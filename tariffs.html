@@ -17,7 +17,7 @@
   .tar-wrap{padding-top:0}
   .tar-hero{padding:128px 0 8px;max-width:940px}
   .tar-hero .lead{max-width:680px;margin-bottom:28px}
-  .tar-trustline{display:flex;align-items:center;gap:14px;flex-wrap:wrap;color:var(--ink-faint);font-size:13.5px;letter-spacing:.01em;margin-top:26px}
+  .tar-trustline{display:flex;align-items:center;gap:14px;flex-wrap:wrap;color:var(--ink-soft);font-size:13.5px;letter-spacing:.01em;margin-top:26px}
   .tar-trustline .sep{width:4px;height:4px;border-radius:50%;background:var(--gold-line)}
   .tar-trustline b{color:var(--ink-soft);font-weight:600}
 
@@ -74,7 +74,7 @@
   /* --- формула --- */
   .formula{display:flex;align-items:stretch;gap:12px;flex-wrap:wrap}
   .formula-tile{flex:1 1 150px;padding:20px 16px;text-align:center}
-  .formula-tile .ft-lbl{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:9px;min-height:28px;display:flex;align-items:center;justify-content:center}
+  .formula-tile .ft-lbl{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:9px;min-height:28px;display:flex;align-items:center;justify-content:center}
   .formula-tile .ft-val{font-family:var(--serif);font-size:21px;color:var(--gold);line-height:1.1}
   .formula-tile .ft-hint{font-size:11.5px;color:var(--ink-soft);margin-top:8px;line-height:1.4}
   .formula-x{display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:26px;color:var(--gold-line);flex:0 0 auto}
@@ -182,7 +182,7 @@
     <div class="tar-trustline reveal d3">
       <span>Платите эксперту напрямую</span><span class="sep"></span>
       <span>Оплата по этапам</span><span class="sep"></span>
-      <span>Беру <b data-count="5" data-prefix="3–">3–5</b> проектов одновременно</span>
+      <span>Беру <b>3–5</b> проектов одновременно</span>
     </div>
   </header>
 
@@ -222,15 +222,15 @@
 
     <div class="ladder-controls reveal">
       <div class="seg seg-wrap" id="ladderFilter" role="group" aria-label="Фильтр по типу работ">
-        <button class="active" data-group="all" type="button">Все</button>
-        <button data-group="self" type="button">Самостоятельные</button>
-        <button data-group="course" type="button">Курсовые и практика</button>
-        <button data-group="article" type="button">Статьи</button>
-        <button data-group="diss" type="button">Дипломы и диссертации</button>
+        <button class="active" data-group="all" type="button" aria-pressed="true">Все</button>
+        <button data-group="self" type="button" aria-pressed="false">Самостоятельные</button>
+        <button data-group="course" type="button" aria-pressed="false">Курсовые и практика</button>
+        <button data-group="article" type="button" aria-pressed="false">Статьи</button>
+        <button data-group="diss" type="button" aria-pressed="false">Дипломы и диссертации</button>
       </div>
       <div class="seg" id="ladderMode" role="group" aria-label="Детализация">
         <button class="active" data-mode="brief" type="button" aria-pressed="true">Кратко</button>
-        <button data-mode="full" data-pressed="false" type="button" aria-pressed="false">Подробно</button>
+        <button data-mode="full" type="button" aria-pressed="false">Подробно</button>
       </div>
     </div>
 
@@ -245,7 +245,7 @@
             <span class="ladder-prices"><b class="ladder-price" data-count="2500" data-prefix="от " data-suffix=" ₽">от 2 500 ₽</b><span class="ladder-range">обычно 2 500–7 000 ₽</span></span>
             <span class="ladder-exp" aria-hidden="true">+</span>
           </div></summary>
-          <div class="ladder-extra"><p>Рынок: 700–2 500 ₽ за работу. Наша позиция: входная ступень, не демпинг. Это та же сумма, что и разбор плана, — психологически безопасный вход в мастерскую.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="self">Рассчитать <span class="ar">→</span></a></div>
+          <div class="ladder-extra"><p>Рынок: 700–2 500 ₽ за работу. Наша позиция: входная ступень, не демпинг — психологически безопасный вход в мастерскую, по порядку сопоставимый с разбором плана.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="self">Рассчитать <span class="ar">→</span></a></div>
         </details>
       </div>
       <!-- 2 -->
@@ -258,7 +258,7 @@
             <span class="ladder-prices"><b class="ladder-price" data-count="14000" data-prefix="от " data-suffix=" ₽">от 14 000 ₽</b><span class="ladder-range">обычно 14 000–28 000 ₽</span></span>
             <span class="ladder-exp" aria-hidden="true">+</span>
           </div></summary>
-          <div class="ladder-extra"><p>Рынок: ~2 900 ₽ обычный, 6 000–8 000 ₽ преддипломная. <b>+75–130%</b> — цена зависит от объёма, дневника практики и расчётов. Естественная связка с дипломом.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="practice">Рассчитать <span class="ar">→</span></a></div>
+          <div class="ladder-extra"><p>Рынок: обычный ~2 900 ₽, преддипломная 6 000–8 000 ₽. У нас <b>от 14 000 ₽</b> — цена зависит от объёма, дневника практики и расчётов. Берём только связкой с дипломом, не как конвейер.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="practice">Рассчитать <span class="ar">→</span></a></div>
         </details>
       </div>
       <!-- 3 -->
@@ -529,7 +529,7 @@
       <details class="faq-item"><summary>Почему «от», а не точная цена?</summary><p>«От» — это гарантированный нижний порог за работу базовой сложности. Точную сумму вы собираете сами в конфигураторе по открытой формуле: тип × направление × срок × уровень. Никаких цифр «по секрету в ЛС».</p></details>
       <details class="faq-item"><summary>Откуда такая разница с биржей?</summary><p>На бирже цену назначает аукцион анонимов, а сверху площадка берёт около 30% комиссии. Здесь вы платите эксперту напрямую — без комиссии и посредника — и получаете отчёт о проверках до оплаты и правки до приёмки.</p></details>
       <details class="faq-item"><summary>Можно платить частями?</summary><p>Да, и это правило, а не уступка. Небольшие работы — 50% на старте и 50% по готовности. Крупные — тремя частями 30 / 40 / 30, привязанными к показу результата. Кандидатская — по главам.</p></details>
-      <details class="faq-item"><summary>Зачтёте ли разбор плана, если передумаю?</summary><p>Если продолжаете работу в течение 14 дней — 3 000 ₽ за разбор полностью зачтём в её стоимость. Не продолжаете — план остаётся у вас, можно работать самостоятельно.</p></details>
+      <details class="faq-item"><summary>Зачтёте ли разбор плана, если передумаю?</summary><p>Если продолжаете работу в течение 14 дней — стоимость разбора (3 000 ₽, для магистерской и кандидатской — 5 000 ₽) полностью зачтём в её стоимость. Не продолжаете — план остаётся у вас, можно работать самостоятельно.</p></details>
       <details class="faq-item"><summary>Что если работа окажется сложнее сметы?</summary><p>Смета фиксируется на разборе плана и не меняется по нашей инициативе. Пересчёт возможен, только если вы сами меняете тему, объём или требования.</p></details>
       <details class="faq-item"><summary>Скидки клуба суммируются с ценой?</summary><p>Нет. Скидки и бонусы не суммируются — применяется одна, самая выгодная для вас. Это честное правило, которое держит цену осмысленной.</p></details>
     </div>
@@ -555,7 +555,7 @@
 </div>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Академический Салон — тарифы","url":"https://salon.217-18-63-210.sslip.io/tariffs.html","areaServed":"RU","knowsLanguage":"ru","priceRange":"от 2500 ₽","hasOfferCatalog":{"@type":"OfferCatalog","name":"Тарифы на академические работы","itemListElement":[{"@type":"Offer","name":"Самостоятельная работа (реферат, эссе, контрольная, презентация)","priceSpecification":{"@type":"PriceSpecification","minPrice":2500,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Отчёт по практике","priceSpecification":{"@type":"PriceSpecification","minPrice":14000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Курсовая теоретическая","priceSpecification":{"@type":"PriceSpecification","minPrice":14000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Курсовая эмпирическая","priceSpecification":{"@type":"PriceSpecification","minPrice":20000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Научная статья РИНЦ","priceSpecification":{"@type":"PriceSpecification","minPrice":9000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Научная статья ВАК","priceSpecification":{"@type":"PriceSpecification","minPrice":18000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Научная статья Scopus / Web of Science","priceSpecification":{"@type":"PriceSpecification","minPrice":35000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Глава диссертации","priceSpecification":{"@type":"PriceSpecification","minPrice":30000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Дипломная работа / ВКР","priceSpecification":{"@type":"PriceSpecification","minPrice":40000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Магистерская диссертация","priceSpecification":{"@type":"PriceSpecification","minPrice":60000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Кандидатская диссертация под ключ","priceSpecification":{"@type":"PriceSpecification","minPrice":200000,"priceCurrency":"RUB"}}]}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Почему «от», а не точная цена?","acceptedAnswer":{"@type":"Answer","text":"«От» — гарантированный нижний порог за работу базовой сложности. Точную сумму вы собираете в конфигураторе по открытой формуле: тип × направление × срок × уровень."}},{"@type":"Question","name":"Откуда такая разница с биржей?","acceptedAnswer":{"@type":"Answer","text":"На бирже цену назначает аукцион анонимов, а площадка берёт около 30% комиссии. Здесь вы платите эксперту напрямую — без комиссии и посредника — и получаете отчёт о проверках до оплаты и правки до приёмки."}},{"@type":"Question","name":"Можно платить частями?","acceptedAnswer":{"@type":"Answer","text":"Да. Небольшие работы — 50% на старте и 50% по готовности. Крупные — тремя частями 30/40/30, привязанными к показу результата. Кандидатская — по главам."}},{"@type":"Question","name":"Зачтёте ли разбор плана, если передумаю?","acceptedAnswer":{"@type":"Answer","text":"Если продолжаете работу в течение 14 дней — 3 000 ₽ за разбор полностью зачтём в её стоимость. Не продолжаете — план остаётся у вас."}},{"@type":"Question","name":"Что если работа окажется сложнее сметы?","acceptedAnswer":{"@type":"Answer","text":"Смета фиксируется на разборе плана и не меняется по нашей инициативе. Пересчёт возможен, только если вы сами меняете тему, объём или требования."}},{"@type":"Question","name":"Скидки клуба суммируются с ценой?","acceptedAnswer":{"@type":"Answer","text":"Нет. Скидки и бонусы не суммируются — применяется одна, самая выгодная для вас."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Почему «от», а не точная цена?","acceptedAnswer":{"@type":"Answer","text":"«От» — гарантированный нижний порог за работу базовой сложности. Точную сумму вы собираете в конфигураторе по открытой формуле: тип × направление × срок × уровень."}},{"@type":"Question","name":"Откуда такая разница с биржей?","acceptedAnswer":{"@type":"Answer","text":"На бирже цену назначает аукцион анонимов, а площадка берёт около 30% комиссии. Здесь вы платите эксперту напрямую — без комиссии и посредника — и получаете отчёт о проверках до оплаты и правки до приёмки."}},{"@type":"Question","name":"Можно платить частями?","acceptedAnswer":{"@type":"Answer","text":"Да. Небольшие работы — 50% на старте и 50% по готовности. Крупные — тремя частями 30/40/30, привязанными к показу результата. Кандидатская — по главам."}},{"@type":"Question","name":"Зачтёте ли разбор плана, если передумаю?","acceptedAnswer":{"@type":"Answer","text":"Если продолжаете работу в течение 14 дней — стоимость разбора (3 000 ₽, для магистерской и кандидатской — 5 000 ₽) полностью зачтём в её стоимость. Не продолжаете — план остаётся у вас."}},{"@type":"Question","name":"Что если работа окажется сложнее сметы?","acceptedAnswer":{"@type":"Answer","text":"Смета фиксируется на разборе плана и не меняется по нашей инициативе. Пересчёт возможен, только если вы сами меняете тему, объём или требования."}},{"@type":"Question","name":"Скидки клуба суммируются с ценой?","acceptedAnswer":{"@type":"Answer","text":"Нет. Скидки и бонусы не суммируются — применяется одна, самая выгодная для вас."}}]}</script>
 <script src="assets/js/app.js"></script>
 <script>
 (function(){
@@ -568,8 +568,8 @@
   if(filter){
     filter.addEventListener('click', function(e){
       var b = e.target.closest('button[data-group]'); if(!b) return;
-      filter.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
-      b.classList.add('active');
+      filter.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); x.setAttribute('aria-pressed','false'); });
+      b.classList.add('active'); b.setAttribute('aria-pressed','true');
       var g = b.getAttribute('data-group');
       rows.forEach(function(r){ r.hidden = !(g==='all' || r.getAttribute('data-group')===g); });
     });
@@ -587,17 +587,22 @@
     });
   }
 
-  /* ---- бесшовный хэндофф в конфигуратор (через salon_draft) ---- */
-  function handoff(type, tier){
+  /* ---- бесшовный хэндофф в конфигуратор: мёрджим существующий черновик, не затирая выбор ---- */
+  function handoff(patch){
     if(!(window.Salon && Salon.store)) return;
-    var st = { type: type || 'diplom', disc: 'hum', term: 'free', tier: tier || 'base' };
-    Salon.store.set('salon_draft', { state: st, idx: 0, savedAt: 0 });
+    var prev = Salon.store.get('salon_draft', null);
+    var p = (prev && prev.state) ? prev.state : {};
+    var st = { type: p.type||'diplom', disc: p.disc||'hum', term: p.term||'free', tier: p.tier||'base' };
+    if(patch.type) st.type = patch.type;
+    if(patch.tier) st.tier = patch.tier;
+    var idx = (prev && typeof prev.idx==='number') ? prev.idx : 0;
+    Salon.store.set('salon_draft', { state: st, idx: idx, savedAt: 0 });
   }
   document.querySelectorAll('a[data-type]').forEach(function(a){
-    a.addEventListener('click', function(){ handoff(a.getAttribute('data-type'), 'base'); });
+    a.addEventListener('click', function(){ handoff({ type: a.getAttribute('data-type') }); });
   });
   document.querySelectorAll('a[data-tier]').forEach(function(a){
-    a.addEventListener('click', function(){ handoff('diplom', a.getAttribute('data-tier')); });
+    a.addEventListener('click', function(){ handoff({ tier: a.getAttribute('data-tier') }); });
   });
 })();
 </script>
