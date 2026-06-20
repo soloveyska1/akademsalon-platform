@@ -20,15 +20,17 @@
   /* ---------------- Калькулятор (единая логика) ---------------- */
   var SalonCalc = {
     types: [
-      { id: 'diplom',   label: 'Дипломная работа / ВКР',     base: 24000 },
-      { id: 'master',   label: 'Магистерская диссертация',   base: 39000 },
-      { id: 'chapter',  label: 'Глава диссертации',          base: 27000 },
-      { id: 'kandidat', label: 'Кандидатская под ключ',      base: 190000 },
-      { id: 'vak',      label: 'Научная статья ВАК',         base: 15000 },
-      { id: 'scopus',   label: 'Научная статья Scopus',      base: 30000 },
-      { id: 'rinc',     label: 'Научная статья РИНЦ',         base: 8000 },
-      { id: 'course',   label: 'Курсовая с практикой',       base: 7000 },
-      { id: 'practice', label: 'Отчёт по практике',          base: 9000 }
+      { id: 'diplom',     label: 'Дипломная работа / ВКР',                         base: 40000 },
+      { id: 'master',     label: 'Магистерская диссертация',                       base: 60000 },
+      { id: 'chapter',    label: 'Глава диссертации',                              base: 30000 },
+      { id: 'kandidat',   label: 'Кандидатская под ключ',                          base: 200000 },
+      { id: 'course',     label: 'Курсовая теоретическая',                         base: 14000 },
+      { id: 'course_emp', label: 'Курсовая эмпирическая (с практикой, расчётами)', base: 20000 },
+      { id: 'practice',   label: 'Отчёт по практике',                              base: 14000 },
+      { id: 'vak',        label: 'Научная статья ВАК',                             base: 18000 },
+      { id: 'scopus',     label: 'Научная статья Scopus / Web of Science',         base: 35000 },
+      { id: 'rinc',       label: 'Научная статья РИНЦ',                            base: 9000 },
+      { id: 'self',       label: 'Самостоятельная работа (реферат, эссе, контрольная)', base: 2500 }
     ],
     disciplines: [
       { id: 'hum',  label: 'Гуманитарные / экономика',                 k: 1.0 },
@@ -167,7 +169,7 @@
     { href: 'check.html', label: 'Проверка текста' },
     { href: 'expertise.html', label: 'Экспертиза' },
     { href: 'referral.html', label: 'Клуб' },
-    { href: 'index.html#tariffs', label: 'Тарифы' }
+    { href: 'tariffs.html', label: 'Тарифы' }
   ];
   var here = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
   function brandHTML() {
@@ -249,7 +251,7 @@
     footer.className = 'site-footer';
     footer.innerHTML = '<div class="wrap"><div class="foot-grid">' +
       '<div>' + brandHTML() + '<p class="muted" style="max-width:300px;margin-top:14px">Авторские академические работы под ключ. Пишем вручную, ведём до защиты, проверки показываем до оплаты.</p></div>' +
-      '<div><h5>Платформа</h5><a href="configurator.html">Рассчитать заказ</a><a href="check.html">Проверка текста</a><a href="expertise.html">Экспертиза</a><a href="referral.html">Реферальный клуб</a><a href="knowledge.html">База знаний</a><a href="dashboard.html">Личный кабинет</a></div>' +
+      '<div><h5>Платформа</h5><a href="configurator.html">Рассчитать заказ</a><a href="tariffs.html">Тарифы и цены</a><a href="check.html">Проверка текста</a><a href="expertise.html">Экспертиза</a><a href="referral.html">Реферальный клуб</a><a href="knowledge.html">База знаний</a><a href="dashboard.html">Личный кабинет</a></div>' +
       '<div><h5>Документы</h5><a href="#" class="placeholder">[Договор-оферта]</a><a href="#" class="placeholder">[Политика ПДн]</a><a href="#" class="placeholder">[Оплата и возврат]</a></div>' +
       '<div><h5>Связь</h5><a href="#" data-msg class="placeholder">[Telegram]</a><a href="#" data-msg class="placeholder">[WhatsApp]</a><a href="#" data-msg class="placeholder">[E-mail]</a></div>' +
       '</div><div class="foot-note"><span class="placeholder">[ИП Фамилия И.О. · ИНН 000000000000 · ОГРНИП 000000000000000]</span><br>' +

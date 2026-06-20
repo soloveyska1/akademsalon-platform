@@ -110,7 +110,7 @@
   function money(n){ return n.toLocaleString('ru-RU')+' ₽'; }
 
   function paySchedule(o){
-    var isBig=/диплом|магистер|диссерт|кандидат/i.test(o.type);
+    var isBig=/диплом|магистер|диссерт|кандидат|scopus/i.test(o.type);
     var total=Math.round((o.priceLow+o.priceHigh)/2);
     if(isBig) return [
       {amt:Math.round(total*0.3),label:'Старт · бронь и план',paidIf:1},

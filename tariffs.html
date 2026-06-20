@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Тарифы и цены — Академический Салон</title>
+<meta name="description" content="Открытый прайс мастерской: от самостоятельной работы (от 2 500 ₽) до кандидатской под ключ. Лесенка цен по 11 типам работ, три уровня сопровождения, оплата по этапам. Без аукционов и скрытых доплат." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+<style>
+  /* ============================================================
+     ТАРИФЫ — «Прайс-путеводитель»: открытая ценовая лесенка
+     page-specific слой; остальное — из design system
+     ============================================================ */
+  .tar-wrap{padding-top:0}
+  .tar-hero{padding:128px 0 8px;max-width:940px}
+  .tar-hero .lead{max-width:680px;margin-bottom:28px}
+  .tar-trustline{display:flex;align-items:center;gap:14px;flex-wrap:wrap;color:var(--ink-faint);font-size:13.5px;letter-spacing:.01em;margin-top:26px}
+  .tar-trustline .sep{width:4px;height:4px;border-radius:50%;background:var(--gold-line)}
+  .tar-trustline b{color:var(--ink-soft);font-weight:600}
+
+  .btn-sm{--pad:10px 18px;font-size:14px}
+  .sec-head{margin-bottom:22px}
+  .sec-head .lead{margin-bottom:0}
+  .tar-sec{padding:56px 0 0}
+
+  /* --- лестница доверия --- */
+  .trust-card{padding:30px;border-left:2px solid var(--gold-line);border-radius:var(--radius-lg)}
+  .trust-split{display:grid;grid-template-columns:1.25fr .75fr;gap:30px;align-items:center}
+  .trust-card h2{font-size:clamp(22px,2.6vw,28px);margin-bottom:12px}
+  .trust-card p{font-size:15px;color:var(--ink-soft);line-height:1.65;margin-bottom:14px}
+  .trust-card .tnote{font-style:italic;font-size:13.5px;color:var(--ink-faint);margin-bottom:0}
+  .trust-obj{padding:22px;text-align:center}
+  .trust-obj .tprice{font-family:var(--serif);font-size:40px;color:var(--gold);line-height:1}
+  .trust-obj .tprice-sub{font-size:13px;color:var(--ink-soft);margin:6px 0 16px}
+  .trust-obj ul{list-style:none;text-align:left;margin-bottom:16px}
+  .trust-obj li{font-size:13px;color:var(--ink-soft);padding:6px 0 6px 22px;position:relative;line-height:1.45}
+  .trust-obj li::before{content:"✦";position:absolute;left:0;top:6px;color:var(--gold);font-size:11px}
+  .trust-credit{font-size:12.5px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:var(--radius-sm);padding:11px 13px;margin-bottom:16px;line-height:1.45}
+
+  /* --- ЛЕСЕНКА --- */
+  .ladder-controls{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin:6px 0 6px}
+  .seg-wrap{display:flex;gap:9px;flex-wrap:wrap}
+  .ladder{border-top:1px solid var(--line);margin-top:14px}
+  .ladder-row{border-bottom:1px solid var(--line)}
+  .ladder-row[hidden]{display:none}
+  .ladder-det>summary{list-style:none;cursor:pointer;outline:none}
+  .ladder-det>summary::-webkit-details-marker{display:none}
+  .ladder-main{display:grid;grid-template-columns:46px minmax(0,1fr) 116px auto 24px;gap:20px;align-items:center;padding:19px 8px;border-radius:var(--radius-sm);transition:background .2s}
+  .ladder-det>summary:focus-visible .ladder-main{box-shadow:0 0 0 2px var(--gold)}
+  .ladder-det>summary:hover .ladder-main{background:rgba(210,173,94,.05)}
+  .ladder-badge{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-size:15px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line)}
+  .ladder-name b{font-family:var(--serif);font-size:16.5px;font-weight:600;display:block;line-height:1.25}
+  .ladder-name small{font-size:12.5px;color:var(--ink-soft)}
+  .lbadge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:100px;padding:2px 9px;margin-left:8px;vertical-align:middle;text-transform:uppercase}
+  .ladder-meter{height:5px;border-radius:100px;background:rgba(244,240,231,.1);overflow:hidden}
+  .ladder-meter i{display:block;height:100%;width:var(--fill,0%);background:linear-gradient(90deg,var(--gold),var(--gold-2));border-radius:100px;transform-origin:left}
+  .ladder-prices{text-align:right;white-space:nowrap}
+  .ladder-price{font-family:var(--serif);font-size:25px;color:var(--gold);display:block;line-height:1.1}
+  .ladder-range{font-size:12px;color:var(--ink-soft)}
+  .ladder-exp{justify-self:center;font-size:24px;font-weight:300;color:var(--gold);transition:transform .25s;line-height:1}
+  .ladder-det[open] .ladder-exp{transform:rotate(45deg)}
+  .ladder-extra{padding:0 8px 22px 70px;display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}
+  .ladder-extra p{font-size:13.5px;color:var(--ink-soft);max-width:660px;line-height:1.55;margin:0}
+  .ladder-extra p b{color:var(--gold)}
+  .ladder-row.is-top .ladder-main{background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--gold-line);border-radius:var(--radius)}
+  .ladder-note{font-size:13px;color:var(--ink-soft);margin-top:18px;padding-left:24px;position:relative;line-height:1.6}
+  .ladder-note::before{content:"✦";position:absolute;left:0;top:2px;color:var(--gold);font-size:11px}
+  .has-js .ladder.reveal:not(.in) .ladder-meter i{transform:scaleX(0)}
+  .has-js .ladder.reveal.in .ladder-meter i{transform:scaleX(1);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+
+  /* --- формула --- */
+  .formula{display:flex;align-items:stretch;gap:12px;flex-wrap:wrap}
+  .formula-tile{flex:1 1 150px;padding:20px 16px;text-align:center}
+  .formula-tile .ft-lbl{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:9px;min-height:28px;display:flex;align-items:center;justify-content:center}
+  .formula-tile .ft-val{font-family:var(--serif);font-size:21px;color:var(--gold);line-height:1.1}
+  .formula-tile .ft-hint{font-size:11.5px;color:var(--ink-soft);margin-top:8px;line-height:1.4}
+  .formula-x{display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:26px;color:var(--gold-line);flex:0 0 auto}
+  .formula-eg{margin-top:18px;padding:16px 20px;font-size:14.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums;line-height:1.6;border-radius:var(--radius-sm)}
+  .formula-eg b{color:var(--gold);font-weight:600}
+
+  /* --- уровни (реюз .tariffs/.tariff) --- */
+  .tier-mult{font-family:var(--serif);font-size:38px;color:var(--gold);line-height:1;margin:8px 0 2px}
+  .tier-mult small{font-size:13px;color:var(--ink-faint);font-family:var(--sans);display:block;margin-top:4px}
+
+  /* --- оплата по этапам --- */
+  .pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .pay-card{padding:24px}
+  .pay-card h4{font-size:16px;margin-bottom:4px}
+  .pay-card .pay-sub{font-size:12.5px;color:var(--ink-soft);margin-bottom:18px;min-height:34px}
+  .pay-track{display:flex;gap:5px;height:12px;margin-bottom:12px}
+  .pay-seg{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));border-radius:4px;transform-origin:left;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0b0d0a}
+  .pay-seg.dim{background:rgba(244,240,231,.14);color:var(--ink-soft)}
+  .pay-legend{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .pay-legend li{font-size:12.5px;color:var(--ink-soft);padding-left:16px;position:relative}
+  .pay-legend li::before{content:"";position:absolute;left:0;top:6px;width:7px;height:7px;border-radius:2px;background:var(--gold)}
+  .pay-quote{font-size:14.5px;color:var(--ink-soft);line-height:1.7;margin-top:22px;max-width:760px}
+  .pay-quote b{color:var(--gold)}
+  .has-js .pay-grid.reveal:not(.in) .pay-seg{transform:scaleX(0)}
+  .has-js .pay-grid.reveal.in .pay-seg{transform:scaleX(1);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+
+  /* --- манифест --- */
+  .manifesto{border-top:1px solid var(--gold-line);padding-top:40px}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0 32px}
+  .compare-col{padding:22px}
+  .compare-col h4{font-size:14.5px;margin-bottom:12px;letter-spacing:.01em}
+  .compare-col ul{list-style:none}
+  .compare-col li{font-size:13.5px;padding:7px 0 7px 24px;position:relative;line-height:1.45}
+  .compare-col.good li{color:var(--ink-soft)}
+  .compare-col.good li::before{content:"✦";position:absolute;left:0;top:7px;color:var(--gold);font-size:11px}
+  .compare-col.dim{opacity:.75}
+  .compare-col.dim li{color:var(--ink-faint)}
+  .compare-col.dim li::before{content:"–";position:absolute;left:2px;top:7px;color:var(--line-2)}
+  .manifesto p{font-size:15.5px;line-height:1.75;color:var(--ink-soft);margin-bottom:15px;max-width:800px}
+  .manifesto p strong{color:var(--ink);font-weight:600}
+  .no-promise{margin-top:6px;padding:20px 22px;max-width:820px}
+  .no-promise b{color:var(--ink)}
+
+  /* --- слоты + клуб --- */
+  .tar-slots{display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:space-between;padding:22px 26px}
+  .tar-slots .slot-l{display:flex;align-items:center;gap:12px;font-size:14.5px;color:var(--ink-soft)}
+  .slot-dots{display:flex;gap:5px}
+  .slot-dots i{width:9px;height:9px;border-radius:50%;background:rgba(244,240,231,.16)}
+  .slot-dots i.on{background:var(--gold)}
+  .tar-slots .slot-r{font-size:13.5px;color:var(--ink-soft)}
+  .tar-slots .slot-r a{color:var(--gold)}
+  .tar-slots .slot-r a:hover{text-decoration:underline}
+
+  /* --- финальный CTA --- */
+  .tar-cta{padding:56px 32px;text-align:center}
+  .tar-cta .lead{margin:0 auto 26px}
+
+  @media(max-width:880px){
+    .trust-split{grid-template-columns:1fr;gap:22px}
+    .pay-grid{grid-template-columns:1fr}
+    .compare{grid-template-columns:1fr}
+    .formula{flex-direction:column}
+    .formula-x{transform:rotate(90deg);padding:2px 0}
+    .ladder-main{grid-template-columns:40px minmax(0,1fr) auto;grid-template-areas:"badge name exp" "meter meter meter" "prices prices prices";gap:10px 14px;row-gap:12px}
+    .ladder-badge{grid-area:badge}
+    .ladder-name{grid-area:name}
+    .ladder-meter{grid-area:meter}
+    .ladder-prices{grid-area:prices;text-align:left}
+    .ladder-price{font-size:22px}
+    .ladder-exp{grid-area:exp;align-self:start}
+    .ladder-extra{padding-left:8px}
+  }
+</style>
+<link rel="canonical" href="https://salon.217-18-63-210.sslip.io/tariffs.html" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#080b09" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Тарифы и цены — Академический Салон" />
+<meta property="og:description" content="Открытый прайс мастерской: от 2 500 ₽ до кандидатской под ключ. Лесенка по 11 типам работ, три уровня сопровождения, оплата по этапам — без аукционов и скрытых доплат." />
+<meta property="og:url" content="https://salon.217-18-63-210.sslip.io/tariffs.html" />
+<meta property="og:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Тарифы и цены — Академический Салон" />
+<meta name="twitter:description" content="Открытый прайс мастерской: от 2 500 ₽ до кандидатской под ключ. Лесенка по 11 типам работ и три уровня сопровождения." />
+<meta name="twitter:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+</head>
+<body>
+
+<main class="tar-wrap">
+
+  <!-- 1. HERO -->
+  <header class="tar-hero wrap">
+    <span class="badge reveal">✦ Открытый прайс</span>
+    <h1 class="h-display reveal d1" style="margin:20px 0 22px">Открытый прайс мастерской<br><span class="serif-italic">без аукционов и скрытых доплат</span></h1>
+    <p class="lead reveal d2">Мы не прячем цены за «уточните в личных сообщениях». Вот вся лесенка — от входной работы до кандидатской. Точную сумму соберёте сами в конфигураторе за минуту.</p>
+    <div class="hero-actions reveal d2">
+      <a class="btn btn-primary btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>
+      <a class="btn btn-ghost btn-lg" href="#ladder">К лесенке цен</a>
+    </div>
+    <div class="tar-trustline reveal d3">
+      <span>Платите эксперту напрямую</span><span class="sep"></span>
+      <span>Оплата по этапам</span><span class="sep"></span>
+      <span>Беру <b data-count="5" data-prefix="3–">3–5</b> проектов одновременно</span>
+    </div>
+  </header>
+
+  <!-- 2. ЛЕСТНИЦА ДОВЕРИЯ -->
+  <section class="tar-sec wrap">
+    <div class="glass glass-2 trust-card reveal">
+      <div class="trust-split">
+        <div>
+          <span class="eyebrow">С чего начать</span>
+          <h2>Не готовы сразу на всю сумму? Начните с разбора плана</h2>
+          <p>Я изучаю вашу тему и методичку и присылаю структуру глав, ориентир по источникам и объёму, реалистичную оценку срока, фиксированную смету и честный вердикт: успеваем, не успеваем или тема сырая.</p>
+          <p class="tnote">Это не плата за расчёт — расчёт в конфигураторе бесплатный, — а реальный час моего времени над вашим планом.</p>
+        </div>
+        <div class="glass trust-obj">
+          <div class="tprice">3 000 ₽</div>
+          <div class="tprice-sub">5 000 ₽ для магистерской и кандидатской</div>
+          <ul>
+            <li>Структура глав под вашу тему</li>
+            <li>Ориентир по источникам и объёму</li>
+            <li>Реалистичный срок и фиксированная смета</li>
+            <li>Честный вердикт по теме</li>
+          </ul>
+          <div class="trust-credit">Зачтём в стоимость работы, если продолжите в течение 14 дней. Не продолжаете — план остаётся у вас.</div>
+          <a class="btn btn-primary btn-block" href="configurator.html">Начать с разбора плана <span class="ar">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. ЛЕСЕНКА ЦЕН -->
+  <section class="tar-sec wrap" id="ladder">
+    <div class="sec-head">
+      <span class="eyebrow reveal">Прайс-путеводитель</span>
+      <h2 class="title reveal" style="margin-bottom:14px">Сколько стоит ваша работа</h2>
+      <p class="lead reveal">Никаких «уточните в ЛС». Найдите свой тип — увидите нижнюю границу и типичную вилку. Нажмите на строку, чтобы сравнить с рынком.</p>
+    </div>
+
+    <div class="ladder-controls reveal">
+      <div class="seg seg-wrap" id="ladderFilter" role="group" aria-label="Фильтр по типу работ">
+        <button class="active" data-group="all" type="button">Все</button>
+        <button data-group="self" type="button">Самостоятельные</button>
+        <button data-group="course" type="button">Курсовые и практика</button>
+        <button data-group="article" type="button">Статьи</button>
+        <button data-group="diss" type="button">Дипломы и диссертации</button>
+      </div>
+      <div class="seg" id="ladderMode" role="group" aria-label="Детализация">
+        <button class="active" data-mode="brief" type="button" aria-pressed="true">Кратко</button>
+        <button data-mode="full" data-pressed="false" type="button" aria-pressed="false">Подробно</button>
+      </div>
+    </div>
+
+    <div class="ladder reveal" id="ladder-list">
+      <!-- 1 -->
+      <div class="ladder-row" data-group="self">
+        <details class="ladder-det"><summary>
+          <div class="ladder-main">
+            <span class="ladder-badge" aria-hidden="true">i</span>
+            <span class="ladder-name"><b>Самостоятельная работа<span class="lbadge">старт</span></b><small>реферат, эссе, контрольная, презентация</small></span>
+            <span class="ladder-meter" aria-hidden="true"><i style="--fill:4%"></i></span>
+            <span class="ladder-prices"><b class="ladder-price" data-count="2500" data-prefix="от " data-suffix=" ₽">от 2 500 ₽</b><span class="ladder-range">обычно 2 500–7 000 ₽</span></span>
+            <span class="ladder-exp" aria-hidden="true">+</span>
+          </div></summary>
+          <div class="ladder-extra"><p>Рынок: 700–2 500 ₽ за работу. Наша позиция: входная ступень, не демпинг. Это та же сумма, что и разбор плана, — психологически безопасный вход в мастерскую.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="self">Рассчитать <span class="ar">→</span></a></div>
+        </details>
+      </div>
+      <!-- 2 -->
+      <div class="ladder-row" data-group="course">
+        <details class="ladder-det"><summary>
+          <div class="ladder-main">
+            <span class="ladder-badge" aria-hidden="true">ii</span>
+            <span class="ladder-name"><b>Отчёт по практике</b><small>учебная, производственная, преддипломная</small></span>
+            <span class="ladder-meter" aria-hidden="true"><i style="--fill:39%"></i></span>
+            <span class="ladder-prices"><b class="ladder-price" data-count="14000" data-prefix="от " data-suffix=" ₽">от 14 000 ₽</b><span class="ladder-range">обычно 14 000–28 000 ₽</span></span>
+            <span class="ladder-exp" aria-hidden="true">+</span>
+          </div></summary>
+          <div class="ladder-extra"><p>Рынок: ~2 900 ₽ обычный, 6 000–8 000 ₽ преддипломная. <b>+75–130%</b> — цена зависит от объёма, дневника практики и расчётов. Естественная связка с дипломом.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="practice">Рассчитать <span class="ar">→</span></a></div>
+        </details>
+      </div>
+      <!-- 3 -->
+      <div class="ladder-row" data-group="course">
+        <details class="ladder-det"><summary>
+          <div class="ladder-main">
+            <span class="ladder-badge" aria-hidden="true">iii</span>
+            <span class="ladder-name"><b>Курсовая теоретическая</b><small>литобзор, анализ источников, по ГОСТ/методичке</small></span>
+            <span class="ladder-meter" aria-hidden="true"><i style="--fill:39%"></i></span>
+            <span class="ladder-prices"><b class="ladder-price" data-count="14000" data-prefix="от " data-suffix=" ₽">от 14 000 ₽</b><span class="ladder-range">обычно 14 000–26 000 ₽</span></span>
+            <span class="ladder-exp" aria-hidden="true">+</span>
+          </div></summary>
+          <div class="ladder-extra"><p>Рынок: 2 500–3 000 ₽. Да, мы дороже в разы — потому что это прямая работа эксперта, а не аукцион новичков и не нейросеть. Курсовая у нас — вход к диплому, а не конвейер.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="course">Рассчитать <span class="ar">→</span></a></div>
+        </details>
+      </div>
+      <!-- 4 -->
+      <div class="ladder-row" data-group="course">
+        <details class="ladder-det"><summary>
+          <div class="ladder-main">
+            <span class="ladder-badge" aria-hidden="true">iv</span>
+            <span class="ladder-name"><b>Курсовая эмпирическая</b><small>с практикой, расчётами, собственным исследованием</small></span>
+            <span class="ladder-meter" aria-hidden="true"><i style="--fill:47%"></i></span>
+            <span class="ladder-prices"><b class="ladder-price" data-count="20000" data-prefix="от " data-suffix=" ₽">от 20 000 ₽</b><span class="ladder-range">обычно 20 000–38 000 ₽</span></span>
+            <span class="ladder-exp" aria-hidden="true">+</span>
+          </div></summary>
+          <div class="ladder-extra"><p>Рынок: 3 500–5 000 ₽. Собственное исследование, обработка данных, расчёты. Технические и медицина дают верх вилки за счёт коэффициента сложности направления.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="course_emp">Рассчитать <span class="ar">→</span></a></div>
+        </details>
+      </div>
+      <!-- 5 -->
+      <div class="ladder-row" data-group="article">
+        <details class="ladder-det"><summary>
+          <div class="ladder-main">
+            <span class="ladder-badge" aria-hidden="true">v</span>
+            <span class="ladder-name"><b>Научная статья РИНЦ</b><small>написание; публикация в журнале — отдельно</small></span>
+            <span class="ladder-meter" aria-hidden="true"><i style="--fill:29%"></i></span>
+            <span class="ladder-prices"><b class="ladder-price" data-count="9000" data-prefix="от " data-suffix=" ₽">от 9 000 ₽</b><span class="ladder-range">обычно 9 000–16 000 ₽</span></span>
+            <span class="ladder-exp" aria-hidden="true">+</span>
+          </div></summary>
+          <div class="ladder-extra"><p>Рынок: 4 000–6 000 ₽ за написание. <b>Верхняя четверть рынка.</b> Частая апробация к диплому и магистерской. Публикационные сборы журнала оплачиваются отдельно.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="rinc">Рассчитать <span class="ar">→</span></a></div>
+        </details>
+      </div>
+      <!-- 6 -->
+      <div class="ladder-row" data-group="article">
+        <details class="ladder-det"><summary>
+          <div class="ladder-main">
+            <span class="ladder-badge" aria-hidden="true">vi</span>
+            <span class="ladder-name"><b>Научная статья ВАК</b><small>под требования ВАК-журнала, с научной новизной</small></span>
+            <span class="ladder-meter" aria-hidden="true"><i style="--fill:45%"></i></span>
+            <span class="ladder-prices"><b class="ladder-price" data-count="18000" data-prefix="от " data-suffix=" ₽">от 18 000 ₽</b><span class="ladder-range">обычно 18 000–30 000 ₽</span></span>
+            <span class="ladder-exp" aria-hidden="true">+</span>
+          </div></summary>
+          <div class="ladder-extra"><p>Рынок: 8 000–12 000 ₽. <b>Премиум-уровень.</b> Обзор литературы, научная новизна, оформление под журнал. Нужна к защите магистерской и кандидатской.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="vak">Рассчитать <span class="ar">→</span></a></div>
+        </details>
+      </div>
+      <!-- 7 -->
+      <div class="ladder-row" data-group="article">
+        <details class="ladder-det"><summary>
+          <div class="ladder-main">
+            <span class="ladder-badge" aria-hidden="true">vii</span>
+            <span class="ladder-name"><b>Научная статья Scopus / WoS</b><small>уровень международного рецензирования, английский</small></span>
+            <span class="ladder-meter" aria-hidden="true"><i style="--fill:60%"></i></span>
+            <span class="ladder-prices"><b class="ladder-price" data-count="35000" data-prefix="от " data-suffix=" ₽">от 35 000 ₽</b><span class="ladder-range">обычно 35 000–70 000 ₽</span></span>
+            <span class="ladder-exp" aria-hidden="true">+</span>
+          </div></summary>
+          <div class="ladder-extra"><p>Рынок: 18 000–25 000 ₽ за написание. Q1/Q2 дают верх вилки. Методология, английский язык, требования международного журнала. Публикационные сборы и APC — отдельно, по запросу.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="scopus">Рассчитать <span class="ar">→</span></a></div>
+        </details>
+      </div>
+      <!-- 8 -->
+      <div class="ladder-row" data-group="diss">
+        <details class="ladder-det"><summary>
+          <div class="ladder-main">
+            <span class="ladder-badge" aria-hidden="true">viii</span>
+            <span class="ladder-name"><b>Глава диссертации</b><small>кандидатской/докторской, с научным аппаратом</small></span>
+            <span class="ladder-meter" aria-hidden="true"><i style="--fill:57%"></i></span>
+            <span class="ladder-prices"><b class="ladder-price" data-count="30000" data-prefix="от " data-suffix=" ₽">от 30 000 ₽</b><span class="ladder-range">обычно 30 000–55 000 ₽</span></span>
+            <span class="ladder-exp" aria-hidden="true">+</span>
+          </div></summary>
+          <div class="ladder-extra"><p>Рынок: 15 000–25 000 ₽ за главу. Отдельная глава с источниками и научным аппаратом. Естественный путь: глава → кандидатская под ключ.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="chapter">Рассчитать <span class="ar">→</span></a></div>
+        </details>
+      </div>
+      <!-- 9 -->
+      <div class="ladder-row" data-group="diss">
+        <details class="ladder-det"><summary>
+          <div class="ladder-main">
+            <span class="ladder-badge" aria-hidden="true">ix</span>
+            <span class="ladder-name"><b>Дипломная работа / ВКР</b><small>бакалавриат, специалитет — флагман</small></span>
+            <span class="ladder-meter" aria-hidden="true"><i style="--fill:63%"></i></span>
+            <span class="ladder-prices"><b class="ladder-price" data-count="40000" data-prefix="от " data-suffix=" ₽">от 40 000 ₽</b><span class="ladder-range">обычно 40 000–72 000 ₽</span></span>
+            <span class="ladder-exp" aria-hidden="true">+</span>
+          </div></summary>
+          <div class="ladder-extra"><p>Рынок: агрегаторы ~14 400 ₽, реклама «от 4 300». <b>+120–180% к медиане — осознанно.</b> «От 4 300» — это демпинг новичка или нейросети. Здесь — живой текст, отчёт о проверках до оплаты, правки до приёмки, оплата 30/40/30.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="diplom">Рассчитать <span class="ar">→</span></a></div>
+        </details>
+      </div>
+      <!-- 10 -->
+      <div class="ladder-row" data-group="diss">
+        <details class="ladder-det"><summary>
+          <div class="ladder-main">
+            <span class="ladder-badge" aria-hidden="true">x</span>
+            <span class="ladder-name"><b>Магистерская диссертация</b><small>научная новизна, исследование, апробация</small></span>
+            <span class="ladder-meter" aria-hidden="true"><i style="--fill:73%"></i></span>
+            <span class="ladder-prices"><b class="ladder-price" data-count="60000" data-prefix="от " data-suffix=" ₽">от 60 000 ₽</b><span class="ladder-range">обычно 60 000–120 000 ₽</span></span>
+            <span class="ladder-exp" aria-hidden="true">+</span>
+          </div></summary>
+          <div class="ladder-extra"><p>Рынок: 25 000–35 000 ₽, премиум-сервисы «от 30 000». <b>+70–100% к премиум-сегменту.</b> Часто берут пакетом со статьёй ВАК — её просят к защите.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="master">Рассчитать <span class="ar">→</span></a></div>
+        </details>
+      </div>
+      <!-- 11 -->
+      <div class="ladder-row is-top" data-group="diss">
+        <details class="ladder-det"><summary>
+          <div class="ladder-main">
+            <span class="ladder-badge" aria-hidden="true">xi</span>
+            <span class="ladder-name"><b>Кандидатская под ключ<span class="lbadge">разбор обязателен</span></b><small>индивидуальная смета · оплата по главам</small></span>
+            <span class="ladder-meter" aria-hidden="true"><i style="--fill:100%"></i></span>
+            <span class="ladder-prices"><b class="ladder-price" data-count="200000" data-prefix="от " data-suffix=" ₽">от 200 000 ₽</b><span class="ladder-range">обычно 200 000–420 000 ₽</span></span>
+            <span class="ladder-exp" aria-hidden="true">+</span>
+          </div></summary>
+          <div class="ladder-extra"><p>Рынок: 110 000–180 000 ₽ под ключ. <b>Топ премиум-сегмента.</b> Всегда индивидуальная смета после обязательного разбора плана (5 000 ₽). Оплата помесячно или по главам. Вилка ориентировочна.</p><a class="btn btn-ghost btn-sm" href="configurator.html" data-type="kandidat">Обсудить проект <span class="ar">→</span></a></div>
+        </details>
+      </div>
+    </div>
+
+    <p class="ladder-note reveal">Все цены — нижняя граница: за работу гуманитарного профиля, свободный срок (от 30 дней), уровень «Базовый». Сложнее направление, короче срок, глубже сопровождение — выше итог. Вилка «обычно» уже учитывает направление и срок, но не уровень VIP. Точную цифру под вашу работу соберите в <a class="gold" href="configurator.html">конфигураторе</a>.</p>
+  </section>
+
+  <!-- 4. ОТКРЫТАЯ ФОРМУЛА -->
+  <section class="tar-sec wrap">
+    <div class="sec-head">
+      <span class="eyebrow reveal">Из чего складывается цена</span>
+      <h2 class="title reveal" style="margin-bottom:14px">Цена собирается у вас на глазах</h2>
+      <p class="lead reveal">Никаких скрытых доплат. Вот все четыре множителя — больше нет ничего.</p>
+    </div>
+    <div class="formula reveal">
+      <div class="glass glass-2 formula-tile"><div class="ft-lbl">От-цена из лесенки</div><div class="ft-val">от 2 500 ₽</div><div class="ft-hint">нижняя граница вашего типа работы</div></div>
+      <div class="formula-x" aria-hidden="true">×</div>
+      <div class="glass glass-2 formula-tile"><div class="ft-lbl">Сложность направления</div><div class="ft-val">×1.0 – 1.4</div><div class="ft-hint">гуманитарные 1.0 · право/педагогика 1.15 · технические/IT 1.3 · медицина/расчёты 1.4</div></div>
+      <div class="formula-x" aria-hidden="true">×</div>
+      <div class="glass glass-2 formula-tile"><div class="ft-lbl">Срок</div><div class="ft-val">×1.0 – 1.45</div><div class="ft-hint">свободный (от 30 дней) 1.0 · 14–30 дней 1.15 · срочно до 14 дней 1.45</div></div>
+      <div class="formula-x" aria-hidden="true">×</div>
+      <div class="glass glass-2 formula-tile"><div class="ft-lbl">Уровень сопровождения</div><div class="ft-val">×1 · 1.33 · 2</div><div class="ft-hint">Базовый · Под ключ · VIP</div></div>
+    </div>
+    <div class="glass formula-eg reveal">Пример: <b>Диплом</b> · технический профиль · срок 14–30 дней · «Под ключ» = 40 000 × 1.3 × 1.15 × 1.33 ≈ <b>79 500 ₽</b>. <a class="gold" href="configurator.html">Собрать свою цену в конфигураторе →</a></div>
+  </section>
+
+  <!-- 5. ТРИ УРОВНЯ -->
+  <section class="tar-sec wrap">
+    <div class="sec-head">
+      <span class="eyebrow reveal">Уровни сопровождения</span>
+      <h2 class="title reveal" style="margin-bottom:12px">Три уровня — отличается глубина ведения</h2>
+      <p class="lead reveal">Качество текста всегда максимальное. Уровень меняет не текст, а то, насколько плотно я веду вас до защиты. Цена — множителем к цене из лесенки.</p>
+    </div>
+    <div class="tariffs reveal">
+      <div class="tariff glass">
+        <h3>Базовый</h3>
+        <div class="tier-mult">×1<small>к цене из лесенки</small></div>
+        <div class="tdesc">Готовая работа по вашей теме и методичке.</div>
+        <ul>
+          <li>Авторский текст с нуля, вручную, без нейросетевых шаблонов</li>
+          <li>Оформление строго по методичке / ГОСТ</li>
+          <li>Отчёт о проверках (антиплагиат + детекторы ИИ) до оплаты</li>
+          <li>Оплата по этапам</li>
+          <li>Одна итерация правок по вашим замечаниям</li>
+        </ul>
+        <a class="btn btn-ghost btn-block" href="configurator.html" data-tier="base">Выбрать уровень</a>
+      </div>
+      <div class="tariff glass feat">
+        <div class="pill">Выбирают чаще всего</div>
+        <h3>Под ключ</h3>
+        <div class="tier-mult">×1.33<small>к цене из лесенки</small></div>
+        <div class="tdesc">Ведём до приёмки научным руководителем.</div>
+        <ul>
+          <li>Всё из «Базового»</li>
+          <li>Сдача по главам с показом черновиков</li>
+          <li>Прямой чат с экспертом, ответ до 4 часов</li>
+          <li>Правки бесплатно — пока работу не примут</li>
+          <li>Личный кабинет с прогрессом по этапам</li>
+        </ul>
+        <a class="btn btn-primary btn-block" href="configurator.html" data-tier="turn">Выбрать уровень</a>
+      </div>
+      <div class="tariff glass">
+        <h3>VIP</h3>
+        <div class="tier-mult">×2<small>к цене из лесенки</small></div>
+        <div class="tdesc">Личное ведение и подготовка к защите.</div>
+        <ul>
+          <li>Всё из «Под ключ»</li>
+          <li>Личный канал связи, ответ до 1 часа</li>
+          <li>Речь и презентация к защите, репетиция вопросов</li>
+          <li>Бронь слота и первый приоритет в очереди</li>
+          <li>Приоритетные правки после защитных замечаний</li>
+        </ul>
+        <a class="btn btn-ghost btn-block" href="configurator.html" data-tier="vip">Выбрать уровень</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. ОПЛАТА ПО ЭТАПАМ -->
+  <section class="tar-sec wrap">
+    <div class="sec-head">
+      <span class="eyebrow reveal">Как вы платите</span>
+      <h2 class="title reveal" style="margin-bottom:12px">Вы не платите всю сумму вперёд</h2>
+      <p class="lead reveal">Оплата всегда привязана к показу результата. Это главное отличие от биржи, где вы рискуете авансом.</p>
+    </div>
+    <div class="pay-grid reveal">
+      <div class="glass glass-2 pay-card">
+        <h4>Небольшие работы</h4>
+        <div class="pay-sub">самостоятельная, статьи РИНЦ/ВАК, отчёт по практике, курсовая</div>
+        <div class="pay-track"><span class="pay-seg" style="flex:0 0 50%">50%</span><span class="pay-seg" style="flex:0 0 50%">50%</span></div>
+        <ul class="pay-legend"><li>50% на старте</li><li>50% по готовности и показу работы</li></ul>
+      </div>
+      <div class="glass glass-2 pay-card">
+        <h4>Крупные работы</h4>
+        <div class="pay-sub">диплом / ВКР, магистерская, глава диссертации, Scopus</div>
+        <div class="pay-track"><span class="pay-seg" style="flex:0 0 30%">30%</span><span class="pay-seg" style="flex:0 0 40%">40%</span><span class="pay-seg" style="flex:0 0 30%">30%</span></div>
+        <ul class="pay-legend"><li>30% — старт и бронь слота</li><li>40% — после показа основной части</li><li>30% — перед финальной выдачей</li></ul>
+      </div>
+    </div>
+    <p class="muted reveal" style="font-size:13.5px;margin-top:14px">Кандидатская под ключ — индивидуальный график по главам, после обязательного разбора плана.</p>
+    <p class="pay-quote reveal">Вносите часть — получаете часть работы. Отчёт о проверках — <b>до финальной оплаты</b>. Правки по замечаниям руководителя — <b>бесплатно до приёмки</b>.</p>
+  </section>
+
+  <!-- 7. МАНИФЕСТ -->
+  <section class="tar-sec wrap">
+    <div class="manifesto reveal">
+      <span class="eyebrow">Почему дороже</span>
+      <h2 class="title" style="margin-bottom:8px">Почему у нас дороже — и почему это правильно</h2>
+      <div class="compare">
+        <div class="glass-2 compare-col dim">
+          <h4>Биржа и нейросеть</h4>
+          <ul>
+            <li>Вашу работу разыгрывают между анонимами по аукциону</li>
+            <li>Побеждает тот, кто поставит ниже — новичок или нейросеть</li>
+            <li>Площадка берёт ~30% комиссии, которую платите вы</li>
+            <li>Низкая цена = риск, переложенный на вас</li>
+          </ul>
+        </div>
+        <div class="glass compare-col good">
+          <h4>Мастерская</h4>
+          <ul>
+            <li>Платите эксперту напрямую, без комиссии и посредника</li>
+            <li>Беру не более 3–5 проектов одновременно</li>
+            <li>Живой текст, отчёт о проверках до оплаты</li>
+            <li>Оплата по этапам, правки до приёмки бесплатно</li>
+          </ul>
+        </div>
+      </div>
+      <p><strong>Биржа продаёт ставку. Нейросеть продаёт текст. Мы продаём доведённый до защиты результат.</strong></p>
+      <p>На бирже вашу работу разыгрывают между анонимами по аукциону: побеждает тот, кто поставит ниже, — то есть новичок или нейросеть. Сверху площадка берёт около 30% комиссии, которую всё равно оплачиваете вы. Низкая цена там — это не выгода, это риск, переложенный на вас.</p>
+      <p>Здесь вы платите эксперту напрямую. Без комиссии площадки, без менеджера-посредника, без аукциона. Я беру не более 3–5 проектов одновременно — поэтому веду каждый внимательно и довожу до приёмки, а не до «сдал и пропал».</p>
+      <p>Высокая цена — это фильтр и гарантия одновременно: она отсеивает поток, который невозможно вести качественно, и сигнализирует уровень. За эти деньги вы получаете то, чего биржа не даёт: живой текст без машинных шаблонов, отчёт о проверках до оплаты, оплату по этапам и бесплатные правки по замечаниям руководителя — пока работу не примут.</p>
+      <div class="glass-2 no-promise">
+        <b>Чего мы не обещаем:</b> что чужой антиплагиат «ничего не заметит» (детекторы ошибаются в обе стороны — никто не вправе гарантировать чужую систему) и что напишем диссертацию за ночь. Так говорят те, кто потом исчезает. Мы отвечаем только за то, что в наших руках, — и именно поэтому за это можно спросить.
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. СЛОТЫ + КЛУБ -->
+  <section class="tar-sec wrap">
+    <div class="glass tar-slots reveal">
+      <div class="slot-l"><span class="slot-dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i></span> Свободно 2 из 4 слотов в этом месяце — поток ограничен осознанно.</div>
+      <div class="slot-r">Постоянным клиентам и по рекомендации — <a href="referral.html">клуб с накопительными баллами →</a> (скидки и бонусы не суммируются)</div>
+    </div>
+  </section>
+
+  <!-- 9. FAQ + CTA -->
+  <section class="tar-sec wrap" style="max-width:840px">
+    <span class="eyebrow reveal">Вопросы о деньгах</span>
+    <h2 class="title reveal">Частые вопросы о цене</h2>
+    <div class="reveal" style="margin-top:24px">
+      <details class="faq-item"><summary>Почему «от», а не точная цена?</summary><p>«От» — это гарантированный нижний порог за работу базовой сложности. Точную сумму вы собираете сами в конфигураторе по открытой формуле: тип × направление × срок × уровень. Никаких цифр «по секрету в ЛС».</p></details>
+      <details class="faq-item"><summary>Откуда такая разница с биржей?</summary><p>На бирже цену назначает аукцион анонимов, а сверху площадка берёт около 30% комиссии. Здесь вы платите эксперту напрямую — без комиссии и посредника — и получаете отчёт о проверках до оплаты и правки до приёмки.</p></details>
+      <details class="faq-item"><summary>Можно платить частями?</summary><p>Да, и это правило, а не уступка. Небольшие работы — 50% на старте и 50% по готовности. Крупные — тремя частями 30 / 40 / 30, привязанными к показу результата. Кандидатская — по главам.</p></details>
+      <details class="faq-item"><summary>Зачтёте ли разбор плана, если передумаю?</summary><p>Если продолжаете работу в течение 14 дней — 3 000 ₽ за разбор полностью зачтём в её стоимость. Не продолжаете — план остаётся у вас, можно работать самостоятельно.</p></details>
+      <details class="faq-item"><summary>Что если работа окажется сложнее сметы?</summary><p>Смета фиксируется на разборе плана и не меняется по нашей инициативе. Пересчёт возможен, только если вы сами меняете тему, объём или требования.</p></details>
+      <details class="faq-item"><summary>Скидки клуба суммируются с ценой?</summary><p>Нет. Скидки и бонусы не суммируются — применяется одна, самая выгодная для вас. Это честное правило, которое держит цену осмысленной.</p></details>
+    </div>
+
+    <div class="glass center tar-cta reveal" style="margin-top:36px">
+      <span class="eyebrow mx-auto" style="justify-content:center">Готовы посчитать?</span>
+      <h2 class="title">Соберите точную цену за минуту</h2>
+      <p class="lead mx-auto">Тип, направление, срок, уровень — стоимость пересчитывается вживую. Или начните с разбора плана — зачтём в стоимость.</p>
+      <div class="hero-actions" style="justify-content:center">
+        <a class="btn btn-primary btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>
+        <a class="btn btn-ghost btn-lg" href="configurator.html">Начать с разбора плана</a>
+      </div>
+      <p class="muted" style="font-size:13px;margin-top:18px">Беру не более 3–5 проектов одновременно — слоты ограничены.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- MOBILE STICKY CTA -->
+<div class="mobile-cta">
+  <a class="btn btn-primary" href="configurator.html">Рассчитать</a>
+  <a class="btn btn-ghost" href="#" data-msg>Написать</a>
+</div>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Академический Салон — тарифы","url":"https://salon.217-18-63-210.sslip.io/tariffs.html","areaServed":"RU","knowsLanguage":"ru","priceRange":"от 2500 ₽","hasOfferCatalog":{"@type":"OfferCatalog","name":"Тарифы на академические работы","itemListElement":[{"@type":"Offer","name":"Самостоятельная работа (реферат, эссе, контрольная, презентация)","priceSpecification":{"@type":"PriceSpecification","minPrice":2500,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Отчёт по практике","priceSpecification":{"@type":"PriceSpecification","minPrice":14000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Курсовая теоретическая","priceSpecification":{"@type":"PriceSpecification","minPrice":14000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Курсовая эмпирическая","priceSpecification":{"@type":"PriceSpecification","minPrice":20000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Научная статья РИНЦ","priceSpecification":{"@type":"PriceSpecification","minPrice":9000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Научная статья ВАК","priceSpecification":{"@type":"PriceSpecification","minPrice":18000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Научная статья Scopus / Web of Science","priceSpecification":{"@type":"PriceSpecification","minPrice":35000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Глава диссертации","priceSpecification":{"@type":"PriceSpecification","minPrice":30000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Дипломная работа / ВКР","priceSpecification":{"@type":"PriceSpecification","minPrice":40000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Магистерская диссертация","priceSpecification":{"@type":"PriceSpecification","minPrice":60000,"priceCurrency":"RUB"}},{"@type":"Offer","name":"Кандидатская диссертация под ключ","priceSpecification":{"@type":"PriceSpecification","minPrice":200000,"priceCurrency":"RUB"}}]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Почему «от», а не точная цена?","acceptedAnswer":{"@type":"Answer","text":"«От» — гарантированный нижний порог за работу базовой сложности. Точную сумму вы собираете в конфигураторе по открытой формуле: тип × направление × срок × уровень."}},{"@type":"Question","name":"Откуда такая разница с биржей?","acceptedAnswer":{"@type":"Answer","text":"На бирже цену назначает аукцион анонимов, а площадка берёт около 30% комиссии. Здесь вы платите эксперту напрямую — без комиссии и посредника — и получаете отчёт о проверках до оплаты и правки до приёмки."}},{"@type":"Question","name":"Можно платить частями?","acceptedAnswer":{"@type":"Answer","text":"Да. Небольшие работы — 50% на старте и 50% по готовности. Крупные — тремя частями 30/40/30, привязанными к показу результата. Кандидатская — по главам."}},{"@type":"Question","name":"Зачтёте ли разбор плана, если передумаю?","acceptedAnswer":{"@type":"Answer","text":"Если продолжаете работу в течение 14 дней — 3 000 ₽ за разбор полностью зачтём в её стоимость. Не продолжаете — план остаётся у вас."}},{"@type":"Question","name":"Что если работа окажется сложнее сметы?","acceptedAnswer":{"@type":"Answer","text":"Смета фиксируется на разборе плана и не меняется по нашей инициативе. Пересчёт возможен, только если вы сами меняете тему, объём или требования."}},{"@type":"Question","name":"Скидки клуба суммируются с ценой?","acceptedAnswer":{"@type":"Answer","text":"Нет. Скидки и бонусы не суммируются — применяется одна, самая выгодная для вас."}}]}</script>
+<script src="assets/js/app.js"></script>
+<script>
+(function(){
+  'use strict';
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- фильтр лесенки по группам ---- */
+  var filter = document.getElementById('ladderFilter');
+  var rows = [].slice.call(document.querySelectorAll('#ladder-list .ladder-row'));
+  if(filter){
+    filter.addEventListener('click', function(e){
+      var b = e.target.closest('button[data-group]'); if(!b) return;
+      filter.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active');
+      var g = b.getAttribute('data-group');
+      rows.forEach(function(r){ r.hidden = !(g==='all' || r.getAttribute('data-group')===g); });
+    });
+  }
+
+  /* ---- тумблер Кратко / Подробно ---- */
+  var mode = document.getElementById('ladderMode');
+  if(mode){
+    mode.addEventListener('click', function(e){
+      var b = e.target.closest('button[data-mode]'); if(!b) return;
+      mode.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); x.setAttribute('aria-pressed','false'); });
+      b.classList.add('active'); b.setAttribute('aria-pressed','true');
+      var open = b.getAttribute('data-mode')==='full';
+      document.querySelectorAll('#ladder-list .ladder-det').forEach(function(d){ d.open = open; });
+    });
+  }
+
+  /* ---- бесшовный хэндофф в конфигуратор (через salon_draft) ---- */
+  function handoff(type, tier){
+    if(!(window.Salon && Salon.store)) return;
+    var st = { type: type || 'diplom', disc: 'hum', term: 'free', tier: tier || 'base' };
+    Salon.store.set('salon_draft', { state: st, idx: 0, savedAt: 0 });
+  }
+  document.querySelectorAll('a[data-type]').forEach(function(a){
+    a.addEventListener('click', function(){ handoff(a.getAttribute('data-type'), 'base'); });
+  });
+  document.querySelectorAll('a[data-tier]').forEach(function(a){
+    a.addEventListener('click', function(){ handoff('diplom', a.getAttribute('data-tier')); });
+  });
+})();
+</script>
+</body>
+</html>
