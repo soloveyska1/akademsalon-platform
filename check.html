@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Проверка текста — Академический Салон</title>
+<meta name="description" content="Бесплатный инструмент: оцените риск ИИ-детекции и живость вашего текста за минуту. Предварительная эвристическая оценка с конкретными советами по правкам." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+<style>
+  .check-wrap{padding-top:120px}
+  .check-grid{display:grid;grid-template-columns:1fr;gap:24px;align-items:start}
+  .check-card{padding:32px}
+  .ta-wrap{position:relative}
+  textarea#src{min-height:230px;resize:vertical;line-height:1.65}
+  .ta-meta{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--ink-faint);letter-spacing:.03em;margin-top:8px}
+  .ta-meta .ok{color:var(--gold)}
+  .check-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;align-items:center}
+
+  /* результат */
+  #result{display:none}
+  #result.show{display:block}
+  .res-head{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:8px}
+  .gauge{flex:0 0 auto;width:96px;height:96px;position:relative;display:grid;place-items:center}
+  .gauge svg{position:absolute;inset:0;transform:rotate(-90deg)}
+  .gauge .gv{font-family:var(--serif);font-size:26px;line-height:1}
+  .gauge .gl{font-size:10px;color:var(--ink-faint);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+  .risk-line{display:inline-flex;align-items:center;gap:11px;font-size:14px}
+  .risk-dot{width:12px;height:12px;border-radius:50%;box-shadow:0 0 0 4px rgba(244,240,231,.05)}
+  .risk-low .risk-dot{background:var(--emerald)} .risk-low .gv{color:var(--emerald)}
+  .risk-mid .risk-dot{background:var(--gold)} .risk-mid .gv{color:var(--gold)}
+  .risk-high .risk-dot{background:var(--terra)} .risk-high .gv{color:var(--terra)}
+
+  .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:6px}
+  .metric{padding:16px 18px;border:1px solid var(--line);border-radius:var(--radius-sm);background:rgba(8,11,9,.4)}
+  .metric .mlabel{font-size:12.5px;color:var(--ink-soft);display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .metric .mval{font-family:var(--serif);font-size:20px;color:var(--ink);margin-top:5px}
+  .mbar{height:5px;border-radius:6px;background:rgba(244,240,231,.1);overflow:hidden;margin-top:10px}
+  .mbar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--gold),var(--gold-2));transition:width .7s cubic-bezier(.2,.8,.2,1)}
+  .mbar.warn i{background:linear-gradient(90deg,var(--terra),#d98a6c)}
+  .mbar.good i{background:linear-gradient(90deg,var(--emerald),#5bb892)}
+
+  .advice{list-style:none;margin-top:6px}
+  .advice li{position:relative;padding:13px 0 13px 30px;border-top:1px solid var(--line);font-size:15px;color:var(--ink)}
+  .advice li:first-child{border-top:none}
+  .advice li::before{content:"✦";position:absolute;left:0;top:13px;color:var(--gold);font-size:12px}
+  .advice li .qt{color:var(--gold);font-style:italic}
+  .advice li small{display:block;color:var(--ink-soft);font-size:13px;margin-top:3px}
+
+  .disclaim{font-size:12.5px;color:var(--ink-faint);line-height:1.7;border-top:1px solid var(--line);margin-top:22px;padding-top:18px}
+
+  /* CTA + захват */
+  .cta-band{display:grid;grid-template-columns:1.2fr 1fr;gap:0;overflow:hidden}
+  .cta-l{padding:34px}
+  .cta-r{padding:34px;border-left:1px solid var(--line);background:rgba(8,11,9,.35)}
+  .capture{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .capture input{flex:1;min-width:200px}
+  .cap-note{font-size:12px;color:var(--ink-faint);margin-top:10px}
+  .cap-ok{display:none;font-size:14px;color:var(--gold);margin-top:12px}
+  .cap-ok.show{display:block}
+
+  @media(max-width:760px){
+    .metrics{grid-template-columns:1fr}
+    .cta-band{grid-template-columns:1fr}
+    .cta-r{border-left:none;border-top:1px solid var(--line)}
+  }
+</style>
+<link rel="canonical" href="https://salon.217-18-63-210.sslip.io/check.html" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#080b09" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Проверка текста — Академический Салон" />
+<meta property="og:description" content="Бесплатный инструмент: оцените риск ИИ-детекции и живость вашего текста за минуту. Предварительная эвристическая оценка с конкретными советами по правкам." />
+<meta property="og:url" content="https://salon.217-18-63-210.sslip.io/check.html" />
+<meta property="og:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Проверка текста — Академический Салон" />
+<meta name="twitter:description" content="Бесплатный инструмент: оцените риск ИИ-детекции и живость вашего текста за минуту. Предварительная эвристическая оценка с конкретными советами по правкам." />
+<meta name="twitter:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+</head>
+<body>
+
+<main class="check-wrap">
+  <div class="wrap">
+
+    <div class="reveal" style="max-width:760px">
+      <span class="eyebrow">Бесплатный инструмент</span>
+      <h1 class="title" style="margin-bottom:14px">Проверьте свой текст на&nbsp;риск ИИ-детекции</h1>
+      <p class="lead">Это предварительная оценка по лингвистическим признакам — она помогает заметить машинальные обороты и однообразие. Полноценную вузовскую систему она не заменяет: финальное слово всегда за проверяющим.</p>
+    </div>
+
+    <div class="check-grid mt-l">
+
+      <!-- Ввод -->
+      <section class="glass check-card reveal">
+        <div class="field" style="margin-bottom:0">
+          <label for="src">Вставьте фрагмент текста</label>
+          <div class="ta-wrap">
+            <textarea id="src" placeholder="Вставьте абзац или раздел работы — желательно от 200 символов. Чем больше текста, тем точнее оценка."></textarea>
+          </div>
+          <div class="ta-meta">
+            <span id="counter">0 символов</span>
+            <span class="muted">Текст не покидает ваш браузер — анализ идёт на устройстве.</span>
+          </div>
+        </div>
+        <div class="check-actions">
+          <button class="btn btn-primary btn-lg" id="run">Проверить <span class="ar">→</span></button>
+          <button class="btn btn-ghost" id="sample">Подставить пример</button>
+        </div>
+      </section>
+
+      <!-- Результат -->
+      <section class="glass glass-2 check-card reveal" id="result">
+        <div class="res-head" id="resHead"></div>
+        <p class="muted" id="resVerdict" style="font-size:15px;margin-bottom:22px"></p>
+
+        <div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:12px">ПОКАЗАТЕЛИ ТЕКСТА</div>
+        <div class="metrics" id="metrics"></div>
+
+        <div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin:26px 0 6px">ЧТО СТОИТ ПЕРЕПИСАТЬ</div>
+        <ul class="advice" id="advice"></ul>
+
+        <p class="disclaim">Оценка ориентировочная. Инструмент опирается на открытые лингвистические признаки — длину и ритм предложений, долю канцелярских клише, разнообразие лексики и зачинов. Он не подключён к вузовским системам антиплагиата и не выносит окончательного вердикта о происхождении текста. Используйте результат как подсказку для редактуры, а не как гарантию.</p>
+        <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-ghost" id="shareBtn">Поделиться инструментом</button>
+          <a class="btn btn-primary" href="configurator.html">Доверить эксперту <span class="ar">→</span></a>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- CTA + мягкий захват -->
+    <div class="glass cta-band reveal mt-l">
+      <div class="cta-l">
+        <span class="eyebrow" style="margin-bottom:14px">Нужен результат наверняка</span>
+        <h2 class="title" style="font-size:clamp(24px,3vw,34px);margin-bottom:12px">Доверьте работу эксперту</h2>
+        <p class="muted" style="font-size:15px;max-width:420px;margin-bottom:20px">Гарантированно живой текст под конкретные проверки вашего вуза, с открытым отчётом об оригинальности до финальной оплаты. Подберём специалиста под вашу тему за минуту.</p>
+        <a class="btn btn-primary btn-lg" href="configurator.html">Собрать заказ <span class="ar">→</span></a>
+      </div>
+      <div class="cta-r">
+        <div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:8px">РАЗВЁРНУТЫЙ РАЗБОР</div>
+        <p class="muted" style="font-size:14.5px">Пришлём подробный разбор фрагмента с примерами правок — на вашу почту, без обязательств.</p>
+        <div class="capture">
+          <input type="text" id="email" placeholder="вашa@почта.ru" autocomplete="email" />
+          <button class="btn btn-ghost" id="capBtn">Прислать разбор</button>
+        </div>
+        <p class="cap-note">Используем адрес только для этого письма. Без рассылок.</p>
+        <p class="cap-ok" id="capOk">Спасибо — разбор подготовим и пришлём в ближайшее время.</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="assets/js/app.js"></script>
+<script>
+(function(){
+  var src   = document.getElementById('src');
+  var run   = document.getElementById('run');
+  var result= document.getElementById('result');
+
+  /* ---------- счётчик ---------- */
+  var counter=document.getElementById('counter');
+  function fmtCount(n){
+    var word = (n%10===1 && n%100!==11) ? 'символ'
+      : ([2,3,4].indexOf(n%10)>=0 && [12,13,14].indexOf(n%100)<0) ? 'символа' : 'символов';
+    return n+' '+word;
+  }
+  function updCount(){
+    var n=src.value.trim().length;
+    counter.textContent=fmtCount(n);
+    counter.className = n>=200 ? 'ok' : '';
+  }
+  src.addEventListener('input',updCount);
+  updCount();
+
+  /* ---------- пример текста (намеренно «машинальный») ---------- */
+  document.getElementById('sample').addEventListener('click',function(){
+    src.value='В современном мире данная проблема играет важную роль и является крайне актуальной. Таким образом, можно сделать вывод, что в современном обществе данный вопрос требует внимания. Следует отметить, что данный аспект является важным. Таким образом, рассмотрение данной темы является необходимым. Кроме того, необходимо отметить, что данная проблема является многогранной и требует комплексного подхода. В заключение следует сказать, что данный вопрос играет важную роль.';
+    updCount();
+    src.focus();
+  });
+
+  /* ---------- словари эвристик ---------- */
+  var CLICHE = [
+    'таким образом','в современном мире','в современном обществе','играет важную роль',
+    'играет ключевую роль','является важным','является актуальной','является актуальным',
+    'следует отметить','необходимо отметить','стоит отметить','в заключение',
+    'подводя итог','можно сделать вывод','не вызывает сомнений','на сегодняшний день',
+    'в настоящее время','комплексный подход','широкий спектр','неотъемлемой частью',
+    'трудно переоценить','с точки зрения','в рамках данного','в первую очередь'
+  ];
+  // одиночные канцелярские маркеры
+  var FILLER = ['данный','данная','данное','данные','данных','данным','является','являются','осуществляется','осуществление','реализуется','представляет собой','вышеуказанный','вышеперечисленный'];
+
+  function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+
+  /* ---------- ядро анализа ---------- */
+  function analyze(text){
+    var t=text.replace(/\s+/g,' ').trim();
+    var lower=t.toLowerCase();
+
+    // слова
+    var words=lower.match(/[а-яёa-z0-9-]+/g)||[];
+    var wordCount=words.length;
+
+    // предложения: режем по . ! ? … и переносам, отбрасываем пустые
+    var sentences=t.split(/[.!?…]+(?:\s|$)/).map(function(s){return s.trim();}).filter(function(s){return s.length>0;});
+    var sentCount=sentences.length||1;
+
+    // длины предложений (в словах)
+    var lens=sentences.map(function(s){ var w=s.toLowerCase().match(/[а-яёa-z0-9-]+/g); return w?w.length:0; }).filter(function(n){return n>0;});
+    if(!lens.length) lens=[wordCount];
+    var avgLen=lens.reduce(function(a,b){return a+b;},0)/lens.length;
+    // стандартное отклонение длин — мера ритмического разнообразия
+    var mean=avgLen;
+    var variance=lens.reduce(function(a,b){return a+(b-mean)*(b-mean);},0)/lens.length;
+    var sd=Math.sqrt(variance);
+    var lenVarRatio = avgLen>0 ? sd/avgLen : 0; // коэффициент вариации
+
+    // клише
+    var clicheHits=0, clicheList={};
+    CLICHE.forEach(function(p){
+      var re=new RegExp(p.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&'),'g');
+      var m=lower.match(re);
+      if(m){ clicheHits+=m.length; clicheList[p]=m.length; }
+    });
+    var fillerHits=0;
+    FILLER.forEach(function(p){
+      var re=new RegExp('(^|[^а-яё])'+p.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&')+'([^а-яё]|$)','g');
+      var m=lower.match(re);
+      if(m) fillerHits+=m.length;
+    });
+    var waterTokens=clicheHits*2+fillerHits; // клише весомее одиночных маркеров
+    var waterRatio = wordCount>0 ? clamp(waterTokens/wordCount,0,1) : 0;
+
+    // лексическое разнообразие (TTR) с поправкой на длину
+    var uniq={}; words.forEach(function(w){uniq[w]=1;});
+    var uniqCount=Object.keys(uniq).length;
+    var ttr = wordCount>0 ? uniqCount/wordCount : 0;
+    // нормализуем: на коротких текстах TTR завышен — приводим к шкале
+    var lexScore = clamp((ttr-0.32)/(0.62-0.32),0,1); // 0..1, где 1 — богатая лексика
+
+    // однообразие зачинов: первые два слова каждого предложения
+    var starts={}, repeatedStarts=0;
+    sentences.forEach(function(s){
+      var w=s.toLowerCase().match(/[а-яёa-z0-9-]+/g)||[];
+      var key=(w.slice(0,2).join(' '))||'';
+      if(key){ starts[key]=(starts[key]||0)+1; }
+    });
+    Object.keys(starts).forEach(function(k){ if(starts[k]>1) repeatedStarts+=starts[k]-1; });
+    var startMonotony = sentCount>1 ? clamp(repeatedStarts/(sentCount-1),0,1) : 0;
+
+    // ----- риск ИИ-детекции (0..100), больше = выше риск -----
+    // факторы: мало вариации длин, много воды, бедная лексика, однообразные зачины,
+    // слишком ровная средняя длина (17-24 слова — типичный «гладкий» машинный диапазон)
+    var fLenVar  = clamp(1-(lenVarRatio/0.45),0,1);            // 0 хорошо .. 1 плохо
+    var fWater   = clamp(waterRatio/0.16,0,1);
+    var fLex     = clamp(1-lexScore,0,1);
+    var fStart   = startMonotony;
+    var fSmooth  = (avgLen>=16 && avgLen<=25) ? clamp(1-(lenVarRatio/0.4),0,1)*0.6 : 0;
+
+    var risk = (fLenVar*0.26 + fWater*0.30 + fLex*0.20 + fStart*0.16 + fSmooth*0.08)*100;
+    // короткий текст — меньше уверенности, чуть сглаживаем к центру
+    if(wordCount<40) risk = risk*0.7+18;
+    risk=Math.round(clamp(risk,3,97));
+
+    // живость / читабельность (0..100, больше = живее)
+    var vit = Math.round(clamp(100 - risk*0.7 + lexScore*18 - fWater*14, 4, 98));
+
+    return {
+      wordCount:wordCount, sentCount:sentences.length, avgLen:avgLen, sd:sd,
+      lenVarRatio:lenVarRatio, clicheHits:clicheHits, clicheList:clicheList,
+      fillerHits:fillerHits, waterRatio:waterRatio, ttr:ttr, lexScore:lexScore,
+      startMonotony:startMonotony, repeatedStarts:repeatedStarts, topStart:topStart(starts),
+      risk:risk, vit:vit, factors:{len:fLenVar,water:fWater,lex:fLex,start:fStart}
+    };
+  }
+
+  function topStart(starts){
+    var best=null,bestN=0;
+    Object.keys(starts).forEach(function(k){ if(starts[k]>bestN){bestN=starts[k];best=k;} });
+    return bestN>1?{key:best,n:bestN}:null;
+  }
+
+  /* ---------- генерация советов из реальных метрик ---------- */
+  function buildAdvice(a){
+    var tips=[];
+    // 1. вода / клише
+    if(a.clicheHits>0){
+      var sample=Object.keys(a.clicheList).slice(0,2).map(function(k){return '«'+k+'»';}).join(', ');
+      tips.push({score:a.factors.water+0.4, t:'Уберите канцелярские клише ('+a.clicheHits+' шт.): '+sample+'. ', s:'Они выдают шаблонность. Замените на конкретику — кто, что и почему именно так.'});
+    }
+    if(a.fillerHits>=3){
+      tips.push({score:a.factors.water+0.2, t:'Сократите слова-наполнители (например «данный», «является») — встречаются '+a.fillerHits+' раз. ', s:'Чаще всего их можно удалить без потери смысла или заменить точным глаголом.'});
+    }
+    // 2. ритм предложений
+    if(a.lenVarRatio<0.30 && a.sentCount>=3){
+      tips.push({score:a.factors.len+0.3, t:'Разнообразьте длину предложений. ', s:'Сейчас они почти одинаковы (в среднем '+a.avgLen.toFixed(0)+' слов). Чередуйте короткие и развёрнутые фразы — это главный признак живого письма.'});
+    }
+    if(a.avgLen>26){
+      tips.push({score:0.5, t:'Разбейте длинные предложения. ', s:'Средняя длина '+a.avgLen.toFixed(0)+' слов затрудняет чтение — делите по одной мысли на фразу.'});
+    }
+    // 3. однообразие зачинов
+    if(a.topStart){
+      tips.push({score:a.factors.start+0.25, t:'Меняйте начала предложений. ', s:'Зачин «'+a.topStart.key+'…» повторяется '+a.topStart.n+' раза. Начинайте с разных частей мысли — с факта, с примера, с уточнения.'});
+    }
+    // 4. лексика
+    if(a.lexScore<0.5 && a.wordCount>=40){
+      tips.push({score:a.factors.lex+0.15, t:'Расширьте словарь. ', s:'Уникальных слов лишь '+Math.round(a.ttr*100)+'% от общего числа — много повторов. Подбирайте синонимы и конкретные термины вместо общих.'});
+    }
+    // запасные советы, если текст уже хорош
+    if(!tips.length){
+      tips.push({score:1, t:'Текст выглядит живым. ', s:'Сохраняйте чередование длинных и коротких фраз и конкретику в формулировках.'});
+      tips.push({score:.9, t:'Добавьте авторский голос. ', s:'Личная оценка, пример из практики или ссылка на источник делают текст ещё убедительнее для проверяющего.'});
+    } else if(tips.length<3){
+      tips.push({score:.1, t:'Добавьте конкретику и примеры. ', s:'Цифры, имена, ссылки на источники снижают «гладкость» и делают текст узнаваемо человеческим.'});
+    }
+    tips.sort(function(x,y){return y.score-x.score;});
+    return tips.slice(0,5);
+  }
+
+  /* ---------- отрисовка результата ---------- */
+  function pct(v){ return Math.round(clamp(v,0,1)*100); }
+
+  function render(a){
+    // уровень риска
+    var level, levelTxt, cls;
+    if(a.risk<34){ level='низкий'; cls='risk-low'; }
+    else if(a.risk<64){ level='средний'; cls='risk-mid'; }
+    else { level='высокий'; cls='risk-high'; }
+
+    // круговой индикатор риска
+    var R=42, C=2*Math.PI*R, off=C*(1-a.risk/100);
+    var head=document.getElementById('resHead');
+    head.className='res-head '+cls;
+    head.innerHTML=
+      '<div class="gauge">'+
+        '<svg viewBox="0 0 96 96">'+
+          '<circle cx="48" cy="48" r="'+R+'" fill="none" stroke="rgba(244,240,231,.1)" stroke-width="7"/>'+
+          '<circle cx="48" cy="48" r="'+R+'" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+C.toFixed(1)+'" id="gaugeArc"/>'+
+        '</svg>'+
+        '<div style="text-align:center"><div class="gv">'+a.risk+'</div><div class="gl">из 100</div></div>'+
+      '</div>'+
+      '<div>'+
+        '<div class="muted" style="font-size:12.5px;letter-spacing:.04em">РИСК ИИ-ДЕТЕКЦИИ</div>'+
+        '<div style="font-family:var(--serif);font-size:30px;line-height:1.1;margin:2px 0 6px">'+level.charAt(0).toUpperCase()+level.slice(1)+'</div>'+
+        '<span class="risk-line"><span class="risk-dot"></span><span class="muted">Живость текста — '+a.vit+' / 100</span></span>'+
+      '</div>';
+
+    // вердикт
+    var verdict;
+    if(a.risk<34) verdict='Текст читается естественно: ритм меняется, штампов немного. Можно ещё усилить отдельные места — смотрите подсказки ниже.';
+    else if(a.risk<64) verdict='Есть машинальные обороты и однообразие. Несколько точечных правок заметно повысят живость текста.';
+    else verdict='Текст звучит шаблонно: много клише, ровный ритм, бедная лексика. Рекомендуем переписать ключевые фрагменты — начните с подсказок ниже.';
+    document.getElementById('resVerdict').textContent=verdict;
+
+    // метрики
+    var lexPct=pct(a.lexScore);
+    var rhythmPct=pct(clamp(a.lenVarRatio/0.45,0,1));
+    var waterPct=pct(clamp(a.waterRatio/0.16,0,1));
+    var freshStarts=pct(1-a.startMonotony);
+    var metrics=[
+      {l:'Средняя длина фразы', v:a.avgLen.toFixed(1)+' сл.', bar:rhythmPct, cls:rhythmPct>50?'good':'warn', sub:'разброс ±'+a.sd.toFixed(1)},
+      {l:'Ритмическое разнообразие', v:rhythmPct+'%', bar:rhythmPct, cls:rhythmPct>=50?'good':'warn', sub:'чередование длин'},
+      {l:'Доля воды и клише', v:waterPct+'%', bar:waterPct, cls:waterPct<=40?'good':'warn', sub:a.clicheHits+' клише · '+a.fillerHits+' наполн.'},
+      {l:'Лексическое разнообразие', v:lexPct+'%', bar:lexPct, cls:lexPct>=50?'good':'warn', sub:Math.round(a.ttr*100)+'% уникальных слов'},
+      {l:'Свежесть зачинов', v:freshStarts+'%', bar:freshStarts, cls:freshStarts>=60?'good':'warn', sub:a.repeatedStarts>0?(a.repeatedStarts+' повтор.'):'без повторов'},
+      {l:'Объём фрагмента', v:a.wordCount+' сл.', bar:clamp(a.wordCount/180*100,6,100), cls:'', sub:a.sentCount+' предлож.'}
+    ];
+    document.getElementById('metrics').innerHTML=metrics.map(function(m){
+      return '<div class="metric"><div class="mlabel"><span>'+m.l+'</span><span class="muted">'+m.sub+'</span></div>'+
+        '<div class="mval">'+m.v+'</div>'+
+        '<div class="mbar '+m.cls+'"><i style="width:0%" data-w="'+m.bar+'"></i></div></div>';
+    }).join('');
+
+    // советы
+    var advice=buildAdvice(a);
+    document.getElementById('advice').innerHTML=advice.map(function(t){
+      return '<li>'+t.t.replace(/«([^»]+)»/g,'<span class="qt">«$1»</span>')+'<small>'+t.s+'</small></li>';
+    }).join('');
+
+    // показать + анимировать
+    result.classList.add('show');
+    requestAnimationFrame(function(){
+      var arc=document.getElementById('gaugeArc'); if(arc){ arc.style.transition='stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1)'; arc.style.strokeDashoffset=off.toFixed(1); }
+      result.querySelectorAll('.mbar i').forEach(function(i){ i.style.width=i.dataset.w+'%'; });
+    });
+    result.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  /* ---------- обработчик кнопки ---------- */
+  run.addEventListener('click',function(){
+    var text=src.value.trim();
+    if(text.length<200){
+      src.style.borderColor='var(--terra)';
+      src.focus();
+      counter.textContent=fmtCount(text.length)+' · нужно от 200';
+      counter.className='';
+      src.addEventListener('input',function once(){ src.style.borderColor=''; src.removeEventListener('input',once); });
+      return;
+    }
+    src.style.borderColor='';
+    render(analyze(text));
+  });
+
+  /* ---------- мягкий захват e-mail ---------- */
+  document.getElementById('capBtn').addEventListener('click',function(){
+    var em=document.getElementById('email');
+    var v=em.value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){
+      em.style.borderColor='var(--terra)'; em.focus();
+      em.addEventListener('input',function once(){ em.style.borderColor=''; em.removeEventListener('input',once); });
+      return;
+    }
+    em.style.borderColor='';
+    em.value='';
+    em.disabled=true;
+    this.disabled=true;
+    document.getElementById('capOk').classList.add('show');
+  });
+
+  /* ---------- поделиться инструментом ---------- */
+  var shareBtn=document.getElementById('shareBtn');
+  if(shareBtn){ shareBtn.addEventListener('click',function(){
+    var url=location.origin+location.pathname;
+    var data={title:'Проверка текста на риск ИИ — Академический Салон',text:'Проверил свой текст на риск ИИ-детекции. Попробуй и ты:',url:url};
+    if(navigator.share){ navigator.share(data).catch(function(){}); }
+    else if(window.Salon){ Salon.copy(url).then(function(ok){ Salon.toast(ok?'Ссылка скопирована — делитесь!':'Не удалось скопировать',{type:ok?'success':'error'}); }); }
+    else { var t=document.createElement('textarea'); t.value=url; document.body.appendChild(t); t.select(); try{document.execCommand('copy');}catch(e){} t.remove(); }
+  }); }
+})();
+</script>
+</body>
+</html>

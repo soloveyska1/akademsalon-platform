@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Конфигуратор заказа — Академический Салон</title>
+<meta name="description" content="Соберите свою академическую работу и узнайте стоимость за минуту: тип, направление, срок, сопровождение. Профиль эксперта и план до сдачи." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+<style>
+  .config-wrap{padding-top:120px}
+  .config-grid{display:grid;grid-template-columns:1fr 384px;gap:28px;align-items:start}
+  .progress-track{height:4px;background:rgba(244,240,231,.1);border-radius:6px;overflow:hidden;margin-bottom:8px}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));width:25%;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+  .step-meta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-faint);letter-spacing:.04em;margin-bottom:26px}
+  .opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .opt{padding:20px;border:1px solid var(--line-2);border-radius:var(--radius-sm);background:rgba(8,11,9,.45);cursor:pointer;transition:.2s;display:flex;flex-direction:column;gap:5px}
+  .opt:hover{border-color:var(--gold-line);transform:translateY(-2px)}
+  .opt.active{border-color:var(--gold);background:var(--gold-soft);box-shadow:var(--glow)}
+  .opt b{font-size:16px;font-weight:600}
+  .opt .opt-sub{font-size:13px;color:var(--ink-soft)}
+  .opt .opt-from{font-family:var(--serif);color:var(--gold);font-size:15px}
+  .step-panel{min-height:300px}
+  .step-actions{display:flex;justify-content:space-between;margin-top:28px;gap:12px}
+  .summary{position:sticky;top:100px;padding:28px}
+  .sum-price{font-family:var(--serif);font-size:34px;color:var(--gold);line-height:1.1;margin:6px 0 2px}
+  .sum-row{display:flex;justify-content:space-between;font-size:14px;padding:9px 0;border-top:1px solid var(--line)}
+  .sum-row span:first-child{color:var(--ink-soft)}
+  .sum-row .v{color:var(--ink);font-weight:500;text-align:right}
+  .expert-card{background:rgba(8,11,9,.45);border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px;margin-top:18px}
+  .timeline{list-style:none;margin-top:8px}
+  .timeline li{position:relative;padding:0 0 16px 24px;border-left:1px solid var(--line-2);font-size:14px;color:var(--ink-soft)}
+  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline li::before{content:"";position:absolute;left:-5px;top:3px;width:9px;height:9px;border-radius:50%;background:var(--gold)}
+  .timeline li b{display:block;color:var(--ink);font-weight:600;font-size:14.5px}
+  .slot-bar{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:13.5px;color:var(--ink-soft)}
+  .slot-dots{display:flex;gap:5px}
+  .slot-dots i{width:9px;height:9px;border-radius:50%;background:rgba(244,240,231,.16)}
+  .slot-dots i.on{background:var(--gold)}
+  .result-head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .booking{margin-top:22px}
+  .booking input{margin-bottom:12px}
+  .success{text-align:center;padding:20px}
+  .success .big{font-family:var(--serif);font-size:30px;color:var(--gold);margin:10px 0}
+  @media(max-width:960px){
+    .config-grid{grid-template-columns:1fr}
+    .summary{position:static}
+    .opt-grid{grid-template-columns:1fr}
+  }
+</style>
+<link rel="canonical" href="https://salon.217-18-63-210.sslip.io/configurator.html" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#080b09" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Конфигуратор заказа — Академический Салон" />
+<meta property="og:description" content="Соберите свою академическую работу и узнайте стоимость за минуту: тип, направление, срок, сопровождение. Профиль эксперта и план до сдачи." />
+<meta property="og:url" content="https://salon.217-18-63-210.sslip.io/configurator.html" />
+<meta property="og:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Конфигуратор заказа — Академический Салон" />
+<meta name="twitter:description" content="Соберите свою академическую работу и узнайте стоимость за минуту: тип, направление, срок, сопровождение. Профиль эксперта и план до сдачи." />
+<meta name="twitter:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+</head>
+<body>
+
+<main class="config-wrap">
+  <div class="wrap">
+    <span class="eyebrow">Конфигуратор заказа</span>
+    <h1 class="title" style="margin-bottom:10px">Соберите свою работу</h1>
+    <p class="lead" style="margin-bottom:36px">Четыре шага — и вы увидите стоимость, профиль эксперта под вашу тему и план до сдачи.</p>
+
+    <div class="config-grid">
+      <!-- LEFT: wizard -->
+      <div class="glass" style="padding:32px">
+        <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+        <div class="step-meta"><span id="stepName">Шаг 1 · Тип работы</span><span id="stepCount">1 / 4</span></div>
+        <div class="step-panel" id="panel"></div>
+        <div class="step-actions">
+          <button class="btn btn-ghost" id="back" style="visibility:hidden">← Назад</button>
+          <button class="btn btn-primary" id="next">Далее <span class="ar">→</span></button>
+        </div>
+      </div>
+
+      <!-- RIGHT: live summary -->
+      <aside class="glass-2 glass summary" id="summary">
+        <div class="muted" style="font-size:13px;letter-spacing:.04em">Ориентировочная стоимость</div>
+        <div class="sum-price" id="price">—</div>
+        <div class="muted" id="priceNote" style="font-size:13px;margin-bottom:14px">Выберите параметры</div>
+        <div class="sum-row"><span>Тип</span><span class="v" id="sType">—</span></div>
+        <div class="sum-row"><span>Направление</span><span class="v" id="sDisc">—</span></div>
+        <div class="sum-row"><span>Срок</span><span class="v" id="sTerm">—</span></div>
+        <div class="sum-row"><span>Сопровождение</span><span class="v" id="sTier">—</span></div>
+        <div class="expert-card" id="expertCard" style="display:none">
+          <div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:4px">ВАШ ЭКСПЕРТ ПОД ТЕМУ</div>
+          <b id="expName" style="font-family:var(--serif);font-size:15.5px"></b>
+          <div class="muted" id="expDesc" style="font-size:13px;margin-top:4px"></div>
+        </div>
+        <div class="slot-bar"><span class="slot-dots"><i class="on"></i><i class="on"></i><i></i><i></i></span> Свободно 2 из 4 слотов в этом месяце</div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<script src="assets/js/app.js"></script>
+<script>
+(function(){
+  var C = window.SalonCalc, EXP = window.SalonExperts;
+  var steps = [
+    { key:'type',  name:'Тип работы',     list:C.types,       sub:function(o){return '';} },
+    { key:'disc',  name:'Направление',    list:C.disciplines, sub:function(o){return o.k>1?('коэффициент ×'+o.k):'базовый коэффициент';} },
+    { key:'term',  name:'Срок',           list:C.terms,       sub:function(o){return o.k>1?('+'+Math.round((o.k-1)*100)+'% за срочность'):'без наценки';} },
+    { key:'tier',  name:'Сопровождение',  list:C.tiers,       sub:function(o){return o.note;} }
+  ];
+  var state = { type:C.types[0].id, disc:C.disciplines[0].id, term:C.terms[0].id, tier:'turn', step:0, booked:false };
+  var idx = 0;
+  var DRAFT='salon_draft';
+  if(window.Salon){ var saved=Salon.store.get(DRAFT,null); if(saved&&saved.state){ state=saved.state; idx=saved.idx||0; } }
+  var qStep=parseInt((location.search.match(/[?&]step=(\d+)/)||[])[1],10);
+  if(qStep>=1&&qStep<=steps.length) idx=qStep-1;
+  function persistDraft(){ if(window.Salon) Salon.store.set(DRAFT,{state:state,idx:idx,savedAt:Date.now()}); }
+
+  var panel=document.getElementById('panel'), prog=document.getElementById('prog');
+  var stepName=document.getElementById('stepName'), stepCount=document.getElementById('stepCount');
+  var back=document.getElementById('back'), next=document.getElementById('next');
+
+  function curVal(stepKey){ return stepKey==='type'?state.type:stepKey==='disc'?state.disc:stepKey==='term'?state.term:state.tier; }
+  function setVal(stepKey,id){ if(stepKey==='type')state.type=id;else if(stepKey==='disc')state.disc=id;else if(stepKey==='term')state.term=id;else state.tier=id; }
+
+  function renderStep(){
+    if(idx>=steps.length){ renderResult(); return; }
+    var st=steps[idx];
+    prog.style.width=((idx+1)/(steps.length+1)*100)+'%';
+    stepName.textContent='Шаг '+(idx+1)+' · '+st.name;
+    stepCount.textContent=(idx+1)+' / '+steps.length;
+    var html='<div class="opt-grid" role="radiogroup" aria-label="'+st.name+'">';
+    st.list.forEach(function(o){
+      var on=curVal(st.key)===o.id;
+      var active=on?' active':'';
+      var from = st.key==='type'?('<div class="opt-from">от '+C.fmt(o.base)+' ₽</div>'):'';
+      var subTxt=st.sub(o); var subHtml=subTxt?('<div class="opt-sub">'+subTxt+'</div>'):'';
+      html+='<div class="opt'+active+'" data-id="'+o.id+'" role="radio" tabindex="'+(on?'0':'-1')+'" aria-checked="'+(on?'true':'false')+'"><b>'+o.label+'</b>'+subHtml+from+'</div>';
+    });
+    html+='</div>';
+    panel.innerHTML=html;
+    function choose(el){
+      setVal(st.key,el.dataset.id);
+      panel.querySelectorAll('.opt').forEach(function(x){x.classList.remove('active');x.setAttribute('aria-checked','false');x.setAttribute('tabindex','-1');});
+      el.classList.add('active'); el.setAttribute('aria-checked','true'); el.setAttribute('tabindex','0');
+      updateSummary(); persistDraft();
+    }
+    panel.querySelectorAll('.opt').forEach(function(el){
+      el.addEventListener('click',function(){ choose(el); });
+      el.addEventListener('keydown',function(e){
+        var opts=[].slice.call(panel.querySelectorAll('.opt'));
+        if(e.key===' '||e.key==='Enter'){ e.preventDefault(); choose(el); }
+        else if(e.key==='ArrowDown'||e.key==='ArrowRight'){ e.preventDefault(); (opts[opts.indexOf(el)+1]||opts[0]).focus(); }
+        else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){ e.preventDefault(); (opts[opts.indexOf(el)-1]||opts[opts.length-1]).focus(); }
+      });
+    });
+    back.style.visibility=idx===0?'hidden':'visible';
+    next.innerHTML=(idx===steps.length-1?'Показать результат':'Далее')+' <span class="ar">→</span>';
+    updateSummary();
+  }
+
+  function label(list,id){ var o=list.find(function(x){return x.id===id;}); return o?o.label:'—'; }
+
+  function updateSummary(){
+    var q=C.quote(state.type,state.disc,state.term,state.tier);
+    document.getElementById('price').textContent=q.range;
+    document.getElementById('priceNote').textContent='Итог уточним после короткого брифа';
+    document.getElementById('sType').textContent=label(C.types,state.type);
+    document.getElementById('sDisc').textContent=label(C.disciplines,state.disc);
+    document.getElementById('sTerm').textContent=label(C.terms,state.term);
+    document.getElementById('sTier').textContent=label(C.tiers,state.tier);
+    var ex=EXP[state.disc];
+    if(ex){ document.getElementById('expertCard').style.display='block';
+      document.getElementById('expName').textContent=ex.name;
+      document.getElementById('expDesc').textContent=ex.desc; }
+  }
+
+  function planFor(typeId){
+    var common=[
+      {t:'Согласование плана', d:'1–2 дня'},
+      {t:'Теоретическая часть', d:'основной объём'},
+      {t:'Практика / расчёты', d:'ядро работы'},
+      {t:'Проверки и отчёт', d:'до оплаты'},
+      {t:'Приёмка и правки', d:'до защиты'}
+    ];
+    if(typeId==='vak'||typeId==='scopus'||typeId==='rinc') return [
+      {t:'Согласование темы и журнала', d:'1–2 дня'},
+      {t:'Структура и анализ источников', d:''},
+      {t:'Текст статьи', d:'ядро'},
+      {t:'Проверки и отчёт', d:'до оплаты'},
+      {t:'Сопровождение до решения рецензента', d:''}
+    ];
+    return common;
+  }
+
+  function renderResult(){
+    prog.style.width='100%';
+    stepName.textContent='Готово · Ваш проект';
+    stepCount.textContent='4 / 4';
+    back.style.visibility='visible';
+    next.style.display='none';
+    var q=C.quote(state.type,state.disc,state.term,state.tier);
+    var ex=EXP[state.disc];
+    var plan=planFor(state.type).map(function(p){return '<li><b>'+p.t+'</b>'+(p.d?p.d:'')+'</li>';}).join('');
+    panel.innerHTML=
+      '<div class="result-head"><span class="badge">Расчёт готов</span></div>'+
+      '<h3 style="margin:6px 0 2px">'+label(C.types,state.type)+'</h3>'+
+      '<div class="sum-price" style="font-size:40px">'+q.range+'</div>'+
+      '<div class="muted" style="font-size:13.5px;margin-bottom:18px">'+label(C.disciplines,state.disc)+' · '+label(C.terms,state.term)+' · «'+label(C.tiers,state.tier)+'»</div>'+
+      '<div class="expert-card" style="margin-top:0"><div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:4px">ВАШ ЭКСПЕРТ ПОД ТЕМУ</div><b style="font-family:var(--serif);font-size:15.5px">'+(ex?ex.name:'')+'</b><div class="muted" style="font-size:13px;margin-top:4px">'+(ex?ex.desc:'')+'</div></div>'+
+      '<div style="margin-top:20px"><div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:10px">ПЛАН ДО СДАЧИ</div><ul class="timeline">'+plan+'</ul></div>'+
+      '<div class="slot-bar"><span class="slot-dots"><i class="on"></i><i class="on"></i><i></i><i></i></span> Свободно 2 из 4 слотов — забронируйте свой</div>'+
+      '<div class="booking">'+
+        '<div class="hr" style="margin:20px 0"></div>'+
+        '<h3 style="font-size:19px;margin-bottom:14px">Забронировать слот</h3>'+
+        '<input type="text" id="bName" placeholder="Как к вам обращаться" />'+
+        '<input type="text" id="bContact" placeholder="Телефон или @telegram" />'+
+        '<input type="text" id="bTheme" placeholder="Тема работы (по желанию)" />'+
+        '<button class="btn btn-primary btn-block btn-lg" id="bSubmit">Забронировать и обсудить <span class="ar">→</span></button>'+
+        '<p class="muted" style="font-size:12.5px;margin-top:10px">Заявка ни к чему не обязывает. Ответим лично, обычно в течение пары часов.</p>'+
+      '</div>';
+    document.getElementById('bSubmit').addEventListener('click',book);
+    var cinp=document.getElementById('bContact');
+    if(cinp&&window.Salon){ cinp.addEventListener('input',function(){
+      var v=cinp.value;
+      if(/^[\d\s()+\-]+$/.test(v)&&/\d/.test(v)){ var p=cinp.selectionStart; cinp.value=Salon.mask.phone(v); }
+      else if(/^@?[a-zA-Z_]/.test(v.trim())&&v.indexOf('@')<=0&&!/@.+\./.test(v)){ /* телеграм-логин — не трогаем агрессивно */ }
+      cinp.classList.remove('invalid');
+    }); }
+    updateSummary();
+  }
+
+  function book(){
+    var name=document.getElementById('bName').value.trim();
+    var contact=document.getElementById('bContact').value.trim();
+    var theme=document.getElementById('bTheme').value.trim();
+    var cf=document.getElementById('bContact');
+    if(!(window.Salon&&Salon.valid.contact(contact))){
+      cf.classList.add('invalid'); cf.focus();
+      if(window.Salon) Salon.toast('Укажите телефон, @telegram или e-mail для связи.',{type:'error'});
+      return;
+    }
+    cf.classList.remove('invalid');
+    var btn=document.getElementById('bSubmit');
+    if(window.Salon) Salon.btnLoading(btn,true,'Бронируем…');
+    setTimeout(function(){
+      var q=C.quote(state.type,state.disc,state.term,state.tier);
+      var now=new Date(), pad=function(x){return String(x).padStart(2,'0');};
+      var stamp=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate());
+      var order={
+        id:now.getFullYear()+'-'+pad(now.getMonth()+1)+pad(now.getDate())+'-'+Math.floor(10+Math.abs(now.getTime())%89),
+        type:label(C.types,state.type), disc:label(C.disciplines,state.disc),
+        term:label(C.terms,state.term), tier:label(C.tiers,state.tier),
+        priceLow:q.low, priceHigh:q.high, name:name, contact:contact, theme:theme,
+        stageIndex:0, createdAt:stamp
+      };
+      try{ var arr=(window.Salon?Salon.store.get('salon_orders',[]):JSON.parse(localStorage.getItem('salon_orders')||'[]'))||[]; arr.unshift(order); if(window.Salon){Salon.store.set('salon_orders',arr);}else{localStorage.setItem('salon_orders',JSON.stringify(arr));} }catch(e){}
+      if(window.Salon){ Salon.store.del('salon_draft'); Salon.toast('Слот забронирован — заказ в личном кабинете.',{type:'success'}); }
+      panel.innerHTML='<div class="success"><div class="badge mx-auto">Заявка принята</div>'+
+        '<div class="big">Слот забронирован</div>'+
+        '<p class="muted" style="max-width:340px;margin:0 auto 8px">Мы получили ваш запрос на «'+order.type+'». Эксперт свяжется с вами по контакту <b class="gold">'+contact+'</b> и подтвердит детали.</p>'+
+        '<p class="muted" style="font-size:13.5px;margin-bottom:20px">Заказ добавлен в ваш личный кабинет — там виден прогресс по этапам.</p>'+
+        '<a class="btn btn-primary btn-lg" href="dashboard.html">Открыть личный кабинет <span class="ar">→</span></a></div>';
+      back.style.display='none';
+    }, 900);
+  }
+
+  next.addEventListener('click',function(){ idx++; renderStep(); persistDraft(); window.scrollTo({top:0,behavior:'smooth'}); });
+  back.addEventListener('click',function(){ if(idx>0){ if(next.style.display==='none'){next.style.display='';} idx--; renderStep(); persistDraft(); } });
+
+  renderStep();
+})();
+</script>
+</body>
+</html>

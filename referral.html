@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Реферальный клуб — Академический Салон</title>
+<meta name="description" content="Клуб Салона: приводите друзей и получайте бонусы. Личная реферальная ссылка, бонусный счёт, скидки всей группе и статусы клуба." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+<style>
+  .ref-wrap{padding-top:120px}
+  .ref-head{max-width:760px;margin-bottom:40px}
+
+  .ref-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start}
+  .panel-block{padding:28px;margin-bottom:24px}
+
+  /* реф-ссылка */
+  .link-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .link-input{flex:1 1 240px;min-width:0;padding:15px 16px;border:1px solid var(--line-2);border-radius:var(--radius-sm);background:rgba(8,11,9,.6);font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--gold);letter-spacing:.01em;cursor:pointer;text-overflow:ellipsis}
+  .link-input:focus{outline:none;border-color:var(--gold-line);background:rgba(210,173,94,.06)}
+  .copy-ok{font-size:13px;color:var(--gold);opacity:0;transition:opacity .3s;margin-top:12px}
+  .copy-ok.show{opacity:1}
+
+  /* статистика */
+  .stat-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
+  .stat{padding:20px;border:1px solid var(--line);border-radius:var(--radius-sm);background:rgba(8,11,9,.4);text-align:center}
+  .stat b{font-family:var(--serif);font-size:32px;color:var(--gold);display:block;line-height:1.1}
+  .stat .st-lbl{font-size:12.5px;color:var(--ink-soft);margin-top:6px;letter-spacing:.02em}
+
+  /* приглашённые */
+  .friends{list-style:none;margin-top:6px}
+  .friends li{display:flex;align-items:center;gap:13px;padding:13px 0;border-top:1px solid var(--line);font-size:14.5px}
+  .friends li:first-child{border-top:none}
+  .friends .fav{width:38px;height:38px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-size:16px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line)}
+  .friends .fmeta{flex:1}
+  .friends .fmeta b{display:block;font-size:14.5px;font-weight:600}
+  .friends .fmeta small{color:var(--ink-faint);font-size:12.5px}
+  .friends .fstatus{font-size:12px;font-weight:600;padding:4px 11px;border-radius:100px;white-space:nowrap}
+  .friends .fstatus.paid{color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line)}
+  .friends .fstatus.wait{color:var(--ink-soft);background:rgba(244,240,231,.05);border:1px solid var(--line-2)}
+  .friends-empty{padding:26px 4px;color:var(--ink-faint);font-size:14px}
+
+  /* прогресс группы */
+  .grp-bar{height:10px;background:rgba(244,240,231,.1);border-radius:8px;margin:18px 0 4px;overflow:hidden;position:relative}
+  .grp-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));width:0;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+  .grp-marks{display:flex;justify-content:space-between;margin-top:10px}
+  .grp-mark{text-align:center;flex:1;font-size:12px;color:var(--ink-faint);position:relative}
+  .grp-mark b{display:block;font-family:var(--serif);font-size:18px;color:var(--ink-soft);transition:color .3s}
+  .grp-mark.reached b{color:var(--gold)}
+  .grp-mark .gm-n{font-size:11.5px}
+  .grp-now{font-size:14.5px;margin-top:16px;color:var(--ink-soft)}
+  .grp-now b{color:var(--gold)}
+
+  /* статусы / тиры */
+  .tiers-track{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:tr}
+  .tier-node{padding:22px 18px;border:1px solid var(--line);border-radius:var(--radius);background:rgba(8,11,9,.4);position:relative;transition:.3s}
+  .tier-node .tr-ic{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);color:var(--ink-faint);font-family:var(--serif);font-size:19px;margin-bottom:14px;transition:.3s}
+  .tier-node h4{font-size:16px;margin-bottom:5px}
+  .tier-node p{font-size:13px;color:var(--ink-soft);line-height:1.5}
+  .tier-node.done .tr-ic{color:var(--gold);border-color:var(--gold-line);background:var(--gold-soft)}
+  .tier-node.current{border-color:var(--gold);background:var(--gold-soft);box-shadow:0 0 0 1px var(--gold-line),var(--glow)}
+  .tier-node.current .tr-ic{color:#0b0d0a;background:linear-gradient(120deg,var(--gold),var(--gold-2));border-color:transparent}
+  .tier-badge{position:absolute;top:-11px;right:16px;font-size:11px;font-weight:700;color:#0b0d0a;background:linear-gradient(120deg,var(--gold),var(--gold-2));padding:4px 12px;border-radius:100px;opacity:0;transition:.3s}
+  .tier-node.current .tier-badge{opacity:1}
+  .tier-foot{margin-top:18px;font-size:14px;color:var(--ink-soft)}
+  .tier-foot b{color:var(--gold)}
+
+  /* правила */
+  .rules{list-style:none}
+  .rules li{font-size:14.5px;color:var(--ink-soft);padding:11px 0 11px 28px;position:relative;border-top:1px solid var(--line)}
+  .rules li:first-child{border-top:none}
+  .rules li::before{content:"✦";position:absolute;left:0;top:11px;color:var(--gold);font-size:12px}
+  .rules li b{color:var(--ink)}
+
+  @media(max-width:960px){
+    .ref-grid{grid-template-columns:1fr}
+    .tiers-track{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:540px){
+    .stat-row{grid-template-columns:1fr}
+    .tiers-track{grid-template-columns:1fr}
+  }
+</style>
+<link rel="canonical" href="https://salon.217-18-63-210.sslip.io/referral.html" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#080b09" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Реферальный клуб — Академический Салон" />
+<meta property="og:description" content="Клуб Салона: приводите друзей и получайте бонусы. Личная реферальная ссылка, бонусный счёт, скидки всей группе и статусы клуба." />
+<meta property="og:url" content="https://salon.217-18-63-210.sslip.io/referral.html" />
+<meta property="og:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Реферальный клуб — Академический Салон" />
+<meta name="twitter:description" content="Клуб Салона: приводите друзей и получайте бонусы. Личная реферальная ссылка, бонусный счёт, скидки всей группе и статусы клуба." />
+<meta name="twitter:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+</head>
+<body>
+
+<main class="ref-wrap">
+  <div class="wrap">
+
+    <div class="ref-head reveal">
+      <span class="eyebrow">Клуб Салона</span>
+      <h1 class="title" style="margin-bottom:14px">Приводите своих — получайте бонусы</h1>
+      <p class="lead">Рекомендуйте Салон тем, кому доверяете. За каждого друга, оформившего работу, — бонус на ваш счёт, а вся ваша группа получает скидку. Чем больше круг — тем выше статус и привилегии.</p>
+    </div>
+
+    <div class="ref-grid">
+
+      <!-- LEFT: кабинет участника -->
+      <div>
+        <div class="glass panel-block reveal">
+          <div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:6px">ВАША РЕФЕРАЛЬНАЯ ССЫЛКА</div>
+          <p class="muted" style="font-size:14px;margin-bottom:14px">Поделитесь ссылкой — друг перейдёт по ней, а мы запомним, что он пришёл от вас.</p>
+          <div class="link-row">
+            <input class="link-input" id="refLinkInput" readonly aria-label="Ваша реферальная ссылка" value="" />
+            <button class="btn btn-primary" id="copyBtn">Скопировать ссылку</button>
+          </div>
+          <div class="copy-ok" id="copyOk">✦ Ссылка скопирована в буфер обмена</div>
+        </div>
+
+        <div class="glass panel-block reveal">
+          <div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:16px">ВАШ КЛУБНЫЙ СЧЁТ</div>
+          <div class="stat-row">
+            <div class="stat"><b id="stBalance">0 ₽</b><div class="st-lbl">бонусный баланс</div></div>
+            <div class="stat"><b id="stFriends">0</b><div class="st-lbl">приглашено друзей</div></div>
+          </div>
+          <p class="muted" style="font-size:13px;margin-top:10px">Бонусами можно оплатить до части стоимости следующего заказа. Начисляются после оплаченного заказа друга.</p>
+        </div>
+
+        <div class="glass panel-block reveal">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:6px">
+            <div class="gold" style="font-size:12.5px;letter-spacing:.04em">ПРИГЛАШЁННЫЕ</div>
+            <button class="btn btn-ghost" id="simBtn">Симулировать приглашение друга</button>
+          </div>
+          <p class="muted" style="font-size:13px;margin-bottom:8px">Демонстрация механики: добавим друга и начислим бонус, как это произойдёт после его оплаченного заказа.</p>
+          <ul class="friends" id="friendList"></ul>
+        </div>
+      </div>
+
+      <!-- RIGHT: группа и статус -->
+      <aside>
+        <div class="glass glass-2 panel-block reveal">
+          <div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:4px">СКИДКА ВСЕЙ ГРУППЕ</div>
+          <p class="muted" style="font-size:13.5px">Чем больше друзей оформили работу — тем выше скидка каждому участнику вашей группы.</p>
+          <div class="grp-bar"><div class="grp-fill" id="grpFill"></div></div>
+          <div class="grp-marks">
+            <div class="grp-mark" id="gm3"><b>−10%</b><span class="gm-n">3 друга</span></div>
+            <div class="grp-mark" id="gm5"><b>−15%</b><span class="gm-n">5 друзей</span></div>
+            <div class="grp-mark" id="gm10"><b>−25%</b><span class="gm-n">10 друзей</span></div>
+          </div>
+          <div class="grp-now" id="grpNow">Пока скидка группы: <b>0%</b></div>
+        </div>
+
+        <div class="glass glass-2 panel-block reveal">
+          <div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:4px">ВАШ СТАТУС В КЛУБЕ</div>
+          <p class="muted" style="font-size:13.5px;margin-bottom:18px">Статус растёт от числа приглашённых друзей и привилегий открывается больше.</p>
+          <div class="tiers-track">
+            <div class="tier-node" id="tier0"><span class="tier-badge">вы здесь</span><div class="tr-ic">○</div><h4>Гость</h4><p>Старт. Личная ссылка и бонусный счёт уже открыты.</p></div>
+            <div class="tier-node" id="tier1"><span class="tier-badge">вы здесь</span><div class="tr-ic">✦</div><h4>Постоянный клиент</h4><p>От 1 друга. Повышенный бонус за рекомендации.</p></div>
+            <div class="tier-node" id="tier2"><span class="tier-badge">вы здесь</span><div class="tr-ic">✦✦</div><h4>Резидент Салона</h4><p>От 3 друзей. Скидка группе и приоритет в очереди.</p></div>
+            <div class="tier-node" id="tier3"><span class="tier-badge">вы здесь</span><div class="tr-ic">✦✦✦</div><h4>Почётный резидент</h4><p>От 5 друзей. Максимальные привилегии и личное ведение.</p></div>
+          </div>
+          <div class="tier-foot" id="tierFoot">До статуса «Постоянный клиент» — <b>1 друг</b>.</div>
+        </div>
+
+        <div class="glass glass-2 panel-block reveal" style="text-align:center">
+          <h3 style="font-size:21px;margin-bottom:8px">Готовы расширить круг?</h3>
+          <p class="muted" style="font-size:14px;margin-bottom:18px">Оформите работу — и приглашайте своих. Бонусы и скидки начнут расти.</p>
+          <a class="btn btn-primary btn-block btn-lg" href="configurator.html">Рассчитать заказ <span class="ar">→</span></a>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- Как это работает -->
+    <div class="section-sm reveal">
+      <div class="center" style="margin-bottom:32px">
+        <span class="eyebrow" style="margin-bottom:14px">Просто и прозрачно</span>
+        <h2 class="title">Как это работает</h2>
+      </div>
+      <div class="steps">
+        <div class="glass card pstep"><div class="num"></div><h4>Получите ссылку</h4><p>Персональная ссылка с вашим кодом уже создана — она в кабинете выше.</p></div>
+        <div class="glass card pstep"><div class="num"></div><h4>Поделитесь с друзьями</h4><p>Отправьте ссылку тем, кому может пригодиться помощь Салона.</p></div>
+        <div class="glass card pstep"><div class="num"></div><h4>Друг оформляет работу</h4><p>Он переходит по ссылке и заказывает — мы видим, что он пришёл от вас.</p></div>
+        <div class="glass card pstep"><div class="num"></div><h4>Вы получаете бонус</h4><p>После оплаченного заказа друга бонус приходит на ваш клубный счёт.</p></div>
+      </div>
+    </div>
+
+    <!-- Правила -->
+    <div class="section-sm reveal" style="padding-top:0">
+      <div class="grid grid-2">
+        <div class="glass card">
+          <div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:14px">ПРАВИЛА КЛУБА</div>
+          <ul class="rules">
+            <li><b>Бонус — после оплаты.</b> Начисляется на ваш счёт после оплаченного заказа приглашённого друга.</li>
+            <li><b>Скидки не суммируются.</b> Действует одна максимальная скидка; потолок групповой скидки — 15%.</li>
+            <li><b>Реферальный бонус — на счёт.</b> Им можно оплатить часть стоимости следующего заказа.</li>
+            <li><b>Статус — за круг.</b> Тир в клубе растёт от числа приглашённых и открывает привилегии.</li>
+          </ul>
+        </div>
+        <div class="glass card">
+          <div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:14px">ВАЖНО ЗНАТЬ</div>
+          <p class="muted" style="font-size:14.5px;line-height:1.7">Скидка группы — отдельная механика: <b class="gold">3 друга → −10%</b>, <b class="gold">5 → −15%</b>, <b class="gold">10 → −25%</b> каждому участнику. При расчёте к конкретному заказу применяется одна максимальная скидка, ограниченная потолком 15%; повышенные значения остаются клубным статусом.</p>
+          <p class="muted" style="font-size:13px;margin-top:14px">Эта страница — наглядная демонстрация. Данные хранятся локально в вашем браузере и не передаются никуда.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="assets/js/app.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var KEY='salon_ref';
+  var BONUS=2500;                 // бонус за оплаченный заказ друга, ₽
+  var GROUP=[ {n:3,d:10}, {n:5,d:15}, {n:10,d:25} ];   // пороги групповой скидки
+  var TIERS=[
+    {id:'tier0', need:0},
+    {id:'tier1', need:1},
+    {id:'tier2', need:3},
+    {id:'tier3', need:5}
+  ];
+  var TIER_NAMES=['Гость','Постоянный клиент','Резидент Салона','Почётный резидент'];
+
+  var NAMES=['Анна','Дмитрий','Екатерина','Михаил','Ольга','Сергей','Полина','Артём','Мария','Никита','Вероника','Илья','Дарья','Роман','София','Тимур'];
+  var SURI=['К.','Л.','М.','Н.','П.','Р.','С.','Т.','Ф.','Ч.','Ш.','Б.','В.','Г.','Д.'];
+
+  function genCode(){
+    var part=function(len){ var s='',a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; for(var i=0;i<len;i++) s+=a[Math.floor(Math.random()*a.length)]; return s; };
+    return 'SALON-'+part(4);
+  }
+
+  function load(){
+    var d;
+    try{ d=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ d=null; }
+    if(!d || !d.code){ d={ code:genCode(), balance:0, friends:[] }; save(d); }
+    if(!Array.isArray(d.friends)) d.friends=[];
+    if(typeof d.balance!=='number') d.balance=0;
+    return d;
+  }
+  function save(d){ try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){} }
+
+  var data=load();
+
+  function money(n){ return n.toLocaleString('ru-RU')+' ₽'; }
+
+  // --- групповая скидка по числу друзей (статусное значение) ---
+  function groupDiscount(count){
+    var d=0;
+    GROUP.forEach(function(g){ if(count>=g.n) d=g.d; });
+    return d;
+  }
+
+  // --- текущий тир ---
+  function currentTier(count){
+    var t=0;
+    TIERS.forEach(function(x,i){ if(count>=x.need) t=i; });
+    return t;
+  }
+
+  /* ---------------- РЕФ-ССЫЛКА ---------------- */
+  var refLinkInput=document.getElementById('refLinkInput');
+  var copyBtn=document.getElementById('copyBtn');
+  var copyOk=document.getElementById('copyOk');
+  function fullLink(){ return 'https://akademsalon.ru/?ref='+data.code; }
+  refLinkInput.value='akademsalon.ru/?ref='+data.code;
+  refLinkInput.addEventListener('click', function(){ this.select(); });
+
+  copyBtn.addEventListener('click', function(){
+    var link=fullLink();
+    var done=function(){
+      copyOk.classList.add('show');
+      copyBtn.textContent='Скопировано ✦';
+      setTimeout(function(){ copyOk.classList.remove('show'); copyBtn.textContent='Скопировать ссылку'; }, 2200);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(link).then(done).catch(fallback);
+    } else { fallback(); }
+    function fallback(){
+      var ta=document.createElement('textarea'); ta.value=link;
+      ta.style.cssText='position:fixed;top:-9999px;left:-9999px';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); done(); }catch(e){}
+      document.body.removeChild(ta);
+    }
+  });
+
+  /* ---------------- СИМУЛЯЦИЯ ДРУГА ---------------- */
+  var simBtn=document.getElementById('simBtn');
+  simBtn.addEventListener('click', function(){
+    var name=NAMES[Math.floor(Math.random()*NAMES.length)]+' '+SURI[Math.floor(Math.random()*SURI.length)];
+    var day=String(Math.floor(Math.random()*28)+1).padStart(2,'0');
+    data.friends.unshift({ name:name, when:'2026-06-'+day, paid:true, bonus:BONUS });
+    data.balance+=BONUS;
+    save(data);
+    render(true);
+  });
+
+  /* ---------------- РЕНДЕР ---------------- */
+  var stBalance=document.getElementById('stBalance');
+  var stFriends=document.getElementById('stFriends');
+  var friendList=document.getElementById('friendList');
+  var grpFill=document.getElementById('grpFill');
+  var grpNow=document.getElementById('grpNow');
+  var tierFoot=document.getElementById('tierFoot');
+
+  function renderFriends(){
+    if(!data.friends.length){
+      friendList.innerHTML='<li class="friends-empty">Пока никого. Поделитесь ссылкой или нажмите «Симулировать приглашение друга», чтобы увидеть, как растут бонусы.</li>';
+      return;
+    }
+    friendList.innerHTML=data.friends.map(function(f){
+      var initial=(f.name||'?').trim().charAt(0).toUpperCase();
+      var st=f.paid
+        ? '<span class="fstatus paid">оплатил · +'+money(f.bonus||BONUS)+'</span>'
+        : '<span class="fstatus wait">ожидает оплаты</span>';
+      return '<li><span class="fav">'+initial+'</span>'+
+        '<span class="fmeta"><b>'+f.name+'</b><small>пришёл '+f.when+'</small></span>'+st+'</li>';
+    }).join('');
+  }
+
+  function renderGroup(){
+    var count=data.friends.length;
+    var disc=groupDiscount(count);
+    // прогресс относительно потолка в 10 друзей
+    var pct=Math.min(count/10*100,100);
+    grpFill.style.width=pct+'%';
+    document.getElementById('gm3').classList.toggle('reached', count>=3);
+    document.getElementById('gm5').classList.toggle('reached', count>=5);
+    document.getElementById('gm10').classList.toggle('reached', count>=10);
+    if(disc>0){
+      var nextTxt='';
+      var next=GROUP.find(function(g){ return count<g.n; });
+      if(next){ nextTxt=' Ещё <b>'+(next.n-count)+'</b> до −'+next.d+'%.'; }
+      grpNow.innerHTML='Скидка группе: <b>−'+disc+'%</b> каждому.'+nextTxt;
+    } else {
+      grpNow.innerHTML='Пока скидка группы: <b>0%</b>. Приведите <b>'+(3-count)+'</b> друга до первой −10%.';
+    }
+  }
+
+  function renderTiers(){
+    var count=data.friends.length;
+    var cur=currentTier(count);
+    TIERS.forEach(function(t,i){
+      var node=document.getElementById(t.id);
+      node.classList.remove('done','current');
+      if(i<cur) node.classList.add('done');
+      else if(i===cur) node.classList.add('current');
+    });
+    if(cur>=TIERS.length-1){
+      tierFoot.innerHTML='Достигнут высший статус — <b>'+TIER_NAMES[cur]+'</b>. Привилегии открыты полностью.';
+    } else {
+      var nextNeed=TIERS[cur+1].need;
+      var left=nextNeed-count;
+      tierFoot.innerHTML='До статуса «'+TIER_NAMES[cur+1]+'» — <b>'+left+(left===1?' друг':(left<5?' друга':' друзей'))+'</b>.';
+    }
+  }
+
+  function render(flash){
+    stBalance.textContent=money(data.balance);
+    stFriends.textContent=data.friends.length;
+    renderFriends();
+    renderGroup();
+    renderTiers();
+    if(flash){
+      stBalance.animate(
+        [{transform:'scale(1)'},{transform:'scale(1.12)'},{transform:'scale(1)'}],
+        {duration:520,easing:'cubic-bezier(.2,.8,.2,1)'}
+      );
+    }
+  }
+
+  render(false);
+})();
+</script>
+</body>
+</html>

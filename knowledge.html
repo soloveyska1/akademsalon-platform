@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>База знаний — Академический Салон</title>
+<meta name="description" content="Разбираемся в правилах игры: как вузы проверяют работы, что такое антиплагиат и ИИ-детекция, как готовиться к защите. Спокойные, честные материалы без обещаний обхода." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+<style>
+  .kb-wrap{padding-top:120px}
+  .kb-head{max-width:760px;margin-bottom:48px}
+
+  /* Featured article */
+  .kb-featured{display:grid;grid-template-columns:1.05fr .95fr;gap:0;overflow:hidden;padding:0;margin-bottom:48px}
+  .kb-featured .kf-art{display:none}
+  .kf-visual{position:relative;min-height:320px;background:
+      radial-gradient(70% 80% at 30% 20%, rgba(210,173,94,.18), transparent 60%),
+      linear-gradient(150deg, var(--emerald-deep), #0a130e);
+    border-right:1px solid var(--line);overflow:hidden}
+  .kf-visual .kf-glyph{position:absolute;right:-10px;bottom:-28px;font-family:var(--serif);font-style:italic;font-size:240px;line-height:1;color:rgba(210,173,94,.14);user-select:none}
+  .kf-visual .kf-tag{position:absolute;top:24px;left:24px}
+  .kf-body{padding:38px 40px;display:flex;flex-direction:column;justify-content:center}
+  .kf-body .kf-meta{font-size:12.5px;letter-spacing:.04em;color:var(--ink-faint);margin-bottom:14px}
+  .kf-body h2{font-size:clamp(26px,3vw,36px);line-height:1.12;margin-bottom:14px}
+  .kf-body p{color:var(--ink-soft);font-size:16px;margin-bottom:24px;max-width:480px}
+
+  /* Article card */
+  .kb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .art-card{display:flex;flex-direction:column;transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s}
+  .art-card:hover{transform:translateY(-4px);border-color:var(--gold-line)}
+  .art-rubric{align-self:flex-start;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px}
+  .art-card h3{font-size:21px;line-height:1.18;margin-bottom:10px}
+  .art-card p{color:var(--ink-soft);font-size:14.5px;flex:1;margin-bottom:20px}
+  .art-more{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--gold);transition:gap .3s}
+  .art-card:hover .art-more{gap:13px}
+  .art-meta{font-size:12px;color:var(--ink-faint);margin-bottom:16px;letter-spacing:.02em}
+
+  /* Ecosystem link block */
+  .kb-eco{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:28px;padding:30px 34px}
+  .eco-mark{width:58px;height:58px;border-radius:15px;display:grid;place-items:center;font-family:var(--serif);font-size:26px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line)}
+  .kb-eco h3{font-size:21px;margin-bottom:6px}
+  .kb-eco p{color:var(--ink-soft);font-size:14.5px;max-width:560px}
+
+  /* CTA */
+  .kb-cta{padding:54px 40px;text-align:center}
+  .kb-cta h2{font-size:clamp(28px,3.4vw,40px);margin-bottom:14px}
+  .kb-cta p{color:var(--ink-soft);max-width:520px;margin:0 auto 28px}
+
+  @media(max-width:960px){
+    .kb-grid{grid-template-columns:1fr 1fr}
+    .kb-featured{grid-template-columns:1fr}
+    .kf-visual{min-height:200px;border-right:none;border-bottom:1px solid var(--line)}
+    .kf-visual .kf-glyph{font-size:170px}
+    .kb-eco{grid-template-columns:1fr;text-align:center;justify-items:center;gap:18px}
+    .kb-eco p{margin:0 auto}
+  }
+  @media(max-width:540px){
+    .kb-grid{grid-template-columns:1fr}
+    .kf-body{padding:30px 26px}
+  }
+</style>
+<link rel="canonical" href="https://salon.217-18-63-210.sslip.io/knowledge.html" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#080b09" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="База знаний — Академический Салон" />
+<meta property="og:description" content="Разбираемся в правилах игры: как вузы проверяют работы, что такое антиплагиат и ИИ-детекция, как готовиться к защите. Спокойные, честные материалы без обещаний обхода." />
+<meta property="og:url" content="https://salon.217-18-63-210.sslip.io/knowledge.html" />
+<meta property="og:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="База знаний — Академический Салон" />
+<meta name="twitter:description" content="Разбираемся в правилах игры: как вузы проверяют работы, что такое антиплагиат и ИИ-детекция, как готовиться к защите. Спокойные, честные материалы без обещаний обхода." />
+<meta name="twitter:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+</head>
+<body>
+
+<main class="kb-wrap">
+  <div class="wrap">
+
+    <!-- Intro -->
+    <header class="kb-head reveal">
+      <span class="eyebrow">База знаний</span>
+      <h1 class="h-display" style="font-size:clamp(38px,5.4vw,68px)">Разбираемся <span class="serif-italic">в&nbsp;правилах игры</span></h1>
+      <p class="lead mt-s">Спокойные, честные материалы о том, как устроена академическая среда сегодня: проверки, оригинальность, защита. Без громких обещаний и без обхода систем — только то, что полезно знать заранее.</p>
+    </header>
+
+    <!-- Featured -->
+    <article class="glass kb-featured reveal">
+      <div class="kf-visual">
+        <span class="kf-glyph">AI</span>
+        <span class="badge kf-tag">Главное</span>
+      </div>
+      <div class="kf-body">
+        <div class="kf-meta">Проверки · 18 июня 2026 · 9 минут чтения</div>
+        <h2>Как вузы проверяют работы на ИИ в&nbsp;2026: что известно и&nbsp;что&nbsp;нет</h2>
+        <p>Детекторы искусственного интеллекта вошли в практику кафедр, но работают они иначе, чем принято думать. Разбираем, на что они реально опираются, где ошибаются и почему «процент ИИ» — не приговор и не гарантия.</p>
+        <a class="btn btn-primary" href="#" data-soon>Читать материал <span class="ar">→</span></a>
+      </div>
+    </article>
+
+    <!-- Cards -->
+    <section class="kb-grid">
+
+      <a href="#" data-soon class="card art-card reveal">
+        <span class="art-rubric">Оригинальность</span>
+        <h3>Антиплагиат: как считается оригинальность и&nbsp;частые мифы</h3>
+        <p>Что именно измеряет система, почему два честных автора могут получить разные цифры и какие «лайфхаки» давно не работают и только вредят.</p>
+        <div class="art-meta">7 минут чтения</div>
+        <span class="art-more">Читать →</span>
+      </a>
+
+      <a href="#" data-soon class="card art-card reveal d1">
+        <span class="art-rubric">Качество текста</span>
+        <h3>Почему живой текст важнее, чем&nbsp;кажется</h3>
+        <p>Научный руководитель чувствует механический текст быстрее любого детектора. Объясняем, из чего складывается живой авторский голос и зачем он на защите.</p>
+        <div class="art-meta">6 минут чтения</div>
+        <span class="art-more">Читать →</span>
+      </a>
+
+      <a href="#" data-soon class="card art-card reveal d2">
+        <span class="art-rubric">Защита</span>
+        <h3>Как подготовиться к&nbsp;защите: чек-лист</h3>
+        <p>Доклад, презентация, ответы на каверзные вопросы. Последовательность шагов за две недели до выхода к комиссии — чтобы волноваться меньше.</p>
+        <div class="art-meta">8 минут чтения</div>
+        <span class="art-more">Читать →</span>
+      </a>
+
+      <a href="#" data-soon class="card art-card reveal">
+        <span class="art-rubric">Стоимость</span>
+        <h3>Сколько стоит дипломная работа и&nbsp;из чего складывается цена</h3>
+        <p>Тип работы, направление, срок и глубина сопровождения. Раскладываем формулу честно — чтобы вы понимали, за что платите, ещё до разговора.</p>
+        <div class="art-meta">5 минут чтения</div>
+        <span class="art-more">Читать →</span>
+      </a>
+
+      <a href="#" data-soon class="card art-card reveal d1">
+        <span class="art-rubric">Практика</span>
+        <h3>Отчёт по практике: как&nbsp;не&nbsp;завалить летом</h3>
+        <p>Дневник, характеристика, структура отчёта и типичные причины возврата на доработку. Что собрать заранее, пока практика ещё идёт.</p>
+        <div class="art-meta">6 минут чтения</div>
+        <span class="art-more">Читать →</span>
+      </a>
+
+      <a href="#" data-soon class="card art-card reveal d2">
+        <span class="art-rubric">Проверки</span>
+        <h3>Что делать, если&nbsp;работу&nbsp;вернули на&nbsp;доработку</h3>
+        <p>Замечания рецензента — не катастрофа, а карта правок. Как читать отзыв, расставлять приоритеты и спокойно довести работу до приёмки.</p>
+        <div class="art-meta">5 минут чтения</div>
+        <span class="art-more">Читать →</span>
+      </a>
+
+    </section>
+
+    <!-- Ecosystem link -->
+    <section class="glass glass-2 kb-eco reveal mt-l">
+      <div class="eco-mark">B</div>
+      <div>
+        <h3>Свободная коллекция работ — <span class="gold">bibliosaloon</span></h3>
+        <p>В нашей экосистеме есть открытая библиотека: примеры структур, удачные планы и фрагменты для вдохновения. Загляните, чтобы понять, как выглядит сильная работа, прежде чем браться за свою.</p>
+      </div>
+      <a class="btn btn-ghost" href="#" data-soon>Открыть библиотеку <span class="ar">→</span></a>
+    </section>
+
+    <!-- CTA -->
+    <section class="glass kb-cta reveal mt-m" style="margin-bottom:30px">
+      <span class="eyebrow mx-auto" style="display:flex;justify-content:center">Готовы перейти от теории к делу</span>
+      <h2>Соберите свою работу <span class="serif-italic">за минуту</span></h2>
+      <p>Выберите тип, направление и срок — конфигуратор покажет ориентировочную стоимость, профиль эксперта под вашу тему и план до сдачи.</p>
+      <a class="btn btn-primary btn-lg" href="configurator.html">Перейти к конфигуратору <span class="ar">→</span></a>
+    </section>
+
+  </div>
+</main>
+
+<script src="assets/js/app.js"></script>
+<script>
+(function(){
+  // Честная заглушка: статьи ещё готовятся — мягко сообщаем, без обмана.
+  function notice(e){
+    e.preventDefault();
+    var link=e.currentTarget;
+    if(link.dataset.busy) return;
+    link.dataset.busy='1';
+    var prev=link.innerHTML;
+    var isBtn=link.classList.contains('btn');
+    link.innerHTML = isBtn ? 'Готовим материал — скоро' : 'Скоро →';
+    link.style.opacity='.7';
+    setTimeout(function(){ link.innerHTML=prev; link.style.opacity=''; link.dataset.busy=''; }, 1900);
+  }
+  document.querySelectorAll('[data-soon]').forEach(function(el){
+    el.addEventListener('click', notice);
+  });
+})();
+</script>
+</body>
+</html>
