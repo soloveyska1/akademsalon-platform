@@ -166,10 +166,8 @@
 
   /* ---------------- Шапка ---------------- */
   var NAV = [
-    { href: 'check.html', label: 'Проверка текста' },
-    { href: 'expertise.html', label: 'Экспертиза' },
-    { href: 'referral.html', label: 'Клуб' },
-    { href: 'tariffs.html', label: 'Тарифы' }
+    { href: 'tariffs.html', label: 'Тарифы' },
+    { href: 'referral.html', label: 'Клуб' }
   ];
   var here = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
   function brandHTML() {
@@ -249,13 +247,11 @@
   if (!document.querySelector('.site-footer')) {
     var footer = document.createElement('footer');
     footer.className = 'site-footer';
-    footer.innerHTML = '<div class="wrap"><div class="foot-grid">' +
-      '<div>' + brandHTML() + '<p class="muted" style="max-width:300px;margin-top:14px">Авторские академические работы под ключ. Пишем вручную, ведём до защиты, проверки показываем до оплаты.</p></div>' +
-      '<div><h5>Платформа</h5><a href="configurator.html">Рассчитать заказ</a><a href="tariffs.html">Тарифы и цены</a><a href="check.html">Проверка текста</a><a href="expertise.html">Экспертиза</a><a href="referral.html">Реферальный клуб</a><a href="knowledge.html">База знаний</a><a href="dashboard.html">Личный кабинет</a></div>' +
-      '<div><h5>Документы</h5><a href="#" class="placeholder">[Договор-оферта]</a><a href="#" class="placeholder">[Политика ПДн]</a><a href="#" class="placeholder">[Оплата и возврат]</a></div>' +
-      '<div><h5>Связь</h5><a href="#" data-msg class="placeholder">[Telegram]</a><a href="#" data-msg class="placeholder">[WhatsApp]</a><a href="#" data-msg class="placeholder">[E-mail]</a></div>' +
-      '</div><div class="foot-note"><span class="placeholder">[ИП Фамилия И.О. · ИНН 000000000000 · ОГРНИП 000000000000000]</span><br>' +
-      'Сайт оказывает информационно-консультационные услуги и помощь в подготовке авторских материалов-образцов по теме, указанной заказчиком. © 2026 Академический Салон.</div></div>';
+    footer.innerHTML = '<div class="wrap foot-slim">' +
+      '<div class="foot-row">' + brandHTML() +
+        '<nav class="foot-links"><a href="tariffs.html">Тарифы</a><a href="referral.html">Клуб</a><a href="configurator.html">Рассчитать</a><a href="dashboard.html">Кабинет</a><a href="knowledge.html">База знаний</a></nav>' +
+      '</div>' +
+      '<div class="foot-note">Сайт оказывает информационно-консультационные услуги и помощь в подготовке авторских материалов по теме, указанной заказчиком. © 2026 Академический Салон.</div></div>';
     document.body.appendChild(footer);
   }
 
@@ -341,18 +337,7 @@
     document.querySelectorAll('[data-count]').forEach(function (n) { cio.observe(n); });
   }
 
-  /* ---------------- Магнитные кнопки (desktop, тонко) ---------------- */
-  if (window.matchMedia('(pointer:fine)').matches && !reduceMotion) {
-    document.querySelectorAll('.btn-lg').forEach(function (btn) {
-      btn.addEventListener('mousemove', function (e) {
-        var r = btn.getBoundingClientRect();
-        var x = (e.clientX - r.left - r.width / 2) / r.width;
-        var y = (e.clientY - r.top - r.height / 2) / r.height;
-        btn.style.transform = 'translate(' + (x * 7).toFixed(1) + 'px,' + (y * 5 - 2).toFixed(1) + 'px)';
-      });
-      btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
-    });
-  }
+  /* Магнитные кнопки убраны — спокойный минималистичный тон. */
 
   /* ---------------- 3D «созвездие знаний» (ленивая загрузка) ---------------- */
   function webglOK() {
@@ -460,6 +445,7 @@
     loop();
   }
 
-  var ric = window.requestIdleCallback || function (f) { return setTimeout(f, 250); };
-  window.addEventListener('load', function () { ric(startBackground, { timeout: 2500 }); });
+  /* 3D-«созвездие знаний» отключено в пользу тихого статичного фона (минимализм).
+     startBackground/initConstellation оставлены в коде, но не вызываются. */
+  void startBackground;
 })();

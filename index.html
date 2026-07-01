@@ -4,11 +4,74 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Академический Салон — дипломы и диссертации, написанные экспертами</title>
-<meta name="description" content="Закрытая мастерская академических работ. Пишем вручную, ведём до защиты, проверки показываем до оплаты. Дипломы, диссертации, статьи под ключ." />
+<meta name="description" content="Закрытая мастерская академических работ. Один эксперт ведёт ваш проект до защиты: живой текст, отчёт о проверках до оплаты, оплата по этапам. Узнайте цену за минуту." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/styles.css" />
+<style>
+  /* ============================================================
+     ГЛАВНАЯ — «Тихий салон»: спокойно, плотно, цена сразу
+     ============================================================ */
+  .rubric{display:flex;align-items:baseline;gap:12px;margin-bottom:22px}
+  .rubric .rn{font-family:var(--serif);font-size:14px;color:var(--gold);letter-spacing:.02em;flex:0 0 auto}
+  .rubric h2{font-family:var(--sans);font-size:clamp(19px,2.1vw,25px);font-weight:600;letter-spacing:-.01em;line-height:1.2}
+  .hsec{padding:var(--space-block) 0;border-top:1px solid var(--line)}
+
+  /* hero + расчёт */
+  .home-hero{padding:112px 0 52px}
+  .hero-split{display:grid;grid-template-columns:1.08fr .92fr;gap:46px;align-items:center}
+  .hero-l h1{font-family:var(--serif);font-weight:600;font-size:clamp(31px,3.9vw,49px);line-height:1.08;letter-spacing:-.02em;margin-bottom:18px}
+  .hero-l h1 em{font-style:italic;color:transparent;background:linear-gradient(108deg,var(--gold),#f0dba6 60%,var(--gold-2));-webkit-background-clip:text;background-clip:text}
+  .hero-l .lead{font-size:17px;color:var(--ink-soft);max-width:46ch;margin-bottom:20px;line-height:1.55}
+  .hero-trust{font-size:13px;color:var(--ink-faint);display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+  .hero-trust b{color:var(--ink-soft);font-weight:600}
+  .hero-trust .sep{width:3px;height:3px;border-radius:50%;background:var(--gold-line)}
+
+  .calc{padding:24px;border:1px solid var(--line-2);border-radius:var(--radius);background:rgba(255,255,255,.025)}
+  .calc .ck{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px}
+  .calc label{display:block;font-size:12.5px;color:var(--ink-soft);margin-bottom:7px}
+  .calc select{width:100%;margin-bottom:16px;font-size:14.5px;padding:12px 14px}
+  .calc .seg{display:flex;gap:8px;margin-bottom:18px}
+  .calc .seg button{flex:1;min-width:0;padding:11px 8px;font-size:13px}
+  .calc-out{border-top:1px solid var(--line);padding-top:16px}
+  .calc-price{font-family:var(--serif);font-weight:600;font-size:clamp(27px,3.2vw,38px);color:var(--gold);line-height:1.05}
+  .calc-note{font-size:11.5px;color:var(--ink-faint);margin:7px 0 16px;line-height:1.45}
+
+  /* 01 — три причины строками */
+  .lines{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .lines .li{padding-left:16px;border-left:1px solid var(--gold-line)}
+  .lines .li b{display:block;font-size:15px;margin-bottom:6px}
+  .lines .li p{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:0}
+
+  /* 02 — процесс лентой */
+  .flow{display:flex;gap:12px;flex-wrap:wrap}
+  .flow .st{flex:1;min-width:130px;padding-top:14px;border-top:1px solid var(--line)}
+  .flow .st .n{font-family:var(--serif);color:var(--gold);font-size:13px}
+  .flow .st b{display:block;font-size:14.5px;margin:6px 0 3px;font-weight:600}
+  .flow .st small{font-size:12.5px;color:var(--ink-faint);line-height:1.4}
+
+  /* 03 — тизер цен */
+  .ptease{display:flex;align-items:center;justify-content:space-between;gap:22px 40px;flex-wrap:wrap;padding:24px 26px;border:1px solid var(--line-2);border-radius:var(--radius);background:rgba(255,255,255,.025)}
+  .ptease .pfrom{font-family:var(--serif);font-weight:600;font-size:34px;color:var(--gold);line-height:1}
+  .ptease .pf{font-size:13px;color:var(--ink-soft);margin-top:7px;max-width:34ch;line-height:1.5}
+  .ptease .ptiers{display:flex;gap:22px}
+  .ptease .ptiers div{text-align:center}
+  .ptease .ptiers b{font-family:var(--serif);color:var(--ink);font-size:19px;display:block;line-height:1}
+  .ptease .ptiers small{font-size:11px;color:var(--ink-faint)}
+  .ptease .plink{white-space:nowrap}
+
+  .home-faq{max-width:760px}
+  .home-faq .faq-item summary{font-size:16px;padding:16px 36px 16px 0}
+  .home-faq .faq-item p{font-size:14.5px}
+
+  @media(max-width:840px){
+    .home-hero{padding:96px 0 36px}
+    .hero-split{grid-template-columns:1fr;gap:28px}
+    .lines{grid-template-columns:1fr;gap:16px}
+    .ptease{flex-direction:column;align-items:flex-start}
+  }
+</style>
 <link rel="canonical" href="https://salon.217-18-63-210.sslip.io/index.html" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
@@ -17,213 +80,146 @@
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
 <meta property="og:title" content="Академический Салон — дипломы и диссертации, написанные экспертами" />
-<meta property="og:description" content="Закрытая мастерская академических работ. Пишем вручную, ведём до защиты, проверки показываем до оплаты. Дипломы, диссертации, статьи под ключ." />
+<meta property="og:description" content="Закрытая мастерская: один эксперт ведёт ваш проект до защиты. Живой текст, отчёт о проверках до оплаты, оплата по этапам." />
 <meta property="og:url" content="https://salon.217-18-63-210.sslip.io/index.html" />
 <meta property="og:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Академический Салон — дипломы и диссертации, написанные экспертами" />
-<meta name="twitter:description" content="Закрытая мастерская академических работ. Пишем вручную, ведём до защиты, проверки показываем до оплаты. Дипломы, диссертации, статьи под ключ." />
+<meta name="twitter:description" content="Закрытая мастерская: один эксперт ведёт ваш проект до защиты. Узнайте цену за минуту." />
 <meta name="twitter:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
 </head>
 <body>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="wrap hero-inner">
-    <span class="badge reveal">✦ Закрытая мастерская · с 2019 года</span>
-    <h1 class="h-display reveal d1">Дипломы и диссертации,<br><span class="serif-italic">написанные экспертами</span></h1>
-    <p class="lead reveal d2">Не биржа, где вашу работу разыгрывают между анонимами. Не нейросеть, на которой ловят. Один закреплённый эксперт ведёт ваш проект — от первой страницы до защиты.</p>
-    <div class="hero-actions reveal d2">
-      <a class="btn btn-primary btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>
-      <a class="btn btn-ghost btn-lg" href="#how">Как мы работаем</a>
-    </div>
-    <div class="hero-meta reveal d3">
-      <span><b data-count="6" data-suffix="+">6+</b> лет на рынке</span><span class="sep"></span>
-      <span><b data-count="1000" data-suffix="+">1000+</b> работ доведено до сдачи</span><span class="sep"></span>
-      <span>оплата по этапам</span>
-    </div>
-  </div>
-  <div class="scroll-cue" aria-hidden="true">Листайте<i></i></div>
-</section>
-
-<!-- VALUES -->
-<section class="section" id="why">
+<main class="home">
   <div class="wrap">
-    <span class="eyebrow reveal">Почему к нам</span>
-    <h2 class="title reveal">Мы берём на себя то, чего вы боитесь</h2>
-    <p class="lead reveal" style="margin-bottom:46px">Вы платите не за текст, а за спокойствие — за то, что эти сценарии с вами не случатся.</p>
-    <div class="grid grid-3">
-      <div class="card feature reveal">
-        <div class="fic">i</div>
-        <h3>Живой текст, а не нейросеть</h3>
-        <p>Пишем вручную, без машинных шаблонов. Прогоняем работу через проверки и показываем отчёт до оплаты — вы видите цифры, а не верите на слово.</p>
-      </div>
-      <div class="card feature reveal d1">
-        <div class="fic">ii</div>
-        <h3>Прозрачно и по этапам</h3>
-        <p>Оплата частями, привязанная к результату. Вы видите работу прежде, чем платите за неё, и не рискуете всей суммой вперёд.</p>
-      </div>
-      <div class="card feature reveal d2">
-        <div class="fic">iii</div>
-        <h3>Доводим до приёмки</h3>
-        <p>Правки по замечаниям научного руководителя — бесплатно, пока работу не примут. Вы идёте на защиту с работой, в которой разбираетесь.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- HOW -->
-<section class="section" id="how" style="border-top:1px solid var(--line)">
-  <div class="wrap">
-    <span class="eyebrow reveal">Процесс</span>
-    <h2 class="title reveal">Как мы работаем</h2>
-    <p class="lead reveal" style="margin-bottom:48px">Прозрачно и по этапам — результат виден до того, как вы за него платите.</p>
-    <div class="steps">
-      <div class="pstep glass reveal"><div class="num"></div><h4>Заявка</h4><p>Тема, дедлайн, методичка. Оцениваем объём и называем цену.</p></div>
-      <div class="pstep glass reveal d1"><div class="num"></div><h4>План</h4><p>Согласуем структуру и сроки. Бронируем слот в работе.</p></div>
-      <div class="pstep glass reveal d1"><div class="num"></div><h4>Работа по главам</h4><p>Эксперт пишет и показывает черновики. Вы на связи.</p></div>
-      <div class="pstep glass reveal d2"><div class="num"></div><h4>Проверки</h4><p>Антиплагиат и детекторы ИИ. Отчёт — до финальной оплаты.</p></div>
-      <div class="pstep glass reveal d2"><div class="num"></div><h4>Приёмка</h4><p>Дорабатываем по замечаниям бесплатно — пока не примут.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- CONFIGURATOR TEASER -->
-<section class="section">
-  <div class="wrap">
-    <div class="glass split" style="padding:46px;overflow:hidden">
-      <div class="reveal">
-        <span class="eyebrow">Конфигуратор заказа</span>
-        <h2 class="title">Соберите свою работу<br>и узнайте цену за минуту</h2>
-        <p class="lead" style="margin-bottom:26px">Тип, направление, срок, глубина сопровождения — стоимость пересчитывается вживую. Покажем профиль эксперта под вашу тему и план до сдачи.</p>
-        <a class="btn btn-primary btn-lg" href="configurator.html">Открыть конфигуратор <span class="ar">→</span></a>
-      </div>
-      <div class="reveal d2">
-        <div class="glass-2 card" style="text-align:center">
-          <div class="muted" style="font-size:13px;letter-spacing:.04em">Ориентировочная стоимость</div>
-          <div class="serif-italic" style="font-family:var(--serif);font-size:44px;margin:8px 0">53 000 – 74 000 ₽</div>
-          <div class="muted" style="font-size:13.5px;margin-bottom:18px">Диплом · экономика · «Под ключ»</div>
-          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <span class="badge">Отчёт до оплаты</span><span class="badge">Оплата по этапам</span>
+    <!-- HERO + живой расчёт -->
+    <section class="home-hero">
+      <div class="hero-split">
+        <div class="hero-l reveal">
+          <h1>Дипломы и диссертации,<br><em>написанные экспертами</em></h1>
+          <p class="lead">Не биржа и не нейросеть. Один закреплённый эксперт ведёт ваш проект — от первой страницы до защиты.</p>
+          <div class="hero-trust">
+            <span><b>6+</b> лет</span><span class="sep"></span>
+            <span><b>1000+</b> работ доведено</span><span class="sep"></span>
+            <span>оплата по этапам</span>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- DASHBOARD TEASER -->
-<section class="section" style="border-top:1px solid var(--line)">
-  <div class="wrap">
-    <div class="split">
-      <div class="reveal">
-        <div class="glass-2 card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-            <b style="font-family:var(--serif);font-size:18px">Заказ №2026-0418</b>
-            <span class="badge">В работе</span>
+        <aside class="calc reveal d1" aria-label="Узнать цену">
+          <div class="ck">Узнать цену за минуту</div>
+          <label for="cType">Тип работы</label>
+          <select id="cType" aria-label="Тип работы"></select>
+          <label>Срок</label>
+          <div class="seg" id="cTerm" role="group" aria-label="Срок"></div>
+          <div class="calc-out">
+            <div class="calc-price" id="cPrice">—</div>
+            <div class="calc-note">Базовый уровень, гуманитарный профиль. Точную сумму под вашу работу соберёте в конфигураторе.</div>
+            <a class="btn btn-primary btn-block" id="cGo" href="configurator.html">Собрать заказ <span class="ar">→</span></a>
           </div>
-          <div style="display:flex;flex-direction:column;gap:14px">
-            <div style="display:flex;gap:12px;align-items:center"><span class="tick">✦</span><span style="flex:1">План согласован</span><span class="muted" style="font-size:13px">готово</span></div>
-            <div style="display:flex;gap:12px;align-items:center"><span class="tick">✦</span><span style="flex:1">Теоретическая глава</span><span class="muted" style="font-size:13px">готово</span></div>
-            <div style="display:flex;gap:12px;align-items:center"><span class="gold">◷</span><span style="flex:1">Практическая часть</span><span class="gold" style="font-size:13px">сейчас</span></div>
-            <div style="display:flex;gap:12px;align-items:center;opacity:.5"><span>○</span><span style="flex:1">Проверки и отчёт</span><span class="muted" style="font-size:13px">далее</span></div>
-          </div>
-          <div style="height:6px;background:rgba(244,240,231,.1);border-radius:6px;margin-top:22px;overflow:hidden"><div style="width:62%;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2))"></div></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 01 — Почему мастерская -->
+    <section class="hsec reveal">
+      <div class="rubric"><span class="rn">01</span><h2>Почему мастерская, а не биржа</h2></div>
+      <div class="lines">
+        <div class="li"><b>Живой текст, не нейросеть</b><p>Пишем вручную, без машинных шаблонов. Отчёт о проверках — до оплаты: вы видите цифры, а не верите на слово.</p></div>
+        <div class="li"><b>Оплата по этапам</b><p>Не просим всю сумму вперёд. Вносите часть — получаете часть работы. Не рискуете авансом, как на бирже.</p></div>
+        <div class="li"><b>Доводим до приёмки</b><p>Правки по замечаниям руководителя — бесплатно, пока работу не примут. На защиту идёте с готовой работой.</p></div>
+      </div>
+    </section>
+
+    <!-- 02 — Как идёт работа -->
+    <section class="hsec reveal">
+      <div class="rubric"><span class="rn">02</span><h2>Как идёт работа</h2></div>
+      <div class="flow">
+        <div class="st"><span class="n">01</span><b>Заявка</b><small>тема, срок, методичка — оцениваем объём</small></div>
+        <div class="st"><span class="n">02</span><b>План</b><small>согласуем структуру, бронируем слот</small></div>
+        <div class="st"><span class="n">03</span><b>Главы</b><small>пишем и показываем черновики</small></div>
+        <div class="st"><span class="n">04</span><b>Проверки</b><small>антиплагиат и детекторы — отчёт до оплаты</small></div>
+        <div class="st"><span class="n">05</span><b>Приёмка</b><small>правки по замечаниям — бесплатно</small></div>
+      </div>
+    </section>
+
+    <!-- 03 — Цены открыто -->
+    <section class="hsec reveal">
+      <div class="rubric"><span class="rn">03</span><h2>Цены — открыто</h2></div>
+      <div class="ptease">
+        <div>
+          <div class="pfrom">от 2 500 ₽</div>
+          <div class="pf">Открытая лесенка по 11 типам работ. Итог собирается по формуле: тип × направление × срок × уровень.</div>
         </div>
-      </div>
-      <div class="reveal d1">
-        <span class="eyebrow">Личный кабинет</span>
-        <h2 class="title">Видно, как идёт работа</h2>
-        <p class="lead" style="margin-bottom:26px">Прогресс по этапам, главы по мере готовности, отчёт о проверках, оплата по частям и переписка с экспертом — в одном окне. «Снятие тревоги», сделанное видимым.</p>
-        <a class="btn btn-ghost btn-lg" href="dashboard.html">Заглянуть в кабинет <span class="ar">→</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TARIFFS -->
-<section class="section" id="tariffs" style="border-top:1px solid var(--line)">
-  <div class="wrap">
-    <span class="eyebrow reveal">Тарифы и цены</span>
-    <h2 class="title reveal">Открытый прайс — без аукционов и скрытых доплат</h2>
-    <p class="lead reveal" style="margin-bottom:36px">Лесенка цен по 11 типам работ — от самостоятельной (от 2 500 ₽) до кандидатской под ключ — и три уровня сопровождения. Качество текста всегда максимальное; уровень меняет глубину ведения до защиты.</p>
-    <div class="glass split reveal" style="padding:40px;overflow:hidden">
-      <div>
-        <div class="grid grid-3" style="gap:14px">
-          <div class="glass-2 card center" style="padding:22px"><div style="font-family:var(--serif);font-size:30px;color:var(--ink)">×1</div><div class="muted" style="font-size:13px;margin-top:4px">Базовый</div></div>
-          <div class="glass-2 card center" style="padding:22px;border-color:var(--gold-line)"><div class="gold" style="font-family:var(--serif);font-size:30px">×1.33</div><div class="muted" style="font-size:13px;margin-top:4px">Под ключ</div></div>
-          <div class="glass-2 card center" style="padding:22px"><div style="font-family:var(--serif);font-size:30px;color:var(--ink)">×2</div><div class="muted" style="font-size:13px;margin-top:4px">VIP</div></div>
+        <div class="ptiers">
+          <div><b>×1</b><small>Базовый</small></div>
+          <div><b>×1.33</b><small>Под ключ</small></div>
+          <div><b>×2</b><small>VIP</small></div>
         </div>
-        <p class="muted" style="font-size:13.5px;margin-top:16px">Уровень — множитель к цене из лесенки. Итог собирается по открытой формуле: тип × направление × срок × уровень. Никаких скрытых доплат.</p>
+        <a class="btn btn-ghost plink" href="tariffs.html">Все тарифы и лесенка цен <span class="ar">→</span></a>
       </div>
-      <div class="center" style="display:flex;flex-direction:column;justify-content:center;gap:16px">
-        <div class="serif-italic" style="font-family:var(--serif);font-size:36px">от 2 500 ₽</div>
-        <div class="muted" style="font-size:14px">11 типов работ · 3 уровня · оплата по этапам</div>
-        <a class="btn btn-primary btn-lg" href="tariffs.html">Все тарифы и цены <span class="ar">→</span></a>
+    </section>
+
+    <!-- 04 — Вопросы -->
+    <section class="hsec reveal">
+      <div class="rubric"><span class="rn">04</span><h2>Частые вопросы</h2></div>
+      <div class="home-faq">
+        <details class="faq-item"><summary>А вдруг работу определят как написанную нейросетью?</summary><p>Текст создаёт живой эксперт, без машинных шаблонов, на которые срабатывают детекторы. Перед сдачей прогоняем работу через проверки и показываем отчёт до оплаты. Возникнут вопросы у вуза — дорабатываем бесплатно до приёмки.</p></details>
+        <details class="faq-item"><summary>Вы гарантируете, что Антиплагиат не определит ИИ?</summary><p>Честно: никто не может гарантировать поведение чужой системы — детекторы ошибаются в обе стороны. Мы отвечаем за то, что в наших руках: живой текст, отчёт о проверках до оплаты и бесплатные правки до приёмки.</p></details>
+        <details class="faq-item"><summary>А вдруг вы пропадёте с деньгами?</summary><p>Мы не просим всю сумму вперёд. Работаем по этапам: вносите часть — получаете часть работы. Репутация бренда дороже одного аванса.</p></details>
+        <details class="faq-item"><summary>Почему у вас дороже, чем на бирже?</summary><p>Вы платите мастерской напрямую, без комиссии площадки и менеджера-посредника, и берём ограниченное число проектов, чтобы вести каждый внимательно. Слишком низкая цена означала бы новичка или нейросеть.</p></details>
+        <details class="faq-item"><summary>Как происходит оплата?</summary><p>По этапам. Для небольших работ — обычно 50% на старте и 50% по готовности. Для дипломов и диссертаций — тремя частями, привязанными к показу промежуточного результата.</p></details>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ABOUT -->
-<section class="section" style="border-top:1px solid var(--line)">
-  <div class="wrap split">
-    <div class="reveal">
-      <span class="eyebrow">О Салоне</span>
-      <h2 class="title">Не биржа и не конвейер.<br>Мастерская</h2>
-      <p class="lead">Мы намеренно берём ограниченное число проектов, чтобы вести каждый внимательно и доводить до результата. За плечами — более шести лет практики и свыше тысячи доведённых до сдачи работ.</p>
-      <p class="muted mt-m">Мы не обещаем, что «вуз ничего не заметит» — так говорят те, кто потом пропадает. Мы отвечаем за то, что в наших руках: живой текст, прозрачные проверки и доработки до приёмки.</p>
-    </div>
-    <div class="grid grid-2 reveal d1">
-      <div class="glass-2 card center"><div class="serif-italic" data-count="6" data-suffix="+" style="font-family:var(--serif);font-size:38px">6+</div><div class="muted" style="font-size:14px">лет на рынке</div></div>
-      <div class="glass-2 card center"><div class="serif-italic" data-count="1000" data-suffix="+" style="font-family:var(--serif);font-size:38px">1000+</div><div class="muted" style="font-size:14px">работ выполнено</div></div>
-      <div class="glass-2 card center"><div class="serif-italic" style="font-family:var(--serif);font-size:38px">3–5</div><div class="muted" style="font-size:14px">проектов одновременно</div></div>
-      <div class="glass-2 card center"><div class="serif-italic" data-count="100" data-suffix="%" style="font-family:var(--serif);font-size:38px">100%</div><div class="muted" style="font-size:14px">правок до приёмки</div></div>
-    </div>
   </div>
-</section>
-
-<!-- FAQ -->
-<section class="section" id="faq" style="border-top:1px solid var(--line)">
-  <div class="wrap" style="max-width:840px">
-    <span class="eyebrow reveal">Вопросы и ответы</span>
-    <h2 class="title reveal">Частые вопросы</h2>
-    <div class="reveal" style="margin-top:24px">
-      <details class="faq-item"><summary>А вдруг работу определят как написанную нейросетью?</summary><p>Текст создаёт живой эксперт, поэтому в нём нет машинных шаблонов, на которые срабатывают детекторы. Перед сдачей прогоняем работу через проверки и показываем отчёт до оплаты. Возникнут вопросы у вуза — дорабатываем бесплатно до приёмки.</p></details>
-      <details class="faq-item"><summary>Вы гарантируете, что Антиплагиат не определит ИИ?</summary><p>Честно: никто не может гарантировать поведение чужой системы — детекторы ошибаются в обе стороны. Поэтому мы не торгуем обещаниями за чужой сервис. Отвечаем за то, что в наших руках: живой текст, отчёт о проверках до оплаты и бесплатные правки до приёмки.</p></details>
-      <details class="faq-item"><summary>А вдруг вы пропадёте с деньгами?</summary><p>Мы не просим всю сумму вперёд. Работаем по этапам: вносите часть — получаете часть работы. Бренд дорожит репутацией, и она для нас дороже одного аванса.</p></details>
-      <details class="faq-item"><summary>Почему у вас дороже, чем на бирже?</summary><p>Вы платите мастерской напрямую, без комиссии площадки и менеджера-посредника, и берём ограниченное число проектов, чтобы вести каждый внимательно. Слишком низкая цена означала бы новичка или нейросеть.</p></details>
-      <details class="faq-item"><summary>Как происходит оплата?</summary><p>По этапам. Для статей и небольших работ — обычно 50% на старте и 50% по готовности. Для дипломов и диссертаций — тремя частями, привязанными к показу промежуточного результата.</p></details>
-      <details class="faq-item"><summary>Что входит в бесплатные правки?</summary><p>Любые правки по замечаниям научного руководителя в рамках исходной темы, структуры и объёма — пока работу не примут, в течение гарантийного срока.</p></details>
-    </div>
-  </div>
-</section>
-
-<!-- FINAL CTA -->
-<section class="section">
-  <div class="wrap">
-    <div class="glass center reveal" style="padding:60px 32px">
-      <span class="eyebrow mx-auto" style="justify-content:center">Свяжитесь с нами</span>
-      <h2 class="title">Расскажите о своей работе</h2>
-      <p class="lead mx-auto center" style="margin-bottom:28px">Напишите тему и дедлайн — оценим объём, назовём цену и честно скажем, успеваем ли.</p>
-      <div class="hero-actions" style="justify-content:center">
-        <a class="btn btn-primary btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>
-        <a class="btn btn-ghost btn-lg" href="#" data-msg>Написать напрямую</a>
-      </div>
-    </div>
-  </div>
-</section>
+</main>
 
 <!-- MOBILE STICKY CTA -->
 <div class="mobile-cta">
-  <a class="btn btn-primary" href="configurator.html">Рассчитать</a>
-  <a class="btn btn-ghost" href="#" data-msg>Написать</a>
+  <a class="btn btn-primary" href="configurator.html">Рассчитать стоимость</a>
 </div>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Академический Салон","description":"Закрытая мастерская академических работ: дипломы, диссертации, статьи. Пишем вручную, ведём до защиты, проверки показываем до оплаты.","url":"https://salon.217-18-63-210.sslip.io/","image":"https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png","areaServed":"RU","knowsLanguage":"ru","priceRange":"от 2500 ₽"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"А вдруг работу определят как написанную нейросетью?","acceptedAnswer":{"@type":"Answer","text":"Текст создаёт живой эксперт, без машинных шаблонов, на которые срабатывают детекторы. Перед сдачей прогоняем работу через проверки и показываем отчёт до оплаты, а при вопросах вуза дорабатываем бесплатно до приёмки."}},{"@type":"Question","name":"Вы гарантируете, что Антиплагиат не определит ИИ?","acceptedAnswer":{"@type":"Answer","text":"Никто не может гарантировать поведение чужой системы — детекторы ошибаются в обе стороны. Мы отвечаем за то, что в наших руках: живой текст, отчёт о проверках до оплаты и бесплатные правки до приёмки."}},{"@type":"Question","name":"А вдруг вы пропадёте с деньгами?","acceptedAnswer":{"@type":"Answer","text":"Мы не просим всю сумму вперёд. Работаем по этапам: вносите часть — получаете часть работы. Репутация бренда дороже одного аванса."}},{"@type":"Question","name":"Почему у вас дороже, чем на бирже?","acceptedAnswer":{"@type":"Answer","text":"Вы платите мастерской напрямую, без комиссии площадки и менеджера, и берём ограниченное число проектов, чтобы вести каждый внимательно."}},{"@type":"Question","name":"Как происходит оплата?","acceptedAnswer":{"@type":"Answer","text":"По этапам: для небольших работ 50% на старте и 50% по готовности, для дипломов и диссертаций — тремя частями, привязанными к показу результата."}},{"@type":"Question","name":"Что входит в бесплатные правки?","acceptedAnswer":{"@type":"Answer","text":"Любые правки по замечаниям научного руководителя в рамках исходной темы, структуры и объёма — пока работу не примут, в течение гарантийного срока."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Академический Салон","description":"Закрытая мастерская академических работ: дипломы, диссертации, статьи. Один эксперт ведёт проект до защиты, отчёт о проверках до оплаты, оплата по этапам.","url":"https://salon.217-18-63-210.sslip.io/","image":"https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png","areaServed":"RU","knowsLanguage":"ru","priceRange":"от 2500 ₽"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"А вдруг работу определят как написанную нейросетью?","acceptedAnswer":{"@type":"Answer","text":"Текст создаёт живой эксперт, без машинных шаблонов, на которые срабатывают детекторы. Перед сдачей прогоняем работу через проверки и показываем отчёт до оплаты, а при вопросах вуза дорабатываем бесплатно до приёмки."}},{"@type":"Question","name":"Вы гарантируете, что Антиплагиат не определит ИИ?","acceptedAnswer":{"@type":"Answer","text":"Никто не может гарантировать поведение чужой системы — детекторы ошибаются в обе стороны. Мы отвечаем за то, что в наших руках: живой текст, отчёт о проверках до оплаты и бесплатные правки до приёмки."}},{"@type":"Question","name":"А вдруг вы пропадёте с деньгами?","acceptedAnswer":{"@type":"Answer","text":"Мы не просим всю сумму вперёд. Работаем по этапам: вносите часть — получаете часть работы."}},{"@type":"Question","name":"Почему у вас дороже, чем на бирже?","acceptedAnswer":{"@type":"Answer","text":"Вы платите мастерской напрямую, без комиссии площадки и менеджера, и берём ограниченное число проектов, чтобы вести каждый внимательно."}},{"@type":"Question","name":"Как происходит оплата?","acceptedAnswer":{"@type":"Answer","text":"По этапам: для небольших работ 50% на старте и 50% по готовности, для дипломов и диссертаций — тремя частями, привязанными к показу результата."}}]}</script>
 <script src="assets/js/app.js"></script>
+<script>
+(function(){
+  'use strict';
+  var C = window.SalonCalc; if(!C) return;
+  var typeSel = document.getElementById('cType');
+  var termWrap = document.getElementById('cTerm');
+  var priceEl = document.getElementById('cPrice');
+  var goBtn = document.getElementById('cGo');
+  var state = { type: 'diplom', term: 'free' };
+
+  // тип работы
+  typeSel.innerHTML = C.types.map(function(t){ return '<option value="'+t.id+'">'+t.label+'</option>'; }).join('');
+  typeSel.value = state.type;
+
+  // срок — сегменты
+  termWrap.innerHTML = C.terms.map(function(t,i){
+    return '<button type="button" data-id="'+t.id+'"'+(t.id===state.term?' class="active"':'')+'>'+t.label.replace(/\s*\(.*\)/,'')+'</button>';
+  }).join('');
+
+  function render(){
+    var q = C.quote(state.type, 'hum', state.term, 'base');   // «от»: базовый уровень, гуманитарный профиль
+    priceEl.textContent = q.range;
+  }
+  typeSel.addEventListener('change', function(){ state.type = typeSel.value; render(); });
+  termWrap.addEventListener('click', function(e){
+    var b = e.target.closest('button[data-id]'); if(!b) return;
+    termWrap.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
+    b.classList.add('active'); state.term = b.getAttribute('data-id'); render();
+  });
+  goBtn.addEventListener('click', function(){
+    if(window.Salon && Salon.store){
+      Salon.store.set('salon_draft', { state:{ type:state.type, disc:'hum', term:state.term, tier:'turn' }, idx:0, savedAt:0 });
+    }
+  });
+  render();
+})();
+</script>
 </body>
 </html>
