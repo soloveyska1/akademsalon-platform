@@ -243,15 +243,37 @@
     if (kab) kab.style.display = 'none';
   })();
 
-  /* ---------------- Подвал ---------------- */
+  /* ---------------- Подвал (DOM API, без innerHTML) ---------------- */
   if (!document.querySelector('.site-footer')) {
     var footer = document.createElement('footer');
     footer.className = 'site-footer';
-    footer.innerHTML = '<div class="wrap foot-slim">' +
-      '<div class="foot-row">' + brandHTML() +
-        '<nav class="foot-links"><a href="tariffs.html">Тарифы</a><a href="referral.html">Клуб</a><a href="configurator.html">Рассчитать</a><a href="dashboard.html">Кабинет</a><a href="knowledge.html">База знаний</a></nav>' +
-      '</div>' +
-      '<div class="foot-note">Сайт оказывает информационно-консультационные услуги и помощь в подготовке авторских материалов по теме, указанной заказчиком. © 2026 Академический Салон.</div></div>';
+    var fWrap = document.createElement('div'); fWrap.className = 'wrap foot-slim';
+    var fRow = document.createElement('div'); fRow.className = 'foot-row';
+
+    var fBrand = document.createElement('a');
+    fBrand.className = 'brand'; fBrand.href = 'index.html';
+    fBrand.setAttribute('aria-label', 'Академический Салон');
+    var fMark = document.createElement('span'); fMark.className = 'brand-mark';
+    var fMarkCh = document.createElement('span'); fMarkCh.textContent = 'А';
+    fMark.appendChild(fMarkCh);
+    var fText = document.createElement('span'); fText.className = 'brand-text';
+    var fName = document.createElement('b'); fName.textContent = 'Академический Салон';
+    var fSub = document.createElement('small'); fSub.textContent = 'Мастерская работ';
+    fText.appendChild(fName); fText.appendChild(fSub);
+    fBrand.appendChild(fMark); fBrand.appendChild(fText);
+
+    var fNav = document.createElement('nav'); fNav.className = 'foot-links';
+    [['tariffs.html', 'Тарифы'], ['referral.html', 'Клуб'], ['configurator.html', 'Рассчитать'],
+     ['dashboard.html', 'Кабинет'], ['knowledge.html', 'База знаний']].forEach(function (l) {
+      var a = document.createElement('a'); a.href = l[0]; a.textContent = l[1]; fNav.appendChild(a);
+    });
+
+    var fNote = document.createElement('div'); fNote.className = 'foot-note';
+    fNote.textContent = 'Сайт оказывает информационно-консультационные услуги и помощь в подготовке авторских материалов по теме, указанной заказчиком. © 2026 Академический Салон.';
+
+    fRow.appendChild(fBrand); fRow.appendChild(fNav);
+    fWrap.appendChild(fRow); fWrap.appendChild(fNote);
+    footer.appendChild(fWrap);
     document.body.appendChild(footer);
   }
 
