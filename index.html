@@ -198,9 +198,10 @@
   typeSel.innerHTML = C.types.map(function(t){ return '<option value="'+t.id+'">'+t.label+'</option>'; }).join('');
   typeSel.value = state.type;
 
-  // срок — сегменты
+  // срок — сегменты (toggle-паттерн с aria-pressed)
   termWrap.innerHTML = C.terms.map(function(t,i){
-    return '<button type="button" data-id="'+t.id+'"'+(t.id===state.term?' class="active"':'')+'>'+t.label.replace(/\s*\(.*\)/,'')+'</button>';
+    var on = t.id===state.term;
+    return '<button type="button" data-id="'+t.id+'" aria-pressed="'+(on?'true':'false')+'"'+(on?' class="active"':'')+'>'+t.label.replace(/\s*\(.*\)/,'')+'</button>';
   }).join('');
 
   function render(){
@@ -210,12 +211,14 @@
   typeSel.addEventListener('change', function(){ state.type = typeSel.value; render(); });
   termWrap.addEventListener('click', function(e){
     var b = e.target.closest('button[data-id]'); if(!b) return;
-    termWrap.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
-    b.classList.add('active'); state.term = b.getAttribute('data-id'); render();
+    termWrap.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); x.setAttribute('aria-pressed','false'); });
+    b.classList.add('active'); b.setAttribute('aria-pressed','true');
+    state.term = b.getAttribute('data-id'); render();
   });
   goBtn.addEventListener('click', function(){
     if(window.Salon && Salon.store){
-      Salon.store.set('salon_draft', { state:{ type:state.type, disc:'hum', term:state.term, tier:'turn' }, idx:0, savedAt:0 });
+      // tier:'base' — тот же уровень, что показан в цене (иначе конфигуратор откроется дороже)
+      Salon.store.set('salon_draft', { state:{ type:state.type, disc:'hum', term:state.term, tier:'base' }, idx:0, savedAt:0 });
     }
   });
   render();
