@@ -3,289 +3,563 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Конфигуратор заказа — Академический Салон</title>
-<meta name="description" content="Соберите свою академическую работу и узнайте стоимость за минуту: тип, направление, срок, сопровождение. Профиль эксперта и план до сдачи." />
+<title>Расчёт стоимости — Академический Салон</title>
+<meta name="description" content="Соберите смету за четыре шага: тип работы, направление, срок и уровень сопровождения. Живой расчёт и порядок оплаты — до заявки." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/styles.css" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
-  .config-wrap{padding-top:120px}
-  .config-grid{display:grid;grid-template-columns:1fr 384px;gap:28px;align-items:start}
-  .progress-track{height:4px;background:rgba(244,240,231,.1);border-radius:6px;overflow:hidden;margin-bottom:8px}
-  .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));width:25%;transition:width .5s cubic-bezier(.2,.8,.2,1)}
-  .step-meta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-faint);letter-spacing:.04em;margin-bottom:26px}
-  .opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .opt{padding:20px;border:1px solid var(--line-2);border-radius:var(--radius-sm);background:rgba(8,11,9,.45);cursor:pointer;transition:.2s;display:flex;flex-direction:column;gap:5px}
-  .opt:hover{border-color:var(--gold-line);transform:translateY(-2px)}
-  .opt.active{border-color:var(--gold);background:var(--gold-soft);box-shadow:var(--glow)}
-  .opt b{font-size:16px;font-weight:600}
-  .opt .opt-sub{font-size:13px;color:var(--ink-soft)}
-  .opt .opt-from{font-family:var(--serif);color:var(--gold);font-size:15px}
-  .step-panel{min-height:300px}
-  .step-actions{display:flex;justify-content:space-between;margin-top:28px;gap:12px}
-  .summary{position:sticky;top:100px;padding:28px}
-  .sum-price{font-family:var(--serif);font-size:34px;color:var(--gold);line-height:1.1;margin:6px 0 2px}
-  .sum-row{display:flex;justify-content:space-between;font-size:14px;padding:9px 0;border-top:1px solid var(--line)}
-  .sum-row span:first-child{color:var(--ink-soft)}
-  .sum-row .v{color:var(--ink);font-weight:500;text-align:right}
-  .expert-card{background:rgba(8,11,9,.45);border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px;margin-top:18px}
-  .timeline{list-style:none;margin-top:8px}
-  .timeline li{position:relative;padding:0 0 16px 24px;border-left:1px solid var(--line-2);font-size:14px;color:var(--ink-soft)}
-  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
-  .timeline li::before{content:"";position:absolute;left:-5px;top:3px;width:9px;height:9px;border-radius:50%;background:var(--gold)}
-  .timeline li b{display:block;color:var(--ink);font-weight:600;font-size:14.5px}
-  .slot-bar{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:13.5px;color:var(--ink-soft)}
-  .slot-dots{display:flex;gap:5px}
-  .slot-dots i{width:9px;height:9px;border-radius:50%;background:rgba(244,240,231,.16)}
-  .slot-dots i.on{background:var(--gold)}
-  .result-head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
-  .booking{margin-top:22px}
-  .booking input{margin-bottom:12px}
-  .success{text-align:center;padding:20px}
-  .success .big{font-family:var(--serif);font-size:30px;color:var(--gold);margin:10px 0}
-  @media(max-width:960px){
-    .config-grid{grid-template-columns:1fr}
-    .summary{position:static}
-    .opt-grid{grid-template-columns:1fr}
+  /* ============================================================
+     РАСЧЁТ ЗАКАЗА — пошаговый бланк (визард) + липкая смета
+     ============================================================ */
+  .chapter.conf-chapter{padding-top:calc(56px + clamp(24px,5vh,48px))}
+  .conf-head{margin-bottom:clamp(22px,3.5vw,36px)}
+  .conf-head h1{font-size:clamp(28px,4vw,44px);font-weight:360;margin-bottom:8px}
+  .conf-head .petit{max-width:52ch}
+
+  /* прогресс */
+  .wprog{display:flex;align-items:center;gap:14px;margin-bottom:clamp(18px,3vw,26px)}
+  .wprog .wp-lbl{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .wprog .wp-track{flex:1;height:2px;background:var(--hairline);overflow:hidden}
+  .wprog .wp-fill{display:block;height:100%;background:var(--ink);width:25%;transition:width .35s cubic-bezier(.22,1,.36,1)}
+
+  /* шаги визарда: без JS видны все, с JS — один */
+  .has-js .wstep{display:none}
+  .has-js .wstep.active{display:block}
+  .ws-title{font-size:clamp(20px,2.4vw,26px);font-weight:400;margin-bottom:16px}
+  .ws-title:focus{outline:none}
+  .opt-group{margin-bottom:22px}
+  .opt-group .caps{display:block;margin-bottom:10px}
+  .opt-list{display:flex;flex-direction:column;gap:8px}
+  .disc-profile{margin-top:14px;min-height:1.6em;max-width:56ch}
+  .seg-term button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 12px}
+  .seg-term button b{font-weight:500;font-size:14px;color:var(--ink)}
+  .seg-term button small{font-size:11.5px;color:var(--ink-soft);letter-spacing:.02em}
+  .wnav{display:flex;gap:12px;margin-top:26px}
+  .wnav .btn{min-width:128px}
+  .wsubmit-note{max-width:52ch}
+
+  /* липкая смета */
+  .conf-aside{position:sticky;top:76px}
+  .lq-head{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
+  .lq-type{margin-bottom:8px}
+  .lq-high{margin-top:10px}
+  .lq-pay{margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline)}
+
+  /* экран успеха */
+  .conf-done{max-width:660px;margin:0 auto}
+  .done-sheet{padding:clamp(26px,5vw,44px);position:relative}
+  .done-seal{position:absolute;top:16px;right:20px}
+  .done-h{font-size:clamp(24px,3.2vw,34px);margin:6px 0 4px}
+  .done-h:focus{outline:none}
+  .done-no{font-family:var(--mono);font-size:15px;letter-spacing:.06em;color:var(--ink-soft);font-variant-numeric:tabular-nums;margin-bottom:22px}
+  .done-steps{list-style:none;margin:8px 0 26px;display:flex;flex-direction:column}
+  .done-steps li{display:flex;gap:14px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--hairline);font-size:15px}
+  .done-steps li:first-child{border-top:1px solid var(--hairline)}
+  .done-steps .dn{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);flex:0 0 18px;font-variant-numeric:tabular-nums}
+  .done-note{margin-top:14px}
+
+  /* мобильная нижняя панель (своя, вместо инжекта app.js) */
+  .conf-mcta{flex-direction:column;align-items:stretch;gap:10px}
+  .conf-mcta[hidden]{display:none!important}
+  .mq-panel{background:var(--sheet);border:1px solid var(--hairline);border-radius:var(--r);padding:14px 16px;max-height:52vh;overflow:auto}
+  .mq-panel .ledger{font-size:13.5px}
+  .mq-panel .lg-total .num{font-size:20px;font-weight:600}
+  .mq-bar{display:flex;gap:10px}
+  .mq-total{flex:1.25;min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--hairline-strong);background:var(--sheet);border-radius:var(--r);font-size:13px;color:var(--ink);cursor:pointer;padding:6px 10px;white-space:nowrap}
+  .mq-total .num{font-weight:600}
+  .mq-more{color:var(--ink-soft);font-size:12px}
+
+  @media(max-width:880px){
+    .conf-aside{display:none}
+    #btnNext{display:none}   /* «Далее» на мобильном живёт в нижней панели */
+    #btnSubmit{display:none} /* «Отправить» — тоже */
+    .wnav{margin-top:20px}
+    .wnav .btn{min-width:0}
+    .ws-title{margin-bottom:12px}
+    /* опции без отточий: название слева, цена справа, без ломаных строк */
+    .optrow .dots{display:none}
+    .optrow{justify-content:space-between;gap:8px}
+    .optrow > span:first-child{flex:1;min-width:0}
   }
 </style>
-<link rel="canonical" href="https://salon.217-18-63-210.sslip.io/configurator.html" />
+<link rel="canonical" href="https://academic-saloon.duckdns.org/configurator.html" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-<meta name="theme-color" content="#080b09" />
+<meta name="theme-color" content="#F6F1E7" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Конфигуратор заказа — Академический Салон" />
-<meta property="og:description" content="Соберите свою академическую работу и узнайте стоимость за минуту: тип, направление, срок, сопровождение. Профиль эксперта и план до сдачи." />
-<meta property="og:url" content="https://salon.217-18-63-210.sslip.io/configurator.html" />
-<meta property="og:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+<meta property="og:title" content="Расчёт стоимости — Академический Салон" />
+<meta property="og:description" content="Четыре шага — увидите стоимость, план и порядок оплаты. Заявка ни к чему не обязывает." />
+<meta property="og:url" content="https://academic-saloon.duckdns.org/configurator.html" />
+<meta property="og:image" content="https://academic-saloon.duckdns.org/assets/img/og-cover.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Конфигуратор заказа — Академический Салон" />
-<meta name="twitter:description" content="Соберите свою академическую работу и узнайте стоимость за минуту: тип, направление, срок, сопровождение. Профиль эксперта и план до сдачи." />
-<meta name="twitter:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+<meta name="twitter:title" content="Расчёт стоимости — Академический Салон" />
+<meta name="twitter:description" content="Четыре шага — стоимость, план и порядок оплаты." />
+<meta name="twitter:image" content="https://academic-saloon.duckdns.org/assets/img/og-cover.png" />
 </head>
 <body>
 
-<main class="config-wrap">
+<main>
   <div class="wrap">
-    <span class="eyebrow">Конфигуратор заказа</span>
-    <h1 class="title" style="margin-bottom:10px">Соберите свою работу</h1>
-    <p class="lead" style="margin-bottom:36px">Четыре шага — и вы увидите стоимость, профиль эксперта под вашу тему и план до сдачи.</p>
+    <section class="chapter conf-chapter" id="order" data-chapter="Расчёт заказа">
+      <div class="ch-rule"><span class="ch-no">§ 01 · Расчёт заказа</span></div>
 
-    <div class="config-grid">
-      <!-- LEFT: wizard -->
-      <div class="glass" style="padding:32px">
-        <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
-        <div class="step-meta"><span id="stepName">Шаг 1 · Тип работы</span><span id="stepCount">1 / 4</span></div>
-        <div class="step-panel" id="panel"></div>
-        <div class="step-actions">
-          <button class="btn btn-ghost" id="back" style="visibility:hidden">← Назад</button>
-          <button class="btn btn-primary" id="next">Далее <span class="ar">→</span></button>
+      <div id="confBody">
+        <header class="conf-head reveal">
+          <h1>Смета вашей работы</h1>
+          <p class="petit">Четыре шага — увидите стоимость, план и порядок оплаты. Заявка ни к чему не обязывает.</p>
+          <p class="petit plan-note" hidden><span class="tag tag-wax">Разбор плана</span> Вы начинаете с разбора плана — <b id="planPrice">3&nbsp;000&nbsp;₽</b>: структура глав, реалистичный срок и фиксированная смета. Зачитывается в стоимость работы при продолжении в течение 14 дней.</p>
+        </header>
+
+        <div class="split">
+          <!-- ЛЕВАЯ КОЛОНКА: шаги -->
+          <div class="conf-steps reveal">
+            <div class="wprog">
+              <span class="wp-lbl" id="wpLbl" aria-live="polite">Шаг 1 из 4</span>
+              <div class="wp-track"><span class="wp-fill" id="wpFill"></span></div>
+            </div>
+            <noscript><p class="petit" style="margin-bottom:18px">Для пошагового бланка нужен JavaScript. Все цены и формула открыты на странице «Цены».</p></noscript>
+
+            <!-- ШАГ 1: тип работы -->
+            <div class="wstep active" role="group" aria-labelledby="ws1t">
+              <h2 class="ws-title" id="ws1t" tabindex="-1">Тип работы</h2>
+              <div id="typeGroup" role="radiogroup" aria-label="Тип работы">
+                <div class="opt-group">
+                  <span class="caps">Дипломы и диссертации</span>
+                  <div class="opt-list">
+                    <button type="button" class="optrow" role="radio" data-id="diplom" aria-checked="true" tabindex="0"><span>Дипломная работа / ВКР</span><span class="dots"></span><span class="o-val">от 40&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="master" aria-checked="false" tabindex="-1"><span>Магистерская диссертация</span><span class="dots"></span><span class="o-val">от 60&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="chapter" aria-checked="false" tabindex="-1"><span>Глава диссертации</span><span class="dots"></span><span class="o-val">от 30&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="kandidat" aria-checked="false" tabindex="-1"><span>Кандидатская под ключ</span><span class="dots"></span><span class="o-val">от 200&nbsp;000&nbsp;₽</span></button>
+                  </div>
+                </div>
+                <div class="opt-group">
+                  <span class="caps">Курсовые и практика</span>
+                  <div class="opt-list">
+                    <button type="button" class="optrow" role="radio" data-id="course_emp" aria-checked="false" tabindex="-1"><span>Курсовая с практикой и расчётами</span><span class="dots"></span><span class="o-val">от 20&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="course" aria-checked="false" tabindex="-1"><span>Курсовая теоретическая</span><span class="dots"></span><span class="o-val">от 14&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="practice" aria-checked="false" tabindex="-1"><span>Отчёт по практике</span><span class="dots"></span><span class="o-val">от 14&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="self" aria-checked="false" tabindex="-1"><span>Реферат, эссе, контрольная</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></button>
+                  </div>
+                </div>
+                <div class="opt-group">
+                  <span class="caps">Научные статьи</span>
+                  <div class="opt-list">
+                    <button type="button" class="optrow" role="radio" data-id="scopus" aria-checked="false" tabindex="-1"><span>Scopus / Web of Science</span><span class="dots"></span><span class="o-val">от 35&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="vak" aria-checked="false" tabindex="-1"><span>Статья ВАК</span><span class="dots"></span><span class="o-val">от 18&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="rinc" aria-checked="false" tabindex="-1"><span>Статья РИНЦ</span><span class="dots"></span><span class="o-val">от 9&nbsp;000&nbsp;₽</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ШАГ 2: направление -->
+            <div class="wstep" role="group" aria-labelledby="ws2t">
+              <h2 class="ws-title" id="ws2t" tabindex="-1">Направление</h2>
+              <div id="discGroup" role="radiogroup" aria-label="Направление работы" class="opt-list">
+                <button type="button" class="optrow" role="radio" data-id="hum" aria-checked="true" tabindex="0"><span>Гуманитарные / экономика</span><span class="dots"></span><span class="o-val">×1.0</span></button>
+                <button type="button" class="optrow" role="radio" data-id="law" aria-checked="false" tabindex="-1"><span>Юриспруденция / педагогика / психология</span><span class="dots"></span><span class="o-val">×1.15</span></button>
+                <button type="button" class="optrow" role="radio" data-id="tech" aria-checked="false" tabindex="-1"><span>Технические / IT / программирование</span><span class="dots"></span><span class="o-val">×1.3</span></button>
+                <button type="button" class="optrow" role="radio" data-id="med" aria-checked="false" tabindex="-1"><span>Медицина / финансы с расчётами</span><span class="dots"></span><span class="o-val">×1.4</span></button>
+              </div>
+              <p class="petit disc-profile" id="discProfile" aria-live="polite">Социология, история, филология, менеджмент, маркетинг, экономическая теория.</p>
+            </div>
+
+            <!-- ШАГ 3: срок и уровень -->
+            <div class="wstep" role="group" aria-labelledby="ws3t">
+              <h2 class="ws-title" id="ws3t" tabindex="-1">Срок и уровень</h2>
+              <p class="caps" id="segTermLbl" style="margin-bottom:10px">Срок сдачи</p>
+              <div class="seg seg-term" id="segTerm" role="group" aria-labelledby="segTermLbl">
+                <button type="button" data-id="free" class="active" aria-pressed="true"><b>От 30 дней</b><small>без наценки</small></button>
+                <button type="button" data-id="mid" aria-pressed="false"><b>14–30 дней</b><small>+15%</small></button>
+                <button type="button" data-id="urgent" aria-pressed="false"><b>До 14 дней</b><small>+45%</small></button>
+              </div>
+              <p class="caps" style="margin:22px 0 10px">Уровень сопровождения</p>
+              <div id="tierGroup" role="radiogroup" aria-label="Уровень сопровождения" class="opt-list">
+                <button type="button" class="optrow" role="radio" data-id="base" aria-checked="true" tabindex="0"><span>Базовый</span><span class="dots"></span><span class="o-val">×1.0</span><small>Готовая работа с отчётом о проверках</small></button>
+                <button type="button" class="optrow" role="radio" data-id="turn" aria-checked="false" tabindex="-1"><span>Под ключ</span><span class="dots"></span><span class="o-val">×1.33</span><small>Правки и сопровождение до приёмки</small></button>
+                <button type="button" class="optrow" role="radio" data-id="vip" aria-checked="false" tabindex="-1"><span>VIP</span><span class="dots"></span><span class="o-val">×2.0</span><small>Личное ведение, подготовка к защите, приоритет в очереди</small></button>
+              </div>
+            </div>
+
+            <!-- ШАГ 4: тема и заявка -->
+            <div class="wstep" role="group" aria-labelledby="ws4t">
+              <h2 class="ws-title" id="ws4t" tabindex="-1">Тема и заявка</h2>
+              <div class="field">
+                <label for="fTopic">Тема работы · необязательно</label>
+                <input type="text" id="fTopic" maxlength="160" autocomplete="off" placeholder="Если тема уже утверждена — впишите её" />
+              </div>
+              <p class="petit" style="margin-bottom:14px">Смета готова. Отправьте заявку в Telegram — бот увидит ваш расчёт, а мы ответим с планом и точной ценой. <b>Сайт не собирает и не хранит ваши данные</b> — переписка идёт в мессенджере.</p>
+              <button type="button" class="btn btn-wax btn-block" id="btnSubmit">Отправить заявку в Telegram <span class="ar">→</span></button>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+                <a class="btn btn-line" style="flex:1" href="https://t.me/academicsaloon" target="_blank" rel="noopener">Написать человеку</a>
+                <a class="btn btn-line" style="flex:1" href="https://vk.com/academicsaloon" target="_blank" rel="noopener">ВКонтакте</a>
+              </div>
+              <p class="petit mt-s wsubmit-note">Заявка ни к чему не обязывает. Ответим обычно в течение пары часов. Смета фиксируется после разбора плана и не меняется по нашей инициативе.</p>
+            </div>
+
+            <div class="wnav">
+              <button type="button" class="btn btn-line" id="btnBack" hidden>← Назад</button>
+              <button type="button" class="btn btn-ink" id="btnNext">Далее <span class="ar">→</span></button>
+            </div>
+          </div>
+
+          <!-- ПРАВАЯ КОЛОНКА: живая смета -->
+          <aside class="conf-aside reveal d1" aria-label="Смета — живой расчёт">
+            <div class="sheet sheet-pad stacked">
+              <div class="lq-head">Смета · живой расчёт</div>
+              <p class="petit lq-type" data-lg="type">Дипломная работа / ВКР</p>
+              <div class="ledger">
+                <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">40&nbsp;000&nbsp;₽</span></div>
+                <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
+                <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
+                <div class="lg-row"><span data-lg="tierLbl">Уровень · Базовый</span><span class="num" data-lg="tier">×1.0</span></div>
+                <div class="lg-total">
+                  <b>Итого, от</b>
+                  <span class="price-xl" id="lqLow" aria-hidden="true">40&nbsp;000&nbsp;₽</span>
+                  <span id="lqLowSr" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">40&nbsp;000&nbsp;₽</span>
+                </div>
+              </div>
+              <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
+              <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
+            </div>
+          </aside>
         </div>
       </div>
 
-      <!-- RIGHT: live summary -->
-      <aside class="glass-2 glass summary" id="summary">
-        <div class="muted" style="font-size:13px;letter-spacing:.04em">Ориентировочная стоимость</div>
-        <div class="sum-price" id="price">—</div>
-        <div class="muted" id="priceNote" style="font-size:13px;margin-bottom:14px">Выберите параметры</div>
-        <div class="sum-row"><span>Тип</span><span class="v" id="sType">—</span></div>
-        <div class="sum-row"><span>Направление</span><span class="v" id="sDisc">—</span></div>
-        <div class="sum-row"><span>Срок</span><span class="v" id="sTerm">—</span></div>
-        <div class="sum-row"><span>Сопровождение</span><span class="v" id="sTier">—</span></div>
-        <div class="expert-card" id="expertCard" style="display:none">
-          <div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:4px">ВАШ ЭКСПЕРТ ПОД ТЕМУ</div>
-          <b id="expName" style="font-family:var(--serif);font-size:15.5px"></b>
-          <div class="muted" id="expDesc" style="font-size:13px;margin-top:4px"></div>
+      <!-- ЭКРАН УСПЕХА (вместо визарда) -->
+      <div id="confDone" class="conf-done" hidden>
+        <div class="sheet sheet-pad stacked done-sheet">
+          <div class="done-seal" data-seal="ПРИНЯТО В РАБОТУ · АКАДЕМИЧЕСКИЙ САЛОН · " data-seal-center="¶" data-seal-cls="seal--wax" data-seal-size="112"></div>
+          <p class="caps">Заявка принята</p>
+          <h2 class="done-h" id="doneH" tabindex="-1">Ваш заказ в очереди разбора</h2>
+          <p class="done-no">№ <span id="doneNo">AS-0000</span></p>
+          <p class="caps" style="margin-bottom:4px">Что дальше</p>
+          <ol class="done-steps">
+            <li><span class="dn">1</span><span>Откройте бота и отправьте заявку — смета уже прикреплена</span></li>
+            <li><span class="dn">2</span><span>Пришлём план и точную смету</span></li>
+            <li><span class="dn">3</span><span>Первый платёж — только после согласования плана</span></li>
+          </ol>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+            <a class="btn btn-wax" id="doneBot" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Открыть бота <span class="ar">→</span></a>
+            <a class="btn btn-line" href="dashboard.html">Мой расчёт</a>
+          </div>
+          <p class="petit done-note">Мы открыли бота в новой вкладке и скопировали смету в буфер — если поле пустое, просто вставьте её в чат. Сайт ничего не отправляет за вас и не хранит данные.</p>
         </div>
-        <div class="slot-bar"><span class="slot-dots"><i class="on"></i><i class="on"></i><i></i><i></i></span> Свободно 2 из 4 слотов в этом месяце</div>
-      </aside>
-    </div>
+      </div>
+
+    </section>
   </div>
 </main>
 
+<!-- МОБИЛЬНАЯ ПАНЕЛЬ: своя разметка (app.js не инжектит CTA на этой странице) -->
+<div class="mobile-cta conf-mcta" id="confMcta">
+  <div class="mq-panel" id="mqPanel" hidden>
+    <p class="petit lq-type" data-lg="type">Дипломная работа / ВКР</p>
+    <div class="ledger">
+      <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">40&nbsp;000&nbsp;₽</span></div>
+      <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
+      <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
+      <div class="lg-row"><span data-lg="tierLbl">Уровень · Базовый</span><span class="num" data-lg="tier">×1.0</span></div>
+      <div class="lg-total"><b>Итого, от</b><span class="num" data-lg="low">40&nbsp;000&nbsp;₽</span></div>
+    </div>
+    <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
+    <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
+  </div>
+  <div class="mq-bar">
+    <button type="button" class="mq-total" id="mqToggle" aria-expanded="false" aria-controls="mqPanel">
+      <span aria-live="polite" aria-atomic="true">Итого: <b class="num" data-lg="low">40&nbsp;000&nbsp;₽</b></span>
+      <span class="mq-more" id="mqMore">· подробнее</span>
+    </button>
+    <button type="button" class="btn btn-wax" id="mNext">Далее</button>
+  </div>
+</div>
+
 <script src="assets/js/app.js"></script>
 <script>
-(function(){
-  var C = window.SalonCalc, EXP = window.SalonExperts;
-  var steps = [
-    { key:'type',  name:'Тип работы',     list:C.types,       sub:function(o){return '';} },
-    { key:'disc',  name:'Направление',    list:C.disciplines, sub:function(o){return o.k>1?('коэффициент ×'+o.k):'базовый коэффициент';} },
-    { key:'term',  name:'Срок',           list:C.terms,       sub:function(o){return o.k>1?('+'+Math.round((o.k-1)*100)+'% за срочность'):'без наценки';} },
-    { key:'tier',  name:'Сопровождение',  list:C.tiers,       sub:function(o){return o.note;} }
-  ];
-  var state = { type:C.types[0].id, disc:C.disciplines[0].id, term:C.terms[0].id, tier:'turn', step:0, booked:false };
+function initConf() {
+  'use strict';
+  var C = window.SalonCalc, S = window.Salon;
+  if (!C || !S) return;
+
+  function $(id) { return document.getElementById(id); }
+  function find(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i]; return list[0]; }
+  function has(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id) return true; return false; }
+  function kfmt(k) { return k === Math.round(k) ? k.toFixed(1) : String(k); }
+  function put(name, text) {
+    document.querySelectorAll('[data-lg="' + name + '"]').forEach(function (el) { el.textContent = text; });
+  }
+
+  var BIG = ['diplom', 'master', 'chapter', 'scopus'];
+  var TERM_SHORT = { free: 'от 30 дней', mid: '14–30 дней', urgent: 'до 14 дней' };
+  var DISC_SHORT = { hum: 'гуманитарные', law: 'право, педагогика', tech: 'технические, IT', med: 'медицина, финансы' };
+
+  var state = { type: 'diplom', disc: 'hum', term: 'free', tier: 'base' };
   var idx = 0;
-  var DRAFT='salon_draft';
-  if(window.Salon){ var saved=Salon.store.get(DRAFT,null); if(saved&&saved.state){ state=saved.state; idx=saved.idx||0; } }
-  var qStep=parseInt((location.search.match(/[?&]step=(\d+)/)||[])[1],10);
-  if(qStep>=1&&qStep<=steps.length) idx=qStep-1;
-  function persistDraft(){ if(window.Salon) Salon.store.set(DRAFT,{state:state,idx:idx,savedAt:Date.now()}); }
+  var canSave = false; /* черновик пишем, только если он был или пользователь что-то тронул */
 
-  var panel=document.getElementById('panel'), prog=document.getElementById('prog');
-  var stepName=document.getElementById('stepName'), stepCount=document.getElementById('stepCount');
-  var back=document.getElementById('back'), next=document.getElementById('next');
+  /* --- восстановление черновика (главная/прайс пишут сюда предвыбор) --- */
+  var draft = S.store.get('salon_draft', null);
+  if (draft && draft.state) {
+    canSave = true;
+    if (has(C.types, draft.state.type)) state.type = draft.state.type;
+    if (has(C.disciplines, draft.state.disc)) state.disc = draft.state.disc;
+    if (has(C.terms, draft.state.term)) state.term = draft.state.term;
+    if (has(C.tiers, draft.state.tier)) state.tier = draft.state.tier;
+    if (typeof draft.idx === 'number' && isFinite(draft.idx)) idx = Math.max(0, Math.min(3, Math.round(draft.idx)));
+  }
+  /* --- deep-link ?step=1..4 --- */
+  try {
+    var qs = new URLSearchParams(location.search).get('step');
+    if (qs) { var n = parseInt(qs, 10); if (n >= 1 && n <= 4) idx = n - 1; }
+  } catch (e) {}
+  /* --- режим «разбор плана»: из черновика или по ?plan=1 --- */
+  var plan = !!(draft && draft.plan);
+  try {
+    if (new URLSearchParams(location.search).get('plan') === '1') plan = true;
+  } catch (e) {}
 
-  function curVal(stepKey){ return stepKey==='type'?state.type:stepKey==='disc'?state.disc:stepKey==='term'?state.term:state.tier; }
-  function setVal(stepKey,id){ if(stepKey==='type')state.type=id;else if(stepKey==='disc')state.disc=id;else if(stepKey==='term')state.term=id;else state.tier=id; }
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.wstep'));
+  var wiz = document.querySelector('.conf-steps');
+  var wpLbl = $('wpLbl'), wpFill = $('wpFill');
+  var btnBack = $('btnBack'), btnNext = $('btnNext'), btnSubmit = $('btnSubmit');
+  var priceEl = $('lqLow'), priceSrEl = $('lqLowSr');
+  var planNoteEl = document.querySelector('.plan-note'), planPriceEl = $('planPrice');
+  var profileEl = $('discProfile');
+  if (plan && planNoteEl) planNoteEl.hidden = false;
+  var topicIn = $('fTopic');
+  var mcta = $('confMcta'), mqPanel = $('mqPanel'), mqToggle = $('mqToggle'), mqMore = $('mqMore'), mNext = $('mNext');
 
-  function renderStep(){
-    if(idx>=steps.length){ renderResult(); return; }
-    var st=steps[idx];
-    prog.style.width=((idx+1)/(steps.length+1)*100)+'%';
-    stepName.textContent='Шаг '+(idx+1)+' · '+st.name;
-    stepCount.textContent=(idx+1)+' / '+steps.length;
-    var html='<div class="opt-grid" role="radiogroup" aria-label="'+st.name+'">';
-    st.list.forEach(function(o){
-      var on=curVal(st.key)===o.id;
-      var active=on?' active':'';
-      var from = st.key==='type'?('<div class="opt-from">от '+C.fmt(o.base)+' ₽</div>'):'';
-      var subTxt=st.sub(o); var subHtml=subTxt?('<div class="opt-sub">'+subTxt+'</div>'):'';
-      html+='<div class="opt'+active+'" data-id="'+o.id+'" role="radio" tabindex="'+(on?'0':'-1')+'" aria-checked="'+(on?'true':'false')+'"><b>'+o.label+'</b>'+subHtml+from+'</div>';
+  function saveDraft() {
+    if (!canSave) return;
+    S.store.set('salon_draft', {
+      state: { type: state.type, disc: state.disc, term: state.term, tier: state.tier },
+      idx: idx,
+      plan: plan,
+      savedAt: Date.now()
     });
-    html+='</div>';
-    panel.innerHTML=html;
-    function choose(el){
-      setVal(st.key,el.dataset.id);
-      panel.querySelectorAll('.opt').forEach(function(x){x.classList.remove('active');x.setAttribute('aria-checked','false');x.setAttribute('tabindex','-1');});
-      el.classList.add('active'); el.setAttribute('aria-checked','true'); el.setAttribute('tabindex','0');
-      updateSummary(); persistDraft();
-    }
-    panel.querySelectorAll('.opt').forEach(function(el){
-      el.addEventListener('click',function(){ choose(el); });
-      el.addEventListener('keydown',function(e){
-        var opts=[].slice.call(panel.querySelectorAll('.opt'));
-        if(e.key===' '||e.key==='Enter'){ e.preventDefault(); choose(el); }
-        else if(e.key==='ArrowDown'||e.key==='ArrowRight'){ e.preventDefault(); (opts[opts.indexOf(el)+1]||opts[0]).focus(); }
-        else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){ e.preventDefault(); (opts[opts.indexOf(el)-1]||opts[opts.length-1]).focus(); }
+  }
+  function touch() { canSave = true; saveDraft(); }
+
+  /* --- живая смета (обновляет и десктопную, и мобильную) --- */
+  function render() {
+    var t = find(C.types, state.type), d = find(C.disciplines, state.disc);
+    var s = find(C.terms, state.term), v = find(C.tiers, state.tier);
+    var q = C.quote(state.type, state.disc, state.term, state.tier);
+    put('type', t.label);
+    put('base', C.fmt(t.base) + ' ₽');
+    put('discLbl', 'Направление · ' + DISC_SHORT[state.disc]);
+    put('disc', '×' + kfmt(d.k));
+    put('termLbl', 'Срок · ' + TERM_SHORT[state.term]);
+    put('term', '×' + kfmt(s.k));
+    put('tierLbl', 'Уровень · ' + v.label);
+    put('tier', '×' + kfmt(v.k));
+    put('low', q.lowFmt + ' ₽');
+    put('high', 'до ' + q.highFmt + ' ₽ в зависимости от объёма');
+    S.countTo(priceEl, q.low, { suffix: ' ₽' });
+    if (priceSrEl) priceSrEl.textContent = q.lowFmt + ' ₽';
+    if (planPriceEl) planPriceEl.textContent =
+      (state.type === 'master' || state.type === 'kandidat') ? '5 000 ₽' : '3 000 ₽';
+    var pay = state.type === 'kandidat'
+      ? 'Кандидатскую считаем по главам — у каждой главы своя смета и свой график оплаты. Детали зафиксируем после разбора плана.'
+      : BIG.indexOf(state.type) > -1
+        ? 'Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.'
+        : 'Оплата 50/50: половина после согласования плана, половина после отчёта о проверках.';
+    put('pay', pay);
+    if (profileEl && window.SalonExperts) profileEl.textContent = (window.SalonExperts[state.disc] || {}).desc || '';
+  }
+
+  /* --- радиогруппа с roving tabindex и стрелками --- */
+  function radioGroup(container, onChange) {
+    var items = Array.prototype.slice.call(container.querySelectorAll('[role="radio"]'));
+    function mark(i) {
+      items.forEach(function (el, n) {
+        var on = n === i;
+        el.setAttribute('aria-checked', String(on));
+        el.tabIndex = on ? 0 : -1;
       });
-    });
-    back.style.visibility=idx===0?'hidden':'visible';
-    next.innerHTML=(idx===steps.length-1?'Показать результат':'Далее')+' <span class="ar">→</span>';
-    updateSummary();
-  }
-
-  function label(list,id){ var o=list.find(function(x){return x.id===id;}); return o?o.label:'—'; }
-
-  function updateSummary(){
-    var q=C.quote(state.type,state.disc,state.term,state.tier);
-    document.getElementById('price').textContent=q.range;
-    document.getElementById('priceNote').textContent='Итог уточним после короткого брифа';
-    document.getElementById('sType').textContent=label(C.types,state.type);
-    document.getElementById('sDisc').textContent=label(C.disciplines,state.disc);
-    document.getElementById('sTerm').textContent=label(C.terms,state.term);
-    document.getElementById('sTier').textContent=label(C.tiers,state.tier);
-    var ex=EXP[state.disc];
-    if(ex){ document.getElementById('expertCard').style.display='block';
-      document.getElementById('expName').textContent=ex.name;
-      document.getElementById('expDesc').textContent=ex.desc; }
-  }
-
-  function planFor(typeId){
-    var common=[
-      {t:'Согласование плана', d:'1–2 дня'},
-      {t:'Теоретическая часть', d:'основной объём'},
-      {t:'Практика / расчёты', d:'ядро работы'},
-      {t:'Проверки и отчёт', d:'до оплаты'},
-      {t:'Приёмка и правки', d:'до защиты'}
-    ];
-    if(typeId==='vak'||typeId==='scopus'||typeId==='rinc') return [
-      {t:'Согласование темы и журнала', d:'1–2 дня'},
-      {t:'Структура и анализ источников', d:''},
-      {t:'Текст статьи', d:'ядро'},
-      {t:'Проверки и отчёт', d:'до оплаты'},
-      {t:'Сопровождение до решения рецензента', d:''}
-    ];
-    if(typeId==='self'||typeId==='course') return [
-      {t:'Согласование плана', d:'1–2 дня'},
-      {t:'Основной текст', d:'литобзор и анализ источников'},
-      {t:'Проверки и отчёт', d:'до оплаты'},
-      {t:'Приёмка и правки', d:'до сдачи'}
-    ];
-    return common;
-  }
-
-  function renderResult(){
-    prog.style.width='100%';
-    stepName.textContent='Готово · Ваш проект';
-    stepCount.textContent='4 / 4';
-    back.style.visibility='visible';
-    next.style.display='none';
-    var q=C.quote(state.type,state.disc,state.term,state.tier);
-    var ex=EXP[state.disc];
-    var plan=planFor(state.type).map(function(p){return '<li><b>'+p.t+'</b>'+(p.d?p.d:'')+'</li>';}).join('');
-    panel.innerHTML=
-      '<div class="result-head"><span class="badge">Расчёт готов</span></div>'+
-      '<h3 style="margin:6px 0 2px">'+label(C.types,state.type)+'</h3>'+
-      '<div class="sum-price" style="font-size:40px">'+q.range+'</div>'+
-      '<div class="muted" style="font-size:13.5px;margin-bottom:18px">'+label(C.disciplines,state.disc)+' · '+label(C.terms,state.term)+' · «'+label(C.tiers,state.tier)+'»</div>'+
-      '<div class="expert-card" style="margin-top:0"><div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:4px">ВАШ ЭКСПЕРТ ПОД ТЕМУ</div><b style="font-family:var(--serif);font-size:15.5px">'+(ex?ex.name:'')+'</b><div class="muted" style="font-size:13px;margin-top:4px">'+(ex?ex.desc:'')+'</div></div>'+
-      '<div style="margin-top:20px"><div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:10px">ПЛАН ДО СДАЧИ</div><ul class="timeline">'+plan+'</ul></div>'+
-      '<div class="slot-bar"><span class="slot-dots"><i class="on"></i><i class="on"></i><i></i><i></i></span> Свободно 2 из 4 слотов — забронируйте свой</div>'+
-      '<div class="booking">'+
-        '<div class="hr" style="margin:20px 0"></div>'+
-        '<h3 style="font-size:19px;margin-bottom:14px">Забронировать слот</h3>'+
-        '<input type="text" id="bName" placeholder="Как к вам обращаться" />'+
-        '<input type="text" id="bContact" placeholder="Телефон или @telegram" />'+
-        '<input type="text" id="bTheme" placeholder="Тема работы (по желанию)" />'+
-        '<button class="btn btn-primary btn-block btn-lg" id="bSubmit">Забронировать и обсудить <span class="ar">→</span></button>'+
-        '<p class="muted" style="font-size:12.5px;margin-top:10px">Заявка ни к чему не обязывает. Ответим лично, обычно в течение пары часов.</p>'+
-      '</div>';
-    document.getElementById('bSubmit').addEventListener('click',book);
-    var cinp=document.getElementById('bContact');
-    if(cinp&&window.Salon){ cinp.addEventListener('input',function(){
-      var v=cinp.value;
-      if(/^[\d\s()+\-]+$/.test(v)&&/\d/.test(v)){ var p=cinp.selectionStart; cinp.value=Salon.mask.phone(v); }
-      else if(/^@?[a-zA-Z_]/.test(v.trim())&&v.indexOf('@')<=0&&!/@.+\./.test(v)){ /* телеграм-логин — не трогаем агрессивно */ }
-      cinp.classList.remove('invalid');
-    }); }
-    updateSummary();
-  }
-
-  function book(){
-    var name=document.getElementById('bName').value.trim();
-    var contact=document.getElementById('bContact').value.trim();
-    var theme=document.getElementById('bTheme').value.trim();
-    var cf=document.getElementById('bContact');
-    if(!(window.Salon&&Salon.valid.contact(contact))){
-      cf.classList.add('invalid'); cf.focus();
-      if(window.Salon) Salon.toast('Укажите телефон, @telegram или e-mail для связи.',{type:'error'});
-      return;
     }
-    cf.classList.remove('invalid');
-    var btn=document.getElementById('bSubmit');
-    if(window.Salon) Salon.btnLoading(btn,true,'Бронируем…');
-    setTimeout(function(){
-      var q=C.quote(state.type,state.disc,state.term,state.tier);
-      var now=new Date(), pad=function(x){return String(x).padStart(2,'0');};
-      var stamp=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate());
-      var order={
-        id:now.getFullYear()+'-'+pad(now.getMonth()+1)+pad(now.getDate())+'-'+Math.floor(10+Math.abs(now.getTime())%89),
-        type:label(C.types,state.type), disc:label(C.disciplines,state.disc),
-        term:label(C.terms,state.term), tier:label(C.tiers,state.tier),
-        priceLow:q.low, priceHigh:q.high, name:name, contact:contact, theme:theme,
-        stageIndex:0, createdAt:stamp
-      };
-      try{ var arr=(window.Salon?Salon.store.get('salon_orders',[]):JSON.parse(localStorage.getItem('salon_orders')||'[]'))||[]; arr.unshift(order); if(window.Salon){Salon.store.set('salon_orders',arr);}else{localStorage.setItem('salon_orders',JSON.stringify(arr));} }catch(e){}
-      if(window.Salon){ Salon.store.del('salon_draft'); Salon.toast('Слот забронирован — заказ в личном кабинете.',{type:'success'}); }
-      panel.innerHTML='<div class="success"><div class="badge mx-auto">Заявка принята</div>'+
-        '<div class="big">Слот забронирован</div>'+
-        '<p class="muted" style="max-width:340px;margin:0 auto 8px">Мы получили ваш запрос на «'+order.type+'». Эксперт свяжется с вами по контакту <b class="gold">'+contact+'</b> и подтвердит детали.</p>'+
-        '<p class="muted" style="font-size:13.5px;margin-bottom:20px">Заказ добавлен в ваш личный кабинет — там виден прогресс по этапам.</p>'+
-        '<a class="btn btn-primary btn-lg" href="dashboard.html">Открыть личный кабинет <span class="ar">→</span></a></div>';
-      back.style.display='none';
-    }, 900);
+    function choose(i, focus) {
+      mark(i);
+      if (focus) items[i].focus();
+      onChange(items[i].getAttribute('data-id'));
+    }
+    container.addEventListener('click', function (e) {
+      var el = e.target.closest('[role="radio"]');
+      if (el) choose(items.indexOf(el), false);
+    });
+    container.addEventListener('keydown', function (e) {
+      var el = e.target.closest('[role="radio"]');
+      if (!el) return;
+      var i = items.indexOf(el), n = items.length;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); choose((i + 1) % n, true); }
+      else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); choose((i - 1 + n) % n, true); }
+      else if (e.key === ' ') { e.preventDefault(); choose(i, false); }
+    });
+    return {
+      set: function (id) { /* программная установка — без onChange */
+        for (var i = 0; i < items.length; i++)
+          if (items[i].getAttribute('data-id') === id) { mark(i); return; }
+      }
+    };
   }
 
-  next.addEventListener('click',function(){ idx++; renderStep(); persistDraft(); window.scrollTo({top:0,behavior:'smooth'}); });
-  back.addEventListener('click',function(){ if(idx>0){ if(next.style.display==='none'){next.style.display='';} idx--; renderStep(); persistDraft(); } });
+  var rgType = radioGroup($('typeGroup'), function (id) { state.type = id; render(); touch(); });
+  var rgDisc = radioGroup($('discGroup'), function (id) { state.disc = id; render(); touch(); });
+  var rgTier = radioGroup($('tierGroup'), function (id) { state.tier = id; render(); touch(); });
 
-  renderStep();
-})();
+  /* --- сегмент срока --- */
+  var segTerm = $('segTerm');
+  function segMark() {
+    segTerm.querySelectorAll('button[data-id]').forEach(function (b) {
+      var on = b.getAttribute('data-id') === state.term;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+  }
+  segTerm.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-id]');
+    if (!b) return;
+    state.term = b.getAttribute('data-id');
+    segMark(); render(); touch();
+  });
+
+  /* --- навигация по шагам --- */
+  function go(i, focus) {
+    idx = Math.max(0, Math.min(3, i));
+    steps.forEach(function (el, n) { el.classList.toggle('active', n === idx); });
+    wpLbl.textContent = 'Шаг ' + (idx + 1) + ' из 4';
+    wpFill.style.width = ((idx + 1) * 25) + '%';
+    btnBack.hidden = idx === 0;
+    btnNext.hidden = idx === 3;
+    if (mNext) mNext.textContent = idx === 3 ? 'Отправить' : 'Далее';
+    saveDraft();
+    if (focus) {
+      var t = steps[idx].querySelector('.ws-title');
+      if (t) t.focus({ preventScroll: true });
+      var r = wiz.getBoundingClientRect();
+      if (r.top < 56) window.scrollTo({ top: window.scrollY + r.top - 76, behavior: S.reduceMotion ? 'auto' : 'smooth' });
+    }
+  }
+  btnNext.addEventListener('click', function () { canSave = true; go(idx + 1, true); });
+  btnBack.addEventListener('click', function () { canSave = true; go(idx - 1, true); });
+
+  /* --- сборка человекочитаемой сметы для буфера/бота --- */
+  function summaryText(id) {
+    var t = find(C.types, state.type), d = find(C.disciplines, state.disc);
+    var s = find(C.terms, state.term), v = find(C.tiers, state.tier);
+    var q = C.quote(state.type, state.disc, state.term, state.tier);
+    var topic = topicIn.value.trim();
+    var lines = [
+      'Заявка с сайта · ' + id,
+      'Тип: ' + t.label,
+      'Направление: ' + d.label,
+      'Срок: ' + s.label,
+      'Уровень: ' + v.label
+    ];
+    if (topic) lines.push('Тема: ' + topic);
+    if (plan) lines.push('Формат: начать с разбора плана');
+    lines.push('Смета: от ' + q.lowFmt + ' до ' + q.highFmt + ' ₽');
+    return lines.join('\n');
+  }
+
+  /* --- отправка: копируем смету, открываем бота (без сбора данных) --- */
+  var submitting = false;
+  function submit() {
+    if (submitting) return;
+    submitting = true;
+    S.btnLoading(btnSubmit, true, 'Открываем…');
+    if (mNext) S.btnLoading(mNext, true, 'Открываем…');
+
+    var id;
+    var orders = S.store.get('salon_orders', []);
+    if (!Array.isArray(orders)) orders = [];
+    do { id = 'AS-' + (1000 + Math.floor(Math.random() * 9000)); }
+    while (orders.some(function (o) { return o && o.id === id; }));
+
+    var t = find(C.types, state.type), d = find(C.disciplines, state.disc);
+    var s = find(C.terms, state.term), v = find(C.tiers, state.tier);
+    var q = C.quote(state.type, state.disc, state.term, state.tier);
+    /* заметка остаётся в браузере пользователя (его «расчёт»), без личных данных */
+    orders.push({
+      id: id, createdAt: Date.now(),
+      typeId: t.id, typeLabel: t.label,
+      discId: d.id, discLabel: d.label,
+      termId: s.id, termLabel: s.label,
+      tierId: v.id, tierLabel: v.label,
+      priceLow: q.low, priceHigh: q.high,
+      topic: topicIn.value.trim(), plan: plan, stageIndex: 0
+    });
+    S.store.set('salon_orders', orders);
+    S.store.del('salon_draft');
+
+    var botLink = (window.SalonBotLink ? window.SalonBotLink(state) : 'https://t.me/academic_saloon_bot');
+    if (S.copy) S.copy(summaryText(id)); /* смета в буфер — как фолбэк */
+    /* открываем бота в новой вкладке в рамках пользовательского жеста */
+    var win = window.open(botLink, '_blank', 'noopener');
+    var doneBot = $('doneBot'); if (doneBot) doneBot.href = botLink;
+    if (!win) { /* всплывашка заблокирована — переходим в текущей вкладке после показа экрана */
+      var d2 = $('doneBot'); if (d2) d2.setAttribute('data-fallback', '1');
+    }
+    showDone(id);
+  }
+  btnSubmit.addEventListener('click', submit);
+
+  function showDone(id) {
+    $('doneNo').textContent = id;
+    $('confBody').hidden = true;
+    if (mcta) mcta.hidden = true;
+    var done = $('confDone');
+    done.hidden = false;
+    if (plan) {
+      var doneSpans = done.querySelectorAll('.done-steps li span:last-child');
+      if (doneSpans[0]) doneSpans[0].textContent = 'Изучим тему и методичку';
+      if (doneSpans[1]) doneSpans[1].textContent = 'Проведём разбор плана — структура глав и фиксированная смета';
+      if (doneSpans[2]) doneSpans[2].textContent = 'Продолжите работу — стоимость разбора зачтётся в смету';
+    }
+    if (S.observeReveal) S.observeReveal(done);
+    var seal = done.querySelector('.seal');
+    if (seal && !S.reduceMotion) { /* повторное «пропечатывание» */
+      seal.classList.remove('in');
+      void seal.offsetWidth;
+      requestAnimationFrame(function () { seal.classList.add('in'); });
+    }
+    window.scrollTo({ top: 0, behavior: S.reduceMotion ? 'auto' : 'smooth' });
+    var h = $('doneH');
+    if (h) h.focus({ preventScroll: true });
+  }
+
+  /* --- мобильная панель: смета по тапу, без drag --- */
+  if (mqToggle) mqToggle.addEventListener('click', function () {
+    var open = mqPanel.hidden;
+    mqPanel.hidden = !open;
+    mqToggle.setAttribute('aria-expanded', String(open));
+    mqMore.textContent = open ? '· свернуть' : '· подробнее';
+  });
+  if (mNext) mNext.addEventListener('click', function () {
+    if (idx === 3) submit();
+    else { canSave = true; go(idx + 1, true); }
+  });
+
+  /* --- старт --- */
+  rgType.set(state.type);
+  rgDisc.set(state.disc);
+  rgTier.set(state.tier);
+  segMark();
+  go(idx, false);
+  render();
+}
+if (document.prerendering) {
+  document.addEventListener('prerenderingchange', initConf, { once: true });
+} else {
+  initConf();
+}
 </script>
 </body>
 </html>

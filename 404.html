@@ -4,31 +4,70 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Страница не найдена — Академический Салон</title>
-<meta name="robots" content="noindex,follow" />
+<meta name="description" content="Такой страницы нет в каталоге. Вернитесь на главную или рассчитайте стоимость работы." />
+<meta name="robots" content="noindex" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/styles.css" />
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
-<meta name="theme-color" content="#080b09" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
-  .nf{min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 22px 80px}
-  .nf .code{font-family:var(--serif);font-size:clamp(90px,18vw,180px);line-height:1;color:transparent;background:linear-gradient(108deg,var(--gold),#f0dba6 60%,var(--gold-2));-webkit-background-clip:text;background-clip:text}
-  .nf h1{font-size:clamp(26px,4vw,40px);margin:6px 0 14px}
-  .nf .lead{margin:0 auto 30px}
-  .nf .actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+  /* ============================================================
+     404 — страница, выпавшая из каталога: фолио-цифры,
+     штемпель «НЕ НАЙДЕНО», две дороги обратно
+     ============================================================ */
+  .lost{min-height:calc(100vh - 56px);min-height:calc(100svh - 56px);display:flex;align-items:center;justify-content:center;text-align:center;padding:calc(56px + 32px) 0 48px}
+  .lost-code{position:relative;display:inline-block}
+  .lost-code .code{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:clamp(96px,19vw,176px);line-height:1;letter-spacing:-.04em;color:var(--ink-faint)}
+  .lost-code .seal-slot{position:absolute;right:-54px;bottom:-14px}
+  .lost h1{font-weight:340;font-size:clamp(24px,4vw,34px);margin:18px 0 10px}
+  .lost .petit{max-width:44ch;margin:0 auto 30px}
+  .lost-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .lost-actions .btn{min-width:200px}
+  @media(max-width:880px){
+    .lost{min-height:calc(100svh - 126px)}
+    .lost-code .seal-slot{right:-30px;bottom:-20px}
+  }
 </style>
+<link rel="canonical" href="https://academic-saloon.duckdns.org/404.html" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#F6F1E7" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Страница не найдена — Академический Салон" />
+<meta property="og:description" content="Такой страницы нет в каталоге. Возможно, ссылка устарела при переиздании сайта." />
+<meta property="og:url" content="https://academic-saloon.duckdns.org/404.html" />
+<meta property="og:image" content="https://academic-saloon.duckdns.org/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Страница не найдена — Академический Салон" />
+<meta name="twitter:description" content="Такой страницы нет в каталоге." />
+<meta name="twitter:image" content="https://academic-saloon.duckdns.org/assets/img/og-cover.png" />
 </head>
 <body>
-<main class="nf">
-  <div class="code">404</div>
-  <h1>Такой страницы нет</h1>
-  <p class="lead">Похоже, ссылка устарела или ведёт в пустоту. Вернёмся к делу — рассчитаем вашу работу или начнём с главной.</p>
-  <div class="actions">
-    <a class="btn btn-primary btn-lg" href="index.html">На главную <span class="ar">→</span></a>
-    <a class="btn btn-ghost btn-lg" href="configurator.html">Рассчитать стоимость</a>
+
+<main>
+  <div class="wrap">
+    <section class="lost" data-chapter="Страница 404">
+      <div class="reveal">
+        <div class="lost-code">
+          <span class="code">404</span>
+          <span class="seal-slot" data-seal="НЕ НАЙДЕНО · СТРАНИЦА 404 · " data-seal-center="¶" data-seal-cls="seal--stamp" data-seal-size="104"></span>
+        </div>
+        <h1>Такой страницы нет в каталоге</h1>
+        <p class="petit">Возможно, ссылка устарела при переиздании сайта.</p>
+        <div class="lost-actions">
+          <a class="btn btn-ink" href="index.html">На главную</a>
+          <a class="btn btn-line" href="configurator.html">Рассчитать стоимость</a>
+        </div>
+      </div>
+    </section>
   </div>
 </main>
+
 <script src="assets/js/app.js"></script>
 </body>
 </html>

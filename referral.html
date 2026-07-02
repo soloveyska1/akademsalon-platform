@@ -3,964 +3,161 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Клуб Салона — карта резидента — Академический Салон</title>
-<meta name="description" content="Клуб Салона: ваша карта резидента, баллы Салона, статусы клуба и круг друзей. Приглашайте своих — растёт скидка группе и кэшбэк, а статус открывает привилегии." />
+<title>Клуб Салона — бонусы, приглашения и подписка «Салон+»</title>
+<meta name="description" content="Приветственный бонус, кэшбэк с каждого заказа, приглашения друзей и подписка «Салон+» со скидкой до 10%. Бонусы Академического Салона — просто и прозрачно." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/styles.css" />
-<style>
-  /* ============================================================
-     КЛУБ САЛОНА — «Карта Резидента»
-     page-specific слой; всё остальное — из design system
-     ============================================================ */
-  .club-wrap{padding-top:120px}
-  .club-head{max-width:880px}
-  .club-metrics{display:flex;align-items:center;gap:16px 18px;flex-wrap:wrap;margin-top:24px;color:var(--ink-faint);font-size:13.5px;letter-spacing:.01em}
-  .club-metrics .cm{display:inline-flex;align-items:baseline;gap:8px}
-  .club-metrics b{font-family:var(--serif);font-size:21px;color:var(--gold);font-weight:600;line-height:1}
-  .club-metrics .cm small{font-size:13px}
-  .club-metrics .sep{width:4px;height:4px;border-radius:50%;background:var(--gold-line);align-self:center}
-
-  .club-sec{padding-top:54px}
-  .sec-eyebrow{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}
-  .sec-eyebrow h2{font-size:clamp(24px,3vw,32px)}
-  .sec-note{font-size:13px;color:var(--ink-soft);max-width:360px}
-
-  /* ---------- 1. КАРТА + ПОЛОСА БАЛАНСА ---------- */
-  .card-stage{display:grid;grid-template-columns:1.02fr .98fr;gap:34px;align-items:center}
-  .card-col{display:flex;flex-direction:column;align-items:center;gap:16px}
-  .card-perspective{width:min(460px,100%);perspective:1300px}
-  .res-tilt{width:100%;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.8,.2,1);will-change:transform}
-  .res-card{position:relative;width:100%;aspect-ratio:1.586/1;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
-  .res-card.flipped{transform:rotateY(180deg)}
-  .res-face{position:absolute;inset:0;border-radius:16px;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:22px 24px;border:1px solid var(--gold-line);background:linear-gradient(150deg,var(--bg-3),#06080a 72%)}
-  .res-back{transform:rotateY(180deg)}
-  .res-guilloche{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-  .res-guilloche .gl{fill:none;stroke:var(--gold);stroke-width:.5;stroke-opacity:.55}
-  .res-guilloche .glc{fill:none;stroke:var(--gold);stroke-width:.4;stroke-opacity:.22}
-  .res-glare{position:absolute;inset:-30%;z-index:2;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.22) 48%,rgba(255,255,255,.05) 56%,transparent 64%);transform:translateX(calc(var(--mx,0%) * .55));transition:transform .12s linear}
-  .res-front>.res-top,.res-front>.res-mid,.res-front>.res-bottom,.res-back>*{position:relative;z-index:1}
-  .res-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-  .res-club{display:flex;align-items:center;gap:10px}
-  .res-club .brand-mark{width:34px;height:34px;border-radius:9px;flex:0 0 auto}
-  .res-club .brand-mark span{font-size:18px}
-  .res-clubname{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;line-height:1.35}
-  .res-seal{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 11px;border:1px solid var(--gold-line);border-radius:11px;background:var(--gold-soft);text-align:center}
-  .res-seal .rs-sym{font-family:var(--serif);color:var(--gold);font-size:15px;line-height:1;letter-spacing:1px}
-  .res-seal .rs-st{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);font-weight:700}
-  .res-mid{margin:auto 0}
-  .res-codelbl,.res-namelbl{font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
-  .res-code{font-family:var(--serif);font-weight:600;font-size:clamp(21px,4.5vw,29px);letter-spacing:.05em;background:linear-gradient(108deg,var(--gold),#f0dba6 55%,var(--gold-2));-webkit-background-clip:text;background-clip:text;color:transparent;border:0;padding:0;cursor:pointer;display:inline-block;font-family:var(--serif)}
-  .res-code:hover{filter:brightness(1.12)}
-  .res-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
-  .res-name{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);font-weight:600;min-width:120px;max-width:180px;border-bottom:1px dashed transparent;outline:none;line-height:1.3;word-break:break-word}
-  .res-name:empty::before{content:'Впишите имя';color:var(--ink-faint);font-weight:500}
-  .res-name:hover{border-bottom-color:var(--line-2)}
-  .res-name:focus{border-bottom-color:var(--gold-line)}
-  .res-since{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);text-align:right;white-space:nowrap;line-height:1.4}
-  .res-since b{color:var(--ink-soft);font-weight:600}
-  .res-holo{position:absolute;right:18px;bottom:48px;width:30px;height:30px;border-radius:8px;z-index:1;background:conic-gradient(from 120deg,rgba(47,143,104,.6),rgba(210,173,94,.7),rgba(47,143,104,.5),rgba(210,173,94,.65));opacity:.5;filter:blur(.3px);mix-blend-mode:screen}
-  /* back */
-  .res-back .res-bhead{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
-  .res-strip{height:26px;margin:0 -24px;background:linear-gradient(90deg,#090c0a,#15120b 60%,#090c0a);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .res-rows{display:flex;flex-direction:column;gap:7px}
-  .res-rows .rr{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-soft)}
-  .res-rows .rr b{color:var(--gold);font-weight:600}
-  .res-bbar{height:5px;border-radius:5px;background:rgba(244,240,231,.1);overflow:hidden;margin-top:3px}
-  .res-bbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));width:0;transition:width .7s cubic-bezier(.2,.8,.2,1)}
-  /* tier evolution */
-  .res-card[data-tier="0"] .res-face{border-color:var(--line-2);background:linear-gradient(150deg,var(--bg-2),#06080a 74%)}
-  .res-card[data-tier="0"] .res-guilloche{opacity:.3}
-  .res-card[data-tier="0"] .res-seal{opacity:.72}
-  .res-card[data-tier="0"] .res-holo{opacity:.28}
-  .res-card[data-tier="1"] .res-guilloche{opacity:.5}
-  .res-card[data-tier="2"] .res-front{box-shadow:var(--glow)}
-  .res-card[data-tier="2"] .res-guilloche{opacity:.62}
-  .res-card[data-tier="3"] .res-face{border-color:var(--gold)}
-  .res-card[data-tier="3"] .res-front{box-shadow:0 0 0 1px var(--gold-line),0 0 0 3px rgba(210,173,94,.14),0 0 50px rgba(210,173,94,.34)}
-  .res-card[data-tier="3"] .res-guilloche{opacity:.8}
-  .res-card[data-tier="3"] .res-holo{opacity:.7;width:34px;height:34px}
-  @keyframes resPop{0%{box-shadow:0 0 0 0 rgba(210,173,94,.55)}100%{box-shadow:0 0 0 18px rgba(210,173,94,0)}}
-  .res-card.pop .res-front{animation:resPop .9s ease-out}
-  .card-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-  .card-actions .btn{--pad:12px 22px;font-size:14.5px}
-  .card-hint{font-size:12.5px;color:var(--ink-soft);text-align:center}
-
-  /* balance rail */
-  .balance-rail{padding:26px;width:100%}
-  .bal-cell{padding:18px 0;border-top:1px solid var(--line)}
-  .bal-cell:first-child{padding-top:0;border-top:none}
-  .bal-cell:last-child{padding-bottom:0}
-  .bal-big{font-family:var(--serif);font-size:clamp(30px,5vw,42px);color:var(--gold);line-height:1.02;display:block}
-  .bal-sub{font-size:13.5px;color:var(--ink-soft);margin-top:6px}
-  .bal-line{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--ink-soft);gap:12px}
-  .bal-line b{color:var(--ink)}
-  .bal-mini{height:6px;border-radius:6px;background:rgba(244,240,231,.1);overflow:hidden;margin-top:10px}
-  .bal-mini i{display:block;height:100%;width:15%;background:linear-gradient(90deg,var(--gold),var(--gold-2))}
-  .burn{display:flex;align-items:center;gap:15px}
-  .burn-ring{width:60px;height:60px;flex:0 0 auto;transform:rotate(-90deg)}
-  .burn-ring .bt{fill:none;stroke:rgba(244,240,231,.12);stroke-width:5}
-  .burn-ring .bp{fill:none;stroke:var(--gold);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1)}
-  .burn-ring .bnum{transform:rotate(90deg);transform-origin:center;fill:var(--gold);font-family:var(--serif);font-size:17px;text-anchor:middle;dominant-baseline:central}
-  .burn-txt{font-size:13.5px;color:var(--ink-soft);line-height:1.45}
-  .burn-txt b{color:var(--gold)}
-  .burn.urgent .bp{stroke:var(--terra)}
-  .burn.urgent .bnum{fill:var(--terra)}
-  .burn.urgent .burn-txt b{color:var(--terra)}
-  .bal-spend{margin-top:16px}
-
-  /* ---------- 2. СОЗВЕЗДИЕ КРУГА ---------- */
-  .circle-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:30px;align-items:center}
-  .con-wrap{display:flex;justify-content:center}
-  .constellation{width:min(420px,100%);aspect-ratio:1;display:block;overflow:visible}
-  .con-orbit{fill:none;stroke:var(--gold);stroke-opacity:.14}
-  .con-line{stroke:var(--gold);stroke-opacity:.2}
-  .con-line.proc{stroke-opacity:.08}
-  .con-ghost{fill:none;stroke:var(--gold-line);stroke-dasharray:3 4;stroke-opacity:.55}
-  .con-dot{stroke:var(--gold);stroke-width:1.5}
-  .con-dot.paid{fill:rgba(210,173,94,.2)}
-  .con-dot.proc{fill:rgba(244,240,231,.04);stroke-dasharray:3 3;stroke-opacity:.6}
-  .con-init{fill:var(--gold);font-size:14px;font-family:var(--serif);text-anchor:middle;dominant-baseline:central}
-  .con-init.proc{fill:var(--ink-faint)}
-  .con-appear{animation:conAppear .45s cubic-bezier(.2,.8,.2,1)}
-  @keyframes conAppear{from{opacity:0}to{opacity:1}}
-  .con-star{fill:var(--gold)}
-  .con-crown{fill:var(--gold);opacity:.92}
-  .con-star-wrap{transform-box:fill-box;transform-origin:center;animation:conpulse 3.2s ease-in-out infinite}
-  @keyframes conpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-  .core-disc{fill:var(--gold);font-family:var(--serif);font-weight:600;text-anchor:middle;dominant-baseline:central}
-  .core-lbl{fill:var(--ink-soft);font-size:10.5px;letter-spacing:1.5px;text-anchor:middle;text-transform:uppercase}
-  .circle-side .grp-bar{height:10px;background:rgba(244,240,231,.1);border-radius:8px;margin:6px 0 4px;overflow:hidden}
-  .grp-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-2));transition:width .7s cubic-bezier(.2,.8,.2,1)}
-  .grp-marks{display:flex;justify-content:space-between;margin-top:10px}
-  .grp-mark{text-align:center;flex:1;font-size:11.5px;color:var(--ink-soft)}
-  .grp-mark b{display:block;font-family:var(--serif);font-size:17px;color:var(--ink-soft);transition:color .3s}
-  .grp-mark.reached b{color:var(--gold)}
-  .grp-now{font-size:14px;margin-top:14px;color:var(--ink-soft)}
-  .grp-now b{color:var(--gold)}
-  .grp-foot{font-size:12px;color:var(--ink-soft);margin-top:8px}
-  .friends{list-style:none;margin-top:16px}
-  .friends li{display:flex;align-items:center;gap:13px;padding:12px 0;border-top:1px solid var(--line);font-size:14px}
-  .friends li:first-child{border-top:none}
-  .friends .fav{width:36px;height:36px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-size:15px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line)}
-  .friends .fmeta{flex:1;min-width:0}
-  .friends .fmeta b{display:block;font-size:14px;font-weight:600}
-  .friends .fmeta small{color:var(--ink-soft);font-size:12px}
-  .friends .fstatus{font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:100px;white-space:nowrap}
-  .friends .fstatus.paid{color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line)}
-  .friends .fstatus.ordered{color:var(--ink-soft);background:rgba(244,240,231,.05);border:1px solid var(--line-2)}
-  .friends .fstatus.joined{color:var(--ink-faint);background:rgba(244,240,231,.03);border:1px solid var(--line)}
-  .friends .fstatus.curator{color:#0b0d0a;background:linear-gradient(120deg,var(--gold),var(--gold-2));border:1px solid transparent}
-  .friends .fcur{font:inherit;font-size:11.5px;font-weight:600;color:var(--ink-faint);background:none;border:0;cursor:pointer;padding:4px 4px;white-space:nowrap}
-  .friends .fcur:hover{color:var(--gold);text-decoration:underline}
-  .friends-empty{padding:22px 4px;color:var(--ink-faint);font-size:13.5px}
-
-  /* ---------- 3. ЛЕСТНИЦА СТАТУСОВ ---------- */
-  .ladder{position:relative}
-  .tiers-track{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;position:relative}
-  .tiers-track::before{content:"";position:absolute;top:40px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,var(--gold-line) 20%,var(--gold-line) 80%,transparent);z-index:0}
-  details.tier-node{padding:20px 18px;border:1px solid var(--line);border-radius:var(--radius);background:rgba(8,11,9,.45);position:relative;z-index:1;transition:.3s}
-  details.tier-node>summary{list-style:none;cursor:pointer;display:block}
-  details.tier-node>summary::-webkit-details-marker{display:none}
-  .tier-node .tr-ic{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);color:var(--ink-faint);font-family:var(--serif);font-size:18px;margin-bottom:13px;background:var(--bg);transition:.3s}
-  .tier-node h4{font-size:15.5px;margin-bottom:5px}
-  .tier-node .tr-sub{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
-  .tier-node .tr-more{font-size:11.5px;color:var(--gold);margin-top:10px;opacity:.8}
-  details.tier-node[open] .tr-more{opacity:0;height:0;margin:0;overflow:hidden}
-  .tier-node.done .tr-ic{color:var(--gold);border-color:var(--gold-line);background:var(--gold-soft)}
-  .tier-node.current{border-color:var(--gold);background:var(--gold-soft);box-shadow:0 0 0 1px var(--gold-line),var(--glow)}
-  .tier-node.current .tr-ic{color:#0b0d0a;background:linear-gradient(120deg,var(--gold),var(--gold-2));border-color:transparent}
-  .tier-badge{position:absolute;top:-11px;right:16px;font-size:11px;font-weight:700;color:#0b0d0a;background:linear-gradient(120deg,var(--gold),var(--gold-2));padding:4px 12px;border-radius:100px;opacity:0;transition:.3s}
-  .tier-node.current .tier-badge{opacity:1}
-  .priv-list{list-style:none;margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
-  .priv-list li{font-size:12.5px;color:var(--ink-soft);padding:6px 0 6px 22px;position:relative;line-height:1.45}
-  .priv-list li.on::before{content:"✦";position:absolute;left:0;top:6px;color:var(--gold);font-size:11px}
-  .priv-list li.off{color:var(--ink-faint)}
-  .priv-list li.off::before{content:"–";position:absolute;left:2px;top:6px;color:var(--line-2)}
-  .tier-foot{margin-top:20px;font-size:14.5px;color:var(--ink-soft)}
-  .tier-foot b{color:var(--gold)}
-
-  /* ---------- 4. МАТРИЦА ПРИВИЛЕГИЙ ---------- */
-  .matrix-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:4px}
-  .priv-matrix{width:100%;border-collapse:collapse;min-width:560px}
-  .priv-matrix th,.priv-matrix td{padding:13px 14px;text-align:center;border:1px solid var(--line);font-size:13.5px}
-  .priv-matrix thead th{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;font-family:var(--sans)}
-  .priv-matrix thead th .ms{display:block;font-size:13px;color:var(--ink);font-family:var(--serif);letter-spacing:0;text-transform:none;margin-top:3px}
-  .priv-matrix tbody th{text-align:left;font-weight:500;color:var(--ink);white-space:nowrap}
-  .priv-matrix .yes{color:var(--gold);font-weight:600}
-  .priv-matrix .no{color:var(--ink-faint)}
-  .priv-matrix .col-current{background:var(--gold-soft);box-shadow:inset 0 0 0 1px var(--gold-line)}
-  .priv-matrix thead th.col-current .ms{color:var(--gold)}
-  .matrix-note{font-size:13px;color:var(--ink-soft);margin-top:16px;padding-left:22px;position:relative}
-  .matrix-note::before{content:"✦";position:absolute;left:0;top:1px;color:var(--gold);font-size:11px}
-  @media(max-width:640px){
-    .priv-matrix tbody th,.priv-matrix thead th:first-child{position:sticky;left:0;background:#0c120e;z-index:1}
-    .priv-matrix thead th:first-child{z-index:2}
-  }
-
-  /* ---------- 5–6. ШЕРИНГ + КУРАТОР ---------- */
-  .share-curator{display:grid;grid-template-columns:1.25fr .75fr;gap:24px;align-items:start}
-  .link-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
-  .link-input{flex:1 1 220px;min-width:0;padding:14px 16px;border:1px solid var(--line-2);border-radius:var(--radius-sm);background:rgba(8,11,9,.6);font-family:var(--sans);font-size:14px;font-weight:600;color:var(--gold);letter-spacing:.01em;cursor:pointer;text-overflow:ellipsis}
-  .link-input:focus{outline:none;border-color:var(--gold-line);background:rgba(210,173,94,.06)}
-  .share-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-  .share-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border:1px solid var(--line-2);border-radius:100px;font-size:13.5px;font-weight:500;color:var(--ink-soft);background:rgba(244,240,231,.03);cursor:pointer;transition:.2s}
-  .share-btn svg{width:16px;height:16px}
-  .share-btn:hover{border-color:var(--gold-line);color:var(--gold);transform:translateY(-1px)}
-  .share-benefit{font-size:13.5px;color:var(--ink-soft);margin-top:16px;line-height:1.6}
-  .share-benefit b{color:var(--gold)}
-  .share-fraud{font-size:12px;color:var(--ink-soft);margin-top:8px}
-  .qr-box{display:none;margin-top:18px;align-items:center;gap:16px}
-  .qr-box.show{display:flex}
-  .qr-svg{width:128px;height:128px;flex:0 0 auto;border:1px solid var(--gold-line);border-radius:12px;padding:9px;background:rgba(8,11,9,.55)}
-  .qr-svg rect.m{fill:var(--ink)}
-  .qr-cap{font-size:13px;color:var(--ink-soft);line-height:1.5}
-  .curator-card{padding:26px}
-  .curator-card h3{font-size:19px;margin-bottom:8px}
-  .curator-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:16px}
-  .curator-card .ccode{display:none;font-family:var(--serif);color:var(--gold);font-size:18px;letter-spacing:.04em;margin:0 0 14px;padding:11px 14px;border:1px dashed var(--gold-line);border-radius:var(--radius-sm);text-align:center;background:var(--gold-soft)}
-  .curator-card .ccode.show{display:block}
-
-  /* ---------- 7. ПРАВИЛА ---------- */
-  .rules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  .rule-card{padding:24px}
-  .rule-card .ric{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-family:var(--serif);font-size:18px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold-line);margin-bottom:14px}
-  .rule-card h4{font-size:16px;margin-bottom:6px}
-  .rule-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.55}
-  .club-meta{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:24px;font-size:12.5px;color:var(--ink-soft)}
-  .club-meta button{font:inherit;color:var(--ink-soft);background:none;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
-  .club-meta button:hover{color:var(--gold)}
-
-  /* ---------- 8. CTA ---------- */
-  .club-cta{max-width:560px;margin:0 auto;text-align:center;padding:38px 30px}
-  .club-cta h3{font-size:clamp(22px,3vw,28px);margin-bottom:10px}
-  .club-cta p{font-size:14.5px;color:var(--ink-soft);margin-bottom:22px}
-
-  /* ---------- RESPONSIVE ---------- */
-  @media(max-width:960px){
-    .card-stage{grid-template-columns:1fr;gap:26px}
-    .circle-grid{grid-template-columns:1fr;gap:26px}
-    .share-curator{grid-template-columns:1fr}
-    .tiers-track{grid-template-columns:1fr 1fr}
-    .tiers-track::before{display:none}
-  }
-  @media(max-width:540px){
-    .tiers-track{grid-template-columns:1fr}
-    .rules-grid{grid-template-columns:1fr}
-    .club-metrics{gap:10px 14px}
-    .club-metrics .sep{display:none}
-  }
-  @media(max-width:1120px){ body{padding-bottom:0} .to-top{bottom:22px} }
-  @media(max-width:540px){ .toast-stack{bottom:24px} }
-  @media(pointer:coarse){ .res-tilt{transform:none!important} }
-  @media(prefers-reduced-motion:reduce){
-    .res-card,.res-tilt,.con-star-wrap,.res-card.pop .res-front,.con-appear{animation:none!important;transition:none!important}
-  }
-</style>
-<link rel="canonical" href="https://salon.217-18-63-210.sslip.io/referral.html" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<link rel="canonical" href="https://academic-saloon.duckdns.org/referral.html" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
-<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-<meta name="theme-color" content="#080b09" />
+<meta name="theme-color" content="#F6F1E7" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
-<meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Клуб Салона — карта резидента — Академический Салон" />
-<meta property="og:description" content="Клуб Салона: ваша карта резидента, баллы Салона, статусы клуба и круг друзей. Приглашайте своих — растёт скидка группе и кэшбэк." />
-<meta property="og:url" content="https://salon.217-18-63-210.sslip.io/referral.html" />
-<meta property="og:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Клуб Салона — карта резидента — Академический Салон" />
-<meta name="twitter:description" content="Клуб Салона: ваша карта резидента, баллы Салона, статусы клуба и круг друзей." />
-<meta name="twitter:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+<meta property="og:title" content="Клуб Салона — бонусы, приглашения и подписка «Салон+»" />
+<meta property="og:description" content="Приветственный бонус, кэшбэк с каждого заказа и подписка «Салон+» со скидкой до 10%." />
+<meta property="og:url" content="https://academic-saloon.duckdns.org/referral.html" />
+<style>
+  .clb-hero{padding:calc(56px + clamp(28px,5vw,56px)) 0 0}
+  .clb-lead{max-width:56ch;margin-top:14px}
+  .bonus-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:clamp(28px,5vw,40px)}
+  .bonus-card{padding:24px}
+  .bonus-card .bc-n{font-family:var(--mono);font-size:12px;color:var(--ink-faint);margin-bottom:12px}
+  .bonus-card .bc-v{font-family:var(--mono);font-size:clamp(26px,3.2vw,34px);color:var(--wax);letter-spacing:-.02em;line-height:1;margin-bottom:8px}
+  .bonus-card h3{font-size:17px;font-weight:500;margin-bottom:6px}
+  .bonus-card p{font-size:14px;color:var(--ink-soft);line-height:1.55}
+  .ref-steps{counter-reset:rs;margin-top:24px}
+  .ref-steps .dotrow{font-size:16px}
+  .ref-steps .rs-no{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint);flex:0 0 26px}
+  .ref-steps small{color:var(--ink-soft);font-size:13.5px}
+  .subs{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:clamp(24px,4vw,36px);align-items:stretch}
+  .sub{padding:28px;display:flex;flex-direction:column;position:relative}
+  .sub.feat{border-color:var(--wax)}
+  .sub .s-tag{position:absolute;top:-11px;left:24px;background:var(--wax);color:#FFFEF9;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:var(--r)}
+  .sub h3{font-size:21px;font-weight:500;margin-bottom:4px}
+  .sub .s-price{font-family:var(--mono);font-size:30px;color:var(--ink);letter-spacing:-.02em;margin:8px 0 2px}
+  .sub .s-price small{font-size:14px;color:var(--ink-soft)}
+  .sub ul{list-style:none;margin:18px 0 22px;flex:1}
+  .sub li{font-size:14.5px;padding:9px 0 9px 24px;position:relative;border-top:1px solid var(--hairline);color:var(--ink)}
+  .sub li:first-child{border-top:0}
+  .sub li::before{content:"✓";position:absolute;left:0;color:var(--verify);font-weight:600}
+  .clb-note{margin-top:14px;font-size:13px;color:var(--ink-soft);line-height:1.6;max-width:70ch}
+  @media(max-width:880px){.bonus-row{grid-template-columns:1fr}.subs{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
+<main class="wrap">
 
-<main class="club-wrap">
-  <div class="wrap">
-
-    <noscript>
-      <div class="glass" style="padding:20px 22px;margin-bottom:20px;border-radius:var(--radius)">
-        <p class="muted" style="font-size:14.5px;margin:0">Включите JavaScript, чтобы увидеть вашу карту резидента, баланс баллов и круг. Механика клуба: статусы Гость → Постоянный клиент → Резидент → Почётный резидент (по числу оплативших), кэшбэк баллами, другу — −500 ₽ на первый заказ, вам — 7% после его оплаты, групповая скидка до −25%. <a class="gold" href="configurator.html">Рассчитать заказ →</a></p>
+  <section class="clb-hero" data-chapter="Клуб Салона">
+    <div class="reveal">
+      <span class="caps">Клуб Салона</span>
+      <h1 class="h-display" style="margin-top:12px">Чем дольше с нами —<br>тем выгоднее</h1>
+      <p class="lead clb-lead">Бонусы за каждый заказ, приветственный подарок новичкам, приглашения друзей и подписка со скидкой. Всё считается автоматически в боте — ничего не нужно запоминать.</p>
+      <div class="mt-m" style="display:flex;gap:12px;flex-wrap:wrap">
+        <a class="btn btn-wax btn-lg" href="https://t.me/academic_saloon_bot?start=club" target="_blank" rel="noopener">Открыть клуб в боте <span class="ar">→</span></a>
+        <a class="btn btn-line btn-lg" href="loyalty.html">Полные правила</a>
       </div>
-    </noscript>
+    </div>
+  </section>
 
-    <!-- 0. ШАПКА-ПРИВЕТСТВИЕ -->
-    <header class="club-head reveal">
-      <span class="eyebrow">Клуб Салона · закрытый круг</span>
-      <h1 class="title" style="margin-bottom:12px">Ваша карта <span class="serif-italic">резидента</span></h1>
-      <p class="lead">Знак того, что вас здесь знают.</p>
-      <div class="club-metrics">
-        <span class="cm"><b id="hmBalance" data-count="0" data-suffix="">0</b><small>баллов</small></span>
-        <span class="sep"></span>
-        <span class="cm"><b id="hmStatus">Гость</b><small id="hmStep">· 1 ступень из 4</small></span>
-        <span class="sep"></span>
-        <span class="cm"><b id="hmCircle" data-count="0">0</b><small>в вашем круге</small></span>
+  <!-- § 01 БОНУСЫ -->
+  <section class="chapter reveal" id="bonuses" data-chapter="§ 01 · Бонусы">
+    <div class="ch-rule"><span class="ch-no">§ 01 · Бонусы</span></div>
+    <h2>1 бонус = 1 ₽ скидки на следующий заказ</h2>
+    <p class="lead">Бонусы копятся на счёте в боте и уменьшают стоимость будущих работ. Это не деньги и не выплаты — просто ваша скидка за то, что вы с нами.</p>
+    <div class="bonus-row">
+      <div class="bonus-card sheet stacked reveal">
+        <div class="bc-n">Новичкам</div>
+        <div class="bc-v">+300</div>
+        <h3>Приветственный бонус</h3>
+        <p>Начисляем один раз каждому новому пользователю бота. Действует 30 дней — попробуйте Салон со скидкой уже на первом заказе.</p>
       </div>
-    </header>
+      <div class="bonus-card sheet stacked reveal d1">
+        <div class="bc-n">С каждого заказа</div>
+        <div class="bc-v">5%</div>
+        <h3>Кэшбэк бонусами</h3>
+        <p>После каждого оплаченного заказа возвращаем 5% его стоимости бонусами. Копятся и ждут следующей работы.</p>
+      </div>
+      <div class="bonus-card sheet stacked reveal d2">
+        <div class="bc-n">Списание</div>
+        <div class="bc-v">до 20%</div>
+        <h3>Оплата бонусами</h3>
+        <p>Бонусами можно закрыть до 20% стоимости заказа (от 1000 ₽). Остальное — обычной оплатой. Так выгода честная для обеих сторон.</p>
+      </div>
+    </div>
+    <p class="clb-note">Бонусы не обмениваются на деньги и не передаются другим людям. Полные условия, сроки действия и защита от злоупотреблений — в <a class="link" href="loyalty.html">Правилах программы лояльности</a>.</p>
+  </section>
 
-    <!-- 1. КАРТА + БАЛАНС -->
-    <section class="club-sec">
-      <div class="card-stage">
-
-        <div class="card-col reveal">
-          <div class="card-perspective" id="cardStage">
-            <div class="res-tilt" id="resTilt">
-              <div class="res-card" id="resCard" data-tier="0">
-
-                <div class="res-face res-front">
-                  <svg class="res-guilloche" viewBox="0 0 300 190" preserveAspectRatio="none" aria-hidden="true">
-                    <defs>
-                      <pattern id="guil" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(9)">
-                        <path class="gl" d="M0 12 Q 6 0 12 12 T 24 12" />
-                        <path class="gl" d="M0 0 Q 6 12 12 0 T 24 0" />
-                        <circle class="glc" cx="12" cy="12" r="9.5" />
-                      </pattern>
-                    </defs>
-                    <rect width="300" height="190" fill="url(#guil)" />
-                  </svg>
-                  <div class="res-glare" aria-hidden="true"></div>
-                  <div class="res-holo" aria-hidden="true"></div>
-
-                  <div class="res-top">
-                    <div class="res-club">
-                      <span class="brand-mark"><span>А</span></span>
-                      <span class="res-clubname">Академический<br>Салон · Club</span>
-                    </div>
-                    <div class="res-seal" id="resSeal">
-                      <span class="rs-sym">○</span>
-                      <span class="rs-st">Гость</span>
-                    </div>
-                  </div>
-
-                  <div class="res-mid">
-                    <div class="res-codelbl">Реферальный код</div>
-                    <button class="res-code" id="resCode" type="button" aria-label="Скопировать реферальную ссылку">SALON-····</button>
-                  </div>
-
-                  <div class="res-bottom">
-                    <div>
-                      <div class="res-namelbl">Владелец карты</div>
-                      <div class="res-name" id="resName" role="textbox" aria-label="Ваше имя на карте" tabindex="0"></div>
-                    </div>
-                    <div class="res-since">В клубе<br>с <b id="resSince">06/26</b></div>
-                  </div>
-                </div>
-
-                <div class="res-face res-back">
-                  <div class="res-bhead">Академический Салон · карта участника клуба</div>
-                  <div class="res-strip" aria-hidden="true"></div>
-                  <div class="res-rows">
-                    <div class="rr"><span>Статус в клубе</span><b id="rbStatus">Гость</b></div>
-                    <div class="rr"><span>Кэшбэк баллами</span><b id="rbCash">5%</b></div>
-                    <div class="rr"><span>Баланс баллов</span><b id="rbBal">0</b></div>
-                    <div class="rr"><span>В клубе с</span><b id="rbSince">июня 2026</b></div>
-                  </div>
-                  <div>
-                    <div class="rr" style="margin-bottom:4px"><span id="rbNext">До следующего статуса</span><b id="rbNextPct">—</b></div>
-                    <div class="res-bbar"><i id="rbBar"></i></div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-          <div class="card-actions">
-            <button class="btn btn-ghost" id="flipBtn" type="button">Перевернуть карту</button>
-            <button class="btn btn-primary" id="shareCardBtn" type="button">Поделиться</button>
-          </div>
-          <div class="card-hint">Наведите на карту · кликните код, чтобы скопировать ссылку · впишите имя</div>
+  <!-- § 02 ПРИГЛАШЕНИЯ -->
+  <section class="chapter reveal" id="referral" data-chapter="§ 02 · Приглашения">
+    <div class="ch-rule"><span class="ch-no">§ 02 · Приглашения</span></div>
+    <h2>Приведите друга — бонусы получите оба</h2>
+    <div class="split">
+      <div>
+        <div class="ref-steps">
+          <div class="dotrow"><span class="rs-no">01</span><span>Берёте ссылку в боте</span><span class="dots"></span><small>раздел «Клуб» → «Пригласить»</small></div>
+          <div class="dotrow"><span class="rs-no">02</span><span>Друг переходит и делает заказ</span><span class="dots"></span><small>он сразу получает +200 бонусов после первого оплаченного заказа</small></div>
+          <div class="dotrow"><span class="rs-no">03</span><span>Вам — 5% бонусами</span><span class="dots"></span><small>с каждого его оплаченного заказа, всегда</small></div>
         </div>
-
-        <div class="glass glass-2 balance-rail reveal d1">
-          <div class="bal-cell">
-            <div class="gold" style="font-size:12px;letter-spacing:.04em;margin-bottom:10px">БАЛЛЫ САЛОНА</div>
-            <b class="bal-big" id="balBig" data-count="0" data-suffix=" баллов">0 баллов</b>
-            <div class="bal-sub" id="balRub">1 балл = 1 ₽ к стоимости вашего следующего заказа</div>
-          </div>
-          <div class="bal-cell">
-            <div class="bal-line"><span>К списанию в следующем заказе</span><b id="balWriteoff">до 15%</b></div>
-            <div class="bal-mini" aria-hidden="true"><i id="balWoBar"></i></div>
-          </div>
-          <div class="bal-cell">
-            <div class="burn" id="burnWrap">
-              <svg class="burn-ring" viewBox="0 0 60 60" aria-hidden="true">
-                <circle class="bt" cx="30" cy="30" r="25" />
-                <circle class="bp" id="burnArc" cx="30" cy="30" r="25" />
-                <text class="bnum" id="burnDays" x="30" y="30">—</text>
-              </svg>
-              <div class="burn-txt" id="burnTxt">Баллы сгорают <b>1 сентября</b> — их можно применить к следующему заказу до этой даты.</div>
-            </div>
-            <a class="btn btn-primary btn-block bal-spend" href="configurator.html">Потратить баллы в заказе <span class="ar">→</span></a>
-          </div>
+        <p class="clb-note">Начисления — только с фактически оплаченных заказов. Приглашать самого себя и заводить фейковые аккаунты нельзя: такие бонусы аннулируются.</p>
+      </div>
+      <aside class="sheet sheet-pad stacked reveal d1" aria-label="Пример">
+        <div class="caps" style="margin-bottom:14px">Как это выглядит</div>
+        <div class="ledger">
+          <div class="lg-row"><span>Друг заказал курсовую</span><span class="num">20 000 ₽</span></div>
+          <div class="lg-row"><span>Другу — приветственные</span><span class="num verify">+200</span></div>
+          <div class="lg-row"><span>Вам — 5% бонусами</span><span class="num verify">+1 000</span></div>
         </div>
-
-      </div>
-    </section>
-
-    <!-- 2. ВАШ КРУГ -->
-    <section class="club-sec reveal">
-      <div class="sec-eyebrow">
-        <div><span class="eyebrow" style="margin-bottom:8px">Ваш круг</span><h2 class="title" style="margin-bottom:0">Скидка растёт вместе с кругом</h2></div>
-        <p class="sec-note">У группы одна сессия и одна методичка. Одно приглашение — выгода всем.</p>
-      </div>
-      <div class="glass glass-2 panel-block" style="padding:30px;border-radius:var(--radius-lg)">
-        <div class="circle-grid">
-
-          <div class="con-wrap">
-            <svg class="constellation" viewBox="0 0 440 440" id="constellation" role="img" aria-label="Ваш круг участников и скидка группе">
-              <circle class="con-orbit" cx="220" cy="220" r="150" />
-              <g id="conGhosts"></g>
-              <g id="conLines"></g>
-              <g id="conStars"></g>
-              <defs>
-                <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0" stop-color="#d2ad5e" stop-opacity=".34" />
-                  <stop offset=".62" stop-color="#d2ad5e" stop-opacity=".09" />
-                  <stop offset="1" stop-color="#d2ad5e" stop-opacity="0" />
-                </radialGradient>
-              </defs>
-              <g class="con-star-wrap" id="conCore">
-                <circle class="core-glow" cx="220" cy="224" r="78" fill="url(#coreGlow)" />
-                <path class="con-crown" d="M220 178 L223.4 189 L234.5 192.5 L223.4 196 L220 207 L216.6 196 L205.5 192.5 L216.6 189 Z" />
-              </g>
-              <text class="core-disc" id="coreDisc" x="220" y="227" font-size="46">−0%</text>
-              <text class="core-lbl" x="220" y="259">скидка кругу</text>
-            </svg>
-          </div>
-
-          <div class="circle-side">
-            <div class="grp-bar"><div class="grp-fill" id="grpFill"></div></div>
-            <div class="grp-marks">
-              <div class="grp-mark" id="gm3"><b>−10%</b>3 в круге</div>
-              <div class="grp-mark" id="gm5"><b>−15%</b>5 в круге</div>
-              <div class="grp-mark" id="gm10"><b>−25%</b>10 в круге</div>
-            </div>
-            <div class="grp-now" id="grpNow" aria-live="polite">Пока скидка кругу <b>−0%</b>. Ещё <b>3</b> с оплаченным заказом — и кругу откроется −10%.</div>
-            <div class="grp-foot">Считаем по оплаченным заказам участников. Скидки не суммируются — применяется одна максимальная.</div>
-
-            <ul class="friends" id="friendList"></ul>
-            <button class="btn btn-ghost btn-block mt-s" id="inviteBtn" type="button">Пригласить друга <span class="ar">→</span></button>
-          </div>
-
+        <div class="lg-total" style="display:flex;justify-content:space-between;align-items:baseline;padding-top:14px;margin-top:2px;border-top:3px double var(--ink)">
+          <span class="caps">Ваш бонус со скидки</span>
+          <span class="price-xl" style="font-size:26px">1 000 <small>₽</small></span>
         </div>
-      </div>
-    </section>
+        <p class="clb-note" style="margin-top:12px">Пригласите пятерых активных друзей — и следующая курсовая почти ничего вам не стоит.</p>
+      </aside>
+    </div>
+  </section>
 
-    <!-- 3. ЛЕСТНИЦА СТАТУСОВ -->
-    <section class="club-sec reveal">
-      <div class="sec-eyebrow">
-        <div><span class="eyebrow" style="margin-bottom:8px">Путь в клубе</span><h2 class="title" style="margin-bottom:0">Чем выше статус — тем больше открыто</h2></div>
-        <p class="sec-note">Статус растёт от числа оплативших в вашем круге. Нажмите на ступень — увидите привилегии.</p>
+  <!-- § 03 ПОДПИСКА -->
+  <section class="chapter reveal" id="plus" data-chapter="§ 03 · Подписка «Салон+»">
+    <div class="ch-rule"><span class="ch-no">§ 03 · Подписка «Салон+»</span></div>
+    <h2>Скидка на каждый заказ и место без очереди</h2>
+    <p class="lead">Если работ впереди несколько — подписка окупается с первого заказа. Оформляется в боте, действует 30 дней, без автосписаний.</p>
+    <div class="subs">
+      <div class="sub sheet stacked reveal">
+        <h3>Салон+</h3>
+        <div class="s-price">499 <small>₽ / мес</small></div>
+        <ul>
+          <li>−5% на все заказы</li>
+          <li>Приоритетная очередь в работу</li>
+          <li>Скидка суммируется с бонусами</li>
+        </ul>
+        <a class="btn btn-line btn-block" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">Оформить в боте</a>
       </div>
-      <div class="glass glass-2 panel-block ladder" style="padding:30px 28px;border-radius:var(--radius-lg)">
-        <div class="tiers-track" id="tiersTrack"></div>
-        <div class="tier-foot" id="tierFoot"></div>
+      <div class="sub sheet stacked feat reveal d1">
+        <span class="s-tag">выгоднее</span>
+        <h3>Салон+ Про</h3>
+        <div class="s-price">999 <small>₽ / мес</small></div>
+        <ul>
+          <li>−10% на все заказы</li>
+          <li>Приоритетная очередь в работу</li>
+          <li>1 экспресс-консультация (15 минут) в месяц</li>
+          <li>Скидка суммируется с бонусами</li>
+        </ul>
+        <a class="btn btn-wax btn-block" href="https://t.me/academic_saloon_bot?start=pluspro" target="_blank" rel="noopener">Оформить в боте</a>
       </div>
-    </section>
+    </div>
+    <p class="clb-note">Общая скидка на один заказ (подписка + бонусы) — не более 25%. Подписка — отдельная услуга и не оплачивается бонусами. Условия, порядок продления и возврата — в <a class="link" href="loyalty.html">Правилах программы</a> и <a class="link" href="oferta.html">Оферте</a>.</p>
+  </section>
 
-    <!-- 4. МАТРИЦА ПРИВИЛЕГИЙ -->
-    <section class="club-sec reveal">
-      <div class="sec-eyebrow">
-        <div><span class="eyebrow" style="margin-bottom:8px">Привилегии</span><h2 class="title" style="margin-bottom:0">Что даёт каждый статус</h2></div>
-      </div>
-      <div class="glass panel-block" style="padding:26px;border-radius:var(--radius-lg)">
-        <div class="matrix-scroll">
-          <table class="priv-matrix" id="privMatrix"></table>
-        </div>
-        <p class="matrix-note">Скидки и бонусы не суммируются — к заказу применяется одна, самая выгодная для вас: групповая скидка до −25% или списание баллов до 15%. Клубный статус группы — это про привилегии, а не про сумму скидок.</p>
-      </div>
-    </section>
+  <section class="final-cta reveal" data-chapter="В клуб" style="padding:var(--block) 0 0;text-align:center">
+    <div class="fc-rule" style="display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,5vw,44px)"><span style="font-family:var(--serif);color:var(--ink-faint);font-size:18px">¶</span></div>
+    <h2 style="margin-bottom:14px">Заберите свои 300 бонусов</h2>
+    <p class="lead" style="max-width:44ch;margin:0 auto 26px">Приветственный бонус ждёт в боте — начнём знакомство со скидки.</p>
+    <a class="btn btn-wax btn-lg" href="https://t.me/academic_saloon_bot?start=club" target="_blank" rel="noopener">Открыть клуб в боте <span class="ar">→</span></a>
+  </section>
 
-    <!-- 5–6. ШЕРИНГ + КУРАТОР -->
-    <section class="club-sec reveal">
-      <div class="share-curator">
-
-        <div class="glass glass-2 panel-block" style="padding:28px;border-radius:var(--radius-lg)">
-          <div class="gold" style="font-size:12px;letter-spacing:.04em;margin-bottom:6px">ЛИЧНОЕ ПРИГЛАШЕНИЕ</div>
-          <p class="muted" style="font-size:13.5px;margin-bottom:6px">Поделитесь ссылкой — мы запомним, что друг пришёл от вас.</p>
-          <div class="link-row">
-            <input class="link-input" id="refLinkInput" readonly aria-label="Ваша реферальная ссылка" value="" />
-            <button class="btn btn-primary" id="copyBtn" type="button">Скопировать ссылку</button>
-          </div>
-          <div class="share-row">
-            <button class="share-btn" id="shareTg" type="button"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3l-3.3 15.6c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 13.5l-4.9-1.5c-1-.3-1-1 .2-1.5l19.1-7.4c.9-.3 1.7.2 1.3 1.7z"/></svg>Telegram</button>
-            <button class="share-btn" id="shareWa" type="button"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1012 2zm0 2a8 8 0 11-4.2 14.8l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 0112 4zm4.6 10.3c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.8 1-.3.2-.5.1a6.5 6.5 0 01-3.2-2.8c-.2-.4.2-.4.6-1.2.1-.2 0-.3 0-.5l-.7-1.7c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2c0 1.3.9 2.6 1.1 2.8s1.9 3 4.7 4.1c1.7.7 2.4.8 3.2.7.5-.1 1.4-.6 1.6-1.1s.2-1 .1-1.1-.3-.2-.5-.3z"/></svg>WhatsApp</button>
-            <button class="share-btn" id="qrToggle" type="button" aria-expanded="false" aria-controls="qrBox"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10-2h2v2h-2v-2zm4 0h2v2h-2v-2zm-4 4h2v2h-2v-2zm4 0h2v6h-6v-2h4v-4z"/></svg>QR-код</button>
-          </div>
-          <div class="qr-box" id="qrBox">
-            <svg class="qr-svg" id="qrSvg" viewBox="0 0 29 29" aria-hidden="true"></svg>
-            <div class="qr-cap">Отсканируйте камерой телефона — друг попадёт по вашей ссылке.</div>
-          </div>
-          <p class="share-benefit">Другу — <b>−500 ₽</b> на первый заказ. Вам — <b>7%</b> от его заказа баллами.</p>
-          <p class="share-fraud">Бонус приходит на счёт только после оплаченного заказа друга — так устроена защита от накруток.</p>
-        </div>
-
-        <div class="glass curator-card reveal d1">
-          <div class="gold" style="font-size:12px;letter-spacing:.04em;margin-bottom:10px">КУРАТОР ГРУППЫ</div>
-          <h3>Ведёте группу курса?</h3>
-          <p>Станьте Куратором Салона: повышенный процент с заказов группы, личный промокод и отдельный статус.</p>
-          <div class="ccode" id="curatorCode"></div>
-          <button class="btn btn-ghost btn-block" id="curatorBtn" type="button">Запросить роль куратора</button>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- 7. ПРАВИЛА -->
-    <section class="club-sec reveal">
-      <div class="rules-grid">
-        <div class="glass card rule-card"><div class="ric">✓</div><h4>Бонус — после оплаты</h4><p>7% приходят на счёт, когда друг оплатил заказ. Не за переход и не за регистрацию.</p></div>
-        <div class="glass card rule-card"><div class="ric">%</div><h4>Одна скидка, самая выгодная</h4><p>Скидки и бонусы не суммируются. К заказу применяется одна, самая выгодная для вас: групповая — до −25% либо списание баллов — до 15%.</p></div>
-        <div class="glass card rule-card"><div class="ric">✦</div><h4>Баллы живут до 1 сентября</h4><p>Кэшбэк-баллы сгорают раз в год. Списать можно до 15% стоимости следующего заказа.</p></div>
-      </div>
-      <div class="club-meta">
-        <span>Это демонстрация механики — данные хранятся локально в вашем браузере и никуда не передаются.</span>
-        <button id="resetBtn" type="button">Сбросить демо</button>
-      </div>
-    </section>
-
-    <!-- 8. CTA -->
-    <section class="club-sec reveal" style="padding-bottom:20px">
-      <div class="glass glass-2 club-cta">
-        <h3>Поднимитесь на ступень выше</h3>
-        <p>Оформите работу — круг, баллы и статус начнут расти.</p>
-        <a class="btn btn-primary btn-lg" href="configurator.html">Рассчитать заказ <span class="ar">→</span></a>
-      </div>
-    </section>
-
-  </div>
 </main>
-
 <script src="assets/js/app.js"></script>
-<script>
-(function(){
-  'use strict';
-
-  /* ---------------- константы модели ---------------- */
-  var KEY='salon_ref';
-  var REF_PCT=0.07;                 // 7% от оплаченного заказа друга — рефереру
-  var FRIEND_OFF=500;               // −500 ₽ другу (только подпись)
-  var WRITEOFF_CAP=15;              // списание баллов до 15% заказа
-  var GROUP=[{n:3,d:10},{n:5,d:15},{n:10,d:25}];   // групповая скидка по оплатившим
-  var MAX_SLOTS=10;                 // слотов в созвездии
-  var TIER_NEED=[0,1,3,5];          // оплаченных для статуса
-  var TIER_NAMES=['Гость','Постоянный клиент','Резидент Салона','Почётный резидент'];
-  var TIER_SHORT=['Гость','Постоянный','Резидент','Почётный'];
-  var TIER_SYM=['○','✦','✦✦','✦✦✦'];
-  var CASHBACK=[5,6,8,10];          // кэшбэк баллами по статусу, %
-  var PRIVS=[
-    {label:'Кэшбэк баллами', vals:['5%','6%','8%','10%']},
-    {label:'Приоритет в очереди', from:1},
-    {label:'Доступ к ведущему эксперту', from:2},
-    {label:'Постоплата по договорённости', from:2},
-    {label:'Личный куратор', from:3}
-  ];
-  var NAMES=['Анна','Дмитрий','Екатерина','Михаил','Ольга','Сергей','Полина','Артём','Мария','Никита','Вероника','Илья','Дарья','Роман','София','Тимур'];
-  var SURI=['К.','Л.','М.','Н.','П.','Р.','С.','Т.','Ф.','Ч.','Ш.','Б.','В.','Г.','Д.'];
-
-  var SVGNS='http://www.w3.org/2000/svg';
-  var timers=[];
-  function later(fn,ms){ var id=setTimeout(function(){ fn(); }, ms); timers.push(id); return id; }
-  var reduceMotion=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---------------- утилиты ---------------- */
-  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  function points(n){return Math.round(n).toLocaleString('ru-RU');}
-  function money(n){return Math.round(n).toLocaleString('ru-RU')+' ₽';}
-  function rnd(a,b){return a+Math.floor(Math.random()*(b-a+1));}
-  function pluralFr(n){return n%10===1&&n%100!==11?'друг':(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'друга':'друзей');}
-  function gOrders(n){return n===1?'оплаченного заказа':'оплаченных заказов';}
-  function genCode(){var a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',s='';for(var i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];return 'SALON-'+s;}
-  function promoCode(){var a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',s='';for(var i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];return 'КУРАТОР-'+s;}
-  function initial(nm){return (nm||'?').trim().charAt(0).toUpperCase();}
-
-  /* ---------------- состояние + миграция ---------------- */
-  function seedFriends(){
-    return [
-      {name:'Игорь В.',  when:'2026-06-15', stage:'ordered', orderSum:21000, bonus:0,    curator:false},
-      {name:'Анна Т.',   when:'2026-06-10', stage:'paid',    orderSum:33000, bonus:2310, curator:false},
-      {name:'Дмитрий К.',when:'2026-06-03', stage:'paid',    orderSum:45000, bonus:3150, curator:false},
-      {name:'Полина С.', when:'2026-05-26', stage:'paid',    orderSum:24000, bonus:1680, curator:false},
-      {name:'Михаил Р.', when:'2026-05-18', stage:'paid',    orderSum:30000, bonus:2100, curator:false}
-    ];
-  }
-  function freshData(){return {code:genCode(), name:'', curatorCode:'', friends:seedFriends()};}
-
-  function load(){
-    var d=null;
-    try{ d=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ d=null; }
-    if(!d || !d.code){ d=freshData(); save(d); return d; }
-    if(typeof d.name!=='string') d.name='';
-    if(typeof d.curatorCode!=='string') d.curatorCode='';
-    if(!Array.isArray(d.friends)) d.friends=[];
-    // миграция со старого формата (paid:true, плоский balance, фикс-бонус)
-    var migrated=false;
-    d.friends=d.friends.map(function(f){
-      if(f.stage) return f;
-      migrated=true;
-      var paid = !!f.paid;
-      var sum = f.orderSum || rnd(15,60)*1000;
-      return {name:f.name||'Друг', when:f.when||'2026-06-01', stage:paid?'paid':'joined',
-              orderSum:sum, bonus:paid?Math.round(sum*REF_PCT):0, curator:false};
-    });
-    if('balance' in d){ delete d.balance; migrated=true; }
-    if(migrated) save(d);
-    return d;
-  }
-  function save(d){ try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){} }
-
-  var data=load();
-
-  /* ---------------- расчёты ---------------- */
-  function paidCount(){ return data.friends.filter(function(f){return f.stage==='paid';}).length; }
-  function balance(){ return data.friends.reduce(function(s,f){return s+(f.stage==='paid'?(f.bonus||0):0);},0); }
-  function groupDiscount(c){ var d=0; GROUP.forEach(function(g){ if(c>=g.n) d=g.d; }); return d; }
-  function nextGroup(c){ for(var i=0;i<GROUP.length;i++){ if(c<GROUP[i].n) return GROUP[i]; } return null; }
-  function currentTier(c){ var t=0; TIER_NEED.forEach(function(n,i){ if(c>=n) t=i; }); return t; }
-  function fullLink(){ return 'https://akademsalon.ru/?ref='+data.code; }
-  function shortLink(){ return 'akademsalon.ru/?ref='+data.code; }
-
-  function burnInfo(){
-    var now=new Date();
-    var sept=new Date(now.getFullYear(),8,1);            // 1 сентября
-    if(now>sept) sept=new Date(now.getFullYear()+1,8,1);
-    var prev=new Date(sept.getFullYear()-1,8,1);
-    var day=86400000;
-    var daysLeft=Math.max(0,Math.ceil((sept-now)/day));
-    var total=Math.round((sept-prev)/day);
-    return {daysLeft:daysLeft, frac:Math.max(0,Math.min(1,daysLeft/total)), urgent:daysLeft<30,
-            label:sept.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})};
-  }
-
-  /* ---------------- DOM ---------------- */
-  function $(id){return document.getElementById(id);}
-  var resCard=$('resCard'), resSeal=$('resSeal'), resCode=$('resCode'), resName=$('resName'), resSince=$('resSince');
-  var rbStatus=$('rbStatus'), rbCash=$('rbCash'), rbBal=$('rbBal'), rbSince=$('rbSince'), rbNext=$('rbNext'), rbNextPct=$('rbNextPct'), rbBar=$('rbBar');
-  var balBig=$('balBig'), balRub=$('balRub'), balWriteoff=$('balWriteoff'), balWoBar=$('balWoBar');
-  var burnArc=$('burnArc'), burnDays=$('burnDays'), burnTxt=$('burnTxt'), burnWrap=$('burnWrap');
-  var hmBalance=$('hmBalance'), hmStatus=$('hmStatus'), hmStep=$('hmStep'), hmCircle=$('hmCircle');
-  var coreDisc=$('coreDisc'), conLines=$('conLines'), conStars=$('conStars'), conGhosts=$('conGhosts');
-  var grpFill=$('grpFill'), grpNow=$('grpNow'), friendList=$('friendList');
-  var tiersTrack=$('tiersTrack'), tierFoot=$('tierFoot'), privMatrix=$('privMatrix');
-  var refLinkInput=$('refLinkInput'), constellation=$('constellation');
-
-  /* ---------------- рендер: карта ---------------- */
-  function renderCard(){
-    var paid=paidCount(), tier=currentTier(paid), bal=balance();
-    resCard.setAttribute('data-tier', tier);
-    resCode.textContent=data.code;
-    resName.textContent=data.name||'';
-    resSeal.innerHTML='<span class="rs-sym">'+TIER_SYM[tier]+'</span><span class="rs-st">'+esc(TIER_SHORT[tier])+'</span>';
-    // back
-    rbStatus.textContent=TIER_NAMES[tier];
-    rbCash.textContent=CASHBACK[tier]+'%';
-    rbBal.textContent=points(bal);
-    if(tier>=TIER_NAMES.length-1){
-      rbNext.textContent='Высший статус достигнут';
-      rbNextPct.textContent='100%';
-      rbBar.style.width='100%';
-    } else {
-      var need=TIER_NEED[tier+1], prevNeed=TIER_NEED[tier];
-      var pct=Math.round((paid-prevNeed)/(need-prevNeed)*100);
-      rbNext.textContent='До «'+TIER_SHORT[tier+1]+'»';
-      rbNextPct.textContent=Math.max(0,Math.min(100,pct))+'%';
-      rbBar.style.width=Math.max(0,Math.min(100,pct))+'%';
-    }
-  }
-
-  /* ---------------- рендер: баланс + сгорание ---------------- */
-  function renderBalance(flash){
-    var bal=balance();
-    balBig.setAttribute('data-count', bal);
-    balBig.textContent=points(bal)+' баллов';
-    balRub.textContent= bal>0 ? (points(bal)+' баллов = '+money(bal)+' к следующему заказу') : '1 балл = 1 ₽ к стоимости вашего следующего заказа';
-    balWriteoff.textContent='до '+WRITEOFF_CAP+'%';
-    balWoBar.style.width=WRITEOFF_CAP+'%';
-    // burn
-    var b=burnInfo();
-    var C=2*Math.PI*25;
-    burnArc.setAttribute('stroke-dasharray', C.toFixed(1));
-    burnArc.setAttribute('stroke-dashoffset', (C*(1-b.frac)).toFixed(1));
-    burnDays.textContent=b.daysLeft;
-    burnWrap.classList.toggle('urgent', b.urgent);
-    if(bal>0){
-      burnTxt.innerHTML=points(bal)+' баллов сгорят <b>'+esc(b.label)+'</b> — их можно применить к следующему заказу до этой даты.';
-    } else {
-      burnTxt.innerHTML='Баллы начисляются после заказов друзей и сгорают <b>'+esc(b.label)+'</b>.';
-    }
-    if(flash && !reduceMotion && balBig.animate){
-      balBig.animate([{transform:'scale(1)'},{transform:'scale(1.1)'},{transform:'scale(1)'}],{duration:520,easing:'cubic-bezier(.2,.8,.2,1)'});
-    }
-  }
-
-  /* ---------------- рендер: созвездие ---------------- */
-  function svgEl(tag,attrs){var e=document.createElementNS(SVGNS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);return e;}
-  function slot(i){var a=(-90+i*(360/MAX_SLOTS))*Math.PI/180;return {x:220+150*Math.cos(a), y:220+150*Math.sin(a)};}
-
-  function renderConstellation(newIdx){
-    var paid=paidCount(), disc=groupDiscount(paid);
-    coreDisc.textContent='−'+disc+'%';
-    conLines.innerHTML=''; conStars.innerHTML=''; conGhosts.innerHTML='';
-    var dots=data.friends.slice(0,MAX_SLOTS);
-    dots.forEach(function(f,i){
-      var p=slot(i), isPaid=f.stage==='paid';
-      var line=svgEl('line',{x1:220,y1:220,x2:p.x.toFixed(1),y2:p.y.toFixed(1),'class':'con-line'+(isPaid?'':' proc')});
-      conLines.appendChild(line);
-      var g=svgEl('g',{});
-      if(newIdx===i) g.setAttribute('class','con-appear');
-      var c=svgEl('circle',{cx:p.x.toFixed(1),cy:p.y.toFixed(1),r:18,'class':'con-dot '+(isPaid?'paid':'proc')});
-      var t=svgEl('text',{x:p.x.toFixed(1),y:p.y.toFixed(1),'class':'con-init'+(isPaid?'':' proc')});
-      t.textContent=initial(f.name);
-      g.appendChild(c); g.appendChild(t); conStars.appendChild(g);
-    });
-    // призраки до следующего порога
-    var next=nextGroup(paid);
-    if(next){
-      var upto=Math.min(next.n, MAX_SLOTS);
-      for(var j=dots.length;j<upto;j++){
-        var gp=slot(j);
-        conGhosts.appendChild(svgEl('circle',{cx:gp.x.toFixed(1),cy:gp.y.toFixed(1),r:18,'class':'con-ghost'}));
-      }
-    }
-    constellation.setAttribute('aria-label','Ваш круг: '+dots.length+' '+pluralFr(dots.length)+', скидка группе −'+disc+'%');
-  }
-
-  /* ---------------- рендер: группа + список ---------------- */
-  function renderGroup(){
-    var paid=paidCount();
-    grpFill.style.width=Math.min(paid/10*100,100)+'%';
-    $('gm3').classList.toggle('reached', paid>=3);
-    $('gm5').classList.toggle('reached', paid>=5);
-    $('gm10').classList.toggle('reached', paid>=10);
-    var disc=groupDiscount(paid), next=nextGroup(paid);
-    if(disc>0){
-      grpNow.innerHTML='Скидка вашему кругу <b>−'+disc+'%</b> каждому.'+(next?(' Ещё <b>'+(next.n-paid)+'</b> до −'+next.d+'%.'):' Достигнут максимум.');
-    } else {
-      var need=3-paid;
-      grpNow.innerHTML='Пока скидка кругу <b>−0%</b>. Ещё <b>'+need+'</b> с оплаченным заказом — и кругу откроется −10%.';
-    }
-  }
-
-  function renderFriends(){
-    if(!data.friends.length){
-      friendList.innerHTML='<li class="friends-empty">В вашем круге пока никого. Поделитесь ссылкой или нажмите «Пригласить друга» — увидите, как растут баллы и скидка.</li>';
-      return;
-    }
-    friendList.innerHTML=data.friends.map(function(f,i){
-      var chip;
-      if(f.curator) chip='<span class="fstatus curator">Куратор группы</span>';
-      else if(f.stage==='paid') chip='<span class="fstatus paid">+'+points(f.bonus||0)+' баллов</span>';
-      else if(f.stage==='ordered') chip='<span class="fstatus ordered">оформил заказ</span>';
-      else chip='<span class="fstatus joined">перешёл</span>';
-      var act = (f.stage==='paid' && !f.curator) ? '<button class="fcur" data-cur="'+i+'" type="button">в кураторы</button>' : '';
-      return '<li><span class="fav">'+esc(initial(f.name))+'</span>'+
-        '<span class="fmeta"><b>'+esc(f.name)+'</b><small>пришёл '+esc(f.when)+'</small></span>'+act+chip+'</li>';
-    }).join('');
-    friendList.querySelectorAll('.fcur').forEach(function(b){
-      b.addEventListener('click', function(){ makeCurator(+b.getAttribute('data-cur')); });
-    });
-  }
-
-  /* ---------------- рендер: лестница + матрица ---------------- */
-  function privForTier(i){
-    return PRIVS.map(function(p){
-      if(p.vals) return {txt:p.label+' — '+p.vals[i], on:true};
-      return {txt:p.label, on:i>=p.from};
-    });
-  }
-  function renderLadder(){
-    var paid=paidCount(), cur=currentTier(paid);
-    tiersTrack.innerHTML=TIER_NAMES.map(function(nm,i){
-      var cls=i<cur?'done':i===cur?'current':'';
-      var sub = i===0?'Старт. Личная ссылка, карта и баллы уже открыты.'
-              : 'Открыт от '+TIER_NEED[i]+' '+gOrders(TIER_NEED[i])+' в круге.';
-      var lis=privForTier(i).map(function(p){return '<li class="'+(p.on?'on':'off')+'">'+esc(p.txt)+'</li>';}).join('');
-      return '<details class="tier-node '+cls+'"'+(i===cur?' open':'')+'>'+
-        '<summary><span class="tier-badge">вы здесь</span>'+
-        '<div class="tr-ic">'+TIER_SYM[i]+'</div>'+
-        '<h4>'+esc(TIER_NAMES[i])+'</h4>'+
-        '<div class="tr-sub">'+sub+'</div>'+
-        '<div class="tr-more">привилегии ↓</div></summary>'+
-        '<ul class="priv-list">'+lis+'</ul></details>';
-    }).join('');
-    if(cur>=TIER_NAMES.length-1){
-      tierFoot.innerHTML='Достигнут высший статус — <b>'+TIER_NAMES[cur]+'</b>. Все привилегии клуба открыты.';
-    } else {
-      var left=TIER_NEED[cur+1]-paid;
-      tierFoot.innerHTML='До статуса «'+TIER_NAMES[cur+1]+'» — ещё <b>'+left+'</b> с оплаченным заказом в вашем круге.';
-    }
-  }
-  function renderMatrix(){
-    var cur=currentTier(paidCount());
-    var head='<thead><tr><th></th>'+TIER_NAMES.map(function(nm,i){
-      return '<th class="'+(i===cur?'col-current':'')+'"><span>'+(i===cur?'вы здесь':TIER_SYM[i])+'</span><span class="ms">'+esc(TIER_SHORT[i])+'</span></th>';
-    }).join('')+'</tr></thead>';
-    var body='<tbody>'+PRIVS.map(function(p){
-      var cells=TIER_NAMES.map(function(nm,i){
-        var c=(i===cur?' col-current':'');
-        if(p.vals) return '<td class="yes'+c+'">'+p.vals[i]+'</td>';
-        return i>=p.from?'<td class="yes'+c+'">✦</td>':'<td class="no'+c+'">–</td>';
-      }).join('');
-      return '<tr><th>'+esc(p.label)+'</th>'+cells+'</tr>';
-    }).join('')+'</tbody>';
-    privMatrix.innerHTML=head+body;
-  }
-
-  /* ---------------- рендер: шапка-метрики ---------------- */
-  function renderMetrics(){
-    var paid=paidCount(), tier=currentTier(paid), bal=balance();
-    hmBalance.setAttribute('data-count', bal); hmBalance.textContent=points(bal);
-    hmStatus.textContent=TIER_SHORT[tier];
-    hmStep.textContent='· '+(tier+1)+' ступень из 4';
-    hmCircle.setAttribute('data-count', data.friends.length); hmCircle.textContent=data.friends.length;
-  }
-
-  function render(flash, newIdx){
-    renderCard();
-    renderBalance(flash);
-    renderConstellation(newIdx);
-    renderGroup();
-    renderFriends();
-    renderLadder();
-    renderMatrix();
-    renderMetrics();
-    refLinkInput.value=shortLink();
-    renderQR();
-  }
-
-  /* ---------------- интерактив: карта (tilt / flip / копия / имя) ---------------- */
-  var stage=$('cardStage'), tilt=$('resTilt');
-  if(window.matchMedia('(pointer:fine)').matches && !reduceMotion){
-    stage.addEventListener('mousemove', function(e){
-      var r=stage.getBoundingClientRect();
-      var px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
-      tilt.style.setProperty('--ry',(px*14).toFixed(2)+'deg');
-      tilt.style.setProperty('--rx',(-py*12).toFixed(2)+'deg');
-      tilt.style.setProperty('--mx',(px*120).toFixed(1)+'%');
-    });
-    stage.addEventListener('mouseleave', function(){
-      tilt.style.setProperty('--rx','0deg'); tilt.style.setProperty('--ry','0deg'); tilt.style.setProperty('--mx','0%');
-    });
-  }
-  $('flipBtn').addEventListener('click', function(){ resCard.classList.toggle('flipped'); });
-
-  function copyLink(btn,okText){
-    var done=function(ok){
-      if(ok){ Salon.toast('Ссылка скопирована в буфер обмена',{type:'success'}); }
-      else { Salon.toast('Не удалось скопировать — выделите ссылку вручную',{type:'error'}); }
-      if(btn){ var t=btn.textContent; btn.textContent=okText||'Скопировано ✦'; setTimeout(function(){ btn.textContent=t; },1800); }
-    };
-    if(window.Salon && Salon.copy) Salon.copy(fullLink()).then(done);
-    else done(false);
-  }
-  resCode.addEventListener('click', function(){ copyLink(null); });
-  $('copyBtn').addEventListener('click', function(){ copyLink(this,'Скопировано ✦'); });
-  $('shareCardBtn').addEventListener('click', function(){ copyLink(this,'Ссылка скопирована ✦'); });
-
-  // инлайн-имя
-  resName.addEventListener('focus', function(){ this.setAttribute('contenteditable','true'); });
-  resName.addEventListener('keydown', function(e){
-    if(e.key==='Enter'){ e.preventDefault(); this.blur(); }
-    if(e.key==='Escape'){ this.textContent=data.name||''; this.blur(); }
-  });
-  resName.addEventListener('blur', function(){
-    var v=(this.textContent||'').replace(/\s+/g,' ').trim().slice(0,26);
-    this.removeAttribute('contenteditable');
-    this.textContent=v;
-    if(v!==data.name){ data.name=v; save(data); if(v) Salon.toast('Имя на карте сохранено',{type:'success'}); }
-  });
-
-  /* ---------------- интерактив: шеринг ---------------- */
-  refLinkInput.addEventListener('click', function(){ this.select(); });
-  function openShare(url){ window.open(url,'_blank','noopener,noreferrer'); }
-  $('shareTg').addEventListener('click', function(){
-    openShare('https://t.me/share/url?url='+encodeURIComponent(fullLink())+'&text='+encodeURIComponent('Рекомендую Академический Салон — авторские работы под ключ. Другу −500 ₽ на первый заказ по моей ссылке:'));
-  });
-  $('shareWa').addEventListener('click', function(){
-    openShare('https://wa.me/?text='+encodeURIComponent('Рекомендую Академический Салон. Другу −500 ₽ на первый заказ по моей ссылке: '+fullLink()));
-  });
-  var qrToggle=$('qrToggle'), qrBox=$('qrBox');
-  qrToggle.addEventListener('click', function(){
-    var open=qrBox.classList.toggle('show');
-    qrToggle.setAttribute('aria-expanded', String(open));
-  });
-  // декоративный «QR» (не настоящий код) — стабильный узор из кода
-  function renderQR(){
-    var svg=$('qrSvg'); if(!svg) return;
-    var seed=0, s=data.code; for(var i=0;i<s.length;i++) seed=(seed*31+s.charCodeAt(i))>>>0;
-    function rand(){ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; }
-    var N=29, html='';
-    function finder(x,y){ return '<rect class="m" x="'+x+'" y="'+y+'" width="7" height="7"/>'+
-      '<rect x="'+(x+1)+'" y="'+(y+1)+'" width="5" height="5" fill="#0b0d0a"/>'+
-      '<rect class="m" x="'+(x+2)+'" y="'+(y+2)+'" width="3" height="3"/>'; }
-    for(var yy=0; yy<N; yy++) for(var xx=0; xx<N; xx++){
-      var inFinder=(xx<8&&yy<8)||(xx>N-9&&yy<8)||(xx<8&&yy>N-9);
-      if(inFinder) continue;
-      if(rand()>0.55) html+='<rect class="m" x="'+xx+'" y="'+yy+'" width="1" height="1"/>';
-    }
-    html+=finder(0,0)+finder(N-7,0)+finder(0,N-7);
-    svg.innerHTML=html;
-  }
-
-  /* ---------------- интерактив: куратор ---------------- */
-  $('curatorBtn').addEventListener('click', function(){
-    if(!data.curatorCode){ data.curatorCode=promoCode(); save(data); }
-    var box=$('curatorCode');
-    box.textContent='Ваш промокод куратора: '+data.curatorCode;
-    box.classList.add('show');
-    Salon.toast('Заявка на роль куратора отправлена — куратор свяжется с вами',{type:'success'});
-  });
-  function makeCurator(i){
-    var f=data.friends[i]; if(!f) return;
-    f.curator=true; save(data); renderFriends();
-    Salon.toast(esc(f.name)+' назначен старостой — повышенный процент с заказов группы',{type:'success'});
-  }
-
-  /* ---------------- демо: пригласить друга (joined → ordered → paid) ---------------- */
-  var inviteBtn=$('inviteBtn');
-  inviteBtn.addEventListener('click', function(){
-    if(data.friends.length>=MAX_SLOTS){ Salon.toast('Круг заполнен — это максимум для демонстрации',{type:'info'}); return; }
-    var name=NAMES[rnd(0,NAMES.length-1)]+' '+SURI[rnd(0,SURI.length-1)];
-    var sum=rnd(15,60)*1000;
-    var when='2026-06-'+String(rnd(16,28)).padStart(2,'0');
-    var f={name:name, when:when, stage:'joined', orderSum:sum, bonus:0, curator:false};
-    data.friends.unshift(f); save(data); render(false, 0);
-    Salon.toast(esc(name)+' перешёл по вашей ссылке',{type:'info'});
-
-    later(function(){
-      f.stage='ordered'; save(data); render();
-      Salon.toast(esc(name)+' оформил заказ — ждём оплату',{type:'info'});
-      later(function(){
-        var prevPaid=paidCount(), prevTier=currentTier(prevPaid), prevDisc=groupDiscount(prevPaid);
-        f.stage='paid'; f.bonus=Math.round(f.orderSum*REF_PCT); save(data);
-        var nowPaid=paidCount(), nowTier=currentTier(nowPaid), nowDisc=groupDiscount(nowPaid);
-        render(true);
-        Salon.toast('+'+points(f.bonus)+' баллов на ваш счёт — заказ '+esc(name)+' оплачен',{type:'success'});
-        if(nowDisc>prevDisc) later(function(){ Salon.toast('Круг вырос: −'+nowDisc+'% скидки всему кругу!',{type:'success'}); }, 700);
-        if(nowTier>prevTier){
-          resCard.classList.add('pop'); later(function(){ resCard.classList.remove('pop'); }, 1000);
-          later(function(){ Salon.toast('Новый статус: '+TIER_NAMES[nowTier]+' — добро пожаловать',{type:'success'}); }, 1100);
-        }
-      }, 1500);
-    }, 900);
-  });
-
-  /* ---------------- сброс демо ---------------- */
-  $('resetBtn').addEventListener('click', function(){
-    Salon.toast('Сбросить демо к исходному состоянию?',{type:'info', duration:6000, action:{label:'Сбросить', onClick:function(){
-      timers.forEach(clearTimeout); timers=[];
-      data=freshData(); save(data); render();
-      Salon.toast('Демо сброшено',{type:'success'});
-      window.scrollTo({top:0, behavior:reduceMotion?'auto':'smooth'});
-    }}});
-  });
-
-  /* ---------------- старт ---------------- */
-  render(false);
-})();
-</script>
 </body>
 </html>

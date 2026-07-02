@@ -1,10 +1,9 @@
 /* ============================================================
-   АКАДЕМИЧЕСКИЙ САЛОН — shared app layer
-   - общий UX-слой (Salon: store/toast/copy/mask/valid/loading)
-   - инъекция шапки/подвала (DRY) + умная шапка, прогресс, «наверх»
-   - непрерывность заказа («Продолжить заказ»)
-   - 3D «созвездие знаний» (ленивая загрузка Three.js + фолбэк)
-   - reveal без флэша; данные/логика калькулятора (window.SalonCalc)
+   АКАДЕМИЧЕСКИЙ САЛОН — общий слой «Оттиск»
+   - калькулятор (window.SalonCalc) — единственный источник цен
+   - UX-утилиты (Salon: store/toast/copy/mask/valid/countTo/seal)
+   - колонтитул: шапка + индикатор раздела + «Оглавление»
+   - подвал-колофон, мобильный CTA, reveal, prefetch
    ============================================================ */
 (function () {
   'use strict';
@@ -12,12 +11,7 @@
   docEl.classList.add('has-js');
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------------- Единый error-handler: упал внешний скрипт → градиент-фолбэк ---------------- */
-  window.addEventListener('error', function (e) {
-    if (e && e.target && e.target.tagName === 'SCRIPT') docEl.classList.add('bg-fallback');
-  }, true);
-
-  /* ---------------- Калькулятор (единая логика) ---------------- */
+  /* ---------------- Калькулятор (единая логика, менять запрещено) ---------------- */
   var SalonCalc = {
     types: [
       { id: 'diplom',     label: 'Дипломная работа / ВКР',                         base: 40000 },
@@ -62,7 +56,44 @@
   };
   window.SalonCalc = SalonCalc;
 
-  /* ---------------- Чем мы сильны (по дисциплинам, анонимно) ---------------- */
+  /* ---------------- Контакты (единственный источник ссылок) ----------------
+     Сайт НЕ собирает и НЕ хранит персональные данные: заявка уходит
+     в мессенджер, где отвечает человек/бот. На сайте — только ссылки. */
+  var LINKS = window.SalonLinks = {
+    bot:   'https://t.me/academic_saloon_bot',   // бот: заявки, расчёт, статусы
+    human: 'https://t.me/academicsaloon',        // личка: отвечает человек
+    vk:    'https://vk.com/academicsaloon'        // ВКонтакте
+  };
+  /* короткие коды типов для deep-link в бота (?start=web_dp_h_u_t) */
+  var TYPE_CODE = {
+    diplom:'dp', master:'ms', chapter:'ch', kandidat:'kd', course:'cr',
+    course_emp:'ce', practice:'pr', vak:'vk', scopus:'sc', rinc:'rc', self:'sf'
+  };
+  var DISC_CODE = { hum:'h', law:'l', tech:'t', med:'m' };
+  var TERM_CODE = { free:'f', mid:'m', urgent:'u' };
+  var TIER_CODE = { base:'b', turn:'t', vip:'v' };
+  /* Собирает ссылку на бота с предзаполненной сметой (без личных данных). */
+  window.SalonBotLink = function (st) {
+    st = st || {};
+    var parts = ['web', TYPE_CODE[st.type] || '', DISC_CODE[st.disc] || 'h',
+                 TERM_CODE[st.term] || 'f', TIER_CODE[st.tier] || 'b'];
+    var p = parts.join('_').replace(/[^A-Za-z0-9_]/g, '').slice(0, 60);
+    return LINKS.bot + '?start=' + p;
+  };
+
+  /* ---------------- Отдельные услуги (плоские цены «от», вне формулы) ---------------- */
+  window.SalonServices = [
+    { id:'ai',    label:'Чистка текста от следов ИИ',        from:2500, unit:'',       code:'ai',
+      desc:'Редактура и стилистическая доработка: убираем машинальные обороты и канцелярит, текст читается как живой.' },
+    { id:'review',label:'Разбор готовой работы',             from:2500, unit:'',       code:'rv',
+      desc:'Объясним структуру и логику вашей ВКР, курсовой или реферата, подготовим к вопросам на защите.' },
+    { id:'tutor', label:'Репетиторство и консультации',      from:3000, unit:' / час', code:'tu',
+      desc:'Индивидуальные занятия и разбор темы: методология, оформление, подготовка к сдаче — по вашему запросу.' },
+    { id:'norm',  label:'Оформление по методичке · нормоконтроль', from:5000, unit:'', code:'nm',
+      desc:'Приводим работу к требованиям методички и ГОСТ, готовим к прохождению нормоконтроля.' }
+  ];
+
+  /* ---------------- Профили компетенций по направлениям ---------------- */
   window.SalonExperts = {
     hum:  { name: 'Профиль: гуманитарные науки и экономика', desc: 'Социология, история, филология, менеджмент, маркетинг, экономическая теория.' },
     law:  { name: 'Профиль: право, педагогика, психология', desc: 'Гражданское и уголовное право, методика, возрастная и клиническая психология.' },
@@ -70,8 +101,9 @@
     med:  { name: 'Профиль: медицина и финансы',              desc: 'Клинические темы, доказательная база, финансовый анализ, эконометрика.' }
   };
 
-  /* ---------------- Общий UX-слой (Salon namespace) ---------------- */
+  /* ---------------- UX-слой (Salon) ---------------- */
   var Salon = window.Salon = window.Salon || {};
+  Salon.reduceMotion = reduceMotion;
   Salon.store = {
     get: function (k, fb) { try { var v = localStorage.getItem(k); return v == null ? fb : JSON.parse(v); } catch (e) { return fb; } },
     set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
@@ -81,6 +113,38 @@
     var a = Math.abs(n) % 100, b = a % 10;
     return forms[(a > 10 && a < 20) ? 2 : (b > 1 && b < 5) ? 1 : (b === 1) ? 0 : 2];
   };
+
+  /* ---------------- Тема оформления (светлая «Оттиск» / тёмная) ----------------
+     Первичная тема выставляется инлайн-скриптом в <head> (без мигания).
+     Здесь — только переключатель и синхронизация meta theme-color. */
+  Salon.theme = (function () {
+    var THEME_BG = { light: '#F6F1E7', dark: '#14120E' };
+    function current() { return docEl.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+    function apply(mode, persist) {
+      docEl.setAttribute('data-theme', mode);
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', THEME_BG[mode]);
+      docEl.querySelectorAll('.theme-toggle').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(mode === 'dark'));
+        b.title = mode === 'dark' ? 'Тёмная тема · включить светлую' : 'Светлая тема · включить тёмную';
+      });
+      if (persist) { try { localStorage.setItem('salon_theme', mode); } catch (e) {} }
+    }
+    function toggle() { apply(current() === 'dark' ? 'light' : 'dark', true); }
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('.theme-toggle')) { e.preventDefault(); toggle(); }
+    });
+    /* если пользователь не выбирал тему вручную — следуем за системной */
+    if (window.matchMedia) {
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      var onSys = function () { var saved; try { saved = localStorage.getItem('salon_theme'); } catch (e) {}
+        if (!saved) apply(mq.matches ? 'dark' : 'light', false); };
+      if (mq.addEventListener) mq.addEventListener('change', onSys);
+      else if (mq.addListener) mq.addListener(onSys);
+    }
+    return { toggle: toggle, apply: apply, current: current };
+  })();
+
   (function () {
     var box;
     function ensure() {
@@ -93,7 +157,7 @@
       opts = opts || {};
       var t = document.createElement('div');
       t.className = 'toast toast-' + (opts.type || 'info');
-      var icon = opts.type === 'success' ? '✦' : opts.type === 'error' ? '!' : 'i';
+      var icon = opts.type === 'success' ? '¶' : opts.type === 'error' ? '!' : '§';
       t.innerHTML = '<span class="toast-ic">' + icon + '</span><span class="toast-msg"></span>';
       t.querySelector('.toast-msg').textContent = msg;
       if (opts.action) {
@@ -105,10 +169,11 @@
       ensure().appendChild(t);
       requestAnimationFrame(function () { t.classList.add('in'); });
       var to = setTimeout(dismiss, opts.duration || 4200);
-      function dismiss() { clearTimeout(to); t.classList.remove('in'); setTimeout(function () { t.remove(); }, 300); }
+      function dismiss() { clearTimeout(to); t.classList.remove('in'); setTimeout(function () { t.remove(); }, 260); }
       return dismiss;
     };
   })();
+
   Salon.copy = function (text) {
     return new Promise(function (res) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -123,6 +188,7 @@
       }
     });
   };
+
   Salon.mask = {
     phone: function (v) {
       var d = v.replace(/\D/g, '').replace(/^8/, '7').replace(/^([^7])/, '7$1').slice(0, 11);
@@ -147,164 +213,362 @@
     else { btn.disabled = false; btn.classList.remove('is-loading'); if (btn.dataset._t) btn.innerHTML = btn.dataset._t; }
   };
 
-  /* ---------------- Инъекция фоновых слоёв ---------------- */
-  function el(tag, id) { var e = document.createElement(tag); if (id) e.id = id; return e; }
-  function bgLayer(id) { var d = el('div', id); d.setAttribute('aria-hidden', 'true'); return d; }
-  if (!document.getElementById('bg-base')) document.body.insertBefore(bgLayer('bg-base'), document.body.firstChild);
-  if (!document.getElementById('bg-vignette')) document.body.insertBefore(bgLayer('bg-vignette'), document.body.firstChild);
+  /* Одометр: цифры «допечатываются» до значения. countTo(el, 79500, {suffix:' ₽'}) */
+  Salon.countTo = function (el, target, opts) {
+    opts = opts || {};
+    var suffix = opts.suffix != null ? opts.suffix : '';
+    var prefix = opts.prefix != null ? opts.prefix : '';
+    function put(n) { el.textContent = prefix + Math.round(n).toLocaleString('ru-RU') + suffix; }
+    if (reduceMotion || opts.instant) { el.dataset.cur = String(target); put(target); return; }
+    var from = parseFloat(el.dataset.cur || '0') || 0;
+    el.dataset.cur = String(target);
+    var dur = opts.duration || 420, t0 = null;
+    function step(ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      var e = 1 - Math.pow(1 - p, 4);
+      put(from + (target - from) * e);
+      if (p < 1 && el.dataset.cur === String(target)) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  };
 
-  /* скип-линк + #main (доступность) */
+  /* Круглая печать-штемпель: SVG с текстом по окружности (наследует currentColor) */
+  Salon.sealSVG = function (opts) {
+    opts = opts || {};
+    var ring = (opts.ring || 'ОТЧЁТ О ПРОВЕРКАХ · ДО ОПЛАТЫ · ').toUpperCase();
+    var center = opts.center || '¶';
+    var size = opts.size || 116;
+    var id = 'sealp' + Math.abs((ring + center).split('').reduce(function (a, c) { return (a * 31 + c.charCodeAt(0)) | 0; }, 7));
+    var label = ring.replace(/"/g, '').replace(/\s*·\s*$/, '').replace(/\s*·\s*/g, ', ');
+    return '<svg class="seal press ' + (opts.cls || 'seal--verify') + '" width="' + size + '" height="' + size + '" viewBox="0 0 120 120" role="img" aria-label="Печать: ' + label + '">' +
+      '<defs><path id="' + id + '" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>' +
+      '<circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="1.5"/>' +
+      '<circle cx="60" cy="60" r="33" fill="none" stroke="currentColor" stroke-width="1"/>' +
+      '<text style="font:600 10.5px \'Golos Text\',sans-serif;letter-spacing:.22em" fill="currentColor"><textPath href="#' + id + '">' + ring + '</textPath></text>' +
+      '<text x="60" y="61" text-anchor="middle" dominant-baseline="central" style="font:500 26px \'Literata\',serif" fill="currentColor">' + center + '</text>' +
+      '</svg>';
+  };
+
+  /* ---------------- Скип-линк + #main ---------------- */
   (function () {
-    var main = document.querySelector('main') || document.querySelector('.hero') || document.querySelector('section');
+    var main = document.querySelector('main') || document.querySelector('section');
     if (main && !main.id) main.id = 'main';
     if (main && !document.querySelector('.skip-link')) {
       var skip = document.createElement('a');
-      skip.className = 'skip-link'; skip.href = '#' + (main.id || 'main'); skip.textContent = 'К содержанию';
+      skip.className = 'skip-link'; skip.href = '#' + main.id; skip.textContent = 'К содержанию';
       document.body.insertBefore(skip, document.body.firstChild);
     }
   })();
 
-  /* ---------------- Шапка ---------------- */
-  var NAV = [
-    { href: 'check.html', label: 'Проверка текста' },
-    { href: 'expertise.html', label: 'Экспертиза' },
-    { href: 'referral.html', label: 'Клуб' },
-    { href: 'tariffs.html', label: 'Тарифы' }
-  ];
+  /* ---------------- Колонтитул (шапка) ---------------- */
   var here = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
+  var NAV = [
+    { href: 'tariffs.html',    label: 'Цены' },
+    { href: 'reviews.html',    label: 'Отзывы' },
+    { href: 'referral.html',   label: 'Клуб' },
+    { href: 'guarantees.html', label: 'Гарантии' }
+  ];
+  var TOC = [
+    { href: 'index.html',        label: 'Главная',          no: '01' },
+    { href: 'configurator.html', label: 'Рассчитать заказ', no: '02' },
+    { href: 'tariffs.html',      label: 'Цены и услуги',    no: '03' },
+    { href: 'reviews.html',      label: 'Отзывы',           no: '04' },
+    { href: 'referral.html',     label: 'Клуб и бонусы',    no: '05' },
+    { href: 'guarantees.html',   label: 'Гарантии',         no: '06' },
+    { href: 'check.html',        label: 'Проверка текста',  no: '07' },
+    { href: 'dashboard.html',    label: 'Личный кабинет',   no: '08' }
+  ];
+
   function brandHTML() {
-    return '<a class="brand" href="index.html" aria-label="Академический Салон">' +
-      '<span class="brand-mark"><span>А</span></span>' +
-      '<span class="brand-text"><b>Академический Салон</b><small>Мастерская работ</small></span></a>';
-  }
-  function navLinks() {
-    return NAV.map(function (n) {
-      var file = n.href.split('#')[0];
-      var cur = (file === here && n.href.indexOf('#') === -1) ? ' aria-current="page"' : '';
-      return '<a href="' + n.href + '"' + cur + '>' + n.label + '</a>';
-    }).join('');
+    return '<a class="brand" href="index.html" aria-label="Академический Салон — на главную">' +
+      '<span class="b-para" aria-hidden="true">¶</span>' +
+      '<span class="b-name">Академический Салон</span></a>';
   }
 
   if (!document.querySelector('.site-header')) {
     var header = document.createElement('header');
     header.className = 'site-header';
+    var navLinks = NAV.map(function (n) {
+      var cur = n.href === here ? ' aria-current="page"' : '';
+      return '<a href="' + n.href + '"' + cur + '>' + n.label + '</a>';
+    }).join('');
     header.innerHTML = '<div class="wrap nav">' + brandHTML() +
-      '<nav class="nav-links">' + navLinks() + '</nav>' +
+      '<div class="head-section" aria-hidden="true"></div>' +
+      '<nav class="nav-links" aria-label="Разделы">' + navLinks + '</nav>' +
       '<div class="nav-cta">' +
-        '<a class="btn btn-ghost" href="dashboard.html">Кабинет</a>' +
-        '<a class="btn btn-primary" href="configurator.html">Рассчитать цену</a>' +
-        '<button class="menu-toggle" aria-label="Меню" aria-expanded="false"><span></span><span></span><span></span></button>' +
+        '<button class="theme-toggle" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема"><span class="tt-ic" aria-hidden="true"></span></button>' +
+        '<a class="btn btn-line" href="dashboard.html">Кабинет</a>' +
+        '<a class="btn btn-wax" href="configurator.html">Рассчитать</a>' +
+        '<button class="menu-toggle" aria-expanded="false" aria-controls="toc">Меню <i aria-hidden="true"></i></button>' +
       '</div></div>';
     document.body.insertBefore(header, document.body.firstChild);
+    if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк состояния кнопки темы */
 
-    var overlay = document.createElement('div'); overlay.className = 'drawer-overlay';
-    document.body.appendChild(overlay);
-    var mm = document.createElement('aside');
-    mm.className = 'mobile-menu'; mm.id = 'mobile-menu';
-    mm.setAttribute('aria-hidden', 'true'); mm.setAttribute('aria-label', 'Меню');
-    mm.innerHTML = navLinks() + '<a class="btn btn-ghost btn-block mt-s" href="dashboard.html">Личный кабинет</a><a class="btn btn-primary btn-block mt-s" href="configurator.html">Рассчитать стоимость</a>';
-    document.body.appendChild(mm);
+    /* Оглавление (полноэкранное меню) */
+    var toc = document.createElement('div');
+    toc.className = 'toc'; toc.id = 'toc';
+    toc.setAttribute('role', 'dialog'); toc.setAttribute('aria-modal', 'true'); toc.setAttribute('aria-label', 'Оглавление');
+    toc.innerHTML = '<div class="toc-head"><span class="toc-title">Оглавление</span>' +
+      '<button class="toc-close">Закрыть</button></div>' +
+      '<nav>' + TOC.map(function (t) {
+        var cur = t.href === here ? ' aria-current="page"' : '';
+        return '<a class="dotrow" href="' + t.href + '"' + cur + '><span>' + t.label + '</span><span class="dots"></span><span class="dr-val">' + t.no + '</span></a>';
+      }).join('') + '</nav>' +
+      '<div class="toc-cta"><a class="btn btn-wax btn-block btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a></div>';
+    document.body.appendChild(toc);
 
     var toggle = header.querySelector('.menu-toggle');
-    toggle.setAttribute('aria-controls', 'mobile-menu');
-    function setMenu(open) {
-      mm.classList.toggle('open', open); overlay.classList.toggle('open', open);
-      toggle.setAttribute('aria-expanded', String(open)); mm.setAttribute('aria-hidden', String(!open));
-      document.body.style.overflow = open ? 'hidden' : '';
-      if (open) { var f = mm.querySelector('a'); if (f) f.focus(); }
+    function tocSiblings() {
+      return ['.site-header', 'main', '.site-footer', '.mobile-cta']
+        .map(function (s) { return document.querySelector(s); })
+        .filter(Boolean);
     }
-    toggle.addEventListener('click', function () { setMenu(!mm.classList.contains('open')); });
-    overlay.addEventListener('click', function () { setMenu(false); });
-    mm.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && mm.classList.contains('open')) { setMenu(false); toggle.focus(); } });
+    function setToc(open) {
+      toc.classList.toggle('open', open);
+      document.body.classList.toggle('toc-lock', open);
+      /* фон недоступен для фокуса и AT, пока оглавление открыто */
+      tocSiblings().forEach(function (el) {
+        if (open) el.setAttribute('inert', ''); else el.removeAttribute('inert');
+      });
+      toggle.setAttribute('aria-expanded', String(open));
+      if (open) { var f = toc.querySelector('.toc-close'); if (f) f.focus(); } else { toggle.focus(); }
+    }
+    /* страховочная петля Tab для браузеров без inert */
+    toc.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      var items = toc.querySelectorAll('button, a[href]');
+      if (!items.length) return;
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    toggle.addEventListener('click', function () { setToc(!toc.classList.contains('open')); });
+    toc.querySelector('.toc-close').addEventListener('click', function () { setToc(false); });
+    toc.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { toc.classList.remove('open'); document.body.classList.remove('toc-lock'); }); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && toc.classList.contains('open')) setToc(false); });
 
-    /* бейдж активных заказов на «Кабинете» */
+    /* бейдж заказов на «Кабинете» */
     var _orders = Salon.store.get('salon_orders', []);
     if (_orders && _orders.length) {
       var kab = header.querySelector('.nav-cta a[href="dashboard.html"]');
-      if (kab) {
-        var bdg = document.createElement('span'); bdg.className = 'nav-badge';
-        bdg.textContent = _orders.length;
-        bdg.setAttribute('aria-label', _orders.length + ' ' + Salon.plural(_orders.length, ['заказ', 'заказа', 'заказов']));
-        kab.appendChild(bdg);
-      }
+      if (kab) kab.textContent = 'Кабинет · ' + _orders.length;
     }
   }
 
-  /* ---------------- Непрерывность заказа: «Продолжить заказ» ---------------- */
+  /* ---------------- «Продолжить заказ» ---------------- */
   (function continueOrder() {
     var draft = Salon.store.get('salon_draft', null);
-    var cta = document.querySelector('.nav-cta');
-    if (!cta || !draft || !draft.state || here === 'configurator.html') return;
-    var a = document.createElement('a');
-    a.className = 'btn btn-ghost nav-resume';
-    a.href = 'configurator.html?step=' + ((draft.idx || 0) + 1);
-    a.innerHTML = 'Продолжить заказ <span class="ar">→</span>';
-    cta.insertBefore(a, cta.firstChild);
-    var kab = cta.querySelector('a.btn-ghost[href="dashboard.html"]');
-    if (kab) kab.style.display = 'none';
+    if (!draft || !draft.state || here === 'configurator.html') return;
+    var main = document.querySelector('.nav-cta a.btn-wax');
+    if (main) {
+      main.textContent = 'Продолжить заказ';
+      main.href = 'configurator.html?step=' + ((draft.idx || 0) + 1);
+    }
   })();
 
-  /* ---------------- Подвал ---------------- */
+  /* ---------------- Индикатор раздела в колонтитуле ---------------- */
+  (function () {
+    var slot = document.querySelector('.head-section');
+    if (!slot) return;
+    var title = (document.title.split('—')[0] || '').trim();
+    slot.textContent = title;
+    var chapters = document.querySelectorAll('[data-chapter]');
+    if (!chapters.length || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) slot.textContent = en.target.getAttribute('data-chapter');
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    chapters.forEach(function (c) { io.observe(c); });
+  })();
+
+  /* ---------------- Подвал-колофон ---------------- */
   if (!document.querySelector('.site-footer')) {
     var footer = document.createElement('footer');
     footer.className = 'site-footer';
-    footer.innerHTML = '<div class="wrap"><div class="foot-grid">' +
-      '<div>' + brandHTML() + '<p class="muted" style="max-width:300px;margin-top:14px">Авторские академические работы под ключ. Пишем вручную, ведём до защиты, проверки показываем до оплаты.</p></div>' +
-      '<div><h5>Платформа</h5><a href="configurator.html">Рассчитать заказ</a><a href="tariffs.html">Тарифы и цены</a><a href="check.html">Проверка текста</a><a href="expertise.html">Экспертиза</a><a href="referral.html">Реферальный клуб</a><a href="knowledge.html">База знаний</a><a href="dashboard.html">Личный кабинет</a></div>' +
-      '<div><h5>Документы</h5><a href="#" class="placeholder">[Договор-оферта]</a><a href="#" class="placeholder">[Политика ПДн]</a><a href="#" class="placeholder">[Оплата и возврат]</a></div>' +
-      '<div><h5>Связь</h5><a href="#" data-msg class="placeholder">[Telegram]</a><a href="#" data-msg class="placeholder">[WhatsApp]</a><a href="#" data-msg class="placeholder">[E-mail]</a></div>' +
-      '</div><div class="foot-note"><span class="placeholder">[ИП Фамилия И.О. · ИНН 000000000000 · ОГРНИП 000000000000000]</span><br>' +
-      'Сайт оказывает информационно-консультационные услуги и помощь в подготовке авторских материалов-образцов по теме, указанной заказчиком. © 2026 Академический Салон.</div></div>';
+    var fWrap = document.createElement('div'); fWrap.className = 'wrap';
+
+    /* колонки: бренд+контакты · навигация · документы */
+    var fCols = document.createElement('div'); fCols.className = 'foot-cols';
+
+    /* — колонка 1: бренд + контакты — */
+    var cBrand = document.createElement('div'); cBrand.className = 'fc-brand';
+    var fBrand = document.createElement('a');
+    fBrand.href = 'index.html'; fBrand.className = 'brand';
+    var fPara = document.createElement('span'); fPara.className = 'b-para'; fPara.setAttribute('aria-hidden', 'true'); fPara.textContent = '¶';
+    var fName = document.createElement('span'); fName.className = 'b-name'; fName.textContent = 'Академический Салон';
+    fBrand.appendChild(fPara); fBrand.appendChild(fName);
+    cBrand.appendChild(fBrand);
+    var cContacts = document.createElement('div'); cContacts.className = 'foot-contacts';
+    [['Бот · заявки и расчёт', LINKS.bot, '@academic_saloon_bot'],
+     ['Написать человеку', LINKS.human, '@academicsaloon'],
+     ['ВКонтакте', LINKS.vk, 'vk.com/academicsaloon']].forEach(function (c) {
+      var a = document.createElement('a'); a.href = c[1]; a.target = '_blank'; a.rel = 'noopener';
+      a.innerHTML = '<span class="fco-l">' + c[0] + '</span><span class="fco-v">' + c[2] + '</span>';
+      cContacts.appendChild(a);
+    });
+    cBrand.appendChild(cContacts);
+
+    /* — колонка 2: разделы — */
+    var cNav = document.createElement('div');
+    cNav.innerHTML = '<div class="fc-h caps">Разделы</div>';
+    var fNav = document.createElement('nav'); fNav.className = 'foot-links';
+    fNav.setAttribute('aria-label', 'Карта сайта');
+    [['configurator.html', 'Рассчитать заказ'], ['tariffs.html', 'Цены и услуги'], ['guarantees.html', 'Гарантии'],
+     ['reviews.html', 'Отзывы'], ['referral.html', 'Клуб и бонусы'], ['check.html', 'Проверка текста'],
+     ['dashboard.html', 'Кабинет']].forEach(function (l) {
+      var a = document.createElement('a'); a.href = l[0]; a.textContent = l[1]; fNav.appendChild(a);
+    });
+    cNav.appendChild(fNav);
+
+    /* — колонка 3: документы — */
+    var cDocs = document.createElement('div');
+    cDocs.innerHTML = '<div class="fc-h caps">Документы</div>';
+    var fDocs = document.createElement('nav'); fDocs.className = 'foot-links';
+    fDocs.setAttribute('aria-label', 'Правовые документы');
+    [['oferta.html', 'Публичная оферта'], ['privacy.html', 'Политика ПДн'], ['consent.html', 'Согласие на обработку ПДн'],
+     ['loyalty.html', 'Правила программы лояльности'], ['terms.html', 'Пользовательское соглашение'],
+     ['requisites.html', 'Реквизиты и правовая информация']].forEach(function (l) {
+      var a = document.createElement('a'); a.href = l[0]; a.textContent = l[1]; fDocs.appendChild(a);
+    });
+    cDocs.appendChild(fDocs);
+
+    fCols.appendChild(cBrand); fCols.appendChild(cNav); fCols.appendChild(cDocs);
+
+    var fColophon = document.createElement('div'); fColophon.className = 'colophon';
+    fColophon.textContent = '6 лет практики · 1000+ работ доведено до приёмки';
+
+    var fNote = document.createElement('p'); fNote.className = 'foot-note';
+    fNote.innerHTML = 'Исполнитель: Семёнов Семён Юрьевич, самозанятый (налог на профессиональный доход, ФЗ № 422-ФЗ), ИНН 212885750445, г. Казань. ' +
+      'Все услуги и материалы носят информационно-консультационный и учебно-методический характер и предназначены для самостоятельной подготовки заказчика. ' +
+      'Сайт не собирает и не хранит персональные данные. © 2020–2026 Академический Салон.';
+
+    fWrap.appendChild(fCols); fWrap.appendChild(fColophon); fWrap.appendChild(fNote);
+    footer.appendChild(fWrap);
     document.body.appendChild(footer);
   }
 
-  /* ---------------- Заглушки мессенджеров → тост ---------------- */
-  document.addEventListener('click', function (e) {
-    var t = e.target.closest('[data-msg]');
-    if (t) { e.preventDefault(); Salon.toast('Контакты подставим, когда вы их дадите — пока это демонстрация.', { type: 'info' }); }
+  /* ---------------- Мобильный sticky-CTA (если страница не задала свой) ---------------- */
+  if (!document.querySelector('.mobile-cta') && here !== 'configurator.html' && here !== '404.html') {
+    var mcta = document.createElement('div');
+    mcta.className = 'mobile-cta';
+    mcta.innerHTML = '<a class="btn btn-wax" href="configurator.html">Рассчитать стоимость</a>';
+    document.body.appendChild(mcta);
+  }
+
+  /* ---------------- Лист связи (bot / человек / ВК) ----------------
+     Никакие данные не отправляются с сайта: открываем мессенджер,
+     где отвечает бот или человек. [data-msg] или [data-contact] — триггеры. */
+  (function () {
+    var sheet, lastFocus;
+    function build(opts) {
+      opts = opts || {};
+      var el = document.createElement('div');
+      el.className = 'contact-sheet';
+      el.setAttribute('role', 'dialog');
+      el.setAttribute('aria-modal', 'true');
+      el.setAttribute('aria-label', 'Как с нами связаться');
+      var order = opts.orderLink || LINKS.bot;
+      el.innerHTML =
+        '<div class="cs-backdrop" data-cs-close></div>' +
+        '<div class="cs-card sheet">' +
+          '<div class="cs-head"><span class="caps">Связаться с Салоном</span>' +
+            '<button class="cs-x" type="button" aria-label="Закрыть" data-cs-close>×</button></div>' +
+          '<p class="cs-lead">' + (opts.lead ||
+            'Напишите тему и срок — оценим объём и назовём цену. Ни к чему не обязывает.') + '</p>' +
+          '<a class="cs-opt cs-opt--wax" href="' + order + '" target="_blank" rel="noopener">' +
+            '<span class="cs-o-ic" aria-hidden="true">✎</span>' +
+            '<span class="cs-o-txt"><b>Оформить через бота</b><small>Расчёт, заявка и статус заказа — за пару минут</small></span>' +
+            '<span class="ar" aria-hidden="true">→</span></a>' +
+          '<a class="cs-opt" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
+            '<span class="cs-o-ic" aria-hidden="true">✆</span>' +
+            '<span class="cs-o-txt"><b>Написать человеку в Telegram</b><small>Ответим лично, обычно в течение пары часов</small></span>' +
+            '<span class="ar" aria-hidden="true">→</span></a>' +
+          '<a class="cs-opt" href="' + LINKS.vk + '" target="_blank" rel="noopener">' +
+            '<span class="cs-o-ic" aria-hidden="true">ВК</span>' +
+            '<span class="cs-o-txt"><b>ВКонтакте</b><small>vk.com/academicsaloon</small></span>' +
+            '<span class="ar" aria-hidden="true">→</span></a>' +
+          '<p class="cs-note">Сайт не собирает и не хранит ваши данные. Переписка идёт в выбранном мессенджере. Нажимая, вы принимаете <a href="oferta.html">оферту</a> и <a href="privacy.html">политику ПДн</a>.</p>' +
+        '</div>';
+      return el;
+    }
+    function close() {
+      if (!sheet) return;
+      sheet.classList.remove('open');
+      document.body.classList.remove('toc-lock');
+      var s = sheet; setTimeout(function () { if (s && s.parentNode) s.parentNode.removeChild(s); }, 240);
+      sheet = null;
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    Salon.contact = function (opts) {
+      lastFocus = document.activeElement;
+      sheet = build(opts || {});
+      document.body.appendChild(sheet);
+      document.body.classList.add('toc-lock');
+      requestAnimationFrame(function () { sheet.classList.add('open'); });
+      var f = sheet.querySelector('.cs-opt'); if (f) f.focus();
+      sheet.addEventListener('click', function (e) { if (e.target.closest('[data-cs-close]')) { e.preventDefault(); close(); } });
+    };
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sheet) close(); });
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-msg], [data-contact]');
+      if (!t) return;
+      e.preventDefault();
+      var st = Salon.store.get('salon_draft', null);
+      var link = (t.getAttribute('data-contact') === 'bot' || (st && st.state))
+        ? window.SalonBotLink(st && st.state) : LINKS.bot;
+      Salon.contact({ orderLink: link, lead: t.getAttribute('data-msg-lead') || undefined });
+    });
+  })();
+
+  /* ---------------- Печати по разметке: <span data-seal="ТЕКСТ · ПО · КРУГУ · "> ---------------- */
+  document.querySelectorAll('[data-seal]').forEach(function (el) {
+    el.innerHTML = Salon.sealSVG({
+      ring: el.getAttribute('data-seal') || undefined,
+      center: el.getAttribute('data-seal-center') || undefined,
+      cls: el.getAttribute('data-seal-cls') || undefined,
+      size: parseInt(el.getAttribute('data-seal-size'), 10) || undefined
+    });
   });
 
-  /* ---------------- Reveal (без флэша) ---------------- */
-  function revealAll() { document.querySelectorAll('.reveal').forEach(function (n) { n.classList.add('in'); }); }
+  /* ---------------- Reveal: секции, линейки, печати, шкалы ---------------- */
+  var OBSERVED = '.reveal, .rule.draw, .seal.press, .paysteps';
+  function markAll() { document.querySelectorAll(OBSERVED).forEach(function (n) { n.classList.add('in'); }); }
+  /* страховка помечает только то, что уже около вьюпорта, — скролл-хореография ниже сохраняется */
+  function markNearViewport() {
+    var limit = window.innerHeight * 1.2;
+    document.querySelectorAll(OBSERVED).forEach(function (n) {
+      if (!n.classList.contains('in') && n.getBoundingClientRect().top < limit) n.classList.add('in');
+    });
+  }
   if (reduceMotion || !('IntersectionObserver' in window)) {
-    revealAll();
+    markAll();
   } else {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    document.querySelectorAll('.reveal:not(.in)').forEach(function (n) { io.observe(n); });
-    window.addEventListener('load', function () { setTimeout(revealAll, 1600); });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    document.querySelectorAll(OBSERVED).forEach(function (n) { if (!n.classList.contains('in')) io.observe(n); });
+    window.addEventListener('load', function () { setTimeout(markNearViewport, 1800); });
   }
+  /* наблюдатель для динамически добавленных узлов (кабинет, результаты) */
+  Salon.observeReveal = function (root) {
+    (root || document).querySelectorAll(OBSERVED).forEach(function (n) { n.classList.add('in'); });
+  };
 
-  /* ---------------- Прогресс чтения + умная шапка + «наверх» (единый scroll) ---------------- */
-  var bar = null;
-  if (!reduceMotion) { bar = document.createElement('div'); bar.className = 'read-progress'; bar.setAttribute('aria-hidden', 'true'); document.body.appendChild(bar); }
-  var toTop = document.createElement('button');
-  toTop.className = 'to-top'; toTop.setAttribute('aria-label', 'Наверх'); toTop.innerHTML = '↑';
-  document.body.appendChild(toTop);
-  toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); });
-
+  /* ---------------- Умная шапка (прячется при скролле вниз) ---------------- */
   var lastY = window.scrollY, hidden = false, scheduled = false;
   function onScrollFrame() {
     scheduled = false;
     var y = window.scrollY;
     var hdr = document.querySelector('.site-header');
-    if (hdr) {
-      hdr.classList.toggle('scrolled', y > 24);
-      if (Math.abs(y - lastY) > 6) {
-        var goDown = y > lastY && y > 220;
-        if (goDown !== hidden) { hidden = goDown; hdr.classList.toggle('hide', hidden); }
-      }
+    if (hdr && Math.abs(y - lastY) > 6) {
+      var goDown = y > lastY && y > 200;
+      if (goDown !== hidden) { hidden = goDown; hdr.classList.toggle('hide', hidden); }
     }
-    if (bar) { var h = docEl.scrollHeight - docEl.clientHeight; bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(y / h, 1) : 0) + ')'; }
-    toTop.classList.toggle('show', y > 700);
-    window.SalonScrollY = y;
     lastY = y;
   }
   window.addEventListener('scroll', function () { if (!scheduled) { scheduled = true; requestAnimationFrame(onScrollFrame); } }, { passive: true });
-  window.addEventListener('resize', onScrollFrame, { passive: true });
-  onScrollFrame();
 
   /* ---------------- Мгновенная навигация: prefetch / prerender ---------------- */
   (function () {
@@ -325,141 +589,19 @@
     } catch (e) {}
   })();
 
-  /* ---------------- Count-up чисел ---------------- */
-  function countUp(n) {
-    var target = parseFloat(n.getAttribute('data-count')) || 0;
-    var suf = n.getAttribute('data-suffix') || '', pre = n.getAttribute('data-prefix') || '';
-    var dur = 1100, t0 = null;
-    function step(ts) { if (!t0) t0 = ts; var p = Math.min((ts - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
-      n.textContent = pre + Math.round(target * e).toLocaleString('ru-RU') + suf; if (p < 1) requestAnimationFrame(step); }
-    requestAnimationFrame(step);
-  }
+  /* ---------------- Count-up для [data-count] ---------------- */
   if (!reduceMotion && 'IntersectionObserver' in window) {
     var cio = new IntersectionObserver(function (ents) {
-      ents.forEach(function (en) { if (en.isIntersecting) { countUp(en.target); cio.unobserve(en.target); } });
+      ents.forEach(function (en) {
+        if (en.isIntersecting) {
+          var n = en.target;
+          Salon.countTo(n, parseFloat(n.getAttribute('data-count')) || 0, {
+            suffix: n.getAttribute('data-suffix') || '', prefix: n.getAttribute('data-prefix') || '', duration: 900
+          });
+          cio.unobserve(n);
+        }
+      });
     }, { threshold: 0.6 });
     document.querySelectorAll('[data-count]').forEach(function (n) { cio.observe(n); });
   }
-
-  /* ---------------- Магнитные кнопки (desktop, тонко) ---------------- */
-  if (window.matchMedia('(pointer:fine)').matches && !reduceMotion) {
-    document.querySelectorAll('.btn-lg').forEach(function (btn) {
-      btn.addEventListener('mousemove', function (e) {
-        var r = btn.getBoundingClientRect();
-        var x = (e.clientX - r.left - r.width / 2) / r.width;
-        var y = (e.clientY - r.top - r.height / 2) / r.height;
-        btn.style.transform = 'translate(' + (x * 7).toFixed(1) + 'px,' + (y * 5 - 2).toFixed(1) + 'px)';
-      });
-      btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
-    });
-  }
-
-  /* ---------------- 3D «созвездие знаний» (ленивая загрузка) ---------------- */
-  function webglOK() {
-    try { var c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl'))); }
-    catch (e) { return false; }
-  }
-  function loadScript(src, cb) {
-    var s = document.createElement('script'); s.src = src; s.async = true;
-    s.onload = function () { cb(true); };
-    s.onerror = function () { docEl.classList.add('bg-fallback'); cb(false); };
-    document.head.appendChild(s);
-  }
-  function startBackground() {
-    if (reduceMotion || !webglOK()) return;
-    if (window.innerWidth < 540) return;
-    var conn = navigator.connection || navigator.webkitConnection;
-    if (conn && (conn.saveData || /(2|3)g/.test(conn.effectiveType || ''))) return;
-    loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', function (ok) {
-      if (!ok || !window.THREE) return;
-      try { initConstellation(window.THREE); } catch (err) { docEl.classList.add('bg-fallback'); }
-    });
-  }
-
-  function initConstellation(THREE) {
-    var canvas = document.getElementById('bg-canvas') || el('canvas', 'bg-canvas');
-    if (!canvas.parentNode) document.body.insertBefore(canvas, document.body.firstChild);
-
-    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.z = 14;
-
-    function sprite() {
-      var c = document.createElement('canvas'); c.width = c.height = 64;
-      var g = c.getContext('2d'); var r = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-      r.addColorStop(0, 'rgba(244,224,170,1)'); r.addColorStop(.25, 'rgba(210,173,94,.85)');
-      r.addColorStop(1, 'rgba(210,173,94,0)');
-      g.fillStyle = r; g.fillRect(0, 0, 64, 64);
-      var tx = new THREE.Texture(c); tx.needsUpdate = true; return tx;
-    }
-    var tex = sprite();
-    var group = new THREE.Group(); scene.add(group);
-    var isMobile = window.innerWidth < 720;
-
-    function constellation(count, radius, size, opacity) {
-      var pos = new Float32Array(count * 3);
-      for (var i = 0; i < count; i++) {
-        var u = Math.random(), v = Math.random();
-        var th = 2 * Math.PI * u, ph = Math.acos(2 * v - 1);
-        var rr = radius * (0.78 + Math.random() * 0.22);
-        pos[i * 3] = rr * Math.sin(ph) * Math.cos(th);
-        pos[i * 3 + 1] = rr * Math.sin(ph) * Math.sin(th);
-        pos[i * 3 + 2] = rr * Math.cos(ph);
-      }
-      var geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      var mat = new THREE.PointsMaterial({ size: size, map: tex, transparent: true, opacity: opacity, depthWrite: false, blending: THREE.AdditiveBlending });
-      return new THREE.Points(geo, mat);
-    }
-    group.add(constellation(isMobile ? 420 : 900, 9, 0.5, 0.9));
-    group.add(constellation(isMobile ? 240 : 520, 13, 0.32, 0.5));
-
-    (function lines() {
-      var n = isMobile ? 26 : 60, seg = new Float32Array(n * 6), R = 9;
-      for (var i = 0; i < n; i++) {
-        var a = [Math.random() - .5, Math.random() - .5, Math.random() - .5];
-        var b = [a[0] + (Math.random() - .5) * .5, a[1] + (Math.random() - .5) * .5, a[2] + (Math.random() - .5) * .5];
-        seg[i * 6] = a[0] * R; seg[i * 6 + 1] = a[1] * R; seg[i * 6 + 2] = a[2] * R;
-        seg[i * 6 + 3] = b[0] * R; seg[i * 6 + 4] = b[1] * R; seg[i * 6 + 5] = b[2] * R;
-      }
-      var g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(seg, 3));
-      var m = new THREE.LineBasicMaterial({ color: 0xd2ad5e, transparent: true, opacity: 0.12 });
-      group.add(new THREE.LineSegments(g, m));
-    })();
-
-    var tx2 = 0, ty2 = 0, mx = 0, my = 0;
-    if (window.matchMedia('(pointer:fine)').matches) {
-      window.addEventListener('mousemove', function (e) {
-        mx = (e.clientX / window.innerWidth - 0.5); my = (e.clientY / window.innerHeight - 0.5);
-      }, { passive: true });
-    }
-    var running = true, lit = false;
-    document.addEventListener('visibilitychange', function () { running = !document.hidden; if (running) loop(); });
-    window.addEventListener('resize', function () {
-      camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    function loop() {
-      if (!running) return;
-      requestAnimationFrame(loop);
-      group.rotation.y += 0.0009;
-      group.rotation.x += 0.0004;
-      tx2 += (mx * 0.6 - tx2) * 0.04;
-      ty2 += (-my * 0.6 - ty2) * 0.04;
-      group.rotation.y += tx2 * 0.01;
-      group.rotation.x += ty2 * 0.01;
-      camera.position.z = 14 + Math.min(window.SalonScrollY || 0, 1400) * 0.004;
-      renderer.render(scene, camera);
-      if (!lit) { lit = true; canvas.classList.add('lit'); }
-    }
-    loop();
-  }
-
-  var ric = window.requestIdleCallback || function (f) { return setTimeout(f, 250); };
-  window.addEventListener('load', function () { ric(startBackground, { timeout: 2500 }); });
 })();

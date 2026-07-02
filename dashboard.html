@@ -4,214 +4,318 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Личный кабинет — Академический Салон</title>
-<meta name="description" content="Личный кабинет: прогресс заказа по этапам, главы и файлы, отчёт о проверках, оплата по частям, переписка с экспертом." />
+<meta name="description" content="Формуляр вашего заказа: этапы работы, график оплаты, отчёт о проверках. Кабинет работает прямо в браузере." />
+<meta name="robots" content="noindex" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/styles.css" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
-  .dash-wrap{padding-top:120px}
-  .dash-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:30px}
-  .dash-grid{display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start}
-  .order-item{padding:18px;border:1px solid var(--line);border-radius:var(--radius-sm);background:rgba(8,11,9,.4);cursor:pointer;transition:.2s;margin-bottom:12px}
-  .order-item:hover{border-color:var(--gold-line)}
-  .order-item.active{border-color:var(--gold);background:var(--gold-soft)}
-  .order-item b{font-family:var(--serif);font-size:15px}
-  .order-item .oi-sub{font-size:13px;color:var(--ink-soft);margin-top:3px}
-  .panel-block{padding:26px;margin-bottom:22px}
-  .vtl{list-style:none}
-  .vtl li{position:relative;padding:0 0 22px 30px;border-left:1.5px solid var(--line-2)}
-  .vtl li:last-child{border-left-color:transparent;padding-bottom:0}
-  .vtl li .mk{position:absolute;left:-8px;top:0;width:16px;height:16px;border-radius:50%;border:2px solid var(--line-2);background:var(--bg)}
-  .vtl li.done .mk{background:var(--gold);border-color:var(--gold)}
-  .vtl li.cur .mk{border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
-  .vtl li.cur::after{content:"сейчас";position:absolute;right:0;top:0;font-size:11px;color:var(--gold);background:var(--gold-soft);padding:2px 8px;border-radius:20px}
-  .vtl li b{display:block;font-size:15.5px}
-  .vtl li.pending{opacity:.5}
-  .vtl li .when{font-size:12.5px;color:var(--ink-faint)}
-  .pay-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  .pay{padding:16px;border:1px solid var(--line);border-radius:var(--radius-sm);background:rgba(8,11,9,.4)}
-  .pay .pamt{font-family:var(--serif);font-size:20px;color:var(--ink)}
-  .pay .pst{font-size:12.5px;margin-top:6px}
-  .pay.paid{border-color:var(--gold-line)} .pay.paid .pst{color:var(--gold)}
-  .pay.due .pst{color:var(--ink-soft)}
-  .filelist{list-style:none}
-  .filelist li{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid var(--line);font-size:14.5px}
-  .filelist li:first-child{border-top:none}
-  .filelist .fmeta{flex:1;color:var(--ink)} .filelist .fmeta small{display:block;color:var(--ink-faint);font-size:12.5px}
-  .report{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .report .rb{padding:16px;border:1px solid var(--line);border-radius:var(--radius-sm);background:rgba(8,11,9,.4);text-align:center}
-  .report .rb b{font-family:var(--serif);font-size:28px;display:block}
-  .report .rb.good b{color:var(--gold)}
-  .chat{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
-  .msg{max-width:78%;padding:12px 15px;border-radius:14px;font-size:14.5px;line-height:1.5}
-  .msg.them{align-self:flex-start;background:rgba(244,240,231,.06);border:1px solid var(--line)}
-  .msg.me{align-self:flex-end;background:var(--gold-soft);border:1px solid var(--gold-line)}
-  .msg .mwho{font-size:11.5px;color:var(--ink-faint);margin-bottom:3px}
-  .chat-input{display:flex;gap:10px}
-  .chat-input input{flex:1}
-  .empty{padding:60px 20px;text-align:center}
-  @media(max-width:960px){.dash-grid{grid-template-columns:1fr}.pay-steps{grid-template-columns:1fr}.report{grid-template-columns:1fr}}
+  /* ============================================================
+     КАБИНЕТ — формуляр заказа: одна колонка ≤720px.
+     Демо-витрина этапной механики + реальные заявки из localStorage.
+     ============================================================ */
+  .cab{max-width:720px;margin:0 auto}
+  .cab-h{font-size:clamp(26px,3.4vw,42px);font-weight:360;margin-bottom:clamp(20px,3vw,32px)}
+
+  /* честная пометка демо-примера */
+  .demo-note{
+    display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;
+    padding:16px 18px;margin-bottom:22px;
+    border:1px dashed var(--stamp);border-radius:var(--r);
+    background:rgba(58,78,122,.05);
+  }
+  .demo-note .dn-text{flex:1 1 240px;font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:0}
+  .demo-note .btn{flex:0 0 auto}
+
+  /* переключатель заказов (если их больше одного) */
+  .ord-switch{display:flex;flex-direction:column;margin-bottom:20px}
+  .ord-switch .dotrow{width:100%;background:transparent;border:0;cursor:pointer;font:inherit;color:inherit;min-height:44px;transition:background .12s}
+  .ord-switch .dotrow:hover{background:var(--mark)}
+  .ord-switch .osw-no{font-size:12.5px;color:var(--ink-soft);letter-spacing:.06em}
+  .ord-switch .osw-type{font-size:14.5px}
+  .ord-switch .dr-val{font-size:12px;color:var(--ink-soft)}
+
+  /* шапка формуляра */
+  .ord-top{display:flex;justify-content:space-between;align-items:center;gap:10px 14px;flex-wrap:wrap;margin-bottom:16px}
+  .ord-no{font-size:13.5px;letter-spacing:.1em;color:var(--ink-soft)}
+  .ord-type{font-size:clamp(22px,3vw,30px);font-weight:400;margin-bottom:6px}
+  .ord-topic{font-family:var(--serif);font-style:italic;font-size:15.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:6px}
+  .ord-price-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px 12px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:3px double var(--ink)}
+  .ord-price{font-size:clamp(18px,2.4vw,22px);letter-spacing:-.02em;white-space:nowrap}
+  .ord-price-note{margin-top:8px}
+
+  /* этапы: строки-отточия с состояниями */
+  .stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:28px 0 4px}
+  .stage-prog{font-size:12px;color:var(--ink-soft);letter-spacing:.08em}
+  .stage-row{flex-wrap:wrap;row-gap:2px}
+  .stage-row .st-no{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;color:var(--ink-faint);flex:0 0 24px}
+  .stage-row.is-past .st-no{color:var(--verify)}
+  .stage-row.is-now .st-no{color:var(--ink)}
+  .stage-row.is-next{color:var(--ink-soft)}
+  .stage-row small{flex-basis:100%;padding-left:36px;font-size:13px;color:var(--ink-soft);line-height:1.5}
+  .stage-row .dr-val{font-size:12px;color:var(--ink-soft)}
+  .tag.tag-mini{font-size:10px;padding:3px 8px;gap:5px}
+
+  /* оплата и отчёт */
+  .pay-block{margin-top:clamp(32px,5vw,48px)}
+  .pay-block > .caps{display:block;margin-bottom:20px}
+  .pay-note{margin-top:14px}
+  .report-block{margin-top:clamp(32px,5vw,48px)}
+  .rp-empty{border:1px dashed var(--hairline-strong);border-radius:var(--r);padding:24px 18px;text-align:center}
+
+  /* связь */
+  .contact-row{
+    display:flex;justify-content:space-between;align-items:center;gap:14px 18px;flex-wrap:wrap;
+    margin-top:clamp(32px,5vw,48px);padding-top:22px;border-top:1px solid var(--hairline);
+  }
+  .contact-row .cr-q{font-family:var(--serif);font-size:17px}
+  .cr-btns{display:flex;gap:10px;flex-wrap:wrap}
+
+  .cab-foot{margin-top:clamp(28px,5vw,44px);padding-top:14px;border-top:1px solid var(--hairline)}
+
+  @media(max-width:540px){
+    .contact-row{flex-direction:column;align-items:stretch}
+    .cr-btns{width:100%}
+    .cr-btns .btn{flex:1}
+  }
 </style>
-<link rel="canonical" href="https://salon.217-18-63-210.sslip.io/dashboard.html" />
+<link rel="canonical" href="https://academic-saloon.duckdns.org/dashboard.html" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-<meta name="theme-color" content="#080b09" />
-<meta name="robots" content="noindex,follow" />
+<meta name="theme-color" content="#F6F1E7" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
 <meta property="og:title" content="Личный кабинет — Академический Салон" />
-<meta property="og:description" content="Личный кабинет: прогресс заказа по этапам, главы и файлы, отчёт о проверках, оплата по частям, переписка с экспертом." />
-<meta property="og:url" content="https://salon.217-18-63-210.sslip.io/dashboard.html" />
-<meta property="og:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+<meta property="og:description" content="Формуляр заказа: этапы работы, график оплаты, отчёт о проверках." />
+<meta property="og:url" content="https://academic-saloon.duckdns.org/dashboard.html" />
+<meta property="og:image" content="https://academic-saloon.duckdns.org/assets/img/og-cover.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Личный кабинет — Академический Салон" />
-<meta name="twitter:description" content="Личный кабинет: прогресс заказа по этапам, главы и файлы, отчёт о проверках, оплата по частям, переписка с экспертом." />
-<meta name="twitter:image" content="https://salon.217-18-63-210.sslip.io/assets/img/og-cover.png" />
+<meta name="twitter:description" content="Формуляр заказа: этапы, оплата, отчёт о проверках." />
+<meta name="twitter:image" content="https://academic-saloon.duckdns.org/assets/img/og-cover.png" />
 </head>
 <body>
 
-<main class="dash-wrap">
+<main class="cab-page">
   <div class="wrap">
-    <div class="dash-head">
-      <div>
-        <span class="eyebrow">Личный кабинет</span>
-        <h1 class="title" style="margin-bottom:0">Ваши заказы</h1>
-      </div>
-      <a class="btn btn-primary" href="configurator.html">+ Новый заказ</a>
-    </div>
 
-    <div class="dash-grid" id="dash"></div>
+    <section class="chapter cab" id="formular" data-chapter="Формуляр заказа">
+      <div class="ch-rule"><span class="ch-no">§ 01 · Формуляр заказа</span></div>
+      <h1 class="cab-h reveal">Личный кабинет</h1>
+
+      <div id="cabRoot">
+        <noscript>
+          <p class="petit">Формуляр заказа собирается в вашем браузере — включите JavaScript, чтобы его увидеть.</p>
+        </noscript>
+      </div>
+
+      <p class="petit cab-foot reveal">Здесь сохраняются ваши расчёты — прямо в браузере, без регистрации. Настоящий кабинет с заказами, статусами, чатом и бонусами живёт в <a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Telegram-боте</a>.</p>
+    </section>
+
   </div>
 </main>
 
 <script src="assets/js/app.js"></script>
 <script>
-(function(){
-  var STAGES=['Согласование плана','Теоретическая часть','Практическая часть','Проверки и отчёт','Приёмка и защита'];
-  var dash=document.getElementById('dash');
+function initDash() {
+  'use strict';
+  var C = window.SalonCalc, S = window.Salon;
+  var root = document.getElementById('cabRoot');
+  if (!C || !root) return;
 
-  function load(){ try{ return JSON.parse(localStorage.getItem('salon_orders')||'[]'); }catch(e){ return []; } }
-  function save(a){ try{ localStorage.setItem('salon_orders',JSON.stringify(a)); }catch(e){} }
+  /* ---------- данные ---------- */
+  var STAGES = ['Заявка', 'План', 'Главы', 'Проверки', 'Приёмка'];
+  var NOW_TEXT = [
+    'Изучаем тему и методичку — пришлём план и смету',
+    'Согласуем структуру глав и фиксируем смету',
+    'Пишем главы и показываем черновики по мере готовности',
+    'Проводим проверки — отчёт покажем до финальной оплаты',
+    'Вносим правки по замечаниям — бесплатно, пока работу не примут'
+  ];
+  var TRIPLE = ['diplom', 'master', 'chapter', 'scopus'];
 
-  var orders=load();
-  if(!orders.length){
-    // демо-заказ, чтобы кабинет был живым до первой заявки
-    orders=[{ id:'2026-0418', type:'Магистерская диссертация', disc:'Гуманитарные / экономика',
-      term:'Свободный (от 30 дней)', tier:'Под ключ', priceLow:45000, priceHigh:60000,
-      name:'', contact:'', theme:'Управление лояльностью клиентов в розничной сети',
-      stageIndex:2, createdAt:'2026-06-18', demo:true }];
+  function label(list, id) {
+    var x = list.find(function (i) { return i.id === id; });
+    return x ? x.label : '';
   }
-  var sel=0;
-
-  function money(n){ return n.toLocaleString('ru-RU')+' ₽'; }
-
-  function paySchedule(o){
-    var total=Math.round((o.priceLow+o.priceHigh)/2);
-    if(/кандидат/i.test(o.type)) return [
-      {amt:Math.round(total*0.3),label:'Старт · после разбора плана',paidIf:1},
-      {amt:Math.round(total*0.4),label:'По главам · промежуточные',paidIf:3},
-      {amt:Math.round(total*0.3),label:'Финал · к защите',paidIf:4}
-    ];
-    var isBig=/диплом|магистер|диссерт|scopus/i.test(o.type);
-    if(isBig) return [
-      {amt:Math.round(total*0.3),label:'Старт · бронь и план',paidIf:1},
-      {amt:Math.round(total*0.4),label:'Контроль · черновик глав',paidIf:3},
-      {amt:Math.round(total*0.3),label:'Финал · после отчёта',paidIf:4}
-    ];
-    return [
-      {amt:Math.round(total*0.5),label:'Старт',paidIf:1},
-      {amt:Math.round(total*0.5),label:'По готовности',paidIf:4}
-    ];
-  }
-
-  function renderList(){
-    var html='<div><div class="muted" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:12px">МОИ ЗАКАЗЫ</div>';
-    orders.forEach(function(o,i){
-      var demoTag=o.demo?' <span class="gold" style="font-size:11px;border:1px solid var(--gold-line);border-radius:20px;padding:1px 7px">пример</span>':'';
-      html+='<div class="order-item'+(i===sel?' active':'')+'" data-i="'+i+'"><b>Заказ №'+o.id+'</b>'+demoTag+'<div class="oi-sub">'+o.type+'</div><div class="oi-sub gold">'+(o.stageIndex>=STAGES.length-1?'Готово':'В работе · '+STAGES[o.stageIndex])+'</div></div>';
-    });
-    html+='</div>';
-    return html;
-  }
-
-  function renderDetail(){
-    var o=orders[sel];
-    var pct=Math.round((o.stageIndex)/(STAGES.length-1)*100);
-    var tl=STAGES.map(function(s,i){
-      var cls=i<o.stageIndex?'done':i===o.stageIndex?'cur':'pending';
-      var when=i<o.stageIndex?'готово':i===o.stageIndex?'':'далее';
-      return '<li class="'+cls+'"><span class="mk"></span><b>'+s+'</b><span class="when">'+when+'</span></li>';
-    }).join('');
-    var pays=paySchedule(o).map(function(p){
-      var paid=o.stageIndex>=p.paidIf;
-      return '<div class="pay '+(paid?'paid':'due')+'"><div class="pamt">'+money(p.amt)+'</div><div class="pst">'+p.label+'<br>'+(paid?'✦ оплачено':'ожидается')+'</div></div>';
-    }).join('');
-    var showReport=o.stageIndex>=3;
-
-    var demoBanner=o.demo?'<div class="glass panel-block" style="border-color:var(--gold-line);background:var(--gold-soft);display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span class="badge">Демо-пример</span><span class="muted" style="font-size:14px">Так выглядит кабинет после первой заявки. Это образец, не реальный заказ.</span></div>':'';
-    var html='<div>'+
-      demoBanner+
-      '<div class="glass panel-block">'+
-        '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">'+
-          '<div><div class="muted" style="font-size:13px">Заказ №'+o.id+' · от '+o.createdAt+'</div><h3 style="font-size:24px;margin-top:4px">'+o.type+'</h3>'+
-          (o.theme?'<div class="muted" style="font-size:14px;margin-top:4px">Тема: '+o.theme+'</div>':'')+'</div>'+
-          '<span class="badge">'+(o.stageIndex>=STAGES.length-1?'Готово':'В работе')+'</span>'+
-        '</div>'+
-        '<div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:14px;color:var(--ink-soft)">'+
-          '<span>'+o.disc+'</span><span>·</span><span>'+o.term+'</span><span>·</span><span>«'+o.tier+'»</span><span>·</span><span class="gold">'+money(o.priceLow)+' – '+money(o.priceHigh)+'</span>'+
-        '</div>'+
-        '<div style="height:6px;background:rgba(244,240,231,.1);border-radius:6px;margin-top:18px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));transition:width .6s"></div></div>'+
-      '</div>'+
-
-      '<div class="glass panel-block"><div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:16px">ПРОГРЕСС ПО ЭТАПАМ</div><ul class="vtl">'+tl+'</ul></div>'+
-
-      '<div class="glass panel-block"><div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:16px">ОПЛАТА ПО ЭТАПАМ</div><div class="pay-steps">'+pays+'</div></div>'+
-
-      '<div class="glass panel-block"><div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:16px">ГЛАВЫ И ФАЙЛЫ</div><ul class="filelist">'+
-        '<li><span class="gold">✦</span><span class="fmeta">План работы.pdf<small>загружен · согласован</small></span><a href="#" data-msg class="gold">скачать</a></li>'+
-        (o.stageIndex>=2?'<li><span class="gold">✦</span><span class="fmeta">Глава 1. Теория.docx<small>готова</small></span><a href="#" data-msg class="gold">скачать</a></li>':'')+
-        (o.stageIndex>=3?'<li><span class="gold">✦</span><span class="fmeta">Глава 2. Практика.docx<small>готова</small></span><a href="#" data-msg class="gold">скачать</a></li>':'<li style="opacity:.5"><span>○</span><span class="fmeta">Практическая часть<small>в работе</small></span></li>')+
-      '</ul></div>'+
-
-      (showReport?
-      '<div class="glass panel-block"><div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:6px">ОТЧЁТ О ПРОВЕРКАХ</div><p class="muted" style="font-size:13.5px;margin-bottom:14px">Показываем до финальной оплаты — вы видите цифры, а не верите на слово.</p><div class="report">'+
-        '<div class="rb good"><b>87%</b><span class="muted" style="font-size:13px">оригинальность</span></div>'+
-        '<div class="rb good"><b>низкий</b><span class="muted" style="font-size:13px">риск ИИ-детекции</span></div>'+
-      '</div></div>'
-      :'<div class="glass panel-block" style="opacity:.65"><div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:6px">ОТЧЁТ О ПРОВЕРКАХ</div><p class="muted" style="font-size:14px">Появится на этапе «Проверки и отчёт» — до финальной оплаты.</p></div>')+
-
-      '<div class="glass panel-block"><div class="gold" style="font-size:12.5px;letter-spacing:.04em;margin-bottom:16px">ПЕРЕПИСКА С ЭКСПЕРТОМ</div>'+
-        '<div class="chat" id="chat">'+
-          '<div class="msg them"><div class="mwho">Эксперт</div>Добрый день! Принял вашу работу в сопровождение. Согласовал план — посмотрите в файлах.</div>'+
-          '<div class="msg me"><div class="mwho">Вы</div>Спасибо! Когда будет готова практическая часть?</div>'+
-          '<div class="msg them"><div class="mwho">Эксперт</div>Ориентировочно в срок по плану. Покажу черновик до оплаты следующего этапа.</div>'+
-        '</div>'+
-        '<div class="chat-input"><input type="text" id="cmsg" placeholder="Написать эксперту…" /><button class="btn btn-primary" id="csend">Отправить</button></div>'+
-      '</div>'+
-    '</div>';
-    return html;
-  }
-
-  function render(){
-    dash.innerHTML='<aside>'+renderList()+'</aside><section>'+renderDetail()+'</section>';
-    dash.querySelectorAll('.order-item').forEach(function(el){
-      el.addEventListener('click',function(){ sel=+el.dataset.i; render(); window.scrollTo({top:0,behavior:'smooth'}); });
-    });
-    var send=document.getElementById('csend'), inp=document.getElementById('cmsg');
-    if(send) send.addEventListener('click',function(){
-      var v=inp.value.trim(); if(!v)return;
-      var chat=document.getElementById('chat');
-      var m=document.createElement('div'); m.className='msg me'; m.innerHTML='<div class="mwho">Вы</div>'+v.replace(/</g,'&lt;');
-      chat.appendChild(m); inp.value='';
-      setTimeout(function(){ var r=document.createElement('div'); r.className='msg them'; r.innerHTML='<div class="mwho">Эксперт</div>Принял, отвечу подробно в ближайшее время.'; chat.appendChild(r); chat.scrollTop=chat.scrollHeight; },700);
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  function stage(o) { return Math.min(Math.max(parseInt(o.stageIndex, 10) || 0, 0), 4); }
+
+  var raw = (S && S.store.get('salon_orders', [])) || [];
+  /* записи без typeId — старый формат прежнего сайта, пропускаем */
+  raw = Array.isArray(raw) ? raw.filter(function (o) { return o && o.id && o.typeId; }) : [];
+  var isDemo = !raw.length;
+  var orders;
+  if (isDemo) {
+    var q = C.quote('master', 'hum', 'free', 'turn');
+    orders = [{
+      id: 'AS-DEMO', createdAt: 0,
+      typeId: 'master', typeLabel: label(C.types, 'master'),
+      discId: 'hum', discLabel: label(C.disciplines, 'hum'),
+      termId: 'free', termLabel: label(C.terms, 'free'),
+      tierId: 'turn', tierLabel: label(C.tiers, 'turn'),
+      priceLow: q.low, priceHigh: q.high,
+      topic: 'Управление мотивацией персонала в проектных командах',
+      contact: '', stageIndex: 2
+    }];
+  } else {
+    orders = raw.slice().sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+  }
+  var current = 0;
+
+  /* ---------- мелкие шаблоны ---------- */
+  function tplDemoNote() {
+    return '<div class="demo-note reveal">' +
+      '<span class="tag tag-stamp">Демо-пример</span>' +
+      '<p class="dn-text">Так будет выглядеть ваш заказ после заявки. Это образец, не реальный заказ.</p>' +
+      '<a class="btn btn-wax" href="configurator.html">Рассчитать свою работу <span class="ar">→</span></a>' +
+      '</div>';
+  }
+
+  function tplSwitch() {
+    return '<div class="ord-switch reveal" role="group" aria-label="Ваши заказы">' +
+      orders.map(function (o, i) {
+        var st = stage(o);
+        return '<button type="button" class="dotrow' + (i === current ? ' hl' : '') + '" data-ord="' + i + '" aria-pressed="' + (i === current) + '">' +
+          '<span class="mono osw-no">' + esc(o.id) + '</span>' +
+          '<span class="osw-type">' + esc(o.typeLabel || label(C.types, o.typeId)) + '</span>' +
+          '<span class="dots"></span>' +
+          '<span class="dr-val">этап ' + (st + 1) + ' из 5</span>' +
+          '</button>';
+      }).join('') + '</div>';
+  }
+
+  function stageRow(i, st) {
+    var cls = i < st ? ' is-past' : i === st ? ' hl is-now' : ' is-next';
+    var val = i < st ? '<span class="tag tag-verify tag-mini">принято</span>'
+      : i === st ? '<span class="dr-val">сейчас</span>'
+      : '<span class="dr-val">—</span>';
+    var now = i === st ? '<small>' + NOW_TEXT[st] + '</small>' : '';
+    return '<div class="dotrow stage-row' + cls + '">' +
+      '<span class="st-no">0' + (i + 1) + '</span><span>' + STAGES[i] + '</span>' +
+      '<span class="dots"></span>' + val + now + '</div>';
+  }
+
+  function tplCard(o) {
+    var st = stage(o);
+    var meta = [
+      esc(o.discLabel || label(C.disciplines, o.discId)),
+      esc(o.termLabel || label(C.terms, o.termId)),
+      esc(o.tierLabel || label(C.tiers, o.tierId))
+    ].filter(Boolean).join(' · ');
+    if (o.createdAt) meta += ' · заявка от ' + new Date(o.createdAt).toLocaleDateString('ru-RU');
+    var topic = o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '';
+    var rows = STAGES.map(function (_, i) { return stageRow(i, st); }).join('');
+    return '<article class="sheet sheet-pad stacked reveal" aria-label="Формуляр заказа ' + esc(o.id) + '">' +
+      '<div class="ord-top">' +
+        '<span class="mono ord-no">№ ' + esc(o.id) + '</span>' +
+        '<span class="tag tag-ink">этап ' + (st + 1) + ' · ' + STAGES[st].toLowerCase() + '</span>' +
+        (o.plan ? '<span class="tag tag-stamp">разбор плана</span>' : '') +
+      '</div>' +
+      '<h2 class="ord-type">' + esc(o.typeLabel || label(C.types, o.typeId)) + '</h2>' +
+      topic +
+      '<p class="petit">' + meta + '</p>' +
+      '<div class="ord-price-row">' +
+        '<span class="caps">Вилка сметы</span>' +
+        '<span class="mono ord-price">' + C.fmt(o.priceLow) + ' – ' + C.fmt(o.priceHigh) + ' ₽</span>' +
+      '</div>' +
+      '<p class="petit ord-price-note">Итог внутри вилки зависит от объёма и требований методички; смета фиксируется после разбора плана и не меняется по нашей инициативе.</p>' +
+      '<div class="stage-head">' +
+        '<span class="caps">Этапы работы</span>' +
+        '<span class="mono stage-prog">Этап ' + (st + 1) + ' из 5</span>' +
+      '</div>' +
+      '<div class="stage-list">' + rows + '</div>' +
+      '</article>';
+  }
+
+  function tplPay(o) {
+    if (o.typeId === 'kandidat') {
+      return '<section class="pay-block reveal d1"><span class="caps">График оплаты</span>' +
+        '<p class="petit pay-note">Кандидатскую считаем по главам — у каждой главы своя смета и свой график. Детали фиксируются после разбора плана.</p>' +
+        '</section>';
+    }
+    var st = stage(o);
+    var triple = TRIPLE.indexOf(o.typeId) > -1;
+    var paid = st >= 4 ? 2 : st >= 2 ? 1 : 0;
+    var steps = triple
+      ? [['30%', 'Старт', 'старт и бронь слота'],
+         ['40%', 'Середина', 'после показа основной части'],
+         ['30%', 'Финал', 'перед финальной выдачей']]
+      : [['50%', 'Старт', 'после согласования плана и сметы'],
+         ['50%', 'Финал', 'перед финальной выдачей']];
+    var html = '<section class="pay-block reveal d1"><span class="caps">График оплаты</span>' +
+      '<div class="paysteps" style="--pay-n:' + steps.length + '">' +
+      steps.map(function (s, i) {
+        var done = i < paid;
+        return '<div class="pstep' + (done ? ' paid' : '') + '">' +
+          '<span class="ps-share">' + s[0] + '</span>' +
+          '<b>' + s[1] + (done ? ' — внесено' : '') + '</b>' +
+          '<small>' + s[2] + '</small></div>';
+      }).join('') + '</div>';
+    return html + '</section>';
+  }
+
+  function tplReport(o) {
+    var txt = stage(o) < 3
+      ? 'Появится на этапе «Проверки» — до финальной оплаты.'
+      : 'Отчёт по вашей работе выдаётся на этом этапе — до финальной оплаты.';
+    return '<section class="report-block reveal d2">' +
+      '<div class="report-sheet sheet sheet-pad">' +
+        '<div class="rp-head"><span class="rp-title">Отчёт о проверках</span></div>' +
+        '<div class="rp-empty petit">' + txt + '</div>' +
+      '</div></section>';
+  }
+
+  function tplContact() {
+    return '<section class="contact-row reveal d2">' +
+      '<span class="cr-q">Вопрос по заказу?</span>' +
+      '<div class="cr-btns">' +
+        '<a class="btn btn-wax" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Открыть бота</a>' +
+        '<a class="btn btn-line" href="https://t.me/academicsaloon" target="_blank" rel="noopener">Написать человеку</a>' +
+      '</div></section>';
+  }
+
+  /* ---------- рендер ---------- */
+  function render() {
+    var o = orders[current];
+    root.innerHTML = [
+      isDemo ? tplDemoNote() : '',
+      orders.length > 1 ? tplSwitch() : '',
+      tplCard(o),
+      tplPay(o),
+      tplReport(o),
+      tplContact()
+    ].join('');
+    if (S && S.observeReveal) S.observeReveal(document);
+  }
+
+  root.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-ord]');
+    if (!b) return;
+    var i = parseInt(b.getAttribute('data-ord'), 10);
+    if (isNaN(i) || i === current) return;
+    current = i;
+    render();
+    var nb = root.querySelector('button[data-ord="' + i + '"]');
+    if (nb) nb.focus();
+  });
+
   render();
-})();
+}
+if (document.prerendering) {
+  document.addEventListener('prerenderingchange', initDash, { once: true });
+} else {
+  initDash();
+}
 </script>
 </body>
 </html>

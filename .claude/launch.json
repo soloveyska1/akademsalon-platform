@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [".claude/static-server.js"],
+      "port": 8000,
+      "autoPort": true
+    },
+    {
+      "name": "imprint",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [".claude/worktrees/imprint/.claude/static-server.js"],
+      "port": 8010,
+      "autoPort": true
+    }
+  ]
+}

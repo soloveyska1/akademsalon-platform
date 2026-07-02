@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Гарантии — Академический Салон</title>
+<meta name="description" content="Устав мастерской: отчёт о проверках до оплаты, оплата по этапам, правки бесплатно до приёмки, конфиденциальность — и честный список того, чего мы не обещаем." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<style>
+  /* ============================================================
+     ГАРАНТИИ — «Устав мастерской»: пять параграфов механики,
+     три вопроса к уставу, финальный расчёт
+     ============================================================ */
+  .guar-hero{padding:calc(56px + clamp(44px,8vh,92px)) 0 0}
+  .guar-hero .caps{display:block;margin-bottom:14px}
+  .guar-hero h1{margin-bottom:clamp(14px,2.2vw,22px)}
+  .guar-hero .lead{max-width:46ch}
+  .guar-hero .hero-rule{margin-top:clamp(28px,5vw,48px)}
+
+  /* абзацы устава */
+  .gtext{font-size:15.5px;color:var(--ink-soft);line-height:1.65;max-width:52ch}
+
+  /* § 01 — отчёт-образец */
+  .report-demo{position:relative}
+  .report-demo .report-sheet{padding-bottom:96px}
+  .report-demo .seal-slot{position:absolute;right:18px;bottom:14px}
+  .report-demo .rp-note{font-size:12px;color:var(--ink-soft);margin-top:12px}
+
+  /* § 02 — шкала оплат */
+  .pay-note{margin-top:16px}
+
+  /* § 05 — честный блок с печатью */
+  .nopromise{display:grid;grid-template-columns:1fr auto;gap:clamp(28px,5vw,64px);align-items:center}
+  .nopromise .np-seal{justify-self:center}
+  .ustav-quote{
+    font-family:var(--serif);font-style:italic;
+    font-size:clamp(17px,2vw,20px);line-height:1.55;color:var(--ink);
+    border-left:2px solid var(--ink);padding-left:18px;max-width:52ch;
+    margin-top:clamp(18px,3vw,26px);
+  }
+
+  /* финальный CTA */
+  .final-cta{padding:var(--block) 0 0;text-align:center}
+  .final-cta .fc-rule{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,5vw,44px)}
+  .final-cta .fc-rule::before,.final-cta .fc-rule::after{content:"";height:1px;background:var(--hairline);flex:1}
+  .final-cta .fc-rule span{font-family:var(--serif);color:var(--ink-faint);font-size:18px}
+  .final-cta h2{margin-bottom:14px}
+  .final-cta .lead{margin:0 auto 26px}
+  .final-cta .petit{margin-top:14px}
+
+  @media(max-width:880px){
+    .guar-hero{padding-top:calc(56px + 24px)}
+    .nopromise{grid-template-columns:1fr}
+    .nopromise .np-seal{justify-self:start;margin-top:4px}
+    .report-demo{margin-top:6px}
+  }
+</style>
+<link rel="canonical" href="https://academic-saloon.duckdns.org/guarantees.html" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#F6F1E7" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Гарантии — Академический Салон" />
+<meta property="og:description" content="Пять параграфов, которые делают обман технически невыгодным: отчёт до оплаты, оплата по этапам, правки до приёмки." />
+<meta property="og:url" content="https://academic-saloon.duckdns.org/guarantees.html" />
+<meta property="og:image" content="https://academic-saloon.duckdns.org/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Гарантии — Академический Салон" />
+<meta name="twitter:description" content="Не обещания — механика: отчёт до оплаты, оплата по этапам, правки до приёмки." />
+<meta name="twitter:image" content="https://academic-saloon.duckdns.org/assets/img/og-cover.png" />
+</head>
+<body>
+
+<main class="guar">
+  <div class="wrap">
+
+    <!-- ЗАГОЛОВОК-ПОЛОСА -->
+    <section class="guar-hero" data-chapter="Устав мастерской">
+      <div class="reveal">
+        <span class="caps">Гарантии</span>
+        <h1 class="h-display">Устав мастерской</h1>
+        <p class="lead">Пять параграфов, которые делают обман технически невыгодным. Не обещания — механика.</p>
+      </div>
+      <hr class="rule rule-strong draw hero-rule" />
+    </section>
+
+    <!-- § 01 — ОТЧЁТ О ПРОВЕРКАХ -->
+    <section class="chapter reveal" id="report" data-chapter="§ 01 · Отчёт о проверках">
+      <div class="ch-rule"><span class="ch-no">§ 01 · Отчёт о проверках</span></div>
+      <h2>Отчёт о проверках — до оплаты</h2>
+      <div class="split">
+        <div>
+          <p class="gtext">Перед финальным платежом вы получаете отчёт: оригинальность по «Антиплагиату», оценка риска ИИ-детекции, разбор совпадений по базам.</p>
+          <p class="gtext mt-s">Сначала цифры — потом деньги, а не наоборот.</p>
+        </div>
+        <div class="report-demo">
+          <div class="report-sheet sheet sheet-pad stacked">
+            <div class="rp-head"><span class="rp-title">Отчёт о проверках · пример</span><span class="tag tag-ink">образец</span></div>
+            <div class="rp-row"><span>Оригинальность («Антиплагиат»)</span><span class="num rp-ok">87,4%</span></div>
+            <div class="rp-row"><span>Риск ИИ-детекции</span><span class="num rp-ok">низкий</span></div>
+            <div class="rp-row"><span>Совпадения по базам</span><span class="num">разобраны</span></div>
+            <div class="rp-row"><span>Формат</span><span class="num">PDF + скриншоты</span></div>
+            <div class="rp-row"><span>Выдан</span><span class="num">до финальной оплаты</span></div>
+            <div class="seal-slot" data-seal="ПРОВЕРЕНО · ЖИВОЙ ТЕКСТ · ОТЧЁТ ДО ОПЛАТЫ · " data-seal-center="¶" data-seal-cls="seal--verify" data-seal-size="104"></div>
+          </div>
+          <p class="rp-note">Цифры демонстрационные — по вашей работе отчёт собирается заново.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 02 — ОПЛАТА ПО ЭТАПАМ -->
+    <section class="chapter reveal" id="pay" data-chapter="§ 02 · Оплата по этапам">
+      <div class="ch-rule"><span class="ch-no">§ 02 · Оплата по этапам</span></div>
+      <h2>Оплата по этапам</h2>
+      <p class="gtext">Всю сумму вперёд мы не берём. Каждый платёж закрывает только тот этап, который вы уже видели.</p>
+      <div class="paysteps mt-l" style="--pay-n:3">
+        <div class="pstep"><span class="ps-share">30%</span><b>Старт и бронь</b><small>уже у вас: согласованный план глав и зафиксированная смета</small></div>
+        <div class="pstep"><span class="ps-share">40%</span><b>Середина</b><small>уже у вас: основная часть текста черновиками</small></div>
+        <div class="pstep"><span class="ps-share">30%</span><b>Финал</b><small>уже у вас: отчёт о проверках по готовому тексту</small></div>
+      </div>
+      <p class="petit pay-note">Небольшие работы — просто 50/50. Кандидатские считаем по главам.</p>
+    </section>
+
+    <!-- § 03 — ПРАВКИ -->
+    <section class="chapter reveal" id="edits" data-chapter="§ 03 · Правки">
+      <div class="ch-rule"><span class="ch-no">§ 03 · Правки</span></div>
+      <h2>Правки — бесплатно до приёмки</h2>
+      <p class="gtext">Замечания руководителя — обычная часть процесса, а не повод для доплаты. Дорабатываем, пока работу не примут.</p>
+      <p class="gtext mt-s">Смета при этом не меняется — пересчёт возможен, только если вы сами меняете тему или объём.</p>
+    </section>
+
+    <!-- § 04 — КОНФИДЕНЦИАЛЬНОСТЬ -->
+    <section class="chapter reveal" id="privacy" data-chapter="§ 04 · Конфиденциальность">
+      <div class="ch-rule"><span class="ch-no">§ 04 · Конфиденциальность</span></div>
+      <h2>Конфиденциальность</h2>
+      <p class="gtext">Готовые работы не публикуем и не выкладываем в базы, данные не передаём третьим лицам. Общение — напрямую с мастерской, без менеджеров.</p>
+      <p class="gtext mt-s">После приёмки по вашему запросу удаляем работу из рабочих файлов.</p>
+    </section>
+
+    <!-- § 05 — ЧЕГО МЫ НЕ ОБЕЩАЕМ -->
+    <section class="chapter reveal" id="honest" data-chapter="§ 05 · Чего мы не обещаем">
+      <div class="ch-rule"><span class="ch-no">§ 05 · Чего мы не обещаем</span></div>
+      <h2>Чего мы не обещаем</h2>
+      <div class="nopromise">
+        <div>
+          <p class="gtext">Не обещаем, что «чужой антиплагиат ничего не заметит»: детекторы ошибаются в обе стороны, и гарантировать чужую систему не может никто. И не пишем «диссертацию за ночь».</p>
+          <blockquote class="ustav-quote">Мы отвечаем за то, что в наших руках: живой текст, отчёт до оплаты, правки до приёмки — и именно поэтому за это можно спросить.</blockquote>
+        </div>
+        <div class="np-seal" data-seal="ОТВЕЧАЕМ ЗА СВОЁ · § 1–5 · " data-seal-center="¶" data-seal-cls="seal--stamp" data-seal-size="128"></div>
+      </div>
+    </section>
+
+    <!-- § 06 — ВОПРОСЫ -->
+    <section class="chapter reveal" id="faq" data-chapter="§ 06 · Вопросы">
+      <div class="ch-rule"><span class="ch-no">§ 06 · Вопросы</span></div>
+      <h2>Три вопроса к уставу</h2>
+      <div class="prose" style="max-width:760px">
+        <details class="faq-item">
+          <summary>Что, если детектор вуза всё-таки сработает?</summary>
+          <p>Срабатывание детектора — такое же замечание, как любое другое: действует § 3, без доплат. Разница в том, что у вас на руках наш отчёт — разговор с кафедрой идёт о цифрах, а не о впечатлениях.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Что, если вы исчезнете после аванса?</summary>
+          <p>Большая часть суммы приходит после показанного результата (§ 2) — исчезать мастерской экономически бессмысленно. Репутация здесь стоит дороже любого аванса.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Есть ли договор и чек?</summary>
+          <p>Работаем по публичной оферте этапной оплаты: её условия — эти пять параграфов. Формат закрывающих документов обсуждаем в переписке до старта — честно скажем, что сможем выдать.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ФИНАЛЬНЫЙ CTA -->
+    <section class="final-cta reveal" data-chapter="Расчёт стоимости">
+      <div class="fc-rule"><span>¶</span></div>
+      <h2>Проверьте механику на своей работе</h2>
+      <p class="lead" style="max-width:44ch">Смета, план до сдачи и порядок оплаты — за минуту.</p>
+      <a class="btn btn-wax btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>
+      <p class="petit">Заявка ни к чему не обязывает.</p>
+    </section>
+
+  </div>
+</main>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Что, если детектор вуза всё-таки сработает?","acceptedAnswer":{"@type":"Answer","text":"Срабатывание детектора — такое же замечание, как любое другое: действует § 3, без доплат. Разница в том, что у вас на руках наш отчёт — разговор с кафедрой идёт о цифрах, а не о впечатлениях."}},{"@type":"Question","name":"Что, если вы исчезнете после аванса?","acceptedAnswer":{"@type":"Answer","text":"Большая часть суммы приходит после показанного результата (§ 2) — исчезать мастерской экономически бессмысленно. Репутация здесь стоит дороже любого аванса."}},{"@type":"Question","name":"Есть ли договор и чек?","acceptedAnswer":{"@type":"Answer","text":"Работаем по публичной оферте этапной оплаты: её условия — пять параграфов устава. Формат закрывающих документов обсуждается в переписке до старта."}}]}</script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
