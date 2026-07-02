@@ -571,4 +571,15 @@ html{transition:none}
 @media(max-width:540px){
   .brand .b-name{font-size:15.5px}
   .chapter{padding-top:56px}
+  .nav{gap:10px}
+}
+/* очень узкие экраны: не даём шапке переполняться */
+@media(max-width:430px){
+  .nav{gap:8px}
+  .brand .b-name{font-size:14px}
+  .brand .b-para{font-size:17px}
+  .theme-toggle{width:34px;height:34px}
+  .menu-toggle{padding:9px 11px;gap:0}
+  .menu-toggle .mt-txt{display:none}
+  .menu-toggle i{width:18px;height:10px}
 }

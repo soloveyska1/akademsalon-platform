@@ -300,7 +300,7 @@
         '<button class="theme-toggle" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема"><span class="tt-ic" aria-hidden="true"></span></button>' +
         '<a class="btn btn-line" href="dashboard.html">Кабинет</a>' +
         '<a class="btn btn-wax" href="configurator.html">Рассчитать</a>' +
-        '<button class="menu-toggle" aria-expanded="false" aria-controls="toc">Меню <i aria-hidden="true"></i></button>' +
+        '<button class="menu-toggle" aria-expanded="false" aria-controls="toc" aria-label="Меню"><span class="mt-txt">Меню</span> <i aria-hidden="true"></i></button>' +
       '</div></div>';
     document.body.insertBefore(header, document.body.firstChild);
     if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк состояния кнопки темы */
@@ -416,8 +416,8 @@
     var fNav = document.createElement('nav'); fNav.className = 'foot-links';
     fNav.setAttribute('aria-label', 'Карта сайта');
     [['configurator.html', 'Рассчитать заказ'], ['tariffs.html', 'Цены и услуги'], ['guarantees.html', 'Гарантии'],
-     ['reviews.html', 'Отзывы'], ['referral.html', 'Клуб и бонусы'], ['check.html', 'Проверка текста'],
-     ['dashboard.html', 'Кабинет']].forEach(function (l) {
+     ['reviews.html', 'Отзывы'], ['referral.html', 'Клуб и бонусы'], ['knowledge.html', 'База знаний'],
+     ['check.html', 'Проверка текста'], ['dashboard.html', 'Кабинет']].forEach(function (l) {
       var a = document.createElement('a'); a.href = l[0]; a.textContent = l[1]; fNav.appendChild(a);
     });
     cNav.appendChild(fNav);
