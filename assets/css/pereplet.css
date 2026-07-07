@@ -129,16 +129,44 @@ h3{font-size:clamp(19px,2vw,23px);font-weight:500}
 .nav-links{display:flex;gap:clamp(14px,2.4vw,28px);margin-left:auto}
 .nav-links a{font-size:15px;color:var(--ink-soft);padding:6px 2px;border-bottom:1px solid transparent;transition:color .15s,border-color .15s;white-space:nowrap}
 .nav-links a:hover{color:var(--ink);border-color:var(--hairline-strong)}
-.nav-cta{display:flex;align-items:center;gap:12px}
-.nav-cta .btn{min-height:48px;padding:10px 20px;font-size:15px}
-/* на планшете остаются две ключевые ссылки, второстепенные (.nav-x) уходят */
+.nav-cta{display:flex;align-items:center;gap:10px;margin-left:auto}
+.nav-cta .btn{min-height:44px;padding:9px 18px;font-size:14.5px}
+.menu-toggle{
+  display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:9px 15px;
+  border:1px solid var(--hairline-strong);background:transparent;border-radius:var(--r);
+  font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;color:var(--ink);transition:border-color .15s,background .15s;
+}
+.menu-toggle:hover{background:var(--paper-2);border-color:var(--ink-soft)}
+.menu-toggle i{display:block;width:16px;height:9px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+/* на планшете второстепенные ссылки уходят в «Меню» */
 @media(max-width:960px){.nav-links a.nav-x{display:none}}
 @media(max-width:760px){.nav-links{display:none}}
-/* на узких экранах CTA несёт нижняя плашка — шапка остаётся колонтитулом */
+/* на узких экранах «Рассчитать» несёт нижняя плашка; «Меню» остаётся всегда */
 @media(max-width:560px){
-  .nav-cta{display:none}
-  .site-header .nav{justify-content:center}
+  .nav-cta .btn{display:none}
+  .menu-toggle .mt-txt{display:inline}
 }
+
+/* ---------- Меню (полноэкранное «Оглавление») ---------- */
+.toc{
+  position:fixed;inset:0;z-index:200;background:var(--paper);
+  padding:max(84px,11vh) clamp(20px,6vw,64px) 40px;overflow-y:auto;
+  opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;
+}
+.toc.open{opacity:1;visibility:visible}
+.toc-head{display:flex;justify-content:space-between;align-items:center;max-width:660px;margin:0 auto 28px}
+.toc-title{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+.toc-close{border:1px solid var(--hairline-strong);background:transparent;border-radius:var(--r);min-height:44px;padding:10px 18px;font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;color:var(--ink)}
+.toc-close:hover{background:var(--paper-2)}
+.toc nav{max-width:660px;margin:0 auto;display:flex;flex-direction:column}
+.toc a.dotrow{font-family:var(--serif);font-size:clamp(22px,4.6vw,28px);padding:15px 6px}
+.toc a.dotrow[aria-current="page"]{color:var(--wax)}
+.toc a.dotrow .dr-val{font-size:13px;color:var(--ink-soft)}
+.toc-foot{max-width:660px;margin:36px auto 0}
+.toc-contacts{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;padding-bottom:22px;margin-bottom:24px;border-bottom:1px solid var(--hairline)}
+.toc-tg{font-size:16px;color:var(--ink);border-bottom:1px solid var(--wax);padding-bottom:2px}
+.toc-tg:hover{color:var(--wax)}
 
 /* ============================================================
    HERO — ОБЛОЖКА

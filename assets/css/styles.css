@@ -271,7 +271,7 @@ textarea{resize:vertical;min-height:120px;line-height:1.55}
   transition:transform .4s cubic-bezier(.22,1,.36,1);
 }
 .site-header.hide{transform:translateY(-100%)}
-.nav{display:flex;align-items:center;justify-content:space-between;height:56px;gap:20px}
+.nav{display:flex;align-items:center;justify-content:flex-start;height:56px;gap:clamp(16px,3vw,28px)}
 .brand{display:flex;align-items:baseline;gap:10px;flex:0 0 auto}
 .brand .b-para{font-family:var(--serif);color:var(--wax);font-size:19px;line-height:1}
 .brand .b-name{font-family:var(--serif);font-weight:500;font-size:17px;letter-spacing:.01em;white-space:nowrap}
@@ -280,17 +280,21 @@ textarea{resize:vertical;min-height:120px;line-height:1.55}
   color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   font-variant-numeric:tabular-nums;
 }
-.nav-links{display:flex;align-items:center;gap:24px}
+.nav-links{display:flex;align-items:center;gap:24px;margin-left:auto}
 .nav-links a{font-size:14px;color:var(--ink-soft);white-space:nowrap;border-bottom:1px solid transparent;padding-bottom:2px;transition:color .15s,border-color .15s}
 .nav-links a:hover{color:var(--ink)}
 .nav-links a[aria-current="page"]{color:var(--ink);border-color:var(--wax)}
-.nav-cta{display:flex;align-items:center;gap:12px}
+.nav-cta{display:flex;align-items:center;gap:12px;margin-left:auto}
 .nav-cta .btn{min-height:38px;padding:8px 18px;font-size:13.5px}
 .menu-toggle{
-  display:none;align-items:center;gap:9px;min-height:44px;padding:10px 14px;
+  display:inline-flex;align-items:center;gap:9px;min-height:38px;padding:9px 15px;
   border:1px solid var(--hairline-strong);background:transparent;border-radius:var(--r);
-  font-size:12px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;color:var(--ink);
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;color:var(--ink);
+  transition:border-color .15s,background .15s;
 }
+.menu-toggle:hover{background:var(--mark);border-color:var(--ink-soft)}
+.menu-toggle i{position:relative}
+.menu-toggle[aria-expanded="true"] i{border-color:transparent}
 .menu-toggle i{display:block;width:16px;height:9px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
 
 /* ---------- Оглавление (полноэкранное меню) ---------- */
@@ -307,6 +311,13 @@ textarea{resize:vertical;min-height:120px;line-height:1.55}
 .toc a.dotrow{font-family:var(--serif);font-size:clamp(21px,4.5vw,27px);padding:16px 6px}
 .toc a.dotrow .dr-val{font-size:13px;color:var(--ink-soft)}
 .toc .toc-cta{max-width:640px;margin:32px auto 0}
+.toc .toc-foot{max-width:640px;margin:36px auto 0}
+.toc .toc-contacts{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;justify-content:space-between;padding-bottom:22px;margin-bottom:24px;border-bottom:1px solid var(--hairline)}
+.toc .toc-tg{font-size:16px;color:var(--ink);border-bottom:1px solid var(--wax);padding-bottom:2px}
+.toc .toc-tg:hover{color:var(--wax)}
+.toc .toc-theme{display:inline-grid;grid-auto-flow:column;place-items:center;gap:10px;width:auto;height:auto;min-height:44px;padding:9px 16px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:var(--ink-soft);font-family:var(--sans);font-size:14px;cursor:pointer}
+.toc .toc-theme:hover{background:var(--mark);color:var(--ink)}
+.toc .toc-theme .tt-lbl{white-space:nowrap}
 body.toc-lock{overflow:hidden}
 
 /* ---------- Подвал-колофон ---------- */
@@ -548,13 +559,11 @@ html{transition:none}
 .doc-back{margin-top:40px;padding-top:20px;border-top:1px solid var(--hairline)}
 
 /* ---------- Responsive ---------- */
-@media(max-width:1000px){
-  .head-section{display:none}
+@media(max-width:940px){
+  .nav-links{display:none}       /* ключевые разделы уходят в «Меню» */
 }
 @media(max-width:880px){
-  .nav-links{display:none}
-  .nav-cta .btn{display:none}
-  .menu-toggle{display:inline-flex}
+  .nav-cta .btn{display:none}    /* «Рассчитать» — в нижней плашке */
   .split{grid-template-columns:1fr}
   .grid-2,.grid-3{grid-template-columns:1fr}
   .paysteps{grid-template-columns:1fr;gap:18px}
@@ -578,8 +587,5 @@ html{transition:none}
   .nav{gap:8px}
   .brand .b-name{font-size:14px}
   .brand .b-para{font-size:17px}
-  .theme-toggle{width:34px;height:34px}
-  .menu-toggle{padding:9px 11px;gap:0}
-  .menu-toggle .mt-txt{display:none}
-  .menu-toggle i{width:18px;height:10px}
+  .menu-toggle{padding:9px 12px}       /* подпись «Меню» остаётся — так понятнее */
 }

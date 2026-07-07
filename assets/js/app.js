@@ -127,6 +127,8 @@
       docEl.querySelectorAll('.theme-toggle').forEach(function (b) {
         b.setAttribute('aria-pressed', String(mode === 'dark'));
         b.title = mode === 'dark' ? 'Тёмная тема · включить светлую' : 'Светлая тема · включить тёмную';
+        var lbl = b.querySelector('.tt-lbl');
+        if (lbl) lbl.textContent = mode === 'dark' ? 'Светлая тема' : 'Тёмная тема';
       });
       if (persist) { try { localStorage.setItem('salon_theme', mode); } catch (e) {} }
     }
@@ -276,8 +278,9 @@
     { href: 'reviews.html',      label: 'Отзывы',           no: '04' },
     { href: 'referral.html',     label: 'Клуб и бонусы',    no: '05' },
     { href: 'guarantees.html',   label: 'Гарантии',         no: '06' },
-    { href: 'check.html',        label: 'Проверка текста',  no: '07' },
-    { href: 'dashboard.html',    label: 'Личный кабинет',   no: '08' }
+    { href: 'knowledge.html',    label: 'База знаний',      no: '07' },
+    { href: 'check.html',        label: 'Проверка текста',  no: '08' },
+    { href: 'dashboard.html',    label: 'Личный кабинет',   no: '09' }
   ];
 
   function brandHTML() {
@@ -286,54 +289,47 @@
       '<span class="b-name">Академический Салон</span></a>';
   }
 
-  if (!document.querySelector('.site-header')) {
-    var header = document.createElement('header');
-    header.className = 'site-header';
-    var navLinks = NAV.map(function (n) {
-      var cur = n.href === here ? ' aria-current="page"' : '';
-      return '<a href="' + n.href + '"' + cur + '>' + n.label + '</a>';
-    }).join('');
-    header.innerHTML = '<div class="wrap nav">' + brandHTML() +
-      '<div class="head-section" aria-hidden="true"></div>' +
-      '<nav class="nav-links" aria-label="Разделы">' + navLinks + '</nav>' +
-      '<div class="nav-cta">' +
-        '<button class="theme-toggle" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема"><span class="tt-ic" aria-hidden="true"></span></button>' +
-        '<a class="btn btn-line" href="dashboard.html">Кабинет</a>' +
-        '<a class="btn btn-wax" href="configurator.html">Рассчитать</a>' +
-        '<button class="menu-toggle" aria-expanded="false" aria-controls="toc" aria-label="Меню"><span class="mt-txt">Меню</span> <i aria-hidden="true"></i></button>' +
-      '</div></div>';
-    document.body.insertBefore(header, document.body.firstChild);
-    if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк состояния кнопки темы */
-
-    /* Оглавление (полноэкранное меню) */
+  /* Полноэкранное меню «Оглавление» — одно на страницу; держит ВСЕ разделы,
+     контакты и переключатель темы. Работает и на главной (своя шапка), и на
+     внутренних (шапка ниже). Ничего из навигации не теряется — всё здесь. */
+  function mountTOC() {
+    if (document.querySelector('.toc')) return;
     var toc = document.createElement('div');
     toc.className = 'toc'; toc.id = 'toc';
-    toc.setAttribute('role', 'dialog'); toc.setAttribute('aria-modal', 'true'); toc.setAttribute('aria-label', 'Оглавление');
-    toc.innerHTML = '<div class="toc-head"><span class="toc-title">Оглавление</span>' +
-      '<button class="toc-close">Закрыть</button></div>' +
-      '<nav>' + TOC.map(function (t) {
-        var cur = t.href === here ? ' aria-current="page"' : '';
-        return '<a class="dotrow" href="' + t.href + '"' + cur + '><span>' + t.label + '</span><span class="dots"></span><span class="dr-val">' + t.no + '</span></a>';
-      }).join('') + '</nav>' +
-      '<div class="toc-cta"><a class="btn btn-wax btn-block btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a></div>';
+    toc.setAttribute('role', 'dialog'); toc.setAttribute('aria-modal', 'true'); toc.setAttribute('aria-label', 'Меню сайта');
+    var rows = TOC.map(function (t) {
+      var cur = t.href === here ? ' aria-current="page"' : '';
+      return '<a class="dotrow" href="' + t.href + '"' + cur + '><span>' + t.label + '</span><span class="dots"></span><span class="dr-val">' + t.no + '</span></a>';
+    }).join('');
+    var lightOnly = !!document.querySelector('link[href*="pereplet"]');   /* главная всегда светлая — тумблер темы не нужен */
+    var themeBtn = lightOnly ? '' :
+      '<button class="theme-toggle toc-theme" type="button" aria-label="Сменить тему оформления"><span class="tt-ic" aria-hidden="true"></span><span class="tt-lbl">Тёмная тема</span></button>';
+    toc.innerHTML = '<div class="toc-head"><span class="toc-title">Меню</span>' +
+      '<button class="toc-close" type="button">Закрыть</button></div>' +
+      '<nav aria-label="Разделы сайта">' + rows + '</nav>' +
+      '<div class="toc-foot">' +
+        '<div class="toc-contacts">' +
+          '<a class="toc-tg" href="' + LINKS.bot + '" target="_blank" rel="noopener">Написать в Telegram</a>' +
+          themeBtn +
+        '</div>' +
+        '<a class="btn btn-wax btn-block btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>' +
+      '</div>';
     document.body.appendChild(toc);
+    if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк подписи темы */
 
-    var toggle = header.querySelector('.menu-toggle');
     function tocSiblings() {
-      return ['.site-header', 'main', '.site-footer', '.mobile-cta']
-        .map(function (s) { return document.querySelector(s); })
-        .filter(Boolean);
+      return ['.site-header', 'main', '.site-footer', '.mobile-cta', '.lasse', '.tg-pill']
+        .map(function (s) { return document.querySelector(s); }).filter(Boolean);
     }
     function setToc(open) {
       toc.classList.toggle('open', open);
       document.body.classList.toggle('toc-lock', open);
-      /* фон недоступен для фокуса и AT, пока оглавление открыто */
-      tocSiblings().forEach(function (el) {
-        if (open) el.setAttribute('inert', ''); else el.removeAttribute('inert');
-      });
-      toggle.setAttribute('aria-expanded', String(open));
-      if (open) { var f = toc.querySelector('.toc-close'); if (f) f.focus(); } else { toggle.focus(); }
+      tocSiblings().forEach(function (el) { if (open) el.setAttribute('inert', ''); else el.removeAttribute('inert'); });
+      document.querySelectorAll('.menu-toggle').forEach(function (t) { t.setAttribute('aria-expanded', String(open)); });
+      if (open) { var f = toc.querySelector('.toc-close'); if (f) f.focus(); }
+      else { var mt = document.querySelector('.menu-toggle'); if (mt) mt.focus(); }
     }
+    Salon.toc = { open: function () { setToc(true); }, close: function () { setToc(false); }, isOpen: function () { return toc.classList.contains('open'); } };
     /* страховочная петля Tab для браузеров без inert */
     toc.addEventListener('keydown', function (e) {
       if (e.key !== 'Tab') return;
@@ -343,17 +339,47 @@
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
-    toggle.addEventListener('click', function () { setToc(!toc.classList.contains('open')); });
     toc.querySelector('.toc-close').addEventListener('click', function () { setToc(false); });
-    toc.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { toc.classList.remove('open'); document.body.classList.remove('toc-lock'); }); });
+    /* закрываем по переходу — но НЕ по клику на переключатель темы */
+    toc.querySelectorAll('nav a, .toc-foot a').forEach(function (a) { a.addEventListener('click', function () { setToc(false); }); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && toc.classList.contains('open')) setToc(false); });
 
-    /* бейдж заказов на «Кабинете» */
+    /* бейдж заказов на пункте «Личный кабинет» */
     var _orders = Salon.store.get('salon_orders', []);
     if (_orders && _orders.length) {
-      var kab = header.querySelector('.nav-cta a[href="dashboard.html"]');
-      if (kab) kab.textContent = 'Кабинет · ' + _orders.length;
+      var kab = toc.querySelector('a[href="dashboard.html"] span');
+      if (kab) kab.textContent = 'Личный кабинет · ' + _orders.length;
     }
+  }
+
+  /* Шапка внутренних страниц (главная задаёт свою в разметке).
+     Компактно: бренд · ключевые разделы · «Рассчитать» · «Меню».
+     Кабинет, База знаний, Проверка, контакты и тема — в «Меню». */
+  if (!document.querySelector('.site-header')) {
+    var header = document.createElement('header');
+    header.className = 'site-header';
+    var navLinks = NAV.map(function (n) {
+      var cur = n.href === here ? ' aria-current="page"' : '';
+      return '<a href="' + n.href + '"' + cur + '>' + n.label + '</a>';
+    }).join('');
+    header.innerHTML = '<div class="wrap nav">' + brandHTML() +
+      '<nav class="nav-links" aria-label="Разделы">' + navLinks + '</nav>' +
+      '<div class="nav-cta">' +
+        '<a class="btn btn-wax" href="configurator.html">Рассчитать</a>' +
+        '<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><span class="mt-txt">Меню</span> <i aria-hidden="true"></i></button>' +
+      '</div></div>';
+    document.body.insertBefore(header, document.body.firstChild);
+  }
+
+  /* Меню — на любой странице, где есть кнопка «Меню» (в т.ч. на главной) */
+  if (document.querySelector('.menu-toggle')) {
+    mountTOC();
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest && e.target.closest('.menu-toggle');
+      if (!t || !Salon.toc) return;
+      e.preventDefault();
+      Salon.toc.isOpen() ? Salon.toc.close() : Salon.toc.open();
+    });
   }
 
   /* ---------------- «Продолжить заказ» ---------------- */
