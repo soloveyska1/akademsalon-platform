@@ -461,20 +461,16 @@ html{transition:none}
   cursor:pointer;color:var(--ink);transition:background .15s,border-color .15s;
 }
 .theme-toggle:hover{background:var(--mark);border-color:var(--ink-soft)}
-.theme-toggle .tt-ic{position:relative;width:17px;height:17px;display:block}
-/* солнце (светлая тема активна → предлагаем ночь: показываем луну) */
+/* полумесяц: залитый круг + «прикус» цветом фона — понятная иконка темы */
+.theme-toggle .tt-ic{position:relative;width:16px;height:16px;display:block}
 .theme-toggle .tt-ic::before{
-  content:"";position:absolute;inset:0;border-radius:50%;
-  border:1.6px solid currentColor;
-  box-shadow:0 0 0 0 currentColor;
-  transition:all .2s;
+  content:"";position:absolute;inset:0;border-radius:50%;background:currentColor;
 }
 .theme-toggle .tt-ic::after{
-  content:"";position:absolute;top:-3px;right:-3px;width:11px;height:11px;border-radius:50%;
-  background:var(--paper);transform:scale(0);transition:transform .2s;
+  content:"";position:absolute;top:-3px;right:-3px;width:12px;height:12px;border-radius:50%;
+  background:var(--paper);transition:background .15s;
 }
-:root[data-theme="dark"] .theme-toggle .tt-ic::after{transform:scale(1)}
-:root[data-theme="dark"] .theme-toggle .tt-ic::before{border-width:2px}
+.theme-toggle:hover .tt-ic::after{background:var(--mark)}
 
 /* ---------- Лист связи (contact-sheet) ---------- */
 .contact-sheet{position:fixed;inset:0;z-index:95;opacity:0;visibility:hidden;transition:opacity .24s,visibility .24s}

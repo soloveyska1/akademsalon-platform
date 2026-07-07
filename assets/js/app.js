@@ -301,16 +301,12 @@
       var cur = t.href === here ? ' aria-current="page"' : '';
       return '<a class="dotrow" href="' + t.href + '"' + cur + '><span>' + t.label + '</span><span class="dots"></span><span class="dr-val">' + t.no + '</span></a>';
     }).join('');
-    var lightOnly = !!document.querySelector('link[href*="pereplet"]');   /* главная всегда светлая — тумблер темы не нужен */
-    var themeBtn = lightOnly ? '' :
-      '<button class="theme-toggle toc-theme" type="button" aria-label="Сменить тему оформления"><span class="tt-ic" aria-hidden="true"></span><span class="tt-lbl">Тёмная тема</span></button>';
     toc.innerHTML = '<div class="toc-head"><span class="toc-title">Меню</span>' +
       '<button class="toc-close" type="button">Закрыть</button></div>' +
       '<nav aria-label="Разделы сайта">' + rows + '</nav>' +
       '<div class="toc-foot">' +
         '<div class="toc-contacts">' +
           '<a class="toc-tg" href="' + LINKS.bot + '" target="_blank" rel="noopener">Написать в Telegram</a>' +
-          themeBtn +
         '</div>' +
         '<a class="btn btn-wax btn-block btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>' +
       '</div>';
@@ -365,10 +361,12 @@
     header.innerHTML = '<div class="wrap nav">' + brandHTML() +
       '<nav class="nav-links" aria-label="Разделы">' + navLinks + '</nav>' +
       '<div class="nav-cta">' +
+        '<button class="theme-toggle" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема"><span class="tt-ic" aria-hidden="true"></span></button>' +
         '<a class="btn btn-wax" href="configurator.html">Рассчитать</a>' +
         '<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><span class="mt-txt">Меню</span> <i aria-hidden="true"></i></button>' +
       '</div></div>';
     document.body.insertBefore(header, document.body.firstChild);
+    if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк состояния кнопки темы */
   }
 
   /* Меню — на любой странице, где есть кнопка «Меню» (в т.ч. на главной) */
