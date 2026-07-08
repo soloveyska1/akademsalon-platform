@@ -114,11 +114,30 @@
     return forms[(a > 10 && a < 20) ? 2 : (b > 1 && b < 5) ? 1 : (b === 1) ? 0 : 2];
   };
 
-  /* ---------------- Тема оформления (светлая «Оттиск» / тёмная) ----------------
+  /* ---------------- Тема оформления (светлая «Оттиск» / «Оттиск ночью») ----------------
      Первичная тема выставляется инлайн-скриптом в <head> (без мигания).
-     Здесь — только переключатель и синхронизация meta theme-color. */
+     Переключение — «чернильной заливкой»: view transition раскрывает
+     новую тему кругом от точки клика. Фолбэк — мягкий кросс-фейд. */
+  var ttUid = 0;
+  Salon.themeToggleHTML = function () {
+    ttUid++;
+    var m = 'ttm' + ttUid;
+    return '<button class="theme-toggle" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема">' +
+      '<svg class="tt-svg" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+        '<mask id="' + m + '"><rect width="24" height="24" fill="#fff"/><circle class="tt-hole" cx="26" cy="2" r="0" fill="#000"/></mask>' +
+        '<circle class="tt-core" cx="12" cy="12" r="4.6" fill="currentColor" mask="url(#' + m + ')"/>' +
+        '<g class="tt-rays" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">' +
+          '<line x1="12" y1="2.4" x2="12" y2="4.4"/><line x1="12" y1="19.6" x2="12" y2="21.6"/>' +
+          '<line x1="2.4" y1="12" x2="4.4" y2="12"/><line x1="19.6" y1="12" x2="21.6" y2="12"/>' +
+          '<line x1="5.2" y1="5.2" x2="6.6" y2="6.6"/><line x1="17.4" y1="17.4" x2="18.8" y2="18.8"/>' +
+          '<line x1="18.8" y1="5.2" x2="17.4" y2="6.6"/><line x1="6.6" y1="17.4" x2="5.2" y2="18.8"/>' +
+        '</g>' +
+        '<g class="tt-stars" fill="currentColor"><circle cx="5.4" cy="6.4" r=".9"/><circle cx="8.1" cy="3.7" r=".6"/><circle cx="4" cy="10.4" r=".55"/></g>' +
+      '</svg></button>';
+  };
   Salon.theme = (function () {
     var THEME_BG = { light: '#F6F1E7', dark: '#14120E' };
+    var vtBusy = false;
     function current() { return docEl.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
     function apply(mode, persist) {
       docEl.setAttribute('data-theme', mode);
@@ -127,14 +146,45 @@
       docEl.querySelectorAll('.theme-toggle').forEach(function (b) {
         b.setAttribute('aria-pressed', String(mode === 'dark'));
         b.title = mode === 'dark' ? 'Тёмная тема · включить светлую' : 'Светлая тема · включить тёмную';
-        var lbl = b.querySelector('.tt-lbl');
-        if (lbl) lbl.textContent = mode === 'dark' ? 'Светлая тема' : 'Тёмная тема';
+      });
+      docEl.querySelectorAll('[data-theme-label]').forEach(function (l) {
+        l.textContent = mode === 'dark' ? 'Тёмная тема' : 'Светлая тема';
       });
       if (persist) { try { localStorage.setItem('salon_theme', mode); } catch (e) {} }
     }
-    function toggle() { apply(current() === 'dark' ? 'light' : 'dark', true); }
+    /* чернильная заливка от точки (x, y) */
+    function switchFrom(mode, x, y) {
+      var canVT = typeof document.startViewTransition === 'function' && !reduceMotion && !vtBusy;
+      if (!canVT) { apply(mode, true); return; }
+      vtBusy = true;
+      docEl.classList.add('vt-theme');
+      var done = function () { vtBusy = false; docEl.classList.remove('vt-theme'); };
+      var vt;
+      try {
+        vt = document.startViewTransition(function () { apply(mode, true); });
+      } catch (e) { done(); apply(mode, true); return; }
+      vt.ready.then(function () {
+        var r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)) + 24;
+        docEl.animate(
+          { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + r + 'px at ' + x + 'px ' + y + 'px)'] },
+          { duration: 620, easing: 'cubic-bezier(.3,0,.3,1)', pseudoElement: '::view-transition-new(root)' }
+        );
+      }).catch(function () {});
+      vt.finished.then(done, done);
+    }
+    function toggle() {
+      var b = document.querySelector('.theme-toggle');
+      var r = b ? b.getBoundingClientRect() : { left: window.innerWidth / 2, top: 0, width: 0, height: 0 };
+      switchFrom(current() === 'dark' ? 'light' : 'dark', r.left + r.width / 2, r.top + r.height / 2);
+    }
     document.addEventListener('click', function (e) {
-      if (e.target.closest && e.target.closest('.theme-toggle')) { e.preventDefault(); toggle(); }
+      var b = e.target.closest && e.target.closest('.theme-toggle');
+      if (!b) return;
+      e.preventDefault();
+      var rc = b.getBoundingClientRect();
+      var x = e.clientX || rc.left + rc.width / 2;
+      var y = e.clientY || rc.top + rc.height / 2;
+      switchFrom(current() === 'dark' ? 'light' : 'dark', x, y);
     });
     /* если пользователь не выбирал тему вручную — следуем за системной */
     if (window.matchMedia) {
@@ -263,24 +313,35 @@
     }
   })();
 
-  /* ---------------- Колонтитул (шапка) ---------------- */
+  /* ---------------- Колонтитул (шапка) ----------------
+     ОДНА шапка на всех страницах, включая главную: те же ссылки,
+     тот же порядок — читатель никогда не теряется. */
   var here = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
   var NAV = [
     { href: 'tariffs.html',    label: 'Цены' },
+    { href: 'guarantees.html', label: 'Гарантии' },
     { href: 'reviews.html',    label: 'Отзывы' },
-    { href: 'referral.html',   label: 'Клуб' },
-    { href: 'guarantees.html', label: 'Гарантии' }
+    { href: 'referral.html',   label: 'Клуб', x: true },
+    { href: 'knowledge.html',  label: 'База знаний', x: true }
   ];
   var TOC = [
     { href: 'index.html',        label: 'Главная',          no: '01' },
     { href: 'configurator.html', label: 'Рассчитать заказ', no: '02' },
     { href: 'tariffs.html',      label: 'Цены и услуги',    no: '03' },
-    { href: 'reviews.html',      label: 'Отзывы',           no: '04' },
-    { href: 'referral.html',     label: 'Клуб и бонусы',    no: '05' },
-    { href: 'guarantees.html',   label: 'Гарантии',         no: '06' },
+    { href: 'guarantees.html',   label: 'Гарантии · устав', no: '04' },
+    { href: 'reviews.html',      label: 'Отзывы',           no: '05' },
+    { href: 'referral.html',     label: 'Клуб и бонусы',    no: '06' },
     { href: 'knowledge.html',    label: 'База знаний',      no: '07' },
     { href: 'check.html',        label: 'Проверка текста',  no: '08' },
     { href: 'dashboard.html',    label: 'Личный кабинет',   no: '09' }
+  ];
+  var DOCS = [
+    ['oferta.html', 'Публичная оферта'],
+    ['privacy.html', 'Политика ПДн'],
+    ['consent.html', 'Согласие на обработку ПДн'],
+    ['loyalty.html', 'Правила лояльности'],
+    ['terms.html', 'Пользовательское соглашение'],
+    ['requisites.html', 'Реквизиты']
   ];
 
   function brandHTML() {
@@ -290,8 +351,8 @@
   }
 
   /* Полноэкранное меню «Оглавление» — одно на страницу; держит ВСЕ разделы,
-     контакты и переключатель темы. Работает и на главной (своя шапка), и на
-     внутренних (шапка ниже). Ничего из навигации не теряется — всё здесь. */
+     документы, контакты и переключатель темы. Быстрый доступ ко всему,
+     не перегружая шапку. */
   function mountTOC() {
     if (document.querySelector('.toc')) return;
     var toc = document.createElement('div');
@@ -301,15 +362,25 @@
       var cur = t.href === here ? ' aria-current="page"' : '';
       return '<a class="dotrow" href="' + t.href + '"' + cur + '><span>' + t.label + '</span><span class="dots"></span><span class="dr-val">' + t.no + '</span></a>';
     }).join('');
-    toc.innerHTML = '<div class="toc-head"><span class="toc-title">Меню</span>' +
-      '<button class="toc-close" type="button">Закрыть</button></div>' +
-      '<nav aria-label="Разделы сайта">' + rows + '</nav>' +
-      '<div class="toc-foot">' +
-        '<div class="toc-contacts">' +
-          '<a class="toc-tg" href="' + LINKS.bot + '" target="_blank" rel="noopener">Написать в Telegram</a>' +
+    var docRows = DOCS.map(function (d) {
+      return '<a href="' + d[0] + '">' + d[1] + '</a>';
+    }).join('');
+    toc.innerHTML = '<div class="toc-inner">' +
+      '<div class="toc-head"><span class="toc-title">Оглавление</span>' +
+        '<button class="toc-close" type="button">Закрыть</button></div>' +
+      '<div class="toc-grid">' +
+        '<nav class="toc-primary" aria-label="Разделы сайта">' + rows + '</nav>' +
+        '<div class="toc-side">' +
+          '<div><span class="toc-grp-t">Документы</span><nav class="toc-docs" aria-label="Правовые документы">' + docRows + '</nav></div>' +
+          '<div><span class="toc-grp-t">Связь</span><div class="toc-contacts">' +
+            '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span>Бот · заявки и расчёт</span><span class="tc-v">@academic_saloon_bot</span></a>' +
+            '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span>Написать человеку</span><span class="tc-v">@academicsaloon</span></a>' +
+            '<a href="' + LINKS.vk + '" target="_blank" rel="noopener"><span>ВКонтакте</span><span class="tc-v">vk.com/academicsaloon</span></a>' +
+          '</div></div>' +
+          '<div class="toc-theme-row"><span class="ttr-lbl" data-theme-label>Светлая тема</span>' + Salon.themeToggleHTML() + '</div>' +
+          '<a class="btn btn-wax btn-block btn-lg toc-cta" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>' +
         '</div>' +
-        '<a class="btn btn-wax btn-block btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>' +
-      '</div>';
+      '</div></div>';
     document.body.appendChild(toc);
     if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк подписи темы */
 
@@ -337,7 +408,7 @@
     });
     toc.querySelector('.toc-close').addEventListener('click', function () { setToc(false); });
     /* закрываем по переходу — но НЕ по клику на переключатель темы */
-    toc.querySelectorAll('nav a, .toc-foot a').forEach(function (a) { a.addEventListener('click', function () { setToc(false); }); });
+    toc.querySelectorAll('a[href]').forEach(function (a) { a.addEventListener('click', function () { setToc(false); }); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && toc.classList.contains('open')) setToc(false); });
 
     /* бейдж заказов на пункте «Личный кабинет» */
@@ -348,21 +419,23 @@
     }
   }
 
-  /* Шапка внутренних страниц (главная задаёт свою в разметке).
-     Компактно: бренд · ключевые разделы · «Рассчитать» · «Меню».
-     Кабинет, База знаний, Проверка, контакты и тема — в «Меню». */
+  /* Единая шапка для ВСЕХ страниц (и главной тоже):
+     бренд · Цены · Гарантии · Отзывы · Клуб · База знаний · тема · «Рассчитать» · «Меню».
+     На главной «Рассчитать» ведёт к смете на странице, дальше — в конфигуратор. */
   if (!document.querySelector('.site-header')) {
     var header = document.createElement('header');
     header.className = 'site-header';
     var navLinks = NAV.map(function (n) {
       var cur = n.href === here ? ' aria-current="page"' : '';
-      return '<a href="' + n.href + '"' + cur + '>' + n.label + '</a>';
+      var cls = n.x ? ' class="nav-x"' : '';
+      return '<a href="' + n.href + '"' + cur + cls + '>' + n.label + '</a>';
     }).join('');
+    var calcHref = here === 'index.html' ? '#smeta' : 'configurator.html';
     header.innerHTML = '<div class="wrap nav">' + brandHTML() +
       '<nav class="nav-links" aria-label="Разделы">' + navLinks + '</nav>' +
       '<div class="nav-cta">' +
-        '<button class="theme-toggle" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема"><span class="tt-ic" aria-hidden="true"></span></button>' +
-        '<a class="btn btn-wax" href="configurator.html">Рассчитать</a>' +
+        Salon.themeToggleHTML() +
+        '<a class="btn btn-wax" href="' + calcHref + '">Рассчитать</a>' +
         '<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><span class="mt-txt">Меню</span> <i aria-hidden="true"></i></button>' +
       '</div></div>';
     document.body.insertBefore(header, document.body.firstChild);
@@ -380,15 +453,14 @@
     });
   }
 
-  /* ---------------- «Продолжить заказ» ---------------- */
+  /* ---------------- Возврат к начатому заказу ----------------
+     Подпись кнопки не меняем (шапка всегда одинаковая) — черновик
+     тихо продолжается: ссылка ведёт на нужный шаг конфигуратора. */
   (function continueOrder() {
     var draft = Salon.store.get('salon_draft', null);
-    if (!draft || !draft.state || here === 'configurator.html') return;
+    if (!draft || !draft.state || here === 'configurator.html' || here === 'index.html') return;
     var main = document.querySelector('.nav-cta a.btn-wax');
-    if (main) {
-      main.textContent = 'Продолжить заказ';
-      main.href = 'configurator.html?step=' + ((draft.idx || 0) + 1);
-    }
+    if (main) main.href = 'configurator.html?step=' + ((draft.idx || 0) + 1);
   })();
 
   /* ---------------- Индикатор раздела в колонтитуле ---------------- */
@@ -407,70 +479,59 @@
     chapters.forEach(function (c) { io.observe(c); });
   })();
 
-  /* ---------------- Подвал-колофон ---------------- */
+  /* ---------------- Подвал-колофон (тёмный финал каждой страницы) ---------------- */
+  Salon.footerHTML = function () {
+    return '<div class="wrap">' +
+      '<div class="colophon-center">' +
+        '<div class="co-para" aria-hidden="true">¶</div>' +
+        '<h2>Узнайте точную стоимость за минуту</h2>' +
+        '<p class="co-line">Набрано вручную · сверстано без шаблонов · 1000+ работ</p>' +
+        '<a class="btn btn-wax" href="' + LINKS.bot + '" target="_blank" rel="noopener">Написать в Telegram<span class="visually-hidden"> (откроется в новом окне)</span> <span class="ar">→</span></a>' +
+        '<p class="co-alt">Или лично: <a href="' + LINKS.human + '" target="_blank" rel="noopener">@academicsaloon<span class="visually-hidden"> (откроется в новом окне)</span></a> · Заявка ни к чему не обязывает</p>' +
+      '</div>' +
+      '<div class="foot-cols">' +
+        '<div class="fc-brand">' + brandHTML() +
+          '<div class="foot-contacts">' +
+            '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span class="fco-l">Бот · заявки и расчёт</span><span class="fco-v">@academic_saloon_bot</span></a>' +
+            '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span class="fco-l">Написать человеку</span><span class="fco-v">@academicsaloon</span></a>' +
+            '<a href="' + LINKS.vk + '" target="_blank" rel="noopener"><span class="fco-l">ВКонтакте</span><span class="fco-v">vk.com/academicsaloon</span></a>' +
+          '</div>' +
+        '</div>' +
+        '<div><div class="fc-h">Разделы</div><nav class="foot-links" aria-label="Карта сайта">' +
+          '<a href="configurator.html">Рассчитать заказ</a><a href="tariffs.html">Цены и услуги</a>' +
+          '<a href="guarantees.html">Гарантии · устав</a><a href="reviews.html">Отзывы</a>' +
+          '<a href="referral.html">Клуб и бонусы</a><a href="knowledge.html">База знаний</a>' +
+          '<a href="check.html">Проверка текста</a><a href="dashboard.html">Кабинет</a>' +
+        '</nav></div>' +
+        '<div><div class="fc-h">Документы</div><nav class="foot-links" aria-label="Правовые документы">' +
+          '<a href="oferta.html">Публичная оферта</a><a href="privacy.html">Политика ПДн</a>' +
+          '<a href="consent.html">Согласие на обработку ПДн</a><a href="loyalty.html">Правила лояльности</a>' +
+          '<a href="terms.html">Пользовательское соглашение</a><a href="requisites.html">Реквизиты</a>' +
+        '</nav></div>' +
+      '</div>' +
+      '<div class="foot-legal">' +
+        '<div class="fl-row"><span class="fl-k">Исполнитель</span><span class="fl-v">Семёнов Семён Юрьевич · самозанятый, налог на профессиональный доход (ФЗ №&nbsp;422-ФЗ) · ИНН 212885750445 · г.&nbsp;Казань</span></div>' +
+        '<div class="fl-row"><span class="fl-k">Характер услуг</span><span class="fl-v">Информационно-консультационная и учебно-методическая помощь для самостоятельной подготовки заказчика</span></div>' +
+        '<div class="fl-row"><span class="fl-k">Данные</span><span class="fl-v">Сайт не собирает и не хранит персональные данные — переписка идёт в выбранном вами мессенджере</span></div>' +
+      '</div>' +
+      '<div class="foot-copy"><span>© 2020–2026 «Академический Салон»</span><span class="fc-sep">·</span><span>6 лет практики</span><span class="fc-sep">·</span><span>1000+ работ доведено до приёмки</span></div>' +
+    '</div>';
+  };
   if (!document.querySelector('.site-footer')) {
     var footer = document.createElement('footer');
     footer.className = 'site-footer';
-    var fWrap = document.createElement('div'); fWrap.className = 'wrap';
-
-    /* колонки: бренд+контакты · навигация · документы */
-    var fCols = document.createElement('div'); fCols.className = 'foot-cols';
-
-    /* — колонка 1: бренд + контакты — */
-    var cBrand = document.createElement('div'); cBrand.className = 'fc-brand';
-    var fBrand = document.createElement('a');
-    fBrand.href = 'index.html'; fBrand.className = 'brand';
-    var fPara = document.createElement('span'); fPara.className = 'b-para'; fPara.setAttribute('aria-hidden', 'true'); fPara.textContent = '¶';
-    var fName = document.createElement('span'); fName.className = 'b-name'; fName.textContent = 'Академический Салон';
-    fBrand.appendChild(fPara); fBrand.appendChild(fName);
-    cBrand.appendChild(fBrand);
-    var cContacts = document.createElement('div'); cContacts.className = 'foot-contacts';
-    [['Бот · заявки и расчёт', LINKS.bot, '@academic_saloon_bot'],
-     ['Написать человеку', LINKS.human, '@academicsaloon'],
-     ['ВКонтакте', LINKS.vk, 'vk.com/academicsaloon']].forEach(function (c) {
-      var a = document.createElement('a'); a.href = c[1]; a.target = '_blank'; a.rel = 'noopener';
-      a.innerHTML = '<span class="fco-l">' + c[0] + '</span><span class="fco-v">' + c[2] + '</span>';
-      cContacts.appendChild(a);
-    });
-    cBrand.appendChild(cContacts);
-
-    /* — колонка 2: разделы — */
-    var cNav = document.createElement('div');
-    cNav.innerHTML = '<div class="fc-h caps">Разделы</div>';
-    var fNav = document.createElement('nav'); fNav.className = 'foot-links';
-    fNav.setAttribute('aria-label', 'Карта сайта');
-    [['configurator.html', 'Рассчитать заказ'], ['tariffs.html', 'Цены и услуги'], ['guarantees.html', 'Гарантии'],
-     ['reviews.html', 'Отзывы'], ['referral.html', 'Клуб и бонусы'], ['knowledge.html', 'База знаний'],
-     ['check.html', 'Проверка текста'], ['dashboard.html', 'Кабинет']].forEach(function (l) {
-      var a = document.createElement('a'); a.href = l[0]; a.textContent = l[1]; fNav.appendChild(a);
-    });
-    cNav.appendChild(fNav);
-
-    /* — колонка 3: документы — */
-    var cDocs = document.createElement('div');
-    cDocs.innerHTML = '<div class="fc-h caps">Документы</div>';
-    var fDocs = document.createElement('nav'); fDocs.className = 'foot-links';
-    fDocs.setAttribute('aria-label', 'Правовые документы');
-    [['oferta.html', 'Публичная оферта'], ['privacy.html', 'Политика ПДн'], ['consent.html', 'Согласие на обработку ПДн'],
-     ['loyalty.html', 'Правила программы лояльности'], ['terms.html', 'Пользовательское соглашение'],
-     ['requisites.html', 'Реквизиты и правовая информация']].forEach(function (l) {
-      var a = document.createElement('a'); a.href = l[0]; a.textContent = l[1]; fDocs.appendChild(a);
-    });
-    cDocs.appendChild(fDocs);
-
-    fCols.appendChild(cBrand); fCols.appendChild(cNav); fCols.appendChild(cDocs);
-
-    var fColophon = document.createElement('div'); fColophon.className = 'colophon';
-    fColophon.textContent = '6 лет практики · 1000+ работ доведено до приёмки';
-
-    var fNote = document.createElement('p'); fNote.className = 'foot-note';
-    fNote.innerHTML = 'Исполнитель: Семёнов Семён Юрьевич, самозанятый (налог на профессиональный доход, ФЗ № 422-ФЗ), ИНН 212885750445, г. Казань. ' +
-      'Все услуги и материалы носят информационно-консультационный и учебно-методический характер и предназначены для самостоятельной подготовки заказчика. ' +
-      'Сайт не собирает и не хранит персональные данные. © 2020–2026 Академический Салон.';
-
-    fWrap.appendChild(fCols); fWrap.appendChild(fColophon); fWrap.appendChild(fNote);
-    footer.appendChild(fWrap);
+    footer.setAttribute('aria-label', 'Колофон');
+    footer.innerHTML = Salon.footerHTML();
     document.body.appendChild(footer);
+  }
+
+  /* ---------------- Плавающий Telegram (десктоп) ---------------- */
+  if (!document.querySelector('.tg-pill') && here !== 'configurator.html' && here !== '404.html') {
+    var pill = document.createElement('a');
+    pill.className = 'tg-pill';
+    pill.href = LINKS.bot; pill.target = '_blank'; pill.rel = 'noopener';
+    pill.innerHTML = '<span class="tp-dot" aria-hidden="true"></span>Telegram<span class="visually-hidden"> (откроется в новом окне)</span>';
+    document.body.appendChild(pill);
   }
 
   /* ---------------- Мобильный sticky-CTA (если страница не задала свой) ---------------- */

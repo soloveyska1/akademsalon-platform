@@ -47,16 +47,6 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
 
-  /* ---------------- Тема: главная всегда светлая ----------------
-     app.js может выставить data-theme=dark (системная тема без
-     сохранённого выбора) — на этой странице тёмных токенов нет,
-     поэтому нормализуем атрибут и цвет обвязки браузера. */
-  document.documentElement.removeAttribute('data-theme');
-  (function () {
-    var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute('content', '#F6F1E7');
-  })();
-
   /* ---------------- HERO: книга ---------------- */
   var coverScene = document.querySelector('.cover-scene');
   var bookTilt = document.querySelector('.b-tilt');

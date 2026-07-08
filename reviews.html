@@ -4,11 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Отзывы клиентов — Академический Салон</title>
-<meta name="description" content="Живые скриншоты благодарностей: защиты на «отлично», работы, принятые с первого раза, помощь с нормоконтролем. Отзывы клиентов Академического Салона без ретуши." />
+<meta name="description" content="Книга отзывов: живые скриншоты благодарностей после защит — оценки «отлично», сданные госэкзамены, помощь с нормоконтролем. Без ретуши и выдуманных имён." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260708b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260709a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260709a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://academic-saloon.duckdns.org/reviews.html" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -16,189 +17,427 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:title" content="Отзывы клиентов — Академический Салон" />
-<meta property="og:description" content="Живые благодарности клиентов: защиты на «отлично», работы, принятые с первого раза." />
+<meta property="og:description" content="Книга отзывов: живые благодарности после защит — как есть, без ретуши." />
 <meta property="og:url" content="https://academic-saloon.duckdns.org/reviews.html" />
 <style>
-  .rv-hero{padding:calc(56px + clamp(28px,5vw,56px)) 0 0}
+  /* ============================================================
+     ОТЗЫВЫ — «КНИГА ОТЗЫВОВ»: бегущая строка цитат и записи
+     с защит — скриншоты на паспарту со скотчем и печатью оценки
+     ============================================================ */
+  .rv-hero{padding:calc(64px + clamp(32px,6vh,64px)) 0 0}
+  .rv-hero .caps{display:block;margin-bottom:14px}
   .rv-lead{max-width:60ch;margin-top:14px}
   .rv-strip{display:flex;gap:8px 22px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin-top:22px;font-variant-numeric:tabular-nums}
-  .rv-strip b{color:var(--ink);font-weight:500}
+  .rv-strip b{color:var(--ink);font-weight:600}
   .rv-strip .sep{color:var(--hairline-strong)}
-  .rv-grid{columns:3 300px;column-gap:20px;margin-top:clamp(28px,5vw,44px)}
-  .rv-item{break-inside:avoid;margin:0 0 20px;display:block}
-  .rv-shot{display:block;width:100%;padding:0;border:1px solid var(--hairline);border-radius:var(--r);background:var(--sheet);cursor:zoom-in;overflow:hidden;transition:border-color .15s,box-shadow .15s}
-  .rv-shot:hover{border-color:var(--hairline-strong);box-shadow:4px 4px 0 rgba(34,32,27,.06)}
+
+  /* бегущая строка благодарностей */
+  .rv-marq{
+    overflow:hidden;margin-top:clamp(32px,6vw,56px);
+    border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);
+    padding:20px 0;background:var(--paper-2);
+  }
+  .rv-marq .mq-track{display:flex;width:max-content;animation:mq 46s linear infinite}
+  .rv-marq:hover .mq-track{animation-play-state:paused}
+  .rv-marq .mq-i{
+    font-family:var(--serif);font-style:italic;font-size:clamp(18px,2.3vw,25px);
+    white-space:nowrap;color:var(--ink);padding-right:40px;
+  }
+  .rv-marq .mq-i::after{content:"¶";margin-left:40px;color:var(--wax);font-style:normal;opacity:.55}
+  @keyframes mq{to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){
+    .rv-marq{display:none}
+  }
+
+  /* сетка-мазонри записей */
+  .rv-body{padding-top:clamp(32px,5vw,52px)}
+  .rv-grid{columns:3 300px;column-gap:22px}
+  .rv-item{break-inside:avoid;margin:0 0 22px;display:block}
+  .rv-mat{
+    position:relative;background:#fff;border:1px solid #E2DACA;border-radius:2px;
+    padding:12px 12px 10px;
+    box-shadow:0 2px 0 rgba(107,94,64,.16),0 12px 26px rgba(107,94,64,.12);
+    transform:rotate(var(--rot,0deg));
+    transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s;
+  }
+  :root[data-theme="dark"] .rv-mat{border-color:#3A362B;box-shadow:0 2px 0 rgba(0,0,0,.5),0 14px 30px rgba(0,0,0,.45)}
+  .rv-item:nth-child(4n+1) .rv-mat{--rot:-1.1deg}
+  .rv-item:nth-child(4n+2) .rv-mat{--rot:.9deg}
+  .rv-item:nth-child(4n+3) .rv-mat{--rot:-.6deg}
+  .rv-item:nth-child(4n+4) .rv-mat{--rot:1.2deg}
+  .rv-item:hover .rv-mat{transform:rotate(0deg) translateY(-5px);box-shadow:0 4px 0 rgba(107,94,64,.14),0 18px 38px rgba(107,94,64,.2)}
+  :root[data-theme="dark"] .rv-item:hover .rv-mat{box-shadow:0 4px 0 rgba(0,0,0,.5),0 18px 38px rgba(0,0,0,.55)}
+  .rv-tape{ /* полоска скотча */
+    position:absolute;top:-9px;left:50%;transform:translateX(-50%) rotate(-2deg);
+    width:86px;height:20px;border-radius:1px;
+    background:rgba(233,214,160,.55);border:1px solid rgba(178,158,102,.35);
+    box-shadow:0 1px 2px rgba(107,94,64,.15);
+    -webkit-backdrop-filter:blur(1px);backdrop-filter:blur(1px);
+  }
+  .rv-shot{display:block;width:100%;padding:0;border:1px solid #EAE3D3;border-radius:1px;background:#fff;cursor:zoom-in;overflow:hidden}
   .rv-shot img{width:100%;height:auto;display:block}
-  .rv-item figcaption{display:flex;align-items:baseline;gap:10px;padding:9px 4px 0;font-size:13.5px;color:var(--ink-soft);line-height:1.45}
-  .rv-grade{flex:0 0 auto;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--verify);border:1px solid var(--verify);border-radius:var(--r);padding:1px 7px;letter-spacing:.02em}
+  .rv-seal{ /* печать оценки */
+    position:absolute;top:-13px;right:-11px;width:46px;height:46px;
+    display:grid;place-items:center;border-radius:50%;
+    border:2px solid var(--wax);color:var(--wax);background:var(--paper);
+    font-family:var(--mono);font-weight:600;font-size:17px;
+    transform:rotate(9deg);box-shadow:0 2px 6px rgba(107,94,64,.2);
+  }
+  .rv-seal::after{content:"";position:absolute;inset:3px;border-radius:50%;border:1px solid currentColor;opacity:.5}
+  .rv-item figcaption{display:block;padding:9px 4px 2px;font-family:var(--mono);font-size:12.5px;color:#6B665A;line-height:1.5;letter-spacing:.01em}
+
+  /* текстовые пулл-цитаты между записями */
+  .rv-quote .rv-mat{background:var(--sheet);border-color:var(--hairline);padding:22px 22px 18px}
+  .rv-quote .rq-mark{font-family:var(--serif);font-size:44px;line-height:.6;color:var(--wax);display:block;margin:6px 0 12px}
+  .rv-quote blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(18px,2vw,22px);line-height:1.45;color:var(--ink);margin:0 0 12px}
+  .rv-quote .rq-src{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+
   .rv-note{margin-top:clamp(28px,5vw,44px);font-size:13px;color:var(--ink-soft);max-width:70ch;line-height:1.6}
-  /* лайтбокс */
-  .lb{position:fixed;inset:0;z-index:95;display:none;place-items:center;background:rgba(20,18,14,.82);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);padding:24px}
+
+  /* лайтбокс с листанием */
+  .lb{position:fixed;inset:0;z-index:220;display:none;place-items:center;background:rgba(20,18,14,.85);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);padding:24px}
   .lb.open{display:grid}
-  .lb img{max-width:min(920px,96vw);max-height:90vh;width:auto;height:auto;border:1px solid var(--hairline-strong);border-radius:var(--r);background:var(--sheet)}
-  .lb-x{position:fixed;top:16px;right:18px;width:48px;height:48px;border:1px solid var(--hairline-strong);background:var(--paper);border-radius:var(--r);font-size:24px;color:var(--ink);cursor:pointer}
-  @media(max-width:880px){.rv-grid{columns:2 240px;column-gap:14px}.rv-item{margin-bottom:14px}}
+  .lb figure{display:flex;flex-direction:column;align-items:center;gap:0;max-width:min(940px,96vw)}
+  .lb img{max-width:100%;max-height:82vh;width:auto;height:auto;border:1px solid var(--hairline-strong);border-radius:2px 2px 0 0;background:#fff}
+  .lb figcaption{
+    width:100%;display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+    background:var(--paper);border:1px solid var(--hairline-strong);border-top:0;border-radius:0 0 2px 2px;
+    padding:10px 14px;font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);
+  }
+  .lb figcaption .lb-cnt{color:var(--ink-faint);white-space:nowrap}
+  .lb-x{position:fixed;top:16px;right:18px;width:48px;height:48px;border:1px solid var(--hairline-strong);background:var(--paper);border-radius:var(--r);font-size:24px;color:var(--ink);cursor:pointer;z-index:2}
+  .lb-nav{
+    position:fixed;top:50%;transform:translateY(-50%);width:52px;height:52px;z-index:2;
+    border:1px solid var(--hairline-strong);background:var(--paper);border-radius:var(--r);
+    font-family:var(--serif);font-size:24px;color:var(--ink);cursor:pointer;
+    display:grid;place-items:center;transition:background .15s;
+  }
+  .lb-nav:hover{background:var(--mark)}
+  .lb-prev{left:18px}
+  .lb-next{right:18px}
+  @media(max-width:720px){.lb-nav{top:auto;bottom:18px;transform:none}.lb-prev{left:24vw}.lb-next{right:24vw}}
+
+  /* финальный CTA */
+  .final-cta{padding:var(--block) 0 0;text-align:center}
+  .final-cta .fc-rule{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,5vw,44px)}
+  .final-cta .fc-rule::before,.final-cta .fc-rule::after{content:"";height:1px;background:var(--hairline);flex:1}
+  .final-cta .fc-rule span{font-family:var(--serif);color:var(--ink-faint);font-size:18px}
+  .final-cta h2{margin-bottom:14px}
+
+  @media(max-width:880px){.rv-grid{columns:2 240px;column-gap:16px}.rv-item{margin-bottom:16px}}
   @media(max-width:520px){.rv-grid{columns:1}}
 </style>
 </head>
 <body>
-<main class="wrap">
-  <section class="rv-hero" data-chapter="Отзывы">
-    <div class="reveal">
-      <span class="caps">Отзывы · без ретуши</span>
-      <h1 class="h-display" style="margin-top:12px">Их работы уже защищены</h1>
-      <p class="lead rv-lead">Реальные благодарности клиентов — скриншоты из переписок как есть. Мы не сочиняем отзывы и не просим их за скидку: люди пишут сами, когда всё позади.</p>
+<main>
+  <section class="rv-hero" data-chapter="Книга отзывов">
+    <div class="wrap reveal">
+      <span class="caps">Книга отзывов · записи с защит</span>
+      <h1 class="h-display">Здесь расписываются после защиты</h1>
+      <p class="lead rv-lead">Девятнадцать скриншотов из переписок — как есть, без ретуши. Мы не сочиняем отзывы и не просим их за скидку: люди пишут сами, когда всё позади.</p>
       <div class="rv-strip">
-        <span><b>19</b> живых благодарностей</span><span class="sep">·</span>
+        <span><b>19</b> живых записей</span><span class="sep">·</span>
         <span>защиты на <b>«отлично»</b></span><span class="sep">·</span>
-        <span>работы, принятые <b>с первого раза</b></span>
+        <span>имена и данные <b>скрыты</b></span>
       </div>
     </div>
   </section>
 
-  <section class="reveal">
-    <div class="rv-grid">
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-01.webp" aria-label="Открыть отзыв крупнее: Клиентка благодарит за выполненную работу и пишет, что довольна результатом.">
-          <img src="assets/img/reviews/review-01.webp" width="590" height="307" loading="lazy" decoding="async" alt="Клиентка благодарит за выполненную работу и пишет, что довольна результатом." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">«Спасибо за работу, я довольна»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-02.webp" aria-label="Открыть отзыв крупнее: Клиент получил оценку 5 без защиты; научный руководитель назвал работу очень хорошей.">
-          <img src="assets/img/reviews/review-02.webp" width="590" height="536" loading="lazy" decoding="async" alt="Клиент получил оценку 5 без защиты; научный руководитель назвал работу очень хорошей." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">«У меня 5 без защиты, работа очень хорошая»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-03.webp" aria-label="Открыть отзыв крупнее: Голосовой отзыв: твёрдая четвёрка, благодарность за работу и вовремя сделанные материалы.">
-          <img src="assets/img/reviews/review-03.webp" width="590" height="439" loading="lazy" decoding="async" alt="Голосовой отзыв: твёрдая четвёрка, благодарность за работу и вовремя сделанные материалы." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">4</span><span class="rv-cap">«Отлично всё, шикарно, спасибо за работу»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-04.webp" aria-label="Открыть отзыв крупнее: Клиентка получила автомат с оценкой 5 и захотела сама разобраться в расчётах.">
-          <img src="assets/img/reviews/review-04.webp" width="591" height="816" loading="lazy" decoding="async" alt="Клиентка получила автомат с оценкой 5 и захотела сама разобраться в расчётах." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">«Автомат по выставленной оценке — 5»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-05.webp" aria-label="Открыть отзыв крупнее: Скриншот письма научного руководителя: работа принята с первого раза, без единой правки.">
-          <img src="assets/img/reviews/review-05.webp" width="590" height="1014" loading="lazy" decoding="async" alt="Скриншот письма научного руководителя: работа принята с первого раза, без единой правки." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">Диплом принят с первого раза, без правок</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-06.webp" aria-label="Открыть отзыв крупнее: Клиентка сдала работу на 4; комиссия отметила, что работа очень хорошая.">
-          <img src="assets/img/reviews/review-06.webp" width="658" height="1280" loading="lazy" decoding="async" alt="Клиентка сдала работу на 4; комиссия отметила, что работа очень хорошая." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">4</span><span class="rv-cap">«Сдала на 4, работа очень хорошая»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-07.webp" aria-label="Открыть отзыв крупнее: Короткий отзыв: клиент доволен скоростью выполнения.">
-          <img src="assets/img/reviews/review-07.webp" width="1074" height="700" loading="lazy" decoding="async" alt="Короткий отзыв: клиент доволен скоростью выполнения." />
-        </button>
-        <figcaption><span class="rv-cap">«Кайф) Благодарю за быструю работу»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-08.webp" aria-label="Открыть отзыв крупнее: Клиент получил готовую работу с высоким процентом оригинальности и восторженно благодарит.">
-          <img src="assets/img/reviews/review-08.webp" width="1080" height="1085" loading="lazy" decoding="async" alt="Клиент получил готовую работу с высоким процентом оригинальности и восторженно благодарит." />
-        </button>
-        <figcaption><span class="rv-cap">«Как вы это делаете? Вы мой кумир!»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-09.webp" aria-label="Открыть отзыв крупнее: Клиентка удивлена, что работа была готова и отправлена уже на следующий день.">
-          <img src="assets/img/reviews/review-09.webp" width="458" height="214" loading="lazy" decoding="async" alt="Клиентка удивлена, что работа была готова и отправлена уже на следующий день." />
-        </button>
-        <figcaption><span class="rv-cap">«Не думала, что на следующий день всё отправишь»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-10.webp" aria-label="Открыть отзыв крупнее: Скриншот из личного кабинета вуза: самостоятельная работа оценена на 30 баллов.">
-          <img src="assets/img/reviews/review-10.webp" width="866" height="358" loading="lazy" decoding="async" alt="Скриншот из личного кабинета вуза: самостоятельная работа оценена на 30 баллов." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">30 баллов</span><span class="rv-cap">Самостоятельная работа оценена на 30 баллов</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-11.webp" aria-label="Открыть отзыв крупнее: Клиентка получила оценку «отлично» и благодарит за работу.">
-          <img src="assets/img/reviews/review-11.webp" width="1174" height="258" loading="lazy" decoding="async" alt="Клиентка получила оценку «отлично» и благодарит за работу." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">«Получила отлично! Спасибо за работу»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-12.webp" aria-label="Открыть отзыв крупнее: Клиент сообщает, что защитил ВКР на пятёрку.">
-          <img src="assets/img/reviews/review-12.webp" width="1344" height="344" loading="lazy" decoding="async" alt="Клиент сообщает, что защитил ВКР на пятёрку." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">«ВКР — 5!»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-13.webp" aria-label="Открыть отзыв крупнее: Клиентка защитила диплом на «5» и сдала госэкзамены на «5».">
-          <img src="assets/img/reviews/review-13.webp" width="1158" height="298" loading="lazy" decoding="async" alt="Клиентка защитила диплом на «5» и сдала госэкзамены на «5»." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">Диплом на 5, госэкзамены на 5</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-14.webp" aria-label="Открыть отзыв крупнее: Успешная защита на «отлично» (98 баллов); клиентка благодарит за труд и терпение.">
-          <img src="assets/img/reviews/review-14.webp" width="720" height="402" loading="lazy" decoding="async" alt="Успешная защита на «отлично» (98 баллов); клиентка благодарит за труд и терпение." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">«Это победа! Защитила, красный будет»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-15.webp" aria-label="Открыть отзыв крупнее: Клиентка сдала на 5 и отдельно благодарит за помощь с нормоконтролем.">
-          <img src="assets/img/reviews/review-15.webp" width="918" height="460" loading="lazy" decoding="async" alt="Клиентка сдала на 5 и отдельно благодарит за помощь с нормоконтролем." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">«Спасибо, особенно за нормоконтроль»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-16.webp" aria-label="Открыть отзыв крупнее: Клиентка сообщает, что защитилась на пятёрку, и благодарит.">
-          <img src="assets/img/reviews/review-16.webp" width="982" height="232" loading="lazy" decoding="async" alt="Клиентка сообщает, что защитилась на пятёрку, и благодарит." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">«Защитилась на пятёрку»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-17.webp" aria-label="Открыть отзыв крупнее: Клиентка защитила работу на «отлично»: комиссия отметила проделанное исследование.">
-          <img src="assets/img/reviews/review-17.webp" width="990" height="414" loading="lazy" decoding="async" alt="Клиентка защитила работу на «отлично»: комиссия отметила проделанное исследование." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">«Защитила на отлично, ты лучший»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-18.webp" aria-label="Открыть отзыв крупнее: Клиентка сообщает об успешной защите на «отлично».">
-          <img src="assets/img/reviews/review-18.webp" width="658" height="202" loading="lazy" decoding="async" alt="Клиентка сообщает об успешной защите на «отлично»." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">«Вчера защитилась. 5. Спасибо»</span></figcaption>
-      </figure>
-      <figure class="rv-item reveal">
-        <button class="rv-shot" type="button" data-full="assets/img/reviews/review-19.webp" aria-label="Открыть отзыв крупнее: Клиентка благодарит за успешную сдачу на «отлично».">
-          <img src="assets/img/reviews/review-19.webp" width="586" height="160" loading="lazy" decoding="async" alt="Клиентка благодарит за успешную сдачу на «отлично»." />
-        </button>
-        <figcaption><span class="rv-grade" aria-hidden="true">5</span><span class="rv-cap">«Сдала на отлично! Спасибо»</span></figcaption>
-      </figure>
+  <div class="rv-marq" aria-hidden="true">
+    <div class="mq-track">
+      <span class="mq-i">«Это победа! Защитила, красный будет»</span>
+      <span class="mq-i">«ВКР — 5!»</span>
+      <span class="mq-i">«У меня 5 без защиты»</span>
+      <span class="mq-i">«Как вы это делаете? Вы мой кумир!»</span>
+      <span class="mq-i">«Защитилась на пятёрку»</span>
+      <span class="mq-i">«Диплом на 5, госы на 5»</span>
+      <span class="mq-i">«Кайф! Благодарю за быструю работу»</span>
+      <span class="mq-i">«Сдала на отлично! Спасибо»</span>
+      <span class="mq-i">«Это победа! Защитила, красный будет»</span>
+      <span class="mq-i">«ВКР — 5!»</span>
+      <span class="mq-i">«У меня 5 без защиты»</span>
+      <span class="mq-i">«Как вы это делаете? Вы мой кумир!»</span>
+      <span class="mq-i">«Защитилась на пятёрку»</span>
+      <span class="mq-i">«Диплом на 5, госы на 5»</span>
+      <span class="mq-i">«Кайф! Благодарю за быструю работу»</span>
+      <span class="mq-i">«Сдала на отлично! Спасибо»</span>
     </div>
-    <p class="rv-note">Имена и личные данные на скриншотах скрыты или отсутствуют. Оценки зависят от темы, требований и вовлечённости самого студента — мы отвечаем за качество материалов и сопровождение, но не гарантируем конкретную оценку или результат проверки. Хотите так же — <a class="link" href="configurator.html">соберите смету за минуту</a>.</p>
+  </div>
+
+  <section class="rv-body reveal">
+    <div class="wrap">
+      <div class="rv-grid">
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-14.webp" aria-label="Открыть отзыв крупнее: Успешная защита на «отлично» (98 баллов); клиентка благодарит за труд и терпение.">
+              <img src="assets/img/reviews/review-14.webp" width="720" height="402" loading="lazy" decoding="async" alt="Успешная защита на «отлично» (98 баллов); клиентка благодарит за труд и терпение." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>«Это победа! Защитила, красный будет» · 98 баллов</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-02.webp" aria-label="Открыть отзыв крупнее: Клиент получил оценку 5 без защиты; научный руководитель назвал работу очень хорошей.">
+              <img src="assets/img/reviews/review-02.webp" width="590" height="536" loading="lazy" decoding="async" alt="Клиент получил оценку 5 без защиты; научный руководитель назвал работу очень хорошей." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>«У меня 5 без защиты, работа очень хорошая»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-13.webp" aria-label="Открыть отзыв крупнее: Клиентка защитила диплом на «5» и сдала госэкзамены на «5».">
+              <img src="assets/img/reviews/review-13.webp" width="1158" height="298" loading="lazy" decoding="async" alt="Клиентка защитила диплом на «5» и сдала госэкзамены на «5»." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>Диплом на 5, госэкзамены на 5</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item rv-quote reveal" aria-label="Цитата из отзыва">
+          <div class="rv-mat">
+            <span class="rq-mark" aria-hidden="true">«</span>
+            <blockquote>Как вы это делаете? Вы мой кумир!</blockquote>
+            <span class="rq-src">после отчёта об оригинальности</span>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-05.webp" aria-label="Открыть отзыв крупнее: Скриншот письма научного руководителя: работа принята с первого раза, без единой правки.">
+              <img src="assets/img/reviews/review-05.webp" width="590" height="1014" loading="lazy" decoding="async" alt="Скриншот письма научного руководителя: работа принята с первого раза, без единой правки." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>Диплом принят без единой правки</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-01.webp" aria-label="Открыть отзыв крупнее: Клиентка благодарит за выполненную работу и пишет, что довольна результатом.">
+              <img src="assets/img/reviews/review-01.webp" width="590" height="307" loading="lazy" decoding="async" alt="Клиентка благодарит за выполненную работу и пишет, что довольна результатом." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>«Спасибо за работу, я довольна»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-04.webp" aria-label="Открыть отзыв крупнее: Клиентка получила автомат с оценкой 5 и захотела сама разобраться в расчётах.">
+              <img src="assets/img/reviews/review-04.webp" width="591" height="816" loading="lazy" decoding="async" alt="Клиентка получила автомат с оценкой 5 и захотела сама разобраться в расчётах." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>«Автомат по выставленной оценке — 5»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-08.webp" aria-label="Открыть отзыв крупнее: Клиент получил готовую работу с высоким процентом оригинальности и восторженно благодарит.">
+              <img src="assets/img/reviews/review-08.webp" width="1080" height="1085" loading="lazy" decoding="async" alt="Клиент получил готовую работу с высоким процентом оригинальности и восторженно благодарит." />
+            </button>
+            <figcaption>«Как вы это делаете? Вы мой кумир!»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-06.webp" aria-label="Открыть отзыв крупнее: Клиентка сдала работу на 4; комиссия отметила, что работа очень хорошая.">
+              <img src="assets/img/reviews/review-06.webp" width="658" height="1280" loading="lazy" decoding="async" alt="Клиентка сдала работу на 4; комиссия отметила, что работа очень хорошая." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">4</span>
+            <figcaption>«Сдала на 4, работа очень хорошая»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-12.webp" aria-label="Открыть отзыв крупнее: Клиент сообщает, что защитил ВКР на пятёрку.">
+              <img src="assets/img/reviews/review-12.webp" width="1344" height="344" loading="lazy" decoding="async" alt="Клиент сообщает, что защитил ВКР на пятёрку." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>«ВКР — 5!»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-03.webp" aria-label="Открыть отзыв крупнее: Голосовой отзыв: твёрдая четвёрка, благодарность за работу и вовремя сделанные материалы.">
+              <img src="assets/img/reviews/review-03.webp" width="590" height="439" loading="lazy" decoding="async" alt="Голосовой отзыв: твёрдая четвёрка, благодарность за работу и вовремя сделанные материалы." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">4</span>
+            <figcaption>«Отлично всё, шикарно, спасибо за работу»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-07.webp" aria-label="Открыть отзыв крупнее: Короткий отзыв: клиент доволен скоростью выполнения.">
+              <img src="assets/img/reviews/review-07.webp" width="1074" height="700" loading="lazy" decoding="async" alt="Короткий отзыв: клиент доволен скоростью выполнения." />
+            </button>
+            <figcaption>«Кайф) Благодарю за быструю работу»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item rv-quote reveal" aria-label="Цитата из отзыва">
+          <div class="rv-mat">
+            <span class="rq-mark" aria-hidden="true">«</span>
+            <blockquote>Вчера защитилась. 5. Спасибо огромное за труд и терпение!</blockquote>
+            <span class="rq-src">запись после защиты · 2026</span>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-09.webp" aria-label="Открыть отзыв крупнее: Клиентка удивлена, что работа была готова и отправлена уже на следующий день.">
+              <img src="assets/img/reviews/review-09.webp" width="458" height="214" loading="lazy" decoding="async" alt="Клиентка удивлена, что работа была готова и отправлена уже на следующий день." />
+            </button>
+            <figcaption>«Не думала, что на следующий день всё отправишь»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-10.webp" aria-label="Открыть отзыв крупнее: Скриншот из личного кабинета вуза: самостоятельная работа оценена на 30 баллов.">
+              <img src="assets/img/reviews/review-10.webp" width="866" height="358" loading="lazy" decoding="async" alt="Скриншот из личного кабинета вуза: самостоятельная работа оценена на 30 баллов." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">30</span>
+            <figcaption>Самостоятельная работа — 30 баллов из 30</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-11.webp" aria-label="Открыть отзыв крупнее: Клиентка получила оценку «отлично» и благодарит за работу.">
+              <img src="assets/img/reviews/review-11.webp" width="1174" height="258" loading="lazy" decoding="async" alt="Клиентка получила оценку «отлично» и благодарит за работу." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>«Получила отлично! Спасибо за работу»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-15.webp" aria-label="Открыть отзыв крупнее: Клиентка сдала на 5 и отдельно благодарит за помощь с нормоконтролем.">
+              <img src="assets/img/reviews/review-15.webp" width="918" height="460" loading="lazy" decoding="async" alt="Клиентка сдала на 5 и отдельно благодарит за помощь с нормоконтролем." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>«Спасибо, особенно за нормоконтроль»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-16.webp" aria-label="Открыть отзыв крупнее: Клиентка сообщает, что защитилась на пятёрку, и благодарит.">
+              <img src="assets/img/reviews/review-16.webp" width="982" height="232" loading="lazy" decoding="async" alt="Клиентка сообщает, что защитилась на пятёрку, и благодарит." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>«Защитилась на пятёрку»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-17.webp" aria-label="Открыть отзыв крупнее: Клиентка защитила работу на «отлично»: комиссия отметила проделанное исследование.">
+              <img src="assets/img/reviews/review-17.webp" width="990" height="414" loading="lazy" decoding="async" alt="Клиентка защитила работу на «отлично»: комиссия отметила проделанное исследование." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>«Защитила на отлично, ты лучший»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-18.webp" aria-label="Открыть отзыв крупнее: Клиентка сообщает об успешной защите на «отлично».">
+              <img src="assets/img/reviews/review-18.webp" width="658" height="202" loading="lazy" decoding="async" alt="Клиентка сообщает об успешной защите на «отлично»." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>«Вчера защитилась. 5. Спасибо»</figcaption>
+          </div>
+        </figure>
+        <figure class="rv-item reveal">
+          <div class="rv-mat">
+            <span class="rv-tape" aria-hidden="true"></span>
+            <button class="rv-shot" type="button" data-full="assets/img/reviews/review-19.webp" aria-label="Открыть отзыв крупнее: Клиентка благодарит за успешную сдачу на «отлично».">
+              <img src="assets/img/reviews/review-19.webp" width="586" height="160" loading="lazy" decoding="async" alt="Клиентка благодарит за успешную сдачу на «отлично»." />
+            </button>
+            <span class="rv-seal" aria-hidden="true">5</span>
+            <figcaption>«Сдала на отлично! Спасибо»</figcaption>
+          </div>
+        </figure>
+      </div>
+      <p class="rv-note">Имена и личные данные на скриншотах скрыты или отсутствуют. Оценки зависят от темы, требований и вовлечённости самого студента — мы отвечаем за качество материалов и сопровождение, но не гарантируем конкретную оценку или результат проверки. Хотите так же — <a class="link" href="configurator.html">соберите смету за минуту</a>.</p>
+    </div>
   </section>
 
-  <section class="final-cta reveal" data-chapter="Расчёт стоимости" style="padding:var(--block) 0 0;text-align:center">
-    <div class="fc-rule" style="display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,5vw,44px)"><span style="font-family:var(--serif);color:var(--ink-faint);font-size:18px">¶</span></div>
-    <h2 style="margin-bottom:14px">Ваша защита — следующая</h2>
-    <p class="lead" style="max-width:44ch;margin:0 auto 26px">Тип работы, срок, направление — и вы увидите смету и порядок оплаты за минуту.</p>
-    <a class="btn btn-wax btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>
+  <section class="final-cta reveal" data-chapter="Расчёт стоимости">
+    <div class="wrap">
+      <div class="fc-rule"><span>¶</span></div>
+      <h2>Ваша защита — следующая запись</h2>
+      <p class="lead" style="max-width:44ch;margin:0 auto 26px">Тип работы, срок, направление — и вы увидите смету и порядок оплаты за минуту.</p>
+      <a class="btn btn-wax btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>
+    </div>
   </section>
 </main>
-<div class="fc-rule" style="height:0"></div>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Отзыв крупнее">
   <button class="lb-x" type="button" aria-label="Закрыть">×</button>
-  <img id="lbImg" src="" alt="" />
+  <button class="lb-nav lb-prev" type="button" aria-label="Предыдущий отзыв">←</button>
+  <figure>
+    <img id="lbImg" src="" alt="" />
+    <figcaption><span id="lbCap"></span><span class="lb-cnt" id="lbCnt"></span></figcaption>
+  </figure>
+  <button class="lb-nav lb-next" type="button" aria-label="Следующий отзыв">→</button>
 </div>
 
-<script src="assets/js/app.js?v=20260708b"></script>
+<script src="assets/js/app.js?v=20260709a"></script>
 <script>
 (function(){
-  var lb=document.getElementById('lb'), img=document.getElementById('lbImg'), last;
-  function open(src,alt){ last=document.activeElement; img.src=src; img.alt=alt||''; lb.classList.add('open'); document.body.classList.add('toc-lock'); lb.querySelector('.lb-x').focus(); }
-  function close(){ lb.classList.remove('open'); document.body.classList.remove('toc-lock'); img.src=''; if(last&&last.focus)last.focus(); }
-  document.querySelectorAll('.rv-shot').forEach(function(b){ b.addEventListener('click',function(){ var im=b.querySelector('img'); open(b.getAttribute('data-full'), im?im.alt:''); }); });
-  lb.addEventListener('click',function(e){ if(e.target===lb||e.target.closest('.lb-x')) close(); });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&lb.classList.contains('open')) close(); });
+  'use strict';
+  var lb = document.getElementById('lb');
+  var img = document.getElementById('lbImg');
+  var cap = document.getElementById('lbCap');
+  var cnt = document.getElementById('lbCnt');
+  var shots = Array.prototype.slice.call(document.querySelectorAll('.rv-shot'));
+  var items = shots.map(function(b){
+    var im = b.querySelector('img');
+    var fc = b.closest('.rv-mat').querySelector('figcaption');
+    return { src: b.getAttribute('data-full'), alt: im ? im.alt : '', cap: fc ? fc.textContent : '' };
+  });
+  var idx = 0, last;
+  function show(i){
+    idx = (i + items.length) % items.length;
+    img.src = items[idx].src;
+    img.alt = items[idx].alt;
+    cap.textContent = items[idx].cap;
+    cnt.textContent = (idx + 1) + ' / ' + items.length;
+  }
+  function open(i){
+    last = document.activeElement;
+    show(i);
+    lb.classList.add('open');
+    document.body.classList.add('toc-lock');
+    lb.querySelector('.lb-x').focus();
+  }
+  function close(){
+    lb.classList.remove('open');
+    document.body.classList.remove('toc-lock');
+    img.src = '';
+    if (last && last.focus) last.focus();
+  }
+  shots.forEach(function(b, i){ b.addEventListener('click', function(){ open(i); }); });
+  lb.querySelector('.lb-prev').addEventListener('click', function(){ show(idx - 1); });
+  lb.querySelector('.lb-next').addEventListener('click', function(){ show(idx + 1); });
+  lb.addEventListener('click', function(e){ if (e.target === lb || e.target.closest('.lb-x')) close(); });
+  document.addEventListener('keydown', function(e){
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') show(idx - 1);
+    else if (e.key === 'ArrowRight') show(idx + 1);
+  });
 })();
 </script>
 </body>

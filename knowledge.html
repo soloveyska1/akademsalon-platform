@@ -8,7 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260708b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260709a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260709a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://academic-saloon.duckdns.org/knowledge.html" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -19,15 +20,37 @@
 <meta property="og:description" content="Понятные бесплатные гайды: введение ВКР, нормоконтроль, оригинальность, защита." />
 <meta property="og:url" content="https://academic-saloon.duckdns.org/knowledge.html" />
 <style>
-  .kb-hero{padding:calc(56px + clamp(28px,5vw,56px)) 0 0}
+  /* ============================================================
+     БАЗА ЗНАНИЙ — читальный зал: нумерованные гайды-конспекты
+     ============================================================ */
+  .kb-hero{padding:calc(64px + clamp(32px,6vh,64px)) 0 0}
+  .kb-hero .caps{display:block;margin-bottom:14px}
   .kb-lead{max-width:58ch;margin-top:14px}
-  .kb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:clamp(28px,5vw,44px)}
-  .kb-card{display:flex;flex-direction:column;padding:26px;transition:border-color .15s,box-shadow .15s}
-  .kb-card:hover{border-color:var(--hairline-strong);box-shadow:5px 5px 0 rgba(34,32,27,.06)}
-  .kb-card .kb-tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px}
-  .kb-card h2{font-size:clamp(19px,2.2vw,23px);font-weight:500;line-height:1.2;margin-bottom:8px}
+  .kb-strip{display:flex;gap:8px 22px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin-top:22px;font-variant-numeric:tabular-nums}
+  .kb-strip b{color:var(--ink);font-weight:600}
+  .kb-strip .sep{color:var(--hairline-strong)}
+  .kb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:clamp(28px,5vw,44px)}
+  .kb-card{
+    position:relative;display:flex;flex-direction:column;padding:24px;overflow:hidden;
+    transition:transform .22s cubic-bezier(.22,1,.36,1),border-color .15s,box-shadow .22s;
+  }
+  .kb-card:hover{transform:translateY(-4px);border-color:var(--hairline-strong);box-shadow:0 14px 30px rgba(107,94,64,.16)}
+  :root[data-theme="dark"] .kb-card:hover{box-shadow:0 14px 30px rgba(0,0,0,.5)}
+  .kb-card .kb-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:12px}
+  .kb-card .kb-tag{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+  .kb-card .kb-no{font-family:var(--mono);font-size:11px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .kb-card h2{font-size:clamp(19px,2.2vw,23px);font-weight:500;line-height:1.25;margin-bottom:8px}
   .kb-card p{font-size:14.5px;color:var(--ink-soft);line-height:1.55;margin-bottom:16px;flex:1}
+  .kb-card .kb-foot{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-top:1px dashed var(--hairline-strong);padding-top:12px}
   .kb-card .kb-more{font-family:var(--serif);color:var(--wax);font-size:15px}
+  .kb-card .kb-more .ar{display:inline-block;transition:transform .15s}
+  .kb-card:hover .kb-more .ar{transform:translateX(4px)}
+  .kb-card .kb-time{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint)}
+  .final-cta{padding:var(--block) 0 0;text-align:center}
+  .final-cta .fc-rule{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,5vw,44px)}
+  .final-cta .fc-rule::before,.final-cta .fc-rule::after{content:"";height:1px;background:var(--hairline);flex:1}
+  .final-cta .fc-rule span{font-family:var(--serif);color:var(--ink-faint);font-size:18px}
+  .final-cta h2{margin-bottom:14px}
   @media(max-width:760px){.kb-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -35,60 +58,65 @@
 <main class="wrap">
   <section class="kb-hero" data-chapter="База знаний">
     <div class="reveal">
-      <span class="caps">База знаний · бесплатно</span>
-      <h1 class="h-display" style="margin-top:12px">Разбираемся вместе</h1>
+      <span class="caps">Читальный зал · бесплатно</span>
+      <h1 class="h-display">Разбираемся вместе</h1>
       <p class="lead kb-lead">Понятные гайды по самым частым вопросам студентов — от введения ВКР до защиты. Пишем по-человечески, без воды: пользуйтесь на здоровье, а если нужна помощь — мы рядом.</p>
+      <div class="kb-strip">
+        <span><b>6</b> конспектов</span><span class="sep">·</span>
+        <span>читаются за <b>7–12 минут</b></span><span class="sep">·</span>
+        <span>обновлены в <b>2026</b></span>
+      </div>
     </div>
   </section>
 
   <section class="reveal">
     <div class="kb-grid">
       <a class="kb-card sheet stacked" href="guide-vkr-struktura.html">
-        <span class="kb-tag">ВКР · структура</span>
+        <span class="kb-head"><span class="kb-tag">ВКР · структура</span><span class="kb-no">01</span></span>
         <h2>Как написать введение к ВКР</h2>
         <p>Актуальность, цель и задачи, объект и предмет, методы и новизна — с примерами формулировок и чек-листом.</p>
-        <span class="kb-more">Читать →</span>
+        <span class="kb-foot"><span class="kb-more">Читать <span class="ar">→</span></span><span class="kb-time">~9 мин</span></span>
       </a>
       <a class="kb-card sheet stacked" href="guide-normocontrol.html">
-        <span class="kb-tag">Оформление · ГОСТ</span>
+        <span class="kb-head"><span class="kb-tag">Оформление · ГОСТ</span><span class="kb-no">02</span></span>
         <h2>Как пройти нормоконтроль с первого раза</h2>
         <p>Поля, шрифты, нумерация, таблицы, ссылки и список литературы. Топ ошибок, из-за которых заворачивают.</p>
-        <span class="kb-more">Читать →</span>
+        <span class="kb-foot"><span class="kb-more">Читать <span class="ar">→</span></span><span class="kb-time">~8 мин</span></span>
       </a>
       <a class="kb-card sheet stacked" href="guide-antiplagiat-ai.html">
-        <span class="kb-tag">Проверки · 2026</span>
+        <span class="kb-head"><span class="kb-tag">Проверки · 2026</span><span class="kb-no">03</span></span>
         <h2>Антиплагиат и детекторы ИИ</h2>
         <p>Как работают проверки на оригинальность и на «нейросеть», что честно повышает уникальность, а что бесполезно и рискованно.</p>
-        <span class="kb-more">Читать →</span>
+        <span class="kb-foot"><span class="kb-more">Читать <span class="ar">→</span></span><span class="kb-time">~10 мин</span></span>
       </a>
       <a class="kb-card sheet stacked" href="guide-kursovaya-za-nedelyu.html">
-        <span class="kb-tag">Курсовая · план</span>
+        <span class="kb-head"><span class="kb-tag">Курсовая · план</span><span class="kb-no">04</span></span>
         <h2>Как написать курсовую и не завалить</h2>
         <p>Реалистичный план, выбор темы, где искать источники, как собрать теорию и практику и оформить работу.</p>
-        <span class="kb-more">Читать →</span>
+        <span class="kb-foot"><span class="kb-more">Читать <span class="ar">→</span></span><span class="kb-time">~9 мин</span></span>
       </a>
       <a class="kb-card sheet stacked" href="guide-zashchita-diploma.html">
-        <span class="kb-tag">Защита · подготовка</span>
+        <span class="kb-head"><span class="kb-tag">Защита · подготовка</span><span class="kb-no">05</span></span>
         <h2>Как подготовиться к защите диплома</h2>
         <p>Доклад на 7 минут, презентация, раздатка, ответы на каверзные вопросы комиссии и как не волноваться.</p>
-        <span class="kb-more">Читать →</span>
+        <span class="kb-foot"><span class="kb-more">Читать <span class="ar">→</span></span><span class="kb-time">~12 мин</span></span>
       </a>
       <a class="kb-card sheet stacked" href="check.html">
-        <span class="kb-tag">Инструмент · бесплатно</span>
+        <span class="kb-head"><span class="kb-tag">Инструмент · бесплатно</span><span class="kb-no">06</span></span>
         <h2>Проверить свой текст на «машинность»</h2>
         <p>Быстрый разбор: где текст звучит шаблонно и на что срабатывают проверяющие. Прямо в браузере.</p>
-        <span class="kb-more">Открыть →</span>
+        <span class="kb-foot"><span class="kb-more">Открыть <span class="ar">→</span></span><span class="kb-time">~1 мин</span></span>
       </a>
     </div>
   </section>
 
-  <section class="final-cta reveal" data-chapter="Расчёт" style="padding:var(--block) 0 0;text-align:center">
-    <div class="fc-rule" style="display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,5vw,44px)"><span style="font-family:var(--serif);color:var(--ink-faint);font-size:18px">¶</span></div>
-    <h2 style="margin-bottom:14px">Разобрались, но нужна помощь?</h2>
+  <section class="final-cta reveal" data-chapter="Расчёт">
+    <div class="fc-rule"><span>¶</span></div>
+    <h2>Разобрались, но нужна помощь?</h2>
     <p class="lead" style="max-width:46ch;margin:0 auto 26px">Соберите смету за минуту или задайте вопрос — сопроводим вашу работу до приёмки.</p>
     <a class="btn btn-wax btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>
   </section>
 </main>
-<script src="assets/js/app.js?v=20260708b"></script>
+<script src="assets/js/app.js?v=20260709a"></script>
 </body>
 </html>

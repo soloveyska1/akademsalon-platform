@@ -4,66 +4,140 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Цены — Академический Салон</title>
-<meta name="description" content="Открытый прайс: от реферата за 2 500 ₽ до кандидатской за 200 000 ₽. Формула цены: тип × направление × срок × уровень. Смета фиксируется после разбора плана." />
+<meta name="description" content="Открытый каталог цен: от реферата за 2 500 ₽ до кандидатской за 200 000 ₽. Формула цены: тип × направление × срок × уровень. Смета фиксируется после разбора плана." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260708b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260709a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260709a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
-     ЦЕНЫ — прайс-каталог: лесенка 11 типов, формула, уровни
-     сопровождения, разбор плана, оплата и вопросы
+     ЦЕНЫ — «КАРТОТЕКА»: библиотечный каталог из 11 карточек,
+     формула-уравнение, уровни сопровождения, квитанция разбора
+     плана, отдельные услуги, оплата и вопросы
      ============================================================ */
-  .tar-hero{padding:calc(56px + clamp(40px,7vh,80px)) 0 0}
-  .tar-hero h1{max-width:24ch;margin-bottom:clamp(14px,2vw,20px)}
+  .tar-hero{padding:calc(64px + clamp(40px,7vh,80px)) 0 0}
+  .tar-hero .caps{display:block;margin-bottom:14px}
+  .tar-hero h1{max-width:22ch;margin-bottom:clamp(14px,2vw,20px)}
   .tar-hero .lead{max-width:56ch}
+  .tar-strip{display:flex;gap:8px 22px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin-top:22px;font-variant-numeric:tabular-nums}
+  .tar-strip b{color:var(--ink);font-weight:600}
+  .tar-strip .sep{color:var(--hairline-strong)}
 
-  /* § 01 — лесенка каталога */
-  .cat-list{border-top:1px solid var(--hairline)}
-  .cat-item{border-bottom:1px solid var(--hairline)}
-  .cat-item summary{list-style:none;cursor:pointer}
-  .cat-item summary::-webkit-details-marker{display:none}
-  .cat-item summary.dotrow{padding:15px 6px;font-size:16.5px}
-  .cat-item summary .dr-val{color:var(--ink-soft);transition:color .12s}
-  .cat-item summary:hover{background:var(--mark)}
-  .cat-item summary:hover .dr-val,.cat-item[open] summary .dr-val{color:var(--ink)}
-  .cat-item summary .ind{flex:0 0 auto;align-self:center;font-family:var(--serif);font-size:21px;font-weight:300;line-height:1;color:var(--ink-faint);transition:transform .2s}
-  .cat-item[open] summary .ind{transform:rotate(45deg)}
-  .cat-body{padding:2px 6px 22px;max-width:68ch}
-  .cat-body>p{font-size:14.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:8px}
-  .cat-body .lg-row span:first-child{font-size:13px}
-  .cat-body .lg-row .num{white-space:nowrap}
-  .cat-body .btn{margin-top:16px;min-height:44px;padding:10px 20px;font-size:14px}
+  /* § 01 — фильтры картотеки */
+  .cc-filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 clamp(20px,3vw,28px)}
+  .cc-filters button{
+    padding:10px 16px;min-height:42px;border:1px solid var(--hairline-strong);
+    background:var(--sheet);border-radius:var(--r);font-size:13.5px;color:var(--ink-soft);
+    cursor:pointer;transition:border-color .15s,background .15s,color .15s;
+  }
+  .cc-filters button:hover{border-color:var(--ink-soft);color:var(--ink)}
+  .cc-filters button[aria-pressed="true"]{border-color:var(--ink);background:var(--mark);color:var(--ink);font-weight:500}
+  .cc-filters .cnt{font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-left:6px}
+
+  /* § 01 — каталожные карточки */
+  .cc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .cc{
+    position:relative;display:flex;flex-direction:column;
+    background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;
+    padding:30px 22px 18px;overflow:hidden;
+    box-shadow:0 1px 0 var(--hairline);
+    transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s,border-color .22s,opacity .25s;
+    /* линованная каталожная карточка с красной линией поля */
+    background-image:
+      linear-gradient(90deg, transparent 15px, rgba(178,59,34,.28) 15px, rgba(178,59,34,.28) 16px, transparent 16px),
+      repeating-linear-gradient(180deg, transparent 0 27px, rgba(127,116,86,.10) 27px 28px);
+  }
+  :root[data-theme="dark"] .cc{background-image:
+      linear-gradient(90deg, transparent 15px, rgba(224,107,76,.30) 15px, rgba(224,107,76,.30) 16px, transparent 16px),
+      repeating-linear-gradient(180deg, transparent 0 27px, rgba(236,230,215,.05) 27px 28px)}
+  .cc:hover{transform:translateY(-5px);border-color:var(--hairline-strong);box-shadow:0 14px 30px rgba(107,94,64,.18)}
+  :root[data-theme="dark"] .cc:hover{box-shadow:0 14px 30px rgba(0,0,0,.5)}
+  .cc-hole{ /* перфорация картотечного ящика */
+    position:absolute;top:10px;left:50%;transform:translateX(-50%);
+    width:12px;height:12px;border-radius:50%;
+    background:var(--paper);border:1px solid var(--hairline-strong);
+    box-shadow:inset 0 1px 2px rgba(34,32,27,.2);
+  }
+  .cc-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
+  .cc-cat{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+  .cc-no{font-family:var(--mono);font-size:11px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .cc-title{font-family:var(--serif);font-size:clamp(19px,2vw,22px);font-weight:500;line-height:1.25;margin-bottom:8px}
+  .cc-desc{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin-bottom:14px;flex:1}
+  .cc-price{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+  .cc-price .cc-from{font-size:12px;color:var(--ink-soft)}
+  .cc-price .cc-val{font-family:var(--mono);font-size:clamp(22px,2.4vw,27px);font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums;transition:color .2s}
+  .cc:hover .cc-price .cc-val{color:var(--wax)}
+  .cc-range{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:11.5px;color:var(--ink-faint);border-top:1px dashed var(--hairline-strong);padding-top:9px;margin-bottom:4px}
+  .cc-range .num{font-size:11.5px;white-space:nowrap}
+  .cc-cta{
+    display:inline-flex;align-items:center;gap:8px;align-self:flex-start;
+    margin-top:8px;padding:9px 2px;font-size:14px;font-weight:500;color:var(--ink);
+    border-bottom:1px solid var(--hairline-strong);transition:color .15s,border-color .15s;
+  }
+  .cc-cta .ar{font-family:var(--serif);transition:transform .15s}
+  .cc:hover .cc-cta{color:var(--wax);border-color:var(--wax)}
+  .cc:hover .cc-cta .ar{transform:translateX(3px)}
+  .cc.out{opacity:0;transform:translateY(8px) scale(.98)}
+  .cc[hidden]{display:none}
   .cat-note{margin-top:clamp(20px,3vw,30px);max-width:52ch}
 
-  /* § 02 — формула */
-  .f-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s2);margin-bottom:clamp(28px,4vw,44px)}
-  .f-tile{padding:clamp(16px,2vw,22px)}
-  .f-tile .caps{display:block;margin-bottom:10px}
-  .f-tile .f-k{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:clamp(18px,2vw,23px);letter-spacing:-.02em;white-space:nowrap}
-  .f-tile p{font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin-top:8px}
+  /* § 02 — формула-уравнение */
+  .eq{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr auto 1.15fr;gap:10px;align-items:stretch;margin-bottom:clamp(28px,4vw,44px)}
+  .eq-t{padding:16px 14px;display:flex;flex-direction:column;gap:6px;justify-content:flex-start}
+  .eq-t .caps{font-size:10.5px}
+  .eq-t b{font-family:var(--mono);font-weight:600;font-size:clamp(15px,1.6vw,19px);letter-spacing:-.02em;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .eq-t small{font-size:11.5px;color:var(--ink-soft);line-height:1.45}
+  .eq-x{align-self:center;font-family:var(--serif);font-size:clamp(20px,2.4vw,28px);color:var(--ink-faint)}
+  .eq-res{border:1px solid var(--wax);background:var(--wax-soft);border-radius:3px}
+  .eq-res b{color:var(--wax)}
   .f-example .ledger .num{white-space:nowrap}
 
   /* § 03 — уровни сопровождения */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+  .tier{display:flex;flex-direction:column;position:relative;padding:clamp(20px,3vw,28px)}
   .tier .t-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
   .tier .t-k{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:21px;letter-spacing:-.02em}
-  .tier .t-sub{font-size:13px;color:var(--ink-soft);margin:2px 0 10px}
-  .tier .dotrow{font-size:14px;padding:10px 4px;margin:0 -4px}
+  .tier .t-sub{font-size:13px;color:var(--ink-soft);margin:2px 0 12px}
+  .tier .dotrow{font-size:14px;padding:10px 4px;margin:0 -4px;min-height:0}
   .tier .dotrow .dr-val{font-size:13px}
-  .tier .t-tag{margin:2px 0 8px;align-self:flex-start}
+  .tier.feat{border-color:var(--wax)}
+  .tier .t-flag{
+    position:absolute;top:-11px;left:22px;background:var(--wax);color:#FFFEF9;
+    font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;
+    padding:4px 12px;border-radius:var(--r);
+  }
   .tiers-note{margin-top:clamp(18px,3vw,26px);max-width:56ch}
 
-  /* § 04 — разбор плана */
+  /* § 04 — квитанция разбора плана */
+  .receipt{
+    position:relative;max-width:920px;
+    background:var(--sheet);border:1px dashed var(--hairline-strong);border-radius:3px;
+    padding:clamp(24px,3.6vw,40px);
+  }
+  .receipt::before{ /* перфорация слева */
+    content:"";position:absolute;top:14px;bottom:14px;left:10px;width:1px;
+    background-image:radial-gradient(circle,var(--hairline-strong) 1.2px,transparent 1.6px);
+    background-size:1px 12px;background-repeat:repeat-y;
+  }
+  .receipt-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;border-bottom:3px double var(--ink);padding-bottom:12px;margin-bottom:18px}
+  .receipt-head .rh-t{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
+  .receipt-head .rh-n{font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
   .plan-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,4vw,56px);align-items:start}
-  .plan-price{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:clamp(30px,4vw,42px);letter-spacing:-.03em;line-height:1;color:var(--wax);margin:8px 0 8px}
+  .plan-price{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:clamp(34px,4.4vw,48px);letter-spacing:-.03em;line-height:1;color:var(--wax);margin:10px 0 8px}
   .plan-price small{font-size:.5em;letter-spacing:0}
   .plan-list{list-style:none;border-top:1px solid var(--hairline)}
   .plan-list li{display:flex;gap:12px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--hairline);font-size:15px}
   .plan-list li::before{content:"—";color:var(--ink-faint);flex:0 0 auto}
   .plan-cta{margin-top:18px}
+  .plan-seal{position:absolute;right:clamp(14px,3vw,34px);bottom:12px;pointer-events:none}
+  @media(max-width:720px){.plan-seal{display:none}}
 
-  /* § 05 — оплата и вопросы */
+  /* § 05 — отдельные услуги */
+  .svc-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(32px,6vw,72px);row-gap:0}
+
+  /* § 06 — оплата и вопросы */
   .pay-block{margin-bottom:clamp(32px,5vw,52px)}
   .pay-block .caps{display:block;margin-bottom:22px}
   .pay-note{margin-top:16px}
@@ -77,16 +151,20 @@
   .final-cta h2{margin-bottom:22px}
   .final-cta .petit{margin-top:14px}
 
-  @media(max-width:1000px){
-    .f-tiles{grid-template-columns:1fr 1fr}
+  @media(max-width:1020px){
+    .cc-grid{grid-template-columns:1fr 1fr}
+    .eq{grid-template-columns:1fr 1fr;gap:12px}
+    .eq .eq-x{display:none}
+    .eq-res{grid-column:1 / -1}
   }
   @media(max-width:880px){
+    .tiers{grid-template-columns:1fr}
+    .tier.feat{order:-1}
     .plan-grid{grid-template-columns:1fr}
-    .cat-item summary.dotrow{font-size:15.5px}
+    .svc-grid{grid-template-columns:1fr}
   }
-  @media(max-width:560px){
-    .f-tiles{grid-template-columns:1fr}
-    .f-tile .f-k{font-size:19px}
+  @media(max-width:640px){
+    .cc-grid{grid-template-columns:1fr}
   }
 </style>
 <link rel="canonical" href="https://academic-saloon.duckdns.org/tariffs.html" />
@@ -97,14 +175,14 @@
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
 <meta property="og:title" content="Цены — Академический Салон" />
-<meta property="og:description" content="Открытый прайс: от реферата за 2 500 ₽ до кандидатской за 200 000 ₽. Формула: тип × направление × срок × уровень." />
+<meta property="og:description" content="Открытый каталог цен: от реферата за 2 500 ₽ до кандидатской за 200 000 ₽. Формула: тип × направление × срок × уровень." />
 <meta property="og:url" content="https://academic-saloon.duckdns.org/tariffs.html" />
 <meta property="og:image" content="https://academic-saloon.duckdns.org/assets/img/og-cover.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Цены — Академический Салон" />
-<meta name="twitter:description" content="Открытый прайс от реферата до кандидатской. Формула цены без «уточните в личных сообщениях»." />
+<meta name="twitter:description" content="Открытый каталог цен от реферата до кандидатской. Формула цены без «уточните в личных сообщениях»." />
 <meta name="twitter:image" content="https://academic-saloon.duckdns.org/assets/img/og-cover.png" />
 </head>
 <body>
@@ -113,105 +191,140 @@
   <div class="wrap">
 
     <!-- ЗАГОЛОВОК-ПОЛОСА -->
-    <section class="tar-hero reveal" data-chapter="Прайс">
-      <h1 class="h-display">Прайс открыт — от реферата до кандидатской</h1>
-      <p class="lead">Итог собирается по формуле: тип × направление × срок × уровень. Никаких «уточните в личных сообщениях».</p>
+    <section class="tar-hero reveal" data-chapter="Каталог цен">
+      <span class="caps">Картотека · цены открыты</span>
+      <h1 class="h-display">Каталог работ и цен</h1>
+      <p class="lead">Одиннадцать типов работ, открытая формула и ни одного «уточните в личных сообщениях». Выберите карточку — покажем вилку и соберём точную смету.</p>
+      <div class="tar-strip">
+        <span>от <b>2 500 ₽</b> реферат</span><span class="sep">·</span>
+        <span>до <b>200 000 ₽</b> кандидатская</span><span class="sep">·</span>
+        <span>смета фиксируется <b>после разбора плана</b></span>
+      </div>
     </section>
 
-    <!-- § 01 — КАТАЛОГ -->
-    <section class="chapter reveal" id="catalog" data-chapter="§ 01 · Каталог">
-      <div class="ch-rule"><span class="ch-no">§ 01 · Каталог</span></div>
-      <h2>Одиннадцать типов работ — по возрастанию цены</h2>
+    <!-- § 01 — КАРТОТЕКА -->
+    <section class="chapter reveal" id="catalog" data-chapter="§ 01 · Картотека">
+      <div class="ch-rule"><span class="ch-no">§ 01 · Картотека</span></div>
+      <h2>Одиннадцать карточек — по возрастанию цены</h2>
 
-      <div class="cat-list">
-        <details class="cat-item">
-          <summary class="dotrow"><span>Реферат, эссе, контрольная</span><span class="dots"></span><span class="dr-val">от 2&nbsp;500&nbsp;₽</span><span class="ind" aria-hidden="true">+</span></summary>
-          <div class="cat-body">
-            <p>Готовый текст по теме и методичке, оформление и проверка оригинальности.</p>
-            <div class="ledger"><div class="lg-row"><span>Вилка · базовый уровень, гуманитарный профиль, свободный срок</span><span class="num">2&nbsp;500 – 3&nbsp;500&nbsp;₽</span></div></div>
-            <a class="btn btn-line" href="configurator.html" data-type="self">Рассчитать точно <span class="ar">→</span></a>
-          </div>
-        </details>
-        <details class="cat-item">
-          <summary class="dotrow"><span>Научная статья РИНЦ</span><span class="dots"></span><span class="dr-val">от 9&nbsp;000&nbsp;₽</span><span class="ind" aria-hidden="true">+</span></summary>
-          <div class="cat-body">
-            <p>Статья под требования журнала: текст, аннотация, ключевые слова, оформление.</p>
-            <div class="ledger"><div class="lg-row"><span>Вилка · базовый уровень, гуманитарный профиль, свободный срок</span><span class="num">9&nbsp;000 – 12&nbsp;500&nbsp;₽</span></div></div>
-            <a class="btn btn-line" href="configurator.html" data-type="rinc">Рассчитать точно <span class="ar">→</span></a>
-          </div>
-        </details>
-        <details class="cat-item">
-          <summary class="dotrow"><span>Курсовая теоретическая</span><span class="dots"></span><span class="dr-val">от 14&nbsp;000&nbsp;₽</span><span class="ind" aria-hidden="true">+</span></summary>
-          <div class="cat-body">
-            <p>Теоретический обзор по структуре методички, список литературы, оформление по ГОСТ.</p>
-            <div class="ledger"><div class="lg-row"><span>Вилка · базовый уровень, гуманитарный профиль, свободный срок</span><span class="num">14&nbsp;000 – 19&nbsp;500&nbsp;₽</span></div></div>
-            <a class="btn btn-line" href="configurator.html" data-type="course">Рассчитать точно <span class="ar">→</span></a>
-          </div>
-        </details>
-        <details class="cat-item">
-          <summary class="dotrow"><span>Отчёт по практике</span><span class="dots"></span><span class="dr-val">от 14&nbsp;000&nbsp;₽</span><span class="ind" aria-hidden="true">+</span></summary>
-          <div class="cat-body">
-            <p>Отчёт по программе практики: содержательная часть, дневник, оформление.</p>
-            <div class="ledger"><div class="lg-row"><span>Вилка · базовый уровень, гуманитарный профиль, свободный срок</span><span class="num">14&nbsp;000 – 19&nbsp;500&nbsp;₽</span></div></div>
-            <a class="btn btn-line" href="configurator.html" data-type="practice">Рассчитать точно <span class="ar">→</span></a>
-          </div>
-        </details>
-        <details class="cat-item">
-          <summary class="dotrow"><span>Научная статья ВАК</span><span class="dots"></span><span class="dr-val">от 18&nbsp;000&nbsp;₽</span><span class="ind" aria-hidden="true">+</span></summary>
-          <div class="cat-body">
-            <p>Статья под журнал из перечня ВАК: текст, научный аппарат, требования редакции.</p>
-            <div class="ledger"><div class="lg-row"><span>Вилка · базовый уровень, гуманитарный профиль, свободный срок</span><span class="num">18&nbsp;000 – 25&nbsp;000&nbsp;₽</span></div></div>
-            <a class="btn btn-line" href="configurator.html" data-type="vak">Рассчитать точно <span class="ar">→</span></a>
-          </div>
-        </details>
-        <details class="cat-item">
-          <summary class="dotrow"><span>Курсовая эмпирическая</span><span class="dots"></span><span class="dr-val">от 20&nbsp;000&nbsp;₽</span><span class="ind" aria-hidden="true">+</span></summary>
-          <div class="cat-body">
-            <p>Теория плюс практическая часть: расчёты, анализ данных, выводы.</p>
-            <div class="ledger"><div class="lg-row"><span>Вилка · базовый уровень, гуманитарный профиль, свободный срок</span><span class="num">20&nbsp;000 – 28&nbsp;000&nbsp;₽</span></div></div>
-            <a class="btn btn-line" href="configurator.html" data-type="course_emp">Рассчитать точно <span class="ar">→</span></a>
-          </div>
-        </details>
-        <details class="cat-item">
-          <summary class="dotrow"><span>Глава диссертации</span><span class="dots"></span><span class="dr-val">от 30&nbsp;000&nbsp;₽</span><span class="ind" aria-hidden="true">+</span></summary>
-          <div class="cat-body">
-            <p>Отдельная глава в логике всей диссертации: текст, аппарат, связки с соседними главами.</p>
-            <div class="ledger"><div class="lg-row"><span>Вилка · базовый уровень, гуманитарный профиль, свободный срок</span><span class="num">30&nbsp;000 – 42&nbsp;000&nbsp;₽</span></div></div>
-            <a class="btn btn-line" href="configurator.html" data-type="chapter">Рассчитать точно <span class="ar">→</span></a>
-          </div>
-        </details>
-        <details class="cat-item">
-          <summary class="dotrow"><span>Статья Scopus / Web of Science</span><span class="dots"></span><span class="dr-val">от 35&nbsp;000&nbsp;₽</span><span class="ind" aria-hidden="true">+</span></summary>
-          <div class="cat-body">
-            <p>Статья под требования международного журнала: структура, аннотация, оформление по гайдлайнам.</p>
-            <div class="ledger"><div class="lg-row"><span>Вилка · базовый уровень, гуманитарный профиль, свободный срок</span><span class="num">35&nbsp;000 – 49&nbsp;000&nbsp;₽</span></div></div>
-            <a class="btn btn-line" href="configurator.html" data-type="scopus">Рассчитать точно <span class="ar">→</span></a>
-          </div>
-        </details>
-        <details class="cat-item">
-          <summary class="dotrow"><span>Дипломная работа / ВКР</span><span class="dots"></span><span class="dr-val">от 40&nbsp;000&nbsp;₽</span><span class="ind" aria-hidden="true">+</span></summary>
-          <div class="cat-body">
-            <p>Введение, главы, заключение и список литературы — по методичке вашей кафедры.</p>
-            <div class="ledger"><div class="lg-row"><span>Вилка · базовый уровень, гуманитарный профиль, свободный срок</span><span class="num">40&nbsp;000 – 56&nbsp;000&nbsp;₽</span></div></div>
-            <a class="btn btn-line" href="configurator.html" data-type="diplom">Рассчитать точно <span class="ar">→</span></a>
-          </div>
-        </details>
-        <details class="cat-item">
-          <summary class="dotrow"><span>Магистерская диссертация</span><span class="dots"></span><span class="dr-val">от 60&nbsp;000&nbsp;₽</span><span class="ind" aria-hidden="true">+</span></summary>
-          <div class="cat-body">
-            <p>Исследование магистерского уровня: методология, эмпирическая часть, выводы.</p>
-            <div class="ledger"><div class="lg-row"><span>Вилка · базовый уровень, гуманитарный профиль, свободный срок</span><span class="num">60&nbsp;000 – 84&nbsp;000&nbsp;₽</span></div></div>
-            <a class="btn btn-line" href="configurator.html" data-type="master">Рассчитать точно <span class="ar">→</span></a>
-          </div>
-        </details>
-        <details class="cat-item">
-          <summary class="dotrow"><span>Кандидатская под ключ</span><span class="dots"></span><span class="dr-val">от 200&nbsp;000&nbsp;₽</span><span class="ind" aria-hidden="true">+</span></summary>
-          <div class="cat-body">
-            <p>Диссертация по главам: концепция, исследование, подготовка публикаций. Считаем и сдаём поэтапно.</p>
-            <div class="ledger"><div class="lg-row"><span>Вилка · базовый уровень, гуманитарный профиль, свободный срок</span><span class="num">200&nbsp;000 – 280&nbsp;000&nbsp;₽</span></div></div>
-            <a class="btn btn-line" href="configurator.html" data-type="kandidat">Рассчитать точно <span class="ar">→</span></a>
-          </div>
-        </details>
+      <div class="cc-filters" role="group" aria-label="Фильтр по типу работ">
+        <button type="button" data-cat="all" aria-pressed="true">Все<span class="cnt">11</span></button>
+        <button type="button" data-cat="diploma" aria-pressed="false">Дипломы и диссертации<span class="cnt">4</span></button>
+        <button type="button" data-cat="course" aria-pressed="false">Курсовые и практика<span class="cnt">3</span></button>
+        <button type="button" data-cat="article" aria-pressed="false">Научные статьи<span class="cnt">3</span></button>
+        <button type="button" data-cat="small" aria-pressed="false">Малые работы<span class="cnt">1</span></button>
+      </div>
+
+      <div class="cc-grid" id="ccGrid">
+        <article class="cc" data-cat="small" id="c-self">
+          <span class="cc-hole" aria-hidden="true"></span>
+          <div class="cc-head"><span class="cc-cat">Малые работы</span><span class="cc-no">01</span></div>
+          <h3 class="cc-title">Реферат, эссе, контрольная</h3>
+          <p class="cc-desc">Готовый текст по теме и методичке, оформление и проверка оригинальности.</p>
+          <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">2 500 ₽</span></div>
+          <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">2,5–3,5 тыс.</span></div>
+          <a class="cc-cta" href="configurator.html" data-type="self">Рассчитать точно <span class="ar">→</span></a>
+        </article>
+
+        <article class="cc" data-cat="article" id="c-rinc">
+          <span class="cc-hole" aria-hidden="true"></span>
+          <div class="cc-head"><span class="cc-cat">Научные статьи</span><span class="cc-no">02</span></div>
+          <h3 class="cc-title">Научная статья РИНЦ</h3>
+          <p class="cc-desc">Статья под требования журнала: текст, аннотация, ключевые слова, оформление.</p>
+          <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">9 000 ₽</span></div>
+          <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">9–12,5 тыс.</span></div>
+          <a class="cc-cta" href="configurator.html" data-type="rinc">Рассчитать точно <span class="ar">→</span></a>
+        </article>
+
+        <article class="cc" data-cat="course" id="c-course">
+          <span class="cc-hole" aria-hidden="true"></span>
+          <div class="cc-head"><span class="cc-cat">Курсовые и практика</span><span class="cc-no">03</span></div>
+          <h3 class="cc-title">Курсовая теоретическая</h3>
+          <p class="cc-desc">Теоретический обзор по структуре методички, список литературы, оформление по ГОСТ.</p>
+          <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">14 000 ₽</span></div>
+          <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">14–19,5 тыс.</span></div>
+          <a class="cc-cta" href="configurator.html" data-type="course">Рассчитать точно <span class="ar">→</span></a>
+        </article>
+
+        <article class="cc" data-cat="course" id="c-practice">
+          <span class="cc-hole" aria-hidden="true"></span>
+          <div class="cc-head"><span class="cc-cat">Курсовые и практика</span><span class="cc-no">04</span></div>
+          <h3 class="cc-title">Отчёт по практике</h3>
+          <p class="cc-desc">Отчёт по программе практики: содержательная часть, дневник, оформление.</p>
+          <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">14 000 ₽</span></div>
+          <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">14–19,5 тыс.</span></div>
+          <a class="cc-cta" href="configurator.html" data-type="practice">Рассчитать точно <span class="ar">→</span></a>
+        </article>
+
+        <article class="cc" data-cat="article" id="c-vak">
+          <span class="cc-hole" aria-hidden="true"></span>
+          <div class="cc-head"><span class="cc-cat">Научные статьи</span><span class="cc-no">05</span></div>
+          <h3 class="cc-title">Научная статья ВАК</h3>
+          <p class="cc-desc">Статья под журнал из перечня ВАК: текст, научный аппарат, требования редакции.</p>
+          <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">18 000 ₽</span></div>
+          <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">18–25 тыс.</span></div>
+          <a class="cc-cta" href="configurator.html" data-type="vak">Рассчитать точно <span class="ar">→</span></a>
+        </article>
+
+        <article class="cc" data-cat="course" id="c-course_emp">
+          <span class="cc-hole" aria-hidden="true"></span>
+          <div class="cc-head"><span class="cc-cat">Курсовые и практика</span><span class="cc-no">06</span></div>
+          <h3 class="cc-title">Курсовая эмпирическая</h3>
+          <p class="cc-desc">Теория плюс практическая часть: расчёты, анализ данных, выводы.</p>
+          <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">20 000 ₽</span></div>
+          <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">20–28 тыс.</span></div>
+          <a class="cc-cta" href="configurator.html" data-type="course_emp">Рассчитать точно <span class="ar">→</span></a>
+        </article>
+
+        <article class="cc" data-cat="diploma" id="c-chapter">
+          <span class="cc-hole" aria-hidden="true"></span>
+          <div class="cc-head"><span class="cc-cat">Дипломы и диссертации</span><span class="cc-no">07</span></div>
+          <h3 class="cc-title">Глава диссертации</h3>
+          <p class="cc-desc">Отдельная глава в логике всей диссертации: текст, аппарат, связки с соседними главами.</p>
+          <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">30 000 ₽</span></div>
+          <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">30–42 тыс.</span></div>
+          <a class="cc-cta" href="configurator.html" data-type="chapter">Рассчитать точно <span class="ar">→</span></a>
+        </article>
+
+        <article class="cc" data-cat="article" id="c-scopus">
+          <span class="cc-hole" aria-hidden="true"></span>
+          <div class="cc-head"><span class="cc-cat">Научные статьи</span><span class="cc-no">08</span></div>
+          <h3 class="cc-title">Статья Scopus / Web of Science</h3>
+          <p class="cc-desc">Статья под требования международного журнала: структура, аннотация, гайдлайны.</p>
+          <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">35 000 ₽</span></div>
+          <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">35–49 тыс.</span></div>
+          <a class="cc-cta" href="configurator.html" data-type="scopus">Рассчитать точно <span class="ar">→</span></a>
+        </article>
+
+        <article class="cc" data-cat="diploma" id="c-diplom">
+          <span class="cc-hole" aria-hidden="true"></span>
+          <div class="cc-head"><span class="cc-cat">Дипломы и диссертации</span><span class="cc-no">09</span></div>
+          <h3 class="cc-title">Дипломная работа / ВКР</h3>
+          <p class="cc-desc">Введение, главы, заключение и список литературы — по методичке вашей кафедры.</p>
+          <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">40 000 ₽</span></div>
+          <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">40–56 тыс.</span></div>
+          <a class="cc-cta" href="configurator.html" data-type="diplom">Рассчитать точно <span class="ar">→</span></a>
+        </article>
+
+        <article class="cc" data-cat="diploma" id="c-master">
+          <span class="cc-hole" aria-hidden="true"></span>
+          <div class="cc-head"><span class="cc-cat">Дипломы и диссертации</span><span class="cc-no">10</span></div>
+          <h3 class="cc-title">Магистерская диссертация</h3>
+          <p class="cc-desc">Исследование магистерского уровня: методология, эмпирическая часть, выводы.</p>
+          <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">60 000 ₽</span></div>
+          <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">60–84 тыс.</span></div>
+          <a class="cc-cta" href="configurator.html" data-type="master">Рассчитать точно <span class="ar">→</span></a>
+        </article>
+
+        <article class="cc" data-cat="diploma" id="c-kandidat">
+          <span class="cc-hole" aria-hidden="true"></span>
+          <div class="cc-head"><span class="cc-cat">Дипломы и диссертации</span><span class="cc-no">11</span></div>
+          <h3 class="cc-title">Кандидатская под ключ</h3>
+          <p class="cc-desc">Диссертация по главам: концепция, исследование, подготовка публикаций. Считаем и сдаём поэтапно.</p>
+          <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">200 000 ₽</span></div>
+          <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">200–280 тыс.</span></div>
+          <a class="cc-cta" href="configurator.html" data-type="kandidat">Рассчитать точно <span class="ar">→</span></a>
+        </article>
       </div>
 
       <p class="marginalia cat-note">Биржа продаёт ставку анонимного исполнителя. Нейросеть продаёт текст. Мы продаём доведённый до защиты результат.</p>
@@ -220,42 +333,32 @@
     <!-- § 02 — ФОРМУЛА -->
     <section class="chapter reveal" id="formula" data-chapter="§ 02 · Формула цены">
       <div class="ch-rule"><span class="ch-no">§ 02 · Формула цены</span></div>
-      <h2>Как собирается итог: четыре множителя</h2>
+      <h2>Итог собирается как уравнение</h2>
 
-      <div class="f-tiles">
-        <div class="f-tile sheet">
-          <span class="caps">Тип</span>
-          <span class="f-k">2&nbsp;500 – 200&nbsp;000&nbsp;₽</span>
-          <p>От 2&nbsp;500&nbsp;₽ за реферат до 200&nbsp;000&nbsp;₽ за кандидатскую.</p>
-        </div>
-        <div class="f-tile sheet">
-          <span class="caps">Направление</span>
-          <span class="f-k">×1.0 – ×1.4</span>
-          <p>Гуманитарные ×1.0 · право ×1.15 · IT ×1.3 · медицина и финансы ×1.4.</p>
-        </div>
-        <div class="f-tile sheet">
-          <span class="caps">Срок</span>
-          <span class="f-k">×1.0 – ×1.45</span>
-          <p>От 30 дней ×1.0 · 14–30 дней ×1.15 · до 14 дней ×1.45.</p>
-        </div>
-        <div class="f-tile sheet">
-          <span class="caps">Уровень</span>
-          <span class="f-k">×1 – ×2</span>
-          <p>Базовый ×1 · Под ключ ×1.33 · VIP ×2.</p>
-        </div>
+      <div class="eq" role="img" aria-label="Формула: тип умножить на направление, срок и уровень — получается смета">
+        <div class="eq-t sheet"><span class="caps">Тип</span><b>2,5–200 тыс. ₽</b><small>от реферата до кандидатской</small></div>
+        <span class="eq-x" aria-hidden="true">×</span>
+        <div class="eq-t sheet"><span class="caps">Направление</span><b>×1,0–1,4</b><small>гуманитарные ×1 · право ×1,15 · IT ×1,3 · медицина ×1,4</small></div>
+        <span class="eq-x" aria-hidden="true">×</span>
+        <div class="eq-t sheet"><span class="caps">Срок</span><b>×1,0–1,45</b><small>от 30 дней ×1 · 14–30 дней ×1,15 · до 14 дней ×1,45</small></div>
+        <span class="eq-x" aria-hidden="true">×</span>
+        <div class="eq-t sheet"><span class="caps">Уровень</span><b>×1–2</b><small>Базовый ×1 · Под ключ ×1,33 · VIP ×2</small></div>
+        <span class="eq-x" aria-hidden="true">=</span>
+        <div class="eq-t eq-res"><span class="caps">Смета</span><b>фиксируется</b><small>после разбора плана — и не растёт по нашей инициативе</small></div>
       </div>
 
       <div class="split">
         <div class="f-example sheet sheet-pad stacked">
+          <span class="caps" style="display:block;margin-bottom:12px">Пример расчёта</span>
           <div class="ledger">
-            <div class="lg-row"><span>Диплом / ВКР — базовая ставка</span><span class="num">40&nbsp;000&nbsp;₽</span></div>
+            <div class="lg-row"><span>Диплом / ВКР — базовая ставка</span><span class="num">40 000 ₽</span></div>
             <div class="lg-row"><span>Направление · технические, IT</span><span class="num">×1.3</span></div>
             <div class="lg-row"><span>Срок · 14–30 дней</span><span class="num">×1.15</span></div>
             <div class="lg-row"><span>Уровень · Под ключ</span><span class="num">×1.33</span></div>
-            <div class="lg-total"><b>Итого, от</b><span class="price-xl">≈ 79&nbsp;500&nbsp;<small>₽</small></span></div>
+            <div class="lg-total"><b>Итого, от</b><span class="price-xl">≈ 79 500 <small>₽</small></span></div>
           </div>
         </div>
-        <p class="marginalia">Вилка внутри типа зависит от объёма и требований методички; смета фиксируется после разбора плана.</p>
+        <p class="marginalia">Вилка внутри типа зависит от объёма и требований методички. Пошаговый расчёт в конфигураторе занимает около минуты и ни к чему не обязывает.</p>
       </div>
     </section>
 
@@ -264,8 +367,8 @@
       <div class="ch-rule"><span class="ch-no">§ 03 · Уровни сопровождения</span></div>
       <h2>Уровень выбираете вы — от готовой работы до личного ведения</h2>
 
-      <div class="grid grid-3">
-        <div class="tier sheet sheet-pad">
+      <div class="tiers">
+        <div class="tier sheet">
           <div class="t-head"><h3>Базовый</h3><span class="t-k">×1</span></div>
           <p class="t-sub">Готовая работа</p>
           <div class="dotrow"><span>Готовая работа целиком к сроку</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
@@ -273,7 +376,8 @@
           <div class="dotrow"><span>Отчёт о проверках до оплаты</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
           <div class="dotrow"><span>Правки бесплатно до приёмки</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
         </div>
-        <div class="tier sheet sheet-pad">
+        <div class="tier sheet feat">
+          <span class="t-flag">выбирают чаще</span>
           <div class="t-head"><h3>Под ключ</h3><span class="t-k">×1.33</span></div>
           <p class="t-sub">Сопровождение до приёмки</p>
           <div class="dotrow"><span>Всё, что в «Базовом»</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
@@ -281,10 +385,9 @@
           <div class="dotrow"><span>Разбор замечаний руководителя</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
           <div class="dotrow"><span>Ведение до приёмки на кафедре</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
         </div>
-        <div class="tier sheet sheet-pad">
+        <div class="tier sheet">
           <div class="t-head"><h3>VIP</h3><span class="t-k">×2</span></div>
           <p class="t-sub">Личное ведение и защита</p>
-          <span class="tag tag-wax t-tag">Личное ведение</span>
           <div class="dotrow"><span>Всё, что в «Под ключ»</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
           <div class="dotrow"><span>Первый приоритет по срокам</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
           <div class="dotrow"><span>Доклад и презентация к защите</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
@@ -300,12 +403,13 @@
       <div class="ch-rule"><span class="ch-no">§ 04 · Разбор плана</span></div>
       <h2>Не готовы заказывать целиком? Начните с разбора плана</h2>
 
-      <div class="sheet sheet-pad stacked">
+      <div class="receipt stacked">
+        <div class="receipt-head"><span class="rh-t">Квитанция · разбор плана</span><span class="rh-n">засчитывается в стартовый платёж</span></div>
         <div class="plan-grid">
           <div>
-            <span class="caps">Разбор плана</span>
-            <div class="plan-price">3&nbsp;000&nbsp;<small>₽</small></div>
-            <p class="petit">Для магистерских и кандидатских — 5&nbsp;000&nbsp;₽.</p>
+            <span class="caps">Стоимость</span>
+            <div class="plan-price">3 000 <small>₽</small></div>
+            <p class="petit">Для магистерских и кандидатских — 5 000 ₽.</p>
             <a class="btn btn-line plan-cta" href="configurator.html?plan=1">Заказать разбор плана <span class="ar">→</span></a>
           </div>
           <div>
@@ -316,25 +420,26 @@
               <li>Фиксированная смета</li>
               <li>Честный вердикт — успеваем или нет</li>
             </ul>
-            <p class="petit" style="margin-top:12px">Разбор плана — это этап «План» без обязательства заказывать целиком: стоимость зачитывается в стартовый платёж при продолжении в течение 14 дней. Не продолжите — план останется у вас.</p>
+            <p class="petit" style="margin-top:12px">Продолжите заказ в течение 14 дней — стоимость разбора зачтётся в стартовый платёж. Не продолжите — план останется у вас.</p>
           </div>
         </div>
+        <span class="plan-seal" data-seal="ЗАЧТЁТСЯ В ОПЛАТУ · 14 ДНЕЙ · " data-seal-center="₽" data-seal-cls="seal--verify" data-seal-size="92" aria-hidden="true"></span>
       </div>
     </section>
 
     <!-- § 05 — ОТДЕЛЬНЫЕ УСЛУГИ -->
     <section class="chapter reveal" id="services" data-chapter="§ 05 · Отдельные услуги">
       <div class="ch-rule"><span class="ch-no">§ 05 · Отдельные услуги</span></div>
-      <h2>Нужна помощь на участке, а не вся работа</h2>
+      <h2>Когда нужна не вся работа, а помощь с её частью</h2>
       <p class="lead" style="margin-bottom:clamp(22px,3vw,30px)">Эти услуги заказывают отдельно — цену собираем индивидуально под ваш объём. Напишите в бот, обсудим за пару сообщений.</p>
-      <div class="catalog grid grid-2" style="column-gap:clamp(32px,6vw,72px);row-gap:0">
+      <div class="svc-grid">
         <div>
-          <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_ai" target="_blank" rel="noopener"><span>Чистка текста от следов ИИ</span><span class="dots"></span><span class="dr-val">от&nbsp;2&nbsp;500&nbsp;₽</span></a>
-          <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_rv" target="_blank" rel="noopener"><span>Разбор готовой работы (ВКР, курсовой)</span><span class="dots"></span><span class="dr-val">от&nbsp;2&nbsp;500&nbsp;₽</span></a>
+          <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_ai" target="_blank" rel="noopener"><span>Чистка текста от следов ИИ</span><span class="dots"></span><span class="dr-val">от 2 500 ₽</span></a>
+          <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_rv" target="_blank" rel="noopener"><span>Разбор готовой работы (ВКР, курсовой)</span><span class="dots"></span><span class="dr-val">от 2 500 ₽</span></a>
         </div>
         <div>
-          <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_tu" target="_blank" rel="noopener"><span>Репетиторство и консультации</span><span class="dots"></span><span class="dr-val">от&nbsp;3&nbsp;000&nbsp;₽&nbsp;/&nbsp;час</span></a>
-          <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_nm" target="_blank" rel="noopener"><span>Оформление по методичке · нормоконтроль</span><span class="dots"></span><span class="dr-val">от&nbsp;5&nbsp;000&nbsp;₽</span></a>
+          <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_tu" target="_blank" rel="noopener"><span>Репетиторство и консультации</span><span class="dots"></span><span class="dr-val">от 3 000 ₽ / час</span></a>
+          <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_nm" target="_blank" rel="noopener"><span>Оформление по методичке · нормоконтроль</span><span class="dots"></span><span class="dr-val">от 5 000 ₽</span></a>
         </div>
       </div>
       <p class="marginalia" style="margin-top:16px">Редактура, разбор и репетиторство — это помощь в понимании и оформлении вашего материала. Итоговую работу и её сдачу вы контролируете сами.</p>
@@ -388,10 +493,38 @@
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"OfferCatalog","name":"Прайс Академического Салона","url":"https://academic-saloon.duckdns.org/tariffs.html","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Самостоятельная работа (реферат, эссе, контрольная)"},"priceSpecification":{"@type":"PriceSpecification","minPrice":2500,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Научная статья РИНЦ"},"priceSpecification":{"@type":"PriceSpecification","minPrice":9000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Курсовая теоретическая"},"priceSpecification":{"@type":"PriceSpecification","minPrice":14000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Отчёт по практике"},"priceSpecification":{"@type":"PriceSpecification","minPrice":14000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Научная статья ВАК"},"priceSpecification":{"@type":"PriceSpecification","minPrice":18000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Курсовая эмпирическая (с практикой, расчётами)"},"priceSpecification":{"@type":"PriceSpecification","minPrice":20000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Глава диссертации"},"priceSpecification":{"@type":"PriceSpecification","minPrice":30000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Научная статья Scopus / Web of Science"},"priceSpecification":{"@type":"PriceSpecification","minPrice":35000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Дипломная работа / ВКР"},"priceSpecification":{"@type":"PriceSpecification","minPrice":40000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Магистерская диссертация"},"priceSpecification":{"@type":"PriceSpecification","minPrice":60000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Кандидатская под ключ"},"priceSpecification":{"@type":"PriceSpecification","minPrice":200000,"priceCurrency":"RUB"}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Почему «от»?","acceptedAnswer":{"@type":"Answer","text":"«От» — нижний порог за базовую сложность типа: стандартный объём и требования. Полную вилку под конкретную тему показывает пошаговый расчёт за минуту."}},{"@type":"Question","name":"Когда фиксируется смета?","acceptedAnswer":{"@type":"Answer","text":"После разбора плана, когда известны объём и методичка. Зафиксированная смета не меняется по инициативе мастерской — пересчёт только при смене темы или объёма со стороны заказчика."}},{"@type":"Question","name":"Можно ли дешевле?","acceptedAnswer":{"@type":"Answer","text":"Да, без потери качества: уровень «Базовый» идёт без наценки за сопровождение, а свободный срок от 30 дней — без коэффициента за срочность."}},{"@type":"Question","name":"Как проходит оплата?","acceptedAnswer":{"@type":"Answer","text":"По этапам: каждый платёж вносится после показанного результата предыдущего этапа. Вся сумма вперёд не берётся, перед финальным платежом выдаётся отчёт о проверках."}}]}</script>
-<script src="assets/js/app.js?v=20260708b"></script>
+<script src="assets/js/app.js?v=20260709a"></script>
 <script>
 (function(){
   'use strict';
+  /* Фильтр картотеки: мягкое исчезновение и появление карточек */
+  var grid = document.getElementById('ccGrid');
+  var btns = document.querySelectorAll('.cc-filters button');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var busy = false;
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if (busy) return;
+      var cat = btn.getAttribute('data-cat');
+      btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b === btn)); });
+      var cards = grid.querySelectorAll('.cc');
+      function apply(){
+        cards.forEach(function(c){ c.hidden = cat !== 'all' && c.getAttribute('data-cat') !== cat; });
+      }
+      if (reduce) { apply(); return; }
+      busy = true;
+      cards.forEach(function(c){ c.classList.add('out'); });
+      setTimeout(function(){
+        apply();
+        requestAnimationFrame(function(){
+          requestAnimationFrame(function(){
+            cards.forEach(function(c){ c.classList.remove('out'); });
+            busy = false;
+          });
+        });
+      }, 190);
+    });
+  });
   /* Кнопки «Рассчитать точно» пишут черновик заказа: тип + уровень «Базовый» */
   document.querySelectorAll('a[data-type]').forEach(function(a){
     a.addEventListener('click', function(){

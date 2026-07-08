@@ -21,8 +21,10 @@
   /* акценты */
   --wax:#B23B22;            /* сургуч: CTA, печати, ляссе. Квота ≤3 на экран */
   --wax-deep:#8C2D18;
+  --wax-soft:rgba(178,59,34,.08);
   --verify:#3D6B50;
   --stamp-blue:#3A4E7A;
+  --mark:#EFE5CC;           /* кремовый маркер: подсветка строк и ховеры */
 
   /* новые тона «Переплёта» */
   --desk:#EDE5D5;           /* столешница вокруг книги */
@@ -68,9 +70,6 @@ button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer
 :focus-visible{outline:2px solid var(--wax);outline-offset:3px;border-radius:var(--r)}
 .visually-hidden{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
-.skip-link{position:fixed;top:-64px;left:16px;z-index:200;background:var(--ink);color:var(--paper);padding:12px 20px;border-radius:var(--r);transition:top .2s}
-.skip-link:focus{top:12px}
-
 /* ---------- Полоса набора ---------- */
 .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,4.5vw,48px)}
 
@@ -114,59 +113,8 @@ h3{font-size:clamp(19px,2vw,23px);font-weight:500}
 .btn-block{display:flex;width:100%}
 .btn .ar{font-family:var(--serif)}
 
-/* ---------- Шапка ---------- */
-.site-header{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:color-mix(in srgb, var(--paper) 86%, transparent);
-  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--hairline);
-  transition:transform .3s ease;
-}
-.site-header.hide{transform:translateY(-100%)}
-.site-header .nav{display:flex;align-items:center;gap:clamp(16px,3vw,40px);height:64px}
-.brand{display:inline-flex;align-items:baseline;gap:10px;font-family:var(--serif);font-size:19px;letter-spacing:-.01em;white-space:nowrap}
-.brand .b-para{color:var(--wax);font-size:22px;line-height:1}
-.nav-links{display:flex;gap:clamp(14px,2.4vw,28px);margin-left:auto}
-.nav-links a{font-size:15px;color:var(--ink-soft);padding:6px 2px;border-bottom:1px solid transparent;transition:color .15s,border-color .15s;white-space:nowrap}
-.nav-links a:hover{color:var(--ink);border-color:var(--hairline-strong)}
-.nav-cta{display:flex;align-items:center;gap:10px;margin-left:auto}
-.nav-cta .btn{min-height:44px;padding:9px 18px;font-size:14.5px}
-.menu-toggle{
-  display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:9px 15px;
-  border:1px solid var(--hairline-strong);background:transparent;border-radius:var(--r);
-  font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
-  cursor:pointer;color:var(--ink);transition:border-color .15s,background .15s;
-}
-.menu-toggle:hover{background:var(--paper-2);border-color:var(--ink-soft)}
-.menu-toggle i{display:block;width:16px;height:9px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
-/* на планшете второстепенные ссылки уходят в «Меню» */
-@media(max-width:960px){.nav-links a.nav-x{display:none}}
-@media(max-width:760px){.nav-links{display:none}}
-/* на узких экранах «Рассчитать» несёт нижняя плашка; «Меню» остаётся всегда */
-@media(max-width:560px){
-  .nav-cta .btn{display:none}
-  .menu-toggle .mt-txt{display:inline}
-}
-
-/* ---------- Меню (полноэкранное «Оглавление») ---------- */
-.toc{
-  position:fixed;inset:0;z-index:200;background:var(--paper);
-  padding:max(84px,11vh) clamp(20px,6vw,64px) 40px;overflow-y:auto;
-  opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;
-}
-.toc.open{opacity:1;visibility:visible}
-.toc-head{display:flex;justify-content:space-between;align-items:center;max-width:660px;margin:0 auto 28px}
-.toc-title{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
-.toc-close{border:1px solid var(--hairline-strong);background:transparent;border-radius:var(--r);min-height:44px;padding:10px 18px;font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;color:var(--ink)}
-.toc-close:hover{background:var(--paper-2)}
-.toc nav{max-width:660px;margin:0 auto;display:flex;flex-direction:column}
-.toc a.dotrow{font-family:var(--serif);font-size:clamp(22px,4.6vw,28px);padding:15px 6px}
-.toc a.dotrow[aria-current="page"]{color:var(--wax)}
-.toc a.dotrow .dr-val{font-size:13px;color:var(--ink-soft)}
-.toc-foot{max-width:660px;margin:36px auto 0}
-.toc-contacts{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;padding-bottom:22px;margin-bottom:24px;border-bottom:1px solid var(--hairline)}
-.toc-tg{font-size:16px;color:var(--ink);border-bottom:1px solid var(--wax);padding-bottom:2px}
-.toc-tg:hover{color:var(--wax)}
+/* Шапка, «Оглавление», переключатель темы, подвал-колофон,
+   tg-pill и мобильная плашка — в общем слое assets/css/chrome.css */
 
 /* ============================================================
    HERO — ОБЛОЖКА
@@ -447,50 +395,85 @@ a.dotrow:hover .dr-val{color:var(--wax)}
 .proc-left{padding:clamp(28px,4vw,56px) clamp(24px,3.4vw,48px) clamp(28px,4vw,56px) clamp(24px,4vw,64px);display:flex;flex-direction:column}
 .proc-left h2{margin:10px 0 clamp(20px,3vw,32px)}
 .proc-toc{margin-bottom:var(--s3)}
-.proc-toc .pt-row{display:flex;gap:14px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--hairline);color:var(--ink-soft);transition:color .2s}
-.proc-toc .pt-row .pt-no{font-family:var(--mono);font-size:12px;flex:0 0 24px;color:var(--ink-faint)}
-.proc-toc .pt-row.active{color:var(--ink)}
-.proc-toc .pt-row.active .pt-no{color:var(--wax)}
+.proc-toc .pt-row{
+  display:flex;gap:12px;align-items:baseline;padding:12px 8px;margin:0 -8px;
+  border-bottom:1px solid var(--hairline);color:var(--ink-soft);
+  border-radius:var(--r);transition:color .25s,background .25s;
+}
+.proc-toc .pt-row .pt-no{font-family:var(--mono);font-size:12px;flex:0 0 36px;white-space:nowrap;color:var(--ink-faint);transition:color .25s}
+.proc-toc .pt-row .pt-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proc-toc .pt-row .pt-dots{flex:1;min-width:16px;border-bottom:2px dotted var(--hairline);transform:translateY(-4px);transition:border-color .25s}
+.proc-toc .pt-row .pt-pay{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint);font-variant-numeric:tabular-nums;transition:color .25s}
+.proc-toc .pt-row.active{color:var(--ink);background:var(--mark)}
+.proc-toc .pt-row.active .pt-no,.proc-toc .pt-row.active .pt-pay{color:var(--wax)}
+.proc-toc .pt-row.active .pt-dots{border-color:var(--hairline-strong)}
 .proc-toc .pt-row.done{color:var(--ink)}
 .proc-toc .pt-row.done .pt-no::after{content:" ✓";color:var(--verify)}
 .pay-strip{margin-top:auto;padding-top:var(--s2)}
-.pay-strip .ps-row{display:flex;gap:2px;margin:10px 0 8px}
-.pay-strip .ps-seg{height:8px;background:var(--paper-2);border:1px solid var(--hairline-strong)}
-.pay-strip .ps-seg:first-child{border-radius:2px 0 0 2px}
-.pay-strip .ps-seg:last-child{border-radius:0 2px 2px 0}
-.pay-strip .ps-lbls{display:flex;justify-content:space-between;font-family:var(--mono);font-size:13px;color:var(--ink-soft)}
+.pay-strip .ps-row{display:flex;gap:3px;margin:12px 0 2px}
+.pay-strip .ps-seg{
+  display:flex;flex-direction:column;justify-content:center;gap:1px;
+  min-height:52px;padding:8px 12px;background:var(--paper-2);
+  border:1px solid var(--hairline-strong);border-radius:2px;
+}
+.pay-strip .ps-seg:first-child{border-radius:3px 2px 2px 3px}
+.pay-strip .ps-seg:last-child{border-radius:2px 3px 3px 2px}
+.pay-strip .ps-seg b{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.pay-strip .ps-seg small{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap}
 
-/* правая страница: стопка листов */
+/* правая страница: стопка листов рукописи */
 .proc-right{position:relative;min-height:520px;perspective:1800px}
 .proc-sheet{
   position:absolute;inset:0;background:var(--sheet);border-radius:0 3px 3px 0;
   transform-origin:left center;transform-style:preserve-3d;
   padding:clamp(28px,4vw,56px) clamp(24px,4vw,64px) clamp(28px,4vw,56px) clamp(24px,3.4vw,48px);
   display:flex;flex-direction:column;justify-content:center;gap:14px;
-  backface-visibility:hidden;
+  backface-visibility:hidden;overflow:hidden;
   box-shadow:inset 1px 0 0 var(--hairline);
+  /* фактура рукописи: слабые линии набора */
+  background-image:repeating-linear-gradient(180deg,transparent 0 30px,rgba(127,116,86,.06) 30px 31px);
 }
-.proc-sheet .sh-no{font-family:var(--mono);font-size:13px;color:var(--wax);letter-spacing:.14em}
-.proc-sheet h3{font-family:var(--serif);font-size:clamp(24px,2.6vw,34px);font-weight:400}
-.proc-sheet p{font-size:16.5px;color:var(--ink-soft);max-width:38ch}
-.proc-sheet .sh-art{margin-top:10px;color:var(--ink-faint)}
+.proc-sheet .sh-ghost{ /* призрачный номер главы, как колонцифра шмуцтитула */
+  position:absolute;right:clamp(8px,3vw,36px);top:50%;transform:translateY(-54%);
+  font-family:var(--serif);font-weight:300;font-size:clamp(200px,24vw,320px);
+  line-height:1;color:var(--ink);opacity:.05;pointer-events:none;user-select:none;
+}
+.proc-sheet .sh-no{font-family:var(--mono);font-size:12.5px;color:var(--wax);letter-spacing:.16em;text-transform:uppercase}
+.proc-sheet h3{font-family:var(--serif);font-size:clamp(24px,2.6vw,34px);font-weight:400;max-width:14ch}
+.proc-sheet p{font-size:16px;color:var(--ink-soft);max-width:40ch}
+.proc-sheet .sh-hand{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.sh-tag{
+  display:inline-flex;align-items:center;padding:7px 11px;border-radius:var(--r);
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--hairline-strong);color:var(--ink-soft);
+}
+.sh-tag-wax{border-color:var(--wax);color:var(--wax);background:var(--wax-soft)}
+.sh-tag-verify{border-color:var(--verify);color:var(--verify);background:rgba(61,107,80,.08)}
 .proc-sheet .sh-folio{position:absolute;bottom:20px;right:26px;font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
 /* тень сгиба при листании */
-.proc-sheet::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(107,94,64,.16),transparent 26%);opacity:0;transition:opacity .2s}
+.proc-sheet::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(107,94,64,.18),transparent 30%);opacity:0;transition:opacity .2s}
 .enhanced .proc-sheet.turning::after{opacity:1}
+
+/* заметная строка «Полный каталог» в оглавлении цен */
+.cat-more{margin-top:14px}
+.cat-more>span:first-child{font-weight:500}
+.cat-more .dr-val{color:var(--wax)}
 
 /* статичный (мобильный / no-JS / reduced-motion) вид процесса */
 body:not(.enhanced) .proc-track{height:auto}
 body:not(.enhanced) .proc-right{min-height:0;display:flex;flex-direction:column}
-body:not(.enhanced) .proc-sheet{position:relative;inset:auto;border-bottom:1px solid var(--hairline);padding-top:24px;padding-bottom:24px;justify-content:flex-start}
+body:not(.enhanced) .proc-sheet{position:relative;inset:auto;border-bottom:1px solid var(--hairline);padding-top:26px;padding-bottom:26px;justify-content:flex-start}
 body:not(.enhanced) .proc-sheet:last-child{border-bottom:0}
 body:not(.enhanced) .proc-sheet .sh-folio{display:none}
+body:not(.enhanced) .proc-sheet .sh-ghost{font-size:140px;right:6px}
 @media(max-width:880px){
   .proc-grid{grid-template-columns:1fr}
   .proc-grid::before{display:none}
   .proc-left{border-bottom:1px solid var(--hairline)}
   .proc-toc{display:none}
   .pay-strip{margin-top:0}
+  .pay-strip .ps-seg{min-height:46px;padding:6px 8px}
+  .pay-strip .ps-seg small{font-size:9.5px}
 }
 
 /* ============================================================
@@ -551,46 +534,7 @@ body:not(.enhanced) .proc-sheet .sh-folio{display:none}
 .faq-item p{padding:0 0 18px 30px;color:var(--ink-soft);font-size:15.5px;max-width:64ch}
 
 /* ============================================================
-   КОЛОФОН (тёмный финал = подвал)
-   ============================================================ */
-.site-footer{
-  background:linear-gradient(180deg,#262319 0%,#22201B 30%,#1D1B16 100%);
-  color:#CFC8B8;margin-top:clamp(72px,10vw,120px);
-  padding:clamp(64px,9vw,112px) 0 40px;position:relative;
-}
-.site-footer::before{ /* золотой обрез сверху */
-  content:"";position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,transparent,var(--foil) 30%,#E9C972 50%,var(--foil) 70%,transparent);
-  opacity:.75;
-}
-.colophon-center{text-align:center;max-width:640px;margin:0 auto clamp(48px,7vw,80px)}
-.colophon-center .co-para{font-family:var(--serif);font-size:40px;color:var(--foil-soft);line-height:1;margin-bottom:22px}
-.colophon-center h2{font-family:var(--serif);font-weight:380;font-size:clamp(26px,3.2vw,40px);color:#F0EADB;margin-bottom:14px}
-.colophon-center .co-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:#9C9580;margin-bottom:34px}
-.colophon-center .btn-wax{box-shadow:0 2px 0 #6E2312,0 10px 28px rgba(178,59,34,.35)}
-.colophon-center .co-alt{margin-top:16px;font-size:14.5px;color:#9C9580}
-.colophon-center .co-alt a{color:#CFC8B8;border-bottom:1px solid #4A4536;padding-bottom:1px}
-.colophon-center .co-alt a:hover{color:#F0EADB;border-color:#8F8871}
-
-.foot-cols{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:clamp(24px,4vw,56px);padding-top:clamp(32px,5vw,48px);border-top:1px solid #3A362B}
-.fc-h{color:#9C9580;margin-bottom:14px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
-.foot-links{display:flex;flex-direction:column;gap:9px}
-.foot-links a{font-size:14px;color:#B5AE9C;transition:color .15s}
-.foot-links a:hover{color:#F0EADB}
-.fc-brand .brand{color:#F0EADB;margin-bottom:16px;display:inline-flex}
-.fc-brand .brand .b-para{color:var(--foil-soft)}
-.foot-contacts{display:flex;flex-direction:column;gap:10px}
-.foot-contacts a{display:flex;flex-direction:column;font-size:14px;color:#B5AE9C}
-.foot-contacts a .fco-v{font-family:var(--mono);font-size:13px;color:#9C9580}
-.foot-contacts a:hover{color:#F0EADB}
-.foot-note{margin-top:clamp(32px,5vw,48px);padding-top:24px;border-top:1px solid #3A362B;font-size:13.5px;line-height:1.7;color:#9A937D;max-width:88ch}
-@media(max-width:760px){.foot-cols{grid-template-columns:1fr;gap:32px}}
-/* фокус-рамка на тёмном фоне: сургуч не читается, берём светлую кость */
-.site-footer :focus-visible,.tg-pill:focus-visible{outline-color:#F0EADB}
-main[tabindex="-1"]:focus{outline:none}
-
-/* ============================================================
-   ЛЯССЕ (прогресс + CTA, десктоп) и мобильная плашка
+   ЛЯССЕ (прогресс чтения, десктоп)
    ============================================================ */
 .lasse{position:fixed;top:0;right:clamp(10px,1.6vw,22px);bottom:0;width:6px;z-index:90;pointer-events:none}
 .lasse .ls-track{position:absolute;inset:0;background:transparent}
@@ -606,33 +550,6 @@ main[tabindex="-1"]:focus{outline:none}
   background:#8C2D18;clip-path:polygon(0 0,100% 0,50% 100%);
 }
 @media(max-width:880px){.lasse{display:none}}
-
-.tg-pill{
-  position:fixed;right:clamp(22px,3vw,40px);bottom:26px;z-index:95;
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--ink);color:var(--paper);border:1px solid #3A362B;
-  font-size:15px;font-weight:500;padding:13px 22px;border-radius:3px;min-height:48px;
-  box-shadow:0 2px 0 #000,0 12px 28px rgba(34,32,27,.3);
-  transition:transform .15s,background .15s;
-}
-.tg-pill:hover{background:#33302a;transform:translateY(-2px)}
-.tg-pill .tp-dot{width:8px;height:8px;border-radius:50%;background:var(--verify)}
-@media(max-width:880px){.tg-pill{display:none}}
-
-.mobile-cta{
-  position:fixed;left:0;right:0;bottom:0;z-index:95;display:none;
-  padding:10px max(12px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
-  background:color-mix(in srgb, var(--paper) 92%, transparent);
-  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-  border-top:1px solid var(--hairline);
-  gap:10px;
-}
-.mobile-cta .btn{flex:1;min-height:52px;font-size:15.5px;padding:10px 12px}
-@media(max-width:880px){
-  .mobile-cta{display:flex}
-  body{padding-bottom:76px}
-  .site-footer{padding-bottom:96px}
-}
 
 /* ============================================================
    REVEAL + ДЕГРАДАЦИЯ
@@ -658,46 +575,73 @@ main[tabindex="-1"]:focus{outline:none}
 /* без JS книга приоткрыта статично — та же деградация, что при reduce */
 html:not(.has-js) .b-cover{transform:translateZ(2px) rotateY(-30deg)}
 
-/* ---------- Рантайм app.js: toast, лист связи, блокировка скролла ----------
-   app.js умеет показывать эти элементы на любой странице; на главной
-   styles.css не подключён, поэтому даём им компактные стили здесь. */
-body.toc-lock{overflow:hidden}
-.toast-stack{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:130;display:flex;flex-direction:column;gap:8px;width:min(92vw,440px)}
-.toast{display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper);padding:12px 16px;border-radius:3px;font-size:15px;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;box-shadow:0 10px 28px rgba(34,32,27,.3)}
-.toast.in{opacity:1;transform:none}
-.toast-ic{font-family:var(--serif);color:var(--foil-soft)}
-.toast-act{margin-left:auto;border-bottom:1px solid var(--hairline-strong);color:var(--paper);font-weight:500;cursor:pointer}
-.contact-sheet{position:fixed;inset:0;z-index:140;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .24s}
-.contact-sheet.open{opacity:1}
-.contact-sheet .cs-backdrop{position:absolute;inset:0;background:rgba(34,32,27,.5)}
-.contact-sheet .cs-card{position:relative;background:var(--sheet);border:1px solid var(--hairline);border-radius:6px 6px 0 0;padding:20px;width:min(100%,480px);max-height:86svh;overflow:auto}
-@media(min-width:560px){.contact-sheet{align-items:center}.contact-sheet .cs-card{border-radius:4px}}
-.cs-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.cs-x{font-size:26px;line-height:1;min-width:48px;min-height:48px;cursor:pointer;color:var(--ink-soft)}
-.cs-lead{font-size:15px;color:var(--ink-soft);margin-bottom:14px}
-.cs-opt{display:flex;align-items:center;gap:12px;border:1px solid var(--hairline-strong);border-radius:3px;padding:14px;margin-bottom:10px;min-height:56px}
-.cs-opt:hover{border-color:var(--ink)}
-.cs-opt--wax{border-color:var(--wax);background:rgba(178,59,34,.06)}
-.cs-o-ic{font-size:20px;flex:0 0 28px;text-align:center}
-.cs-o-txt{display:flex;flex-direction:column}
-.cs-o-txt b{font-size:16px}
-.cs-o-txt small{font-size:13px;color:var(--ink-soft)}
-.cs-opt .ar{margin-left:auto;font-family:var(--serif)}
-.cs-note{font-size:12.5px;color:var(--ink-soft);margin-top:8px}
-.cs-note a{border-bottom:1px solid var(--hairline-strong)}
+/* спиннер загрузки кнопок (Salon.btnLoading) */
 .spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* печать: статичная светлая книга без хрома */
 @media print{
-  .site-header,.lasse,.tg-pill,.mobile-cta,.scroll-hint,.toast-stack,.contact-sheet{display:none!important}
+  .lasse,.scroll-hint{display:none!important}
   .has-js .reveal{opacity:1!important;transform:none!important}
   .enhanced .cover-track,.enhanced .proc-track{height:auto!important}
   .enhanced .cover-stage,.enhanced .proc-stage{position:static!important;height:auto!important}
   .proc-right{min-height:0!important}
   .proc-sheet{position:static!important;transform:none!important;visibility:visible!important;border-bottom:1px solid var(--hairline)}
   .b-cover{transform:none!important}
-  .site-footer{background:none!important;color:#000}
-  .site-footer *{color:#000!important}
-  body{padding-bottom:0!important}
 }
+
+/* ============================================================
+   ТЁМНАЯ ТЕМА «Переплёт ночью»
+   Кабинет затемняется, а сама книга остаётся светлой — как
+   том под лампой в ночной библиотеке. Развороты и смета
+   переходят на тёмные листы, сургуч и фольга становятся ярче.
+   ============================================================ */
+:root[data-theme="dark"]{
+  --paper:#14120E;
+  --paper-2:#1B1813;
+  --sheet:#1F1B15;
+  --ink:#ECE6D7;
+  --ink-soft:#ABA595;
+  --ink-faint:#847E6E;
+  --hairline:#34302A;
+  --hairline-strong:#4C483E;
+  --wax:#E06B4C;
+  --wax-deep:#C8563A;
+  --verify:#74BA90;
+  --stamp-blue:#8098CE;
+  --desk:#191510;
+  --desk-deep:#120F0A;
+  --foil:#CDA455;
+  --foil-soft:#E9C972;
+  --shadow:#0B0906;
+  --shadow-deep:#050403;
+  --mark:#2C2A1D;
+  --wax-soft:rgba(224,107,76,.14);
+}
+:root[data-theme="dark"] body::before{opacity:.5}
+:root[data-theme="dark"] ::selection{background:#2C2A1D;color:var(--ink)}
+/* letterpress: на тёмном заголовок продавлен тенью, а не бликом */
+:root[data-theme="dark"] .press-h{text-shadow:0 1px 0 rgba(0,0,0,.55)}
+/* тени разворотов и книги — глубже и холоднее */
+:root[data-theme="dark"] .pages,
+:root[data-theme="dark"] .proc-grid{box-shadow:0 2px 0 var(--shadow),0 24px 48px rgba(0,0,0,.45)}
+:root[data-theme="dark"] .b-back{box-shadow:0 30px 64px rgba(0,0,0,.62)}
+:root[data-theme="dark"] a.dotrow:hover{box-shadow:0 6px 14px rgba(0,0,0,.4)}
+:root[data-theme="dark"] .plates button[aria-pressed="true"]{box-shadow:inset 0 2px 4px rgba(0,0,0,.5), inset 0 0 0 1px var(--ink)}
+:root[data-theme="dark"] .slip{box-shadow:0 2px 0 var(--shadow),0 14px 30px rgba(0,0,0,.5)}
+/* сцена обложки: тёплый круг света от лампы над книгой */
+:root[data-theme="dark"] .cover-scene{
+  background:
+    radial-gradient(58% 52% at 68% 42%, rgba(233,201,114,.10) 0%, transparent 70%),
+    radial-gradient(120% 90% at 50% 8%, transparent 55%, rgba(0,0,0,.5) 100%),
+    linear-gradient(180deg, var(--desk) 0%, var(--desk) 78%, var(--paper) 100%);
+}
+/* физическая книга и её титульный лист всегда из светлой бумаги */
+:root[data-theme="dark"] .b-title-page{background:#FFFEF9}
+:root[data-theme="dark"] .b-title-page .tp-caps{color:#857E6C}
+:root[data-theme="dark"] .b-title-page .tp-name{color:#22201B}
+:root[data-theme="dark"] .b-title-page .tp-line{color:#6B665A}
+:root[data-theme="dark"] .b-title-page .tp-rule{background:#C2B89F}
+:root[data-theme="dark"] .b-title-page .tp-seal{color:#B23B22}
+/* печати на тёмном светятся, а не умножаются */
+:root[data-theme="dark"] .seal{mix-blend-mode:screen}
