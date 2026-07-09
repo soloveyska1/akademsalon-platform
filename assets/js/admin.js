@@ -426,7 +426,7 @@ function initGodEye() {
         ? '✅ Онлайн-касса подключена — клиенты могут платить картой/СБП, статусы двигаются сами.'
         : 'Пока выключена. Основной путь — <b>Robokassa</b> (работает с самозанятыми, «Робочеки СМЗ» сами шлют чек НПД): ' +
           'зарегистрируйте магазин на <b>robokassa.com</b>, в настройках магазина укажите Result URL ' +
-          '<span class="mono">https://academic-saloon.duckdns.org/api/pay/robokassa</span> (метод POST), ' +
+          '<span class="mono">https://akademsalon.ru/api/pay/robokassa</span> (метод POST), ' +
           'Success/Fail URL — <span class="mono">…/dashboard.html</span>, возьмите «Идентификатор магазина» и «Пароль #1/#2» ' +
           'и добавьте в <span class="mono">/root/salon_bot/.env</span> строки ROBOKASSA_LOGIN, ROBOKASSA_PASS1, ROBOKASSA_PASS2, ' +
           'затем перезапустите бота (systemctl restart salon-bot-v2). Для теста: тестовые пароли + ROBOKASSA_TEST=1. ' +

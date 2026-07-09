@@ -698,8 +698,8 @@
      Сайт и Telegram-бот работают с одним сервером: заказы, статусы и переписка
      синхронны. Сессия — токен в localStorage (вход через Telegram);
      у гостевых заказов — токены доступа по каждому заказу. */
-  var API_BASE = (location.hostname === 'academic-saloon.duckdns.org')
-    ? '/api' : 'https://academic-saloon.duckdns.org/api';
+  var API_BASE = (location.hostname === 'akademsalon.ru')
+    ? '/api' : 'https://akademsalon.ru/api';
   Salon.api = {
     base: API_BASE,
     token: function () { return Salon.store.get('salon_session', null); },

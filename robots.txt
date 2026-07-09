@@ -3,4 +3,4 @@ Allow: /
 Disallow: /dashboard.html
 Disallow: /consent.html
 
-Sitemap: https://academic-saloon.duckdns.org/sitemap.xml
+Sitemap: https://akademsalon.ru/sitemap.xml
