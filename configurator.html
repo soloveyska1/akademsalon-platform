@@ -74,6 +74,28 @@
   .mq-total .num{font-weight:600}
   .mq-more{color:var(--ink-soft);font-size:12px}
 
+  /* файлы в заявке: методичка и ТЗ уходят мастеру вместе с формой */
+  .att-add{
+    display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    min-height:52px;padding:12px 16px;background:var(--sheet);
+    border:1px dashed var(--hairline-strong);border-radius:var(--r);
+    color:var(--ink);font-size:14.5px;cursor:pointer;
+    transition:border-color .15s,color .15s,background .15s;
+  }
+  .att-add:hover,.att-add.dragover{border-color:var(--wax);color:var(--wax);background:var(--wax-soft)}
+  .att-add svg{flex:0 0 auto}
+  .att-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  .att-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--sheet);border:1px solid var(--hairline);border-radius:var(--r);font-size:13.5px}
+  .att-item .ai-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .att-item .ai-size,.att-item .ai-st{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .att-item .ai-st.ok{color:var(--verify)}
+  .att-item .ai-st.err{color:var(--wax)}
+  .att-item .ai-x{border:0;background:none;color:var(--ink-faint);font-size:16px;line-height:1;cursor:pointer;padding:2px 6px;border-radius:50%}
+  .att-item .ai-x:hover{color:var(--wax)}
+  .att-item .ai-retry{border:0;background:none;color:var(--wax);cursor:pointer;font-size:12.5px;border-bottom:1px solid currentColor;padding:0;margin-left:4px}
+  .done-files{margin:-10px 0 24px}
+  .done-files .caps{display:block;margin-bottom:8px}
+
   @media(max-width:880px){
     .conf-aside{display:none}
     #btnNext{display:none}   /* «Далее» на мобильном живёт в нижней панели */
@@ -197,6 +219,26 @@
                 <label for="fTopic">Тема работы · необязательно</label>
                 <input type="text" id="fTopic" maxlength="160" autocomplete="off" placeholder="Если тема уже утверждена — впишите её" />
               </div>
+              <div class="field">
+                <label for="fDeadline">Точная дата сдачи · необязательно</label>
+                <input type="text" id="fDeadline" maxlength="60" autocomplete="off" placeholder="Например, «25 июля» или «до конца сессии»" />
+              </div>
+              <div class="field">
+                <label for="fDetails">Требования · необязательно</label>
+                <textarea id="fDetails" rows="2" maxlength="1200" placeholder="Объём в страницах, % оригинальности и система проверки, оформление по методичке"></textarea>
+              </div>
+
+              <!-- файлы: то, ради чего заявку удобно отправлять именно с сайта -->
+              <div class="field">
+                <label for="fFiles">Методичка и ТЗ · необязательно</label>
+                <input type="file" id="fFiles" multiple hidden />
+                <button type="button" class="att-add" id="attAdd" aria-describedby="attHint">
+                  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.2 12.7 13 19.9a5 5 0 0 1-7.1-7.1l7.9-7.8a3.35 3.35 0 0 1 4.7 4.7l-7.8 7.9a1.68 1.68 0 0 1-2.4-2.4l7.2-7.2"/></svg>
+                  <span>Прикрепить файлы — методичка, ТЗ, черновик</span>
+                </button>
+                <div class="att-list" id="attList" hidden></div>
+                <p class="petit" id="attHint" style="margin-top:8px">До 5 файлов по 20 МБ. С файлами мастер называет точную смету с первого ответа — не придётся пересылать их позже в переписке.</p>
+              </div>
 
               <!-- как с вами связаться: Telegram-вход или контакт вручную -->
               <div id="ctAuthed" hidden>
@@ -225,7 +267,7 @@
                 <a class="btn btn-line" style="flex:1" href="https://t.me/academicsaloon" target="_blank" rel="noopener">Написать человеку</a>
                 <a class="btn btn-line" style="flex:1" href="https://vk.com/academicsaloon" target="_blank" rel="noopener">ВКонтакте</a>
               </div>
-              <p class="petit mt-s wsubmit-note">Оценка бесплатна: мастер увидит заявку мгновенно, статус появится в <a class="link" href="dashboard.html">кабинете</a> и в Telegram. Решение вы принимаете, уже зная точную смету, — она фиксируется после разбора плана и не меняется по нашей инициативе.</p>
+              <p class="petit mt-s wsubmit-note">Оценка бесплатна: мастер сразу получит заявку вместе с файлами, статус появится в <a class="link" href="dashboard.html">кабинете</a> и в Telegram. Решение вы принимаете, уже зная точную смету, — она фиксируется после разбора плана и не меняется по нашей инициативе.</p>
             </div>
 
             <div class="wnav">
@@ -270,6 +312,10 @@
             <li><span class="dn">2</span><span>Пришлём план и точную смету — в кабинет и в Telegram</span></li>
             <li><span class="dn">3</span><span>Первый платёж — только после согласования плана</span></li>
           </ol>
+          <div class="done-files" id="doneFiles" hidden>
+            <span class="caps">Файлы — мастеру</span>
+            <div class="att-list" id="doneAttList"></div>
+          </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
             <a class="btn btn-wax" href="dashboard.html">Открыть кабинет <span class="ar">→</span></a>
             <a class="btn btn-line" id="doneBot" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Продолжить в Telegram</a>
@@ -359,7 +405,117 @@ function initConf() {
   var profileEl = $('discProfile');
   if (plan && planNoteEl) planNoteEl.hidden = false;
   var topicIn = $('fTopic');
+  var deadlineIn = $('fDeadline'), detailsIn = $('fDetails');
   var mcta = $('confMcta'), mqPanel = $('mqPanel'), mqToggle = $('mqToggle'), mqMore = $('mqMore'), mNext = $('mNext');
+
+  /* --- файлы к заявке: очередь в памяти, уходят сразу после создания заказа.
+     Ради этого заявка с сайта и существует: методичка и ТЗ попадают мастеру
+     вместе с формой, а не досылаются потом в переписке. --- */
+  var ATT_MAX = 5, ATT_SIZE = 20 * 1024 * 1024;
+  var attQueue = []; /* {f: File, st: 'wait'|'up'|'ok'|'err'} */
+  var attAdd = $('attAdd'), attInput = $('fFiles'), attList = $('attList');
+  var attOrder = null; /* {id, token} — появляется после создания заказа */
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function attSize(n) {
+    return n < 1024 * 1024
+      ? Math.max(1, Math.round(n / 1024)) + ' КБ'
+      : (n / 1024 / 1024).toFixed(1).replace('.', ',') + ' МБ';
+  }
+  function attRender() {
+    if (!attList) return;
+    attList.hidden = !attQueue.length;
+    attList.innerHTML = attQueue.map(function (a, i) {
+      return '<div class="att-item"><span class="ai-name">' + esc(a.f.name) + '</span>' +
+        '<span class="ai-size">' + attSize(a.f.size) + '</span>' +
+        '<button type="button" class="ai-x" data-att-x="' + i + '" aria-label="Убрать файл ' + esc(a.f.name) + '">×</button></div>';
+    }).join('');
+  }
+  function attPush(files) {
+    var added = 0, dup = 0, big = 0, over = false;
+    Array.prototype.slice.call(files || []).forEach(function (f) {
+      if (!f || !f.size) return;
+      if (attQueue.length >= ATT_MAX) { over = true; return; }
+      if (f.size > ATT_SIZE) { big++; return; }
+      var same = attQueue.some(function (a) { return a.f.name === f.name && a.f.size === f.size; });
+      if (same) { dup++; return; }
+      attQueue.push({ f: f, st: 'wait' });
+      added++;
+    });
+    if (big) S.toast('Файл больше 20 МБ — такой удобнее переслать в чате бота');
+    else if (over) S.toast('Не больше 5 файлов — остальные добавите в кабинете');
+    else if (!added && dup) S.toast('Эти файлы уже прикреплены');
+    attRender();
+  }
+  if (attAdd && attInput && attList) {
+    attAdd.addEventListener('click', function () { attInput.click(); });
+    attInput.addEventListener('change', function () { attPush(attInput.files); attInput.value = ''; });
+    attList.addEventListener('click', function (e) {
+      var x = e.target.closest('[data-att-x]');
+      if (!x) return;
+      attQueue.splice(parseInt(x.getAttribute('data-att-x'), 10), 1);
+      attRender();
+    });
+    ['dragover', 'dragenter'].forEach(function (ev) {
+      attAdd.addEventListener(ev, function (e) { e.preventDefault(); attAdd.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(function (ev) {
+      attAdd.addEventListener(ev, function (e) { e.preventDefault(); attAdd.classList.remove('dragover'); });
+    });
+    attAdd.addEventListener('drop', function (e) {
+      if (e.dataTransfer && e.dataTransfer.files) attPush(e.dataTransfer.files);
+    });
+  }
+
+  /* статусы файлов на экране успеха + последовательная загрузка */
+  function doneAttRender() {
+    var box = $('doneFiles'), list = $('doneAttList');
+    if (!box || !list) return;
+    box.hidden = !attQueue.length;
+    if (!attQueue.length) return;
+    list.innerHTML = attQueue.map(function (a, i) {
+      var st = a.st === 'ok' ? '<span class="ai-st ok">у мастера ✓</span>'
+        : a.st === 'err' ? '<span class="ai-st err">не ушёл</span><button type="button" class="ai-retry" data-att-retry="' + i + '">повторить</button>'
+        : a.st === 'up' ? '<span class="ai-st">загружаем…</span>'
+        : '<span class="ai-st">в очереди</span>';
+      return '<div class="att-item"><span class="ai-name">' + esc(a.f.name) + '</span>' +
+        '<span class="ai-size">' + attSize(a.f.size) + '</span>' + st + '</div>';
+    }).join('');
+  }
+  function uploadOne(a) {
+    if (!attOrder) return Promise.resolve();
+    a.st = 'up'; doneAttRender();
+    var url = S.api.base + '/orders/' + attOrder.id + '/upload' +
+      (attOrder.token ? '?token=' + encodeURIComponent(attOrder.token) : '');
+    var h = {};
+    var sess = S.api.token();
+    if (sess && !attOrder.token) h['Authorization'] = 'Bearer ' + sess;
+    var fd = new FormData();
+    fd.append('file', a.f, a.f.name);
+    return fetch(url, { method: 'POST', body: fd, headers: h })
+      .then(function (r) { return r.json(); })
+      .then(function (r) { a.st = (r && r.ok) ? 'ok' : 'err'; doneAttRender(); })
+      .catch(function () { a.st = 'err'; doneAttRender(); });
+  }
+  function uploadQueued() {
+    var chain = Promise.resolve();
+    attQueue.forEach(function (a) {
+      if (a.st === 'ok' || a.st === 'up') return;
+      chain = chain.then(function () { return uploadOne(a); });
+    });
+    return chain;
+  }
+  (function () {
+    var list = $('doneAttList');
+    if (list) list.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-att-retry]');
+      if (!b) return;
+      uploadOne(attQueue[parseInt(b.getAttribute('data-att-retry'), 10)]);
+    });
+  })();
 
   function saveDraft() {
     if (!canSave) return;
@@ -489,6 +645,10 @@ function initConf() {
       'Уровень: ' + v.label
     ];
     if (topic) lines.push('Тема: ' + topic);
+    var dl = deadlineIn && deadlineIn.value.trim();
+    if (dl) lines.push('Дата сдачи: ' + dl);
+    var dt = detailsIn && detailsIn.value.trim();
+    if (dt) lines.push('Требования: ' + dt);
     if (plan) lines.push('Формат: начать с разбора плана');
     lines.push('Смета: от ' + q.lowFmt + ' до ' + q.highFmt + ' ₽');
     return lines.join('\n');
@@ -557,6 +717,8 @@ function initConf() {
     S.api.post('/orders', {
       type: state.type, disc: state.disc, term: state.term, tier: state.tier,
       topic: topicIn.value.trim(), plan: plan, name: name, contact: contact, website: '',
+      deadline: deadlineIn ? deadlineIn.value.trim() : '',
+      details: detailsIn ? detailsIn.value.trim() : '',
       consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
       consent_doc: 'consent 1.1 · privacy 1.1 · oferta 1.1 · форма конфигуратора',
       page: 'configurator.html'
@@ -569,6 +731,10 @@ function initConf() {
       }
       if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
       S.store.del('salon_draft');
+      /* файлы — следом за заявкой, статусы на экране успеха */
+      attOrder = { id: r.id, token: r.token || '' };
+      doneAttRender();
+      if (attQueue.length) uploadQueued();
       var bl = $('doneBot');
       var claim = r.token
         ? 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(r.token)
@@ -593,7 +759,8 @@ function initConf() {
     var doneBot = $('doneBot');
     if (doneBot) { doneBot.href = botLink; if (!win) doneBot.setAttribute('data-fallback', '1'); }
     var note = document.querySelector('.done-note');
-    if (note) note.textContent = 'Сеть подвела, поэтому открыли Telegram-бота: смета уже скопирована в буфер — вставьте её в чат, мастер всё увидит.';
+    if (note) note.textContent = 'Сеть подвела, поэтому открыли Telegram-бота: смета уже скопирована в буфер — вставьте её в чат, мастер всё увидит.'
+      + (attQueue.length ? ' Файлы прикрепите там же — бот принимает документы.' : '');
     showDone(id);
   }
   btnSubmit.addEventListener('click', submit);
