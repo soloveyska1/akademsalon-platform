@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260710a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260710a" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260710a" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260710b" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260710b" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260710b" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://academic-saloon.duckdns.org/referral.html" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -103,6 +103,9 @@
   .final-cta .fc-rule::before,.final-cta .fc-rule::after{content:"";height:1px;background:var(--hairline);flex:1}
   .final-cta .fc-rule span{font-family:var(--serif);color:var(--ink-faint);font-size:18px}
   .final-cta h2{margin-bottom:14px}
+  .final-cta .clb-note{max-width:46ch;margin-left:auto;margin-right:auto}
+  .btn .btn-gift{flex:0 0 auto;transition:transform .15s}
+  .btn:hover .btn-gift{transform:rotate(-8deg) translateY(-1px)}
 
   @media(max-width:960px){
     .clb-grid{grid-template-columns:1fr;gap:36px}
@@ -251,14 +254,14 @@
       <div class="fc-rule"><span>¶</span></div>
       <h2>Заберите свои 300 бонусов</h2>
       <p class="lead" style="max-width:44ch;margin:0 auto 26px">Приветственный бонус ждёт в боте — начнём знакомство со скидки.</p>
-      <a class="btn btn-wax btn-lg" href="https://t.me/academic_saloon_bot?start=welcome_site" target="_blank" rel="noopener" id="clubClaim">🎁 Забрать 300 бонусов <span class="ar">→</span></a>
+      <a class="btn btn-wax btn-lg" href="https://t.me/academic_saloon_bot?start=welcome_site" target="_blank" rel="noopener" id="clubClaim"><svg class="btn-gift" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.75 8h16.5v3.5H3.75z"/><path d="M5.25 11.5v7.75h13.5V11.5"/><path d="M12 8v11.25"/><path d="M12 8C9.9 8 8.1 7.5 7.4 6.5c-.7-1.05-.05-2.5 1.3-2.5C10.3 4 11.6 5.6 12 8Z"/><path d="M12 8c2.1 0 3.9-.5 4.6-1.5.7-1.05.05-2.5-1.3-2.5C13.7 4 12.4 5.6 12 8Z"/></svg>Забрать 300 бонусов <span class="ar">→</span></a>
       <p class="clb-note" style="margin-top:12px">Начисляются в боте один раз на Telegram-аккаунт — после короткого подтверждения правил.</p>
     </section>
 
   </div>
 </main>
-<script src="assets/js/app.js?v=20260710a"></script>
-<script src="assets/js/extras.js?v=20260710a"></script>
+<script src="assets/js/app.js?v=20260710b"></script>
+<script src="assets/js/extras.js?v=20260710b"></script>
 <script>
 (function(){
   var b = document.getElementById('clubClaim');

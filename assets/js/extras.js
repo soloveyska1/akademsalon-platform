@@ -196,7 +196,7 @@
           title: '300 бонусов — за знакомство',
           text: '1 бонус = 1 ₽ скидки. Бонусы начисляются на ваш Telegram-аккаунт ' +
                 'один раз и действуют 30 дней — хватит на первый заказ.',
-          ok: '🎁 Забрать 300 бонусов',
+          ok: 'Забрать 300 бонусов',
           no: 'Позже'
         }
       ];
@@ -364,7 +364,7 @@
       b.type = 'button';
       b.className = 'dotrow';
       b.setAttribute('data-tour-row', '1');
-      b.innerHTML = '<span>Как всё устроено · тур</span><span class="dots"></span><span class="dr-val">¶</span>';
+      b.innerHTML = '<span>Как всё устроено</span><span class="dots"></span><span class="dr-val">тур&nbsp;¶</span>';
       b.addEventListener('click', function () {
         if (window.Salon.toc) window.Salon.toc.close();
         setTimeout(tour.start, 250);
