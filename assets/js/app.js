@@ -411,12 +411,17 @@
     toc.querySelectorAll('a[href]').forEach(function (a) { a.addEventListener('click', function () { setToc(false); }); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && toc.classList.contains('open')) setToc(false); });
 
-    /* бейдж заказов на пункте «Личный кабинет» */
-    var _orders = Salon.store.get('salon_orders', []);
-    if (_orders && _orders.length) {
+    /* бейдж заказов на пункте «Личный кабинет» — из общей с ботом базы */
+    (function () {
       var kab = toc.querySelector('a[href="dashboard.html"] span');
-      if (kab) kab.textContent = 'Личный кабинет · ' + _orders.length;
-    }
+      if (!kab || !Salon.api || !Salon.api.identified()) return;
+      var t = Salon.api.token(), g = Salon.api.guestTokens();
+      Salon.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
+        if (!r.ok || !r.orders || !r.orders.length) return;
+        var un = r.orders.reduce(function (s, o) { return s + (o.unread || 0); }, 0);
+        kab.textContent = 'Личный кабинет · ' + r.orders.length + (un ? ' · ' + un + ' нов.' : '');
+      });
+    })();
   }
 
   /* Единая шапка для ВСЕХ страниц (и главной тоже):
@@ -512,7 +517,7 @@
       '<div class="foot-legal">' +
         '<div class="fl-row"><span class="fl-k">Исполнитель</span><span class="fl-v">Семёнов Семён Юрьевич · самозанятый, налог на профессиональный доход (ФЗ №&nbsp;422-ФЗ) · ИНН 212885750445 · г.&nbsp;Казань</span></div>' +
         '<div class="fl-row"><span class="fl-k">Характер услуг</span><span class="fl-v">Информационно-консультационная и учебно-методическая помощь для самостоятельной подготовки заказчика</span></div>' +
-        '<div class="fl-row"><span class="fl-k">Данные</span><span class="fl-v">Сайт не собирает и не хранит персональные данные — переписка идёт в выбранном вами мессенджере</span></div>' +
+        '<div class="fl-row"><span class="fl-k">Данные</span><span class="fl-v">Данные из формы заказа используются только для связи и выполнения заказа — <a href="privacy.html">политика ПДн</a></span></div>' +
       '</div>' +
       '<div class="foot-copy"><span>© 2020–2026 «Академический Салон»</span><span class="fc-sep">·</span><span>6 лет практики</span><span class="fc-sep">·</span><span>1000+ работ доведено до приёмки</span></div>' +
     '</div>';
@@ -574,7 +579,7 @@
             '<span class="cs-o-ic" aria-hidden="true">ВК</span>' +
             '<span class="cs-o-txt"><b>ВКонтакте</b><small>vk.com/academicsaloon</small></span>' +
             '<span class="ar" aria-hidden="true">→</span></a>' +
-          '<p class="cs-note">Сайт не собирает и не хранит ваши данные. Переписка идёт в выбранном мессенджере. Нажимая, вы принимаете <a href="oferta.html">оферту</a> и <a href="privacy.html">политику ПДн</a>.</p>' +
+          '<p class="cs-note">Переписка идёт в выбранном мессенджере; заказ можно оформить и на сайте — в <a href="configurator.html">конфигураторе</a>. Нажимая, вы принимаете <a href="oferta.html">оферту</a> и <a href="privacy.html">политику ПДн</a>.</p>' +
         '</div>';
       return el;
     }
@@ -673,6 +678,66 @@
       }
     } catch (e) {}
   })();
+
+  /* ---------------- Кабинет: клиент API (общая база с ботом) ----------------
+     Сайт и Telegram-бот работают с одним сервером: заказы, статусы и переписка
+     синхронны. Сессия — токен в localStorage (вход через Telegram);
+     у гостевых заказов — токены доступа по каждому заказу. */
+  var API_BASE = (location.hostname === 'academic-saloon.duckdns.org')
+    ? '/api' : 'https://academic-saloon.duckdns.org/api';
+  Salon.api = {
+    base: API_BASE,
+    token: function () { return Salon.store.get('salon_session', null); },
+    setToken: function (t) { t ? Salon.store.set('salon_session', t) : Salon.store.del('salon_session'); },
+    user: function () { return Salon.store.get('salon_user', null); },
+    setUser: function (u) { u ? Salon.store.set('salon_user', u) : Salon.store.del('salon_user'); },
+    guestTokens: function () { var v = Salon.store.get('salon_tokens', []); return Array.isArray(v) ? v : []; },
+    addGuestToken: function (t) {
+      var v = Salon.api.guestTokens();
+      if (t && v.indexOf(t) < 0) { v.push(t); Salon.store.set('salon_tokens', v.slice(-30)); }
+    },
+    identified: function () { return !!(Salon.api.token() || Salon.api.guestTokens().length); },
+    req: function (method, path, body) {
+      var h = {};
+      if (body !== undefined) h['Content-Type'] = 'application/json';
+      var t = Salon.api.token();
+      if (t) h['Authorization'] = 'Bearer ' + t;
+      return fetch(API_BASE + path, { method: method, headers: h, body: body !== undefined ? JSON.stringify(body) : undefined })
+        .then(function (r) {
+          if (r.status === 401) { Salon.api.setToken(null); Salon.api.setUser(null); }
+          return r.json();
+        })
+        .catch(function () { return { ok: false, error: 'network' }; });
+    },
+    get: function (p) { return Salon.api.req('GET', p); },
+    post: function (p, b) { return Salon.api.req('POST', p, b || {}); },
+    logout: function () { Salon.api.setToken(null); Salon.api.setUser(null); }
+  };
+
+  /* Вход через Telegram: код → t.me/бот?start=auth_<код> → поллинг → сессия.
+     onOpen(link, opened) — сразу после открытия бота; onDone(user) — после входа. */
+  Salon.tgLogin = function (onDone, onFail, onOpen) {
+    Salon.api.post('/auth/start').then(function (r) {
+      if (!r.ok || !r.link) { if (onFail) onFail(r); return; }
+      var win = window.open(r.link, '_blank', 'noopener');
+      if (onOpen) onOpen(r.link, !!win);
+      var tries = 0;
+      var iv = setInterval(function () {
+        if (++tries > 200) { clearInterval(iv); if (onFail) onFail({ error: 'timeout' }); return; }
+        Salon.api.get('/auth/poll?code=' + encodeURIComponent(r.code)).then(function (p) {
+          if (p.ok && p.pending === false && p.token) {
+            clearInterval(iv);
+            Salon.api.setToken(p.token);
+            Salon.api.setUser(p.user || null);
+            var gt = Salon.api.guestTokens();
+            var fin = function () { if (onDone) onDone(p.user); };
+            if (gt.length) Salon.api.post('/orders/claim', { tokens: gt }).then(fin, fin);
+            else fin();
+          }
+        });
+      }, 2000);
+    });
+  };
 
   /* ---------------- Count-up для [data-count] ---------------- */
   if (!reduceMotion && 'IntersectionObserver' in window) {

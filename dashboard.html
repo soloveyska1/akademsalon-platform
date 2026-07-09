@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Личный кабинет — Академический Салон</title>
-<meta name="description" content="Формуляр вашего заказа: этапы работы, график оплаты, отчёт о проверках. Кабинет работает прямо в браузере." />
+<meta name="description" content="Формуляр вашего заказа: этапы, цена, переписка с мастером и файлы — синхронно с Telegram-ботом." />
 <meta name="robots" content="noindex" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260709a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260709a" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260709b" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260709b" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -81,6 +81,41 @@
     .cr-btns{width:100%}
     .cr-btns .btn{flex:1}
   }
+
+  /* ---------- живой кабинет: вход, действия, файлы, чат ---------- */
+  .cab-login{max-width:540px;margin:0 auto}
+  .cab-login-hint{margin-top:10px}
+  .cab-user .btn{flex:0 0 auto}
+  .cab-act{margin-top:clamp(24px,4vw,36px)}
+  .act-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .act-row .btn{flex:1 1 auto}
+  .req-box{border:1px dashed var(--stamp);border-radius:var(--r);padding:14px 16px;background:rgba(58,78,122,.05)}
+  .req-pre{white-space:pre-wrap;word-break:break-word;font-size:13.5px;margin:8px 0 0;line-height:1.6}
+  .fix-form{margin-top:12px}
+  .fix-form textarea,.chat-form textarea{
+    width:100%;font:inherit;font-size:14.5px;padding:10px 12px;color:inherit;resize:vertical;
+    border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;
+  }
+  .cab-files{margin-top:clamp(24px,4vw,36px)}
+  .btn-upload{cursor:pointer}
+  .file-row{flex-wrap:wrap;row-gap:2px}
+  .file-dl{margin-left:10px;flex:0 0 auto}
+  .cab-chat{margin-top:clamp(24px,4vw,36px)}
+  .chat-feed{
+    display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto;
+    padding:14px;border:1px solid var(--hairline);border-radius:var(--r);background:rgba(0,0,0,.015);
+  }
+  .chat-m{display:flex;flex-direction:column;max-width:86%;align-self:flex-start}
+  .chat-m.me{align-self:flex-end;text-align:right}
+  .chat-who{font-size:10px;letter-spacing:.14em;color:var(--ink-faint);margin-bottom:2px}
+  .chat-txt{font-size:14.5px;line-height:1.55;padding:8px 12px;border-radius:var(--r);border:1px solid var(--hairline)}
+  .chat-m.me .chat-txt{border-color:var(--stamp);background:rgba(58,78,122,.06)}
+  .chat-at{font-size:11px;color:var(--ink-faint);margin-top:2px}
+  .chat-sys{text-align:center;color:var(--ink-soft);font-size:12.5px}
+  .chat-form{display:flex;gap:10px;margin-top:12px;align-items:flex-end}
+  .chat-form textarea{flex:1}
+  .cab-foot-sync{margin-top:clamp(24px,4vw,36px);text-align:center}
+  @media(max-width:540px){.chat-m{max-width:100%}.act-row{flex-direction:column}}
 </style>
 <link rel="canonical" href="https://academic-saloon.duckdns.org/dashboard.html" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -115,208 +150,13 @@
         </noscript>
       </div>
 
-      <p class="petit cab-foot reveal">Здесь сохраняются ваши расчёты — прямо в браузере, без регистрации. Настоящий кабинет с заказами, статусами, чатом и бонусами живёт в <a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Telegram-боте</a>.</p>
+      <p class="petit cab-foot reveal">Кабинет и <a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Telegram-бот</a> — одна картотека: заказы, статусы, переписка и файлы синхронны. Данные используются только для выполнения заказа — <a class="link" href="privacy.html">политика ПДн</a>.</p>
     </section>
 
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260709a"></script>
-<script>
-function initDash() {
-  'use strict';
-  var C = window.SalonCalc, S = window.Salon;
-  var root = document.getElementById('cabRoot');
-  if (!C || !root) return;
-
-  /* ---------- данные ---------- */
-  var STAGES = ['Заявка', 'План', 'Главы', 'Проверки', 'Приёмка'];
-  var NOW_TEXT = [
-    'Изучаем тему и методичку — пришлём план и смету',
-    'Согласуем структуру глав и фиксируем смету',
-    'Пишем главы и показываем черновики по мере готовности',
-    'Проводим проверки — отчёт покажем до финальной оплаты',
-    'Вносим правки по замечаниям — бесплатно, пока работу не примут'
-  ];
-  var TRIPLE = ['diplom', 'master', 'chapter', 'scopus'];
-
-  function label(list, id) {
-    var x = list.find(function (i) { return i.id === id; });
-    return x ? x.label : '';
-  }
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-    });
-  }
-  function stage(o) { return Math.min(Math.max(parseInt(o.stageIndex, 10) || 0, 0), 4); }
-
-  var raw = (S && S.store.get('salon_orders', [])) || [];
-  /* записи без typeId — старый формат прежнего сайта, пропускаем */
-  raw = Array.isArray(raw) ? raw.filter(function (o) { return o && o.id && o.typeId; }) : [];
-  var isDemo = !raw.length;
-  var orders;
-  if (isDemo) {
-    var q = C.quote('master', 'hum', 'free', 'turn');
-    orders = [{
-      id: 'AS-DEMO', createdAt: 0,
-      typeId: 'master', typeLabel: label(C.types, 'master'),
-      discId: 'hum', discLabel: label(C.disciplines, 'hum'),
-      termId: 'free', termLabel: label(C.terms, 'free'),
-      tierId: 'turn', tierLabel: label(C.tiers, 'turn'),
-      priceLow: q.low, priceHigh: q.high,
-      topic: 'Управление мотивацией персонала в проектных командах',
-      contact: '', stageIndex: 2
-    }];
-  } else {
-    orders = raw.slice().sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
-  }
-  var current = 0;
-
-  /* ---------- мелкие шаблоны ---------- */
-  function tplDemoNote() {
-    return '<div class="demo-note reveal">' +
-      '<span class="tag tag-stamp">Демо-пример</span>' +
-      '<p class="dn-text">Так будет выглядеть ваш заказ после заявки. Это образец, не реальный заказ.</p>' +
-      '<a class="btn btn-wax" href="configurator.html">Рассчитать свою работу <span class="ar">→</span></a>' +
-      '</div>';
-  }
-
-  function tplSwitch() {
-    return '<div class="ord-switch reveal" role="group" aria-label="Ваши заказы">' +
-      orders.map(function (o, i) {
-        var st = stage(o);
-        return '<button type="button" class="dotrow' + (i === current ? ' hl' : '') + '" data-ord="' + i + '" aria-pressed="' + (i === current) + '">' +
-          '<span class="mono osw-no">' + esc(o.id) + '</span>' +
-          '<span class="osw-type">' + esc(o.typeLabel || label(C.types, o.typeId)) + '</span>' +
-          '<span class="dots"></span>' +
-          '<span class="dr-val">этап ' + (st + 1) + ' из 5</span>' +
-          '</button>';
-      }).join('') + '</div>';
-  }
-
-  function stageRow(i, st) {
-    var cls = i < st ? ' is-past' : i === st ? ' hl is-now' : ' is-next';
-    var val = i < st ? '<span class="tag tag-verify tag-mini">принято</span>'
-      : i === st ? '<span class="dr-val">сейчас</span>'
-      : '<span class="dr-val">—</span>';
-    var now = i === st ? '<small>' + NOW_TEXT[st] + '</small>' : '';
-    return '<div class="dotrow stage-row' + cls + '">' +
-      '<span class="st-no">0' + (i + 1) + '</span><span>' + STAGES[i] + '</span>' +
-      '<span class="dots"></span>' + val + now + '</div>';
-  }
-
-  function tplCard(o) {
-    var st = stage(o);
-    var meta = [
-      esc(o.discLabel || label(C.disciplines, o.discId)),
-      esc(o.termLabel || label(C.terms, o.termId)),
-      esc(o.tierLabel || label(C.tiers, o.tierId))
-    ].filter(Boolean).join(' · ');
-    if (o.createdAt) meta += ' · заявка от ' + new Date(o.createdAt).toLocaleDateString('ru-RU');
-    var topic = o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '';
-    var rows = STAGES.map(function (_, i) { return stageRow(i, st); }).join('');
-    return '<article class="sheet sheet-pad stacked reveal" aria-label="Формуляр заказа ' + esc(o.id) + '">' +
-      '<div class="ord-top">' +
-        '<span class="mono ord-no">№ ' + esc(o.id) + '</span>' +
-        '<span class="tag tag-ink">этап ' + (st + 1) + ' · ' + STAGES[st].toLowerCase() + '</span>' +
-        (o.plan ? '<span class="tag tag-stamp">разбор плана</span>' : '') +
-      '</div>' +
-      '<h2 class="ord-type">' + esc(o.typeLabel || label(C.types, o.typeId)) + '</h2>' +
-      topic +
-      '<p class="petit">' + meta + '</p>' +
-      '<div class="ord-price-row">' +
-        '<span class="caps">Вилка сметы</span>' +
-        '<span class="mono ord-price">' + C.fmt(o.priceLow) + ' – ' + C.fmt(o.priceHigh) + ' ₽</span>' +
-      '</div>' +
-      '<p class="petit ord-price-note">Итог внутри вилки зависит от объёма и требований методички; смета фиксируется после разбора плана и не меняется по нашей инициативе.</p>' +
-      '<div class="stage-head">' +
-        '<span class="caps">Этапы работы</span>' +
-        '<span class="mono stage-prog">Этап ' + (st + 1) + ' из 5</span>' +
-      '</div>' +
-      '<div class="stage-list">' + rows + '</div>' +
-      '</article>';
-  }
-
-  function tplPay(o) {
-    if (o.typeId === 'kandidat') {
-      return '<section class="pay-block reveal d1"><span class="caps">График оплаты</span>' +
-        '<p class="petit pay-note">Кандидатскую считаем по главам — у каждой главы своя смета и свой график. Детали фиксируются после разбора плана.</p>' +
-        '</section>';
-    }
-    var st = stage(o);
-    var triple = TRIPLE.indexOf(o.typeId) > -1;
-    var paid = st >= 4 ? 2 : st >= 2 ? 1 : 0;
-    var steps = triple
-      ? [['30%', 'Старт', 'старт и бронь слота'],
-         ['40%', 'Середина', 'после показа основной части'],
-         ['30%', 'Финал', 'перед финальной выдачей']]
-      : [['50%', 'Старт', 'после согласования плана и сметы'],
-         ['50%', 'Финал', 'перед финальной выдачей']];
-    var html = '<section class="pay-block reveal d1"><span class="caps">График оплаты</span>' +
-      '<div class="paysteps" style="--pay-n:' + steps.length + '">' +
-      steps.map(function (s, i) {
-        var done = i < paid;
-        return '<div class="pstep' + (done ? ' paid' : '') + '">' +
-          '<span class="ps-share">' + s[0] + '</span>' +
-          '<b>' + s[1] + (done ? ' — внесено' : '') + '</b>' +
-          '<small>' + s[2] + '</small></div>';
-      }).join('') + '</div>';
-    return html + '</section>';
-  }
-
-  function tplReport(o) {
-    var txt = stage(o) < 3
-      ? 'Появится на этапе «Проверки» — до финальной оплаты.'
-      : 'Отчёт по вашей работе выдаётся на этом этапе — до финальной оплаты.';
-    return '<section class="report-block reveal d2">' +
-      '<div class="report-sheet sheet sheet-pad">' +
-        '<div class="rp-head"><span class="rp-title">Отчёт о проверках</span></div>' +
-        '<div class="rp-empty petit">' + txt + '</div>' +
-      '</div></section>';
-  }
-
-  function tplContact() {
-    return '<section class="contact-row reveal d2">' +
-      '<span class="cr-q">Вопрос по заказу?</span>' +
-      '<div class="cr-btns">' +
-        '<a class="btn btn-wax" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Открыть бота</a>' +
-        '<a class="btn btn-line" href="https://t.me/academicsaloon" target="_blank" rel="noopener">Написать человеку</a>' +
-      '</div></section>';
-  }
-
-  /* ---------- рендер ---------- */
-  function render() {
-    var o = orders[current];
-    root.innerHTML = [
-      isDemo ? tplDemoNote() : '',
-      orders.length > 1 ? tplSwitch() : '',
-      tplCard(o),
-      tplPay(o),
-      tplReport(o),
-      tplContact()
-    ].join('');
-    if (S && S.observeReveal) S.observeReveal(document);
-  }
-
-  root.addEventListener('click', function (e) {
-    var b = e.target.closest('button[data-ord]');
-    if (!b) return;
-    var i = parseInt(b.getAttribute('data-ord'), 10);
-    if (isNaN(i) || i === current) return;
-    current = i;
-    render();
-    var nb = root.querySelector('button[data-ord="' + i + '"]');
-    if (nb) nb.focus();
-  });
-
-  render();
-}
-if (document.prerendering) {
-  document.addEventListener('prerenderingchange', initDash, { once: true });
-} else {
-  initDash();
-}
-</script>
+<script src="assets/js/app.js?v=20260709b"></script>
+<script src="assets/js/cabinet.js?v=20260709b"></script>
 </body>
 </html>

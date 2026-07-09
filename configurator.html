@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260709a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260709a" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260709b" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260709b" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -196,13 +196,35 @@
                 <label for="fTopic">Тема работы · необязательно</label>
                 <input type="text" id="fTopic" maxlength="160" autocomplete="off" placeholder="Если тема уже утверждена — впишите её" />
               </div>
-              <p class="petit" style="margin-bottom:14px">Смета готова. Отправьте заявку в Telegram — бот увидит ваш расчёт, а мы ответим с планом и точной ценой. <b>Сайт не собирает и не хранит ваши данные</b> — переписка идёт в мессенджере.</p>
-              <button type="button" class="btn btn-wax btn-block" id="btnSubmit">Отправить заявку в Telegram <span class="ar">→</span></button>
+
+              <!-- как с вами связаться: Telegram-вход или контакт вручную -->
+              <div id="ctAuthed" hidden>
+                <p class="petit" style="margin-bottom:14px">✓ Вы вошли через Telegram как <b id="ctName">гость</b>.
+                Заявка сразу привяжется к вашему кабинету — ответим здесь и в боте.</p>
+              </div>
+              <div id="ctGuest">
+                <button type="button" class="btn btn-line btn-block" id="tgLoginBtn" style="margin-bottom:12px">Войти через Telegram — статусы придут в бота</button>
+                <p class="caps" style="margin-bottom:8px">Или оставьте контакт</p>
+                <div class="field">
+                  <label for="fName">Как к вам обращаться · необязательно</label>
+                  <input type="text" id="fName" maxlength="80" autocomplete="name" placeholder="Имя" />
+                </div>
+                <div class="field">
+                  <label for="fContact">Телефон, Telegram или почта</label>
+                  <input type="text" id="fContact" maxlength="120" autocomplete="tel" placeholder="+7 900 000-00-00 · @nickname · you@mail.ru" />
+                </div>
+                <label class="petit" style="display:flex;gap:8px;align-items:flex-start;margin-bottom:14px;cursor:pointer">
+                  <input type="checkbox" id="fConsent" style="margin-top:3px" />
+                  <span>Согласен(на) на обработку данных для связи и выполнения заказа — <a class="link" href="consent.html" target="_blank">согласие</a> и <a class="link" href="privacy.html" target="_blank">политика ПДн</a></span>
+                </label>
+              </div>
+
+              <button type="button" class="btn btn-wax btn-block" id="btnSubmit">Отправить заявку мастеру <span class="ar">→</span></button>
               <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
                 <a class="btn btn-line" style="flex:1" href="https://t.me/academicsaloon" target="_blank" rel="noopener">Написать человеку</a>
                 <a class="btn btn-line" style="flex:1" href="https://vk.com/academicsaloon" target="_blank" rel="noopener">ВКонтакте</a>
               </div>
-              <p class="petit mt-s wsubmit-note">Заявка ни к чему не обязывает. Ответим обычно в течение пары часов. Смета фиксируется после разбора плана и не меняется по нашей инициативе.</p>
+              <p class="petit mt-s wsubmit-note">Заявка ни к чему не обязывает: мастер увидит её мгновенно, статус появится в <a class="link" href="dashboard.html">кабинете</a> и в Telegram. Смета фиксируется после разбора плана и не меняется по нашей инициативе.</p>
             </div>
 
             <div class="wnav">
@@ -243,15 +265,15 @@
           <p class="done-no">№ <span id="doneNo">AS-0000</span></p>
           <p class="caps" style="margin-bottom:4px">Что дальше</p>
           <ol class="done-steps">
-            <li><span class="dn">1</span><span>Откройте бота и отправьте заявку — смета уже прикреплена</span></li>
-            <li><span class="dn">2</span><span>Пришлём план и точную смету</span></li>
+            <li><span class="dn">1</span><span>Мастер изучит заявку — ответ обычно за 15–30 минут в рабочее время</span></li>
+            <li><span class="dn">2</span><span>Пришлём план и точную смету — в кабинет и в Telegram</span></li>
             <li><span class="dn">3</span><span>Первый платёж — только после согласования плана</span></li>
           </ol>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
-            <a class="btn btn-wax" id="doneBot" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Открыть бота <span class="ar">→</span></a>
-            <a class="btn btn-line" href="dashboard.html">Мой расчёт</a>
+            <a class="btn btn-wax" href="dashboard.html">Открыть кабинет <span class="ar">→</span></a>
+            <a class="btn btn-line" id="doneBot" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Продолжить в Telegram</a>
           </div>
-          <p class="petit done-note">Мы открыли бота в новой вкладке и скопировали смету в буфер — если поле пустое, просто вставьте её в чат. Сайт ничего не отправляет за вас и не хранит данные.</p>
+          <p class="petit done-note">Заявка уже у мастера — статус и переписка ждут в кабинете на этой странице. Войдите через Telegram, чтобы уведомления приходили и в бота.</p>
         </div>
       </div>
 
@@ -282,7 +304,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260709a"></script>
+<script src="assets/js/app.js?v=20260709b"></script>
 <script>
 function initConf() {
   'use strict';
@@ -470,44 +492,82 @@ function initConf() {
     return lines.join('\n');
   }
 
-  /* --- отправка: копируем смету, открываем бота (без сбора данных) --- */
+  /* --- контакт-блок: Telegram-вход или контакт вручную --- */
+  function contactUI() {
+    var authed = !!(S.api && S.api.token());
+    var u = S.api && S.api.user();
+    var a = $('ctAuthed'), g = $('ctGuest');
+    if (a) a.hidden = !authed;
+    if (g) g.hidden = authed;
+    if (authed && u && $('ctName'))
+      $('ctName').textContent = (u.name || 'гость') + (u.username ? ' (@' + u.username + ')' : '');
+  }
+  var tgBtn = $('tgLoginBtn');
+  if (tgBtn) tgBtn.addEventListener('click', function () {
+    tgBtn.disabled = true; tgBtn.textContent = 'Открываем Telegram…';
+    S.tgLogin(function (u) {
+      contactUI();
+      S.toast('Вы вошли' + (u && u.name ? ', ' + u.name : '') + ' ✓');
+    }, function () {
+      tgBtn.disabled = false; tgBtn.textContent = 'Войти через Telegram — статусы придут в бота';
+      S.toast('Вход не подтвердился — попробуйте ещё раз');
+    }, function (link, opened) {
+      tgBtn.textContent = 'Подтвердите вход в боте…';
+      if (!opened) location.href = link;
+    });
+  });
+  contactUI();
+
+  /* --- отправка: заявка уходит в общую с ботом картотеку --- */
   var submitting = false;
   function submit() {
     if (submitting) return;
-    submitting = true;
-    S.btnLoading(btnSubmit, true, 'Открываем…');
-    if (mNext) S.btnLoading(mNext, true, 'Открываем…');
-
-    var id;
-    var orders = S.store.get('salon_orders', []);
-    if (!Array.isArray(orders)) orders = [];
-    do { id = 'AS-' + (1000 + Math.floor(Math.random() * 9000)); }
-    while (orders.some(function (o) { return o && o.id === id; }));
-
-    var t = find(C.types, state.type), d = find(C.disciplines, state.disc);
-    var s = find(C.terms, state.term), v = find(C.tiers, state.tier);
-    var q = C.quote(state.type, state.disc, state.term, state.tier);
-    /* заметка остаётся в браузере пользователя (его «расчёт»), без личных данных */
-    orders.push({
-      id: id, createdAt: Date.now(),
-      typeId: t.id, typeLabel: t.label,
-      discId: d.id, discLabel: d.label,
-      termId: s.id, termLabel: s.label,
-      tierId: v.id, tierLabel: v.label,
-      priceLow: q.low, priceHigh: q.high,
-      topic: topicIn.value.trim(), plan: plan, stageIndex: 0
-    });
-    S.store.set('salon_orders', orders);
-    S.store.del('salon_draft');
-
-    var botLink = (window.SalonBotLink ? window.SalonBotLink(state) : 'https://t.me/academic_saloon_bot');
-    if (S.copy) S.copy(summaryText(id)); /* смета в буфер — как фолбэк */
-    /* открываем бота в новой вкладке в рамках пользовательского жеста */
-    var win = window.open(botLink, '_blank', 'noopener');
-    var doneBot = $('doneBot'); if (doneBot) doneBot.href = botLink;
-    if (!win) { /* всплывашка заблокирована — переходим в текущей вкладке после показа экрана */
-      var d2 = $('doneBot'); if (d2) d2.setAttribute('data-fallback', '1');
+    var authed = !!(S.api && S.api.token());
+    var contact = $('fContact') ? $('fContact').value.trim() : '';
+    var name = $('fName') ? $('fName').value.trim() : '';
+    if (!authed) {
+      if (!contact) { S.toast('Оставьте контакт или войдите через Telegram'); $('fContact').focus(); return; }
+      if (S.valid && S.valid.contact && !S.valid.contact(contact)) {
+        S.toast('Контакт не похож на телефон, Telegram или почту'); $('fContact').focus(); return;
+      }
+      if ($('fConsent') && !$('fConsent').checked) { S.toast('Отметьте согласие на обработку данных'); return; }
     }
+    submitting = true;
+    S.btnLoading(btnSubmit, true, 'Отправляем…');
+    if (mNext) S.btnLoading(mNext, true, 'Отправляем…');
+    S.api.post('/orders', {
+      type: state.type, disc: state.disc, term: state.term, tier: state.tier,
+      topic: topicIn.value.trim(), plan: plan, name: name, contact: contact, website: ''
+    }).then(function (r) {
+      if (!r || !r.ok || !r.id) {
+        submitting = false;
+        S.btnLoading(btnSubmit, false); if (mNext) S.btnLoading(mNext, false);
+        fallbackTelegram(r);
+        return;
+      }
+      if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
+      S.store.del('salon_draft');
+      var bl = $('doneBot');
+      if (bl) {
+        /* гостю — привязка заказа к Telegram в один тап; вошедшему — просто бот */
+        bl.href = r.token
+          ? 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(r.token)
+          : 'https://t.me/academic_saloon_bot';
+      }
+      showDone('№' + r.id);
+    });
+  }
+  /* сеть/сервер недоступны — старый путь: смета в буфер + открываем бота */
+  function fallbackTelegram(err) {
+    if (err && err.error === 'rate_limit') { S.toast('Слишком много заявок подряд — подождите минуту'); return; }
+    var id = 'AS-' + (1000 + Math.floor(Math.random() * 9000));
+    if (S.copy) S.copy(summaryText(id));
+    var botLink = window.SalonBotLink ? window.SalonBotLink(state) : 'https://t.me/academic_saloon_bot';
+    var win = window.open(botLink, '_blank', 'noopener');
+    var doneBot = $('doneBot');
+    if (doneBot) { doneBot.href = botLink; if (!win) doneBot.setAttribute('data-fallback', '1'); }
+    var note = document.querySelector('.done-note');
+    if (note) note.textContent = 'Сеть подвела, поэтому открыли Telegram-бота: смета уже скопирована в буфер — вставьте её в чат, мастер всё увидит.';
     showDone(id);
   }
   btnSubmit.addEventListener('click', submit);
