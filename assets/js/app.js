@@ -502,7 +502,7 @@
         '<h2>Узнайте точную стоимость за минуту</h2>' +
         '<p class="co-line">Набрано вручную · сверстано без шаблонов · 1000+ работ</p>' +
         '<a class="btn btn-wax" href="' + LINKS.bot + '" target="_blank" rel="noopener">Написать в Telegram<span class="visually-hidden"> (откроется в новом окне)</span> <span class="ar">→</span></a>' +
-        '<p class="co-alt">Или лично: <a href="' + LINKS.human + '" target="_blank" rel="noopener">@academicsaloon<span class="visually-hidden"> (откроется в новом окне)</span></a> · Заявка ни к чему не обязывает</p>' +
+        '<p class="co-alt">Или лично: <a href="' + LINKS.human + '" target="_blank" rel="noopener">@academicsaloon<span class="visually-hidden"> (откроется в новом окне)</span></a> · Оценка бесплатна — решение остаётся за вами</p>' +
       '</div>' +
       '<div class="foot-cols">' +
         '<div class="fc-brand">' + brandHTML() +
@@ -577,7 +577,7 @@
           '<div class="cs-head"><span class="caps">Связаться с Салоном</span>' +
             '<button class="cs-x" type="button" aria-label="Закрыть" data-cs-close>×</button></div>' +
           '<p class="cs-lead">' + (opts.lead ||
-            'Напишите тему и срок — оценим объём и назовём цену. Ни к чему не обязывает.') + '</p>' +
+            'Напишите тему и срок — бесплатно оценим объём и назовём цену. Решение останется за вами.') + '</p>' +
           '<a class="cs-opt cs-opt--wax" href="' + order + '" target="_blank" rel="noopener">' +
             '<span class="cs-o-ic" aria-hidden="true">✎</span>' +
             '<span class="cs-o-txt"><b>Оформить через бота</b><small>Расчёт, заявка и статус заказа — за пару минут</small></span>' +

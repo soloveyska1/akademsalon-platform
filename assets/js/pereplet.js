@@ -16,9 +16,12 @@
   if (/[?&]motion=1/.test(location.search)) reduceMotion = false;
   if (/[?&]motion=0/.test(location.search)) reduceMotion = true;
   var finePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
-  var lowEnd = (navigator.deviceMemory && navigator.deviceMemory < 4) ||
-               (navigator.connection && navigator.connection.saveData);
-  var animate = !reduceMotion && !lowEnd;
+  /* ВАЖНО: не выключаем хореографию по navigator.connection.saveData —
+     Яндекс.Браузер в режиме «Турбо»/экономии выставляет этот флаг, и у части
+     гостей страница выглядела «мёртвой» (Safari такого API не имеет, потому
+     там всё работало). Листание — дешёвые transform-анимации, они по карману
+     любому устройству; честно уважаем только prefers-reduced-motion. */
+  var animate = !reduceMotion;
 
   /* Десктопная ширина. 881px не пересекается с CSS-мобайлом (max-width:880px). */
   var wideMQ = window.matchMedia('(min-width: 881px)');
@@ -200,6 +203,22 @@
 
     /* z-порядок стопки: первый лист сверху */
     sheets.forEach(function (s, i) { s.style.zIndex = String(n - i); });
+
+    /* оглавление глав кликабельно: ведёт к нужной странице (работает
+       и при выключенных анимациях — просто прокручивает к листу) */
+    rows.forEach(function (row, i) {
+      row.style.cursor = 'pointer';
+      row.addEventListener('click', function () {
+        var total = trackEl.offsetHeight - window.innerHeight;
+        if (enhanced() && total > 1) {
+          var top = trackEl.getBoundingClientRect().top + window.scrollY;
+          var target = i === 0 ? top : top + total * (i / (n - 1)) - 1;
+          window.scrollTo({ top: target, behavior: reduceMotion ? 'auto' : 'smooth' });
+        } else {
+          sheets[i].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        }
+      });
+    });
 
     if (!animate) return;
 

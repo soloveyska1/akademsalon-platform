@@ -13,8 +13,20 @@ function initCabinet() {
     orders: [],       // список из /orders
     currentId: null,  // выбранный заказ
     detail: null,     // полная карточка из /orders/<id>
+    me: null,         // /me (бонусы, реф-ссылка) — только при tg-входе
+    ledgerOpen: false,
+    ledger: null,     // журнал бонусов из /bonus
     timer: null,
     busy: false
+  };
+
+  /* печати и подписи для смен статуса — «красивые уведомления» */
+  var STATUS_STAMP = {
+    work: ['В работе', 'Оплата получена — работа пошла'],
+    check: ['Готово', 'Работа ждёт вашей проверки'],
+    done: ['Принято', 'Заказ завершён — спасибо!'],
+    priced: [null, 'Мастер назначил цену — решение за вами'],
+    fix: [null, 'Приняли в правки']
   };
 
   /* ---------------- утилиты ---------------- */
@@ -99,11 +111,47 @@ function initCabinet() {
       return '<div class="demo-note reveal cab-user"><span class="tag tag-verify">Telegram</span>' +
         '<p class="dn-text">Вы вошли как <b>' + esc(u.name || 'гость') + '</b>' + (u.username ? ' (@' + esc(u.username) + ')' : '') +
         ' — уведомления придут и в бота.</p>' +
-        '<button type="button" class="btn btn-line" id="cabLogout">Выйти</button></div>';
+        '<button type="button" class="btn btn-line" id="cabLogout">Выйти</button></div>' +
+        bonusCard();
     }
     return '<div class="demo-note reveal cab-user"><span class="tag tag-stamp">Гостевой доступ</span>' +
-      '<p class="dn-text">Заказы видны на этом устройстве. Войдите через Telegram — привяжем их к вам, продублируем уведомления в бота.</p>' +
+      '<p class="dn-text">Заказы видны на этом устройстве. Войдите через Telegram — привяжем их к вам, продублируем уведомления в бота, а новым гостям начислим 300 бонусов.</p>' +
       '<button type="button" class="btn btn-wax" id="cabTg">Войти</button></div>';
+  }
+
+  /* -------- бонусный счёт (только для вошедших) -------- */
+  function bonusCard() {
+    if (!st.me || !st.me.bonus) return '';
+    var b = st.me.bonus;
+    var exp = (b.expiring || []).map(function (e) {
+      return e.amount + ' — до ' + dt(e.at).slice(0, 5);
+    }).join(' · ');
+    var led = '';
+    if (st.ledgerOpen) {
+      led = '<div class="cbn-ledger" id="bonusLedger">' +
+        (st.ledger === null ? '<p class="petit" style="padding:8px 0">Листаем журнал…</p>'
+          : (st.ledger.length ? st.ledger.map(function (r) {
+              var plus = r.delta > 0;
+              if (!r.delta) plus = null;
+              return '<div class="bl-row">' +
+                '<span class="bl-delta ' + (plus === null ? '' : plus ? 'plus' : 'minus') + '">' +
+                  (plus === null ? '·' : (plus ? '+' : '') + r.delta) + '</span>' +
+                '<span class="bl-what">' + esc(r.label || '') + (r.note ? ' · ' + esc(r.note) : '') +
+                  (r.expires_at && r.delta > 0 ? ' <span class="bl-when">до ' + dt(r.expires_at).slice(0, 5) + '</span>' : '') + '</span>' +
+                '<span class="bl-when">' + dt(r.at) + '</span></div>';
+            }).join('') : '<p class="petit" style="padding:8px 0">Движений пока нет — бонусы появятся после первого заказа.</p>')) +
+        '</div>';
+    }
+    return '<div class="cbn-card reveal">' +
+      '<div><span class="bc-cap">Бонусный счёт</span>' +
+      '<span class="bc-num">' + money(b.balance) + '</span></div>' +
+      '<div class="bc-side">' +
+        (exp ? '<p class="bc-exp">⏳ Сгорание: ' + esc(exp) + '</p>'
+             : '<p class="bc-exp">1 бонус = 1 ₽ скидки · списание до 20% заказа</p>') +
+        '<div class="bc-act"><button type="button" class="btn btn-line" id="bonusLogBtn">' +
+          (st.ledgerOpen ? 'Скрыть журнал' : 'Журнал начислений') + '</button>' +
+        '<button type="button" class="btn btn-line" id="bonusRefBtn">Пригласить друга</button></div>' +
+      '</div>' + led + '</div>';
   }
 
   /* ---------------- список и карточка ---------------- */
@@ -127,7 +175,10 @@ function initCabinet() {
 
   function stageRows(o) {
     if (o.step < 0) {
-      return '<p class="petit" style="margin-top:6px">🚫 Заявка закрыта. Передумали? Напишите нам в чате ниже — продолжим.</p>';
+      return '<p class="petit" style="margin-top:6px">🚫 Заявка закрыта' +
+        (o.cancel_reason ? ' (причина: ' + esc(o.cancel_reason) + ')' : '') +
+        '. Передумали? Нажмите «Возобновить заказ» ниже — мастер вернётся к вашей заявке, ' +
+        'условия можно обсудить заново.</p>';
     }
     var NOW = {
       new: 'Мастер изучает заявку — ответ обычно за 15–30 минут в рабочее время',
@@ -154,10 +205,20 @@ function initCabinet() {
 
   function priceBlock(o) {
     if (o.price) {
-      var pp = (o.prepay && (o.status === 'priced' || o.status === 'prepay'))
-        ? ' <span class="petit">(предоплата ' + money(o.prepay) + ' ₽)</span>' : '';
-      return '<div class="ord-price-row"><span class="caps">Цена мастера</span>' +
-        '<span class="mono ord-price">' + money(o.price) + ' ₽' + pp + '</span></div>';
+      var out = '<div class="ord-price-row"><span class="caps">Цена мастера</span>' +
+        '<span class="mono ord-price">' + money(o.price) + ' ₽</span></div>';
+      if (o.bonus_spent) {
+        out += '<div class="due-box">' +
+          '<div class="dr"><span>Цена работы</span><b>' + money(o.price) + ' ₽</b></div>' +
+          '<div class="dr"><span>Оплачено бонусами</span><b class="minus">−' + money(o.bonus_spent) + '</b></div>' +
+          '<div class="dr total"><span>К оплате деньгами</span><b>' + money(o.due_total) + ' ₽</b></div>' +
+          (o.prepay && (o.status === 'priced' || o.status === 'prepay')
+            ? '<div class="dr"><span>Из них предоплата</span><b>' + money(o.prepay_due) + ' ₽</b></div>' : '') +
+          '</div>';
+      } else if (o.prepay && (o.status === 'priced' || o.status === 'prepay')) {
+        out += '<p class="petit ord-price-note">Предоплата — ' + money(o.prepay_due || o.prepay) + ' ₽, остальное после проверки работы.</p>';
+      }
+      return out + bonusSpendBlock(o);
     }
     if (o.quote_low) {
       return '<div class="ord-price-row"><span class="caps">Вилка сметы</span>' +
@@ -167,32 +228,63 @@ function initCabinet() {
     return '';
   }
 
+  /* -------- списание бонусов: ползунок + точная сумма -------- */
+  function bonusSpendBlock(o) {
+    if (!o.bonus || !(o.status === 'priced' || o.status === 'prepay')) return '';
+    var paidAlready = (o.payments || []).some(function (p) { return p.status === 'paid'; });
+    if (paidAlready) return '';
+    var room = Math.max((o.bonus_cap || 0) - (o.bonus_spent || 0), 0);
+    var limit = Math.min(o.bonus.balance || 0, room);
+    if (limit <= 0) return '';
+    return '<div class="due-box" id="bspendBox">' +
+      '<div class="cbn-row"><span>💎 Списать бонусы <span class="petit">(на счету ' + money(o.bonus.balance) + ', к этому заказу — до ' + money(limit) + ')</span></span>' +
+      '<b class="num" id="bspendVal">' + money(limit) + '</b></div>' +
+      '<input type="range" class="cbn-slider" id="bspendRange" min="0" max="' + limit + '" step="50" value="' + limit + '">' +
+      '<div class="cbn-row"><span class="petit">Спишутся при подтверждении — деньгами останется <b id="bspendDue">' + money((o.due_total || o.price) - limit) + ' ₽</b></span>' +
+      '<button type="button" class="btn btn-line" id="bspendApply">Применить</button></div>' +
+      '</div>';
+  }
+
+  function payHistory(o) {
+    var paid = (o.payments || []).filter(function (p) { return p.status === 'paid'; });
+    if (!paid.length) return '';
+    return '<p class="petit" style="margin-top:8px">Оплачено: ' + paid.map(function (p) {
+      return money(p.amount) + ' ₽ (' + (p.kind === 'prepay' ? 'предоплата' : 'остаток') + ', ' + dt(p.at) + ')';
+    }).join(' · ') + '</p>';
+  }
+
   function actionsBlock(o) {
     var b = [];
     if (o.actions.indexOf('accept_price') >= 0) {
-      b.push('<button type="button" class="btn btn-wax" data-act="accept_price">Принять цену ' + money(o.price) + ' ₽</button>');
+      b.push('<button type="button" class="btn btn-wax" data-act="accept_price">Принять цену — к оплате ' + money(o.due_total || o.price) + ' ₽</button>');
       b.push('<button type="button" class="btn btn-line" data-act="decline">Отказаться</button>');
     }
     if (o.actions.indexOf('paid') >= 0) {
+      var amount = o.status === 'prepay' ? (o.prepay_due || o.prepay) : (o.due_total || o.price);
+      var payBtns = '<div class="act-row">' +
+        (o.pay_online ? '<button type="button" class="btn btn-wax" data-act-pay>💳 Оплатить картой онлайн</button>' : '') +
+        '<button type="button" class="btn ' + (o.pay_online ? 'btn-line' : 'btn-wax') + '" data-act="paid">Я оплатил(а) переводом</button>' +
+        '<button type="button" class="btn btn-line" data-chat-focus>Вопрос по оплате</button></div>';
       var req = o.requisites
-        ? '<div class="req-box"><span class="caps">Реквизиты для предоплаты' + (o.prepay ? ' · ' + money(o.prepay) + ' ₽' : '') + '</span>' +
+        ? '<div class="req-box"><span class="caps">Реквизиты для перевода' + (amount ? ' · ' + money(amount) + ' ₽' : '') + '</span>' +
           '<pre class="req-pre mono">' + esc(o.requisites) + '</pre></div>'
-        : '<p class="petit">Реквизиты пришлём в чат ниже (и в Telegram) в течение пары минут.</p>';
-      return '<section class="cab-act reveal">' + req +
-        '<div class="act-row"><button type="button" class="btn btn-wax" data-act="paid">Я оплатил(а)</button>' +
-        '<button type="button" class="btn btn-line" data-chat-focus>Вопрос по оплате</button></div></section>';
+        : (o.pay_online ? '' : '<p class="petit">Реквизиты пришлём в чат ниже (и в Telegram) в течение пары минут.</p>');
+      return '<section class="cab-act reveal">' + req + payBtns + payHistory(o) + '</section>';
     }
     if (o.actions.indexOf('accept_work') >= 0) {
       b.push('<button type="button" class="btn btn-wax" data-act="accept_work">Принять работу</button>');
       b.push('<button type="button" class="btn btn-line" data-act-fix>Нужны правки</button>');
     }
-    if (!b.length) return '';
+    if (o.actions.indexOf('resume') >= 0) {
+      b.push('<button type="button" class="btn btn-wax" data-act="resume">🔄 Возобновить заказ</button>');
+    }
+    if (!b.length) return payHistory(o) ? '<section class="cab-act reveal">' + payHistory(o) + '</section>' : '';
     return '<section class="cab-act reveal"><div class="act-row">' + b.join('') + '</div>' +
       '<div class="fix-form" id="fixForm" hidden>' +
         '<textarea id="fixText" rows="3" maxlength="2000" placeholder="Что поправить? Например: «во 2-й главе обновить данные за 2025 год»"></textarea>' +
         '<div class="act-row"><button type="button" class="btn btn-wax" data-act-fix-send>Отправить на правки</button>' +
         '<button type="button" class="btn btn-line" data-act-fix-cancel>Передумал(а)</button></div>' +
-      '</div></section>';
+      '</div>' + payHistory(o) + '</section>';
   }
 
   function filesBlock(o) {
@@ -261,6 +353,13 @@ function initCabinet() {
       render(tplLogin(pending));
       return;
     }
+    if (t) {
+      S.api.get('/me').then(function (r) {
+        if (r.ok) { st.me = r; if (document.querySelector('.cbn-card') || st.detail) renderCurrent(); }
+      });
+    } else {
+      st.me = null;
+    }
     S.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
       if (!r.ok) { render(tplError()); return; }
       st.orders = r.orders || [];
@@ -271,6 +370,15 @@ function initCabinet() {
     });
   }
 
+  function renderCurrent() {
+    if (st.detail) {
+      var draft = (document.getElementById('chatText') || {}).value || '';
+      render(tplDetail());
+      var ta = document.getElementById('chatText');
+      if (ta && draft) ta.value = draft;
+    }
+  }
+
   function loadDetail(silent) {
     var id = st.currentId;
     S.api.get(apiPath(id)).then(function (r) {
@@ -279,6 +387,14 @@ function initCabinet() {
       var changed = !was || was.id !== r.order.id || was.updated_at !== r.order.updated_at ||
         (was.messages || []).length !== (r.order.messages || []).length ||
         (was.files || []).length !== (r.order.files || []).length;
+      /* статус изменился, пока страница была открыта → живое уведомление */
+      if (was && was.id === r.order.id && was.status !== r.order.status) {
+        var meta = STATUS_STAMP[r.order.status];
+        if (meta) {
+          if (meta[0] && S.stamp) S.stamp(meta[0]);
+          toast(meta[1]);
+        }
+      }
       st.detail = r.order;
       if (changed || !silent) {
         var draft = (document.getElementById('chatText') || {}).value || '';
@@ -304,19 +420,53 @@ function initCabinet() {
     if (st.busy) return;
     st.busy = true;
     var body = { action: action };
-    if (extra) body.comment = extra;
+    if (extra && extra.comment) body.comment = extra.comment;
+    if (extra && extra.reason) body.reason = extra.reason;
+    if (extra && extra.amount != null) body.amount = extra.amount;
     var t = tokenFor(st.currentId);
     if (t) body.token = t;
     S.api.post('/orders/' + st.currentId + '/action' + (t ? '?token=' + encodeURIComponent(t) : ''), body)
       .then(function (r) {
         st.busy = false;
-        if (!r.ok) { toast('Не получилось — попробуйте ещё раз'); return; }
+        if (!r.ok) {
+          toast({ bonus_need_login: 'Чтобы списывать бонусы, войдите через Telegram',
+                  bonus_after_payment: 'По заказу уже была оплата — бонусы не применить',
+                  bonus_order_small: 'Бонусы применимы к заказам от 1000 ₽',
+                  bonus_cap: 'Лимит списания по этому заказу уже выбран',
+                  bonus_empty: 'На счету нет доступных бонусов' }[r.error] ||
+                'Не получилось — попробуйте ещё раз');
+          return;
+        }
         st.detail = r.order;
         render(tplDetail());
-        toast({ accept_price: 'Принято! Ждём предоплату', paid: 'Передали на сверку',
+        if (action === 'accept_work' && S.stamp) S.stamp('Принято');
+        if (action === 'resume' && S.stamp) S.stamp('Снова в работе');
+        if (action === 'bonus_apply' && S.stamp) S.stamp('−' + money(r.spent || 0) + ' бонусами', { tone: 'wax' });
+        toast({ accept_price: 'Принято! Дальше — предоплата', paid: 'Передали мастеру на сверку',
                 accept_work: 'Заказ завершён — спасибо!', request_fixes: 'Отправили на правки',
-                decline: 'Заявка закрыта' }[action] || 'Готово');
+                decline: 'Заявка закрыта — её можно возобновить в любой момент',
+                resume: 'Заявка снова в работе', bonus_apply: 'Бонусы применены' }[action] || 'Готово');
         loadList(true);
+        if (st.me) S.api.get('/me').then(function (rr) { if (rr.ok) { st.me = rr; renderCurrent(); } });
+      });
+  }
+
+  function payOnline() {
+    if (st.busy) return;
+    st.busy = true;
+    var t = tokenFor(st.currentId);
+    S.api.post('/orders/' + st.currentId + '/pay' + (t ? '?token=' + encodeURIComponent(t) : ''),
+               t ? { token: t } : {})
+      .then(function (r) {
+        st.busy = false;
+        if (!r.ok) { toast('Не получилось открыть оплату — воспользуйтесь реквизитами'); return; }
+        if (r.online && r.url) {
+          toast('Открываем защищённую страницу оплаты…');
+          var w = window.open(r.url, '_blank', 'noopener');
+          if (!w) location.href = r.url;
+        } else {
+          toast('Онлайн-оплата пока не подключена — переведите по реквизитам');
+        }
       });
   }
 
@@ -391,8 +541,54 @@ function initCabinet() {
     var act = t.closest('[data-act]');
     if (act) {
       var a = act.getAttribute('data-act');
-      if (a === 'decline' && !window.confirm('Закрыть заявку? Если смущает цена или срок — просто напишите в чат, обычно договариваемся.')) return;
+      if (a === 'decline') {
+        var ask = S.confirm ? S.confirm({
+          title: 'Закрыть заявку?',
+          text: 'Если смущает цена или срок — напишите в чат, обычно удаётся договориться. ' +
+                'Закрытую заявку можно возобновить в любой момент.',
+          input: 'textarea',
+          placeholder: 'Причина — по желанию: поможет нам сделать предложение точнее',
+          okLabel: 'Закрыть заявку', noLabel: 'Вернуться', danger: true
+        }) : Promise.resolve({ ok: window.confirm('Закрыть заявку?'), value: '' });
+        ask.then(function (res) { if (res.ok) doAction('decline', { reason: res.value }); });
+        return;
+      }
+      if (a === 'accept_work' && S.confirm) {
+        S.confirm({
+          title: 'Принять работу?',
+          text: 'Подтверждение завершит заказ. Если остались замечания — лучше нажать «Нужны правки», это бесплатно до приёмки.',
+          okLabel: 'Принять работу', noLabel: 'Ещё посмотрю'
+        }).then(function (res) { if (res.ok) doAction('accept_work'); });
+        return;
+      }
       doAction(a);
+      return;
+    }
+    if (t.closest('[data-act-pay]')) { payOnline(); return; }
+    if (t.closest('#bspendApply')) {
+      var rng = document.getElementById('bspendRange');
+      var amount = rng ? parseInt(rng.value, 10) : 0;
+      if (!amount) { toast('Выберите сумму списания ползунком'); return; }
+      doAction('bonus_apply', { amount: amount });
+      return;
+    }
+    if (t.closest('#bonusLogBtn')) {
+      st.ledgerOpen = !st.ledgerOpen;
+      renderCurrent();
+      if (st.ledgerOpen && st.ledger === null) {
+        S.api.get('/bonus').then(function (r) {
+          st.ledger = r.ok ? (r.items || []) : [];
+          renderCurrent();
+        });
+      }
+      return;
+    }
+    if (t.closest('#bonusRefBtn')) {
+      var link = (st.me && st.me.ref_link) || 'https://t.me/academic_saloon_bot';
+      if (S.copy) S.copy(link).then(function (okc) {
+        toast(okc ? 'Ссылка-приглашение скопирована — отправьте другу'
+                  : 'Ссылка: ' + link);
+      });
       return;
     }
     if (t.closest('[data-act-fix]')) { var ff = document.getElementById('fixForm'); if (ff) { ff.hidden = false; document.getElementById('fixText').focus(); } return; }
@@ -400,10 +596,22 @@ function initCabinet() {
     if (t.closest('[data-act-fix-send]')) {
       var txt = (document.getElementById('fixText') || {}).value || '';
       if (!txt.trim()) { toast('Опишите, что поправить'); return; }
-      doAction('request_fixes', txt.trim());
+      doAction('request_fixes', { comment: txt.trim() });
       return;
     }
     if (t.closest('[data-chat-focus]')) { var ta = document.getElementById('chatText'); if (ta) { ta.focus(); ta.scrollIntoView({ block: 'center' }); } return; }
+  });
+
+  /* живой пересчёт «деньгами останется…» при движении ползунка */
+  root.addEventListener('input', function (e) {
+    if (e.target && e.target.id === 'bspendRange' && st.detail) {
+      var v = parseInt(e.target.value, 10) || 0;
+      var val = document.getElementById('bspendVal');
+      var due = document.getElementById('bspendDue');
+      var base = (st.detail.price || 0) - (st.detail.bonus_spent || 0);
+      if (val) val.textContent = money(v);
+      if (due) due.textContent = money(Math.max(base - v, 0)) + ' ₽';
+    }
   });
 
   root.addEventListener('change', function (e) {
@@ -421,8 +629,29 @@ function initCabinet() {
   });
 
   /* ---------------- старт ---------------- */
+  /* возврат со страницы оплаты: ?paid=<id> — открываем заказ и обновляем */
+  try {
+    var paidId = new URLSearchParams(location.search).get('paid');
+    if (paidId) {
+      st.currentId = parseInt(paidId, 10) || null;
+      toast('Проверяем оплату — статус обновится в течение минуты');
+      history.replaceState(null, '', location.pathname);
+    }
+  } catch (e) {}
   loadList();
   startPolling();
+
+  /* гостям с заказом — мягкое предложение привязать Telegram (раз за сессию) */
+  setTimeout(function () {
+    try {
+      if (S.api.token() || sessionStorage.getItem('salon_nudged') === '1') return;
+      var tokenized = st.orders.filter(function (o) { return o.token; });
+      if (!tokenized.length || !S.tgNudge) return;
+      sessionStorage.setItem('salon_nudged', '1');
+      var link = 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(tokenized[0].token);
+      S.tgNudge(root, link);
+    } catch (e) {}
+  }, 2600);
 }
 if (document.prerendering) {
   document.addEventListener('prerenderingchange', initCabinet, { once: true });

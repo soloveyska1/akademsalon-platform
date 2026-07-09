@@ -8,8 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260709c" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260709c" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260710a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260710a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260710a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://academic-saloon.duckdns.org/referral.html" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -124,7 +125,7 @@
         <div class="reveal">
           <span class="caps">Клуб Салона</span>
           <h1 class="h-display">Чем дольше с нами — тем выгоднее</h1>
-          <p class="lead clb-lead">Бонусы за каждый заказ, приветственный подарок новичкам, приглашения друзей и подписка со скидкой. Всё считается автоматически в боте — ничего не нужно запоминать.</p>
+          <p class="lead clb-lead">Бонусы за каждый заказ, приветственный подарок новичкам, приглашения друзей и подписка со скидкой. Всё считается автоматически — баланс виден в боте и в личном кабинете на сайте, ничего не нужно запоминать.</p>
           <div class="clb-cta">
             <a class="btn btn-wax btn-lg" href="https://t.me/academic_saloon_bot?start=club" target="_blank" rel="noopener">Открыть клуб в боте <span class="ar">→</span></a>
             <a class="btn btn-line btn-lg" href="loyalty.html">Полные правила</a>
@@ -178,7 +179,7 @@
           <p>Бонусами можно закрыть до 20% стоимости заказа (от 1000 ₽). Остальное — обычной оплатой. Так выгода честная для обеих сторон.</p>
         </div>
       </div>
-      <p class="clb-note">Бонусы не обмениваются на деньги и не передаются другим людям. Полные условия, сроки действия и защита от злоупотреблений — в <a class="link" href="loyalty.html">Правилах программы лояльности</a>.</p>
+      <p class="clb-note">Списать бонусы можно прямо в карточке заказа — в боте или в кабинете сайта, когда мастер назначит цену. Бонусы не обмениваются на деньги и не передаются другим людям. Полные условия, сроки действия и защита от злоупотреблений — в <a class="link" href="loyalty.html">Правилах программы лояльности</a>.</p>
     </section>
 
     <!-- § 02 ПРИГЛАШЕНИЯ -->
@@ -188,7 +189,7 @@
       <div class="split">
         <div>
           <div class="ref-steps">
-            <div class="dotrow"><span class="rs-no">01</span><span>Берёте ссылку в боте</span><span class="dots"></span><small>раздел «Клуб» → «Пригласить»</small></div>
+            <div class="dotrow"><span class="rs-no">01</span><span>Берёте личную ссылку</span><span class="dots"></span><small>в боте — «💎 Мои бонусы», на сайте — кабинет → «Пригласить друга»</small></div>
             <div class="dotrow"><span class="rs-no">02</span><span>Друг переходит и делает заказ</span><span class="dots"></span><small>ему +200 бонусов после первого заказа</small></div>
             <div class="dotrow"><span class="rs-no">03</span><span>Вам — 5% бонусами</span><span class="dots"></span><small>с каждого его оплаченного заказа, всегда</small></div>
           </div>
@@ -250,12 +251,29 @@
       <div class="fc-rule"><span>¶</span></div>
       <h2>Заберите свои 300 бонусов</h2>
       <p class="lead" style="max-width:44ch;margin:0 auto 26px">Приветственный бонус ждёт в боте — начнём знакомство со скидки.</p>
-      <a class="btn btn-wax btn-lg" href="https://t.me/academic_saloon_bot?start=club" target="_blank" rel="noopener">Открыть клуб в боте <span class="ar">→</span></a>
+      <a class="btn btn-wax btn-lg" href="https://t.me/academic_saloon_bot?start=welcome_site" target="_blank" rel="noopener" id="clubClaim">🎁 Забрать 300 бонусов <span class="ar">→</span></a>
+      <p class="clb-note" style="margin-top:12px">Начисляются в боте один раз на Telegram-аккаунт — после короткого подтверждения правил.</p>
     </section>
 
   </div>
 </main>
-<script src="assets/js/app.js?v=20260709c"></script>
+<script src="assets/js/app.js?v=20260710a"></script>
+<script src="assets/js/extras.js?v=20260710a"></script>
+<script>
+(function(){
+  var b = document.getElementById('clubClaim');
+  if (!b || !window.Salon || !Salon.api) return;
+  b.addEventListener('click', function(e){
+    e.preventDefault();
+    var fb = b.href;
+    Salon.api.post('/welcome/token').then(function(r){
+      var link = (r && r.ok && r.link) ? r.link : fb;
+      var w = window.open(link, '_blank', 'noopener');
+      if (!w) location.href = link;
+    });
+  });
+})();
+</script>
 <script>
 (function(){
   'use strict';

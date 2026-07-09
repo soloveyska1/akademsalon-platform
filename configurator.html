@@ -8,8 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260709c" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260709c" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260710a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260710a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260710a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -94,7 +95,7 @@
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
 <meta property="og:title" content="Расчёт стоимости — Академический Салон" />
-<meta property="og:description" content="Четыре шага — увидите стоимость, план и порядок оплаты. Заявка ни к чему не обязывает." />
+<meta property="og:description" content="Четыре шага — увидите стоимость, план и порядок оплаты. Оценка бесплатна, решение остаётся за вами." />
 <meta property="og:url" content="https://academic-saloon.duckdns.org/configurator.html" />
 <meta property="og:image" content="https://academic-saloon.duckdns.org/assets/img/og-cover.png" />
 <meta property="og:image:width" content="1200" />
@@ -114,7 +115,7 @@
       <div id="confBody">
         <header class="conf-head reveal">
           <h1>Смета вашей работы</h1>
-          <p class="petit">Четыре шага — увидите стоимость, план и порядок оплаты. Заявка ни к чему не обязывает.</p>
+          <p class="petit">Четыре шага — увидите стоимость, план и порядок оплаты. Оценка бесплатна, решение остаётся за вами.</p>
           <p class="petit plan-note" hidden><span class="tag tag-wax">Разбор плана</span> Вы начинаете с разбора плана — <b id="planPrice">3&nbsp;000&nbsp;₽</b>: структура глав, реалистичный срок и фиксированная смета. Зачитывается в стоимость работы при продолжении в течение 14 дней.</p>
         </header>
 
@@ -224,7 +225,7 @@
                 <a class="btn btn-line" style="flex:1" href="https://t.me/academicsaloon" target="_blank" rel="noopener">Написать человеку</a>
                 <a class="btn btn-line" style="flex:1" href="https://vk.com/academicsaloon" target="_blank" rel="noopener">ВКонтакте</a>
               </div>
-              <p class="petit mt-s wsubmit-note">Заявка ни к чему не обязывает: мастер увидит её мгновенно, статус появится в <a class="link" href="dashboard.html">кабинете</a> и в Telegram. Смета фиксируется после разбора плана и не меняется по нашей инициативе.</p>
+              <p class="petit mt-s wsubmit-note">Оценка бесплатна: мастер увидит заявку мгновенно, статус появится в <a class="link" href="dashboard.html">кабинете</a> и в Telegram. Решение вы принимаете, уже зная точную смету, — она фиксируется после разбора плана и не меняется по нашей инициативе.</p>
             </div>
 
             <div class="wnav">
@@ -304,7 +305,8 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260709c"></script>
+<script src="assets/js/app.js?v=20260710a"></script>
+<script src="assets/js/extras.js?v=20260710a"></script>
 <script>
 function initConf() {
   'use strict';
@@ -554,7 +556,10 @@ function initConf() {
     if (mNext) S.btnLoading(mNext, true, 'Отправляем…');
     S.api.post('/orders', {
       type: state.type, disc: state.disc, term: state.term, tier: state.tier,
-      topic: topicIn.value.trim(), plan: plan, name: name, contact: contact, website: ''
+      topic: topicIn.value.trim(), plan: plan, name: name, contact: contact, website: '',
+      consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
+      consent_doc: 'consent 1.1 · privacy 1.1 · oferta 1.1 · форма конфигуратора',
+      page: 'configurator.html'
     }).then(function (r) {
       if (!r || !r.ok || !r.id) {
         submitting = false;
@@ -565,13 +570,17 @@ function initConf() {
       if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
       S.store.del('salon_draft');
       var bl = $('doneBot');
-      if (bl) {
-        /* гостю — привязка заказа к Telegram в один тап; вошедшему — просто бот */
-        bl.href = r.token
-          ? 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(r.token)
-          : 'https://t.me/academic_saloon_bot';
-      }
+      var claim = r.token
+        ? 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(r.token)
+        : 'https://t.me/academic_saloon_bot';
+      if (bl) bl.href = claim; /* гостю — привязка заказа к Telegram в один тап */
       showDone('№' + r.id);
+      if (S.stamp) S.stamp('Заявка принята');
+      /* гостям — мягкое предложение привязать Telegram; заказ принят и без этого */
+      if (r.token && S.tgNudge) {
+        var sheetEl = document.querySelector('#confDone .done-sheet');
+        if (sheetEl) S.tgNudge(sheetEl, claim);
+      }
     });
   }
   /* сеть/сервер недоступны — старый путь: смета в буфер + открываем бота */

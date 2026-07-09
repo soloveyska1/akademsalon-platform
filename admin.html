@@ -8,8 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260709c" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260709c" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260710a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260710a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260710a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <meta name="theme-color" content="#F6F1E7" />
@@ -28,6 +29,17 @@
   .ag-tile .t-num{font-family:var(--mono);font-size:22px;letter-spacing:-.02em}
   .ag-tile .t-lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:2px}
   .ag-tile.warn{border-color:var(--wax,#A8402F)}
+
+  .ag-tabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--hairline);flex-wrap:wrap}
+  .ag-tab{border:0;background:none;color:var(--ink-soft);font:inherit;font-size:14px;padding:9px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .ag-tab.on{color:var(--ink);border-bottom-color:var(--wax);font-weight:500}
+  .ag-tab:hover{color:var(--ink)}
+
+  .ag-intel{border:1px solid var(--hairline-strong);border-left:3px solid var(--stamp);border-radius:var(--r);padding:10px 12px;margin:12px 0;background:var(--sheet,transparent)}
+  .ag-intel .ai-row{display:flex;gap:10px;padding:3px 0;font-size:13px;align-items:baseline}
+  .ag-intel .ai-k{flex:0 0 150px;color:var(--ink-soft);white-space:nowrap}
+  .ag-intel .ai-v{flex:1;min-width:0}
+  .ag-linkbtn{background:none;border:0;padding:0;cursor:pointer;font:inherit}
 
   .ag-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
   .ag-chip{border:1px solid var(--hairline-strong);background:transparent;color:inherit;border-radius:999px;padding:6px 12px;font-size:12.5px;cursor:pointer}
@@ -80,7 +92,8 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260709c"></script>
-<script src="assets/js/admin.js?v=20260709c"></script>
+<script src="assets/js/app.js?v=20260710a"></script>
+<script src="assets/js/extras.js?v=20260710a"></script>
+<script src="assets/js/admin.js?v=20260710a"></script>
 </body>
 </html>

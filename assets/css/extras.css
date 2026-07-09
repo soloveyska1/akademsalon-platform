@@ -1,0 +1,184 @@
+/* ============================================================
+   «ОТТИСК» — дополнительный слой: тур для новых гостей,
+   куки-плашка, «Нужна помощь?», диалоги, переходы страниц,
+   печать-вспышка, бонусные карточки. Подключается после
+   chrome.css на всех страницах.
+   ============================================================ */
+
+/* ---------------- Куки-плашка (аккуратная, слева снизу) ---------------- */
+.cookiebar{
+  position:fixed;left:clamp(14px,2.5vw,28px);bottom:clamp(14px,2.5vw,26px);z-index:210;
+  width:min(92vw,360px);background:var(--sheet);border:1px solid var(--hairline-strong);
+  border-radius:var(--r);padding:16px 18px;
+  box-shadow:0 1px 0 var(--hairline),0 14px 34px rgba(34,32,27,.18);
+  opacity:0;transform:translateY(14px);transition:opacity .35s,transform .35s;
+}
+.cookiebar.in{opacity:1;transform:none}
+.cookiebar p{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0 0 12px}
+.cookiebar p b{color:var(--ink);font-weight:500}
+.cookiebar .cb-row{display:flex;gap:8px;align-items:center}
+.cookiebar .btn{min-height:40px;padding:8px 16px;font-size:13.5px}
+.cookiebar .cb-more{font-size:12.5px;color:var(--ink-soft);border-bottom:1px solid var(--hairline-strong);white-space:nowrap}
+.cookiebar .cb-more:hover{color:var(--wax);border-color:var(--wax)}
+@media(max-width:880px){.cookiebar{left:10px;right:10px;width:auto;bottom:84px}}
+
+/* ---------------- Тур «Как всё устроено» ---------------- */
+.tour-veil{position:fixed;inset:0;z-index:260;pointer-events:auto}
+.tour-hole{
+  position:absolute;border-radius:6px;
+  box-shadow:0 0 0 200vmax rgba(24,21,15,.62);
+  outline:2px solid var(--paper);outline-offset:3px;
+  transition:all .45s cubic-bezier(.22,1,.36,1);
+}
+.tour-hole.center{box-shadow:0 0 0 200vmax rgba(24,21,15,.66);outline:none}
+.tour-card{
+  position:absolute;width:min(92vw,430px);background:var(--sheet);color:var(--ink);
+  border:1px solid var(--hairline-strong);border-radius:var(--r);
+  padding:clamp(18px,3vw,26px);
+  box-shadow:0 2px 0 var(--hairline),0 24px 60px rgba(24,21,15,.4);
+  transition:top .45s cubic-bezier(.22,1,.36,1),left .45s cubic-bezier(.22,1,.36,1);
+}
+.tour-card .tc-step{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--wax);display:block;margin-bottom:8px}
+.tour-card h3{font-family:var(--serif);font-size:clamp(20px,2.6vw,24px);font-weight:480;line-height:1.25;margin:0 0 10px}
+.tour-card p{font-size:15.5px;line-height:1.62;color:var(--ink-soft);margin:0 0 16px}
+.tour-card p b{color:var(--ink);font-weight:500}
+.tour-dots{display:flex;gap:6px;margin-bottom:14px}
+.tour-dots i{width:22px;height:3px;background:var(--hairline);border-radius:2px;transition:background .2s}
+.tour-dots i.on{background:var(--wax)}
+.tour-nav{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tour-nav .btn{min-height:46px;font-size:15px}
+.tour-skip{margin-left:auto;background:none;border:0;cursor:pointer;font-size:13.5px;color:var(--ink-soft);border-bottom:1px solid var(--hairline-strong);padding:2px 0}
+.tour-skip:hover{color:var(--ink)}
+.tour-bonus{
+  display:flex;align-items:center;gap:14px;background:var(--wax-soft);
+  border:1px dashed var(--wax);border-radius:var(--r);padding:12px 14px;margin:0 0 16px;
+}
+.tour-bonus .tb-num{font-family:var(--serif);font-size:34px;color:var(--wax);line-height:1}
+.tour-bonus small{display:block;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+@media(max-width:640px){
+  .tour-card{left:10px!important;right:10px;width:auto;bottom:14px;top:auto!important}
+}
+
+/* ---------------- «Нужна помощь?» ---------------- */
+.helpfab{
+  position:fixed;left:clamp(18px,2.5vw,34px);bottom:26px;z-index:94;
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--sheet);color:var(--ink);border:1px solid var(--hairline-strong);
+  font-size:14.5px;font-weight:500;padding:12px 18px;border-radius:999px;min-height:46px;
+  box-shadow:0 2px 0 var(--hairline),0 12px 28px rgba(34,32,27,.22);
+  cursor:pointer;opacity:0;transform:translateY(16px) scale(.96);
+  transition:opacity .4s,transform .4s cubic-bezier(.22,1,.36,1);
+}
+.helpfab.in{opacity:1;transform:none}
+.helpfab:hover{border-color:var(--wax);color:var(--wax)}
+.helpfab .hf-ic{font-family:var(--serif);font-size:18px;color:var(--wax)}
+.helpfab .hf-x{margin-left:4px;color:var(--ink-faint);font-size:16px;line-height:1;padding:2px 4px;border-radius:50%}
+.helpfab .hf-x:hover{color:var(--ink)}
+@media(max-width:880px){.helpfab{bottom:86px;left:10px}}
+@media print{.helpfab,.cookiebar,.tour-veil,.tour-card{display:none!important}}
+
+/* ---------------- Диалог (подтверждения, формы причин) ---------------- */
+.sdlg{position:fixed;inset:0;z-index:270;display:flex;align-items:center;justify-content:center;padding:16px;
+  opacity:0;visibility:hidden;transition:opacity .22s,visibility .22s}
+.sdlg.open{opacity:1;visibility:visible}
+.sdlg-back{position:absolute;inset:0;background:rgba(24,21,15,.5)}
+.sdlg-card{
+  position:relative;width:min(94vw,440px);background:var(--sheet);border:1px solid var(--hairline-strong);
+  border-radius:var(--r);padding:clamp(18px,3.4vw,26px);
+  box-shadow:0 2px 0 var(--hairline),0 26px 64px rgba(24,21,15,.4);
+  transform:translateY(10px) scale(.98);transition:transform .22s cubic-bezier(.22,1,.36,1);
+}
+.sdlg.open .sdlg-card{transform:none}
+.sdlg-card h3{font-family:var(--serif);font-size:20px;font-weight:480;margin:0 0 8px}
+.sdlg-card p{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px}
+.sdlg-card textarea,.sdlg-card input[type=number],.sdlg-card input[type=text]{
+  width:100%;font:inherit;font-size:15px;padding:10px 12px;margin-bottom:14px;
+  border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:var(--ink);resize:vertical;
+}
+.sdlg-row{display:flex;gap:10px;flex-wrap:wrap}
+.sdlg-row .btn{flex:1;min-height:46px}
+.sdlg-note{font-size:12.5px;color:var(--ink-faint);margin-top:10px}
+
+/* ---------------- Переход между страницами: «перелистнули лист» ------- */
+.page-veil{
+  position:fixed;inset:0;z-index:400;background:var(--paper);pointer-events:none;
+  opacity:0;visibility:hidden;
+}
+.page-veil .pv-line{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--hairline-strong);transform:scaleX(0)}
+.page-veil .pv-para{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);
+  font-family:var(--serif);font-size:44px;color:var(--wax);opacity:0;
+}
+.page-veil.act{visibility:visible;animation:pv-in .26s ease-out forwards}
+.page-veil.act .pv-line{animation:pv-line .26s ease-out .04s forwards}
+.page-veil.act .pv-para{animation:pv-para .22s ease-out .08s forwards}
+.page-veil.out{visibility:visible;opacity:1;animation:pv-out .34s ease-in .05s forwards}
+@keyframes pv-in{from{opacity:0}to{opacity:1}}
+@keyframes pv-out{from{opacity:1}to{opacity:0;visibility:hidden}}
+@keyframes pv-line{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes pv-para{from{opacity:0;transform:translate(-50%,-40%)}to{opacity:1;transform:translate(-50%,-52%)}}
+@media (prefers-reduced-motion: reduce){.page-veil{display:none!important}}
+
+/* ---------------- Печать-вспышка (оплата/успех) ---------------- */
+.stamp-burst{
+  position:fixed;inset:0;z-index:280;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.stamp-burst .sb-seal{
+  border:3px solid var(--verify);color:var(--verify);border-radius:8px;
+  font-family:var(--mono);font-size:clamp(20px,4vw,30px);letter-spacing:.2em;text-transform:uppercase;
+  padding:14px 26px;background:color-mix(in srgb, var(--sheet) 88%, transparent);
+  transform:rotate(-8deg) scale(2.2);opacity:0;
+  animation:sb-stamp .55s cubic-bezier(.16,1.1,.3,1) forwards;
+  box-shadow:0 18px 44px rgba(24,21,15,.25);
+}
+.stamp-burst.wax .sb-seal{border-color:var(--wax);color:var(--wax)}
+.stamp-burst.fade .sb-seal{animation:sb-fade .5s ease-in forwards}
+@keyframes sb-stamp{
+  0%{transform:rotate(-8deg) scale(2.2);opacity:0}
+  62%{transform:rotate(-8deg) scale(.94);opacity:1}
+  80%{transform:rotate(-8deg) scale(1.05)}
+  100%{transform:rotate(-8deg) scale(1);opacity:1}
+}
+@keyframes sb-fade{to{opacity:0;transform:rotate(-8deg) scale(1) translateY(-8px)}}
+
+/* ---------------- Нудж регистрации (после гостевой заявки) ------------ */
+.nudge{
+  border:1px solid var(--hairline-strong);border-left:3px solid var(--wax);
+  background:var(--sheet);border-radius:var(--r);padding:16px 18px;margin-top:16px;
+}
+.nudge h4{font-family:var(--serif);font-size:17.5px;font-weight:500;margin:0 0 6px}
+.nudge p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 12px}
+.nudge .n-row{display:flex;gap:10px;flex-wrap:wrap}
+.nudge .n-later{background:none;border:0;cursor:pointer;font-size:13px;color:var(--ink-soft);border-bottom:1px solid var(--hairline-strong);padding:0}
+
+/* ---------------- Бонусные элементы кабинета ---------------- */
+.cbn-card{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  border:1px solid var(--hairline-strong);border-radius:var(--r);
+  background:linear-gradient(135deg, var(--sheet) 60%, var(--wax-soft));
+  padding:16px 18px;margin-bottom:14px;
+}
+.cbn-card .bc-num{font-family:var(--serif);font-size:clamp(28px,4vw,36px);line-height:1;color:var(--wax)}
+.cbn-card .bc-cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:4px}
+.cbn-card .bc-exp{font-size:12.5px;color:var(--ink-soft)}
+.cbn-card .bc-side{flex:1;min-width:200px}
+.cbn-card .bc-act{display:flex;gap:8px;flex-wrap:wrap}
+.cbn-slider{width:100%;margin:6px 0 2px;accent-color:var(--wax)}
+.cbn-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:14px}
+.cbn-row .num{font-family:var(--mono)}
+.cbn-ledger{max-height:300px;overflow-y:auto;border:1px solid var(--hairline);border-radius:var(--r);padding:4px 12px;margin-top:10px}
+.cbn-ledger .bl-row{display:flex;gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--hairline);font-size:13.5px}
+.cbn-ledger .bl-row:last-child{border-bottom:0}
+.cbn-ledger .bl-delta{font-family:var(--mono);flex:0 0 64px;text-align:right}
+.cbn-ledger .bl-delta.plus{color:var(--verify)}
+.cbn-ledger .bl-delta.minus{color:var(--wax)}
+.cbn-ledger .bl-what{flex:1;min-width:0}
+.cbn-ledger .bl-when{font-size:12px;color:var(--ink-faint);white-space:nowrap}
+
+/* строка «к оплате» с учётом бонусов */
+.due-box{border:1px solid var(--hairline-strong);border-radius:var(--r);padding:12px 14px;margin:10px 0}
+.due-box .dr{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:3px 0}
+.due-box .dr b{font-family:var(--mono);font-weight:600}
+.due-box .dr.total{border-top:1px solid var(--hairline);margin-top:6px;padding-top:8px;font-size:15px}
+.due-box .dr .minus{color:var(--verify)}
