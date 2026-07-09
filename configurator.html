@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260709b" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260709b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260709c" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260709c" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -304,7 +304,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260709b"></script>
+<script src="assets/js/app.js?v=20260709c"></script>
 <script>
 function initConf() {
   'use strict';
@@ -503,20 +503,37 @@ function initConf() {
       $('ctName').textContent = (u.name || 'гость') + (u.username ? ' (@' + u.username + ')' : '');
   }
   var tgBtn = $('tgLoginBtn');
+  function tgHint(link, opened) {
+    var old = document.getElementById('tgOpenHint');
+    if (old) old.remove();
+    tgBtn.insertAdjacentHTML('afterend',
+      '<p class="petit" id="tgOpenHint" style="margin:-4px 0 12px">' +
+      (opened ? 'Окно Telegram открыто — нажмите в боте <b>Start</b>. ' : 'Telegram не открылся сам — ') +
+      '<a class="link" href="' + link + '" target="_blank" rel="noopener">открыть бота</a>' +
+      ' · страница поймает вход сама.</p>');
+  }
+  function tgDone(u) {
+    var h = document.getElementById('tgOpenHint');
+    if (h) h.remove();
+    contactUI();
+    S.toast('Вы вошли' + (u && u.name ? ', ' + u.name : '') + ' ✓');
+  }
   if (tgBtn) tgBtn.addEventListener('click', function () {
     tgBtn.disabled = true; tgBtn.textContent = 'Открываем Telegram…';
-    S.tgLogin(function (u) {
-      contactUI();
-      S.toast('Вы вошли' + (u && u.name ? ', ' + u.name : '') + ' ✓');
-    }, function () {
+    S.tgLogin(tgDone, function () {
       tgBtn.disabled = false; tgBtn.textContent = 'Войти через Telegram — статусы придут в бота';
       S.toast('Вход не подтвердился — попробуйте ещё раз');
     }, function (link, opened) {
       tgBtn.textContent = 'Подтвердите вход в боте…';
-      if (!opened) location.href = link;
+      tgHint(link, opened);
     });
   });
   contactUI();
+  /* вход мог быть начат раньше (в т.ч. до перезагрузки) — доловим */
+  if (S.resumeTgLogin && !S.api.token()) {
+    var pend = S.resumeTgLogin(tgDone, function () { contactUI(); });
+    if (pend && tgBtn) { tgBtn.disabled = true; tgBtn.textContent = 'Подтвердите вход в боте…'; tgHint(pend.link || 'https://t.me/academic_saloon_bot', true); }
+  }
 
   /* --- отправка: заявка уходит в общую с ботом картотеку --- */
   var submitting = false;

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Глаз бога — Академический Салон</title>
+<meta name="robots" content="noindex,nofollow,noarchive" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260709c" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260709c" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<meta name="theme-color" content="#F6F1E7" />
+<style>
+  /* ============================================================
+     ГЛАЗ БОГА — рабочий стол мастера. Доступ: только Telegram-вход
+     аккаунта из ADMIN_IDS (сервер отдаёт 403 всем остальным).
+     ============================================================ */
+  .ag{max-width:1080px;margin:0 auto}
+  .ag-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+  .ag-head h1{font-size:clamp(24px,3vw,34px);font-weight:380}
+  .ag-user{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--ink-soft)}
+
+  .ag-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+  .ag-tile{border:1px solid var(--hairline);border-radius:var(--r);padding:12px 14px;background:var(--sheet,transparent)}
+  .ag-tile .t-num{font-family:var(--mono);font-size:22px;letter-spacing:-.02em}
+  .ag-tile .t-lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:2px}
+  .ag-tile.warn{border-color:var(--wax,#A8402F)}
+
+  .ag-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+  .ag-chip{border:1px solid var(--hairline-strong);background:transparent;color:inherit;border-radius:999px;padding:6px 12px;font-size:12.5px;cursor:pointer}
+  .ag-chip.on{background:var(--ink);color:var(--paper,#F6F1E7);border-color:var(--ink)}
+  .ag-search{flex:1;min-width:160px;font:inherit;font-size:13.5px;padding:7px 12px;border:1px solid var(--hairline-strong);border-radius:999px;background:transparent;color:inherit}
+
+  .ag-split{display:grid;grid-template-columns:minmax(300px,5fr) minmax(340px,7fr);gap:18px;align-items:start}
+  @media(max-width:900px){.ag-split{grid-template-columns:1fr}}
+
+  .ag-list{display:flex;flex-direction:column;max-height:70vh;overflow-y:auto;border:1px solid var(--hairline);border-radius:var(--r)}
+  .ag-row{display:flex;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--hairline);cursor:pointer;background:transparent;border-left:3px solid transparent;font:inherit;color:inherit;text-align:left;width:100%}
+  .ag-row:hover{background:var(--mark)}
+  .ag-row.sel{border-left-color:var(--ink)}
+  .ag-row .r-no{font-family:var(--mono);font-size:12px;color:var(--ink-soft);flex:0 0 42px}
+  .ag-row .r-main{flex:1;min-width:0}
+  .ag-row .r-t{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ag-row .r-s{font-size:12px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ag-row .r-price{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+  .ag-row .r-unrd{background:var(--wax,#A8402F);color:#fff;border-radius:999px;font-size:10.5px;padding:2px 7px}
+
+  .ag-card{border:1px solid var(--hairline);border-radius:var(--r);padding:clamp(14px,2.5vw,22px)}
+  .ag-card h2{font-size:clamp(18px,2.2vw,24px);font-weight:420;margin:2px 0 6px}
+  .ag-sec{margin-top:18px;padding-top:14px;border-top:1px solid var(--hairline)}
+  .ag-sec .caps{display:block;margin-bottom:8px}
+  .ag-actrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .ag-actrow input[type=number]{width:120px;font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit}
+  .ag-actrow textarea{flex:1;min-width:200px;font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit;resize:vertical}
+  .ag-stbtn{border:1px solid var(--hairline-strong);background:transparent;color:inherit;border-radius:var(--r);padding:7px 10px;font-size:12.5px;cursor:pointer}
+  .ag-stbtn.on{background:var(--ink);color:var(--paper,#F6F1E7)}
+  .ag-feed{display:flex;flex-direction:column;gap:8px;max-height:340px;overflow-y:auto;padding:12px;border:1px solid var(--hairline);border-radius:var(--r)}
+  .ag-m{max-width:88%}
+  .ag-m .who{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+  .ag-m .txt{font-size:13.5px;line-height:1.5;padding:7px 10px;border:1px solid var(--hairline);border-radius:var(--r)}
+  .ag-m.master{align-self:flex-end;text-align:right}
+  .ag-m.master .txt{border-color:var(--stamp);background:rgba(58,78,122,.06)}
+  .ag-sys{text-align:center;font-size:12px;color:var(--ink-soft)}
+  .ag-ev{font-size:12.5px;color:var(--ink-soft);line-height:1.7}
+  .ag-lead{padding:10px 12px;border-bottom:1px solid var(--hairline);font-size:13.5px}
+  .ag-empty{padding:28px;text-align:center;color:var(--ink-soft);font-size:14px}
+  .ag-login{max-width:480px;margin:8vh auto 0;text-align:center}
+  .ag-note{font-size:12px;color:var(--ink-soft)}
+  .ag-files a{margin-left:8px}
+</style>
+</head>
+<body>
+
+<main class="ag-page">
+  <div class="wrap ag" id="agRoot">
+    <noscript><p class="petit">Глазу бога нужен JavaScript.</p></noscript>
+  </div>
+</main>
+
+<script src="assets/js/app.js?v=20260709c"></script>
+<script src="assets/js/admin.js?v=20260709c"></script>
+</body>
+</html>

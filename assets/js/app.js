@@ -62,8 +62,18 @@
   var LINKS = window.SalonLinks = {
     bot:   'https://t.me/academic_saloon_bot',   // бот: заявки, расчёт, статусы
     human: 'https://t.me/academicsaloon',        // личка: отвечает человек
-    vk:    'https://vk.com/academicsaloon'        // ВКонтакте
+    vk:    'https://vk.com/academicsaloon',      // сообщество ВКонтакте
+    max:   'https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs' // канал в MAX
   };
+  /* монограмма мессенджера MAX — рисуем сами в тоне сайта (без чужих ассетов) */
+  function maxLogoSVG(size) {
+    size = size || 18;
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+      '<rect x="1.5" y="1.5" width="21" height="21" rx="6.5" stroke="currentColor" stroke-width="1.6"/>' +
+      '<path d="M6.7 16.4V8.2l5.3 5.6 5.3-5.6v8.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</svg>';
+  }
+  window.SalonMaxLogo = maxLogoSVG;
   /* короткие коды типов для deep-link в бота (?start=web_dp_h_u_t) */
   var TYPE_CODE = {
     diplom:'dp', master:'ms', chapter:'ch', kandidat:'kd', course:'cr',
@@ -499,7 +509,8 @@
           '<div class="foot-contacts">' +
             '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span class="fco-l">Бот · заявки и расчёт</span><span class="fco-v">@academic_saloon_bot</span></a>' +
             '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span class="fco-l">Написать человеку</span><span class="fco-v">@academicsaloon</span></a>' +
-            '<a href="' + LINKS.vk + '" target="_blank" rel="noopener"><span class="fco-l">ВКонтакте</span><span class="fco-v">vk.com/academicsaloon</span></a>' +
+            '<a href="' + LINKS.vk + '" target="_blank" rel="noopener"><span class="fco-l">Сообщество ВКонтакте</span><span class="fco-v">vk.com/academicsaloon</span></a>' +
+            '<a href="' + LINKS.max + '" target="_blank" rel="noopener"><span class="fco-l">Канал в MAX</span><span class="fco-v">max.ru — Академический Салон</span></a>' +
           '</div>' +
         '</div>' +
         '<div><div class="fc-h">Разделы</div><nav class="foot-links" aria-label="Карта сайта">' +
@@ -578,6 +589,10 @@
           '<a class="cs-opt" href="' + LINKS.vk + '" target="_blank" rel="noopener">' +
             '<span class="cs-o-ic" aria-hidden="true">ВК</span>' +
             '<span class="cs-o-txt"><b>ВКонтакте</b><small>vk.com/academicsaloon</small></span>' +
+            '<span class="ar" aria-hidden="true">→</span></a>' +
+          '<a class="cs-opt" href="' + LINKS.max + '" target="_blank" rel="noopener">' +
+            '<span class="cs-o-ic" aria-hidden="true">' + maxLogoSVG() + '</span>' +
+            '<span class="cs-o-txt"><b>Канал в MAX</b><small>новости и акции мастерской</small></span>' +
             '<span class="ar" aria-hidden="true">→</span></a>' +
           '<p class="cs-note">Переписка идёт в выбранном мессенджере; заказ можно оформить и на сайте — в <a href="configurator.html">конфигураторе</a>. Нажимая, вы принимаете <a href="oferta.html">оферту</a> и <a href="privacy.html">политику ПДн</a>.</p>' +
         '</div>';
@@ -715,28 +730,57 @@
   };
 
   /* Вход через Telegram: код → t.me/бот?start=auth_<код> → поллинг → сессия.
-     onOpen(link, opened) — сразу после открытия бота; onDone(user) — после входа. */
+     Код живёт в localStorage: страница может перезагрузиться или уйти в Telegram
+     (мобильные!) — при возврате поллинг продолжится сам (Salon.resumeTgLogin).
+     onOpen(link, opened) — сразу после window.open; onDone(user) — после входа. */
   Salon.tgLogin = function (onDone, onFail, onOpen) {
     Salon.api.post('/auth/start').then(function (r) {
       if (!r.ok || !r.link) { if (onFail) onFail(r); return; }
+      Salon.store.set('salon_auth_pending', { code: r.code, link: r.link, ts: Date.now() });
       var win = window.open(r.link, '_blank', 'noopener');
       if (onOpen) onOpen(r.link, !!win);
-      var tries = 0;
-      var iv = setInterval(function () {
-        if (++tries > 200) { clearInterval(iv); if (onFail) onFail({ error: 'timeout' }); return; }
-        Salon.api.get('/auth/poll?code=' + encodeURIComponent(r.code)).then(function (p) {
-          if (p.ok && p.pending === false && p.token) {
-            clearInterval(iv);
-            Salon.api.setToken(p.token);
-            Salon.api.setUser(p.user || null);
-            var gt = Salon.api.guestTokens();
-            var fin = function () { if (onDone) onDone(p.user); };
-            if (gt.length) Salon.api.post('/orders/claim', { tokens: gt }).then(fin, fin);
-            else fin();
-          }
-        });
-      }, 2000);
+      Salon.resumeTgLogin(onDone, onFail);
     });
+  };
+
+  /* Возобновить ожидание входа (по коду из localStorage). Возвращает pending-объект
+     или null, если ожидания нет/протухло. Идемпотентно: вторая петля не запустится. */
+  Salon.resumeTgLogin = function (onDone, onFail) {
+    var TTL = 14 * 60 * 1000;
+    var p = Salon.store.get('salon_auth_pending', null);
+    if (!p || !p.code || (Date.now() - (p.ts || 0)) > TTL) {
+      if (p) Salon.store.del('salon_auth_pending');
+      return null;
+    }
+    if (Salon.__authLoop) return p;
+    Salon.__authLoop = true;
+    var iv = setInterval(tick, 2000);
+    function stop() { clearInterval(iv); Salon.__authLoop = false; }
+    function tick() {
+      var cur = Salon.store.get('salon_auth_pending', null);
+      if (!cur || (Date.now() - (cur.ts || 0)) > TTL) {
+        stop(); Salon.store.del('salon_auth_pending');
+        if (onFail) onFail({ error: 'timeout' });
+        return;
+      }
+      Salon.api.get('/auth/poll?code=' + encodeURIComponent(cur.code)).then(function (pr) {
+        if (pr.ok && pr.pending === false && pr.token) {
+          stop();
+          Salon.store.del('salon_auth_pending');
+          Salon.api.setToken(pr.token);
+          Salon.api.setUser(pr.user || null);
+          var gt = Salon.api.guestTokens();
+          var fin = function () { if (onDone) onDone(pr.user); };
+          if (gt.length) Salon.api.post('/orders/claim', { tokens: gt }).then(fin, fin);
+          else fin();
+        }
+      });
+    }
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden && Salon.__authLoop) tick();
+    });
+    tick();
+    return p;
   };
 
   /* ---------------- Count-up для [data-count] ---------------- */

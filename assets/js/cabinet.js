@@ -53,14 +53,21 @@ function initCabinet() {
   function toast(msg) { if (S.toast) S.toast(msg); }
 
   /* ---------------- экраны входа/пустоты ---------------- */
-  function tplLogin() {
+  function tplLogin(pending) {
+    var pendingBlock = pending
+      ? '<div class="req-box" style="margin-bottom:14px"><p class="petit" style="margin:0">⏳ <b>Ждём подтверждение в Telegram.</b> ' +
+        'Откройте бота и нажмите <b>Start</b> — эта страница поймает вход сама, даже если вы её перезагрузите.</p>' +
+        '<div class="act-row"><a class="btn btn-wax" href="' + (pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Открыть Telegram</a>' +
+        '<button type="button" class="btn btn-line" id="cabTgCancel">Отменить вход</button></div></div>'
+      : '';
     return '<div class="sheet sheet-pad stacked cab-login reveal">' +
       '<p class="caps">Вход в кабинет</p>' +
       '<h2 class="ord-type">Ваши заказы — на сайте и в Telegram</h2>' +
       '<p class="petit" style="margin-bottom:18px">Кабинет и бот работают с одной картотекой: статусы, переписка с мастером и файлы синхронны. ' +
       'Вход занимает пару секунд — подтвердите его в нашем боте.</p>' +
-      '<button type="button" class="btn btn-wax btn-block" id="cabTg">Войти через Telegram <span class="ar">→</span></button>' +
-      '<p class="petit cab-login-hint" id="cabTgHint" hidden>Окно Telegram открыто — нажмите в боте кнопку <b>Start</b>. Ждём подтверждение…</p>' +
+      pendingBlock +
+      (pending ? '' : '<button type="button" class="btn btn-wax btn-block" id="cabTg">Войти через Telegram <span class="ar">→</span></button>') +
+      '<p class="petit cab-login-hint" id="cabTgHint" hidden></p>' +
       '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">' +
         '<a class="btn btn-line" style="flex:1" href="configurator.html">Оформить первый заказ</a>' +
       '</div>' +
@@ -246,7 +253,14 @@ function initCabinet() {
   /* ---------------- загрузка данных ---------------- */
   function loadList(keepCurrent) {
     var t = S.api.token(), g = S.api.guestTokens();
-    if (!t && !g.length) { render(tplLogin()); return; }
+    if (!t && !g.length) {
+      /* если вход уже запущен (в т.ч. до перезагрузки страницы) — продолжаем ловить */
+      var pending = S.resumeTgLogin(
+        function (u) { toast('Вы вошли' + (u && u.name ? ', ' + u.name : '') + ' ✓'); loadList(); },
+        function () { render(tplLogin(null)); });
+      render(tplLogin(pending));
+      return;
+    }
     S.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
       if (!r.ok) { render(tplError()); return; }
       st.orders = r.orders || [];
@@ -352,9 +366,15 @@ function initCabinet() {
       function (user) { toast('Вы вошли' + (user && user.name ? ', ' + user.name : '') + ' ✓'); loadList(); },
       function () { if (btn) { btn.disabled = false; btn.textContent = 'Войти через Telegram →'; } toast('Вход не подтвердился — попробуйте ещё раз'); },
       function (link, opened) {
-        if (hint) hint.hidden = false;
         if (btn) btn.textContent = 'Ждём подтверждение в боте…';
-        if (!opened) { window.location.href = link; }
+        if (hint) {
+          hint.hidden = false;
+          /* НЕ уводим страницу в Telegram — иначе поллинг умрёт; даём ссылку-кнопку */
+          hint.innerHTML = (opened ? 'Окно Telegram открыто — нажмите в боте <b>Start</b>. '
+                                   : 'Telegram не открылся сам — ')
+            + '<a class="link" href="' + link + '" target="_blank" rel="noopener">открыть бота</a>'
+            + ' · ждём подтверждение, страница поймает вход сама.';
+        }
       });
   }
 
@@ -364,6 +384,7 @@ function initCabinet() {
     var sw = t.closest('button[data-ord]');
     if (sw) { st.currentId = parseInt(sw.getAttribute('data-ord'), 10); loadDetail(); return; }
     if (t.closest('#cabTg')) { doTgLogin(t.closest('#cabTg')); return; }
+    if (t.closest('#cabTgCancel')) { S.store.del('salon_auth_pending'); render(tplLogin(null)); return; }
     if (t.closest('#cabLogout')) { S.api.logout(); st.detail = null; loadList(); return; }
     if (t.closest('#cabRetry')) { loadList(); return; }
     if (t.closest('#chatSend')) { sendMessage(); return; }
