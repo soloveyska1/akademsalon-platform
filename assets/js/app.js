@@ -558,6 +558,44 @@
     document.body.appendChild(mcta);
   }
 
+  /* ---------------- Яндекс.Метрика ----------------
+     Включается только после «Хорошо» на куки-плашке (salon_consent,
+     privacy.html п. 2.3.1) и молчит в кабинете и админке — там
+     переписка клиентов, вебвизору она ни к чему. */
+  (function metrika() {
+    var ID = 110565162;
+    if (here === 'admin.html' || here === 'dashboard.html' || here === '404.html') return;
+    function boot() {
+      if (boot.done) return;
+      boot.done = true;
+      (function (m, e, t, r, i, k, a) {
+        m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
+        m[i].l = 1 * new Date();
+        for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+        k = e.createElement(t); a = e.getElementsByTagName(t)[0];
+        k.async = 1; k.src = r; a.parentNode.insertBefore(k, a);
+      })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=' + ID, 'ym');
+      window.ym(ID, 'init', {
+        ssr: true, webvisor: true, clickmap: true, ecommerce: 'dataLayer',
+        referrer: document.referrer, url: location.href,
+        accurateTrackBounce: true, trackLinks: true
+      });
+    }
+    Salon.metrika = {
+      id: ID,
+      boot: boot,
+      goal: function (name) { if (boot.done && window.ym) window.ym(ID, 'reachGoal', name); }
+    };
+    var c = Salon.store.get('salon_consent', null);
+    if (c && c.v >= 1) boot();
+    else document.addEventListener('salon:consent', boot, { once: true });
+    /* цель: любой уход в Telegram — бот или личка */
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href*="t.me/"]') : null;
+      if (a) Salon.metrika.goal('tg_click');
+    }, true);
+  })();
+
   /* ---------------- Лист связи (bot / человек / ВК) ----------------
      Никакие данные не отправляются с сайта: открываем мессенджер,
      где отвечает бот или человек. [data-msg] или [data-contact] — триггеры. */

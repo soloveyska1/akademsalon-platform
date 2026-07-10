@@ -94,9 +94,9 @@
     el.setAttribute('role', 'region');
     el.setAttribute('aria-label', 'Сообщение о cookie');
     el.innerHTML =
-      '<p><b>Пара слов о данных.</b> Сайт хранит в вашем браузере только служебные ' +
-      'записи: тему оформления, черновик расчёта и доступ к вашим заказам. ' +
-      'Рекламных трекеров нет.</p>' +
+      '<p><b>Пара слов о данных.</b> Сайт хранит служебные записи: тему оформления, ' +
+      'черновик расчёта и доступ к вашим заказам. После «Хорошо» включится ' +
+      'обезличенная статистика Яндекс.Метрики — рекламных трекеров нет.</p>' +
       '<div class="cb-row">' +
         '<button type="button" class="btn btn-ink" data-cb-ok>Хорошо</button>' +
         '<a class="cb-more" href="privacy.html#cookies">Подробнее</a>' +
@@ -105,6 +105,7 @@
     setTimeout(function () { el.classList.add('in'); }, 900);
     el.querySelector('[data-cb-ok]').addEventListener('click', function () {
       S.store.set('salon_consent', { v: 1, at: new Date().toISOString(), necessary: true });
+      document.dispatchEvent(new CustomEvent('salon:consent'));
       el.classList.remove('in');
       setTimeout(function () { el.remove(); }, 400);
     });
@@ -156,8 +157,8 @@
           center: true,
           step: 'Знакомство',
           title: 'Добро пожаловать в Академический Салон',
-          text: 'Мы — мастерская академических работ: дипломы, курсовые, статьи. ' +
-                'За полминуты покажем, как здесь всё устроено, — а в конце вас ждёт подарок.',
+          text: 'Мы — академическая мастерская: консультации, разборы и авторские материалы ' +
+                'по дипломам, курсовым и статьям. За полминуты покажем, как здесь всё устроено, — а в конце вас ждёт подарок.',
           ok: 'Показать'
         },
         {
