@@ -15,108 +15,126 @@
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
-     КАБИНЕТ — формуляр заказа: одна колонка ≤720px.
-     Демо-витрина этапной механики + реальные заявки из localStorage.
+     КАБИНЕТ — «дело заказа»: один лист-формуляр с разделами.
+     Язык «Оттиска»: листы, волосяные линии, mono-меты, сургуч.
+     Ни отточий, ни синих пунктиров — им тут не место.
      ============================================================ */
-  .cab{max-width:720px;margin:0 auto}
-  .cab-h{font-size:clamp(26px,3.4vw,42px);font-weight:360;margin-bottom:clamp(20px,3vw,32px)}
+  .cab{max-width:760px;margin:0 auto}
+  .cab-h{font-size:clamp(26px,3.4vw,42px);font-weight:360;margin-bottom:clamp(18px,3vw,28px)}
 
-  /* честная пометка демо-примера */
-  .demo-note{
-    display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;
-    padding:16px 18px;margin-bottom:22px;
-    border:1px dashed var(--stamp);border-radius:var(--r);
-    background:rgba(58,78,122,.05);
+  /* строка личности — тонкая, над формуляром */
+  .cab-id{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:16px;font-size:13.5px;color:var(--ink-soft)}
+  .cab-id .ci-dot{width:7px;height:7px;border-radius:50%;background:var(--verify);flex:0 0 auto;align-self:center}
+  .cab-id .ci-dot.guest{background:var(--hairline-strong)}
+  .cab-id b{color:var(--ink);font-weight:500}
+  .cab-id .ci-act{margin-left:auto}
+  .linkbtn{background:none;border:0;padding:0 0 1px;font:inherit;font-size:13px;color:var(--ink-soft);border-bottom:1px solid var(--hairline-strong);cursor:pointer;white-space:nowrap}
+  .linkbtn:hover{color:var(--ink)}
+  .linkbtn.wax{color:var(--wax);border-color:var(--wax)}
+  .linkbtn.wax:hover{color:var(--wax-deep)}
+
+  /* корешки заказов — закладки картотеки над листом */
+  .ord-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px;margin-bottom:-1px;position:relative;z-index:2}
+  .ord-tab{
+    border:1px solid var(--hairline);border-bottom:0;background:var(--paper-2);
+    border-radius:6px 6px 0 0;padding:8px 13px 10px;cursor:pointer;font:inherit;
+    font-size:12.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:baseline;
+    transition:background .15s,color .15s;
   }
-  .demo-note .dn-text{flex:1 1 240px;font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:0}
-  .demo-note .btn{flex:0 0 auto}
-
-  /* переключатель заказов (если их больше одного) */
-  .ord-switch{display:flex;flex-direction:column;margin-bottom:20px}
-  .ord-switch .dotrow{width:100%;background:transparent;border:0;cursor:pointer;font:inherit;color:inherit;min-height:44px;transition:background .12s}
-  .ord-switch .dotrow:hover{background:var(--mark)}
-  .ord-switch .osw-no{font-size:12.5px;color:var(--ink-soft);letter-spacing:.06em}
-  .ord-switch .osw-type{font-size:14.5px}
-  .ord-switch .dr-val{font-size:12px;color:var(--ink-soft)}
+  .ord-tab:hover{background:var(--mark)}
+  .ord-tab .ot-no{font-family:var(--mono);font-size:11px;letter-spacing:.04em}
+  .ord-tab.on{background:var(--sheet);color:var(--ink);border-color:var(--hairline-strong);position:relative}
+  .ord-tab.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--sheet)}
+  .ord-tab .ot-unread{font-family:var(--mono);font-size:10px;color:#FFFEF9;background:var(--wax);border-radius:9px;padding:1px 6px;align-self:center}
 
   /* шапка формуляра */
-  .ord-top{display:flex;justify-content:space-between;align-items:center;gap:10px 14px;flex-wrap:wrap;margin-bottom:16px}
-  .ord-no{font-size:13.5px;letter-spacing:.1em;color:var(--ink-soft)}
+  .ord-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px 14px;flex-wrap:wrap;margin-bottom:14px}
+  .ord-no{font-size:13px;letter-spacing:.1em;color:var(--ink-soft)}
+  .ord-stamp{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    border:1.5px solid currentColor;border-radius:3px;padding:5px 10px;
+    transform:rotate(-1.2deg);color:var(--ink-soft);white-space:nowrap;
+  }
+  .ord-stamp.s-act{color:var(--wax)}
+  .ord-stamp.s-done{color:var(--verify)}
+  .ord-stamp.s-mute{color:var(--ink-faint)}
   .ord-type{font-size:clamp(22px,3vw,30px);font-weight:400;margin-bottom:6px}
   .ord-topic{font-family:var(--serif);font-style:italic;font-size:15.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:6px}
   .ord-price-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px 12px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:3px double var(--ink)}
   .ord-price{font-size:clamp(18px,2.4vw,22px);letter-spacing:-.02em;white-space:nowrap}
   .ord-price-note{margin-top:8px}
 
-  /* этапы: строки-отточия с состояниями */
-  .stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:28px 0 4px}
-  .stage-prog{font-size:12px;color:var(--ink-soft);letter-spacing:.08em}
-  .stage-row{flex-wrap:wrap;row-gap:2px}
-  .stage-row .st-no{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;color:var(--ink-faint);flex:0 0 24px}
-  .stage-row.is-past .st-no{color:var(--verify)}
-  .stage-row.is-now .st-no{color:var(--ink)}
-  .stage-row.is-next{color:var(--ink-soft)}
-  .stage-row small{flex-basis:100%;padding-left:36px;font-size:13px;color:var(--ink-soft);line-height:1.5}
-  .stage-row .dr-val{font-size:12px;color:var(--ink-soft)}
-  .tag.tag-mini{font-size:10px;padding:3px 8px;gap:5px}
+  /* разделы дела: волосяная линия + caps-заголовок */
+  .fs-sec{margin-top:clamp(24px,4vw,34px);padding-top:clamp(16px,2.6vw,22px);border-top:1px solid var(--hairline)}
+  .fs-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+  .fs-head .fs-meta{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-faint)}
 
-  /* оплата и отчёт */
-  .pay-block{margin-top:clamp(32px,5vw,48px)}
-  .pay-block > .caps{display:block;margin-bottom:20px}
-  .pay-note{margin-top:14px}
-  .report-block{margin-top:clamp(32px,5vw,48px)}
-  .rp-empty{border:1px dashed var(--hairline-strong);border-radius:var(--r);padding:24px 18px;text-align:center}
-
-  /* связь */
-  .contact-row{
-    display:flex;justify-content:space-between;align-items:center;gap:14px 18px;flex-wrap:wrap;
-    margin-top:clamp(32px,5vw,48px);padding-top:22px;border-top:1px solid var(--hairline);
+  /* этапы — таймлайн с номерами-печатями (как «Пригласить друга» в клубе) */
+  .stg{position:relative}
+  .stg::before{content:"";position:absolute;left:15px;top:22px;bottom:22px;width:1px;background:var(--hairline-strong)}
+  .stg-row{display:flex;gap:14px;padding:9px 0;align-items:flex-start;color:var(--ink-soft)}
+  .stg-row .sn{
+    position:relative;z-index:1;flex:0 0 31px;height:31px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:11px;background:var(--sheet);
+    border:1px solid var(--hairline-strong);color:var(--ink-faint);
   }
-  .contact-row .cr-q{font-family:var(--serif);font-size:17px}
-  .cr-btns{display:flex;gap:10px;flex-wrap:wrap}
+  .stg-row.past .sn{color:var(--verify);border-color:var(--verify)}
+  .stg-row.now{color:var(--ink)}
+  .stg-row.now .sn{color:#FFFEF9;background:var(--wax);border-color:var(--wax)}
+  .stg-row .sb{flex:1;min-width:0;padding-top:4px}
+  .stg-row .sb b{display:block;font-size:15px;font-weight:500;line-height:1.35}
+  .stg-row .sb small{display:block;font-size:13px;color:var(--ink-soft);line-height:1.55;margin-top:2px}
+  .stg-row .st-tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap;padding-top:9px}
+  .stg-row.past .st-tag{color:var(--verify)}
+  .stg-row.now .st-tag{color:var(--wax)}
 
-  .cab-foot{margin-top:clamp(28px,5vw,44px);padding-top:14px;border-top:1px solid var(--hairline)}
+  /* вкладыш с реквизитами / служебные вставки */
+  .req-slip{border:1px solid var(--hairline-strong);border-left:3px solid var(--wax);border-radius:var(--r);padding:14px 16px;background:var(--paper-2);margin-bottom:12px}
+  .req-slip .caps{display:block;margin-bottom:6px}
+  .req-pre{white-space:pre-wrap;word-break:break-word;font-size:13.5px;margin:6px 0 0;line-height:1.6}
 
-  @media(max-width:540px){
-    .contact-row{flex-direction:column;align-items:stretch}
-    .cr-btns{width:100%}
-    .cr-btns .btn{flex:1}
-  }
-
-  /* ---------- живой кабинет: вход, действия, файлы, чат ---------- */
-  .cab-login{max-width:540px;margin:0 auto}
-  .cab-login-hint{margin-top:10px}
-  .cab-user .btn{flex:0 0 auto}
-  .cab-act{margin-top:clamp(24px,4vw,36px)}
   .act-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
   .act-row .btn{flex:1 1 auto}
-  .req-box{border:1px dashed var(--stamp);border-radius:var(--r);padding:14px 16px;background:rgba(58,78,122,.05)}
-  .req-pre{white-space:pre-wrap;word-break:break-word;font-size:13.5px;margin:8px 0 0;line-height:1.6}
   .fix-form{margin-top:12px}
   .fix-form textarea,.chat-form textarea{
     width:100%;font:inherit;font-size:14.5px;padding:10px 12px;color:inherit;resize:vertical;
     border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;
   }
-  .cab-files{margin-top:clamp(24px,4vw,36px)}
+
+  /* файлы — опись вложений */
+  .file-line{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--hairline)}
+  .file-line:last-child{border-bottom:0}
+  .file-line .fl-ic{flex:0 0 auto;color:var(--ink-faint);align-self:center}
+  .file-line .fl-name{flex:1;min-width:0;overflow-wrap:anywhere;font-size:14.5px}
+  .file-line .fl-meta{font-family:var(--mono);font-size:11px;color:var(--ink-faint);white-space:nowrap}
+  .file-line .link{white-space:nowrap;font-size:13.5px}
   .btn-upload{cursor:pointer}
-  .file-row{flex-wrap:wrap;row-gap:2px}
-  .file-dl{margin-left:10px;flex:0 0 auto}
-  .cab-chat{margin-top:clamp(24px,4vw,36px)}
-  .chat-feed{
-    display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto;
-    padding:14px;border:1px solid var(--hairline);border-radius:var(--r);background:rgba(0,0,0,.015);
-  }
-  .chat-m{display:flex;flex-direction:column;max-width:86%;align-self:flex-start}
-  .chat-m.me{align-self:flex-end;text-align:right}
-  .chat-who{font-size:10px;letter-spacing:.14em;color:var(--ink-faint);margin-bottom:2px}
-  .chat-txt{font-size:14.5px;line-height:1.55;padding:8px 12px;border-radius:var(--r);border:1px solid var(--hairline)}
-  .chat-m.me .chat-txt{border-color:var(--stamp);background:rgba(58,78,122,.06)}
-  .chat-at{font-size:11px;color:var(--ink-faint);margin-top:2px}
-  .chat-sys{text-align:center;color:var(--ink-soft);font-size:12.5px}
-  .chat-form{display:flex;gap:10px;margin-top:12px;align-items:flex-end}
+
+  /* переписка — почтовая лента дела, без рамок-пузырей */
+  .chat-feed{display:flex;flex-direction:column;gap:14px;max-height:440px;overflow-y:auto;padding:2px 2px 6px}
+  .chat-m{max-width:92%;padding-left:14px;border-left:2px solid var(--hairline-strong)}
+  .chat-m.me{align-self:flex-end;border-left:0;border-right:2px solid var(--wax);padding-left:0;padding-right:14px;text-align:right}
+  .chat-who{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px}
+  .chat-m.me .chat-who{color:var(--wax)}
+  .chat-txt{font-size:14.5px;line-height:1.6;color:var(--ink);white-space:pre-wrap}
+  .chat-at{display:block;font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);margin-top:3px}
+  .chat-sys{text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-faint)}
+  .chat-form{display:flex;gap:10px;margin-top:14px;align-items:flex-end}
   .chat-form textarea{flex:1}
-  .cab-foot-sync{margin-top:clamp(24px,4vw,36px);text-align:center}
-  @media(max-width:540px){.chat-m{max-width:100%}.act-row{flex-direction:column}}
+
+  /* вход */
+  .cab-login{max-width:540px;margin:0 auto}
+  .cab-login-hint{margin-top:10px}
+  .cab-foot{margin-top:clamp(28px,5vw,44px);padding-top:14px;border-top:1px solid var(--hairline)}
+  .cab-foot-sync{margin-top:clamp(22px,4vw,32px);text-align:center}
+
+  @media(max-width:540px){
+    .act-row{flex-direction:column}
+    .chat-m{max-width:100%}
+    .ord-tabs{padding:0 6px}
+    .stg-row .st-tag{display:none}
+  }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/dashboard.html" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />

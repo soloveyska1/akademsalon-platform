@@ -67,7 +67,7 @@ function initCabinet() {
   /* ---------------- экраны входа/пустоты ---------------- */
   function tplLogin(pending) {
     var pendingBlock = pending
-      ? '<div class="req-box" style="margin-bottom:14px"><p class="petit" style="margin:0">⏳ <b>Ждём подтверждение в Telegram.</b> ' +
+      ? '<div class="req-slip" style="margin-bottom:14px"><p class="petit" style="margin:0"><b>Ждём подтверждение в Telegram.</b> ' +
         'Откройте бота и нажмите <b>Start</b> — эта страница поймает вход сама, даже если вы её перезагрузите.</p>' +
         '<div class="act-row"><a class="btn btn-wax" href="' + (pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Открыть Telegram</a>' +
         '<button type="button" class="btn btn-line" id="cabTgCancel">Отменить вход</button></div></div>'
@@ -108,15 +108,15 @@ function initCabinet() {
   function userRow() {
     var u = S.api.user();
     if (S.api.token() && u) {
-      return '<div class="demo-note reveal cab-user"><span class="tag tag-verify">Telegram</span>' +
-        '<p class="dn-text">Вы вошли как <b>' + esc(u.name || 'гость') + '</b>' + (u.username ? ' (@' + esc(u.username) + ')' : '') +
-        ' — уведомления придут и в бота.</p>' +
-        '<button type="button" class="btn btn-line" id="cabLogout">Выйти</button></div>' +
+      return '<div class="cab-id reveal"><span class="ci-dot"></span>' +
+        '<span>Вы вошли как <b>' + esc(u.name || 'гость') + '</b>' + (u.username ? ' (@' + esc(u.username) + ')' : '') +
+        ' · уведомления дублируются в бота</span>' +
+        '<span class="ci-act"><button type="button" class="linkbtn" id="cabLogout">выйти</button></span></div>' +
         bonusCard();
     }
-    return '<div class="demo-note reveal cab-user"><span class="tag tag-stamp">Гостевой доступ</span>' +
-      '<p class="dn-text">Заказы видны на этом устройстве. Войдите через Telegram — привяжем их к вам, продублируем уведомления в бота, а новым гостям начислим 300 бонусов.</p>' +
-      '<button type="button" class="btn btn-wax" id="cabTg">Войти</button></div>';
+    return '<div class="cab-id reveal"><span class="ci-dot guest"></span>' +
+      '<span>Гостевой доступ — заказы видны на этом устройстве</span>' +
+      '<span class="ci-act"><button type="button" class="linkbtn wax" id="cabTg">войти через Telegram — заказы привяжутся к вам</button></span></div>';
   }
 
   /* -------- бонусный счёт (только для вошедших) -------- */
@@ -157,16 +157,19 @@ function initCabinet() {
   /* ---------------- список и карточка ---------------- */
   function tplSwitch() {
     if (st.orders.length < 2) return '';
-    return '<div class="ord-switch reveal" role="group" aria-label="Ваши заказы">' +
+    return '<div class="ord-tabs reveal" role="tablist" aria-label="Ваши заказы">' +
       st.orders.map(function (o) {
         var on = o.id === st.currentId;
-        return '<button type="button" class="dotrow' + (on ? ' hl' : '') + '" data-ord="' + o.id + '" aria-pressed="' + on + '">' +
-          '<span class="mono osw-no">' + esc(o.no) + '</span>' +
-          '<span class="osw-type">' + esc(o.work_label || '') + '</span>' +
-          '<span class="dots"></span>' +
-          '<span class="dr-val">' + esc(o.status_emoji) + ' ' + esc(shortStatus(o)) + (o.unread ? ' · ' + o.unread + ' нов.' : '') + '</span>' +
+        return '<button type="button" role="tab" class="ord-tab' + (on ? ' on' : '') + '" data-ord="' + o.id + '" aria-selected="' + on + '">' +
+          '<span class="ot-no">' + esc(o.no) + '</span>' +
+          '<span>' + esc(shortWork(o)) + ' · ' + esc(shortStatus(o)) + '</span>' +
+          (o.unread ? '<span class="ot-unread">' + o.unread + '</span>' : '') +
           '</button>';
       }).join('') + '</div>';
+  }
+  function shortWork(o) {
+    var w = o.work_label || '';
+    return w.length > 24 ? w.slice(0, 23) + '…' : w;
   }
   function shortStatus(o) {
     return { new: 'на оценке', priced: 'ждёт решения', prepay: 'ждёт оплату', work: 'в работе',
@@ -175,10 +178,10 @@ function initCabinet() {
 
   function stageRows(o) {
     if (o.step < 0) {
-      return '<p class="petit" style="margin-top:6px">🚫 Заявка закрыта' +
+      return '<div class="fs-sec"><p class="petit" style="margin:0">Заявка закрыта' +
         (o.cancel_reason ? ' (причина: ' + esc(o.cancel_reason) + ')' : '') +
         '. Передумали? Нажмите «Возобновить заказ» ниже — мастер вернётся к вашей заявке, ' +
-        'условия можно обсудить заново.</p>';
+        'условия можно обсудить заново.</p></div>';
     }
     var NOW = {
       new: 'Мастер изучает заявку — ответ обычно за 15–30 минут в рабочее время',
@@ -189,18 +192,19 @@ function initCabinet() {
       check: 'Готово! Посмотрите работу и примите её — или запросите правки',
       done: 'Заказ завершён. Мы на связи до вашей защиты'
     };
-    return '<div class="stage-head"><span class="caps">Этапы</span>' +
-      '<span class="mono stage-prog">Этап ' + o.step + ' из ' + o.steps.length + '</span></div>' +
-      '<div class="stage-list">' +
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Этапы</span>' +
+      '<span class="fs-meta">этап ' + o.step + ' из ' + o.steps.length + '</span></div>' +
+      '<div class="stg">' +
       o.steps.map(function (name, i) {
         var n = i + 1;
-        var cls = n < o.step ? ' is-past' : n === o.step ? ' hl is-now' : ' is-next';
-        var val = n < o.step ? '<span class="tag tag-verify tag-mini">пройден</span>'
-          : n === o.step ? '<span class="dr-val">сейчас</span>' : '<span class="dr-val">—</span>';
+        var cls = n < o.step ? ' past' : n === o.step ? ' now' : '';
+        var sn = n < o.step ? '✓' : '0' + n;
+        var tag = n < o.step ? 'пройден' : n === o.step ? 'сейчас' : '';
         var now = n === o.step ? '<small>' + esc(NOW[o.status] || o.status_label) + '</small>' : '';
-        return '<div class="dotrow stage-row' + cls + '"><span class="st-no">0' + n + '</span>' +
-          '<span>' + esc(name) + '</span><span class="dots"></span>' + val + now + '</div>';
-      }).join('') + '</div>';
+        return '<div class="stg-row' + cls + '"><span class="sn">' + sn + '</span>' +
+          '<span class="sb"><b>' + esc(name) + '</b>' + now + '</span>' +
+          (tag ? '<span class="st-tag">' + tag + '</span>' : '') + '</div>';
+      }).join('') + '</div></div>';
   }
 
   function priceBlock(o) {
@@ -266,10 +270,10 @@ function initCabinet() {
         '<button type="button" class="btn ' + (o.pay_online ? 'btn-line' : 'btn-wax') + '" data-act="paid">Я оплатил(а) переводом</button>' +
         '<button type="button" class="btn btn-line" data-chat-focus>Вопрос по оплате</button></div>';
       var req = o.requisites
-        ? '<div class="req-box"><span class="caps">Реквизиты для перевода' + (amount ? ' · ' + money(amount) + ' ₽' : '') + '</span>' +
+        ? '<div class="req-slip"><span class="caps">Реквизиты для перевода' + (amount ? ' · ' + money(amount) + ' ₽' : '') + '</span>' +
           '<pre class="req-pre mono">' + esc(o.requisites) + '</pre></div>'
         : (o.pay_online ? '' : '<p class="petit">Реквизиты пришлём в чат ниже (и в Telegram) в течение пары минут.</p>');
-      return '<section class="cab-act reveal">' + req + payBtns + payHistory(o) + '</section>';
+      return '<div class="fs-sec"><div class="fs-head"><span class="caps">Оплата</span></div>' + req + payBtns + payHistory(o) + '</div>';
     }
     if (o.actions.indexOf('accept_work') >= 0) {
       b.push('<button type="button" class="btn btn-wax" data-act="accept_work">Принять работу</button>');
@@ -278,26 +282,28 @@ function initCabinet() {
     if (o.actions.indexOf('resume') >= 0) {
       b.push('<button type="button" class="btn btn-wax" data-act="resume">🔄 Возобновить заказ</button>');
     }
-    if (!b.length) return payHistory(o) ? '<section class="cab-act reveal">' + payHistory(o) + '</section>' : '';
-    return '<section class="cab-act reveal"><div class="act-row">' + b.join('') + '</div>' +
+    if (!b.length) return payHistory(o) ? '<div class="fs-sec"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '';
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Решение по заказу</span></div><div class="act-row" style="margin-top:0">' + b.join('') + '</div>' +
       '<div class="fix-form" id="fixForm" hidden>' +
         '<textarea id="fixText" rows="3" maxlength="2000" placeholder="Что поправить? Например: «во 2-й главе обновить данные за 2025 год»"></textarea>' +
         '<div class="act-row"><button type="button" class="btn btn-wax" data-act-fix-send>Отправить на правки</button>' +
         '<button type="button" class="btn btn-line" data-act-fix-cancel>Передумал(а)</button></div>' +
-      '</div>' + payHistory(o) + '</section>';
+      '</div>' + payHistory(o) + '</div>';
   }
 
+  var CLIP_SVG = '<svg class="fl-ic" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 12.7 13 19.9a5 5 0 0 1-7.1-7.1l7.9-7.8a3.35 3.35 0 0 1 4.7 4.7l-7.8 7.9a1.68 1.68 0 0 1-2.4-2.4l7.2-7.2"/></svg>';
   function filesBlock(o) {
     var rows = (o.files || []).map(function (f) {
       var who = f.from === 'master' ? 'от мастерской' : 'ваш файл';
-      return '<div class="dotrow file-row"><span>📎 ' + esc(f.name) + '</span><span class="dots"></span>' +
-        '<span class="dr-val">' + who + ' · ' + dt(f.at) + '</span>' +
-        '<a class="link file-dl" href="' + S.api.base + apiPath(o.id, '/file/' + f.id) + '" download>скачать</a></div>';
+      return '<div class="file-line">' + CLIP_SVG +
+        '<span class="fl-name">' + esc(f.name) + '</span>' +
+        '<span class="fl-meta">' + who + ' · ' + dt(f.at) + '</span>' +
+        '<a class="link" href="' + S.api.base + apiPath(o.id, '/file/' + f.id) + '" download>скачать</a></div>';
     }).join('');
-    return '<section class="cab-files reveal"><div class="stage-head"><span class="caps">Файлы</span>' +
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Файлы</span>' +
       '<label class="btn btn-line btn-upload">Приложить файл<input type="file" id="cabUpload" hidden></label></div>' +
       (rows || '<p class="petit">Пока пусто. Приложите методичку или задание — мастеру будет проще оценить работу точно.</p>') +
-      '<p class="petit up-note" id="upNote" hidden></p></section>';
+      '<p class="petit up-note" id="upNote" hidden></p></div>';
   }
 
   function chatBlock(o) {
@@ -310,34 +316,36 @@ function initCabinet() {
     var feed = items.map(function (i) {
       if (i.sys) return '<div class="chat-sys petit">' + esc(i.text) + ' · ' + dt(i.at) + '</div>';
       var body = i.text ? esc(i.text) : '';
-      if (!body && i.kind && i.kind !== 'text') body = '📎 ' + (i.file ? esc(i.file) : 'вложение (см. «Файлы» или Telegram)');
-      else if (i.file) body += '<br>📎 ' + esc(i.file);
+      if (!body && i.kind && i.kind !== 'text') body = '\u2758 вложение: ' + (i.file ? esc(i.file) : 'см. раздел «Файлы» или Telegram');
+      else if (i.file) body += '<br>\u2758 ' + esc(i.file);
       return '<div class="chat-m' + (i.me ? ' me' : '') + '">' +
         '<span class="chat-who caps">' + (i.me ? 'Вы' : 'Мастерская') + '</span>' +
         '<span class="chat-txt">' + body + '</span>' +
         '<span class="chat-at petit">' + dt(i.at) + '</span></div>';
     }).join('');
-    return '<section class="cab-chat reveal"><div class="stage-head"><span class="caps">Переписка по заказу</span>' +
-      '<span class="petit">видна и в Telegram-боте</span></div>' +
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Переписка по заказу</span>' +
+      '<span class="fs-meta">синхронно с Telegram</span></div>' +
       '<div class="chat-feed" id="chatFeed">' + (feed || '<p class="petit" style="text-align:center">Пока тихо. Напишите первым — мастер ответит здесь и в боте.</p>') + '</div>' +
       '<div class="chat-form"><textarea id="chatText" rows="2" maxlength="3000" placeholder="Сообщение мастеру…"></textarea>' +
-      '<button type="button" class="btn btn-wax" id="chatSend">Отправить</button></div></section>';
+      '<button type="button" class="btn btn-wax" id="chatSend">Отправить</button></div></div>';
   }
 
+  var STAMP_TONE = { priced: 's-act', prepay: 's-act', check: 's-act', fix: 's-act',
+                     done: 's-done', cancel: 's-mute' };
   function tplDetail() {
     var o = st.detail;
     var meta = [];
     if (o.deadline_text) meta.push('срок: ' + esc(o.deadline_text));
     meta.push('заявка от ' + dt(o.created_at));
     return userRow() + tplSwitch() +
-      '<article class="sheet sheet-pad stacked reveal" aria-label="Формуляр заказа ' + esc(o.no) + '">' +
-      '<div class="ord-top"><span class="mono ord-no">Заказ ' + esc(o.no) + '</span>' +
-      '<span class="tag tag-ink">' + esc(o.status_emoji) + ' ' + esc(o.status_label) + '</span></div>' +
+      '<article class="sheet sheet-pad stacked reveal form-sheet" aria-label="Дело заказа ' + esc(o.no) + '">' +
+      '<div class="ord-top"><span class="mono ord-no">Дело ' + esc(o.no) + '</span>' +
+      '<span class="ord-stamp ' + (STAMP_TONE[o.status] || '') + '">' + esc(o.status_label) + '</span></div>' +
       '<h2 class="ord-type">' + esc(o.work_label || '') + '</h2>' +
       (o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
       '<p class="petit">' + meta.join(' · ') + '</p>' +
-      priceBlock(o) + stageRows(o) + '</article>' +
-      actionsBlock(o) + filesBlock(o) + chatBlock(o) +
+      priceBlock(o) + stageRows(o) +
+      actionsBlock(o) + filesBlock(o) + chatBlock(o) + '</article>' +
       '<p class="petit cab-foot-sync">Кабинет и Telegram-бот — одна картотека: что бы ни изменилось, вы увидите это в обоих местах. ' +
       'Бот: <a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">@academic_saloon_bot</a></p>';
   }
