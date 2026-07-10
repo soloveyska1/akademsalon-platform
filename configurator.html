@@ -614,6 +614,8 @@ function initConf() {
   /* --- навигация по шагам --- */
   function go(i, focus) {
     idx = Math.max(0, Math.min(3, i));
+    if (idx > 0 && !go.g1) { go.g1 = 1; if (S.metrika) S.metrika.goal('calc_started'); }
+    if (idx === 3 && !go.g4) { go.g4 = 1; if (S.metrika) S.metrika.goal('calc_step4'); }
     steps.forEach(function (el, n) { el.classList.toggle('active', n === idx); });
     wpLbl.textContent = 'Шаг ' + (idx + 1) + ' из 4';
     wpFill.style.width = ((idx + 1) * 25) + '%';
