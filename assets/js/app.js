@@ -17,7 +17,7 @@
       { id: 'diplom',     label: 'Дипломная работа / ВКР',                         base: 40000 },
       { id: 'master',     label: 'Магистерская диссертация',                       base: 60000 },
       { id: 'chapter',    label: 'Глава диссертации',                              base: 30000 },
-      { id: 'kandidat',   label: 'Кандидатская под ключ',                          base: 200000 },
+      { id: 'kandidat',   label: 'Кандидатская (по главам)',                          base: 200000 },
       { id: 'course',     label: 'Курсовая теоретическая',                         base: 14000 },
       { id: 'course_emp', label: 'Курсовая эмпирическая (с практикой, расчётами)', base: 20000 },
       { id: 'practice',   label: 'Отчёт по практике',                              base: 14000 },
