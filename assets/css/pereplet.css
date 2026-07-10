@@ -459,13 +459,30 @@ a.dotrow:hover .dr-val{color:var(--wax)}
 .cat-more>span:first-child{font-weight:500}
 .cat-more .dr-val{color:var(--wax)}
 
-/* статичный (мобильный / no-JS / reduced-motion) вид процесса */
+/* статичный (мобильный / no-JS / reduced-motion) вид процесса.
+   Это не «деградация», а полноценный второй вид разворота: левая
+   страница прилипает как оглавление-рельс и ведёт по главам справа. */
 body:not(.enhanced) .proc-track{height:auto}
 body:not(.enhanced) .proc-right{min-height:0;display:flex;flex-direction:column}
 body:not(.enhanced) .proc-sheet{position:relative;inset:auto;border-bottom:1px solid var(--hairline);padding-top:26px;padding-bottom:26px;justify-content:flex-start}
 body:not(.enhanced) .proc-sheet:last-child{border-bottom:0}
 body:not(.enhanced) .proc-sheet .sh-folio{display:none}
 body:not(.enhanced) .proc-sheet .sh-ghost{font-size:140px;right:6px}
+@media(min-width:881px){
+  body:not(.enhanced) .proc-grid{align-items:start}
+  body:not(.enhanced) .proc-left{position:sticky;top:84px}
+  body:not(.enhanced) .pay-strip{margin-top:var(--s2)}
+  body:not(.enhanced) .proc-toc .pt-row{cursor:pointer}
+  body:not(.enhanced) .proc-toc .pt-row:hover{color:var(--ink)}
+  body:not(.enhanced) .proc-sheet{
+    min-height:0;justify-content:center;
+    padding-top:clamp(38px,6vh,64px);padding-bottom:clamp(38px,6vh,64px);
+  }
+  body:not(.enhanced) .proc-sheet .sh-ghost{
+    font-size:clamp(150px,15vw,230px);right:clamp(10px,2.2vw,32px);
+    top:50%;transform:translateY(-52%);
+  }
+}
 @media(max-width:880px){
   .proc-grid{grid-template-columns:1fr}
   .proc-grid::before{display:none}

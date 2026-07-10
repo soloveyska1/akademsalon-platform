@@ -220,6 +220,25 @@
       });
     });
 
+    /* статичный вид: подсветка текущей главы в оглавлении — без движения,
+       только смена класса, поэтому живёт и при prefers-reduced-motion.
+       Нарочно без rAF: слушатель прямой, чтобы работать даже там, где
+       кадры анимации задушены энергосбережением. Четыре замера — копейки. */
+    function spyStatic() {
+      if (enhanced()) return;                /* сценой правит листающий джоб */
+      var mid = window.innerHeight / 2, current = 0;
+      for (var i = 0; i < n; i++) {
+        if (sheets[i].getBoundingClientRect().top <= mid) current = i;
+      }
+      rows.forEach(function (row, j) {
+        row.classList.toggle('active', j === current);
+        row.classList.toggle('done', j < current);
+      });
+    }
+    window.addEventListener('scroll', spyStatic, { passive: true });
+    window.addEventListener('resize', spyStatic, { passive: true });
+    spyStatic();
+
     if (!animate) return;
 
     jobs.push(function () {
