@@ -426,6 +426,112 @@
     window.addEventListener('pagehide', function () { clearTimeout(dwell); });
   })();
 
+  /* ---------------- Живые уведомления о заказе ----------------
+     Клиент ходит по сайту, а дело сдвинулось (цена, статус, сообщение) —
+     показываем аккуратный «лист» в углу с мягким колокольчиком и ссылкой
+     в кабинет. Кабинет сам себе источник правды — там поллер не нужен. */
+  (function liveOrders() {
+    if (QUIET_PAGES[here] || here === 'dashboard.html') return;
+    if (!S.api || !S.api.identified || !S.api.identified()) return;
+
+    var EVENT_TEXT = {
+      priced: function (o) {
+        return 'Мастер назвал цену' + (o.price ? ' — ' + o.price.toLocaleString('ru-RU') + ' ₽' : '') + '. Решение за вами.';
+      },
+      prepay: function () { return 'Ожидаем предоплату — реквизиты в кабинете.'; },
+      work:   function () { return 'Оплата получена — работа взята в производство.'; },
+      check:  function () { return 'Работа готова! Посмотрите и примите её.'; },
+      fix:    function () { return 'Ваши замечания приняты — вносим правки.'; },
+      done:   function () { return 'Заказ завершён. Мы на связи до защиты!'; },
+      cancel: function () { return 'Заявка закрыта — возобновить можно в кабинете.'; },
+      msg:    function () { return 'Новое сообщение мастера — ответ ждёт в переписке.'; },
+      newo:   function () { return 'Заявка принята — мастер уже изучает её.'; }
+    };
+
+    /* мягкий двухнотный колокольчик; звук возможен только после жеста */
+    var canSound = false, actx = null;
+    ['pointerdown', 'keydown'].forEach(function (ev) {
+      document.addEventListener(ev, function () { canSound = true; }, { once: true, passive: true });
+    });
+    function chime() {
+      if (!canSound) return;
+      try {
+        actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+        if (actx.state === 'suspended') actx.resume();
+        var t0 = actx.currentTime;
+        [[880, 0, 0.9], [1318.5, 0.11, 1.1]].forEach(function (n) {
+          var o = actx.createOscillator(), g = actx.createGain();
+          o.type = 'sine';
+          o.frequency.value = n[0];
+          g.gain.setValueAtTime(0, t0 + n[1]);
+          g.gain.linearRampToValueAtTime(0.08, t0 + n[1] + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, t0 + n[1] + n[2]);
+          o.connect(g); g.connect(actx.destination);
+          o.start(t0 + n[1]); o.stop(t0 + n[1] + n[2] + 0.05);
+        });
+      } catch (e) {}
+    }
+
+    var shownNow = 0;
+    function showNote(o, kind) {
+      var make = EVENT_TEXT[kind];
+      if (!make || shownNow >= 2) return;
+      shownNow++;
+      var el = document.createElement('a');
+      el.className = 'onote';
+      el.href = 'dashboard.html';
+      el.setAttribute('role', 'status');
+      el.innerHTML =
+        '<span class="on-seal" aria-hidden="true">¶</span>' +
+        '<span class="on-body"><span class="on-cap">Дело ' + (o.no || '№' + o.id) + ' · Академический Салон</span>' +
+        '<b>' + make(o) + '</b>' +
+        '<span class="on-go">Открыть кабинет <span class="ar">→</span></span></span>' +
+        '<button type="button" class="on-x" aria-label="Закрыть">×</button>';
+      document.body.appendChild(el);
+      setTimeout(function () { el.classList.add('in'); }, 30); /* rAF замирает в фоне */
+      chime();
+      function gone() {
+        el.classList.remove('in');
+        setTimeout(function () { el.remove(); shownNow--; }, 350);
+      }
+      el.querySelector('.on-x').addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation(); gone();
+      });
+      setTimeout(gone, 12000);
+    }
+
+    function poll(silent) {
+      if (document.hidden) return;
+      var t = S.api.token(), g = S.api.guestTokens();
+      if (!t && !g.length) return;
+      S.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
+        if (!r || !r.ok || !r.orders) return;
+        var prev = S.store.get('salon_watch', null);
+        var first = prev === null;
+        prev = prev || {};
+        var next = {}, events = [];
+        r.orders.forEach(function (o) {
+          next[o.id] = { s: o.status, u: o.unread || 0 };
+          var p = prev[o.id];
+          if (!p) {
+            if (!first) events.push([o, 'newo']);
+            return;
+          }
+          if (p.s !== o.status) events.push([o, o.status === 'new' ? 'newo' : o.status]);
+          else if ((o.unread || 0) > (p.u || 0)) events.push([o, 'msg']);
+        });
+        S.store.set('salon_watch', next);
+        if (!silent && !first) events.slice(0, 2).forEach(function (ev) { showNote(ev[0], ev[1]); });
+      });
+    }
+
+    setTimeout(function () { poll(false); }, 2200);   /* при заходе на страницу */
+    setInterval(function () { poll(false); }, 90000); /* и раз в полторы минуты */
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) setTimeout(function () { poll(false); }, 800);
+    });
+  })();
+
   /* ---------------- Нудж «Сохраните доступ к делу» (гостевые заявки) ----------------
      Salon.orderNudge(container, token) — ссылка доступа к делу (главное,
      работает при любых блокировках) + необязательная привязка Telegram. */

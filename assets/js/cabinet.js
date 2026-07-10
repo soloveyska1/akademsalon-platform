@@ -20,6 +20,7 @@ function initCabinet() {
     emailTo: '',      // почта, на которую отправлен код входа
     ledgerOpen: false,
     ledger: null,     // журнал бонусов из /bonus
+    archOpen: false,  // развёрнут ли «Архив» в корешках
     timer: null,
     busy: false
   };
@@ -266,18 +267,51 @@ function initCabinet() {
       '</div>' + led + '</div>';
   }
 
-  /* ---------------- список и карточка ---------------- */
+  /* ---------------- список и карточка ----------------
+     Порядок сам собой: активные дела — на виду, завершённые и отменённые
+     складываются в «Архив», отдельные можно скрыть совсем (локально). */
+  function isArch(o) { return o.status === 'done' || o.status === 'cancel'; }
+  function hiddenIds() {
+    var v = S.store.get('salon_hidden_orders', []);
+    return Array.isArray(v) ? v : [];
+  }
+  function visibleOrders() {
+    var hid = hiddenIds();
+    return st.orders.filter(function (o) { return hid.indexOf(o.id) < 0; });
+  }
+  function activeOrders() { return visibleOrders().filter(function (o) { return !isArch(o); }); }
+  function archOrders() { return visibleOrders().filter(isArch); }
+  function pickDefaultId() {
+    var act = activeOrders(), arch = archOrders();
+    if (act.length) return act[0].id;
+    if (arch.length) return arch[0].id;
+    return null;
+  }
+
+  function tabBtn(o) {
+    var on = o.id === st.currentId;
+    return '<button type="button" role="tab" class="ord-tab' + (on ? ' on' : '') + '" data-ord="' + o.id + '" aria-selected="' + on + '">' +
+      '<span class="ot-no">' + esc(o.no) + '</span>' +
+      '<span>' + esc(shortWork(o)) + ' · ' + esc(shortStatus(o)) + '</span>' +
+      (o.unread ? '<span class="ot-unread">' + o.unread + '</span>' : '') +
+      '</button>';
+  }
+
   function tplSwitch() {
-    if (st.orders.length < 2) return '';
-    return '<div class="ord-tabs reveal" role="tablist" aria-label="Ваши заказы">' +
-      st.orders.map(function (o) {
-        var on = o.id === st.currentId;
-        return '<button type="button" role="tab" class="ord-tab' + (on ? ' on' : '') + '" data-ord="' + o.id + '" aria-selected="' + on + '">' +
-          '<span class="ot-no">' + esc(o.no) + '</span>' +
-          '<span>' + esc(shortWork(o)) + ' · ' + esc(shortStatus(o)) + '</span>' +
-          (o.unread ? '<span class="ot-unread">' + o.unread + '</span>' : '') +
-          '</button>';
-      }).join('') + '</div>';
+    var act = activeOrders(), arch = archOrders(), hid = hiddenIds();
+    if (act.length + arch.length < 2 && !hid.length) return '';
+    var row = act.map(tabBtn).join('');
+    if (arch.length || hid.length) {
+      row += '<button type="button" class="ord-tab ot-arch' + (st.archOpen ? ' on' : '') + '" data-arch-toggle aria-expanded="' + !!st.archOpen + '">' +
+        '<span class="ot-no">🗂</span><span>Архив · ' + arch.length + '</span></button>';
+    }
+    var archRow = '';
+    if (st.archOpen && (arch.length || hid.length)) {
+      archRow = '<div class="ord-tabs ord-tabs-arch reveal">' + arch.map(tabBtn).join('') +
+        (hid.length ? '<button type="button" class="ord-tab ot-ghost" data-unhide>показать скрытые · ' + hid.length + '</button>' : '') +
+        '</div>';
+    }
+    return '<div class="ord-tabs reveal" role="tablist" aria-label="Ваши заказы">' + row + '</div>' + archRow;
   }
   function shortWork(o) {
     var w = o.work_label || '';
@@ -472,7 +506,11 @@ function initCabinet() {
       (o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
       '<p class="petit">' + meta.join(' · ') + '</p>' +
       priceBlock(o) + stageRows(o) +
-      actionsBlock(o) + filesBlock(o) + chatBlock(o) + accessBlock(o) + '</article>' +
+      actionsBlock(o) + filesBlock(o) + chatBlock(o) + accessBlock(o) +
+      (isArch(o) ? '<p class="petit" style="margin-top:clamp(20px,3vw,28px);padding-top:14px;border-top:1px solid var(--hairline)">' +
+        'Дело ' + (o.status === 'done' ? 'завершено' : 'закрыто') + ' и лежит в архиве. ' +
+        '<button type="button" class="linkbtn" data-hide-order>Скрыть из списка</button> — вернуть можно через «Архив → показать скрытые».</p>' : '') +
+      '</article>' +
       '<p class="petit cab-foot-sync">Всё по заказу живёт в этом кабинете. Привязан Telegram? Дублируем статусы и в бота: ' +
       '<a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">@academic_saloon_bot</a></p>';
   }
@@ -510,11 +548,27 @@ function initCabinet() {
     S.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
       if (!r.ok) { render(tplError()); return; }
       st.orders = r.orders || [];
+      watchSync();
       if (!st.orders.length) { render(tplEmpty()); return; }
-      if (!keepCurrent || !st.orders.some(function (o) { return o.id === st.currentId; }))
-        st.currentId = st.orders[0].id;
+      var visible = visibleOrders();
+      if (!visible.length) { st.archOpen = true; render(tplEmpty()); return; }
+      var current = visible.some(function (o) { return o.id === st.currentId; });
+      if (!keepCurrent || !current) st.currentId = pickDefaultId();
+      /* выбранный заказ лежит в архиве — раскроем корешки, чтобы он был виден */
+      var cur = st.orders.filter(function (o) { return o.id === st.currentId; })[0];
+      if (cur && isArch(cur)) st.archOpen = true;
       loadDetail();
     });
+  }
+
+  /* снапшот для «живых уведомлений» на остальных страницах сайта:
+     кабинет — источник правды, здесь всё уже увидено */
+  function watchSync() {
+    try {
+      var snap = {};
+      st.orders.forEach(function (o) { snap[o.id] = { s: o.status, u: 0 }; });
+      S.store.set('salon_watch', snap);
+    } catch (e) {}
   }
 
   function renderCurrent() {
@@ -647,13 +701,23 @@ function initCabinet() {
     var sess = S.api.token();
     if (sess && !t) h['Authorization'] = 'Bearer ' + sess;
     fetch(url, { method: 'POST', body: fd, headers: h })
-      .then(function (r) { return r.json(); })
+      .then(function (resp) {
+        if (resp.status === 413) throw new Error('too_big');
+        if (!resp.ok) throw new Error('http_' + resp.status);
+        return resp.json();
+      })
       .then(function (r) {
-        if (!r.ok) { if (note) note.textContent = 'Не получилось загрузить — попробуйте ещё раз или пришлите в боте.'; return; }
+        if (!r.ok) { if (note) note.textContent = 'Не получилось загрузить (' + (r.error || 'ошибка') + ') — попробуйте ещё раз.'; return; }
         if (note) note.textContent = 'Файл у мастера ✓';
         loadDetail();
       })
-      .catch(function () { if (note) note.textContent = 'Сеть прервалась — попробуйте ещё раз.'; });
+      .catch(function (err) {
+        if (note) note.textContent = err && err.message === 'too_big'
+          ? 'Файл не влез в лимит сервера — сожмите его или пришлите ссылкой в чате.'
+          : (err && /^http_/.test(err.message || '')
+            ? 'Сервер ответил ошибкой (' + err.message.slice(5) + ') — попробуйте ещё раз через минуту.'
+            : 'Сеть прервалась — проверьте интернет и попробуйте ещё раз.');
+      });
   }
 
   function doTgLogin(btn) {
@@ -680,6 +744,24 @@ function initCabinet() {
     var t = e.target;
     var sw = t.closest('button[data-ord]');
     if (sw) { st.currentId = parseInt(sw.getAttribute('data-ord'), 10); loadDetail(); return; }
+    if (t.closest('[data-arch-toggle]')) { st.archOpen = !st.archOpen; renderCurrent(); return; }
+    if (t.closest('[data-unhide]')) {
+      S.store.del('salon_hidden_orders');
+      toast('Скрытые заказы возвращены в архив');
+      loadList(true);
+      return;
+    }
+    if (t.closest('[data-hide-order]')) {
+      var hid = hiddenIds();
+      if (hid.indexOf(st.currentId) < 0) hid.push(st.currentId);
+      S.store.set('salon_hidden_orders', hid.slice(-50));
+      toast('Заказ скрыт из списка — вернуть: Архив → «показать скрытые»');
+      st.detail = null;
+      st.currentId = pickDefaultId();
+      if (st.currentId) loadDetail();
+      else loadList(true);
+      return;
+    }
     if (t.closest('#cabTg')) { doTgLogin(t.closest('#cabTg')); return; }
     if (t.closest('#cabEmailSend')) { emailSendCode(); return; }
     if (t.closest('#cabEmailGo')) { emailVerify(); return; }

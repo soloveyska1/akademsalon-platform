@@ -182,3 +182,40 @@
 .due-box .dr b{font-family:var(--mono);font-weight:600}
 .due-box .dr.total{border-top:1px solid var(--hairline);margin-top:6px;padding-top:8px;font-size:15px}
 .due-box .dr .minus{color:var(--verify)}
+
+/* ============ живое уведомление о заказе — «лист» в углу ============ */
+.onote{
+  position:fixed;right:clamp(16px,2.5vw,32px);bottom:88px;z-index:97;
+  display:flex;gap:12px;align-items:flex-start;
+  width:min(92vw,360px);padding:14px 16px;
+  background:var(--sheet);color:var(--ink);text-decoration:none;
+  border:1px solid var(--hairline-strong);border-left:3px solid var(--wax);
+  border-radius:var(--r);
+  box-shadow:0 2px 0 var(--hairline),0 18px 44px rgba(34,32,27,.28);
+  opacity:0;transform:translateY(14px) rotate(-.4deg);
+  transition:opacity .3s ease,transform .35s cubic-bezier(.22,1,.36,1);
+}
+.onote.in{opacity:1;transform:translateY(0) rotate(0)}
+.onote .on-seal{
+  flex:0 0 34px;height:34px;border:1.5px solid var(--wax);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:17px;color:var(--wax);
+  transform:rotate(-6deg);margin-top:2px;
+}
+.onote .on-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.onote .on-cap{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.onote b{font-size:14.5px;font-weight:500;line-height:1.45}
+.onote .on-go{font-size:12.5px;color:var(--wax);margin-top:2px}
+.onote:hover .on-go{text-decoration:underline}
+.onote .on-x{
+  flex:0 0 auto;border:0;background:none;color:var(--ink-faint);
+  font-size:17px;line-height:1;cursor:pointer;padding:2px 4px;margin:-4px -6px 0 0;
+}
+.onote .on-x:hover{color:var(--ink)}
+@media(max-width:880px){
+  .onote{right:12px;left:12px;width:auto;bottom:calc(74px + env(safe-area-inset-bottom))}
+}
+@media(prefers-reduced-motion:reduce){
+  .onote{transition:opacity .2s ease;transform:none}
+  .onote.in{transform:none}
+}

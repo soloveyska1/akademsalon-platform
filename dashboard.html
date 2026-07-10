@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260710f" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260710f" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260710f" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260710g" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260710g" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260710g" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -46,6 +46,12 @@
   .ord-tab.on{background:var(--sheet);color:var(--ink);border-color:var(--hairline-strong);position:relative}
   .ord-tab.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--sheet)}
   .ord-tab .ot-unread{font-family:var(--mono);font-size:10px;color:#FFFEF9;background:var(--wax);border-radius:9px;padding:1px 6px;align-self:center}
+  /* корешок и ряд «Архива»: приглушённые, пунктирные — как старые папки */
+  .ord-tab.ot-arch{border-style:dashed;color:var(--ink-faint)}
+  .ord-tab.ot-arch.on{background:var(--paper-2);color:var(--ink-soft);border-style:solid}
+  .ord-tabs-arch{margin-top:2px;margin-bottom:-1px}
+  .ord-tabs-arch .ord-tab{opacity:.85}
+  .ord-tab.ot-ghost{border-style:dashed;color:var(--ink-faint);background:transparent}
 
   /* шапка формуляра */
   .ord-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px 14px;flex-wrap:wrap;margin-bottom:14px}
@@ -175,8 +181,8 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260710f"></script>
-<script src="assets/js/extras.js?v=20260710f"></script>
-<script src="assets/js/cabinet.js?v=20260710f"></script>
+<script src="assets/js/app.js?v=20260710g"></script>
+<script src="assets/js/extras.js?v=20260710g"></script>
+<script src="assets/js/cabinet.js?v=20260710g"></script>
 </body>
 </html>
