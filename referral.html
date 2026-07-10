@@ -78,9 +78,12 @@
   .clb-note{margin-top:14px;font-size:13px;color:var(--ink-soft);line-height:1.6;max-width:70ch}
 
   /* --- приглашения --- */
-  .ref-steps .dotrow{font-size:15.5px;min-height:0}
-  .ref-steps .rs-no{font-family:var(--mono);font-size:12.5px;color:var(--wax);flex:0 0 26px}
-  .ref-steps small{color:var(--ink-soft);font-size:13px}
+  .ref-steps{position:relative;margin-bottom:18px}
+  .ref-steps::before{content:"";position:absolute;left:20px;top:26px;bottom:26px;width:1px;background:var(--hairline-strong)}
+  .rstep{display:flex;gap:16px;padding:13px 0;align-items:flex-start}
+  .rstep .rn{position:relative;z-index:1;flex:0 0 41px;height:41px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;color:var(--wax);border:1px solid var(--hairline-strong);border-radius:50%;background:var(--sheet)}
+  .rstep .rb b{display:block;font-size:16.5px;font-weight:500;margin-bottom:3px}
+  .rstep .rb small{font-size:13.5px;color:var(--ink-soft);line-height:1.55}
   .ref-example .lg-total{display:flex;justify-content:space-between;align-items:baseline;padding-top:14px;margin-top:2px;border-top:3px double var(--ink)}
 
   /* --- подписка --- */
@@ -192,9 +195,9 @@
       <div class="split">
         <div>
           <div class="ref-steps">
-            <div class="dotrow"><span class="rs-no">01</span><span>Берёте личную ссылку</span><span class="dots"></span><small>в боте — «💎 Мои бонусы», на сайте — кабинет → «Пригласить друга»</small></div>
-            <div class="dotrow"><span class="rs-no">02</span><span>Друг переходит и делает заказ</span><span class="dots"></span><small>ему +200 бонусов после первого заказа</small></div>
-            <div class="dotrow"><span class="rs-no">03</span><span>Вам — 5% бонусами</span><span class="dots"></span><small>с каждого его оплаченного заказа, всегда</small></div>
+            <div class="rstep"><span class="rn">01</span><div class="rb"><b>Берёте личную ссылку</b><small>в боте — «💎 Мои бонусы», на сайте — кабинет → «Пригласить друга»</small></div></div>
+            <div class="rstep"><span class="rn">02</span><div class="rb"><b>Друг переходит и делает заказ</b><small>ему +200 приветственных бонусов после первого заказа</small></div></div>
+            <div class="rstep"><span class="rn">03</span><div class="rb"><b>Вам — 5% бонусами</b><small>с каждого его оплаченного заказа — не разово, а всегда</small></div></div>
           </div>
           <p class="clb-note">Начисления — только с фактически оплаченных заказов. Приглашать самого себя и заводить фейковые аккаунты нельзя: такие бонусы аннулируются.</p>
         </div>

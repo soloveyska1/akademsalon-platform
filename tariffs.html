@@ -150,6 +150,12 @@
 
   /* § 06 — оплата и вопросы */
   .pay-block{margin-bottom:clamp(32px,5vw,52px)}
+  .pay-plates{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .pay-plate{padding:clamp(18px,2.4vw,26px);display:flex;flex-direction:column}
+  .pay-plate .pp-share{font-family:var(--mono);font-size:clamp(26px,3vw,36px);font-weight:600;color:var(--wax);letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+  .pay-plate b{font-size:15.5px;font-weight:500;margin:10px 0 3px}
+  .pay-plate small{font-size:13px;color:var(--ink-soft);line-height:1.5}
+  @media(max-width:640px){.pay-plates{grid-template-columns:1fr}}
   .pay-block .caps{display:block;margin-bottom:22px}
   .pay-note{margin-top:16px}
   .faq-wrap{max-width:760px}
@@ -480,10 +486,10 @@
 
       <div class="pay-block">
         <span class="caps">Дипломы, магистерские, главы диссертаций, Scopus — 30/40/30</span>
-        <div class="paysteps" style="--pay-n:3">
-          <div class="pstep"><span class="ps-share">30%</span><b>Старт</b><small>после согласования плана и сметы</small></div>
-          <div class="pstep"><span class="ps-share">40%</span><b>Середина</b><small>когда вы увидели основную часть</small></div>
-          <div class="pstep"><span class="ps-share">30%</span><b>Финал</b><small>после отчёта о проверках</small></div>
+        <div class="pay-plates">
+          <div class="pay-plate sheet stacked"><span class="pp-share">30%</span><b>Старт</b><small>после согласования плана и сметы — бронируем место и начинаем</small></div>
+          <div class="pay-plate sheet stacked"><span class="pp-share">40%</span><b>Середина</b><small>когда вы увидели основную часть текста своими глазами</small></div>
+          <div class="pay-plate sheet stacked"><span class="pp-share">30%</span><b>Финал</b><small>после отчёта о проверках — перед финальной выдачей</small></div>
         </div>
         <p class="petit pay-note">Для небольших работ — просто 50/50. Кандидатские считаем по главам.</p>
       </div>
