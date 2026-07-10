@@ -15,12 +15,15 @@ function initCabinet() {
     orders: [],       // список из /orders
     currentId: null,  // выбранный заказ
     detail: null,     // полная карточка из /orders/<id>
-    me: null,         // /me (бонусы, реф-ссылка) — только при tg-входе
+    me: null,         // /me (бонусы, реф-ссылка) — только при входе
+    features: null,   // /features (что включено на сервере), null = ещё не спрашивали
+    emailTo: '',      // почта, на которую отправлен код входа
     ledgerOpen: false,
     ledger: null,     // журнал бонусов из /bonus
     timer: null,
     busy: false
   };
+  var lastPending = null; // pending TG-входа — для перерисовки экрана входа
 
   /* печати и подписи для смен статуса — «красивые уведомления» */
   var STATUS_STAMP = {
@@ -74,11 +77,22 @@ function initCabinet() {
         '<div class="act-row"><a class="btn btn-wax" href="' + (pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Открыть Telegram</a>' +
         '<button type="button" class="btn btn-line" id="cabTgCancel">Отменить вход</button></div></div>'
       : '';
+    var emailBlock = '';
+    if (st.features && st.features.email_login) {
+      emailBlock = '<p class="caps" style="margin-bottom:8px">Вход по почте</p>' +
+        '<p class="petit" style="margin-bottom:10px">Пришлём 6-значный код — без паролей и мессенджеров.</p>' +
+        '<div class="act-row" id="cabEmailBox" style="margin-top:0;margin-bottom:18px">' +
+          '<input type="email" id="cabEmailIn" placeholder="you@mail.ru" autocomplete="email" ' +
+            'style="flex:2;min-width:0;font:inherit;font-size:14px;padding:10px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
+          '<button type="button" class="btn btn-wax" id="cabEmailSend" style="flex:1">Получить код</button>' +
+        '</div>';
+    }
     return '<div class="sheet sheet-pad stacked cab-login reveal">' +
       '<p class="caps">Вход в кабинет</p>' +
       '<h2 class="ord-type">Ваши заказы — здесь, на сайте</h2>' +
       '<p class="petit" style="margin-bottom:18px">Статусы, переписка с мастером и файлы живут в кабинете. ' +
       'Заказы этого устройства открываются сами — входить не нужно.</p>' +
+      emailBlock +
       '<p class="caps" style="margin-bottom:8px">Заказ с другого устройства</p>' +
       '<p class="petit" style="margin-bottom:10px">Вставьте ссылку доступа к делу — она была на экране «Заявка принята», её же можно скопировать в кабинете на том устройстве.</p>' +
       '<div class="act-row" style="margin-top:0;margin-bottom:18px">' +
@@ -94,6 +108,80 @@ function initCabinet() {
         '<a class="btn btn-wax" style="flex:1" href="configurator.html">Оформить первый заказ</a>' +
       '</div>' +
       '</div>';
+  }
+
+  /* ---------------- вход по почте: код на e-mail ---------------- */
+  var EMAIL_ERR = {
+    resend_wait: 'Код уже отправлен — новый можно запросить через минуту',
+    bad_email: 'Проверьте адрес почты',
+    send_failed: 'Не получилось отправить письмо — попробуйте позже',
+    email_off: 'Вход по почте пока не подключён',
+    wrong_code: 'Неверный код — проверьте письмо',
+    code_expired: 'Код устарел — запросите новый',
+    too_many_attempts: 'Слишком много попыток — запросите новый код',
+    rate_limit: 'Слишком часто — подождите минуту'
+  };
+
+  function emailSendCode() {
+    var inp = document.getElementById('cabEmailIn');
+    var email = inp ? inp.value.trim() : '';
+    if (!email || !(S.valid && S.valid.email(email))) {
+      toast('Введите почту — на неё придёт код входа');
+      if (inp) inp.focus();
+      return;
+    }
+    if (st.busy) return;
+    st.busy = true;
+    S.api.post('/auth/email/start', { email: email }).then(function (r) {
+      st.busy = false;
+      if (!r.ok) { toast(EMAIL_ERR[r.error] || 'Не получилось — попробуйте ещё раз'); return; }
+      st.emailTo = email;
+      var box = document.getElementById('cabEmailBox');
+      if (!box) return;
+      box.innerHTML =
+        '<input type="text" id="cabEmailCode" inputmode="numeric" maxlength="6" placeholder="Код из письма" ' +
+          'style="flex:2;min-width:0;font:inherit;font-size:14px;padding:10px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;letter-spacing:.2em">' +
+        '<button type="button" class="btn btn-wax" id="cabEmailGo" style="flex:1">Войти</button>';
+      box.insertAdjacentHTML('afterend',
+        '<p class="petit" id="cabEmailNote" style="margin:-8px 0 18px">Код отправлен на <b>' + esc(email) + '</b> — действует 10 минут. ' +
+        'Не пришёл? Проверьте «Спам» или <button type="button" class="linkbtn" id="cabEmailAgain">отправьте ещё раз</button>.</p>');
+      var code = document.getElementById('cabEmailCode');
+      if (code) code.focus();
+    });
+  }
+
+  function emailVerify() {
+    var inp = document.getElementById('cabEmailCode');
+    var code = inp ? inp.value.trim() : '';
+    if (!code || code.length < 6) { toast('Введите 6-значный код из письма'); if (inp) inp.focus(); return; }
+    if (st.busy) return;
+    st.busy = true;
+    S.api.post('/auth/email/verify', { email: st.emailTo, code: code }).then(function (r) {
+      st.busy = false;
+      if (!r.ok || !r.token) { toast(EMAIL_ERR[r.error] || 'Не получилось — попробуйте ещё раз'); return; }
+      S.api.setToken(r.token);
+      S.api.setUser(r.user || null);
+      var gt = S.api.guestTokens();
+      var fin = function () {
+        toast('Вы вошли' + (r.user && r.user.name ? ', ' + r.user.name : '') + ' ✓');
+        loadList();
+      };
+      if (gt.length) S.api.post('/orders/claim', { tokens: gt }).then(fin, fin);
+      else fin();
+    });
+  }
+
+  function emailAgain() {
+    var note = document.getElementById('cabEmailNote');
+    if (note) note.remove();
+    var box = document.getElementById('cabEmailBox');
+    if (!box) return;
+    box.innerHTML =
+      '<input type="email" id="cabEmailIn" placeholder="you@mail.ru" autocomplete="email" ' +
+        'style="flex:2;min-width:0;font:inherit;font-size:14px;padding:10px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
+      '<button type="button" class="btn btn-wax" id="cabEmailSend" style="flex:1">Получить код</button>';
+    var inp = document.getElementById('cabEmailIn');
+    if (inp) { inp.value = st.emailTo || ''; inp.focus(); }
   }
 
   /* открыть дело по ссылке доступа / коду (токен заказа) */
@@ -131,9 +219,10 @@ function initCabinet() {
   function userRow() {
     var u = S.api.user();
     if (S.api.token() && u) {
+      var chan = (u.id < 0) ? 'уведомления приходят на почту' : 'уведомления дублируются в бота';
       return '<div class="cab-id reveal"><span class="ci-dot"></span>' +
         '<span>Вы вошли как <b>' + esc(u.name || 'гость') + '</b>' + (u.username ? ' (@' + esc(u.username) + ')' : '') +
-        ' · уведомления дублируются в бота</span>' +
+        ' · ' + chan + '</span>' +
         '<span class="ci-act"><button type="button" class="linkbtn" id="cabLogout">выйти</button></span></div>' +
         bonusCard();
     }
@@ -389,14 +478,26 @@ function initCabinet() {
   }
 
   /* ---------------- загрузка данных ---------------- */
+  function ensureFeatures() {
+    if (st.features !== null) return;
+    st.features = false; /* запрошено — не дублируем */
+    S.api.get('/features').then(function (r) {
+      st.features = (r && r.ok) ? r : {};
+      /* экран входа уже на месте — дорисуем опцию почты */
+      if (!S.api.identified() && document.getElementById('cabTg')) render(tplLogin(lastPending));
+    });
+  }
+
   function loadList(keepCurrent) {
     var t = S.api.token(), g = S.api.guestTokens();
     if (!t && !g.length) {
       /* если вход уже запущен (в т.ч. до перезагрузки страницы) — продолжаем ловить */
       var pending = S.resumeTgLogin(
         function (u) { toast('Вы вошли' + (u && u.name ? ', ' + u.name : '') + ' ✓'); loadList(); },
-        function () { render(tplLogin(null)); });
+        function () { lastPending = null; render(tplLogin(null)); });
+      lastPending = pending;
       render(tplLogin(pending));
+      ensureFeatures();
       return;
     }
     if (t) {
@@ -580,6 +681,9 @@ function initCabinet() {
     var sw = t.closest('button[data-ord]');
     if (sw) { st.currentId = parseInt(sw.getAttribute('data-ord'), 10); loadDetail(); return; }
     if (t.closest('#cabTg')) { doTgLogin(t.closest('#cabTg')); return; }
+    if (t.closest('#cabEmailSend')) { emailSendCode(); return; }
+    if (t.closest('#cabEmailGo')) { emailVerify(); return; }
+    if (t.closest('#cabEmailAgain')) { emailAgain(); return; }
     if (t.closest('#cabClaimBtn')) { claimByCode((document.getElementById('cabClaimIn') || {}).value); return; }
     if (t.closest('[data-access-copy]')) {
       var atok = tokenFor(st.currentId);
@@ -678,6 +782,12 @@ function initCabinet() {
     }
     if (e.target && e.target.id === 'cabClaimIn' && e.key === 'Enter') {
       e.preventDefault(); claimByCode(e.target.value);
+    }
+    if (e.target && e.target.id === 'cabEmailIn' && e.key === 'Enter') {
+      e.preventDefault(); emailSendCode();
+    }
+    if (e.target && e.target.id === 'cabEmailCode' && e.key === 'Enter') {
+      e.preventDefault(); emailVerify();
     }
   });
 

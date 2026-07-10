@@ -790,6 +790,26 @@
     return 'https://akademsalon.ru/dashboard.html#claim=' + encodeURIComponent(token || '');
   };
 
+  /* Реферальная метка сайта (?ref=<код>): помним 30 дней, конфигуратор
+     передаёт её с заявкой — пригласившему идёт бонус по правилам клуба. */
+  (function () {
+    try {
+      var ref = new URLSearchParams(location.search).get('ref');
+      if (ref && /^-?\d{1,12}$/.test(ref)) {
+        Salon.store.set('salon_ref', { code: parseInt(ref, 10), ts: Date.now() });
+      }
+    } catch (e) {}
+  })();
+  Salon.refCode = function () {
+    var r = Salon.store.get('salon_ref', null);
+    if (!r || !r.code) return null;
+    if (Date.now() - (r.ts || 0) > 30 * 24 * 3600 * 1000) {
+      Salon.store.del('salon_ref');
+      return null;
+    }
+    return r.code;
+  };
+
   /* Вход через Telegram: код → t.me/бот?start=auth_<код> → поллинг → сессия.
      Код живёт в localStorage: страница может перезагрузиться или уйти в Telegram
      (мобильные!) — при возврате поллинг продолжится сам (Salon.resumeTgLogin).
