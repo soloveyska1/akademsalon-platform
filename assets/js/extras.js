@@ -186,9 +186,9 @@
         {
           sel: '.tg-pill, .mobile-cta',
           step: 'Шаг 4 · Связь',
-          title: 'Мы на связи в Telegram',
-          text: 'Вопросы, файлы и статусы заказа живут в одном чате с мастером. ' +
-                'Отвечаем быстро: обычно в течение 15–30 минут в рабочее время.'
+          title: 'Всё — на сайте, мессенджеры по желанию',
+          text: 'Заявка, файлы, переписка с мастером и статусы живут в личном кабинете на сайте. ' +
+                'Удобнее в мессенджере? Мы есть во ВКонтакте, MAX и Telegram — отвечаем обычно за 15–30 минут в рабочее время.'
         },
         {
           center: true,
@@ -426,22 +426,30 @@
     window.addEventListener('pagehide', function () { clearTimeout(dwell); });
   })();
 
-  /* ---------------- Нудж регистрации (для гостевых заявок) ---------------- */
-  /* Salon.tgNudge(container, claimLink) — мягкое предложение привязать Telegram */
-  S.tgNudge = function (container, claimLink) {
-    if (!container || container.querySelector('.nudge')) return;
+  /* ---------------- Нудж «Сохраните доступ к делу» (гостевые заявки) ----------------
+     Salon.orderNudge(container, token) — ссылка доступа к делу (главное,
+     работает при любых блокировках) + необязательная привязка Telegram. */
+  S.orderNudge = function (container, token) {
+    if (!container || container.querySelector('.nudge') || !token) return;
     var el = document.createElement('div');
     el.className = 'nudge';
+    var siteLink = S.claimLink ? S.claimLink(token) : '';
+    var tgLink = 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(token);
     el.innerHTML =
-      '<h4>Удобнее с Telegram — и 300 бонусов в подарок</h4>' +
-      '<p>Привяжите заказ к Telegram: статусы и файлы будут приходить прямо в чат, ' +
-      'заказ не потеряется при смене устройства, а новым гостям мы начисляем ' +
-      '300 бонусов на первый заказ. Это необязательно — заказ уже принят и без этого.</p>' +
+      '<h4>Сохраните доступ к делу</h4>' +
+      '<p>Заказ привязан к этому браузеру. Скопируйте секретную ссылку доступа — по ней дело ' +
+      'откроется на любом устройстве, мессенджеры не нужны. А если привяжете Telegram, статусы ' +
+      'придут и в бота, новым гостям там — 300 бонусов. И то и другое необязательно: заказ уже принят.</p>' +
       '<div class="n-row">' +
-        '<a class="btn btn-wax" target="_blank" rel="noopener">Привязать Telegram</a>' +
-        '<button type="button" class="n-later">Продолжить как гость</button>' +
+        '<button type="button" class="btn btn-wax" data-n-copy>Скопировать ссылку доступа</button>' +
+        '<a class="btn btn-line" target="_blank" rel="noopener" href="' + tgLink + '">Привязать Telegram</a>' +
+        '<button type="button" class="n-later">Позже</button>' +
       '</div>';
-    el.querySelector('a').href = claimLink || 'https://t.me/academic_saloon_bot';
+    el.querySelector('[data-n-copy]').addEventListener('click', function () {
+      if (S.copy) S.copy(siteLink).then(function (ok) {
+        if (S.toast) S.toast(ok ? 'Ссылка доступа скопирована — сохраните её себе' : 'Ссылка: ' + siteLink);
+      });
+    });
     el.querySelector('.n-later').addEventListener('click', function () {
       el.style.opacity = '0';
       setTimeout(function () { el.remove(); }, 300);

@@ -1,7 +1,9 @@
 /* ============================================================
-   ЛИЧНЫЙ КАБИНЕТ — живые заказы из общей с Telegram-ботом базы.
-   Вход через Telegram (Salon.tgLogin) или гостевой доступ по
-   токенам заказов (salon_tokens). Поллинг раз в 25 секунд.
+   ЛИЧНЫЙ КАБИНЕТ — заказы живут на сайте; Telegram-бот — зеркало
+   для тех, кто его привязал. Доступ: токены заказов этого
+   устройства (salon_tokens), ссылка доступа #claim=<токен>
+   с другого устройства или вход через Telegram (Salon.tgLogin).
+   Поллинг раз в 25 секунд.
    ============================================================ */
 function initCabinet() {
   'use strict';
@@ -74,18 +76,39 @@ function initCabinet() {
       : '';
     return '<div class="sheet sheet-pad stacked cab-login reveal">' +
       '<p class="caps">Вход в кабинет</p>' +
-      '<h2 class="ord-type">Ваши заказы — на сайте и в Telegram</h2>' +
-      '<p class="petit" style="margin-bottom:18px">Кабинет и бот работают с одной картотекой: статусы, переписка с мастером и файлы синхронны. ' +
-      'Вход занимает пару секунд — подтвердите его в нашем боте.</p>' +
-      pendingBlock +
-      (pending ? '' : '<button type="button" class="btn btn-wax btn-block" id="cabTg">Войти через Telegram <span class="ar">→</span></button>') +
-      '<p class="petit cab-login-hint" id="cabTgHint" hidden></p>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">' +
-        '<a class="btn btn-line" style="flex:1" href="configurator.html">Оформить первый заказ</a>' +
+      '<h2 class="ord-type">Ваши заказы — здесь, на сайте</h2>' +
+      '<p class="petit" style="margin-bottom:18px">Статусы, переписка с мастером и файлы живут в кабинете. ' +
+      'Заказы этого устройства открываются сами — входить не нужно.</p>' +
+      '<p class="caps" style="margin-bottom:8px">Заказ с другого устройства</p>' +
+      '<p class="petit" style="margin-bottom:10px">Вставьте ссылку доступа к делу — она была на экране «Заявка принята», её же можно скопировать в кабинете на том устройстве.</p>' +
+      '<div class="act-row" style="margin-top:0;margin-bottom:18px">' +
+        '<input type="text" id="cabClaimIn" placeholder="Ссылка доступа или код дела" style="flex:2;min-width:0;font:inherit;font-size:14px;padding:10px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
+        '<button type="button" class="btn btn-line" id="cabClaimBtn" style="flex:1">Открыть дело</button>' +
       '</div>' +
-      '<p class="petit" style="margin-top:14px;color:var(--ink-soft)">Оформляли заказ на этом устройстве без входа? Он появится здесь автоматически. ' +
-      'Входить нужно, только чтобы видеть заказы с других устройств и получать уведомления в Telegram.</p>' +
+      '<p class="caps" style="margin-bottom:8px">Или через Telegram</p>' +
+      pendingBlock +
+      (pending ? '' : '<button type="button" class="btn btn-line btn-block" id="cabTg">Войти через Telegram <span class="ar">→</span></button>') +
+      '<p class="petit cab-login-hint" id="cabTgHint" hidden></p>' +
+      '<p class="petit" style="margin:14px 0 0;color:var(--ink-soft)">Вход через Telegram привязывает заказы к аккаунту и дублирует уведомления в бота — это по желанию, кабинет полностью работает и без него.</p>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">' +
+        '<a class="btn btn-wax" style="flex:1" href="configurator.html">Оформить первый заказ</a>' +
+      '</div>' +
       '</div>';
+  }
+
+  /* открыть дело по ссылке доступа / коду (токен заказа) */
+  function claimByCode(raw) {
+    var s = String(raw == null ? '' : raw).trim();
+    var m = s.match(/(?:claim|token)=([A-Za-z0-9_-]+)/);
+    var tok = m ? m[1] : (/^[A-Za-z0-9_-]{16,}$/.test(s) ? s : '');
+    if (!tok) { toast('Не похоже на ссылку доступа — скопируйте её целиком'); return; }
+    S.api.get('/orders?tokens=' + encodeURIComponent(tok)).then(function (r) {
+      if (!r.ok) { toast('Не получилось связаться с картотекой — попробуйте ещё раз'); return; }
+      if (!(r.orders || []).length) { toast('По этому коду дело не нашлось — проверьте ссылку'); return; }
+      S.api.addGuestToken(tok);
+      toast('Дело открыто на этом устройстве ✓');
+      loadList();
+    });
   }
 
   function tplEmpty() {
@@ -93,7 +116,7 @@ function initCabinet() {
       '<div class="sheet sheet-pad stacked reveal" style="text-align:center">' +
       '<p class="caps">Картотека пуста</p>' +
       '<h2 class="ord-type">Заказов пока нет</h2>' +
-      '<p class="petit" style="margin-bottom:16px">Соберите смету в конфигураторе — заявка попадёт к мастеру мгновенно, а статус появится здесь и в боте.</p>' +
+      '<p class="petit" style="margin-bottom:16px">Соберите смету в конфигураторе — заявка попадёт к мастеру мгновенно, а статус появится прямо здесь.</p>' +
       '<a class="btn btn-wax" href="configurator.html">Рассчитать работу <span class="ar">→</span></a>' +
       '</div>';
   }
@@ -227,7 +250,8 @@ function initCabinet() {
     if (o.quote_low) {
       return '<div class="ord-price-row"><span class="caps">Вилка сметы</span>' +
         '<span class="mono ord-price">' + money(o.quote_low) + ' – ' + money(o.quote_high) + ' ₽</span></div>' +
-        '<p class="petit ord-price-note">Точную цену мастер назовёт после разбора заявки — уведомим здесь и в Telegram.</p>';
+        '<p class="petit ord-price-note">Точную цену мастер назовёт после разбора заявки — уведомим прямо здесь' +
+        (S.api.token() ? ' и в Telegram' : '') + '.</p>';
     }
     return '';
   }
@@ -324,10 +348,24 @@ function initCabinet() {
         '<span class="chat-at petit">' + dt(i.at) + '</span></div>';
     }).join('');
     return '<div class="fs-sec"><div class="fs-head"><span class="caps">Переписка по заказу</span>' +
-      '<span class="fs-meta">синхронно с Telegram</span></div>' +
-      '<div class="chat-feed" id="chatFeed">' + (feed || '<p class="petit" style="text-align:center">Пока тихо. Напишите первым — мастер ответит здесь и в боте.</p>') + '</div>' +
+      '<span class="fs-meta">' + (S.api.token() ? 'синхронно с Telegram' : 'мастер видит сразу') + '</span></div>' +
+      '<div class="chat-feed" id="chatFeed">' + (feed || '<p class="petit" style="text-align:center">Пока тихо. Напишите первым — мастер ответит прямо здесь.</p>') + '</div>' +
       '<div class="chat-form"><textarea id="chatText" rows="2" maxlength="3000" placeholder="Сообщение мастеру…"></textarea>' +
       '<button type="button" class="btn btn-wax" id="chatSend">Отправить</button></div></div>';
+  }
+
+  /* -------- доступ к делу: секретная ссылка для других устройств -------- */
+  function accessBlock(o) {
+    var t = tokenFor(o.id);
+    if (!t) return ''; /* заказы аккаунта открываются входом через Telegram */
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Доступ к делу</span>' +
+      '<span class="fs-meta">работает без входа</span></div>' +
+      '<p class="petit" style="margin-bottom:10px">Дело открывается на любом устройстве по секретной ссылке — сохраните её себе (заметки, «Избранное»). ' +
+      'Не пересылайте посторонним: у кого ссылка, тот видит дело. По желанию привяжите Telegram — статусы придут и в бота.</p>' +
+      '<div class="act-row" style="margin-top:0">' +
+      '<button type="button" class="btn btn-line" data-access-copy>Скопировать ссылку доступа</button>' +
+      '<a class="btn btn-line" href="https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(t) + '" target="_blank" rel="noopener">Привязать Telegram</a>' +
+      '</div></div>';
   }
 
   var STAMP_TONE = { priced: 's-act', prepay: 's-act', check: 's-act', fix: 's-act',
@@ -345,9 +383,9 @@ function initCabinet() {
       (o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
       '<p class="petit">' + meta.join(' · ') + '</p>' +
       priceBlock(o) + stageRows(o) +
-      actionsBlock(o) + filesBlock(o) + chatBlock(o) + '</article>' +
-      '<p class="petit cab-foot-sync">Кабинет и Telegram-бот — одна картотека: что бы ни изменилось, вы увидите это в обоих местах. ' +
-      'Бот: <a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">@academic_saloon_bot</a></p>';
+      actionsBlock(o) + filesBlock(o) + chatBlock(o) + accessBlock(o) + '</article>' +
+      '<p class="petit cab-foot-sync">Всё по заказу живёт в этом кабинете. Привязан Telegram? Дублируем статусы и в бота: ' +
+      '<a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">@academic_saloon_bot</a></p>';
   }
 
   /* ---------------- загрузка данных ---------------- */
@@ -497,7 +535,7 @@ function initCabinet() {
   function uploadFile(input) {
     var f = input.files && input.files[0];
     if (!f) return;
-    if (f.size > 20 * 1024 * 1024) { toast('Файл больше 20 МБ — пришлите его в Telegram-боте'); return; }
+    if (f.size > 20 * 1024 * 1024) { toast('Файл больше 20 МБ — отправьте его ссылкой (диск) в чате или через Telegram-бота'); return; }
     var note = document.getElementById('upNote');
     if (note) { note.hidden = false; note.textContent = 'Загружаем «' + f.name + '»…'; }
     var fd = new FormData();
@@ -542,6 +580,14 @@ function initCabinet() {
     var sw = t.closest('button[data-ord]');
     if (sw) { st.currentId = parseInt(sw.getAttribute('data-ord'), 10); loadDetail(); return; }
     if (t.closest('#cabTg')) { doTgLogin(t.closest('#cabTg')); return; }
+    if (t.closest('#cabClaimBtn')) { claimByCode((document.getElementById('cabClaimIn') || {}).value); return; }
+    if (t.closest('[data-access-copy]')) {
+      var atok = tokenFor(st.currentId);
+      if (atok && S.copy) S.copy(S.claimLink ? S.claimLink(atok) : atok).then(function (okc) {
+        toast(okc ? 'Ссылка доступа скопирована — сохраните её себе' : 'Не удалось скопировать — выделите ссылку вручную');
+      });
+      return;
+    }
     if (t.closest('#cabTgCancel')) { S.store.del('salon_auth_pending'); render(tplLogin(null)); return; }
     if (t.closest('#cabLogout')) { S.api.logout(); st.detail = null; loadList(); return; }
     if (t.closest('#cabRetry')) { loadList(); return; }
@@ -630,6 +676,9 @@ function initCabinet() {
     if (e.target && e.target.id === 'chatText' && e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
       e.preventDefault(); sendMessage();
     }
+    if (e.target && e.target.id === 'cabClaimIn' && e.key === 'Enter') {
+      e.preventDefault(); claimByCode(e.target.value);
+    }
   });
 
   document.addEventListener('visibilitychange', function () {
@@ -637,6 +686,16 @@ function initCabinet() {
   });
 
   /* ---------------- старт ---------------- */
+  /* ссылка доступа с другого устройства: #claim=<токен> (или ?claim=) */
+  try {
+    var claimTok = (location.hash.match(/claim=([A-Za-z0-9_-]+)/) ||
+                    location.search.match(/claim=([A-Za-z0-9_-]+)/) || [])[1];
+    if (claimTok) {
+      S.api.addGuestToken(claimTok);
+      history.replaceState(null, '', location.pathname);
+      toast('Дело добавлено на это устройство ✓');
+    }
+  } catch (e) {}
   /* возврат со страницы оплаты: ?paid=<id> — открываем заказ и обновляем */
   try {
     var paidId = new URLSearchParams(location.search).get('paid');
@@ -649,15 +708,14 @@ function initCabinet() {
   loadList();
   startPolling();
 
-  /* гостям с заказом — мягкое предложение привязать Telegram (раз за сессию) */
+  /* гостям с заказом — раз за сессию напоминаем сохранить доступ к делу */
   setTimeout(function () {
     try {
       if (S.api.token() || sessionStorage.getItem('salon_nudged') === '1') return;
       var tokenized = st.orders.filter(function (o) { return o.token; });
-      if (!tokenized.length || !S.tgNudge) return;
+      if (!tokenized.length || !S.orderNudge) return;
       sessionStorage.setItem('salon_nudged', '1');
-      var link = 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(tokenized[0].token);
-      S.tgNudge(root, link);
+      S.orderNudge(root, tokenized[0].token);
     } catch (e) {}
   }, 2600);
 }

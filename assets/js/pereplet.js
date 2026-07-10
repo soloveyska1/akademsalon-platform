@@ -109,7 +109,9 @@
     });
   }
 
-  /* ---------------- СМЕТА: плашки → расчёт → Telegram ---------------- */
+  /* ---------------- СМЕТА: плашки → расчёт → заявка на сайте ----------------
+     Главная кнопка ведёт в конфигуратор (черновик переносит выбор),
+     Telegram-бот — запасная ссылка для тех, кому привычнее там. */
   (function () {
     var C = window.SalonCalc;
     var root = document.getElementById('smeta');
@@ -122,7 +124,8 @@
     var rowBase = document.getElementById('qBase');
     var rowDisc = document.getElementById('qDisc');
     var rowTerm = document.getElementById('qTerm');
-    var tgBtn = document.getElementById('qSend');
+    var siteBtn = document.getElementById('qSend');
+    var tgAlt = document.getElementById('qSendTg');
     var cfgBtn = document.getElementById('qFull');
 
     /* пока калькулятор жив, дубль цены для AT скрыт — озвучивает live-регион;
@@ -153,7 +156,7 @@
         void priceEl.offsetWidth;                    /* перезапуск анимации */
         priceEl.classList.add('restamp');
       }
-      if (tgBtn && window.SalonBotLink) tgBtn.href = window.SalonBotLink(state);
+      if (tgAlt && window.SalonBotLink) tgAlt.href = window.SalonBotLink(state);
     }
 
     function selectPlate(key, value) {
@@ -179,7 +182,8 @@
     });
 
     if (cfgBtn) cfgBtn.addEventListener('click', saveDraft);
-    if (tgBtn) tgBtn.addEventListener('click', saveDraft);
+    if (siteBtn) siteBtn.addEventListener('click', saveDraft);
+    if (tgAlt) tgAlt.addEventListener('click', saveDraft);
     render(true);
 
     /* строки оглавления: выбирают тип и ведут к смете */

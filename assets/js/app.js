@@ -57,12 +57,13 @@
   window.SalonCalc = SalonCalc;
 
   /* ---------------- Контакты (единственный источник ссылок) ----------------
-     Сайт НЕ собирает и НЕ хранит персональные данные: заявка уходит
-     в мессенджер, где отвечает человек/бот. На сайте — только ссылки. */
+     Главная площадка — сам сайт: конфигуратор и кабинет. Мессенджеры —
+     по желанию клиента; порядок каналов: ВК → MAX → Telegram. */
   var LINKS = window.SalonLinks = {
     bot:   'https://t.me/academic_saloon_bot',   // бот: заявки, расчёт, статусы
     human: 'https://t.me/academicsaloon',        // личка: отвечает человек
     vk:    'https://vk.com/academicsaloon',      // сообщество ВКонтакте
+    vkm:   'https://vk.me/academicsaloon',       // диалог с сообществом ВК
     max:   'https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs' // канал в MAX
   };
   /* монограмма мессенджера MAX — рисуем сами в тоне сайта (без чужих ассетов) */
@@ -267,7 +268,8 @@
     email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); },
     phone: function (v) { return v.replace(/\D/g, '').length === 11; },
     telegram: function (v) { return /^@\w{4,}$/.test(v); },
-    contact: function (v) { return Salon.valid.phone(v) || Salon.valid.telegram(v) || Salon.valid.email(v); }
+    vk: function (v) { return /^(https?:\/\/)?(m\.)?(vk\.com|vk\.me)\/[A-Za-z0-9_.]{2,}$/i.test(v.trim()); },
+    contact: function (v) { return Salon.valid.phone(v) || Salon.valid.telegram(v) || Salon.valid.email(v) || Salon.valid.vk(v); }
   };
   Salon.btnLoading = function (btn, on, txt) {
     if (on) { btn.dataset._t = btn.innerHTML; btn.disabled = true; btn.classList.add('is-loading');
@@ -383,9 +385,10 @@
         '<div class="toc-side">' +
           '<div><span class="toc-grp-t">Документы</span><nav class="toc-docs" aria-label="Правовые документы">' + docRows + '</nav></div>' +
           '<div><span class="toc-grp-t">Связь</span><div class="toc-contacts">' +
-            '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span>Бот · заявки и расчёт</span><span class="tc-v">@academic_saloon_bot</span></a>' +
-            '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span>Написать человеку</span><span class="tc-v">@academicsaloon</span></a>' +
-            '<a href="' + LINKS.vk + '" target="_blank" rel="noopener"><span>ВКонтакте</span><span class="tc-v">vk.com/academicsaloon</span></a>' +
+            '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener"><span>ВКонтакте · написать</span><span class="tc-v">vk.me/academicsaloon</span></a>' +
+            '<a href="' + LINKS.max + '" target="_blank" rel="noopener"><span>MAX · канал</span><span class="tc-v">Академический Салон</span></a>' +
+            '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span>Telegram · человек</span><span class="tc-v">@academicsaloon</span></a>' +
+            '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span>Telegram · бот</span><span class="tc-v">@academic_saloon_bot</span></a>' +
           '</div></div>' +
           '<div class="toc-theme-row"><span class="ttr-lbl" data-theme-label>Светлая тема</span>' + Salon.themeToggleHTML() + '</div>' +
           '<a class="btn btn-wax btn-block btn-lg toc-cta" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>' +
@@ -501,16 +504,16 @@
         '<div class="co-para" aria-hidden="true">¶</div>' +
         '<h2>Узнайте точную стоимость за минуту</h2>' +
         '<p class="co-line">Набрано вручную · сверстано без шаблонов · 1000+ работ</p>' +
-        '<a class="btn btn-wax" href="' + LINKS.bot + '" target="_blank" rel="noopener">Написать в Telegram<span class="visually-hidden"> (откроется в новом окне)</span> <span class="ar">→</span></a>' +
-        '<p class="co-alt">Или лично: <a href="' + LINKS.human + '" target="_blank" rel="noopener">@academicsaloon<span class="visually-hidden"> (откроется в новом окне)</span></a> · Оценка бесплатна — решение остаётся за вами</p>' +
+        '<a class="btn btn-wax" href="configurator.html">Рассчитать и оформить на сайте <span class="ar">→</span></a>' +
+        '<p class="co-alt">Или напишите, где удобнее: <a href="' + LINKS.vkm + '" target="_blank" rel="noopener">ВКонтакте<span class="visually-hidden"> (откроется в новом окне)</span></a> · <a href="' + LINKS.max + '" target="_blank" rel="noopener">MAX<span class="visually-hidden"> (откроется в новом окне)</span></a> · <a href="' + LINKS.human + '" target="_blank" rel="noopener">Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a> — оценка бесплатна, решение остаётся за вами</p>' +
       '</div>' +
       '<div class="foot-cols">' +
         '<div class="fc-brand">' + brandHTML() +
           '<div class="foot-contacts">' +
-            '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span class="fco-l">Бот · заявки и расчёт</span><span class="fco-v">@academic_saloon_bot</span></a>' +
-            '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span class="fco-l">Написать человеку</span><span class="fco-v">@academicsaloon</span></a>' +
-            '<a href="' + LINKS.vk + '" target="_blank" rel="noopener"><span class="fco-l">Сообщество ВКонтакте</span><span class="fco-v">vk.com/academicsaloon</span></a>' +
+            '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener"><span class="fco-l">ВКонтакте · написать</span><span class="fco-v">vk.me/academicsaloon</span></a>' +
             '<a href="' + LINKS.max + '" target="_blank" rel="noopener"><span class="fco-l">Канал в MAX</span><span class="fco-v">max.ru — Академический Салон</span></a>' +
+            '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span class="fco-l">Telegram · человек</span><span class="fco-v">@academicsaloon</span></a>' +
+            '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span class="fco-l">Telegram · бот, если удобнее</span><span class="fco-v">@academic_saloon_bot</span></a>' +
           '</div>' +
         '</div>' +
         '<div><div class="fc-h">Разделы</div><nav class="foot-links" aria-label="Карта сайта">' +
@@ -541,12 +544,18 @@
     document.body.appendChild(footer);
   }
 
-  /* ---------------- Плавающий Telegram (десктоп) ---------------- */
+  /* ---------------- Плавающая пилюля связи (десктоп) ----------------
+     Открывает лист каналов: сайт → ВК → MAX → Telegram. */
   if (!document.querySelector('.tg-pill') && here !== 'configurator.html' && here !== '404.html') {
     var pill = document.createElement('a');
     pill.className = 'tg-pill';
-    pill.href = LINKS.bot; pill.target = '_blank'; pill.rel = 'noopener';
-    pill.innerHTML = '<span class="tp-dot" aria-hidden="true"></span>Telegram<span class="visually-hidden"> (откроется в новом окне)</span>';
+    pill.href = '#';
+    pill.setAttribute('role', 'button');
+    pill.innerHTML = '<span class="tp-dot" aria-hidden="true"></span>Связаться';
+    pill.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (Salon.contact) Salon.contact();
+    });
     document.body.appendChild(pill);
   }
 
@@ -589,16 +598,20 @@
     var c = Salon.store.get('salon_consent', null);
     if (c && c.v >= 1) boot();
     else document.addEventListener('salon:consent', boot, { once: true });
-    /* цель: любой уход в Telegram — бот или личка */
+    /* цели: уходы в каналы — ВК, MAX, Telegram */
     document.addEventListener('click', function (e) {
-      var a = e.target.closest ? e.target.closest('a[href*="t.me/"]') : null;
-      if (a) Salon.metrika.goal('tg_click');
+      var a = e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a) return;
+      var h = a.getAttribute('href') || '';
+      if (h.indexOf('t.me/') > -1) Salon.metrika.goal('tg_click');
+      else if (h.indexOf('vk.com/') > -1 || h.indexOf('vk.me/') > -1) Salon.metrika.goal('vk_click');
+      else if (h.indexOf('max.ru/') > -1) Salon.metrika.goal('max_click');
     }, true);
   })();
 
-  /* ---------------- Лист связи (bot / человек / ВК) ----------------
-     Никакие данные не отправляются с сайта: открываем мессенджер,
-     где отвечает бот или человек. [data-msg] или [data-contact] — триггеры. */
+  /* ---------------- Лист связи (сайт → ВК → MAX → Telegram) ----------------
+     Главная дверь — конфигуратор на сайте: заявка, файлы и кабинет без
+     мессенджеров. Каналы — по желанию. [data-msg]/[data-contact] — триггеры. */
   (function () {
     var sheet, lastFocus;
     function build(opts) {
@@ -616,23 +629,27 @@
             '<button class="cs-x" type="button" aria-label="Закрыть" data-cs-close>×</button></div>' +
           '<p class="cs-lead">' + (opts.lead ||
             'Напишите тему и срок — бесплатно оценим объём и назовём цену. Решение останется за вами.') + '</p>' +
-          '<a class="cs-opt cs-opt--wax" href="' + order + '" target="_blank" rel="noopener">' +
+          '<a class="cs-opt cs-opt--wax" href="configurator.html">' +
             '<span class="cs-o-ic" aria-hidden="true">✎</span>' +
-            '<span class="cs-o-txt"><b>Оформить через бота</b><small>Расчёт, заявка и статус заказа — за пару минут</small></span>' +
+            '<span class="cs-o-txt"><b>Оформить заявку на сайте</b><small>Смета, файлы и кабинет — 2 минуты, без регистрации</small></span>' +
             '<span class="ar" aria-hidden="true">→</span></a>' +
-          '<a class="cs-opt" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
-            '<span class="cs-o-ic" aria-hidden="true">✆</span>' +
-            '<span class="cs-o-txt"><b>Написать человеку в Telegram</b><small>Ответим лично, обычно в течение пары часов</small></span>' +
-            '<span class="ar" aria-hidden="true">→</span></a>' +
-          '<a class="cs-opt" href="' + LINKS.vk + '" target="_blank" rel="noopener">' +
+          '<a class="cs-opt" href="' + LINKS.vkm + '" target="_blank" rel="noopener">' +
             '<span class="cs-o-ic" aria-hidden="true">ВК</span>' +
-            '<span class="cs-o-txt"><b>ВКонтакте</b><small>vk.com/academicsaloon</small></span>' +
+            '<span class="cs-o-txt"><b>Написать во ВКонтакте</b><small>Диалог с сообществом — отвечает человек</small></span>' +
             '<span class="ar" aria-hidden="true">→</span></a>' +
           '<a class="cs-opt" href="' + LINKS.max + '" target="_blank" rel="noopener">' +
             '<span class="cs-o-ic" aria-hidden="true">' + maxLogoSVG() + '</span>' +
-            '<span class="cs-o-txt"><b>Канал в MAX</b><small>новости и акции мастерской</small></span>' +
+            '<span class="cs-o-txt"><b>MAX</b><small>Канал мастерской — новости и связь</small></span>' +
             '<span class="ar" aria-hidden="true">→</span></a>' +
-          '<p class="cs-note">Переписка идёт в выбранном мессенджере; заказ можно оформить и на сайте — в <a href="configurator.html">конфигураторе</a>. Нажимая, вы принимаете <a href="oferta.html">оферту</a> и <a href="privacy.html">политику ПДн</a>.</p>' +
+          '<a class="cs-opt" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
+            '<span class="cs-o-ic" aria-hidden="true">✆</span>' +
+            '<span class="cs-o-txt"><b>Telegram — написать человеку</b><small>Лично, обычно отвечаем в течение пары часов</small></span>' +
+            '<span class="ar" aria-hidden="true">→</span></a>' +
+          '<a class="cs-opt" href="' + order + '" target="_blank" rel="noopener">' +
+            '<span class="cs-o-ic" aria-hidden="true">⚙</span>' +
+            '<span class="cs-o-txt"><b>Telegram-бот</b><small>Заявки и статусы — если привычнее в боте</small></span>' +
+            '<span class="ar" aria-hidden="true">→</span></a>' +
+          '<p class="cs-note">Заявка с сайта попадает мастеру напрямую, переписка и статусы — в <a href="dashboard.html">кабинете</a>. Нажимая, вы принимаете <a href="oferta.html">оферту</a> и <a href="privacy.html">политику ПДн</a>.</p>' +
         '</div>';
       return el;
     }
@@ -765,6 +782,12 @@
     get: function (p) { return Salon.api.req('GET', p); },
     post: function (p, b) { return Salon.api.req('POST', p, b || {}); },
     logout: function () { Salon.api.setToken(null); Salon.api.setUser(null); }
+  };
+
+  /* Ссылка доступа к делу: открывает заказ на любом устройстве без входа.
+     Токен — тот же, что в salon_tokens; кабинет ловит #claim= при загрузке. */
+  Salon.claimLink = function (token) {
+    return 'https://akademsalon.ru/dashboard.html#claim=' + encodeURIComponent(token || '');
   };
 
   /* Вход через Telegram: код → t.me/бот?start=auth_<код> → поллинг → сессия.

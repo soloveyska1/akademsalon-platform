@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/pereplet.css?v=20260710d" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260710d" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260710d" />
+<link rel="stylesheet" href="assets/css/pereplet.css?v=20260710e" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260710e" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260710e" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -52,7 +52,7 @@
               <p class="price-line"><span>диплом <b>от 40 000 ₽</b></span><span>курсовая <b>от 14 000 ₽</b></span><span>статья <b>от 9 000 ₽</b></span></p>
               <div class="cover-cta">
                 <a class="btn btn-wax" href="#smeta">Рассчитать стоимость <span class="ar">→</span></a>
-                <a class="btn btn-line" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Написать в Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a>
+                <button type="button" class="btn btn-line" data-contact="1">Связаться — ВК · MAX · Telegram</button>
               </div>
               <p class="cover-note">6 лет практики · 1000+ работ доведено до приёмки · оплата по этапам</p>
             </div>
@@ -129,10 +129,10 @@
           </div>
           <div class="cat-group">
             <span class="caps">Отдельные услуги</span>
-            <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_ai" target="_blank" rel="noopener"><span>Чистка текста от следов ИИ</span><span class="dots"></span><span class="dr-val">от 2 500 ₽</span></a>
-            <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_rv" target="_blank" rel="noopener"><span>Разбор готовой работы</span><span class="dots"></span><span class="dr-val">от 2 500 ₽</span></a>
-            <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_nm" target="_blank" rel="noopener"><span>Нормоконтроль, оформление</span><span class="dots"></span><span class="dr-val">от 5 000 ₽</span></a>
-            <a class="dotrow" href="https://t.me/academic_saloon_bot?start=web_tu" target="_blank" rel="noopener"><span>Репетиторство, консультации</span><span class="dots"></span><span class="dr-val">от 3 000 ₽/час</span></a>
+            <a class="dotrow" href="configurator.html?service=ai"><span>Чистка текста от следов ИИ</span><span class="dots"></span><span class="dr-val">от 2 500 ₽</span></a>
+            <a class="dotrow" href="configurator.html?service=rv"><span>Разбор готовой работы</span><span class="dots"></span><span class="dr-val">от 2 500 ₽</span></a>
+            <a class="dotrow" href="configurator.html?service=nm"><span>Нормоконтроль, оформление</span><span class="dots"></span><span class="dr-val">от 5 000 ₽</span></a>
+            <a class="dotrow" href="configurator.html?service=tu"><span>Репетиторство, консультации</span><span class="dots"></span><span class="dr-val">от 3 000 ₽/час</span></a>
           </div>
           <a class="dotrow cat-more" href="tariffs.html"><span>Полный каталог: вилки цен, уровни, примеры</span><span class="dots"></span><span class="dr-val">11 типов →</span></a>
           <p class="petit" style="margin-top:14px">Итог считается по открытой формуле: тип × направление × срок.</p>
@@ -150,7 +150,7 @@
 
         <div class="page page-l">
           <h2 class="press-h" style="margin-bottom:16px">Три вопроса — и цена</h2>
-          <p class="lead" style="margin-bottom:32px">Без телефона и почты. Смета уходит в Telegram — дальше отвечает человек.</p>
+          <p class="lead" style="margin-bottom:32px">Без телефона и почты. Смета считается прямо здесь, заявка уходит мастеру с сайта.</p>
 
           <p class="plate-q"><span class="q-no">1.</span>Что за работа?</p>
           <div class="plates" data-plates="type" role="group" aria-label="Тип работы">
@@ -177,7 +177,7 @@
             <button type="button" data-v="mid" aria-pressed="false">14–30 дней</button>
             <button type="button" data-v="urgent" aria-pressed="false">До 14 дней</button>
           </div>
-          <noscript><p class="petit">Калькулятор работает при включённом JavaScript. Или просто напишите в <a class="link" href="https://t.me/academic_saloon_bot">Telegram</a> — посчитаем за минуту.</p></noscript>
+          <noscript><p class="petit">Калькулятор работает при включённом JavaScript. Или напишите нам: <a class="link" href="https://vk.me/academicsaloon">ВКонтакте</a> · <a class="link" href="https://t.me/academicsaloon">Telegram</a> — посчитаем за минуту.</p></noscript>
         </div>
 
         <div class="page page-r ledger-page">
@@ -193,8 +193,8 @@
           <div class="calc-seal" id="qSeal" aria-hidden="true"><span data-seal="ПРЕДВАРИТЕЛЬНАЯ СМЕТА · БАЗОВЫЙ УРОВЕНЬ · " data-seal-center="¶" data-seal-cls="seal--wax" data-seal-size="104"></span></div>
           <p class="calc-note">Это нижняя граница базового уровня. Точную цену под вашу тему назовём после короткого диалога — бесплатно; решение вы примете, уже зная точную цену.</p>
           <div class="calc-cta">
-            <a class="btn btn-wax btn-block" id="qSend" href="https://t.me/academic_saloon_bot?start=web" target="_blank" rel="noopener">Отправить смету в Telegram<span class="visually-hidden"> (откроется в новом окне)</span> <span class="ar">→</span></a>
-            <p class="petit">Смета уйдёт боту вместе с расчётом — без имён и телефонов. Новым пользователям — бонус 300 ₽.</p>
+            <a class="btn btn-wax btn-block" id="qSend" href="configurator.html?step=4">Оформить заявку на сайте <span class="ar">→</span></a>
+            <p class="petit">Расчёт сохранится — останется добавить тему и файлы, заявка уйдёт мастеру напрямую. Удобнее в Telegram? <a class="link" id="qSendTg" href="https://t.me/academic_saloon_bot?start=web" target="_blank" rel="noopener">Отправьте смету боту<span class="visually-hidden"> (откроется в новом окне)</span></a>.</p>
           </div>
         </div>
 
@@ -333,7 +333,7 @@
         <div class="bc-cta">
           <span class="bc-q">Начнём?</span>
           <a class="btn btn-wax" href="#smeta">Рассчитать стоимость <span class="ar">→</span></a>
-          <a class="btn btn-line" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Написать в Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a>
+          <button type="button" class="btn btn-line" data-contact="1">Связаться</button>
         </div>
       </div>
 
@@ -373,13 +373,13 @@
 <!-- Мобильная плашка: свой вариант, app.js не дублирует -->
 <div class="mobile-cta">
   <a class="btn btn-wax" href="#smeta">Рассчитать</a>
-  <a class="btn btn-line" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a>
+  <button type="button" class="btn btn-line" data-contact="1">Связаться</button>
 </div>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Академический Салон","description":"Помощь и сопровождение в подготовке академических работ: консультации, редактура, разбор, репетиторство, оформление по методичке. Оплата по этапам, отчёт о проверках до оплаты, правки до приёмки.","url":"https://akademsalon.ru/","image":"https://akademsalon.ru/assets/img/og-cover.png","areaServed":"RU","knowsLanguage":"ru","priceRange":"от 2500 ₽","sameAs":["https://t.me/academic_saloon_bot","https://vk.com/academicsaloon"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Академический Салон","description":"Помощь и сопровождение в подготовке академических работ: консультации, редактура, разбор, репетиторство, оформление по методичке. Оплата по этапам, отчёт о проверках до оплаты, правки до приёмки.","url":"https://akademsalon.ru/","image":"https://akademsalon.ru/assets/img/og-cover.png","areaServed":"RU","knowsLanguage":"ru","priceRange":"от 2500 ₽","sameAs":["https://vk.com/academicsaloon","https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs","https://t.me/academic_saloon_bot"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"А вдруг вуз решит, что текст написан нейросетью?","acceptedAnswer":{"@type":"Answer","text":"Текст пишет человек, а отчёт о проверках вы видите до оплаты. Гарантировать чужой детектор не может никто — на этот случай дорабатываем до приёмки."}},{"@type":"Question","name":"Я не рискую, платя вперёд?","acceptedAnswer":{"@type":"Answer","text":"Нет: первый платёж — после согласованного плана и сметы, каждый следующий — после показанного результата."}},{"@type":"Question","name":"Кто будет вести мою работу?","acceptedAnswer":{"@type":"Answer","text":"Профильный специалист вашего направления — сопровождает от плана до приёмки, без передачи между менеджерами и случайными исполнителями."}},{"@type":"Question","name":"Что, если руководитель вернёт работу с замечаниями?","acceptedAnswer":{"@type":"Answer","text":"Это обычная часть процесса, и она уже в стоимости. Смета не меняется, пока не меняются тема и объём."}},{"@type":"Question","name":"Почему у вас дороже, чем на биржах?","acceptedAnswer":{"@type":"Answer","text":"Биржа продаёт ставку анонимного исполнителя, мы — доведённый до защиты результат: напрямую, без комиссии площадки. Слишком низкая цена здесь — риск, переложенный на вас."}}]}</script>
-<script src="assets/js/app.js?v=20260710d"></script>
-<script src="assets/js/extras.js?v=20260710d"></script>
-<script src="assets/js/pereplet.js?v=20260710d"></script>
+<script src="assets/js/app.js?v=20260710e"></script>
+<script src="assets/js/extras.js?v=20260710e"></script>
+<script src="assets/js/pereplet.js?v=20260710e"></script>
 </body>
 </html>

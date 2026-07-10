@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260710d" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260710d" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260710d" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260710e" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260710e" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260710e" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -246,28 +246,28 @@
                 Заявка сразу привяжется к вашему кабинету — ответим здесь и в боте.</p>
               </div>
               <div id="ctGuest">
-                <button type="button" class="btn btn-line btn-block" id="tgLoginBtn" style="margin-bottom:12px">Войти через Telegram — статусы придут в бота</button>
-                <p class="caps" style="margin-bottom:8px">Или оставьте контакт</p>
+                <p class="caps" style="margin-bottom:8px">Как с вами связаться</p>
                 <div class="field">
                   <label for="fName">Как к вам обращаться · необязательно</label>
                   <input type="text" id="fName" maxlength="80" autocomplete="name" placeholder="Имя" />
                 </div>
                 <div class="field">
-                  <label for="fContact">Телефон, Telegram или почта</label>
-                  <input type="text" id="fContact" maxlength="120" autocomplete="tel" placeholder="+7 900 000-00-00 · @nickname · you@mail.ru" />
+                  <label for="fContact">Телефон, ВК, Telegram или почта</label>
+                  <input type="text" id="fContact" maxlength="120" autocomplete="tel" placeholder="+7 900 000-00-00 · @nickname · vk.com/id · you@mail.ru" />
                 </div>
                 <label class="petit" style="display:flex;gap:8px;align-items:flex-start;margin-bottom:14px;cursor:pointer">
                   <input type="checkbox" id="fConsent" style="margin-top:3px" />
                   <span>Согласен(на) на обработку данных для связи и выполнения заказа — <a class="link" href="consent.html" target="_blank">согласие</a> и <a class="link" href="privacy.html" target="_blank">политика ПДн</a></span>
                 </label>
+                <button type="button" class="btn btn-line btn-block" id="tgLoginBtn" style="margin-bottom:14px">Или войти через Telegram — без анкеты</button>
               </div>
 
               <button type="button" class="btn btn-wax btn-block" id="btnSubmit">Отправить заявку мастеру <span class="ar">→</span></button>
               <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-                <a class="btn btn-line" style="flex:1" href="https://t.me/academicsaloon" target="_blank" rel="noopener">Написать человеку</a>
-                <a class="btn btn-line" style="flex:1" href="https://vk.com/academicsaloon" target="_blank" rel="noopener">ВКонтакте</a>
+                <a class="btn btn-line" style="flex:1" href="https://vk.me/academicsaloon" target="_blank" rel="noopener">Написать во ВКонтакте</a>
+                <a class="btn btn-line" style="flex:1" href="https://t.me/academicsaloon" target="_blank" rel="noopener">В Telegram</a>
               </div>
-              <p class="petit mt-s wsubmit-note">Оценка бесплатна: мастер сразу получит заявку вместе с файлами, статус появится в <a class="link" href="dashboard.html">кабинете</a> и в Telegram. Решение вы принимаете, уже зная точную смету, — она фиксируется после разбора плана и не меняется по нашей инициативе.</p>
+              <p class="petit mt-s wsubmit-note">Оценка бесплатна: мастер сразу получит заявку вместе с файлами, статус и переписка появятся в <a class="link" href="dashboard.html">кабинете</a> на сайте — а если захотите, продублируем в мессенджер. Решение вы принимаете, уже зная точную смету, — она фиксируется после разбора плана и не меняется по нашей инициативе.</p>
             </div>
 
             <div class="wnav">
@@ -309,7 +309,7 @@
           <p class="caps" style="margin-bottom:4px">Что дальше</p>
           <ol class="done-steps">
             <li><span class="dn">1</span><span>Мастер изучит заявку — ответ обычно за 15–30 минут в рабочее время</span></li>
-            <li><span class="dn">2</span><span>Пришлём план и точную смету — в кабинет и в Telegram</span></li>
+            <li><span class="dn">2</span><span>Пришлём план и точную смету — в кабинет на сайте (и в мессенджер, если привяжете)</span></li>
             <li><span class="dn">3</span><span>Первый платёж — только после согласования плана</span></li>
           </ol>
           <div class="done-files" id="doneFiles" hidden>
@@ -318,9 +318,9 @@
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
             <a class="btn btn-wax" href="dashboard.html">Открыть кабинет <span class="ar">→</span></a>
-            <a class="btn btn-line" id="doneBot" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Продолжить в Telegram</a>
+            <a class="btn btn-line" id="doneBot" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Продублировать в Telegram</a>
           </div>
-          <p class="petit done-note">Заявка уже у мастера — статус и переписка ждут в кабинете на этой странице. Войдите через Telegram, чтобы уведомления приходили и в бота.</p>
+          <p class="petit done-note">Заявка уже у мастера — статус и переписка ждут в кабинете на сайте. Ниже — как не потерять доступ к делу.</p>
         </div>
       </div>
 
@@ -351,8 +351,8 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260710d"></script>
-<script src="assets/js/extras.js?v=20260710d"></script>
+<script src="assets/js/app.js?v=20260710e"></script>
+<script src="assets/js/extras.js?v=20260710e"></script>
 <script>
 function initConf() {
   'use strict';
@@ -375,9 +375,23 @@ function initConf() {
   var idx = 0;
   var canSave = false; /* черновик пишем, только если он был или пользователь что-то тронул */
 
+  /* --- режим отдельной услуги: ?service=ai|rv|tu|nm (код или id из SalonServices).
+     Один шаг вместо четырёх: детали, файлы, контакт. Цена «от» — точную
+     назовёт мастер; на сервер уходит type=svc_* (общая с ботом номенклатура). --- */
+  var svc = null;
+  try {
+    var svcQ = new URLSearchParams(location.search).get('service');
+    if (svcQ && window.SalonServices) {
+      window.SalonServices.forEach(function (s) {
+        if (!svc && (s.code === svcQ || s.id === svcQ)) svc = s;
+      });
+    }
+  } catch (e) {}
+  var svcSrvId = svc ? ({ ai: 'svc_ai', review: 'svc_review', tutor: 'svc_tutor', norm: 'svc_norm' }[svc.id] || 'custom') : '';
+
   /* --- восстановление черновика (главная/прайс пишут сюда предвыбор) --- */
   var draft = S.store.get('salon_draft', null);
-  if (draft && draft.state) {
+  if (!svc && draft && draft.state) {
     canSave = true;
     if (has(C.types, draft.state.type)) state.type = draft.state.type;
     if (has(C.disciplines, draft.state.disc)) state.disc = draft.state.disc;
@@ -388,13 +402,14 @@ function initConf() {
   /* --- deep-link ?step=1..4 --- */
   try {
     var qs = new URLSearchParams(location.search).get('step');
-    if (qs) { var n = parseInt(qs, 10); if (n >= 1 && n <= 4) idx = n - 1; }
+    if (!svc && qs) { var n = parseInt(qs, 10); if (n >= 1 && n <= 4) idx = n - 1; }
   } catch (e) {}
   /* --- режим «разбор плана»: из черновика или по ?plan=1 --- */
-  var plan = !!(draft && draft.plan);
+  var plan = !svc && !!(draft && draft.plan);
   try {
-    if (new URLSearchParams(location.search).get('plan') === '1') plan = true;
+    if (!svc && new URLSearchParams(location.search).get('plan') === '1') plan = true;
   } catch (e) {}
+  if (svc) idx = 3; /* услуга — сразу лист заявки (шаг 4) */
 
   var steps = Array.prototype.slice.call(document.querySelectorAll('.wstep'));
   var wiz = document.querySelector('.conf-steps');
@@ -407,6 +422,42 @@ function initConf() {
   var topicIn = $('fTopic');
   var deadlineIn = $('fDeadline'), detailsIn = $('fDetails');
   var mcta = $('confMcta'), mqPanel = $('mqPanel'), mqToggle = $('mqToggle'), mqMore = $('mqMore'), mNext = $('mNext');
+
+  /* --- сервисный режим: один лист заявки вместо четырёх шагов --- */
+  if (svc) {
+    var svcFrom = 'от ' + C.fmt(svc.from) + ' ₽' + (svc.unit || '');
+    var head = document.querySelector('.conf-head');
+    if (head) {
+      var h1 = head.querySelector('h1');
+      if (h1) h1.textContent = svc.label;
+      var sub = head.querySelector('.petit:not(.plan-note)');
+      if (sub) sub.textContent = svc.desc + ' Оценка бесплатна: мастер уточнит детали и назовёт точную цену — решение останется за вами.';
+    }
+    var wsT = $('ws4t');
+    if (wsT) wsT.textContent = 'Детали задачи';
+    var wp = document.querySelector('.wprog');
+    if (wp) wp.style.display = 'none'; /* hidden перебивается display:flex из CSS */
+    if (detailsIn) detailsIn.placeholder = 'Объём (страницы), вуз и методичка, особые пожелания — всё, что знаете';
+    /* смета «от» без множителей — и в колонке, и в мобильной панели */
+    var lqHead = document.querySelector('.lq-head');
+    if (lqHead) lqHead.textContent = 'Смета · отдельная услуга';
+    put('type', svc.label);
+    put('base', svcFrom);
+    ['discLbl', 'termLbl', 'tierLbl'].forEach(function (k) {
+      document.querySelectorAll('[data-lg="' + k + '"]').forEach(function (el) {
+        var row = el.closest('.lg-row');
+        if (row) row.style.display = 'none'; /* hidden перебивается display:flex */
+      });
+    });
+    document.querySelectorAll('.lg-total > b').forEach(function (b) { b.textContent = 'Итого'; });
+    put('low', svcFrom);
+    if (priceEl) priceEl.textContent = svcFrom;
+    if (priceSrEl) priceSrEl.textContent = svcFrom;
+    put('high', 'итог зависит от объёма — смету зафиксируем после разбора');
+    put('pay', 'Оплата — после согласования точной сметы; небольшие услуги обычно оплачиваются одним платежом.');
+    document.title = svc.label + ' — заявка | Академический Салон';
+    if (S.metrika) S.metrika.goal('service_form');
+  }
 
   /* --- файлы к заявке: очередь в памяти, уходят сразу после создания заказа.
      Ради этого заявка с сайта и существует: методичка и ТЗ попадают мастеру
@@ -445,7 +496,7 @@ function initConf() {
       attQueue.push({ f: f, st: 'wait' });
       added++;
     });
-    if (big) S.toast('Файл больше 20 МБ — такой удобнее переслать в чате бота');
+    if (big) S.toast('Файл больше 20 МБ — пришлите его ссылкой (диск) в чате кабинета или через Telegram-бота');
     else if (over) S.toast('Не больше 5 файлов — остальные добавите в кабинете');
     else if (!added && dup) S.toast('Эти файлы уже прикреплены');
     attRender();
@@ -518,7 +569,7 @@ function initConf() {
   })();
 
   function saveDraft() {
-    if (!canSave) return;
+    if (!canSave || svc) return; /* заявка на услугу не трогает черновик расчёта */
     S.store.set('salon_draft', {
       state: { type: state.type, disc: state.disc, term: state.term, tier: state.tier },
       idx: idx,
@@ -614,13 +665,15 @@ function initConf() {
   /* --- навигация по шагам --- */
   function go(i, focus) {
     idx = Math.max(0, Math.min(3, i));
-    if (idx > 0 && !go.g1) { go.g1 = 1; if (S.metrika) S.metrika.goal('calc_started'); }
-    if (idx === 3 && !go.g4) { go.g4 = 1; if (S.metrika) S.metrika.goal('calc_step4'); }
+    if (!svc) { /* воронка калькулятора — не про услуги */
+      if (idx > 0 && !go.g1) { go.g1 = 1; if (S.metrika) S.metrika.goal('calc_started'); }
+      if (idx === 3 && !go.g4) { go.g4 = 1; if (S.metrika) S.metrika.goal('calc_step4'); }
+    }
     steps.forEach(function (el, n) { el.classList.toggle('active', n === idx); });
     wpLbl.textContent = 'Шаг ' + (idx + 1) + ' из 4';
     wpFill.style.width = ((idx + 1) * 25) + '%';
-    btnBack.hidden = idx === 0;
-    btnNext.hidden = idx === 3;
+    btnBack.hidden = svc ? true : idx === 0;
+    btnNext.hidden = svc ? true : idx === 3;
     if (mNext) mNext.textContent = idx === 3 ? 'Отправить' : 'Далее';
     saveDraft();
     if (focus) {
@@ -635,24 +688,27 @@ function initConf() {
 
   /* --- сборка человекочитаемой сметы для буфера/бота --- */
   function summaryText(id) {
-    var t = find(C.types, state.type), d = find(C.disciplines, state.disc);
-    var s = find(C.terms, state.term), v = find(C.tiers, state.tier);
-    var q = C.quote(state.type, state.disc, state.term, state.tier);
     var topic = topicIn.value.trim();
-    var lines = [
-      'Заявка с сайта · ' + id,
-      'Тип: ' + t.label,
-      'Направление: ' + d.label,
-      'Срок: ' + s.label,
-      'Уровень: ' + v.label
-    ];
+    var lines = ['Заявка с сайта · ' + id];
+    if (svc) {
+      lines.push('Услуга: ' + svc.label);
+    } else {
+      var t = find(C.types, state.type), d = find(C.disciplines, state.disc);
+      var s = find(C.terms, state.term), v = find(C.tiers, state.tier);
+      lines.push('Тип: ' + t.label, 'Направление: ' + d.label, 'Срок: ' + s.label, 'Уровень: ' + v.label);
+    }
     if (topic) lines.push('Тема: ' + topic);
     var dl = deadlineIn && deadlineIn.value.trim();
     if (dl) lines.push('Дата сдачи: ' + dl);
     var dt = detailsIn && detailsIn.value.trim();
     if (dt) lines.push('Требования: ' + dt);
     if (plan) lines.push('Формат: начать с разбора плана');
-    lines.push('Смета: от ' + q.lowFmt + ' до ' + q.highFmt + ' ₽');
+    if (svc) {
+      lines.push('Ставка: от ' + C.fmt(svc.from) + ' ₽' + (svc.unit || '') + ' — точная цена после разбора');
+    } else {
+      var q = C.quote(state.type, state.disc, state.term, state.tier);
+      lines.push('Смета: от ' + q.lowFmt + ' до ' + q.highFmt + ' ₽');
+    }
     return lines.join('\n');
   }
 
@@ -685,7 +741,7 @@ function initConf() {
   if (tgBtn) tgBtn.addEventListener('click', function () {
     tgBtn.disabled = true; tgBtn.textContent = 'Открываем Telegram…';
     S.tgLogin(tgDone, function () {
-      tgBtn.disabled = false; tgBtn.textContent = 'Войти через Telegram — статусы придут в бота';
+      tgBtn.disabled = false; tgBtn.textContent = 'Или войти через Telegram — без анкеты';
       S.toast('Вход не подтвердился — попробуйте ещё раз');
     }, function (link, opened) {
       tgBtn.textContent = 'Подтвердите вход в боте…';
@@ -709,7 +765,7 @@ function initConf() {
     if (!authed) {
       if (!contact) { S.toast('Оставьте контакт или войдите через Telegram'); $('fContact').focus(); return; }
       if (S.valid && S.valid.contact && !S.valid.contact(contact)) {
-        S.toast('Контакт не похож на телефон, Telegram или почту'); $('fContact').focus(); return;
+        S.toast('Контакт не похож на телефон, ВК, Telegram или почту'); $('fContact').focus(); return;
       }
       if ($('fConsent') && !$('fConsent').checked) { S.toast('Отметьте согласие на обработку данных'); return; }
     }
@@ -717,13 +773,13 @@ function initConf() {
     S.btnLoading(btnSubmit, true, 'Отправляем…');
     if (mNext) S.btnLoading(mNext, true, 'Отправляем…');
     S.api.post('/orders', {
-      type: state.type, disc: state.disc, term: state.term, tier: state.tier,
+      type: svc ? svcSrvId : state.type, disc: state.disc, term: state.term, tier: state.tier,
       topic: topicIn.value.trim(), plan: plan, name: name, contact: contact, website: '',
       deadline: deadlineIn ? deadlineIn.value.trim() : '',
       details: detailsIn ? detailsIn.value.trim() : '',
       consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
       consent_doc: 'consent 1.1 · privacy 1.3 · oferta 1.1 · форма конфигуратора',
-      page: 'configurator.html'
+      page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html'
     }).then(function (r) {
       if (!r || !r.ok || !r.id) {
         submitting = false;
@@ -745,10 +801,10 @@ function initConf() {
       if (bl) bl.href = claim; /* гостю — привязка заказа к Telegram в один тап */
       showDone('№' + r.id);
       if (S.stamp) S.stamp('Заявка принята');
-      /* гостям — мягкое предложение привязать Telegram; заказ принят и без этого */
-      if (r.token && S.tgNudge) {
+      /* гостям — ссылка доступа к делу + необязательная привязка Telegram */
+      if (r.token && S.orderNudge) {
         var sheetEl = document.querySelector('#confDone .done-sheet');
-        if (sheetEl) S.tgNudge(sheetEl, claim);
+        if (sheetEl) S.orderNudge(sheetEl, r.token);
       }
     });
   }
@@ -757,7 +813,9 @@ function initConf() {
     if (err && err.error === 'rate_limit') { S.toast('Слишком много заявок подряд — подождите минуту'); return; }
     var id = 'AS-' + (1000 + Math.floor(Math.random() * 9000));
     if (S.copy) S.copy(summaryText(id));
-    var botLink = window.SalonBotLink ? window.SalonBotLink(state) : 'https://t.me/academic_saloon_bot';
+    var botLink = svc
+      ? 'https://t.me/academic_saloon_bot?start=web_' + (svc.code || '')
+      : window.SalonBotLink ? window.SalonBotLink(state) : 'https://t.me/academic_saloon_bot';
     var win = window.open(botLink, '_blank', 'noopener');
     var doneBot = $('doneBot');
     if (doneBot) { doneBot.href = botLink; if (!win) doneBot.setAttribute('data-fallback', '1'); }
@@ -810,7 +868,7 @@ function initConf() {
   rgTier.set(state.tier);
   segMark();
   go(idx, false);
-  render();
+  if (!svc) render(); /* в сервисном режиме смета уже собрана выше */
 }
 if (document.prerendering) {
   document.addEventListener('prerenderingchange', initConf, { once: true });
