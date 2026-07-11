@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260711a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260711a" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260711a" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260712a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260712a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260712a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/referral.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -203,6 +203,10 @@
             <div class="rstep"><span class="rn">02</span><div class="rb"><b>Друг переходит и делает заказ</b><small>ему +200 приветственных бонусов после первого заказа</small></div></div>
             <div class="rstep"><span class="rn">03</span><div class="rb"><b>Вам — 5% бонусами</b><small>с каждого его оплаченного заказа — не разово, а всегда</small></div></div>
           </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+            <button type="button" class="btn btn-wax" id="refInvite">✉️ Составить пригласительное письмо</button>
+          </div>
+          <p class="clb-note" style="margin-top:12px">Готовое письмо с вашей личной ссылкой — отправьте в Telegram, ВК или WhatsApp одним нажатием.</p>
           <p class="clb-note">Начисления — только с фактически оплаченных заказов. Приглашать самого себя и заводить фейковые аккаунты нельзя: такие бонусы аннулируются.</p>
         </div>
         <aside class="ref-example sheet sheet-pad stacked reveal d1" aria-label="Пример">
@@ -267,8 +271,33 @@
 
   </div>
 </main>
-<script src="assets/js/app.js?v=20260711a"></script>
-<script src="assets/js/extras.js?v=20260711a"></script>
+<script src="assets/js/app.js?v=20260712a"></script>
+<script src="assets/js/extras.js?v=20260712a"></script>
+<script>
+(function(){
+  /* «Пригласить друга»: письмо с личной ссылкой — для вошедших;
+     остальных мягко ведём в кабинет за ссылкой */
+  var btn = document.getElementById('refInvite');
+  if (btn && window.Salon && Salon.api) btn.addEventListener('click', function(){
+    if (Salon.api.token()) {
+      Salon.api.get('/me').then(function(r){
+        if (r && r.ok && Salon.invite) {
+          Salon.invite({ site: r.ref_link, tg: r.ref_link_tg });
+        } else if (Salon.toast) {
+          Salon.toast('Не получилось получить личную ссылку — попробуйте из кабинета');
+        }
+      });
+      return;
+    }
+    (Salon.confirm ? Salon.confirm({
+      title: 'Нужна личная ссылка',
+      text: 'Пригласительное письмо собирается с вашей личной ссылкой — по ней бонусы приходят именно вам. Ссылка появляется после входа в кабинет (Telegram или почта).',
+      okLabel: 'Открыть кабинет', noLabel: 'Позже'
+    }) : Promise.resolve({ ok: window.confirm('Открыть кабинет для входа?') }))
+      .then(function(res){ if (res.ok) location.href = 'dashboard.html'; });
+  });
+})();
+</script>
 <script>
 (function(){
   var b = document.getElementById('clubClaim');

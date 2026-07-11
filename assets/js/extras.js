@@ -84,6 +84,81 @@
     setTimeout(function () { el.remove(); }, (opts.hold || 1500) + 600);
   };
 
+  /* ---------------- «Пригласительное письмо» ----------------
+     Salon.invite({site, tg}) — красивый механизм «пригласить друга»:
+     готовый текст письма (не голая ссылка), отправка в Telegram/ВК/WhatsApp,
+     копирование письма целиком. Работает без анимаций и без rAF. */
+  S.invite = function (links) {
+    links = links || {};
+    var site = links.site || 'https://akademsalon.ru/';
+    var letter = 'Привет! Советую «Академический Салон» — мастерская, которая помогает ' +
+      'студентам: курсовые, дипломы и ВКР, доводка до антиплагиата, нормоконтроль.\n\n' +
+      'По моей ссылке тебе начислят 200 бонусов на первую работу (1 бонус = 1 ₽):\n' + site;
+    var shareText = 'Дарю 200 бонусов на первую студенческую работу в «Академическом Салоне» — ' +
+      'курсовые, дипломы, ВКР, антиплагиат.';
+    var enc = encodeURIComponent;
+    var shares = [
+      { cls: 'tg', label: 'Telegram', href: 'https://t.me/share/url?url=' + enc(site) + '&text=' + enc(shareText) },
+      { cls: 'vk', label: 'ВКонтакте', href: 'https://vk.com/share.php?url=' + enc(site) + '&comment=' + enc(shareText) },
+      { cls: 'wa', label: 'WhatsApp', href: 'https://api.whatsapp.com/send?text=' + enc(letter) }
+    ];
+    var el = document.createElement('div');
+    el.className = 'sdlg inv';
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'true');
+    el.setAttribute('aria-label', 'Пригласительное письмо');
+    el.innerHTML =
+      '<div class="sdlg-back" data-x></div>' +
+      '<div class="sdlg-card inv-card">' +
+        '<button type="button" class="inv-x" data-x aria-label="Закрыть">✕</button>' +
+        '<p class="inv-caps">Клуб Салона · приглашение</p>' +
+        '<h3 class="inv-h">Пригласительное письмо</h3>' +
+        '<div class="inv-sheet">' +
+          '<span class="inv-para">¶</span>' +
+          '<p class="inv-text"></p>' +
+          '<span class="inv-seal" aria-hidden="true">АС</span>' +
+        '</div>' +
+        '<div class="inv-gain">' +
+          '<span class="ig-chip">Другу — <b>200 бонусов</b> на первую работу</span>' +
+          '<span class="ig-chip">Вам — <b>5%</b> с каждой его оплаты</span>' +
+        '</div>' +
+        '<div class="inv-row">' +
+          shares.map(function (s) {
+            return '<a class="btn btn-line inv-share ' + s.cls + '" target="_blank" rel="noopener" href="' + s.href + '">' + s.label + '</a>';
+          }).join('') +
+        '</div>' +
+        '<div class="inv-row">' +
+          '<button type="button" class="btn btn-wax" data-inv-copy>⧉ Скопировать письмо</button>' +
+          (navigator.share ? '<button type="button" class="btn btn-line" data-inv-native>Поделиться…</button>' : '') +
+        '</div>' +
+        '<p class="sdlg-note">Ссылка личная — бонусы придут именно вам. Начисления видны в кабинете, в журнале бонусов. <a class="link" href="loyalty.html">Правила клуба</a></p>' +
+      '</div>';
+    el.querySelector('.inv-text').textContent = letter;
+    document.body.appendChild(el);
+    setTimeout(function () { el.classList.add('open'); }, 10);
+    function close() {
+      el.classList.remove('open');
+      setTimeout(function () { el.remove(); }, 240);
+      document.removeEventListener('keydown', onKey);
+    }
+    function onKey(e) { if (e.key === 'Escape') close(); }
+    document.addEventListener('keydown', onKey);
+    el.addEventListener('click', function (e) {
+      if (e.target.closest('[data-x]')) { close(); return; }
+      if (e.target.closest('[data-inv-copy]')) {
+        (S.copy ? S.copy(letter) : Promise.resolve(false)).then(function (ok) {
+          var b = el.querySelector('[data-inv-copy]');
+          if (b) b.textContent = ok ? 'Письмо в буфере ✓ — вставьте в чат' : 'Выделите текст письма вручную';
+          if (S.toast && ok) S.toast('Письмо скопировано — отправьте другу');
+        });
+        return;
+      }
+      if (e.target.closest('[data-inv-native]')) {
+        try { navigator.share({ text: letter }); } catch (err) {}
+      }
+    });
+  };
+
   /* ---------------- Куки-плашка ---------------- */
   (function cookieBar() {
     if (QUIET_PAGES[here]) return;

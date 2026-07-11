@@ -45,21 +45,36 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
   background:color-mix(in srgb, var(--paper) 88%, transparent);
   -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
   border-bottom:1px solid var(--hairline);
-  transition:transform .35s cubic-bezier(.22,1,.36,1);
+  transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .3s ease;
 }
 .site-header.hide{transform:translateY(-100%)}
+.site-header.scrolled{box-shadow:0 6px 24px rgba(34,32,27,.07)}
+/* чернильный прогресс чтения — тонкая линия по нижней кромке шапки */
+.hdr-ink{
+  position:absolute;left:0;bottom:-1px;height:2px;width:0;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,var(--wax) 0%,var(--wax-deep,#8C2D18) 100%);
+}
 .site-header .nav{display:flex;align-items:center;gap:clamp(14px,2.6vw,36px);height:64px}
 .brand{display:inline-flex;align-items:baseline;gap:10px;font-family:var(--serif);font-size:18.5px;letter-spacing:-.01em;white-space:nowrap;flex:0 0 auto;color:var(--ink)}
-.brand .b-para{color:var(--wax);font-size:21px;line-height:1}
+.brand .b-para{color:var(--wax);font-size:21px;line-height:1;display:inline-block;
+  transition:transform .45s cubic-bezier(.34,1.56,.5,1)}
+.brand:hover .b-para{transform:rotate(12deg) scale(1.14)}
 .brand .b-name{font-weight:500}
 .nav-links{display:flex;gap:clamp(12px,2vw,26px);margin-left:auto}
 .nav-links a{
-  font-size:14.5px;color:var(--ink-soft);white-space:nowrap;
-  padding:6px 2px;border-bottom:1px solid transparent;
-  transition:color .15s,border-color .15s;
+  position:relative;font-size:14.5px;color:var(--ink-soft);white-space:nowrap;
+  padding:6px 2px;transition:color .15s;
 }
-.nav-links a:hover{color:var(--ink);border-color:var(--hairline-strong)}
-.nav-links a[aria-current="page"]{color:var(--ink);border-color:var(--wax)}
+/* чернильное подчёркивание: линия «прорисовывается» слева направо */
+.nav-links a::after{
+  content:"";position:absolute;left:0;right:0;bottom:2px;height:1px;background:var(--wax);
+  transform:scaleX(0);transform-origin:left center;
+  transition:transform .28s cubic-bezier(.22,1,.36,1);
+}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after,.nav-links a:focus-visible::after{transform:scaleX(1)}
+.nav-links a[aria-current="page"]{color:var(--ink)}
+.nav-links a[aria-current="page"]::after{transform:scaleX(1)}
 .nav-cta{display:flex;align-items:center;gap:10px;margin-left:auto}
 .nav-cta .btn{min-height:42px;padding:8px 18px;font-size:14px;box-shadow:none}
 
@@ -94,14 +109,19 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
 @media(max-width:1060px){.nav-links a.nav-x{display:none}}
 @media(max-width:820px){.nav-links{display:none}}
 @media(max-width:560px){
-  .nav-cta .btn{display:none}          /* «Рассчитать» несёт нижняя плашка */
-  .brand .b-name{font-size:15.5px}
-  .nav-cab{padding:9px 11px}
-  .nav-cab .nc-txt{display:none}       /* на телефоне — только пиктограмма и бейдж */
+  .nav-cta .btn{display:none}          /* «Рассчитать» несёт нижняя панель */
+  .nav-cta .theme-toggle{display:none} /* тема доступна в «Меню» */
+  .nav-cta{gap:8px}
+  .brand .b-name{font-size:15px}
+  .nav-cab{padding:8px 11px;gap:6px}
+  .nav-cab .nc-txt{font-size:10.5px;letter-spacing:.08em} /* подпись «Кабинет» остаётся видимой */
 }
 @media(max-width:400px){
-  .brand .b-name{font-size:14px}
-  .menu-toggle{padding:9px 12px}
+  .brand .b-name{font-size:13.5px}
+  .brand{gap:7px}
+  .menu-toggle{padding:9px 10px}
+  .menu-toggle .mt-txt{display:none}   /* узкий экран: у «Меню» остаётся пиктограмма-жалюзи */
+  .nav-cab{padding:8px 9px}
 }
 
 /* ============================================================
@@ -317,6 +337,34 @@ main[tabindex="-1"]:focus{outline:none}
   body{padding-bottom:76px}
   .site-footer{padding-bottom:96px}
 }
+
+/* нижняя панель-навигация (вариант .mobile-cta, который монтирует app.js):
+   Главная · Цены · Рассчитать (сургуч) · Кабинет (бейдж) */
+.mnav{padding:6px max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
+@media(max-width:880px){.mnav{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}}
+.mnav .mn-i{
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:7px 4px 6px;min-height:52px;border-radius:var(--r);
+  color:var(--ink-soft);font-size:10.5px;letter-spacing:.05em;text-decoration:none;
+  transition:color .15s,background .15s;
+}
+.mnav .mn-i .mn-ic{font-family:var(--serif);font-size:17px;line-height:1;display:inline-flex;align-items:center;justify-content:center;height:18px}
+.mnav .mn-i:active{background:var(--mark)}
+.mnav .mn-i[aria-current="page"]{color:var(--wax)}
+.mnav .mn-calc{
+  color:#FFFEF9;background:var(--wax);margin:0 3px;
+  box-shadow:0 2px 0 var(--wax-deep,#6E2312);
+}
+.mnav .mn-calc:active{background:var(--wax-deep,#8C2D18)}
+.mnav .mn-calc[aria-current="page"]{color:#FFFEF9}
+.mnav .mn-badge{
+  position:absolute;top:3px;right:calc(50% - 22px);min-width:16px;height:16px;border-radius:999px;
+  background:var(--wax);color:#FFFEF9;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  display:inline-flex;align-items:center;justify-content:center;padding:0 4px;
+  border:2px solid var(--paper);
+}
+.mnav .mn-badge[hidden]{display:none}
+.mnav .mn-badge.calm{background:var(--stamp,#3A4E7A)}
 
 /* ============================================================
    ТОСТЫ И ЛИСТ СВЯЗИ (создаются app.js)

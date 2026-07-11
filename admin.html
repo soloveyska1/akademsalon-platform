@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260711a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260711a" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260711a" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260712a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260712a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260712a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -83,6 +83,27 @@
   .ag-search{flex:1;min-width:170px;font:inherit;font-size:13.5px;padding:8px 14px;
     border:1px solid var(--hairline-strong);border-radius:999px;background:transparent;color:inherit}
   .ag-search:focus{outline:none;border-color:var(--ink-soft)}
+  .ag-sort{font:inherit;font-size:12.5px;padding:7px 10px;border:1px solid var(--hairline-strong);
+    border-radius:999px;background:transparent;color:inherit;cursor:pointer}
+  .ag-more{justify-content:center;color:var(--ink-soft);font-size:13px;border-left:0!important}
+  .ag-more:hover{color:var(--ink)}
+
+  /* быстрые заготовки ответов */
+  .ag-tpls{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px}
+  .ag-tpl{border:1px dashed var(--hairline-strong);background:transparent;color:var(--ink-soft);
+    border-radius:999px;padding:5px 11px;font-size:12px;cursor:pointer;font-family:var(--sans);
+    transition:color .15s,border-color .15s}
+  .ag-tpl:hover{color:var(--wax,#A8402F);border-color:var(--wax,#A8402F)}
+
+  /* выручка по неделям */
+  .ag-weeks{display:flex;gap:8px;align-items:flex-end;border:1px solid var(--hairline);
+    border-radius:var(--r);padding:14px 14px 10px;margin-bottom:16px;background:var(--sheet,transparent);
+    overflow-x:auto}
+  .ag-weeks .wk{flex:1;min-width:52px;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .ag-weeks .wk-bar{width:100%;max-width:44px;border-radius:3px 3px 0 0;background:var(--wax,#A8402F);opacity:.85}
+  .ag-weeks .wk-bar.zero{background:var(--hairline-strong)}
+  .ag-weeks .wk-sum{font-family:var(--mono);font-size:10px;color:var(--ink-soft);white-space:nowrap;min-height:13px}
+  .ag-weeks .wk-lbl{font-family:var(--mono);font-size:10px;color:var(--ink-faint,#999)}
 
   /* -------- сплит: список + карточка -------- */
   .ag-split{display:grid;grid-template-columns:minmax(290px,4fr) minmax(380px,8fr);gap:16px;align-items:start}
@@ -231,8 +252,8 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260711a"></script>
-<script src="assets/js/extras.js?v=20260711a"></script>
-<script src="assets/js/admin.js?v=20260711a"></script>
+<script src="assets/js/app.js?v=20260712a"></script>
+<script src="assets/js/extras.js?v=20260712a"></script>
+<script src="assets/js/admin.js?v=20260712a"></script>
 </body>
 </html>

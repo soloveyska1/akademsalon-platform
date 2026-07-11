@@ -238,3 +238,107 @@
 #reviewForm textarea{width:100%;font:inherit;font-size:14px;padding:10px 12px;color:inherit;
   border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;resize:vertical}
 .chat-txt audio{vertical-align:middle;min-width:min(240px,60vw)}
+
+/* ---------- Кабинет: пауза, закрепление, дедлайн (2026-07-12) ---------- */
+.ord-flags{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ord-pin{
+  border:1px solid var(--hairline-strong);background:transparent;border-radius:50%;
+  width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:15px;line-height:1;filter:grayscale(1);opacity:.55;
+  transition:opacity .15s,filter .15s,border-color .15s,transform .15s;
+}
+.ord-pin:hover{opacity:.9;transform:rotate(-10deg)}
+.ord-pin.on{filter:none;opacity:1;border-color:var(--wax);background:var(--wax-soft,rgba(168,64,47,.08))}
+.ord-stamp.s-pause{color:var(--stamp,#3A4E7A);border-style:dashed;transform:rotate(1.4deg)}
+.ot-pin{font-size:11px;align-self:center;line-height:1}
+.pause-band{
+  display:flex;gap:10px;align-items:flex-start;margin:14px 0 4px;
+  border:1px dashed var(--stamp,#3A4E7A);border-radius:var(--r);
+  padding:11px 14px;font-size:13.5px;line-height:1.55;color:var(--ink-soft);
+  background:color-mix(in srgb, var(--stamp, #3A4E7A) 6%, transparent);
+}
+.pause-band .pb-ic{font-size:15px;line-height:1.4}
+.pause-band .linkbtn{color:var(--stamp,#3A4E7A);border-color:currentColor}
+.dl-chip{
+  display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.05em;
+  border:1px solid var(--hairline-strong);border-radius:999px;padding:2px 9px;
+  color:var(--ink-soft);white-space:nowrap;vertical-align:1px;
+}
+.dl-chip.warn{color:var(--wax);border-color:var(--wax)}
+.dl-chip.late{color:#FFFEF9;background:var(--wax);border-color:var(--wax)}
+
+/* ---------- Платёжный лист: реквизиты, которые видно ---------- */
+.payslip{
+  border:1px solid var(--hairline-strong);border-radius:var(--r);overflow:hidden;
+  margin-bottom:12px;background:var(--sheet);
+  box-shadow:0 1px 0 var(--hairline);
+}
+.payslip .ps-head{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:12px 16px;border-bottom:3px double var(--ink);
+  background:linear-gradient(135deg, var(--sheet) 55%, var(--wax-soft,rgba(168,64,47,.07)));
+}
+.payslip .ps-due{font-family:var(--serif);font-size:clamp(22px,3.4vw,30px);line-height:1;color:var(--wax);letter-spacing:-.01em}
+.payslip .ps-body{padding:6px 16px 10px}
+.payslip .ps-row{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:9px 0;border-bottom:1px solid var(--hairline);
+}
+.payslip .ps-row:last-child{border-bottom:0}
+.payslip .ps-val{font-size:14.5px;line-height:1.5;overflow-wrap:anywhere}
+.payslip .ps-card .ps-val{font-family:var(--mono);font-size:clamp(16px,2.6vw,19px);letter-spacing:.06em;font-weight:600}
+.payslip .ps-copy{
+  flex:0 0 auto;border:1px solid var(--hairline-strong);background:transparent;border-radius:999px;
+  font:inherit;font-size:11.5px;color:var(--ink-soft);padding:5px 11px;cursor:pointer;white-space:nowrap;
+  transition:color .15s,border-color .15s;
+}
+.payslip .ps-copy:hover{color:var(--wax);border-color:var(--wax)}
+.payslip .ps-steps{
+  display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;
+  padding:10px 16px;border-top:1px solid var(--hairline);
+  font-size:12px;color:var(--ink-soft);background:var(--paper-2);
+}
+.payslip .ps-steps b{font-family:var(--mono);font-size:10.5px;color:var(--wax);margin-right:3px}
+.payslip .ps-steps .ps-ar{color:var(--ink-faint)}
+@media(max-width:540px){
+  .payslip .ps-row{flex-direction:column;align-items:flex-start;gap:6px}
+  .payslip .ps-copy{align-self:flex-end;margin-top:-4px}
+}
+
+/* ---------- «Пригласительное письмо» ---------- */
+.inv-card{width:min(94vw,520px);max-height:92vh;overflow-y:auto}
+.inv-x{
+  position:absolute;top:10px;right:12px;border:0;background:none;color:var(--ink-faint);
+  font-size:18px;line-height:1;cursor:pointer;padding:6px;
+}
+.inv-x:hover{color:var(--ink)}
+.inv-caps{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--wax);margin:0 0 6px;padding-right:34px}
+.inv-h{font-family:var(--serif);font-size:clamp(21px,3vw,26px);font-weight:480;margin:0 0 14px}
+.inv-sheet{
+  position:relative;border:1px solid var(--hairline-strong);border-radius:var(--r);
+  background:var(--paper-2);padding:18px 18px 22px;margin-bottom:12px;
+}
+.inv-sheet .inv-para{
+  position:absolute;top:8px;right:14px;font-family:var(--serif);
+  font-size:26px;color:var(--wax);opacity:.35;
+}
+.inv-sheet .inv-text{
+  font-family:var(--serif);font-size:14.5px;line-height:1.7;color:var(--ink);
+  white-space:pre-wrap;margin:0;overflow-wrap:anywhere;
+}
+.inv-sheet .inv-seal{
+  position:absolute;right:16px;bottom:-13px;width:40px;height:40px;border-radius:50%;
+  background:var(--wax);color:#FFFEF9;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:13px;letter-spacing:.06em;transform:rotate(-7deg);
+  box-shadow:0 4px 10px rgba(24,21,15,.28);
+}
+.inv-gain{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 14px}
+.inv-gain .ig-chip{
+  font-size:12.5px;color:var(--ink-soft);border:1px dashed var(--hairline-strong);
+  border-radius:999px;padding:5px 12px;
+}
+.inv-gain .ig-chip b{color:var(--wax);font-weight:600}
+.inv-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.inv-row .btn{flex:1 1 auto;min-height:44px;font-size:14px}
+.inv-share{text-align:center}
+@media(max-width:540px){.inv-row{flex-direction:column}}

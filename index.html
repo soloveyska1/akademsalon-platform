@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/pereplet.css?v=20260711a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260711a" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260711a" />
+<link rel="stylesheet" href="assets/css/pereplet.css?v=20260712a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260712a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260712a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -291,27 +291,70 @@
   <!-- ================= IV. ДОВЕРИЕ ================= -->
   <section class="spread" id="otzyvy" aria-label="Отзывы и гарантии">
     <style>
-      /* живая строка благодарностей: цитаты с защит + свежие записи из кабинета */
-      .ix-marq{overflow:hidden;margin:0 0 clamp(28px,4vw,44px);padding:18px 0;
+      /* «Книга благодарностей»: записки с защит. Никаких CSS-анимаций и rAF —
+         листается setInterval-ом и руками, работает и при reduce-motion. */
+      .tw{margin:0 0 clamp(28px,4vw,44px);padding:clamp(16px,2.6vw,24px) 0 clamp(18px,3vw,26px);
         border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
-      .ix-marq .mq-track{display:flex;width:max-content;animation:ixmq 52s linear infinite}
-      .ix-marq:hover .mq-track{animation-play-state:paused}
-      .ix-marq .mq-i{font-family:var(--serif);font-style:italic;font-size:clamp(16px,2vw,21px);
-        white-space:nowrap;color:var(--ink);padding-right:38px}
-      .ix-marq .mq-i .mq-st{font-style:normal;font-size:.75em;color:var(--wax);letter-spacing:2px;margin-right:8px;vertical-align:1px}
-      .ix-marq .mq-i::after{content:"¶";margin-left:38px;color:var(--wax);font-style:normal;opacity:.5}
-      .ix-marq .mq-live{color:var(--ink)}
-      .ix-marq .mq-live .mq-tag{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
-        text-transform:uppercase;color:var(--verify,#2E6B4F);border:1px solid currentColor;border-radius:999px;
-        padding:2px 8px;margin-left:10px;vertical-align:2px}
-      @keyframes ixmq{to{transform:translateX(-50%)}}
-      @media(prefers-reduced-motion:reduce){.ix-marq{display:none}}
+      .tw-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+      .tw-nav{display:flex;gap:8px;align-items:center}
+      .tw-btn{border:1px solid var(--hairline-strong);background:transparent;border-radius:50%;
+        width:34px;height:34px;line-height:1;cursor:pointer;color:var(--ink-soft);font-size:15px;
+        transition:color .15s,border-color .15s,transform .15s}
+      .tw-btn:hover{color:var(--wax);border-color:var(--wax);transform:scale(1.06)}
+      .tw-page{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.1em;white-space:nowrap}
+      .tw-deck{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.6vw,16px);align-items:stretch}
+      .tw-note{position:relative;background:var(--sheet);border:1px solid var(--hairline-strong);
+        border-radius:var(--r,6px);padding:16px 16px 14px;margin:0;box-shadow:0 1px 0 var(--hairline);
+        transition:opacity .32s ease,transform .32s ease}
+      .tw-note:nth-child(3n+1){transform:rotate(-.6deg)}
+      .tw-note:nth-child(3n+2){transform:rotate(.45deg) translateY(2px)}
+      .tw-note:nth-child(3n+3){transform:rotate(-.25deg)}
+      .tw-note .tn-st{color:var(--wax);font-size:12px;letter-spacing:3px;display:block;margin-bottom:8px}
+      .tw-note blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(14.5px,1.6vw,17px);
+        line-height:1.55;color:var(--ink);margin:0 0 12px}
+      .tw-note figcaption{display:flex;justify-content:space-between;gap:8px;align-items:baseline;
+        font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+      .tw-note .tn-tag{border:1px solid currentColor;border-radius:999px;padding:2px 8px;
+        color:var(--verify,#2E6B4F);white-space:nowrap}
+      .tw-deck.swap .tw-note{opacity:0;transform:translateY(8px)}
+      @media(max-width:740px){
+        .tw-deck{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+          padding-bottom:8px;scrollbar-width:none}
+        .tw-deck::-webkit-scrollbar{display:none}
+        .tw-note{flex:0 0 82%;scroll-snap-align:center}
+        .tw-nav .tw-btn{display:none}
+      }
+      @media(prefers-reduced-motion:reduce){
+        .tw-note{transition:none}
+        .tw-deck.swap .tw-note{opacity:1;transform:none}
+      }
     </style>
     <div class="wrap">
       <div class="running-head"><span class="rh-no">— 04 —</span><span class="rh-t">Экслибрисы · доверие</span></div>
     </div>
-    <div class="ix-marq reveal" aria-label="Цитаты из отзывов">
-      <div class="mq-track" id="ixTrack"></div>
+    <div class="tw reveal" id="trustWall" aria-label="Книга благодарностей — цитаты из отзывов с защит">
+      <div class="wrap">
+        <div class="tw-head">
+          <span class="caps">Книга благодарностей</span>
+          <span class="tw-nav">
+            <button type="button" class="tw-btn" id="twPrev" aria-label="Предыдущие записи">←</button>
+            <span class="tw-page" id="twPage">лист 1</span>
+            <button type="button" class="tw-btn" id="twNext" aria-label="Следующие записи">→</button>
+          </span>
+        </div>
+        <div class="tw-deck" id="twDeck">
+          <!-- первые записки прямо в разметке: их видно даже без JS -->
+          <figure class="tw-note"><span class="tn-st" aria-hidden="true">★★★★★</span>
+            <blockquote>«Это победа! Защитила, красный будет»</blockquote>
+            <figcaption><span>98 баллов · ВКР</span></figcaption></figure>
+          <figure class="tw-note"><span class="tn-st" aria-hidden="true">★★★★★</span>
+            <blockquote>«Диплом принят без единой правки»</blockquote>
+            <figcaption><span>скрин с защиты</span></figcaption></figure>
+          <figure class="tw-note"><span class="tn-st" aria-hidden="true">★★★★★</span>
+            <blockquote>«Диплом на 5, госы на 5»</blockquote>
+            <figcaption><span>скрин с защиты</span></figcaption></figure>
+        </div>
+      </div>
     </div>
     <div class="wrap">
 
@@ -395,59 +438,130 @@
 <!-- Ляссе: прогресс чтения (десктоп) -->
 <div class="lasse" aria-hidden="true"><div class="ls-track"><div class="ls-fill"></div></div></div>
 
-<!-- Мобильная плашка: свой вариант, app.js не дублирует -->
-<div class="mobile-cta">
-  <a class="btn btn-wax" href="#smeta">Рассчитать</a>
-  <button type="button" class="btn btn-line" data-contact="1">Связаться</button>
-</div>
+<!-- Мобильная навигация: единая нижняя панель, монтирует app.js -->
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Академический Салон","description":"Помощь и сопровождение в подготовке академических работ: консультации, редактура, разбор, репетиторство, оформление по методичке. Оплата по этапам, отчёт о проверках до оплаты, правки до приёмки.","url":"https://akademsalon.ru/","image":"https://akademsalon.ru/assets/img/og-cover.png","logo":"https://akademsalon.ru/assets/img/favicon-120.png","areaServed":"RU","knowsLanguage":"ru","priceRange":"от 2500 ₽","sameAs":["https://vk.com/academicsaloon","https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs","https://t.me/academic_saloon_bot"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"А вдруг вуз решит, что текст написан нейросетью?","acceptedAnswer":{"@type":"Answer","text":"Текст пишет человек, а отчёт о проверках вы видите до оплаты. Гарантировать чужой детектор не может никто — на этот случай дорабатываем до приёмки."}},{"@type":"Question","name":"Я не рискую, платя вперёд?","acceptedAnswer":{"@type":"Answer","text":"Нет: первый платёж — после согласованного плана и сметы, каждый следующий — после показанного результата."}},{"@type":"Question","name":"Кто будет вести мою работу?","acceptedAnswer":{"@type":"Answer","text":"Профильный специалист вашего направления — сопровождает от плана до приёмки, без передачи между менеджерами и случайными исполнителями."}},{"@type":"Question","name":"Что, если руководитель вернёт работу с замечаниями?","acceptedAnswer":{"@type":"Answer","text":"Это обычная часть процесса, и она уже в стоимости. Смета не меняется, пока не меняются тема и объём."}},{"@type":"Question","name":"Почему у вас дороже, чем на биржах?","acceptedAnswer":{"@type":"Answer","text":"Биржа продаёт ставку анонимного исполнителя, мы — доведённый до защиты результат: напрямую, без комиссии площадки. Слишком низкая цена здесь — риск, переложенный на вас."}}]}</script>
-<script src="assets/js/app.js?v=20260711a"></script>
-<script src="assets/js/extras.js?v=20260711a"></script>
-<script src="assets/js/pereplet.js?v=20260711a"></script>
+<script src="assets/js/app.js?v=20260712a"></script>
+<script src="assets/js/extras.js?v=20260712a"></script>
+<script src="assets/js/pereplet.js?v=20260712a"></script>
 <script>
-/* живая строка доверия: цитаты с защит + свежие одобренные отзывы из картотеки */
+/* «Книга благодарностей»: цитаты с защит + свежие одобренные отзывы из картотеки.
+   Сознательно без rAF и CSS-анимаций: листается setInterval-ом, руками (стрелки)
+   и свайпом на телефоне — видно в любом браузере, включая reduce-motion. */
 (function () {
   'use strict';
-  var track = document.getElementById('ixTrack');
-  if (!track) return;
+  var deck = document.getElementById('twDeck');
+  var pageEl = document.getElementById('twPage');
+  if (!deck) return;
+  var PER = 3;
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
-  var base = [
-    '«Это победа! Защитила, красный будет» · 98 баллов',
-    '«У меня 5 без защиты, работа очень хорошая»',
-    '«Как вы это делаете? Вы мой кумир!»',
-    '«Диплом принят без единой правки»',
-    '«Защитилась на пятёрку»',
-    '«Диплом на 5, госы на 5»',
-    '«Кайф! Благодарю за быструю работу»',
-    '«Сдала на отлично! Спасибо»'
+  var quotes = [
+    { t: 'Это победа! Защитила, красный будет', m: '98 баллов · ВКР' },
+    { t: 'Диплом принят без единой правки', m: 'скрин с защиты' },
+    { t: 'Диплом на 5, госы на 5', m: 'скрин с защиты' },
+    { t: 'У меня 5 без защиты, работа очень хорошая', m: 'скрин с защиты' },
+    { t: 'Как вы это делаете? Вы мой кумир!', m: 'скрин с защиты' },
+    { t: 'Защитилась на пятёрку', m: 'скрин с защиты' },
+    { t: 'Кайф! Благодарю за быструю работу', m: 'срочный заказ' },
+    { t: 'Сдала на отлично! Спасибо', m: 'скрин с защиты' }
   ];
-  function draw(extra) {
-    var items = base.map(function (q) { return '<span class="mq-i">' + esc(q) + '</span>'; });
-    (extra || []).forEach(function (rv) {
-      if (!rv.text) return;
-      var t = rv.text.length > 90 ? rv.text.slice(0, 89) + '…' : rv.text;
-      items.push('<span class="mq-i mq-live"><span class="mq-st">' +
-        '★★★★★'.slice(0, Math.max(1, Math.min(rv.rating || 5, 5))) + '</span>«' + esc(t) + '»' +
-        '<span class="mq-tag">из кабинета</span></span>');
-    });
-    /* дубль ленты — бесшовная петля (сдвиг на −50%) */
-    track.innerHTML = items.join('') + items.join('');
+  var page = 0, timer = null;
+  var isMobile = window.matchMedia('(max-width: 740px)');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function note(q) {
+    var stars = '★★★★★'.slice(0, Math.max(1, Math.min(q.r || 5, 5)));
+    return '<figure class="tw-note"><span class="tn-st" aria-hidden="true">' + stars + '</span>' +
+      '<blockquote>«' + esc(q.t) + '»</blockquote>' +
+      '<figcaption><span>' + esc(q.m || 'с защиты') + '</span>' +
+      (q.live ? '<span class="tn-tag">живой отзыв</span>' : '') + '</figcaption></figure>';
   }
-  draw([]);
+  function pages() { return Math.max(1, Math.ceil(quotes.length / PER)); }
+  function slice() {
+    var s = page * PER, part = quotes.slice(s, s + PER);
+    if (part.length < PER) part = part.concat(quotes.slice(0, PER - part.length));
+    return part;
+  }
+  function paint() {
+    deck.innerHTML = (isMobile.matches ? quotes : slice()).map(note).join('');
+    if (pageEl) pageEl.textContent = isMobile.matches
+      ? 'листайте →' : 'лист ' + (page + 1) + ' из ' + pages();
+  }
+  function turn(dir) {
+    page = (page + dir + pages()) % pages();
+    if (isMobile.matches || reduce.matches) { paint(); return; }
+    deck.classList.add('swap');
+    setTimeout(function () { paint(); deck.classList.remove('swap'); }, 240);
+  }
+  function arm() {
+    if (timer) clearInterval(timer);
+    timer = setInterval(function () {
+      if (document.hidden || isMobile.matches) return;
+      try { if (deck.matches(':hover')) return; } catch (e) {}
+      turn(1);
+    }, 9000);
+  }
+  paint(); arm();
+  var pv = document.getElementById('twPrev'), nx = document.getElementById('twNext');
+  if (pv) pv.addEventListener('click', function () { turn(-1); arm(); });
+  if (nx) nx.addEventListener('click', function () { turn(1); arm(); });
+  var onMq = function () { page = 0; paint(); };
+  if (isMobile.addEventListener) isMobile.addEventListener('change', onMq);
+  else if (isMobile.addListener) isMobile.addListener(onMq);
   function boot() {
     if (!window.Salon || !Salon.api) return;
     Salon.api.get('/reviews').then(function (r) {
-      if (r.ok && (r.reviews || []).length) draw(r.reviews.slice(0, 6));
+      if (!(r && r.ok && (r.reviews || []).length)) return;
+      r.reviews.slice(0, 6).forEach(function (rv) {
+        if (!rv.text) return;
+        var t = rv.text.length > 110 ? rv.text.slice(0, 109) + '…' : rv.text;
+        quotes.push({ t: t, m: rv.author || 'клиент мастерской', live: true, r: rv.rating });
+      });
+      paint();
     });
   }
   if (document.prerendering) document.addEventListener('prerenderingchange', boot, { once: true });
   else boot();
+})();
+</script>
+<script>
+/* цифры доверия оживают при появлении: прямой scroll-слушатель + setInterval —
+   без rAF и IntersectionObserver, чтобы работало везде */
+(function () {
+  'use strict';
+  var row = document.querySelector('.fact-row');
+  if (!row) return;
+  var els = [].slice.call(row.querySelectorAll('[data-count]'));
+  if (!els.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; /* цифры уже в разметке */
+  var done = false;
+  function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+  function inView() {
+    var r = row.getBoundingClientRect();
+    return r.top < window.innerHeight - 60 && r.bottom > 0;
+  }
+  function run() {
+    if (done || !inView()) return;
+    done = true;
+    window.removeEventListener('scroll', run);
+    els.forEach(function (el) {
+      var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+      var steps = 26, i = 0;
+      el.textContent = '0';
+      var iv = setInterval(function () {
+        i++;
+        var v = Math.round(target * (1 - Math.pow(1 - i / steps, 3)));
+        el.textContent = fmt(i >= steps ? target : v);
+        if (i >= steps) clearInterval(iv);
+      }, 36);
+    });
+  }
+  window.addEventListener('scroll', run, { passive: true });
+  setTimeout(run, 400);
 })();
 </script>
 </body>

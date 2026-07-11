@@ -396,3 +396,9 @@ section[id],main[id],[id].chapter{scroll-margin-top:76px}
 @media(max-width:540px){
   .chapter{padding-top:56px}
 }
+/* таблицы гайдов на телефоне листаются внутри себя, не распирая страницу */
+@media(max-width:680px){
+  .doc table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .doc th,.doc td{min-width:130px}
+  .doc th:first-child,.doc td:first-child{min-width:96px}
+}

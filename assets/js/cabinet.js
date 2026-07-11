@@ -49,6 +49,27 @@ function initCabinet() {
     if (isNaN(d)) return '';
     return d.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
   }
+  function plural(n, one, few, many) {
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return one;
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+    return many;
+  }
+  /* обратный отсчёт до сдачи — по deadline_date, только для живых дел */
+  function daysLeft(o) {
+    if (!o.deadline_date || o.step < 0 || o.status === 'done') return null;
+    var d = new Date(o.deadline_date + 'T23:59:59');
+    if (isNaN(d)) return null;
+    return Math.ceil((d - new Date()) / 86400000);
+  }
+  function deadlineChip(o) {
+    var n = daysLeft(o);
+    if (n === null) return '';
+    if (n < 0) return '<span class="dl-chip late">⏰ срок вышел — обсудите с мастером</span>';
+    if (n === 0) return '<span class="dl-chip warn">⏰ сдача сегодня</span>';
+    return '<span class="dl-chip' + (n <= 3 ? ' warn' : '') + '">⏳ до сдачи ' + n + ' ' +
+      plural(n, 'день', 'дня', 'дней') + '</span>';
+  }
   function tokenFor(id) {
     for (var i = 0; i < st.orders.length; i++)
       if (st.orders[i].id === id && st.orders[i].token) return st.orders[i].token;
@@ -281,7 +302,11 @@ function initCabinet() {
     return st.orders.filter(function (o) { return !isRemoved(o); });
   }
   function removedOrders() { return st.orders.filter(isRemoved); }
-  function activeOrders() { return visibleOrders().filter(function (o) { return !isArch(o); }); }
+  function activeOrders() {
+    /* закреплённые дела — первыми, дальше свежие сверху (порядок сервера) */
+    return visibleOrders().filter(function (o) { return !isArch(o); })
+      .sort(function (a, b) { return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0); });
+  }
   function archOrders() { return visibleOrders().filter(isArch); }
   function pickDefaultId() {
     var act = activeOrders(), arch = archOrders();
@@ -295,6 +320,7 @@ function initCabinet() {
   function tabBtn(o) {
     var on = o.id === st.currentId;
     return '<button type="button" role="tab" class="ord-tab' + (on ? ' on' : '') + '" data-ord="' + o.id + '" aria-selected="' + on + '">' +
+      (o.pinned ? '<span class="ot-pin" title="Закреплено">📌</span>' : '') +
       '<span class="ot-no">' + esc(o.no) + '</span>' +
       '<span>' + esc(shortWork(o)) + ' · ' + esc(shortStatus(o)) + '</span>' +
       (o.unread ? '<span class="ot-unread">' + o.unread + '</span>' : '') +
@@ -324,6 +350,7 @@ function initCabinet() {
     return w.length > 24 ? w.slice(0, 23) + '…' : w;
   }
   function shortStatus(o) {
+    if (o.paused && o.status !== 'done' && o.status !== 'cancel') return '⏸ на паузе';
     return { new: 'на оценке', priced: 'ждёт решения', prepay: 'ждёт оплату', work: 'в работе',
              check: 'на проверке', fix: 'правки', done: 'завершён', cancel: 'закрыт' }[o.status] || '';
   }
@@ -453,6 +480,42 @@ function initCabinet() {
     }).join(' · ') + '</p>';
   }
 
+  /* -------- реквизиты: платёжный лист с крупной суммой и копированием --------
+     Текст реквизитов свободный (мастер пишет как удобно) — карту и телефон
+     находим сами и даём скопировать в одно касание. */
+  function reqRows(req) {
+    var lines = String(req).split(/\n+/).map(function (l) { return l.trim(); }).filter(Boolean);
+    return lines.map(function (line) {
+      var copyVal = null, isCard = false, shown = line;
+      var mCard = line.match(/\d(?:[\s-]?\d){15,18}/);
+      if (mCard && mCard[0].replace(/\D/g, '').length >= 16) {
+        var digits = mCard[0].replace(/\D/g, '');
+        copyVal = digits;
+        isCard = true;
+        shown = line.replace(mCard[0], digits.replace(/(\d{4})(?=\d)/g, '$1 '));
+      } else {
+        var mPhone = line.match(/(?:\+7|\b8)[\s(-]*\d{3}[\s)-]*\d{3}[\s-]*\d{2}[\s-]*\d{2}/);
+        if (mPhone) copyVal = mPhone[0].replace(/[^\d+]/g, '');
+      }
+      return '<div class="ps-row' + (isCard ? ' ps-card' : '') + '">' +
+        '<span class="ps-val' + (isCard ? ' mono' : '') + '">' + esc(shown) + '</span>' +
+        (copyVal ? '<button type="button" class="ps-copy" data-copy="' + esc(copyVal) +
+          '" title="Скопировать">⧉ копировать</button>' : '') +
+        '</div>';
+    }).join('');
+  }
+  function paySlip(o, due) {
+    return '<div class="payslip">' +
+      '<div class="ps-head"><span class="caps">Реквизиты для перевода</span>' +
+      (due ? '<span class="ps-due">' + money(due) + ' ₽</span>' : '') + '</div>' +
+      '<div class="ps-body">' + reqRows(o.requisites) + '</div>' +
+      '<div class="ps-steps">' +
+        '<span><b>1</b> переведите сумму</span><span class="ps-ar">→</span>' +
+        '<span><b>2</b> нажмите «Я оплатил(а)»</span><span class="ps-ar">→</span>' +
+        '<span><b>3</b> приложите чек — сверка быстрее</span></div>' +
+      '</div>';
+  }
+
   function payBlock(o) {
     /* блок оплаты: показываем, когда есть «созревший» платёж или отметка на сверке */
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
@@ -472,8 +535,7 @@ function initCabinet() {
         payHistory(o) + '</div>';
     }
     var req = o.requisites
-      ? '<div class="req-slip"><span class="caps">Реквизиты для перевода' + (due ? ' · ' + money(due) + ' ₽' : '') + '</span>' +
-        '<pre class="req-pre mono">' + esc(o.requisites) + '</pre></div>'
+      ? paySlip(o, due)
       : (o.pay_online ? '' : '<p class="petit">Реквизиты пришлём в чат ниже (и в Telegram) в течение пары минут.</p>');
     var payBtns = '<div class="act-row">' +
       (o.pay_online ? '<button type="button" class="btn btn-wax" data-act-pay>💳 Оплатить картой онлайн</button>' : '') +
@@ -509,6 +571,35 @@ function initCabinet() {
         '<div class="act-row"><button type="button" class="btn btn-wax" data-act-fix-send>Отправить на правки</button>' +
         '<button type="button" class="btn btn-line" data-act-fix-cancel>Передумал(а)</button></div>' +
       '</div></div>' + pay;
+  }
+
+  /* -------- пауза: заметная лента под шапкой дела -------- */
+  function pauseBand(o) {
+    if (!o.paused) return '';
+    var by = o.paused_by === 'admin'
+      ? 'Мастер приостановил дело — вопросы можно задать в переписке ниже.'
+      : 'Вы поставили дело на паузу: работа и напоминания подождут вашего сигнала.';
+    return '<div class="pause-band"><span class="pb-ic">⏸</span><span class="pb-txt">' + by +
+      (o.actions.indexOf('unpause') >= 0
+        ? ' <button type="button" class="linkbtn" data-act="unpause">Снять с паузы</button>' : '') +
+      '</span></div>';
+  }
+
+  /* -------- управление делом: пауза, отзыв заявки, закрытие в работе -------- */
+  function manageBlock(o) {
+    var items = [];
+    if (o.actions.indexOf('unpause') >= 0)
+      items.push('<button type="button" class="btn btn-line" data-act="unpause">▶️ Снять с паузы</button>');
+    else if (o.actions.indexOf('pause') >= 0)
+      items.push('<button type="button" class="btn btn-line" data-act-pause>⏸ Поставить на паузу</button>');
+    if (o.status === 'new' && o.actions.indexOf('decline') >= 0)
+      items.push('<button type="button" class="btn btn-line" data-act="decline">Отозвать заявку</button>');
+    if (o.actions.indexOf('cancel_request') >= 0)
+      items.push('<button type="button" class="btn btn-line" data-act-cancelreq>Закрыть дело…</button>');
+    if (!items.length) return '';
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Управление делом</span>' +
+      '<span class="fs-meta">пауза — не отмена: всё сохраняется</span></div>' +
+      '<div class="act-row" style="margin-top:0">' + items.join('') + '</div></div>';
   }
 
   /* -------- отзыв: просто для тех, кто не любит писать -------- */
@@ -622,15 +713,20 @@ function initCabinet() {
     var meta = [];
     if (o.deadline_text) meta.push('срок: ' + esc(o.deadline_text));
     meta.push('заявка от ' + dt(o.created_at));
+    var pinTitle = o.pinned ? 'Открепить дело' : 'Закрепить дело первым в списке';
     return userRow() + tplSwitch() +
       '<article class="sheet sheet-pad stacked reveal form-sheet" aria-label="Дело заказа ' + esc(o.no) + '">' +
       '<div class="ord-top"><span class="mono ord-no">Дело ' + esc(o.no) + '</span>' +
-      '<span class="ord-stamp ' + (STAMP_TONE[o.status] || '') + '">' + esc(o.status_label) + '</span></div>' +
+      '<span class="ord-flags">' +
+      '<button type="button" class="ord-pin' + (o.pinned ? ' on' : '') + '" data-act-pin title="' + pinTitle + '" aria-label="' + pinTitle + '" aria-pressed="' + !!o.pinned + '">📌</button>' +
+      (o.paused ? '<span class="ord-stamp s-pause">⏸ пауза</span>' : '') +
+      '<span class="ord-stamp ' + (STAMP_TONE[o.status] || '') + '">' + esc(o.status_label) + '</span></span></div>' +
       '<h2 class="ord-type">' + esc(o.work_label || '') + '</h2>' +
       (o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
-      '<p class="petit">' + meta.join(' · ') + '</p>' +
+      '<p class="petit">' + meta.join(' · ') + ' ' + deadlineChip(o) + '</p>' +
+      pauseBand(o) +
       priceBlock(o) + stageRows(o) +
-      actionsBlock(o) + reviewBlock(o) + filesBlock(o) + chatBlock(o) + accessBlock(o) +
+      actionsBlock(o) + reviewBlock(o) + manageBlock(o) + filesBlock(o) + chatBlock(o) + accessBlock(o) +
       (isArch(o) ? '<p class="petit" style="margin-top:clamp(20px,3vw,28px);padding-top:14px;border-top:1px solid var(--hairline)">' +
         'Дело ' + (o.status === 'done' ? 'завершено' : 'закрыто') + '. ' +
         (o.archived
@@ -767,7 +863,10 @@ function initCabinet() {
                   bonus_after_payment: 'По заказу уже была оплата — бонусы не применить',
                   bonus_order_small: 'Бонусы применимы к заказам от 1000 ₽',
                   bonus_cap: 'Лимит списания по этому заказу уже выбран',
-                  bonus_empty: 'На счету нет доступных бонусов' }[r.error] ||
+                  bonus_empty: 'На счету нет доступных бонусов',
+                  paused_by_master: 'Паузу ставил мастер — напишите ему в переписке, он снимет',
+                  pause_state: 'Пауза тут не применима — обновите страницу',
+                  only_finished: 'В архив убираются только завершённые и закрытые дела' }[r.error] ||
                 'Не получилось — попробуйте ещё раз');
           return;
         }
@@ -778,6 +877,8 @@ function initCabinet() {
           S.stamp(ai.final ? 'Принято' : 'Часть ' + (ai.part || '') + ' принята');
         }
         if (action === 'resume' && S.stamp) S.stamp('Снова в работе');
+        if (action === 'pause' && S.stamp) S.stamp('На паузе');
+        if (action === 'unpause' && S.stamp) S.stamp('Продолжаем');
         if (action === 'bonus_apply' && S.stamp) S.stamp('−' + money(r.spent || 0) + ' бонусами', { tone: 'wax' });
         if (action === 'bonus_cancel' && S.stamp) S.stamp('+' + money(r.restored || 0) + ' на счёт', { tone: 'wax' });
         var msgA = { accept_price: 'Принято! Дальше — предоплата', paid: 'Передали мастеру на сверку',
@@ -788,6 +889,11 @@ function initCabinet() {
                 paid_undo: 'Отметка снята — без паники',
                 archive: 'Дело убрано в архив — вернуть можно в любой момент',
                 unarchive: 'Дело вернулось в список',
+                pause: 'Дело на паузе — продолжим по вашему сигналу',
+                unpause: 'Пауза снята — работа продолжается',
+                pin: 'Закрепили — дело теперь первое в списке',
+                unpin: 'Закрепление снято',
+                cancel_request: 'Запрос отправлен — мастер свяжется с вами',
                 review: 'Спасибо! Отзыв ушёл на модерацию' }[action];
         if (action === 'accept_work') {
           var a2 = r.accept || {};
@@ -924,13 +1030,19 @@ function initCabinet() {
         return;
       }
       if (a === 'decline') {
+        var od = st.detail || {};
+        var isNew = od.status === 'new';
+        var bonusNote = od.bonus_spent
+          ? ' Применённые бонусы (' + money(od.bonus_spent) + ') сразу вернутся на ваш счёт.' : '';
         var ask = S.confirm ? S.confirm({
-          title: 'Закрыть заявку?',
-          text: 'Если смущает цена или срок — напишите в чат, обычно удаётся договориться. ' +
-                'Закрытую заявку можно возобновить в любой момент.',
+          title: isNew ? 'Отозвать заявку?' : 'Закрыть заявку?',
+          text: (isNew
+            ? 'Заявка закроется, мастер получит уведомление.'
+            : 'Если смущает цена или срок — напишите в чат, обычно удаётся договориться. Мастер получит уведомление о закрытии.') +
+            bonusNote + ' Закрытую заявку можно возобновить в любой момент.',
           input: 'textarea',
           placeholder: 'Причина — по желанию: поможет нам сделать предложение точнее',
-          okLabel: 'Закрыть заявку', noLabel: 'Вернуться', danger: true
+          okLabel: isNew ? 'Отозвать заявку' : 'Закрыть заявку', noLabel: 'Вернуться', danger: true
         }) : Promise.resolve({ ok: window.confirm('Закрыть заявку?'), value: '' });
         ask.then(function (res) { if (res.ok) doAction('decline', { reason: res.value }); });
         return;
@@ -947,6 +1059,41 @@ function initCabinet() {
       return;
     }
     if (t.closest('[data-act-pay]')) { payOnline(); return; }
+    var cp = t.closest('[data-copy]');
+    if (cp) {
+      var cv = cp.getAttribute('data-copy') || '';
+      if (S.copy) S.copy(cv).then(function (okc) {
+        toast(okc ? 'Скопировано: ' + cv + ' ✓' : 'Не получилось — выделите и скопируйте вручную');
+      });
+      return;
+    }
+    if (t.closest('[data-act-pin]')) {
+      doAction(st.detail && st.detail.pinned ? 'unpin' : 'pin');
+      return;
+    }
+    if (t.closest('[data-act-pause]')) {
+      (S.confirm ? S.confirm({
+        title: 'Поставить дело на паузу?',
+        text: 'Работа и напоминания подождут, пока вы не снимете паузу. Это не отмена: ' +
+              'цена, файлы и договорённости сохраняются. Мастер получит уведомление.',
+        okLabel: 'Поставить на паузу', noLabel: 'Передумал(а)'
+      }) : Promise.resolve({ ok: window.confirm('Поставить дело на паузу?') }))
+        .then(function (res) { if (res.ok) doAction('pause'); });
+      return;
+    }
+    if (t.closest('[data-act-cancelreq]')) {
+      (S.confirm ? S.confirm({
+        title: 'Закрыть дело, когда работа уже идёт?',
+        text: 'По делу уже есть выполненная часть, поэтому закрытие согласуем лично: ' +
+              'мастер свяжется с вами, решите вопрос по материалам и оплате. ' +
+              'Если нужен просто перерыв — удобнее пауза.',
+        input: 'textarea',
+        placeholder: 'Почему решили закрыть? Пара слов ускорит решение',
+        okLabel: 'Отправить запрос мастеру', noLabel: 'Вернуться', danger: true
+      }) : Promise.resolve({ ok: window.confirm('Отправить мастеру запрос на закрытие дела?'), value: '' }))
+        .then(function (res) { if (res.ok) doAction('cancel_request', { reason: res.value }); });
+      return;
+    }
     if (t.closest('#bspendApply')) {
       var rng = document.getElementById('bspendRange');
       var amount = rng ? parseInt(rng.value, 10) : 0;
@@ -967,6 +1114,8 @@ function initCabinet() {
     }
     if (t.closest('#bonusRefBtn')) {
       var link = (st.me && st.me.ref_link) || 'https://t.me/academic_saloon_bot';
+      var linkTg = (st.me && st.me.ref_link_tg) || link;
+      if (S.invite) { S.invite({ site: link, tg: linkTg }); return; }
       if (S.copy) S.copy(link).then(function (okc) {
         toast(okc ? 'Ссылка-приглашение скопирована — отправьте другу'
                   : 'Ссылка: ' + link);
