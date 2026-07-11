@@ -228,6 +228,10 @@
 .fl-tag{display:inline-block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
   border:1px solid var(--hairline-strong);border-radius:999px;padding:1px 7px;margin-left:4px;
   color:var(--ink-soft);vertical-align:1px;white-space:nowrap}
+.fl-tag.fl-new{background:var(--wax);border-color:var(--wax);color:#FFFEF9;font-weight:600}
+.ot-unread.ot-file{background:var(--stamp,#3A4E7A)}
+.fin-band{border-color:var(--wax);background:var(--wax-soft,rgba(168,64,47,.06));color:var(--ink)}
+.fin-band .pb-ic{filter:none}
 .rv-stars{display:flex;gap:4px;margin-bottom:10px}
 .rv-star{border:0;background:none;font-size:26px;line-height:1;cursor:pointer;color:var(--hairline-strong);
   padding:2px 4px;transition:color .12s,transform .12s}

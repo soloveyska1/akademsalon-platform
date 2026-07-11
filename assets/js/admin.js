@@ -36,6 +36,9 @@ function initGodEye() {
     admin_archive: 'архив мастера', review: 'отзыв клиента',
     paused: 'дело поставлено на паузу', unpaused: 'пауза снята',
     cancel_request: 'клиент просит закрыть дело', client_pin: 'клиент закрепил дело',
+    final_ready: 'финал готов — клиенту выставлен остаток',
+    spec_sent: 'спецификация отправлена клиенту',
+    broadcast: 'рассылка клиентам', defense_offered: 'предложены услуги к защите',
     plan_set: 'план оплаты изменён', tg_linked: 'клиент привязал Telegram',
     admin_ping: 'напоминание о заявке', client_followup: 'напоминание клиенту о проверке',
     deadline1: 'скоро срок сдачи', deadline3: 'до срока 3 дня'
@@ -234,6 +237,7 @@ function initGodEye() {
       ['clients', '👥 Клиенты', 0],
       ['reviews', '⭐ Отзывы', b.reviews],
       ['leads', '🌐 Лиды', 0],
+      ['broadcast', '📣 Рассылка', 0],
       ['settings', '⚙️ Настройки', 0]
     ];
     box.innerHTML = tabs.map(function (t) {
@@ -270,7 +274,59 @@ function initGodEye() {
     }
     if (st.tab === 'reviews') { box.innerHTML = tplReviews(); return; }
     if (st.tab === 'leads') { box.innerHTML = tplLeads(); return; }
+    if (st.tab === 'broadcast') { box.innerHTML = tplBroadcast(); bcastRefresh(); return; }
     drawSettings(box);
+  }
+
+  /* ---------------- РАССЫЛКА ---------------- */
+  function tplBroadcast() {
+    return '<div class="ag-card" style="max-width:680px;max-height:none">' +
+      '<div class="ag-sec" style="border-top:0;margin-top:0;padding-top:0">' +
+      '<span class="caps">Рассылка клиентам в Telegram</span>' +
+      '<p class="petit" style="margin:8px 0 12px">Сообщение уйдёт от имени бота всем выбранным клиентам. ' +
+      'В конец автоматически добавляется «🔕 Отписаться: /stopnews». Отписавшиеся, заблокировавшие бота ' +
+      'и заблокированные вами клиенты рассылку не получают.</p>' +
+      '<div class="ag-actrow"><select id="agBSeg" class="ag-sort" style="border-radius:var(--r)">' +
+        '<option value="all">Все клиенты</option>' +
+        '<option value="active">С активными заказами</option>' +
+        '<option value="done">С завершёнными заказами</option>' +
+      '</select><span class="petit" id="agBCount">считаем получателей…</span></div>' +
+      '<div class="ag-actrow" style="margin-top:10px"><textarea id="agBText" rows="7" ' +
+      'placeholder="Текст сообщения — обычным текстом, как пишете в Telegram.&#10;&#10;Например: «До конца месяца дарим +10% бонусами на любую летнюю работу…»"></textarea></div>' +
+      '<div class="ag-actrow" style="margin-top:10px">' +
+        '<button type="button" class="btn btn-line" id="agBTest">👀 Отправить себе — посмотреть</button>' +
+        '<button type="button" class="btn btn-wax" id="agBSend">📣 Запустить рассылку</button></div>' +
+      '<p class="ag-note" id="agBStatus"></p>' +
+      '<p class="ag-note">Хорошая рассылка — редкая и полезная: акция, новая услуга, сезонное напоминание. ' +
+      'Чаще раза в пару недель лучше не беспокоить.</p></div></div>';
+  }
+
+  function bcastRefresh() {
+    var seg = (document.getElementById('agBSeg') || {}).value || 'all';
+    S.api.get('/admin/broadcast?segment=' + seg).then(function (r) {
+      var c = document.getElementById('agBCount');
+      if (!c || !r.ok) return;
+      c.textContent = 'получателей: ' + r.count;
+      bcastStatus(r.state);
+    });
+  }
+
+  function bcastStatus(stt) {
+    var el = document.getElementById('agBStatus');
+    if (!el || !stt) return;
+    if (stt.running) {
+      el.innerHTML = '⏳ Идёт рассылка: отправлено <b>' + stt.sent + '</b> из ' + stt.total +
+        (stt.failed ? ' · недоставлено ' + stt.failed : '');
+      setTimeout(function () {
+        if (st.tab !== 'broadcast') return;
+        S.api.get('/admin/broadcast/status').then(function (r) { if (r.ok) bcastStatus(r.state); });
+      }, 2500);
+    } else if (stt.finished_at) {
+      el.innerHTML = '✅ Последняя рассылка («' + esc(stt.segment) + '»): доставлено ' + stt.sent +
+        (stt.failed ? ', недоставлено ' + stt.failed + ' (блокировки)' : '') + '.';
+    } else {
+      el.textContent = '';
+    }
   }
 
   /* ---------------- СВОДКА ---------------- */
@@ -421,6 +477,12 @@ function initGodEye() {
     var claimed = (o.payments || []).filter(function (p) { return p.status === 'claimed'; });
     if (claimed.length)
       return ['due', '💳 <b>Клиент отметил оплату ' + money(claimed[0].amount) + ' ₽.</b> Проверьте поступление и подтвердите в плане оплат ниже — статус и кэшбэк посчитаются сами.'];
+    if (o.final_ready && 'work fix'.indexOf(o.status) >= 0) {
+      if (o.due_now && o.due_now.amount > 0)
+        return ['', '🏁 Финал объявлен готовым — клиент получил счёт на остаток ' +
+          money(o.due_now.amount) + ' ₽. Файл придержите: как только подтвердите оплату, напомним сдать.'];
+      return ['due', '🏁 <b>Остаток получен — передайте финальную часть.</b> Сдайте файлом ниже, клиент получит кнопки приёмки.'];
+    }
     if (o.status === 'new')
       return ['due', '💰 <b>Новая заявка.</b> Изучите требования и отправьте предложение с ценой — клиент получит его в Telegram и в кабинете.'];
     if (o.status === 'fix')
@@ -499,17 +561,25 @@ function initGodEye() {
       }
     }
     var canDeliver = 'work fix check'.indexOf(o.status) >= 0;
+    var finalStage = total <= 1 || (o.stage || 1) >= total;
+    var unpaid = (o.plan || []).some(function (p) { return p.state !== 'paid'; });
+    var finBtn = ('work fix'.indexOf(o.status) >= 0 && finalStage && !o.final_ready && unpaid)
+      ? '<button type="button" class="btn btn-line" id="agFinalReady">🏁 Финал готов — счёт на остаток (файл придержать)</button>'
+      : '';
     return '<div class="ag-sec"><span class="caps">Сдача работы' +
-      (total > 1 ? '<span class="sub">часть ' + o.stage + ' из ' + total + ' · принято ' + (o.parts_done || 0) + '</span>' : '') + '</span>' +
+      '<span class="sub">' + (total > 1 ? 'часть ' + o.stage + ' из ' + total + ' · принято ' + (o.parts_done || 0) : '') +
+      (o.final_ready ? ' · 🏁 финал придержан до оплаты' : '') + '</span></span>' +
       (cells ? '<div class="ag-parts">' + cells + '</div>' : '') +
       (canDeliver
         ? '<div class="ag-actrow" style="margin-top:8px">' +
-          '<label class="btn btn-wax btn-upload">📦 Сдать ' + (total > 1 ? 'часть ' + o.stage : 'работу') + ' файлом' +
+          '<label class="btn btn-wax btn-upload">📦 Сдать ' + (o.final_ready ? 'финал' : (total > 1 ? 'часть ' + o.stage : 'работу')) + ' файлом' +
           '<input type="file" id="agDeliverFile"></label>' +
           '<label class="btn btn-line btn-upload">📎 Просто отправить файл<input type="file" id="agPlainFile"></label>' +
+          finBtn +
           (o.status !== 'check' ? '<button type="button" class="btn btn-line" id="agDeliverMark">Файлы уже у клиента — зафиксировать сдачу</button>' : '') +
           '</div>' +
-          '<p class="ag-note">«Сдать» — клиент получит файл с кнопками «принять / нужны правки», статус и оплата этапа посчитаются сами. «Просто файл» — ничего не меняет.</p>'
+          '<p class="ag-note">«Сдать» — клиент получит файл с кнопками «принять / нужны правки», статус и оплата этапа посчитаются сами. «Просто файл» — ничего не меняет. ' +
+          '«Финал готов» — клиенту уходит счёт на остаток, а финальный файл вы передаёте после оплаты.</p>'
         : '') +
       '<p class="ag-note" id="agUpNote" hidden></p></div>';
   }
@@ -919,6 +989,46 @@ function initGodEye() {
         .then(function (r) { afterOrder(r, 'Статус обновлён — клиент уведомлён'); });
       return;
     }
+    if (t.closest('#agFinalReady')) {
+      confirmDlg({
+        title: 'Финал готов — выставить счёт на остаток?',
+        text: 'Клиент получит уведомление: работа готова целиком, финальная часть передаётся после закрытия остатка. ' +
+              'Файл пока не отправляйте — как подтвердите оплату, придёт напоминание сдать.',
+        okLabel: 'Выставить счёт', noLabel: 'Отмена'
+      }).then(function (res) {
+        if (!res.ok) return;
+        api('/admin/orders/' + st.sel + '/final_ready', {})
+          .then(function (r) { afterOrder(r, r.ok ? '🏁 Счёт на остаток ушёл клиенту' : null); });
+      });
+      return;
+    }
+    if (t.closest('#agBTest')) {
+      var btxt = (document.getElementById('agBText') || {}).value || '';
+      if (!btxt.trim()) { toast('Напишите текст рассылки'); return; }
+      api('/admin/broadcast', { text: btxt.trim(), test: true })
+        .then(function (r) { toast(r.ok ? 'Отправили вам в Telegram — посмотрите глазами клиента' : 'Не получилось (бот не может вам написать?)'); });
+      return;
+    }
+    if (t.closest('#agBSend')) {
+      var btxt2 = (document.getElementById('agBText') || {}).value || '';
+      var seg2 = (document.getElementById('agBSeg') || {}).value || 'all';
+      if (!btxt2.trim()) { toast('Напишите текст рассылки'); return; }
+      var cnt = ((document.getElementById('agBCount') || {}).textContent || '').replace(/\D/g, '') || '?';
+      confirmDlg({
+        title: 'Запустить рассылку на ' + cnt + ' получателей?',
+        text: 'Сообщение уйдёт сразу и отозвать его будет нельзя. Лучше сначала «Отправить себе» и перечитать.',
+        okLabel: 'Отправить всем', noLabel: 'Отмена', danger: true
+      }).then(function (res) {
+        if (!res.ok) return;
+        api('/admin/broadcast', { text: btxt2.trim(), segment: seg2 })
+          .then(function (r) {
+            if (!r.ok) { toast(r.error === 'busy' ? 'Предыдущая рассылка ещё идёт' : 'Не получилось'); return; }
+            toast('📣 Рассылка пошла — статус ниже');
+            bcastStatus({ running: true, sent: 0, total: r.total, failed: 0 });
+          });
+      });
+      return;
+    }
     if (t.closest('#agDeliverMark')) {
       confirmDlg({
         title: 'Зафиксировать сдачу?',
@@ -1018,6 +1128,7 @@ function initGodEye() {
   });
 
   root.addEventListener('change', function (e) {
+    if (e.target && e.target.id === 'agBSeg') { bcastRefresh(); return; }
     if (e.target && e.target.id === 'agSort') { st.sort = e.target.value; drawList(); return; }
     if (e.target && e.target.id === 'agDeliverFile') { uploadAdminFile(e.target, true); e.target.value = ''; }
     if (e.target && e.target.id === 'agPlainFile') { uploadAdminFile(e.target, false); e.target.value = ''; }
@@ -1032,6 +1143,25 @@ function initGodEye() {
     }
   });
 
+  /* одноразовый вход по ссылке из бота: admin.html#alk=<ключ> (команда /panel) */
+  function tryLinkLogin(next) {
+    var mch = (location.hash || '').match(/alk=([A-Za-z0-9_-]+)/);
+    if (!mch) { next(); return; }
+    history.replaceState(null, '', location.pathname);
+    S.api.post('/admin/login', { key: mch[1] }).then(function (r) {
+      if (r.ok && r.token) {
+        S.api.setToken(r.token);
+        if (S.api.setUser) S.api.setUser(r.user || null);
+        toast('Вы вошли как мастер ✓');
+      } else {
+        toast(r.error === 'bad_key'
+          ? 'Ссылка входа устарела — запросите новую: /panel в боте'
+          : 'Не получилось войти по ссылке — попробуйте /panel ещё раз');
+      }
+      next();
+    });
+  }
+
   root.addEventListener('keydown', function (e) {
     if (e.target && e.target.id === 'agQ' && e.key === 'Enter') {
       st.q = e.target.value.trim();
@@ -1045,7 +1175,7 @@ function initGodEye() {
     }
   });
 
-  gate();
+  tryLinkLogin(gate);
 }
 if (document.prerendering) {
   document.addEventListener('prerenderingchange', initGodEye, { once: true });

@@ -520,6 +520,7 @@
       done:   function () { return 'Заказ завершён. Мы на связи до защиты!'; },
       cancel: function () { return 'Заявка закрыта — возобновить можно в кабинете.'; },
       msg:    function () { return 'Новое сообщение мастера — ответ ждёт в переписке.'; },
+      file:   function () { return 'Мастерская положила новый файл в дело — посмотрите.'; },
       newo:   function () { return 'Заявка принята — мастер уже изучает её.'; }
     };
 
@@ -586,13 +587,14 @@
         prev = prev || {};
         var next = {}, events = [];
         r.orders.forEach(function (o) {
-          next[o.id] = { s: o.status, u: o.unread || 0 };
+          next[o.id] = { s: o.status, u: o.unread || 0, f: o.files_new || 0 };
           var p = prev[o.id];
           if (!p) {
             if (!first) events.push([o, 'newo']);
             return;
           }
           if (p.s !== o.status) events.push([o, o.status === 'new' ? 'newo' : o.status]);
+          else if ((o.files_new || 0) > (p.f || 0)) events.push([o, 'file']);
           else if ((o.unread || 0) > (p.u || 0)) events.push([o, 'msg']);
         });
         S.store.set('salon_watch', next);

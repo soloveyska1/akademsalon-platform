@@ -324,6 +324,7 @@ function initCabinet() {
       '<span class="ot-no">' + esc(o.no) + '</span>' +
       '<span>' + esc(shortWork(o)) + ' · ' + esc(shortStatus(o)) + '</span>' +
       (o.unread ? '<span class="ot-unread">' + o.unread + '</span>' : '') +
+      (o.files_new ? '<span class="ot-unread ot-file" title="Новые файлы от мастерской">📎' + o.files_new + '</span>' : '') +
       '</button>';
   }
 
@@ -409,10 +410,19 @@ function initCabinet() {
       '<div class="stg">' + rows + '</div></div>';
   }
 
+  function specLink(o) {
+    if (!o.price) return '';
+    return '<p class="petit" style="margin-top:8px">📄 <a class="link" href="' +
+      S.api.base + apiPath(o.id, '/contract') + '" target="_blank" rel="noopener">' +
+      'Спецификация заказа (PDF)</a> — условия одним листом: что входит в цену, ' +
+      'этапы оплаты, правки. Действует вместе с <a class="link" href="oferta.html">офертой</a>, ' +
+      'подписывать ничего не нужно.</p>';
+  }
+
   function priceBlock(o) {
     if (o.price) {
       var out = '<div class="ord-price-row"><span class="caps">Цена мастера</span>' +
-        '<span class="mono ord-price">' + money(o.price) + ' ₽</span></div>';
+        '<span class="mono ord-price">' + money(o.price) + ' ₽</span></div>' + specLink(o);
       if (o.bonus_spent) {
         out += '<div class="due-box">' +
           '<div class="dr"><span>Цена работы</span><b>' + money(o.price) + ' ₽</b></div>' +
@@ -573,6 +583,20 @@ function initCabinet() {
       '</div></div>' + pay;
   }
 
+  /* -------- финал придержан до оплаты: заметная лента -------- */
+  function finalBand(o) {
+    if (!o.final_ready || 'work fix'.indexOf(o.status) < 0) return '';
+    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
+    if (due > 0) {
+      return '<div class="pause-band fin-band"><span class="pb-ic">🏁</span><span class="pb-txt">' +
+        '<b>Работа готова целиком!</b> Финальная часть передаётся после закрытия остатка — ' +
+        '<b>' + money(due) + ' ₽</b>. Реквизиты — в блоке «Оплата» ниже; как только мастер ' +
+        'подтвердит поступление, файлы придут сразу.</span></div>';
+    }
+    return '<div class="pause-band fin-band"><span class="pb-ic">🏁</span><span class="pb-txt">' +
+      'Оплата закрыта — мастер передаёт финальную часть.</span></div>';
+  }
+
   /* -------- пауза: заметная лента под шапкой дела -------- */
   function pauseBand(o) {
     if (!o.paused) return '';
@@ -600,6 +624,20 @@ function initCabinet() {
     return '<div class="fs-sec"><div class="fs-head"><span class="caps">Управление делом</span>' +
       '<span class="fs-meta">пауза — не отмена: всё сохраняется</span></div>' +
       '<div class="act-row" style="margin-top:0">' + items.join('') + '</div></div>';
+  }
+
+  /* -------- после завершения: услуги «к защите» -------- */
+  function defenseBlock(o) {
+    if (o.status !== 'done' || /^svc_/.test(o.work_type || '')) return '';
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Впереди защита?</span>' +
+      '<span class="fs-meta">по вашей готовой работе</span></div>' +
+      '<p class="petit" style="margin-bottom:12px">Мастерская доводит дело до самой защиты — бонусы с этого заказа уже на счету, их можно применить.</p>' +
+      '<div class="act-row" style="margin-top:0">' +
+      '<a class="btn btn-wax" href="configurator.html?service=dp">🎁 «К защите под ключ» · от 7 200 ₽</a>' +
+      '<a class="btn btn-line" href="configurator.html?service=df">🎤 Презентация и речь · от 3 500 ₽</a>' +
+      '<a class="btn btn-line" href="configurator.html?service=nm">📏 Нормоконтроль · от 5 000 ₽</a>' +
+      '</div>' +
+      '<p class="petit" style="margin-top:10px">Пакет выгоднее на 1 300 ₽, чем услуги по отдельности (8 500 ₽).</p></div>';
   }
 
   /* -------- отзыв: просто для тех, кто не любит писать -------- */
@@ -640,6 +678,7 @@ function initCabinet() {
     var rows = (o.files || []).map(function (f) {
       var who = f.from === 'master' ? 'от мастерской' : 'ваш файл';
       var tags = '';
+      if (f.new) tags += ' <span class="fl-tag fl-new">новый</span>';
       if (f.part && (o.stages_total || 1) > 1) tags += ' <span class="fl-tag">часть ' + f.part + '</span>';
       if (f.label) tags += ' <span class="fl-tag">' + esc(f.label) + '</span>';
       return '<div class="file-line">' + CLIP_SVG +
@@ -724,9 +763,9 @@ function initCabinet() {
       '<h2 class="ord-type">' + esc(o.work_label || '') + '</h2>' +
       (o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
       '<p class="petit">' + meta.join(' · ') + ' ' + deadlineChip(o) + '</p>' +
-      pauseBand(o) +
+      pauseBand(o) + finalBand(o) +
       priceBlock(o) + stageRows(o) +
-      actionsBlock(o) + reviewBlock(o) + manageBlock(o) + filesBlock(o) + chatBlock(o) + accessBlock(o) +
+      actionsBlock(o) + reviewBlock(o) + defenseBlock(o) + manageBlock(o) + filesBlock(o) + chatBlock(o) + accessBlock(o) +
       (isArch(o) ? '<p class="petit" style="margin-top:clamp(20px,3vw,28px);padding-top:14px;border-top:1px solid var(--hairline)">' +
         'Дело ' + (o.status === 'done' ? 'завершено' : 'закрыто') + '. ' +
         (o.archived
@@ -792,7 +831,7 @@ function initCabinet() {
   function watchSync() {
     try {
       var snap = {};
-      st.orders.forEach(function (o) { snap[o.id] = { s: o.status, u: 0 }; });
+      st.orders.forEach(function (o) { snap[o.id] = { s: o.status, u: 0, f: 0 }; });
       S.store.set('salon_watch', snap);
     } catch (e) {}
   }
@@ -866,6 +905,8 @@ function initCabinet() {
                   bonus_empty: 'На счету нет доступных бонусов',
                   paused_by_master: 'Паузу ставил мастер — напишите ему в переписке, он снимет',
                   pause_state: 'Пауза тут не применима — обновите страницу',
+                  nothing_due: 'Сейчас платить нечего — оплата по заказу закрыта',
+                  already_claimed: 'Отметка уже стоит — мастер сверяет поступление',
                   only_finished: 'В архив убираются только завершённые и закрытые дела' }[r.error] ||
                 'Не получилось — попробуйте ещё раз');
           return;
@@ -1048,10 +1089,17 @@ function initCabinet() {
         return;
       }
       if (a === 'accept_work' && S.confirm) {
-        S.confirm({
-          title: 'Принять работу?',
-          text: 'Подтверждение завершит заказ. Если остались замечания — лучше нажать «Нужны правки», это бесплатно до приёмки.',
-          okLabel: 'Принять работу', noLabel: 'Ещё посмотрю'
+        var od2 = st.detail || {};
+        var isFinal = (od2.stage || 1) >= (od2.stages_total || 1);
+        S.confirm(isFinal ? {
+          title: 'Принять и завершить заказ?',
+          text: 'Правки бесплатны до приёмки — в том числе по замечаниям научного руководителя и после предзащиты. ' +
+                'Завершайте, когда все проверки позади; если что-то ещё будет — нажмите «Нужны правки».',
+          okLabel: 'Всё проверено — завершить', noLabel: 'Ещё будут проверки'
+        } : {
+          title: 'Принять часть ' + (od2.stage || 1) + '?',
+          text: 'Мастер продолжит со следующей частью. Замечания по этой части лучше отправить сейчас — кнопкой «Нужны правки», это бесплатно.',
+          okLabel: 'Принять часть', noLabel: 'Ещё посмотрю'
         }).then(function (res) { if (res.ok) doAction('accept_work'); });
         return;
       }
