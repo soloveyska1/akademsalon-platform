@@ -644,8 +644,12 @@ function initGodEye() {
 
       '<div class="ag-sec"><span class="caps">Почта</span>' +
       '<p class="petit">' + (ov.mail_on
-        ? '✅ Почта подключена: гости и почтовые аккаунты получают письма о заказе, работает вход по коду.'
-        : 'SMTP не настроен — письма клиентам не уходят. Добавьте SMTP_HOST/USER/PASS в /root/salon_bot/.env.') + '</p></div>' +
+        ? '✅ Почта работает (support@akademsalon.ru): письма о заказе уходят, вход по коду включён.'
+        : (ov.mail_configured
+          ? '⚠️ Почта настроена (support@akademsalon.ru), но <b>хостер держит исходящий SMTP-порт закрытым</b> — письма не уходят. ' +
+            'Напишите в поддержку Timeweb из панели: «Прошу открыть исходящие SMTP-порты 465 и 587 на VPS 217.18.63.210 — ' +
+            'нужна отправка транзакционных писем моего домена akademsalon.ru». После разблокировки всё включится само, без перезапусков.'
+          : 'SMTP не настроен — письма клиентам не уходят. Добавьте SMTP_HOST/USER/PASS в /root/salon_bot/.env.')) + '</p></div>' +
 
       '<div class="ag-sec"><span class="caps">Рабочая группа заказов</span>' +
       '<p class="petit">' + (ov.group_forum
