@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260710g" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260710g" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260710g" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260711a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260711a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260711a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/reviews.html" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -374,6 +374,24 @@
     </div>
   </section>
 
+  <!-- Живая книга: отзывы из кабинета, прошедшие модерацию, — прямо из картотеки -->
+  <section class="rv-live reveal" id="rvLive" hidden data-chapter="Свежие записи">
+    <div class="wrap">
+      <div class="ch-rule"><span class="ch-no">§ Свежие записи в книге</span></div>
+      <p class="petit" style="max-width:60ch;margin:10px 0 18px">Эти отзывы клиенты оставили в кабинете после завершения заказа — публикуются после проверки мастером, автоматически.</p>
+      <div class="rvl-grid" id="rvLiveGrid"></div>
+    </div>
+  </section>
+  <style>
+    .rv-live{margin:clamp(28px,5vw,56px) 0}
+    .rvl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+    .rvl-card{border:1px solid var(--hairline);border-radius:var(--r);padding:16px 18px;background:var(--sheet,transparent);position:relative}
+    .rvl-stars{color:var(--wax,#A8402F);font-size:15px;letter-spacing:2px}
+    .rvl-stars .dim{color:var(--hairline-strong)}
+    .rvl-text{font-size:14.5px;line-height:1.55;margin:8px 0 10px;font-style:italic}
+    .rvl-meta{font-size:12px;color:var(--ink-soft)}
+  </style>
+
   <section class="final-cta reveal" data-chapter="Расчёт стоимости">
     <div class="wrap">
       <div class="fc-rule"><span>¶</span></div>
@@ -394,8 +412,38 @@
   <button class="lb-nav lb-next" type="button" aria-label="Следующий отзыв">→</button>
 </div>
 
-<script src="assets/js/app.js?v=20260710g"></script>
-<script src="assets/js/extras.js?v=20260710g"></script>
+<script src="assets/js/app.js?v=20260711a"></script>
+<script src="assets/js/extras.js?v=20260711a"></script>
+<script>
+/* живые отзывы из картотеки (модерация мастером) */
+(function(){
+  'use strict';
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function boot(){
+    if (!window.Salon || !Salon.api) return;
+    Salon.api.get('/reviews').then(function(r){
+      if (!r.ok || !(r.reviews||[]).length) return;
+      var sec = document.getElementById('rvLive'), grid = document.getElementById('rvLiveGrid');
+      if (!sec || !grid) return;
+      grid.innerHTML = r.reviews.map(function(rv){
+        var full = Math.max(1, Math.min(rv.rating||5,5));
+        var stars = '';
+        for (var i=1;i<=5;i++) stars += i<=full ? '★' : '<span class="dim">★</span>';
+        var d = rv.at ? new Date(rv.at + (String(rv.at).indexOf('Z')<0?'Z':'')) : null;
+        var when = d && !isNaN(d) ? d.toLocaleDateString('ru-RU',{month:'long',year:'numeric'}) : '';
+        return '<div class="rvl-card"><span class="rvl-stars">'+stars+'</span>'+
+          (rv.text?'<p class="rvl-text">«'+esc(rv.text)+'»</p>':'<p class="rvl-text" style="opacity:.7">Оценка без слов — но какая!</p>')+
+          '<p class="rvl-meta">'+esc(rv.author||'Клиент мастерской')+(rv.work_label?' · '+esc(rv.work_label):'')+(when?' · '+when:'')+'</p></div>';
+      }).join('');
+      sec.hidden = false;
+      if (Salon.observeReveal) Salon.observeReveal(sec);
+      sec.classList.add('in');
+    });
+  }
+  if (document.prerendering) document.addEventListener('prerenderingchange', boot, {once:true});
+  else boot();
+})();
+</script>
 <script>
 (function(){
   'use strict';

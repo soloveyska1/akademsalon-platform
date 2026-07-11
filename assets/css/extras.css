@@ -219,3 +219,22 @@
   .onote{transition:opacity .2s ease;transform:none}
   .onote.in{transform:none}
 }
+
+/* ---------- Кабинет: поэтапная сдача, план оплат, отзыв (2026-07) ---------- */
+.plan-box .pl-st{font-size:11px;letter-spacing:.04em;margin-left:6px;white-space:nowrap}
+.plan-box .pl-st.s-done{color:var(--verify,#2E6B4F)}
+.plan-box .pl-st.s-act{color:var(--stamp,#3A4E7A)}
+.plan-box .pl-st.s-due{color:var(--wax,#A8402F);font-weight:600}
+.fl-tag{display:inline-block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--hairline-strong);border-radius:999px;padding:1px 7px;margin-left:4px;
+  color:var(--ink-soft);vertical-align:1px;white-space:nowrap}
+.rv-stars{display:flex;gap:4px;margin-bottom:10px}
+.rv-star{border:0;background:none;font-size:26px;line-height:1;cursor:pointer;color:var(--hairline-strong);
+  padding:2px 4px;transition:color .12s,transform .12s}
+.rv-star.on{color:var(--wax,#A8402F)}
+.rv-star:hover{transform:scale(1.15)}
+.rv-stars-static{font-size:20px;letter-spacing:2px;color:var(--wax,#A8402F);margin:4px 0 8px}
+.rv-stars-static .dim{color:var(--hairline-strong)}
+#reviewForm textarea{width:100%;font:inherit;font-size:14px;padding:10px 12px;color:inherit;
+  border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;resize:vertical}
+.chat-txt audio{vertical-align:middle;min-width:min(240px,60vw)}

@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260710g" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260710g" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260710g" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260711a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260711a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260711a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -95,6 +95,14 @@
   .att-item .ai-retry{border:0;background:none;color:var(--wax);cursor:pointer;font-size:12.5px;border-bottom:1px solid currentColor;padding:0;margin-left:4px}
   .done-files{margin:-10px 0 24px}
   .done-files .caps{display:block;margin-bottom:8px}
+
+  /* выбор способа связи: мастеру нужен рабочий канал до лида */
+  .ct-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+  .ct-chip{border:1px solid var(--hairline-strong);background:transparent;color:var(--ink-soft);
+    border-radius:999px;padding:6px 12px;font:inherit;font-size:12.5px;cursor:pointer;
+    transition:background .15s,color .15s,border-color .15s}
+  .ct-chip:hover{border-color:var(--ink-soft);color:var(--ink)}
+  .ct-chip.on{background:var(--ink);border-color:var(--ink);color:var(--paper,#F6F1E7)}
 
   @media(max-width:880px){
     .conf-aside{display:none}
@@ -252,8 +260,16 @@
                   <input type="text" id="fName" maxlength="80" autocomplete="name" placeholder="Имя" />
                 </div>
                 <div class="field">
-                  <label for="fContact">Телефон, ВК, Telegram или почта</label>
-                  <input type="text" id="fContact" maxlength="120" autocomplete="tel" placeholder="+7 900 000-00-00 · @nickname · vk.com/id · you@mail.ru" />
+                  <label for="fContact">Где вас искать — мессенджер, телефон или почта</label>
+                  <div class="ct-chips" id="ctChips" role="group" aria-label="Способ связи">
+                    <button type="button" class="ct-chip on" data-ct="tg">Telegram</button>
+                    <button type="button" class="ct-chip" data-ct="vk">ВКонтакте</button>
+                    <button type="button" class="ct-chip" data-ct="wa">WhatsApp</button>
+                    <button type="button" class="ct-chip" data-ct="ph">Телефон</button>
+                    <button type="button" class="ct-chip" data-ct="em">Почта</button>
+                  </div>
+                  <input type="text" id="fContact" maxlength="120" autocomplete="tel" placeholder="@nickname — ник в Telegram" />
+                  <p class="petit" id="ctHint" style="margin-top:6px">Лучше всего — ссылка или ник: мастер сможет написать вам напрямую, даже если бот или сайт закапризничают.</p>
                 </div>
                 <label class="petit" style="display:flex;gap:8px;align-items:flex-start;margin-bottom:14px;cursor:pointer">
                   <input type="checkbox" id="fConsent" style="margin-top:3px" />
@@ -351,8 +367,8 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260710g"></script>
-<script src="assets/js/extras.js?v=20260710g"></script>
+<script src="assets/js/app.js?v=20260711a"></script>
+<script src="assets/js/extras.js?v=20260711a"></script>
 <script>
 function initConf() {
   'use strict';
@@ -715,6 +731,33 @@ function initConf() {
     return lines.join('\n');
   }
 
+  /* --- способ связи: подсказки по выбранному мессенджеру --- */
+  var CT_META = {
+    tg: ['@nickname — ник в Telegram', 'Ник или ссылка t.me — мастер напишет напрямую.'],
+    vk: ['vk.com/id или ссылка на профиль', 'Ссылка на профиль ВК — проверьте, что личные сообщения открыты.'],
+    wa: ['+7 900 000-00-00 — номер WhatsApp', 'Номер, к которому привязан WhatsApp.'],
+    ph: ['+7 900 000-00-00', 'Позвоним или напишем в мессенджер, привязанный к номеру.'],
+    em: ['you@mail.ru', 'Пришлём ответ и ссылку доступа к делу на почту.']
+  };
+  var ctKind = 'tg';
+  var ctChips = $('ctChips');
+  if (ctChips) ctChips.addEventListener('click', function (e) {
+    var b = e.target.closest('.ct-chip');
+    if (!b) return;
+    ctKind = b.getAttribute('data-ct');
+    ctChips.querySelectorAll('.ct-chip').forEach(function (x) { x.classList.toggle('on', x === b); });
+    var inp = $('fContact'), hint = $('ctHint');
+    if (inp) { inp.placeholder = CT_META[ctKind][0]; inp.focus(); }
+    if (hint) hint.textContent = CT_META[ctKind][1];
+  });
+  var CT_TAG = { tg: 'Telegram', vk: 'ВК', wa: 'WhatsApp', ph: 'Телефон', em: 'Почта' };
+  function contactValue() {
+    var v = $('fContact') ? $('fContact').value.trim() : '';
+    if (!v) return '';
+    /* канал — в заявку: мастер сразу видит, где искать лида */
+    return CT_TAG[ctKind] ? CT_TAG[ctKind] + ': ' + v : v;
+  }
+
   /* --- контакт-блок: Telegram-вход или контакт вручную --- */
   function contactUI() {
     var authed = !!(S.api && S.api.token());
@@ -777,7 +820,7 @@ function initConf() {
     if (mNext) S.btnLoading(mNext, true, 'Отправляем…');
     S.api.post('/orders', {
       type: svc ? svcSrvId : state.type, disc: state.disc, term: state.term, tier: state.tier,
-      topic: topicIn.value.trim(), plan: plan, name: name, contact: contact, website: '',
+      topic: topicIn.value.trim(), plan: plan, name: name, contact: contactValue(), website: '',
       deadline: deadlineIn ? deadlineIn.value.trim() : '',
       details: detailsIn ? detailsIn.value.trim() : '',
       consent: !!(authed || ($('fConsent') && $('fConsent').checked)),

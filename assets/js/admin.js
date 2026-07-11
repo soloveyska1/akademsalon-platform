@@ -1,9 +1,10 @@
 /* ============================================================
-   ГЛАЗ БОГА v2 — рабочий стол мастера поверх /api/admin/*.
-   Вкладки: Заказы · Клиенты · Лиды · Настройки.
-   Карточка заказа показывает всё: тариф сопровождения, цену
-   с сайта, бонусы клиента, рефералов, согласие, источник.
-   Доступ: Telegram-вход; сервер пускает только ADMIN_IDS.
+   КАБИНЕТ МАСТЕРА v3 — все процессы мастерской в одном окне.
+   Вкладки: Сводка · Заказы · Клиенты · Отзывы · Лиды · Настройки.
+   Умеет: цену с планом этапов (50/50, 30/40/30), подтверждение
+   оплат по этапам, сдачу частей файлами, переписку с файлами и
+   голосовыми, причины отмен, архив, модерацию отзывов, ссылки
+   на мессенджеры клиента. Доступ: Telegram-вход из ADMIN_IDS.
    ============================================================ */
 function initGodEye() {
   'use strict';
@@ -16,11 +17,16 @@ function initGodEye() {
     work: ['🔨', 'В работе'], check: ['📤', 'На проверке'], fix: ['✏️', 'Правки'],
     done: ['✅', 'Завершён'], cancel: ['🚫', 'Отменён']
   };
+  var PLAN_LBL = { 1: 'Одна выдача', 2: '2 части · 50/50', 3: '3 части · 30/40/30' };
+  var PL_ST = { paid: ['оплачен ✓', 'pl-paid'], claimed: ['клиент отметил — сверьте!', 'pl-claimed'],
+                due: ['созрел к оплате', 'pl-due'], later: ['после следующей части', 'pl-later'] };
+
   var st = {
-    tab: 'orders', filter: 'active', q: '',
+    tab: 'summary', filter: 'attention', q: '',
     orders: [], sel: null, card: null,
     clients: [], csel: null, ccard: null,
-    ov: null, timer: null
+    reviews: [], leads: [],
+    ov: null, timer: null, busy: false
   };
 
   function esc(s) {
@@ -36,16 +42,28 @@ function initGodEye() {
   }
   function toast(m) { if (S.toast) S.toast(m); }
   function stMeta(s) { return ST_META[s] || ['·', s]; }
+  function stamp(s) { return '<span class="ag-stamp st-' + s + '">' + stMeta(s)[1] + '</span>'; }
   function confirmDlg(opts) {
     return S.confirm ? S.confirm(opts)
       : Promise.resolve({ ok: window.confirm(opts.title || 'Подтвердить?'), value: '' });
+  }
+  function starRow(n) {
+    var out = '';
+    for (var i = 1; i <= 5; i++) out += i <= n ? '★' : '<span class="dim">★</span>';
+    return out;
+  }
+  function mediaSrc(orderId, msgId) {
+    return S.api.base + '/orders/' + orderId + '/msgmedia/' + msgId + '?session=' + encodeURIComponent(S.api.token());
+  }
+  function fileSrc(orderId, fid) {
+    return S.api.base + '/orders/' + orderId + '/file/' + fid + '?session=' + encodeURIComponent(S.api.token());
   }
 
   /* ---------------- вход/гейт ---------------- */
   function tplLogin(pending, denied) {
     return '<div class="ag-login sheet sheet-pad stacked">' +
-      '<p class="caps">Глаз бога</p>' +
-      '<h1 style="font-size:26px;margin:6px 0 10px">Рабочий стол мастера</h1>' +
+      '<p class="caps">Кабинет мастера</p>' +
+      '<h1 style="font-size:26px;margin:6px 0 10px">Рабочий стол мастерской</h1>' +
       (denied ? '<p class="petit" style="color:var(--wax,#A8402F);margin-bottom:12px">Этот аккаунт Telegram не является мастером — доступа нет.</p>' : '') +
       (pending
         ? '<p class="petit" style="margin-bottom:12px">⏳ Ждём подтверждение в Telegram — нажмите в боте <b>Start</b>.</p>' +
@@ -67,16 +85,16 @@ function initGodEye() {
       if (r.error === 'forbidden') { render(tplLogin(null, true)); return; }
       if (!r.ok) { render('<div class="ag-empty">Сервер недоступен. <button class="btn btn-line" id="agRetry">Повторить</button></div>'); return; }
       st.ov = r;
-      renderPanel();
+      renderShell();
       loadTab(true);
       if (!st.timer) st.timer = setInterval(function () {
         if (!document.hidden) refreshSilent();
-      }, 30000);
+      }, 25000);
     });
   }
 
   function refreshSilent() {
-    S.api.get('/admin/overview').then(function (r) { if (r.ok) { st.ov = r; drawTiles(); } });
+    S.api.get('/admin/overview').then(function (r) { if (r.ok) { st.ov = r; drawNav(); if (st.tab === 'summary') drawBody(); } });
     if (st.tab === 'orders') {
       S.api.get('/admin/orders?' + listQuery()).then(function (r) {
         if (r.ok) { st.orders = r.orders; drawList(); }
@@ -105,9 +123,20 @@ function initGodEye() {
         drawBody();
         if (st.csel) loadClient(st.csel);
       });
+    } else if (st.tab === 'reviews') {
+      S.api.get('/admin/reviews').then(function (r) {
+        if (!r.ok) return;
+        st.reviews = r.reviews;
+        drawBody();
+      });
+    } else if (st.tab === 'leads') {
+      S.api.get('/admin/leads').then(function (r) {
+        if (!r.ok) return;
+        st.leads = r.leads;
+        drawBody();
+      });
     } else {
       drawBody();
-      if (st.tab === 'leads') loadLeads();
     }
   }
   function loadCard(id, silent) {
@@ -118,9 +147,12 @@ function initGodEye() {
       if (silent && was && was.id === r.order.id &&
           was.updated_at === r.order.updated_at &&
           (was.messages || []).length === (r.order.messages || []).length) return;
+      var draft = (document.getElementById('agMsg') || {}).value || '';
       st.card = r.order;
       drawCard();
       drawList();
+      var ta = document.getElementById('agMsg');
+      if (ta && draft) ta.value = draft;
     });
   }
   function loadClient(id) {
@@ -131,67 +163,53 @@ function initGodEye() {
       drawClientCard();
     });
   }
-  function loadLeads() {
-    S.api.get('/admin/leads').then(function (r) {
-      var box = document.getElementById('agLeads');
-      if (!box || !r.ok) return;
-      box.innerHTML = r.leads.length ? r.leads.map(function (l) {
-        return '<div class="ag-lead"><b>#' + l.id + '</b> ' + esc(l.name || '—') +
-          ' · <span class="mono">' + esc(l.contact || '') + '</span>' +
-          (l.message ? '<br><span class="petit">' + esc(l.message).slice(0, 160) + '</span>' : '') +
-          ' <span class="petit">· ' + esc(l.status) + ' · ' + dt(l.at) + '</span></div>';
-      }).join('') : '<div class="ag-empty">Лидов пока нет</div>';
-    });
-  }
 
   /* ---------------- каркас ---------------- */
   function render(html) { root.innerHTML = html; }
 
-  function renderPanel() {
+  function renderShell() {
     var u = S.api.user() || {};
     render(
-      '<div class="ag-head"><h1>👁 Глаз бога</h1>' +
-      '<div class="ag-user"><span>' + esc(u.name || 'мастер') + '</span>' +
-      '<a class="link" href="dashboard.html">кабинет</a>' +
-      '<button type="button" class="ag-chip" id="agLogout">выйти</button></div></div>' +
-      '<div class="ag-tiles" id="agTiles"></div>' +
-      '<div class="ag-tabs" id="agTabs"></div>' +
+      '<div class="ag-mast"><h1><span class="mono">Академический салон · картотека</span>Кабинет мастера</h1>' +
+      '<div class="ag-user"><span>мастер: <b>' + esc(u.name || '—') + '</b></span>' +
+      '<a class="ag-linkbtn" href="dashboard.html">клиентский кабинет</a>' +
+      '<button type="button" class="ag-linkbtn" id="agLogout">выйти</button></div></div>' +
+      '<div class="ag-nav" id="agNav"></div>' +
       '<div id="agBody"></div>');
-    drawTiles();
-    drawTabs();
-    drawBody();
+    drawNav();
   }
 
-  function drawTiles() {
-    var box = document.getElementById('agTiles');
-    if (!box || !st.ov) return;
-    var by = st.ov.by_status || {};
-    var active = ['new', 'priced', 'prepay', 'work', 'check', 'fix']
-      .reduce(function (s, k) { return s + (by[k] || 0); }, 0);
-    box.innerHTML =
-      tile(by.new || 0, '🆕 новые', by.new ? 'warn' : '') +
-      tile(active, 'активные') +
-      tile(st.ov.week.new, 'заявок за 7 дн') +
-      tile(money(st.ov.month.revenue) + ' ₽', 'выручка 30 дн') +
-      tile(st.ov.users, 'клиентов') +
-      tile(st.ov.leads, 'лидов');
-    function tile(n, l, cls) {
-      return '<div class="ag-tile ' + (cls || '') + '"><div class="t-num">' + n + '</div><div class="t-lbl">' + l + '</div></div>';
-    }
+  function navBadges() {
+    var ov = st.ov || {};
+    var by = ov.by_status || {};
+    return {
+      orders: (by.new || 0) + (by.fix || 0) + (ov.claimed || 0),
+      reviews: ov.reviews_pending || 0
+    };
   }
 
-  function drawTabs() {
-    var box = document.getElementById('agTabs');
+  function drawNav() {
+    var box = document.getElementById('agNav');
     if (!box) return;
-    var tabs = [['orders', '🗂 Заказы'], ['clients', '👥 Клиенты'], ['leads', '🌐 Лиды'], ['settings', '⚙️ Настройки']];
+    var b = navBadges();
+    var tabs = [
+      ['summary', '◫ Сводка', 0],
+      ['orders', '🗂 Заказы', b.orders],
+      ['clients', '👥 Клиенты', 0],
+      ['reviews', '⭐ Отзывы', b.reviews],
+      ['leads', '🌐 Лиды', 0],
+      ['settings', '⚙️ Настройки', 0]
+    ];
     box.innerHTML = tabs.map(function (t) {
-      return '<button type="button" class="ag-tab' + (st.tab === t[0] ? ' on' : '') + '" data-tab="' + t[0] + '">' + t[1] + '</button>';
+      return '<button type="button" class="ag-tab' + (st.tab === t[0] ? ' on' : '') + '" data-tab="' + t[0] + '">' + t[1] +
+        (t[2] ? '<span class="ag-badge">' + t[2] + '</span>' : '') + '</button>';
     }).join('');
   }
 
   function drawBody() {
     var box = document.getElementById('agBody');
     if (!box) return;
+    if (st.tab === 'summary') { box.innerHTML = tplSummary(); return; }
     if (st.tab === 'orders') {
       box.innerHTML =
         '<div class="ag-filters" id="agFilters"></div>' +
@@ -202,7 +220,9 @@ function initGodEye() {
       drawFilters();
       drawList();
       if (st.card) drawCard();
-    } else if (st.tab === 'clients') {
+      return;
+    }
+    if (st.tab === 'clients') {
       box.innerHTML =
         '<div class="ag-split">' +
           '<div class="ag-list" id="agCList"></div>' +
@@ -210,22 +230,62 @@ function initGodEye() {
         '</div>';
       drawClientList();
       if (st.ccard) drawClientCard();
-    } else if (st.tab === 'leads') {
-      box.innerHTML =
-        '<p class="petit" style="margin-bottom:10px">Обращения с сайта без оформленного заказа. ' +
-        'Свяжитесь по контакту — эти люди уже проявили интерес.</p>' +
-        '<div id="agLeads" style="border:1px solid var(--hairline);border-radius:var(--r);max-height:60vh;overflow-y:auto"></div>';
-    } else {
-      drawSettings(box);
+      return;
     }
+    if (st.tab === 'reviews') { box.innerHTML = tplReviews(); return; }
+    if (st.tab === 'leads') { box.innerHTML = tplLeads(); return; }
+    drawSettings(box);
   }
 
-  /* ---------------- вкладка «Заказы» ---------------- */
+  /* ---------------- СВОДКА ---------------- */
+  function tplSummary() {
+    var ov = st.ov || {};
+    var by = ov.by_status || {};
+    var active = ['new', 'priced', 'prepay', 'work', 'check', 'fix']
+      .reduce(function (s, k) { return s + (by[k] || 0); }, 0);
+    function tile(n, l, cls, go) {
+      return '<div class="ag-tile ' + (cls || '') + (go ? ' click" data-go="' + go : '') + '">' +
+        '<div class="t-num">' + n + '</div><div class="t-lbl">' + l + '</div></div>';
+    }
+    var attn = [];
+    if (by.new) attn.push({ f: 'new', ic: '🆕', t: '<b>Новые заявки: ' + by.new + '</b> — посмотрите и назначьте цену' });
+    if (ov.claimed) attn.push({ f: 'attention', ic: '💳', t: '<b>Отмеченные оплаты: ' + ov.claimed + '</b> — сверьте поступления и подтвердите' });
+    if (by.fix) attn.push({ f: 'fix', ic: '✏️', t: '<b>Правки: ' + by.fix + '</b> — клиенты ждут исправленную версию' });
+    if (by.check) attn.push({ f: 'check', ic: '📤', t: 'На проверке у клиентов: ' + by.check });
+    if (ov.reviews_pending) attn.push({ f: '@reviews', ic: '⭐', t: '<b>Отзывы на модерации: ' + ov.reviews_pending + '</b> — опубликовать или отклонить' });
+    return '' +
+      '<div class="ag-tiles">' +
+      tile(by.new || 0, 'новые заявки', by.new ? 'warn' : '', 'new') +
+      tile(ov.claimed || 0, 'оплаты на сверке', ov.claimed ? 'warn' : '', 'attention') +
+      tile(active, 'активные заказы', '', 'active') +
+      tile((by.fix || 0), 'в правках', by.fix ? 'warn' : '', 'fix') +
+      tile(money(ov.month && ov.month.revenue) + ' ₽', 'выручка 30 дн', 'calm') +
+      tile(ov.users || 0, 'клиентов', '') +
+      '</div>' +
+      (attn.length
+        ? '<p class="caps" style="margin-bottom:8px">Требует вашего внимания</p><div class="ag-attn">' +
+          attn.map(function (a) {
+            return '<div class="aa-row" data-go="' + a.f + '"><span>' + a.ic + '</span>' +
+              '<span class="aa-what">' + a.t + '</span><span class="aa-go">открыть →</span></div>';
+          }).join('') + '</div>'
+        : '<div class="ag-attn" style="border-left-color:var(--ag-ok)"><div class="aa-row" style="cursor:default"><span>🕊</span><span class="aa-what">Всё разобрано — срочных дел нет.</span></div></div>') +
+      '<p class="caps" style="margin:18px 0 8px">Последние события</p>' +
+      '<div class="ag-attn" style="border-left-color:var(--hairline-strong)">' +
+      (st.ov.events || []).map(function (e) {
+        return '<div class="aa-row" ' + (e.order_id ? 'data-open-order="' + e.order_id + '"' : 'style="cursor:default"') + '>' +
+          '<span class="aa-go">' + dt(e.at) + '</span>' +
+          '<span class="aa-what">' + (e.order_id ? '№' + e.order_id + ' · ' : '') + esc(e.kind) +
+          (e.data ? ' — ' + esc(String(e.data).slice(0, 70)) : '') + '</span></div>';
+      }).join('') + '</div>';
+  }
+
+  /* ---------------- ЗАКАЗЫ: фильтры и список ---------------- */
   function drawFilters() {
     var box = document.getElementById('agFilters');
     if (!box) return;
-    var chips = [['active', 'Активные'], ['', 'Все']].concat(
-      Object.keys(ST_META).map(function (k) { return [k, stMeta(k)[0] + ' ' + stMeta(k)[1]]; }));
+    var chips = [['attention', '❗ Требуют действий'], ['active', 'Активные'], ['', 'Все']]
+      .concat(Object.keys(ST_META).map(function (k) { return [k, stMeta(k)[0] + ' ' + stMeta(k)[1]]; }))
+      .concat([['archive', '🗄 Архив']]);
     box.innerHTML = chips.map(function (c) {
       return '<button type="button" class="ag-chip' + (st.filter === c[0] && !st.q ? ' on' : '') + '" data-f="' + c[0] + '">' + c[1] + '</button>';
     }).join('') + '<input class="ag-search" id="agQ" placeholder="Поиск: №, тема, ник… (Enter)" value="' + esc(st.q) + '">';
@@ -234,48 +294,204 @@ function initGodEye() {
   function drawList() {
     var box = document.getElementById('agList');
     if (!box) return;
-    if (!st.orders.length) { box.innerHTML = '<div class="ag-empty">Пусто</div>'; return; }
+    if (!st.orders.length) { box.innerHTML = '<div class="ag-empty">Здесь пусто 🕊</div>'; return; }
     box.innerHTML = st.orders.map(function (o) {
       var m = stMeta(o.status);
-      var who = o.client.guest ? ('👻 ' + o.client.name) : (o.client.name + (o.client.username ? ' @' + o.client.username : ''));
+      var who = o.client.guest ? ('👤 ' + o.client.name) : (o.client.name + (o.client.username ? ' @' + o.client.username : ''));
+      var pills = '';
+      if (o.claimed) pills += '<span class="ag-pill due">сверка</span>';
+      else if (o.status === 'new') pills += '<span class="ag-pill due">оценить</span>';
+      else if (o.status === 'fix') pills += '<span class="ag-pill act">правки</span>';
+      if ((o.stages_total || 1) > 1 && 'work check fix done'.indexOf(o.status) >= 0)
+        pills += '<span class="ag-pill">ч.' + o.stage + '/' + o.stages_total + '</span>';
       return '<button type="button" class="ag-row' + (o.id === st.sel ? ' sel' : '') + '" data-id="' + o.id + '">' +
         '<span class="r-no">№' + o.id + '</span>' +
         '<span class="r-main"><span class="r-t">' + m[0] + ' ' + esc(o.work_label || '') + '</span>' +
-        '<span class="r-s">' + esc(who) + ' · ' + dt(o.created_at) + '</span></span>' +
-        (o.unread ? '<span class="r-unrd">' + o.unread + '</span>' : '') +
-        '<span class="r-price">' + (o.price ? money(o.price) + '₽' : (o.quote_low ? '~' + money(o.quote_low) : '')) + '</span>' +
+        '<span class="r-s">' + esc(who) + ' · ' + dt(o.created_at) +
+        (o.cancel_reason ? ' · 🚫 ' + esc(String(o.cancel_reason).slice(0, 30)) : '') + '</span></span>' +
+        '<span class="r-side">' + (pills || '') +
+        '<span class="r-price">' + (o.price ? money(o.price) + '₽' : (o.quote_low ? '~' + money(o.quote_low) : '')) + '</span></span>' +
         '</button>';
     }).join('');
+  }
+
+  /* ---------------- карточка дела ---------------- */
+  function nextHint(o) {
+    /* что мастеру сделать прямо сейчас — карточка сама подсказывает */
+    var claimed = (o.payments || []).filter(function (p) { return p.status === 'claimed'; });
+    if (claimed.length)
+      return ['due', '💳 <b>Клиент отметил оплату ' + money(claimed[0].amount) + ' ₽.</b> Проверьте поступление и подтвердите в плане оплат ниже — статус и кэшбэк посчитаются сами.'];
+    if (o.status === 'new')
+      return ['due', '💰 <b>Новая заявка.</b> Изучите требования и отправьте предложение с ценой — клиент получит его в Telegram и в кабинете.'];
+    if (o.status === 'fix')
+      return ['due', '✏️ <b>Клиент запросил правки' + ((o.stages_total || 1) > 1 ? ' по части ' + o.stage : '') + '.</b> Замечания — в переписке. Готовую версию сдайте файлом с пометкой «сдача» — клиент снова получит кнопки приёмки.'];
+    if (o.status === 'priced')
+      return ['', '⏳ Предложение у клиента — ждём решения. Можно поменять цену или написать в переписке.'];
+    if (o.status === 'prepay')
+      return ['', '⏳ Ждём предоплату. Если клиент оплатил и отметил — здесь появится кнопка подтверждения.'];
+    if (o.status === 'work')
+      return ['', '🔨 В работе' + ((o.stages_total || 1) > 1 ? ': часть ' + o.stage + ' из ' + o.stages_total : '') + '. Когда будет готово — сдайте файлом ниже.'];
+    if (o.status === 'check')
+      return ['', '📤 ' + ((o.stages_total || 1) > 1 ? 'Часть ' + o.stage + ' из ' + o.stages_total : 'Работа') + ' на проверке у клиента — он примет или запросит правки.'];
+    if (o.status === 'cancel')
+      return ['', '🚫 Заявка закрыта' + (o.cancel_reason ? ': «' + esc(o.cancel_reason) + '»' : '') + '. Можно возобновить — клиент получит предложение заново.'];
+    return null;
+  }
+
+  function clientLine(o) {
+    var links = (o.client.links || []).map(function (l) {
+      return '<a href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + esc(l[0]) + '</a>';
+    }).join('');
+    var who = o.client.guest
+      ? '👤 Гость: <b>' + esc(o.client.name) + '</b>' + (o.client.contact ? ' · <span class="mono">' + esc(o.client.contact) + '</span>' : '') +
+        '<br><span class="petit">Без Telegram: всё написанное здесь он видит в кабинете сайта' + (o.client.contact ? '; для живой связи — кнопки ниже' : '') + '.</span>'
+      : '👤 <b>' + esc(o.client.name) + '</b>' + (o.client.username ? ' · @' + esc(o.client.username) : '') +
+        ' · <button type="button" class="ag-linkbtn" data-open-client="' + o.client.id + '">карточка клиента</button>';
+    return '<p class="ag-meta" style="margin-top:8px">' + who + '</p>' +
+      (links ? '<div class="ag-clinks">' + links + '</div>' : '');
+  }
+
+  function planBlock(o) {
+    var plan = o.plan || [];
+    var cur = o.stages_total || 1;
+    var planSel = '<select id="agPlanSel">' + [1, 2, 3].map(function (n) {
+      return '<option value="' + n + '"' + (cur === n ? ' selected' : '') + '>' + PLAN_LBL[n] + '</option>';
+    }).join('') + '</select>';
+    var rows = plan.map(function (p) {
+      var m = PL_ST[p.state] || ['', ''];
+      var act = '';
+      if (p.state === 'claimed' || p.state === 'due')
+        act = '<button type="button" class="btn btn-ink" data-pay-kind="' + p.kind + '" data-pay-amount="' + p.amount + '">Получена ✓</button>';
+      return '<div class="pl-row"><span class="pl-n">' + p.n + '</span>' +
+        '<span class="pl-what">' + esc(p.label) + ' <span class="pl-st ' + m[1] + '">' + m[0] + '</span></span>' +
+        '<span class="pl-sum">' + money(p.amount) + ' ₽</span>' + act + '</div>';
+    }).join('');
+    var paid = (o.payments || []).filter(function (p) { return p.status === 'paid'; });
+    return '<div class="ag-sec"><span class="caps">Цена и план оплаты' +
+      '<span class="sub">бонусами списано: ' + money(o.bonus_spent || 0) + ' · деньгами всего: ' + money(o.due_total || o.price || 0) + ' ₽</span></span>' +
+      '<div class="ag-actrow">' +
+      '<input type="number" id="agPrice" placeholder="цена ₽" value="' + (o.price || '') + '">' +
+      '<input type="number" id="agPrepay" placeholder="первый платёж" value="' + (o.prepay || '') + '">' +
+      planSel +
+      '<button type="button" class="btn btn-wax" id="agPriceSend">' + (o.price ? 'Обновить предложение' : 'Отправить предложение') + '</button>' +
+      '</div>' +
+      '<p class="ag-note">Первый платёж можно не указывать — посчитается по плану (50% или 30%). Предложение уйдёт клиенту с кнопками в Telegram и в кабинет.</p>' +
+      (plan.length ? '<div class="ag-plan">' + rows + '</div>' : '') +
+      (paid.length ? '<p class="ag-note">💰 Получено: ' + paid.map(function (p) {
+        return money(p.amount) + ' ₽ (' + dt(p.at) + ', ' + p.method + ')';
+      }).join(' · ') + '</p>' : '') +
+      '</div>';
+  }
+
+  function partsBlock(o) {
+    var total = o.stages_total || 1;
+    if ('work check fix done'.indexOf(o.status) < 0 && !(total > 1 && o.price)) return '';
+    var cells = '';
+    if (total > 1) {
+      for (var n = 1; n <= total; n++) {
+        var cls = '', tag = 'впереди';
+        if (o.status === 'done' || n <= (o.parts_done || 0)) { cls = 'past'; tag = 'принята ✓'; }
+        else if (n === o.stage) {
+          cls = 'now';
+          tag = o.status === 'check' ? 'у клиента' : o.status === 'fix' ? 'правки' : 'в работе';
+        }
+        cells += '<div class="ag-part ' + cls + '"><b>Часть ' + n + '</b><span class="st">' + tag + '</span></div>';
+      }
+    }
+    var canDeliver = 'work fix check'.indexOf(o.status) >= 0;
+    return '<div class="ag-sec"><span class="caps">Сдача работы' +
+      (total > 1 ? '<span class="sub">часть ' + o.stage + ' из ' + total + ' · принято ' + (o.parts_done || 0) + '</span>' : '') + '</span>' +
+      (cells ? '<div class="ag-parts">' + cells + '</div>' : '') +
+      (canDeliver
+        ? '<div class="ag-actrow" style="margin-top:8px">' +
+          '<label class="btn btn-wax btn-upload">📦 Сдать ' + (total > 1 ? 'часть ' + o.stage : 'работу') + ' файлом' +
+          '<input type="file" id="agDeliverFile"></label>' +
+          '<label class="btn btn-line btn-upload">📎 Просто отправить файл<input type="file" id="agPlainFile"></label>' +
+          (o.status !== 'check' ? '<button type="button" class="btn btn-line" id="agDeliverMark">Файлы уже у клиента — зафиксировать сдачу</button>' : '') +
+          '</div>' +
+          '<p class="ag-note">«Сдать» — клиент получит файл с кнопками «принять / нужны правки», статус и оплата этапа посчитаются сами. «Просто файл» — ничего не меняет.</p>'
+        : '') +
+      '<p class="ag-note" id="agUpNote" hidden></p></div>';
+  }
+
+  function feedBlock(o) {
+    var feed = [];
+    (o.history || []).forEach(function (h) { feed.push({ at: h.at, sys: true, text: h.text }); });
+    (o.messages || []).forEach(function (x) { feed.push({ at: x.at, m: x }); });
+    feed.sort(function (a, b) { return a.at < b.at ? -1 : 1; });
+    var html = feed.map(function (f) {
+      if (f.sys) return '<div class="ag-sys">' + esc(f.text) + ' · ' + dt(f.at) + '</div>';
+      var x = f.m;
+      var me = x.from === 'master';
+      var body = x.text ? esc(x.text) : '';
+      if (x.media && (x.kind === 'voice' || x.kind === 'audio'))
+        body += (body ? '<br>' : '') + '<audio controls preload="none" src="' + mediaSrc(o.id, x.id) + '"></audio>';
+      else if (x.media && x.kind === 'photo')
+        body += (body ? '<br>' : '') + '<a href="' + mediaSrc(o.id, x.id) + '" target="_blank" rel="noopener"><img loading="lazy" src="' + mediaSrc(o.id, x.id) + '" alt="фото"></a>';
+      else if (x.media && (x.kind === 'video' || x.kind === 'video_note'))
+        body += (body ? '<br>' : '') + '<video controls preload="none" style="max-width:min(260px,100%)" src="' + mediaSrc(o.id, x.id) + '"></video>';
+      else if (!body || x.file_name)
+        body += (body ? '<br>' : '') + '📎 ' + esc(x.file_name || ('вложение (' + esc(x.kind || '') + ')'));
+      return '<div class="ag-m' + (me ? ' master' : '') + '"><span class="who">' + (me ? 'Мастерская' : 'Клиент') + ' · ' + dt(f.at) + '</span>' +
+        '<div class="txt">' + body + '</div></div>';
+    }).join('');
+    return '<div class="ag-sec"><span class="caps">Переписка' +
+      '<span class="sub">клиент видит её в кабинете' + (o.tg_linked ? ' и в Telegram' : '') + '</span></span>' +
+      '<div class="ag-feed" id="agFeed">' + (html || '<div class="ag-sys">пока пусто</div>') + '</div>' +
+      '<div class="ag-chatform">' +
+      '<textarea id="agMsg" rows="2" placeholder="Сообщение клиенту… (Cmd/Ctrl+Enter)"></textarea>' +
+      '<label class="btn btn-line btn-upload" title="Файл клиенту">📎<input type="file" id="agChatFile"></label>' +
+      '<button type="button" class="btn btn-wax" id="agMsgSend">Отправить</button></div></div>';
+  }
+
+  function filesBlock(o) {
+    var fs = o.files || [];
+    return '<div class="ag-sec"><span class="caps">Файлы дела (' + fs.length + ')</span>' +
+      (fs.length ? fs.map(function (f) {
+        var tags = '';
+        if (f.part) tags += '<span class="fl-tag">часть ' + f.part + '</span>';
+        if (f.label) tags += '<span class="fl-tag">' + esc(f.label) + '</span>';
+        return '<div class="ag-file"><span class="fname">📎 ' + esc(f.name) + tags + '</span>' +
+          '<span class="fmeta">' + (f.from === 'master' ? 'от вас' : 'от клиента') + ' · ' + dt(f.at) + '</span>' +
+          '<a class="ag-linkbtn" href="' + fileSrc(o.id, f.id) + '" download>скачать</a></div>';
+      }).join('') : '<p class="ag-note">Файлов пока нет.</p>') + '</div>';
+  }
+
+  function manageBlock(o) {
+    return '<div class="ag-sec"><span class="caps">Управление статусом</span>' +
+      '<div class="ag-actrow">' +
+      Object.keys(ST_META).map(function (k) {
+        return '<button type="button" class="ag-stbtn' + (o.status === k ? ' on' : '') + '" data-st="' + k + '">' + stMeta(k)[0] + ' ' + stMeta(k)[1] + '</button>';
+      }).join('') + '</div>' +
+      '<p class="ag-note">Клиент получает уведомление о смене статуса — в Telegram, на почту и в кабинет.</p>' +
+      '<div class="ag-actrow" style="margin-top:10px">' +
+      (o.status === 'cancel'
+        ? '<button type="button" class="btn btn-line" id="agResume">🔄 Возобновить заказ</button>'
+        : '<button type="button" class="btn btn-line" id="agCancel2">🚫 Закрыть с причиной…</button>') +
+      (o.archived_admin
+        ? '<button type="button" class="btn btn-line" id="agArch" data-on="0">📂 Вернуть из архива</button>'
+        : '<button type="button" class="btn btn-line" id="agArch" data-on="1">🗄 Убрать в архив</button>') +
+      '</div></div>';
   }
 
   function intelBlock(o) {
     var ci = o.client_intel;
     var rows = [];
-    if (o.tier_label) rows.push(['⭐ Сопровождение', o.tier_label]);
+    if (o.tier_label) rows.push(['⭐ Сопровождение', esc(o.tier_label)]);
     if (o.quote_low) rows.push(['🧮 Сайт показал', money(o.quote_low) + ' – ' + money(o.quote_high) + ' ₽']);
-    if (o.price) {
-      var pr = money(o.price) + ' ₽';
-      if (o.bonus_spent) pr += ' · бонусами −' + money(o.bonus_spent) + ' → деньгами ' + money(o.due_total) + ' ₽';
-      rows.push(['💰 Цена', pr]);
-    }
+    if (o.deadline_text) rows.push(['📅 Срок клиента', esc(o.deadline_text)]);
+    if (o.details) rows.push(['📋 Требования', esc(o.details)]);
     if (ci) {
       rows.push(['💎 Бонусы клиента', money(ci.bonus.balance) +
         (ci.bonus.expiring.length ? ' (сгорит ' + ci.bonus.expiring.map(function (e) { return e.amount + ' — ' + dt(e.at).slice(0, 5); }).join(', ') + ')' : '')]);
       rows.push(['🤝 Рефералы', ci.referrals + (ci.referrer ? ' · пришёл от ' + esc(ci.referrer.name || ci.referrer.id) : '')]);
-      rows.push(['📇 Клиент с', dt(ci.since) + (ci.welcome_at ? ' · велком получен' : ' · велком не получал')]);
+      rows.push(['📇 Клиент с', dt(ci.since) + (ci.welcome_at ? ' · велком получен' : '')]);
       if (ci.banned) rows.push(['⛔️', '<b style="color:var(--wax)">В чёрном списке</b>']);
     }
-    if (o.consent_at) rows.push(['📋 Согласие', dt(o.consent_at) + ' · ' + esc(o.consent_doc || '')]);
+    if (o.consent_at) rows.push(['📋 Согласие ПДн', dt(o.consent_at) + ' · ' + esc(o.consent_doc || '')]);
     if (o.page) rows.push(['🔗 Источник', esc(o.page)]);
     if (o.cancel_reason) rows.push(['🚫 Причина отказа', '«' + esc(o.cancel_reason) + '»']);
-    var paid = (o.payments || []).filter(function (p) { return p.status === 'paid'; });
-    if (paid.length) rows.push(['💳 Оплачено', paid.map(function (p) {
-      return money(p.amount) + ' ₽ (' + (p.kind === 'prepay' ? 'предоплата' : 'остаток') + ', ' + p.method + ')';
-    }).join(' · ')]);
-    var claimed = (o.payments || []).filter(function (p) { return p.status === 'claimed'; });
-    if (claimed.length) rows.push(['⏳ Клиент отметил оплату', claimed.map(function (p) {
-      return money(p.amount) + ' ₽ — проверьте поступление и подтвердите';
-    }).join(' · ')]);
+    if (o.review) rows.push(['⭐ Отзыв', starRow(o.review.rating) + ' · ' + ({ pending: 'на модерации — вкладка «Отзывы»', approved: 'опубликован', rejected: 'отклонён' }[o.review.status] || '')]);
     if (!rows.length) return '';
     return '<div class="ag-intel">' + rows.map(function (r) {
       return '<div class="ai-row"><span class="ai-k">' + r[0] + '</span><span class="ai-v">' + r[1] + '</span></div>';
@@ -286,77 +502,34 @@ function initGodEye() {
     var box = document.getElementById('agCard');
     var o = st.card;
     if (!box || !o) return;
-    var m = stMeta(o.status);
-    var who = o.client.guest
-      ? '👻 Гость: <b>' + esc(o.client.name) + '</b>' + (o.client.contact ? ' · <span class="mono">' + esc(o.client.contact) + '</span>' : '') + ' <span class="petit">(без Telegram — пишите ему здесь, он увидит в кабинете; контакт выше — для ручной связи)</span>'
-      : '👤 <b>' + esc(o.client.name) + '</b>' + (o.client.username ? ' · @' + esc(o.client.username) : '') + ' · <button type="button" class="link ag-linkbtn" data-open-client="' + o.client.id + '">карточка клиента</button>';
-    var feed = [];
-    (o.history || []).forEach(function (h) { feed.push({ at: h.at, sys: true, text: h.text }); });
-    (o.messages || []).forEach(function (x) {
-      feed.push({ at: x.at, who: x.from, text: x.text || ('📎 ' + (x.file_name || 'вложение')) });
-    });
-    feed.sort(function (a, b) { return a.at < b.at ? -1 : 1; });
-    var needConfirm = (o.payments || []).some(function (p) { return p.status === 'claimed'; }) ||
-      o.status === 'prepay' || o.status === 'priced' || o.status === 'check';
-
+    var hint = nextHint(o);
     box.innerHTML =
       '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
-      '<span class="mono petit">Заказ №' + o.id + ' · ' + esc(o.source || '') + '</span>' +
-      '<span class="tag tag-ink">' + m[0] + ' ' + m[1] + '</span></div>' +
+      '<span class="mono petit">Дело №' + o.id + ' · ' + esc(o.source || '') + ' · создано ' + dt(o.created_at) +
+      (o.archived_admin ? ' · 🗄 в архиве' : '') + '</span>' +
+      stamp(o.status) + '</div>' +
       '<h2>' + esc(o.work_label || '') + '</h2>' +
-      (o.topic ? '<p class="petit" style="font-style:italic">«' + esc(o.topic) + '»</p>' : '') +
-      '<p class="petit">' + who + '</p>' +
-      '<p class="petit">' + (o.deadline_text ? '📅 ' + esc(o.deadline_text) + ' · ' : '') + 'создан ' + dt(o.created_at) + '</p>' +
-      (o.details ? '<p class="petit">📋 ' + esc(o.details) + '</p>' : '') +
+      (o.topic ? '<p class="ag-topic">«' + esc(o.topic) + '»</p>' : '') +
+      clientLine(o) +
+      (hint ? '<div class="ag-next ' + hint[0] + '">' + hint[1] + '</div>' : '') +
+      planBlock(o) +
+      partsBlock(o) +
+      feedBlock(o) +
+      filesBlock(o) +
+      manageBlock(o) +
       intelBlock(o) +
-
-      '<div class="ag-sec"><span class="caps">Цена и оплата</span>' +
-      '<div class="ag-actrow"><input type="number" id="agPrice" placeholder="цена ₽" value="' + (o.price || '') + '">' +
-      '<input type="number" id="agPrepay" placeholder="предоплата" value="' + (o.prepay || '') + '">' +
-      '<button type="button" class="btn btn-wax" id="agPriceSend">Отправить предложение</button>' +
-      (needConfirm ? '<button type="button" class="btn btn-ink" id="agPayConfirm">✅ Оплата получена</button>' : '') +
-      '</div>' +
-      '<p class="ag-note">Предложение уйдёт клиенту с кнопками — в Telegram и в кабинет. «Оплата получена» сама двинет статус и начислит кэшбэк.</p></div>' +
-
-      '<div class="ag-sec"><span class="caps">Статус</span><div class="ag-actrow">' +
-      Object.keys(ST_META).map(function (k) {
-        return '<button type="button" class="ag-stbtn' + (o.status === k ? ' on' : '') + '" data-st="' + k + '">' + stMeta(k)[0] + ' ' + stMeta(k)[1] + '</button>';
-      }).join('') + '</div>' +
-      '<div class="ag-actrow" style="margin-top:8px">' +
-      (o.status === 'cancel'
-        ? '<button type="button" class="btn btn-line" id="agResume">🔄 Возобновить заказ</button>'
-        : '<button type="button" class="btn btn-line" id="agCancel2">🚫 Закрыть с причиной…</button>') +
-      '</div></div>' +
-
-      '<div class="ag-sec"><span class="caps">Переписка</span><div class="ag-feed" id="agFeed">' +
-      (feed.length ? feed.map(function (f) {
-        if (f.sys) return '<div class="ag-sys">' + esc(f.text) + ' · ' + dt(f.at) + '</div>';
-        var me = f.who === 'master';
-        return '<div class="ag-m' + (me ? ' master' : '') + '"><span class="who">' + (me ? 'Вы' : 'Клиент') + ' · ' + dt(f.at) + '</span><div class="txt">' + esc(f.text) + '</div></div>';
-      }).join('') : '<div class="ag-sys">пока пусто</div>') + '</div>' +
-      '<div class="ag-actrow" style="margin-top:10px"><textarea id="agMsg" rows="2" placeholder="Сообщение клиенту… (Cmd/Ctrl+Enter — отправить)"></textarea>' +
-      '<button type="button" class="btn btn-wax" id="agMsgSend">Отправить</button></div>' +
-      '<p class="ag-note">Файлы клиенту удобнее отправлять в ветке заказа в рабочей группе или из бота («Сдать работу»).</p></div>' +
-
-      '<div class="ag-sec ag-files"><span class="caps">Файлы (' + (o.files || []).length + ')</span>' +
-      ((o.files || []).length ? o.files.map(function (f) {
-        return '<div class="petit">📎 ' + esc(f.name) + ' · ' + (f.from === 'master' ? 'от вас' : 'от клиента') +
-          '<a class="link" href="' + S.api.base + '/orders/' + o.id + '/file/' + f.id + '?session=' + encodeURIComponent(S.api.token()) + '" download>скачать</a></div>';
-      }).join('') : '<p class="ag-note">Файлов пока нет.</p>') + '</div>' +
-
       '<div class="ag-sec"><span class="caps">Заметка (видна только вам)</span>' +
       '<div class="ag-actrow"><textarea id="agNote" rows="2">' + esc(o.admin_note || '') + '</textarea>' +
       '<button type="button" class="btn btn-line" id="agNoteSave">Сохранить</button></div></div>' +
-
-      '<div class="ag-sec"><span class="caps">События</span><div class="ag-ev">' +
+      '<div class="ag-sec"><span class="caps">Хроника дела</span><div class="ag-ev">' +
       (o.events || []).map(function (e) {
-        return dt(e.at) + ' · ' + esc(e.kind) + (e.data ? ' — ' + esc(String(e.data).slice(0, 60)) : '');
+        return dt(e.at) + ' · ' + esc(e.kind) + (e.data ? ' — ' + esc(String(e.data).slice(0, 70)) : '');
       }).join('<br>') + '</div></div>';
     var feedBox = document.getElementById('agFeed');
     if (feedBox) feedBox.scrollTop = feedBox.scrollHeight;
   }
 
-  /* ---------------- вкладка «Клиенты» ---------------- */
+  /* ---------------- КЛИЕНТЫ ---------------- */
   function drawClientList() {
     var box = document.getElementById('agCList');
     if (!box) return;
@@ -380,18 +553,20 @@ function initGodEye() {
       '<h2 style="margin:0">' + (c.banned ? '⛔️ ' : '') + esc(c.name || 'клиент') +
       (c.username ? ' <span class="petit">@' + esc(c.username) + '</span>' : '') + '</h2>' +
       '<span class="mono petit">id ' + c.id + '</span></div>' +
-      '<p class="petit">с нами с ' + dt(c.since) + ' · был ' + dt(c.last_seen) +
+      '<p class="ag-meta">с нами с ' + dt(c.since) + ' · был ' + dt(c.last_seen) +
       (c.welcome_at ? ' · велком-бонус получен' : '') + '</p>' +
-      (c.referrer ? '<p class="petit">🤝 пришёл по приглашению: ' + esc(c.referrer.name || c.referrer.id) + '</p>' : '') +
-      (c.referrals.length ? '<p class="petit">🤝 привёл: ' + c.referrals.map(function (r) { return esc(r.name || r.id); }).join(', ') + '</p>' : '') +
+      (c.username ? '<div class="ag-clinks"><a href="https://t.me/' + esc(c.username) + '" target="_blank" rel="noopener">Telegram @' + esc(c.username) + '</a></div>'
+        : (c.id > 0 ? '<div class="ag-clinks"><a href="tg://user?id=' + c.id + '">Профиль Telegram</a></div>' : '')) +
+      (c.referrer ? '<p class="ag-meta">🤝 пришёл по приглашению: ' + esc(c.referrer.name || c.referrer.id) + '</p>' : '') +
+      (c.referrals.length ? '<p class="ag-meta">🤝 привёл: ' + c.referrals.map(function (r) { return esc(r.name || r.id); }).join(', ') + '</p>' : '') +
 
       '<div class="ag-sec"><span class="caps">Бонусный счёт · ' + money(c.bonus.balance) + '</span>' +
       (c.bonus.expiring.length ? '<p class="petit">⏳ сгорает: ' + c.bonus.expiring.map(function (e) { return e.amount + ' — ' + dt(e.at).slice(0, 5); }).join(', ') + '</p>' : '') +
       '<div class="ag-actrow"><input type="number" id="agBDelta" placeholder="± сумма">' +
-      '<input type="text" id="agBNote" placeholder="комментарий (клиент увидит)">' +
+      '<input type="text" id="agBNote" placeholder="комментарий (клиент увидит)" style="flex:1;min-width:150px">' +
       '<button type="button" class="btn btn-line" id="agBApply">Провести</button></div>' +
       '<p class="ag-note">Плюс — начислить (срок 90 дней), минус — списать. Начисление придёт клиенту уведомлением.</p>' +
-      '<div class="ag-ev" style="margin-top:10px">' +
+      '<div class="ag-ev" style="margin-top:10px;max-height:200px;overflow-y:auto">' +
       (c.ledger || []).map(function (r) {
         var sign = r.delta > 0 ? '+' : '';
         return dt(r.at) + ' · <b>' + sign + r.delta + '</b> · ' + esc(r.label) + (r.note ? ' — ' + esc(r.note) : '');
@@ -400,9 +575,9 @@ function initGodEye() {
       '<div class="ag-sec"><span class="caps">Заказы (' + c.orders.length + ')</span>' +
       (c.orders.length ? c.orders.map(function (o) {
         var m = stMeta(o.status);
-        return '<div class="petit">' + m[0] + ' №' + o.id + ' · ' + esc(o.work_label || '') +
-          (o.price ? ' · ' + money(o.price) + ' ₽' : '') +
-          ' · <button type="button" class="link ag-linkbtn" data-open-order="' + o.id + '">открыть</button></div>';
+        return '<div class="ag-file"><span class="fname">' + m[0] + ' №' + o.id + ' · ' + esc(o.work_label || '') +
+          (o.price ? ' · ' + money(o.price) + ' ₽' : '') + '</span>' +
+          '<button type="button" class="ag-linkbtn" data-open-order="' + o.id + '">открыть</button></div>';
       }).join('') : '<p class="ag-note">Заказов нет.</p>') + '</div>' +
 
       '<div class="ag-sec"><span class="caps">Доступ</span><div class="ag-actrow">' +
@@ -411,15 +586,50 @@ function initGodEye() {
       '<p class="ag-note">Блокировка закрывает приём новых заявок с сайта от этого аккаунта.</p></div>';
   }
 
-  /* ---------------- вкладка «Настройки» ---------------- */
+  /* ---------------- ОТЗЫВЫ ---------------- */
+  function tplReviews() {
+    if (!st.reviews.length) return '<div class="ag-empty">Отзывов пока нет. Они появляются, когда клиент завершённого заказа ставит оценку в боте или кабинете.</div>';
+    var stLbl = { pending: '⏳ ждёт решения', approved: '✅ на сайте', rejected: '🚫 отклонён' };
+    return '<p class="petit" style="margin-bottom:12px">Отзывы публикуются на «Книге отзывов» сайта только после вашего одобрения. Отклонённый отзыв клиент не увидит как отклонённый — просто не попадёт на сайт.</p>' +
+      st.reviews.map(function (r) {
+        return '<div class="ag-rv ' + r.status + '">' +
+          '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
+          '<span class="rv-st">' + starRow(r.rating) + '</span>' +
+          '<span class="rv-meta">' + (stLbl[r.status] || '') + ' · ' + dt(r.at) + '</span></div>' +
+          (r.text ? '<blockquote>«' + esc(r.text) + '»</blockquote>' : '<blockquote style="opacity:.6">Без текста — только оценка.</blockquote>') +
+          '<p class="rv-meta">' + esc(r.author || 'Без подписи') + ' · ' + esc(r.work_label || '') +
+          ' · <button type="button" class="ag-linkbtn" data-open-order="' + r.order_id + '">дело №' + r.order_id + '</button></p>' +
+          '<div class="ag-actrow" style="margin-top:10px">' +
+          (r.status !== 'approved' ? '<button type="button" class="btn btn-ink" data-rv="' + r.id + '" data-ok="1">✅ Опубликовать</button>' : '') +
+          (r.status !== 'rejected' ? '<button type="button" class="btn btn-line" data-rv="' + r.id + '" data-ok="0">🚫 ' + (r.status === 'approved' ? 'Снять с сайта' : 'Отклонить') + '</button>' : '') +
+          '</div></div>';
+      }).join('');
+  }
+
+  /* ---------------- ЛИДЫ ---------------- */
+  function tplLeads() {
+    return '<p class="petit" style="margin-bottom:10px">Обращения с сайта без оформленного заказа — эти люди уже проявили интерес, свяжитесь по контакту.</p>' +
+      '<div style="border:1px solid var(--hairline);border-radius:var(--r);max-height:65vh;overflow-y:auto;background:var(--sheet,transparent)">' +
+      (st.leads.length ? st.leads.map(function (l) {
+        return '<div class="ag-lead"><b>#' + l.id + '</b> ' + esc(l.name || '—') +
+          ' · <span class="mono">' + esc(l.contact || '') + '</span>' +
+          (l.message ? '<br><span class="petit">' + esc(l.message).slice(0, 200) + '</span>' : '') +
+          '<br><span class="petit">' + esc(l.status) + ' · ' + dt(l.at) + '</span></div>';
+      }).join('') : '<div class="ag-empty">Лидов пока нет</div>') + '</div>';
+  }
+
+  /* ---------------- НАСТРОЙКИ ---------------- */
   function drawSettings(box) {
     var ov = st.ov || {};
     box.innerHTML =
-      '<div class="ag-card" style="max-width:640px">' +
+      '<div class="ag-card" style="max-width:680px;max-height:none">' +
       '<div class="ag-sec" style="border-top:0;margin-top:0;padding-top:0"><span class="caps">Реквизиты для переводов</span>' +
       '<div class="ag-actrow"><textarea id="agReq" rows="3" placeholder="Сбер: 0000 0000 0000 0000 (Имя О.)&#10;СБП: +7 900 000-00-00">' + esc(ov.requisites || '') + '</textarea>' +
       '<button type="button" class="btn btn-line" id="agReqSave">Сохранить</button></div>' +
       '<p class="ag-note">Эти реквизиты видят клиенты при оплате переводом — в боте и в кабинете.</p></div>' +
+
+      '<div class="ag-sec"><span class="caps">Оплата этапами</span>' +
+      '<p class="petit">Небольшие работы — 2 части (50/50), крупные (диплом, магистерская, Scopus…) — 3 части (30/40/30), как обещает сайт. План ставится автоматически при назначении цены; в карточке заказа его можно поменять, пока этапы не пошли.</p></div>' +
 
       '<div class="ag-sec"><span class="caps">Онлайн-оплата картой</span>' +
       '<p class="petit">' + (ov.pay_online
@@ -430,19 +640,58 @@ function initGodEye() {
           'Success/Fail URL — <span class="mono">…/dashboard.html</span>, возьмите «Идентификатор магазина» и «Пароль #1/#2» ' +
           'и добавьте в <span class="mono">/root/salon_bot/.env</span> строки ROBOKASSA_LOGIN, ROBOKASSA_PASS1, ROBOKASSA_PASS2, ' +
           'затем перезапустите бота (systemctl restart salon-bot-v2). Для теста: тестовые пароли + ROBOKASSA_TEST=1. ' +
-          'Альтернатива — ЮKassa (YOOKASSA_SHOP_ID и YOOKASSA_SECRET). До этого работает оплата переводом с подтверждением в одну кнопку.') + '</p></div>' +
+          'До этого работает оплата переводом с подтверждением в одну кнопку.') + '</p></div>' +
+
+      '<div class="ag-sec"><span class="caps">Почта</span>' +
+      '<p class="petit">' + (ov.mail_on
+        ? '✅ Почта подключена: гости и почтовые аккаунты получают письма о заказе, работает вход по коду.'
+        : 'SMTP не настроен — письма клиентам не уходят. Добавьте SMTP_HOST/USER/PASS в /root/salon_bot/.env.') + '</p></div>' +
 
       '<div class="ag-sec"><span class="caps">Рабочая группа заказов</span>' +
       '<p class="petit">' + (ov.group_forum
-        ? '✅ Темы включены: каждый заказ — отдельная ветка в группе. Пишите в ветке — клиент получит ответ.'
-        : 'Группа подключена (id <span class="mono">' + esc(String(ov.group_chat_id || '')) + '</span>), но «Темы» ещё не включены. ' +
-          'Откройте профиль группы → «Изменить» → включите <b>«Темы»</b> — и каждый заказ станет отдельной веткой. ' +
-          'Пока темы выключены, заказы приходят в общую ленту с метками #заказ.') + '</p>' +
-      '<p class="ag-note">Подсказка по работе в группе — команда /help внутри группы.</p></div>' +
+        ? '✅ Темы включены: каждый заказ — отдельная ветка. Всё по заказу (файлы клиента, чеки, отзывы) падает в его тему.'
+        : 'Группа подключена (id <span class="mono">' + esc(String(ov.group_chat_id || '')) + '</span>), но «Темы» не включены. ' +
+          'Профиль группы → «Изменить» → «Темы» → вид <b>«Список»</b>, затем команда /threads в группе. ' +
+          'Пока тем нет, заказы идут в общую ленту с метками #заказ.') + '</p>' +
+      '<p class="ag-note">Шпаргалка по работе в группе — команда /help внутри группы.</p></div>' +
       '</div>';
   }
 
-  /* ---------------- события ---------------- */
+  /* ---------------- действия ---------------- */
+  function api(path, body) {
+    if (st.busy) return Promise.resolve({ ok: false, error: 'busy' });
+    st.busy = true;
+    return S.api.post(path, body).then(function (r) { st.busy = false; return r; });
+  }
+  function afterOrder(r, msg) {
+    if (r.ok) {
+      if (msg) toast(msg);
+      if (r.order) { st.card = r.order; drawCard(); }
+      refreshSilent();
+    } else toast(r.error === 'busy' ? 'Секунду…' : 'Не получилось' + (r.error ? ' (' + r.error + ')' : ''));
+  }
+
+  function uploadAdminFile(input, deliver) {
+    var f = input.files && input.files[0];
+    if (!f || !st.sel) return;
+    if (f.size > 20 * 1024 * 1024) { toast('Файл больше 20 МБ — отправьте его через ветку заказа в группе'); return; }
+    var note = document.getElementById('agUpNote');
+    if (note) { note.hidden = false; note.textContent = 'Отправляем «' + f.name + '»…'; }
+    var fd = new FormData();
+    fd.append('file', f, f.name);
+    fetch(S.api.base + '/admin/orders/' + st.sel + '/upload?deliver=' + (deliver ? '1' : '0'), {
+      method: 'POST', body: fd,
+      headers: { 'Authorization': 'Bearer ' + S.api.token() }
+    }).then(function (resp) { return resp.json(); })
+      .then(function (r) {
+        if (!r.ok) { if (note) note.textContent = 'Не ушло (' + (r.error || 'ошибка') + ')'; toast('Файл не отправился'); return; }
+        if (note) note.textContent = deliver ? 'Сдано ✓ — клиент получил кнопки приёмки' : 'Файл у клиента ✓';
+        toast(deliver ? '📦 Сдача зафиксирована' : (r.delivered_tg ? 'Файл доставлен в Telegram ✓' : 'Файл в деле — клиент увидит в кабинете'));
+        if (r.order) { st.card = r.order; drawCard(); }
+      })
+      .catch(function () { if (note) note.textContent = 'Сеть прервалась — попробуйте ещё раз'; });
+  }
+
   root.addEventListener('click', function (e) {
     var t = e.target;
     if (t.closest('#agTg')) {
@@ -457,93 +706,136 @@ function initGodEye() {
     if (t.closest('#agRetry')) { gate(); return; }
 
     var tab = t.closest('.ag-tab');
-    if (tab) { st.tab = tab.getAttribute('data-tab'); drawTabs(); loadTab(true); return; }
+    if (tab) { st.tab = tab.getAttribute('data-tab'); drawNav(); loadTab(true); return; }
+
+    var go = t.closest('[data-go]');
+    if (go) {
+      var f = go.getAttribute('data-go');
+      if (f === '@reviews') { st.tab = 'reviews'; }
+      else { st.tab = 'orders'; st.filter = f; st.q = ''; st.sel = null; }
+      drawNav(); loadTab(true);
+      return;
+    }
+    var oo = t.closest('[data-open-order]');
+    if (oo) { st.tab = 'orders'; st.filter = ''; st.q = ''; st.sel = parseInt(oo.getAttribute('data-open-order'), 10); drawNav(); loadTab(); return; }
+    var oc = t.closest('[data-open-client]');
+    if (oc) { st.tab = 'clients'; st.csel = parseInt(oc.getAttribute('data-open-client'), 10); drawNav(); loadTab(); return; }
 
     var row = t.closest('.ag-row[data-id]');
     if (row) { loadCard(parseInt(row.getAttribute('data-id'), 10)); return; }
     var crow = t.closest('.ag-row[data-cid]');
     if (crow) { loadClient(parseInt(crow.getAttribute('data-cid'), 10)); return; }
-    var oc = t.closest('[data-open-client]');
-    if (oc) { st.tab = 'clients'; st.csel = parseInt(oc.getAttribute('data-open-client'), 10); drawTabs(); loadTab(); return; }
-    var oo = t.closest('[data-open-order]');
-    if (oo) { st.tab = 'orders'; st.sel = parseInt(oo.getAttribute('data-open-order'), 10); drawTabs(); loadTab(); return; }
 
     var chip = t.closest('.ag-chip[data-f]');
     if (chip) { st.filter = chip.getAttribute('data-f'); st.q = ''; loadTab(); return; }
 
+    /* --- карточка дела --- */
     if (t.closest('#agPriceSend')) {
       var price = parseInt((document.getElementById('agPrice') || {}).value, 10);
       var prepay = parseInt((document.getElementById('agPrepay') || {}).value, 10);
+      var stages = parseInt((document.getElementById('agPlanSel') || {}).value, 10);
       if (!price || price <= 0) { toast('Введите цену'); return; }
-      S.api.post('/admin/orders/' + st.sel + '/price', { price: price, prepay: prepay || undefined })
-        .then(function (r) { if (r.ok) { toast('Предложение ушло клиенту 💰'); st.card = r.order; loadCard(st.sel); } else toast('Не получилось'); });
+      api('/admin/orders/' + st.sel + '/price', { price: price, prepay: prepay || undefined, stages: stages || undefined })
+        .then(function (r) { afterOrder(r, 'Предложение ушло клиенту 💰'); });
       return;
     }
-    if (t.closest('#agPayConfirm')) {
+    var payBtn = t.closest('[data-pay-kind]');
+    if (payBtn) {
+      var kind = payBtn.getAttribute('data-pay-kind');
+      var amount = parseInt(payBtn.getAttribute('data-pay-amount'), 10);
       confirmDlg({
-        title: 'Подтвердить оплату?',
-        text: 'Проверьте поступление денег. Подтверждение двинет статус заказа и начислит клиенту кэшбэк — отменить будет нельзя.',
+        title: 'Подтвердить оплату ' + money(amount) + ' ₽?',
+        text: 'Проверьте поступление денег. Подтверждение двинет заказ и начислит клиенту кэшбэк — отменить будет нельзя.',
         okLabel: 'Деньги пришли — подтвердить', noLabel: 'Отмена'
       }).then(function (res) {
         if (!res.ok) return;
-        S.api.post('/admin/orders/' + st.sel + '/confirm_payment', {})
-          .then(function (r) {
-            if (r.ok) { toast('Оплата подтверждена ✓'); if (S.stamp) S.stamp('Оплачено'); st.card = r.order; drawCard(); refreshSilent(); }
-            else toast('Не получилось');
-          });
+        api('/admin/orders/' + st.sel + '/confirm_payment', { kind: kind, amount: amount })
+          .then(function (r) { afterOrder(r, 'Оплата подтверждена ✓'); if (r.ok && S.stamp) S.stamp('Оплачено'); });
       });
       return;
     }
     var stb = t.closest('.ag-stbtn');
     if (stb) {
-      S.api.post('/admin/orders/' + st.sel + '/status', { status: stb.getAttribute('data-st') })
-        .then(function (r) { if (r.ok) { toast('Статус обновлён'); loadCard(st.sel); refreshSilent(); } else toast('Не получилось'); });
+      api('/admin/orders/' + st.sel + '/status', { status: stb.getAttribute('data-st') })
+        .then(function (r) { afterOrder(r, 'Статус обновлён — клиент уведомлён'); });
+      return;
+    }
+    if (t.closest('#agDeliverMark')) {
+      confirmDlg({
+        title: 'Зафиксировать сдачу?',
+        text: 'Клиент получит кнопки «принять / нужны правки». Используйте, если файлы уже отправили ему раньше (в группе или в боте).',
+        okLabel: 'Сдать на проверку', noLabel: 'Отмена'
+      }).then(function (res) {
+        if (!res.ok) return;
+        api('/admin/orders/' + st.sel + '/deliver', {})
+          .then(function (r) { afterOrder(r, '📦 На проверке у клиента'); });
+      });
       return;
     }
     if (t.closest('#agCancel2')) {
       confirmDlg({
         title: 'Закрыть заказ?',
-        text: 'Клиент получит уведомление; применённые бонусы вернутся ему на счёт. Заказ можно будет возобновить.',
+        text: 'Клиент получит уведомление с причиной; применённые бонусы вернутся ему на счёт. Заказ можно будет возобновить.',
         input: 'textarea', placeholder: 'Причина (клиент её увидит) — можно оставить пустым',
         okLabel: 'Закрыть заказ', noLabel: 'Отмена', danger: true
       }).then(function (res) {
         if (!res.ok) return;
-        S.api.post('/admin/orders/' + st.sel + '/cancel', { reason: res.value })
-          .then(function (r) { if (r.ok) { toast('Заказ закрыт'); st.card = r.order; drawCard(); } else toast('Не получилось'); });
+        api('/admin/orders/' + st.sel + '/cancel', { reason: res.value })
+          .then(function (r) { afterOrder(r, 'Заказ закрыт'); });
       });
       return;
     }
     if (t.closest('#agResume')) {
-      S.api.post('/admin/orders/' + st.sel + '/resume', {})
-        .then(function (r) { if (r.ok) { toast('Заказ возобновлён 🔄'); st.card = r.order; drawCard(); refreshSilent(); } else toast('Не получилось'); });
+      api('/admin/orders/' + st.sel + '/resume', {})
+        .then(function (r) { afterOrder(r, 'Заказ возобновлён — клиент получил предложение 🔄'); });
+      return;
+    }
+    var arch = t.closest('#agArch');
+    if (arch) {
+      api('/admin/orders/' + st.sel + '/archive', { on: arch.getAttribute('data-on') === '1' })
+        .then(function (r) { afterOrder(r, arch.getAttribute('data-on') === '1' ? 'Убрано в архив 🗄' : 'Возвращено из архива'); });
       return;
     }
     if (t.closest('#agMsgSend')) {
       var ta = document.getElementById('agMsg');
       var txt = (ta.value || '').trim();
       if (!txt) return;
-      S.api.post('/admin/orders/' + st.sel + '/message', { text: txt })
+      api('/admin/orders/' + st.sel + '/message', { text: txt })
         .then(function (r) {
-          if (r.ok) { ta.value = ''; toast(r.delivered_tg ? 'Доставлено в Telegram ✓' : 'Сохранено — клиент увидит в кабинете'); loadCard(st.sel); }
+          if (r.ok) { toast(r.delivered_tg ? 'Доставлено в Telegram ✓' : 'Сохранено — клиент увидит в кабинете'); st.card = r.order; drawCard(); }
           else toast('Не отправилось');
         });
       return;
     }
     if (t.closest('#agNoteSave')) {
-      S.api.post('/admin/orders/' + st.sel + '/note', { text: (document.getElementById('agNote') || {}).value || '' })
+      api('/admin/orders/' + st.sel + '/note', { text: (document.getElementById('agNote') || {}).value || '' })
         .then(function (r) { toast(r.ok ? 'Заметка сохранена 📝' : 'Не получилось'); });
       return;
     }
     if (t.closest('#agReqSave')) {
-      S.api.post('/admin/requisites', { text: (document.getElementById('agReq') || {}).value || '' })
+      api('/admin/requisites', { text: (document.getElementById('agReq') || {}).value || '' })
         .then(function (r) { toast(r.ok ? 'Реквизиты сохранены ✓' : 'Не получилось'); });
       return;
     }
+    /* --- отзывы --- */
+    var rv = t.closest('[data-rv]');
+    if (rv) {
+      var ok = rv.getAttribute('data-ok') === '1';
+      api('/admin/reviews/' + rv.getAttribute('data-rv') + '/moderate', { approve: ok })
+        .then(function (r) {
+          if (!r.ok) { toast('Не получилось'); return; }
+          toast(ok ? 'Опубликован на сайте ✅' : 'Не публикуется 🚫');
+          loadTab();
+          S.api.get('/admin/overview').then(function (r2) { if (r2.ok) { st.ov = r2; drawNav(); } });
+        });
+      return;
+    }
+    /* --- клиенты --- */
     if (t.closest('#agBApply')) {
       var delta = parseInt((document.getElementById('agBDelta') || {}).value, 10);
       var note = (document.getElementById('agBNote') || {}).value || '';
       if (!delta) { toast('Введите сумму: 500 — начислить, -500 — списать'); return; }
-      S.api.post('/admin/clients/' + st.csel + '/bonus', { delta: delta, note: note })
+      api('/admin/clients/' + st.csel + '/bonus', { delta: delta, note: note })
         .then(function (r) {
           if (r.ok) { toast('Проведено · баланс ' + money(r.balance)); loadClient(st.csel); }
           else toast(r.error === 'bonus_empty' ? 'У клиента нет столько бонусов' : 'Не получилось');
@@ -559,10 +851,24 @@ function initGodEye() {
         okLabel: on ? 'Заблокировать' : 'Разблокировать', noLabel: 'Отмена', danger: on
       }).then(function (res) {
         if (!res.ok) return;
-        S.api.post('/admin/clients/' + st.csel + '/ban', { banned: on })
+        api('/admin/clients/' + st.csel + '/ban', { banned: on })
           .then(function (r) { if (r.ok) { toast(on ? 'Заблокирован ⛔️' : 'Разблокирован ✓'); loadClient(st.csel); loadTab(); } });
       });
       return;
+    }
+  });
+
+  root.addEventListener('change', function (e) {
+    if (e.target && e.target.id === 'agDeliverFile') { uploadAdminFile(e.target, true); e.target.value = ''; }
+    if (e.target && e.target.id === 'agPlainFile') { uploadAdminFile(e.target, false); e.target.value = ''; }
+    if (e.target && e.target.id === 'agChatFile') { uploadAdminFile(e.target, false); e.target.value = ''; }
+    if (e.target && e.target.id === 'agPlanSel' && st.card && st.card.price) {
+      var stages = parseInt(e.target.value, 10);
+      api('/admin/orders/' + st.sel + '/plan', { stages: stages })
+        .then(function (r) {
+          afterOrder(r, r.ok ? 'План: ' + PLAN_LBL[stages] : null);
+          if (!r.ok && r.error === 'plan_locked') toast('Этапы уже пошли — план не поменять');
+        });
     }
   });
 

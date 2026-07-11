@@ -112,6 +112,9 @@ em.pen{font-style:italic;font-family:var(--serif);color:inherit}
   cursor:pointer;white-space:nowrap;
   transition:background .15s,color .15s,border-color .15s,box-shadow .15s;
 }
+/* display:inline-flex перебивает атрибут hidden — возвращаем ему силу
+   (иначе «Далее» на последнем шаге конфигуратора оставался мёртвой кнопкой) */
+.btn[hidden]{display:none!important}
 .btn-ink{background:var(--ink);color:var(--paper)}
 .btn-ink:hover{background:#33302a}
 .btn-wax{background:var(--wax);color:#FFFEF9}
