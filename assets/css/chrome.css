@@ -62,6 +62,24 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
 .nav-links a[aria-current="page"]{color:var(--ink);border-color:var(--wax)}
 .nav-cta{display:flex;align-items:center;gap:10px;margin-left:auto}
 .nav-cta .btn{min-height:42px;padding:8px 18px;font-size:14px;box-shadow:none}
+
+/* «Кабинет» — всегда под рукой, и на телефоне тоже */
+.nav-cab{
+  position:relative;display:inline-flex;align-items:center;gap:7px;min-height:42px;
+  padding:9px 14px;border:1px solid var(--hairline-strong);border-radius:var(--r);
+  font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink);text-decoration:none;transition:border-color .15s,background .15s;white-space:nowrap;
+}
+.nav-cab:hover{background:var(--mark);border-color:var(--ink-soft)}
+.nav-cab[aria-current="page"]{border-color:var(--wax);color:var(--wax)}
+.nav-cab .nc-badge{
+  position:absolute;top:-7px;right:-7px;min-width:18px;height:18px;border-radius:999px;
+  background:var(--wax);color:#FFFEF9;font-size:10.5px;font-weight:600;
+  display:inline-flex;align-items:center;justify-content:center;padding:0 5px;
+  font-family:var(--mono);border:2px solid var(--paper);
+}
+.nav-cab .nc-badge[hidden]{display:none}
+.nav-cab .nc-badge.calm{background:var(--stamp,#3A4E7A)}
 .menu-toggle{
   display:inline-flex;align-items:center;gap:9px;min-height:42px;padding:9px 15px;
   border:1px solid var(--hairline-strong);background:transparent;border-radius:var(--r);
@@ -78,6 +96,8 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
 @media(max-width:560px){
   .nav-cta .btn{display:none}          /* «Рассчитать» несёт нижняя плашка */
   .brand .b-name{font-size:15.5px}
+  .nav-cab{padding:9px 11px}
+  .nav-cab .nc-txt{display:none}       /* на телефоне — только пиктограмма и бейдж */
 }
 @media(max-width:400px){
   .brand .b-name{font-size:14px}

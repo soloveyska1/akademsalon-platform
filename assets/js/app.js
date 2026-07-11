@@ -453,12 +453,30 @@
       '<nav class="nav-links" aria-label="Разделы">' + navLinks + '</nav>' +
       '<div class="nav-cta">' +
         Salon.themeToggleHTML() +
+        '<a class="nav-cab" href="dashboard.html"' + (here === 'dashboard.html' ? ' aria-current="page"' : '') +
+          ' aria-label="Личный кабинет"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 19.4c.9-3.4 3.5-5 6.5-5s5.6 1.6 6.5 5"/></svg><span class="nc-txt">Кабинет</span><span class="nc-badge" hidden></span></a>' +
         '<a class="btn btn-wax" href="' + calcHref + '">Рассчитать</a>' +
         '<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><span class="mt-txt">Меню</span> <i aria-hidden="true"></i></button>' +
       '</div></div>';
     document.body.insertBefore(header, document.body.firstChild);
     if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк состояния кнопки темы */
   }
+
+  /* бейдж кабинета в шапке: активные дела + непрочитанное — из общей с ботом базы */
+  (function cabBadge() {
+    var slot = document.querySelector('.nav-cab .nc-badge');
+    if (!slot || !Salon.api || !Salon.api.identified || !Salon.api.identified()) return;
+    var t = Salon.api.token(), g = Salon.api.guestTokens();
+    Salon.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
+      if (!r.ok || !r.orders || !r.orders.length) return;
+      var un = r.orders.reduce(function (s, o) { return s + (o.unread || 0); }, 0);
+      if (un > 0) { slot.textContent = un > 9 ? '9+' : un; slot.hidden = false; }
+      else {
+        var act = r.orders.filter(function (o) { return 'done cancel'.indexOf(o.status) < 0 && !o.archived; }).length;
+        if (act > 0) { slot.textContent = act; slot.hidden = false; slot.classList.add('calm'); }
+      }
+    });
+  })();
 
   /* Меню — на любой странице, где есть кнопка «Меню» (в т.ч. на главной) */
   if (document.querySelector('.menu-toggle')) {

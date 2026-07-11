@@ -64,6 +64,49 @@
   /* статьи устава */
   .ust-art{position:relative;padding:clamp(44px,7vh,84px) 0;border-bottom:1px solid var(--hairline)}
   .ust-art:last-of-type{border-bottom:0}
+
+  /* --- устав-гармошка: статьи сложены до тезиса, раскрываются по клику ---
+     полотно превращается в картотеку: заголовок + суть видны сразу,
+     подробности «пощупываются» — печать проворачивается при раскрытии */
+  .js .ust-art{padding:clamp(26px,4vh,40px) 0}
+  .js .ust-art .ua-head{cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;z-index:1}
+  .js .ust-art .ua-head:hover h2{color:var(--wax)}
+  .js .ust-art h2{transition:color .18s;margin-bottom:10px}
+  .ua-toggle{
+    position:absolute;right:0;top:6px;width:44px;height:44px;border-radius:50%;
+    border:1.6px solid var(--hairline-strong);display:grid;place-items:center;
+    font-family:var(--serif);font-size:22px;color:var(--ink-soft);z-index:2;
+    transition:transform .35s cubic-bezier(.22,1,.36,1),border-color .2s,color .2s;pointer-events:none;
+  }
+  .ua-toggle::before{content:"¶"}
+  .js .ust-art.open .ua-toggle{transform:rotate(180deg) scale(1.06);border-color:var(--wax);color:var(--wax)}
+  .ua-fold{
+    display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.22,1,.36,1);
+  }
+  .ua-fold>div{overflow:hidden}
+  .js .ust-art.open .ua-fold{grid-template-rows:1fr}
+  .js .ust-art:not(.open) .ua-ghost{opacity:.05}
+  .ua-hint{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-faint);margin-top:10px;display:inline-flex;gap:8px;align-items:center}
+  .js .ust-art.open .ua-hint{display:none}
+  @media(max-width:640px){.ua-toggle{width:36px;height:36px;font-size:18px;top:2px}}
+
+  /* --- живой расчёт этапов: подвигайте сумму — увидите свои платежи --- */
+  .paycalc{margin-top:clamp(20px,3vh,30px);border:1px solid var(--hairline-strong);border-radius:var(--r);
+    padding:clamp(14px,2.4vw,22px);background:var(--sheet,transparent)}
+  .paycalc .pc-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;margin-bottom:8px}
+  .paycalc .pc-sum{font-family:var(--mono);font-size:clamp(19px,2.4vw,24px);font-weight:600;font-variant-numeric:tabular-nums}
+  .paycalc input[type=range]{width:100%;accent-color:var(--wax);margin:10px 0 4px;cursor:pointer}
+  .paycalc .pc-plan{display:flex;gap:6px;margin:10px 0 14px;flex-wrap:wrap}
+  .paycalc .pc-plan button{border:1px solid var(--hairline-strong);background:transparent;color:var(--ink-soft);
+    border-radius:999px;padding:6px 13px;font:inherit;font-size:12.5px;cursor:pointer}
+  .paycalc .pc-plan button.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .paycalc .pc-cells{display:flex;gap:8px}
+  .paycalc .pc-cell{flex:1;border:1px dashed var(--hairline-strong);border-radius:var(--r);padding:11px 12px;text-align:center;
+    transition:flex-grow .4s cubic-bezier(.22,1,.36,1)}
+  .paycalc .pc-cell b{display:block;font-family:var(--mono);font-size:clamp(14px,1.8vw,17px);font-variant-numeric:tabular-nums}
+  .paycalc .pc-cell small{display:block;font-size:11px;color:var(--ink-soft);margin-top:3px;line-height:1.45}
+  .paycalc .pc-note{font-size:12px;color:var(--ink-soft);margin-top:12px;line-height:1.55}
   .ust-art .ua-ghost{
     position:absolute;top:clamp(20px,4vh,44px);right:-8px;z-index:0;pointer-events:none;user-select:none;
     font-family:var(--serif);font-weight:300;line-height:.8;
@@ -142,7 +185,10 @@
   .final-cta .petit{margin-top:14px}
 </style>
 <link rel="canonical" href="https://akademsalon.ru/guarantees.html" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
+
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
 <meta name="theme-color" content="#F6F1E7" />
 <meta property="og:type" content="website" />
@@ -229,6 +275,20 @@
             <div class="pstep"><span class="ps-share">30%</span><b>Финал</b><small>уже у вас: отчёт о проверках по готовому тексту</small></div>
           </div>
           <p class="petit" style="margin-top:16px">Небольшие работы — просто 50/50. Кандидатские считаем по главам.</p>
+
+          <!-- пощупать руками: подвиньте сумму — увидите свои платежи -->
+          <div class="paycalc" id="paycalc">
+            <div class="pc-head"><span class="caps">Попробуйте на своей сумме</span>
+              <span class="pc-sum" id="pcSum">40 000 ₽</span></div>
+            <input type="range" id="pcRange" min="5000" max="150000" step="1000" value="40000"
+                   aria-label="Стоимость работы" />
+            <div class="pc-plan" role="group" aria-label="План оплаты">
+              <button type="button" class="on" data-plan="3">Крупная работа · 30/40/30</button>
+              <button type="button" data-plan="2">Небольшая · 50/50</button>
+            </div>
+            <div class="pc-cells" id="pcCells"></div>
+            <p class="pc-note">Каждый платёж закрывает этап, который вы уже увидели. Ни один рубль не уходит «в надежде» — только за показанный результат.</p>
+          </div>
         </article>
 
         <article class="ust-art reveal" id="st3" data-chapter="Статья III · Правки">
@@ -341,6 +401,125 @@
     var el = document.getElementById(id);
     if (el) io.observe(el);
   });
+})();
+</script>
+<script>
+/* Устав-гармошка: статьи сложены до тезиса; раскрывается одна, печать проворачивается */
+(function () {
+  'use strict';
+  var arts = Array.prototype.slice.call(document.querySelectorAll('.ust-art'));
+  if (!arts.length) return;
+  document.body.classList.add('js');
+  arts.forEach(function (art, i) {
+    var norm = art.querySelector('.ua-norm');
+    if (!norm) return;
+    /* шапка: кикер + заголовок + тезис; остальное — в сворачиваемый ящик */
+    var head = document.createElement('div');
+    head.className = 'ua-head';
+    head.setAttribute('role', 'button');
+    head.setAttribute('tabindex', '0');
+    head.setAttribute('aria-expanded', 'false');
+    var kicker = art.querySelector('.ua-kicker'), h2 = art.querySelector('h2');
+    art.insertBefore(head, kicker);
+    head.appendChild(kicker); head.appendChild(h2); head.appendChild(norm);
+    var hint = document.createElement('span');
+    hint.className = 'ua-hint';
+    hint.innerHTML = 'развернуть статью <span aria-hidden="true">→</span>';
+    head.appendChild(hint);
+    var toggle = document.createElement('span');
+    toggle.className = 'ua-toggle';
+    toggle.setAttribute('aria-hidden', 'true');
+    art.insertBefore(toggle, head.nextSibling);
+    /* всё, что после шапки (кроме ghost/toggle), — в ua-fold */
+    var fold = document.createElement('div');
+    fold.className = 'ua-fold';
+    var inner = document.createElement('div');
+    fold.appendChild(inner);
+    var rest = [];
+    Array.prototype.slice.call(art.children).forEach(function (ch) {
+      if (ch === head || ch === toggle) return;
+      if (ch.classList.contains('ua-ghost')) return;
+      rest.push(ch);
+    });
+    rest.forEach(function (ch) { inner.appendChild(ch); });
+    art.appendChild(fold);
+    function setOpen(on) {
+      art.classList.toggle('open', on);
+      head.setAttribute('aria-expanded', String(on));
+    }
+    function toggleOpen() {
+      var willOpen = !art.classList.contains('open');
+      arts.forEach(function (a2) {
+        if (a2 !== art && a2.classList.contains('open')) {
+          a2.classList.remove('open');
+          var h = a2.querySelector('.ua-head');
+          if (h) h.setAttribute('aria-expanded', 'false');
+        }
+      });
+      setOpen(willOpen);
+      if (willOpen) setTimeout(function () {
+        var r = art.getBoundingClientRect();
+        if (r.top < 60) window.scrollTo({ top: window.scrollY + r.top - 82, behavior: 'smooth' });
+      }, 180);
+    }
+    head.addEventListener('click', toggleOpen);
+    head.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleOpen(); }
+    });
+    if (i === 0) setOpen(true); /* первая статья встречает раскрытой */
+  });
+  /* переход по оглавлению/якорю — раскрыть нужную статью */
+  function openByHash(id) {
+    var art = document.getElementById(id);
+    if (!art || !art.classList.contains('ust-art') || art.classList.contains('open')) return;
+    var h = art.querySelector('.ua-head');
+    if (h) h.click();
+  }
+  document.querySelectorAll('.ust-nav .un-l').forEach(function (a) {
+    a.addEventListener('click', function () { openByHash(a.getAttribute('href').slice(1)); });
+  });
+  if (location.hash) setTimeout(function () { openByHash(location.hash.slice(1)); }, 60);
+})();
+
+/* Живой расчёт этапов: сумма ползунком → плитки платежей дышат размером */
+(function () {
+  'use strict';
+  var range = document.getElementById('pcRange'), sum = document.getElementById('pcSum'),
+      cells = document.getElementById('pcCells'), box = document.getElementById('paycalc');
+  if (!range || !cells) return;
+  var plan = 3;
+  var META = {
+    3: [['Старт и бронь', 30, 'план глав и смета — уже у вас'],
+        ['Основная часть', 40, 'черновики основной части — уже у вас'],
+        ['Финал', 30, 'отчёт о проверках — уже у вас']],
+    2: [['После плана', 50, 'план и смета согласованы'],
+        ['После отчёта', 50, 'работа и отчёт о проверках — у вас']]
+  };
+  function money(n) { return n.toLocaleString('ru-RU') + ' ₽'; }
+  function draw() {
+    var total = parseInt(range.value, 10);
+    sum.textContent = money(total);
+    var parts = META[plan];
+    var acc = 0;
+    cells.innerHTML = parts.map(function (p, i) {
+      var amount = i === parts.length - 1
+        ? total - acc
+        : Math.round(total * p[1] / 100 / 100) * 100;
+      acc += amount;
+      return '<div class="pc-cell" style="flex-grow:' + p[1] + '">' +
+        '<small>' + p[1] + '% · ' + p[0] + '</small><b>' + money(amount) + '</b>' +
+        '<small>' + p[2] + '</small></div>';
+    }).join('');
+  }
+  range.addEventListener('input', draw);
+  box.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-plan]');
+    if (!b) return;
+    plan = parseInt(b.getAttribute('data-plan'), 10);
+    box.querySelectorAll('[data-plan]').forEach(function (x) { x.classList.toggle('on', x === b); });
+    draw();
+  });
+  draw();
 })();
 </script>
 </body>

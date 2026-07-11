@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Курсовые, дипломы, диссертации: консультации, разборы и авторские материалы — Академический Салон</title>
-<meta name="description" content="Академическая мастерская: консультации по курсовым, ВКР и научным статьям, разборы, редактура и авторские учебные материалы ручной работы. Оплата по этапам, отчёт о проверках до оплаты, правки бесплатно до приёмки." />
+<title>Заказать курсовую, дипломную работу (ВКР), диссертацию — Академический Салон: цена за минуту, оплата по этапам</title>
+<meta name="description" content="Заказать курсовую, дипломную работу (ВКР), магистерскую или научную статью в академической мастерской: живые авторы, цена за минуту в калькуляторе, оплата по этапам, отчёт о проверках до оплаты, правки бесплатно до приёмки." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -13,7 +13,10 @@
 <link rel="stylesheet" href="assets/css/extras.css?v=20260711a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
+
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
 <meta name="theme-color" content="#F6F1E7" />
 <meta property="og:type" content="website" />
@@ -287,8 +290,30 @@
 
   <!-- ================= IV. ДОВЕРИЕ ================= -->
   <section class="spread" id="otzyvy" aria-label="Отзывы и гарантии">
+    <style>
+      /* живая строка благодарностей: цитаты с защит + свежие записи из кабинета */
+      .ix-marq{overflow:hidden;margin:0 0 clamp(28px,4vw,44px);padding:18px 0;
+        border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+      .ix-marq .mq-track{display:flex;width:max-content;animation:ixmq 52s linear infinite}
+      .ix-marq:hover .mq-track{animation-play-state:paused}
+      .ix-marq .mq-i{font-family:var(--serif);font-style:italic;font-size:clamp(16px,2vw,21px);
+        white-space:nowrap;color:var(--ink);padding-right:38px}
+      .ix-marq .mq-i .mq-st{font-style:normal;font-size:.75em;color:var(--wax);letter-spacing:2px;margin-right:8px;vertical-align:1px}
+      .ix-marq .mq-i::after{content:"¶";margin-left:38px;color:var(--wax);font-style:normal;opacity:.5}
+      .ix-marq .mq-live{color:var(--ink)}
+      .ix-marq .mq-live .mq-tag{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+        text-transform:uppercase;color:var(--verify,#2E6B4F);border:1px solid currentColor;border-radius:999px;
+        padding:2px 8px;margin-left:10px;vertical-align:2px}
+      @keyframes ixmq{to{transform:translateX(-50%)}}
+      @media(prefers-reduced-motion:reduce){.ix-marq{display:none}}
+    </style>
     <div class="wrap">
       <div class="running-head"><span class="rh-no">— 04 —</span><span class="rh-t">Экслибрисы · доверие</span></div>
+    </div>
+    <div class="ix-marq reveal" aria-label="Цитаты из отзывов">
+      <div class="mq-track" id="ixTrack"></div>
+    </div>
+    <div class="wrap">
 
       <div class="fact-row reveal">
         <div class="fact"><div class="f-num"><span data-count="6">6</span><sup> лет</sup></div><p class="f-lbl">практики: ведём работы с 2020 года</p></div>
@@ -376,10 +401,54 @@
   <button type="button" class="btn btn-line" data-contact="1">Связаться</button>
 </div>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Академический Салон","description":"Помощь и сопровождение в подготовке академических работ: консультации, редактура, разбор, репетиторство, оформление по методичке. Оплата по этапам, отчёт о проверках до оплаты, правки до приёмки.","url":"https://akademsalon.ru/","image":"https://akademsalon.ru/assets/img/og-cover.png","areaServed":"RU","knowsLanguage":"ru","priceRange":"от 2500 ₽","sameAs":["https://vk.com/academicsaloon","https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs","https://t.me/academic_saloon_bot"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Академический Салон","description":"Помощь и сопровождение в подготовке академических работ: консультации, редактура, разбор, репетиторство, оформление по методичке. Оплата по этапам, отчёт о проверках до оплаты, правки до приёмки.","url":"https://akademsalon.ru/","image":"https://akademsalon.ru/assets/img/og-cover.png","logo":"https://akademsalon.ru/assets/img/favicon-120.png","areaServed":"RU","knowsLanguage":"ru","priceRange":"от 2500 ₽","sameAs":["https://vk.com/academicsaloon","https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs","https://t.me/academic_saloon_bot"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"А вдруг вуз решит, что текст написан нейросетью?","acceptedAnswer":{"@type":"Answer","text":"Текст пишет человек, а отчёт о проверках вы видите до оплаты. Гарантировать чужой детектор не может никто — на этот случай дорабатываем до приёмки."}},{"@type":"Question","name":"Я не рискую, платя вперёд?","acceptedAnswer":{"@type":"Answer","text":"Нет: первый платёж — после согласованного плана и сметы, каждый следующий — после показанного результата."}},{"@type":"Question","name":"Кто будет вести мою работу?","acceptedAnswer":{"@type":"Answer","text":"Профильный специалист вашего направления — сопровождает от плана до приёмки, без передачи между менеджерами и случайными исполнителями."}},{"@type":"Question","name":"Что, если руководитель вернёт работу с замечаниями?","acceptedAnswer":{"@type":"Answer","text":"Это обычная часть процесса, и она уже в стоимости. Смета не меняется, пока не меняются тема и объём."}},{"@type":"Question","name":"Почему у вас дороже, чем на биржах?","acceptedAnswer":{"@type":"Answer","text":"Биржа продаёт ставку анонимного исполнителя, мы — доведённый до защиты результат: напрямую, без комиссии площадки. Слишком низкая цена здесь — риск, переложенный на вас."}}]}</script>
 <script src="assets/js/app.js?v=20260711a"></script>
 <script src="assets/js/extras.js?v=20260711a"></script>
 <script src="assets/js/pereplet.js?v=20260711a"></script>
+<script>
+/* живая строка доверия: цитаты с защит + свежие одобренные отзывы из картотеки */
+(function () {
+  'use strict';
+  var track = document.getElementById('ixTrack');
+  if (!track) return;
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  var base = [
+    '«Это победа! Защитила, красный будет» · 98 баллов',
+    '«У меня 5 без защиты, работа очень хорошая»',
+    '«Как вы это делаете? Вы мой кумир!»',
+    '«Диплом принят без единой правки»',
+    '«Защитилась на пятёрку»',
+    '«Диплом на 5, госы на 5»',
+    '«Кайф! Благодарю за быструю работу»',
+    '«Сдала на отлично! Спасибо»'
+  ];
+  function draw(extra) {
+    var items = base.map(function (q) { return '<span class="mq-i">' + esc(q) + '</span>'; });
+    (extra || []).forEach(function (rv) {
+      if (!rv.text) return;
+      var t = rv.text.length > 90 ? rv.text.slice(0, 89) + '…' : rv.text;
+      items.push('<span class="mq-i mq-live"><span class="mq-st">' +
+        '★★★★★'.slice(0, Math.max(1, Math.min(rv.rating || 5, 5))) + '</span>«' + esc(t) + '»' +
+        '<span class="mq-tag">из кабинета</span></span>');
+    });
+    /* дубль ленты — бесшовная петля (сдвиг на −50%) */
+    track.innerHTML = items.join('') + items.join('');
+  }
+  draw([]);
+  function boot() {
+    if (!window.Salon || !Salon.api) return;
+    Salon.api.get('/reviews').then(function (r) {
+      if (r.ok && (r.reviews || []).length) draw(r.reviews.slice(0, 6));
+    });
+  }
+  if (document.prerendering) document.addEventListener('prerenderingchange', boot, { once: true });
+  else boot();
+})();
+</script>
 </body>
 </html>

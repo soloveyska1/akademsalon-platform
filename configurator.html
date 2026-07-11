@@ -96,6 +96,12 @@
   .done-files{margin:-10px 0 24px}
   .done-files .caps{display:block;margin-bottom:8px}
 
+  /* услуги-ссылки на шаге 1: тот же ряд, но ведут в короткий лист заявки */
+  .optrow-link{text-decoration:none;color:inherit}
+  .optrow-link:hover{border-color:var(--wax)}
+  .optrow-link:hover .o-val{color:var(--wax)}
+  .svc-group{border-top:1px solid var(--hairline);padding-top:18px}
+
   /* выбор способа связи: мастеру нужен рабочий канал до лида */
   .ct-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
   .ct-chip{border:1px solid var(--hairline-strong);background:transparent;color:var(--ink-soft);
@@ -118,7 +124,10 @@
   }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
+
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
 <meta name="theme-color" content="#F6F1E7" />
 <meta property="og:type" content="website" />
@@ -187,6 +196,17 @@
                     <button type="button" class="optrow" role="radio" data-id="vak" aria-checked="false" tabindex="-1"><span>Статья ВАК</span><span class="dots"></span><span class="o-val">от 18&nbsp;000&nbsp;₽</span></button>
                     <button type="button" class="optrow" role="radio" data-id="rinc" aria-checked="false" tabindex="-1"><span>Статья РИНЦ</span><span class="dots"></span><span class="o-val">от 9&nbsp;000&nbsp;₽</span></button>
                   </div>
+                </div>
+                <!-- работа уже написана — нужны отдельные услуги: короткий лист заявки -->
+                <div class="opt-group svc-group">
+                  <span class="caps">Работа уже есть — нужна услуга</span>
+                  <div class="opt-list">
+                    <a class="optrow optrow-link" href="configurator.html?service=ai"><span>Чистка текста от следов ИИ</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
+                    <a class="optrow optrow-link" href="configurator.html?service=rv"><span>Разбор готовой работы перед защитой</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
+                    <a class="optrow optrow-link" href="configurator.html?service=nm"><span>Нормоконтроль и оформление по ГОСТ</span><span class="dots"></span><span class="o-val">от 5&nbsp;000&nbsp;₽</span></a>
+                    <a class="optrow optrow-link" href="configurator.html?service=tu"><span>Репетиторство и консультации</span><span class="dots"></span><span class="o-val">от 3&nbsp;000&nbsp;₽/час</span></a>
+                  </div>
+                  <p class="petit" style="margin-top:8px">Эти заявки короче: один лист — описываете задачу, прикладываете работу, мастер называет точную цену.</p>
                 </div>
               </div>
             </div>
