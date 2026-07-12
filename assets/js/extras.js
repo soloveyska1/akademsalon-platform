@@ -576,8 +576,31 @@
       setTimeout(gone, 12000);
     }
 
+    function sysNote(o, kind) {
+      /* вкладка в фоне: если разрешены уведомления устройства — будим ими */
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+      var TXT = {
+        newo: 'Заявка принята — мастер уже смотрит',
+        priced: 'Мастер назвал цену — решение за вами',
+        prepay: 'Ожидается оплата этапа',
+        work: 'Оплата получена — работа пошла',
+        check: 'Готово! Посмотрите работу',
+        fix: 'Приняли в правки',
+        done: 'Дело завершено — спасибо!',
+        cancel: 'Заявка закрыта',
+        file: 'Новый файл от мастерской',
+        msg: 'Новое сообщение мастера'
+      };
+      try {
+        var n = new Notification('Дело ' + (o.no || '№' + o.id) + ' — Академический Салон',
+          { body: TXT[kind] || 'Движение по делу', icon: 'assets/img/favicon-120.png', tag: 'salon-' + o.id });
+        n.onclick = function () { try { window.focus(); location.href = 'dashboard.html'; } catch (e) {} this.close(); };
+      } catch (e) {}
+    }
+
     function poll(silent) {
-      if (document.hidden) return;
+      var noti = ('Notification' in window) && Notification.permission === 'granted';
+      if (document.hidden && !noti) return;
       var t = S.api.token(), g = S.api.guestTokens();
       if (!t && !g.length) return;
       S.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
@@ -598,7 +621,12 @@
           else if ((o.unread || 0) > (p.u || 0)) events.push([o, 'msg']);
         });
         S.store.set('salon_watch', next);
-        if (!silent && !first) events.slice(0, 2).forEach(function (ev) { showNote(ev[0], ev[1]); });
+        if (!silent && !first) {
+          events.slice(0, 2).forEach(function (ev) {
+            if (document.hidden) sysNote(ev[0], ev[1]);
+            else showNote(ev[0], ev[1]);
+          });
+        }
       });
     }
 

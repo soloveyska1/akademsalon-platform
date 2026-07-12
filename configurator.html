@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260712b" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260712b" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260712b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260712e" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260712e" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260712e" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -204,6 +204,8 @@
                     <a class="optrow optrow-link" href="configurator.html?service=ai"><span>Чистка текста от следов ИИ</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
                     <a class="optrow optrow-link" href="configurator.html?service=rv"><span>Разбор готовой работы перед защитой</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
                     <a class="optrow optrow-link" href="configurator.html?service=nm"><span>Нормоконтроль и оформление по ГОСТ</span><span class="dots"></span><span class="o-val">от 5&nbsp;000&nbsp;₽</span></a>
+                    <a class="optrow optrow-link" href="configurator.html?service=df"><span>Презентация и речь к защите</span><span class="dots"></span><span class="o-val">от 6&nbsp;000&nbsp;₽</span></a>
+                    <a class="optrow optrow-link" href="configurator.html?service=dp"><span>«К защите под ключ»: презентация + речь + нормоконтроль</span><span class="dots"></span><span class="o-val">от 9&nbsp;500&nbsp;₽</span></a>
                     <a class="optrow optrow-link" href="configurator.html?service=tu"><span>Репетиторство и консультации</span><span class="dots"></span><span class="o-val">от 3&nbsp;000&nbsp;₽/час</span></a>
                   </div>
                   <p class="petit" style="margin-top:8px">Эти заявки короче: один лист — описываете задачу, прикладываете работу, мастер называет точную цену.</p>
@@ -387,8 +389,8 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260712b"></script>
-<script src="assets/js/extras.js?v=20260712b"></script>
+<script src="assets/js/app.js?v=20260712e"></script>
+<script src="assets/js/extras.js?v=20260712e"></script>
 <script>
 function initConf() {
   'use strict';
@@ -493,6 +495,15 @@ function initConf() {
     put('high', 'итог зависит от объёма — смету зафиксируем после разбора');
     put('pay', 'Оплата — после согласования точной сметы; небольшие услуги обычно оплачиваются одним платежом.');
     document.title = svc.label + ' — заявка | Академический Салон';
+    /* пришли из готового дела («Впереди защита?») — работа уже у мастера,
+       тему не переспрашиваем, а подставляем ссылку на дело */
+    try {
+      var srcOrder = new URLSearchParams(location.search).get('order');
+      if (srcOrder && /^\d+$/.test(srcOrder) && topicIn && !topicIn.value) {
+        topicIn.value = 'По готовой работе из дела №' + srcOrder + ' — она уже у мастера';
+        if (deadlineIn) deadlineIn.placeholder = 'Когда защита? Например, «20 июля»';
+      }
+    } catch (e) {}
     if (S.metrika) S.metrika.goal('service_form');
   }
 

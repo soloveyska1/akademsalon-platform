@@ -3,7 +3,9 @@
    для тех, кто его привязал. Доступ: токены заказов этого
    устройства (salon_tokens), ссылка доступа #claim=<токен>
    с другого устройства или вход через Telegram (Salon.tgLogin).
-   Поллинг раз в 25 секунд.
+   Обновления мгновенные: long-poll /api/events (+ редкий страховочный
+   поллинг). В фоновой вкладке события продолжают приходить — при
+   разрешении показываем системные уведомления устройства.
    ============================================================ */
 function initCabinet() {
   'use strict';
@@ -26,6 +28,41 @@ function initCabinet() {
     busy: false
   };
   var lastPending = null; // pending TG-входа — для перерисовки экрана входа
+  var seenTimer = null;   // отложенная отметка «файлы посмотрены»
+  var baseTitle = document.title;
+  var hiddenNews = 0;     // сколько событий пришло, пока вкладка в фоне
+
+  /* ---------- системные уведомления устройства (по разрешению) ---------- */
+  function notiSupported() { return 'Notification' in window; }
+  function notiOn() { return notiSupported() && Notification.permission === 'granted'; }
+  function notiAsk() {
+    if (!notiSupported()) return;
+    try {
+      Notification.requestPermission().then(function (p) {
+        toast(p === 'granted' ? 'Уведомления включены — догонят вас в любой вкладке 🔔'
+                              : 'Хорошо, без уведомлений — всё останется здесь, в кабинете');
+        renderCurrent();
+      });
+    } catch (e) { /* старые браузеры без промиса */
+      Notification.requestPermission(function () { renderCurrent(); });
+    }
+  }
+  function titleBadge() {
+    document.title = (hiddenNews > 0 ? '(' + hiddenNews + ') ' : '') + baseTitle;
+  }
+  function systemNote(no, body) {
+    hiddenNews++;
+    titleBadge();
+    if (!notiOn()) return;
+    try {
+      var n = new Notification('Дело ' + no + ' — Академический Салон',
+        { body: body, icon: 'assets/img/favicon-120.png', tag: 'salon-' + no });
+      n.onclick = function () { try { window.focus(); } catch (e) {} this.close(); };
+    } catch (e) {}
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) { hiddenNews = 0; titleBadge(); }
+  });
 
   /* печати и подписи для смен статуса — «красивые уведомления» */
   var STATUS_STAMP = {
@@ -103,7 +140,8 @@ function initCabinet() {
     var emailBlock = '';
     if (st.features && st.features.email_login) {
       emailBlock = '<p class="caps" style="margin-bottom:8px">Вход по почте</p>' +
-        '<p class="petit" style="margin-bottom:10px">Пришлём 6-значный код — без паролей и мессенджеров.</p>' +
+        '<p class="petit" style="margin-bottom:10px">Пришлём 6-значный код — без паролей и мессенджеров. ' +
+        'Адреса @mail.ru и @bk.ru иногда задерживают наши письма в спам-фильтре — если код не пришёл, надёжнее Telegram или ссылка доступа ниже.</p>' +
         '<div class="act-row" id="cabEmailBox" style="margin-top:0;margin-bottom:18px">' +
           '<input type="email" id="cabEmailIn" placeholder="you@mail.ru" autocomplete="email" ' +
             'style="flex:2;min-width:0;font:inherit;font-size:14px;padding:10px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
@@ -239,6 +277,14 @@ function initCabinet() {
       '</div>';
   }
 
+  function notiRow() {
+    /* однострочное приглашение включить уведомления устройства */
+    if (!notiSupported() || Notification.permission !== 'default') return '';
+    return '<p class="petit reveal" style="margin:2px 0 10px">' +
+      '<button type="button" class="linkbtn wax" id="cabNotiBtn">🔔 Включить уведомления на устройстве</button>' +
+      ' — статусы, файлы и сообщения догонят вас, даже если вкладка в фоне.</p>';
+  }
+
   function userRow() {
     var u = S.api.user();
     if (S.api.token() && u) {
@@ -247,11 +293,12 @@ function initCabinet() {
         '<span>Вы вошли как <b>' + esc(u.name || 'гость') + '</b>' + (u.username ? ' (@' + esc(u.username) + ')' : '') +
         ' · ' + chan + '</span>' +
         '<span class="ci-act"><button type="button" class="linkbtn" id="cabLogout">выйти</button></span></div>' +
-        bonusCard();
+        notiRow() + bonusCard();
     }
     return '<div class="cab-id reveal"><span class="ci-dot guest"></span>' +
       '<span>Гостевой доступ — заказы видны на этом устройстве</span>' +
-      '<span class="ci-act"><button type="button" class="linkbtn wax" id="cabTg">войти через Telegram — заказы привяжутся к вам</button></span></div>';
+      '<span class="ci-act"><button type="button" class="linkbtn wax" id="cabTg">войти через Telegram — заказы привяжутся к вам</button></span></div>' +
+      notiRow();
   }
 
   /* -------- бонусный счёт (только для вошедших) -------- */
@@ -398,7 +445,8 @@ function initCabinet() {
       else if (n === o.stage) {
         state = 'now';
         tag = o.status === 'check' ? 'на вашей проверке'
-            : o.status === 'fix' ? 'в правках' : 'в работе';
+            : o.status === 'fix' ? 'в правках'
+            : (o.part_ready === n ? 'готова — ждёт оплату этапа' : 'в работе');
       } else { state = ''; tag = 'впереди'; }
       rows += '<div class="stg-row ' + state + '"><span class="sn">' + (state === 'past' ? '✓' : '§' + n) + '</span>' +
         '<span class="sb"><b>Часть ' + n + ' из ' + total + '</b>' +
@@ -446,7 +494,7 @@ function initCabinet() {
   /* -------- план оплат: этапы 50/50 или 30/40/30, статус каждого -------- */
   var PLAN_ST = {
     paid: ['оплачен ✓', 's-done'], claimed: ['на сверке у мастера', 's-act'],
-    due: ['к оплате сейчас', 's-due'], later: ['после следующей части', '']
+    due: ['к оплате сейчас', 's-due'], later: ['после готовности следующей части', '']
   };
   function planTable(o) {
     var plan = o.plan || [];
@@ -465,19 +513,19 @@ function initCabinet() {
       }).join('') + '</div>';
   }
 
-  /* -------- списание бонусов: ползунок + точная сумма -------- */
+  /* -------- списание бонусов: один раз на заказ, до первой оплаты -------- */
   function bonusSpendBlock(o) {
     if (!o.bonus || !(o.status === 'priced' || o.status === 'prepay')) return '';
     var paidAlready = (o.payments || []).some(function (p) { return p.status === 'paid'; });
     if (paidAlready) return '';
-    var room = Math.max((o.bonus_cap || 0) - (o.bonus_spent || 0), 0);
-    var limit = Math.min(o.bonus.balance || 0, room);
+    if ((o.bonus_spent || 0) > 0) return ''; /* уже применены — есть «вернуть бонусы» */
+    var limit = Math.min(o.bonus.balance || 0, o.bonus_cap || 0);
     if (limit <= 0) return '';
     return '<div class="due-box" id="bspendBox">' +
       '<div class="cbn-row"><span>💎 Списать бонусы <span class="petit">(на счету ' + money(o.bonus.balance) + ', к этому заказу — до ' + money(limit) + ')</span></span>' +
       '<b class="num" id="bspendVal">' + money(limit) + '</b></div>' +
       '<input type="range" class="cbn-slider" id="bspendRange" min="0" max="' + limit + '" step="50" value="' + limit + '">' +
-      '<div class="cbn-row"><span class="petit">Спишутся при подтверждении — деньгами останется <b id="bspendDue">' + money((o.due_total || o.price) - limit) + ' ₽</b></span>' +
+      '<div class="cbn-row"><span class="petit">Списание — один раз, до оплаты; деньгами останется <b id="bspendDue">' + money((o.due_total || o.price) - limit) + ' ₽</b></span>' +
       '<button type="button" class="btn btn-line" id="bspendApply">Применить</button></div>' +
       '</div>';
   }
@@ -485,8 +533,11 @@ function initCabinet() {
   function payHistory(o) {
     var paid = (o.payments || []).filter(function (p) { return p.status === 'paid'; });
     if (!paid.length) return '';
+    var lbl = {};
+    (o.plan || []).forEach(function (p) { lbl[p.kind] = p.label; });
     return '<p class="petit" style="margin-top:8px">Оплачено: ' + paid.map(function (p) {
-      return money(p.amount) + ' ₽ (' + (p.kind === 'prepay' ? 'предоплата' : 'остаток') + ', ' + dt(p.at) + ')';
+      var what = lbl[p.kind] || (p.kind === 'prepay' ? 'предоплата' : 'остаток');
+      return money(p.amount) + ' ₽ (' + esc(what.toLowerCase()) + ', ' + dt(p.at) + ')';
     }).join(' · ') + '</p>';
   }
 
@@ -514,9 +565,10 @@ function initCabinet() {
         '</div>';
     }).join('');
   }
-  function paySlip(o, due) {
+  function paySlip(o, due, label) {
     return '<div class="payslip">' +
-      '<div class="ps-head"><span class="caps">Реквизиты для перевода</span>' +
+      '<div class="ps-head"><span class="caps">' +
+      (label ? esc(label) + ' · реквизиты' : 'Реквизиты для перевода') + '</span>' +
       (due ? '<span class="ps-due">' + money(due) + ' ₽</span>' : '') + '</div>' +
       '<div class="ps-body">' + reqRows(o.requisites) + '</div>' +
       '<div class="ps-steps">' +
@@ -527,9 +579,10 @@ function initCabinet() {
   }
 
   function payBlock(o) {
-    /* блок оплаты: показываем, когда есть «созревший» платёж или отметка на сверке */
+    /* блок оплаты: только когда реально есть что платить (или отметка на сверке) —
+       во время работы над частью клиента не дёргаем кнопками оплаты */
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
-    var wantPay = o.actions.indexOf('paid') >= 0 || (due > 0 && 'work check fix'.indexOf(o.status) >= 0);
+    var wantPay = due > 0;
     if (!wantPay && !o.claimed) return payHistory(o) ? '<div class="fs-sec"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '';
     var head = '<div class="fs-sec"><div class="fs-head"><span class="caps">Оплата</span>' +
       (o.due_now ? '<span class="fs-meta">' + esc(o.due_now.label) + ' · ' + money(due) + ' ₽</span>' : '') + '</div>';
@@ -545,7 +598,7 @@ function initCabinet() {
         payHistory(o) + '</div>';
     }
     var req = o.requisites
-      ? paySlip(o, due)
+      ? paySlip(o, due, o.due_now && o.due_now.label)
       : (o.pay_online ? '' : '<p class="petit">Реквизиты пришлём в чат ниже (и в Telegram) в течение пары минут.</p>');
     var payBtns = '<div class="act-row">' +
       (o.pay_online ? '<button type="button" class="btn btn-wax" data-act-pay>💳 Оплатить картой онлайн</button>' : '') +
@@ -570,8 +623,9 @@ function initCabinet() {
     if (o.actions.indexOf('resume') >= 0) {
       b.push('<button type="button" class="btn btn-wax" data-act="resume">🔄 Возобновить заказ</button>');
     }
-    var pay = (o.actions.indexOf('paid') >= 0 || o.claimed ||
-               (o.due_now && 'work check fix'.indexOf(o.status) >= 0)) ? payBlock(o) : '';
+    var pay = ((o.due_now && o.due_now.amount > 0) || o.claimed ||
+               (o.payments || []).some(function (p) { return p.status === 'paid'; }))
+      ? payBlock(o) : '';
     if (!b.length) return pay || (payHistory(o) ? '<div class="fs-sec"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '');
     return '<div class="fs-sec"><div class="fs-head"><span class="caps">Решение по заказу</span>' +
       (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="fs-meta">правки безлимитны до приёмки</span>' : '') +
@@ -583,7 +637,7 @@ function initCabinet() {
       '</div></div>' + pay;
   }
 
-  /* -------- финал придержан до оплаты: заметная лента -------- */
+  /* -------- часть/финал готовы и придержаны до оплаты: заметные ленты -------- */
   function finalBand(o) {
     if (!o.final_ready || 'work fix'.indexOf(o.status) < 0) return '';
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
@@ -594,7 +648,23 @@ function initCabinet() {
         'подтвердит поступление, файлы придут сразу.</span></div>';
     }
     return '<div class="pause-band fin-band"><span class="pb-ic">🏁</span><span class="pb-txt">' +
-      'Оплата закрыта — мастер передаёт финальную часть.</span></div>';
+      (o.claimed ? 'Ваша отметка об оплате на сверке у мастера — после подтверждения он передаст финальную часть.'
+                 : 'Оплата закрыта — мастер передаёт финальную часть.') + '</span></div>';
+  }
+
+  function partBand(o) {
+    /* промежуточная часть готова: «сначала оплата этапа — потом файл» */
+    if (!o.part_ready || o.final_ready || 'work fix'.indexOf(o.status) < 0) return '';
+    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
+    if (due > 0) {
+      return '<div class="pause-band fin-band"><span class="pb-ic">📘</span><span class="pb-txt">' +
+        '<b>Часть ' + o.part_ready + ' готова!</b> Она передаётся после оплаты этапа — ' +
+        '<b>' + money(due) + ' ₽</b>' + (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ')' : '') +
+        '. Реквизиты — в блоке «Оплата» ниже; после подтверждения файл придёт сразу.</span></div>';
+    }
+    return '<div class="pause-band fin-band"><span class="pb-ic">📘</span><span class="pb-txt">' +
+      (o.claimed ? 'Часть ' + o.part_ready + ' готова; ваша отметка об оплате на сверке — после подтверждения мастер передаст файл.'
+                 : 'Часть ' + o.part_ready + ' готова, этап оплачен — мастер передаёт файл.') + '</span></div>';
   }
 
   /* -------- пауза: заметная лента под шапкой дела -------- */
@@ -631,13 +701,13 @@ function initCabinet() {
     if (o.status !== 'done' || /^svc_/.test(o.work_type || '')) return '';
     return '<div class="fs-sec"><div class="fs-head"><span class="caps">Впереди защита?</span>' +
       '<span class="fs-meta">по вашей готовой работе</span></div>' +
-      '<p class="petit" style="margin-bottom:12px">Мастерская доводит дело до самой защиты — бонусы с этого заказа уже на счету, их можно применить.</p>' +
+      '<p class="petit" style="margin-bottom:12px">Работа уже у нас — заново ничего описывать не придётся. Бонусы с этого заказа на счету, их можно применить.</p>' +
       '<div class="act-row" style="margin-top:0">' +
-      '<a class="btn btn-wax" href="configurator.html?service=dp">🎁 «К защите под ключ» · от 7 200 ₽</a>' +
-      '<a class="btn btn-line" href="configurator.html?service=df">🎤 Презентация и речь · от 3 500 ₽</a>' +
-      '<a class="btn btn-line" href="configurator.html?service=nm">📏 Нормоконтроль · от 5 000 ₽</a>' +
+      '<a class="btn btn-wax" href="configurator.html?service=dp&order=' + o.id + '">🎁 «К защите под ключ» · от 9 500 ₽</a>' +
+      '<a class="btn btn-line" href="configurator.html?service=df&order=' + o.id + '">🎤 Презентация и речь · от 6 000 ₽</a>' +
+      '<a class="btn btn-line" href="configurator.html?service=nm&order=' + o.id + '">📏 Нормоконтроль · от 5 000 ₽</a>' +
       '</div>' +
-      '<p class="petit" style="margin-top:10px">Пакет выгоднее на 1 300 ₽, чем услуги по отдельности (8 500 ₽).</p></div>';
+      '<p class="petit" style="margin-top:10px">Пакет выгоднее на 1 500 ₽, чем услуги по отдельности (11 000 ₽).</p></div>';
   }
 
   /* -------- отзыв: просто для тех, кто не любит писать -------- */
@@ -763,7 +833,7 @@ function initCabinet() {
       '<h2 class="ord-type">' + esc(o.work_label || '') + '</h2>' +
       (o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
       '<p class="petit">' + meta.join(' · ') + ' ' + deadlineChip(o) + '</p>' +
-      pauseBand(o) + finalBand(o) +
+      pauseBand(o) + finalBand(o) + partBand(o) +
       priceBlock(o) + stageRows(o) +
       actionsBlock(o) + reviewBlock(o) + defenseBlock(o) + manageBlock(o) + filesBlock(o) + chatBlock(o) + accessBlock(o) +
       (isArch(o) ? '<p class="petit" style="margin-top:clamp(20px,3vw,28px);padding-top:14px;border-top:1px solid var(--hairline)">' +
@@ -845,14 +915,34 @@ function initCabinet() {
     }
   }
 
+  function scheduleFilesSeen(order) {
+    /* метки «новый файл» гасим только после того, как клиент реально
+       посмотрел на дело: 7 секунд видимой страницы с открытой карточкой */
+    if (seenTimer) { clearTimeout(seenTimer); seenTimer = null; }
+    var hasNew = (order.files || []).some(function (f) { return f.new; });
+    if (!hasNew) return;
+    var id = order.id;
+    seenTimer = setTimeout(function () {
+      if (document.hidden || st.currentId !== id) return;
+      var t = tokenFor(id);
+      var body = { action: 'files_seen' };
+      if (t) body.token = t;
+      S.api.post('/orders/' + id + '/action' + (t ? '?token=' + encodeURIComponent(t) : ''), body);
+    }, 7000);
+  }
+
   function loadDetail(silent) {
     var id = st.currentId;
     S.api.get(apiPath(id)).then(function (r) {
       if (!r.ok) { if (!silent) render(tplError()); return; }
       var was = st.detail;
-      var changed = !was || was.id !== r.order.id || was.updated_at !== r.order.updated_at ||
-        (was.messages || []).length !== (r.order.messages || []).length ||
-        (was.files || []).length !== (r.order.files || []).length;
+      /* полное сравнение: платежи/план/готовность части меняются без
+         updated_at заказа — раньше карточка не замечала подтверждение оплаты */
+      var changed = !was || was.id !== r.order.id;
+      if (!changed) {
+        try { changed = JSON.stringify(was) !== JSON.stringify(r.order); }
+        catch (e) { changed = true; }
+      }
       /* статус изменился, пока страница была открыта → живое уведомление */
       if (was && was.id === r.order.id && was.status !== r.order.status) {
         var meta = STATUS_STAMP[r.order.status];
@@ -860,6 +950,14 @@ function initCabinet() {
           if (meta[0] && S.stamp) S.stamp(meta[0]);
           toast(meta[1]);
         }
+        if (document.hidden) systemNote(r.order.no, meta ? meta[1] : ('Статус: ' + (r.order.status_label || '')));
+      }
+      if (was && was.id === r.order.id && document.hidden) {
+        /* вкладка в фоне: новые сообщения/файлы → системное уведомление */
+        var dM = (r.order.messages || []).length - (was.messages || []).length;
+        var dF = (r.order.files || []).length - (was.files || []).length;
+        if (dF > 0) systemNote(r.order.no, 'Новый файл от мастерской — уже в деле');
+        else if (dM > 0) systemNote(r.order.no, 'Новое сообщение мастера');
       }
       st.detail = r.order;
       if (changed || !silent) {
@@ -869,19 +967,65 @@ function initCabinet() {
         if (ta && draft) ta.value = draft;
         var feed = document.getElementById('chatFeed');
         if (feed) feed.scrollTop = feed.scrollHeight;
+        scheduleFilesSeen(r.order);
       }
     });
   }
 
+  function refreshListSilent() {
+    var t = S.api.token(), g = S.api.guestTokens();
+    if (!t && !g.length) return;
+    S.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
+      if (!r.ok) return;
+      var mini = function (o) { return [o.id, o.status, o.unread, o.files_new, o.pinned, o.archived].join(':'); };
+      var before = st.orders.map(mini).join('|');
+      st.orders = r.orders || [];
+      if (st.orders.map(mini).join('|') !== before && st.detail) renderCurrent();
+    });
+  }
+
+  /* мгновенные обновления: long-poll шины событий сервера.
+     Ответ приходит в момент любого движения по делам (или раз в ~25 с
+     тишины) — работает и в фоновой вкладке, питает системные уведомления. */
+  var evVer = 0;
+  function watchEvents() {
+    fetch(S.api.base + '/events?since=' + evVer)
+      .then(function (resp) { return resp.json(); })
+      .then(function (r) {
+        var moved = r && r.ok && r.v > evVer;
+        if (r && r.ok) evVer = r.v;
+        if (moved && S.api.identified()) {
+          if (st.currentId) loadDetail(true);
+          refreshListSilent();
+        }
+        setTimeout(watchEvents, moved ? 250 : 500);
+      })
+      .catch(function () { setTimeout(watchEvents, 8000); });
+  }
+
   function startPolling() {
+    /* страховочный поллинг на случай, если long-poll перекрыт сетью */
     if (st.timer) clearInterval(st.timer);
     st.timer = setInterval(function () {
       if (document.hidden || !st.currentId || !S.api.identified()) return;
       loadDetail(true);
-    }, 25000);
+    }, 60000);
+    watchEvents();
   }
 
   /* ---------------- действия ---------------- */
+  var waitChkSent = {};
+  function waitChecksOnce(id) {
+    /* сообщить мастеру «клиент ждёт проверок» — тихо, раз за сессию */
+    if (!id || waitChkSent[id]) return;
+    waitChkSent[id] = true;
+    var t = tokenFor(id);
+    var body = { action: 'wait_checks' };
+    if (t) body.token = t;
+    S.api.post('/orders/' + id + '/action' + (t ? '?token=' + encodeURIComponent(t) : ''), body)
+      .then(function (r) { if (r.ok && r.order) { st.detail = r.order; } });
+  }
+
   function doAction(action, extra) {
     if (st.busy) return;
     st.busy = true;
@@ -902,6 +1046,7 @@ function initCabinet() {
                   bonus_after_payment: 'По заказу уже была оплата — бонусы не применить',
                   bonus_order_small: 'Бонусы применимы к заказам от 1000 ₽',
                   bonus_cap: 'Лимит списания по этому заказу уже выбран',
+                  bonus_once: 'Бонусы применяются один раз на заказ. Передумали — «вернуть бонусы» и примените заново',
                   bonus_empty: 'На счету нет доступных бонусов',
                   paused_by_master: 'Паузу ставил мастер — напишите ему в переписке, он снимет',
                   pause_state: 'Пауза тут не применима — обновите страницу',
@@ -1056,6 +1201,7 @@ function initCabinet() {
       });
       return;
     }
+    if (t.closest('#cabNotiBtn')) { notiAsk(); return; }
     if (t.closest('#cabTgCancel')) { S.store.del('salon_auth_pending'); render(tplLogin(null)); return; }
     if (t.closest('#cabLogout')) { S.api.logout(); st.detail = null; loadList(); return; }
     if (t.closest('#cabRetry')) { loadList(); return; }
@@ -1094,13 +1240,21 @@ function initCabinet() {
         S.confirm(isFinal ? {
           title: 'Принять и завершить заказ?',
           text: 'Правки бесплатны до приёмки — в том числе по замечаниям научного руководителя и после предзащиты. ' +
-                'Завершайте, когда все проверки позади; если что-то ещё будет — нажмите «Нужны правки».',
-          okLabel: 'Всё проверено — завершить', noLabel: 'Ещё будут проверки'
+                'Ещё ждёте проверок? Нажмите «Пока жду проверок» — дело останется открытым, ничего не сгорит. ' +
+                'Появились замечания — «Нужны правки» в карточке.',
+          okLabel: 'Всё проверено — завершить', noLabel: 'Пока жду проверок'
         } : {
           title: 'Принять часть ' + (od2.stage || 1) + '?',
           text: 'Мастер продолжит со следующей частью. Замечания по этой части лучше отправить сейчас — кнопкой «Нужны правки», это бесплатно.',
           okLabel: 'Принять часть', noLabel: 'Ещё посмотрю'
-        }).then(function (res) { if (res.ok) doAction('accept_work'); });
+        }).then(function (res) {
+          if (res.ok) { doAction('accept_work'); return; }
+          if (isFinal) {
+            /* «жду проверок» — не правки и не завершение: дело остаётся открытым */
+            toast('Дело остаётся открытым — правки бесплатны до приёмки. Мастер предупреждён.');
+            waitChecksOnce(st.currentId);
+          }
+        });
         return;
       }
       doAction(a);

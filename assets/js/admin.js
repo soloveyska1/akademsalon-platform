@@ -19,7 +19,7 @@ function initGodEye() {
   };
   var PLAN_LBL = { 1: 'Одна выдача', 2: '2 части · 50/50', 3: '3 части · 30/40/30' };
   var PL_ST = { paid: ['оплачен ✓', 'pl-paid'], claimed: ['клиент отметил — сверьте!', 'pl-claimed'],
-                due: ['созрел к оплате', 'pl-due'], later: ['после следующей части', 'pl-later'] };
+                due: ['созрел к оплате', 'pl-due'], later: ['после готовности следующей части', 'pl-later'] };
 
   /* серверные коды — по-русски: хроника и события не должны быть «тьмой» */
   var EV_LABEL = {
@@ -37,6 +37,8 @@ function initGodEye() {
     paused: 'дело поставлено на паузу', unpaused: 'пауза снята',
     cancel_request: 'клиент просит закрыть дело', client_pin: 'клиент закрепил дело',
     final_ready: 'финал готов — клиенту выставлен остаток',
+    part_ready: 'часть готова — клиенту выставлен счёт этапа',
+    wait_checks: 'клиент ждёт проверок (научрук/предзащита)',
     spec_sent: 'спецификация отправлена клиенту',
     broadcast: 'рассылка клиентам', defense_offered: 'предложены услуги к защите',
     plan_set: 'план оплаты изменён', tg_linked: 'клиент привязал Telegram',
@@ -123,10 +125,29 @@ function initGodEye() {
       st.ov = r;
       renderShell();
       loadTab(true);
-      if (!st.timer) st.timer = setInterval(function () {
-        if (!document.hidden) refreshSilent();
-      }, 25000);
+      if (!st.timer) {
+        /* страховочный интервал; главное — long-poll событий ниже */
+        st.timer = setInterval(function () {
+          if (!document.hidden) refreshSilent();
+        }, 60000);
+        watchEvents();
+      }
     });
+  }
+
+  /* мгновенные обновления: long-poll шины событий — карточки и списки
+     подтягиваются в момент действия клиента, без ожидания поллинга */
+  var evVer = 0;
+  function watchEvents() {
+    fetch(S.api.base + '/events?since=' + evVer)
+      .then(function (resp) { return resp.json(); })
+      .then(function (r) {
+        var moved = r && r.ok && r.v > evVer;
+        if (r && r.ok) evVer = r.v;
+        if (moved && S.api.token()) refreshSilent();
+        setTimeout(watchEvents, moved ? 250 : 500);
+      })
+      .catch(function () { setTimeout(watchEvents, 8000); });
   }
 
   function refreshSilent() {
@@ -183,9 +204,14 @@ function initGodEye() {
     S.api.get('/admin/orders/' + id).then(function (r) {
       if (!r.ok) return;
       var was = st.card;
-      if (silent && was && was.id === r.order.id &&
-          was.updated_at === r.order.updated_at &&
-          (was.messages || []).length === (r.order.messages || []).length) return;
+      var same = false;
+      if (silent && was && was.id === r.order.id) {
+        /* платежи и объявленная готовность части меняются без updated_at —
+           сравниваем карточку целиком */
+        try { same = JSON.stringify(was) === JSON.stringify(r.order); }
+        catch (e) { same = false; }
+      }
+      if (same) return;
       var draft = (document.getElementById('agMsg') || {}).value || '';
       st.card = r.order;
       drawCard();
@@ -483,6 +509,13 @@ function initGodEye() {
           money(o.due_now.amount) + ' ₽. Файл придержите: как только подтвердите оплату, напомним сдать.'];
       return ['due', '🏁 <b>Остаток получен — передайте финальную часть.</b> Сдайте файлом ниже, клиент получит кнопки приёмки.'];
     }
+    if (o.part_ready && 'work fix'.indexOf(o.status) >= 0) {
+      if (o.due_now && o.due_now.amount > 0)
+        return ['', '📘 Часть ' + o.part_ready + ' объявлена готовой — клиент получил счёт ' +
+          money(o.due_now.amount) + ' ₽ (' + esc((o.due_now.label || 'этап').toLowerCase()) +
+          '). Файл придержите: подтвердите оплату — напомним передать.'];
+      return ['due', '📘 <b>Оплата за часть ' + o.part_ready + ' получена — передайте её.</b> Сдайте файлом ниже, клиент получит кнопки приёмки.'];
+    }
     if (o.status === 'new')
       return ['due', '💰 <b>Новая заявка.</b> Изучите требования и отправьте предложение с ценой — клиент получит его в Telegram и в кабинете.'];
     if (o.status === 'fix')
@@ -555,7 +588,8 @@ function initGodEye() {
         if (o.status === 'done' || n <= (o.parts_done || 0)) { cls = 'past'; tag = 'принята ✓'; }
         else if (n === o.stage) {
           cls = 'now';
-          tag = o.status === 'check' ? 'у клиента' : o.status === 'fix' ? 'правки' : 'в работе';
+          tag = o.status === 'check' ? 'у клиента' : o.status === 'fix' ? 'правки'
+              : ((o.part_ready || 0) === n ? 'ждёт оплату' : 'в работе');
         }
         cells += '<div class="ag-part ' + cls + '"><b>Часть ' + n + '</b><span class="st">' + tag + '</span></div>';
       }
@@ -563,23 +597,32 @@ function initGodEye() {
     var canDeliver = 'work fix check'.indexOf(o.status) >= 0;
     var finalStage = total <= 1 || (o.stage || 1) >= total;
     var unpaid = (o.plan || []).some(function (p) { return p.state !== 'paid'; });
-    var finBtn = ('work fix'.indexOf(o.status) >= 0 && finalStage && !o.final_ready && unpaid)
-      ? '<button type="button" class="btn btn-line" id="agFinalReady">🏁 Финал готов — счёт на остаток (файл придержать)</button>'
-      : '';
+    var announced = (o.part_ready || 0) >= (o.stage || 1);
+    var finBtn = '';
+    if ('work fix'.indexOf(o.status) >= 0 && unpaid) {
+      if (finalStage && !o.final_ready)
+        finBtn = '<button type="button" class="btn btn-line" id="agFinalReady">🏁 Финал готов — счёт на остаток (файл придержать)</button>';
+      else if (!finalStage && !announced)
+        finBtn = '<button type="button" class="btn btn-line" id="agPartReady">📣 Часть ' + o.stage + ' готова — счёт клиенту (файл придержать)</button>';
+    }
+    var deliverWord = o.final_ready ? 'финал'
+      : (total > 1 ? (announced ? 'Передать часть ' + o.stage : 'часть ' + o.stage) : 'работу');
     return '<div class="ag-sec"><span class="caps">Сдача работы' +
       '<span class="sub">' + (total > 1 ? 'часть ' + o.stage + ' из ' + total + ' · принято ' + (o.parts_done || 0) : '') +
-      (o.final_ready ? ' · 🏁 финал придержан до оплаты' : '') + '</span></span>' +
+      (o.final_ready ? ' · 🏁 финал придержан до оплаты'
+        : (announced && 'work fix'.indexOf(o.status) >= 0 ? ' · 📣 счёт за часть ' + o.part_ready + ' выставлен, файл придержан' : '')) +
+      '</span></span>' +
       (cells ? '<div class="ag-parts">' + cells + '</div>' : '') +
       (canDeliver
         ? '<div class="ag-actrow" style="margin-top:8px">' +
-          '<label class="btn btn-wax btn-upload">📦 Сдать ' + (o.final_ready ? 'финал' : (total > 1 ? 'часть ' + o.stage : 'работу')) + ' файлом' +
+          '<label class="btn btn-wax btn-upload">📦 ' + (announced && !o.final_ready && total > 1 ? '' : 'Сдать ') + deliverWord + ' файлом' +
           '<input type="file" id="agDeliverFile"></label>' +
           '<label class="btn btn-line btn-upload">📎 Просто отправить файл<input type="file" id="agPlainFile"></label>' +
           finBtn +
           (o.status !== 'check' ? '<button type="button" class="btn btn-line" id="agDeliverMark">Файлы уже у клиента — зафиксировать сдачу</button>' : '') +
           '</div>' +
-          '<p class="ag-note">«Сдать» — клиент получит файл с кнопками «принять / нужны правки», статус и оплата этапа посчитаются сами. «Просто файл» — ничего не меняет. ' +
-          '«Финал готов» — клиенту уходит счёт на остаток, а финальный файл вы передаёте после оплаты.</p>'
+          '<p class="ag-note">Правило «сначала оплата — потом файл»: «Часть готова / Финал готов» выставляет клиенту счёт этапа, файл вы передаёте после оплаты (напомним). ' +
+          '«Сдать файлом» — передать сразу, доверяя клиенту: кнопки приёмки и оплата этапа посчитаются сами. «Просто файл» — ничего не меняет.</p>'
         : '') +
       '<p class="ag-note" id="agUpNote" hidden></p></div>';
   }
@@ -837,7 +880,10 @@ function initGodEye() {
 
       '<div class="ag-sec"><span class="caps">Почта</span>' +
       '<p class="petit">' + (ov.mail_on
-        ? '✅ Почта работает (support@akademsalon.ru): письма о заказе уходят, вход по коду включён.'
+        ? '✅ Почта работает (support@akademsalon.ru): письма о заказе уходят, вход по коду включён. ' +
+          '<b>Нюанс mail.ru:</b> адреса @mail.ru / @bk.ru / @inbox.ru их спам-фильтр может отбивать (550), ' +
+          'пока домен не зарегистрирован в <b>postmaster.mail.ru</b> — зайдите туда с любого аккаунта mail.ru, ' +
+          'добавьте домен akademsalon.ru и подтвердите права (DNS уже настроен). Отлупы копятся во «Входящих» ящика support@.'
         : (ov.mail_configured
           ? '⚠️ Почта настроена (support@akademsalon.ru), но <b>хостер держит исходящий SMTP-порт закрытым</b> — письма не уходят. ' +
             'Напишите в поддержку Timeweb из панели: «Прошу открыть исходящие SMTP-порты 465 и 587 на VPS 217.18.63.210 — ' +
@@ -999,6 +1045,23 @@ function initGodEye() {
         if (!res.ok) return;
         api('/admin/orders/' + st.sel + '/final_ready', {})
           .then(function (r) { afterOrder(r, r.ok ? '🏁 Счёт на остаток ушёл клиенту' : null); });
+      });
+      return;
+    }
+    if (t.closest('#agPartReady')) {
+      var prPart = (st.card && st.card.stage) || 1;
+      confirmDlg({
+        title: 'Часть ' + prPart + ' готова — выставить счёт этапа?',
+        text: 'Клиент получит уведомление: часть готова и передаётся после оплаты этапа (с подписью «оплата части ' + prPart + '»). ' +
+              'Файл пока не отправляйте — как подтвердите оплату, придёт напоминание передать.',
+        okLabel: 'Выставить счёт', noLabel: 'Отмена'
+      }).then(function (res) {
+        if (!res.ok) return;
+        api('/admin/orders/' + st.sel + '/part_ready', {})
+          .then(function (r) {
+            if (r.ok && r.paid_already) { afterOrder(r, 'Этап уже оплачен — просто передайте часть файлом'); return; }
+            afterOrder(r, r.ok ? '📣 Счёт за часть ушёл клиенту — файл придержите' : null);
+          });
       });
       return;
     }
