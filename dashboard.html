@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260712g" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260712g" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260712g" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260712h" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260712h" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260712h" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -135,11 +135,54 @@
   .cab-foot{margin-top:clamp(28px,5vw,44px);padding-top:14px;border-top:1px solid var(--hairline)}
   .cab-foot-sync{margin-top:clamp(22px,4vw,32px);text-align:center}
 
+  /* автопрокрутки и чипы не ныряют под шапку */
+  #cabRoot .fs-sec[id],#subPaySheet,#plusCard,#plusSheet,#bonusLedger{scroll-margin-top:74px}
+
+  /* шапка карточки плана «Салон+»: название + слоган переносятся по-человечески */
+  .pl-h{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--hairline)}
+  .pl-h .pl-tag{font-size:12.5px;color:var(--ink-soft)}
+
+  /* чипы-навигация по делу: на телефоне доводят до нужного раздела
+     без листания всей простыни (Оплата · Файлы · Переписка · Управление) */
+  .ord-jump{display:none;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0 2px;padding-bottom:2px;scrollbar-width:none}
+  .ord-jump::-webkit-scrollbar{display:none}
+  .ord-jump .oj{flex:0 0 auto;font:inherit;font-size:12.5px;line-height:1;padding:10px 14px;border:1px solid var(--hairline-strong);border-radius:999px;background:var(--paper-2);color:var(--ink-soft);cursor:pointer;white-space:nowrap}
+  .ord-jump .oj.hot{border-color:var(--wax);color:var(--wax);font-weight:600}
+  .ord-jump .oj:active{background:var(--mark)}
+
+  @media(max-width:740px){
+    /* iPhone: поля ввода мельче 16px заставляют Safari зумить страницу
+       при фокусе — вёрстка «уезжает». Держим 16px, зум не срабатывает. */
+    #cabRoot input[type="text"],#cabRoot input[type="email"],#cabRoot input[type="date"],
+    #cabRoot input[type="number"],#cabRoot textarea{font-size:16px!important}
+    /* меньше служебной шапки — дело начинается выше */
+    .cab-page .chapter{padding-top:30px}
+    .cab-page .ch-rule{margin-bottom:12px}
+    .cab-h{font-size:23px;margin-bottom:12px}
+    .ord-jump{display:flex}
+    /* корешки заказов — одна строка с прокруткой, не растут в высоту */
+    .ord-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 6px}
+    .ord-tabs::-webkit-scrollbar{display:none}
+    .ord-tab{flex:0 0 auto;white-space:nowrap}
+  }
   @media(max-width:540px){
+    /* строка личности: без сиротской точки-индикатора, «выйти» не ломает строку */
+    .cab-id{row-gap:4px}
+    .cab-id .ci-dot{display:none}
     .act-row{flex-direction:column}
+    .act-row .btn{width:100%}
     .chat-m{max-width:100%}
-    .ord-tabs{padding:0 6px}
     .stg-row .st-tag{display:none}
+    .sheet-pad{padding:16px 14px}
+    .fs-sec{margin-top:22px;padding-top:14px}
+    .chat-feed{max-height:56vh}
+    /* поле сообщения на всю ширину, кнопка под ним — пальцу удобнее */
+    .chat-form{flex-direction:column;align-items:stretch}
+    .chat-form .btn{width:100%}
+    /* платёжный лист и карточки бонусов/подписки — плотнее */
+    .cbn-card{padding:14px}
+    .payslip .ps-head{padding:12px 14px 8px}
+    .payslip .ps-body{padding:4px 14px 8px}
   }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/dashboard.html" />
@@ -184,8 +227,8 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260712g"></script>
-<script src="assets/js/extras.js?v=20260712g"></script>
-<script src="assets/js/cabinet.js?v=20260712g"></script>
+<script src="assets/js/app.js?v=20260712h"></script>
+<script src="assets/js/extras.js?v=20260712h"></script>
+<script src="assets/js/cabinet.js?v=20260712h"></script>
 </body>
 </html>

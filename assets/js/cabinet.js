@@ -141,36 +141,36 @@ function initCabinet() {
         '<div class="act-row"><a class="btn btn-wax" href="' + (pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Открыть Telegram</a>' +
         '<button type="button" class="btn btn-line" id="cabTgCancel">Отменить вход</button></div></div>'
       : '';
+    /* Telegram — первым: одна кнопка, самый надёжный канал (почтовые коды
+       до @mail.ru доходят плохо). Почта и ссылка доступа — ниже. */
     var emailBlock = '';
     if (st.features && st.features.email_login) {
       emailBlock = '<p class="caps" style="margin-bottom:8px">Вход по почте</p>' +
-        '<p class="petit" style="margin-bottom:10px">Пришлём 6-значный код — без паролей и мессенджеров. ' +
-        'Адреса @mail.ru и @bk.ru иногда задерживают наши письма в спам-фильтре — если код не пришёл, надёжнее Telegram или ссылка доступа ниже.</p>' +
+        '<p class="petit" style="margin-bottom:10px">Пришлём 6-значный код. Адреса @mail.ru и @bk.ru иногда задерживают наши письма — если код не пришёл, надёжнее Telegram.</p>' +
         '<div class="act-row" id="cabEmailBox" style="margin-top:0;margin-bottom:18px">' +
           '<input type="email" id="cabEmailIn" placeholder="you@mail.ru" autocomplete="email" ' +
-            'style="flex:2;min-width:0;font:inherit;font-size:14px;padding:10px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
+            'style="flex:2;min-width:0;font:inherit;font-size:16px;padding:11px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
           '<button type="button" class="btn btn-wax" id="cabEmailSend" style="flex:1">Получить код</button>' +
         '</div>';
     }
     return '<div class="sheet sheet-pad stacked cab-login reveal">' +
       '<p class="caps">Вход в кабинет</p>' +
       '<h2 class="ord-type">Ваши заказы — здесь, на сайте</h2>' +
-      '<p class="petit" style="margin-bottom:18px">Статусы, переписка с мастером и файлы живут в кабинете. ' +
-      'Заказы этого устройства открываются сами — входить не нужно.</p>' +
+      '<p class="petit" style="margin-bottom:16px">Заказы этого устройства открываются сами — входить не нужно. ' +
+      'Вход пригодится, чтобы видеть заказы с других устройств, бонусы и подписку.</p>' +
+      pendingBlock +
+      (pending ? '' : '<button type="button" class="btn btn-wax btn-block" id="cabTg">Войти через Telegram <span class="ar">→</span></button>') +
+      '<p class="petit cab-login-hint" id="cabTgHint" hidden></p>' +
+      '<p class="petit" style="margin:10px 0 18px;color:var(--ink-soft)">Одна кнопка — без паролей; уведомления придут и в бота.</p>' +
       emailBlock +
       '<p class="caps" style="margin-bottom:8px">Заказ с другого устройства</p>' +
-      '<p class="petit" style="margin-bottom:10px">Вставьте ссылку доступа к делу — она была на экране «Заявка принята», её же можно скопировать в кабинете на том устройстве.</p>' +
-      '<div class="act-row" style="margin-top:0;margin-bottom:18px">' +
-        '<input type="text" id="cabClaimIn" placeholder="Ссылка доступа или код дела" style="flex:2;min-width:0;font:inherit;font-size:14px;padding:10px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
+      '<p class="petit" style="margin-bottom:10px">Вставьте ссылку доступа к делу — она была на экране «Заявка принята».</p>' +
+      '<div class="act-row" style="margin-top:0;margin-bottom:4px">' +
+        '<input type="text" id="cabClaimIn" placeholder="Ссылка доступа или код дела" style="flex:2;min-width:0;font:inherit;font-size:16px;padding:11px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
         '<button type="button" class="btn btn-line" id="cabClaimBtn" style="flex:1">Открыть дело</button>' +
       '</div>' +
-      '<p class="caps" style="margin-bottom:8px">Или через Telegram</p>' +
-      pendingBlock +
-      (pending ? '' : '<button type="button" class="btn btn-line btn-block" id="cabTg">Войти через Telegram <span class="ar">→</span></button>') +
-      '<p class="petit cab-login-hint" id="cabTgHint" hidden></p>' +
-      '<p class="petit" style="margin:14px 0 0;color:var(--ink-soft)">Вход через Telegram привязывает заказы к аккаунту и дублирует уведомления в бота — это по желанию, кабинет полностью работает и без него.</p>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">' +
-        '<a class="btn btn-wax" style="flex:1" href="configurator.html">Оформить первый заказ</a>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--hairline)">' +
+        '<a class="btn btn-line" style="flex:1" href="configurator.html">Оформить первый заказ <span class="ar">→</span></a>' +
       '</div>' +
       '</div>';
   }
@@ -340,9 +340,56 @@ function initCabinet() {
       '</div>' + led + '</div>';
   }
 
-  /* -------- подписка «Салон+»: карточка, витрина, конструктор, куратор -------- */
+  /* -------- подписка «Салон+»: карточка, витрина, конструктор, куратор --------
+     У подписки СВОЙ платёжный порядок (не заказ): один перевод, без этапов,
+     без бонусов; «я оплатил» → сверка мастером → активация. */
+  function subPendingCard(p) {
+    var head = '<div class="cbn-card reveal" id="plusCard">' +
+      '<div><span class="bc-cap">' + esc(p.emoji || '⭐') + ' Подписка ' + esc(p.label) + '</span>' +
+      '<span class="bc-num" style="font-size:20px">ждёт оплаты</span></div>' +
+      '<div class="bc-side"><p class="bc-exp">' + esc(p.period_label) + ' · один перевод ' + money(p.price) + ' ₽. ' +
+      'Бонусы и скидки к подписке не применяются.</p>' +
+      '<div class="bc-act"><button type="button" class="btn btn-line" id="plusToggle">' +
+      (st.plusOpen ? 'Свернуть планы' : 'Выбрать другой план') + '</button></div></div></div>';
+    var body;
+    if (p.claimed) {
+      body = '<div class="sheet sheet-pad stacked reveal" id="subPaySheet">' +
+        '<p class="caps">Оплата подписки</p>' +
+        '<div class="req-slip"><span class="caps">Отметка «оплатил» у мастера</span>' +
+        '<p class="petit" style="margin:8px 0 0">Сверяем поступление <b>' + money(p.price) + ' ₽</b> за «' + esc(p.label) + '» — ' +
+        'как подтвердим, подписка включится сама и придёт уведомление.</p></div>' +
+        '<div class="act-row">' +
+        '<button type="button" class="btn btn-line" data-sub-unpaid="' + p.id + '">↩️ Я ещё не оплатил — снять отметку</button>' +
+        '</div></div>';
+    } else {
+      var slip = p.requisites
+        ? '<div class="payslip">' +
+          '<div class="ps-head"><span class="caps">Платёж за подписку</span>' +
+          '<span class="ps-due">' + money(p.price) + ' ₽</span></div>' +
+          '<div class="ps-body">' + reqRows(p.requisites) + '</div>' +
+          '<div class="ps-steps"><span><b>1</b> переведите сумму</span><span class="ps-ar">→</span>' +
+          '<span><b>2</b> отметьте «Я оплатил(а)»</span><span class="ps-ar">→</span>' +
+          '<span><b>3</b> сверим — подписка включится сама</span></div></div>'
+        : '<p class="petit" style="margin-bottom:4px">Реквизиты появятся здесь в течение пары минут — либо оформите в Telegram: <a class="link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a>.</p>';
+      body = '<div class="sheet sheet-pad stacked reveal" id="subPaySheet">' +
+        '<p class="caps">Оплата подписки</p>' +
+        '<p class="petit" style="margin-bottom:10px">' + esc(p.label) + ' · ' + esc(p.period_label) +
+        '. Это не заказ: один платёж без этапов и планов оплат, автосписаний нет.</p>' +
+        slip +
+        '<div class="act-row">' +
+        (p.pay_online ? '<button type="button" class="btn btn-wax" data-sub-pay="' + p.id + '">💳 Оплатить картой онлайн</button>' : '') +
+        '<button type="button" class="btn ' + (p.pay_online ? 'btn-line' : 'btn-wax') + '" data-sub-paid="' + p.id + '">Я оплатил(а) подписку</button>' +
+        '<button type="button" class="btn btn-line" data-sub-cancel="' + p.id + '">Отменить оформление</button></div>' +
+        '<p class="petit" style="margin-top:8px">Оплата подписки — деньгами целиком, бонусы к ней не применяются (<a class="link" href="loyalty.html" target="_blank" rel="noopener">правила, §5</a>).</p>' +
+        '</div>';
+    }
+    return head + body;
+  }
+
   function subCard() {
     if (!S.api.token()) return '';
+    var pend = st.me && st.me.sub_pending;
+    if (pend) return subPendingCard(pend) + (st.plusOpen ? plusSection() : '');
     var sub = st.me && st.me.sub;
     var head;
     if (sub) {
@@ -379,7 +426,8 @@ function initCabinet() {
       : '<button type="button" class="btn btn-line" data-sub-buy="' + p.id + ':month">Месяц · ' + money(p.month_price) + ' ₽</button>' +
         '<button type="button" class="btn btn-wax" data-sub-buy="' + p.id + ':sem">Семестр · ' + money(p.sem_price) + ' ₽</button>';
     return '<div class="due-box" style="margin-top:10px">' +
-      '<div class="dr caps" style="font-size:11px"><span>' + esc(p.label) + '</span><b>' + esc(p.tagline) + '</b></div>' +
+      '<div class="pl-h"><span class="caps">' + esc(p.label) + '</span>' +
+      '<span class="pl-tag">' + esc(p.tagline) + '</span></div>' +
       feats +
       '<div class="dr total"><span>Цена</span><b>' + price + '</b></div>' +
       '<div class="act-row" style="margin-top:8px">' + btns + '</div></div>';
@@ -503,12 +551,90 @@ function initCabinet() {
             : 'Не получилось оформить — попробуйте ещё раз');
           return;
         }
-        toast('Подписка оформлена — осталось оплатить ⭐');
+        /* подписка — не заказ: платёж живёт в карточке «Салон+», список дел не трогаем */
+        toast('Оформлено! Остался один перевод — реквизиты в карточке подписки ⭐');
         if (S.stamp) S.stamp('Салон+');
+        if (st.me) st.me.sub_pending = r.sub || null;
         st.plusOpen = false;
-        st.currentId = r.id;
-        loadList(true);
+        rerenderHome();
+        scrollToEl('subPaySheet');
       });
+  }
+
+  function scrollToEl(id) {
+    /* довести взгляд до появившегося блока — на телефоне иначе не видно */
+    setTimeout(function () {
+      var el = document.getElementById(id);
+      if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  }
+
+  /* -------- действия по оплате подписки (свой контур, не заказ) -------- */
+  var SUB_ERR = {
+    already_claimed: 'Отметка уже стоит — мастер сверяет поступление',
+    nothing_claimed: 'Отметки нет — снимать нечего',
+    sub_state: 'Это оформление уже закрыто — выберите план заново',
+    sub_active: 'Подписка уже активна ⭐',
+    unauthorized: 'Войдите через Telegram или почту',
+    not_found: 'Оформление не нашлось — обновите страницу'
+  };
+  function subAction(id, act) {
+    if (st.busy) return;
+    st.busy = true;
+    S.api.post('/subs/' + id + '/' + act, {}).then(function (r) {
+      st.busy = false;
+      if (!r.ok) { toast(SUB_ERR[r.error] || 'Не получилось — попробуйте ещё раз'); refreshMe(true); return; }
+      if (st.me) st.me.sub_pending = r.sub || null;
+      if (act === 'paid') {
+        toast('Передали мастеру на сверку — активируем сразу после подтверждения');
+        if (S.stamp) S.stamp('На сверке');
+      } else if (act === 'unpaid') {
+        toast('Отметка снята — без паники');
+      } else if (act === 'cancel') {
+        toast('Оформление отменено — ничего не списано и не должно');
+      }
+      rerenderHome();
+    });
+  }
+  function subPayOnline(id) {
+    if (st.busy) return;
+    st.busy = true;
+    S.api.post('/subs/' + id + '/pay', {}).then(function (r) {
+      st.busy = false;
+      if (!r.ok) { toast('Не получилось открыть оплату — воспользуйтесь реквизитами'); return; }
+      if (r.online && r.url) {
+        toast('Открываем защищённую страницу оплаты…');
+        var w = window.open(r.url, '_blank', 'noopener');
+        if (!w) location.href = r.url;
+      } else {
+        toast('Онлайн-оплата пока не подключена — переведите по реквизитам');
+      }
+    });
+  }
+
+  /* /me заново: карточки бонусов и подписки обновляются реалтаймом
+     (активация мастером видна сразу, без перезагрузки страницы) */
+  var meSnap = '';
+  function meSnapshot(r) {
+    try { return JSON.stringify([r.bonus, r.sub, r.sub_pending, r.milestones, r.unread]); }
+    catch (e) { return String(Date.now()); }
+  }
+  function refreshMe(force) {
+    if (!S.api.token()) return;
+    S.api.get('/me').then(function (r) {
+      if (!r.ok) return;
+      var hadPending = !!(st.me && st.me.sub_pending);
+      var snap = meSnapshot(r);
+      var changed = snap !== meSnap;
+      meSnap = snap;
+      st.me = r;
+      if (hadPending && !r.sub_pending && r.sub) {
+        toast('Подписка «' + (r.sub.label || 'Салон+') + '» активна — скидка уже работает 🎉');
+        if (S.stamp) S.stamp('Салон+ активна');
+        if (document.hidden) systemNote('⭐', 'Подписка ' + (r.sub.label || '') + ' активирована');
+      }
+      if (changed || force) rerenderHome();
+    });
   }
 
   /* ---------------- список и карточка ----------------
@@ -759,8 +885,8 @@ function initCabinet() {
        во время работы над частью клиента не дёргаем кнопками оплаты */
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
     var wantPay = due > 0;
-    if (!wantPay && !o.claimed) return payHistory(o) ? '<div class="fs-sec"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '';
-    var head = '<div class="fs-sec"><div class="fs-head"><span class="caps">Оплата</span>' +
+    if (!wantPay && !o.claimed) return payHistory(o) ? '<div class="fs-sec" id="secPay"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '';
+    var head = '<div class="fs-sec" id="secPay"><div class="fs-head"><span class="caps">Оплата</span>' +
       (o.due_now ? '<span class="fs-meta">' + esc(o.due_now.label) + ' · ' + money(due) + ' ₽</span>' : '') + '</div>';
     if (o.claimed) {
       return head +
@@ -802,8 +928,8 @@ function initCabinet() {
     var pay = ((o.due_now && o.due_now.amount > 0) || o.claimed ||
                (o.payments || []).some(function (p) { return p.status === 'paid'; }))
       ? payBlock(o) : '';
-    if (!b.length) return pay || (payHistory(o) ? '<div class="fs-sec"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '');
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Решение по заказу</span>' +
+    if (!b.length) return pay || (payHistory(o) ? '<div class="fs-sec" id="secPay"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '');
+    return '<div class="fs-sec" id="secDecide"><div class="fs-head"><span class="caps">Решение по заказу</span>' +
       (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="fs-meta">правки безлимитны до приёмки</span>' : '') +
       '</div><div class="act-row" style="margin-top:0">' + b.join('') + '</div>' +
       '<div class="fix-form" id="fixForm" hidden>' +
@@ -867,7 +993,7 @@ function initCabinet() {
     if (o.actions.indexOf('cancel_request') >= 0)
       items.push('<button type="button" class="btn btn-line" data-act-cancelreq>Закрыть дело…</button>');
     if (!items.length) return '';
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Управление делом</span>' +
+    return '<div class="fs-sec" id="secManage"><div class="fs-head"><span class="caps">Управление делом</span>' +
       '<span class="fs-meta">пауза — не отмена: всё сохраняется</span></div>' +
       '<div class="act-row" style="margin-top:0">' + items.join('') + '</div></div>';
   }
@@ -932,7 +1058,7 @@ function initCabinet() {
         '<span class="fl-meta">' + who + ' · ' + dt(f.at) + '</span>' +
         '<a class="link" href="' + S.api.base + apiPath(o.id, '/file/' + f.id) + '" download>скачать</a></div>';
     }).join('');
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Файлы</span>' +
+    return '<div class="fs-sec" id="secFiles"><div class="fs-head"><span class="caps">Файлы</span>' +
       '<label class="btn btn-line btn-upload">Приложить файл<input type="file" id="cabUpload" hidden></label></div>' +
       (rows || '<p class="petit">Пока пусто. Приложите методичку или задание — мастеру будет проще оценить работу точно.</p>') +
       '<p class="petit up-note" id="upNote" hidden></p></div>';
@@ -970,7 +1096,7 @@ function initCabinet() {
         '<span class="chat-txt">' + body + '</span>' +
         '<span class="chat-at petit">' + dt(i.at) + '</span></div>';
     }).join('');
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Переписка по заказу</span>' +
+    return '<div class="fs-sec" id="secChat"><div class="fs-head"><span class="caps">Переписка по заказу</span>' +
       '<span class="fs-meta">' + (S.api.token() ? 'синхронно с Telegram' : 'мастер видит сразу') + '</span></div>' +
       '<div class="chat-feed" id="chatFeed">' + (feed || '<p class="petit" style="text-align:center">Пока тихо. Напишите первым — мастер ответит прямо здесь.</p>') + '</div>' +
       '<div class="chat-form"><textarea id="chatText" rows="2" maxlength="3000" placeholder="Сообщение мастеру…"></textarea>' +
@@ -993,6 +1119,23 @@ function initCabinet() {
 
   var STAMP_TONE = { priced: 's-act', prepay: 's-act', check: 's-act', fix: 's-act',
                      done: 's-done', cancel: 's-mute' };
+
+  /* чипы-навигация по делу (мобайл): довести до раздела без листания */
+  function jumpChips(o) {
+    var chips = [];
+    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
+    if (due > 0 || o.claimed)
+      chips.push(['secPay', '💳 Оплата' + (due > 0 ? ' · ' + money(due) + ' ₽' : ''), true]);
+    if (o.actions.indexOf('accept_work') >= 0) chips.push(['secDecide', '✅ Решение', true]);
+    chips.push(['secFiles', '📎 Файлы' + ((o.files || []).length ? ' · ' + o.files.length : ''), false]);
+    chips.push(['secChat', '💬 Переписка' + (o.unread ? ' · ' + o.unread : ''), !!o.unread]);
+    if (o.status !== 'done' && o.status !== 'cancel') chips.push(['secManage', '⚙️ Управление', false]);
+    return '<div class="ord-jump" role="navigation" aria-label="Разделы дела">' +
+      chips.map(function (c) {
+        return '<button type="button" class="oj' + (c[2] ? ' hot' : '') + '" data-jump="' + c[0] + '">' + c[1] + '</button>';
+      }).join('') + '</div>';
+  }
+
   function tplDetail() {
     var o = st.detail;
     var meta = [];
@@ -1009,6 +1152,7 @@ function initCabinet() {
       '<h2 class="ord-type">' + esc(o.work_label || '') + '</h2>' +
       (o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
       '<p class="petit">' + meta.join(' · ') + ' ' + deadlineChip(o) + '</p>' +
+      jumpChips(o) +
       pauseBand(o) + finalBand(o) + partBand(o) +
       priceBlock(o) + stageRows(o) +
       actionsBlock(o) + reviewBlock(o) + defenseBlock(o) + manageBlock(o) + filesBlock(o) + chatBlock(o) + accessBlock(o) +
@@ -1048,7 +1192,15 @@ function initCabinet() {
     }
     if (t) {
       S.api.get('/me').then(function (r) {
-        if (r.ok) { st.me = r; if (document.querySelector('.cbn-card') || st.detail) renderCurrent(); }
+        if (r.ok) {
+          st.me = r;
+          meSnap = meSnapshot(r);
+          rerenderHome(); /* карточки бонусов/подписки — и при пустой картотеке */
+          if (hashPlusScroll) {
+            hashPlusScroll = false;
+            scrollToEl(r.sub_pending ? 'subPaySheet' : 'plusCard');
+          }
+        }
       });
     } else {
       st.me = null;
@@ -1173,6 +1325,7 @@ function initCabinet() {
         if (moved && S.api.identified()) {
           if (st.currentId) loadDetail(true);
           refreshListSilent();
+          refreshMe(); /* активация подписки/бонусы — видны сразу */
         }
         setTimeout(watchEvents, moved ? 250 : 500);
       })
@@ -1219,6 +1372,7 @@ function initCabinet() {
         st.busy = false;
         if (!r.ok) {
           toast({ bonus_need_login: 'Чтобы списывать бонусы, войдите через Telegram',
+                  bonus_not_for_subs: 'Подписка оплачивается деньгами целиком — бонусы к ней не применяются',
                   bonus_after_payment: 'По заказу уже была оплата — бонусы не применить',
                   bonus_order_small: 'Бонусы применимы к заказам от 1000 ₽',
                   bonus_cap: 'Лимит списания по этому заказу уже выбран',
@@ -1378,16 +1532,41 @@ function initCabinet() {
       return;
     }
     if (t.closest('#cabNotiBtn')) { notiAsk(); return; }
+    var jmp = t.closest('[data-jump]');
+    if (jmp) {
+      var je = document.getElementById(jmp.getAttribute('data-jump'));
+      if (je && je.scrollIntoView) je.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
     if (t.closest('#plusToggle')) {
       st.plusOpen = !st.plusOpen;
       if (st.plusOpen && !st.plans) loadPlans();
       rerenderHome();
+      if (st.plusOpen) scrollToEl('plusSheet');
       return;
     }
     var sbuy = t.closest('[data-sub-buy]');
     if (sbuy) {
       var sp = sbuy.getAttribute('data-sub-buy').split(':');
       doSubscribe(sp[0], sp[1] || 'month');
+      return;
+    }
+    var sPaid = t.closest('[data-sub-paid]');
+    if (sPaid) { subAction(sPaid.getAttribute('data-sub-paid'), 'paid'); return; }
+    var sUnpaid = t.closest('[data-sub-unpaid]');
+    if (sUnpaid) { subAction(sUnpaid.getAttribute('data-sub-unpaid'), 'unpaid'); return; }
+    var sPay = t.closest('[data-sub-pay]');
+    if (sPay) { subPayOnline(sPay.getAttribute('data-sub-pay')); return; }
+    var sCancel = t.closest('[data-sub-cancel]');
+    if (sCancel) {
+      var sid = sCancel.getAttribute('data-sub-cancel');
+      (S.confirm ? S.confirm({
+        title: 'Отменить оформление подписки?',
+        text: 'Ничего не списано и не должно — просто закроем это оформление. ' +
+              'Вернуться к планам можно в любой момент.',
+        okLabel: 'Отменить оформление', noLabel: 'Вернуться'
+      }) : Promise.resolve({ ok: window.confirm('Отменить оформление подписки?') }))
+        .then(function (res) { if (res.ok) subAction(sid, 'cancel'); });
       return;
     }
     if (t.closest('#ctorBuy')) {
@@ -1528,6 +1707,7 @@ function initCabinet() {
           renderCurrent();
         });
       }
+      if (st.ledgerOpen) scrollToEl('bonusLedger');
       return;
     }
     if (t.closest('#bonusRefBtn')) {
@@ -1630,9 +1810,11 @@ function initCabinet() {
   });
 
   /* ---------------- старт ---------------- */
-  /* dashboard.html#plus — сразу раскрыть витрину «Салон+» (ссылки с referral) */
+  /* dashboard.html#plus — сразу раскрыть витрину «Салон+» (ссылки с referral)
+     и довести взгляд до неё (на телефоне карточка ниже первого экрана) */
+  var hashPlusScroll = false;
   try {
-    if ((location.hash || '').indexOf('plus') >= 0) st.plusOpen = true;
+    if ((location.hash || '').indexOf('plus') >= 0) { st.plusOpen = true; hashPlusScroll = true; }
   } catch (e) {}
   /* ссылка доступа с другого устройства: #claim=<токен> (или ?claim=) */
   try {

@@ -179,7 +179,7 @@
 /* строка «к оплате» с учётом бонусов */
 .due-box{border:1px solid var(--hairline-strong);border-radius:var(--r);padding:12px 14px;margin:10px 0}
 .due-box .dr{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:3px 0}
-.due-box .dr b{font-family:var(--mono);font-weight:600}
+.due-box .dr b{font-family:var(--mono);font-weight:600;white-space:nowrap} /* «10 298 ₽» — не рвать сумму */
 .due-box .dr.total{border-top:1px solid var(--hairline);margin-top:6px;padding-top:8px;font-size:15px}
 .due-box .dr .minus{color:var(--verify)}
 

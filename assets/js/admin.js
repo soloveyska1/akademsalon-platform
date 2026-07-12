@@ -64,6 +64,7 @@ function initGodEye() {
     orders: [], sel: null, card: null,
     clients: [], csel: null, ccard: null,
     reviews: [], leads: [],
+    subs: null,               /* /admin/subs: оформления подписки (свой контур) */
     ov: null, timer: null, busy: false
   };
 
@@ -125,6 +126,7 @@ function initGodEye() {
       st.ov = r;
       renderShell();
       loadTab(true);
+      loadSubs();
       if (!st.timer) {
         /* страховочный интервал; главное — long-poll событий ниже */
         st.timer = setInterval(function () {
@@ -150,8 +152,15 @@ function initGodEye() {
       .catch(function () { setTimeout(watchEvents, 8000); });
   }
 
+  function loadSubs() {
+    S.api.get('/admin/subs').then(function (r) {
+      if (r.ok) { st.subs = r; if (st.tab === 'summary') drawBody(); }
+    });
+  }
+
   function refreshSilent() {
     S.api.get('/admin/overview').then(function (r) { if (r.ok) { st.ov = r; drawNav(); if (st.tab === 'summary') drawBody(); } });
+    loadSubs();
     if (st.tab === 'orders') {
       S.api.get('/admin/orders?' + listQuery()).then(function (r) {
         if (r.ok) { st.orders = r.orders; drawList(); }
@@ -379,8 +388,10 @@ function initGodEye() {
       tile((by.fix || 0), 'в правках', by.fix ? 'warn' : '', 'fix') +
       tile(money(ov.month && ov.month.revenue) + ' ₽', 'выручка за 30 дней', 'calm') +
       tile(ov.users || 0, 'клиентов', '') +
+      tile(ov.subs_active || 0, '⭐ подписчиков', ov.subs_claimed ? 'warn' : 'calm') +
       '</div>' +
       weeksChart(ov) +
+      tplSubs(ov) +
       (attn.length
         ? '<p class="caps" style="margin-bottom:8px">Требует вашего внимания</p><div class="ag-attn">' +
           attn.map(function (a) {
@@ -396,6 +407,35 @@ function initGodEye() {
           '<span class="aa-what">' + (e.order_id ? '№' + e.order_id + ' · ' : '') + esc(evLabel(e.kind)) +
           (e.data ? ' — ' + esc(evData(e).slice(0, 70)) : '') + '</span></div>';
       }).join('') + '</div>';
+  }
+
+  /* -------- подписки «Салон+»: свой платёжный контур, сверка отдельно --------
+     Подписка — не заказ: здесь только «оплата получена → активировать»
+     и «закрыть оформление». Активация и уведомления — само. */
+  function tplSubs(ov) {
+    var sd = st.subs;
+    var pend = (sd && sd.pending) || [];
+    if (!pend.length && !(ov.subs_pending > 0)) return '';
+    var rows;
+    if (!sd) {
+      rows = '<div class="aa-row" style="cursor:default"><span>⏳</span>' +
+        '<span class="aa-what">Листаем оформления…</span></div>';
+    } else {
+      rows = pend.map(function (s) {
+        var u = s.user || {};
+        var who = esc(u.name || 'клиент') +
+          (u.username ? ' (@' + esc(u.username) + ')' : (u.email ? ' · ' + esc(u.email) : ''));
+        return '<div class="aa-row" style="cursor:default;align-items:flex-start"><span>' + (s.claimed ? '💳' : '⏳') + '</span>' +
+          '<span class="aa-what"><b>' + esc(s.label) + '</b> · ' + esc(s.period_label) + ' · <b>' + money(s.price) + ' ₽</b> — ' + who +
+          (s.claimed ? '<br><b>клиент отметил оплату — сверьте поступление</b>' : '<br>ждёт оплату клиента') +
+          '<span class="petit" style="display:block;opacity:.7">' + (s.via ? 'оформлена: ' + esc(s.via) + ' · ' : '') + dt(s.created_at) + '</span></span>' +
+          '<span class="aa-go" style="white-space:nowrap">' +
+          '<button type="button" class="ag-linkbtn" data-sub-ok="' + s.id + '">✅ оплата получена</button><br>' +
+          '<button type="button" class="ag-linkbtn" data-sub-no="' + s.id + '">✖ закрыть</button></span></div>';
+      }).join('');
+    }
+    return '<p class="caps" style="margin:18px 0 8px">⭐ Подписки — оплата отдельно от заказов</p>' +
+      '<div class="ag-attn">' + rows + '</div>';
   }
 
   /* выручка по неделям — тихие столбики без библиотек */
@@ -958,6 +998,40 @@ function initGodEye() {
       if (f === '@reviews') { st.tab = 'reviews'; }
       else { st.tab = 'orders'; st.filter = f; st.q = ''; st.sel = null; }
       drawNav(); loadTab(true);
+      return;
+    }
+    var subOk = t.closest('[data-sub-ok]');
+    if (subOk) {
+      var sOkId = subOk.getAttribute('data-sub-ok');
+      confirmDlg({
+        title: 'Оплата подписки получена?',
+        text: 'Подписка активируется сразу на свой срок, клиент получит уведомление. Не забудьте чек в «Мой налог».',
+        okLabel: 'Да, активировать', noLabel: 'Отмена'
+      }).then(function (res) {
+        if (!res.ok) return;
+        api('/admin/subs/' + sOkId + '/confirm', {}).then(function (r) {
+          if (!r.ok) { toast('Не получилось' + (r.error ? ' (' + r.error + ')' : '')); return; }
+          toast('Подписка активирована — клиент уведомлён ⭐');
+          loadSubs(); refreshSilent();
+        });
+      });
+      return;
+    }
+    var subNo = t.closest('[data-sub-no]');
+    if (subNo) {
+      var sNoId = subNo.getAttribute('data-sub-no');
+      confirmDlg({
+        title: 'Закрыть оформление подписки?',
+        text: 'Для неоплаченных «хвостов». Клиент получит честное уведомление; если он уже перевёл деньги — лучше активировать, а не закрывать.',
+        okLabel: 'Закрыть оформление', noLabel: 'Отмена', danger: true
+      }).then(function (res) {
+        if (!res.ok) return;
+        api('/admin/subs/' + sNoId + '/cancel', {}).then(function (r) {
+          if (!r.ok) { toast('Не получилось' + (r.error ? ' (' + r.error + ')' : '')); return; }
+          toast('Оформление закрыто');
+          loadSubs(); refreshSilent();
+        });
+      });
       return;
     }
     var oo = t.closest('[data-open-order]');
