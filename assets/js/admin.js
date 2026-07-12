@@ -563,7 +563,8 @@ function initGodEye() {
     }).join('');
     var paid = (o.payments || []).filter(function (p) { return p.status === 'paid'; });
     return '<div class="ag-sec"><span class="caps">Цена и план оплаты' +
-      '<span class="sub">бонусами списано: ' + money(o.bonus_spent || 0) + ' · деньгами всего: ' + money(o.due_total || o.price || 0) + ' ₽</span></span>' +
+      '<span class="sub">' + (o.sub_discount ? '⭐ скидка подписки: −' + money(o.sub_discount) + ' · ' : '') +
+      'бонусами списано: ' + money(o.bonus_spent || 0) + ' · деньгами всего: ' + money(o.due_total || o.price || 0) + ' ₽</span></span>' +
       '<div class="ag-actrow">' +
       '<input type="number" id="agPrice" placeholder="цена ₽" value="' + (o.price || '') + '">' +
       '<input type="number" id="agPrepay" placeholder="первый платёж" value="' + (o.prepay || '') + '">' +

@@ -24,6 +24,10 @@ function initCabinet() {
     ledger: null,     // журнал бонусов из /bonus
     archOpen: false,  // развёрнут ли «Архив» в корешках
     remOpen: false,   // развёрнуты ли «убранные» (архивированные) дела
+    plusOpen: false,  // развёрнута ли витрина «Салон+»
+    plans: null,      // /plans (планы+конструктор), null = не загружали
+    ctorFeats: [],    // выбранные фичи конструктора
+    ctorPeriod: 'month',
     timer: null,
     busy: false
   };
@@ -293,7 +297,7 @@ function initCabinet() {
         '<span>Вы вошли как <b>' + esc(u.name || 'гость') + '</b>' + (u.username ? ' (@' + esc(u.username) + ')' : '') +
         ' · ' + chan + '</span>' +
         '<span class="ci-act"><button type="button" class="linkbtn" id="cabLogout">выйти</button></span></div>' +
-        notiRow() + bonusCard();
+        notiRow() + bonusCard() + subCard();
     }
     return '<div class="cab-id reveal"><span class="ci-dot guest"></span>' +
       '<span>Гостевой доступ — заказы видны на этом устройстве</span>' +
@@ -334,6 +338,177 @@ function initCabinet() {
           (st.ledgerOpen ? 'Скрыть журнал' : 'Журнал начислений') + '</button>' +
         '<button type="button" class="btn btn-line" id="bonusRefBtn">Пригласить друга</button></div>' +
       '</div>' + led + '</div>';
+  }
+
+  /* -------- подписка «Салон+»: карточка, витрина, конструктор, куратор -------- */
+  function subCard() {
+    if (!S.api.token()) return '';
+    var sub = st.me && st.me.sub;
+    var head;
+    if (sub) {
+      head = '<div class="cbn-card reveal" id="plusCard">' +
+        '<div><span class="bc-cap">' + esc(sub.emoji || '⭐') + ' Подписка ' + esc(sub.label) + '</span>' +
+        '<span class="bc-num" style="font-size:20px">до ' + esc(sub.expires_ru) + '</span></div>' +
+        '<div class="bc-side"><p class="bc-exp">' +
+        (sub.discount_pct ? '−' + sub.discount_pct + '% на заказы (до ' + money(sub.discount_cap) + ' ₽ с заказа) — применяется сама. ' : '') +
+        'Все опции — ниже, в развороте.</p>' +
+        '<div class="bc-act"><button type="button" class="btn btn-line" id="plusToggle">' +
+        (st.plusOpen ? 'Свернуть' : 'Опции · продлить · куратор') + '</button></div></div></div>';
+    } else {
+      head = '<div class="cbn-card reveal" id="plusCard">' +
+        '<div><span class="bc-cap">⭐ Салон+</span>' +
+        '<span class="bc-num" style="font-size:20px">от 449 ₽</span></div>' +
+        '<div class="bc-side"><p class="bc-exp">Скидка на каждый заказ, приоритет, куратор сессии и подготовка к защите. Без автосписаний.</p>' +
+        '<div class="bc-act"><button type="button" class="btn btn-wax" id="plusToggle">' +
+        (st.plusOpen ? 'Свернуть' : 'Выбрать план') + '</button></div></div></div>';
+    }
+    return head + (st.plusOpen ? plusSection() : '');
+  }
+
+  function planCardHtml(p) {
+    var pl = st.plans;
+    var feats = (p.features || []).map(function (fid) {
+      var f = (pl.features || []).filter(function (x) { return x.id === fid; })[0];
+      return f ? '<div class="dr"><span>· ' + esc(f.label) + '</span><b></b></div>' : '';
+    }).join('');
+    var price = p.once
+      ? '<b>' + money(p.month_price) + ' ₽</b> · разово на ' + p.period_days + ' дней'
+      : '<b>' + money(p.month_price) + ' ₽/мес</b> или ' + money(p.sem_price) + ' ₽ / семестр';
+    var btns = p.once
+      ? '<button type="button" class="btn btn-wax" data-sub-buy="' + p.id + ':month">Оформить · ' + money(p.month_price) + ' ₽</button>'
+      : '<button type="button" class="btn btn-line" data-sub-buy="' + p.id + ':month">Месяц · ' + money(p.month_price) + ' ₽</button>' +
+        '<button type="button" class="btn btn-wax" data-sub-buy="' + p.id + ':sem">Семестр · ' + money(p.sem_price) + ' ₽</button>';
+    return '<div class="due-box" style="margin-top:10px">' +
+      '<div class="dr caps" style="font-size:11px"><span>' + esc(p.label) + '</span><b>' + esc(p.tagline) + '</b></div>' +
+      feats +
+      '<div class="dr total"><span>Цена</span><b>' + price + '</b></div>' +
+      '<div class="act-row" style="margin-top:8px">' + btns + '</div></div>';
+  }
+
+  function ctorHtml() {
+    var pl = st.plans;
+    var rows = (pl.features || []).map(function (f) {
+      var on = st.ctorFeats.indexOf(f.id) >= 0;
+      return '<label class="dr" style="cursor:pointer;gap:8px">' +
+        '<span><input type="checkbox" data-ctor-f="' + esc(f.id) + '"' + (on ? ' checked' : '') +
+        ' style="margin-right:8px">' + esc(f.label) +
+        ' <span class="petit" style="color:var(--ink-faint)">' + esc(f.hint || '') + '</span></span>' +
+        '<b>+' + money(f.price) + ' ₽</b></label>';
+    }).join('');
+    var total = ctorTotal();
+    var periods = '<div class="act-row" style="margin-top:8px">' +
+      '<label class="petit"><input type="radio" name="ctorPeriod" value="month"' + (st.ctorPeriod === 'month' ? ' checked' : '') + '> месяц</label>' +
+      '<label class="petit"><input type="radio" name="ctorPeriod" value="sem"' + (st.ctorPeriod === 'sem' ? ' checked' : '') + '> семестр ×' + (pl.periods.sem.k) + ' (150 дней)</label></div>';
+    var saveNote = '';
+    var disc = bestCtorDisc();
+    if (disc) {
+      var sample = 20000;
+      var save = Math.min(Math.round(sample * disc.pct / 100), disc.cap);
+      saveNote = '<p class="petit" style="margin-top:6px">Например, курсовая за 20 000 ₽ → ваша выгода <b>' + money(save) + ' ₽</b> уже с одного заказа.</p>';
+    }
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Соберите свой Салон+</span>' +
+      '<span class="fs-meta">база ' + money(pl.base_price) + ' ₽/мес + опции</span></div>' +
+      '<div class="due-box">' + rows + periods +
+      '<div class="dr total"><span>Итого</span><b id="ctorTotal">' + (st.ctorFeats.length ? money(total) + ' ₽' : '—') + '</b></div></div>' +
+      saveNote +
+      '<div class="act-row"><button type="button" class="btn btn-wax" id="ctorBuy"' + (st.ctorFeats.length ? '' : ' disabled') + '>Оформить свою подписку</button></div>' +
+      '<p class="petit" style="margin-top:6px">Из скидочных опций действует одна — самая большая. Готовые планы выгоднее того же набора на 10–15%.</p></div>';
+  }
+
+  function bestCtorDisc() {
+    var pl = st.plans;
+    if (!pl) return null;
+    var best = null;
+    st.ctorFeats.forEach(function (fid) {
+      var d = pl.discounts[fid];
+      if (d && (!best || d.pct > best.pct)) best = d;
+    });
+    return best;
+  }
+
+  function ctorTotal() {
+    var pl = st.plans;
+    if (!pl || !st.ctorFeats.length) return 0;
+    var feats = st.ctorFeats.slice();
+    /* скидка одна — как на сервере: считаем по самой жирной */
+    var sum = pl.base_price;
+    var discIds = Object.keys(pl.discounts);
+    var chosenDiscs = feats.filter(function (f) { return discIds.indexOf(f) >= 0; });
+    var keepDisc = chosenDiscs.sort(function (a, b) { return pl.discounts[b].pct - pl.discounts[a].pct; })[0];
+    feats.forEach(function (fid) {
+      if (discIds.indexOf(fid) >= 0 && fid !== keepDisc) return;
+      var f = (pl.features || []).filter(function (x) { return x.id === fid; })[0];
+      if (f) sum += f.price;
+    });
+    var k = pl.periods[st.ctorPeriod] ? pl.periods[st.ctorPeriod].k : 1;
+    return Math.round(sum * k / 10) * 10;
+  }
+
+  function curatorHtml() {
+    var ms = (st.me && st.me.milestones) || [];
+    var sub = st.me && st.me.sub;
+    var canMore = (sub && (sub.features || []).indexOf('curator') >= 0) ? ms.length < 50 : ms.length < 1;
+    var rows = ms.map(function (m) {
+      var d = m.due || '';
+      return '<div class="dr"><span>📅 ' + d.slice(8, 10) + '.' + d.slice(5, 7) + ' · ' + esc(m.title) + '</span>' +
+        '<b><button type="button" class="linkbtn" data-ms-del="' + m.id + '">убрать</button></b></div>';
+    }).join('');
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Куратор сессии</span>' +
+      '<span class="fs-meta">напомним за 7 · 3 · 1 день</span></div>' +
+      '<p class="petit" style="margin-bottom:8px">Внесите свои сдачи и экзамены — мы напомним заранее и подстрахуем, если станет жарко.' +
+      (canMore || ms.length ? '' : ' Без подписки доступна одна запись, с «Салон+» — весь график.') + '</p>' +
+      (rows ? '<div class="due-box">' + rows + '</div>' : '') +
+      (canMore
+        ? '<div class="act-row" style="margin-top:8px">' +
+          '<input type="text" id="msTitle" maxlength="120" placeholder="Что сдаёте — например, «Курсовая по ТГП»" style="flex:2;min-width:0;font:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
+          '<input type="date" id="msDate" style="font:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
+          '<button type="button" class="btn btn-line" id="msAdd">Добавить</button></div>'
+        : '<p class="petit" style="margin-top:6px">Лимит записей достигнут — с подпиской «Салон+» график безлимитный.</p>') +
+      '</div>';
+  }
+
+  function plusSection() {
+    if (!st.plans) {
+      loadPlans();
+      return '<div class="sheet sheet-pad stacked reveal"><p class="petit">Листаем планы…</p></div>';
+    }
+    var cards = (st.plans.plans || []).map(planCardHtml).join('');
+    return '<div class="sheet sheet-pad stacked reveal" id="plusSheet">' +
+      '<p class="caps">Салон+ · планы</p>' +
+      '<p class="petit" style="margin-bottom:6px">Оплата разовая, автосписаний нет. Скидка применяется сама, когда мастер называет цену; суммируется с бонусами — вместе до 25% заказа.</p>' +
+      cards + ctorHtml() + curatorHtml() +
+      '<p class="petit" style="margin-top:4px">Оформить можно и в Telegram: <a class="link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a></p>' +
+      '</div>';
+  }
+
+  function rerenderHome() {
+    if (st.detail) renderCurrent();
+    else if (!st.orders.length) render(tplEmpty());
+  }
+
+  function loadPlans() {
+    S.api.get('/plans').then(function (r) {
+      if (r.ok) { st.plans = r; rerenderHome(); }
+    });
+  }
+
+  function doSubscribe(plan, period, features) {
+    if (st.busy) return;
+    st.busy = true;
+    S.api.post('/subscribe', { plan: plan, period: period, features: features || [] })
+      .then(function (r) {
+        st.busy = false;
+        if (!r.ok) {
+          toast(r.error === 'unauthorized' ? 'Войдите через Telegram или почту — подписка привязывается к аккаунту'
+            : 'Не получилось оформить — попробуйте ещё раз');
+          return;
+        }
+        toast('Подписка оформлена — осталось оплатить ⭐');
+        if (S.stamp) S.stamp('Салон+');
+        st.plusOpen = false;
+        st.currentId = r.id;
+        loadList(true);
+      });
   }
 
   /* ---------------- список и карточка ----------------
@@ -471,12 +646,13 @@ function initCabinet() {
     if (o.price) {
       var out = '<div class="ord-price-row"><span class="caps">Цена мастера</span>' +
         '<span class="mono ord-price">' + money(o.price) + ' ₽</span></div>' + specLink(o);
-      if (o.bonus_spent) {
+      if (o.bonus_spent || o.sub_discount) {
         out += '<div class="due-box">' +
           '<div class="dr"><span>Цена работы</span><b>' + money(o.price) + ' ₽</b></div>' +
-          '<div class="dr"><span>Оплачено бонусами</span><b class="minus">−' + money(o.bonus_spent) + '</b></div>' +
+          (o.sub_discount ? '<div class="dr"><span>⭐ Скидка «Салон+»</span><b class="minus">−' + money(o.sub_discount) + '</b></div>' : '') +
+          (o.bonus_spent ? '<div class="dr"><span>Оплачено бонусами</span><b class="minus">−' + money(o.bonus_spent) + '</b></div>' : '') +
           '<div class="dr total"><span>К оплате деньгами</span><b>' + money(o.due_total) + ' ₽</b></div>' +
-          ((o.status === 'priced' || o.status === 'prepay')
+          (o.bonus_spent && (o.status === 'priced' || o.status === 'prepay')
             ? '<div class="dr"><span></span><b><button type="button" class="linkbtn" data-act="bonus_cancel">↩ вернуть бонусы на счёт</button></b></div>' : '') +
           '</div>';
       }
@@ -1202,6 +1378,46 @@ function initCabinet() {
       return;
     }
     if (t.closest('#cabNotiBtn')) { notiAsk(); return; }
+    if (t.closest('#plusToggle')) {
+      st.plusOpen = !st.plusOpen;
+      if (st.plusOpen && !st.plans) loadPlans();
+      rerenderHome();
+      return;
+    }
+    var sbuy = t.closest('[data-sub-buy]');
+    if (sbuy) {
+      var sp = sbuy.getAttribute('data-sub-buy').split(':');
+      doSubscribe(sp[0], sp[1] || 'month');
+      return;
+    }
+    if (t.closest('#ctorBuy')) {
+      if (!st.ctorFeats.length) { toast('Отметьте хотя бы одну опцию'); return; }
+      doSubscribe('custom', st.ctorPeriod, st.ctorFeats);
+      return;
+    }
+    if (t.closest('#msAdd')) {
+      var mst = (document.getElementById('msTitle') || {}).value || '';
+      var msd = (document.getElementById('msDate') || {}).value || '';
+      if (!mst.trim() || !msd) { toast('Напишите, что сдаёте, и выберите дату'); return; }
+      S.api.post('/milestones', { title: mst.trim(), due: msd }).then(function (r) {
+        if (!r.ok) {
+          toast(r.error === 'milestone_limit' ? 'Лимит записей — с подпиской «Салон+» график безлимитный'
+            : 'Не получилось добавить');
+          return;
+        }
+        if (st.me) st.me.milestones = r.milestones;
+        toast('Записали — напомним за 7, 3 и 1 день 📅');
+        rerenderHome();
+      });
+      return;
+    }
+    var msDel = t.closest('[data-ms-del]');
+    if (msDel) {
+      S.api.post('/milestones/' + msDel.getAttribute('data-ms-del') + '/delete', {}).then(function (r) {
+        if (r.ok && st.me) { st.me.milestones = r.milestones; rerenderHome(); }
+      });
+      return;
+    }
     if (t.closest('#cabTgCancel')) { S.store.del('salon_auth_pending'); render(tplLogin(null)); return; }
     if (t.closest('#cabLogout')) { S.api.logout(); st.detail = null; loadList(); return; }
     if (t.closest('#cabRetry')) { loadList(); return; }
@@ -1373,6 +1589,22 @@ function initCabinet() {
   });
 
   root.addEventListener('change', function (e) {
+    var cf = e.target && e.target.getAttribute && e.target.getAttribute('data-ctor-f');
+    if (cf) {
+      var i = st.ctorFeats.indexOf(cf);
+      if (i >= 0) st.ctorFeats.splice(i, 1); else st.ctorFeats.push(cf);
+      var totEl = document.getElementById('ctorTotal');
+      if (totEl) totEl.textContent = st.ctorFeats.length ? money(ctorTotal()) + ' ₽' : '—';
+      var buyBtn = document.getElementById('ctorBuy');
+      if (buyBtn) buyBtn.disabled = !st.ctorFeats.length;
+      return;
+    }
+    if (e.target && e.target.name === 'ctorPeriod') {
+      st.ctorPeriod = e.target.value;
+      var totEl2 = document.getElementById('ctorTotal');
+      if (totEl2) totEl2.textContent = st.ctorFeats.length ? money(ctorTotal()) + ' ₽' : '—';
+      return;
+    }
     if (e.target && e.target.id === 'cabUpload') uploadFile(e.target);
     if (e.target && e.target.id === 'cabReceipt') { uploadFile(e.target, 'receipt'); toast('Чек уйдёт мастеру — сверка станет быстрее'); }
     if (e.target && e.target.id === 'cabReviewShot') uploadFile(e.target, 'review', 'rvNote');
@@ -1398,6 +1630,10 @@ function initCabinet() {
   });
 
   /* ---------------- старт ---------------- */
+  /* dashboard.html#plus — сразу раскрыть витрину «Салон+» (ссылки с referral) */
+  try {
+    if ((location.hash || '').indexOf('plus') >= 0) st.plusOpen = true;
+  } catch (e) {}
   /* ссылка доступа с другого устройства: #claim=<токен> (или ?claim=) */
   try {
     var claimTok = (location.hash.match(/claim=([A-Za-z0-9_-]+)/) ||
