@@ -894,7 +894,7 @@ function initCabinet() {
         '</span><span class="st-tag">' + tag + '</span></div>';
     }
     return '<div class="fs-sec"><div class="fs-head"><span class="caps">Сдача по частям</span>' +
-      '<span class="fs-meta">правки — без ограничений, до приёмки</span></div>' +
+      '<span class="fs-meta">правки — без лимита, в рамках задания</span></div>' +
       '<div class="stg">' + rows + '</div></div>';
   }
 
@@ -1087,7 +1087,7 @@ function initCabinet() {
       ? payBlock(o) : '';
     if (!b.length) return pay || (payHistory(o) ? '<div class="fs-sec" id="secPay"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '');
     return '<div class="fs-sec" id="secDecide"><div class="fs-head"><span class="caps">Решение по заказу</span>' +
-      (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="fs-meta">правки безлимитны до приёмки</span>' : '') +
+      (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="fs-meta">правки — без лимита, в рамках задания</span>' : '') +
       '</div><div class="act-row" style="margin-top:0">' + b.join('') + '</div>' +
       '<div class="fix-form" id="fixForm" hidden>' +
         '<textarea id="fixText" rows="3" maxlength="2000" placeholder="Что поправить? Например: «во 2-й главе обновить данные за 2025 год»"></textarea>' +
@@ -1837,8 +1837,9 @@ function initCabinet() {
         var isFinal = (od2.stage || 1) >= (od2.stages_total || 1);
         S.confirm(isFinal ? {
           title: 'Принять и завершить заказ?',
-          text: 'Правки бесплатны до приёмки — в том числе по замечаниям научного руководителя и после предзащиты. ' +
-                'Ещё ждёте проверок? Нажмите «Пока жду проверок» — дело останется открытым, ничего не сгорит. ' +
+          text: 'Правки в рамках задания бесплатны — до приёмки и в сервисном окне после неё ' +
+                '(замечания научного руководителя и комиссии — до защиты). ' +
+                'Ещё ждёте проверок? Нажмите «Пока жду проверок» — дело останется открытым, а сервисное окно продлится. ' +
                 'Появились замечания — «Нужны правки» в карточке.',
           okLabel: 'Всё проверено — завершить', noLabel: 'Пока жду проверок'
         } : {
