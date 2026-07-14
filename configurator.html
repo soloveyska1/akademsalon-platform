@@ -108,6 +108,13 @@
   .ct-chip:hover{border-color:var(--ink-soft);color:var(--ink)}
   .ct-chip.on{background:var(--ink);border-color:var(--ink);color:var(--paper,#F6F1E7)}
 
+  /* строка выгоды «Салон+» в смете и купон на экране успеха */
+  .lq-plus{margin-top:10px;padding:9px 11px;border:1px dashed var(--hairline-strong);border-radius:var(--r);background:var(--paper-2)}
+  .lq-plus[hidden]{display:none}
+  .done-plus{display:flex;gap:10px;align-items:flex-start;border:1px dashed var(--hairline-strong);
+    border-radius:var(--r);background:var(--paper-2);padding:12px 14px;margin-bottom:14px;text-align:left}
+  .done-plus .dp-star{font-size:17px;line-height:1.3}
+
   @media(max-width:880px){
     .conf-aside{display:none}
     #btnNext{display:none}   /* «Далее» на мобильном живёт в нижней панели */
@@ -330,6 +337,7 @@
               </div>
               <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
               <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
+              <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
             </div>
           </aside>
         </div>
@@ -351,6 +359,12 @@
           <div class="done-files" id="doneFiles" hidden>
             <span class="caps">Файлы — мастеру</span>
             <div class="att-list" id="doneAttList"></div>
+          </div>
+          <div class="done-plus">
+            <span class="dp-star" aria-hidden="true">⭐</span>
+            <p class="petit" style="margin:0">Пока мастер считает: абонемент <b>«Салон+»</b> даёт скидку на каждый заказ
+            (до −10%, до 3 000 ₽), приоритет мастера и куратора сессии — и применится уже к этой работе.
+            От 449 ₽/мес, без автосписаний. <a class="link" href="dashboard.html#plus">Посмотреть планы →</a></p>
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
             <a class="btn btn-wax" href="dashboard.html">Открыть кабинет <span class="ar">→</span></a>
@@ -377,6 +391,7 @@
     </div>
     <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
     <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
+    <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
   </div>
   <div class="mq-bar">
     <button type="button" class="mq-total" id="mqToggle" aria-expanded="false" aria-controls="mqPanel">
@@ -653,6 +668,14 @@ function initConf() {
         ? 'Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.'
         : 'Оплата 50/50: половина после согласования плана, половина после отчёта о проверках.';
     put('pay', pay);
+    /* выгода абонемента «Салон+» — честный расчёт от середины вилки:
+       до 10% (план «Про»), потолок 3 000 ₽ с заказа */
+    var mid = Math.round((q.low + (q.high || q.low)) / 2);
+    var plusSave = Math.min(Math.round(mid * 0.10 / 50) * 50, 3000);
+    var showPlus = mid >= 5000 && state.type !== 'kandidat';
+    document.querySelectorAll('.lq-plus').forEach(function (el) { el.hidden = !showPlus; });
+    if (showPlus) put('plus', 'С абонементом «Салон+» этот заказ — до −' + C.fmt(plusSave) +
+      ' ₽, плюс приоритет мастера. От 449 ₽/мес.');
     if (profileEl && window.SalonExperts) profileEl.textContent = (window.SalonExperts[state.disc] || {}).desc || '';
   }
 

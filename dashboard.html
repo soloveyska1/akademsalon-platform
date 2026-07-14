@@ -6,22 +6,24 @@
 <title>Личный кабинет — Академический Салон</title>
 <meta name="description" content="Формуляр вашего заказа: этапы, цена, переписка с мастером и файлы — всё на сайте, без мессенджеров." />
 <meta name="robots" content="noindex" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260715b" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260715b" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260715b" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260715b" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260715c" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260715c" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260715c" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260715c" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
-     КАБИНЕТ — «дело заказа»: один лист-формуляр с разделами.
-     Язык «Оттиска»: листы, волосяные линии, mono-меты, сургуч.
-     Ни отточий, ни синих пунктиров — им тут не место.
+     КАБИНЕТ «ЧИТАЛЬНЫЙ ЗАЛ» — редакция 2026-07.
+     Иерархия сверху вниз: личность → «сейчас важно» (одно главное
+     действие) → полка дел → формуляр дела → клуб и абонементы.
+     Язык «Оттиска»: бумага, волосяные линейки, сургуч, mono-меты.
+     Анимации — короткие CSS-переходы; при reduce-motion всё видно.
      ============================================================ */
-  .cab{max-width:760px;margin:0 auto}
-  .cab-h{font-size:clamp(26px,3.4vw,42px);font-weight:360;margin-bottom:clamp(18px,3vw,28px)}
+  .cab{max-width:780px;margin:0 auto}
+  .cab-h{font-size:clamp(26px,3.4vw,40px);font-weight:360;margin-bottom:clamp(14px,2.4vw,22px)}
 
   /* строка личности — тонкая, над формуляром */
-  .cab-id{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:16px;font-size:13.5px;color:var(--ink-soft)}
+  .cab-id{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:14px;font-size:13.5px;color:var(--ink-soft)}
   .cab-id .ci-dot{width:7px;height:7px;border-radius:50%;background:var(--verify);flex:0 0 auto;align-self:center}
   .cab-id .ci-dot.guest{background:var(--hairline-strong)}
   .cab-id b{color:var(--ink);font-weight:500}
@@ -31,25 +33,42 @@
   .linkbtn.wax{color:var(--wax);border-color:var(--wax)}
   .linkbtn.wax:hover{color:var(--wax-deep)}
 
-  /* корешки заказов — закладки картотеки над листом */
-  .ord-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px;margin-bottom:-1px;position:relative;z-index:2}
-  .ord-tab{
-    border:1px solid var(--hairline);border-bottom:0;background:var(--paper-2);
-    border-radius:6px 6px 0 0;padding:8px 13px 10px;cursor:pointer;font:inherit;
-    font-size:12.5px;color:var(--ink-soft);display:flex;gap:8px;align-items:baseline;
-    transition:background .15s,color .15s;
-  }
-  .ord-tab:hover{background:var(--mark)}
-  .ord-tab .ot-no{font-family:var(--mono);font-size:11px;letter-spacing:.04em}
-  .ord-tab.on{background:var(--sheet);color:var(--ink);border-color:var(--hairline-strong);position:relative}
-  .ord-tab.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--sheet)}
-  .ord-tab .ot-unread{font-family:var(--mono);font-size:10px;color:#FFFEF9;background:var(--wax);border-radius:9px;padding:1px 6px;align-self:center}
-  /* корешок и ряд «Архива»: приглушённые, пунктирные — как старые папки */
-  .ord-tab.ot-arch{border-style:dashed;color:var(--ink-faint)}
-  .ord-tab.ot-arch.on{background:var(--paper-2);color:var(--ink-soft);border-style:solid}
-  .ord-tabs-arch{margin-top:2px;margin-bottom:-1px}
-  .ord-tabs-arch .ord-tab{opacity:.85}
-  .ord-tab.ot-ghost{border-style:dashed;color:var(--ink-faint);background:transparent}
+  /* ── «СЕЙЧАС ВАЖНО»: одно главное действие по всем делам ── */
+  .now-card{position:relative;background:var(--sheet);border:1px solid var(--hairline-strong);
+    border-left:4px solid var(--wax);border-radius:var(--r);
+    padding:clamp(14px,2.4vw,20px) clamp(16px,3vw,24px);margin:0 0 16px;
+    box-shadow:0 1px 0 var(--hairline),0 14px 30px -22px rgba(34,32,27,.45)}
+  .now-card .nc-cap{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .now-card .nc-cap .caps{color:var(--wax);font-size:10.5px}
+  .now-card .nc-no{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em}
+  .now-card .nc-msg{font-family:var(--serif);font-size:clamp(17px,2.4vw,21px);font-weight:420;line-height:1.4;margin:7px 0 3px;text-wrap:balance}
+  .now-card .nc-msg b{font-weight:600;white-space:nowrap}
+  .now-card .nc-sub{font-size:13px;color:var(--ink-soft);line-height:1.55}
+  .now-card .nc-act{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+
+  /* ── полка дел: каждое дело — корешок тома, активный приподнят ── */
+  .shelf{display:flex;gap:10px;overflow-x:auto;padding:8px 2px 14px;margin:0 -2px;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+  .shelf::-webkit-scrollbar{display:none}
+  .spine{position:relative;flex:0 0 auto;scroll-snap-align:start;width:min(200px,58vw);text-align:left;
+    background:var(--sheet);border:1px solid var(--hairline);border-top:3px solid var(--hairline-strong);
+    border-radius:2px 2px 0 0;padding:9px 13px 10px;cursor:pointer;font:inherit;color:var(--ink-soft);
+    transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .spine:hover{transform:translateY(-2px);box-shadow:0 10px 20px -14px rgba(34,32,27,.5)}
+  .spine.on{color:var(--ink);border-color:var(--hairline-strong);border-top-color:var(--wax);
+    transform:translateY(-3px);box-shadow:0 12px 22px -14px rgba(34,32,27,.5)}
+  .spine.st-act:not(.on){border-top-color:var(--wax);opacity:.94}
+  .spine .sp-no{display:flex;justify-content:space-between;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink-faint)}
+  .spine .sp-dot{font-family:var(--mono);font-size:10px;color:#FFFEF9;background:var(--wax);border-radius:9px;padding:1px 6px}
+  .spine .sp-name{display:block;font-size:13.5px;font-weight:500;margin:3px 0 1px;color:inherit;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .spine .sp-st{display:block;font-size:11.5px;color:var(--ink-faint)}
+  .spine.st-act .sp-st{color:var(--wax)}
+  .spine.sp-ghost{background:transparent;border-style:dashed;border-top-width:1px;box-shadow:none;align-self:stretch}
+  .spine.sp-ghost:hover{transform:none;background:var(--mark)}
+  .spine.sp-arch{opacity:.8}
+  .shelf-base{border-top:3px double var(--hairline-strong);margin:-14px 0 clamp(16px,3vw,24px)}
 
   /* шапка формуляра */
   .ord-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px 14px;flex-wrap:wrap;margin-bottom:14px}
@@ -136,14 +155,55 @@
   /* автопрокрутки и чипы не ныряют под шапку */
   #cabRoot .fs-sec[id],#subPaySheet,#plusCard,#plusSheet,#bonusLedger{scroll-margin-top:74px}
 
-  /* полоса «клуба»: бонусы и подписка одной строкой, детали по клику */
-  .club-strip{display:flex;align-items:baseline;gap:8px 10px;flex-wrap:wrap;
-    border:1px solid var(--hairline);border-radius:var(--r);background:var(--paper-2);
-    padding:10px 14px;margin-bottom:14px;font-size:13.5px;color:var(--ink-soft)}
+  /* ── полоса «клуба» — читательский билет: перфорация слева, детали по клику ── */
+  .club-strip{position:relative;display:flex;align-items:baseline;gap:8px 10px;flex-wrap:wrap;
+    border:1px solid var(--hairline-strong);border-radius:var(--r);background:var(--sheet);
+    padding:11px 15px 11px 24px;margin-bottom:16px;font-size:13.5px;color:var(--ink-soft)}
+  .club-strip::before{content:"";position:absolute;left:11px;top:7px;bottom:7px;width:0;
+    border-left:1px dashed var(--hairline-strong)}
   .club-strip b{color:var(--ink)}
   .club-strip .cs-dot{color:var(--ink-faint)}
   .club-strip .cs-warn{color:var(--wax)}
   .club-strip .cs-more{margin-left:auto}
+
+  /* ── абонементы «Салон+» — билеты читального зала ── */
+  .seg{display:inline-flex;border:1px solid var(--hairline-strong);border-radius:999px;overflow:hidden;vertical-align:middle}
+  .seg button{font:inherit;font-size:12.5px;line-height:1;padding:9px 15px;background:transparent;border:0;color:var(--ink-soft);cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+  .seg button.on{background:var(--ink);color:var(--paper)}
+  .tickets{display:grid;grid-template-columns:repeat(auto-fit,minmax(212px,1fr));gap:14px;margin-top:14px}
+  .ticket{position:relative;display:flex;flex-direction:column;gap:7px;
+    background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:3px;
+    padding:16px 15px 15px 24px;overflow:hidden;
+    transition:transform .18s ease,box-shadow .18s ease}
+  .ticket::before{content:"";position:absolute;left:11px;top:8px;bottom:8px;width:0;
+    border-left:1px dashed var(--hairline-strong)}
+  .ticket:hover{transform:translateY(-3px);box-shadow:0 16px 28px -18px rgba(34,32,27,.5)}
+  .ticket .tk-name{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--ink);padding-right:20px}
+  .ticket .tk-star{position:absolute;top:11px;right:12px;font-size:14px;line-height:1;opacity:.85}
+  .ticket .tk-tag{font-size:12.5px;color:var(--ink-soft);line-height:1.5;min-height:38px}
+  .ticket .tk-price{font-family:var(--serif);font-size:clamp(21px,2.6vw,25px);line-height:1.1;letter-spacing:-.01em;margin-top:2px}
+  .ticket .tk-price small{display:block;font-family:var(--sans);font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em;margin-top:3px}
+  .ticket .tk-feats{list-style:none;margin:5px 0 3px;padding:0;display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--ink-soft);line-height:1.45}
+  .ticket .tk-feats li{padding-left:13px;position:relative}
+  .ticket .tk-feats li::before{content:"·";position:absolute;left:2px;color:var(--wax);font-weight:700}
+  .ticket .tk-cta{margin-top:auto;padding-top:8px}
+  .ticket .tk-cta .btn{width:100%}
+  .ticket.rec{border-color:var(--wax);box-shadow:0 1px 0 var(--hairline)}
+  .ticket.rec .rec-tape{position:absolute;top:15px;right:-40px;transform:rotate(38deg);
+    background:var(--wax);color:#FFFEF9;font-family:var(--mono);font-size:9px;
+    letter-spacing:.14em;text-transform:uppercase;padding:4px 46px;pointer-events:none;white-space:nowrap}
+  @media (prefers-reduced-motion:no-preference){
+    .ticket .tk-star{animation:tkStar 3.6s ease-in-out infinite}
+    @keyframes tkStar{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(8deg)}}
+  }
+
+  /* купон-апселл в деле: пунктир отрывного талона, не кричит */
+  .upsell{display:flex;gap:12px;align-items:flex-start;border:1px dashed var(--hairline-strong);
+    border-radius:var(--r);background:var(--paper-2);padding:12px 14px;margin-top:12px;
+    font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+  .upsell .up-star{font-size:17px;line-height:1.3}
+  .upsell b{color:var(--ink)}
+  .upsell .linkbtn{margin-left:2px}
 
   /* свёрнутые способы входа (почта, ссылка доступа) */
   .cab-alt{border:1px solid var(--hairline);border-radius:var(--r);padding:0 14px;margin:8px 0}
@@ -175,10 +235,8 @@
     .cab-page .ch-rule{margin-bottom:12px}
     .cab-h{font-size:23px;margin-bottom:12px}
     .ord-jump{display:flex}
-    /* корешки заказов — одна строка с прокруткой, не растут в высоту */
-    .ord-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 6px}
-    .ord-tabs::-webkit-scrollbar{display:none}
-    .ord-tab{flex:0 0 auto;white-space:nowrap}
+    .now-card .nc-act .btn{flex:1 1 auto}
+    .spine{width:min(180px,62vw)}
   }
   @media(max-width:540px){
     /* строка личности: без сиротской точки-индикатора, «выйти» не ломает строку */
@@ -198,6 +256,11 @@
     .cbn-card{padding:14px}
     .payslip .ps-head{padding:12px 14px 8px}
     .payslip .ps-body{padding:4px 14px 8px}
+    .tickets{grid-template-columns:1fr}
+    .ticket .tk-tag{min-height:0}
+    .club-strip{padding-left:22px}
+    .seg{width:100%}
+    .seg button{flex:1}
   }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/dashboard.html" />
@@ -242,8 +305,8 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260715b"></script>
-<script src="assets/js/extras.js?v=20260715b"></script>
-<script src="assets/js/cabinet.js?v=20260715b"></script>
+<script src="assets/js/app.js?v=20260715c"></script>
+<script src="assets/js/extras.js?v=20260715c"></script>
+<script src="assets/js/cabinet.js?v=20260715c"></script>
 </body>
 </html>

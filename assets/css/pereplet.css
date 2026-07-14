@@ -662,3 +662,45 @@ html:not(.has-js) .b-cover{transform:translateZ(2px) rotateY(-30deg)}
 :root[data-theme="dark"] .b-title-page .tp-seal{color:#B23B22}
 /* печати на тёмном светятся, а не умножаются */
 :root[data-theme="dark"] .seal{mix-blend-mode:screen}
+
+/* ============================================================
+   § АБОНЕМЕНТ «САЛОН+» на главной: читательский билет.
+   Билет полностью виден без движения; при reduce-motion
+   анимации гаснут, содержимое остаётся. Сургуч — только CTA
+   и печать билета (квота акцента соблюдена).
+   ============================================================ */
+.plus-grid{display:grid;grid-template-columns:minmax(290px,400px) 1fr;gap:clamp(28px,5vw,64px);align-items:center;margin-top:clamp(24px,4vw,40px)}
+.plus-card{position:relative;background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:4px;
+  box-shadow:0 1px 0 var(--hairline),0 22px 44px -28px rgba(34,32,27,.5);
+  padding:22px 22px 18px 34px;transform:rotate(-1.1deg);
+  transition:transform .25s ease,box-shadow .25s ease}
+.plus-card::before{content:"";position:absolute;left:14px;top:12px;bottom:12px;width:0;border-left:1px dashed var(--hairline-strong)}
+.plus-card::after{content:"";position:absolute;inset:5px;border:1px solid var(--hairline);border-radius:2px;pointer-events:none}
+.plus-card:hover{transform:rotate(0deg) translateY(-5px);box-shadow:0 1px 0 var(--hairline),0 30px 54px -30px rgba(34,32,27,.55)}
+.plus-card .pc-head{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);display:flex;justify-content:space-between;gap:10px;padding-right:30px}
+.plus-card .pc-title{font-family:var(--serif);font-size:clamp(21px,2.6vw,26px);font-weight:500;letter-spacing:.01em;margin:10px 0 2px}
+.plus-card .pc-sub{font-size:12.5px;color:var(--ink-soft);margin-bottom:14px}
+.plus-card .pc-row{display:flex;align-items:baseline;gap:8px;font-size:12.5px;color:var(--ink-soft);padding:7px 0;border-bottom:1px dotted var(--hairline-strong)}
+.plus-card .pc-row:last-of-type{border-bottom:0}
+.plus-card .pc-row .pr-k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);flex:0 0 84px}
+.plus-card .pc-row b{color:var(--ink);font-weight:500}
+.plus-card .pc-stamp{position:absolute;right:16px;bottom:44px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--wax);border:2px solid var(--wax);border-radius:3px;padding:6px 10px;transform:rotate(-8deg);opacity:.9;background:rgba(255,254,249,.6)}
+.plus-card .pc-seal{position:absolute;right:18px;top:14px;font-size:20px;line-height:1}
+.plus-card .pc-foot{margin-top:12px;padding-top:10px;border-top:1px solid var(--hairline);display:flex;justify-content:space-between;gap:8px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+@media (prefers-reduced-motion:no-preference){
+  .plus-card .pc-seal{animation:plusSeal 4.2s ease-in-out infinite}
+  @keyframes plusSeal{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(10deg)}}
+}
+.plus-copy .plus-b{display:flex;align-items:baseline;gap:10px;padding:11px 0;font-size:15.5px}
+.plus-copy .plus-b .dots{flex:1;border-bottom:2px dotted var(--hairline-strong);transform:translateY(-4px);min-width:20px}
+.plus-copy .plus-b .pb-val{font-family:var(--mono);font-size:13px;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+.plus-copy .plus-price{font-family:var(--serif);font-size:clamp(19px,2.4vw,23px);margin:14px 0 4px}
+.plus-copy .plus-price small{display:block;font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);margin-top:4px}
+.plus-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+@media(max-width:860px){
+  .plus-grid{grid-template-columns:1fr;gap:26px}
+  .plus-card{max-width:420px;margin:0 auto;transform:rotate(-.6deg)}
+  .plus-cta .btn{flex:1 1 auto}
+}

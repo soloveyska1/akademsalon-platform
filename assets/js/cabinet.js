@@ -31,6 +31,8 @@ function initCabinet() {
     plans: null,      // /plans (планы+конструктор), null = не загружали
     ctorFeats: [],    // выбранные фичи конструктора
     ctorPeriod: 'month',
+    showPeriod: 'sem',  // витрина билетов: показываемый срок (семестр выгоднее)
+    pendingJump: null,  // раздел, к которому доехать после смены дела (герой)
     timer: null,
     busy: false
   };
@@ -268,7 +270,7 @@ function initCabinet() {
   }
 
   function tplEmpty() {
-    return userRow() +
+    return userRow() + clubBlock() +
       '<div class="sheet sheet-pad stacked reveal" style="text-align:center">' +
       '<p class="caps">Картотека пуста</p>' +
       '<h2 class="ord-type">Заказов пока нет</h2>' +
@@ -298,7 +300,7 @@ function initCabinet() {
       return '<div class="cab-id reveal">' +
         '<span>Вы вошли как <b>' + esc(u.name || 'гость') + '</b>' + (u.username ? ' (@' + esc(u.username) + ')' : '') + '</span>' +
         '<span class="ci-act"><button type="button" class="linkbtn" id="cabLogout">выйти</button></span></div>' +
-        notiRow() + clubBlock();
+        notiRow();
     }
     return '<div class="cab-id reveal"><span class="ci-dot guest"></span>' +
       '<span>Гостевой доступ — заказы видны на этом устройстве</span>' +
@@ -306,11 +308,79 @@ function initCabinet() {
       notiRow();
   }
 
+  /* -------- «Сейчас важно»: одно главное действие по всем делам --------
+     Кабинет сам ранжирует: оплата → решение по цене → приёмка → новое.
+     Одна карточка, один сургучный CTA — никакого шума. */
+  function nowCard() {
+    var list = activeOrders();
+    if (!list.length) return '';
+    var best = null, score = 0;
+    list.forEach(function (o) {
+      var s = 0;
+      if (o.paused) s = 0;
+      else if (o.status === 'prepay' ||
+               ((o.part_ready || o.final_ready) && (o.status === 'work' || o.status === 'fix'))) s = 5;
+      else if (o.status === 'priced') s = 4;
+      else if (o.status === 'check') s = 3;
+      else if (o.files_new) s = 2;
+      else if (o.unread) s = 1;
+      if (s > score) { score = s; best = o; }
+    });
+    if (!best) return '';
+    var o = best;
+    var det = (st.detail && st.detail.id === o.id) ? st.detail : null;
+    var due = det && det.due_now && det.due_now.amount ? det.due_now.amount : 0;
+    if (!due && o.status === 'prepay') due = o.prepay_due || 0;
+    var msg, sub, cta, jump;
+    if (score === 5) {
+      var what = (o.final_ready && o.status !== 'prepay') ? 'Работа готова целиком'
+        : (o.part_ready && o.status !== 'prepay') ? 'Часть ' + o.part_ready + ' готова'
+        : 'Смета согласована';
+      msg = what + ' — дело за оплатой' + (due ? ': <b>' + money(due) + ' ₽</b>' : '') + '.';
+      sub = o.status === 'prepay'
+        ? 'Мастер приступит сразу после первого платежа. Реквизиты и оплата картой — в один клик.'
+        : 'Файл придёт сразу, как подтвердится оплата этапа. Правки после — бесплатны.';
+      cta = 'Перейти к оплате'; jump = 'secPay';
+    } else if (score === 4) {
+      msg = 'Мастер назвал цену: <b>' + money(o.price) + ' ₽</b> — решение за вами.';
+      sub = 'Можно применить бонусы, обсудить детали в переписке или принять предложение.';
+      cta = 'Посмотреть предложение'; jump = 'secDecide';
+    } else if (score === 3) {
+      var partW = (o.stages_total || 1) > 1 ? 'Часть ' + (o.stage || 1) + ' из ' + o.stages_total : 'Работа';
+      msg = partW + ' на вашей проверке.';
+      sub = 'Посмотрите материал: примите — или запросите правки, это бесплатно.';
+      cta = 'Проверить и решить'; jump = 'secDecide';
+    } else if (score === 2) {
+      msg = 'Новые файлы от мастерской в деле ' + esc(o.no) + '.';
+      sub = 'Они уже в разделе «Файлы» — и в Telegram, если он привязан.';
+      cta = 'Открыть файлы'; jump = 'secFiles';
+    } else {
+      msg = 'Новое сообщение мастера по делу ' + esc(o.no) + '.';
+      sub = 'Ответить можно прямо в переписке дела.';
+      cta = 'Открыть переписку'; jump = 'secChat';
+    }
+    return '<div class="now-card reveal">' +
+      '<div class="nc-cap"><span class="caps">Сейчас важно</span>' +
+      '<span class="nc-no">дело ' + esc(o.no) + ' · ' + esc(shortWork(o)) + '</span></div>' +
+      '<p class="nc-msg">' + msg + '</p>' +
+      '<p class="nc-sub">' + sub + '</p>' +
+      '<div class="nc-act"><button type="button" class="btn btn-wax" data-now-open="' + o.id +
+      '" data-now-jump="' + jump + '">' + cta + ' <span class="ar">→</span></button></div>' +
+      '</div>';
+  }
+
   /* -------- «клуб»: бонусы + подписка одной строкой, детали — по клику.
      Кабинет в первую очередь про ДЕЛО; клубные карточки не должны
      отталкивать его вниз. Незакрытая оплата подписки не прячется никогда. */
   function clubBlock() {
-    if (!st.me) return '';
+    if (!st.me) {
+      /* гость: подписки привязаны к аккаунту — тонкий тизер со входом */
+      if (!S.api.token()) {
+        return '<div class="club-strip reveal"><span>⭐ Абонемент «Салон+» — скидка на каждый заказ, приоритет и куратор сессии</span>' +
+          '<button type="button" class="linkbtn wax cs-more" id="cabTg2">войти и подключить</button></div>';
+      }
+      return '';
+    }
     if (st.me.sub_pending) {
       return subPendingCard(st.me.sub_pending) + (st.plusOpen ? plusSection() : '');
     }
@@ -429,31 +499,47 @@ function initCabinet() {
         '<div><span class="bc-cap">⭐ Салон+</span>' +
         '<span class="bc-num" style="font-size:20px">от 449 ₽</span></div>' +
         '<div class="bc-side"><p class="bc-exp">Скидка на каждый заказ, приоритет, куратор сессии и подготовка к защите. Без автосписаний.</p>' +
-        '<div class="bc-act"><button type="button" class="btn btn-wax" id="plusToggle">' +
+        '<div class="bc-act"><button type="button" class="btn ' + (st.plusOpen ? 'btn-line' : 'btn-wax') + '" id="plusToggle">' +
         (st.plusOpen ? 'Свернуть' : 'Выбрать план') + '</button></div></div></div>';
     }
     return head + (st.plusOpen ? plusSection() : '');
   }
 
   function planCardHtml(p) {
+    /* билет читального зала: имя, слоган, крупная цена, опции, один CTA */
     var pl = st.plans;
     var feats = (p.features || []).map(function (fid) {
       var f = (pl.features || []).filter(function (x) { return x.id === fid; })[0];
-      return f ? '<div class="dr"><span>· ' + esc(f.label) + '</span><b></b></div>' : '';
+      return f ? '<li>' + esc(f.label) + '</li>' : '';
     }).join('');
-    var price = p.once
-      ? '<b>' + money(p.month_price) + ' ₽</b> · разово на ' + p.period_days + ' дней'
-      : '<b>' + money(p.month_price) + ' ₽/мес</b> или ' + money(p.sem_price) + ' ₽ / семестр';
-    var btns = p.once
-      ? '<button type="button" class="btn btn-wax" data-sub-buy="' + p.id + ':month">Оформить · ' + money(p.month_price) + ' ₽</button>'
-      : '<button type="button" class="btn btn-line" data-sub-buy="' + p.id + ':month">Месяц · ' + money(p.month_price) + ' ₽</button>' +
-        '<button type="button" class="btn btn-wax" data-sub-buy="' + p.id + ':sem">Семестр · ' + money(p.sem_price) + ' ₽</button>';
-    return '<div class="due-box" style="margin-top:10px">' +
-      '<div class="pl-h"><span class="caps">' + esc(p.label) + '</span>' +
-      '<span class="pl-tag">' + esc(p.tagline) + '</span></div>' +
-      feats +
-      '<div class="dr total"><span>Цена</span><b>' + price + '</b></div>' +
-      '<div class="act-row" style="margin-top:8px">' + btns + '</div></div>';
+    var rec = /pro/.test(p.id || '');
+    var per = st.showPeriod;
+    var price, priceNote, buy, buyLabel;
+    if (p.once) {
+      price = money(p.month_price) + ' ₽';
+      priceNote = 'разовый доступ · ' + p.period_days + ' дней';
+      buy = p.id + ':month';
+      buyLabel = 'Оформить';
+    } else if (per === 'sem') {
+      price = money(p.sem_price) + ' ₽';
+      priceNote = 'семестр · 150 дней (выгоднее помесячного)';
+      buy = p.id + ':sem';
+      buyLabel = 'Оформить на семестр';
+    } else {
+      price = money(p.month_price) + ' ₽';
+      priceNote = 'месяц · 30 дней · без автосписаний';
+      buy = p.id + ':month';
+      buyLabel = 'Оформить на месяц';
+    }
+    return '<div class="ticket' + (rec ? ' rec' : '') + '">' +
+      (rec ? '<span class="rec-tape">выгодный выбор</span>' : '<span class="tk-star" aria-hidden="true">' + (p.once ? '🎓' : '⭐') + '</span>') +
+      '<span class="tk-name">' + esc(p.label) + '</span>' +
+      '<span class="tk-tag">' + esc(p.tagline || '') + '</span>' +
+      '<span class="tk-price">' + price + '<small>' + priceNote + '</small></span>' +
+      (feats ? '<ul class="tk-feats">' + feats + '</ul>' : '') +
+      '<span class="tk-cta"><button type="button" class="btn ' + (rec ? 'btn-wax' : 'btn-line') +
+      '" data-sub-buy="' + buy + '">' + buyLabel + '</button></span>' +
+      '</div>';
   }
 
   function ctorHtml() {
@@ -544,17 +630,25 @@ function initCabinet() {
       return '<div class="sheet sheet-pad stacked reveal"><p class="petit">Листаем планы…</p></div>';
     }
     var cards = (st.plans.plans || []).map(planCardHtml).join('');
-    /* конструктор и куратор — за раскрытием: витрина = три плана, не простыня */
+    var hasPeriods = (st.plans.plans || []).some(function (p) { return !p.once; });
+    var seg = hasPeriods
+      ? '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px">' +
+        '<span class="seg" role="tablist" aria-label="Срок абонемента">' +
+        '<button type="button" data-seg-period="month" class="' + (st.showPeriod === 'month' ? 'on' : '') + '">Месяц</button>' +
+        '<button type="button" data-seg-period="sem" class="' + (st.showPeriod === 'sem' ? 'on' : '') + '">Семестр · выгоднее</button></span>' +
+        '<span class="petit">семестр = 150 дней одной оплатой — дешевле помесячного в разы</span></div>'
+      : '';
+    /* конструктор и куратор — за раскрытием: витрина = три билета, не простыня */
     var ms = (st.me && st.me.milestones) || [];
     var ctorBlock = st.ctorOpen ? ctorHtml() :
-      '<p class="petit" style="margin-top:12px"><button type="button" class="linkbtn" id="ctorShow">🛠 Собрать свою подписку из опций…</button> — если готовые планы не подходят.</p>';
+      '<p class="petit" style="margin-top:14px"><button type="button" class="linkbtn" id="ctorShow">🛠 Собрать свой абонемент из опций…</button> — если готовые не подходят.</p>';
     var curBlock = st.curOpen ? curatorHtml() :
       '<p class="petit" style="margin-top:8px"><button type="button" class="linkbtn" id="curShow">📅 Куратор сессии' + (ms.length ? ' · записей: ' + ms.length : '') + '…</button> — график сдач с напоминаниями за 7·3·1 день.</p>';
     return '<div class="sheet sheet-pad stacked reveal" id="plusSheet">' +
-      '<p class="caps">Салон+ · планы</p>' +
-      '<p class="petit" style="margin-bottom:6px">Оплата разовая, автосписаний нет. Скидка применяется сама, когда мастер называет цену; суммируется с бонусами — вместе до 25% заказа.</p>' +
-      cards + ctorBlock + curBlock +
-      '<p class="petit" style="margin-top:10px">Оформить можно и в Telegram: <a class="link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a></p>' +
+      '<p class="caps">Абонемент «Салон+»</p>' +
+      '<p class="petit" style="margin:6px 0 0">Один платёж, автосписаний нет. Скидка применяется сама, когда мастер называет цену, — и суммируется с бонусами (вместе до 25% заказа).</p>' +
+      seg + '<div class="tickets">' + cards + '</div>' + ctorBlock + curBlock +
+      '<p class="petit" style="margin-top:12px">Оформить можно и в Telegram: <a class="link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a></p>' +
       '</div>';
   }
 
@@ -694,14 +788,23 @@ function initCabinet() {
     return null;
   }
 
+  function needsAction(o) {
+    /* дело ждёт решения клиента: оплата, цена или приёмка */
+    if (o.paused) return false;
+    return o.status === 'prepay' || o.status === 'priced' || o.status === 'check' ||
+      (!!(o.part_ready || o.final_ready) && (o.status === 'work' || o.status === 'fix'));
+  }
+
   function tabBtn(o) {
     var on = o.id === st.currentId;
-    return '<button type="button" role="tab" class="ord-tab' + (on ? ' on' : '') + '" data-ord="' + o.id + '" aria-selected="' + on + '">' +
-      (o.pinned ? '<span class="ot-pin" title="Закреплено">📌</span>' : '') +
-      '<span class="ot-no">' + esc(o.no) + '</span>' +
-      '<span>' + esc(shortWork(o)) + ' · ' + esc(shortStatus(o)) + '</span>' +
-      (o.unread ? '<span class="ot-unread">' + o.unread + '</span>' : '') +
-      (o.files_new ? '<span class="ot-unread ot-file" title="Новые файлы от мастерской">📎' + o.files_new + '</span>' : '') +
+    var badge = (o.unread || 0) + (o.files_new || 0);
+    return '<button type="button" role="tab" class="spine' + (on ? ' on' : '') +
+      (needsAction(o) ? ' st-act' : '') + (isArch(o) ? ' sp-arch' : '') +
+      '" data-ord="' + o.id + '" aria-selected="' + on + '">' +
+      '<span class="sp-no">' + esc(o.no) + (o.pinned ? ' 📌' : '') +
+      (badge ? '<span class="sp-dot" title="Новое в деле">' + badge + '</span>' : '') + '</span>' +
+      '<span class="sp-name">' + esc(shortWork(o)) + '</span>' +
+      '<span class="sp-st">' + esc(shortStatus(o)) + '</span>' +
       '</button>';
   }
 
@@ -710,18 +813,21 @@ function initCabinet() {
     if (act.length + arch.length < 2 && !rem.length) return '';
     var row = act.map(tabBtn).join('');
     if (arch.length || rem.length) {
-      row += '<button type="button" class="ord-tab ot-arch' + (st.archOpen ? ' on' : '') + '" data-arch-toggle aria-expanded="' + !!st.archOpen + '">' +
-        '<span class="ot-no">🗂</span><span>Архив · ' + arch.length + '</span></button>';
+      row += '<button type="button" class="spine sp-ghost' + (st.archOpen ? ' on' : '') + '" data-arch-toggle aria-expanded="' + !!st.archOpen + '">' +
+        '<span class="sp-no">🗂 архив</span>' +
+        '<span class="sp-name">Завершённые · ' + arch.length + '</span>' +
+        '<span class="sp-st">' + (st.archOpen ? 'свернуть' : 'показать') + '</span></button>';
     }
     var archRow = '';
     if (st.archOpen && (arch.length || rem.length)) {
-      archRow = '<div class="ord-tabs ord-tabs-arch reveal">' + arch.map(tabBtn).join('') +
+      archRow = '<div class="shelf reveal">' + arch.map(tabBtn).join('') +
         (rem.length ? (st.remOpen
-          ? rem.map(tabBtn).join('') + '<button type="button" class="ord-tab ot-ghost" data-rem-toggle>спрятать убранные</button>'
-          : '<button type="button" class="ord-tab ot-ghost" data-rem-toggle>убранные · ' + rem.length + '</button>') : '') +
+          ? rem.map(tabBtn).join('') + '<button type="button" class="spine sp-ghost" data-rem-toggle><span class="sp-no">···</span><span class="sp-name">спрятать убранные</span><span class="sp-st">&nbsp;</span></button>'
+          : '<button type="button" class="spine sp-ghost" data-rem-toggle><span class="sp-no">···</span><span class="sp-name">убранные · ' + rem.length + '</span><span class="sp-st">показать</span></button>') : '') +
         '</div>';
     }
-    return '<div class="ord-tabs reveal" role="tablist" aria-label="Ваши заказы">' + row + '</div>' + archRow;
+    return '<div class="shelf reveal" role="tablist" aria-label="Ваши заказы">' + row + '</div>' +
+      (archRow || '') + '<div class="shelf-base" aria-hidden="true"></div>';
   }
   function shortWork(o) {
     var w = o.work_label || '';
@@ -815,7 +921,7 @@ function initCabinet() {
             ? '<div class="dr"><span></span><b><button type="button" class="linkbtn" data-act="bonus_cancel">↩ вернуть бонусы на счёт</button></b></div>' : '') +
           '</div>';
       }
-      return out + planTable(o) + bonusSpendBlock(o);
+      return out + planTable(o) + bonusSpendBlock(o) + subUpsell(o);
     }
     if (o.quote_low) {
       return '<div class="ord-price-row"><span class="caps">Вилка сметы</span>' +
@@ -863,6 +969,24 @@ function initCabinet() {
       '<div class="cbn-row"><span class="petit">Списание — один раз, до оплаты; деньгами останется <b id="bspendDue">' + money((o.due_total || o.price) - limit) + ' ₽</b></span>' +
       '<button type="button" class="btn btn-line" id="bspendApply">Применить</button></div>' +
       '</div>';
+  }
+
+  /* -------- купон «Салон+» в деле: честная выгода, один тихий талон --------
+     Показывается только там, где подписка реально сэкономит: цена названа,
+     оплат ещё не было. После активации скидка пересчитает ЭТОТ заказ сама. */
+  function subUpsell(o) {
+    if (!S.api.token() || !st.me) return '';
+    if (st.me.sub || st.me.sub_pending) return '';
+    if (o.sub_discount || /^sub_/.test(o.work_type || '')) return '';
+    if (!(o.status === 'priced' || o.status === 'prepay')) return '';
+    if ((o.price || 0) < 3000) return '';
+    if ((o.payments || []).some(function (p) { return p.status === 'paid'; })) return '';
+    var save = Math.min(Math.round(o.price * 0.10), 3000);
+    return '<div class="upsell reveal"><span class="up-star" aria-hidden="true">⭐</span>' +
+      '<span>С абонементом «Салон+» этот заказ — до <b>−' + money(save) + ' ₽</b>: ' +
+      'скидка пересчитает цену сразу после активации. Плюс приоритет мастера и куратор сессии. ' +
+      'От <b>449 ₽/мес</b>, без автосписаний. ' +
+      '<button type="button" class="linkbtn wax" data-open-plus>Выбрать абонемент →</button></span></div>';
   }
 
   function payHistory(o) {
@@ -1188,7 +1312,7 @@ function initCabinet() {
     if (o.deadline_text) meta.push('срок: ' + esc(o.deadline_text));
     meta.push('заявка от ' + dt(o.created_at));
     var pinTitle = o.pinned ? 'Открепить дело' : 'Закрепить дело первым в списке';
-    return userRow() + tplSwitch() +
+    return userRow() + nowCard() + clubBlock() + tplSwitch() +
       '<article class="sheet sheet-pad stacked reveal form-sheet" aria-label="Дело заказа ' + esc(o.no) + '">' +
       '<div class="ord-top"><span class="mono ord-no">Дело ' + esc(o.no) + '</span>' +
       '<span class="ord-flags">' +
@@ -1342,6 +1466,7 @@ function initCabinet() {
         var feed = document.getElementById('chatFeed');
         if (feed) feed.scrollTop = feed.scrollHeight;
         scheduleFilesSeen(r.order);
+        if (st.pendingJump) { scrollToEl(st.pendingJump); st.pendingJump = null; }
       }
     });
   }
@@ -1563,9 +1688,34 @@ function initCabinet() {
     var t = e.target;
     var sw = t.closest('button[data-ord]');
     if (sw) { st.currentId = parseInt(sw.getAttribute('data-ord'), 10); loadDetail(); return; }
+    var nowBtn = t.closest('[data-now-open]');
+    if (nowBtn) {
+      var nid = parseInt(nowBtn.getAttribute('data-now-open'), 10);
+      var njump = nowBtn.getAttribute('data-now-jump') || '';
+      if (st.currentId === nid && st.detail) { if (njump) scrollToEl(njump); return; }
+      st.currentId = nid;
+      st.pendingJump = njump || null;
+      loadDetail();
+      return;
+    }
+    var segBtn = t.closest('[data-seg-period]');
+    if (segBtn) {
+      st.showPeriod = segBtn.getAttribute('data-seg-period') === 'sem' ? 'sem' : 'month';
+      rerenderHome();
+      return;
+    }
+    if (t.closest('[data-open-plus]')) {
+      st.clubOpen = true;
+      st.plusOpen = true;
+      if (!st.plans) loadPlans();
+      rerenderHome();
+      scrollToEl('plusSheet');
+      return;
+    }
     if (t.closest('[data-arch-toggle]')) { st.archOpen = !st.archOpen; renderCurrent(); return; }
     if (t.closest('[data-rem-toggle]')) { st.remOpen = !st.remOpen; renderCurrent(); return; }
     if (t.closest('#cabTg')) { doTgLogin(t.closest('#cabTg')); return; }
+    if (t.closest('#cabTg2')) { doTgLogin(t.closest('#cabTg2')); return; }
     if (t.closest('#cabEmailSend')) { emailSendCode(); return; }
     if (t.closest('#cabEmailGo')) { emailVerify(); return; }
     if (t.closest('#cabEmailAgain')) { emailAgain(); return; }
