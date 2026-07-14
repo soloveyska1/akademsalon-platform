@@ -24,7 +24,10 @@ function initCabinet() {
     ledger: null,     // журнал бонусов из /bonus
     archOpen: false,  // развёрнут ли «Архив» в корешках
     remOpen: false,   // развёрнуты ли «убранные» (архивированные) дела
+    clubOpen: false,  // развёрнуты ли карточки бонусов/подписки (полоса «клуба»)
     plusOpen: false,  // развёрнута ли витрина «Салон+»
+    ctorOpen: false,  // развёрнут ли конструктор подписки внутри витрины
+    curOpen: false,   // развёрнут ли куратор сессии внутри витрины
     plans: null,      // /plans (планы+конструктор), null = не загружали
     ctorFeats: [],    // выбранные фичи конструктора
     ctorPeriod: 'month',
@@ -141,35 +144,35 @@ function initCabinet() {
         '<div class="act-row"><a class="btn btn-wax" href="' + (pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Открыть Telegram</a>' +
         '<button type="button" class="btn btn-line" id="cabTgCancel">Отменить вход</button></div></div>'
       : '';
-    /* Telegram — первым: одна кнопка, самый надёжный канал (почтовые коды
-       до @mail.ru доходят плохо). Почта и ссылка доступа — ниже. */
+    /* Telegram — первым: одна кнопка, самый надёжный канал. Почта и ссылка
+       доступа — свёрнуты: экран входа не должен быть простынёй. */
     var emailBlock = '';
     if (st.features && st.features.email_login) {
-      emailBlock = '<p class="caps" style="margin-bottom:8px">Вход по почте</p>' +
-        '<p class="petit" style="margin-bottom:10px">Пришлём 6-значный код. Адреса @mail.ru и @bk.ru иногда задерживают наши письма — если код не пришёл, надёжнее Telegram.</p>' +
-        '<div class="act-row" id="cabEmailBox" style="margin-top:0;margin-bottom:18px">' +
+      emailBlock = '<details class="cab-alt"><summary>Вход по почте — пришлём код</summary>' +
+        '<p class="petit" style="margin:6px 0 10px">6-значный код, без паролей. Адреса @mail.ru и @bk.ru иногда задерживают наши письма — тогда надёжнее Telegram.</p>' +
+        '<div class="act-row" id="cabEmailBox" style="margin:0 0 12px">' +
           '<input type="email" id="cabEmailIn" placeholder="you@mail.ru" autocomplete="email" ' +
             'style="flex:2;min-width:0;font:inherit;font-size:16px;padding:11px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
           '<button type="button" class="btn btn-wax" id="cabEmailSend" style="flex:1">Получить код</button>' +
-        '</div>';
+        '</div></details>';
     }
     return '<div class="sheet sheet-pad stacked cab-login reveal">' +
       '<p class="caps">Вход в кабинет</p>' +
       '<h2 class="ord-type">Ваши заказы — здесь, на сайте</h2>' +
       '<p class="petit" style="margin-bottom:16px">Заказы этого устройства открываются сами — входить не нужно. ' +
-      'Вход пригодится, чтобы видеть заказы с других устройств, бонусы и подписку.</p>' +
+      'Вход пригодится для бонусов, подписки и заказов с других устройств.</p>' +
       pendingBlock +
       (pending ? '' : '<button type="button" class="btn btn-wax btn-block" id="cabTg">Войти через Telegram <span class="ar">→</span></button>') +
       '<p class="petit cab-login-hint" id="cabTgHint" hidden></p>' +
-      '<p class="petit" style="margin:10px 0 18px;color:var(--ink-soft)">Одна кнопка — без паролей; уведомления придут и в бота.</p>' +
+      '<p class="petit" style="margin:10px 0 14px;color:var(--ink-soft)">Одна кнопка — без паролей; уведомления придут и в бота.</p>' +
       emailBlock +
-      '<p class="caps" style="margin-bottom:8px">Заказ с другого устройства</p>' +
-      '<p class="petit" style="margin-bottom:10px">Вставьте ссылку доступа к делу — она была на экране «Заявка принята».</p>' +
-      '<div class="act-row" style="margin-top:0;margin-bottom:4px">' +
+      '<details class="cab-alt"><summary>У меня есть ссылка доступа к делу</summary>' +
+      '<p class="petit" style="margin:6px 0 10px">Она была на экране «Заявка принята» — вставьте её целиком, дело откроется без входа.</p>' +
+      '<div class="act-row" style="margin:0 0 12px">' +
         '<input type="text" id="cabClaimIn" placeholder="Ссылка доступа или код дела" style="flex:2;min-width:0;font:inherit;font-size:16px;padding:11px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
         '<button type="button" class="btn btn-line" id="cabClaimBtn" style="flex:1">Открыть дело</button>' +
-      '</div>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--hairline)">' +
+      '</div></details>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--hairline)">' +
         '<a class="btn btn-line" style="flex:1" href="configurator.html">Оформить первый заказ <span class="ar">→</span></a>' +
       '</div>' +
       '</div>';
@@ -292,17 +295,37 @@ function initCabinet() {
   function userRow() {
     var u = S.api.user();
     if (S.api.token() && u) {
-      var chan = (u.id < 0) ? 'уведомления приходят на почту' : 'уведомления дублируются в бота';
-      return '<div class="cab-id reveal"><span class="ci-dot"></span>' +
-        '<span>Вы вошли как <b>' + esc(u.name || 'гость') + '</b>' + (u.username ? ' (@' + esc(u.username) + ')' : '') +
-        ' · ' + chan + '</span>' +
+      return '<div class="cab-id reveal">' +
+        '<span>Вы вошли как <b>' + esc(u.name || 'гость') + '</b>' + (u.username ? ' (@' + esc(u.username) + ')' : '') + '</span>' +
         '<span class="ci-act"><button type="button" class="linkbtn" id="cabLogout">выйти</button></span></div>' +
-        notiRow() + bonusCard() + subCard();
+        notiRow() + clubBlock();
     }
     return '<div class="cab-id reveal"><span class="ci-dot guest"></span>' +
       '<span>Гостевой доступ — заказы видны на этом устройстве</span>' +
       '<span class="ci-act"><button type="button" class="linkbtn wax" id="cabTg">войти через Telegram — заказы привяжутся к вам</button></span></div>' +
       notiRow();
+  }
+
+  /* -------- «клуб»: бонусы + подписка одной строкой, детали — по клику.
+     Кабинет в первую очередь про ДЕЛО; клубные карточки не должны
+     отталкивать его вниз. Незакрытая оплата подписки не прячется никогда. */
+  function clubBlock() {
+    if (!st.me) return '';
+    if (st.me.sub_pending) {
+      return subPendingCard(st.me.sub_pending) + (st.plusOpen ? plusSection() : '');
+    }
+    var b = st.me.bonus || {};
+    var sub = st.me.sub;
+    var bits = ['<span class="cs-item">💎 <b>' + money(b.balance || 0) + '</b> бонусов</span>'];
+    var exp = (b.expiring || [])[0];
+    if (exp) bits.push('<span class="cs-item cs-warn">⏳ ' + exp.amount + ' сгорят ' + dt(exp.at).slice(0, 5) + '</span>');
+    bits.push(sub
+      ? '<span class="cs-item">' + esc(sub.emoji || '⭐') + ' Салон+ до <b>' + esc(sub.expires_ru) + '</b></span>'
+      : '<span class="cs-item">⭐ Салон+ <span class="petit">от 449 ₽</span></span>');
+    return '<div class="club-strip reveal">' + bits.join('<span class="cs-dot">·</span>') +
+      '<button type="button" class="linkbtn cs-more" id="clubToggle">' +
+      (st.clubOpen ? 'свернуть' : (sub ? 'подробнее и куратор' : 'бонусы и подписка')) + '</button></div>' +
+      (st.clubOpen ? bonusCard() + subCard() : '');
   }
 
   /* -------- бонусный счёт (только для вошедших) -------- */
@@ -454,7 +477,7 @@ function initCabinet() {
       var save = Math.min(Math.round(sample * disc.pct / 100), disc.cap);
       saveNote = '<p class="petit" style="margin-top:6px">Например, курсовая за 20 000 ₽ → ваша выгода <b>' + money(save) + ' ₽</b> уже с одного заказа.</p>';
     }
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Соберите свой Салон+</span>' +
+    return '<div class="fs-sec" id="ctorBox"><div class="fs-head"><span class="caps">Соберите свой Салон+</span>' +
       '<span class="fs-meta">база ' + money(pl.base_price) + ' ₽/мес + опции</span></div>' +
       '<div class="due-box">' + rows + periods +
       '<div class="dr total"><span>Итого</span><b id="ctorTotal">' + (st.ctorFeats.length ? money(total) + ' ₽' : '—') + '</b></div></div>' +
@@ -521,11 +544,17 @@ function initCabinet() {
       return '<div class="sheet sheet-pad stacked reveal"><p class="petit">Листаем планы…</p></div>';
     }
     var cards = (st.plans.plans || []).map(planCardHtml).join('');
+    /* конструктор и куратор — за раскрытием: витрина = три плана, не простыня */
+    var ms = (st.me && st.me.milestones) || [];
+    var ctorBlock = st.ctorOpen ? ctorHtml() :
+      '<p class="petit" style="margin-top:12px"><button type="button" class="linkbtn" id="ctorShow">🛠 Собрать свою подписку из опций…</button> — если готовые планы не подходят.</p>';
+    var curBlock = st.curOpen ? curatorHtml() :
+      '<p class="petit" style="margin-top:8px"><button type="button" class="linkbtn" id="curShow">📅 Куратор сессии' + (ms.length ? ' · записей: ' + ms.length : '') + '…</button> — график сдач с напоминаниями за 7·3·1 день.</p>';
     return '<div class="sheet sheet-pad stacked reveal" id="plusSheet">' +
       '<p class="caps">Салон+ · планы</p>' +
       '<p class="petit" style="margin-bottom:6px">Оплата разовая, автосписаний нет. Скидка применяется сама, когда мастер называет цену; суммируется с бонусами — вместе до 25% заказа.</p>' +
-      cards + ctorHtml() + curatorHtml() +
-      '<p class="petit" style="margin-top:4px">Оформить можно и в Telegram: <a class="link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a></p>' +
+      cards + ctorBlock + curBlock +
+      '<p class="petit" style="margin-top:10px">Оформить можно и в Telegram: <a class="link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a></p>' +
       '</div>';
   }
 
@@ -1542,6 +1571,13 @@ function initCabinet() {
       if (je && je.scrollIntoView) je.scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
     }
+    if (t.closest('#clubToggle')) {
+      st.clubOpen = !st.clubOpen;
+      rerenderHome();
+      return;
+    }
+    if (t.closest('#ctorShow')) { st.ctorOpen = true; rerenderHome(); scrollToEl('ctorBox'); return; }
+    if (t.closest('#curShow')) { st.curOpen = true; rerenderHome(); return; }
     if (t.closest('#plusToggle')) {
       st.plusOpen = !st.plusOpen;
       if (st.plusOpen && !st.plans) loadPlans();
@@ -1818,7 +1854,9 @@ function initCabinet() {
      и довести взгляд до неё (на телефоне карточка ниже первого экрана) */
   var hashPlusScroll = false;
   try {
-    if ((location.hash || '').indexOf('plus') >= 0) { st.plusOpen = true; hashPlusScroll = true; }
+    if ((location.hash || '').indexOf('plus') >= 0) {
+      st.plusOpen = true; st.clubOpen = true; hashPlusScroll = true;
+    }
   } catch (e) {}
   /* ссылка доступа с другого устройства: #claim=<токен> (или ?claim=) */
   try {

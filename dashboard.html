@@ -6,12 +6,10 @@
 <title>Личный кабинет — Академический Салон</title>
 <meta name="description" content="Формуляр вашего заказа: этапы, цена, переписка с мастером и файлы — всё на сайте, без мессенджеров." />
 <meta name="robots" content="noindex" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260713b" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260713b" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260713b" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260715a" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260715a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260715a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260715a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -138,6 +136,23 @@
   /* автопрокрутки и чипы не ныряют под шапку */
   #cabRoot .fs-sec[id],#subPaySheet,#plusCard,#plusSheet,#bonusLedger{scroll-margin-top:74px}
 
+  /* полоса «клуба»: бонусы и подписка одной строкой, детали по клику */
+  .club-strip{display:flex;align-items:baseline;gap:8px 10px;flex-wrap:wrap;
+    border:1px solid var(--hairline);border-radius:var(--r);background:var(--paper-2);
+    padding:10px 14px;margin-bottom:14px;font-size:13.5px;color:var(--ink-soft)}
+  .club-strip b{color:var(--ink)}
+  .club-strip .cs-dot{color:var(--ink-faint)}
+  .club-strip .cs-warn{color:var(--wax)}
+  .club-strip .cs-more{margin-left:auto}
+
+  /* свёрнутые способы входа (почта, ссылка доступа) */
+  .cab-alt{border:1px solid var(--hairline);border-radius:var(--r);padding:0 14px;margin:8px 0}
+  .cab-alt summary{cursor:pointer;padding:11px 0;font-size:13.5px;color:var(--ink-soft);list-style:none;user-select:none}
+  .cab-alt summary::-webkit-details-marker{display:none}
+  .cab-alt summary::before{content:"▸";display:inline-block;margin-right:8px;color:var(--ink-faint);transition:transform .15s}
+  .cab-alt[open] summary::before{transform:rotate(90deg)}
+  .cab-alt summary:hover{color:var(--ink)}
+
   /* шапка карточки плана «Салон+»: название + слоган переносятся по-человечески */
   .pl-h{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--hairline)}
   .pl-h .pl-tag{font-size:12.5px;color:var(--ink-soft)}
@@ -227,8 +242,8 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260713b"></script>
-<script src="assets/js/extras.js?v=20260713b"></script>
-<script src="assets/js/cabinet.js?v=20260713b"></script>
+<script src="assets/js/app.js?v=20260715a"></script>
+<script src="assets/js/extras.js?v=20260715a"></script>
+<script src="assets/js/cabinet.js?v=20260715a"></script>
 </body>
 </html>

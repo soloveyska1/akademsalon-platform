@@ -659,11 +659,13 @@ function initGodEye() {
           '<label class="btn btn-wax btn-upload">📦 ' + (announced && !o.final_ready && total > 1 ? '' : 'Сдать ') + deliverWord + ' файлом' +
           '<input type="file" id="agDeliverFile"></label>' +
           '<label class="btn btn-line btn-upload">📎 Просто отправить файл<input type="file" id="agPlainFile"></label>' +
+          '<label class="btn btn-line btn-upload">🔒 Предпросмотр клиенту<input type="file" id="agPreviewFile" accept=".pdf,.doc,.docx,.odt,.rtf,.txt"></label>' +
           finBtn +
           (o.status !== 'check' ? '<button type="button" class="btn btn-line" id="agDeliverMark">Файлы уже у клиента — зафиксировать сдачу</button>' : '') +
           '</div>' +
           '<p class="ag-note">Правило «сначала оплата — потом файл»: «Часть готова / Финал готов» выставляет клиенту счёт этапа, файл вы передаёте после оплаты (напомним). ' +
-          '«Сдать файлом» — передать сразу, доверяя клиенту: кнопки приёмки и оплата этапа посчитаются сами. «Просто файл» — ничего не меняет.</p>'
+          '«Сдать файлом» — передать сразу, доверяя клиенту: кнопки приёмки и оплата этапа посчитаются сами. «Просто файл» — ничего не меняет. ' +
+          '<b>«🔒 Предпросмотр»</b> — для «покажи работу до оплаты»: оригинал остаётся у вас, клиент получает копию с водяными знаками на каждой странице — её нельзя ни скопировать, ни сдать; счёт этапа приложится сам.</p>'
         : '') +
       '<p class="ag-note" id="agUpNote" hidden></p></div>';
   }
@@ -960,22 +962,40 @@ function initGodEye() {
     } else toast(r.error === 'busy' ? 'Секунду…' : 'Не получилось' + (r.error ? ' (' + r.error + ')' : ''));
   }
 
-  function uploadAdminFile(input, deliver) {
+  function uploadAdminFile(input, deliver, preview) {
     var f = input.files && input.files[0];
     if (!f || !st.sel) return;
     if (f.size > 20 * 1024 * 1024) { toast('Файл больше 20 МБ — отправьте его через ветку заказа в группе'); return; }
     var note = document.getElementById('agUpNote');
-    if (note) { note.hidden = false; note.textContent = 'Отправляем «' + f.name + '»…'; }
+    if (note) {
+      note.hidden = false;
+      note.textContent = preview
+        ? 'Готовим защищённый предпросмотр «' + f.name + '» — обычно до минуты…'
+        : 'Отправляем «' + f.name + '»…';
+    }
     var fd = new FormData();
     fd.append('file', f, f.name);
-    fetch(S.api.base + '/admin/orders/' + st.sel + '/upload?deliver=' + (deliver ? '1' : '0'), {
+    var q = preview ? 'preview=1' : 'deliver=' + (deliver ? '1' : '0');
+    fetch(S.api.base + '/admin/orders/' + st.sel + '/upload?' + q, {
       method: 'POST', body: fd,
       headers: { 'Authorization': 'Bearer ' + S.api.token() }
     }).then(function (resp) { return resp.json(); })
       .then(function (r) {
-        if (!r.ok) { if (note) note.textContent = 'Не ушло (' + (r.error || 'ошибка') + ')'; toast('Файл не отправился'); return; }
-        if (note) note.textContent = deliver ? 'Сдано ✓ — клиент получил кнопки приёмки' : 'Файл у клиента ✓';
-        toast(deliver ? '📦 Сдача зафиксирована' : (r.delivered_tg ? 'Файл доставлен в Telegram ✓' : 'Файл в деле — клиент увидит в кабинете'));
+        if (!r.ok) {
+          var perr = { preview_format: 'Формат не поддержан — PDF, DOCX, DOC, ODT, RTF',
+                       preview_failed: 'Не получилось собрать предпросмотр — проверьте файл' }[r.error];
+          if (note) note.textContent = (perr || 'Не ушло (' + (r.error || 'ошибка') + ')');
+          toast(perr || 'Файл не отправился');
+          return;
+        }
+        if (preview) {
+          if (note) note.textContent = '🔒 Предпросмотр у клиента ✓ — оригинал остался у вас' +
+            (r.due ? '; счёт этапа ' + money(r.due) + ' ₽ приложен' : '');
+          toast('🔒 Предпросмотр отправлен');
+        } else {
+          if (note) note.textContent = deliver ? 'Сдано ✓ — клиент получил кнопки приёмки' : 'Файл у клиента ✓';
+          toast(deliver ? '📦 Сдача зафиксирована' : (r.delivered_tg ? 'Файл доставлен в Telegram ✓' : 'Файл в деле — клиент увидит в кабинете'));
+        }
         if (r.order) { st.card = r.order; drawCard(); }
       })
       .catch(function () { if (note) note.textContent = 'Сеть прервалась — попробуйте ещё раз'; });
@@ -1275,6 +1295,7 @@ function initGodEye() {
     if (e.target && e.target.id === 'agSort') { st.sort = e.target.value; drawList(); return; }
     if (e.target && e.target.id === 'agDeliverFile') { uploadAdminFile(e.target, true); e.target.value = ''; }
     if (e.target && e.target.id === 'agPlainFile') { uploadAdminFile(e.target, false); e.target.value = ''; }
+    if (e.target && e.target.id === 'agPreviewFile') { uploadAdminFile(e.target, false, true); e.target.value = ''; }
     if (e.target && e.target.id === 'agChatFile') { uploadAdminFile(e.target, false); e.target.value = ''; }
     if (e.target && e.target.id === 'agPlanSel' && st.card && st.card.price) {
       var stages = parseInt(e.target.value, 10);
