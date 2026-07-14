@@ -979,8 +979,8 @@ function initCabinet() {
     if (due > 0) {
       return '<div class="pause-band fin-band"><span class="pb-ic">🏁</span><span class="pb-txt">' +
         '<b>Работа готова целиком!</b> Финальная часть передаётся после закрытия остатка — ' +
-        '<b>' + money(due) + ' ₽</b>. Реквизиты — в блоке «Оплата» ниже; как только мастер ' +
-        'подтвердит поступление, файлы придут сразу.</span></div>';
+        '<b>' + money(due) + ' ₽</b>. Как только мастер подтвердит поступление, файлы придут сразу. ' +
+        '<button type="button" class="linkbtn" data-jump="secPay">Перейти к оплате ↓</button></span></div>';
     }
     return '<div class="pause-band fin-band"><span class="pb-ic">🏁</span><span class="pb-txt">' +
       (o.claimed ? 'Ваша отметка об оплате на сверке у мастера — после подтверждения он передаст финальную часть.'
@@ -995,11 +995,24 @@ function initCabinet() {
       return '<div class="pause-band fin-band"><span class="pb-ic">📘</span><span class="pb-txt">' +
         '<b>Часть ' + o.part_ready + ' готова!</b> Она передаётся после оплаты этапа — ' +
         '<b>' + money(due) + ' ₽</b>' + (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ')' : '') +
-        '. Реквизиты — в блоке «Оплата» ниже; после подтверждения файл придёт сразу.</span></div>';
+        '. После подтверждения файл придёт сразу. ' +
+        '<button type="button" class="linkbtn" data-jump="secPay">Перейти к оплате ↓</button></span></div>';
     }
     return '<div class="pause-band fin-band"><span class="pb-ic">📘</span><span class="pb-txt">' +
       (o.claimed ? 'Часть ' + o.part_ready + ' готова; ваша отметка об оплате на сверке — после подтверждения мастер передаст файл.'
                  : 'Часть ' + o.part_ready + ' готова, этап оплачен — мастер передаёт файл.') + '</span></div>';
+  }
+
+  /* -------- часть уже у клиента, а этап не оплачен: честная лента -------- */
+  function dueBand(o) {
+    if ('check fix'.indexOf(o.status) < 0 || o.final_ready || o.part_ready) return '';
+    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
+    if (due <= 0) return '';
+    return '<div class="pause-band fin-band"><span class="pb-ic">💳</span><span class="pb-txt">' +
+      'По плану оплат за эту часть — <b>' + money(due) + ' ₽</b>' +
+      (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ')' : '') +
+      '. Мастерская передала её, доверившись вам — закройте этап, и работа продолжится без пауз. ' +
+      '<button type="button" class="linkbtn" data-jump="secPay">Перейти к оплате ↓</button></span></div>';
   }
 
   /* -------- пауза: заметная лента под шапкой дела -------- */
@@ -1186,7 +1199,7 @@ function initCabinet() {
       (o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
       '<p class="petit">' + meta.join(' · ') + ' ' + deadlineChip(o) + '</p>' +
       jumpChips(o) +
-      pauseBand(o) + finalBand(o) + partBand(o) +
+      pauseBand(o) + finalBand(o) + partBand(o) + dueBand(o) +
       priceBlock(o) + stageRows(o) +
       actionsBlock(o) + reviewBlock(o) + defenseBlock(o) + manageBlock(o) + filesBlock(o) + chatBlock(o) + accessBlock(o) +
       (isArch(o) ? '<p class="petit" style="margin-top:clamp(20px,3vw,28px);padding-top:14px;border-top:1px solid var(--hairline)">' +

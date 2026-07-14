@@ -38,6 +38,10 @@ function initGodEye() {
     cancel_request: 'клиент просит закрыть дело', client_pin: 'клиент закрепил дело',
     final_ready: 'финал готов — клиенту выставлен остаток',
     part_ready: 'часть готова — клиенту выставлен счёт этапа',
+    pay_reminder: 'напоминание клиенту об оплате',
+    pay_silent: 'клиент молчит по счёту — нужен личный контакт',
+    delivered_unpaid: '⚠️ часть передана без оплаты этапа',
+    admin_ping_pay: 'алерт: счёт без движения',
     wait_checks: 'клиент ждёт проверок (научрук/предзащита)',
     spec_sent: 'спецификация отправлена клиенту',
     broadcast: 'рассылка клиентам', defense_offered: 'предложены услуги к защите',
@@ -531,6 +535,46 @@ function initGodEye() {
     return null;
   }
 
+  /* какой части сдачи соответствует этап оплаты (зеркало payments.kind_stage) */
+  function kindStage(o, kind) {
+    if ((o.stages_total || 1) === 3) return { prepay: 1, stage2: 2, rest: 3 }[kind] || 1;
+    return { prepay: 1, rest: 2 }[kind] || 1;
+  }
+
+  /* долг, блокирующий передачу части (зеркало payments.unpaid_for_part):
+     финальная часть — весь неоплаченный остаток; отметка «оплатил» ≠ оплата */
+  function debtForPart(o, part) {
+    var total = o.stages_total || 1;
+    var block = (o.plan || []).filter(function (p) {
+      if (p.state === 'paid') return false;
+      return part >= total || kindStage(o, p.kind) <= part;
+    });
+    return {
+      amount: block.reduce(function (s, p) { return s + (p.amount || 0); }, 0),
+      claimed: block.some(function (p) { return p.state === 'claimed'; }),
+      labels: block.map(function (p) { return p.label; })
+    };
+  }
+
+  function debtLine(d) {
+    return money(d.amount) + ' ₽' +
+      (d.labels.length ? ' (' + d.labels.join(' + ').toLowerCase() + ')' : '');
+  }
+
+  /* сколько дней назад выставлен счёт (part_ready / final_ready) */
+  function invoiceAgeDays(o) {
+    var evs = o.events || []; /* новые сверху */
+    for (var i = 0; i < evs.length; i++) {
+      if (evs[i].kind === 'part_ready' || evs[i].kind === 'final_ready') {
+        var t = new Date(evs[i].at + (String(evs[i].at).indexOf('Z') < 0 ? 'Z' : ''));
+        if (isNaN(t)) return null;
+        return Math.floor((Date.now() - t) / 86400000);
+      }
+      if (evs[i].kind === 'status') return null;
+    }
+    return null;
+  }
+
   function nextHint(o) {
     /* что мастеру сделать прямо сейчас — карточка сама подсказывает */
     var cr = pendingCancelReq(o);
@@ -544,22 +588,34 @@ function initGodEye() {
     if (claimed.length)
       return ['due', '💳 <b>Клиент отметил оплату ' + money(claimed[0].amount) + ' ₽.</b> Проверьте поступление и подтвердите в плане оплат ниже — статус и кэшбэк посчитаются сами.'];
     if (o.final_ready && 'work fix'.indexOf(o.status) >= 0) {
-      if (o.due_now && o.due_now.amount > 0)
-        return ['', '🏁 Финал объявлен готовым — клиент получил счёт на остаток ' +
-          money(o.due_now.amount) + ' ₽. Файл придержите: как только подтвердите оплату, напомним сдать.'];
+      if (o.due_now && o.due_now.amount > 0) {
+        var fAge = invoiceAgeDays(o);
+        return [fAge >= 2 ? 'due' : '', '🏁 Финал объявлен готовым — клиент получил счёт на остаток ' +
+          money(o.due_now.amount) + ' ₽' +
+          (fAge >= 1 ? ' <b>ещё ' + fAge + ' дн. назад — не оплачен</b>' : '') +
+          '. Файл придержан. Поторопить: кнопка «🔔 Напомнить об оплате» ниже (авто-напоминания идут раз в день, до 3 раз).'];
+      }
       return ['due', '🏁 <b>Остаток получен — передайте финальную часть.</b> Сдайте файлом ниже, клиент получит кнопки приёмки.'];
     }
     if (o.part_ready && 'work fix'.indexOf(o.status) >= 0) {
-      if (o.due_now && o.due_now.amount > 0)
-        return ['', '📘 Часть ' + o.part_ready + ' объявлена готовой — клиент получил счёт ' +
-          money(o.due_now.amount) + ' ₽ (' + esc((o.due_now.label || 'этап').toLowerCase()) +
-          '). Файл придержите: подтвердите оплату — напомним передать.'];
+      if (o.due_now && o.due_now.amount > 0) {
+        var pAge = invoiceAgeDays(o);
+        return [pAge >= 2 ? 'due' : '', '📘 Часть ' + o.part_ready + ' объявлена готовой — клиент получил счёт ' +
+          money(o.due_now.amount) + ' ₽ (' + esc((o.due_now.label || 'этап').toLowerCase()) + ')' +
+          (pAge >= 1 ? ' <b>ещё ' + pAge + ' дн. назад — не оплачен</b>' : '') +
+          '. Файл придержан. Поторопить: кнопка «🔔 Напомнить об оплате» ниже (авто-напоминания идут раз в день, до 3 раз).'];
+      }
       return ['due', '📘 <b>Оплата за часть ' + o.part_ready + ' получена — передайте её.</b> Сдайте файлом ниже, клиент получит кнопки приёмки.'];
     }
+    if (o.due_now && o.due_now.amount > 0 && 'check work'.indexOf(o.status) >= 0)
+      return ['due', '💳 <b>Созрел неоплаченный этап: ' + money(o.due_now.amount) + ' ₽ (' +
+        esc((o.due_now.label || 'этап').toLowerCase()) +
+        ').</b> Новые части не передавайте до оплаты — напомнить клиенту можно кнопкой «🔔 Напомнить об оплате» ниже.'];
     if (o.status === 'new')
       return ['due', '💰 <b>Новая заявка.</b> Изучите требования и отправьте предложение с ценой — клиент получит его в Telegram и в кабинете.'];
     if (o.status === 'fix')
-      return ['due', '✏️ <b>Клиент запросил правки' + ((o.stages_total || 1) > 1 ? ' по части ' + o.stage : '') + '.</b> Замечания — в переписке. Готовую версию сдайте файлом с пометкой «сдача» — клиент снова получит кнопки приёмки.'];
+      return ['due', '✏️ <b>Клиент запросил правки' + ((o.stages_total || 1) > 1 ? ' по части ' + o.stage : '') + '.</b> Замечания — в переписке. Готовую версию сдайте файлом с пометкой «сдача» — клиент снова получит кнопки приёмки.' +
+        (o.due_now && o.due_now.amount > 0 ? ' <b>Этап при этом не оплачен (' + money(o.due_now.amount) + ' ₽)</b> — исправления передавать можно, но напомните об оплате («🔔» ниже).' : '')];
     if (o.status === 'priced')
       return ['', '⏳ Предложение у клиента — ждём решения. Можно поменять цену или написать в переписке.'];
     if (o.status === 'prepay')
@@ -592,11 +648,18 @@ function initGodEye() {
     var planSel = '<select id="agPlanSel">' + [1, 2, 3].map(function (n) {
       return '<option value="' + n + '"' + (cur === n ? ' selected' : '') + '>' + PLAN_LBL[n] + '</option>';
     }).join('') + '</select>';
+    var remindShown = false;
     var rows = plan.map(function (p) {
       var m = PL_ST[p.state] || ['', ''];
       var act = '';
       if (p.state === 'claimed' || p.state === 'due')
         act = '<button type="button" class="btn btn-ink" data-pay-kind="' + p.kind + '" data-pay-amount="' + p.amount + '">Получена ✓</button>';
+      if (p.state === 'due' && !remindShown) {
+        /* напоминание уходит по ближайшему созревшему этапу — кнопка у него */
+        remindShown = true;
+        act += '<button type="button" class="btn btn-line" data-remind-pay="1" ' +
+          'title="Клиенту заново уйдёт счёт с реквизитами и кассой — в Telegram, на почту и в кабинет">🔔 Напомнить</button>';
+      }
       return '<div class="pl-row"><span class="pl-n">' + p.n + '</span>' +
         '<span class="pl-what">' + esc(p.label) + ' <span class="pl-st ' + m[1] + '">' + m[0] + '</span></span>' +
         '<span class="pl-sum">' + money(p.amount) + ' ₽</span>' + act + '</div>';
@@ -639,12 +702,18 @@ function initGodEye() {
     var finalStage = total <= 1 || (o.stage || 1) >= total;
     var unpaid = (o.plan || []).some(function (p) { return p.state !== 'paid'; });
     var announced = (o.part_ready || 0) >= (o.stage || 1);
+    /* долг текущей части: в work сдача заблокирована сервером, пока не оплачено
+       (в fix/check повторная передача той же части свободна — клиент её видел) */
+    var debt = debtForPart(o, o.stage || 1);
+    var held = o.status === 'work' && debt.amount > 0;
     var finBtn = '';
     if ('work fix'.indexOf(o.status) >= 0 && unpaid) {
       if (finalStage && !o.final_ready)
-        finBtn = '<button type="button" class="btn btn-line" id="agFinalReady">🏁 Финал готов — счёт на остаток (файл придержать)</button>';
+        finBtn = '<button type="button" class="btn btn-wax" id="agFinalReady">🏁 Финал готов — счёт на остаток (файл придержать)</button>';
       else if (!finalStage && !announced)
-        finBtn = '<button type="button" class="btn btn-line" id="agPartReady">📣 Часть ' + o.stage + ' готова — счёт клиенту (файл придержать)</button>';
+        finBtn = '<button type="button" class="btn btn-wax" id="agPartReady">📣 Часть ' + o.stage + ' готова — счёт клиенту (файл придержать)</button>';
+      else if (o.due_now && o.due_now.amount > 0)
+        finBtn = '<button type="button" class="btn btn-wax" data-remind-pay="1">🔔 Напомнить об оплате (' + money(o.due_now.amount) + ' ₽)</button>';
     }
     var deliverWord = o.final_ready ? 'финал'
       : (total > 1 ? (announced ? 'Передать часть ' + o.stage : 'часть ' + o.stage) : 'работу');
@@ -656,16 +725,19 @@ function initGodEye() {
       (cells ? '<div class="ag-parts">' + cells + '</div>' : '') +
       (canDeliver
         ? '<div class="ag-actrow" style="margin-top:8px">' +
-          '<label class="btn btn-wax btn-upload">📦 ' + (announced && !o.final_ready && total > 1 ? '' : 'Сдать ') + deliverWord + ' файлом' +
-          '<input type="file" id="agDeliverFile"></label>' +
-          '<label class="btn btn-line btn-upload">📎 Просто отправить файл<input type="file" id="agPlainFile"></label>' +
-          '<label class="btn btn-line btn-upload">🔒 Предпросмотр клиенту<input type="file" id="agPreviewFile" accept=".pdf,.doc,.docx,.odt,.rtf,.txt"></label>' +
           finBtn +
+          '<label class="btn ' + (held ? 'btn-line' : 'btn-wax') + ' btn-upload">📦 ' +
+          (announced && !o.final_ready && total > 1 ? '' : 'Сдать ') + deliverWord + ' файлом' +
+          (held ? ' · этап не оплачен ⚠️' : '') +
+          '<input type="file" id="agDeliverFile"></label>' +
+          '<label class="btn btn-line btn-upload">🔒 Предпросмотр клиенту<input type="file" id="agPreviewFile" accept=".pdf,.doc,.docx,.odt,.rtf,.txt"></label>' +
+          '<label class="btn btn-line btn-upload">📎 Просто отправить файл<input type="file" id="agPlainFile"></label>' +
           (o.status !== 'check' ? '<button type="button" class="btn btn-line" id="agDeliverMark">Файлы уже у клиента — зафиксировать сдачу</button>' : '') +
           '</div>' +
-          '<p class="ag-note">Правило «сначала оплата — потом файл»: «Часть готова / Финал готов» выставляет клиенту счёт этапа, файл вы передаёте после оплаты (напомним). ' +
-          '«Сдать файлом» — передать сразу, доверяя клиенту: кнопки приёмки и оплата этапа посчитаются сами. «Просто файл» — ничего не меняет. ' +
-          '<b>«🔒 Предпросмотр»</b> — для «покажи работу до оплаты»: оригинал остаётся у вас, клиент получает копию с водяными знаками на каждой странице — её нельзя ни скопировать, ни сдать; счёт этапа приложится сам.</p>'
+          '<p class="ag-note"><b>Правило мастерской: сначала оплата части — потом файл.</b> ' +
+          '«Часть готова / Финал готов» выставляет клиенту счёт этапа; файл передаёте после подтверждения оплаты — придёт напоминание. ' +
+          'Пока этап не оплачен, «Сдать файлом» и «Просто отправить» придерживаются — передать вопреки правилу можно только с отдельным подтверждением. ' +
+          '<b>«🔒 Предпросмотр»</b> — для «покажи работу до оплаты»: оригинал остаётся у вас, клиент получает копию с водяными знаками, её нельзя ни скопировать, ни сдать; счёт этапа приложится сам.</p>'
         : '') +
       '<p class="ag-note" id="agUpNote" hidden></p></div>';
   }
@@ -966,6 +1038,33 @@ function initGodEye() {
     var f = input.files && input.files[0];
     if (!f || !st.sel) return;
     if (f.size > 20 * 1024 * 1024) { toast('Файл больше 20 МБ — отправьте его через ветку заказа в группе'); return; }
+    sendAdminFile(f, deliver, preview, false);
+  }
+
+  /* «этап не оплачен» (409 stage_unpaid): файл придержан сервером — объясняем
+     правило и даём осознанный обход вторым подтверждением */
+  function unpaidDialog(r, deliver, retry) {
+    var whatTxt = 'За часть ' + (r.part || '') + ' не оплачено ' + money(r.debt) + ' ₽' +
+      (r.labels && r.labels.length ? ' (' + r.labels.join(' + ').toLowerCase() + ')' : '') + '. Файл НЕ отправлен.';
+    if (r.claimed) {
+      confirmDlg({
+        title: 'Клиент отметил оплату — сверьте поступление',
+        text: whatTxt + ' Отметка клиента ждёт вашей сверки: проверьте деньги и нажмите «Получена ✓» в плане оплат — тогда файл можно передавать. Передать без сверки — на ваш риск.',
+        okLabel: '⚠️ Передать без сверки', noLabel: 'Не передавать', danger: true
+      }).then(function (res) { if (res.ok) retry(); });
+      return;
+    }
+    confirmDlg({
+      title: 'Сначала оплата — потом файл',
+      text: whatTxt + (deliver
+        ? ' По правилу мастерской выставьте счёт («Часть готова / Финал готов» — файл придержится, клиент получит реквизиты и кассу) или покажите работу «🔒 Предпросмотром». Передать оригинал без оплаты — на ваш риск.'
+        : ' Если это готовая работа — не отправляйте оригинал: выставьте счёт («Часть готова») или пошлите «🔒 Предпросмотр». Отправить как есть (это не сдача) — на ваш риск.'),
+      okLabel: deliver ? '⚠️ Всё равно передать' : '⚠️ Отправить как есть',
+      noLabel: 'Не отправлять', danger: true
+    }).then(function (res) { if (res.ok) retry(); });
+  }
+
+  function sendAdminFile(f, deliver, preview, force) {
     var note = document.getElementById('agUpNote');
     if (note) {
       note.hidden = false;
@@ -976,11 +1075,17 @@ function initGodEye() {
     var fd = new FormData();
     fd.append('file', f, f.name);
     var q = preview ? 'preview=1' : 'deliver=' + (deliver ? '1' : '0');
+    if (force) q += '&force=1';
     fetch(S.api.base + '/admin/orders/' + st.sel + '/upload?' + q, {
       method: 'POST', body: fd,
       headers: { 'Authorization': 'Bearer ' + S.api.token() }
     }).then(function (resp) { return resp.json(); })
       .then(function (r) {
+        if (!r.ok && r.error === 'stage_unpaid') {
+          if (note) note.textContent = '✋ Файл придержан: этап не оплачен (' + money(r.debt) + ' ₽).';
+          unpaidDialog(r, deliver, function () { sendAdminFile(f, deliver, preview, true); });
+          return;
+        }
         if (!r.ok) {
           var perr = { preview_format: 'Формат не поддержан — PDF, DOCX, DOC, ODT, RTF',
                        preview_failed: 'Не получилось собрать предпросмотр — проверьте файл' }[r.error];
@@ -1200,8 +1305,34 @@ function initGodEye() {
       }).then(function (res) {
         if (!res.ok) return;
         api('/admin/orders/' + st.sel + '/deliver', {})
-          .then(function (r) { afterOrder(r, '📦 На проверке у клиента'); });
+          .then(function (r) {
+            if (!r.ok && r.error === 'stage_unpaid') {
+              unpaidDialog(r, true, function () {
+                api('/admin/orders/' + st.sel + '/deliver', { force: true })
+                  .then(function (r2) { afterOrder(r2, '📦 Сдача зафиксирована (без оплаты — в хронике)'); });
+              });
+              return;
+            }
+            afterOrder(r, '📦 На проверке у клиента');
+          });
       });
+      return;
+    }
+    var remindBtn = t.closest('[data-remind-pay]');
+    if (remindBtn) {
+      api('/admin/orders/' + st.sel + '/remind_pay', {})
+        .then(function (r) {
+          if (!r.ok) {
+            toast({ claimed: 'Клиент отметил оплату — сверьте и подтвердите «Получена ✓»',
+                    nothing_due: 'Платить нечего — созревших неоплаченных этапов нет',
+                    paused: 'Дело на паузе — сначала снимите паузу',
+                    busy: 'Секунду…' }[r.error] || 'Не получилось');
+            return;
+          }
+          var where = r.delivered_tg ? 'в Telegram' + (r.mailed ? ' и на почту' : '')
+            : (r.mailed ? 'на почту' : 'в кабинет (там счёт и так виден)');
+          afterOrder(r, '🔔 Напоминание ' + money(r.due) + ' ₽ ушло ' + where);
+        });
       return;
     }
     if (t.closest('#agCancel2')) {
