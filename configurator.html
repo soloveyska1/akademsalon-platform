@@ -171,16 +171,12 @@
         <header class="conf-head reveal">
           <h1>Смета вашей работы</h1>
           <p class="petit">Четыре шага — увидите стоимость, план и порядок оплаты. Оценка бесплатна, решение остаётся за вами.</p>
-          <div class="plan-note plan-offer" hidden>
-            <div class="po-head"><span class="caps">Первый шаг · Разбор плана</span>
-              <span class="po-price"><b id="planPrice">3&nbsp;000&nbsp;₽</b></span></div>
-            <p class="po-lead">Прежде чем писать, мастер разбирает вашу задачу — на руках у вас окажутся:</p>
-            <ul class="po-list">
-              <li><b>Структура глав</b> — согласованный план, по которому пишется работа</li>
-              <li><b>Реалистичный срок</b> — календарь сдачи без сюрпризов в конце</li>
-              <li><b>Фиксированная смета</b> — после разбора цена уже не меняется</li>
-            </ul>
-            <p class="po-note">Продолжаете работу в течение 14 дней — стоимость разбора <b>зачитывается полностью</b>. По сути, при продолжении разбор бесплатный.</p>
+          <!-- карточка-квитанция услуги: заполняется в сервисном режиме (?service=…) -->
+          <div class="plan-offer" id="svcOffer" hidden>
+            <div class="po-head"><span class="caps" id="svcOfferCap"></span>
+              <span class="po-price"><b id="svcOfferPrice"></b></span></div>
+            <ul class="po-list" id="svcOfferList"></ul>
+            <p class="po-note" id="svcOfferNote" hidden></p>
           </div>
         </header>
 
@@ -227,6 +223,7 @@
                 <div class="opt-group svc-group">
                   <span class="caps">Работа уже есть — нужна услуга</span>
                   <div class="opt-list">
+                    <a class="optrow optrow-link" href="configurator.html?service=pl"><span>Разбор плана — старт любой работы, зачтётся в её цену</span><span class="dots"></span><span class="o-val">3&nbsp;000&nbsp;₽</span></a>
                     <a class="optrow optrow-link" href="configurator.html?service=ai"><span>Чистка текста от следов ИИ</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
                     <a class="optrow optrow-link" href="configurator.html?service=rv"><span>Разбор готовой работы перед защитой</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
                     <a class="optrow optrow-link" href="configurator.html?service=nm"><span>Нормоконтроль и оформление по ГОСТ</span><span class="dots"></span><span class="o-val">от 5&nbsp;000&nbsp;₽</span></a>
@@ -238,8 +235,9 @@
                 </div>
               </div>
               <p class="petit" id="planEntry" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--hairline-strong)">
-                Не готовы заказывать целиком? <a class="link" href="configurator.html?plan=1"><b>Начните с разбора плана — 3&nbsp;000&nbsp;₽</b></a>:
-                структура глав, срок и фиксированная смета. Продолжите работу — зачтётся в её стоимость полностью.</p>
+                Не готовы заказывать целиком? <a class="link" href="configurator.html?service=pl"><b>Начните с разбора плана — 3&nbsp;000&nbsp;₽</b></a>:
+                структура глав, срок и фиксированная смета, при продолжении зачтётся полностью.
+                <a class="link" href="plan.html">Подробнее об услуге →</a></p>
             </div>
 
             <!-- ШАГ 2: направление -->
@@ -274,6 +272,8 @@
             <!-- ШАГ 4: тема и заявка -->
             <div class="wstep" role="group" aria-labelledby="ws4t">
               <h2 class="ws-title" id="ws4t" tabindex="-1">Тема и заявка</h2>
+              <!-- анкета отдельной услуги: вопросы приходят из SalonServices[].ask -->
+              <div id="svcAsk" hidden></div>
               <div class="field">
                 <label for="fTopic">Тема работы · необязательно</label>
                 <input type="text" id="fTopic" maxlength="160" autocomplete="off" placeholder="Если тема уже утверждена — впишите её" />
@@ -453,7 +453,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260715a"></script>
+<script src="assets/js/app.js?v=20260716a"></script>
 <script src="assets/js/extras.js?v=20260715a"></script>
 <script>
 function initConf() {
@@ -483,14 +483,16 @@ function initConf() {
   var svc = null;
   try {
     var svcQ = new URLSearchParams(location.search).get('service');
+    /* старые ссылки ?plan=1 (письма, реклама) ведут в ту же анкету разбора */
+    if (!svcQ && new URLSearchParams(location.search).get('plan') === '1') svcQ = 'plan';
     if (svcQ && window.SalonServices) {
       window.SalonServices.forEach(function (s) {
         if (!svc && (s.code === svcQ || s.id === svcQ)) svc = s;
       });
     }
   } catch (e) {}
-  var svcSrvId = svc ? ({ ai: 'svc_ai', review: 'svc_review', tutor: 'svc_tutor', norm: 'svc_norm',
-                          defense: 'svc_defense', defensepack: 'svc_defense_pack' }[svc.id] || 'custom') : '';
+  var svcSrvId = svc ? ({ plan: 'svc_plan', ai: 'svc_ai', review: 'svc_review', tutor: 'svc_tutor',
+                          norm: 'svc_norm', defense: 'svc_defense', defensepack: 'svc_defense_pack' }[svc.id] || 'custom') : '';
 
   /* --- восстановление черновика (главная/прайс пишут сюда предвыбор) --- */
   var draft = S.store.get('salon_draft', null);
@@ -507,11 +509,9 @@ function initConf() {
     var qs = new URLSearchParams(location.search).get('step');
     if (!svc && qs) { var n = parseInt(qs, 10); if (n >= 1 && n <= 4) idx = n - 1; }
   } catch (e) {}
-  /* --- режим «разбор плана»: из черновика или по ?plan=1 --- */
-  var plan = !svc && !!(draft && draft.plan);
-  try {
-    if (!svc && new URLSearchParams(location.search).get('plan') === '1') plan = true;
-  } catch (e) {}
+  /* легаси-режим «полная работа, начиная с разбора» упразднён:
+     разбор плана — отдельная услуга со своей анкетой (?service=pl) */
+  var plan = false;
   if (svc) idx = 3; /* услуга — сразу лист заявки (шаг 4) */
 
   var steps = Array.prototype.slice.call(document.querySelectorAll('.wstep'));
@@ -519,12 +519,9 @@ function initConf() {
   var wpLbl = $('wpLbl'), wpFill = $('wpFill');
   var btnBack = $('btnBack'), btnNext = $('btnNext'), btnSubmit = $('btnSubmit');
   var priceEl = $('lqLow'), priceSrEl = $('lqLowSr');
-  var planNoteEl = document.querySelector('.plan-note'), planPriceEl = $('planPrice');
+  var planNoteEl = null, planPriceEl = null; /* легаси-хуки: не рендерятся */
   var profileEl = $('discProfile');
-  if (plan && planNoteEl) planNoteEl.hidden = false;
-  /* вход в услугу из общего потока не показываем, когда режим уже включён */
   var planEntryEl = $('planEntry');
-  if (plan && planEntryEl) planEntryEl.hidden = true;
   var topicIn = $('fTopic');
   var deadlineIn = $('fDeadline'), detailsIn = $('fDetails');
   var mcta = $('confMcta'), mqPanel = $('mqPanel'), mqToggle = $('mqToggle'), mqMore = $('mqMore'), mNext = $('mNext');
@@ -572,6 +569,79 @@ function initConf() {
       }
     } catch (e) {}
     if (S.metrika) S.metrika.goal('service_form');
+  }
+
+  /* --- анкета услуги: свои вопросы под каждую особенную позицию --- */
+  var svcAnswers = {};
+  function svcPriceVal() {
+    return svc && svc.priceFor ? svc.priceFor(svcAnswers) : (svc ? svc.from : 0);
+  }
+  function svcPricePaint() {
+    if (!svc || !svc.fixed) return;
+    var v = C.fmt(svcPriceVal()) + ' ₽';
+    put('base', v);
+    put('low', v);
+    if (priceEl) priceEl.textContent = v;
+    if (priceSrEl) priceSrEl.textContent = v;
+    var op = $('svcOfferPrice');
+    if (op) op.textContent = v;
+  }
+  if (svc) {
+    var askWrap = $('svcAsk');
+    if (askWrap && svc.ask && svc.ask.length) {
+      askWrap.hidden = false;
+      askWrap.innerHTML = svc.ask.map(function (q) {
+        var lbl = q.label + (q.req ? '' : ' · необязательно');
+        if (q.type === 'chips') {
+          return '<div class="field svc-q"><label>' + lbl + '</label>' +
+            '<div class="ct-chips" role="group" aria-label="' + q.label + '">' +
+            q.opts.map(function (o) {
+              return '<button type="button" class="ct-chip" data-ask="' + q.id + '" data-val="' + o + '">' + o + '</button>';
+            }).join('') + '</div></div>';
+        }
+        var inner = q.type === 'textarea'
+          ? '<textarea id="ask_' + q.id + '" rows="3" maxlength="800" placeholder="' + (q.ph || '') + '"></textarea>'
+          : '<input type="text" id="ask_' + q.id + '" maxlength="200" autocomplete="off" placeholder="' + (q.ph || '') + '" />';
+        return '<div class="field svc-q"><label for="ask_' + q.id + '">' + lbl + '</label>' + inner + '</div>';
+      }).join('');
+      askWrap.addEventListener('click', function (e) {
+        var chip = e.target.closest('[data-ask]');
+        if (!chip) return;
+        var qid = chip.getAttribute('data-ask');
+        svcAnswers[qid] = chip.getAttribute('data-val');
+        askWrap.querySelectorAll('[data-ask="' + qid + '"]').forEach(function (c) {
+          c.classList.toggle('on', c === chip);
+        });
+        svcPricePaint();
+      });
+    }
+    /* карточка-квитанция в шапке: у разбора плана — полная, у прочих — цена */
+    var offer = $('svcOffer');
+    if (offer) {
+      offer.hidden = false;
+      $('svcOfferCap').textContent = 'Отдельная услуга · ' + svc.label;
+      $('svcOfferPrice').textContent = svc.fixed
+        ? C.fmt(svc.from) + ' ₽' : 'от ' + C.fmt(svc.from) + ' ₽' + (svc.unit || '');
+      if (svc.id === 'plan') {
+        $('svcOfferList').innerHTML =
+          '<li><b>Структура глав</b> — план, который можно нести научному руководителю</li>' +
+          '<li><b>Реалистичный срок</b> — календарь сдачи по частям</li>' +
+          '<li><b>Фиксированная смета</b> — цена работы после разбора не меняется</li>';
+        var on = $('svcOfferNote');
+        on.hidden = false;
+        on.innerHTML = 'Продолжите работу в течение 14 дней — стоимость разбора <b>зачтётся полностью</b>. ' +
+          'Магистерские и кандидатские — 5 000 ₽ (цена ниже пересчитается сама).';
+      } else {
+        $('svcOfferList').innerHTML = '';
+      }
+    }
+    if (svc.fixed) {
+      put('high', 'цена фиксированная — доплат по ходу не будет');
+      put('pay', svc.id === 'plan'
+        ? 'Один платёж после подтверждения мастером. При продолжении работы сумма зачитывается в её стоимость.'
+        : 'Оплата одним платежом после подтверждения мастером.');
+      svcPricePaint();
+    }
   }
 
   /* --- файлы к заявке: очередь в памяти, уходят сразу после создания заказа.
@@ -1012,11 +1082,6 @@ function initConf() {
         if (has(C.tiers, q.tier)) state.tier = q.tier;
         if (topicIn && q.topic) topicIn.value = q.topic;
         if (deadlineIn && q.deadline) deadlineIn.value = q.deadline;
-        if (q.plan) {
-          plan = true;
-          if (planNoteEl) planNoteEl.hidden = false;
-          if (planEntryEl) planEntryEl.hidden = true;
-        }
         rgType.set(state.type);
         rgDisc.set(state.disc);
         rgTier.set(state.tier);
@@ -1041,6 +1106,25 @@ function initConf() {
       }
       if ($('fConsent') && !$('fConsent').checked) { S.toast('Отметьте согласие на обработку данных'); return; }
     }
+    /* ответы анкеты услуги — сводкой в требования (мастер видит всё сразу) */
+    var askText = '';
+    if (svc && svc.ask && svc.ask.length) {
+      var missing = null;
+      askText = svc.ask.map(function (q) {
+        var v = q.type === 'chips'
+          ? (svcAnswers[q.id] || '')
+          : (($('ask_' + q.id) || {}).value || '').trim();
+        if (q.req && !v && !missing) missing = q;
+        return v ? (q.short || q.label) + ': ' + v : '';
+      }).filter(Boolean).join('\n');
+      if (missing) {
+        S.toast('Ответьте, пожалуйста: ' + missing.label.toLowerCase());
+        var mel = document.querySelector('#svcAsk [data-ask="' + missing.id + '"], #ask_' + missing.id);
+        if (mel && mel.scrollIntoView) mel.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        return;
+      }
+      if (svc.fixed) askText += (askText ? '\n' : '') + 'Прайс услуги: ' + C.fmt(svcPriceVal()) + ' ₽';
+    }
     submitting = true;
     S.btnLoading(btnSubmit, true, 'Отправляем…');
     if (mNext) S.btnLoading(mNext, true, 'Отправляем…');
@@ -1048,7 +1132,8 @@ function initConf() {
       type: svc ? svcSrvId : state.type, disc: state.disc, term: state.term, tier: state.tier,
       topic: topicIn.value.trim(), plan: plan, name: name, contact: contactValue(), website: '',
       deadline: deadlineIn ? deadlineIn.value.trim() : '',
-      details: detailsIn ? detailsIn.value.trim() : '',
+      details: (askText ? 'Анкета услуги:\n' + askText + '\n\n' : '') +
+               (detailsIn ? detailsIn.value.trim() : ''),
       promo: promoCode || undefined,
       consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
       consent_doc: 'consent 1.1 · privacy 1.3 · oferta 1.1 · форма конфигуратора',
@@ -1111,10 +1196,10 @@ function initConf() {
     if (mcta) mcta.hidden = true;
     var done = $('confDone');
     done.hidden = false;
-    if (plan) {
+    if (svc && svc.id === 'plan') {
       var doneSpans = done.querySelectorAll('.done-steps li span:last-child');
-      if (doneSpans[0]) doneSpans[0].textContent = 'Изучим тему и методичку';
-      if (doneSpans[1]) doneSpans[1].textContent = 'Проведём разбор плана — структура глав и фиксированная смета';
+      if (doneSpans[0]) doneSpans[0].textContent = 'Изучим тему, требования и методичку';
+      if (doneSpans[1]) doneSpans[1].textContent = 'Проведём разбор — структура глав, срок и фиксированная смета';
       if (doneSpans[2]) doneSpans[2].textContent = 'Продолжите работу — стоимость разбора зачтётся в смету';
     }
     if (S.observeReveal) S.observeReveal(done);

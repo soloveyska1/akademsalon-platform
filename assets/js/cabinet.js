@@ -279,7 +279,7 @@ function initCabinet() {
       '<p class="petit" style="margin-bottom:16px">Соберите смету в конфигураторе — заявка попадёт к мастеру мгновенно, а статус появится прямо здесь.</p>' +
       '<div class="act-row" style="justify-content:center">' +
       '<a class="btn btn-wax" href="configurator.html">Рассчитать работу <span class="ar">→</span></a>' +
-      '<a class="btn btn-line" href="configurator.html?plan=1">Начать с разбора плана · 3 000 ₽</a></div>' +
+      '<a class="btn btn-line" href="configurator.html?service=pl">Начать с разбора плана · 3 000 ₽</a></div>' +
       '</div>' + clubBlock();
   }
 
