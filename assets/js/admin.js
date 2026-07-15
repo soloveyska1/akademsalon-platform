@@ -47,7 +47,10 @@ function initGodEye() {
     broadcast: 'рассылка клиентам', defense_offered: 'предложены услуги к защите',
     plan_set: 'план оплаты изменён', tg_linked: 'клиент привязал Telegram',
     admin_ping: 'напоминание о заявке', client_followup: 'напоминание клиенту о проверке',
-    deadline1: 'скоро срок сдачи', deadline3: 'до срока 3 дня'
+    deadline1: 'скоро срок сдачи', deadline3: 'до срока 3 дня',
+    fix_ack: 'правки взяты в работу — клиенту сообщили',
+    review_nudge: 'напоминание клиенту о проверке части',
+    accept_warn: 'предупреждение об авто-приёмке части'
   };
   var STATUS_WORD = { new: 'новая', priced: 'цена предложена', prepay: 'ждёт предоплату',
     work: 'в работе', check: 'на проверке', fix: 'правки', done: 'завершён', cancel: 'закрыт' };
@@ -1438,10 +1441,19 @@ function initGodEye() {
     }
   });
 
-  /* одноразовый вход по ссылке из бота: admin.html#alk=<ключ> (команда /panel) */
+  /* одноразовый вход по ссылке из бота: admin.html#alk=<ключ> (команда /panel).
+     Диплинк на дело: #alk=<ключ>&o=<id> или просто #o=<id> у вошедшего мастера —
+     карточка заказа открывается сразу (кнопка «Открыть в админке» в боте). */
   function tryLinkLogin(next) {
-    var mch = (location.hash || '').match(/alk=([A-Za-z0-9_-]+)/);
-    if (!mch) { next(); return; }
+    var h = location.hash || '';
+    var mo = h.match(/(?:^#|[#&])o=(\d+)/);
+    if (mo) { st.tab = 'orders'; st.filter = ''; st.sel = parseInt(mo[1], 10); }
+    var mch = h.match(/alk=([A-Za-z0-9_-]+)/);
+    if (!mch) {
+      if (mo) history.replaceState(null, '', location.pathname);
+      next();
+      return;
+    }
     history.replaceState(null, '', location.pathname);
     S.api.post('/admin/login', { key: mch[1] }).then(function (r) {
       if (r.ok && r.token) {
