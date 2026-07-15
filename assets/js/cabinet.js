@@ -2052,7 +2052,15 @@ function initCabinet() {
       doAction('request_fixes', { comment: txt.trim() });
       return;
     }
-    if (t.closest('[data-chat-focus]')) { var ta = document.getElementById('chatText'); if (ta) { ta.focus(); ta.scrollIntoView({ block: 'center' }); } return; }
+    if (t.closest('[data-chat-focus]')) {
+      /* поле чата может лежать в свёрнутой секции — сперва раскрываем её,
+         иначе focus() по скрытому полю молча не срабатывает */
+      var chatFold = document.getElementById('secChat');
+      if (chatFold && chatFold.tagName === 'DETAILS' && !chatFold.open) chatFold.open = true;
+      var ta = document.getElementById('chatText');
+      if (ta) { ta.focus(); ta.scrollIntoView({ block: 'center' }); }
+      return;
+    }
   });
 
   /* живой пересчёт «деньгами останется…» при движении ползунка */
