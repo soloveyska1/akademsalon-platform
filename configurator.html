@@ -463,6 +463,14 @@
               <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
               <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
               <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
+    <details class="lq-cheaper petit" style="margin-top:10px">
+      <summary class="link" style="cursor:pointer">Дороже, чем рассчитывали? Три честных способа снизить</summary>
+      <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
+        <li data-lg="chTerm"></li>
+        <li data-lg="chTier"></li>
+        <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span> — структура, срок и точная смета; зачтётся в цену работы.</li>
+      </ul>
+    </details>
             </div>
           </aside>
         </div>
@@ -518,6 +526,14 @@
     <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
     <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
     <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
+    <details class="lq-cheaper petit" style="margin-top:10px">
+      <summary class="link" style="cursor:pointer">Дороже, чем рассчитывали? Три честных способа снизить</summary>
+      <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
+        <li data-lg="chTerm"></li>
+        <li data-lg="chTier"></li>
+        <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span> — структура, срок и точная смета; зачтётся в цену работы.</li>
+      </ul>
+    </details>
   </div>
   <div class="mq-bar">
     <button type="button" class="mq-total" id="mqToggle" aria-expanded="false" aria-controls="mqPanel">
@@ -628,6 +644,7 @@ function initConf() {
       });
     });
     document.querySelectorAll('.lg-total > b').forEach(function (b) { b.textContent = 'Итого'; });
+    document.querySelectorAll('.lq-cheaper').forEach(function (el) { el.hidden = true; });
     put('low', svcFrom);
     if (priceEl) priceEl.textContent = svcFrom;
     if (priceSrEl) priceSrEl.textContent = svcFrom;
@@ -890,6 +907,16 @@ function initConf() {
     document.querySelectorAll('.lq-plus').forEach(function (el) { el.hidden = !showPlus; });
     if (showPlus) put('plus', 'С абонементом «Салон+» этот заказ — до −' + C.fmt(plusSave) +
       ' ₽, плюс приоритет мастера. От 449 ₽/мес.');
+    /* «как сделать дешевле» — честный даун-селл вместо молчаливого ухода */
+    var qTermFree = C.quote(state.type, state.disc, 'free', state.tier);
+    put('chTerm', state.term !== 'free'
+      ? 'Сдвиньте срок к «от 30 дней» — минус ~' + C.fmt(q.low - qTermFree.low) + ' ₽: наценка за срочность уйдёт.'
+      : 'Свободный срок уже выбран — наценки за срочность нет.');
+    var qTierBase = C.quote(state.type, state.disc, state.term, 'base');
+    put('chTier', state.tier !== 'base'
+      ? 'Уровень «Базовый» вместо «' + v.label + '» — минус ~' + C.fmt(q.low - qTierBase.low) + ' ₽ (сопровождение можно докупить позже).'
+      : 'Уровень «Базовый» уже выбран — без наценки за сопровождение.');
+    put('chPlan', (state.type === 'master' || state.type === 'kandidat') ? '5 000 ₽' : '3 000 ₽');
     if (profileEl && window.SalonExperts) profileEl.textContent = (window.SalonExperts[state.disc] || {}).desc || '';
   }
 

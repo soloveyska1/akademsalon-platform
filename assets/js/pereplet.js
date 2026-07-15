@@ -163,6 +163,11 @@
 
       /* входной билет в рублях: большая цифра пугает, а стартовый платёж
          втрое меньше — показываем его сразу, это честно и снимает шок */
+      var slotsEl = document.getElementById('qSlots');
+      if (slotsEl && window.SalonSlots && window.SalonSlots.enabled) {
+        slotsEl.textContent = window.SalonSlots.label;
+        slotsEl.hidden = false;
+      }
       var startEl = document.getElementById('qStart');
       if (startEl) {
         if (state.type === 'kandidat') {

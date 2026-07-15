@@ -678,6 +678,67 @@
     container.appendChild(el);
   };
 
+  /* ---------------- «Спросите мастера» — микролид на гайдах ----------------
+     Гайды ловят информационный трафик, но «рассчитать стоимость» — слишком
+     большой шаг для читателя статьи. Вопрос в одно поле — мостик к мастеру:
+     уходит обычной заявкой в общую картотеку (тип «консультация»). */
+  (function guideLead() {
+    if (!/^guide-/.test(here) && here !== 'knowledge.html') return;
+    if (!S.api) return;
+    var host = document.querySelector('aside.sheet');
+    if (!host) return;
+    var authed = function () { return !!S.api.token(); };
+    var box = document.createElement('div');
+    box.style.cssText = 'margin-top:18px;padding-top:16px;border-top:1px solid var(--hairline)';
+    box.innerHTML =
+      '<p class="caps" style="margin-bottom:8px">Или спросите мастера прямо здесь</p>' +
+      '<textarea id="glQ" rows="3" maxlength="600" placeholder="Что осталось непонятным? Спросите своими словами — ответим по-человечески" ' +
+        'style="width:100%;font:inherit;font-size:15px;padding:11px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;resize:vertical"></textarea>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">' +
+        '<input type="text" id="glC" placeholder="Telegram, ВК или почта — куда ответить" ' +
+          'style="flex:2;min-width:200px;font:inherit;font-size:15px;padding:11px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
+        '<button type="button" class="btn btn-wax" id="glGo" style="flex:1;min-width:150px">Отправить вопрос</button>' +
+      '</div>' +
+      '<label class="petit" id="glOkRow" style="display:flex;gap:8px;align-items:flex-start;margin-top:10px;cursor:pointer">' +
+        '<input type="checkbox" id="glOk" style="margin-top:3px">' +
+        '<span>Согласен(на) на обработку данных для ответа на вопрос — <a class="link" href="privacy.html" target="_blank">политика</a></span></label>' +
+      '<p class="petit" style="margin-top:8px;color:var(--ink-faint)">Вопрос бесплатный и ни к чему не обязывает — попадёт мастеру вместе с названием статьи.</p>';
+    host.appendChild(box);
+    if (authed()) { var r0 = box.querySelector('#glOkRow'); if (r0) r0.hidden = true; }
+    box.querySelector('#glGo').addEventListener('click', function () {
+      var q = box.querySelector('#glQ').value.trim();
+      var c = box.querySelector('#glC').value.trim();
+      if (q.length < 5) { S.toast('Напишите вопрос — хотя бы пару слов'); return; }
+      if (!authed()) {
+        if (!c) { S.toast('Оставьте контакт — куда прислать ответ'); return; }
+        if (S.valid && S.valid.contact && !S.valid.contact(c)) { S.toast('Контакт не похож на телефон, ВК, Telegram или почту'); return; }
+        if (!box.querySelector('#glOk').checked) { S.toast('Отметьте согласие на обработку данных'); return; }
+      }
+      var btn = box.querySelector('#glGo');
+      S.btnLoading(btn, true, 'Отправляем…');
+      var h1 = document.querySelector('h1');
+      S.api.post('/orders', {
+        type: 'svc_tutor', disc: 'hum', term: 'free', tier: 'base',
+        topic: 'Вопрос с гайда: ' + (h1 ? h1.textContent.trim().slice(0, 120) : here),
+        details: q, name: '', contact: c, website: '', deadline: '',
+        consent: true,
+        consent_doc: 'consent 1.2 · privacy 1.6 · oferta 1.4 · вопрос с гайда',
+        page: here
+      }).then(function (r) {
+        S.btnLoading(btn, false);
+        if (r && r.ok) {
+          box.innerHTML = '<p class="caps" style="margin-bottom:8px">Вопрос у мастера ✓</p>' +
+            '<p class="lead" style="margin:0">Ответим' + (c ? ' — ' + c.replace(/</g, '&lt;') : '') +
+            '. Обычно это 15–30 минут днём; ночью — чуть дольше, но тоже отвечаем.</p>';
+          if (S.metrika) S.metrika.goal('guide_lead');
+          if (S.visit) S.visit.mark('вопрос с гайда');
+        } else {
+          S.toast('Не отправилось — сеть шалит. Продублируйте вопрос боту: t.me/academic_saloon_bot');
+        }
+      });
+    });
+  })();
+
   /* ---------------- «Ваша смета ждёт» — закладка для вернувшихся ----------------
      Гость считал в конфигураторе (savedAt > 0 — квик-калк главной пишет 0),
      ушёл, вернулся на витрину — напоминаем одной строкой-«ляссе». Возврат
