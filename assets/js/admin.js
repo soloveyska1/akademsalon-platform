@@ -72,8 +72,37 @@ function initGodEye() {
     clients: [], csel: null, ccard: null,
     reviews: [], leads: [],
     subs: null,               /* /admin/subs: оформления подписки (свой контур) */
-    ov: null, timer: null, busy: false
+    ov: null, timer: null, busy: false,
+    visits: null, vstats: null,                    /* «Глаз бога»: лента заходов */
+    vopts: { hours: 24, self: false, bots: false },
+    vopen: {},                                     /* раскрытые строки визитов */
+    vtimer: null,
+    bulk: null                                     /* Set(id) — режим массовых действий */
   };
+
+  /* цветные метки заказов: имя → чернила «Оттиска» */
+  var CLR = { red: '#B23B22', gold: '#8A6D1C', green: '#2E6B4F', blue: '#3A4E7A', violet: '#6B4B8A' };
+  var CLR_NAME = { red: 'сургуч', gold: 'золото', green: 'зелёный', blue: 'синий', violet: 'фиолетовый' };
+
+  /* пин/цвет/скрыть/корзина — один вызов и для карточки, и для пачки */
+  function flag(ids, payload, after) {
+    payload.ids = ids;
+    S.api.post('/admin/orders/flag', payload).then(function (r) {
+      if (!r || !r.ok) { toast('Не получилось — попробуйте ещё раз'); return; }
+      if (after) after(r);
+    });
+  }
+
+  function bulkApply(payload) {
+    if (!st.bulk || !st.bulk.size) { toast('Сначала отметьте заказы галочками'); return; }
+    var ids = [];
+    st.bulk.forEach(function (id) { ids.push(id); });
+    flag(ids, payload, function () {
+      toast('Готово · ' + ids.length + ' шт.');
+      st.bulk = new Set();
+      loadTab();
+    });
+  }
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -166,7 +195,7 @@ function initGodEye() {
   }
 
   function refreshSilent() {
-    S.api.get('/admin/overview').then(function (r) { if (r.ok) { st.ov = r; drawNav(); if (st.tab === 'summary') drawBody(); } });
+    S.api.get('/admin/overview').then(function (r) { if (r.ok) { st.ov = r; drawNav(); drawLive(); if (st.tab === 'summary') drawBody(); } });
     loadSubs();
     if (st.tab === 'orders') {
       S.api.get('/admin/orders?' + listQuery()).then(function (r) {
@@ -184,6 +213,16 @@ function initGodEye() {
     return parts.join('&');
   }
   function loadTab(openFirst) {
+    /* лента визитов сама себя освежает — таймер живёт, пока открыта вкладка */
+    if (st.vtimer) { clearInterval(st.vtimer); st.vtimer = null; }
+    if (st.tab === 'visits') {
+      drawBody();
+      loadVisits();
+      st.vtimer = setInterval(function () {
+        if (st.tab === 'visits' && !document.hidden) loadVisits(true);
+      }, 12000);
+      return;
+    }
     if (st.tab === 'orders') {
       S.api.get('/admin/orders?' + listQuery()).then(function (r) {
         if (!r.ok) return;
@@ -215,6 +254,167 @@ function initGodEye() {
       drawBody();
     }
   }
+  /* ---------------- ВИЗИТЫ («все заходы») ---------------- */
+  function loadVisits(silent) {
+    var o = st.vopts;
+    var qs = 'hours=' + o.hours + (o.self ? '&self=1' : '') + (o.bots ? '&bots=1' : '');
+    S.api.get('/admin/visits?' + qs).then(function (r) {
+      if (!r || !r.ok) return;
+      st.visits = r.visits;
+      st.vstats = r.stats;
+      if (st.tab === 'visits') drawVisits(silent);
+      if (st.tab === 'summary') drawBody();
+    });
+  }
+
+  /* устройство и браузер — коротко, по user-agent */
+  function devLabel(ua) {
+    ua = String(ua || '');
+    var dev = /iPhone|iPad/.test(ua) ? '📱 iPhone'
+      : /Android.*Mobile/.test(ua) ? '📱 Android'
+      : /Android/.test(ua) ? '📱 планшет'
+      : /Mobile/.test(ua) ? '📱'
+      : '💻';
+    var br = /YaBrowser/.test(ua) ? 'Яндекс.Браузер'
+      : /Edg\//.test(ua) ? 'Edge'
+      : /OPR\//.test(ua) ? 'Opera'
+      : /Firefox\//.test(ua) ? 'Firefox'
+      : /Chrome\//.test(ua) ? 'Chrome'
+      : /Safari\//.test(ua) ? 'Safari' : '';
+    return dev + (br ? ' · ' + br : '');
+  }
+
+  function refLabel(ref) {
+    if (!ref) return '';
+    var s = String(ref);
+    var m = /https?:\/\/([^\/]+)/.exec(s);
+    var host = m ? m[1].replace(/^www\./, '') : '';
+    var q = /[?&]text=([^&]+)/.exec(s); /* запрос из поисковика — золото */
+    var word = '';
+    if (q) { try { word = decodeURIComponent(q[1].replace(/\+/g, ' ')); } catch (e) {} }
+    if (/utm_/.test(s) && !host) return '🎯 ' + s.replace(/^[?&]/, '').slice(0, 60);
+    if (!host) return s.slice(0, 60);
+    var ic = /yandex|ya\.ru/.test(host) ? '🔎' : /google/.test(host) ? '🔎'
+      : /vk\.com|vk\.ru/.test(host) ? '💙' : /t\.me|telegram/.test(host) ? '✈️' : '🔗';
+    return ic + ' ' + host + (word ? ' · «' + word.slice(0, 48) + '»' : '');
+  }
+
+  function pageName(p) {
+    var map = {
+      '/index.html': 'главная', '/': 'главная', '/configurator.html': 'калькулятор',
+      '/tariffs.html': 'цены', '/plan.html': 'разбор плана', '/guarantees.html': 'гарантии',
+      '/reviews.html': 'отзывы', '/loyalty.html': 'клуб', '/dashboard.html': 'кабинет',
+      '/referral.html': 'приглашения', '/knowledge.html': 'база знаний', '/check.html': 'проверка'
+    };
+    var path = String(p || '').split('?')[0];
+    return map[path] || path.replace(/^\//, '').replace('.html', '') || '—';
+  }
+
+  function minsAgo(iso) {
+    var t = new Date(iso + (String(iso).indexOf('Z') < 0 ? 'Z' : ''));
+    if (isNaN(t)) return 9999;
+    return Math.floor((Date.now() - t) / 60000);
+  }
+
+  function visitRow(v) {
+    var online = minsAgo(v.at) < 3;
+    var who;
+    if (v.user && v.user.name) {
+      who = '👤 ' + esc(v.user.name) + (v.user.username ? ' @' + esc(v.user.username) : '');
+    } else if (v.contact) {
+      who = '☎ ' + esc(v.contact);
+    } else {
+      who = 'аноним · ' + esc(v.vid);
+    }
+    var known = !!(v.user || v.contact);
+    var stepCls = v.order_id ? 'v-step done' : 'v-step';
+    var stepTxt = v.order_id
+      ? '✓ заявка №' + v.order_id
+      : (v.step ? '⚑ ' + esc(v.step) : '');
+    var path = v.entry === v.page
+      ? pageName(v.entry)
+      : pageName(v.entry) + ' → ' + pageName(v.page);
+    var dur = Math.max(0, Math.round((new Date(v.at + 'Z') - new Date(v.started + 'Z')) / 60000));
+    var open = st.vopen[v.id];
+    return '<div class="ag-vrow" data-vrow="' + v.id + '">' +
+      '<div class="v-top">' +
+        (online ? '<span class="v-on" title="на сайте прямо сейчас"></span>' : '') +
+        '<span class="v-time">' + dt(v.at) + '</span>' +
+        '<span class="v-geo">' + esc(v.geo || (v.bot ? 'робот' : 'откуда — выясняем…')) + '</span>' +
+        '<span class="v-dev">' + devLabel(v.ua) + (v.bot ? ' · 🤖 бот' : '') + '</span>' +
+        '<span class="v-who' + (known ? ' known' : '') + '">' + who + '</span>' +
+      '</div>' +
+      '<div class="v-sub">' +
+        '<span>' + esc(path) + ' · стр: ' + (v.pages || 1) +
+          (dur ? ' · ' + dur + ' мин' : '') + '</span>' +
+        (stepTxt ? '<span class="' + stepCls + '">' + stepTxt + '</span>' : '') +
+        (v.ref ? '<span class="v-ref" title="' + esc(v.ref) + '">' + esc(refLabel(v.ref)) + '</span>' : '') +
+      '</div>' +
+      (open ? visitDetails(v) : '') +
+      '</div>';
+  }
+
+  function visitDetails(v) {
+    var links = (v.links || []).map(function (l) {
+      return '<a href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + esc(l[0]) + '</a>';
+    }).join(' · ');
+    var refFull = v.ref || '';
+    try { refFull = decodeURIComponent(refFull); } catch (e) {}
+    return '<div class="v-det">' +
+      '<span>Сессия с ' + dt(v.started) + ' · последняя активность ' + dt(v.at) + '</span>' +
+      '<span>Вход: <b>' + esc(v.entry || '—') + '</b> → сейчас: <b>' + esc(v.page || '—') + '</b></span>' +
+      (refFull ? '<span>Источник: ' + esc(refFull) + '</span>' : '') +
+      '<span class="mono">IP ' + esc(v.ip || '—') + (v.org ? ' · ' + esc(v.org) : '') +
+        ' · <a href="https://ipinfo.io/' + esc(v.ip || '') + '" target="_blank" rel="noopener">подробнее об IP</a></span>' +
+      '<span class="mono">' + esc(v.ua || '') + '</span>' +
+      (links ? '<span>Связаться: ' + links + '</span>' : '') +
+      ((v.user && v.user.id > 0) ? '<span><button type="button" class="ag-linkbtn" data-open-client="' + v.user.id + '">карточка клиента →</button></span>' : '') +
+      (v.order_id ? '<span><button type="button" class="ag-linkbtn" data-open-order="' + v.order_id + '">открыть заявку №' + v.order_id + ' →</button></span>' : '') +
+      '</div>';
+  }
+
+  function tplVisits() {
+    return '<div class="ag-tiles" id="agVTiles"></div>' +
+      '<div class="ag-filters" id="agVFilters"></div>' +
+      '<div class="ag-vwrap" id="agVList"><div class="ag-empty">Слушаем эфир…</div></div>' +
+      '<p class="ag-note" style="margin-top:10px">Сессия — заходы без паузы больше 30 минут. ' +
+      'Гео определяется по IP (примерно, город может съезжать на соседний). Контакт появляется, ' +
+      'когда посетитель вошёл, оставил заявку или смету. Лента обновляется сама каждые 12 секунд.</p>';
+  }
+
+  function drawVisits(keepScroll) {
+    var tiles = document.getElementById('agVTiles');
+    var flt = document.getElementById('agVFilters');
+    var list = document.getElementById('agVList');
+    if (!tiles || !list) return;
+    var s = st.vstats || {};
+    var conv = s.uniq ? Math.round((s.with_order || 0) / s.uniq * 100) : 0;
+    function tile(n, l, cls) {
+      return '<div class="ag-tile ' + (cls || '') + '"><div class="t-num">' + n + '</div>' +
+        '<div class="t-lbl">' + l + '</div></div>';
+    }
+    tiles.innerHTML =
+      tile(s.online || 0, 'на сайте сейчас', s.online ? 'calm' : '') +
+      tile(s.visits || 0, 'визитов за сутки') +
+      tile(s.uniq || 0, 'уникальных') +
+      tile(s.with_order || 0, 'дошли до заявки', s.with_order ? 'calm' : '') +
+      tile(conv + '%', 'конверсия в заявку');
+    var o = st.vopts;
+    if (flt) flt.innerHTML = [[24, 'Сутки'], [72, '3 дня'], [168, 'Неделя'], [720, '30 дней']]
+      .map(function (h) {
+        return '<button type="button" class="ag-chip' + (o.hours === h[0] ? ' on' : '') + '" data-vh="' + h[0] + '">' + h[1] + '</button>';
+      }).join('') +
+      '<button type="button" class="ag-chip' + (o.self ? ' on' : '') + '" data-vt="self">мои заходы</button>' +
+      '<button type="button" class="ag-chip' + (o.bots ? ' on' : '') + '" data-vt="bots">🤖 роботы</button>';
+    var rows = st.visits || [];
+    var top = keepScroll ? list.scrollTop : 0;
+    list.innerHTML = rows.length
+      ? rows.map(visitRow).join('')
+      : '<div class="ag-empty">Пока тихо — за выбранный период заходов нет.<br>' +
+        '<span class="petit">Маячок появился на сайте только что: лента наполнится с первыми посетителями.</span></div>';
+    if (keepScroll) list.scrollTop = top;
+  }
+
   function loadCard(id, silent) {
     st.sel = id;
     S.api.get('/admin/orders/' + id).then(function (r) {
@@ -251,13 +451,26 @@ function initGodEye() {
   function renderShell() {
     var u = S.api.user() || {};
     render(
-      '<div class="ag-mast"><h1><span class="mono">Академический салон · картотека</span>Кабинет мастера</h1>' +
-      '<div class="ag-user"><span>мастер: <b>' + esc(u.name || '—') + '</b></span>' +
+      '<div class="ag-mast"><h1><span class="mono">Академический салон · глаз бога</span>Кабинет мастера</h1>' +
+      '<button type="button" class="ag-live quiet" id="agLive" title="Кто на сайте прямо сейчас — открыть визиты">' +
+        '<span class="ld"></span><span>на сайте <b id="agLiveN">0</b></span></button>' +
+      '<div class="ag-user">' + (S.themeToggleHTML ? S.themeToggleHTML() : '') +
+      '<span>мастер: <b>' + esc(u.name || '—') + '</b></span>' +
+      '<a class="ag-linkbtn" href="index.html">на сайт</a>' +
       '<a class="ag-linkbtn" href="dashboard.html">клиентский кабинет</a>' +
       '<button type="button" class="ag-linkbtn" id="agLogout">выйти</button></div></div>' +
       '<div class="ag-nav" id="agNav"></div>' +
       '<div id="agBody"></div>');
     drawNav();
+    drawLive();
+  }
+
+  function drawLive() {
+    var v = (st.ov && st.ov.visits) || {};
+    var chip = document.getElementById('agLive'), n = document.getElementById('agLiveN');
+    if (!chip || !n) return;
+    n.textContent = v.online || 0;
+    chip.classList.toggle('quiet', !(v.online > 0));
   }
 
   function navBadges() {
@@ -273,8 +486,10 @@ function initGodEye() {
     var box = document.getElementById('agNav');
     if (!box) return;
     var b = navBadges();
+    var online = (st.ov && st.ov.visits && st.ov.visits.online) || 0;
     var tabs = [
-      ['summary', '◫ Сводка', 0],
+      ['summary', '◉ Пульс', 0],
+      ['visits', '👁 Визиты', online],
       ['orders', '🗂 Заказы', b.orders],
       ['clients', '👥 Клиенты', 0],
       ['reviews', '⭐ Отзывы', b.reviews],
@@ -283,22 +498,29 @@ function initGodEye() {
       ['settings', '⚙️ Настройки', 0]
     ];
     box.innerHTML = tabs.map(function (t) {
+      var bcls = t[0] === 'visits' ? 'ag-badge mut' : 'ag-badge';
       return '<button type="button" class="ag-tab' + (st.tab === t[0] ? ' on' : '') + '" data-tab="' + t[0] + '">' + t[1] +
-        (t[2] ? '<span class="ag-badge">' + t[2] + '</span>' : '') + '</button>';
+        (t[2] ? '<span class="' + bcls + '">' + t[2] + '</span>' : '') + '</button>';
     }).join('');
   }
 
   function drawBody() {
     var box = document.getElementById('agBody');
     if (!box) return;
-    if (st.tab === 'summary') { box.innerHTML = tplSummary(); return; }
+    if (st.tab === 'summary') {
+      box.innerHTML = tplSummary();
+      if (st.visits === null) loadVisits(); /* мини-лента заходов дозагрузится сама */
+      return;
+    }
+    if (st.tab === 'visits') { box.innerHTML = tplVisits(); drawVisits(); return; }
     if (st.tab === 'orders') {
       box.innerHTML =
         '<div class="ag-filters" id="agFilters"></div>' +
         '<div class="ag-split">' +
           '<div class="ag-list" id="agList"></div>' +
           '<div class="ag-card" id="agCard"><div class="ag-empty">Выберите заказ слева</div></div>' +
-        '</div>';
+        '</div>' +
+        '<div id="agBulkWrap"></div>';
       drawFilters();
       drawList();
       if (st.card) drawCard();
@@ -387,6 +609,7 @@ function initGodEye() {
     if (by.fix) attn.push({ f: 'fix', ic: '✏️', t: '<b>Правки: ' + by.fix + '</b> — клиенты ждут исправленную версию' });
     if (by.check) attn.push({ f: 'check', ic: '📤', t: 'На проверке у клиентов: ' + by.check });
     if (ov.reviews_pending) attn.push({ f: '@reviews', ic: '⭐', t: '<b>Отзывы на модерации: ' + ov.reviews_pending + '</b> — опубликовать или отклонить' });
+    var vs = ov.visits || {};
     return '' +
       '<div class="ag-tiles">' +
       tile(by.new || 0, 'новые заявки', by.new ? 'warn' : '', 'new') +
@@ -394,10 +617,12 @@ function initGodEye() {
       tile(active, 'активные заказы', '', 'active') +
       tile((by.fix || 0), 'в правках', by.fix ? 'warn' : '', 'fix') +
       tile(money(ov.month && ov.month.revenue) + ' ₽', 'выручка за 30 дней', 'calm') +
-      tile(ov.users || 0, 'клиентов', '') +
+      tile('👁 ' + (vs.online || 0), 'на сайте сейчас', vs.online ? 'calm' : '', '@visits') +
+      tile(vs.uniq || 0, 'посетителей за сутки', '', '@visits') +
       tile(ov.subs_active || 0, '⭐ подписчиков', ov.subs_claimed ? 'warn' : 'calm') +
       '</div>' +
       weeksChart(ov) +
+      miniVisits() +
       tplSubs(ov) +
       (attn.length
         ? '<p class="caps" style="margin-bottom:8px">Требует вашего внимания</p><div class="ag-attn">' +
@@ -445,6 +670,15 @@ function initGodEye() {
       '<div class="ag-attn">' + rows + '</div>';
   }
 
+  /* мини-лента заходов на «Пульсе»: последние 6, клик — во вкладку «Визиты» */
+  function miniVisits() {
+    var rows = (st.visits || []).slice(0, 6);
+    if (!rows.length) return '';
+    return '<p class="caps" style="margin:18px 0 8px">Последние заходы ' +
+      '<button type="button" class="ag-linkbtn" data-tab-go="visits" style="text-transform:none;letter-spacing:0;font-size:12px">все визиты →</button></p>' +
+      '<div class="ag-vwrap">' + rows.map(visitRow).join('') + '</div>';
+  }
+
   /* выручка по неделям — тихие столбики без библиотек */
   function weeksChart(ov) {
     var w = ov.weeks || [];
@@ -466,7 +700,7 @@ function initGodEye() {
     if (!box) return;
     var chips = [['attention', '❗ Требуют действий'], ['active', 'Активные'], ['', 'Все']]
       .concat(Object.keys(ST_META).map(function (k) { return [k, stMeta(k)[0] + ' ' + stMeta(k)[1]]; }))
-      .concat([['archive', '🗄 Архив']]);
+      .concat([['archive', '🗄 Архив'], ['trash', '🗑 Корзина']]);
     box.innerHTML = chips.map(function (c) {
       return '<button type="button" class="ag-chip' + (st.filter === c[0] ? ' on' : '') + '" data-f="' + c[0] + '">' + c[1] + '</button>';
     }).join('') +
@@ -475,7 +709,31 @@ function initGodEye() {
         '<option value="fresh"' + (st.sort === 'fresh' ? ' selected' : '') + '>сначала новые</option>' +
         '<option value="updated"' + (st.sort === 'updated' ? ' selected' : '') + '>по последнему движению</option>' +
         '<option value="deadline"' + (st.sort === 'deadline' ? ' selected' : '') + '>по сроку сдачи</option>' +
-      '</select>';
+      '</select>' +
+      '<button type="button" class="ag-chip' + (st.bulk ? ' on' : '') + '" id="agBulkToggle" ' +
+      'title="Выделить несколько заказов и разом закрепить, скрыть, покрасить или убрать в корзину">☑ Выбрать</button>';
+  }
+
+  /* панель массовых действий — живёт под списком, пока включён режим ☑ */
+  function bulkBar() {
+    if (!st.bulk) return '';
+    var n = st.bulk.size;
+    var trash = st.filter === 'trash';
+    return '<div class="ag-bulkbar" id="agBulkBar">' +
+      '<b>' + (n ? 'выбрано: ' + n : 'отметьте заказы галочками') + '</b>' +
+      (n ? '<button type="button" class="btn btn-line" data-bulk="pin">📌 Закрепить</button>' +
+        '<button type="button" class="btn btn-line" data-bulk="unpin">Открепить</button>' +
+        '<span class="ag-pal">' + ['red', 'gold', 'green', 'blue', 'violet'].map(function (c) {
+          return '<button type="button" class="clr-dot" data-bulk-clr="' + c + '" title="' + CLR_NAME[c] + '" style="background:' + CLR[c] + '"></button>';
+        }).join('') +
+        '<button type="button" class="clr-dot" data-bulk-clr="" title="без цвета" style="background:transparent"></button></span>' +
+        (trash
+          ? '<button type="button" class="btn btn-wax" data-bulk="restore">↩ Восстановить</button>'
+          : '<button type="button" class="btn btn-line" data-bulk="hide">🗄 Скрыть</button>' +
+            '<button type="button" class="btn btn-wax" data-bulk="trash">🗑 В корзину</button>')
+      : '') +
+      '<button type="button" class="ag-linkbtn" data-bulk="off" style="margin-left:auto">✕ готово</button>' +
+      '</div>';
   }
 
   function sortedOrders() {
@@ -512,7 +770,17 @@ function initGodEye() {
         var left = Math.ceil((new Date(o.deadline_date + 'T23:59:59') - new Date()) / 86400000);
         if (!isNaN(left)) dl = ' · ⏳ ' + (left < 0 ? 'срок вышел' : left === 0 ? 'сдача сегодня' : left + ' дн.');
       }
-      return '<button type="button" class="ag-row' + (o.id === st.sel ? ' sel' : '') + '" data-id="' + o.id + '">' +
+      /* цветной корешок мастера — поверх маркера выбранности */
+      var clrStyle = o.color && CLR[o.color]
+        ? ' style="border-left-color:' + CLR[o.color] + ';border-left-width:4px"' : '';
+      var ck = st.bulk
+        ? '<input type="checkbox" class="ag-ck" data-ck="' + o.id + '"' +
+          (st.bulk.has(o.id) ? ' checked' : '') + '>'
+        : '';
+      return '<button type="button" class="ag-row' + (o.id === st.sel ? ' sel' : '') +
+        (o.pinned ? ' pin' : '') + '" data-id="' + o.id + '"' + clrStyle + '>' +
+        ck +
+        (o.pinned ? '<span class="r-pin" title="закреплён">📌</span>' : '') +
         '<span class="r-no">№' + o.id + '</span>' +
         '<span class="r-main"><span class="r-t">' + m[0] + ' ' + esc(o.work_label || '') + '</span>' +
         '<span class="r-s">' + esc(who) + ' · ' + dt(o.created_at) + dl +
@@ -525,6 +793,8 @@ function initGodEye() {
       ? '<button type="button" class="ag-row ag-more" id="agMore">Показать ещё ' +
         Math.min(40, arr.length - st.listLimit) + ' из ' + (arr.length - st.listLimit) + '</button>'
       : '');
+    var bb = document.getElementById('agBulkWrap');
+    if (bb) bb.innerHTML = bulkBar();
   }
 
   /* ---------------- карточка дела ---------------- */
@@ -851,6 +1121,27 @@ function initGodEye() {
     }).join('') + '</div>';
   }
 
+  /* быстрые действия мастера: пин, цвет, скрыть, корзина — прямо в шапке дела */
+  function quickRow(o) {
+    var pal = ['red', 'gold', 'green', 'blue', 'violet'].map(function (c) {
+      return '<button type="button" class="clr-dot' + (o.color === c ? ' on' : '') + '" data-card-clr="' + c + '" ' +
+        'title="метка «' + CLR_NAME[c] + '»" style="background:' + CLR[c] + '"></button>';
+    }).join('') +
+      '<button type="button" class="clr-dot' + (!o.color ? ' on' : '') + '" data-card-clr="" title="без метки" style="background:transparent"></button>';
+    return '<div class="ag-quick">' +
+      '<button type="button" class="ag-qbtn' + (o.pinned ? ' on' : '') + '" data-card-flag="pin" ' +
+        'title="Закреплённые заказы всегда наверху списка">📌 ' + (o.pinned ? 'Закреплён' : 'Закрепить') + '</button>' +
+      '<span class="ag-pal" title="Цветная метка — для своих пометок: срочное, ждёт, VIP…">' + pal + '</span>' +
+      (o.deleted
+        ? '<button type="button" class="ag-qbtn" data-card-flag="restore">↩ Вернуть из корзины</button>'
+        : '<button type="button" class="ag-qbtn' + (o.archived_admin ? ' on' : '') + '" data-card-flag="hide" ' +
+            'title="Скрыть с рабочего стола — заказ уедет в «Архив», клиент ничего не заметит">' +
+            (o.archived_admin ? '🗄 В архиве' : '🗄 Скрыть') + '</button>' +
+          '<button type="button" class="ag-qbtn" data-card-flag="trash" ' +
+            'title="Убрать в корзину: пропадёт из всех списков, кроме «Корзины». Данные не стираются">🗑 В корзину</button>') +
+      '</div>';
+  }
+
   function drawCard() {
     var box = document.getElementById('agCard');
     var o = st.card;
@@ -859,10 +1150,11 @@ function initGodEye() {
     box.innerHTML =
       '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
       '<span class="mono petit">Дело №' + o.id + ' · ' + esc(o.source || '') + ' · создано ' + dt(o.created_at) +
-      (o.archived_admin ? ' · 🗄 в архиве' : '') + '</span>' +
+      (o.archived_admin ? ' · 🗄 в архиве' : '') + (o.deleted ? ' · 🗑 в корзине' : '') + '</span>' +
       '<span>' + (o.paused ? '<span class="ag-stamp st-cancel" style="margin-right:6px">⏸ пауза</span>' : '') +
       stamp(o.status) + '</span></div>' +
-      '<h2>' + esc(o.work_label || '') + '</h2>' +
+      '<h2>' + (o.pinned ? '📌 ' : '') + esc(o.work_label || '') + '</h2>' +
+      quickRow(o) +
       (o.topic ? '<p class="ag-topic">«' + esc(o.topic) + '»</p>' : '') +
       clientLine(o) +
       (hint ? '<div class="ag-next ' + hint[0] + '">' + hint[1] + '</div>' : '') +
@@ -1131,13 +1423,90 @@ function initGodEye() {
 
     var tab = t.closest('.ag-tab');
     if (tab) { st.tab = tab.getAttribute('data-tab'); drawNav(); loadTab(true); return; }
+    if (t.closest('#agLive')) { st.tab = 'visits'; drawNav(); loadTab(); return; }
+    var tabGo = t.closest('[data-tab-go]');
+    if (tabGo) { st.tab = tabGo.getAttribute('data-tab-go'); drawNav(); loadTab(); return; }
 
     var go = t.closest('[data-go]');
     if (go) {
       var f = go.getAttribute('data-go');
       if (f === '@reviews') { st.tab = 'reviews'; }
+      else if (f === '@visits') { st.tab = 'visits'; }
       else { st.tab = 'orders'; st.filter = f; st.q = ''; st.sel = null; }
       drawNav(); loadTab(true);
+      return;
+    }
+
+    /* --- визиты: диапазон, тумблеры, раскрытие сессии --- */
+    var vh = t.closest('[data-vh]');
+    if (vh) { st.vopts.hours = parseInt(vh.getAttribute('data-vh'), 10); loadVisits(); return; }
+    var vt = t.closest('[data-vt]');
+    if (vt) {
+      var vk = vt.getAttribute('data-vt');
+      st.vopts[vk] = !st.vopts[vk];
+      loadVisits();
+      return;
+    }
+    var vr = t.closest('.ag-vrow[data-vrow]');
+    if (vr && !t.closest('a') && !t.closest('.ag-linkbtn')) {
+      var vrid = vr.getAttribute('data-vrow');
+      st.vopen[vrid] = !st.vopen[vrid];
+      if (st.tab === 'visits') drawVisits(true); else drawBody();
+      return;
+    }
+
+    /* --- массовые действия над заказами --- */
+    if (t.closest('#agBulkToggle')) {
+      st.bulk = st.bulk ? null : new Set();
+      drawFilters(); drawList();
+      return;
+    }
+    var bclr = t.closest('[data-bulk-clr]');
+    if (bclr) { bulkApply({ color: bclr.getAttribute('data-bulk-clr') }); return; }
+    var bact = t.closest('[data-bulk]');
+    if (bact) {
+      var bAct = bact.getAttribute('data-bulk');
+      if (bAct === 'off') { st.bulk = null; drawFilters(); drawList(); return; }
+      if (bAct === 'pin') bulkApply({ pin: 1 });
+      else if (bAct === 'unpin') bulkApply({ pin: 0 });
+      else if (bAct === 'hide') bulkApply({ hide: 1 });
+      else if (bAct === 'restore') bulkApply({ 'delete': 0 });
+      else if (bAct === 'trash') {
+        var bn = st.bulk ? st.bulk.size : 0;
+        if (!bn) { toast('Сначала отметьте заказы галочками'); return; }
+        confirmDlg({
+          title: 'В корзину: ' + bn + ' шт.?',
+          text: 'Заказы пропадут из всех списков (кроме «Корзины»), клиентам ничего не уходит. Вернуть можно в любой момент.',
+          okLabel: 'В корзину', noLabel: 'Отмена', danger: true
+        }).then(function (res) { if (res.ok) bulkApply({ 'delete': 1 }); });
+      }
+      return;
+    }
+
+    /* --- быстрые действия в карточке дела --- */
+    var cclr = t.closest('[data-card-clr]');
+    if (cclr && st.card) {
+      flag([st.card.id], { color: cclr.getAttribute('data-card-clr') }, function () {
+        loadCard(st.sel); loadTab();
+      });
+      return;
+    }
+    var cflag = t.closest('[data-card-flag]');
+    if (cflag && st.card) {
+      var ck = cflag.getAttribute('data-card-flag');
+      var after = function () { loadCard(st.sel); loadTab(); };
+      if (ck === 'pin') flag([st.card.id], { pin: st.card.pinned ? 0 : 1 }, after);
+      else if (ck === 'hide') flag([st.card.id], { hide: st.card.archived_admin ? 0 : 1 }, after);
+      else if (ck === 'restore') flag([st.card.id], { 'delete': 0 }, after);
+      else if (ck === 'trash') {
+        confirmDlg({
+          title: 'Убрать дело №' + st.card.id + ' в корзину?',
+          text: 'Оно пропадёт из всех списков, кроме фильтра «Корзина». Клиент ничего не заметит, данные не стираются — вернуть можно в любой момент.',
+          okLabel: 'В корзину', noLabel: 'Отмена', danger: true
+        }).then(function (res) {
+          if (res.ok) flag([st.card.id], { 'delete': 1 }, after);
+        });
+      }
       return;
     }
     var subOk = t.closest('[data-sub-ok]');
@@ -1180,7 +1549,17 @@ function initGodEye() {
     if (oc) { st.tab = 'clients'; st.csel = parseInt(oc.getAttribute('data-open-client'), 10); drawNav(); loadTab(); return; }
 
     var row = t.closest('.ag-row[data-id]');
-    if (row) { loadCard(parseInt(row.getAttribute('data-id'), 10)); return; }
+    if (row) {
+      var rid = parseInt(row.getAttribute('data-id'), 10);
+      if (st.bulk) {
+        /* режим ☑: клик по строке (и по галке) — выбор, а не открытие */
+        if (st.bulk.has(rid)) st.bulk.delete(rid); else st.bulk.add(rid);
+        drawList();
+        return;
+      }
+      loadCard(rid);
+      return;
+    }
     var crow = t.closest('.ag-row[data-cid]');
     if (crow) { loadClient(parseInt(crow.getAttribute('data-cid'), 10)); return; }
 

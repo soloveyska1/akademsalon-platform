@@ -644,6 +644,7 @@ function initConf() {
       }
     } catch (e) {}
     if (S.metrika) S.metrika.goal('service_form');
+    if (S.visit) S.visit.mark('услуга: ' + svc.label);
   }
 
   /* --- анкета услуги: свои вопросы под каждую особенную позицию --- */
@@ -943,6 +944,7 @@ function initConf() {
     steps.forEach(function (el, n) { el.classList.toggle('active', n === idx); });
     wpLbl.textContent = 'Шаг ' + (idx + 1) + ' из 4';
     wpFill.style.width = ((idx + 1) * 25) + '%';
+    if (S.visit) S.visit.mark('шаг ' + (idx + 1) + ' из 4');
     btnBack.hidden = svc ? true : idx === 0;
     btnNext.hidden = svc ? true : idx === 3;
     if (mNext) mNext.textContent = idx === 3 ? 'Отправить' : 'Далее';
@@ -1191,6 +1193,7 @@ function initConf() {
         qmMsg('✓ Смета уехала на ' + em + (promoCode ? ' вместе с промокодом' : '') +
           ' — письмо придёт в течение минуты', true);
         if (S.metrika) S.metrika.goal('quote_email');
+        if (S.visit) S.visit.mark('запросил смету на почту');
       } else {
         qmMsg(r && r.error === 'rate_limited' ? 'Слишком часто — подождите минуту'
           : 'Не получилось отправить — попробуйте ещё раз', false);
@@ -1307,6 +1310,7 @@ function initConf() {
         if (promoIn) { promoIn.value = g.code; promoCheck(true); }
         showExitDlg(g);
         if (S.metrika) S.metrika.goal('exit_code');
+        if (S.visit) S.visit.mark('уходил — выдан код ' + g.code);
       });
     }
 
@@ -1383,6 +1387,7 @@ function initConf() {
       if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
       S.store.del('salon_draft');
       if (S.metrika) S.metrika.goal('order_submitted');
+      if (S.visit) S.visit.order(r.id, r.token);
       /* файлы — следом за заявкой, статусы на экране успеха */
       attOrder = { id: r.id, token: r.token || '' };
       doneAttRender();

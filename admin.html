@@ -240,6 +240,62 @@
     .ag-card{max-height:none}
     .ag-intel .ai-k{flex-basis:110px}
   }
+
+  /* -------- «в эфире»: пульс-индикатор и счётчик на сайте -------- */
+  .ag-live{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--hairline-strong);
+    border-radius:999px;padding:5px 12px;font-size:12px;color:var(--ink-soft);cursor:pointer;
+    background:var(--sheet,transparent);font-family:var(--sans);transition:border-color .15s}
+  .ag-live:hover{border-color:var(--ink-soft);color:var(--ink)}
+  .ag-live .ld{width:8px;height:8px;border-radius:50%;background:var(--ag-ok);
+    box-shadow:0 0 0 0 rgba(46,107,79,.45);animation:agPulse 2.2s infinite}
+  .ag-live.quiet .ld{background:var(--ink-faint);animation:none}
+  .ag-live b{font-family:var(--mono);color:var(--ink)}
+  @keyframes agPulse{0%{box-shadow:0 0 0 0 rgba(46,107,79,.45)}70%{box-shadow:0 0 0 7px rgba(46,107,79,0)}100%{box-shadow:0 0 0 0 rgba(46,107,79,0)}}
+
+  /* -------- визиты: лента заходов -------- */
+  .ag-vwrap{border:1px solid var(--hairline);border-radius:var(--r);background:var(--sheet,transparent);overflow:hidden}
+  .ag-vrow{border-bottom:1px solid var(--hairline);padding:10px 14px;cursor:pointer}
+  .ag-vrow:last-child{border-bottom:0}
+  .ag-vrow:hover{background:var(--mark)}
+  .ag-vrow .v-top{display:flex;gap:9px;align-items:baseline;flex-wrap:wrap;font-size:13.5px}
+  .v-time{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .v-on{width:7px;height:7px;border-radius:50%;background:var(--ag-ok);display:inline-block;flex:0 0 7px;
+    align-self:center;animation:agPulse 2.2s infinite}
+  .v-geo{font-weight:500}
+  .v-dev{color:var(--ink-soft);font-size:12.5px}
+  .v-who{margin-left:auto;font-size:12px;color:var(--ink-soft);white-space:nowrap;max-width:40%;overflow:hidden;text-overflow:ellipsis}
+  .v-who.known{color:var(--ag-act);font-weight:600}
+  .ag-vrow .v-sub{display:flex;gap:4px 12px;flex-wrap:wrap;margin-top:3px;font-size:12px;color:var(--ink-soft)}
+  .v-step{color:var(--wax,#A8402F);font-weight:500}
+  .v-step.done{color:var(--ag-ok)}
+  .v-ref{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:min(360px,80vw)}
+  .v-det{margin-top:9px;padding-top:9px;border-top:1px dashed var(--hairline);font-size:12.5px;
+    color:var(--ink-soft);display:grid;gap:4px;overflow-wrap:anywhere}
+  .v-det .mono{font-family:var(--mono);font-size:11.5px}
+  .v-det a{color:var(--ag-act)}
+
+  /* -------- метки мастера: пины, цвета, корзина -------- */
+  .ag-row.pin .r-no{color:var(--ink);font-weight:700}
+  .ag-row .r-pin{font-size:11px;flex:0 0 auto}
+  .clr-dot{width:16px;height:16px;border-radius:50%;border:1px solid var(--hairline-strong);
+    cursor:pointer;display:inline-block;padding:0;background:transparent}
+  .clr-dot:hover{transform:scale(1.15)}
+  .clr-dot.on{outline:2px solid var(--ink);outline-offset:1px}
+  .ag-pal{display:inline-flex;gap:7px;align-items:center;border:1px dashed var(--hairline-strong);
+    border-radius:999px;padding:5px 10px}
+  .ag-ck{width:16px;height:16px;flex:0 0 16px;accent-color:var(--wax,#A8402F);cursor:pointer;margin:0}
+  .ag-bulkbar{position:sticky;bottom:10px;z-index:30;display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+    border:1px solid var(--ink);border-radius:12px;background:var(--sheet,#FDFBF5);padding:9px 13px;
+    box-shadow:0 8px 28px rgba(24,21,15,.18);margin-top:10px;font-size:13px}
+  .ag-bulkbar .btn{min-height:0;padding:7px 12px;font-size:12.5px}
+
+  /* быстрые действия в шапке карточки дела */
+  .ag-quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+  .ag-qbtn{border:1px solid var(--hairline-strong);background:transparent;color:var(--ink-soft);
+    border-radius:999px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:var(--sans);
+    transition:color .15s,border-color .15s}
+  .ag-qbtn:hover{border-color:var(--ink-soft);color:var(--ink)}
+  .ag-qbtn.on{background:var(--ink);border-color:var(--ink);color:var(--paper,#F6F1E7)}
 </style>
 </head>
 <body>
@@ -252,6 +308,6 @@
 
 <script src="assets/js/app.js?v=20260716a"></script>
 <script src="assets/js/extras.js?v=20260715b"></script>
-<script src="assets/js/admin.js?v=20260715g"></script>
+<script src="assets/js/admin.js?v=20260716a"></script>
 </body>
 </html>

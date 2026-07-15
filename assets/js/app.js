@@ -490,7 +490,9 @@
   /* Единая шапка для ВСЕХ страниц (и главной тоже):
      бренд · Цены · Гарантии · Отзывы · Клуб · База знаний · тема · «Рассчитать» · «Меню».
      На главной «Рассчитать» ведёт к смете на странице, дальше — в конфигуратор. */
-  if (!document.querySelector('.site-header')) {
+  /* админка — рабочий стол мастера: маркетинговый каркас сайта там ни к чему */
+  var CHROME_OFF = here === 'admin.html' || here === 'admin-mock.html';
+  if (!CHROME_OFF && !document.querySelector('.site-header')) {
     var header = document.createElement('header');
     header.className = 'site-header';
     var navLinks = NAV.map(function (n) {
@@ -605,7 +607,7 @@
       '<div class="foot-copy"><span>© 2020–2026 «Академический Салон»</span><span class="fc-sep">·</span><span>6 лет практики</span><span class="fc-sep">·</span><span>1000+ работ доведено до приёмки</span></div>' +
     '</div>';
   };
-  if (!document.querySelector('.site-footer')) {
+  if (!CHROME_OFF && !document.querySelector('.site-footer')) {
     var footer = document.createElement('footer');
     footer.className = 'site-footer';
     footer.setAttribute('aria-label', 'Колофон');
@@ -615,7 +617,7 @@
 
   /* ---------------- Плавающая пилюля связи (десктоп) ----------------
      Открывает лист каналов: сайт → ВК → MAX → Telegram. */
-  if (!document.querySelector('.tg-pill') && here !== 'configurator.html' && here !== '404.html') {
+  if (!CHROME_OFF && !document.querySelector('.tg-pill') && here !== 'configurator.html' && here !== '404.html') {
     var pill = document.createElement('a');
     pill.className = 'tg-pill';
     pill.href = '#';
@@ -630,7 +632,7 @@
 
   /* ---------------- Мобильная навигация: нижняя панель на всех страницах ----
      Кабинет всегда на виду (с бейджем), «Рассчитать» — сургучная кнопка. */
-  if (!document.querySelector('.mobile-cta') && here !== 'configurator.html' && here !== '404.html') {
+  if (!CHROME_OFF && !document.querySelector('.mobile-cta') && here !== 'configurator.html' && here !== '404.html') {
     var mnav = document.createElement('nav');
     mnav.className = 'mobile-cta mnav';
     mnav.setAttribute('aria-label', 'Быстрая навигация');
@@ -885,6 +887,68 @@
   Salon.claimLink = function (token) {
     return 'https://akademsalon.ru/dashboard.html#claim=' + encodeURIComponent(token || '');
   };
+
+  /* ---------------- Маячок визитов («Глаз бога») ----------------
+     Служебная запись уровня серверного лога: страница, источник и шаг,
+     на котором остановились, — мастер видит их в своей админке.
+     Токены доступа из адреса вычищаются и здесь, и на сервере.
+     Молчит в админке; не трогает бюджет обычных запросов (свой лимит). */
+  Salon.visit = (function () {
+    var here = (location.pathname.split('/').pop() || 'index.html');
+    /* молчим в админке и на локальных превью — это не посетители */
+    if (here.indexOf('admin') === 0 || /^(localhost|127\.)/.test(location.hostname)) {
+      return { mark: function () {}, order: function () {} };
+    }
+    function vid() {
+      var v = Salon.store.get('salon_vid', null);
+      if (v && /^[a-z0-9-]{8,40}$/.test(v)) return v;
+      var a = new Uint8Array(9);
+      if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(a);
+      else for (var i = 0; i < 9; i++) a[i] = Math.floor(Math.random() * 256);
+      v = 'v' + Array.prototype.map.call(a, function (b) {
+        return ('0' + b.toString(16)).slice(-2);
+      }).join('');
+      Salon.store.set('salon_vid', v);
+      return v;
+    }
+    function page() {
+      var q = location.search.replace(/(token|resume|session|claim)=[^&#]*/g, '$1=…');
+      return (location.pathname + q).slice(0, 200);
+    }
+    function send(extra) {
+      try {
+        var body = { vid: vid(), page: page() };
+        for (var k in extra) body[k] = extra[k];
+        var h = { 'Content-Type': 'text/plain' };
+        var t = Salon.api.token();
+        if (t) h['Authorization'] = 'Bearer ' + t;
+        fetch(API_BASE + '/visit', {
+          method: 'POST', headers: h, keepalive: true,
+          body: JSON.stringify(body)
+        }).catch(function () {});
+      } catch (e) {}
+    }
+    function view() {
+      var ref = '';
+      try {
+        if (document.referrer &&
+            document.referrer.indexOf(location.origin) !== 0) ref = document.referrer;
+        var utm = /(utm_[a-z]+|yclid|gclid)=/.test(location.search) ? location.search : '';
+        if (utm) ref += (ref ? ' · ' : '') + utm.slice(0, 180);
+      } catch (e) {}
+      send({ kind: 'view', ref: ref.slice(0, 380) || undefined });
+    }
+    if (document.prerendering) {
+      document.addEventListener('prerenderingchange', view, { once: true });
+    } else {
+      view();
+    }
+    return {
+      /* mark('шаг 3 из 4') — где человек сейчас; order(id, token) — дошёл до заявки */
+      mark: function (step) { send({ kind: 'mark', step: String(step || '').slice(0, 120) }); },
+      order: function (id, token) { send({ kind: 'order', order: id, token: token || undefined }); }
+    };
+  })();
 
   /* Реферальная метка сайта (?ref=<код>): помним 30 дней, конфигуратор
      передаёт её с заявкой — пригласившему идёт бонус по правилам клуба. */
