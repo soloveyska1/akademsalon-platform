@@ -699,8 +699,73 @@ html:not(.has-js) .b-cover{transform:translateZ(2px) rotateY(-30deg)}
 .plus-copy .plus-price{font-family:var(--serif);font-size:clamp(19px,2.4vw,23px);margin:14px 0 4px}
 .plus-copy .plus-price small{display:block;font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);margin-top:4px}
 .plus-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+
+/* --- интерактивная витрина абонемента: табы планов, период, прикидка выгоды --- */
+.plus-grid.is-live{align-items:start}
+@media(min-width:861px){.plus-grid.is-live .plus-card{position:sticky;top:96px}}
+.plus-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px}
+.pt-tab{appearance:none;cursor:pointer;background:var(--sheet);border:1px solid var(--hairline-strong);
+  border-radius:3px;padding:9px 14px 8px;text-align:left;color:var(--ink-soft);
+  display:flex;flex-direction:column;gap:2px;min-width:118px;
+  transition:border-color .2s,background .2s,color .2s,transform .2s;position:relative}
+.pt-tab b{font-family:var(--serif);font-size:15.5px;font-weight:500;color:var(--ink);letter-spacing:.01em}
+.pt-tab span{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-faint);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.pt-tab:hover{border-color:var(--ink-soft)}
+.pt-tab.is-on{background:var(--mark);border-color:var(--ink);color:var(--ink);transform:translateY(-2px);
+  box-shadow:0 1px 0 var(--hairline)}
+.pt-tab.is-on::after{content:"◈";position:absolute;right:9px;top:8px;font-size:10px;color:var(--stamp)}
+.pt-hint{font-size:12px;color:var(--ink-faint);margin:0 0 2px}
+.plus-rows{min-height:196px}
+.plus-rows .plus-b,.plus-price .pp-big,.plus-price small,#plusCta{transition:opacity .22s ease}
+.is-swapping .plus-b,.is-swapping .pp-big,.is-swapping small{opacity:.15}
+.plus-per{display:inline-flex;gap:0;margin:2px 0 0;border:1px solid var(--hairline-strong);border-radius:3px;overflow:hidden;vertical-align:middle}
+.pp-btn{appearance:none;cursor:pointer;background:var(--sheet);border:0;padding:6px 12px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+  transition:background .2s,color .2s}
+.pp-btn+.pp-btn{border-left:1px solid var(--hairline-strong)}
+.pp-btn.is-on{background:var(--ink);color:var(--paper)}
+.pp-btn u{text-decoration:none;opacity:.72;font-size:10px;margin-left:4px}
+.plus-price .pp-once{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-soft);border:1px dashed var(--hairline-strong);border-radius:3px;padding:6px 12px;display:inline-block;vertical-align:middle}
+.plus-calc{margin-top:20px;background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:3px;
+  padding:16px 18px 14px;position:relative}
+.plus-calc::after{content:"";position:absolute;inset:4px;border:1px dashed var(--hairline);border-radius:2px;pointer-events:none}
+.cl-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
+.cl-k{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)}
+.cl-hint{font-size:12px;color:var(--ink-faint)}
+.cl-price{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:14.5px}
+.cl-price output{font-family:var(--serif);font-size:19px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.plus-calc input[type=range]{width:100%;margin:10px 0 12px;appearance:none;-webkit-appearance:none;height:22px;background:transparent;cursor:pointer}
+.plus-calc input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--hairline-strong);border-radius:1px}
+.plus-calc input[type=range]::-moz-range-track{height:2px;background:var(--hairline-strong);border-radius:1px}
+.plus-calc input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;
+  background:var(--paper);border:2px solid var(--ink);margin-top:-8px;box-shadow:0 1px 0 var(--hairline)}
+.plus-calc input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--paper);border:2px solid var(--ink)}
+.plus-calc input[type=range]:focus-visible{outline:2px solid var(--stamp);outline-offset:4px}
+.cl-row{display:flex;align-items:baseline;gap:10px;padding:7px 0;font-size:14px}
+.cl-row .dots{flex:1;border-bottom:1px dotted var(--hairline-strong);transform:translateY(-3px);min-width:16px}
+.cl-row .cl-val{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cl-row b.cl-val{color:var(--wax);font-size:14px;font-weight:600}
+.cl-sum{border-top:1px solid var(--hairline);margin-top:4px;padding-top:10px}
+.cl-sum .cl-val{color:var(--ink);font-family:var(--sans);font-size:13.5px;white-space:normal;text-align:right}
+.cl-note{font-size:11.5px;color:var(--ink-faint);margin:8px 0 0;font-variant-numeric:tabular-nums}
+.plus-price .plus-per,.plus-price .pp-once{margin-left:12px}
+.plus-per[hidden],.pp-once[hidden]{display:none}
+.plus-card .pc-row span:last-child,.plus-card .pc-head span:last-child,
+.plus-card .pc-title,.plus-card .pc-sub,.plus-card .pc-foot span:first-child{transition:opacity .22s ease}
+.plus-card.is-swapping .pc-row span:last-child,.plus-card.is-swapping .pc-head span:last-child,
+.plus-card.is-swapping .pc-title,.plus-card.is-swapping .pc-sub,
+.plus-card.is-swapping .pc-foot span:first-child{opacity:.15}
+.plus-qs{margin-top:22px;border-top:1px solid var(--hairline)}
+.plus-qs .faq-item summary{font-size:14.5px;padding:13px 34px 13px 0}
+.plus-qs .faq-item p{font-size:13.5px;padding-bottom:16px}
+html:not(.has-js) .plus-tabs,html:not(.has-js) .plus-per,html:not(.has-js) .plus-calc{display:none}
 @media(max-width:860px){
   .plus-grid{grid-template-columns:1fr;gap:26px}
   .plus-card{max-width:420px;margin:0 auto;transform:rotate(-.6deg)}
   .plus-cta .btn{flex:1 1 auto}
+  .plus-rows{min-height:0}
+  .pt-tab{flex:1 1 44%;min-width:0}
+  .cl-price{flex-direction:column;align-items:flex-start;gap:2px}
 }

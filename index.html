@@ -6,7 +6,7 @@
 <title>Заказать курсовую, дипломную работу (ВКР), диссертацию — Академический Салон: цена за минуту, оплата по этапам</title>
 <meta name="description" content="Заказать курсовую, дипломную работу (ВКР), магистерскую или научную статью в академической мастерской: живые авторы, цена за минуту в калькуляторе, оплата по этапам, отчёт о проверках до оплаты, правки бесплатно до приёмки." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260715c" />
-<link rel="stylesheet" href="assets/css/pereplet.css?v=20260715c" />
+<link rel="stylesheet" href="assets/css/pereplet.css?v=20260715f" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260715c" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260715c" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
@@ -395,32 +395,85 @@
     <div class="wrap">
       <div class="running-head"><span class="rh-no">— 05 —</span><span class="rh-t">Абонемент читального зала</span></div>
 
-      <div class="plus-grid">
-        <div class="plus-card reveal" aria-hidden="true">
-          <div class="pc-head"><span>Академический салон</span><span>серия С+</span></div>
+      <div class="plus-grid is-live">
+        <div class="plus-card reveal" aria-hidden="true" id="plusTicket">
+          <div class="pc-head"><span>Академический салон</span><span id="ptSeries">серия С+</span></div>
           <span class="pc-seal">⭐</span>
-          <p class="pc-title">Читательский билет<br>«Салон+»</p>
-          <p class="pc-sub">абонемент постоянного клиента</p>
+          <p class="pc-title" id="ptTitle">Читательский билет<br>«Салон+»</p>
+          <p class="pc-sub" id="ptSub">для тех, кто сдаёт в этом семестре</p>
           <div class="pc-row"><span class="pr-k">Предъявитель</span><span><b>студент, которому дорог сон</b></span></div>
-          <div class="pc-row"><span class="pr-k">Привилегии</span><span>скидка на каждый заказ, приоритет мастера</span></div>
-          <div class="pc-row"><span class="pr-k">Куратор</span><span>график сессии · напомним за 7 · 3 · 1 день</span></div>
-          <div class="pc-row"><span class="pr-k">Срок</span><span>месяц или семестр · <b>без автосписаний</b></span></div>
+          <div class="pc-row"><span class="pr-k">Привилегии</span><span id="ptPriv">скидка −5% на каждый заказ, приоритет мастера, полка Салона</span></div>
+          <div class="pc-row"><span class="pr-k">Куратор</span><span id="ptCur">график сессии · напомним за 7 · 3 · 1 день</span></div>
+          <div class="pc-row"><span class="pr-k">Срок</span><span id="ptTerm">месяц или семестр · <b>без автосписаний</b></span></div>
           <span class="pc-stamp">Действителен</span>
-          <div class="pc-foot"><span>№ 0449</span><span>выдан читальным залом</span></div>
+          <div class="pc-foot"><span id="ptNo">№ 0449</span><span>выдан читальным залом</span></div>
         </div>
 
-        <div class="plus-copy reveal">
+        <div class="plus-copy reveal" id="plusCopy">
           <h2 class="press-h" style="font-size:clamp(22px,3vw,30px);margin-bottom:6px">Абонемент «Салон+» — для тех, кто сдаёт не последнюю работу</h2>
-          <p class="petit" style="max-width:56ch;margin-bottom:10px">Подписка мастерской: один платёж, никаких автосписаний. Скидка применяется сама, как только мастер называет цену, — и суммируется с бонусами.</p>
-          <div class="plus-b"><span>Скидка на каждый заказ</span><span class="dots"></span><span class="pb-val">до −10% · до 3 000 ₽</span></div>
-          <div class="plus-b"><span>Приоритет мастера и куратор сессии</span><span class="dots"></span><span class="pb-val">во всех планах</span></div>
-          <div class="plus-b"><span>Тренажёр защиты и экспресс-разборы</span><span class="dots"></span><span class="pb-val">в плане «Про»</span></div>
-          <p class="plus-price">от 449 ₽ в месяц <small>семестр (150 дней) — 999 ₽ одной оплатой · «Сессия под ключ» — разовый пакет 2 990 ₽</small></p>
+          <p class="petit" style="max-width:56ch;margin-bottom:2px">Один платёж — никаких автосписаний. Скидка включается сама, как только мастер называет цену, и работает на каждый заказ периода.</p>
+
+          <div class="plus-tabs" role="group" aria-label="Выбор плана абонемента" id="plusTabs">
+            <button type="button" class="pt-tab is-on" data-plan="plus" aria-pressed="true"><b>Салон+</b><span>449 ₽/мес · −5%</span></button>
+            <button type="button" class="pt-tab" data-plan="pro" aria-pressed="false"><b>Салон+ Про</b><span>1 190 ₽/мес · −10%</span></button>
+            <button type="button" class="pt-tab" data-plan="session" aria-pressed="false"><b>Сессия под ключ</b><span>2 990 ₽ · 60 дней</span></button>
+          </div>
+
+          <div class="plus-rows" id="plusRows">
+            <div class="plus-b"><span>Скидка на каждый заказ</span><span class="dots"></span><span class="pb-val">−5% · до 1 000 ₽</span></div>
+            <div class="plus-b"><span>Приоритет мастера и куратор сессии</span><span class="dots"></span><span class="pb-val">включены</span></div>
+            <div class="plus-b"><span>Полка Салона — чек-листы к защите</span><span class="dots"></span><span class="pb-val">включена</span></div>
+            <div class="plus-b"><span>Тренажёр защиты и кэшбэк ×2</span><span class="dots"></span><span class="pb-val">добавит план «Про»</span></div>
+          </div>
+
+          <p class="plus-price">
+            <span class="pp-big" id="ppBig">449 ₽ / месяц</span>
+            <span class="plus-per" id="plusPer" role="group" aria-label="Период абонемента">
+              <button type="button" class="pp-btn is-on" data-per="m" aria-pressed="true">Месяц</button>
+              <button type="button" class="pp-btn" data-per="s" aria-pressed="false">Семестр <u>−55%</u></button>
+            </span>
+            <span class="pp-once" id="ppOnce" hidden>разовый пакет · 60 дней</span>
+            <small id="ppSmall">одной оплатой · 30 дней привилегий · без автосписаний</small>
+          </p>
+
+          <div class="plus-calc" id="plusCalc">
+            <div class="cl-head"><span class="cl-k">Прикидка выгоды</span><span class="cl-hint">подвиньте к своей смете</span></div>
+            <label class="cl-price" for="clRange"><span>Если ваша работа стоит</span><output id="clPrice">20 000 ₽</output></label>
+            <input type="range" id="clRange" min="3000" max="60000" step="500" value="20000" aria-label="Стоимость работы, рублей">
+            <div class="cl-row"><span>Скидка с этой работы</span><span class="dots"></span><b class="cl-val" id="clDisc">−1 000 ₽</b></div>
+            <div class="cl-row"><span>Абонемент</span><span class="dots"></span><span class="cl-val" id="clPlanPrice">449 ₽ / месяц</span></div>
+            <div class="cl-row cl-sum"><span>Итог</span><span class="dots"></span><span class="cl-val" id="clVerdict">окупается этой же работой — дальше чистая экономия</span></div>
+            <p class="cl-note" id="clNote">достигнут потолок плана: −1 000 ₽ с одного заказа · сверху можно списать бонусы</p>
+          </div>
+
           <div class="plus-cta">
-            <a class="btn btn-wax" href="dashboard.html#plus">Выбрать абонемент <span class="ar">→</span></a>
+            <a class="btn btn-wax" id="plusCta" href="dashboard.html#plus">Оформить «Салон+» · 449 ₽ <span class="ar">→</span></a>
             <a class="btn btn-line" href="loyalty.html">Правила и планы подробно</a>
           </div>
-          <p class="petit" style="margin-top:12px">Экономия видна с первого же заказа: курсовая за 20 000 ₽ по плану «Про» — уже −2 000 ₽.</p>
+          <p class="petit" style="margin-top:12px">Не подходит готовый план? В кабинете есть конструктор: свой набор привилегий от 199 ₽/мес.</p>
+
+          <div class="plus-qs">
+            <details class="faq-item">
+              <summary>Автосписаний точно нет?</summary>
+              <p>Точно. Абонемент — разовый платёж за период: месяц, семестр или 60 дней. Закончился — просто закончился, карта не привязывается. Продлить можно в один тап, когда снова понадобится.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Как включается скидка?</summary>
+              <p>После оплаты мастер активирует абонемент — дальше скидка применяется сама в момент, когда мастер называет цену заказа. Уже открытым заказам без оплат она пересчитается автоматически.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Суммируется с бонусами?</summary>
+              <p>Да: сначала скидка абонемента, сверху — списание бонусов. Вместе — до 25% стоимости заказа (правила лояльности, §5).</p>
+            </details>
+            <details class="faq-item">
+              <summary>А если заказов в этом месяце не будет?</summary>
+              <p>Скидка работает только вместе с заказами, поэтому берите абонемент под конкретную работу: месяц «Салон+» окупает одна смета от ~9 000 ₽. Семестр — выбор тех, у кого впереди две-три сдачи.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Где купить и как оплатить?</summary>
+              <p>В кабинете на сайте (раздел «Абонемент») или в боте — команда /plus. Картой онлайн — чек придёт сам, активация после оплаты; переводом — нажмите «Я оплатил», мастер сверит и включит.</p>
+            </details>
+          </div>
         </div>
       </div>
 
@@ -562,6 +615,173 @@
   }
   if (document.prerendering) document.addEventListener('prerenderingchange', boot, { once: true });
   else boot();
+})();
+</script>
+<script>
+/* витрина абонемента (— 05 —): планы, период, прикидка выгоды, живой билет.
+   Цифры и правила — из config.SUB_PLANS бота и loyalty.html (ред. 1.3); менять синхронно.
+   Без rAF/IntersectionObserver — прямые слушатели, живёт и при reduce-motion. */
+(function () {
+  var tabs = document.getElementById('plusTabs');
+  if (!tabs) return;
+  var PLANS = {
+    plus: {
+      label: 'Салон+', series: 'серия С+', tag: 'для тех, кто сдаёт в этом семестре',
+      m: 449, s: 999, once: 0, pct: 5, cap: 1000,
+      priv: 'скидка −5% на каждый заказ, приоритет мастера, полка Салона',
+      cur: 'график сессии · напомним за 7 · 3 · 1 день',
+      term: 'месяц или семестр · <b>без автосписаний</b>',
+      rows: [
+        ['Скидка на каждый заказ', '−5% · до 1 000 ₽'],
+        ['Приоритет мастера и куратор сессии', 'включены'],
+        ['Полка Салона — чек-листы к защите', 'включена'],
+        ['Тренажёр защиты и кэшбэк ×2', 'добавит план «Про»']
+      ],
+      cta: 'Оформить «Салон+»'
+    },
+    pro: {
+      label: 'Салон+ Про', series: 'серия ПРО', tag: 'максимум выгоды и подготовка к защите',
+      m: 1190, s: 2690, once: 0, pct: 10, cap: 3000,
+      priv: 'скидка −10%, кэшбэк ×2, тренажёр защиты, приоритет мастера',
+      cur: 'график сессии + экспресс-разбор 15 минут каждый месяц',
+      term: 'месяц или семестр · <b>без автосписаний</b>',
+      rows: [
+        ['Скидка на каждый заказ', '−10% · до 3 000 ₽'],
+        ['Приоритет мастера и куратор сессии', 'включены'],
+        ['Тренажёр защиты · экспресс-разбор 15 мин', 'включены'],
+        ['Кэшбэк бонусами после оплаты', '×2 — 10% на счёт']
+      ],
+      cta: 'Оформить «Салон+ Про»'
+    },
+    session: {
+      label: 'Сессия под ключ', series: 'сезон · сессия', tag: '60 дней спокойствия в самый жаркий сезон',
+      m: 2990, s: 0, once: 1, pct: 7, cap: 2000,
+      priv: 'скидка −7%, бронь места, замок цен, SOS в день сдачи',
+      cur: 'график сессии · напомним за 7 · 3 · 1 день',
+      term: '<b>60 дней</b> · разовый пакет, без автосписаний',
+      rows: [
+        ['Скидка на каждый заказ', '−7% · до 2 000 ₽'],
+        ['Приоритет, куратор и бронь места', 'включены'],
+        ['Замок цен на весь период', 'включён'],
+        ['SOS в день сдачи', 'ответ мастера в течение часа']
+      ],
+      cta: 'Взять «Сессию под ключ»'
+    }
+  };
+  var st = { plan: 'plus', per: 'm' };
+  function $(id) { return document.getElementById(id); }
+  function fmt(n) { return (n || 0).toLocaleString('ru-RU'); }
+  function plan() { return PLANS[st.plan]; }
+  function price() { var p = plan(); return p.once ? p.m : (st.per === 's' ? p.s : p.m); }
+  function priceLine() {
+    var p = plan();
+    return fmt(price()) + ' ₽ ' + (p.once ? '· 60 дней' : (st.per === 's' ? '/ семестр' : '/ месяц'));
+  }
+  var copy = $('plusCopy'), ticket = $('plusTicket');
+
+  function plural(n, one, few, many) {
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return one;
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+    return many;
+  }
+
+  function calc() {
+    var p = plan();
+    var v = parseInt($('clRange').value, 10) || 20000;
+    var raw = Math.round(v * p.pct / 100);
+    var d = Math.max(1, Math.min(raw, p.cap));
+    $('clPrice').textContent = fmt(v) + ' ₽';
+    $('clDisc').textContent = '−' + fmt(d) + ' ₽';
+    $('clPlanPrice').textContent = priceLine();
+    var pr = price(), verdict;
+    if (d >= pr) {
+      verdict = 'окупается этой же работой — дальше чистая экономия';
+    } else {
+      var n = Math.ceil(pr / d);
+      verdict = 'окупится за ' + n + ' ' +
+        plural(n, 'такую работу', 'такие работы', 'таких работ') +
+        (p.once || st.per === 's' ? ' за период' : '');
+    }
+    $('clVerdict').textContent = verdict;
+    $('clNote').textContent = (raw > p.cap
+      ? 'достигнут потолок плана: −' + fmt(p.cap) + ' ₽ с одного заказа'
+      : '−' + p.pct + '% от сметы · потолок ' + fmt(p.cap) + ' ₽ с заказа')
+      + ' · сверху спишутся бонусы (вместе до 25%)';
+  }
+
+  function paint() {
+    var p = plan();
+    var bs = tabs.querySelectorAll('.pt-tab');
+    for (var i = 0; i < bs.length; i++) {
+      var on = bs[i].getAttribute('data-plan') === st.plan;
+      bs[i].classList.toggle('is-on', on);
+      bs[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    var html = '';
+    for (var j = 0; j < p.rows.length; j++) {
+      html += '<div class="plus-b"><span>' + p.rows[j][0] +
+        '</span><span class="dots"></span><span class="pb-val">' + p.rows[j][1] + '</span></div>';
+    }
+    $('plusRows').innerHTML = html;
+    $('ppBig').textContent = priceLine();
+    var perBox = $('plusPer'), onceEl = $('ppOnce');
+    perBox.hidden = !!p.once;
+    onceEl.hidden = !p.once;
+    if (!p.once) {
+      var pbs = perBox.querySelectorAll('.pp-btn');
+      for (var k = 0; k < pbs.length; k++) {
+        var po = pbs[k].getAttribute('data-per') === st.per;
+        pbs[k].classList.toggle('is-on', po);
+        pbs[k].setAttribute('aria-pressed', po ? 'true' : 'false');
+      }
+    }
+    $('ppSmall').textContent = p.once
+      ? 'один платёж на самый жаркий сезон · продлевается только вручную'
+      : (st.per === 's'
+        ? 'одной оплатой · 150 дней привилегий — на 55% дешевле, чем помесячно'
+        : 'одной оплатой · 30 дней привилегий · без автосписаний');
+    $('plusCta').innerHTML = p.cta + ' · ' + fmt(price()) + ' ₽ <span class="ar">→</span>';
+    $('ptSeries').textContent = p.series;
+    $('ptTitle').innerHTML = (st.plan === 'session'
+      ? 'Сезонный билет<br>«Сессия под ключ»'
+      : 'Читательский билет<br>«' + p.label + '»');
+    $('ptSub').textContent = p.tag;
+    $('ptPriv').textContent = p.priv;
+    $('ptCur').textContent = p.cur;
+    $('ptTerm').innerHTML = p.term;
+    $('ptNo').textContent = '№ ' + ('0000' + price()).slice(-4);
+    calc();
+  }
+
+  function swapTo() {
+    copy.classList.add('is-swapping');
+    if (ticket) ticket.classList.add('is-swapping');
+    setTimeout(function () {
+      paint();
+      copy.classList.remove('is-swapping');
+      if (ticket) ticket.classList.remove('is-swapping');
+    }, 130);
+  }
+
+  tabs.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest ? e.target.closest('.pt-tab') : null;
+    if (!b) return;
+    var id = b.getAttribute('data-plan');
+    if (!PLANS[id] || id === st.plan) return;
+    st.plan = id;
+    swapTo();
+  });
+  $('plusPer').addEventListener('click', function (e) {
+    var b = e.target && e.target.closest ? e.target.closest('.pp-btn') : null;
+    if (!b) return;
+    var per = b.getAttribute('data-per');
+    if (per === st.per) return;
+    st.per = per;
+    swapTo();
+  });
+  $('clRange').addEventListener('input', calc);
+  paint();
 })();
 </script>
 <script>
