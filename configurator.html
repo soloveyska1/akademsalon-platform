@@ -126,6 +126,62 @@
     border-radius:var(--r);background:var(--paper-2);padding:12px 14px;margin-bottom:14px;text-align:left}
   .done-plus .dp-star{font-size:17px;line-height:1.3}
 
+  /* применённый промокод — строка в смете (обе панели) */
+  .lq-promo{margin-top:10px;padding:9px 11px;border:1px dashed var(--verify);border-radius:var(--r);
+    background:var(--verify-soft);color:var(--ink)}
+  .lq-promo[hidden]{display:none}
+  .lq-promo .num{font-family:var(--mono);letter-spacing:.06em}
+
+  /* промокод: купон в бланке заявки, а не сиротская ссылка */
+  .coupon{margin:0 0 14px;border:1px dashed var(--hairline-strong);border-radius:var(--r);
+    background:var(--paper-2);transition:border-color .15s,background .15s}
+  .coupon.open{background:var(--sheet)}
+  .coupon.on{border:1px solid var(--verify);background:var(--verify-soft)}
+  .cp-toggle{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;
+    background:none;border:0;font:inherit;font-size:14px;color:var(--ink);cursor:pointer;text-align:left}
+  .cp-toggle:hover .cp-lbl{color:var(--wax)}
+  .cp-toggle .cp-lbl{flex:1;transition:color .15s}
+  .cp-toggle .cp-ar{color:var(--ink-faint);font-family:var(--mono);transition:transform .2s}
+  .coupon.open .cp-ar{transform:rotate(90deg)}
+  .cp-body{padding:2px 14px 13px}
+  .cp-row{display:flex;gap:8px}
+  .cp-row input{flex:1;min-width:0;text-transform:uppercase;font-family:var(--mono);letter-spacing:.08em}
+  .cp-done{display:flex;align-items:center;gap:12px;padding:12px 14px}
+  .cp-done[hidden],.cp-toggle[hidden]{display:none}
+  .cp-done .cp-code{font-family:var(--mono);font-size:14px;letter-spacing:.1em;color:var(--verify);white-space:nowrap}
+  .cp-done .cp-what{flex:1;min-width:0;font-size:13px;line-height:1.45;color:var(--ink-soft)}
+  .cp-done .cp-x{border:0;background:none;color:var(--ink-faint);font-size:17px;line-height:1;
+    cursor:pointer;padding:2px 6px;border-radius:50%}
+  .cp-done .cp-x:hover{color:var(--wax)}
+
+  /* «смета письмом» — способ уйти подумать, не потеряв расчёт */
+  .qm-card{margin:18px 0 14px;padding:14px 16px;border:1px solid var(--hairline-strong);
+    border-left:4px solid var(--stamp,#3A4E7A);border-radius:var(--r);background:var(--sheet)}
+  .qm-head{display:flex;gap:12px;align-items:flex-start}
+  .qm-head svg{flex:0 0 auto;margin-top:2px;color:var(--stamp,#3A4E7A)}
+  .qm-head .qm-t{font-size:14.5px;margin:0 0 3px}
+  .qm-head .petit{margin:0}
+  .qm-open{flex:0 0 auto;align-self:center;border:1px solid var(--hairline-strong);background:transparent;
+    border-radius:var(--r);padding:8px 14px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;
+    white-space:nowrap;transition:border-color .15s,color .15s}
+  .qm-open:hover{border-color:var(--stamp,#3A4E7A);color:var(--stamp,#3A4E7A)}
+  .qm-form{margin-top:12px;padding-top:12px;border-top:1px dashed var(--hairline)}
+  .qm-form .cp-row input{text-transform:none;font-family:inherit;letter-spacing:normal}
+  @media(max-width:560px){
+    .qm-head{flex-wrap:wrap}
+    .qm-open{flex:1 1 100%;align-self:stretch;min-height:44px}
+  }
+
+  /* код возврата: модал с купоном (база — .sdlg из extras.css) */
+  .exit-code{display:flex;align-items:center;gap:12px;margin:4px 0 10px;padding:13px 16px;
+    border:1px dashed var(--wax);border-radius:var(--r);background:var(--wax-soft)}
+  .exit-code .xc-code{flex:1;font-family:var(--mono);font-size:clamp(17px,4.6vw,21px);
+    letter-spacing:.14em;color:var(--wax);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .exit-code .xc-copy{border:0;background:none;color:var(--ink-soft);font:inherit;font-size:12.5px;
+    cursor:pointer;border-bottom:1px solid currentColor;padding:0;white-space:nowrap}
+  .exit-code .xc-copy:hover{color:var(--wax)}
+  .exit-note{font-size:12.5px;color:var(--ink-faint);margin:0 0 16px}
+
   @media(max-width:880px){
     .conf-aside{display:none}
     #btnNext{display:none}   /* «Далее» на мобильном живёт в нижней панели */
@@ -329,17 +385,27 @@
                 <button type="button" class="btn btn-line btn-block" id="tgLoginBtn" style="margin-bottom:14px">Или войти через Telegram — без анкеты</button>
               </div>
 
-              <!-- промокод: свёрнут в строку, разворачивается по клику или из ?promo= -->
-              <p class="petit" id="promoShowRow" style="margin-bottom:12px">
-                <button type="button" class="linkbtn" id="promoShow">🎟 У меня есть промокод</button></p>
-              <div class="field" id="promoField" hidden>
-                <label for="fPromo">Промокод</label>
-                <div style="display:flex;gap:8px">
-                  <input type="text" id="fPromo" maxlength="24" autocomplete="off"
-                         placeholder="Например, СТАРТ300" style="flex:1;min-width:0;text-transform:uppercase" />
-                  <button type="button" class="btn btn-line" id="promoApply">Применить</button>
+              <!-- промокод: купон — свёрнут в строку купона, разворачивается по клику или из ?promo= -->
+              <div class="coupon" id="promoBox">
+                <button type="button" class="cp-toggle" id="promoShow" aria-expanded="false" aria-controls="promoField">
+                  <span aria-hidden="true">🎟</span>
+                  <span class="cp-lbl">У меня есть промокод</span>
+                  <span class="cp-ar" aria-hidden="true">→</span>
+                </button>
+                <div class="cp-body" id="promoField" hidden>
+                  <div class="cp-row">
+                    <input type="text" id="fPromo" maxlength="24" autocomplete="off"
+                           placeholder="Например, ОСЕНЬ10" aria-label="Промокод" />
+                    <button type="button" class="btn btn-line" id="promoApply">Применить</button>
+                  </div>
+                  <p class="petit" id="promoNote" style="margin-top:8px" hidden></p>
                 </div>
-                <p class="petit" id="promoNote" style="margin-top:6px" hidden></p>
+                <div class="cp-done" id="promoDone" hidden>
+                  <span aria-hidden="true">🎟</span>
+                  <span class="cp-code" id="promoDoneCode"></span>
+                  <span class="cp-what" id="promoDoneLbl"></span>
+                  <button type="button" class="cp-x" id="promoRemove" aria-label="Убрать промокод">×</button>
+                </div>
               </div>
 
               <button type="button" class="btn btn-wax btn-block" id="btnSubmit">Отправить заявку мастеру <span class="ar">→</span></button>
@@ -347,26 +413,33 @@
                 <a class="btn btn-line" style="flex:1" href="https://vk.me/academicsaloon" target="_blank" rel="noopener">Написать во ВКонтакте</a>
                 <a class="btn btn-line" style="flex:1" href="https://t.me/academicsaloon" target="_blank" rel="noopener">В Telegram</a>
               </div>
+
+              <!-- смета письмом: уйти подумать, не потеряв расчёт -->
+              <div class="qm-card" id="qmCard">
+                <div class="qm-head">
+                  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>
+                  <div style="flex:1;min-width:0">
+                    <p class="qm-t"><b>Не готовы отправить сейчас?</b></p>
+                    <p class="petit">Пришлём смету письмом — вернётесь по ссылке с любого устройства, ответы сохранятся.</p>
+                  </div>
+                  <button type="button" class="qm-open" id="qmShow" aria-expanded="false" aria-controls="qmField">На почту</button>
+                </div>
+                <div class="qm-form" id="qmField" hidden>
+                  <label class="caps" for="qmEmail" style="display:block;margin-bottom:8px">Почта для сметы</label>
+                  <div class="cp-row">
+                    <input type="email" id="qmEmail" maxlength="120" autocomplete="email" placeholder="you@example.com" />
+                    <button type="button" class="btn btn-line" id="qmSend">Отправить</button>
+                  </div>
+                  <p class="petit" id="qmNote" style="margin-top:8px" hidden></p>
+                </div>
+              </div>
+
               <p class="petit mt-s wsubmit-note">Оценка бесплатна: мастер сразу получит заявку вместе с файлами, статус и переписка появятся в <a class="link" href="dashboard.html">кабинете</a> на сайте — а если захотите, продублируем в мессенджер. Решение вы принимаете, уже зная точную смету, — она фиксируется после разбора плана и не меняется по нашей инициативе.</p>
             </div>
 
             <div class="wnav">
               <button type="button" class="btn btn-line" id="btnBack" hidden>← Назад</button>
               <button type="button" class="btn btn-ink" id="btnNext">Далее <span class="ar">→</span></button>
-            </div>
-
-            <!-- смета на почту: тёплый возврат с любого устройства -->
-            <p class="petit" id="qmShowRow" style="margin-top:16px">
-              <button type="button" class="linkbtn" id="qmShow">📧 Прислать смету на почту</button>
-              — вернётесь к оформлению позже, с любого устройства.</p>
-            <div class="field" id="qmField" hidden style="margin-top:12px">
-              <label for="qmEmail">Почта для сметы</label>
-              <div style="display:flex;gap:8px">
-                <input type="email" id="qmEmail" maxlength="120" autocomplete="email"
-                       placeholder="you@example.com" style="flex:1;min-width:0" />
-                <button type="button" class="btn btn-line" id="qmSend">Отправить</button>
-              </div>
-              <p class="petit" id="qmNote" style="margin-top:6px" hidden></p>
             </div>
           </div>
 
@@ -388,6 +461,7 @@
               </div>
               <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
               <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
+              <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
               <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
             </div>
           </aside>
@@ -442,6 +516,7 @@
     </div>
     <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
     <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
+    <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
     <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
   </div>
   <div class="mq-bar">
@@ -979,14 +1054,16 @@ function initConf() {
   }
 
   /* --- отправка: заявка уходит в общую с ботом картотеку --- */
-  /* --- промокод: проверка и передача с заявкой; ?promo=КОД — из рекламы --- */
-  var promoCode = null;
+  /* --- промокод: купон в бланке; ?promo=КОД — из рекламы и писем --- */
+  var promoCode = null, promoLabel = '';
   var promoIn = $('fPromo'), promoApplyBtn = $('promoApply'), promoNote = $('promoNote');
+  var promoBox = $('promoBox');
   var PROMO_ERR = {
     not_found: 'Такого кода нет — проверьте написание',
     inactive: 'Код сейчас выключен',
     expired: 'Срок действия кода истёк',
     used_up: 'Код уже разобрали — увы',
+    already_used: 'Код этой серии у вас уже был — он одноразовый',
     min_price: 'Код действует для заказов подороже',
     rate_limited: 'Слишком много попыток — подождите минуту',
     empty: 'Введите код'
@@ -998,22 +1075,59 @@ function initConf() {
     promoNote.style.color = ok ? 'var(--verify)' : 'var(--wax)';
   }
   function promoOpen() {
-    var f = $('promoField'), row = $('promoShowRow');
+    var f = $('promoField');
     if (f) f.hidden = false;
-    if (row) row.hidden = true;
+    if (promoBox) {
+      promoBox.classList.add('open');
+      var t = promoBox.querySelector('.cp-toggle');
+      if (t) { t.setAttribute('aria-expanded', 'true'); t.querySelector('.cp-ar').textContent = '↓'; }
+    }
   }
-  function promoCheck() {
+  /* применённый код — «пробитый» купон + строка в обеих панелях сметы */
+  function promoPaint() {
+    var t = promoBox && promoBox.querySelector('.cp-toggle');
+    var f = $('promoField'), d = $('promoDone');
+    var on = !!promoCode;
+    if (promoBox) promoBox.classList.toggle('on', on);
+    if (t) t.hidden = on;
+    if (f && on) f.hidden = true;
+    if (d) {
+      d.hidden = !on;
+      if (on) {
+        $('promoDoneCode').textContent = promoCode;
+        $('promoDoneLbl').textContent = promoLabel + ' — мастер учтёт код в счёте';
+      }
+    }
+    document.querySelectorAll('.lq-promo').forEach(function (el) { el.hidden = !on; });
+    if (on) put('promo', 'Промокод ' + promoCode + ' · ' + promoLabel);
+  }
+  function promoCheck(quiet) {
     var v = (promoIn && promoIn.value || '').trim().toUpperCase();
-    if (!v) { promoMsg(PROMO_ERR.empty, false); return; }
+    if (!v) { if (!quiet) promoMsg(PROMO_ERR.empty, false); return; }
     if (promoApplyBtn) S.btnLoading(promoApplyBtn, true, '…');
     S.api.post('/promo/check', { code: v }).then(function (r) {
       if (promoApplyBtn) S.btnLoading(promoApplyBtn, false);
       if (r && r.ok) {
         promoCode = r.code;
-        promoMsg('✓ Промокод ' + r.code + ': ' + r.label + ' — мастер применит его к цене', true);
+        promoLabel = r.label || '';
+        if (promoNote) promoNote.hidden = true;
+        promoPaint();
+        if (S.metrika) S.metrika.goal('promo_ok');
       } else {
-        promoCode = null;
-        promoMsg(PROMO_ERR[(r && r.error) || 'not_found'] || 'Не получилось проверить код', false);
+        promoCode = null; promoLabel = '';
+        promoPaint();
+        /* тихий режим — для автоподстановки сохранённого кода возврата:
+           протухший код молча складываем, купон не разворачиваем */
+        if (quiet) {
+          var f = $('promoField');
+          if (f) f.hidden = true;
+          if (promoBox) promoBox.classList.remove('open');
+          if (promoIn) promoIn.value = '';
+          exitGrantDrop((r && r.error) || '');
+        } else {
+          promoOpen();
+          promoMsg(PROMO_ERR[(r && r.error) || 'not_found'] || 'Не получилось проверить код', false);
+        }
       }
     });
   }
@@ -1021,20 +1135,30 @@ function initConf() {
     promoOpen();
     if (promoIn) promoIn.focus();
   });
-  if (promoApplyBtn) promoApplyBtn.addEventListener('click', promoCheck);
+  if (promoApplyBtn) promoApplyBtn.addEventListener('click', function () { promoCheck(false); });
   if (promoIn) promoIn.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') { e.preventDefault(); promoCheck(); }
+    if (e.key === 'Enter') { e.preventDefault(); promoCheck(false); }
   });
-  try {
-    var qPromo = new URLSearchParams(location.search).get('promo');
-    if (qPromo && promoIn) {
-      promoOpen();
-      promoIn.value = qPromo.toUpperCase().slice(0, 24);
-      promoCheck();
-    }
-  } catch (e) {}
+  if ($('promoRemove')) $('promoRemove').addEventListener('click', function () {
+    promoCode = null; promoLabel = '';
+    promoPaint();
+    if (promoIn) promoIn.value = '';
+    if (promoNote) promoNote.hidden = true;
+    var t = promoBox && promoBox.querySelector('.cp-toggle');
+    if (t) t.hidden = false;
+    if (promoBox) promoBox.classList.remove('open');
+    var f = $('promoField');
+    if (f) f.hidden = true;
+  });
+  var urlPromo = null;
+  try { urlPromo = new URLSearchParams(location.search).get('promo'); } catch (e) {}
+  if (urlPromo && promoIn) {
+    promoOpen();
+    promoIn.value = urlPromo.toUpperCase().slice(0, 24);
+    promoCheck(false);
+  }
 
-  /* --- «смета на почту»: письмо с расчётом и ссылкой-возвратом --- */
+  /* --- «смета письмом»: расчёт + ссылка-возврат (и промокод, если введён) --- */
   function qmMsg(t, ok) {
     var n = $('qmNote');
     if (!n) return;
@@ -1042,16 +1166,21 @@ function initConf() {
     n.textContent = t;
     n.style.color = ok ? 'var(--verify)' : 'var(--wax)';
   }
+  /* в сервисном режиме письмо не предлагаем: смета письма считается по
+     калькулятору полных работ и наврала бы про услугу */
+  if (svc && $('qmCard')) $('qmCard').hidden = true;
   if ($('qmShow')) $('qmShow').addEventListener('click', function () {
-    $('qmField').hidden = false;
-    $('qmShowRow').hidden = true;
-    $('qmEmail').focus();
+    var f = $('qmField');
+    var open = f.hidden;
+    f.hidden = !open;
+    this.setAttribute('aria-expanded', String(open));
+    if (open) $('qmEmail').focus();
   });
   if ($('qmSend')) $('qmSend').addEventListener('click', function () {
     var em = ($('qmEmail').value || '').trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)) { qmMsg('Похоже, в адресе опечатка — проверьте', false); return; }
     S.btnLoading($('qmSend'), true, '…');
-    S.api.post('/quote/email', { email: em, state: {
+    S.api.post('/quote/email', { email: em, promo: promoCode || undefined, state: {
       type: state.type, disc: state.disc, term: state.term, tier: state.tier,
       topic: topicIn ? topicIn.value.trim() : '',
       deadline: deadlineIn ? deadlineIn.value.trim() : '',
@@ -1059,7 +1188,8 @@ function initConf() {
     } }).then(function (r) {
       S.btnLoading($('qmSend'), false);
       if (r && r.ok) {
-        qmMsg('✓ Смета уехала на ' + em + ' — письмо придёт в течение минуты', true);
+        qmMsg('✓ Смета уехала на ' + em + (promoCode ? ' вместе с промокодом' : '') +
+          ' — письмо придёт в течение минуты', true);
         if (S.metrika) S.metrika.goal('quote_email');
       } else {
         qmMsg(r && r.error === 'rate_limited' ? 'Слишком часто — подождите минуту'
@@ -1092,6 +1222,110 @@ function initConf() {
       });
     }
   } catch (e) {}
+
+  /* --- код возврата: гость собрал заявку, но уходит — выписываем персональный
+     одноразовый код (сервер: −5% до 1 000 ₽, работы от 5 000 ₽, 3 дня, серия
+     «exit» повторно одному клиенту не применяется). Код запоминаем в браузере
+     и тихо подставляем в купон при следующем визите. --- */
+  var EXIT_KEY = 'salon_exit_grant';
+  function exitGrantDrop(reason) {
+    /* сохранённый код умер (использован/истёк/серия уже была) — забываем */
+    if (reason === 'used_up' || reason === 'expired' || reason === 'not_found' ||
+        reason === 'inactive' || reason === 'already_used') S.store.del(EXIT_KEY);
+  }
+  var doneShown = false;
+  (function () {
+    if (svc) return; /* только калькулятор полных работ */
+    var grant = S.store.get(EXIT_KEY, null);
+    var offered = false;
+    var startedAt = Date.now();
+    var hiddenAt = 0;
+
+    /* выданный ранее код — тихо возвращаем в купон (протухший сложится сам) */
+    if (grant && grant.code && !urlPromo && promoIn && !promoIn.value) {
+      offered = true;
+      promoIn.value = grant.code;
+      promoCheck(true);
+    }
+
+    function fmtDay(iso) {
+      var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+      return m ? m[3] + '.' + m[2] : '';
+    }
+    function eligible() {
+      return !offered && !doneShown && !promoCode && !(S.api && S.api.token()) &&
+        (idx >= 3 || (topicIn && topicIn.value.trim()) ||
+         (detailsIn && detailsIn.value.trim()) || attQueue.length ||
+         ($('fContact') && $('fContact').value.trim()));
+    }
+    function showExitDlg(g) {
+      var el = document.createElement('div');
+      el.className = 'sdlg exit-dlg';
+      el.setAttribute('role', 'dialog');
+      el.setAttribute('aria-modal', 'true');
+      el.setAttribute('aria-label', 'Код возврата к заявке');
+      el.innerHTML =
+        '<div class="sdlg-back" data-x></div>' +
+        '<div class="sdlg-card">' +
+          '<p class="caps" style="margin-bottom:6px">Салон · код возврата</p>' +
+          '<h3>Смета подождёт вас</h3>' +
+          '<p>Ответы сохранены в этом браузере, а это — ваш персональный код: ' +
+          'отправьте заявку' + (g.until ? ' до ' + fmtDay(g.until) : ' в течение трёх дней') +
+          ', и мастер вычтет скидку из счёта. Мы уже вписали его в купон заявки.</p>' +
+          '<div class="exit-code"><span class="xc-code"></span>' +
+            '<button type="button" class="xc-copy">Скопировать</button></div>' +
+          '<p class="exit-note">' + (g.label || '−5% (до 1 000 ₽) · для работ от 5 000 ₽') +
+          ' · одноразовый · не суммируется со скидкой «Салон+»</p>' +
+          '<div class="sdlg-row"><button type="button" class="btn btn-wax" data-ok>Вернуться к заявке</button></div>' +
+        '</div>';
+      el.querySelector('.xc-code').textContent = g.code;
+      document.body.appendChild(el);
+      requestAnimationFrame(function () { el.classList.add('open'); });
+      function close(toForm) {
+        el.classList.remove('open');
+        setTimeout(function () { el.remove(); }, 240);
+        document.removeEventListener('keydown', onKey);
+        if (toForm) go(3, true);
+      }
+      function onKey(e) { if (e.key === 'Escape') close(false); }
+      document.addEventListener('keydown', onKey);
+      el.querySelector('[data-ok]').addEventListener('click', function () { close(true); });
+      el.querySelector('.sdlg-back').addEventListener('click', function () { close(false); });
+      var cp = el.querySelector('.xc-copy');
+      cp.addEventListener('click', function () {
+        S.copy(g.code).then(function (ok) { cp.textContent = ok ? 'Скопировано ✓' : g.code; });
+      });
+      el.querySelector('[data-ok]').focus();
+    }
+    function offer() {
+      if (!eligible()) return;
+      offered = true; /* одна попытка за визит — даже если сервер откажет */
+      S.api.post('/promo/exit', { page: 'configurator.html' }).then(function (r) {
+        if (!r || !r.ok || !r.code) return; /* лимит/рубильник — молчим */
+        var g = { code: r.code, label: r.label || '', until: r.until || '' };
+        S.store.set(EXIT_KEY, g);
+        if (promoIn) { promoIn.value = g.code; promoCheck(true); }
+        showExitDlg(g);
+        if (S.metrika) S.metrika.goal('exit_code');
+      });
+    }
+
+    /* десктоп: курсор ушёл вверх за пределы страницы — классический exit-intent */
+    document.addEventListener('mouseout', function (e) {
+      if (e.relatedTarget || e.clientY > 0) return;
+      if (Date.now() - startedAt < 7000) return; /* не пугаем сразу на входе */
+      offer();
+    });
+    /* мобильные: ушёл из вкладки надолго и вернулся — встречаем кодом */
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') { hiddenAt = Date.now(); return; }
+      if (hiddenAt && Date.now() - hiddenAt > 40000) offer();
+    });
+    /* вернулся позже со старым черновиком — тоже повод удержать */
+    if (draft && draft.savedAt && Date.now() - draft.savedAt > 30 * 60 * 1000) {
+      setTimeout(offer, 1500);
+    }
+  })();
 
   var submitting = false;
   function submit() {
@@ -1159,10 +1393,13 @@ function initConf() {
         : 'https://t.me/academic_saloon_bot';
       if (bl) bl.href = claim; /* гостю — привязка заказа к Telegram в один тап */
       showDone('№' + r.id);
-      if (promoCode && r.promo === 'ok') {
+      if (promoCode && r.promo) {
         var dnote = document.querySelector('.done-note');
-        if (dnote) dnote.textContent += ' 🎟 Промокод ' + promoCode +
-          ' учтён — скидка применится, когда мастер назовёт цену.';
+        if (dnote) dnote.textContent += r.promo === 'ok'
+          ? ' 🎟 Промокод ' + promoCode + ' учтён — скидка применится, когда мастер назовёт цену.'
+          : ' 🎟 Промокод не применился (' + (PROMO_ERR[r.promo] || 'не прошёл проверку').toLowerCase() +
+            ') — мастер посчитает без него.';
+        if (r.promo !== 'ok') exitGrantDrop(r.promo);
       }
       if (S.stamp) S.stamp('Заявка принята');
       /* гостям — ссылка доступа к делу + необязательная привязка Telegram */
@@ -1191,6 +1428,7 @@ function initConf() {
   btnSubmit.addEventListener('click', submit);
 
   function showDone(id) {
+    doneShown = true; /* заявка ушла — код возврата больше не предлагаем */
     $('doneNo').textContent = id;
     $('confBody').hidden = true;
     if (mcta) mcta.hidden = true;
