@@ -270,13 +270,37 @@ function initCabinet() {
   }
 
   function tplEmpty() {
-    return userRow() + clubBlock() +
+    /* порядок по значимости: сначала дело (здесь — приглашение его завести),
+       клубные карточки — после */
+    return userRow() +
       '<div class="sheet sheet-pad stacked reveal" style="text-align:center">' +
       '<p class="caps">Картотека пуста</p>' +
       '<h2 class="ord-type">Заказов пока нет</h2>' +
       '<p class="petit" style="margin-bottom:16px">Соберите смету в конфигураторе — заявка попадёт к мастеру мгновенно, а статус появится прямо здесь.</p>' +
+      '<div class="act-row" style="justify-content:center">' +
       '<a class="btn btn-wax" href="configurator.html">Рассчитать работу <span class="ar">→</span></a>' +
-      '</div>';
+      '<a class="btn btn-line" href="configurator.html?plan=1">Начать с разбора плана · 3 000 ₽</a></div>' +
+      '</div>' + clubBlock();
+  }
+
+  /* -------- секция-раскрывашка: второстепенное свёрнуто, но под рукой -------- */
+  function fold(id, summary, meta, inner, open) {
+    if (!inner) return '';
+    return '<details class="fs-fold" id="' + id + '"' + (open ? ' open' : '') + '>' +
+      '<summary><span class="caps">' + summary + '</span>' +
+      (meta ? '<span class="fs-meta">' + meta + '</span>' : '') +
+      '<span class="ff-ar" aria-hidden="true">▾</span></summary>' +
+      '<div class="ff-body">' + inner + '</div></details>';
+  }
+
+  /* незакрытая оплата подписки не прячется никогда: тонкая лента сверху,
+     сама карточка оплаты — в клубном блоке ниже дела */
+  function subPendingBand() {
+    var p = st.me && st.me.sub_pending;
+    if (!p) return '';
+    return '<div class="pause-band fin-band reveal"><span class="pb-ic">⭐</span><span class="pb-txt">' +
+      'Подписка «' + esc(p.label) + '» ждёт оплаты — <b>' + money(p.price) + ' ₽</b>. ' +
+      '<button type="button" class="linkbtn" data-jump="plusCard">К оплате подписки ↓</button></span></div>';
   }
 
   function tplError() {
@@ -506,11 +530,19 @@ function initCabinet() {
   }
 
   function planCardHtml(p) {
-    /* билет читального зала: имя, слоган, крупная цена, опции, один CTA */
+    /* билет: имя → ГЛАВНАЯ выгода крупно (скидка) → цена → ключевое одной
+       строкой → полный состав за раскрытием → один CTA. Без простыней */
     var pl = st.plans;
-    var feats = (p.features || []).map(function (fid) {
-      var f = (pl.features || []).filter(function (x) { return x.id === fid; })[0];
-      return f ? '<li>' + esc(f.label) + '</li>' : '';
+    var featObjs = (p.features || []).map(function (fid) {
+      return (pl.features || []).filter(function (x) { return x.id === fid; })[0];
+    }).filter(Boolean);
+    var discF = featObjs.filter(function (f) { return pl.discounts[f.id]; })
+      .sort(function (a, b) { return pl.discounts[b.id].pct - pl.discounts[a.id].pct; })[0];
+    var disc = discF ? pl.discounts[discF.id] : null;
+    var others = featObjs.filter(function (f) { return !discF || f.id !== discF.id; });
+    var keyLine = others.slice(0, 3).map(function (f) { return esc(f.label); }).join(' · ');
+    var moreList = featObjs.map(function (f) {
+      return '<li><b>' + esc(f.label) + '</b>' + (f.hint ? ' — ' + esc(f.hint) : '') + '</li>';
     }).join('');
     var rec = /pro/.test(p.id || '');
     var per = st.showPeriod;
@@ -522,7 +554,7 @@ function initCabinet() {
       buyLabel = 'Оформить';
     } else if (per === 'sem') {
       price = money(p.sem_price) + ' ₽';
-      priceNote = 'семестр · 150 дней (выгоднее помесячного)';
+      priceNote = 'семестр · 150 дней одной оплатой';
       buy = p.id + ':sem';
       buyLabel = 'Оформить на семестр';
     } else {
@@ -535,41 +567,66 @@ function initCabinet() {
       (rec ? '<span class="rec-tape">выгодный выбор</span>' : '<span class="tk-star" aria-hidden="true">' + (p.once ? '🎓' : '⭐') + '</span>') +
       '<span class="tk-name">' + esc(p.label) + '</span>' +
       '<span class="tk-tag">' + esc(p.tagline || '') + '</span>' +
+      (disc ? '<span class="tk-hero">−' + disc.pct + '%<small>на каждый заказ · до ' +
+        money(disc.cap) + ' ₽ выгоды с заказа</small></span>' : '') +
       '<span class="tk-price">' + price + '<small>' + priceNote + '</small></span>' +
-      (feats ? '<ul class="tk-feats">' + feats + '</ul>' : '') +
+      (keyLine ? '<p class="tk-key">' + keyLine + (others.length > 3 ? ' · и ещё ' + (others.length - 3) : '') + '</p>' : '') +
+      (moreList ? '<details class="tk-more"><summary>что входит — полностью</summary><ul>' + moreList + '</ul></details>' : '') +
       '<span class="tk-cta"><button type="button" class="btn ' + (rec ? 'btn-wax' : 'btn-line') +
       '" data-sub-buy="' + buy + '">' + buyLabel + '</button></span>' +
       '</div>';
   }
 
   function ctorHtml() {
+    /* конструктор-механика: слева плитки-опции, справа живой билет с составом
+       и итогом — каждый клик сразу отражается в билете */
     var pl = st.plans;
-    var rows = (pl.features || []).map(function (f) {
-      var on = st.ctorFeats.indexOf(f.id) >= 0;
-      return '<label class="dr" style="cursor:pointer;gap:8px">' +
-        '<span><input type="checkbox" data-ctor-f="' + esc(f.id) + '"' + (on ? ' checked' : '') +
-        ' style="margin-right:8px">' + esc(f.label) +
-        ' <span class="petit" style="color:var(--ink-faint)">' + esc(f.hint || '') + '</span></span>' +
-        '<b>+' + money(f.price) + ' ₽</b></label>';
-    }).join('');
-    var total = ctorTotal();
-    var periods = '<div class="act-row" style="margin-top:8px">' +
-      '<label class="petit"><input type="radio" name="ctorPeriod" value="month"' + (st.ctorPeriod === 'month' ? ' checked' : '') + '> месяц</label>' +
-      '<label class="petit"><input type="radio" name="ctorPeriod" value="sem"' + (st.ctorPeriod === 'sem' ? ' checked' : '') + '> семестр ×' + (pl.periods.sem.k) + ' (150 дней)</label></div>';
-    var saveNote = '';
-    var disc = bestCtorDisc();
-    if (disc) {
-      var sample = 20000;
-      var save = Math.min(Math.round(sample * disc.pct / 100), disc.cap);
-      saveNote = '<p class="petit" style="margin-top:6px">Например, курсовая за 20 000 ₽ → ваша выгода <b>' + money(save) + ' ₽</b> уже с одного заказа.</p>';
+    var discIds = Object.keys(pl.discounts || {});
+    var best = bestCtorDisc();
+    var bestId = null;
+    if (best) {
+      st.ctorFeats.forEach(function (fid) {
+        if (pl.discounts[fid] && pl.discounts[fid].pct === best.pct) bestId = bestId || fid;
+      });
     }
+    var opts = (pl.features || []).map(function (f) {
+      var on = st.ctorFeats.indexOf(f.id) >= 0;
+      return '<button type="button" class="ctor-opt' + (on ? ' on' : '') + '" data-ctor-f="' + esc(f.id) +
+        '" aria-pressed="' + on + '">' +
+        '<span class="co-name">' + esc(f.label) + '</span>' +
+        '<span class="co-price">+' + money(f.price) + ' ₽</span>' +
+        (f.hint ? '<span class="co-hint">' + esc(f.hint) + '</span>' : '') +
+        '<span class="co-tick" aria-hidden="true">✓</span></button>';
+    }).join('');
+    var chosen = (pl.features || []).filter(function (f) { return st.ctorFeats.indexOf(f.id) >= 0; });
+    var comp = '<ul class="ct-comp"><li>База абонемента <b>' + money(pl.base_price) + ' ₽</b></li>' +
+      (chosen.length
+        ? chosen.map(function (f) {
+            var idle = discIds.indexOf(f.id) >= 0 && f.id !== bestId;
+            return '<li' + (idle ? ' class="ct-idle"' : '') + '>' + esc(f.label) +
+              (idle ? ' <small>не суммируется со скидкой выше</small>' : ' <b>+' + money(f.price) + ' ₽</b>') + '</li>';
+          }).join('')
+        : '<li class="ct-idle">…выберите опции слева</li>') + '</ul>';
+    var saveNote = '';
+    if (best) {
+      var save = Math.min(Math.round(20000 * best.pct / 100), best.cap);
+      saveNote = '<p class="petit ct-note">Курсовая за 20 000 ₽ с таким набором — уже <b>−' + money(save) + ' ₽</b>.</p>';
+    }
+    var perSeg = '<span class="seg ct-per" role="tablist" aria-label="Срок">' +
+      '<button type="button" data-ctor-period="month" class="' + (st.ctorPeriod === 'month' ? 'on' : '') + '">Месяц</button>' +
+      '<button type="button" data-ctor-period="sem" class="' + (st.ctorPeriod === 'sem' ? 'on' : '') + '">Семестр · 150 дней</button></span>';
     return '<div class="fs-sec" id="ctorBox"><div class="fs-head"><span class="caps">Соберите свой Салон+</span>' +
-      '<span class="fs-meta">база ' + money(pl.base_price) + ' ₽/мес + опции</span></div>' +
-      '<div class="due-box">' + rows + periods +
-      '<div class="dr total"><span>Итого</span><b id="ctorTotal">' + (st.ctorFeats.length ? money(total) + ' ₽' : '—') + '</b></div></div>' +
+      '<span class="fs-meta">база ' + money(pl.base_price) + ' ₽/мес + опции по вкусу</span></div>' +
+      '<div class="ctor">' +
+      '<div class="ctor-opts">' + opts + '</div>' +
+      '<aside class="ctor-ticket"><span class="caps">Ваш абонемент</span>' +
+      comp + perSeg +
+      '<div class="ct-total" id="ctorTotal">' + (chosen.length ? money(ctorTotal()) + ' ₽' : '—') + '</div>' +
+      '<p class="petit ct-note">' + (st.ctorPeriod === 'sem' ? 'одной оплатой за 150 дней' : 'за 30 дней') + ' · без автосписаний</p>' +
       saveNote +
-      '<div class="act-row"><button type="button" class="btn btn-wax" id="ctorBuy"' + (st.ctorFeats.length ? '' : ' disabled') + '>Оформить свою подписку</button></div>' +
-      '<p class="petit" style="margin-top:6px">Из скидочных опций действует одна — самая большая. Готовые планы выгоднее того же набора на 10–15%.</p></div>';
+      '<button type="button" class="btn btn-wax btn-block" id="ctorBuy"' + (chosen.length ? '' : ' disabled') + '>Оформить</button>' +
+      '<p class="petit ct-note">Из скидочных опций действует одна — самая большая. Готовые планы выгоднее того же набора на 10–15%.</p>' +
+      '</aside></div></div>';
   }
 
   function bestCtorDisc() {
@@ -685,10 +742,14 @@ function initCabinet() {
   }
 
   function scrollToEl(id) {
-    /* довести взгляд до появившегося блока — на телефоне иначе не видно */
+    /* довести взгляд до появившегося блока — на телефоне иначе не видно;
+       если блок спрятан в свёрнутой секции, сперва раскрываем её */
     setTimeout(function () {
       var el = document.getElementById(id);
-      if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (!el) return;
+      var d = el.tagName === 'DETAILS' ? el : (el.closest ? el.closest('details') : null);
+      if (d && !d.open) d.open = true;
+      if (el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 80);
   }
 
@@ -839,6 +900,16 @@ function initCabinet() {
              check: 'на проверке', fix: 'правки', done: 'завершён', cancel: 'закрыт' }[o.status] || '';
   }
 
+  /* ход дела свёрнут, когда у клиента есть действие поважнее (оплата/решение) —
+     этапы остаются в одном клике, но не отталкивают главное вниз */
+  function stageFold(o) {
+    if (o.step < 0) return stageRows(o); /* закрытая заявка — короткая заметка */
+    var open = !needsAction(o) && o.status !== 'done' && o.status !== 'cancel';
+    var meta = 'этап ' + o.step + ' из ' + o.steps.length +
+      ((o.stages_total || 1) > 1 ? ' · частей: ' + o.stages_total : '');
+    return fold('secStages', 'Ход дела', meta, stageRows(o), open);
+  }
+
   function stageRows(o) {
     if (o.step < 0) {
       return '<div class="fs-sec"><p class="petit" style="margin:0">Заявка закрыта' +
@@ -921,7 +992,7 @@ function initCabinet() {
             ? '<div class="dr"><span></span><b><button type="button" class="linkbtn" data-act="bonus_cancel">↩ вернуть бонусы на счёт</button></b></div>' : '') +
           '</div>';
       }
-      return out + planTable(o) + bonusSpendBlock(o) + subUpsell(o);
+      return out + planTable(o) + bonusSpendFold(o) + subUpsell(o);
     }
     if (o.quote_low) {
       return '<div class="ord-price-row"><span class="caps">Вилка сметы</span>' +
@@ -954,7 +1025,15 @@ function initCabinet() {
       }).join('') + '</div>';
   }
 
-  /* -------- списание бонусов: один раз на заказ, до первой оплаты -------- */
+  /* -------- списание бонусов: один раз на заказ, до первой оплаты.
+     Свёрнуто в строку — раскрывается только тем, кому это нужно -------- */
+  function bonusSpendFold(o) {
+    var inner = bonusSpendBlock(o);
+    if (!inner) return '';
+    var limit = Math.min((o.bonus && o.bonus.balance) || 0, o.bonus_cap || 0);
+    return fold('secBonus', '💎 Списать бонусы', 'до −' + money(limit) + ' ₽ с этого заказа', inner, false);
+  }
+
   function bonusSpendBlock(o) {
     if (!o.bonus || !(o.status === 'priced' || o.status === 'prepay')) return '';
     var paidAlready = (o.payments || []).some(function (p) { return p.status === 'paid'; });
@@ -982,11 +1061,9 @@ function initCabinet() {
     if ((o.price || 0) < 3000) return '';
     if ((o.payments || []).some(function (p) { return p.status === 'paid'; })) return '';
     var save = Math.min(Math.round(o.price * 0.10), 3000);
-    return '<div class="upsell reveal"><span class="up-star" aria-hidden="true">⭐</span>' +
-      '<span>С абонементом «Салон+» этот заказ — до <b>−' + money(save) + ' ₽</b>: ' +
-      'скидка пересчитает цену сразу после активации. Плюс приоритет мастера и куратор сессии. ' +
-      'От <b>449 ₽/мес</b>, без автосписаний. ' +
-      '<button type="button" class="linkbtn wax" data-open-plus>Выбрать абонемент →</button></span></div>';
+    /* один тихий талон-строка: без карточек и простыней в середине дела */
+    return '<p class="up-line reveal">⭐ С абонементом «Салон+» этот заказ — до <b>−' + money(save) +
+      ' ₽</b>, от 449 ₽/мес. <button type="button" class="linkbtn wax" data-open-plus>Подключить →</button></p>';
   }
 
   function payHistory(o) {
@@ -1163,9 +1240,8 @@ function initCabinet() {
     if (o.actions.indexOf('cancel_request') >= 0)
       items.push('<button type="button" class="btn btn-line" data-act-cancelreq>Закрыть дело…</button>');
     if (!items.length) return '';
-    return '<div class="fs-sec" id="secManage"><div class="fs-head"><span class="caps">Управление делом</span>' +
-      '<span class="fs-meta">пауза — не отмена: всё сохраняется</span></div>' +
-      '<div class="act-row" style="margin-top:0">' + items.join('') + '</div></div>';
+    return fold('secManage', '⚙️ Управление делом', 'пауза — не отмена: всё сохраняется',
+      '<div class="act-row" style="margin-top:0">' + items.join('') + '</div>', false);
   }
 
   /* -------- после завершения: услуги «к защите» -------- */
@@ -1228,10 +1304,13 @@ function initCabinet() {
         '<span class="fl-meta">' + who + ' · ' + dt(f.at) + '</span>' +
         '<a class="link" href="' + S.api.base + apiPath(o.id, '/file/' + f.id) + '" download>скачать</a></div>';
     }).join('');
-    return '<div class="fs-sec" id="secFiles"><div class="fs-head"><span class="caps">Файлы</span>' +
-      '<label class="btn btn-line btn-upload">Приложить файл<input type="file" id="cabUpload" hidden></label></div>' +
+    var n = (o.files || []).length;
+    var meta = n ? (n + (o.files_new ? ' · есть новые' : '')) : 'приложить методичку или задание';
+    var open = n > 0 || o.status === 'new';
+    return fold('secFiles', '📎 Файлы', meta,
       (rows || '<p class="petit">Пока пусто. Приложите методичку или задание — мастеру будет проще оценить работу точно.</p>') +
-      '<p class="petit up-note" id="upNote" hidden></p></div>';
+      '<div class="act-row"><label class="btn btn-line btn-upload">Приложить файл<input type="file" id="cabUpload" hidden></label></div>' +
+      '<p class="petit up-note" id="upNote" hidden></p>', open);
   }
 
   function mediaHtml(o, m) {
@@ -1266,25 +1345,26 @@ function initCabinet() {
         '<span class="chat-txt">' + body + '</span>' +
         '<span class="chat-at petit">' + dt(i.at) + '</span></div>';
     }).join('');
-    return '<div class="fs-sec" id="secChat"><div class="fs-head"><span class="caps">Переписка по заказу</span>' +
-      '<span class="fs-meta">' + (S.api.token() ? 'синхронно с Telegram' : 'мастер видит сразу') + '</span></div>' +
+    var hasMsgs = (o.messages || []).length > 0;
+    var meta = o.unread ? ('новых: ' + o.unread) : (S.api.token() ? 'синхронно с Telegram' : 'мастер видит сразу');
+    return fold('secChat', '💬 Переписка по заказу', meta,
       '<div class="chat-feed" id="chatFeed">' + (feed || '<p class="petit" style="text-align:center">Пока тихо. Напишите первым — мастер ответит прямо здесь.</p>') + '</div>' +
       '<div class="chat-form"><textarea id="chatText" rows="2" maxlength="3000" placeholder="Сообщение мастеру…"></textarea>' +
-      '<button type="button" class="btn btn-wax" id="chatSend">Отправить</button></div></div>';
+      '<button type="button" class="btn btn-wax" id="chatSend">Отправить</button></div>',
+      hasMsgs || !!o.unread);
   }
 
   /* -------- доступ к делу: секретная ссылка для других устройств -------- */
   function accessBlock(o) {
     var t = tokenFor(o.id);
     if (!t) return ''; /* заказы аккаунта открываются входом через Telegram */
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Доступ к делу</span>' +
-      '<span class="fs-meta">работает без входа</span></div>' +
+    return fold('secAccess', '🔑 Доступ к делу', 'ссылка для других устройств',
       '<p class="petit" style="margin-bottom:10px">Дело открывается на любом устройстве по секретной ссылке — сохраните её себе (заметки, «Избранное»). ' +
       'Не пересылайте посторонним: у кого ссылка, тот видит дело. По желанию привяжите Telegram — статусы придут и в бота.</p>' +
       '<div class="act-row" style="margin-top:0">' +
       '<button type="button" class="btn btn-line" data-access-copy>Скопировать ссылку доступа</button>' +
       '<a class="btn btn-line" href="https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(t) + '" target="_blank" rel="noopener">Привязать Telegram</a>' +
-      '</div></div>';
+      '</div>', false);
   }
 
   var STAMP_TONE = { priced: 's-act', prepay: 's-act', check: 's-act', fix: 's-act',
@@ -1312,7 +1392,10 @@ function initCabinet() {
     if (o.deadline_text) meta.push('срок: ' + esc(o.deadline_text));
     meta.push('заявка от ' + dt(o.created_at));
     var pinTitle = o.pinned ? 'Открепить дело' : 'Закрепить дело первым в списке';
-    return userRow() + nowCard() + clubBlock() + tplSwitch() +
+    /* порядок по значимости: решение и оплата — сразу после шапки; ход дела,
+       файлы и переписка — следом; сервисное (управление, доступ) — свёрнуто
+       в конце; клуб (бонусы и подписка) — всегда ПОСЛЕ дела */
+    return userRow() + nowCard() + subPendingBand() + tplSwitch() +
       '<article class="sheet sheet-pad stacked reveal form-sheet" aria-label="Дело заказа ' + esc(o.no) + '">' +
       '<div class="ord-top"><span class="mono ord-no">Дело ' + esc(o.no) + '</span>' +
       '<span class="ord-flags">' +
@@ -1324,8 +1407,9 @@ function initCabinet() {
       '<p class="petit">' + meta.join(' · ') + ' ' + deadlineChip(o) + '</p>' +
       jumpChips(o) +
       pauseBand(o) + finalBand(o) + partBand(o) + dueBand(o) +
-      priceBlock(o) + stageRows(o) +
-      actionsBlock(o) + reviewBlock(o) + defenseBlock(o) + manageBlock(o) + filesBlock(o) + chatBlock(o) + accessBlock(o) +
+      priceBlock(o) + actionsBlock(o) +
+      stageFold(o) + reviewBlock(o) + defenseBlock(o) +
+      filesBlock(o) + chatBlock(o) + manageBlock(o) + accessBlock(o) +
       (isArch(o) ? '<p class="petit" style="margin-top:clamp(20px,3vw,28px);padding-top:14px;border-top:1px solid var(--hairline)">' +
         'Дело ' + (o.status === 'done' ? 'завершено' : 'закрыто') + '. ' +
         (o.archived
@@ -1333,6 +1417,7 @@ function initCabinet() {
           : '<button type="button" class="linkbtn" data-act="archive">Убрать в архив</button> — дело исчезнет из списка; вернуть можно в любой момент («Архив → убранные»).') +
         '</p>' : '') +
       '</article>' +
+      clubBlock() +
       '<p class="petit cab-foot-sync">Всё по заказу живёт в этом кабинете. Привязан Telegram? Дублируем статусы и в бота: ' +
       '<a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">@academic_saloon_bot</a></p>';
   }
@@ -1729,17 +1814,27 @@ function initCabinet() {
     }
     if (t.closest('#cabNotiBtn')) { notiAsk(); return; }
     var jmp = t.closest('[data-jump]');
-    if (jmp) {
-      var je = document.getElementById(jmp.getAttribute('data-jump'));
-      if (je && je.scrollIntoView) je.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
+    if (jmp) { scrollToEl(jmp.getAttribute('data-jump')); return; }
     if (t.closest('#clubToggle')) {
       st.clubOpen = !st.clubOpen;
       rerenderHome();
       return;
     }
     if (t.closest('#ctorShow')) { st.ctorOpen = true; rerenderHome(); scrollToEl('ctorBox'); return; }
+    var cf = t.closest('[data-ctor-f]');
+    if (cf) {
+      var fid = cf.getAttribute('data-ctor-f');
+      var ix = st.ctorFeats.indexOf(fid);
+      if (ix >= 0) st.ctorFeats.splice(ix, 1); else st.ctorFeats.push(fid);
+      rerenderHome();
+      return;
+    }
+    var cper = t.closest('[data-ctor-period]');
+    if (cper) {
+      st.ctorPeriod = cper.getAttribute('data-ctor-period') === 'sem' ? 'sem' : 'month';
+      rerenderHome();
+      return;
+    }
     if (t.closest('#curShow')) { st.curOpen = true; rerenderHome(); return; }
     if (t.closest('#plusToggle')) {
       st.plusOpen = !st.plusOpen;
@@ -1973,22 +2068,6 @@ function initCabinet() {
   });
 
   root.addEventListener('change', function (e) {
-    var cf = e.target && e.target.getAttribute && e.target.getAttribute('data-ctor-f');
-    if (cf) {
-      var i = st.ctorFeats.indexOf(cf);
-      if (i >= 0) st.ctorFeats.splice(i, 1); else st.ctorFeats.push(cf);
-      var totEl = document.getElementById('ctorTotal');
-      if (totEl) totEl.textContent = st.ctorFeats.length ? money(ctorTotal()) + ' ₽' : '—';
-      var buyBtn = document.getElementById('ctorBuy');
-      if (buyBtn) buyBtn.disabled = !st.ctorFeats.length;
-      return;
-    }
-    if (e.target && e.target.name === 'ctorPeriod') {
-      st.ctorPeriod = e.target.value;
-      var totEl2 = document.getElementById('ctorTotal');
-      if (totEl2) totEl2.textContent = st.ctorFeats.length ? money(ctorTotal()) + ' ₽' : '—';
-      return;
-    }
     if (e.target && e.target.id === 'cabUpload') uploadFile(e.target);
     if (e.target && e.target.id === 'cabReceipt') { uploadFile(e.target, 'receipt'); toast('Чек уйдёт мастеру — сверка станет быстрее'); }
     if (e.target && e.target.id === 'cabReviewShot') uploadFile(e.target, 'review', 'rvNote');

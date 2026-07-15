@@ -19,6 +19,17 @@
   .conf-head h1{font-size:clamp(28px,4vw,44px);font-weight:360;margin-bottom:8px}
   .conf-head .petit{max-width:52ch}
 
+  /* «Разбор плана» — карточка-квитанция услуги, а не бейдж с абзацем */
+  .plan-offer{margin:14px 0 4px;padding:14px 16px;border:1px solid var(--hairline-strong);
+    border-left:4px solid var(--wax);border-radius:var(--r);background:var(--sheet);max-width:560px}
+  .plan-offer .po-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px}
+  .plan-offer .po-price b{font:700 20px/1 var(--serif);color:var(--wax);white-space:nowrap}
+  .plan-offer .po-lead{font-size:13.5px;color:var(--ink-soft);margin:0 0 8px}
+  .plan-offer .po-list{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+  .plan-offer .po-list li::before{content:"—";margin-right:8px;color:var(--wax)}
+  .plan-offer .po-list b{color:var(--ink)}
+  .plan-offer .po-note{margin:10px 0 0;padding-top:9px;border-top:1px dashed var(--hairline-strong);font-size:12.5px;color:var(--ink-soft)}
+
   /* прогресс */
   .wprog{display:flex;align-items:center;gap:14px;margin-bottom:clamp(18px,3vw,26px)}
   .wprog .wp-lbl{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -160,7 +171,17 @@
         <header class="conf-head reveal">
           <h1>Смета вашей работы</h1>
           <p class="petit">Четыре шага — увидите стоимость, план и порядок оплаты. Оценка бесплатна, решение остаётся за вами.</p>
-          <p class="petit plan-note" hidden><span class="tag tag-wax">Разбор плана</span> Вы начинаете с разбора плана — <b id="planPrice">3&nbsp;000&nbsp;₽</b>: структура глав, реалистичный срок и фиксированная смета. Зачитывается в стоимость работы при продолжении в течение 14 дней.</p>
+          <div class="plan-note plan-offer" hidden>
+            <div class="po-head"><span class="caps">Первый шаг · Разбор плана</span>
+              <span class="po-price"><b id="planPrice">3&nbsp;000&nbsp;₽</b></span></div>
+            <p class="po-lead">Прежде чем писать, мастер разбирает вашу задачу — на руках у вас окажутся:</p>
+            <ul class="po-list">
+              <li><b>Структура глав</b> — согласованный план, по которому пишется работа</li>
+              <li><b>Реалистичный срок</b> — календарь сдачи без сюрпризов в конце</li>
+              <li><b>Фиксированная смета</b> — после разбора цена уже не меняется</li>
+            </ul>
+            <p class="po-note">Продолжаете работу в течение 14 дней — стоимость разбора <b>зачитывается полностью</b>. По сути, при продолжении разбор бесплатный.</p>
+          </div>
         </header>
 
         <div class="split">
@@ -216,6 +237,9 @@
                   <p class="petit" style="margin-top:8px">Эти заявки короче: один лист — описываете задачу, прикладываете работу, мастер называет точную цену.</p>
                 </div>
               </div>
+              <p class="petit" id="planEntry" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--hairline-strong)">
+                Не готовы заказывать целиком? <a class="link" href="configurator.html?plan=1"><b>Начните с разбора плана — 3&nbsp;000&nbsp;₽</b></a>:
+                структура глав, срок и фиксированная смета. Продолжите работу — зачтётся в её стоимость полностью.</p>
             </div>
 
             <!-- ШАГ 2: направление -->
@@ -471,6 +495,9 @@ function initConf() {
   var planNoteEl = document.querySelector('.plan-note'), planPriceEl = $('planPrice');
   var profileEl = $('discProfile');
   if (plan && planNoteEl) planNoteEl.hidden = false;
+  /* вход в услугу из общего потока не показываем, когда режим уже включён */
+  var planEntryEl = $('planEntry');
+  if (plan && planEntryEl) planEntryEl.hidden = true;
   var topicIn = $('fTopic');
   var deadlineIn = $('fDeadline'), detailsIn = $('fDetails');
   var mcta = $('confMcta'), mqPanel = $('mqPanel'), mqToggle = $('mqToggle'), mqMore = $('mqMore'), mNext = $('mNext');

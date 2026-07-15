@@ -217,6 +217,58 @@
   .pl-h{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--hairline)}
   .pl-h .pl-tag{font-size:12.5px;color:var(--ink-soft)}
 
+  /* складные секции формуляра: второстепенное свёрнуто, но в одном клике */
+  .fs-fold{border-top:1px solid var(--hairline);margin-top:clamp(18px,2.6vw,26px)}
+  .fs-fold summary{display:flex;align-items:center;gap:10px;list-style:none;cursor:pointer;
+    padding:12px 0 10px;user-select:none;-webkit-tap-highlight-color:transparent}
+  .fs-fold summary::-webkit-details-marker{display:none}
+  .fs-fold summary .fs-meta{margin-left:auto;font-size:12px;color:var(--ink-faint);text-align:right}
+  .fs-fold .ff-ar{color:var(--ink-faint);font-size:11px;transition:transform .15s;flex:0 0 auto}
+  .fs-fold[open] .ff-ar{transform:rotate(180deg)}
+  .fs-fold summary:hover .caps{color:var(--ink)}
+  .fs-fold .ff-body{padding:2px 0 6px}
+  .fs-fold .ff-body .fs-sec{border-top:0;margin-top:8px;padding-top:0}
+
+  /* талон-строка «Салон+» в деле — одна строка вместо карточки */
+  .up-line{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+  .up-line b{color:var(--ink)}
+
+  /* билет-тариф v2: герой-выгода, ключевая строка, состав за раскрытием */
+  .tk-hero{display:block;margin:10px 0 0;font:700 27px/1.05 var(--serif);color:var(--wax)}
+  .tk-hero small{display:block;font:400 12px/1.5 var(--sans);color:var(--ink-soft);margin-top:3px}
+  .tk-key{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;line-height:1.55}
+  .tk-more{margin-top:8px;font-size:12.5px}
+  .tk-more summary{cursor:pointer;color:var(--ink-faint);list-style:none;user-select:none}
+  .tk-more summary::-webkit-details-marker{display:none}
+  .tk-more summary::before{content:"▸";display:inline-block;margin-right:6px;transition:transform .15s}
+  .tk-more[open] summary::before{transform:rotate(90deg)}
+  .tk-more ul{margin:8px 0 0;padding-left:16px;display:grid;gap:5px;color:var(--ink-soft);line-height:1.5}
+
+  /* конструктор-механика: плитки-опции + живой билет с итогом */
+  .ctor{display:grid;grid-template-columns:1.35fr 1fr;gap:14px;margin-top:10px;align-items:start}
+  .ctor-opts{display:grid;gap:8px}
+  .ctor-opt{position:relative;display:grid;grid-template-columns:1fr auto;gap:2px 10px;text-align:left;
+    padding:11px 13px;border:1px solid var(--hairline-strong);border-radius:var(--r);
+    background:transparent;cursor:pointer;font:inherit;color:inherit;transition:border-color .12s,background .12s}
+  .ctor-opt .co-name{font-weight:600;font-size:13.5px}
+  .ctor-opt .co-hint{grid-column:1;font-size:12px;color:var(--ink-faint);line-height:1.45}
+  .ctor-opt .co-price{grid-column:2;grid-row:1/span 2;align-self:center;font-family:var(--mono);font-size:13px;white-space:nowrap}
+  .ctor-opt .co-tick{position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;
+    background:var(--wax);color:var(--sheet);font-size:11px;line-height:20px;text-align:center;
+    opacity:0;transform:scale(.5);transition:all .15s}
+  .ctor-opt.on{border-color:var(--wax);background:var(--wax-soft)}
+  .ctor-opt.on .co-tick{opacity:1;transform:none}
+  .ctor-ticket{border:1px solid var(--hairline-strong);border-left:4px solid var(--wax);
+    border-radius:var(--r);padding:14px;background:var(--sheet);position:sticky;top:10px}
+  .ct-comp{margin:10px 0;padding:0;list-style:none;display:grid;gap:5px;font-size:12.5px;color:var(--ink-soft);line-height:1.45}
+  .ct-comp li{display:flex;justify-content:space-between;gap:10px}
+  .ct-comp li small{color:var(--ink-faint)}
+  .ct-idle{color:var(--ink-faint)}
+  .ct-per{margin:6px 0 8px}
+  .ct-total{font:700 26px/1 var(--serif);margin:6px 0 2px}
+  .ct-note{margin:4px 0 8px}
+  @media(max-width:720px){.ctor{grid-template-columns:1fr}.ctor-ticket{position:static}}
+
   /* чипы-навигация по делу: на телефоне доводят до нужного раздела
      без листания всей простыни (Оплата · Файлы · Переписка · Управление) */
   .ord-jump{display:none;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0 2px;padding-bottom:2px;scrollbar-width:none}
@@ -305,8 +357,8 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260715d"></script>
-<script src="assets/js/extras.js?v=20260715d"></script>
-<script src="assets/js/cabinet.js?v=20260715d"></script>
+<script src="assets/js/app.js?v=20260715h"></script>
+<script src="assets/js/extras.js?v=20260715h"></script>
+<script src="assets/js/cabinet.js?v=20260715h"></script>
 </body>
 </html>
