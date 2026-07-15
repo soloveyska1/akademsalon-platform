@@ -19,7 +19,7 @@
       { id: 'chapter',    label: 'Глава диссертации',                              base: 30000 },
       { id: 'kandidat',   label: 'Кандидатская (по главам)',                          base: 200000 },
       { id: 'course',     label: 'Курсовая теоретическая',                         base: 14000 },
-      { id: 'course_emp', label: 'Курсовая эмпирическая (с практикой, расчётами)', base: 20000 },
+      { id: 'course_emp', label: 'Курсовая с исследованием (практика, расчёты)',   base: 20000 },
       { id: 'practice',   label: 'Отчёт по практике',                              base: 14000 },
       { id: 'vak',        label: 'Научная статья ВАК',                             base: 18000 },
       { id: 'scopus',     label: 'Научная статья Scopus / Web of Science',         base: 35000 },
@@ -652,7 +652,8 @@
       mnItem('dashboard.html', 'Кабинет', CAB_SVG, ' mn-cab');
     document.body.appendChild(mnav);
   }
-  if (Salon.cabBadge) Salon.cabBadge();
+  /* бейдж кабинета зовём ниже, когда Salon.api уже определён —
+     здесь он молча выходил на проверке !Salon.api и не рисовался никогда */
 
   /* ---------------- Яндекс.Метрика ----------------
      Включается только после «Хорошо» на куки-плашке (salon_consent,
@@ -716,6 +717,16 @@
             '<button class="cs-x" type="button" aria-label="Закрыть" data-cs-close>×</button></div>' +
           '<p class="cs-lead">' + (opts.lead ||
             'Напишите тему и срок — бесплатно оценим объём и назовём цену. Решение останется за вами.') + '</p>' +
+          /* честный индикатор доступности: тишина после «написать» — главный страх */
+          (function () {
+            var mskH = (new Date().getUTCHours() + 3) % 24;
+            var day = mskH >= 9 && mskH < 23;
+            return '<p style="display:flex;align-items:center;gap:8px;margin:-6px 0 12px;font-size:12.5px;color:var(--ink-soft)">' +
+              '<span style="width:8px;height:8px;border-radius:50%;flex:none;background:' +
+              (day ? 'var(--verify)' : 'var(--foil)') + '"></span>' +
+              (day ? 'Мастер на связи — обычно отвечаем за 15–30 минут'
+                   : 'В мастерской ночь — отвечаем и ночью, просто чуть дольше') + '</p>';
+          })() +
           '<a class="cs-opt cs-opt--wax" href="configurator.html">' +
             '<span class="cs-o-ic" aria-hidden="true">✎</span>' +
             '<span class="cs-o-txt"><b>Оформить заявку на сайте</b><small>Смета, файлы и кабинет — 2 минуты, без регистрации</small></span>' +
@@ -887,6 +898,9 @@
   Salon.claimLink = function (token) {
     return 'https://akademsalon.ru/dashboard.html#claim=' + encodeURIComponent(token || '');
   };
+
+  /* бейдж «есть живое дело» на кнопке кабинета — теперь, когда api готов */
+  if (Salon.cabBadge) Salon.cabBadge();
 
   /* ---------------- Маячок визитов («Глаз бога») ----------------
      Служебная запись уровня серверного лога: страница, источник и шаг,

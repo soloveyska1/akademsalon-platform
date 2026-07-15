@@ -1,7 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /dashboard.html
-Disallow: /consent.html
 Disallow: /admin.html
 
 Sitemap: https://akademsalon.ru/sitemap.xml

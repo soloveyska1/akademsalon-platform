@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Калькулятор стоимости онлайн: курсовая, диплом, ВКР — смета за минуту | Академический Салон</title>
 <meta name="description" content="Соберите смету за четыре шага: тип работы, направление, срок и уровень сопровождения. Живой расчёт и порядок оплаты — до заявки." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260715a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260715a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260715a" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260715a" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260716a" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260716a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260716a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260716a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -261,7 +261,7 @@
                 <div class="opt-group">
                   <span class="caps">Курсовые и практика</span>
                   <div class="opt-list">
-                    <button type="button" class="optrow" role="radio" data-id="course_emp" aria-checked="false" tabindex="-1"><span>Курсовая с практикой и расчётами</span><span class="dots"></span><span class="o-val">от 20&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="course_emp" aria-checked="false" tabindex="-1"><span>Курсовая с исследованием (практика, расчёты)</span><span class="dots"></span><span class="o-val">от 20&nbsp;000&nbsp;₽</span></button>
                     <button type="button" class="optrow" role="radio" data-id="course" aria-checked="false" tabindex="-1"><span>Курсовая теоретическая</span><span class="dots"></span><span class="o-val">от 14&nbsp;000&nbsp;₽</span></button>
                     <button type="button" class="optrow" role="radio" data-id="practice" aria-checked="false" tabindex="-1"><span>Отчёт по практике</span><span class="dots"></span><span class="o-val">от 14&nbsp;000&nbsp;₽</span></button>
                     <button type="button" class="optrow" role="radio" data-id="self" aria-checked="false" tabindex="-1"><span>Реферат, эссе, контрольная</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></button>
@@ -395,7 +395,7 @@
                 <div class="cp-body" id="promoField" hidden>
                   <div class="cp-row">
                     <input type="text" id="fPromo" maxlength="24" autocomplete="off"
-                           placeholder="Например, ОСЕНЬ10" aria-label="Промокод" />
+                           placeholder="Ваш промокод" aria-label="Промокод" />
                     <button type="button" class="btn btn-line" id="promoApply">Применить</button>
                   </div>
                   <p class="petit" id="promoNote" style="margin-top:8px" hidden></p>
@@ -529,7 +529,7 @@
 </div>
 
 <script src="assets/js/app.js?v=20260716a"></script>
-<script src="assets/js/extras.js?v=20260715a"></script>
+<script src="assets/js/extras.js?v=20260716a"></script>
 <script>
 function initConf() {
   'use strict';
@@ -838,8 +838,22 @@ function initConf() {
       state: { type: state.type, disc: state.disc, term: state.term, tier: state.tier },
       idx: idx,
       plan: plan,
+      fields: { /* набранный текст переживает уход в Telegram и перезагрузку */
+        topic: topicIn ? topicIn.value : '',
+        deadline: deadlineIn ? deadlineIn.value : '',
+        details: detailsIn ? detailsIn.value : '',
+        name: $('fName') ? $('fName').value : '',
+        contact: $('fContact') ? $('fContact').value : '',
+        ct: ctKind
+      },
       savedAt: Date.now()
     });
+  }
+  var draftTimer = null;
+  function saveDraftSoon() { /* поля — с паузой, чтобы не дёргать хранилище на каждый символ */
+    canSave = true;
+    if (draftTimer) clearTimeout(draftTimer);
+    draftTimer = setTimeout(saveDraft, 500);
   }
   function touch() { canSave = true; saveDraft(); }
 
@@ -1003,7 +1017,34 @@ function initConf() {
     var inp = $('fContact'), hint = $('ctHint');
     if (inp) { inp.placeholder = CT_META[ctKind][0]; inp.focus(); }
     if (hint) hint.textContent = CT_META[ctKind][1];
+    saveDraftSoon();
   });
+  /* восстановление набранных полей из черновика: уход в Telegram или
+     случайная перезагрузка больше не стирают тему, требования и контакт */
+  (function () {
+    if (svc) return;
+    var f = draft && draft.fields;
+    if (f) {
+      if (topicIn && !topicIn.value && f.topic) topicIn.value = f.topic;
+      if (deadlineIn && !deadlineIn.value && f.deadline) deadlineIn.value = f.deadline;
+      if (detailsIn && !detailsIn.value && f.details) detailsIn.value = f.details;
+      if ($('fName') && !$('fName').value && f.name) $('fName').value = f.name;
+      if ($('fContact') && !$('fContact').value && f.contact) $('fContact').value = f.contact;
+      if (f.ct && CT_META[f.ct] && ctChips) {
+        ctKind = f.ct;
+        ctChips.querySelectorAll('.ct-chip').forEach(function (x) {
+          x.classList.toggle('on', x.getAttribute('data-ct') === ctKind);
+        });
+        var rInp = $('fContact'), rHint = $('ctHint');
+        if (rInp) rInp.placeholder = CT_META[ctKind][0];
+        if (rHint) rHint.textContent = CT_META[ctKind][1];
+      }
+    }
+    ['fTopic', 'fDeadline', 'fDetails', 'fName', 'fContact'].forEach(function (id) {
+      var el = $(id);
+      if (el) el.addEventListener('input', saveDraftSoon);
+    });
+  })();
   var CT_TAG = { tg: 'Telegram', vk: 'ВК', wa: 'WhatsApp', ph: 'Телефон', em: 'Почта' };
   function contactValue() {
     var v = $('fContact') ? $('fContact').value.trim() : '';
@@ -1366,6 +1407,8 @@ function initConf() {
     submitting = true;
     S.btnLoading(btnSubmit, true, 'Отправляем…');
     if (mNext) S.btnLoading(mNext, true, 'Отправляем…');
+    var sendTry = 0;
+    function send() {
     S.api.post('/orders', {
       type: svc ? svcSrvId : state.type, disc: state.disc, term: state.term, tier: state.tier,
       topic: topicIn.value.trim(), plan: plan, name: name, contact: contactValue(), website: '',
@@ -1374,11 +1417,13 @@ function initConf() {
                (detailsIn ? detailsIn.value.trim() : ''),
       promo: promoCode || undefined,
       consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
-      consent_doc: 'consent 1.1 · privacy 1.3 · oferta 1.1 · форма конфигуратора',
+      consent_doc: 'consent 1.2 · privacy 1.6 · oferta 1.4 · форма конфигуратора',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
       ref: (S.refCode && S.refCode()) || undefined
     }).then(function (r) {
       if (!r || !r.ok || !r.id) {
+        /* сеть моргнула — одна тихая повторная попытка через пару секунд */
+        if (r && r.error === 'network' && sendTry < 1) { sendTry++; setTimeout(send, 2500); return; }
         submitting = false;
         S.btnLoading(btnSubmit, false); if (mNext) S.btnLoading(mNext, false);
         fallbackTelegram(r);
@@ -1413,32 +1458,59 @@ function initConf() {
         if (sheetEl) S.orderNudge(sheetEl, r.token);
       }
     });
+    }
+    send();
   }
-  /* сеть/сервер недоступны — старый путь: смета в буфер + открываем бота */
+  /* сеть/сервер недоступны — ЧЕСТНЫЙ экран: заявка не ушла, дублируем в Telegram.
+     Никаких «Заявка принята» с выдуманным номером — это потерянные лиды и доверие. */
   function fallbackTelegram(err) {
-    if (err && err.error === 'rate_limit') { S.toast('Слишком много заявок подряд — подождите минуту'); return; }
+    if (err && (err.error === 'rate_limit' || err.error === 'rate_limited')) {
+      S.toast('Слишком много заявок подряд — подождите минуту'); return;
+    }
     var id = 'AS-' + (1000 + Math.floor(Math.random() * 9000));
     if (S.copy) S.copy(summaryText(id));
     var botLink = svc
       ? 'https://t.me/academic_saloon_bot?start=web_' + (svc.code || '')
       : window.SalonBotLink ? window.SalonBotLink(state) : 'https://t.me/academic_saloon_bot';
-    var win = window.open(botLink, '_blank', 'noopener');
+    showDone('черновик ' + id, true);
     var doneBot = $('doneBot');
-    if (doneBot) { doneBot.href = botLink; if (!win) doneBot.setAttribute('data-fallback', '1'); }
+    if (doneBot) { /* кнопка бота становится главной дверью */
+      doneBot.href = botLink;
+      doneBot.classList.remove('btn-line');
+      doneBot.classList.add('btn-wax');
+      doneBot.textContent = 'Открыть бота и вставить смету →';
+    }
     var note = document.querySelector('.done-note');
-    if (note) note.textContent = 'Сеть подвела, поэтому открыли Telegram-бота: смета уже скопирована в буфер — вставьте её в чат, мастер всё увидит.'
-      + (attQueue.length ? ' Файлы прикрепите там же — бот принимает документы.' : '');
-    showDone(id);
+    if (note) note.textContent = 'Смета уже скопирована в буфер — вставьте её в чат бота, и мастер ответит как обычно.'
+      + (attQueue.length ? ' Файлы прикрепите там же — бот принимает документы.' : '')
+      + ' Или попробуйте отправить ещё раз чуть позже — черновик формы сохранён.';
   }
   btnSubmit.addEventListener('click', submit);
 
-  function showDone(id) {
-    doneShown = true; /* заявка ушла — код возврата больше не предлагаем */
+  function showDone(id, failed) {
+    doneShown = !failed; /* при сбое код возврата ещё пригодится */
     $('doneNo').textContent = id;
     $('confBody').hidden = true;
     if (mcta) mcta.hidden = true;
     var done = $('confDone');
     done.hidden = false;
+    if (failed) { /* экран говорит правду: не отправилось */
+      var sheet = done.querySelector('.done-sheet');
+      var caps = sheet ? sheet.querySelector('.caps') : null;
+      if (caps) caps.textContent = 'Не отправилось';
+      var dh = $('doneH');
+      if (dh) dh.textContent = 'Сеть подвела — продублируйте смету в Telegram';
+      var stepsCap = sheet ? sheet.querySelectorAll('.caps')[1] : null;
+      if (stepsCap) stepsCap.hidden = true;
+      var steps = done.querySelector('.done-steps');
+      if (steps) steps.hidden = true;
+      var plus = done.querySelector('.done-plus');
+      if (plus) plus.hidden = true;
+      var cab = done.querySelector('a.btn-wax[href="dashboard.html"]');
+      if (cab) cab.hidden = true;
+      var sl = done.querySelector('.done-seal');
+      if (sl) sl.hidden = true; /* печать «ПРИНЯТО В РАБОТУ» — только для принятых */
+    }
     if (svc && svc.id === 'plan') {
       var doneSpans = done.querySelectorAll('.done-steps li span:last-child');
       if (doneSpans[0]) doneSpans[0].textContent = 'Изучим тему, требования и методичку';

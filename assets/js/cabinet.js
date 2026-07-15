@@ -158,11 +158,20 @@ function initCabinet() {
           '<button type="button" class="btn btn-wax" id="cabEmailSend" style="flex:1">Получить код</button>' +
         '</div></details>';
     }
+    /* пришли за «Салон+» с витрины (#plus), а сессии нет — не встречать гостя
+       голой стеной входа: объясняем, что абонемент ждёт сразу за дверью */
+    var plusTeaser = (typeof hashPlusScroll !== 'undefined' && hashPlusScroll)
+      ? '<div class="req-slip" style="margin-bottom:14px"><p class="petit" style="margin:0">' +
+        '⭐ <b>Абонемент «Салон+»</b> привязывается к аккаунту: скидка на каждый заказ (от −5%, ' +
+        'в плане «Про» — до −10% и 3 000 ₽), приоритет мастера и куратор сессии. ' +
+        'Войдите через Telegram — это минута, без паролей — и витрина планов откроется сама.</p></div>'
+      : '';
     return '<div class="sheet sheet-pad stacked cab-login reveal">' +
       '<p class="caps">Вход в кабинет</p>' +
       '<h2 class="ord-type">Ваши заказы — здесь, на сайте</h2>' +
       '<p class="petit" style="margin-bottom:16px">Заказы этого устройства открываются сами — входить не нужно. ' +
       'Вход пригодится для бонусов, подписки и заказов с других устройств.</p>' +
+      plusTeaser +
       pendingBlock +
       (pending ? '' : '<button type="button" class="btn btn-wax btn-block" id="cabTg">Войти через Telegram <span class="ar">→</span></button>') +
       '<p class="petit cab-login-hint" id="cabTgHint" hidden></p>' +

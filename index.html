@@ -5,11 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Заказать курсовую, дипломную работу (ВКР), диссертацию — Академический Салон: цена за минуту, оплата по этапам</title>
 <meta name="description" content="Заказать курсовую, дипломную работу (ВКР), магистерскую или научную статью в академической мастерской: живые авторы, цена за минуту в калькуляторе, оплата по этапам, отчёт о проверках до оплаты, правки бесплатно до приёмки." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260715c" />
-<link rel="stylesheet" href="assets/css/pereplet.css?v=20260715f" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260715c" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260715c" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260716a" />
+<link rel="stylesheet" href="assets/css/pereplet.css?v=20260716a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260716a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260716a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<script>
+/* Пролог «Тот, кто отвечает»: один раз, только первому гостю.
+   Не redirect (SEO: главная остаётся главной) — оверлей-iframe поверх.
+   Не показываем: повторным (localStorage), заходам с параметрами/якорем
+   (реклама, ?resume, #smeta — у них целевой интент), роботам, без JS. */
+(function(){try{
+  if(window.self!==window.top)return;
+  if(location.search||location.hash)return;
+  if(navigator.webdriver)return;
+  if(localStorage.getItem('salon_prelude_seen'))return;
+  localStorage.setItem('salon_prelude_seen','1');
+  document.documentElement.classList.add('has-prelude');
+}catch(e){}})();
+</script>
+<style>
+html.has-prelude{overflow:hidden}
+html.has-prelude body{overflow:hidden}
+#preludeFrame{position:fixed;inset:0;width:100%;height:100%;border:0;z-index:99999;background:#12100B}
+</style>
 <link rel="canonical" href="https://akademsalon.ru/" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -32,6 +51,47 @@
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
 </head>
 <body>
+
+<script>
+/* Монтаж пролога первым элементом body: тёмный кадр встаёт мгновенно,
+   главная дорисовывается под ним. Выход — по message от пролога.
+   Страховки: рукопожатие 'ready' + сторож 6с (если фильм не загрузился —
+   молча показываем главную), Escape, фокус в iframe для клавиатуры. */
+(function(){
+  if(!document.documentElement.classList.contains('has-prelude'))return;
+  var f=document.createElement('iframe');
+  f.src='prolog.html'; f.id='preludeFrame'; f.title='Пролог Академического Салона';
+  document.body.appendChild(f);
+  var alive=true;
+  function dismantle(goto){
+    if(!alive)return; alive=false;
+    document.documentElement.classList.remove('has-prelude');
+    f.style.transition='opacity .45s ease'; f.style.opacity='0';
+    setTimeout(function(){
+      if(f.parentNode)f.parentNode.removeChild(f);
+      if(goto&&String(goto).indexOf('#smeta')>-1){
+        var s=document.getElementById('smeta');
+        if(s)s.scrollIntoView({behavior:'smooth'});
+      }
+      /* сцена свободна — можно запускать отложенные механики (тур и т.п.) */
+      try{document.dispatchEvent(new CustomEvent('salon:prelude-closed'));}catch(e){}
+    },470);
+  }
+  var ready=false;
+  window.addEventListener('message',function(ev){
+    var d=ev.data||{};
+    if(d.salonPrelude==='ready'){ready=true;return;}
+    if(d.salonPrelude==='close')dismantle(d.goto);
+  });
+  /* сторож: фильм не отчитался за 6с (сбой сети/деплоя) — сайт важнее кино */
+  setTimeout(function(){ if(!ready)dismantle(); },6000);
+  /* клавиатура сразу листает фильм, а не заблокированную главную */
+  f.addEventListener('load',function(){
+    try{ if(f.contentWindow&&f.contentWindow.PRELUDE)f.contentWindow.focus(); }catch(e){}
+  });
+  document.addEventListener('keydown',function(e){ if(alive&&e.key==='Escape')dismantle(); });
+})();
+</script>
 
 <a class="skip-link" href="#main">К содержанию</a>
 
@@ -115,7 +175,7 @@
           </div>
           <div class="cat-group">
             <span class="caps">Курсовые и практика</span>
-            <a class="dotrow" href="#smeta" data-type="course_emp"><span>Курсовая с практикой и расчётами</span><span class="dots"></span><span class="dr-val">от 20 000 ₽</span></a>
+            <a class="dotrow" href="#smeta" data-type="course_emp"><span>Курсовая с исследованием</span><span class="dots"></span><span class="dr-val">от 20 000 ₽</span></a>
             <a class="dotrow" href="#smeta" data-type="course"><span>Курсовая теоретическая</span><span class="dots"></span><span class="dr-val">от 14 000 ₽</span></a>
             <a class="dotrow" href="#smeta" data-type="practice"><span>Отчёт по практике</span><span class="dots"></span><span class="dr-val">от 14 000 ₽</span></a>
             <a class="dotrow" href="#smeta" data-type="self"><span>Реферат, эссе, контрольная</span><span class="dots"></span><span class="dr-val">от 2 500 ₽</span></a>
@@ -159,7 +219,7 @@
             <button type="button" data-v="diplom" aria-pressed="true">Диплом / ВКР</button>
             <button type="button" data-v="master" aria-pressed="false">Магистерская</button>
             <button type="button" data-v="course" aria-pressed="false">Курсовая</button>
-            <button type="button" data-v="course_emp" aria-pressed="false">Курсовая с практикой</button>
+            <button type="button" data-v="course_emp" aria-pressed="false">Курсовая с исследованием</button>
             <button type="button" data-v="vak" aria-pressed="false">Статья ВАК</button>
             <button type="button" data-v="kandidat" aria-pressed="false">Кандидатская</button>
           </div>
@@ -192,8 +252,9 @@
             <span class="price-xl" id="qPrice">от 40 000 ₽</span>
             <span class="visually-hidden" id="qPriceLive" aria-live="polite"></span>
           </div>
+          <p class="petit" id="qStart" style="margin:6px 0 0">начать сегодня — 12 000 ₽ (30%) · остальное после показанного результата</p>
           <div class="calc-seal" id="qSeal" aria-hidden="true"><span data-seal="ПРЕДВАРИТЕЛЬНАЯ СМЕТА · БАЗОВЫЙ УРОВЕНЬ · " data-seal-center="¶" data-seal-cls="seal--wax" data-seal-size="104"></span></div>
-          <p class="calc-note">Это нижняя граница базового уровня. Точную цену под вашу тему назовём после короткого диалога — бесплатно; решение вы примете, уже зная точную цену.</p>
+          <p class="calc-note">Это нижняя граница базового уровня. Точную цену под вашу тему назовём после короткого диалога — бесплатно; решение вы примете, уже зная финальную цифру.</p>
           <div class="calc-cta">
             <a class="btn btn-wax btn-block" id="qSend" href="configurator.html?step=4">Оформить заявку на сайте <span class="ar">→</span></a>
             <p class="petit">Расчёт сохранится — останется добавить тему и файлы, заявка уйдёт мастеру напрямую. Удобнее в Telegram? <a class="link" id="qSendTg" href="https://t.me/academic_saloon_bot?start=web" target="_blank" rel="noopener">Отправьте смету боту<span class="visually-hidden"> (откроется в новом окне)</span></a>.</p>
@@ -260,7 +321,7 @@
                 <span class="sh-ghost" aria-hidden="true">3</span>
                 <span class="sh-no">Глава 03 · Корректура</span>
                 <h3>Правки — бесплатно до приёмки</h3>
-                <p>Замечания руководителя — обычная часть процесса. Дорабатываем, пока работу не примут; смета при этом не меняется.</p>
+                <p>Замечания руководителя — обычная часть процесса. Дорабатываем в рамках задания, пока работу не примут; смета не меняется, пока не меняются тема и объём.</p>
                 <div class="sh-hand">
                   <span class="sh-tag sh-tag-ink">У вас: доработанный текст</span>
                   <span class="sh-tag sh-tag-verify">Платёж: 0 ₽</span>
@@ -360,7 +421,7 @@
       <div class="fact-row reveal">
         <div class="fact"><div class="f-num"><span data-count="6">6</span><sup> лет</sup></div><p class="f-lbl">практики: ведём работы с 2020 года</p></div>
         <div class="fact"><div class="f-num"><span data-count="1000">1&nbsp;000</span><sup>+</sup></div><p class="f-lbl">работ доведено до приёмки</p></div>
-        <div class="fact"><div class="f-num"><span data-count="19">19</span><sup> шт.</sup></div><p class="f-lbl">живых отзывов с защит — без ретуши</p></div>
+        <div class="fact"><div class="f-num"><span data-count="19">19</span></div><p class="f-lbl">живых отзывов с защит — без ретуши</p></div>
       </div>
 
       <div class="trust-grid">
@@ -503,7 +564,11 @@
         </details>
         <details class="faq-item">
           <summary>Я не рискую, платя вперёд?</summary>
-          <p>Нет: первый платёж — после согласованного плана и сметы, каждый следующий — после показанного результата.</p>
+          <p>Первый платёж — только после согласованного плана и сметы, каждый следующий — после показанного результата. Деньги всегда идут за тем, что вы уже увидели.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Кто-нибудь узнает, что я обращался?</summary>
+          <p>Никто. Обращение конфиденциально: в переписке достаточно ника, тему и вуз мы не разглашаем, в отзывах — только то, чем клиенты поделились сами. Как хранятся данные — в политике данных.</p>
         </details>
         <details class="faq-item">
           <summary>Кто будет вести мою работу?</summary>
@@ -511,11 +576,11 @@
         </details>
         <details class="faq-item">
           <summary>Что, если руководитель вернёт работу с замечаниями?</summary>
-          <p>Это обычная часть процесса, и она уже в стоимости: правки в рамках задания не ограничены по количеству, а замечания руководителя и комиссии дорабатываем бесплатно до защиты — в пределах сервисного окна (оферта, раздел 9). Смета не меняется, пока не меняются тема и объём.</p>
+          <p>Это обычная часть процесса, и она уже в стоимости: правки в рамках задания не ограничены по количеству, а замечания руководителя и комиссии дорабатываем бесплатно до защиты (точные сроки — в оферте, раздел 9). Смета не меняется, пока не меняются тема и объём.</p>
         </details>
         <details class="faq-item">
           <summary>Почему у вас дороже, чем на биржах?</summary>
-          <p>Биржа продаёт ставку анонимного исполнителя, мы — доведённый до защиты результат: напрямую, без комиссии площадки. Слишком низкая цена здесь — риск, переложенный на вас.</p>
+          <p>Биржа продаёт ставку случайного исполнителя, мы — доведённый до защиты результат: напрямую, без комиссии площадки. Слишком низкая цена здесь — риск, переложенный на вас.</p>
         </details>
       </div>
     </div>
@@ -531,10 +596,10 @@
 <!-- Мобильная навигация: единая нижняя панель, монтирует app.js -->
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Академический Салон","description":"Помощь и сопровождение в подготовке академических работ: консультации, редактура, разбор, репетиторство, оформление по методичке. Оплата по этапам, отчёт о проверках до оплаты, правки до приёмки.","url":"https://akademsalon.ru/","image":"https://akademsalon.ru/assets/img/og-cover.png","logo":"https://akademsalon.ru/assets/img/favicon-120.png","areaServed":"RU","knowsLanguage":"ru","priceRange":"от 2500 ₽","sameAs":["https://vk.com/academicsaloon","https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs","https://t.me/academic_saloon_bot"]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"А вдруг вуз решит, что текст написан нейросетью?","acceptedAnswer":{"@type":"Answer","text":"Текст пишет человек, а отчёт о проверках вы видите до оплаты. Гарантировать чужой детектор не может никто — на этот случай дорабатываем до приёмки."}},{"@type":"Question","name":"Я не рискую, платя вперёд?","acceptedAnswer":{"@type":"Answer","text":"Нет: первый платёж — после согласованного плана и сметы, каждый следующий — после показанного результата."}},{"@type":"Question","name":"Кто будет вести мою работу?","acceptedAnswer":{"@type":"Answer","text":"Профильный специалист вашего направления — сопровождает от плана до приёмки, без передачи между менеджерами и случайными исполнителями."}},{"@type":"Question","name":"Что, если руководитель вернёт работу с замечаниями?","acceptedAnswer":{"@type":"Answer","text":"Это обычная часть процесса, и она уже в стоимости: правки в рамках задания не ограничены по количеству, а замечания руководителя и комиссии дорабатываем бесплатно до защиты — в пределах сервисного окна (оферта, раздел 9). Смета не меняется, пока не меняются тема и объём."}},{"@type":"Question","name":"Почему у вас дороже, чем на биржах?","acceptedAnswer":{"@type":"Answer","text":"Биржа продаёт ставку анонимного исполнителя, мы — доведённый до защиты результат: напрямую, без комиссии площадки. Слишком низкая цена здесь — риск, переложенный на вас."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"А вдруг вуз решит, что текст написан нейросетью?","acceptedAnswer":{"@type":"Answer","text":"Текст пишет человек, а отчёт о проверках вы видите до оплаты. Гарантировать чужой детектор не может никто — на этот случай дорабатываем до приёмки."}},{"@type":"Question","name":"Я не рискую, платя вперёд?","acceptedAnswer":{"@type":"Answer","text":"Первый платёж — только после согласованного плана и сметы, каждый следующий — после показанного результата. Деньги всегда идут за тем, что вы уже увидели."}},{"@type":"Question","name":"Кто-нибудь узнает, что я обращался?","acceptedAnswer":{"@type":"Answer","text":"Никто. Обращение конфиденциально: в переписке достаточно ника, тему и вуз мы не разглашаем, в отзывах — только то, чем клиенты поделились сами."}},{"@type":"Question","name":"Кто будет вести мою работу?","acceptedAnswer":{"@type":"Answer","text":"Профильный специалист вашего направления — сопровождает от плана до приёмки, без передачи между менеджерами и случайными исполнителями."}},{"@type":"Question","name":"Что, если руководитель вернёт работу с замечаниями?","acceptedAnswer":{"@type":"Answer","text":"Это обычная часть процесса, и она уже в стоимости: правки в рамках задания не ограничены по количеству, а замечания руководителя и комиссии дорабатываем бесплатно до защиты (точные сроки — в оферте, раздел 9). Смета не меняется, пока не меняются тема и объём."}},{"@type":"Question","name":"Почему у вас дороже, чем на биржах?","acceptedAnswer":{"@type":"Answer","text":"Биржа продаёт ставку случайного исполнителя, мы — доведённый до защиты результат: напрямую, без комиссии площадки. Слишком низкая цена здесь — риск, переложенный на вас."}}]}</script>
 <script src="assets/js/app.js?v=20260716a"></script>
-<script src="assets/js/extras.js?v=20260715c"></script>
-<script src="assets/js/pereplet.js?v=20260715c"></script>
+<script src="assets/js/extras.js?v=20260716a"></script>
+<script src="assets/js/pereplet.js?v=20260716a"></script>
 <script>
 /* «Книга благодарностей»: цитаты с защит + свежие одобренные отзывы из картотеки.
    Сознательно без rAF и CSS-анимаций: листается setInterval-ом, руками (стрелки)

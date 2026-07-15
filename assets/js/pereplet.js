@@ -134,7 +134,17 @@
 
     function saveDraft() {
       if (window.Salon && Salon.store) {
-        Salon.store.set('salon_draft', { state: { type: state.type, disc: state.disc, term: state.term, tier: 'base' }, idx: 0, savedAt: 0 });
+        /* квик-калк обновляет только выбор — набранные в конфигураторе поля,
+           шаг и метка времени переживают игру с плашками на главной */
+        var prev = Salon.store.get('salon_draft', null) || {};
+        Salon.store.set('salon_draft', {
+          state: { type: state.type, disc: state.disc, term: state.term,
+                   tier: (prev.state && prev.state.tier) || 'base' },
+          idx: typeof prev.idx === 'number' ? prev.idx : 0,
+          plan: prev.plan || false,
+          fields: prev.fields || undefined,
+          savedAt: prev.savedAt || 0
+        });
       }
     }
 
@@ -150,6 +160,19 @@
       rowTerm.textContent = '×' + s.k.toFixed(2).replace(/0$/, '');
       priceEl.textContent = 'от ' + q.lowFmt + ' ₽';
       if (live) live.textContent = 'Итого: от ' + q.lowFmt + ' ₽';
+
+      /* входной билет в рублях: большая цифра пугает, а стартовый платёж
+         втрое меньше — показываем его сразу, это честно и снимает шок */
+      var startEl = document.getElementById('qStart');
+      if (startEl) {
+        if (state.type === 'kandidat') {
+          startEl.textContent = 'кандидатская считается по главам — у каждой главы своя смета и свой график';
+        } else {
+          var big = ['diplom', 'master', 'chapter'].indexOf(state.type) > -1;
+          startEl.textContent = 'начать сегодня — ' + C.fmt(C.round500(q.low * (big ? 0.3 : 0.5))) +
+            ' ₽ (' + (big ? '30%' : 'половина, 50/50') + ') · остальное после показанного результата';
+        }
+      }
 
       if (!first && animate) {
         priceEl.classList.remove('restamp');

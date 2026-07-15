@@ -421,14 +421,24 @@
   })();
   S.tour = tour;
 
-  /* автозапуск тура: только главная, только новые гости, один раз */
+  /* автозапуск тура: только главная, только новые гости, один раз.
+     Первому гостю сначала показывается пролог-фильм (оверлей поверх всего) —
+     тур ждёт его закрытия, иначе раскладывается невидимо под iframe. */
   (function autoTour() {
     if (here !== 'index.html' || QUIET_PAGES[here]) return;
     if (S.store.get('salon_tour_done', null)) return;
     if (S.api && S.api.identified && S.api.identified()) return; /* уже свой человек */
-    setTimeout(function () {
-      if (!document.hidden && !tour.active()) tour.start();
-    }, 1800);
+    function later() {
+      setTimeout(function () {
+        if (!document.hidden && !tour.active() &&
+            !document.documentElement.classList.contains('has-prelude')) tour.start();
+      }, 1800);
+    }
+    if (document.documentElement.classList.contains('has-prelude')) {
+      document.addEventListener('salon:prelude-closed', later, { once: true });
+    } else {
+      later();
+    }
   })();
 
   /* пункт «Как всё устроено?» в меню и подвале — тур можно пересмотреть */
@@ -667,4 +677,41 @@
     });
     container.appendChild(el);
   };
+
+  /* ---------------- «Ваша смета ждёт» — закладка для вернувшихся ----------------
+     Гость считал в конфигураторе (savedAt > 0 — квик-калк главной пишет 0),
+     ушёл, вернулся на витрину — напоминаем одной строкой-«ляссе». Возврат
+     брошенной заявки без email и промокодов: просто дверь туда, где остановился. */
+  (function resumeBar() {
+    if (here !== 'index.html' && here !== 'tariffs.html') return;
+    var d = S.store.get('salon_draft', null);
+    if (!d || !d.savedAt || !d.state || !window.SalonCalc) return;
+    if (Date.now() - d.savedAt > 14 * 24 * 3600 * 1000) return; /* двухнедельная память */
+    try { if (sessionStorage.getItem('salon_resume_hidden')) return; } catch (e) {}
+    var C = window.SalonCalc;
+    var t = C.types.filter(function (x) { return x.id === d.state.type; })[0];
+    if (!t) return;
+    var q = C.quote(d.state.type, d.state.disc, d.state.term, d.state.tier || 'base');
+    var hasText = d.fields && (d.fields.topic || d.fields.details);
+    var bar = document.createElement('div');
+    bar.className = 'resume-bar';
+    bar.setAttribute('role', 'note');
+    bar.innerHTML =
+      '<style>.resume-bar{position:fixed;left:0;right:0;bottom:0;z-index:240;background:var(--mark);' +
+      'border-top:1px solid var(--hairline-strong);padding:10px 16px calc(10px + env(safe-area-inset-bottom));' +
+      'display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:var(--ink)}' +
+      '.resume-bar b{font-weight:600}.resume-bar a{white-space:nowrap}' +
+      '.resume-bar .rb-x{border:none;background:none;cursor:pointer;color:var(--ink-faint);font-size:16px;line-height:1;padding:4px}' +
+      '@media(max-width:740px){.resume-bar{bottom:58px}}</style>' +
+      '<span>✒ Ваша смета ждёт: <b>' + t.label.split(' (')[0] + ' · от ' + q.lowFmt + ' ₽</b>' +
+      (hasText ? ' — тема и требования сохранены' : '') + '</span>' +
+      '<a class="link" href="configurator.html">Продолжить оформление →</a>' +
+      '<button type="button" class="rb-x" aria-label="Скрыть">×</button>';
+    bar.querySelector('.rb-x').addEventListener('click', function () {
+      try { sessionStorage.setItem('salon_resume_hidden', '1'); } catch (e) {}
+      bar.remove();
+    });
+    document.body.appendChild(bar);
+    if (S.visit) S.visit.mark('показана закладка возврата сметы');
+  })();
 })();
