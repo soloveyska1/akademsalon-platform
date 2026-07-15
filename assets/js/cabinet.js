@@ -982,10 +982,11 @@ function initCabinet() {
     if (o.price) {
       var out = '<div class="ord-price-row"><span class="caps">Цена мастера</span>' +
         '<span class="mono ord-price">' + money(o.price) + ' ₽</span></div>' + specLink(o);
-      if (o.bonus_spent || o.sub_discount) {
+      if (o.bonus_spent || o.sub_discount || o.promo_discount) {
         out += '<div class="due-box">' +
           '<div class="dr"><span>Цена работы</span><b>' + money(o.price) + ' ₽</b></div>' +
           (o.sub_discount ? '<div class="dr"><span>⭐ Скидка «Салон+»</span><b class="minus">−' + money(o.sub_discount) + '</b></div>' : '') +
+          (o.promo_discount ? '<div class="dr"><span>🎟 Промокод' + (o.promo_code ? ' ' + esc(o.promo_code) : '') + '</span><b class="minus">−' + money(o.promo_discount) + '</b></div>' : '') +
           (o.bonus_spent ? '<div class="dr"><span>Оплачено бонусами</span><b class="minus">−' + money(o.bonus_spent) + '</b></div>' : '') +
           '<div class="dr total"><span>К оплате деньгами</span><b>' + money(o.due_total) + ' ₽</b></div>' +
           (o.bonus_spent && (o.status === 'priced' || o.status === 'prepay')

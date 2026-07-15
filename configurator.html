@@ -329,6 +329,19 @@
                 <button type="button" class="btn btn-line btn-block" id="tgLoginBtn" style="margin-bottom:14px">Или войти через Telegram — без анкеты</button>
               </div>
 
+              <!-- промокод: свёрнут в строку, разворачивается по клику или из ?promo= -->
+              <p class="petit" id="promoShowRow" style="margin-bottom:12px">
+                <button type="button" class="linkbtn" id="promoShow">🎟 У меня есть промокод</button></p>
+              <div class="field" id="promoField" hidden>
+                <label for="fPromo">Промокод</label>
+                <div style="display:flex;gap:8px">
+                  <input type="text" id="fPromo" maxlength="24" autocomplete="off"
+                         placeholder="Например, СТАРТ300" style="flex:1;min-width:0;text-transform:uppercase" />
+                  <button type="button" class="btn btn-line" id="promoApply">Применить</button>
+                </div>
+                <p class="petit" id="promoNote" style="margin-top:6px" hidden></p>
+              </div>
+
               <button type="button" class="btn btn-wax btn-block" id="btnSubmit">Отправить заявку мастеру <span class="ar">→</span></button>
               <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
                 <a class="btn btn-line" style="flex:1" href="https://vk.me/academicsaloon" target="_blank" rel="noopener">Написать во ВКонтакте</a>
@@ -882,6 +895,61 @@ function initConf() {
   }
 
   /* --- отправка: заявка уходит в общую с ботом картотеку --- */
+  /* --- промокод: проверка и передача с заявкой; ?promo=КОД — из рекламы --- */
+  var promoCode = null;
+  var promoIn = $('fPromo'), promoApplyBtn = $('promoApply'), promoNote = $('promoNote');
+  var PROMO_ERR = {
+    not_found: 'Такого кода нет — проверьте написание',
+    inactive: 'Код сейчас выключен',
+    expired: 'Срок действия кода истёк',
+    used_up: 'Код уже разобрали — увы',
+    min_price: 'Код действует для заказов подороже',
+    rate_limited: 'Слишком много попыток — подождите минуту',
+    empty: 'Введите код'
+  };
+  function promoMsg(text, ok) {
+    if (!promoNote) return;
+    promoNote.hidden = false;
+    promoNote.textContent = text;
+    promoNote.style.color = ok ? 'var(--verify)' : 'var(--wax)';
+  }
+  function promoOpen() {
+    var f = $('promoField'), row = $('promoShowRow');
+    if (f) f.hidden = false;
+    if (row) row.hidden = true;
+  }
+  function promoCheck() {
+    var v = (promoIn && promoIn.value || '').trim().toUpperCase();
+    if (!v) { promoMsg(PROMO_ERR.empty, false); return; }
+    if (promoApplyBtn) S.btnLoading(promoApplyBtn, true, '…');
+    S.api.post('/promo/check', { code: v }).then(function (r) {
+      if (promoApplyBtn) S.btnLoading(promoApplyBtn, false);
+      if (r && r.ok) {
+        promoCode = r.code;
+        promoMsg('✓ Промокод ' + r.code + ': ' + r.label + ' — мастер применит его к цене', true);
+      } else {
+        promoCode = null;
+        promoMsg(PROMO_ERR[(r && r.error) || 'not_found'] || 'Не получилось проверить код', false);
+      }
+    });
+  }
+  if ($('promoShow')) $('promoShow').addEventListener('click', function () {
+    promoOpen();
+    if (promoIn) promoIn.focus();
+  });
+  if (promoApplyBtn) promoApplyBtn.addEventListener('click', promoCheck);
+  if (promoIn) promoIn.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); promoCheck(); }
+  });
+  try {
+    var qPromo = new URLSearchParams(location.search).get('promo');
+    if (qPromo && promoIn) {
+      promoOpen();
+      promoIn.value = qPromo.toUpperCase().slice(0, 24);
+      promoCheck();
+    }
+  } catch (e) {}
+
   var submitting = false;
   function submit() {
     if (submitting) return;
@@ -903,6 +971,7 @@ function initConf() {
       topic: topicIn.value.trim(), plan: plan, name: name, contact: contactValue(), website: '',
       deadline: deadlineIn ? deadlineIn.value.trim() : '',
       details: detailsIn ? detailsIn.value.trim() : '',
+      promo: promoCode || undefined,
       consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
       consent_doc: 'consent 1.1 · privacy 1.3 · oferta 1.1 · форма конфигуратора',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
@@ -927,6 +996,11 @@ function initConf() {
         : 'https://t.me/academic_saloon_bot';
       if (bl) bl.href = claim; /* гостю — привязка заказа к Telegram в один тап */
       showDone('№' + r.id);
+      if (promoCode && r.promo === 'ok') {
+        var dnote = document.querySelector('.done-note');
+        if (dnote) dnote.textContent += ' 🎟 Промокод ' + promoCode +
+          ' учтён — скидка применится, когда мастер назовёт цену.';
+      }
       if (S.stamp) S.stamp('Заявка принята');
       /* гостям — ссылка доступа к делу + необязательная привязка Telegram */
       if (r.token && S.orderNudge) {
