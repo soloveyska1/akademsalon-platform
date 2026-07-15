@@ -354,6 +354,20 @@
               <button type="button" class="btn btn-line" id="btnBack" hidden>← Назад</button>
               <button type="button" class="btn btn-ink" id="btnNext">Далее <span class="ar">→</span></button>
             </div>
+
+            <!-- смета на почту: тёплый возврат с любого устройства -->
+            <p class="petit" id="qmShowRow" style="margin-top:16px">
+              <button type="button" class="linkbtn" id="qmShow">📧 Прислать смету на почту</button>
+              — вернётесь к оформлению позже, с любого устройства.</p>
+            <div class="field" id="qmField" hidden style="margin-top:12px">
+              <label for="qmEmail">Почта для сметы</label>
+              <div style="display:flex;gap:8px">
+                <input type="email" id="qmEmail" maxlength="120" autocomplete="email"
+                       placeholder="you@example.com" style="flex:1;min-width:0" />
+                <button type="button" class="btn btn-line" id="qmSend">Отправить</button>
+              </div>
+              <p class="petit" id="qmNote" style="margin-top:6px" hidden></p>
+            </div>
           </div>
 
           <!-- ПРАВАЯ КОЛОНКА: живая смета -->
@@ -947,6 +961,70 @@ function initConf() {
       promoOpen();
       promoIn.value = qPromo.toUpperCase().slice(0, 24);
       promoCheck();
+    }
+  } catch (e) {}
+
+  /* --- «смета на почту»: письмо с расчётом и ссылкой-возвратом --- */
+  function qmMsg(t, ok) {
+    var n = $('qmNote');
+    if (!n) return;
+    n.hidden = false;
+    n.textContent = t;
+    n.style.color = ok ? 'var(--verify)' : 'var(--wax)';
+  }
+  if ($('qmShow')) $('qmShow').addEventListener('click', function () {
+    $('qmField').hidden = false;
+    $('qmShowRow').hidden = true;
+    $('qmEmail').focus();
+  });
+  if ($('qmSend')) $('qmSend').addEventListener('click', function () {
+    var em = ($('qmEmail').value || '').trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)) { qmMsg('Похоже, в адресе опечатка — проверьте', false); return; }
+    S.btnLoading($('qmSend'), true, '…');
+    S.api.post('/quote/email', { email: em, state: {
+      type: state.type, disc: state.disc, term: state.term, tier: state.tier,
+      topic: topicIn ? topicIn.value.trim() : '',
+      deadline: deadlineIn ? deadlineIn.value.trim() : '',
+      plan: plan
+    } }).then(function (r) {
+      S.btnLoading($('qmSend'), false);
+      if (r && r.ok) {
+        qmMsg('✓ Смета уехала на ' + em + ' — письмо придёт в течение минуты', true);
+        if (S.metrika) S.metrika.goal('quote_email');
+      } else {
+        qmMsg(r && r.error === 'rate_limited' ? 'Слишком часто — подождите минуту'
+          : 'Не получилось отправить — попробуйте ещё раз', false);
+      }
+    });
+  });
+
+  /* --- возврат по ссылке из письма: ?resume=ТОКЕН восстанавливает ответы --- */
+  try {
+    var resumeTok = new URLSearchParams(location.search).get('resume');
+    if (resumeTok && !svc) {
+      S.api.get('/quote/' + encodeURIComponent(resumeTok)).then(function (r) {
+        if (!r || !r.ok || !r.state) return;
+        var q = r.state;
+        canSave = true;
+        if (has(C.types, q.type)) state.type = q.type;
+        if (has(C.disciplines, q.disc)) state.disc = q.disc;
+        if (has(C.terms, q.term)) state.term = q.term;
+        if (has(C.tiers, q.tier)) state.tier = q.tier;
+        if (topicIn && q.topic) topicIn.value = q.topic;
+        if (deadlineIn && q.deadline) deadlineIn.value = q.deadline;
+        if (q.plan) {
+          plan = true;
+          if (planNoteEl) planNoteEl.hidden = false;
+          if (planEntryEl) planEntryEl.hidden = true;
+        }
+        rgType.set(state.type);
+        rgDisc.set(state.disc);
+        rgTier.set(state.tier);
+        segMark();
+        render();
+        go(3, true);
+        S.toast('Смета восстановлена — осталось отправить заявку');
+      });
     }
   } catch (e) {}
 
