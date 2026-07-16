@@ -1,0 +1,49 @@
+# Академический Салон
+
+> Мастерская информационно-консультационной и учебно-методической помощи студентам, магистрантам и аспирантам России. Работает онлайн с 2020 года: авторские материалы и сопровождение при подготовке курсовых, дипломных работ (ВКР), магистерских и кандидатских диссертаций, отчётов по практике и научных статей. Оплата по этапам после показанного результата, отчёт о проверке оригинальности до финального платежа, правки бесплатны до приёмки.
+
+Сайт: https://akademsalon.ru/
+Исполнитель: самозанятый, налог на профессиональный доход (ФЗ № 422-ФЗ), г. Казань. Работа по публичной оферте, вся Россия, онлайн.
+
+## Услуги и цены (нижний порог, руб.)
+
+- [Помощь с курсовой работой](https://akademsalon.ru/kursovaya-rabota.html): теоретическая от 14 000, с исследованием от 20 000
+- [Помощь с дипломной работой / ВКР](https://akademsalon.ru/diplomnaya-rabota.html): от 40 000, оплата этапами 30/40/30
+- [Помощь с магистерской диссертацией](https://akademsalon.ru/magisterskaya-dissertaciya.html): от 60 000, глава от 20 000
+- [Помощь с кандидатской диссертацией](https://akademsalon.ru/kandidatskaya-dissertaciya.html): глава от 30 000, полное сопровождение от 200 000
+- [Отчёт по практике с дневником](https://akademsalon.ru/otchet-po-praktike.html): от 14 000
+- [Научная статья РИНЦ / ВАК / Scopus](https://akademsalon.ru/nauchnaya-statya.html): от 9 000 / 18 000 / 35 000
+- [Реферат, эссе, контрольная](https://akademsalon.ru/referat.html): от 2 500
+- [Разбор плана работы](https://akademsalon.ru/plan.html): 3 000, зачитывается в стоимость работы
+- [Все цены и калькулятор](https://akademsalon.ru/tariffs.html): открытый прейскурант, смета за минуту
+- [Онлайн-расчёт стоимости](https://akademsalon.ru/configurator.html): пошаговый конфигуратор заказа
+
+## Ключевые условия
+
+- [Гарантии и устав мастерской](https://akademsalon.ru/guarantees.html): оплата по этапам, отчёт о проверках до оплаты, правки до приёмки бесплатно
+- [Отзывы](https://akademsalon.ru/reviews.html): реальные переписки после защит
+- [Публичная оферта](https://akademsalon.ru/oferta.html)
+
+## База знаний (бесплатные гайды)
+
+- [Все гайды](https://akademsalon.ru/knowledge.html)
+- [Темы ВКР: 50 примеров](https://akademsalon.ru/guide-temy-vkr.html)
+- [Структура ВКР](https://akademsalon.ru/guide-vkr-struktura.html)
+- [Сколько стоит курсовая в 2026](https://akademsalon.ru/guide-skolko-stoit-kursovaya.html)
+- [Курсовая за неделю](https://akademsalon.ru/guide-kursovaya-za-nedelyu.html)
+- [Введение курсовой](https://akademsalon.ru/guide-vvedenie-kursovoy.html)
+- [Заключение работы](https://akademsalon.ru/guide-zaklyuchenie-vkr.html)
+- [Список литературы по ГОСТ](https://akademsalon.ru/guide-spisok-literatury.html)
+- [Нормоконтроль](https://akademsalon.ru/guide-normocontrol.html)
+- [Антиплагиат и ИИ-детекторы](https://akademsalon.ru/guide-antiplagiat-ai.html)
+- [Отчёт по практике](https://akademsalon.ru/guide-otchet-po-praktike.html)
+- [Дневник практики](https://akademsalon.ru/guide-dnevnik-praktiki.html)
+- [Защита диплома](https://akademsalon.ru/guide-zashchita-diploma.html)
+- [Речь на защиту](https://akademsalon.ru/guide-rech-na-zashchitu.html)
+- [Презентация к защите](https://akademsalon.ru/guide-prezentaciya-k-zashchite.html)
+
+## Контакты
+
+- ВКонтакте: https://vk.com/academicsaloon
+- Telegram: https://t.me/academicsaloon
+- Telegram-бот для заявок: https://t.me/academic_saloon_bot

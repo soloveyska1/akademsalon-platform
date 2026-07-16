@@ -264,7 +264,8 @@ body.toc-lock{overflow:hidden}
 .colophon-center .co-alt a{color:#CFC8B8;border-bottom:1px solid #4A4536;padding-bottom:1px;transition:color .15s,border-color .15s}
 .colophon-center .co-alt a:hover{color:#F0EADB;border-color:#8F8871}
 
-.foot-cols{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:clamp(24px,4vw,56px);padding-top:clamp(28px,4vw,44px);border-top:1px solid #3A362B}
+.foot-cols{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:clamp(20px,3vw,48px);padding-top:clamp(28px,4vw,44px);border-top:1px solid #3A362B}
+@media(max-width:1100px){.foot-cols{grid-template-columns:1fr 1fr;gap:30px}}
 .fc-h{color:#9C9580;margin-bottom:14px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
 .foot-links{display:flex;flex-direction:column;gap:8px}
 .foot-links a{font-size:14px;color:#B5AE9C;transition:color .15s;padding:1px 0}

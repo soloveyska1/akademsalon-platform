@@ -624,6 +624,12 @@
           '<a href="referral.html">Клуб и бонусы</a><a href="knowledge.html">База знаний</a>' +
           '<a href="check.html">Проверка текста</a><a href="dashboard.html">Кабинет</a>' +
         '</nav></div>' +
+        '<div><div class="fc-h">Типы работ</div><nav class="foot-links" aria-label="Помощь по типам работ">' +
+          '<a href="kursovaya-rabota.html">Курсовая работа</a><a href="diplomnaya-rabota.html">Дипломная / ВКР</a>' +
+          '<a href="magisterskaya-dissertaciya.html">Магистерская</a><a href="kandidatskaya-dissertaciya.html">Кандидатская</a>' +
+          '<a href="otchet-po-praktike.html">Отчёт по практике</a><a href="nauchnaya-statya.html">Научная статья</a>' +
+          '<a href="referat.html">Реферат, эссе</a>' +
+        '</nav></div>' +
         '<div><div class="fc-h">Документы</div><nav class="foot-links" aria-label="Правовые документы">' +
           '<a href="oferta.html">Публичная оферта</a><a href="privacy.html">Политика ПДн</a>' +
           '<a href="consent.html">Согласие на обработку ПДн</a><a href="loyalty.html">Правила лояльности</a>' +
