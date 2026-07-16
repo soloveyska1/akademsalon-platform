@@ -8,6 +8,9 @@
 ## Услуги и цены (нижний порог, руб.)
 
 - [Помощь с курсовой работой](https://akademsalon.ru/kursovaya-rabota.html): теоретическая от 14 000, с исследованием от 20 000
+- [Курсовая по экономике](https://akademsalon.ru/kursovaya-po-ekonomike.html): расчёты по реальной отчётности, от 14 000
+- [Курсовая по юриспруденции](https://akademsalon.ru/kursovaya-po-yurisprudencii.html): действующие НПА и судебная практика, от 14 000
+- [Курсовая по психологии](https://akademsalon.ru/kursovaya-po-psihologii.html): эмпирика, методики, статистика, от 14 000
 - [Помощь с дипломной работой / ВКР](https://akademsalon.ru/diplomnaya-rabota.html): от 40 000, оплата этапами 30/40/30
 - [Помощь с магистерской диссертацией](https://akademsalon.ru/magisterskaya-dissertaciya.html): от 60 000, глава от 20 000
 - [Помощь с кандидатской диссертацией](https://akademsalon.ru/kandidatskaya-dissertaciya.html): глава от 30 000, полное сопровождение от 200 000
@@ -38,6 +41,8 @@
 - [Антиплагиат и ИИ-детекторы](https://akademsalon.ru/guide-antiplagiat-ai.html)
 - [Отчёт по практике](https://akademsalon.ru/guide-otchet-po-praktike.html)
 - [Дневник практики](https://akademsalon.ru/guide-dnevnik-praktiki.html)
+- [Статья РИНЦ: как опубликовать](https://akademsalon.ru/guide-rinc-statya.html)
+- [Рецензия на ВКР: шаблон](https://akademsalon.ru/guide-recenziya-na-vkr.html)
 - [Защита диплома](https://akademsalon.ru/guide-zashchita-diploma.html)
 - [Речь на защиту](https://akademsalon.ru/guide-rech-na-zashchitu.html)
 - [Презентация к защите](https://akademsalon.ru/guide-prezentaciya-k-zashchite.html)
