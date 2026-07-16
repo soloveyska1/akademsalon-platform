@@ -72,6 +72,7 @@ function initGodEye() {
     clients: [], csel: null, ccard: null,
     reviews: [], leads: [],
     subs: null,               /* /admin/subs: оформления подписки (свой контур) */
+    gifts: null, gsel: null, gnew: false,  /* сертификаты: список, раскрытая карточка, форма выпуска */
     ov: null, timer: null, busy: false,
     visits: null, vstats: null,                    /* «Глаз бога»: лента заходов */
     vopts: { hours: 24, self: false, bots: false },
@@ -197,6 +198,7 @@ function initGodEye() {
   function refreshSilent() {
     S.api.get('/admin/overview').then(function (r) { if (r.ok) { st.ov = r; drawNav(); drawLive(); if (st.tab === 'summary') drawBody(); } });
     loadSubs();
+    if (st.tab === 'gifts') loadGifts();
     if (st.tab === 'orders') {
       S.api.get('/admin/orders?' + listQuery()).then(function (r) {
         if (r.ok) { st.orders = r.orders; drawList(); }
@@ -244,6 +246,8 @@ function initGodEye() {
         st.reviews = r.reviews;
         drawBody();
       });
+    } else if (st.tab === 'gifts') {
+      loadGifts();
     } else if (st.tab === 'leads') {
       S.api.get('/admin/leads').then(function (r) {
         if (!r.ok) return;
@@ -478,7 +482,8 @@ function initGodEye() {
     var by = ov.by_status || {};
     return {
       orders: (by.new || 0) + (by.fix || 0) + (ov.claimed || 0),
-      reviews: ov.reviews_pending || 0
+      reviews: ov.reviews_pending || 0,
+      gifts: (ov.gifts && ov.gifts.claimed_n) || 0
     };
   }
 
@@ -493,6 +498,7 @@ function initGodEye() {
       ['orders', '🗂 Заказы', b.orders],
       ['clients', '👥 Клиенты', 0],
       ['reviews', '⭐ Отзывы', b.reviews],
+      ['gifts', '🎁 Сертификаты', b.gifts],
       ['leads', '🌐 Лиды', 0],
       ['broadcast', '📣 Рассылка', 0],
       ['settings', '⚙️ Настройки', 0]
@@ -537,9 +543,140 @@ function initGodEye() {
       return;
     }
     if (st.tab === 'reviews') { box.innerHTML = tplReviews(); return; }
+    if (st.tab === 'gifts') { box.innerHTML = tplGifts(); return; }
     if (st.tab === 'leads') { box.innerHTML = tplLeads(); return; }
     if (st.tab === 'broadcast') { box.innerHTML = tplBroadcast(); bcastRefresh(); return; }
     drawSettings(box);
+  }
+
+  /* ---------------- СЕРТИФИКАТЫ ---------------- */
+  function loadGifts() {
+    S.api.get('/admin/gifts').then(function (r) {
+      if (!r || !r.ok) return;
+      st.gifts = r;
+      if (st.tab === 'gifts') drawBody();
+    });
+  }
+  var GIFT_ST = {
+    pending: ['ожидает оплаты', 'act'], active: ['действителен', 'ok'],
+    spent: ['погашен', ''], expired: ['истёк', ''],
+    blocked: ['заблокирован', 'due'], canceled: ['отменён', '']
+  };
+  var GIFT_LEDGER_KIND = {
+    issue: 'выпуск', hold: 'зачёт в заказ', release: 'возврат на код',
+    adjust: 'корректировка', expire: 'сгорание'
+  };
+  function tplGifts() {
+    if (!st.gifts) { loadGifts(); return '<div class="ag-empty">Загружаем сертификаты…</div>'; }
+    var s = st.gifts.stats || {};
+    var tiles =
+      '<div class="ag-tiles">' +
+        '<div class="ag-tile"><b class="t-num">' + (s.active_n || 0) + '</b><span class="t-lbl">в обращении</span></div>' +
+        '<div class="ag-tile"><b class="t-num">' + money(s.live_balance) + ' ₽</b><span class="t-lbl">остаток на кодах</span></div>' +
+        '<div class="ag-tile"><b class="t-num">' + money(s.redeemed_sum) + ' ₽</b><span class="t-lbl">погашено услугами</span></div>' +
+        '<div class="ag-tile' + (s.claimed_n ? ' warn' : '') + '"><b class="t-num">' + (s.claimed_n || 0) + '</b><span class="t-lbl">на сверке оплаты</span></div>' +
+      '</div>';
+    var newBtn = '<div style="margin:12px 0">' +
+      '<button type="button" class="btn ' + (st.gnew ? 'btn-line' : 'btn-wax') + '" id="agGiftNew">' +
+      (st.gnew ? 'Свернуть форму' : '➕ Выпустить сертификат') + '</button></div>';
+    var form = !st.gnew ? '' :
+      '<div class="ag-card" style="max-width:560px;max-height:none;margin-bottom:14px">' +
+        '<span class="caps">Ручной выпуск — комплимент или продажа вне сайта</span>' +
+        '<div style="display:grid;gap:8px;margin-top:10px">' +
+          '<input type="number" id="agGfAmount" min="500" max="50000" step="500" placeholder="Номинал, ₽ (например 5000)" class="ag-in">' +
+          '<input type="text" id="agGfName" maxlength="120" placeholder="Имя получателя (на сертификате, по желанию)" class="ag-in">' +
+          '<input type="email" id="agGfEmail" maxlength="120" placeholder="Почта получателя — отправим письмом (по желанию)" class="ag-in">' +
+          '<input type="text" id="agGfCongrats" maxlength="280" placeholder="Поздравление (по желанию)" class="ag-in">' +
+          '<input type="text" id="agGfNote" maxlength="300" placeholder="Заметка для себя: кому и за что" class="ag-in">' +
+          '<button type="button" class="btn btn-wax" id="agGfCreate">Выпустить — код появится сразу</button>' +
+          '<p class="ag-hint">Выпуск ручной оплаты: сертификат сразу действителен. Не забудьте чек, если это продажа.</p>' +
+        '</div></div>';
+    var rows = (st.gifts.gifts || []).map(function (g) {
+      var stt = GIFT_ST[g.state] || [g.state_label || g.state, ''];
+      var open = st.gsel === g.id;
+      var head =
+        '<button type="button" class="ag-grow" data-gift-open="' + g.id + '" aria-expanded="' + open + '">' +
+          '<span class="gg-t"><b class="mono">' + esc(g.code) + '</b>' +
+            ' <span class="ag-pill ' + stt[1] + '">' + stt[0] + '</span>' +
+            (g.claimed && g.status === 'pending' ? ' <span class="ag-pill due">клиент отметил оплату</span>' : '') +
+          '</span>' +
+          '<span class="gg-m">' + money(g.balance) + ' / ' + money(g.amount) + ' ₽' +
+            (g.recip_name ? ' · для: ' + esc(g.recip_name) : '') +
+            (g.expires_ru && g.expires_ru !== '—' ? ' · до ' + g.expires_ru : '') + '</span>' +
+        '</button>';
+      if (!open) return '<div class="ag-gift">' + head + '</div>';
+      return '<div class="ag-gift on">' + head + '<div class="ag-gift-body" data-gift-body="' + g.id + '">' +
+        '<div class="ag-empty" style="padding:12px">Загружаем журнал…</div></div></div>';
+    }).join('');
+    return tiles + newBtn + form +
+      '<div class="ag-gifts">' + (rows || '<div class="ag-empty">Сертификатов пока нет — выпустите первый или дождитесь покупки с сайта (страница /gift.html).</div>') + '</div>';
+  }
+  function drawGiftCard(g) {
+    var box = document.querySelector('[data-gift-body="' + g.id + '"]');
+    if (!box) return;
+    var stt = GIFT_ST[g.state] || [g.state_label || g.state, ''];
+    var info =
+      '<div class="ag-kv">' +
+        '<div><span>Состояние</span><b>' + stt[0] + (g.block_note ? ' · ' + esc(g.block_note) : '') + '</b></div>' +
+        '<div><span>Остаток / номинал</span><b>' + money(g.balance) + ' / ' + money(g.amount) + ' ₽</b></div>' +
+        '<div><span>Покупатель</span><b>' + esc(g.buyer_name || '—') + (g.buyer_contact ? ' · ' + esc(g.buyer_contact) : '') + (g.via ? ' · ' + esc(g.via) : '') + '</b></div>' +
+        '<div><span>Получатель</span><b>' + esc(g.recip_name || '—') + (g.recip_contact ? ' · ' + esc(g.recip_contact) : '') +
+          (g.recip_contact ? (g.delivered ? ' · письмо ушло' : (g.deliver_at ? ' · отправим ' + esc(g.deliver_at) : ' · письмо не ушло')) : '') + '</b></div>' +
+        (g.congrats ? '<div><span>Поздравление</span><b>«' + esc(g.congrats) + '»</b></div>' : '') +
+        '<div><span>Срок</span><b>' + (g.expires_ru || '—') + '</b></div>' +
+        (g.note ? '<div><span>Заметка</span><b>' + esc(g.note) + '</b></div>' : '') +
+      '</div>';
+    var acts = [];
+    if (g.status === 'pending') {
+      acts.push('<button type="button" class="btn btn-wax" data-gift-act="confirm" data-gift-id="' + g.id + '">✅ Оплата получена — выпустить</button>');
+      acts.push('<button type="button" class="btn btn-line" data-gift-act="cancel" data-gift-id="' + g.id + '">✖ Отменить оформление</button>');
+    }
+    if (g.status === 'active' || g.status === 'expired') {
+      acts.push('<button type="button" class="btn btn-line" data-gift-act="extend" data-gift-id="' + g.id + '">🕐 Продлить +90 дн</button>');
+      acts.push('<button type="button" class="btn btn-line" data-gift-act="adjust" data-gift-id="' + g.id + '">± Корректировать остаток</button>');
+      acts.push('<button type="button" class="btn btn-line" data-gift-act="resend" data-gift-id="' + g.id + '">✉️ Переслать письма</button>');
+      acts.push('<button type="button" class="btn btn-line" data-gift-act="block" data-gift-id="' + g.id + '">🚫 Заблокировать</button>');
+    }
+    if (g.status === 'blocked') {
+      acts.push('<button type="button" class="btn btn-wax" data-gift-act="unblock" data-gift-id="' + g.id + '">Разблокировать</button>');
+    }
+    if (g.code && g.status !== 'pending' && g.status !== 'canceled') {
+      acts.push('<a class="btn btn-line" target="_blank" rel="noopener" href="gift.html?code=' + encodeURIComponent(g.code) + '">Открыть лист</a>');
+      acts.push('<a class="btn btn-line" target="_blank" rel="noopener" href="' + S.api.base + '/gift/pdf?code=' + encodeURIComponent(g.code) + '">PDF</a>');
+    }
+    var orders = (g.orders || []).map(function (o) {
+      return '<button type="button" class="ag-linkbtn" data-open-order="' + o.id + '">№' + o.id + ' · ' +
+        esc(o.work_label || '') + ' · зачтено ' + money(o.gift_amount) + ' ₽</button>';
+    }).join('<br>');
+    var ledger = (g.ledger || []).map(function (l) {
+      var k = GIFT_LEDGER_KIND[l.kind] || l.kind;
+      return '<div class="ag-ev"><span>' + (l.at || '').slice(0, 10) + ' ' + (l.at || '').slice(11, 16) + '</span>' +
+        '<span>' + k + (l.order_id ? ' · заказ №' + l.order_id : '') + (l.note ? ' · ' + esc(l.note) : '') + '</span>' +
+        '<b class="' + (l.delta < 0 ? 'neg' : 'pos') + '">' + (l.delta > 0 ? '+' : '') + money(l.delta) + '</b></div>';
+    }).join('');
+    box.innerHTML = info +
+      '<div class="ag-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">' + acts.join('') + '</div>' +
+      (orders ? '<span class="caps">Заказы по коду</span><div style="margin:6px 0 10px">' + orders + '</div>' : '') +
+      '<span class="caps">Журнал операций</span><div class="ag-evs" style="margin-top:6px">' +
+      (ledger || '<p class="ag-hint">Пока пусто.</p>') + '</div>';
+  }
+  function giftAction(id, act, body, okMsg) {
+    S.api.post('/admin/gifts/' + id + '/' + act, body || {}).then(function (r) {
+      if (!r || !r.ok) {
+        toast({ gift_state: 'Уже в другом состоянии — обновите список',
+                mail_off: 'Почта не настроена или адресов нет',
+                bad_amount: 'Проверьте сумму' }[(r && r.error) || ''] || 'Не получилось');
+        return;
+      }
+      toast(okMsg || 'Готово');
+      loadGifts();
+      openGiftCard(id);
+    });
+  }
+  function openGiftCard(id) {
+    S.api.get('/admin/gifts/' + id).then(function (r) {
+      if (r && r.ok) drawGiftCard(r.gift);
+    });
   }
 
   /* ---------------- РАССЫЛКА ---------------- */
@@ -1462,6 +1599,76 @@ function initGodEye() {
       else if (f === '@visits') { st.tab = 'visits'; }
       else { st.tab = 'orders'; st.filter = f; st.q = ''; st.sel = null; }
       drawNav(); loadTab(true);
+      return;
+    }
+
+    /* --- сертификаты: раскрытие, выпуск, действия --- */
+    var gop = t.closest('[data-gift-open]');
+    if (gop) {
+      var gid = parseInt(gop.getAttribute('data-gift-open'), 10);
+      st.gsel = st.gsel === gid ? null : gid;
+      drawBody();
+      if (st.gsel) openGiftCard(gid);
+      return;
+    }
+    if (t.closest('#agGiftNew')) { st.gnew = !st.gnew; drawBody(); return; }
+    if (t.closest('#agGfCreate')) {
+      var ga = parseInt((document.getElementById('agGfAmount') || {}).value, 10) || 0;
+      if (ga < 500) { toast('Укажите номинал — от 500 ₽'); return; }
+      var gemail = (document.getElementById('agGfEmail') || {}).value || '';
+      confirmDlg({
+        title: 'Выпустить сертификат на ' + money(ga) + ' ₽?',
+        text: 'Сертификат станет действительным сразу (оплата ручная/вне сайта).' +
+              (gemail ? ' Получателю уйдёт письмо с кодом.' : ''),
+        okLabel: 'Выпустить', noLabel: 'Отмена'
+      }).then(function (res) {
+        if (!res.ok) return;
+        S.api.post('/admin/gifts', {
+          amount: ga,
+          recip_name: (document.getElementById('agGfName') || {}).value || '',
+          recip_contact: gemail,
+          congrats: (document.getElementById('agGfCongrats') || {}).value || '',
+          note: (document.getElementById('agGfNote') || {}).value || ''
+        }).then(function (r) {
+          if (!r || !r.ok) { toast(r && r.error === 'bad_recip_email' ? 'Проверьте почту получателя' : 'Не получилось — проверьте номинал'); return; }
+          st.gnew = false;
+          st.gsel = r.gift.id;
+          toast('Выпущен: ' + r.gift.code);
+          loadGifts();
+          setTimeout(function () { openGiftCard(r.gift.id); }, 150);
+        });
+      });
+      return;
+    }
+    var gact = t.closest('[data-gift-act]');
+    if (gact) {
+      var gaid = parseInt(gact.getAttribute('data-gift-id'), 10);
+      var ga2 = gact.getAttribute('data-gift-act');
+      if (ga2 === 'confirm') {
+        confirmDlg({ title: 'Оплата получена?', text: 'Сертификат будет выпущен, покупатель получит код письмом' +
+          ' (и в Telegram, если входил). Не забудьте чек.', okLabel: 'Выпустить', noLabel: 'Отмена' })
+          .then(function (res) { if (res.ok) giftAction(gaid, 'confirm', {}, 'Выпущен — письма ушли'); });
+      } else if (ga2 === 'cancel') {
+        confirmDlg({ title: 'Отменить оформление?', text: 'Покупатель получит вежливое письмо. Деньги, если пришли, верните вручную.', okLabel: 'Отменить оформление', noLabel: 'Назад', danger: true })
+          .then(function (res) { if (res.ok) giftAction(gaid, 'cancel', {}, 'Оформление закрыто'); });
+      } else if (ga2 === 'block') {
+        confirmDlg({ title: 'Заблокировать сертификат?', text: 'Код перестанет приниматься (утечка, чарджбек, спор). Остаток заморозится — разблокировать можно в любой момент.', input: 'textarea', placeholder: 'Причина — увидите её в карточке', okLabel: 'Заблокировать', noLabel: 'Назад', danger: true })
+          .then(function (res) { if (res.ok) giftAction(gaid, 'block', { note: res.value || '' }, 'Заблокирован'); });
+      } else if (ga2 === 'unblock') {
+        giftAction(gaid, 'unblock', {}, 'Снова действует');
+      } else if (ga2 === 'extend') {
+        giftAction(gaid, 'extend', { days: 90 }, 'Продлён на 90 дней');
+      } else if (ga2 === 'adjust') {
+        confirmDlg({ title: 'Корректировка остатка', text: 'Введите сумму со знаком: «500» — добавить, «−500» — списать (возврат сгоревшего, компенсация, ручное погашение).', input: 'text', placeholder: 'например 500 или -500', okLabel: 'Применить', noLabel: 'Отмена' })
+          .then(function (res) {
+            if (!res.ok) return;
+            var d = parseInt(String(res.value || '').replace('−', '-').replace(/\s/g, ''), 10);
+            if (!d) { toast('Нужно число со знаком'); return; }
+            giftAction(gaid, 'adjust', { delta: d, note: 'корректировка из админки' }, 'Остаток обновлён');
+          });
+      } else if (ga2 === 'resend') {
+        giftAction(gaid, 'resend', {}, 'Письма отправлены заново');
+      }
       return;
     }
 

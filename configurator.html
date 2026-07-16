@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Калькулятор стоимости онлайн: курсовая, диплом, ВКР — смета за минуту | Академический Салон</title>
 <meta name="description" content="Соберите смету за четыре шага: тип работы, направление, срок и уровень сопровождения. Живой расчёт и порядок оплаты — до заявки." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260716i" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260716i" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260716i" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260716i" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717a" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260717a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260717a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260717a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -408,6 +408,29 @@
                 </div>
               </div>
 
+              <!-- подарочный сертификат: тот же купон-механизм, что и промокод -->
+              <div class="coupon" id="giftBox">
+                <button type="button" class="cp-toggle" id="giftShow" aria-expanded="false" aria-controls="giftField">
+                  <span aria-hidden="true">🎁</span>
+                  <span class="cp-lbl">У меня есть сертификат</span>
+                  <span class="cp-ar" aria-hidden="true">→</span>
+                </button>
+                <div class="cp-body" id="giftField" hidden>
+                  <div class="cp-row">
+                    <input type="text" id="fGift" maxlength="24" autocomplete="off"
+                           placeholder="AS-XXXX-XXXX-XXXX" aria-label="Код сертификата" />
+                    <button type="button" class="btn btn-line" id="giftApply">Применить</button>
+                  </div>
+                  <p class="petit" id="giftNote" style="margin-top:8px" hidden></p>
+                </div>
+                <div class="cp-done" id="giftDone" hidden>
+                  <span aria-hidden="true">🎁</span>
+                  <span class="cp-code" id="giftDoneCode"></span>
+                  <span class="cp-what" id="giftDoneLbl"></span>
+                  <button type="button" class="cp-x" id="giftRemove" aria-label="Убрать сертификат">×</button>
+                </div>
+              </div>
+
               <button type="button" class="btn btn-wax btn-block" id="btnSubmit">Отправить заявку мастеру <span class="ar">→</span></button>
               <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
                 <a class="btn btn-line" style="flex:1" href="https://vk.me/academicsaloon" target="_blank" rel="noopener">Написать во ВКонтакте</a>
@@ -462,6 +485,7 @@
               <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
               <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
               <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
+              <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
               <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
     <details class="lq-cheaper petit" style="margin-top:10px">
       <summary class="link" style="cursor:pointer">Дороже, чем рассчитывали? Три честных способа снизить</summary>
@@ -525,6 +549,7 @@
     <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
     <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
     <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
+    <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
     <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
     <details class="lq-cheaper petit" style="margin-top:10px">
       <summary class="link" style="cursor:pointer">Дороже, чем рассчитывали? Три честных способа снизить</summary>
@@ -544,8 +569,8 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260716i"></script>
-<script src="assets/js/extras.js?v=20260716i"></script>
+<script src="assets/js/app.js?v=20260717a"></script>
+<script src="assets/js/extras.js?v=20260717a"></script>
 <script>
 function initConf() {
   'use strict';
@@ -1228,6 +1253,105 @@ function initConf() {
     promoCheck(false);
   }
 
+  /* --- подарочный сертификат: купон-близнец промокода; ?gift=КОД — со страницы сертификата --- */
+  var giftCode = null, giftBal = 0;
+  var giftIn = $('fGift'), giftApplyBtn = $('giftApply'), giftNote = $('giftNote');
+  var giftBox = $('giftBox');
+  var GIFT_ERR = {
+    not_found: 'Такого кода нет — проверьте написание',
+    not_paid: 'Сертификат ещё не оплачен',
+    blocked: 'Сертификат приостановлен — напишите нам, разберёмся',
+    expired: 'Срок сертификата истёк — напишите нам, продлим',
+    spent: 'Сертификат уже полностью использован',
+    rate_limited: 'Слишком много попыток — подождите минуту',
+    empty: 'Введите код с сертификата'
+  };
+  function giftMsg(text, ok) {
+    if (!giftNote) return;
+    giftNote.hidden = false;
+    giftNote.textContent = text;
+    giftNote.style.color = ok ? 'var(--verify)' : 'var(--wax)';
+  }
+  function giftOpen() {
+    var f = $('giftField');
+    if (f) f.hidden = false;
+    if (giftBox) {
+      giftBox.classList.add('open');
+      var t = giftBox.querySelector('.cp-toggle');
+      if (t) { t.setAttribute('aria-expanded', 'true'); t.querySelector('.cp-ar').textContent = '↓'; }
+    }
+  }
+  function giftPaint() {
+    var t = giftBox && giftBox.querySelector('.cp-toggle');
+    var f = $('giftField'), d = $('giftDone');
+    var on = !!giftCode;
+    if (giftBox) giftBox.classList.toggle('on', on);
+    if (t) t.hidden = on;
+    if (f && on) f.hidden = true;
+    if (d) {
+      d.hidden = !on;
+      if (on) {
+        $('giftDoneCode').textContent = giftCode;
+        $('giftDoneLbl').textContent = C.fmt(giftBal) + ' ₽ на коде — зачтётся, когда мастер назовёт цену';
+      }
+    }
+    document.querySelectorAll('.lq-gift').forEach(function (el) { el.hidden = !on; });
+    if (on) put('gift', 'Сертификат ' + giftCode + ' · ' + C.fmt(giftBal) + ' ₽ спишется с итога');
+  }
+  function giftCheck(quiet) {
+    var v = (giftIn && giftIn.value || '').trim().toUpperCase();
+    if (!v) { if (!quiet) giftMsg(GIFT_ERR.empty, false); return; }
+    if (giftApplyBtn) S.btnLoading(giftApplyBtn, true, '…');
+    S.api.get('/gift/check?code=' + encodeURIComponent(v)).then(function (r) {
+      if (giftApplyBtn) S.btnLoading(giftApplyBtn, false);
+      if (r && r.ok) {
+        giftCode = r.code;
+        giftBal = r.balance || 0;
+        if (giftNote) giftNote.hidden = true;
+        giftPaint();
+        if (S.metrika) S.metrika.goal('gift_ok');
+      } else {
+        giftCode = null; giftBal = 0;
+        giftPaint();
+        if (quiet) {
+          var f = $('giftField');
+          if (f) f.hidden = true;
+          if (giftBox) giftBox.classList.remove('open');
+          if (giftIn) giftIn.value = '';
+        } else {
+          giftOpen();
+          giftMsg(GIFT_ERR[(r && r.error) || 'not_found'] || 'Не получилось проверить код', false);
+        }
+      }
+    });
+  }
+  if ($('giftShow')) $('giftShow').addEventListener('click', function () {
+    giftOpen();
+    if (giftIn) giftIn.focus();
+  });
+  if (giftApplyBtn) giftApplyBtn.addEventListener('click', function () { giftCheck(false); });
+  if (giftIn) giftIn.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); giftCheck(false); }
+  });
+  if ($('giftRemove')) $('giftRemove').addEventListener('click', function () {
+    giftCode = null; giftBal = 0;
+    giftPaint();
+    if (giftIn) giftIn.value = '';
+    if (giftNote) giftNote.hidden = true;
+    var t = giftBox && giftBox.querySelector('.cp-toggle');
+    if (t) t.hidden = false;
+    if (giftBox) giftBox.classList.remove('open');
+    var f = $('giftField');
+    if (f) f.hidden = true;
+  });
+  var urlGift = null;
+  try { urlGift = new URLSearchParams(location.search).get('gift'); } catch (e) {}
+  if (urlGift && giftIn) {
+    giftOpen();
+    giftIn.value = urlGift.toUpperCase().slice(0, 24);
+    giftCheck(false);
+  }
+
   /* --- «смета письмом»: расчёт + ссылка-возврат (и промокод, если введён) --- */
   function qmMsg(t, ok) {
     var n = $('qmNote');
@@ -1443,6 +1567,7 @@ function initConf() {
       details: (askText ? 'Анкета услуги:\n' + askText + '\n\n' : '') +
                (detailsIn ? detailsIn.value.trim() : ''),
       promo: promoCode || undefined,
+      gift: giftCode || undefined,
       consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
       consent_doc: 'consent 1.2 · privacy 1.6 · oferta 1.4 · форма конфигуратора',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
@@ -1477,6 +1602,13 @@ function initConf() {
           : ' 🎟 Промокод не применился (' + (PROMO_ERR[r.promo] || 'не прошёл проверку').toLowerCase() +
             ') — мастер посчитает без него.';
         if (r.promo !== 'ok') exitGrantDrop(r.promo);
+      }
+      if (giftCode && r.gift) {
+        var gnote = document.querySelector('.done-note');
+        if (gnote) gnote.textContent += r.gift === 'ok'
+          ? ' 🎁 Сертификат ' + giftCode + ' привязан — сумма зачтётся, когда мастер назовёт цену.'
+          : ' 🎁 Сертификат не привязался (' + (GIFT_ERR[r.gift] || 'не прошёл проверку').toLowerCase() +
+            ') — мастер посчитает без него.';
       }
       if (S.stamp) S.stamp('Заявка принята');
       /* гостям — ссылка доступа к делу + необязательная привязка Telegram */

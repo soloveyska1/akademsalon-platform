@@ -422,12 +422,13 @@
     { href: 'configurator.html', label: 'Рассчитать заказ', no: '02' },
     { href: 'plan.html',         label: 'Разбор плана',     no: '03' },
     { href: 'tariffs.html',      label: 'Цены и услуги',    no: '04' },
-    { href: 'guarantees.html',   label: 'Гарантии · устав', no: '05' },
-    { href: 'reviews.html',      label: 'Отзывы',           no: '06' },
-    { href: 'referral.html',     label: 'Клуб и бонусы',    no: '07' },
-    { href: 'knowledge.html',    label: 'База знаний',      no: '08' },
-    { href: 'check.html',        label: 'Проверка текста',  no: '09' },
-    { href: 'dashboard.html',    label: 'Личный кабинет',   no: '10' }
+    { href: 'gift.html',         label: 'Подарочный сертификат', no: '05' },
+    { href: 'guarantees.html',   label: 'Гарантии · устав', no: '06' },
+    { href: 'reviews.html',      label: 'Отзывы',           no: '07' },
+    { href: 'referral.html',     label: 'Клуб и бонусы',    no: '08' },
+    { href: 'knowledge.html',    label: 'База знаний',      no: '09' },
+    { href: 'check.html',        label: 'Проверка текста',  no: '10' },
+    { href: 'dashboard.html',    label: 'Личный кабинет',   no: '11' }
   ];
   var DOCS = [
     ['oferta.html', 'Публичная оферта'],
@@ -623,6 +624,7 @@
         '</div>' +
         '<div><div class="fc-h">Разделы</div><nav class="foot-links" aria-label="Карта сайта">' +
           '<a href="configurator.html">Рассчитать заказ</a><a href="tariffs.html">Цены и услуги</a>' +
+          '<a href="gift.html">Подарочный сертификат</a>' +
           '<a href="guarantees.html">Гарантии · устав</a><a href="reviews.html">Отзывы</a>' +
           '<a href="referral.html">Клуб и бонусы</a><a href="knowledge.html">База знаний</a>' +
           '<a href="check.html">Проверка текста</a><a href="dashboard.html">Кабинет</a>' +

@@ -991,26 +991,53 @@ function initCabinet() {
     if (o.price) {
       var out = '<div class="ord-price-row"><span class="caps">Цена мастера</span>' +
         '<span class="mono ord-price">' + money(o.price) + ' ₽</span></div>' + specLink(o);
-      if (o.bonus_spent || o.sub_discount || o.promo_discount) {
+      if (o.bonus_spent || o.sub_discount || o.promo_discount || o.gift_amount) {
         out += '<div class="due-box">' +
           '<div class="dr"><span>Цена работы</span><b>' + money(o.price) + ' ₽</b></div>' +
           (o.sub_discount ? '<div class="dr"><span>⭐ Скидка «Салон+»</span><b class="minus">−' + money(o.sub_discount) + '</b></div>' : '') +
           (o.promo_discount ? '<div class="dr"><span>🎟 Промокод' + (o.promo_code ? ' ' + esc(o.promo_code) : '') + '</span><b class="minus">−' + money(o.promo_discount) + '</b></div>' : '') +
           (o.bonus_spent ? '<div class="dr"><span>Оплачено бонусами</span><b class="minus">−' + money(o.bonus_spent) + '</b></div>' : '') +
+          (o.gift_amount ? '<div class="dr"><span>🎁 Сертификат' + (o.gift_code ? ' ' + esc(o.gift_code) : '') + '</span><b class="minus">−' + money(o.gift_amount) + '</b></div>' : '') +
           '<div class="dr total"><span>К оплате деньгами</span><b>' + money(o.due_total) + ' ₽</b></div>' +
           (o.bonus_spent && (o.status === 'priced' || o.status === 'prepay')
             ? '<div class="dr"><span></span><b><button type="button" class="linkbtn" data-act="bonus_cancel">↩ вернуть бонусы на счёт</button></b></div>' : '') +
+          (o.gift_amount && (o.status === 'priced' || o.status === 'prepay') && !(o.payments || []).some(function (p) { return p.status === 'paid'; })
+            ? '<div class="dr"><span></span><b><button type="button" class="linkbtn" data-act="gift_remove">↩ открепить сертификат</button></b></div>' : '') +
           '</div>';
       }
-      return out + planTable(o) + bonusSpendFold(o) + subUpsell(o);
+      return out + planTable(o) + bonusSpendFold(o) + giftFold(o) + subUpsell(o);
     }
     if (o.quote_low) {
       return '<div class="ord-price-row"><span class="caps">Вилка сметы</span>' +
         '<span class="mono ord-price">' + money(o.quote_low) + ' – ' + money(o.quote_high) + ' ₽</span></div>' +
         '<p class="petit ord-price-note">Точную цену мастер назовёт после разбора заявки — уведомим прямо здесь' +
-        (S.api.token() ? ' и в Telegram' : '') + '.</p>';
+        (S.api.token() ? ' и в Telegram' : '') + '.</p>' + giftFold(o);
     }
-    return '';
+    return giftFold(o);
+  }
+
+  /* -------- подарочный сертификат в деле: привязать код / показать привязку.
+     Средство платежа, не скидка: зачёт считает сервер при цене -------- */
+  function giftFold(o) {
+    if (/^sub_/.test(o.work_type || '')) return '';
+    if (!(o.status === 'new' || o.status === 'priced' || o.status === 'prepay')) return '';
+    var paidAlready = (o.payments || []).some(function (p) { return p.status === 'paid'; });
+    if (o.gift_code && !o.gift_amount) {
+      /* код привязан, цены ещё нет — покажем строку ожидания */
+      return fold('secGift', '🎁 Сертификат', esc(o.gift_code),
+        '<p class="petit" style="margin:0">Код <b class="mono">' + esc(o.gift_code) + '</b> привязан — ' +
+        'сумма зачтётся, когда мастер назовёт цену.' +
+        (paidAlready ? '' : ' <button type="button" class="linkbtn" data-act="gift_remove">Открепить</button>') +
+        '</p>', false);
+    }
+    if (o.gift_code || paidAlready) return '';
+    var inner = '<div class="due-box" id="gattBox" style="margin-top:0">' +
+      '<p class="petit" style="margin:0 0 8px">Есть подарочный сертификат? Привяжите код — сумма спишется с итога' +
+      (o.price ? ' сразу' : ', когда мастер назовёт цену') + '. Остаток сохранится на коде.</p>' +
+      '<div class="cbn-row"><input type="text" id="gattCode" maxlength="24" autocomplete="off" placeholder="AS-XXXX-XXXX-XXXX" ' +
+      'style="flex:1;min-width:0;background:transparent;border:1px solid var(--hairline-strong);border-radius:6px;padding:9px 10px;color:var(--ink);font:inherit;font-size:16px">' +
+      '<button type="button" class="btn btn-line" id="gattApply">Применить</button></div></div>';
+    return fold('secGift', '🎁 Сертификат', 'применить код к делу', inner, false);
   }
 
   /* -------- план оплат: этапы 50/50 или 30/40/30, статус каждого -------- */
@@ -1644,11 +1671,22 @@ function initCabinet() {
                   bonus_cap: 'Лимит списания по этому заказу уже выбран',
                   bonus_once: 'Бонусы применяются один раз на заказ. Передумали — «вернуть бонусы» и примените заново',
                   bonus_empty: 'На счету нет доступных бонусов',
+                  gift_not_for_subs: 'Подписка оплачивается деньгами — сертификат к ней не применяется',
+                  gift_after_payment: 'По заказу уже была оплата — сертификат не изменить',
+                  gift_stage: 'К закрытому делу сертификат не применить',
+                  gift_nothing: 'К этому делу сертификат не привязан',
+                  not_paid: 'Сертификат ещё не оплачен',
+                  blocked: 'Сертификат приостановлен — напишите нам, разберёмся',
+                  expired: 'Срок сертификата истёк — напишите нам, продлим',
+                  spent: 'Сертификат уже полностью использован',
+                  empty: 'Введите код с сертификата',
                   paused_by_master: 'Паузу ставил мастер — напишите ему в переписке, он снимет',
                   pause_state: 'Пауза тут не применима — обновите страницу',
                   nothing_due: 'Сейчас платить нечего — оплата по заказу закрыта',
                   already_claimed: 'Отметка уже стоит — мастер сверяет поступление',
                   only_finished: 'В архив убираются только завершённые и закрытые дела' }[r.error] ||
+                (r.error === 'not_found' && action === 'gift_apply'
+                  ? 'Такого кода нет — проверьте написание' : '') ||
                 'Не получилось — попробуйте ещё раз');
           return;
         }
@@ -1663,11 +1701,14 @@ function initCabinet() {
         if (action === 'unpause' && S.stamp) S.stamp('Продолжаем');
         if (action === 'bonus_apply' && S.stamp) S.stamp('−' + money(r.spent || 0) + ' бонусами', { tone: 'wax' });
         if (action === 'bonus_cancel' && S.stamp) S.stamp('+' + money(r.restored || 0) + ' на счёт', { tone: 'wax' });
+        if (action === 'gift_apply' && S.stamp) S.stamp(r.gift_amount ? '−' + money(r.gift_amount) + ' сертификатом' : 'Сертификат привязан', { tone: 'wax' });
         var msgA = { accept_price: 'Принято! Дальше — предоплата', paid: 'Передали мастеру на сверку',
                 request_fixes: 'Отправили на правки — исправим и вернём',
                 decline: 'Заявка закрыта — её можно возобновить в любой момент',
                 resume: 'Заявка снова в работе — мастер уже видит',
                 bonus_apply: 'Бонусы применены', bonus_cancel: 'Бонусы вернулись на счёт',
+                gift_apply: 'Сертификат привязан к делу',
+                gift_remove: 'Сертификат откреплён — сумма вернулась на код',
                 paid_undo: 'Отметка снята — без паники',
                 archive: 'Дело убрано в архив — вернуть можно в любой момент',
                 unarchive: 'Дело вернулось в список',
@@ -2005,6 +2046,13 @@ function initCabinet() {
       var amount = rng ? parseInt(rng.value, 10) : 0;
       if (!amount) { toast('Выберите сумму списания ползунком'); return; }
       doAction('bonus_apply', { amount: amount });
+      return;
+    }
+    if (t.closest('#gattApply')) {
+      var gin = document.getElementById('gattCode');
+      var gcode = (gin && gin.value || '').trim().toUpperCase();
+      if (!gcode) { toast('Введите код с сертификата'); if (gin) gin.focus(); return; }
+      doAction('gift_apply', { code: gcode });
       return;
     }
     if (t.closest('#bonusLogBtn')) {

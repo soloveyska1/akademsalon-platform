@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Подарочный сертификат на учебные работы — от 2 000 ₽ | Академический Салон</title>
+<meta name="description" content="Подарите уверенность перед сессией: именной сертификат на курсовую, диплом или подготовку к защите. Красивый PDF для вручения, доставка письмом к дате, срок действия 12 месяцев, остаток сохраняется." />
+<link rel="canonical" href="https://akademsalon.ru/gift.html" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717a" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260717a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260717a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260717a" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Подарочный сертификат мастерской — подарите уверенность" />
+<meta property="og:description" content="Именной сертификат на любую работу или услугу: от курсовой до подготовки к защите. PDF для вручения, доставка к дате, действует 12 месяцев." />
+<meta property="og:url" content="https://akademsalon.ru/gift.html" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Подарочный сертификат мастерской — подарите уверенность" />
+<meta name="twitter:description" content="Именной сертификат на любую работу или услугу. PDF для вручения, доставка к дате, действует 12 месяцев." />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<style>
+  /* ============================================================
+     ПОДАРОЧНЫЙ СЕРТИФИКАТ — витрина покупки и лист-предъявитель.
+     Язык «Оттиска»: гербовый бланк, марка кода, сургучная печать.
+     ============================================================ */
+  .gf-hero{padding:calc(64px + clamp(36px,6vh,72px)) 0 0;display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,460px);gap:clamp(24px,4vw,56px);align-items:center}
+  /* авторский display перебивает атрибут hidden — возвращаем ему силу */
+  .gf-hero[hidden],.gv-balance[hidden],#gfEmailBox[hidden]{display:none}
+  .gf-hero .caps{display:block;margin-bottom:14px}
+  .gf-hero h1{max-width:22ch;margin-bottom:clamp(14px,2vw,20px)}
+  .gf-hero .lead{max-width:52ch}
+  .gf-hero-cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:clamp(18px,3vw,26px)}
+
+  /* бланк сертификата (общий для витрины и предъявителя) */
+  .gcert{position:relative;background:var(--sheet);border:1px solid var(--hairline);
+    border-radius:3px;box-shadow:0 18px 40px -18px rgba(34,32,27,.35),0 2px 0 var(--hairline);
+    padding:12px}
+  .gcert-in{border:2px solid var(--ink);border-radius:2px;padding:clamp(18px,3vw,28px) clamp(16px,2.6vw,26px);
+    position:relative;overflow:hidden}
+  .gcert-in::after{content:"";position:absolute;inset:5px;border:1px solid var(--hairline-strong);
+    border-radius:1px;pointer-events:none}
+  .gcert .gc-brand{text-align:center;font-family:var(--serif);font-weight:700;
+    letter-spacing:.32em;font-size:12.5px}
+  .gcert .gc-sub{text-align:center;font-size:9px;letter-spacing:.22em;color:var(--ink-faint);
+    text-transform:uppercase;margin-top:4px}
+  .gcert .gc-rule{display:flex;align-items:center;gap:8px;margin:12px 8px}
+  .gcert .gc-rule::before,.gcert .gc-rule::after{content:"";flex:1;height:1px;background:var(--hairline-strong)}
+  .gcert .gc-rule i{width:6px;height:6px;background:var(--wax);transform:rotate(45deg);flex:0 0 auto}
+  .gcert .gc-title{text-align:center;font-family:var(--serif);font-size:clamp(15px,1.9vw,19px);
+    font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+  .gcert .gc-sum{text-align:center;font-family:var(--serif);font-weight:700;color:var(--wax);
+    font-size:clamp(38px,6vw,54px);line-height:1.1;margin:10px 0 4px;font-variant-numeric:tabular-nums}
+  .gcert .gc-what{text-align:center;font-size:12.5px;color:var(--ink-soft);max-width:38ch;margin:0 auto;line-height:1.55}
+  .gcert .gc-name{text-align:center;font-family:var(--serif);font-size:15px;margin-top:12px}
+  .gcert .gc-congrats{text-align:center;font-family:var(--serif);font-style:italic;font-size:13.5px;
+    color:var(--ink-soft);margin:8px auto 0;max-width:44ch;line-height:1.55}
+  .gcert .gc-code{margin:14px auto 0;width:max-content;max-width:100%;background:var(--mark,#EFE5CC);
+    border:1px dashed var(--hairline-strong);border-radius:2px;padding:9px 18px;
+    font-family:var(--mono);font-size:clamp(15px,2.2vw,19px);letter-spacing:.08em;font-weight:600}
+  .gcert .gc-meta{display:flex;justify-content:space-between;gap:10px;margin-top:14px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-faint)}
+  .gcert .gc-seal{position:absolute;right:clamp(10px,2vw,22px);bottom:clamp(38px,5vw,52px);
+    width:64px;height:64px;border-radius:50%;background:var(--wax);color:#FFFEF9;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:0 6px 14px -6px rgba(178,59,34,.55);transform:rotate(-8deg)}
+  .gcert .gc-seal::before{content:"";position:absolute;inset:4px;border:1px solid rgba(255,254,249,.75);border-radius:50%}
+  .gcert .gc-seal b{font-family:var(--serif);font-size:20px;letter-spacing:.06em}
+  .gcert .gc-seal span{font-size:6.5px;letter-spacing:.14em;margin-top:1px}
+  .gf-hero .gcert{transform:rotate(1.6deg)}
+  @media(prefers-reduced-motion:no-preference){
+    .gf-hero .gcert{transition:transform .35s ease}
+    .gf-hero .gcert:hover{transform:rotate(0deg)}
+  }
+  /* штамп состояния на листе-предъявителе */
+  .gc-stamp{position:absolute;left:14px;top:14px;z-index:2;border:2px solid var(--verify);
+    color:var(--verify);border-radius:2px;padding:4px 10px;font-family:var(--mono);
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;transform:rotate(-6deg);
+    background:color-mix(in srgb,var(--sheet) 88%, transparent)}
+  .gc-stamp.mute{border-color:var(--ink-faint);color:var(--ink-faint)}
+  .gc-stamp.wax{border-color:var(--wax);color:var(--wax)}
+
+  /* форма оформления */
+  .gf-form{background:var(--sheet);border:1px solid var(--hairline);border-top:3px solid var(--ink);
+    border-radius:var(--r);padding:clamp(18px,3vw,28px);box-shadow:0 1px 0 var(--hairline)}
+  .gf-form .caps{display:block;margin:18px 0 10px}
+  .gf-form .caps:first-child{margin-top:0}
+  .gf-noms{display:flex;gap:10px;flex-wrap:wrap}
+  .gf-nom{flex:1 1 100px;min-width:96px;padding:12px 8px;border:1px solid var(--hairline-strong);
+    border-radius:var(--r);background:transparent;cursor:pointer;text-align:center;
+    font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink)}
+  .gf-nom small{display:block;font-family:var(--sans);font-size:10.5px;font-weight:400;
+    color:var(--ink-faint);margin-top:2px;letter-spacing:.04em}
+  .gf-nom[aria-pressed="true"]{border-color:var(--wax);box-shadow:inset 0 0 0 1px var(--wax);color:var(--wax)}
+  .gf-custom{display:flex;gap:10px;align-items:center;margin-top:10px}
+  .gf-custom input{width:140px}
+  .gf-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .gf-form input[type=text],.gf-form input[type=email],.gf-form input[type=number],
+  .gf-form input[type=date],.gf-form textarea{width:100%;background:transparent;
+    border:1px solid var(--hairline-strong);border-radius:var(--r);padding:11px 12px;
+    color:var(--ink);font:inherit;font-size:16px}
+  .gf-form textarea{min-height:74px;resize:vertical}
+  .gf-count{font-family:var(--mono);font-size:11px;color:var(--ink-faint);text-align:right;margin-top:4px}
+  .gf-dlv{display:grid;gap:8px}
+  .gf-dlv label.opt{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;
+    border:1px solid var(--hairline);border-radius:var(--r);cursor:pointer;font-size:14px}
+  .gf-dlv label.opt:has(input:checked){border-color:var(--wax);box-shadow:inset 0 0 0 1px var(--wax)}
+  .gf-dlv .opt input{margin-top:3px}
+  .gf-dlv .opt b{display:block;font-size:14.5px}
+  .gf-dlv .opt span{color:var(--ink-soft);font-size:12.5px;line-height:1.5}
+  #gfEmailBox{display:grid;gap:10px;padding:4px 0 0}
+  .gf-consent{display:flex;gap:8px;align-items:flex-start;margin:16px 0 14px;cursor:pointer}
+  .gf-consent input{margin-top:3px}
+  .gf-consent span{font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+  .gf-note{margin-top:10px}
+  .gf-err{color:var(--wax)}.gf-ok{color:var(--verify)}
+  /* длинная подпись кнопки не должна распирать бланк на узких экранах */
+  #gfSubmit{white-space:normal;line-height:1.35}
+
+  /* платёжный лист оформления */
+  .gf-pays{background:var(--sheet);border:1px solid var(--hairline);border-top:3px solid var(--wax);
+    border-radius:var(--r);padding:clamp(18px,3vw,26px);box-shadow:0 1px 0 var(--hairline)}
+  .gf-pays .sum{font-family:var(--serif);font-size:clamp(22px,3vw,28px);font-weight:700}
+  .gf-pays .req{white-space:pre-line;background:var(--paper);border:1px dashed var(--hairline-strong);
+    border-radius:var(--r);padding:12px 14px;font-size:14px;line-height:1.65;margin:12px 0}
+  .gf-pays .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .gf-pays .st{margin-top:10px;font-size:13.5px;color:var(--ink-soft)}
+  .gf-code-final{margin-top:14px}
+
+  /* режим предъявителя */
+  .gf-viewwrap{max-width:640px;margin:0 auto}
+  .gf-viewwrap .gcert{margin-top:clamp(20px,4vw,34px)}
+  .gv-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:clamp(18px,3vw,26px)}
+  .gv-balance{display:flex;justify-content:center;gap:26px;margin-top:16px;text-align:center}
+  .gv-balance b{display:block;font-family:var(--serif);font-size:22px}
+  .gv-balance span{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+
+  /* «как работает» и условия */
+  .gf-steps{counter-reset:gfs;display:grid;gap:0;margin-top:clamp(18px,2.6vw,26px)}
+  .gf-step{display:flex;gap:16px;padding:16px 0;border-top:1px solid var(--hairline);align-items:baseline}
+  .gf-step:last-child{border-bottom:1px solid var(--hairline)}
+  .gf-step .n{counter-increment:gfs;flex:0 0 34px;font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
+  .gf-step .n::before{content:"0" counter(gfs)}
+  .gf-step .t b{display:block;font-size:15.5px;font-weight:600;margin-bottom:3px}
+  .gf-step .t p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin:0;max-width:64ch}
+  .gf-terms{display:grid;gap:0;margin-top:clamp(16px,2.4vw,22px)}
+  .gf-term{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--hairline);font-size:14px;line-height:1.6}
+  .gf-term:last-child{border-bottom:1px solid var(--hairline)}
+  .gf-term .m{flex:0 0 auto;color:var(--verify)}
+  .gf-buy-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:clamp(20px,3.4vw,40px);align-items:start}
+
+  @media(max-width:960px){.gf-hero{grid-template-columns:1fr}.gf-hero .gcert{max-width:460px}}
+  @media(max-width:860px){.gf-buy-grid{grid-template-columns:1fr}}
+  @media(max-width:560px){
+    .gf-grid2{grid-template-columns:1fr}
+    .gf-hero-cta .btn{width:100%}
+    .gv-actions .btn{width:100%}
+    .gcert .gc-seal{width:52px;height:52px;bottom:32px}
+    .gcert .gc-seal b{font-size:16px}
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <div class="wrap">
+
+    <!-- ГЕРОЙ (витрина; в режиме предъявителя скрывается) -->
+    <section class="gf-hero reveal" id="gfHero" data-chapter="Сертификат">
+      <div>
+        <span class="caps">Подарочный сертификат</span>
+        <h1 class="h-display">Подарите уверенность перед сессией</h1>
+        <p class="lead">Именной сертификат на любую работу или услугу мастерской — от курсовой
+        и диплома до разбора плана и подготовки к защите. Красивый лист для вручения,
+        доставка письмом к нужной дате и целый год на использование.</p>
+        <div class="gf-hero-cta">
+          <a class="btn btn-wax" href="#buy">Оформить сертификат <span class="ar">→</span></a>
+          <a class="btn btn-line" href="#how">Как это работает</a>
+        </div>
+        <p class="marginalia" style="margin-top:14px">Номиналы от 2 000 до 50 000 ₽ · остаток не сгорает при первом заказе</p>
+      </div>
+      <div class="gcert" aria-hidden="true">
+        <div class="gcert-in">
+          <div class="gc-brand">АКАДЕМИЧЕСКИЙ САЛОН</div>
+          <div class="gc-sub">Мастерская учебных и научных работ</div>
+          <div class="gc-rule"><i></i></div>
+          <div class="gc-title">Подарочный сертификат</div>
+          <div class="gc-sum" id="heroSum">5 000 ₽</div>
+          <p class="gc-what">на любые работы и услуги мастерской — от курсовой до подготовки к защите</p>
+          <div class="gc-code">AS-••••-••••-••••</div>
+          <div class="gc-meta"><span>СЕРИЯ АС</span><span>ДЕЙСТВУЕТ 12 МЕСЯЦЕВ</span></div>
+          <div class="gc-seal"><b>АС</b><span>ОПЛАЧЕНО</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- РЕЖИМ ПРЕДЪЯВИТЕЛЯ (?code=) -->
+    <section class="chapter reveal gf-viewwrap" id="gfView" hidden data-chapter="Ваш сертификат">
+      <div style="text-align:center">
+        <span class="caps">Предъявительский лист</span>
+        <h1 style="margin-top:10px">Ваш подарочный сертификат</h1>
+      </div>
+      <div class="gcert" style="position:relative">
+        <span class="gc-stamp" id="gvStamp">Действителен</span>
+        <div class="gcert-in">
+          <div class="gc-brand">АКАДЕМИЧЕСКИЙ САЛОН</div>
+          <div class="gc-sub">Мастерская учебных и научных работ</div>
+          <div class="gc-rule"><i></i></div>
+          <div class="gc-title">Подарочный сертификат</div>
+          <div class="gc-sum" id="gvSum">— ₽</div>
+          <p class="gc-what">на любые работы и услуги мастерской — от курсовой до подготовки к защите</p>
+          <div class="gc-name" id="gvName" hidden></div>
+          <p class="gc-congrats" id="gvCongrats" hidden></p>
+          <div class="gc-code" id="gvCode">…</div>
+          <div class="gc-meta"><span id="gvSerial">СЕРИЯ АС</span><span id="gvTerm"></span></div>
+          <div class="gc-seal"><b>АС</b><span>ОПЛАЧЕНО</span></div>
+        </div>
+      </div>
+      <div class="gv-balance" id="gvBalanceRow" hidden>
+        <div><b id="gvBalance">—</b><span>остаток</span></div>
+        <div><b id="gvSpent">—</b><span>использовано</span></div>
+      </div>
+      <div class="gv-actions">
+        <a class="btn btn-wax" id="gvUse" href="configurator.html">Применить к заказу <span class="ar">→</span></a>
+        <a class="btn btn-line" id="gvPdf" href="#" target="_blank" rel="noopener">Скачать PDF</a>
+        <button class="btn btn-line" type="button" id="gvCopy">Скопировать код</button>
+      </div>
+      <p class="petit" style="text-align:center;margin-top:14px" id="gvHint">Введите код в поле
+      «У меня есть сертификат» на последнем шаге заказа — сумма зачтётся автоматически.</p>
+    </section>
+
+    <!-- § 01 — ОФОРМЛЕНИЕ -->
+    <section class="chapter reveal" id="buy" data-chapter="§ 01 · Оформление">
+      <div class="ch-rule"><span class="ch-no">§ 01 · Оформление</span></div>
+      <h2>Собрать сертификат — две минуты</h2>
+      <div class="gf-buy-grid" style="margin-top:clamp(18px,2.6vw,26px)">
+        <!-- ФОРМА -->
+        <div class="gf-form" id="gfForm">
+          <span class="caps">Номинал</span>
+          <div class="gf-noms" id="gfNoms" role="group" aria-label="Выбор номинала"></div>
+          <div class="gf-custom">
+            <label class="petit" for="gfCustom">Свой:</label>
+            <input type="number" id="gfCustom" min="2000" max="50000" step="500" placeholder="7 500" inputmode="numeric" />
+            <span class="petit">от 2 000 до 50 000 ₽</span>
+          </div>
+
+          <span class="caps">Кому и от кого</span>
+          <div class="gf-grid2">
+            <input type="text" id="gfRecipName" maxlength="120" placeholder="Имя получателя (напечатаем на сертификате)" />
+            <input type="text" id="gfBuyerName" maxlength="120" placeholder="От кого (по желанию)" />
+          </div>
+          <div style="margin-top:12px">
+            <textarea id="gfCongrats" maxlength="280" placeholder="Поздравление — напечатаем на сертификате и в письме (по желанию)"></textarea>
+            <div class="gf-count"><span id="gfCnt">0</span>/280</div>
+          </div>
+
+          <span class="caps">Как вручить</span>
+          <div class="gf-dlv" role="radiogroup" aria-label="Способ вручения">
+            <label class="opt"><input type="radio" name="gfDlv" value="self" checked />
+              <span><b>Вручу сам(а)</b><span>Пришлём вам код, страницу сертификата и PDF для печати — подарите как захотите.</span></span></label>
+            <label class="opt"><input type="radio" name="gfDlv" value="email" />
+              <span><b>Отправьте получателю письмом</b><span>Красивое письмо с поздравлением — сразу после оплаты или утром в выбранный день.</span></span></label>
+          </div>
+          <div id="gfEmailBox" hidden>
+            <input type="email" id="gfRecipEmail" maxlength="120" placeholder="Почта получателя" autocomplete="off" />
+            <label class="petit" style="display:flex;gap:8px;align-items:center">Дата вручения (по желанию):
+              <input type="date" id="gfDate" style="width:auto" /></label>
+          </div>
+
+          <span class="caps">Куда прислать сертификат вам</span>
+          <input type="email" id="gfBuyerEmail" maxlength="120" placeholder="Ваша почта — пришлём код и PDF" autocomplete="email" />
+          <input type="text" id="gfWebsite" tabindex="-1" autocomplete="off" style="position:absolute;left:-5000px" aria-hidden="true" />
+
+          <label class="gf-consent"><input type="checkbox" id="gfConsent" />
+            <span>Согласен(на) на обработку данных для оформления сертификата — <a class="link" href="consent.html" target="_blank">согласие</a> и <a class="link" href="privacy.html" target="_blank">политика ПДн</a>. Имя получателя и поздравление печатаются на сертификате.</span></label>
+
+          <button type="button" class="btn btn-wax btn-block" id="gfSubmit">Оформить сертификат · <span id="gfSum">5 000 ₽</span> <span class="ar">→</span></button>
+          <p class="petit gf-note" id="gfNote" hidden></p>
+          <p class="petit" style="margin-top:12px">После оформления — оплата картой или переводом по реквизитам.
+          Код сертификата приходит после подтверждения оплаты. Это аванс за услуги мастерской
+          (<a class="link" href="oferta.html" target="_blank">оферта, р. 14</a>).</p>
+        </div>
+
+        <!-- ПЛАТЁЖНЫЙ ЛИСТ -->
+        <div>
+          <div class="gf-pays" id="gfPays" hidden>
+            <span class="caps">Платёжный лист</span>
+            <div class="sum" id="gpSum">—</div>
+            <p class="petit" id="gpWho" style="margin-top:4px"></p>
+            <div class="req" id="gpReq" hidden></div>
+            <div class="row" id="gpBtns"></div>
+            <p class="st" id="gpSt"></p>
+            <div class="gf-code-final" id="gpFinal" hidden></div>
+          </div>
+          <div class="gf-pays" id="gfPaysEmpty">
+            <span class="caps">Что получит получатель</span>
+            <div class="gf-terms" style="margin-top:10px">
+              <div class="gf-term"><span class="m">✓</span><span>Именной лист сертификата — страница на сайте и PDF для печати</span></div>
+              <div class="gf-term"><span class="m">✓</span><span>Код на предъявителя: вводится при заказе, сумма зачитывается сама</span></div>
+              <div class="gf-term"><span class="m">✓</span><span>Целый год на использование и остаток, который не сгорает при первом заказе</span></div>
+              <div class="gf-term"><span class="m">✓</span><span>Живого мастера: можно просто ответить на письмо и спросить совета</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 02 — КАК РАБОТАЕТ -->
+    <section class="chapter reveal" id="how" data-chapter="§ 02 · Как работает">
+      <div class="ch-rule"><span class="ch-no">§ 02 · Как это работает</span></div>
+      <h2>Три шага — и подарок у адресата</h2>
+      <div class="gf-steps">
+        <div class="gf-step"><span class="n"></span><span class="t"><b>Оформляете и оплачиваете</b>
+          <p>Выбираете номинал, подписываете кому и от кого, платите картой или переводом.
+          После подтверждения оплаты сертификат выпускается — вам приходит код, страница и PDF.</p></span></div>
+        <div class="gf-step"><span class="n"></span><span class="t"><b>Вручаете красиво</b>
+          <p>Покажите с телефона, распечатайте PDF или доверьте нам: отправим получателю
+          письмо с вашим поздравлением — сразу или утром в выбранную дату.</p></span></div>
+        <div class="gf-step"><span class="n"></span><span class="t"><b>Получатель тратит на что угодно</b>
+          <p>Вводит код при заказе — сумма зачитывается автоматически. Курсовая, диплом,
+          статья, нормоконтроль, презентация к защите — любой пункт нашего прейскуранта.
+          Если работа дороже номинала, разница доплачивается как обычно.</p></span></div>
+      </div>
+    </section>
+
+    <!-- § 03 — ЧЕСТНЫЕ УСЛОВИЯ -->
+    <section class="chapter reveal" id="terms" data-chapter="§ 03 · Условия">
+      <div class="ch-rule"><span class="ch-no">§ 03 · Честные условия</span></div>
+      <h2>Мелкий шрифт, который мы пишем крупно</h2>
+      <div class="gf-terms">
+        <div class="gf-term"><span class="m">✓</span><span><b>12 месяцев</b> с момента оплаты. Не успеваете — напишите, продлим по-человечески.</span></div>
+        <div class="gf-term"><span class="m">✓</span><span><b>Остаток сохраняется.</b> Заказ дешевле номинала? Разница остаётся на коде до следующего раза.</span></div>
+        <div class="gf-term"><span class="m">✓</span><span><b>Совместим со скидками.</b> Промокод, абонемент «Салон+» и бонусы применяются к цене, сертификат гасит итог.</span></div>
+        <div class="gf-term"><span class="m">✓</span><span><b>Отмена заказа — деньги на код.</b> Если дело закрылось, зачтённая сумма возвращается на сертификат целиком.</span></div>
+        <div class="gf-term"><span class="m">✓</span><span><b>Деньгами не выдаётся.</b> Сертификат — аванс за услуги; возврат неиспользованного остатка возможен покупателю по заявлению.</span></div>
+        <div class="gf-term"><span class="m">✓</span><span><b>Код — как наличные.</b> Берегите его: погасить может любой, кто знает код. Скомпрометирован — напишите, заблокируем и перевыпустим.</span></div>
+      </div>
+    </section>
+
+    <!-- § 04 — FAQ -->
+    <section class="chapter reveal" id="faq" data-chapter="§ 04 · Вопросы">
+      <div class="ch-rule"><span class="ch-no">§ 04 · Вопросы</span></div>
+      <h2>Спрашивают перед покупкой</h2>
+      <div class="faq" style="margin-top:clamp(16px,2.4vw,22px)">
+        <details class="faq-item">
+          <summary>Это легально дарить?</summary>
+          <p>Да. Сертификат — предоплата консультационно-методических услуг: разборы, образцы,
+          сопровождение. Получатель сам решает, на что его потратить. Чек НПД формируется как обычно.</p>
+        </details>
+        <details class="faq-item">
+          <summary>А если получателю ничего не нужно будет?</summary>
+          <p>Срок — целый год: за это время случается и курсовая, и практика, и защита.
+          Если совсем не пригодился — покупатель может письменно попросить возврат
+          неиспользованного остатка, вернём тем же способом, каким платили.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Получатель узнает, сколько я заплатил(а)?</summary>
+          <p>Номинал печатается на сертификате — это и есть подарок. Если хотите без суммы,
+          напишите нам после оформления, пришлём версию PDF без номинала.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Можно оплатить сертификатом часть работы, а часть деньгами?</summary>
+          <p>Да, это обычный сценарий: код гасит свою сумму, остальное доплачивается картой
+          или переводом по этапам, как любой заказ.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Как проверить остаток?</summary>
+          <p>Откройте страницу сертификата по ссылке из письма или введите код на этой странице —
+          остаток и срок всегда видны.</p>
+        </details>
+      </div>
+      <div style="text-align:center;margin-top:clamp(22px,3.4vw,32px)">
+        <a class="btn btn-wax" href="#buy">Оформить сертификат <span class="ar">→</span></a>
+        <p class="petit" style="margin-top:10px">Проверить имеющийся код: откройте ссылку из письма
+        или <button class="link" type="button" id="gfCheckLink" style="background:none;border:0;padding:0;cursor:pointer;font:inherit">введите код здесь</button>.</p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Подарочный сертификат Академического Салона","provider":{"@type":"ProfessionalService","name":"Академический Салон","url":"https://akademsalon.ru"},"description":"Именной подарочный сертификат на учебные и научные работы: курсовые, дипломы, статьи, подготовка к защите. Действует 12 месяцев, остаток сохраняется.","offers":{"@type":"Offer","priceSpecification":{"@type":"PriceSpecification","minPrice":2000,"maxPrice":50000,"priceCurrency":"RUB"},"priceCurrency":"RUB","url":"https://akademsalon.ru/gift.html"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Сколько действует подарочный сертификат?","acceptedAnswer":{"@type":"Answer","text":"12 месяцев с момента оплаты. По просьбе покупателя срок продлевается."}},{"@type":"Question","name":"Сгорает ли остаток сертификата после первого заказа?","acceptedAnswer":{"@type":"Answer","text":"Нет. Если заказ дешевле номинала, разница остаётся на коде и действует до конца срока."}},{"@type":"Question","name":"Можно ли доплатить, если работа дороже номинала?","acceptedAnswer":{"@type":"Answer","text":"Да: сертификат гасит свою сумму, остальное оплачивается картой или переводом по обычным этапам."}},{"@type":"Question","name":"Можно ли отправить сертификат получателю к определённой дате?","acceptedAnswer":{"@type":"Answer","text":"Да, при оформлении укажите почту получателя и дату — письмо с поздравлением придёт утром в выбранный день."}}]}</script>
+<script src="assets/js/app.js?v=20260717a"></script>
+<script src="assets/js/extras.js?v=20260717a"></script>
+<script>
+(function () {
+  'use strict';
+  var S = window.Salon;
+  if (!S || !S.api) return;
+  function $(id) { return document.getElementById(id); }
+  function money(n) { return (n || 0).toLocaleString('ru-RU') + ' ₽'; }
+  var CFG = { presets: [3000, 5000, 10000, 15000], min: 2000, max: 50000, deliver_max_days: 90, pay_online: false };
+  var state = { amount: 5000, gift: null, token: null, pollT: null };
+
+  /* ---------- режим предъявителя (?code=) ---------- */
+  var qs = new URLSearchParams(location.search);
+  var viewCode = (qs.get('code') || '').trim().toUpperCase();
+  if (viewCode) renderView(viewCode);
+
+  function renderView(code) {
+    S.api.get('/gift/view?code=' + encodeURIComponent(code)).then(function (r) {
+      if (!r || !r.ok) {
+        if (S.note) S.note('Сертификат не найден — проверьте ссылку или код', 'warn');
+        return;
+      }
+      var g = r.gift;
+      $('gfHero').hidden = true;
+      $('gfView').hidden = false;
+      document.title = 'Сертификат на ' + money(g.amount) + ' — Академический Салон';
+      $('gvSum').textContent = money(g.amount);
+      $('gvCode').textContent = g.code || code;
+      $('gvSerial').textContent = 'СЕРИЯ АС · ' + (g.serial || '');
+      $('gvTerm').textContent = g.expires_ru ? 'ДО ' + g.expires_ru : '';
+      if (g.recip_name) {
+        $('gvName').hidden = false;
+        $('gvName').innerHTML = 'Для: <b>' + esc(g.recip_name) + '</b>' +
+          (g.buyer_name && g.buyer_name !== 'мастерская' ? ' · от: ' + esc(g.buyer_name) : '');
+      }
+      if (g.congrats) { $('gvCongrats').hidden = false; $('gvCongrats').textContent = '«' + g.congrats + '»'; }
+      var stamp = $('gvStamp');
+      var map = { active: ['Действителен', ''], spent: ['Погашен', 'mute'],
+                  expired: ['Истёк', 'mute'], blocked: ['Заблокирован', 'wax'] };
+      var st = map[g.state] || [g.state_label || g.state, 'mute'];
+      stamp.textContent = st[0];
+      stamp.className = 'gc-stamp' + (st[1] ? ' ' + st[1] : '');
+      if (g.balance < g.amount) {
+        $('gvBalanceRow').hidden = false;
+        $('gvBalance').textContent = money(g.balance);
+        $('gvSpent').textContent = money(g.amount - g.balance);
+      }
+      var usable = g.state === 'active' && g.balance > 0;
+      $('gvUse').hidden = !usable;
+      if (usable) $('gvUse').href = 'configurator.html?gift=' + encodeURIComponent(g.code || code);
+      else $('gvHint').textContent = g.state === 'spent'
+        ? 'Сертификат полностью использован — спасибо, что были с нами!'
+        : (g.state === 'expired' ? 'Срок истёк. Напишите нам — продлим по-человечески.'
+                                 : 'Сертификат приостановлен. Напишите нам, разберёмся.');
+      $('gvPdf').href = S.api.base + '/gift/pdf?code=' + encodeURIComponent(g.code || code);
+      $('gvCopy').addEventListener('click', function () {
+        try { navigator.clipboard.writeText(g.code || code); } catch (e) {}
+        this.textContent = 'Скопировано ✓';
+        var b = this; setTimeout(function () { b.textContent = 'Скопировать код'; }, 1800);
+      });
+    });
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  /* ---------- витрина: номиналы ---------- */
+  function drawNoms() {
+    var box = $('gfNoms');
+    box.innerHTML = CFG.presets.map(function (p) {
+      var tag = p === 5000 ? 'популярный' : (p === 10000 ? 'сильный жест' : (p === 3000 ? 'знак внимания' : 'широкий жест'));
+      return '<button type="button" class="gf-nom" data-nom="' + p + '" aria-pressed="' +
+        (p === state.amount ? 'true' : 'false') + '">' + p.toLocaleString('ru-RU') + ' ₽<small>' + tag + '</small></button>';
+    }).join('');
+  }
+  function setAmount(v, fromCustom) {
+    v = Math.round(v / 100) * 100;
+    state.amount = v;
+    document.querySelectorAll('.gf-nom').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(+b.dataset.nom === v));
+    });
+    if (!fromCustom) $('gfCustom').value = '';
+    $('gfSum').textContent = money(v);
+    var hs = $('heroSum'); if (hs) hs.textContent = money(v);
+  }
+  document.addEventListener('click', function (e) {
+    var nb = e.target.closest('.gf-nom');
+    if (nb) setAmount(+nb.dataset.nom);
+  });
+  $('gfCustom').addEventListener('input', function () {
+    var v = parseInt(this.value, 10);
+    if (v >= CFG.min && v <= CFG.max) setAmount(v, true);
+  });
+  drawNoms();
+
+  S.api.get('/gift/config').then(function (r) {
+    if (r && r.ok) {
+      CFG = r;
+      drawNoms();
+      var d = $('gfDate'), t = new Date(), max = new Date(Date.now() + r.deliver_max_days * 864e5);
+      d.min = t.toISOString().slice(0, 10);
+      d.max = max.toISOString().slice(0, 10);
+    }
+  });
+
+  /* ---------- поля формы ---------- */
+  $('gfCongrats').addEventListener('input', function () { $('gfCnt').textContent = String(this.value.length); });
+  document.querySelectorAll('input[name=gfDlv]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      $('gfEmailBox').hidden = this.value !== 'email';
+    });
+  });
+  function note(t, ok) {
+    var n = $('gfNote');
+    n.hidden = false; n.textContent = t;
+    n.className = 'petit gf-note ' + (ok ? 'gf-ok' : 'gf-err');
+  }
+
+  /* ---------- оформление ---------- */
+  $('gfSubmit').addEventListener('click', function () {
+    var dlvEmail = document.querySelector('input[name=gfDlv]:checked').value === 'email';
+    var buyerEmail = $('gfBuyerEmail').value.trim();
+    var recipEmail = dlvEmail ? $('gfRecipEmail').value.trim() : '';
+    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!(state.amount >= CFG.min && state.amount <= CFG.max)) { note('Выберите номинал от ' + money(CFG.min) + ' до ' + money(CFG.max), false); return; }
+    if (!buyerEmail && !S.api.token()) { note('Укажите вашу почту — туда придёт код сертификата', false); return; }
+    if (buyerEmail && !emailRe.test(buyerEmail)) { note('Похоже, в вашей почте опечатка', false); return; }
+    if (dlvEmail && !emailRe.test(recipEmail)) { note('Укажите почту получателя — или выберите «Вручу сам(а)»', false); return; }
+    if (!$('gfConsent').checked) { note('Нужно согласие на обработку данных — без него не имеем права оформить', false); return; }
+    var body = {
+      amount: state.amount,
+      buyer_name: $('gfBuyerName').value.trim(),
+      buyer_contact: buyerEmail,
+      recip_name: $('gfRecipName').value.trim(),
+      recip_contact: recipEmail,
+      congrats: $('gfCongrats').value.trim(),
+      deliver_at: dlvEmail ? ($('gfDate').value || '') : '',
+      consent: true,
+      website: $('gfWebsite').value
+    };
+    S.btnLoading(this, true, 'Оформляем…');
+    var btn = this;
+    S.api.post('/gift', body).then(function (r) {
+      S.btnLoading(btn, false);
+      if (!r || !r.ok) {
+        var errs = { bad_amount: 'Проверьте номинал', bad_email: 'Проверьте вашу почту',
+          bad_recip_email: 'Проверьте почту получателя', bad_date: 'Дата вручения: сегодня — плюс ' + (CFG.deliver_max_days || 90) + ' дней',
+          contact_required: 'Укажите почту — туда придёт код', consent_required: 'Нужно согласие на обработку данных',
+          rate_limit: 'Слишком часто — подождите минуту' };
+        note(errs[(r && r.error) || ''] || 'Не получилось оформить — попробуйте ещё раз', false);
+        return;
+      }
+      state.gift = r.gift; state.token = r.buy_token;
+      try { S.store.set('salon_gift_buy', { id: r.gift.id, t: r.buy_token }); } catch (e) {}
+      note('Оформлено! Остался платёж — детали справа.', true);
+      if (S.metrika) S.metrika.goal('gift_created');
+      drawPays();
+      var ps = $('gfPays');
+      if (ps && ps.scrollIntoView) ps.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+
+  /* ---------- платёжный лист ---------- */
+  function giftApi(path) {
+    return '/gift/' + state.gift.id + path + '?t=' + encodeURIComponent(state.token || '');
+  }
+  function drawPays() {
+    var g = state.gift;
+    if (!g) return;
+    $('gfPaysEmpty').hidden = true;
+    var box = $('gfPays');
+    box.hidden = false;
+    $('gpSum').textContent = money(g.amount);
+    $('gpWho').textContent = (g.recip_name ? 'Для: ' + g.recip_name + ' · ' : '') + 'сертификат ' + (g.serial || '');
+    var req = $('gpReq'), btns = $('gpBtns'), st = $('gpSt'), fin = $('gpFinal');
+    btns.innerHTML = ''; fin.hidden = true; fin.innerHTML = '';
+    if (g.state === 'pending') {
+      req.hidden = !g.requisites;
+      if (g.requisites) req.textContent = g.requisites;
+      var html = '';
+      if (g.pay_online) html += '<button type="button" class="btn btn-wax" id="gpPay">Оплатить картой</button>';
+      html += g.claimed
+        ? '<button type="button" class="btn btn-line" id="gpUnpaid">↩ Снять отметку</button>'
+        : '<button type="button" class="btn btn-line" id="gpPaid">✅ Я оплатил(а)</button>';
+      html += '<button type="button" class="btn btn-line" id="gpCancel">Отменить</button>';
+      btns.innerHTML = html;
+      st.textContent = g.claimed
+        ? 'Отметили оплату — мастер сверит поступление и выпустит сертификат. Код придёт на почту' + (S.api.token() ? ' и в Telegram' : '') + '.'
+        : 'После перевода нажмите «Я оплатил(а)» — мастер сверит и выпустит сертификат.';
+      bindPays();
+    } else if (g.state === 'canceled') {
+      req.hidden = true;
+      st.textContent = 'Оформление отменено — ничего не списано.';
+      try { S.store.del('salon_gift_buy'); } catch (e) {}
+    } else {
+      req.hidden = true;
+      st.textContent = 'Оплата получена — сертификат выпущен! Код и PDF уже в письме.';
+      fin.hidden = false;
+      fin.innerHTML = '<div class="gc-code" style="margin:0 0 10px">' + esc(g.code || '') + '</div>' +
+        '<div class="row" style="display:flex;gap:10px;flex-wrap:wrap">' +
+        '<a class="btn btn-wax" href="gift.html?code=' + encodeURIComponent(g.code || '') + '">Открыть сертификат</a>' +
+        '<a class="btn btn-line" target="_blank" rel="noopener" href="' + S.api.base + '/gift/pdf?code=' + encodeURIComponent(g.code || '') + '">Скачать PDF</a></div>';
+      try { S.store.del('salon_gift_buy'); } catch (e) {}
+      if (S.metrika) S.metrika.goal('gift_paid');
+    }
+  }
+  function bindPays() {
+    var pay = $('gpPay');
+    if (pay) pay.addEventListener('click', function () {
+      S.btnLoading(pay, true, '…');
+      S.api.post(giftApi('/pay')).then(function (r) {
+        S.btnLoading(pay, false);
+        if (r && r.ok && r.online && r.url) location.href = r.url;
+        else if (r && r.ok && !r.online) { state.gift.requisites = r.requisites; drawPays(); }
+        else if (S.note) S.note('Касса недоступна — оплатите по реквизитам', 'warn');
+      });
+    });
+    var paid = $('gpPaid');
+    if (paid) paid.addEventListener('click', function () { paysAction('/paid'); });
+    var unp = $('gpUnpaid');
+    if (unp) unp.addEventListener('click', function () { paysAction('/unpaid'); });
+    var cnl = $('gpCancel');
+    if (cnl) cnl.addEventListener('click', function () {
+      var go = function () { paysAction('/cancel'); };
+      if (S.confirm) S.confirm({ title: 'Отменить оформление?', text: 'Ничего не списано и не должно. Оформить заново можно в любой момент.', yes: 'Отменить', no: 'Оставить' }).then(function (y) { if (y) go(); });
+      else if (window.confirm('Отменить оформление?')) go();
+    });
+  }
+  function paysAction(path) {
+    S.api.post(giftApi(path)).then(function (r) {
+      if (r && r.ok) {
+        if (r.gift) { state.gift = r.gift; drawPays(); }
+        else { state.gift = { state: 'canceled', amount: state.gift.amount, serial: state.gift.serial }; drawPays(); }
+      } else if (S.note) S.note('Не получилось — обновите страницу', 'warn');
+    });
+  }
+  /* опрос состояния оформления: выпуск мастером виден на странице сам */
+  function pollState() {
+    if (state.gift && state.token && state.gift.state === 'pending') {
+      S.api.get('/gift/state?id=' + state.gift.id + '&t=' + encodeURIComponent(state.token)).then(function (r) {
+        if (r && r.ok && r.gift) {
+          var was = state.gift.state + '|' + state.gift.claimed;
+          state.gift = r.gift;
+          if (was !== r.gift.state + '|' + r.gift.claimed) drawPays();
+        }
+      });
+    }
+    setTimeout(pollState, 12000);
+  }
+  setTimeout(pollState, 12000);
+
+  /* возврат к оформлению: ?buy=ID&t=TOKEN из письма или localStorage */
+  var buyId = parseInt(qs.get('buy') || '0', 10), buyT = qs.get('t') || '';
+  if (!buyId) {
+    try {
+      var saved = S.store.get('salon_gift_buy', null);
+      if (saved && saved.id) { buyId = saved.id; buyT = saved.t; }
+    } catch (e) {}
+  }
+  if (buyId && buyT && !viewCode) {
+    S.api.get('/gift/state?id=' + buyId + '&t=' + encodeURIComponent(buyT)).then(function (r) {
+      if (r && r.ok && r.gift) {
+        if (r.gift.state === 'canceled') { try { S.store.del('salon_gift_buy'); } catch (e) {} return; }
+        state.gift = r.gift; state.token = buyT;
+        drawPays();
+        if (qs.get('buy')) {
+          var ps = $('gfPays');
+          if (ps && ps.scrollIntoView) setTimeout(function () { ps.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
+        }
+      } else {
+        try { S.store.del('salon_gift_buy'); } catch (e) {}
+      }
+    });
+  }
+
+  /* проверка кода по кнопке в FAQ */
+  $('gfCheckLink').addEventListener('click', function () {
+    var c = window.prompt('Введите код сертификата (AS-…):', '');
+    if (!c) return;
+    location.href = 'gift.html?code=' + encodeURIComponent(c.trim().toUpperCase());
+  });
+})();
+</script>
+</body>
+</html>
