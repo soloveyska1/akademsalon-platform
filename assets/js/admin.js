@@ -1280,7 +1280,16 @@ function initGodEye() {
           'Заявки, кабинет, эта админка и бот продолжают работать.') +
       row('bot', m.bot, 'Бот',
           'Клиентам в Telegram бот вежливо отвечает про короткий антракт. Вы (мастер) видите бота как обычно.') +
-      '</div>';
+      '</div>' +
+      '<div class="ag-sec"><span class="caps">Набор месяца — честная квота</span>' +
+      '<div class="ag-actrow" style="align-items:center;gap:10px">' +
+      '<input type="number" id="agSlots" min="0" max="500" value="' + (ov.slots_quota || 0) + '" style="width:96px">' +
+      '<button type="button" class="btn btn-line" id="agSlotsSave">Сохранить</button>' +
+      '<span class="petit">занято в этом месяце: <b>' + (ov.slots_taken || 0) + '</b></span></div>' +
+      '<p class="ag-note">Квота — ваша политика качества: «мастерская берёт столько, сколько ведёт лично». ' +
+      'Сайт покажет «Набор на месяц: свободно X из N» в каталоге и смете; занятые места считаются сами — ' +
+      'по реальным заявкам месяца (без отмен, отдельных услуг и подписок). 0 — плашка скрыта. ' +
+      'Рисовать цифры не надо: живой счётчик убедительнее и не подставляет бренд.</p></div>';
   }
 
   function drawSettings(box) {
@@ -1786,6 +1795,16 @@ function initGodEye() {
     if (t.closest('#agReqSave')) {
       api('/admin/requisites', { text: (document.getElementById('agReq') || {}).value || '' })
         .then(function (r) { toast(r.ok ? 'Реквизиты сохранены ✓' : 'Не получилось'); });
+      return;
+    }
+    if (t.closest('#agSlotsSave')) {
+      var qv = parseInt((document.getElementById('agSlots') || {}).value || '0', 10) || 0;
+      api('/admin/slots', { quota: qv }).then(function (r) {
+        if (!r.ok) { toast('Не получилось'); return; }
+        st.ov = st.ov || {}; st.ov.slots_quota = r.quota; st.ov.slots_taken = r.taken;
+        toast(r.quota ? 'Квота ' + r.quota + ' мест — плашка на сайте живёт ✓' : 'Набор месяца скрыт');
+        if (st.tab === 'settings') drawBody();
+      });
       return;
     }
     /* --- техработы: занавес сайта и бота --- */

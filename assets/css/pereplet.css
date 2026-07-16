@@ -334,6 +334,62 @@ a.dotrow:hover .dr-val{color:var(--wax)}
 .cat-group:last-child{margin-bottom:0}
 .cat-group .caps{display:block;margin-bottom:6px}
 
+/* одетый каталог: пакет ценности, стартовый платёж, честная квота набора */
+.cat-includes{font-size:13px;line-height:1.6;color:var(--ink-soft);margin-bottom:14px;
+  padding-left:12px;border-left:2px solid var(--foil)}
+.slot-band{display:inline-flex;align-items:center;gap:9px;margin:0 0 24px;
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;color:var(--wax);
+  border:1px solid color-mix(in srgb,var(--wax) 40%,transparent);border-radius:999px;
+  padding:7px 14px;background:color-mix(in srgb,var(--wax) 6%,transparent)}
+.slot-band::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--wax);flex:0 0 7px}
+.dotrow .dr-val{text-align:right}
+.dotrow .dr-start{display:block;font-size:11px;color:var(--ink-faint);font-weight:400;
+  letter-spacing:.01em;margin-top:2px}
+a.dotrow:hover .dr-start{color:var(--ink-soft)}
+
+/* ============================================================
+   МАСТЕРСКАЯ ИЗНУТРИ (— 02 —): досье научрука + витрина работы
+   ============================================================ */
+.dossier,.showcase{background:var(--sheet);border:1px solid var(--hairline-strong);
+  border-radius:4px;padding:20px 22px;position:relative;
+  box-shadow:0 1px 0 var(--hairline),0 14px 34px rgba(34,32,27,.10)}
+.ds-head{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--hairline)}
+.ds-tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-faint);border:1px solid var(--hairline-strong);border-radius:2px;
+  padding:3px 8px;white-space:nowrap}
+.ds-tag--seal{color:var(--wax);border-color:color-mix(in srgb,var(--wax) 45%,transparent);
+  transform:rotate(-2deg)}
+.ds-rows{margin:0}
+.ds-rows > div{display:grid;grid-template-columns:112px 1fr;gap:10px;
+  padding:9px 0;border-bottom:1px dotted var(--hairline)}
+.ds-rows > div:last-child{border-bottom:0}
+.ds-rows dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-faint);padding-top:3px}
+.ds-rows dd{font-size:14px;line-height:1.55;color:var(--ink)}
+.ds-f,.ds-i{display:inline-block;font-style:normal;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.08em;text-transform:uppercase;border-radius:2px;padding:1.5px 6px;
+  margin-right:6px;vertical-align:1px}
+.ds-f{color:var(--verify);border:1px solid color-mix(in srgb,var(--verify) 45%,transparent)}
+.ds-i{color:var(--stamp-blue,#3A4E7A);border:1px solid color-mix(in srgb,#3A4E7A 40%,transparent)}
+.ds-note{font-size:12px;line-height:1.6;color:var(--ink-soft);margin-top:14px}
+.sc-title{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px}
+.sc-topic{font-family:var(--serif);font-size:clamp(17px,1.9vw,20px);line-height:1.4;
+  margin-bottom:16px}
+.sc-toc{list-style:none;margin:0 0 16px;padding:0}
+.sc-toc li{display:flex;gap:12px;align-items:baseline;padding:8px 0;
+  border-bottom:1px dotted var(--hairline);font-size:14px;line-height:1.5}
+.sc-toc li:last-child{border-bottom:0}
+.sc-toc li span{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--foil);white-space:nowrap}
+.sc-meta{font-family:var(--mono);font-size:12px;color:var(--ink-soft);
+  padding-top:12px;border-top:1px solid var(--hairline)}
+@media(max-width:640px){
+  .ds-rows > div{grid-template-columns:1fr;gap:2px}
+  .dossier,.showcase{padding:16px 15px}
+}
+
 /* ============================================================
    СМЕТА (сцена II)
    ============================================================ */

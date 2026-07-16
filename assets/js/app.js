@@ -56,13 +56,35 @@
   };
   window.SalonCalc = SalonCalc;
 
-  /* Набор месяца — честный дефицит: владелец правит цифры РУКАМИ при деплое.
-     enabled:false — строка нигде не показывается. Только реальные цифры:
-     фальшивый дефицит убивает доверие быстрее любой цены. */
-  window.SalonSlots = {
-    enabled: false,
-    label: 'В июле мастерская берёт 20 работ — свободно 6 мест'
-  };
+  /* Набор месяца — честный дефицит: квоту объявляет владелец (правило
+     качества, задаётся в админке), занятые места сервер считает САМ по
+     реальным заявкам месяца. Рисованных цифр нет: фальшивый дефицит
+     убивает доверие быстрее любой цены. Сервер молчит — строка скрыта. */
+  window.SalonSlots = { enabled: false, label: '' };
+  setTimeout(function slots() {
+    /* Salon.api объявляется ниже по файлу — ждём конца синхронного прохода */
+    var here_ = (location.pathname.split('/').pop() || 'index.html');
+    if (here_ !== 'index.html' && here_ !== 'tariffs.html') return;
+    if (!Salon.api) return;
+    Salon.api.get('/slots').then(function (r) {
+      if (!r || !r.ok || !r.on || !r.quota) return;
+      var free = Math.max(0, r.quota - r.taken);
+      var band, line;
+      if (free > 0) {
+        band = 'Набор на ' + r.month + ': свободно ' + free + ' из ' + r.quota + ' мест';
+        line = band + ' — место закрепляется за темой после согласования плана';
+      } else {
+        band = 'Набор на ' + r.month + ' закрыт — идёт запись на ' + r.next;
+        line = band;
+      }
+      window.SalonSlots.enabled = true;
+      window.SalonSlots.label = line;
+      var b = document.getElementById('slotBand');
+      if (b) { b.textContent = band; b.hidden = false; }
+      var q = document.getElementById('qSlots');
+      if (q) { q.textContent = line; q.hidden = false; }
+    }).catch(function () {});
+  }, 0);
 
   /* ---------------- Контакты (единственный источник ссылок) ----------------
      Главная площадка — сам сайт: конфигуратор и кабинет. Мессенджеры —
