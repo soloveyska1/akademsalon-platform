@@ -584,7 +584,7 @@ a.dotrow:hover .dr-start{color:var(--ink-soft)}
 .proc-track{position:relative}
 .proc-stage{padding:0}
 @media(min-width:881px){
-  .enhanced .proc-track{height:340vh;height:340svh}
+  .enhanced .proc-track{height:280vh;height:280svh}
   .enhanced .proc-stage{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;overflow:clip}
 }
 .proc-book{width:100%}
@@ -610,17 +610,7 @@ a.dotrow:hover .dr-start{color:var(--ink-soft)}
 .proc-toc .pt-row.active .pt-dots{border-color:var(--hairline-strong)}
 .proc-toc .pt-row.done{color:var(--ink)}
 .proc-toc .pt-row.done .pt-no::after{content:" ✓";color:var(--verify)}
-.pay-strip{margin-top:auto;padding-top:var(--s2)}
-.pay-strip .ps-row{display:flex;gap:3px;margin:12px 0 2px}
-.pay-strip .ps-seg{
-  display:flex;flex-direction:column;justify-content:center;gap:1px;
-  min-height:52px;padding:8px 12px;background:var(--paper-2);
-  border:1px solid var(--hairline-strong);border-radius:2px;
-}
-.pay-strip .ps-seg:first-child{border-radius:3px 2px 2px 3px}
-.pay-strip .ps-seg:last-child{border-radius:2px 3px 3px 2px}
-.pay-strip .ps-seg b{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:-.02em;line-height:1.2}
-.pay-strip .ps-seg small{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap}
+
 
 /* правая страница: стопка листов рукописи */
 .proc-right{position:relative;min-height:520px;perspective:1800px}
@@ -651,9 +641,15 @@ a.dotrow:hover .dr-start{color:var(--ink-soft)}
 .sh-tag-wax{border-color:var(--hairline-strong);color:var(--ink);background:var(--paper-2);font-weight:600}
 .sh-tag-verify{border-color:var(--verify);color:var(--verify);background:rgba(61,107,80,.08)}
 .proc-sheet .sh-folio{position:absolute;bottom:20px;right:26px;font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
-/* тень сгиба при листании */
-.proc-sheet::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(107,94,64,.18),transparent 30%);opacity:0;transition:opacity .2s}
-.enhanced .proc-sheet.turning::after{opacity:1}
+/* enhanced: карта шага поднимается на стол (подъём, не листание) */
+.enhanced .proc-sheet{
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(16px) rotateX(6deg);
+  transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1),visibility 0s .5s;
+}
+.enhanced .proc-sheet.is-on{
+  opacity:1;visibility:visible;pointer-events:auto;transform:none;transition-delay:0s;
+}
 
 /* заметная строка «Полный каталог» в оглавлении цен */
 .cat-more{margin-top:14px}
@@ -990,4 +986,118 @@ html:not(.has-js) .plus-tabs,html:not(.has-js) .plus-per,html:not(.has-js) .plus
 @media(min-width:861px){
   .enhanced .plus-scene-tilt .plus-card{transform:rotateX(4deg) rotateY(-5deg);transition:transform .45s cubic-bezier(.22,1,.36,1)}
   .enhanced .plus-scene-tilt:hover .plus-card,.enhanced .plus-scene-tilt:focus-within .plus-card{transform:none}
+}
+
+/* ============================================================
+   Цех, заход 2 (2026-07-16): рельса §01, чек §05, билет §06
+   ============================================================ */
+/* — §01: рельса платежей вдоль оглавления — */
+.proc-toc{position:relative;padding-left:24px}
+.pt-rail{position:absolute;left:6px;top:14px;bottom:14px;width:2px;background:var(--hairline)}
+.pt-rail i{position:absolute;left:0;top:0;width:2px;height:100%;background:var(--foil);
+  transform:scaleY(0);transform-origin:top;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.proc-toc .pt-row{position:relative}
+.proc-toc .pt-row::before{
+  content:"";position:absolute;left:-22px;top:50%;width:9px;height:9px;border-radius:50%;
+  transform:translateY(-50%);background:var(--paper);border:2px solid var(--hairline-strong);
+  transition:background .25s,border-color .25s,box-shadow .25s;
+}
+.proc-toc .pt-row.done::before{background:var(--foil);border-color:var(--foil)}
+.proc-toc .pt-row.active::before{
+  background:var(--wax);border-color:var(--wax);
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--wax) 18%,transparent);
+}
+.hand-strip{margin-top:auto;padding:16px 18px;border:1px solid var(--hairline);border-radius:3px;
+  background:var(--paper-2)}
+.hand-strip p{font-family:var(--serif);font-size:15.5px;margin:6px 0 0;min-height:1.5em}
+
+/* — §01: карточка шага 3:1 — */
+.sh-mini{display:flex;gap:8px;margin-bottom:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em}
+.sh-mini i{font-style:normal;color:var(--ink-faint);opacity:.5}
+.sh-mini i.done{opacity:.35;color:var(--verify)}
+.sh-mini i.on{opacity:1;color:var(--wax);font-weight:600}
+.sh-cap{margin-top:4px}
+.sh-have{list-style:none;margin:6px 0 2px;padding:0}
+.sh-have li{
+  font-family:var(--serif);font-size:clamp(16px,1.7vw,19px);line-height:1.5;
+  padding:7px 0 7px 22px;position:relative;border-bottom:1px dotted var(--hairline);
+}
+.sh-have li:last-child{border-bottom:0}
+.sh-have li::before{content:"·";position:absolute;left:4px;color:var(--foil);font-weight:700}
+.sh-pay{
+  margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline);
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.sh-seal{position:absolute;right:clamp(16px,4vw,52px);bottom:52px;opacity:0;transform:scale(1.35) rotate(-9deg);transition:opacity .4s,transform .4s cubic-bezier(.22,1,.36,1)}
+.proc-sheet.is-on .sh-seal,body:not(.enhanced) .sh-seal{opacity:1;transform:scale(1) rotate(-7deg)}
+
+/* — §05: чек с зубцами, копиркой и водяным знаком — */
+.ledger-page{
+  position:relative;background:var(--sheet);border:1px solid var(--hairline);
+  border-top:0;border-radius:0 0 3px 3px;
+  max-width:388px;width:100%;margin-left:auto;
+  padding:26px 22px 24px;height:auto;
+  box-shadow:0 2px 3px rgba(34,32,27,.10),0 24px 48px -22px rgba(34,32,27,.28);
+}
+@media(min-width:881px){.enhanced .ledger-page{position:sticky;top:96px;align-self:start}}
+.ledger-page::before{ /* зубчатый верх кассовой ленты */
+  content:"";position:absolute;left:-1px;right:-1px;top:-11px;height:12px;
+  background:linear-gradient(-45deg, var(--sheet) 8px, transparent 0),
+             linear-gradient(45deg, var(--sheet) 8px, transparent 0);
+  background-size:16px 12px;background-repeat:repeat-x;background-position:0 100%;
+  filter:drop-shadow(0 -1px 0 var(--hairline));
+}
+.ledger-page::after{ /* копирка мастеру */
+  content:"копия уйдёт мастеру";position:absolute;z-index:-1;
+  inset:14px -8px -8px 14px;border-radius:3px;
+  background:color-mix(in srgb,#3A4E7A 8%,var(--paper));
+  border:1px solid color-mix(in srgb,#3A4E7A 20%,transparent);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:color-mix(in srgb,#3A4E7A 60%,transparent);
+  display:flex;align-items:flex-end;justify-content:flex-end;padding:6px 10px;
+}
+.lg-wm{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:clamp(64px,7vw,92px);letter-spacing:.18em;
+  color:var(--ink);opacity:.045;transform:rotate(-24deg);pointer-events:none;user-select:none;
+}
+.plate-q .q-no{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
+.price-xl{display:inline-block;transition:transform .18s}
+.ledger-page.restamp .price-xl{transform:translateY(-2px) scale(1.04)}
+.ledger-page.restamp .lg-row .num{color:var(--ink)}
+
+/* — §06: гильош, ляссе-табы, корешок — */
+.plus-card{overflow:hidden}
+.pc-guill{display:none}
+.plus-card::before{ /* гильош-полоса по нижней кромке билета */
+  content:"";position:absolute;left:0;right:0;bottom:34px;height:26px;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(105deg,
+    color-mix(in srgb,var(--foil) 38%,transparent) 0 1px, transparent 1px 7px);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent);
+}
+.pc-sale{
+  position:absolute;right:18px;top:104px;transform:rotate(7deg) scale(1);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--stamp-blue,#3A4E7A);border:2px solid color-mix(in srgb,#3A4E7A 55%,transparent);
+  border-radius:3px;padding:4px 10px;opacity:.92;
+  transition:opacity .35s,transform .35s cubic-bezier(.22,1,.36,1);
+}
+.pc-sale[hidden]{display:inline-block;opacity:0;transform:rotate(7deg) scale(1.3);pointer-events:none;visibility:hidden}
+.plus-tabs .pt-tab{position:relative}
+.plus-tabs .pt-tab::after{ /* хвост ляссе */
+  content:"";position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:var(--hairline-strong);
+  transition:border-top-color .2s;
+}
+.plus-tabs .pt-tab.is-on::after{border-top-color:var(--wax)}
+.tear-wrap{position:relative;padding-left:26px}
+.tear-wrap::before{
+  content:"";position:absolute;left:10px;top:-4px;bottom:-4px;width:0;
+  border-left:2px dashed var(--hairline-strong);
+}
+.tear-scis{
+  position:absolute;left:1px;top:-14px;font-size:14px;color:var(--ink-faint);
+  background:var(--paper);padding:2px;transform:rotate(90deg);
 }

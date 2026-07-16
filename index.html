@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Помощь с курсовой, дипломом и ВКР — авторские материалы, цена за минуту | Академический Салон</title>
 <meta name="description" content="Помощь с курсовой, дипломной работой (ВКР), магистерской и научной статьёй: живые авторы, материалы и сопровождение до защиты, цена за минуту в калькуляторе, оплата по этапам, отчёт о проверках до оплаты, правки до приёмки." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260716e" />
-<link rel="stylesheet" href="assets/css/pereplet.css?v=20260716e" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260716e" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260716e" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260716f" />
+<link rel="stylesheet" href="assets/css/pereplet.css?v=20260716f" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260716f" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260716f" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <script>
 /* Пролог «Тот, кто отвечает»: один раз, только первому гостю.
@@ -168,69 +168,76 @@ html.has-prelude body{overflow:hidden}
           <div class="proc-grid">
 
             <div class="proc-left">
-              <span class="caps">Четыре главы · перелистываются сами, пока вы читаете</span>
+              <span class="caps">Четыре главы · раскрываются, пока вы читаете</span>
               <h2 class="press-h">Вы видите каждый шаг — и платите после результата</h2>
               <div class="proc-toc" aria-hidden="true">
+                <span class="pt-rail"><i id="ptFill"></i></span>
                 <div class="pt-row active"><span class="pt-no">01</span><span class="pt-t">Рукопись · план и смета</span><span class="pt-dots"></span><span class="pt-pay">30%</span></div>
                 <div class="pt-row"><span class="pt-no">02</span><span class="pt-t">Набор · черновики глав</span><span class="pt-dots"></span><span class="pt-pay">40%</span></div>
                 <div class="pt-row"><span class="pt-no">03</span><span class="pt-t">Корректура · правки</span><span class="pt-dots"></span><span class="pt-pay">0 ₽</span></div>
                 <div class="pt-row"><span class="pt-no">04</span><span class="pt-t">Переплёт · отчёт и защита</span><span class="pt-dots"></span><span class="pt-pay">30%</span></div>
               </div>
-              <div class="pay-strip">
-                <span class="caps">Оплата по этапам</span>
-                <div class="ps-row" aria-hidden="true">
-                  <span class="ps-seg" style="flex:30"><b>30%</b><small>старт</small></span><span class="ps-seg" style="flex:40"><b>40%</b><small>середина</small></span><span class="ps-seg" style="flex:30"><b>30%</b><small>финал</small></span>
-                </div>
-                <p class="petit" style="margin-top:10px">Каждый платёж — после показанного результата. Небольшие работы — просто 50/50.</p>
+              <div class="hand-strip">
+                <span class="caps">Сейчас у вас на руках</span>
+                <p id="procHand">план и смета — деньги ещё не платились</p>
+                <p class="petit" style="margin:8px 0 0">Каждый платёж — после показанного результата. Небольшие работы — просто 50/50.</p>
               </div>
             </div>
 
             <div class="proc-right">
               <article class="proc-sheet">
                 <span class="sh-ghost" aria-hidden="true">1</span>
+                <div class="sh-mini" aria-hidden="true"><i class="on">01</i><i class="">02</i><i class="">03</i><i class="">04</i></div>
                 <span class="sh-no">Глава 01 · Рукопись</span>
                 <h3>План и смета — раньше денег</h3>
-                <p>Присылаете тему и методичку. Согласуем план глав и зафиксируем смету — первый платёж только после этого.</p>
-                <div class="sh-hand">
-                  <span class="sh-tag sh-tag-ink">У вас: план + смета</span>
-                  <span class="sh-tag sh-tag-wax">Платёж: 30%</span>
-                </div>
+                <span class="caps sh-cap">У вас на руках</span>
+                <ul class="sh-have">
+                  <li>согласованный план глав под вашу методичку</li>
+                  <li>зафиксированная смета — цифра не поплывёт</li>
+                </ul>
+                <div class="sh-pay">платёж: 30% — только после этого</div>
                 <span class="sh-folio">стр. 1</span>
               </article>
               <article class="proc-sheet">
                 <span class="sh-ghost" aria-hidden="true">2</span>
+                <div class="sh-mini" aria-hidden="true"><i class="done">01</i><i class="on">02</i><i class="">03</i><i class="">04</i></div>
                 <span class="sh-no">Глава 02 · Набор</span>
                 <h3>Черновики глав — по мере готовности</h3>
-                <p>Профильный специалист пишет вручную и показывает главы по мере готовности. Вы следите за текстом, а не ждёте вслепую.</p>
-                <div class="sh-hand">
-                  <span class="sh-tag sh-tag-ink">У вас: основная часть текста</span>
-                  <span class="sh-tag sh-tag-wax">Платёж: 40%</span>
-                </div>
+                <span class="caps sh-cap">У вас на руках</span>
+                <ul class="sh-have">
+                  <li>основная часть текста, написанная вручную</li>
+                  <li>главы на просмотр — вы следите, а не ждёте вслепую</li>
+                </ul>
+                <div class="sh-pay">платёж: 40% — за показанные главы</div>
                 <span class="sh-folio">стр. 2</span>
               </article>
               <article class="proc-sheet">
                 <span class="sh-ghost" aria-hidden="true">3</span>
+                <div class="sh-mini" aria-hidden="true"><i class="done">01</i><i class="done">02</i><i class="on">03</i><i class="">04</i></div>
                 <span class="sh-no">Глава 03 · Корректура</span>
                 <h3>Правки — бесплатно до приёмки</h3>
-                <p>Замечания руководителя — обычная часть процесса. Дорабатываем в рамках задания, пока работу не примут; смета не меняется, пока не меняются тема и объём.</p>
-                <div class="sh-hand">
-                  <span class="sh-tag sh-tag-ink">У вас: доработанный текст</span>
-                  <span class="sh-tag sh-tag-verify">Платёж: 0 ₽</span>
-                </div>
+                <span class="caps sh-cap">У вас на руках</span>
+                <ul class="sh-have">
+                  <li>доработанный текст по замечаниям руководителя</li>
+                  <li>смета не меняется, пока не меняются тема и объём</li>
+                </ul>
+                <span class="sh-seal" data-seal="ПРАВКИ ДО ПРИЁМКИ · БЕЗ ДОПЛАТ · " data-seal-center="✓" data-seal-cls="seal--stamp" data-seal-size="94"></span>
+                <div class="sh-pay">платёж: 0 ₽ — правки уже в цене</div>
                 <span class="sh-folio">стр. 3</span>
               </article>
               <article class="proc-sheet">
                 <span class="sh-ghost" aria-hidden="true">4</span>
+                <div class="sh-mini" aria-hidden="true"><i class="done">01</i><i class="done">02</i><i class="done">03</i><i class="on">04</i></div>
                 <span class="sh-no">Глава 04 · Переплёт</span>
                 <h3>Отчёт о проверках — до оплаты</h3>
-                <p>Перед финальным платежом вы видите отчёт: «Антиплагиат», риск ИИ-детекции, разбор совпадений. Затем — защита.</p>
-                <div class="sh-hand">
-                  <span class="sh-tag sh-tag-ink">У вас: отчёт + готовая работа</span>
-                  <span class="sh-tag sh-tag-wax">Платёж: 30%</span>
-                </div>
+                <span class="caps sh-cap">У вас на руках</span>
+                <ul class="sh-have">
+                  <li>отчёт: «Антиплагиат», риск ИИ-детекции, совпадения</li>
+                  <li>готовая работа + сопровождение до защиты</li>
+                </ul>
+                <div class="sh-pay">платёж: 30% — после отчёта</div>
                 <span class="sh-folio">стр. 4</span>
               </article>
-            </div>
 
           </div>
         </div>
@@ -485,7 +492,7 @@ html.has-prelude body{overflow:hidden}
           <h2 class="press-h" style="margin-bottom:16px">Три вопроса — и цена</h2>
           <p class="lead" style="margin-bottom:32px">Без телефона и почты. Смета считается прямо здесь, заявка уходит мастеру с сайта.</p>
 
-          <p class="plate-q"><span class="q-no">1.</span>Что за работа?</p>
+          <p class="plate-q"><span class="q-no">вопрос 1 из 3</span>Что за работа?</p>
           <div class="plates" data-plates="type" role="group" aria-label="Тип работы">
             <button type="button" data-v="diplom" aria-pressed="true">Диплом / ВКР</button>
             <button type="button" data-v="master" aria-pressed="false">Магистерская</button>
@@ -496,7 +503,7 @@ html.has-prelude body{overflow:hidden}
           </div>
           <a class="plate-more link" href="configurator.html" id="qFull">Другой тип работы — полный расчёт →</a>
 
-          <p class="plate-q"><span class="q-no">2.</span>Какое направление?</p>
+          <p class="plate-q"><span class="q-no">вопрос 2 из 3</span>Какое направление?</p>
           <div class="plates" data-plates="disc" role="group" aria-label="Направление">
             <button type="button" data-v="hum" aria-pressed="true">Гуманитарное, экономика</button>
             <button type="button" data-v="law" aria-pressed="false">Право, педагогика, психология</button>
@@ -504,7 +511,7 @@ html.has-prelude body{overflow:hidden}
             <button type="button" data-v="med" aria-pressed="false">Медицина, финансы</button>
           </div>
 
-          <p class="plate-q"><span class="q-no">3.</span>Когда сдавать?</p>
+          <p class="plate-q"><span class="q-no">вопрос 3 из 3</span>Когда сдавать?</p>
           <div class="plates cols-3" data-plates="term" role="group" aria-label="Срок">
             <button type="button" data-v="free" aria-pressed="true">От 30 дней</button>
             <button type="button" data-v="mid" aria-pressed="false">14–30 дней</button>
@@ -514,6 +521,7 @@ html.has-prelude body{overflow:hidden}
         </div>
 
         <div class="page page-r ledger-page">
+          <span class="lg-wm" aria-hidden="true">СМЕТА</span>
           <span class="pg-caps caps">Смета · базовый уровень</span>
           <div class="lg-row"><span id="qType">Дипломная работа / ВКР</span><span class="num" id="qBase">40 000 ₽</span></div>
           <div class="lg-row"><span>Направление</span><span class="num" id="qDisc">×1.0</span></div>
@@ -524,7 +532,7 @@ html.has-prelude body{overflow:hidden}
             <span class="visually-hidden" id="qPriceLive" aria-live="polite"></span>
           </div>
           <p class="petit" id="qStart" style="margin:6px 0 0">начать сегодня — 12 000 ₽ (30%) · остальное после показанного результата</p>
-          <p class="petit" id="qSlots" hidden style="margin:4px 0 0;color:var(--wax)"></p>
+          <p class="petit mono" id="qSlots" hidden style="margin:6px 0 0;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft)"></p>
           <div class="calc-seal" id="qSeal" aria-hidden="true"><span data-seal="ПРЕДВАРИТЕЛЬНАЯ СМЕТА · БАЗОВЫЙ УРОВЕНЬ · " data-seal-center="¶" data-seal-cls="seal--wax" data-seal-size="104"></span></div>
           <p class="calc-note">Это нижняя граница базового уровня. Точную цену под вашу тему назовём после короткого диалога — бесплатно; решение вы примете, уже зная финальную цифру.</p>
           <div class="calc-cta">
@@ -554,6 +562,7 @@ html.has-prelude body{overflow:hidden}
           <div class="pc-row"><span class="pr-k">Куратор</span><span id="ptCur">график сессии · напомним за 7 · 3 · 1 день</span></div>
           <div class="pc-row"><span class="pr-k">Срок</span><span id="ptTerm">месяц или семестр · <b>без автосписаний</b></span></div>
           <span class="pc-stamp">Действителен</span>
+          <span class="pc-sale" id="ptSale" hidden>семестр −55%</span>
           <div class="pc-foot"><span id="ptNo">№ 0449</span><span>выдан читальным залом</span></div>
         </div>
 
@@ -594,7 +603,7 @@ html.has-prelude body{overflow:hidden}
             <p class="cl-note" id="clNote">достигнут потолок плана: −1 000 ₽ с одного заказа · сверху можно списать бонусы</p>
           </div>
 
-          <div class="plus-cta">
+          <div class="plus-cta tear-wrap"><span class="tear-scis" aria-hidden="true">✂</span>
             <a class="btn btn-wax" id="plusCta" href="dashboard.html#plus">Оформить «Салон+» · 449 ₽ <span class="ar">→</span></a>
             <a class="btn btn-line" href="loyalty.html">Правила и планы подробно</a>
           </div>
@@ -613,14 +622,8 @@ html.has-prelude body{overflow:hidden}
               <summary>Суммируется с бонусами?</summary>
               <p>Да: сначала скидка абонемента, сверху — списание бонусов. Вместе — до 25% стоимости заказа (правила лояльности, §5).</p>
             </details>
-            <details class="faq-item">
-              <summary>А если заказов в этом месяце не будет?</summary>
-              <p>Скидка работает только вместе с заказами, поэтому берите абонемент под конкретную работу: месяц «Салон+» окупает одна смета от ~9 000 ₽. Семестр — выбор тех, у кого впереди две-три сдачи.</p>
-            </details>
-            <details class="faq-item">
-              <summary>Где купить и как оплатить?</summary>
-              <p>В кабинете на сайте (раздел «Абонемент») или в боте — команда /plus. Картой онлайн — чек придёт сам, активация после оплаты; переводом — нажмите «Я оплатил», мастер сверит и включит.</p>
-            </details>
+            
+            
           </div>
         </div>
       </div>
@@ -683,9 +686,9 @@ html.has-prelude body{overflow:hidden}
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Академический Салон","description":"Помощь и сопровождение в подготовке академических работ: консультации, редактура, разбор, репетиторство, оформление по методичке. Оплата по этапам, отчёт о проверках до оплаты, правки до приёмки.","url":"https://akademsalon.ru/","image":"https://akademsalon.ru/assets/img/og-cover.png","logo":"https://akademsalon.ru/assets/img/favicon-120.png","areaServed":"RU","knowsLanguage":"ru","priceRange":"от 2500 ₽","sameAs":["https://vk.com/academicsaloon","https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs","https://t.me/academic_saloon_bot"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"А вдруг вуз решит, что текст написан нейросетью?","acceptedAnswer":{"@type":"Answer","text":"Текст пишет человек, а отчёт о проверках вы видите до оплаты. Гарантировать чужой детектор не может никто — на этот случай дорабатываем до приёмки."}},{"@type":"Question","name":"Я не рискую, платя вперёд?","acceptedAnswer":{"@type":"Answer","text":"Первый платёж — только после согласованного плана и сметы, каждый следующий — после показанного результата. Деньги всегда идут за тем, что вы уже увидели."}},{"@type":"Question","name":"Кто-нибудь узнает, что я обращался?","acceptedAnswer":{"@type":"Answer","text":"Никто. Обращение конфиденциально: в переписке достаточно ника, тему и вуз мы не разглашаем, в отзывах — только то, чем клиенты поделились сами."}},{"@type":"Question","name":"Кто будет вести мою работу?","acceptedAnswer":{"@type":"Answer","text":"Профильный специалист вашего направления — сопровождает от плана до приёмки, без передачи между менеджерами и случайными исполнителями."}},{"@type":"Question","name":"Что, если руководитель вернёт работу с замечаниями?","acceptedAnswer":{"@type":"Answer","text":"Это обычная часть процесса, и она уже в стоимости: правки в рамках задания не ограничены по количеству, а замечания руководителя и комиссии дорабатываем бесплатно до защиты (точные сроки — в оферте, раздел 9). Смета не меняется, пока не меняются тема и объём."}},{"@type":"Question","name":"Почему у вас дороже, чем на биржах?","acceptedAnswer":{"@type":"Answer","text":"Биржа продаёт ставку случайного исполнителя, мы — доведённый до защиты результат: напрямую, без комиссии площадки. Слишком низкая цена здесь — риск, переложенный на вас."}}]}</script>
-<script src="assets/js/app.js?v=20260716e"></script>
-<script src="assets/js/extras.js?v=20260716e"></script>
-<script src="assets/js/pereplet.js?v=20260716e"></script>
+<script src="assets/js/app.js?v=20260716f"></script>
+<script src="assets/js/extras.js?v=20260716f"></script>
+<script src="assets/js/pereplet.js?v=20260716f"></script>
 <script>
 /* «Книга благодарностей»: цитаты с защит + свежие одобренные отзывы из картотеки.
    Сознательно без rAF и CSS-анимаций: листается setInterval-ом, руками (стрелки)
@@ -903,6 +906,9 @@ html.has-prelude body{overflow:hidden}
     $('ptCur').textContent = p.cur;
     $('ptTerm').innerHTML = p.term;
     $('ptNo').textContent = '№ ' + ('0000' + price()).slice(-4);
+    /* печать «семестр −55%» проявляется на билете только при семестре */
+    var sale = $('ptSale');
+    if (sale) sale.hidden = !(st.per === 's' && !p.once);
     calc();
   }
 

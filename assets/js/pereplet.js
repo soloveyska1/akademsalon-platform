@@ -159,6 +159,12 @@
       rowDisc.textContent = '×' + d.k.toFixed(2).replace(/0$/, '');
       rowTerm.textContent = '×' + s.k.toFixed(2).replace(/0$/, '');
       priceEl.textContent = 'от ' + q.lowFmt + ' ₽';
+      /* перештамповка чека: короткая вспышка на пересчёте */
+      var ledger = priceEl.closest('.ledger-page');
+      if (ledger) {
+        ledger.classList.add('restamp');
+        setTimeout(function () { ledger.classList.remove('restamp'); }, 240);
+      }
       if (live) live.textContent = 'Итого: от ' + q.lowFmt + ' ₽';
 
       /* входной билет в рублях: большая цифра пугает, а стартовый платёж
@@ -273,33 +279,49 @@
 
     if (!animate) return;
 
+    /* enhanced: карта шага поднимается на стол. Шаг квантуется с гистерезисом
+       ±8% — граница не дребезжит; рельса платежей заливается по прогрессу,
+       накопитель «у вас на руках» пересказывает пройденное. */
+    var HAND = [
+      'план и смета — деньги ещё не платились',
+      'план + черновики глав · оплачено 30%',
+      'доработанный текст · правки — 0 ₽',
+      'работа + отчёт о проверках · остаток 30% — после отчёта'
+    ];
+    var handEl = document.getElementById('procHand');
+    var fillEl = document.getElementById('ptFill');
+    var step = 0;
+
+    function applyStep(idx) {
+      step = idx;
+      sheets.forEach(function (s, i) { s.classList.toggle('is-on', i === idx); });
+      rows.forEach(function (row, i) {
+        row.classList.toggle('active', i === idx);
+        row.classList.toggle('done', i < idx);
+      });
+      if (handEl && HAND[idx]) handEl.textContent = HAND[idx];
+      if (fillEl) fillEl.style.transform = 'scaleY(' + (n > 1 ? idx / (n - 1) : 1).toFixed(3) + ')';
+    }
+
     jobs.push(function () {
       if (!enhanced()) return;
       var r = trackEl.getBoundingClientRect();
       var total = trackEl.offsetHeight - window.innerHeight;
-      if (total <= 1) return;                        /* нет запаса скролла — не листаем */
+      if (total <= 1) return;
       var p = Math.min(Math.max(-r.top / total, 0), 1);
-      /* последний лист не листается — на нём останавливаемся */
       var lead = p * (n - 1);
-      var current = Math.min(Math.floor(lead + 0.5), n - 1);
-      sheets.forEach(function (s, i) {
-        var sp = Math.min(Math.max(lead - i, 0), 1);
-        s.style.transform = 'rotateY(' + (-168 * sp).toFixed(2) + 'deg)';
-        s.classList.toggle('turning', sp > 0.02 && sp < 0.98);
-        /* улетевший лист прячем от кликов */
-        s.style.visibility = sp > 0.995 ? 'hidden' : '';
-      });
-      rows.forEach(function (row, i) {
-        row.classList.toggle('active', i === current);
-        row.classList.toggle('done', i < current);
-      });
+      var target = Math.min(Math.round(lead), n - 1);
+      /* гистерезис: переключаемся, лишь уйдя за середину на 8% */
+      if (target !== step && Math.abs(lead - step) > 0.58) applyStep(target);
+      else if (sheets[step] && !sheets[step].classList.contains('is-on')) applyStep(step);
     });
     resetFns.push(function () {
       sheets.forEach(function (s) {
         s.style.transform = '';
         s.style.visibility = '';
-        s.classList.remove('turning');
+        s.classList.remove('turning', 'is-on');
       });
+      if (fillEl) fillEl.style.transform = '';
       rows.forEach(function (row, i) {
         row.classList.toggle('active', i === 0);
         row.classList.remove('done');
