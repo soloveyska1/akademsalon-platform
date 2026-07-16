@@ -215,7 +215,7 @@
     render(true);
 
     /* строки оглавления: выбирают тип и ведут к смете */
-    document.querySelectorAll('a.dotrow[data-type]').forEach(function (a) {
+    document.querySelectorAll('a.dotrow[data-type], a.ph-row[data-type]').forEach(function (a) {
       a.addEventListener('click', function () {
         var id = a.getAttribute('data-type');
         if (!C.types.some(function (x) { return x.id === id; })) return;
@@ -305,6 +305,116 @@
         row.classList.remove('done');
       });
     });
+  })();
+
+  /* ---------------- Стол мастера (— 02 —): гранки, лайтбокс, лупа ----------------
+     Перелистывание: верхний лист уезжает (.away), в слепой фазе setTimeout
+     роли top/mid/low сдвигаются по кругу. Лупа — только в лайтбоксе и только
+     на точных указателях; на таче вместо неё кнопка 2× и нативный пан. */
+  (function proofDesk() {
+    var stack = document.getElementById('proofStack');
+    if (!stack) return;
+    var leaves = Array.prototype.slice.call(stack.querySelectorAll('.pf-leaf'));
+    if (leaves.length < 2) return;
+    var order = leaves.slice(); /* order[0] — верхний */
+    var noEl = document.getElementById('pfNo');
+    var busy = false;
+
+    function paint() {
+      order.forEach(function (leaf, i) {
+        leaf.classList.toggle('top', i === 0);
+        leaf.classList.toggle('mid', i === 1);
+        leaf.classList.toggle('low', i === 2);
+      });
+      if (noEl) noEl.textContent = String(leaves.indexOf(order[0]) + 1);
+    }
+    function flip() {
+      if (busy) return;
+      busy = true;
+      var top = order[0];
+      if (reduceMotion) {
+        order.push(order.shift()); paint(); busy = false; return;
+      }
+      top.classList.add('away');
+      setTimeout(function () {          /* слепая фаза: роли меняются за кадром */
+        order.push(order.shift());
+        paint();
+        top.classList.remove('away');
+        setTimeout(function () { busy = false; }, 380);
+      }, 300);
+    }
+    var nextBtn = document.getElementById('pfNext');
+    if (nextBtn) nextBtn.addEventListener('click', flip);
+    paint();
+
+    /* лайтбокс */
+    var box = document.getElementById('pfBox'),
+        img = document.getElementById('pfBoxImg'),
+        cap = document.getElementById('pfBoxCap'),
+        zoomBtn = document.getElementById('pfZoom'),
+        lens = document.getElementById('pfLens'),
+        fig = box ? box.querySelector('.pf-box-fig') : null,
+        lastFocus = null;
+    var fine = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+    function openBox(leaf) {
+      if (!box) return;
+      lastFocus = document.activeElement;
+      var src = leaf.querySelector('img').getAttribute('src');
+      img.src = src;
+      cap.textContent = (leaf.getAttribute('data-cap') || '') + ' · водяной знак';
+      fig.classList.remove('zoomed');
+      zoomBtn.hidden = fine;           /* на таче — кнопка 2×, на мыши — лупа */
+      zoomBtn.textContent = '2×';
+      box.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+      var closer = box.querySelector('.pf-close');
+      if (closer) closer.focus();
+    }
+    function closeBox() {
+      if (!box || box.hidden) return;
+      box.hidden = true;
+      lens.hidden = true;
+      document.documentElement.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    leaves.forEach(function (leaf) {
+      leaf.addEventListener('click', function () {
+        if (leaf !== order[0]) { flip(); return; }  /* нижние листы — перелистнуть */
+        openBox(leaf);
+      });
+    });
+    if (box) {
+      box.addEventListener('click', function (e) {
+        if (e.target.closest('[data-pf-close]')) closeBox();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeBox();
+      });
+      if (zoomBtn) zoomBtn.addEventListener('click', function () {
+        var z = fig.classList.toggle('zoomed');
+        zoomBtn.textContent = z ? '1×' : '2×';
+      });
+      /* лупа: mousemove с троттлингом временем, без rAF */
+      if (fine) {
+        var lastMove = 0;
+        img.addEventListener('mousemove', function (e) {
+          var now = Date.now();
+          if (now - lastMove < 40) return;
+          lastMove = now;
+          var r = img.getBoundingClientRect();
+          var rx = (e.clientX - r.left) / r.width, ry = (e.clientY - r.top) / r.height;
+          lens.hidden = false;
+          lens.style.left = (e.clientX - 95) + 'px';
+          lens.style.top = (e.clientY - 95) + 'px';
+          lens.style.backgroundImage = 'url("' + img.src + '")';
+          lens.style.backgroundSize = (r.width * 2.4) + 'px auto';
+          lens.style.backgroundPosition =
+            (-(rx * r.width * 2.4 - 95)) + 'px ' + (-(ry * r.height * 2.4 - 95)) + 'px';
+        });
+        img.addEventListener('mouseleave', function () { lens.hidden = true; });
+      }
+    }
   })();
 
   /* режим включаем после регистрации всех джобов и следим за шириной */

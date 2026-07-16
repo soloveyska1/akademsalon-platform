@@ -69,18 +69,19 @@
     Salon.api.get('/slots').then(function (r) {
       if (!r || !r.ok || !r.on || !r.quota) return;
       var free = Math.max(0, r.quota - r.taken);
-      var band, line;
-      if (free > 0) {
-        band = 'Набор на ' + r.month + ': свободно ' + free + ' из ' + r.quota + ' мест';
-        line = band + ' — место закрепляется за темой после согласования плана';
-      } else {
-        band = 'Набор на ' + r.month + ' закрыт — идёт запись на ' + r.next;
-        line = band;
-      }
+      var line = free > 0
+        ? 'Набор на ' + r.month + ': свободно ' + free + ' из ' + r.quota + ' мест — место закрепляется после согласования плана'
+        : 'Набор на ' + r.month + ' закрыт — идёт запись на ' + r.next;
       window.SalonSlots.enabled = true;
       window.SalonSlots.label = line;
-      var b = document.getElementById('slotBand');
-      if (b) { b.textContent = band; b.hidden = false; }
+      /* печать квоты в прейскуранте: месяц + строка мест */
+      var seal = document.getElementById('slotSeal');
+      if (seal) {
+        seal.querySelector('b').textContent = r.month;
+        seal.querySelector('i').textContent = free > 0
+          ? 'свободно ' + free + ' из ' + r.quota : 'мест нет · пишем на ' + r.next;
+        seal.hidden = false;
+      }
       var q = document.getElementById('qSlots');
       if (q) { q.textContent = line; q.hidden = false; }
     }).catch(function () {});
