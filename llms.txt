@@ -54,6 +54,7 @@
 
 ## Контакты
 
+- Telegram-канал (гайды и новости мастерской): https://t.me/akademsalon
 - ВКонтакте: https://vk.com/academicsaloon
-- Telegram: https://t.me/academicsaloon
+- Telegram (написать человеку): https://t.me/academicsaloon
 - Telegram-бот для заявок: https://t.me/academic_saloon_bot

@@ -93,6 +93,7 @@
   var LINKS = window.SalonLinks = {
     bot:   'https://t.me/academic_saloon_bot',   // бот: заявки, расчёт, статусы
     human: 'https://t.me/academicsaloon',        // личка: отвечает человек
+    tgc:   'https://t.me/akademsalon',           // канал в Telegram: гайды и мастерская
     vk:    'https://vk.com/academicsaloon',      // сообщество ВКонтакте
     vkm:   'https://vk.me/academicsaloon',       // диалог с сообществом ВК
     max:   'https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs' // канал в MAX
@@ -468,6 +469,7 @@
           '<div><span class="toc-grp-t">Связь</span><div class="toc-contacts">' +
             '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener"><span>ВКонтакте · написать</span><span class="tc-v">vk.me/academicsaloon</span></a>' +
             '<a href="' + LINKS.max + '" target="_blank" rel="noopener"><span>MAX · канал</span><span class="tc-v">Академический Салон</span></a>' +
+            '<a href="' + LINKS.tgc + '" target="_blank" rel="noopener"><span>Telegram · канал</span><span class="tc-v">@akademsalon</span></a>' +
             '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span>Telegram · человек</span><span class="tc-v">@academicsaloon</span></a>' +
             '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span>Telegram · бот</span><span class="tc-v">@academic_saloon_bot</span></a>' +
           '</div></div>' +
@@ -614,6 +616,7 @@
           '<div class="foot-contacts">' +
             '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener"><span class="fco-l">ВКонтакте · написать</span><span class="fco-v">vk.me/academicsaloon</span></a>' +
             '<a href="' + LINKS.max + '" target="_blank" rel="noopener"><span class="fco-l">Канал в MAX</span><span class="fco-v">max.ru — Академический Салон</span></a>' +
+            '<a href="' + LINKS.tgc + '" target="_blank" rel="noopener"><span class="fco-l">Telegram · канал</span><span class="fco-v">@akademsalon</span></a>' +
             '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span class="fco-l">Telegram · человек</span><span class="fco-v">@academicsaloon</span></a>' +
             '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span class="fco-l">Telegram · бот, если удобнее</span><span class="fco-v">@academic_saloon_bot</span></a>' +
           '</div>' +
