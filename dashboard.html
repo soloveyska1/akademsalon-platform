@@ -6,10 +6,10 @@
 <title>Личный кабинет — Академический Салон</title>
 <meta name="description" content="Формуляр вашего заказа: этапы, цена, переписка с мастером и файлы — всё на сайте, без мессенджеров." />
 <meta name="robots" content="noindex" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260717a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260717a" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260717a" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260717b" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260717b" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260717b" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -149,6 +149,17 @@
   /* вход */
   .cab-login{max-width:540px;margin:0 auto}
   .cab-login-hint{margin-top:10px}
+  /* тихий ряд «или»: ВК / Mail.ru / код на почту — минимализм, всё под рукой */
+  .cab-or{display:flex;align-items:center;gap:12px;margin:16px 0 12px;
+    color:var(--ink-faint);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+  .cab-or::before,.cab-or::after{content:"";flex:1;height:1px;background:var(--hairline)}
+  .cab-prov{display:flex;gap:8px;flex-wrap:wrap}
+  .cab-prov .btn{flex:1 1 30%;min-width:118px;font-size:13.5px;padding:10px 8px;
+    display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap}
+  .pv-ic{font-weight:700;font-family:var(--sans);font-size:12.5px}
+  .pv-vk{color:#07F}
+  .pv-mr{color:var(--wax)}
+  #cabEmailWrap[hidden]{display:none}
   .cab-foot{margin-top:clamp(28px,5vw,44px);padding-top:14px;border-top:1px solid var(--hairline)}
   .cab-foot-sync{margin-top:clamp(22px,4vw,32px);text-align:center}
 
@@ -357,8 +368,8 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260717a"></script>
-<script src="assets/js/extras.js?v=20260717a"></script>
-<script src="assets/js/cabinet.js?v=20260717a"></script>
+<script src="assets/js/app.js?v=20260717b"></script>
+<script src="assets/js/extras.js?v=20260717b"></script>
+<script src="assets/js/cabinet.js?v=20260717b"></script>
 </body>
 </html>

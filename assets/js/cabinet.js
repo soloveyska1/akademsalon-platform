@@ -146,17 +146,36 @@ function initCabinet() {
         '<div class="act-row"><a class="btn btn-wax" href="' + (pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Открыть Telegram</a>' +
         '<button type="button" class="btn btn-line" id="cabTgCancel">Отменить вход</button></div></div>'
       : '';
-    /* Telegram — первым: одна кнопка, самый надёжный канал. Почта и ссылка
-       доступа — свёрнуты: экран входа не должен быть простынёй. */
+    /* Telegram — первым: одна кнопка, самый надёжный канал. Остальные способы —
+       тихим рядом под чертой «или»: экран входа не должен быть простынёй. */
+    var f = st.features || {};
+    var provBtns = [];
+    if (f.vk_login) {
+      provBtns.push('<button type="button" class="btn btn-line" data-oauth="vk">' +
+        '<span class="pv-ic pv-vk">VK</span>ВКонтакте</button>');
+    }
+    if (f.mailru_login) {
+      provBtns.push('<button type="button" class="btn btn-line" data-oauth="mailru">' +
+        '<span class="pv-ic pv-mr">@</span>Mail.ru</button>');
+    }
+    if (f.email_login) {
+      provBtns.push('<button type="button" class="btn btn-line" id="cabEmailTgl">' +
+        '<span class="pv-ic">✉</span>Код на почту</button>');
+    }
     var emailBlock = '';
-    if (st.features && st.features.email_login) {
-      emailBlock = '<details class="cab-alt"><summary>Вход по почте — пришлём код</summary>' +
-        '<p class="petit" style="margin:6px 0 10px">6-значный код, без паролей. Адреса @mail.ru и @bk.ru иногда задерживают наши письма — тогда надёжнее Telegram.</p>' +
-        '<div class="act-row" id="cabEmailBox" style="margin:0 0 12px">' +
-          '<input type="email" id="cabEmailIn" placeholder="you@mail.ru" autocomplete="email" ' +
-            'style="flex:2;min-width:0;font:inherit;font-size:16px;padding:11px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
-          '<button type="button" class="btn btn-wax" id="cabEmailSend" style="flex:1">Получить код</button>' +
-        '</div></details>';
+    if (provBtns.length) {
+      emailBlock = '<div class="cab-or" aria-hidden="true">или</div>' +
+        '<div class="cab-prov">' + provBtns.join('') + '</div>' +
+        (f.email_login
+          ? '<div id="cabEmailWrap" hidden>' +
+            '<p class="petit" style="margin:12px 0 8px">Пришлём 6-значный код — без паролей. ' +
+            'Адреса @mail.ru и @bk.ru иногда задерживают письма — тогда надёжнее Telegram.</p>' +
+            '<div class="act-row" id="cabEmailBox" style="margin:0">' +
+              '<input type="email" id="cabEmailIn" placeholder="you@mail.ru" autocomplete="email" ' +
+                'style="flex:2;min-width:0;font:inherit;font-size:16px;padding:11px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
+              '<button type="button" class="btn btn-wax" id="cabEmailSend" style="flex:1">Получить код</button>' +
+            '</div></div>'
+          : '');
     }
     /* пришли за «Салон+» с витрины (#plus), а сессии нет — не встречать гостя
        голой стеной входа: объясняем, что абонемент ждёт сразу за дверью */
@@ -169,15 +188,14 @@ function initCabinet() {
     return '<div class="sheet sheet-pad stacked cab-login reveal">' +
       '<p class="caps">Вход в кабинет</p>' +
       '<h2 class="ord-type">Ваши заказы — здесь, на сайте</h2>' +
-      '<p class="petit" style="margin-bottom:16px">Заказы этого устройства открываются сами — входить не нужно. ' +
-      'Вход пригодится для бонусов, подписки и заказов с других устройств.</p>' +
+      '<p class="petit" style="margin-bottom:16px">Без паролей: одна кнопка — и кабинет ваш. ' +
+      'Заказы этого устройства открываются и без входа.</p>' +
       plusTeaser +
       pendingBlock +
       (pending ? '' : '<button type="button" class="btn btn-wax btn-block" id="cabTg">Войти через Telegram <span class="ar">→</span></button>') +
       '<p class="petit cab-login-hint" id="cabTgHint" hidden></p>' +
-      '<p class="petit" style="margin:10px 0 14px;color:var(--ink-soft)">Одна кнопка — без паролей; уведомления придут и в бота.</p>' +
       emailBlock +
-      '<details class="cab-alt"><summary>У меня есть ссылка доступа к делу</summary>' +
+      '<details class="cab-alt" style="margin-top:16px"><summary>У меня есть ссылка доступа к делу</summary>' +
       '<p class="petit" style="margin:6px 0 10px">Она была на экране «Заявка принята» — вставьте её целиком, дело откроется без входа.</p>' +
       '<div class="act-row" style="margin:0 0 12px">' +
         '<input type="text" id="cabClaimIn" placeholder="Ссылка доступа или код дела" style="flex:2;min-width:0;font:inherit;font-size:16px;padding:11px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
@@ -327,12 +345,33 @@ function initCabinet() {
       ' — статусы, файлы и сообщения догонят вас, даже если вкладка в фоне.</p>';
   }
 
+  function linksRow() {
+    /* связанные входы: показываем, только когда ВК/Mail.ru включены на сервере.
+       Привязка = тот же серверный OAuth с текущей сессией (?session=) — после
+       неё в кабинет можно попадать любым из способов, всё синхронно. */
+    var me = st.me || {};
+    var f = me.features || {};
+    if (!f.vk_login && !f.mailru_login) return '';
+    var linked = me.oauth || [];
+    var bits = [];
+    [['vk', 'ВКонтакте'], ['mailru', 'Mail.ru']].forEach(function (p) {
+      if (!f[p[0] + '_login']) return;
+      bits.push(linked.indexOf(p[0]) >= 0
+        ? '<span style="color:var(--verify,#3D6B50)">' + p[1] + ' ✓</span>'
+        : '<button type="button" class="linkbtn" data-oauth-link="' + p[0] + '">привязать ' + p[1] + '</button>');
+    });
+    if (!bits.length) return '';
+    return '<p class="petit reveal" style="margin:2px 0 10px">Входы: Telegram/почта · ' +
+      bits.join(' · ') + '</p>';
+  }
+
   function userRow() {
     var u = S.api.user();
     if (S.api.token() && u) {
       return '<div class="cab-id reveal">' +
         '<span>Вы вошли как <b>' + esc(u.name || 'гость') + '</b>' + (u.username ? ' (@' + esc(u.username) + ')' : '') + '</span>' +
         '<span class="ci-act"><button type="button" class="linkbtn" id="cabLogout">выйти</button></span></div>' +
+        linksRow() +
         notiRow();
     }
     return '<div class="cab-id reveal"><span class="ci-dot guest"></span>' +
@@ -1947,6 +1986,27 @@ function initCabinet() {
       return;
     }
     if (t.closest('#cabTgCancel')) { S.store.del('salon_auth_pending'); render(tplLogin(null)); return; }
+    var oaBtn = t.closest('[data-oauth]');
+    if (oaBtn) {
+      /* серверный OAuth: уходим к провайдеру, вернёмся с #oauth=токен */
+      window.location.href = S.api.base + '/auth/' + oaBtn.getAttribute('data-oauth') + '/start';
+      return;
+    }
+    var oaLink = t.closest('[data-oauth-link]');
+    if (oaLink) {
+      /* привязка к текущему аккаунту: сессия уезжает в ?session= */
+      window.location.href = S.api.base + '/auth/' + oaLink.getAttribute('data-oauth-link') +
+        '/start?session=' + encodeURIComponent(S.api.token() || '');
+      return;
+    }
+    if (t.closest('#cabEmailTgl')) {
+      var ew = document.getElementById('cabEmailWrap');
+      if (ew) {
+        ew.hidden = !ew.hidden;
+        if (!ew.hidden) { var ei = document.getElementById('cabEmailIn'); if (ei) ei.focus(); }
+      }
+      return;
+    }
     if (t.closest('#cabLogout')) { S.api.logout(); st.detail = null; loadList(); return; }
     if (t.closest('#cabRetry')) { loadList(); return; }
     if (t.closest('#chatSend')) { sendMessage(); return; }
@@ -2175,6 +2235,26 @@ function initCabinet() {
       S.api.addGuestToken(claimTok);
       history.replaceState(null, '', location.pathname);
       toast('Дело добавлено на это устройство ✓');
+    }
+  } catch (e) {}
+  /* возврат из ВК/Mail.ru: сервер кладёт токен сессии во фрагмент адреса —
+     он не светится ни в логах, ни в Referer; забираем и чистим строку */
+  try {
+    var oauthTok = (location.hash.match(/oauth=([A-Za-z0-9_-]+)/) || [])[1];
+    var oauthErr = (location.hash.match(/oauth_err=([a-z_]+)/) || [])[1];
+    if (oauthTok) {
+      S.api.setToken(oauthTok);
+      history.replaceState(null, '', location.pathname);
+      var gtOa = S.api.guestTokens();
+      if (gtOa.length) S.api.post('/orders/claim', { tokens: gtOa });
+      toast('Вы вошли ✓');
+    } else if (oauthErr) {
+      history.replaceState(null, '', location.pathname);
+      toast({
+        declined: 'Вход отменён на стороне сервиса',
+        already_linked: 'Этот профиль уже привязан к другому аккаунту',
+        forbidden: 'Доступ для этого аккаунта закрыт'
+      }[oauthErr] || 'Вход через сервис не удался — попробуйте Telegram или почту');
     }
   } catch (e) {}
   /* возврат со страницы оплаты: ?paid=<id> — открываем заказ и обновляем */

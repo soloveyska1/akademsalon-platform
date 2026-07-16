@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Открытая приёмная — анонимные вопросы мастеру о курсовых и дипломах | Академический Салон</title>
+<meta name="description" content="Задайте вопрос о курсовой, дипломе, антиплагиате или защите — анонимно, без регистрации. Мастер отвечает лично в течение дня, ответы публикуются и остаются для всех: 18+ разобранных вопросов." />
+<link rel="canonical" href="https://akademsalon.ru/priyomnaya.html" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260717b" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260717b" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260717b" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Открытая приёмная — спросите мастера, не называя себя" />
+<meta property="og:description" content="Анонимные вопросы о курсовых, дипломах, антиплагиате и защите. Мастер отвечает лично; вопросы и ответы остаются в приёмной для всех." />
+<meta property="og:url" content="https://akademsalon.ru/priyomnaya.html" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Открытая приёмная — спросите мастера, не называя себя" />
+<meta name="twitter:description" content="Анонимные вопросы о курсовых, дипломах, антиплагиате и защите — с личными ответами мастера." />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<style>
+  /* ============================================================
+     ОТКРЫТАЯ ПРИЁМНАЯ — журнал входящих писем мастерской.
+     Формуляр пары: «Входящий №», вопрос-цитата, ответ за подписью
+     мастера, штамп ОТВЕЧЕНО. Тишина читального зала: без аватарок,
+     лайков и тредов.
+     ============================================================ */
+  .pr-hero{padding:calc(64px + clamp(36px,6vh,72px)) 0 0;max-width:760px}
+  .pr-hero .caps{display:block;margin-bottom:14px}
+  .pr-hero h1{max-width:20ch;margin-bottom:clamp(14px,2vw,20px)}
+  .pr-hero .lead{max-width:56ch}
+  .pr-sla{display:flex;gap:10px;align-items:flex-start;margin-top:clamp(16px,2.6vw,22px);
+    padding:10px 14px;background:var(--sheet);border:1px solid var(--hairline);border-radius:var(--r);
+    font-size:13.5px;color:var(--ink-soft)}
+  .pr-sla .dot{width:8px;height:8px;border-radius:50%;background:var(--verify);flex:0 0 auto;margin-top:5px}
+  .pr-hero-cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:clamp(16px,2.6vw,24px)}
+
+  /* --- бланк вопроса --- */
+  .pr-ask{margin-top:clamp(28px,4.5vw,44px);max-width:760px}
+  .pr-ask[hidden],.pr-done[hidden],.pr-item[hidden],.pr-same-n[hidden],.pr-empty[hidden]{display:none}
+  .pr-blank{background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;
+    box-shadow:0 14px 34px -20px rgba(34,32,27,.35);padding:10px}
+  .pr-blank-in{border:1px solid var(--hairline-strong);border-radius:2px;padding:clamp(16px,2.8vw,26px)}
+  .pr-blank-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;
+    border-bottom:1px solid var(--hairline);padding-bottom:10px;margin-bottom:14px}
+  .pr-blank-head b{font-family:var(--serif);letter-spacing:.06em;font-size:15px}
+  .pr-blank-head span{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);letter-spacing:.14em;text-transform:uppercase}
+  .pr-field{margin-bottom:12px}
+  .pr-field label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:6px}
+  .pr-field textarea,.pr-field input[type=text],.pr-field input[type=email]{width:100%;
+    background:var(--paper);border:1px solid var(--hairline-strong);border-radius:var(--r);
+    padding:10px 12px;font:inherit;font-size:16px;color:var(--ink)}
+  .pr-field textarea{min-height:110px;resize:vertical}
+  .pr-field textarea:focus,.pr-field input:focus{outline:2px solid var(--stamp);outline-offset:1px}
+  .pr-cnt{float:right;font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+  .pr-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:620px){.pr-2col{grid-template-columns:1fr}}
+  .pr-quiet{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-soft);
+    background:var(--paper-2);border:1px dashed var(--hairline-strong);border-radius:var(--r);
+    padding:10px 12px;margin:4px 0 14px;cursor:pointer}
+  .pr-quiet input{margin-top:3px;accent-color:var(--wax)}
+  .pr-send-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .pr-note{font-size:12.5px;color:var(--ink-faint);max-width:46ch}
+  .pr-hp{position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden}
+  .pr-err{color:var(--wax);font-size:13.5px;margin-top:10px}
+
+  /* штамп «принято» */
+  .pr-done{margin-top:14px;background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;
+    padding:clamp(18px,3vw,26px);position:relative}
+  .pr-done b{font-family:var(--serif);font-size:17px}
+  .pr-done .stamp-got{position:absolute;top:14px;right:16px;transform:rotate(6deg);
+    border:2px solid var(--verify);color:var(--verify);border-radius:3px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    padding:5px 10px;opacity:.85}
+
+  /* --- лента формуляров --- */
+  .pr-feed{margin-top:clamp(40px,6vw,64px)}
+  .pr-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:18px 0 22px}
+  .pr-chip{border:1px solid var(--hairline-strong);background:var(--sheet);color:var(--ink-soft);
+    border-radius:999px;padding:7px 14px;font-size:13px;cursor:pointer}
+  .pr-chip.is-on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .pr-search{margin-left:auto;flex:0 1 240px;min-width:170px}
+  .pr-search input{width:100%;background:var(--sheet);border:1px solid var(--hairline-strong);
+    border-radius:999px;padding:8px 14px;font:inherit;font-size:14px;color:var(--ink)}
+  .pr-list{display:grid;gap:clamp(16px,2.4vw,24px);max-width:820px}
+  .pr-item{background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;
+    padding:clamp(16px,2.6vw,24px);position:relative;
+    box-shadow:0 10px 26px -22px rgba(34,32,27,.4)}
+  .pr-item.is-hl{outline:2px solid var(--stamp);outline-offset:2px}
+  .pr-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-faint);margin-bottom:12px}
+  .pr-num{color:var(--ink-soft)}
+  .pr-tagpill{border:1px solid var(--hairline);border-radius:999px;padding:2px 9px}
+  .pr-stamp{margin-left:auto;border:1.5px solid var(--stamp);color:var(--stamp);border-radius:3px;
+    padding:2px 8px;transform:rotate(-4deg);letter-spacing:.2em;opacity:.75}
+  .pr-q{margin:0 0 14px;padding:2px 0 2px 16px;border-left:2px solid var(--hairline-strong)}
+  .pr-q p{font-family:var(--serif);font-style:italic;font-size:clamp(15.5px,1.8vw,17.5px);
+    line-height:1.55;color:var(--ink)}
+  .pr-q footer{margin-top:8px;font-size:12.5px;color:var(--ink-faint);font-style:normal}
+  .pr-a{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+  .pr-who{display:inline-flex;gap:7px;align-items:center;font-family:var(--serif);font-weight:700;
+    font-size:13px;letter-spacing:.05em;white-space:nowrap;padding-top:2px}
+  .pr-seal{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%, var(--wax), var(--wax-deep));
+    box-shadow:0 1px 2px rgba(0,0,0,.25);display:inline-block}
+  .pr-a p{font-size:15px;line-height:1.65;color:var(--ink);white-space:pre-line}
+  @media (max-width:560px){.pr-a{grid-template-columns:1fr;gap:6px}}
+  .pr-foot{display:flex;gap:10px;align-items:center;margin-top:14px;padding-top:12px;
+    border-top:1px dashed var(--hairline)}
+  .pr-same{border:1px solid var(--hairline-strong);background:transparent;color:var(--ink-soft);
+    border-radius:999px;padding:6px 13px;font-size:13px;cursor:pointer}
+  .pr-same:hover{border-color:var(--ink);color:var(--ink)}
+  .pr-same[disabled]{cursor:default;border-style:dashed;color:var(--ink-faint)}
+  .pr-same-n{font-size:12.5px;color:var(--ink-faint)}
+  .pr-empty{padding:26px;border:1px dashed var(--hairline-strong);border-radius:3px;
+    color:var(--ink-soft);text-align:center;max-width:820px}
+
+  /* правила приёмной */
+  .pr-rules{margin-top:clamp(36px,5vw,56px);max-width:760px}
+  .pr-rules details{background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;
+    padding:14px 18px}
+  .pr-rules summary{cursor:pointer;font-family:var(--serif);font-weight:600;font-size:15px}
+  .pr-rules ol{margin:12px 0 4px 18px;display:grid;gap:8px;font-size:14px;color:var(--ink-soft)}
+  .pr-cta{margin:clamp(36px,5vw,60px) 0 clamp(44px,6vw,72px);max-width:760px;
+    background:var(--paper-2);border:1px solid var(--hairline);border-radius:3px;
+    padding:clamp(18px,3vw,26px);display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .pr-cta b{font-family:var(--serif);font-size:16.5px}
+  .pr-cta .marginalia{margin-top:4px}
+</style>
+</head>
+<body>
+
+<main>
+  <div class="wrap">
+
+    <section class="pr-hero reveal" data-chapter="Приёмная">
+      <span class="caps">Открытая приёмная</span>
+      <h1 class="h-display">Спросите мастера, не называя себя</h1>
+      <p class="lead">Здесь задают вопросы о курсовых, дипломах, антиплагиате и защите —
+      анонимно, без регистрации и без обязательств. Мастер отвечает лично; пара
+      «вопрос-ответ» остаётся в приёмной, и её читают те, кому сейчас так же тревожно.</p>
+      <div class="pr-sla"><span class="dot" aria-hidden="true"></span>
+        <span>Отвечаем в течение дня. Вопросы публикуются анонимно, в литературной
+        обработке — суть сохраняется, узнать автора невозможно.</span></div>
+      <div class="pr-hero-cta">
+        <a class="btn btn-wax" href="#ask">Задать вопрос <span class="ar">→</span></a>
+        <a class="btn btn-line" href="#feed">Читать ответы</a>
+      </div>
+      <p class="marginalia" style="margin-top:14px">Приёмная открылась на 18 вопросах
+      из архива переписок мастерской за шесть лет — новые появляются выше архивных.</p>
+    </section>
+
+    <!-- БЛАНК ВОПРОСА -->
+    <section class="pr-ask reveal" id="ask">
+      <form class="pr-blank" id="prForm" novalidate>
+        <div class="pr-blank-in">
+          <div class="pr-blank-head"><b>Бланк входящего вопроса</b><span>анонимно</span></div>
+          <div class="pr-field">
+            <label for="prQ">Ваш вопрос <span class="pr-cnt" id="prCnt">0 / 600</span></label>
+            <textarea id="prQ" maxlength="600" required
+              placeholder="Например: научрук завернул вторую главу, до защиты месяц — что делать?"></textarea>
+          </div>
+          <div class="pr-2col">
+            <div class="pr-field">
+              <label for="prName">Подпись под вопросом</label>
+              <input type="text" id="prName" maxlength="40" placeholder="Студент(ка) — можно не менять" />
+            </div>
+            <div class="pr-field">
+              <label for="prMail">Почта для ответа — по желанию</label>
+              <input type="email" id="prMail" maxlength="120" placeholder="не публикуется никогда" />
+            </div>
+          </div>
+          <label class="pr-quiet"><input type="checkbox" id="prQuiet" />
+            <span><b>Тихий вопрос.</b> Не публиковать в ленте: ответ придёт только письмом
+            на почту. Для тех, кому спокойнее без публикации — даже анонимной.</span></label>
+          <div class="pr-hp" aria-hidden="true">
+            <label>Не заполняйте это поле<input type="text" id="prWebsite" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <div class="pr-send-row">
+            <button class="btn btn-wax" type="submit" id="prSend">Отправить в приёмную</button>
+            <span class="pr-note">Публикуем в литературной обработке; ссылки и контакты
+            вычищаются автоматически. Почта нужна только для письма с ответом.</span>
+          </div>
+          <p class="pr-err" id="prErr" hidden></p>
+        </div>
+      </form>
+
+      <div class="pr-done" id="prDone" hidden>
+        <span class="stamp-got">Принято</span>
+        <b>Вопрос принят в приёмную.</b>
+        <p style="margin-top:8px;color:var(--ink-soft);max-width:56ch">Мастер отвечает в течение
+        дня. <span id="prDoneMode">Ответ появится на этой странице — загляните позже или
+        оставьте почту в следующий раз, чтобы получить его письмом.</span></p>
+      </div>
+    </section>
+
+    <!-- ЛЕНТА -->
+    <section class="pr-feed reveal" id="feed">
+      <span class="caps">Журнал входящих</span>
+      <h2 class="h-display" style="font-size:clamp(24px,3.4vw,34px);margin-top:10px">Вопросы, на которые уже отвечено</h2>
+      <div class="pr-toolbar" role="toolbar" aria-label="Фильтр вопросов">
+        <button class="pr-chip is-on" type="button" data-prtag="">Все</button><button class="pr-chip" type="button" data-prtag="diplom">Диплом и ВКР</button><button class="pr-chip" type="button" data-prtag="kursach">Курсовые</button><button class="pr-chip" type="button" data-prtag="antiplagiat">Антиплагиат и ИИ</button><button class="pr-chip" type="button" data-prtag="sroki">Сроки</button><button class="pr-chip" type="button" data-prtag="oplata">Оплата и гарантии</button><button class="pr-chip" type="button" data-prtag="process">Как всё устроено</button>
+        <span class="pr-search"><input type="search" id="prSearch" placeholder="Поиск по вопросам…" aria-label="Поиск по вопросам" /></span>
+      </div>
+      <div class="pr-list" id="prList">
+<article class="pr-item" id="q1" data-tag="diplom" data-qa="1">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;001</span>
+    <span class="pr-date">5 июня</span>
+    <span class="pr-tagpill">Диплом и ВКР</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Препод валит на защите всех, кто «подозрительно хорошо» написал. Как доказать, что работа моя?</p><footer>— Аноним</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>«Доказывать» ничего не нужно — нужно быть готовым к трём типовым проверкам. Первая: «расскажите своими словами, что во второй главе» — лечится тем, что вы прочитали работу дважды и можете пересказать логику каждой главы одним абзацем. Вторая: «почему выбрали эту методику?» — на такой вопрос мы даём готовое обоснование в пояснительной записке к работе. Третья: «что значит вот этот термин на странице 34?» — пройдитесь по терминам, их в работе конечное число. К нашим работам можно взять разбор с мастером: час разговора, после которого вы ориентируетесь в тексте не хуже автора. Честно: студент, который знает свою работу, выглядит на защите убедительнее многих писавших самостоятельно.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="1">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="1" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q2" data-tag="diplom" data-qa="2">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;002</span>
+    <span class="pr-date">8 июня</span>
+    <span class="pr-tagpill">Диплом и ВКР</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Чем магистерская отличается от обычного диплома? Поступила после бакалавриата и я в лёгкой панике от слова «диссертация».</p><footer>— Настя</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Спокойно: магистерская — это не кандидатская, слово «диссертация» в ней — самое страшное. Отличий от ВКР бакалавра по сути три: нужна научная новизна (хотя бы скромная — новый ракурс, уточнённая методика, свежие данные), обязательная апробация (обычно 1–2 статьи или выступление на конференции — это планируется заранее, а не в последний месяц) и более строгая методология во введении. Объём вырастает не сильно: 80–100 страниц против 60–80. Если у вас сейчас первый семестр — идеальный момент спланировать всё: тему, план, график статей. Такой разбор мы делаем за 5 000 ₽, и дальше два года идут по расписанию, а не в пожаре.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="2">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="2" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q3" data-tag="oplata" data-qa="3">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;003</span>
+    <span class="pr-date">10 июня</span>
+    <span class="pr-tagpill">Оплата и гарантии</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>У вас есть гарантии? Что будет, если работу не примут вообще?</p><footer>— прагматик</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Гарантия у нас процессная, и она сильнее, чем «вернём деньги» мелким шрифтом: работа не бросается после передачи. Не принял научрук — правим по его замечаниям бесплатно, сколько потребуется, в рамках задания. Дошло до защиты — готовим к ней. Случилось невероятное, и работу отклонили по нашей вине — возвращаем деньги за неоказанную часть по этапам, это прописано в оферте (раздел 10, по ст. 32 закона о защите прав потребителей). За шесть лет до возврата «за отклонение» не дошло ни разу — не потому, что мы идеальны, а потому что этапная схема ловит проблемы на первой трети пути, а не на защите.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="3">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="3" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q4" data-tag="process" data-qa="4">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;004</span>
+    <span class="pr-date">12 июня</span>
+    <span class="pr-tagpill">Как всё устроено</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Кафедра обновила методичку, когда работа уже была готова. Теперь оформление «не по стандарту». Кто виноват и что делать?</p><footer>— Магистрант</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Виноватых нет — это классика: кафедры любят обновлять требования в мае и декабре. Что делать: взять новую методичку и переоформить по ней титульный лист, содержание, ссылки и список литературы — содержательная часть при смене методички почти никогда не трогается. Если работу делали мы — присылайте новую методичку, посмотрим объём изменений: чисто оформительские правки часто укладываются в сервисное окно, тогда это бесплатно. Если делали не мы — тоже присылайте: нормоконтроль по чужой работе стоит от 5 000 ₽ и занимает пару дней.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="4">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="4" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q5" data-tag="process" data-qa="5">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;005</span>
+    <span class="pr-date">15 июня</span>
+    <span class="pr-tagpill">Как всё устроено</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Правки после сдачи платные? А то знаю контору, где каждая правка по 500 рублей.</p><footer>— Аноним</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Правки по замечаниям научрука и комиссии — бесплатные, без лимита по количеству, в рамках исходного задания: до защиты, в пределах сервисного окна (все сроки честно расписаны в оферте, раздел 9). Платными бывают только два случая: замечания меняют само задание (была теоретическая глава — «а теперь нужен опрос на сто человек») или кафедра сменила методичку после согласования работы. В обоих случаях мы сначала говорим, что это вне окна, и называем цену — ничего не делается «по умолчанию за деньги».</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="5">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="5" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q6" data-tag="oplata" data-qa="6">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;006</span>
+    <span class="pr-date">18 июня</span>
+    <span class="pr-tagpill">Оплата и гарантии</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Как у вас с оплатой? Если я переведу деньги, а вы пропадёте — что мне делать? Уже обжигался на «авторе» с сайта объявлений.</p><footer>— обжёгшийся</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Понимаю этот опыт, поэтому механика собрана так, чтобы вам не приходилось верить на слово. Оплата — по частям: первый платёж только после того, как названа точная цена (обычно 30–50%), каждая следующая часть — по её готовности, и вы видите работу до финальной оплаты через защищённый предпросмотр. К каждому заказу — спецификация в PDF со всеми условиями: этапы, сроки, правки. Оплатить можно картой через Робокассу с чеком самозанятого — это официальный след, с которым при желании можно идти хоть в банк, хоть в суд. «Пропасть» при такой схеме невыгодно технически: деньги всегда идут за уже показанным результатом.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="6">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="6" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q7" data-tag="process" data-qa="7">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;007</span>
+    <span class="pr-date">20 июня</span>
+    <span class="pr-tagpill">Как всё устроено</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Чем вы отличаетесь от бирж, где «2000 авторов онлайн»? Там дешевле.</p><footer>— скептик</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Дешевле — потому что на бирже вы покупаете лотерею: работу пишет случайный исполнитель, который взял ваш заказ среди двадцати других, а гарантия — рейтинг в профиле. У нас другой формат: мастерская. Заказ ведёт один мастер от разбора задания до защиты, правки — без лимита, до и после сдачи в рамках задания, и мы остаёмся на связи до защиты, а не до кнопки «принять». Разница в цене — это разница между «текст к сроку» и «результат на защите». Если бюджет ограничен, честный вариант — заказать не всё, а критичное: например, вторую главу с расчётами, а остальное написать самостоятельно по нашему плану.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="7">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="7" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q8" data-tag="oplata" data-qa="8">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;008</span>
+    <span class="pr-date">22 июня</span>
+    <span class="pr-tagpill">Оплата и гарантии</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Сколько по-честному стоит курсовая? У одних 800 рублей, у других 8 тысяч — я не понимаю, из чего цена вообще складывается.</p><footer>— Влад</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Из трёх вещей: объём и глубина (теоретическая на 25 страниц — одно, с расчётной частью и первичными данными — другое), срочность и требования вуза (порог оригинальности, конкретная методичка, придирчивость кафедры). За 800 рублей вы получаете скачанный и слегка перефразированный текст — его «оригинальности» хватает до первой проверки. Наши курсовые стоят от 3 500 ₽: работа пишется под вашу методичку с нуля, с отчётом о проверке и правками до приёмки. Точную вилку считает конфигуратор на сайте за пару минут — без контактов и звонков, и после разбора задания цена уже не растёт.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="8">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="8" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q9" data-tag="process" data-qa="9">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;009</span>
+    <span class="pr-date">25 июня</span>
+    <span class="pr-tagpill">Как всё устроено</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Скажите честно: если я закажу у вас работу, в универе смогут узнать? Боюсь даже не антиплагиата, а того, что кто-то увидит переписку или базу заказов.</p><footer>— Аноним</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Не смогут — и вот почему это устроено именно так. Мы работаем без публичной базы заказов и без биржи: нет «личных кабинетов исполнителей», где вашу тему видят сто человек. Переписка идёт в одном канале — с мастером. Тему и вуз мы не публикуем никогда, даже обезличенно, если вы отдельно не разрешили. В документах вы — «Заказчик», без ФИО. Единственный человек, который может рассказать о заказе, — вы сами. За шесть лет работы не было ни одного случая, чтобы информация ушла из мастерской.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="9">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="9" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q10" data-tag="antiplagiat" data-qa="10">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;010</span>
+    <span class="pr-date">28 июня</span>
+    <span class="pr-tagpill">Антиплагиат и ИИ</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Антиплагиат показал 48%, сдача через неделю. Преподаватель сказал «поднимите хотя бы до 70». Реально ли это без того, чтобы переписывать всё с нуля?</p><footer>— Студентка, 4 курс</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Реально, и чаще всего — без «переписать всё». Сначала смотрим отчёт: какие блоки дают заимствования. Обычно 60–70% процента съедают три вещи: цитаты без оформления, шаблонные фразы введения и заключения, таблицы с чужими данными. Лечатся они по-разному: цитаты оформляем по ГОСТу (корректная цитата со ссылкой уходит в модуль цитирования и плагиатом не считается), шаблонные куски переформулируем по смыслу — не синонимайзером, он делает текст нечитаемым и легко ловится, — а данные пересобираем под вашу задачу. Неделя — комфортный срок. Пришлёте полный отчёт — скажем точно, где просядет и на сколько поднимется.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="10">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="10" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q11" data-tag="process" data-qa="11">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;011</span>
+    <span class="pr-date">30 июня</span>
+    <span class="pr-tagpill">Как всё устроено</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Можно заказать не всю работу, а только доработку? Диплом написал сам, но оформление и список литературы — беда, и введение препод завернул.</p><footer>— Игорь</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Можно и нужно — это нормальный формат, примерно треть наших заказов именно такие. Доработка считается от фактического объёма: смотрим вашу работу и замечания, называем цену за конкретные блоки — введение по канону кафедры, список по ГОСТ Р 7.0.100-2018, оформление по методичке, — а не «от половины стоимости диплома», как любят биржи. Свою работу вы при этом не «сдаёте нам насовсем»: правим аккуратно, с пометками, чтобы было видно, что изменилось, и вы могли защитить каждый абзац.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="11">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="11" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q12" data-tag="diplom" data-qa="12">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;012</span>
+    <span class="pr-date">2 июля</span>
+    <span class="pr-tagpill">Диплом и ВКР</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Научрук третий раз возвращает вторую главу со словами «мало анализа, одна вода». Я уже не понимаю, чего он хочет. До предзащиты полтора месяца.</p><footer>— Марина</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>«Мало анализа» почти всегда означает одно: в главе пересказаны чужие материалы, но нет ваших выводов из них. Проверьте по простому признаку: если абзац можно перенести в чужой диплом без правок — это вода; если в нём есть «из этого следует, что…» применительно к вашему объекту — это анализ. Обычно главу спасает не переписывание, а достройка: после каждого параграфа — микровывод, в конце — сопоставление подходов и ваша позиция, лучше таблицей. Полтора месяца — спокойный запас. Мы такие главы «доводим» регулярно: присылайте текст и замечания научрука — скажем, что именно достроить.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="12">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="12" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q13" data-tag="antiplagiat" data-qa="13">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;013</span>
+    <span class="pr-date">5 июля</span>
+    <span class="pr-tagpill">Антиплагиат и ИИ</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Вы пишете работы нейросетью? Препод сказал, что теперь всех проверяют на ИИ-текст.</p><footer>— Аноним</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Основной текст пишет человек — именно потому, что проверки на ИИ действительно появились: у Антиплагиат.ВУЗ есть модуль «подозрение на генерацию», а преподаватели гоняют тексты через детекторы сами. Нейросети в мастерской — инструмент на подхвате: поиск источников, черновые таблицы, проверка логики. Всё, что уходит вам, проходит проверку и на заимствования, и на «ИИ-подозрительность» — отчёт прикладываем. И парадокс, о котором мало кто знает: детекторы чаще всего срабатывают на идеально гладком тексте без единой шероховатости — живые формулировки с авторским стилем проходят спокойнее.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="13">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="13" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q14" data-tag="sroki" data-qa="14">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;014</span>
+    <span class="pr-date">6 июля</span>
+    <span class="pr-tagpill">Сроки</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Отчёт по практике нужен через 5 дней, но на практику я не ходил, базы нет. Такое вообще делаете?</p><footer>— Аноним</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Делаем, с одной оговоркой: предприятие для отчёта должно быть реальным и подходящим по профилю — «рисованные» организации валятся на первой же сверке реквизитов кафедрой. Обычно студент договаривается о формальной базе сам (знакомые, родственники, прошлый работодатель), а мы собираем отчёт: дневник по дням, характеристику, аналитическую часть под вашу методичку. Пять дней — реальный срок, от 14 000 ₽ в зависимости от объёма. Если базы нет совсем — напишите, обсудим варианты: они находятся почти всегда.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="14">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="14" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q15" data-tag="sroki" data-qa="15">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;015</span>
+    <span class="pr-date">8 июля</span>
+    <span class="pr-tagpill">Сроки</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>До защиты диплома 3 недели, у меня готова только первая глава, и то криво. Вообще ничего не успеваю из-за работы. Это уже всё или ещё можно спасти?</p><footer>— на грани</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Спасаемо, и даже без ночных подвигов — но окно уже узкое, поэтому по-честному: решение стоит принять в ближайшие дни, дальше каждый день сушит варианты и поднимает цену срочности. Как это выглядит у нас: в первый день разбираем задание и вашу главу, договариваемся о плане; дальше работа идёт частями — вы получаете и оплачиваете её по кускам и успеваете показывать научруку по ходу. Три недели — это ещё «плановый» режим, а не SOS. Начните с бесплатной оценки в конфигураторе: увидите цену и график по дням — и уже от этого решайте.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="15">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="15" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q16" data-tag="diplom" data-qa="16">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;016</span>
+    <span class="pr-date">10 июля</span>
+    <span class="pr-tagpill">Диплом и ВКР</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Что говорить на защите, если работу писал не я? Боюсь поплыть на первом же вопросе комиссии.</p><footer>— с ужасом жду июня</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Секрет в том, что комиссия не проверяет, «сами ли вы писали», — она проверяет, ориентируетесь ли вы в работе. А это решается подготовкой, а не талантом: доклад на 7 минут по схеме «проблема → что сделано → цифры → вывод», 10–12 вероятных вопросов с короткими ответами (мы составляем их по тексту работы — комиссии предсказуемее, чем кажется) и один прогон вслух накануне. К каждой нашей работе можно взять пакет «к защите»: презентация, речь и вопросы. После такой подготовки «поплыть» почти невозможно: вы будете знать о работе больше, чем комиссия успеет спросить.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="16">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="16" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q17" data-tag="sroki" data-qa="17">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;017</span>
+    <span class="pr-date">12 июля</span>
+    <span class="pr-tagpill">Сроки</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Ночь перед сдачей курсовой, готово процентов 40. Кофе уже не помогает. Что реально успеть за ночь?</p><footer>— совсем всё</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>За ночь реально: дописать заключение (это пересказ выводов по главам, две страницы), собрать содержание и список по ГОСТу, вычитать введение — и сдать то, что есть, взяв у преподавателя замечания. Это лучше, чем не сдать ничего: большинство кафедр спокойно принимает доработку после первой проверки, а вот «не сдал» превращается в академическую задолженность. Чего за ночь делать не стоит: скачивать чужие главы и вставлять как есть — антиплагиат видит всё, что когда-либо было в сети. И если такие ночи у вас системные, приходите до следующей: работа частями и куратор сессии стоят дешевле пересдач.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="17">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="17" hidden></span>
+  </footer>
+</article>
+
+<article class="pr-item" id="q18" data-tag="diplom" data-qa="18">
+  <header class="pr-meta">
+    <span class="pr-num">Входящий №&nbsp;018</span>
+    <span class="pr-date">14 июля</span>
+    <span class="pr-tagpill">Диплом и ВКР</span>
+    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
+  </header>
+  <blockquote class="pr-q"><p>Получила задание на ВКР, там написано «провести эмпирическое исследование адаптационного потенциала». Я даже не понимаю, с чего начать. Помогите расшифровать, что от меня хотят?</p><footer>— первый раз пишу</footer></blockquote>
+  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
+    <p>Это нормальное состояние: задание на ВКР пишется языком кафедры, а не человека. «Эмпирическое исследование адаптационного потенциала» по-человечески значит: взять группу людей (обычно 30–60), прогнать по двум-трём стандартным методикам (для адаптации это чаще всего опросник Роджерса–Даймонд или методика Маклакова), посчитать статистику и объяснить цифры. С чего начать: выбрать базу — где возьмёте респондентов, — согласовать методики с научруком и только потом писать теорию под них, а не наоборот. Для таких случаев у нас есть «разбор задания» за 3 000 ₽: расшифровка каждого пункта, план по главам и график — и эти 3 000 ₽ зачитываются, если продолжите работу с нами.</p></div>
+  <footer class="pr-foot">
+    <button class="pr-same" type="button" data-same="18">🙋 У меня такой же вопрос</button>
+    <span class="pr-same-n" data-same-n="18" hidden></span>
+  </footer>
+</article>
+      </div>
+      <p class="pr-empty" id="prEmpty" hidden>По этому фильтру пока пусто — задайте свой вопрос,
+      и он станет первым.</p>
+    </section>
+
+    <!-- ПРАВИЛА -->
+    <section class="pr-rules reveal">
+      <details>
+        <summary>Правила приёмной — коротко и честно</summary>
+        <ol>
+          <li>Вопросы публикуются анонимно и в литературной обработке: мастер вычищает
+          имена, вузы и любые детали, по которым автора можно узнать. Суть не меняется.</li>
+          <li>Почта не публикуется никогда и используется только для письма с ответом.
+          «Тихий вопрос» не публикуется вовсе.</li>
+          <li>В приёмную не попадают оскорбления, реклама и просьбы, нарушающие закон.
+          Такие письма остаются без ответа.</li>
+          <li>Ответ мастера — консультация по учебной работе, а не оферта: цены в ответах
+          ориентировочные, точную считает <a href="configurator.html">конфигуратор</a>.</li>
+        </ol>
+      </details>
+    </section>
+
+    <div class="pr-cta reveal">
+      <div>
+        <b>Вопрос оказался «про вашу работу целиком»?</b>
+        <p class="marginalia">Конфигуратор посчитает честную вилку за пару минут — без
+        контактов и звонков.</p>
+      </div>
+      <a class="btn btn-line" href="configurator.html">Рассчитать заказ <span class="ar">→</span></a>
+    </div>
+
+  </div>
+</main>
+
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Препод валит на защите всех, кто «подозрительно хорошо» написал. Как доказать, что работа моя?", "acceptedAnswer": {"@type": "Answer", "text": "«Доказывать» ничего не нужно — нужно быть готовым к трём типовым проверкам. Первая: «расскажите своими словами, что во второй главе» — лечится тем, что вы прочитали работу дважды и можете пересказать логику каждой главы одним абзацем. Вторая: «почему выбрали эту методику?» — на такой вопрос мы даём готовое обоснование в пояснительной записке к работе. Третья: «что значит вот этот термин на странице 34?» — пройдитесь по терминам, их в работе конечное число. К нашим работам можно взять разбор с мастером: час разговора, после которого вы ориентируетесь в тексте не хуже автора. Честно: студент, который знает свою работу, выглядит на защите убедительнее многих писавших самостоятельно."}}, {"@type": "Question", "name": "Чем магистерская отличается от обычного диплома? Поступила после бакалавриата и я в лёгкой панике от слова «диссертация».", "acceptedAnswer": {"@type": "Answer", "text": "Спокойно: магистерская — это не кандидатская, слово «диссертация» в ней — самое страшное. Отличий от ВКР бакалавра по сути три: нужна научная новизна (хотя бы скромная — новый ракурс, уточнённая методика, свежие данные), обязательная апробация (обычно 1–2 статьи или выступление на конференции — это планируется заранее, а не в последний месяц) и более строгая методология во введении. Объём вырастает не сильно: 80–100 страниц против 60–80. Если у вас сейчас первый семестр — идеальный момент спланировать всё: тему, план, график статей. Такой разбор мы делаем за 5 000 ₽, и дальше два года идут по расписанию, а не в пожаре."}}, {"@type": "Question", "name": "У вас есть гарантии? Что будет, если работу не примут вообще?", "acceptedAnswer": {"@type": "Answer", "text": "Гарантия у нас процессная, и она сильнее, чем «вернём деньги» мелким шрифтом: работа не бросается после передачи. Не принял научрук — правим по его замечаниям бесплатно, сколько потребуется, в рамках задания. Дошло до защиты — готовим к ней. Случилось невероятное, и работу отклонили по нашей вине — возвращаем деньги за неоказанную часть по этапам, это прописано в оферте (раздел 10, по ст. 32 закона о защите прав потребителей). За шесть лет до возврата «за отклонение» не дошло ни разу — не потому, что мы идеальны, а потому что этапная схема ловит проблемы на первой трети пути, а не на защите."}}, {"@type": "Question", "name": "Кафедра обновила методичку, когда работа уже была готова. Теперь оформление «не по стандарту». Кто виноват и что делать?", "acceptedAnswer": {"@type": "Answer", "text": "Виноватых нет — это классика: кафедры любят обновлять требования в мае и декабре. Что делать: взять новую методичку и переоформить по ней титульный лист, содержание, ссылки и список литературы — содержательная часть при смене методички почти никогда не трогается. Если работу делали мы — присылайте новую методичку, посмотрим объём изменений: чисто оформительские правки часто укладываются в сервисное окно, тогда это бесплатно. Если делали не мы — тоже присылайте: нормоконтроль по чужой работе стоит от 5 000 ₽ и занимает пару дней."}}, {"@type": "Question", "name": "Правки после сдачи платные? А то знаю контору, где каждая правка по 500 рублей.", "acceptedAnswer": {"@type": "Answer", "text": "Правки по замечаниям научрука и комиссии — бесплатные, без лимита по количеству, в рамках исходного задания: до защиты, в пределах сервисного окна (все сроки честно расписаны в оферте, раздел 9). Платными бывают только два случая: замечания меняют само задание (была теоретическая глава — «а теперь нужен опрос на сто человек») или кафедра сменила методичку после согласования работы. В обоих случаях мы сначала говорим, что это вне окна, и называем цену — ничего не делается «по умолчанию за деньги»."}}, {"@type": "Question", "name": "Как у вас с оплатой? Если я переведу деньги, а вы пропадёте — что мне делать? Уже обжигался на «авторе» с сайта объявлений.", "acceptedAnswer": {"@type": "Answer", "text": "Понимаю этот опыт, поэтому механика собрана так, чтобы вам не приходилось верить на слово. Оплата — по частям: первый платёж только после того, как названа точная цена (обычно 30–50%), каждая следующая часть — по её готовности, и вы видите работу до финальной оплаты через защищённый предпросмотр. К каждому заказу — спецификация в PDF со всеми условиями: этапы, сроки, правки. Оплатить можно картой через Робокассу с чеком самозанятого — это официальный след, с которым при желании можно идти хоть в банк, хоть в суд. «Пропасть» при такой схеме невыгодно технически: деньги всегда идут за уже показанным результатом."}}, {"@type": "Question", "name": "Чем вы отличаетесь от бирж, где «2000 авторов онлайн»? Там дешевле.", "acceptedAnswer": {"@type": "Answer", "text": "Дешевле — потому что на бирже вы покупаете лотерею: работу пишет случайный исполнитель, который взял ваш заказ среди двадцати других, а гарантия — рейтинг в профиле. У нас другой формат: мастерская. Заказ ведёт один мастер от разбора задания до защиты, правки — без лимита, до и после сдачи в рамках задания, и мы остаёмся на связи до защиты, а не до кнопки «принять». Разница в цене — это разница между «текст к сроку» и «результат на защите». Если бюджет ограничен, честный вариант — заказать не всё, а критичное: например, вторую главу с расчётами, а остальное написать самостоятельно по нашему плану."}}, {"@type": "Question", "name": "Сколько по-честному стоит курсовая? У одних 800 рублей, у других 8 тысяч — я не понимаю, из чего цена вообще складывается.", "acceptedAnswer": {"@type": "Answer", "text": "Из трёх вещей: объём и глубина (теоретическая на 25 страниц — одно, с расчётной частью и первичными данными — другое), срочность и требования вуза (порог оригинальности, конкретная методичка, придирчивость кафедры). За 800 рублей вы получаете скачанный и слегка перефразированный текст — его «оригинальности» хватает до первой проверки. Наши курсовые стоят от 3 500 ₽: работа пишется под вашу методичку с нуля, с отчётом о проверке и правками до приёмки. Точную вилку считает конфигуратор на сайте за пару минут — без контактов и звонков, и после разбора задания цена уже не растёт."}}, {"@type": "Question", "name": "Скажите честно: если я закажу у вас работу, в универе смогут узнать? Боюсь даже не антиплагиата, а того, что кто-то увидит переписку или базу заказов.", "acceptedAnswer": {"@type": "Answer", "text": "Не смогут — и вот почему это устроено именно так. Мы работаем без публичной базы заказов и без биржи: нет «личных кабинетов исполнителей», где вашу тему видят сто человек. Переписка идёт в одном канале — с мастером. Тему и вуз мы не публикуем никогда, даже обезличенно, если вы отдельно не разрешили. В документах вы — «Заказчик», без ФИО. Единственный человек, который может рассказать о заказе, — вы сами. За шесть лет работы не было ни одного случая, чтобы информация ушла из мастерской."}}, {"@type": "Question", "name": "Антиплагиат показал 48%, сдача через неделю. Преподаватель сказал «поднимите хотя бы до 70». Реально ли это без того, чтобы переписывать всё с нуля?", "acceptedAnswer": {"@type": "Answer", "text": "Реально, и чаще всего — без «переписать всё». Сначала смотрим отчёт: какие блоки дают заимствования. Обычно 60–70% процента съедают три вещи: цитаты без оформления, шаблонные фразы введения и заключения, таблицы с чужими данными. Лечатся они по-разному: цитаты оформляем по ГОСТу (корректная цитата со ссылкой уходит в модуль цитирования и плагиатом не считается), шаблонные куски переформулируем по смыслу — не синонимайзером, он делает текст нечитаемым и легко ловится, — а данные пересобираем под вашу задачу. Неделя — комфортный срок. Пришлёте полный отчёт — скажем точно, где просядет и на сколько поднимется."}}, {"@type": "Question", "name": "Можно заказать не всю работу, а только доработку? Диплом написал сам, но оформление и список литературы — беда, и введение препод завернул.", "acceptedAnswer": {"@type": "Answer", "text": "Можно и нужно — это нормальный формат, примерно треть наших заказов именно такие. Доработка считается от фактического объёма: смотрим вашу работу и замечания, называем цену за конкретные блоки — введение по канону кафедры, список по ГОСТ Р 7.0.100-2018, оформление по методичке, — а не «от половины стоимости диплома», как любят биржи. Свою работу вы при этом не «сдаёте нам насовсем»: правим аккуратно, с пометками, чтобы было видно, что изменилось, и вы могли защитить каждый абзац."}}, {"@type": "Question", "name": "Научрук третий раз возвращает вторую главу со словами «мало анализа, одна вода». Я уже не понимаю, чего он хочет. До предзащиты полтора месяца.", "acceptedAnswer": {"@type": "Answer", "text": "«Мало анализа» почти всегда означает одно: в главе пересказаны чужие материалы, но нет ваших выводов из них. Проверьте по простому признаку: если абзац можно перенести в чужой диплом без правок — это вода; если в нём есть «из этого следует, что…» применительно к вашему объекту — это анализ. Обычно главу спасает не переписывание, а достройка: после каждого параграфа — микровывод, в конце — сопоставление подходов и ваша позиция, лучше таблицей. Полтора месяца — спокойный запас. Мы такие главы «доводим» регулярно: присылайте текст и замечания научрука — скажем, что именно достроить."}}, {"@type": "Question", "name": "Вы пишете работы нейросетью? Препод сказал, что теперь всех проверяют на ИИ-текст.", "acceptedAnswer": {"@type": "Answer", "text": "Основной текст пишет человек — именно потому, что проверки на ИИ действительно появились: у Антиплагиат.ВУЗ есть модуль «подозрение на генерацию», а преподаватели гоняют тексты через детекторы сами. Нейросети в мастерской — инструмент на подхвате: поиск источников, черновые таблицы, проверка логики. Всё, что уходит вам, проходит проверку и на заимствования, и на «ИИ-подозрительность» — отчёт прикладываем. И парадокс, о котором мало кто знает: детекторы чаще всего срабатывают на идеально гладком тексте без единой шероховатости — живые формулировки с авторским стилем проходят спокойнее."}}, {"@type": "Question", "name": "Отчёт по практике нужен через 5 дней, но на практику я не ходил, базы нет. Такое вообще делаете?", "acceptedAnswer": {"@type": "Answer", "text": "Делаем, с одной оговоркой: предприятие для отчёта должно быть реальным и подходящим по профилю — «рисованные» организации валятся на первой же сверке реквизитов кафедрой. Обычно студент договаривается о формальной базе сам (знакомые, родственники, прошлый работодатель), а мы собираем отчёт: дневник по дням, характеристику, аналитическую часть под вашу методичку. Пять дней — реальный срок, от 14 000 ₽ в зависимости от объёма. Если базы нет совсем — напишите, обсудим варианты: они находятся почти всегда."}}, {"@type": "Question", "name": "До защиты диплома 3 недели, у меня готова только первая глава, и то криво. Вообще ничего не успеваю из-за работы. Это уже всё или ещё можно спасти?", "acceptedAnswer": {"@type": "Answer", "text": "Спасаемо, и даже без ночных подвигов — но окно уже узкое, поэтому по-честному: решение стоит принять в ближайшие дни, дальше каждый день сушит варианты и поднимает цену срочности. Как это выглядит у нас: в первый день разбираем задание и вашу главу, договариваемся о плане; дальше работа идёт частями — вы получаете и оплачиваете её по кускам и успеваете показывать научруку по ходу. Три недели — это ещё «плановый» режим, а не SOS. Начните с бесплатной оценки в конфигураторе: увидите цену и график по дням — и уже от этого решайте."}}, {"@type": "Question", "name": "Что говорить на защите, если работу писал не я? Боюсь поплыть на первом же вопросе комиссии.", "acceptedAnswer": {"@type": "Answer", "text": "Секрет в том, что комиссия не проверяет, «сами ли вы писали», — она проверяет, ориентируетесь ли вы в работе. А это решается подготовкой, а не талантом: доклад на 7 минут по схеме «проблема → что сделано → цифры → вывод», 10–12 вероятных вопросов с короткими ответами (мы составляем их по тексту работы — комиссии предсказуемее, чем кажется) и один прогон вслух накануне. К каждой нашей работе можно взять пакет «к защите»: презентация, речь и вопросы. После такой подготовки «поплыть» почти невозможно: вы будете знать о работе больше, чем комиссия успеет спросить."}}, {"@type": "Question", "name": "Ночь перед сдачей курсовой, готово процентов 40. Кофе уже не помогает. Что реально успеть за ночь?", "acceptedAnswer": {"@type": "Answer", "text": "За ночь реально: дописать заключение (это пересказ выводов по главам, две страницы), собрать содержание и список по ГОСТу, вычитать введение — и сдать то, что есть, взяв у преподавателя замечания. Это лучше, чем не сдать ничего: большинство кафедр спокойно принимает доработку после первой проверки, а вот «не сдал» превращается в академическую задолженность. Чего за ночь делать не стоит: скачивать чужие главы и вставлять как есть — антиплагиат видит всё, что когда-либо было в сети. И если такие ночи у вас системные, приходите до следующей: работа частями и куратор сессии стоят дешевле пересдач."}}, {"@type": "Question", "name": "Получила задание на ВКР, там написано «провести эмпирическое исследование адаптационного потенциала». Я даже не понимаю, с чего начать. Помогите расшифровать, что от меня хотят?", "acceptedAnswer": {"@type": "Answer", "text": "Это нормальное состояние: задание на ВКР пишется языком кафедры, а не человека. «Эмпирическое исследование адаптационного потенциала» по-человечески значит: взять группу людей (обычно 30–60), прогнать по двум-трём стандартным методикам (для адаптации это чаще всего опросник Роджерса–Даймонд или методика Маклакова), посчитать статистику и объяснить цифры. С чего начать: выбрать базу — где возьмёте респондентов, — согласовать методики с научруком и только потом писать теорию под них, а не наоборот. Для таких случаев у нас есть «разбор задания» за 3 000 ₽: расшифровка каждого пункта, план по главам и график — и эти 3 000 ₽ зачитываются, если продолжите работу с нами."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Открытая приёмная","item":"https://akademsalon.ru/priyomnaya.html"}]}</script>
+
+<script src="assets/js/app.js?v=20260717b"></script>
+<script src="assets/js/extras.js?v=20260717b"></script>
+<script>
+/* Приёмная: живая лента с /api/qa (статика в HTML — для поиска и без-JS),
+   отправка вопроса, «у меня такой же вопрос», фильтры и поиск.
+   Без rAF и IntersectionObserver — переживает reduce-motion и Турбо-режимы. */
+(function () {
+  var S = window.Salon || {};
+  if (!S.api) return;
+  var TAGS = { diplom: 'Диплом и ВКР', kursach: 'Курсовые', antiplagiat: 'Антиплагиат и ИИ',
+               sroki: 'Сроки', oplata: 'Оплата и гарантии', process: 'Как всё устроено' };
+  var $ = function (id) { return document.getElementById(id); };
+  var list = $('prList'), state = { tag: '', q: '' };
+  var voted = (S.store && S.store.get('salon_qa_voted', [])) || [];
+  if (!Array.isArray(voted)) voted = [];
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c];
+    });
+  }
+  function vid() { return (S.store && S.store.get('salon_vid', '')) || ''; }
+
+  function itemHTML(it) {
+    return '<header class="pr-meta">' +
+      '<span class="pr-num">Входящий №&nbsp;' + esc(it.num.replace('№ ', '')) + '</span>' +
+      (it.date ? '<span class="pr-date">' + esc(it.date) + '</span>' : '') +
+      (it.tag_label ? '<span class="pr-tagpill">' + esc(it.tag_label) + '</span>' : '') +
+      '<span class="pr-stamp" aria-label="Мастер ответил">отвечено</span></header>' +
+      '<blockquote class="pr-q"><p>' + esc(it.question) + '</p>' +
+      '<footer>— ' + esc(it.pseudonym) + '</footer></blockquote>' +
+      '<div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>' +
+      '<p>' + esc(it.answer) + '</p></div>' +
+      '<footer class="pr-foot">' +
+      '<button class="pr-same" type="button" data-same="' + it.id + '">🙋 У меня такой же вопрос</button>' +
+      '<span class="pr-same-n" data-same-n="' + it.id + '"' + (it.same ? '' : ' hidden') + '>' +
+      (it.same ? 'таких уже ' + it.same : '') + '</span></footer>';
+  }
+
+  function render(items) {
+    var html = items.map(function (it) {
+      return '<article class="pr-item" id="q' + it.id + '" data-tag="' + esc(it.tag) +
+        '" data-qa="' + it.id + '">' + itemHTML(it) + '</article>';
+    }).join('');
+    list.innerHTML = html;
+    applyFilter();
+    markVoted();
+  }
+
+  function applyFilter() {
+    var n = 0;
+    Array.prototype.forEach.call(list.children, function (el) {
+      var okTag = !state.tag || el.getAttribute('data-tag') === state.tag;
+      var okQ = !state.q || el.textContent.toLowerCase().indexOf(state.q) >= 0;
+      var show = okTag && okQ;
+      if (show) { el.removeAttribute('hidden'); n++; } else { el.setAttribute('hidden', ''); }
+    });
+    $('prEmpty').hidden = n > 0;
+  }
+
+  function markVoted() {
+    voted.forEach(function (id) {
+      var b = list.querySelector('[data-same="' + id + '"]');
+      if (b) { b.disabled = true; b.textContent = '🙋 Вы отметились'; }
+    });
+  }
+
+  function jumpHash() {
+    var m = /^#q(\d+)$/.exec(location.hash || '');
+    if (!m) return;
+    var el = document.getElementById('q' + m[1]);
+    if (!el || el.hidden) return;
+    el.classList.add('is-hl');
+    var y = el.getBoundingClientRect().top + window.pageYOffset - 84;
+    window.scrollTo(0, y);
+  }
+
+  /* живые данные: админские правки и новые ответы важнее статики */
+  S.api.get('/qa').then(function (r) {
+    if (r && r.ok && r.items && r.items.length) render(r.items);
+    jumpHash();
+  });
+
+  /* фильтры */
+  Array.prototype.forEach.call(document.querySelectorAll('.pr-chip'), function (ch) {
+    ch.addEventListener('click', function () {
+      Array.prototype.forEach.call(document.querySelectorAll('.pr-chip'), function (c) {
+        c.classList.toggle('is-on', c === ch);
+      });
+      state.tag = ch.getAttribute('data-prtag') || '';
+      applyFilter();
+    });
+  });
+  var searchT = null;
+  $('prSearch').addEventListener('input', function () {
+    clearTimeout(searchT);
+    var v = this.value;
+    searchT = setTimeout(function () {
+      state.q = v.trim().toLowerCase();
+      applyFilter();
+    }, 160);
+  });
+
+  /* «у меня такой же вопрос» */
+  list.addEventListener('click', function (ev) {
+    var b = ev.target.closest ? ev.target.closest('[data-same]') : null;
+    if (!b || b.disabled) return;
+    var id = parseInt(b.getAttribute('data-same'), 10);
+    if (voted.indexOf(id) >= 0 || !vid()) { b.disabled = true; return; }
+    b.disabled = true;
+    S.api.post('/qa/' + id + '/same', { vid: vid() }).then(function (r) {
+      if (!(r && r.ok)) { b.disabled = false; return; }
+      voted.push(id);
+      if (S.store) S.store.set('salon_qa_voted', voted.slice(-100));
+      b.textContent = '🙋 Вы отметились';
+      var n = list.querySelector('[data-same-n="' + id + '"]');
+      if (n && r.same) { n.hidden = false; n.textContent = 'таких уже ' + r.same; }
+      if (S.visit) S.visit.mark('приёмная: такой же вопрос №' + id);
+    });
+  });
+
+  /* счётчик знаков */
+  $('prQ').addEventListener('input', function () {
+    $('prCnt').textContent = this.value.length + ' / 600';
+  });
+
+  /* отправка вопроса */
+  $('prForm').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var err = $('prErr');
+    err.hidden = true;
+    var q = $('prQ').value.trim();
+    var quiet = $('prQuiet').checked;
+    var mail = $('prMail').value.trim();
+    if (q.length < 10) { err.textContent = 'Опишите вопрос чуть подробнее — хотя бы одной фразой.'; err.hidden = false; return; }
+    if (quiet && !/^\S+@\S+\.\S+$/.test(mail)) {
+      err.textContent = 'Для «тихого вопроса» нужна почта — ответ придёт только письмом.';
+      err.hidden = false; return;
+    }
+    if (mail && !/^\S+@\S+\.\S+$/.test(mail)) {
+      err.textContent = 'Почта выглядит неполной — проверьте адрес или оставьте поле пустым.';
+      err.hidden = false; return;
+    }
+    var btn = $('prSend');
+    btn.disabled = true; btn.textContent = 'Отправляем…';
+    S.api.post('/qa', {
+      question: q, pseudonym: $('prName').value.trim(), email: mail,
+      quiet: quiet, vid: vid(), website: $('prWebsite').value
+    }).then(function (r) {
+      btn.disabled = false; btn.textContent = 'Отправить в приёмную';
+      if (!(r && r.ok)) {
+        var msgs = {
+          rate_limited: 'На сегодня лимит вопросов с этого устройства исчерпан — приходите завтра.',
+          too_short: 'Опишите вопрос чуть подробнее.',
+          email_required: 'Для «тихого вопроса» нужна почта.',
+          bad_email: 'Почта выглядит неполной — проверьте адрес.'
+        };
+        err.textContent = msgs[r && r.error] || 'Не получилось отправить — попробуйте ещё раз через минуту.';
+        err.hidden = false;
+        return;
+      }
+      $('prForm').hidden = true;
+      var mode = $('prDoneMode');
+      if (quiet) mode.textContent = 'Вопрос тихий: в ленту он не попадёт, ответ придёт письмом на ' + mail + '.';
+      else if (mail) mode.textContent = 'Ответ появится на этой странице, а на ' + mail + ' придёт письмо со ссылкой.';
+      $('prDone').hidden = false;
+      if (S.visit) S.visit.mark(quiet ? 'приёмная: тихий вопрос' : 'приёмная: вопрос задан');
+      try { if (S.metrika) S.metrika.goal('qa_asked'); } catch (e) {}
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

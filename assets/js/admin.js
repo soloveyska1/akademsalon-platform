@@ -71,6 +71,7 @@ function initGodEye() {
     orders: [], sel: null, card: null,
     clients: [], csel: null, ccard: null,
     reviews: [], leads: [],
+    qa: null, qaTags: null,   /* «Открытая приёмная»: очередь и лента */
     subs: null,               /* /admin/subs: оформления подписки (свой контур) */
     gifts: null, gsel: null, gnew: false,  /* сертификаты: список, раскрытая карточка, форма выпуска */
     ov: null, timer: null, busy: false,
@@ -199,6 +200,7 @@ function initGodEye() {
     S.api.get('/admin/overview').then(function (r) { if (r.ok) { st.ov = r; drawNav(); drawLive(); if (st.tab === 'summary') drawBody(); } });
     loadSubs();
     if (st.tab === 'gifts') loadGifts();
+    if (st.tab === 'qa') loadQA();
     if (st.tab === 'orders') {
       S.api.get('/admin/orders?' + listQuery()).then(function (r) {
         if (r.ok) { st.orders = r.orders; drawList(); }
@@ -246,6 +248,8 @@ function initGodEye() {
         st.reviews = r.reviews;
         drawBody();
       });
+    } else if (st.tab === 'qa') {
+      loadQA();
     } else if (st.tab === 'gifts') {
       loadGifts();
     } else if (st.tab === 'leads') {
@@ -258,6 +262,15 @@ function initGodEye() {
       drawBody();
     }
   }
+  function loadQA() {
+    S.api.get('/admin/qa').then(function (r) {
+      if (!r || !r.ok) return;
+      st.qa = r.items;
+      st.qaTags = r.tags || {};
+      if (st.tab === 'qa') drawBody();
+    });
+  }
+
   /* ---------------- ВИЗИТЫ («все заходы») ---------------- */
   function loadVisits(silent) {
     var o = st.vopts;
@@ -483,6 +496,7 @@ function initGodEye() {
     return {
       orders: (by.new || 0) + (by.fix || 0) + (ov.claimed || 0),
       reviews: ov.reviews_pending || 0,
+      qa: (ov.qa && ov.qa.pending) || 0,
       gifts: (ov.gifts && ov.gifts.claimed_n) || 0
     };
   }
@@ -498,6 +512,7 @@ function initGodEye() {
       ['orders', '🗂 Заказы', b.orders],
       ['clients', '👥 Клиенты', 0],
       ['reviews', '⭐ Отзывы', b.reviews],
+      ['qa', '📮 Приёмная', b.qa],
       ['gifts', '🎁 Сертификаты', b.gifts],
       ['leads', '🌐 Лиды', 0],
       ['broadcast', '📣 Рассылка', 0],
@@ -543,6 +558,7 @@ function initGodEye() {
       return;
     }
     if (st.tab === 'reviews') { box.innerHTML = tplReviews(); return; }
+    if (st.tab === 'qa') { box.innerHTML = tplQA(); return; }
     if (st.tab === 'gifts') { box.innerHTML = tplGifts(); return; }
     if (st.tab === 'leads') { box.innerHTML = tplLeads(); return; }
     if (st.tab === 'broadcast') { box.innerHTML = tplBroadcast(); bcastRefresh(); return; }
@@ -746,6 +762,7 @@ function initGodEye() {
     if (by.fix) attn.push({ f: 'fix', ic: '✏️', t: '<b>Правки: ' + by.fix + '</b> — клиенты ждут исправленную версию' });
     if (by.check) attn.push({ f: 'check', ic: '📤', t: 'На проверке у клиентов: ' + by.check });
     if (ov.reviews_pending) attn.push({ f: '@reviews', ic: '⭐', t: '<b>Отзывы на модерации: ' + ov.reviews_pending + '</b> — опубликовать или отклонить' });
+    if (ov.qa && ov.qa.pending) attn.push({ f: '@qa', ic: '📮', t: '<b>Вопросы в приёмной: ' + ov.qa.pending + '</b> — ответить в течение дня' });
     var vs = ov.visits || {};
     return '' +
       '<div class="ag-tiles">' +
@@ -1389,6 +1406,80 @@ function initGodEye() {
       }).join('');
   }
 
+  /* ---------------- «ОТКРЫТАЯ ПРИЁМНАЯ» ---------------- */
+  var QA_ST = {
+    pending: '⏳ ждёт ответа', published: '📮 на сайте',
+    answered: '🤫 отвечен тихо', rejected: '🚫 отклонён'
+  };
+
+  function qaTagSelect(id, cur) {
+    var tags = st.qaTags || {};
+    var opts = '<option value=""' + (cur ? '' : ' selected') + '>— рубрика —</option>' +
+      Object.keys(tags).map(function (k) {
+        return '<option value="' + k + '"' + (cur === k ? ' selected' : '') + '>' + esc(tags[k]) + '</option>';
+      }).join('');
+    return '<select id="qaT-' + id + '" class="ag-inp" style="max-width:220px">' + opts + '</select>';
+  }
+
+  function qaCard(q) {
+    var pendingQ = q.status === 'pending';
+    var raw = q.question_raw && q.question_raw !== q.question
+      ? '<details style="margin:8px 0"><summary class="petit" style="cursor:pointer">Исходник гостя (до чистки)</summary>' +
+        '<blockquote style="font-style:italic;margin-top:6px">«' + esc(q.question_raw) + '»</blockquote></details>' : '';
+    var who = esc(q.pseudonym || 'Аноним') +
+      (q.quiet ? ' · 🤫 тихий (без публикации)' : '') +
+      (q.email ? ' · 📧 почта оставлена' : ' · без почты') +
+      (q.source === 'archive' ? ' · 📜 архив' : '');
+    var techno = '<span class="petit" style="opacity:.7">vid ' + esc((q.vid || '—').slice(0, 14)) +
+      ' · ip ' + esc(q.ip || '—') + (q.same ? ' · 🙋 таких же: ' + q.same : '') + '</span>';
+    var btns = [];
+    if (pendingQ && !q.quiet) btns.push('<button type="button" class="btn btn-ink" data-qa-act="publish" data-qa-id="' + q.id + '">📮 Опубликовать с ответом</button>');
+    if (pendingQ && q.email) btns.push('<button type="button" class="btn btn-line" data-qa-act="answer_quiet" data-qa-id="' + q.id + '">🤫 Ответить письмом' + (q.quiet ? '' : ' (без публикации)') + '</button>');
+    if (pendingQ && q.quiet && !q.email) btns.push('<span class="petit">Тихий вопрос без почты — ответить некуда; можно отклонить.</span>');
+    if (!pendingQ) btns.push('<button type="button" class="btn btn-line" data-qa-act="save" data-qa-id="' + q.id + '">💾 Сохранить правки</button>');
+    if (q.status === 'published') {
+      btns.push('<button type="button" class="btn btn-line" data-qa-act="' + (q.pinned ? 'unpin' : 'pin') + '" data-qa-id="' + q.id + '">' + (q.pinned ? '📌 Открепить' : '📌 Закрепить сверху') + '</button>');
+      btns.push('<button type="button" class="btn btn-line" data-qa-act="unpublish" data-qa-id="' + q.id + '">👁 Снять с сайта</button>');
+    }
+    if (q.status === 'answered' && !q.quiet) btns.push('<button type="button" class="btn btn-line" data-qa-act="publish" data-qa-id="' + q.id + '">📮 Опубликовать</button>');
+    if (pendingQ) btns.push('<button type="button" class="btn btn-line" data-qa-act="reject" data-qa-id="' + q.id + '">🚫 Отклонить</button>');
+    btns.push('<button type="button" class="btn btn-line" data-qa-act="ban" data-qa-id="' + q.id + '" style="color:var(--wax)">⛔ Бан автора</button>');
+    btns.push('<button type="button" class="btn btn-line" data-qa-act="delete" data-qa-id="' + q.id + '" style="color:var(--wax)">🗑 Удалить</button>');
+    return '<div class="ag-rv ' + (pendingQ ? 'pending' : '') + '" id="qaRow-' + q.id + '">' +
+      '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
+      '<b>Входящий ' + esc(q.num) + '</b>' +
+      '<span class="rv-meta">' + (QA_ST[q.status] || esc(q.status)) + (q.pinned ? ' · 📌' : '') + ' · ' + dt(q.created_at) + '</span></div>' +
+      '<p class="rv-meta" style="margin-top:4px">' + who + '</p>' + raw +
+      '<div style="display:grid;gap:8px;margin-top:8px">' +
+      '<label class="petit">Вопрос (публикуемая формулировка — чистите деанон и резкие формулировки)</label>' +
+      '<textarea id="qaQ-' + q.id + '" class="ag-inp" rows="3" maxlength="600">' + esc(q.question) + '</textarea>' +
+      '<label class="petit">Ответ мастера</label>' +
+      '<textarea id="qaA-' + q.id + '" class="ag-inp" rows="' + (pendingQ ? 6 : 4) + '" maxlength="3000" placeholder="Спокойно, по делу, с тихим мостиком к услуге, где уместно">' + esc(q.answer || '') + '</textarea>' +
+      qaTagSelect(q.id, q.tag) + '</div>' +
+      '<div class="ag-actrow" style="margin-top:10px;flex-wrap:wrap">' + btns.join('') + '</div>' +
+      '<p style="margin-top:6px">' + techno + '</p></div>';
+  }
+
+  function tplQA() {
+    if (st.qa === null) return '<div class="ag-empty">Загружаем приёмную…</div>';
+    var pending = st.qa.filter(function (q) { return q.status === 'pending'; });
+    var rest = st.qa.filter(function (q) { return q.status !== 'pending'; });
+    var head = '<p class="petit" style="margin-bottom:12px">«Открытая приёмная» на сайте: гость спрашивает анонимно, ' +
+      'вы отвечаете — пара публикуется навсегда. Всё премодерируется: без вашего решения на сайт не попадает ни буквы. ' +
+      'Формулировку вопроса можно (и нужно) редактировать — это заявлено в правилах приёмной. ' +
+      'Отвечать можно и из Telegram: бот присылает каждый новый вопрос с кнопками, команда /qa — очередь. ' +
+      '<a class="ag-linkbtn" href="priyomnaya.html" target="_blank" rel="noopener">Открыть приёмную на сайте ↗</a></p>';
+    var out = head;
+    out += '<div class="ag-sec" style="border-top:0;padding-top:0;margin-top:0"><span class="caps">Ждут ответа' +
+      (pending.length ? ' · ' + pending.length : '') + '</span>';
+    out += pending.length ? pending.map(qaCard).join('')
+      : '<div class="ag-empty">Новых вопросов нет. Появится — придёт в Telegram и сюда.</div>';
+    out += '</div>';
+    out += '<div class="ag-sec"><span class="caps">Лента приёмной · ' + rest.length + '</span>' +
+      (rest.length ? rest.map(qaCard).join('') : '<div class="ag-empty">Пока пусто.</div>') + '</div>';
+    return out;
+  }
+
   /* ---------------- ЛИДЫ ---------------- */
   function tplLeads() {
     return '<p class="petit" style="margin-bottom:10px">Обращения с сайта без оформленного заказа — эти люди уже проявили интерес, свяжитесь по контакту.</p>' +
@@ -1476,6 +1567,22 @@ function initGodEye() {
                 '«Прошу открыть исходящие SMTP-порты 465 и 587 на VPS 217.18.63.210 — ' +
                 'нужна отправка транзакционных писем моего домена akademsalon.ru». После разблокировки всё включится само, без перезапусков.')
           : 'SMTP не настроен — письма клиентам не уходят. Добавьте SMTP_HOST/USER/PASS в /root/salon_bot/.env.')) + '</p></div>' +
+
+      '<div class="ag-sec"><span class="caps">Вход через ВК и Mail.ru</span>' +
+      '<p class="petit">' +
+        ((ov.oauth && ov.oauth.vk) ? '✅ <b>ВКонтакте</b> подключён — кнопка на экране входа видна. '
+          : '<b>ВКонтакте:</b> выключен. Как включить: <span class="mono">id.vk.com</span> → «VK ID для бизнеса» → ' +
+            'создать приложение (тип «Web»), Redirect URL: <span class="mono">https://akademsalon.ru/api/auth/vk/callback</span>, ' +
+            'включить доступ «E-mail». Полученный ID приложения впишите в <span class="mono">/root/salon_bot/.env</span> ' +
+            'строкой VK_CLIENT_ID и перезапустите бота — кнопка появится сама. ') +
+        ((ov.oauth && ov.oauth.mailru) ? '✅ <b>Mail.ru</b> подключён.'
+          : '<b>Mail.ru:</b> выключен. Как включить: <span class="mono">o2.mail.ru/app/</span> → создать приложение, ' +
+            'Redirect URL: <span class="mono">https://akademsalon.ru/api/auth/mailru/callback</span>, scope «userinfo». ' +
+            'ID и секрет — в .env строками MAILRU_CLIENT_ID и MAILRU_CLIENT_SECRET, затем ' +
+            '<span class="mono">systemctl restart salon-bot-v2</span>.') +
+        ' Механика уже на сервере: вход считает людей одним аккаунтом по почте (ВК/Mail.ru/код на почту не плодят дубли), ' +
+        'а вошедший клиент может привязать сервисы в кабинете — строка «Входы».' +
+      '</p></div>' +
 
       '<div class="ag-sec"><span class="caps">Рабочая группа заказов</span>' +
       '<p class="petit">' + (ov.group_forum
@@ -1596,6 +1703,7 @@ function initGodEye() {
     if (go) {
       var f = go.getAttribute('data-go');
       if (f === '@reviews') { st.tab = 'reviews'; }
+      else if (f === '@qa') { st.tab = 'qa'; }
       else if (f === '@visits') { st.tab = 'visits'; }
       else { st.tab = 'orders'; st.filter = f; st.q = ''; st.sel = null; }
       drawNav(); loadTab(true);
@@ -2038,6 +2146,48 @@ function initGodEye() {
         okLabel: 'Закрыть', noLabel: 'Отмена'
       }).then(function (okd) { if (okd && okd.ok) go(); });
       else go();
+      return;
+    }
+    /* --- приёмная --- */
+    var qb = t.closest('[data-qa-act]');
+    if (qb) {
+      var qact = qb.getAttribute('data-qa-act');
+      var qid = qb.getAttribute('data-qa-id');
+      var qpayload = { action: qact };
+      if (qact === 'publish' || qact === 'answer_quiet' || qact === 'save') {
+        var qEl = document.getElementById('qaQ-' + qid);
+        var aEl = document.getElementById('qaA-' + qid);
+        var tEl = document.getElementById('qaT-' + qid);
+        if (qEl) qpayload.question = qEl.value;
+        if (aEl) qpayload.answer = aEl.value;
+        if (tEl) qpayload.tag = tEl.value;
+        if (qact !== 'save' && (!qpayload.answer || qpayload.answer.trim().length < 5)) {
+          toast('Сначала напишите ответ мастера'); return;
+        }
+      }
+      var qaDone = {
+        publish: 'Опубликовано в приёмной 📮', answer_quiet: 'Ответ ушёл письмом 🤫',
+        save: 'Сохранено', reject: 'Отклонён', unpublish: 'Снят с сайта',
+        pin: 'Закреплён сверху', unpin: 'Откреплён', delete: 'Удалён навсегда',
+        ban: 'Автор заблокирован — его вопросы больше не попадут в очередь'
+      };
+      var goQA = function () {
+        api('/admin/qa/' + qid, qpayload).then(function (r) {
+          if (!r || !r.ok) { toast('Не получилось — попробуйте ещё раз'); return; }
+          toast(qaDone[qact] || 'Готово');
+          loadQA();
+          S.api.get('/admin/overview').then(function (r2) { if (r2.ok) { st.ov = r2; drawNav(); } });
+        });
+      };
+      if (qact === 'delete' || qact === 'ban') {
+        confirmDlg({
+          title: qact === 'delete' ? 'Удалить пару навсегда?' : 'Заблокировать автора вопроса?',
+          text: qact === 'delete'
+            ? 'Вопрос и ответ исчезнут с сайта и из очереди. Действие необратимо.'
+            : 'Новые вопросы с этого браузера и IP молча перестанут попадать в приёмную. Текущий вопрос будет отклонён.',
+          okLabel: qact === 'delete' ? 'Удалить' : 'Заблокировать', noLabel: 'Отмена', danger: true
+        }).then(function (okd) { if (okd && okd.ok) goQA(); });
+      } else goQA();
       return;
     }
     /* --- отзывы --- */

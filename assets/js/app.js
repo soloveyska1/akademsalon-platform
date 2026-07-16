@@ -425,10 +425,11 @@
     { href: 'gift.html',         label: 'Подарочный сертификат', no: '05' },
     { href: 'guarantees.html',   label: 'Гарантии · устав', no: '06' },
     { href: 'reviews.html',      label: 'Отзывы',           no: '07' },
-    { href: 'referral.html',     label: 'Клуб и бонусы',    no: '08' },
-    { href: 'knowledge.html',    label: 'База знаний',      no: '09' },
-    { href: 'check.html',        label: 'Проверка текста',  no: '10' },
-    { href: 'dashboard.html',    label: 'Личный кабинет',   no: '11' }
+    { href: 'priyomnaya.html',   label: 'Открытая приёмная', no: '08' },
+    { href: 'referral.html',     label: 'Клуб и бонусы',    no: '09' },
+    { href: 'knowledge.html',    label: 'База знаний',      no: '10' },
+    { href: 'check.html',        label: 'Проверка текста',  no: '11' },
+    { href: 'dashboard.html',    label: 'Личный кабинет',   no: '12' }
   ];
   var DOCS = [
     ['oferta.html', 'Публичная оферта'],
@@ -626,6 +627,7 @@
           '<a href="configurator.html">Рассчитать заказ</a><a href="tariffs.html">Цены и услуги</a>' +
           '<a href="gift.html">Подарочный сертификат</a>' +
           '<a href="guarantees.html">Гарантии · устав</a><a href="reviews.html">Отзывы</a>' +
+          '<a href="priyomnaya.html">Открытая приёмная</a>' +
           '<a href="referral.html">Клуб и бонусы</a><a href="knowledge.html">База знаний</a>' +
           '<a href="check.html">Проверка текста</a><a href="dashboard.html">Кабинет</a>' +
         '</nav></div>' +
@@ -918,17 +920,28 @@
       if (t && v.indexOf(t) < 0) { v.push(t); Salon.store.set('salon_tokens', v.slice(-30)); }
     },
     identified: function () { return !!(Salon.api.token() || Salon.api.guestTokens().length); },
-    req: function (method, path, body) {
+    req: function (method, path, body, _retried) {
       var h = {};
       if (body !== undefined) h['Content-Type'] = 'application/json';
       var t = Salon.api.token();
       if (t) h['Authorization'] = 'Bearer ' + t;
+      /* GET безопасно повторить один раз: короткое окно рестарта сервера
+         (деплой) отдаёт 502/обрыв на пару секунд — не теряем посетителя */
+      function again() {
+        return new Promise(function (res) {
+          setTimeout(function () { res(Salon.api.req(method, path, body, true)); }, 1800);
+        });
+      }
       return fetch(API_BASE + path, { method: method, headers: h, body: body !== undefined ? JSON.stringify(body) : undefined })
         .then(function (r) {
           if (r.status === 401) { Salon.api.setToken(null); Salon.api.setUser(null); }
-          return r.json();
+          if (method === 'GET' && !_retried && (r.status === 502 || r.status === 503 || r.status === 504)) return again();
+          return r.json().catch(function () { return { ok: false, error: 'bad_json' }; });
         })
-        .catch(function () { return { ok: false, error: 'network' }; });
+        .catch(function () {
+          if (method === 'GET' && !_retried) return again();
+          return { ok: false, error: 'network' };
+        });
     },
     get: function (p) { return Salon.api.req('GET', p); },
     post: function (p, b) { return Salon.api.req('POST', p, b || {}); },
@@ -971,17 +984,23 @@
       var q = location.search.replace(/(token|resume|session|claim)=[^&#]*/g, '$1=…');
       return (location.pathname + q).slice(0, 200);
     }
-    function send(extra) {
+    function send(extra, _retried) {
       try {
         var body = { vid: vid(), page: page() };
         for (var k in extra) body[k] = extra[k];
         var h = { 'Content-Type': 'text/plain' };
         var t = Salon.api.token();
         if (t) h['Authorization'] = 'Bearer ' + t;
+        function again() {
+          /* окно рестарта сервера: один тихий повтор, пока вкладка жива */
+          if (_retried || document.visibilityState === 'hidden') return;
+          setTimeout(function () { send(extra, true); }, 2500);
+        }
         fetch(API_BASE + '/visit', {
           method: 'POST', headers: h, keepalive: true,
           body: JSON.stringify(body)
-        }).catch(function () {});
+        }).then(function (r) { if (r.status >= 502) again(); })
+          .catch(again);
       } catch (e) {}
     }
     function view() {

@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Кабинет мастера — Академический Салон</title>
 <meta name="robots" content="noindex,nofollow,noarchive" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260717a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260717a" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260717a" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260717b" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260717b" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260717b" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -254,6 +254,12 @@
   .ag-rv.approved{border-left:4px solid var(--ag-ok)}
   .ag-rv.rejected{opacity:.6}
 
+  /* приёмная: редактируемые поля пары вопрос-ответ */
+  .ag-inp{width:100%;font:inherit;font-size:14px;padding:9px 11px;color:var(--ink);
+    background:var(--paper,transparent);border:1px solid var(--hairline-strong);border-radius:var(--r)}
+  textarea.ag-inp{resize:vertical;line-height:1.5}
+  .ag-inp:focus{outline:2px solid var(--stamp,#3A4E7A);outline-offset:1px}
+
   .ag-lead{padding:11px 14px;border-bottom:1px solid var(--hairline);font-size:13.5px}
   .ag-lead:last-child{border-bottom:0}
 
@@ -330,8 +336,8 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260717a"></script>
-<script src="assets/js/extras.js?v=20260717a"></script>
-<script src="assets/js/admin.js?v=20260717a"></script>
+<script src="assets/js/app.js?v=20260717b"></script>
+<script src="assets/js/extras.js?v=20260717b"></script>
+<script src="assets/js/admin.js?v=20260717b"></script>
 </body>
 </html>
