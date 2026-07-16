@@ -7,7 +7,7 @@
 <!-- ПРОТОТИП v2 «Тот, кто отвечает». Страница ни к чему не подключена и закрыта от индексации. -->
 <meta name="robots" content="noindex,nofollow" />
 <meta name="theme-color" content="#12100B" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260716a" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260716b" />
 <link rel="prefetch" href="index.html" />
 <style>
 /* ============================================================
@@ -417,6 +417,7 @@ noscript a{color:var(--wax)}
 (function () {
   'use strict';
   var RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (/[?&]rm=0\b/.test(location.search)) RM = false; /* люк: панель предпросмотра всегда в reduce-motion */
   var $ = function (id) { return document.getElementById(id); };
   var clamp01 = function (v) { return v < 0 ? 0 : (v > 1 ? 1 : v); };
   var seg = function (p, a, b) { return clamp01((p - a) / (b - a)); };
@@ -492,16 +493,19 @@ noscript a{color:var(--wax)}
 
   /* Бит 2: вопрос в группу → «прочитано: 27» → «кто-то печатает…» гаснет */
   var t2 = makeTyper($('c2msg'), 'ребят, кто-нибудь понял, что он хочет во второй главе?');
-  var seq2 = { started: false,
+  var seq2 = { started: false, done: false,
     run: function () { if (this.started) return; this.started = true;
       t2.start(function () {
         setTimeout(function () { $('c2status').style.opacity = '.9'; }, RM ? 0 : 700);
+        /* для ворот сцена «сыграна», когда легло «прочитано: 27»;
+           гаснущее «кто-то печатает…» доигрывает уже по ходу плёнки */
+        setTimeout(function () { seq2.done = true; }, RM ? 0 : 1200);
         if (RM) { return; }
         setTimeout(function () { $('c2typing').style.opacity = '.9'; }, 1600);
         setTimeout(function () { $('c2typing').style.opacity = '0'; }, 3400);
       });
     },
-    finish: function () { this.started = true; t2.finish();
+    finish: function () { this.started = true; this.done = true; t2.finish();
       $('c2status').style.opacity = '.9'; $('c2typing').style.opacity = '0'; } };
 
   /* Бит 4: честное сообщение печатается, стирается, уходит «всё хорошо) спи» */
@@ -536,7 +540,8 @@ noscript a{color:var(--wax)}
         }, 1000);
       })();
     }
-    return { run: run, finish: function () { started = true; finish(); } };
+    return { run: run, isDone: function () { return done; },
+             finish: function () { started = true; finish(); } };
   })();
 
   /* Бит 6: «вы сейчас не спите?» → долгая пауза «печатает…» → «Не спим. Рассказывайте.» */
@@ -734,10 +739,45 @@ noscript a{color:var(--wax)}
     if (cursorL) cursorL.style.opacity = mouseOn ? String(.9 * (1 - seg(p, .52, .60))) : '0';
   }
 
-  /* ---------------- скролл → прогресс, напрямую ---------------- */
-  var H = 1;
+  /* ---------------- скролл → цель; кадр догоняет, сцены держат ворота ----------------
+     Раньше кадр равнялся позиции скролла напрямую — и колесо мыши или
+     инерция тача пролетали отрезок сцены быстрее, чем играет её театр:
+     finish() дописывал переписку мгновенно (маме уходило «всё хорошо) спи»
+     без печати и стирания — так и наблюдалось на десктопе). Теперь скролл
+     задаёт только ЦЕЛЬ. Кадр движется к ней с потолком скорости — росчерки,
+     штампы и полка успевают раскрыться при любом рывке, — а перед ключевыми
+     сценами стоят ворота: плёнка ждёт, пока сцена доиграет, и едет дальше.
+     Reduce-motion живёт по-старому: там сцены дописываются мгновенно. */
+  var H = 1, target = 0, ticking = null;
+  var VCAP = .085 / 62.5; /* шаг кадра за тик (16 мс): фильм насквозь ≥ ~12 с */
+  var GATES = [
+    { at: .030, ok: function () { return t1.isDone(); },  go: function () { seq1.run(); } },
+    { at: .108, ok: function () { return seq2.done; },    go: function () { seq2.run(); } },
+    { at: .318, ok: function () { return mom.isDone(); }, go: function () { mom.run(); } },
+    { at: .492, ok: function () { return t6b.isDone(); }, go: function () { seq6.run(); } }
+  ];
   function measure() { H = Math.max(1, document.documentElement.scrollHeight - window.innerHeight); }
-  function onScroll() { render(clamp01((window.pageYOffset || document.documentElement.scrollTop || 0) / H)); }
+  function step() {
+    var gap = target - cur;
+    if (gap > -.0005 && gap < .0005) { render(target); stop_(); return; }
+    var d = gap * .14; /* мягкая погоня: медленный скролл — почти 1:1 */
+    if (d > VCAP) d = VCAP; else if (d < -VCAP) d = -VCAP;
+    var np = cur + d;
+    if (d > 0) {
+      for (var i = 0; i < GATES.length; i++) {
+        var g = GATES[i];
+        if (cur <= g.at + 1e-9 && np > g.at && !g.ok()) { np = g.at; g.go(); break; }
+      }
+    }
+    render(np);
+  }
+  function go_() { if (!ticking) ticking = setInterval(step, 16); }
+  function stop_() { if (ticking) { clearInterval(ticking); ticking = null; } }
+  function onScroll() {
+    target = clamp01((window.pageYOffset || document.documentElement.scrollTop || 0) / H);
+    if (RM) { render(target); return; }
+    go_();
+  }
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { measure(); onScroll(); }, { passive: true });
 
@@ -789,8 +829,8 @@ noscript a{color:var(--wax)}
     });
   }
 
-  /* служебный люк для отладки и тестов */
-  window.PRELUDE = { set: function (p) { render(clamp01(p)); }, p: function () { return cur; } };
+  /* служебный люк для отладки и тестов: перемотка мимо погони и ворот */
+  window.PRELUDE = { set: function (p) { target = clamp01(p); render(target); }, p: function () { return cur; } };
 
   measure();
   render(0);

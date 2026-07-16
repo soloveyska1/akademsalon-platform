@@ -763,7 +763,7 @@
       'display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:var(--ink)}' +
       '.resume-bar b{font-weight:600}.resume-bar a{white-space:nowrap}' +
       '.resume-bar .rb-x{border:none;background:none;cursor:pointer;color:var(--ink-faint);font-size:16px;line-height:1;padding:4px}' +
-      '@media(max-width:740px){.resume-bar{bottom:58px}}</style>' +
+      '</style>' +
       '<span>✒ Ваша смета ждёт: <b>' + t.label.split(' (')[0] + ' · от ' + q.lowFmt + ' ₽</b>' +
       (hasText ? ' — тема и требования сохранены' : '') + '</span>' +
       '<a class="link" href="configurator.html">Продолжить оформление →</a>' +
@@ -771,8 +771,23 @@
     bar.querySelector('.rb-x').addEventListener('click', function () {
       try { sessionStorage.setItem('salon_resume_hidden', '1'); } catch (e) {}
       bar.remove();
+      clearance();
     });
     document.body.appendChild(bar);
+    /* плашка встаёт над мобильной навигацией (высота той плавает с safe-area)
+       и сообщает, сколько занято у нижней кромки, — пилюли
+       «Связаться»/«Нужна помощь?» поднимаются над ней через max() в CSS */
+    function clearance() {
+      if (!bar.isConnected) { document.documentElement.style.removeProperty('--resume-clear'); return; }
+      var nav = document.querySelector('.mobile-cta'), navH = 0;
+      if (nav && getComputedStyle(nav).display !== 'none') navH = nav.getBoundingClientRect().height;
+      bar.style.bottom = navH ? Math.round(navH) + 'px' : '0px';
+      var top = bar.getBoundingClientRect().top;
+      document.documentElement.style.setProperty('--resume-clear', Math.max(0, Math.round(window.innerHeight - top)) + 'px');
+    }
+    clearance();
+    setTimeout(clearance, 400); /* шрифты и перенос строк могли изменить высоту */
+    window.addEventListener('resize', clearance, { passive: true });
     if (S.visit) S.visit.mark('показана закладка возврата сметы');
   })();
 })();

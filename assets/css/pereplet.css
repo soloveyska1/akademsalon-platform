@@ -139,8 +139,8 @@ h3{font-size:clamp(19px,2vw,23px);font-weight:500}
 .cover-copy .kicker::after{content:"";height:1px;background:var(--hairline-strong);flex:0 0 56px}
 .cover-copy h1{margin-bottom:clamp(16px,2.5vw,28px)}
 .cover-copy .lead{margin-bottom:var(--s3)}
-.price-line{font-family:var(--mono);font-size:15px;color:var(--ink-soft);letter-spacing:-.01em;margin-bottom:var(--s4);display:flex;flex-wrap:wrap;gap:6px 14px}
-.price-line b{color:var(--ink);font-weight:600}
+/* цены с обложки сняты (2026-07-16): гость сначала видит подход и ценность,
+   к цифрам его ведут каталог в книге и конфигуратор */
 .cover-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:var(--s2)}
 .cover-note{font-size:13px;color:var(--ink-soft)}
 
