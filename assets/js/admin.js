@@ -1265,11 +1265,30 @@ function initGodEye() {
   }
 
   /* ---------------- НАСТРОЙКИ ---------------- */
+  function maintSec(ov) {
+    var m = ov.maintenance || {};
+    function row(key, on, title, note) {
+      return '<div class="ag-actrow" style="align-items:center;gap:10px">' +
+        '<button type="button" class="btn ' + (on ? 'btn-wax' : 'btn-line') + '" data-maint="' + key + '" data-on="' + (on ? 1 : 0) + '">' +
+        (on ? '⏸ ' + title + ': ЗАКРЫТО — открыть' : '▶ ' + title + ': работает — закрыть') + '</button>' +
+        '<span class="petit">' + note + '</span></div>';
+    }
+    return '<div class="ag-sec" style="border-top:0;margin-top:0;padding-top:0"><span class="caps">Техработы</span>' +
+      ((m.site || m.bot) ? '<p class="petit" style="color:var(--wax)"><b>Внимание: занавес опущен.</b> Не забудьте открыть, когда закончите.</p>' : '') +
+      row('site', m.site, 'Сайт',
+          'Гости видят вывеску «Идут переплётные работы» (страница сама вернёт их, когда откроемся). ' +
+          'Заявки, кабинет, эта админка и бот продолжают работать.') +
+      row('bot', m.bot, 'Бот',
+          'Клиентам в Telegram бот вежливо отвечает про короткий антракт. Вы (мастер) видите бота как обычно.') +
+      '</div>';
+  }
+
   function drawSettings(box) {
     var ov = st.ov || {};
     box.innerHTML =
       '<div class="ag-card" style="max-width:680px;max-height:none">' +
-      '<div class="ag-sec" style="border-top:0;margin-top:0;padding-top:0"><span class="caps">Реквизиты для переводов</span>' +
+      maintSec(ov) +
+      '<div class="ag-sec"><span class="caps">Реквизиты для переводов</span>' +
       '<div class="ag-actrow"><textarea id="agReq" rows="3" placeholder="Сбер: 0000 0000 0000 0000 (Имя О.)&#10;СБП: +7 900 000-00-00">' + esc(ov.requisites || '') + '</textarea>' +
       '<button type="button" class="btn btn-line" id="agReqSave">Сохранить</button></div>' +
       '<p class="ag-note">Эти реквизиты видят клиенты при оплате переводом — в боте и в кабинете.</p></div>' +
@@ -1767,6 +1786,32 @@ function initGodEye() {
     if (t.closest('#agReqSave')) {
       api('/admin/requisites', { text: (document.getElementById('agReq') || {}).value || '' })
         .then(function (r) { toast(r.ok ? 'Реквизиты сохранены ✓' : 'Не получилось'); });
+      return;
+    }
+    /* --- техработы: занавес сайта и бота --- */
+    var mt = t.closest('[data-maint]');
+    if (mt) {
+      var mtKey = mt.getAttribute('data-maint');
+      var mtOn = mt.getAttribute('data-on') === '1';
+      var mtBody = {}; mtBody[mtKey] = !mtOn;
+      var go = function () {
+        api('/admin/maintenance', mtBody).then(function (r) {
+          if (!r.ok) { toast('Не получилось'); return; }
+          st.ov = st.ov || {}; st.ov.maintenance = r.maintenance;
+          toast(mtKey === 'site'
+            ? (r.maintenance.site ? 'Сайт закрыт на техработы ⏸' : 'Сайт снова открыт ✅')
+            : (r.maintenance.bot ? 'Бот на антракте ⏸' : 'Бот снова отвечает ✅'));
+          if (st.tab === 'settings') drawBody();
+        });
+      };
+      if (!mtOn) confirmDlg({
+        title: mtKey === 'site' ? 'Закрыть сайт на техработы?' : 'Поставить бота на антракт?',
+        text: mtKey === 'site'
+          ? 'Гости увидят вывеску «Идут переплётные работы». Заявки, кабинет и админка продолжат работать.'
+          : 'Клиенты в Telegram получат вежливый ответ про короткий перерыв. Вам бот отвечает как обычно.',
+        okLabel: 'Закрыть', noLabel: 'Отмена'
+      }).then(function (okd) { if (okd && okd.ok) go(); });
+      else go();
       return;
     }
     /* --- отзывы --- */

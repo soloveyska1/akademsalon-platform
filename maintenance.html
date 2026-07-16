@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Переплётные работы — Академический Салон</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#F6F1E7" />
+<!-- ============================================================
+     ТЕХРАБОТЫ (503). Страница обязана жить сама по себе:
+     ни одного внешнего файла — если лежит вся мастерская,
+     эта вывеска всё равно откроется. Гостя не теряем: бот жив,
+     страница сама вернёт на сайт, когда двери откроются.
+     ============================================================ -->
+<style>
+  :root{
+    --paper:#F6F1E7; --sheet:#FFFEF9; --ink:#22201B; --ink-soft:#6B665A;
+    --ink-faint:#857E6C; --hairline:#D9D2C2; --hairline-strong:#C9C0AA;
+    --wax:#B23B22; --wax-deep:#8C2D18; --foil:#B98A2F;
+    --serif:"Literata",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Golos Text",Arial,sans-serif;
+    --mono:"JetBrains Mono","SF Mono",Consolas,monospace;
+  }
+  [data-theme="dark"]{
+    --paper:#171511; --sheet:#1E1B15; --ink:#EDE3CF; --ink-soft:#B7AD97;
+    --ink-faint:#7E7663; --hairline:#333027; --hairline-strong:#453F32;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--sans);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:32px 20px;-webkit-font-smoothing:antialiased;
+  }
+  .card{max-width:520px;width:100%}
+  .frame{
+    border:1px solid var(--hairline-strong);border-radius:4px;background:var(--sheet);
+    padding:clamp(30px,6vw,52px) clamp(22px,5vw,44px);
+    box-shadow:0 1px 0 var(--hairline),0 22px 60px rgba(34,32,27,.12);
+    position:relative;
+  }
+  .frame::before{
+    content:"";position:absolute;inset:9px;border:1px solid var(--hairline);
+    border-radius:2px;pointer-events:none;
+  }
+  .seal{width:92px;height:92px;margin:0 auto 20px;display:block;filter:drop-shadow(0 3px 8px rgba(140,45,24,.28))}
+  .caps{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(22px,4.6vw,30px);line-height:1.25;margin-bottom:12px}
+  p{font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:40ch;margin:0 auto}
+  .dots{display:inline-block;min-width:22px;text-align:left}
+  .rule{width:64px;height:1px;background:var(--hairline-strong);margin:22px auto}
+  .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    min-height:46px;padding:11px 20px;border-radius:3px;border:1px solid var(--hairline-strong);
+    background:transparent;color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:500;
+    transition:border-color .15s,color .15s;
+  }
+  .btn:hover{border-color:var(--wax);color:var(--wax)}
+  .btn-wax{background:var(--wax);border-color:var(--wax);color:#FFF8EE}
+  .btn-wax:hover{background:var(--wax-deep);border-color:var(--wax-deep);color:#FFF8EE}
+  .petit{font-size:12.5px;color:var(--ink-faint);margin-top:20px}
+  .petit b{color:var(--ink-soft);font-weight:500}
+</style>
+<script>
+(function(){try{var t=localStorage.getItem("salon_theme");
+if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";
+if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();
+</script>
+</head>
+<body>
+<main class="card">
+  <div class="frame">
+    <svg class="seal" viewBox="0 0 120 120" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" fill="#8C2D18"/>
+      <circle cx="60" cy="60" r="48.5" fill="#B23B22"/>
+      <circle cx="60" cy="60" r="42" fill="none" stroke="#C65B41" stroke-width="1.2"/>
+      <text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-weight="bold"
+            font-size="34" fill="#F6ECDC" letter-spacing="1">АС</text>
+    </svg>
+    <p class="caps">Академический салон · короткий антракт</p>
+    <h1>Идут переплётные работы</h1>
+    <p>Мы ненадолго закрыли зал: обновляем мастерскую. Обычно это считанные минуты —
+       страница <b>откроется сама</b><span class="dots" id="dots">.</span></p>
+    <div class="rule" aria-hidden="true"></div>
+    <p style="font-size:13.5px">Дело не ждёт? Мастер на связи, заявки принимаются как обычно:</p>
+    <div class="btns" style="margin-top:14px">
+      <a class="btn btn-wax" href="https://t.me/academic_saloon_bot" rel="noopener">Написать в Telegram</a>
+      <a class="btn" href="https://vk.com/academicsaloon" rel="noopener">ВКонтакте</a>
+    </div>
+    <p class="petit">Страница проверяет двери каждые несколько секунд.<br>Можно просто оставить вкладку открытой.</p>
+  </div>
+</main>
+<script>
+/* стучимся в двери: как только сайт снова отвечает 200 — возвращаем гостя */
+(function () {
+  var n = 0;
+  setInterval(function () {
+    n = (n + 1) % 4;
+    var d = document.getElementById('dots');
+    if (d) d.textContent = ['.', '..', '...', '.'][n];
+  }, 700);
+  function knock() {
+    try {
+      fetch('/', { method: 'GET', cache: 'reload', redirect: 'follow' }).then(function (r) {
+        if (r && r.ok) location.replace('/');
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  setInterval(knock, 12000);
+  setTimeout(knock, 4000);
+})();
+</script>
+</body>
+</html>

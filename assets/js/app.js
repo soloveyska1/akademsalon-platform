@@ -972,6 +972,31 @@
     };
   })();
 
+  /* ---------------- Чёрный ящик: JS-ошибки посетителей ----------------
+     Скрипт упал у клиента — метка «js: …» уходит маячком в «Визиты»
+     (мастер видит в админке), сервер дублирует её в журнал, а «Салон-дозор»
+     будит владельца в Telegram. Не больше трёх меток за сессию, без повторов. */
+  (function blackBox() {
+    var sent = {}, n = 0;
+    function report(msg, src) {
+      if (n >= 3) return;
+      msg = String(msg || '').slice(0, 80);
+      if (!msg || sent[msg]) return;
+      sent[msg] = 1; n++;
+      try { Salon.visit.mark('js: ' + msg + (src ? ' @ ' + src : '')); } catch (e) {}
+    }
+    window.addEventListener('error', function (e) {
+      /* ошибки загрузки картинок/скриптов приходят без message — не наш случай */
+      if (e && e.message) {
+        report(e.message, (String(e.filename || '').split('/').pop() || '') + ':' + (e.lineno || 0));
+      }
+    });
+    window.addEventListener('unhandledrejection', function (e) {
+      var r = e && e.reason;
+      report((r && (r.message || String(r))) || 'обещание без объяснений', 'promise');
+    });
+  })();
+
   /* Реферальная метка сайта (?ref=<код>): помним 30 дней, конфигуратор
      передаёт её с заявкой — пригласившему идёт бонус по правилам клуба. */
   (function () {

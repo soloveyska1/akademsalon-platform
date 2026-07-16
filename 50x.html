@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Станок заело — Академический Салон</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#F6F1E7" />
+<!-- ============================================================
+     СЕРВЕРНЫЙ СБОЙ (500/502/504). Самодостаточная вывеска:
+     ни одного внешнего файла. Сама пробует вернуться на сайт,
+     как только он оживает, и не бросает гостя без связи.
+     ============================================================ -->
+<style>
+  :root{
+    --paper:#F6F1E7; --sheet:#FFFEF9; --ink:#22201B; --ink-soft:#6B665A;
+    --ink-faint:#857E6C; --hairline:#D9D2C2; --hairline-strong:#C9C0AA;
+    --wax:#B23B22; --wax-deep:#8C2D18;
+    --serif:"Literata",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Golos Text",Arial,sans-serif;
+    --mono:"JetBrains Mono","SF Mono",Consolas,monospace;
+  }
+  [data-theme="dark"]{
+    --paper:#171511; --sheet:#1E1B15; --ink:#EDE3CF; --ink-soft:#B7AD97;
+    --ink-faint:#7E7663; --hairline:#333027; --hairline-strong:#453F32;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--sans);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:32px 20px;-webkit-font-smoothing:antialiased;
+  }
+  .card{max-width:560px;width:100%}
+  .code{
+    font-family:var(--mono);font-variant-numeric:tabular-nums;
+    font-size:clamp(84px,17vw,150px);line-height:1;letter-spacing:-.04em;
+    color:var(--ink-faint);position:relative;display:inline-block;
+  }
+  .code .stamp{
+    position:absolute;right:-46px;bottom:-8px;width:92px;height:92px;
+    transform:rotate(-11deg);filter:drop-shadow(0 3px 8px rgba(140,45,24,.25));
+  }
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(22px,4.4vw,30px);margin:18px 0 10px}
+  p{font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:46ch;margin:0 auto}
+  .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    min-height:46px;padding:11px 20px;border-radius:3px;border:1px solid var(--hairline-strong);
+    background:transparent;color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:500;
+    cursor:pointer;transition:border-color .15s,color .15s;font-family:var(--sans);
+  }
+  .btn:hover{border-color:var(--wax);color:var(--wax)}
+  .btn-ink{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  [data-theme="dark"] .btn-ink{color:#171511}
+  .btn-ink:hover{background:var(--wax-deep);border-color:var(--wax-deep);color:#FFF8EE}
+  .petit{font-size:12.5px;color:var(--ink-faint);margin-top:22px}
+  .petit a{color:var(--ink-soft)}
+  @media(max-width:560px){.code .stamp{right:-24px;width:74px;height:74px}}
+</style>
+<script>
+(function(){try{var t=localStorage.getItem("salon_theme");
+if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";
+if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();
+</script>
+</head>
+<body>
+<main class="card">
+  <div class="code">
+    <span id="code">5··</span>
+    <svg class="stamp" viewBox="0 0 120 120" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" fill="#8C2D18"/>
+      <circle cx="60" cy="60" r="48.5" fill="#B23B22"/>
+      <circle cx="60" cy="60" r="42" fill="none" stroke="#C65B41" stroke-width="1.2"/>
+      <text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-weight="bold"
+            font-size="34" fill="#F6ECDC" letter-spacing="1">АС</text>
+    </svg>
+  </div>
+  <h1>Печатный станок заело</h1>
+  <p>Сбой на нашей стороне — мастерская уже в курсе и чинит.
+     Обычно это занимает пару минут: страница попробует открыться сама.</p>
+  <div class="btns">
+    <button class="btn btn-ink" type="button" onclick="location.reload()">Попробовать ещё раз</button>
+    <a class="btn" href="https://t.me/academic_saloon_bot" rel="noopener">Мастер в Telegram</a>
+  </div>
+  <p class="petit">Если срочное по заказу — напишите в
+    <a href="https://t.me/academic_saloon_bot" rel="noopener">Telegram-бот</a> или
+    <a href="https://vk.com/academicsaloon" rel="noopener">ВКонтакте</a>: заявки и переписка живут отдельно от сайта.</p>
+</main>
+<script>
+/* пробуем вернуться сами, когда сайт оживает */
+(function () {
+  function knock() {
+    try {
+      fetch('/', { method: 'GET', cache: 'reload', redirect: 'follow' }).then(function (r) {
+        if (r && r.ok) location.replace('/');
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  setInterval(knock, 15000);
+  setTimeout(knock, 5000);
+})();
+</script>
+</body>
+</html>
