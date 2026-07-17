@@ -44,7 +44,7 @@
   /* гарнитуры */
   --serif:"Literata",Georgia,"Times New Roman",serif;
   --sans:"Golos Text",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  --mono:"JetBrains Mono","SF Mono",Consolas,monospace;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,monospace;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}

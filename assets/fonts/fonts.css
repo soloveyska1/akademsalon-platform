@@ -128,3 +128,94 @@
   src: url(literata-normal-300-700-latin.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+   Символы, которых нет в подмножествах Google: ₽ ← → ↗ ≈ ≠ ≤ ▶
+
+   Диапазоны выше их не покрывают, и глифов нет в самих файлах. Показательно:
+   в latin есть евро (U+20AC), но не рубль; перечислены U+2191/U+2193 (вверх
+   и вниз), но не боковые стрелки. Без правил ниже браузер добирал каждый
+   такой символ из случайного системного шрифта — замерено в Chromium/macOS
+   через CDP CSS.getPlatformFontsForNode: ₽ приходил из STIX Two Math
+   (засечный, рядом с JetBrains Mono видны шпоры), → из Times New Roman,
+   ≈ из Courier; на Android — риск тофу.
+
+   Файлы -symbols.woff2 нарезаны из тех же исходников тех же версий, что и
+   подмножества выше (Golos Text 2.004, JetBrains Mono 2.211, Literata
+   3.103 — очертания всех общих глифов совпали побайтово). Оси wght/opsz
+   на месте, поэтому символы тянутся за весом и кеглем наравне с текстом.
+
+   Два правила, которые легко нарушить:
+
+   1. unicode-range у каждого семейства перечисляет РОВНО то, что есть в его
+      файле, — составы разные (в Golos нет ≠ и ▶, в Literata нет ↗). Заявить
+      лишний код нельзя: браузер выберет это начертание и рисовать будет
+      нечем.
+   2. font-weight обязан повторять соседние правила ОДИН В ОДИН, а не
+      задаваться диапазоном. При font-weight:700 (<strong>) буквы возьмут
+      ближайшее объявленное начертание (600), а символ с диапазоном 400-900
+      взял бы ровно 700 — и оказался бы жирнее строки, в которой стоит.
+
+   ★ ✂ ✉ ✒ ✓ сюда не попали: их нет ни в одном из трёх семейств, они и
+   дальше берутся системным шрифтом. */
+
+/* Golos Text · символы · 400/500/600 — один файл на три начертания */
+@font-face {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(golos-text-symbols.woff2) format('woff2');
+  unicode-range: U+20BD, U+2190, U+2192, U+2197, U+2248, U+2264;
+}
+@font-face {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(golos-text-symbols.woff2) format('woff2');
+  unicode-range: U+20BD, U+2190, U+2192, U+2197, U+2248, U+2264;
+}
+@font-face {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(golos-text-symbols.woff2) format('woff2');
+  unicode-range: U+20BD, U+2190, U+2192, U+2197, U+2248, U+2264;
+}
+/* JetBrains Mono · символы · 400/600 — ширина ₽ 600/1000, как у цифр:
+   моноширинность и tabular-nums не ломаются */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(jetbrains-mono-symbols.woff2) format('woff2');
+  unicode-range: U+20BD, U+2190, U+2192, U+2197, U+2248, U+2260, U+2264, U+25B6;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(jetbrains-mono-symbols.woff2) format('woff2');
+  unicode-range: U+20BD, U+2190, U+2192, U+2197, U+2248, U+2260, U+2264, U+25B6;
+}
+/* Literata · символы · normal 300-700 и italic 400 (↗ в Literata нет) */
+@font-face {
+  font-family: 'Literata';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url(literata-symbols.woff2) format('woff2');
+  unicode-range: U+20BD, U+2190, U+2192, U+2248, U+2260, U+2264, U+25B6;
+}
+@font-face {
+  font-family: 'Literata';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(literata-italic-symbols.woff2) format('woff2');
+  unicode-range: U+20BD, U+2190, U+2192, U+2248, U+2260, U+2264, U+25B6;
+}
