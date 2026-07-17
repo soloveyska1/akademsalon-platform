@@ -403,3 +403,12 @@ section[id],main[id],[id].chapter{scroll-margin-top:76px}
   .doc th,.doc td{min-width:130px}
   .doc th:first-child,.doc td:first-child{min-width:96px}
 }
+
+/* Мягкое раскрытие складных блоков: содержимое details проявляется
+   коротким сдвигом — «красиво раскрывается по необходимости».
+   Дешёвый приём (одна CSS-анимация), при reduce-motion выключен. */
+details[open] > *:not(summary){animation:foldIn .26s ease both}
+@keyframes foldIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){
+  details[open] > *:not(summary){animation:none}
+}

@@ -883,6 +883,9 @@ html:not(.has-js) .b-cover{transform:translateZ(2px) rotateY(-30deg)}
 .plus-card .pc-row b{color:var(--ink);font-weight:500}
 .plus-card .pc-stamp{position:absolute;right:16px;bottom:44px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
   color:var(--wax);border:2px solid var(--wax);border-radius:3px;padding:6px 10px;transform:rotate(-8deg);opacity:.9;background:rgba(255,254,249,.6)}
+/* штампу зарезервирован правый нижний угол — строка «Срок» под него не заезжает
+   (:last-of-type не годится: за строками идёт div-подвал билета) */
+.plus-card #ptTerm{display:block;padding-right:104px}
 .plus-card .pc-seal{position:absolute;right:18px;top:14px;font-size:20px;line-height:1}
 .plus-card .pc-foot{margin-top:12px;padding-top:10px;border-top:1px solid var(--hairline);display:flex;justify-content:space-between;gap:8px;
   font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}

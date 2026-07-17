@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex" />
 <meta name="theme-color" content="#12100B" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717c" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717d" />
 <link rel="prefetch" href="index.html" />
 <style>
 /* ============================================================
@@ -122,6 +122,11 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;
 .stp.pay{border-color:var(--wax);color:#fff;background:rgba(194,71,48,.16)}
 .steps .ar{color:var(--faint);font-size:15px;opacity:0;transition:opacity .3s ease}
 .steps .ar.hit{opacity:1}
+@media (max-width:560px){
+  /* на телефоне схема — столбиком, стрелки смотрят вниз: без повисших хвостов */
+  .steps{flex-direction:column;gap:9px}
+  .steps .ar{transform:rotate(90deg)}
+}
 
 /* --- отзывы: наклеенные карточки --- */
 .shots{display:flex;gap:clamp(10px,2.4vw,18px);justify-content:center;align-items:center;
