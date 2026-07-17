@@ -72,6 +72,7 @@ function initGodEye() {
     clients: [], csel: null, ccard: null,
     reviews: [], leads: [],
     qa: null, qaTags: null,   /* «Открытая приёмная»: очередь и лента */
+    desk: null, calDay: null, /* «Сегодня на столе»: активные дела + календарь сдач */
     subs: null,               /* /admin/subs: оформления подписки (свой контур) */
     gifts: null, gsel: null, gnew: false,  /* сертификаты: список, раскрытая карточка, форма выпуска */
     ov: null, timer: null, busy: false,
@@ -199,6 +200,7 @@ function initGodEye() {
   function refreshSilent() {
     S.api.get('/admin/overview').then(function (r) { if (r.ok) { st.ov = r; drawNav(); drawLive(); if (st.tab === 'summary') drawBody(); } });
     loadSubs();
+    if (st.tab === 'summary') loadDesk();
     if (st.tab === 'gifts') loadGifts();
     if (st.tab === 'qa') loadQA();
     if (st.tab === 'orders') {
@@ -747,6 +749,131 @@ function initGodEye() {
   }
 
   /* ---------------- СВОДКА ---------------- */
+  /* -------- «Сегодня на столе»: фокус-очередь + календарь сдач --------
+     Правило подачи: сначала то, что требует рук сегодня (и деньги дела),
+     остальное — ниже, как обычно. Список собирается из активных заказов. */
+  function loadDesk() {
+    S.api.get('/admin/orders?status=active').then(function (r) {
+      if (r && r.ok) { st.desk = r.orders || []; if (st.tab === 'summary') drawBody(); }
+    });
+  }
+  function dlLeft(o) {
+    /* считаем по календарным суткам: вчера = −1, сегодня = 0, завтра = 1 */
+    if (!o.deadline_date || 'done cancel'.indexOf(o.status) >= 0) return null;
+    var t = new Date(o.deadline_date + 'T00:00:00');
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var n = Math.round((t - today) / 86400000);
+    return isNaN(n) ? null : n;
+  }
+  function silentDays(o) {
+    var raw = o.updated_at || o.created_at || '';
+    var t = new Date(raw + (String(raw).indexOf('Z') < 0 ? 'Z' : ''));
+    return isNaN(t) ? 0 : Math.floor((Date.now() - t) / 86400000);
+  }
+  function orderSum(o) {
+    return o.price ? money(o.price) + ' ₽' : (o.quote_low ? '~' + money(o.quote_low) + ' ₽' : '');
+  }
+  function deskRows() {
+    var rows = [];
+    (st.desk || []).forEach(function (o) {
+      if (o.paused) return;
+      var left = dlLeft(o), quiet = silentDays(o);
+      var r = null;
+      if (left !== null && left < 0) {
+        r = { sc: 100 + Math.min(-left, 30), ic: '🔥', why: 'срок вышел ' + (-left) + ' дн назад', cls: 'fire' };
+      } else if (left !== null && left <= 2 && 'work check fix prepay priced new'.indexOf(o.status) >= 0) {
+        r = { sc: 96 - left, ic: '⏳', why: left === 0 ? 'сдача сегодня' : left === 1 ? 'сдача завтра' : 'сдача через 2 дня', cls: 'fire' };
+      } else if (o.claimed) {
+        r = { sc: 85, ic: '💳', why: 'клиент отметил оплату — сверьте и подтвердите', cls: 'act' };
+      } else if (o.status === 'new') {
+        r = { sc: 80, ic: '🆕', why: 'новая заявка — посмотрите и назначьте цену', cls: 'act' };
+      } else if (o.status === 'fix') {
+        r = { sc: 75, ic: '✏️', why: 'клиент ждёт правки', cls: 'act' };
+      } else if (o.status === 'priced' && quiet >= 2) {
+        r = { sc: 60, ic: '🤝', why: 'предложение висит ' + quiet + ' дн — напомните о себе', cls: '' };
+      } else if (o.status === 'prepay' && quiet >= 2) {
+        r = { sc: 58, ic: '💤', why: 'счёт не оплачен ' + quiet + ' дн — стоит напомнить', cls: '' };
+      } else if (o.status === 'check' && quiet >= 5) {
+        r = { sc: 50, ic: '👀', why: 'на проверке ' + quiet + ' дн — поторопите с приёмкой', cls: '' };
+      }
+      if (!r) return;
+      r.o = o;
+      rows.push(r);
+    });
+    rows.sort(function (a, b) { return b.sc - a.sc; });
+    return rows;
+  }
+  function deskBlock() {
+    if (st.desk === null) {
+      loadDesk();
+      return '<p class="caps" style="margin:0 0 8px">Сегодня на столе</p><div class="ag-empty">Собираем стол…</div>';
+    }
+    var rows = deskRows();
+    var head = '<p class="caps" style="margin:0 0 8px">Сегодня на столе' +
+      (rows.length ? ' · ' + rows.length : '') + '</p>';
+    if (!rows.length) return head + '<div class="ag-attn" style="border-left-color:var(--ag-ok)">' +
+      '<div class="aa-row" style="cursor:default"><span>🕊</span><span class="aa-what">Стол чист — срочного нет. Загляните в календарь сдач ниже.</span></div></div>';
+    var vis = rows.slice(0, 8);
+    return head + '<div class="ag-desk">' + vis.map(function (r) {
+      var o = r.o;
+      var who = o.client && o.client.guest ? o.client.name : (o.client ? o.client.name : '');
+      return '<button type="button" class="dk-row ' + r.cls + '" data-open-order="' + o.id + '">' +
+        '<span class="dk-ic">' + r.ic + '</span>' +
+        '<span class="dk-main"><b>№' + o.id + ' · ' + esc(o.work_label || '') + '</b>' +
+        '<span class="dk-why">' + esc(r.why) + (who ? ' · ' + esc(who) : '') + '</span></span>' +
+        '<span class="dk-sum">' + orderSum(o) + '</span>' +
+        '<span class="dk-go">→</span></button>';
+    }).join('') +
+    (rows.length > 8
+      ? '<button type="button" class="ag-linkbtn" data-go="attention" style="margin:8px 0 0">ещё ' + (rows.length - 8) + ' — во вкладке «Заказы» →</button>'
+      : '') +
+    '</div>';
+  }
+  function calBlock() {
+    if (st.desk === null) return '';
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var byDay = {}, over = [];
+    (st.desk || []).forEach(function (o) {
+      var left = dlLeft(o);
+      if (left === null) return;
+      if (left < 0) { over.push(o); return; }
+      (byDay[o.deadline_date] = byDay[o.deadline_date] || []).push(o);
+    });
+    var DOW = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+    var chips = '';
+    if (over.length) {
+      chips += '<button type="button" class="cal-day fire' + (st.calDay === 'over' ? ' on' : '') + '" data-cal="over">' +
+        '<span class="cd-dow">срок</span><b>!</b><span class="cd-n">' + over.length + '</span></button>';
+    }
+    for (var i = 0; i < 14; i++) {
+      var d = new Date(today.getTime() + i * 86400000);
+      var iso = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+      var list = byDay[iso] || [];
+      chips += '<button type="button" class="cal-day' + (list.length ? ' has' : '') +
+        (st.calDay === iso ? ' on' : '') + '" data-cal="' + iso + '">' +
+        '<span class="cd-dow">' + (i === 0 ? 'сег' : i === 1 ? 'зав' : DOW[d.getDay()]) + '</span>' +
+        '<b>' + d.getDate() + '</b>' +
+        (list.length ? '<span class="cd-n">' + list.length + '</span>' : '') + '</button>';
+    }
+    var sel = st.calDay === 'over' ? over : (st.calDay ? (byDay[st.calDay] || []) : null);
+    var selHtml = '';
+    if (sel) {
+      selHtml = sel.length
+        ? '<div class="ag-attn" style="margin-top:8px">' + sel.map(function (o) {
+            var left = dlLeft(o);
+            return '<div class="aa-row" data-open-order="' + o.id + '"><span>' + stMeta(o.status)[0] + '</span>' +
+              '<span class="aa-what"><b>№' + o.id + ' · ' + esc(o.work_label || '') + '</b>' +
+              (o.deadline_text ? ' — «' + esc(o.deadline_text) + '»' : '') +
+              (left !== null && left < 0 ? ' · срок вышел ' + (-left) + ' дн назад' : '') +
+              '</span><span class="aa-go">' + orderSum(o) + ' →</span></div>';
+          }).join('') + '</div>'
+        : '<div class="ag-empty" style="margin-top:8px">На этот день сдач нет.</div>';
+    }
+    return '<p class="caps" style="margin:18px 0 8px">Календарь сдач · две недели</p>' +
+      '<div class="ag-cal">' + chips + '</div>' + selHtml;
+  }
+
   function tplSummary() {
     var ov = st.ov || {};
     var by = ov.by_status || {};
@@ -765,6 +892,9 @@ function initGodEye() {
     if (ov.qa && ov.qa.pending) attn.push({ f: '@qa', ic: '📮', t: '<b>Вопросы в приёмной: ' + ov.qa.pending + '</b> — ответить в течение дня' });
     var vs = ov.visits || {};
     return '' +
+      deskBlock() +
+      calBlock() +
+      '<p class="caps" style="margin:18px 0 8px">Пульс мастерской</p>' +
       '<div class="ag-tiles">' +
       tile(by.new || 0, 'новые заявки', by.new ? 'warn' : '', 'new') +
       tile(ov.claimed || 0, 'оплаты на сверке', ov.claimed ? 'warn' : '', 'attention') +
@@ -882,7 +1012,8 @@ function initGodEye() {
         }).join('') +
         '<button type="button" class="clr-dot" data-bulk-clr="" title="без цвета" style="background:transparent"></button></span>' +
         (trash
-          ? '<button type="button" class="btn btn-wax" data-bulk="restore">↩ Восстановить</button>'
+          ? '<button type="button" class="btn btn-wax" data-bulk="restore">↩ Восстановить</button>' +
+            '<button type="button" class="btn btn-line" data-bulk="purge" style="color:var(--wax,#A8402F)">🔥 Стереть навсегда</button>'
           : '<button type="button" class="btn btn-line" data-bulk="hide">🗄 Скрыть</button>' +
             '<button type="button" class="btn btn-wax" data-bulk="trash">🗑 В корзину</button>')
       : '') +
@@ -1287,13 +1418,52 @@ function initGodEye() {
         'title="Закреплённые заказы всегда наверху списка">📌 ' + (o.pinned ? 'Закреплён' : 'Закрепить') + '</button>' +
       '<span class="ag-pal" title="Цветная метка — для своих пометок: срочное, ждёт, VIP…">' + pal + '</span>' +
       (o.deleted
-        ? '<button type="button" class="ag-qbtn" data-card-flag="restore">↩ Вернуть из корзины</button>'
+        ? '<button type="button" class="ag-qbtn" data-card-flag="restore">↩ Вернуть из корзины</button>' +
+          '<button type="button" class="ag-qbtn" data-card-flag="purge" ' +
+            'title="Стереть дело навсегда — с хроникой, файлами и перепиской. Возврата нет" ' +
+            'style="color:var(--wax,#A8402F)">🔥 Стереть навсегда</button>'
         : '<button type="button" class="ag-qbtn' + (o.archived_admin ? ' on' : '') + '" data-card-flag="hide" ' +
             'title="Скрыть с рабочего стола — заказ уедет в «Архив», клиент ничего не заметит">' +
             (o.archived_admin ? '🗄 В архиве' : '🗄 Скрыть') + '</button>' +
           '<button type="button" class="ag-qbtn" data-card-flag="trash" ' +
             'title="Убрать в корзину: пропадёт из всех списков, кроме «Корзины». Данные не стираются">🗑 В корзину</button>') +
       '</div>';
+  }
+
+  /* «Деньги по делу» — вся стоимость и скидки в одном месте, без раскопок:
+     цена → каждая скидка с основанием → деньгами → получено → остаток */
+  function moneyBlock(o) {
+    var rows = [];
+    if (!o.price) {
+      rows.push(['Смета сайта', o.quote_low
+        ? '~' + money(o.quote_low) + (o.quote_high ? ' – ' + money(o.quote_high) : '') + ' ₽'
+        : 'без вилки']);
+      rows.push(['Цена', '<b>не назначена</b> — клиент ждёт оценку']);
+      if (o.promo_code) rows.push(['🎟 Промокод ' + esc(o.promo_code), 'привязан — скидка посчитается от цены']);
+      if (o.gift_code) rows.push(['🎁 Сертификат ' + esc(o.gift_code), 'привязан — зачтётся при цене']);
+      if (o.bonus_spent) rows.push(['💎 Бонусы', '−' + money(o.bonus_spent)]);
+    } else {
+      rows.push(['Цена', '<b>' + money(o.price) + ' ₽</b>']);
+      if (o.promo_discount) rows.push(['🎟 Промокод ' + esc(o.promo_code || ''), '−' + money(o.promo_discount) + ' ₽']);
+      else if (o.promo_code) rows.push(['🎟 Промокод ' + esc(o.promo_code), 'не применился (условия кода)']);
+      if (o.sub_discount) rows.push(['⭐ Абонемент', '−' + money(o.sub_discount) + ' ₽']);
+      if (o.bonus_spent) rows.push(['💎 Бонусы клиента', '−' + money(o.bonus_spent) + ' ₽']);
+      if (o.gift_amount) rows.push(['🎁 Сертификат ' + esc(o.gift_code || ''), '−' + money(o.gift_amount) + ' ₽ (зачёт)']);
+      else if (o.gift_code) rows.push(['🎁 Сертификат ' + esc(o.gift_code), 'привязан, зачтётся при пересчёте']);
+      var paid = 0, claimed = 0;
+      (o.plan || []).forEach(function (p) {
+        if (p.state === 'paid') paid += p.amount || 0;
+        else if (p.state === 'claimed') claimed += p.amount || 0;
+      });
+      var total = o.due_total || 0;
+      rows.push(['💵 Деньгами к оплате', '<b>' + money(total) + ' ₽</b>']);
+      if (paid) rows.push(['Получено', money(paid) + ' ₽']);
+      if (claimed) rows.push(['Отмечено клиентом (сверить)', money(claimed) + ' ₽']);
+      rows.push(['Остаток', '<b>' + money(Math.max(0, total - paid)) + ' ₽</b>']);
+    }
+    return '<div class="ag-sec ag-money"><span class="caps">Деньги по делу</span><div class="ag-kv">' +
+      rows.map(function (r) { return '<div><span>' + r[0] + '</span><b>' + r[1] + '</b></div>'; }).join('') +
+      '</div></div>';
   }
 
   function drawCard() {
@@ -1312,6 +1482,7 @@ function initGodEye() {
       (o.topic ? '<p class="ag-topic">«' + esc(o.topic) + '»</p>' : '') +
       clientLine(o) +
       (hint ? '<div class="ag-next ' + hint[0] + '">' + hint[1] + '</div>' : '') +
+      moneyBlock(o) +
       planBlock(o) +
       partsBlock(o) +
       feedBlock(o) +
@@ -1814,6 +1985,15 @@ function initGodEye() {
       else if (bAct === 'unpin') bulkApply({ pin: 0 });
       else if (bAct === 'hide') bulkApply({ hide: 1 });
       else if (bAct === 'restore') bulkApply({ 'delete': 0 });
+      else if (bAct === 'purge') {
+        var pn = st.bulk ? st.bulk.size : 0;
+        if (!pn) { toast('Сначала отметьте заказы галочками'); return; }
+        confirmDlg({
+          title: 'Стереть навсегда: ' + pn + ' шт.?',
+          text: 'Дело исчезнет целиком — с хроникой, файлами и перепиской. Вернуть будет нельзя. Дела с реальными оплатами сервер не стирает (это учёт) — они останутся в корзине.',
+          okLabel: 'Стереть навсегда', noLabel: 'Отмена', danger: true
+        }).then(function (res) { if (res.ok) bulkApply({ purge: 1 }); });
+      }
       else if (bAct === 'trash') {
         var bn = st.bulk ? st.bulk.size : 0;
         if (!bn) { toast('Сначала отметьте заказы галочками'); return; }
@@ -1841,6 +2021,21 @@ function initGodEye() {
       if (ck === 'pin') flag([st.card.id], { pin: st.card.pinned ? 0 : 1 }, after);
       else if (ck === 'hide') flag([st.card.id], { hide: st.card.archived_admin ? 0 : 1 }, after);
       else if (ck === 'restore') flag([st.card.id], { 'delete': 0 }, after);
+      else if (ck === 'purge') {
+        confirmDlg({
+          title: 'Стереть дело №' + st.card.id + ' навсегда?',
+          text: 'Исчезнет всё: хроника, файлы, переписка. Вернуть будет нельзя. Если по делу были реальные оплаты — сервер откажет: оплаченное остаётся учётом.',
+          okLabel: 'Стереть навсегда', noLabel: 'Отмена', danger: true
+        }).then(function (res) {
+          if (!res.ok) return;
+          flag([st.card.id], { purge: 1 }, function (r) {
+            if (r && r.kept) { toast('Не стёрто: по делу есть оплаты (или оно не в корзине)'); return; }
+            toast('Дело стёрто навсегда');
+            st.sel = null; st.card = null;
+            loadTab();
+          });
+        });
+      }
       else if (ck === 'trash') {
         confirmDlg({
           title: 'Убрать дело №' + st.card.id + ' в корзину?',
@@ -1884,6 +2079,13 @@ function initGodEye() {
           loadSubs(); refreshSilent();
         });
       });
+      return;
+    }
+    var cal = t.closest('[data-cal]');
+    if (cal) {
+      var cd = cal.getAttribute('data-cal');
+      st.calDay = st.calDay === cd ? null : cd;
+      drawBody();
       return;
     }
     var oo = t.closest('[data-open-order]');

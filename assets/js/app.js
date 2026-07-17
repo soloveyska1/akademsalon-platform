@@ -311,7 +311,10 @@
         t.appendChild(b);
       }
       ensure().appendChild(t);
-      requestAnimationFrame(function () { t.classList.add('in'); });
+      /* без rAF: при придушенном рендере кадр не наступает и тост оставался
+         невидимым — пользователь не видел подтверждений действий */
+      void t.offsetWidth;
+      t.classList.add('in');
       var to = setTimeout(dismiss, opts.duration || 4200);
       function dismiss() { clearTimeout(to); t.classList.remove('in'); setTimeout(function () { t.remove(); }, 260); }
       return dismiss;
@@ -368,12 +371,18 @@
     var from = parseFloat(el.dataset.cur || '0') || 0;
     el.dataset.cur = String(target);
     var dur = opts.duration || 420, t0 = null;
+    /* страховка от мёртвого rAF: финальное число встанет по таймеру,
+       даже если анимация не сыграет ни одного кадра */
+    var guard = setTimeout(function () {
+      if (el.dataset.cur === String(target)) put(target);
+    }, dur + 150);
     function step(ts) {
       if (!t0) t0 = ts;
       var p = Math.min((ts - t0) / dur, 1);
       var e = 1 - Math.pow(1 - p, 4);
       put(from + (target - from) * e);
       if (p < 1 && el.dataset.cur === String(target)) requestAnimationFrame(step);
+      else clearTimeout(guard);
     }
     requestAnimationFrame(step);
   };
@@ -808,7 +817,8 @@
       sheet = build(opts || {});
       document.body.appendChild(sheet);
       document.body.classList.add('toc-lock');
-      requestAnimationFrame(function () { sheet.classList.add('open'); });
+      void sheet.offsetWidth; /* показ без rAF — иначе шит невидим при спящем рендере */
+      sheet.classList.add('open');
       var f = sheet.querySelector('.cs-opt'); if (f) f.focus();
       sheet.addEventListener('click', function (e) { if (e.target.closest('[data-cs-close]')) { e.preventDefault(); close(); } });
     };

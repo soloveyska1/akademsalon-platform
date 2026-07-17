@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Калькулятор стоимости онлайн: курсовая, диплом, ВКР — смета за минуту | Академический Салон</title>
 <meta name="description" content="Соберите смету за четыре шага: тип работы, направление, срок и уровень сопровождения. Живой расчёт и порядок оплаты — до заявки." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717d" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260717d" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260717d" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260717d" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717e" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260717e" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260717e" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260717e" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -67,6 +67,8 @@
   .done-h:focus{outline:none}
   .done-no{font-family:var(--mono);font-size:15px;letter-spacing:.06em;color:var(--ink-soft);font-variant-numeric:tabular-nums;margin-bottom:22px}
   .done-steps{list-style:none;margin:8px 0 26px;display:flex;flex-direction:column}
+  /* авторские display перебивают hidden — на экране «не отправилось» шаги и апселл обязаны исчезать */
+  .done-steps[hidden],.done-plus[hidden],#doneBot[hidden]{display:none}
   .done-steps li{display:flex;gap:14px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--hairline);font-size:15px}
   .done-steps li:first-child{border-top:1px solid var(--hairline)}
   .done-steps .dn{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);flex:0 0 18px;font-variant-numeric:tabular-nums}
@@ -194,6 +196,75 @@
     .optrow{justify-content:space-between;gap:8px}
     .optrow > span:first-child{flex:1;min-width:0}
   }
+
+  /* ===== применённая выгода в смете: перечёркнутый итог + новая цена ===== */
+  .lg-total.struck .price-xl,.lg-total.struck > .num{
+    text-decoration:line-through;text-decoration-color:var(--wax,#A8402F);
+    text-decoration-thickness:2px;color:var(--ink-faint);
+    font-size:clamp(17px,2.2vw,20px);letter-spacing:0}
+  .lq-deal{margin-top:2px;padding-top:10px;border-top:1px dashed var(--hairline)}
+  .lq-deal[hidden]{display:none}
+  .deal-row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 10px;margin:0 0 6px}
+  .deal-chip{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+    color:var(--wax,#A8402F);border:1px dashed var(--wax,#A8402F);border-radius:3px;
+    padding:2px 8px;background:var(--wax-soft,rgba(168,64,47,.07));white-space:nowrap;
+    max-width:100%;overflow:hidden;text-overflow:ellipsis}
+  .deal-off{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .deal-total{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:8px 0 2px}
+  .deal-total b{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+  .deal-price{font-family:var(--serif);font-size:clamp(24px,3vw,30px);font-weight:600;
+    color:var(--verify,#2E6B4F);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .deal-money{margin:4px 0 0}
+  .deal-note{margin:8px 0 0;color:var(--ink-faint)}
+
+  /* ===== вуаль отправки: письмо уходит в конверт, печать дышит =====
+     Анимации только transform/дискретные — при спящем рендере остаётся
+     честная статичная картинка, ничего не исчезает. */
+  .send-veil{position:fixed;inset:0;z-index:290;display:flex;align-items:center;justify-content:center;padding:20px}
+  .send-veil[hidden]{display:none}
+  .sv-back{position:absolute;inset:0;background:var(--paper,#F6F1E7);opacity:.95}
+  .sv-card{position:relative;background:var(--sheet,#FDFBF5);border:1px solid var(--hairline-strong);
+    border-radius:4px;box-shadow:0 24px 60px -24px rgba(24,21,15,.35);
+    padding:30px 26px 26px;max-width:430px;width:100%;text-align:center}
+  .sv-post{position:relative;height:92px;margin:0 auto 14px;width:150px}
+  .sv-env{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:110px;height:60px;color:var(--ink,#22201B)}
+  .sv-env svg{display:block;width:100%;height:100%}
+  .sv-letter{position:absolute;left:50%;top:0;width:64px;height:40px;margin-left:-32px;z-index:1;
+    background:var(--paper,#F6F1E7);border:1.2px solid var(--hairline-strong);border-radius:2px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--serif);font-size:19px;color:var(--wax,#A8402F);
+    animation:svDrop 2.1s ease-in-out infinite}
+  .sv-env{z-index:2}
+  .sv-seal{z-index:3}
+  @keyframes svDrop{0%{transform:translateY(0)}55%{transform:translateY(26px)}75%{transform:translateY(22px)}100%{transform:translateY(0)}}
+  .sv-seal{position:absolute;right:2px;bottom:0;width:34px;height:34px;border-radius:50%;
+    background:var(--wax,#A8402F);color:#F6F1E7;font-family:var(--serif);font-size:13px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(168,64,47,.4);
+    animation:svBreath 1.6s ease-in-out infinite}
+  @keyframes svBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}
+  .sv-h{font-family:var(--serif);font-weight:520;font-size:clamp(19px,2.4vw,22px);margin:6px 0 8px;min-height:1.3em}
+  .sv-sub{margin:0;min-height:2.6em}
+  .sv-dots{display:inline-flex;gap:7px;margin-top:14px}
+  .sv-dots i{width:7px;height:7px;border-radius:50%;background:var(--ink,#22201B);opacity:.3}
+  .sv-dots i:nth-child(1){animation:svDot 1.2s ease-in-out infinite}
+  .sv-dots i:nth-child(2){animation:svDot 1.2s ease-in-out .2s infinite}
+  .sv-dots i:nth-child(3){animation:svDot 1.2s ease-in-out .4s infinite}
+  @keyframes svDot{0%,100%{opacity:.3}50%{opacity:1}}
+  @media (prefers-reduced-motion:reduce){.sv-letter,.sv-seal,.sv-dots i{animation:none}}
+
+  /* ===== запасной ход: смета текстом + копирование + мессенджеры ===== */
+  .fb-box{margin:14px 0 6px;text-align:left}
+  .fb-sheet{position:relative;border:1px solid var(--hairline-strong);border-radius:3px;
+    background:var(--paper,#F6F1E7);padding:14px 16px;margin:10px 0 12px;max-height:220px;overflow:auto}
+  .fb-sheet pre{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.65;
+    white-space:pre-wrap;word-break:break-word;color:var(--ink)}
+  .fb-sheet::after{content:'¶';position:absolute;top:8px;right:12px;
+    font-family:var(--serif);color:var(--wax,#A8402F);opacity:.5}
+  .fb-links{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
+  .fb-links .btn{flex:1 1 30%;min-width:130px;text-align:center;white-space:normal}
+  .fb-copied{color:var(--verify,#2E6B4F);font-weight:600}
+  #fbCopy{margin-top:2px}
+  #fbRetry{margin-top:12px}
 </style>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -482,6 +553,7 @@
                   <span id="lqLowSr" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">40&nbsp;000&nbsp;₽</span>
                 </div>
               </div>
+              <div class="lq-deal" data-deal hidden></div>
               <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
               <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
               <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
@@ -546,6 +618,7 @@
       <div class="lg-row"><span data-lg="tierLbl">Уровень · Базовый</span><span class="num" data-lg="tier">×1.0</span></div>
       <div class="lg-total"><b>Итого, от</b><span class="num" data-lg="low">40&nbsp;000&nbsp;₽</span></div>
     </div>
+    <div class="lq-deal" data-deal hidden></div>
     <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
     <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
     <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
@@ -562,15 +635,34 @@
   </div>
   <div class="mq-bar">
     <button type="button" class="mq-total" id="mqToggle" aria-expanded="false" aria-controls="mqPanel">
-      <span aria-live="polite" aria-atomic="true">Итого: <b class="num" data-lg="low">40&nbsp;000&nbsp;₽</b></span>
+      <span aria-live="polite" aria-atomic="true">Итого: <b class="num" id="mqBarLow">40&nbsp;000&nbsp;₽</b></span>
       <span class="mq-more" id="mqMore">· подробнее</span>
     </button>
     <button type="button" class="btn btn-wax" id="mNext">Далее</button>
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260717d"></script>
-<script src="assets/js/extras.js?v=20260717d"></script>
+<!-- вуаль отправки: заявка уходит «письмом» — с честными стадиями ожидания -->
+<div class="send-veil" id="sendVeil" hidden>
+  <div class="sv-back"></div>
+  <div class="sv-card" role="alert" aria-live="assertive">
+    <div class="sv-post" aria-hidden="true">
+      <span class="sv-letter">¶</span>
+      <span class="sv-env"><svg viewBox="0 0 110 60" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="107" height="57" rx="4" style="fill:var(--sheet,#FDFBF5)" stroke="currentColor" stroke-width="2"/>
+        <path d="M2 4 55 34 108 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg></span>
+      <span class="sv-seal">АС</span>
+    </div>
+    <p class="caps" id="svCap">Отправляем мастеру</p>
+    <h3 class="sv-h" id="svMsg">Запечатываем смету…</h3>
+    <p class="petit sv-sub" id="svSub">Обычно это пара секунд.</p>
+    <span class="sv-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+  </div>
+</div>
+
+<script src="assets/js/app.js?v=20260717e"></script>
+<script src="assets/js/extras.js?v=20260717e"></script>
 <script>
 function initConf() {
   'use strict';
@@ -703,6 +795,7 @@ function initConf() {
     if (priceSrEl) priceSrEl.textContent = v;
     var op = $('svcOfferPrice');
     if (op) op.textContent = v;
+    renderDeal();
   }
   if (svc) {
     var askWrap = $('svcAsk');
@@ -943,6 +1036,77 @@ function initConf() {
       : 'Уровень «Базовый» уже выбран — без наценки за сопровождение.');
     put('chPlan', (state.type === 'master' || state.type === 'kandidat') ? '5 000 ₽' : '3 000 ₽');
     if (profileEl && window.SalonExperts) profileEl.textContent = (window.SalonExperts[state.disc] || {}).desc || '';
+    renderDeal();
+  }
+
+  /* --- применённая выгода: перечёркнутый итог, новая цена, основание ---
+     Промокод меняет цену (перечёркиваем и показываем «со скидкой»),
+     сертификат — средство оплаты (показываем «деньгами останется»). */
+  var promoDeal = null; /* {pct, cap, amount, min_price} из /promo/check */
+  function escT(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function dealCalc(base) {
+    if (!promoDeal || !base) return 0;
+    var d = promoDeal.amount ? promoDeal.amount : Math.round(base * (promoDeal.pct || 0) / 100);
+    if (!promoDeal.amount && promoDeal.cap) d = Math.min(d, promoDeal.cap);
+    return Math.max(0, Math.min(d, base));
+  }
+  function baseQuote() {
+    if (svc) {
+      var v = svc.fixed ? svcPriceVal() : svc.from;
+      return { low: v, high: svc.fixed ? v : 0, fixed: !!svc.fixed };
+    }
+    var q = C.quote(state.type, state.disc, state.term, state.tier);
+    return { low: q.low, high: q.high, fixed: false };
+  }
+  function renderDeal() {
+    var q = baseQuote();
+    var pOn = !!(promoCode && promoDeal);
+    var gOn = !!giftCode;
+    /* код с порогом «для заказов от N» ниже потолка сметы — честно говорим, не перечёркиваем */
+    var minBar = !!(pOn && promoDeal.min_price && (q.high || q.low) < promoDeal.min_price);
+    var strike = pOn && !minBar;
+    var dLow = strike ? dealCalc(q.low) : 0;
+    var newLow = Math.max(0, q.low - dLow);
+    var newHigh = strike && q.high ? Math.max(0, q.high - dealCalc(q.high)) : 0;
+    var rows = '';
+    if (pOn) {
+      rows += '<div class="deal-row"><span class="deal-chip">🎟 ' + escT(promoCode) + '</span>' +
+        '<span class="deal-off">' + escT(promoLabel || 'скидка') + '</span></div>';
+      if (minBar) rows += '<p class="deal-note petit">Код действует для заказов от ' +
+        C.fmt(promoDeal.min_price) + ' ₽ — если смета мастера будет выше порога, скидка применится.</p>';
+    }
+    if (strike) rows += '<div class="deal-total"><b>' + (q.fixed ? 'Со скидкой' : 'Со скидкой, от') +
+      '</b><span class="deal-price">' + C.fmt(newLow) + ' ₽</span></div>';
+    if (gOn) {
+      var payBase = strike ? newLow : q.low;
+      var credit = Math.min(giftBal, payBase) || giftBal;
+      rows += '<div class="deal-row"><span class="deal-chip">🎁 ' + escT(giftCode) + '</span>' +
+        '<span class="deal-off">зачтёт ' + C.fmt(credit) + ' ₽</span></div>';
+      var moneyLow = Math.max(0, payBase - giftBal);
+      rows += '<p class="deal-money petit">💵 Деньгами останется: ' + (q.fixed ? '' : 'от ') +
+        C.fmt(moneyLow) + ' ₽' + (moneyLow === 0
+          ? ' — сертификат может покрыть работу целиком'
+          : ' — остальное закроет сертификат') + '</p>';
+    }
+    if (strike || gOn) rows += '<p class="deal-note petit">' + (strike
+      ? 'Скидка применится к точной цене мастера — смета до разбора остаётся ориентиром.'
+      : 'Сертификат — средство оплаты: сумма спишется с итогового счёта мастера.') + '</p>';
+    document.querySelectorAll('[data-deal]').forEach(function (el) {
+      el.hidden = !rows; el.innerHTML = rows;
+    });
+    document.querySelectorAll('.lg-total').forEach(function (el) {
+      el.classList.toggle('struck', strike);
+      var b = el.querySelector('b');
+      if (b) b.textContent = strike ? (q.fixed ? 'Без скидки' : 'Без скидки, от')
+                                    : (svc ? 'Итого' : 'Итого, от');
+    });
+    if (strike && !svc) put('high', 'до ' + C.fmt(newHigh || newLow) + ' ₽ со скидкой — в зависимости от объёма');
+    var bar = document.getElementById('mqBarLow');
+    if (bar) bar.innerHTML = strike
+      ? '<s style="color:var(--ink-faint);text-decoration-color:var(--wax,#A8402F)">' + C.fmt(q.low) + '</s> ' +
+        C.fmt(newLow) + ' ₽' + (gOn ? ' 🎁' : '')
+      : C.fmt(q.low) + ' ₽' + (gOn ? ' · 🎁' : '');
   }
 
   /* --- радиогруппа с roving tabindex и стрелками --- */
@@ -1193,8 +1357,8 @@ function initConf() {
         $('promoDoneLbl').textContent = promoLabel + ' — мастер учтёт код в счёте';
       }
     }
-    document.querySelectorAll('.lq-promo').forEach(function (el) { el.hidden = !on; });
-    if (on) put('promo', 'Промокод ' + promoCode + ' · ' + promoLabel);
+    /* строка в смете сменилась «пробитым купоном» в блоке выгоды */
+    renderDeal();
   }
   function promoCheck(quiet) {
     var v = (promoIn && promoIn.value || '').trim().toUpperCase();
@@ -1205,11 +1369,12 @@ function initConf() {
       if (r && r.ok) {
         promoCode = r.code;
         promoLabel = r.label || '';
+        promoDeal = r.deal || null;
         if (promoNote) promoNote.hidden = true;
         promoPaint();
         if (S.metrika) S.metrika.goal('promo_ok');
       } else {
-        promoCode = null; promoLabel = '';
+        promoCode = null; promoLabel = ''; promoDeal = null;
         promoPaint();
         /* тихий режим — для автоподстановки сохранённого кода возврата:
            протухший код молча складываем, купон не разворачиваем */
@@ -1235,7 +1400,7 @@ function initConf() {
     if (e.key === 'Enter') { e.preventDefault(); promoCheck(false); }
   });
   if ($('promoRemove')) $('promoRemove').addEventListener('click', function () {
-    promoCode = null; promoLabel = '';
+    promoCode = null; promoLabel = ''; promoDeal = null;
     promoPaint();
     if (promoIn) promoIn.value = '';
     if (promoNote) promoNote.hidden = true;
@@ -1295,8 +1460,8 @@ function initConf() {
         $('giftDoneLbl').textContent = C.fmt(giftBal) + ' ₽ на коде — зачтётся, когда мастер назовёт цену';
       }
     }
-    document.querySelectorAll('.lq-gift').forEach(function (el) { el.hidden = !on; });
-    if (on) put('gift', 'Сертификат ' + giftCode + ' · ' + C.fmt(giftBal) + ' ₽ спишется с итога');
+    /* строка в смете сменилась «пробитым купоном» в блоке выгоды */
+    renderDeal();
   }
   function giftCheck(quiet) {
     var v = (giftIn && giftIn.value || '').trim().toUpperCase();
@@ -1558,9 +1723,8 @@ function initConf() {
     submitting = true;
     S.btnLoading(btnSubmit, true, 'Отправляем…');
     if (mNext) S.btnLoading(mNext, true, 'Отправляем…');
-    var sendTry = 0;
-    function send() {
-    S.api.post('/orders', {
+    veilShow();
+    var payload = {
       type: svc ? svcSrvId : state.type, disc: state.disc, term: state.term, tier: state.tier,
       topic: topicIn.value.trim(), plan: plan, name: name, contact: contactValue(), website: '',
       deadline: deadlineIn ? deadlineIn.value.trim() : '',
@@ -1572,77 +1736,190 @@ function initConf() {
       consent_doc: 'consent 1.2 · privacy 1.6 · oferta 1.4 · форма конфигуратора',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
       ref: (S.refCode && S.refCode()) || undefined
-    }).then(function (r) {
-      if (!r || !r.ok || !r.id) {
-        /* сеть моргнула — одна тихая повторная попытка через пару секунд */
-        if (r && r.error === 'network' && sendTry < 1) { sendTry++; setTimeout(send, 2500); return; }
-        submitting = false;
-        S.btnLoading(btnSubmit, false); if (mNext) S.btnLoading(mNext, false);
-        fallbackTelegram(r);
+    };
+    function unlock() {
+      submitting = false;
+      veilHide();
+      S.btnLoading(btnSubmit, false); if (mNext) S.btnLoading(mNext, false);
+    }
+    /* попытка 1 — до 25с; обрыв/мёртвый шлюз (0/502/503) — тихий повтор через 2.5с.
+       504/500 не повторяем: заявка могла долететь — дубль хуже паузы. */
+    submitFetch(payload, 25000).then(function (a1) {
+      if (a1.r && a1.r.ok && a1.r.id) { unlock(); onSubmitOk(a1.r); return; }
+      if (a1.r && a1.r.ok === false && a1.st < 500 && a1.st > 0) { unlock(); onSubmitErr(a1.r); return; }
+      if (a1.st === 0 || a1.st === 502 || a1.st === 503) {
+        veilStage('Первая попытка не прошла — пробуем ещё…',
+                  'Такое бывает на секунду-другую. Держим вашу смету крепко.');
+        setTimeout(function () {
+          submitFetch(payload, 12000).then(function (a2) {
+            unlock();
+            if (a2.r && a2.r.ok && a2.r.id) { onSubmitOk(a2.r); return; }
+            if (a2.r && a2.r.ok === false && a2.st < 500 && a2.st > 0) { onSubmitErr(a2.r); return; }
+            fallbackPanel();
+          });
+        }, 2500);
         return;
       }
-      if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
-      S.store.del('salon_draft');
-      if (S.metrika) S.metrika.goal('order_submitted');
-      if (S.visit) S.visit.order(r.id, r.token);
-      /* файлы — следом за заявкой, статусы на экране успеха */
-      attOrder = { id: r.id, token: r.token || '' };
-      doneAttRender();
-      if (attQueue.length) uploadQueued();
-      var bl = $('doneBot');
-      var claim = r.token
-        ? 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(r.token)
-        : 'https://t.me/academic_saloon_bot';
-      if (bl) bl.href = claim; /* гостю — привязка заказа к Telegram в один тап */
-      showDone('№' + r.id);
-      if (promoCode && r.promo) {
-        var dnote = document.querySelector('.done-note');
-        if (dnote) dnote.textContent += r.promo === 'ok'
-          ? ' 🎟 Промокод ' + promoCode + ' учтён — скидка применится, когда мастер назовёт цену.'
-          : ' 🎟 Промокод не применился (' + (PROMO_ERR[r.promo] || 'не прошёл проверку').toLowerCase() +
-            ') — мастер посчитает без него.';
-        if (r.promo !== 'ok') exitGrantDrop(r.promo);
-      }
-      if (giftCode && r.gift) {
-        var gnote = document.querySelector('.done-note');
-        if (gnote) gnote.textContent += r.gift === 'ok'
-          ? ' 🎁 Сертификат ' + giftCode + ' привязан — сумма зачтётся, когда мастер назовёт цену.'
-          : ' 🎁 Сертификат не привязался (' + (GIFT_ERR[r.gift] || 'не прошёл проверку').toLowerCase() +
-            ') — мастер посчитает без него.';
-      }
-      if (S.stamp) S.stamp('Заявка принята');
-      /* гостям — ссылка доступа к делу + необязательная привязка Telegram */
-      if (r.token && S.orderNudge) {
-        var sheetEl = document.querySelector('#confDone .done-sheet');
-        if (sheetEl) S.orderNudge(sheetEl, r.token);
-      }
+      unlock();
+      fallbackPanel();
     });
-    }
-    send();
   }
-  /* сеть/сервер недоступны — ЧЕСТНЫЙ экран: заявка не ушла, дублируем в Telegram.
-     Никаких «Заявка принята» с выдуманным номером — это потерянные лиды и доверие. */
-  function fallbackTelegram(err) {
-    if (err && (err.error === 'rate_limit' || err.error === 'rate_limited')) {
-      S.toast('Слишком много заявок подряд — подождите минуту'); return;
+
+  /* fetch с секундомером: отдаёт {st: httpStatus|0, r: json|null} и никогда не кидает */
+  function submitFetch(payload, timeoutMs) {
+    return new Promise(function (resolve) {
+      var ctl = window.AbortController ? new AbortController() : null;
+      var to = setTimeout(function () { if (ctl) ctl.abort(); }, timeoutMs);
+      var h = { 'Content-Type': 'application/json' };
+      var t = S.api.token();
+      if (t) h['Authorization'] = 'Bearer ' + t;
+      fetch(S.api.base + '/orders', {
+        method: 'POST', headers: h, body: JSON.stringify(payload),
+        signal: ctl ? ctl.signal : undefined
+      }).then(function (res) {
+        clearTimeout(to);
+        res.json().then(function (j) { resolve({ st: res.status, r: j }); },
+                        function () { resolve({ st: res.status, r: null }); });
+      }, function () { clearTimeout(to); resolve({ st: 0, r: null }); });
+    });
+  }
+
+  function onSubmitOk(r) {
+    if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
+    S.store.del('salon_draft');
+    if (S.metrika) S.metrika.goal('order_submitted');
+    if (S.visit) S.visit.order(r.id, r.token);
+    /* файлы — следом за заявкой, статусы на экране успеха */
+    attOrder = { id: r.id, token: r.token || '' };
+    doneAttRender();
+    if (attQueue.length) uploadQueued();
+    var bl = $('doneBot');
+    var claim = r.token
+      ? 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(r.token)
+      : 'https://t.me/academic_saloon_bot';
+    if (bl) bl.href = claim; /* гостю — привязка заказа к Telegram в один тап */
+    showDone('№' + r.id);
+    if (promoCode && r.promo) {
+      var dnote = document.querySelector('.done-note');
+      if (dnote) dnote.textContent += r.promo === 'ok'
+        ? ' 🎟 Промокод ' + promoCode + ' учтён — скидка применится, когда мастер назовёт цену.'
+        : ' 🎟 Промокод не применился (' + (PROMO_ERR[r.promo] || 'не прошёл проверку').toLowerCase() +
+          ') — мастер посчитает без него.';
+      if (r.promo !== 'ok') exitGrantDrop(r.promo);
     }
+    if (giftCode && r.gift) {
+      var gnote = document.querySelector('.done-note');
+      if (gnote) gnote.textContent += r.gift === 'ok'
+        ? ' 🎁 Сертификат ' + giftCode + ' привязан — сумма зачтётся, когда мастер назовёт цену.'
+        : ' 🎁 Сертификат не привязался (' + (GIFT_ERR[r.gift] || 'не прошёл проверку').toLowerCase() +
+          ') — мастер посчитает без него.';
+    }
+    if (S.stamp) S.stamp('Заявка принята');
+    /* гостям — ссылка доступа к делу + необязательная привязка Telegram */
+    if (r.token && S.orderNudge) {
+      var sheetEl = document.querySelector('#confDone .done-sheet');
+      if (sheetEl) S.orderNudge(sheetEl, r.token);
+    }
+  }
+
+  /* сервер жив и ответил ошибкой — говорим словами, форма остаётся */
+  function onSubmitErr(r) {
+    var e = (r && r.error) || '';
+    if (e === 'rate_limit' || e === 'rate_limited') { S.toast('Слишком много заявок подряд — подождите минуту'); return; }
+    if (e === 'contact_required') { S.toast('Оставьте контакт или войдите через Telegram'); return; }
+    if (e === 'forbidden') { S.toast('Доступ ограничен — напишите нам напрямую, разберёмся'); return; }
+    S.toast('Сервер не принял заявку (' + (e || 'ошибка') + ') — попробуйте ещё раз');
+  }
+
+  /* --- вуаль отправки: живые стадии, чтобы человек не ушёл в тишину --- */
+  var veilTimers = [];
+  function veilStage(msg, sub) {
+    var m = $('svMsg'), s = $('svSub');
+    if (m && msg) m.textContent = msg;
+    if (s && sub != null) s.textContent = sub;
+  }
+  function veilShow() {
+    var v = $('sendVeil');
+    if (!v) return;
+    veilStage('Запечатываем смету…', 'Обычно это пара секунд.');
+    v.hidden = false;
+    veilTimers.forEach(clearTimeout);
+    veilTimers = [
+      setTimeout(function () { veilStage('Отправляем изо всех сил…', 'Не уходите — мы держим вашу заявку в руках.'); }, 4000),
+      setTimeout(function () { veilStage('Сервер сегодня задумчив — не сдаёмся.', 'Заявка не потеряется: если не выйдет, дадим запасной ход на 10 секунд.'); }, 11000),
+      setTimeout(function () { veilStage('Ещё чуть-чуть…', 'Проверяем последний путь до мастера.'); }, 20000)
+    ];
+  }
+  function veilHide() {
+    veilTimers.forEach(clearTimeout);
+    veilTimers = [];
+    var v = $('sendVeil');
+    if (v) v.hidden = true;
+  }
+
+  /* --- запасной ход: сеть/сервер недоступны — ЧЕСТНЫЙ экран.
+     Смета — текстом с кнопкой копирования (жест пользователя — буфер сработает
+     в любом браузере), рядом двери: бот, ВК, MAX. Никаких «Заявка принята»
+     с выдуманным номером — это потерянные лиды и доверие. --- */
+  function fallbackPanel() {
     var id = 'AS-' + (1000 + Math.floor(Math.random() * 9000));
-    if (S.copy) S.copy(summaryText(id));
+    var text = summaryText('черновик ' + id) + '\n' +
+      (($('fName') && $('fName').value.trim()) ? 'Имя: ' + $('fName').value.trim() + '\n' : '') +
+      (contactValue() ? 'Связь: ' + contactValue() : '');
+    if (S.copy) S.copy(text); /* попытка тихого копирования — не обещаем, кнопка главнее */
+    var L = window.SalonLinks || {};
     var botLink = svc
       ? 'https://t.me/academic_saloon_bot?start=web_' + (svc.code || '')
-      : window.SalonBotLink ? window.SalonBotLink(state) : 'https://t.me/academic_saloon_bot';
+      : window.SalonBotLink ? window.SalonBotLink(state) : (L.bot || 'https://t.me/academic_saloon_bot');
     showDone('черновик ' + id, true);
     var doneBot = $('doneBot');
-    if (doneBot) { /* кнопка бота становится главной дверью */
-      doneBot.href = botLink;
-      doneBot.classList.remove('btn-line');
-      doneBot.classList.add('btn-wax');
-      doneBot.textContent = 'Открыть бота и вставить смету →';
+    if (doneBot) doneBot.hidden = true; /* его роль берёт на себя ряд дверей ниже */
+    var sheet = document.querySelector('#confDone .done-sheet');
+    var old = document.getElementById('fbBox');
+    if (old) old.remove();
+    if (sheet) {
+      var fb = document.createElement('div');
+      fb.className = 'fb-box';
+      fb.id = 'fbBox';
+      fb.innerHTML =
+        '<p class="caps">Запасной ход · 10 секунд</p>' +
+        '<p class="petit" style="margin:6px 0 0">Смета готова — осталось донести её до мастера удобным путём:</p>' +
+        '<div class="fb-sheet"><pre id="fbText"></pre></div>' +
+        '<button type="button" class="btn btn-wax btn-block" id="fbCopy">📋 Скопировать смету</button>' +
+        '<div class="fb-links">' +
+          '<a class="btn btn-line" id="fbTg" target="_blank" rel="noopener">Telegram · бот</a>' +
+          '<a class="btn btn-line" id="fbVk" target="_blank" rel="noopener">ВКонтакте</a>' +
+          '<a class="btn btn-line" id="fbMax" target="_blank" rel="noopener">MAX</a>' +
+        '</div>' +
+        '<p class="petit" style="margin:8px 0 0">Вставьте смету в чат — мастер ответит как обычно.' +
+        (attQueue.length ? ' Файлы приложите там же — бот принимает документы.' : '') +
+        ' Черновик формы сохранён на этой странице.</p>' +
+        '<button type="button" class="btn btn-line btn-block" id="fbRetry">↻ Попробовать отправить ещё раз</button>';
+      var noteEl = sheet.querySelector('.done-note');
+      if (noteEl) { noteEl.textContent = ''; sheet.insertBefore(fb, noteEl); }
+      else sheet.appendChild(fb);
+      $('fbText').textContent = text;
+      $('fbTg').href = botLink;
+      $('fbVk').href = L.vkm || 'https://vk.me/academicsaloon';
+      $('fbMax').href = L.max || 'https://max.ru';
+      $('fbCopy').addEventListener('click', function () {
+        var btn = this;
+        S.copy(text).then(function (ok) {
+          btn.textContent = ok ? '✓ Скопировано — вставьте в чат' : 'Выделите текст выше и скопируйте вручную';
+          btn.classList.add('fb-copied');
+          if (ok && S.stamp) S.stamp('В буфере');
+        });
+      });
+      $('fbRetry').addEventListener('click', function () {
+        /* назад в форму: экран честного сбоя закрывается, всё набранное на месте */
+        $('confDone').hidden = true;
+        $('confBody').hidden = false;
+        if (mcta) mcta.hidden = false;
+        doneShown = false;
+        submit();
+      });
     }
-    var note = document.querySelector('.done-note');
-    if (note) note.textContent = 'Смета уже скопирована в буфер — вставьте её в чат бота, и мастер ответит как обычно.'
-      + (attQueue.length ? ' Файлы прикрепите там же — бот принимает документы.' : '')
-      + ' Или попробуйте отправить ещё раз чуть позже — черновик формы сохранён.';
+    if (S.visit) S.visit.mark('отправка не прошла — запасной ход');
   }
   btnSubmit.addEventListener('click', submit);
 
@@ -1653,6 +1930,26 @@ function initConf() {
     if (mcta) mcta.hidden = true;
     var done = $('confDone');
     done.hidden = false;
+    { /* сброс следов прежнего «не отправилось»: успех после ретрая обязан быть чистым */
+      var sheet0 = done.querySelector('.done-sheet');
+      var capsAll = sheet0 ? sheet0.querySelectorAll('.caps') : [];
+      if (capsAll[0]) capsAll[0].textContent = 'Заявка принята';
+      if (capsAll[1]) capsAll[1].hidden = false;
+      var dh0 = $('doneH');
+      if (dh0) dh0.textContent = 'Ваш заказ в очереди разбора';
+      ['.done-steps', '.done-plus', '.done-seal'].forEach(function (sel) {
+        var el = done.querySelector(sel);
+        if (el) el.hidden = false;
+      });
+      var cab0 = done.querySelector('a.btn-wax[href="dashboard.html"]');
+      if (cab0) cab0.hidden = false;
+      var bot0 = $('doneBot');
+      if (bot0) bot0.hidden = false;
+      var fb0 = document.getElementById('fbBox');
+      if (fb0) fb0.remove();
+      var note0 = done.querySelector('.done-note');
+      if (note0) note0.textContent = 'Заявка уже у мастера — статус и переписка ждут в кабинете на сайте. Ниже — как не потерять доступ к делу.';
+    }
     if (failed) { /* экран говорит правду: не отправилось */
       var sheet = done.querySelector('.done-sheet');
       var caps = sheet ? sheet.querySelector('.caps') : null;
@@ -1706,7 +2003,7 @@ function initConf() {
   rgTier.set(state.tier);
   segMark();
   go(idx, false);
-  if (!svc) render(); /* в сервисном режиме смета уже собрана выше */
+  if (!svc) render(); else renderDeal(); /* в сервисном режиме смета уже собрана выше */
 }
 if (document.prerendering) {
   document.addEventListener('prerenderingchange', initConf, { once: true });

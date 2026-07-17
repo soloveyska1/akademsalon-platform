@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Аватары Telegram — «Оттиск»</title>
+<link rel="stylesheet" href="../../fonts/fonts.css">
+<style>
+  :root{
+    --paper:#F6F1E7; --sheet:#FFFEF9; --ink:#22201B; --ink-soft:#6B665A;
+    --hairline:#D9D2C2; --wax:#B23B22; --stamp:#3A4E7A;
+    --serif:"Literata",Georgia,serif; --sans:"Golos Text",-apple-system,sans-serif;
+    --mono:"JetBrains Mono","SF Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+       line-height:1.6;padding:clamp(24px,5vw,64px)}
+  .wrap{max-width:980px;margin:0 auto}
+  h1{font-family:var(--serif);font-weight:340;font-size:clamp(28px,4vw,44px);
+     line-height:1.1;letter-spacing:-.015em}
+  .lead{color:var(--ink-soft);max-width:56ch;margin-top:12px}
+  .rule{height:1px;background:var(--hairline);margin:40px 0}
+  .pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px}
+  .card{background:var(--sheet);border:1px solid var(--hairline);border-radius:2px;
+        padding:32px;text-align:center}
+  .disc{width:min(280px,72vw);aspect-ratio:1;margin:0 auto;border-radius:50%;
+        overflow:hidden;background:var(--paper)}
+  .disc video{width:100%;height:100%;display:block;object-fit:cover}
+  .role{font-family:var(--serif);font-size:23px;margin-top:24px}
+  .handle{font-family:var(--mono);font-size:13px;color:var(--ink-soft);margin-top:2px}
+  .verb{font-size:14px;color:var(--ink-soft);margin-top:14px;max-width:34ch;
+        margin-inline:auto}
+  .swatch{display:inline-block;width:9px;height:9px;border-radius:50%;
+          vertical-align:baseline;margin-right:7px}
+  .k .swatch{background:var(--wax)} .b .swatch{background:var(--stamp)}
+  .sizes{display:flex;align-items:center;justify-content:center;gap:18px;
+         margin-top:26px;padding-top:22px;border-top:1px solid var(--hairline)}
+  .sizes video{border-radius:50%;display:block;object-fit:cover;background:var(--paper)}
+  .cap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-top:20px}
+  .files{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);
+         margin-top:18px;line-height:2}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Аватары для Telegram</h1>
+  <p class="lead">Одна печать, две краски. Канал — сургуч, бот — штемпельная синь.
+    По правилу «Оттиска» движется только то, что печатается, пишется или считается:
+    оттиск бьётся по бумаге, бот вдобавок набирает отточие.</p>
+
+  <div class="rule"></div>
+
+  <div class="pair">
+    <div class="card k">
+      <div class="disc"><video src="avatar-kanal.mp4" autoplay loop muted playsinline></video></div>
+      <div class="role"><span class="swatch"></span>Канал</div>
+      <div class="handle">@akademsalon</div>
+      <p class="verb">Сургуч. Печатается: удар и расплыв краски раз в 4 секунды.</p>
+      <div class="sizes">
+        <video src="avatar-kanal.mp4" width="48"  height="48"  autoplay loop muted playsinline></video>
+        <video src="avatar-kanal.mp4" width="64"  height="64"  autoplay loop muted playsinline></video>
+        <video src="avatar-kanal.mp4" width="96"  height="96"  autoplay loop muted playsinline></video>
+      </div>
+      <div class="cap">48 · 64 · 96 px — как в списке чатов</div>
+      <div class="files">avatar-kanal.mp4<br>avatar-kanal-800.png<br>avatar-kanal-512.png</div>
+    </div>
+
+    <div class="card b">
+      <div class="disc"><video src="avatar-bot.mp4" autoplay loop muted playsinline></video></div>
+      <div class="role"><span class="swatch"></span>Бот</div>
+      <div class="handle">@academic_saloon_bot</div>
+      <p class="verb">Штемпельная синь. Пишется: тот же удар, следом набирается отточие «···».</p>
+      <div class="sizes">
+        <video src="avatar-bot.mp4" width="48"  height="48"  autoplay loop muted playsinline></video>
+        <video src="avatar-bot.mp4" width="64"  height="64"  autoplay loop muted playsinline></video>
+        <video src="avatar-bot.mp4" width="96"  height="96"  autoplay loop muted playsinline></video>
+      </div>
+      <div class="cap">48 · 64 · 96 px — как в списке чатов</div>
+      <div class="files">avatar-bot.mp4<br>avatar-bot-800.png<br>avatar-bot-512.png</div>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+  <p class="lead">Монограмма «АС» взята из <code>assets/img/favicon.svg</code> — те же контуры,
+    что у знака сайта. Перегенерировать: <code>python3 generate.py</code>.</p>
+</div>
+</body>
+</html>

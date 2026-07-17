@@ -51,7 +51,12 @@
     return new Promise(function (res) {
       var el = buildDlg(opts || {});
       document.body.appendChild(el);
-      requestAnimationFrame(function () { el.classList.add('open'); });
+      /* .open — БЕЗ requestAnimationFrame: в браузерах с придушенным rAF
+         (энергосбережение/Турбо) кадр не наступает, диалог оставался
+         невидимым и его подложка «замораживала» админку. Reflow фиксирует
+         стартовые стили — транзишен играет там, где рендер живой. */
+      void el.offsetWidth;
+      el.classList.add('open');
       var field = el.querySelector('textarea, input');
       var okBtn = el.querySelector('[data-ok]');
       (field || okBtn).focus();
@@ -484,7 +489,8 @@
       el.setAttribute('aria-label', 'Нужна помощь? Открыть варианты связи');
       el.innerHTML = '<span class="hf-ic">✎</span><span>Нужна помощь?</span><span class="hf-x" data-hf-x aria-label="Скрыть">×</span>';
       document.body.appendChild(el);
-      requestAnimationFrame(function () { el.classList.add('in'); });
+      void el.offsetWidth; /* показ без rAF */
+      el.classList.add('in');
       el.addEventListener('click', function (e) {
         if (e.target.closest('[data-hf-x]')) {
           e.stopPropagation();

@@ -407,8 +407,11 @@ section[id],main[id],[id].chapter{scroll-margin-top:76px}
 /* Мягкое раскрытие складных блоков: содержимое details проявляется
    коротким сдвигом — «красиво раскрывается по необходимости».
    Дешёвый приём (одна CSS-анимация), при reduce-motion выключен. */
-details[open] > *:not(summary){animation:foldIn .26s ease both}
-@keyframes foldIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+/* мягкое раскрытие details: ТОЛЬКО transform, без opacity и без fill both —
+   зависшая/придушенная анимация (энергосбережение, Турбо) не должна уметь
+   спрятать контент: максимум цена сбоя — сдвиг на 3px, а не «пустой ответ» */
+details[open] > *:not(summary){animation:foldIn .26s ease}
+@keyframes foldIn{from{transform:translateY(-3px)}to{transform:none}}
 @media (prefers-reduced-motion: reduce){
   details[open] > *:not(summary){animation:none}
 }

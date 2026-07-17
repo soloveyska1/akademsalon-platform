@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Кабинет мастера — Академический Салон</title>
 <meta name="robots" content="noindex,nofollow,noarchive" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717d" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260717d" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260717d" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260717d" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717e" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260717e" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260717e" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260717e" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -64,6 +64,42 @@
   .ag-tile.calm{border-left:3px solid var(--ag-ok)}
 
   /* -------- лента «требует внимания» на сводке -------- */
+  /* -------- «Сегодня на столе»: фокус-очередь -------- */
+  .ag-desk{display:grid;gap:8px;margin-bottom:16px}
+  .dk-row{display:flex;gap:12px;align-items:center;width:100%;text-align:left;cursor:pointer;
+    border:1px solid var(--hairline-strong);border-left:4px solid var(--hairline-strong);
+    border-radius:var(--r);background:var(--sheet,transparent);padding:11px 14px;font:inherit;color:var(--ink);
+    transition:border-color .15s,background .15s}
+  .dk-row:hover{background:var(--mark)}
+  .dk-row.fire{border-left-color:var(--wax)}
+  .dk-row.act{border-left-color:var(--stamp,#3A4E7A)}
+  .dk-ic{flex:0 0 auto;font-size:17px}
+  .dk-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .dk-main b{font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dk-why{font-size:12.5px;color:var(--ink-soft)}
+  .dk-sum{font-family:var(--mono);font-size:13px;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .dk-go{color:var(--ink-faint)}
+
+  /* -------- календарь сдач: лента на две недели -------- */
+  .ag-cal{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+  .cal-day{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:52px;
+    border:1px solid var(--hairline);border-radius:var(--r);background:var(--sheet,transparent);
+    padding:7px 6px;font:inherit;color:var(--ink-faint);cursor:pointer;position:relative;
+    transition:border-color .15s,color .15s}
+  .cal-day b{font-size:16px;font-weight:600}
+  .cal-day .cd-dow{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+  .cal-day.has{color:var(--ink);border-color:var(--hairline-strong)}
+  .cal-day.has .cd-n{position:absolute;top:-6px;right:-4px;background:var(--stamp,#3A4E7A);color:#fff;
+    border-radius:9px;font-size:10.5px;line-height:1;padding:3px 6px;font-variant-numeric:tabular-nums}
+  .cal-day.fire{color:var(--wax);border-color:var(--wax)}
+  .cal-day.fire .cd-n{background:var(--wax)}
+  .cal-day.on{border-color:var(--stamp,#3A4E7A);box-shadow:inset 0 0 0 1px var(--stamp,#3A4E7A);color:var(--ink)}
+  .cal-day:hover{border-color:var(--hairline-strong)}
+
+  .ag-money .ag-kv > div{display:flex;justify-content:space-between;gap:12px}
+  .ag-money .ag-kv > div > b{text-align:right;font-weight:500}
+  .ag-money .ag-kv > div > b b{font-weight:700}
+
   .ag-attn{border:1px solid var(--hairline-strong);border-left:4px solid var(--wax);border-radius:var(--r);
     padding:4px 0;margin-bottom:16px;background:var(--sheet,transparent)}
   .ag-attn .aa-row{display:flex;gap:10px;align-items:center;padding:9px 14px;border-bottom:1px solid var(--hairline);cursor:pointer;font-size:14px}
@@ -336,8 +372,8 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260717d"></script>
-<script src="assets/js/extras.js?v=20260717d"></script>
-<script src="assets/js/admin.js?v=20260717d"></script>
+<script src="assets/js/app.js?v=20260717e"></script>
+<script src="assets/js/extras.js?v=20260717e"></script>
+<script src="assets/js/admin.js?v=20260717e"></script>
 </body>
 </html>
