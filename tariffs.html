@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Сколько стоит помощь с курсовой, дипломом, ВКР — открытые цены и калькулятор | Академический Салон</title>
 <meta name="description" content="Открытый каталог цен: от реферата за 2 500 ₽ до кандидатской за 200 000 ₽. Формула цены: тип × направление × срок × уровень. Смета фиксируется после согласования плана." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717e" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260717e" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260717e" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260717e" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717f" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260717f" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260717f" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260717f" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -158,6 +158,111 @@
   .pay-note{margin-top:16px}
   .faq-wrap{max-width:760px}
 
+  /* § 01 — формуляры картотеки: карточка раскрывается в статью */
+  .cc-more{margin:0 0 10px;display:inline-flex;align-items:center;gap:7px;align-self:flex-start;background:none;border:0;border-bottom:1px dashed var(--hairline-strong);padding:2px 1px;font-size:12.5px;color:var(--ink-soft);cursor:pointer;transition:color .15s,border-color .15s;font-family:inherit}
+  .cc-more:hover{color:var(--wax);border-color:var(--wax)}
+  .dossier-stack{margin-top:clamp(26px,4vw,40px);display:flex;flex-direction:column;gap:12px}
+  .dossier-stack>.caps{margin-bottom:4px}
+  .dossier{background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;overflow:hidden;scroll-margin-top:76px}
+  .dossier>summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:12px;padding:16px clamp(16px,3vw,26px);transition:background .15s}
+  .dossier>summary::-webkit-details-marker{display:none}
+  .dossier>summary:hover{background:var(--paper-2)}
+  .dossier>summary .ds-no{font-family:var(--mono);font-size:11px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .dossier>summary .ds-t{font-family:var(--serif);font-size:clamp(16.5px,2vw,20px);font-weight:500;flex:1;line-height:1.3}
+  .dossier>summary .ds-price{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .dossier>summary .ds-x{font-family:var(--serif);font-size:18px;color:var(--ink-faint);transition:transform .2s;line-height:1}
+  .dossier[open]>summary .ds-x{transform:rotate(45deg)}
+  .dossier[open]>summary{border-bottom:1px solid var(--hairline);background:var(--paper-2)}
+  .ds-body{padding:clamp(20px,3.4vw,34px) clamp(16px,3vw,26px) clamp(22px,3.4vw,32px);display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(22px,4vw,48px);align-items:start}
+  .ds-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .ds-chips span{font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--ink-soft);border:1px solid var(--hairline-strong);border-radius:2px;padding:5px 9px;background:var(--paper);white-space:nowrap}
+  .ds-h{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);display:block;margin:20px 0 8px}
+  .ds-main>.ds-h:first-child{margin-top:0}
+  .ds-body p{font-size:14.5px;line-height:1.65;color:var(--ink);max-width:64ch}
+  .ds-body p+p{margin-top:8px}
+  .ds-body p.pale{color:var(--ink-soft);font-size:13.5px}
+  .ds-steps{list-style:none;counter-reset:dst;margin:4px 0 0}
+  .ds-steps li{position:relative;padding:9px 0 9px 36px;border-bottom:1px solid var(--hairline);font-size:14px;line-height:1.55;counter-increment:dst;color:var(--ink-soft)}
+  .ds-steps li:last-child{border-bottom:0}
+  .ds-steps li::before{content:counter(dst,decimal-leading-zero);position:absolute;left:2px;top:10px;font-family:var(--mono);font-size:11px;color:var(--wax)}
+  .ds-steps li b{font-weight:500;color:var(--ink)}
+  .ds-nb{margin:4px 0 0;list-style:none}
+  .ds-nb li{position:relative;padding:7px 0 7px 22px;font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+  .ds-nb li::before{content:"¶";position:absolute;left:2px;top:7px;color:var(--wax);font-family:var(--serif)}
+  .ds-nb li b{color:var(--ink);font-weight:500}
+  .ds-toc{background:var(--paper);border:1px solid var(--hairline);border-radius:2px;padding:18px 16px 12px;position:relative}
+  .ds-toc::after{content:"";position:absolute;inset:6px;border:1px solid var(--hairline);pointer-events:none;border-radius:1px}
+  .ds-toc .caps{display:block;margin-bottom:8px;font-size:10.5px}
+  .ds-toc .dotrow{font-size:13px;padding:7px 2px;min-height:0;margin:0}
+  .ds-toc .dotrow .dr-val{font-size:12px}
+  .ds-shot{margin-top:14px;border:1px solid var(--hairline);border-radius:2px;overflow:hidden;background:var(--paper)}
+  .ds-shot img{display:block;width:100%;height:auto;filter:saturate(.92)}
+  .ds-shot figcaption{font-size:11.5px;color:var(--ink-faint);padding:8px 10px;border-top:1px solid var(--hairline)}
+  .ds-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;align-items:center}
+  .ds-links{margin-top:14px;font-size:13px;line-height:2;color:var(--ink-soft)}
+  @media(max-width:880px){.ds-body{grid-template-columns:1fr}}
+
+  /* § 01 — «нет вашей задачи» */
+  .notfound{margin-top:clamp(26px,4vw,40px);border:1px solid var(--wax);border-radius:3px;background:linear-gradient(0deg,var(--wax-soft),var(--wax-soft)),var(--sheet);padding:clamp(22px,3.4vw,36px);display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(20px,4vw,44px);align-items:center}
+  .notfound h3{font-family:var(--serif);font-size:clamp(20px,2.6vw,27px);font-weight:500;margin-bottom:8px}
+  .notfound .nf-lead{font-size:14.5px;color:var(--ink-soft);line-height:1.6;max-width:56ch}
+  .nf-ex{margin-top:12px;font-size:12.5px;color:var(--ink-faint);line-height:1.8}
+  .nf-form{display:flex;flex-direction:column;gap:10px}
+  .nf-form textarea,.nf-form input{width:100%;border:1px solid var(--hairline-strong);background:var(--sheet);border-radius:2px;padding:11px 12px;font:inherit;font-size:14px;color:var(--ink)}
+  .nf-form textarea{min-height:76px;resize:vertical}
+  .nf-form textarea:focus,.nf-form input:focus{outline:none;border-color:var(--ink)}
+  .nf-row{display:flex;gap:10px;flex-wrap:wrap}
+  .nf-row .btn{flex:1;min-width:150px}
+  .nf-alt{font-size:12.5px;color:var(--ink-soft);line-height:1.6}
+  .nf-ok{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+  @media(max-width:880px){.notfound{grid-template-columns:1fr}}
+
+  /* § 07 — экспертиза сравнения: строки-раскрытия и аппарат сносок */
+  .cmp2{border:1px solid var(--hairline);background:var(--sheet);border-radius:3px;overflow:hidden}
+  .cmp2-head{display:grid;grid-template-columns:1.25fr 1.05fr 1fr .9fr 30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--hairline-strong)}
+  .cmp2-head span{padding:12px 14px}
+  .cmp2-head .c-salon{color:var(--wax)}
+  .cmp-row{border-bottom:1px solid var(--hairline)}
+  .cmp-row:last-of-type{border-bottom:0}
+  .cmp-row>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1.25fr 1.05fr 1fr .9fr 30px;align-items:baseline;font-size:13.5px;color:var(--ink-soft);transition:background .15s}
+  .cmp-row>summary::-webkit-details-marker{display:none}
+  .cmp-row>summary:hover{background:var(--paper-2)}
+  .cmp-row>summary>span{padding:12px 14px;line-height:1.5}
+  .cmp-row .c-q{color:var(--ink);font-weight:500}
+  .cmp-row .c-salon b{color:var(--ink);font-weight:600}
+  .cmp-row .c-x{font-family:var(--serif);font-size:17px;color:var(--ink-faint);text-align:center;transition:transform .2s;padding:12px 6px}
+  .cmp-row[open]>summary{background:var(--paper-2)}
+  .cmp-row[open] .c-x{transform:rotate(45deg)}
+  .cmp-body{padding:14px clamp(14px,2.4vw,22px) 20px;background:var(--paper);border-top:1px dashed var(--hairline)}
+  .cmp-body p{font-size:13.5px;line-height:1.65;color:var(--ink);max-width:76ch}
+  .cmp-body p+p{margin-top:8px}
+  .cmp-body .caps{font-size:10px;display:block;margin:14px 0 6px}
+  .cmp-check{margin:0;list-style:none}
+  .cmp-check li{position:relative;padding:5px 0 5px 20px;font-size:13px;color:var(--ink-soft);line-height:1.55}
+  .cmp-check li::before{content:"✓";position:absolute;left:0;color:var(--verify)}
+  .fnm{font-family:var(--mono);font-style:normal;font-size:10px;color:var(--wax);vertical-align:super;margin-left:2px;white-space:nowrap}
+  .cmp-lit{margin-top:20px;border-top:3px double var(--ink);padding-top:14px;max-width:820px}
+  .cmp-lit .caps{display:block;margin-bottom:8px}
+  .cmp-lit ol{list-style:none;counter-reset:lit;margin:0}
+  .cmp-lit li{counter-increment:lit;font-size:12.5px;color:var(--ink-soft);line-height:1.65;padding:4px 0 4px 26px;position:relative}
+  .cmp-lit li::before{content:counter(lit) ".";position:absolute;left:2px;font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+  .cmp-lit a{border-bottom:1px solid var(--hairline-strong)}
+  .cmp-lit a:hover{color:var(--wax);border-color:var(--wax)}
+  @media(max-width:880px){
+    .cmp2-head{display:none}
+    .cmp-row>summary{grid-template-columns:1fr 26px;grid-template-areas:"q x" "s s" "b b" "m m"}
+    .cmp-row .c-q{grid-area:q}
+    .cmp-row .c-x{grid-area:x}
+    .cmp-row .c-salon{grid-area:s;padding-top:0}
+    .cmp-row .c-birzha{grid-area:b;padding-top:0}
+    .cmp-row .c-self{grid-area:m;padding-top:0}
+    .cmp-row>summary>span::before{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+    .cmp-row .c-salon::before{content:"Салон · ";color:var(--wax)}
+    .cmp-row .c-birzha::before{content:"Биржа · "}
+    .cmp-row .c-self::before{content:"Самому · "}
+    .cmp-row .c-q::before{content:""}
+  }
+
   /* финальный CTA */
   .final-cta{padding:var(--block) 0 0;text-align:center}
   .final-cta .fc-rule{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,5vw,44px)}
@@ -241,6 +346,7 @@
           <div class="cc-head"><span class="cc-cat">Малые работы</span><span class="cc-no">01</span></div>
           <h3 class="cc-title">Реферат, эссе, контрольная</h3>
           <p class="cc-desc">Готовый текст по теме и методичке, оформление и проверка оригинальности.</p>
+          <button type="button" class="cc-more" data-dossier="d-self">Что это и как делается ↓</button>
           <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">2 500 ₽</span></div>
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">2,5–3,5 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="self">Рассчитать точно <span class="ar">→</span></a>
@@ -251,6 +357,7 @@
           <div class="cc-head"><span class="cc-cat">Научные статьи</span><span class="cc-no">02</span></div>
           <h3 class="cc-title">Научная статья РИНЦ</h3>
           <p class="cc-desc">Статья под требования журнала: текст, аннотация, ключевые слова, оформление.</p>
+          <button type="button" class="cc-more" data-dossier="d-rinc">Что это и как делается ↓</button>
           <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">9 000 ₽</span></div>
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">9–12,5 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="rinc">Рассчитать точно <span class="ar">→</span></a>
@@ -261,6 +368,7 @@
           <div class="cc-head"><span class="cc-cat">Курсовые и практика</span><span class="cc-no">03</span></div>
           <h3 class="cc-title">Курсовая теоретическая</h3>
           <p class="cc-desc">Теоретический обзор по структуре методички, список литературы, оформление по ГОСТ.</p>
+          <button type="button" class="cc-more" data-dossier="d-course">Что это и как делается ↓</button>
           <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">14 000 ₽</span></div>
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">14–19,5 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="course">Рассчитать точно <span class="ar">→</span></a>
@@ -271,6 +379,7 @@
           <div class="cc-head"><span class="cc-cat">Курсовые и практика</span><span class="cc-no">04</span></div>
           <h3 class="cc-title">Отчёт по практике</h3>
           <p class="cc-desc">Отчёт по программе практики: содержательная часть, дневник, оформление.</p>
+          <button type="button" class="cc-more" data-dossier="d-practice">Что это и как делается ↓</button>
           <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">14 000 ₽</span></div>
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">14–19,5 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="practice">Рассчитать точно <span class="ar">→</span></a>
@@ -281,6 +390,7 @@
           <div class="cc-head"><span class="cc-cat">Научные статьи</span><span class="cc-no">05</span></div>
           <h3 class="cc-title">Научная статья ВАК</h3>
           <p class="cc-desc">Статья под журнал из перечня ВАК: текст, научный аппарат, требования редакции.</p>
+          <button type="button" class="cc-more" data-dossier="d-vak">Что это и как делается ↓</button>
           <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">18 000 ₽</span></div>
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">18–25 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="vak">Рассчитать точно <span class="ar">→</span></a>
@@ -291,6 +401,7 @@
           <div class="cc-head"><span class="cc-cat">Курсовые и практика</span><span class="cc-no">06</span></div>
           <h3 class="cc-title">Курсовая с исследованием</h3>
           <p class="cc-desc">Теория плюс практическая часть: расчёты, анализ данных, выводы.</p>
+          <button type="button" class="cc-more" data-dossier="d-course_emp">Что это и как делается ↓</button>
           <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">20 000 ₽</span></div>
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">20–28 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="course_emp">Рассчитать точно <span class="ar">→</span></a>
@@ -301,6 +412,7 @@
           <div class="cc-head"><span class="cc-cat">Дипломы и диссертации</span><span class="cc-no">07</span></div>
           <h3 class="cc-title">Глава диссертации</h3>
           <p class="cc-desc">Отдельная глава в логике всей диссертации: текст, аппарат, связки с соседними главами.</p>
+          <button type="button" class="cc-more" data-dossier="d-chapter">Что это и как делается ↓</button>
           <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">30 000 ₽</span></div>
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">30–42 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="chapter">Рассчитать точно <span class="ar">→</span></a>
@@ -311,6 +423,7 @@
           <div class="cc-head"><span class="cc-cat">Научные статьи</span><span class="cc-no">08</span></div>
           <h3 class="cc-title">Статья Scopus / Web of Science</h3>
           <p class="cc-desc">Статья под требования международного журнала: структура, аннотация, гайдлайны.</p>
+          <button type="button" class="cc-more" data-dossier="d-scopus">Что это и как делается ↓</button>
           <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">35 000 ₽</span></div>
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">35–49 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="scopus">Рассчитать точно <span class="ar">→</span></a>
@@ -321,6 +434,7 @@
           <div class="cc-head"><span class="cc-cat">Дипломы и диссертации</span><span class="cc-no">09</span></div>
           <h3 class="cc-title">Дипломная работа / ВКР</h3>
           <p class="cc-desc">Введение, главы, заключение и список литературы — по методичке вашей кафедры.</p>
+          <button type="button" class="cc-more" data-dossier="d-diplom">Что это и как делается ↓</button>
           <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">40 000 ₽</span></div>
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">40–56 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="diplom">Рассчитать точно <span class="ar">→</span></a>
@@ -331,6 +445,7 @@
           <div class="cc-head"><span class="cc-cat">Дипломы и диссертации</span><span class="cc-no">10</span></div>
           <h3 class="cc-title">Магистерская диссертация</h3>
           <p class="cc-desc">Работа магистерского уровня: методология, собственное исследование, выводы.</p>
+          <button type="button" class="cc-more" data-dossier="d-master">Что это и как делается ↓</button>
           <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">60 000 ₽</span></div>
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">60–84 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="master">Рассчитать точно <span class="ar">→</span></a>
@@ -341,15 +456,529 @@
           <div class="cc-head"><span class="cc-cat">Дипломы и диссертации</span><span class="cc-no">11</span></div>
           <h3 class="cc-title">Кандидатская (по главам)</h3>
           <p class="cc-desc">Диссертация по главам: концепция, исследование, подготовка публикаций. Считаем и сдаём поэтапно.</p>
+          <button type="button" class="cc-more" data-dossier="d-kandidat">Что это и как делается ↓</button>
           <div class="cc-price"><span class="cc-from">от</span><span class="cc-val num">200 000 ₽</span></div>
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">200–280 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="kandidat">Рассчитать точно <span class="ar">→</span></a>
         </article>
       </div>
 
+      <!-- ФОРМУЛЯРЫ: карточка из ящика раскрывается в статью -->
+      <div class="dossier-stack" id="dossiers">
+        <span class="caps">Формуляры картотеки — что это, как делается, на что смотреть</span>
+
+        <details class="dossier" id="d-self">
+          <summary><span class="ds-no">01</span><span class="ds-t">Реферат, эссе, контрольная</span><span class="ds-price">2,5–3,5 тыс. ₽</span><span class="ds-x" aria-hidden="true">+</span></summary>
+          <div class="ds-body">
+            <div class="ds-main">
+              <span class="ds-h">Что это</span>
+              <div class="ds-chips"><span>10–25 страниц</span><span>от 2 дней</span><span>оригинальность под порог вуза</span><span>оформление по методичке</span></div>
+              <p>Малые жанры первых курсов. Реферат — обзор источников по теме: вы показываете, что умеете найти материал и связно его изложить. Эссе — короткий текст с вашей позицией и аргументами, здесь ценят мысль, а не объём. Контрольная — ответы на вопросы или задачи по программе.</p>
+              <p class="pale">Если вы на первом курсе и это ваша первая сдача: преподаватель смотрит на три вещи — раскрыта ли тема, правильно ли оформлено (титульник, шрифты, список литературы) и не скачан ли текст. Мы закрываем все три.</p>
+              <span class="ds-h">Как делается</span>
+              <ol class="ds-steps">
+                <li><b>Заявка и методичка.</b> Присылаете тему и требования — если методички нет, соберём по стандарту вашего вуза.</li>
+                <li><b>Смета.</b> Называем точную цену и срок — до какой-либо оплаты.</li>
+                <li><b>Текст.</b> Пишем по источникам, без нейросетевой «воды»; оформляем титульный лист, сноски и список литературы по ГОСТ.</li>
+                <li><b>Проверки.</b> Прогоняем через проверку оригинальности, показываем отчёт — потом финальный расчёт.</li>
+                <li><b>Правки.</b> Замечания преподавателя правим бесплатно до приёмки.</li>
+              </ol>
+              <span class="ds-h">Что учесть</span>
+              <ul class="ds-nb">
+                <li><b>Эссе ≠ реферат:</b> в эссе нужна позиция автора. Скажите, каких взглядов придерживаетесь, — напишем в вашу пользу.</li>
+                <li>Порог оригинальности задаёт вуз — обычно 50–70% для малых работ. Уточните в методичке или напишите нам: сориентируем.</li>
+                <li>Срочные «к завтрашнему утру» тоже берём — честно скажем на заявке, успеваем ли без потери качества.</li>
+              </ul>
+              <div class="ds-cta">
+                <a class="btn btn-wax" href="configurator.html" data-type="self">Рассчитать за минуту <span class="ar">→</span></a>
+                <a class="btn btn-line" href="referat.html">Страница услуги</a>
+              </div>
+            </div>
+            <aside class="ds-aside">
+              <div class="ds-toc">
+                <span class="caps">Оглавление типового реферата</span>
+                <div class="dotrow"><span>Титульный лист</span><span class="dots"></span><span class="dr-val">1</span></div>
+                <div class="dotrow"><span>Содержание</span><span class="dots"></span><span class="dr-val">2</span></div>
+                <div class="dotrow"><span>Введение</span><span class="dots"></span><span class="dr-val">3</span></div>
+                <div class="dotrow"><span>Раздел 1. Понятие и история вопроса</span><span class="dots"></span><span class="dr-val">4</span></div>
+                <div class="dotrow"><span>Раздел 2. Современное состояние</span><span class="dots"></span><span class="dr-val">9</span></div>
+                <div class="dotrow"><span>Заключение</span><span class="dots"></span><span class="dr-val">14</span></div>
+                <div class="dotrow"><span>Список литературы (10–15 ист.)</span><span class="dots"></span><span class="dr-val">15</span></div>
+              </div>
+              <p class="marginalia">Точную структуру всегда диктует ваша методичка — типовая здесь, чтобы вы понимали объём.</p>
+              <p class="ds-links">Полезное: <a class="link" href="guide-titulnyj-list.html">титульный лист по ГОСТ</a> · <a class="link" href="guide-spisok-literatury.html">список литературы</a></p>
+            </aside>
+          </div>
+        </details>
+
+        <details class="dossier" id="d-rinc">
+          <summary><span class="ds-no">02</span><span class="ds-t">Научная статья РИНЦ</span><span class="ds-price">9–12,5 тыс. ₽</span><span class="ds-x" aria-hidden="true">+</span></summary>
+          <div class="ds-body">
+            <div class="ds-main">
+              <span class="ds-h">Что это</span>
+              <div class="ds-chips"><span>6–12 страниц</span><span>от 7 дней</span><span>аннотация + ключевые слова</span><span>под требования журнала</span></div>
+              <p>РИНЦ — Российский индекс научного цитирования: база, где публикация «засчитывается» как научная. Статья в журнале из РИНЦ нужна магистрантам и аспирантам для допуска к защите, а студентам — для конференций, портфолио и поступления в магистратуру.</p>
+              <p class="pale">Если вы впервые сталкиваетесь с публикацией: у каждого журнала свои требования — объём, структура, оформление списка, процент оригинальности. Несоблюдение любой мелочи — причина вернуть статью. Поэтому мы начинаем с выбора журнала, а не с текста.</p>
+              <span class="ds-h">Как делается</span>
+              <ol class="ds-steps">
+                <li><b>Тема и журнал.</b> Подбираем издание под вашу специальность, сроки выхода номера и бюджет публикации (оргвзнос журнала — отдельно, мы честно говорим его сразу).</li>
+                <li><b>План-тезисы.</b> Согласуем структуру: постановка проблемы → методы → результат → выводы.</li>
+                <li><b>Текст.</b> Пишем статью, аннотацию, ключевые слова на русском (и английском, если требует журнал), УДК.</li>
+                <li><b>Оформление.</b> Приводим к требованиям редакции: шаблон, ссылки, список по ГОСТ 7.0.100.</li>
+                <li><b>Сопровождение.</b> Помогаем с подачей и правками по замечаниям редакции — до принятия в номер.</li>
+              </ol>
+              <span class="ds-h">Что учесть</span>
+              <ul class="ds-nb">
+                <li>Журналы выходят по графику: если статья нужна «к защите в июне», подавать лучше за 2–4 месяца.</li>
+                <li>Оригинальность для журналов выше студенческой — как правило, от 75–85%.</li>
+                <li>Если научрук требует «статью по теме диссертации» — пришлите автореферат или план: впишем статью в вашу тему.</li>
+              </ul>
+              <div class="ds-cta">
+                <a class="btn btn-wax" href="configurator.html" data-type="rinc">Рассчитать за минуту <span class="ar">→</span></a>
+                <a class="btn btn-line" href="nauchnaya-statya.html">Страница услуги</a>
+              </div>
+            </div>
+            <aside class="ds-aside">
+              <div class="ds-toc">
+                <span class="caps">Скелет статьи РИНЦ</span>
+                <div class="dotrow"><span>УДК · сведения об авторе</span><span class="dots"></span><span class="dr-val">—</span></div>
+                <div class="dotrow"><span>Аннотация + ключевые слова</span><span class="dots"></span><span class="dr-val">½ стр.</span></div>
+                <div class="dotrow"><span>Постановка проблемы</span><span class="dots"></span><span class="dr-val">1–2</span></div>
+                <div class="dotrow"><span>Материалы и методы</span><span class="dots"></span><span class="dr-val">1–2</span></div>
+                <div class="dotrow"><span>Результаты и обсуждение</span><span class="dots"></span><span class="dr-val">3–5</span></div>
+                <div class="dotrow"><span>Выводы</span><span class="dots"></span><span class="dr-val">1</span></div>
+                <div class="dotrow"><span>Список литературы</span><span class="dots"></span><span class="dr-val">10–20 ист.</span></div>
+              </div>
+              <p class="marginalia">Публикация — это текст + правильный журнал + правильная подача. Мы ведём все три части.</p>
+              <p class="ds-links">Полезное: <a class="link" href="guide-rinc-statya.html">как опубликовать статью РИНЦ — разбор</a></p>
+            </aside>
+          </div>
+        </details>
+
+        <details class="dossier" id="d-course">
+          <summary><span class="ds-no">03</span><span class="ds-t">Курсовая теоретическая</span><span class="ds-price">14–19,5 тыс. ₽</span><span class="ds-x" aria-hidden="true">+</span></summary>
+          <div class="ds-body">
+            <div class="ds-main">
+              <span class="ds-h">Что это</span>
+              <div class="ds-chips"><span>25–40 страниц</span><span>от 10 дней</span><span>20–30 источников</span><span>2 главы + введение и заключение</span></div>
+              <p>Первая «настоящая» научная работа студента: не пересказ, а анализ. Теоретическая курсовая строится на источниках — учебниках, статьях, законах — и показывает, что вы умеете сравнивать подходы и делать выводы. Оценивают её по трём китам: логика структуры, качество источников, оформление.</p>
+              <p class="pale">Для первокурсников и второкурсников это обычно первый опыт «введения с актуальностью, целью и задачами» — конструкции, по которой комиссия сразу видит уровень. Мы пишем её по канону кафедры, и на защите курсовой вам будет что сказать: приложим короткую выжимку «о чём работа».</p>
+              <span class="ds-h">Как делается</span>
+              <ol class="ds-steps">
+                <li><b>Заявка.</b> Тема, методичка, требования научрука. Если тему ещё не выбрали — предложим 2–3 выигрышные формулировки.</li>
+                <li><b>План и смета.</b> Бесплатно согласуем структуру глав; смета фиксируется и не растёт.</li>
+                <li><b>Введение и глава 1.</b> Показываем — вы читаете, отдаёте научруку, собираете замечания.</li>
+                <li><b>Глава 2 и заключение.</b> Дописываем с учётом замечаний; выводы отвечают задачам из введения — это первое, что проверяют.</li>
+                <li><b>Оформление и отчёт.</b> ГОСТ, сноски, список литературы; отчёт о проверке оригинальности — до финального платежа.</li>
+              </ol>
+              <span class="ds-h">Что учесть</span>
+              <ul class="ds-nb">
+                <li><b>Методичка решает всё:</b> у двух кафедр одного вуза требования могут отличаться. Нет методички — запросите у старосты или пришлём вопросы, которые стоит задать кафедре.</li>
+                <li>Порог оригинальности обычно 50–70%; для юридических тем с цитатами законов — важно уметь оформлять цитирование так, чтобы система его «понимала».</li>
+                <li>Курсовая часто становится главой будущего диплома. Скажите об этом — напишем так, чтобы через год работу можно было развить, а не переписывать.</li>
+              </ul>
+              <div class="ds-cta">
+                <a class="btn btn-wax" href="configurator.html" data-type="course">Рассчитать за минуту <span class="ar">→</span></a>
+                <a class="btn btn-line" href="kursovaya-rabota.html">Страница услуги</a>
+              </div>
+            </div>
+            <aside class="ds-aside">
+              <div class="ds-toc">
+                <span class="caps">Оглавление типовой курсовой</span>
+                <div class="dotrow"><span>Введение (актуальность, цель, задачи)</span><span class="dots"></span><span class="dr-val">3</span></div>
+                <div class="dotrow"><span>Глава 1. Теоретические основы</span><span class="dots"></span><span class="dr-val">5</span></div>
+                <div class="dotrow"><span>&nbsp;&nbsp;1.1–1.2. Понятие · подходы</span><span class="dots"></span><span class="dr-val">5–14</span></div>
+                <div class="dotrow"><span>Глава 2. Анализ проблемы</span><span class="dots"></span><span class="dr-val">15</span></div>
+                <div class="dotrow"><span>&nbsp;&nbsp;2.1–2.2. Практика · выводы</span><span class="dots"></span><span class="dr-val">15–26</span></div>
+                <div class="dotrow"><span>Заключение</span><span class="dots"></span><span class="dr-val">27</span></div>
+                <div class="dotrow"><span>Список литературы</span><span class="dots"></span><span class="dr-val">29</span></div>
+              </div>
+              <p class="marginalia">Полистать наши гранки: <a class="link" href="assets/samples/obrazec-vvedenie-vkr.pdf" target="_blank" rel="noopener">образец введения</a> и <a class="link" href="assets/samples/obrazec-spisok-literatury.pdf" target="_blank" rel="noopener">списка литературы</a> (PDF, с водяным знаком).</p>
+              <p class="ds-links">Полезное: <a class="link" href="guide-vvedenie-kursovoy.html">введение курсовой</a> · <a class="link" href="guide-kursovaya-za-nedelyu.html">курсовая за неделю</a> · <a class="link" href="guide-skolko-stoit-kursovaya.html">из чего складывается цена</a></p>
+            </aside>
+          </div>
+        </details>
+
+        <details class="dossier" id="d-practice">
+          <summary><span class="ds-no">04</span><span class="ds-t">Отчёт по практике</span><span class="ds-price">14–19,5 тыс. ₽</span><span class="ds-x" aria-hidden="true">+</span></summary>
+          <div class="ds-body">
+            <div class="ds-main">
+              <span class="ds-h">Что это</span>
+              <div class="ds-chips"><span>20–35 страниц</span><span>от 7 дней</span><span>дневник + характеристика</span><span>учебная · производственная · преддипломная</span></div>
+              <p>Документ, который подтверждает: практику вы прошли и чему-то научились. Состоит из трёх частей: сам отчёт (что за организация, чем занимались, какие выводы), дневник практики (записи по дням) и характеристика от руководителя. Кафедра сверяет всё с программой практики — заданием, которое выдали перед началом.</p>
+              <p class="pale">Частая ситуация: практика «прошла мимо» — организация есть, а материалов нет. Это решаемо: по названию и профилю организации мы восстанавливаем правдоподобную картину работы, а вы получаете комплект, который не стыдно показать и руководителю от предприятия.</p>
+              <span class="ds-h">Как делается</span>
+              <ol class="ds-steps">
+                <li><b>Программа практики.</b> Присылаете задание кафедры и данные организации (название, сфера — без внутренних секретов).</li>
+                <li><b>Каркас.</b> Согласуем структуру отчёта и «легенду» занятости по дням для дневника.</li>
+                <li><b>Отчёт.</b> Пишем содержательную часть: описание организации, задачи, анализ, выводы и предложения.</li>
+                <li><b>Дневник и характеристика.</b> Заполняем дневник по датам вашей практики; готовим проект характеристики — руководителю останется подписать.</li>
+                <li><b>Оформление.</b> Титульники, печати-места, приложения — по требованиям вашей кафедры.</li>
+              </ol>
+              <span class="ds-h">Что учесть</span>
+              <ul class="ds-nb">
+                <li><b>Даты имеют значение:</b> дневник должен совпадать с приказом о практике. Пришлите точные даты — впишем.</li>
+                <li>Преддипломная практика — фундамент диплома: аналитическая глава ВКР часто вырастает из этого отчёта. Логично заказывать их вместе — выйдет дешевле и связнее.</li>
+                <li>Если организация «неудобная» (закрылась, не отвечает) — подскажем, как корректно оформить базу практики. Такое бывает чаще, чем вы думаете.</li>
+              </ul>
+              <div class="ds-cta">
+                <a class="btn btn-wax" href="configurator.html" data-type="practice">Рассчитать за минуту <span class="ar">→</span></a>
+                <a class="btn btn-line" href="otchet-po-praktike.html">Страница услуги</a>
+              </div>
+            </div>
+            <aside class="ds-aside">
+              <div class="ds-toc">
+                <span class="caps">Комплект отчёта по практике</span>
+                <div class="dotrow"><span>Титульный лист с подписями</span><span class="dots"></span><span class="dr-val">1</span></div>
+                <div class="dotrow"><span>Индивидуальное задание</span><span class="dots"></span><span class="dr-val">2</span></div>
+                <div class="dotrow"><span>Введение</span><span class="dots"></span><span class="dr-val">4</span></div>
+                <div class="dotrow"><span>1. Характеристика организации</span><span class="dots"></span><span class="dr-val">5</span></div>
+                <div class="dotrow"><span>2. Выполненные задачи и анализ</span><span class="dots"></span><span class="dr-val">10</span></div>
+                <div class="dotrow"><span>Заключение · приложения</span><span class="dots"></span><span class="dr-val">18</span></div>
+                <div class="dotrow"><span>+ Дневник · + Характеристика</span><span class="dots"></span><span class="dr-val">отдельно</span></div>
+              </div>
+              <p class="marginalia">Дневник, характеристика и отчёт должны звучать как один голос — когда их пишут три разных «автора», кафедра это видит.</p>
+              <p class="ds-links">Полезное: <a class="link" href="guide-otchet-po-praktike.html">отчёт по практике — разбор</a> · <a class="link" href="guide-dnevnik-praktiki.html">дневник</a> · <a class="link" href="guide-harakteristika-s-praktiki.html">характеристика</a></p>
+            </aside>
+          </div>
+        </details>
+        <details class="dossier" id="d-vak">
+          <summary><span class="ds-no">05</span><span class="ds-t">Научная статья ВАК</span><span class="ds-price">18–25 тыс. ₽</span><span class="ds-x" aria-hidden="true">+</span></summary>
+          <div class="ds-body">
+            <div class="ds-main">
+              <span class="ds-h">Что это</span>
+              <div class="ds-chips"><span>10–16 страниц</span><span>от 14 дней</span><span>журнал из перечня ВАК</span><span>рецензирование редакцией</span></div>
+              <p>ВАК — Высшая аттестационная комиссия. Статья «из перечня ВАК» — обязательное условие для защиты кандидатской (нужно 2–3 таких публикации) и весомый аргумент в магистратуре и аспирантуре. От РИНЦ отличается уровнем: настоящее рецензирование, научная новизна, строгий аппарат.</p>
+              <p class="pale">Рецензент будет искать, к чему придраться, — так устроен жанр. Поэтому статья ВАК пишется не «по теме», а под конкретный тезис: что нового вы говорите науке. Этот тезис мы формулируем вместе на старте — дальше текст защищает его.</p>
+              <span class="ds-h">Как делается</span>
+              <ol class="ds-steps">
+                <li><b>Тезис и журнал.</b> Определяем научную новизну и подбираем журнал перечня по вашей специальности (шифр!), с реальными сроками выхода.</li>
+                <li><b>Каркас.</b> Постановка проблемы, степень разработанности, методы — согласуем скелет до текста.</li>
+                <li><b>Текст.</b> Пишем с опорой на свежие источники (последние 3–5 лет — редакции это проверяют).</li>
+                <li><b>Аппарат.</b> Аннотация и ключевые слова на двух языках, УДК, список по требованиям редакции.</li>
+                <li><b>Рецензия.</b> Отвечаем на замечания рецензента вместе с вами — до принятия статьи.</li>
+              </ol>
+              <span class="ds-h">Что учесть</span>
+              <ul class="ds-nb">
+                <li><b>Шифр специальности:</b> журнал должен быть в перечне именно по вашему направлению — это первое, что проверит диссовет.</li>
+                <li>Очередь в хороших журналах — 2–6 месяцев. Для защиты весной подавать нужно осенью.</li>
+                <li>Оргвзнос журнала (обычно 3–15 тыс. ₽) — отдельно, платится редакции. Мы говорим о нём сразу, а не «после».</li>
+              </ul>
+              <div class="ds-cta">
+                <a class="btn btn-wax" href="configurator.html" data-type="vak">Рассчитать за минуту <span class="ar">→</span></a>
+                <a class="btn btn-line" href="nauchnaya-statya.html">Страница услуги</a>
+              </div>
+            </div>
+            <aside class="ds-aside">
+              <div class="ds-toc">
+                <span class="caps">Аппарат статьи ВАК</span>
+                <div class="dotrow"><span>УДК · DOI (если присваивается)</span><span class="dots"></span><span class="dr-val">—</span></div>
+                <div class="dotrow"><span>Аннотация RU + EN</span><span class="dots"></span><span class="dr-val">150–250 слов</span></div>
+                <div class="dotrow"><span>Степень разработанности</span><span class="dots"></span><span class="dr-val">1–2</span></div>
+                <div class="dotrow"><span>Методология</span><span class="dots"></span><span class="dr-val">1–2</span></div>
+                <div class="dotrow"><span>Результаты · научная новизна</span><span class="dots"></span><span class="dr-val">4–7</span></div>
+                <div class="dotrow"><span>Список литературы</span><span class="dots"></span><span class="dr-val">15–30 ист.</span></div>
+              </div>
+              <p class="marginalia">Проверить журнал в перечне ВАК можно на официальном сайте комиссии — если сомневаетесь в издании, пришлите название: посмотрим вместе.</p>
+              <p class="ds-links">Полезное: <a class="link" href="guide-rinc-statya.html">публикация статьи — как устроено</a> · <a class="link" href="kandidatskaya-dissertaciya.html">кандидатская по главам</a></p>
+            </aside>
+          </div>
+        </details>
+
+        <details class="dossier" id="d-course_emp">
+          <summary><span class="ds-no">06</span><span class="ds-t">Курсовая с исследованием</span><span class="ds-price">20–28 тыс. ₽</span><span class="ds-x" aria-hidden="true">+</span></summary>
+          <div class="ds-body">
+            <div class="ds-main">
+              <span class="ds-h">Что это</span>
+              <div class="ds-chips"><span>30–45 страниц</span><span>от 14 дней</span><span>расчёты · таблицы · диаграммы</span><span>выводы и рекомендации</span></div>
+              <p>Курсовая старших курсов: к теории добавляется собственное исследование — анализ показателей предприятия, расчёты, опрос, обработка статистики. Именно практическая глава отличает «зачёт» от «отлично»: в ней видно самостоятельную работу с данными.</p>
+              <p class="pale">Главный страх студента здесь — «где взять данные». Отвечаем: подойдут открытая отчётность компаний, Росстат, отраслевые обзоры, а для опросов — корректно составленная анкета. Мы находим данные, считаем и оформляем так, чтобы на вопрос «откуда цифры?» был спокойный ответ со ссылкой.</p>
+              <span class="ds-h">Как делается</span>
+              <ol class="ds-steps">
+                <li><b>Заявка.</b> Тема, методичка и — если есть — объект исследования (компания, регион, выборка).</li>
+                <li><b>План и данные.</b> Согласуем структуру и источники данных до начала: чтобы практическая часть была выполнимой.</li>
+                <li><b>Теоретическая глава.</b> База понятий и методик, на которые обопрётся расчёт.</li>
+                <li><b>Практическая глава.</b> Расчёты в таблицах, динамика на графиках, интерпретация каждой цифры словами.</li>
+                <li><b>Рекомендации и отчёт.</b> Выводы «что делать» + отчёт о проверках до финального платежа. Excel с расчётами отдаём вместе с текстом.</li>
+              </ol>
+              <span class="ds-h">Что учесть</span>
+              <ul class="ds-nb">
+                <li><b>Объект лучше выбрать заранее:</b> «Анализ на примере ООО …» звучит убедительнее абстрактного. Нет объекта — предложим подходящий с открытой отчётностью.</li>
+                <li>Научруки любят «свежие данные» — берём последние доступные периоды и говорим об этом во введении.</li>
+                <li>Эта курсовая — почти готовая вторая глава диплома. Планируете ВКР на ту же тему — скажите, выстроим преемственность.</li>
+              </ul>
+              <div class="ds-cta">
+                <a class="btn btn-wax" href="configurator.html" data-type="course_emp">Рассчитать за минуту <span class="ar">→</span></a>
+                <a class="btn btn-line" href="kursovaya-rabota.html">Страница услуги</a>
+              </div>
+            </div>
+            <aside class="ds-aside">
+              <div class="ds-toc">
+                <span class="caps">Оглавление с исследованием</span>
+                <div class="dotrow"><span>Введение</span><span class="dots"></span><span class="dr-val">3</span></div>
+                <div class="dotrow"><span>Глава 1. Теория и методики</span><span class="dots"></span><span class="dr-val">5</span></div>
+                <div class="dotrow"><span>Глава 2. Анализ и расчёты</span><span class="dots"></span><span class="dr-val">16</span></div>
+                <div class="dotrow"><span>&nbsp;&nbsp;2.1. Характеристика объекта</span><span class="dots"></span><span class="dr-val">16</span></div>
+                <div class="dotrow"><span>&nbsp;&nbsp;2.2. Расчёт показателей</span><span class="dots"></span><span class="dr-val">20</span></div>
+                <div class="dotrow"><span>&nbsp;&nbsp;2.3. Выводы и рекомендации</span><span class="dots"></span><span class="dr-val">28</span></div>
+                <div class="dotrow"><span>Заключение · список · приложения</span><span class="dots"></span><span class="dr-val">32</span></div>
+              </div>
+              <p class="marginalia">Гранка практической главы — в развороте <a class="link" href="index.html#dosie">«Мастерская изнутри»</a> и в <a class="link" href="assets/samples/obrazec-glava-analiz.pdf" target="_blank" rel="noopener">образце PDF</a>.</p>
+              <p class="ds-links">Полезное: <a class="link" href="guide-vvedenie-kursovoy.html">введение</a> · <a class="link" href="guide-skolko-stoit-kursovaya.html">цена курсовой</a> · <a class="link" href="kursovaya-po-ekonomike.html">курсовая по экономике</a></p>
+            </aside>
+          </div>
+        </details>
+
+        <details class="dossier" id="d-chapter">
+          <summary><span class="ds-no">07</span><span class="ds-t">Глава диссертации</span><span class="ds-price">30–42 тыс. ₽</span><span class="ds-x" aria-hidden="true">+</span></summary>
+          <div class="ds-body">
+            <div class="ds-main">
+              <span class="ds-h">Что это</span>
+              <div class="ds-chips"><span>40–70 страниц</span><span>от 21 дня</span><span>в логике всей работы</span><span>единый научный аппарат</span></div>
+              <p>Отдельная глава магистерской или кандидатской — когда работа в целом движется, а один участок встал: не идёт теоретический обзор, буксует методология или не собирается эмпирика. Мы пишем главу так, чтобы она встала в вашу работу как родная: с связками к соседним главам, в вашей терминологии и стилистике.</p>
+              <p class="pale">Это работа «в четыре руки»: у вас — замысел и уже написанные части, у нас — ремесло и скорость. Чем больше материала пришлёте (план, автореферат, готовые главы, замечания научрука), тем точнее попадём в голос вашей работы.</p>
+              <span class="ds-h">Как делается</span>
+              <ol class="ds-steps">
+                <li><b>Погружение.</b> Читаем план работы и готовые главы, замечания руководителя; уточняем, что глава должна доказать.</li>
+                <li><b>Скелет главы.</b> Параграфы, логика аргументов, источники — согласуем до текста.</li>
+                <li><b>Текст.</b> Пишем в стилистике имеющихся глав; сноски и терминология — сквозные для всей работы.</li>
+                <li><b>Выводы по главе.</b> Формулируем так, чтобы они «передавали эстафету» следующей главе.</li>
+                <li><b>Правки научрука.</b> Разбираем замечания и правим до принятия главы руководителем.</li>
+              </ol>
+              <span class="ds-h">Что учесть</span>
+              <ul class="ds-nb">
+                <li><b>Согласованность важнее блеска:</b> глава не должна быть «лучше» остальных — она должна быть цельной с ними. Иначе у руководителя возникнут вопросы.</li>
+                <li>Если работа только начинается — выгоднее заказать <a class="link" href="kandidatskaya-dissertaciya.html">ведение по главам</a>: единая рука на всём тексте.</li>
+                <li>Теоретические главы опираются на свежую литературу — доступ к нужным статьям берём на себя.</li>
+              </ul>
+              <div class="ds-cta">
+                <a class="btn btn-wax" href="configurator.html" data-type="chapter">Рассчитать за минуту <span class="ar">→</span></a>
+                <a class="btn btn-line" href="kandidatskaya-dissertaciya.html">Страница услуги</a>
+              </div>
+            </div>
+            <aside class="ds-aside">
+              <div class="ds-toc">
+                <span class="caps">Анатомия главы</span>
+                <div class="dotrow"><span>Вводка: место главы в работе</span><span class="dots"></span><span class="dr-val">½–1</span></div>
+                <div class="dotrow"><span>§ 1. Постановка и понятия</span><span class="dots"></span><span class="dr-val">8–15</span></div>
+                <div class="dotrow"><span>§ 2. Анализ / методика</span><span class="dots"></span><span class="dr-val">12–20</span></div>
+                <div class="dotrow"><span>§ 3. Результаты / положения</span><span class="dots"></span><span class="dr-val">12–20</span></div>
+                <div class="dotrow"><span>Выводы по главе</span><span class="dots"></span><span class="dr-val">2–3</span></div>
+              </div>
+              <p class="marginalia">Гранки реальной главы с правками мастера — в развороте <a class="link" href="index.html#dosie">«Мастерская изнутри»</a> на главной.</p>
+              <p class="ds-links">Полезное: <a class="link" href="assets/samples/obrazec-glava-analiz.pdf" target="_blank" rel="noopener">образец аналитической главы (PDF)</a></p>
+            </aside>
+          </div>
+        </details>
+
+        <details class="dossier" id="d-scopus">
+          <summary><span class="ds-no">08</span><span class="ds-t">Статья Scopus / Web of Science</span><span class="ds-price">35–49 тыс. ₽</span><span class="ds-x" aria-hidden="true">+</span></summary>
+          <div class="ds-body">
+            <div class="ds-main">
+              <span class="ds-h">Что это</span>
+              <div class="ds-chips"><span>12–20 страниц</span><span>от 30 дней</span><span>английский язык</span><span>формат IMRAD</span></div>
+              <p>Публикация в международной базе — верхняя ступень научной карьеры: нужна аспирантам, преподавателям для отчётности и всем, кто метит в зарубежную магистратуру или гранты. Пишется по мировому стандарту IMRAD: Introduction, Methods, Results, Discussion — и на академическом английском.</p>
+              <p class="pale">Честно о сроках: сам текст мы делаем за месяц, но цикл журнала — подача, рецензии, ответы рецензентам — занимает от трёх месяцев до года. Если публикация нужна «к дате», начинать надо сильно заранее, и мы поможем выбрать журнал с быстрым циклом.</p>
+              <span class="ds-h">Как делается</span>
+              <ol class="ds-steps">
+                <li><b>Скоупинг.</b> Выбираем журнал по вашей области (квартиль, скорость, стоимость публикации) и изучаем его guide for authors.</li>
+                <li><b>Каркас IMRAD.</b> Согласуем структуру, данные и главный вывод статьи.</li>
+                <li><b>Текст на английском.</b> Академический язык без машинного акцента; графики и таблицы — по стандартам журнала.</li>
+                <li><b>Пакет подачи.</b> Abstract, highlights, cover letter, соответствие этическим требованиям.</li>
+                <li><b>Ответы рецензентам.</b> Готовим response letter на каждый раунд ревизии — до принятия.</li>
+              </ol>
+              <span class="ds-h">Что учесть</span>
+              <ul class="ds-nb">
+                <li><b>Остерегайтесь «мусорных» журналов:</b> публикация в хищническом издании хуже её отсутствия. Проверяем индексацию журнала прямо в базах Scopus/WoS — покажем как.</li>
+                <li>Плата за публикацию (APC) в открытом доступе — от $200 до $2000+, решается выбором журнала; есть и бесплатные подписные.</li>
+                <li>Данные исследования — ваши или открытые: происхождение цифр рецензенты смотрят строго.</li>
+              </ul>
+              <div class="ds-cta">
+                <a class="btn btn-wax" href="configurator.html" data-type="scopus">Рассчитать за минуту <span class="ar">→</span></a>
+                <a class="btn btn-line" href="nauchnaya-statya.html">Страница услуги</a>
+              </div>
+            </div>
+            <aside class="ds-aside">
+              <div class="ds-toc">
+                <span class="caps">Стандарт IMRAD</span>
+                <div class="dotrow"><span>Title · Abstract · Keywords</span><span class="dots"></span><span class="dr-val">1</span></div>
+                <div class="dotrow"><span>Introduction</span><span class="dots"></span><span class="dr-val">2–3</span></div>
+                <div class="dotrow"><span>Materials & Methods</span><span class="dots"></span><span class="dr-val">2–4</span></div>
+                <div class="dotrow"><span>Results</span><span class="dots"></span><span class="dr-val">3–5</span></div>
+                <div class="dotrow"><span>Discussion · Conclusion</span><span class="dots"></span><span class="dr-val">3–5</span></div>
+                <div class="dotrow"><span>References (APA/Vancouver)</span><span class="dots"></span><span class="dr-val">25–50 ист.</span></div>
+              </div>
+              <p class="marginalia">Квартиль журнала (Q1–Q4) — это «вес» публикации. Скажите, какой нужен для вашей отчётности, — подберём реалистичный.</p>
+              <p class="ds-links">Полезное: <a class="link" href="nauchnaya-statya.html">научные статьи — страница услуги</a></p>
+            </aside>
+          </div>
+        </details>
+        <details class="dossier" id="d-diplom">
+          <summary><span class="ds-no">09</span><span class="ds-t">Дипломная работа / ВКР</span><span class="ds-price">40–56 тыс. ₽</span><span class="ds-x" aria-hidden="true">+</span></summary>
+          <div class="ds-body">
+            <div class="ds-main">
+              <span class="ds-h">Что это</span>
+              <div class="ds-chips"><span>60–90 страниц</span><span>комфортно от 30 дней</span><span>40–60 источников</span><span>оплата 30/40/30</span></div>
+              <p>Выпускная квалификационная работа — главный текст вашего бакалавриата: по нему комиссия решает, состоялись ли вы как специалист. Три главы (теория → анализ → рекомендации), введение с научным аппаратом, заключение, приложения. Плюс спутники: доклад, презентация, раздаточный материал.</p>
+              <p class="pale">Если защита у вас впервые: бояться стоит не комиссии, а хаоса за месяц до сдачи — когда правки научрука, нормоконтроль и антиплагиат наваливаются разом. Наш формат ведения существует ровно для того, чтобы этого хаоса не было: главы сдаются по мере готовности, и к финалу вы приходите с проверенным текстом.</p>
+              <span class="ds-h">Как делается</span>
+              <ol class="ds-steps">
+                <li><b>План и смета — бесплатно.</b> Читаем методичку, согласуем структуру глав; смета фиксируется и не растёт по нашей инициативе.</li>
+                <li><b>Старт (30%).</b> Введение и первая глава. Вы показываете научруку — его замечания встраиваем сразу.</li>
+                <li><b>Середина (40%).</b> Аналитическая и проектная главы: расчёты, таблицы, выводы. Основной текст вы видите до финальных денег.</li>
+                <li><b>Финал (30%).</b> Заключение, оформление по методичке, отчёт о проверке оригинальности — и только потом финальный платёж.</li>
+                <li><b>До защиты.</b> Правки по замечаниям бесплатно до приёмки; презентация и речь — отдельной услугой или в VIP-уровне.</li>
+              </ol>
+              <span class="ds-h">Что учесть</span>
+              <ul class="ds-nb">
+                <li><b>Порог антиплагиата задаёт вуз</b> — обычно 60–80% по внутренней системе. Присылайте регламент: работаем под вашу цифру и показываем отчёт.</li>
+                <li>Предзащита — репетиция: на неё нужен черновик целиком. Скажите дату — подстроим план сдачи глав.</li>
+                <li>Тему ещё можно менять? Есть формулировки, с которыми и писать, и защищаться легче, — <a class="link" href="guide-temy-vkr.html">разбор тем</a> или спросите нас.</li>
+              </ul>
+              <div class="ds-cta">
+                <a class="btn btn-wax" href="configurator.html" data-type="diplom">Рассчитать за минуту <span class="ar">→</span></a>
+                <a class="btn btn-line" href="diplomnaya-rabota.html">Страница услуги</a>
+              </div>
+            </div>
+            <aside class="ds-aside">
+              <div class="ds-toc">
+                <span class="caps">Оглавление типовой ВКР</span>
+                <div class="dotrow"><span>Введение (аппарат исследования)</span><span class="dots"></span><span class="dr-val">3</span></div>
+                <div class="dotrow"><span>Глава 1. Теоретические основы</span><span class="dots"></span><span class="dr-val">7</span></div>
+                <div class="dotrow"><span>Глава 2. Анализ объекта</span><span class="dots"></span><span class="dr-val">27</span></div>
+                <div class="dotrow"><span>Глава 3. Рекомендации и эффект</span><span class="dots"></span><span class="dr-val">48</span></div>
+                <div class="dotrow"><span>Заключение</span><span class="dots"></span><span class="dr-val">64</span></div>
+                <div class="dotrow"><span>Список литературы (40–60 ист.)</span><span class="dots"></span><span class="dr-val">68</span></div>
+                <div class="dotrow"><span>Приложения</span><span class="dots"></span><span class="dr-val">73</span></div>
+              </div>
+              <figure class="ds-shot">
+                <img src="assets/img/showcase/showcase-2.jpg" alt="Обезличенный титульный лист настоящей ВКР из архива мастерской, с водяным знаком" loading="lazy" width="960" height="1358" />
+                <figcaption>Титульный лист работы из архива мастерской — тема скрыта, это чужая тайна.</figcaption>
+              </figure>
+              <p class="marginalia">Полистать гранки: <a class="link" href="assets/samples/obrazec-vvedenie-vkr.pdf" target="_blank" rel="noopener">введение</a> · <a class="link" href="assets/samples/obrazec-glava-analiz.pdf" target="_blank" rel="noopener">глава анализа</a> · <a class="link" href="assets/samples/obrazec-spisok-literatury.pdf" target="_blank" rel="noopener">список литературы</a>.</p>
+              <p class="ds-links">Полезное: <a class="link" href="guide-vkr-struktura.html">структура ВКР</a> · <a class="link" href="guide-zashchita-diploma.html">как проходит защита</a> · <a class="link" href="guide-skolko-stoit-diplomnaya.html">из чего складывается цена</a></p>
+            </aside>
+          </div>
+        </details>
+
+        <details class="dossier" id="d-master">
+          <summary><span class="ds-no">10</span><span class="ds-t">Магистерская диссертация</span><span class="ds-price">60–84 тыс. ₽</span><span class="ds-x" aria-hidden="true">+</span></summary>
+          <div class="ds-body">
+            <div class="ds-main">
+              <span class="ds-h">Что это</span>
+              <div class="ds-chips"><span>80–120 страниц</span><span>комфортно от 45 дней</span><span>методология + своё исследование</span><span>элементы научной новизны</span></div>
+              <p>Уже не «большой диплом», а первая настоящая диссертация: комиссия ждёт самостоятельное исследование с внятной методологией и хотя бы скромной, но своей новизной. Уровень требований выше во всём — от глубины обзора литературы до строгости выводов.</p>
+              <p class="pale">Магистранты чаще всего совмещают учёбу с работой — и «не хватает рук» именно на систематическую часть: обзор на сотню источников, выборку, обработку данных. Мы забираем ремесленную тяжесть, оставляя вам главное: замысел, знание своей области и уверенность на защите.</p>
+              <span class="ds-h">Как делается</span>
+              <ol class="ds-steps">
+                <li><b>Аппарат исследования.</b> Объект, предмет, гипотеза, методы — фундамент, который согласуем с вашим научруком в первую очередь.</li>
+                <li><b>Обзор и методология (30%).</b> Первая глава со степенью разработанности темы — то, что диссертацию делает диссертацией.</li>
+                <li><b>Исследование (40%).</b> Сбор и обработка данных, анализ, интерпретация; таблицы и графики защитного качества.</li>
+                <li><b>Положения и оформление (30%).</b> Выводы, элементы новизны, заключение; отчёт о проверках — до финального платежа.</li>
+                <li><b>К защите.</b> Правки до приёмки; по многим программам нужна публикация — статью РИНЦ/ВАК сделаем со скидкой к работе.</li>
+              </ol>
+              <span class="ds-h">Что учесть</span>
+              <ul class="ds-nb">
+                <li><b>Апробация:</b> некоторые вузы требуют выступление на конференции или статью до защиты — проверьте программу ГИА заранее, поможем закрыть.</li>
+                <li>Антиплагиат для магистерских строже — как правило, от 70–85%. Работаем под регламент вашего вуза.</li>
+                <li>Научрук здесь — соавтор траектории: чем раньше согласуем с ним аппарат, тем меньше переделок. Возьмём переписку на себя: подготовим вам письма-формулировки.</li>
+              </ul>
+              <div class="ds-cta">
+                <a class="btn btn-wax" href="configurator.html" data-type="master">Рассчитать за минуту <span class="ar">→</span></a>
+                <a class="btn btn-line" href="magisterskaya-dissertaciya.html">Страница услуги</a>
+              </div>
+            </div>
+            <aside class="ds-aside">
+              <div class="ds-toc">
+                <span class="caps">Оглавление магистерской</span>
+                <div class="dotrow"><span>Введение (гипотеза, новизна)</span><span class="dots"></span><span class="dr-val">3</span></div>
+                <div class="dotrow"><span>Глава 1. Обзор и методология</span><span class="dots"></span><span class="dr-val">8</span></div>
+                <div class="dotrow"><span>Глава 2. Эмпирическое исследование</span><span class="dots"></span><span class="dr-val">38</span></div>
+                <div class="dotrow"><span>Глава 3. Результаты и положения</span><span class="dots"></span><span class="dr-val">66</span></div>
+                <div class="dotrow"><span>Заключение</span><span class="dots"></span><span class="dr-val">88</span></div>
+                <div class="dotrow"><span>Список (60–90 ист.) · приложения</span><span class="dots"></span><span class="dr-val">92</span></div>
+              </div>
+              <figure class="ds-shot">
+                <img src="assets/img/showcase/showcase-1.jpg" alt="Обезличенный титульный лист магистерской диссертации по психологии из архива мастерской" loading="lazy" width="960" height="1358" />
+                <figcaption>Магистерская по психологии из архива — данные клиента скрыты.</figcaption>
+              </figure>
+              <p class="ds-links">Полезное: <a class="link" href="guide-temy-vkr.html">выбор темы</a> · <a class="link" href="guide-zashchita-diploma.html">защита</a> · <a class="link" href="guide-rinc-statya.html">статья к защите</a></p>
+            </aside>
+          </div>
+        </details>
+
+        <details class="dossier" id="d-kandidat">
+          <summary><span class="ds-no">11</span><span class="ds-t">Кандидатская диссертация — ведение по главам</span><span class="ds-price">200–280 тыс. ₽</span><span class="ds-x" aria-hidden="true">+</span></summary>
+          <div class="ds-body">
+            <div class="ds-main">
+              <span class="ds-h">Что это</span>
+              <div class="ds-chips"><span>120–180 страниц</span><span>горизонт 6–18 месяцев</span><span>2–3 статьи ВАК</span><span>сметы и сдача — по главам</span></div>
+              <p>Марафон длиной в аспирантуру: диссертация, статьи ВАК, выступления на конференциях, автореферат, предзащита на кафедре — и только потом диссовет. Мы работаем как научный цех при вашем замысле: ведём текст по главам, готовим публикации и держим общий график, чтобы к диссовету всё сошлось.</p>
+              <p class="pale">Цена и оплата устроены честно: общая вилка — ориентир, а договариваемся и платим по главам. Каждая глава — отдельная смета, отдельные этапы, отдельная приёмка. Вы в любой момент понимаете, за что заплатили и что получили; продолжать ли следующую главу — всегда ваше решение.</p>
+              <span class="ds-h">Как делается</span>
+              <ol class="ds-steps">
+                <li><b>Концепция.</b> Тема, научная новизна, положения на защиту, план глав — согласуем с вами и вашим научным руководителем.</li>
+                <li><b>График.</b> Раскладываем главы, статьи и конференции по календарю аспирантуры: что и к какому семестру должно существовать.</li>
+                <li><b>Главы.</b> Пишем по одной: смета → этапы → ваш научрук принимает → следующая. Правки по замечаниям — в стоимости главы.</li>
+                <li><b>Статьи ВАК.</b> Параллельно готовим 2–3 публикации из материала глав — так они не расходятся с текстом диссертации.</li>
+                <li><b>Финишная прямая.</b> Автореферат, презентация, ответы на вероятные вопросы, репетиция доклада — до самого диссовета.</li>
+              </ol>
+              <span class="ds-h">Что учесть</span>
+              <ul class="ds-nb">
+                <li><b>Паспорт специальности:</b> тема обязана попадать в него дословно — проверяем на старте, до того как написана хоть строка.</li>
+                <li>Статьи ВАК должны выйти до защиты, а очередь в журналах — месяцы: публикационный план строим в первый месяц работы.</li>
+                <li>Смена научрука, переезд, пауза в аспирантуре — марафон живой. График пересобираем без штрафов; дело в кабинете хранит всю историю.</li>
+              </ul>
+              <div class="ds-cta">
+                <a class="btn btn-wax" href="configurator.html" data-type="kandidat">Обсудить проект <span class="ar">→</span></a>
+                <a class="btn btn-line" href="kandidatskaya-dissertaciya.html">Страница услуги</a>
+              </div>
+            </div>
+            <aside class="ds-aside">
+              <div class="ds-toc">
+                <span class="caps">Дорожная карта до диссовета</span>
+                <div class="dotrow"><span>Концепция и план</span><span class="dots"></span><span class="dr-val">мес. 1</span></div>
+                <div class="dotrow"><span>Глава 1 + статья ВАК №1</span><span class="dots"></span><span class="dr-val">мес. 2–5</span></div>
+                <div class="dotrow"><span>Глава 2 + статья ВАК №2</span><span class="dots"></span><span class="dr-val">мес. 5–9</span></div>
+                <div class="dotrow"><span>Глава 3 + конференция</span><span class="dots"></span><span class="dr-val">мес. 9–13</span></div>
+                <div class="dotrow"><span>Автореферат · предзащита</span><span class="dots"></span><span class="dr-val">мес. 14–16</span></div>
+                <div class="dotrow"><span>Диссовет</span><span class="dots"></span><span class="dr-val">финал</span></div>
+              </div>
+              <p class="marginalia">На этом уровне всё начинается с разговора, а не с корзины. Напишите — обсудим замысел, сроки и реалистичность без всяких обязательств.</p>
+              <p class="ds-links">Полезное: <a class="link" href="kandidatskaya-dissertaciya.html">кандидатская — страница услуги</a> · <a class="link" href="guide-rinc-statya.html">публикации</a></p>
+            </aside>
+          </div>
+        </details>
+      </div>
+
       <p class="marginalia cat-note">Биржа продаёт ставку анонимного исполнителя. Нейросеть продаёт текст. Мы продаём доведённый до защиты результат.</p>
 
       <p class="petit" style="margin-top:22px">Подробно о каждой услуге — что входит, этапы и вопросы: <a class="link" href="kursovaya-rabota.html">курсовая работа</a> · <a class="link" href="diplomnaya-rabota.html">дипломная / ВКР</a> · <a class="link" href="magisterskaya-dissertaciya.html">магистерская</a> · <a class="link" href="kandidatskaya-dissertaciya.html">кандидатская</a> · <a class="link" href="otchet-po-praktike.html">отчёт по практике</a> · <a class="link" href="nauchnaya-statya.html">научная статья</a> · <a class="link" href="referat.html">реферат и эссе</a>.</p>
+
+      <!-- НЕТ ВАШЕЙ ЗАДАЧИ — ПИШИТЕ, СПЕКТР ШИРЕ КАРТОТЕКИ -->
+      <div class="notfound reveal" id="notfound">
+        <div>
+          <h3>Не нашли свою задачу в картотеке?</h3>
+          <p class="nf-lead">Одиннадцать карточек — это позиции, которые заказывают чаще всего, а не границы мастерской. Опишите задачу своими словами — мастер прочитает и ответит лично: возьмёмся ли, за сколько и к какому сроку. Это бесплатно и ни к чему не обязывает.</p>
+          <p class="nf-ex">Из недавнего вне картотеки: доклад с презентацией · бизнес-план · кейс-стади · рецензия на ВКР · перевод научной статьи · speech для конференции · подготовка к экзамену · сопровождение пересдачи.</p>
+        </div>
+        <div>
+          <form class="nf-form" id="nfForm" novalidate>
+            <textarea id="nfTask" maxlength="1200" placeholder="Опишите задачу: что за работа, предмет, срок…" aria-label="Ваша задача"></textarea>
+            <input id="nfContact" maxlength="120" placeholder="Telegram, почта или телефон — куда ответить" aria-label="Контакт для ответа" autocomplete="off" />
+            <input id="nfSite" tabindex="-1" autocomplete="off" style="position:absolute;left:-5000px" aria-hidden="true" />
+            <div class="nf-row">
+              <button type="submit" class="btn btn-wax" id="nfGo">Спросить мастера</button>
+              <button type="button" class="btn btn-line" data-contact>Написать напрямую</button>
+            </div>
+            <p class="nf-alt">Отправляя, вы соглашаетесь с <a class="link" href="consent.html" target="_blank" rel="noopener">обработкой данных</a>. Стесняетесь? В <a class="link" href="priyomnaya.html">открытой приёмной</a> можно спросить анонимно.</p>
+          </form>
+          <div class="nf-ok" id="nfOk" hidden>
+            <p><b>Вопрос у мастера.</b> Ответим в рабочее время — обычно в течение 15–30 минут, туда, куда вы указали.</p>
+            <a class="btn btn-line" href="dashboard.html">Следить в кабинете →</a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- § 02 — ФОРМУЛА -->
@@ -397,6 +1026,7 @@
           <div class="dotrow"><span>Оформление по методичке и ГОСТ</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
           <div class="dotrow"><span>Отчёт о проверках до оплаты</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
           <div class="dotrow"><span>Правки бесплатно до приёмки</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
+          <a class="cc-cta" href="vedenie.html#base" style="margin-top:12px">Читать досье уровня <span class="ar">→</span></a>
         </div>
         <div class="tier sheet feat">
           <span class="t-flag">выбирают чаще</span>
@@ -406,6 +1036,7 @@
           <div class="dotrow"><span>Главы по мере готовности</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
           <div class="dotrow"><span>Разбор замечаний руководителя</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
           <div class="dotrow"><span>Ведение до приёмки на кафедре</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
+          <a class="cc-cta" href="vedenie.html#turn" style="margin-top:12px">Читать досье уровня <span class="ar">→</span></a>
         </div>
         <div class="tier sheet">
           <div class="t-head"><h3>VIP</h3><span class="t-k">×2</span></div>
@@ -414,10 +1045,11 @@
           <div class="dotrow"><span>Первый приоритет по срокам</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
           <div class="dotrow"><span>Доклад и презентация к защите</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
           <div class="dotrow"><span>Репетиция вопросов комиссии</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
+          <a class="cc-cta" href="vedenie.html#vip" style="margin-top:12px">Читать досье уровня <span class="ar">→</span></a>
         </div>
       </div>
 
-      <p class="marginalia tiers-note">Качество текста одинаково на всех уровнях — уровень меняет плотность сопровождения, а не текст.</p>
+      <p class="marginalia tiers-note">Качество текста одинаково на всех уровнях — уровень меняет плотность сопровождения, а не текст. Как каждый уровень устроен изнутри и какой выбрать под вашу ситуацию — <a class="link" href="vedenie.html">проспект уровней ведения</a>.</p>
     </section>
 
     <!-- § 04 — РАЗБОР ПЛАНА -->
@@ -496,32 +1128,121 @@
           <div class="pay-plate sheet stacked"><span class="pp-share">40%</span><b>Середина</b><small>когда вы увидели основную часть текста своими глазами</small></div>
           <div class="pay-plate sheet stacked"><span class="pp-share">30%</span><b>Финал</b><small>после отчёта о проверках — перед финальной выдачей</small></div>
         </div>
-        <p class="petit pay-note">Для небольших работ — просто 50/50. Кандидатские считаем по главам.</p>
+        <p class="petit pay-note">Для небольших работ — просто 50/50: аванс после сметы, остаток после отчёта о проверках. Кандидатские считаем по главам. Полный разбор оплаты — какие есть варианты, что видно до денег и почему это безопасно: <a class="link" href="oplata.html">страница «Как проходит оплата»</a>.</p>
       </div>
 
-      <!-- «А на бирже дешевле» — честное сравнение вместо спора -->
+      <!-- «А на бирже дешевле» — экспертиза сравнения с аппаратом источников -->
       <div class="cmp-wrap" id="compare" style="margin:clamp(28px,4vw,44px) 0;scroll-margin-top:72px">
-        <span class="caps" style="display:block;margin-bottom:12px">Салон · биржа · писать самому — что вы на самом деле покупаете</span>
-        <div style="overflow-x:auto">
-          <table style="width:100%;min-width:560px;border-collapse:collapse;font-size:13.5px;background:var(--sheet);border:1px solid var(--hairline)">
-            <thead>
-              <tr style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)">
-                <th style="text-align:left;padding:12px 14px;border-bottom:1px solid var(--hairline-strong)"></th>
-                <th style="text-align:left;padding:12px 14px;border-bottom:1px solid var(--hairline-strong);color:var(--wax)">Салон</th>
-                <th style="text-align:left;padding:12px 14px;border-bottom:1px solid var(--hairline-strong)">Биржа</th>
-                <th style="text-align:left;padding:12px 14px;border-bottom:1px solid var(--hairline-strong)">Самому</th>
-              </tr>
-            </thead>
-            <tbody style="color:var(--ink-soft)">
-              <tr><td style="padding:11px 14px;border-bottom:1px solid var(--hairline);color:var(--ink)">За результат отвечает</td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)"><b style="color:var(--ink)">мастерская — до защиты</b></td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)">случайный исполнитель</td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)">только вы</td></tr>
-              <tr><td style="padding:11px 14px;border-bottom:1px solid var(--hairline);color:var(--ink)">Правки после замечаний</td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)"><b style="color:var(--ink)">бесплатно, в стоимости</b></td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)">торг заново</td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)">свои ночи</td></tr>
-              <tr><td style="padding:11px 14px;border-bottom:1px solid var(--hairline);color:var(--ink)">Оплата</td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)"><b style="color:var(--ink)">по этапам, после показа</b></td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)">часто вся вперёд</td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)">—</td></tr>
-              <tr><td style="padding:11px 14px;border-bottom:1px solid var(--hairline);color:var(--ink)">Отчёт о проверках</td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)"><b style="color:var(--ink)">до оплаты финала</b></td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)">как повезёт</td><td style="padding:11px 14px;border-bottom:1px solid var(--hairline)">платные сервисы</td></tr>
-              <tr><td style="padding:11px 14px;color:var(--ink)">Исполнитель исчез</td><td style="padding:11px 14px"><b style="color:var(--ink)">некуда: сайт, бот, кабинет</b></td><td style="padding:11px 14px">обычная история</td><td style="padding:11px 14px">—</td></tr>
-            </tbody>
-          </table>
+        <span class="caps" style="display:block;margin-bottom:6px">Экспертное заключение · Салон — биржа — писать самому</span>
+        <p class="petit" style="margin-bottom:14px;max-width:64ch">Каждая строка раскрывается: внутри — аргумент, способ проверить его самостоятельно и источники. Оформлено как положено в академической работе — со сносками<span class="fnm">[1–8]</span>.</p>
+        <div class="cmp2">
+          <div class="cmp2-head" aria-hidden="true"><span>Критерий</span><span class="c-salon">Салон</span><span>Биржа</span><span>Самому</span><span></span></div>
+
+          <details class="cmp-row">
+            <summary><span class="c-q">За результат отвечает</span><span class="c-salon"><b>мастерская — до защиты</b><i class="fnm">[1,2]</i></span><span class="c-birzha">случайный исполнитель</span><span class="c-self">только вы</span><span class="c-x" aria-hidden="true">+</span></summary>
+            <div class="cmp-body">
+              <p>У нас ответственность прописана, а не подразумевается: гарантийная поддержка до защиты закреплена в оферте — разделы 4 и 9<span class="fnm">[1]</span>, механика разжёвана в «Уставе гарантий»<span class="fnm">[2]</span>. Один исполнитель ведёт работу от плана до приёмки; ему некуда «слиться» — репутация мастерской живёт на этом домене шестой год.</p>
+              <p>На бирже договор де-факто заключается со случайным анонимом: площадка сводит вас и берёт комиссию, но текст пишет человек, которого вы выбрали по отзывам с накруткой. Сменился исполнитель посередине — начинайте объяснять всё заново.</p>
+              <span class="caps">Как проверить</span>
+              <ul class="cmp-check">
+                <li>Откройте оферту, раздел 9 «Порядок правок и гарантийная поддержка» — это публичный договор, а не обещание в чате<span class="fnm">[1]</span>.</li>
+                <li>Сравните с правилами любой биржи: найдите там пункт, где ПЛОЩАДКА отвечает за качество текста. Его нет — ответственность на исполнителе.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="cmp-row">
+            <summary><span class="c-q">Деньги</span><span class="c-salon"><b>по этапам, после показанного</b><i class="fnm">[1,3]</i></span><span class="c-birzha">часто вся сумма вперёд</span><span class="c-self">—</span><span class="c-x" aria-hidden="true">+</span></summary>
+            <div class="cmp-body">
+              <p>Схема 30/40/30 (или 50/50 для малых работ): каждый следующий платёж — после того, как вы своими глазами увидели результат предыдущего этапа. Порядок оплаты закреплён в оферте, раздел 5<span class="fnm">[1]</span>, и разобран на странице <a class="link" href="oplata.html">«Как проходит оплата»</a>. Право заказчика отказаться от услуги с возвратом за невыполненное — не наша доброта, а закон: ст. 782 ГК РФ<span class="fnm">[3]</span> и ст. 32 Закона о защите прав потребителей<span class="fnm">[4]</span>.</p>
+              <p>Биржи держат деньги на «безопасной сделке» площадки: при споре решает арбитраж площадки по её регламенту — почитайте его до, а не после.</p>
+              <span class="caps">Как проверить</span>
+              <ul class="cmp-check">
+                <li>Оферта, раздел 5 «Стоимость услуг и порядок оплаты»<span class="fnm">[1]</span> — этапность зафиксирована письменно.</li>
+                <li>Ст. 782 ГК РФ об одностороннем отказе — две минуты чтения<span class="fnm">[3]</span>.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="cmp-row">
+            <summary><span class="c-q">Правки после замечаний</span><span class="c-salon"><b>бесплатно, в стоимости</b><i class="fnm">[1]</i></span><span class="c-birzha">торг заново</span><span class="c-self">свои ночи</span><span class="c-x" aria-hidden="true">+</span></summary>
+            <div class="cmp-body">
+              <p>Замечания научрука и кафедры — штатная часть жанра, поэтому правки в рамках исходных требований мы делаем бесплатно до приёмки работы: оферта, раздел 9<span class="fnm">[1]</span>. Это не «повторная услуга», а доведение заказанной.</p>
+              <p>На бирже правки — новый торг: исполнитель уже получил деньги, и каждая итерация «после гарантийного срока в 14 дней» становится платной. Свои ночи — вариант бесплатный, но вы уже знаете, сколько стоит ночь перед пересдачей.</p>
+              <span class="caps">Как проверить</span>
+              <ul class="cmp-check">
+                <li>Оферта, раздел 9: объём и сроки гарантийных правок<span class="fnm">[1]</span>.</li>
+                <li>Спросите нас в чате «сколько раундов правок было в последнем деле» — покажем обезличенную историю.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="cmp-row">
+            <summary><span class="c-q">Проверки и отчёт</span><span class="c-salon"><b>отчёт — до оплаты финала</b><i class="fnm">[2,7]</i></span><span class="c-birzha">«скрин на словах»</span><span class="c-self">платные сервисы</span><span class="c-x" aria-hidden="true">+</span></summary>
+            <div class="cmp-body">
+              <p>Перед финальным платежом вы получаете отчёт: процент оригинальности, объём, соответствие методичке — сначала цифры, потом деньги. Формат отчёта показан в «Уставе гарантий», статья I<span class="fnm">[2]</span>. Оформление делаем по ГОСТ 7.32-2017 и ГОСТ 7.0.100-2018 — это открытые госстандарты, а не наша выдумка<span class="fnm">[7]</span>.</p>
+              <p>Порог оригинальности везде свой — его задаёт регламент вашего вуза, поэтому мы спрашиваем методичку, а не обещаем «90% в любой системе». Обещание конкретной цифры без знания вашей системы проверки — признак того, что вам врут.</p>
+              <span class="caps">Как проверить</span>
+              <ul class="cmp-check">
+                <li>Полистайте наши образцы с водяными знаками — введение, глава, список литературы<span class="fnm">[8]</span>.</li>
+                <li>Откройте ГОСТ 7.32-2017 и сверьте любой наш образец с ним<span class="fnm">[7]</span>.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="cmp-row">
+            <summary><span class="c-q">Договор и чеки</span><span class="c-salon"><b>оферта + чек самозанятого</b><i class="fnm">[1,5,6]</i></span><span class="c-birzha">аноним без договора</span><span class="c-self">—</span><span class="c-x" aria-hidden="true">+</span></summary>
+            <div class="cmp-body">
+              <p>Исполнитель — самозанятый, налог на профессиональный доход по 422-ФЗ<span class="fnm">[5]</span>: на каждый платёж приходит чек из приложения ФНС «Мой налог», реквизиты открыты на отдельной странице. Статус самозанятого проверяется по ИНН в официальном сервисе налоговой за 10 секунд<span class="fnm">[6]</span> — попробуйте прямо сейчас.</p>
+              <p>Исполнитель с биржи в лучшем случае «работает на площадке» — чека вы не увидите, договора с ним у вас нет, и предъявлять претензию будет некому и не по чему.</p>
+              <span class="caps">Как проверить</span>
+              <ul class="cmp-check">
+                <li>Реквизиты исполнителя — на странице <a class="link" href="requisites.html">«Реквизиты»</a>: ИНН открыт.</li>
+                <li>Вбейте ИНН в сервис ФНС «Проверка статуса самозанятого»<span class="fnm">[6]</span> — увидите действующий статус.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="cmp-row">
+            <summary><span class="c-q">Исполнитель исчез</span><span class="c-salon"><b>некуда: сайт · бот · кабинет</b><i class="fnm">[2]</i></span><span class="c-birzha">обычная история</span><span class="c-self">—</span><span class="c-x" aria-hidden="true">+</span></summary>
+            <div class="cmp-body">
+              <p>«Пропасть» мастерской технически сложно: дело живёт в кабинете на сайте с историей переписки и файлов, продублировано в Telegram-боте, у канала есть публичная лента, а почта — на собственном домене. Всё это работает шесть лет и проверяется до заказа, а не после.</p>
+              <p>Классический сценарий биржи: исполнитель взял аванс, неделю «болел», потом аккаунт удалён. Арбитраж вернёт деньги в лучшем случае — но не вернёт три недели до сдачи.</p>
+              <span class="caps">Как проверить</span>
+              <ul class="cmp-check">
+                <li>Напишите в <a class="link" href="priyomnaya.html">открытую приёмную</a> любой вопрос — посмотрите на скорость и тон ответа до всяких денег.</li>
+                <li>Полистайте <a class="link" href="reviews.html">экслибрисы-отзывы</a> со скринами переписок и дат.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="cmp-row">
+            <summary><span class="c-q">Цена к защите</span><span class="c-salon"><b>честная сразу, смета — письменно</b><i class="fnm">[1]</i></span><span class="c-birzha">дешевле на старте, дороже к финишу</span><span class="c-self">бесплатно деньгами, дорого временем</span><span class="c-x" aria-hidden="true">+</span></summary>
+            <div class="cmp-body">
+              <p>Наша смета фиксируется после согласования плана и не растёт по нашей инициативе — пересчёт возможен только при смене темы или объёма с вашей стороны (оферта, раздел 5<span class="fnm">[1]</span>). Каждому делу выдаётся PDF-спецификация: что входит, этапы, цена — одним листом.</p>
+              <p>Биржевая ставка ниже на старте, но к защите обрастает доплатами: «срочные правки», «повышение оригинальности», новый исполнитель после пропажи первого. Писать самому — бесплатно деньгами и дорого временем: на ВКР уходит 100–150 часов; посчитайте их в вашей почасовой ставке — и сравнение станет честным.</p>
+              <span class="caps">Как проверить</span>
+              <ul class="cmp-check">
+                <li>Запросите смету в конфигураторе — она бесплатна и придёт письменно, сравнивайте с чем угодно.</li>
+                <li>Оферта, раздел 5: условия пересчёта перечислены исчерпывающе<span class="fnm">[1]</span>.</li>
+              </ul>
+            </div>
+          </details>
         </div>
-        <p class="petit" style="margin-top:10px;max-width:56ch">Биржа бывает дешевле на старте — и дороже к защите: пересдачи, доплаты «за срочность правок» и новый исполнитель посередине. Мы продаём доведённый результат, поэтому цена честная сразу.</p>
+
+        <div class="cmp-lit">
+          <span class="caps">Источники — всё проверяется</span>
+          <ol>
+            <li>Публичная оферта Академического Салона: ред. 1.5 от 17.07.2026 — разделы 4, 5, 9, 10. URL: <a href="oferta.html">akademsalon.ru/oferta.html</a>.</li>
+            <li>Устав гарантий мастерской: статьи I–V с образцом отчёта о проверках. URL: <a href="guarantees.html">akademsalon.ru/guarantees.html</a>.</li>
+            <li>Гражданский кодекс РФ, часть вторая, гл. 39 «Возмездное оказание услуг», ст. 779–783. URL: <a href="https://www.consultant.ru/document/cons_doc_LAW_9027/" target="_blank" rel="noopener nofollow">consultant.ru/document/cons_doc_LAW_9027</a>.</li>
+            <li>Закон РФ от 07.02.1992 № 2300-1 «О защите прав потребителей», ст. 29, 32. URL: <a href="https://www.consultant.ru/document/cons_doc_LAW_305/" target="_blank" rel="noopener nofollow">consultant.ru/document/cons_doc_LAW_305</a>.</li>
+            <li>Федеральный закон от 27.11.2018 № 422-ФЗ «О налоге на профессиональный доход». URL: <a href="https://www.consultant.ru/document/cons_doc_LAW_311977/" target="_blank" rel="noopener nofollow">consultant.ru/document/cons_doc_LAW_311977</a>.</li>
+            <li>Проверка статуса самозанятого — официальный сервис ФНС России. URL: <a href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">npd.nalog.ru/check-status</a>.</li>
+            <li>ГОСТ 7.32-2017 «Отчёт о научно-исследовательской работе» (<a href="https://docs.cntd.ru/document/1200157208" target="_blank" rel="noopener nofollow">docs.cntd.ru/document/1200157208</a>); ГОСТ Р 7.0.100-2018 «Библиографическая запись» (<a href="https://docs.cntd.ru/document/1200161674" target="_blank" rel="noopener nofollow">docs.cntd.ru/document/1200161674</a>).</li>
+            <li>Образцы работ мастерской (PDF с водяными знаками): <a href="assets/samples/obrazec-vvedenie-vkr.pdf" target="_blank" rel="noopener">введение ВКР</a>, <a href="assets/samples/obrazec-glava-analiz.pdf" target="_blank" rel="noopener">аналитическая глава</a>, <a href="assets/samples/obrazec-spisok-literatury.pdf" target="_blank" rel="noopener">список литературы</a>.</li>
+          </ol>
+        </div>
       </div>
 
       <div class="faq-wrap">
@@ -557,8 +1278,8 @@
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"OfferCatalog","name":"Прайс: авторские материалы и сопровождение — Академический Салон","url":"https://akademsalon.ru/tariffs.html","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Самостоятельная работа (реферат, эссе, контрольная)"},"priceSpecification":{"@type":"PriceSpecification","minPrice":2500,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Научная статья РИНЦ"},"priceSpecification":{"@type":"PriceSpecification","minPrice":9000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Курсовая теоретическая"},"priceSpecification":{"@type":"PriceSpecification","minPrice":14000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Отчёт по практике"},"priceSpecification":{"@type":"PriceSpecification","minPrice":14000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Научная статья ВАК"},"priceSpecification":{"@type":"PriceSpecification","minPrice":18000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Курсовая с исследованием (практика, расчёты)"},"priceSpecification":{"@type":"PriceSpecification","minPrice":20000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Глава диссертации"},"priceSpecification":{"@type":"PriceSpecification","minPrice":30000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Научная статья Scopus / Web of Science"},"priceSpecification":{"@type":"PriceSpecification","minPrice":35000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Дипломная работа / ВКР"},"priceSpecification":{"@type":"PriceSpecification","minPrice":40000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Магистерская диссертация"},"priceSpecification":{"@type":"PriceSpecification","minPrice":60000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Кандидатская (по главам)"},"priceSpecification":{"@type":"PriceSpecification","minPrice":200000,"priceCurrency":"RUB"}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Почему «от»?","acceptedAnswer":{"@type":"Answer","text":"«От» — нижний порог за базовую сложность типа: стандартный объём и требования. Полную вилку под конкретную тему показывает пошаговый расчёт за минуту."}},{"@type":"Question","name":"Когда фиксируется смета?","acceptedAnswer":{"@type":"Answer","text":"После бесплатного согласования плана, когда известны объём и методичка. Зафиксированная смета не меняется по инициативе мастерской — пересчёт только при смене темы или объёма со стороны заказчика."}},{"@type":"Question","name":"Можно ли дешевле?","acceptedAnswer":{"@type":"Answer","text":"Да, без потери качества: уровень «Базовый» идёт без наценки за сопровождение, а свободный срок от 30 дней — без коэффициента за срочность."}},{"@type":"Question","name":"Как проходит оплата?","acceptedAnswer":{"@type":"Answer","text":"По этапам: каждый платёж вносится после показанного результата предыдущего этапа. Вся сумма вперёд не берётся, перед финальным платежом выдаётся отчёт о проверках."}}]}</script>
-<script src="assets/js/app.js?v=20260717e"></script>
-<script src="assets/js/extras.js?v=20260717e"></script>
+<script src="assets/js/app.js?v=20260717f"></script>
+<script src="assets/js/extras.js?v=20260717f"></script>
 <script>
 (function(){
   'use strict';
@@ -603,6 +1324,64 @@
     plan.addEventListener('click', function(){
       if(!(window.Salon && Salon.store)) return;
       Salon.store.set('salon_draft', { state:{ type:'diplom', disc:'hum', term:'free', tier:'base' }, plan:true, idx:0, savedAt:0 });
+    });
+  }
+
+  /* Формуляры: кнопка на карточке открывает досье и ведёт к нему */
+  function openDossier(id, scroll){
+    var d = document.getElementById(id);
+    if(!d) return;
+    document.querySelectorAll('.dossier[open]').forEach(function(o){ if(o!==d) o.removeAttribute('open'); });
+    d.setAttribute('open','');
+    if(scroll !== false){
+      setTimeout(function(){ d.scrollIntoView({behavior:'smooth', block:'start'}); }, 60);
+    }
+  }
+  document.querySelectorAll('.cc-more').forEach(function(b){
+    b.addEventListener('click', function(){ openDossier(b.getAttribute('data-dossier')); });
+  });
+  /* прямые ссылки tariffs.html#d-diplom открывают формуляр сами */
+  if(/^#d-[a-z_]+$/.test(location.hash)){ openDossier(location.hash.slice(1)); }
+  window.addEventListener('hashchange', function(){
+    if(/^#d-[a-z_]+$/.test(location.hash)) openDossier(location.hash.slice(1));
+  });
+
+  /* «Не нашли свою задачу» — вопрос мастеру одной формой (тип custom) */
+  var nfForm = document.getElementById('nfForm');
+  if(nfForm){
+    nfForm.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var task = document.getElementById('nfTask').value.trim();
+      var contact = document.getElementById('nfContact').value.trim();
+      var hp = document.getElementById('nfSite').value;
+      var btn = document.getElementById('nfGo');
+      if(hp) return; /* honeypot */
+      if(task.length < 10){ Salon.toast('Опишите задачу хотя бы одной фразой', {type:'error'}); return; }
+      if(!(Salon.valid && Salon.valid.contact ? Salon.valid.contact(contact) : contact.length > 4)){
+        Salon.toast('Оставьте контакт — куда прислать ответ', {type:'error'}); return;
+      }
+      Salon.btnLoading(btn, true);
+      Salon.api.post('/orders', {
+        type: 'custom', disc: 'hum', term: 'free', tier: 'base',
+        topic: 'Задача вне картотеки (страница цен)',
+        details: task, name: '', contact: contact, website: '',
+        consent: true, consent_doc: 'consent.html',
+        page: location.pathname + '#notfound'
+      }).then(function(r){
+        Salon.btnLoading(btn, false);
+        if(r && r.ok){
+          nfForm.hidden = true;
+          var ok = document.getElementById('nfOk'); ok.hidden = false;
+          if(r.token && Salon.api.addGuestToken) Salon.api.addGuestToken(r.token);
+          if(Salon.metrika) Salon.metrika.goal('nf_lead');
+          Salon.toast('Вопрос ушёл мастеру ✓', {type:'success'});
+        } else {
+          Salon.toast(r && r.error === 'rate_limit' ? 'Слишком часто — попробуйте через минуту' : 'Не отправилось — напишите нам напрямую', {type:'error'});
+        }
+      }).catch(function(){
+        Salon.btnLoading(btn, false);
+        Salon.toast('Сеть молчит — напишите нам в Telegram или ВК', {type:'error'});
+      });
     });
   }
 })();

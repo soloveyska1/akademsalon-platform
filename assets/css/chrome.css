@@ -375,14 +375,22 @@ main[tabindex="-1"]:focus{outline:none}
 .toast-stack{position:fixed;left:50%;bottom:24px;bottom:max(24px, calc(var(--resume-clear, 0px) + 12px));transform:translateX(-50%);z-index:230;display:flex;flex-direction:column;gap:8px;width:min(92vw,440px);pointer-events:none}
 .toast{
   pointer-events:auto;display:flex;align-items:center;gap:10px;
-  background:var(--ink);color:var(--paper);padding:12px 16px;border-radius:3px;font-size:15px;
+  background:var(--ink);color:var(--paper);padding:11px 15px;border-radius:3px;
+  font-size:14.5px;line-height:1.45;
+  border-left:3px solid #CDA455; /* типографская закладка: цвет = смысл */
   opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;
   box-shadow:0 10px 28px rgba(34,32,27,.3);
 }
 .toast.in{opacity:1;transform:none}
-.toast-ic{font-family:var(--serif);color:#CDA455}
-.toast-act{margin-left:auto;border:0;background:none;border-bottom:1px solid var(--hairline-strong);color:var(--paper);font-weight:500;cursor:pointer;font-size:14px}
-@media(max-width:880px){.toast-stack{bottom:86px}}
+.toast-success{border-left-color:#74BA90}
+.toast-error{border-left-color:#E06B4C}
+.toast-ic{font-family:var(--serif);color:#CDA455;flex:0 0 auto}
+.toast-success .toast-ic{color:#74BA90}
+.toast-error .toast-ic{color:#E06B4C}
+.toast-msg{flex:1;min-width:0}
+.toast-act{margin-left:auto;flex:0 0 auto;border:0;background:none;border-bottom:1px solid var(--hairline-strong);color:var(--paper);font-weight:500;cursor:pointer;font-size:13.5px;text-decoration:none;white-space:nowrap;padding-bottom:1px}
+a.toast-act:hover{border-color:#CDA455;color:#fff}
+@media(max-width:880px){.toast-stack{bottom:86px;width:min(94vw,440px)}}
 
 .contact-sheet{position:fixed;inset:0;z-index:240;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:opacity .24s,visibility .24s}
 .contact-sheet.open{opacity:1;visibility:visible}

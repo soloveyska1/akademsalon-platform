@@ -135,6 +135,60 @@ function initCabinet() {
     root.innerHTML = html;
     if (S.observeReveal) S.observeReveal(root);
     root.querySelectorAll('.reveal').forEach(function (n) { n.classList.add('in'); });
+    giftRestFill(); /* остаток сертификата в завершённом деле — дозагружается тихо */
+    var ph = document.getElementById('promoHintHide');
+    if (ph) ph.addEventListener('click', function () {
+      var p = st.me && st.me.promo_hint;
+      if (p) S.store.set('salon_ph_' + p.code, 1);
+      var el = document.getElementById('promoHint');
+      if (el) el.remove();
+    });
+  }
+
+  /* -------- остаток подарочного сертификата после завершения дела --------
+     Ненавязчиво: только в done-делах с кодом, баланс тянем один раз,
+     «скрыть» запоминается на устройстве. */
+  var giftBalCache = {};
+  function giftRestStrip(o) {
+    if (!o || !o.gift_code || o.status !== 'done') return '';
+    if (S.store.get('salon_grst_' + o.id)) return '';
+    return '<div class="due-box" id="giftRest" data-oid="' + o.id + '" data-code="' + esc(o.gift_code) + '" hidden></div>';
+  }
+  function giftRestFill() {
+    var box = document.getElementById('giftRest');
+    if (!box) return;
+    var code = box.getAttribute('data-code'), oid = box.getAttribute('data-oid');
+    function show(bal) {
+      if (!(bal > 0)) { box.remove(); return; }
+      box.innerHTML =
+        '<div class="dr"><span>💳 Остаток на сертификате ' + esc(code) + '</span><b>' + money(bal) + ' ₽</b></div>' +
+        '<p class="petit" style="margin:6px 0 8px">Он не сгорел и ждёт: хватит на презентацию и речь к защите, нормоконтроль или часть новой работы.</p>' +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+        '<a class="btn btn-line" href="configurator.html?service=df&gift=' + encodeURIComponent(code) + '">🎤 Презентация и речь</a>' +
+        '<a class="btn btn-line" href="configurator.html?gift=' + encodeURIComponent(code) + '">📝 Новая заявка с кодом</a>' +
+        '<button type="button" class="linkbtn" id="giftRestHide">не напоминать</button></div>';
+      box.hidden = false;
+      var h = box.querySelector('#giftRestHide');
+      if (h) h.addEventListener('click', function () {
+        S.store.set('salon_grst_' + oid, 1); box.remove();
+        toast('Хорошо — остаток всё равно виден в деле и не сгорает');
+      });
+    }
+    if (giftBalCache[code] != null) { show(giftBalCache[code]); return; }
+    S.api.get('/gift/check?code=' + encodeURIComponent(code)).then(function (r) {
+      var bal = (r && r.ok) ? (r.balance || 0) : 0;
+      giftBalCache[code] = bal; show(bal);
+    }, function () { box.remove(); });
+  }
+
+  /* -------- живой промокод, который клиент так и не потратил -------- */
+  function promoHintStrip() {
+    var p = st.me && st.me.promo_hint;
+    if (!p || !p.code) return '';
+    if (S.store.get('salon_ph_' + p.code)) return '';
+    return '<div class="club-strip reveal" id="promoHint"><span class="cs-item">🏷 Промокод <b>' + esc(p.code) + '</b> ждёт: ' + esc(p.label || 'скидка') + '</span>' +
+      '<span class="cs-dot">·</span><a class="linkbtn wax cs-more" href="configurator.html?promo=' + encodeURIComponent(p.code) + '">применить к новой заявке</a>' +
+      '<button type="button" class="linkbtn cs-more" id="promoHintHide" style="margin-left:8px">скрыть</button></div>';
   }
   function toast(msg) { if (S.toast) S.toast(msg); }
 
@@ -464,7 +518,8 @@ function initCabinet() {
     bits.push(sub
       ? '<span class="cs-item">' + esc(sub.emoji || '⭐') + ' Салон+ до <b>' + esc(sub.expires_ru) + '</b></span>'
       : '<span class="cs-item">⭐ Салон+ <span class="petit">от 449 ₽</span></span>');
-    return '<div class="club-strip reveal">' + bits.join('<span class="cs-dot">·</span>') +
+    return promoHintStrip() +
+      '<div class="club-strip reveal">' + bits.join('<span class="cs-dot">·</span>') +
       '<button type="button" class="linkbtn cs-more" id="clubToggle">' +
       (st.clubOpen ? 'свернуть' : (sub ? 'подробнее и куратор' : 'бонусы и подписка')) + '</button></div>' +
       (st.clubOpen ? bonusCard() + subCard() : '');
@@ -1483,7 +1538,7 @@ function initCabinet() {
       '<p class="petit">' + meta.join(' · ') + ' ' + deadlineChip(o) + '</p>' +
       jumpChips(o) +
       pauseBand(o) + finalBand(o) + partBand(o) + dueBand(o) +
-      priceBlock(o) + actionsBlock(o) +
+      priceBlock(o) + giftRestStrip(o) + actionsBlock(o) +
       stageFold(o) + reviewBlock(o) + defenseBlock(o) +
       filesBlock(o) + chatBlock(o) + manageBlock(o) + accessBlock(o) +
       (isArch(o) ? '<p class="petit" style="margin-top:clamp(20px,3vw,28px);padding-top:14px;border-top:1px solid var(--hairline)">' +

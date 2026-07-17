@@ -299,6 +299,10 @@
     }
     Salon.toast = function (msg, opts) {
       opts = opts || {};
+      var st = ensure();
+      /* стопка не растёт бесконечно: держим максимум три записки,
+         старшая уходит тихо — ничего не перекрываем и не мельтешим */
+      while (st.children.length >= 3) st.removeChild(st.firstChild);
       var t = document.createElement('div');
       t.className = 'toast toast-' + (opts.type || 'info');
       var icon = opts.type === 'success' ? '¶' : opts.type === 'error' ? '!' : '§';
@@ -309,13 +313,25 @@
         b.className = 'toast-act'; b.textContent = opts.action.label;
         b.addEventListener('click', function () { opts.action.onClick(); dismiss(); });
         t.appendChild(b);
+      } else if (opts.href) {
+        /* быстрая ссылка «в то самое место» — клиент не плутает */
+        var a = document.createElement('a');
+        a.className = 'toast-act'; a.href = opts.href;
+        a.textContent = opts.hrefLabel || 'Открыть →';
+        t.appendChild(a);
       }
-      ensure().appendChild(t);
+      st.appendChild(t);
       /* без rAF: при придушенном рендере кадр не наступает и тост оставался
          невидимым — пользователь не видел подтверждений действий */
       void t.offsetWidth;
       t.classList.add('in');
-      var to = setTimeout(dismiss, opts.duration || 4200);
+      /* с действием живёт дольше:人 должен успеть прочитать и нажать */
+      var life = opts.duration || ((opts.action || opts.href) ? 6500 : 4200);
+      var to = setTimeout(dismiss, life);
+      t.addEventListener('click', function (e) {
+        if (e.target.closest('.toast-act')) return;
+        dismiss(); /* тап по самой записке закрывает её — ненавязчивость */
+      });
       function dismiss() { clearTimeout(to); t.classList.remove('in'); setTimeout(function () { t.remove(); }, 260); }
       return dismiss;
     };
@@ -431,14 +447,16 @@
     { href: 'configurator.html', label: 'Рассчитать заказ', no: '02' },
     { href: 'plan.html',         label: 'Разбор плана',     no: '03' },
     { href: 'tariffs.html',      label: 'Цены и услуги',    no: '04' },
-    { href: 'gift.html',         label: 'Подарочный сертификат', no: '05' },
-    { href: 'guarantees.html',   label: 'Гарантии · устав', no: '06' },
-    { href: 'reviews.html',      label: 'Отзывы',           no: '07' },
-    { href: 'priyomnaya.html',   label: 'Открытая приёмная', no: '08' },
-    { href: 'referral.html',     label: 'Клуб и бонусы',    no: '09' },
-    { href: 'knowledge.html',    label: 'Полезные материалы',      no: '10' },
-    { href: 'check.html',        label: 'Проверка текста',  no: '11' },
-    { href: 'dashboard.html',    label: 'Личный кабинет',   no: '12' }
+    { href: 'vedenie.html',      label: 'Уровни ведения',   no: '05' },
+    { href: 'oplata.html',       label: 'Как проходит оплата', no: '06' },
+    { href: 'gift.html',         label: 'Подарочный сертификат', no: '07' },
+    { href: 'guarantees.html',   label: 'Гарантии · устав', no: '08' },
+    { href: 'reviews.html',      label: 'Отзывы',           no: '09' },
+    { href: 'priyomnaya.html',   label: 'Открытая приёмная', no: '10' },
+    { href: 'referral.html',     label: 'Клуб и бонусы',    no: '11' },
+    { href: 'knowledge.html',    label: 'Полезные материалы',      no: '12' },
+    { href: 'check.html',        label: 'Проверка текста',  no: '13' },
+    { href: 'dashboard.html',    label: 'Личный кабинет',   no: '14' }
   ];
   var DOCS = [
     ['oferta.html', 'Публичная оферта'],
@@ -634,6 +652,7 @@
         '</div>' +
         '<div><div class="fc-h">Разделы</div><nav class="foot-links" aria-label="Карта сайта">' +
           '<a href="configurator.html">Рассчитать заказ</a><a href="tariffs.html">Цены и услуги</a>' +
+          '<a href="vedenie.html">Уровни ведения</a><a href="oplata.html">Как проходит оплата</a>' +
           '<a href="gift.html">Подарочный сертификат</a>' +
           '<a href="guarantees.html">Гарантии · устав</a><a href="reviews.html">Отзывы</a>' +
           '<a href="priyomnaya.html">Открытая приёмная</a>' +

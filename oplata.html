@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Как проходит оплата: этапы 30/40/30, 50/50, касса и чеки — без предоплаты всей суммы | Академический Салон</title>
+<meta name="description" content="Оплата по этапам: каждый платёж — после показанного результата. Схемы 50/50 и 30/40/30, онлайн-касса, чек самозанятого, возврат по закону. Разбор всех вариантов и ответы на страхи." />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717f" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260717f" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260717f" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260717f" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<style>
+  /* ============================================================
+     ОПЛАТА — «КАССОВАЯ КНИГА»: правило показа, три схемы,
+     живой расчёт, касса и чеки, возвраты, страхи
+     ============================================================ */
+  .op-hero{padding:calc(64px + clamp(40px,7vh,80px)) 0 0}
+  .op-hero h1{max-width:24ch;margin:14px 0 clamp(14px,2vw,20px)}
+  .op-hero .lead{max-width:58ch}
+  .op-rule{margin-top:clamp(26px,4vw,38px);border:1px solid var(--wax);background:linear-gradient(0deg,var(--wax-soft),var(--wax-soft)),var(--sheet);border-radius:3px;padding:clamp(20px,3vw,30px);display:flex;gap:18px;align-items:baseline;flex-wrap:wrap}
+  .op-rule .or-law{font-family:var(--serif);font-size:clamp(19px,2.6vw,26px);font-weight:500;flex:1;min-width:260px}
+  .op-rule .or-sub{font-size:13.5px;color:var(--ink-soft);max-width:38ch;line-height:1.6}
+
+  /* схемы оплаты */
+  .schemes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:clamp(22px,3vw,30px)}
+  .scheme{padding:clamp(20px,2.6vw,28px);display:flex;flex-direction:column;gap:10px;position:relative}
+  .scheme .sc-name{font-family:var(--serif);font-size:clamp(18px,2vw,22px);font-weight:500}
+  .scheme .sc-for{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+  .scheme .sc-flag{position:absolute;top:-11px;left:20px;background:var(--wax);color:#FFFEF9;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;padding:4px 12px;border-radius:2px}
+  .scheme.feat{border-color:var(--wax)}
+  .scheme .paysteps{margin:6px 0 2px}
+  .scheme p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;flex:1;margin:0}
+  .scheme .sc-note{font-size:12px;color:var(--ink-faint)}
+
+  /* живой расчёт */
+  .opcalc{margin-top:clamp(26px,4vw,40px);background:var(--sheet);border:1px dashed var(--hairline-strong);border-radius:3px;padding:clamp(22px,3.4vw,36px)}
+  .opcalc .caps{display:block;margin-bottom:14px}
+  .opcalc input[type=range]{width:100%;accent-color:var(--wax);margin:8px 0 4px}
+  .opcalc .oc-sum{font-family:var(--mono);font-size:clamp(24px,3.4vw,34px);font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .opcalc .oc-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,36px);margin-top:16px}
+  .opcalc .ledger .lg-row .num{white-space:nowrap}
+  .opcalc .oc-when{font-size:12px;color:var(--ink-faint)}
+  @media(max-width:880px){.opcalc .oc-grid{grid-template-columns:1fr}}
+
+  /* касса и чеки */
+  .paylanes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:clamp(20px,3vw,28px)}
+  .paylane{padding:clamp(20px,2.6vw,28px)}
+  .paylane h3{font-size:clamp(17px,1.9vw,20px);margin-bottom:8px}
+  .paylane p{font-size:13.5px;color:var(--ink-soft);line-height:1.62}
+  .paylane .dotrow{font-size:13.5px;min-height:0;padding:8px 2px}
+  @media(max-width:880px){.paylanes{grid-template-columns:1fr}}
+
+  /* деньги меньше — купоны */
+  .lessrow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:clamp(20px,3vw,28px)}
+  .less{padding:clamp(18px,2.4vw,24px);display:flex;flex-direction:column;gap:8px}
+  .less .ls-ic{font-size:20px}
+  .less b{font-size:15px;font-weight:500}
+  .less p{font-size:13px;color:var(--ink-soft);line-height:1.6;flex:1;margin:0}
+  .less a{font-size:13px}
+  @media(max-width:880px){.lessrow{grid-template-columns:1fr}}
+
+  /* страхи */
+  .fears{max-width:800px}
+  .fears .faq-item p+p{margin-top:8px}
+
+  .final-cta{padding:var(--block) 0 0;text-align:center}
+  .final-cta .fc-rule{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,5vw,44px)}
+  .final-cta .fc-rule::before,.final-cta .fc-rule::after{content:"";height:1px;background:var(--hairline);flex:1}
+  .final-cta .fc-rule span{font-family:var(--serif);color:var(--ink-faint);font-size:18px}
+  .final-cta h2{margin-bottom:22px}
+  .final-cta .petit{margin-top:14px}
+  @media(max-width:880px){.schemes{grid-template-columns:1fr}.scheme.feat{order:-1}}
+</style>
+<link rel="canonical" href="https://akademsalon.ru/oplata.html" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#F6F1E7" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Как проходит оплата — по этапам, после показанного" />
+<meta property="og:description" content="50/50, 30/40/30 или по главам: каждый платёж — после того, как вы увидели результат. Касса, чеки самозанятого, возврат по закону." />
+<meta property="og:url" content="https://akademsalon.ru/oplata.html" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Оплата по этапам — Академический Салон" />
+<meta name="twitter:description" content="Каждый платёж — после показанного результата. Разбор схем оплаты, кассы, чеков и возвратов." />
+</head>
+<body>
+
+<main class="oplata">
+  <div class="wrap">
+
+    <!-- ТИТУЛ -->
+    <section class="op-hero reveal" data-chapter="Как проходит оплата">
+      <span class="caps">Кассовая книга · всё по этапам</span>
+      <h1 class="h-display">Как у нас устроены деньги</h1>
+      <p class="lead">Короткий ответ: <em class="pen">вы никогда не платите за то, чего ещё не видели</em>. Длинный ответ — на этой странице: схемы оплаты, касса и чеки, что делать, если всей суммы сейчас нет, и что происходит с деньгами в любом «а вдруг».</p>
+
+      <div class="op-rule">
+        <div class="or-law">Правило одно: сначала показанный результат — потом платёж за него.</div>
+        <p class="or-sub">Работает в обе стороны: мы не просим денег вперёд за невидимое — и не передаём финальные файлы до закрытия остатка. Симметрично и честно; порядок закреплён в <a class="link" href="oferta.html#p5">оферте, раздел 5</a>.</p>
+      </div>
+    </section>
+
+    <!-- § 01 — ТРИ СХЕМЫ -->
+    <section class="chapter reveal" id="shemy" data-chapter="§ 01 · Схемы оплаты">
+      <div class="ch-rule"><span class="ch-no">§ 01 · Три схемы — по размеру работы</span></div>
+      <h2>Схему подбираем под работу, а не под «как вам удобнее нам заплатить»</h2>
+      <p class="lead" style="margin-bottom:clamp(20px,3vw,28px)">Все три — это <em class="pen">рассрочка по факту</em>: деньги делятся на части и привязаны к показанным результатам. Никаких кредитов, банков и процентов.</p>
+
+      <div class="schemes">
+        <div class="scheme sheet stacked feat">
+          <span class="sc-flag">так идут 99% заказов</span>
+          <span class="sc-for">Малые и средние работы · курсовые · рефераты · статьи</span>
+          <span class="sc-name">50 / 50 — привычная классика</span>
+          <div class="paysteps">
+            <div class="pstep"><span class="ps-share">50%</span><span class="ps-what">после плана и сметы — старт</span></div>
+            <div class="pstep"><span class="ps-share">50%</span><span class="ps-what">после отчёта о проверках — финал</span></div>
+          </div>
+          <p>Половина при старте бронирует место в графике мастера. Вторая половина — только после того, как вы увидели готовую работу и отчёт о проверках. Между этими точками вы не платите ничего.</p>
+          <span class="sc-note">Подходит и для дипломов, если вам так спокойнее, — скажите при заказе.</span>
+        </div>
+
+        <div class="scheme sheet stacked">
+          <span class="sc-for">Дипломы · магистерские · главы диссертаций · Scopus</span>
+          <span class="sc-name">30 / 40 / 30 — по главам</span>
+          <div class="paysteps">
+            <div class="pstep"><span class="ps-share">30%</span><span class="ps-what">старт: план согласован</span></div>
+            <div class="pstep"><span class="ps-share">40%</span><span class="ps-what">середина: основная часть у вас</span></div>
+            <div class="pstep"><span class="ps-share">30%</span><span class="ps-what">финал: после отчёта о проверках</span></div>
+          </div>
+          <p>Большая работа — большие деньги, поэтому дробим мельче: каждый платёж меньше половины, и перед каждым вы держите в руках результат предыдущего этапа.</p>
+          <span class="sc-note">Кандидатские считаем отдельными сметами по главам — там своя долгая арифметика.</span>
+        </div>
+
+        <div class="scheme sheet stacked">
+          <span class="sc-for">По желанию клиента · при полном доверии</span>
+          <span class="sc-name">100% — если так удобнее вам</span>
+          <div class="paysteps">
+            <div class="pstep"><span class="ps-share">100%</span><span class="ps-what">одним платежом после сметы</span></div>
+          </div>
+          <p>Некоторые клиенты — обычно постоянные — предпочитают закрыть вопрос одним переводом и не вспоминать. Уважаем: так тоже можно. Но по умолчанию никогда не предлагаем: этапность — ваша страховка, и мы не заинтересованы её отбирать.</p>
+          <span class="sc-note">Все гарантии — отчёт, правки, возвраты — действуют одинаково при любой схеме.</span>
+        </div>
+      </div>
+
+      <!-- живой расчёт -->
+      <div class="opcalc" id="opcalc">
+        <span class="caps">Живой расчёт · подвигайте цену своей работы</span>
+        <div class="oc-sum"><span id="ocVal">40 000</span> ₽</div>
+        <input type="range" id="ocRange" min="2500" max="200000" step="500" value="40000" aria-label="Стоимость работы" />
+        <div class="oc-grid">
+          <div>
+            <span class="caps" style="font-size:10px">Схема 50/50</span>
+            <div class="ledger">
+              <div class="lg-row"><span>Старт — после плана и сметы</span><span class="num" id="oc50a">20 000 ₽</span></div>
+              <div class="lg-row"><span>Финал — после отчёта о проверках</span><span class="num" id="oc50b">20 000 ₽</span></div>
+            </div>
+            <p class="oc-when" style="margin-top:8px">Максимум, чем вы рискуете до первого показа, — стартовый платёж. И его страхует оферта.</p>
+          </div>
+          <div>
+            <span class="caps" style="font-size:10px">Схема 30/40/30</span>
+            <div class="ledger">
+              <div class="lg-row"><span>Старт</span><span class="num" id="oc30a">12 000 ₽</span></div>
+              <div class="lg-row"><span>Середина — основная часть у вас</span><span class="num" id="oc30b">16 000 ₽</span></div>
+              <div class="lg-row"><span>Финал — после отчёта</span><span class="num" id="oc30c">12 000 ₽</span></div>
+            </div>
+            <p class="oc-when" style="margin-top:8px">Для диплома за 60 000 ₽ стартовый платёж — всего 18 000 ₽: место в графике забронировано, работа пошла.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 02 — КАК ФИЗИЧЕСКИ ПЛАТИТЬ -->
+    <section class="chapter reveal" id="kassa" data-chapter="§ 02 · Касса и чеки">
+      <div class="ch-rule"><span class="ch-no">§ 02 · Касса, переводы и чеки</span></div>
+      <h2>Платите как удобно — документы будут при любом способе</h2>
+      <div class="paylanes">
+        <div class="paylane sheet stacked">
+          <h3>💳 Онлайн-касса</h3>
+          <p>Кнопка «Оплатить картой онлайн» появляется прямо в счёте — в кабинете и в Telegram. Платёж уходит через защищённую платёжную страницу (Robokassa): карта любого банка, СБП. Мы не видим и не храним данные вашей карты — только факт оплаты.</p>
+          <div class="dotrow"><span>Зачисление</span><span class="dots"></span><span class="dr-val">мгновенно</span></div>
+          <div class="dotrow"><span>Чек</span><span class="dots"></span><span class="dr-val">автоматически, на почту</span></div>
+        </div>
+        <div class="paylane sheet stacked">
+          <h3>🏦 Перевод по реквизитам</h3>
+          <p>Классика: переводите на карту или по СБП по реквизитам из счёта, жмёте «Я оплатил» — мастер сверяет поступление и подтверждает этап. Чек самозанятого из приложения ФНС «Мой налог» приходит на каждый платёж.</p>
+          <div class="dotrow"><span>Зачисление</span><span class="dots"></span><span class="dr-val">после сверки мастером</span></div>
+          <div class="dotrow"><span>Чек НПД</span><span class="dots"></span><span class="dr-val">на каждый платёж</span></div>
+        </div>
+      </div>
+      <p class="petit" style="margin-top:14px;max-width:64ch">Исполнитель — самозанятый (налог на профессиональный доход, <a class="link" href="https://www.consultant.ru/document/cons_doc_LAW_311977/" target="_blank" rel="noopener nofollow">422-ФЗ</a>). Статус проверяется по ИНН за 10 секунд в <a class="link" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">официальном сервисе ФНС</a>; реквизиты открыты на <a class="link" href="requisites.html">странице реквизитов</a>. Каждый платёж отражается в вашем деле в <a class="link" href="dashboard.html">кабинете</a> — план оплат всегда перед глазами.</p>
+    </section>
+
+    <!-- § 03 — ЕСЛИ ДЕНЕГ СЕЙЧАС МЕНЬШЕ -->
+    <section class="chapter reveal" id="menshe" data-chapter="§ 03 · Если сейчас не вся сумма">
+      <div class="ch-rule"><span class="ch-no">§ 03 · Если всей суммы сейчас нет</span></div>
+      <h2>Честные способы платить меньше и позже</h2>
+      <p class="lead" style="margin-bottom:clamp(18px,3vw,26px)">Сессия редко совпадает с зарплатой. Вот что реально помогает — без кредитов и мелкого шрифта.</p>
+      <div class="lessrow">
+        <div class="less sheet stacked">
+          <span class="ls-ic">📅</span>
+          <b>Начните со старта — 30%</b>
+          <p>Для диплома это меньше трети суммы. Место в графике бронируется, работа идёт, а следующий платёж наступит через недели — когда вы уже увидите главы. Многие так и закрывают сессию: платят с двух стипендий и одной зарплаты.</p>
+          <a class="link" href="configurator.html">Узнать свой стартовый платёж →</a>
+        </div>
+        <div class="less sheet stacked">
+          <span class="ls-ic">💎</span>
+          <b>Бонусы, промокоды, «Салон+»</b>
+          <p>Кэшбэк 5% с каждого заказа, приветственные 300 бонусов, скидка подписки до −10% с потолком — всё это уменьшает «деньгами к оплате» и суммируется по понятным правилам без «звёздочек».</p>
+          <a class="link" href="loyalty.html">Правила лояльности →</a>
+        </div>
+        <div class="less sheet stacked">
+          <span class="ls-ic">🎁</span>
+          <b>Подарочный сертификат</b>
+          <p>Работу может частично оплатить тот, кто хочет вам помочь: родители, партнёр, друзья. Сертификат — средство платежа: зачитывается в счёт как деньги, остаток не сгорает и тратится на следующие услуги.</p>
+          <a class="link" href="gift.html">Подарить или предъявить →</a>
+        </div>
+      </div>
+      <p class="marginalia" style="margin-top:16px;max-width:56ch">Совсем впритык? Начните с <a class="link" href="plan.html">разбора плана за 3 000 ₽</a>: получите структуру, срок и фиксированную смету — а сумма зачтётся в стартовый платёж, когда решитесь.</p>
+    </section>
+
+    <!-- § 04 — СТРАХИ И «А ВДРУГ» -->
+    <section class="chapter reveal" id="strahi" data-chapter="§ 04 · Страхи и «а вдруг»">
+      <div class="ch-rule"><span class="ch-no">§ 04 · Разбор страхов — без обид</span></div>
+      <h2>«А вдруг…» — отвечаем на всё, что обычно боятся спросить</h2>
+      <div class="fears">
+        <details class="faq-item">
+          <summary>А вдруг я заплачу — и вы пропадёте?</summary>
+          <p>Пропадать нам физически некуда: сайт на собственном домене, кабинет с историей дела, бот, публичный канал, почта — всё это работает годами и проверяется до оплаты, а не после. Шестой год практики и 1000+ работ — след, который не оставляют однодневки.</p>
+          <p>Юридически: вы платите по публичной оферте самозанятому исполнителю с открытым ИНН — это договор, чек и конкретное лицо, а не «Дмитрий с аватаркой». Право отказаться от услуги с возвратом за невыполненное закреплено ст. 782 ГК РФ и ст. 32 Закона о защите прав потребителей — и продублировано в <a class="link" href="oferta.html#p10">оферте, раздел 10</a>.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Почему вы не работаете по 100% постоплате, если так уверены в себе?</summary>
+          <p>Потому что этапность защищает обе стороны — это честнее, чем геройство. Стартовый платёж отсекает «заказал и передумал» (мастер бронирует под вас недели графика), а этапы дальше гарантируют вам, что мы мотивированы показывать результат, а не обещать его. Схема, при которой рискует только одна сторона, — плохая схема, чья бы очередь рисковать ни была.</p>
+        </details>
+        <details class="faq-item">
+          <summary>А вдруг работа не понравится — деньги сгорят?</summary>
+          <p>Не сгорят. Во-первых, правки бесплатны до приёмки — «не понравилось» чаще всего решается за одну итерацию. Во-вторых, вы видите работу до финального платежа: платить за кота в мешке здесь технически невозможно. В-третьих, если продолжать нет смысла — возврат за невыполненную часть по <a class="link" href="oferta.html#p10">разделу 10 оферты</a>: считаем, что сделано, возвращаем за несделанное.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Можно платить с карты родителей / другого человека?</summary>
+          <p>Да. Платёж привязывается к делу, а не к плательщику: в назначении ничего компрометирующего, чек придёт на ту почту, которую укажете. Для случая «платят близкие» есть и красивый путь — <a class="link" href="gift.html">подарочный сертификат</a>: они дарят, вы предъявляете код, остаток не сгорает.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Есть ли рассрочка или кредит?</summary>
+          <p>Банковских рассрочек и кредитов нет намеренно: не хотим, чтобы студент платил проценты за диплом. Наша этапность — и есть рассрочка: для магистерской за 60 000 ₽ это три платежа по 18–24 тысячи с интервалом в недели. Если нужен индивидуальный график под даты стипендии или зарплаты — напишите, разложим по-человечески.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Что будет, если я задержу платёж этапа?</summary>
+          <p>Ничего страшного: работа мягко встаёт на паузу до оплаты, дело остаётся в кабинете, ничего не сгорает и не штрафуется. Напомним один-два раза без коллекторских интонаций. Единственное честное «но»: долгие паузы двигают срок сдачи — график мастера живой.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ФИНАЛЬНЫЙ CTA -->
+    <section class="final-cta reveal" data-chapter="Смета">
+      <div class="fc-rule"><span>¶</span></div>
+      <h2>Посчитайте свою смету — увидите и план оплат</h2>
+      <a class="btn btn-wax btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>
+      <p class="petit">Смета бесплатна и ни к чему не обязывает. Платить — только после согласованного плана.</p>
+    </section>
+
+  </div>
+</main>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Нужно ли платить всю сумму вперёд?","acceptedAnswer":{"@type":"Answer","text":"Нет. Оплата идёт по этапам: 50/50 для малых и средних работ, 30/40/30 для дипломов и магистерских. Каждый платёж вносится после показанного результата предыдущего этапа. 100% предоплата возможна только по желанию клиента."}},{"@type":"Question","name":"Какие документы подтверждают оплату?","acceptedAnswer":{"@type":"Answer","text":"На каждый платёж приходит чек самозанятого из приложения ФНС «Мой налог» (422-ФЗ). При оплате через онлайн-кассу чек формируется автоматически. Статус исполнителя проверяется по ИНН в официальном сервисе ФНС."}},{"@type":"Question","name":"Что делать, если сейчас нет всей суммы?","acceptedAnswer":{"@type":"Answer","text":"Начните со стартового платежа 30% — место бронируется, работа идёт. Сумму уменьшают бонусы, промокоды, скидка подписки «Салон+» и подарочные сертификаты. Банковских кредитов нет намеренно."}},{"@type":"Question","name":"Можно ли вернуть деньги?","acceptedAnswer":{"@type":"Answer","text":"Да: возврат за невыполненную часть услуги предусмотрен разделом 10 оферты и опирается на ст. 782 ГК РФ и ст. 32 Закона о защите прав потребителей."}}]}</script>
+<script src="assets/js/app.js?v=20260717f"></script>
+<script src="assets/js/extras.js?v=20260717f"></script>
+<script>
+(function(){
+  'use strict';
+  /* Живой расчёт этапов: ползунок цены → разбивка 50/50 и 30/40/30 */
+  var r = document.getElementById('ocRange');
+  if(!r) return;
+  var val = document.getElementById('ocVal');
+  var f = function(n){ return Math.round(n).toLocaleString('ru-RU'); };
+  function draw(){
+    var s = parseInt(r.value, 10) || 0;
+    val.textContent = f(s);
+    document.getElementById('oc50a').textContent = f(s * .5) + ' ₽';
+    document.getElementById('oc50b').textContent = f(s * .5) + ' ₽';
+    document.getElementById('oc30a').textContent = f(s * .3) + ' ₽';
+    document.getElementById('oc30b').textContent = f(s * .4) + ' ₽';
+    document.getElementById('oc30c').textContent = f(s * .3) + ' ₽';
+  }
+  r.addEventListener('input', draw);
+  draw();
+})();
+</script>
+</body>
+</html>

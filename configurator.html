@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Калькулятор стоимости онлайн: курсовая, диплом, ВКР — смета за минуту | Академический Салон</title>
 <meta name="description" content="Соберите смету за четыре шага: тип работы, направление, срок и уровень сопровождения. Живой расчёт и порядок оплаты — до заявки." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717e" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260717e" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260717e" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260717e" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717f" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260717f" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260717f" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260717f" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -394,6 +394,7 @@
                 <button type="button" class="optrow" role="radio" data-id="turn" aria-checked="false" tabindex="-1"><span>Под ключ</span><span class="dots"></span><span class="o-val">×1.33</span><small>Правки и сопровождение до приёмки</small></button>
                 <button type="button" class="optrow" role="radio" data-id="vip" aria-checked="false" tabindex="-1"><span>VIP</span><span class="dots"></span><span class="o-val">×2.0</span><small>Личное ведение, подготовка к защите, приоритет в очереди</small></button>
               </div>
+              <p class="petit" style="margin-top:10px">Не уверены, какой уровень ваш? <a class="link" href="vedenie.html" target="_blank" rel="noopener">Проспект уровней</a> — что входит в каждый и как ощущается. Про деньги — <a class="link" href="oplata.html" target="_blank" rel="noopener">как проходит оплата</a>.</p>
             </div>
 
             <!-- ШАГ 4: тема и заявка -->
@@ -661,8 +662,8 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260717e"></script>
-<script src="assets/js/extras.js?v=20260717e"></script>
+<script src="assets/js/app.js?v=20260717f"></script>
+<script src="assets/js/extras.js?v=20260717f"></script>
 <script>
 function initConf() {
   'use strict';
@@ -1813,6 +1814,31 @@ function initConf() {
         ? ' 🎁 Сертификат ' + giftCode + ' привязан — сумма зачтётся, когда мастер назовёт цену.'
         : ' 🎁 Сертификат не привязался (' + (GIFT_ERR[r.gift] || 'не прошёл проверку').toLowerCase() +
           ') — мастер посчитает без него.';
+    }
+    /* остаток сертификата больше сметы? мягко предложим потратить его же:
+       презентация, речь, нормоконтроль — отказ ничего не ломает */
+    if (r.gift === 'ok' && r.gift_balance) {
+      var qHigh = 0;
+      try { qHigh = (svc ? 0 : (SalonCalc.quote(state.type, state.disc, state.term, state.tier) || {}).high) || 0; } catch (e) {}
+      var rest = r.gift_balance - qHigh;
+      if (rest >= 2000) {
+        var sheet = document.querySelector('#confDone .done-sheet');
+        if (sheet && !document.getElementById('giftRestCard')) {
+          var card = document.createElement('div');
+          card.id = 'giftRestCard';
+          card.style.cssText = 'margin-top:18px;border:1px solid var(--verify);background:var(--verify-soft);border-radius:3px;padding:16px 18px;text-align:left';
+          card.innerHTML = '<p class="caps" style="margin-bottom:8px">На сертификате останется запас</p>' +
+            '<p style="font-size:14px;line-height:1.6;margin-bottom:12px">После этой работы на коде останется примерно <b class="num">' +
+            rest.toLocaleString('ru-RU') + ' ₽</b> — их хватит на презентацию и речь к защите или нормоконтроль. ' +
+            'Можно оформить второй заявкой прямо сейчас — код уже вписан.</p>' +
+            '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
+            '<a class="btn btn-line" href="configurator.html?service=df&gift=' + encodeURIComponent(giftCode) + '">🎤 Презентация и речь</a>' +
+            '<a class="btn btn-line" href="configurator.html?service=nm&gift=' + encodeURIComponent(giftCode) + '">📏 Нормоконтроль</a>' +
+            '<button type="button" class="btn btn-line" id="giftRestNo">Не сейчас</button></div>';
+          sheet.appendChild(card);
+          card.querySelector('#giftRestNo').addEventListener('click', function(){ card.remove(); });
+        }
+      }
     }
     if (S.stamp) S.stamp('Заявка принята');
     /* гостям — ссылка доступа к делу + необязательная привязка Telegram */
