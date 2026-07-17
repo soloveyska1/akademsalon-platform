@@ -3,840 +3,425 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Пролог — Академический Салон</title>
-<!-- ПРОТОТИП v2 «Тот, кто отвечает». Страница ни к чему не подключена и закрыта от индексации. -->
-<meta name="robots" content="noindex,nofollow" />
+<title>Сториз мастерской — 20 секунд о том, как здесь всё устроено | Академический Салон</title>
+<meta name="description" content="Шесть кадров о мастерской: одни руки, оплата за показанное, правки до защиты, анонимность. Можно досмотреть, можно пропустить." />
+<meta name="robots" content="noindex" />
 <meta name="theme-color" content="#12100B" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717b" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717c" />
 <link rel="prefetch" href="index.html" />
 <style>
 /* ============================================================
-   ПРОЛОГ «Тот, кто отвечает» — скролл-фильм, ~11 кадров.
-   Сценарий собран писательским цехом (5 концепций × 3 судьи):
-   каркас «Ночи» + арка «той же красной ручки» + тихое дно
-   «Я не тупой» + штампы доверия + «Ваша полка пока пуста».
-   Правила мастерства (без изменений с v1):
-   - единственный инструмент зрителя — скролл; всё живое во
-     времени (печать сообщений) — setTimeout/setInterval;
-   - никаких rAF и CSS-анимаций: движение = функция прогресса;
-   - только transform/opacity/clip-path/stroke-dashoffset;
-   - ноль библиотек, ноль картинок; PRELUDE.set(p) — люк отладки;
-   - детям НЕ ставим visibility:'visible' — только '' | 'hidden',
-     чтобы скрытая секция всегда побеждала (урок v1).
+   «СТОРИЗ МАСТЕРСКОЙ» — быстрый трейлер доверия вместо скролл-
+   фильма (v3, 2026-07-17). Формат историй: сегменты прогресса,
+   автоплей ~4с/кадр, тап вперёд/назад, удержание — пауза, свайп
+   вниз или ✕ — пропуск, финал — CTA. Одна мысль на кадр, только
+   доказательства, ни слова о ценах.
+   Механика: setInterval + CSS-переходы (без rAF/IO — живёт при
+   reduce-motion и в «турбо»-браузерах); reduce-motion отключает
+   автоплей и даёт явные стрелки. Протокол оверлея прежний:
+   postMessage {salonPrelude:'ready'|'close', goto} — index.html
+   не менялся.
    ============================================================ */
 :root{
-  --night:#12100B;
-  --night-2:#1A1610;
-  --n-ink:#EDE3CF;
-  --n-soft:#B7AD97;
-  --n-faint:#7E7663;
-  --amber:#E8B463;
-  --amber-deep:#C98F3F;
+  --night:#12100B;          /* ночная переплётная */
+  --night-2:#1B1812;
   --paper:#F6F1E7;
-  --sheet:#FFFEF9;
-  --ink:#22201B;
-  --ink-soft:#6B665A;
-  --ink-faint:#857E6C;
-  --hairline:#D9D2C2;
-  --wax:#B23B22;
+  --paper-dim:#CFC7B4;
+  --faint:#8F8776;
+  --wax:#C24730;            /* сургуч чуть ярче — тёмный фон */
   --wax-deep:#8C2D18;
-  --red:#C9412A;           /* красная ручка на тёмном */
-  --verify:#3D6B50;
-  --stamp-blue:#3A4E7A;
-  --foil:#B98A2F;
-  --serif:"Literata",Georgia,"Times New Roman",serif;
-  --sans:"Golos Text",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  --mono:"JetBrains Mono","SF Mono",Consolas,monospace;
+  --verify:#7FB598;
+  --serif:"Literata",Georgia,serif;
+  --sans:"Golos Text",-apple-system,sans-serif;
+  --mono:"JetBrains Mono",Consolas,monospace;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:auto}
-body{background:var(--night);font-family:var(--sans);overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:var(--night);color:var(--paper);
+  font-family:var(--sans);overflow:hidden;
+  -webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+/* лёгкое бумажное зерно ночи */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;
+  background-image:radial-gradient(rgba(246,241,231,.55) .6px, transparent .7px);
+  background-size:9px 9px}
 
-.stage{position:fixed;inset:0;overflow:hidden}
-.scroll-space{height:1400vh;height:1400svh}
+.stage{position:fixed;inset:0;display:flex;flex-direction:column}
 
-/* ---------- фоны ---------- */
-.bg-night{position:absolute;inset:0;background:
-  radial-gradient(130% 95% at 50% 0%, var(--night-2) 0%, var(--night) 60%)}
-.bg-night::after{content:"";position:absolute;inset:0;opacity:.05;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
-.blackout{position:absolute;inset:0;background:#0B0906;opacity:0}
-.bg-glow{position:absolute;inset:0;opacity:0;background:
-  radial-gradient(75% 60% at 50% 46%, rgba(232,180,99,.22) 0%, rgba(232,180,99,.05) 45%, transparent 72%)}
-.bg-day{position:absolute;inset:0;background:var(--paper);
-  clip-path:circle(0% at 50% 40%);-webkit-clip-path:circle(0% at 50% 40%)}
-.bg-day::after{content:"";position:absolute;inset:0;opacity:.05;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
-.rim{position:absolute;left:50%;top:40%;width:10px;height:10px;border-radius:50%;
-  border:2px solid rgba(232,180,99,.55);transform:translate(-50%,-50%);opacity:0;
-  box-shadow:0 0 44px rgba(232,180,99,.35)}
-.cursor-light{position:absolute;left:0;top:0;width:640px;height:640px;margin:-320px 0 0 -320px;
-  pointer-events:none;opacity:0;background:
-  radial-gradient(circle, rgba(232,180,99,.08) 0%, transparent 62%)}
+/* -------- верх: сегменты прогресса + пропуск -------- */
+.top{display:flex;gap:10px;align-items:center;position:relative;z-index:6;
+  padding:calc(12px + env(safe-area-inset-top)) 14px 10px}
+.segs{display:flex;gap:5px;flex:1}
+.seg{flex:1;height:3px;border-radius:2px;background:rgba(246,241,231,.22);overflow:hidden}
+.seg i{display:block;height:100%;width:0;background:var(--paper);border-radius:2px}
+.seg.done i{width:100%}
+.skip{flex:0 0 auto;display:inline-flex;gap:8px;align-items:center;
+  background:none;border:1px solid rgba(246,241,231,.3);color:var(--paper-dim);
+  font:inherit;font-size:12.5px;letter-spacing:.06em;border-radius:999px;
+  padding:6px 13px;cursor:pointer}
+.skip:hover{color:var(--paper);border-color:rgba(246,241,231,.6)}
+.brandline{position:absolute;left:0;right:0;top:calc(38px + env(safe-area-inset-top));
+  text-align:center;font-family:var(--mono);font-size:9.5px;letter-spacing:.34em;
+  color:var(--faint);text-transform:uppercase;pointer-events:none}
 
-/* ---------- биты ---------- */
-.act{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;text-align:center;padding:24px clamp(18px,5vw,48px);
-  visibility:hidden;pointer-events:none}
-.act > *{max-width:min(92vw,600px)}
+/* -------- сцена кадров -------- */
+.frames{position:relative;flex:1;min-height:0}
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;padding:24px clamp(20px,6vw,64px) 90px;
+  opacity:0;visibility:hidden;transform:translateY(14px) scale(.985);
+  transition:opacity .5s ease,transform .5s ease,visibility 0s linear .5s}
+.fr.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.fr .caps{font-family:var(--mono);font-size:clamp(9.5px,1.4vw,11px);letter-spacing:.3em;
+  text-transform:uppercase;color:var(--faint);margin-bottom:clamp(16px,3vh,28px)}
+.fr h2{font-family:var(--serif);font-weight:420;letter-spacing:-.015em;
+  font-size:clamp(30px,6.2vw,58px);line-height:1.12;max-width:17ch;text-wrap:balance}
+.fr h2 b{font-weight:640;color:#fff}
+.fr .sub{margin-top:clamp(14px,2.6vh,22px);font-size:clamp(14px,1.9vw,16.5px);
+  line-height:1.6;color:var(--paper-dim);max-width:52ch;text-wrap:balance}
+.fr .sub small{display:block;margin-top:10px;font-size:12px;color:var(--faint)}
 
-/* Бит 1 · 03:12 */
-.clock{font-family:var(--mono);font-weight:400;color:var(--amber);
-  font-size:clamp(56px,17vw,110px);letter-spacing:.04em;
-  text-shadow:0 0 34px rgba(232,180,99,.26)}
-.b1-line{font-family:var(--mono);color:var(--n-soft);font-size:clamp(14px,3.9vw,18px);
-  letter-spacing:.06em;margin-top:16px;min-height:1.5em}
-.caret{display:inline-block;width:2px;height:1em;vertical-align:-.15em;background:var(--amber);margin-left:1px}
+/* появление содержимого кадра каскадом */
+.fr .caps,.fr h2,.fr .sub,.fr .art{opacity:0;transform:translateY(12px);
+  transition:opacity .55s ease,transform .55s ease}
+.fr.on .caps{opacity:1;transform:none;transition-delay:.05s}
+.fr.on .art{opacity:1;transform:none;transition-delay:.15s}
+.fr.on h2{opacity:1;transform:none;transition-delay:.22s}
+.fr.on .sub{opacity:1;transform:none;transition-delay:.4s}
 
-/* чаты */
-.chat{width:min(92vw,410px);text-align:left}
-.chat-head{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--n-faint);margin-bottom:12px;text-align:center}
-.typing-note{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--n-faint);
-  text-align:center;margin-bottom:10px;opacity:0;min-height:1.2em}
-.bubble{position:relative;background:#241E14;border:1px solid #3A3226;border-radius:10px 10px 10px 3px;
-  padding:10px 13px 8px;margin:0 26px 9px 0;color:#E6DCC6;font-size:15px;line-height:1.45;opacity:0}
-.bubble-out{background:#2A2417;border-color:#453C2B;border-radius:10px 10px 3px 10px;margin:0 0 9px 26px}
-.bubble .b-time{display:block;text-align:right;font-family:var(--mono);font-size:9.5px;
-  color:var(--n-faint);letter-spacing:.08em;margin-top:4px;opacity:0}
-.bubble-amber{background:#2A2113;border-color:#5A4526;
-  box-shadow:0 0 0 1px rgba(232,180,99,.06),0 10px 34px rgba(232,180,99,.08)}
-.chat-status{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--n-faint);
-  text-align:right;margin:2px 2px 0 0;opacity:0}
-.typing-dots{display:inline-block;font-family:var(--mono);color:var(--amber);letter-spacing:2px}
-.chat-input{display:flex;align-items:center;gap:10px;margin-top:14px;border:1px solid #3A3226;
-  border-radius:999px;padding:10px 16px;background:#1D1810;color:#E6DCC6;font-size:15px;min-height:42px}
-.chat-input .ci-txt{flex:1;text-align:left;white-space:nowrap;overflow:hidden}
-.chat-input .ci-send{color:var(--n-faint);font-family:var(--mono);font-size:11px}
+/* --- печать-оттиск --- */
+.seal{width:clamp(86px,14vh,120px);height:clamp(86px,14vh,120px);border-radius:50%;
+  margin-bottom:clamp(18px,3.4vh,30px);position:relative;display:inline-block;
+  background:radial-gradient(circle at 33% 30%,var(--wax),var(--wax-deep) 72%);
+  box-shadow:0 10px 34px rgba(194,71,48,.35),inset 0 2px 6px rgba(255,255,255,.18),inset 0 -4px 10px rgba(0,0,0,.3)}
+.seal::before{content:"";position:absolute;inset:9%;border:1.5px solid rgba(246,241,231,.5);border-radius:50%}
+.seal::after{content:"АС";position:absolute;inset:0;display:grid;place-items:center;
+  font-family:var(--serif);font-weight:700;font-size:clamp(30px,5vh,42px);color:var(--paper);
+  letter-spacing:.04em;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.fr.on .seal{animation:stampIn .6s cubic-bezier(.2,1.4,.4,1) .12s backwards}
+@keyframes stampIn{from{transform:scale(1.7) rotate(-10deg);opacity:0}to{transform:scale(1) rotate(-3deg);opacity:1}}
 
-/* Бит 3 · красная ручка */
-.sheet{position:relative;width:min(88vw,420px);background:#EFE8D6;border-radius:3px;
-  padding:26px 22px 22px;box-shadow:0 18px 60px rgba(0,0,0,.55);text-align:left;
-  transform:rotate(-.8deg)}
-.sheet .sh-title{font-family:var(--serif);font-size:12px;letter-spacing:.08em;color:#5A5342;
-  text-align:center;margin-bottom:14px;text-transform:uppercase}
-.greek{height:7px;border-radius:2px;background:#C9C0AA;margin:0 0 8px;opacity:.75}
-.greek.g2{width:92%}.greek.g3{width:97%}.greek.g4{width:88%}.greek.g5{width:95%}
-.greek.g6{width:72%}
-.sheet svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
-.sheet path{fill:none;stroke:var(--red);stroke-width:2.6;stroke-linecap:round}
-.mark{position:absolute;font-family:var(--serif);font-style:italic;color:var(--red);
-  font-size:clamp(12.5px,3.4vw,15px);opacity:0;white-space:nowrap}
-.verdict-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  pointer-events:none}
-.verdict{font-family:var(--serif);font-style:italic;font-weight:700;color:var(--red);
-  font-size:clamp(26px,8vw,42px);white-space:nowrap;opacity:0;
-  text-shadow:0 1px 0 rgba(255,255,255,.25)}
-.b3-sub{font-family:var(--mono);color:var(--n-faint);font-size:clamp(11.5px,3.2vw,13px);
-  letter-spacing:.08em;margin-top:22px;opacity:0}
+/* --- счётчик работ --- */
+.bignum{font-family:var(--serif);font-weight:640;color:#fff;
+  font-size:clamp(64px,16vw,150px);line-height:1;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums}
+.bignum sup{font-size:.38em;color:var(--wax);font-weight:640;margin-left:4px}
+.numlbl{font-family:var(--mono);font-size:clamp(10px,1.6vw,12px);letter-spacing:.3em;
+  text-transform:uppercase;color:var(--paper-dim);margin-top:12px}
 
-/* Бит 5 · дно */
-.deep{font-family:var(--serif);color:var(--n-ink);font-size:clamp(24px,6.6vw,40px);
-  line-height:1.25;opacity:0;text-shadow:0 1px 0 rgba(0,0,0,.6)}
-.deep.d2{color:var(--n-soft);font-size:clamp(18px,5vw,28px);margin-top:14px}
+/* --- схема «за показанное»: три штампа по очереди --- */
+.steps{display:flex;gap:clamp(8px,2vw,14px);align-items:center;flex-wrap:wrap;justify-content:center;
+  margin-bottom:clamp(18px,3.4vh,30px)}
+.stp{font-family:var(--mono);font-size:clamp(10px,1.7vw,12.5px);letter-spacing:.14em;
+  text-transform:uppercase;border:1.6px solid var(--paper-dim);color:var(--paper);
+  border-radius:4px;padding:9px 13px;opacity:0;transform:scale(1.28) rotate(-4deg);
+  transition:opacity .4s ease,transform .45s cubic-bezier(.2,1.3,.4,1)}
+.stp.hit{opacity:1;transform:rotate(-1.4deg)}
+.stp.pay{border-color:var(--wax);color:#fff;background:rgba(194,71,48,.16)}
+.steps .ar{color:var(--faint);font-size:15px;opacity:0;transition:opacity .3s ease}
+.steps .ar.hit{opacity:1}
 
-/* Бит 7 · свет и происхождение */
-.h-origin{font-family:var(--serif);font-weight:500;color:var(--ink);line-height:1.3;
-  font-size:clamp(21px,5.6vw,32px);letter-spacing:-.005em;text-shadow:0 1px 0 rgba(255,255,255,.7)}
-.h-origin em{font-style:italic}
-.h-origin2{font-family:var(--serif);font-weight:600;color:var(--ink);line-height:1.3;
-  font-size:clamp(23px,6vw,34px);margin-top:18px;text-shadow:0 1px 0 rgba(255,255,255,.7)}
-.goldline{width:0;height:2px;background:var(--foil);margin:26px auto 0;opacity:.9}
+/* --- отзывы: наклеенные карточки --- */
+.shots{display:flex;gap:clamp(10px,2.4vw,18px);justify-content:center;align-items:center;
+  margin-bottom:clamp(18px,3vh,26px)}
+.shot{background:#FFFEF9;padding:7px 7px 9px;border-radius:3px;max-width:min(46vw,300px);
+  box-shadow:0 16px 40px rgba(0,0,0,.5);opacity:0;transform:translateY(20px)}
+.shot img{display:block;width:100%;height:auto;border-radius:2px;filter:saturate(.96)}
+.shot .cap{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:#857E6C;
+  text-transform:uppercase;padding-top:6px;text-align:center}
+.fr.on .shot{transition:opacity .5s ease,transform .55s cubic-bezier(.2,1.2,.4,1)}
+.fr.on .shot:first-child{opacity:1;transform:rotate(-2.2deg);transition-delay:.2s}
+.fr.on .shot:last-child{opacity:1;transform:rotate(1.8deg) translateY(6px);transition-delay:.36s}
+@media (max-width:560px){.shot:last-child{display:none}.shot{max-width:72vw}}
 
-/* Бит 8 · портрет научрука */
-.h-day{font-family:var(--serif);font-weight:500;color:var(--ink);line-height:1.2;
-  font-size:clamp(22px,5.6vw,32px);text-shadow:0 1px 0 rgba(255,255,255,.7)}
-.h-sub{font-family:var(--serif);font-style:italic;color:var(--ink-soft);
-  font-size:clamp(15px,4.2vw,19px);margin-top:10px}
-.frame-wrap{position:relative;width:min(74vw,300px);height:min(56vw,230px);margin-top:26px}
-.frame-wrap svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.frame-wrap ellipse{fill:none;stroke:var(--foil);stroke-width:1.6}
-.traits{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:9px}
-.trait{font-family:var(--mono);font-size:clamp(10.5px,3vw,12.5px);letter-spacing:.1em;
-  color:var(--ink-soft);border:1px solid var(--hairline);border-radius:999px;
-  padding:4px 12px;background:rgba(255,254,249,.65);opacity:0}
+/* --- юр-строки штампами --- */
+.law{display:grid;gap:10px;margin-bottom:clamp(18px,3vh,26px)}
+.law .row{display:flex;gap:10px;align-items:center;justify-content:center;
+  font-size:clamp(13.5px,2vw,16px);color:var(--paper-dim);
+  opacity:0;transform:translateX(-10px);transition:opacity .45s ease,transform .45s ease}
+.fr.on .law .row{opacity:1;transform:none}
+.fr.on .law .row:nth-child(1){transition-delay:.2s}
+.fr.on .law .row:nth-child(2){transition-delay:.38s}
+.fr.on .law .row:nth-child(3){transition-delay:.56s}
+.law .ok{font-family:var(--mono);color:var(--verify);font-size:13px}
+.law b{color:var(--paper);font-weight:560}
 
-/* Бит 9 · штампы доверия */
-.b9-q{font-family:var(--mono);color:var(--ink-faint);font-size:clamp(12px,3.4vw,14px);
-  letter-spacing:.08em;margin-bottom:clamp(20px,4vh,32px)}
-.stamps{display:flex;flex-direction:column;gap:13px;align-items:center}
-.stamp{width:min(88vw,430px);border:2px solid currentColor;border-radius:4px;
-  padding:11px 16px 10px;background:rgba(255,254,249,.6);text-align:center;opacity:0}
-.stamp b{display:block;font-family:var(--mono);font-weight:600;font-size:clamp(12px,3.3vw,14.5px);
-  letter-spacing:.13em;text-transform:uppercase}
-.stamp-wax{color:var(--wax)}
-.stamp-blue{color:var(--stamp-blue)}
-.stamp-verify{color:var(--verify)}
-.b9-a{font-family:var(--serif);color:var(--ink);font-size:clamp(16.5px,4.6vw,21px);
-  margin-top:clamp(22px,4vh,32px);opacity:0}
+/* --- финальный кадр: CTA --- */
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:clamp(20px,3.6vh,30px)}
+.btn{font:inherit;font-size:15px;font-weight:520;border-radius:3px;cursor:pointer;
+  padding:13px 22px;letter-spacing:.01em;transition:transform .15s ease,background .2s ease}
+.btn:active{transform:translateY(1px)}
+.btn-wax{background:var(--wax);border:1px solid var(--wax);color:#fff}
+.btn-wax:hover{background:var(--wax-deep)}
+.btn-ghost{background:none;border:1px solid rgba(246,241,231,.34);color:var(--paper)}
+.btn-ghost:hover{border-color:rgba(246,241,231,.7)}
+.again{margin-top:16px;background:none;border:0;color:var(--faint);font:inherit;font-size:13px;
+  cursor:pointer;border-bottom:1px solid rgba(143,135,118,.5);padding-bottom:1px}
+.again:hover{color:var(--paper-dim)}
 
-/* Бит 10 · полка */
-.shelf-wrap{width:min(90vw,470px)}
-.shelf{display:flex;align-items:flex-end;justify-content:center;gap:7px;
-  height:clamp(120px,26vw,160px);border-bottom:3px solid var(--ink);padding:0 8px}
-.spine{writing-mode:vertical-rl;transform:rotate(180deg);display:flex;align-items:center;
-  justify-content:center;font-family:var(--mono);font-size:clamp(9px,2.4vw,11px);
-  letter-spacing:.12em;color:var(--paper);border-radius:2px 2px 0 0;opacity:0;
-  padding:10px 0;text-transform:uppercase}
-.sp1{width:clamp(30px,7.4vw,40px);height:76%;background:var(--stamp-blue)}
-.sp2{width:clamp(30px,7.4vw,40px);height:82%;background:#4C6350}
-.sp3{width:clamp(28px,7vw,38px);height:70%;background:#6B665A}
-.sp4{width:clamp(40px,9.6vw,52px);height:96%;background:var(--wax);
-  box-shadow:inset 0 0 0 1.5px rgba(185,138,47,.75);color:#FFF7E8}
-.plate{display:inline-block;margin-top:18px;font-family:var(--mono);
-  font-size:clamp(10.5px,3vw,12.5px);letter-spacing:.14em;color:#6C5A2E;
-  border:1px solid var(--foil);border-radius:3px;padding:7px 14px;opacity:0;
-  background:linear-gradient(180deg,#F3E3B6,#E4CE96);text-transform:uppercase;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
-.b10-line{font-family:var(--serif);color:var(--ink);font-size:clamp(16.5px,4.6vw,21px);
-  margin-bottom:clamp(22px,4vh,34px)}
+/* -------- низ: подсказка управления -------- */
+.hint{position:absolute;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom));
+  text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--faint);pointer-events:none;
+  opacity:0;transition:opacity .6s ease .9s}
+.hint.show{opacity:.85}
+/* стрелки ручного листания (десктоп с мышью и reduce-motion) */
+.nav{position:absolute;top:50%;transform:translateY(-50%);z-index:5;
+  width:44px;height:44px;border-radius:50%;border:1px solid rgba(246,241,231,.28);
+  background:rgba(18,16,11,.5);color:var(--paper-dim);font-size:18px;cursor:pointer;
+  display:none;align-items:center;justify-content:center}
+.nav:hover{color:#fff;border-color:rgba(246,241,231,.6)}
+.nav.prev{left:14px}.nav.next{right:14px}
+.show-nav .nav{display:flex}
 
-/* Бит 11 · финал */
-.accept{position:relative;font-family:var(--serif);font-style:italic;font-weight:700;
-  color:var(--wax);font-size:clamp(38px,11vw,64px);transform:rotate(-3deg);line-height:1.1}
-.accept .clip{display:inline-block;clip-path:inset(0 100% 0 0);-webkit-clip-path:inset(0 100% 0 0)}
-.accept svg{position:absolute;left:-4%;bottom:-14px;width:108%;height:26px;overflow:visible}
-.accept path{fill:none;stroke:var(--wax);stroke-width:3;stroke-linecap:round}
-.seal{width:clamp(140px,34vw,196px);height:auto;margin-top:6px;
-  filter:drop-shadow(0 10px 26px rgba(140,45,24,.28));opacity:0}
-.seal-cap{font-family:var(--serif);color:var(--ink);font-size:clamp(17px,4.8vw,23px);
-  margin-top:18px;opacity:0;text-shadow:0 1px 0 rgba(255,255,255,.7)}
-.shelf-line{font-family:var(--serif);font-style:italic;color:var(--ink-soft);
-  font-size:clamp(14.5px,4vw,18px);margin-top:8px;opacity:0}
-.copy-no{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--ink-faint);margin:16px 0 0;opacity:0}
-.doors{display:flex;flex-direction:column;gap:14px;align-items:center;margin-top:clamp(20px,3.5vh,30px);opacity:0}
-.btn-wax{display:inline-flex;align-items:center;gap:10px;background:var(--wax);color:#FFFDF7;
-  text-decoration:none;font-family:var(--sans);font-weight:600;font-size:15.5px;letter-spacing:.01em;
-  padding:15px 28px;border-radius:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 10px 26px rgba(178,59,34,.22)}
-.btn-wax:active{transform:translateY(1px)}
-.quiet{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);
-  text-decoration:underline;text-decoration-style:dotted;text-underline-offset:4px}
+/* тап-зоны (невидимые, поверх кадров, под верхней панелью и кнопками) */
+.tap{position:absolute;top:70px;bottom:0;width:38%;z-index:2}
+.tap.l{left:0}.tap.r{right:0;width:62%}
+.fr .cta-row,.fr .again{position:relative;z-index:4}
 
-/* ---------- рамка ---------- */
-.skip{position:fixed;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:30;
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--n-soft);text-decoration:none;border-bottom:1px dotted currentColor;
-  padding-bottom:2px;opacity:.55}
-body.day .skip{color:var(--ink-soft)}
-.hint{position:fixed;left:0;right:0;bottom:calc(20px + env(safe-area-inset-bottom));z-index:30;
-  text-align:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--n-faint);pointer-events:none}
-.progress{position:fixed;left:0;right:0;bottom:0;height:2px;z-index:31;background:rgba(133,126,108,.18)}
-.progress i{display:block;height:100%;width:0;background:var(--amber)}
-body.day .progress i{background:var(--wax)}
-.snd{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:30;
-  background:none;border:none;cursor:pointer;font-family:var(--mono);font-size:10px;
-  letter-spacing:.14em;text-transform:uppercase;color:var(--n-faint);
-  border-bottom:1px dotted currentColor;padding:0 0 2px}
-body.day .snd{color:var(--ink-faint)}
-
-.visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;
-  clip:rect(0 0 0 0);white-space:nowrap}
-noscript .ns{position:fixed;inset:0;z-index:50;background:var(--paper);color:var(--ink);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:32px;font-family:var(--serif);font-size:18px;line-height:1.6}
-noscript a{color:var(--wax)}
-@media (prefers-reduced-motion:reduce){ .cursor-light{display:none} }
+@media (prefers-reduced-motion: reduce){
+  .fr,.fr .caps,.fr h2,.fr .sub,.fr .art,.stp,.shot,.law .row{transition:none!important;animation:none!important}
+  .fr .caps,.fr h2,.fr .sub,.fr .art{opacity:1;transform:none}
+  .stp,.steps .ar{opacity:1;transform:none}
+  .fr.on .shot{opacity:1;transform:none}
+}
 </style>
 </head>
 <body>
 
-<a class="skip" id="skip" href="index.html">пропустить →</a>
+<div class="stage" id="stage">
+  <div class="top">
+    <div class="segs" id="segs"></div>
+    <button type="button" class="skip" id="btnSkip">Пропустить <span aria-hidden="true">✕</span></button>
+  </div>
+  <div class="brandline">Академический салон · 20 секунд</div>
 
-<div class="stage" id="stage" role="presentation">
-  <div class="bg-night"></div>
-  <div class="bg-glow" id="bgGlow"></div>
-  <div class="blackout" id="blackout"></div>
-  <div class="bg-day" id="bgDay"></div>
-  <div class="rim" id="rim"></div>
-  <div class="cursor-light" id="cursorLight"></div>
+  <div class="frames" id="frames">
 
-  <!-- ============ БИТ 1 · 03:12 ============ -->
-  <section class="act" id="b1" aria-label="Три часа ночи">
-    <p class="clock" id="b1clock">03:12</p>
-    <p class="b1-line" id="b1line"><span class="b-txt"></span></p>
-  </section>
+    <!-- 1 · кто мы -->
+    <section class="fr" data-dur="3600">
+      <span class="seal art" aria-hidden="true"></span>
+      <span class="caps">С 2020 года</span>
+      <h2><b>Мастерская</b>, а не биржа.</h2>
+      <p class="sub">Вашу работу ведут одни руки — от разбора задания до защиты.
+      Без менеджеров, перекупщиков и случайных исполнителей.</p>
+    </section>
 
-  <!-- ============ БИТ 2 · ЧАТ ГРУППЫ ============ -->
-  <section class="act" id="b2" aria-label="Чат группы молчит">
-    <div class="chat">
-      <p class="chat-head">группа · четвёртый курс · 128 участников</p>
-      <p class="typing-note" id="c2typing">кто-то печатает…</p>
-      <div class="bubble bubble-out" id="c2msg"><span class="b-txt"></span><span class="b-time">03:12</span></div>
-      <p class="chat-status" id="c2status">прочитано: 27</p>
-    </div>
-  </section>
-
-  <!-- ============ БИТ 3 · КРАСНАЯ РУЧКА ============ -->
-  <section class="act" id="b3" aria-label="Замечания научного руководителя">
-    <div class="sheet" id="sheet3">
-      <p class="sh-title">Глава 2. Анализ…</p>
-      <div class="greek"></div><div class="greek g2"></div><div class="greek g3"></div>
-      <div class="greek g4"></div><div class="greek g5"></div><div class="greek"></div>
-      <div class="greek g3"></div><div class="greek g6"></div>
-      <svg viewBox="0 0 420 300" preserveAspectRatio="none" aria-hidden="true">
-        <path id="rp1" d="M28,84 C120,74 300,92 396,78"/>
-        <path id="rp2" d="M24,148 C140,160 260,138 392,152"/>
-        <path id="rp3" d="M30,212 C150,200 270,224 388,208"/>
-      </svg>
-      <span class="mark" id="m3a" style="right:6%;top:16%;transform:rotate(3deg)">не раскрыто</span>
-      <span class="mark" id="m3b" style="left:5%;top:56%;transform:rotate(-2.5deg)">источники?</span>
-      <span class="mark" id="m3c" style="right:5%;bottom:9%;transform:rotate(2deg)">оригинальность: 43%</span>
-      <span class="verdict-wrap"><span class="verdict" id="verdict3">Переделать всё.</span></span>
-    </div>
-    <p class="b3-sub" id="sub3">а как — не объяснили.</p>
-  </section>
-
-  <!-- ============ БИТ 4 · МАМА ============ -->
-  <section class="act" id="b4" aria-label="Сообщение маме">
-    <div class="chat">
-      <p class="chat-head">мама · в сети</p>
-      <div class="bubble bubble-out" id="c4sent"><span class="b-txt"></span><span class="b-time">03:15 · доставлено</span></div>
-      <div class="chat-input" id="c4input"><span class="ci-txt" id="c4txt"><span class="caret" id="c4caret"></span></span><span class="ci-send">отпр.</span></div>
-    </div>
-  </section>
-
-  <!-- ============ БИТ 5 · ДНО ============ -->
-  <section class="act" id="b5" aria-label="Я не тупой">
-    <p class="deep" id="deep1">Я не тупой.</p>
-    <p class="deep d2" id="deep2">У меня просто нет времени.</p>
-  </section>
-
-  <!-- ============ БИТ 6 · ОДИН ОТВЕЧАЕТ ============ -->
-  <section class="act" id="b6" aria-label="Салон отвечает ночью">
-    <div class="chat">
-      <p class="chat-head" style="color:var(--amber-deep)">академический салон · онлайн</p>
-      <div class="bubble bubble-out" id="c6msg"><span class="b-txt"></span><span class="b-time">03:16</span></div>
-      <div class="bubble bubble-amber" id="c6reply">
-        <span class="typing-dots" id="c6dots">·&#8202;·&#8202;·</span><span class="b-txt"></span>
-        <span class="b-time">03:16 · отвечаем и ночью</span>
+    <!-- 2 · счётчик -->
+    <section class="fr" data-dur="3900">
+      <div class="art">
+        <div class="bignum"><span id="cnt">0</span><sup>+</sup></div>
+        <div class="numlbl">работ доведено до приёмки</div>
       </div>
-    </div>
-  </section>
+      <h2 style="font-size:clamp(22px,3.6vw,34px);margin-top:18px">Шесть лет. Каждая — до результата.</h2>
+      <p class="sub">Курсовые, дипломные, магистерские, статьи.
+      <small>Счётчик — тот же, что на главной. Живой.</small></p>
+    </section>
 
-  <!-- ============ БИТ 7 · ПОЧЕМУ МЫ НЕ СПИМ ============ -->
-  <section class="act" id="b7" aria-label="Почему мы отвечаем ночью">
-    <h1 class="h-origin" id="h7a">Когда-то на наше <em>«кто-нибудь поможет?»</em><br>тоже никто не ответил.</h1>
-    <p class="h-origin2" id="h7b">Поэтому теперь отвечаем мы.<br>Даже ночью.</p>
-    <div class="goldline" id="goldline"></div>
-  </section>
-
-  <!-- ============ БИТ 8 · ПОРТРЕТ НАУЧРУКА ============ -->
-  <section class="act" id="b8" aria-label="Портрет научного руководителя">
-    <h2 class="h-day" id="h8">Сначала мы читаем<br>вашего научного руководителя.</h2>
-    <p class="h-sub" id="sub8">Его статьи. Его методички. Его «как надо».</p>
-    <div class="frame-wrap" id="frame8">
-      <svg viewBox="0 0 300 230" aria-hidden="true"><ellipse id="oval8" cx="150" cy="115" rx="136" ry="100"/></svg>
-      <div class="traits">
-        <span class="trait" id="t8a">источники — после 2020</span>
-        <span class="trait" id="t8b">любит таблицы</span>
-        <span class="trait" id="t8c">не терпит воды</span>
-        <span class="trait" id="t8d">цитирует себя</span>
+    <!-- 3 · деньги за показанное -->
+    <section class="fr" data-dur="4400">
+      <div class="steps art" id="steps">
+        <span class="stp">Часть готова</span><span class="ar">→</span>
+        <span class="stp">Предпросмотр</span><span class="ar">→</span>
+        <span class="stp pay">Оплата этапа</span>
       </div>
-    </div>
-  </section>
+      <h2>Деньги — только <b>за показанное</b>.</h2>
+      <p class="sub">Работа идёт частями: вы видите каждую до оплаты.
+      Условия — спецификацией в PDF, одним листом.</p>
+    </section>
 
-  <!-- ============ БИТ 9 · ШТАМПЫ ДОВЕРИЯ ============ -->
-  <section class="act" id="b9" aria-label="Гарантии">
-    <p class="b9-q" id="q9">а вдруг заплачу — и тишина?</p>
-    <div class="stamps">
-      <div class="stamp stamp-wax" id="stp1"><b>Оплата — по этапам</b></div>
-      <div class="stamp stamp-blue" id="stp2"><b>Отчёт о проверках — до оплаты</b></div>
-      <div class="stamp stamp-verify" id="stp3"><b>Правки — бесплатно до приёмки</b></div>
-    </div>
-    <p class="b9-a" id="a9">Сначала мы показываем. Потом вы платите.</p>
-  </section>
-
-  <!-- ============ БИТ 10 · ПОЛКА ============ -->
-  <section class="act" id="b10" aria-label="От курсовой до диплома">
-    <div class="shelf-wrap">
-      <p class="b10-line" id="h10">Разберём. Объясним по-человечески.<br>Доведём до защиты.</p>
-      <div class="shelf">
-        <span class="spine sp1" id="sp1">курсовая · 2 курс</span>
-        <span class="spine sp2" id="sp2">курсовая · 3 курс</span>
-        <span class="spine sp3" id="sp3">практика</span>
-        <span class="spine sp4" id="sp4">диплом</span>
+    <!-- 4 · правки и отзывы -->
+    <section class="fr" data-dur="4400">
+      <div class="shots art" aria-hidden="true">
+        <figure class="shot"><img src="assets/img/reviews/review-14.webp" alt="" loading="eager" decoding="async" />
+          <figcaption class="cap">защита · «отлично», 98 баллов</figcaption></figure>
+        <figure class="shot"><img src="assets/img/reviews/review-13.webp" alt="" loading="eager" decoding="async" />
+          <figcaption class="cap">диплом на «5» · госы на «5»</figcaption></figure>
       </div>
-      <span class="plate" id="plate10">98 из 100 — с первой курсовой до диплома</span>
-    </div>
-  </section>
+      <h2>Правки — <b>без лимита</b>. До защиты.</h2>
+      <p class="sub">Замечания научрука и комиссии дорабатываем бесплатно.
+      19 отзывов с настоящих защит — в «Книге отзывов», без ретуши.</p>
+    </section>
 
-  <!-- ============ БИТ 11 · ТА ЖЕ РУЧКА ============ -->
-  <section class="act" id="b11" aria-label="Принято.">
-    <div class="accept" id="accept">
-      <span class="clip" id="acceptClip">Принято.</span>
-      <svg viewBox="0 0 420 26" preserveAspectRatio="none" aria-hidden="true">
-        <path id="rp4" d="M8,16 C120,6 300,24 412,10"/>
-      </svg>
-    </div>
-  </section>
+    <!-- 5 · анонимность и документы -->
+    <section class="fr" data-dur="4400">
+      <div class="law art">
+        <div class="row"><span class="ok">✓</span><span>в документах вы — <b>«Заказчик»</b>, без ФИО</span></div>
+        <div class="row"><span class="ok">✓</span><span>оферта, спецификация и <b>чек ФНС</b> — всё официально</span></div>
+        <div class="row"><span class="ok">✓</span><span>тему и вуз <b>не разглашаем</b> — даже в примерах</span></div>
+      </div>
+      <h2><b>Анонимно.</b> И по-взрослому.</h2>
+      <p class="sub">Шесть лет без единой утечки: рассказать о заказе можете только вы сами.</p>
+    </section>
 
-  <!-- ============ БИТ 12 · СУРГУЧ И ДВЕРИ ============ -->
-  <section class="act" id="b12" aria-label="Сургуч и двери">
-    <svg class="seal" id="seal" viewBox="0 0 200 200" aria-hidden="true">
-      <defs>
-        <path id="sealArc" d="M 100,100 m -76,0 a 76,76 0 1,1 152,0 a 76,76 0 1,1 -152,0"/>
-      </defs>
-      <circle cx="100" cy="100" r="96" fill="var(--wax)"/>
-      <circle cx="100" cy="100" r="96" fill="none" stroke="var(--wax-deep)" stroke-width="1.5"/>
-      <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,253,247,.5)" stroke-width="1"/>
-      <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(255,253,247,.5)" stroke-width="1"/>
-      <text font-family="JetBrains Mono, monospace" font-size="12.5" letter-spacing="3.2" fill="#FFFDF7">
-        <textPath href="#sealArc">АКАДЕМИЧЕСКИЙ САЛОН · ОСНОВАН НОЧЬЮ · С 2020 ·</textPath>
-      </text>
-      <text x="100" y="126" text-anchor="middle" font-family="Literata, Georgia, serif"
-        font-size="72" fill="#FFFDF7">¶</text>
-    </svg>
-    <p class="seal-cap" id="sealCap">Теперь красный — на вашей стороне.</p>
-    <p class="shelf-line" id="shelfLine">Ваша полка пока пуста.</p>
-    <p class="copy-no" id="copyNo">оттиск · экземпляр № 0000</p>
-    <div class="doors" id="doors">
-      <a class="btn-wax" href="index.html">Открыть Салон <span aria-hidden="true">→</span></a>
-      <a class="quiet" href="index.html#smeta">у меня горит — смета за минуту →</a>
-    </div>
-  </section>
+    <!-- 6 · CTA -->
+    <section class="fr" data-dur="999999">
+      <span class="caps">Вот, собственно, и всё</span>
+      <h2>Убедитесь <b>сами</b>.</h2>
+      <p class="sub">Смета — за две минуты, без контактов и звонков.
+      Решение всегда остаётся за вами.</p>
+      <div class="cta-row">
+        <button type="button" class="btn btn-wax" id="btnCalc">Рассчитать заказ →</button>
+        <button type="button" class="btn btn-ghost" id="btnSite">Смотреть сайт</button>
+      </div>
+      <button type="button" class="again" id="btnAgain">↻ Пересмотреть 20 секунд</button>
+    </section>
 
-  <p class="hint" id="hint">листайте</p>
-  <div class="progress" aria-hidden="true"><i id="progFill"></i></div>
-  <button type="button" class="snd" id="sndBtn" aria-pressed="false">звук · выкл</button>
+  </div>
+
+  <button type="button" class="nav prev" id="navPrev" aria-label="Назад">←</button>
+  <button type="button" class="nav next" id="navNext" aria-label="Дальше">→</button>
+  <div class="tap l" id="tapL" aria-hidden="true"></div>
+  <div class="tap r" id="tapR" aria-hidden="true"></div>
+  <p class="hint" id="hint">тап — дальше · удержание — пауза · свайп вниз — пропустить</p>
 </div>
 
-<div class="scroll-space" aria-hidden="true"></div>
-
-<noscript>
-  <div class="ns">
-    <p style="max-width:40ch">В 03:12 чат группы молчит. Мы — отвечаем: Салон основан ночью,
-    теми, кому однажды никто не помог. <br><br><a href="index.html">Открыть Академический Салон →</a></p>
-  </div>
-</noscript>
-
 <script>
+/* Движок историй: сегменты, автоплей, пауза удержанием, тапы, свайп, клавиши.
+   Тик — setInterval 50мс; переходы — CSS-классами. Никаких rAF/IO. */
 (function () {
-  'use strict';
-  var RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (/[?&]rm=0\b/.test(location.search)) RM = false; /* люк: панель предпросмотра всегда в reduce-motion */
-  var $ = function (id) { return document.getElementById(id); };
-  var clamp01 = function (v) { return v < 0 ? 0 : (v > 1 ? 1 : v); };
-  var seg = function (p, a, b) { return clamp01((p - a) / (b - a)); };
-  var easeOut = function (t) { return 1 - Math.pow(1 - t, 3); };
-  var easeBack = function (t) { var c = 1.70158; t -= 1; return 1 + t * t * ((c + 1) * t + c); };
+  var frames = [].slice.call(document.querySelectorAll('.fr'));
+  var segsBox = document.getElementById('segs');
+  var reduce = false;
+  try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
 
-  /* ---------------- звук (по умолчанию выключен, синтез без файлов) ---------------- */
-  var sound = { on: false, ctx: null };
-  function au() {
-    if (!sound.ctx) { try { sound.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} }
-    return sound.ctx;
-  }
-  function tick() {
-    if (!sound.on) return; var c = au(); if (!c) return;
-    var o = c.createOscillator(), g = c.createGain();
-    o.type = 'square'; o.frequency.value = 1500 + Math.random() * 700;
-    g.gain.setValueAtTime(.02, c.currentTime);
-    g.gain.exponentialRampToValueAtTime(.0001, c.currentTime + .015);
-    o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + .02);
-  }
-  function thump(deep) {
-    if (!sound.on) return; var c = au(); if (!c) return;
-    var o = c.createOscillator(), g = c.createGain();
-    o.type = 'sine'; o.frequency.setValueAtTime(deep ? 70 : 95, c.currentTime);
-    o.frequency.exponentialRampToValueAtTime(40, c.currentTime + .13);
-    g.gain.setValueAtTime(deep ? .3 : .22, c.currentTime);
-    g.gain.exponentialRampToValueAtTime(.0001, c.currentTime + .16);
-    o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + .17);
-  }
-  $('sndBtn').addEventListener('click', function () {
-    sound.on = !sound.on;
-    this.textContent = 'звук · ' + (sound.on ? 'вкл' : 'выкл');
-    this.setAttribute('aria-pressed', String(sound.on));
-    if (sound.on) { var c = au(); if (c && c.state === 'suspended') c.resume(); tick(); }
+  var segs = frames.map(function () {
+    var s = document.createElement('span');
+    s.className = 'seg'; s.innerHTML = '<i></i>';
+    segsBox.appendChild(s);
+    return s;
   });
-  function buzz(ms) { if (!RM && navigator.vibrate) { try { navigator.vibrate(ms); } catch (e) {} } }
 
-  /* ---------------- пишущая машинка ---------------- */
-  function makeTyper(el, text, cps) {
-    var span = el.querySelector('.b-txt'), i = 0, timer = null, done = false, started = false;
-    var caret = document.createElement('span'); caret.className = 'caret';
-    function step() {
-      if (i >= text.length) { finish(); return; }
-      span.textContent = text.slice(0, ++i);
-      span.appendChild(caret); tick();
-      var ch = text.charAt(i - 1), d = (cps || 34) + Math.random() * 46;
-      if ('.,—…?!'.indexOf(ch) > -1) d += 300;
-      timer = setTimeout(step, d);
-    }
-    function finish() {
-      if (timer) clearTimeout(timer); timer = null; done = true;
-      el.style.opacity = '1';
-      span.textContent = text; if (caret.parentNode) caret.parentNode.removeChild(caret);
-      var tm = el.querySelector('.b-time'); if (tm) tm.style.opacity = '1';
-      if (onDone) { var f = onDone; onDone = null; f(); }
-    }
-    var onDone = null;
-    return {
-      start: function (cb) { if (started) return; started = true; onDone = cb || null;
-        el.style.opacity = '1';
-        if (RM) { finish(); } else { step(); } },
-      finish: function () { started = true; finish(); },
-      isDone: function () { return done; }
+  var idx = -1, t0 = 0, paused = false, pausedAt = 0, timer = null, closed = false;
+  var standalone = true;
+  try { standalone = (window.self === window.top); } catch (e) {}
+
+  function dur(i) { return parseInt(frames[i].getAttribute('data-dur'), 10) || 3500; }
+
+  function paint() {
+    if (idx < 0) return;
+    var el = segs[idx].firstChild;
+    var d = dur(idx);
+    var p = paused ? (pausedAt - t0) : (Date.now() - t0);
+    el.style.width = Math.min(100, p / d * 100) + '%';
+    if (!paused && p >= d && idx < frames.length - 1) show(idx + 1);
+  }
+
+  function show(i) {
+    if (closed) return;
+    i = Math.max(0, Math.min(frames.length - 1, i));
+    frames.forEach(function (f, k) { f.classList.toggle('on', k === i); });
+    segs.forEach(function (s, k) {
+      s.classList.toggle('done', k < i);
+      if (k >= i) s.firstChild.style.width = '0';
+    });
+    idx = i; t0 = Date.now(); paused = false;
+    if (i === 1) countUp();
+    if (i === 2) stampSteps();
+    if (i === frames.length - 1) segs[i].firstChild.style.width = '100%';
+  }
+
+  /* счётчик 0 → 1000 живьём (та же цифра, что на главной) */
+  var counted = false;
+  function countUp() {
+    if (counted) return; counted = true;
+    var el = document.getElementById('cnt');
+    if (reduce) { el.textContent = '1 000'; return; }
+    var start = Date.now(), D = 1200;
+    var iv = setInterval(function () {
+      var k = Math.min(1, (Date.now() - start) / D);
+      k = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(1000 * k).toLocaleString('ru-RU');
+      if (k >= 1) clearInterval(iv);
+    }, 40);
+  }
+
+  /* штампы схемы оплаты — по очереди */
+  var stamped = false;
+  function stampSteps() {
+    if (stamped) return; stamped = true;
+    var kids = [].slice.call(document.getElementById('steps').children);
+    kids.forEach(function (el, n) {
+      setTimeout(function () { el.classList.add('hit'); }, reduce ? 0 : 240 + n * 260);
+    });
+  }
+
+  /* закрытие: оверлей шлёт рукопожатие родителю; standalone уходит на главную */
+  function close(goto) {
+    if (closed) return; closed = true;
+    clearInterval(timer);
+    try { localStorage.setItem('salon_prelude_seen', '1'); } catch (e) {}
+    if (standalone) { location.href = goto || 'index.html'; return; }
+    try { window.parent.postMessage({ salonPrelude: 'close', goto: goto || 'index.html' }, '*'); } catch (e) {}
+  }
+
+  document.getElementById('btnSkip').addEventListener('click', function () { close(); });
+  document.getElementById('btnSite').addEventListener('click', function () { close(); });
+  document.getElementById('btnCalc').addEventListener('click', function () { close('index.html#smeta'); });
+  document.getElementById('btnAgain').addEventListener('click', function () {
+    counted = false; stamped = false;
+    document.getElementById('cnt').textContent = '0';
+    [].slice.call(document.getElementById('steps').children).forEach(function (el) { el.classList.remove('hit'); });
+    show(0);
+  });
+
+  /* тапы: право — дальше, лево — назад; удержание — пауза; свайп вниз — пропуск */
+  var downT = 0, downY = 0;
+  function press(ev) {
+    downT = Date.now();
+    downY = (ev.touches ? ev.touches[0].clientY : ev.clientY) || 0;
+    paused = true; pausedAt = Date.now();
+  }
+  function lift(zone) {
+    return function (ev) {
+      var held = Date.now() - downT;
+      var y = (ev.changedTouches ? ev.changedTouches[0].clientY : ev.clientY) || 0;
+      if (y - downY > 70) { close(); return; }               /* свайп вниз */
+      if (paused) { t0 += Date.now() - pausedAt; paused = false; }
+      if (held < 300) show(zone === 'l' ? idx - 1 : idx + 1);
     };
   }
+  ['tapL', 'tapR'].forEach(function (id) {
+    var el = document.getElementById(id), zone = id === 'tapL' ? 'l' : 'r';
+    el.addEventListener('pointerdown', press);
+    el.addEventListener('pointerup', lift(zone));
+    el.addEventListener('pointercancel', function () {
+      if (paused) { t0 += Date.now() - pausedAt; paused = false; }
+    });
+  });
+  document.getElementById('navPrev').addEventListener('click', function () { show(idx - 1); });
+  document.getElementById('navNext').addEventListener('click', function () { show(idx + 1); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(idx + 1); }
+    else if (e.key === 'ArrowLeft') show(idx - 1);
+    else if (e.key === 'Escape') close();
+  });
 
-  /* ---------------- сценарные автоматы (время внутри бита) ---------------- */
-  /* Бит 1: «До сдачи — шесть часов.» */
-  var t1 = makeTyper($('b1line'), 'До сдачи — шесть часов.', 46);
-  var seq1 = { started: false,
-    run: function () { if (this.started) return; this.started = true; t1.start(); },
-    finish: function () { this.started = true; t1.finish(); } };
+  /* десктоп с мышью и reduce-motion получают явные стрелки */
+  var fine = false;
+  try { fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches; } catch (e) {}
+  if (fine || reduce) document.getElementById('stage').classList.add('show-nav');
 
-  /* Бит 2: вопрос в группу → «прочитано: 27» → «кто-то печатает…» гаснет */
-  var t2 = makeTyper($('c2msg'), 'ребят, кто-нибудь понял, что он хочет во второй главе?');
-  var seq2 = { started: false, done: false,
-    run: function () { if (this.started) return; this.started = true;
-      t2.start(function () {
-        setTimeout(function () { $('c2status').style.opacity = '.9'; }, RM ? 0 : 700);
-        /* для ворот сцена «сыграна», когда легло «прочитано: 27»;
-           гаснущее «кто-то печатает…» доигрывает уже по ходу плёнки */
-        setTimeout(function () { seq2.done = true; }, RM ? 0 : 1200);
-        if (RM) { return; }
-        setTimeout(function () { $('c2typing').style.opacity = '.9'; }, 1600);
-        setTimeout(function () { $('c2typing').style.opacity = '0'; }, 3400);
+  timer = setInterval(function () { if (!closed && !reduce) paint(); }, 50);
+  if (reduce) {
+    /* без автоплея: листается руками, сегменты отмечают позицию */
+    setInterval(function () {
+      segs.forEach(function (s, k) {
+        s.classList.toggle('done', k < idx);
+        s.firstChild.style.width = k === idx ? '100%' : '0';
       });
-    },
-    finish: function () { this.started = true; this.done = true; t2.finish();
-      $('c2status').style.opacity = '.9'; $('c2typing').style.opacity = '0'; } };
-
-  /* Бит 4: честное сообщение печатается, стирается, уходит «всё хорошо) спи» */
-  var mom = (function () {
-    var txtEl = $('c4txt'), caret = $('c4caret'), sent = $('c4sent');
-    var honest = 'мам, я не сдам. я боюсь, что…', short = 'всё хорошо) спи';
-    var started = false, done = false, timer = null;
-    function setTxt(s) { txtEl.textContent = s; txtEl.appendChild(caret); }
-    function finish() {
-      if (timer) clearTimeout(timer); done = true;
-      setTxt('');
-      sent.style.opacity = '1';
-      sent.querySelector('.b-txt').textContent = short;
-      sent.querySelector('.b-time').style.opacity = '1';
-    }
-    function run() {
-      if (started) return; started = true;
-      if (RM) { finish(); return; }
-      var i = 0, j;
-      (function typeH() {
-        if (done) return;
-        if (i < honest.length) { setTxt(honest.slice(0, ++i)); tick(); timer = setTimeout(typeH, 40 + Math.random() * 55); return; }
-        timer = setTimeout(function eraseH() {
-          if (done) return;
-          if (i > 0) { setTxt(honest.slice(0, --i)); timer = setTimeout(eraseH, 26); return; }
-          j = 0;
-          timer = setTimeout(function typeS() {
-            if (done) return;
-            if (j < short.length) { setTxt(short.slice(0, ++j)); tick(); timer = setTimeout(typeS, 44 + Math.random() * 50); return; }
-            timer = setTimeout(finish, 600);
-          }, 420);
-        }, 1000);
-      })();
-    }
-    return { run: run, isDone: function () { return done; },
-             finish: function () { started = true; finish(); } };
-  })();
-
-  /* Бит 6: «вы сейчас не спите?» → долгая пауза «печатает…» → «Не спим. Рассказывайте.» */
-  var t6a = makeTyper($('c6msg'), 'здравствуйте… вы сейчас не спите?');
-  var t6b = makeTyper($('c6reply'), 'Не спим. Рассказывайте.', 44);
-  var seq6 = { started: false,
-    run: function () { if (this.started) return; this.started = true;
-      var dots = $('c6dots'), reply = $('c6reply');
-      if (RM) { dots.style.display = 'none'; t6a.finish(); t6b.finish(); return; }
-      t6a.start(function () {
-        setTimeout(function () {
-          reply.style.opacity = '1';
-          var n = 0, pulse = setInterval(function () {
-            n = (n + 1) % 3; dots.textContent = ['· ', '· · ', '· · · '][n];
-          }, 340);
-          /* пауза чуть дольше комфортной: зритель уже видел, как «печатает…» гаснет */
-          setTimeout(function () { clearInterval(pulse); dots.style.display = 'none'; t6b.start(); }, 2600);
-        }, 800);
-      });
-    },
-    finish: function () { this.started = true; $('c6dots').style.display = 'none';
-      t6a.finish(); $('c6reply').style.opacity = '1'; t6b.finish(); } };
-
-  /* ---------------- плёнка: элемент × отрезок прогресса ---------------- */
-  var FX = [];
-  /* важно: детям только ''/'hidden', чтобы скрытая секция побеждала */
-  function fade(id, i0, i1, o0, o1, dy) {
-    var el = $(id);
-    if (!el) { throw new Error('нет элемента: ' + id); }
-    FX.push(function (p) {
-      var a = easeOut(seg(p, i0, i1));
-      if (o0 != null) a = Math.min(a, 1 - seg(p, o0, o1));
-      el.style.opacity = a.toFixed(3);
-      el.style.visibility = a > .002 ? '' : 'hidden';
-      if (dy && !RM) {
-        var y = (1 - easeOut(seg(p, i0, i1))) * dy - (o0 != null ? seg(p, o0, o1) * dy * .6 : 0);
-        el.style.transform = 'translateY(' + y.toFixed(1) + 'px)';
-      }
-    });
-  }
-  /* штамп: вжимается с перелётом, гаснет с битом; w — ширина окна вжатия */
-  function press(id, at, o0, o1, rot, hard, w) {
-    var el = $(id); if (!el) throw new Error('нет элемента: ' + id);
-    var fired = false; w = w || .04;
-    FX.push(function (p) {
-      var t = seg(p, at, at + w);
-      var a = easeOut(t) * (o0 != null ? 1 - seg(p, o0, o1) : 1);
-      var s = RM ? 1 : (1.7 - .7 * easeBack(t));
-      el.style.opacity = a.toFixed(3);
-      el.style.visibility = a > .002 ? '' : 'hidden';
-      el.style.transform = 'rotate(' + rot + 'deg) scale(' + s.toFixed(3) + ')';
-      if (t >= .96 && a > .5 && !fired) { fired = true; buzz(hard ? 22 : 14); thump(hard); }
-      if (t < .5) fired = false;
-    });
-  }
-  /* красный росчерк: рисуется скроллом через stroke-dashoffset */
-  function stroke(id, a, b, o0, o1, len) {
-    var el = $(id); if (!el) throw new Error('нет пути: ' + id);
-    el.style.strokeDasharray = String(len);
-    FX.push(function (p) {
-      var t = RM ? (seg(p, a, b) > 0 ? 1 : 0) : seg(p, a, b);
-      el.style.strokeDashoffset = String(len * (1 - t));
-      el.style.opacity = (o0 != null ? (1 - seg(p, o0, o1)) : 1).toFixed(3);
-    });
+    }, 300);
   }
 
-  /* --- раскадровка: 12 битов на одной шкале 0…1, строго без наложений --- */
-  /* Бит 1 · 03:12 (виден без скролла, фильм начинается сам) */
-  fade('b1clock', -1, .001, .062, .078, 0);
-  fade('b1line',  -1, .001, .062, .078, 0);
-  /* Бит 2 · чат группы */
-  fade('b2', .082, .106, .146, .163, 22);
-  /* Бит 3 · красная ручка */
-  fade('sheet3', .168, .192, .252, .268, 24);
-  stroke('rp1', .196, .210, .252, .268, 460);
-  stroke('rp2', .208, .222, .252, .268, 460);
-  stroke('rp3', .220, .234, .252, .268, 460);
-  fade('m3a', .200, .210, .252, .268, 0);
-  fade('m3b', .212, .222, .252, .268, 0);
-  fade('m3c', .222, .232, .252, .268, 0);
-  press('verdict3', .226, .252, .268, -4, true, .024);
-  fade('sub3', .234, .246, .252, .270, 8);
-  /* Бит 4 · мама */
-  fade('b4', .276, .300, .336, .352, 22);
-  /* Бит 5 · дно (полное затемнение, строки — отпечатком, резко) */
-  fade('deep1', .368, .374, .418, .440, 0);
-  fade('deep2', .392, .398, .418, .440, 0);
-  /* Бит 6 · один отвечает */
-  fade('b6', .448, .472, .512, .530, 22);
-  /* Бит 7 · свет и происхождение */
-  fade('h7a', .538, .568, .606, .625, 18);
-  fade('h7b', .572, .600, .606, .625, 18);
-  /* Бит 8 · портрет научрука */
-  fade('h8',  .632, .656, .706, .724, 20);
-  fade('sub8', .646, .668, .706, .724, 14);
-  fade('frame8', .652, .672, .706, .724, 0);
-  stroke('oval8', .658, .700, .706, .724, 760);
-  fade('t8a', .662, .673, .706, .724, 8);
-  fade('t8b', .674, .685, .706, .724, 8);
-  fade('t8c', .686, .697, .706, .724, 8);
-  fade('t8d', .698, .709, .706, .724, 8);
-  /* Бит 9 · штампы доверия */
-  fade('q9', .732, .752, .806, .824, 14);
-  press('stp1', .756, .806, .824, -1.6, false, .028);
-  press('stp2', .768, .806, .824, 1.1, false, .028);
-  press('stp3', .780, .806, .824, -.7, false, .028);
-  fade('a9', .792, .808, .806, .826, 10);
-  /* Бит 10 · полка */
-  fade('h10', .832, .852, .90, .916, 18);
-  fade('sp1', .844, .854, .90, .916, 26);
-  fade('sp2', .854, .864, .90, .916, 26);
-  fade('sp3', .864, .874, .90, .916, 26);
-  fade('sp4', .874, .884, .90, .916, 26);
-  fade('plate10', .886, .898, .90, .916, 8);
-  /* Бит 11 · та же ручка, затем тишина до самого сургуча */
-  fade('accept', .924, .930, .966, .980, 0);
-  stroke('rp4', .944, .956, .966, .980, 460);
-  /* Бит 12 · сургуч и двери */
-  fade('sealCap', .990, .995, null, null, 10);
-  fade('shelfLine', .992, .996, null, null, 8);
-  fade('copyNo', .993, .997, null, null, 0);
-  fade('doors', .994, .998, null, null, 14);
-
-  /* видимость битов: секция живёт только в своём отрезке */
-  var acts = {
-    b1: [0, .08], b2: [.075, .17], b3: [.16, .272], b4: [.268, .356],
-    b5: [.35, .45], b6: [.44, .536], b7: [.525, .63], b8: [.626, .728],
-    b9: [.726, .828], b10: [.826, .92], b11: [.918, .982], b12: [.978, 1.01]
-  };
-
-  var bgGlow = $('bgGlow'), bgDay = $('bgDay'), rim = $('rim'), blackout = $('blackout'),
-      sealEl = $('seal'), acceptClip = $('acceptClip'), goldEl = $('goldline'),
-      hint = $('hint'), skip = $('skip'), prog = $('progFill'), cursorL = $('cursorLight');
-  var sealFired = false, cur = 0;
-
-  function render(p) {
-    cur = p;
-    for (var i = 0; i < FX.length; i++) FX[i](p);
-
-    for (var id in acts) {
-      var el = $(id), on = p >= acts[id][0] && p <= acts[id][1];
-      el.style.visibility = on ? 'visible' : 'hidden';
-      el.style.pointerEvents = (id === 'b12' && on) ? 'auto' : 'none';
-    }
-
-    /* дно: экран проваливается в полную темноту и выныривает */
-    blackout.style.opacity = (seg(p, .35, .372) * (1 - seg(p, .418, .446))).toFixed(3);
-
-    /* тепло за ответом Салона */
-    bgGlow.style.opacity = (seg(p, .468, .525) * .9 * (1 - seg(p, .535, .60))).toFixed(3);
-
-    /* лампа: круг света раскрывает бумагу; янтарная кромка бежит по краю */
-    var rr = easeOut(seg(p, .53, .60)) * 150;
-    var cp = 'circle(' + rr.toFixed(1) + '% at 50% 40%)';
-    bgDay.style.clipPath = cp; bgDay.style.webkitClipPath = cp;
-    if (!RM) {
-      var vmax = Math.max(window.innerWidth, window.innerHeight);
-      var d = rr / 100 * vmax * 2;
-      rim.style.width = d.toFixed(0) + 'px'; rim.style.height = d.toFixed(0) + 'px';
-      rim.style.opacity = (rr > 1 && rr < 130 ? .8 * (1 - seg(p, .58, .60)) : 0).toFixed(3);
-    }
-    document.body.classList.toggle('day', p > .55);
-
-    /* золотая линия под словами происхождения */
-    goldEl.style.width = (easeOut(seg(p, .592, .618)) * 120).toFixed(0) + 'px';
-    goldEl.style.opacity = (1 - seg(p, .606, .625)).toFixed(3);
-
-    /* «Принято.» пишется скроллом; после росчерка — тишина до самого сургуча */
-    var ta = RM ? (seg(p, .926, .948) > 0 ? 1 : 0) : easeOut(seg(p, .926, .948));
-    var ins = 'inset(0 ' + ((1 - ta) * 100).toFixed(1) + '% 0 0)';
-    acceptClip.style.clipPath = ins; acceptClip.style.webkitClipPath = ins;
-
-    /* сургуч: прожимается — точка в конце этой ночи */
-    var ts = seg(p, .982, .994);
-    sealEl.style.opacity = easeOut(ts).toFixed(3);
-    sealEl.style.visibility = ts > .002 ? '' : 'hidden';
-    if (!RM) sealEl.style.transform = 'scale(' + (0.25 + .75 * easeBack(ts)).toFixed(3) + ') rotate(' + (-9 * (1 - ts)).toFixed(1) + 'deg)';
-    if (ts >= .97 && !sealFired) { sealFired = true; buzz([16, 40, 22]); thump(true); }
-    if (ts < .5) sealFired = false;
-
-    /* сценарные триггеры; пролистал быстрее фильма — дописываем мгновенно */
-    if (p > .008) seq1.run();
-    if (p > .062) seq1.finish();
-    if (p > .09) seq2.run();
-    if (p > .15) seq2.finish();
-    if (p > .29) mom.run();
-    if (p > .34) mom.finish();
-    if (p > .46) seq6.run();
-    if (p > .512) seq6.finish();
-
-    /* рамка */
-    hint.style.opacity = p < .02 ? '' : '0';
-    skip.style.opacity = p < .96 ? '' : '0';
-    prog.style.width = (p * 100).toFixed(2) + '%';
-    if (cursorL) cursorL.style.opacity = mouseOn ? String(.9 * (1 - seg(p, .52, .60))) : '0';
-  }
-
-  /* ---------------- скролл → цель; кадр догоняет, сцены держат ворота ----------------
-     Раньше кадр равнялся позиции скролла напрямую — и колесо мыши или
-     инерция тача пролетали отрезок сцены быстрее, чем играет её театр:
-     finish() дописывал переписку мгновенно (маме уходило «всё хорошо) спи»
-     без печати и стирания — так и наблюдалось на десктопе). Теперь скролл
-     задаёт только ЦЕЛЬ. Кадр движется к ней с потолком скорости — росчерки,
-     штампы и полка успевают раскрыться при любом рывке, — а перед ключевыми
-     сценами стоят ворота: плёнка ждёт, пока сцена доиграет, и едет дальше.
-     Reduce-motion живёт по-старому: там сцены дописываются мгновенно. */
-  var H = 1, target = 0, ticking = null;
-  var VCAP = .085 / 62.5; /* шаг кадра за тик (16 мс): фильм насквозь ≥ ~12 с */
-  var GATES = [
-    { at: .030, ok: function () { return t1.isDone(); },  go: function () { seq1.run(); } },
-    { at: .108, ok: function () { return seq2.done; },    go: function () { seq2.run(); } },
-    { at: .318, ok: function () { return mom.isDone(); }, go: function () { mom.run(); } },
-    { at: .492, ok: function () { return t6b.isDone(); }, go: function () { seq6.run(); } }
-  ];
-  function measure() { H = Math.max(1, document.documentElement.scrollHeight - window.innerHeight); }
-  function step() {
-    var gap = target - cur;
-    if (gap > -.0005 && gap < .0005) { render(target); stop_(); return; }
-    var d = gap * .14; /* мягкая погоня: медленный скролл — почти 1:1 */
-    if (d > VCAP) d = VCAP; else if (d < -VCAP) d = -VCAP;
-    var np = cur + d;
-    if (d > 0) {
-      for (var i = 0; i < GATES.length; i++) {
-        var g = GATES[i];
-        if (cur <= g.at + 1e-9 && np > g.at && !g.ok()) { np = g.at; g.go(); break; }
-      }
-    }
-    render(np);
-  }
-  function go_() { if (!ticking) ticking = setInterval(step, 16); }
-  function stop_() { if (ticking) { clearInterval(ticking); ticking = null; } }
-  function onScroll() {
-    target = clamp01((window.pageYOffset || document.documentElement.scrollTop || 0) / H);
-    if (RM) { render(target); return; }
-    go_();
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { measure(); onScroll(); }, { passive: true });
-
-  /* мигания — таймером, не CSS-анимацией (панель предпросмотра и reduce-motion) */
-  var dim = false;
-  setInterval(function () {
-    if (cur < .02) { dim = !dim; hint.style.opacity = dim ? '.35' : '.9'; }
-    var c4 = $('c4caret'); if (c4) c4.style.opacity = dim ? '0' : '1';
-  }, 560);
-
-  /* тёплый след мыши — только точный указатель, только ночь */
-  var mouseOn = false;
-  if (window.matchMedia && window.matchMedia('(pointer:fine)').matches && !RM) {
-    document.addEventListener('mousemove', function (e) {
-      mouseOn = true;
-      cursorL.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)';
-      cursorL.style.opacity = String(.9 * (1 - seg(cur, .52, .60)));
-    }, { passive: true });
-  }
-
-  /* номер экземпляра — свой у каждого гостя, навсегда */
-  try {
-    var no = localStorage.getItem('salon_copy_no');
-    if (!no) { no = String(1000 + Math.floor(Math.random() * 8600)); localStorage.setItem('salon_copy_no', no); }
-    $('copyNo').textContent = 'оттиск · экземпляр № ' + no;
-  } catch (e) {}
-
-  /* ---------------- режим оверлея: пролог живёт в iframe поверх главной ----------------
-     Гейт первого визита стоит в index.html; здесь — только выход из фильма:
-     клик по двери или «пропустить» закрывает оверлей сообщением родителю. */
-  var EMB = false;
-  try { EMB = window.self !== window.top; } catch (e) { EMB = true; }
-  if (EMB) {
-    /* рукопожатие: родитель ждёт 'ready' — иначе снимет оверлей по сторожу */
-    try { window.parent.postMessage({ salonPrelude: 'ready' }, '*'); } catch (err) {}
-    function closeTo(href) {
-      try { localStorage.setItem('salon_prelude_seen', '1'); } catch (err) {}
-      try { window.parent.postMessage({ salonPrelude: 'close', goto: href || 'index.html' }, '*'); } catch (err) {}
-    }
-    document.addEventListener('click', function (e) {
-      var a = e.target && e.target.closest ? e.target.closest('a') : null;
-      if (!a) return;
-      var href = a.getAttribute('href') || '';
-      if (href.indexOf('index.html') === 0) { e.preventDefault(); closeTo(href); }
-    });
-    /* Escape — всегда выход, фильм никого не запирает */
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeTo('index.html');
-    });
-  }
-
-  /* служебный люк для отладки и тестов: перемотка мимо погони и ворот */
-  window.PRELUDE = { set: function (p) { target = clamp01(p); render(target); }, p: function () { return cur; } };
-
-  measure();
-  render(0);
-  /* фильм начинается сам, через вдох после загрузки */
-  setTimeout(function () { if (cur < .07) seq1.run(); }, 700);
+  show(0);
+  setTimeout(function () { document.getElementById('hint').classList.add('show'); }, 500);
+  setTimeout(function () { document.getElementById('hint').classList.remove('show'); }, 6500);
+  try { window.parent.postMessage({ salonPrelude: 'ready' }, '*'); } catch (e) {}
+  window.PRELUDE = true;
 })();
 </script>
+
 </body>
 </html>

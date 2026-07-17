@@ -415,7 +415,7 @@
     { href: 'guarantees.html', label: 'Гарантии' },
     { href: 'reviews.html',    label: 'Отзывы' },
     { href: 'referral.html',   label: 'Клуб', x: true },
-    { href: 'knowledge.html',  label: 'База знаний', x: true }
+    { href: 'knowledge.html',  label: 'Полезные материалы', x: true }
   ];
   var TOC = [
     { href: 'index.html',        label: 'Главная',          no: '01' },
@@ -427,7 +427,7 @@
     { href: 'reviews.html',      label: 'Отзывы',           no: '07' },
     { href: 'priyomnaya.html',   label: 'Открытая приёмная', no: '08' },
     { href: 'referral.html',     label: 'Клуб и бонусы',    no: '09' },
-    { href: 'knowledge.html',    label: 'База знаний',      no: '10' },
+    { href: 'knowledge.html',    label: 'Полезные материалы',      no: '10' },
     { href: 'check.html',        label: 'Проверка текста',  no: '11' },
     { href: 'dashboard.html',    label: 'Личный кабинет',   no: '12' }
   ];
@@ -523,7 +523,7 @@
   }
 
   /* Единая шапка для ВСЕХ страниц (и главной тоже):
-     бренд · Цены · Гарантии · Отзывы · Клуб · База знаний · тема · «Рассчитать» · «Меню».
+     бренд · Цены · Гарантии · Отзывы · Клуб · Полезные материалы · тема · «Рассчитать» · «Меню».
      На главной «Рассчитать» ведёт к смете на странице, дальше — в конфигуратор. */
   /* админка — рабочий стол мастера: маркетинговый каркас сайта там ни к чему */
   var CHROME_OFF = here === 'admin.html' || here === 'admin-mock.html';
@@ -628,7 +628,7 @@
           '<a href="gift.html">Подарочный сертификат</a>' +
           '<a href="guarantees.html">Гарантии · устав</a><a href="reviews.html">Отзывы</a>' +
           '<a href="priyomnaya.html">Открытая приёмная</a>' +
-          '<a href="referral.html">Клуб и бонусы</a><a href="knowledge.html">База знаний</a>' +
+          '<a href="referral.html">Клуб и бонусы</a><a href="knowledge.html">Полезные материалы</a>' +
           '<a href="check.html">Проверка текста</a><a href="dashboard.html">Кабинет</a>' +
         '</nav></div>' +
         '<div><div class="fc-h">Типы работ</div><nav class="foot-links" aria-label="Помощь по типам работ">' +

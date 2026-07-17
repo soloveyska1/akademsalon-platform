@@ -321,7 +321,7 @@ function initGodEye() {
       '/index.html': 'главная', '/': 'главная', '/configurator.html': 'калькулятор',
       '/tariffs.html': 'цены', '/plan.html': 'разбор плана', '/guarantees.html': 'гарантии',
       '/reviews.html': 'отзывы', '/loyalty.html': 'клуб', '/dashboard.html': 'кабинет',
-      '/referral.html': 'приглашения', '/knowledge.html': 'база знаний', '/check.html': 'проверка'
+      '/referral.html': 'приглашения', '/knowledge.html': 'полезные материалы', '/check.html': 'проверка'
     };
     var path = String(p || '').split('?')[0];
     return map[path] || path.replace(/^\//, '').replace('.html', '') || '—';

@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Помощь с курсовой, дипломом и ВКР — авторские материалы, цена за минуту | Академический Салон</title>
 <meta name="description" content="Помощь с курсовой, дипломной работой (ВКР), магистерской и научной статьёй: живые авторы, материалы и сопровождение до защиты, цена за минуту в калькуляторе, оплата по этапам, отчёт о проверках до оплаты, правки до приёмки." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717b" />
-<link rel="stylesheet" href="assets/css/pereplet.css?v=20260717b" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260717b" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260717b" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260717c" />
+<link rel="stylesheet" href="assets/css/pereplet.css?v=20260717c" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260717c" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260717c" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <script>
 /* Пролог «Тот, кто отвечает»: один раз, только первому гостю.
@@ -57,10 +57,11 @@ html.has-prelude body{overflow:hidden}
    главная дорисовывается под ним. Выход — по message от пролога.
    Страховки: рукопожатие 'ready' + сторож 6с (если фильм не загрузился —
    молча показываем главную), Escape, фокус в iframe для клавиатуры. */
-(function(){
-  if(!document.documentElement.classList.contains('has-prelude'))return;
+window.SalonPreludeOpen=function(){
+  if(document.getElementById('preludeFrame'))return;
+  document.documentElement.classList.add('has-prelude');
   var f=document.createElement('iframe');
-  f.src='prolog.html'; f.id='preludeFrame'; f.title='Пролог Академического Салона';
+  f.src='prolog.html'; f.id='preludeFrame'; f.title='Сториз Академического Салона';
   document.body.appendChild(f);
   var alive=true;
   function dismantle(goto){
@@ -90,7 +91,8 @@ html.has-prelude body{overflow:hidden}
     try{ if(f.contentWindow&&f.contentWindow.PRELUDE)f.contentWindow.focus(); }catch(e){}
   });
   document.addEventListener('keydown',function(e){ if(alive&&e.key==='Escape')dismantle(); });
-})();
+};
+if(document.documentElement.classList.contains('has-prelude'))window.SalonPreludeOpen();
 </script>
 
 <a class="skip-link" href="#main">К содержанию</a>
@@ -115,6 +117,19 @@ html.has-prelude body{overflow:hidden}
                 <button type="button" class="btn btn-line" data-contact="1">Связаться — ВК · MAX · Telegram</button>
               </div>
               <p class="cover-note">6 лет практики · 1000+ работ доведено до приёмки · оплата по этапам</p>
+              <button type="button" class="story-chip" onclick="window.SalonPreludeOpen&&window.SalonPreludeOpen()"
+                aria-label="Посмотреть сториз мастерской — 20 секунд">
+                <span class="sc-play" aria-hidden="true">▶</span> Как здесь всё устроено — 20 секунд
+              </button>
+              <style>
+                .story-chip{display:inline-flex;gap:9px;align-items:center;margin-top:14px;
+                  background:none;border:1px solid var(--hairline-strong);border-radius:999px;
+                  padding:8px 15px;font:inherit;font-size:13px;color:var(--ink-soft);cursor:pointer;
+                  transition:color .15s ease,border-color .15s ease}
+                .story-chip:hover{color:var(--ink);border-color:var(--ink)}
+                .story-chip .sc-play{display:inline-grid;place-items:center;width:20px;height:20px;
+                  border-radius:50%;background:var(--wax);color:#FFFEF9;font-size:8.5px;padding-left:2px}
+              </style>
             </div>
 
             <div class="book3d" aria-hidden="true">
@@ -273,6 +288,65 @@ html.has-prelude body{overflow:hidden}
         </div>
 
       </div>
+
+      <!-- Скачиваемые фрагменты: пощупать бумагу руками, а не «поверить на слово».
+           Написаны мастерской как образцы; клиентские работы не публикуются. -->
+      <style>
+        .smpl{margin-top:clamp(30px,4.6vw,48px);border-top:1px solid var(--hairline);
+          padding-top:clamp(20px,3vw,28px)}
+        .smpl-head{display:flex;gap:14px 24px;align-items:baseline;justify-content:space-between;
+          flex-wrap:wrap;margin-bottom:16px}
+        .smpl-h{font-family:var(--serif);font-size:clamp(19px,2.4vw,24px);font-weight:500}
+        .smpl-note{font-size:13px;color:var(--ink-soft);max-width:52ch}
+        .smpl-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.8vw,16px)}
+        @media (max-width:760px){.smpl-row{grid-template-columns:1fr}}
+        .smp{display:flex;flex-direction:column;gap:8px;background:var(--sheet);
+          border:1px solid var(--hairline);border-radius:3px;padding:15px 16px;
+          text-decoration:none;color:inherit;position:relative;
+          box-shadow:0 8px 22px -18px rgba(34,32,27,.4);
+          transition:transform .16s ease,box-shadow .16s ease}
+        .smp:hover{transform:translateY(-2px);box-shadow:0 14px 28px -18px rgba(34,32,27,.5)}
+        .smp .sm-kind{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;
+          text-transform:uppercase;color:var(--ink-faint)}
+        .smp b{font-family:var(--serif);font-size:15.5px;font-weight:600;line-height:1.35}
+        .smp .sm-what{font-size:12.5px;color:var(--ink-soft);line-height:1.5;flex:1}
+        .smp .sm-get{display:inline-flex;gap:7px;align-items:center;font-size:12.5px;
+          color:var(--ink);border-top:1px dashed var(--hairline);padding-top:9px}
+        .smp .sm-get .pdf{font-family:var(--mono);font-size:9px;border:1px solid var(--hairline-strong);
+          border-radius:3px;padding:2px 6px;color:var(--ink-soft)}
+        .smp:hover .sm-get{color:var(--wax)}
+      </style>
+      <div class="smpl reveal">
+        <div class="smpl-head">
+          <span class="smpl-h">Пощупайте бумагу: три фрагмента — скачиваются свободно</span>
+          <span class="smpl-note">Написаны мастерской как образцы стиля и глубины — с водяным
+          знаком. Клиентские работы не публикуем никогда, даже обезличенно.</span>
+        </div>
+        <div class="smpl-row">
+          <a class="smp" href="assets/samples/obrazec-vvedenie-vkr.pdf" target="_blank" rel="noopener" download>
+            <span class="sm-kind">ВКР · психология</span>
+            <b>Введение и методология</b>
+            <span class="sm-what">Канон, который принимают кафедры: актуальность → проблема →
+            аппарат → гипотеза → методики с выборкой и статистикой.</span>
+            <span class="sm-get"><span class="pdf">PDF</span> Скачать фрагмент · 2 стр.</span>
+          </a>
+          <a class="smp" href="assets/samples/obrazec-glava-analiz.pdf" target="_blank" rel="noopener" download>
+            <span class="sm-kind">ВКР · экономика</span>
+            <b>Фрагмент аналитической главы</b>
+            <span class="sm-what">Живой анализ, а не «вода»: таблица динамики → расчёт →
+            интерпретация → микровывод, который ведёт в третью главу.</span>
+            <span class="sm-get"><span class="pdf">PDF</span> Скачать фрагмент · 1 стр.</span>
+          </a>
+          <a class="smp" href="assets/samples/obrazec-spisok-literatury.pdf" target="_blank" rel="noopener" download>
+            <span class="sm-kind">Оформление · ГОСТ</span>
+            <b>Список литературы по ГОСТ Р 7.0.100-2018</b>
+            <span class="sm-what">Все типовые описания на одном листе: НПА, монография, статья
+            с DOI, электронный ресурс, иностранный источник.</span>
+            <span class="sm-get"><span class="pdf">PDF</span> Скачать фрагмент · 1 стр.</span>
+          </a>
+        </div>
+      </div>
+
       <div class="folio"><span>стр. 5 · мастерская изнутри</span></div>
     </div>
 
@@ -614,9 +688,110 @@ html.has-prelude body{overflow:hidden}
   </section>
 
   <!-- ================= VII. ПУСТАЯ ГЛАВА + FAQ ================= -->
+  <!-- ============ — 07 — ЖУРНАЛ МАСТЕРСКОЙ: живая витрина TG-канала ============ -->
+  <section class="spread" id="zhurnal" aria-label="Журнал мастерской — Telegram-канал">
+    <div class="wrap">
+      <div class="running-head"><span class="rh-no">— 07 —</span><span class="rh-t">Журнал мастерской</span></div>
+      <style>
+        /* витрина канала: карточки-посты как свежие оттиски на просушке */
+        .tgw-head{display:flex;gap:18px 28px;align-items:flex-end;justify-content:space-between;
+          flex-wrap:wrap;margin-bottom:clamp(20px,3vw,30px)}
+        .tgw-head .caps{display:block;margin-bottom:10px}
+        .tgw-h{font-size:clamp(24px,3.4vw,36px);margin-bottom:10px}
+        .tgw-lead{max-width:52ch;color:var(--ink-soft);font-size:15px;line-height:1.6}
+        .tgw-cta{flex:0 0 auto;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+        .tgw-cta .marginalia{margin:0}
+        .tgw-rail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,20px)}
+        @media (max-width:860px){.tgw-rail{display:flex;overflow-x:auto;scroll-snap-type:x proximity;
+          padding-bottom:10px;margin:0 -16px;padding-left:16px;padding-right:16px;scrollbar-width:none}
+          .tgw-rail::-webkit-scrollbar{display:none}
+          .tgw-rail .tgp{flex:0 0 min(78vw,320px);scroll-snap-align:start}}
+        .tgp{display:flex;flex-direction:column;background:var(--sheet);border:1px solid var(--hairline);
+          border-radius:3px;overflow:hidden;text-decoration:none;color:inherit;
+          box-shadow:0 10px 26px -22px rgba(34,32,27,.4);
+          transition:transform .18s ease,box-shadow .18s ease}
+        .tgp:hover{transform:translateY(-3px);box-shadow:0 16px 32px -20px rgba(34,32,27,.5)}
+        .tgp-img{aspect-ratio:16/10;background:var(--paper-2);position:relative;overflow:hidden}
+        .tgp-img img{width:100%;height:100%;object-fit:cover;display:block}
+        .tgp-img.empty::after{content:"¶";position:absolute;inset:0;display:grid;place-items:center;
+          font-family:var(--serif);font-size:44px;color:var(--hairline-strong)}
+        .tgp-body{padding:14px 16px 15px;display:flex;flex-direction:column;gap:8px;flex:1}
+        .tgp-meta{display:flex;gap:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+          text-transform:uppercase;color:var(--ink-faint)}
+        .tgp-meta .v{margin-left:auto}
+        .tgp-text{font-size:14px;line-height:1.55;color:var(--ink);
+          display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+        .tgp-more{margin-top:auto;font-size:12.5px;color:var(--ink-soft)}
+        .tgp:hover .tgp-more{color:var(--wax)}
+        .tgw-note{margin-top:14px}
+      </style>
+      <div class="reveal">
+        <div class="tgw-head">
+          <div>
+            <span class="caps">Telegram-канал</span>
+            <h2 class="press-h tgw-h">Журнал мастерской</h2>
+            <p class="tgw-lead">Разборы без воды, новости набора и то, что не попадает на сайт:
+            свежие оттиски выходят сначала в канале. Уже там — из переписок мастерской,
+            честно про предоплату и антиплагиат.</p>
+          </div>
+          <div class="tgw-cta">
+            <a class="btn btn-wax" href="https://t.me/akademsalon" target="_blank" rel="noopener"
+               data-goal="tg_channel">Подписаться — @akademsalon</a>
+            <p class="marginalia">канал ведёт мастер · без спама</p>
+          </div>
+        </div>
+        <div class="tgw-rail" id="tgwRail">
+          <!-- фолбэк до загрузки живой ленты: приглашение-визитка -->
+          <a class="tgp" href="https://t.me/akademsalon" target="_blank" rel="noopener">
+            <span class="tgp-img empty"></span>
+            <span class="tgp-body">
+              <span class="tgp-meta"><span>@akademsalon</span></span>
+              <span class="tgp-text">Из переписок мастерской, разборы типовых ошибок, сезон защит
+              и честные ответы на неудобные вопросы — короткими выпусками.</span>
+              <span class="tgp-more">Открыть канал ↗</span>
+            </span>
+          </a>
+        </div>
+        <p class="marginalia tgw-note">Лента живая: это настоящие посты канала — карточки обновляются сами.</p>
+      </div>
+    </div>
+    <script>
+    /* живые карточки из /api/channel; фолбэк-визитка остаётся при пустой ленте */
+    (function () {
+      function boot() {
+        var rail = document.getElementById('tgwRail');
+        if (!rail || !window.Salon || !Salon.api) return;
+        function esc(s) {
+          return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+          });
+        }
+        Salon.api.get('/channel').then(function (r) {
+          if (!(r && r.ok && r.posts && r.posts.length)) return;
+          var posts = r.posts.filter(function (p) { return (p.text || '').length > 30 || p.img; }).slice(0, 3);
+          if (!posts.length) return;
+          rail.innerHTML = posts.map(function (p) {
+            var img = p.img
+              ? '<span class="tgp-img"><img src="' + esc(p.img) + '" loading="lazy" decoding="async" alt="" /></span>'
+              : '<span class="tgp-img empty"></span>';
+            var meta = '<span class="tgp-meta"><span>' + esc(p.date || '@akademsalon') + '</span>' +
+              (p.views ? '<span class="v">👁 ' + esc(p.views) + '</span>' : '') + '</span>';
+            return '<a class="tgp" href="' + esc(p.url) + '" target="_blank" rel="noopener" data-goal="tg_channel">' +
+              img + '<span class="tgp-body">' + meta +
+              '<span class="tgp-text">' + esc(p.text).slice(0, 300) + '</span>' +
+              '<span class="tgp-more">Читать в канале ↗</span></span></a>';
+          }).join('');
+        });
+      }
+      if (window.Salon && window.Salon.api) boot();
+      else document.addEventListener('DOMContentLoaded', boot);
+    })();
+    </script>
+  </section>
+
   <section class="spread" aria-label="Ваша работа">
     <div class="wrap">
-      <div class="running-head"><span class="rh-no">— 07 —</span><span class="rh-t">Следующая глава</span></div>
+      <div class="running-head"><span class="rh-no">— 08 —</span><span class="rh-t">Следующая глава</span></div>
       <div class="blank-chapter reveal">
         <div class="bc-row"><span>Глава <span class="bc-no">__</span>.</span><span>Ваша работа</span><span class="dots"></span><span class="bc-val">стр. ___</span></div>
         <div class="bc-cta">
@@ -703,9 +878,9 @@ html.has-prelude body{overflow:hidden}
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://akademsalon.ru/#org","name":"Академический Салон","description":"Помощь и сопровождение в подготовке академических работ: консультации, редактура, разбор, репетиторство, оформление по методичке. Оплата по этапам, отчёт о проверках до оплаты, правки до приёмки.","url":"https://akademsalon.ru/","image":"https://akademsalon.ru/assets/img/og-cover.png","logo":"https://akademsalon.ru/assets/img/mail-avatar-512.png","foundingDate":"2020","areaServed":{"@type":"Country","name":"Россия"},"knowsLanguage":"ru","priceRange":"от 2500 ₽","contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://t.me/academicsaloon","availableLanguage":"ru"},"sameAs":["https://vk.com/academicsaloon","https://t.me/akademsalon","https://t.me/academicsaloon","https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs","https://t.me/academic_saloon_bot"],"makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с курсовой работой","url":"https://akademsalon.ru/kursovaya-rabota.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с дипломной работой (ВКР)","url":"https://akademsalon.ru/diplomnaya-rabota.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с магистерской диссертацией","url":"https://akademsalon.ru/magisterskaya-dissertaciya.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с кандидатской диссертацией","url":"https://akademsalon.ru/kandidatskaya-dissertaciya.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с отчётом по практике","url":"https://akademsalon.ru/otchet-po-praktike.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с научной статьёй","url":"https://akademsalon.ru/nauchnaya-statya.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Реферат, эссе, контрольная","url":"https://akademsalon.ru/referat.html"}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"А вдруг вуз решит, что текст написан нейросетью?","acceptedAnswer":{"@type":"Answer","text":"Текст пишет человек, а отчёт о проверках вы видите до оплаты. Гарантировать чужой детектор не может никто — на этот случай дорабатываем до приёмки."}},{"@type":"Question","name":"Я не рискую, платя вперёд?","acceptedAnswer":{"@type":"Answer","text":"Первый платёж — только после согласованного плана и сметы, каждый следующий — после показанного результата. Деньги всегда идут за тем, что вы уже увидели."}},{"@type":"Question","name":"Кто-нибудь узнает, что я обращался?","acceptedAnswer":{"@type":"Answer","text":"Никто. Обращение конфиденциально: в переписке достаточно ника, тему и вуз мы не разглашаем, в отзывах — только то, чем клиенты поделились сами."}},{"@type":"Question","name":"Кто будет вести мою работу?","acceptedAnswer":{"@type":"Answer","text":"Профильный специалист вашего направления — сопровождает от плана до приёмки, без передачи между менеджерами и случайными исполнителями."}},{"@type":"Question","name":"Что, если руководитель вернёт работу с замечаниями?","acceptedAnswer":{"@type":"Answer","text":"Это обычная часть процесса, и она уже в стоимости: правки в рамках задания не ограничены по количеству, а замечания руководителя и комиссии дорабатываем бесплатно до защиты (точные сроки — в оферте, раздел 9). Смета не меняется, пока не меняются тема и объём."}},{"@type":"Question","name":"Почему у вас дороже, чем на биржах?","acceptedAnswer":{"@type":"Answer","text":"Биржа продаёт ставку случайного исполнителя, мы — доведённый до защиты результат: напрямую, без комиссии площадки. Слишком низкая цена здесь — риск, переложенный на вас."}}]}</script>
-<script src="assets/js/app.js?v=20260717b"></script>
-<script src="assets/js/extras.js?v=20260717b"></script>
-<script src="assets/js/pereplet.js?v=20260717b"></script>
+<script src="assets/js/app.js?v=20260717c"></script>
+<script src="assets/js/extras.js?v=20260717c"></script>
+<script src="assets/js/pereplet.js?v=20260717c"></script>
 <script>
 /* «Книга благодарностей»: цитаты с защит + свежие одобренные отзывы из картотеки.
    Сознательно без rAF и CSS-анимаций: листается setInterval-ом, руками (стрелки)
