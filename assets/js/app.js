@@ -436,27 +436,108 @@
      тот же порядок — читатель никогда не теряется. */
   var here = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
   var NAV = [
+    { href: 'start.html',      label: 'С чего начать' },
     { href: 'tariffs.html',    label: 'Цены' },
     { href: 'guarantees.html', label: 'Гарантии' },
-    { href: 'reviews.html',    label: 'Отзывы' },
-    { href: 'referral.html',   label: 'Клуб', x: true },
+    { href: 'reviews.html',    label: 'Отзывы', x2: true },
     { href: 'knowledge.html',  label: 'Полезные материалы', x: true }
   ];
-  var TOC = [
-    { href: 'index.html',        label: 'Главная',          no: '01' },
-    { href: 'configurator.html', label: 'Рассчитать заказ', no: '02' },
-    { href: 'plan.html',         label: 'Разбор плана',     no: '03' },
-    { href: 'tariffs.html',      label: 'Цены и услуги',    no: '04' },
-    { href: 'vedenie.html',      label: 'Уровни ведения',   no: '05' },
-    { href: 'oplata.html',       label: 'Как проходит оплата', no: '06' },
-    { href: 'gift.html',         label: 'Подарочный сертификат', no: '07' },
-    { href: 'guarantees.html',   label: 'Гарантии · устав', no: '08' },
-    { href: 'reviews.html',      label: 'Отзывы',           no: '09' },
-    { href: 'priyomnaya.html',   label: 'Открытая приёмная', no: '10' },
-    { href: 'referral.html',     label: 'Клуб и бонусы',    no: '11' },
-    { href: 'knowledge.html',    label: 'Полезные материалы',      no: '12' },
-    { href: 'check.html',        label: 'Проверка текста',  no: '13' },
-    { href: 'dashboard.html',    label: 'Личный кабинет',   no: '14' }
+  /* Маршрут новичка: линейный путь «за ручку» от цен до заявки.
+     Он же рисует полоску «Дальше по маршруту» внизу этих страниц. */
+  var ROUTE = [
+    { href: 'tariffs.html',      label: 'Цены и каталог' },
+    { href: 'vedenie.html',      label: 'Уровни ведения' },
+    { href: 'oplata.html',       label: 'Оплата' },
+    { href: 'guarantees.html',   label: 'Гарантии' },
+    { href: 'reviews.html',      label: 'Отзывы' },
+    { href: 'configurator.html', label: 'Рассчитать и отправить' }
+  ];
+  /* Путеводитель: разделы сгруппированы по смыслу, у каждого — подсказка */
+  var GROUPS = [
+    { t: 'Заказ', items: [
+      ['configurator.html', 'Рассчитать заказ', 'смета за минуту'],
+      ['tariffs.html', 'Цены и каталог работ', '11 формуляров с разбором'],
+      ['vedenie.html', 'Уровни ведения', 'Базовый · Под ключ · VIP'],
+      ['oplata.html', 'Как проходит оплата', '50/50 · 30/40/30 · чеки'],
+      ['plan.html', 'Разбор плана', '3 000 ₽, зачтётся в оплату'],
+      ['gift.html', 'Подарочный сертификат', 'помощь в подарок']
+    ]},
+    { t: 'Доверие', items: [
+      ['guarantees.html', 'Гарантии · устав', '7 статей с опорой на закон'],
+      ['reviews.html', 'Отзывы · экслибрисы', 'скрины и живые истории'],
+      ['priyomnaya.html', 'Открытая приёмная', 'спросить анонимно'],
+      ['check.html', 'Проверка текста', 'бесплатный сервис'],
+      ['requisites.html', 'Реквизиты', 'ИНН открыт — проверяйте']
+    ]},
+    { t: 'Клуб и материалы', items: [
+      ['referral.html', 'Клуб и бонусы', 'кэшбэк и рефералка'],
+      ['dashboard.html#plus', 'Подписка «Салон+»', 'скидки · приоритет · полка'],
+      ['knowledge.html', 'Полезные материалы', 'гайды по учёбе и защите']
+    ]},
+    { t: 'Кабинет', items: [
+      ['dashboard.html', 'Личный кабинет', 'дела, статусы, переписка']
+    ]}
+  ];
+  /* Живой поиск путеводителя: любая страница сайта — в две буквы.
+     [href, подпись, теги-синонимы] — теги в нижнем регистре. */
+  var SEARCH = [
+    ['start.html', 'С чего начать — карта за 60 секунд', 'новичок карта маршрут впервые гид путеводитель'],
+    ['configurator.html', 'Рассчитать заказ · конфигуратор', 'смета цена калькулятор заявка заказать'],
+    ['tariffs.html', 'Цены и каталог работ', 'прайс стоимость сколько стоит картотека формуляр'],
+    ['vedenie.html', 'Уровни ведения', 'базовый под ключ vip вип сопровождение тариф'],
+    ['oplata.html', 'Как проходит оплата', 'деньги оплатить рассрочка предоплата этапы чек касса возврат'],
+    ['plan.html', 'Разбор плана', 'план структура старт'],
+    ['gift.html', 'Подарочный сертификат', 'подарок подарить код'],
+    ['guarantees.html', 'Гарантии · устав мастерской', 'гарантия закон возврат договор правки антиплагиат скептик'],
+    ['reviews.html', 'Отзывы', 'экслибрис отзыв истории'],
+    ['priyomnaya.html', 'Открытая приёмная', 'вопрос анонимно спросить faq'],
+    ['check.html', 'Проверка текста', 'антиплагиат ии нейросеть канцелярит проверить'],
+    ['referral.html', 'Клуб и бонусы', 'реферал бонус кэшбэк скидка друг'],
+    ['knowledge.html', 'Полезные материалы — все гайды', 'база знаний статьи гайды'],
+    ['dashboard.html', 'Личный кабинет', 'вход дело статус заказы кабинет'],
+    ['index.html', 'Главная', 'главная начало'],
+    ['kursovaya-rabota.html', 'Курсовая работа — услуга', 'курсовая курсач'],
+    ['diplomnaya-rabota.html', 'Дипломная / ВКР — услуга', 'диплом вкр выпускная'],
+    ['magisterskaya-dissertaciya.html', 'Магистерская диссертация — услуга', 'магистратура магистерская'],
+    ['kandidatskaya-dissertaciya.html', 'Кандидатская — услуга', 'аспирантура кандидатская диссертация'],
+    ['otchet-po-praktike.html', 'Отчёт по практике — услуга', 'практика дневник характеристика'],
+    ['nauchnaya-statya.html', 'Научная статья — услуга', 'ринц вак scopus скопус публикация статья'],
+    ['referat.html', 'Реферат, эссе, контрольная — услуга', 'реферат эссе контрольная доклад'],
+    ['kursovaya-po-ekonomike.html', 'Курсовая по экономике', 'экономика'],
+    ['kursovaya-po-informatike.html', 'Курсовая по информатике', 'информатика программирование код it'],
+    ['kursovaya-po-menedzhmentu.html', 'Курсовая по менеджменту', 'менеджмент управление'],
+    ['kursovaya-po-pedagogike.html', 'Курсовая по педагогике', 'педагогика фгос'],
+    ['kursovaya-po-psihologii.html', 'Курсовая по психологии', 'психология'],
+    ['kursovaya-po-yurisprudencii.html', 'Курсовая по юриспруденции', 'юриспруденция право'],
+    ['diplomnaya-po-ekonomike.html', 'Диплом по экономике', 'экономика вкр'],
+    ['diplomnaya-po-psihologii.html', 'Диплом по психологии', 'психология вкр'],
+    ['diplomnaya-po-yurisprudencii.html', 'Диплом по юриспруденции', 'право юрфак вкр'],
+    ['guide-zashchita-diploma.html', 'Гайд · защита диплома', 'защита комиссия доклад'],
+    ['guide-rech-na-zashchitu.html', 'Гайд · речь на защиту', 'речь доклад выступление'],
+    ['guide-prezentaciya-k-zashchite.html', 'Гайд · презентация к защите', 'презентация слайды'],
+    ['guide-normocontrol.html', 'Гайд · нормоконтроль', 'нормоконтроль гост оформление'],
+    ['guide-antiplagiat-ai.html', 'Гайд · антиплагиат и ИИ', 'антиплагиат оригинальность ии детектор'],
+    ['guide-spisok-literatury.html', 'Гайд · список литературы', 'литература список источники гост'],
+    ['guide-titulnyj-list.html', 'Гайд · титульный лист', 'титульник титульный'],
+    ['guide-vvedenie-kursovoy.html', 'Гайд · введение курсовой', 'введение актуальность'],
+    ['guide-vkr-struktura.html', 'Гайд · введение и структура ВКР', 'структура введение вкр'],
+    ['guide-zaklyuchenie-vkr.html', 'Гайд · заключение работы', 'заключение выводы'],
+    ['guide-temy-vkr.html', 'Гайд · темы ВКР, 50 примеров', 'тема темы выбрать'],
+    ['guide-kursovaya-za-nedelyu.html', 'Гайд · курсовая за неделю', 'срочно неделя быстро'],
+    ['guide-skolko-stoit-diplomnaya.html', 'Гайд · сколько стоит диплом', 'цена диплом стоимость'],
+    ['guide-skolko-stoit-kursovaya.html', 'Гайд · сколько стоит курсовая', 'цена курсовая стоимость'],
+    ['guide-otchet-po-praktike.html', 'Гайд · отчёт по практике', 'практика отчёт'],
+    ['guide-dnevnik-praktiki.html', 'Гайд · дневник практики', 'дневник практика'],
+    ['guide-harakteristika-s-praktiki.html', 'Гайд · характеристика с практики', 'характеристика'],
+    ['guide-recenziya-na-vkr.html', 'Гайд · рецензия на ВКР', 'рецензия'],
+    ['guide-rinc-statya.html', 'Гайд · статья РИНЦ', 'ринц публикация журнал'],
+    ['guide-apellyaciya.html', 'Гайд · апелляция на оценку', 'апелляция пересдача оценка'],
+    ['oferta.html', 'Публичная оферта', 'договор оферта условия'],
+    ['privacy.html', 'Политика персональных данных', 'политика данные приватность'],
+    ['consent.html', 'Согласие на обработку данных', 'согласие'],
+    ['loyalty.html', 'Правила лояльности', 'бонусы правила подписка'],
+    ['terms.html', 'Пользовательское соглашение', 'соглашение'],
+    ['requisites.html', 'Реквизиты исполнителя', 'инн самозанятый реквизиты']
   ];
   var DOCS = [
     ['oferta.html', 'Публичная оферта'],
@@ -473,24 +554,37 @@
       '<span class="b-name">Академический Салон</span></a>';
   }
 
-  /* Полноэкранное меню «Оглавление» — одно на страницу; держит ВСЕ разделы,
-     документы, контакты и переключатель темы. Быстрый доступ ко всему,
-     не перегружая шапку. */
+  /* Полноэкранное меню-«Путеводитель» — одно на страницу: живой поиск по
+     всем страницам, маршрут новичка и разделы по смыслу с подсказками.
+     Задача: даже впервые зашедший находит любую страницу за секунды. */
   function mountTOC() {
     if (document.querySelector('.toc')) return;
     var toc = document.createElement('div');
     toc.className = 'toc'; toc.id = 'toc';
-    toc.setAttribute('role', 'dialog'); toc.setAttribute('aria-modal', 'true'); toc.setAttribute('aria-label', 'Меню сайта');
-    var rows = TOC.map(function (t) {
-      var cur = t.href === here ? ' aria-current="page"' : '';
-      return '<a class="dotrow" href="' + t.href + '"' + cur + '><span>' + t.label + '</span><span class="dots"></span><span class="dr-val">' + t.no + '</span></a>';
+    toc.setAttribute('role', 'dialog'); toc.setAttribute('aria-modal', 'true'); toc.setAttribute('aria-label', 'Путеводитель по сайту');
+    var routeRow = ROUTE.map(function (r, i) {
+      return '<a class="tr-step" href="' + r.href + '"><i>' + (i + 1) + '</i>' + r.label + '</a>';
+    }).join('<span class="tr-arr" aria-hidden="true">→</span>');
+    var rows = GROUPS.map(function (g) {
+      return '<div class="toc-grp"><span class="toc-grp-t">' + g.t + '</span>' +
+        g.items.map(function (it) {
+          var cur = it[0] === here ? ' aria-current="page"' : '';
+          return '<a class="dotrow" href="' + it[0] + '"' + cur + '><span>' + it[1] +
+            '</span><span class="dots"></span><span class="dr-val">' + it[2] + '</span></a>';
+        }).join('') + '</div>';
     }).join('');
     var docRows = DOCS.map(function (d) {
       return '<a href="' + d[0] + '">' + d[1] + '</a>';
     }).join('');
     toc.innerHTML = '<div class="toc-inner">' +
-      '<div class="toc-head"><span class="toc-title">Оглавление</span>' +
+      '<div class="toc-head"><span class="toc-title">Путеводитель</span>' +
         '<button class="toc-close" type="button">Закрыть</button></div>' +
+      '<div class="toc-search"><input type="search" id="tocQ" autocomplete="off" ' +
+        'placeholder="Куда вам? Наберите: «курсовая», «оплата», «речь»…" aria-label="Поиск по сайту" />' +
+        '<div class="toc-sr" id="tocSR" hidden></div></div>' +
+      '<div class="toc-route" id="tocRoute"><span class="toc-grp-t">Впервые здесь? Маршрут до заявки — 6 шагов</span>' +
+        '<nav class="tr-steps" aria-label="Маршрут новичка">' + routeRow + '</nav>' +
+        '<a class="tr-all link" href="start.html">Вся карта с пояснениями — «С чего начать» →</a></div>' +
       '<div class="toc-grid">' +
         '<nav class="toc-primary" aria-label="Разделы сайта">' + rows + '</nav>' +
         '<div class="toc-side">' +
@@ -525,16 +619,57 @@
     /* страховочная петля Tab для браузеров без inert */
     toc.addEventListener('keydown', function (e) {
       if (e.key !== 'Tab') return;
-      var items = toc.querySelectorAll('button, a[href]');
+      var items = toc.querySelectorAll('button, a[href], input');
       if (!items.length) return;
       var first = items[0], last = items[items.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
     toc.querySelector('.toc-close').addEventListener('click', function () { setToc(false); });
-    /* закрываем по переходу — но НЕ по клику на переключатель темы */
-    toc.querySelectorAll('a[href]').forEach(function (a) { a.addEventListener('click', function () { setToc(false); }); });
+    /* закрываем по переходу — но НЕ по клику на переключатель темы; ссылки
+       поиска появляются позже — ловим кликом-делегатом */
+    toc.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a[href]')) setToc(false);
+    });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && toc.classList.contains('open')) setToc(false); });
+
+    /* --- живой поиск: label+теги, топ-9, Enter открывает первый --- */
+    (function () {
+      var q = toc.querySelector('#tocQ'), sr = toc.querySelector('#tocSR');
+      var route = toc.querySelector('#tocRoute'), grid = toc.querySelector('.toc-grid');
+      if (!q || !sr) return;
+      function draw() {
+        var v = (q.value || '').trim().toLowerCase();
+        if (v.length < 2) {
+          sr.hidden = true; sr.innerHTML = '';
+          route.hidden = false; grid.hidden = false;
+          return;
+        }
+        var hits = [];
+        for (var i = 0; i < SEARCH.length && hits.length < 9; i++) {
+          var s = SEARCH[i];
+          if ((s[1] + ' ' + s[2]).toLowerCase().indexOf(v) >= 0) hits.push(s);
+        }
+        sr.innerHTML = hits.length
+          ? hits.map(function (s) {
+              return '<a class="dotrow" href="' + s[0] + '"><span>' + s[1] +
+                '</span><span class="dots"></span><span class="dr-val">→</span></a>';
+            }).join('')
+          : '<p class="toc-sr-none">Ничего не нашлось. Напишите нам — найдём вместе: ' +
+            '<a class="link" href="' + LINKS.human + '" target="_blank" rel="noopener">@academicsaloon</a> · ' +
+            '<a class="link" href="priyomnaya.html">анонимно в приёмную</a></p>';
+        sr.hidden = false; route.hidden = true; grid.hidden = true;
+      }
+      q.addEventListener('input', draw);
+      q.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          var a = sr.querySelector('a.dotrow');
+          if (a) { setToc(false); location.href = a.getAttribute('href'); }
+        } else if (e.key === 'Escape' && q.value) {
+          e.stopPropagation(); q.value = ''; draw();
+        }
+      });
+    })();
 
     /* бейдж заказов на пункте «Личный кабинет» — из общей с ботом базы */
     (function () {
@@ -559,7 +694,7 @@
     header.className = 'site-header';
     var navLinks = NAV.map(function (n) {
       var cur = n.href === here ? ' aria-current="page"' : '';
-      var cls = n.x ? ' class="nav-x"' : '';
+      var cls = n.x ? ' class="nav-x"' : (n.x2 ? ' class="nav-x2"' : '');
       return '<a href="' + n.href + '"' + cur + cls + '>' + n.label + '</a>';
     }).join('');
     var calcHref = here === 'index.html' ? '#smeta' : 'configurator.html';
@@ -602,6 +737,30 @@
       e.preventDefault();
       Salon.toc.isOpen() ? Salon.toc.close() : Salon.toc.open();
     });
+  }
+
+  /* «Дальше по маршруту» — тонкий штурман внизу страниц маршрута:
+     показывает, где читатель находится, и ведёт за руку к следующему шагу */
+  function mountRouteNext() {
+    if (CHROME_OFF) return;
+    var i = -1;
+    ROUTE.forEach(function (r, k) { if (r.href === here) i = k; });
+    if (i < 0 || i >= ROUTE.length - 1) return; /* вне маршрута или финал */
+    var next = ROUTE[i + 1];
+    var el = document.createElement('aside');
+    el.className = 'route-next';
+    el.setAttribute('aria-label', 'Маршрут по сайту');
+    el.innerHTML = '<div class="wrap rn-in">' +
+      '<span class="rn-step">Маршрут новичка · шаг ' + (i + 1) + ' из ' + ROUTE.length + '</span>' +
+      '<span class="rn-dots" aria-hidden="true">' + ROUTE.map(function (_, k) {
+        return '<i' + (k <= i ? ' class="on"' : '') + '></i>';
+      }).join('') + '</span>' +
+      '<a class="rn-next" href="' + next.href + '">Дальше: ' + next.label + ' <span class="ar">→</span></a>' +
+      '<a class="rn-map" href="start.html">вся карта</a>' +
+    '</div>';
+    var f = document.querySelector('.site-footer');
+    if (f && f.parentNode) f.parentNode.insertBefore(el, f);
+    else document.body.appendChild(el);
   }
 
   /* ---------------- Возврат к начатому заказу ----------------
@@ -651,6 +810,7 @@
           '</div>' +
         '</div>' +
         '<div><div class="fc-h">Разделы</div><nav class="foot-links" aria-label="Карта сайта">' +
+          '<a href="start.html">С чего начать</a>' +
           '<a href="configurator.html">Рассчитать заказ</a><a href="tariffs.html">Цены и услуги</a>' +
           '<a href="vedenie.html">Уровни ведения</a><a href="oplata.html">Как проходит оплата</a>' +
           '<a href="gift.html">Подарочный сертификат</a>' +
@@ -686,6 +846,7 @@
     footer.innerHTML = Salon.footerHTML();
     document.body.appendChild(footer);
   }
+  mountRouteNext(); /* штурман «Дальше по маршруту» — сразу над колофоном */
 
   /* ---------------- Плавающая пилюля связи (десктоп) ----------------
      Открывает лист каналов: сайт → ВК → MAX → Telegram. */
