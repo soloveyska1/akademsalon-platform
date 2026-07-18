@@ -486,6 +486,8 @@
     ['tariffs.html', 'Цены и каталог работ', 'прайс стоимость сколько стоит картотека формуляр'],
     ['vedenie.html', 'Уровни ведения', 'базовый под ключ vip вип сопровождение тариф'],
     ['oplata.html', 'Как проходит оплата', 'деньги оплатить рассрочка предоплата этапы чек касса возврат'],
+    ['oplata.html#zaruchku', 'Первый платёж — за ручку, по шагам', 'оплата как платить кнопка что нажать инструкция пошагово'],
+    ['https://akademsalon.ru/api/pamyatka/welcome', 'Памятка новичка — путеводитель (PDF)', 'памятка новичок путеводитель pdf правила'],
     ['plan.html', 'Разбор плана', 'план структура старт'],
     ['gift.html', 'Подарочный сертификат', 'подарок подарить код'],
     ['guarantees.html', 'Гарантии · устав мастерской', 'гарантия закон возврат договор правки антиплагиат скептик'],
@@ -1098,9 +1100,14 @@
      у гостевых заказов — токены доступа по каждому заказу. */
   var API_BASE = (location.hostname === 'akademsalon.ru')
     ? '/api' : 'https://akademsalon.ru/api';
+  /* «Тихий» вход мастера в кабинет клиента: токен живёт ТОЛЬКО в этой вкладке
+     (sessionStorage), чтобы не выбить основную сессию мастера в админке. */
+  function impToken() {
+    try { return sessionStorage.getItem('salon_imp_token') || null; } catch (e) { return null; }
+  }
   Salon.api = {
     base: API_BASE,
-    token: function () { return Salon.store.get('salon_session', null); },
+    token: function () { return impToken() || Salon.store.get('salon_session', null); },
     setToken: function (t) { t ? Salon.store.set('salon_session', t) : Salon.store.del('salon_session'); },
     user: function () { return Salon.store.get('salon_user', null); },
     setUser: function (u) { u ? Salon.store.set('salon_user', u) : Salon.store.del('salon_user'); },
@@ -1124,7 +1131,12 @@
       }
       return fetch(API_BASE + path, { method: method, headers: h, body: body !== undefined ? JSON.stringify(body) : undefined })
         .then(function (r) {
-          if (r.status === 401) { Salon.api.setToken(null); Salon.api.setUser(null); }
+          if (r.status === 401) {
+            if (impToken()) {
+              /* протухла «тихая» сессия мастера — чистим только её */
+              try { sessionStorage.removeItem('salon_imp_token'); sessionStorage.removeItem('salon_imp'); } catch (e) {}
+            } else { Salon.api.setToken(null); Salon.api.setUser(null); }
+          }
           if (method === 'GET' && !_retried && (r.status === 502 || r.status === 503 || r.status === 504)) return again();
           return r.json().catch(function () { return { ok: false, error: 'bad_json' }; });
         })
@@ -1154,8 +1166,11 @@
      Молчит в админке; не трогает бюджет обычных запросов (свой лимит). */
   Salon.visit = (function () {
     var here = (location.pathname.split('/').pop() || 'index.html');
-    /* молчим в админке и на локальных превью — это не посетители */
-    if (here.indexOf('admin') === 0 || /^(localhost|127\.)/.test(location.hostname)) {
+    /* молчим в админке, на локальных превью и в «тихом» кабинете мастера —
+       это не посетители (сервер дублирует этот гейт по флагу сессии) */
+    var imp = false;
+    try { imp = sessionStorage.getItem('salon_imp') === '1'; } catch (e) {}
+    if (here.indexOf('admin') === 0 || imp || /^(localhost|127\.)/.test(location.hostname)) {
       return { mark: function () {}, order: function () {} };
     }
     function vid() {

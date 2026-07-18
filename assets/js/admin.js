@@ -1195,7 +1195,8 @@ function initGodEye() {
       ? '👤 Гость: <b>' + esc(o.client.name) + '</b>' + (o.client.contact ? ' · <span class="mono">' + esc(o.client.contact) + '</span>' : '') +
         '<br><span class="petit">Без Telegram: всё написанное здесь он видит в кабинете сайта' + (o.client.contact ? '; для живой связи — кнопки ниже' : '') + '.</span>'
       : '👤 <b>' + esc(o.client.name) + '</b>' + (o.client.username ? ' · @' + esc(o.client.username) : '') +
-        ' · <button type="button" class="ag-linkbtn" data-open-client="' + o.client.id + '">карточка клиента</button>';
+        ' · <button type="button" class="ag-linkbtn" data-open-client="' + o.client.id + '">карточка клиента</button>' +
+        ' · <button type="button" class="ag-linkbtn" data-imp-client="' + o.client.id + '">👁 его кабинет</button>';
     return '<p class="ag-meta" style="margin-top:8px">' + who + '</p>' +
       (links ? '<div class="ag-clinks">' + links + '</div>' : '');
   }
@@ -1552,9 +1553,12 @@ function initGodEye() {
       }).join('') : '<p class="ag-note">Заказов нет.</p>') + '</div>' +
 
       '<div class="ag-sec"><span class="caps">Доступ</span><div class="ag-actrow">' +
+      '<button type="button" class="btn btn-line" data-imp-client="' + c.id + '">👁 Открыть кабинет клиента</button>' +
       '<button type="button" class="btn ' + (c.banned ? 'btn-line' : 'btn-wax') + '" id="agBan" data-on="' + (c.banned ? '0' : '1') + '">' +
       (c.banned ? 'Снять блокировку' : '⛔️ Заблокировать клиента') + '</button></div>' +
-      '<p class="ag-note">Блокировка закрывает приём новых заявок с сайта от этого аккаунта.</p></div>';
+      '<p class="ag-note">«Открыть кабинет» — тихий вход на правах клиента в новой вкладке: посмотреть его глазами, ' +
+      'поправить, помочь. Клиент ничего не заметит — визиты и метки «прочитано» не трогаются.<br>' +
+      'Блокировка закрывает приём новых заявок с сайта от этого аккаунта.</p></div>';
   }
 
   /* ---------------- ОТЗЫВЫ ---------------- */
@@ -1703,6 +1707,13 @@ function initGodEye() {
 
       '<div class="ag-sec"><span class="caps">Оплата этапами</span>' +
       '<p class="petit">Небольшие работы — 2 части (50/50), крупные (диплом, магистерская, Scopus…) — 3 части (30/40/30), как обещает сайт. План ставится автоматически при назначении цены; в карточке заказа его можно поменять, пока этапы не пошли.</p></div>' +
+
+      '<div class="ag-sec"><span class="caps">Инструменты мастерской</span>' +
+      '<p class="petit">🖼 <a class="ag-linkbtn" href="admin-covers.html" target="_blank" rel="noopener" style="text-decoration:underline">Мастерская обложек</a> — ' +
+      'картинки для постов в фирменном стиле: рубрика внизу, ваш заголовок по центру, скачивание PNG. ' +
+      'Пустые заготовки девяти рубрик лежат в папке репозитория «Макеты постов».<br>' +
+      '📕 <a class="ag-linkbtn" href="' + S.api.base + '/pamyatka/welcome" target="_blank" rel="noopener" style="text-decoration:underline">Памятка новичка (PDF)</a> — ' +
+      'та самая, что бот дарит вместе с 300 бонусами; персональные памятки к выдаче уходят сами при передаче финала.</p></div>' +
 
       '<div class="ag-sec"><span class="caps">Онлайн-оплата картой</span>' +
       '<p class="petit">' + (ov.pay_online
@@ -2092,6 +2103,18 @@ function initGodEye() {
     if (oo) { st.tab = 'orders'; st.filter = ''; st.q = ''; st.sel = parseInt(oo.getAttribute('data-open-order'), 10); drawNav(); loadTab(); return; }
     var oc = t.closest('[data-open-client]');
     if (oc) { st.tab = 'clients'; st.csel = parseInt(oc.getAttribute('data-open-client'), 10); drawNav(); loadTab(); return; }
+    var ic = t.closest('[data-imp-client]');
+    if (ic) {
+      /* «тихий» вход в кабинет клиента: новая вкладка, сессия только там */
+      var icid = parseInt(ic.getAttribute('data-imp-client'), 10);
+      ic.disabled = true;
+      api('/admin/clients/' + icid + '/impersonate', {}).then(function (r) {
+        ic.disabled = false;
+        if (r.ok && r.url) window.open(r.url, '_blank');
+        else toast('Не вышло открыть кабинет: ' + (r.error || 'ошибка'), 'error');
+      });
+      return;
+    }
 
     var row = t.closest('.ag-row[data-id]');
     if (row) {

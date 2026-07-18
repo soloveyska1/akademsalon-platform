@@ -44,6 +44,9 @@
 .tour-card h3{font-family:var(--serif);font-size:clamp(20px,2.6vw,24px);font-weight:480;line-height:1.25;margin:0 0 10px}
 .tour-card p{font-size:15.5px;line-height:1.62;color:var(--ink-soft);margin:0 0 16px}
 .tour-card p b{color:var(--ink);font-weight:500}
+.tour-links{display:flex;flex-wrap:wrap;gap:8px;margin:-6px 0 14px}
+.tour-lnk{font-size:13px;line-height:1;border:1px solid var(--hairline-strong);border-radius:999px;padding:7px 11px;text-decoration:none;color:var(--ink);background:var(--paper)}
+.tour-lnk:hover{border-color:var(--wax);color:var(--wax)}
 .tour-dots{display:flex;gap:6px;margin-bottom:14px}
 .tour-dots i{width:22px;height:3px;background:var(--hairline);border-radius:2px;transition:background .2s}
 .tour-dots i.on{background:var(--wax)}

@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Мастерская обложек — Академический Салон</title>
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<style>
+  :root{
+    --paper:#F6F1E7; --paper-2:#F1EBDD; --sheet:#FFFEF9;
+    --ink:#22201B; --ink-soft:#6B665A; --hairline:#D9D2C2;
+    --wax:#B23B22; --wax-deep:#8C2D18;
+    --sans:"Golos Text",-apple-system,sans-serif;
+    --serif:"Literata",Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;padding:26px 18px 60px}
+  .wrap{max-width:1180px;margin:0 auto}
+  h1{font-family:var(--serif);font-weight:600;font-size:30px;margin-bottom:4px}
+  .lead{color:var(--ink-soft);max-width:64ch;margin-bottom:22px}
+  .lead a{color:var(--wax)}
+  .grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:26px;align-items:start}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--sheet);border:1px solid var(--hairline);border-radius:2px;padding:18px}
+  .panel h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 12px}
+  label{display:block;font-weight:500;font-size:14px;margin:14px 0 6px}
+  label:first-of-type{margin-top:0}
+  select,textarea,input[type=text]{width:100%;font:inherit;font-size:16px;padding:9px 10px;border:1px solid var(--hairline);border-radius:2px;background:var(--paper);color:var(--ink)}
+  textarea{min-height:84px;resize:vertical}
+  .hint{font-size:12.5px;color:var(--ink-soft);margin-top:5px}
+  .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  button{font:inherit;font-weight:600;padding:11px 16px;border-radius:2px;border:1px solid var(--ink);background:var(--ink);color:var(--sheet);cursor:pointer}
+  button.ghost{background:transparent;color:var(--ink)}
+  button.wax{background:var(--wax);border-color:var(--wax)}
+  button:hover{opacity:.88}
+  .stage{background:var(--paper-2);border:1px solid var(--hairline);border-radius:2px;padding:16px}
+  canvas{width:100%;height:auto;display:block;box-shadow:0 10px 30px rgba(60,50,30,.14)}
+  .foot{margin-top:12px;font-size:13px;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Мастерская обложек</h1>
+  <p class="lead">Картинки для постов в фирменном стиле: выберите рубрику, впишите заголовок — и скачайте PNG.
+  Пустые заготовки всех девяти рубрик лежат в папке репозитория «Макеты постов». Страница служебная, в поиск не попадает.</p>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>Наборная касса</h2>
+      <label for="rub">Рубрика (подпись внизу)</label>
+      <select id="rub">
+        <option value="Отзывы">Отзывы</option>
+        <option value="Полезное" selected>Полезное</option>
+        <option value="Шаблоны">Шаблоны</option>
+        <option value="Кейсы">Кейсы</option>
+        <option value="Акции">Акции</option>
+        <option value="О нас">О нас</option>
+        <option value="Юмор">Юмор</option>
+        <option value="В цифрах">В цифрах</option>
+        <option value="FAQ">FAQ</option>
+      </select>
+      <label for="ttl">Заголовок (по центру)</label>
+      <textarea id="ttl" placeholder="Можно оставить пустым — будет чистая заготовка.&#10;Перенос строки — Enter."></textarea>
+      <label for="sub">Подзаголовок (серым, необязательно)</label>
+      <input type="text" id="sub" placeholder="одна короткая строка">
+      <div class="hint">Кегль подбирается сам: длинный заголовок аккуратно уменьшится, ₽ и стрелки — фирменным шрифтом.</div>
+      <div class="btns">
+        <button class="wax" id="dl2">Скачать PNG · 2400×1350</button>
+        <button class="ghost" id="dl1">PNG · 1200×675</button>
+      </div>
+    </div>
+    <div class="stage">
+      <canvas id="cv" width="1200" height="675" aria-label="Предпросмотр обложки"></canvas>
+      <p class="foot">Предпросмотр обновляется на лету. Скачанный файл — точно такой же, в большем размере.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var cv = document.getElementById('cv'), rub = document.getElementById('rub'),
+      ttl = document.getElementById('ttl'), sub = document.getElementById('sub');
+
+  // ── геометрия эталона 1200×675 (совпадает с пустыми заготовками) ──
+  var G = {
+    W:1200, H:675,
+    frameOut:{inset:20, lw:1.6, col:'rgba(34,32,27,.62)'},
+    frameIn:{inset:31, lw:1, col:'rgba(34,32,27,.20)'},
+    kicker:{y:89, size:21, ls:.46, col:'#AF3D28', text:'АКАДЕМИЧЕСКИЙ САЛОН'},
+    rule:{y:124.5, w:64, col:'#C2B89F'},
+    title:{cx:600, zoneTop:172, zoneBot:503, maxW:980, size:76, lh:1.14, col:'#25221C', min:40},
+    subt:{size:27, gap:18, col:'#8B8577'},
+    rubric:{x:84, yBase:585, size:19, ls:.36, col:'#AF3D28'},
+    seal:{cx:1066, cy:557, r:48}
+  };
+
+  function spacedWidth(ctx, s, ls){
+    var w = 0;
+    for (var i = 0; i < s.length; i++) w += ctx.measureText(s[i]).width + (i < s.length-1 ? ls : 0);
+    return w;
+  }
+  function drawSpaced(ctx, s, x, y, ls){
+    for (var i = 0; i < s.length; i++){
+      ctx.fillText(s[i], x, y);
+      x += ctx.measureText(s[i]).width + ls;
+    }
+  }
+  function wrapLines(ctx, text, maxW){
+    var out = [];
+    text.split('\n').forEach(function(par){
+      var words = par.trim().split(/\s+/).filter(Boolean);
+      if (!words.length) return;
+      var line = words[0];
+      for (var i = 1; i < words.length; i++){
+        var probe = line + ' ' + words[i];
+        if (ctx.measureText(probe).width <= maxW) line = probe;
+        else { out.push(line); line = words[i]; }
+      }
+      out.push(line);
+    });
+    return out;
+  }
+  // детерминированное бумажное зерно (mulberry32)
+  function noiseLayer(w, h){
+    var c = document.createElement('canvas'); c.width = w; c.height = h;
+    var x = c.getContext('2d'), img = x.createImageData(w, h), d = img.data, seed = 20260718;
+    function rnd(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+    for (var i = 0; i < d.length; i += 4){
+      var v = 90 + rnd()*130;
+      d[i] = d[i+1] = d[i+2] = v; d[i+3] = 13; // ≈ opacity .05
+    }
+    x.putImageData(img, 0, 0);
+    return c;
+  }
+  var noiseCache = {};
+
+  function render(canvas, scale){
+    var ctx = canvas.getContext('2d');
+    canvas.width = G.W * scale; canvas.height = G.H * scale;
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.textBaseline = 'alphabetic';
+
+    // бумага + виньетка
+    ctx.fillStyle = '#F6F1E7'; ctx.fillRect(0, 0, G.W, G.H);
+    var vg = ctx.createRadialGradient(600, 256, 60, 600, 256, 950);
+    vg.addColorStop(0, 'rgba(255,255,255,.28)'); vg.addColorStop(1, 'rgba(97,84,58,.055)');
+    ctx.fillStyle = vg; ctx.fillRect(0, 0, G.W, G.H);
+
+    // рамки
+    var fo = G.frameOut;
+    ctx.strokeStyle = fo.col; ctx.lineWidth = fo.lw;
+    ctx.strokeRect(fo.inset, fo.inset, G.W - 2*fo.inset, G.H - 2*fo.inset);
+    var fi = G.frameIn;
+    ctx.strokeStyle = fi.col; ctx.lineWidth = fi.lw;
+    ctx.strokeRect(fi.inset, fi.inset, G.W - 2*fi.inset, G.H - 2*fi.inset);
+
+    // шапка-набор
+    var k = G.kicker;
+    ctx.font = '600 ' + k.size + 'px "Golos Text"';
+    ctx.fillStyle = k.col;
+    var ls = k.size * k.ls;
+    drawSpaced(ctx, k.text, (G.W - spacedWidth(ctx, k.text, ls)) / 2, k.y, ls);
+    ctx.fillStyle = G.rule.col;
+    ctx.fillRect((G.W - G.rule.w) / 2, G.rule.y, G.rule.w, 1);
+
+    // заголовок + подзаголовок
+    var t = ttl.value.replace(/\s+$/,''), s = sub.value.trim();
+    if (t){
+      var T = G.title, size = T.size, lines;
+      do {
+        ctx.font = '540 ' + size + 'px "Literata"';
+        lines = wrapLines(ctx, t, T.maxW);
+        var block = lines.length * size * T.lh + (s ? G.subt.gap + G.subt.size*1.35 : 0);
+        if (block <= (T.zoneBot - T.zoneTop) && lines.every(function(l){ return ctx.measureText(l).width <= T.maxW; })) break;
+        size -= 2;
+      } while (size > T.min);
+      ctx.fillStyle = T.col; ctx.textAlign = 'center';
+      var lineH = size * T.lh;
+      var total = lines.length * lineH + (s ? G.subt.gap + G.subt.size*1.35 : 0);
+      var y0 = (T.zoneTop + T.zoneBot - total) / 2 + size * .82;
+      lines.forEach(function(l, i){ ctx.fillText(l, T.cx, y0 + i * lineH); });
+      if (s){
+        ctx.font = '400 ' + G.subt.size + 'px "Golos Text"';
+        ctx.fillStyle = G.subt.col;
+        ctx.fillText(s, T.cx, y0 + lines.length * lineH - lineH + size*.4 + G.subt.gap + G.subt.size);
+      }
+      ctx.textAlign = 'start';
+    }
+
+    // рубрика
+    var r = G.rubric, rt = '—  ' + rub.value.toUpperCase() + '  —';
+    ctx.font = '600 ' + r.size + 'px "Golos Text"';
+    ctx.fillStyle = r.col;
+    drawSpaced(ctx, rt, r.x, r.yBase, r.size * r.ls);
+
+    // сургучная печать
+    var sl = G.seal;
+    var sg = ctx.createRadialGradient(sl.cx - 10, sl.cy - 17, 5, sl.cx, sl.cy, sl.r + 6);
+    sg.addColorStop(0, '#C4503A'); sg.addColorStop(.52, '#B23B22'); sg.addColorStop(1, '#8C2D18');
+    ctx.save();
+    ctx.shadowColor = 'rgba(76,29,15,.28)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2;
+    ctx.fillStyle = sg;
+    ctx.beginPath(); ctx.arc(sl.cx, sl.cy, sl.r, 0, 7); ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle = 'rgba(255,244,233,.55)'; ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.arc(sl.cx, sl.cy, sl.r - 7.7, 0, 7); ctx.stroke();
+    ctx.save();
+    ctx.shadowColor = 'rgba(70,20,8,.45)'; ctx.shadowBlur = 1; ctx.shadowOffsetY = 1;
+    ctx.font = '600 35px "Literata"'; ctx.fillStyle = '#FFF4E9'; ctx.textAlign = 'center';
+    ctx.fillText('АС', sl.cx, sl.cy + 12);
+    ctx.restore(); ctx.textAlign = 'start';
+
+    // зерно поверх
+    var key = canvas.width + 'x' + canvas.height;
+    if (!noiseCache[key]) noiseCache[key] = noiseLayer(canvas.width, canvas.height);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(noiseCache[key], 0, 0);
+  }
+
+  function slug(s){
+    var map = {'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'c','ч':'ch','ш':'sh','щ':'sch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya'};
+    return s.toLowerCase().split('').map(function(ch){ return map[ch] !== undefined ? map[ch] : (/[a-z0-9]/.test(ch) ? ch : '-'); }).join('').replace(/-+/g,'-').replace(/^-|-$/g,'') || 'cover';
+  }
+  function download(scale){
+    var off = document.createElement('canvas');
+    render(off, scale);
+    var a = document.createElement('a');
+    a.download = 'akademsalon-' + slug(rub.value) + (ttl.value.trim() ? '-' + slug(ttl.value.trim()).slice(0, 40) : '') + '-' + (1200*scale) + '.png';
+    a.href = off.toDataURL('image/png');
+    a.click();
+  }
+
+  var queued = false;
+  function repaint(){
+    if (queued) return;
+    queued = true;
+    setTimeout(function(){ queued = false; render(cv, 1); }, 60);
+  }
+  ['input','change'].forEach(function(ev){
+    rub.addEventListener(ev, repaint); ttl.addEventListener(ev, repaint); sub.addEventListener(ev, repaint);
+  });
+  document.getElementById('dl1').addEventListener('click', function(){ download(1); });
+  document.getElementById('dl2').addEventListener('click', function(){ download(2); });
+
+  // шрифты: рисуем только после загрузки нужных начертаний (иначе канвас возьмёт фолбэк)
+  Promise.all([
+    document.fonts.load('600 21px "Golos Text"', 'АКАДЕМИЧЕСКИЙ САЛОН FAQ'),
+    document.fonts.load('400 27px "Golos Text"', 'подзаголовок ₽'),
+    document.fonts.load('540 76px "Literata"', 'Пример Заголовка ₽ №'),
+    document.fonts.load('600 35px "Literata"', 'АС')
+  ]).then(function(){ return document.fonts.ready; }).then(function(){ render(cv, 1); });
+  render(cv, 1); // черновой кадр до шрифтов, чтобы не пустовало
+})();
+</script>
+</body>
+</html>

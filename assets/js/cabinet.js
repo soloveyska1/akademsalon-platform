@@ -419,7 +419,24 @@ function initCabinet() {
       bits.join(' · ') + '</p>';
   }
 
+  /* «тихий» режим мастера: кабинет клиента открыт из админки (#imp=…) */
+  function impMode() {
+    try {
+      return sessionStorage.getItem('salon_imp') === '1' &&
+        !!sessionStorage.getItem('salon_imp_token');
+    } catch (e) { return false; }
+  }
+
   function userRow() {
+    if (impMode()) {
+      var nm = '';
+      try { nm = sessionStorage.getItem('salon_imp_name') || ''; } catch (e) {}
+      return '<div class="cab-id reveal" style="border:1px dashed var(--wax);background:var(--wax-soft);border-radius:6px;padding:8px 10px">' +
+        '<span>👁 <b>Режим мастера</b> — кабинет клиента' + (nm ? ' <b>' + esc(nm) + '</b>' : '') +
+        '. Действия настоящие, но тихо: визиты и метки «прочитано» не трогаются.</span>' +
+        '<span class="ci-act"><button type="button" class="linkbtn" id="cabImpExit">закрыть режим</button></span></div>' +
+        notiRow();
+    }
     var u = S.api.user();
     if (S.api.token() && u) {
       return '<div class="cab-id reveal">' +
@@ -469,7 +486,9 @@ function initCabinet() {
       cta = 'Перейти к оплате'; jump = 'secPay';
     } else if (score === 4) {
       msg = 'Мастер назвал цену: <b>' + money(o.price) + ' ₽</b> — решение за вами.';
-      sub = 'Можно применить бонусы, обсудить детали в переписке или принять предложение.';
+      sub = (o.stages_total || 1) > 1
+        ? 'Платить всё сразу не нужно: старт — только первая часть, остальное по готовности. Бонусы тоже можно применить.'
+        : 'Можно применить бонусы, обсудить детали в переписке или принять предложение.';
       cta = 'Посмотреть предложение'; jump = 'secDecide';
     } else if (score === 3) {
       var partW = (o.stages_total || 1) > 1 ? 'Часть ' + (o.stage || 1) + ' из ' + o.stages_total : 'Работа';
@@ -1078,7 +1097,16 @@ function initCabinet() {
       S.api.base + apiPath(o.id, '/contract') + '" target="_blank" rel="noopener">' +
       'Спецификация заказа (PDF)</a> — условия одним листом: что входит в цену, ' +
       'этапы оплаты, правки. Действует вместе с <a class="link" href="oferta.html">офертой</a>, ' +
-      'подписывать ничего не нужно.</p>';
+      'подписывать ничего не нужно.</p>' + pamyatkaLink(o);
+  }
+
+  /* персональная памятка «что дальше» — появляется с передачей финала */
+  function pamyatkaLink(o) {
+    if (!o.pamyatka) return '';
+    return '<p class="petit" style="margin-top:2px">📘 <a class="link" href="' +
+      S.api.base + apiPath(o.id, '/pamyatka') + '" target="_blank" rel="noopener">' +
+      'Памятка «что дальше» (PDF)</a> — приёмка за 48 часов, антиплагиат без паники, ' +
+      'письмо научруку, окна бесплатных правок с датами и план подготовки к защите.</p>';
   }
 
   function priceBlock(o) {
@@ -1277,8 +1305,19 @@ function initCabinet() {
   function actionsBlock(o) {
     var b = [];
     var total = o.stages_total || 1;
+    var plan0 = o.plan || [];
+    var byParts = plan0.length > 1;   /* платят по частям — не пугаем полной суммой */
+    var partsNote = '';
     if (o.actions.indexOf('accept_price') >= 0) {
-      b.push('<button type="button" class="btn btn-wax" data-act="accept_price">Принять цену — к оплате ' + money(o.due_total || o.price) + ' ₽</button>');
+      if (byParts) {
+        b.push('<button type="button" class="btn btn-wax" data-act="accept_price">Принять цену — начать с ' + money(plan0[0].amount) + ' ₽</button>');
+        partsNote = '<p class="petit" style="margin:0 0 10px">Полная стоимость — <b>' +
+          money(o.due_total || o.price) + ' ₽</b>, но платить её сразу не нужно: сейчас — только ' +
+          '<b>первая часть ' + money(plan0[0].amount) + ' ₽</b>. Каждый следующий платёж — после ' +
+          'того, как увидите готовую часть работы (план — выше, рядом с ценой).</p>';
+      } else {
+        b.push('<button type="button" class="btn btn-wax" data-act="accept_price">Принять цену — к оплате ' + money(o.due_total || o.price) + ' ₽</button>');
+      }
       b.push('<button type="button" class="btn btn-line" data-act="decline">Отказаться</button>');
     }
     if (o.actions.indexOf('accept_work') >= 0) {
@@ -1296,7 +1335,7 @@ function initCabinet() {
     if (!b.length) return pay || (payHistory(o) ? '<div class="fs-sec" id="secPay"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '');
     return '<div class="fs-sec" id="secDecide"><div class="fs-head"><span class="caps">Решение по заказу</span>' +
       (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="fs-meta">правки — без лимита, в рамках задания</span>' : '') +
-      '</div><div class="act-row" style="margin-top:0">' + b.join('') + '</div>' +
+      '</div>' + partsNote + '<div class="act-row" style="margin-top:0">' + b.join('') + '</div>' +
       '<div class="fix-form" id="fixForm" hidden>' +
         '<textarea id="fixText" rows="3" maxlength="2000" placeholder="Что поправить? Например: «во 2-й главе обновить данные за 2025 год»"></textarea>' +
         '<div class="act-row"><button type="button" class="btn btn-wax" data-act-fix-send>Отправить на правки</button>' +
@@ -1631,7 +1670,9 @@ function initCabinet() {
 
   function scheduleFilesSeen(order) {
     /* метки «новый файл» гасим только после того, как клиент реально
-       посмотрел на дело: 7 секунд видимой страницы с открытой карточкой */
+       посмотрел на дело: 7 секунд видимой страницы с открытой карточкой.
+       В «тихом» режиме мастера — не трогаем (сервер тоже гардит) */
+    if (impMode()) return;
     if (seenTimer) { clearTimeout(seenTimer); seenTimer = null; }
     var hasNew = (order.files || []).some(function (f) { return f.new; });
     if (!hasNew) return;
@@ -2063,6 +2104,17 @@ function initCabinet() {
       return;
     }
     if (t.closest('#cabLogout')) { S.api.logout(); st.detail = null; loadList(); return; }
+    if (t.closest('#cabImpExit')) {
+      /* закрыть «тихий» режим мастера: чистим только вкладочные ключи */
+      try {
+        sessionStorage.removeItem('salon_imp');
+        sessionStorage.removeItem('salon_imp_token');
+        sessionStorage.removeItem('salon_imp_name');
+      } catch (e) {}
+      window.close();
+      setTimeout(function () { location.href = 'admin.html'; }, 150);
+      return;
+    }
     if (t.closest('#cabRetry')) { loadList(); return; }
     if (t.closest('#chatSend')) { sendMessage(); return; }
     var act = t.closest('[data-act]');
@@ -2321,8 +2373,30 @@ function initCabinet() {
       history.replaceState(null, '', location.pathname);
     }
   } catch (e) {}
-  loadList();
-  startPolling();
+  /* «тихий» вход мастера: dashboard.html#imp=<ключ> из админки. Токен живёт
+     только в sessionStorage ЭТОЙ вкладки — основная сессия мастера
+     (админка в соседней) не затирается; маячок визитов молчит (гейт в app.js) */
+  var impKey = null;
+  try { impKey = (location.hash.match(/imp=([A-Za-z0-9_-]+)/) || [])[1] || null; } catch (e) {}
+  if (impKey) {
+    history.replaceState(null, '', location.pathname);
+    S.api.post('/imp_login', { key: impKey }).then(function (r) {
+      if (r.ok && r.token) {
+        try {
+          sessionStorage.setItem('salon_imp', '1');
+          sessionStorage.setItem('salon_imp_token', r.token);
+          sessionStorage.setItem('salon_imp_name', (r.user && r.user.name) || 'клиент');
+        } catch (e) {}
+      } else {
+        toast('Ключ входа истёк — откройте кабинет клиента из админки заново');
+      }
+      loadList();
+      startPolling();
+    });
+  } else {
+    loadList();
+    startPolling();
+  }
 
   /* гостям с заказом — раз за сессию напоминаем сохранить доступ к делу */
   setTimeout(function () {
