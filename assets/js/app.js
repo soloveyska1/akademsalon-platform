@@ -798,15 +798,21 @@
   })();
 
   /* ---------------- Подвал-колофон (тёмный финал каждой страницы) ---------------- */
+  /* Большой призыв «Узнайте точную стоимость» — только там, где человек выбирает
+     и сравнивает: главная, цены, страницы услуг и ценовые гайды. На справочных,
+     юридических и сервисных страницах он повторялся навязчиво — там подвал
+     начинается сразу с карты сайта (ссылка «Рассчитать заказ» в ней остаётся). */
+  var FOOTER_CTA_PAGES = /^(index\.html|tariffs\.html|kursovaya-|diplomnaya-|magisterskaya-|kandidatskaya-|otchet-po-praktike|nauchnaya-statya|referat\.|guide-skolko-stoit-|guide-kursovaya-za-nedelyu)/;
   Salon.footerHTML = function () {
-    return '<div class="wrap">' +
+    var ctaBlock = FOOTER_CTA_PAGES.test(here) ?
       '<div class="colophon-center">' +
         '<div class="co-para" aria-hidden="true">¶</div>' +
         '<h2>Узнайте точную стоимость за минуту</h2>' +
         '<p class="co-line">Набрано вручную · сверстано без шаблонов · 1000+ работ</p>' +
         '<a class="btn btn-wax" href="configurator.html">Рассчитать и оформить на сайте <span class="ar">→</span></a>' +
         '<p class="co-alt">Или напишите, где удобнее: <a href="' + LINKS.vkm + '" target="_blank" rel="noopener">ВКонтакте<span class="visually-hidden"> (откроется в новом окне)</span></a> · <a href="' + LINKS.max + '" target="_blank" rel="noopener">MAX<span class="visually-hidden"> (откроется в новом окне)</span></a> · <a href="' + LINKS.human + '" target="_blank" rel="noopener">Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a> — оценка бесплатна, решение остаётся за вами</p>' +
-      '</div>' +
+      '</div>' : '';
+    return '<div class="wrap">' + ctaBlock +
       '<div class="foot-cols">' +
         '<div class="fc-brand">' + brandHTML() +
           '<div class="foot-contacts">' +

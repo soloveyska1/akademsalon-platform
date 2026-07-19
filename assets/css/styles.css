@@ -379,6 +379,11 @@ section[id],main[id],[id].chapter{scroll-margin-top:76px}
 .doc strong,.doc b{font-weight:600}
 .doc a{color:var(--wax);border-bottom:1px solid var(--wax-soft);transition:border-color .15s}
 .doc a:hover{border-color:var(--wax)}
+/* кнопки внутри статьи: правило «.doc a» перекрашивало текст кнопки в цвет её же фона */
+.doc a.btn,.doc a.btn:hover{border-bottom:0}
+.doc a.btn-wax,.doc a.btn-wax:hover{color:#FFFEF9}
+.doc a.btn-ink,.doc a.btn-ink:hover{color:var(--paper)}
+.doc a.btn-line,.doc a.btn-line:hover{color:var(--ink)}
 .doc table{width:100%;border-collapse:collapse;margin:12px 0 18px;font-size:14.5px}
 .doc th,.doc td{text-align:left;padding:10px 12px;border:1px solid var(--hairline);vertical-align:top}
 .doc th{background:var(--paper-2);font-weight:500}

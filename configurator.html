@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Калькулятор стоимости онлайн: курсовая, диплом, ВКР — смета за минуту | Академический Салон</title>
 <meta name="description" content="Соберите смету за четыре шага: тип работы, направление, срок и уровень сопровождения. Живой расчёт и порядок оплаты — до заявки." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260719a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260719a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260719a" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260719a" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260719b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260719b" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260719b" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260719b" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -556,13 +556,13 @@
               </div>
               <div class="lq-deal" data-deal hidden></div>
               <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
-              <p class="petit lq-when" style="color:var(--ink-faint)">Это вилка — она считается сразу, по открытой формуле. Точную цену мастер называет после разбора ваших требований (обычно за пару часов днём) — и фиксирует её до старта: дальше цифра не изменится. Коэффициент срока честный: чем меньше времени, тем он выше — срочная работа идёт вне очереди, но потолок ×1,45, а не ×2.</p>
+              <p class="petit lq-when" style="color:var(--ink-faint)">Эта вилка считается сразу, пока вы отвечаете на вопросы. Точная смета формируется после отправки заявки: мастер разбирает требования (обычно за пару часов днём), называет цену и фиксирует её до старта — дальше она не меняется. Срок влияет на цену: чем меньше времени, тем выше коэффициент — срочная работа идёт вне очереди. Потолок наценки ×1,45: выше он не поднимается даже за сутки до сдачи.</p>
               <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
               <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
               <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
               <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
     <details class="lq-cheaper petit" style="margin-top:10px">
-      <summary class="link" style="cursor:pointer">Дороже, чем рассчитывали? Три честных способа снизить</summary>
+      <summary class="link" style="cursor:pointer">Дороже, чем рассчитывали? Три способа снизить цену</summary>
       <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
         <li data-lg="chTerm"></li>
         <li data-lg="chTier"></li>
@@ -622,12 +622,13 @@
     </div>
     <div class="lq-deal" data-deal hidden></div>
     <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
+    <p class="petit lq-when" style="color:var(--ink-faint)">Эта вилка считается сразу, пока вы отвечаете на вопросы. Точная смета формируется после отправки заявки: мастер разбирает требования (обычно за пару часов днём), называет цену и фиксирует её до старта — дальше она не меняется. Срок влияет на цену: чем меньше времени, тем выше коэффициент — срочная работа идёт вне очереди. Потолок наценки ×1,45: выше он не поднимается даже за сутки до сдачи.</p>
     <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
     <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
     <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
     <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
     <details class="lq-cheaper petit" style="margin-top:10px">
-      <summary class="link" style="cursor:pointer">Дороже, чем рассчитывали? Три честных способа снизить</summary>
+      <summary class="link" style="cursor:pointer">Дороже, чем рассчитывали? Три способа снизить цену</summary>
       <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
         <li data-lg="chTerm"></li>
         <li data-lg="chTier"></li>
@@ -663,8 +664,8 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260719a"></script>
-<script src="assets/js/extras.js?v=20260719a"></script>
+<script src="assets/js/app.js?v=20260719b"></script>
+<script src="assets/js/extras.js?v=20260719b"></script>
 <script>
 function initConf() {
   'use strict';
@@ -764,6 +765,8 @@ function initConf() {
     });
     document.querySelectorAll('.lg-total > b').forEach(function (b) { b.textContent = 'Итого'; });
     document.querySelectorAll('.lq-cheaper').forEach(function (el) { el.hidden = true; });
+    /* пояснение про коэффициент срока — только для работ с множителями */
+    document.querySelectorAll('.lq-when').forEach(function (el) { el.hidden = true; });
     put('low', svcFrom);
     if (priceEl) priceEl.textContent = svcFrom;
     if (priceSrEl) priceSrEl.textContent = svcFrom;
