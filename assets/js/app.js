@@ -39,7 +39,7 @@
     ],
     tiers: [
       { id: 'base', label: 'Базовый',  k: 1.0,  note: 'Готовая работа' },
-      { id: 'turn', label: 'Под ключ', k: 1.33, note: 'Сопровождение до приёмки' },
+      { id: 'turn', label: 'Под ключ', k: 1.33, note: 'Сопровождение до защиты' },
       { id: 'vip',  label: 'VIP',      k: 2.0,  note: 'Личное ведение и защита' }
     ],
     round500: function (n) { return Math.round(n / 500) * 500; },
@@ -850,7 +850,7 @@
         '<div class="fl-row"><span class="fl-k">Характер услуг</span><span class="fl-v">Информационно-консультационная и учебно-методическая помощь для самостоятельной подготовки заказчика</span></div>' +
         '<div class="fl-row"><span class="fl-k">Данные</span><span class="fl-v">Данные из формы заказа используются только для связи и выполнения заказа — <a href="privacy.html">политика ПДн</a></span></div>' +
       '</div>' +
-      '<div class="foot-copy"><span>© 2020–2026 «Академический Салон»</span><span class="fc-sep">·</span><span>6 лет практики</span><span class="fc-sep">·</span><span>1000+ работ доведено до приёмки</span></div>' +
+      '<div class="foot-copy"><span>© 2020–2026 «Академический Салон»</span><span class="fc-sep">·</span><span>6 лет практики</span><span class="fc-sep">·</span><span>1000+ работ доведено до защиты</span></div>' +
     '</div>';
   };
   if (!CHROME_OFF && !document.querySelector('.site-footer')) {
