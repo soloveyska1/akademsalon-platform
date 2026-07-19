@@ -638,6 +638,11 @@ function initCabinet() {
         '<div class="bc-side"><p class="bc-exp">' +
         (sub.discount_pct ? '−' + sub.discount_pct + '% на заказы (до ' + money(sub.discount_cap) + ' ₽ с заказа) — применяется сама. ' : '') +
         'Все опции — ниже, в развороте.</p>' +
+        '<p class="bc-exp" style="margin-top:6px">🔁 Автопродление ' +
+        (sub.auto_renew ? '<b>включено</b>: при истечении сами пришлём счёт — деньги спишутся только вашими руками'
+                        : '<b>выключено</b>: закончится — просто напомним') +
+        ' · <button type="button" class="linkbtn" data-sub-ar="' + sub.id + '" data-ar-on="' + (sub.auto_renew ? 0 : 1) + '">' +
+        (sub.auto_renew ? 'выключить' : 'включить') + '</button></p>' +
         '<div class="bc-act"><button type="button" class="btn btn-line" id="plusToggle">' +
         (st.plusOpen ? 'Свернуть' : 'Опции · продлить · куратор') + '</button></div></div></div>';
     } else {
@@ -1097,7 +1102,7 @@ function initCabinet() {
       S.api.base + apiPath(o.id, '/contract') + '" target="_blank" rel="noopener">' +
       'Спецификация заказа (PDF)</a> — условия одним листом: что входит в цену, ' +
       'этапы оплаты, правки. Действует вместе с <a class="link" href="oferta.html">офертой</a>, ' +
-      'подписывать ничего не нужно.</p>' + pamyatkaLink(o);
+      'подписывать ничего не нужно. <a class="link" href="specifikaciya.html" target="_blank" rel="noopener">Что это такое — простыми словами →</a></p>' + pamyatkaLink(o);
   }
 
   /* персональная памятка «что дальше» — появляется с передачей финала */
@@ -2104,6 +2109,24 @@ function initCabinet() {
       return;
     }
     if (t.closest('#cabLogout')) { S.api.logout(); st.detail = null; loadList(); return; }
+    var arBtn = t.closest('[data-sub-ar]');
+    if (arBtn) {
+      var arId = parseInt(arBtn.getAttribute('data-sub-ar'), 10);
+      var arOn = arBtn.getAttribute('data-ar-on') === '1';
+      arBtn.disabled = true;
+      S.api.post('/subs/' + arId + '/autorenew', { on: arOn }).then(function (r) {
+        if (r.ok) {
+          toast(arOn ? 'Автопродление включено — счёт пришлём сами, спишете руками'
+                     : 'Автопродление выключено');
+          if (st.me && st.me.sub) st.me.sub.auto_renew = arOn;
+          rerenderHome();
+        } else {
+          arBtn.disabled = false;
+          toast('Не получилось переключить: ' + (r.error || 'ошибка'));
+        }
+      });
+      return;
+    }
     if (t.closest('#cabImpExit')) {
       /* закрыть «тихий» режим мастера: чистим только вкладочные ключи */
       try {
