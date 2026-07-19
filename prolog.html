@@ -180,38 +180,67 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;
 .fr.on .shot:last-child{opacity:1;transform:rotate(1.8deg) translateY(6px);transition-delay:.36s}
 @media (max-width:560px){.shot:last-child{display:none}.shot{max-width:72vw}}
 
-/* --- формуляр для дотошных: светлая каталожная карточка со штампом --- */
+/* --- формуляр доверия: гербовый документ — стопка листов, водяной знак,
+       внутренняя рамка сертификата, галочки «сверено», штамп-марка --- */
 .dossier{width:min(92vw,540px);background:#F9F5EA;color:#22201B;border-radius:4px;
-  text-align:left;position:relative;transform:rotate(-1.2deg);
-  box-shadow:0 26px 60px rgba(0,0,0,.55);margin-bottom:clamp(18px,3.2vh,28px)}
-.dossier::before{content:"";position:absolute;inset:0;border-radius:4px 4px 0 0;
-  border-top:3px solid var(--wax);pointer-events:none}
+  border-top:3px solid var(--wax);text-align:left;position:relative;
+  box-shadow:0 26px 60px rgba(0,0,0,.55);margin-bottom:clamp(18px,3.2vh,28px);
+  /* transform создаёт stacking context — внутренним ссылкам z-index не пробить тап-зону.
+     Поэтому карточка целиком поверх тап-зон, но прозрачна для касаний: тап по телу
+     листает сториз, клики ловят только ссылки. */
+  z-index:3;pointer-events:none}
+/* тонкая внутренняя рамка — как на ценных бумагах */
+.dossier::before{content:"";position:absolute;inset:6px;border-radius:2px;
+  border:1px solid rgba(178,59,34,.14);pointer-events:none}
+/* нижний лист стопки, выглядывающий из-под документа */
+.dossier::after{content:"";position:absolute;z-index:-1;left:12px;right:-8px;top:10px;bottom:-10px;
+  background:#EBE2CD;border-radius:4px;transform:rotate(1.5deg);
+  box-shadow:0 18px 44px rgba(0,0,0,.4)}
+/* водяной знак гербовой бумаги */
+.do-wm{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;
+  font-family:var(--serif);font-weight:700;font-size:clamp(120px,22vh,180px);line-height:1;
+  color:rgba(178,59,34,.05);letter-spacing:.02em}
 .do-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;
   font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
   color:#857E6C;padding:13px 18px 10px;border-bottom:1px solid rgba(34,32,27,.16)}
-.do-row{display:flex;gap:14px;align-items:baseline;padding:10px 18px;
+.do-row{display:flex;gap:12px;align-items:baseline;padding:10px 14px 10px 18px;
   border-bottom:1px dashed rgba(34,32,27,.18);
   opacity:0;transform:translateX(-10px);transition:opacity .45s ease,transform .45s ease}
 .do-row:last-of-type{border-bottom:0;padding-bottom:13px}
 .do-k{flex:0 0 96px;font-family:var(--mono);font-size:8.5px;letter-spacing:.13em;
   text-transform:uppercase;color:#9A937F;padding-top:3px}
-.do-v{font-size:clamp(12.5px,1.8vw,14.5px);line-height:1.5;color:#33302A}
+.do-v{flex:1;font-size:clamp(12.5px,1.8vw,14.5px);line-height:1.5;color:#33302A}
 .do-v b{color:#22201B;font-weight:600}
-.do-v a{position:relative;z-index:4;color:#8C2D18;text-decoration:none;
+.do-v a{position:relative;z-index:4;pointer-events:auto;color:#8C2D18;text-decoration:none;
   border-bottom:1px solid rgba(140,45,24,.4);white-space:nowrap}
 .do-v a:hover{border-color:#8C2D18}
+/* галочка «сверено» — проставляется после появления строки */
+.do-ok{flex:0 0 auto;font-family:var(--mono);font-size:13px;color:#4F8467;padding-top:1px;
+  opacity:0;transform:scale(1.7);
+  transition:opacity .3s ease,transform .35s cubic-bezier(.2,1.4,.4,1)}
+/* документ «ложится на стол»: своя посадка поверх общего каскада .art */
+.fr .dossier.art{transform:rotate(-2.8deg) translateY(18px) scale(.985)}
+.fr.on .dossier.art{opacity:1;transform:rotate(-1.2deg);
+  transition:opacity .5s ease .12s,transform .65s cubic-bezier(.2,1.1,.35,1) .12s}
 .fr.on .do-row{opacity:1;transform:none}
-.fr.on .do-row:nth-of-type(1){transition-delay:.25s}
-.fr.on .do-row:nth-of-type(2){transition-delay:.4s}
-.fr.on .do-row:nth-of-type(3){transition-delay:.55s}
-.fr.on .do-row:nth-of-type(4){transition-delay:.7s}
+.fr.on .do-row:nth-of-type(1){transition-delay:.3s}
+.fr.on .do-row:nth-of-type(2){transition-delay:.45s}
+.fr.on .do-row:nth-of-type(3){transition-delay:.6s}
+.fr.on .do-row:nth-of-type(4){transition-delay:.75s}
+.fr.on .do-row:nth-of-type(1) .do-ok{opacity:1;transform:scale(1);transition-delay:1.05s}
+.fr.on .do-row:nth-of-type(2) .do-ok{opacity:1;transform:scale(1);transition-delay:1.3s}
+.fr.on .do-row:nth-of-type(3) .do-ok{opacity:1;transform:scale(1);transition-delay:1.55s}
+.fr.on .do-row:nth-of-type(4) .do-ok{opacity:1;transform:scale(1);transition-delay:1.8s}
 .do-stamp{position:absolute;right:-7px;bottom:-11px;font-family:var(--mono);font-size:10.5px;
   font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#B23B22;
   background:#F6EFE0;border:2px solid #B23B22;border-radius:3px;padding:6px 11px;
   box-shadow:0 8px 20px rgba(0,0,0,.4);white-space:nowrap;
   transform:rotate(-7deg) scale(1.35);opacity:0;
-  transition:opacity .35s ease .95s,transform .45s cubic-bezier(.2,1.35,.4,1) .95s}
+  transition:opacity .35s ease 2.1s,transform .45s cubic-bezier(.2,1.35,.4,1) 2.1s}
 .fr.on .do-stamp{opacity:1;transform:rotate(-7deg) scale(1)}
+/* золотое слово в заголовке — рифма с титульным листом */
+.fr h2 .gild{font-weight:640;background:linear-gradient(180deg,#FFFEF8 15%,#EFE3C4 60%,#D6C193 95%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* --- юр-строки штампами --- */
 .law{display:grid;gap:10px;margin-bottom:clamp(18px,3vh,26px)}
@@ -261,10 +290,17 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;
 .fr .cta-row,.fr .again{position:relative;z-index:4}
 
 @media (prefers-reduced-motion: reduce){
-  .fr,.fr .caps,.fr h2,.fr .brand-tag,.fr .sub,.fr .art,.stp,.shot,.law .row{transition:none!important;animation:none!important}
+  .fr,.fr .caps,.fr h2,.fr .brand-tag,.fr .sub,.fr .art,.stp,.shot,.law .row,
+  .bb-main,.bb-rule i,.bb-rule b,.do-row,.do-ok,.do-stamp{transition:none!important;animation:none!important}
   .fr .caps,.fr h2,.fr .brand-tag,.fr .sub,.fr .art{opacity:1;transform:none}
   .stp,.steps .ar{opacity:1;transform:none}
   .fr.on .shot{opacity:1;transform:none}
+  .bb-main{opacity:1;transform:none}
+  .bb-rule i{transform:scaleX(1)}
+  .bb-rule b{transform:rotate(45deg) scale(1)}
+  .do-row,.do-ok{opacity:1;transform:none}
+  .fr .dossier.art,.fr.on .dossier.art{transform:rotate(-1.2deg)}
+  .do-stamp{opacity:1;transform:rotate(-7deg)}
 }
 </style>
 </head>
@@ -341,18 +377,19 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;
       <p class="sub">Шесть лет без единой утечки: рассказать о заказе можете только вы сами.</p>
     </section>
 
-    <!-- 6 · формуляр для дотошных -->
-    <section class="fr" data-dur="5600">
-      <div class="dossier art" aria-label="Формуляр для проверяющих">
-        <div class="do-head"><span>Формуляр мастерской</span><span>для дотошных</span></div>
-        <div class="do-row"><span class="do-k">Исполнитель</span><span class="do-v">Самозанятый по ФЗ-422, ИНН 212885750445 — <a href="requisites.html" target="_top">сверить в ФНС →</a></span></div>
-        <div class="do-row"><span class="do-k">Договор</span><span class="do-v">Оферта + спецификация вашего заказа; оплата = акцепт <b>(ст. 438 ГК РФ)</b></span></div>
-        <div class="do-row"><span class="do-k">Каждый платёж</span><span class="do-v">Чек ФНС — автоматически, как в магазине</span></div>
-        <div class="do-row"><span class="do-k">Возврат</span><span class="do-v">За невыполненную часть — <b>ст. 32</b> Закона о защите прав потребителей</span></div>
+    <!-- 6 · формуляр доверия -->
+    <section class="fr" data-dur="6200">
+      <div class="dossier art" aria-label="Формуляр доверия: документы и законы мастерской">
+        <span class="do-wm" aria-hidden="true">АС</span>
+        <div class="do-head"><span>Формуляр мастерской</span><span>документы · законы</span></div>
+        <div class="do-row"><span class="do-k">Исполнитель</span><span class="do-v">Самозанятый мастер, ФЗ-422. ИНН 212885750445 — <a href="requisites.html" target="_top">сверить в ФНС →</a></span><span class="do-ok" aria-hidden="true">✓</span></div>
+        <div class="do-row"><span class="do-k">Договор</span><span class="do-v"><a href="oferta.html" target="_top">Оферта</a> + <a href="specifikaciya.html" target="_top">спецификация</a> заказа = полный договор <b>(ст. 435–438 ГК РФ)</b></span><span class="do-ok" aria-hidden="true">✓</span></div>
+        <div class="do-row"><span class="do-k">Каждый платёж</span><span class="do-v">Чек ФНС — автоматически. <a href="oplata.html" target="_top">Как устроена оплата →</a></span><span class="do-ok" aria-hidden="true">✓</span></div>
+        <div class="do-row"><span class="do-k">Возврат</span><span class="do-v">За невыполненную часть — <b>ст. 32 ЗоЗПП</b>, пункт <a href="guarantees.html" target="_top">устава гарантий →</a></span><span class="do-ok" aria-hidden="true">✓</span></div>
         <span class="do-stamp" aria-hidden="true">Всё официально</span>
       </div>
-      <h2>Любите проверять? <b>Пожалуйста.</b></h2>
-      <p class="sub">Устав гарантий написан по статьям законов — <a href="guarantees.html" target="_top">откройте и сверьте →</a></p>
+      <h2>Не верьте на слово — <b class="gild">проверьте</b>.</h2>
+      <p class="sub">Каждая строка — не обещание, а документ: всё открывается прямо отсюда.</p>
     </section>
 
     <!-- 7 · CTA -->
