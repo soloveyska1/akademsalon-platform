@@ -88,19 +88,17 @@
       }
       var q = document.getElementById('qSlots');
       if (q) { q.textContent = line; q.hidden = false; }
-      /* лента мест на обложке и в финале главной: заполнившиеся места —
-         чернильные метки, свободные — пустые гнёзда (визуальный дефицит) */
+      /* запись из журнала набора — на обложке и в финале главной:
+         «НАБОР · ИЮЛЬ …отточие… свободно 2 из 15 мест», цифры сургучом */
       ['coverSlots', 'nextSlots'].forEach(function (id) {
         var el = document.getElementById(id);
         if (!el) return;
-        var pips = '';
-        if (r.quota <= 24) {
-          pips = '<span class="sb-pips" aria-hidden="true">';
-          for (var i = 0; i < r.quota; i++) pips += '<i' + (i < r.taken ? ' class="on"' : '') + '></i>';
-          pips += '</span>';
-        }
-        el.innerHTML = '<span class="sb-txt"></span>' + pips;
-        el.querySelector('.sb-txt').textContent = short_;
+        el.innerHTML = '<span class="sl-k"></span>' +
+          '<span class="sl-dots" aria-hidden="true"></span><span class="sl-v"></span>';
+        el.querySelector('.sl-k').textContent = 'Набор · ' + r.month;
+        el.querySelector('.sl-v').innerHTML = free > 0
+          ? 'свободно <b>' + free + ' из ' + r.quota + '</b> мест'
+          : 'мест нет — запись на <b>' + r.next + '</b>';
         el.hidden = false;
       });
     }).catch(function () {});
@@ -872,9 +870,15 @@
         '</nav></div>' +
       '</div>' +
       '<div class="foot-legal">' +
-        '<div class="fl-row"><span class="fl-k">Исполнитель</span><span class="fl-v">Семёнов Семён Юрьевич · самозанятый, налог на профессиональный доход (ФЗ №&nbsp;422-ФЗ) · ИНН 212885750445 · г.&nbsp;Казань</span></div>' +
-        '<div class="fl-row"><span class="fl-k">Характер услуг</span><span class="fl-v">Информационно-консультационная и учебно-методическая помощь для самостоятельной подготовки заказчика</span></div>' +
-        '<div class="fl-row"><span class="fl-k">Данные</span><span class="fl-v">Данные из формы заказа используются только для связи и выполнения заказа — <a href="privacy.html">политика ПДн</a></span></div>' +
+        '<div class="fl-rows">' +
+          '<div class="fl-row"><span class="fl-k">Исполнитель</span><span class="fl-v">Семёнов Семён Юрьевич · самозанятый, налог на профессиональный доход (ФЗ №&nbsp;422-ФЗ) · ИНН 212885750445 · г.&nbsp;Казань</span></div>' +
+          '<div class="fl-row"><span class="fl-k">Характер услуг</span><span class="fl-v">Информационно-консультационная и учебно-методическая помощь для самостоятельной подготовки заказчика</span></div>' +
+          '<div class="fl-row"><span class="fl-k">Данные</span><span class="fl-v">Данные из формы заказа используются только для связи и выполнения заказа — <a href="privacy.html">политика ПДн</a></span></div>' +
+        '</div>' +
+        '<span class="fl-seal" aria-hidden="true">' + Salon.sealSVG({
+          ring: 'АКАДЕМИЧЕСКИЙ САЛОН · ИЗДАНИЕ МАСТЕРСКОЙ · ',
+          center: '¶', size: 96, cls: 'seal--foil'
+        }) + '</span>' +
       '</div>' +
       '<div class="foot-copy"><span>© 2020–2026 «Академический Салон»</span><span class="fc-sep">·</span><span>6 лет практики</span><span class="fc-sep">·</span><span>1000+ работ доведено до защиты</span>' +
         '<a class="fc-top" href="#main">Наверх ↑</a></div>' +

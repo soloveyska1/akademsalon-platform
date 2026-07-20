@@ -313,41 +313,41 @@ body.toc-lock{overflow:hidden}
 
 .foot-cols{display:grid;grid-template-columns:1.35fr 1.15fr 1fr 1fr;gap:clamp(20px,3vw,48px);padding-top:clamp(28px,4vw,44px);border-top:1px solid #3A362B}
 @media(max-width:1100px){.foot-cols{grid-template-columns:1fr 1fr;gap:30px}}
-.fc-h{color:#9C9580;margin-bottom:14px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
-  display:flex;align-items:baseline;gap:10px}
-.fc-h::after{content:"";flex:1;max-width:52px;border-bottom:1px solid #3A362B;transform:translateY(-3px)}
+.fc-h{color:#9C9580;margin-bottom:14px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
 .foot-links{display:flex;flex-direction:column;gap:8px}
-.foot-links a{font-size:14px;color:#B5AE9C;transition:color .15s,transform .15s;padding:1px 0}
-.foot-links a:hover{color:#F0EADB;transform:translateX(2px)}
+.foot-links a{font-size:14px;color:#B5AE9C;transition:color .15s;padding:1px 0}
+.foot-links a:hover{color:#F0EADB}
 /* длинная карта сайта — в две колонки, чтобы колофон не вытягивался простынёй */
-.foot-links--2col{display:block;columns:2;column-gap:22px}
+.foot-links--2col{display:block;columns:2;column-gap:24px}
 .foot-links--2col a{display:block;padding:4px 0;break-inside:avoid}
 @media(max-width:480px){.foot-links--2col{columns:1}}
 .fc-brand .brand{color:#F0EADB;margin-bottom:12px;display:inline-flex}
 .fc-brand .brand .b-para{color:#CDA455}
-.fc-tag{font-size:13px;line-height:1.6;color:#9C9580;max-width:34ch;margin:0 0 10px}
-.fc-live{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#B5AE9C;margin:0 0 16px}
-.fcl-dot{width:8px;height:8px;border-radius:50%;flex:none;background:#74BA90;
-  box-shadow:0 0 0 0 rgba(116,186,144,.4);animation:fclLive 2.8s ease-out infinite}
-.fcl-dot.night{background:#CDA455;animation:none}
-@keyframes fclLive{0%{box-shadow:0 0 0 0 rgba(116,186,144,.35)}70%,100%{box-shadow:0 0 0 7px rgba(116,186,144,0)}}
-@media(prefers-reduced-motion:reduce){.fcl-dot{animation:none}}
-/* контакты — формулярные строки с чернильной кромкой */
-.foot-contacts{display:flex;flex-direction:column}
-.foot-contacts a{display:flex;flex-direction:column;gap:1px;font-size:14px;color:#B5AE9C;
-  padding:9px 2px 9px 12px;border-left:2px solid #3A362B;transition:color .15s,border-color .15s,background .15s}
-.foot-contacts a+a{margin-top:2px}
-.foot-contacts a .fco-l{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7E7863;transition:color .15s}
+.fc-tag{font-size:13px;line-height:1.65;color:#9C9580;max-width:34ch;margin:0 0 8px}
+.fc-live{display:flex;align-items:center;gap:8px;font-size:12px;color:#8F8871;margin:0 0 18px}
+.fcl-dot{width:7px;height:7px;border-radius:50%;flex:none;background:#74BA90}
+.fcl-dot.night{background:#CDA455}
+/* контакты — спокойные двухстрочные записи, золото только на ховере */
+.foot-contacts{display:flex;flex-direction:column;gap:11px}
+.foot-contacts a{display:flex;flex-direction:column;gap:1px;font-size:14px;color:#B5AE9C;transition:color .15s}
+.foot-contacts a .fco-l{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#7E7863}
 .foot-contacts a .fco-v{font-family:var(--mono);font-size:13px;color:#9C9580;transition:color .15s}
-.foot-contacts a:hover{color:#F0EADB;border-left-color:#E9C972;background:rgba(233,201,114,.045)}
-.foot-contacts a:hover .fco-l{color:#B5AE9C}
+.foot-contacts a:hover{color:#F0EADB}
 .foot-contacts a:hover .fco-v{color:#E9C972}
 
-/* выходные данные: аккуратные строки вместо сплошного абзаца */
+/* выходные данные: аккуратные строки + сургучно-золотая печать издания */
 .foot-legal{
   margin-top:clamp(28px,4.5vw,44px);padding-top:22px;border-top:1px solid #3A362B;
-  display:flex;flex-direction:column;gap:9px;max-width:82ch;
+  display:flex;gap:clamp(20px,4vw,48px);align-items:center;
 }
+.fl-rows{flex:1;display:flex;flex-direction:column;gap:9px;max-width:82ch}
+.fl-seal{flex:0 0 auto;color:#CDA455}
+/* печать обязана быть видимой в тёмном колофоне: гасим reveal-механику
+   (.has-js .seal.press ждёт .in) и multiply, который тонет на тёмном */
+.fl-seal .seal,.has-js .fl-seal .seal.press{
+  opacity:.5;transform:rotate(-8deg);mix-blend-mode:normal;transition:none;
+}
+@media(max-width:760px){.fl-seal{display:none}}
 .foot-legal .fl-row{display:grid;grid-template-columns:150px 1fr;gap:6px 20px;align-items:baseline}
 .foot-legal .fl-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#7E7863;white-space:nowrap}
 .foot-legal .fl-v{font-size:12.5px;line-height:1.6;color:#9A937D}

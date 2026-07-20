@@ -337,22 +337,22 @@ a.dotrow:hover .dr-val{color:var(--wax)}
 /* одетый каталог: пакет ценности, стартовый платёж, честная квота набора */
 .cat-includes{font-size:13px;line-height:1.6;color:var(--ink-soft);margin-bottom:14px;
   padding-left:12px;border-left:2px solid var(--foil)}
-.slot-band{display:inline-flex;align-items:center;gap:10px;margin:0 0 24px;
-  font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;color:var(--wax);
-  border:1px solid color-mix(in srgb,var(--wax) 40%,transparent);border-radius:999px;
-  padding:8px 16px;background:color-mix(in srgb,var(--wax) 6%,transparent);
-  flex-wrap:wrap;max-width:100%}
-.slot-band::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--wax);flex:0 0 7px;
-  box-shadow:0 0 0 0 color-mix(in srgb,var(--wax) 40%,transparent);animation:slotLive 2.6s ease-out infinite}
-@keyframes slotLive{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--wax) 35%,transparent)}
-  70%,100%{box-shadow:0 0 0 6px transparent}}
-@media(prefers-reduced-motion:reduce){.slot-band::before{animation:none}}
-.slot-band[hidden]{display:none}
-/* лента мест: занятые — чернильные метки, свободные — пустые гнёзда */
-.slot-band .sb-pips{display:inline-flex;gap:4px;align-items:center;flex-wrap:wrap}
-.slot-band .sb-pips i{width:7px;height:11px;border-radius:1.5px;border:1px solid color-mix(in srgb,var(--wax) 45%,transparent);background:transparent}
-.slot-band .sb-pips i.on{background:var(--wax);border-color:var(--wax)}
-.slot-band--cover{margin:16px 0 0;font-size:12px}
+/* Набор месяца — запись из журнала мастерской: формулярная строка
+   с отточием в тонких линейках. Никаких пилюль и рисованных «гнёзд» —
+   та же типографика, что у оглавлений и сметы. */
+.slot-line{display:flex;align-items:baseline;gap:12px;max-width:470px;
+  margin:0 0 24px;padding:11px 2px;
+  border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);
+  color:var(--ink)}
+.slot-line[hidden]{display:none}
+.slot-line .sl-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-faint);white-space:nowrap}
+.slot-line .sl-dots{flex:1;min-width:18px;border-bottom:2px dotted var(--hairline-strong);
+  transform:translateY(-4px)}
+.slot-line .sl-v{font-family:var(--serif);font-size:15.5px;letter-spacing:.01em;white-space:nowrap}
+.slot-line .sl-v b{color:var(--wax);font-weight:600;font-variant-numeric:tabular-nums}
+.slot-line--cover{margin:18px 0 0}
+@media(max-width:400px){.slot-line .sl-v{font-size:14px}}
 .dotrow .dr-val{text-align:right}
 .dotrow .dr-start{display:block;font-size:11px;color:var(--ink-faint);font-weight:400;
   letter-spacing:.01em;margin-top:2px}
