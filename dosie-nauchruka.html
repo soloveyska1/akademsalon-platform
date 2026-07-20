@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Досье научного руководителя: как мы читаем того, кто примет вашу работу</title>
+<meta name="description" content="Перед стартом каждой работы мастерская собирает досье научного руководителя: интересы, публикации, словарь, требования и вероятные вопросы на защите. Как это устроено — с настоящими примерами из практики." />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260720a" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260720a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260720a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260720a" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<link rel="canonical" href="https://akademsalon.ru/dosie-nauchruka.html" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#F6F1E7" />
+<meta property="og:type" content="article" /><meta property="og:site_name" content="Академический Салон" />
+<meta property="og:title" content="Досье научного руководителя: работа пишется под человека" /><meta property="og:description" content="Интересы, словарь, требования и вероятные вопросы на защите — что мастерская узнаёт о научруке до первой строки текста." />
+<meta property="og:url" content="https://akademsalon.ru/dosie-nauchruka.html" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<style>
+  /* формуляры досье — как на столе мастера (автономная копия стилей разворота) */
+  .dsx{background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:3px;
+    padding:20px 22px;position:relative;margin:26px 0;
+    box-shadow:0 2px 3px rgba(34,32,27,.08),0 18px 40px -20px rgba(34,32,27,.22)}
+  .dsx-tab{position:absolute;top:-13px;left:16px;background:var(--paper-2);
+    border:1px solid var(--hairline-strong);border-bottom-color:var(--sheet);
+    border-radius:3px 3px 0 0;padding:4px 14px 6px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+  .dsx-rows{margin:6px 0 0}
+  .dsx-rows > div{display:grid;grid-template-columns:118px 1fr;gap:10px;padding:10px 0;border-bottom:1px dotted var(--hairline)}
+  .dsx-rows > div:last-child{border-bottom:0}
+  .dsx-rows dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);padding-top:3px}
+  .dsx-rows dd{font-size:14.5px;line-height:1.6;color:var(--ink);margin:0}
+  @media(max-width:560px){.dsx-rows > div{grid-template-columns:1fr;gap:3px;padding:9px 0}}
+  .tag-f,.tag-i{display:inline-block;font-style:normal;font-family:var(--mono);font-size:9.5px;
+    letter-spacing:.08em;text-transform:uppercase;border-radius:2px;padding:1.5px 6px;margin-right:6px;vertical-align:1px}
+  .tag-f{color:var(--verify,#3D6B50);border:1px solid color-mix(in srgb,var(--verify,#3D6B50) 45%,transparent)}
+  .tag-i{color:#3A4E7A;border:1px solid color-mix(in srgb,#3A4E7A 40%,transparent)}
+  .dsx-note{font-size:12.5px;line-height:1.6;color:var(--ink-soft);margin-top:12px}
+  /* словарь научрука — чипы терминов */
+  .lex{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+  .lex span{font-family:var(--mono);font-size:12px;letter-spacing:.02em;color:var(--ink);
+    border:1px solid var(--hairline-strong);border-radius:999px;padding:6px 12px;background:var(--sheet)}
+  /* вопросы на защите — карточки */
+  .qcards{display:grid;gap:10px;margin:16px 0}
+  .qcard{border:1px solid var(--hairline);border-left:3px solid var(--wax);border-radius:3px;
+    background:var(--sheet);padding:13px 16px;font-size:14.5px;line-height:1.6}
+  .qcard b{font-family:var(--serif)}
+  .qcard small{display:block;margin-top:6px;font-size:12.5px;color:var(--ink-soft)}
+  /* иллюстрации: страницы работы */
+  .figrow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
+  @media(max-width:640px){.figrow{grid-template-columns:1fr}}
+  .figrow figure{margin:0;background:#fff;border:1px solid var(--hairline);border-radius:3px;overflow:hidden;
+    box-shadow:0 12px 28px -20px rgba(34,32,27,.4)}
+  .figrow img{display:block;width:100%;height:auto}
+  :root[data-theme="dark"] .figrow img{filter:brightness(.93)}
+  .figrow figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--ink-soft);
+    padding:9px 12px;border-top:1px solid var(--hairline);background:var(--sheet)}
+  /* этика — тихая рамка */
+  .ethics{border:1px dashed var(--hairline-strong);border-radius:3px;padding:16px 18px;margin:24px 0;background:var(--sheet)}
+  .ethics p{margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft)}
+</style>
+</head><body>
+<main class="wrap doc-wrap">
+<nav class="doc-crumb" aria-label="Хлебные крошки"><a href="index.html">Главная</a> · <a href="knowledge.html">Полезные материалы</a> · Досье научного руководителя</nav>
+<article class="doc">
+  <h1>Досье научного руководителя: работа пишется под человека, который будет её принимать</h1>
+  <p class="doc-subtitle">Методичка задаёт формат, но принимает работу не методичка, а живой человек — со своими темами, словарём и представлением о том, что такое «хорошо». Поэтому перед стартом каждой работы, у которой есть научный руководитель, мастерская собирает его досье. Ниже — как это устроено, с настоящими фрагментами из практики.</p>
+  <p class="doc-meta">Обновлено 20 июля 2026 · Академический Салон</p>
+
+  <h2>Зачем вообще читать научрука</h2>
+  <p>Две работы, одинаково аккуратные по ГОСТу, у одного и того же руководителя получают разные оценки. Разница почти всегда не в оформлении, а в попадании: одна написана «в формат вуза», другая — под человека. Руководитель-практик ждёт работающую схему и цифры; руководитель-теоретик — строгий понятийный аппарат и полемику с источниками; руководитель, который двадцать лет пишет об одном методе, безошибочно замечает, что его метод в списке литературы отсутствует.</p>
+  <p>Досье — это способ узнать всё это <em>до первой строки текста</em>, а не на предзащите, когда переделывать уже дорого.</p>
+
+  <h2>Как выглядит досье</h2>
+  <p>Вот собирательный фрагмент настоящего досье из практики мастерской — имена, вуз и узнаваемые детали убраны, приём сохранён полностью. Работа — ВКР по социальной работе; руководитель оказался не «кабинетным» преподавателем, а действующим практиком:</p>
+
+  <div class="dsx" role="img" aria-label="Фрагмент досье научного руководителя (обезличено)">
+    <span class="dsx-tab">досье научрука · ВКР, социальная работа · обезличено</span>
+    <dl class="dsx-rows">
+      <div><dt>Кто это</dt><dd><i class="tag-f">факт</i>старший преподаватель профильной кафедры — и одновременно руководитель в действующем центре социальной помощи: смотрит на предмет и как преподаватель, и как управленец-практик</dd></div>
+      <div><dt>Его темы</dt><dd><i class="tag-f">факт</i>социальная реабилитация, инклюзивные технологии, комплексная организация помощи — по публичным докладам и программам конференций за три года</dd></div>
+      <div><dt>Рабочая формула</dt><dd><i class="tag-i">вывод</i>«социальная работа должна быть технологичной, институционально описанной и доказуемой через реально работающий маршрут помощи» — кабинетная теория без практического контура его не убедит</dd></div>
+      <div><dt>Что это меняет</dt><dd><i class="tag-i">вывод</i>практическая глава строится как маршрут клиента через конкретные службы, с показателями на каждом шаге — не «рекомендации» списком, а работающая схема</dd></div>
+    </dl>
+    <p class="dsx-note">Пометки «факт» и «вывод» разведены сознательно: факт подтверждён открытым источником, вывод — осторожная профессиональная интерпретация. Мы не гадаем — мы помечаем, где что.</p>
+  </div>
+
+  <h2>Словарь научрука</h2>
+  <p>У каждого руководителя есть язык, на котором он думает: термины из его собственных публикаций и докладов. Когда работа говорит на этом языке, она читается «своей». Из того же досье:</p>
+  <div class="lex" aria-label="Термины из публикаций руководителя">
+    <span>социальная реабилитация</span><span>маршрут помощи</span><span>инклюзивные технологии</span><span>комплексная помощь</span><span>социально-бытовая адаптация</span><span>сопровождение семьи</span>
+  </div>
+  <p>Это не подстройка ради подстройки: терминологическая рамка — половина ответа на вопрос «раскрыта ли тема». Вторая половина — чтобы за терминами стояло содержание.</p>
+
+  <h2>Вероятные вопросы на защите</h2>
+  <p>Финальный раздел каждого досье — прогноз вопросов. Он строится из повторяющихся акцентов руководителя: о чём он говорит в докладах, к чему цепляется в чужих работах, что спрашивал у прошлых выпускников. Примеры из практики:</p>
+  <div class="qcards">
+    <div class="qcard"><b>«А как ваша модель заработает в реальном учреждении?»</b><small>руководитель-практик · заготовлен ответ с опорой на действующий регламент и штатную структуру</small></div>
+    <div class="qcard"><b>«Почему выбраны именно эти методики диагностики?»</b><small>руководитель-психолог · в работе методики обоснованы через его же критерии валидности</small></div>
+    <div class="qcard"><b>«Чем ваш вывод отличается от того, что уже написано по теме?»</b><small>руководитель-теоретик · в заключении явно сформулирован элемент новизны</small></div>
+  </div>
+  <p>Клиент получает эти вопросы вместе с готовыми линиями ответа — на защите они перестают быть сюрпризом.</p>
+
+  <h2>Откуда берутся данные</h2>
+  <p>Только открытые источники — то, что руководитель сам опубликовал о себе как о специалисте:</p>
+  <ul>
+    <li>официальные страницы вуза: должность, дисциплины, научные интересы;</li>
+    <li>публикации в eLibrary/РИНЦ и материалы конференций — темы и словарь;</li>
+    <li>публичные доклады, программы семинаров, методические материалы;</li>
+    <li>требования кафедры и методичка — как рамка, поверх которой живёт человек.</li>
+  </ul>
+  <div class="ethics">
+    <p><b>Этика досье.</b> Мы собираем профессиональный портрет, а не личный: никакой частной жизни, только научная и преподавательская роль. Досье готовится для одной работы, никому не передаётся и не публикуется — фрагменты в этой статье обезличены до неузнаваемости. В документах мастерской клиент — «Заказчик»; та же конфиденциальность укрывает и руководителей.</p>
+  </div>
+
+  <h2>Как досье превращается в оценку</h2>
+  <p>Пример из практики. Магистерская по психологии: из досье стало ясно, что руководитель годами работает с тревожностью и доверяет классическим методикам с проверенной валидностью. Эмпирику собрали на Спилбергере—Ханине и Прихожан — тех самых инструментах, на которых руководитель вырос как исследователь. Вопросов к выбору методик на защите не было вовсе; работа прошла на «отлично».</p>
+  <p>Страницы этой работы (обезличенные — тема перефразирована, имена и вуз скрыты) можно рассмотреть на главной, в развороте «Мастерская изнутри»:</p>
+  <div class="figrow">
+    <figure><img src="assets/img/showcase/showcase-2.jpg" width="960" height="1358" loading="lazy" decoding="async" alt="Оглавление настоящей магистерской работы, написанной под досье научрука (обезличено)"><figcaption>оглавление · три главы · обезличено</figcaption></figure>
+    <figure><img src="assets/img/showcase/showcase-4.jpg" width="960" height="1358" loading="lazy" decoding="async" alt="Страница эмпирической главы с таблицей результатов (обезличено)"><figcaption>глава 2 · эмпирика с методиками из досье</figcaption></figure>
+  </div>
+  <p><a class="link" href="index.html#dosie">Посмотреть разворот «Мастерская изнутри» на главной →</a></p>
+
+  <h2>Когда досье собирается</h2>
+  <p>Под каждую работу, у которой есть научный руководитель, — до старта, вместе с планом. Отдельно оно не продаётся и не тарифицируется: это часть подхода, а не опция. Если руководителя ещё не назначили, досье готовится, как только появится имя, — и план при необходимости корректируется бесплатно.</p>
+
+  <div style="margin-top:36px"><p class="caps" style="margin-bottom:10px">Читайте также</p><ul style="list-style:none;margin:0;padding:0">
+    <li style="padding:7px 0;border-bottom:1px solid var(--hairline)"><a class="link" href="guide-otzyv-rukovoditelya-vkr.html">Отзыв руководителя на ВКР: структура и готовый образец</a></li>
+    <li style="padding:7px 0;border-bottom:1px solid var(--hairline)"><a class="link" href="guide-zashchita-diploma.html">Защита диплома: как проходит и как подготовиться</a></li>
+    <li style="padding:7px 0"><a class="link" href="guide-temy-vkr.html">Темы ВКР: 5 критериев выбора и 50 примеров</a></li>
+  </ul></div>
+
+  <aside class="sheet sheet-pad stacked" style="margin-top:36px"><p class="caps" style="margin-bottom:8px">Хотите так же — под вашего руководителя?</p><p class="lead" style="margin-bottom:16px">Начните с разбора плана за 3 000 ₽: структура глав, реалистичный срок и смета — с учётом того, кто будет принимать работу. При продолжении сумма зачтётся полностью.</p><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-wax" href="plan.html">Разбор плана — 3 000 ₽ <span class="ar">→</span></a><a class="btn btn-line" href="configurator.html">Рассчитать работу целиком</a></div></aside>
+</article>
+<p class="doc-back"><a class="link" href="knowledge.html">← Все полезные материалы</a></p>
+</main>
+<script src="assets/js/app.js?v=20260720a"></script>
+<script src="assets/js/extras.js?v=20260720a"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Досье научного руководителя: работа пишется под человека","description":"Как мастерская собирает досье научрука: интересы, словарь, требования и вероятные вопросы на защите — с настоящими обезличенными примерами.","inLanguage":"ru","author":{"@type":"Organization","name":"Академический Салон"},"publisher":{"@type":"Organization","name":"Академический Салон"},"url":"https://akademsalon.ru/dosie-nauchruka.html","datePublished":"2026-07-20","dateModified":"2026-07-20"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Полезные материалы","item":"https://akademsalon.ru/knowledge.html"},{"@type":"ListItem","position":3,"name":"Досье научного руководителя"}]}</script>
+</body></html>

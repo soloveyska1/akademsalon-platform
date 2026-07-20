@@ -337,11 +337,22 @@ a.dotrow:hover .dr-val{color:var(--wax)}
 /* одетый каталог: пакет ценности, стартовый платёж, честная квота набора */
 .cat-includes{font-size:13px;line-height:1.6;color:var(--ink-soft);margin-bottom:14px;
   padding-left:12px;border-left:2px solid var(--foil)}
-.slot-band{display:inline-flex;align-items:center;gap:9px;margin:0 0 24px;
+.slot-band{display:inline-flex;align-items:center;gap:10px;margin:0 0 24px;
   font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;color:var(--wax);
   border:1px solid color-mix(in srgb,var(--wax) 40%,transparent);border-radius:999px;
-  padding:7px 14px;background:color-mix(in srgb,var(--wax) 6%,transparent)}
-.slot-band::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--wax);flex:0 0 7px}
+  padding:8px 16px;background:color-mix(in srgb,var(--wax) 6%,transparent);
+  flex-wrap:wrap;max-width:100%}
+.slot-band::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--wax);flex:0 0 7px;
+  box-shadow:0 0 0 0 color-mix(in srgb,var(--wax) 40%,transparent);animation:slotLive 2.6s ease-out infinite}
+@keyframes slotLive{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--wax) 35%,transparent)}
+  70%,100%{box-shadow:0 0 0 6px transparent}}
+@media(prefers-reduced-motion:reduce){.slot-band::before{animation:none}}
+.slot-band[hidden]{display:none}
+/* лента мест: занятые — чернильные метки, свободные — пустые гнёзда */
+.slot-band .sb-pips{display:inline-flex;gap:4px;align-items:center;flex-wrap:wrap}
+.slot-band .sb-pips i{width:7px;height:11px;border-radius:1.5px;border:1px solid color-mix(in srgb,var(--wax) 45%,transparent);background:transparent}
+.slot-band .sb-pips i.on{background:var(--wax);border-color:var(--wax)}
+.slot-band--cover{margin:16px 0 0;font-size:12px}
 .dotrow .dr-val{text-align:right}
 .dotrow .dr-start{display:block;font-size:11px;color:var(--ink-faint);font-weight:400;
   letter-spacing:.01em;margin-top:2px}
@@ -457,10 +468,15 @@ a.dotrow:hover .dr-start{color:var(--ink-soft)}
   border:2px solid #B98A2F;box-shadow:0 0 0 1px rgba(255,255,255,.5),0 14px 34px rgba(0,0,0,.4);
   background-repeat:no-repeat;background-color:#fff;
 }
+/* направление в тексте честное на любом экране: на десктопе гранки СЛЕВА,
+   на мобиле колонки складываются и гранки оказываются СВЕРХУ */
+.dir-mob{display:none}
 @media(max-width:880px){
   .ws-grid{grid-template-columns:1fr}
   .proof-stack{max-width:420px}
   .pf-bar{max-width:420px}
+  .dir-desk{display:none}
+  .dir-mob{display:inline}
 }
 
 /* ============================================================
@@ -697,7 +713,19 @@ body:not(.enhanced) .proc-sheet .sh-ghost{font-size:140px;right:6px}
 .fact .f-num{font-family:var(--mono);font-size:clamp(44px,5.6vw,72px);font-weight:600;letter-spacing:-.045em;line-height:1;font-variant-numeric:tabular-nums}
 .fact .f-num sup{font-size:.5em;color:var(--wax);font-weight:500}
 .fact .f-lbl{margin-top:10px;font-size:14.5px;color:var(--ink-soft);max-width:22ch}
-@media(max-width:680px){.fact-row{grid-template-columns:1fr;gap:24px}.fact{display:flex;align-items:baseline;gap:16px}.fact .f-lbl{margin:0}}
+/* мобайл: вместо трёх огромных цифр в столбик — аккуратные формулярные
+   строки «подпись …… цифра», как в смете; читается и не разваливается */
+@media(max-width:680px){
+  .fact-row{grid-template-columns:1fr;gap:0;margin-bottom:36px;
+    border-top:1px solid var(--hairline)}
+  .fact{display:flex;align-items:baseline;gap:12px;padding:13px 2px;
+    border-bottom:1px solid var(--hairline)}
+  .fact .f-lbl{margin:0;flex:1;order:1;font-size:13.5px;max-width:none;line-height:1.45}
+  .fact::after{content:"";order:2;flex:0 1 40px;min-width:16px;
+    border-bottom:2px dotted var(--hairline-strong);transform:translateY(-4px)}
+  .fact .f-num{order:3;font-size:26px;white-space:nowrap;letter-spacing:-.02em}
+  .fact .f-num sup{font-size:.6em}
+}
 
 .trust-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(28px,5vw,64px);align-items:start}
 @media(max-width:880px){.trust-grid{grid-template-columns:1fr}}
@@ -916,9 +944,30 @@ html:not(.has-js) .b-cover{transform:translateZ(2px) rotateY(-30deg)}
   box-shadow:0 1px 0 var(--hairline)}
 .pt-tab.is-on::after{content:"◈";position:absolute;right:9px;top:8px;font-size:10px;color:var(--stamp)}
 .pt-hint{font-size:12px;color:var(--ink-faint);margin:0 0 2px}
-.plus-rows{min-height:196px}
-.plus-rows .plus-b,.plus-price .pp-big,.plus-price small,#plusCta{transition:opacity .22s ease}
-.is-swapping .plus-b,.is-swapping .pp-big,.is-swapping small{opacity:.15}
+/* привилегии плана — четыре карточки 2×2 вместо полотна строк */
+.plus-perks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+  margin:16px 0 4px;min-height:172px}
+.perk{background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;
+  padding:12px 14px 11px;display:flex;flex-direction:column;gap:5px;position:relative;
+  box-shadow:0 6px 18px -16px rgba(34,32,27,.4)}
+.perk::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:2px;
+  background:linear-gradient(180deg,var(--foil,#B98A2F),transparent)}
+.perk b{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.01em;
+  color:var(--wax);font-variant-numeric:tabular-nums;line-height:1.25}
+.perk span{font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+/* кассовый блок: цена + период + кнопки одним листом */
+.plus-buy{margin-top:14px;background:var(--sheet);border:1px solid var(--hairline-strong);
+  border-radius:3px;padding:15px 18px 16px;position:relative;
+  box-shadow:0 10px 26px -20px rgba(34,32,27,.4)}
+.plus-buy::before{content:"";position:absolute;inset:4px;border:1px dashed var(--hairline);
+  border-radius:2px;pointer-events:none}
+.plus-buy .pb-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:relative}
+.plus-buy .pp-big{font-family:var(--serif);font-size:clamp(20px,2.6vw,25px);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.plus-buy small{display:block;font-size:12px;color:var(--ink-soft);margin:5px 0 0}
+.plus-buy .plus-cta{margin-top:13px;position:relative}
+.perk,.plus-buy .pp-big,.plus-buy small,#plusCta{transition:opacity .22s ease}
+.is-swapping .perk,.is-swapping .pp-big,.is-swapping small{opacity:.15}
 .plus-per{display:inline-flex;gap:0;margin:2px 0 0;border:1px solid var(--hairline-strong);border-radius:3px;overflow:hidden;vertical-align:middle}
 .pp-btn{appearance:none;cursor:pointer;background:var(--sheet);border:0;padding:6px 12px;
   font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
@@ -926,7 +975,7 @@ html:not(.has-js) .b-cover{transform:translateZ(2px) rotateY(-30deg)}
 .pp-btn+.pp-btn{border-left:1px solid var(--hairline-strong)}
 .pp-btn.is-on{background:var(--ink);color:var(--paper)}
 .pp-btn u{text-decoration:none;opacity:.72;font-size:10px;margin-left:4px}
-.plus-price .pp-once{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+.pp-once{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--ink-soft);border:1px dashed var(--hairline-strong);border-radius:3px;padding:6px 12px;display:inline-block;vertical-align:middle}
 .plus-calc{margin-top:20px;background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:3px;
   padding:16px 18px 14px;position:relative}
@@ -950,7 +999,6 @@ html:not(.has-js) .b-cover{transform:translateZ(2px) rotateY(-30deg)}
 .cl-sum{border-top:1px solid var(--hairline);margin-top:4px;padding-top:10px}
 .cl-sum .cl-val{color:var(--ink);font-family:var(--sans);font-size:13.5px;white-space:normal;text-align:right}
 .cl-note{font-size:11.5px;color:var(--ink-faint);margin:8px 0 0;font-variant-numeric:tabular-nums}
-.plus-price .plus-per,.plus-price .pp-once{margin-left:12px}
 .plus-per[hidden],.pp-once[hidden]{display:none}
 .plus-card .pc-row span:last-child,.plus-card .pc-head span:last-child,
 .plus-card .pc-title,.plus-card .pc-sub,.plus-card .pc-foot span:first-child{transition:opacity .22s ease}
@@ -965,10 +1013,11 @@ html:not(.has-js) .plus-tabs,html:not(.has-js) .plus-per,html:not(.has-js) .plus
   .plus-grid{grid-template-columns:1fr;gap:26px}
   .plus-card{max-width:420px;margin:0 auto;transform:rotate(-.6deg)}
   .plus-cta .btn{flex:1 1 auto}
-  .plus-rows{min-height:0}
+  .plus-perks{min-height:0}
   .pt-tab{flex:1 1 44%;min-width:0}
   .cl-price{flex-direction:column;align-items:flex-start;gap:2px}
 }
+@media(max-width:460px){.plus-perks{grid-template-columns:1fr}}
 
 /* ============================================================
    Скин цеха (2026-07-16): билет с фольгой, наклон-выпрямление

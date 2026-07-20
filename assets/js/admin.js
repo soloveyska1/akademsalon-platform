@@ -1684,14 +1684,44 @@ function initGodEye() {
       row('bot', m.bot, 'Бот',
           'Клиентам в Telegram бот вежливо отвечает про короткий антракт. Вы (мастер) видите бота как обычно.') +
       '</div>' +
-      '<div class="ag-sec"><span class="caps">Набор месяца — честная квота</span>' +
-      '<div class="ag-actrow" style="align-items:center;gap:10px">' +
-      '<input type="number" id="agSlots" min="0" max="500" value="' + (ov.slots_quota || 0) + '" style="width:96px">' +
-      '<button type="button" class="btn btn-line" id="agSlotsSave">Сохранить</button>' +
-      '<span class="petit">занято в этом месяце: <b>' + (ov.slots_taken || 0) + '</b></span></div>' +
-      '<p class="ag-note">Квота — ваша политика качества: «мастерская берёт столько, сколько ведёт лично». ' +
-      'Сайт покажет «Набор на месяц: свободно X из N» в каталоге и смете; занятые места считаются сами — ' +
-      'по реальным заявкам месяца (без отмен, отдельных услуг и подписок). 0 — плашка скрыта. ' +
+      slotsSec(ov);
+  }
+
+  /* ответ /admin/slots -> обновить локальное состояние и перерисовать настройки */
+  function slotsApply(r) {
+    st.ov = st.ov || {};
+    st.ov.slots = { quota: r.quota, taken: r.taken, auto: r.auto || 0, extra: r.extra || 0 };
+    st.ov.slots_quota = r.quota; st.ov.slots_taken = r.taken;
+    if (st.tab === 'settings') drawBody();
+  }
+
+  /* «Набор месяца»: квота-политика + брони мастера (место занято договорённостью
+     вне картотеки). Счётчик сайта = заявки картотеки (сами) + брони (руками).
+     Быстрые ➕/➖ сохраняют сразу — то же самое умеет /slots в боте. */
+  function slotsSec(ov) {
+    var s = ov.slots || { quota: ov.slots_quota || 0, taken: ov.slots_taken || 0, auto: 0, extra: 0 };
+    var free = Math.max(0, (s.quota || 0) - (s.taken || 0));
+    var stateLine = s.quota
+      ? (free
+        ? 'Сайт показывает: <b>свободно ' + free + ' из ' + s.quota + '</b> — обложка, прейскурант, смета.'
+        : 'Сайт показывает: <b>мест нет</b> — идёт запись на следующий месяц.')
+      : 'Квота 0 — плашки набора на сайте скрыты.';
+    return '<div class="ag-sec"><span class="caps">Набор месяца — квота и брони</span>' +
+      '<p class="petit" style="margin:2px 0 10px">' + stateLine + '</p>' +
+      '<div class="ag-actrow" style="align-items:center;gap:10px;flex-wrap:wrap">' +
+      '<label class="petit" style="display:inline-flex;align-items:center;gap:8px">квота ' +
+      '<input type="number" id="agSlots" min="0" max="500" value="' + (s.quota || 0) + '" style="width:84px"></label>' +
+      '<button type="button" class="btn btn-line" id="agSlotsSave">Сохранить квоту</button>' +
+      '<span class="petit">занято: <b>' + (s.taken || 0) + '</b> = картотека ' + (s.auto || 0) +
+      ' + брони ' + (s.extra || 0) + '</span></div>' +
+      '<div class="ag-actrow" style="align-items:center;gap:10px;margin-top:8px">' +
+      '<button type="button" class="btn btn-wax" data-slot-extra="1">➕ Место забронировано</button>' +
+      '<button type="button" class="btn btn-line" data-slot-extra="-1"' + (s.extra ? '' : ' disabled') + '>➖ Снять бронь</button>' +
+      '</div>' +
+      '<p class="ag-note">Заявки картотеки месяца считаются сами (без отмен, услуг, подписок и ваших тестов). ' +
+      '«Бронь» — реальная договорённость мимо картотеки: личка, ВК, постоянный клиент. Отметили — ' +
+      'счётчик на сайте сразу уменьшил свободные места; оформили заявку — снимите бронь, чтобы место ' +
+      'не посчиталось дважды. Быстро из Telegram: команда <b>/slots</b> в боте. ' +
       'Рисовать цифры не надо: живой счётчик убедительнее и не подставляет бренд.</p></div>';
   }
 
@@ -2341,9 +2371,21 @@ function initGodEye() {
       var qv = parseInt((document.getElementById('agSlots') || {}).value || '0', 10) || 0;
       api('/admin/slots', { quota: qv }).then(function (r) {
         if (!r.ok) { toast('Не получилось'); return; }
-        st.ov = st.ov || {}; st.ov.slots_quota = r.quota; st.ov.slots_taken = r.taken;
+        slotsApply(r);
         toast(r.quota ? 'Квота ' + r.quota + ' мест — плашка на сайте живёт ✓' : 'Набор месяца скрыт');
-        if (st.tab === 'settings') drawBody();
+      });
+      return;
+    }
+    var se = t.closest('[data-slot-extra]');
+    if (se) {
+      var sd = parseInt(se.getAttribute('data-slot-extra'), 10) || 0;
+      var cur = (st.ov && st.ov.slots && st.ov.slots.extra) || 0;
+      api('/admin/slots', { extra: Math.max(0, cur + sd) }).then(function (r) {
+        if (!r.ok) { toast('Не получилось'); return; }
+        slotsApply(r);
+        toast(sd > 0
+          ? (r.quota ? 'Бронь отмечена — на сайте стало на место меньше ✓' : 'Бронь отмечена. Квота 0 — плашка скрыта!')
+          : 'Бронь снята — место снова свободно');
       });
       return;
     }

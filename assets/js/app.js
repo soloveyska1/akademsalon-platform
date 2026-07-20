@@ -60,7 +60,7 @@
      качества, задаётся в админке), занятые места сервер считает САМ по
      реальным заявкам месяца. Рисованных цифр нет: фальшивый дефицит
      убивает доверие быстрее любой цены. Сервер молчит — строка скрыта. */
-  window.SalonSlots = { enabled: false, label: '' };
+  window.SalonSlots = { enabled: false, label: '', short: '', free: 0, quota: 0 };
   setTimeout(function slots() {
     /* Salon.api объявляется ниже по файлу — ждём конца синхронного прохода */
     var here_ = (location.pathname.split('/').pop() || 'index.html');
@@ -72,8 +72,12 @@
       var line = free > 0
         ? 'Набор на ' + r.month + ': свободно ' + free + ' из ' + r.quota + ' мест — место закрепляется после согласования плана'
         : 'Набор на ' + r.month + ' закрыт — идёт запись на ' + r.next;
-      window.SalonSlots.enabled = true;
-      window.SalonSlots.label = line;
+      /* короткая форма — для обложки и финального CTA: тон мастерской,
+         которая берёт столько, сколько ведёт лично, а не конвейера */
+      var short_ = free > 0
+        ? 'Набор на ' + r.month + ': свободно ' + free + ' из ' + r.quota + ' мест'
+        : 'Набор на ' + r.month + ' закрыт · запись на ' + r.next;
+      window.SalonSlots = { enabled: true, label: line, short: short_, free: free, quota: r.quota };
       /* печать квоты в прейскуранте: месяц + строка мест */
       var seal = document.getElementById('slotSeal');
       if (seal) {
@@ -84,6 +88,21 @@
       }
       var q = document.getElementById('qSlots');
       if (q) { q.textContent = line; q.hidden = false; }
+      /* лента мест на обложке и в финале главной: заполнившиеся места —
+         чернильные метки, свободные — пустые гнёзда (визуальный дефицит) */
+      ['coverSlots', 'nextSlots'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var pips = '';
+        if (r.quota <= 24) {
+          pips = '<span class="sb-pips" aria-hidden="true">';
+          for (var i = 0; i < r.quota; i++) pips += '<i' + (i < r.taken ? ' class="on"' : '') + '></i>';
+          pips += '</span>';
+        }
+        el.innerHTML = '<span class="sb-txt"></span>' + pips;
+        el.querySelector('.sb-txt').textContent = short_;
+        el.hidden = false;
+      });
     }).catch(function () {});
   }, 0);
 
@@ -527,6 +546,7 @@
     ['guide-zaklyuchenie-kursovoy.html', 'Гайд · заключение курсовой', 'заключение курсовой выводы'],
     ['guide-prakticheskaya-chast-kursovoy.html', 'Гайд · практическая часть курсовой', 'практическая часть анализ данные эмпирика исследование'],
     ['guide-otzyv-rukovoditelya-vkr.html', 'Гайд · отзыв научного руководителя', 'отзыв руководителя научрук образец'],
+    ['dosie-nauchruka.html', 'Досье научного руководителя — как мы его читаем', 'досье научрук руководитель подход защита вопросы'],
     ['guide-prilozheniya-po-gost.html', 'Гайд · приложения по ГОСТ', 'приложения оформление буквы нумерация'],
     ['guide-vkr-struktura.html', 'Гайд · введение и структура ВКР', 'структура введение вкр'],
     ['guide-zaklyuchenie-vkr.html', 'Гайд · заключение работы', 'заключение выводы'],
@@ -812,9 +832,15 @@
         '<a class="btn btn-wax" href="configurator.html">Рассчитать и оформить на сайте <span class="ar">→</span></a>' +
         '<p class="co-alt">Или напишите, где удобнее: <a href="' + LINKS.vkm + '" target="_blank" rel="noopener">ВКонтакте<span class="visually-hidden"> (откроется в новом окне)</span></a> · <a href="' + LINKS.max + '" target="_blank" rel="noopener">MAX<span class="visually-hidden"> (откроется в новом окне)</span></a> · <a href="' + LINKS.human + '" target="_blank" rel="noopener">Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a> — оценка бесплатна, решение остаётся за вами</p>' +
       '</div>' : '';
+    /* честный индикатор часов мастерской — как в листе связи */
+    var mskH = (new Date().getUTCHours() + 3) % 24;
+    var isDay = mskH >= 9 && mskH < 23;
     return '<div class="wrap">' + ctaBlock +
       '<div class="foot-cols">' +
         '<div class="fc-brand">' + brandHTML() +
+          '<p class="fc-tag">Мастерская, а не биржа: работу ведёт профильный специалист — от плана до защиты.</p>' +
+          '<p class="fc-live"><span class="fcl-dot' + (isDay ? '' : ' night') + '" aria-hidden="true"></span>' +
+            (isDay ? 'Мастер на связи · отвечаем за 15–30 минут' : 'В мастерской ночь · отвечаем и ночью, чуть дольше') + '</p>' +
           '<div class="foot-contacts">' +
             '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener"><span class="fco-l">ВКонтакте · написать</span><span class="fco-v">vk.me/academicsaloon</span></a>' +
             '<a href="' + LINKS.max + '" target="_blank" rel="noopener"><span class="fco-l">Канал в MAX</span><span class="fco-v">max.ru — Академический Салон</span></a>' +
@@ -823,7 +849,7 @@
             '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span class="fco-l">Telegram · бот, если удобнее</span><span class="fco-v">@academic_saloon_bot</span></a>' +
           '</div>' +
         '</div>' +
-        '<div><div class="fc-h">Разделы</div><nav class="foot-links" aria-label="Карта сайта">' +
+        '<div><div class="fc-h">Разделы</div><nav class="foot-links foot-links--2col" aria-label="Карта сайта">' +
           '<a href="start.html">С чего начать</a>' +
           '<a href="configurator.html">Рассчитать заказ</a><a href="tariffs.html">Цены и услуги</a>' +
           '<a href="vedenie.html">Уровни ведения</a><a href="oplata.html">Как проходит оплата</a>' +
@@ -850,9 +876,17 @@
         '<div class="fl-row"><span class="fl-k">Характер услуг</span><span class="fl-v">Информационно-консультационная и учебно-методическая помощь для самостоятельной подготовки заказчика</span></div>' +
         '<div class="fl-row"><span class="fl-k">Данные</span><span class="fl-v">Данные из формы заказа используются только для связи и выполнения заказа — <a href="privacy.html">политика ПДн</a></span></div>' +
       '</div>' +
-      '<div class="foot-copy"><span>© 2020–2026 «Академический Салон»</span><span class="fc-sep">·</span><span>6 лет практики</span><span class="fc-sep">·</span><span>1000+ работ доведено до защиты</span></div>' +
+      '<div class="foot-copy"><span>© 2020–2026 «Академический Салон»</span><span class="fc-sep">·</span><span>6 лет практики</span><span class="fc-sep">·</span><span>1000+ работ доведено до защиты</span>' +
+        '<a class="fc-top" href="#main">Наверх ↑</a></div>' +
     '</div>';
   };
+  /* «Наверх» в колофоне: мягкий скролл вместо прыжка по якорю */
+  document.addEventListener('click', function (e) {
+    var top = e.target.closest && e.target.closest('.fc-top');
+    if (!top) return;
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
   if (!CHROME_OFF && !document.querySelector('.site-footer')) {
     var footer = document.createElement('footer');
     footer.className = 'site-footer';

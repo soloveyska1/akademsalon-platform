@@ -510,24 +510,60 @@
     }
   })();
 
-  /* ---------------- «Нужна помощь?» ---------------- */
+  /* ---------------- «Нужна помощь?» — закладка мастера ----------------
+     Появляется не по одному таймеру, а по СМЫСЛУ момента, и говорит
+     о том, что человек делает прямо сейчас:
+       · читает FAQ (открыл 2+ вопроса)  → «Остался вопрос?»
+       · изучает цены и медлит           → «Сомневаетесь в цене?»
+       · застрял в конфигураторе         → «Запутались в шагах?»
+       · собрался уходить (курсор вверх) → «Уходите? Возьмите расчёт»
+       · просто долго читает             → «Нужна помощь?»
+     Один показ за сессию, крестик прячет до конца сессии. */
   (function helpFab() {
-    if (QUIET_PAGES[here]) return;
+    if (QUIET_PAGES[here] || here === 'dashboard.html') return;
     var shown = false, dismissed = false;
     try { dismissed = sessionStorage.getItem('salon_help_off') === '1'; } catch (e) {}
     if (dismissed) return;
+    var born = Date.now();
+
+    var PRICE_PAGES = /^(tariffs\.html|kursovaya-|diplomnaya-|magisterskaya-|kandidatskaya-|otchet-po-praktike|nauchnaya-statya|referat\.|guide-skolko-stoit-)/;
+    var TEXTS = {
+      faq:    { t: 'Остался вопрос?', s: 'мастер ответит лично · бесплатно',
+                lead: 'Не нашли ответ в вопросах? Напишите своими словами — мастер ответит лично, это бесплатно и ни к чему не обязывает.' },
+      price:  { t: 'Сомневаетесь в цене?', s: 'посчитаем вашу задачу · бесплатно',
+                lead: 'Назовите тему и срок — прикинем честную вилку под вашу задачу и подскажем, на чём можно сэкономить.' },
+      config: { t: 'Запутались в шагах?', s: 'поможем досчитать смету',
+                lead: 'Если что-то в расчёте неясно — напишите, поможем досчитать и оформить. Черновик сметы не потеряется.' },
+      exit:   { t: 'Уже уходите?', s: 'возьмите расчёт с собой',
+                lead: 'Оставьте задачу в двух словах — пришлём расчёт туда, где удобно читать: ВК, Telegram или на почту.' },
+      dwell:  { t: 'Нужна помощь?', s: 'подскажем по цене и срокам',
+                lead: 'Расскажите о задаче — подскажем, посчитаем и сориентируем по срокам. Бесплатно, отвечает живой человек.' }
+    };
+
     var el;
+    function busy() {
+      /* не влезаем поверх тура, сториз, диалогов и открытого листа связи */
+      if (tour.active()) return true;
+      if (document.documentElement.classList.contains('has-prelude')) return true;
+      if (document.querySelector('.contact-sheet, .sdlg.open, .toc.open')) return true;
+      return false;
+    }
     function show(reason) {
-      if (shown || dismissed || tour.active()) return;
+      if (shown || dismissed || busy()) return;
+      var tx = TEXTS[reason] || TEXTS.dwell;
       shown = true;
       el = document.createElement('button');
       el.type = 'button';
       el.className = 'helpfab';
-      el.setAttribute('aria-label', 'Нужна помощь? Открыть варианты связи');
-      el.innerHTML = '<span class="hf-ic">✎</span><span>Нужна помощь?</span><span class="hf-x" data-hf-x aria-label="Скрыть">×</span>';
+      el.setAttribute('aria-label', tx.t + ' Открыть варианты связи');
+      el.innerHTML =
+        '<span class="hf-seal" aria-hidden="true">✎</span>' +
+        '<span class="hf-t"><b>' + tx.t + '</b><small>' + tx.s + '</small></span>' +
+        '<span class="hf-x" data-hf-x aria-label="Скрыть">×</span>';
       document.body.appendChild(el);
       void el.offsetWidth; /* показ без rAF */
       el.classList.add('in');
+      if (S.visit) S.visit.mark('закладка помощи: ' + reason);
       el.addEventListener('click', function (e) {
         if (e.target.closest('[data-hf-x]')) {
           e.stopPropagation();
@@ -537,20 +573,42 @@
           setTimeout(function () { el.remove(); }, 400);
           return;
         }
-        if (S.contact) S.contact({
-          lead: 'Расскажите о задаче — подскажем, посчитаем и сориентируем по срокам. ' +
-                'Бесплатно, отвечает живой человек.'
-        });
+        if (S.contact) S.contact({ lead: tx.lead });
       });
     }
-    /* триггеры: пауза чтения, попытка уйти, долгий выбор в конфигураторе */
-    var dwell = setTimeout(function () { show('dwell'); }, 45000);
-    document.addEventListener('mouseout', function (e) {
-      if (!e.relatedTarget && e.clientY <= 0) show('exit');
+
+    /* 1) вдумчивое чтение FAQ: открыл два и больше вопросов */
+    var faqOpened = 0;
+    document.addEventListener('click', function (e) {
+      var sum = e.target.closest && e.target.closest('.faq-item summary');
+      if (!sum) return;
+      var d = sum.closest('details');
+      setTimeout(function () {
+        if (d && d.open) { faqOpened++; if (faqOpened >= 2) setTimeout(function () { show('faq'); }, 6000); }
+      }, 0);
     });
+    /* 2) страница цен: долистал и замер — думает над цифрами */
+    if (PRICE_PAGES.test(here) || here === 'index.html') {
+      var deep = false, still = null;
+      window.addEventListener('scroll', function () {
+        var max = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+        if (window.scrollY / max > 0.55) deep = true;
+        if (deep && Date.now() - born > 20000) {
+          clearTimeout(still);
+          still = setTimeout(function () { show(PRICE_PAGES.test(here) ? 'price' : 'dwell'); }, 14000);
+        }
+      }, { passive: true });
+    }
+    /* 3) конфигуратор: четверть минуты без отправки */
     if (here === 'configurator.html') {
       setTimeout(function () { show('config'); }, 25000);
     }
+    /* 4) собрался уходить (десктоп): но не в первые секунды */
+    document.addEventListener('mouseout', function (e) {
+      if (!e.relatedTarget && e.clientY <= 0 && Date.now() - born > 12000) show('exit');
+    });
+    /* 5) просто долго читает */
+    var dwell = setTimeout(function () { show('dwell'); }, 50000);
     window.addEventListener('pagehide', function () { clearTimeout(dwell); });
   })();
 
