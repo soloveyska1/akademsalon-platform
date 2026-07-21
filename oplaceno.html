@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Оплата прошла — Академический Салон</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta name="referrer" content="same-origin" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260721n" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260721n" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<meta name="theme-color" content="#F6F1E7" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<style>
+/* Посадочная после кассы. Ничего не решает сама: читает Shp_* и уводит туда,
+   где человек уже был. Видна доли секунды — но если скрипт не выполнится,
+   на ней должно остаться что-то осмысленное, поэтому разметка настоящая. */
+body{min-height:100vh;display:grid;place-items:center;padding:24px}
+.op{max-width:34rem;text-align:center}
+.op .seal{width:64px;height:64px;border-radius:50%;border:2px solid var(--verify);
+  color:var(--verify);display:grid;place-items:center;margin:0 auto 18px;
+  font-family:var(--serif);font-size:26px;transform:rotate(-6deg)}
+.op h1{font-size:clamp(24px,4vw,34px);margin:0 0 10px}
+.op p{color:var(--ink-soft);line-height:1.6;margin:0 0 18px}
+.op .links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.op .links a{min-height:44px;display:inline-flex;align-items:center;padding:10px 18px;
+  border:1px solid var(--hairline-strong);border-radius:var(--r);color:var(--ink)}
+.op .links a:hover{border-color:var(--wax);color:var(--wax)}
+</style>
+</head>
+<body>
+<main class="op" id="main">
+  <div class="seal" aria-hidden="true">¶</div>
+  <h1>Оплата прошла</h1>
+  <p id="opText">Открываем ваше дело…</p>
+  <div class="links">
+    <a href="dashboard.html">Мой кабинет</a>
+    <a href="index.html">На главную</a>
+  </div>
+</main>
+<script>
+/* Единственная посадочная после кассы: SuccessURL у Robokassa один на весь
+   магазин, а возвращаться надо в разные места — заявка, сертификат, подписка,
+   дело. Robokassa дописывает к SuccessURL свои параметры, включая все Shp_*,
+   по ним и раскидываем. ES5, без зависимостей: страница обязана работать
+   даже если общий чром не загрузился. */
+(function () {
+  'use strict';
+  function q(n) {
+    var m = (location.search || '').match(new RegExp('[?&]' + n + '=([^&]+)'));
+    return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : '';
+  }
+  var k = q('Shp_k'), gift = q('Shp_gift'), kind = q('Shp_kind'), ord = q('Shp_order');
+  var to = '';
+  if (k) to = 'zayavka.html#k=' + encodeURIComponent(k);
+  else if (gift) to = 'gift.html?code=' + encodeURIComponent(gift);
+  else if (kind === 'sub') to = 'dashboard.html#plus';
+  else if (ord) to = 'dashboard.html?paid=' + encodeURIComponent(ord);
+  if (!to) {
+    var t = document.getElementById('opText');
+    if (t) t.textContent = 'Платёж принят. Дело открыто в вашем кабинете — ' +
+      'зайдите в него по кнопке ниже. Если чего-то не хватает, напишите мастеру.';
+    return;
+  }
+  /* replace, а не href: кнопка «назад» не должна возвращать на кассу */
+  try { location.replace(to); } catch (e) { location.href = to; }
+})();
+</script>
+<noscript>
+  <p style="text-align:center;max-width:34rem;margin:0 auto;color:var(--ink-soft)">
+    Платёж принят. Откройте <a href="dashboard.html">кабинет</a>, чтобы увидеть дело.
+    Если вы платили по ссылке-заявке — вернитесь по ней же, она откроет дело.
+  </p>
+</noscript>
+</body>
+</html>
