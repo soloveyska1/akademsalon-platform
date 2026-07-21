@@ -815,12 +815,48 @@
     chapters.forEach(function (c) { io.observe(c); });
   })();
 
-  /* ---------------- Подвал-колофон (тёмный финал каждой страницы) ---------------- */
+  /* ---------------- Колофон v3 «Концевая полоса» ----------------
+     Подвал — не сетка ссылок, а последняя страница издания: колонтитул
+     с живыми часами приёмной, разворот «манифест | лист связи», гербовая
+     плита выходных данных, реестр наборными строками, мостик к Путеводителю
+     и концевая полоса-воронка с печатью мастерской.
+     Ссылки набраны потоком: перенос уходит МЕЖДУ ярлыками, а не внутрь. */
   /* Большой призыв «Узнайте точную стоимость» — только там, где человек выбирает
      и сравнивает: главная, цены, страницы услуг и ценовые гайды. На справочных,
      юридических и сервисных страницах он повторялся навязчиво — там подвал
-     начинается сразу с карты сайта (ссылка «Рассчитать заказ» в ней остаётся). */
+     начинается сразу с колонтитула. */
   var FOOTER_CTA_PAGES = /^(index\.html|tariffs\.html|kursovaya-|diplomnaya-|magisterskaya-|kandidatskaya-|otchet-po-praktike|nauchnaya-statya|referat\.|guide-skolko-stoit-|guide-kursovaya-za-nedelyu)/;
+
+  /* Часы приёмной по МСК. Один источник правды для колонтитула и листа связи:
+     и «Приём открыт», и «отвечаем за 15–30 минут» считаются из одного isDay,
+     поэтому в четыре утра подвал не врёт. */
+  function mskNow() {
+    var d = new Date();
+    var h = (d.getUTCHours() + 3) % 24;
+    return { h: h, m: d.getUTCMinutes(), day: h >= 9 && h < 23 };
+  }
+  function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+  /* Подписи у часов — человеческим языком, без типографского жаргона:
+     владелец 2026-07-21 не понял слова «колофон», и это верный сигнал. */
+  var CLOCK_STATE = ['Ночь, отвечаем дольше', 'Мы на связи'];
+  /* строка в листе связи говорит только про СРОК ответа: статус «мы на связи»
+     уже стоит в колонтитуле выше, и повторять его здесь было бы эхом */
+  var CLOCK_ETA = ['Ночью отвечаем в течение нескольких часов',
+                   'Отвечаем за 15–30 минут'];
+
+  /* Наборная строка реестра: рубрика — отдельный <nav> со своей подписью,
+     чтобы скринридер объявлял группу, а не плоский список из 28 ссылок. */
+  function reestrRow(id, key, items, extraCls) {
+    var out = '<nav class="cf-r-row" aria-labelledby="' + id + '">' +
+      '<span class="cf-r-k" id="' + id + '">' + key + '</span>' +
+      '<span class="cf-r-set' + (extraCls ? ' ' + extraCls : '') + '">';
+    for (var i = 0; i < items.length; i++) {
+      var cur = items[i][0] === here ? ' aria-current="page"' : '';
+      out += '<a href="' + items[i][0] + '"' + cur + '>' + items[i][1] + '</a>';
+    }
+    return out + '</span></nav>';
+  }
+
   Salon.footerHTML = function () {
     var ctaBlock = FOOTER_CTA_PAGES.test(here) ?
       '<div class="colophon-center">' +
@@ -830,58 +866,114 @@
         '<a class="btn btn-wax" href="configurator.html">Рассчитать и оформить на сайте <span class="ar">→</span></a>' +
         '<p class="co-alt">Или напишите, где удобнее: <a href="' + LINKS.vkm + '" target="_blank" rel="noopener">ВКонтакте<span class="visually-hidden"> (откроется в новом окне)</span></a> · <a href="' + LINKS.max + '" target="_blank" rel="noopener">MAX<span class="visually-hidden"> (откроется в новом окне)</span></a> · <a href="' + LINKS.human + '" target="_blank" rel="noopener">Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a> — оценка бесплатна, решение остаётся за вами</p>' +
       '</div>' : '';
-    /* честный индикатор часов мастерской — как в листе связи */
-    var mskH = (new Date().getUTCHours() + 3) % 24;
-    var isDay = mskH >= 9 && mskH < 23;
+
+    var t = mskNow();
+    var night = t.day ? '' : ' night';
+
     return '<div class="wrap">' + ctaBlock +
-      '<div class="foot-cols">' +
-        '<div class="fc-brand">' + brandHTML() +
-          '<p class="fc-tag">Мастерская, а не биржа: работу ведёт профильный специалист — от плана до защиты.</p>' +
-          '<p class="fc-live"><span class="fcl-dot' + (isDay ? '' : ' night') + '" aria-hidden="true"></span>' +
-            (isDay ? 'Мастер на связи · отвечаем за 15–30 минут' : 'В мастерской ночь · отвечаем и ночью, чуть дольше') + '</p>' +
-          '<div class="foot-contacts">' +
-            '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener"><span class="fco-l">ВКонтакте · написать</span><span class="fco-v">vk.me/academicsaloon</span></a>' +
-            '<a href="' + LINKS.max + '" target="_blank" rel="noopener"><span class="fco-l">Канал в MAX</span><span class="fco-v">max.ru — Академический Салон</span></a>' +
-            '<a href="' + LINKS.tgc + '" target="_blank" rel="noopener"><span class="fco-l">Telegram · канал</span><span class="fco-v">@akademsalon</span></a>' +
-            '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span class="fco-l">Telegram · человек</span><span class="fco-v">@academicsaloon</span></a>' +
-            '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span class="fco-l">Telegram · бот, если удобнее</span><span class="fco-v">@academic_saloon_bot</span></a>' +
-          '</div>' +
-        '</div>' +
-        '<div><div class="fc-h">Разделы</div><nav class="foot-links foot-links--2col" aria-label="Карта сайта">' +
-          '<a href="start.html">С чего начать</a>' +
-          '<a href="configurator.html">Рассчитать заказ</a><a href="tariffs.html">Цены и услуги</a>' +
-          '<a href="vedenie.html">Уровни ведения</a><a href="oplata.html">Как проходит оплата</a>' +
-          '<a href="gift.html">Подарочный сертификат</a>' +
-          '<a href="guarantees.html">Гарантии · устав</a><a href="reviews.html">Отзывы</a>' +
-          '<a href="priyomnaya.html">Открытая приёмная</a>' +
-          '<a href="referral.html">Клуб и бонусы</a><a href="knowledge.html">Полезные материалы</a>' +
-          '<a href="check.html">Проверка текста</a><a href="dashboard.html">Кабинет</a>' +
-        '</nav></div>' +
-        '<div><div class="fc-h">Типы работ</div><nav class="foot-links" aria-label="Помощь по типам работ">' +
-          '<a href="kursovaya-rabota.html">Курсовая работа</a><a href="diplomnaya-rabota.html">Дипломная / ВКР</a>' +
-          '<a href="magisterskaya-dissertaciya.html">Магистерская</a><a href="kandidatskaya-dissertaciya.html">Кандидатская</a>' +
-          '<a href="otchet-po-praktike.html">Отчёт по практике</a><a href="nauchnaya-statya.html">Научная статья</a>' +
-          '<a href="referat.html">Реферат, эссе</a>' +
-        '</nav></div>' +
-        '<div><div class="fc-h">Документы</div><nav class="foot-links" aria-label="Правовые документы">' +
-          '<a href="oferta.html">Публичная оферта</a><a href="privacy.html">Политика ПДн</a>' +
-          '<a href="consent.html">Согласие на обработку ПДн</a><a href="loyalty.html">Правила лояльности</a>' +
-          '<a href="terms.html">Пользовательское соглашение</a><a href="requisites.html">Реквизиты</a>' +
-        '</nav></div>' +
+
+    /* --- колонтитул с живыми часами --- */
+    '<div class="cf-head">' +
+      '<span class="cf-head-t"><i aria-hidden="true">¶</i> Связь и документы</span>' +
+      '<span class="cf-head-r" aria-hidden="true"></span>' +
+      '<p class="cf-clock" data-foot-clock>' +
+        '<span class="cf-lamp' + night + '" aria-hidden="true"></span>' +
+        '<span class="cf-cl-s">' + CLOCK_STATE[t.day ? 1 : 0] + '</span>' +
+        '<span class="cf-cl-t"><span class="cf-hh">' + pad2(t.h) + '</span>' +
+          '<span class="cf-cn">:</span><span class="cf-mm">' + pad2(t.m) + '</span>' +
+          '<span class="cf-tz">МСК</span></span>' +
+      '</p>' +
+    '</div>' +
+
+    /* --- разворот: манифест | лист связи --- */
+    '<div class="cf-spread">' +
+      '<div class="cf-manifest">' + brandHTML() +
+        '<p class="cf-motto">Мастерская, а&nbsp;не биржа: работу ведёт профильный специалист — от плана до защиты.</p>' +
+        '<p class="cf-sub">Шесть лет практики · 1000+ работ доведено до защиты</p>' +
       '</div>' +
-      '<div class="foot-legal">' +
-        '<div class="fl-rows">' +
-          '<div class="fl-row"><span class="fl-k">Исполнитель</span><span class="fl-v">Семёнов Семён Юрьевич · самозанятый, налог на профессиональный доход (ФЗ №&nbsp;422-ФЗ) · ИНН 212885750445 · г.&nbsp;Казань</span></div>' +
-          '<div class="fl-row"><span class="fl-k">Характер услуг</span><span class="fl-v">Информационно-консультационная и учебно-методическая помощь для самостоятельной подготовки заказчика</span></div>' +
-          '<div class="fl-row"><span class="fl-k">Данные</span><span class="fl-v">Данные из формы заказа используются только для связи и выполнения заказа — <a href="privacy.html">политика ПДн</a></span></div>' +
-        '</div>' +
-        '<span class="fl-seal" aria-hidden="true">' + Salon.sealSVG({
-          ring: 'АКАДЕМИЧЕСКИЙ САЛОН · ИЗДАНИЕ МАСТЕРСКОЙ · ',
-          center: '¶', size: 96, cls: 'seal--foil'
-        }) + '</span>' +
+      '<div class="cf-hail">' +
+        '<p class="cf-live" data-foot-eta><span class="fcl-dot' + night + '" aria-hidden="true"></span>' +
+          '<span class="cf-live-t">' + CLOCK_ETA[t.day ? 1 : 0] + '</span></p>' +
+        '<a class="cf-line" href="' + LINKS.vkm + '" target="_blank" rel="noopener">' +
+          '<span class="cf-l-k">ВКонтакте · написать<span class="visually-hidden"> (откроется в новом окне)</span></span>' +
+          '<i class="cf-dots" aria-hidden="true"></i>' +
+          '<span class="cf-l-v">vk.me/academicsaloon</span></a>' +
+        '<a class="cf-line" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
+          '<span class="cf-l-k">Telegram · человек<span class="visually-hidden"> (откроется в новом окне)</span></span>' +
+          '<i class="cf-dots" aria-hidden="true"></i>' +
+          '<span class="cf-l-v">@academicsaloon</span></a>' +
+        '<p class="cf-more">Ещё: ' +
+          '<a href="' + LINKS.tgc + '" target="_blank" rel="noopener">канал в Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a> · ' +
+          '<a href="' + LINKS.max + '" target="_blank" rel="noopener">канал в MAX<span class="visually-hidden"> (откроется в новом окне)</span></a> · ' +
+          '<a href="' + LINKS.bot + '" target="_blank" rel="noopener">бот, если удобнее<span class="visually-hidden"> (откроется в новом окне)</span></a></p>' +
       '</div>' +
-      '<div class="foot-copy"><span>© 2020–2026 «Академический Салон»</span><span class="fc-sep">·</span><span>6 лет практики</span><span class="fc-sep">·</span><span>1000+ работ доведено до защиты</span>' +
-        '<a class="fc-top" href="#main">Наверх ↑</a></div>' +
+    '</div>' +
+
+    /* --- выходные данные: оборот титульного листа --- */
+    '<section class="cf-imprint" aria-labelledby="cf-imp-h">' +
+      '<h2 class="cf-imp-h" id="cf-imp-h">Выходные данные</h2>' +
+      '<dl class="cf-imp-rows">' +
+        '<div class="cf-imp-row"><dt class="cf-imp-k"><span>Исполнитель</span><i class="cf-dots" aria-hidden="true"></i></dt>' +
+          '<dd class="cf-imp-v"><b>Семёнов Семён Юрьевич</b> · самозанятый — плательщик налога на профессиональный доход (Федеральный закон №&nbsp;422-ФЗ) · ИНН <span class="cf-inn">212885750445</span> · г.&nbsp;Казань</dd></div>' +
+        '<div class="cf-imp-row"><dt class="cf-imp-k"><span>Характер услуг</span><i class="cf-dots" aria-hidden="true"></i></dt>' +
+          '<dd class="cf-imp-v">Информационно-консультационная и учебно-методическая помощь для самостоятельной подготовки заказчика — <a href="oferta.html">публичная оферта</a></dd></div>' +
+        '<div class="cf-imp-row"><dt class="cf-imp-k"><span>Данные</span><i class="cf-dots" aria-hidden="true"></i></dt>' +
+          '<dd class="cf-imp-v">Данные из формы заказа используются только для связи и выполнения заказа — <a href="privacy.html">политика ПДн</a></dd></div>' +
+      '</dl>' +
+      '<a class="cf-check" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">' +
+        '<span class="cf-check-k">Открыто для проверки</span>' +
+        '<span class="cf-check-t">Статус самозанятого в реестре ФНС <span class="ar">→</span></span>' +
+        '<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
+    '</section>' +
+
+    /* --- реестр: наборные строки вместо колонок --- */
+    '<div class="cf-reestr">' +
+      reestrRow('cf-r1', 'Заказать', [
+        ['start.html', 'С чего начать'], ['configurator.html', 'Рассчитать смету'],
+        ['tariffs.html', 'Цены'], ['vedenie.html', 'Уровни ведения'],
+        ['oplata.html', 'Оплата'], ['plan.html', 'Разбор плана'],
+        ['gift.html', 'Сертификат']
+      ]) +
+      reestrRow('cf-r2', 'Доверие', [
+        ['guarantees.html', 'Гарантии · устав'], ['reviews.html', 'Отзывы'],
+        ['priyomnaya.html', 'Открытая приёмная'], ['check.html', 'Проверка текста']
+      ]) +
+      reestrRow('cf-r3', 'Работы', [
+        ['kursovaya-rabota.html', 'Курсовая'], ['diplomnaya-rabota.html', 'Диплом · ВКР'],
+        ['magisterskaya-dissertaciya.html', 'Магистерская'], ['kandidatskaya-dissertaciya.html', 'Кандидатская'],
+        ['otchet-po-praktike.html', 'Отчёт по практике'], ['nauchnaya-statya.html', 'Научная статья'],
+        ['referat.html', 'Реферат · эссе']
+      ]) +
+      /* ЕДИНСТВЕННЫЙ .foot-links в подвале: сюда extras.js дописывает
+         «Как всё устроено — тур». Голый <a> получает стиль от .cf-r-set a. */
+      reestrRow('cf-r4', 'Ваш заказ', [
+        ['dashboard.html', 'Кабинет'], ['referral.html', 'Клуб и бонусы'],
+        ['dashboard.html#plusCard', 'Салон+'], ['knowledge.html', 'Полезные материалы']
+      ], 'foot-links') +
+      reestrRow('cf-r5', 'Документы', [
+        ['oferta.html', 'Публичная оферта'], ['privacy.html', 'Политика ПДн'],
+        ['consent.html', 'Согласие на обработку ПДн'], ['loyalty.html', 'Правила лояльности'],
+        ['terms.html', 'Пользовательское соглашение'], ['requisites.html', 'Реквизиты']
+      ]) +
+    '</div>' +
+
+    /* --- мостик к Путеводителю --- */
+    '<a class="cf-guide" href="start.html" data-toc-open>' +
+      '<span class="cf-g-t">Не нашли нужное? Путеводитель — живой поиск по всему сайту</span>' +
+      '<i class="cf-dots" aria-hidden="true"></i>' +
+      '<span class="cf-val">Открыть <span class="ar">→</span></span></a>' +
+
+    /* --- концевая полоса-воронка --- */
+    '<div class="cf-finis">' +
+      '<p class="cf-fin-copy">© 2020–2026 «Академический Салон» · Казань · издание мастерской</p>' +
+      '<p class="cf-fin-line">набрано и сверстано в мастерской</p>' +
+      '<span class="fl-seal" aria-hidden="true">' + Salon.sealSVG({
+        ring: 'АКАДЕМИЧЕСКИЙ САЛОН · ИЗДАНИЕ МАСТЕРСКОЙ · ',
+        center: '¶', size: 128, cls: 'seal--foil'
+      }) + '</span>' +
+      '<a class="fc-top" href="#main">Наверх ↑</a>' +
+    '</div>' +
+
     '</div>';
   };
   /* «Наверх» в колофоне: мягкий скролл вместо прыжка по якорю */
@@ -891,14 +983,46 @@
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
   });
+  /* Мостик к Путеводителю: с JS — оверлей, без JS — честный переход на start.html */
+  document.addEventListener('click', function (e) {
+    var g = e.target.closest && e.target.closest('[data-toc-open]');
+    if (!g || !Salon.toc) return;
+    e.preventDefault();
+    Salon.toc.open();
+  });
   if (!CHROME_OFF && !document.querySelector('.site-footer')) {
     var footer = document.createElement('footer');
     footer.className = 'site-footer';
-    footer.setAttribute('aria-label', 'Колофон');
+    footer.setAttribute('aria-label', 'Связь и документы');
     footer.innerHTML = Salon.footerHTML();
     document.body.appendChild(footer);
+    /* мостик открывает диалог — сообщаем это вспомогательным технологиям
+       только когда путеводитель реально смонтирован */
+    var bridge = footer.querySelector('[data-toc-open]');
+    if (bridge && Salon.toc) bridge.setAttribute('aria-haspopup', 'dialog');
+    /* Часы приёмной идут: setInterval, а не rAF — rAF в панели предпросмотра мёртв.
+       Раз в 20 с пересчитываем и время, и день/ночь, чтобы страница, открытая
+       с вечера, к ночи честно поменяла и лампу, и обещание по срокам. */
+    (function () {
+      var box = footer.querySelector('[data-foot-clock]');
+      if (!box) return;
+      var hh = box.querySelector('.cf-hh'), mm = box.querySelector('.cf-mm'),
+          st = box.querySelector('.cf-cl-s'), lamp = box.querySelector('.cf-lamp'),
+          eta = footer.querySelector('[data-foot-eta] .cf-live-t'),
+          dot = footer.querySelector('[data-foot-eta] .fcl-dot');
+      setInterval(function () {
+        var n = mskNow(), i = n.day ? 1 : 0;
+        hh.textContent = pad2(n.h); mm.textContent = pad2(n.m);
+        if (st.textContent !== CLOCK_STATE[i]) st.textContent = CLOCK_STATE[i];
+        lamp.className = 'cf-lamp' + (n.day ? '' : ' night');
+        if (dot) dot.className = 'fcl-dot' + (n.day ? '' : ' night');
+        if (eta && eta.textContent !== CLOCK_ETA[i]) eta.textContent = CLOCK_ETA[i];
+      }, 20000);
+    })();
   }
-  mountRouteNext(); /* штурман «Дальше по маршруту» — сразу над колофоном */
+  mountRouteNext(); /* штурман «Дальше по маршруту» — сразу над колофоном.
+                       ВАЖНО: вызов обязан оставаться ПОСЛЕ создания подвала —
+                       иначе полоса уедет под колофон через fallback appendChild. */
 
   /* ---------------- Плавающая пилюля связи (десктоп) ----------------
      Открывает лист каналов: сайт → ВК → MAX → Telegram. */
@@ -917,7 +1041,8 @@
 
   /* ---------------- Мобильная навигация: нижняя панель на всех страницах ----
      Кабинет всегда на виду (с бейджем), «Рассчитать» — сургучная кнопка. */
-  if (!CHROME_OFF && !document.querySelector('.mobile-cta') && here !== 'configurator.html' && here !== '404.html') {
+  var MCTA_OFF = CHROME_OFF || here === 'configurator.html' || here === '404.html';
+  if (!MCTA_OFF && !document.querySelector('.mobile-cta')) {
     var mnav = document.createElement('nav');
     mnav.className = 'mobile-cta mnav';
     mnav.setAttribute('aria-label', 'Быстрая навигация');
@@ -937,6 +1062,11 @@
       mnItem('dashboard.html', 'Кабинет', CAB_SVG, ' mn-cab');
     document.body.appendChild(mnav);
   }
+  /* Внизу колофона зарезервированы 96px под нижнюю панель. Панель бывает
+     двух видов: смонтированная выше и своя, прописанная прямо в разметке
+     страницы (configurator.html — .conf-mcta). Отступ снимаем, только если
+     панели нет НИ ОДНОЙ, иначе она накроет концевую полосу с печатью. */
+  if (!CHROME_OFF && !document.querySelector('.mobile-cta')) document.body.classList.add('no-mcta');
   /* бейдж кабинета зовём ниже, когда Salon.api уже определён —
      здесь он молча выходил на проверке !Salon.api и не рисовался никогда */
 
