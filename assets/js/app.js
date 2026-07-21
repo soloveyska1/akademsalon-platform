@@ -1774,7 +1774,7 @@
             var day = mskH >= 9 && mskH < 23;
             return '<p style="display:flex;align-items:center;gap:8px;margin:-6px 0 12px;font-size:12.5px;color:var(--ink-soft)">' +
               '<span style="width:8px;height:8px;border-radius:50%;flex:none;background:' +
-              (day ? 'var(--verify)' : 'var(--foil)') + '"></span>' +
+              (day ? 'var(--verify,#3D6B50)' : 'var(--foil,#B98A2F)') + '"></span>' +
               (day ? 'Мастер на связи — обычно отвечаем за 15–30 минут'
                    : 'В мастерской ночь — отвечаем и ночью, просто чуть дольше') + '</p>';
           })() +

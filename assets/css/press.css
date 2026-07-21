@@ -1,0 +1,399 @@
+/* ============================================================
+   «ПРЕСС» — сцена главной страницы (поверх pereplet.css).
+   Титул с книгой на столе мастера → скролл раскрывает переплёт →
+   на развороте приёмная (квик-калк живёт прод-механикой pereplet.js).
+   Все цвета — токены «Оттиска», тёмная тема наследуется сама.
+
+   Режимы раскладки:
+   - кино (десктоп, JS, полная анимация) — по умолчанию;
+   - поток (html[data-pr-flat]) — мобильные и prefers-reduced-motion,
+     ставит press.js; те же правила продублированы для html:not(.has-js).
+   ============================================================ */
+
+/* ---------- трек и фазы ---------- */
+.pr-track{
+  position:relative;height:340vh;
+  --p:0;
+  --pcopy:clamp(0, calc((var(--p) - .16)*4.16), 1);
+  --pm:clamp(0, calc((var(--p) - .20)*3.12), 1);
+  --po:clamp(0, calc((var(--p) - .44)*3.57), 1);
+  --ps:clamp(0, calc((var(--p) - .66)*4.16), 1);
+}
+.pr-scene{
+  position:sticky;top:0;height:100vh;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 8%, var(--paper) 0%, var(--desk) 58%, var(--desk-deep) 100%);
+}
+.pr-scene::after{ /* зерно бумаги */
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  background-size:240px 240px;mix-blend-mode:multiply;
+}
+.pr-light{
+  position:absolute;inset:-12%;pointer-events:none;
+  background:radial-gradient(ellipse 46% 40% at calc(40% + var(--mx,0)*1.6%) calc(30% + var(--my,0)*1.2%),
+    rgba(255,247,216,.92), rgba(255,247,216,.28) 46%, transparent 72%);
+  animation:pr-breathe 9s ease-in-out infinite alternate;
+}
+@keyframes pr-breathe{
+  from{transform:scale(1);opacity:.94}
+  to{transform:scale(1.035);opacity:1}
+}
+:root[data-theme="dark"] .pr-light{opacity:.6}
+.pr-vignette{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(130% 110% at 50% 42%, transparent 55%, rgba(60,45,20,.13) 86%, rgba(46,34,14,.2) 100%);
+}
+:root[data-theme="dark"] .pr-vignette{
+  background:radial-gradient(130% 110% at 50% 42%, transparent 50%, rgba(0,0,0,.4) 88%, rgba(0,0,0,.6) 100%);
+}
+#prDust{position:absolute;inset:0;pointer-events:none}
+.pr-stage{position:absolute;inset:0}
+
+/* ---------- копи-блок титула ---------- */
+.pr-copy{
+  position:absolute;left:clamp(20px,7vw,110px);top:50%;
+  width:min(46vw,560px);
+  transform:translateY(-50%) translateX(calc(var(--pcopy)*-7vw));
+  opacity:calc(1 - var(--pcopy));
+}
+.pr-open .pr-copy{pointer-events:none}
+.pr-kicker{
+  font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:18px;
+  animation:pr-fade .8s ease both;
+}
+.pr-h{
+  font-family:var(--serif);font-weight:600;line-height:1.04;
+  font-size:clamp(40px,4.6vw,62px);letter-spacing:-.012em;color:var(--ink);
+  text-shadow:0 1px 0 rgba(255,255,255,.5), 0 -1px 1px rgba(34,32,27,.18);
+}
+:root[data-theme="dark"] .pr-h{text-shadow:0 1px 0 rgba(255,255,255,.08), 0 -1px 1px rgba(0,0,0,.5)}
+.pr-h .ln{display:block;animation:pr-press .58s cubic-bezier(.2,.85,.3,1) both;animation-delay:calc(var(--i)*.13s + .2s)}
+@keyframes pr-press{
+  0%{opacity:0;transform:translateY(-11px) scale(1.045);text-shadow:none}
+  58%{opacity:1;transform:translateY(1.5px) scale(.996)}
+  100%{opacity:1;transform:none}
+}
+@keyframes pr-fade{from{opacity:0}to{opacity:1}}
+.pr-lead{
+  margin-top:22px;font-size:16.5px;color:var(--ink-soft);max-width:44ch;
+  animation:pr-fade .9s ease .7s both;
+}
+.pr-cta{display:flex;align-items:center;gap:22px;margin-top:30px;flex-wrap:wrap;animation:pr-fade .9s ease .85s both}
+.pr-cta .btn-wax{padding:14px 24px;font-size:15px}
+.pr-toclink{
+  font-size:14px;color:var(--ink-soft);text-decoration:none;
+  border-bottom:1px solid var(--hairline-strong);padding-bottom:2px;
+  transition:color .15s ease,border-color .15s ease;
+}
+.pr-toclink:hover{color:var(--ink);border-color:var(--ink)}
+.pr-note{margin-top:26px;font-size:13.5px;color:var(--ink-faint);animation:pr-fade 1s ease 1s both}
+.pr-copy .slot-line{margin-top:14px;animation:pr-fade 1s ease 1.15s both}
+.story-chip{display:inline-flex;gap:9px;align-items:center;margin-top:16px;
+  background:none;border:1px solid var(--hairline-strong);border-radius:999px;
+  padding:8px 15px;font:inherit;font-size:13px;color:var(--ink-soft);cursor:pointer;
+  transition:color .15s ease,border-color .15s ease;
+  animation:pr-fade 1s ease 1.3s both}
+.story-chip:hover{color:var(--ink);border-color:var(--ink)}
+.story-chip .sc-play{display:inline-grid;place-items:center;width:20px;height:20px;
+  border-radius:50%;background:var(--wax);color:#FFFEF9;font-size:8.5px;padding-left:2px}
+
+/* ---------- книга ---------- */
+.pr-bookwrap{
+  position:absolute;left:50%;top:calc(50% + 16px);
+  width:0;height:0;
+  translate:calc(19vw*(1 - var(--pm)) + var(--po)*130px) -50%;
+  perspective:1600px;
+  z-index:5;
+}
+.pr-book{
+  position:absolute;left:-240px;top:-355px;width:480px;height:710px;
+  transform-style:preserve-3d;
+  transform:
+    scale(calc(.62 + var(--pm)*.14 + var(--ps)*.16))
+    rotateY(calc(-17deg*(1 - var(--pm)) + var(--mx,0)*2.4deg*(1 - var(--ps))))
+    rotateX(calc(7deg - 4deg*var(--pm) - 3deg*var(--ps) + var(--my,0)*-1.6deg*(1 - var(--ps))));
+}
+.pr-bshadow{
+  position:absolute;left:-300px;top:315px;width:600px;height:120px;
+  background:radial-gradient(50% 50% at 50% 50%, rgba(90,70,40,.34), transparent 70%);
+  filter:blur(6px);
+  transform:scale(calc(.7 + var(--pm)*.25 + var(--ps)*.5), 1);
+}
+:root[data-theme="dark"] .pr-bshadow{background:radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,.55), transparent 70%)}
+.pr-back{
+  position:absolute;inset:0;transform:translateZ(-15px);border-radius:3px 6px 6px 3px;
+  background:linear-gradient(180deg,#F0E9D8 0%,#E7DEC8 100%);
+  box-shadow:inset 0 0 0 1px rgba(185,138,47,.14), 0 40px 80px -30px rgba(60,45,20,.45);
+}
+:root[data-theme="dark"] .pr-back{background:linear-gradient(180deg,#26221B 0%,#1D1913 100%)}
+.pr-edge-r{
+  position:absolute;top:5px;bottom:5px;right:-15px;width:30px;
+  transform:rotateY(90deg);
+  background:repeating-linear-gradient(to left, #F2ECDD 0 2px, #DFD6C0 2px 3px);
+}
+.pr-edge-b{
+  position:absolute;left:5px;right:5px;bottom:-15px;height:30px;
+  transform:rotateX(90deg);
+  background:repeating-linear-gradient(to top, #EFE9D9 0 2px, #DCD3BD 2px 3px);
+}
+:root[data-theme="dark"] .pr-edge-r{background:repeating-linear-gradient(to left, #2A251D 0 2px, #211C15 2px 3px)}
+:root[data-theme="dark"] .pr-edge-b{background:repeating-linear-gradient(to top, #2A251D 0 2px, #211C15 2px 3px)}
+/* первая страница (правая) — чек */
+.pr-first{
+  position:absolute;inset:5px;transform:translateZ(13px);
+  background:var(--sheet);border-radius:2px;
+  box-shadow:inset 14px 0 30px -18px rgba(120,100,60,.38), inset 0 0 40px rgba(120,100,60,.07);
+}
+/* обложка: снаружи светлый переплёт «Оттиска», изнутри форзац-формуляр */
+.pr-cover{
+  position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;
+  transform:rotateY(calc(var(--po)*-180deg)) translateZ(15px);
+}
+.pr-cvout{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:3px 8px 8px 3px;overflow:hidden;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,.5) 0%, transparent 34%),
+    linear-gradient(180deg,#F5EFE1 0%,#EFE7D4 100%);
+  box-shadow:inset 0 0 0 1px rgba(185,138,47,.16), inset -3px 0 10px rgba(107,94,64,.12), 0 1px 2px rgba(107,94,64,.2);
+  display:flex;align-items:center;justify-content:center;
+}
+:root[data-theme="dark"] .pr-cvout{
+  background:
+    linear-gradient(160deg, rgba(255,255,255,.06) 0%, transparent 34%),
+    linear-gradient(180deg,#2B2620 0%,#221D16 100%);
+  box-shadow:inset 0 0 0 1px rgba(205,164,85,.22), inset -3px 0 10px rgba(0,0,0,.35);
+}
+.pr-cvout::after{ /* блик фольги за курсором — как на прод-книге */
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg, transparent 30%, rgba(255,246,214,.5) 46%, transparent 62%);
+  transform:translateX(calc(var(--mx,0)*46px));
+  mix-blend-mode:soft-light;
+}
+.pr-cvframe{position:absolute;inset:20px;border:1px solid rgba(185,138,47,.5);border-radius:2px;pointer-events:none}
+.pr-cvframe::after{content:"";position:absolute;inset:6px;border:1px solid rgba(185,138,47,.3)}
+.pr-cvinner{text-align:center;padding:0 44px;transform:translateZ(1px)}
+.pr-cvpara{
+  display:block;font-family:var(--serif);font-size:62px;line-height:1;margin-bottom:24px;
+  background:linear-gradient(168deg,#8A6420 8%,#C99B3F 38%,#EDD388 52%,#C99B3F 66%,#8A6420 94%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.45));
+}
+.pr-cvname{
+  display:block;font-family:var(--serif);font-weight:600;font-size:31px;line-height:1.3;
+  letter-spacing:.04em;text-transform:uppercase;
+  background:linear-gradient(168deg,#8A6420 8%,#C99B3F 40%,#EDD388 52%,#C99B3F 64%,#8A6420 94%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.4));
+}
+:root[data-theme="dark"] .pr-cvpara,
+:root[data-theme="dark"] .pr-cvname{filter:none}
+.pr-cvrule{display:block;width:72px;height:1px;margin:20px auto 0;background:linear-gradient(90deg,transparent,rgba(185,138,47,.7),transparent)}
+.pr-cvsub{
+  display:block;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+  color:#A79268;text-shadow:0 1px 0 rgba(255,255,255,.5);
+}
+.pr-cvblind{
+  position:absolute;left:0;right:0;bottom:34px;text-align:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.26em;text-transform:uppercase;
+  color:#BFB18F;text-shadow:0 1px 0 rgba(255,255,255,.6);
+}
+:root[data-theme="dark"] .pr-cvsub{color:#8A7A55;text-shadow:none}
+:root[data-theme="dark"] .pr-cvblind{color:#5E5442;text-shadow:none}
+.pr-cvin{
+  position:absolute;inset:0;transform:rotateY(180deg) translateZ(1px);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background:var(--sheet);border-radius:6px 2px 2px 6px;
+  box-shadow:inset -14px 0 26px -18px rgba(120,100,60,.35);
+}
+.pr-ribbon{
+  position:absolute;left:64%;bottom:-46px;width:13px;height:64px;
+  transform:translateZ(14px) rotate(2deg);
+  background:linear-gradient(180deg, var(--wax) 0%, var(--wax-deep) 100%);
+  clip-path:polygon(0 0, 100% 0, 100% 100%, 50% 88%, 0 100%);
+  opacity:calc(1 - var(--po));
+}
+
+/* ---------- страницы приёмной ---------- */
+.pr-pg{position:absolute;inset:0;padding:28px 32px;font-size:13px;color:var(--ink);overflow:hidden}
+.pr-pg::before{ /* графление формуляра */
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(to bottom, transparent 0 27px, var(--hairline) 27px 28px);
+  mask-image:linear-gradient(to bottom, transparent 0 78px, #000 78px);
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0 78px, #000 78px);
+}
+.pr-pg > *{position:relative}
+.pr-pg .pg-caps{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px}
+.pr-formh{
+  font-family:var(--serif);font-weight:600;font-size:25px;line-height:1.15;letter-spacing:-.01em;
+  margin:0 0 6px;
+}
+.pr-formsub{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px;max-width:40ch}
+/* компактные плашки внутри страницы книги (надстройка над pereplet.css) */
+.pr-pg .plate-q{margin:12px 0 7px;font-size:12px}
+.pr-pg .plates{display:flex;flex-wrap:wrap;gap:7px}
+.pr-pg .plates button{
+  font-size:12px;padding:7px 11px;line-height:1.2;border-radius:var(--r);
+}
+.pr-pg .plate-more{display:inline-block;margin-top:8px;font-size:12px}
+.pr-pg .pr-pgfoot{
+  position:absolute;left:34px;right:34px;bottom:24px;margin:0;
+  font-size:11px;color:var(--ink-faint);
+  border-top:1px solid var(--hairline);padding-top:10px;
+}
+/* чек */
+.pr-pg .lg-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  font-size:12.5px;margin-top:7px}
+.pr-pg .lg-total{margin-top:14px;padding-top:11px;border-top:1.5px solid var(--ink)}
+.pr-pg .price-xl{font-size:33px;font-family:var(--serif);font-weight:600;letter-spacing:-.01em}
+.pr-pg .calc-note{font-size:11px;margin-top:8px;max-width:46ch}
+.pr-pg .calc-cta{margin-top:12px}
+.pr-pg .calc-cta .btn-block{width:100%;justify-content:center;padding:13px 18px;font-size:14px}
+.pr-pg .calc-cta .petit{font-size:10.5px;margin-top:7px}
+.pr-trust{
+  margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-faint);display:flex;gap:14px;flex-wrap:wrap;
+}
+.pr-pg .calc-seal--foot{position:absolute;right:14px;top:236px;opacity:.92;pointer-events:none}
+
+/* ---------- подсказка ---------- */
+.pr-hint{
+  position:absolute;left:50%;bottom:26px;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--ink-faint);opacity:calc(1 - var(--p)*14);pointer-events:none;
+}
+.pr-hint .ln{width:1px;height:34px;background:var(--hairline-strong);position:relative;overflow:hidden}
+.pr-hint .ln::after{
+  content:"";position:absolute;left:0;top:-40%;width:100%;height:40%;background:var(--wax);
+  animation:pr-hintdrop 1.9s ease-in-out infinite;
+}
+@keyframes pr-hintdrop{0%{top:-40%}70%,100%{top:110%}}
+
+/* интерактив разворота — только когда книга раскрыта */
+.pr-pg{pointer-events:none}
+.pr-open .pr-pg{pointer-events:auto}
+
+/* ---------- оглавление издания ---------- */
+.pr-toc{
+  position:relative;background:var(--paper);
+  border-top:1px solid var(--hairline);
+  padding:clamp(64px,9vh,110px) 20px clamp(48px,7vh,80px);
+}
+.pr-tocwrap{max-width:760px;margin:0 auto}
+.pr-toccaps{
+  font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ink-faint);text-align:center;
+}
+.pr-toc h2{
+  font-family:var(--serif);font-weight:600;font-size:clamp(28px,3.2vw,38px);
+  text-align:center;letter-spacing:-.01em;margin:10px 0 8px;
+}
+.pr-tocsub{text-align:center;color:var(--ink-soft);font-size:14.5px;margin:0 0 34px}
+.pr-first-here{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  border:1px solid var(--hairline-strong);border-radius:var(--r);background:var(--sheet);
+  padding:14px 18px;margin-bottom:26px;text-decoration:none;
+  transition:border-color .15s ease, background .15s ease;
+}
+.pr-first-here:hover{border-color:var(--ink);background:var(--mark)}
+.pr-first-here .t{font-family:var(--serif);font-weight:600;font-size:16px}
+.pr-first-here .s{font-size:12.5px;color:var(--ink-soft);margin-top:2px;display:block}
+.pr-first-here .go{font-family:var(--serif);font-size:20px;color:var(--wax);flex:0 0 auto}
+.pr-row{
+  display:flex;align-items:baseline;gap:12px;padding:13px 8px;text-decoration:none;
+  border-radius:var(--r);transition:background .13s ease;color:inherit;
+}
+.pr-row:hover{background:var(--mark)}
+.pr-row .no{font-family:var(--mono);font-size:11px;color:var(--ink-faint);width:34px;flex:none}
+.pr-row .name{font-family:var(--serif);font-weight:500;font-size:16.5px;letter-spacing:-.005em;flex:none}
+.pr-row .tease{font-size:12.5px;color:var(--ink-faint);flex:none;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pr-row .dots{flex:1;border-bottom:1.5px dotted var(--hairline-strong);transform:translateY(-4px);min-width:24px}
+.pr-row .pg{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft)}
+.pr-append{
+  margin-top:18px;padding-top:14px;border-top:1px solid var(--hairline);
+  font-size:12.5px;color:var(--ink-soft);line-height:2;
+}
+.pr-append .caps{display:block;font-size:10px;margin-bottom:4px;color:var(--ink-faint)}
+/* финал «Начнём?» — прод-блок blank-chapter живёт в pereplet.css */
+.pr-toc .blank-chapter{margin-top:clamp(46px,7vh,72px)}
+
+/* ============================================================
+   ПОТОК: html[data-pr-flat] (мобильные, reduce-motion — ставит press.js)
+   и html:not(.has-js) (деградация без скриптов).
+   Сцена перестаёт быть кино: копи, форзац и чек — обычные карточки.
+   ============================================================ */
+html[data-pr-flat] .pr-track,
+html:not(.has-js) .pr-track{height:auto}
+html[data-pr-flat] .pr-scene,
+html:not(.has-js) .pr-scene{position:relative;height:auto;overflow:visible;padding:96px 0 40px}
+html[data-pr-flat] .pr-stage,
+html:not(.has-js) .pr-stage{position:relative;inset:auto}
+html[data-pr-flat] .pr-copy,
+html:not(.has-js) .pr-copy{
+  position:relative;left:auto;top:auto;transform:none;opacity:1;
+  width:auto;max-width:640px;margin:0 auto;padding:0 22px;
+}
+html[data-pr-flat] .pr-light,
+html:not(.has-js) .pr-light{
+  animation:none;inset:-30% -20% auto -20%;height:70vh;
+  background:radial-gradient(ellipse 70% 46% at 50% 26%, rgba(255,247,216,.9), transparent 70%);
+}
+html[data-pr-flat] #prDust, html:not(.has-js) #prDust,
+html[data-pr-flat] .pr-hint, html:not(.has-js) .pr-hint{display:none}
+html[data-pr-flat] .pr-bookwrap,
+html:not(.has-js) .pr-bookwrap{
+  position:relative;left:auto;top:auto;translate:none;perspective:none;
+  width:auto;height:auto;max-width:640px;margin:26px auto 0;padding:0 14px;
+}
+html[data-pr-flat] .pr-bshadow, html:not(.has-js) .pr-bshadow,
+html[data-pr-flat] .pr-back, html:not(.has-js) .pr-back,
+html[data-pr-flat] .pr-edge-r, html:not(.has-js) .pr-edge-r,
+html[data-pr-flat] .pr-edge-b, html:not(.has-js) .pr-edge-b,
+html[data-pr-flat] .pr-cvout, html:not(.has-js) .pr-cvout,
+html[data-pr-flat] .pr-ribbon, html:not(.has-js) .pr-ribbon{display:none}
+html[data-pr-flat] .pr-book,
+html:not(.has-js) .pr-book{
+  position:relative;left:auto;top:auto;width:auto;height:auto;transform:none;
+  display:grid;gap:14px;
+}
+html[data-pr-flat] .pr-cover,
+html:not(.has-js) .pr-cover{position:relative;inset:auto;transform:none;order:1}
+html[data-pr-flat] .pr-cvin,
+html:not(.has-js) .pr-cvin{
+  position:relative;inset:auto;transform:none;border-radius:3px;
+  border:1px solid var(--hairline);
+  box-shadow:0 18px 40px -24px rgba(90,70,40,.35);
+}
+html[data-pr-flat] .pr-first,
+html:not(.has-js) .pr-first{
+  position:relative;inset:auto;transform:none;order:2;border-radius:3px;
+  border:1px solid var(--hairline);
+  box-shadow:0 18px 40px -24px rgba(90,70,40,.35);
+}
+html[data-pr-flat] .pr-pg,
+html:not(.has-js) .pr-pg{position:relative;inset:auto;pointer-events:auto;padding:24px 20px 26px;overflow:visible}
+html[data-pr-flat] .pr-pg .pr-pgfoot,
+html:not(.has-js) .pr-pg .pr-pgfoot{position:static;margin-top:16px}
+html[data-pr-flat] .pr-pg .calc-seal--foot,
+html:not(.has-js) .pr-pg .calc-seal--foot{top:auto;bottom:180px}
+html[data-pr-flat] .pr-h .ln, html:not(.has-js) .pr-h .ln,
+html[data-pr-flat] .pr-kicker, html:not(.has-js) .pr-kicker,
+html[data-pr-flat] .pr-lead, html:not(.has-js) .pr-lead,
+html[data-pr-flat] .pr-cta, html:not(.has-js) .pr-cta,
+html[data-pr-flat] .pr-note, html:not(.has-js) .pr-note,
+html[data-pr-flat] .pr-copy .slot-line, html:not(.has-js) .pr-copy .slot-line,
+html[data-pr-flat] .story-chip, html:not(.has-js) .story-chip{animation:none;opacity:1;transform:none}
+
+@media (max-width:880px){
+  .pr-h{font-size:38px}
+  .pr-lead{font-size:15px}
+  .pr-row .tease{display:none}
+  .pr-toc{padding-left:14px;padding-right:14px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .pr-light,.pr-hint .ln::after{animation:none}
+  .pr-h .ln,.pr-kicker,.pr-lead,.pr-cta,.pr-note,.pr-copy .slot-line,.story-chip{animation:none;opacity:1;transform:none}
+}
