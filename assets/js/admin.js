@@ -70,19 +70,22 @@ function initGodEye() {
     offnew: false, offlink: null,   /* сборка заявки под ссылку */
     tab: 'summary', filter: 'attention', q: '', sort: 'fresh', listLimit: 40,
     orders: [], sel: null, card: null,
-    clients: [], csel: null, ccard: null,
+    clients: [], csel: null, ccard: null, cq: '', csort: 'recent',
     reviews: [], leads: [],
-    qa: null, qaTags: null,   /* «Открытая приёмная»: очередь и лента */
+    qa: null, qaTags: null, qaDrafts: {},   /* «Открытая приёмная»: очередь, лента, несохранённые наброски */
     desk: null, calDay: null, /* «Сегодня на столе»: активные дела + календарь сдач */
     subs: null,               /* /admin/subs: оформления подписки (свой контур) */
-    gifts: null, gsel: null, gnew: false,  /* сертификаты: список, раскрытая карточка, форма выпуска */
+    gifts: null, gsel: null, gnew: false, gq: '', gfilter: '', giftBusy: false,  /* сертификаты: список, раскрытая карточка, форма, поиск/фильтр */
     ov: null, timer: null, busy: false,
     visits: null, vstats: null,                    /* «Глаз бога»: лента заходов */
     vopts: { hours: 24, self: false, bots: false },
+    vgeo: null, vanmore: false,                    /* выбранный город: фильтр ленты; раскрыт ли блок «ещё разрезы» */
     vopen: {},                                     /* раскрытые строки визитов */
     vtimer: null,
     bulk: null                                     /* Set(id) — режим массовых действий */
   };
+  var VALID_TABS = { summary: 1, visits: 1, orders: 1, clients: 1, reviews: 1,
+    qa: 1, gifts: 1, leads: 1, broadcast: 1, settings: 1 };
 
   /* цветные метки заказов: имя → чернила «Оттиска» */
   var CLR = { red: '#B23B22', gold: '#8A6D1C', green: '#2E6B4F', blue: '#3A4E7A', violet: '#6B4B8A' };
@@ -97,12 +100,15 @@ function initGodEye() {
     });
   }
 
-  function bulkApply(payload) {
+  function bulkApply(payload, keepSel) {
     if (!st.bulk || !st.bulk.size) { toast('Сначала отметьте заказы галочками'); return; }
     var ids = [];
     st.bulk.forEach(function (id) { ids.push(id); });
     flag(ids, payload, function () {
       toast('Готово · ' + ids.length + ' шт.');
+      /* цвет/пин не убирают строки из списка — держим выделение, чтобы можно
+         было тут же применить к той же пачке ещё действие; hide/trash — сбрасываем */
+      if (keepSel) { loadTab(); return; }
       st.bulk = new Set();
       loadTab();
     });
@@ -120,6 +126,17 @@ function initGodEye() {
     return isNaN(d) ? '' : d.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
   }
   function toast(m) { if (S.toast) S.toast(m); }
+  function copyText(text, okMsg) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(
+          function () { toast(okMsg || 'Скопировано ✓'); },
+          function () { toast('Браузер не дал доступ к буферу'); });
+        return;
+      }
+    } catch (e) {}
+    toast('Не удалось скопировать — выделите вручную');
+  }
   function stMeta(s) { return ST_META[s] || ['·', s]; }
   function stamp(s) { return '<span class="ag-stamp st-' + s + '">' + stMeta(s)[1] + '</span>'; }
   function confirmDlg(opts) {
@@ -164,6 +181,12 @@ function initGodEye() {
       if (r.error === 'forbidden') { render(tplLogin(null, true)); return; }
       if (!r.ok) { render('<div class="ag-empty">Сервер недоступен. <button class="btn btn-line" id="agRetry">Повторить</button></div>'); return; }
       st.ov = r;
+      /* вернуть последнюю вкладку (переживает F5 и релогин с бота), но не
+         перебивать диплинк #o= — он уже увёл st.tab на «Заказы» */
+      if (st.tab === 'summary') {
+        var saved = S.store.get('ag_tab', null);
+        if (saved && VALID_TABS[saved]) st.tab = saved;
+      }
       renderShell();
       loadTab(true);
       loadSubs();
@@ -181,6 +204,8 @@ function initGodEye() {
      подтягиваются в момент действия клиента, без ожидания поллинга */
   var evVer = 0;
   function watchEvents() {
+    /* в фоне или после выхода — не держим полусекундный long-poll, только редкая сверка */
+    if (!S.api.token() || document.hidden) { setTimeout(watchEvents, 4000); return; }
     fetch(S.api.base + '/events?since=' + evVer)
       .then(function (resp) { return resp.json(); })
       .then(function (r) {
@@ -198,8 +223,24 @@ function initGodEye() {
     });
   }
 
+  /* всплеск событий на общей шине (чужие заказы, визиты, рассылки) не должен
+     оборачиваться очередью полных /overview — коалесцируем и не дублируем запрос */
+  var refreshT = null;
   function refreshSilent() {
-    S.api.get('/admin/overview').then(function (r) { if (r.ok) { st.ov = r; drawNav(); drawLive(); if (st.tab === 'summary') drawBody(); } });
+    if (!S.api.token()) return;                       /* после выхода — тихий no-op */
+    if (refreshT) clearTimeout(refreshT);
+    refreshT = setTimeout(doRefresh, 300);
+  }
+  function doRefresh() {
+    refreshT = null;
+    if (!S.api.token()) return;
+    if (!st.ovBusy) {
+      st.ovBusy = true;
+      S.api.get('/admin/overview').then(function (r) {
+        st.ovBusy = false;
+        if (r.ok) { st.ov = r; drawNav(); drawLive(); if (st.tab === 'summary') drawBody(); }
+      });
+    }
     loadSubs();
     if (st.tab === 'summary') loadDesk();
     if (st.tab === 'gifts') loadGifts();
@@ -230,24 +271,28 @@ function initGodEye() {
       }, 12000);
       return;
     }
+    /* показываем «Загружаем…» сразу: без этого при обрыве/медленной сети экран
+       остаётся на прошлой вкладке, хотя в шапке уже подсвечена новая */
+    tabLoading();
     if (st.tab === 'orders') {
       S.api.get('/admin/orders?' + listQuery()).then(function (r) {
-        if (!r.ok) return;
+        if (!r.ok) return tabFail();
         st.orders = r.orders;
-        if (openFirst && st.orders.length && !st.sel) st.sel = st.orders[0].id;
+        /* открываем ту строку, что визуально сверху (закреплённые всплывают) */
+        if (openFirst && st.orders.length && !st.sel) st.sel = sortedOrders()[0].id;
         drawBody();
         if (st.sel) loadCard(st.sel);
       });
     } else if (st.tab === 'clients') {
       S.api.get('/admin/clients').then(function (r) {
-        if (!r.ok) return;
+        if (!r.ok) return tabFail();
         st.clients = r.clients;
         drawBody();
         if (st.csel) loadClient(st.csel);
       });
     } else if (st.tab === 'reviews') {
       S.api.get('/admin/reviews').then(function (r) {
-        if (!r.ok) return;
+        if (!r.ok) return tabFail();
         st.reviews = r.reviews;
         drawBody();
       });
@@ -257,7 +302,7 @@ function initGodEye() {
       loadGifts();
     } else if (st.tab === 'leads') {
       S.api.get('/admin/leads').then(function (r) {
-        if (!r.ok) return;
+        if (!r.ok) return tabFail();
         st.leads = r.leads;
         drawBody();
       });
@@ -265,12 +310,46 @@ function initGodEye() {
       drawBody();
     }
   }
+  function tabLoading() {
+    var box = document.getElementById('agBody');
+    if (box) box.innerHTML = '<div class="ag-empty">Загружаем…</div>';
+  }
+  function tabFail() {
+    var box = document.getElementById('agBody');
+    if (box) box.innerHTML = '<div class="ag-empty">Не удалось загрузить эту вкладку. ' +
+      '<button type="button" class="btn btn-line" id="agTabRetry" style="margin-left:8px">Повторить</button></div>';
+  }
+  /* переход на вкладку: запоминаем её (переживёт перезагрузку и релогин с бота)
+     и уводим фокус на тело — иначе он падает на <body> при каждой смене */
+  function goTab(name, openFirst) {
+    st.tab = name;
+    try { S.store.set('ag_tab', name); } catch (e) {}
+    drawNav();
+    loadTab(openFirst);
+    var body = document.getElementById('agBody');
+    if (body) { try { body.focus({ preventScroll: true }); } catch (e) {} }
+  }
   function loadQA() {
+    snapshotQaDrafts();   /* сохранить недописанные ответы перед перерисовкой ленты */
     S.api.get('/admin/qa').then(function (r) {
-      if (!r || !r.ok) return;
+      if (!r || !r.ok) { if (st.tab === 'qa') tabFail(); return; }
       st.qa = r.items;
       st.qaTags = r.tags || {};
       if (st.tab === 'qa') drawBody();
+    });
+  }
+  /* каждая карточка приёмной — редактор; действие над одной не должно затирать
+     наброски в остальных. Складываем «грязные» поля и подставляем их обратно. */
+  function snapshotQaDrafts() {
+    if (!st.qa) return;
+    st.qaDrafts = st.qaDrafts || {};
+    (st.qa || []).forEach(function (q) {
+      var qEl = document.getElementById('qaQ-' + q.id), aEl = document.getElementById('qaA-' + q.id);
+      if (!qEl && !aEl) return;
+      var d = st.qaDrafts[q.id] || {};
+      if (qEl && qEl.value !== (q.question || '')) d.q = qEl.value; else delete d.q;
+      if (aEl && aEl.value !== (q.answer || '')) d.a = aEl.value; else delete d.a;
+      if (d.q != null || d.a != null) st.qaDrafts[q.id] = d; else delete st.qaDrafts[q.id];
     });
   }
 
@@ -336,6 +415,203 @@ function initGodEye() {
     return Math.floor((Date.now() - t) / 60000);
   }
 
+  /* ============ АНАЛИТИКА ВИЗИТОВ: города, источники, конверсия ============
+     Всё считается на клиенте из уже загруженной ленты st.visits. Единица —
+     уникальный человек (по v.vid), а не сессия: три захода одного не должны
+     перевешивать трёх разных людей. Честно: цифры — «по загруженным сессиям
+     за период», не перепись. Появится серверный агрегат st.vstats.cities —
+     подхватим его как более точный (см. visitStats). */
+  var AN_PERIOD = { 24: 'сутки', 72: '3 дня', 168: 'неделю', 720: '30 дней' };
+  function anPl(n, one, few, many) {
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return one;
+    if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return few;
+    return many;
+  }
+  function anCut(s, n) { s = String(s || ''); return s.length > n ? s.slice(0, n - 1) + '…' : s; }
+
+  /* город из v.geo — строка от IP приходит разнобоем: «Москва», «Москва,
+     Россия», «г. Москва», «», «—», «робот». Режем до запятой, чистим «г.». */
+  function cityOf(v) {
+    var s = String((v && v.geo) || '').split(',')[0].trim().replace(/^г\.?\s+/i, '');
+    if (!s || s === '—' || /^(робот|бот)$/i.test(s) || /^откуда/i.test(s)) return null;
+    return s;
+  }
+  function sourceOf(v) {
+    var ref = String((v && v.ref) || '');
+    if (!ref) return { key: 'direct', label: 'прямые заходы' };
+    var m = /https?:\/\/([^\/]+)/.exec(ref);
+    var host = m ? m[1].replace(/^www\./, '') : '';
+    if (/yandex|ya\.ru|google/.test(host)) return { key: 'search', label: '🔎 Поиск' };
+    if (/vk\.com|vk\.ru/.test(host)) return { key: 'vk', label: '💙 ВКонтакте' };
+    if (/t\.me|telegram/.test(host)) return { key: 'tg', label: '✈️ Telegram' };
+    if (!host && /utm_/.test(ref)) return { key: 'utm', label: '🎯 Реклама (utm)' };
+    return { key: host || 'other', label: host || 'другой источник' };
+  }
+  function deviceOf(ua) { return /Mobile|iPhone|Android.*Mobile/.test(String(ua || '')) ? 'mob' : 'desk'; }
+
+  function anTop(map, n) {
+    var a = Object.keys(map).map(function (k) { return map[k]; })
+      .sort(function (x, y) { return y.uniq - x.uniq; });
+    var t = a.slice(0, n || 5);
+    var r = a.slice(n || 5).reduce(function (s, c) { return s + c.uniq; }, 0);
+    if (r) t.push({ name: 'прочие', uniq: r });
+    return t;
+  }
+
+  function visitStats(rows) {
+    rows = rows || [];
+    var seen = {}, order = [], bots = 0;
+    for (var i = 0; i < rows.length; i++) {
+      var v = rows[i];
+      if (v.bot) { bots++; continue; }
+      var vid = v.vid || ('v' + v.id);
+      var rec = seen[vid];
+      if (!rec) {
+        seen[vid] = { city: cityOf(v), src: sourceOf(v), entry: pageName(v.entry),
+          dev: deviceOf(v.ua), order: !!v.order_id, sessions: 1 };
+        order.push(vid);
+      } else { rec.sessions++; if (v.order_id) rec.order = true; }
+    }
+    var uniq = order.length;
+    var cmap = {}, none = { name: 'не определён', uniq: 0, orders: 0, none: true, color: 'var(--an-none)' };
+    var srcMap = {}, entMap = {}, devMap = { mob: 0, desk: 0 }, ret = 0;
+    order.forEach(function (vid) {
+      var r = seen[vid];
+      if (r.city) { var c = cmap[r.city] || (cmap[r.city] = { name: r.city, uniq: 0, orders: 0 }); c.uniq++; if (r.order) c.orders++; }
+      else { none.uniq++; if (r.order) none.orders++; }
+      var sc = srcMap[r.src.key] || (srcMap[r.src.key] = { name: r.src.label, uniq: 0 }); sc.uniq++;
+      var ec = entMap[r.entry] || (entMap[r.entry] = { name: r.entry, uniq: 0 }); ec.uniq++;
+      devMap[r.dev]++;
+      if (r.sessions > 1) ret++;
+    });
+    var cities = Object.keys(cmap).map(function (k) { return cmap[k]; })
+      .sort(function (a, b) { return b.uniq - a.uniq; });
+    var top = cities.slice(0, 6), rest = cities.slice(6);
+    top.forEach(function (c, i) { c.color = 'var(--an' + (i + 1) + ')'; });
+    var slices = top.slice();
+    var restSum = rest.reduce(function (s, c) { return s + c.uniq; }, 0);
+    if (restSum) slices.push({ name: 'прочие', uniq: restSum,
+      orders: rest.reduce(function (s, c) { return s + c.orders; }, 0), rest: true, color: 'var(--an-rest)' });
+    if (none.uniq) slices.push(none);
+    var serverUniq = (st.vstats && st.vstats.uniq) || 0;
+    return {
+      uniq: uniq, bots: bots, gap: Math.max(0, serverUniq - uniq),
+      slices: slices, cities: top, distinctCities: cities.length,
+      sources: anTop(srcMap, 5), entries: anTop(entMap, 5),
+      devices: devMap, ret: ret, fresh: uniq - ret
+    };
+  }
+
+  /* дуга кольца: угол считаем по часовой от 12ч; sweep=1 — по часовой */
+  function anArc(r, a0, a1) {
+    function pt(a) { var d = (a - 90) * Math.PI / 180; return [(60 + r * Math.cos(d)).toFixed(2), (60 + r * Math.sin(d)).toFixed(2)]; }
+    var s = pt(a0), e = pt(a1), large = (a1 - a0) > 180 ? 1 : 0;
+    return 'M' + s[0] + ' ' + s[1] + ' A' + r + ' ' + r + ' 0 ' + large + ' 1 ' + e[0] + ' ' + e[1];
+  }
+  function anDonut(stats, sel) {
+    var slices = stats.slices, r = 42, sw = 15, GAP = 2.6;
+    var total = slices.reduce(function (s, c) { return s + c.uniq; }, 0) || 1;
+    var segs = '', cum = 0;
+    if (slices.length === 1) {
+      var one = slices[0];
+      segs = '<circle cx="60" cy="60" r="42" fill="none" stroke="' + one.color + '" stroke-width="' + sw + '"' +
+        (one.none || one.rest ? '' : ' data-vgeo="' + esc(one.name) + '" style="cursor:pointer"') + '>' +
+        '<title>' + esc(one.name) + ' · ' + one.uniq + ' чел · 100%</title></circle>';
+    } else {
+      slices.forEach(function (c) {
+        var frac = c.uniq / total, a0 = cum * 360, a1 = (cum + frac) * 360, span = a1 - a0;
+        cum += frac;
+        var pad = span > GAP * 1.6 ? GAP : 0;
+        var dim = sel && c.name !== sel ? ' opacity="0.3"' : '';
+        var w = sel && c.name === sel ? sw + 3 : sw;
+        var pickable = !c.none && !c.rest;
+        segs += '<path d="' + anArc(r, a0 + pad / 2, a1 - pad / 2) + '" fill="none" stroke="' + c.color +
+          '" stroke-width="' + w + '" stroke-linecap="butt"' + dim +
+          (pickable ? ' data-vgeo="' + esc(c.name) + '" style="cursor:pointer"' : '') + '>' +
+          '<title>' + esc(c.name) + ' · ' + c.uniq + ' ' + anPl(c.uniq, 'человек', 'человека', 'человек') +
+          ' · ' + Math.round(frac * 100) + '%' + (c.orders ? ' · ' + c.orders + ' ' + anPl(c.orders, 'заявка', 'заявки', 'заявок') : '') +
+          '</title></path>';
+      });
+    }
+    var selC = sel && slices.filter(function (c) { return c.name === sel; })[0];
+    var big = selC ? Math.round(selC.uniq / total * 100) + '%' : String(stats.uniq);
+    var small = selC ? anCut(sel, 13) : (stats.distinctCities + ' ' + anPl(stats.distinctCities, 'город', 'города', 'городов'));
+    return '<svg viewBox="0 0 120 120" role="img" aria-label="Города посетителей: ' + esc(small) + '">' +
+      '<circle cx="60" cy="60" r="42" fill="none" stroke="var(--hairline)" stroke-width="' + sw + '"/>' +
+      segs +
+      '<text x="60" y="59" text-anchor="middle" style="font-family:var(--mono);font-size:21px;fill:var(--ink)">' + esc(big) + '</text>' +
+      '<text x="60" y="73" text-anchor="middle" style="font-family:var(--sans);font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;fill:var(--ink-soft)">' + esc(small) + '</text>' +
+      '</svg>';
+  }
+  function anBars(items, denom) {
+    if (!items || !items.length) return '<p class="an-foot">нет данных</p>';
+    var max = items.reduce(function (m, x) { return Math.max(m, x.uniq); }, 1);
+    return items.map(function (x, i) {
+      var w = Math.max(3, Math.round(x.uniq / max * 100));
+      var pct = denom ? Math.round(x.uniq / denom * 100) : 0;
+      return '<div class="an-bar' + (i === 0 ? ' top' : '') + '" title="' + esc(x.name) + ' · ' + x.uniq + (pct ? ' · ' + pct + '%' : '') + '">' +
+        '<span class="an-blbl">' + esc(x.name) + '</span>' +
+        '<span class="an-track"><span class="an-fill" style="width:' + w + '%"></span></span>' +
+        '<span class="an-n">' + x.uniq + '</span></div>';
+    }).join('');
+  }
+  function tplAnalytics(stats) {
+    if (!stats || !stats.uniq) {
+      return '<p class="an-empty-c">Данных для аналитики за выбранный период пока нет — расширьте окно фильтром выше.</p>';
+    }
+    var period = AN_PERIOD[st.vopts.hours] || 'период';
+    var real = stats.cities;
+    var head = '<div class="an-head"><p class="caps" style="margin:0">Откуда наши посетители</p>' +
+      '<span class="sub">уник. люди · за ' + period + ' · по загруженным сессиям</span></div>';
+    if (!real.length) {
+      return head + '<p class="an-empty-c">Город по IP пока не определился ни у кого за период. ' +
+        'Он появляется, когда посетитель заходит не через анонимайзер — расширьте окно (Неделя / 30 дней).</p>';
+    }
+    var p1 = Math.round(real[0].uniq / stats.uniq * 100);
+    var reco = '<div class="an-reco">Больше всего людей из <b>' + esc(real[0].name) + '</b> — ' + p1 + '%' +
+      (real[1] ? ', затем <b>' + esc(real[1].name) + '</b> — ' + Math.round(real[1].uniq / stats.uniq * 100) + '%' : '') +
+      '. Туда есть смысл усилить таргет.</div>';
+    var sel = st.vgeo;
+    var legend = '<ul class="an-legend">' + stats.slices.map(function (c) {
+      var pct = Math.round(c.uniq / stats.uniq * 100);
+      var pick = !c.none && !c.rest;
+      var on = sel && c.name === sel ? ' class="on"' : '';
+      return '<li' + on + '>' +
+        (pick ? '<button type="button" data-vgeo="' + esc(c.name) + '">' : '<button type="button" disabled>') +
+        '<span class="an-sw" style="background:' + c.color + '"></span>' +
+        '<span class="an-nm">' + esc(c.name) + '</span>' +
+        '<span class="an-pct">' + c.uniq + ' · ' + pct + '%</span></button></li>';
+    }).join('') + '</ul>';
+    var conv = '<div class="an-conv"><span class="caps">Конверсия в заявку по городам</span>' +
+      real.map(function (c) {
+        var low = c.uniq < 3;
+        var pct = c.uniq ? Math.round(c.orders / c.uniq * 100) : 0;
+        return '<div class="an-crow' + (low ? ' low' : (c.orders ? ' hot' : '')) + '">' +
+          '<span class="an-cnm">' + esc(c.name) + '</span>' +
+          '<span class="an-cn">' + c.orders + '/' + c.uniq + '</span>' +
+          '<span class="an-cv">' + (low ? '—' : pct + '%') + '</span></div>';
+      }).join('') + '<p class="an-foot">Города с 1–2 людьми (—) — слишком мелкая выборка, чтобы верить проценту.</p></div>';
+    var band = '<div class="an-band"><div class="an-donut">' + anDonut(stats, sel) + '</div>' +
+      '<div class="an-side">' + legend + conv + '</div></div>';
+    var breaks = '<div class="an-breaks">' +
+      '<div class="an-block"><span class="caps">Источники</span>' + anBars(stats.sources, stats.uniq) + '</div>' +
+      '<div class="an-block"><span class="caps">Устройства</span>' +
+        anBars([{ name: '📱 мобильные', uniq: stats.devices.mob }, { name: '💻 десктоп', uniq: stats.devices.desk }], stats.uniq) +
+        (stats.bots ? '<p class="an-foot">+' + stats.bots + ' ' + anPl(stats.bots, 'заход робота', 'захода роботов', 'заходов роботов') + ' отфильтровано</p>' : '') +
+      '</div></div>';
+    var more = '<details class="an-more"' + (st.vanmore ? ' open' : '') + '><summary>ещё разрезы — входные страницы, новые и вернувшиеся</summary>' +
+      '<div class="an-breaks">' +
+        '<div class="an-block"><span class="caps">Входные страницы</span>' + anBars(stats.entries, stats.uniq) + '</div>' +
+        '<div class="an-block"><span class="caps">Новые и вернувшиеся <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— в пределах окна</span></span>' +
+          anBars([{ name: 'новые', uniq: stats.fresh }, { name: 'вернувшиеся', uniq: stats.ret }], stats.uniq) + '</div>' +
+      '</div></details>';
+    var foot = stats.gap
+      ? '<p class="an-foot" style="margin-bottom:12px">Ещё ~' + stats.gap + ' уник. посетителей за период не попали в загруженное окно ленты — на круге показаны только загруженные сессии.</p>'
+      : '';
+    return head + reco + band + breaks + more + foot;
+  }
+
   function visitRow(v) {
     var online = minsAgo(v.at) < 3;
     var who;
@@ -356,7 +632,7 @@ function initGodEye() {
       : pageName(v.entry) + ' → ' + pageName(v.page);
     var dur = Math.max(0, Math.round((new Date(v.at + 'Z') - new Date(v.started + 'Z')) / 60000));
     var open = st.vopen[v.id];
-    return '<div class="ag-vrow" data-vrow="' + v.id + '">' +
+    return '<div class="ag-vrow" data-vrow="' + v.id + '" role="button" tabindex="0" aria-expanded="' + (open ? 'true' : 'false') + '">' +
       '<div class="v-top">' +
         (online ? '<span class="v-on" title="на сайте прямо сейчас"></span>' : '') +
         '<span class="v-time">' + dt(v.at) + '</span>' +
@@ -395,6 +671,7 @@ function initGodEye() {
 
   function tplVisits() {
     return '<div class="ag-tiles" id="agVTiles"></div>' +
+      '<div id="agVAnalytics"></div>' +
       '<div class="ag-filters" id="agVFilters"></div>' +
       '<div class="ag-vwrap" id="agVList"><div class="ag-empty">Слушаем эфир…</div></div>' +
       '<p class="ag-note" style="margin-top:10px">Сессия — заходы без паузы больше 30 минут. ' +
@@ -406,6 +683,7 @@ function initGodEye() {
     var tiles = document.getElementById('agVTiles');
     var flt = document.getElementById('agVFilters');
     var list = document.getElementById('agVList');
+    var an = document.getElementById('agVAnalytics');
     if (!tiles || !list) return;
     var s = st.vstats || {};
     var conv = s.uniq ? Math.round((s.with_order || 0) / s.uniq * 100) : 0;
@@ -419,19 +697,26 @@ function initGodEye() {
       tile(s.uniq || 0, 'уникальных') +
       tile(s.with_order || 0, 'дошли до заявки', s.with_order ? 'calm' : '') +
       tile(conv + '%', 'конверсия в заявку');
+    if (an) an.innerHTML = tplAnalytics(visitStats(st.visits || []));
     var o = st.vopts;
-    if (flt) flt.innerHTML = [[24, 'Сутки'], [72, '3 дня'], [168, 'Неделя'], [720, '30 дней']]
+    if (flt) flt.innerHTML =
+      (st.vgeo ? '<button type="button" class="ag-chip on" data-vgeo="' + esc(st.vgeo) + '" title="Показать все города">✕ ' + esc(anCut(st.vgeo, 20)) + '</button>' : '') +
+      [[24, 'Сутки'], [72, '3 дня'], [168, 'Неделя'], [720, '30 дней']]
       .map(function (h) {
         return '<button type="button" class="ag-chip' + (o.hours === h[0] ? ' on' : '') + '" data-vh="' + h[0] + '">' + h[1] + '</button>';
       }).join('') +
       '<button type="button" class="ag-chip' + (o.self ? ' on' : '') + '" data-vt="self">мои заходы</button>' +
       '<button type="button" class="ag-chip' + (o.bots ? ' on' : '') + '" data-vt="bots">🤖 роботы</button>';
     var rows = st.visits || [];
+    if (st.vgeo) rows = rows.filter(function (v) { return cityOf(v) === st.vgeo; });
     var top = keepScroll ? list.scrollTop : 0;
     list.innerHTML = rows.length
       ? rows.map(visitRow).join('')
-      : '<div class="ag-empty">Пока тихо — за выбранный период заходов нет.<br>' +
-        '<span class="petit">Маячок появился на сайте только что: лента наполнится с первыми посетителями.</span></div>';
+      : (st.vgeo
+        ? '<div class="ag-empty">Из города «' + esc(st.vgeo) + '» заходов в загруженном окне нет. ' +
+          '<button type="button" class="ag-linkbtn" data-vgeo="' + esc(st.vgeo) + '">показать все</button></div>'
+        : '<div class="ag-empty">Пока тихо — за выбранный период заходов нет.<br>' +
+          '<span class="petit">Маячок появился на сайте только что: лента наполнится с первыми посетителями.</span></div>');
     if (keepScroll) list.scrollTop = top;
   }
 
@@ -458,10 +743,16 @@ function initGodEye() {
   }
   function loadClient(id) {
     st.csel = id;
+    drawClientList();   /* подсветить выбранную строку сразу */
     S.api.get('/admin/clients/' + id).then(function (r) {
       if (!r.ok) return;
       st.ccard = r.client;
       drawClientCard();
+      /* на телефоне карточка ниже всего списка — подтянем её в вид */
+      if (window.innerWidth <= 960) {
+        var cc = document.getElementById('agCCard');
+        if (cc) { try { cc.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }
+      }
     });
   }
 
@@ -480,8 +771,8 @@ function initGodEye() {
       '<a class="ag-linkbtn" href="index.html">на сайт</a>' +
       '<a class="ag-linkbtn" href="dashboard.html">клиентский кабинет</a>' +
       '<button type="button" class="ag-linkbtn" id="agLogout">выйти</button></div></div>' +
-      '<div class="ag-nav" id="agNav"></div>' +
-      '<div id="agBody"></div>');
+      '<div class="ag-nav" id="agNav" role="tablist" aria-label="Разделы кабинета"></div>' +
+      '<div id="agBody" tabindex="-1"></div>');
     drawNav();
     drawLive();
   }
@@ -501,7 +792,8 @@ function initGodEye() {
       orders: (by.new || 0) + (by.fix || 0) + (ov.claimed || 0),
       reviews: ov.reviews_pending || 0,
       qa: (ov.qa && ov.qa.pending) || 0,
-      gifts: (ov.gifts && ov.gifts.claimed_n) || 0
+      gifts: (ov.gifts && ov.gifts.claimed_n) || 0,
+      leads: ov.leads_new || 0
     };
   }
 
@@ -518,7 +810,7 @@ function initGodEye() {
       ['reviews', '⭐ Отзывы', b.reviews],
       ['qa', '📮 Приёмная', b.qa],
       ['gifts', '🎁 Сертификаты', b.gifts],
-      ['leads', '🌐 Лиды', 0],
+      ['leads', '🌐 Лиды', b.leads],
       ['broadcast', '📣 Рассылка', 0],
       ['settings', '⚙️ Настройки', 0]
     ];
@@ -526,7 +818,9 @@ function initGodEye() {
       '<button type="button" class="wz-navbtn" id="wzOpenNav">📄 Новая заявка</button>' +
       tabs.map(function (t) {
       var bcls = t[0] === 'visits' ? 'ag-badge mut' : 'ag-badge';
-      return '<button type="button" class="ag-tab' + (st.tab === t[0] ? ' on' : '') + '" data-tab="' + t[0] + '">' + t[1] +
+      var on = st.tab === t[0];
+      return '<button type="button" role="tab" aria-selected="' + (on ? 'true' : 'false') + '"' +
+        ' class="ag-tab' + (on ? ' on' : '') + '" data-tab="' + t[0] + '">' + t[1] +
         (t[2] ? '<span class="' + bcls + '">' + t[2] + '</span>' : '') + '</button>';
     }).join('');
   }
@@ -555,6 +849,17 @@ function initGodEye() {
     }
     if (st.tab === 'clients') {
       box.innerHTML =
+        '<div class="ag-filters">' +
+          '<input class="ag-search" id="agCQ" type="search" placeholder="Поиск: имя или @ник" value="' + esc(st.cq) + '">' +
+          '<button type="button" class="ag-chip" id="agCQClear" title="Сбросить"' + (st.cq ? '' : ' hidden') + '>✕ сброс</button>' +
+          '<select class="ag-sort" id="agCSort" title="Порядок">' +
+            '<option value="recent"' + (st.csort === 'recent' ? ' selected' : '') + '>по последнему визиту</option>' +
+            '<option value="ltv"' + (st.csort === 'ltv' ? ' selected' : '') + '>по сумме оплат</option>' +
+            '<option value="orders"' + (st.csort === 'orders' ? ' selected' : '') + '>по числу заказов</option>' +
+            '<option value="bonus"' + (st.csort === 'bonus' ? ' selected' : '') + '>по бонусам</option>' +
+            '<option value="name"' + (st.csort === 'name' ? ' selected' : '') + '>по имени</option>' +
+          '</select>' +
+        '</div>' +
         '<div class="ag-split">' +
           '<div class="ag-list" id="agCList"></div>' +
           '<div class="ag-card" id="agCCard"><div class="ag-empty">Выберите клиента слева</div></div>' +
@@ -574,7 +879,9 @@ function initGodEye() {
   /* ---------------- СЕРТИФИКАТЫ ---------------- */
   function loadGifts() {
     S.api.get('/admin/gifts').then(function (r) {
-      if (!r || !r.ok) return;
+      /* при обрыве: есть кэш — вернём его (loadTab уже стёр тело в «Загружаем…»),
+         нет — покажем ошибку с «Повторить». Иначе вкладка зависает на плейсхолдере */
+      if (!r || !r.ok) { if (st.tab === 'gifts') { if (st.gifts) drawBody(); else tabFail(); } return; }
       st.gifts = r;
       if (st.tab === 'gifts') drawBody();
     });
@@ -593,10 +900,10 @@ function initGodEye() {
     var s = st.gifts.stats || {};
     var tiles =
       '<div class="ag-tiles">' +
-        '<div class="ag-tile"><b class="t-num">' + (s.active_n || 0) + '</b><span class="t-lbl">в обращении</span></div>' +
+        '<div class="ag-tile click" data-gift-filter="active"><b class="t-num">' + (s.active_n || 0) + '</b><span class="t-lbl">в обращении →</span></div>' +
         '<div class="ag-tile"><b class="t-num">' + money(s.live_balance) + ' ₽</b><span class="t-lbl">остаток на кодах</span></div>' +
         '<div class="ag-tile"><b class="t-num">' + money(s.redeemed_sum) + ' ₽</b><span class="t-lbl">погашено услугами</span></div>' +
-        '<div class="ag-tile' + (s.claimed_n ? ' warn' : '') + '"><b class="t-num">' + (s.claimed_n || 0) + '</b><span class="t-lbl">на сверке оплаты</span></div>' +
+        '<div class="ag-tile click' + (s.claimed_n ? ' warn' : '') + '" data-gift-filter="claimed"><b class="t-num">' + (s.claimed_n || 0) + '</b><span class="t-lbl">на сверке оплаты →</span></div>' +
       '</div>';
     var newBtn = '<div style="margin:12px 0">' +
       '<button type="button" class="btn ' + (st.gnew ? 'btn-line' : 'btn-wax') + '" id="agGiftNew">' +
@@ -613,7 +920,23 @@ function initGodEye() {
           '<button type="button" class="btn btn-wax" id="agGfCreate">Выпустить — код появится сразу</button>' +
           '<p class="ag-hint">Выпуск ручной оплаты: сертификат сразу действителен. Не забудьте чек, если это продажа.</p>' +
         '</div></div>';
-    var rows = (st.gifts.gifts || []).map(function (g) {
+    var gq = (st.gq || '').toLowerCase().trim();
+    var list = (st.gifts.gifts || []).filter(function (g) {
+      if (st.gfilter === 'claimed' && !(g.claimed && g.status === 'pending')) return false;
+      if (st.gfilter && st.gfilter !== 'claimed' && g.state !== st.gfilter && g.status !== st.gfilter) return false;
+      if (!gq) return true;
+      return [g.code, g.recip_name, g.buyer_name, g.buyer_contact, g.recip_contact]
+        .some(function (x) { return String(x || '').toLowerCase().indexOf(gq) >= 0; });
+    });
+    var controls = '<div class="ag-filters" style="margin:12px 0">' +
+      '<input class="ag-search" id="agGfQ" type="search" placeholder="Поиск: код, имя, почта" value="' + esc(st.gq) + '">' +
+      (st.gq || st.gfilter ? '<button type="button" class="ag-chip on" id="agGfClear" title="Сбросить">✕ фильтр</button>' : '') +
+      '<select class="ag-sort" id="agGfState" title="Состояние">' +
+        [['', 'все состояния'], ['active', 'действительные'], ['pending', 'на оформлении'],
+         ['claimed', 'на сверке оплаты'], ['redeemed', 'погашенные'], ['expired', 'истёкшие'], ['blocked', 'заблокированные']]
+        .map(function (o) { return '<option value="' + o[0] + '"' + (st.gfilter === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') +
+      '</select></div>';
+    var rows = list.map(function (g) {
       var stt = GIFT_ST[g.state] || [g.state_label || g.state, ''];
       var open = st.gsel === g.id;
       var head =
@@ -630,8 +953,11 @@ function initGodEye() {
       return '<div class="ag-gift on">' + head + '<div class="ag-gift-body" data-gift-body="' + g.id + '">' +
         '<div class="ag-empty" style="padding:12px">Загружаем журнал…</div></div></div>';
     }).join('');
-    return tiles + newBtn + form +
-      '<div class="ag-gifts">' + (rows || '<div class="ag-empty">Сертификатов пока нет — выпустите первый или дождитесь покупки с сайта (страница /gift.html).</div>') + '</div>';
+    var empty = (st.gq || st.gfilter)
+      ? '<div class="ag-empty">Ничего не найдено по фильтру. <button type="button" class="ag-linkbtn" id="agGfClear">сбросить</button></div>'
+      : '<div class="ag-empty">Сертификатов пока нет — выпустите первый или дождитесь покупки с сайта (страница /gift.html).</div>';
+    return tiles + newBtn + form + controls +
+      '<div class="ag-gifts">' + (rows || empty) + '</div>';
   }
   function drawGiftCard(g) {
     var box = document.querySelector('[data-gift-body="' + g.id + '"]');
@@ -649,6 +975,10 @@ function initGodEye() {
         (g.note ? '<div><span>Заметка</span><b>' + esc(g.note) + '</b></div>' : '') +
       '</div>';
     var acts = [];
+    if (g.code) {
+      acts.push('<button type="button" class="btn btn-line" data-gift-copy="' + esc(g.code) + '">📋 Скопировать код</button>');
+      acts.push('<button type="button" class="btn btn-line" data-gift-copy-link="' + esc(g.code) + '">🔗 Ссылка на активацию</button>');
+    }
     if (g.status === 'pending') {
       acts.push('<button type="button" class="btn btn-wax" data-gift-act="confirm" data-gift-id="' + g.id + '">✅ Оплата получена — выпустить</button>');
       acts.push('<button type="button" class="btn btn-line" data-gift-act="cancel" data-gift-id="' + g.id + '">✖ Отменить оформление</button>');
@@ -656,7 +986,8 @@ function initGodEye() {
     if (g.status === 'active' || g.status === 'expired') {
       acts.push('<button type="button" class="btn btn-line" data-gift-act="extend" data-gift-id="' + g.id + '">🕐 Продлить +90 дн</button>');
       acts.push('<button type="button" class="btn btn-line" data-gift-act="adjust" data-gift-id="' + g.id + '">± Корректировать остаток</button>');
-      acts.push('<button type="button" class="btn btn-line" data-gift-act="resend" data-gift-id="' + g.id + '">✉️ Переслать письма</button>');
+      if (g.recip_contact || g.buyer_contact)
+        acts.push('<button type="button" class="btn btn-line" data-gift-act="resend" data-gift-id="' + g.id + '">✉️ Переслать письма</button>');
       acts.push('<button type="button" class="btn btn-line" data-gift-act="block" data-gift-id="' + g.id + '">🚫 Заблокировать</button>');
     }
     if (g.status === 'blocked') {
@@ -670,10 +1001,19 @@ function initGodEye() {
       return '<button type="button" class="ag-linkbtn" data-open-order="' + o.id + '">№' + o.id + ' · ' +
         esc(o.work_label || '') + ' · зачтено ' + money(o.gift_amount) + ' ₽</button>';
     }).join('<br>');
-    var ledger = (g.ledger || []).map(function (l) {
+    /* показываем остаток ПОСЛЕ каждой операции — иначе сверку приходится
+       складывать в уме. Копим в хронологическом порядке (по времени), не
+       завися от того, как отсортирован массив (новые сверху или снизу) */
+    var led = (g.ledger || []).slice();
+    var chron = led.map(function (l, i) { return i; })
+      .sort(function (a, b) { return String(led[a].at || '') < String(led[b].at || '') ? -1 : 1; });
+    var runMap = {}, run = 0;
+    chron.forEach(function (i) { run += (led[i].delta || 0); runMap[i] = run; });
+    var ledger = led.map(function (l, idx) {
       var k = GIFT_LEDGER_KIND[l.kind] || l.kind;
       return '<div class="ag-ev"><span>' + (l.at || '').slice(0, 10) + ' ' + (l.at || '').slice(11, 16) + '</span>' +
-        '<span>' + k + (l.order_id ? ' · заказ №' + l.order_id : '') + (l.note ? ' · ' + esc(l.note) : '') + '</span>' +
+        '<span>' + k + (l.order_id ? ' · заказ №' + l.order_id : '') + (l.note ? ' · ' + esc(l.note) : '') +
+          ' <span style="color:var(--ink-faint)">→ остаток ' + money(runMap[idx]) + ' ₽</span></span>' +
         '<b class="' + (l.delta < 0 ? 'neg' : 'pos') + '">' + (l.delta > 0 ? '+' : '') + money(l.delta) + '</b></div>';
     }).join('');
     box.innerHTML = info +
@@ -683,14 +1023,17 @@ function initGodEye() {
       (ledger || '<p class="ag-hint">Пока пусто.</p>') + '</div>';
   }
   function giftAction(id, act, body, okMsg) {
+    if (st.giftBusy) return;   /* без этого двойной клик шлёт +90+90 или дубли писем */
+    st.giftBusy = true;
     S.api.post('/admin/gifts/' + id + '/' + act, body || {}).then(function (r) {
+      st.giftBusy = false;
       if (!r || !r.ok) {
         toast({ gift_state: 'Уже в другом состоянии — обновите список',
                 mail_off: 'Почта не настроена или адресов нет',
                 bad_amount: 'Проверьте сумму' }[(r && r.error) || ''] || 'Не получилось');
         return;
       }
-      toast(okMsg || 'Готово');
+      toast((r.gift && r.gift.expires_ru && act === 'extend') ? 'Продлён · теперь до ' + r.gift.expires_ru : (okMsg || 'Готово'));
       loadGifts();
       openGiftCard(id);
     });
@@ -716,6 +1059,7 @@ function initGodEye() {
       '</select><span class="petit" id="agBCount">считаем получателей…</span></div>' +
       '<div class="ag-actrow" style="margin-top:10px"><textarea id="agBText" rows="7" ' +
       'placeholder="Текст сообщения — обычным текстом, как пишете в Telegram.&#10;&#10;Например: «До конца месяца дарим +10% бонусами на любую летнюю работу…»"></textarea></div>' +
+      '<p class="petit" id="agBCnt" style="margin:6px 0 0;text-align:right">0 / 4096</p>' +
       '<div class="ag-actrow" style="margin-top:10px">' +
         '<button type="button" class="btn btn-line" id="agBTest">👀 Отправить себе — посмотреть</button>' +
         '<button type="button" class="btn btn-wax" id="agBSend">📣 Запустить рассылку</button></div>' +
@@ -737,6 +1081,10 @@ function initGodEye() {
   function bcastStatus(stt) {
     var el = document.getElementById('agBStatus');
     if (!el || !stt) return;
+    /* пока идёт рассылка — гасим кнопки, чтобы не запустить вторую поверх */
+    var send = document.getElementById('agBSend'), test = document.getElementById('agBTest');
+    if (send) { send.disabled = !!stt.running; send.textContent = stt.running ? '⏳ Идёт рассылка' : '📣 Запустить рассылку'; }
+    if (test) test.disabled = !!stt.running;
     if (stt.running) {
       el.innerHTML = '⏳ Идёт рассылка: отправлено <b>' + stt.sent + '</b> из ' + stt.total +
         (stt.failed ? ' · недоставлено ' + stt.failed : '');
@@ -820,7 +1168,7 @@ function initGodEye() {
     var vis = rows.slice(0, 8);
     return head + '<div class="ag-desk">' + vis.map(function (r) {
       var o = r.o;
-      var who = o.client && o.client.guest ? o.client.name : (o.client ? o.client.name : '');
+      var who = o.client ? (o.client.name + (o.client.guest ? ' · гость' : '')) : '';
       return '<button type="button" class="dk-row ' + r.cls + '" data-open-order="' + o.id + '">' +
         '<span class="dk-ic">' + r.ic + '</span>' +
         '<span class="dk-main"><b>№' + o.id + ' · ' + esc(o.work_label || '') + '</b>' +
@@ -829,7 +1177,7 @@ function initGodEye() {
         '<span class="dk-go">→</span></button>';
     }).join('') +
     (rows.length > 8
-      ? '<button type="button" class="ag-linkbtn" data-go="attention" style="margin:8px 0 0">ещё ' + (rows.length - 8) + ' — во вкладке «Заказы» →</button>'
+      ? '<button type="button" class="ag-linkbtn" data-go="active" style="margin:8px 0 0">ещё ' + (rows.length - 8) + ' — все активные заказы →</button>'
       : '') +
     '</div>';
   }
@@ -887,11 +1235,9 @@ function initGodEye() {
       return '<div class="ag-tile ' + (cls || '') + (go ? ' click" data-go="' + go : '') + '">' +
         '<div class="t-num">' + n + '</div><div class="t-lbl">' + l + '</div></div>';
     }
+    /* «Сегодня на столе» уже разбирает заказы по срочности, а плитки дают числа —
+       поэтому здесь только очереди, которых на столе НЕТ: отзывы и приёмная */
     var attn = [];
-    if (by.new) attn.push({ f: 'new', ic: '🆕', t: '<b>Новые заявки: ' + by.new + '</b> — посмотрите и назначьте цену' });
-    if (ov.claimed) attn.push({ f: 'attention', ic: '💳', t: '<b>Отмеченные оплаты: ' + ov.claimed + '</b> — сверьте поступления и подтвердите' });
-    if (by.fix) attn.push({ f: 'fix', ic: '✏️', t: '<b>Правки: ' + by.fix + '</b> — клиенты ждут исправленную версию' });
-    if (by.check) attn.push({ f: 'check', ic: '📤', t: 'На проверке у клиентов: ' + by.check });
     if (ov.reviews_pending) attn.push({ f: '@reviews', ic: '⭐', t: '<b>Отзывы на модерации: ' + ov.reviews_pending + '</b> — опубликовать или отклонить' });
     if (ov.qa && ov.qa.pending) attn.push({ f: '@qa', ic: '📮', t: '<b>Вопросы в приёмной: ' + ov.qa.pending + '</b> — ответить в течение дня' });
     var vs = ov.visits || {};
@@ -907,25 +1253,27 @@ function initGodEye() {
       tile(money(ov.month && ov.month.revenue) + ' ₽', 'выручка за 30 дней', 'calm') +
       tile('👁 ' + (vs.online || 0), 'на сайте сейчас', vs.online ? 'calm' : '', '@visits') +
       tile(vs.uniq || 0, 'посетителей за сутки', '', '@visits') +
-      tile(ov.subs_active || 0, '⭐ подписчиков', ov.subs_claimed ? 'warn' : 'calm') +
+      tile(ov.subs_active || 0, '⭐ подписчиков', 'calm') +
       '</div>' +
       weeksChart(ov) +
       miniVisits() +
       tplSubs(ov) +
       (attn.length
-        ? '<p class="caps" style="margin-bottom:8px">Требует вашего внимания</p><div class="ag-attn">' +
+        ? '<p class="caps" style="margin-bottom:8px">Ещё на модерации</p><div class="ag-attn">' +
           attn.map(function (a) {
-            return '<div class="aa-row" data-go="' + a.f + '"><span>' + a.ic + '</span>' +
+            return '<div class="aa-row" role="button" tabindex="0" data-go="' + a.f + '"><span>' + a.ic + '</span>' +
               '<span class="aa-what">' + a.t + '</span><span class="aa-go">открыть →</span></div>';
           }).join('') + '</div>'
-        : '<div class="ag-attn" style="border-left-color:var(--ag-ok)"><div class="aa-row" style="cursor:default"><span>🕊</span><span class="aa-what">Всё разобрано — срочных дел нет.</span></div></div>') +
+        : '') +
       '<p class="caps" style="margin:18px 0 8px">Последние события</p>' +
       '<div class="ag-attn" style="border-left-color:var(--hairline-strong)">' +
-      (st.ov.events || []).map(function (e) {
-        return '<div class="aa-row" ' + (e.order_id ? 'data-open-order="' + e.order_id + '"' : 'style="cursor:default"') + '>' +
+      (st.ov.events || []).slice(0, 14).map(function (e) {
+        var raw = evData(e);
+        var txt = raw.length > 70 ? esc(raw.slice(0, 70)) + '…' : esc(raw);
+        return '<div class="aa-row" ' + (e.order_id ? 'role="button" tabindex="0" data-open-order="' + e.order_id + '"' : 'style="cursor:default"') + '>' +
           '<span class="aa-go">' + dt(e.at) + '</span>' +
           '<span class="aa-what">' + (e.order_id ? '№' + e.order_id + ' · ' : '') + esc(evLabel(e.kind)) +
-          (e.data ? ' — ' + esc(evData(e).slice(0, 70)) : '') + '</span></div>';
+          (raw ? ' — ' + txt : '') + '</span></div>';
       }).join('') + '</div>';
   }
 
@@ -958,16 +1306,29 @@ function initGodEye() {
       '<div class="ag-attn">' + rows + '</div>';
   }
 
-  /* мини-лента заходов на «Пульсе»: последние 6, клик — во вкладку «Визиты» */
+  /* мини-лента заходов на «Пульсе»: топ-города одной строкой + последние 6 */
   function miniVisits() {
-    var rows = (st.visits || []).slice(0, 6);
-    if (!rows.length) return '';
+    var all = st.visits || [];
+    if (!all.length) return '';
+    var rows = all.slice(0, 6);
+    var stats = visitStats(all);
+    var teaser = '';
+    if (stats.cities.length) {
+      teaser = '<button type="button" class="an-reco" data-tab-go="visits" style="width:100%;text-align:left;cursor:pointer;font:inherit;font-size:13px;margin:0 0 10px">' +
+        '👥 Больше всего людей из ' +
+        stats.cities.slice(0, 3).map(function (c) {
+          return '<b>' + esc(c.name) + '</b> ' + Math.round(c.uniq / stats.uniq * 100) + '%';
+        }).join(' · ') +
+        ' <span style="color:var(--ink-soft)">— разбор по городам →</span></button>';
+    }
     return '<p class="caps" style="margin:18px 0 8px">Последние заходы ' +
       '<button type="button" class="ag-linkbtn" data-tab-go="visits" style="text-transform:none;letter-spacing:0;font-size:12px">все визиты →</button></p>' +
+      teaser +
       '<div class="ag-vwrap">' + rows.map(visitRow).join('') + '</div>';
   }
 
   /* выручка по неделям — тихие столбики без библиотек */
+  function dmLabel(s) { var p = String(s || '').split('-'); return p.length === 3 ? p[2] + '.' + p[1] : s; }
   function weeksChart(ov) {
     var w = ov.weeks || [];
     if (!w.length || !w.some(function (x) { return x.revenue > 0; })) return '';
@@ -975,10 +1336,10 @@ function initGodEye() {
     return '<p class="caps" style="margin:18px 0 8px">Выручка по неделям <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint,#888)">— подтверждённые платежи, 8 недель</span></p>' +
       '<div class="ag-weeks">' + w.map(function (x) {
         var h = Math.max(3, Math.round(x.revenue / max * 74));
-        return '<div class="wk" title="' + x.start + ' — ' + money(x.revenue) + ' ₽' + (x.pays ? ' (' + x.pays + ' пл.)' : '') + '">' +
+        return '<div class="wk" title="с ' + esc(x.start) + ' — ' + money(x.revenue) + ' ₽' + (x.pays ? ' (' + x.pays + ' пл.)' : '') + '">' +
           '<span class="wk-sum">' + (x.revenue ? money(x.revenue) : '') + '</span>' +
           '<span class="wk-bar' + (x.revenue ? '' : ' zero') + '" style="height:' + h + 'px"></span>' +
-          '<span class="wk-lbl">' + esc(x.start) + '</span></div>';
+          '<span class="wk-lbl">' + esc(dmLabel(x.start)) + '</span></div>';
       }).join('') + '</div>';
   }
 
@@ -992,7 +1353,8 @@ function initGodEye() {
     box.innerHTML = chips.map(function (c) {
       return '<button type="button" class="ag-chip' + (st.filter === c[0] ? ' on' : '') + '" data-f="' + c[0] + '">' + c[1] + '</button>';
     }).join('') +
-      '<input class="ag-search" id="agQ" placeholder="Поиск: №, тема, ник… (Enter)" value="' + esc(st.q) + '">' +
+      '<input class="ag-search" id="agQ" type="search" placeholder="Поиск: №, тема, ник… (Enter)" value="' + esc(st.q) + '">' +
+      (st.q ? '<button type="button" class="ag-chip" id="agQClear" title="Сбросить поиск">✕ «' + esc(st.q.length > 16 ? st.q.slice(0, 15) + '…' : st.q) + '»</button>' : '') +
       '<select class="ag-sort" id="agSort" title="Порядок списка">' +
         '<option value="fresh"' + (st.sort === 'fresh' ? ' selected' : '') + '>сначала новые</option>' +
         '<option value="updated"' + (st.sort === 'updated' ? ' selected' : '') + '>по последнему движению</option>' +
@@ -1035,6 +1397,9 @@ function initGodEye() {
         return da < db2 ? -1 : da > db2 ? 1 : 0;
       });
     }
+    /* закреплённые — всегда наверху во всех режимах (бейдж 📌 это обещает);
+       стабильная сортировка сохраняет порядок внутри групп */
+    arr.sort(function (a, b) { return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0); });
     return arr; /* 'fresh' — порядок сервера: новые сверху */
   }
 
@@ -1057,17 +1422,22 @@ function initGodEye() {
       var dl = '';
       if (o.deadline_date && 'done cancel'.indexOf(o.status) < 0) {
         var left = Math.ceil((new Date(o.deadline_date + 'T23:59:59') - new Date()) / 86400000);
-        if (!isNaN(left)) dl = ' · ⏳ ' + (left < 0 ? 'срок вышел' : left === 0 ? 'сдача сегодня' : left + ' дн.');
+        if (!isNaN(left)) {
+          var word = left < 0 ? 'срок вышел' : left === 0 ? 'сдача сегодня' : left + ' дн.';
+          dl = ' · <span class="' + (left <= 0 ? 'r-due-hot' : '') + '">⏳ ' + word + '</span>';
+        }
       }
       /* цветной корешок мастера — поверх маркера выбранности */
       var clrStyle = o.color && CLR[o.color]
         ? ' style="border-left-color:' + CLR[o.color] + ';border-left-width:4px"' : '';
+      /* галка — рисованная (не <input>): вложенный в <button> input невалиден,
+         а выбор всё равно делает клик по всей строке (см. обработчик .ag-row) */
       var ck = st.bulk
-        ? '<input type="checkbox" class="ag-ck" data-ck="' + o.id + '"' +
-          (st.bulk.has(o.id) ? ' checked' : '') + '>'
+        ? '<span class="ag-ck-box' + (st.bulk.has(o.id) ? ' on' : '') + '" aria-hidden="true"></span>'
         : '';
       return '<button type="button" class="ag-row' + (o.id === st.sel ? ' sel' : '') +
-        (o.pinned ? ' pin' : '') + '" data-id="' + o.id + '"' + clrStyle + '>' +
+        (o.pinned ? ' pin' : '') + '" data-id="' + o.id + '"' +
+        (st.bulk ? ' aria-pressed="' + (st.bulk.has(o.id) ? 'true' : 'false') + '"' : '') + clrStyle + '>' +
         ck +
         (o.pinned ? '<span class="r-pin" title="закреплён">📌</span>' : '') +
         '<span class="r-no">№' + o.id + '</span>' +
@@ -1147,8 +1517,13 @@ function initGodEye() {
       return ['', '⏸ <b>Дело на паузе' + (o.paused_by === 'admin' ? ' (поставили вы)' : ' (поставил клиент)') + '.</b> ' +
         'Напоминания молчат. Снять паузу можно в «Управлении статусом» ниже.'];
     var claimed = (o.payments || []).filter(function (p) { return p.status === 'claimed'; });
-    if (claimed.length)
-      return ['due', '💳 <b>Клиент отметил оплату ' + money(claimed[0].amount) + ' ₽.</b> Проверьте поступление и подтвердите в плане оплат ниже — статус и кэшбэк посчитаются сами.'];
+    if (claimed.length) {
+      var cSum = claimed.reduce(function (s, p) { return s + (p.amount || 0); }, 0);
+      var cWhat = claimed.length > 1
+        ? 'отметил оплату ' + claimed.length + ' этапов на ' + money(cSum) + ' ₽'
+        : 'отметил оплату ' + money(cSum) + ' ₽';
+      return ['due', '💳 <b>Клиент ' + cWhat + '.</b> Проверьте поступление и подтвердите в плане оплат ниже — статус и кэшбэк посчитаются сами.'];
+    }
     if (o.final_ready && 'work fix'.indexOf(o.status) >= 0) {
       if (o.due_now && o.due_now.amount > 0) {
         var fAge = invoiceAgeDays(o);
@@ -1226,7 +1601,7 @@ function initGodEye() {
         '<input type="text" class="ag-inp" id="agOffUrl" readonly style="flex:1;min-width:220px" value="' + esc(off.url) + '">' +
         '<button type="button" class="btn btn-line" id="agOffCopy">Скопировать ссылку</button>' +
         '<button type="button" class="btn btn-line" id="agOffMsg">Скопировать текст для мессенджера</button>' +
-        '<a class="btn btn-line" href="' + esc(off.url) + '&preview=1" target="_blank" rel="noopener">Открыть как клиент</a>' +
+        '<a class="btn btn-line" href="' + esc(off.url + (off.url.indexOf('?') < 0 ? '?' : '&') + 'preview=1') + '" target="_blank" rel="noopener">Открыть как клиент</a>' +
         (off.status === 'live' ? '<button type="button" class="btn btn-line" id="agOffCancel">Отозвать</button>' : '') +
         '</div>' +
         '<p class="ag-note">Действительна до ' + dt(off.expires_at) +
@@ -1581,6 +1956,11 @@ function initGodEye() {
     var box = document.getElementById('agCard');
     var o = st.card;
     if (!box || !o) return;
+    /* переписка не должна прыгать в конец при каждом действии/тихом обновлении:
+       к низу — только на свежем открытии дела и после отправки сообщения */
+    var prevFeed = document.getElementById('agFeed');
+    var prevTop = prevFeed ? prevFeed.scrollTop : null;
+    var sameOrder = st._feedOrder === o.id;
     var hint = nextHint(o);
     box.innerHTML =
       '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
@@ -1609,7 +1989,12 @@ function initGodEye() {
         return dt(e.at) + ' · ' + esc(evLabel(e.kind)) + (e.data ? ' — ' + esc(evData(e).slice(0, 70)) : '');
       }).join('<br>') + '</div></div>';
     var feedBox = document.getElementById('agFeed');
-    if (feedBox) feedBox.scrollTop = feedBox.scrollHeight;
+    if (feedBox) {
+      if (st.feedStick || !sameOrder) feedBox.scrollTop = feedBox.scrollHeight;
+      else if (prevTop != null) feedBox.scrollTop = prevTop;
+    }
+    st.feedStick = false;
+    st._feedOrder = o.id;
   }
 
   /* ---------------- КЛИЕНТЫ ---------------- */
@@ -1617,7 +2002,23 @@ function initGodEye() {
     var box = document.getElementById('agCList');
     if (!box) return;
     if (!st.clients.length) { box.innerHTML = '<div class="ag-empty">Клиентов пока нет</div>'; return; }
-    box.innerHTML = st.clients.map(function (c) {
+    var q = (st.cq || '').toLowerCase().trim();
+    var arr = st.clients.filter(function (c) {
+      if (!q) return true;
+      return (String(c.name || '').toLowerCase().indexOf(q) >= 0) ||
+             (String(c.username || '').toLowerCase().indexOf(q) >= 0);
+    });
+    arr.sort(function (a, b) {
+      switch (st.csort) {
+        case 'ltv': return (b.paid_sum || 0) - (a.paid_sum || 0);
+        case 'orders': return (b.orders || 0) - (a.orders || 0);
+        case 'bonus': return (b.balance || 0) - (a.balance || 0);
+        case 'name': return String(a.name || '').localeCompare(String(b.name || ''), 'ru');
+        default: return (b.last_seen || '') < (a.last_seen || '') ? -1 : 1;
+      }
+    });
+    if (!arr.length) { box.innerHTML = '<div class="ag-empty">Никто не найден по «' + esc(st.cq) + '».</div>'; return; }
+    box.innerHTML = arr.map(function (c) {
       return '<button type="button" class="ag-row' + (c.id === st.csel ? ' sel' : '') + '" data-cid="' + c.id + '">' +
         '<span class="r-main"><span class="r-t">' + (c.banned ? '⛔️ ' : '') + esc(c.name || 'клиент') +
         (c.username ? ' <span class="petit">@' + esc(c.username) + '</span>' : '') + '</span>' +
@@ -1631,6 +2032,17 @@ function initGodEye() {
     var box = document.getElementById('agCCard');
     var c = st.ccard;
     if (!box || !c) return;
+    /* защита от неполного payload (новый клиент без бонусов/рефералов и т.п.) —
+       иначе всё innerHTML-выражение падало и карточка не рисовалась вовсе */
+    var refs = c.referrals || [];
+    var bonus = c.bonus || {}; if (!bonus.expiring) bonus.expiring = [];
+    var orders = c.orders || [];
+    var ledger = c.ledger || [];
+    var paidSum = c.paid_sum != null ? c.paid_sum
+      : orders.reduce(function (s, o) { return s + (/^(done|work|check|fix)$/.test(o.status) ? (o.price || 0) : 0); }, 0);
+    var activeN = orders.filter(function (o) { return 'new priced prepay work check fix'.indexOf(o.status) >= 0; }).length;
+    var doneN = orders.filter(function (o) { return o.status === 'done'; }).length;
+    var avg = doneN ? Math.round(paidSum / doneN) : 0;
     box.innerHTML =
       '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
       '<h2 style="margin:0">' + (c.banned ? '⛔️ ' : '') + esc(c.name || 'клиент') +
@@ -1641,22 +2053,29 @@ function initGodEye() {
       (c.username ? '<div class="ag-clinks"><a href="https://t.me/' + esc(c.username) + '" target="_blank" rel="noopener">Telegram @' + esc(c.username) + '</a></div>'
         : (c.id > 0 ? '<div class="ag-clinks"><a href="tg://user?id=' + c.id + '">Профиль Telegram</a></div>' : '')) +
       (c.referrer ? '<p class="ag-meta">🤝 пришёл по приглашению: ' + esc(c.referrer.name || c.referrer.id) + '</p>' : '') +
-      (c.referrals.length ? '<p class="ag-meta">🤝 привёл: ' + c.referrals.map(function (r) { return esc(r.name || r.id); }).join(', ') + '</p>' : '') +
+      (refs.length ? '<p class="ag-meta">🤝 привёл: ' + refs.map(function (r) { return esc(r.name || r.id); }).join(', ') + '</p>' : '') +
 
-      '<div class="ag-sec"><span class="caps">Бонусный счёт · ' + money(c.bonus.balance) + '</span>' +
-      (c.bonus.expiring.length ? '<p class="petit">⏳ сгорает: ' + c.bonus.expiring.map(function (e) { return e.amount + ' — ' + dt(e.at).slice(0, 5); }).join(', ') + '</p>' : '') +
+      '<div class="cl-stats">' +
+        '<span><b>' + money(paidSum) + ' ₽</b><i>оплачено всего</i></span>' +
+        '<span><b>' + orders.length + '</b><i>заказов</i></span>' +
+        '<span><b>' + activeN + '</b><i>в работе</i></span>' +
+        (avg ? '<span><b>' + money(avg) + ' ₽</b><i>средний чек</i></span>' : '') +
+      '</div>' +
+
+      '<div class="ag-sec"><span class="caps">Бонусный счёт · ' + money(bonus.balance || 0) + '</span>' +
+      (bonus.expiring.length ? '<p class="petit">⏳ сгорает: ' + bonus.expiring.map(function (e) { return e.amount + ' — ' + dt(e.at).slice(0, 5); }).join(', ') + '</p>' : '') +
       '<div class="ag-actrow"><input type="number" id="agBDelta" placeholder="± сумма">' +
       '<input type="text" id="agBNote" placeholder="комментарий (клиент увидит)" style="flex:1;min-width:150px">' +
       '<button type="button" class="btn btn-line" id="agBApply">Провести</button></div>' +
       '<p class="ag-note">Плюс — начислить (срок 90 дней), минус — списать. Начисление придёт клиенту уведомлением.</p>' +
       '<div class="ag-ev" style="margin-top:10px;max-height:200px;overflow-y:auto">' +
-      (c.ledger || []).map(function (r) {
+      ledger.map(function (r) {
         var sign = r.delta > 0 ? '+' : '';
         return dt(r.at) + ' · <b>' + sign + r.delta + '</b> · ' + esc(r.label) + (r.note ? ' — ' + esc(r.note) : '');
       }).join('<br>') + '</div></div>' +
 
-      '<div class="ag-sec"><span class="caps">Заказы (' + c.orders.length + ')</span>' +
-      (c.orders.length ? c.orders.map(function (o) {
+      '<div class="ag-sec"><span class="caps">Заказы (' + orders.length + ')</span>' +
+      (orders.length ? orders.map(function (o) {
         var m = stMeta(o.status);
         return '<div class="ag-file"><span class="fname">' + m[0] + ' №' + o.id + ' · ' + esc(o.work_label || '') +
           (o.price ? ' · ' + money(o.price) + ' ₽' : '') + '</span>' +
@@ -1676,20 +2095,27 @@ function initGodEye() {
   function tplReviews() {
     if (!st.reviews.length) return '<div class="ag-empty">Отзывов пока нет. Они появляются, когда клиент завершённого заказа ставит оценку в боте или кабинете.</div>';
     var stLbl = { pending: '⏳ ждёт решения', approved: '✅ на сайте', rejected: '🚫 отклонён' };
+    function rvCard(r) {
+      return '<div class="ag-rv ' + r.status + '" data-rv-st="' + r.status + '">' +
+        '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
+        '<span class="rv-st">' + starRow(r.rating) + '</span>' +
+        '<span class="rv-meta">' + (stLbl[r.status] || '') + ' · ' + dt(r.at) + '</span></div>' +
+        (r.text ? '<blockquote>«' + esc(r.text) + '»</blockquote>' : '<blockquote style="opacity:.6">Без текста — только оценка.</blockquote>') +
+        '<p class="rv-meta">' + esc(r.author || 'Без подписи') + ' · ' + esc(r.work_label || '') +
+        ' · <button type="button" class="ag-linkbtn" data-open-order="' + r.order_id + '">дело №' + r.order_id + '</button></p>' +
+        '<div class="ag-actrow" style="margin-top:10px">' +
+        (r.status !== 'approved' ? '<button type="button" class="btn btn-ink" data-rv="' + r.id + '" data-ok="1">✅ Опубликовать</button>' : '') +
+        (r.status !== 'rejected' ? '<button type="button" class="btn btn-line" data-rv="' + r.id + '" data-ok="0">🚫 ' + (r.status === 'approved' ? 'Снять с сайта' : 'Отклонить') + '</button>' : '') +
+        '</div></div>';
+    }
+    var pend = st.reviews.filter(function (r) { return r.status === 'pending'; });
+    var rest = st.reviews.filter(function (r) { return r.status !== 'pending'; });
     return '<p class="petit" style="margin-bottom:12px">Отзывы публикуются на «Книге отзывов» сайта только после вашего одобрения. Отклонённый отзыв клиент не увидит как отклонённый — просто не попадёт на сайт.</p>' +
-      st.reviews.map(function (r) {
-        return '<div class="ag-rv ' + r.status + '">' +
-          '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
-          '<span class="rv-st">' + starRow(r.rating) + '</span>' +
-          '<span class="rv-meta">' + (stLbl[r.status] || '') + ' · ' + dt(r.at) + '</span></div>' +
-          (r.text ? '<blockquote>«' + esc(r.text) + '»</blockquote>' : '<blockquote style="opacity:.6">Без текста — только оценка.</blockquote>') +
-          '<p class="rv-meta">' + esc(r.author || 'Без подписи') + ' · ' + esc(r.work_label || '') +
-          ' · <button type="button" class="ag-linkbtn" data-open-order="' + r.order_id + '">дело №' + r.order_id + '</button></p>' +
-          '<div class="ag-actrow" style="margin-top:10px">' +
-          (r.status !== 'approved' ? '<button type="button" class="btn btn-ink" data-rv="' + r.id + '" data-ok="1">✅ Опубликовать</button>' : '') +
-          (r.status !== 'rejected' ? '<button type="button" class="btn btn-line" data-rv="' + r.id + '" data-ok="0">🚫 ' + (r.status === 'approved' ? 'Снять с сайта' : 'Отклонить') + '</button>' : '') +
-          '</div></div>';
-      }).join('');
+      '<div class="ag-sec" style="border-top:0;padding-top:0;margin-top:0"><span class="caps">Ждут решения' +
+        (pend.length ? ' · ' + pend.length : '') + '</span>' +
+        (pend.length ? pend.map(rvCard).join('') : '<div class="ag-empty">Отзывов на модерации нет.</div>') + '</div>' +
+      '<div class="ag-sec"><span class="caps">На сайте и отклонённые · ' + rest.length + '</span>' +
+        (rest.length ? rest.map(rvCard).join('') : '<div class="ag-empty">Пусто.</div>') + '</div>';
   }
 
   /* ---------------- «ОТКРЫТАЯ ПРИЁМНАЯ» ---------------- */
@@ -1708,6 +2134,7 @@ function initGodEye() {
   }
 
   function qaCard(q) {
+    var draft = (st.qaDrafts && st.qaDrafts[q.id]) || {};
     var pendingQ = q.status === 'pending';
     var raw = q.question_raw && q.question_raw !== q.question
       ? '<details style="margin:8px 0"><summary class="petit" style="cursor:pointer">Исходник гостя (до чистки)</summary>' +
@@ -1727,7 +2154,7 @@ function initGodEye() {
       btns.push('<button type="button" class="btn btn-line" data-qa-act="' + (q.pinned ? 'unpin' : 'pin') + '" data-qa-id="' + q.id + '">' + (q.pinned ? '📌 Открепить' : '📌 Закрепить сверху') + '</button>');
       btns.push('<button type="button" class="btn btn-line" data-qa-act="unpublish" data-qa-id="' + q.id + '">👁 Снять с сайта</button>');
     }
-    if (q.status === 'answered' && !q.quiet) btns.push('<button type="button" class="btn btn-line" data-qa-act="publish" data-qa-id="' + q.id + '">📮 Опубликовать</button>');
+    if ((q.status === 'answered' || q.status === 'rejected') && !q.quiet) btns.push('<button type="button" class="btn btn-line" data-qa-act="publish" data-qa-id="' + q.id + '">📮 ' + (q.status === 'rejected' ? 'Вернуть и опубликовать' : 'Опубликовать') + '</button>');
     if (pendingQ) btns.push('<button type="button" class="btn btn-line" data-qa-act="reject" data-qa-id="' + q.id + '">🚫 Отклонить</button>');
     btns.push('<button type="button" class="btn btn-line" data-qa-act="ban" data-qa-id="' + q.id + '" style="color:var(--wax)">⛔ Бан автора</button>');
     btns.push('<button type="button" class="btn btn-line" data-qa-act="delete" data-qa-id="' + q.id + '" style="color:var(--wax)">🗑 Удалить</button>');
@@ -1737,10 +2164,10 @@ function initGodEye() {
       '<span class="rv-meta">' + (QA_ST[q.status] || esc(q.status)) + (q.pinned ? ' · 📌' : '') + ' · ' + dt(q.created_at) + '</span></div>' +
       '<p class="rv-meta" style="margin-top:4px">' + who + '</p>' + raw +
       '<div style="display:grid;gap:8px;margin-top:8px">' +
-      '<label class="petit">Вопрос (публикуемая формулировка — чистите деанон и резкие формулировки)</label>' +
-      '<textarea id="qaQ-' + q.id + '" class="ag-inp" rows="3" maxlength="600">' + esc(q.question) + '</textarea>' +
-      '<label class="petit">Ответ мастера</label>' +
-      '<textarea id="qaA-' + q.id + '" class="ag-inp" rows="' + (pendingQ ? 6 : 4) + '" maxlength="3000" placeholder="Спокойно, по делу, с тихим мостиком к услуге, где уместно">' + esc(q.answer || '') + '</textarea>' +
+      '<label class="petit" for="qaQ-' + q.id + '">Вопрос (публикуемая формулировка — чистите деанон и резкие формулировки)' + (draft.q != null ? ' · <span style="color:var(--wax)">черновик не сохранён</span>' : '') + '</label>' +
+      '<textarea id="qaQ-' + q.id + '" class="ag-inp" rows="3" maxlength="600">' + esc(draft.q != null ? draft.q : q.question) + '</textarea>' +
+      '<label class="petit" for="qaA-' + q.id + '">Ответ мастера' + (draft.a != null ? ' · <span style="color:var(--wax)">черновик не сохранён</span>' : '') + '</label>' +
+      '<textarea id="qaA-' + q.id + '" class="ag-inp" rows="' + (pendingQ ? 6 : 4) + '" maxlength="3000" placeholder="Спокойно, по делу, с тихим мостиком к услуге, где уместно">' + esc(draft.a != null ? draft.a : (q.answer || '')) + '</textarea>' +
       qaTagSelect(q.id, q.tag) + '</div>' +
       '<div class="ag-actrow" style="margin-top:10px;flex-wrap:wrap">' + btns.join('') + '</div>' +
       '<p style="margin-top:6px">' + techno + '</p></div>';
@@ -1749,7 +2176,8 @@ function initGodEye() {
   function tplQA() {
     if (st.qa === null) return '<div class="ag-empty">Загружаем приёмную…</div>';
     var pending = st.qa.filter(function (q) { return q.status === 'pending'; });
-    var rest = st.qa.filter(function (q) { return q.status !== 'pending'; });
+    var rest = st.qa.filter(function (q) { return q.status !== 'pending'; })
+      .sort(function (a, b) { return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0); });   /* закреплённые — наверх */
     var head = '<p class="petit" style="margin-bottom:12px">«Открытая приёмная» на сайте: гость спрашивает анонимно, ' +
       'вы отвечаете — пара публикуется навсегда. Всё премодерируется: без вашего решения на сайт не попадает ни буквы. ' +
       'Формулировку вопроса можно (и нужно) редактировать — это заявлено в правилах приёмной. ' +
@@ -1767,13 +2195,30 @@ function initGodEye() {
   }
 
   /* ---------------- ЛИДЫ ---------------- */
+  /* контакт лида — сразу кликабельный: позвонить/написать/скопировать */
+  function leadContact(raw) {
+    var s = String(raw || '').trim();
+    if (!s) return '<span class="mono">—</span>';
+    var e = esc(s);
+    if (/^\+?\d[\d\s()\-]{6,}$/.test(s))
+      return '<a class="ag-linkbtn" href="tel:' + esc(s.replace(/[^\d+]/g, '')) + '">☎ ' + e + '</a>';
+    if (s.indexOf('@') > 0 && s.indexOf('.') > s.indexOf('@') && !/\s/.test(s))
+      return '<a class="ag-linkbtn" href="mailto:' + e + '">✉ ' + e + '</a>';
+    if (/^@/.test(s) || /t\.me\//.test(s)) {
+      var tg = s.replace(/^@/, '').replace(/^(https?:\/\/)?t\.me\//, '');
+      return '<a class="ag-linkbtn" href="https://t.me/' + esc(tg) + '" target="_blank" rel="noopener">✈️ ' + e + '</a>';
+    }
+    return '<button type="button" class="ag-linkbtn" data-copy="' + e + '" title="скопировать">' + e + ' ⧉</button>';
+  }
   function tplLeads() {
     return '<p class="petit" style="margin-bottom:10px">Обращения с сайта без оформленного заказа — эти люди уже проявили интерес, свяжитесь по контакту.</p>' +
       '<div style="border:1px solid var(--hairline);border-radius:var(--r);max-height:65vh;overflow-y:auto;background:var(--sheet,transparent)">' +
       (st.leads.length ? st.leads.map(function (l) {
-        return '<div class="ag-lead"><b>#' + l.id + '</b> ' + esc(l.name || '—') +
-          ' · <span class="mono">' + esc(l.contact || '') + '</span>' +
-          (l.message ? '<br><span class="petit">' + esc(l.message).slice(0, 200) + '</span>' : '') +
+        var isNew = l.status === 'new';
+        var msg = String(l.message || '');
+        return '<div class="ag-lead"' + (isNew ? ' style="border-left:3px solid var(--wax,#B23B22);padding-left:11px"' : '') + '>' +
+          '<b>#' + l.id + '</b> ' + esc(l.name || '—') + ' · ' + leadContact(l.contact) +
+          (msg ? '<br><span class="petit">' + esc(msg.slice(0, 200)) + (msg.length > 200 ? '…' : '') + '</span>' : '') +
           '<br><span class="petit">' + (LEAD_ST[l.status] || esc(l.status)) + ' · ' + dt(l.at) + '</span></div>';
       }).join('') : '<div class="ag-empty">Лидов пока нет</div>') + '</div>';
   }
@@ -2015,21 +2460,21 @@ function initGodEye() {
     if (t.closest('#agCancel')) { S.store.del('salon_auth_pending'); gate(); return; }
     if (t.closest('#agLogout')) { S.api.logout(); gate(); return; }
     if (t.closest('#agRetry')) { gate(); return; }
+    if (t.closest('#agTabRetry')) { loadTab(true); return; }
 
     var tab = t.closest('.ag-tab');
-    if (tab) { st.tab = tab.getAttribute('data-tab'); drawNav(); loadTab(true); return; }
-    if (t.closest('#agLive')) { st.tab = 'visits'; drawNav(); loadTab(); return; }
+    if (tab) { goTab(tab.getAttribute('data-tab'), true); return; }
+    if (t.closest('#agLive')) { goTab('visits'); return; }
     var tabGo = t.closest('[data-tab-go]');
-    if (tabGo) { st.tab = tabGo.getAttribute('data-tab-go'); drawNav(); loadTab(); return; }
+    if (tabGo) { goTab(tabGo.getAttribute('data-tab-go')); return; }
 
     var go = t.closest('[data-go]');
     if (go) {
       var f = go.getAttribute('data-go');
-      if (f === '@reviews') { st.tab = 'reviews'; }
-      else if (f === '@qa') { st.tab = 'qa'; }
-      else if (f === '@visits') { st.tab = 'visits'; }
-      else { st.tab = 'orders'; st.filter = f; st.q = ''; st.sel = null; }
-      drawNav(); loadTab(true);
+      if (f === '@reviews') { goTab('reviews', true); }
+      else if (f === '@qa') { goTab('qa', true); }
+      else if (f === '@visits') { goTab('visits', true); }
+      else { st.filter = f; st.q = ''; st.sel = null; goTab('orders', true); }
       return;
     }
 
@@ -2046,6 +2491,8 @@ function initGodEye() {
     if (t.closest('#agGfCreate')) {
       var ga = parseInt((document.getElementById('agGfAmount') || {}).value, 10) || 0;
       if (ga < 500) { toast('Укажите номинал — от 500 ₽'); return; }
+      if (ga > 50000) { toast('Номинал — до 50 000 ₽'); return; }
+      if (ga % 500) { toast('Номинал кратен 500 ₽'); return; }
       var gemail = (document.getElementById('agGfEmail') || {}).value || '';
       confirmDlg({
         title: 'Выпустить сертификат на ' + money(ga) + ' ₽?',
@@ -2088,7 +2535,8 @@ function initGodEye() {
       } else if (ga2 === 'unblock') {
         giftAction(gaid, 'unblock', {}, 'Снова действует');
       } else if (ga2 === 'extend') {
-        giftAction(gaid, 'extend', { days: 90 }, 'Продлён на 90 дней');
+        confirmDlg({ title: 'Продлить срок на 90 дней?', text: 'Код будет действовать на 90 дней дольше. Новую дату покажем после продления.', okLabel: 'Продлить', noLabel: 'Отмена' })
+          .then(function (res) { if (res.ok) giftAction(gaid, 'extend', { days: 90 }, 'Продлён на 90 дней'); });
       } else if (ga2 === 'adjust') {
         confirmDlg({ title: 'Корректировка остатка', text: 'Введите сумму со знаком: «500» — добавить, «−500» — списать (возврат сгоревшего, компенсация, ручное погашение).', input: 'text', placeholder: 'например 500 или -500', okLabel: 'Применить', noLabel: 'Отмена' })
           .then(function (res) {
@@ -2098,10 +2546,24 @@ function initGodEye() {
             giftAction(gaid, 'adjust', { delta: d, note: 'корректировка из админки' }, 'Остаток обновлён');
           });
       } else if (ga2 === 'resend') {
-        giftAction(gaid, 'resend', {}, 'Письма отправлены заново');
+        confirmDlg({ title: 'Переслать письма заново?', text: 'Получателю и покупателю (если есть адреса) повторно уйдёт код сертификата.', okLabel: 'Отправить', noLabel: 'Отмена' })
+          .then(function (res) { if (res.ok) giftAction(gaid, 'resend', {}, 'Письма отправлены заново'); });
       }
       return;
     }
+    var gcopy = t.closest('[data-gift-copy]');
+    if (gcopy) { copyText(gcopy.getAttribute('data-gift-copy'), 'Код скопирован ✓'); return; }
+    var glink = t.closest('[data-gift-copy-link]');
+    if (glink) {
+      var lc = glink.getAttribute('data-gift-copy-link');
+      copyText('https://akademsalon.ru/gift.html?code=' + encodeURIComponent(lc), 'Ссылка на активацию скопирована ✓');
+      return;
+    }
+    var gfl = t.closest('[data-gift-filter]');
+    if (gfl) { st.gfilter = gfl.getAttribute('data-gift-filter'); st.gq = ''; drawBody(); return; }
+    if (t.closest('#agGfClear')) { st.gq = ''; st.gfilter = ''; drawBody(); return; }
+    var cpy = t.closest('[data-copy]');
+    if (cpy) { copyText(cpy.getAttribute('data-copy'), 'Скопировано ✓'); return; }
 
     /* --- визиты: диапазон, тумблеры, раскрытие сессии --- */
     var vh = t.closest('[data-vh]');
@@ -2111,6 +2573,13 @@ function initGodEye() {
       var vk = vt.getAttribute('data-vt');
       st.vopts[vk] = !st.vopts[vk];
       loadVisits();
+      return;
+    }
+    var vg = t.closest('[data-vgeo]');
+    if (vg) {
+      var gc = vg.getAttribute('data-vgeo');
+      st.vgeo = (st.vgeo === gc) ? null : gc;   /* повторный клик — снять фильтр */
+      drawVisits(true);
       return;
     }
     var vr = t.closest('.ag-vrow[data-vrow]');
@@ -2128,13 +2597,13 @@ function initGodEye() {
       return;
     }
     var bclr = t.closest('[data-bulk-clr]');
-    if (bclr) { bulkApply({ color: bclr.getAttribute('data-bulk-clr') }); return; }
+    if (bclr) { bulkApply({ color: bclr.getAttribute('data-bulk-clr') }, true); return; }
     var bact = t.closest('[data-bulk]');
     if (bact) {
       var bAct = bact.getAttribute('data-bulk');
       if (bAct === 'off') { st.bulk = null; drawFilters(); drawList(); return; }
-      if (bAct === 'pin') bulkApply({ pin: 1 });
-      else if (bAct === 'unpin') bulkApply({ pin: 0 });
+      if (bAct === 'pin') bulkApply({ pin: 1 }, true);
+      else if (bAct === 'unpin') bulkApply({ pin: 0 }, true);
       else if (bAct === 'hide') bulkApply({ hide: 1 });
       else if (bAct === 'restore') bulkApply({ 'delete': 0 });
       else if (bAct === 'purge') {
@@ -2275,6 +2744,8 @@ function initGodEye() {
     var chip = t.closest('.ag-chip[data-f]');
     if (chip) { st.filter = chip.getAttribute('data-f'); st.listLimit = 40; loadTab(); return; }
     if (t.closest('#agMore')) { st.listLimit += 40; drawList(); return; }
+    if (t.closest('#agQClear')) { st.q = ''; st.listLimit = 40; loadTab(); return; }
+    if (t.closest('#agCQClear')) { st.cq = ''; drawBody(); return; }
     var tplBtn = t.closest('.ag-tpl[data-tpl]');
     if (tplBtn) {
       var ta0 = document.getElementById('agMsg');
@@ -2475,7 +2946,11 @@ function initGodEye() {
       var btxt2 = (document.getElementById('agBText') || {}).value || '';
       var seg2 = (document.getElementById('agBSeg') || {}).value || 'all';
       if (!btxt2.trim()) { toast('Напишите текст рассылки'); return; }
-      var cnt = ((document.getElementById('agBCount') || {}).textContent || '').replace(/\D/g, '') || '?';
+      if (btxt2.length > 4096) { toast('Слишком длинно для Telegram (лимит 4096 знаков)'); return; }
+      var cntRaw = ((document.getElementById('agBCount') || {}).textContent || '');
+      var cnt = cntRaw.replace(/\D/g, '');
+      if (!/получателей/.test(cntRaw) || cnt === '') { toast('Ещё считаем получателей — секунду'); return; }
+      if (cnt === '0') { toast('В этом сегменте сейчас никого нет'); return; }
       confirmDlg({
         title: 'Запустить рассылку на ' + cnt + ' получателей?',
         text: 'Сообщение уйдёт сразу и отозвать его будет нельзя. Лучше сначала «Отправить себе» и перечитать.',
@@ -2559,7 +3034,7 @@ function initGodEye() {
       if (!txt) return;
       api('/admin/orders/' + st.sel + '/message', { text: txt })
         .then(function (r) {
-          if (r.ok) { toast(r.delivered_tg ? 'Доставлено в Telegram ✓' : 'Сохранено — клиент увидит в кабинете'); st.card = r.order; drawCard(); }
+          if (r.ok) { toast(r.delivered_tg ? 'Доставлено в Telegram ✓' : 'Сохранено — клиент увидит в кабинете'); st.card = r.order; st.feedStick = true; drawCard(); }
           else toast('Не отправилось');
         });
       return;
@@ -2648,17 +3123,26 @@ function initGodEye() {
       var goQA = function () {
         api('/admin/qa/' + qid, qpayload).then(function (r) {
           if (!r || !r.ok) { toast('Не получилось — попробуйте ещё раз'); return; }
+          if (st.qaDrafts) delete st.qaDrafts[qid];   /* этот набросок сохранён — не тащим его дальше */
+          /* и синхронизируем кэш, иначе синхронный snapshotQaDrafts в loadQA сравнит
+             сохранённый текст со СТАРЫМ значением и снова пометит «черновик не сохранён» */
+          var qo = (st.qa || []).filter(function (x) { return String(x.id) === String(qid); })[0];
+          if (qo) { if ('answer' in qpayload) qo.answer = qpayload.answer; if ('question' in qpayload) qo.question = qpayload.question; }
           toast(qaDone[qact] || 'Готово');
           loadQA();
           S.api.get('/admin/overview').then(function (r2) { if (r2.ok) { st.ov = r2; drawNav(); } });
         });
       };
       if (qact === 'delete' || qact === 'ban') {
+        var qObj = (st.qa || []).filter(function (x) { return String(x.id) === String(qid); })[0];
+        var banText = (qObj && qObj.status === 'pending')
+          ? 'Новые вопросы с этого браузера и IP молча перестанут попадать в приёмную. Текущий вопрос будет отклонён.'
+          : 'Новые вопросы с этого браузера и IP молча перестанут попадать в приёмную. Уже опубликованная пара останется на сайте — блокируется только автор от новых вопросов.';
         confirmDlg({
           title: qact === 'delete' ? 'Удалить пару навсегда?' : 'Заблокировать автора вопроса?',
           text: qact === 'delete'
             ? 'Вопрос и ответ исчезнут с сайта и из очереди. Действие необратимо.'
-            : 'Новые вопросы с этого браузера и IP молча перестанут попадать в приёмную. Текущий вопрос будет отклонён.',
+            : banText,
           okLabel: qact === 'delete' ? 'Удалить' : 'Заблокировать', noLabel: 'Отмена', danger: true
         }).then(function (okd) { if (okd && okd.ok) goQA(); });
       } else goQA();
@@ -2668,13 +3152,26 @@ function initGodEye() {
     var rv = t.closest('[data-rv]');
     if (rv) {
       var ok = rv.getAttribute('data-ok') === '1';
-      api('/admin/reviews/' + rv.getAttribute('data-rv') + '/moderate', { approve: ok })
-        .then(function (r) {
-          if (!r.ok) { toast('Не получилось'); return; }
-          toast(ok ? 'Опубликован на сайте ✅' : 'Не публикуется 🚫');
-          loadTab();
-          S.api.get('/admin/overview').then(function (r2) { if (r2.ok) { st.ov = r2; drawNav(); } });
-        });
+      var rvCardEl = rv.closest('[data-rv-st]');
+      var wasLive = rvCardEl && rvCardEl.getAttribute('data-rv-st') === 'approved';
+      var doMod = function () {
+        api('/admin/reviews/' + rv.getAttribute('data-rv') + '/moderate', { approve: ok })
+          .then(function (r) {
+            if (!r.ok) { toast('Не получилось'); return; }
+            toast(ok ? 'Опубликован на сайте ✅' : 'Не публикуется 🚫');
+            loadTab();
+            S.api.get('/admin/overview').then(function (r2) { if (r2.ok) { st.ov = r2; drawNav(); } });
+          });
+      };
+      /* снять уже опубликованный отзыв — публичное действие, спрашиваем; отклонить
+         ещё не опубликованный ничего публичного не меняет — делаем сразу */
+      if (!ok && wasLive) {
+        confirmDlg({
+          title: 'Снять отзыв с сайта?',
+          text: 'Отзыв перестанет показываться в «Книге отзывов». Вернуть можно повторной публикацией.',
+          okLabel: 'Снять', noLabel: 'Отмена', danger: true
+        }).then(function (res) { if (res.ok) doMod(); });
+      } else doMod();
       return;
     }
     /* --- клиенты --- */
@@ -2708,6 +3205,10 @@ function initGodEye() {
   root.addEventListener('change', function (e) {
     if (e.target && e.target.id === 'agBSeg') { bcastRefresh(); return; }
     if (e.target && e.target.id === 'agSort') { st.sort = e.target.value; drawList(); return; }
+    if (e.target && e.target.id === 'agCSort') { st.csort = e.target.value; drawClientList(); return; }
+    if (e.target && e.target.id === 'agCQ') { st.cq = e.target.value; drawClientList(); return; }
+    if (e.target && e.target.id === 'agGfState') { st.gfilter = e.target.value; drawBody(); return; }
+    if (e.target && e.target.id === 'agGfQ') { st.gq = e.target.value; drawBody(); return; }
     if (e.target && e.target.id === 'agDeliverFile') { uploadAdminFile(e.target, true); e.target.value = ''; }
     if (e.target && e.target.id === 'agPlainFile') { uploadAdminFile(e.target, false); e.target.value = ''; }
     if (e.target && e.target.id === 'agPreviewFile') { uploadAdminFile(e.target, false, true); e.target.value = ''; }
@@ -2719,6 +3220,30 @@ function initGodEye() {
           afterOrder(r, r.ok ? 'План: ' + PLAN_LBL[stages] : null);
           if (!r.ok && r.error === 'plan_locked') toast('Этапы уже пошли — план не поменять');
         });
+    }
+  });
+
+  /* запоминаем, раскрыт ли блок «ещё разрезы» — иначе живое обновление визитов
+     (каждые 12с перерисовывает #agVAnalytics) захлопывает его на середине чтения.
+     toggle не всплывает — слушаем в фазе перехвата */
+  root.addEventListener('toggle', function (e) {
+    if (e.target && e.target.classList && e.target.classList.contains('an-more')) st.vanmore = e.target.open;
+  }, true);
+
+  /* живые реакции на ввод: поиск по клиентам и счётчик длины рассылки */
+  root.addEventListener('input', function (e) {
+    if (e.target && e.target.id === 'agCQ') {
+      st.cq = e.target.value; drawClientList();
+      var cc = document.getElementById('agCQClear'); if (cc) cc.hidden = !st.cq;   /* держим ✕ в такт вводу */
+      return;
+    }
+    if (e.target && e.target.id === 'agBText') {
+      var cel = document.getElementById('agBCnt');
+      if (cel) {
+        var n = e.target.value.length;
+        cel.textContent = n + ' / 4096';
+        cel.style.color = n > 4096 ? 'var(--wax)' : (n > 3900 ? 'var(--wax)' : '');
+      }
     }
   });
 
@@ -2756,10 +3281,37 @@ function initGodEye() {
       st.listLimit = 40;
       loadTab();
     }
+    if (e.target && e.target.id === 'agCQ' && e.key === 'Enter') { drawClientList(); return; }
+    if (e.target && e.target.id === 'agGfQ' && e.key === 'Enter') { st.gq = e.target.value; drawBody(); return; }
+    if (e.target && e.target.id === 'agSlots' && e.key === 'Enter') {
+      e.preventDefault();
+      var sb = document.getElementById('agSlotsSave');
+      if (sb) sb.click();
+      return;
+    }
     if (e.target && e.target.id === 'agMsg' && e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       var btn = document.getElementById('agMsgSend');
       if (btn) btn.click();
+    }
+    /* стрелки перелистывают вкладки, когда фокус на регистре */
+    var onTab = e.target && e.target.closest && e.target.closest('.ag-tab');
+    if (onTab && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+      e.preventDefault();
+      var order = ['summary', 'visits', 'orders', 'clients', 'reviews', 'qa', 'gifts', 'leads', 'broadcast', 'settings'];
+      var i = order.indexOf(st.tab);
+      if (i < 0) i = 0;
+      i = (i + (e.key === 'ArrowRight' ? 1 : order.length - 1)) % order.length;
+      goTab(order[i], order[i] === 'orders');
+      var nt = document.querySelector('.ag-tab[data-tab="' + order[i] + '"]');
+      if (nt) { try { nt.focus(); } catch (er) {} }
+      return;
+    }
+    /* Enter/Пробел активируют «кнопочные» строки-div (визиты, очередь, события) */
+    if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') &&
+        e.target && e.target.getAttribute && e.target.getAttribute('role') === 'button') {
+      e.preventDefault();
+      e.target.click();
     }
   });
 
@@ -3150,7 +3702,7 @@ function initGodEye() {
   function wzPayNote(price) {
     var p = wzPlan(price), i, s = [];
     for (i = 0; i < p.length; i++) s.push(wzMoney(p[i]) + ' ₽');
-    return (wz.stages === 3 ? 'Сейчас ' : 'Сейчас ') + s.shift() +
+    return 'Сейчас ' + s.shift() +
       ' · потом ' + s.join(' и ') + '. Считает сервер — это его цифры.';
   }
 
@@ -3217,8 +3769,8 @@ function initGodEye() {
     var F = hasTier ? ' финал' : ' Финал';
     var s;
     if (wz.tone === 'short')
-      s = 'Заявка: ' + head + '.' + lvl + ' ' + days +
-          ' дней,' + W.toLowerCase() + ' на руках ' + fin + '. Смета и этапы ниже. ' +
+      s = 'Заявка: ' + head + '.' + lvl + ' ' + wzDaysWord(days) +
+          ',' + W.toLowerCase() + ' на руках ' + fin + '. Смета и этапы ниже. ' +
           'Стартуем со стартового платежа.';
     else if (wz.tone === 'warm')
       s = 'Здравствуйте! Ниже — всё, о чём договорились, в одном месте: ' + head +
@@ -3302,8 +3854,8 @@ function initGodEye() {
   function wzWarnHtml() {
     var days = wzDays(), out = '', band, lbl, C = window.SalonCalc, i;
     if (!wz.p.svc && WZ_SLOW[wz.p.type] && wz.p.term === 'urgent')
-      out += '<div>«Срочно» для этого типа работы — это ' + wzDaysBase() +
-        ' дней: быстрее не бывает. Коэффициент срочности в цене учтён.</div>';
+      out += '<div>«Срочно» для этого типа работы — это ' + wzDaysWord(wzDaysBase()) +
+        ': быстрее не бывает. Коэффициент срочности в цене учтён.</div>';
     if (!wz.p.svc) {
       band = wzBand(days);
       if (band !== wz.p.term) {
@@ -3334,7 +3886,7 @@ function initGodEye() {
       wzMoney(price) + ' ₽</b></li></ul></div>';
     h += '<div class="wz-pv"><span class="caps">Календарь</span><ul>';
     for (i = 0; i < rail.length; i++)
-      h += '<li><span class="d">' + esc(rail[i].d) + '</span>' + esc(rail[i].t) +
+      h += '<li><span class="d">' + esc(wzRu(wzParse(rail[i].d))) + '</span>' + esc(rail[i].t) +
         ' — ' + esc(rail[i].g) + (rail[i].pay ? ' · платёж' : '') + '</li>';
     h += '</ul></div>';
     h += '<div class="wz-pv"><span class="caps">Объём и требования</span>' +
@@ -3363,15 +3915,15 @@ function initGodEye() {
 
     h += '<div class="wz-row"><span class="caps">Цена</span>' +
       '<div class="wz-big"><input type="number" inputmode="numeric" id="wzPriceIn" ' +
-      'class="wz-inp wz-price" min="1" step="500" value="' + price + '">' +
+      'class="wz-inp wz-price" min="100" step="100" value="' + price + '">' +
       '<span class="wz-cur">₽</span></div>' +
       wzChips('data-wz-adj', [['0', 'по формуле'], ['-10', '−10 %'], ['10', '+10 %'],
                               ['top', 'верх вилки ' + wzMoney(q.high)]], wz.adj) +
       '<p class="ag-note" id="wzRange">' + esc(wzRangeText()) + '</p></div>';
 
     h += '<div class="wz-row"><span class="caps">Работа на руках</span>' +
-      '<div class="wz-big"><span class="wz-val" id="wzDateV">' + wzRu(fin) + ' · ' + days +
-      ' дней</span><input type="date" id="wzDateIn" class="wz-inp wz-date" value="' +
+      '<div class="wz-big"><span class="wz-val" id="wzDateV">' + wzRu(fin) + ' · ' + wzDaysWord(days) +
+      '</span><input type="date" id="wzDateIn" class="wz-inp wz-date" value="' +
       wzISO(fin) + '"></div>' +
       wzChips('data-wz-d', [['-7', '− неделя'], ['7', '+ неделя'], ['14', '+ 2 недели'],
                             ['0', 'вернуть по сроку']], '') +
@@ -3514,11 +4066,17 @@ function initGodEye() {
     wz.stages = 2; wz.ttl = 14; wz.files = 1; wz.tone = 'work'; wz.orig = 75; wz.avuz = 0;
     wz.topic = ''; wz.name = ''; wz.noname = 0;
     wz.res = null; wz.oid = 0; wz.sent = false;
+    wz._opener = document.activeElement;   /* вернём фокус сюда при закрытии */
     ov.hidden = false;
     wzDraw();
     void ov.offsetWidth;
     ov.classList.add('open');
     document.documentElement.classList.add('wz-lock');
+    /* уводим фокус внутрь листа — иначе он остаётся на кнопке за оверлеем */
+    setTimeout(function () {
+      var f = ov.querySelector('#wzTopic') || ov.querySelector('.wz-card') || ov.querySelector('.wz-x');
+      if (f) { try { f.focus(); } catch (e) {} }
+    }, 60);
   }
   function wzClose() {
     var ov = document.getElementById('wzOv');
@@ -3526,6 +4084,8 @@ function initGodEye() {
     ov.classList.remove('open');
     document.documentElement.classList.remove('wz-lock');
     setTimeout(function () { ov.hidden = true; }, 200);
+    if (wz._opener && wz._opener.focus) { try { wz._opener.focus(); } catch (e) {} }
+    wz._opener = null;
   }
 
   function wzTake(id) {
@@ -3539,6 +4099,9 @@ function initGodEye() {
       }
     }
     if (!wz.p) return;
+    /* сбрасываем правки прошлой заготовки, иначе новая наследует чужую цену/срок/этапы
+       (те же сбросы делают обработчики выбора типа/услуги) */
+    wz.exact = ''; wz.dshift = 0; wz.adj = '0'; wz.stages = 2;
     if (wz.p.term === 'urgent') wz.tone = 'short';
     wz.step = 2;
     wzDraw();
@@ -3578,7 +4141,7 @@ function initGodEye() {
     wz.files = el && el.checked ? 1 : 0;
 
     var price = wzPrice(), days = wzDays(), fin = wzFinal(), iso = wzISO(fin);
-    var dlText = 'к ' + wzRu(fin) + ', ' + days + ' дней с начала работы';
+    var dlText = 'к ' + wzRu(fin) + ', ' + wzDaysWord(days) + ' с начала работы';
     var btn = document.getElementById('wzFire');
     if (btn) { btn.disabled = true; btn.textContent = 'Собираем…'; }
     wzSay('Заводим дело…');
