@@ -59,13 +59,18 @@ function initCabinet() {
   function titleBadge() {
     document.title = (hiddenNews > 0 ? '(' + hiddenNews + ') ' : '') + baseTitle;
   }
+  /* Тег обязан совпадать с extras.js ('salon-' + o.id). Раньше здесь стоял
+     НОМЕР дела, а там — id: ОС не схлопывала два уведомления об одном
+     событии, и клиент с открытым кабинетом в одной вкладке и статьёй
+     в другой получал их два. Принимаем и объект заказа, и голый номер. */
   function systemNote(no, body) {
     hiddenNews++;
     titleBadge();
     if (!notiOn()) return;
+    var num = (no && no.no) || no, id = (no && no.id) || num;
     try {
-      var n = new Notification('Дело ' + no + ' — Академический Салон',
-        { body: body, icon: 'assets/img/favicon-120.png', tag: 'salon-' + no });
+      var n = new Notification('Дело ' + num + ' — Академический Салон',
+        { body: body, icon: 'assets/img/favicon-120.png', tag: 'salon-' + id });
       n.onclick = function () { try { window.focus(); } catch (e) {} this.close(); };
     } catch (e) {}
   }

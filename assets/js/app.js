@@ -306,52 +306,682 @@
     return { toggle: toggle, apply: apply, current: current };
   })();
 
-  (function () {
-    var box;
-    function ensure() {
-      if (box) return box;
-      box = document.createElement('div'); box.className = 'toast-stack';
-      box.setAttribute('role', 'status'); box.setAttribute('aria-live', 'polite');
-      document.body.appendChild(box); return box;
-    }
-    Salon.toast = function (msg, opts) {
-      opts = opts || {};
-      var st = ensure();
-      /* стопка не растёт бесконечно: держим максимум три записки,
-         старшая уходит тихо — ничего не перекрываем и не мельтешим */
-      while (st.children.length >= 3) st.removeChild(st.firstChild);
-      var t = document.createElement('div');
-      t.className = 'toast toast-' + (opts.type || 'info');
-      var icon = opts.type === 'success' ? '¶' : opts.type === 'error' ? '!' : '§';
-      t.innerHTML = '<span class="toast-ic">' + icon + '</span><span class="toast-msg"></span>';
-      t.querySelector('.toast-msg').textContent = msg;
-      if (opts.action) {
-        var b = document.createElement('button');
-        b.className = 'toast-act'; b.textContent = opts.action.label;
-        b.addEventListener('click', function () { opts.action.onClick(); dismiss(); });
-        t.appendChild(b);
-      } else if (opts.href) {
-        /* быстрая ссылка «в то самое место» — клиент не плутает */
-        var a = document.createElement('a');
-        a.className = 'toast-act'; a.href = opts.href;
-        a.textContent = opts.hrefLabel || 'Открыть →';
-        t.appendChild(a);
-      }
-      st.appendChild(t);
-      /* без rAF: при придушенном рендере кадр не наступает и тост оставался
-         невидимым — пользователь не видел подтверждений действий */
-      void t.offsetWidth;
-      t.classList.add('in');
-      /* с действием живёт дольше:人 должен успеть прочитать и нажать */
-      var life = opts.duration || ((opts.action || opts.href) ? 6500 : 4200);
-      var to = setTimeout(dismiss, life);
-      t.addEventListener('click', function (e) {
-        if (e.target.closest('.toast-act')) return;
-        dismiss(); /* тап по самой записке закрывает её — ненавязчивость */
-      });
-      function dismiss() { clearTimeout(to); t.classList.remove('in'); setTimeout(function () { t.remove(); }, 260); }
-      return dismiss;
+  /* ============================================================
+     «ПОМЕТКИ НА ПОЛЯХ» — единый слой уведомлений «Оттиска».
+     Заменяет Salon.toast (тёмный тост) и .onote (лист в углу).
+     Три уровня: 'call'  — полоса набора, требует решения клиента;
+                 'echo'  — оттиск его собственного действия;
+                 'quiet' — только строка в реестре «Поля» и счётчик.
+     ES5: var, конкатенация, без стрелок и шаблонных литералов.
+     Показ БЕЗ rAF (void offsetWidth / setTimeout): в панели
+     предпросмотра проекта кадр не наступает — обход снимать нельзя.
+     ============================================================ */
+  (function marginalia() {
+    'use strict';
+    var S = window.Salon || (window.Salon = {});
+    var docEl = document.documentElement;
+    var here = (location.pathname.split('/').pop() || 'index.html');
+    var RM = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+
+    /* страницы решения: карточка не выходит ни при каких событиях */
+    var HUSH_ALL = {
+      'admin.html': 1, 'admin-mock.html': 1, '404.html': 1, 'dashboard.html': 1,
+      'oferta.html': 1, 'privacy.html': 1, 'ustav.html': 1, 'priyomnaya.html': 1,
+      'configurator.html': 1
     };
+    /* денежные страницы: молчим обо всём, кроме денег по делу */
+    var HUSH_SOFT = { 'oplata.html': 1, 'specifikaciya.html': 1 };
+    var SOFT_PASS = { prepay: 1, priced: 1 };
+    /* заголовок страницы ведут сами (кабинет) — не спорим */
+    var TITLE_OFF = { 'dashboard.html': 1, 'admin.html': 1, 'admin-mock.html': 1 };
+
+    var RANK = { check: 90, prepay: 85, priced: 80, msg: 60, file: 40, paused: 35,
+                 work: 30, fix: 25, done: 20, cancel: 15, newo: 5 };
+
+    var GAP_MS = 90000;       /* громкая — не чаще раза в полторы минуты   */
+    var PER_HOUR = 3;         /* и не больше трёх в скользящий час          */
+    var COLD_MS = 8000;       /* тишина первые 8 секунд ВИЗИТА             */
+    var HOP_MS = 3000;        /* и первые 3 секунды после перехода         */
+    var HOLD_MS = 180000;     /* потолок паузы под курсором                */
+    var ECHO_MAX = 2;
+    var MARKS_MAX = 30;
+    var MARKS_TTL = 1209600000;   /* 14 суток */
+
+    var rail = null, lrail = null, liveP = null, liveA = null, ledger = null;
+    var current = null, echoes = [], queue = [], drainTimer = null;
+    var hopT0 = Date.now(), baseTitle = null;
+
+    /* ---------------- хранилище ---------------- */
+    function get(k, fb) { return (S.store && S.store.get) ? S.store.get(k, fb) : fb; }
+    function set(k, v) { if (S.store && S.store.set) S.store.set(k, v); }
+    function sget(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+    function sset(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} return v; }
+
+    /* начало ВИЗИТА, а не страницы: иначе холодные 8 секунд обнуляются на
+       каждой из 71 страницы и громкий канал не заговорит никогда */
+    var visitT0 = parseInt(sget('salon_t0') || '0', 10);
+    if (!visitT0) { visitT0 = Date.now(); sset('salon_t0', String(visitT0)); }
+
+    /* ---------------- единый нижний якорь --floor ----------------
+       ОДНА переменная вместо шести формул max(база, --resume-clear+12).
+       Считается как ЗАНЯТАЯ КРОМКА, а не как сумма высот: .resume-bar
+       стоит ПОВЕРХ .mobile-cta (её bottom = высоте панели), поэтому
+       сложение давало лишние ~76px. */
+    function measure() {
+      var f = 0, r, cs, nav, bar, hdr, narrow, lh;
+      nav = document.querySelector('.mobile-cta');
+      if (nav) { cs = getComputedStyle(nav); if (cs.display !== 'none') f = Math.round(nav.getBoundingClientRect().height); }
+      bar = document.querySelector('.resume-bar');
+      if (bar && bar.parentNode) {
+        r = bar.getBoundingClientRect();
+        f = Math.max(f, Math.round(window.innerHeight - r.top));
+      }
+      docEl.style.setProperty('--floor', (f > 0 ? f : 0) + 'px');
+
+      hdr = document.querySelector('.site-header');
+      docEl.style.setProperty('--hdr-h', (hdr ? Math.round(hdr.getBoundingClientRect().height) : 64) + 'px');
+
+      /* на телефоне рельсы делят одну кромку: правый встаёт НАД левым */
+      narrow = !!(window.matchMedia && window.matchMedia('(max-width:880px)').matches);
+      lh = 0;
+      if (narrow && lrail && lrail.children.length) {
+        r = lrail.getBoundingClientRect();
+        if (r.height > 0) lh = Math.round(r.height) + 10;
+      }
+      docEl.style.setProperty('--lrail-h', lh + 'px');
+    }
+    S.floor = measure;
+    window.addEventListener('resize', measure, { passive: true });
+    window.addEventListener('orientationchange', function () { setTimeout(measure, 250); });
+    if (window.visualViewport && window.visualViewport.addEventListener) {
+      window.visualViewport.addEventListener('resize', measure);
+    }
+
+    /* ---------------- рельсы ---------------- */
+    function ensure() {
+      if (rail) return rail;
+      rail = document.createElement('div');
+      rail.className = 'mrail'; rail.id = 'mrail';
+      lrail = document.createElement('div');
+      lrail.className = 'lrail'; lrail.id = 'lrail';
+
+      /* живые регионы создаются ПУСТЫМИ и заранее: регион, вставленный
+         сразу с текстом, большинство скринридеров не озвучивает */
+      liveP = document.createElement('div');
+      liveP.className = 'mrail-live';
+      liveP.setAttribute('role', 'status');
+      liveP.setAttribute('aria-live', 'polite');
+      liveP.setAttribute('aria-atomic', 'false');
+      liveA = liveP.cloneNode(false);
+      liveA.setAttribute('aria-live', 'assertive');
+      rail.appendChild(liveP);
+      rail.appendChild(liveA);
+
+      place();
+      adopt();
+      if (window.MutationObserver) {
+        var mo = new MutationObserver(function () { measure(); });
+        mo.observe(rail, { childList: true });
+        mo.observe(lrail, { childList: true });
+      }
+      measure();
+      setTimeout(measure, 400);   /* шрифты доехали — высоты поменялись */
+      return rail;
+    }
+
+    /* рельсы стоят ПОСЛЕ main и ПЕРЕД подвалом: карточка достижима с
+       клавиатуры сразу после содержимого, а постоянная пилюля «Связаться»
+       не влезает в начало таб-порядка каждой страницы */
+    function place() {
+      var anchor = document.querySelector('.site-footer');
+      if (anchor && anchor.parentNode === document.body) {
+        document.body.insertBefore(lrail, anchor);
+        document.body.insertBefore(rail, anchor);
+      } else {
+        document.body.appendChild(lrail);
+        document.body.appendChild(rail);
+      }
+    }
+
+    /* пилюля «Связаться», куки-плашка и закладка помощи перестают быть
+       самостоятельными position:fixed и становятся детьми рельсов */
+    function adopt() {
+      if (!rail) return;
+      var pill = document.querySelector('.tg-pill');
+      if (pill && pill.parentNode !== rail) rail.appendChild(pill);
+      var cb = document.querySelector('.cookiebar');
+      if (cb && cb.parentNode !== lrail) lrail.appendChild(cb);
+      var hf = document.querySelector('.helpfab');
+      if (hf && hf.parentNode !== lrail) {
+        if (cb && cb.parentNode === lrail) lrail.insertBefore(hf, cb);
+        else lrail.appendChild(hf);
+      }
+      measure();
+    }
+    S.railAdopt = adopt;
+
+    /* ---------------- реестр «Поля» ---------------- */
+    function marks() {
+      var a = get('salon_marks', null), out = [], i, cut = Date.now() - MARKS_TTL;
+      if (!a || !a.length) return out;
+      for (i = 0; i < a.length; i++) if (a[i] && a[i].ts > cut) out.push(a[i]);
+      return out;
+    }
+    function unreadN() {
+      var a = marks(), n = 0, i;
+      for (i = 0; i < a.length; i++) if (!a[i].read) n++;
+      return n;
+    }
+    function mark(rec) {
+      if (!rec || !rec.k) return false;
+      var a = marks(), i;
+      for (i = 0; i < a.length; i++) if (a[i].k === rec.k) return false;
+      a.unshift(rec);
+      set('salon_marks', a.slice(0, MARKS_MAX));
+      badge(true);
+      if (ledger && !ledger.hidden) drawLedger();
+      return true;
+    }
+    function readOne(k) {
+      var a = marks(), i, ch = false;
+      for (i = 0; i < a.length; i++) if (a[i].k === k && !a[i].read) { a[i].read = true; ch = true; }
+      if (ch) { set('salon_marks', a); badge(false); }
+    }
+    function readAll() {
+      var a = marks(), i;
+      for (i = 0; i < a.length; i++) a[i].read = true;
+      set('salon_marks', a);
+      badge(false);
+      drawLedger();
+    }
+    S.marks = { list: marks, add: mark, unread: unreadN, readAll: readAll, open: function () { openLedger(); } };
+
+    function badge(printed) {
+      var n = unreadN(), total = marks().length, btn, el;
+      /* заголовок правится ПЕРВЫМ — раньше любых ранних выходов */
+      if (!TITLE_OFF[here]) {
+        if (baseTitle === null) baseTitle = document.title.replace(/^\(\d+\)\s*/, '');
+        document.title = n ? '(' + n + ') ' + baseTitle : baseTitle;
+      }
+      btn = document.querySelector('.nav-marks');
+      if (!btn) return;
+      btn.hidden = !total;
+      el = btn.querySelector('.nm-n');
+      if (!el) return;
+      if (n) { el.textContent = n > 9 ? '9+' : String(n); el.hidden = false; }
+      else { el.hidden = true; }
+      if (printed && n && !RM) { el.classList.remove('ink'); void el.offsetWidth; el.classList.add('ink'); }
+    }
+
+    function mountMarks() {
+      var cta = document.querySelector('.nav-cta'), b, cab;
+      if (!cta || cta.querySelector('.nav-marks')) return;
+      b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'nav-marks';
+      b.id = 'navMarks';
+      b.hidden = true;
+      b.setAttribute('aria-expanded', 'false');
+      b.setAttribute('aria-controls', 'mledger');
+      b.setAttribute('aria-label', 'Пометки на полях');
+      b.innerHTML = '<span class="nm-g" aria-hidden="true">¶</span><span class="nm-n" hidden></span>';
+      cab = cta.querySelector('.nav-cab');
+      if (cab) cta.insertBefore(b, cab); else cta.appendChild(b);
+      b.addEventListener('click', function () { if (ledger && !ledger.hidden) closeLedger(); else openLedger(); });
+    }
+
+    function when(ts) {
+      var d = new Date(ts), n = new Date();
+      function p(x) { return (x < 10 ? '0' : '') + x; }
+      var same = d.getDate() === n.getDate() && d.getMonth() === n.getMonth() && d.getFullYear() === n.getFullYear();
+      return (same ? 'сегодня' : p(d.getDate()) + '.' + p(d.getMonth() + 1)) + ', ' + p(d.getHours()) + ':' + p(d.getMinutes());
+    }
+
+    function buildLedger() {
+      if (ledger) return ledger;
+      ledger = document.createElement('div');
+      ledger.className = 'mledger';
+      ledger.id = 'mledger';
+      ledger.setAttribute('role', 'dialog');
+      ledger.setAttribute('aria-modal', 'false');
+      ledger.setAttribute('aria-labelledby', 'mlH');
+      ledger.hidden = true;
+      ledger.innerHTML =
+        '<div class="ml-head">' +
+          '<h3 id="mlH">Пометки на полях</h3>' +
+          '<button type="button" class="ml-x" data-ml-x aria-label="Закрыть">×</button>' +
+        '</div>' +
+        '<ol class="ml-list"></ol>' +
+        '<p class="ml-empty" hidden>Поля чистые. Всё по делу — в кабинете.</p>' +
+        '<div class="ml-foot">' +
+          '<button type="button" class="ml-clear" data-ml-clear>Отметить всё прочтённым</button>' +
+          '<a class="ml-all" href="dashboard.html">Все дела <span class="ar" aria-hidden="true">→</span></a>' +
+        '</div>';
+      document.body.appendChild(ledger);
+      ledger.addEventListener('click', function (e) {
+        var t = e.target;
+        if (t.closest('[data-ml-x]')) { closeLedger(); return; }
+        if (t.closest('[data-ml-clear]')) { readAll(); return; }
+        var a = t.closest('a.ml-go');
+        if (a) readOne(a.getAttribute('data-k'));
+      });
+      return ledger;
+    }
+
+    function drawLedger() {
+      var box = buildLedger(), list = box.querySelector('.ml-list'), a = marks(), i, li, go, sp;
+      while (list.firstChild) list.removeChild(list.firstChild);
+      for (i = 0; i < a.length; i++) {
+        li = document.createElement('li');
+        li.className = 'ml-row' + (a[i].read ? '' : ' is-new');
+        go = document.createElement('a');
+        go.className = 'ml-go';
+        go.setAttribute('href', a[i].href || 'dashboard.html');
+        go.setAttribute('data-k', a[i].k);
+
+        sp = document.createElement('span'); sp.className = 'ml-what';
+        sp.textContent = a[i].text || ''; go.appendChild(sp);
+
+        sp = document.createElement('span'); sp.className = 'ml-dots';
+        sp.setAttribute('aria-hidden', 'true'); go.appendChild(sp);
+
+        sp = document.createElement('span'); sp.className = 'ml-no';
+        sp.textContent = a[i].no ? String(a[i].no) : ''; go.appendChild(sp);
+
+        sp = document.createElement('span'); sp.className = 'ml-when';
+        sp.textContent = when(a[i].ts); go.appendChild(sp);
+
+        li.appendChild(go);
+        list.appendChild(li);
+      }
+      box.querySelector('.ml-empty').hidden = a.length > 0;
+      box.querySelector('.ml-foot').hidden = a.length === 0;
+    }
+
+    function outside(e) {
+      if (!ledger || ledger.hidden) return;
+      if (ledger.contains(e.target)) return;
+      if (e.target.closest && e.target.closest('.nav-marks')) return;
+      closeLedger();
+    }
+    function openLedger() {
+      buildLedger();
+      drawLedger();
+      ledger.hidden = false;
+      void ledger.offsetWidth;
+      ledger.classList.add('open');
+      var b = document.querySelector('.nav-marks'), f;
+      if (b) b.setAttribute('aria-expanded', 'true');
+      f = ledger.querySelector('.ml-x');
+      if (f) { try { f.focus(); } catch (e) {} }
+      document.addEventListener('click', outside, true);
+    }
+    function closeLedger() {
+      if (!ledger || ledger.hidden) return;
+      ledger.classList.remove('open');
+      var b = document.querySelector('.nav-marks');
+      if (b) { b.setAttribute('aria-expanded', 'false'); try { b.focus(); } catch (e) {} }
+      setTimeout(function () { if (ledger) ledger.hidden = true; }, RM ? 0 : 200);
+      document.removeEventListener('click', outside, true);
+      kick();   /* реестр закрылся — занятость снята, очередь может пойти */
+    }
+
+    /* ---------------- занятость и очередь ---------------- */
+    function busy() {
+      if (document.hidden) return true;
+      if (S.tour && S.tour.active && S.tour.active()) return true;
+      if (docEl.classList.contains('has-prelude')) return true;
+      if (ledger && !ledger.hidden) return true;
+      return !!document.querySelector('.contact-sheet, .sdlg.open, .toc.open, .tour-veil, .page-veil.act');
+    }
+    /* очередь разбирается не только по закрытию карточки, но и по СНЯТИЮ
+       занятости: закрыли Путеводитель, лист связи, диалог, вернулись во
+       вкладку. Самозаводящийся тик дешевле наблюдателей и не течёт. */
+    function kick() {
+      if (!queue.length) return;
+      if (!drainTimer) {
+        drainTimer = setInterval(function () {
+          if (!queue.length) { clearInterval(drainTimer); drainTimer = null; return; }
+          drain();
+        }, 700);
+      }
+      drain();
+    }
+    function drain() {
+      if (!queue.length || current || busy()) return;
+      if (Date.now() - visitT0 < COLD_MS) return;
+      if (Date.now() - hopT0 < HOP_MS) return;
+      if (!canLoud()) { queue.length = 0; return; }   /* колпак: всё уже в полях */
+      queue.sort(function (a, b) { return (RANK[b.kind] || 0) - (RANK[a.kind] || 0); });
+      var top = queue.shift();
+      queue.length = 0;                                /* остальное — в полях, не копим */
+      render(top);
+    }
+
+    /* ---------------- частотные колпаки ---------------- */
+    function loudLog() {
+      var c = get('salon_caps', null) || {}, a = c.loud || [], now = Date.now(), keep = [], i;
+      for (i = 0; i < a.length; i++) if (now - a[i] < 3600000) keep.push(a[i]);
+      return keep;
+    }
+    function canLoud() {
+      var keep = loudLog(), now = Date.now();
+      if (keep.length >= PER_HOUR) return false;
+      if (keep.length && now - keep[keep.length - 1] < GAP_MS) return false;
+      return true;
+    }
+    function tookLoud() {
+      var c = get('salon_caps', null) || {}, keep = loudLog();
+      keep.push(Date.now());
+      c.loud = keep;
+      set('salon_caps', c);
+    }
+
+    /* ---------------- эмодзи → тон линейки ----------------
+       Смысл переезжает из значка в цвет линейки: скринридер больше не
+       читает «галочка», а «Оттиск» не держит в наборе эмодзи. */
+    var OK_RE = /[✅✔✓⭐]|🎉|\uD83D[\uDCC5\uDCE6\uDD12\uDD14\uDCDD\uDCE3\uDD04]/;
+    var BAD_RE = /[⛔❌❗⚠]|🚫/;
+    function sniff(raw) {
+      if (BAD_RE.test(raw)) return 'wax';
+      if (OK_RE.test(raw)) return 'verify';
+      return 'stamp';
+    }
+    function clean(s) {
+      return String(s)
+        .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, '')
+        .replace(/[\u2600-\u27BF\u2B00-\u2BFF\uFE0F\u200D\u20E3]/g, '')
+        .replace(/\s+([,.:;!?])/g, '$1')
+        .replace(/\s{2,}/g, ' ')
+        .replace(/^\s+|\s+$/g, '');
+    }
+
+    /* ---------------- сборка ---------------- */
+    function build(o) {
+      var el = document.createElement('article'), loud = (o.level === 'call'), go, sub, act, lead;
+      el.className = 'mnote mnote--' + (loud ? 'call' : 'echo') + ' is-' + (o.tone || 'stamp');
+      el._spec = o;
+      if (loud) {
+        el.setAttribute('tabindex', '-1');
+        el.setAttribute('role', 'group');
+        el.innerHTML =
+          '<span class="mn-seal" aria-hidden="true">¶</span>' +
+          '<div class="mn-body">' +
+            '<span class="mn-cap"><span class="mc-no"></span>' +
+              '<span class="mc-dots" aria-hidden="true"></span>' +
+              '<span class="mc-st"></span></span>' +
+            '<b class="mn-t"></b>' +
+            '<p class="mn-sub"></p>' +
+            '<div class="mn-act">' +
+              '<a class="mn-go btn btn-line"></a>' +
+              '<button type="button" class="mn-later">Позже</button>' +
+            '</div>' +
+          '</div>' +
+          '<button type="button" class="mn-x" aria-label="Убрать в поля">×</button>';
+        el.querySelector('.mc-no').textContent = o.cap || '';
+        el.querySelector('.mc-st').textContent = o.state || '';
+        el.querySelector('.mn-t').textContent = o.title || '';
+        sub = el.querySelector('.mn-sub');
+        if (o.sub) sub.textContent = o.sub;
+        else sub.parentNode.removeChild(sub);
+        go = el.querySelector('.mn-go');
+        go.setAttribute('href', o.href || 'dashboard.html');
+        go.textContent = (o.goLabel || 'Открыть дело') + ' ';
+        go.insertAdjacentHTML('beforeend', '<span class="ar" aria-hidden="true">→</span>');
+        el.querySelector('.mn-later').addEventListener('click', function () { close(el, true); });
+      } else {
+        el.innerHTML =
+          '<span class="mn-ic" aria-hidden="true">§</span>' +
+          '<span class="mn-msg"></span>' +
+          '<span class="mn-lead" aria-hidden="true"><i></i></span>' +
+          '<button type="button" class="mn-x" aria-label="Закрыть">×</button>';
+        el.querySelector('.mn-msg').textContent = o.text || '';
+        if (o.action && o.action.label) {
+          act = document.createElement('button');
+          act.type = 'button';
+          act.className = 'mn-do';
+          act.textContent = o.action.label;
+          act.addEventListener('click', function () {
+            try { if (o.action.onClick) o.action.onClick(); } catch (e) {}
+            close(el, false);
+          });
+        } else if (o.href) {
+          act = document.createElement('a');
+          act.className = 'mn-do';
+          act.setAttribute('href', o.href);
+          act.textContent = o.hrefLabel || 'Открыть';
+        }
+        if (act) {
+          lead = el.querySelector('.mn-lead');
+          el.replaceChild(act, lead);   /* отточие уступает место действию */
+          el.classList.add('has-do');
+        }
+      }
+      el.querySelector('.mn-x').addEventListener('click', function () { close(el, o.level === 'call'); });
+      return el;
+    }
+
+    function announce(o) {
+      if (!liveP) return;
+      var box = (o.level === 'call') ? liveA : liveP;
+      var txt = (o.level === 'call')
+        ? ((o.cap ? o.cap + '. ' : '') + (o.state ? o.state + '. ' : '') + (o.title || '') + (o.sub ? ' ' + o.sub : ''))
+        : (o.text || '');
+      box.textContent = '';
+      setTimeout(function () { box.textContent = txt; }, 60);
+    }
+
+    function render(o) {
+      var r = ensure(), el = build(o), pill = r.querySelector('.tg-pill'), life, lead, old;
+      if (pill) r.insertBefore(el, pill); else r.appendChild(el);
+      void el.offsetWidth;                 /* показ без rAF: кадр может не наступить */
+      el.classList.add('in');
+
+      if (o.level === 'call') {
+        current = el;
+        tookLoud();
+        /* у громкой карточки ТАЙМЕРА НЕТ. Она про деньги и срок; исчезающий
+           отсчёт рядом с ценой читается как «предложение истекает». Уходит
+           только по «Позже», крестику, свайпу или Escape. */
+      } else {
+        echoes.push(el);
+        while (echoes.length > ECHO_MAX) { old = echoes.shift(); close(old, false); }
+        life = o.duration ? o.duration : Math.min(9000, 5500 + String(o.text || '').length * 60);
+        if (o.href || o.action) life = Math.min(12000, Math.round(life * 1.6));
+        lead = el.querySelector('.mn-lead i');
+        if (RM || !lead) {
+          el._timer = setTimeout(function () { close(el, false); }, life);
+        } else {
+          /* фирменный приём: отточие само себя стирает справа налево.
+             Пауза при hover/focus — animation-play-state, значит пауза
+             анимации и пауза таймера физически одно и то же. */
+          lead.style.animationDuration = life + 'ms';
+          lead.addEventListener('animationend', function () { close(el, false); });
+          /* потолок паузы: забытая под курсором строка не висит вечно */
+          el._hold = setTimeout(function () { close(el, false); }, life + HOLD_MS);
+        }
+      }
+      announce(o);
+      swipe(el);
+      measure();
+      return el;
+    }
+
+    function close(el, toMargin) {
+      if (!el || el._dead) return;
+      el._dead = true;
+      if (el._timer) { clearTimeout(el._timer); el._timer = null; }
+      if (el._hold) { clearTimeout(el._hold); el._hold = null; }
+      var i = echoes.indexOf(el);
+      if (i > -1) echoes.splice(i, 1);          /* СИНХРОННО: иначе while зациклится */
+      if (current === el) current = null;
+      if (toMargin && el._spec && el._spec.rec) mark(el._spec.rec);
+      /* max-height ставится ТОЛЬКО на выход: в покое none, иначе на 200%
+         зуме карточка обрезается по нижней кромке */
+      el.style.maxHeight = el.scrollHeight + 'px';
+      void el.offsetWidth;
+      el.classList.remove('in');
+      el.classList.add('out');
+      el.style.maxHeight = '0px';
+      setTimeout(function () {
+        if (el.parentNode) el.parentNode.removeChild(el);
+        measure();
+        kick();
+      }, RM ? 200 : 340);
+    }
+
+    /* ---------------- свайп вправо (телефон) ---------------- */
+    function swipe(el) {
+      var x0 = 0, y0 = 0, dx = 0, on = false, lock = 0;
+      el.addEventListener('touchstart', function (e) {
+        if (e.touches.length !== 1) return;
+        x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+        dx = 0; lock = 0; on = true;
+        el.classList.add('swiping');
+      }, { passive: true });
+      el.addEventListener('touchmove', function (e) {
+        if (!on) return;
+        var x = e.touches[0].clientX, y = e.touches[0].clientY;
+        if (!lock) lock = (Math.abs(x - x0) > Math.abs(y - y0) + 4) ? 1 : -1;
+        if (lock < 0) return;                    /* вертикаль — это скролл страницы */
+        dx = Math.max(0, x - x0);
+        el.style.transform = 'translateX(' + dx + 'px)';
+        el.style.opacity = String(Math.max(0, 1 - dx / 220));
+      }, { passive: true });
+      function up() {
+        if (!on) return;
+        on = false;
+        el.classList.remove('swiping');
+        if (dx > 64) { el.style.transform = 'translateX(110%)'; close(el, true); }
+        else { el.style.transform = ''; el.style.opacity = ''; }
+      }
+      el.addEventListener('touchend', up);
+      el.addEventListener('touchcancel', up);
+    }
+
+    /* ---------------- квитанция вызова ----------------
+       Функция (старый контракт Salon.toast → dismiss) + поля статуса,
+       чтобы поллер писал ключ ПОСЛЕ доставки, а не после вызова. */
+    function receipt() {
+      var f = function () { if (f.dismiss) f.dismiss(); };
+      f.delivered = false;
+      f.channel = 'none';
+      f.dismiss = null;
+      return f;
+    }
+
+    /* ---------------- ЕДИНАЯ ТОЧКА ПОКАЗА ---------------- */
+    S.note = function (spec) {
+      var o = spec || {}, out = receipt(), el, landed, raw;
+      o.level = o.level || 'echo';
+      o.kind = o.kind || o.level;
+
+      /* ЭХО — ответ на действие клиента в этой вкладке. Работает везде,
+         включая тихие страницы и админку: человек нажал и ждёт ответа. */
+      if (o.level === 'echo') {
+        raw = o.text == null ? '' : String(o.text);
+        o.text = clean(raw);
+        if (!o.text) return out;
+        if (!o.tone) o.tone = sniff(raw);
+        el = render(o);
+        out.delivered = true;
+        out.channel = 'echo';
+        out.dismiss = function () { close(el, false); };
+        return out;
+      }
+
+      /* СЕРВЕРНОЕ СОБЫТИЕ сначала ложится в поля и только потом, если
+         позволено, поднимается до карточки. Терять нечего в принципе. */
+      landed = o.rec ? mark(o.rec) : false;
+      out.delivered = !!(landed || !o.rec);
+      out.channel = 'ledger';
+      if (o.rec && !landed) { out.delivered = true; out.channel = 'dup'; return out; }
+
+      if (o.level !== 'call') return out;
+      if (HUSH_ALL[here]) return out;
+      if (HUSH_SOFT[here] && !SOFT_PASS[o.kind]) return out;
+      if (!canLoud()) return out;
+
+      if (current) {
+        if ((RANK[o.kind] || 0) <= (RANK[(current._spec || {}).kind] || 0)) return out;
+        close(current, true);                    /* приоритетнее — вытесняет */
+        queue.push(o); kick();
+        out.channel = 'queued';
+        return out;
+      }
+      if (busy() || Date.now() - visitT0 < COLD_MS || Date.now() - hopT0 < HOP_MS) {
+        queue.push(o); kick();
+        out.channel = 'queued';
+        return out;
+      }
+      el = render(o);
+      out.channel = 'call';
+      out.dismiss = function () { close(el, true); };
+      return out;
+    };
+
+    /* ---------------- совместимость: старая сигнатура ----------------
+       Salon.toast(msg, {type,action,href,hrefLabel,duration}) — все 131
+       существующий вызов продолжают работать, возвращается dismiss. */
+    var TYPE_TONE = { success: 'verify', error: 'wax', info: 'stamp' };
+    S.toast = function (msg, opts) {
+      opts = opts || {};
+      return S.note({
+        level: 'echo',
+        text: msg,
+        tone: TYPE_TONE[opts.type] || null,
+        action: opts.action || null,
+        href: opts.href || null,
+        hrefLabel: opts.hrefLabel || null,
+        duration: opts.duration || 0
+      });
+    };
+
+    /* ---------------- вкладка-лидер ----------------
+       Опрашивает /orders и показывает только одна вкладка: чинит гонку
+       setInterval(90000) × visibilitychange(800ms), дававшую дубль. */
+    S.lead = function () {
+      var id = sget('salon_tab'), l, now = Date.now();
+      if (!id) { id = 't' + now + Math.random().toString(36).slice(2, 7); sset('salon_tab', id); }
+      l = get('salon_lead', null);
+      if (!l || !l.id || l.id === id || now - l.ts > 5000) {
+        set('salon_lead', { id: id, ts: now });
+        return true;
+      }
+      return false;
+    };
+
+    /* ---------------- клавиатура и фон ---------------- */
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' && e.keyCode !== 27) return;
+      if (ledger && !ledger.hidden) { closeLedger(); return; }
+      /* Escape отдаётся модальным слоям, если они открыты */
+      if (document.querySelector('.sdlg.open, .toc.open, .contact-sheet')) return;
+      if (current) { close(current, true); return; }
+      if (echoes.length) close(echoes[echoes.length - 1], false);
+    });
+    document.addEventListener('visibilitychange', function () {
+      if (rail) { if (document.hidden) rail.classList.add('held'); else rail.classList.remove('held'); }
+      if (!document.hidden) kick();
+    });
+    window.addEventListener('storage', function (e) {
+      if (!e.key || e.key.indexOf('salon_marks') < 0) return;
+      badge(false);
+      if (ledger && !ledger.hidden) drawLedger();
+    });
+
+    /* ---------------- запуск ---------------- */
+    function init() {
+      ensure();
+      if (rail && document.querySelector('.site-footer')) place();  /* подвал появился позже */
+      mountMarks();
+      badge(false);
+      adopt();
+      setTimeout(adopt, 1200);   /* куки-плашка и закладка помощи приходят позже */
+      measure();
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else setTimeout(init, 0);
   })();
 
   Salon.copy = function (text) {
@@ -630,7 +1260,10 @@
     if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк подписи темы */
 
     function tocSiblings() {
-      return ['.site-header', 'main', '.site-footer', '.mobile-cta', '.lasse', '.tg-pill']
+      /* .tg-pill теперь ребёнок .mrail — прячем сами рельсы, иначе
+         под открытым Путеводителем осталась бы висеть карточка */
+      return ['.site-header', 'main', '.site-footer', '.mobile-cta', '.lasse',
+              '.mrail', '.lrail', '.mledger']
         .map(function (s) { return document.querySelector(s); }).filter(Boolean);
     }
     function setToc(open) {

@@ -206,43 +206,6 @@
 .due-box .dr.total{border-top:1px solid var(--hairline);margin-top:6px;padding-top:8px;font-size:15px}
 .due-box .dr .minus{color:var(--verify)}
 
-/* ============ живое уведомление о заказе — «лист» в углу ============ */
-.onote{
-  position:fixed;right:clamp(16px,2.5vw,32px);bottom:88px;z-index:97;
-  bottom:max(88px, calc(var(--resume-clear, 0px) + 12px));
-  display:flex;gap:12px;align-items:flex-start;
-  width:min(92vw,360px);padding:14px 16px;
-  background:var(--sheet);color:var(--ink);text-decoration:none;
-  border:1px solid var(--hairline-strong);border-left:3px solid var(--wax);
-  border-radius:var(--r);
-  box-shadow:0 2px 0 var(--hairline),0 18px 44px rgba(34,32,27,.28);
-  opacity:0;transform:translateY(14px) rotate(-.4deg);
-  transition:opacity .3s ease,transform .35s cubic-bezier(.22,1,.36,1);
-}
-.onote.in{opacity:1;transform:translateY(0) rotate(0)}
-.onote .on-seal{
-  flex:0 0 34px;height:34px;border:1.5px solid var(--wax);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-size:17px;color:var(--wax);
-  transform:rotate(-6deg);margin-top:2px;
-}
-.onote .on-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
-.onote .on-cap{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
-.onote b{font-size:14.5px;font-weight:500;line-height:1.45}
-.onote .on-go{font-size:12.5px;color:var(--wax);margin-top:2px}
-.onote:hover .on-go{text-decoration:underline}
-.onote .on-x{
-  flex:0 0 auto;border:0;background:none;color:var(--ink-faint);
-  font-size:17px;line-height:1;cursor:pointer;padding:2px 4px;margin:-4px -6px 0 0;
-}
-.onote .on-x:hover{color:var(--ink)}
-@media(max-width:880px){
-  .onote{right:12px;left:12px;width:auto;bottom:calc(74px + env(safe-area-inset-bottom))}
-}
-@media(prefers-reduced-motion:reduce){
-  .onote{transition:opacity .2s ease;transform:none}
-  .onote.in{transform:none}
-}
 
 /* ---------- Кабинет: поэтапная сдача, план оплат, отзыв (2026-07) ---------- */
 .plan-box .pl-st{font-size:11px;letter-spacing:.04em;margin-left:6px;white-space:nowrap}
@@ -370,3 +333,340 @@
 .inv-row .btn{flex:1 1 auto;min-height:44px;font-size:14px}
 .inv-share{text-align:center}
 @media(max-width:540px){.inv-row{flex-direction:column}}
+
+
+/* ============================================================
+   «ПОМЕТКИ НА ПОЛЯХ» — единый плавающий слой.
+   Заменяет .toast-stack/.toast (chrome.css:666-690) и .onote
+   (extras.css:207-245). Наложение невозможно АРХИТЕКТУРНО:
+   ни один жилец углов больше не position:fixed — все они дети
+   двух рельсов и стоят в нормальном потоке flex-колонки.
+   ============================================================ */
+
+/* --floor — ЕДИНСТВЕННЫЙ нижний якорь. Заменяет --resume-clear
+   у всех шести прежних потребителей. Ставит JS (Salon.floor). */
+:root{ --floor:0px; --hdr-h:64px; --lrail-h:0px; }
+
+.mrail,.lrail{
+  position:fixed;z-index:96;
+  bottom:calc(max(var(--floor,0px), env(safe-area-inset-bottom)) + 22px);
+  display:flex;flex-direction:column;gap:10px;
+  pointer-events:none;
+}
+.mrail{right:clamp(26px,3vw,40px);width:min(92vw,372px);align-items:stretch;z-index:97}
+.lrail{left:clamp(18px,2.5vw,34px);width:min(92vw,360px);align-items:flex-start}
+.mrail>*,.lrail>*{pointer-events:auto}
+.mrail-live{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0;pointer-events:none}
+
+/* жильцы углов перестают быть самостоятельными fixed-объектами.
+   Специфичность (0,2,0) перебивает и базовые правила, и мобильные
+   медиазапросы (0,1,0) — !important не нужен. */
+.mrail .tg-pill,.lrail .cookiebar,.lrail .helpfab{
+  position:static;inset:auto;top:auto;right:auto;bottom:auto;left:auto;
+  z-index:auto;margin:0;
+}
+.mrail .tg-pill{align-self:flex-end}
+.lrail .cookiebar,.lrail .helpfab{width:min(100%,360px);max-width:100%}
+
+/* ============================================================
+   ЛИСТ ПОМЕТКИ
+   ============================================================ */
+.mnote{
+  position:relative;background:var(--sheet);color:var(--ink);
+  border:1px solid var(--hairline-strong);
+  border-left:3px solid var(--hairline-strong);   /* линейка несёт смысл */
+  border-radius:var(--r);
+  box-shadow:0 2px 0 var(--hairline),0 18px 44px rgba(34,32,27,.28);
+  max-height:none;                                 /* в покое НЕ режем: 200% зум */
+  opacity:0;transform:translateY(12px);
+  transition:opacity .3s ease,
+             transform .35s cubic-bezier(.22,1,.36,1),
+             max-height .3s ease,margin-top .3s ease,
+             padding .3s ease,border-width .3s ease;
+  --tilt:-.35deg;
+}
+/* лист, положенный на стол, а не выровненный по сетке */
+.mnote:nth-of-type(2n){--tilt:.3deg}
+.mnote.in{opacity:1;transform:translateY(0) rotate(var(--tilt))}
+.mnote.out{
+  opacity:0;transform:translateY(4px);overflow:hidden;
+  margin-top:-10px;padding-top:0;padding-bottom:0;
+  border-top-width:0;border-bottom-width:0;
+}
+.mnote.swiping{transition:none}
+.mnote.is-wax{border-left-color:var(--wax)}
+.mnote.is-verify{border-left-color:var(--verify)}
+.mnote.is-stamp{border-left-color:var(--stamp)}
+.mnote :focus-visible,.mnote:focus-visible{outline:2px solid var(--wax);outline-offset:2px;border-radius:var(--r)}
+
+/* ---------- ГРОМКАЯ: полоса набора ---------- */
+.mnote--call{display:flex;gap:12px;align-items:flex-start;padding:14px 14px 13px 16px;touch-action:pan-y}
+.mn-seal{
+  flex:0 0 34px;height:34px;border:1.5px solid var(--wax);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:17px;color:var(--wax);
+  transform:rotate(-6deg);margin-top:2px;
+}
+.mnote.is-verify .mn-seal{border-color:var(--verify);color:var(--verify)}
+.mnote.is-stamp  .mn-seal{border-color:var(--stamp); color:var(--stamp)}
+.mn-body{flex:1;min-width:0;display:flex;flex-direction:column}
+
+/* ФОРМУЛЯРНАЯ СТРОКА: «ДЕЛО №182 ····· ЖДЁМ ВАШЕГО СЛОВА».
+   Фактура отточия — ДНК проекта, один в один с .dotrow (styles.css:158):
+   шаг 9px, радиус 1px, растушёвка 1.4px, посадка на базовую линию. */
+.mn-cap{
+  display:flex;align-items:baseline;gap:8px;margin-bottom:6px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-soft);       /* не --ink-faint: 5.67:1 вместо 4.01:1 */
+}
+.mc-no,.mc-st{flex:0 0 auto;white-space:nowrap}
+.mc-dots{
+  flex:1 1 auto;min-width:16px;height:.9em;align-self:baseline;
+  background-image:radial-gradient(circle,var(--hairline-strong) 1px,transparent 1.4px);
+  background-size:9px 3px;background-repeat:repeat-x;background-position:0 100%;
+}
+.mn-t{font-family:var(--serif);font-size:17px;font-weight:480;line-height:1.32;margin:0}
+.mn-sub{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:6px 0 0}
+.mn-act{display:flex;align-items:center;gap:14px;margin-top:12px;flex-wrap:wrap}
+/* кнопка СИСТЕМНАЯ: типографика и состояния приходят из .btn/.btn-line
+   (styles.css:111-127). Заливки сургучом нет — квота ≤2 на вьюпорт
+   тратится на печать и левую линейку. */
+.mn-go{min-height:44px;padding:10px 18px;font-size:14px;text-decoration:none}
+.mn-later{
+  background:none;border:0;cursor:pointer;padding:0 2px;
+  min-height:44px;display:inline-flex;align-items:center;
+  font:inherit;font-size:13.5px;color:var(--ink-soft);
+  text-decoration:underline;text-decoration-color:var(--hairline-strong);text-underline-offset:3px;
+}
+.mn-later:hover{color:var(--ink);text-decoration-color:var(--ink)}
+
+/* ---------- ЭХО: оттиск собственного действия ----------
+   Замена 131 тоста. Та же бумага, одна формулярная строка. */
+.mnote--echo{display:flex;align-items:baseline;gap:9px;padding:0 4px 0 14px;min-height:48px;touch-action:pan-y}
+.mn-ic{flex:0 0 auto;font-family:var(--serif);font-size:15px;color:var(--ink-soft)}
+.mn-msg{flex:0 1 auto;min-width:0;font-size:14.5px;line-height:1.45;padding:13px 0}
+/* ФИРМЕННЫЙ ПРИЁМ: отточие само себя стирает справа налево — наборщик
+   снимает точки со строки. Живёт ТОЛЬКО на эхо: исчезающий отсчёт рядом
+   с ценой читается как «предложение истекает», поэтому у громкой
+   карточки таймера нет вовсе. */
+.mn-lead{flex:1 1 auto;min-width:18px;height:.9em;position:relative;overflow:hidden}
+.mn-lead i{
+  position:absolute;left:0;top:0;bottom:0;width:100%;display:block;
+  background-image:radial-gradient(circle,var(--hairline-strong) 1px,transparent 1.4px);
+  background-size:9px 3px;background-repeat:repeat-x;background-position:0 100%;
+  animation-name:mn-unprint;animation-timing-function:linear;animation-fill-mode:forwards;
+}
+@keyframes mn-unprint{from{width:100%}to{width:0}}
+/* перо поднято: пауза таймера и пауза анимации — физически одно и то же,
+   потому что закрытие висит на animationend. WCAG 2.2.1 закрыт формой. */
+.mnote--echo:hover .mn-lead i,
+.mnote--echo:focus-within .mn-lead i,
+.mrail.held .mn-lead i{animation-play-state:paused}
+.mn-do{
+  flex:0 0 auto;align-self:center;min-height:44px;display:inline-flex;align-items:center;
+  background:none;border:0;cursor:pointer;font:inherit;font-size:13.5px;color:var(--ink);
+  text-decoration:underline;text-decoration-color:var(--hairline-strong);text-underline-offset:3px;
+}
+.mn-do:hover{color:var(--wax);text-decoration-color:var(--wax)}
+
+/* крестик — СИБЛИНГ ссылки, а не потомок; 44×44 вместо 18×21 */
+.mn-x{
+  flex:0 0 44px;width:44px;height:44px;align-self:center;
+  border:0;background:none;cursor:pointer;border-radius:50%;padding:0;
+  font-size:19px;line-height:1;color:var(--ink-soft);
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:color .15s,background .15s;
+}
+.mnote--call .mn-x{align-self:flex-start;margin:-4px -4px 0 0}
+.mn-x:hover{color:var(--ink);background:var(--mark)}
+
+/* ============================================================
+   ОТКРЫВАЛКА ПОЛЕЙ В ШАПКЕ
+   ============================================================ */
+.nav-marks{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  width:38px;height:38px;min-width:38px;padding:0;line-height:1;
+  border:1px solid transparent;border-radius:var(--r);background:none;cursor:pointer;
+  color:var(--ink-soft);transition:color .15s,border-color .15s,background .15s;
+}
+.nav-marks[hidden]{display:none}
+.nav-marks .nm-g{font-family:var(--serif);font-size:19px;line-height:1}
+.nav-marks:hover,.nav-marks[aria-expanded="true"]{color:var(--ink);border-color:var(--hairline-strong);background:var(--mark)}
+.nav-marks:focus-visible{outline:2px solid var(--wax);outline-offset:2px}
+/* счётчик — штемпельная синь, а не сургуч: квота сургуча остаётся у листа.
+   Конвенция уже есть в проекте — .mn-badge.calm (chrome.css:678) */
+.nav-marks .nm-n{
+  position:absolute;top:0;right:-2px;min-width:16px;height:16px;padding:0 4px;
+  border-radius:999px;background:var(--stamp);color:#FFFEF9;border:2px solid var(--paper);
+  font-family:var(--mono);font-size:9.5px;font-weight:600;line-height:1;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.nav-marks .nm-n[hidden]{display:none}
+/* цифра ПЕЧАТАЕТСЯ — та же кривая и та же форма кадров, что у .stamp-burst */
+.nav-marks .nm-n.ink{animation:nm-ink .45s cubic-bezier(.16,1.1,.3,1)}
+@keyframes nm-ink{
+  0%{transform:rotate(-8deg) scale(1.7);opacity:0}
+  62%{transform:rotate(0) scale(.96);opacity:1}
+  100%{transform:rotate(0) scale(1);opacity:1}
+}
+
+/* ============================================================
+   РЕЕСТР «ПОЛЯ» — где лежит всё тихое
+   ============================================================ */
+.mledger{
+  position:fixed;top:calc(var(--hdr-h) + 8px);right:clamp(12px,2vw,22px);z-index:198;
+  width:min(94vw,392px);max-height:min(70svh,520px);overflow:auto;
+  background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:var(--r);
+  box-shadow:0 2px 0 var(--hairline),0 22px 54px rgba(34,32,27,.26);
+  opacity:0;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease;
+}
+.mledger.open{opacity:1;transform:none}
+.mledger[hidden]{display:none}
+.ml-head{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:8px 8px 8px 16px;border-bottom:1px solid var(--hairline);
+  position:sticky;top:0;background:var(--sheet);z-index:1;
+}
+.ml-head h3{font-family:var(--serif);font-size:17px;font-weight:500;margin:0}
+.ml-x{
+  width:44px;height:44px;min-width:44px;border:0;background:none;cursor:pointer;
+  font-size:22px;line-height:1;color:var(--ink-soft);border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.ml-x:hover{color:var(--ink);background:var(--mark)}
+/* обрез страницы: вертикальная линейка вдоль полей */
+.ml-list{list-style:none;margin:0 0 0 14px;padding:0;border-left:1px solid var(--hairline)}
+.ml-go{
+  display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;min-height:44px;
+  padding:11px 14px 11px 12px;text-decoration:none;color:var(--ink);
+  border-bottom:1px solid var(--hairline);
+}
+.ml-row:last-child .ml-go{border-bottom:0}
+.ml-go:hover{background:var(--paper-2)}
+.ml-what{flex:0 1 auto;font-size:14.5px;line-height:1.45}
+.ml-dots{
+  flex:1 1 auto;min-width:14px;height:.9em;align-self:baseline;
+  background-image:radial-gradient(circle,var(--hairline-strong) 1px,transparent 1.4px);
+  background-size:9px 3px;background-repeat:repeat-x;background-position:0 100%;
+}
+.ml-no{flex:0 0 auto;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);white-space:nowrap}
+.ml-when{
+  flex:0 0 100%;margin-top:3px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.ml-row.is-new .ml-go{background:var(--mark);border-left:2px solid var(--stamp);padding-left:10px}
+.ml-empty{padding:26px 16px;font-size:14px;color:var(--ink-soft);margin:0;text-align:center}
+.ml-empty[hidden]{display:none}
+.ml-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 14px 10px}
+.ml-foot[hidden]{display:none}
+.ml-clear{
+  background:none;border:0;cursor:pointer;padding:0;min-height:44px;
+  display:inline-flex;align-items:center;font:inherit;font-size:12.5px;color:var(--ink-soft);
+  text-decoration:underline;text-decoration-color:var(--hairline-strong);text-underline-offset:3px;
+}
+.ml-clear:hover{color:var(--ink)}
+.ml-all{
+  font-size:13px;color:var(--wax);text-decoration:none;min-height:44px;
+  display:inline-flex;align-items:center;gap:5px;border-bottom:1px solid transparent;
+}
+.ml-all:hover{border-bottom-color:var(--wax)}
+.mledger :focus-visible{outline:2px solid var(--wax);outline-offset:-2px}
+
+/* ============================================================
+   ОДИН СЛОВАРЬ ПЕЧАТИ В УГЛУ
+   У карточки печать — обводка. Приводим к ней и закладку помощи:
+   после сборки в рельсы обе оказываются в поле зрения разом.
+   ============================================================ */
+.helpfab{cursor:default}
+.helpfab .hf-open{
+  flex:1;min-width:0;display:inline-flex;align-items:center;gap:12px;text-align:left;
+  border:0;background:none;cursor:pointer;font:inherit;color:inherit;padding:0;min-height:44px;
+}
+.helpfab .hf-seal{
+  background:none;box-shadow:none;color:var(--wax);
+  border:1.5px solid var(--wax);transform:rotate(-6deg);
+}
+.helpfab .hf-x{
+  width:44px;height:44px;min-width:44px;padding:0;margin:-6px -8px -6px 0;
+  border:0;background:none;cursor:pointer;border-radius:50%;align-self:center;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--ink-soft);font-size:18px;line-height:1;
+}
+.helpfab .hf-x:hover{color:var(--ink);background:var(--mark)}
+.helpfab .hf-open:focus-visible,.helpfab .hf-x:focus-visible{outline:2px solid var(--wax);outline-offset:-2px}
+
+/* ============================================================
+   ТЁМНАЯ ТЕМА
+   Ни одного захардкоженного цвета: --wax/--verify/--stamp/--ink-soft
+   уже переопределены в styles.css:333-349, поэтому сургуч уведомления
+   совпадает с сургучом страницы. Правим только глубину.
+   ============================================================ */
+:root[data-theme="dark"] .mnote{
+  box-shadow:0 2px 0 rgba(0,0,0,.5),0 18px 44px rgba(0,0,0,.55);
+}
+:root[data-theme="dark"] .mledger{
+  box-shadow:0 2px 0 rgba(0,0,0,.5),0 22px 54px rgba(0,0,0,.6);
+}
+:root[data-theme="dark"] .mn-x:hover,
+:root[data-theme="dark"] .ml-x:hover,
+:root[data-theme="dark"] .nav-marks:hover,
+:root[data-theme="dark"] .helpfab .hf-x:hover{background:color-mix(in srgb,var(--ink) 12%,transparent)}
+:root[data-theme="dark"] .ml-row.is-new .ml-go{background:color-mix(in srgb,var(--stamp) 14%,transparent)}
+:root[data-theme="dark"] .nav-marks .nm-n{border-color:var(--paper)}
+
+/* ============================================================
+   БРЕЙКПОИНТЫ
+   ============================================================ */
+@media(max-width:880px){
+  /* рельсы делят одну кромку: правый встаёт НАД левым на измеренную
+     высоту, поэтому полосы не могут пересечься */
+  .lrail{left:12px;right:12px;width:auto;align-items:stretch;
+    bottom:calc(max(var(--floor,0px), env(safe-area-inset-bottom)) + 12px)}
+  .mrail{left:12px;right:12px;width:auto;
+    bottom:calc(max(var(--floor,0px), env(safe-area-inset-bottom)) + 12px + var(--lrail-h,0px))}
+  .lrail .cookiebar,.lrail .helpfab{width:100%;max-width:none}
+  .mnote--call{padding:14px}
+  .mn-act{gap:10px}
+  .mn-go{flex:1 1 auto;justify-content:center}
+  .nav-marks{width:44px;height:44px;min-width:44px}
+  .mledger{
+    top:auto;left:0;right:0;bottom:0;width:auto;max-height:82svh;
+    border-radius:6px 6px 0 0;border-bottom:0;transform:translateY(10px);
+    padding-bottom:max(10px,env(safe-area-inset-bottom));
+  }
+  .mledger.open{transform:none}
+}
+@media(max-width:760px){
+  .mn-t{font-size:16px;line-height:1.35}
+  .mn-sub{font-size:13px}
+  .ml-what{font-size:14px}
+  .mn-msg{font-size:14px}
+}
+@media(max-width:480px){
+  .mnote--call{gap:10px;padding:13px 12px}
+  .mn-seal{display:none}                 /* текст важнее декора */
+  .mn-cap{font-size:10px;letter-spacing:.1em;gap:6px}
+  .mn-act{flex-direction:column;align-items:stretch;gap:8px}
+  .mn-later{justify-content:center}
+  .mnote--echo{padding-left:12px;gap:7px}
+  .mnote--call .mn-x{margin:-2px -2px 0 0}
+}
+
+/* ============================================================
+   ДВИЖЕНИЕ И ПЕЧАТЬ
+   ============================================================ */
+@media(prefers-reduced-motion:reduce){
+  .mnote{transition:opacity .2s ease;transform:none}
+  .mnote.in,.mnote.out{transform:none}
+  /* глобальный подавитель (styles.css:313) обнуляет длительность, и
+     animationend выстрелил бы мгновенно — поэтому отточие рисуется
+     целиком, а срок жизни эха JS ведёт обычным setTimeout */
+  .mn-lead i{animation:none;width:100%}
+  .nav-marks .nm-n.ink{animation:none}
+  .mledger{transition:none}
+}
+@media print{
+  .mrail,.lrail,.mledger,.nav-marks{display:none!important}
+}

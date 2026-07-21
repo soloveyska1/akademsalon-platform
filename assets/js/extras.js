@@ -561,6 +561,11 @@
         '<span class="hf-t"><b>' + tx.t + '</b><small>' + tx.s + '</small></span>' +
         '<span class="hf-x" data-hf-x aria-label="Скрыть">×</span>';
       document.body.appendChild(el);
+      /* Закладка рождается ПОЗЖЕ, чем отработал adopt() слоя «Пометки на
+         полях» (её триггеры — секунды и минуты), поэтому она оставалась
+         самостоятельным position:fixed на том же left, что и левая рельса,
+         и налезала на куки-плашку. Просим рельсу усыновить её сразу. */
+      if (S.railAdopt) S.railAdopt();
       void el.offsetWidth; /* показ без rAF */
       el.classList.add('in');
       if (S.visit) S.visit.mark('закладка помощи: ' + reason);
@@ -612,141 +617,226 @@
     window.addEventListener('pagehide', function () { clearTimeout(dwell); });
   })();
 
-  /* ---------------- Живые уведомления о заказе ----------------
-     Клиент ходит по сайту, а дело сдвинулось (цена, статус, сообщение) —
-     показываем аккуратный «лист» в углу с мягким колокольчиком и ссылкой
-     в кабинет. Кабинет сам себе источник правды — там поллер не нужен. */
-  (function liveOrders() {
-    if (QUIET_PAGES[here] || here === 'dashboard.html') return;
-    if (!S.api || !S.api.identified || !S.api.identified()) return;
+    /* ---------------- Живые уведомления о деле ----------------
+       Клиент ходит по сайту, а дело сдвинулось. ВСЁ, что пришло, сначала
+       ложится в реестр «Поля» (Salon.note → mark), и только четыре события,
+       где мяч у клиента и есть срок, поднимаются до карточки.
+       Кабинет — сам себе источник правды, там поллер не нужен. */
+    (function liveOrders() {
+      if (here === 'dashboard.html') return;
+      if (!S.note || !S.lead) return;
+      if (!S.api || !S.api.identified || !S.api.identified()) return;
 
-    var EVENT_TEXT = {
-      priced: function (o) {
-        return 'Мастер назвал цену' + (o.price ? ' — ' + o.price.toLocaleString('ru-RU') + ' ₽' : '') + '. Решение за вами.';
-      },
-      prepay: function () { return 'Ожидаем предоплату — реквизиты в кабинете.'; },
-      work:   function () { return 'Оплата получена — работа взята в производство.'; },
-      check:  function () { return 'Работа готова! Посмотрите и примите её.'; },
-      fix:    function () { return 'Ваши замечания приняты — вносим правки.'; },
-      done:   function () { return 'Заказ завершён. Мы на связи до защиты!'; },
-      cancel: function () { return 'Заявка закрыта — возобновить можно в кабинете.'; },
-      msg:    function () { return 'Новое сообщение мастера — ответ ждёт в переписке.'; },
-      file:   function () { return 'Мастерская положила новый файл в дело — посмотрите.'; },
-      newo:   function () { return 'Заявка принята — мастер уже изучает её.'; }
-    };
-
-    /* мягкий двухнотный колокольчик; звук возможен только после жеста */
-    var canSound = false, actx = null;
-    ['pointerdown', 'keydown'].forEach(function (ev) {
-      document.addEventListener(ev, function () { canSound = true; }, { once: true, passive: true });
-    });
-    function chime() {
-      if (!canSound) return;
-      try {
-        actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-        if (actx.state === 'suspended') actx.resume();
-        var t0 = actx.currentTime;
-        [[880, 0, 0.9], [1318.5, 0.11, 1.1]].forEach(function (n) {
-          var o = actx.createOscillator(), g = actx.createGain();
-          o.type = 'sine';
-          o.frequency.value = n[0];
-          g.gain.setValueAtTime(0, t0 + n[1]);
-          g.gain.linearRampToValueAtTime(0.08, t0 + n[1] + 0.02);
-          g.gain.exponentialRampToValueAtTime(0.0001, t0 + n[1] + n[2]);
-          o.connect(g); g.connect(actx.destination);
-          o.start(t0 + n[1]); o.stop(t0 + n[1] + n[2] + 0.05);
-        });
-      } catch (e) {}
-    }
-
-    var shownNow = 0;
-    function showNote(o, kind) {
-      var make = EVENT_TEXT[kind];
-      if (!make || shownNow >= 2) return;
-      shownNow++;
-      var el = document.createElement('a');
-      el.className = 'onote';
-      el.href = 'dashboard.html';
-      el.setAttribute('role', 'status');
-      el.innerHTML =
-        '<span class="on-seal" aria-hidden="true">¶</span>' +
-        '<span class="on-body"><span class="on-cap">Дело ' + (o.no || '№' + o.id) + ' · Академический Салон</span>' +
-        '<b>' + make(o) + '</b>' +
-        '<span class="on-go">Открыть кабинет <span class="ar">→</span></span></span>' +
-        '<button type="button" class="on-x" aria-label="Закрыть">×</button>';
-      document.body.appendChild(el);
-      setTimeout(function () { el.classList.add('in'); }, 30); /* rAF замирает в фоне */
-      chime();
-      function gone() {
-        el.classList.remove('in');
-        setTimeout(function () { el.remove(); shownNow--; }, 350);
-      }
-      el.querySelector('.on-x').addEventListener('click', function (e) {
-        e.preventDefault(); e.stopPropagation(); gone();
-      });
-      setTimeout(gone, 12000);
-    }
-
-    function sysNote(o, kind) {
-      /* вкладка в фоне: если разрешены уведомления устройства — будим ими */
-      if (!('Notification' in window) || Notification.permission !== 'granted') return;
-      var TXT = {
-        newo: 'Заявка принята — мастер уже смотрит',
-        priced: 'Мастер назвал цену — решение за вами',
-        prepay: 'Ожидается оплата этапа',
-        work: 'Оплата получена — работа пошла',
-        check: 'Готово! Посмотрите работу',
-        fix: 'Приняли в правки',
-        done: 'Дело завершено — спасибо!',
-        cancel: 'Заявка закрыта',
-        file: 'Новый файл от мастерской',
-        msg: 'Новое сообщение мастера'
+      var TITLE = {
+        priced: function (o) { return 'Мастер назвал цену' + (o.price ? ' — ' + o.price.toLocaleString('ru-RU') + ' ₽' : ''); },
+        prepay: function () { return 'Ждём первый перевод — реквизиты в деле'; },
+        check:  function () { return 'Работа готова — посмотрите и примите'; },
+        msg:    function (o, n) {
+          return (n > 1)
+            ? ('Мастер написал вам: ' + n + ' ' + S.plural(n, ['новое сообщение', 'новых сообщения', 'новых сообщений']))
+            : 'Мастер написал вам — ответ ждёт в переписке';
+        },
+        file:   function (o, n) { return (n > 1) ? ('Мастер положил в дело ' + n + ' новых файла') : 'Мастер положил новый файл в дело'; },
+        work:   function () { return 'Оплата получена — взяли в работу'; },
+        fix:    function () { return 'Замечания приняты — вносим правки'; },
+        done:   function () { return 'Дело закрыто. Остаёмся на связи до защиты'; },
+        cancel: function () { return 'Дело закрыто. Открыть заново можно в кабинете'; },
+        paused: function () { return 'Дело на паузе — продолжим по вашему слову'; },
+        newo:   function () { return 'Заявка принята — мастер уже смотрит'; }
       };
-      try {
-        var n = new Notification('Дело ' + (o.no || '№' + o.id) + ' — Академический Салон',
-          { body: TXT[kind] || 'Движение по делу', icon: 'assets/img/favicon-120.png', tag: 'salon-' + o.id });
-        n.onclick = function () { try { window.focus(); location.href = 'dashboard.html'; } catch (e) {} this.close(); };
-      } catch (e) {}
-    }
+      /* строка последствия — ТОЛЬКО у громких. Она и есть право на прерывание. */
+      var SUB = {
+        priced: 'Работа начнётся, как только вы согласитесь.',
+        prepay: 'Пока не придёт первая часть, мастер не приступает.',
+        check:  'Пока вы не приняли, дело открыто, а правки бесплатны.',
+        msg:    'Мастер ждёт ответа — без него работа стоит.'
+      };
+      /* правая часть формулярной строки: отвечает на «зачем меня отвлекли» */
+      var STATE = {
+        priced: 'ЖДЁМ ВАШЕГО СЛОВА', prepay: 'ЖДЁМ ОПЛАТЫ ЭТАПА',
+        check: 'ЖДЁМ ВАС НА ПРИЁМКЕ', msg: 'ЖДЁМ ВАШЕГО ОТВЕТА'
+      };
+      var TONE = { check: 'verify', prepay: 'wax', priced: 'wax', msg: 'stamp', file: 'stamp',
+                   work: 'verify', fix: 'stamp', done: 'verify', cancel: 'stamp',
+                   paused: 'stamp', newo: 'stamp' };
+      var RANKP = { check: 90, prepay: 85, priced: 80, msg: 60, file: 40, paused: 35,
+                    work: 30, fix: 25, done: 20, cancel: 15, newo: 5 };
+      var LOUD = { check: 1, prepay: 1, priced: 1 };   /* + msg, но только переход 0 → 1 */
+      /* эхо собственного действия клиента: в поля ложится, счётчик не поднимает */
+      var READ_ON_ARRIVAL = { newo: 1, work: 1, fix: 1 };
+      var SEEN_TTL = 604800000;   /* 7 суток */
+      var SYS_GAP = 300000;       /* ОС-уведомление: 1 в 5 минут на дело */
+      var SND_GAP = 600000;       /* звук: 1 в 10 минут */
 
-    function poll(silent) {
-      var noti = ('Notification' in window) && Notification.permission === 'granted';
-      if (document.hidden && !noti) return;
-      var t = S.api.token(), g = S.api.guestTokens();
-      if (!t && !g.length) return;
-      S.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
-        if (!r || !r.ok || !r.orders) return;
-        var prev = S.store.get('salon_watch', null);
-        var first = prev === null;
-        prev = prev || {};
-        var next = {}, events = [];
-        r.orders.forEach(function (o) {
-          next[o.id] = { s: o.status, u: o.unread || 0, f: o.files_new || 0 };
-          var p = prev[o.id];
-          if (!p) {
-            if (!first) events.push([o, 'newo']);
-            return;
-          }
-          if (p.s !== o.status) events.push([o, o.status === 'new' ? 'newo' : o.status]);
-          else if ((o.files_new || 0) > (p.f || 0)) events.push([o, 'file']);
-          else if ((o.unread || 0) > (p.u || 0)) events.push([o, 'msg']);
+      /* ---------- журнал доставки: ключ пишется ПОСЛЕ доставки ---------- */
+      function seenMap() {
+        var m = S.store.get('salon_seen', null) || {}, now = Date.now(), out = {}, k;
+        for (k in m) if (m.hasOwnProperty(k) && now - m[k] < SEEN_TTL) out[k] = m[k];
+        return out;
+      }
+      var seen = seenMap();
+      function seenHas(k) { return !!seen[k]; }
+      function seenAdd(k) { seen[k] = Date.now(); S.store.set('salon_seen', seen); }
+
+      /* ---------- звук: ВЫКЛЮЧЕН по умолчанию ----------
+         Играет, только если человек сам включил (тумблер в кабинете), только
+         когда вкладка в фоне И системные уведомления запрещены — иначе
+         звонит операционная система, а мы молчим. */
+      function chime(kind) {
+        if (kind !== 'check' && kind !== 'prepay') return;
+        if (!S.store || S.store.get('salon_sound', 0) !== 1) return;
+        if (reduceMotion) return;
+        if (!document.hidden) return;
+        var h = new Date().getHours();
+        if (h >= 23 || h < 9) return;                       /* тихие часы */
+        var last = S.store.get('salon_sound_at', 0) || 0;
+        if (Date.now() - last < SND_GAP) return;
+        S.store.set('salon_sound_at', Date.now());
+        try {
+          var ac = new (window.AudioContext || window.webkitAudioContext)();
+          var t0 = ac.currentTime, o = ac.createOscillator(), g = ac.createGain();
+          o.type = 'sine'; o.frequency.value = 880;
+          g.gain.setValueAtTime(0, t0);
+          g.gain.linearRampToValueAtTime(0.05, t0 + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.7);
+          o.connect(g); g.connect(ac.destination);
+          o.start(t0); o.stop(t0 + 0.75);
+          /* контекст закрывается, а не висит всю сессию */
+          setTimeout(function () { try { ac.close(); } catch (e) {} }, 1500);
+        } catch (e) {}
+      }
+
+      /* ---------- системное уведомление: только громкое, только в фоне ---------- */
+      function sysNote(o, kind, text) {
+        if (!('Notification' in window) || Notification.permission !== 'granted') return false;
+        var log = S.store.get('salon_sys', null) || {}, now = Date.now();
+        if (log[o.id] && now - log[o.id] < SYS_GAP) return false;
+        log[o.id] = now;
+        S.store.set('salon_sys', log);
+        try {
+          /* ЕДИНЫЙ тег с кабинетом (cabinet.js): иначе ОС не схлопывает и
+             человек получает два уведомления об одном событии */
+          var n = new Notification('Дело ' + (o.no || '№' + o.id) + ' — Академический Салон',
+            { body: text, icon: 'assets/img/favicon-120.png', tag: 'salon-' + o.id });
+          n.onclick = function () {
+            try { window.focus(); location.href = 'dashboard.html#o' + o.id; } catch (e) {}
+            this.close();
+          };
+          return true;
+        } catch (e) { return false; }
+      }
+
+      /* ---------- доставка одного события ---------- */
+      function deliver(e, loud) {
+        var o = e.o, kind = e.kind;
+        var key = o.id + ':' + kind + ':' + o.status + ':' + (o.unread || 0) + ':' + (o.files_new || 0);
+        if (seenHas(key)) return;
+        var text = TITLE[kind](o, e.n || 0);
+        var href = 'dashboard.html#o' + o.id;
+        var out = S.note({
+          level: loud ? 'call' : 'quiet',
+          kind: kind,
+          cap: 'Дело ' + (o.no || '№' + o.id),
+          state: STATE[kind] || '',
+          title: text,
+          sub: loud ? (SUB[kind] || '') : '',
+          href: href,
+          goLabel: 'Открыть дело',
+          tone: TONE[kind] || 'stamp',
+          rec: { k: key, ts: Date.now(), no: (o.no || '№' + o.id), kind: kind,
+                 text: text, href: href, read: !!READ_ON_ARRIVAL[kind] }
         });
-        S.store.set('salon_watch', next);
-        if (!silent && !first) {
-          events.slice(0, 2).forEach(function (ev) {
-            if (document.hidden) sysNote(ev[0], ev[1]);
-            else showNote(ev[0], ev[1]);
-          });
+        if (!out.delivered) return;      /* не доставили — ключ НЕ пишем, событие вернётся */
+        seenAdd(key);
+        if (loud && document.hidden) {
+          if (!sysNote(o, kind, text)) chime(kind);
         }
-      });
-    }
+      }
 
-    setTimeout(function () { poll(false); }, 2200);   /* при заходе на страницу */
-    setInterval(function () { poll(false); }, 90000); /* и раз в полторы минуты */
-    document.addEventListener('visibilitychange', function () {
-      if (!document.hidden) setTimeout(function () { poll(false); }, 800);
-    });
-  })();
+      /* ---------- первый заход на устройстве ----------
+         Карточек нет, звука нет: история не высыпается. Но дела, где мяч у
+         клиента, честно ложатся в поля — до трёх строк, счётчик их считает. */
+      var seeded = 0;
+      function seedFirst(o) {
+        var st = o.paused ? 'paused' : o.status;
+        if (seeded >= 3 || !LOUD[st]) return;
+        var key = o.id + ':' + st + ':' + o.status + ':' + (o.unread || 0) + ':' + (o.files_new || 0);
+        if (seenHas(key)) return;
+        seeded++;
+        var text = TITLE[st](o, 0), href = 'dashboard.html#o' + o.id;
+        S.note({
+          level: 'quiet', kind: st, cap: 'Дело ' + (o.no || '№' + o.id),
+          title: text, href: href, tone: TONE[st] || 'stamp',
+          rec: { k: key, ts: Date.now(), no: (o.no || '№' + o.id), kind: st,
+                 text: text, href: href, read: false }
+        });
+        seenAdd(key);
+      }
+
+      function isLoud(e) {
+        if (LOUD[e.kind]) return true;
+        return e.kind === 'msg' && e.first0 === true;   /* только первое непрочитанное */
+      }
+
+      function poll() {
+        var noti = ('Notification' in window) && Notification.permission === 'granted';
+        if (document.hidden && !noti) return;
+        if (!S.lead()) return;                           /* опрашивает только вкладка-лидер */
+        var t = S.api.token(), g = S.api.guestTokens();
+        if (!t && !g.length) return;
+        S.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
+          if (!r || !r.ok || !r.orders) return;
+          var prev = S.store.get('salon_watch', null);
+          var first = prev === null;
+          prev = prev || {};
+          var next = {}, events = [], i, e, used = false, loud;
+
+          r.orders.forEach(function (o) {
+            var p = prev[o.id], k;
+            next[o.id] = { s: o.status, u: o.unread || 0, f: o.files_new || 0, p: o.paused ? 1 : 0 };
+            if (!p) {
+              if (first) { seedFirst(o); return; }
+              events.push({ o: o, kind: 'newo', n: 0 });
+              return;
+            }
+            if (o.paused && !p.p) { events.push({ o: o, kind: 'paused', n: 0 }); return; }
+            if (p.s !== o.status) {
+              k = (o.status === 'new') ? 'newo' : o.status;
+              /* статуса нет в словаре — событие не создаётся и слот не тратит */
+              if (TITLE[k]) events.push({ o: o, kind: k, n: 0 });
+              return;
+            }
+            if ((o.files_new || 0) > (p.f || 0)) {
+              events.push({ o: o, kind: 'file', n: (o.files_new || 0) - (p.f || 0) });
+              return;
+            }
+            if ((o.unread || 0) > (p.u || 0)) {
+              events.push({ o: o, kind: 'msg', n: (o.unread || 0), first0: (p.u || 0) === 0 });
+            }
+          });
+
+          S.store.set('salon_watch', next);
+          if (first || !events.length) return;
+
+          /* детерминированный приоритет вместо events.slice(0, 2):
+             ровно одно событие может стать громким, ВСЕ остальные ложатся
+             в поля — ни одно не теряется */
+          events.sort(function (a, b) { return (RANKP[b.kind] || 0) - (RANKP[a.kind] || 0); });
+          for (i = 0; i < events.length; i++) {
+            e = events[i];
+            loud = false;
+            if (!used && isLoud(e)) { loud = true; used = true; }
+            deliver(e, loud);
+          }
+        });
+      }
+
+      setTimeout(poll, 2600);
+      setInterval(poll, 90000);
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) setTimeout(poll, 800);
+      });
+    })();
 
   /* ---------------- Нудж «Сохраните доступ к делу» (гостевые заявки) ----------------
      Salon.orderNudge(container, token) — ссылка доступа к делу (главное,
@@ -859,7 +949,8 @@
     bar.className = 'resume-bar';
     bar.setAttribute('role', 'note');
     bar.innerHTML =
-      '<style>.resume-bar{position:fixed;left:0;right:0;bottom:0;z-index:240;background:var(--mark);' +
+      /* z 235, а не 240: ничья с .contact-sheet (240) решалась порядком в DOM */
+      '<style>.resume-bar{position:fixed;left:0;right:0;bottom:0;z-index:235;background:var(--mark);' +
       'border-top:1px solid var(--hairline-strong);padding:10px 16px calc(10px + env(safe-area-inset-bottom));' +
       'display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:var(--ink)}' +
       '.resume-bar b{font-weight:600}.resume-bar a{white-space:nowrap}' +
@@ -879,12 +970,19 @@
        и сообщает, сколько занято у нижней кромки, — пилюли
        «Связаться»/«Нужна помощь?» поднимаются над ней через max() в CSS */
     function clearance() {
-      if (!bar.isConnected) { document.documentElement.style.removeProperty('--resume-clear'); return; }
+      if (!bar.isConnected) {
+        document.documentElement.style.removeProperty('--resume-clear');
+        if (S.floor) S.floor();
+        return;
+      }
       var nav = document.querySelector('.mobile-cta'), navH = 0;
       if (nav && getComputedStyle(nav).display !== 'none') navH = nav.getBoundingClientRect().height;
       bar.style.bottom = navH ? Math.round(navH) + 'px' : '0px';
       var top = bar.getBoundingClientRect().top;
       document.documentElement.style.setProperty('--resume-clear', Math.max(0, Math.round(window.innerHeight - top)) + 'px');
+      /* --floor считает ЗАНЯТУЮ КРОМКУ, а не сумму высот: полоса стоит
+         ПОВЕРХ .mobile-cta, поэтому её top уже включает высоту панели */
+      if (S.floor) S.floor();
     }
     clearance();
     setTimeout(clearance, 400); /* шрифты и перенос строк могли изменить высоту */
