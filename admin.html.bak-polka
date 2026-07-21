@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Кабинет мастера — Академический Салон</title>
 <meta name="robots" content="noindex,nofollow,noarchive" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260721h" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260721h" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260721h" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260721h" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260721g" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260721g" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260721g" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260721g" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -362,123 +362,6 @@
     transition:color .15s,border-color .15s}
   .ag-qbtn:hover{border-color:var(--ink-soft);color:var(--ink)}
   .ag-qbtn.on{background:var(--ink);border-color:var(--ink);color:var(--paper,#F6F1E7)}
-
-  /* ================= Полка заготовок: заявка в три нажатия ================= */
-  .wz-open{min-height:0;padding:8px 15px;font-size:13.5px;white-space:nowrap}
-  /* вторая точка входа — первая в липкой ленте вкладок. Контурная, а не
-     залитая: квота --wax «≤2 на вьюпорт» (styles.css:20), заливка уже в мастхеде */
-  .wz-navbtn{border:1px solid var(--wax,#B23B22);border-bottom:0;background:transparent;
-    color:var(--wax,#B23B22);font:inherit;font-size:14px;font-weight:500;
-    padding:10px 15px 12px;margin-right:8px;cursor:pointer;white-space:nowrap;
-    border-radius:8px 8px 0 0;flex:0 0 auto}
-  .wz-navbtn:hover{background:var(--wax,#B23B22);color:#FFFEF9}
-
-  /* Оверлей: свой класс — .sdlg-card шириной 440px (extras.css:108) для
-     конструктора тесен. z-index 250: НИЖЕ .sdlg (270) и .stamp-burst (280),
-     ВЫШЕ .ag-nav (40). */
-  .wz-ov{position:fixed;inset:0;z-index:250;background:rgba(24,21,15,.44);
-    display:flex;align-items:flex-start;justify-content:center;padding:22px 14px;
-    opacity:0;transition:opacity .18s;overflow-y:auto;overscroll-behavior:contain}
-  .wz-ov.open{opacity:1}
-  .wz-ov[hidden]{display:none}
-  /* Рельсы пометок живут на z-index 96/97 (extras.css:351,356) — под оверлеем.
-     Пока лист открыт, поднимаем их выше него, иначе КАЖДЫЙ тост немой.
-     258 < 270: диалог подтверждения по-прежнему кроет всё. */
-  html.wz-lock{overflow:hidden}
-  html.wz-lock .mrail,html.wz-lock .lrail{z-index:258}
-
-  .wz-sheet{width:min(96vw,720px);background:var(--sheet,#FFFEF9);border:1px solid var(--ink);
-    border-radius:14px;box-shadow:0 20px 60px rgba(24,21,15,.32);
-    display:flex;flex-direction:column;max-height:calc(100vh - 44px);
-    transform:translateY(10px);transition:transform .18s}
-  .wz-ov.open .wz-sheet{transform:none}
-  .wz-head{display:flex;align-items:center;gap:12px;padding:15px clamp(15px,3vw,26px) 11px;
-    border-bottom:2px solid var(--ink)}
-  .wz-head h2{font-family:var(--serif);font-size:clamp(18px,2.4vw,24px);font-weight:440;margin:0;flex:1}
-  .wz-x{background:none;border:0;font:inherit;font-size:19px;color:var(--ink-soft);
-    cursor:pointer;padding:4px 8px;line-height:1}
-  .wz-x:hover{color:var(--ink)}
-  .wz-body{padding:15px clamp(15px,3vw,26px);overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
-  .wz-lead{font-size:13.5px;color:var(--ink-soft);margin:0 0 14px;line-height:1.55}
-  .wz-foot{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap;
-    padding:11px clamp(15px,3vw,26px);border-top:1px solid var(--hairline);
-    background:var(--sheet,#FFFEF9);border-radius:0 0 14px 14px}
-  .wz-foot:empty{display:none}
-  .wz-go{flex:1;min-width:190px;justify-content:center}
-
-  /* строка сообщений внутри листа — тосты могут не долететь, эта долетит всегда */
-  .wz-say{margin:0 0 12px;padding:9px 12px;border-left:3px solid var(--stamp,#3A4E7A);
-    background:var(--mark);font-size:13px;line-height:1.5;border-radius:var(--r)}
-  .wz-say:empty{display:none}
-  .wz-say.bad{border-left-color:var(--wax,#B23B22)}
-
-  /* полка */
-  .wz-shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:10px}
-  .wz-card{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;text-align:left;
-    font:inherit;color:inherit;cursor:pointer;border:1px solid var(--hairline-strong);
-    border-radius:var(--r);background:transparent;padding:12px 14px;min-height:94px;
-    transition:border-color .15s,transform .15s,box-shadow .15s}
-  .wz-card:hover{border-color:var(--wax,#B23B22);transform:translateY(-1px);
-    box-shadow:0 4px 14px rgba(24,21,15,.08)}
-  .wz-card .wz-ico{grid-row:1/4;font-size:22px;line-height:1.1;align-self:start}
-  .wz-card .wz-nm{font-size:14.5px;font-weight:500}
-  .wz-card .wz-sub{font-size:11.5px;color:var(--ink-soft);line-height:1.45}
-  .wz-card .wz-pr{font-family:var(--mono);font-size:13px;color:var(--wax,#B23B22);margin-top:4px}
-  .wz-card.wz-own{border-style:dashed;color:var(--ink-soft);min-height:0}
-  .wz-card.wz-own .wz-pr{display:none}
-
-  /* экран проверки */
-  .wz-fl{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--ink-soft);font-family:var(--sans);margin-bottom:13px}
-  .wz-opt{text-transform:none;letter-spacing:0;font-size:11px;opacity:.7}
-  .wz-inp{width:100%;font:inherit;font-size:15px;padding:11px 13px;margin-top:6px;
-    color:var(--ink);background:var(--paper,transparent);
-    border:1px solid var(--hairline-strong);border-radius:var(--r)}
-  .wz-inp.big{font-size:17px;padding:13px}       /* >16px — iOS не зумит при фокусе */
-  .wz-inp:focus{outline:2px solid var(--stamp,#3A4E7A);outline-offset:1px}
-  .wz-hint{display:block;text-transform:none;letter-spacing:0;font-size:11.5px;
-    color:var(--ink-soft);margin-top:5px;line-height:1.5}
-  .wz-row{margin-top:15px;padding-top:12px;border-top:1px solid var(--hairline)}
-  .wz-row>.caps{display:block;margin-bottom:7px}
-  .wz-big{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:9px}
-  .wz-price{width:auto;max-width:210px;margin:0;font-family:var(--mono);
-    font-size:clamp(23px,4.2vw,32px);padding:4px 10px;line-height:1.15;
-    font-variant-numeric:tabular-nums;border-color:transparent;background:transparent}
-  .wz-price:hover{border-color:var(--hairline-strong)}
-  .wz-cur{font-family:var(--mono);font-size:19px;color:var(--ink-soft)}
-  .wz-val{font-family:var(--mono);font-size:clamp(20px,3.6vw,27px);
-    font-variant-numeric:tabular-nums;line-height:1.15}
-  .wz-date{width:auto;max-width:170px;margin:0;font-size:13px;padding:7px 10px}
-  .wz-warn{margin-top:8px;padding:8px 11px;border-left:3px solid var(--wax,#B23B22);
-    background:var(--wax-soft);font-size:12.5px;line-height:1.55;border-radius:var(--r)}
-  .wz-warn:empty{display:none}
-  .wz-warn .ag-chip{margin-top:6px}
-
-  /* складка «что увидит клиент» */
-  .wz-prev{margin-top:17px;border:1px dashed var(--hairline-strong);
-    border-radius:var(--r);padding:11px 14px;background:var(--mark)}
-  .wz-prev summary{cursor:pointer;font-size:13px;color:var(--ink-soft);list-style:none}
-  .wz-prev summary::-webkit-details-marker{display:none}
-  .wz-prev[open] summary{margin-bottom:10px;color:var(--ink)}
-  .wz-pv{font-size:13px;line-height:1.6;margin-bottom:12px}
-  .wz-pv .caps{display:block;margin-bottom:5px}
-  .wz-pv ul{list-style:none;margin:0;padding:0}
-  .wz-pv li{padding:3px 0;border-bottom:1px dotted var(--hairline)}
-  .wz-pv li:last-child{border-bottom:0}
-  .wz-pv li.no{color:var(--ink-soft)}
-  .wz-pv .sum{display:flex;justify-content:space-between;gap:14px}
-  .wz-pv .sum b{font-family:var(--mono);font-weight:500;white-space:nowrap}
-  .wz-pv .tot{border-top:1px solid var(--ink);margin-top:4px;padding-top:5px;font-weight:600}
-  .wz-pv .d{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin-right:7px}
-
-  @media(max-width:720px){
-    .wz-ov{padding:0;align-items:stretch}
-    .wz-sheet{width:100%;max-height:100vh;border:0;border-radius:0}
-    .wz-foot{position:sticky;bottom:0;border-radius:0}
-    .wz-foot .btn{min-height:48px}
-    .wz-shelf{grid-template-columns:1fr}
-    .wz-card{min-height:0}
-  }
 </style>
 </head>
 <body>
@@ -489,8 +372,8 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260721h"></script>
-<script src="assets/js/extras.js?v=20260721h"></script>
-<script src="assets/js/admin.js?v=20260721h"></script>
+<script src="assets/js/app.js?v=20260721g"></script>
+<script src="assets/js/extras.js?v=20260721g"></script>
+<script src="assets/js/admin.js?v=20260721g"></script>
 </body>
 </html>
