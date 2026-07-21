@@ -6,10 +6,10 @@
 <title>Ваша заявка — Академический Салон</title>
 <meta name="robots" content="noindex,nofollow" />
 <meta name="referrer" content="same-origin" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260721k" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260721k" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260721k" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260721k" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260721m" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260721m" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260721m" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260721m" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
@@ -159,6 +159,10 @@
    заголовок уезжает под неё («закреплено [за] вами»). Резерв = ширина
    печати + её отступ справа + воздух. */
 #zkDone .caps,#zkDoneH{padding-right:calc(72px + clamp(14px,3vw,28px) + 12px)}
+.zk-linkbox{width:100%;margin:0 0 10px;padding:11px 12px;border:1px solid var(--hairline-strong);
+  border-radius:var(--r);background:var(--paper);font-family:var(--mono);font-size:12.5px;
+  color:var(--ink);min-height:44px}
+.zk-linkbox:focus{outline:2px solid var(--wax);outline-offset:2px}
 .zk-keep{margin:20px 0;padding:14px 16px;border:1px dashed var(--hairline-strong);
   border-radius:var(--r);background:var(--paper);font-size:14px;line-height:1.6}
 .zk-keeprow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
@@ -364,7 +368,8 @@
         <b>Сохраните эту ссылку.</b> Она открывает ваше дело без пароля и регистрации —
         и именно поэтому её не стоит никому пересылать.
         <div class="zk-keeprow">
-          <button type="button" class="btn btn-line" id="zkCopy">Скопировать ссылку</button>
+          <input type="text" class="zk-linkbox" id="zkLinkBox" readonly hidden aria-label="Ссылка на ваше дело — выделите и скопируйте">
+        <button type="button" class="btn btn-line" id="zkCopy">Скопировать ссылку</button>
           <a class="btn btn-line" id="zkTgShare" href="#" target="_blank" rel="noopener">Прислать себе в Telegram</a>
         </div>
       </div>
@@ -403,8 +408,8 @@
 
 <footer class="site-footer" hidden></footer>
 
-<script src="assets/js/app.js?v=20260721k"></script>
-<script src="assets/js/extras.js?v=20260721k"></script>
+<script src="assets/js/app.js?v=20260721m"></script>
+<script src="assets/js/extras.js?v=20260721m"></script>
 <script>
 /* Собранная заявка: смотрит, соглашается, платит. ES5-стиль проекта. */
 (function () {
@@ -513,9 +518,15 @@
 
   /* ---------- загрузка ---------- */
   function load(first) {
-    var path = first ? '/offer/' + encodeURIComponent(state.code)
-                     : '/offer/' + encodeURIComponent(state.code) + '/state' +
-                       (state.nonce ? '?n=' + encodeURIComponent(state.nonce) : '');
+    /* Публичная ручка токена не отдаёт — и правильно. Но если nonce у нас ЕСТЬ
+       (мы и есть плательщик, страницу просто перезагрузили), первый запрос тоже
+       надо слать в /state: иначе оплативший человек видит «ссылка открылась
+       в другом браузере» на своём же браузере и остаётся без ключа от дела. */
+    var useState = !first || state.nonce;
+    var path = (!useState || (first && !state.nonce))
+      ? '/offer/' + encodeURIComponent(state.code)
+      : '/offer/' + encodeURIComponent(state.code) + '/state' +
+        (state.nonce ? '?n=' + encodeURIComponent(state.nonce) : '');
     return S.api.get(path).then(function (r) {
       if (!r || !r.ok) {
         if (r && r.error === 'rate_limit') { state.gap = 60000; return; }
@@ -728,11 +739,26 @@
   }
 
   var doneWired = false;
+  var doneRetry = false;
   function drawDone(d) {
     show('zkDone');
     document.title = 'Заявка № ' + d.no + ' оплачена';
     stopPoll();
     $('zkDoneH').textContent = 'Дело № ' + d.no + ' закреплено за вами';
+    if (!d.access_token && state.nonce && !doneRetry) {
+      /* Ключа нет, но nonce у нас ЕСТЬ — значит платили именно с этого браузера,
+         а данные пришли из публичной ручки, которая токен не отдаёт по замыслу.
+         Прежде чем пугать человека «вы в другом браузере», спрашиваем /state. */
+      doneRetry = true;
+      S.api.get('/offer/' + encodeURIComponent(state.code) + '/state?n=' +
+                encodeURIComponent(state.nonce)).then(function (r) {
+        if (r && r.ok && r.offer && r.offer.access_token) {
+          state.data = r.offer;
+          drawDone(r.offer);
+        }
+      }, function () {});
+      return;
+    }
     if (!d.access_token) {
       /* оплачено, но ключа нет: открыли не тем браузером, из которого платили */
       $('zkDoneP').textContent = 'По этой заявке уже заплачено. Ссылка на дело открылась ' +
@@ -745,15 +771,40 @@
     var link = d.claim_url || S.claimLink(d.access_token);
     try { S.api.addGuestToken(d.access_token); } catch (e) {}
     $('zkOpenCase').href = link;
-    $('zkTgShare').href = 'https://t.me/share/url?url=' + encodeURIComponent(link) +
-      '&text=' + encodeURIComponent('Моё дело в Академическом Салоне');
+    /* Было t.me/share/url — отправка ссылки САМОМУ СЕБЕ в избранное. Человек
+       думал, что привязал дело к боту, а просто переслал себе текст.
+       Настоящая привязка — deep-link боту: handlers/client.py разбирает
+       start=claim_<token> и проставляет user_id. После одного нажатия
+       оживают все уведомления клиенту в payments.confirm, которые сегодня
+       молчат из-за пустого user_id. */
+    $('zkTgShare').href = 'https://t.me/academic_saloon_bot?start=claim_' +
+      encodeURIComponent(d.access_token);
+    /* Ссылка обязана быть ВИДНА текстом: это единственный ключ от дела,
+       а буфер обмена может быть запрещён политикой браузера. */
+    if ($('zkLinkBox')) {
+      $('zkLinkBox').value = link;
+      $('zkLinkBox').hidden = false;
+    }
     if (!doneWired) {
       doneWired = true;
+      if ($('zkLinkBox')) {
+        $('zkLinkBox').addEventListener('focus', function () { this.select(); });
+        $('zkLinkBox').addEventListener('click', function () { this.select(); });
+      }
       $('zkCopy').addEventListener('click', function () {
         var b = this;
-        try { navigator.clipboard.writeText(link); } catch (e) {}
-        b.textContent = 'Скопировано ✓';
-        setTimeout(function () { b.textContent = 'Скопировать ссылку'; }, 1800);
+        function ok() { b.textContent = 'Скопировано ✓';
+                        setTimeout(function () { b.textContent = 'Скопировать ссылку'; }, 1800); }
+        function no() { b.textContent = 'Не вышло — выделите ссылку ниже';
+                        if ($('zkLinkBox')) { $('zkLinkBox').focus(); $('zkLinkBox').select(); }
+                        setTimeout(function () { b.textContent = 'Скопировать ссылку'; }, 3200); }
+        /* Промис ОБРАБАТЫВАЕМ: раньше кнопка писала «Скопировано ✓» даже
+           когда браузер отказал, и человек уходил без единственного ключа. */
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText)
+            navigator.clipboard.writeText(link).then(ok, no);
+          else no();
+        } catch (e) { no(); }
       });
     }
     if (S.stamp) S.stamp('Оплачено');
