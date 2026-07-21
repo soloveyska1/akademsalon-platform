@@ -6,10 +6,10 @@
 <title>Ваша заявка — Академический Салон</title>
 <meta name="robots" content="noindex,nofollow" />
 <meta name="referrer" content="same-origin" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260721p" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260721p" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260721p" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260721p" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260722a" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260722a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260722a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260722a" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
@@ -408,8 +408,8 @@
 
 <footer class="site-footer" hidden></footer>
 
-<script src="assets/js/app.js?v=20260721p"></script>
-<script src="assets/js/extras.js?v=20260721p"></script>
+<script src="assets/js/app.js?v=20260722a"></script>
+<script src="assets/js/extras.js?v=20260722a"></script>
 <script>
 /* Собранная заявка: смотрит, соглашается, платит. ES5-стиль проекта. */
 (function () {
@@ -624,13 +624,26 @@
           '</span>' : '') + '</li>';
     }
     $('zkRail').innerHTML = out;
+    /* Пустой календарь не оставляем с заголовком-сиротой: у минимальной услуги
+       остановок нет, и «Как пойдёт работа» с одной оговоркой смотрелось бы
+       незаполненным. Блок целиком прячем — секция скрыта через её id. */
+    var calSec = document.querySelector('.zk-cal');
+    if (calSec) calSec.hidden = !((d.rail || []).length);
 
-    /* срок */
-    $('zkDue').innerHTML = '<b>Работа у вас на руках к ' + esc(d.deadline_ru) + '.</b> ' +
-      'Сопровождение и бесплатные правки — дальше, до защиты.' +
-      '<small>Отсчёт идёт с оплаты' +
-      (d.need_files ? ' и с момента, когда вы пришлёте методичку.'
-                    : ' — все материалы от вас у нас уже есть.') + '</small>';
+    /* срок. Для УСЛУГИ язык другой: у неё нет защиты (сопровождать нечего),
+       а материал от клиента — это текст/работа, а не «методичка». Признак —
+       d.kind === 'service' (сервер отдаёт из work_type). */
+    var isSvc = d.kind === 'service';
+    var due = '<b>' + (isSvc ? 'Готово будет к ' : 'Работа у вас на руках к ')
+            + esc(d.deadline_ru) + '.</b> ';
+    if (!isSvc) due += 'Сопровождение и бесплатные правки — дальше, до защиты.';
+    else due += 'Правки по замечаниям — бесплатно, в рамках задания.';
+    due += '<small>Отсчёт идёт с оплаты'
+        + (d.need_files
+            ? (isSvc ? ' и с момента, когда вы пришлёте материал.'
+                     : ' и с момента, когда вы пришлёте методичку.')
+            : ' — всё, что нужно, у нас уже есть.') + '</small>';
+    $('zkDue').innerHTML = due;
 
     /* Что входит — только положительным списком. Владелец: «чего здесь нет
        не писать». То, что не входит, показываем отдельной спокойной строкой

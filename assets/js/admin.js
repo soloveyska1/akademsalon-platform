@@ -3606,7 +3606,9 @@ function initGodEye() {
            строку не рисует. Описание услуги уходит в tier_full, где оно к месту. */
         tier_label: wz.p.svc ? '' : WZ_TIER[wz.p.tier].label,
         tier_full: wz.p.svc ? WZ_SVC[wz.p.type].full : WZ_TIER[wz.p.tier].full,
-        reqs_short: wzReqShort(), reqs_full: wzReqFull(),
+        // reqs_full обещает ГОСТ и оригинальность; у услуги их нет,
+        // а оплата листа = акцепт оферты — обещать нечем (ст. 10 ЗоЗПП).
+        reqs_short: wzReqShort(), reqs_full: wzReqApplies() ? wzReqFull() : '',
         need_files: wz.files,
         incl: wzIncl(), ledger: wzLedger(), rail: wzRail(),
         deadline_text: dlText, deadline_date: iso, ttl_days: wz.ttl
