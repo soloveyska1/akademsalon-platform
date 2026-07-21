@@ -2919,7 +2919,7 @@ function initGodEye() {
       full: 'Редактура и стилистическая доработка: уберём машинные обороты, текст будет читаться как живой.' },
     svc_review: { label: 'Разбор готовой работы', price: 2500, days: 3,
       full: 'Объясним структуру и логику вашей работы, подготовим к вопросам на защите.' },
-    svc_tutor: { label: 'Репетиторство и консультации', price: 3000, days: 7,
+    svc_tutor: { label: 'Репетиторство и консультации', price: 3000, days: 7, unit: 'час',
       full: 'Индивидуальные занятия: методология, оформление, подготовка к сдаче. Цена указана за час — поправьте её под число занятий.' },
     svc_norm: { label: 'Нормоконтроль и оформление', price: 5000, days: 4,
       full: 'Приведём работу в соответствие методичке и ГОСТу: поля, ссылки, список литературы.' },
@@ -2970,7 +2970,14 @@ function initGodEye() {
   /* ---------------------- вычисления ---------------------- */
 
   function wzMoney(n) { return Number(n || 0).toLocaleString('ru-RU'); }
-  function wzR500(n) { return Math.round(n / 500) * 500; }
+  /* Шаг округления зависит от порядка цены. При шаге 500 у услуги за 2 500 ₽
+     кнопка «−10 %» давала 0 % (2 500 → 2 500), а «+10 %» давала +20 % (→ 3 000):
+     мастер думал, что уступил, и не уступал. Замерено. Для сумм до 20 000
+     округляем до 100 ₽ — скидка становится честной. */
+  function wzR500(n) {
+    var step = n < 20000 ? 100 : 500;
+    return Math.round(n / step) * step;
+  }
 
   /* Питоновский round(): половина уходит К ЧЁТНОМУ. JS Math.round() округляет
      половину вверх — на 66 500 ₽ (50 % = 33 250) это давало 33 300 против
@@ -3073,7 +3080,12 @@ function initGodEye() {
   function wzLedger() {
     var q = wzQuote(wz.p), price = wzPrice(), out = [], diff;
     if (q.svc) {
-      out.push({ t: q.t.label + ' — услуга мастерской', a: q.p0 });
+      /* У почасовой услуги цена в конфиге — ЗА ЧАС. Без единицы клиент читал
+         «Итого 3 000 ₽» как стоимость всей работы, а мастер мог продать
+         десять занятий по цене одного. Единицу печатаем прямо в строке. */
+      var un = WZ_SVC[wz.p.type] && WZ_SVC[wz.p.type].unit;
+      out.push({ t: q.t.label + (un ? ' — цена за один ' + un : ' — услуга мастерской'),
+                 a: q.p0 });
     } else {
       out.push({ t: q.t.label + ' — работа по стандарту мастерской', a: q.p0 });
       if (q.p1 !== q.p0) out.push({ t: 'Направление: ' + WZ_DNOTE[wz.p.disc], a: q.p1 - q.p0 });
@@ -3142,7 +3154,28 @@ function initGodEye() {
       ' · потом ' + s.join(' и ') + '. Считает сервер — это его цифры.';
   }
 
+  /* «3 дней» видно всегда: у услуг срок 1–7 дней, двузначных не бывает */
+  function wzPlural(n, one, few, many) {
+    var a = Math.abs(n) % 100, b = a % 10;
+    if (a > 10 && a < 20) return many;
+    if (b > 1 && b < 5) return few;
+    if (b === 1) return one;
+    return many;
+  }
+  function wzDaysWord(n) { return n + ' ' + wzPlural(n, 'день', 'дня', 'дней'); }
+
+  /* Оригинальность и ГОСТ производит только работа с нуля. Обещать их
+     в заявке, оплата которой = акцепт оферты, мы не вправе: чистка текста
+     заимствований не снижает, а репетиторство вообще ничего не сдаёт.
+     Исключения — нормоконтроль и пакет «к защите», они как раз про оформление. */
+  var WZ_REQ_OK = { svc_norm: 1, svc_defense_pack: 1 };
+  function wzReqApplies() { return !wz.p.svc || WZ_REQ_OK[wz.p.type]; }
   function wzReqShort() {
+    if (!wzReqApplies()) {
+      if (wz.p.type === 'svc_ai')
+        return 'Снижаем долю машинного текста · отчёт «до и после»';
+      return '';
+    }
     var a = ['Оформление по методичке вуза', 'Оригинальность от ' + wz.orig + ' %'];
     if (wz.avuz) a.push('Проверка в Антиплагиат.ВУЗ');
     return a.join(' · ');
@@ -3423,7 +3456,7 @@ function initGodEye() {
     el = document.querySelector('#wzBody [data-wz-adj="top"]');
     if (el) el.textContent = 'верх вилки ' + wzMoney(q.high);
     wzTxt('wzRange', wzRangeText());
-    wzTxt('wzDateV', wzRu(fin) + ' · ' + days + ' дней');
+    wzTxt('wzDateV', wzRu(fin) + ' · ' + wzDaysWord(days));
     wzTxt('wzPayNote', wzPayNote(price));
     wzHtm('wzWarn', wzWarnHtml());
 
