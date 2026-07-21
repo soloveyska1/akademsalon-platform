@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ваша заявка — Академический Салон</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta name="referrer" content="same-origin" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260721d" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260721d" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260721d" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260721d" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#F6F1E7" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<style>
+/* ============================================================
+   СОБРАННАЯ ЗАЯВКА — лист, который мастер отдаёт клиенту в руки.
+   Язык «Оттиска»: формулярные строки, календарь работы, печать.
+   ============================================================ */
+
+/* авторский display перебивает атрибут hidden — возвращаем ему силу */
+#zkDoc[hidden],#zkDone[hidden],#zkWait[hidden],#zkCold[hidden],#zk404[hidden],
+#zkMcta[hidden],#zkAct[hidden],#zkColdNote[hidden],.tg-pill[hidden],
+.zk-slot[hidden]{display:none !important}
+
+#zkMain{padding:clamp(24px,5vh,52px) 0 clamp(90px,14vh,140px)}
+.zk-sheet{position:relative;max-width:74ch;margin:0 auto}
+#zkDone .sheet,#zkWait .sheet,#zkCold .sheet,#zk404 .sheet{position:relative;max-width:64ch;margin:0 auto}
+
+/* --- 1. шапка-формуляр --- */
+.zk-head{position:relative;padding-bottom:clamp(14px,2vw,20px);
+  border-bottom:1px solid var(--hairline);margin-bottom:clamp(18px,3vw,26px)}
+.zk-head .caps{display:block;margin-bottom:10px;padding-right:96px}
+.zk-headsum{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;line-height:1.7}
+.zk-headsum b{font-family:var(--serif);font-size:20px;letter-spacing:0;text-transform:none;
+  color:var(--wax);font-variant-numeric:tabular-nums}
+.zk-head h1{margin:0 0 12px;max-width:20ch;font-size:clamp(28px,4.4vw,44px)}
+.zk-letter{font-family:var(--serif);font-size:clamp(16px,2vw,18.5px);line-height:1.65;
+  max-width:52ch;margin:0 0 8px;white-space:pre-line}
+.zk-sign{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:15px;
+  margin:0 0 12px}
+.zk-sign::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--wax);margin-right:8px;vertical-align:middle}
+.zk-stamp{position:absolute;right:0;top:-4px;border:2px solid var(--verify);color:var(--verify);
+  border-radius:2px;padding:4px 10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;transform:rotate(-6deg);
+  background:color-mix(in srgb,var(--sheet) 88%,transparent)}
+.zk-stamp.mute{border-color:var(--ink-soft);color:var(--ink-soft)}
+.zk-stamp.wax{border-color:var(--wax);color:var(--wax)}
+
+/* --- 2/12. формулярные строки --- */
+.zk-slots{display:grid;gap:0;margin:0 0 clamp(20px,3vw,30px)}
+.zk-slot{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:10px;
+  min-height:48px;padding:11px 0;border-bottom:1px solid var(--hairline)}
+.zk-slot:first-child{border-top:1px solid var(--hairline)}
+.zk-slot .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-soft);white-space:nowrap}
+.zk-slot .d{border-bottom:2px dotted var(--hairline-strong);transform:translateY(-4px)}
+.zk-slot .v{font-family:var(--serif);font-size:15.5px;line-height:1.45;text-align:right}
+.zk-slot .v.no{color:var(--ink-soft)}
+.zk-slot .v.yes{color:var(--verify)}
+@media(max-width:560px){
+  .zk-slot{grid-template-columns:1fr;gap:2px;padding:12px 0}
+  .zk-slot .d{display:none}
+  .zk-slot .v{text-align:left;font-size:16px}
+}
+
+/* --- 3. срок --- */
+.zk-due{margin:clamp(18px,3vw,26px) 0;padding:14px 16px;border-left:3px solid var(--wax);
+  background:color-mix(in srgb,var(--wax) 5%,var(--sheet));font-family:var(--serif);
+  font-size:clamp(16px,2.2vw,19px);line-height:1.5;border-radius:var(--r)}
+.zk-due b{color:var(--wax)}
+.zk-due small{display:block;font-family:var(--sans);font-size:13px;color:var(--ink-soft);
+  margin-top:5px;line-height:1.55}
+
+/* --- 4. календарь работы --- */
+.zk-cal{margin:clamp(22px,3.5vw,34px) 0}
+.zk-cal>.caps{display:block;margin-bottom:16px}
+.zk-rail{list-style:none;margin:0;padding:0;display:grid;gap:0;position:relative}
+.zk-stop{position:relative;padding:0 0 22px 34px;min-height:56px}
+.zk-stop::before{content:"";position:absolute;left:9px;top:16px;bottom:-4px;width:1px;
+  background:var(--hairline-strong)}
+.zk-stop:last-child::before{display:none}
+.zk-stop .dot{position:absolute;left:3px;top:6px;width:13px;height:13px;border-radius:50%;
+  background:var(--sheet);border:2px solid var(--hairline-strong);box-sizing:border-box}
+.zk-stop.now .dot{border-color:var(--wax);background:var(--wax);
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--wax) 16%,transparent)}
+.zk-stop.done .dot{border-color:var(--verify);background:var(--verify)}
+.zk-stop .date{font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-soft)}
+.zk-stop .ttl{font-family:var(--serif);font-size:17px;font-weight:600;margin:2px 0 3px;line-height:1.3}
+.zk-stop .got{font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+.zk-stop .pay{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 10px;
+  border:1px solid var(--hairline-strong);border-radius:var(--r);background:var(--mark);
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em}
+.zk-stop.now .pay{border-color:var(--wax);color:var(--wax);
+  background:color-mix(in srgb,var(--wax) 8%,var(--sheet))}
+.zk-railnote{margin-top:4px;max-width:56ch}
+@media(min-width:820px){
+  .zk-rail{grid-auto-flow:column;grid-auto-columns:1fr}
+  .zk-stop{padding:34px 16px 0 0}
+  .zk-stop::before{left:16px;right:-16px;top:9px;bottom:auto;width:auto;height:1px}
+  .zk-stop:last-child{padding-right:0}
+  .zk-stop .dot{left:10px;top:3px}
+}
+
+/* --- 5/6. состав и смета --- */
+.zk-money,.zk-incl{margin:clamp(22px,3.5vw,34px) 0}
+.zk-money>.caps,.zk-incl>.caps{display:block;margin-bottom:12px}
+.zk-money .paysteps{margin-top:20px}
+.zk-rule{margin:14px 0 0;font-size:14px;line-height:1.6;color:var(--ink)}
+
+/* --- 8. гарантии --- */
+.zk-guards{list-style:none;margin:clamp(20px,3vw,28px) 0;padding:0;display:grid;gap:12px}
+.zk-guards li{position:relative;padding:12px 14px 12px 40px;border:1px solid var(--hairline);
+  border-radius:var(--r);background:var(--paper);font-size:14.5px;line-height:1.6}
+.zk-guards li::before{content:"✓";position:absolute;left:14px;top:12px;color:var(--verify);
+  font-weight:700;font-size:16px}
+
+/* --- 9. действие --- */
+.zk-act{margin:clamp(24px,4vw,36px) 0 0;display:grid;gap:12px;
+  padding-top:clamp(20px,3vw,28px);border-top:3px double var(--ink)}
+#zkPay{display:flex;flex-direction:column;gap:3px;padding-top:14px;padding-bottom:14px;
+  white-space:normal;line-height:1.3;min-height:56px}
+#zkPay b{font-family:var(--serif);font-size:clamp(19px,3vw,23px);font-weight:700}
+#zkPay small{font-size:12.5px;opacity:.85;font-weight:400;letter-spacing:.02em}
+.zk-act .petit{max-width:60ch;margin:0}
+.zk-act .zk-accept{color:var(--ink)}
+
+/* --- 10. что дальше --- */
+.zk-after{margin:clamp(24px,4vw,34px) 0}
+.zk-after>.caps{display:block;margin-bottom:12px}
+.zk-steps{counter-reset:zks;list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.zk-steps li{counter-increment:zks;position:relative;padding-left:38px;font-size:14.5px;line-height:1.6}
+.zk-steps li::before{content:counter(zks);position:absolute;left:0;top:-1px;width:26px;height:26px;
+  border:1px solid var(--hairline-strong);border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
+
+.zk-deep{margin:clamp(22px,3.5vw,32px) 0}
+.zk-deep .faq-item p{font-size:14.5px;line-height:1.65;margin:0 0 10px;color:var(--ink-soft)}
+.zk-legal{margin-top:clamp(22px,3.5vw,32px)}
+.zk-exp{margin-top:16px;color:var(--ink-soft)}
+
+/* --- оплачено --- */
+.zk-seal{position:absolute;right:clamp(14px,3vw,28px);top:clamp(14px,3vw,28px);
+  width:72px;height:72px;border-radius:50%;background:var(--verify);color:#FFFEF9;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transform:rotate(-8deg);box-shadow:0 6px 14px -6px rgba(61,107,80,.55)}
+.zk-seal::before{content:"";position:absolute;inset:4px;border:1px solid rgba(255,254,249,.75);
+  border-radius:50%}
+.zk-seal b{font-family:var(--serif);font-size:22px;letter-spacing:.06em}
+.zk-seal span{font-size:6.5px;letter-spacing:.14em;margin-top:1px}
+.zk-keep{margin:20px 0;padding:14px 16px;border:1px dashed var(--hairline-strong);
+  border-radius:var(--r);background:var(--paper);font-size:14px;line-height:1.6}
+.zk-keeprow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.zk-req{white-space:pre-line;background:var(--paper);border:1px dashed var(--hairline-strong);
+  border-radius:var(--r);padding:12px 14px;font-size:14px;line-height:1.65;margin:14px 0}
+
+/* --- остывшая заявка: цена приглушена, но лист виден целиком --- */
+.zk-stale .zk-money,.zk-stale .zk-due,.zk-stale .zk-headsum{opacity:.5;filter:grayscale(1)}
+.zk-cold-note{margin:0 0 clamp(18px,3vw,26px);padding:14px 16px;border:1px solid var(--wax);
+  border-left-width:3px;border-radius:var(--r);
+  background:color-mix(in srgb,var(--wax) 6%,var(--sheet));font-size:14.5px;line-height:1.6}
+
+/* --- липкая панель телефона (класс mobile-cta гасит общую навигацию) --- */
+#zkMcta{justify-content:space-between;align-items:center;gap:12px}
+#zkMcta .zk-ml{display:flex;flex-direction:column;font-family:var(--mono);font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);line-height:1.3}
+#zkMcta .zk-ml b{font-family:var(--serif);font-size:19px;letter-spacing:0;text-transform:none;
+  color:var(--wax);font-variant-numeric:tabular-nums}
+#zkMcta .btn{flex:0 0 auto;min-width:46%;min-height:48px}
+
+/* доступность */
+#zkMain :focus-visible,#zkMcta :focus-visible{outline:2px solid var(--stamp);outline-offset:3px}
+#zkMain input,#zkMain select,#zkMain textarea{font-size:16px}
+@media(prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+
+/* тёмная тема: токены переопределены глобально — правим только смеси */
+:root[data-theme="dark"] .zk-due{background:color-mix(in srgb,var(--wax) 12%,var(--sheet))}
+:root[data-theme="dark"] .zk-stop .pay{background:color-mix(in srgb,var(--mark) 40%,var(--sheet))}
+</style>
+</head>
+<body>
+
+<!-- пустые каркасы: app.js не монтирует ни шапку, ни подвал, ни пилюлю —
+     любая ссылка «наружу» с этой страницы это потерянный человек -->
+<header class="site-header" hidden></header>
+<span class="tg-pill" hidden></span>
+
+<main class="wrap" id="zkMain">
+
+  <!-- ===== ЖИВАЯ ЗАЯВКА ===== -->
+  <section id="zkDoc" hidden>
+    <div class="sheet sheet-pad stacked zk-sheet">
+
+      <div class="zk-cold-note" id="zkColdNote" hidden></div>
+
+      <header class="zk-head">
+        <span class="caps" id="zkNo">ЗАЯВКА № —</span>
+        <span class="zk-stamp" id="zkStamp" hidden></span>
+        <span class="zk-headsum" id="zkHeadSum"></span>
+        <h1 id="zkGreet">Ваша заявка собрана</h1>
+        <p class="zk-letter" id="zkLetter">Собрал по нашему разговору — посмотрите, всё ли верно. Заполнять ничего не нужно. Если что-то не так, напишите мне туда же, где мы говорили: переделаю за пять минут.</p>
+        <p class="zk-sign">Мастерская</p>
+        <p class="petit">Эту ссылку прислала мастерская. Если сомневаетесь — спросите
+          у мастера прямо в переписке: «это моя заявка <span id="zkNoAsk">№ —</span>?»</p>
+      </header>
+
+      <div class="zk-slots" id="zkSlots"></div>
+
+      <p class="zk-due" id="zkDue"></p>
+
+      <section class="zk-cal" aria-labelledby="zkCalH">
+        <h2 class="caps" id="zkCalH">Как пойдёт работа</h2>
+        <ol class="zk-rail" id="zkRail"></ol>
+        <p class="petit zk-railnote">Даты — рабочий план мастерской. Если что-то сдвинется
+          по вашей стороне или по вине вуза, мы пересогласуем даты письменно, а не молча.</p>
+      </section>
+
+      <section class="zk-incl" id="zkInclBox" aria-labelledby="zkInclH" hidden>
+        <h2 class="caps" id="zkInclH">Что входит — и чего здесь нет</h2>
+        <div class="zk-slots" id="zkIncl"></div>
+      </section>
+
+      <section class="zk-money" aria-labelledby="zkMoneyH">
+        <h2 class="caps" id="zkMoneyH">Смета</h2>
+        <div class="ledger" id="zkLedger"></div>
+        <p class="zk-rule">Платить всё сразу не нужно. Каждая следующая часть — только после
+          того, как вы увидели результат предыдущей.</p>
+        <div class="paysteps" id="zkSteps"></div>
+        <p class="petit" style="margin-top:14px">Цена окончательная. Она изменится, только если
+          вы сами решите изменить тему или объём — тогда мы соберём отдельную заявку
+          на доработку (п. 5.4 оферты).</p>
+      </section>
+
+      <div class="doc-note" style="background:var(--paper);border-left:3px solid var(--wax);
+           padding:14px 16px;border-radius:var(--r);font-size:14.5px;line-height:1.65">
+        <b>Что именно вы покупаете.</b> Мы оказываем информационно-консультационные услуги
+        и готовим авторские справочно-методические материалы — основу для вашей работы.
+        Они предназначены для самостоятельного изучения темы и <b>не предназначены для сдачи
+        в вуз как ваша собственная работа</b>; аттестацию вы проходите сами. Конкретных оценок
+        мы не обещаем. <a class="link" href="oferta.html#p7" target="_blank" rel="noopener">Раздел 7 оферты →</a>
+      </div>
+
+      <ul class="zk-guards">
+        <li><b>Отчёт о проверках — до финального платежа.</b> Оригинальность и разбор
+          совпадений вы видите раньше, чем платите последнюю часть.</li>
+        <li><b>Правки бесплатны, и их количество не ограничено.</b> Ограничены только сроки:
+          замечания по переданной части — 7 дней после передачи, а по готовой работе —
+          вплоть до защиты (п. 9.1–9.3 оферты).</li>
+        <li><b>Отказаться можно в любой момент</b> — это ст. 32 закона о защите прав
+          потребителей, а не наша добрая воля. До начала работы деньги возвращаются полностью;
+          после начала — за вычетом уже оказанного, по этапам из этой сметы (п. 10.2–10.3),
+          тем же способом, в течение 10 рабочих дней.</li>
+      </ul>
+
+      <div class="zk-act" id="zkAct">
+        <button type="button" class="btn btn-wax btn-lg btn-block" id="zkPay">
+          <b id="zkPaySum">Оплатить</b><small id="zkPaySub">первый платёж</small>
+        </button>
+        <a class="btn btn-line btn-block" id="zkAsk" href="#" target="_blank" rel="noopener">Есть вопрос — написать мастеру</a>
+        <p class="petit" id="zkNote" hidden></p>
+        <p class="petit zk-accept">Оплата — это и есть согласие с условиями: по ст. 438 ГК РФ
+          договор считается заключённым в момент поступления денег. Подписывать и присылать
+          ничего не нужно. <b>До оплаты вы ничем не связаны</b> — эта страница ни к чему
+          не обязывает (п. 3.4 оферты).</p>
+        <p class="petit">На этой странице вводить нечего. Номер карты и почту для чека
+          вы укажете на защищённой странице Robokassa — реквизиты карты мы не видим
+          и не храним (п. 5.2 оферты).</p>
+        <p class="petit">Платить может кто угодно — родители, партнёр, друг. В назначении
+          платежа нет ничего, что раскрывало бы содержание заказа. Дело закрепится за тем,
+          кто открыл эту ссылку и нажал «Оплатить».</p>
+        <p class="petit" id="zkLegalLine"></p>
+      </div>
+
+      <section class="zk-after" aria-labelledby="zkAfterH">
+        <h2 class="caps" id="zkAfterH">Что произойдёт сразу после оплаты</h2>
+        <ol class="zk-steps">
+          <li>Откроется ссылка на ваше дело — там вся история заказа, файлы и переписка
+            с мастером. Мы продублируем её вам в мессенджер.</li>
+          <li>На почту, которую вы укажете при оплате, придёт чек: при оплате картой он
+            формируется автоматически и уходит в налоговую сам, при переводе мастер пришлёт
+            чек из приложения ФНС «Мой налог».</li>
+          <li>Мастер напишет в течение рабочего дня: работа пошла.</li>
+        </ol>
+      </section>
+
+      <section class="zk-deep">
+        <details class="faq-item"><summary>Полный текст требований к работе</summary>
+          <div id="zkReqFull"></div></details>
+        <details class="faq-item"><summary>Что входит в уровень ведения целиком</summary>
+          <div id="zkTierFull"></div></details>
+        <details class="faq-item"><summary>Как устроены правки и окна проверки</summary>
+          <p>Замечания по переданной части присылайте в течение 7 дней после передачи — их мы
+            отрабатываем бесплатно, в том числе повторно, пока они не сняты. После сдачи
+            чистовика действует сервисное окно: замечания научного руководителя, рецензента
+            или комиссии дорабатываем бесплатно до защиты (п. 9.2–9.3 оферты). Просим
+            присылать замечания целиком, одним сообщением: так быстрее.</p></details>
+        <details class="faq-item"><summary>А вдруг вы пропадёте после оплаты?</summary>
+          <p>Поэтому деньги и разбиты на части: вы платите за то, что уже увидели. Если
+            мастерская исчезнет после первого платежа, вы вправе отказаться и вернуть
+            уплаченное за невыполненное — по ст. 32 ЗоЗПП и п. 10.3 оферты возврат считается
+            по этапам этой самой сметы. Заявление — в дело заказа, на
+            <a class="link" id="zkMail2" href="#">support@akademsalon.ru</a> или в переписку;
+            срок возврата — 10 рабочих дней.</p></details>
+        <details class="faq-item"><summary>Кто исполнитель и как проверить, что мы настоящие</summary>
+          <p>Семёнов Семён Юрьевич, самозанятый, ИНН 212885750445, г. Казань. Статус
+            плательщика налога на профессиональный доход проверяется по ИНН на сайте ФНС:
+            <a class="link" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">npd.nalog.ru/check-status →</a>.
+            Претензии и заявления: <a class="link" id="zkMail3" href="#">support@akademsalon.ru</a>,
+            <a class="link" id="zkTg3" href="#" target="_blank" rel="noopener">Telegram</a>,
+            <a class="link" id="zkVk3" href="#" target="_blank" rel="noopener">ВКонтакте</a>.</p></details>
+        <details class="faq-item"><summary>О ваших данных</summary>
+          <p>Здесь ничего не нужно вводить: заявка собрана по нашей переписке. Реквизиты карты
+            мы не видим и не храним — оплата проходит на защищённой странице Robokassa
+            (ООО «РОБОКАССА»). Почту для чека вы укажете там же: она нужна налоговой, чтобы
+            прислать вам чек. Что и зачем мы храним — в
+            <a class="link" href="privacy.html" target="_blank" rel="noopener">Политике обработки данных</a>.
+            На этой странице нет ни счётчиков, ни рекламных трекеров.</p></details>
+        <p class="petit" style="margin-top:14px">
+          <a class="link" href="oplata.html" target="_blank" rel="noopener">Как вообще проходит оплата →</a> ·
+          <a class="link" href="specifikaciya.html" target="_blank" rel="noopener">Что такое спецификация работы →</a></p>
+      </section>
+
+      <div class="zk-slots zk-legal" id="zkLegal"></div>
+      <p class="petit zk-exp" id="zkExp"></p>
+
+    </div>
+  </section>
+
+  <!-- ===== ЖДЁМ ПЕРЕВОД ===== -->
+  <section id="zkWait" hidden>
+    <div class="sheet sheet-pad stacked">
+      <span class="caps">Оплата переводом</span>
+      <h1 class="h-display" style="font-size:clamp(26px,4vw,38px);margin:8px 0 12px">Ждём подтверждения перевода</h1>
+      <p class="lead">Мастер сверит поступление и напишет — обычно это занимает несколько часов,
+        в выходные дольше. <b>Платить ещё раз не нужно.</b> Эта страница обновится сама,
+        когда деньги дойдут.</p>
+      <div class="zk-req" id="zkReq"></div>
+      <p class="petit">Что-то пошло не так? <a class="link" id="zkAsk3" href="#" target="_blank" rel="noopener">Напишите мастеру</a>.</p>
+    </div>
+  </section>
+
+  <!-- ===== ОПЛАЧЕНО ===== -->
+  <section id="zkDone" hidden>
+    <div class="sheet sheet-pad stacked">
+      <div class="zk-seal" aria-hidden="true"><b>АС</b><span>ОПЛАЧЕНО</span></div>
+      <span class="caps">Оплата прошла</span>
+      <h1 class="h-display" id="zkDoneH" style="font-size:clamp(26px,4vw,38px);margin:8px 0 12px">Дело закреплено за вами</h1>
+      <p class="lead" id="zkDoneP">Мастер уже видит заказ и напишет вам в течение рабочего дня.
+        Дальше всё происходит в деле: файлы, даты и переписка.</p>
+      <a class="btn btn-wax btn-lg btn-block" id="zkOpenCase" href="dashboard.html">Открыть моё дело →</a>
+      <div class="zk-keep" id="zkKeep">
+        <b>Сохраните эту ссылку.</b> Она открывает ваше дело без пароля и регистрации —
+        и именно поэтому её не стоит никому пересылать.
+        <div class="zk-keeprow">
+          <button type="button" class="btn btn-line" id="zkCopy">Скопировать ссылку</button>
+          <a class="btn btn-line" id="zkTgShare" href="#" target="_blank" rel="noopener">Прислать себе в Telegram</a>
+        </div>
+      </div>
+      <p class="petit">Чек придёт на почту, которую вы указали при оплате. Потеряли ссылку?
+        <a class="link" id="zkAsk2" href="#" target="_blank" rel="noopener">Напишите мастеру</a> — восстановим за минуту.</p>
+    </div>
+  </section>
+
+  <!-- ===== УСТАРЕЛА / ЗАМЕНЕНА / ОТОЗВАНА ===== -->
+  <section id="zkCold" hidden>
+    <div class="sheet sheet-pad stacked">
+      <span class="caps" id="zkColdCaps"></span>
+      <h1 class="h-display" id="zkColdH" style="font-size:clamp(26px,4vw,38px);margin:8px 0 12px"></h1>
+      <p class="lead" id="zkColdP"></p>
+      <a class="btn btn-wax btn-lg" id="zkColdBtn" href="#" target="_blank" rel="noopener">Написать мастеру →</a>
+    </div>
+  </section>
+
+  <!-- ===== НЕ НАЙДЕНА ===== -->
+  <section id="zk404" hidden>
+    <div class="sheet sheet-pad stacked">
+      <span class="caps">Заявка не найдена</span>
+      <h1 class="h-display" style="font-size:clamp(26px,4vw,38px);margin:8px 0 12px">Похоже, ссылка неполная</h1>
+      <p class="lead">Мессенджеры иногда обрезают длинные ссылки. Откройте её из переписки
+        целиком или напишите мастеру — пришлём заново за минуту.</p>
+      <a class="btn btn-wax btn-lg" id="zk404Btn" href="#" target="_blank" rel="noopener">Написать мастеру →</a>
+    </div>
+  </section>
+</main>
+
+<!-- липкая панель: класс mobile-cta гасит общую нижнюю навигацию app.js -->
+<div class="mobile-cta" id="zkMcta" hidden>
+  <span class="zk-ml">К оплате сейчас<b id="zkMctaSum">—</b></span>
+  <button type="button" class="btn btn-wax" id="zkMctaBtn">Оплатить</button>
+</div>
+
+<footer class="site-footer" hidden></footer>
+
+<script src="assets/js/app.js?v=20260721d"></script>
+<script src="assets/js/extras.js?v=20260721d"></script>
+<script>
+/* Собранная заявка: смотрит, соглашается, платит. ES5-стиль проекта. */
+(function () {
+  'use strict';
+  var S = window.Salon;
+  if (!S || !S.api) return;
+
+  function $(id) { return document.getElementById(id); }
+  function money(n) { return (n || 0).toLocaleString('ru-RU') + ' ₽'; }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  var MON = ['января','февраля','марта','апреля','мая','июня',
+             'июля','августа','сентября','октября','ноября','декабря'];
+  function ruDate(iso) {
+    if (!iso) return '';
+    var p = String(iso).slice(0, 10).split('-');
+    if (p.length !== 3) return String(iso);
+    var m = parseInt(p[1], 10);
+    if (!(m >= 1 && m <= 12)) return String(iso);
+    return parseInt(p[2], 10) + ' ' + MON[m - 1];
+  }
+  var ERRS = {
+    not_found: 'Заявка не найдена — проверьте, что ссылка скопировалась целиком',
+    admin_session: 'Вы вошли как мастер. Оплатить может только клиент по своей ссылке',
+    expired: 'Условия заявки устарели — напишите мастеру, соберём свежую',
+    replaced: 'Условия обновились — перезагрузите страницу',
+    canceled: 'Заявка отозвана — напишите мастеру',
+    already_paid: 'По этой заявке уже заплачено',
+    already_claimed: 'Оплата уже на сверке — платить ещё раз не нужно',
+    order_has_owner: 'Это дело уже закреплено за аккаунтом — откройте кабинет',
+    nothing_due: 'Сейчас платить нечего',
+    pay_stage: 'Заявка ещё не готова к оплате — напишите мастеру',
+    rate_limit: 'Слишком часто — подождите минуту',
+    pay_failed: 'Касса не ответила. Попробуйте ещё раз или напишите мастеру — примем перевод'
+  };
+  var TG = 'https://t.me/academicsaloon';   /* подменится из ответа сервера */
+
+  var state = { code: '', nonce: '', data: null, busy: false, preview: false,
+                timer: null, gap: 25000 };
+
+  /* --- код заявки: только из фрагмента --------------------------------
+     Фрагмент не уходит ни в access-лог nginx, ни в Referer при переходе
+     на Robokassa (и в маячок визитов он тоже не попадает — Salon.visit
+     берёт только pathname+search). Хэш НЕ вычищаем: перезагрузка, «назад»
+     и история браузера остаются запасной копией ссылки. */
+  var h = location.hash || '';
+  var m = h.match(/[#&]k=([A-Za-z0-9_-]+)/);
+  state.preview = /[#&]preview=1/.test(h);
+  var saved = null;
+  try { saved = S.store.get('salon_zayavka', null); } catch (e) { saved = null; }
+  if (m) {
+    state.code = m[1];
+  } else if (saved && saved.c) {
+    state.code = saved.c;
+  }
+  if (saved && saved.c === state.code && saved.n) state.nonce = saved.n;
+
+  function remember() {
+    try { S.store.set('salon_zayavka', { c: state.code, n: state.nonce }); } catch (e) {}
+  }
+
+  function show(id) {
+    var ids = ['zkDoc', 'zkDone', 'zkWait', 'zkCold', 'zk404'], i;
+    for (i = 0; i < ids.length; i++) $(ids[i]).hidden = (ids[i] !== id);
+    if (id !== 'zkDoc') $('zkMcta').hidden = true;
+  }
+  function note(t, ok) {
+    var n = $('zkNote');
+    n.hidden = false;
+    n.textContent = t;
+    n.style.color = ok ? 'var(--verify)' : 'var(--wax)';
+  }
+  function wireContacts(c) {
+    if (c && c.tg) TG = c.tg;
+    var ids = ['zkAsk', 'zkAsk2', 'zkAsk3', 'zkColdBtn', 'zk404Btn'], i, el;
+    for (i = 0; i < ids.length; i++) { el = $(ids[i]); if (el) el.href = TG; }
+    if (c && c.tg && $('zkTg3')) $('zkTg3').href = c.tg;
+    if (c && c.vk && $('zkVk3')) $('zkVk3').href = c.vk;
+    if (c && c.email) {
+      if ($('zkMail2')) { $('zkMail2').href = 'mailto:' + c.email; $('zkMail2').textContent = c.email; }
+      if ($('zkMail3')) { $('zkMail3').href = 'mailto:' + c.email; $('zkMail3').textContent = c.email; }
+    }
+  }
+  wireContacts(null);
+
+  if (!state.code) { show('zk404'); return; }
+
+  /* ---------- загрузка ---------- */
+  function load(first) {
+    var path = first ? '/offer/' + encodeURIComponent(state.code)
+                     : '/offer/' + encodeURIComponent(state.code) + '/state' +
+                       (state.nonce ? '?n=' + encodeURIComponent(state.nonce) : '');
+    return S.api.get(path).then(function (r) {
+      if (!r || !r.ok) {
+        if (r && r.error === 'rate_limit') { state.gap = 60000; return; }
+        if (first) show('zk404');
+        return;
+      }
+      state.gap = 25000;
+      state.data = r.offer;
+      render(first);
+    }, function () { if (first) show('zk404'); });
+  }
+
+  function render(first) {
+    var d = state.data;
+    wireContacts(d.contacts);
+    if (d.status === 'paid') { drawDone(d); return; }
+    if (d.status === 'awaiting') { drawWait(d); return; }
+    if (d.status === 'replaced') { drawCold(d, 'replaced'); return; }
+    if (d.status === 'canceled') { drawCold(d, 'canceled'); return; }
+
+    drawDoc(d);
+    show('zkDoc');
+    var stale = d.status === 'expired';
+    $('zkDoc').classList.toggle('zk-stale', stale);
+    $('zkAct').hidden = stale;
+    $('zkColdNote').hidden = !stale;
+    if (stale) {
+      $('zkColdNote').innerHTML =
+        '<b>Эта заявка собрана ' + esc(d.created_ru) + ' — условия в ней уже устарели.</b> ' +
+        'Цена и сроки зависят от загрузки мастерской, поэтому обещать те же условия спустя ' +
+        'столько времени мы не можем. Напишите мастеру — соберём новую за пару минут, ' +
+        'обычно условия близкие.<div style="margin-top:12px">' +
+        '<a class="btn btn-wax" href="' + esc(TG) + '" target="_blank" rel="noopener">Обновить заявку →</a></div>';
+    }
+    if (!stale && !state.preview && d.pay && d.pay.amount > 0) {
+      $('zkMctaSum').textContent = money(d.pay.amount);
+      $('zkMcta').hidden = false;
+    }
+    if (state.preview) {
+      $('zkPay').setAttribute('aria-disabled', 'true');
+      $('zkMcta').hidden = true;
+      note('Предпросмотр мастера — оплатить отсюда нельзя.', false);
+    }
+    if (first) startPoll();
+  }
+
+  /* ---------- живая заявка ---------- */
+  function slotRows(rows, raw) {
+    var o = '', i;
+    for (i = 0; i < rows.length; i++) {
+      if (!rows[i][1]) continue;
+      o += '<div class="zk-slot"><span class="k">' + esc(rows[i][0]) + '</span>' +
+           '<span class="d" aria-hidden="true"></span>' +
+           '<span class="v' + (rows[i][2] ? ' ' + rows[i][2] : '') + '">' +
+           (raw ? rows[i][1] : esc(rows[i][1])) + '</span></div>';
+    }
+    return o;
+  }
+
+  function drawDoc(d) {
+    document.title = 'Заявка № ' + d.no + ' · Академический Салон';
+    $('zkNo').textContent = 'ЗАЯВКА № ' + d.no + ' · СОБРАНА ' +
+      String(d.created_ru).toUpperCase() + ' · РЕДАКЦИЯ ' + d.version;
+    $('zkNoAsk').textContent = '№ ' + d.no;
+    $('zkGreet').textContent = d.greet_name
+      ? (d.greet_name + ', ваша заявка собрана') : 'Ваша заявка собрана';
+    if (d.intro) $('zkLetter').textContent = d.intro;
+
+    var sum = d.pay && d.pay.amount > 0
+      ? 'К оплате сейчас <b>' + money(d.pay.amount) + '</b> · всего по заявке ' + money(d.due_total)
+      : 'Всего по заявке <b>' + money(d.due_total) + '</b>';
+    $('zkHeadSum').innerHTML = sum;
+
+    $('zkStamp').hidden = false;
+    $('zkStamp').textContent = d.status === 'expired' ? 'Устарела' : 'К оплате';
+    $('zkStamp').className = 'zk-stamp' + (d.status === 'expired' ? ' mute' : ' wax');
+
+    $('zkSlots').innerHTML = slotRows([
+      ['Работа', d.work_label], ['Тема', d.topic], ['Дисциплина', d.discipline],
+      ['Объём', d.volume], ['Ведение', d.tier_label], ['Требования', d.reqs_short]
+    ]);
+
+    /* календарь */
+    var out = '', i, st;
+    for (i = 0; i < (d.rail || []).length; i++) {
+      st = d.rail[i];
+      out += '<li class="zk-stop ' + (st.done ? 'done' : (st.now ? 'now' : '')) + '">' +
+        '<span class="dot" aria-hidden="true"></span>' +
+        '<span class="date">' + esc(st.d ? ruDate(st.d) : (st.when || 'дальше')) +
+        (st.done ? ' · готово' : '') + '</span>' +
+        '<div class="ttl">' + esc(st.t) + '</div>' +
+        '<div class="got">' + esc(st.g || '') + '</div>' +
+        (st.pay_amount ? '<span class="pay">' + money(st.pay_amount) + ' · ' +
+          (st.done ? 'оплачено' : (st.now ? 'платёж сейчас' : 'платёж на этом шаге')) +
+          '</span>' : '') + '</li>';
+    }
+    $('zkRail').innerHTML = out;
+
+    /* срок */
+    $('zkDue').innerHTML = '<b>Работа у вас на руках к ' + esc(d.deadline_ru) + '.</b> ' +
+      'Сопровождение и бесплатные правки — дальше, до защиты.' +
+      '<small>Отсчёт идёт с оплаты' +
+      (d.need_files ? ' и с момента, когда вы пришлёте методичку.'
+                    : ' — все материалы от вас у нас уже есть.') + '</small>';
+
+    /* что входит / чего нет */
+    var incl = d.incl || [], io = '';
+    for (i = 0; i < incl.length; i++) {
+      io += slotRows([[incl[i].t, incl[i]['in'] ? 'включено' : 'отдельно',
+                       incl[i]['in'] ? 'yes' : 'no']]);
+    }
+    $('zkIncl').innerHTML = io;
+    $('zkInclBox').hidden = !io;
+
+    /* смета */
+    var led = d.ledger || [], lo = '';
+    for (i = 0; i < led.length; i++) {
+      lo += '<div class="lg-row"><span>' + esc(led[i].t) + '</span>' +
+            '<span class="num">' + money(led[i].a) + '</span></div>';
+    }
+    lo += '<div class="lg-total"><b>Итого по заявке</b>' +
+          '<b class="num">' + money(d.due_total) + '</b></div>';
+    $('zkLedger').innerHTML = lo;
+
+    /* лента этапов: порядок узлов важен — ps-share, b, small (styles.css:189) */
+    var pl = d.plan || [], po = '';
+    $('zkSteps').style.setProperty('--pay-n', String(pl.length || 1));
+    for (i = 0; i < pl.length; i++) {
+      var tag = pl[i].state === 'paid' ? 'оплачено'
+              : pl[i].state === 'claimed' ? 'на сверке'
+              : pl[i].state === 'due' ? 'сейчас' : 'позже';
+      po += '<div class="pstep' + (pl[i].state === 'paid' ? ' paid' : '') + '">' +
+        '<span class="ps-share">' + money(pl[i].amount) + '</span>' +
+        '<b>' + esc(pl[i].label) + '</b><small>' + tag + '</small></div>';
+    }
+    $('zkSteps').innerHTML = po;
+    /* линия шкалы живёт на классе in — динамическому узлу её ставим сами */
+    if (S.observeReveal) S.observeReveal($('zkSteps').parentNode);
+
+    /* кнопка */
+    if (d.pay && d.pay.amount > 0) {
+      $('zkPaySum').textContent = 'Оплатить ' + money(d.pay.amount);
+      $('zkPaySub').textContent = d.pay.label +
+        (d.pay_online ? ' · картой или переводом' : ' · переводом по реквизитам');
+    }
+
+    /* складки и юрформуляр */
+    $('zkReqFull').innerHTML = '<p>' +
+      esc(d.reqs_full || 'Особых требований, кроме методички вуза, нет.') + '</p>';
+    $('zkTierFull').innerHTML = '<p>' +
+      esc(d.tier_full || 'Состав ведения мы согласовали в переписке — спросите мастера, если нужно подробнее.') + '</p>';
+
+    var ed = d.doc || {};
+    $('zkLegalLine').innerHTML = 'Оплачивая, вы подтверждаете, что вам исполнилось 18 лет ' +
+      'и что вы ознакомились с <a class="link" href="oferta.html" target="_blank" rel="noopener">публичной офертой</a>' +
+      (ed.oferta ? ' (ред. ' + esc(ed.oferta) + ')' : '') + ' — в особенности с разделом 7 — и с ' +
+      '<a class="link" href="privacy.html" target="_blank" rel="noopener">Политикой обработки данных</a>' +
+      (ed.privacy ? ' (ред. ' + esc(ed.privacy) + ')' : '') + '.';
+
+    var mail = (d.contacts && d.contacts.email) || 'support@akademsalon.ru';
+    $('zkLegal').innerHTML = slotRows([
+      ['Исполнитель', 'Семёнов Семён Юрьевич'],
+      ['Статус', 'Самозанятый, налог на профдоход (422-ФЗ)'],
+      ['ИНН', '212885750445 · <a class="link" target="_blank" rel="noopener nofollow" href="https://npd.nalog.ru/check-status/">проверить в ФНС</a>'],
+      ['Договор', '<a class="link" target="_blank" rel="noopener" href="oferta.html">Публичная оферта, ред. ' + esc(ed.oferta || '') + '</a>'],
+      ['Чек', 'На каждый платёж (ст. 14 № 422-ФЗ)'],
+      ['Возврат', '<a class="link" target="_blank" rel="noopener" href="oferta.html#p10">В любой момент, за невыполненное · 10 рабочих дней</a>'],
+      ['Претензии', '<a class="link" href="mailto:' + esc(mail) + '">' + esc(mail) + '</a>']
+    ], true);
+
+    $('zkExp').textContent = d.expires_ru
+      ? ('Условия этой заявки действительны до ' + d.expires_ru +
+         '. Позже цену и срок нужно будет освежить — загрузка мастерской меняется.')
+      : '';
+  }
+
+  /* ---------- прочие состояния ---------- */
+  function drawCold(d, kind) {
+    show('zkCold');
+    if (kind === 'replaced') {
+      $('zkColdCaps').textContent = 'Условия обновились';
+      $('zkColdH').textContent = 'Мастер пересобрал заявку';
+      $('zkColdP').textContent = 'Прежняя редакция больше не действует — посмотрите свежую, ' +
+        'там актуальные даты и цена.';
+      $('zkColdBtn').textContent = 'Открыть новую заявку →';
+      $('zkColdBtn').removeAttribute('target');
+      $('zkColdBtn').href = 'zayavka.html#k=' + encodeURIComponent(d.replaced_code || '');
+    } else {
+      $('zkColdCaps').textContent = 'Заявка отозвана';
+      $('zkColdH').textContent = 'Эту заявку мастерская отозвала';
+      $('zkColdP').textContent = 'Так бывает, когда договорённость изменилась. Напишите ' +
+        'мастеру — разберёмся и соберём новую.';
+      $('zkColdBtn').textContent = 'Написать мастеру →';
+      $('zkColdBtn').href = TG;
+    }
+  }
+
+  function drawWait(d) {
+    show('zkWait');
+    $('zkReq').textContent = d.requisites || '';
+    $('zkReq').hidden = !d.requisites;
+  }
+
+  var doneWired = false;
+  function drawDone(d) {
+    show('zkDone');
+    document.title = 'Заявка № ' + d.no + ' оплачена';
+    stopPoll();
+    $('zkDoneH').textContent = 'Дело № ' + d.no + ' закреплено за вами';
+    if (!d.access_token) {
+      /* оплачено, но ключа нет: открыли не тем браузером, из которого платили */
+      $('zkDoneP').textContent = 'По этой заявке уже заплачено. Ссылка на дело открылась ' +
+        'в том браузере, из которого прошла оплата. Если это были вы — откройте страницу ' +
+        'там же; если нет — напишите мастеру, пришлём ссылку заново.';
+      $('zkOpenCase').hidden = true;
+      $('zkKeep').hidden = true;
+      return;
+    }
+    var link = d.claim_url || S.claimLink(d.access_token);
+    try { S.api.addGuestToken(d.access_token); } catch (e) {}
+    $('zkOpenCase').href = link;
+    $('zkTgShare').href = 'https://t.me/share/url?url=' + encodeURIComponent(link) +
+      '&text=' + encodeURIComponent('Моё дело в Академическом Салоне');
+    if (!doneWired) {
+      doneWired = true;
+      $('zkCopy').addEventListener('click', function () {
+        var b = this;
+        try { navigator.clipboard.writeText(link); } catch (e) {}
+        b.textContent = 'Скопировано ✓';
+        setTimeout(function () { b.textContent = 'Скопировать ссылку'; }, 1800);
+      });
+    }
+    if (S.stamp) S.stamp('Оплачено');
+  }
+
+  /* ---------- оплата ---------- */
+  function pay(btn) {
+    if (state.busy || state.preview) return;
+    state.busy = true;
+    if (S.btnLoading && btn) S.btnLoading(btn, true, 'Открываем кассу…');
+    S.api.post('/offer/' + encodeURIComponent(state.code) + '/pay', {}).then(function (r) {
+      state.busy = false;
+      if (S.btnLoading && btn) S.btnLoading(btn, false);
+      if (!r || !r.ok) {
+        note(ERRS[(r && r.error) || ''] ||
+             'Не получилось открыть кассу — напишите мастеру, примем перевод', false);
+        if (r && (r.error === 'replaced' || r.error === 'already_paid' ||
+                  r.error === 'already_claimed')) load(false);
+        return;
+      }
+      /* ключ предъявителя платежа: только он откроет дело после подтверждения */
+      if (r.nonce) { state.nonce = r.nonce; remember(); }
+      if (r.online && r.url) { location.href = r.url; return; }
+      state.data.status = 'awaiting';
+      state.data.requisites = r.requisites || '';
+      drawWait(state.data);
+      startPoll();
+    }, function () {
+      state.busy = false;
+      if (S.btnLoading && btn) S.btnLoading(btn, false);
+      note('Связь подвела. Попробуйте ещё раз через минуту.', false);
+    });
+  }
+  $('zkPay').addEventListener('click', function () { pay(this); });
+  $('zkMctaBtn').addEventListener('click', function () { pay($('zkPay')); });
+
+  /* ---------- поллинг: setTimeout, не rAF (rAF душат энергорежимы) ---------- */
+  function stopPoll() { if (state.timer) { clearTimeout(state.timer); state.timer = null; } }
+  function startPoll() {
+    stopPoll();
+    state.timer = setTimeout(function tick() {
+      var d = state.data;
+      var alive = d && (d.status === 'live' || d.status === 'awaiting' || d.status === 'expired');
+      if (!alive) return;
+      if (document.visibilityState === 'hidden') {
+        state.timer = setTimeout(tick, state.gap);
+        return;
+      }
+      var was = d.status + '|' + d.version;
+      load(false).then(function () {
+        if (state.data && was !== state.data.status + '|' + state.data.version) render(false);
+        state.timer = setTimeout(tick, state.gap);
+      }, function () { state.timer = setTimeout(tick, 60000); });
+    }, state.gap);
+  }
+
+  load(true);
+})();
+</script>
+</body>
+</html>

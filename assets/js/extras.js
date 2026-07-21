@@ -14,7 +14,9 @@
   if (!S) return;
   var reduceMotion = S.reduceMotion;
   var here = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
-  var QUIET_PAGES = { 'admin.html': 1, '404.html': 1 };
+  /* zayavka.html — страница оплаты по ссылке: ни куки-плашки, ни закладки
+     «Нужна помощь?», ни уведомлений. Человек читает условия и платит. */
+  var QUIET_PAGES = { 'admin.html': 1, '404.html': 1, 'zayavka.html': 1 };
 
   /* ---------------- Диалоги ---------------- */
   function buildDlg(opts) {

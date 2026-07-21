@@ -67,6 +67,7 @@ function initGodEye() {
   var LEAD_ST = { new: '🆕 новый', seen: 'просмотрен', done: '✓ обработан' };
 
   var st = {
+    offnew: false, offlink: null,   /* сборка заявки под ссылку */
     tab: 'summary', filter: 'attention', q: '', sort: 'fresh', listLimit: 40,
     orders: [], sel: null, card: null,
     clients: [], csel: null, ccard: null,
@@ -601,11 +602,11 @@ function initGodEye() {
       '<div class="ag-card" style="max-width:560px;max-height:none;margin-bottom:14px">' +
         '<span class="caps">Ручной выпуск — комплимент или продажа вне сайта</span>' +
         '<div style="display:grid;gap:8px;margin-top:10px">' +
-          '<input type="number" id="agGfAmount" min="500" max="50000" step="500" placeholder="Номинал, ₽ (например 5000)" class="ag-in">' +
-          '<input type="text" id="agGfName" maxlength="120" placeholder="Имя получателя (на сертификате, по желанию)" class="ag-in">' +
-          '<input type="email" id="agGfEmail" maxlength="120" placeholder="Почта получателя — отправим письмом (по желанию)" class="ag-in">' +
-          '<input type="text" id="agGfCongrats" maxlength="280" placeholder="Поздравление (по желанию)" class="ag-in">' +
-          '<input type="text" id="agGfNote" maxlength="300" placeholder="Заметка для себя: кому и за что" class="ag-in">' +
+          '<input type="number" id="agGfAmount" min="500" max="50000" step="500" placeholder="Номинал, ₽ (например 5000)" class="ag-inp">' +
+          '<input type="text" id="agGfName" maxlength="120" placeholder="Имя получателя (на сертификате, по желанию)" class="ag-inp">' +
+          '<input type="email" id="agGfEmail" maxlength="120" placeholder="Почта получателя — отправим письмом (по желанию)" class="ag-inp">' +
+          '<input type="text" id="agGfCongrats" maxlength="280" placeholder="Поздравление (по желанию)" class="ag-inp">' +
+          '<input type="text" id="agGfNote" maxlength="300" placeholder="Заметка для себя: кому и за что" class="ag-inp">' +
           '<button type="button" class="btn btn-wax" id="agGfCreate">Выпустить — код появится сразу</button>' +
           '<p class="ag-hint">Выпуск ручной оплаты: сертификат сразу действителен. Не забудьте чек, если это продажа.</p>' +
         '</div></div>';
@@ -1201,6 +1202,112 @@ function initGodEye() {
       (links ? '<div class="ag-clinks">' + links + '</div>' : '');
   }
 
+  /* Собранная заявка: ссылка, по которой клиент смотрит условия и платит.
+     Дело до оплаты не принадлежит никому — владельца назначает платёж. */
+  function offerBlock(o) {
+    var off = o.offer;
+    var owned = !!o.tg_linked;
+    var head = '<div class="ag-sec"><span class="caps">Заявка под ссылку' +
+      (off ? '<span class="sub">ред. ' + off.version + ' · открыта ' + (off.opens || 0) +
+             ' раз' + (off.opened_at ? ' · последний раз ' + dt(off.opened_at) : '') +
+             ' · ' + (OFF_ST[off.status] || off.status) + '</span>' : '') + '</span>';
+    if (owned) {
+      return head + '<p class="ag-note">У дела уже есть владелец — ссылку на оплату ' +
+        'выписать нельзя. Так и задумано: ссылка не должна уметь подарить чужое дело ' +
+        'тому, кто её открыл.</p></div>';
+    }
+    var linkRow = '';
+    if (off && off.status !== 'canceled') {
+      linkRow =
+        '<div class="ag-actrow" style="margin-bottom:8px">' +
+        '<input type="text" class="ag-inp" id="agOffUrl" readonly style="flex:1;min-width:220px" value="' + esc(off.url) + '">' +
+        '<button type="button" class="btn btn-line" id="agOffCopy">Скопировать ссылку</button>' +
+        '<button type="button" class="btn btn-line" id="agOffMsg">Скопировать текст для мессенджера</button>' +
+        '<a class="btn btn-line" href="' + esc(off.url) + '&preview=1" target="_blank" rel="noopener">Открыть как клиент</a>' +
+        (off.status === 'live' ? '<button type="button" class="btn btn-line" id="agOffCancel">Отозвать</button>' : '') +
+        '</div>' +
+        '<p class="ag-note">Действительна до ' + dt(off.expires_at) +
+        '. Пересборка создаёт РЕДАКЦИЮ ' + (off.version + 1) + ' с новым кодом: старая ссылка ' +
+        'честно скажет «условия обновились» и уведёт на свежую. Молча переписывать открытую ' +
+        'ссылку нельзя — человек мог видеть одну цену, а нажать на другую.</p>';
+    }
+    var btn = '<div class="ag-actrow"><button type="button" class="btn ' +
+      (st.offnew ? 'btn-line' : 'btn-wax') + '" id="agOffNew">' +
+      (st.offnew ? 'Свернуть форму' : (off ? '✎ Пересобрать заявку' : '🔗 Собрать заявку под ссылку')) +
+      '</button></div>';
+    if (!st.offnew) return head + linkRow + btn + '</div>';
+
+    var p = off || {};
+    var form =
+      '<div class="ag-card" style="max-width:640px;max-height:none;margin-top:12px">' +
+      '<div style="display:grid;gap:8px">' +
+      '<input type="text" id="agOffName" maxlength="60" class="ag-inp" placeholder="Имя для обращения — только имя" value="' + esc(p.greet_name || '') + '">' +
+      '<p class="ag-hint">Фамилию, вуз и научрука не пишем: ссылку могут переслать, а на предоплатной странице лишних данных быть не должно (Политика п. 4.4).</p>' +
+      '<textarea id="agOffIntro" rows="3" maxlength="400" class="ag-inp" placeholder="Письмо клиенту, 2–3 предложения: «Анна, собрал по нашему вчерашнему разговору…»">' + esc(p.intro || '') + '</textarea>' +
+      '<input type="text" id="agOffVolume" maxlength="120" class="ag-inp" placeholder="Объём — 60–70 страниц" value="' + esc(p.volume || '') + '">' +
+      '<input type="text" id="agOffTier" maxlength="120" class="ag-inp" placeholder="Уровень ведения — «Под ключ: сдача по главам, разбор замечаний научрука»" value="' + esc(p.tier_label || '') + '">' +
+      '<input type="text" id="agOffReq" maxlength="200" class="ag-inp" placeholder="Требования одной строкой — методичка, оригинальность от 75%" value="' + esc(p.reqs_short || '') + '">' +
+      '<textarea id="agOffReqFull" rows="3" maxlength="2000" class="ag-inp" placeholder="Полный текст требований (складка на странице)">' + esc(p.reqs_full || '') + '</textarea>' +
+      '<textarea id="agOffTierFull" rows="3" maxlength="2000" class="ag-inp" placeholder="Что входит в уровень ведения целиком (складка)">' + esc(p.tier_full || '') + '</textarea>' +
+      '<textarea id="agOffIncl" rows="5" class="ag-inp" placeholder="Что входит — и чего нет. Строка: «Отчёт о проверках | да», «Презентация к защите | нет»">' + esc(jl2t(p.incl, 'in')) + '</textarea>' +
+      '<textarea id="agOffLedger" rows="4" class="ag-inp" placeholder="Смета. Строка: «Ведение под ключ | 38000»">' + esc(jl2t(p.ledger, 'a')) + '</textarea>' +
+      '<textarea id="agOffRail" rows="5" class="ag-inp" placeholder="Календарь. Строка: «2026-07-25 | План согласован | развёрнутый план глав | prepay». Платёж: prepay / stage2 / rest / пусто">' + esc(railToText(p.rail)) + '</textarea>' +
+      '<label class="ag-hint"><input type="checkbox" id="agOffFiles"' + (p.need_files ? ' checked' : '') + '> Ждём материалы от клиента (срок пойдёт и с их получения)</label>' +
+      '<div class="ag-actrow">' +
+      '<select id="agOffTtl"><option value="7">7 дней</option><option value="14" selected>14 дней</option><option value="30">30 дней</option></select>' +
+      '<button type="button" class="btn btn-wax" id="agOffBuild">' + (off ? 'Пересобрать — редакция ' + (off.version + 1) : 'Собрать заявку') + '</button>' +
+      '</div>' +
+      '<p class="ag-hint">Цена, первый платёж и план берутся из блока «Цена и план оплаты» выше. ' +
+      'Никаких уведомлений сейчас никому не уйдёт: у дела нет владельца, а письма о цене ' +
+      'мы намеренно не шлём — акцептом будет оплата.</p>' +
+      '</div></div>';
+    return head + linkRow + btn + form + '</div>';
+  }
+
+  var OFF_ST = { live: 'ждёт оплату', paid: 'оплачена ✓', replaced: 'заменена',
+                 canceled: 'отозвана' };
+
+  /* «Название | значение» ↔ JSON: мастеру проще править текстом */
+  function jl2t(raw, key) {
+    var arr = [];
+    try { arr = typeof raw === 'string' ? JSON.parse(raw || '[]') : (raw || []); }
+    catch (e) { arr = []; }
+    return arr.map(function (r) {
+      return r.t + ' | ' + (key === 'in' ? (r['in'] ? 'да' : 'нет') : r.a);
+    }).join('\n');
+  }
+  function t2ledger(txt) {
+    return String(txt || '').split('\n').map(function (l) {
+      var p = l.split('|');
+      if (p.length < 2 || !p[0].trim()) return null;
+      return { t: p[0].trim(), a: parseInt(String(p[1]).replace(/\D/g, ''), 10) || 0 };
+    }).filter(Boolean);
+  }
+  function t2incl(txt) {
+    return String(txt || '').split('\n').map(function (l) {
+      var p = l.split('|');
+      if (!p[0] || !p[0].trim()) return null;
+      var v = (p[1] || '').trim().toLowerCase();
+      return { t: p[0].trim(), 'in': (v === 'да' || v === 'yes' || v === '1') ? 1 : 0 };
+    }).filter(Boolean);
+  }
+  function railToText(raw) {
+    var arr = [];
+    try { arr = typeof raw === 'string' ? JSON.parse(raw || '[]') : (raw || []); }
+    catch (e) { arr = []; }
+    return arr.map(function (r) {
+      return [r.d || '', r.t || '', r.g || '', r.pay || ''].join(' | ');
+    }).join('\n');
+  }
+  function t2rail(txt) {
+    return String(txt || '').split('\n').map(function (l) {
+      var p = l.split('|');
+      if (p.length < 2 || !p[1].trim()) return null;
+      return { d: p[0].trim(), t: p[1].trim(), g: (p[2] || '').trim(),
+               pay: (p[3] || '').trim() || null };
+    }).filter(Boolean);
+  }
+
   function planBlock(o) {
     var plan = o.plan || [];
     var cur = o.stages_total || 1;
@@ -1485,6 +1592,7 @@ function initGodEye() {
       (hint ? '<div class="ag-next ' + hint[0] + '">' + hint[1] + '</div>' : '') +
       moneyBlock(o) +
       planBlock(o) +
+      offerBlock(o) +
       partsBlock(o) +
       feedBlock(o) +
       filesBlock(o) +
@@ -2197,6 +2305,101 @@ function initGodEye() {
     }
 
     /* --- карточка дела --- */
+    if (t.closest('#agOffNew')) { st.offnew = !st.offnew; drawCard(); return; }
+
+    if (t.closest('#agOffCopy') || t.closest('#agOffMsg')) {
+      var oc = st.card && st.card.offer;
+      if (!oc) return;
+      var payload = t.closest('#agOffMsg')
+        ? ((st.card.offer.greet_name || 'Здравствуйте') + ', собрал заявку по вашей работе. ' +
+           'Там весь план с датами, что входит и цена — заполнять ничего не надо, только ' +
+           'посмотреть. Если всё верно, внизу кнопка оплаты.\n' + oc.url)
+        : oc.url;
+      try { navigator.clipboard.writeText(payload); toast('Скопировано ✓'); }
+      catch (e) { toast('Скопируйте вручную из поля'); }
+      return;
+    }
+
+    if (t.closest('#agOffCancel')) {
+      confirmDlg({
+        title: 'Отозвать ссылку?',
+        text: 'Клиент увидит спокойное «заявка отозвана» и предложение написать вам. ' +
+              'Дело и цена останутся на месте.',
+        okLabel: 'Отозвать', noLabel: 'Отмена', danger: true
+      }).then(function (res) {
+        if (!res.ok) return;
+        api('/admin/offers/' + st.card.offer.id + '/cancel', {})
+          .then(function (r) { afterOrder(r, 'Ссылка отозвана'); });
+      });
+      return;
+    }
+
+    if (t.closest('#agOffBuild')) {
+      var price = parseInt((document.getElementById('agPrice') || {}).value, 10)
+                  || (st.card && st.card.price) || 0;
+      if (!price || price <= 0) { toast('Сначала укажите цену в блоке выше'); return; }
+      var prepay = parseInt((document.getElementById('agPrepay') || {}).value, 10);
+      var stages = parseInt((document.getElementById('agPlanSel') || {}).value, 10);
+      var was = st.card && st.card.offer;
+      confirmDlg({
+        title: (was ? 'Пересобрать заявку № ' : 'Собрать заявку № ') + st.sel + '?',
+        text: 'Появится ссылка для клиента. ' +
+              (was ? 'Старая ссылка перестанет действовать и будет уводить на новую. ' : '') +
+              'Дело ни к кому не привяжется, пока по нему не заплатят. ' +
+              'Никаких уведомлений сейчас никому не уйдёт.',
+        okLabel: was ? 'Пересобрать' : 'Собрать', noLabel: 'Отмена'
+      }).then(function (res) {
+        if (!res.ok) return;
+        api('/admin/offers', {
+          order_id: st.sel, price: price,
+          prepay: prepay || undefined, stages: stages || undefined,
+          greet_name: (document.getElementById('agOffName') || {}).value || '',
+          intro: (document.getElementById('agOffIntro') || {}).value || '',
+          volume: (document.getElementById('agOffVolume') || {}).value || '',
+          tier_label: (document.getElementById('agOffTier') || {}).value || '',
+          reqs_short: (document.getElementById('agOffReq') || {}).value || '',
+          reqs_full: (document.getElementById('agOffReqFull') || {}).value || '',
+          tier_full: (document.getElementById('agOffTierFull') || {}).value || '',
+          need_files: (document.getElementById('agOffFiles') || {}).checked ? 1 : 0,
+          incl: t2incl((document.getElementById('agOffIncl') || {}).value),
+          ledger: t2ledger((document.getElementById('agOffLedger') || {}).value),
+          rail: t2rail((document.getElementById('agOffRail') || {}).value),
+          ttl_days: parseInt((document.getElementById('agOffTtl') || {}).value, 10) || 14
+        }).then(function (r) {
+          if (!r || !r.ok) {
+            toast(r && r.error === 'order_has_owner'
+              ? 'У дела уже есть владелец — ссылку выписать нельзя'
+              : 'Не получилось' + (r && r.error ? ' (' + r.error + ')' : ''));
+            return;
+          }
+          st.offnew = false;
+          try { navigator.clipboard.writeText(r.url); } catch (e) {}
+          toast('Заявка собрана · ссылка в буфере ✓');
+          afterOrder(r, null);
+        });
+      });
+      return;
+    }
+
+    if (t.closest('#agNewOrder')) {
+      confirmDlg({
+        title: 'Завести дело под ссылку',
+        text: 'Тема работы — одной строкой. Тип, срок и остальное допишете в карточке. ' +
+              'Дело заведётся без владельца: уведомлений никому не уйдёт.',
+        input: 'text', placeholder: 'Например: Мотивация персонала в розничной торговле',
+        okLabel: 'Завести', noLabel: 'Отмена'
+      }).then(function (res) {
+        if (!res.ok || !res.value) return;
+        api('/admin/orders', { topic: res.value, type: 'diplom' }).then(function (r) {
+          if (!r || !r.ok) { toast('Не получилось'); return; }
+          toast('Дело №' + r.id + ' заведено — поставьте цену и соберите заявку');
+          st.sel = r.id; st.card = r.order; st.offnew = true;
+          drawCard(); refreshSilent();
+        });
+      });
+      return;
+    }
+
     if (t.closest('#agPriceSend')) {
       var price = parseInt((document.getElementById('agPrice') || {}).value, 10);
       var prepay = parseInt((document.getElementById('agPrepay') || {}).value, 10);

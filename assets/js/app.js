@@ -1709,7 +1709,10 @@
      переписка клиентов, вебвизору она ни к чему. */
   (function metrika() {
     var ID = 110565162;
-    if (here === 'admin.html' || here === 'dashboard.html' || here === '404.html') return;
+    /* zayavka.html — страница оплаты по ссылке мастера: там человек принимает
+       денежное решение, аналитике на ней делать нечего */
+    if (here === 'admin.html' || here === 'dashboard.html' || here === '404.html'
+        || here === 'zayavka.html') return;
     function boot() {
       if (boot.done) return;
       boot.done = true;
@@ -1983,7 +1986,8 @@
        это не посетители (сервер дублирует этот гейт по флагу сессии) */
     var imp = false;
     try { imp = sessionStorage.getItem('salon_imp') === '1'; } catch (e) {}
-    if (here.indexOf('admin') === 0 || imp || /^(localhost|127\.)/.test(location.hostname)) {
+    if (here.indexOf('admin') === 0 || here === 'zayavka.html' || imp
+        || /^(localhost|127\.)/.test(location.hostname)) {
       return { mark: function () {}, order: function () {} };
     }
     function vid() {
