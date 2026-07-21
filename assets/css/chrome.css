@@ -704,7 +704,11 @@ main[tabindex="-1"]:focus{outline:none}
 
 /* ---------- Печать ---------- */
 @media print{
-  .site-header,.toc,.tg-pill,.mobile-cta,.toast-stack,.contact-sheet,.skip-link{display:none!important}
+  /* .toast-stack не существует с 21.07.2026 — вместо него рельсы «Пометок
+     на полях». Их обязательно гасить: .tg-pill, куки-плашка и закладка
+     помощи теперь ДЕТИ рельсов, и без этой строки они печатались бы. */
+  .site-header,.toc,.mobile-cta,.contact-sheet,.skip-link,
+  .mrail,.lrail,.mledger{display:none!important}
   .site-footer{background:none!important;color:#000}
   .site-footer *{color:#000!important}
   body{padding-bottom:0!important}
