@@ -227,8 +227,9 @@
       </section>
 
       <section class="zk-incl" id="zkInclBox" aria-labelledby="zkInclH" hidden>
-        <h2 class="caps" id="zkInclH">Что входит — и чего здесь нет</h2>
+        <h2 class="caps" id="zkInclH">Что входит</h2>
         <div class="zk-slots" id="zkIncl"></div>
+        <p class="petit zk-extra" id="zkExtra" hidden></p>
       </section>
 
       <section class="zk-money" aria-labelledby="zkMoneyH">
@@ -620,14 +621,22 @@
       (d.need_files ? ' и с момента, когда вы пришлёте методичку.'
                     : ' — все материалы от вас у нас уже есть.') + '</small>';
 
-    /* что входит / чего нет */
-    var incl = d.incl || [], io = '';
+    /* Что входит — только положительным списком. Владелец: «чего здесь нет
+       не писать». То, что не входит, показываем отдельной спокойной строкой
+       «можно добавить», и только если такие позиции реально есть. */
+    var incl = d.incl || [], io = '', extra = [];
     for (i = 0; i < incl.length; i++) {
-      io += slotRows([[incl[i].t, incl[i]['in'] ? 'включено' : 'отдельно',
-                       incl[i]['in'] ? 'yes' : 'no']]);
+      if (incl[i]['in']) io += slotRows([[incl[i].t, 'включено', 'yes']]);
+      else extra.push(incl[i].t);
     }
     $('zkIncl').innerHTML = io;
     $('zkInclBox').hidden = !io;
+    if ($('zkExtra')) {
+      $('zkExtra').textContent = extra.length
+        ? 'Можно добавить отдельно: ' + extra.join(' · ') + '. Скажите — пересоберу заявку.'
+        : '';
+      $('zkExtra').hidden = !extra.length;
+    }
 
     /* смета */
     var led = d.ledger || [], lo = '';
