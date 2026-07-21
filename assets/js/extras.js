@@ -956,7 +956,12 @@
       'border-top:1px solid var(--hairline-strong);padding:10px 16px calc(10px + env(safe-area-inset-bottom));' +
       'display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:var(--ink)}' +
       '.resume-bar b{font-weight:600}.resume-bar a{white-space:nowrap}' +
-      '.resume-bar .rb-x{border:none;background:none;cursor:pointer;color:var(--ink-faint);font-size:16px;line-height:1;padding:4px}' +
+      /* цель 44×44, как у крестиков плашек: было 17×24 — промах мимо него
+         уводил в конфигуратор вместо закрытия, и это на телефоне */
+      '.resume-bar .rb-x{border:none;background:none;cursor:pointer;color:var(--ink-soft);' +
+      'font-size:18px;line-height:1;width:44px;height:44px;min-width:44px;padding:0;border-radius:50%;' +
+      'display:inline-flex;align-items:center;justify-content:center;margin:-10px -8px -10px 0}' +
+      '.resume-bar .rb-x:hover{color:var(--ink);background:var(--sheet)}' +
       '</style>' +
       '<span>✒ Ваша смета ждёт: <b>' + t.label.split(' (')[0] + ' · от ' + q.lowFmt + ' ₽</b>' +
       (hasText ? ' — тема и требования сохранены' : '') + '</span>' +
