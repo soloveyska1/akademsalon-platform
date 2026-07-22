@@ -327,7 +327,7 @@
 html[data-pr-flat] .pr-track,
 html:not(.has-js) .pr-track{height:auto}
 html[data-pr-flat] .pr-scene,
-html:not(.has-js) .pr-scene{position:relative;height:auto;overflow:visible;padding:96px 0 40px}
+html:not(.has-js) .pr-scene{position:relative;height:auto;overflow:clip;padding:96px 0 40px}
 html[data-pr-flat] .pr-stage,
 html:not(.has-js) .pr-stage{position:relative;inset:auto}
 html[data-pr-flat] .pr-copy,
@@ -337,8 +337,8 @@ html:not(.has-js) .pr-copy{
 }
 html[data-pr-flat] .pr-light,
 html:not(.has-js) .pr-light{
-  animation:none;inset:-30% -20% auto -20%;height:70vh;
-  background:radial-gradient(ellipse 70% 46% at 50% 26%, rgba(255,247,216,.9), transparent 70%);
+  animation:none;inset:0 0 auto 0;height:72vh;
+  background:radial-gradient(ellipse 62% 46% at 50% 22%, rgba(255,247,216,.9), transparent 70%);
 }
 html[data-pr-flat] #prDust, html:not(.has-js) #prDust,
 html[data-pr-flat] .pr-hint, html:not(.has-js) .pr-hint{display:none}
@@ -373,7 +373,9 @@ html:not(.has-js) .pr-first{
   box-shadow:0 18px 40px -24px rgba(90,70,40,.35);
 }
 html[data-pr-flat] .pr-pg,
-html:not(.has-js) .pr-pg{position:relative;inset:auto;pointer-events:auto;padding:24px 20px 26px;overflow:visible}
+html:not(.has-js) .pr-pg{position:relative;inset:auto;pointer-events:auto;padding:24px 22px 26px;overflow:visible}
+html[data-pr-flat] .pr-pg::before,
+html:not(.has-js) .pr-pg::before{display:none} /* карточкам графление не идёт */
 html[data-pr-flat] .pr-pg .pr-pgfoot,
 html:not(.has-js) .pr-pg .pr-pgfoot{position:static;margin-top:16px}
 html[data-pr-flat] .pr-pg .calc-seal--foot,
@@ -391,6 +393,27 @@ html[data-pr-flat] .story-chip, html:not(.has-js) .story-chip{animation:none;opa
   .pr-lead{font-size:15px}
   .pr-row .tease{display:none}
   .pr-toc{padding-left:14px;padding-right:14px}
+}
+
+/* «Спокойный» широкий экран (reduce-motion на десктопе): не мобильная
+   колонка, а полноценный разворот — формуляр и чек рядом, без 3D. */
+@media (min-width:881px){
+  html[data-pr-flat] .pr-copy,
+  html:not(.has-js) .pr-copy{max-width:720px;text-align:center}
+  html[data-pr-flat] .pr-cta,
+  html:not(.has-js) .pr-cta{justify-content:center}
+  html[data-pr-flat] .pr-copy .slot-line,
+  html:not(.has-js) .pr-copy .slot-line{max-width:430px;margin-left:auto;margin-right:auto}
+  html[data-pr-flat] .pr-bookwrap,
+  html:not(.has-js) .pr-bookwrap{max-width:1080px;margin-top:40px}
+  html[data-pr-flat] .pr-book,
+  html:not(.has-js) .pr-book{grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+  html[data-pr-flat] .pr-cover,
+  html:not(.has-js) .pr-cover{order:1;height:100%}
+  html[data-pr-flat] .pr-first,
+  html:not(.has-js) .pr-first{order:2;height:100%}
+  html[data-pr-flat] .pr-cvin,
+  html:not(.has-js) .pr-cvin{height:100%}
 }
 
 @media (prefers-reduced-motion: reduce){
