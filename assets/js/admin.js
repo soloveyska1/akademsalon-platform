@@ -17,7 +17,7 @@ function initGodEye() {
     work: ['🔨', 'В работе'], check: ['📤', 'На проверке'], fix: ['✏️', 'Правки'],
     done: ['✅', 'Завершён'], cancel: ['🚫', 'Отменён']
   };
-  var PLAN_LBL = { 1: 'Одна выдача', 2: '2 части · 50/50', 3: '3 части · 30/40/30' };
+  var PLAN_LBL = { 1: 'Одним платежом · целиком', 2: '2 части · 50/50', 3: '3 части · 30/40/30' };
   var PL_ST = { paid: ['оплачен ✓', 'pl-paid'], claimed: ['клиент отметил — сверьте!', 'pl-claimed'],
                 due: ['созрел к оплате', 'pl-due'], later: ['после готовности следующей части', 'pl-later'] };
 
@@ -1552,7 +1552,8 @@ function initGodEye() {
       return ['due', '💰 <b>Новая заявка.</b> Изучите требования и отправьте предложение с ценой — клиент получит его в Telegram и в кабинете.'];
     if (o.status === 'fix')
       return ['due', '✏️ <b>Клиент запросил правки' + ((o.stages_total || 1) > 1 ? ' по части ' + o.stage : '') + '.</b> Замечания — в переписке. Готовую версию сдайте файлом с пометкой «сдача» — клиент снова получит кнопки приёмки.' +
-        (o.due_now && o.due_now.amount > 0 ? ' <b>Этап при этом не оплачен (' + money(o.due_now.amount) + ' ₽)</b> — исправления передавать можно, но напомните об оплате («🔔» ниже).' : '')];
+        (o.due_now && o.due_now.amount > 0 ? ' <b>Этап при этом не оплачен (' + money(o.due_now.amount) + ' ₽)</b> — исправления передавать можно, но напомните об оплате («🔔» ниже).' : '') +
+        ' <button type="button" class="btn btn-line" id="agFixAck" style="margin-top:8px">🛠 Взял в работу — сообщить клиенту</button>'];
     if (o.status === 'priced')
       return ['', '⏳ Предложение у клиента — ждём решения. Можно поменять цену или написать в переписке.'];
     if (o.status === 'prepay')
@@ -1604,16 +1605,38 @@ function initGodEye() {
         '<a class="btn btn-line" href="' + esc(off.url + (off.url.indexOf('?') < 0 ? '?' : '&') + 'preview=1') + '" target="_blank" rel="noopener">Открыть как клиент</a>' +
         (off.status === 'live' ? '<button type="button" class="btn btn-line" id="agOffCancel">Отозвать</button>' : '') +
         '</div>' +
-        '<p class="ag-note">Действительна до ' + dt(off.expires_at) +
-        '. Пересборка создаёт РЕДАКЦИЮ ' + (off.version + 1) + ' с новым кодом: старая ссылка ' +
-        'честно скажет «условия обновились» и уведёт на свежую. Молча переписывать открытую ' +
-        'ссылку нельзя — человек мог видеть одну цену, а нажать на другую.</p>';
+        (off.status === 'paid'
+          ? '<p class="ag-note">✅ Оплачена' + (off.paid_at ? ' ' + dt(off.paid_at) : '') +
+            ' — условия зафиксированы в акцепте, пересборка недоступна. Эта же ссылка теперь показывает клиенту «дело закреплено».</p>'
+          : '<p class="ag-note">Действительна до ' + dt(off.expires_at) +
+            '. Пересборка создаёт РЕДАКЦИЮ ' + (off.version + 1) + ' с новым кодом: старая ссылка ' +
+            'честно скажет «условия обновились» и уведёт на свежую. Молча переписывать открытую ' +
+            'ссылку нельзя — человек мог видеть одну цену, а нажать на другую.</p>');
+      /* почта, оставленная клиентом при оплате: письма включает ТОЛЬКО мастер,
+         сверив адрес с перепиской (в письмах — ключ доступа к делу) */
+      if (off.notify_to && !off.mail_enabled) {
+        linkRow += '<div class="ag-actrow" style="margin-bottom:8px">' +
+          '<span class="ag-note" style="margin:0">📮 Клиент оставил почту: <b class="mono">' + esc(off.notify_to) + '</b></span>' +
+          '<button type="button" class="btn btn-line" id="agOffMailOn">Включить письма на этот адрес</button>' +
+          '</div>';
+      } else if (off.mail_enabled) {
+        linkRow += '<p class="ag-note">📮 Письма клиенту включены — счета, готовность частей и сообщения уходят на почту.</p>';
+      }
+    }
+    var claimRow = '';
+    if (o.claim_url) {
+      claimRow = '<div class="ag-actrow" style="margin-bottom:8px">' +
+        '<input type="text" class="ag-inp" id="agClaimUrl" readonly style="flex:1;min-width:220px" value="' + esc(o.claim_url) + '">' +
+        '<button type="button" class="btn btn-line" id="agClaimCopy">🔑 Ссылка клиента на дело</button>' +
+        '</div>' +
+        '<p class="ag-note">Это единственный ключ клиента от дела («потеряли ссылку — восстановим за минуту» — это сюда). Отдавайте только в ту переписку, где договаривались.</p>';
     }
     var btn = '<div class="ag-actrow"><button type="button" class="btn ' +
       (st.offnew ? 'btn-line' : 'btn-wax') + '" id="agOffNew">' +
       (st.offnew ? 'Свернуть форму' : (off ? '✎ Пересобрать заявку' : '🔗 Собрать заявку под ссылку')) +
       '</button></div>';
-    if (!st.offnew) return head + linkRow + btn + '</div>';
+    if (off && off.status === 'paid') btn = '';   /* акцепт состоялся — пересборки нет */
+    if (!st.offnew) return head + linkRow + claimRow + btn + '</div>';
 
     var p = off || {};
     var form =
@@ -1627,7 +1650,7 @@ function initGodEye() {
       '<input type="text" id="agOffReq" maxlength="200" class="ag-inp" placeholder="Требования одной строкой — методичка, оригинальность от 75%" value="' + esc(p.reqs_short || '') + '">' +
       '<textarea id="agOffReqFull" rows="3" maxlength="2000" class="ag-inp" placeholder="Полный текст требований (складка на странице)">' + esc(p.reqs_full || '') + '</textarea>' +
       '<textarea id="agOffTierFull" rows="3" maxlength="2000" class="ag-inp" placeholder="Что входит в уровень ведения целиком (складка)">' + esc(p.tier_full || '') + '</textarea>' +
-      '<textarea id="agOffIncl" rows="5" class="ag-inp" placeholder="Что входит — и чего нет. Строка: «Отчёт о проверках | да», «Презентация к защите | нет»">' + esc(jl2t(p.incl, 'in')) + '</textarea>' +
+      '<textarea id="agOffIncl" rows="5" class="ag-inp" placeholder="Что входит — и чего нет. Строка: «Отчёт о проверках | да». У невключённого можно дописать цену — «Презентация к защите | нет | 6000» — лист покажет её тихим предложением «можно довложить»">' + esc(jl2t(p.incl, 'in')) + '</textarea>' +
       '<textarea id="agOffLedger" rows="4" class="ag-inp" placeholder="Смета. Строка: «Ведение под ключ | 38000»">' + esc(jl2t(p.ledger, 'a')) + '</textarea>' +
       '<textarea id="agOffRail" rows="5" class="ag-inp" placeholder="Календарь. Строка: «2026-07-25 | План согласован | развёрнутый план глав | prepay». Платёж: prepay / stage2 / rest / пусто">' + esc(railToText(p.rail)) + '</textarea>' +
       '<label class="ag-hint"><input type="checkbox" id="agOffFiles"' + (p.need_files ? ' checked' : '') + '> Ждём материалы от клиента (срок пойдёт и с их получения)</label>' +
@@ -1639,7 +1662,7 @@ function initGodEye() {
       'Никаких уведомлений сейчас никому не уйдёт: у дела нет владельца, а письма о цене ' +
       'мы намеренно не шлём — акцептом будет оплата.</p>' +
       '</div></div>';
-    return head + linkRow + btn + form + '</div>';
+    return head + linkRow + claimRow + btn + form + '</div>';
   }
 
   var OFF_ST = { live: 'ждёт оплату', paid: 'оплачена ✓', replaced: 'заменена',
@@ -1651,7 +1674,9 @@ function initGodEye() {
     try { arr = typeof raw === 'string' ? JSON.parse(raw || '[]') : (raw || []); }
     catch (e) { arr = []; }
     return arr.map(function (r) {
-      return r.t + ' | ' + (key === 'in' ? (r['in'] ? 'да' : 'нет') : r.a);
+      if (key === 'in')
+        return r.t + ' | ' + (r['in'] ? 'да' : 'нет') + (r.p ? ' | ' + r.p : '');
+      return r.t + ' | ' + r.a;
     }).join('\n');
   }
   function t2ledger(txt) {
@@ -1666,7 +1691,12 @@ function initGodEye() {
       var p = l.split('|');
       if (!p[0] || !p[0].trim()) return null;
       var v = (p[1] || '').trim().toLowerCase();
-      return { t: p[0].trim(), 'in': (v === 'да' || v === 'yes' || v === '1') ? 1 : 0 };
+      var row = { t: p[0].trim(), 'in': (v === 'да' || v === 'yes' || v === '1') ? 1 : 0 };
+      /* третья колонка — цена допа: невключённая строка с ценой становится
+         на листе тихим предложением «можно довложить» */
+      var price = parseInt(String(p[2] || '').replace(/\D/g, ''), 10);
+      if (!row['in'] && price > 0) row.p = price;
+      return row;
     }).filter(Boolean);
   }
   function railToText(raw) {
@@ -1718,7 +1748,7 @@ function initGodEye() {
       planSel +
       '<button type="button" class="btn btn-wax" id="agPriceSend">' + (o.price ? 'Обновить предложение' : 'Отправить предложение') + '</button>' +
       '</div>' +
-      '<p class="ag-note">Первый платёж можно не указывать — посчитается по плану (50% или 30%). Предложение уйдёт клиенту с кнопками в Telegram и в кабинет.</p>' +
+      '<p class="ag-note">Первый платёж можно не указывать — посчитается по плану (целиком, 50% или 30%). Предложение уйдёт клиенту с кнопками в Telegram и в кабинет.</p>' +
       (plan.length ? '<div class="ag-plan">' + rows + '</div>' : '') +
       (paid.length ? '<p class="ag-note">💰 Получено: ' + paid.map(function (p) {
         return money(p.amount) + ' ₽ (' + dt(p.at) + ', ' + (METHOD_LBL[p.method] || esc(p.method)) + ')';
@@ -2379,7 +2409,7 @@ function initGodEye() {
   function uploadAdminFile(input, deliver, preview) {
     var f = input.files && input.files[0];
     if (!f || !st.sel) return;
-    if (f.size > 20 * 1024 * 1024) { toast('Файл больше 20 МБ — отправьте его через ветку заказа в группе'); return; }
+    if (f.size > 20 * 1024 * 1024) { toast('Файл больше 20 МБ — такие не пролезают и через группу (лимит Telegram-бота). Загрузите на диск и пришлите клиенту ссылку в переписке.'); return; }
     sendAdminFile(f, deliver, preview, false);
   }
 
@@ -2795,6 +2825,35 @@ function initGodEye() {
       return;
     }
 
+    if (t.closest('#agClaimCopy')) {
+      var cu = (st.card && st.card.claim_url) || (document.getElementById('agClaimUrl') || {}).value || '';
+      if (!cu) return;
+      try { navigator.clipboard.writeText(cu); toast('Ссылка клиента в буфере ✓ — продублируйте её в переписку'); }
+      catch (e) { toast('Скопируйте вручную из поля'); }
+      return;
+    }
+
+    if (t.closest('#agOffMailOn')) {
+      var mto = st.card && st.card.offer && st.card.offer.notify_to;
+      confirmDlg({
+        title: 'Включить письма клиенту?',
+        text: 'Адрес: ' + (mto || '—') + '. Сверьте его с перепиской: в письмах будет ссылка доступа к делу, ' +
+              'и подменённый на оплате адрес получил бы ключ. После включения клиенту начнут уходить счета, готовность частей и сообщения.',
+        okLabel: 'Адрес верный — включить', noLabel: 'Отмена'
+      }).then(function (res) {
+        if (!res.ok) return;
+        api('/admin/offers/' + st.card.offer.id + '/mail_on', {}).then(function (r) {
+          if (!r || !r.ok) {
+            toast(r && r.error === 'no_contact' ? 'Почты в заявке нет' : 'Не получилось' + (r && r.error ? ' (' + r.error + ')' : ''));
+            return;
+          }
+          toast('📮 Письма включены на ' + (r.contact || mto));
+          loadCard(st.sel);
+        });
+      });
+      return;
+    }
+
     if (t.closest('#agOffCancel')) {
       confirmDlg({
         title: 'Отозвать ссылку?',
@@ -2842,9 +2901,13 @@ function initGodEye() {
           ttl_days: parseInt((document.getElementById('agOffTtl') || {}).value, 10) || 14
         }).then(function (r) {
           if (!r || !r.ok) {
-            toast(r && r.error === 'order_has_owner'
-              ? 'У дела уже есть владелец — ссылку выписать нельзя'
-              : 'Не получилось' + (r && r.error ? ' (' + r.error + ')' : ''));
+            var OFF_ERR = {
+              order_has_owner: 'У дела уже есть владелец — ссылку выписать нельзя',
+              already_paid: 'По делу уже была оплата — условия зафиксированы, пересборка недоступна',
+              claimed_pending: 'Клиент отметил перевод — сперва подтвердите оплату («Получена ✓») или снимите отметку в TG-алерте',
+              bad_price: 'Цена не распознана — проверьте цифру в блоке «Цена и план оплаты»'
+            };
+            toast(OFF_ERR[r && r.error] || 'Не получилось' + (r && r.error ? ' (' + r.error + ')' : ''));
             return;
           }
           st.offnew = false;
@@ -2890,8 +2953,10 @@ function initGodEye() {
       var amount = parseInt(payBtn.getAttribute('data-pay-amount'), 10);
       confirmDlg({
         title: 'Подтвердить оплату ' + money(amount) + ' ₽?',
-        text: 'Проверьте поступление денег. Подтверждение двинет заказ и начислит клиенту кэшбэк — отменить будет нельзя.',
-        okLabel: 'Деньги пришли — подтвердить', noLabel: 'Отмена'
+        text: 'Сверьте поступление С ТОЧНОСТЬЮ ДО СУММЫ: этап закроется на ' + money(amount) +
+              ' ₽. Пришло меньше или больше — сначала договоритесь с клиентом (доплата или возврат разницы), потом подтверждайте. ' +
+              'Подтверждение двинет заказ и начислит клиенту кэшбэк — отменить будет нельзя.',
+        okLabel: 'Пришло ровно ' + money(amount) + ' ₽ — подтвердить', noLabel: 'Отмена'
       }).then(function (res) {
         if (!res.ok) return;
         api('/admin/orders/' + st.sel + '/confirm_payment', { kind: kind, amount: amount })
@@ -2901,8 +2966,33 @@ function initGodEye() {
     }
     var stb = t.closest('.ag-stbtn');
     if (stb) {
-      api('/admin/orders/' + st.sel + '/status', { status: stb.getAttribute('data-st') })
+      var stTo = stb.getAttribute('data-st');
+      /* ручной check/done обходит механику сдач: клиент получит «работа
+         готова — примите» без файла или закрытие мимо плана оплат */
+      if (stTo === 'check' || stTo === 'done') {
+        confirmDlg({
+          title: stTo === 'check' ? 'Перевести в «На проверке» вручную?' : 'Завершить дело вручную?',
+          text: stTo === 'check'
+            ? 'Клиент получит «работа готова — посмотрите» с кнопками приёмки. Если файл ещё не передан, он увидит пустую проверку. Для сдачи файла с придержкой до оплаты пользуйтесь блоком «Сдача работы» — он всё сделает по правилам.'
+            : 'Дело закроется мимо плана оплат и приёмки. Обычно завершение происходит само: клиент принимает финал после полной оплаты. Продолжайте, только если понимаете, зачем.',
+          okLabel: 'Всё равно перевести', noLabel: 'Отмена', danger: true
+        }).then(function (res) {
+          if (!res.ok) return;
+          api('/admin/orders/' + st.sel + '/status', { status: stTo })
+            .then(function (r) { afterOrder(r, 'Статус обновлён — клиент уведомлён'); });
+        });
+        return;
+      }
+      api('/admin/orders/' + st.sel + '/status', { status: stTo })
         .then(function (r) { afterOrder(r, 'Статус обновлён — клиент уведомлён'); });
+      return;
+    }
+    if (t.closest('#agFixAck')) {
+      api('/admin/orders/' + st.sel + '/fix_ack', {}).then(function (r) {
+        if (r && !r.ok && r.error === 'already') { toast('Клиенту уже сообщали — после нового запроса правок кнопка оживёт'); return; }
+        afterOrder(r, r && r.ok ? '🛠 Клиенту сообщено: правки в работе' : null);
+        if (r && !r.ok) toast('Не получилось' + (r.error ? ' (' + r.error + ')' : ''));
+      });
       return;
     }
     if (t.closest('#agFinalReady')) {
@@ -3388,7 +3478,9 @@ function initGodEye() {
         ['Оплата по этапам', 1],
         ['Сдача по главам', 0],
         ['Разбор замечаний научрука', 0],
-        ['Доклад и презентация', 0]
+        /* цена = svc_defense (config.SERVICES): лист превратит строку
+           в тихое предложение «можно довложить» */
+        ['Доклад и презентация к защите', 0, 6000]
       ]
     },
     turn: {
@@ -3658,9 +3750,11 @@ function initGodEye() {
               { t: 'Правки по замечаниям', 'in': 1 },
               { t: 'Написание работы с нуля', 'in': 0 }];
     }
-    var src = WZ_TIER[wz.p.tier].incl, xtra = WZ_XTRA[wz.p.type], out = [], i;
+    var src = WZ_TIER[wz.p.tier].incl, xtra = WZ_XTRA[wz.p.type], out = [], i, row;
     for (i = 0; i < src.length; i++) {
-      out.push({ t: src[i][0], 'in': src[i][1] });
+      row = { t: src[i][0], 'in': src[i][1] };
+      if (!src[i][1] && src[i][2]) row.p = src[i][2];  // цена допа → «можно довложить»
+      out.push(row);
       if (i === 0 && xtra) out.push({ t: xtra, 'in': 1 });
     }
     return out;
@@ -3675,6 +3769,8 @@ function initGodEye() {
       r = set[i];
       pay = r[3];
       if (pay === 'stage2' && wz.stages !== 3) pay = '';
+      /* одним платежом: деньги целиком на старте, у финала платёжного флажка нет */
+      if (pay === 'rest' && wz.stages === 1) pay = '';
       if (r[0] >= 1) d = fin;
       else {
         n = Math.min(Math.ceil(days * r[0]), Math.max(0, days - 1));
@@ -3691,6 +3787,7 @@ function initGodEye() {
   /* повторяет payments.default_prepay + payments.stage_plan */
   function wzPlan(price) {
     var a1, a2;
+    if (wz.stages === 1) return [price];
     if (wz.stages === 3) {
       a1 = wzPy(price * 0.30, 0);
       a2 = wzPy(price * 0.40, 0);
@@ -3701,6 +3798,9 @@ function initGodEye() {
   }
   function wzPayNote(price) {
     var p = wzPlan(price), i, s = [];
+    if (p.length === 1)
+      return 'Один платёж — ' + wzMoney(p[0]) + ' ₽ целиком, до начала работы. ' +
+        'Файл передаётся после оплаты. Считает сервер — это его цифры.';
     for (i = 0; i < p.length; i++) s.push(wzMoney(p[i]) + ' ₽');
     return 'Сейчас ' + s.shift() +
       ' · потом ' + s.join(' и ') + '. Считает сервер — это его цифры.';
@@ -3931,7 +4031,8 @@ function initGodEye() {
       '<div class="wz-warn" id="wzWarn">' + wzWarnHtml() + '</div></div>';
 
     h += '<div class="wz-row"><span class="caps">План оплаты</span>' +
-      wzChips('data-wz-st', [['2', '2 части · 50/50'], ['3', '3 части · 30/40/30']], wz.stages) +
+      wzChips('data-wz-st', [['2', '2 части · 50/50'], ['3', '3 части · 30/40/30'],
+                             ['1', 'Одним платежом']], wz.stages) +
       '<p class="ag-note" id="wzPayNote">' + esc(wzPayNote(price)) + '</p></div>';
 
     h += '<div class="wz-row"><span class="caps">Требования</span>' +

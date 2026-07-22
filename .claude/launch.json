@@ -14,6 +14,13 @@
       "runtimeArgs": [".claude/worktrees/imprint/.claude/static-server.js"],
       "port": 8010,
       "autoPort": true
+    },
+    {
+      "name": "press",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["/private/tmp/claude-501/-Users-saymurrbk-ru-Desktop-----------------/62de020c-4494-4297-8e97-174d8b2e50d7/scratchpad/press-server.js"],
+      "port": 8123,
+      "autoPort": true
     }
   ]
 }

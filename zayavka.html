@@ -6,10 +6,10 @@
 <title>Ваша заявка — Академический Салон</title>
 <meta name="robots" content="noindex,nofollow" />
 <meta name="referrer" content="same-origin" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260722a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260722a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260722a" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260722a" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260722b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260722b" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260722b" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260722b" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
@@ -18,30 +18,53 @@
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
 /* ============================================================
-   СОБРАННАЯ ЗАЯВКА — лист, который мастер отдаёт клиенту в руки.
-   Язык «Оттиска»: формулярные строки, календарь работы, печать.
+   СОБРАННАЯ ЗАЯВКА v2 — «Дело, собранное в переплёт».
+   Печатный документ: титул → плита цифр → формуляр → календарь →
+   опись → довложения → отрывная квитанция с печатью → штампы →
+   приложения-складки → колофон. Язык «Оттиска», ни одного rAF.
    ============================================================ */
 
 /* авторский display перебивает атрибут hidden — возвращаем ему силу */
 #zkDoc[hidden],#zkDone[hidden],#zkWait[hidden],#zkCold[hidden],#zk404[hidden],
-#zkMcta[hidden],#zkAct[hidden],#zkColdNote[hidden],.tg-pill[hidden],
-.zk-slot[hidden]{display:none !important}
+#zkReqStep[hidden],#zkMcta[hidden],#zkAct[hidden],#zkColdNote[hidden],
+#zkAddBox[hidden],#zkInclBox[hidden],#zkCash[hidden],#zkDnFiles[hidden],
+#zkDnCash[hidden],#zkDnRailBox[hidden],#zkMark[hidden],#zkGst1[hidden],
+#zkColdPay[hidden],.tg-pill[hidden],.zk-slot[hidden],
+/* у ячеек плиты и рельсы свой display — атрибуту hidden возвращаем силу */
+.zk-cell[hidden],#zkRail[hidden],#zkRailNote[hidden],#zkDue[hidden],
+#zkKind[hidden],#zkReq[hidden]{display:none !important}
 
-#zkMain{padding:clamp(24px,5vh,52px) 0 clamp(90px,14vh,140px)}
+/* боковые поля обязательны: подложенный лист .stacked::after сдвинут на 6px
+   и при нулевых полях вытаскивал страницу в горизонтальный скролл */
+#zkMain{padding:clamp(24px,5vh,52px) clamp(12px,3vw,24px) clamp(90px,14vh,140px)}
 .zk-sheet{position:relative;max-width:74ch;margin:0 auto}
-#zkDone .sheet,#zkWait .sheet,#zkCold .sheet,#zk404 .sheet{position:relative;max-width:64ch;margin:0 auto}
+#zkDone .sheet,#zkWait .sheet,#zkCold .sheet,#zk404 .sheet,#zkReqStep .sheet{
+  position:relative;max-width:64ch;margin:0 auto}
 
-/* --- 1. шапка-формуляр --- */
+/* --- корешок дела: переплёт тома, только на широком столе --- */
+.zk-spine{display:none}
+@media(min-width:1150px){
+  .zk-spine{display:flex;position:absolute;left:-58px;top:0;bottom:0;width:40px;
+    border:1px solid var(--hairline);border-right-width:3px;border-radius:2px 0 0 2px;
+    background:color-mix(in srgb,var(--wax) 7%,var(--paper));
+    align-items:center;justify-content:center}
+  .zk-spine span{writing-mode:vertical-rl;transform:rotate(180deg);
+    font-family:var(--mono);font-size:10px;letter-spacing:.3em;
+    text-transform:uppercase;color:var(--ink-soft);white-space:nowrap}
+}
+
+/* --- 1. титульный лист --- */
 .zk-head{position:relative;padding-bottom:clamp(14px,2vw,20px);
-  border-bottom:1px solid var(--hairline);margin-bottom:clamp(18px,3vw,26px)}
-.zk-head .caps{display:block;margin-bottom:10px;padding-right:96px}
-.zk-headsum{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;line-height:1.7}
-.zk-headsum b{font-family:var(--serif);font-size:20px;letter-spacing:0;text-transform:none;
-  color:var(--wax);font-variant-numeric:tabular-nums}
-.zk-head h1{margin:0 0 12px;max-width:20ch;font-size:clamp(28px,4.4vw,44px)}
-.zk-letter{font-family:var(--serif);font-size:clamp(16px,2vw,18.5px);line-height:1.65;
-  max-width:52ch;margin:0 0 8px;white-space:pre-line}
+  border-bottom:1px solid var(--hairline);margin-bottom:clamp(16px,2.5vw,22px)}
+.zk-head .caps{display:block;margin-bottom:12px;padding-right:96px}
+.zk-house{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:22px}
+.zk-head h1{margin:0 0 6px;font-size:clamp(26px,4vw,40px);line-height:1.16;max-width:26ch}
+.zk-kind{font-family:var(--serif);font-style:italic;color:var(--ink-soft);
+  font-size:clamp(15px,2vw,17px);margin:0 0 18px}
+.zk-greet{font-family:var(--serif);font-size:clamp(16px,2.1vw,19px);margin:0 0 6px;font-weight:600}
+.zk-letter{font-family:var(--serif);font-size:clamp(15.5px,2vw,18px);line-height:1.65;
+  max-width:54ch;margin:0 0 8px;white-space:pre-line}
 .zk-sign{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:15px;
   margin:0 0 12px}
 .zk-sign::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;
@@ -52,8 +75,30 @@
   background:color-mix(in srgb,var(--sheet) 88%,transparent)}
 .zk-stamp.mute{border-color:var(--ink-soft);color:var(--ink-soft)}
 .zk-stamp.wax{border-color:var(--wax);color:var(--wax)}
+/* марка редакции: пересборка не прячется, а гордится честностью */
+.zk-markst{position:absolute;right:10px;top:40px;padding:5px 9px;transform:rotate(-3deg);
+  border:1px dashed var(--stamp);color:var(--stamp);border-radius:2px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  background:color-mix(in srgb,var(--stamp) 5%,var(--sheet))}
 
-/* --- 2/12. формулярные строки --- */
+/* --- 2. плита трёх цифр: всё главное — одним взглядом --- */
+.zk-plate{display:grid;grid-template-columns:repeat(3,1fr);margin:0 0 clamp(18px,3vw,26px);
+  border:1px solid var(--hairline-strong);border-radius:var(--r);background:var(--paper)}
+.zk-plate.two{grid-template-columns:repeat(2,1fr)}
+.zk-cell{padding:14px 16px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.zk-cell + .zk-cell{border-left:1px solid var(--hairline)}
+.zk-cell .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-soft)}
+.zk-cell .v{font-family:var(--serif);font-size:clamp(17px,2.6vw,24px);font-weight:600;
+  font-variant-numeric:tabular-nums;line-height:1.15;overflow-wrap:anywhere}
+.zk-cell.hot .v{color:var(--wax)}
+@media(max-width:620px){
+  .zk-plate{grid-template-columns:1fr}
+  .zk-cell + .zk-cell{border-left:0;border-top:1px solid var(--hairline)}
+  .zk-cell{flex-direction:row;align-items:baseline;justify-content:space-between;gap:12px;padding:11px 14px}
+}
+
+/* --- 3. формулярные строки --- */
 .zk-slots{display:grid;gap:0;margin:0 0 clamp(20px,3vw,30px)}
 .zk-slot{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:10px;
   min-height:48px;padding:11px 0;border-bottom:1px solid var(--hairline)}
@@ -70,17 +115,15 @@
   .zk-slot .v{text-align:left;font-size:16px}
 }
 
-/* --- 3. срок --- */
-.zk-due{margin:clamp(18px,3vw,26px) 0;padding:14px 16px;border-left:3px solid var(--wax);
+/* --- 4. календарь работы + срок --- */
+.zk-cal{margin:clamp(22px,3.5vw,34px) 0}
+.zk-cal>.caps{display:block;margin-bottom:16px}
+.zk-due{margin:0 0 18px;padding:13px 16px;border-left:3px solid var(--wax);
   background:color-mix(in srgb,var(--wax) 5%,var(--sheet));font-family:var(--serif);
-  font-size:clamp(16px,2.2vw,19px);line-height:1.5;border-radius:var(--r)}
+  font-size:clamp(15.5px,2.1vw,18px);line-height:1.5;border-radius:var(--r)}
 .zk-due b{color:var(--wax)}
 .zk-due small{display:block;font-family:var(--sans);font-size:13px;color:var(--ink-soft);
   margin-top:5px;line-height:1.55}
-
-/* --- 4. календарь работы --- */
-.zk-cal{margin:clamp(22px,3.5vw,34px) 0}
-.zk-cal>.caps{display:block;margin-bottom:16px}
 .zk-rail{list-style:none;margin:0;padding:0;display:grid;gap:0;position:relative}
 .zk-stop{position:relative;padding:0 0 22px 34px;min-height:56px}
 .zk-stop::before{content:"";position:absolute;left:9px;top:16px;bottom:-4px;width:1px;
@@ -109,30 +152,74 @@
   .zk-stop .dot{left:10px;top:3px}
 }
 
-/* --- 5/6. состав и смета --- */
-.zk-money,.zk-incl{margin:clamp(22px,3.5vw,34px) 0}
-.zk-money>.caps,.zk-incl>.caps{display:block;margin-bottom:12px}
+/* --- 5. опись и довложения --- */
+.zk-incl{margin:clamp(22px,3.5vw,34px) 0}
+.zk-incl>.caps{display:block;margin-bottom:12px}
+.zk-add{margin:clamp(20px,3vw,28px) 0;padding:14px 16px;border:1px dashed var(--hairline-strong);
+  border-radius:var(--r);background:var(--paper)}
+.zk-add>.caps{display:block;margin-bottom:6px}
+.zk-addrow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  padding:8px 0;border-bottom:1px dotted var(--hairline)}
+.zk-addrow:last-of-type{border-bottom:0}
+.zk-addrow .t{font-family:var(--serif);font-size:14.5px;line-height:1.45}
+.zk-addrow .p{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--ink)}
+.zk-add .petit{margin:8px 0 0}
+
+/* --- 6. отрывная квитанция: смета, план, кнопка, печать --- */
+.zk-tear{position:relative;margin:clamp(26px,4vw,38px) 0 0;padding-top:26px}
+.zk-tear::before{content:"";position:absolute;left:0;right:0;top:12px;
+  border-top:2px dashed var(--hairline-strong)}
+.zk-tear::after{content:"✂";position:absolute;left:8px;top:1px;color:var(--ink-soft);
+  font-size:15px;background:var(--sheet);padding:0 6px}
+.zk-receipt{border:1px solid var(--ink);outline:1px solid var(--hairline-strong);
+  outline-offset:4px;border-radius:var(--r);padding:clamp(16px,3vw,26px);
+  background:var(--sheet)}
+.zk-receipt>.caps{display:block;margin-bottom:14px}
+.zk-receipt .lg-row .num,.zk-receipt .lg-total .num{white-space:nowrap}
 .zk-money .paysteps{margin-top:20px}
 .zk-rule{margin:14px 0 0;font-size:14px;line-height:1.6;color:var(--ink)}
-
-/* --- 8. гарантии --- */
-.zk-guards{list-style:none;margin:clamp(20px,3vw,28px) 0;padding:0;display:grid;gap:12px}
-.zk-guards li{position:relative;padding:12px 14px 12px 40px;border:1px solid var(--hairline);
-  border-radius:var(--r);background:var(--paper);font-size:14.5px;line-height:1.6}
-.zk-guards li::before{content:"✓";position:absolute;left:14px;top:12px;color:var(--verify);
-  font-weight:700;font-size:16px}
-
-/* --- 9. действие --- */
-.zk-act{margin:clamp(24px,4vw,36px) 0 0;display:grid;gap:12px;
-  padding-top:clamp(20px,3vw,28px);border-top:3px double var(--ink)}
+.zk-buy{margin:16px 0;background:var(--paper);border-left:3px solid var(--wax);
+  padding:13px 15px;border-radius:var(--r);font-size:14px;line-height:1.6}
+.zk-payrow{display:flex;gap:16px;align-items:stretch;margin-top:clamp(18px,3vw,24px)}
+.zk-payrow .zk-paycol{flex:1;display:grid;gap:12px;min-width:0}
 #zkPay{display:flex;flex-direction:column;gap:3px;padding-top:14px;padding-bottom:14px;
   white-space:normal;line-height:1.3;min-height:56px}
 #zkPay b{font-family:var(--serif);font-size:clamp(19px,3vw,23px);font-weight:700}
 #zkPay small{font-size:12.5px;opacity:.85;font-weight:400;letter-spacing:.02em}
+/* box-sizing и боковые поля: bbox повёрнутого круга шире своей клетки,
+   без запаса он выталкивал лист в горизонтальный скролл */
+.zk-sealspot{flex:0 0 auto;width:92px;height:92px;box-sizing:border-box;
+  border:2px dashed var(--hairline-strong);margin:0 7px;
+  border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;transform:rotate(-6deg);align-self:center;color:var(--ink-soft);
+  font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;
+  text-align:center;padding:10px;line-height:1.5}
+@media(max-width:560px){.zk-payrow{flex-direction:column;align-items:center}}
+.zk-mailrow{display:grid;gap:5px;margin-top:4px}
+.zk-mailrow input{width:100%;padding:11px 12px;border:1px solid var(--hairline-strong);
+  border-radius:var(--r);background:var(--paper);font-family:var(--mono);font-size:14px;
+  color:var(--ink);min-height:44px}
+.zk-mailrow input:focus{outline:2px solid var(--wax);outline-offset:2px}
+.zk-mailrow .petit{margin:0}
+.zk-act{display:grid;gap:12px}
 .zk-act .petit{max-width:60ch;margin:0}
 .zk-act .zk-accept{color:var(--ink)}
 
-/* --- 10. что дальше --- */
+/* --- 7. штампы-гарантии --- */
+/* наклон оттисков даёт ~5px свеса — сетке отдан запас, лист не скроллится вбок */
+.zk-gsts{display:grid;gap:14px;margin:clamp(22px,3.5vw,32px) 0;padding:0 6px}
+@media(min-width:760px){.zk-gsts{grid-template-columns:repeat(3,1fr)}}
+.zk-gst{border:2px solid var(--stamp);color:var(--stamp);border-radius:3px;
+  padding:12px 13px;background:color-mix(in srgb,var(--stamp) 4%,var(--sheet));
+  transform:rotate(-1.1deg)}
+.zk-gst:nth-child(2){transform:rotate(.9deg)}
+.zk-gst:nth-child(3){transform:rotate(-.7deg)}
+.zk-gst b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;margin-bottom:6px;line-height:1.45}
+.zk-gst span{display:block;font-family:var(--sans);font-size:12.5px;line-height:1.55;
+  color:var(--ink-soft)}
+
+/* --- 8. что после оплаты / приложения / колофон --- */
 .zk-after{margin:clamp(24px,4vw,34px) 0}
 .zk-after>.caps{display:block;margin-bottom:12px}
 .zk-steps{counter-reset:zks;list-style:none;margin:0;padding:0;display:grid;gap:12px}
@@ -140,13 +227,12 @@
 .zk-steps li::before{content:counter(zks);position:absolute;left:0;top:-1px;width:26px;height:26px;
   border:1px solid var(--hairline-strong);border-radius:50%;display:flex;align-items:center;
   justify-content:center;font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
-
 .zk-deep{margin:clamp(22px,3.5vw,32px) 0}
 .zk-deep .faq-item p{font-size:14.5px;line-height:1.65;margin:0 0 10px;color:var(--ink-soft)}
 .zk-legal{margin-top:clamp(22px,3.5vw,32px)}
 .zk-exp{margin-top:16px;color:var(--ink-soft)}
 
-/* --- оплачено --- */
+/* --- экраны: оплачено / перевод / реквизиты --- */
 .zk-seal{position:absolute;right:clamp(14px,3vw,28px);top:clamp(14px,3vw,28px);
   width:72px;height:72px;border-radius:50%;background:var(--verify);color:#FFFEF9;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -155,9 +241,6 @@
   border-radius:50%}
 .zk-seal b{font-family:var(--serif);font-size:22px;letter-spacing:.06em}
 .zk-seal span{font-size:6.5px;letter-spacing:.14em;margin-top:1px}
-/* Печать absolute — верхние строки обязаны её обходить, иначе на телефоне
-   заголовок уезжает под неё («закреплено [за] вами»). Резерв = ширина
-   печати + её отступ справа + воздух. */
 #zkDone .caps,#zkDoneH{padding-right:calc(72px + clamp(14px,3vw,28px) + 12px)}
 .zk-linkbox{width:100%;margin:0 0 10px;padding:11px 12px;border:1px solid var(--hairline-strong);
   border-radius:var(--r);background:var(--paper);font-family:var(--mono);font-size:12.5px;
@@ -168,14 +251,25 @@
 .zk-keeprow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 .zk-req{white-space:pre-line;background:var(--paper);border:1px dashed var(--hairline-strong);
   border-radius:var(--r);padding:12px 14px;font-size:14px;line-height:1.65;margin:14px 0}
+.zk-dn{margin:18px 0;padding:13px 15px;border-left:3px solid var(--verify);
+  background:color-mix(in srgb,var(--verify) 5%,var(--sheet));border-radius:var(--r);
+  font-size:14px;line-height:1.6}
+.zk-dn b{color:var(--verify)}
+.zk-dots{list-style:none;margin:16px 0;padding:0;display:grid;gap:10px}
+.zk-dots li{position:relative;padding-left:26px;font-size:14px;line-height:1.55;color:var(--ink-soft)}
+.zk-dots li::before{content:"";position:absolute;left:6px;top:6px;width:9px;height:9px;
+  border-radius:50%;border:2px solid var(--hairline-strong);background:var(--sheet)}
+.zk-dots li.on{color:var(--ink)}
+.zk-dots li.on::before{border-color:var(--wax);background:var(--wax)}
+.zk-quiet{display:flex;gap:14px;flex-wrap:wrap;margin-top:16px}
 
-/* --- остывшая заявка: цена приглушена, но лист виден целиком --- */
-.zk-stale .zk-money,.zk-stale .zk-due,.zk-stale .zk-headsum{opacity:.5;filter:grayscale(1)}
+/* --- остывшая заявка --- */
+.zk-stale .zk-money,.zk-stale .zk-due,.zk-stale .zk-plate{opacity:.5;filter:grayscale(1)}
 .zk-cold-note{margin:0 0 clamp(18px,3vw,26px);padding:14px 16px;border:1px solid var(--wax);
   border-left-width:3px;border-radius:var(--r);
   background:color-mix(in srgb,var(--wax) 6%,var(--sheet));font-size:14.5px;line-height:1.6}
 
-/* --- липкая панель телефона (класс mobile-cta гасит общую навигацию) --- */
+/* --- липкая панель телефона --- */
 #zkMcta{justify-content:space-between;align-items:center;gap:12px}
 #zkMcta .zk-ml{display:flex;flex-direction:column;font-family:var(--mono);font-size:10px;
   letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);line-height:1.3}
@@ -191,6 +285,7 @@
 /* тёмная тема: токены переопределены глобально — правим только смеси */
 :root[data-theme="dark"] .zk-due{background:color-mix(in srgb,var(--wax) 12%,var(--sheet))}
 :root[data-theme="dark"] .zk-stop .pay{background:color-mix(in srgb,var(--mark) 40%,var(--sheet))}
+:root[data-theme="dark"] .zk-gst{background:color-mix(in srgb,var(--stamp) 12%,var(--sheet))}
 </style>
 </head>
 <body>
@@ -205,50 +300,61 @@
   <!-- ===== ЖИВАЯ ЗАЯВКА ===== -->
   <section id="zkDoc" hidden>
     <div class="sheet sheet-pad stacked zk-sheet">
+      <aside class="zk-spine" aria-hidden="true"><span id="zkSpine">ДЕЛО · АКАДЕМИЧЕСКИЙ САЛОН</span></aside>
 
       <div class="zk-cold-note" id="zkColdNote" hidden></div>
 
+      <!-- 1. титульный лист -->
       <header class="zk-head">
-        <span class="caps" id="zkNo">ЗАЯВКА № —</span>
+        <span class="caps" id="zkNo">ДЕЛО № —</span>
         <span class="zk-stamp" id="zkStamp" hidden></span>
-        <span class="zk-headsum" id="zkHeadSum"></span>
-        <h1 id="zkGreet">Ваша заявка собрана</h1>
+        <span class="zk-markst" id="zkMark" hidden></span>
+        <span class="zk-house">Мастерская академических работ · akademsalon.ru</span>
+        <h1 id="zkTopic">Ваша заявка собрана</h1>
+        <p class="zk-kind" id="zkKind"></p>
+        <p class="zk-greet" id="zkGreet">Здравствуйте.</p>
         <p class="zk-letter" id="zkLetter">Собрал по нашему разговору — посмотрите, всё ли верно. Заполнять ничего не нужно. Если что-то не так, напишите мне туда же, где мы говорили: переделаю за пять минут.</p>
         <p class="zk-sign">Мастерская</p>
         <p class="petit">Эту ссылку прислала мастерская. Если сомневаетесь — спросите
           у мастера прямо в переписке: «это моя заявка <span id="zkNoAsk">№ —</span>?»</p>
       </header>
 
+      <!-- 2. плита трёх цифр -->
+      <div class="zk-plate" id="zkPlate">
+        <div class="zk-cell hot" id="zkPlNow"><span class="k" id="zkPlNowK">К оплате сейчас</span><span class="v" id="zkPlNowV">—</span></div>
+        <div class="zk-cell" id="zkPlTot"><span class="k">Всего по делу</span><span class="v" id="zkPlTotV">—</span></div>
+        <div class="zk-cell" id="zkPlDue"><span class="k" id="zkPlDueK">На руках к</span><span class="v" id="zkPlDueV">—</span></div>
+      </div>
+
+      <!-- 3. формуляр -->
       <div class="zk-slots" id="zkSlots"></div>
 
-      <p class="zk-due" id="zkDue"></p>
-
-      <section class="zk-cal" aria-labelledby="zkCalH">
+      <!-- 4. календарь + срок -->
+      <section class="zk-cal" aria-labelledby="zkCalH" id="zkCalBox">
         <h2 class="caps" id="zkCalH">Как пойдёт работа</h2>
+        <p class="zk-due" id="zkDue"></p>
         <ol class="zk-rail" id="zkRail"></ol>
-        <p class="petit zk-railnote">Даты — рабочий план мастерской. Если что-то сдвинется
+        <p class="petit zk-railnote" id="zkRailNote">Даты — рабочий план мастерской. Если что-то сдвинется
           по вашей стороне или по вине вуза, мы пересогласуем даты письменно, а не молча.</p>
       </section>
 
+      <!-- 5. опись -->
       <section class="zk-incl" id="zkInclBox" aria-labelledby="zkInclH" hidden>
         <h2 class="caps" id="zkInclH">Что входит</h2>
-        <div class="zk-slots" id="zkIncl"></div>
-        <p class="petit zk-extra" id="zkExtra" hidden></p>
+        <div class="zk-slots" id="zkIncl" style="margin-bottom:0"></div>
       </section>
 
-      <section class="zk-money" aria-labelledby="zkMoneyH">
-        <h2 class="caps" id="zkMoneyH">Смета</h2>
-        <div class="ledger" id="zkLedger"></div>
-        <p class="zk-rule">Платить всё сразу не нужно. Каждая следующая часть — только после
-          того, как вы увидели результат предыдущей.</p>
-        <div class="paysteps" id="zkSteps"></div>
-        <p class="petit" style="margin-top:14px">Цена окончательная. Она изменится, только если
-          вы сами решите изменить тему или объём — тогда мы соберём отдельную заявку
-          на доработку (п. 5.4 оферты).</p>
-      </section>
+      <!-- 5б. довложения: тихое предложение, не вторая кнопка -->
+      <aside class="zk-add" id="zkAddBox" hidden>
+        <span class="caps">Можно довложить в это дело</span>
+        <div id="zkAdd"></div>
+        <p class="petit">Смета ниже от этого не изменится, пока вы сами не попросите.
+          Нужно что-то из списка — просто скажите мастеру в переписке: он добавит строку
+          и пришлёт обновлённую редакцию заявки.</p>
+      </aside>
 
-      <div class="doc-note" style="background:var(--paper);border-left:3px solid var(--wax);
-           padding:14px 16px;border-radius:var(--r);font-size:14.5px;line-height:1.65">
+      <!-- что именно вы покупаете: честность до кнопки -->
+      <div class="zk-buy" id="zkBuyNote">
         <b>Что именно вы покупаете.</b> Мы оказываем информационно-консультационные услуги
         и готовим авторские справочно-методические материалы — основу для вашей работы.
         Они предназначены для самостоятельного изучения темы и <b>не предназначены для сдачи
@@ -256,89 +362,150 @@
         мы не обещаем. <a class="link" href="oferta.html#p7" target="_blank" rel="noopener">Раздел 7 оферты →</a>
       </div>
 
-      <ul class="zk-guards">
-        <li><b>Отчёт о проверках — до финального платежа.</b> Оригинальность и разбор
-          совпадений вы видите раньше, чем платите последнюю часть.</li>
-        <li><b>Правки бесплатны, и их количество не ограничено.</b> Ограничены только сроки:
-          замечания по переданной части — 7 дней после передачи, а по готовой работе —
-          вплоть до защиты (п. 9.1–9.3 оферты).</li>
-        <li><b>Отказаться можно в любой момент</b> — это ст. 32 закона о защите прав
-          потребителей, а не наша добрая воля. До начала работы деньги возвращаются полностью;
-          после начала — за вычетом уже оказанного, по этапам из этой сметы (п. 10.2–10.3),
-          тем же способом, в течение 10 календарных дней.</li>
-      </ul>
+      <!-- 6. отрывная квитанция -->
+      <div class="zk-tear">
+        <div class="zk-receipt">
+          <span class="caps">Расчётная часть · квитанция</span>
+          <div class="zk-money">
+            <div class="ledger" id="zkLedger"></div>
+            <p class="zk-rule" id="zkRule">Платить всё сразу не нужно. Каждая следующая часть —
+              только после того, как вы увидели результат предыдущей.</p>
+            <div class="paysteps" id="zkSteps"></div>
+            <p class="petit" style="margin-top:12px" id="zkPriceNote">Цена окончательная. Она изменится,
+              только если изменится само задание — тема, объём или требования (в том числе если вуз
+              выпустит новую методичку после согласования): тогда соберём отдельную заявку
+              на доработку (п. 5.4 и 9.5 оферты).</p>
+          </div>
 
-      <div class="zk-act" id="zkAct">
-        <button type="button" class="btn btn-wax btn-lg btn-block" id="zkPay">
-          <b id="zkPaySum">Оплатить</b><small id="zkPaySub">первый платёж</small>
-        </button>
-        <a class="btn btn-line btn-block" id="zkAsk" href="#" target="_blank" rel="noopener">Есть вопрос — написать мастеру</a>
-        <p class="petit" id="zkNote" hidden></p>
-        <p class="petit zk-accept">Оплата — это и есть согласие с условиями: по ст. 438 ГК РФ
-          договор считается заключённым в момент поступления денег. Подписывать и присылать
-          ничего не нужно. <b>До оплаты вы ничем не связаны</b> — эта страница ни к чему
-          не обязывает (п. 3.4 оферты).</p>
-        <p class="petit">На этой странице вводить нечего. Номер карты и почту для чека
-          вы укажете на защищённой странице Robokassa — реквизиты карты мы не видим
-          и не храним (п. 5.2 оферты).</p>
-        <p class="petit">Платить может кто угодно — родители, партнёр, друг. В назначении
-          платежа нет ничего, что раскрывало бы содержание заказа. Дело закрепится за тем,
-          кто открыл эту ссылку и нажал «Оплатить».</p>
-        <p class="petit" id="zkLegalLine"></p>
+          <div class="zk-payrow">
+            <div class="zk-paycol zk-act" id="zkAct">
+              <div class="zk-mailrow">
+                <input type="email" id="zkMail" maxlength="120" autocomplete="email"
+                       placeholder="Почта для вестей по делу — необязательно">
+                <p class="petit">Пришлём подтверждение оплаты. Полноценные письма о ходе дела
+                  мастер включит, сверив адрес с вашей перепиской, — так ключ от дела
+                  не уйдёт на чужую почту.</p>
+              </div>
+              <button type="button" class="btn btn-wax btn-lg btn-block" id="zkPay">
+                <b id="zkPaySum">Оплатить</b><small id="zkPaySub">первый платёж</small>
+              </button>
+              <a class="btn btn-line btn-block" id="zkAsk" href="#" target="_blank" rel="noopener">Есть вопрос — написать мастеру</a>
+              <p class="petit" id="zkNote" hidden></p>
+            </div>
+            <div class="zk-sealspot" id="zkSealSpot" aria-hidden="true">
+              <span>место оттиска</span><span>мастерской</span><span>·</span><span>встанет после оплаты</span>
+            </div>
+          </div>
+
+          <div class="zk-act" style="margin-top:14px">
+            <p class="petit zk-accept" id="zkLegalLine"></p>
+            <p class="petit" id="zkCardNote">На этой странице вводить нечего. Номер карты и почту для чека
+              вы укажете на защищённой странице Robokassa — реквизиты карты мы не видим
+              и не храним (п. 5.2 оферты). Чек приходит на каждый платёж.</p>
+            <p class="petit" id="zkThird">Платить может кто угодно — родители, партнёр, друг: в назначении
+              платежа нет ничего, что раскрывало бы содержание заказа. Дело закрепится за тем,
+              кто открыл эту ссылку и нажал «Оплатить»; если платил близкий — он просто передаст
+              вам ссылку дела, и дальше действия в деле считаются действиями заказчика.</p>
+          </div>
+        </div>
       </div>
 
+      <!-- 7. штампы-гарантии -->
+      <div class="zk-gsts" id="zkGsts" role="list">
+        <div class="zk-gst" id="zkGst1" role="listitem"><b id="zkGst1t">Отчёт о проверках</b>
+          <span id="zkGst1s">Оригинальность и разбор совпадений вы видите раньше, чем платите
+            финальную часть.</span></div>
+        <div class="zk-gst" role="listitem"><b>Правки — без лимита</b>
+          <span id="zkGst2s">Количество не ограничено, ограничены сроки: по переданной части — 7 дней;
+            по финалу — сервисное окно 60 дней, а если защита позже, предупредите до конца окна —
+            продлим до неё (суммарно до 180 дней; п. 9.1–9.3 оферты).</span></div>
+        <div class="zk-gst" role="listitem"><b>Возврат — в любой момент</b>
+          <span>Это ст. 782 ГК РФ и ст. 32 ЗоЗПП, закреплённые в оферте, а не наша добрая воля.
+            До начала работы — полностью; после — за вычетом оказанного: переданные части по этапам
+            этой сметы, незавершённая — по факту (п. 10.2–10.4), тем же способом, 10 календарных дней.</span></div>
+      </div>
+
+      <!-- 8. что произойдёт после оплаты -->
       <section class="zk-after" aria-labelledby="zkAfterH">
         <h2 class="caps" id="zkAfterH">Что произойдёт сразу после оплаты</h2>
         <ol class="zk-steps">
           <li>Откроется ссылка на ваше дело — там вся история заказа, файлы и переписка
-            с мастером. Мы продублируем её вам в мессенджер.</li>
+            с мастером. Мастер продублирует её в ту переписку, где вы договаривались,
+            а кнопкой «Прислать себе в Telegram» дело можно сразу привязать к боту.</li>
           <li>На почту, которую вы укажете при оплате, придёт чек: при оплате картой он
             формируется автоматически и уходит в налоговую сам, при переводе мастер пришлёт
             чек из приложения ФНС «Мой налог».</li>
           <li>Мастер напишет в течение рабочего дня: работа пошла.</li>
+          <li id="zkCash" hidden></li>
         </ol>
       </section>
 
+      <!-- 9. приложения-складки -->
       <section class="zk-deep">
         <details class="faq-item"><summary>Полный текст требований к работе</summary>
           <div id="zkReqFull"></div></details>
         <details class="faq-item"><summary>Что входит в уровень ведения целиком</summary>
           <div id="zkTierFull"></div></details>
         <details class="faq-item"><summary>Как устроены правки и окна проверки</summary>
-          <p>Замечания по переданной части присылайте в течение 7 дней после передачи — их мы
-            отрабатываем бесплатно, в том числе повторно, пока они не сняты. После сдачи
-            чистовика действует сервисное окно: замечания научного руководителя, рецензента
-            или комиссии дорабатываем бесплатно до защиты (п. 9.2–9.3 оферты). Просим
-            присылать замечания целиком, одним сообщением: так быстрее.</p></details>
+          <p id="zkFixFull">Замечания по переданной части присылайте в течение 7 дней после передачи — их мы
+            отрабатываем бесплатно, в том числе повторно, пока они не сняты. Если за 7 дней
+            замечаний не пришло и вы никак не отозвались, часть считается принятой по явным
+            недостаткам (п. 4.4 оферты) — за два дня до этого мы отдельно напомним, а ваши
+            права по скрытым недостаткам сохраняются (ст. 29 ЗоЗПП). После сдачи чистовика
+            действует сервисное окно: замечания научного руководителя, рецензента или комиссии
+            (пришлите скан, фото или выгрузку) дорабатываем бесплатно — окно живёт 60 дней
+            после передачи финала; если защита позже, нажмите в деле «Ещё жду проверок» до
+            конца окна — продлим до даты защиты и 7 дней после неё, всего до 180 дней
+            (п. 9.2–9.3 оферты). Замечания удобнее присылать целиком, одним сообщением: так быстрее.</p></details>
         <details class="faq-item"><summary>А вдруг вы пропадёте после оплаты?</summary>
           <p>Поэтому деньги и разбиты на части: вы платите за то, что уже увидели. Если
             мастерская исчезнет после первого платежа, вы вправе отказаться и вернуть
-            уплаченное за невыполненное — по ст. 32 ЗоЗПП и п. 10.3 оферты возврат считается
-            по этапам этой самой сметы. Заявление — в дело заказа, на
+            уплаченное за невыполненное — по ст. 782 ГК, ст. 32 ЗоЗПП и п. 10.3 оферты возврат
+            считается по этапам этой самой сметы. Заявление — в дело заказа, на
             <a class="link" id="zkMail2" href="#">support@akademsalon.ru</a> или в переписку;
             срок возврата — 10 календарных дней.</p></details>
         <details class="faq-item"><summary>Кто исполнитель и как проверить, что мы настоящие</summary>
           <p>Семёнов Семён Юрьевич, самозанятый, ИНН 212885750445, г. Казань. Статус
             плательщика налога на профессиональный доход проверяется по ИНН на сайте ФНС:
             <a class="link" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">npd.nalog.ru/check-status →</a>.
-            Претензии и заявления: <a class="link" id="zkMail3" href="#">support@akademsalon.ru</a>,
+            Мастерская ведёт открытую книгу благодарностей — 48 записей с защит — и открытый
+            каталог цен на сайте. Претензии и заявления:
+            <a class="link" id="zkMail3" href="#">support@akademsalon.ru</a>,
             <a class="link" id="zkTg3" href="#" target="_blank" rel="noopener">Telegram</a>,
             <a class="link" id="zkVk3" href="#" target="_blank" rel="noopener">ВКонтакте</a>.</p></details>
         <details class="faq-item"><summary>О ваших данных</summary>
-          <p>Здесь ничего не нужно вводить: заявка собрана по нашей переписке. Реквизиты карты
-            мы не видим и не храним — оплата проходит на защищённой странице Robokassa
-            (ООО «РОБОКАССА»). Почту для чека вы укажете там же: она нужна налоговой, чтобы
-            прислать вам чек. Что и зачем мы храним — в
-            <a class="link" href="privacy.html" target="_blank" rel="noopener">Политике обработки данных</a>.
-            На этой странице нет ни счётчиков, ни рекламных трекеров.</p></details>
-        <p class="petit" style="margin-top:14px">
-          <a class="link" href="oplata.html" target="_blank" rel="noopener">Как вообще проходит оплата →</a> ·
-          <a class="link" href="specifikaciya.html" target="_blank" rel="noopener">Что такое спецификация работы →</a></p>
+          <p>Здесь ничего не нужно вводить: заявка собрана по нашей переписке, единственное
+            добровольное поле — почта для вестей. Реквизиты карты мы не видим и не храним —
+            оплата проходит на защищённой странице Robokassa (ООО «РОБОКАССА»). Почту для чека
+            вы укажете там же: она нужна налоговой, чтобы прислать вам чек. Что и зачем мы
+            храним — в <a class="link" href="privacy.html" target="_blank" rel="noopener">Политике обработки данных</a>.
+            На этой странице нет ни счётчиков, ни рекламных трекеров.
+            <a class="link" href="oplata.html" target="_blank" rel="noopener">Как вообще проходит оплата →</a> ·
+            <a class="link" href="specifikaciya.html" target="_blank" rel="noopener">Что такое спецификация →</a></p></details>
       </section>
 
+      <!-- 10. колофон -->
       <div class="zk-slots zk-legal" id="zkLegal"></div>
       <p class="petit zk-exp" id="zkExp"></p>
 
+    </div>
+  </section>
+
+  <!-- ===== РЕКВИЗИТЫ ПЕРЕВОДА (шаг до отметки) ===== -->
+  <section id="zkReqStep" hidden>
+    <div class="sheet sheet-pad stacked">
+      <span class="caps">Оплата переводом</span>
+      <h1 class="h-display" style="font-size:clamp(26px,4vw,38px);margin:8px 0 12px">Реквизиты для перевода</h1>
+      <p class="lead" id="zkRqSum"></p>
+      <div class="zk-req" id="zkRq"></div>
+      <p class="petit">Переведите точную сумму. Комментарий к переводу оставьте пустым —
+        в назначении платежа не должно быть ничего о содержании заказа.</p>
+      <div style="display:grid;gap:12px;margin-top:16px">
+        <button type="button" class="btn btn-wax btn-lg btn-block" id="zkRqSend">Я перевёл(а) — сообщить мастеру</button>
+        <button type="button" class="btn btn-line btn-block" id="zkRqBack">← Вернуться к заявке</button>
+      </div>
+      <p class="petit" style="margin-top:12px">Отметка ни к чему не обязывает — это просто сигнал мастеру
+        сверить поступление. Пока вы не перевели деньги, ничего не происходит.</p>
     </div>
   </section>
 
@@ -347,11 +514,15 @@
     <div class="sheet sheet-pad stacked">
       <span class="caps">Оплата переводом</span>
       <h1 class="h-display" style="font-size:clamp(26px,4vw,38px);margin:8px 0 12px">Ждём подтверждения перевода</h1>
-      <p class="lead">Мастер сверит поступление и напишет — обычно это занимает несколько часов,
-        в выходные дольше. <b>Платить ещё раз не нужно.</b> Эта страница обновится сама,
-        когда деньги дойдут.</p>
+      <p class="lead" id="zkWaitMeta"></p>
+      <ul class="zk-dots">
+        <li class="on">Вы отметили перевод — мастер получил сигнал</li>
+        <li>Мастер сверяет поступление (обычно несколько часов, в выходные дольше)</li>
+        <li>Эта страница обновится сама — платить ещё раз не нужно</li>
+      </ul>
       <div class="zk-req" id="zkReq"></div>
-      <p class="petit">Что-то пошло не так? <a class="link" id="zkAsk3" href="#" target="_blank" rel="noopener">Напишите мастеру</a>.</p>
+      <p class="petit">Переводы не теряются: если через пару часов тишина —
+        <a class="link" id="zkAsk3" href="#" target="_blank" rel="noopener">напишите мастеру</a>, найдём по чеку.</p>
     </div>
   </section>
 
@@ -359,7 +530,7 @@
   <section id="zkDone" hidden>
     <div class="sheet sheet-pad stacked">
       <div class="zk-seal" aria-hidden="true"><b>АС</b><span>ОПЛАЧЕНО</span></div>
-      <span class="caps">Оплата прошла</span>
+      <span class="caps">Оплата прошла · печать поставлена</span>
       <h1 class="h-display" id="zkDoneH" style="font-size:clamp(26px,4vw,38px);margin:8px 0 12px">Дело закреплено за вами</h1>
       <p class="lead" id="zkDoneP">Мастер уже видит заказ и напишет вам в течение рабочего дня.
         Дальше всё происходит в деле: файлы, даты и переписка.</p>
@@ -369,12 +540,25 @@
         и именно поэтому её не стоит никому пересылать.
         <div class="zk-keeprow">
           <input type="text" class="zk-linkbox" id="zkLinkBox" readonly hidden aria-label="Ссылка на ваше дело — выделите и скопируйте">
-        <button type="button" class="btn btn-line" id="zkCopy">Скопировать ссылку</button>
+          <button type="button" class="btn btn-line" id="zkCopy">Скопировать ссылку</button>
           <a class="btn btn-line" id="zkTgShare" href="#" target="_blank" rel="noopener">Прислать себе в Telegram</a>
         </div>
+        <p class="petit" style="margin:10px 0 0">В Telegram уведомления о каждом шаге придут сами,
+          а новым читателям бот открывает бонусный счёт: 300 бонусов за знакомство.</p>
       </div>
+      <div class="zk-dn" id="zkDnFiles" hidden><b>Приготовьте к старту.</b> Пока мастер размечает план —
+        найдите методичку вашего вуза и пришлите её в дело (раздел «Файлы»): с неё начинается
+        оформление, и с неё же идёт отсчёт срока.</div>
+      <div class="zk-dn" id="zkDnCash" hidden></div>
+      <section class="zk-cal" id="zkDnRailBox" hidden style="margin-bottom:0">
+        <h2 class="caps">Как пойдёт работа</h2>
+        <ol class="zk-rail" id="zkDnRail"></ol>
+      </section>
       <p class="petit">Чек придёт на почту, которую вы указали при оплате. Потеряли ссылку?
         <a class="link" id="zkAsk2" href="#" target="_blank" rel="noopener">Напишите мастеру</a> — восстановим за минуту.</p>
+      <p class="petit zk-quiet">Пока ждёте первую весточку:
+        <a class="link" href="start.html" target="_blank" rel="noopener">Путеводитель по мастерской →</a>
+        <a class="link" href="specifikaciya.html" target="_blank" rel="noopener">Как читать спецификацию →</a></p>
     </div>
   </section>
 
@@ -384,6 +568,8 @@
       <span class="caps" id="zkColdCaps"></span>
       <h1 class="h-display" id="zkColdH" style="font-size:clamp(26px,4vw,38px);margin:8px 0 12px"></h1>
       <p class="lead" id="zkColdP"></p>
+      <p class="petit" id="zkColdPay" hidden>Если вы только что оплатили эту заявку — ничего не делайте:
+        платёж не теряется, мастер сверит его и перенесёт в актуальную редакцию сам.</p>
       <a class="btn btn-wax btn-lg" id="zkColdBtn" href="#" target="_blank" rel="noopener">Написать мастеру →</a>
     </div>
   </section>
@@ -408,14 +594,16 @@
 
 <footer class="site-footer" hidden></footer>
 
-<script src="assets/js/app.js?v=20260722a"></script>
-<script src="assets/js/extras.js?v=20260722a"></script>
+<script src="assets/js/app.js?v=20260722b"></script>
+<script src="assets/js/extras.js?v=20260722b"></script>
 <script>
 /* Собранная заявка: смотрит, соглашается, платит. ES5-стиль проекта. */
 (function () {
   'use strict';
   var S = window.Salon;
   if (!S || !S.api) return;
+
+  var PAGE_VER = '20260722b';   /* в доказательную базу акцепта (accept_json) */
 
   function $(id) { return document.getElementById(id); }
   function money(n) { return (n || 0).toLocaleString('ru-RU') + ' ₽'; }
@@ -451,7 +639,7 @@
   var TG = 'https://t.me/academicsaloon';   /* подменится из ответа сервера */
 
   var state = { code: '', nonce: '', data: null, busy: false, preview: false,
-                timer: null, gap: 25000 };
+                timer: null, gap: 25000, req: null };
 
   /* --- код заявки: только из фрагмента --------------------------------
      Фрагмент не уходит ни в access-лог nginx, ни в Referer при переходе
@@ -462,7 +650,6 @@
   var m = h.match(/[#&]k=([A-Za-z0-9_-]+)/);
   /* Запасной вход через ?k= — фрагмент теряется слишком легко: превью-карточка
      мессенджера, ручной набор адреса, редиректор, «поделиться» из браузера.
-     Клиент упирался в экран «ссылка неполная» на живой, не истёкшей заявке.
      Приняв код из строки запроса, ТУТ ЖЕ переписываем адрес на #k=, чтобы
      он не ушёл в Referer при переходе на оплату и не осел в истории. */
   var fromQuery = false;
@@ -491,7 +678,7 @@
   }
 
   function show(id) {
-    var ids = ['zkDoc', 'zkDone', 'zkWait', 'zkCold', 'zk404'], i;
+    var ids = ['zkDoc', 'zkDone', 'zkWait', 'zkCold', 'zk404', 'zkReqStep'], i;
     for (i = 0; i < ids.length; i++) $(ids[i]).hidden = (ids[i] !== id);
     if (id !== 'zkDoc') $('zkMcta').hidden = true;
   }
@@ -543,7 +730,11 @@
     var d = state.data;
     wireContacts(d.contacts);
     if (d.status === 'paid') { drawDone(d); return; }
-    if (d.status === 'awaiting') { drawWait(d); return; }
+    if (d.status === 'awaiting') {
+      drawWait(d);
+      if (first) startPoll();   /* обещание «страница обновится сама» держим и после перезагрузки */
+      return;
+    }
     if (d.status === 'replaced') { drawCold(d, 'replaced'); return; }
     if (d.status === 'canceled') { drawCold(d, 'canceled'); return; }
 
@@ -586,33 +777,10 @@
     return o;
   }
 
-  function drawDoc(d) {
-    document.title = 'Заявка № ' + d.no + ' · Академический Салон';
-    $('zkNo').textContent = 'ЗАЯВКА № ' + d.no + ' · СОБРАНА ' +
-      String(d.created_ru).toUpperCase() + ' · РЕДАКЦИЯ ' + d.version;
-    $('zkNoAsk').textContent = '№ ' + d.no;
-    $('zkGreet').textContent = d.greet_name
-      ? (d.greet_name + ', ваша заявка собрана') : 'Ваша заявка собрана';
-    if (d.intro) $('zkLetter').textContent = d.intro;
-
-    var sum = d.pay && d.pay.amount > 0
-      ? 'К оплате сейчас <b>' + money(d.pay.amount) + '</b> · всего по заявке ' + money(d.due_total)
-      : 'Всего по заявке <b>' + money(d.due_total) + '</b>';
-    $('zkHeadSum').innerHTML = sum;
-
-    $('zkStamp').hidden = false;
-    $('zkStamp').textContent = d.status === 'expired' ? 'Устарела' : 'К оплате';
-    $('zkStamp').className = 'zk-stamp' + (d.status === 'expired' ? ' mute' : ' wax');
-
-    $('zkSlots').innerHTML = slotRows([
-      ['Работа', d.work_label], ['Тема', d.topic], ['Дисциплина', d.discipline],
-      ['Объём', d.volume], ['Ведение', d.tier_label], ['Требования', d.reqs_short]
-    ]);
-
-    /* календарь */
+  function railHtml(rail) {
     var out = '', i, st;
-    for (i = 0; i < (d.rail || []).length; i++) {
-      st = d.rail[i];
+    for (i = 0; i < (rail || []).length; i++) {
+      st = rail[i];
       out += '<li class="zk-stop ' + (st.done ? 'done' : (st.now ? 'now' : '')) + '">' +
         '<span class="dot" aria-hidden="true"></span>' +
         '<span class="date">' + esc(st.d ? ruDate(st.d) : (st.when || 'дальше')) +
@@ -623,20 +791,73 @@
           (st.done ? 'оплачено' : (st.now ? 'платёж сейчас' : 'платёж на этом шаге')) +
           '</span>' : '') + '</li>';
     }
-    $('zkRail').innerHTML = out;
-    /* Пустой календарь не оставляем с заголовком-сиротой: у минимальной услуги
-       остановок нет, и «Как пойдёт работа» с одной оговоркой смотрелось бы
-       незаполненным. Блок целиком прячем — секция скрыта через её id. */
-    var calSec = document.querySelector('.zk-cal');
-    if (calSec) calSec.hidden = !((d.rail || []).length);
+    return out;
+  }
 
-    /* срок. Для УСЛУГИ язык другой: у неё нет защиты (сопровождать нечего),
-       а материал от клиента — это текст/работа, а не «методичка». Признак —
-       d.kind === 'service' (сервер отдаёт из work_type). */
+  function drawDoc(d) {
+    var single = (d.plan || []).length === 1;   /* «одним платежом» — язык другой */
     var isSvc = d.kind === 'service';
-    var due = '<b>' + (isSvc ? 'Готово будет к ' : 'Работа у вас на руках к ')
+
+    document.title = 'Заявка № ' + d.no + ' · Академический Салон';
+    $('zkNo').textContent = 'ДЕЛО № ' + d.no + ' · СОБРАНО ' +
+      String(d.created_ru).toUpperCase() + (d.version > 1 ? '' : ' · РЕДАКЦИЯ 1');
+    $('zkNoAsk').textContent = '№ ' + d.no;
+    $('zkSpine').textContent = 'ДЕЛО № ' + d.no + ' · АКАДЕМИЧЕСКИЙ САЛОН';
+
+    /* титул: тема — крупно (чужую тему не подделать), тип — подзаголовком */
+    $('zkTopic').textContent = d.topic || 'Ваша заявка собрана';
+    var kindLine = [d.work_label, d.volume].filter(Boolean).join(' · ');
+    $('zkKind').textContent = kindLine;
+    $('zkKind').hidden = !kindLine;
+    /* если письмо мастера само начинается с имени — не дублируем обращение */
+    var introHasName = d.greet_name && d.intro &&
+      d.intro.slice(0, d.greet_name.length + 1).toLowerCase() === (d.greet_name + ',').toLowerCase();
+    $('zkGreet').textContent = (d.greet_name && !introHasName
+      ? d.greet_name + ', здравствуйте.' : 'Здравствуйте.') +
+      ' Это ваша заявка — собрана по нашей переписке.';
+    if (d.intro) $('zkLetter').textContent = d.intro;
+
+    /* марка редакции: пересборка — честность, а не тайна */
+    $('zkMark').hidden = !(d.version > 1);
+    if (d.version > 1) $('zkMark').textContent = 'РЕДАКЦИЯ № ' + d.version;
+
+    $('zkStamp').hidden = false;
+    $('zkStamp').textContent = d.status === 'expired' ? 'Устарела' : 'К оплате';
+    $('zkStamp').className = 'zk-stamp' + (d.status === 'expired' ? ' mute' : ' wax');
+
+    /* плита трёх цифр */
+    var hasPay = d.pay && d.pay.amount > 0;
+    $('zkPlate').classList.toggle('two', !!single || !hasPay);
+    $('zkPlNow').hidden = false;
+    if (single) {
+      $('zkPlNowK').textContent = 'Оплата целиком';
+      $('zkPlNowV').textContent = money(hasPay ? d.pay.amount : d.due_total);
+    } else if (hasPay) {
+      $('zkPlNowK').textContent = 'К оплате сейчас';
+      $('zkPlNowV').textContent = money(d.pay.amount);
+    } else {
+      $('zkPlNow').hidden = true;
+    }
+    $('zkPlTot').hidden = !!single;   /* при одном платеже «всего» = той же цифре */
+    $('zkPlTotV').textContent = money(d.due_total);
+    $('zkPlDueK').textContent = isSvc ? 'Готово к' : 'На руках к';
+    $('zkPlDueV').textContent = d.deadline_ru || '—';
+    $('zkPlDue').hidden = !d.deadline_ru;
+
+    /* формуляр: тема живёт в титуле, «Работа» переименована в «Заказ» */
+    $('zkSlots').innerHTML = slotRows([
+      ['Заказ', d.work_label], ['Дисциплина', d.discipline],
+      ['Объём', d.volume], ['Ведение', d.tier_label], ['Требования', d.reqs_short]
+    ]);
+
+    /* календарь + срок одним блоком */
+    $('zkRail').innerHTML = railHtml(d.rail);
+    $('zkCalBox').hidden = !((d.rail || []).length) && !d.deadline_ru;
+    $('zkRail').hidden = !((d.rail || []).length);
+    $('zkRailNote').hidden = !((d.rail || []).length);
+    var due = '<b>' + (isSvc ? 'Готово будет к ' : 'Готовые материалы у вас на руках к ')
             + esc(d.deadline_ru) + '.</b> ';
-    if (!isSvc) due += 'Сопровождение и бесплатные правки — дальше, до защиты.';
+    if (!isSvc) due += 'Сопровождение и бесплатные правки — дальше, до защиты (сроки — в штампе ниже).';
     else due += 'Правки по замечаниям — бесплатно, в рамках задания.';
     due += '<small>Отсчёт идёт с оплаты'
         + (d.need_files
@@ -644,33 +865,41 @@
                      : ' и с момента, когда вы пришлёте методичку.')
             : ' — всё, что нужно, у нас уже есть.') + '</small>';
     $('zkDue').innerHTML = due;
+    $('zkDue').hidden = !d.deadline_ru;
 
-    /* Что входит — только положительным списком. Владелец: «чего здесь нет
-       не писать». То, что не входит, показываем отдельной спокойной строкой
-       «можно добавить», и только если такие позиции реально есть. */
-    var incl = d.incl || [], io = '', extra = [];
+    /* опись: только положительный список; допы — отдельным тихим блоком */
+    var incl = d.incl || [], io = '', extra = [], i;
     for (i = 0; i < incl.length; i++) {
       if (incl[i]['in']) io += slotRows([[incl[i].t, 'включено', 'yes']]);
-      else extra.push(incl[i].t);
+      else extra.push(incl[i]);
     }
     $('zkIncl').innerHTML = io;
     $('zkInclBox').hidden = !io;
-    if ($('zkExtra')) {
-      $('zkExtra').textContent = extra.length
-        ? 'Можно добавить отдельно: ' + extra.join(' · ') + '. Скажите — пересоберу заявку.'
-        : '';
-      $('zkExtra').hidden = !extra.length;
+    var ao = '';
+    for (i = 0; i < extra.length && i < 3; i++) {
+      ao += '<div class="zk-addrow"><span class="t">' + esc(extra[i].t) + '</span>' +
+            (extra[i].p ? '<span class="p">+ ' + money(extra[i].p) + '</span>'
+                        : '<span class="p">по запросу</span>') + '</div>';
     }
+    $('zkAdd').innerHTML = ao;
+    $('zkAddBox').hidden = !ao || isSvc;
 
-    /* смета */
+    /* квитанция: смета */
     var led = d.ledger || [], lo = '';
     for (i = 0; i < led.length; i++) {
       lo += '<div class="lg-row"><span>' + esc(led[i].t) + '</span>' +
-            '<span class="num">' + money(led[i].a) + '</span></div>';
+            '<span class="num">' + (led[i].a < 0 ? '− ' + money(-led[i].a) : money(led[i].a)) + '</span></div>';
     }
     lo += '<div class="lg-total"><b>Итого по заявке</b>' +
           '<b class="num">' + money(d.due_total) + '</b></div>';
     $('zkLedger').innerHTML = lo;
+
+    /* правило этапов: у одного платежа своя честная строка */
+    $('zkRule').textContent = single
+      ? 'Оплата одна — целиком, до начала работы. Готовые материалы передаются после оплаты, ' +
+        'а правки и сопровождение действуют так же, как при оплате по частям.'
+      : 'Платить всё сразу не нужно. Каждая следующая часть — только после того, ' +
+        'как вы увидели результат предыдущей.';
 
     /* лента этапов: порядок узлов важен — ps-share, b, small (styles.css:189) */
     var pl = d.plan || [], po = '';
@@ -694,6 +923,37 @@
         (d.pay_online ? ' · картой или переводом' : ' · переводом по реквизитам');
     }
 
+    /* карта/перевод: честная строка под кнопкой */
+    $('zkCardNote').textContent = d.pay_online
+      ? 'На этой странице вводить нечего. Номер карты и почту для чека вы укажете на ' +
+        'защищённой странице Robokassa — реквизиты карты мы не видим и не храним ' +
+        '(п. 5.2 оферты). Чек приходит на каждый платёж (ФЗ-422).'
+      : 'На этой странице вводить нечего. Реквизиты перевода откроются по кнопке; чек ' +
+        'самозанятого из приложения ФНС «Мой налог» придёт на каждый платёж (пп. 5.2–5.3 оферты).';
+
+    /* штампы: услуга без ГОСТ/оригинальности не обещает отчёта; язык окон честный */
+    var reportOk = !isSvc || d.svc === 'svc_norm' || d.svc === 'svc_defense_pack';
+    $('zkGst1').hidden = !reportOk;
+    if (reportOk) {
+      $('zkGst1s').textContent = single
+        ? 'Оригинальность и разбор совпадений — отчётом вместе с готовыми материалами.'
+        : 'Оригинальность и разбор совпадений вы видите раньше, чем платите финальную часть.';
+    }
+    if (isSvc) {
+      $('zkGst2s').textContent = 'Количество не ограничено, ограничены сроки: замечания по ' +
+        'результату — 7 дней после передачи, отрабатываем до снятия (п. 9.1–9.2 оферты).';
+    }
+
+    /* кэшбэк: продажа после решения, а не вместо него */
+    if (d.cashback_est > 0) {
+      $('zkCash').hidden = false;
+      $('zkCash').innerHTML = 'В бонусной книжке появится запись: после полной оплаты вернётся ' +
+        '<b>≈ ' + money(d.cashback_est) + ' бонусами</b> (5% от денежной части). Бонус равен рублю ' +
+        'и уменьшает цену следующей работы — презентации, речи или новой главы.';
+    } else {
+      $('zkCash').hidden = true;
+    }
+
     /* складки и юрформуляр */
     $('zkReqFull').innerHTML = '<p>' +
       esc(d.reqs_full || 'Особых требований, кроме методички вуза, нет.') + '</p>';
@@ -701,11 +961,14 @@
       esc(d.tier_full || 'Состав ведения мы согласовали в переписке — спросите мастера, если нужно подробнее.') + '</p>';
 
     var ed = d.doc || {};
-    $('zkLegalLine').innerHTML = 'Оплачивая, вы подтверждаете, что вам исполнилось 18 лет ' +
-      'и что вы ознакомились с <a class="link" href="oferta.html" target="_blank" rel="noopener">публичной офертой</a>' +
+    $('zkLegalLine').innerHTML = 'Оплата — это и есть согласие с условиями: по ст. 438 ГК РФ ' +
+      'договор заключается в момент поступления денег, подписывать ничего не нужно. Оплачивая, ' +
+      'вы подтверждаете, что вам исполнилось 18 лет и что вы ознакомились с ' +
+      '<a class="link" href="oferta.html" target="_blank" rel="noopener">публичной офертой</a>' +
       (ed.oferta ? ' (ред. ' + esc(ed.oferta) + ')' : '') + ' — в особенности с разделом 7 — и с ' +
       '<a class="link" href="privacy.html" target="_blank" rel="noopener">Политикой обработки данных</a>' +
-      (ed.privacy ? ' (ред. ' + esc(ed.privacy) + ')' : '') + '.';
+      (ed.privacy ? ' (ред. ' + esc(ed.privacy) + ')' : '') +
+      '. <b>До оплаты вы ничем не связаны</b> — эта страница ни к чему не обязывает (п. 3.2 оферты).';
 
     var mail = (d.contacts && d.contacts.email) || 'support@akademsalon.ru';
     $('zkLegal').innerHTML = slotRows([
@@ -732,6 +995,7 @@
       $('zkColdH').textContent = 'Мастер пересобрал заявку';
       $('zkColdP').textContent = 'Прежняя редакция больше не действует — посмотрите свежую, ' +
         'там актуальные даты и цена.';
+      $('zkColdPay').hidden = false;
       $('zkColdBtn').textContent = 'Открыть новую заявку →';
       $('zkColdBtn').removeAttribute('target');
       $('zkColdBtn').href = 'zayavka.html#k=' + encodeURIComponent(d.replaced_code || '');
@@ -740,15 +1004,27 @@
       $('zkColdH').textContent = 'Эту заявку мастерская отозвала';
       $('zkColdP').textContent = 'Так бывает, когда договорённость изменилась. Напишите ' +
         'мастеру — разберёмся и соберём новую.';
+      $('zkColdPay').hidden = true;
       $('zkColdBtn').textContent = 'Написать мастеру →';
       $('zkColdBtn').href = TG;
     }
   }
 
+  function drawReqStep(r) {
+    show('zkReqStep');
+    $('zkRqSum').textContent = 'Дело № ' + (state.data ? state.data.no : '—') + ' · ' +
+      money(r.amount) + (r.kind && state.data && state.data.pay && state.data.pay.label
+        ? ' — ' + state.data.pay.label.toLowerCase() : '');
+    $('zkRq').textContent = r.requisites || 'Реквизиты пришлёт мастер — напишите ему.';
+  }
+
   function drawWait(d) {
     show('zkWait');
-    $('zkReq').textContent = d.requisites || '';
-    $('zkReq').hidden = !d.requisites;
+    var meta = 'Дело № ' + d.no;
+    if (state.req && state.req.amount) meta += ' · перевод ' + money(state.req.amount) + ' на сверке';
+    $('zkWaitMeta').textContent = meta + '. Платить ещё раз не нужно.';
+    $('zkReq').textContent = d.requisites || (state.req && state.req.requisites) || '';
+    $('zkReq').hidden = !$('zkReq').textContent;
   }
 
   var doneWired = false;
@@ -758,6 +1034,21 @@
     document.title = 'Заявка № ' + d.no + ' оплачена';
     stopPoll();
     $('zkDoneH').textContent = 'Дело № ' + d.no + ' закреплено за вами';
+
+    /* календарь остаётся с человеком и после оплаты — это его ориентир */
+    var rl = railHtml(d.rail);
+    $('zkDnRail').innerHTML = rl;
+    $('zkDnRailBox').hidden = !rl;
+    $('zkDnFiles').hidden = !d.need_files;
+    if (d.cashback_est > 0) {
+      $('zkDnCash').hidden = false;
+      $('zkDnCash').innerHTML = '<b>Запись в бонусной книжке.</b> После полной оплаты дела ' +
+        'мастерская вернёт вам ≈ ' + money(d.cashback_est) + ' бонусами (5% от денежной части). ' +
+        'Бонус равен рублю и уменьшает цену следующей работы — например, презентации к защите.';
+    } else {
+      $('zkDnCash').hidden = true;
+    }
+
     if (!d.access_token && state.nonce && !doneRetry) {
       /* Ключа нет, но nonce у нас ЕСТЬ — значит платили именно с этого браузера,
          а данные пришли из публичной ручки, которая токен не отдаёт по замыслу.
@@ -768,28 +1059,21 @@
         if (r && r.ok && r.offer && r.offer.access_token) {
           state.data = r.offer;
           drawDone(r.offer);
+        } else {
+          drawDoneLocked();   /* ретрай не принёс ключ — честный экран, не полурисованный */
         }
-      }, function () {});
+      }, function () { drawDoneLocked(); });
       return;
     }
-    if (!d.access_token) {
-      /* оплачено, но ключа нет: открыли не тем браузером, из которого платили */
-      $('zkDoneP').textContent = 'По этой заявке уже заплачено. Ссылка на дело открылась ' +
-        'в том браузере, из которого прошла оплата. Если это были вы — откройте страницу ' +
-        'там же; если нет — напишите мастеру, пришлём ссылку заново.';
-      $('zkOpenCase').hidden = true;
-      $('zkKeep').hidden = true;
-      return;
-    }
+    if (!d.access_token) { drawDoneLocked(); return; }
+
     var link = d.claim_url || S.claimLink(d.access_token);
     try { S.api.addGuestToken(d.access_token); } catch (e) {}
+    $('zkOpenCase').hidden = false;
+    $('zkKeep').hidden = false;
     $('zkOpenCase').href = link;
-    /* Было t.me/share/url — отправка ссылки САМОМУ СЕБЕ в избранное. Человек
-       думал, что привязал дело к боту, а просто переслал себе текст.
-       Настоящая привязка — deep-link боту: handlers/client.py разбирает
-       start=claim_<token> и проставляет user_id. После одного нажатия
-       оживают все уведомления клиенту в payments.confirm, которые сегодня
-       молчат из-за пустого user_id. */
+    /* Настоящая привязка к боту — deep-link claim_<token>: после одного нажатия
+       оживают все TG-уведомления клиенту (handlers/client.py). */
     $('zkTgShare').href = 'https://t.me/academic_saloon_bot?start=claim_' +
       encodeURIComponent(d.access_token);
     /* Ссылка обязана быть ВИДНА текстом: это единственный ключ от дела,
@@ -811,7 +1095,7 @@
         function no() { b.textContent = 'Не вышло — выделите ссылку ниже';
                         if ($('zkLinkBox')) { $('zkLinkBox').focus(); $('zkLinkBox').select(); }
                         setTimeout(function () { b.textContent = 'Скопировать ссылку'; }, 3200); }
-        /* Промис ОБРАБАТЫВАЕМ: раньше кнопка писала «Скопировано ✓» даже
+        /* Промис ОБРАБАТЫВАЕМ: иначе кнопка писала «Скопировано ✓» даже
            когда браузер отказал, и человек уходил без единственного ключа. */
         try {
           if (navigator.clipboard && navigator.clipboard.writeText)
@@ -823,12 +1107,30 @@
     if (S.stamp) S.stamp('Оплачено');
   }
 
+  function drawDoneLocked() {
+    /* оплачено, но ключа нет: открыли не тем браузером, из которого платили */
+    $('zkDoneP').textContent = 'По этой заявке уже заплачено. Ключ от дела открывается в том ' +
+      'браузере и на том устройстве, где нажимали «Оплатить». Если это были вы — откройте ' +
+      'страницу там же; если нет — напишите мастеру, пришлём ссылку заново за минуту.';
+    $('zkOpenCase').hidden = true;
+    $('zkKeep').hidden = true;
+  }
+
   /* ---------- оплата ---------- */
+  function payBody(extra) {
+    var b = extra || {};
+    b.pv = PAGE_VER;
+    var mv = ($('zkMail') && $('zkMail').value || '').trim();
+    if (mv && mv.indexOf('@') > 0 && mv.length >= 5) b.notify_to = mv;
+    if (state.nonce) b.n = state.nonce;
+    return b;
+  }
+
   function pay(btn) {
     if (state.busy || state.preview) return;
     state.busy = true;
     if (S.btnLoading && btn) S.btnLoading(btn, true, 'Открываем кассу…');
-    S.api.post('/offer/' + encodeURIComponent(state.code) + '/pay', {}).then(function (r) {
+    S.api.post('/offer/' + encodeURIComponent(state.code) + '/pay', payBody()).then(function (r) {
       state.busy = false;
       if (S.btnLoading && btn) S.btnLoading(btn, false);
       if (!r || !r.ok) {
@@ -841,6 +1143,8 @@
       /* ключ предъявителя платежа: только он откроет дело после подтверждения */
       if (r.nonce) { state.nonce = r.nonce; remember(); }
       if (r.online && r.url) { location.href = r.url; return; }
+      state.req = r;
+      if (!r.claimed) { drawReqStep(r); return; }   /* переводный путь: сперва реквизиты */
       state.data.status = 'awaiting';
       state.data.requisites = r.requisites || '';
       drawWait(state.data);
@@ -853,6 +1157,39 @@
   }
   $('zkPay').addEventListener('click', function () { pay(this); });
   $('zkMctaBtn').addEventListener('click', function () { pay($('zkPay')); });
+
+  /* «Я перевёл(а)» — осознанная отметка, случайный клик ничего не замораживает */
+  $('zkRqSend').addEventListener('click', function () {
+    var btn = this;
+    if (state.busy) return;
+    state.busy = true;
+    if (S.btnLoading) S.btnLoading(btn, true, 'Передаём мастеру…');
+    S.api.post('/offer/' + encodeURIComponent(state.code) + '/pay',
+               payBody({ claim: 1 })).then(function (r) {
+      state.busy = false;
+      if (S.btnLoading) S.btnLoading(btn, false);
+      if (!r || !r.ok) {
+        if (r && r.error === 'already_claimed') { load(false); return; }
+        alert(ERRS[(r && r.error) || ''] || 'Не получилось — попробуйте ещё раз');
+        return;
+      }
+      if (r.nonce) { state.nonce = r.nonce; remember(); }
+      state.req = r;
+      state.data.status = 'awaiting';
+      state.data.requisites = r.requisites || '';
+      drawWait(state.data);
+      startPoll();
+    }, function () {
+      state.busy = false;
+      if (S.btnLoading) S.btnLoading(btn, false);
+      alert('Связь подвела. Попробуйте ещё раз через минуту.');
+    });
+  });
+  $('zkRqBack').addEventListener('click', function () {
+    show('zkDoc');
+    if (state.data && !state.preview && state.data.pay && state.data.pay.amount > 0
+        && state.data.status === 'live') $('zkMcta').hidden = false;
+  });
 
   /* ---------- поллинг: setTimeout, не rAF (rAF душат энергорежимы) ---------- */
   function stopPoll() { if (state.timer) { clearTimeout(state.timer); state.timer = null; } }

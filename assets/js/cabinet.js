@@ -1640,7 +1640,11 @@ function initCabinet() {
     } else {
       st.me = null;
     }
-    S.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
+    /* токены шлём ВСЕГДА, когда они есть: сервер склеивает «сессия + гостевые
+       дела», но раньше при живом входе tokens не передавались вовсе — человек
+       с аккаунтом сайта, оплативший заявку по ссылке, не видел это дело
+       и не мог оплатить вторую часть */
+    S.api.get('/orders' + (g.length ? '?tokens=' + encodeURIComponent(g.join(',')) : '')).then(function (r) {
       if (!r.ok) { render(tplError()); return; }
       st.orders = r.orders || [];
       watchSync();
@@ -1741,7 +1745,7 @@ function initCabinet() {
   function refreshListSilent() {
     var t = S.api.token(), g = S.api.guestTokens();
     if (!t && !g.length) return;
-    S.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
+    S.api.get('/orders' + (g.length ? '?tokens=' + encodeURIComponent(g.join(',')) : '')).then(function (r) {
       if (!r.ok) return;
       var mini = function (o) { return [o.id, o.status, o.unread, o.files_new, o.pinned, o.archived].join(':'); };
       var before = st.orders.map(mini).join('|');
