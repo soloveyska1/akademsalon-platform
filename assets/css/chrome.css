@@ -802,6 +802,125 @@ body.toc-lock{overflow:hidden}
   .cf7-legal>summary{display:none}.cf7-legal-in{display:block!important;padding:8px 0}
   .cf7-legal-in nav,.cf7-fns{display:none}.cf7-finis{display:block;padding-top:10px}
 }
+
+/* ============================================================
+   КОЛОФОН v8 «ОБОРОТ ФОРМУЛЯРА»
+   Тот же язык, что у книги-сметы: тёплая бумага, графит,
+   сургуч, формулярные линии и издательский знак ¶.
+   Токены автоматически переводят его в «Переплёт ночью».
+   ============================================================ */
+.site-footer{
+  color:var(--ink-soft);background:var(--paper-2);
+  border-top:0;padding:clamp(32px,4vw,44px) 0 18px;overflow:hidden;
+  box-shadow:inset 0 16px 34px -30px color-mix(in srgb,var(--ink) 38%,transparent);
+}
+.site-footer::before{
+  height:3px;opacity:.82;
+  background:linear-gradient(90deg,transparent,var(--wax) 20%,var(--wax) 80%,transparent);
+}
+.site-footer::after{
+  content:"";inset:0;z-index:0;opacity:.32;transform:none;
+  background:repeating-linear-gradient(180deg,transparent 0 39px,
+    color-mix(in srgb,var(--hairline) 58%,transparent) 39px 40px);
+}
+.cf7-top{align-items:end;padding-bottom:clamp(20px,2.6vw,28px)}
+.cf7-brand{position:relative;padding-right:96px}
+.cf7-brand .brand{color:var(--ink);margin-bottom:clamp(16px,2vw,20px)}
+.cf7-brand .brand .b-para{
+  color:var(--wax);background:var(--sheet);border-color:var(--hairline-strong);
+  box-shadow:inset 0 1px 2px color-mix(in srgb,var(--ink) 18%,transparent),
+    inset 0 -1px 0 color-mix(in srgb,var(--sheet) 55%,white);
+}
+.cf7-kicker{color:var(--ink-faint);font-size:10px;letter-spacing:.22em}
+.cf7-title{color:var(--ink);font-size:clamp(32px,3.7vw,42px);font-weight:400;text-shadow:none}
+.cf7-title em{color:var(--ink);font-weight:400;text-decoration:underline;
+  text-decoration-color:color-mix(in srgb,var(--wax) 62%,transparent);
+  text-decoration-thickness:2px;text-underline-offset:7px}
+.cf7-copy{color:var(--ink-soft);font-size:14px;margin-top:12px}
+.cf7-stamp{position:absolute;right:2px;bottom:-2px;width:80px;height:80px;color:var(--wax);opacity:.74}
+.cf7-stamp .seal{width:80px;height:80px;transform:rotate(-9deg);opacity:1}
+
+.cf7-action{
+  position:relative;padding:16px;background:var(--sheet);border-color:var(--hairline-strong);
+  box-shadow:6px 6px 0 var(--shadow);color:var(--ink);
+}
+.cf7-action::before{
+  content:"ПРИЁМНАЯ · ФОРМУЛЯР";display:block;margin:0 0 10px;
+  color:var(--ink-faint);font-family:var(--mono);font-size:9px;letter-spacing:.22em;
+}
+.cf7-status{border-color:var(--hairline);padding-bottom:10px;margin-bottom:10px}
+.cf-lamp,.fcl-dot{background:var(--verify);box-shadow:0 0 0 3px color-mix(in srgb,var(--verify) 16%,transparent)}
+.cf-lamp.night,.fcl-dot.night{background:var(--wax);box-shadow:0 0 0 3px var(--wax-soft)}
+.cf-cl-s,.cf-live{color:var(--ink-soft)}
+.cf-cl-t{color:var(--ink);font-size:14px}
+.cf-cl-t .cf-tz{color:var(--ink-faint)}
+.cf7-btn--gold{background:var(--wax);border-color:var(--wax);color:#FFFEF9}
+.cf7-btn--gold:hover{background:var(--wax-deep);border-color:var(--wax-deep)}
+.cf7-btn--ghost{color:var(--ink);border-color:var(--hairline-strong);background:var(--paper)}
+.cf7-btn--ghost:hover{color:var(--ink);border-color:var(--ink-soft);background:var(--mark)}
+.cf7-facts{color:var(--ink-faint);font-size:9px;letter-spacing:.13em;margin-top:10px}
+.cf7-facts span+span::before{color:var(--wax)}
+
+.cf7-board{background:var(--sheet);border-color:var(--hairline-strong);
+  box-shadow:0 5px 0 color-mix(in srgb,var(--shadow) 72%,transparent)}
+.cf7-channels>a{min-height:90px;padding:13px 14px;color:var(--ink);
+  border-color:var(--hairline);background:transparent}
+.cf7-channels>a:hover{color:var(--ink);background:var(--mark)}
+.cf7-no{color:var(--wax)}
+.cf7-channels small,.cf7-guide small{color:var(--ink-soft)}
+.cf7-channels i,.cf7-guide>i{color:var(--wax)}
+.cf7-route{border-left:1px solid var(--hairline);padding:7px 0 6px 12px}
+.cf7-guide{min-height:49px;padding:6px 8px;color:var(--ink)}
+.cf7-guide:hover{color:var(--ink);background:var(--mark)}
+.cf7-guide-mark{border-radius:3px;color:var(--wax);background:var(--paper);
+  border-color:var(--hairline-strong);box-shadow:inset 0 1px 2px color-mix(in srgb,var(--ink) 14%,transparent)}
+.cf7-quick{border-top:1px solid var(--hairline);padding:4px 8px 0}
+.cf7-quick a{color:var(--ink-soft)}
+.cf7-quick a:not(:last-child)::after{color:var(--hairline-strong)}
+.cf7-quick a:hover,.cf7-quick a[aria-current="page"]{color:var(--wax);border-color:var(--wax)}
+
+.cf7-legal{margin-top:10px;background:color-mix(in srgb,var(--sheet) 64%,transparent);
+  border:1px solid var(--hairline);border-left:0;border-right:0;color:var(--ink-soft)}
+.cf7-legal>summary{min-height:43px;color:var(--ink-soft);padding:7px 8px}
+.cf7-legal>summary small{color:var(--ink-faint)}
+.cf7-legal>summary i{color:var(--wax)}
+.cf7-legal-in{color:var(--ink-soft);padding:7px 8px 20px}
+.cf7-legal-in p b{color:var(--ink)}
+.cf7-legal-in nav a{color:var(--ink);border-color:var(--hairline-strong)}
+.cf7-legal-in nav a:hover{color:var(--wax);border-color:var(--wax)}
+.cf7-fns{color:var(--wax);border-color:var(--wax);background:var(--sheet)}
+.cf7-fns:hover{color:var(--wax-deep);border-color:var(--wax-deep);background:var(--wax-soft)}
+.cf7-finis{color:var(--ink-faint);padding-top:12px}
+.cf7-finis p span{color:var(--wax)}
+.cf7-made{color:var(--ink-faint)}
+.cf7-finis .fc-top{color:var(--ink-soft);border-color:var(--hairline-strong)}
+.cf7-finis .fc-top:hover{color:var(--wax);border-color:var(--wax)}
+.site-footer :focus-visible{outline-color:var(--wax)}
+
+@media(max-width:980px){
+  .cf7-route{border-left:0;border-top:1px solid var(--hairline);padding-left:0}
+  .cf7-quick{border-top:0;border-left:1px solid var(--hairline)}
+}
+@media(max-width:760px){
+  .cf7-brand{padding-right:104px}
+  .cf7-route{border-top:1px solid var(--hairline)}
+  .cf7-quick{border-left:0;border-top:1px solid var(--hairline)}
+}
+@media(max-width:580px){
+  .site-footer::after{display:block}
+  .cf7-brand{padding-right:0;padding-bottom:0}
+  .cf7-copy{max-width:245px}
+  .cf7-stamp{left:auto;right:2px;bottom:0;width:76px;height:76px}
+  .cf7-stamp .seal{width:76px;height:76px}
+  .cf7-action{box-shadow:5px 5px 0 var(--shadow)}
+  .cf7-cta{grid-template-columns:1.2fr .9fr}
+  .cf7-btn{padding-left:9px;padding-right:9px;font-size:12.5px}
+  .cf7-channels>a,.cf7-channels>a:nth-child(3){border-color:var(--hairline)}
+}
+@media print{
+  .site-footer{background:#fff!important;color:#000!important;border-top:2px solid #000!important}
+  .site-footer::before,.site-footer::after,.cf7-stamp{display:none!important}
+}
 main[tabindex="-1"]:focus{outline:none}
 
 /* ============================================================

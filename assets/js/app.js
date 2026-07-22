@@ -1527,9 +1527,12 @@
 
     '<div class="cf7-top">' +
       '<div class="cf7-brand">' + brandHTML() +
-        '<p class="cf7-kicker">Финальный штрих</p>' +
+        '<p class="cf7-kicker">Издание мастерской · с 2020 года</p>' +
         '<h2 class="cf7-title">Доведём до&nbsp;точки.<br><em>И до&nbsp;защиты.</em></h2>' +
         '<p class="cf7-copy">Профильный специалист ведёт вашу работу от&nbsp;плана до&nbsp;уверенной защиты.</p>' +
+        '<span class="cf7-stamp" aria-hidden="true">' + Salon.sealSVG({
+          ring: 'АКАДЕМИЧЕСКИЙ САЛОН · КАЗАНЬ · ', center: '¶', size: 94, cls: 'seal--wax'
+        }) + '</span>' +
       '</div>' +
       '<div class="cf7-action">' +
         '<div class="cf7-status">' +
@@ -1541,10 +1544,10 @@
           '<p class="cf-live" data-foot-eta><span class="fcl-dot' + night + '" aria-hidden="true"></span><span class="cf-live-t">' + CLOCK_ETA[t.day ? 1 : 0] + '</span></p>' +
         '</div>' +
         '<div class="cf7-cta">' +
-          '<a class="cf7-btn cf7-btn--gold" href="configurator.html">Рассчитать стоимость <span aria-hidden="true">→</span></a>' +
+          '<a class="cf7-btn cf7-btn--gold" href="configurator.html">Оформить заявку <span aria-hidden="true">→</span></a>' +
           '<button class="cf7-btn cf7-btn--ghost" type="button" data-contact="1">Спросить человека</button>' +
         '</div>' +
-        '<p class="cf7-facts"><span>6 лет практики</span><span>1000+ работ</span><span>чек НПД</span></p>' +
+        '<p class="cf7-facts"><span>6 лет</span><span>1000+ защит</span><span>0 утечек</span><span>чек НПД</span></p>' +
       '</div>' +
     '</div>' +
 
