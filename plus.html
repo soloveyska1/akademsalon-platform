@@ -204,6 +204,26 @@
     </div>
   </section>
 
+  <!-- ================= ДЕПОЗИТНАЯ КНИЖКА ================= -->
+  <section class="pl-calc" aria-label="Депозит мастерской" id="depozit" style="margin-top:clamp(28px,4vh,44px)">
+    <div>
+      <p class="pl-kicker" style="margin-bottom:10px">Новое · депозитная книжка</p>
+      <h2>Положите на счёт мастерской — бонусы сверху сразу</h2>
+      <p class="pl-calc-sub">Кошелёк-аванс: пополняете один раз — этапы любых заказов потом оплачиваются в один клик, без карты и ожиданий. Сверху — бонусы к вашему счёту, и чем больше пополнение, тем выше ставка.</p>
+      <input class="pl-range" type="range" id="dpRange" min="20000" max="60000" step="5000" value="30000" aria-label="Сумма пополнения">
+      <p class="pl-sum" id="dpSum">30 000 ₽</p>
+      <p class="pl-orders" id="dpNote">хватит на старт диплома и курсовую рядом</p>
+    </div>
+    <div class="pl-check">
+      <p class="cap">Квитанция пополнения</p>
+      <div class="pl-ch-row"><span>На кошелёк</span><span class="dots"></span><b id="dpMoney">30 000 ₽</b></div>
+      <div class="pl-ch-row"><span>Бонусами сверху</span><span class="dots"></span><span class="win"><b id="dpBonus">+3 000</b> <small id="dpPct">(+10%)</small></span></div>
+      <div class="pl-verdict" id="dpVerdict">Итого ценности — <b>33 000 ₽</b>: деньги тратятся на этапы заказов, бонусы дают скидку до 20% на каждый заказ. Чек НПД приходит сразу при пополнении.</div>
+      <a class="btn btn-wax" style="width:100%;justify-content:center;margin-top:14px" href="dashboard.html">Пополнить в кабинете →</a>
+      <p class="after-cta" style="margin-top:8px;text-align:center;font-size:10.5px;color:var(--ink-faint)">от 20 000 до 60 000 ₽ за раз · неиспользованный остаток возвратен · <a class="link" href="loyalty.html">правила</a></p>
+    </div>
+  </section>
+
   <!-- ================= FAQ ================= -->
   <section class="pl-faq" aria-label="Вопросы о подписке">
     <h2>Вопросы перед оформлением</h2>
@@ -295,6 +315,30 @@
   }
   if (range) { range.addEventListener('input', calc); }
   drawPrices(); calc();
+
+  /* депозитная книжка: ставки зеркалят бэкенд (services/deposit.py RATES) */
+  var DR = [[60000, 15], [45000, 12], [30000, 10], [20000, 8]];
+  var dp = document.getElementById('dpRange');
+  function dpNote(sum) {
+    if (sum < 30000) return 'хватит на старт диплома или курсовую целиком';
+    if (sum < 45000) return 'хватит на старт диплома и курсовую рядом';
+    if (sum < 60000) return 'хватит на магистерскую по этапам';
+    return 'полный выпускной сезон одним пополнением';
+  }
+  function dpCalc() {
+    if (!dp) return;
+    var sum = +dp.value, pct = 0;
+    for (var i = 0; i < DR.length; i++) if (sum >= DR[i][0]) { pct = DR[i][1]; break; }
+    var bonus = Math.floor(sum * pct / 100);
+    document.getElementById('dpSum').textContent = fmt(sum) + ' ₽';
+    document.getElementById('dpMoney').textContent = fmt(sum) + ' ₽';
+    document.getElementById('dpBonus').textContent = '+' + fmt(bonus);
+    document.getElementById('dpPct').textContent = '(+' + pct + '%)';
+    document.getElementById('dpNote').textContent = dpNote(sum);
+    document.getElementById('dpVerdict').innerHTML = 'Итого ценности — <b>' + fmt(sum + bonus) +
+      ' ₽</b>: деньги тратятся на этапы заказов, бонусы дают скидку до 20% на каждый заказ. Чек НПД приходит сразу при пополнении.';
+  }
+  if (dp) { dp.addEventListener('input', dpCalc); dpCalc(); }
 })();
 </script>
 </body>

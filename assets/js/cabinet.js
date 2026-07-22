@@ -22,6 +22,8 @@ function initCabinet() {
     emailTo: '',      // почта, на которую отправлен код входа
     ledgerOpen: false,
     ledger: null,     // журнал бонусов из /bonus
+    depLedgerOpen: false,
+    depLedger: null,  // журнал депозита из /deposit
     archOpen: false,  // развёрнут ли «Архив» в корешках
     remOpen: false,   // развёрнуты ли «убранные» (архивированные) дела
     clubOpen: false,  // развёрнуты ли карточки бонусов/подписки (полоса «клуба»)
@@ -546,7 +548,7 @@ function initCabinet() {
       '<div class="club-strip reveal">' + bits.join('<span class="cs-dot">·</span>') +
       '<button type="button" class="linkbtn cs-more" id="clubToggle">' +
       (st.clubOpen ? 'свернуть' : (sub ? 'подробнее и куратор' : 'бонусы и подписка')) + '</button></div>' +
-      (st.clubOpen ? bonusCard() + subCard() : '');
+      (st.clubOpen ? bonusCard() + depCard() + subCard() : '');
   }
 
   /* -------- бонусный счёт (только для вошедших) -------- */
@@ -581,6 +583,47 @@ function initCabinet() {
         '<div class="bc-act"><button type="button" class="btn btn-line" id="bonusLogBtn">' +
           (st.ledgerOpen ? 'Скрыть журнал' : 'Журнал начислений') + '</button>' +
         '<button type="button" class="btn btn-line" id="bonusRefBtn">Пригласить друга</button></div>' +
+      '</div>' + led + '</div>';
+  }
+
+  /* -------- депозит мастерской: кошелёк-аванс с бонусом за пополнение ------
+     Деньги кошелька оплачивают этапы заказов в один клик (чек НПД пробит
+     при пополнении); бонусы сверху приходят на общий бонусный счёт. */
+  function depCard() {
+    var d = st.me && st.me.deposit;
+    if (!d) return '';
+    var led = '';
+    if (st.depLedgerOpen) {
+      led = '<div class="cbn-ledger" id="depLedger">' +
+        (st.depLedger === null ? '<p class="petit" style="padding:8px 0">Листаем журнал…</p>'
+          : (st.depLedger.length ? st.depLedger.map(function (r) {
+              var plus = r.delta > 0;
+              return '<div class="bl-row">' +
+                '<span class="bl-delta ' + (plus ? 'plus' : 'minus') + '">' +
+                  (plus ? '+' : '−') + money(Math.abs(r.delta)) + '</span>' +
+                '<span class="bl-what">' + esc(r.note || r.kind) +
+                  (r.order_id ? ' · заказ №' + r.order_id : '') + '</span>' +
+                '<span class="bl-when">' + dt(r.at) + '</span></div>';
+            }).join('') : '<p class="petit" style="padding:8px 0">Движений пока нет — кошелёк ждёт первого пополнения.</p>')) +
+        '</div>';
+    }
+    var tops = (d.can_topup !== false)
+      ? '<div class="bc-act">' + [20000, 30000, 45000, 60000].map(function (a) {
+          var pct = 0;
+          (d.rates || []).forEach(function (rr) { if (a >= rr.from) pct = rr.pct; });
+          return '<button type="button" class="btn btn-line" data-dep-topup="' + a + '">+' +
+            money(a) + ' <small>· бонус +' + pct + '%</small></button>';
+        }).join('') + '</div>'
+      : '<p class="bc-exp">Потолок кошелька достигнут — сначала потратьте часть на этапы.</p>';
+    return '<div class="cbn-card reveal" id="depCard">' +
+      '<div><span class="bc-cap">💼 Депозит мастерской</span>' +
+      '<span class="bc-num">' + money(d.balance) + '</span></div>' +
+      '<div class="bc-side">' +
+      '<p class="bc-exp">Пополнили кошелёк — бонусы сверху: от +8% за 20 000 ₽ до +15% за 60 000 ₽. ' +
+      'Кошельком оплачиваются этапы заказов в один клик; чек приходит при пополнении.</p>' +
+      tops +
+      '<div class="bc-act"><button type="button" class="btn btn-line" id="depLogBtn">' +
+        (st.depLedgerOpen ? 'Скрыть журнал' : 'Журнал кошелька') + '</button></div>' +
       '</div>' + led + '</div>';
   }
 
@@ -1305,9 +1348,13 @@ function initCabinet() {
     var req = o.requisites
       ? paySlip(o, due, o.due_now && o.due_now.label)
       : (o.pay_online ? '' : '<p class="petit">Реквизиты пришлём в чат ниже (и в Telegram) в течение пары минут.</p>');
+    var depBal = (st.me && st.me.deposit && st.me.deposit.balance) || 0;
+    var depDue = (o.due_now && o.due_now.amount) || 0;
+    var depBtn = depBal >= depDue && depDue > 0;
     var payBtns = '<div class="act-row">' +
-      (o.pay_online ? '<button type="button" class="btn btn-wax" data-act-pay>💳 Оплатить картой онлайн</button>' : '') +
-      '<button type="button" class="btn ' + (o.pay_online ? 'btn-line' : 'btn-wax') + '" data-act="paid">Я оплатил(а) переводом</button>' +
+      (depBtn ? '<button type="button" class="btn btn-wax" data-act-pay-dep>💼 С депозита — ' + money(depDue) + ' ₽</button>' : '') +
+      (o.pay_online ? '<button type="button" class="btn ' + (depBtn ? 'btn-line' : 'btn-wax') + '" data-act-pay>💳 Оплатить картой онлайн</button>' : '') +
+      '<button type="button" class="btn ' + (o.pay_online || depBtn ? 'btn-line' : 'btn-wax') + '" data-act="paid">Я оплатил(а) переводом</button>' +
       '<button type="button" class="btn btn-line" data-chat-focus>Вопрос по оплате</button></div>';
     return head + req + payBtns + payHistory(o) + '</div>';
   }
@@ -1899,6 +1946,40 @@ function initCabinet() {
       });
   }
 
+  function depTopup(amount) {
+    if (st.busy) return;
+    st.busy = true;
+    S.api.post('/deposit/topup', { amount: amount })
+      .then(function (r) {
+        st.busy = false;
+        if (!r.ok || !r.url) {
+          toast(r.error === 'over_limit'
+            ? 'Потолок кошелька 120 000 ₽ — сначала потратьте часть'
+            : 'Не получилось открыть оплату — напишите мастеру');
+          return;
+        }
+        toast('Открываем оплату: +' + money(r.bonus) + ' бонусами сверху (+' + r.pct + '%)');
+        var w = window.open(r.url, '_blank', 'noopener');
+        if (!w) location.href = r.url;
+      });
+  }
+
+  function payDeposit() {
+    if (st.busy) return;
+    st.busy = true;
+    S.api.post('/orders/' + st.currentId + '/pay-deposit', {})
+      .then(function (r) {
+        st.busy = false;
+        if (!r.ok) {
+          toast(r.message || 'Не получилось списать с депозита — попробуйте картой');
+          return;
+        }
+        toast('Этап оплачен с депозита ✓ Остаток: ' + money(r.balance) + ' ₽');
+        loadList(true);
+        S.api.get('/me').then(function (rr) { if (rr.ok) { st.me = rr; } renderCurrent(); });
+      });
+  }
+
   function sendMessage() {
     var ta = document.getElementById('chatText');
     if (!ta) return;
@@ -2254,6 +2335,21 @@ function initCabinet() {
       doAction('gift_apply', { code: gcode });
       return;
     }
+    if (t.closest('#depLogBtn')) {
+      st.depLedgerOpen = !st.depLedgerOpen;
+      renderCurrent();
+      if (st.depLedgerOpen && st.depLedger === null) {
+        S.api.get('/deposit').then(function (r) {
+          st.depLedger = r.ok ? (r.rows || []) : [];
+          renderCurrent();
+        });
+      }
+      if (st.depLedgerOpen) scrollToEl('depLedger');
+      return;
+    }
+    var dtp = t.closest('[data-dep-topup]');
+    if (dtp) { depTopup(+dtp.getAttribute('data-dep-topup')); return; }
+    if (t.closest('[data-act-pay-dep]')) { payDeposit(); return; }
     if (t.closest('#bonusLogBtn')) {
       st.ledgerOpen = !st.ledgerOpen;
       renderCurrent();
