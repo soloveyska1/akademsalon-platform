@@ -52,7 +52,8 @@ body{min-height:100vh;display:grid;place-items:center;padding:24px}
   }
   var k = q('Shp_k'), gift = q('Shp_gift'), kind = q('Shp_kind'), ord = q('Shp_order');
   var to = '';
-  if (k) to = 'zayavka.html#k=' + encodeURIComponent(k);
+  if (kind === 'tip' && ord) to = 'dashboard.html?thanks=' + encodeURIComponent(ord);
+  else if (k) to = 'zayavka.html#k=' + encodeURIComponent(k);
   else if (gift) to = 'gift.html?code=' + encodeURIComponent(gift);
   else if (kind === 'sub') to = 'dashboard.html#plus';
   else if (ord) to = 'dashboard.html?paid=' + encodeURIComponent(ord);

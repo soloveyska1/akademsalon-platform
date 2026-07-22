@@ -1467,7 +1467,7 @@ function initCabinet() {
 
   /* -------- отзыв: просто для тех, кто не любит писать -------- */
   function reviewBlock(o) {
-    if (o.status !== 'done') return '';
+    if (!o.engagement_ready) return '';
     var r = o.review;
     if (r) {
       var stMap = { pending: 'на модерации у мастера', approved: 'опубликован на сайте — спасибо!', rejected: 'сохранён, на сайт не попал' };
@@ -1496,6 +1496,36 @@ function initCabinet() {
       '<div class="act-row" style="margin-top:8px">' +
       '<label class="btn btn-line btn-upload">📎 Приложить скрин (оценка, переписка)<input type="file" id="cabReviewShot" hidden accept="image/*,.pdf"></label></div>' +
       '<p class="petit up-note" id="rvNote" hidden></p>';
+  }
+
+  /* -------- благодарность: только после завершённого дела -------- */
+  function thanksBlock(o) {
+    if (!o.engagement_ready) return '';
+    var tips = o.tips || {};
+    if (tips.total > 0) {
+      return '<div class="fs-sec"><div class="thanks-card th-complete" id="thanksCard" data-tip="500">' +
+        '<span class="caps">После финальной точки</span>' +
+        '<h3 class="th-title">Спасибо за поддержку мастерской 💛</h3>' +
+        '<p class="th-copy">Вы уже оставили ' + money(tips.total) + ' ₽ на развитие проекта. Это правда помогает.</p>' +
+        '<button type="button" class="linkbtn" data-tip-more>Поддержать ещё раз</button>' +
+      '</div></div>';
+    }
+    var paid = '';
+    return '<div class="fs-sec"><div class="thanks-card" id="thanksCard" data-tip="500">' +
+      '<span class="caps">После финальной точки</span>' +
+      '<h3 class="th-title">Оставить благодарность мастерской</h3>' +
+      '<p class="th-copy">Если работа и сопровождение правда помогли, можно поддержать развитие проекта. Только по желанию — на заказ, правки и отношение это никак не влияет.</p>' +
+      paid +
+      '<div class="th-amounts" role="group" aria-label="Сумма благодарности">' +
+        '<button type="button" class="th-chip" data-tip-preset="300" aria-pressed="false">300 ₽</button>' +
+        '<button type="button" class="th-chip on" data-tip-preset="500" aria-pressed="true">500 ₽</button>' +
+        '<button type="button" class="th-chip" data-tip-preset="1000" aria-pressed="false">1 000 ₽</button>' +
+        '<button type="button" class="th-chip" data-tip-preset="2000" aria-pressed="false">2 000 ₽</button>' +
+      '</div>' +
+      '<div class="th-actions"><input class="th-own" id="tipOwn" type="number" inputmode="numeric" min="100" max="30000" step="50" placeholder="Своя сумма" aria-label="Своя сумма благодарности в рублях">' +
+        '<button type="button" class="btn btn-wax" data-tip-pay>Поблагодарить <span class="ar">→</span></button></div>' +
+      '<p class="th-fine">100–30 000 ₽ · оплата картой или через СБП на защищённой странице Robokassa · электронный чек придёт от платёжного сервиса.</p>' +
+    '</div></div>';
   }
 
   var CLIP_SVG = '<svg class="fl-ic" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 12.7 13 19.9a5 5 0 0 1-7.1-7.1l7.9-7.8a3.35 3.35 0 0 1 4.7 4.7l-7.8 7.9a1.68 1.68 0 0 1-2.4-2.4l7.2-7.2"/></svg>';
@@ -1856,7 +1886,7 @@ function initCabinet() {
       jumpChips(o) +
       pauseBand(o) + finalBand(o) + partBand(o) + dueBand(o) +
       priceBlock(o) + giftRestStrip(o) + actionsBlock(o) +
-      stageFold(o) + reviewBlock(o) + defenseBlock(o) +
+      stageFold(o) + reviewBlock(o) + thanksBlock(o) + defenseBlock(o) +
       filesBlock(o) + chatBlock(o) + manageBlock(o) + accessBlock(o) +
       (isArch(o) ? '<p class="petit" style="margin-top:clamp(20px,3vw,28px);padding-top:14px;border-top:1px solid var(--hairline)">' +
         'Дело ' + (o.status === 'done' ? 'завершено' : 'закрыто') + '. ' +
@@ -2080,6 +2110,10 @@ function initCabinet() {
     if (extra && extra.rating != null) body.rating = extra.rating;
     if (extra && extra.text != null) body.text = extra.text;
     if (extra && extra.author != null) body.author = extra.author;
+    if ((action === 'accept_work' || action === 'request_fixes') &&
+        st.detail && st.detail.handoff_artifact_id) {
+      body.artifact_id = st.detail.handoff_artifact_id;
+    }
     var t = tokenFor(st.currentId);
     if (t) body.token = t;
     S.api.post('/orders/' + st.currentId + '/action' + (t ? '?token=' + encodeURIComponent(t) : ''), body)
@@ -2106,6 +2140,7 @@ function initCabinet() {
                   pause_state: 'Пауза тут не применима — обновите страницу',
                   nothing_due: 'Сейчас платить нечего — оплата по заказу закрыта',
                   already_claimed: 'Отметка уже стоит — мастер сверяет поступление',
+                  stale_version: 'Появилась новая версия — карточка обновлена, посмотрите её перед решением',
                   only_finished: 'В архив убираются только завершённые и закрытые дела' }[r.error] ||
                 (r.error === 'not_found' && action === 'gift_apply'
                   ? 'Такого кода нет — проверьте написание' : '') ||
@@ -2169,6 +2204,32 @@ function initCabinet() {
         } else {
           toast('Онлайн-оплата пока не подключена — переведите по реквизитам');
         }
+      });
+  }
+
+  function tipOnline(amount) {
+    if (st.busy) return;
+    amount = parseInt(amount, 10) || 0;
+    if (amount < 100 || amount > 30000) {
+      toast('Укажите сумму от 100 до 30 000 ₽');
+      return;
+    }
+    st.busy = true;
+    var t = tokenFor(st.currentId);
+    var body = { amount: amount };
+    if (t) body.token = t;
+    S.api.post('/orders/' + st.currentId + '/tip' + (t ? '?token=' + encodeURIComponent(t) : ''), body)
+      .then(function (r) {
+        st.busy = false;
+        if (!r.ok || !r.url) {
+          toast(r.error === 'tip_stage'
+            ? 'Благодарность доступна после завершения заказа'
+            : 'Не получилось открыть оплату — попробуйте чуть позже');
+          return;
+        }
+        toast('Открываем защищённую страницу оплаты…');
+        var w = window.open(r.url, '_blank', 'noopener');
+        if (!w) location.href = r.url;
       });
   }
 
@@ -2634,6 +2695,39 @@ function initCabinet() {
       doAction('review', { rating: rating, text: rvText.trim(), author: rvAuthor.trim() });
       return;
     }
+    var tipPreset = t.closest('[data-tip-preset]');
+    if (tipPreset) {
+      var tipCard = tipPreset.closest('#thanksCard');
+      if (!tipCard) return;
+      tipCard.setAttribute('data-tip', tipPreset.getAttribute('data-tip-preset'));
+      tipCard.querySelectorAll('[data-tip-preset]').forEach(function (b) {
+        var on = b === tipPreset;
+        b.classList.toggle('on', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      var own = document.getElementById('tipOwn');
+      if (own) own.value = '';
+      return;
+    }
+    if (t.closest('[data-tip-pay]')) {
+      var card = document.getElementById('thanksCard');
+      var custom = parseInt(((document.getElementById('tipOwn') || {}).value || ''), 10);
+      tipOnline(custom || (card ? card.getAttribute('data-tip') : 500));
+      return;
+    }
+    if (t.closest('[data-tip-more]')) {
+      var done = t.closest('.thanks-card');
+      if (done) {
+        done.classList.remove('th-complete');
+        done.innerHTML = '<span class="caps">Добровольная поддержка</span>' +
+          '<p class="th-copy">Спасибо ещё раз. Выберите сумму — это по-прежнему только по желанию.</p>' +
+          '<div class="th-amounts"><button type="button" class="th-chip on" data-tip-preset="500" aria-pressed="true">500 ₽</button>' +
+          '<button type="button" class="th-chip" data-tip-preset="1000" aria-pressed="false">1 000 ₽</button></div>' +
+          '<div class="th-actions"><input class="th-own" id="tipOwn" type="number" inputmode="numeric" min="100" max="30000" step="50" placeholder="Своя сумма">' +
+          '<button type="button" class="btn btn-wax" data-tip-pay>Поблагодарить <span class="ar">→</span></button></div>';
+      }
+      return;
+    }
     if (t.closest('[data-act-fix]')) { var ff = document.getElementById('fixForm'); if (ff) { ff.hidden = false; document.getElementById('fixText').focus(); } return; }
     if (t.closest('[data-act-fix-cancel]')) { var f2 = document.getElementById('fixForm'); if (f2) f2.hidden = true; return; }
     if (t.closest('[data-act-fix-send]')) {
@@ -2703,7 +2797,7 @@ function initCabinet() {
       st.tab = h0;
       if (h0 === 'club') st.plusOpen = true;
     }
-    if (/[?&]paid=/.test(location.search)) st.tab = 'orders';
+    if (/[?&](paid|thanks)=/.test(location.search)) st.tab = 'orders';
   } catch (e) {}
   window.addEventListener('hashchange', function () {
     var h = (location.hash || '').replace('#', '');
@@ -2745,6 +2839,15 @@ function initCabinet() {
     if (paidId) {
       st.currentId = parseInt(paidId, 10) || null;
       toast('Проверяем оплату — статус обновится в течение минуты');
+      history.replaceState(null, '', location.pathname);
+    }
+  } catch (e) {}
+  /* возврат после добровольной благодарности: открываем то же завершённое дело */
+  try {
+    var thanksId = new URLSearchParams(location.search).get('thanks');
+    if (thanksId) {
+      st.currentId = parseInt(thanksId, 10) || null;
+      toast('Спасибо за поддержку мастерской 💛 Платёж уже подтверждается');
       history.replaceState(null, '', location.pathname);
     }
   } catch (e) {}

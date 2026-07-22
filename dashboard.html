@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260723b" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
@@ -427,6 +427,28 @@
   .ord-jump .oj.hot{border-color:var(--wax);color:var(--wax);font-weight:600}
   .ord-jump .oj:active{background:var(--mark)}
 
+  /* добровольная благодарность после завершённого дела */
+  .thanks-card{position:relative;overflow:hidden;border:1px solid var(--hairline-strong);
+    border-left:4px solid #B98A2F;border-radius:4px;background:var(--sheet);
+    padding:clamp(16px,2.5vw,22px);box-shadow:0 14px 32px -28px rgba(34,32,27,.55)}
+  .thanks-card::after{content:"¶";position:absolute;right:14px;top:-15px;
+    font-family:var(--serif);font-size:82px;line-height:1;color:#B98A2F;opacity:.07;pointer-events:none}
+  .thanks-card .th-title{font-family:var(--serif);font-size:clamp(19px,2.5vw,24px);
+    font-weight:450;line-height:1.3;margin:5px 0 7px;max-width:26ch}
+  .thanks-card .th-copy{font-size:13.5px;line-height:1.55;color:var(--ink-soft);max-width:58ch}
+  .th-amounts{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 10px}
+  .th-chip{min-height:40px;padding:8px 13px;border:1px solid var(--hairline-strong);
+    border-radius:999px;background:transparent;color:var(--ink);font:600 13px var(--mono);cursor:pointer}
+  .th-chip:hover{border-color:var(--wax);color:var(--wax)}
+  .th-chip.on,.th-chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .th-own{width:142px;min-height:42px;padding:9px 11px;border:1px solid var(--hairline-strong);
+    border-radius:var(--r);background:transparent;color:var(--ink);font:16px var(--mono)}
+  .th-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  .th-fine{font-size:11.5px;line-height:1.5;color:var(--ink-faint);margin-top:10px}
+  .th-paid{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:7px 10px;
+    border:1px solid color-mix(in srgb,var(--verify) 38%,var(--hairline));border-radius:999px;
+    color:var(--verify);font-size:12px;font-weight:600}
+
   /* ── адаптив каркаса ── */
   @media(max-width:880px){
     .cab2{display:block}
@@ -472,6 +494,10 @@
     .seg button{flex:1}
     .ovg{grid-template-columns:1fr 1fr;gap:10px}
     .ov-line{min-height:0}
+    .thanks-card{padding:16px 14px}
+    .th-actions{align-items:stretch}
+    .th-own{width:100%}
+    .th-actions .btn{width:100%}
   }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/dashboard.html" />
@@ -516,7 +542,7 @@
   </div>
 </main>
 
-<script src="assets/js/app.js?v=20260723a"></script>
+<script src="assets/js/app.js?v=20260723b"></script>
 <script src="assets/js/extras.js?v=20260723a"></script>
 <script src="assets/js/cabinet.js?v=20260723a"></script>
 </body>

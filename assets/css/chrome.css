@@ -89,6 +89,7 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
 :root[data-theme="dark"] .brand .b-para{box-shadow:inset 0 1px 3px rgba(0,0,0,.55),inset 0 -1px 0 rgba(255,255,255,.06)}
 .brand:hover .b-para{transform:rotate(8deg) scale(1.08)}
 .brand .b-name{font-weight:500}
+.brand .b-short{display:none}
 .nav-links{display:flex;gap:clamp(12px,2vw,26px);margin-left:auto}
 .nav-links a{
   position:relative;font-size:14.5px;color:var(--ink-soft);white-space:nowrap;
@@ -153,26 +154,34 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
 /* ступенчатое сжатие шапки: длинные пункты уходят первыми — всё живёт в «Меню» */
 @media(max-width:1380px){.nav-links a.nav-x{display:none}}
 @media(max-width:1160px){.nav-links a.nav-x2{display:none}}
-@media(max-width:820px){.nav-links{display:none}}
-@media(max-width:640px){
-  .site-header .calm-toggle{display:none}   /* «Спокойный режим» живёт в путеводителе */
-  .nav-tools .theme-toggle{border-left:0}
+@media(max-width:820px){
+  .nav-links{display:none}
+  /* «Рассчитать» уже живёт в нижнем доке, а тема — в Меню. */
+  .nav-cta .btn,.nav-tools{display:none}
+  .nav-cta{gap:8px}
+  .site-header .nav{height:60px;gap:10px}
+  .site-header.scrolled .nav{height:54px}
+  .nav-cab,.menu-toggle{width:42px;min-height:42px;padding:0;justify-content:center}
+  .nav-cab{gap:0}
+  .nav-cab .nc-txt,.menu-toggle .mt-txt{display:none}
 }
 @media(max-width:560px){
-  .nav-cta .btn{display:none}          /* «Рассчитать» несёт нижняя панель-печать */
-  .nav-tools{display:none}             /* тема доступна в «Меню» */
-  .nav-cta{gap:8px}
   .brand .b-name{font-size:15px}
-  .nav-cab{padding:8px 10px;gap:0}
-  .nav-cab .nc-txt{display:none}       /* подпись «Кабинет» несёт нижний док */
 }
 @media(max-width:400px){
-  .brand .b-name{font-size:13.5px}
-  .brand{gap:7px}
-  .brand .b-para{width:25px;height:25px;font-size:15px}
-  .menu-toggle{padding:9px 10px}
-  .menu-toggle .mt-txt{display:none}   /* узкий экран: у «Меню» остаётся пиктограмма-жалюзи */
-  .nav-cab{padding:8px 9px}
+  .site-header .nav{gap:7px}
+  .site-header .brand .b-full{display:none}
+  .site-header .brand .b-short{display:inline}
+  .site-header .brand .b-name{font-size:14px}
+  .site-header .brand{gap:7px}
+  .site-header .brand .b-para{width:25px;height:25px;font-size:15px}
+  .nav-cab,.menu-toggle{width:40px;min-height:40px}
+}
+@media(max-width:350px){
+  .site-header .nav{gap:5px}
+  .site-header .brand{gap:5px}
+  .site-header .brand .b-name{font-size:13px}
+  .nav-cab,.menu-toggle{width:38px;min-height:38px}
 }
 
 /* ============================================================
@@ -642,6 +651,157 @@ body.toc-lock{overflow:hidden}
   .cf-r-set a{padding:0 12px 2px 0!important;margin-right:0!important}
   body{padding-bottom:0!important}
 }
+
+/* ============================================================
+   КОЛОФОН v7 «ПУЛЬТ МАСТЕРСКОЙ»
+   Компактная концевая полоса: вместо длинного каталога —
+   один сильный тезис, живой статус, три канала и складной legal.
+   ============================================================ */
+.site-footer{
+  margin-top:clamp(68px,9vw,112px);padding:clamp(38px,5vw,58px) 0 24px;
+  background:
+    radial-gradient(circle at 72% 0,rgba(213,168,70,.09),transparent 32%),
+    linear-gradient(155deg,#272319 0%,#1E1C17 54%,#181713 100%);
+}
+.site-footer::after{
+  content:"¶";right:clamp(-38px,-2.5vw,-16px);bottom:auto;top:-42px;
+  font-size:clamp(190px,24vw,330px);opacity:.035;transform:rotate(8deg) scaleX(-1);
+}
+.cf7-top{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(330px,.82fr);
+  gap:clamp(30px,6vw,76px);align-items:end;padding-bottom:clamp(26px,4vw,38px)}
+.cf7-brand{min-width:0}
+.cf7-brand .brand{display:inline-flex;color:#F0EADB;margin-bottom:clamp(22px,3vw,32px)}
+.cf7-brand .brand .b-para{color:#E9C972;background:rgba(233,201,114,.07);
+  border-color:rgba(205,164,85,.42);box-shadow:inset 0 1px 2px rgba(0,0,0,.5)}
+.cf7-kicker{margin:0 0 9px;font-family:var(--mono);font-size:10px;line-height:1.4;
+  letter-spacing:.24em;text-transform:uppercase;color:#CDA455}
+.cf7-title{margin:0;color:#F0EADB;font-family:var(--serif);font-size:clamp(31px,4.6vw,52px);
+  font-weight:330;line-height:1.03;letter-spacing:-.025em;text-wrap:balance}
+.cf7-title em{font-weight:330;color:#E9C972}
+.cf7-copy{max-width:56ch;margin:17px 0 0;color:#AFA895;font-size:14.5px;line-height:1.65}
+.cf7-action{min-width:0;padding:20px;border:1px solid #403A2C;border-radius:3px;
+  background:rgba(255,253,246,.025);box-shadow:9px 9px 0 rgba(0,0,0,.12)}
+.cf7-status{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid #3A362B}
+.cf7-status .cf-clock{margin:0}
+.cf7-status .cf-live{margin:0;text-align:right}
+.cf7-status .fcl-dot{display:none}
+.cf7-cta{display:grid;grid-template-columns:1.25fr .9fr;gap:8px}
+.cf7-btn{min-height:45px;display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:10px 14px;border-radius:2px;border:1px solid transparent;font-size:13px;
+  font-weight:500;line-height:1.25;text-align:center;cursor:pointer;transition:.18s ease;
+  background:none;font-family:var(--sans)}
+.cf7-btn--gold{color:#201D17;background:#E4C36B;border-color:#E4C36B}
+.cf7-btn--gold:hover{background:#F0D787;border-color:#F0D787;transform:translateY(-1px)}
+.cf7-btn--gold span{font-family:var(--serif);font-size:18px;transition:transform .18s ease}
+.cf7-btn--gold:hover span{transform:translateX(3px)}
+.cf7-btn--ghost{color:#D8D1C0;border-color:#514A39}
+.cf7-btn--ghost:hover{color:#F0EADB;border-color:#8F846A;background:rgba(255,255,255,.035)}
+.cf7-facts{display:flex;flex-wrap:wrap;gap:7px 14px;margin:13px 0 0;color:#89816D;
+  font-family:var(--mono);font-size:9px;line-height:1.5;letter-spacing:.11em;text-transform:uppercase}
+.cf7-facts span{display:inline-flex;align-items:center;gap:14px}
+.cf7-facts span+span::before{content:"\00b7";color:#B98A2F}
+
+.cf7-board{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(255px,.55fr);
+  border:1px solid #3A362B;border-left:0;border-right:0}
+.cf7-channels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));min-width:0}
+.cf7-channels>a{position:relative;min-width:0;min-height:106px;display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;gap:13px;align-items:center;padding:17px;
+  border-right:1px solid #3A362B;color:#CFC8B8;transition:background .18s,color .18s}
+.cf7-channels>a:hover{color:#F0EADB;background:rgba(233,201,114,.055)}
+.cf7-no{align-self:start;padding-top:3px;color:#77705E;font-family:var(--mono);font-size:9px;letter-spacing:.12em}
+.cf7-channels b,.cf7-guide b{display:block;font-size:13.5px;font-weight:500;line-height:1.25;color:inherit}
+.cf7-channels small,.cf7-guide small{display:block;margin-top:5px;color:#8F8876;font-size:11px;line-height:1.35}
+.cf7-channels i{align-self:start;font-family:var(--serif);font-size:16px;font-style:normal;color:#CDA455;
+  transition:transform .2s ease}
+.cf7-channels>a:hover i{transform:translate(2px,-2px)}
+.cf7-route{display:flex;flex-direction:column;min-width:0;padding:13px 0 10px 18px}
+.cf7-guide{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:13px;
+  min-height:61px;color:#CFC8B8;padding:8px 10px;transition:background .18s,color .18s}
+.cf7-guide:hover{color:#F0EADB;background:rgba(255,255,255,.03)}
+.cf7-guide-mark{width:31px;height:31px;display:grid;place-items:center;border:1px solid #6B5A34;
+  border-radius:50%;font-family:var(--serif);font-size:19px;color:#E9C972;transition:transform .35s ease}
+.cf7-guide:hover .cf7-guide-mark{transform:rotate(-15deg)}
+.cf7-guide>i{font-family:var(--serif);font-style:normal;color:#CDA455;transition:transform .18s}
+.cf7-guide:hover>i{transform:translateX(3px)}
+.cf7-quick{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:auto;padding:7px 10px 0}
+.cf7-quick a{color:#9D9582;font-family:var(--mono);font-size:9.5px;line-height:1.4;
+  letter-spacing:.06em;text-transform:uppercase;padding:4px 0;border-bottom:1px solid transparent}
+.cf7-quick a:not(:last-child)::after{content:"/";margin-left:6px;color:#514A3A}
+.cf7-quick a:hover,.cf7-quick a[aria-current="page"]{color:#E9C972;border-color:#6B5A34}
+
+.cf7-legal{border-bottom:1px solid #3A362B;color:#AAA28F}
+.cf7-legal>summary{list-style:none;display:grid;grid-template-columns:1fr auto auto;align-items:center;
+  gap:18px;min-height:49px;padding:10px 2px;cursor:pointer;font-family:var(--mono);font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;color:#AAA28F}
+.cf7-legal>summary::-webkit-details-marker{display:none}
+.cf7-legal>summary small{font-size:9px;letter-spacing:.08em;color:#716A59;text-transform:none}
+.cf7-legal>summary i{width:24px;height:24px;display:grid;place-items:center;font-family:var(--serif);
+  font-size:18px;font-style:normal;color:#CDA455;transition:transform .2s ease}
+.cf7-legal[open]>summary i{transform:rotate(45deg)}
+.cf7-legal-in{display:grid;grid-template-columns:minmax(260px,1fr) minmax(300px,1.45fr) auto;
+  gap:18px 28px;align-items:start;padding:5px 2px 20px;color:#918A78;font-size:11.5px;line-height:1.65}
+.cf7-legal-in p{margin:0}
+.cf7-legal-in p b{font-weight:500;color:#D4CCBA}
+.cf7-legal-in nav{display:flex;flex-wrap:wrap;gap:5px 16px}
+.cf7-legal-in nav a{color:#BEB6A5;border-bottom:1px solid #514A3A}
+.cf7-legal-in nav a:hover{color:#F0EADB;border-color:#A79F87}
+.cf7-fns{white-space:nowrap;color:#E0BE64;border:1px solid #6B5524;border-radius:2px;padding:7px 10px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase}
+.cf7-fns:hover{color:#F0D787;border-color:#A88636;background:rgba(233,201,114,.05)}
+
+.cf7-finis{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;
+  padding-top:20px;color:#807966;font-family:var(--mono);font-size:9.5px;line-height:1.6;
+  letter-spacing:.1em;text-transform:uppercase}
+.cf7-finis p{margin:0}
+.cf7-finis p span{color:#B98A2F;margin:0 5px}
+.cf7-made{font-family:var(--serif)!important;font-style:italic;letter-spacing:.02em!important;
+  text-transform:none!important;color:#77705F}
+.cf7-finis .fc-top{font-size:9.5px;color:#AFA795;border-color:#57503F}
+
+@media(max-width:980px){
+  .cf7-top{grid-template-columns:1fr minmax(310px,.8fr);gap:30px}
+  .cf7-title{font-size:clamp(30px,4.6vw,42px)}
+  .cf7-board{grid-template-columns:1fr}
+  .cf7-channels>a:last-child{border-right:0}
+  .cf7-route{padding:9px 0;display:grid;grid-template-columns:minmax(260px,.85fr) 1.15fr;align-items:center}
+  .cf7-quick{margin:0;padding:7px 14px;border-left:1px solid #3A362B}
+  .cf7-legal-in{grid-template-columns:1fr 1.3fr}.cf7-fns{justify-self:start}
+  .cf7-finis{grid-template-columns:1fr auto}.cf7-made{display:none}
+}
+@media(max-width:760px){
+  .cf7-top{grid-template-columns:1fr;gap:23px;align-items:start}
+  .cf7-brand .brand{margin-bottom:22px}
+  .cf7-copy{font-size:14px}
+  .cf7-action{padding:16px;box-shadow:6px 6px 0 rgba(0,0,0,.1)}
+  .cf7-route{grid-template-columns:1fr}.cf7-quick{border-left:0;border-top:1px solid #332F26;padding-top:10px}
+  .cf7-legal-in{grid-template-columns:1fr;gap:14px}
+  .cf7-legal>summary{grid-template-columns:1fr auto}.cf7-legal>summary small{display:none}
+}
+@media(max-width:580px){
+  .site-footer{padding-top:34px}.site-footer::after{display:block;top:-22px;right:-30px;font-size:190px}
+  .cf7-title{font-size:31px}.cf7-copy{max-width:34ch}
+  .cf7-status{align-items:flex-start}.cf7-status .cf-live{max-width:145px;line-height:1.35}
+  .cf7-cta{grid-template-columns:1fr}.cf7-btn{min-height:44px}
+  .cf7-facts{gap:5px 10px}.cf7-facts span+span::before{margin-right:-4px}
+  .cf7-channels{grid-template-columns:1fr 1fr}
+  .cf7-channels>a{min-height:78px;padding:12px;gap:9px}
+  .cf7-channels>a:nth-child(2){border-right:0}.cf7-channels>a:nth-child(3){grid-column:1/-1;
+    border-right:0;border-top:1px solid #3A362B;min-height:66px}
+  .cf7-channels small{font-size:10.5px}.cf7-route{padding:8px 0}
+  .cf7-guide{padding:8px 4px}.cf7-quick{padding-left:4px;padding-right:4px}
+  .cf7-finis{grid-template-columns:1fr auto;gap:10px}.cf7-finis p{max-width:30ch}
+}
+@media(prefers-reduced-motion:reduce){
+  .cf7-btn,.cf7-btn span,.cf7-channels i,.cf7-guide-mark,.cf7-guide>i,.cf7-legal>summary i{transition:none!important}
+}
+@media print{
+  .cf7-action,.cf7-board,.cf7-finis .fc-top{display:none!important}
+  .cf7-top{display:block;padding-bottom:12px}.cf7-brand .brand{margin-bottom:10px}
+  .cf7-title{font-size:26px!important}.cf7-copy{color:#000!important}
+  .cf7-legal>summary{display:none}.cf7-legal-in{display:block!important;padding:8px 0}
+  .cf7-legal-in nav,.cf7-fns{display:none}.cf7-finis{display:block;padding-top:10px}
+}
 main[tabindex="-1"]:focus{outline:none}
 
 /* ============================================================
@@ -721,6 +881,11 @@ main[tabindex="-1"]:focus{outline:none}
 }
 .mnav .mn-badge[hidden]{display:none}
 .mnav .mn-badge.calm{background:var(--stamp,#3A4E7A)}
+@media(max-width:390px){
+  .mnav{padding-left:max(4px,env(safe-area-inset-left));padding-right:max(4px,env(safe-area-inset-right));gap:0}
+  .mnav .mn-i{font-size:9.5px;letter-spacing:0;padding-left:1px;padding-right:1px}
+  .mnav .mn-calc .mn-ic{width:43px;height:43px}
+}
 
 /* Тосты и .onote заменены слоем «Пометки на полях» — extras.css, конец файла */
 
@@ -802,4 +967,3 @@ html[data-calm] .cf-cn{animation:none!important;opacity:1!important}
   /* на телефоне шапка тесная: тумблер живёт в путеводителе */
   .site-header .calm-toggle{display:none}
 }
-

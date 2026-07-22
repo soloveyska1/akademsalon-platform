@@ -1591,9 +1591,14 @@ function initGodEye() {
              ' раз' + (off.opened_at ? ' · последний раз ' + dt(off.opened_at) : '') +
              ' · ' + (OFF_ST[off.status] || off.status) + '</span>' : '') + '</span>';
     if (owned) {
-      return head + '<p class="ag-note">У дела уже есть владелец — ссылку на оплату ' +
-        'выписать нельзя. Так и задумано: ссылка не должна уметь подарить чужое дело ' +
-        'тому, кто её открыл.</p></div>';
+      return head + '<p class="ag-note"><b>✅ Telegram привязан' +
+        (o.client && o.client.username ? ': @' + esc(o.client.username) : '') +
+        '.</b> Сообщения, статусы и файлы можно отправлять прямо в бот; кабинет сайта остаётся синхронной резервной копией.</p>' +
+        '<div class="ag-actrow">' +
+        '<button type="button" class="btn btn-wax" id="agTgSync">📨 Отправить актуальную карточку в Telegram</button>' +
+        (o.bot_claim_url ? '<button type="button" class="btn btn-line" id="agRouteCopy">Скопировать сообщение клиенту</button>' : '') +
+        (o.claim_url ? '<a class="btn btn-line" href="' + esc(o.claim_url) + '" target="_blank" rel="noopener">Открыть его кабинет</a>' : '') +
+        '</div><p class="ag-note">Повторная ссылка в бот безопасна: она откроет уже существующий заказ, а не создаст новый.</p></div>';
     }
     var linkRow = '';
     if (off && off.status !== 'canceled') {
@@ -1628,6 +1633,7 @@ function initGodEye() {
       claimRow = '<div class="ag-actrow" style="margin-bottom:8px">' +
         '<input type="text" class="ag-inp" id="agClaimUrl" readonly style="flex:1;min-width:220px" value="' + esc(o.claim_url) + '">' +
         '<button type="button" class="btn btn-line" id="agClaimCopy">🔑 Ссылка клиента на дело</button>' +
+        (o.bot_claim_url ? '<button type="button" class="btn btn-line" id="agRouteCopy">🤖 Приглашение в бота</button>' : '') +
         '</div>' +
         '<p class="ag-note">Это единственный ключ клиента от дела («потеряли ссылку — восстановим за минуту» — это сюда). Отдавайте только в ту переписку, где договаривались.</p>';
     }
@@ -1832,6 +1838,39 @@ function initGodEye() {
   function partsBlock(o) {
     var total = o.stages_total || 1;
     if ('work check fix done'.indexOf(o.status) < 0 && !(total > 1 && o.price)) return '';
+    if ('work check fix'.indexOf(o.status) >= 0) {
+      var hp = o.handoff_phase || '';
+      var title = 'Передача работы клиенту';
+      var state = '';
+      var action = '';
+      if (!o.handoff_artifact_id || hp === 'fix_requested') {
+        state = o.status === 'fix'
+          ? 'Клиент прислал замечания. Загрузите исправленный полный документ — новый счёт не создаётся.'
+          : 'Загрузите полный документ один раз. Оригинал останется закрытым до принятия защищённой части и оплаты остатка.';
+        action = '<label class="btn btn-wax btn-upload">📄 ' +
+          (o.status === 'fix' ? 'Загрузить исправленную версию' : 'Загрузить готовую работу') +
+          '<input type="file" id="agPreviewFile" multiple accept=".pdf,.doc,.docx,.odt,.rtf,.txt,.ppt,.pptx"></label>';
+      } else if (hp === 'master_review') {
+        state = 'Версия v' + (o.handoff_version || 1) + ' подготовлена: ' +
+          ((o.handoff_files || []).length || 1) + ' файл(а). Откройте все защищённые копии перед отправкой.';
+        action = '<button type="button" class="btn btn-wax" id="agHandoffPublish">✅ Проверено — отправить клиенту</button>' +
+          '<label class="btn btn-line btn-upload">🔁 Заменить пакет<input type="file" id="agPreviewFile" multiple accept=".pdf,.docx,.doc,.odt,.rtf,.txt,.ppt,.pptx"></label>';
+      } else if (hp === 'preview_published') {
+        state = 'Защищённая первая часть у клиента. Ждём: принять или запросить правки.';
+      } else if (hp === 'accepted_wait_pay' || hp === 'releasing') {
+        state = 'Клиент принял защищённую часть. Ждём остаток — после подтверждения чистый оригинал отправится автоматически.';
+      } else if (hp === 'released') {
+        state = 'Чистый оригинал выдан автоматически. Ждём финальную приёмку или новые замечания.';
+      }
+      return '<div class="ag-sec"><span class="caps">' + title +
+        '<span class="sub">версия ' + (o.handoff_version || 0) + '</span></span>' +
+        '<p class="ag-note"><b>' + esc(state) + '</b></p>' +
+        (action ? '<div class="ag-actrow">' + action + '</div>' : '') +
+        '<p class="ag-note">Можно выбрать сразу работу, презентацию и речь. Для каждого файла создаётся отдельная защищённая копия; чистый пакет уйдёт автоматически только после принятия и оплаты.</p>' +
+        ((o.handoff_files || []).length ? '<p class="ag-note"><b>Пакет:</b> ' +
+          o.handoff_files.map(esc).join(' · ') + '</p>' : '') +
+        '<p class="ag-note" id="agUpNote" hidden></p></div>';
+    }
     var cells = '';
     if (total > 1) {
       for (var n = 1; n <= total; n++) {
@@ -1877,7 +1916,7 @@ function initGodEye() {
           (announced && !o.final_ready && total > 1 ? '' : 'Сдать ') + deliverWord + ' файлом' +
           (held ? ' · этап не оплачен ⚠️' : '') +
           '<input type="file" id="agDeliverFile"></label>' +
-          '<label class="btn btn-line btn-upload">🔒 Предпросмотр клиенту<input type="file" id="agPreviewFile" accept=".pdf,.doc,.docx,.odt,.rtf,.txt"></label>' +
+          '<label class="btn btn-line btn-upload">🔒 Предпросмотр клиенту<input type="file" id="agPreviewFile" multiple accept=".pdf,.doc,.docx,.odt,.rtf,.txt,.ppt,.pptx"></label>' +
           '<label class="btn btn-line btn-upload">📎 Просто отправить файл<input type="file" id="agPlainFile"></label>' +
           (o.status !== 'check' ? '<button type="button" class="btn btn-line" id="agDeliverMark">Файлы уже у клиента — зафиксировать сдачу</button>' : '') +
           '</div>' +
@@ -2480,10 +2519,14 @@ function initGodEye() {
   }
 
   function uploadAdminFile(input, deliver, preview) {
-    var f = input.files && input.files[0];
-    if (!f || !st.sel) return;
-    if (f.size > 20 * 1024 * 1024) { toast('Файл больше 20 МБ — такие не пролезают и через группу (лимит Telegram-бота). Загрузите на диск и пришлите клиенту ссылку в переписке.'); return; }
-    sendAdminFile(f, deliver, preview, false);
+    var files = input.files ? Array.prototype.slice.call(input.files) : [];
+    if (!files.length || !st.sel) return;
+    if (!preview) files = [files[0]];
+    if (files.length > 10) { toast('В одном пакете можно передать до 10 файлов.'); return; }
+    if (files.some(function (f) { return f.size > 20 * 1024 * 1024; })) {
+      toast('Один из файлов больше 20 МБ — такие не пролезают через Telegram-бота.'); return;
+    }
+    sendAdminFiles(files, deliver, preview, false);
   }
 
   /* «этап не оплачен» (409 stage_unpaid): файл придержан сервером — объясняем
@@ -2509,16 +2552,18 @@ function initGodEye() {
     }).then(function (res) { if (res.ok) retry(); });
   }
 
-  function sendAdminFile(f, deliver, preview, force) {
+  function sendAdminFiles(files, deliver, preview, force) {
+    var f = files[0];
+    var names = files.map(function (x) { return x.name; });
     var note = document.getElementById('agUpNote');
     if (note) {
       note.hidden = false;
       note.textContent = preview
-        ? 'Готовим защищённый предпросмотр «' + f.name + '» — обычно до минуты…'
+        ? 'Сохраняем пакет (' + files.length + ') и готовим защищённые копии: ' + names.join(' · ') + '…'
         : 'Отправляем «' + f.name + '»…';
     }
     var fd = new FormData();
-    fd.append('file', f, f.name);
+    files.forEach(function (item) { fd.append('file', item, item.name); });
     var q = preview ? 'preview=1' : 'deliver=' + (deliver ? '1' : '0');
     if (force) q += '&force=1';
     fetch(S.api.base + '/admin/orders/' + st.sel + '/upload?' + q, {
@@ -2528,20 +2573,20 @@ function initGodEye() {
       .then(function (r) {
         if (!r.ok && r.error === 'stage_unpaid') {
           if (note) note.textContent = '✋ Файл придержан: этап не оплачен (' + money(r.debt) + ' ₽).';
-          unpaidDialog(r, deliver, function () { sendAdminFile(f, deliver, preview, true); });
+          unpaidDialog(r, deliver, function () { sendAdminFiles(files, deliver, preview, true); });
           return;
         }
         if (!r.ok) {
-          var perr = { preview_format: 'Формат не поддержан — PDF, DOCX, DOC, ODT, RTF',
+          var perr = { preview_format: 'Формат не поддержан — PDF, DOCX, DOC, ODT, RTF, PPTX или PPT',
                        preview_failed: 'Не получилось собрать предпросмотр — проверьте файл' }[r.error];
+          if (r.filename && perr) perr += ': ' + r.filename;
           if (note) note.textContent = (perr || 'Не ушло (' + (r.error || 'ошибка') + ')');
           toast(perr || 'Файл не отправился');
           return;
         }
         if (preview) {
-          if (note) note.textContent = '🔒 Предпросмотр у клиента ✓ — оригинал остался у вас' +
-            (r.due ? '; счёт этапа ' + money(r.due) + ' ₽ приложен' : '');
-          toast('🔒 Предпросмотр отправлен');
+          if (note) note.textContent = '✅ Пакет из ' + (r.file_count || files.length) + ' файлов подготовлен. Клиент его ещё не видел — откройте все проверочные копии в рабочей ветке и подтвердите отправку.';
+          toast('Пакет готов к вашей проверке');
         } else {
           if (note) note.textContent = deliver ? 'Сдано ✓ — клиент получил кнопки приёмки' : 'Файл у клиента ✓';
           toast(deliver ? '📦 Сдача зафиксирована' : (r.delivered_tg ? 'Файл доставлен в Telegram ✓' : 'Файл в деле — клиент увидит в кабинете'));
@@ -2553,6 +2598,15 @@ function initGodEye() {
 
   root.addEventListener('click', function (e) {
     var t = e.target;
+    if (t.closest('#agHandoffPublish')) {
+      var pb = t.closest('#agHandoffPublish');
+      if (!st.card || !st.card.handoff_artifact_id) return;
+      pb.disabled = true;
+      busyPost('/admin/orders/' + st.sel + '/handoff/' + st.card.handoff_artifact_id + '/publish', {})
+        .then(function (r) { afterOrder(r, r.ok ? 'Защищённая версия отправлена клиенту ✓' : ''); })
+        .catch(function () { pb.disabled = false; toast('Сеть прервалась — попробуйте ещё раз'); });
+      return;
+    }
     if (t.closest('#agTg')) {
       var b = t.closest('#agTg');
       b.disabled = true; b.textContent = 'Подтвердите в боте…';
@@ -2910,6 +2964,32 @@ function initGodEye() {
       if (!cu) return;
       try { navigator.clipboard.writeText(cu); toast('Ссылка клиента в буфере ✓ — продублируйте её в переписку'); }
       catch (e) { toast('Скопируйте вручную из поля'); }
+      return;
+    }
+
+    if (t.closest('#agRouteCopy')) {
+      var co = st.card || {};
+      var nm = (co.client && co.client.name) || 'Здравствуйте';
+      var routeText = nm + ', ваш заказ ' + (co.no || ('№' + co.id)) +
+        ' «' + (co.work_label || 'работа') + '» уже в системе.\n' +
+        'Чтобы получать сообщения, статусы и готовые файлы прямо в Telegram, откройте бота по персональной ссылке:\n' +
+        (co.bot_claim_url || '') +
+        (co.claim_url ? '\n\nРезервный доступ к делу на сайте:\n' + co.claim_url : '');
+      try { navigator.clipboard.writeText(routeText); toast('Сообщение для клиента скопировано ✓'); }
+      catch (e) { toast('Не скопировалось — откройте ссылки вручную'); }
+      return;
+    }
+
+    if (t.closest('#agTgSync')) {
+      var sb = t.closest('#agTgSync');
+      sb.disabled = true;
+      api('/admin/orders/' + st.sel + '/sync_tg', {}).then(function (r) {
+        sb.disabled = false;
+        if (r && r.ok) toast('Актуальная карточка отправлена клиенту в Telegram ✓');
+        else toast(r && r.error === 'telegram_not_linked'
+          ? 'Клиент ещё не запускал бота — скопируйте ему приглашение'
+          : 'Telegram недоступен; кабинет сайта продолжает работать');
+      });
       return;
     }
 
