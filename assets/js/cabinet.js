@@ -534,13 +534,17 @@ function initCabinet() {
       return '';
     }
     if (st.me.sub_pending) {
-      return subPendingCard(st.me.sub_pending) + (st.plusOpen ? plusSection() : '');
+      /* неоплаченная подписка не прячет кошелёк и бонусы (баг 2026-07-22) */
+      return subPendingCard(st.me.sub_pending) + (st.plusOpen ? plusSection() : '') +
+             bonusCard() + depCard();
     }
     var b = st.me.bonus || {};
     var sub = st.me.sub;
     var bits = ['<span class="cs-item">💎 <b>' + money(b.balance || 0) + '</b> бонусов</span>'];
     var exp = (b.expiring || [])[0];
     if (exp) bits.push('<span class="cs-item cs-warn">⏳ ' + exp.amount + ' сгорят ' + dt(exp.at).slice(0, 5) + '</span>');
+    var depB = (st.me.deposit || {}).balance || 0;
+    if (depB) bits.push('<span class="cs-item">💼 <b>' + money(depB) + ' ₽</b> на депозите</span>');
     bits.push(sub
       ? '<span class="cs-item">' + esc(sub.emoji || '⭐') + ' Салон+ до <b>' + esc(sub.expires_ru) + '</b></span>'
       : '<span class="cs-item">⭐ Салон+ <span class="petit">от 449 ₽</span></span>');
