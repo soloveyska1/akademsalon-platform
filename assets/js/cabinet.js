@@ -360,9 +360,8 @@ function initCabinet() {
 
   function tplEmpty() {
     /* порядок по значимости: сначала дело (здесь — приглашение его завести),
-       клубные карточки — после */
-    return userRow() +
-      '<div class="sheet sheet-pad stacked reveal" style="text-align:center">' +
+       клубные карточки — после; личность живёт в стойке каркаса */
+    return '<div class="sheet sheet-pad stacked reveal" style="text-align:center">' +
       '<p class="caps">Картотека пуста</p>' +
       '<h2 class="ord-type">Заказов пока нет</h2>' +
       '<p class="petit" style="margin-bottom:16px">Соберите смету в конфигураторе — заявка попадёт к мастеру мгновенно, а статус появится прямо здесь.</p>' +
@@ -435,29 +434,8 @@ function initCabinet() {
     } catch (e) { return false; }
   }
 
-  function userRow() {
-    if (impMode()) {
-      var nm = '';
-      try { nm = sessionStorage.getItem('salon_imp_name') || ''; } catch (e) {}
-      return '<div class="cab-id reveal" style="border:1px dashed var(--wax);background:var(--wax-soft);border-radius:6px;padding:8px 10px">' +
-        '<span>👁 <b>Режим мастера</b> — кабинет клиента' + (nm ? ' <b>' + esc(nm) + '</b>' : '') +
-        '. Действия настоящие, но тихо: визиты и метки «прочитано» не трогаются.</span>' +
-        '<span class="ci-act"><button type="button" class="linkbtn" id="cabImpExit">закрыть режим</button></span></div>' +
-        notiRow();
-    }
-    var u = S.api.user();
-    if (S.api.token() && u) {
-      return '<div class="cab-id reveal">' +
-        '<span>Вы вошли как <b>' + esc(u.name || 'гость') + '</b>' + (u.username ? ' (@' + esc(u.username) + ')' : '') + '</span>' +
-        '<span class="ci-act"><button type="button" class="linkbtn" id="cabLogout">выйти</button></span></div>' +
-        linksRow() +
-        notiRow();
-    }
-    return '<div class="cab-id reveal"><span class="ci-dot guest"></span>' +
-      '<span>Гостевой доступ — заказы видны на этом устройстве</span>' +
-      '<span class="ci-act"><button type="button" class="linkbtn wax" id="cabTg">войти через Telegram — заказы привяжутся к вам</button></span></div>' +
-      notiRow();
-  }
+  /* Строка личности v2 (userRow) заменена стойкой каркаса:
+     profileCard()/impBanner() в renderTab; notiRow/linksRow живут в «Помощи». */
 
   /* -------- «Сейчас важно»: одно главное действие по всем делам --------
      Кабинет сам ранжирует: оплата → решение по цене → приёмка → новое.
@@ -1583,15 +1561,19 @@ function initCabinet() {
       hasMsgs || !!o.unread);
   }
 
-  /* -------- доступ к делу: секретная ссылка для других устройств -------- */
-  function accessBlock(o) {
+  /* -------- доступ к делу: секретная ссылка для других устройств --------
+     uid=true — режим «Помощи», где блок рендерится ПО КАЖДОМУ делу:
+     id уникальные (иначе дубли secAccess), токен зашит в кнопку —
+     копироваться обязан токен ЭТОГО дела, а не текущего открытого */
+  function accessBlock(o, uid) {
     var t = tokenFor(o.id);
     if (!t) return ''; /* заказы аккаунта открываются входом через Telegram */
-    return fold('secAccess', '🔑 Доступ к делу', 'ссылка для других устройств',
+    return fold(uid ? 'secAccess-' + o.id : 'secAccess',
+      '🔑 Доступ к делу' + (uid ? ' ' + esc(o.no) : ''), 'ссылка для других устройств',
       '<p class="petit" style="margin-bottom:10px">Дело открывается на любом устройстве по секретной ссылке — сохраните её себе (заметки, «Избранное»). ' +
       'Не пересылайте посторонним: у кого ссылка, тот видит дело. По желанию привяжите Telegram — статусы придут и в бота.</p>' +
       '<div class="act-row" style="margin-top:0">' +
-      '<button type="button" class="btn btn-line" data-access-copy>Скопировать ссылку доступа</button>' +
+      '<button type="button" class="btn btn-line" data-access-copy="' + esc(t) + '">Скопировать ссылку доступа</button>' +
       '<a class="btn btn-line" href="https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(t) + '" target="_blank" rel="noopener">Привязать Telegram</a>' +
       '</div>', false);
   }
@@ -1623,18 +1605,113 @@ function initCabinet() {
   var TABS = [['home', 'Обзор'], ['orders', 'Дела'], ['wallet', 'Кошелёк'],
               ['club', 'Клуб'], ['help', 'Помощь']];
 
-  function navTabs() {
+  /* ── иконки разделов: гравюрные штрихи, currentColor ── */
+  var ICO = {
+    home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.2C10 4.9 7.6 4.3 4 4.3v13.4c3.6 0 6 .6 8 1.9 2-1.3 4.4-1.9 8-1.9V4.3c-3.6 0-6 .6-8 1.9z"/><path d="M12 6.2v13.4"/></svg>',
+    orders: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 17.5v-11A1.5 1.5 0 0 1 5 5h4l2 2.2h8a1.5 1.5 0 0 1 1.5 1.5v8.8A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M3.5 10.2h17"/></svg>',
+    wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6h11.7v2H5.5A1.5 1.5 0 0 1 4 7.5zm0 0V17a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 17V9.5A1.5 1.5 0 0 0 18.5 8"/><path d="M15.6 12.8h3"/></svg>',
+    club: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16v3.2a1.9 1.9 0 0 0 0 3.6V17H4v-3.2a1.9 1.9 0 0 0 0-3.6V7z"/><path d="M9.5 7v10" stroke-dasharray="2.4 2.6"/></svg>',
+    help: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.3"/><path d="M14.9 9.1l-1.7 4.1-4.1 1.7 1.7-4.1 4.1-1.7z"/></svg>'
+  };
+
+  function tabBadges() {
     var unread = 0;
     st.orders.forEach(function (o) { unread += (o.unread || 0) + (o.files_new || 0); });
-    var badges = {
-      orders: unread > 0 ? String(unread) : '',
+    return {
+      orders: unread > 0 ? (unread > 99 ? '99+' : String(unread)) : '',
       club: (st.me && st.me.sub_pending) ? '!' : ''
     };
-    return '<nav class="cabnav reveal" aria-label="Разделы кабинета">' + TABS.map(function (t) {
-      return '<button type="button" class="cn-tab' + (st.tab === t[0] ? ' on' : '') +
-        '" data-tab="' + t[0] + '" aria-current="' + (st.tab === t[0]) + '">' + t[1] +
-        (badges[t[0]] ? '<span class="cn-b">' + badges[t[0]] + '</span>' : '') + '</button>';
-    }).join('') + '</nav>';
+  }
+  function tabRow(cls, icoCls, lblCls) {
+    var b = tabBadges();
+    return TABS.map(function (t) {
+      return '<button type="button" class="' + cls + (st.tab === t[0] ? ' on' : '') +
+        '" data-tab="' + t[0] + '" aria-current="' + (st.tab === t[0]) + '">' +
+        '<span class="' + icoCls + '" aria-hidden="true">' + ICO[t[0]] + '</span>' +
+        '<span class="' + lblCls + '">' + t[1] + '</span>' +
+        (b[t[0]] ? '<span class="cn-b">' + b[t[0]] + '</span>' : '') + '</button>';
+    }).join('');
+  }
+  /* стойка (десктоп) и нижний док (телефон) — одни и те же data-tab хуки */
+  function navSide() {
+    return '<nav class="cbar-nav reveal" aria-label="Разделы кабинета">' + tabRow('cnav-i', 'ci-ic', 'ci-l') + '</nav>';
+  }
+  function dockTabs() {
+    /* класс mobile-cta даёт бесплатно: скрытие в печати, inert при открытом
+       путеводителе и учёт высоты в extras.js — как у общесайтовой панели */
+    return '<nav class="cabdock mobile-cta" aria-label="Разделы кабинета">' + tabRow('cd-i', 'cd-ic', 'cd-l') + '</nav>';
+  }
+
+  /* режим мастера — вымпел над каркасом (вместо строки личности) */
+  function impBanner() {
+    if (!impMode()) return '';
+    var nm = '';
+    try { nm = sessionStorage.getItem('salon_imp_name') || ''; } catch (e) {}
+    return '<div class="imp-band reveal"><span>👁 <b>Режим мастера</b> — кабинет клиента' +
+      (nm ? ' <b>' + esc(nm) + '</b>' : '') +
+      '. Действия настоящие, но тихо: визиты и метки «прочитано» не трогаются.</span>' +
+      '<button type="button" class="linkbtn" id="cabImpExit">закрыть режим</button></div>';
+  }
+
+  /* профиль в стойке: печать-инициал + статус; хуки #cabLogout/#cabTg живут здесь */
+  function profileCard() {
+    if (impMode()) {
+      var inm = '';
+      try { inm = sessionStorage.getItem('salon_imp_name') || 'клиент'; } catch (e) {}
+      return '<div class="cbar-card reveal"><span class="cbav imp" aria-hidden="true">👁</span>' +
+        '<span class="cbp-txt"><b class="cbp-name">' + esc(inm) + '</b>' +
+        '<span class="cbp-sub">кабинет клиента · режим мастера</span></span></div>';
+    }
+    var u = S.api.token() && S.api.user();
+    if (u) {
+      var letter = String(u.name || 'А').trim().charAt(0).toUpperCase() || 'А';
+      var sub = st.me && st.me.sub;
+      return '<div class="cbar-card reveal">' +
+        '<span class="cbav" aria-hidden="true">' + esc(letter) + '</span>' +
+        '<span class="cbp-txt"><b class="cbp-name">' + esc(u.name || 'Читатель') + '</b>' +
+        '<span class="cbp-sub">' + (u.username ? '@' + esc(u.username) + ' · ' : '') +
+        (sub ? '<b>Салон+</b> до ' + esc(sub.expires_ru || '') : 'аккаунт привязан') + '</span></span>' +
+        '<button type="button" class="linkbtn cbp-out" id="cabLogout">выйти</button></div>';
+    }
+    return '<div class="cbar-card guest reveal">' +
+      '<span class="cbav guest" aria-hidden="true">¶</span>' +
+      '<span class="cbp-txt"><b class="cbp-name">Гостевой доступ</b>' +
+      '<span class="cbp-sub">заказы видны на этом устройстве</span></span>' +
+      '<button type="button" class="btn btn-wax cbp-in" id="cabTg">Войти через Telegram</button></div>';
+  }
+
+  /* мини-кошелёк стойки: бонусы и депозит формулярными строками */
+  function sideMini() {
+    if (!st.me) return '';
+    var b = (st.me.bonus || {}).balance || 0;
+    var d = (st.me.deposit || {}).balance || 0;
+    return '<div class="cbar-mini reveal">' +
+      '<button type="button" class="cbm-row" data-tab="wallet"><span>Бонусы</span><i class="cbm-dots" aria-hidden="true"></i><b>' + money(b) + '</b></button>' +
+      '<button type="button" class="cbm-row" data-tab="wallet"><span>Кошелёк</span><i class="cbm-dots" aria-hidden="true"></i><b>' + money(d) + ' ₽</b></button>' +
+      '</div>';
+  }
+  function sideFoot() {
+    return '<div class="cbar-foot reveal"><button type="button" class="btn btn-line" data-contact="1">Написать мастеру</button></div>';
+  }
+
+  /* заголовок рабочей полосы: раздел + живая мета */
+  function tabHead() {
+    var names = { home: 'Обзор', orders: 'Дела', wallet: 'Кошелёк', club: 'Клуб', help: 'Помощь' };
+    var meta = '';
+    if (st.tab === 'home') {
+      meta = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+    } else if (st.tab === 'orders') {
+      var a = activeOrders().length;
+      meta = st.orders.length ? ('активных · ' + a) : 'картотека пуста';
+    } else if (st.tab === 'wallet' && st.me) {
+      meta = money((st.me.bonus || {}).balance || 0) + ' бон. · ' + money((st.me.deposit || {}).balance || 0) + ' ₽';
+    } else if (st.tab === 'club') {
+      meta = st.me && st.me.sub ? 'Салон+ активен' : 'абонементы и куратор';
+    } else if (st.tab === 'help') {
+      meta = 'связь · доступ · документы';
+    }
+    return '<div class="cbh reveal"><h2 class="cbh-t">' + names[st.tab] + '</h2>' +
+      (meta ? '<span class="cbh-m mono">' + meta + '</span>' : '') + '</div>';
   }
 
   function setTab(tab, silentHash) {
@@ -1647,12 +1724,12 @@ function initCabinet() {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
 
-  function ovCard(tab, ico, title, line, cta) {
+  function ovCard(tab, title, line, cta) {
     return '<button type="button" class="ov-card reveal" data-tab="' + tab + '">' +
-      '<span class="ov-ico" aria-hidden="true">' + ico + '</span>' +
+      '<span class="ov-ico" aria-hidden="true">' + ICO[tab] + '</span>' +
       '<span class="ov-t">' + title + '</span>' +
       '<span class="ov-line">' + line + '</span>' +
-      '<span class="ov-cta">' + cta + ' →</span></button>';
+      '<span class="ov-cta">' + cta + ' <span class="ar">→</span></span></button>';
   }
 
   function homeTab() {
@@ -1663,19 +1740,19 @@ function initCabinet() {
     var unread = 0;
     st.orders.forEach(function (o) { unread += (o.unread || 0) + (o.files_new || 0); });
     var cards =
-      ovCard('orders', '📚', 'Дела',
+      ovCard('orders', 'Дела',
         st.orders.length
-          ? 'активных: ' + act + (unread ? ' · <b class="ov-warn">новое: ' + unread + '</b>' : '')
+          ? 'активных: <b>' + act + '</b>' + (unread ? ' · <b class="ov-warn">новое: ' + unread + '</b>' : '')
           : 'картотека пока пуста',
         st.orders.length ? 'Открыть' : 'Начать') +
-      ovCard('wallet', '💼', 'Кошелёк',
-        money(dep.balance || 0) + ' ₽ на депозите · ' + money(bon.balance || 0) + ' бонусов',
+      ovCard('wallet', 'Кошелёк',
+        '<b>' + money(dep.balance || 0) + ' ₽</b> на депозите · <b>' + money(bon.balance || 0) + '</b> бонусов',
         dep.balance ? 'Открыть' : 'Пополнить') +
-      ovCard('club', '⭐', 'Клуб',
+      ovCard('club', 'Клуб',
         pend ? '<b class="ov-warn">подписка ждёт оплаты</b>'
              : (sub ? 'Салон+ активен до ' + esc(sub.expires_ru || '') : 'Салон+ · от 449 ₽/мес'),
         pend ? 'Оплатить' : 'Подробнее') +
-      ovCard('help', '🧭', 'Помощь', 'связь · доступ к делу · документы', 'Открыть');
+      ovCard('help', 'Помощь', 'связь · доступ к делу · документы', 'Открыть');
     var intro = st.orders.length ? '' :
       '<div class="sheet sheet-pad stacked reveal" style="margin-top:6px">' +
       '<p class="caps" style="margin-bottom:8px">С чего начать</p>' +
@@ -1702,13 +1779,17 @@ function initCabinet() {
     if (!st.me) return loginNudge('Клуб — после входа');
     if (!st.plans) loadPlans();
     var pend = st.me.sub_pending;
-    return (pend ? subPendingCard(pend) : subCard()) + plusSection();
+    /* subCard сам добавляет plusSection при plusOpen — второй раз не звать,
+       иначе витрина и все её id (plusSheet/ctorBox) задваиваются */
+    return pend
+      ? subPendingCard(pend) + (st.plusOpen ? plusSection() : '')
+      : subCard();
   }
 
   function helpTab() {
     var access = '';
     if (!st.me) {
-      st.orders.forEach(function (o) { access += accessBlock(o); });
+      st.orders.forEach(function (o) { access += accessBlock(o, true); });
     }
     return notiRow() + linksRow() + access +
       '<div class="sheet sheet-pad stacked reveal">' +
@@ -1741,7 +1822,17 @@ function initCabinet() {
     else if (st.tab === 'club') inner = clubTab();
     else if (st.tab === 'help') inner = helpTab();
     else inner = homeTab();
-    render(userRow() + navTabs() + inner);
+    render(impBanner() +
+      '<div class="cab2">' +
+        '<aside class="cbar">' + profileCard() + navSide() + sideMini() + sideFoot() + '</aside>' +
+        '<div class="cbody">' + tabHead() + inner + '</div>' +
+      '</div>' + dockTabs());
+    /* док появился ПОСЛЕ замеров app.js: будим measure() — иначе --floor=0
+       и угловые пилюли («Связаться», куки) налезают на док до первого resize */
+    if (!renderTab._floorSynced) {
+      renderTab._floorSynced = true;
+      try { window.dispatchEvent(new Event('resize')); } catch (e) {}
+    }
   }
 
   function tplDetail() {
@@ -1801,6 +1892,11 @@ function initCabinet() {
       ensureFeatures();
       return;
     }
+    /* первая загрузка: скелет формуляра вместо пустого экрана */
+    if (!root.querySelector('.cab2') && !root.querySelector('.cab-login')) {
+      render('<div class="cab-skel reveal" aria-hidden="true">' +
+        '<div class="sk sk1"></div><div class="sk sk2"></div><div class="sk sk3"></div></div>');
+    }
     if (t) {
       S.api.get('/me').then(function (r) {
         if (r.ok) {
@@ -1850,12 +1946,13 @@ function initCabinet() {
   }
 
   function renderCurrent() {
-    if (st.detail) {
-      var draft = (document.getElementById('chatText') || {}).value || '';
-      renderTab();
-      var ta = document.getElementById('chatText');
-      if (ta && draft) ta.value = draft;
-    }
+    /* без открытого дела — обычный ре-рендер вкладки: иначе журналы
+       кошелька/бонусов и переключатели архива молчали при st.detail=null */
+    if (!st.detail) { renderTab(); return; }
+    var draft = (document.getElementById('chatText') || {}).value || '';
+    renderTab();
+    var ta = document.getElementById('chatText');
+    if (ta && draft) ta.value = draft;
   }
 
   function scheduleFilesSeen(order) {
@@ -2184,10 +2281,17 @@ function initCabinet() {
     var tabBtn = t.closest('[data-tab]');
     if (tabBtn) { setTab(tabBtn.getAttribute('data-tab')); return; }
     var sw = t.closest('button[data-ord]');
-    if (sw) { st.tab = 'orders'; st.currentId = parseInt(sw.getAttribute('data-ord'), 10); loadDetail(); return; }
+    if (sw) {
+      st.tab = 'orders';
+      try { history.replaceState(null, '', '#orders'); } catch (e) {}
+      st.currentId = parseInt(sw.getAttribute('data-ord'), 10);
+      loadDetail();
+      return;
+    }
     var nowBtn = t.closest('[data-now-open]');
     if (nowBtn) {
       st.tab = 'orders';
+      try { history.replaceState(null, '', '#orders'); } catch (e) {}
       var nid = parseInt(nowBtn.getAttribute('data-now-open'), 10);
       var njump = nowBtn.getAttribute('data-now-jump') || '';
       if (st.currentId === nid && st.detail) { if (njump) scrollToEl(njump); return; }
@@ -2203,14 +2307,6 @@ function initCabinet() {
       return;
     }
     if (t.closest('[data-open-plus]')) { setTab('club'); return; }
-    if (false) {
-      st.clubOpen = true;
-      st.plusOpen = true;
-      if (!st.plans) loadPlans();
-      rerenderHome();
-      scrollToEl('plusSheet');
-      return;
-    }
     if (t.closest('[data-arch-toggle]')) { st.archOpen = !st.archOpen; renderCurrent(); return; }
     if (t.closest('[data-rem-toggle]')) { st.remOpen = !st.remOpen; renderCurrent(); return; }
     if (t.closest('#cabTg')) { doTgLogin(t.closest('#cabTg')); return; }
@@ -2219,8 +2315,10 @@ function initCabinet() {
     if (t.closest('#cabEmailGo')) { emailVerify(); return; }
     if (t.closest('#cabEmailAgain')) { emailAgain(); return; }
     if (t.closest('#cabClaimBtn')) { claimByCode((document.getElementById('cabClaimIn') || {}).value); return; }
-    if (t.closest('[data-access-copy]')) {
-      var atok = tokenFor(st.currentId);
+    var acp = t.closest('[data-access-copy]');
+    if (acp) {
+      /* токен берём из самой кнопки: в «Помощи» блоки идут по каждому делу */
+      var atok = acp.getAttribute('data-access-copy') || tokenFor(st.currentId);
       if (atok && S.copy) S.copy(S.claimLink ? S.claimLink(atok) : atok).then(function (okc) {
         toast(okc ? 'Ссылка доступа скопирована — сохраните её себе' : 'Не удалось скопировать — выделите ссылку вручную');
       });

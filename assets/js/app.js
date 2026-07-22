@@ -1406,14 +1406,16 @@
     header.innerHTML = '<div class="wrap nav">' + brandHTML() +
       '<nav class="nav-links" aria-label="Разделы">' + navLinks + '</nav>' +
       '<div class="nav-cta">' +
-        Salon.themeToggleHTML() +
-        Salon.calmToggleHTML() +
+        '<span class="nav-tools" role="group" aria-label="Оформление">' +
+          Salon.themeToggleHTML() +
+          Salon.calmToggleHTML() +
+        '</span>' +
         '<a class="nav-cab" href="dashboard.html"' + (here === 'dashboard.html' ? ' aria-current="page"' : '') +
           ' aria-label="Личный кабинет"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 19.4c.9-3.4 3.5-5 6.5-5s5.6 1.6 6.5 5"/></svg><span class="nc-txt">Кабинет</span><span class="nc-badge" hidden></span></a>' +
-        '<a class="btn btn-wax" href="' + calcHref + '">Рассчитать</a>' +
+        '<a class="btn btn-wax" href="' + calcHref + '">Рассчитать <span class="ar" aria-hidden="true">→</span></a>' +
         '<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><span class="mt-txt">Меню</span> <i aria-hidden="true"></i></button>' +
       '</div></div>' +
-      '<span class="hdr-ink" aria-hidden="true"></span>';
+      '<span class="hdr-ink" aria-hidden="true"><i class="hi-tip" aria-hidden="true"></i></span>';
     document.body.insertBefore(header, document.body.firstChild);
     if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк состояния кнопки темы */
   }
@@ -1517,10 +1519,10 @@
   function pad2(n) { return n < 10 ? '0' + n : '' + n; }
   /* Подписи у часов — человеческим языком, без типографского жаргона:
      владелец 2026-07-21 не понял слова «колофон», и это верный сигнал. */
-  var CLOCK_STATE = ['Ночь, отвечаем дольше', 'Мы на связи'];
-  /* строка в листе связи говорит только про СРОК ответа: статус «мы на связи»
-     уже стоит в колонтитуле выше, и повторять его здесь было бы эхом */
-  var CLOCK_ETA = ['Ночью отвечаем в течение нескольких часов',
+  var CLOCK_STATE = ['Ночь в мастерской', 'Мы на связи'];
+  /* строка ниже говорит ТОЛЬКО про срок ответа: слово «ночь» уже стоит
+     в статусе у часов — повторять его здесь было бы эхом (правка 2026-07-22) */
+  var CLOCK_ETA = ['Ответим в течение нескольких часов',
                    'Отвечаем за 15–30 минут'];
 
   /* Наборная строка реестра — складная рубрика (v4, 2026-07-22):
@@ -1547,13 +1549,13 @@
 
     return '<div class="wrap">' +
 
-    /* --- v5 «Компактная полоса»: одна шапка вместо трёх этажей,
-       CTA-дубль удалён (смету на посадочных даёт «Ляссе») --- */
-    '<div class="cf5-top">' +
-      '<div class="cf5-brand">' + brandHTML() +
-        '<p class="cf5-motto">Мастерская, а&nbsp;не биржа: профильный специалист — от плана до защиты · 6 лет · 1000+ работ</p>' +
+    /* --- v6 «Развёрнутая полоса»: манифест | стол связи --- */
+    '<div class="cf6-head">' +
+      '<div class="cf6-brand">' + brandHTML() +
+        '<p class="cf6-motto">Мастерская, а&nbsp;не&nbsp;биржа: профильный специалист ведёт работу от&nbsp;плана до&nbsp;защиты.</p>' +
+        '<p class="cf6-facts">6 лет практики · 1000+ работ · чек НПД на&nbsp;каждый платёж</p>' +
       '</div>' +
-      '<div class="cf5-side">' +
+      '<div class="cf6-desk">' +
         '<p class="cf-clock" data-foot-clock>' +
           '<span class="cf-lamp' + night + '" aria-hidden="true"></span>' +
           '<span class="cf-cl-s">' + CLOCK_STATE[t.day ? 1 : 0] + '</span>' +
@@ -1561,41 +1563,18 @@
             '<span class="cf-cn">:</span><span class="cf-mm">' + pad2(t.m) + '</span>' +
             '<span class="cf-tz">МСК</span></span>' +
         '</p>' +
-        '<p class="cf-live cf5-eta" data-foot-eta><span class="fcl-dot' + night + '" aria-hidden="true"></span>' +
+        '<p class="cf-live" data-foot-eta><span class="fcl-dot' + night + '" aria-hidden="true"></span>' +
           '<span class="cf-live-t">' + CLOCK_ETA[t.day ? 1 : 0] + '</span></p>' +
-        '<p class="cf5-links">' +
-          '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener">ВКонтакте<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
-          '<a href="' + LINKS.human + '" target="_blank" rel="noopener">Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
-          '<a href="' + LINKS.max + '" target="_blank" rel="noopener">MAX<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
-          '<a href="' + LINKS.bot + '" target="_blank" rel="noopener">Бот<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
-        '</p>' +
+        '<div class="cf6-ch">' +
+          '<a class="cf-line" href="' + LINKS.vkm + '" target="_blank" rel="noopener"><span class="cf-l-k">ВКонтакте — написать</span><i class="cf-dots" aria-hidden="true"></i><span class="cf-l-v">vk.me/academicsaloon</span><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
+          '<a class="cf-line" href="' + LINKS.human + '" target="_blank" rel="noopener"><span class="cf-l-k">Telegram — человек</span><i class="cf-dots" aria-hidden="true"></i><span class="cf-l-v">@academicsaloon</span><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
+          '<a class="cf-line" href="' + LINKS.bot + '" target="_blank" rel="noopener"><span class="cf-l-k">Telegram — бот заказов</span><i class="cf-dots" aria-hidden="true"></i><span class="cf-l-v">@academic_saloon_bot</span><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
+          '<a class="cf-line" href="' + LINKS.max + '" target="_blank" rel="noopener"><span class="cf-l-k">Канал в MAX</span><i class="cf-dots" aria-hidden="true"></i><span class="cf-l-v">мастерская</span><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
+        '</div>' +
       '</div>' +
     '</div>' +
 
-    /* --- выходные данные: сложены в рубрику (v5) --- */
-    '<details class="cf-r-row" data-cf-fold>' +
-      '<summary class="cf-r-k">Выходные данные' +
-      '<span class="cf-r-n" aria-hidden="true">ФНС</span>' +
-      '<i class="cf-r-ar" aria-hidden="true">→</i></summary>' +
-      '<span class="cf-r-set cf5-imp">' +
-      '<section class="cf-imprint" aria-labelledby="cf-imp-h">' +
-      '<h2 class="cf-imp-h" id="cf-imp-h">Выходные данные</h2>' +
-      '<dl class="cf-imp-rows">' +
-        '<div class="cf-imp-row"><dt class="cf-imp-k"><span>Исполнитель</span><i class="cf-dots" aria-hidden="true"></i></dt>' +
-          '<dd class="cf-imp-v"><b>Семёнов Семён Юрьевич</b> · самозанятый — плательщик налога на профессиональный доход (Федеральный закон №&nbsp;422-ФЗ) · ИНН <span class="cf-inn">212885750445</span> · г.&nbsp;Казань</dd></div>' +
-        '<div class="cf-imp-row"><dt class="cf-imp-k"><span>Характер услуг</span><i class="cf-dots" aria-hidden="true"></i></dt>' +
-          '<dd class="cf-imp-v">Информационно-консультационная и учебно-методическая помощь для самостоятельной подготовки заказчика — <a href="oferta.html">публичная оферта</a></dd></div>' +
-        '<div class="cf-imp-row"><dt class="cf-imp-k"><span>Данные</span><i class="cf-dots" aria-hidden="true"></i></dt>' +
-          '<dd class="cf-imp-v">Данные из формы заказа используются только для связи и выполнения заказа — <a href="privacy.html">политика ПДн</a></dd></div>' +
-      '</dl>' +
-      '<a class="cf-check" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">' +
-        '<span class="cf-check-k">Открыто для проверки</span>' +
-        '<span class="cf-check-t">Статус самозанятого в реестре ФНС <span class="ar">→</span></span>' +
-        '<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
-    '</section>' +
-      '</span></details>' +
-
-    /* --- реестр: наборные строки вместо колонок --- */
+    /* --- реестр: пять рубрик; на десктопе — наборная касса колонками --- */
     '<div class="cf-reestr">' +
       reestrRow('cf-r1', 'Заказать', [
         ['start.html', 'С чего начать'], ['configurator.html', 'Рассчитать смету'],
@@ -1626,6 +1605,34 @@
       ]) +
     '</div>' +
 
+    /* --- выходные данные: гербовая плита (десктоп держит её раскрытой) --- */
+    '<details class="cf-r-row cf6-impfold" data-cf-fold>' +
+      '<summary class="cf-r-k">Выходные данные' +
+      '<span class="cf-r-n" aria-hidden="true">ФНС</span>' +
+      '<i class="cf-r-ar" aria-hidden="true">→</i></summary>' +
+      '<span class="cf-r-set">' +
+      '<section class="cf-imprint" aria-labelledby="cf-imp-h">' +
+      '<h2 class="cf-imp-h" id="cf-imp-h">Выходные данные</h2>' +
+      '<dl class="cf-imp-rows">' +
+        '<div class="cf-imp-row"><dt class="cf-imp-k"><span>Исполнитель</span><i class="cf-dots" aria-hidden="true"></i></dt>' +
+          '<dd class="cf-imp-v"><b>Семёнов Семён Юрьевич</b> · самозанятый — плательщик налога на профессиональный доход (Федеральный закон №&nbsp;422-ФЗ) · ИНН <span class="cf-inn">212885750445</span> · г.&nbsp;Казань</dd></div>' +
+        '<div class="cf-imp-row"><dt class="cf-imp-k"><span>Характер услуг</span><i class="cf-dots" aria-hidden="true"></i></dt>' +
+          '<dd class="cf-imp-v">Информационно-консультационная и учебно-методическая помощь для самостоятельной подготовки заказчика — <a href="oferta.html">публичная оферта</a></dd></div>' +
+        '<div class="cf-imp-row"><dt class="cf-imp-k"><span>Данные</span><i class="cf-dots" aria-hidden="true"></i></dt>' +
+          '<dd class="cf-imp-v">Данные из формы заказа используются только для связи и выполнения заказа — <a href="privacy.html">политика ПДн</a></dd></div>' +
+      '</dl>' +
+      '<a class="cf-check" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">' +
+        '<span class="cf-check-k">Открыто для проверки</span>' +
+        '<span class="cf-check-t">Статус самозанятого в реестре ФНС <span class="ar">→</span></span>' +
+        '<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
+    '</section>' +
+      '</span></details>' +
+
+    /* --- мостик к Путеводителю: с JS — оверлей, без JS — честный переход --- */
+    '<a class="cf-guide" href="start.html" data-toc-open>' +
+      '<span class="cf-g-t">Не нашли раздел? Путеводитель проведёт по&nbsp;всем страницам</span>' +
+      '<i class="cf-dots" aria-hidden="true"></i>' +
+      '<span class="cf-val">Открыть <span class="ar">→</span></span></a>' +
 
     /* --- концевая полоса-воронка --- */
     '<div class="cf-finis">' +
@@ -1684,6 +1691,21 @@
         if (eta && eta.textContent !== CLOCK_ETA[i]) eta.textContent = CLOCK_ETA[i];
       }, 20000);
     })();
+    /* v6: рубрики реестра и плита выходных данных — details[data-cf-fold].
+       На десктопе они раскрыты «наборной кассой» из колонок, на телефоне
+       свёрнуты в строки-заголовки. Слушаем matchMedia: поворот планшета
+       честно перекладывает подвал в обе стороны. */
+    (function () {
+      var folds = footer.querySelectorAll('[data-cf-fold]');
+      if (!folds.length) return;
+      var mq = window.matchMedia('(min-width: 881px)');
+      function syncFolds() {
+        for (var i = 0; i < folds.length; i++) folds[i].open = mq.matches;
+      }
+      syncFolds();
+      if (mq.addEventListener) mq.addEventListener('change', syncFolds);
+      else if (mq.addListener) mq.addListener(syncFolds);
+    })();
   }
   mountRouteNext(); /* штурман «Дальше по маршруту» — сразу над колофоном.
                        ВАЖНО: вызов обязан оставаться ПОСЛЕ создания подвала —
@@ -1706,7 +1728,8 @@
 
   /* ---------------- Мобильная навигация: нижняя панель на всех страницах ----
      Кабинет всегда на виду (с бейджем), «Рассчитать» — сургучная кнопка. */
-  var MCTA_OFF = CHROME_OFF || here === 'configurator.html' || here === '404.html';
+  /* dashboard: кабинет несёт СВОЙ нижний док с вкладками — общий не монтируем */
+  var MCTA_OFF = CHROME_OFF || here === 'configurator.html' || here === '404.html' || here === 'dashboard.html';
   if (!MCTA_OFF && !document.querySelector('.mobile-cta')) {
     var mnav = document.createElement('nav');
     mnav.className = 'mobile-cta mnav';
@@ -1720,11 +1743,18 @@
         '<span class="mn-l">' + label + '</span>' +
         (cls === ' mn-cab' ? '<span class="mn-badge" hidden></span>' : '') + '</a>';
     }
+    /* «Связь» открывает лист каналов (Salon.contact) — глобальный [data-contact] */
+    var CHAT_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.2h16v10.4H8.6L4 20V6.2z"/><path d="M7.6 10h8.8M7.6 13h5.6"/></svg>';
+    /* перо на печати — SVG: глифа ✒ нет в фирменных подмножествах шрифтов */
+    var PEN_SVG = '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2c2.7 1.9 4.4 4.1 4.4 6.8 0 1.8-.9 3.4-2.4 4.4L12 20.4l-2-6c-1.5-1-2.4-2.6-2.4-4.4 0-2.7 1.7-4.9 4.4-6.8z"/><circle cx="12" cy="10.2" r="1.5"/></svg>';
     mnav.innerHTML =
       mnItem('index.html', 'Главная', '¶') +
       mnItem('tariffs.html', 'Цены', '₽') +
-      mnItem(mnCalc, 'Рассчитать', '✒', ' mn-calc') +
-      mnItem('dashboard.html', 'Кабинет', CAB_SVG, ' mn-cab');
+      mnItem(mnCalc, 'Рассчитать', PEN_SVG, ' mn-calc') +
+      mnItem('dashboard.html', 'Кабинет', CAB_SVG, ' mn-cab') +
+      '<button class="mn-i mn-link" type="button" data-contact="1">' +
+        '<span class="mn-ic" aria-hidden="true">' + CHAT_SVG + '</span>' +
+        '<span class="mn-l">Связь</span></button>';
     document.body.appendChild(mnav);
   }
   /* Внизу колофона зарезервированы 96px под нижнюю панель. Панель бывает
