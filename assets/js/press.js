@@ -12,12 +12,14 @@
   if (!track || !scene) return;
 
   var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  /* Поток — только мобильная вёрстка и no-JS. Системный reduce-motion
+  /* Поток — мобильная вёрстка, no-JS и ЯВНЫЙ «Спокойный режим» (тумблер
+     в шапке ставит html[data-calm] и шлёт resize). Системный reduce-motion
      НЕ понижает раскладку (решение владельца 2026-07-22: полная красота
      по умолчанию для всех — ЯБ/macOS часто шлют reduce без ведома людей),
-     он лишь глушит фоновое: пылинки, дыхание света, тилт, каскад оттиска.
-     Полная статика появится явным тумблером «Спокойный режим» (этап 2). */
-  function flat() { return window.innerWidth <= 880; }
+     он лишь глушит фоновое: пылинки, дыхание света, тилт, каскад оттиска. */
+  function flat() {
+    return window.innerWidth <= 880 || docEl.hasAttribute('data-calm');
+  }
 
   /* режим потока: мобильные и «спокойные» получают страницы без кино */
   function applyMode() {

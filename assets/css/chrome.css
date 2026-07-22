@@ -753,3 +753,34 @@ main[tabindex="-1"]:focus{outline:none}
   .colophon-center .co-line{margin-bottom:22px}
   .cf-finis{margin-top:20px;padding-top:18px}
 }
+
+/* ============ «СПОКОЙНЫЙ РЕЖИМ» (тумблер в шапке) ============
+   Ручной аналог prefers-reduced-motion, осознанный выбор человека:
+   глушит движение всего сайта, слегка поднимает контраст текста и
+   линеек; главную-«Пресс» press.js раскладывает потоком. */
+.calm-toggle{
+  display:inline-grid;place-items:center;width:38px;height:38px;
+  border:1px solid var(--hairline-strong);border-radius:50%;
+  background:none;color:var(--ink-soft);cursor:pointer;
+  transition:color .15s ease,border-color .15s ease;
+}
+.calm-toggle:hover{color:var(--ink);border-color:var(--ink)}
+.calm-toggle[aria-pressed="true"]{color:var(--wax);border-color:var(--wax)}
+html[data-calm] *,html[data-calm] *::before,html[data-calm] *::after{
+  animation-duration:.001ms!important;animation-iteration-count:1!important;
+  transition-duration:.001ms!important;
+}
+html[data-calm]{scroll-behavior:auto!important}
+html[data-calm]{
+  --ink-soft:#57523F;--ink-faint:#6E6754;
+  --hairline:#C9C0AC;--hairline-strong:#A99D80;
+}
+html[data-calm][data-theme="dark"]{
+  --ink-soft:#C8C2B2;--ink-faint:#A39C8A;
+  --hairline:#4A453B;--hairline-strong:#645E50;
+}
+html[data-calm] .cf-cn{animation:none!important;opacity:1!important}
+@media(max-width:640px){
+  /* на телефоне шапка тесная: тумблер живёт в путеводителе */
+  .site-header .calm-toggle{display:none}
+}

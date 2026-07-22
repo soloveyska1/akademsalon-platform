@@ -121,10 +121,271 @@
   <h2>Как досье превращается в оценку</h2>
   <p>Пример из практики. Магистерская по психологии: из досье стало ясно, что руководитель годами работает с тревожностью и доверяет классическим методикам с проверенной валидностью. Эмпирику собрали на Спилбергере—Ханине и Прихожан — тех самых инструментах, на которых руководитель вырос как исследователь. Вопросов к выбору методик на защите не было вовсе; работа прошла на «отлично».</p>
   <p>Страницы этой работы (обезличенные — тема перефразирована, имена и вуз скрыты) — прямо здесь:</p>
-  <div class="figrow">
-    <figure><img src="assets/img/showcase/showcase-2.jpg" width="960" height="1358" loading="lazy" decoding="async" alt="Оглавление настоящей магистерской работы, написанной под досье научрука (обезличено)"><figcaption>оглавление · три главы · обезличено</figcaption></figure>
-    <figure><img src="assets/img/showcase/showcase-4.jpg" width="960" height="1358" loading="lazy" decoding="async" alt="Страница эмпирической главы с таблицей результатов (обезличено)"><figcaption>глава 2 · эмпирика с методиками из досье</figcaption></figure>
+  
+  <!-- Гранки: интерактивная стопка листов с лайтбоксом и лупой (переехала с главной «Пресс», 2026-07-22) -->
+  <style>
+.proof-stack{position:relative;display:grid;max-width:520px;margin-inline:auto;perspective:1200px}
+.pf-leaf{
+  grid-area:1/1;margin:0;background:#fff;border:1px solid var(--hairline);
+  border-radius:2px;overflow:hidden;cursor:zoom-in;
+  box-shadow:0 2px 3px rgba(34,32,27,.10),0 24px 48px -22px rgba(34,32,27,.28);
+  transition:transform .38s cubic-bezier(.22,1,.36,1),box-shadow .38s,opacity .3s;
+  aspect-ratio:960/1358;
+}
+.pf-leaf img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+:root[data-theme="dark"] .pf-leaf{background:#fff}
+:root[data-theme="dark"] .pf-leaf img{filter:brightness(.92)}
+.pf-leaf.top{z-index:3;transform:none}
+.pf-leaf.mid{z-index:2;transform:rotate(-2.4deg) translate(-14px,10px)}
+.pf-leaf.low{z-index:1;transform:rotate(1.6deg) translate(12px,-6px)}
+.enhanced .pf-leaf.top:hover{transform:translateY(-10px) scale(1.015);box-shadow:0 4px 6px rgba(34,32,27,.12),0 34px 60px -20px rgba(34,32,27,.36)}
+.pf-leaf.away{transform:translateX(46%) rotate(6deg)!important;opacity:0}
+.pf-clip{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);z-index:5;
+  width:74px;height:26px;border-radius:4px 4px 6px 6px;
+  background:linear-gradient(160deg,#D9B25C,#B98A2F 55%,#8F6A20);
+  box-shadow:0 2px 4px rgba(34,32,27,.35),inset 0 1px 0 rgba(255,255,255,.5);
+}
+.pf-clip::after{content:"";position:absolute;inset:6px 10px;border-radius:2px;
+  background:linear-gradient(160deg,rgba(255,255,255,.35),transparent 60%)}
+.pf-tag{
+  position:absolute;z-index:6;top:14px;right:-9px;transform:rotate(2deg);
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:#FFF8EE;background:var(--wax);padding:5px 12px;border-radius:2px;
+  box-shadow:0 2px 5px rgba(140,45,24,.35);
+}
+.pf-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;max-width:520px;margin:16px auto 0}
+.pf-counter{
+  font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink);
+  border:1px solid var(--hairline-strong);background:var(--sheet);border-radius:999px;
+  padding:9px 16px;min-height:40px;cursor:pointer;transition:border-color .15s,color .15s;
+}
+.pf-counter:hover{border-color:var(--wax);color:var(--wax)}
+.pf-counter b{font-weight:600}
+
+/* формуляр досье с язычком */
+.dossier{background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:3px;
+  padding:18px 20px;position:relative;
+  box-shadow:0 2px 3px rgba(34,32,27,.08),0 18px 40px -20px rgba(34,32,27,.22)}
+.dossier--tab{margin-top:6px}
+.ds-tab{
+  position:absolute;top:-13px;left:16px;background:var(--paper-2);
+  border:1px solid var(--hairline-strong);border-bottom-color:var(--sheet);
+  border-radius:3px 3px 0 0;padding:4px 14px 6px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);
+}
+.ds-rows{margin:6px 0 0}
+.ds-rows > div{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:9px 0;border-bottom:1px dotted var(--hairline)}
+.ds-rows > div:last-child{border-bottom:0}
+.ds-rows dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);padding-top:3px}
+.ds-rows dd{font-size:14px;line-height:1.55;color:var(--ink)}
+.ds-f,.ds-i{display:inline-block;font-style:normal;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.08em;text-transform:uppercase;border-radius:2px;padding:1.5px 6px;margin-right:5px;vertical-align:1px}
+.ds-f{color:var(--verify);border:1px solid color-mix(in srgb,var(--verify) 45%,transparent)}
+.ds-i{color:var(--stamp-blue,#3A4E7A);border:1px solid color-mix(in srgb,#3A4E7A 40%,transparent)}
+.ds-note{font-size:12px;line-height:1.6;color:var(--ink-soft);margin-top:12px}
+
+/* корешок-трипваер с перфорацией */
+.stub{
+  display:flex;align-items:center;gap:14px;margin-top:22px;padding:14px 18px;
+  border:1px dashed var(--hairline-strong);border-radius:3px;background:var(--sheet);
+  transition:border-color .2s,transform .2s;position:relative;
+}
+.stub::before{content:"";position:absolute;left:-6px;top:50%;width:12px;height:12px;border-radius:50%;
+  transform:translateY(-50%);background:var(--paper);border:1px dashed var(--hairline-strong)}
+.stub:hover{border-color:var(--wax);transform:translateY(-2px)}
+.stub-scis{color:var(--ink-faint);font-size:15px}
+.stub-t{flex:1;font-size:14.5px;line-height:1.45}
+.stub-t b{font-family:var(--mono);font-weight:600}
+.stub-t small{display:block;font-size:12px;color:var(--ink-soft)}
+.stub-ar{font-family:var(--serif);color:var(--ink-soft);transition:transform .2s,color .2s}
+.stub:hover .stub-ar{color:var(--wax);transform:translateX(3px)}
+
+/* лайтбокс листа */
+.pf-box{position:fixed;inset:0;z-index:700;display:flex;align-items:center;justify-content:center;padding:20px}
+.pf-box[hidden]{display:none}
+.pf-box-bg{position:absolute;inset:0;background:rgba(34,32,27,.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.pf-box-fig{position:relative;margin:0;max-height:92vh;max-width:min(92vw,720px);display:flex;flex-direction:column}
+.pf-pan{overflow:auto;border-radius:3px;background:#fff;max-height:calc(92vh - 40px);
+  box-shadow:0 30px 80px rgba(0,0,0,.45);border:1px solid var(--hairline)}
+.pf-pan img{display:block;width:100%;height:auto;transition:transform .3s;transform-origin:top left}
+.pf-box-fig.zoomed .pf-pan img{transform:scale(2)}
+.pf-box-fig figcaption{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:#F6F1E7;
+  text-align:center;padding:12px 6px 0;
+}
+.pf-close{
+  position:absolute;top:-14px;right:-14px;width:40px;height:40px;border-radius:50%;
+  background:var(--wax);color:#FFF8EE;border:0;font-size:20px;line-height:1;cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,.35);
+}
+.pf-zoom{
+  position:absolute;bottom:44px;right:10px;min-width:44px;min-height:44px;border-radius:50%;
+  border:1px solid var(--hairline-strong);background:var(--sheet);color:var(--ink);
+  font-family:var(--mono);font-size:13px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+.pf-lens{
+  position:fixed;z-index:720;width:190px;height:190px;border-radius:50%;pointer-events:none;
+  border:2px solid #B98A2F;box-shadow:0 0 0 1px rgba(255,255,255,.5),0 14px 34px rgba(0,0,0,.4);
+  background-repeat:no-repeat;background-color:#fff;
+}
+/* направление в тексте честное на любом экране: на десктопе гранки СЛЕВА,
+   на мобиле колонки складываются и гранки оказываются СВЕРХУ */
+.dir-mob{display:none}
+@media(max-width:880px){
+  .ws-grid{grid-template-columns:1fr}
+  .proof-stack{max-width:420px}
+  .pf-bar{max-width:420px}
+  .dir-desk{display:none}
+  .dir-mob{display:inline}
+}
+
+  </style>
+  <div class="pf-embed">
+    <div class="proof-stack" id="proofStack" role="group" aria-label="Гранки обезличенной работы — три листа">
+            <figure class="pf-leaf top" data-cap="Оглавление · три главы · обезличено">
+              <img src="assets/img/showcase/showcase-2.jpg" width="960" height="1358" alt="Оглавление настоящей магистерской работы (обезличено)" loading="lazy">
+            </figure>
+            <figure class="pf-leaf mid" data-cap="Введение · постановка проблемы · обезличено">
+              <img src="assets/img/showcase/showcase-3.jpg" width="960" height="1358" alt="Введение настоящей магистерской работы (обезличено)" loading="lazy">
+            </figure>
+            <figure class="pf-leaf low" data-cap="Глава 2 · эмпирика, стр. 63 · обезличено">
+              <img src="assets/img/showcase/showcase-4.jpg" width="960" height="1358" alt="Страница эмпирической главы с таблицей результатов (обезличено)" loading="lazy">
+            </figure>
+            <span class="pf-clip" aria-hidden="true"></span>
+            <span class="pf-tag">обезличено</span>
+          </div>
+          <div class="pf-bar">
+            <button type="button" class="pf-counter" id="pfNext">лист <b id="pfNo">1</b> / 3 — листнуть →</button>
+            <span class="petit">нажмите лист, чтобы рассмотреть вблизи</span>
+          </div>
+    <div class="pf-box" id="pfBox" hidden role="dialog" aria-modal="true" aria-label="Лист работы крупно">
+      <div class="pf-box-bg" data-pf-close></div>
+      <figure class="pf-box-fig">
+        <div class="pf-pan" id="pfPan"><img id="pfBoxImg" src="" alt="Лист работы крупно"></div>
+        <figcaption id="pfBoxCap"></figcaption>
+        <button type="button" class="pf-zoom" id="pfZoom" hidden>2×</button>
+        <button type="button" class="pf-close" data-pf-close aria-label="Закрыть">×</button>
+      </figure>
+      <div class="pf-lens" id="pfLens" hidden aria-hidden="true"></div>
+    </div>
   </div>
+  <script>
+(function () {
+  'use strict';
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* ---------------- Стол мастера (— 02 —): гранки, лайтбокс, лупа ----------------
+     Перелистывание: верхний лист уезжает (.away), в слепой фазе setTimeout
+     роли top/mid/low сдвигаются по кругу. Лупа — только в лайтбоксе и только
+     на точных указателях; на таче вместо неё кнопка 2× и нативный пан. */
+  (function proofDesk() {
+    var stack = document.getElementById('proofStack');
+    if (!stack) return;
+    var leaves = Array.prototype.slice.call(stack.querySelectorAll('.pf-leaf'));
+    if (leaves.length < 2) return;
+    var order = leaves.slice(); /* order[0] — верхний */
+    var noEl = document.getElementById('pfNo');
+    var busy = false;
+
+    function paint() {
+      order.forEach(function (leaf, i) {
+        leaf.classList.toggle('top', i === 0);
+        leaf.classList.toggle('mid', i === 1);
+        leaf.classList.toggle('low', i === 2);
+      });
+      if (noEl) noEl.textContent = String(leaves.indexOf(order[0]) + 1);
+    }
+    function flip() {
+      if (busy) return;
+      busy = true;
+      var top = order[0];
+      if (reduceMotion) {
+        order.push(order.shift()); paint(); busy = false; return;
+      }
+      top.classList.add('away');
+      setTimeout(function () {          /* слепая фаза: роли меняются за кадром */
+        order.push(order.shift());
+        paint();
+        top.classList.remove('away');
+        setTimeout(function () { busy = false; }, 380);
+      }, 300);
+    }
+    var nextBtn = document.getElementById('pfNext');
+    if (nextBtn) nextBtn.addEventListener('click', flip);
+    paint();
+
+    /* лайтбокс */
+    var box = document.getElementById('pfBox'),
+        img = document.getElementById('pfBoxImg'),
+        cap = document.getElementById('pfBoxCap'),
+        zoomBtn = document.getElementById('pfZoom'),
+        lens = document.getElementById('pfLens'),
+        fig = box ? box.querySelector('.pf-box-fig') : null,
+        lastFocus = null;
+    var fine = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+    function openBox(leaf) {
+      if (!box) return;
+      lastFocus = document.activeElement;
+      var src = leaf.querySelector('img').getAttribute('src');
+      img.src = src;
+      cap.textContent = (leaf.getAttribute('data-cap') || '') + ' · водяной знак';
+      fig.classList.remove('zoomed');
+      zoomBtn.hidden = fine;           /* на таче — кнопка 2×, на мыши — лупа */
+      zoomBtn.textContent = '2×';
+      box.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+      var closer = box.querySelector('.pf-close');
+      if (closer) closer.focus();
+    }
+    function closeBox() {
+      if (!box || box.hidden) return;
+      box.hidden = true;
+      lens.hidden = true;
+      document.documentElement.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    leaves.forEach(function (leaf) {
+      leaf.addEventListener('click', function () {
+        if (leaf !== order[0]) { flip(); return; }  /* нижние листы — перелистнуть */
+        openBox(leaf);
+      });
+    });
+    if (box) {
+      box.addEventListener('click', function (e) {
+        if (e.target.closest('[data-pf-close]')) closeBox();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeBox();
+      });
+      if (zoomBtn) zoomBtn.addEventListener('click', function () {
+        var z = fig.classList.toggle('zoomed');
+        zoomBtn.textContent = z ? '1×' : '2×';
+      });
+      /* лупа: mousemove с троттлингом временем, без rAF */
+      if (fine) {
+        var lastMove = 0;
+        img.addEventListener('mousemove', function (e) {
+          var now = Date.now();
+          if (now - lastMove < 40) return;
+          lastMove = now;
+          var r = img.getBoundingClientRect();
+          var rx = (e.clientX - r.left) / r.width, ry = (e.clientY - r.top) / r.height;
+          lens.hidden = false;
+          lens.style.left = (e.clientX - 95) + 'px';
+          lens.style.top = (e.clientY - 95) + 'px';
+          lens.style.backgroundImage = 'url("' + img.src + '")';
+          lens.style.backgroundSize = (r.width * 2.4) + 'px auto';
+          lens.style.backgroundPosition =
+            (-(rx * r.width * 2.4 - 95)) + 'px ' + (-(ry * r.height * 2.4 - 95)) + 'px';
+        });
+        img.addEventListener('mouseleave', function () { lens.hidden = true; });
+      }
+    }
+  })();
+})();
+  </script>
+
   <p class="caps" style="margin:26px 0 8px">Образцы наших текстов · PDF</p>
   <p><a class="link" href="assets/samples/obrazec-vvedenie-vkr.pdf" target="_blank" rel="noopener">Введение ВКР</a> · <a class="link" href="assets/samples/obrazec-glava-analiz.pdf" target="_blank" rel="noopener">Глава с анализом</a> · <a class="link" href="assets/samples/obrazec-spisok-literatury.pdf" target="_blank" rel="noopener">Список литературы по ГОСТу</a> — фрагменты реальных работ, обезличены.</p>
 

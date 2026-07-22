@@ -244,6 +244,51 @@
         '<g class="tt-stars" fill="currentColor"><circle cx="5.4" cy="6.4" r=".9"/><circle cx="8.1" cy="3.7" r=".6"/><circle cx="4" cy="10.4" r=".55"/></g>' +
       '</svg></button>';
   };
+  /* ---------------- «Спокойный режим»: движение — по желанию ----------------
+     Тумблер в шапке и путеводителе: html[data-calm] глушит анимации всего
+     сайта (chrome.css), главная-«Пресс» раскладывается потоком (press.js
+     слышит сигнал resize), контраст слегка поднят. localStorage salon_calm. */
+  Salon.calmToggleHTML = function () {
+    return '<button class="calm-toggle" type="button" aria-pressed="false" ' +
+      'aria-label="Спокойный режим: без анимаций" title="Спокойный режим: без анимаций">' +
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.6" stroke-linecap="round" aria-hidden="true">' +
+      '<path class="ct-wave" d="M3 12c2.2-3.4 4.3-3.4 6.5 0s4.3 3.4 6.5 0 3.4-2.7 5-1"/>' +
+      '<path class="ct-flat" d="M4 12h16" style="display:none"/></svg></button>';
+  };
+  Salon.calm = (function () {
+    function on() { return docEl.hasAttribute('data-calm'); }
+    function apply(mode, persist) {
+      if (mode) docEl.setAttribute('data-calm', '1');
+      else docEl.removeAttribute('data-calm');
+      docEl.querySelectorAll('.calm-toggle').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(!!mode));
+        b.title = mode ? 'Спокойный режим включён · вернуть движение'
+                       : 'Спокойный режим: без анимаций';
+        var w = b.querySelector('.ct-wave'), f = b.querySelector('.ct-flat');
+        if (w) w.style.display = mode ? 'none' : '';
+        if (f) f.style.display = mode ? '' : 'none';
+      });
+      docEl.querySelectorAll('[data-calm-label]').forEach(function (l) {
+        l.textContent = mode ? 'Спокойный режим — включён' : 'Спокойный режим';
+      });
+      if (persist) { try { localStorage.setItem('salon_calm', mode ? '1' : ''); } catch (e) {} }
+      try { window.dispatchEvent(new Event('resize')); } catch (e) {}
+    }
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('.calm-toggle');
+      if (!b) return;
+      e.preventDefault();
+      var next = !on();
+      apply(next, true);
+      if (Salon.toast) Salon.toast(next
+        ? 'Спокойный режим: без анимаций и мерцания'
+        : 'Движение возвращено');
+    });
+    try { if (localStorage.getItem('salon_calm')) apply(true, false); } catch (e) {}
+    return { on: on, apply: apply };
+  })();
+
   Salon.theme = (function () {
     var THEME_BG = { light: '#F6F1E7', dark: '#14120E' };
     var vtBusy = false;
@@ -1253,6 +1298,7 @@
             '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span>Telegram · бот</span><span class="tc-v">@academic_saloon_bot</span></a>' +
           '</div></div>' +
           '<div class="toc-theme-row"><span class="ttr-lbl" data-theme-label>Светлая тема</span>' + Salon.themeToggleHTML() + '</div>' +
+          '<div class="toc-theme-row"><span class="ttr-lbl" data-calm-label>Спокойный режим</span>' + Salon.calmToggleHTML() + '</div>' +
           '<a class="btn btn-wax btn-block btn-lg toc-cta" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>' +
         '</div>' +
       '</div></div>';
@@ -1361,6 +1407,7 @@
       '<nav class="nav-links" aria-label="Разделы">' + navLinks + '</nav>' +
       '<div class="nav-cta">' +
         Salon.themeToggleHTML() +
+        Salon.calmToggleHTML() +
         '<a class="nav-cab" href="dashboard.html"' + (here === 'dashboard.html' ? ' aria-current="page"' : '') +
           ' aria-label="Личный кабинет"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 19.4c.9-3.4 3.5-5 6.5-5s5.6 1.6 6.5 5"/></svg><span class="nc-txt">Кабинет</span><span class="nc-badge" hidden></span></a>' +
         '<a class="btn btn-wax" href="' + calcHref + '">Рассчитать</a>' +

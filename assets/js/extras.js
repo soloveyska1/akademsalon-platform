@@ -999,4 +999,92 @@
     window.addEventListener('resize', clearance, { passive: true });
     if (S.visit) S.visit.mark('показана закладка возврата сметы');
   })();
+
+  /* ---------------- «Ляссе»: мини-смета на посадочных ----------------
+     Гайды и страницы услуг/дисциплин получают компактный расчёт с
+     предвыбранным типом: два вопроса (направление, срок) — цена — и в
+     конфигуратор с готовым черновиком. Тип определяется именем страницы,
+     сами 41 HTML не правятся. */
+  (function lasseQuote() {
+    if (QUIET_PAGES[here]) return;
+    var C = window.SalonCalc;
+    if (!C || !document.querySelector('main')) return;
+    function pageType() {
+      var h = here;
+      if (/^kursovaya-po-/.test(h)) return 'course';
+      if (h === 'kursovaya-rabota.html') return 'course';
+      if (/^diplomnaya-/.test(h)) return 'diplom';
+      if (h === 'magisterskaya-dissertaciya.html') return 'master';
+      if (h === 'kandidatskaya-dissertaciya.html') return 'kandidat';
+      if (h === 'otchet-po-praktike.html') return 'practice';
+      if (h === 'nauchnaya-statya.html') return 'vak';
+      if (h === 'referat.html') return 'self';
+      if (/^guide-/.test(h)) {
+        if (/kursovay|kursovoy/.test(h)) return 'course';
+        if (/rinc/.test(h)) return 'rinc';
+        if (/statya/.test(h)) return 'vak';
+        if (/praktik/.test(h)) return 'practice';
+        return 'diplom';                     /* ВКР-гайды и остальные */
+      }
+      return null;
+    }
+    var type = pageType();
+    if (!type) return;
+    var t = null;
+    for (var i = 0; i < C.types.length; i++) if (C.types[i].id === type) t = C.types[i];
+    if (!t) return;
+    var state = { disc: 'hum', term: 'free' };
+    var box = document.createElement('section');
+    box.className = 'lq';
+    box.setAttribute('aria-label', 'Быстрая смета');
+    box.innerHTML =
+      '<span class="lq-ribbon" aria-hidden="true"></span>' +
+      '<p class="lq-cap">Ляссе · смета за минуту</p>' +
+      '<p class="lq-title">' + t.label + ' — узнайте цену, не уходя со страницы</p>' +
+      '<div class="lq-row" data-lq="disc">' +
+        C.disciplines.map(function (d, di) {
+          return '<button type="button" data-v="' + d.id + '" aria-pressed="' +
+            (di === 0) + '">' + d.label.split(' /')[0].split(',')[0] + '</button>';
+        }).join('') + '</div>' +
+      '<div class="lq-row" data-lq="term">' +
+        C.terms.map(function (s, si) {
+          return '<button type="button" data-v="' + s.id + '" aria-pressed="' +
+            (si === 0) + '">' + s.label.replace('Свободный (от 30 дней)', 'От 30 дней') + '</button>';
+        }).join('') + '</div>' +
+      '<div class="lq-foot">' +
+        '<span class="lq-price" id="lqPrice" aria-live="polite"></span>' +
+        '<a class="btn btn-wax" id="lqGo" href="configurator.html?step=4">Оформить заявку <span class="ar">→</span></a>' +
+      '</div>' +
+      '<p class="lq-note">Это нижняя граница базового уровня; точную цену назовёт мастер после разбора темы — бесплатно.</p>';
+    document.querySelector('main').appendChild(box);
+    function render() {
+      var q = C.quote(type, state.disc, state.term, 'base');
+      var el = document.getElementById('lqPrice');
+      if (el) el.innerHTML = 'от <b>' + q.lowFmt + ' ₽</b>';
+    }
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('button[data-v]');
+      if (!b) return;
+      var row = b.closest('[data-lq]');
+      row.querySelectorAll('button').forEach(function (x) {
+        x.setAttribute('aria-pressed', String(x === b));
+      });
+      state[row.getAttribute('data-lq')] = b.getAttribute('data-v');
+      render();
+    });
+    box.querySelector('#lqGo').addEventListener('click', function () {
+      if (!S.store) return;
+      var prev = S.store.get('salon_draft', null) || {};
+      S.store.set('salon_draft', {
+        state: { type: type, disc: state.disc, term: state.term,
+                 tier: (prev.state && prev.state.tier) || 'base' },
+        idx: typeof prev.idx === 'number' ? prev.idx : 0,
+        plan: prev.plan || false,
+        fields: prev.fields || undefined,
+        savedAt: prev.savedAt || 0
+      });
+    });
+    render();
+    if (S.visit) S.visit.mark('видел мини-смету «Ляссе»');
+  })();
 })();

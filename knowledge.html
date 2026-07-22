@@ -259,6 +259,128 @@
     </div>
   </section>
 
+<!-- ============ — 07 — ЖУРНАЛ МАСТЕРСКОЙ: живая витрина TG-канала ============ -->
+  <section class="zhurnal-band reveal" id="zhurnal" aria-label="Журнал мастерской — Telegram-канал">
+    <div class="wrap">
+            <style>
+        /* полоса свежей печати: разворот выделен фоном и золотыми обрезами */
+        .zhurnal-band{background:linear-gradient(180deg,var(--paper) 0%,var(--paper-2) 18%,var(--paper-2) 82%,var(--paper) 100%);
+          border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);position:relative}
+        .zhurnal-band::before{content:"";position:absolute;top:-1px;left:0;right:0;height:2px;
+          background:linear-gradient(90deg,transparent,#B98A2F 35%,#E9C972 50%,#B98A2F 65%,transparent);opacity:.55}
+        /* витрина канала: карточки-посты как свежие оттиски на просушке */
+        .tgw-head{display:flex;gap:18px 28px;align-items:flex-end;justify-content:space-between;
+          flex-wrap:wrap;margin-bottom:clamp(20px,3vw,30px)}
+        .tgw-head .caps{display:block;margin-bottom:10px}
+        .tgw-h{font-size:clamp(26px,3.6vw,40px);margin-bottom:10px;position:relative;display:inline-block}
+        .tgw-h::after{content:"";position:absolute;left:0;right:22%;bottom:-6px;height:2px;
+          background:linear-gradient(90deg,var(--foil,#B98A2F),transparent)}
+        .tgw-lead{max-width:52ch;color:var(--ink-soft);font-size:15px;line-height:1.6}
+        /* честная метка живой ленты — вместо строки-примечания под карточками */
+        .tgw-live{display:inline-flex;align-items:center;gap:7px;margin-left:12px;vertical-align:2px;
+          font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+          color:var(--verify);border:1px solid color-mix(in srgb,var(--verify) 40%,transparent);
+          border-radius:999px;padding:3px 10px}
+        .tgw-live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--verify)}
+        .tgw-live[hidden]{display:none}
+        .tgw-cta{flex:0 0 auto;display:flex;flex-direction:column;gap:8px;align-items:flex-end;text-align:right}
+        .tgw-cta .marginalia{margin:0}
+        @media (max-width:700px){.tgw-cta{align-items:flex-start;text-align:left}}
+        /* фолбэк-визитка (единственная карточка): во всю ширину, без пустой обложки */
+        #tgwRail .tgp:only-child{grid-column:1/-1;max-width:620px}
+        #tgwRail .tgp:only-child .tgp-img{display:none}
+        .tgw-rail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,20px)}
+        @media (max-width:860px){.tgw-rail{display:flex;overflow-x:auto;scroll-snap-type:x proximity;
+          padding-bottom:10px;margin:0 -16px;padding-left:16px;padding-right:16px;scrollbar-width:none}
+          .tgw-rail::-webkit-scrollbar{display:none}
+          .tgw-rail .tgp{flex:0 0 min(78vw,320px);scroll-snap-align:start}}
+        .tgp{display:flex;flex-direction:column;background:var(--sheet);border:1px solid var(--hairline);
+          border-radius:3px;overflow:hidden;text-decoration:none;color:inherit;position:relative;
+          box-shadow:0 12px 28px -22px rgba(34,32,27,.45);
+          transition:transform .18s ease,box-shadow .18s ease}
+        .tgp::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:1;
+          background:linear-gradient(90deg,var(--foil,#B98A2F),transparent 70%);opacity:.7}
+        .tgp:hover{transform:translateY(-3px);box-shadow:0 18px 36px -20px rgba(34,32,27,.55)}
+        .tgp-img{aspect-ratio:16/10;background:var(--paper-2);position:relative;overflow:hidden}
+        .tgp-img img{width:100%;height:100%;object-fit:cover;display:block}
+        .tgp-img.empty::after{content:"¶";position:absolute;inset:0;display:grid;place-items:center;
+          font-family:var(--serif);font-size:44px;color:var(--hairline-strong)}
+        .tgp-body{padding:14px 16px 15px;display:flex;flex-direction:column;gap:8px;flex:1}
+        .tgp-meta{display:flex;gap:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+          text-transform:uppercase;color:var(--ink-faint)}
+        .tgp-meta .v{margin-left:auto}
+        .tgp-text{font-size:14px;line-height:1.55;color:var(--ink);
+          display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+        .tgp-more{margin-top:auto;font-size:12.5px;color:var(--ink-soft);border-top:1px dashed var(--hairline);
+          padding-top:9px;display:flex;justify-content:space-between;align-items:baseline}
+        .tgp-more::after{content:"↗";font-family:var(--serif)}
+        .tgp:hover .tgp-more{color:var(--wax)}
+      </style>
+      <div class="reveal">
+        <div class="tgw-head">
+          <div>
+            <span class="caps">Telegram-канал · выходит несколько раз в неделю</span>
+            <h2 class="press-h tgw-h">Журнал мастерской<span class="tgw-live" id="tgwLive" hidden>прямо из канала</span></h2>
+            <p class="tgw-lead">Разборы без воды, новости набора и то, что не попадает на сайт:
+            свежие выпуски выходят сначала в канале. Ниже — последние три, как они есть.</p>
+          </div>
+          <div class="tgw-cta">
+            <a class="btn btn-wax" href="https://t.me/akademsalon" target="_blank" rel="noopener"
+               data-goal="tg_channel">Подписаться — @akademsalon</a>
+            <a class="btn btn-line" href="https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs"
+               target="_blank" rel="noopener" data-goal="max_channel" style="margin-top:8px">Подписаться на канал в MAX</a>
+            <p class="marginalia">канал ведёт мастер · без спама</p>
+          </div>
+        </div>
+        <div class="tgw-rail" id="tgwRail">
+          <!-- фолбэк до загрузки живой ленты: приглашение-визитка (без пустой обложки) -->
+          <a class="tgp" href="https://t.me/akademsalon" target="_blank" rel="noopener">
+            <span class="tgp-body">
+              <span class="tgp-meta"><span>@akademsalon</span></span>
+              <span class="tgp-text">Из переписок мастерской, разборы типовых ошибок, сезон защит
+              и честные ответы на неудобные вопросы — короткими выпусками.</span>
+              <span class="tgp-more">Открыть канал</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <script>
+    /* живые карточки из /api/channel; фолбэк-визитка остаётся при пустой ленте */
+    (function () {
+      function boot() {
+        var rail = document.getElementById('tgwRail');
+        if (!rail || !window.Salon || !Salon.api) return;
+        function esc(s) {
+          return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+          });
+        }
+        Salon.api.get('/channel').then(function (r) {
+          if (!(r && r.ok && r.posts && r.posts.length)) return;
+          var posts = r.posts.filter(function (p) { return (p.text || '').length > 30 || p.img; }).slice(0, 3);
+          if (!posts.length) return;
+          rail.innerHTML = posts.map(function (p) {
+            var img = p.img
+              ? '<span class="tgp-img"><img src="' + esc(p.img) + '" loading="lazy" decoding="async" alt="" /></span>'
+              : '<span class="tgp-img empty"></span>';
+            var meta = '<span class="tgp-meta"><span>' + esc(p.date || '@akademsalon') + '</span>' +
+              (p.views ? '<span class="v">👁 ' + esc(p.views) + '</span>' : '') + '</span>';
+            return '<a class="tgp" href="' + esc(p.url) + '" target="_blank" rel="noopener" data-goal="tg_channel">' +
+              img + '<span class="tgp-body">' + meta +
+              '<span class="tgp-text">' + esc(p.text).slice(0, 300) + '</span>' +
+              '<span class="tgp-more">Читать в канале</span></span></a>';
+          }).join('');
+          var live = document.getElementById('tgwLive');
+          if (live) live.hidden = false; /* метка «прямо из канала» — только когда лента правда живая */
+        });
+      }
+      if (window.Salon && window.Salon.api) boot();
+      else document.addEventListener('DOMContentLoaded', boot);
+    })();
+    </script>
+  </section>
+
   <section class="final-cta reveal" data-chapter="Расчёт">
     <div class="fc-rule"><span>¶</span></div>
     <h2>Разобрались, но нужна помощь?</h2>
