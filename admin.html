@@ -568,6 +568,20 @@
     .wz-shelf{grid-template-columns:1fr}
     .wz-card{min-height:0}
   }
+  /* конструктор заявок v2: чипы-пресеты и живой итог сметы */
+  .ag-chips{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 0}
+  .ag-chips .caps{flex:0 0 100%;font-size:10px;letter-spacing:.14em;color:var(--ink-faint)}
+  .ag-chip{font:inherit;font-size:12px;line-height:1;padding:7px 10px;border:1px solid var(--hairline-strong);
+    border-radius:999px;background:var(--paper-2);color:var(--ink-soft);cursor:pointer;white-space:nowrap;
+    transition:border-color .12s,color .12s,background .12s}
+  .ag-chip:hover{border-color:var(--wax);color:var(--wax)}
+  .ag-chip:active{background:var(--mark)}
+  .ag-chip small{color:var(--ink-faint);margin-left:4px}
+  .ag-offsum{display:flex;gap:8px 14px;flex-wrap:wrap;align-items:baseline;font-size:12.5px;
+    color:var(--ink-soft);padding:8px 11px;border:1px dashed var(--hairline-strong);border-radius:3px}
+  .ag-offsum b{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .ag-offsum .ok{color:var(--verify)}
+  .ag-offsum .diff{color:var(--wax);font-weight:600}
 </style>
 </head>
 <body>
@@ -580,6 +594,6 @@
 
 <script src="assets/js/app.js?v=20260723a"></script>
 <script src="assets/js/extras.js?v=20260723a"></script>
-<script src="assets/js/admin.js?v=20260723a"></script>
+<script src="assets/js/admin.js?v=20260723b"></script>
 </body>
 </html>

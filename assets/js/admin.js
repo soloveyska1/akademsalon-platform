@@ -1650,8 +1650,19 @@ function initGodEye() {
       '<input type="text" id="agOffReq" maxlength="200" class="ag-inp" placeholder="Требования одной строкой — методичка, оригинальность от 75%" value="' + esc(p.reqs_short || '') + '">' +
       '<textarea id="agOffReqFull" rows="3" maxlength="2000" class="ag-inp" placeholder="Полный текст требований (складка на странице)">' + esc(p.reqs_full || '') + '</textarea>' +
       '<textarea id="agOffTierFull" rows="3" maxlength="2000" class="ag-inp" placeholder="Что входит в уровень ведения целиком (складка)">' + esc(p.tier_full || '') + '</textarea>' +
+      '<div class="ag-chips"><span class="caps">Что входит — добавить одним кликом</span>' +
+        OFF_INCLS.map(function (t) { return offChip('incl', t); }).join('') + '</div>' +
       '<textarea id="agOffIncl" rows="5" class="ag-inp" placeholder="Что входит — и чего нет. Строка: «Отчёт о проверках | да». У невключённого можно дописать цену — «Презентация к защите | нет | 6000» — лист покажет её тихим предложением «можно довложить»">' + esc(jl2t(p.incl, 'in')) + '</textarea>' +
+      '<div class="ag-chips"><span class="caps">Работы и услуги — строкой в смету (можно несколько)</span>' +
+        OFF_WORKS.map(function (t) {
+          return offChip('work', t + ' — авторские материалы и сопровождение', 0, t);
+        }).join('') +
+        OFF_SVCS.map(function (s) {
+          return offChip('svc', s[0] + ' — услуга мастерской', s[1], s[0]);
+        }).join('') + '</div>' +
+      '<label class="ag-hint" style="margin:0"><input type="checkbox" id="agOffAsAdd"> услуги добавлять не в смету, а на лист как «можно довложить» (нет · цена)</label>' +
       '<textarea id="agOffLedger" rows="4" class="ag-inp" placeholder="Смета. Строка: «Ведение под ключ | 38000»">' + esc(jl2t(p.ledger, 'a')) + '</textarea>' +
+      '<div class="ag-offsum" id="agOffSum"></div>' +
       '<textarea id="agOffRail" rows="5" class="ag-inp" placeholder="Календарь. Строка: «2026-07-25 | План согласован | развёрнутый план глав | prepay». Платёж: prepay / stage2 / rest / пусто">' + esc(railToText(p.rail)) + '</textarea>' +
       '<label class="ag-hint"><input type="checkbox" id="agOffFiles"' + (p.need_files ? ' checked' : '') + '> Ждём материалы от клиента (срок пойдёт и с их получения)</label>' +
       '<div class="ag-actrow">' +
@@ -1714,6 +1725,68 @@ function initGodEye() {
       return { d: p[0].trim(), t: p[1].trim(), g: (p[2] || '').trim(),
                pay: (p[3] || '').trim() || null };
     }).filter(Boolean);
+  }
+
+  /* ── конструктор v2: пресеты работ/услуг/включённого — строки в один клик.
+     Заявка спокойно несёт НЕСКОЛЬКО работ и услуг разом: каждая — строка
+     сметы; «включено» и «можно довложить» — строки листа состава. ── */
+  var OFF_WORKS = ['Курсовая работа', 'Дипломная работа · ВКР', 'Магистерская диссертация',
+                   'Глава диссертации', 'Отчёт по практике', 'Научная статья', 'Реферат · эссе'];
+  var OFF_SVCS = [
+    ['Разбор плана', 3000], ['Чистка текста от следов ИИ', 2500],
+    ['Разбор готовой работы', 2500], ['Нормоконтроль по методичке', 5000],
+    ['Презентация и речь к защите', 6000],
+    ['«К защите под ключ»: презентация + речь + нормоконтроль', 9500],
+    ['Репетиторство · консультация (час)', 3000]];
+  var OFF_INCLS = ['Работа по вашему материалу', 'Правки по замечаниям', 'Отчёт о проверках',
+                   'Презентация к защите', 'Речь к защите', 'Оформление по ГОСТ и методичке',
+                   'Сопровождение до самой защиты'];
+  function offChip(kind, t, a, label) {
+    return '<button type="button" class="ag-chip" data-off-add="' + kind + '" data-t="' + esc(t) + '"' +
+      (a ? ' data-a="' + a + '"' : '') + '>' + esc(label || t) +
+      (a ? ' <small>' + money(a) + '</small>' : '') + '</button>';
+  }
+  function offChipAdd(btn) {
+    var kind = btn.getAttribute('data-off-add');
+    var t = btn.getAttribute('data-t');
+    var a = parseInt(btn.getAttribute('data-a') || '0', 10);
+    var asAdd = (document.getElementById('agOffAsAdd') || {}).checked;
+    var ta, line;
+    if (kind === 'incl') { ta = document.getElementById('agOffIncl'); line = t + ' | да'; }
+    else if (kind === 'svc' && asAdd) {
+      ta = document.getElementById('agOffIncl');
+      line = t + ' | нет | ' + (a || 0); /* «можно довложить» — тихое предложение на листе */
+    } else {
+      ta = document.getElementById('agOffLedger');
+      line = t + ' | ' + (a || 0);
+    }
+    if (!ta) return;
+    var head = line.split('|')[0].trim().toLowerCase();
+    var dup = ta.value.split('\n').some(function (l) {
+      return l.split('|')[0].trim().toLowerCase() === head;
+    });
+    if (dup) { toast('Такая строка уже есть — поправьте её прямо в поле'); return; }
+    ta.value = (ta.value.trim() ? ta.value.replace(/\s+$/, '') + '\n' : '') + line;
+    offSumRender();
+    if (ta.id === 'agOffLedger') {
+      /* курсор сразу на цену добавленной строки — вписать свою цифру */
+      var pos = ta.value.lastIndexOf('| ') + 2;
+      ta.focus();
+      try { ta.setSelectionRange(pos, ta.value.length); } catch (e) {}
+    }
+  }
+  function offSumRender() {
+    var box = document.getElementById('agOffSum');
+    if (!box) return;
+    var sum = t2ledger((document.getElementById('agOffLedger') || {}).value)
+      .reduce(function (s, r) { return s + (r.a || 0); }, 0);
+    var price = parseInt((document.getElementById('agPrice') || {}).value, 10)
+                || (st.card && st.card.price) || 0;
+    box.innerHTML = '<span>Смета по строкам: <b>' + money(sum) + ' ₽</b></span>' +
+      '<span>Цена дела: <b>' + money(price) + ' ₽</b></span>' +
+      (sum ? '<span class="' + (sum === price ? 'ok' : 'diff') + '">' +
+        (sum === price ? '✓ сходится' : 'не сходится — на листе и в кассе будет цена дела')
+        + '</span>' : '<span>соберите смету чипами или строками</span>');
   }
 
   function planBlock(o) {
@@ -2810,7 +2883,14 @@ function initGodEye() {
 
     /* --- карточка дела --- */
     if (t.closest('#wzOpen') || t.closest('#wzOpenNav')) { wzOpen(); return; }
-    if (t.closest('#agOffNew')) { st.offnew = !st.offnew; drawCard(); return; }
+    if (t.closest('#agOffNew')) {
+      st.offnew = !st.offnew;
+      drawCard();
+      if (st.offnew) setTimeout(offSumRender, 0); /* живой итог сразу при открытии формы */
+      return;
+    }
+    var offChipBtn = t.closest('[data-off-add]');
+    if (offChipBtn) { offChipAdd(offChipBtn); return; }
 
     if (t.closest('#agOffCopy') || t.closest('#agOffMsg')) {
       var oc = st.card && st.card.offer;
@@ -3322,6 +3402,8 @@ function initGodEye() {
 
   /* живые реакции на ввод: поиск по клиентам и счётчик длины рассылки */
   root.addEventListener('input', function (e) {
+    /* живой итог конструктора заявки: смета и цена дела сверяются на лету */
+    if (e.target && (e.target.id === 'agOffLedger' || e.target.id === 'agPrice')) offSumRender();
     if (e.target && e.target.id === 'agCQ') {
       st.cq = e.target.value; drawClientList();
       var cc = document.getElementById('agCQClear'); if (cc) cc.hidden = !st.cq;   /* держим ✕ в такт вводу */
