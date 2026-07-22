@@ -1056,7 +1056,18 @@
         '<a class="btn btn-wax" id="lqGo" href="configurator.html?step=4">Оформить заявку <span class="ar">→</span></a>' +
       '</div>' +
       '<p class="lq-note">Это нижняя граница базового уровня; точную цену назовёт мастер после разбора темы — бесплатно.</p>';
-    document.querySelector('main').appendChild(box);
+    /* ляссе встаёт НА МЕСТО старого статического CTA «Рассчитать стоимость»
+       (aside на услугах и гайдах) — иначе на странице две сметы подряд */
+    var legacy = null;
+    document.querySelectorAll('aside.sheet.stacked').forEach(function (a) {
+      if (!legacy && a.querySelector('a[href^="configurator"]')) legacy = a;
+    });
+    if (legacy && legacy.parentNode) {
+      legacy.parentNode.insertBefore(box, legacy);
+      legacy.remove();
+    } else {
+      document.querySelector('main').appendChild(box);
+    }
     function render() {
       var q = C.quote(type, state.disc, state.term, 'base');
       var el = document.getElementById('lqPrice');

@@ -1498,16 +1498,13 @@
   /* ---------------- Колофон v3 «Концевая полоса» ----------------
      Подвал — не сетка ссылок, а последняя страница издания: колонтитул
      с живыми часами приёмной, разворот «манифест | лист связи», гербовая
-     плита выходных данных, реестр наборными строками, мостик к Путеводителю
+     выходные данные и реестр — складными рубриками (v5)
      и концевая полоса-воронка с печатью мастерской.
      Ссылки набраны потоком: перенос уходит МЕЖДУ ярлыками, а не внутрь. */
   /* Большой призыв «Узнайте точную стоимость» — только там, где человек выбирает
      и сравнивает: главная, цены, страницы услуг и ценовые гайды. На справочных,
      юридических и сервисных страницах он повторялся навязчиво — там подвал
      начинается сразу с колонтитула. */
-  /* index исключён 2026-07-22: на главной «Пресс» финал «Начнём?» стоит
-     прямо над подвалом — колофонный CTA дублировал его впритык */
-  var FOOTER_CTA_PAGES = /^(tariffs\.html|kursovaya-|diplomnaya-|magisterskaya-|kandidatskaya-|otchet-po-praktike|nauchnaya-statya|referat\.|guide-skolko-stoit-|guide-kursovaya-za-nedelyu)/;
 
   /* Часы приёмной по МСК. Один источник правды для колонтитула и листа связи:
      и «Приём открыт», и «отвечаем за 15–30 минут» считаются из одного isDay,
@@ -1532,7 +1529,7 @@
      details всегда открыт (foldReestr после монтажа) и выглядит как
      прежняя наборная строка. Семантика групп — details/summary. */
   function reestrRow(id, key, items, extraCls) {
-    var out = '<details class="cf-r-row" data-cf-fold open>' +
+    var out = '<details class="cf-r-row" data-cf-fold>' +
       '<summary class="cf-r-k" id="' + id + '">' + key +
       '<span class="cf-r-n" aria-hidden="true">' + items.length + '</span>' +
       '<i class="cf-r-ar" aria-hidden="true">→</i></summary>' +
@@ -1545,59 +1542,43 @@
   }
 
   Salon.footerHTML = function () {
-    var ctaBlock = FOOTER_CTA_PAGES.test(here) ?
-      '<div class="colophon-center">' +
-        '<div class="co-para" aria-hidden="true">¶</div>' +
-        '<h2>Узнайте точную стоимость за минуту</h2>' +
-        '<p class="co-line">Набрано вручную · сверстано без шаблонов · 1000+ работ</p>' +
-        '<a class="btn btn-wax" href="configurator.html">Рассчитать и оформить на сайте <span class="ar">→</span></a>' +
-        '<p class="co-alt">Или напишите, где удобнее: <a href="' + LINKS.vkm + '" target="_blank" rel="noopener">ВКонтакте<span class="visually-hidden"> (откроется в новом окне)</span></a> · <a href="' + LINKS.max + '" target="_blank" rel="noopener">MAX<span class="visually-hidden"> (откроется в новом окне)</span></a> · <a href="' + LINKS.human + '" target="_blank" rel="noopener">Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a> — оценка бесплатна, решение остаётся за вами</p>' +
-      '</div>' : '';
-
     var t = mskNow();
     var night = t.day ? '' : ' night';
 
-    return '<div class="wrap">' + ctaBlock +
+    return '<div class="wrap">' +
 
-    /* --- колонтитул с живыми часами --- */
-    '<div class="cf-head">' +
-      '<span class="cf-head-t"><i aria-hidden="true">¶</i> Связь и документы</span>' +
-      '<span class="cf-head-r" aria-hidden="true"></span>' +
-      '<p class="cf-clock" data-foot-clock>' +
-        '<span class="cf-lamp' + night + '" aria-hidden="true"></span>' +
-        '<span class="cf-cl-s">' + CLOCK_STATE[t.day ? 1 : 0] + '</span>' +
-        '<span class="cf-cl-t"><span class="cf-hh">' + pad2(t.h) + '</span>' +
-          '<span class="cf-cn">:</span><span class="cf-mm">' + pad2(t.m) + '</span>' +
-          '<span class="cf-tz">МСК</span></span>' +
-      '</p>' +
-    '</div>' +
-
-    /* --- разворот: манифест | лист связи --- */
-    '<div class="cf-spread">' +
-      '<div class="cf-manifest">' + brandHTML() +
-        '<p class="cf-motto">Мастерская, а&nbsp;не биржа: работу ведёт профильный специалист — от плана до защиты.</p>' +
-        '<p class="cf-sub">Шесть лет практики · 1000+ работ доведено до защиты</p>' +
+    /* --- v5 «Компактная полоса»: одна шапка вместо трёх этажей,
+       CTA-дубль удалён (смету на посадочных даёт «Ляссе») --- */
+    '<div class="cf5-top">' +
+      '<div class="cf5-brand">' + brandHTML() +
+        '<p class="cf5-motto">Мастерская, а&nbsp;не биржа: профильный специалист — от плана до защиты · 6 лет · 1000+ работ</p>' +
       '</div>' +
-      '<div class="cf-hail">' +
-        '<p class="cf-live" data-foot-eta><span class="fcl-dot' + night + '" aria-hidden="true"></span>' +
+      '<div class="cf5-side">' +
+        '<p class="cf-clock" data-foot-clock>' +
+          '<span class="cf-lamp' + night + '" aria-hidden="true"></span>' +
+          '<span class="cf-cl-s">' + CLOCK_STATE[t.day ? 1 : 0] + '</span>' +
+          '<span class="cf-cl-t"><span class="cf-hh">' + pad2(t.h) + '</span>' +
+            '<span class="cf-cn">:</span><span class="cf-mm">' + pad2(t.m) + '</span>' +
+            '<span class="cf-tz">МСК</span></span>' +
+        '</p>' +
+        '<p class="cf-live cf5-eta" data-foot-eta><span class="fcl-dot' + night + '" aria-hidden="true"></span>' +
           '<span class="cf-live-t">' + CLOCK_ETA[t.day ? 1 : 0] + '</span></p>' +
-        '<a class="cf-line" href="' + LINKS.vkm + '" target="_blank" rel="noopener">' +
-          '<span class="cf-l-k">ВКонтакте · написать<span class="visually-hidden"> (откроется в новом окне)</span></span>' +
-          '<i class="cf-dots" aria-hidden="true"></i>' +
-          '<span class="cf-l-v">vk.me/academicsaloon</span></a>' +
-        '<a class="cf-line" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
-          '<span class="cf-l-k">Telegram · человек<span class="visually-hidden"> (откроется в новом окне)</span></span>' +
-          '<i class="cf-dots" aria-hidden="true"></i>' +
-          '<span class="cf-l-v">@academicsaloon</span></a>' +
-        '<p class="cf-more">Ещё: ' +
-          '<a href="' + LINKS.tgc + '" target="_blank" rel="noopener">канал в Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a> · ' +
-          '<a href="' + LINKS.max + '" target="_blank" rel="noopener">канал в MAX<span class="visually-hidden"> (откроется в новом окне)</span></a> · ' +
-          '<a href="' + LINKS.bot + '" target="_blank" rel="noopener">бот, если удобнее<span class="visually-hidden"> (откроется в новом окне)</span></a></p>' +
+        '<p class="cf5-links">' +
+          '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener">ВКонтакте<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
+          '<a href="' + LINKS.human + '" target="_blank" rel="noopener">Telegram<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
+          '<a href="' + LINKS.max + '" target="_blank" rel="noopener">MAX<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
+          '<a href="' + LINKS.bot + '" target="_blank" rel="noopener">Бот<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
+        '</p>' +
       '</div>' +
     '</div>' +
 
-    /* --- выходные данные: оборот титульного листа --- */
-    '<section class="cf-imprint" aria-labelledby="cf-imp-h">' +
+    /* --- выходные данные: сложены в рубрику (v5) --- */
+    '<details class="cf-r-row" data-cf-fold>' +
+      '<summary class="cf-r-k">Выходные данные' +
+      '<span class="cf-r-n" aria-hidden="true">ФНС</span>' +
+      '<i class="cf-r-ar" aria-hidden="true">→</i></summary>' +
+      '<span class="cf-r-set cf5-imp">' +
+      '<section class="cf-imprint" aria-labelledby="cf-imp-h">' +
       '<h2 class="cf-imp-h" id="cf-imp-h">Выходные данные</h2>' +
       '<dl class="cf-imp-rows">' +
         '<div class="cf-imp-row"><dt class="cf-imp-k"><span>Исполнитель</span><i class="cf-dots" aria-hidden="true"></i></dt>' +
@@ -1612,6 +1593,7 @@
         '<span class="cf-check-t">Статус самозанятого в реестре ФНС <span class="ar">→</span></span>' +
         '<span class="visually-hidden"> (откроется в новом окне)</span></a>' +
     '</section>' +
+      '</span></details>' +
 
     /* --- реестр: наборные строки вместо колонок --- */
     '<div class="cf-reestr">' +
@@ -1644,11 +1626,6 @@
       ]) +
     '</div>' +
 
-    /* --- мостик к Путеводителю --- */
-    '<a class="cf-guide" href="start.html" data-toc-open>' +
-      '<span class="cf-g-t">Не нашли нужное? Путеводитель — живой поиск по всему сайту</span>' +
-      '<i class="cf-dots" aria-hidden="true"></i>' +
-      '<span class="cf-val">Открыть <span class="ar">→</span></span></a>' +
 
     /* --- концевая полоса-воронка --- */
     '<div class="cf-finis">' +
@@ -1687,15 +1664,7 @@
        только когда путеводитель реально смонтирован */
     var bridge = footer.querySelector('[data-toc-open]');
     if (bridge && Salon.toc) bridge.setAttribute('aria-haspopup', 'dialog');
-    /* реестр: телефон — свёрнутые рубрики, десктоп — всегда раскрыт */
-    (function foldReestr() {
-      function apply() {
-        var open = window.innerWidth > 880;
-        footer.querySelectorAll('details[data-cf-fold]').forEach(function (d) { d.open = open; });
-      }
-      apply();
-      window.addEventListener('resize', apply);
-    })();
+    /* v5: рубрики реестра свёрнуты на всех экранах — раскрываются кликом */
     /* Часы приёмной идут: setInterval, а не rAF — rAF в панели предпросмотра мёртв.
        Раз в 20 с пересчитываем и время, и день/ночь, чтобы страница, открытая
        с вечера, к ночи честно поменяла и лампу, и обещание по срокам. */

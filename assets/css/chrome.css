@@ -784,3 +784,40 @@ html[data-calm] .cf-cn{animation:none!important;opacity:1!important}
   /* на телефоне шапка тесная: тумблер живёт в путеводителе */
   .site-header .calm-toggle{display:none}
 }
+
+/* ============ КОЛОФОН v5 «Одна полоса» (2026-07-22) ============
+   Верх: бренд+девиз слева, часы+связь справа. Реестр И выходные
+   данные — складные рубрики на ВСЕХ экранах (перекрывает v4-правила
+   ниже по каскаду). CTA-блок удалён: смету на посадочных даёт «Ляссе». */
+.cf5-top{display:flex;gap:28px 48px;align-items:flex-start;justify-content:space-between;
+  flex-wrap:wrap;padding:6px 0 26px}
+.cf5-brand{min-width:0;max-width:560px}
+.cf5-brand .brand{color:#F0EADB;display:inline-flex;margin-bottom:10px}
+.cf5-brand .brand .b-para{color:#CDA455}
+.cf5-motto{font-size:13.5px;line-height:1.6;color:#9C9580;margin:0}
+.cf5-side{display:flex;flex-direction:column;gap:7px;align-items:flex-end;text-align:right}
+.cf5-side .cf-clock{margin:0}
+.cf5-eta{margin:0;font-size:12px}
+.cf5-links{display:flex;gap:14px;margin:2px 0 0;flex-wrap:wrap;justify-content:flex-end}
+.cf5-links a{font-size:13px;color:#CFC8B8;border-bottom:1px solid #6A6350;padding-bottom:1px;
+  transition:color .15s,border-color .15s}
+.cf5-links a:hover{color:#F0EADB;border-color:#A79F87}
+@media(max-width:700px){
+  .cf5-top{flex-direction:column;gap:16px}
+  .cf5-side{align-items:flex-start;text-align:left}
+  .cf5-links{justify-content:flex-start}
+}
+/* складные рубрики — теперь и на десктопе */
+.cf-r-row{display:block;padding:0}
+.cf-r-row>summary{pointer-events:auto}
+.cf-r-row>summary.cf-r-k{display:flex;align-items:center;gap:10px;cursor:pointer;
+  padding:14px 2px;margin:0;font-size:11px}
+.cf-r-n{display:inline-block;margin-left:auto;font-family:var(--mono);font-size:10px;
+  color:#7E7763;border:1px solid #3A362B;border-radius:999px;padding:2px 8px;letter-spacing:.06em}
+.cf-r-ar{display:inline-block;font-family:var(--serif);font-style:normal;color:#A79F87;
+  transform:rotate(90deg);transition:transform .2s ease}
+.cf-r-row[open] .cf-r-ar{transform:rotate(-90deg)}
+.cf-r-set{display:block;padding:0 2px 14px}
+/* выходные данные внутри рубрики: прежний бланк, но скромнее */
+.cf5-imp .cf-imprint{margin:8px 0 4px}
+.cf-finis{margin-top:22px;padding-top:18px}
