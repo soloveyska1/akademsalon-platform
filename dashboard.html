@@ -325,6 +325,36 @@
     .seg{width:100%}
     .seg button{flex:1}
   }
+
+  /* ---------- кабинет v2 «Маркетплейс»: вкладки и обзорные плитки ---------- */
+  .cabnav{display:flex;gap:4px;flex-wrap:wrap;margin:14px 0 20px;padding:4px;
+    border:1px solid var(--hairline);border-radius:999px;background:var(--sheet);
+    position:sticky;top:66px;z-index:6;box-shadow:0 10px 26px -20px rgba(34,32,27,.4)}
+  .cn-tab{border:0;background:none;font:inherit;font-size:13.5px;font-weight:500;
+    padding:9px 16px;border-radius:999px;color:var(--ink-soft);cursor:pointer;
+    position:relative;transition:color .14s ease,background .14s ease}
+  .cn-tab:hover{color:var(--ink)}
+  .cn-tab.on{background:var(--ink);color:var(--paper)}
+  .cn-b{position:absolute;top:0;right:2px;background:var(--wax);color:#FFFEF9;
+    font-size:9px;line-height:1;border-radius:999px;padding:3px 5px;font-family:var(--mono)}
+  .ovg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}
+  @media(min-width:740px){.ovg{grid-template-columns:repeat(4,minmax(0,1fr))}}
+  .ov-card{display:flex;flex-direction:column;gap:6px;text-align:left;
+    background:var(--sheet);border:1px solid var(--hairline);border-radius:4px;
+    padding:14px 15px;font:inherit;cursor:pointer;
+    transition:border-color .15s ease,transform .15s ease,box-shadow .15s ease}
+  .ov-card:hover{border-color:var(--ink);transform:translateY(-2px);
+    box-shadow:0 14px 30px -22px rgba(34,32,27,.5)}
+  .ov-ico{font-size:20px;line-height:1}
+  .ov-t{font-family:var(--serif);font-weight:600;font-size:16.5px}
+  .ov-line{font-size:12px;line-height:1.5;color:var(--ink-soft);min-height:2.6em}
+  .ov-warn{color:var(--wax)}
+  .ov-cta{font-size:12px;font-weight:600;color:var(--wax);margin-top:auto}
+  @media(max-width:560px){
+    .cabnav{top:58px;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+    .cabnav::-webkit-scrollbar{display:none}
+    .cn-tab{flex:0 0 auto}
+  }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/dashboard.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -370,6 +400,6 @@
 
 <script src="assets/js/app.js?v=20260722b"></script>
 <script src="assets/js/extras.js?v=20260722b"></script>
-<script src="assets/js/cabinet.js?v=20260722e"></script>
+<script src="assets/js/cabinet.js?v=20260722f"></script>
 </body>
 </html>
