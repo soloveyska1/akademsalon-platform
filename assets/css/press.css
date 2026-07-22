@@ -388,11 +388,83 @@ html[data-pr-flat] .pr-note, html:not(.has-js) .pr-note,
 html[data-pr-flat] .pr-copy .slot-line, html:not(.has-js) .pr-copy .slot-line,
 html[data-pr-flat] .story-chip, html:not(.has-js) .story-chip{animation:none;opacity:1;transform:none}
 
+/* ---------- мини-обложка: фронтиспис мобильного титула ---------- */
+.pr-minibook{
+  display:none;position:relative;width:132px;height:184px;margin:0 auto 22px;
+  border-radius:3px 6px 6px 3px;place-items:center;text-align:center;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,.5) 0%, transparent 34%),
+    linear-gradient(180deg,#F5EFE1 0%,#EFE7D4 100%);
+  box-shadow:inset 0 0 0 1px rgba(185,138,47,.16), 0 18px 32px -18px rgba(60,45,20,.55);
+  transform:rotate(-2deg);
+}
+:root[data-theme="dark"] .pr-minibook{
+  background:
+    linear-gradient(160deg, rgba(255,255,255,.06) 0%, transparent 34%),
+    linear-gradient(180deg,#2B2620 0%,#221D16 100%);
+  box-shadow:inset 0 0 0 1px rgba(205,164,85,.22), 0 18px 32px -18px rgba(0,0,0,.6);
+}
+.pr-minibook::before{content:"";position:absolute;inset:8px;border:1px solid rgba(185,138,47,.5);border-radius:2px}
+.pr-minibook::after{content:"";position:absolute;inset:12px;border:1px solid rgba(185,138,47,.28)}
+.pr-mb-para{
+  display:block;font-family:var(--serif);font-size:26px;line-height:1;margin-bottom:9px;
+  background:linear-gradient(168deg,#8A6420 8%,#C99B3F 38%,#EDD388 52%,#C99B3F 66%,#8A6420 94%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.pr-mb-name{
+  display:block;font-family:var(--serif);font-weight:600;font-size:12.5px;line-height:1.4;
+  letter-spacing:.05em;text-transform:uppercase;
+  background:linear-gradient(168deg,#8A6420 8%,#C99B3F 40%,#EDD388 52%,#C99B3F 64%,#8A6420 94%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.pr-mb-ribbon{
+  position:absolute;left:62%;bottom:-13px;width:9px;height:26px;
+  background:linear-gradient(180deg,var(--wax),var(--wax-deep));
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 86%,0 100%);
+}
+
 @media (max-width:880px){
-  .pr-h{font-size:38px}
+  .pr-h{font-size:37px}
   .pr-lead{font-size:15px}
   .pr-row .tease{display:none}
   .pr-toc{padding-left:14px;padding-right:14px}
+
+  /* титул-обложка: всё по оси, мини-книга как фронтиспис */
+  html[data-pr-flat] .pr-minibook,
+  html:not(.has-js) .pr-minibook{display:grid}
+  html[data-pr-flat] .pr-scene,
+  html:not(.has-js) .pr-scene{padding:86px 0 34px}
+  html[data-pr-flat] .pr-copy,
+  html:not(.has-js) .pr-copy{text-align:center;padding:0 18px}
+  html[data-pr-flat] .pr-kicker,
+  html:not(.has-js) .pr-kicker{margin-bottom:12px}
+  html[data-pr-flat] .pr-lead,
+  html:not(.has-js) .pr-lead{margin-left:auto;margin-right:auto}
+  html[data-pr-flat] .pr-cta,
+  html:not(.has-js) .pr-cta{flex-direction:column;gap:14px;margin-top:24px}
+  html[data-pr-flat] .pr-cta .btn-wax,
+  html:not(.has-js) .pr-cta .btn-wax{width:100%;justify-content:center}
+  html[data-pr-flat] .pr-note,
+  html:not(.has-js) .pr-note{margin-top:18px;font-size:12.5px}
+  html[data-pr-flat] .pr-copy .slot-line,
+  html:not(.has-js) .pr-copy .slot-line{justify-content:center}
+  html[data-pr-flat] .pr-copy .slot-line .sl-dots,
+  html:not(.has-js) .pr-copy .slot-line .sl-dots{display:none}
+
+  /* плашки — ровные плитки, дружелюбные пальцу */
+  html[data-pr-flat] .pr-pg .plates,
+  html:not(.has-js) .pr-pg .plates{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  html[data-pr-flat] .pr-pg .plates.cols-3,
+  html:not(.has-js) .pr-pg .plates.cols-3{grid-template-columns:repeat(3,1fr)}
+  html[data-pr-flat] .pr-pg .plates button,
+  html:not(.has-js) .pr-pg .plates button{
+    font-size:13px;padding:10px 8px;white-space:normal;line-height:1.25;
+  }
+  /* карточки-«страницы»: корешок слева */
+  html[data-pr-flat] .pr-cvin, html:not(.has-js) .pr-cvin,
+  html[data-pr-flat] .pr-first, html:not(.has-js) .pr-first{
+    border-left:3px double var(--hairline-strong);
+  }
 }
 
 /* «Спокойный» широкий экран (reduce-motion на десктопе): не мобильная

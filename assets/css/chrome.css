@@ -713,3 +713,43 @@ main[tabindex="-1"]:focus{outline:none}
   .site-footer *{color:#000!important}
   body{padding-bottom:0!important}
 }
+
+/* ============================================================
+   КОЛОФОН v4 «Компактная полоса» (2026-07-22): реестр — складные
+   рубрики на телефоне (подвал занимал ~2800px — половину страницы),
+   на десктопе details раскрыт и выглядит прежней наборной строкой.
+   Плюс плотнее оборот титула и финал на мобильных.
+   ============================================================ */
+.cf-r-row>summary{list-style:none}
+.cf-r-row>summary::-webkit-details-marker{display:none}
+.cf-r-n,.cf-r-ar{display:none}
+@media(min-width:881px){
+  .cf-r-row>summary{pointer-events:none}
+}
+@media(max-width:880px){
+  .cf-r-row{display:block;padding:0}
+  .cf-r-row>summary.cf-r-k{
+    display:flex;align-items:center;gap:10px;cursor:pointer;
+    padding:15px 2px;margin:0;
+  }
+  .cf-r-n{
+    display:inline-block;margin-left:auto;font-family:var(--mono);
+    font-size:10px;color:#7E7763;border:1px solid #3A362B;border-radius:999px;
+    padding:2px 8px;letter-spacing:.06em;
+  }
+  .cf-r-ar{
+    display:inline-block;font-family:var(--serif);font-style:normal;
+    color:#A79F87;transform:rotate(90deg);transition:transform .2s ease;
+  }
+  .cf-r-row[open] .cf-r-ar{transform:rotate(-90deg)}
+  .cf-r-set{display:block;padding:0 2px 14px}
+  .cf-r-set a{padding:8px 0;margin-right:18px}
+  .cf-motto{font-size:19px}
+  .cf-hail{border-left:0;padding-left:0}
+  .cf-imp-rows{gap:8px}
+  .cf-imp-v{font-size:12.2px;line-height:1.55}
+  .colophon-center{margin-bottom:34px}
+  .colophon-center .co-para{font-size:32px;margin-bottom:12px}
+  .colophon-center .co-line{margin-bottom:22px}
+  .cf-finis{margin-top:20px;padding-top:18px}
+}

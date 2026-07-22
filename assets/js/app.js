@@ -1458,7 +1458,9 @@
      и сравнивает: главная, цены, страницы услуг и ценовые гайды. На справочных,
      юридических и сервисных страницах он повторялся навязчиво — там подвал
      начинается сразу с колонтитула. */
-  var FOOTER_CTA_PAGES = /^(index\.html|tariffs\.html|kursovaya-|diplomnaya-|magisterskaya-|kandidatskaya-|otchet-po-praktike|nauchnaya-statya|referat\.|guide-skolko-stoit-|guide-kursovaya-za-nedelyu)/;
+  /* index исключён 2026-07-22: на главной «Пресс» финал «Начнём?» стоит
+     прямо над подвалом — колофонный CTA дублировал его впритык */
+  var FOOTER_CTA_PAGES = /^(tariffs\.html|kursovaya-|diplomnaya-|magisterskaya-|kandidatskaya-|otchet-po-praktike|nauchnaya-statya|referat\.|guide-skolko-stoit-|guide-kursovaya-za-nedelyu)/;
 
   /* Часы приёмной по МСК. Один источник правды для колонтитула и листа связи:
      и «Приём открыт», и «отвечаем за 15–30 минут» считаются из одного isDay,
@@ -1477,17 +1479,22 @@
   var CLOCK_ETA = ['Ночью отвечаем в течение нескольких часов',
                    'Отвечаем за 15–30 минут'];
 
-  /* Наборная строка реестра: рубрика — отдельный <nav> со своей подписью,
-     чтобы скринридер объявлял группу, а не плоский список из 28 ссылок. */
+  /* Наборная строка реестра — складная рубрика (v4, 2026-07-22):
+     на телефоне подвал занимал ~2800px (половину страницы), поэтому
+     группы там свёрнуты в строки-заголовки со счётчиком; на десктопе
+     details всегда открыт (foldReestr после монтажа) и выглядит как
+     прежняя наборная строка. Семантика групп — details/summary. */
   function reestrRow(id, key, items, extraCls) {
-    var out = '<nav class="cf-r-row" aria-labelledby="' + id + '">' +
-      '<span class="cf-r-k" id="' + id + '">' + key + '</span>' +
+    var out = '<details class="cf-r-row" data-cf-fold open>' +
+      '<summary class="cf-r-k" id="' + id + '">' + key +
+      '<span class="cf-r-n" aria-hidden="true">' + items.length + '</span>' +
+      '<i class="cf-r-ar" aria-hidden="true">→</i></summary>' +
       '<span class="cf-r-set' + (extraCls ? ' ' + extraCls : '') + '">';
     for (var i = 0; i < items.length; i++) {
       var cur = items[i][0] === here ? ' aria-current="page"' : '';
       out += '<a href="' + items[i][0] + '"' + cur + '>' + items[i][1] + '</a>';
     }
-    return out + '</span></nav>';
+    return out + '</span></details>';
   }
 
   Salon.footerHTML = function () {
@@ -1581,7 +1588,7 @@
          «Как всё устроено — тур». Голый <a> получает стиль от .cf-r-set a. */
       reestrRow('cf-r4', 'Ваш заказ', [
         ['dashboard.html', 'Кабинет'], ['referral.html', 'Клуб и бонусы'],
-        ['dashboard.html#plusCard', 'Салон+'], ['knowledge.html', 'Полезные материалы']
+        ['plus.html', 'Абонемент «Салон+»'], ['knowledge.html', 'Полезные материалы']
       ], 'foot-links') +
       reestrRow('cf-r5', 'Документы', [
         ['oferta.html', 'Публичная оферта'], ['privacy.html', 'Политика ПДн'],
@@ -1602,7 +1609,7 @@
       '<p class="cf-fin-line">набрано и сверстано в мастерской</p>' +
       '<span class="fl-seal" aria-hidden="true">' + Salon.sealSVG({
         ring: 'АКАДЕМИЧЕСКИЙ САЛОН · ИЗДАНИЕ МАСТЕРСКОЙ · ',
-        center: '¶', size: 128, cls: 'seal--foil'
+        center: '¶', size: 104, cls: 'seal--foil'
       }) + '</span>' +
       '<a class="fc-top" href="#main">Наверх ↑</a>' +
     '</div>' +
@@ -1633,6 +1640,15 @@
        только когда путеводитель реально смонтирован */
     var bridge = footer.querySelector('[data-toc-open]');
     if (bridge && Salon.toc) bridge.setAttribute('aria-haspopup', 'dialog');
+    /* реестр: телефон — свёрнутые рубрики, десктоп — всегда раскрыт */
+    (function foldReestr() {
+      function apply() {
+        var open = window.innerWidth > 880;
+        footer.querySelectorAll('details[data-cf-fold]').forEach(function (d) { d.open = open; });
+      }
+      apply();
+      window.addEventListener('resize', apply);
+    })();
     /* Часы приёмной идут: setInterval, а не rAF — rAF в панели предпросмотра мёртв.
        Раз в 20 с пересчитываем и время, и день/ночь, чтобы страница, открытая
        с вечера, к ночи честно поменяла и лампу, и обещание по срокам. */

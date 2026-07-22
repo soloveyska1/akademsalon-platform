@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Абонемент «Салон+» — приоритет мастера, бонусы и куратор сессии | Академический Салон</title>
+<meta name="description" content="Подписка мастерской «Салон+»: приоритет в очереди, скидка на каждый заказ, кэшбэк бонусами, куратор сессии и полка материалов. От 449 ₽ в месяц, разовый платёж без автосписаний." />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260722b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260722b" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260722b" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260722b" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<link rel="canonical" href="https://akademsalon.ru/plus.html" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#F6F1E7" />
+<meta name="robots" content="index,follow" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:title" content="Абонемент «Салон+» — привилегии тех, кто сдаёт в этом семестре" />
+<meta property="og:description" content="Приоритет мастера, скидка на каждый заказ, кэшбэк бонусами, куратор сессии. От 449 ₽/мес, без автосписаний." />
+<meta property="og:url" content="https://akademsalon.ru/plus.html" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<style>
+/* ============================================================
+   «Салон+» — витрина абонемента. Язык «Оттиска»: читательский
+   билет, формуляры тарифов, чек окупаемости. Токены — styles.css.
+   ============================================================ */
+.pl-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);
+  align-items:center;padding:clamp(28px,5vh,56px) 0 clamp(24px,4vh,44px)}
+.pl-kicker{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+.pl-hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.01em;margin:0 0 14px}
+.pl-lead{font-size:16px;color:var(--ink-soft);max-width:48ch;margin:0 0 22px}
+.pl-facts{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+/* билет */
+.pl-ticket{position:relative;background:var(--sheet);border:1px solid var(--hairline-strong);
+  border-radius:4px;padding:22px 24px;max-width:430px;justify-self:center;width:100%;
+  box-shadow:0 24px 50px -30px rgba(60,45,20,.5);transform:rotate(1.4deg)}
+.pl-ticket::before{content:"";position:absolute;inset:7px;border:1px solid var(--hairline);border-radius:2px;pointer-events:none}
+.pl-t-head{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+.pl-t-title{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.2;margin-bottom:4px}
+.pl-t-sub{font-size:12.5px;color:var(--ink-soft);margin-bottom:14px}
+.pl-t-row{display:flex;gap:10px;align-items:baseline;font-size:12.5px;padding:7px 0;border-top:1px dotted var(--hairline)}
+.pl-t-row .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);flex:0 0 96px}
+.pl-t-stamp{position:absolute;right:16px;top:44%;transform:rotate(-11deg);
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--verify);border:2px solid var(--verify);border-radius:3px;padding:4px 9px;opacity:.85}
+/* переключатель периода */
+.pl-per{display:inline-flex;border:1px solid var(--hairline-strong);border-radius:999px;padding:3px;gap:2px;margin:26px 0 18px}
+.pl-per button{border:0;background:none;font:inherit;font-size:13.5px;padding:8px 18px;border-radius:999px;cursor:pointer;color:var(--ink-soft)}
+.pl-per button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.pl-per .save{font-size:11px;color:var(--wax);font-weight:600;margin-left:6px}
+/* тарифы */
+.pl-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.8vw,20px);align-items:stretch}
+.pl-card{position:relative;display:flex;flex-direction:column;background:var(--sheet);
+  border:1px solid var(--hairline-strong);border-radius:4px;padding:22px 22px 20px}
+.pl-card.hot{border-color:var(--wax);box-shadow:0 18px 40px -26px rgba(178,59,34,.55)}
+.pl-hot-tag{position:absolute;top:-11px;left:20px;background:var(--wax);color:#FFFEF9;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  border-radius:2px;padding:4px 9px}
+.pl-c-name{font-family:var(--serif);font-weight:600;font-size:21px;margin-bottom:2px}
+.pl-c-tag{font-size:12px;color:var(--ink-faint);margin-bottom:14px;min-height:2.6em}
+.pl-c-price{font-family:var(--serif);font-weight:600;font-size:30px;letter-spacing:-.01em}
+.pl-c-price small{font-family:var(--sans);font-weight:400;font-size:12.5px;color:var(--ink-soft);letter-spacing:0}
+.pl-c-alt{font-size:11.5px;color:var(--ink-faint);margin:2px 0 14px;min-height:1.2em}
+.pl-c-perks{list-style:none;margin:0 0 18px;padding:14px 0 0;border-top:1px solid var(--hairline);flex:1}
+.pl-c-perks li{display:flex;gap:9px;font-size:13px;color:var(--ink-soft);padding:5px 0;line-height:1.45}
+.pl-c-perks b{color:var(--ink);font-weight:600}
+.pl-c-perks .tick{color:var(--verify);flex:0 0 auto}
+.pl-card .btn{width:100%;justify-content:center}
+.pl-note{margin-top:16px;font-size:12.5px;color:var(--ink-faint);text-align:center}
+/* чек окупаемости */
+.pl-calc{margin-top:clamp(44px,7vh,72px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(20px,4vw,48px);align-items:start;background:var(--block,#FBF7EC);border:1px solid var(--hairline);
+  border-radius:4px;padding:clamp(20px,3.4vw,36px)}
+.pl-calc h2{font-family:var(--serif);font-weight:600;font-size:clamp(22px,2.6vw,30px);margin:0 0 8px}
+.pl-calc-sub{font-size:14px;color:var(--ink-soft);margin:0 0 20px;max-width:46ch}
+.pl-range{width:100%;accent-color:var(--wax)}
+.pl-sum{font-family:var(--serif);font-weight:600;font-size:26px;margin:10px 0 2px}
+.pl-orders{font-size:12.5px;color:var(--ink-faint)}
+.pl-check{background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;padding:18px 20px}
+.pl-check .cap{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px}
+.pl-ch-row{display:flex;align-items:baseline;gap:10px;font-size:13.5px;padding:7px 0}
+.pl-ch-row .dots{flex:1;border-bottom:1.5px dotted var(--hairline-strong);transform:translateY(-3px)}
+.pl-ch-row b{font-weight:600}
+.pl-ch-row .win b{color:var(--verify)}
+.pl-verdict{margin-top:12px;padding-top:12px;border-top:1.5px solid var(--ink);font-size:13.5px;line-height:1.5}
+.pl-verdict b{color:var(--wax)}
+/* сноска и FAQ */
+.pl-faq{margin-top:clamp(44px,7vh,72px);max-width:760px}
+.pl-faq h2{font-family:var(--serif);font-weight:600;font-size:clamp(22px,2.6vw,30px);margin:0 0 16px}
+.pl-legal{margin-top:26px;font-size:12.5px;color:var(--ink-faint)}
+@media (max-width:880px){
+  .pl-hero{grid-template-columns:1fr;padding-top:18px}
+  .pl-ticket{transform:none;justify-self:stretch;max-width:none}
+  .pl-grid{grid-template-columns:1fr}
+  .pl-card.hot{order:-1}
+  .pl-calc{grid-template-columns:1fr}
+  .pl-c-tag{min-height:0}
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">К содержанию</a>
+
+<main id="main" tabindex="-1" class="wrap">
+
+  <nav class="doc-crumb" aria-label="Хлебные крошки" style="padding-top:18px"><a href="index.html">Главная</a> · Абонемент «Салон+»</nav>
+
+  <!-- ================= ГЕРОЙ + БИЛЕТ ================= -->
+  <section class="pl-hero" aria-label="Абонемент «Салон+»">
+    <div>
+      <p class="pl-kicker">Абонемент читального зала</p>
+      <h1>Привилегии тех, кто сдаёт в&nbsp;этом семестре</h1>
+      <p class="pl-lead">Подписка мастерской: ваша работа идёт первой в&nbsp;очереди, каждый заказ — со&nbsp;скидкой и&nbsp;кэшбэком бонусами, а&nbsp;куратор напоминает о&nbsp;дедлайнах раньше, чем о&nbsp;них вспомнит деканат.</p>
+      <p class="pl-facts"><span>разовый платёж</span><span>без автосписаний</span><span>активация в день оплаты</span></p>
+    </div>
+    <div class="pl-ticket" aria-hidden="true">
+      <div class="pl-t-head"><span>Академический салон</span><span>серия С+ · № 0451</span></div>
+      <p class="pl-t-title">Читательский билет<br>«Салон+»</p>
+      <p class="pl-t-sub">для тех, кому дорог сон перед защитой</p>
+      <div class="pl-t-row"><span class="k">Предъявитель</span><span><b>студент выпускного курса</b></span></div>
+      <div class="pl-t-row"><span class="k">Привилегии</span><span>скидка на каждый заказ · приоритет мастера · полка Салона</span></div>
+      <div class="pl-t-row"><span class="k">Куратор</span><span>график сессии · напомним за 7 · 3 · 1 день</span></div>
+      <div class="pl-t-row"><span class="k">Срок</span><span>месяц или семестр · без автосписаний</span></div>
+      <span class="pl-t-stamp">Действителен</span>
+    </div>
+  </section>
+
+  <!-- ================= ТАРИФЫ ================= -->
+  <section aria-label="Тарифы подписки">
+    <div class="pl-per" role="group" aria-label="Период подписки">
+      <button type="button" data-per="m" aria-pressed="false">Месяц</button>
+      <button type="button" data-per="s" aria-pressed="true">Семестр <span class="save">выгоднее ×2</span></button>
+    </div>
+
+    <div class="pl-grid">
+      <article class="pl-card" aria-label="Тариф Салон+">
+        <h2 class="pl-c-name">Салон+</h2>
+        <p class="pl-c-tag">базовые привилегии на каждый день сессии</p>
+        <p class="pl-c-price" data-price="plus">999 ₽ <small>/ семестр</small></p>
+        <p class="pl-c-alt" data-alt="plus">или 449 ₽ помесячно</p>
+        <ul class="pl-c-perks">
+          <li><span class="tick">✓</span><span><b>−5% на каждый заказ</b> · до 1 000 ₽ со всякого</span></li>
+          <li><span class="tick">✓</span><span><b>Первый в очереди</b> — приоритет мастера</span></li>
+          <li><span class="tick">✓</span><span><b>Куратор сессии</b> — напомним за 7 · 3 · 1 день</span></li>
+          <li><span class="tick">✓</span><span><b>Полка Салона</b> — чек-листы и памятки к защите</span></li>
+        </ul>
+        <a class="btn btn-line" href="dashboard.html#plus">Оформить «Салон+»</a>
+      </article>
+
+      <article class="pl-card hot" aria-label="Тариф Салон+ Про">
+        <span class="pl-hot-tag">Выбор мастерской</span>
+        <h2 class="pl-c-name">Салон+ Про</h2>
+        <p class="pl-c-tag">максимум выгоды и подготовка к защите</p>
+        <p class="pl-c-price" data-price="pro">2 690 ₽ <small>/ семестр</small></p>
+        <p class="pl-c-alt" data-alt="pro">или 1 190 ₽ помесячно</p>
+        <ul class="pl-c-perks">
+          <li><span class="tick">✓</span><span><b>−10% на каждый заказ</b> · до 3 000 ₽ со всякого</span></li>
+          <li><span class="tick">✓</span><span><b>Кэшбэк ×2</b> — 10% бонусами после полной оплаты</span></li>
+          <li><span class="tick">✓</span><span><b>Тренажёр защиты</b> — вопросы комиссии + разбор 15&nbsp;мин каждый месяц</span></li>
+          <li><span class="tick">✓</span><span><b>Всё из «Салон+»</b> — приоритет, куратор, полка</span></li>
+        </ul>
+        <a class="btn btn-wax" href="dashboard.html#plus">Оформить «Про»</a>
+      </article>
+
+      <article class="pl-card" aria-label="Тариф Сессия под ключ">
+        <h2 class="pl-c-name">Сессия под ключ</h2>
+        <p class="pl-c-tag">60 дней спокойствия в самый жаркий сезон</p>
+        <p class="pl-c-price">2 990 ₽ <small>· 60 дней</small></p>
+        <p class="pl-c-alt">разовый пакет · продление не требуется</p>
+        <ul class="pl-c-perks">
+          <li><span class="tick">✓</span><span><b>−7% на каждый заказ</b> · до 2 000 ₽ со всякого</span></li>
+          <li><span class="tick">✓</span><span><b>Бронь места</b> — набор месяца вас не касается</span></li>
+          <li><span class="tick">✓</span><span><b>Замок цен</b> — смета не растёт весь период</span></li>
+          <li><span class="tick">✓</span><span><b>SOS-день</b> — в день сдачи мастер отвечает в течение часа</span></li>
+        </ul>
+        <a class="btn btn-line" href="dashboard.html#plus">Взять «Сессию»</a>
+      </article>
+    </div>
+    <p class="pl-note">Оплата разовым платежом в кабинете или через бота · автосписаний нет — продление всегда ваше решение · <a class="link" href="loyalty.html">правила программы</a></p>
+  </section>
+
+  <!-- ================= ЧЕК ОКУПАЕМОСТИ ================= -->
+  <section class="pl-calc" aria-label="Чек окупаемости">
+    <div>
+      <h2>Окупится первым же заказом?</h2>
+      <p class="pl-calc-sub">Подвиньте, на какую сумму планируете заказать за семестр, — чек справа посчитает выгоду по каждому тарифу.</p>
+      <input class="pl-range" type="range" id="plRange" min="15000" max="120000" step="5000" value="40000" aria-label="Сумма заказов за семестр">
+      <p class="pl-sum" id="plSum">40 000 ₽</p>
+      <p class="pl-orders" id="plOrders">примерно 1–2 заказа: диплом или пара курсовых</p>
+    </div>
+    <div class="pl-check">
+      <p class="cap">Чек выгоды · семестр</p>
+      <div class="pl-ch-row"><span>«Салон+» за 999 ₽</span><span class="dots"></span><span class="win">вернёт <b id="plWinPlus">2 000 ₽</b></span></div>
+      <div class="pl-ch-row"><span>«Про» за 2 690 ₽</span><span class="dots"></span><span class="win">вернёт <b id="plWinPro">7 000 ₽</b></span></div>
+      <div class="pl-ch-row"><span>«Сессия» за 2 990 ₽</span><span class="dots"></span><span class="win">вернёт <b id="plWinSes">2 800 ₽</b></span></div>
+      <p class="pl-verdict" id="plVerdict">Выгоднее всего — <b>«Про»</b>: возвращает 7 000 ₽ выгоды, окупается в 2,6 раза. И это не считая тренажёра защиты и приоритета.</p>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="pl-faq" aria-label="Вопросы о подписке">
+    <h2>Вопросы перед оформлением</h2>
+    <details class="faq-item">
+      <summary>Это автосписания? Забуду отменить — снимут деньги?</summary>
+      <p>Нет. Подписка оплачивается разовым платежом на месяц или семестр и заканчивается сама. Продление — только вашим решением и вашим платежом; мы напомним, но ничего не списываем.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Скидка подписки и бонусы — это одно и то же?</summary>
+      <p>Нет, они складываются: скидка тарифа применяется к каждому заказу сразу, а кэшбэк «Про» приходит бонусами после полной оплаты и тратится на следующий заказ. Оплатить саму подписку бонусами нельзя — она всегда отдельный платёж (<a class="link" href="loyalty.html">правила</a>).</p>
+    </details>
+    <details class="faq-item">
+      <summary>А если я так и не закажу работу?</summary>
+      <p>Привилегии действуют весь оплаченный срок независимо от заказов: полка Салона открыта, куратор ведёт график сессии, место в очереди закреплено. Но честно: максимум подписка даёт тем, кто заказывает, — на этом и построена её математика.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Чем «Сессия под ключ» отличается от «Про»?</summary>
+      <p>«Про» — подписка на выгоду и подготовку к защите, продлевается пока нужна. «Сессия» — разовый штурмовой пакет на 60 дней: бронь места в наборе, замороженные цены и SOS-режим в день сдачи. Их можно сочетать с умом: спросите в боте, что подойдёт вашему графику.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Как оформить?</summary>
+      <p>В <a class="link" href="dashboard.html#plus">личном кабинете</a> — карта или перевод, чек самозанятого приходит на почту. Либо напишите <a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">боту</a> — он выставит счёт и активирует билет в день оплаты.</p>
+    </details>
+    <p class="pl-legal">Юридические условия — в <a class="link" href="loyalty.html">Правилах программы лояльности</a> (раздел 5) и <a class="link" href="oferta.html">Оферте</a>. Подписка — отдельная услуга мастерской; характер услуг сайта — информационно-консультационный.</p>
+  </section>
+
+</main>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Абонемент «Салон+»","provider":{"@id":"https://akademsalon.ru/#org"},"description":"Подписка мастерской: приоритет в очереди, скидка на каждый заказ, кэшбэк бонусами, куратор сессии, полка материалов.","areaServed":{"@type":"Country","name":"Россия"},"offers":[{"@type":"Offer","name":"Салон+ · семестр","price":"999","priceCurrency":"RUB","url":"https://akademsalon.ru/plus.html"},{"@type":"Offer","name":"Салон+ Про · семестр","price":"2690","priceCurrency":"RUB","url":"https://akademsalon.ru/plus.html"},{"@type":"Offer","name":"Сессия под ключ · 60 дней","price":"2990","priceCurrency":"RUB","url":"https://akademsalon.ru/plus.html"}]}</script>
+<script src="assets/js/app.js?v=20260722b"></script>
+<script src="assets/js/extras.js?v=20260722b"></script>
+<script>
+/* Тарифы: переключатель месяц/семестр + чек окупаемости.
+   Цены и потолки — те же, что в кабинете (PLANS кабинета — источник правды). */
+(function () {
+  'use strict';
+  var P = {
+    plus: { m: 449, s: 999, pct: .05, cap: 1000 },
+    pro:  { m: 1190, s: 2690, pct: .10, cap: 3000 },
+    ses:  { price: 2990, pct: .07, cap: 2000 }
+  };
+  var per = 's';
+  var fmt = function (n) { return Math.round(n).toLocaleString('ru-RU'); };
+
+  var perBox = document.querySelector('.pl-per');
+  function drawPrices() {
+    var m = per === 'm';
+    document.querySelector('[data-price="plus"]').innerHTML = fmt(m ? P.plus.m : P.plus.s) + ' ₽ <small>/ ' + (m ? 'месяц' : 'семестр') + '</small>';
+    document.querySelector('[data-price="pro"]').innerHTML = fmt(m ? P.pro.m : P.pro.s) + ' ₽ <small>/ ' + (m ? 'месяц' : 'семестр') + '</small>';
+    document.querySelector('[data-alt="plus"]').textContent = m ? 'или 999 ₽ сразу за семестр' : 'или 449 ₽ помесячно';
+    document.querySelector('[data-alt="pro"]').textContent = m ? 'или 2 690 ₽ сразу за семестр' : 'или 1 190 ₽ помесячно';
+  }
+  if (perBox) perBox.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-per]');
+    if (!b) return;
+    per = b.getAttribute('data-per');
+    perBox.querySelectorAll('button').forEach(function (x) {
+      x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+    });
+    drawPrices(); calc();
+  });
+
+  var range = document.getElementById('plRange');
+  function orders(sum) { return Math.max(1, Math.round(sum / 30000)); }
+  function ordersLine(sum) {
+    if (sum <= 25000) return 'примерно 1 заказ: курсовая с исследованием';
+    if (sum <= 45000) return 'примерно 1–2 заказа: диплом или пара курсовых';
+    if (sum <= 70000) return 'примерно 2 заказа: магистерская или диплом с курсовой';
+    if (sum <= 95000) return 'примерно 3 заказа: диплом, курсовая и статья';
+    return 'примерно 3–4 заказа: полный выпускной сезон';
+  }
+  function win(sum, p) { return Math.min(sum * p.pct, p.cap * orders(sum)); }
+  function calc() {
+    if (!range) return;
+    var sum = +range.value, n = orders(sum);
+    document.getElementById('plSum').textContent = fmt(sum) + ' ₽';
+    document.getElementById('plOrders').textContent = ordersLine(sum);
+    var wPlus = win(sum, P.plus),
+        wPro = win(sum, P.pro) + sum * .10,           /* −10% сразу + 10% бонусами */
+        wSes = win(sum, P.ses);
+    document.getElementById('plWinPlus').textContent = fmt(wPlus) + ' ₽';
+    document.getElementById('plWinPro').textContent = fmt(wPro) + ' ₽';
+    document.getElementById('plWinSes').textContent = fmt(wSes) + ' ₽';
+    var proPrice = per === 'm' ? P.pro.m * 5 : P.pro.s;
+    var k = (wPro / proPrice).toFixed(1).replace('.', ',');
+    document.getElementById('plVerdict').innerHTML = wPro >= proPrice
+      ? 'Выгоднее всего — <b>«Про»</b>: ' + fmt(wPro) + ' ₽ скидкой и бонусами, окупается в ' + k + ' раза. И это не считая тренажёра защиты и приоритета.'
+      : 'При таком объёме хватит <b>«Салон+»</b> за ' + fmt(per === 'm' ? P.plus.m : P.plus.s) + ' ₽ — он вернёт ' + fmt(wPlus) + ' ₽. Вырастет объём — «Про» станет выгоднее.';
+  }
+  if (range) { range.addEventListener('input', calc); }
+  drawPrices(); calc();
+})();
+</script>
+</body>
+</html>
