@@ -1304,26 +1304,42 @@
     var state = { disc: 'hum', term: 'free' };
     var box = document.createElement('section');
     box.className = 'lq';
-    box.setAttribute('aria-label', 'Быстрая смета');
+    box.setAttribute('aria-labelledby', 'lqTitle');
+    box.setAttribute('data-lq-type', type);
     box.innerHTML =
-      '<span class="lq-ribbon" aria-hidden="true"></span>' +
-      '<p class="lq-cap">Ляссе · смета за минуту</p>' +
-      '<p class="lq-title">' + t.label + ' — узнайте цену, не уходя со страницы</p>' +
-      '<div class="lq-row" data-lq="disc">' +
-        C.disciplines.map(function (d, di) {
-          return '<button type="button" data-v="' + d.id + '" aria-pressed="' +
-            (di === 0) + '">' + d.label.split(' /')[0].split(',')[0] + '</button>';
-        }).join('') + '</div>' +
-      '<div class="lq-row" data-lq="term">' +
-        C.terms.map(function (s, si) {
-          return '<button type="button" data-v="' + s.id + '" aria-pressed="' +
-            (si === 0) + '">' + s.label.replace('Свободный (от 30 дней)', 'От 30 дней') + '</button>';
-        }).join('') + '</div>' +
-      '<div class="lq-foot">' +
-        '<span class="lq-price" id="lqPrice" aria-live="polite"></span>' +
-        '<a class="btn btn-wax" id="lqGo" href="configurator.html?step=4">Оформить заявку <span class="ar">→</span></a>' +
+      '<span class="lq-ribbon" aria-hidden="true"><i>¶</i></span>' +
+      '<header class="lq-head">' +
+        '<p class="lq-cap"><span>Ляссе</span><i>смета за минуту</i></p>' +
+        '<h2 class="lq-title" id="lqTitle">' + t.label + '</h2>' +
+        '<p class="lq-lead">Два уточнения — и вы увидите честный ориентир для своей задачи прямо на этой странице.</p>' +
+      '</header>' +
+      '<div class="lq-body">' +
+        '<div class="lq-choices">' +
+          '<fieldset class="lq-group" data-lq="disc"><legend><b>01</b><span>Направление работы</span></legend>' +
+            '<div class="lq-row">' +
+              C.disciplines.map(function (d, di) {
+                return '<button type="button" data-v="' + d.id + '" aria-pressed="' +
+                  (di === 0) + '">' + d.label.split(' /')[0].split(',')[0] + '</button>';
+              }).join('') +
+            '</div>' +
+          '</fieldset>' +
+          '<fieldset class="lq-group" data-lq="term"><legend><b>02</b><span>Когда нужен результат</span></legend>' +
+            '<div class="lq-row">' +
+              C.terms.map(function (s, si) {
+                return '<button type="button" data-v="' + s.id + '" aria-pressed="' +
+                  (si === 0) + '">' + s.label.replace('Свободный (от 30 дней)', 'От 30 дней') + '</button>';
+              }).join('') +
+            '</div>' +
+          '</fieldset>' +
+        '</div>' +
+        '<aside class="lq-result" aria-label="Предварительная стоимость">' +
+          '<span class="lq-result-cap">Предварительный ориентир</span>' +
+          '<span class="lq-price" id="lqPrice" aria-live="polite"></span>' +
+          '<p>Точная цена зависит от темы, методички и состояния материалов. Мастер разберёт их бесплатно.</p>' +
+          '<a class="btn btn-wax" id="lqGo" href="configurator.html?step=4">Продолжить расчёт <span class="ar">→</span></a>' +
+        '</aside>' +
       '</div>' +
-      '<p class="lq-note">Это нижняя граница базового уровня; точную цену назовёт мастер после разбора темы — бесплатно.</p>';
+      '<p class="lq-note"><span aria-hidden="true">i</span> Расчёт сохранится: на следующем шаге не придётся выбирать всё заново.</p>';
     /* ляссе встаёт НА МЕСТО старого статического CTA «Рассчитать стоимость»
        (aside на услугах и гайдах) — иначе на странице две сметы подряд */
     var legacy = null;
@@ -1338,7 +1354,7 @@
     }
     function render() {
       var q = C.quote(type, state.disc, state.term, 'base');
-      var el = document.getElementById('lqPrice');
+      var el = box.querySelector('#lqPrice');
       if (el) el.innerHTML = 'от <b>' + q.lowFmt + ' ₽</b>';
     }
     box.addEventListener('click', function (e) {

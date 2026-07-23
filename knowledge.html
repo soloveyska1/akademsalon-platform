@@ -247,21 +247,49 @@
         </div>
       </section>
 
-      <section class="kb-section reveal" aria-labelledby="journalTitle">
+      <section class="kb-section kb-journal-section reveal" aria-labelledby="journalTitle">
         <div class="kb-journal">
           <div class="kb-journal-intro">
+            <span class="kb-journal-ribbon" aria-hidden="true">¶</span>
             <span class="caps">Продолжение читального зала</span>
             <h2 id="journalTitle">Журнал мастерской</h2>
-            <p>Короткие разборы, свежие наблюдения и ответы на вопросы, которые ещё не стали большой статьёй.</p>
+            <p>Свежие рабочие заметки из канала: короткие разборы, наглядные карусели и ответы на вопросы, которые ещё не стали большой статьёй.</p>
+            <ul class="kb-journal-notes" aria-label="Что выходит в журнале">
+              <li>разборы замечаний</li>
+              <li>шаблоны и памятки</li>
+              <li>наблюдения мастерской</li>
+            </ul>
             <div class="kb-journal-links">
               <a class="btn btn-wax" href="https://t.me/akademsalon" target="_blank" rel="noopener" data-goal="tg_channel">Читать в Telegram</a>
               <a class="link" href="https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs" target="_blank" rel="noopener" data-goal="max_channel">Канал в MAX</a>
             </div>
           </div>
-          <div class="kb-journal-list" data-kb-journal>
-            <a class="kb-journal-post" href="https://t.me/akademsalon" target="_blank" rel="noopener">
-              <time>Новые выпуски</time><span>Разборы типовых замечаний, сезон защит и честные ответы на неудобные вопросы.</span><i>↗</i>
-            </a>
+          <div class="kb-journal-stage" data-kb-journal-stage>
+            <div class="kb-journal-toolbar">
+              <div>
+                <span class="kb-journal-edition">Свежие выпуски</span>
+                <span class="kb-journal-status" data-kb-journal-status aria-live="polite">Загружаем из канала…</span>
+              </div>
+              <div class="kb-journal-controls" aria-label="Листание выпусков">
+                <button type="button" data-kb-journal-prev aria-label="Предыдущий выпуск" disabled>←</button>
+                <span class="kb-journal-counter" aria-hidden="true"><b data-kb-journal-index>01</b><i>/</i><span data-kb-journal-total>—</span></span>
+                <button type="button" data-kb-journal-next aria-label="Следующий выпуск" disabled>→</button>
+              </div>
+            </div>
+            <div class="kb-journal-viewport" data-kb-journal-viewport tabindex="0" aria-label="Свежие выпуски журнала мастерской" aria-busy="true">
+              <div class="kb-journal-track" data-kb-journal>
+                <a class="kb-journal-post is-fallback" href="https://t.me/akademsalon" target="_blank" rel="noopener" data-goal="tg_channel">
+                  <span class="kb-journal-media"><i aria-hidden="true">¶</i></span>
+                  <span class="kb-journal-copy">
+                    <span class="kb-journal-meta"><time>Новые выпуски</time><em>Telegram</em></span>
+                    <strong>Заметки прямо из мастерской</strong>
+                    <span>Разборы типовых замечаний, сезон защит и честные ответы на неудобные вопросы.</span>
+                    <span class="kb-journal-open">Открыть журнал <i>↗</i></span>
+                  </span>
+                </a>
+              </div>
+            </div>
+            <p class="kb-journal-hint">Листайте стрелками, свайпом или клавишами ← →. Полный выпуск откроется в канале.</p>
           </div>
         </div>
       </section>
