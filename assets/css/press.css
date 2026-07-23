@@ -510,24 +510,68 @@ html[data-pr-flat] .story-chip, html:not(.has-js) .story-chip{animation:none;opa
   #smeta,.pr-first{scroll-margin-top:72px}
   html[data-pr-flat] .pr-scene,
   html:not(.has-js) .pr-scene{padding:76px 0 28px}
-  .pr-minibook{width:94px;height:128px;margin-bottom:14px;transform:rotate(-1.5deg)}
-  .pr-minibook::before{inset:6px}
-  .pr-mb-para{font-size:19px;margin-bottom:5px}
-  .pr-mb-name{font-size:8px}
-  .pr-mb-ribbon{width:7px;height:20px}
-  .pr-kicker{font-size:10px;letter-spacing:.2em}
-  .pr-h{font-size:clamp(31px,9.2vw,36px);line-height:1.01}
-  .pr-lead{margin-top:16px;font-size:14.5px;line-height:1.58;max-width:35ch}
+
+  /* Мобильный титул — не уменьшенная картинка книги, а её титульный лист.
+     Настоящий переплёт остаётся частью десктопного кино; на телефоне знак,
+     рубрика и набор работают одной редакционной композицией. */
+  html[data-pr-flat] .pr-minibook,
+  html:not(.has-js) .pr-minibook{display:none}
+  html[data-pr-flat] .pr-copy,
+  html:not(.has-js) .pr-copy{
+    max-width:520px;padding:0 18px;text-align:left;
+  }
+  html[data-pr-flat] .pr-kicker,
+  html:not(.has-js) .pr-kicker{
+    display:flex;align-items:center;gap:10px;margin:0 0 25px;padding:9px 0;
+    border-top:1px solid var(--hairline-strong);border-bottom:1px solid var(--hairline);
+    font-size:9px;line-height:1;letter-spacing:.2em;white-space:nowrap;
+  }
+  html[data-pr-flat] .pr-kicker::before,
+  html:not(.has-js) .pr-kicker::before{
+    content:"¶";display:grid;place-items:center;width:27px;height:27px;flex:0 0 27px;
+    border:1px solid color-mix(in srgb,var(--wax) 56%,var(--hairline));
+    color:var(--wax);font:17px/1 var(--serif);letter-spacing:0;
+  }
+  html[data-pr-flat] .pr-kicker::after,
+  html:not(.has-js) .pr-kicker::after{
+    content:"ИЗДАНИЕ 06 · 2026";margin-left:auto;color:var(--ink-faint);
+    font:8px/1 var(--mono);letter-spacing:.14em;
+  }
+  .pr-h{
+    font-size:clamp(38px,11vw,45px);line-height:.93;letter-spacing:-.035em;
+    text-wrap:balance;
+  }
+  .pr-h .ln:nth-child(2){padding-left:13px;font-style:italic;font-weight:500}
+  .pr-h .ln:nth-child(3){padding-left:46px}
+  .pr-lead{
+    position:relative;margin-top:23px;padding:17px 0 0 46px;
+    border-top:1px solid var(--hairline-strong);
+    font-size:14.5px;line-height:1.56;max-width:none;
+  }
+  .pr-lead::before{
+    content:"§";position:absolute;left:5px;top:16px;color:var(--wax);
+    font:italic 23px/1 var(--serif);
+  }
   html[data-pr-flat] .pr-cta,
-  html:not(.has-js) .pr-cta{margin-top:19px;gap:8px}
+  html:not(.has-js) .pr-cta{margin-top:22px;gap:8px}
   html[data-pr-flat] .pr-cta .btn-wax,
-  html:not(.has-js) .pr-cta .btn-wax{min-height:52px}
+  html:not(.has-js) .pr-cta .btn-wax{
+    min-height:54px;box-shadow:0 12px 28px -20px color-mix(in srgb,var(--wax) 78%,#000);
+  }
   .pr-toclink{display:none}
   html[data-pr-flat] .pr-note,
-  html:not(.has-js) .pr-note{margin-top:13px;font-size:12px;line-height:1.45}
-  .story-chip{margin-top:12px;min-height:44px;padding:9px 13px;font-size:12.5px}
+  html:not(.has-js) .pr-note{
+    margin-top:14px;padding-left:46px;font-size:11px;line-height:1.5;text-align:left;
+  }
+  .story-chip{
+    width:100%;justify-content:flex-start;margin-top:16px;min-height:46px;padding:11px 0;
+    border:0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);
+    border-radius:0;font-size:12.5px;text-align:left;
+  }
+  .story-chip::after{content:"→";margin-left:auto;color:var(--wax);font:17px/1 var(--serif)}
+  .story-chip .sc-play{width:22px;height:22px;flex:0 0 22px}
   html[data-pr-flat] .pr-bookwrap,
-  html:not(.has-js) .pr-bookwrap{margin-top:18px;padding:0 12px}
+  html:not(.has-js) .pr-bookwrap{margin-top:24px;padding:0 12px}
   html[data-pr-flat] .pr-pg,
   html:not(.has-js) .pr-pg{padding:20px 18px 22px}
 
@@ -554,9 +598,12 @@ html[data-pr-flat] .story-chip, html:not(.has-js) .story-chip{animation:none;opa
 }
 
 @media(max-width:380px),(max-height:700px){
-  .pr-minibook{width:78px;height:106px;margin-bottom:10px}
   html[data-pr-flat] .pr-scene,
   html:not(.has-js) .pr-scene{padding-top:70px}
-  .pr-h{font-size:30px}
+  .pr-h{font-size:35px}
   .pr-lead{font-size:14px;line-height:1.5}
+}
+@media(max-width:340px){
+  html[data-pr-flat] .pr-kicker::after,
+  html:not(.has-js) .pr-kicker::after{display:none}
 }
