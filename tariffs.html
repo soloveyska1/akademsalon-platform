@@ -1302,12 +1302,11 @@
             <textarea id="nfTask" maxlength="1200" placeholder="Опишите задачу: что за работа, предмет, срок…" aria-label="Ваша задача"></textarea>
             <input id="nfContact" maxlength="120" placeholder="Telegram, почта или телефон — куда ответить" aria-label="Контакт для ответа" autocomplete="off" />
             <input id="nfSite" tabindex="-1" autocomplete="off" style="position:absolute;left:-5000px" aria-hidden="true" />
-            <p class="petit">Контакт нужен только для ответа и подготовки договора; отправка заявки не подписывает на рекламу. Подробнее — в <a class="link" href="privacy.html" target="_blank" rel="noopener">политике ПДн</a>.</p>
             <div class="nf-row">
               <button type="submit" class="btn btn-wax" id="nfGo">Спросить мастера</button>
               <button type="button" class="btn btn-line" data-contact>Написать напрямую</button>
             </div>
-            <p class="nf-alt">Заявка не подписывает вас на рекламу или аналитику. Стесняетесь? В <a class="link" href="priyomnaya.html">приёмной</a> можно задать закрытый вопрос.</p>
+            <p class="nf-alt">Отправляя, вы соглашаетесь с <a class="link" href="consent.html" target="_blank" rel="noopener">обработкой данных</a>. Стесняетесь? В <a class="link" href="priyomnaya.html">открытой приёмной</a> можно спросить анонимно.</p>
           </form>
           <div class="nf-ok" id="nfOk" hidden>
             <p><b>Вопрос у мастера.</b> Ответим в рабочее время — обычно в течение 15–30 минут, туда, куда вы указали.</p>
@@ -1899,8 +1898,7 @@
         type: 'custom', disc: 'hum', term: 'free', tier: 'base',
         topic: 'Задача вне картотеки (страница цен)',
         details: task, name: '', contact: contact, website: '',
-        consent: true, privacy_notice_ack: true,
-        consent_doc: 'договорное уведомление · privacy 2.1 · форма спецзадачи 2.0',
+        consent: true, consent_doc: 'consent 1.4 · privacy 2.0 · oferta 1.9 · форма спецзадачи',
         page: location.pathname + '#notfound'
       }).then(function(r){
         Salon.btnLoading(btn, false);

@@ -890,7 +890,7 @@
                   </div>
                   <label class="petit consent-row">
                     <input type="checkbox" id="fConsent" />
-                    <span>Мне исполнилось 18 лет; я ознакомлен(а) с <a class="link" href="privacy.html" target="_blank">политикой ПДн</a>. Контакт используется для ответа и подготовки договора, а не для рекламы.</span>
+                    <span>Согласен(на) на обработку данных для связи и выполнения заказа — <a class="link" href="consent.html" target="_blank">согласие</a> и <a class="link" href="privacy.html" target="_blank">политика ПДн</a></span>
                   </label>
                 </div>
               </section>
@@ -2543,7 +2543,7 @@ function initConf() {
         $('fContact').setAttribute('aria-invalid','true'); $('fContact').focus(); return;
       }
       if ($('fConsent') && !$('fConsent').checked) {
-        S.toast('Подтвердите возраст и ознакомление с политикой', { type: 'error' });
+        S.toast('Нужно согласие, чтобы передать контакт мастеру', { type: 'error' });
         if (S.motion) S.motion.field($('fConsent'), 'error'); $('fConsent').focus(); return;
       }
     }
@@ -2583,8 +2583,7 @@ function initConf() {
       promo: promoCode || undefined,
       gift: giftCode || undefined,
       consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
-      privacy_notice_ack: !!(authed || ($('fConsent') && $('fConsent').checked)),
-      consent_doc: 'договорное уведомление · privacy 2.1 · форма конфигуратора 2.0',
+      consent_doc: 'consent 1.4 · privacy 2.0 · oferta 1.9 · форма конфигуратора',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
       ref: (S.refCode && S.refCode()) || undefined,
       client_request_id: requestId()
