@@ -532,12 +532,12 @@
 
             <!-- ШАГ 2: направление -->
             <div class="wstep" role="group" aria-labelledby="ws2t">
-              <h2 class="ws-title" id="ws2t" tabindex="-1">Направление</h2>
+              <h2 class="ws-title" id="ws2t" tabindex="-1">Выберите направление</h2>
               <div id="discGroup" role="radiogroup" aria-label="Направление работы" class="opt-list">
-                <button type="button" class="optrow" role="radio" data-id="hum" aria-checked="true" tabindex="0"><span>Гуманитарные / экономика</span><span class="dots"></span><span class="o-val">×1.0</span></button>
-                <button type="button" class="optrow" role="radio" data-id="law" aria-checked="false" tabindex="-1"><span>Юриспруденция / педагогика / психология</span><span class="dots"></span><span class="o-val">×1.15</span></button>
-                <button type="button" class="optrow" role="radio" data-id="tech" aria-checked="false" tabindex="-1"><span>Технические / IT / программирование</span><span class="dots"></span><span class="o-val">×1.3</span></button>
-                <button type="button" class="optrow" role="radio" data-id="med" aria-checked="false" tabindex="-1"><span>Медицина / финансы с расчётами</span><span class="dots"></span><span class="o-val">×1.4</span></button>
+                <button type="button" class="optrow" role="radio" data-id="hum" aria-checked="true" tabindex="0"><span>Гуманитарные / экономика</span><span class="dots"></span><span class="o-val">без наценки</span></button>
+                <button type="button" class="optrow" role="radio" data-id="law" aria-checked="false" tabindex="-1"><span>Юриспруденция / педагогика / психология</span><span class="dots"></span><span class="o-val">+15%</span></button>
+                <button type="button" class="optrow" role="radio" data-id="tech" aria-checked="false" tabindex="-1"><span>Технические / IT / программирование</span><span class="dots"></span><span class="o-val">+30%</span></button>
+                <button type="button" class="optrow" role="radio" data-id="med" aria-checked="false" tabindex="-1"><span>Медицина / финансы с расчётами</span><span class="dots"></span><span class="o-val">+40%</span></button>
               </div>
               <p class="petit disc-profile" id="discProfile" aria-live="polite">Социология, история, филология, менеджмент, маркетинг, экономическая теория.</p>
             </div>
@@ -821,7 +821,7 @@
   <div class="mq-panel" id="mqPanel" hidden>
     <div class="lq-mobile-head">
       <div>
-        <span class="lq-head">Смета · живой расчёт</span>
+        <span class="lq-head">Предварительная смета</span>
         <p class="lq-type" data-lg="type">Дипломная работа / ВКР</p>
       </div>
       <span class="lq-step" data-conf-step>Шаг 1 / 4</span>
@@ -832,7 +832,7 @@
       <div class="lq-deal" data-deal hidden></div>
     </div>
     <details class="lq-mobile-formula">
-      <summary>Показать формулу расчёта</summary>
+      <summary>Как рассчитали сумму</summary>
       <div class="ledger">
         <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">40&nbsp;000&nbsp;₽</span></div>
         <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
@@ -840,30 +840,30 @@
         <div class="lg-row"><span data-lg="tierLbl">Уровень · Базовый</span><span class="num" data-lg="tier">×1.0</span></div>
       </div>
     </details>
-    <div class="lq-mobile-info">
-      <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
-      <details class="lq-explain">
-        <summary>Почему сейчас показана вилка?</summary>
-        <p class="petit lq-when">После заявки мастер проверит объём и требования, назовёт точную цену и зафиксирует её до старта.</p>
-      </details>
-      <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
-      <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
-      <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="plus.html">Про абонемент</a></p>
-      <details class="lq-cheaper petit">
-        <summary class="link" style="cursor:pointer">Как снизить стоимость</summary>
-        <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
-          <li data-lg="chTerm"></li>
-          <li data-lg="chTier"></li>
-          <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span>.</li>
-        </ul>
-      </details>
-    </div>
+    <details class="lq-mobile-terms">
+      <summary>Условия и оплата</summary>
+      <div class="lq-mobile-info">
+        <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
+        <p class="petit lq-when"><b>Почему диапазон.</b> После заявки мастер проверит объём и требования, назовёт точную цену и зафиксирует её до старта.</p>
+        <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
+        <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
+        <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="plus.html">Про абонемент</a></p>
+        <details class="lq-cheaper petit">
+          <summary class="link" style="cursor:pointer">Как снизить стоимость</summary>
+          <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
+            <li data-lg="chTerm"></li>
+            <li data-lg="chTier"></li>
+            <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span>.</li>
+          </ul>
+        </details>
+      </div>
+    </details>
   </div>
   <div class="mq-bar">
     <button type="button" class="mq-back" id="mBack" aria-label="Назад" hidden>←</button>
     <button type="button" class="mq-total" id="mqToggle" aria-expanded="false" aria-controls="mqPanel">
-      <span aria-live="polite" aria-atomic="true">Итого: <b class="num" id="mqBarLow">40&nbsp;000&nbsp;₽</b></span>
-      <span class="mq-more" id="mqMore">· подробнее</span>
+      <span class="mq-total-copy" aria-live="polite" aria-atomic="true"><small>Итого</small><b class="num" id="mqBarLow">40&nbsp;000&nbsp;₽</b></span>
+      <span class="mq-more" id="mqMore">Смета</span>
     </button>
     <button type="button" class="btn btn-wax" id="mNext">Далее</button>
   </div>
@@ -888,8 +888,8 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260723m"></script>
-<script src="assets/js/extras.js?v=20260723h"></script>
+<script src="assets/js/app.js?v=20260723n"></script>
+<script src="assets/js/extras.js?v=20260723i"></script>
 <script src="assets/js/cart.js?v=20260723e"></script>
 <script>
 function initConf() {
@@ -1498,6 +1498,8 @@ function initConf() {
   /* --- навигация по шагам --- */
   function go(i, focus) {
     idx = Math.max(0, Math.min(3, i));
+    document.body.classList.toggle('conf-step-later', !svc && idx > 0);
+    document.body.classList.toggle('conf-step-final', !svc && idx === 3);
     if (!svc) { /* воронка калькулятора — не про услуги */
       if (idx > 0 && !go.g1) { go.g1 = 1; if (S.metrika) S.metrika.goal('calc_started'); }
       if (idx === 3 && !go.g4) { go.g4 = 1; if (S.metrika) S.metrika.goal('calc_step4'); }
@@ -1519,7 +1521,7 @@ function initConf() {
     if (mqPanel && !mqPanel.hidden) {
       mqPanel.hidden = true;
       if (mqToggle) mqToggle.setAttribute('aria-expanded', 'false');
-      if (mqMore) mqMore.textContent = '· подробнее';
+      if (mqMore) mqMore.textContent = 'Смета';
     }
     saveDraft();
     if (focus) {
@@ -2447,7 +2449,7 @@ function initConf() {
     var open = mqPanel.hidden;
     mqPanel.hidden = !open;
     mqToggle.setAttribute('aria-expanded', String(open));
-    mqMore.textContent = open ? '· свернуть' : '· подробнее';
+    mqMore.textContent = open ? 'Скрыть' : 'Смета';
   });
   if (mNext) mNext.addEventListener('click', function () {
     if (idx === 3) submit();
@@ -2460,7 +2462,7 @@ function initConf() {
     if (!mqPanel || mqPanel.hidden || !e.target.matches('input,textarea,select')) return;
     mqPanel.hidden = true;
     if (mqToggle) mqToggle.setAttribute('aria-expanded', 'false');
-    if (mqMore) mqMore.textContent = '· подробнее';
+    if (mqMore) mqMore.textContent = 'Смета';
   });
 
   /* --- комплексная корзина: сохраняет разные работы локально, а на сервер

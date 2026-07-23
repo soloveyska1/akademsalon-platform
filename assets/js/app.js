@@ -22,10 +22,10 @@
     link.media = 'screen and (max-width: 880px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260723p', source).href
-        : 'assets/css/mobile.css?v=20260723p';
+      link.href = source ? new URL('../css/mobile.css?v=20260723q', source).href
+        : 'assets/css/mobile.css?v=20260723q';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260723p';
+      link.href = 'assets/css/mobile.css?v=20260723q';
     }
     document.head.appendChild(link);
   })();

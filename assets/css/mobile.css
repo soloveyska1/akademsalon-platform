@@ -142,69 +142,277 @@
   /* Черновик на телефоне живёт в центральной кнопке дока. */
   .resume-bar{display:none!important}
 
-  /* Конфигуратор: назад, итог, состав и продолжение — в одном ряду. */
+  /* После выбора типа не повторяем вводный экран на каждом шаге. */
+  body.conf-step-later main .chapter.conf-chapter{
+    padding-top:calc(var(--mobile-header-h) + 12px);
+  }
+  body.conf-step-later .conf-chapter>.ch-rule,
+  body.conf-step-later .conf-chapter .conf-head{
+    display:none!important;
+  }
+  body.conf-step-later .conf-chapter .wprog{
+    margin-bottom:16px;
+  }
+  body.conf-step-later .conf-chapter .ws-title{
+    margin-bottom:14px;
+    font-size:clamp(23px,6.5vw,27px);
+    line-height:1.14;
+  }
+  .conf-chapter #btnBack{display:none!important}
+  body.conf-step-later #discGroup{
+    gap:8px;
+  }
+  body.conf-step-later #discGroup .optrow{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:6px 10px;
+    align-items:center;
+    min-height:58px;
+    padding:11px 13px;
+    border-radius:5px;
+    font-size:14.5px;
+    line-height:1.3;
+  }
+  body.conf-step-later #discGroup .optrow .dots{display:none}
+  body.conf-step-later #discGroup .optrow .o-val{
+    font-size:11.5px;
+    color:var(--ink-faint);
+  }
+  body.conf-step-later #discGroup .optrow[aria-checked="true"]{
+    border-color:var(--wax);
+    background:linear-gradient(110deg,var(--wax-soft),var(--sheet) 78%);
+    box-shadow:inset 3px 0 0 var(--wax);
+  }
+  body.conf-step-later #discGroup .optrow[aria-checked="true"] .o-val{
+    color:var(--wax);
+  }
+  body.conf-step-later .disc-profile{display:none}
+
+  /* Конфигуратор: один спокойный лист сметы и одно главное действие. */
   .mobile-cta.conf-mcta{
     display:flex;
     min-height:0;
-    padding:7px max(7px,env(safe-area-inset-right))
-      max(7px,env(safe-area-inset-bottom))
-      max(7px,env(safe-area-inset-left));
-    gap:7px;
-    background:var(--paper);
-    box-shadow:0 -12px 30px -25px rgba(34,32,27,.62);
+    padding:8px max(8px,env(safe-area-inset-right))
+      max(8px,env(safe-area-inset-bottom))
+      max(8px,env(safe-area-inset-left));
+    gap:8px;
+    border-top:1px solid color-mix(in srgb,var(--ink) 13%,transparent);
+    background:color-mix(in srgb,var(--paper) 98%,transparent);
+    box-shadow:0 -14px 34px -28px rgba(34,32,27,.68);
   }
   .conf-mcta .mq-panel{
     width:100%;
-    max-height:min(58svh,480px);
+    max-height:min(54svh,430px);
     overflow:auto;
     overscroll-behavior:contain;
-    border-radius:8px;
-    padding:12px 14px;
+    border:1px solid var(--hairline-strong);
+    border-radius:14px;
+    padding:16px;
+    background:var(--sheet);
+    box-shadow:0 18px 46px -30px rgba(34,32,27,.72);
+  }
+  .conf-mcta .lq-mobile-head{
+    align-items:center;
+    gap:10px;
+    margin:0 0 14px;
+  }
+  .conf-mcta .lq-mobile-head .lq-head{
+    font-size:9px;
+    letter-spacing:.16em;
+  }
+  .conf-mcta .lq-mobile-head .lq-type{
+    margin:4px 0 0;
+    font:500 18px/1.2 var(--serif);
+    color:var(--ink);
+  }
+  .conf-mcta .lq-step{
+    padding:5px 9px;
+    border-color:var(--hairline);
+    background:transparent;
+    font-size:8.5px;
+  }
+  .conf-mcta .lq-mobile-price{
+    padding:0 0 14px!important;
+    border:0!important;
+    border-bottom:1px solid var(--hairline)!important;
+    border-radius:0!important;
+    background:none!important;
+  }
+  .conf-mcta .lq-mobile-price .lg-total{
+    align-items:flex-end;
+  }
+  .conf-mcta .lq-mobile-price .lg-total b{
+    padding-bottom:4px;
+    font:500 13px/1.2 var(--sans);
+    color:var(--ink-soft);
+  }
+  .conf-mcta .lq-mobile-price .lg-total .num{
+    font-size:clamp(31px,9.5vw,38px);
+    line-height:1;
+    letter-spacing:.025em;
+  }
+  .conf-mcta .lq-mobile-price .lq-high{
+    display:block;
+    margin:6px 0 0;
+    padding:0;
+    border-radius:0;
+    background:none;
+    font-size:12px;
+    line-height:1.4;
+  }
+  .conf-mcta .lq-mobile-formula,
+  .conf-mcta .lq-mobile-terms{
+    margin:0;
+    border-bottom:1px solid var(--hairline);
+  }
+  .conf-mcta .lq-mobile-formula>summary,
+  .conf-mcta .lq-mobile-terms>summary{
+    display:flex;
+    min-height:46px;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    list-style:none;
+    cursor:pointer;
+    color:var(--ink-soft);
+    font:500 12.5px/1.3 var(--sans);
+    letter-spacing:0;
+    text-transform:none;
+  }
+  .conf-mcta .lq-mobile-formula>summary::-webkit-details-marker,
+  .conf-mcta .lq-mobile-terms>summary::-webkit-details-marker{display:none}
+  .conf-mcta .lq-mobile-formula>summary::after,
+  .conf-mcta .lq-mobile-terms>summary::after{
+    content:"+";
+    flex:0 0 auto;
+    color:var(--wax);
+    font:20px/1 var(--serif);
+    transition:transform .18s ease;
+  }
+  .conf-mcta .lq-mobile-formula[open]>summary::after,
+  .conf-mcta .lq-mobile-terms[open]>summary::after{transform:rotate(45deg)}
+  .conf-mcta .lq-mobile-formula .ledger{
+    margin:0;
+    padding:0 0 10px;
+  }
+  .conf-mcta .lq-mobile-formula .ledger .lg-row{
+    padding:7px 0;
+    font-size:12px;
+  }
+  .conf-mcta .lq-mobile-info{
+    margin:0!important;
+    padding:0 0 12px!important;
+    border:0!important;
+  }
+  .conf-mcta .lq-mobile-info .lq-pay{
+    margin:0 0 10px;
+    padding:0;
+    border:0;
+    background:none;
+    font-size:12.5px;
+    line-height:1.5;
+  }
+  .conf-mcta .lq-mobile-info .lq-when{
+    margin:0;
+    padding-top:10px;
+    border-top:1px solid var(--hairline);
+    font-size:12px;
+    line-height:1.5;
+    color:var(--ink-soft);
+  }
+  .conf-mcta .lq-mobile-info .lq-promo,
+  .conf-mcta .lq-mobile-info .lq-gift,
+  .conf-mcta .lq-mobile-info .lq-plus{
+    margin:10px 0 0;
+    padding:9px 10px;
+    border:0;
+    border-radius:4px;
+    background:var(--paper-2);
+    font-size:11.5px;
+    line-height:1.45;
+  }
+  .conf-mcta .lq-mobile-info .lq-cheaper{
+    margin:8px 0 0!important;
+    padding-top:8px;
+    border-top:1px solid var(--hairline);
+  }
+  .conf-mcta .lq-mobile-info .lq-cheaper>summary{
+    min-height:36px;
+    display:flex;
+    align-items:center;
   }
   .conf-mcta .mq-bar{
     display:grid;
-    grid-template-columns:48px minmax(0,1fr) 44px minmax(104px,.72fr);
+    grid-template-columns:48px minmax(0,1fr) minmax(116px,.78fr);
     align-items:stretch;
-    gap:7px;
+    gap:8px;
     width:100%;
   }
   .conf-mcta .mq-back[hidden]+.mq-total{grid-column:1/3}
-  .conf-mcta .mq-back{width:48px;min-height:50px}
+  .conf-mcta .mq-back{
+    width:48px;
+    min-height:52px;
+    border-radius:5px;
+  }
   .conf-mcta .mq-total{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    justify-content:stretch;
+    gap:8px;
     min-width:0;
-    min-height:50px;
-    padding:6px 8px;
-    line-height:1.2;
-    white-space:normal;
+    min-height:52px;
+    padding:6px 10px;
+    border-color:var(--hairline);
+    border-radius:5px;
+    text-align:left;
   }
-  .conf-mcta .cart-tab:not([hidden]){
-    position:relative;
-    display:grid!important;
-    place-items:center;
-    width:44px;
-    min-width:44px;
-    max-width:44px;
-    min-height:50px;
-    padding:4px;
-    align-self:stretch;
+  .conf-mcta .mq-total-copy{
+    display:grid;
+    min-width:0;
+    gap:2px;
   }
-  .conf-mcta .cart-tab .cart-entry-copy{display:none!important}
-  .conf-mcta .cart-tab .cart-entry-icon{width:25px;height:25px;flex-basis:25px}
-  .conf-mcta .cart-tab .cart-tab-count{
-    position:absolute;
-    top:-5px;
-    right:-5px;
-    min-width:20px;
-    height:20px;
-    margin:0;
-    border:2px solid var(--paper);
+  .conf-mcta .mq-total-copy small{
+    color:var(--ink-faint);
+    font:8px/1 var(--mono);
+    letter-spacing:.12em;
+    text-transform:uppercase;
   }
+  .conf-mcta .mq-total-copy .num{
+    overflow:hidden;
+    font-size:15px;
+    line-height:1.15;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .conf-mcta .mq-more{
+    color:var(--wax);
+    font:10px/1.2 var(--sans);
+    white-space:nowrap;
+  }
+  .conf-mcta .cart-tab{display:none!important}
   .conf-mcta #mNext{
     min-width:0;
-    min-height:50px;
-    padding:7px 9px;
+    min-height:52px;
+    padding:8px 12px;
+    border-radius:5px;
+    font-size:15px;
     line-height:1.15;
   }
+  body.conf-step-final .conf-mcta .mq-bar{
+    grid-template-columns:48px 116px minmax(154px,1fr);
+  }
+  body.svc-checkout .conf-mcta .mq-bar{
+    grid-template-columns:minmax(96px,.58fr) minmax(154px,1fr);
+  }
+  body.svc-checkout .conf-mcta .mq-total{
+    grid-column:auto!important;
+  }
+  body.conf-step-final .conf-mcta #mNext,
+  body.svc-checkout .conf-mcta #mNext{
+    font-size:13.5px;
+  }
+  body.conf-step-final .conf-mcta .mq-total{padding-inline:6px}
 
   /* Все мобильные листы открываются от нижней кромки. */
   .contact-sheet{align-items:flex-end!important}
@@ -545,13 +753,18 @@
   .site-header .brand .b-name{font-size:14px}
   .mnav .mn-i{font-size:10px;letter-spacing:0}
   .conf-mcta .mq-bar{
-    grid-template-columns:46px minmax(0,1fr) 42px minmax(92px,.68fr);
+    grid-template-columns:46px minmax(0,1fr) minmax(106px,.74fr);
     gap:6px;
   }
   .conf-mcta .mq-back{width:46px}
-  .conf-mcta .cart-tab:not([hidden]){width:42px;min-width:42px;max-width:42px}
-  .conf-mcta .mq-more{display:none}
-  .conf-mcta #mNext{font-size:12.5px}
+  .conf-mcta .mq-more{font-size:9.5px}
+  .conf-mcta #mNext{font-size:14px}
+  body.conf-step-final .conf-mcta .mq-bar{
+    grid-template-columns:46px 104px minmax(150px,1fr);
+  }
+  body.svc-checkout .conf-mcta .mq-bar{
+    grid-template-columns:minmax(92px,.56fr) minmax(150px,1fr);
+  }
   #zkMcta .btn{max-width:44vw;padding-left:12px;padding-right:12px}
   .home .pr-form[data-estimator-flow="1"] .plates,
   .home .pr-form[data-estimator-flow="1"] .plates.cols-3{
@@ -583,8 +796,15 @@
     font-size:9.5px!important;
   }
   .conf-mcta .mq-bar{
-    grid-template-columns:44px minmax(0,1fr) 40px minmax(88px,.64fr);
+    grid-template-columns:44px minmax(0,1fr) minmax(96px,.7fr);
     gap:5px;
+  }
+  .conf-mcta .mq-more{display:none}
+  body.conf-step-final .conf-mcta .mq-bar{
+    grid-template-columns:44px 104px minmax(146px,1fr);
+  }
+  body.svc-checkout .conf-mcta .mq-bar{
+    grid-template-columns:minmax(88px,.54fr) minmax(146px,1fr);
   }
 }
 

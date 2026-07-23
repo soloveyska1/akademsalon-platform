@@ -23,7 +23,13 @@ const { spawnSync } = require('node:child_process');
 const PLAYWRIGHT_VERSION = '1.60.0';
 const ROOT = path.resolve(__dirname, '..');
 const OUTPUT_ROOT = path.join(ROOT, 'output', 'playwright', 'mobile-light');
-const DEFAULT_PAGES = ['index.html', 'tariffs.html', 'zayavka.html', 'dashboard.html'];
+const DEFAULT_PAGES = [
+  'index.html',
+  'tariffs.html',
+  'zayavka.html',
+  'dashboard.html',
+  'configurator.html?step=2'
+];
 const VIEWPORTS = [
   { name: 'iphone-320', width: 320, height: 568 },
   { name: 'iphone-390', width: 390, height: 844 },
@@ -342,6 +348,271 @@ async function inspectPage(page, ctaRequired) {
   return { theme, overflow, cta, homeHero, dock, failures };
 }
 
+async function inspectConfiguratorStep2(page) {
+  await page.waitForFunction(() => {
+    const title = document.getElementById('ws2t');
+    const step = title && title.closest('.wstep');
+    const mobileEdition = document.querySelector('link[data-mobile-edition]');
+    return step && step.classList.contains('active') &&
+      mobileEdition && mobileEdition.sheet &&
+      document.getElementById('wpLbl') &&
+      document.getElementById('mBack') &&
+      document.getElementById('mNext');
+  }, null, { timeout: 10_000 });
+
+  const layout = await page.evaluate(() => {
+    const visible = (element) => {
+      if (!element) return false;
+      const style = getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return !element.hidden &&
+        style.display !== 'none' &&
+        style.visibility !== 'hidden' &&
+        Number(style.opacity) !== 0 &&
+        rect.width > 0 &&
+        rect.height > 0;
+    };
+    const box = (element) => {
+      const rect = element.getBoundingClientRect();
+      return {
+        left: Math.round(rect.left),
+        top: Math.round(rect.top),
+        right: Math.round(rect.right),
+        bottom: Math.round(rect.bottom),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height)
+      };
+    };
+    const overlap = (a, b) =>
+      a.right > b.left + 1 && a.left < b.right - 1 &&
+      a.bottom > b.top + 1 && a.top < b.bottom - 1;
+
+    const activeSteps = Array.from(document.querySelectorAll('.wstep.active'));
+    const dock = document.getElementById('confMcta');
+    const bar = dock && dock.querySelector('.mq-bar');
+    const controls = [
+      document.getElementById('mBack'),
+      document.getElementById('mqToggle'),
+      document.getElementById('mNext')
+    ].filter(Boolean);
+    const controlBoxes = controls.map((element) => ({
+      selector: element.id ? `#${element.id}` : '.cart-tab',
+      visible: visible(element),
+      ariaLabel: element.getAttribute('aria-label') || '',
+      text: String(element.textContent || '').replace(/\s+/g, ' ').trim(),
+      box: box(element)
+    }));
+    const overlaps = [];
+    for (let i = 0; i < controlBoxes.length; i += 1) {
+      for (let j = i + 1; j < controlBoxes.length; j += 1) {
+        if (overlap(controlBoxes[i].box, controlBoxes[j].box)) {
+          overlaps.push(`${controlBoxes[i].selector} ↔ ${controlBoxes[j].selector}`);
+        }
+      }
+    }
+
+    const fill = document.getElementById('wpFill');
+    return {
+      activeStepCount: activeSteps.length,
+      activeStepTitle: activeSteps[0] &&
+        String(activeSteps[0].querySelector('.ws-title')?.textContent || '').trim(),
+      laterClass: document.body.classList.contains('conf-step-later'),
+      progressLabel: String(document.getElementById('wpLbl')?.textContent || '').trim(),
+      progressFill: fill ? parseFloat(getComputedStyle(fill).width) /
+        Math.max(1, parseFloat(getComputedStyle(fill.parentElement).width)) : 0,
+      helpFabs: Array.from(document.querySelectorAll('.helpfab')).map((element) => ({
+        visible: visible(element),
+        text: String(element.textContent || '').replace(/\s+/g, ' ').trim(),
+        box: box(element)
+      })),
+      introVisible: visible(document.querySelector('.conf-head')),
+      cartTabVisible: visible(bar && bar.querySelector('.cart-tab')),
+      dock: dock ? {
+        visible: visible(dock),
+        position: getComputedStyle(dock).position,
+        box: box(dock)
+      } : null,
+      controls: controlBoxes,
+      overlaps,
+      viewport: { width: innerWidth, height: innerHeight },
+      desktopNextVisible: visible(document.getElementById('btnNext'))
+    };
+  });
+
+  const failures = [];
+  if (layout.activeStepCount !== 1 || !/направление/i.test(layout.activeStepTitle || '')) {
+    failures.push(
+      `configurator step 2: active=${layout.activeStepCount}, title=${layout.activeStepTitle || 'none'}`
+    );
+  }
+  if (!layout.laterClass) failures.push('configurator step 2: body.conf-step-later missing');
+  if (layout.progressLabel !== 'Шаг 2 из 4' || Math.abs(layout.progressFill - 0.5) > 0.03) {
+    failures.push(
+      `configurator progress: label=${layout.progressLabel || 'none'}, fill=${Math.round(layout.progressFill * 100)}%`
+    );
+  }
+  if (layout.helpFabs.some((item) => item.visible)) {
+    failures.push(`configurator top nudge .helpfab is visible: ${JSON.stringify(layout.helpFabs)}`);
+  }
+  if (layout.introVisible) failures.push('configurator step 2: introductory .conf-head still visible');
+  if (layout.cartTabVisible) failures.push('configurator action bar: .cart-tab must stay hidden');
+  if (!layout.dock || !layout.dock.visible || layout.dock.position !== 'fixed') {
+    failures.push('configurator action bar: not visible/fixed');
+  } else {
+    if (layout.dock.box.left < -1 ||
+        layout.dock.box.right > layout.viewport.width + 1 ||
+        layout.dock.box.bottom > layout.viewport.height + 1) {
+      failures.push(`configurator action bar: clipped ${JSON.stringify(layout.dock.box)}`);
+    }
+    if (layout.controls.length !== 3) {
+      failures.push(`configurator action bar: expected 3 controls, got ${layout.controls.length}`);
+    }
+    for (const control of layout.controls) {
+      if (!control.visible) failures.push(`configurator action bar: ${control.selector} hidden`);
+      if (control.box.height < 44 || control.box.width < 44) {
+        failures.push(
+          `configurator action bar: ${control.selector} touch target ${control.box.width}×${control.box.height}`
+        );
+      }
+    }
+    if (layout.overlaps.length) {
+      failures.push(`configurator action bar overlaps: ${layout.overlaps.join(', ')}`);
+    }
+    const back = layout.controls.find((item) => item.selector === '#mBack');
+    const next = layout.controls.find((item) => item.selector === '#mNext');
+    const total = layout.controls.find((item) => item.selector === '#mqToggle');
+    if (!back || !back.visible) failures.push('configurator action bar: back unavailable on step 2');
+    if (!next || next.text !== 'Далее') {
+      failures.push(`configurator action bar: next copy=${next ? next.text : 'none'}`);
+    }
+    if (!total || !/Итого/.test(total.text) || !/Смета/.test(total.text)) {
+      failures.push(`configurator action bar: total copy=${total ? total.text : 'none'}`);
+    }
+  }
+  if (layout.desktopNextVisible) {
+    failures.push('configurator action bar: desktop #btnNext is also visible');
+  }
+
+  await page.evaluate(() => document.getElementById('mqToggle')?.click());
+  await page.waitForTimeout(80);
+  const panel = await page.evaluate(() => {
+    const element = document.getElementById('mqPanel');
+    const bar = document.querySelector('#confMcta .mq-bar');
+    const rect = element && element.getBoundingClientRect();
+    const barRect = bar && bar.getBoundingClientRect();
+    const style = element && getComputedStyle(element);
+    return {
+      visible: !!(element && !element.hidden && style.display !== 'none'),
+      expanded: document.getElementById('mqToggle')?.getAttribute('aria-expanded'),
+      box: rect ? {
+        left: Math.round(rect.left),
+        top: Math.round(rect.top),
+        right: Math.round(rect.right),
+        bottom: Math.round(rect.bottom),
+        height: Math.round(rect.height)
+      } : null,
+      barTop: barRect ? Math.round(barRect.top) : null,
+      overflowY: style && style.overflowY,
+      maxHeight: style && style.maxHeight,
+      clientHeight: element && element.clientHeight,
+      scrollHeight: element && element.scrollHeight,
+      viewport: { width: innerWidth, height: innerHeight }
+    };
+  });
+  if (!panel.visible || panel.expanded !== 'true') {
+    failures.push('configurator estimate panel: #mqPanel did not open');
+  } else {
+    if (!panel.box ||
+        panel.box.left < -1 ||
+        panel.box.right > panel.viewport.width + 1 ||
+        panel.box.top < -1 ||
+        panel.box.bottom > panel.viewport.height + 1 ||
+        (panel.barTop !== null && panel.box.bottom > panel.barTop + 1)) {
+      failures.push(`configurator estimate panel: clipped/overlapping ${JSON.stringify(panel)}`);
+    }
+    if (panel.box.height > panel.viewport.height * 0.56 + 2) {
+      failures.push(
+        `configurator estimate panel: height ${panel.box.height}px exceeds 56vh`
+      );
+    }
+    if (!/(auto|scroll)/.test(panel.overflowY || '')) {
+      failures.push(
+        `configurator estimate panel: overflow-y=${panel.overflowY || 'unset'}`
+      );
+    }
+  }
+  await page.evaluate(() => document.getElementById('mqToggle')?.click());
+  await page.waitForTimeout(50);
+
+  await page.evaluate(() => document.getElementById('mBack')?.click());
+  await page.waitForFunction(() => {
+    const title = document.getElementById('ws1t');
+    return title?.closest('.wstep')?.classList.contains('active');
+  });
+  const backState = await page.evaluate(() => ({
+    label: document.getElementById('wpLbl')?.textContent.trim(),
+    backHidden: document.getElementById('mBack')?.hidden,
+    laterClass: document.body.classList.contains('conf-step-later')
+  }));
+  if (backState.label !== 'Шаг 1 из 4' || !backState.backHidden || backState.laterClass) {
+    failures.push(`configurator action bar back: ${JSON.stringify(backState)}`);
+  }
+  await page.evaluate(() => document.getElementById('mNext')?.click());
+  await page.waitForFunction(() => {
+    const title = document.getElementById('ws2t');
+    return title?.closest('.wstep')?.classList.contains('active');
+  });
+  const nextState = await page.evaluate(() => ({
+    label: document.getElementById('wpLbl')?.textContent.trim(),
+    backHidden: document.getElementById('mBack')?.hidden,
+    laterClass: document.body.classList.contains('conf-step-later')
+  }));
+  if (nextState.label !== 'Шаг 2 из 4' || nextState.backHidden || !nextState.laterClass) {
+    failures.push(`configurator action bar next: ${JSON.stringify(nextState)}`);
+  }
+
+  await page.evaluate(() => {
+    const progress = document.querySelector('.wprog');
+    if (!progress) return;
+    const stickyTop = parseFloat(getComputedStyle(progress).top) || 58;
+    window.scrollTo(0, window.scrollY + progress.getBoundingClientRect().top - stickyTop);
+  });
+  await page.waitForTimeout(80);
+  const sticky = await page.evaluate(() => {
+    const progress = document.querySelector('.wprog');
+    const title = document.getElementById('ws2t');
+    const rect = (element) => {
+      const value = element.getBoundingClientRect();
+      return {
+        left: Math.round(value.left),
+        top: Math.round(value.top),
+        right: Math.round(value.right),
+        bottom: Math.round(value.bottom)
+      };
+    };
+    return {
+      position: getComputedStyle(progress).position,
+      cssTop: parseFloat(getComputedStyle(progress).top),
+      progress: rect(progress),
+      title: rect(title),
+      helpVisible: Array.from(document.querySelectorAll('.helpfab')).some((element) => {
+        const style = getComputedStyle(element);
+        const value = element.getBoundingClientRect();
+        return style.display !== 'none' && style.visibility !== 'hidden' &&
+          value.width > 0 && value.height > 0;
+      })
+    };
+  });
+  if (sticky.position !== 'sticky' ||
+      sticky.progress.top < sticky.cssTop - 1 ||
+      sticky.progress.bottom > sticky.title.top + 1) {
+    failures.push(`configurator sticky progress overlap: ${JSON.stringify(sticky)}`);
+  }
+  if (sticky.helpVisible) failures.push('configurator top nudge .helpfab became visible after scroll');
+
+  return { layout, panel, backState, nextState, sticky, failures };
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const playwright = loadPlaywright();
@@ -386,6 +657,8 @@ async function main() {
               try {
                 localStorage.setItem('salon_theme', 'light');
                 localStorage.setItem('salon_calm', '1');
+                localStorage.removeItem('salon_draft');
+                localStorage.removeItem('salon_cart_v1');
                 const now = new Date();
                 localStorage.setItem('salon_consent', JSON.stringify({
                   v: 2,
@@ -410,6 +683,7 @@ async function main() {
             const label = `${browserName}/${sanitizePageName(pageName)}-${viewport.width}`;
             const url = `${server.baseURL}/${pageName}`;
             let inspection = null;
+            let configuratorInspection = null;
             let navigationError = null;
             try {
               const response = await page.goto(url, {
@@ -421,6 +695,26 @@ async function main() {
               }
               await page.waitForTimeout(700);
               await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
+              if (/^configurator\.html\?step=2(?:&|$)/.test(pageName)) {
+                configuratorInspection = await inspectConfiguratorStep2(page);
+                if (options.screenshots) {
+                  await page.evaluate(() => document.getElementById('mqToggle')?.click());
+                  await page.waitForTimeout(80);
+                  const panelPath = path.join(
+                    OUTPUT_ROOT,
+                    `${label}-estimate-panel.png`
+                  );
+                  const viewportPath = path.join(
+                    OUTPUT_ROOT,
+                    `${label}-step2-viewport.png`
+                  );
+                  fs.mkdirSync(path.dirname(panelPath), { recursive: true });
+                  await page.screenshot({ path: panelPath, fullPage: false });
+                  await page.evaluate(() => document.getElementById('mqToggle')?.click());
+                  await page.waitForTimeout(50);
+                  await page.screenshot({ path: viewportPath, fullPage: false });
+                }
+              }
               inspection = await inspectPage(page, pageName === 'index.html');
               if (options.screenshots) {
                 const screenshotPath = path.join(OUTPUT_ROOT, `${label}.png`);
@@ -434,6 +728,7 @@ async function main() {
             const failures = [
               ...(navigationError ? [`navigation: ${navigationError}`] : []),
               ...(inspection ? inspection.failures : []),
+              ...(configuratorInspection ? configuratorInspection.failures : []),
               ...consoleErrors
             ];
             results.push({

@@ -704,6 +704,11 @@
      Один показ за сессию, крестик прячет до конца сессии. */
   (function helpFab() {
     if (QUIET_PAGES[here] || here === 'dashboard.html') return;
+    /* В мобильном конфигураторе подсказка становилась вторым fixed-слоем
+       над сметой и перекрывала текущий шаг. Здесь помощь не должна
+       прерывать заполнение: пользователь уже находится в главном потоке. */
+    if (here === 'configurator.html' &&
+        window.matchMedia && window.matchMedia('(max-width:880px)').matches) return;
     var shown = false, dismissed = false;
     try { dismissed = sessionStorage.getItem('salon_help_off') === '1'; } catch (e) {}
     if (dismissed) return;
