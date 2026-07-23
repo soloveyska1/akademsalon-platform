@@ -11,6 +11,10 @@
   var scene = document.querySelector('.pr-scene');
   var bookTrigger = document.getElementById('prBookTrigger');
   var formHeading = document.querySelector('.pr-formh');
+  var concealedPages = [
+    document.querySelector('.pr-first'),
+    document.querySelector('.pr-cvin')
+  ].filter(Boolean);
   var focusTimer = 0;
   if (!track || !scene) return;
 
@@ -29,6 +33,19 @@
   }
   function staticWide() {
     return window.innerWidth > 880 && !(coarse && coarse.matches) && reduced() && !docEl.hasAttribute('data-calm');
+  }
+  function syncBookState(open) {
+    var conceal = !docEl.hasAttribute('data-pr-flat') && !open;
+    var active = document.activeElement;
+    if (conceal && bookTrigger && concealedPages.some(function (page) { return page.contains(active); })) {
+      bookTrigger.focus({ preventScroll: true });
+    }
+    concealedPages.forEach(function (page) {
+      page.inert = conceal;
+      if (conceal) page.setAttribute('aria-hidden', 'true');
+      else page.removeAttribute('aria-hidden');
+    });
+    if (bookTrigger) bookTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
   /* На телефоне быстрый расчёт — это три коротких шага, а не длинный
@@ -117,14 +134,17 @@
 
   /* ---------- прогресс кино ---------- */
   function onScroll() {
-    if (docEl.hasAttribute('data-pr-flat') || docEl.hasAttribute('data-pr-static')) return;
+    if (docEl.hasAttribute('data-pr-flat') || docEl.hasAttribute('data-pr-static')) {
+      syncBookState(document.body.classList.contains('pr-open'));
+      return;
+    }
     var total = track.offsetHeight - window.innerHeight;
     if (total <= 0) return;
     var p = Math.min(1, Math.max(0, -track.getBoundingClientRect().top / total));
     track.style.setProperty('--p', p.toFixed(4));
     document.body.classList.toggle('pr-open', p > .55);
     document.body.classList.toggle('pr-set', p > .82);
-    if (bookTrigger) bookTrigger.setAttribute('aria-expanded', p > .55 ? 'true' : 'false');
+    syncBookState(p > .55);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', applyMode);
@@ -152,7 +172,7 @@
       track.setAttribute('data-static-open', '1');
       track.style.setProperty('--p', '1');
       document.body.classList.add('pr-open', 'pr-set');
-      if (bookTrigger) bookTrigger.setAttribute('aria-expanded', 'true');
+      syncBookState(true);
       scene.scrollIntoView({ behavior: 'auto', block: 'start' });
       if (moveFocus) focusFormSoon(false);
       return;
