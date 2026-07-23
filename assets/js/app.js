@@ -1892,7 +1892,11 @@
     if (hdr) {
       if (Math.abs(y - lastY) > 6) {
         var goDown = y > lastY && y > 200;
-        if (goDown !== hidden) { hidden = goDown; hdr.classList.toggle('hide', hidden); }
+        if (goDown !== hidden) {
+          hidden = goDown;
+          hdr.classList.toggle('hide', hidden);
+          document.body.classList.toggle('header-hidden', hidden);
+        }
       }
       hdr.classList.toggle('scrolled', y > 12);
       var ink = hdr.querySelector('.hdr-ink');
