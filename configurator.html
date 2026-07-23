@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260723c" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260723d" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -433,6 +433,11 @@
         <header class="conf-head reveal">
           <h1>Смета вашей работы</h1>
           <p class="petit">Четыре шага — увидите стоимость, план и порядок оплаты. Оценка бесплатна, решение остаётся за вами.</p>
+          <div class="estimate-builder-note">
+            <span class="estimate-builder-mark" aria-hidden="true">¶</span>
+            <span><b>Соберите одну смету</b><small>Работы и дополнительные услуги можно объединить, применить промокод, сертификат и бонусы.</small></span>
+            <button type="button" data-cart-open aria-label="Открыть вашу смету">Открыть смету →</button>
+          </div>
           <!-- карточка-квитанция услуги: заполняется в сервисном режиме (?service=…) -->
           <div class="plan-offer" id="svcOffer" hidden>
             <div class="po-head"><span class="caps" id="svcOfferCap"></span>
@@ -584,6 +589,14 @@
                 <p class="petit" id="attHint" style="margin-top:8px">До 5 файлов по 20 МБ. С файлами мастер называет точную смету с первого ответа — не придётся пересылать их позже в переписке.</p>
               </div>
 
+              <div class="compose-gate" id="composeGate" hidden>
+                <span class="caps">Сначала — состав сметы</span>
+                <h3>Добавьте услугу, затем решите: дополнить или отправить</h3>
+                <p>Контакты понадобятся только после того, как вы проверите состав и выгоды.</p>
+                <button type="button" class="btn btn-wax btn-block" data-cart-add>Добавить услугу в смету <span class="ar">→</span></button>
+              </div>
+
+              <div id="checkoutFields">
               <!-- как с вами связаться: Telegram-вход или контакт вручную -->
               <div id="ctAuthed" hidden>
                 <p class="petit" style="margin-bottom:14px">✓ Вы вошли через Telegram как <b id="ctName">гость</b>.
@@ -687,6 +700,7 @@
               </div>
 
               <p class="petit mt-s wsubmit-note">Оценка бесплатна: мастер сразу получит заявку вместе с файлами, статус и переписка появятся в <a class="link" href="dashboard.html">кабинете</a> на сайте — а если захотите, продублируем в мессенджер. Решение вы принимаете, уже зная точную смету, — она фиксируется после разбора плана и не меняется по нашей инициативе.</p>
+              </div>
             </div>
 
             <div class="wnav">
@@ -875,7 +889,7 @@
 
 <script src="assets/js/app.js?v=20260723j"></script>
 <script src="assets/js/extras.js?v=20260723g"></script>
-<script src="assets/js/cart.js?v=20260723c"></script>
+<script src="assets/js/cart.js?v=20260723d"></script>
 <script>
 function initConf() {
   'use strict';
@@ -1001,11 +1015,25 @@ function initConf() {
     if (clear) clear.addEventListener('click', function () {
       search.value = ''; paint(); search.focus();
     });
+    try {
+      var composeKind = new URLSearchParams(location.search).get('compose');
+      if (composeKind === 'service') {
+        active = 'service';
+        filters.querySelectorAll('[data-work-filter]').forEach(function (x) {
+          x.setAttribute('aria-pressed', String(x.getAttribute('data-work-filter') === 'service'));
+        });
+      }
+    } catch (e) {}
     paint();
   })();
 
   /* --- сервисный режим: один лист заявки вместо четырёх шагов --- */
   if (svc) {
+    document.body.classList.add('svc-compose');
+    var composeGate = $('composeGate');
+    var checkoutFields = $('checkoutFields');
+    if (composeGate) composeGate.hidden = false;
+    if (checkoutFields) checkoutFields.hidden = true;
     var svcFrom = 'от ' + C.fmt(svc.from) + ' ₽' + (svc.unit || '');
     var head = document.querySelector('.conf-head');
     if (head) {
@@ -1357,7 +1385,7 @@ function initConf() {
     var pOn = !!(promoCode && promoDeal);
     var gOn = !!giftCode;
     /* код с порогом «для заказов от N» ниже потолка сметы — честно говорим, не перечёркиваем */
-    var minBar = !!(pOn && promoDeal.min_price && (q.high || q.low) < promoDeal.min_price);
+    var minBar = !!(pOn && promoDeal.min_price && q.low < promoDeal.min_price);
     var strike = pOn && !minBar;
     var dLow = strike ? dealCalc(q.low) : 0;
     var newLow = Math.max(0, q.low - dLow);
@@ -1484,10 +1512,8 @@ function initConf() {
     btnNext.hidden = svc ? true : idx === 3;
     if (mBack) mBack.hidden = svc ? true : idx === 0;
     if (mNext) {
-      var mobileCartN = window.SalonCart && window.SalonCart.hasItems ? window.SalonCart.count() : 0;
-      mNext.textContent = idx === 3
-        ? (mobileCartN ? 'Оформить состав · ' + mobileCartN : 'Отправить')
-        : 'Далее';
+      mNext.hidden = svc && !document.body.classList.contains('svc-checkout');
+      mNext.textContent = idx === 3 ? 'Отправить заявку' : 'Далее';
     }
     if (mqPanel && !mqPanel.hidden) {
       mqPanel.hidden = true;
@@ -1686,9 +1712,13 @@ function initConf() {
     renderDeal();
     if (window.SalonCart && window.SalonCart.refresh) window.SalonCart.refresh();
   }
-  function promoCheck(quiet) {
+  function promoCheck(quiet, done) {
     var v = (promoIn && promoIn.value || '').trim().toUpperCase();
-    if (!v) { if (!quiet) promoMsg(PROMO_ERR.empty, false); return; }
+    if (!v) {
+      if (!quiet) promoMsg(PROMO_ERR.empty, false);
+      if (done) done({ ok:false, message:PROMO_ERR.empty });
+      return;
+    }
     if (promoApplyBtn) S.btnLoading(promoApplyBtn, true, '…');
     S.api.post('/promo/check', { code: v }).then(function (r) {
       if (promoApplyBtn) S.btnLoading(promoApplyBtn, false);
@@ -1699,6 +1729,7 @@ function initConf() {
         if (promoNote) promoNote.hidden = true;
         promoPaint();
         if (S.metrika) S.metrika.goal('promo_ok');
+        if (done) done({ ok:true, code:promoCode, label:promoLabel });
       } else {
         promoCode = null; promoLabel = ''; promoDeal = null;
         promoPaint();
@@ -1712,8 +1743,10 @@ function initConf() {
           exitGrantDrop((r && r.error) || '');
         } else {
           promoOpen();
-          promoMsg(PROMO_ERR[(r && r.error) || 'not_found'] || 'Не получилось проверить код', false);
+          var promoError = PROMO_ERR[(r && r.error) || 'not_found'] || 'Не получилось проверить код';
+          promoMsg(promoError, false);
         }
+        if (done) done({ ok:false, message:PROMO_ERR[(r && r.error) || 'not_found'] || 'Не получилось проверить код' });
       }
     });
   }
@@ -1725,7 +1758,7 @@ function initConf() {
   if (promoIn) promoIn.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') { e.preventDefault(); promoCheck(false); }
   });
-  if ($('promoRemove')) $('promoRemove').addEventListener('click', function () {
+  function promoRemoveNow() {
     promoCode = null; promoLabel = ''; promoDeal = null;
     promoPaint();
     if (promoIn) promoIn.value = '';
@@ -1735,7 +1768,8 @@ function initConf() {
     if (promoBox) promoBox.classList.remove('open');
     var f = $('promoField');
     if (f) f.hidden = true;
-  });
+  }
+  if ($('promoRemove')) $('promoRemove').addEventListener('click', promoRemoveNow);
   var urlPromo = null;
   try { urlPromo = new URLSearchParams(location.search).get('promo'); } catch (e) {}
   if (urlPromo && promoIn) {
@@ -1790,9 +1824,13 @@ function initConf() {
     renderDeal();
     if (window.SalonCart && window.SalonCart.refresh) window.SalonCart.refresh();
   }
-  function giftCheck(quiet) {
+  function giftCheck(quiet, done) {
     var v = (giftIn && giftIn.value || '').trim().toUpperCase();
-    if (!v) { if (!quiet) giftMsg(GIFT_ERR.empty, false); return; }
+    if (!v) {
+      if (!quiet) giftMsg(GIFT_ERR.empty, false);
+      if (done) done({ ok:false, message:GIFT_ERR.empty });
+      return;
+    }
     if (giftApplyBtn) S.btnLoading(giftApplyBtn, true, '…');
     S.api.get('/gift/check?code=' + encodeURIComponent(v)).then(function (r) {
       if (giftApplyBtn) S.btnLoading(giftApplyBtn, false);
@@ -1802,6 +1840,7 @@ function initConf() {
         if (giftNote) giftNote.hidden = true;
         giftPaint();
         if (S.metrika) S.metrika.goal('gift_ok');
+        if (done) done({ ok:true, code:giftCode, balance:giftBal });
       } else {
         giftCode = null; giftBal = 0;
         giftPaint();
@@ -1812,8 +1851,10 @@ function initConf() {
           if (giftIn) giftIn.value = '';
         } else {
           giftOpen();
-          giftMsg(GIFT_ERR[(r && r.error) || 'not_found'] || 'Не получилось проверить код', false);
+          var giftError = GIFT_ERR[(r && r.error) || 'not_found'] || 'Не получилось проверить код';
+          giftMsg(giftError, false);
         }
+        if (done) done({ ok:false, message:GIFT_ERR[(r && r.error) || 'not_found'] || 'Не получилось проверить код' });
       }
     });
   }
@@ -1825,7 +1866,7 @@ function initConf() {
   if (giftIn) giftIn.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') { e.preventDefault(); giftCheck(false); }
   });
-  if ($('giftRemove')) $('giftRemove').addEventListener('click', function () {
+  function giftRemoveNow() {
     giftCode = null; giftBal = 0;
     giftPaint();
     if (giftIn) giftIn.value = '';
@@ -1835,7 +1876,8 @@ function initConf() {
     if (giftBox) giftBox.classList.remove('open');
     var f = $('giftField');
     if (f) f.hidden = true;
-  });
+  }
+  if ($('giftRemove')) $('giftRemove').addEventListener('click', giftRemoveNow);
   var urlGift = null;
   try { urlGift = new URLSearchParams(location.search).get('gift'); } catch (e) {}
   if (urlGift && giftIn) {
@@ -2043,6 +2085,7 @@ function initConf() {
   function submit() {
     if (submitting) return;
     var authed = !!(S.api && S.api.token());
+    var cartHasItems = !!(window.SalonCart && window.SalonCart.hasItems());
     var contact = $('fContact') ? $('fContact').value.trim() : '';
     var name = $('fName') ? $('fName').value.trim() : '';
     if (!authed) {
@@ -2070,7 +2113,7 @@ function initConf() {
         if (q.req && !v && !missing) missing = q;
         return v ? (q.short || q.label) + ': ' + v : '';
       }).filter(Boolean).join('\n');
-      if (missing) {
+      if (missing && !cartHasItems) {
         S.toast('Ответьте, пожалуйста: ' + missing.label.toLowerCase());
         var mel = document.querySelector('#svcAsk [data-ask="' + missing.id + '"], #ask_' + missing.id);
         if (mel && mel.scrollIntoView) mel.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -2098,7 +2141,6 @@ function initConf() {
     };
     submittedCartCount = 0;
     if (window.SalonCart && window.SalonCart.hasItems()) {
-      window.SalonCart.ensure(cartCurrentItem());
       var cartItems = window.SalonCart.items();
       var cartFirst = cartItems[0];
       submittedCartCount = cartItems.length;
@@ -2422,12 +2464,14 @@ function initConf() {
     if (svc) {
       var answers = {};
       var answerLines = [];
+      var needs = 0;
       (svc.ask || []).forEach(function (q) {
         var answer = q.type === 'chips'
           ? (svcAnswers[q.id] || '')
           : (($('ask_' + q.id) || {}).value || '').trim();
         answers[q.id] = answer;
         if (answer) answerLines.push((q.short || q.label) + ': ' + answer);
+        if (q.req && !answer) needs += 1;
       });
       var sp = svc.fixed ? svcPriceVal() : svc.from;
       return {
@@ -2435,6 +2479,7 @@ function initConf() {
         label:svc.label, serviceMeta:svc.unit ? 'услуга · ' + svc.unit.replace('/', '').trim() : 'услуга мастерской',
         low:sp, high:svc.fixed ? sp : (svc.to || sp), fixed:!!svc.fixed,
         allowQty:/час|страниц|единиц/i.test(svc.unit || ''), answers:answers, answerLines:answerLines,
+        needs:needs,
         topic:topicIn ? topicIn.value.trim() : '', deadline:deadlineIn ? deadlineIn.value.trim() : '',
         requirements:detailsIn ? detailsIn.value.trim() : '', note:''
       };
@@ -2474,17 +2519,48 @@ function initConf() {
           giftCode:giftCode, giftBal:giftBal
         };
       },
+      applyPromo:function (code, done) {
+        if (promoIn) promoIn.value = String(code || '').toUpperCase().slice(0, 24);
+        promoCheck(false, done);
+      },
+      removePromo:promoRemoveNow,
+      applyGift:function (code, done) {
+        if (giftIn) giftIn.value = String(code || '').toUpperCase().slice(0, 24);
+        giftCheck(false, done);
+      },
+      removeGift:giftRemoveNow,
       onChange:function () { renderDeal(); },
-      another:function () {
-        if (svc) { location.href = 'configurator.html'; return; }
+      another:function (kind) {
+        kind = kind === 'service' ? 'service' : 'work';
+        if (svc) { location.href = 'configurator.html?compose=' + kind; return; }
         if (topicIn) topicIn.value = '';
         if (deadlineIn) deadlineIn.value = '';
         if (detailsIn) detailsIn.value = '';
         go(0, true);
+        var filter = document.querySelector('[data-work-filter="' + (kind === 'service' ? 'service' : 'all') + '"]');
+        if (filter) filter.click();
+        var search = $('workSearch');
+        if (search) {
+          search.value = '';
+          search.dispatchEvent(new Event('input', { bubbles:true }));
+        }
         var h = document.querySelector('.conf-head h1');
         if (h && h.scrollIntoView) h.scrollIntoView({ behavior:S.reduceMotion ? 'auto' : 'smooth', block:'start' });
       },
-      checkout:function () { go(3, true); }
+      checkout:function () {
+        document.body.classList.add('cart-checkout');
+        if (svc) {
+          var gate = $('composeGate'), fields = $('checkoutFields');
+          if (gate) gate.hidden = true;
+          if (fields) fields.hidden = false;
+          document.body.classList.add('svc-checkout');
+        }
+        go(3, true);
+        setTimeout(function () {
+          var target = (S.api && S.api.token()) ? $('btnSubmit') : $('fContact');
+          if (target && target.focus) target.focus({ preventScroll:true });
+        }, 80);
+      }
     });
   }
 

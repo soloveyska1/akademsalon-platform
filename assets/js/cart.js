@@ -11,6 +11,7 @@
   var data = { version: VERSION, items: [], checkout: { useBonus: false, bonusAmount: 0 }, updatedAt: 0 };
   var member = null, removed = null, undoTimer = null, lastFocus = null;
   var visible = true, focusRestore = null;
+  var benefitMessage = { promo:'', gift:'' };
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -89,15 +90,24 @@
     var bonus = data.checkout.useBonus ? Math.min(data.checkout.bonusAmount || bonusCap, bonusCap) : 0;
     var afterDiscount = Math.max(0, q.low - discount - bonus);
     var gift = d.giftCode ? Math.min(d.giftBal || 0, afterDiscount) : 0;
+    var promoHigh = d.promoCode && d.promoDeal ? dealAmount(q.high, d.promoDeal) : 0;
+    var subSaveHigh = sub && sub.discount_pct
+      ? Math.min(Math.round(q.high * sub.discount_pct / 100), sub.discount_cap || Infinity) : 0;
+    var discountHigh = Math.max(promoHigh, subSaveHigh);
+    var afterDiscountHigh = Math.max(0, q.high - discountHigh - bonus);
+    var giftHigh = d.giftCode ? Math.min(d.giftBal || 0, afterDiscountHigh) : 0;
     return {
       quote:q, deal:d, sub:sub, promo:promo, subSave:subSave, discount:discount,
       discountKind:discountKind, bonusBalance:bonusBalance, bonusCap:bonusCap,
-      bonus:bonus, gift:gift, due:Math.max(0, afterDiscount - gift)
+      bonus:bonus, gift:gift, due:Math.max(0, afterDiscount - gift),
+      dueHigh:Math.max(0, afterDiscountHigh - giftHigh)
     };
   }
   function meta(x) {
     if (x.kind === 'service') {
       return [x.serviceMeta || 'услуга мастерской'].concat(
+        x.needs ? ['детали можно уточнить позже'] : []
+      ).concat(
         Array.isArray(x.answerLines) ? x.answerLines.slice(0, 3) : []
       );
     }
@@ -138,6 +148,10 @@
     }
     if (existing) existing.qty = Math.min(10, (existing.qty || 1) + 1);
     else {
+      if (data.items.length >= 30) {
+        if (S && S.toast) S.toast('В одной смете может быть до 30 позиций', { type:'error' });
+        return false;
+      }
       item.id = uid(); item.qty = 1; item.note = item.note || ''; item.addedAt = Date.now();
       data.items.push(item);
     }
@@ -146,8 +160,9 @@
       tab.classList.remove('bump'); void tab.offsetWidth; tab.classList.add('bump');
     }
     if (!opts.silent && S && S.toast) {
-      S.toast(existing ? 'Количество обновлено · состав заявки' : 'Добавлено в состав заявки ✓');
+      S.toast(existing ? 'Количество обновлено · ваша смета' : 'Добавлено в смету ✓');
     }
+    if (!opts.silent) setTimeout(open, 90);
     return true;
   }
   function ensure(item) {
@@ -156,8 +171,9 @@
   }
   function addCurrent() {
     if (!api || !api.getCurrent) return;
-    if (api.validateCurrent && api.validateCurrent() === false) return;
-    add(api.getCurrent());
+    var current = api.getCurrent();
+    if (contains(current)) { open(); return; }
+    add(current);
   }
   function remove(id) {
     var at = -1;
@@ -189,10 +205,40 @@
     data.items = []; data.checkout = { useBonus:false, bonusAmount:0 }; removed = null;
     write();
   }
+  function serviceType(id) {
+    return {
+      plan:'svc_plan', ai:'svc_ai', review:'svc_review', tutor:'svc_tutor',
+      norm:'svc_norm', defense:'svc_defense', defensepack:'svc_defense_pack'
+    }[id] || 'custom';
+  }
+  function addAddon(id) {
+    var svc = null;
+    (window.SalonServices || []).some(function (x) {
+      if (x.id === id) { svc = x; return true; }
+      return false;
+    });
+    if (!svc) return;
+    var parent = null;
+    data.items.some(function (x) {
+      if (x.kind === 'work') { parent = x; return true; }
+      return false;
+    });
+    var item = {
+      kind:'service', type:serviceType(svc.id), serviceId:svc.id, serviceCode:svc.code,
+      label:svc.label, serviceMeta:'дополнение к работе', low:svc.from,
+      high:svc.fixed ? svc.from : (svc.to || svc.from), fixed:!!svc.fixed,
+      allowQty:false, answers:{}, answerLines:[], topic:'', deadline:'', requirements:'', note:'',
+      parentId:parent ? parent.id : '', isAddon:true
+    };
+    if (contains(item)) { open(); return; }
+    add(item);
+  }
   function lineItem(x, i) {
     var q = itemQuote(x), m = meta(x);
     var titleId = 'cartItem_' + esc(x.id);
-    return '<article class="cart-item" data-cart-id="' + esc(x.id) + '" aria-labelledby="' + titleId + '">' +
+    return '<article class="cart-item ' + (x.kind === 'service' ? 'is-service' : 'is-work') +
+      (x.isAddon || x.parentId ? ' is-addon' : '') + '" data-cart-id="' + esc(x.id) +
+      '" aria-labelledby="' + titleId + '">' +
       '<div class="cart-item-top"><div><h3 id="' + titleId + '">' + esc(x.label) + '</h3>' +
       '<div class="cart-item-meta">' + m.map(function (v) { return '<span>' + esc(v) + '</span>'; }).join('') + '</div></div>' +
       '<div class="cart-price"><b>' + (x.fixed ? '' : 'от ') + money(q.low) + ' ₽</b>' +
@@ -207,7 +253,8 @@
         ((x.qty || 1) <= 1 ? ' disabled' : '') + '>−</button>' +
         '<b aria-live="polite">' + (x.qty || 1) + '</b>' +
         '<button type="button" data-cart-qty="1" aria-label="Увеличить количество «' + esc(x.label) + '»"' +
-        ((x.qty || 1) >= 10 ? ' disabled' : '') + '>+</button></div>' : '<span class="cart-one">1 работа</span>') +
+        ((x.qty || 1) >= 10 ? ' disabled' : '') + '>+</button></div>' :
+        '<span class="cart-one">1 ' + (x.kind === 'service' ? 'услуга' : 'работа') + '</span>') +
       '<button type="button" class="cart-remove" data-cart-remove="' + esc(x.id) +
       '" aria-label="Убрать «' + esc(x.label) + '» из состава">Убрать</button></div></article>';
   }
@@ -242,59 +289,152 @@
     }
     return out;
   }
+  function benefitToolsHtml(b) {
+    var promoOn = !!b.deal.promoCode;
+    var giftOn = !!b.deal.giftCode;
+    var out = '<section class="cart-tools" id="cartBenefits" aria-labelledby="cartToolsTitle">' +
+      '<div class="cart-section-head"><span class="cart-section-no">02</span><div><h3 id="cartToolsTitle">Выгода</h3>' +
+      '<p>Промокод, сертификат и бонусы применяются здесь</p></div></div>';
+    out += '<div class="cart-tool' + (promoOn ? ' applied' : '') + '"><div class="cart-tool-copy">' +
+      '<b>Промокод</b><small>' + (promoOn ? esc(b.deal.promoCode) + ' · ' +
+        esc(b.deal.promoLabel || 'применён') : 'Скидка на предварительный ориентир') + '</small></div>' +
+      (promoOn
+        ? '<span class="cart-tool-value">' + (b.promo ? '−' + money(b.promo) + ' ₽' : 'ждёт порога') + '</span>' +
+          '<button type="button" class="cart-tool-remove" data-cart-promo-remove aria-label="Убрать промокод">×</button>'
+        : '<div class="cart-code"><label class="sr-only" for="cartPromoInput">Промокод</label>' +
+          '<input id="cartPromoInput" maxlength="24" autocomplete="off" placeholder="Промокод">' +
+          '<button type="button" data-cart-promo-apply>Применить</button></div>') +
+      (benefitMessage.promo ? '<p class="cart-tool-msg" role="status">' + esc(benefitMessage.promo) + '</p>' : '') + '</div>';
+    out += '<div class="cart-tool' + (giftOn ? ' applied' : '') + '"><div class="cart-tool-copy">' +
+      '<b>Сертификат</b><small>' + (giftOn ? esc(b.deal.giftCode) + ' · баланс ' +
+        money(b.deal.giftBal || 0) + ' ₽' : 'Оплата кодом, остаток не сгорает') + '</small></div>' +
+      (giftOn
+        ? '<span class="cart-tool-value">−' + money(b.gift) + ' ₽</span>' +
+          '<button type="button" class="cart-tool-remove" data-cart-gift-remove aria-label="Убрать сертификат">×</button>'
+        : '<div class="cart-code"><label class="sr-only" for="cartGiftInput">Код сертификата</label>' +
+          '<input id="cartGiftInput" maxlength="24" autocomplete="off" placeholder="AS-XXXX-XXXX-XXXX">' +
+          '<button type="button" data-cart-gift-apply>Применить</button></div>') +
+      (benefitMessage.gift ? '<p class="cart-tool-msg" role="status">' + esc(benefitMessage.gift) + '</p>' : '') + '</div>';
+    if (member && member.bonus) {
+      out += '<div class="cart-tool cart-tool-bonus"><div class="cart-tool-copy">' +
+        '<label class="cart-bonus-toggle"><input type="checkbox" id="cartBonus"' +
+        (data.checkout.useBonus ? ' checked' : '') + (b.bonusCap ? '' : ' disabled') +
+        '><b>Списать бонусы</b></label><small>Баланс ' + money(b.bonusBalance) +
+        ' · доступно до ' + money(b.bonusCap) + ' ₽</small></div><span class="cart-tool-value">' +
+        (data.checkout.useBonus ? '−' + money(b.bonus) + ' ₽' : 'не выбрано') + '</span>' +
+        (data.checkout.useBonus && b.bonusCap
+          ? '<div class="cart-bonus-quick"><button type="button" data-cart-bonus="500">500</button>' +
+            '<button type="button" data-cart-bonus="1000">1 000</button>' +
+            '<button type="button" data-cart-bonus="max">Максимум</button></div>' : '') + '</div>';
+    } else {
+      out += '<a class="cart-tool cart-tool-login" href="dashboard.html"><div class="cart-tool-copy"><b>Бонусы</b>' +
+        '<small>Войдите — покажем баланс и доступное списание</small></div><span>Войти →</span></a>';
+    }
+    if (b.sub) {
+      out += '<div class="cart-tool applied"><div class="cart-tool-copy"><b>' +
+        esc(b.sub.label || 'Салон+') + '</b><small>Применяется автоматически, если это выгоднее промокода</small></div>' +
+        '<span class="cart-tool-value">−' + money(b.subSave) + ' ₽</span></div>';
+    }
+    return out + '</section>';
+  }
+  function addonsHtml() {
+    var hasWork = data.items.some(function (x) { return x.kind === 'work'; });
+    if (!hasWork) return '';
+    var ids = ['norm', 'defense', 'ai', 'review'];
+    var rows = [];
+    ids.forEach(function (id) {
+      var svc = null;
+      (window.SalonServices || []).some(function (x) { if (x.id === id) { svc = x; return true; } return false; });
+      if (!svc) return;
+      var already = data.items.some(function (x) { return x.kind === 'service' && x.serviceId === id; });
+      rows.push('<button type="button" data-cart-addon="' + id + '"' + (already ? ' disabled' : '') + '>' +
+        '<span>' + (already ? '✓' : '+') + ' ' + esc(svc.label) + '</span><b>от ' + money(svc.from) + ' ₽</b></button>');
+    });
+    return '<section class="cart-addons"><div class="cart-section-head compact"><span class="cart-section-no">+</span>' +
+      '<div><h3>Дополнить работу</h3><p>Добавляется к той же заявке одним нажатием</p></div></div>' +
+      '<div class="cart-addon-list">' + rows.join('') + '</div></section>';
+  }
   function totalsHtml(b) {
     var discountLabel = b.discountKind === 'promo' ? 'Промокод' : (b.discountKind === 'sub' ? 'Салон+' : 'Скидки');
+    var hasBenefit = !!(b.discount || b.bonus || b.gift);
     return '<div class="cart-totals">' +
-      '<div class="cart-total-main"><span>Ориентир по заявке</span><b>' + money(b.quote.low) +
-      (b.quote.high > b.quote.low ? '–' + money(b.quote.high) : '') + ' ₽</b></div>' +
+      '<div class="cart-total-main' + (hasBenefit ? ' has-benefit' : '') + '"><span>Предварительная стоимость</span><b>' +
+      (hasBenefit ? '<s>' : '') + money(b.quote.low) +
+      (b.quote.high > b.quote.low ? '–' + money(b.quote.high) : '') + ' ₽' + (hasBenefit ? '</s>' : '') + '</b></div>' +
       (b.discount ? '<div class="cart-total-row minus"><span>' + discountLabel + '</span><b>−' + money(b.discount) + ' ₽</b></div>' : '') +
       (b.promo && b.subSave ? '<div class="cart-total-row"><span>Промокод и подписка</span><b>учтём выгоднейший</b></div>' : '') +
       (b.bonus ? '<div class="cart-total-row minus"><span>Планируем списать бонусами</span><b>−' + money(b.bonus) + ' ₽</b></div>' : '') +
       (b.gift ? '<div class="cart-total-row minus"><span>Сертификат</span><b>−' + money(b.gift) + ' ₽</b></div>' : '') +
-      ((b.discount || b.bonus || b.gift) ? '<div class="cart-total-row cart-total-after"><span>После подтверждённых зачётов, от</span><b>' +
-        money(b.due) + ' ₽</b></div>' : '') +
-      '<p class="cart-total-note">Мастер проверит каждую позицию и пришлёт точную общую смету. Сейчас платить ничего не нужно.</p></div>';
+      (hasBenefit ? '<div class="cart-total-after"><span>Предварительно деньгами, от</span><b>' +
+        money(b.due) + (b.dueHigh > b.due ? '–' + money(b.dueHigh) : '') + ' ₽</b></div>' : '') +
+      '<p class="cart-total-note">Это предварительный расчёт. Мастер проверит материалы и зафиксирует точную сумму до оплаты.</p></div>';
   }
   function entryHtml(n, compact) {
     var q = quote();
-    return '<span class="cart-entry-icon" aria-hidden="true">≡</span>' +
-      '<span class="cart-entry-copy"><b>Состав заявки</b>' +
-      (compact ? '' : '<small>' + positionLabel(n) + (n ? ' · от ' + money(q.low) + ' ₽' : '') + '</small>') +
+    return '<span class="cart-entry-icon" aria-hidden="true">¶</span>' +
+      '<span class="cart-entry-copy"><b>Ваша смета</b>' +
+      '<small>' + (n ? positionLabel(n) + ' · от ' + money(q.low) + ' ₽' :
+        (compact ? 'можно объединить' : 'работы + услуги в одной заявке')) + '</small>' +
       '</span><span class="cart-tab-count" role="status" aria-live="polite">' + n + '</span>';
   }
   function syncEntry(el, n, compact) {
     if (!el) return;
-    el.classList.toggle('is-empty', !n || !visible);
+    el.classList.toggle('is-empty', !n);
+    el.hidden = !visible;
     el.innerHTML = entryHtml(n, compact);
-    el.setAttribute('aria-label', n ? 'Открыть состав заявки, ' + positionLabel(n) : 'Состав заявки пуст');
+    el.setAttribute('aria-label', n ? 'Открыть смету, ' + positionLabel(n) :
+      'Открыть пустую смету и узнать, как объединить работы и услуги');
     el.setAttribute('aria-expanded', box && box.classList.contains('open') ? 'true' : 'false');
   }
   function render() {
     if (!box || !body || !foot) return;
-    var n = lineCount(), b = benefits(), bh = benefitHtml(b);
+    var n = lineCount(), b = benefits();
     syncEntry(tab, n, true);
     syncEntry(dock, n, false);
-    document.querySelectorAll('[data-cart-submit]').forEach(function (el) {
-      el.textContent = n ? 'Перейти к контактам · ' + positionLabel(n) : 'Отправить заявку мастеру';
+    var current = api && api.getCurrent ? api.getCurrent() : null;
+    var currentSaved = current && contains(current);
+    document.querySelectorAll('[data-cart-add]').forEach(function (el) {
+      el.classList.toggle('saved', !!currentSaved);
+      el.textContent = currentSaved
+        ? 'В смете · открыть'
+        : 'Добавить ' + (current && current.kind === 'service' ? 'услугу' : 'работу') + ' в смету';
     });
+    document.querySelectorAll('[data-cart-submit]').forEach(function (el) {
+      el.textContent = 'Отправить заявку мастеру';
+    });
+    var guide = '<nav class="cart-guide" aria-label="Этапы оформления">' +
+      '<button type="button" class="done" data-cart-jump="cartItems"><b>01</b> Состав</button><i></i><button type="button" class="' +
+      ((b.discount || b.bonus || b.gift) ? 'done' : '') + '" data-cart-jump="cartBenefits"><b>02</b> Выгода</button><i></i>' +
+      '<button type="button" data-cart-checkout' + (n ? '' : ' disabled') + '><b>03</b> Отправка</button></nav>';
     if (!n) {
-      body.innerHTML = '<div class="cart-empty"><div class="cart-empty-mark">¶</div><h3>Состав пока пуст</h3>' +
-        '<p>Добавьте одну или несколько работ — они уйдут мастеру одной аккуратной заявкой.</p>' +
-        '<button type="button" class="btn btn-wax" data-cart-close>Вернуться к расчёту</button></div>' +
+      body.innerHTML = guide + '<div class="cart-empty" id="cartItems"><div class="cart-empty-mark">¶</div>' +
+        '<h3>Работы и услуги можно объединять</h3>' +
+        '<p>Соберите одну понятную смету: основная работа, дополнения и выгоды — мастер проверит всё вместе.</p>' +
+        '<div class="cart-empty-actions"><button type="button" class="btn btn-wax" data-cart-another="work">Выбрать работу</button>' +
+        '<button type="button" class="btn btn-line" data-cart-another="service">Выбрать услугу</button></div></div>' +
+        benefitToolsHtml(b) +
         (removed ? '<div class="cart-undo"><span>Позиция убрана</span><button type="button" data-cart-undo>Вернуть</button></div>' : '');
-      foot.innerHTML = '';
+      foot.innerHTML = '<p class="cart-empty-foot">Добавьте первую позицию — ориентир появится сразу. Сейчас платить ничего не нужно.</p>';
       return;
     }
-    body.innerHTML = '<div class="cart-list">' + data.items.map(lineItem).join('') + '</div>' +
+    var works = data.items.filter(function (x) { return x.kind !== 'service'; });
+    var services = data.items.filter(function (x) { return x.kind === 'service'; });
+    var groups = '<section class="cart-group" id="cartItems"><div class="cart-section-head"><span class="cart-section-no">01</span>' +
+      '<div><h3>Позиции сметы</h3><p>' + positionLabel(n) + ' · можно изменить до отправки</p></div></div>';
+    if (works.length) groups += '<h4>Работы</h4><div class="cart-list">' +
+      works.map(function (x) { return lineItem(x, data.items.indexOf(x)); }).join('') + '</div>';
+    if (services.length) groups += '<h4>Дополнительные услуги</h4><div class="cart-list service-list">' +
+      services.map(function (x) { return lineItem(x, data.items.indexOf(x)); }).join('') + '</div>';
+    groups += '</section>';
+    body.innerHTML = guide + groups + addonsHtml() +
       (removed ? '<div class="cart-undo"><span>Позиция убрана</span><button type="button" data-cart-undo>Вернуть</button></div>' : '') +
-      (bh ? '<details class="cart-benefits"><summary><span><b>Скидки и зачёты</b><small>Проверим после точной сметы</small></span><span aria-hidden="true">+</span></summary>' +
-        '<div class="cart-benefits-body">' + bh + '</div></details>' :
-        '<p class="cart-benefits-hint">Промокод, бонусы или сертификат можно указать на последнем шаге.</p>') +
+      benefitToolsHtml(b) +
       '<button type="button" class="cart-clear" data-cart-clear>Очистить состав</button>' +
       '<p class="cart-legal">До отправки состав хранится только на этом устройстве.</p>';
     foot.innerHTML = totalsHtml(b) +
-      '<div class="cart-actions"><button type="button" class="btn btn-line" data-cart-another>Добавить ещё</button>' +
-      '<button type="button" class="btn btn-wax" data-cart-checkout>К контактам · ' + n + ' →</button></div>';
+      '<div class="cart-actions"><div class="cart-add-more"><button type="button" data-cart-another="work">+ Работа</button>' +
+      '<button type="button" data-cart-another="service">+ Услуга</button></div>' +
+      '<button type="button" class="btn btn-wax" data-cart-checkout>Продолжить · контакты →</button></div>';
     if (focusRestore) {
       var fr = focusRestore; focusRestore = null;
       requestAnimationFrame(function () {
@@ -323,11 +463,11 @@
     }
     box = document.createElement('div');
     box.className = 'cart-shell'; box.id = 'cartDrawer'; box.setAttribute('aria-hidden', 'true');
-    box.innerHTML = '<button type="button" class="cart-back" data-cart-close tabindex="-1" aria-label="Закрыть состав заявки"></button>' +
+    box.innerHTML = '<button type="button" class="cart-back" data-cart-close tabindex="-1" aria-label="Закрыть смету"></button>' +
       '<aside class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-describedby="cartIntro">' +
       '<span class="cart-handle" aria-hidden="true"></span>' +
-      '<header class="cart-head"><div><span class="cart-folio">Комплексная заявка</span><h2 id="cartTitle">Состав заявки</h2>' +
-      '<p id="cartIntro">Несколько работ — одна отправка мастеру</p></div>' +
+      '<header class="cart-head"><div><span class="cart-folio">Конструктор сметы</span><h2 id="cartTitle">Ваша смета</h2>' +
+      '<p id="cartIntro">Работы, дополнения и выгоды — в одном месте</p></div>' +
       '<button type="button" class="cart-close" data-cart-close aria-label="Закрыть">×</button></header>' +
       '<div class="cart-body"></div><footer class="cart-foot"></footer></aside>';
     document.body.appendChild(box);
@@ -336,15 +476,12 @@
     var aside = document.querySelector('.conf-aside .sheet');
     if (aside) {
       var a = document.createElement('button'); a.type = 'button'; a.className = 'cart-add';
-      a.setAttribute('data-cart-add', '1'); a.textContent = 'Добавить в состав заявки';
+      a.setAttribute('data-cart-add', '1'); a.textContent = 'Добавить работу в смету';
       aside.appendChild(a);
     }
     var submit = document.getElementById('btnSubmit');
     if (submit) {
       submit.setAttribute('data-cart-submit', '1');
-      var a2 = document.createElement('button'); a2.type = 'button'; a2.className = 'cart-add';
-      a2.setAttribute('data-cart-add', '1'); a2.textContent = 'Добавить в состав и выбрать ещё работу';
-      submit.insertAdjacentElement('afterend', a2);
     }
     document.querySelectorAll('[data-cart-open]').forEach(function (el) { el.addEventListener('click', open); });
     box.addEventListener('click', click);
@@ -373,8 +510,57 @@
     if (t.closest('[data-cart-remove]')) { remove(t.closest('[data-cart-remove]').getAttribute('data-cart-remove')); return; }
     if (t.closest('[data-cart-undo]')) { undo(); return; }
     if (t.closest('[data-cart-qty]') && id) { setQty(id, parseInt(t.closest('[data-cart-qty]').getAttribute('data-cart-qty'), 10)); return; }
-    if (t.closest('[data-cart-another]')) { close(); if (api && api.another) api.another(); return; }
+    if (t.closest('[data-cart-addon]')) { addAddon(t.closest('[data-cart-addon]').getAttribute('data-cart-addon')); return; }
+    if (t.closest('[data-cart-another]')) {
+      var kind = t.closest('[data-cart-another]').getAttribute('data-cart-another') || 'work';
+      close(); if (api && api.another) api.another(kind); return;
+    }
     if (t.closest('[data-cart-checkout]')) { close(); if (api && api.checkout) api.checkout(); return; }
+    if (t.closest('[data-cart-jump]')) {
+      var jump = box.querySelector('#' + t.closest('[data-cart-jump]').getAttribute('data-cart-jump'));
+      if (jump && jump.scrollIntoView) jump.scrollIntoView({
+        block:'start',
+        behavior:S && S.reduceMotion ? 'auto' : 'smooth'
+      });
+      return;
+    }
+    if (t.closest('[data-cart-promo-apply]')) {
+      var promoInput = box.querySelector('#cartPromoInput');
+      var promoValue = promoInput ? promoInput.value.trim() : '';
+      benefitMessage.promo = '';
+      if (!promoValue) { benefitMessage.promo = 'Введите промокод'; render(); return; }
+      t.closest('[data-cart-promo-apply]').disabled = true;
+      if (api && api.applyPromo) api.applyPromo(promoValue, function (r) {
+        benefitMessage.promo = r && r.ok ? '' : ((r && r.message) || 'Не получилось проверить код');
+        render();
+      });
+      return;
+    }
+    if (t.closest('[data-cart-gift-apply]')) {
+      var giftInput = box.querySelector('#cartGiftInput');
+      var giftValue = giftInput ? giftInput.value.trim() : '';
+      benefitMessage.gift = '';
+      if (!giftValue) { benefitMessage.gift = 'Введите код сертификата'; render(); return; }
+      t.closest('[data-cart-gift-apply]').disabled = true;
+      if (api && api.applyGift) api.applyGift(giftValue, function (r) {
+        benefitMessage.gift = r && r.ok ? '' : ((r && r.message) || 'Не получилось проверить сертификат');
+        render();
+      });
+      return;
+    }
+    if (t.closest('[data-cart-promo-remove]')) {
+      benefitMessage.promo = ''; if (api && api.removePromo) api.removePromo(); return;
+    }
+    if (t.closest('[data-cart-gift-remove]')) {
+      benefitMessage.gift = ''; if (api && api.removeGift) api.removeGift(); return;
+    }
+    if (t.closest('[data-cart-bonus]')) {
+      var raw = t.closest('[data-cart-bonus]').getAttribute('data-cart-bonus');
+      var cap = benefits().bonusCap;
+      data.checkout.useBonus = true;
+      data.checkout.bonusAmount = raw === 'max' ? cap : Math.min(parseInt(raw, 10) || 0, cap);
+      write(); return;
+    }
     if (t.closest('[data-cart-clear]')) {
       var go = function () { clear(); };
       if (S && S.confirm) S.confirm({ title:'Очистить состав?', text:'Все позиции исчезнут с этого устройства.', okLabel:'Очистить', noLabel:'Оставить', danger:true })
@@ -405,6 +591,12 @@
   }
   function trap(e) {
     if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+    if (e.key === 'Enter' && e.target && e.target.id === 'cartPromoInput') {
+      e.preventDefault(); var pb = box.querySelector('[data-cart-promo-apply]'); if (pb) pb.click(); return;
+    }
+    if (e.key === 'Enter' && e.target && e.target.id === 'cartGiftInput') {
+      e.preventDefault(); var gb = box.querySelector('[data-cart-gift-apply]'); if (gb) gb.click(); return;
+    }
     if (e.key !== 'Tab') return;
     var f = Array.prototype.slice.call(box.querySelectorAll('button:not([disabled]),a[href],input:not([disabled])'))
       .filter(function (x) { return x.offsetParent !== null; });
@@ -453,6 +645,7 @@
           deadline: String(x.deadline || '').slice(0, 120),
           requirements: String(x.requirements || '').slice(0, 1500),
           note: String(x.note || '').slice(0, 240),
+          parent_client_id: String(x.parentId || ''),
           answers: x.answers && typeof x.answers === 'object' ? x.answers : {},
           quote_preview: itemQuote(x)
         };
