@@ -533,15 +533,15 @@
 
     var PRICE_PAGES = /^(tariffs\.html|kursovaya-|diplomnaya-|magisterskaya-|kandidatskaya-|otchet-po-praktike|nauchnaya-statya|referat\.|guide-skolko-stoit-)/;
     var TEXTS = {
-      faq:    { t: 'Остался вопрос?', s: 'мастер ответит лично · бесплатно',
+      faq:    { s: 'Если ответа нет — разберём вопрос',
                 lead: 'Не нашли ответ в вопросах? Напишите своими словами — мастер ответит лично, это бесплатно и ни к чему не обязывает.' },
-      price:  { t: 'Сомневаетесь в цене?', s: 'посчитаем вашу задачу · бесплатно',
+      price:  { s: 'Оценим тему и срок бесплатно',
                 lead: 'Назовите тему и срок — прикинем честную вилку под вашу задачу и подскажем, на чём можно сэкономить.' },
-      config: { t: 'Запутались в шагах?', s: 'поможем досчитать смету',
+      config: { s: 'Поможем закончить расчёт',
                 lead: 'Если что-то в расчёте неясно — напишите, поможем досчитать и оформить. Черновик сметы не потеряется.' },
-      exit:   { t: 'Уже уходите?', s: 'возьмите расчёт с собой',
+      exit:   { s: 'Сохраним и отправим расчёт',
                 lead: 'Оставьте задачу в двух словах — пришлём расчёт туда, где удобно читать: ВК, Telegram или на почту.' },
-      dwell:  { t: 'Нужна помощь?', s: 'подскажем по цене и срокам',
+      dwell:  { s: 'Цена, срок или формат — подскажем',
                 lead: 'Расскажите о задаче — подскажем, посчитаем и сориентируем по срокам. Бесплатно, отвечает живой человек.' }
     };
 
@@ -557,14 +557,18 @@
       if (shown || dismissed || busy()) return;
       var tx = TEXTS[reason] || TEXTS.dwell;
       shown = true;
-      el = document.createElement('button');
-      el.type = 'button';
+      el = document.createElement('div');
       el.className = 'helpfab';
-      el.setAttribute('aria-label', tx.t + ' Открыть варианты связи');
+      el.setAttribute('role', 'region');
+      el.setAttribute('aria-label', 'Помощь мастера');
       el.innerHTML =
-        '<span class="hf-seal" aria-hidden="true">✎</span>' +
-        '<span class="hf-t"><b>' + tx.t + '</b><small>' + tx.s + '</small></span>' +
-        '<span class="hf-x" data-hf-x aria-label="Скрыть">×</span>';
+        '<button class="hf-open" type="button" aria-label="Спросить мастера. ' + tx.s + '">' +
+          '<span class="hf-seal" aria-hidden="true">м</span>' +
+          '<span class="hf-t"><span class="hf-cap">Живой мастер</span>' +
+            '<b>Спросить мастера</b><small>' + tx.s + '</small></span>' +
+          '<span class="hf-arrow" aria-hidden="true">→</span>' +
+        '</button>' +
+        '<button class="hf-x" type="button" data-hf-x aria-label="Скрыть подсказку"><span aria-hidden="true">×</span></button>';
       document.body.appendChild(el);
       /* Закладка рождается ПОЗЖЕ, чем отработал adopt() слоя «Пометки на
          полях» (её триггеры — секунды и минуты), поэтому она оставалась
@@ -583,7 +587,7 @@
           setTimeout(function () { el.remove(); }, 400);
           return;
         }
-        if (S.contact) S.contact({ lead: tx.lead });
+        if (e.target.closest('.hf-open') && S.contact) S.contact({ lead: tx.lead });
       });
     }
 

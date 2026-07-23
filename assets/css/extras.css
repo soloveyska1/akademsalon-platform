@@ -64,39 +64,34 @@
   .tour-card{left:10px!important;right:10px;width:auto;bottom:14px;top:auto!important}
 }
 
-/* ---------------- «Нужна помощь?» — закладка мастера ----------------
-   Не пилюля, а бумажная закладка: сургучная печать, заголовок по моменту
-   («Остался вопрос?», «Сомневаетесь в цене?»…) и тихая вторая строка. */
+/* ---------------- Закладка живого мастера ---------------- */
 .helpfab{
   position:fixed;left:clamp(18px,2.5vw,34px);bottom:26px;z-index:94;
-  /* закладка «Ваша смета ждёт» (extras.js) занимает низ — уступаем ей */
   bottom:max(26px, calc(var(--resume-clear, 0px) + 12px));
-  display:inline-flex;align-items:center;gap:12px;text-align:left;
+  display:flex;align-items:stretch;text-align:left;
   background:var(--sheet);color:var(--ink);border:1px solid var(--hairline-strong);
-  border-radius:4px;padding:11px 14px;min-height:52px;max-width:min(86vw,320px);
-  box-shadow:0 2px 0 var(--hairline),0 14px 32px rgba(34,32,27,.26);
-  cursor:pointer;opacity:0;transform:translateY(16px) scale(.96);
-  transition:opacity .4s,transform .4s cubic-bezier(.22,1,.36,1),border-color .15s;
+  border-radius:5px;padding:7px 7px 7px 10px;min-height:62px;max-width:min(88vw,334px);
+  box-shadow:0 1px 0 var(--hairline),0 14px 34px rgba(34,32,27,.2);
+  opacity:0;transform:translateY(12px) scale(.97);
+  transition:opacity .35s,transform .35s cubic-bezier(.22,1,.36,1),border-color .15s,box-shadow .15s;
   overflow:hidden;
 }
-.helpfab::before{ /* золотой обрез сверху — родня колофону */
-  content:"";position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--foil,#B98A2F),transparent 75%);opacity:.8;
+.helpfab::before{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:2px;
+  background:var(--wax);opacity:.82;
 }
 .helpfab.in{opacity:1;transform:none}
-.helpfab:hover{border-color:var(--wax)}
+.helpfab:hover{border-color:color-mix(in srgb,var(--wax) 56%,var(--hairline-strong));box-shadow:0 1px 0 var(--hairline),0 16px 38px rgba(34,32,27,.23)}
 .helpfab .hf-seal{
   flex:0 0 34px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
-  color:#FFF8EE;font-family:var(--serif);font-size:16px;
-  background:radial-gradient(circle at 34% 32%, var(--wax), var(--wax-deep,#8C2D18));
-  box-shadow:0 2px 5px rgba(0,0,0,.25);
+  color:var(--wax);font:italic 17px/1 var(--serif);border:1.5px solid var(--wax);
+  transform:rotate(-6deg);background:color-mix(in srgb,var(--wax-soft) 65%,var(--sheet));
 }
-.helpfab .hf-t{display:flex;flex-direction:column;gap:1px;min-width:0}
-.helpfab .hf-t b{font-size:14px;font-weight:600;letter-spacing:.01em;white-space:nowrap}
-.helpfab .hf-t small{font-size:11.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.helpfab .hf-t{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:7px;row-gap:1px;min-width:0}
+.helpfab .hf-cap{font:8px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.helpfab .hf-t b{font-family:var(--serif);font-size:15.5px;font-weight:500;line-height:1.15;white-space:nowrap}
+.helpfab .hf-t small{grid-column:1/-1;font-size:10.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .helpfab:hover .hf-t b{color:var(--wax)}
-.helpfab .hf-x{margin-left:2px;color:var(--ink-faint);font-size:16px;line-height:1;padding:4px 6px;border-radius:50%;align-self:flex-start}
-.helpfab .hf-x:hover{color:var(--ink)}
 @media(max-width:880px){.helpfab{left:10px;bottom:86px;bottom:max(86px, calc(var(--resume-clear, 0px) + 12px))}}
 @media print{.helpfab,.cookiebar,.tour-veil,.tour-card{display:none!important}}
 
@@ -367,14 +362,8 @@
   z-index:auto;margin:0;
 }
 .mrail .tg-pill{align-self:flex-end}
-.lrail .cookiebar,.lrail .helpfab{width:min(100%,360px);max-width:100%}
-/* Рельса растянула закладку на всю ширину ради единообразия с куки-плашкой —
-   значит её строку надо распереть изнутри, иначе крестик прилипает к тексту,
-   а справа висит пустота (замерено: 78px). Текст забирает свободное место,
-   крестик уходит к правому краю, как было у fixed-версии.
-   Ставим на .hf-t, а не на .hf-open: обёртки .hf-open разметка extras.js
-   не создаёт — правило под неё в этом файле мёртвое. */
-.lrail .helpfab .hf-t{flex:1 1 auto}
+.lrail .cookiebar{width:min(100%,360px);max-width:100%}
+.lrail .helpfab{width:min(100%,334px);max-width:100%}
 
 /* ============================================================
    ЛИСТ ПОМЕТКИ
@@ -575,25 +564,22 @@
 .ml-all:hover{border-bottom-color:var(--wax)}
 .mledger :focus-visible{outline:2px solid var(--wax);outline-offset:-2px}
 
-/* ============================================================
-   ОДИН СЛОВАРЬ ПЕЧАТИ В УГЛУ
-   У карточки печать — обводка. Приводим к ней и закладку помощи:
-   после сборки в рельсы обе оказываются в поле зрения разом.
-   ============================================================ */
+/* Две самостоятельные цели: открыть помощь и тихо убрать подсказку. */
 .helpfab{cursor:default}
 .helpfab .hf-open{
-  flex:1;min-width:0;display:inline-flex;align-items:center;gap:12px;text-align:left;
-  border:0;background:none;cursor:pointer;font:inherit;color:inherit;padding:0;min-height:44px;
+  flex:1;min-width:0;display:grid;grid-template-columns:34px minmax(0,1fr) 18px;align-items:center;gap:10px;text-align:left;
+  border:0;background:none;cursor:pointer;font:inherit;color:inherit;padding:0;min-height:46px;
 }
 .helpfab .hf-seal{
-  background:none;box-shadow:none;color:var(--wax);
-  border:1.5px solid var(--wax);transform:rotate(-6deg);
+  color:var(--wax);border:1.5px solid var(--wax);transform:rotate(-6deg);
 }
+.helpfab .hf-arrow{font:18px/1 var(--serif);color:var(--wax);transition:transform .15s}
+.helpfab .hf-open:hover .hf-arrow{transform:translateX(2px)}
 .helpfab .hf-x{
-  width:44px;height:44px;min-width:44px;padding:0;margin:-6px -8px -6px 0;
+  width:44px;height:44px;min-width:44px;padding:0;margin:1px -5px 0 0;
   border:0;background:none;cursor:pointer;border-radius:50%;align-self:center;
   display:inline-flex;align-items:center;justify-content:center;
-  color:var(--ink-soft);font-size:18px;line-height:1;
+  color:var(--ink-faint);font-size:17px;line-height:1;
 }
 .helpfab .hf-x:hover{color:var(--ink);background:var(--mark)}
 .helpfab .hf-open:focus-visible,.helpfab .hf-x:focus-visible{outline:2px solid var(--wax);outline-offset:-2px}
@@ -627,7 +613,10 @@
     bottom:calc(max(var(--floor,0px), env(safe-area-inset-bottom)) + 12px)}
   .mrail{left:12px;right:12px;width:auto;
     bottom:calc(max(var(--floor,0px), env(safe-area-inset-bottom)) + 12px + var(--lrail-h,0px))}
-  .lrail .cookiebar,.lrail .helpfab{width:100%;max-width:none}
+  .lrail .cookiebar{width:100%;max-width:none}
+  .lrail .helpfab{width:min(100%,334px);max-width:334px;align-self:flex-start}
+  .helpfab .hf-cap{display:none}
+  .helpfab .hf-t{grid-template-columns:1fr}
   .mnote--call{padding:14px}
   .mn-act{gap:10px}
   .mn-go{flex:1 1 auto;justify-content:center}
