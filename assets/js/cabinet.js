@@ -2127,6 +2127,7 @@ function initCabinet() {
     if (extra && extra.comment) body.comment = extra.comment;
     if (extra && extra.reason) body.reason = extra.reason;
     if (extra && extra.amount != null) body.amount = extra.amount;
+    if (extra && extra.code != null) body.code = extra.code;
     if (extra && extra.rating != null) body.rating = extra.rating;
     if (extra && extra.text != null) body.text = extra.text;
     if (extra && extra.author != null) body.author = extra.author;
@@ -2792,7 +2793,11 @@ function initCabinet() {
       var v = parseInt(e.target.value, 10) || 0;
       var val = document.getElementById('bspendVal');
       var due = document.getElementById('bspendDue');
-      var base = (st.detail.price || 0) - (st.detail.bonus_spent || 0);
+      /* due_total уже учитывает промокод, подписку и сертификат; отнимать
+         бонусы от голой цены здесь означало показывать завышенный остаток. */
+      var base = st.detail.due_total != null
+        ? st.detail.due_total + (st.detail.bonus_spent || 0)
+        : (st.detail.price || 0);
       if (val) val.textContent = money(v);
       if (due) due.textContent = money(Math.max(base - v, 0)) + ' ₽';
     }

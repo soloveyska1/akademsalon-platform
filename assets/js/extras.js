@@ -1138,7 +1138,7 @@
         topic: 'Вопрос с гайда: ' + (h1 ? h1.textContent.trim().slice(0, 120) : here),
         details: q, name: '', contact: c, website: '', deadline: '',
         consent: true,
-        consent_doc: 'consent 1.2 · privacy 1.6 · oferta 1.4 · вопрос с гайда',
+        consent_doc: 'consent 1.4 · privacy 2.0 · oferta 1.9 · вопрос с гайда',
         page: here
       }).then(function (r) {
         S.btnLoading(btn, false);

@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723e" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260723a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -52,12 +53,91 @@
   .wnav .btn{min-width:128px}
   .wsubmit-note{max-width:52ch}
 
-  /* липкая смета */
+  /* каталог работ: быстрый поиск, рубрики и компактные карточки */
+  .service-finder{margin:0 0 15px}
+  .sf-search{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr) 40px;
+    align-items:center;background:var(--sheet);border:1px solid var(--hairline-strong);
+    border-radius:4px;box-shadow:0 8px 24px -22px rgba(34,32,27,.35)}
+  .sf-mark{display:grid;place-items:center;color:var(--wax);font:italic 17px/1 var(--serif)}
+  .sf-search input{width:100%;height:48px;padding:0;border:0;background:transparent;box-shadow:none;
+    font-size:14px;color:var(--ink)}
+  .sf-search input:focus{box-shadow:none}
+  .sf-clear{width:32px;height:32px;border:0;background:transparent;border-radius:50%;
+    color:var(--ink-faint);font:20px/1 var(--serif);cursor:pointer}
+  .sf-clear:hover{background:var(--paper-2);color:var(--wax)}
+  .sf-clear[hidden]{display:none}
+  .sf-filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+  .sf-filter{min-height:34px;padding:6px 10px;border:1px solid var(--hairline);
+    border-radius:999px;background:transparent;color:var(--ink-soft);font:11.5px/1.2 var(--sans);
+    cursor:pointer;transition:border-color .15s,color .15s,background .15s}
+  .sf-filter:hover{border-color:var(--hairline-strong);color:var(--ink)}
+  .sf-filter[aria-pressed="true"]{border-color:var(--wax);background:var(--wax-soft);color:var(--wax)}
+  .sf-status{display:flex;justify-content:space-between;gap:12px;margin:9px 2px 0;
+    font:10px/1.35 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint)}
+  .sf-empty{padding:22px;border:1px dashed var(--hairline-strong);border-radius:4px;
+    background:var(--sheet);text-align:center;color:var(--ink-soft)}
+  .sf-empty[hidden],#typeGroup .filter-hidden{display:none!important}
+  #typeGroup{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;align-items:start}
+  #typeGroup .opt-group{margin:0;padding:14px;border:1px solid var(--hairline);
+    border-radius:4px;background:color-mix(in srgb,var(--sheet) 82%,transparent)}
+  #typeGroup .opt-group>.caps{margin-bottom:9px;color:var(--ink-faint)}
+  #typeGroup .opt-list{display:grid;gap:6px}
+  #typeGroup .optrow{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;
+    gap:5px 10px;align-items:center;min-height:48px;padding:9px 10px;border:1px solid transparent;
+    border-radius:3px;background:var(--sheet);text-align:left;box-shadow:0 1px 0 var(--hairline)}
+  #typeGroup .optrow .dots{display:none}
+  #typeGroup .optrow>span:first-child{min-width:0;font-size:13.5px;line-height:1.3;color:var(--ink)}
+  #typeGroup .optrow .o-val{font:11.5px/1.2 var(--mono);color:var(--ink-soft);white-space:nowrap}
+  #typeGroup button.optrow:hover,#typeGroup .optrow-link:hover{border-color:var(--hairline-strong);background:var(--paper-2)}
+  #typeGroup button.optrow[aria-checked="true"]{padding-left:25px;border-color:var(--wax);
+    background:linear-gradient(100deg,var(--wax-soft),var(--sheet) 74%)}
+  #typeGroup button.optrow[aria-checked="true"]::before{content:"✓";position:absolute;left:9px;top:50%;
+    transform:translateY(-50%);color:var(--wax);font:12px/1 var(--mono)}
+  #typeGroup button.optrow[aria-checked="true"] .o-val{color:var(--wax)}
+  #typeGroup .svc-group{grid-column:1/-1;border-top:3px double var(--hairline-strong)}
+  #typeGroup .svc-group .opt-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #typeGroup .svc-group .petit{grid-column:1/-1}
+
+  /* живая смета: редакционный расчётный лист вместо длинной карточки */
   .conf-aside{position:sticky;top:76px}
-  .lq-head{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
-  .lq-type{margin-bottom:8px}
-  .lq-high{margin-top:10px}
-  .lq-pay{margin-top:12px;padding-top:12px;border-top:1px solid var(--hairline)}
+  .lq-sheet{overflow:hidden;padding:0;border-color:var(--hairline-strong);
+    box-shadow:0 2px 0 var(--hairline),0 22px 52px -42px rgba(34,32,27,.5)}
+  .lq-dochead{position:relative;padding:17px 18px 14px;border-bottom:1px solid var(--hairline);
+    background:linear-gradient(120deg,var(--wax-soft),transparent 62%)}
+  .lq-dochead::after{content:"¶";position:absolute;right:16px;top:12px;color:var(--wax);
+    opacity:.18;font:italic 46px/1 var(--serif);transform:rotate(-7deg)}
+  .lq-head{font:9.5px/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--wax)}
+  .lq-dochead h2{margin:5px 40px 9px 0;font:500 23px/1.1 var(--serif);color:var(--ink)}
+  .lq-context{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .lq-type{margin:0;max-width:28ch;color:var(--ink-soft);font-size:12.5px;line-height:1.35}
+  .lq-step{flex:0 0 auto;border:1px solid var(--hairline-strong);border-radius:999px;
+    padding:4px 8px;background:var(--sheet);font:9px/1 var(--mono);letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ink-faint)}
+  .lq-priceblock{padding:16px 18px;background:var(--sheet);border-bottom:1px solid var(--hairline)}
+  .lq-priceblock .lg-total{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;
+    padding:0;margin:0;border:0}
+  .lq-priceblock .lg-total b{padding-bottom:4px;font:10px/1.25 var(--mono);
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+  .lq-priceblock .price-xl{font-size:clamp(32px,3.7vw,42px)}
+  .lq-high{display:inline-flex;margin:9px 0 0;padding:4px 8px;border-radius:999px;
+    background:var(--paper-2);color:var(--ink-soft);font-size:11.5px}
+  .lq-formula{padding:14px 18px;border-bottom:1px solid var(--hairline)}
+  .lq-formula-head{display:flex;justify-content:space-between;gap:12px;margin-bottom:3px;
+    font:9px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+  .lq-formula .ledger .lg-row{padding:7px 0;font-size:12.5px}
+  .lq-formula .ledger .lg-row:last-child{border-bottom:0}
+  .lq-summary{padding:14px 18px 17px;background:color-mix(in srgb,var(--paper-2) 54%,transparent)}
+  .lq-facts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px}
+  .lq-fact{display:flex;gap:6px;align-items:flex-start;font-size:11.5px;line-height:1.35;color:var(--ink-soft)}
+  .lq-fact i{font-style:normal;color:var(--verify);font-family:var(--mono)}
+  .lq-pay{margin:0;padding:10px 11px;border:1px solid var(--hairline);border-radius:3px;
+    background:var(--sheet);font-size:11.5px;line-height:1.45;color:var(--ink-soft)}
+  .lq-explain{margin-top:9px;border-top:1px dashed var(--hairline-strong);padding-top:8px}
+  .lq-explain>summary{cursor:pointer;font-size:11.5px;color:var(--ink-soft)}
+  .lq-explain .lq-when{margin:8px 0 0;line-height:1.5;color:var(--ink-faint)}
+  .lq-summary .lq-promo,.lq-summary .lq-gift,.lq-summary .lq-plus{margin-top:9px}
+  .lq-summary .lq-cheaper{margin-top:9px!important}
+  .lq-sheet>.cart-add{width:calc(100% - 36px);margin:0 18px 18px}
 
   /* экран успеха */
   .conf-done{max-width:660px;margin:0 auto}
@@ -191,10 +271,28 @@
     .wnav{margin-top:20px}
     .wnav .btn{min-width:0}
     .ws-title{margin-bottom:12px}
-    /* опции без отточий: название слева, цена справа, без ломаных строк */
-    .optrow .dots{display:none}
-    .optrow{justify-content:space-between;gap:8px}
-    .optrow > span:first-child{flex:1;min-width:0}
+    .sf-filters{margin-left:calc(var(--mobile-gutter) * -1);margin-right:calc(var(--mobile-gutter) * -1);
+      padding:0 var(--mobile-gutter) 5px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+    .sf-filters::-webkit-scrollbar{display:none}
+    .sf-filter{flex:0 0 auto;min-height:38px}
+    #typeGroup{grid-template-columns:1fr;gap:9px}
+    #typeGroup .opt-group{padding:11px}
+    #typeGroup .svc-group{grid-column:auto}
+    #typeGroup .svc-group .opt-list{grid-template-columns:1fr}
+    #typeGroup .optrow{min-height:52px}
+    .mq-panel .lq-mobile-head{display:flex;align-items:flex-start;justify-content:space-between;
+      gap:12px;margin-bottom:10px}
+    .mq-panel .lq-mobile-head .lq-type{font-size:13px;color:var(--ink)}
+    .mq-panel .lq-mobile-price{padding:12px;border:1px solid var(--hairline-strong);
+      border-radius:4px;background:linear-gradient(110deg,var(--wax-soft),var(--sheet) 72%)}
+    .mq-panel .lq-mobile-price .lg-total{display:flex;align-items:baseline;justify-content:space-between;
+      gap:12px;padding:0;margin:0;border:0}
+    .mq-panel .lq-mobile-price .lg-total .num{font-size:24px;color:var(--wax)}
+    .mq-panel .lq-mobile-formula{margin-top:10px}
+    .mq-panel .lq-mobile-formula>summary{cursor:pointer;font:10px/1.3 var(--mono);
+      letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+    .mq-panel .lq-mobile-formula .ledger{margin-top:7px}
+    .mq-panel .lq-mobile-info{margin-top:10px;padding-top:10px;border-top:1px dashed var(--hairline-strong)}
   }
 
   /* ===== применённая выгода в смете: перечёркнутый итог + новая цена ===== */
@@ -314,8 +412,26 @@
             <!-- ШАГ 1: тип работы -->
             <div class="wstep active" role="group" aria-labelledby="ws1t">
               <h2 class="ws-title" id="ws1t" tabindex="-1">Тип работы</h2>
+              <div class="service-finder" role="search" aria-label="Поиск работы или услуги">
+                <label class="visually-hidden" for="workSearch">Найти работу или услугу</label>
+                <div class="sf-search">
+                  <span class="sf-mark" aria-hidden="true">¶</span>
+                  <input type="search" id="workSearch" autocomplete="off"
+                         placeholder="Например: курсовая, ВАК, нормоконтроль" />
+                  <button type="button" class="sf-clear" id="workSearchClear"
+                          aria-label="Очистить поиск" hidden>×</button>
+                </div>
+                <div class="sf-filters" id="workFilters" role="group" aria-label="Рубрика">
+                  <button type="button" class="sf-filter" data-work-filter="all" aria-pressed="true">Все</button>
+                  <button type="button" class="sf-filter" data-work-filter="degree" aria-pressed="false">Дипломы</button>
+                  <button type="button" class="sf-filter" data-work-filter="course" aria-pressed="false">Курсовые</button>
+                  <button type="button" class="sf-filter" data-work-filter="article" aria-pressed="false">Статьи</button>
+                  <button type="button" class="sf-filter" data-work-filter="service" aria-pressed="false">Услуги</button>
+                </div>
+                <p class="sf-status"><span id="workResult" role="status" aria-live="polite">18 вариантов</span><span>цена видна сразу</span></p>
+              </div>
               <div id="typeGroup" role="radiogroup" aria-label="Тип работы">
-                <div class="opt-group">
+                <div class="opt-group" data-work-kind="degree">
                   <span class="caps">Дипломы и диссертации</span>
                   <div class="opt-list">
                     <button type="button" class="optrow" role="radio" data-id="diplom" aria-checked="true" tabindex="0"><span>Дипломная работа / ВКР</span><span class="dots"></span><span class="o-val">от 40&nbsp;000&nbsp;₽</span></button>
@@ -324,7 +440,7 @@
                     <button type="button" class="optrow" role="radio" data-id="kandidat" aria-checked="false" tabindex="-1"><span>Кандидатская (по главам)</span><span class="dots"></span><span class="o-val">от 200&nbsp;000&nbsp;₽</span></button>
                   </div>
                 </div>
-                <div class="opt-group">
+                <div class="opt-group" data-work-kind="course">
                   <span class="caps">Курсовые и практика</span>
                   <div class="opt-list">
                     <button type="button" class="optrow" role="radio" data-id="course_emp" aria-checked="false" tabindex="-1"><span>Курсовая с исследованием (практика, расчёты)</span><span class="dots"></span><span class="o-val">от 20&nbsp;000&nbsp;₽</span></button>
@@ -333,7 +449,7 @@
                     <button type="button" class="optrow" role="radio" data-id="self" aria-checked="false" tabindex="-1"><span>Реферат, эссе, контрольная</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></button>
                   </div>
                 </div>
-                <div class="opt-group">
+                <div class="opt-group" data-work-kind="article">
                   <span class="caps">Научные статьи</span>
                   <div class="opt-list">
                     <button type="button" class="optrow" role="radio" data-id="scopus" aria-checked="false" tabindex="-1"><span>Scopus / Web of Science</span><span class="dots"></span><span class="o-val">от 35&nbsp;000&nbsp;₽</span></button>
@@ -342,7 +458,7 @@
                   </div>
                 </div>
                 <!-- работа уже написана — нужны отдельные услуги: короткий лист заявки -->
-                <div class="opt-group svc-group">
+                <div class="opt-group svc-group" data-work-kind="service">
                   <span class="caps">Работа уже есть — нужна услуга</span>
                   <div class="opt-list">
                     <a class="optrow optrow-link" href="configurator.html?service=pl"><span>Разбор плана — старт любой работы, зачтётся в её цену</span><span class="dots"></span><span class="o-val">3&nbsp;000&nbsp;₽</span></a>
@@ -355,6 +471,10 @@
                   </div>
                   <p class="petit" style="margin-top:8px">Эти заявки короче: один лист — описываете задачу, прикладываете работу, мастер называет точную цену.</p>
                 </div>
+              </div>
+              <div class="sf-empty" id="workEmpty" hidden>
+                <b>Такого названия не нашли</b>
+                <p class="petit" style="margin:5px 0 0">Попробуйте «диплом», «статья», «оформление» — или напишите мастеру.</p>
               </div>
               <p class="petit" id="planEntry" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--hairline-strong)">
                 Не готовы заказывать целиком? <a class="link" href="configurator.html?service=pl"><b>Начните с разбора плана — 3&nbsp;000&nbsp;₽</b></a>:
@@ -535,35 +655,55 @@
 
           <!-- ПРАВАЯ КОЛОНКА: живая смета -->
           <aside class="conf-aside reveal d1" aria-label="Смета — живой расчёт">
-            <div class="sheet sheet-pad stacked">
-              <div class="lq-head">Смета · живой расчёт</div>
-              <p class="petit lq-type" data-lg="type">Дипломная работа / ВКР</p>
-              <div class="ledger">
-                <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">40&nbsp;000&nbsp;₽</span></div>
-                <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
-                <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
-                <div class="lg-row"><span data-lg="tierLbl">Уровень · Базовый</span><span class="num" data-lg="tier">×1.0</span></div>
+            <div class="sheet stacked lq-sheet">
+              <header class="lq-dochead">
+                <div class="lq-head">Смета · обновляется сразу</div>
+                <h2>Ваш расчёт</h2>
+                <div class="lq-context">
+                  <p class="lq-type" data-lg="type">Дипломная работа / ВКР</p>
+                  <span class="lq-step" data-conf-step>Шаг 1 / 4</span>
+                </div>
+              </header>
+              <section class="lq-priceblock" aria-label="Предварительная стоимость">
                 <div class="lg-total">
                   <b>Итого, от</b>
                   <span class="price-xl" id="lqLow" aria-hidden="true">40&nbsp;000&nbsp;₽</span>
                   <span id="lqLowSr" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">40&nbsp;000&nbsp;₽</span>
                 </div>
-              </div>
-              <div class="lq-deal" data-deal hidden></div>
-              <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
-              <p class="petit lq-when" style="color:var(--ink-faint)">Эта вилка считается сразу, пока вы отвечаете на вопросы. Точная смета формируется после отправки заявки: мастер разбирает требования (обычно за пару часов днём), называет цену и фиксирует её до старта — дальше она не меняется. Срок влияет на цену: чем меньше времени, тем выше коэффициент — срочная работа идёт вне очереди. Потолок наценки ×1,45: выше он не поднимается даже за сутки до сдачи.</p>
-              <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
-              <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
-              <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
-              <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
-    <details class="lq-cheaper petit" style="margin-top:10px">
-      <summary class="link" style="cursor:pointer">Дороже, чем рассчитывали? Три способа снизить цену</summary>
-      <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
-        <li data-lg="chTerm"></li>
-        <li data-lg="chTier"></li>
-        <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span> — структура, срок и точная смета; зачтётся в цену работы.</li>
-      </ul>
-    </details>
+                <p class="lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
+                <div class="lq-deal" data-deal hidden></div>
+              </section>
+              <section class="lq-formula">
+                <div class="lq-formula-head"><span>Как сложилась цена</span><span>формула открыта</span></div>
+                <div class="ledger">
+                  <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">40&nbsp;000&nbsp;₽</span></div>
+                  <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
+                  <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
+                  <div class="lg-row"><span data-lg="tierLbl">Уровень · Базовый</span><span class="num" data-lg="tier">×1.0</span></div>
+                </div>
+              </section>
+              <section class="lq-summary">
+                <div class="lq-facts" aria-label="Условия сметы">
+                  <span class="lq-fact"><i>✓</i>Оценка бесплатна</span>
+                  <span class="lq-fact"><i>✓</i>Цена фиксируется до старта</span>
+                </div>
+                <p class="lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
+                <details class="lq-explain">
+                  <summary>Почему сейчас показана вилка?</summary>
+                  <p class="petit lq-when">Расчёт меняется сразу с вашими ответами. После заявки мастер проверит объём и требования, назовёт точную цену и зафиксирует её до старта. Максимальный коэффициент срочности — ×1,45.</p>
+                </details>
+                <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
+                <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
+                <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="plus.html">Про абонемент</a></p>
+                <details class="lq-cheaper petit">
+                  <summary class="link" style="cursor:pointer">Как снизить стоимость</summary>
+                  <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
+                    <li data-lg="chTerm"></li>
+                    <li data-lg="chTier"></li>
+                    <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span> — зачтём в цену работы.</li>
+                  </ul>
+                </details>
+              </section>
             </div>
           </aside>
         </div>
@@ -607,29 +747,45 @@
 <!-- МОБИЛЬНАЯ ПАНЕЛЬ: своя разметка (app.js не инжектит CTA на этой странице) -->
 <div class="mobile-cta conf-mcta" id="confMcta">
   <div class="mq-panel" id="mqPanel" hidden>
-    <p class="petit lq-type" data-lg="type">Дипломная работа / ВКР</p>
-    <div class="ledger">
-      <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">40&nbsp;000&nbsp;₽</span></div>
-      <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
-      <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
-      <div class="lg-row"><span data-lg="tierLbl">Уровень · Базовый</span><span class="num" data-lg="tier">×1.0</span></div>
-      <div class="lg-total"><b>Итого, от</b><span class="num" data-lg="low">40&nbsp;000&nbsp;₽</span></div>
+    <div class="lq-mobile-head">
+      <div>
+        <span class="lq-head">Смета · живой расчёт</span>
+        <p class="lq-type" data-lg="type">Дипломная работа / ВКР</p>
+      </div>
+      <span class="lq-step" data-conf-step>Шаг 1 / 4</span>
     </div>
-    <div class="lq-deal" data-deal hidden></div>
-    <p class="petit lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
-    <p class="petit lq-when" style="color:var(--ink-faint)">Эта вилка считается сразу, пока вы отвечаете на вопросы. Точная смета формируется после отправки заявки: мастер разбирает требования (обычно за пару часов днём), называет цену и фиксирует её до старта — дальше она не меняется. Срок влияет на цену: чем меньше времени, тем выше коэффициент — срочная работа идёт вне очереди. Потолок наценки ×1,45: выше он не поднимается даже за сутки до сдачи.</p>
-    <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
-    <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
-    <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
-    <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="dashboard.html#plus">Про абонемент</a></p>
-    <details class="lq-cheaper petit" style="margin-top:10px">
-      <summary class="link" style="cursor:pointer">Дороже, чем рассчитывали? Три способа снизить цену</summary>
-      <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
-        <li data-lg="chTerm"></li>
-        <li data-lg="chTier"></li>
-        <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span> — структура, срок и точная смета; зачтётся в цену работы.</li>
-      </ul>
+    <div class="lq-mobile-price">
+      <div class="lg-total"><b>Итого, от</b><span class="num" data-lg="low">40&nbsp;000&nbsp;₽</span></div>
+      <p class="lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
+      <div class="lq-deal" data-deal hidden></div>
+    </div>
+    <details class="lq-mobile-formula">
+      <summary>Показать формулу расчёта</summary>
+      <div class="ledger">
+        <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">40&nbsp;000&nbsp;₽</span></div>
+        <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
+        <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
+        <div class="lg-row"><span data-lg="tierLbl">Уровень · Базовый</span><span class="num" data-lg="tier">×1.0</span></div>
+      </div>
     </details>
+    <div class="lq-mobile-info">
+      <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
+      <details class="lq-explain">
+        <summary>Почему сейчас показана вилка?</summary>
+        <p class="petit lq-when">После заявки мастер проверит объём и требования, назовёт точную цену и зафиксирует её до старта.</p>
+      </details>
+      <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
+      <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
+      <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="plus.html">Про абонемент</a></p>
+      <details class="lq-cheaper petit">
+        <summary class="link" style="cursor:pointer">Как снизить стоимость</summary>
+        <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
+          <li data-lg="chTerm"></li>
+          <li data-lg="chTier"></li>
+          <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span>.</li>
+        </ul>
+      </details>
+    </div>
   </div>
   <div class="mq-bar">
     <button type="button" class="mq-back" id="mBack" aria-label="Назад" hidden>←</button>
@@ -660,8 +816,9 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260723i"></script>
-<script src="assets/js/extras.js?v=20260723f"></script>
+<script src="assets/js/app.js?v=20260723j"></script>
+<script src="assets/js/extras.js?v=20260723g"></script>
+<script src="assets/js/cart.js?v=20260723a"></script>
 <script>
 function initConf() {
   'use strict';
@@ -734,41 +891,55 @@ function initConf() {
   var mcta = $('confMcta'), mqPanel = $('mqPanel'), mqToggle = $('mqToggle'), mqMore = $('mqMore'),
       mBack = $('mBack'), mNext = $('mNext');
 
-  /* На телефоне длинный перечень типов превращается в четыре вкладки-
-     рубрики. Выбор и цены остаются теми же, меняется только навигация. */
-  (function mobileTypeTabs() {
-    var root = $('typeGroup');
-    if (!root || !(window.matchMedia && window.matchMedia('(max-width: 880px)').matches)) return;
-    var groups = Array.prototype.slice.call(root.querySelectorAll('.opt-group'));
-    if (groups.length < 2) return;
-    var nav = document.createElement('div');
-    nav.className = 'conf-type-tabs';
-    nav.setAttribute('role', 'tablist');
-    nav.setAttribute('aria-label', 'Категория работы');
-    var active = 0;
-    groups.forEach(function (group, i) {
-      if (group.querySelector('[data-id="' + state.type + '"]')) active = i;
-      var cap = group.querySelector('.caps');
-      var b = document.createElement('button');
-      b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('data-group', String(i));
-      b.textContent = cap ? cap.textContent.trim() : 'Раздел ' + (i + 1);
-      nav.appendChild(b);
-    });
-    root.insertBefore(nav, root.firstChild);
-    root.classList.add('has-mobile-tabs');
-    function showGroup(i) {
-      active = Math.max(0, Math.min(groups.length - 1, i));
-      groups.forEach(function (group, n) { group.classList.toggle('mobile-active', n === active); });
-      nav.querySelectorAll('button').forEach(function (b, n) {
-        var on = n === active; b.classList.toggle('on', on);
-        b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
-      });
+  /* Быстрый каталог работает одинаково на телефоне и десктопе:
+     рубрики дают обзор, поиск мгновенно оставляет только совпадения. */
+  (function workFinder() {
+    var root = $('typeGroup'), search = $('workSearch'), clear = $('workSearchClear');
+    var filters = $('workFilters'), result = $('workResult'), empty = $('workEmpty');
+    if (!root || !search || !filters) return;
+    var groups = Array.prototype.slice.call(root.querySelectorAll('[data-work-kind]'));
+    var active = 'all';
+    function norm(v) {
+      return String(v || '').toLocaleLowerCase('ru-RU').replace(/ё/g, 'е').trim();
     }
-    nav.addEventListener('click', function (e) {
-      var b = e.target.closest('button[data-group]');
-      if (b) showGroup(parseInt(b.getAttribute('data-group'), 10) || 0);
+    function paint() {
+      var query = norm(search.value), visible = 0;
+      groups.forEach(function (group) {
+        var allowed = active === 'all' || group.getAttribute('data-work-kind') === active;
+        var rows = Array.prototype.slice.call(group.querySelectorAll('.optrow'));
+        var inGroup = 0;
+        rows.forEach(function (row) {
+          var match = allowed && (!query || norm(row.textContent).indexOf(query) !== -1);
+          row.classList.toggle('filter-hidden', !match);
+          if (match) { visible += 1; inGroup += 1; }
+        });
+        group.classList.toggle('filter-hidden', inGroup === 0);
+      });
+      if (result) result.textContent = visible
+        ? visible + ' ' + (visible === 1 ? 'вариант' : (visible < 5 ? 'варианта' : 'вариантов'))
+        : 'Совпадений нет';
+      if (empty) empty.hidden = visible !== 0;
+      if (clear) clear.hidden = !query;
+    }
+    filters.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-work-filter]');
+      if (!b) return;
+      active = b.getAttribute('data-work-filter') || 'all';
+      filters.querySelectorAll('[data-work-filter]').forEach(function (x) {
+        x.setAttribute('aria-pressed', String(x === b));
+      });
+      paint();
     });
-    showGroup(active);
+    search.addEventListener('input', paint);
+    search.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && search.value) {
+        e.preventDefault(); search.value = ''; paint();
+      }
+    });
+    if (clear) clear.addEventListener('click', function () {
+      search.value = ''; paint(); search.focus();
+    });
+    paint();
   })();
 
   /* --- сервисный режим: один лист заявки вместо четырёх шагов --- */
@@ -787,8 +958,9 @@ function initConf() {
     if (wp) wp.style.display = 'none'; /* hidden перебивается display:flex из CSS */
     if (detailsIn) detailsIn.placeholder = 'Объём (страницы), вуз и методичка, особые пожелания — всё, что знаете';
     /* смета «от» без множителей — и в колонке, и в мобильной панели */
-    var lqHead = document.querySelector('.lq-head');
-    if (lqHead) lqHead.textContent = 'Смета · отдельная услуга';
+    document.querySelectorAll('.lq-head').forEach(function (el) {
+      el.textContent = 'Смета · отдельная услуга';
+    });
     put('type', svc.label);
     put('base', svcFrom);
     ['discLbl', 'termLbl', 'tierLbl'].forEach(function (k) {
@@ -800,7 +972,7 @@ function initConf() {
     document.querySelectorAll('.lg-total > b').forEach(function (b) { b.textContent = 'Итого'; });
     document.querySelectorAll('.lq-cheaper').forEach(function (el) { el.hidden = true; });
     /* пояснение про коэффициент срока — только для работ с множителями */
-    document.querySelectorAll('.lq-when').forEach(function (el) { el.hidden = true; });
+    document.querySelectorAll('.lq-explain').forEach(function (el) { el.hidden = true; });
     put('low', svcFrom);
     if (priceEl) priceEl.textContent = svcFrom;
     if (priceSrEl) priceSrEl.textContent = svcFrom;
@@ -1091,6 +1263,10 @@ function initConf() {
     return Math.max(0, Math.min(d, base));
   }
   function baseQuote() {
+    if (window.SalonCart && window.SalonCart.hasItems()) {
+      var cq = window.SalonCart.quote();
+      return { low: cq.low, high: cq.high, fixed: cq.low === cq.high };
+    }
     if (svc) {
       var v = svc.fixed ? svcPriceVal() : svc.from;
       return { low: v, high: svc.fixed ? v : 0, fixed: !!svc.fixed };
@@ -1100,6 +1276,22 @@ function initConf() {
   }
   function renderDeal() {
     var q = baseQuote();
+    var cartOn = window.SalonCart && window.SalonCart.hasItems();
+    if (cartOn) {
+      var cartPositionLabel = window.SalonCart.positionLabel(window.SalonCart.count());
+      put('type', 'Корзина · ' + cartPositionLabel);
+      put('base', cartPositionLabel);
+      put('discLbl', 'Разные направления');
+      put('disc', '—');
+      put('termLbl', 'Срок у каждой позиции');
+      put('term', '—');
+      put('tierLbl', 'Сопровождение по строкам');
+      put('tier', '—');
+      put('low', C.fmt(q.low) + ' ₽');
+      put('high', 'до ' + C.fmt(q.high || q.low) + ' ₽ за всю корзину');
+      if (priceEl) S.countTo(priceEl, q.low, { suffix:' ₽' });
+      if (priceSrEl) priceSrEl.textContent = C.fmt(q.low) + ' ₽';
+    }
     var pOn = !!(promoCode && promoDeal);
     var gOn = !!giftCode;
     /* код с порогом «для заказов от N» ниже потолка сметы — честно говорим, не перечёркиваем */
@@ -1140,7 +1332,7 @@ function initConf() {
       if (b) b.textContent = strike ? (q.fixed ? 'Без скидки' : 'Без скидки, от')
                                     : (svc ? 'Итого' : 'Итого, от');
     });
-    if (strike && !svc) put('high', 'до ' + C.fmt(newHigh || newLow) + ' ₽ со скидкой — в зависимости от объёма');
+    if (strike && (!svc || cartOn)) put('high', 'до ' + C.fmt(newHigh || newLow) + ' ₽ со скидкой — в зависимости от объёма');
     var bar = document.getElementById('mqBarLow');
     if (bar) bar.innerHTML = strike
       ? '<s style="color:var(--ink-faint);text-decoration-color:var(--wax,#A8402F)">' + C.fmt(q.low) + '</s> ' +
@@ -1170,10 +1362,19 @@ function initConf() {
     container.addEventListener('keydown', function (e) {
       var el = e.target.closest('[role="radio"]');
       if (!el) return;
-      var i = items.indexOf(el), n = items.length;
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); choose((i + 1) % n, true); }
-      else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); choose((i - 1 + n) % n, true); }
-      else if (e.key === ' ') { e.preventDefault(); choose(i, false); }
+      var visible = items.filter(function (x) {
+        return !x.classList.contains('filter-hidden') &&
+          !(x.closest('.opt-group') && x.closest('.opt-group').classList.contains('filter-hidden'));
+      });
+      var i = visible.indexOf(el), n = visible.length;
+      if (!n || i < 0) return;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault(); choose(items.indexOf(visible[(i + 1) % n]), true);
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault(); choose(items.indexOf(visible[(i - 1 + n) % n]), true);
+      } else if (e.key === ' ') {
+        e.preventDefault(); choose(items.indexOf(el), false);
+      }
     });
     return {
       set: function (id) { /* программная установка — без onChange */
@@ -1213,11 +1414,19 @@ function initConf() {
     steps.forEach(function (el, n) { el.classList.toggle('active', n === idx); });
     wpLbl.textContent = 'Шаг ' + (idx + 1) + ' из 4';
     wpFill.style.width = ((idx + 1) * 25) + '%';
+    document.querySelectorAll('[data-conf-step]').forEach(function (el) {
+      el.textContent = svc ? 'Один лист' : 'Шаг ' + (idx + 1) + ' / 4';
+    });
     if (S.visit) S.visit.mark('шаг ' + (idx + 1) + ' из 4');
     btnBack.hidden = svc ? true : idx === 0;
     btnNext.hidden = svc ? true : idx === 3;
     if (mBack) mBack.hidden = svc ? true : idx === 0;
-    if (mNext) mNext.textContent = idx === 3 ? 'Отправить' : 'Далее';
+    if (mNext) {
+      var mobileCartN = window.SalonCart && window.SalonCart.hasItems ? window.SalonCart.count() : 0;
+      mNext.textContent = idx === 3
+        ? (mobileCartN ? 'Оформить корзину · ' + mobileCartN : 'Отправить')
+        : 'Далее';
+    }
     if (mqPanel && !mqPanel.hidden) {
       mqPanel.hidden = true;
       if (mqToggle) mqToggle.setAttribute('aria-expanded', 'false');
@@ -1413,6 +1622,7 @@ function initConf() {
     }
     /* строка в смете сменилась «пробитым купоном» в блоке выгоды */
     renderDeal();
+    if (window.SalonCart && window.SalonCart.refresh) window.SalonCart.refresh();
   }
   function promoCheck(quiet) {
     var v = (promoIn && promoIn.value || '').trim().toUpperCase();
@@ -1516,6 +1726,7 @@ function initConf() {
     }
     /* строка в смете сменилась «пробитым купоном» в блоке выгоды */
     renderDeal();
+    if (window.SalonCart && window.SalonCart.refresh) window.SalonCart.refresh();
   }
   function giftCheck(quiet) {
     var v = (giftIn && giftIn.value || '').trim().toUpperCase();
@@ -1743,6 +1954,7 @@ function initConf() {
   })();
 
   var submitting = false;
+  var submittedCartCount = 0;
   function submit() {
     if (submitting) return;
     var authed = !!(S.api && S.api.token());
@@ -1794,10 +2006,26 @@ function initConf() {
       promo: promoCode || undefined,
       gift: giftCode || undefined,
       consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
-      consent_doc: 'consent 1.2 · privacy 1.6 · oferta 1.4 · форма конфигуратора',
+      consent_doc: 'consent 1.4 · privacy 2.0 · oferta 1.9 · форма конфигуратора',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
       ref: (S.refCode && S.refCode()) || undefined
     };
+    submittedCartCount = 0;
+    if (window.SalonCart && window.SalonCart.hasItems()) {
+      var cartItems = window.SalonCart.items();
+      var cartFirst = cartItems[0];
+      submittedCartCount = window.SalonCart.count();
+      payload.type = submittedCartCount > 1 ? 'custom' : cartFirst.type;
+      payload.disc = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.disc : 'hum';
+      payload.term = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.term : 'free';
+      payload.tier = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.tier : 'base';
+      payload.topic = topicIn.value.trim() || (cartItems.length > 1
+        ? 'Комплексный заказ · ' + window.SalonCart.positionLabel(submittedCartCount)
+        : cartFirst.label);
+      payload.details = window.SalonCart.summary() +
+        (payload.details ? '\n\nОБЩИЙ КОММЕНТАРИЙ\n' + payload.details : '');
+      payload.page = 'configurator.html#cart';
+    }
     function unlock() {
       submitting = false;
       veilHide();
@@ -1848,6 +2076,7 @@ function initConf() {
   function onSubmitOk(r) {
     if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
     S.store.del('salon_draft');
+    if (submittedCartCount && window.SalonCart) window.SalonCart.clear();
     if (S.metrika) S.metrika.goal('order_submitted');
     if (S.visit) S.visit.order(r.id, r.token);
     /* файлы — следом за заявкой, статусы на экране успеха */
@@ -1860,6 +2089,14 @@ function initConf() {
       : 'https://t.me/academic_saloon_bot';
     if (bl) bl.href = claim; /* гостю — привязка заказа к Telegram в один тап */
     showDone('№' + r.id);
+    if (submittedCartCount > 1) {
+      var doneHCart = $('doneH');
+      if (doneHCart) doneHCart.textContent = 'Комплексный заказ принят';
+      var doneStepsCart = document.querySelectorAll('.done-steps li span:last-child');
+      if (doneStepsCart[0]) doneStepsCart[0].textContent = 'Мастер разберёт состав корзины как одну заявку';
+      if (doneStepsCart[1]) doneStepsCart[1].textContent = 'Каждая работа получит отдельную строку в точной смете';
+      if (doneStepsCart[2]) doneStepsCart[2].textContent = 'Оплата начнётся только после согласования всего состава';
+    }
     if (promoCode && r.promo) {
       var dnote = document.querySelector('.done-note');
       if (dnote) dnote.textContent += r.promo === 'ok'
@@ -1949,7 +2186,8 @@ function initConf() {
      с выдуманным номером — это потерянные лиды и доверие. --- */
   function fallbackPanel() {
     var id = 'AS-' + (1000 + Math.floor(Math.random() * 9000));
-    var text = summaryText('черновик ' + id) + '\n' +
+    var text = ((window.SalonCart && window.SalonCart.hasItems())
+        ? window.SalonCart.summary() : summaryText('черновик ' + id)) + '\n' +
       (($('fName') && $('fName').value.trim()) ? 'Имя: ' + $('fName').value.trim() + '\n' : '') +
       (contactValue() ? 'Связь: ' + contactValue() : '');
     if (S.copy) S.copy(text); /* попытка тихого копирования — не обещаем, кнопка главнее */
@@ -2091,6 +2329,57 @@ function initConf() {
     if (mqToggle) mqToggle.setAttribute('aria-expanded', 'false');
     if (mqMore) mqMore.textContent = '· подробнее';
   });
+
+  /* --- комплексная корзина: сохраняет разные работы локально, а на сервер
+     отправляет одно дело type=custom. Админка уже раскладывает его по строкам. --- */
+  function cartCurrentItem() {
+    if (svc) {
+      var answers = {};
+      var answerLines = [];
+      (svc.ask || []).forEach(function (q) {
+        var answer = q.type === 'chips'
+          ? (svcAnswers[q.id] || '')
+          : (($('ask_' + q.id) || {}).value || '').trim();
+        answers[q.id] = answer;
+        if (answer) answerLines.push((q.short || q.label) + ': ' + answer);
+      });
+      var sp = svc.fixed ? svcPriceVal() : svc.from;
+      return {
+        kind:'service', type:svcSrvId, serviceId:svc.id, serviceCode:svc.code,
+        label:svc.label, serviceMeta:svc.unit ? 'услуга · ' + svc.unit.replace('/', '').trim() : 'услуга мастерской',
+        low:sp, high:svc.fixed ? sp : sp, fixed:!!svc.fixed, answers:answers, answerLines:answerLines,
+        topic:topicIn ? topicIn.value.trim() : '', deadline:deadlineIn ? deadlineIn.value.trim() : '',
+        requirements:detailsIn ? detailsIn.value.trim() : '', note:topicIn ? topicIn.value.trim() : ''
+      };
+    }
+    var t = find(C.types, state.type);
+    var q = C.quote(state.type, state.disc, state.term, state.tier);
+    return {
+      kind:'work', type:state.type, label:t.label, disc:state.disc, term:state.term, tier:state.tier,
+      low:q.low, high:q.high, fixed:false,
+      topic:topicIn ? topicIn.value.trim() : '', deadline:deadlineIn ? deadlineIn.value.trim() : '',
+      requirements:detailsIn ? detailsIn.value.trim() : '', note:topicIn ? topicIn.value.trim() : ''
+    };
+  }
+  if (window.SalonCart) {
+    window.SalonCart.init({
+      getCurrent:cartCurrentItem,
+      getDeals:function () {
+        return {
+          promoCode:promoCode, promoLabel:promoLabel, promoDeal:promoDeal,
+          giftCode:giftCode, giftBal:giftBal
+        };
+      },
+      onChange:function () { renderDeal(); },
+      another:function () {
+        if (svc) { location.href = 'configurator.html'; return; }
+        go(0, true);
+        var h = document.querySelector('.conf-head h1');
+        if (h && h.scrollIntoView) h.scrollIntoView({ behavior:S.reduceMotion ? 'auto' : 'smooth', block:'start' });
+      },
+      checkout:function () { go(3, true); }
+    });
+  }
 
   /* --- старт --- */
   rgType.set(state.type);

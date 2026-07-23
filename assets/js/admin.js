@@ -1653,7 +1653,7 @@ function initGodEye() {
 
     var p = off || {};
     var form =
-      '<div class="ag-card" style="max-width:640px;max-height:none;margin-top:12px">' +
+      '<div class="ag-card ag-off-form" style="max-height:none;margin-top:12px">' +
       '<div style="display:grid;gap:8px">' +
       '<input type="text" id="agOffName" maxlength="60" class="ag-inp" placeholder="Имя для обращения — только имя" value="' + esc(p.greet_name || '') + '">' +
       '<p class="ag-hint">Фамилию, вуз и научрука не пишем: ссылку могут переслать, а на предоплатной странице лишних данных быть не должно (Политика п. 4.4).</p>' +
@@ -1666,16 +1666,34 @@ function initGodEye() {
       '<div class="ag-chips"><span class="caps">Что входит — добавить одним кликом</span>' +
         OFF_INCLS.map(function (t) { return offChip('incl', t); }).join('') + '</div>' +
       '<textarea id="agOffIncl" rows="5" class="ag-inp" placeholder="Что входит — и чего нет. Строка: «Отчёт о проверках | да». У невключённого можно дописать цену — «Презентация к защите | нет | 6000» — лист покажет её тихим предложением «можно довложить»">' + esc(jl2t(p.incl, 'in')) + '</textarea>' +
-      '<div class="ag-chips"><span class="caps">Работы и услуги — строкой в смету (можно несколько)</span>' +
-        OFF_WORKS.map(function (t) {
-          return offChip('work', t + ' — авторские материалы и сопровождение', 0, t);
-        }).join('') +
-        OFF_SVCS.map(function (s) {
-          return offChip('svc', s[0] + ' — услуга мастерской', s[1], s[0]);
-        }).join('') + '</div>' +
-      '<label class="ag-hint" style="margin:0"><input type="checkbox" id="agOffAsAdd"> услуги добавлять не в смету, а на лист как «можно довложить» (нет · цена)</label>' +
-      '<textarea id="agOffLedger" rows="4" class="ag-inp" placeholder="Смета. Строка: «Ведение под ключ | 38000»">' + esc(jl2t(p.ledger, 'a')) + '</textarea>' +
-      '<div class="ag-offsum" id="agOffSum"></div>' +
+      '<section class="ag-est" id="agEst" aria-labelledby="agEstTitle">' +
+        '<header class="ag-est-head">' +
+          '<div><div class="ag-est-title"><b id="agEstTitle">Смета</b><span class="ag-est-count" id="agEstCount">0 позиций</span></div>' +
+          '<span class="ag-est-kicker">Найдите услугу и добавьте её одним нажатием</span></div>' +
+          '<div class="ag-est-search"><input type="search" id="agOffSearch" autocomplete="off" placeholder="ВКР, нормоконтроль, речь…" aria-label="Поиск работы или услуги">' +
+          '<button type="button" id="agOffSearchClear" aria-label="Очистить поиск" hidden>×</button></div>' +
+        '</header>' +
+        '<div class="ag-est-tools">' +
+          '<div class="ag-est-cats" role="tablist" aria-label="Категории услуг">' +
+            OFF_CATS.map(function (c, i) { return '<button type="button" class="ag-est-cat' + (i ? '' : ' on') +
+              '" data-off-cat="' + c[0] + '" role="tab" aria-selected="' + (i ? 'false' : 'true') + '">' + c[1] + '</button>'; }).join('') +
+          '</div>' +
+          '<label class="ag-est-mode" title="Для услуг, которые клиент может выбрать дополнительно">' +
+            '<input type="checkbox" id="agOffAsAdd"><span>Как доп. опцию</span></label>' +
+        '</div>' +
+        '<div class="ag-est-catalog" id="agOffCatalog">' +
+          OFF_CATALOG.map(offCatalogItem).join('') +
+          '<div class="ag-est-empty" id="agOffEmpty" hidden>Ничего не найдено — попробуйте короче или добавьте свою строку ниже.</div>' +
+        '</div>' +
+        '<div class="ag-est-picked">' +
+          '<div class="ag-est-pickedhead"><span class="caps">Выбрано для клиента</span>' +
+          '<button type="button" class="ag-est-add" id="agOffCustom">+ Своя позиция</button></div>' +
+          '<div class="ag-est-rows" id="agOffRows"></div>' +
+          '<details class="ag-est-raw"><summary>Ручная правка строк</summary>' +
+          '<textarea id="agOffLedger" rows="4" class="ag-inp" placeholder="Название | 38000">' + esc(jl2t(p.ledger, 'a')) + '</textarea></details>' +
+        '</div>' +
+        '<div class="ag-offsum" id="agOffSum"></div>' +
+      '</section>' +
       '<textarea id="agOffRail" rows="5" class="ag-inp" placeholder="Календарь. Строка: «2026-07-25 | План согласован | развёрнутый план глав | prepay». Платёж: prepay / stage2 / rest / пусто">' + esc(railToText(p.rail)) + '</textarea>' +
       '<label class="ag-hint"><input type="checkbox" id="agOffFiles"' + (p.need_files ? ' checked' : '') + '> Ждём материалы от клиента (срок пойдёт и с их получения)</label>' +
       '<div class="ag-actrow">' +
@@ -1740,26 +1758,50 @@ function initGodEye() {
     }).filter(Boolean);
   }
 
-  /* ── конструктор v2: пресеты работ/услуг/включённого — строки в один клик.
+  /* ── конструктор v3: каталог работ/услуг и состав — строки в один клик.
      Заявка спокойно несёт НЕСКОЛЬКО работ и услуг разом: каждая — строка
      сметы; «включено» и «можно довложить» — строки листа состава. ── */
-  var OFF_WORKS = ['Курсовая работа', 'Дипломная работа · ВКР', 'Магистерская диссертация',
-                   'Глава диссертации', 'Отчёт по практике', 'Научная статья', 'Реферат · эссе'];
-  var OFF_SVCS = [
-    ['Разбор плана', 3000], ['Чистка текста от следов ИИ', 2500],
-    ['Разбор готовой работы', 2500], ['Нормоконтроль по методичке', 5000],
-    ['Презентация и речь к защите', 6000],
-    ['«К защите под ключ»: презентация + речь + нормоконтроль', 9500],
-    ['Репетиторство · консультация (час)', 3000]];
+  var OFF_CATS = [
+    ['all', 'Все'], ['work', 'Работы'], ['edit', 'Редактура'],
+    ['format', 'Оформление'], ['defense', 'Защита'], ['support', 'Консультации']
+  ];
+  var OFF_CATALOG = [
+    { k:'work', c:'work', m:'КР', t:'Курсовая работа', s:'авторские материалы и сопровождение', q:'курсач курсовик' },
+    { k:'work', c:'work', m:'ВКР', t:'Дипломная работа · ВКР', s:'бакалавриат и специалитет', q:'диплом дипломная выпускная' },
+    { k:'work', c:'work', m:'МАГ', t:'Магистерская диссертация', s:'исследование и защита', q:'магистр магистратура' },
+    { k:'work', c:'work', m:'ГЛ', t:'Глава диссертации', s:'отдельный исследовательский блок', q:'диссер глава кандидатская' },
+    { k:'work', c:'work', m:'ПР', t:'Отчёт по практике', s:'отчёт, дневник и задание', q:'практика дневник' },
+    { k:'work', c:'work', m:'СТ', t:'Научная статья', s:'статья для журнала или сборника', q:'вак ринц публикация' },
+    { k:'work', c:'work', m:'РФ', t:'Реферат · эссе', s:'компактная учебная работа', q:'эссе доклад' },
+    { k:'svc', c:'support', m:'ПЛ', t:'Разбор плана', s:'структура и дорожная карта', a:3000, q:'план структура' },
+    { k:'svc', c:'edit', m:'AI', t:'Чистка текста от следов ИИ', s:'стилистика и естественность текста', a:2500, q:'ии ai нейросеть текст' },
+    { k:'svc', c:'edit', m:'РЗ', t:'Разбор готовой работы', s:'аудит, замечания и план правок', a:2500, q:'проверка аудит готовая' },
+    { k:'svc', c:'format', m:'НК', t:'Нормоконтроль по методичке', s:'оформление и требования вуза', a:5000, q:'гост оформление методичка' },
+    { k:'svc', c:'defense', m:'ЗЩ', t:'Презентация и речь к защите', s:'слайды и доклад', a:6000, q:'защита презентация речь доклад слайды' },
+    { k:'svc', c:'defense', m:'PRO', t:'К защите под ключ', s:'презентация, речь и нормоконтроль', a:9500, q:'защита полный комплект' },
+    { k:'svc', c:'support', m:'1Ч', t:'Репетиторство · консультация', s:'один час с мастером', a:3000, q:'репетитор час консультация созвон' }
+  ];
   var OFF_INCLS = ['Работа по вашему материалу', 'Правки по замечаниям', 'Отчёт о проверках',
                    'Презентация к защите', 'Речь к защите', 'Оформление по ГОСТ и методичке',
                    'Сопровождение до самой защиты'];
+  function offCatalogItem(x) {
+    return '<button type="button" class="ag-est-item" data-off-add="' + x.k + '" data-off-cat-item="' + x.c +
+      '" data-off-search="' + esc((x.t + ' ' + x.s + ' ' + (x.q || '')).toLowerCase()) +
+      '" data-t="' + esc(x.t) + '"' + (x.a ? ' data-a="' + x.a + '"' : '') + '>' +
+      '<span class="ag-est-mark"><span>' + esc(x.m) + '</span></span>' +
+      '<span><span class="ag-est-nm">' + esc(x.t) + '</span><span class="ag-est-sub">' + esc(x.s) + '</span></span>' +
+      '<span class="ag-est-price' + (x.a ? '' : ' free') + '">' + (x.a ? money(x.a) + ' ₽' : 'своя цена') + '</span></button>';
+  }
   function offChip(kind, t, a, label) {
     return '<button type="button" class="ag-chip" data-off-add="' + kind + '" data-t="' + esc(t) + '"' +
       (a ? ' data-a="' + a + '"' : '') + '>' + esc(label || t) +
       (a ? ' <small>' + money(a) + '</small>' : '') + '</button>';
   }
   function offChipAdd(btn) {
+    if (btn.classList.contains('ag-est-item') && btn.classList.contains('is-added')) {
+      toast('Уже добавлено — цену можно изменить в выбранных позициях');
+      return;
+    }
     var kind = btn.getAttribute('data-off-add');
     var t = btn.getAttribute('data-t');
     var a = parseInt(btn.getAttribute('data-a') || '0', 10);
@@ -1781,12 +1823,76 @@ function initGodEye() {
     if (dup) { toast('Такая строка уже есть — поправьте её прямо в поле'); return; }
     ta.value = (ta.value.trim() ? ta.value.replace(/\s+$/, '') + '\n' : '') + line;
     offSumRender();
+    offRowsRender();
+    offCatalogState();
     if (ta.id === 'agOffLedger') {
-      /* курсор сразу на цену добавленной строки — вписать свою цифру */
-      var pos = ta.value.lastIndexOf('| ') + 2;
-      ta.focus();
-      try { ta.setSelectionRange(pos, ta.value.length); } catch (e) {}
+      var rows = document.querySelectorAll('#agOffRows [data-off-row-price]');
+      var last = rows[rows.length - 1];
+      if (last) { last.focus(); try { last.select(); } catch (e) {} }
     }
+  }
+  function offWord(n) {
+    var n10 = n % 10, n100 = n % 100;
+    return n10 === 1 && n100 !== 11 ? 'позиция' :
+      (n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14) ? 'позиции' : 'позиций');
+  }
+  function offRowsRender() {
+    var box = document.getElementById('agOffRows');
+    var ta = document.getElementById('agOffLedger');
+    if (!box || !ta) return;
+    var rows = t2ledger(ta.value);
+    box.innerHTML = rows.length ? rows.map(function (r, i) {
+      return '<div class="ag-est-row">' +
+        '<input type="text" value="' + esc(r.t) + '" data-off-row-title="' + i + '" aria-label="Название позиции ' + (i + 1) + '">' +
+        '<input type="number" min="0" step="100" inputmode="numeric" value="' + (r.a || '') +
+          '" data-off-row-price="' + i + '" aria-label="Цена позиции ' + (i + 1) + '">' +
+        '<button type="button" class="ag-est-rm" data-off-row-rm="' + i + '" aria-label="Удалить ' + esc(r.t) + '">×</button></div>';
+    }).join('') : '<div class="ag-est-none">Пока пусто — выберите работу или услугу выше</div>';
+    var count = document.getElementById('agEstCount');
+    if (count) count.textContent = rows.length + ' ' + offWord(rows.length);
+  }
+  function offRowsSync() {
+    var ta = document.getElementById('agOffLedger');
+    if (!ta) return;
+    var titles = document.querySelectorAll('#agOffRows [data-off-row-title]');
+    var lines = [];
+    Array.prototype.forEach.call(titles, function (title) {
+      var i = title.getAttribute('data-off-row-title');
+      var price = document.querySelector('#agOffRows [data-off-row-price="' + i + '"]');
+      if (title.value.trim()) lines.push(title.value.trim() + ' | ' + (parseInt(price && price.value, 10) || 0));
+    });
+    ta.value = lines.join('\n');
+    offSumRender();
+    offCatalogState();
+  }
+  function offCatalogState() {
+    var ledger = t2ledger((document.getElementById('agOffLedger') || {}).value);
+    var incl = t2incl((document.getElementById('agOffIncl') || {}).value);
+    var names = ledger.concat(incl).map(function (r) { return String(r.t || '').toLowerCase(); });
+    var items = document.querySelectorAll('#agOffCatalog .ag-est-item');
+    Array.prototype.forEach.call(items, function (item) {
+      var on = names.indexOf(String(item.getAttribute('data-t') || '').toLowerCase()) >= 0;
+      item.classList.toggle('is-added', on);
+      item.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  function offCatalogFilter() {
+    var q = String((document.getElementById('agOffSearch') || {}).value || '').toLowerCase()
+      .replace(/ё/g, 'е').trim();
+    var on = document.querySelector('#agEst .ag-est-cat.on');
+    var cat = on ? on.getAttribute('data-off-cat') : 'all';
+    var shown = 0;
+    var items = document.querySelectorAll('#agOffCatalog .ag-est-item');
+    Array.prototype.forEach.call(items, function (item) {
+      var hay = String(item.getAttribute('data-off-search') || '').replace(/ё/g, 'е');
+      var ok = (cat === 'all' || item.getAttribute('data-off-cat-item') === cat) && (!q || hay.indexOf(q) >= 0);
+      item.hidden = !ok;
+      if (ok) shown++;
+    });
+    var empty = document.getElementById('agOffEmpty');
+    if (empty) empty.hidden = !!shown;
+    var clear = document.getElementById('agOffSearchClear');
+    if (clear) clear.hidden = !q;
   }
   function offSumRender() {
     var box = document.getElementById('agOffSum');
@@ -1799,7 +1905,7 @@ function initGodEye() {
       '<span>Цена дела: <b>' + money(price) + ' ₽</b></span>' +
       (sum ? '<span class="' + (sum === price ? 'ok' : 'diff') + '">' +
         (sum === price ? '✓ сходится' : 'не сходится — на листе и в кассе будет цена дела')
-        + '</span>' : '<span>соберите смету чипами или строками</span>');
+        + '</span>' : '<span>добавьте первую позицию из каталога</span>');
   }
 
   function planBlock(o) {
@@ -2137,6 +2243,9 @@ function initGodEye() {
       (o.events || []).map(function (e) {
         return dt(e.at) + ' · ' + esc(evLabel(e.kind)) + (e.data ? ' — ' + esc(evData(e).slice(0, 70)) : '');
       }).join('<br>') + '</div></div>';
+    if (st.offnew) setTimeout(function () {
+      offSumRender(); offRowsRender(); offCatalogState(); offCatalogFilter();
+    }, 0);
     var feedBox = document.getElementById('agFeed');
     if (feedBox) {
       if (st.feedStick || !sameOrder) feedBox.scrollTop = feedBox.scrollHeight;
@@ -2957,7 +3066,44 @@ function initGodEye() {
     if (t.closest('#agOffNew')) {
       st.offnew = !st.offnew;
       drawCard();
-      if (st.offnew) setTimeout(offSumRender, 0); /* живой итог сразу при открытии формы */
+      return;
+    }
+    var offCat = t.closest('[data-off-cat]');
+    if (offCat) {
+      var cats = document.querySelectorAll('#agEst [data-off-cat]');
+      Array.prototype.forEach.call(cats, function (b) {
+        var on = b === offCat;
+        b.classList.toggle('on', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      offCatalogFilter();
+      return;
+    }
+    if (t.closest('#agOffSearchClear')) {
+      var search = document.getElementById('agOffSearch');
+      if (search) { search.value = ''; search.focus(); }
+      offCatalogFilter();
+      return;
+    }
+    if (t.closest('#agOffCustom')) {
+      var customTa = document.getElementById('agOffLedger');
+      if (!customTa) return;
+      customTa.value += (customTa.value.trim() ? '\n' : '') + 'Новая позиция | 0';
+      offRowsRender(); offSumRender(); offCatalogState();
+      var customTitles = document.querySelectorAll('#agOffRows [data-off-row-title]');
+      var customLast = customTitles[customTitles.length - 1];
+      if (customLast) { customLast.focus(); customLast.select(); }
+      return;
+    }
+    var offRm = t.closest('[data-off-row-rm]');
+    if (offRm) {
+      var rmIndex = parseInt(offRm.getAttribute('data-off-row-rm'), 10);
+      var rmTa = document.getElementById('agOffLedger');
+      if (!rmTa) return;
+      var rmRows = t2ledger(rmTa.value);
+      rmRows.splice(rmIndex, 1);
+      rmTa.value = rmRows.map(function (r) { return r.t + ' | ' + r.a; }).join('\n');
+      offRowsRender(); offSumRender(); offCatalogState();
       return;
     }
     var offChipBtn = t.closest('[data-off-add]');
@@ -3470,6 +3616,7 @@ function initGodEye() {
   });
 
   root.addEventListener('change', function (e) {
+    if (e.target && e.target.id === 'agOffAsAdd') return;
     if (e.target && e.target.id === 'agBSeg') { bcastRefresh(); return; }
     if (e.target && e.target.id === 'agSort') { st.sort = e.target.value; drawList(); return; }
     if (e.target && e.target.id === 'agCSort') { st.csort = e.target.value; drawClientList(); return; }
@@ -3500,7 +3647,15 @@ function initGodEye() {
   /* живые реакции на ввод: поиск по клиентам и счётчик длины рассылки */
   root.addEventListener('input', function (e) {
     /* живой итог конструктора заявки: смета и цена дела сверяются на лету */
-    if (e.target && (e.target.id === 'agOffLedger' || e.target.id === 'agPrice')) offSumRender();
+    if (e.target && e.target.id === 'agOffSearch') { offCatalogFilter(); return; }
+    if (e.target && (e.target.hasAttribute('data-off-row-title') || e.target.hasAttribute('data-off-row-price'))) {
+      offRowsSync(); return;
+    }
+    if (e.target && e.target.id === 'agOffLedger') {
+      offSumRender(); offRowsRender(); offCatalogState(); return;
+    }
+    if (e.target && e.target.id === 'agOffIncl') { offCatalogState(); return; }
+    if (e.target && e.target.id === 'agPrice') offSumRender();
     if (e.target && e.target.id === 'agCQ') {
       st.cq = e.target.value; drawClientList();
       var cc = document.getElementById('agCQClear'); if (cc) cc.hidden = !st.cq;   /* держим ✕ в такт вводу */
