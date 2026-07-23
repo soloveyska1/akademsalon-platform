@@ -2,12 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Калькулятор стоимости онлайн: курсовая, диплом, ВКР — смета за минуту | Академический Салон</title>
 <meta name="description" content="Соберите смету за четыре шага: тип работы, направление, срок и уровень сопровождения. Живой расчёт и порядок оплаты — до заявки." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723c" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260723d" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
@@ -637,6 +637,7 @@
     </details>
   </div>
   <div class="mq-bar">
+    <button type="button" class="mq-back" id="mBack" aria-label="Назад" hidden>←</button>
     <button type="button" class="mq-total" id="mqToggle" aria-expanded="false" aria-controls="mqPanel">
       <span aria-live="polite" aria-atomic="true">Итого: <b class="num" id="mqBarLow">40&nbsp;000&nbsp;₽</b></span>
       <span class="mq-more" id="mqMore">· подробнее</span>
@@ -664,7 +665,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260723c"></script>
+<script src="assets/js/app.js?v=20260723d"></script>
 <script src="assets/js/extras.js?v=20260723a"></script>
 <script>
 function initConf() {
@@ -735,7 +736,45 @@ function initConf() {
   var planEntryEl = $('planEntry');
   var topicIn = $('fTopic');
   var deadlineIn = $('fDeadline'), detailsIn = $('fDetails');
-  var mcta = $('confMcta'), mqPanel = $('mqPanel'), mqToggle = $('mqToggle'), mqMore = $('mqMore'), mNext = $('mNext');
+  var mcta = $('confMcta'), mqPanel = $('mqPanel'), mqToggle = $('mqToggle'), mqMore = $('mqMore'),
+      mBack = $('mBack'), mNext = $('mNext');
+
+  /* На телефоне длинный перечень типов превращается в четыре вкладки-
+     рубрики. Выбор и цены остаются теми же, меняется только навигация. */
+  (function mobileTypeTabs() {
+    var root = $('typeGroup');
+    if (!root || !(window.matchMedia && window.matchMedia('(max-width: 880px)').matches)) return;
+    var groups = Array.prototype.slice.call(root.querySelectorAll('.opt-group'));
+    if (groups.length < 2) return;
+    var nav = document.createElement('div');
+    nav.className = 'conf-type-tabs';
+    nav.setAttribute('role', 'tablist');
+    nav.setAttribute('aria-label', 'Категория работы');
+    var active = 0;
+    groups.forEach(function (group, i) {
+      if (group.querySelector('[data-id="' + state.type + '"]')) active = i;
+      var cap = group.querySelector('.caps');
+      var b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('data-group', String(i));
+      b.textContent = cap ? cap.textContent.trim() : 'Раздел ' + (i + 1);
+      nav.appendChild(b);
+    });
+    root.insertBefore(nav, root.firstChild);
+    root.classList.add('has-mobile-tabs');
+    function showGroup(i) {
+      active = Math.max(0, Math.min(groups.length - 1, i));
+      groups.forEach(function (group, n) { group.classList.toggle('mobile-active', n === active); });
+      nav.querySelectorAll('button').forEach(function (b, n) {
+        var on = n === active; b.classList.toggle('on', on);
+        b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
+      });
+    }
+    nav.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-group]');
+      if (b) showGroup(parseInt(b.getAttribute('data-group'), 10) || 0);
+    });
+    showGroup(active);
+  })();
 
   /* --- сервисный режим: один лист заявки вместо четырёх шагов --- */
   if (svc) {
@@ -1182,7 +1221,13 @@ function initConf() {
     if (S.visit) S.visit.mark('шаг ' + (idx + 1) + ' из 4');
     btnBack.hidden = svc ? true : idx === 0;
     btnNext.hidden = svc ? true : idx === 3;
+    if (mBack) mBack.hidden = svc ? true : idx === 0;
     if (mNext) mNext.textContent = idx === 3 ? 'Отправить' : 'Далее';
+    if (mqPanel && !mqPanel.hidden) {
+      mqPanel.hidden = true;
+      if (mqToggle) mqToggle.setAttribute('aria-expanded', 'false');
+      if (mqMore) mqMore.textContent = '· подробнее';
+    }
     saveDraft();
     if (focus) {
       var t = steps[idx].querySelector('.ws-title');
@@ -1222,21 +1267,30 @@ function initConf() {
 
   /* --- способ связи: подсказки по выбранному мессенджеру --- */
   var CT_META = {
-    tg: ['@nickname — ник в Telegram', 'Ник или ссылка t.me — мастер напишет напрямую.'],
-    vk: ['vk.com/id или ссылка на профиль', 'Ссылка на профиль ВК — проверьте, что личные сообщения открыты.'],
-    wa: ['+7 900 000-00-00 — номер WhatsApp', 'Номер, к которому привязан WhatsApp.'],
-    ph: ['+7 900 000-00-00', 'Позвоним или напишем в мессенджер, привязанный к номеру.'],
-    em: ['you@mail.ru', 'Пришлём ответ и ссылку доступа к делу на почту.']
+    tg: ['@nickname — ник в Telegram', 'Ник или ссылка t.me — мастер напишет напрямую.', 'text', 'text', 'off'],
+    vk: ['vk.com/id или ссылка на профиль', 'Ссылка на профиль ВК — проверьте, что личные сообщения открыты.', 'text', 'url', 'url'],
+    wa: ['+7 900 000-00-00 — номер WhatsApp', 'Номер, к которому привязан WhatsApp.', 'tel', 'tel', 'tel'],
+    ph: ['+7 900 000-00-00', 'Позвоним или напишем в мессенджер, привязанный к номеру.', 'tel', 'tel', 'tel'],
+    em: ['you@mail.ru', 'Пришлём ответ и ссылку доступа к делу на почту.', 'email', 'email', 'email']
   };
+  function applyContactMode(inp) {
+    if (!inp || !CT_META[ctKind]) return;
+    var meta = CT_META[ctKind];
+    inp.placeholder = meta[0]; inp.type = meta[2];
+    inp.setAttribute('inputmode', meta[3]);
+    inp.setAttribute('autocomplete', meta[4]);
+    inp.setAttribute('enterkeyhint', 'done');
+  }
   var ctKind = 'tg';
   var ctChips = $('ctChips');
+  applyContactMode($('fContact'));
   if (ctChips) ctChips.addEventListener('click', function (e) {
     var b = e.target.closest('.ct-chip');
     if (!b) return;
     ctKind = b.getAttribute('data-ct');
     ctChips.querySelectorAll('.ct-chip').forEach(function (x) { x.classList.toggle('on', x === b); });
     var inp = $('fContact'), hint = $('ctHint');
-    if (inp) { inp.placeholder = CT_META[ctKind][0]; inp.focus(); }
+    if (inp) { applyContactMode(inp); inp.focus(); }
     if (hint) hint.textContent = CT_META[ctKind][1];
     saveDraftSoon();
   });
@@ -1257,7 +1311,7 @@ function initConf() {
           x.classList.toggle('on', x.getAttribute('data-ct') === ctKind);
         });
         var rInp = $('fContact'), rHint = $('ctHint');
-        if (rInp) rInp.placeholder = CT_META[ctKind][0];
+        if (rInp) applyContactMode(rInp);
         if (rHint) rHint.textContent = CT_META[ctKind][1];
       }
     }
@@ -2025,6 +2079,15 @@ function initConf() {
   if (mNext) mNext.addEventListener('click', function () {
     if (idx === 3) submit();
     else { canSave = true; go(idx + 1, true); }
+  });
+  if (mBack) mBack.addEventListener('click', function () {
+    canSave = true; go(idx - 1, true);
+  });
+  document.addEventListener('focusin', function (e) {
+    if (!mqPanel || mqPanel.hidden || !e.target.matches('input,textarea,select')) return;
+    mqPanel.hidden = true;
+    if (mqToggle) mqToggle.setAttribute('aria-expanded', 'false');
+    if (mqMore) mqMore.textContent = '· подробнее';
   });
 
   /* --- старт --- */

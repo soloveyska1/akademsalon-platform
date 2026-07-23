@@ -413,7 +413,10 @@
        стоит ПОВЕРХ .mobile-cta (её bottom = высоте панели), поэтому
        сложение давало лишние ~76px. */
     function measure() {
-      var f = 0, r, cs, nav, bar, hdr, narrow, lh;
+      var f = 0, r, cs, nav, bar, hdr, narrow, lh, vv, keyboard;
+      vv = window.visualViewport;
+      keyboard = !!(vv && window.innerHeight - vv.height > 140);
+      docEl.classList.toggle('keyboard-open', keyboard);
       nav = document.querySelector('.mobile-cta');
       if (nav) { cs = getComputedStyle(nav); if (cs.display !== 'none') f = Math.round(nav.getBoundingClientRect().height); }
       bar = document.querySelector('.resume-bar');
@@ -440,6 +443,14 @@
     window.addEventListener('orientationchange', function () { setTimeout(measure, 250); });
     if (window.visualViewport && window.visualViewport.addEventListener) {
       window.visualViewport.addEventListener('resize', measure);
+      window.visualViewport.addEventListener('scroll', measure);
+    }
+    if ('ResizeObserver' in window) {
+      var floorRO = new ResizeObserver(measure);
+      setTimeout(function () {
+        var n = document.querySelector('.mobile-cta'), h = document.querySelector('.site-header');
+        if (n) floorRO.observe(n); if (h) floorRO.observe(h);
+      }, 0);
     }
 
     /* ---------------- рельсы ---------------- */
@@ -1317,8 +1328,14 @@
       toc.classList.toggle('open', open);
       document.body.classList.toggle('toc-lock', open);
       tocSiblings().forEach(function (el) { if (open) el.setAttribute('inert', ''); else el.removeAttribute('inert'); });
-      document.querySelectorAll('.menu-toggle').forEach(function (t) { t.setAttribute('aria-expanded', String(open)); });
-      if (open) { var f = toc.querySelector('.toc-close'); if (f) f.focus(); }
+      document.querySelectorAll('.menu-toggle').forEach(function (t) {
+        t.setAttribute('aria-expanded', String(open));
+        t.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+      });
+      if (open) {
+        toc.scrollTop = 0;
+        var f = toc.querySelector('.toc-close'); if (f) f.focus();
+      }
       else { var mt = document.querySelector('.menu-toggle'); if (mt) mt.focus(); }
     }
     Salon.toc = { open: function () { setToc(true); }, close: function () { setToc(false); }, isOpen: function () { return toc.classList.contains('open'); } };
@@ -1669,7 +1686,7 @@
     mnav.innerHTML =
       mnItem('index.html', 'Главная', '¶') +
       mnItem('tariffs.html', 'Цены', '₽') +
-      mnItem(mnCalc, 'Рассчитать', PEN_SVG, ' mn-calc') +
+      mnItem(mnCalc, 'Смета', PEN_SVG, ' mn-calc') +
       mnItem('dashboard.html', 'Кабинет', CAB_SVG, ' mn-cab') +
       '<button class="mn-i mn-link" type="button" data-contact="1">' +
         '<span class="mn-ic" aria-hidden="true">' + CHAT_SVG + '</span>' +
@@ -1733,7 +1750,7 @@
      Главная дверь — конфигуратор на сайте: заявка, файлы и кабинет без
      мессенджеров. Каналы — по желанию. [data-msg]/[data-contact] — триггеры. */
   (function () {
-    var sheet, lastFocus;
+    var sheet, lastFocus, inerted = [];
     function build(opts) {
       opts = opts || {};
       var el = document.createElement('div');
@@ -1759,26 +1776,20 @@
               (day ? 'Мастер на связи — обычно отвечаем за 15–30 минут'
                    : 'В мастерской ночь — отвечаем и ночью, просто чуть дольше') + '</p>';
           })() +
-          '<a class="cs-opt cs-opt--wax" href="configurator.html">' +
-            '<span class="cs-o-ic" aria-hidden="true">✎</span>' +
-            '<span class="cs-o-txt"><b>Оформить заявку на сайте</b><small>Смета, файлы и кабинет — 2 минуты, без регистрации</small></span>' +
-            '<span class="ar" aria-hidden="true">→</span></a>' +
-          '<a class="cs-opt" href="' + LINKS.vkm + '" target="_blank" rel="noopener">' +
-            '<span class="cs-o-ic" aria-hidden="true">ВК</span>' +
-            '<span class="cs-o-txt"><b>Написать во ВКонтакте</b><small>Диалог с сообществом — отвечает человек</small></span>' +
-            '<span class="ar" aria-hidden="true">→</span></a>' +
-          '<a class="cs-opt" href="' + LINKS.max + '" target="_blank" rel="noopener">' +
-            '<span class="cs-o-ic" aria-hidden="true">' + maxLogoSVG() + '</span>' +
-            '<span class="cs-o-txt"><b>MAX</b><small>Канал мастерской — новости и связь</small></span>' +
-            '<span class="ar" aria-hidden="true">→</span></a>' +
-          '<a class="cs-opt" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
+          '<a class="cs-opt cs-opt--wax" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
             '<span class="cs-o-ic" aria-hidden="true">✆</span>' +
-            '<span class="cs-o-txt"><b>Telegram — написать человеку</b><small>Лично, обычно отвечаем в течение пары часов</small></span>' +
+            '<span class="cs-o-txt"><b>Написать человеку</b><small>Telegram · обычно отвечаем за 15–30 минут днём</small></span>' +
             '<span class="ar" aria-hidden="true">→</span></a>' +
-          '<a class="cs-opt" href="' + order + '" target="_blank" rel="noopener">' +
-            '<span class="cs-o-ic" aria-hidden="true">⚙</span>' +
-            '<span class="cs-o-txt"><b>Telegram-бот</b><small>Заявки и статусы — если привычнее в боте</small></span>' +
+          '<a class="cs-opt" href="configurator.html">' +
+            '<span class="cs-o-ic" aria-hidden="true">✎</span>' +
+            '<span class="cs-o-txt"><b>Оформить заявку на сайте</b><small>Расчёт, файлы и кабинет — без регистрации</small></span>' +
             '<span class="ar" aria-hidden="true">→</span></a>' +
+          '<details class="cs-more"><summary>Другие способы связи <span aria-hidden="true">+</span></summary>' +
+            '<div class="cs-more-in">' +
+              '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener"><b>ВКонтакте</b><small>Диалог с сообществом</small><i aria-hidden="true">↗</i></a>' +
+              '<a href="' + LINKS.max + '" target="_blank" rel="noopener"><b>MAX</b><small>Канал мастерской</small><i aria-hidden="true">↗</i></a>' +
+              '<a href="' + order + '" target="_blank" rel="noopener"><b>Telegram-бот</b><small>Заявки и статусы 24/7</small><i aria-hidden="true">↗</i></a>' +
+            '</div></details>' +
           '<p class="cs-note">Заявка с сайта попадает мастеру напрямую, переписка и статусы — в <a href="dashboard.html">кабинете</a>. Нажимая, вы принимаете <a href="oferta.html">оферту</a> и <a href="privacy.html">политику ПДн</a>.</p>' +
         '</div>';
       return el;
@@ -1787,6 +1798,7 @@
       if (!sheet) return;
       sheet.classList.remove('open');
       document.body.classList.remove('toc-lock');
+      inerted.forEach(function (el) { el.removeAttribute('inert'); }); inerted = [];
       var s = sheet; setTimeout(function () { if (s && s.parentNode) s.parentNode.removeChild(s); }, 240);
       sheet = null;
       if (lastFocus && lastFocus.focus) lastFocus.focus();
@@ -1796,10 +1808,32 @@
       sheet = build(opts || {});
       document.body.appendChild(sheet);
       document.body.classList.add('toc-lock');
+      inerted = ['.site-header', 'main', '.site-footer', '.mobile-cta', '.toc', '.mrail', '.lrail']
+        .map(function (s) { return document.querySelector(s); }).filter(function (el) {
+          return el && !sheet.contains(el);
+        });
+      inerted.forEach(function (el) { el.setAttribute('inert', ''); });
       void sheet.offsetWidth; /* показ без rAF — иначе шит невидим при спящем рендере */
       sheet.classList.add('open');
-      var f = sheet.querySelector('.cs-opt'); if (f) f.focus();
+      var f = sheet.querySelector('.cs-x');
+      if (f) {
+        f.focus({ preventScroll: true });
+        setTimeout(function () {
+          if (sheet && !sheet.contains(document.activeElement)) f.focus({ preventScroll: true });
+        }, 0);
+      }
       sheet.addEventListener('click', function (e) { if (e.target.closest('[data-cs-close]')) { e.preventDefault(); close(); } });
+      sheet.addEventListener('keydown', function (e) {
+        if (e.key !== 'Tab') return;
+        var focusable = Array.prototype.filter.call(
+          sheet.querySelectorAll('a[href],button,summary'),
+          function (el) { return el.getClientRects().length && !el.hasAttribute('disabled'); }
+        );
+        if (!focusable.length) return;
+        var first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      });
     };
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sheet) close(); });
     document.addEventListener('click', function (e) {
@@ -1875,11 +1909,15 @@
   /* ---------------- Мгновенная навигация: prefetch / prerender ---------------- */
   (function () {
     try {
-      if (HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')) {
+      var mobile = window.matchMedia && window.matchMedia('(max-width:880px), (pointer:coarse)').matches;
+      var save = navigator.connection && navigator.connection.saveData;
+      if (!mobile && !save && HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')) {
         var sr = document.createElement('script'); sr.type = 'speculationrules';
-        sr.textContent = JSON.stringify({ prerender: [{ source: 'document', where: { selector_matches: 'a[href$=".html"]' }, eagerness: 'moderate' }] });
+        sr.textContent = JSON.stringify({ prerender: [{ source: 'document', where: {
+          selector_matches: 'a[href="configurator.html"],a[href="dashboard.html"]'
+        }, eagerness: 'moderate' }] });
         document.head.appendChild(sr);
-      } else {
+      } else if (!mobile && !save) {
         var seen = {};
         document.addEventListener('mouseover', function (e) {
           var a = e.target.closest && e.target.closest('a[href$=".html"]');

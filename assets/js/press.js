@@ -12,19 +12,85 @@
   if (!track || !scene) return;
 
   var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var coarse = window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)');
   /* Поток — мобильная вёрстка, no-JS и ЯВНЫЙ «Спокойный режим» (тумблер
      в шапке ставит html[data-calm] и шлёт resize). Системный reduce-motion
      НЕ понижает раскладку (решение владельца 2026-07-22: полная красота
      по умолчанию для всех — ЯБ/macOS часто шлют reduce без ведома людей),
      он лишь глушит фоновое: пылинки, дыхание света, тилт, каскад оттиска. */
   function flat() {
-    return window.innerWidth <= 880 || docEl.hasAttribute('data-calm');
+    return window.innerWidth <= 880 || (coarse && coarse.matches) || docEl.hasAttribute('data-calm');
+  }
+
+  /* На телефоне быстрый расчёт — это три коротких шага, а не длинный
+     книжный разворот. Сами группы и расчёт остаются прежними: меняется
+     только мобильная подача, поэтому один источник цен не раздваивается. */
+  function initMobileEstimator() {
+    var form = document.querySelector('.pr-form');
+    if (!form || form.getAttribute('data-mobile-flow') === '1') return;
+    var questions = Array.prototype.slice.call(form.querySelectorAll('.plate-q'));
+    var foot = form.querySelector('.pr-pgfoot');
+    if (questions.length !== 3 || !foot) return;
+    form.setAttribute('data-mobile-flow', '1');
+
+    var progress = document.createElement('div');
+    progress.className = 'pr-qprog';
+    progress.setAttribute('aria-live', 'polite');
+    form.insertBefore(progress, questions[0]);
+
+    var steps = [];
+    questions.forEach(function (question, i) {
+      var stop = questions[i + 1] || foot;
+      var step = document.createElement('div');
+      step.className = 'pr-qstep';
+      form.insertBefore(step, question);
+      var node = question;
+      while (node && node !== stop) {
+        var next = node.nextSibling;
+        step.appendChild(node);
+        node = next;
+      }
+      steps.push(step);
+    });
+
+    var nav = document.createElement('div');
+    nav.className = 'pr-qnav';
+    nav.innerHTML = '<button class="pr-qback" type="button" aria-label="Предыдущий вопрос">←</button>' +
+      '<button class="btn btn-wax pr-qnext" type="button">Далее <span aria-hidden="true">→</span></button>';
+    form.insertBefore(nav, foot);
+    var back = nav.querySelector('.pr-qback');
+    var nextBtn = nav.querySelector('.pr-qnext');
+    var current = 0;
+
+    function show(i, focus) {
+      current = Math.max(0, Math.min(steps.length - 1, i));
+      steps.forEach(function (step, n) { step.classList.toggle('active', n === current); });
+      progress.innerHTML = '<span>Вопрос ' + (current + 1) + ' из ' + steps.length + '</span>' +
+        '<i><b style="width:' + ((current + 1) / steps.length * 100) + '%"></b></i>';
+      back.hidden = current === 0;
+      nextBtn.innerHTML = current === steps.length - 1
+        ? 'Показать смету <span aria-hidden="true">↓</span>'
+        : 'Далее <span aria-hidden="true">→</span>';
+      if (focus) {
+        var heading = steps[current].querySelector('.plate-q');
+        if (heading) { heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); }
+        form.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'start' });
+      }
+    }
+    back.addEventListener('click', function () { show(current - 1, true); });
+    nextBtn.addEventListener('click', function () {
+      if (current < steps.length - 1) { show(current + 1, true); return; }
+      var receipt = document.querySelector('.pr-first');
+      if (receipt) receipt.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'start' });
+    });
+    show(0, false);
   }
 
   /* режим потока: мобильные и «спокойные» получают страницы без кино */
   function applyMode() {
     if (flat()) docEl.setAttribute('data-pr-flat', '1');
     else docEl.removeAttribute('data-pr-flat');
+    if (flat()) initMobileEstimator();
     onScroll();
   }
 

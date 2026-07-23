@@ -501,3 +501,62 @@ html[data-pr-flat] .story-chip, html:not(.has-js) .story-chip{animation:none;opa
   .pr-light,.pr-hint .ln::after{animation:none}
   .pr-h .ln,.pr-kicker,.pr-lead,.pr-cta,.pr-note,.pr-copy .slot-line,.story-chip{animation:none;opacity:1;transform:none}
 }
+
+/* ============================================================
+   МОБИЛЬНАЯ ПРЕСС-ФОРМА — «КАРМАННЫЙ ФОРМУЛЯР»
+   ============================================================ */
+.pr-qprog,.pr-qnav{display:none}
+@media(max-width:880px),(hover:none) and (pointer:coarse){
+  #smeta,.pr-first{scroll-margin-top:72px}
+  html[data-pr-flat] .pr-scene,
+  html:not(.has-js) .pr-scene{padding:76px 0 28px}
+  .pr-minibook{width:94px;height:128px;margin-bottom:14px;transform:rotate(-1.5deg)}
+  .pr-minibook::before{inset:6px}
+  .pr-mb-para{font-size:19px;margin-bottom:5px}
+  .pr-mb-name{font-size:8px}
+  .pr-mb-ribbon{width:7px;height:20px}
+  .pr-kicker{font-size:10px;letter-spacing:.2em}
+  .pr-h{font-size:clamp(31px,9.2vw,36px);line-height:1.01}
+  .pr-lead{margin-top:16px;font-size:14.5px;line-height:1.58;max-width:35ch}
+  html[data-pr-flat] .pr-cta,
+  html:not(.has-js) .pr-cta{margin-top:19px;gap:8px}
+  html[data-pr-flat] .pr-cta .btn-wax,
+  html:not(.has-js) .pr-cta .btn-wax{min-height:52px}
+  .pr-toclink{display:none}
+  html[data-pr-flat] .pr-note,
+  html:not(.has-js) .pr-note{margin-top:13px;font-size:12px;line-height:1.45}
+  .story-chip{margin-top:12px;min-height:44px;padding:9px 13px;font-size:12.5px}
+  html[data-pr-flat] .pr-bookwrap,
+  html:not(.has-js) .pr-bookwrap{margin-top:18px;padding:0 12px}
+  html[data-pr-flat] .pr-pg,
+  html:not(.has-js) .pr-pg{padding:20px 18px 22px}
+
+  .pr-form[data-mobile-flow="1"]{scroll-margin-top:72px}
+  .pr-form[data-mobile-flow="1"] .pr-qprog{
+    display:flex;align-items:center;gap:12px;margin:3px 0 16px;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)
+  }
+  .pr-qprog>span{white-space:nowrap}
+  .pr-qprog>i{position:relative;display:block;flex:1;height:2px;background:var(--hairline);overflow:hidden}
+  .pr-qprog>i>b{position:absolute;inset:0 auto 0 0;display:block;background:var(--wax);transition:width .2s ease}
+  .pr-form[data-mobile-flow="1"] .pr-qstep{display:none}
+  .pr-form[data-mobile-flow="1"] .pr-qstep.active{display:block}
+  .pr-form[data-mobile-flow="1"] .plate-q{margin-top:0;font-size:14px;outline:none}
+  .pr-form[data-mobile-flow="1"] .plates button{min-height:48px;text-align:left;padding:10px 11px}
+  .pr-form[data-mobile-flow="1"] .pr-qnav{display:flex;align-items:center;gap:8px;margin-top:16px}
+  .pr-qback{width:48px;height:48px;flex:0 0 48px;border:1px solid var(--hairline-strong);border-radius:3px;background:var(--paper);color:var(--ink);font:20px/1 var(--serif)}
+  .pr-qnext{min-height:48px;flex:1;justify-content:center}
+  .pr-form[data-mobile-flow="1"] .pr-pgfoot{margin-top:14px;padding-top:10px}
+  .pr-ledger .calc-cta .btn{min-height:50px}
+  .pr-toc{padding-top:52px}
+  .pr-row{min-height:50px;padding:12px 5px}
+  .pr-row .name{font-size:15.5px;min-width:0}
+}
+
+@media(max-width:380px),(max-height:700px){
+  .pr-minibook{width:78px;height:106px;margin-bottom:10px}
+  html[data-pr-flat] .pr-scene,
+  html:not(.has-js) .pr-scene{padding-top:70px}
+  .pr-h{font-size:30px}
+  .pr-lead{font-size:14px;line-height:1.5}
+}

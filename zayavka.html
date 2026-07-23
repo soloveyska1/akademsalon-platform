@@ -2,13 +2,13 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Ваша заявка — Академический Салон</title>
 <meta name="robots" content="noindex,nofollow" />
 <meta name="referrer" content="same-origin" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723c" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260723d" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723a" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -595,7 +595,7 @@
 
 <footer class="site-footer" hidden></footer>
 
-<script src="assets/js/app.js?v=20260723c"></script>
+<script src="assets/js/app.js?v=20260723d"></script>
 <script src="assets/js/extras.js?v=20260723a"></script>
 <script>
 /* Собранная заявка: смотрит, соглашается, платит. ES5-стиль проекта. */
@@ -1127,13 +1127,20 @@
     return b;
   }
 
-  function pay(btn) {
+  function payLoading(on) {
+    ['zkPay', 'zkMctaBtn'].forEach(function (id) {
+      var btn = $(id);
+      if (S.btnLoading && btn) S.btnLoading(btn, on, 'Открываем кассу…');
+    });
+  }
+
+  function pay() {
     if (state.busy || state.preview) return;
     state.busy = true;
-    if (S.btnLoading && btn) S.btnLoading(btn, true, 'Открываем кассу…');
+    payLoading(true);
     S.api.post('/offer/' + encodeURIComponent(state.code) + '/pay', payBody()).then(function (r) {
       state.busy = false;
-      if (S.btnLoading && btn) S.btnLoading(btn, false);
+      payLoading(false);
       if (!r || !r.ok) {
         note(ERRS[(r && r.error) || ''] ||
              'Не получилось открыть кассу — напишите мастеру, примем перевод', false);
@@ -1152,12 +1159,12 @@
       startPoll();
     }, function () {
       state.busy = false;
-      if (S.btnLoading && btn) S.btnLoading(btn, false);
+      payLoading(false);
       note('Связь подвела. Попробуйте ещё раз через минуту.', false);
     });
   }
-  $('zkPay').addEventListener('click', function () { pay(this); });
-  $('zkMctaBtn').addEventListener('click', function () { pay($('zkPay')); });
+  $('zkPay').addEventListener('click', pay);
+  $('zkMctaBtn').addEventListener('click', pay);
 
   /* «Я перевёл(а)» — осознанная отметка, случайный клик ничего не замораживает */
   $('zkRqSend').addEventListener('click', function () {
