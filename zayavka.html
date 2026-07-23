@@ -850,8 +850,27 @@
     $('zkPlDueV').textContent = d.deadline_ru || '—';
     $('zkPlDue').hidden = !d.deadline_ru;
 
-    /* формуляр: тема живёт в титуле, «Работа» переименована в «Заказ» */
-    $('zkSlots').innerHTML = slotRows([
+    /* формуляр: для комплексного заказа каждая строка показывается отдельно */
+    var itemRows = '';
+    if (Array.isArray(d.items) && d.items.length) {
+      for (var itemIndex = 0; itemIndex < d.items.length; itemIndex++) {
+        var item = d.items[itemIndex] || {};
+        var itemMeta = [
+          item.qty > 1 ? '× ' + item.qty : '',
+          item.deadline || item.deadline_ru || '',
+          item.final_price ? money(item.final_price) : 'цена строки уточняется'
+        ].filter(Boolean).join(' · ');
+        itemRows += '<div class="zk-slot"><span class="k">Позиция ' + (itemIndex + 1) +
+          (item.line_id ? ' · ' + esc(item.line_id) : '') + '</span>' +
+          '<span class="d" aria-hidden="true"></span><span class="v">' +
+          '<b>' + esc(item.label || item.work_label || item.type || 'Услуга') + '</b>' +
+          (itemMeta ? '<small style="display:block">' + esc(itemMeta) + '</small>' : '') +
+          (item.topic ? '<small style="display:block">Тема: ' + esc(item.topic) + '</small>' : '') +
+          (item.deliverable ? '<small style="display:block">Результат: ' + esc(item.deliverable) + '</small>' : '') +
+          '</span></div>';
+      }
+    }
+    $('zkSlots').innerHTML = itemRows + slotRows([
       ['Заказ', d.work_label], ['Дисциплина', d.discipline],
       ['Объём', d.volume], ['Ведение', d.tier_label], ['Требования', d.reqs_short]
     ]);

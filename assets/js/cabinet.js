@@ -275,7 +275,7 @@ function initCabinet() {
             (provBtns.length ? '<div class="cab-or" aria-hidden="true"><span>или быстрее через</span></div>' +
               '<div class="cab-prov">' + provBtns.join('') + '</div>' : '')) +
           '<p class="cab-login-hint" id="cabTgHint" role="status" aria-live="polite" hidden></p>' +
-          '<p class="cab-login-legal">Продолжая, вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a>.</p>' +
+          '<p class="cab-login-legal">Мы используем email или Telegram только для входа и защиты кабинета. Подробнее — в <a href="privacy.html">политике ПДн</a>.</p>' +
           '<details class="cab-alt"><summary>Есть ссылка доступа к отдельному делу</summary>' +
             '<p>Вставьте ссылку с экрана «Заявка принята» — заказ откроется без входа.</p>' +
             '<div class="cab-claim-row">' +
@@ -1557,6 +1557,12 @@ function initCabinet() {
       '<div class="act-row" style="margin-top:10px">' +
       '<input type="text" id="rvAuthor" maxlength="60" aria-label="Подпись к отзыву, необязательно" placeholder="Подпись (например, «Мария, ВКР») — можно пусто" style="flex:2;min-width:0;font:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
       '<button type="button" class="btn btn-wax" data-review-send>' + (r ? 'Обновить отзыв' : 'Отправить отзыв') + '</button></div>' +
+      '<label class="petit" style="display:flex;gap:8px;align-items:flex-start;margin-top:10px"><input type="checkbox" id="rvConsentText">' +
+      '<span>Отдельно разрешаю опубликовать оценку и текст на akademsalon.ru. Условия — <a href="consent-publication.html" target="_blank">согласие на распространение</a>.</span></label>' +
+      '<label class="petit" style="display:flex;gap:8px;align-items:flex-start;margin-top:8px"><input type="checkbox" id="rvConsentAuthor">' +
+      '<span>Также разрешаю опубликовать введённую подпись. Без отметки отзыв будет анонимным.</span></label>' +
+      '<label class="petit" style="display:flex;gap:8px;align-items:flex-start;margin-top:8px"><input type="checkbox" id="rvConsentShot">' +
+      '<span>Также разрешаю публикацию приложенного скриншота после удаления данных третьих лиц.</span></label>' +
       '<div class="act-row" style="margin-top:8px">' +
       '<label class="btn btn-line btn-upload">📎 Приложить скрин (оценка, переписка)<input type="file" id="cabReviewShot" hidden accept="image/*,.pdf"></label></div>' +
       '<p class="petit up-note" id="rvNote" hidden></p>';
@@ -2777,7 +2783,19 @@ function initCabinet() {
       var rating = wrap2 ? parseInt(wrap2.getAttribute('data-val'), 10) || 5 : 5;
       var rvText = (document.getElementById('rvText') || {}).value || '';
       var rvAuthor = (document.getElementById('rvAuthor') || {}).value || '';
-      doAction('review', { rating: rating, text: rvText.trim(), author: rvAuthor.trim() });
+      var consentText = document.getElementById('rvConsentText');
+      var consentRatingText = !!(consentText && consentText.checked);
+      var consentAuthor = !!((document.getElementById('rvConsentAuthor') || {}).checked);
+      var consentShot = !!((document.getElementById('rvConsentShot') || {}).checked);
+      doAction('review', {
+        rating: rating,
+        text: rvText.trim(),
+        author: rvAuthor.trim(),
+        publication_consent: consentRatingText,
+        publication_categories: { rating_text: consentRatingText, author: consentAuthor, screenshot: consentShot },
+        publication_consent_doc: consentRatingText ? 'consent-publication 1.0 · akademsalon.ru' : '',
+        publication_consent_at: consentRatingText ? new Date().toISOString() : ''
+      });
       return;
     }
     var tipPreset = t.closest('[data-tip-preset]');

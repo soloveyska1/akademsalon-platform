@@ -1904,7 +1904,7 @@ function initGodEye() {
     box.innerHTML = '<span>Смета по строкам: <b>' + money(sum) + ' ₽</b></span>' +
       '<span>Цена дела: <b>' + money(price) + ' ₽</b></span>' +
       (sum ? '<span class="' + (sum === price ? 'ok' : 'diff') + '">' +
-        (sum === price ? '✓ сходится' : 'не сходится — на листе и в кассе будет цена дела')
+        (sum === price ? '✓ сходится' : 'не сходится — проверьте распределение перед публикацией')
         + '</span>' : '<span>добавьте первую позицию из каталога</span>');
   }
 
@@ -2412,6 +2412,7 @@ function initGodEye() {
         ' · <button type="button" class="ag-linkbtn" data-open-order="' + r.order_id + '">дело №' + r.order_id + '</button></p>' +
         '<div class="ag-actrow" style="margin-top:10px">' +
         (r.status !== 'approved' ? '<button type="button" class="btn btn-ink" data-rv="' + r.id + '" data-ok="1">✅ Опубликовать</button>' : '') +
+        (r.status !== 'approved' && !r.publication_consent ? '<span class="rv-meta">⚠ Нет отметки об отдельном согласии на публикацию</span>' : '') +
         (r.status !== 'rejected' ? '<button type="button" class="btn btn-line" data-rv="' + r.id + '" data-ok="0">🚫 ' + (r.status === 'approved' ? 'Снять с сайта' : 'Отклонить') + '</button>' : '') +
         '</div></div>';
     }
@@ -2453,7 +2454,10 @@ function initGodEye() {
     var techno = '<span class="petit" style="opacity:.7">vid ' + esc((q.vid || '—').slice(0, 14)) +
       ' · ip ' + esc(q.ip || '—') + (q.same ? ' · 🙋 таких же: ' + q.same : '') + '</span>';
     var btns = [];
-    if (pendingQ && !q.quiet) btns.push('<button type="button" class="btn btn-ink" data-qa-act="publish" data-qa-id="' + q.id + '">📮 Опубликовать с ответом</button>');
+    if (pendingQ && !q.quiet) {
+      btns.push('<button type="button" class="btn btn-ink" data-qa-act="publish" data-qa-id="' + q.id + '">📮 Опубликовать с ответом</button>');
+      if (!q.publish_consent) btns.push('<span class="petit">⚠ Нет отметки об отдельном разрешении на публикацию</span>');
+    }
     if (pendingQ && q.email) btns.push('<button type="button" class="btn btn-line" data-qa-act="answer_quiet" data-qa-id="' + q.id + '">🤫 Ответить письмом' + (q.quiet ? '' : ' (без публикации)') + '</button>');
     if (pendingQ && q.quiet && !q.email) btns.push('<span class="petit">Тихий вопрос без почты — ответить некуда; можно отклонить.</span>');
     if (!pendingQ) btns.push('<button type="button" class="btn btn-line" data-qa-act="save" data-qa-id="' + q.id + '">💾 Сохранить правки</button>');
@@ -2461,7 +2465,9 @@ function initGodEye() {
       btns.push('<button type="button" class="btn btn-line" data-qa-act="' + (q.pinned ? 'unpin' : 'pin') + '" data-qa-id="' + q.id + '">' + (q.pinned ? '📌 Открепить' : '📌 Закрепить сверху') + '</button>');
       btns.push('<button type="button" class="btn btn-line" data-qa-act="unpublish" data-qa-id="' + q.id + '">👁 Снять с сайта</button>');
     }
-    if ((q.status === 'answered' || q.status === 'rejected') && !q.quiet) btns.push('<button type="button" class="btn btn-line" data-qa-act="publish" data-qa-id="' + q.id + '">📮 ' + (q.status === 'rejected' ? 'Вернуть и опубликовать' : 'Опубликовать') + '</button>');
+    if ((q.status === 'answered' || q.status === 'rejected') && !q.quiet) {
+      btns.push('<button type="button" class="btn btn-line" data-qa-act="publish" data-qa-id="' + q.id + '">📮 ' + (q.status === 'rejected' ? 'Вернуть и опубликовать' : 'Опубликовать') + '</button>');
+    }
     if (pendingQ) btns.push('<button type="button" class="btn btn-line" data-qa-act="reject" data-qa-id="' + q.id + '">🚫 Отклонить</button>');
     btns.push('<button type="button" class="btn btn-line" data-qa-act="ban" data-qa-id="' + q.id + '" style="color:var(--wax)">⛔ Бан автора</button>');
     btns.push('<button type="button" class="btn btn-line" data-qa-act="delete" data-qa-id="' + q.id + '" style="color:var(--wax)">🗑 Удалить</button>');
@@ -3244,6 +3250,7 @@ function initGodEye() {
       var price = parseInt((document.getElementById('agPrice') || {}).value, 10)
                   || (st.card && st.card.price) || 0;
       if (!price || price <= 0) { toast('Сначала укажите цену в блоке выше'); return; }
+      var offerLedger = t2ledger((document.getElementById('agOffLedger') || {}).value);
       var prepay = parseInt((document.getElementById('agPrepay') || {}).value, 10);
       var stages = parseInt((document.getElementById('agPlanSel') || {}).value, 10);
       var was = st.card && st.card.offer;
@@ -3268,7 +3275,7 @@ function initGodEye() {
           tier_full: (document.getElementById('agOffTierFull') || {}).value || '',
           need_files: (document.getElementById('agOffFiles') || {}).checked ? 1 : 0,
           incl: t2incl((document.getElementById('agOffIncl') || {}).value),
-          ledger: t2ledger((document.getElementById('agOffLedger') || {}).value),
+          ledger: offerLedger,
           rail: t2rail((document.getElementById('agOffRail') || {}).value),
           ttl_days: parseInt((document.getElementById('agOffTtl') || {}).value, 10) || 14
         }).then(function (r) {
