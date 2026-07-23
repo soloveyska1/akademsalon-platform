@@ -108,7 +108,7 @@
 }
 .sdlg.open .sdlg-card{transform:none}
 .sdlg-card h3{font-family:var(--serif);font-size:20px;font-weight:480;margin:0 0 8px}
-.sdlg-card p{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px}
+.sdlg-card p{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;white-space:pre-line}
 .sdlg-card textarea,.sdlg-card input[type=number],.sdlg-card input[type=text]{
   width:100%;font:inherit;font-size:15px;padding:10px 12px;margin-bottom:14px;
   border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:var(--ink);resize:vertical;

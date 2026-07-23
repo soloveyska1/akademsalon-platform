@@ -535,6 +535,19 @@ html[data-pr-flat] .story-chip, html:not(.has-js) .story-chip{animation:none;opa
   .pr-h .ln,.pr-kicker,.pr-lead,.pr-cta,.pr-note,.pr-copy .slot-line,.story-chip{animation:none;opacity:1;transform:none}
 }
 
+/* Системный reduced-motion на ПК не должен превращать титул в длинную
+   колонку и убирать книгу из первого экрана. Оставляем композицию «кино»,
+   но без скролл-хореографии: CTA мгновенно раскрывает статичную смету. */
+html[data-pr-static] .pr-track{height:100vh;height:100svh}
+html[data-pr-static] .pr-light{animation:none}
+html[data-pr-static] .pr-hint{display:none}
+html[data-pr-static] .pr-book,
+html[data-pr-static] .pr-cover,
+html[data-pr-static] .pr-copy{transition:none!important}
+html[data-pr-static] .pr-track[data-static-open] .pr-bookwrap{top:calc(50% + 96px)}
+html[data-pr-static] .pr-track[data-static-open] .pr-book{transform:scale(.82)}
+html[data-pr-static] .pr-track[data-static-open] .pr-bshadow{transform:scale(1.1,1)}
+
 /* ============================================================
    МОБИЛЬНАЯ ПРЕСС-ФОРМА — «КАРМАННЫЙ ФОРМУЛЯР»
    ============================================================ */

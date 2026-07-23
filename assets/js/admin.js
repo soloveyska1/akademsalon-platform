@@ -814,15 +814,22 @@ function initGodEye() {
       ['broadcast', '📣 Рассылка', 0],
       ['settings', '⚙️ Настройки', 0]
     ];
+    var primary = { summary: 1, orders: 1, clients: 1 };
+    var extraTabs = tabs.filter(function (t) { return !primary[t[0]]; });
     box.innerHTML =
       '<button type="button" class="wz-navbtn" id="wzOpenNav">📄 Новая заявка</button>' +
       tabs.map(function (t) {
       var bcls = t[0] === 'visits' ? 'ag-badge mut' : 'ag-badge';
       var on = st.tab === t[0];
       return '<button type="button" role="tab" aria-selected="' + (on ? 'true' : 'false') + '"' +
-        ' class="ag-tab' + (on ? ' on' : '') + '" data-tab="' + t[0] + '">' + t[1] +
+        ' class="ag-tab' + (primary[t[0]] ? ' primary' : ' extra') + (on ? ' on' : '') + '" data-tab="' + t[0] + '">' + t[1] +
         (t[2] ? '<span class="' + bcls + '">' + t[2] + '</span>' : '') + '</button>';
-    }).join('');
+    }).join('') +
+      '<button type="button" class="ag-tab ag-more-tabs' + (!primary[st.tab] ? ' on' : '') + '" id="agMoreTabs" aria-expanded="false" aria-controls="agMorePop">••• Ещё</button>' +
+      '<div class="ag-more-pop" id="agMorePop" role="menu" hidden>' + extraTabs.map(function (t) {
+        return '<button type="button" role="menuitem" class="ag-more-item' + (st.tab === t[0] ? ' on' : '') + '" data-tab="' + t[0] + '">' + t[1] +
+          (t[2] ? '<span class="ag-badge">' + t[2] + '</span>' : '') + '</button>';
+      }).join('') + '</div>';
   }
 
   function drawBody() {
@@ -2578,7 +2585,8 @@ function initGodEye() {
         }
         if (!r.ok) {
           var perr = { preview_format: 'Формат не поддержан — PDF, DOCX, DOC, ODT, RTF, PPTX или PPT',
-                       preview_failed: 'Не получилось собрать предпросмотр — проверьте файл' }[r.error];
+                       preview_failed: 'Не получилось собрать предпросмотр — проверьте файл',
+                       sanitize_failed: 'Не удалось безопасно очистить свойства файла — сохраните его заново и повторите загрузку' }[r.error];
           if (r.filename && perr) perr += ': ' + r.filename;
           if (note) note.textContent = (perr || 'Не ушло (' + (r.error || 'ошибка') + ')');
           toast(perr || 'Файл не отправился');
@@ -2598,6 +2606,15 @@ function initGodEye() {
 
   root.addEventListener('click', function (e) {
     var t = e.target;
+    if (t.closest('#agMoreTabs')) {
+      var more = document.getElementById('agMorePop');
+      var mb = document.getElementById('agMoreTabs');
+      if (more && mb) {
+        more.hidden = !more.hidden;
+        mb.setAttribute('aria-expanded', more.hidden ? 'false' : 'true');
+      }
+      return;
+    }
     if (t.closest('#agHandoffPublish')) {
       var pb = t.closest('#agHandoffPublish');
       if (!st.card || !st.card.handoff_artifact_id) return;
@@ -2619,7 +2636,7 @@ function initGodEye() {
     if (t.closest('#agRetry')) { gate(); return; }
     if (t.closest('#agTabRetry')) { loadTab(true); return; }
 
-    var tab = t.closest('.ag-tab');
+    var tab = t.closest('.ag-tab, .ag-more-pop [data-tab]');
     if (tab) { goTab(tab.getAttribute('data-tab'), true); return; }
     if (t.closest('#agLive')) { goTab('visits'); return; }
     var tabGo = t.closest('[data-tab-go]');

@@ -432,10 +432,10 @@ function initCabinet() {
        неё в кабинет можно попадать любым из способов, всё синхронно. */
     var me = st.me || {};
     var f = me.features || {};
-    if (!f.vk_login && !f.mailru_login) return '';
+    if (!f.vk_login && !f.mailru_login && !f.max_login) return '';
     var linked = me.oauth || [];
     var bits = [];
-    [['vk', 'ВКонтакте'], ['mailru', 'Mail.ru']].forEach(function (p) {
+    [['vk', 'VK ID'], ['mailru', 'Mail ID'], ['max', 'MAX']].forEach(function (p) {
       if (!f[p[0] + '_login']) return;
       bits.push(linked.indexOf(p[0]) >= 0
         ? '<span style="color:var(--verify,#3D6B50)">' + p[1] + ' ✓</span>'
@@ -2140,6 +2140,7 @@ function initCabinet() {
       .then(function (r) {
         st.busy = false;
         if (!r.ok) {
+          if (r.error === 'stale_version') loadList(true);
           toast({ bonus_need_login: 'Чтобы списывать бонусы, войдите через Telegram',
                   bonus_not_for_subs: 'Подписка оплачивается деньгами целиком — бонусы к ней не применяются',
                   bonus_after_payment: 'По заказу уже была оплата — бонусы не применить',
@@ -2241,12 +2242,29 @@ function initCabinet() {
     S.api.post('/orders/' + st.currentId + '/tip' + (t ? '?token=' + encodeURIComponent(t) : ''), body)
       .then(function (r) {
         st.busy = false;
-        if (!r.ok || !r.url) {
+        if (!r.ok) {
           toast(r.error === 'tip_stage'
             ? 'Благодарность доступна после завершения заказа'
             : 'Не получилось открыть оплату — попробуйте чуть позже');
           return;
         }
+        if (r.online === false && r.tip_id && r.requisites) {
+          var ask = S.confirm ? S.confirm({
+            title: 'Благодарность ' + money(amount) + ' ₽',
+            text: 'Переведите по реквизитам ниже, затем нажмите «Я перевёл(а)». Мастер сверит поступление.\n\n' + r.requisites,
+            okLabel: 'Я перевёл(а)', noLabel: 'Закрыть'
+          }) : Promise.resolve({ ok: window.confirm('Перевести ' + money(amount) + ' ₽ по реквизитам:\n\n' + r.requisites + '\n\nУже перевели?') });
+          ask.then(function (ans) {
+            if (!ans.ok) return;
+            var claimBody = t ? { token: t } : {};
+            S.api.post('/orders/' + st.currentId + '/tip/' + r.tip_id + '/claim' +
+              (t ? '?token=' + encodeURIComponent(t) : ''), claimBody).then(function (cr) {
+                toast(cr.ok ? 'Спасибо 💛 Передали мастеру на сверку' : 'Не получилось поставить отметку — напишите мастеру');
+              });
+          });
+          return;
+        }
+        if (!r.url) { toast('Не получилось открыть оплату — попробуйте чуть позже'); return; }
         toast('Открываем защищённую страницу оплаты…');
         var w = window.open(r.url, '_blank', 'noopener');
         if (!w) location.href = r.url;

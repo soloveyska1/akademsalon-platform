@@ -208,6 +208,7 @@
   .notfound .nf-lead{font-size:14.5px;color:var(--ink-soft);line-height:1.6;max-width:56ch}
   .nf-ex{margin-top:12px;font-size:12.5px;color:var(--ink-faint);line-height:1.8}
   .nf-form{display:flex;flex-direction:column;gap:10px}
+  .nf-form[hidden],.nf-ok[hidden]{display:none}
   .nf-form textarea,.nf-form input{width:100%;border:1px solid var(--hairline-strong);background:var(--sheet);border-radius:2px;padding:11px 12px;font:inherit;font-size:14px;color:var(--ink)}
   .nf-form textarea{min-height:76px;resize:vertical}
   .nf-form textarea:focus,.nf-form input:focus{outline:none;border-color:var(--ink)}
@@ -287,6 +288,294 @@
     .svc-cards{grid-template-columns:1fr}
     .cc-grid{grid-template-columns:1fr}
   }
+
+  /* ============================================================
+     РЕДИЗАЙН 2026 — компактный ценовой пульт
+     Весь длинный контент сохранён, но открывается по запросу.
+     ============================================================ */
+  .tar-hero{padding-top:calc(64px + clamp(28px,5vh,58px))}
+  .tar-hero-shell{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(310px,.82fr);gap:clamp(28px,5vw,72px);align-items:center;padding-bottom:clamp(24px,4vw,42px)}
+  .tar-hero h1{max-width:14ch;font-size:clamp(44px,5.6vw,76px);line-height:.96;letter-spacing:-.045em}
+  .tar-hero .lead{font-size:clamp(17px,1.8vw,21px);max-width:49ch}
+  .tar-hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .tar-hero-actions .btn{min-height:48px}
+  .tar-promise{position:relative;padding:22px 0 20px 24px;border:0;border-left:3px solid var(--wax);background:transparent;overflow:hidden}
+  .tar-promise::after{content:"";position:absolute;left:24px;right:0;top:0;height:1px;background:var(--hairline)}
+  .tar-promise .caps{position:relative;margin-bottom:18px}
+  .tar-promise-price{position:relative;display:flex;align-items:baseline;gap:8px;margin-bottom:18px}
+  .tar-promise-price small{font-size:13px;color:var(--ink-soft)}
+  .tar-promise-price strong{font-family:var(--mono);font-size:clamp(30px,4vw,46px);font-weight:600;letter-spacing:-.055em;color:var(--wax)}
+  .tar-promise-list{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:0 16px;border-top:1px solid var(--hairline)}
+  .tar-promise-list span{display:flex;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid var(--hairline);font-size:13.5px;color:var(--ink-soft)}
+  .tar-promise-list span::before{content:"✓";font-family:var(--mono);font-size:11px;color:var(--verify)}
+  .tar-strip{padding:11px 0;margin-top:0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+
+  .tar-quicknav{position:relative;z-index:12;display:flex;align-items:center;gap:6px;margin:18px 0 0;padding:7px;background:color-mix(in srgb,var(--paper) 90%,transparent);border:1px solid var(--hairline);border-radius:3px;backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(34,32,27,.06)}
+  .tar-quicknav a{flex:1;min-height:38px;display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:2px;font-size:12.5px;color:var(--ink-soft);white-space:nowrap;transition:background .16s,color .16s}
+  .tar-quicknav a:hover,.tar-quicknav a:focus-visible{background:var(--sheet);color:var(--ink)}
+  .tar-quicknav .tq-primary{background:var(--wax);color:#fffef9;font-weight:500}
+  .tar-quicknav .tq-primary:hover,.tar-quicknav .tq-primary:focus-visible{background:var(--ink);color:var(--paper)}
+
+  #catalog{padding-top:clamp(42px,6vw,72px)}
+  .catalog-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:18px}
+  .catalog-head h2{margin:0;max-width:18ch}
+  .catalog-tools{display:flex;align-items:center;gap:8px}
+  .catalog-progress{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);min-width:72px;text-align:right;font-variant-numeric:tabular-nums}
+  .rail-btn{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--hairline-strong);border-radius:50%;background:var(--sheet);color:var(--ink);font-family:var(--serif);font-size:20px;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}
+  .rail-btn:hover{transform:translateY(-2px);border-color:var(--wax);background:var(--wax-soft)}
+  .rail-btn:disabled{opacity:.35;cursor:default;transform:none}
+  main.tariffs .cc-filters{position:static;top:auto;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-bottom:16px;padding-bottom:2px;overscroll-behavior-inline:contain;background:transparent;border:0;backdrop-filter:none}
+  .cc-filters::-webkit-scrollbar{display:none}
+  .cc-filters button{flex:0 0 auto;border-radius:999px;padding:9px 14px;min-height:40px;background:transparent}
+  .cc-filters button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .cc-filters button[aria-pressed="true"] .cnt{color:inherit;opacity:.62}
+  .cc-rail-wrap{position:relative}
+  .cc-grid{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;padding:4px 2px 20px;scroll-snap-type:x mandatory;scroll-padding-inline:2px;scrollbar-color:var(--hairline-strong) transparent;scrollbar-width:thin;overscroll-behavior-inline:contain}
+  .cc{flex:0 0 clamp(248px,25vw,300px);min-height:274px;scroll-snap-align:start;padding:28px 20px 17px;border-radius:3px;box-shadow:none}
+  .cc:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(107,94,64,.14)}
+  .cc-title{font-size:clamp(18px,1.7vw,21px)}
+  .cc-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:42px;margin-bottom:10px}
+  .cc-range{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cc-range .num{display:none}
+  .cc-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;border-top:1px solid var(--hairline);padding-top:8px}
+  .cc .cc-more,.cc .cc-cta{margin:0;padding:8px 0;font-size:12.5px;border-bottom:0;white-space:nowrap}
+  .cc .cc-more{order:2}
+  .cc .cc-cta{order:1;color:var(--wax);font-weight:600}
+  .cat-note{margin-top:12px}
+  body.tar-ready .dossier-stack{display:none}
+  .notfound{display:block;margin-top:18px;padding:0;border:1px solid var(--hairline);background:var(--sheet);box-shadow:none;overflow:hidden}
+  .notfound>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;padding:17px 20px;transition:background .16s}
+  .notfound>summary::-webkit-details-marker{display:none}
+  .notfound>summary:hover{background:var(--paper-2)}
+  .nf-mark{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--wax);text-transform:uppercase;white-space:nowrap}
+  .notfound h3{font-size:19px;margin:0 0 2px}
+  .notfound .nf-lead{font-size:13px;max-width:74ch;margin:0;color:var(--ink-soft)}
+  .nf-open{width:40px;height:40px;border:1px solid var(--hairline-strong);border-radius:50%;display:grid;place-items:center;font:20px var(--serif);color:var(--wax);transition:transform .2s,background .16s}
+  .notfound[open] .nf-open{transform:rotate(45deg);background:var(--wax-soft)}
+  .nf-panel{display:grid;grid-template-columns:.86fr 1.14fr;gap:clamp(22px,4vw,48px);padding:22px 20px 20px;border-top:1px solid var(--hairline);background:var(--paper)}
+  .nf-panel .nf-ex{display:block;margin:0;font-size:12.5px}
+  .nf-panel>div:last-child{min-width:0}
+
+  /* Единый формуляр расчёта вместо набора конкурирующих карточек */
+  .formula-board{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(340px,.95fr);border:1px solid var(--hairline);background:var(--sheet);border-radius:3px;overflow:hidden}
+  .factor-list{display:flex;flex-direction:column}
+  .factor-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;padding:18px 20px;border-bottom:1px solid var(--hairline)}
+  .factor-row:last-child{border-bottom:0}
+  .factor-no{font-family:var(--mono);font-size:10px;color:var(--wax)}
+  .factor-copy b{display:block;font-family:var(--serif);font-size:18px;font-weight:500;line-height:1.25;margin-bottom:3px}
+  .factor-copy small{display:block;font-size:12.5px;line-height:1.45;color:var(--ink-soft);max-width:48ch}
+  .factor-value{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;text-align:right}
+  .calc-receipt{position:relative;padding:22px 24px 20px;background:var(--paper-2);border-left:1px solid var(--hairline)}
+  .calc-receipt::before{content:"";position:absolute;inset:8px;border:1px solid var(--hairline);pointer-events:none}
+  .calc-receipt>*{position:relative}
+  .calc-receipt-head{display:flex;justify-content:space-between;gap:12px;padding-bottom:12px;margin-bottom:8px;border-bottom:3px double var(--ink)}
+  .calc-receipt-head span{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .calc-receipt .ledger{margin-top:4px}
+  .calc-receipt .lg-row{font-size:13px;padding:9px 0}
+  .calc-receipt .lg-total{padding-top:15px}
+  .calc-receipt .price-xl{font-size:clamp(26px,3vw,38px)}
+  .formula-lock{display:flex;align-items:flex-start;gap:9px;margin-top:14px;font-size:12.5px;line-height:1.45;color:var(--ink-soft)}
+  .formula-lock::before{content:"✓";font-family:var(--mono);color:var(--verify)}
+  .calc-receipt .btn{width:100%;justify-content:center;margin-top:16px}
+
+  .tar-switcher{position:relative;top:auto;z-index:12;margin:clamp(36px,5vw,58px) 0 0;padding:8px;border:1px solid var(--hairline);background:var(--paper);border-radius:3px;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;box-shadow:none}
+  .tar-switcher button{min-height:44px;padding:9px 12px;border:0;border-radius:2px;background:transparent;color:var(--ink-soft);font:500 12.5px var(--sans);cursor:pointer;transition:background .16s,color .16s}
+  .tar-switcher button:hover{background:var(--sheet);color:var(--ink)}
+  .tar-switcher button[aria-selected="true"]{background:var(--wax);color:#fffef9;box-shadow:0 4px 12px rgba(178,59,34,.18)}
+  body.tar-ready #formula,body.tar-ready #tiers,body.tar-ready #plan,body.tar-ready #services,body.tar-ready #pay{display:none}
+  body.tar-ready #formula.is-active,body.tar-ready #tiers.is-active,body.tar-ready #plan.is-active,body.tar-ready #services.is-active,body.tar-ready #pay.is-active{display:block;animation:tarPanelIn .3s cubic-bezier(.22,1,.36,1)}
+  @keyframes tarPanelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .tariffs .chapter.is-active{padding-top:clamp(28px,4vw,44px);min-height:520px}
+  .tariffs .chapter.is-active .ch-rule{display:none}
+  .tariffs .chapter.is-active>h2{font-size:clamp(27px,3.4vw,42px);max-width:24ch;margin-bottom:clamp(20px,3vw,30px)}
+  .tar-source-disclosure{margin-top:16px;border-top:1px solid var(--hairline)}
+  .tar-source-disclosure>summary{cursor:pointer;padding:13px 0;font-size:12.5px;color:var(--ink-soft)}
+  .tar-source-disclosure .cmp-lit{margin-top:0;padding-bottom:12px}
+  .tar-compare-disclosure{margin:18px 0 28px;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);background:transparent;overflow:hidden}
+  .tar-compare-disclosure>summary{cursor:pointer;list-style:none;padding:14px 2px;font:500 13.5px var(--sans);display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .tar-compare-disclosure>summary::-webkit-details-marker{display:none}
+  .tar-compare-disclosure>summary::after{content:"+";font-size:22px;color:var(--wax);transition:transform .2s}
+  .tar-compare-disclosure[open]>summary{border-bottom:1px solid var(--hairline);background:transparent}
+  .tar-compare-disclosure[open]>summary::after{transform:rotate(45deg)}
+  .tar-compare-disclosure .cmp-wrap{margin:0!important;padding:18px clamp(14px,2.4vw,22px) 22px}
+  .final-cta{padding-top:clamp(36px,5vw,64px)}
+
+  /* На странице цен шапка остаётся цельной: без прозрачной щели и прыжка вкладок. */
+  body.tar-ready .site-header{background:var(--paper)}
+  body.tar-ready .site-header.hide{transform:none}
+
+  /* Каталог как компактный ценовой реестр, а не ряд тяжёлых карточек. */
+  @media(min-width:881px){
+    .catalog-tools .rail-btn{display:none}
+    .cc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;overflow:visible;padding:0;scroll-snap-type:none}
+    .cc{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"head price" "title price" "actions actions";column-gap:18px;row-gap:4px;min-height:0;padding:14px 16px 12px;background:var(--sheet);background-image:none;overflow:visible;scroll-snap-align:none}
+    :root[data-theme="dark"] .cc{background-image:none}
+    .cc:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(34,32,27,.08);border-color:var(--hairline-strong)}
+    .cc-hole,.cc-desc,.cc-range{display:none}
+    .cc-head{grid-area:head;margin:0 0 2px;justify-content:flex-start;gap:8px}
+    .cc-no::before{content:"· ";color:var(--hairline-strong)}
+    .cc-title{grid-area:title;margin:0;font-size:17.5px;line-height:1.22;align-self:start}
+    .cc-price{grid-area:price;align-self:center;justify-self:end;margin:0;white-space:nowrap}
+    .cc-price .cc-val{font-size:19px}
+    .cc-actions{grid-area:actions;margin-top:8px;padding-top:8px;justify-content:flex-start;gap:18px}
+    .cc .cc-more,.cc .cc-cta{font-size:11.5px;padding:3px 0}
+  }
+  @media(min-width:1240px){.cc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  .cat-note{max-width:none;margin-top:14px;padding-left:12px;border-left:2px solid var(--wax)}
+  .cat-directory{margin-top:14px;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+  .cat-directory>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:12px;padding:12px 2px;font-size:12.5px;color:var(--ink-soft)}
+  .cat-directory>summary::-webkit-details-marker{display:none}
+  .cat-directory>summary::after{content:"+";font-size:18px;color:var(--wax)}
+  .cat-directory[open]>summary::after{transform:rotate(45deg)}
+  .cat-directory p{margin:0;padding:2px 2px 14px;font-size:12px;line-height:1.65;color:var(--ink-soft)}
+
+  /* Отдельные услуги — двухколоночная ведомость с ценой на одной линии. */
+  .svc-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin-top:18px;border-top:1px solid var(--hairline)}
+  .svc-card{display:grid;grid-template-columns:78px minmax(0,1fr) auto;grid-template-areas:"cat title foot" "cat desc foot";gap:3px 14px;align-items:start;padding:15px 12px;color:var(--ink);border:0;border-bottom:1px solid var(--hairline);border-radius:0;background:transparent;box-shadow:none}
+  .svc-card:nth-child(odd){border-right:1px solid var(--hairline);padding-left:2px}
+  .svc-card:hover{transform:none;background:var(--sheet);border-color:var(--hairline)}
+  .svc-card::after{display:none}
+  .svc-card .sv-cat{grid-area:cat;padding-top:3px;font-size:9.5px}
+  .svc-card h3{grid-area:title;font-size:17px;line-height:1.25}
+  .svc-card p{grid-area:desc;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.45}
+  .svc-card .sv-foot{grid-area:foot;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:5px;height:100%;padding:0;border:0}
+  .svc-card .sv-price{font-size:13px}
+  .svc-card .sv-go{font-size:11px}
+
+  /* Оплата — единая спокойная шкала вместо трёх конкурирующих карточек. */
+  .pay-block{margin-bottom:24px}
+  .pay-block .caps{margin-bottom:12px}
+  .pay-plates{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+  .pay-plate{position:relative;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"share title" "share copy";gap:2px 14px;align-items:start;padding:17px 20px;border:0;border-right:1px solid var(--hairline);border-radius:0;background:transparent;box-shadow:none}
+  .pay-plate:last-child{border-right:0}
+  .pay-plate::after{display:none}
+  .pay-plate .pp-share{grid-area:share;font-size:25px;align-self:center}
+  .pay-plate b{grid-area:title;margin:0;font-size:14px}
+  .pay-plate small{grid-area:copy;font-size:11.5px;line-height:1.4}
+  .pay-note{margin-top:12px;max-width:92ch}
+  #pay>h2{max-width:18ch}
+
+  .dossier-dialog{width:min(1040px,calc(100vw - 34px));max-width:none;height:min(86dvh,860px);max-height:none;margin:auto;padding:0;border:1px solid var(--hairline-strong);border-radius:4px;background:var(--paper);color:var(--ink);box-shadow:0 30px 90px rgba(34,32,27,.28);overflow:hidden}
+  .dossier-dialog::backdrop{background:rgba(27,25,21,.58);backdrop-filter:blur(5px)}
+  .dossier-dialog-shell{height:100%;display:flex;flex-direction:column}
+  .dossier-dialog-head{position:relative;z-index:2;display:flex;align-items:center;gap:14px;padding:14px 16px 14px 22px;border-bottom:1px solid var(--hairline);background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(12px)}
+  .dossier-dialog-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--wax)}
+  .dossier-dialog-title{font-family:var(--serif);font-size:clamp(18px,2vw,24px);font-weight:500;line-height:1.2;flex:1}
+  .dossier-dialog-close{width:44px;height:44px;border:1px solid var(--hairline-strong);border-radius:50%;background:var(--sheet);color:var(--ink);font-size:24px;line-height:1;cursor:pointer}
+  .dossier-dialog-content{overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:0}
+  .dossier-dialog-content .ds-body{border:0;background:transparent}
+  .dossier-dialog-content .ds-cta{position:sticky;bottom:0;background:linear-gradient(transparent,var(--paper) 18%);padding-top:28px;padding-bottom:6px}
+  .dossier-dialog-content .ds-cta .btn-wax{box-shadow:0 10px 24px rgba(178,59,34,.2)}
+
+  @media(max-width:880px){
+    .tar-hero-shell{grid-template-columns:1fr;gap:24px;align-items:start}
+    .tar-hero h1{max-width:12ch}
+    .tar-promise{max-width:560px}
+    .tar-quicknav{overflow-x:auto;justify-content:flex-start;scrollbar-width:none}
+    .tar-quicknav a{flex:0 0 auto}
+    .tar-switcher{top:auto;display:flex;overflow-x:auto;scrollbar-width:none;justify-content:flex-start}
+    .tar-switcher button{flex:0 0 auto;padding-inline:16px}
+    .nf-panel{grid-template-columns:1fr}
+    .formula-board{grid-template-columns:1fr}
+    .calc-receipt{border-left:0;border-top:1px solid var(--hairline)}
+  }
+  @media(max-width:640px){
+    .tariffs{padding-bottom:84px}
+    .tar-hero{padding-top:calc(56px + 22px)}
+    .tar-hero-shell{padding-bottom:20px;gap:18px}
+    .tar-hero h1{font-size:clamp(40px,13vw,56px);line-height:.93;margin-bottom:12px}
+    .tar-hero .lead{font-size:16px;line-height:1.55}
+    .tar-hero .petit{display:none}
+    .tar-hero-actions .btn{width:100%;justify-content:center}
+    .tar-hero-actions .btn-line{display:none}
+    .tar-promise{padding:14px 0 13px 14px;display:grid;grid-template-columns:auto 1fr;gap:8px 18px;align-items:center}
+    .tar-promise::after{left:14px}
+    .tar-promise>.caps{display:none}
+    .tar-promise-price{margin:0;display:block;min-width:120px}
+    .tar-promise-price small{display:block;margin-bottom:3px}
+    .tar-promise-price strong{font-size:28px}
+    .tar-promise-list{grid-template-columns:1fr;gap:0;border-top:0}
+    .tar-promise-list span{font-size:11.5px;padding:4px 0;border-bottom:0}
+    .tar-promise-list span:nth-child(n+4){display:none}
+    .tar-strip{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;font-size:11.5px}
+    .tar-strip .sep{display:none}
+    .tar-strip span:last-child{grid-column:1/-1}
+    .tar-quicknav{margin-inline:-10px;padding:6px;border-left:0;border-right:0;border-radius:0}
+    .tar-quicknav a{font-size:11.5px;min-height:44px}
+    .tar-quicknav .tq-primary{display:none}
+    #catalog{padding-top:32px}
+    .catalog-head{align-items:end;margin-bottom:14px}
+    .catalog-head h2{font-size:29px}
+    .catalog-progress{display:block;min-width:42px;font-size:11px}
+    .rail-btn{width:44px;height:44px}
+    .cc-filters{margin-right:calc(var(--mobile-gutter) * -1);padding-right:var(--mobile-gutter)}
+    .cc-filters button{min-height:44px}
+    .cc-grid{margin-right:calc(var(--mobile-gutter) * -1);padding-right:var(--mobile-gutter);gap:11px}
+    .cc{flex-basis:min(80vw,286px);min-height:232px;padding-top:20px;background-image:none}
+    :root[data-theme="dark"] .cc{background-image:none}
+    .cc-hole{display:none}
+    .cc-desc{min-height:0;-webkit-line-clamp:2}
+    .cc:hover{transform:none}
+    .cc-actions{gap:4px}
+    .cc .cc-more{font-size:0}
+    .cc .cc-more::after{content:"Подробнее";font-size:12.5px}
+    .cat-note{font-size:11.5px;padding-left:10px}
+    .cat-directory>summary{min-height:44px;align-items:center}
+    .notfound{margin-top:14px}
+    .notfound>summary{grid-template-columns:1fr auto;gap:10px;padding:15px 14px}
+    .nf-mark{grid-column:1/-1;margin-bottom:-4px}
+    .notfound h3{font-size:18px}
+    .notfound .nf-lead{font-size:12.5px;line-height:1.45}
+    .nf-open{grid-column:2;grid-row:2;width:44px;height:44px}
+    .nf-panel{padding:16px 14px;gap:16px}
+    .nf-form textarea{min-height:88px}
+    .nf-row .btn{width:100%;justify-content:center}
+    .factor-row{grid-template-columns:28px minmax(0,1fr);padding:15px 14px;gap:10px}
+    .factor-value{grid-column:2;text-align:left;color:var(--wax);margin-top:2px}
+    .calc-receipt{padding:20px 16px 18px}
+    .tar-switcher{top:auto;margin:28px calc(var(--mobile-gutter) * -1) 0;padding-inline:var(--mobile-gutter);border-left:0;border-right:0;border-radius:0}
+    .tariffs .chapter.is-active{padding-top:24px;min-height:0}
+    .eq{display:flex;overflow-x:auto;gap:10px;scroll-snap-type:x mandatory;padding-bottom:10px;margin-right:calc(var(--mobile-gutter) * -1);padding-right:var(--mobile-gutter)}
+    .eq .eq-x{display:none}
+    .eq-t{flex:0 0 78vw;scroll-snap-align:start;min-height:136px}
+    .eq-res{order:-1}
+    .tiers{display:flex;overflow-x:auto;gap:11px;scroll-snap-type:x mandatory;margin-right:calc(var(--mobile-gutter) * -1);padding:12px var(--mobile-gutter) 14px 0}
+    .tier{flex:0 0 84vw;scroll-snap-align:start}
+    .tier.feat{order:0}
+    .svc-cards{display:grid;grid-template-columns:1fr;overflow:visible;gap:0;margin:0;padding:0;border-top:1px solid var(--hairline)}
+    .svc-card{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"cat foot" "title foot" "desc foot";gap:3px 12px;padding:14px 2px;border-right:0!important}
+    .svc-card .sv-cat{padding-top:0}
+    .svc-card h3{font-size:16.5px}
+    .svc-card p{-webkit-line-clamp:2;font-size:11.5px}
+    .svc-card .sv-go{font-size:0}
+    .svc-card .sv-go .ar{font-size:17px}
+    .pay-plates{display:grid;grid-template-columns:1fr;overflow:visible;gap:0;margin:0;padding:0;border-bottom:0}
+    .pay-plate{grid-template-columns:64px minmax(0,1fr);padding:14px 2px;border-right:0;border-bottom:1px solid var(--hairline)}
+    .pay-plate .pp-share{font-size:22px}
+    .pay-plate small{font-size:11.5px}
+    .cmp-row>summary{font-size:12.5px}
+    .cmp-row .c-birzha,.cmp-row .c-self{display:none}
+    .cmp-lit{font-size:11px}
+    .final-cta{padding-bottom:10px}
+    .dossier-dialog{width:100%;height:min(92dvh,900px);margin:auto 0 0;border-radius:12px 12px 0 0;border-left:0;border-right:0;border-bottom:0}
+    .dossier-dialog-head{padding:11px 12px 11px 16px}
+    .dossier-dialog-kicker{display:none}
+    .dossier-dialog-title{font-size:18px}
+    .dossier-dialog-content .ds-body{display:block;padding:20px 16px 32px}
+    .dossier-dialog-content .ds-aside{margin-top:22px}
+    .dossier-dialog-content .ds-cta{margin-inline:-16px;padding-inline:16px}
+    .dossier-dialog-content .ds-cta .btn{width:100%;justify-content:center}
+    body.tar-ready .cookiebar{padding:12px 14px}
+  }
+  @media(max-width:380px) and (max-height:650px){
+    body.tar-ready .cookiebar{left:7px;right:7px;bottom:74px;padding:9px 11px}
+    body.tar-ready .cookiebar p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:11.5px;line-height:1.35;margin-bottom:7px}
+    body.tar-ready .cookiebar .btn{min-height:44px;padding:7px 14px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .tariffs *{scroll-behavior:auto!important}
+    body.tar-ready .chapter.is-active{animation:none}
+  }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/tariffs.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -316,10 +605,28 @@
 
     <!-- ЗАГОЛОВОК-ПОЛОСА -->
     <section class="tar-hero reveal" data-chapter="Каталог цен">
-      <span class="caps">Картотека · цены открыты</span>
-      <h1 class="h-display">Каталог работ и цен</h1>
-      <p class="lead">Одиннадцать типов работ, открытая формула и ни одного «уточните в личных сообщениях». Выберите карточку — покажем вилку и соберём точную смету.</p>
-      <p class="petit" style="max-width:56ch;margin-top:10px;color:var(--ink-soft)">Каждая позиция — авторские материалы и сопровождение по оферте (§ 2.2): основа для вашей работы и поддержка до самой защиты. Аттестуетесь вы сами — мы делаем так, чтобы вам было с чем.</p>
+      <div class="tar-hero-shell">
+        <div class="tar-hero-copy">
+          <span class="caps">Цены открыты · смета за минуту</span>
+          <h1 class="h-display">Сколько стоит ваша работа</h1>
+          <p class="lead">Выберите тип — сразу увидите честную вилку. Точную цену закрепим до старта: без скрытых доплат и «уточните в личных сообщениях».</p>
+          <p class="petit" style="max-width:58ch;margin-top:10px;color:var(--ink-soft)">Авторские материалы, оформление и сопровождение до защиты. Аттестуетесь вы сами — мы готовим основу и остаёмся рядом на правках.</p>
+          <div class="tar-hero-actions">
+            <a class="btn btn-wax btn-lg" href="configurator.html">Получить точную смету <span class="ar">→</span></a>
+            <button type="button" class="btn btn-line" data-contact>Спросить мастера</button>
+          </div>
+        </div>
+        <aside class="tar-promise" aria-label="Главное о расчёте">
+          <span class="caps">Ориентир по бюджету</span>
+          <div class="tar-promise-price"><small>работы от</small><strong>2 500 ₽</strong></div>
+          <div class="tar-promise-list">
+            <span>Оценка бесплатна</span>
+            <span>Смета фиксируется</span>
+            <span>Оплата по этапам</span>
+            <span>Правки до защиты</span>
+          </div>
+        </aside>
+      </div>
       <div class="tar-strip">
         <span>от <b>2 500 ₽</b> реферат</span><span class="sep">·</span>
         <span>до <b>200 000 ₽</b> кандидатская</span><span class="sep">·</span>
@@ -327,10 +634,28 @@
       </div>
     </section>
 
+    <nav class="tar-quicknav" aria-label="Быстрая навигация по ценам">
+      <a href="#catalog">Выбрать работу</a>
+      <a href="#price-guide" data-open-panel="formula">Из чего цена</a>
+      <a href="#price-guide" data-open-panel="tiers">Уровни</a>
+      <a href="#price-guide" data-open-panel="pay">Оплата и гарантии</a>
+      <a class="tq-primary" href="configurator.html">Точная смета →</a>
+    </nav>
+
     <!-- § 01 — КАРТОТЕКА -->
     <section class="chapter reveal" id="catalog" data-chapter="§ 01 · Картотека">
       <div class="ch-rule"><span class="ch-no">§ 01 · Картотека</span></div>
-      <h2>Одиннадцать карточек — по возрастанию цены</h2>
+      <div class="catalog-head">
+        <div>
+          <span class="caps">11 основных услуг</span>
+          <h2>Найдите свою работу</h2>
+        </div>
+        <div class="catalog-tools" aria-label="Управление лентой услуг">
+          <span class="catalog-progress" id="catalogProgress" aria-live="polite">11 вариантов</span>
+          <button type="button" class="rail-btn" id="railPrev" aria-label="Предыдущие услуги">←</button>
+          <button type="button" class="rail-btn" id="railNext" aria-label="Следующие услуги">→</button>
+        </div>
+      </div>
 
       <div class="cc-filters" role="group" aria-label="Фильтр по типу работ">
         <button type="button" data-cat="all" aria-pressed="true">Все<span class="cnt">11</span></button>
@@ -340,7 +665,8 @@
         <button type="button" data-cat="small" aria-pressed="false">Малые работы<span class="cnt">1</span></button>
       </div>
 
-      <div class="cc-grid" id="ccGrid">
+      <div class="cc-rail-wrap">
+      <div class="cc-grid" id="ccGrid" tabindex="0" aria-label="Лента услуг и цен">
         <article class="cc" data-cat="small" id="c-self">
           <span class="cc-hole" aria-hidden="true"></span>
           <div class="cc-head"><span class="cc-cat">Малые работы</span><span class="cc-no">01</span></div>
@@ -461,6 +787,7 @@
           <div class="cc-range"><span>базовый · гуманитарный · свободный срок</span><span class="num">200–280 тыс.</span></div>
           <a class="cc-cta" href="configurator.html" data-type="kandidat">Узнать стоимость <span class="ar">→</span></a>
         </article>
+      </div>
       </div>
 
       <!-- ФОРМУЛЯРЫ: карточка из ящика раскрывается в статью -->
@@ -951,18 +1278,26 @@
         </details>
       </div>
 
-      <p class="marginalia cat-note">Биржа продаёт ставку анонимного исполнителя. Нейросеть продаёт текст. Мы продаём доведённый до защиты результат.</p>
+      <p class="marginalia cat-note">Цена — за доведение материала до защиты, а не за сырой текст.</p>
 
-      <p class="petit" style="margin-top:22px">Подробно о каждой услуге — что входит, этапы и вопросы: <a class="link" href="kursovaya-rabota.html">курсовая работа</a> · <a class="link" href="diplomnaya-rabota.html">дипломная / ВКР</a> · <a class="link" href="magisterskaya-dissertaciya.html">магистерская</a> · <a class="link" href="kandidatskaya-dissertaciya.html">кандидатская</a> · <a class="link" href="otchet-po-praktike.html">отчёт по практике</a> · <a class="link" href="nauchnaya-statya.html">научная статья</a> · <a class="link" href="referat.html">реферат и эссе</a>.</p>
+      <details class="cat-directory">
+        <summary>Страницы услуг: состав, этапы и частые вопросы</summary>
+        <p><a class="link" href="kursovaya-rabota.html">Курсовая работа</a> · <a class="link" href="diplomnaya-rabota.html">дипломная / ВКР</a> · <a class="link" href="magisterskaya-dissertaciya.html">магистерская</a> · <a class="link" href="kandidatskaya-dissertaciya.html">кандидатская</a> · <a class="link" href="otchet-po-praktike.html">отчёт по практике</a> · <a class="link" href="nauchnaya-statya.html">научная статья</a> · <a class="link" href="referat.html">реферат и эссе</a>.</p>
+      </details>
 
       <!-- НЕТ ВАШЕЙ ЗАДАЧИ — ПИШИТЕ, СПЕКТР ШИРЕ КАРТОТЕКИ -->
-      <div class="notfound reveal" id="notfound">
-        <div>
-          <h3>Не нашли свою задачу в картотеке?</h3>
-          <p class="nf-lead">Одиннадцать карточек — это позиции, которые заказывают чаще всего, а не границы мастерской. Опишите задачу своими словами — мастер прочитает и ответит лично: возьмёмся ли, за сколько и к какому сроку. Это бесплатно и ни к чему не обязывает.</p>
-          <p class="nf-ex">Из недавнего вне картотеки: доклад с презентацией · бизнес-план · кейс-стади · рецензия на ВКР · перевод научной статьи · speech для конференции · подготовка к экзамену · сопровождение пересдачи.</p>
-        </div>
-        <div>
+      <details class="notfound reveal" id="notfound">
+        <summary>
+          <span class="nf-mark">Свободный запрос</span>
+          <span>
+            <h3>Задачи нет в списке? Всё равно спросите</h3>
+            <p class="nf-lead">Опишите её своими словами — мастер лично оценит возможность, срок и бюджет.</p>
+          </span>
+          <span class="nf-open" aria-hidden="true">+</span>
+        </summary>
+        <div class="nf-panel">
+          <p class="nf-ex">Работаем шире каталога: доклады и презентации, бизнес-планы, кейс-стади, рецензии, перевод научных статей, подготовка к экзамену и сопровождение пересдачи. Сначала честно скажем, возьмёмся ли.</p>
+          <div>
           <form class="nf-form" id="nfForm" novalidate>
             <textarea id="nfTask" maxlength="1200" placeholder="Опишите задачу: что за работа, предмет, срок…" aria-label="Ваша задача"></textarea>
             <input id="nfContact" maxlength="120" placeholder="Telegram, почта или телефон — куда ответить" aria-label="Контакт для ответа" autocomplete="off" />
@@ -977,30 +1312,49 @@
             <p><b>Вопрос у мастера.</b> Ответим в рабочее время — обычно в течение 15–30 минут, туда, куда вы указали.</p>
             <a class="btn btn-line" href="dashboard.html">Следить в кабинете →</a>
           </div>
+          </div>
         </div>
-      </div>
+      </details>
     </section>
 
+    <div class="tar-switcher" id="price-guide" role="tablist" aria-label="Всё о цене">
+      <button type="button" role="tab" id="tab-formula" aria-controls="formula" aria-selected="true" data-panel="formula">Из чего цена</button>
+      <button type="button" role="tab" id="tab-tiers" aria-controls="tiers" aria-selected="false" data-panel="tiers">Уровни ведения</button>
+      <button type="button" role="tab" id="tab-plan" aria-controls="plan" aria-selected="false" data-panel="plan">Начать с плана</button>
+      <button type="button" role="tab" id="tab-services" aria-controls="services" aria-selected="false" data-panel="services">Отдельные услуги</button>
+      <button type="button" role="tab" id="tab-pay" aria-controls="pay" aria-selected="false" data-panel="pay">Оплата и гарантии</button>
+    </div>
+
     <!-- § 02 — ФОРМУЛА -->
-    <section class="chapter reveal" id="formula" data-chapter="§ 02 · Формула цены">
+    <section class="chapter reveal is-active" id="formula" role="tabpanel" aria-labelledby="tab-formula" data-chapter="§ 02 · Формула цены">
       <div class="ch-rule"><span class="ch-no">§ 02 · Формула цены</span></div>
-      <h2>Итог собирается как уравнение</h2>
+      <h2>Четыре вещи влияют на цену</h2>
 
-      <div class="eq" role="img" aria-label="Формула: тип умножить на направление, срок и уровень — получается смета">
-        <div class="eq-t sheet"><span class="caps">Тип</span><b>2,5–200 тыс. ₽</b><small>от реферата до кандидатской</small></div>
-        <span class="eq-x" aria-hidden="true">×</span>
-        <div class="eq-t sheet"><span class="caps">Направление</span><b>×1,0–1,4</b><small>гуманитарные ×1 · право ×1,15 · IT ×1,3 · медицина ×1,4</small></div>
-        <span class="eq-x" aria-hidden="true">×</span>
-        <div class="eq-t sheet"><span class="caps">Срок</span><b>×1,0–1,45</b><small>от 30 дней ×1 · 14–30 дней ×1,15 · до 14 дней ×1,45. Чем короче срок — тем выше коэффициент: срочная работа идёт вне очереди графика. Потолок ×1,45, а не ×2 — даже «горит» не должно стоить как две работы</small></div>
-        <span class="eq-x" aria-hidden="true">×</span>
-        <div class="eq-t sheet"><span class="caps">Уровень</span><b>×1–2</b><small>Базовый ×1 · Под ключ ×1,33 · VIP ×2</small></div>
-        <span class="eq-x" aria-hidden="true">=</span>
-        <div class="eq-t eq-res"><span class="caps">Смета</span><b>фиксируется</b><small>после согласования плана — и не растёт по нашей инициативе</small></div>
-      </div>
-
-      <div class="split">
-        <div class="f-example sheet sheet-pad stacked">
-          <span class="caps" style="display:block;margin-bottom:12px">Пример расчёта</span>
+      <div class="formula-board">
+        <div class="factor-list" aria-label="Факторы расчёта стоимости">
+          <div class="factor-row">
+            <span class="factor-no">01</span>
+            <span class="factor-copy"><b>Тип работы</b><small>Главная ставка: от небольшого реферата до кандидатской по главам.</small></span>
+            <span class="factor-value">2,5–200 тыс. ₽</span>
+          </div>
+          <div class="factor-row">
+            <span class="factor-no">02</span>
+            <span class="factor-copy"><b>Направление</b><small>Гуманитарное — без наценки; право, IT и медицина требуют более узкой экспертизы.</small></span>
+            <span class="factor-value">×1–1,4</span>
+          </div>
+          <div class="factor-row">
+            <span class="factor-no">03</span>
+            <span class="factor-copy"><b>Срок</b><small>От 30 дней — обычный график. Срочная работа получает приоритет в расписании.</small></span>
+            <span class="factor-value">×1–1,45</span>
+          </div>
+          <div class="factor-row">
+            <span class="factor-no">04</span>
+            <span class="factor-copy"><b>Уровень ведения</b><small>Качество текста одинаковое; меняется только плотность сопровождения до защиты.</small></span>
+            <span class="factor-value">×1–2</span>
+          </div>
+        </div>
+        <aside class="calc-receipt" aria-label="Пример расчёта стоимости">
+          <div class="calc-receipt-head"><span>Пример расчёта</span><span>ВКР · IT</span></div>
           <div class="ledger">
             <div class="lg-row"><span>Диплом / ВКР — базовая ставка</span><span class="num">40 000 ₽</span></div>
             <div class="lg-row"><span>Направление · технические, IT</span><span class="num">×1.3</span></div>
@@ -1008,13 +1362,14 @@
             <div class="lg-row"><span>Уровень · Под ключ</span><span class="num">×1.33</span></div>
             <div class="lg-total"><b>Итого, от</b><span class="price-xl">≈ 79 500 <small>₽</small></span></div>
           </div>
-        </div>
-        <p class="marginalia">Вилка внутри типа зависит от объёма и требований методички. Пошаговый расчёт в конфигураторе занимает около минуты; решение вы примете, уже зная точную цену.</p>
+          <p class="formula-lock">После согласования плана смета фиксируется и не растёт по нашей инициативе.</p>
+          <a class="btn btn-wax" href="configurator.html">Посчитать свою работу <span class="ar">→</span></a>
+        </aside>
       </div>
     </section>
 
     <!-- § 03 — УРОВНИ СОПРОВОЖДЕНИЯ -->
-    <section class="chapter reveal" id="tiers" data-chapter="§ 03 · Уровни сопровождения">
+    <section class="chapter reveal" id="tiers" role="tabpanel" aria-labelledby="tab-tiers" data-chapter="§ 03 · Уровни сопровождения">
       <div class="ch-rule"><span class="ch-no">§ 03 · Уровни сопровождения</span></div>
       <h2>Уровень выбираете вы — от готовой работы до личного ведения</h2>
 
@@ -1053,7 +1408,7 @@
     </section>
 
     <!-- § 04 — РАЗБОР ПЛАНА -->
-    <section class="chapter reveal" id="plan" data-chapter="§ 04 · Разбор плана">
+    <section class="chapter reveal" id="plan" role="tabpanel" aria-labelledby="tab-plan" data-chapter="§ 04 · Разбор плана">
       <div class="ch-rule"><span class="ch-no">§ 04 · Разбор плана</span></div>
       <h2>Не готовы заказывать целиком? Начните с разбора плана</h2>
 
@@ -1083,7 +1438,7 @@
     </section>
 
     <!-- § 05 — ОТДЕЛЬНЫЕ УСЛУГИ -->
-    <section class="chapter reveal" id="services" data-chapter="§ 05 · Отдельные услуги">
+    <section class="chapter reveal" id="services" role="tabpanel" aria-labelledby="tab-services" data-chapter="§ 05 · Отдельные услуги">
       <div class="ch-rule"><span class="ch-no">§ 05 · Отдельные услуги</span></div>
       <h2>Когда нужна не вся работа, а помощь с её частью</h2>
       <p class="lead" style="margin-bottom:clamp(22px,3vw,30px)">Эти услуги заказывают отдельно — цену собираем индивидуально под ваш объём. Оформите заявку прямо на сайте: мастер уточнит детали и назовёт цену.</p>
@@ -1117,9 +1472,9 @@
     </section>
 
     <!-- § 06 — ОПЛАТА И ВОПРОСЫ -->
-    <section class="chapter reveal" id="pay" data-chapter="§ 06 · Оплата и вопросы">
+    <section class="chapter reveal" id="pay" role="tabpanel" aria-labelledby="tab-pay" data-chapter="§ 06 · Оплата и вопросы">
       <div class="ch-rule"><span class="ch-no">§ 06 · Оплата и вопросы</span></div>
-      <h2>Оплата по этапам — и четыре коротких ответа</h2>
+      <h2>Оплата по этапам. Без сюрпризов.</h2>
 
       <div class="pay-block">
         <span class="caps">Дипломы, магистерские, главы диссертаций, Scopus — 30/40/30</span>
@@ -1276,6 +1631,17 @@
   </div>
 </main>
 
+<dialog class="dossier-dialog" id="dossierDialog" aria-labelledby="dossierDialogTitle">
+  <div class="dossier-dialog-shell">
+    <header class="dossier-dialog-head">
+      <span class="dossier-dialog-kicker">Досье услуги</span>
+      <h2 class="dossier-dialog-title" id="dossierDialogTitle">Подробности</h2>
+      <button type="button" class="dossier-dialog-close" id="dossierDialogClose" aria-label="Закрыть подробности">×</button>
+    </header>
+    <div class="dossier-dialog-content" id="dossierDialogContent"></div>
+  </div>
+</dialog>
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"OfferCatalog","name":"Прайс: авторские материалы и сопровождение — Академический Салон","url":"https://akademsalon.ru/tariffs.html","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Самостоятельная работа (реферат, эссе, контрольная)"},"priceSpecification":{"@type":"PriceSpecification","minPrice":2500,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Научная статья РИНЦ"},"priceSpecification":{"@type":"PriceSpecification","minPrice":9000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Курсовая теоретическая"},"priceSpecification":{"@type":"PriceSpecification","minPrice":14000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Отчёт по практике"},"priceSpecification":{"@type":"PriceSpecification","minPrice":14000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Научная статья ВАК"},"priceSpecification":{"@type":"PriceSpecification","minPrice":18000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Курсовая с исследованием (практика, расчёты)"},"priceSpecification":{"@type":"PriceSpecification","minPrice":20000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Глава диссертации"},"priceSpecification":{"@type":"PriceSpecification","minPrice":30000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Научная статья Scopus / Web of Science"},"priceSpecification":{"@type":"PriceSpecification","minPrice":35000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Дипломная работа / ВКР"},"priceSpecification":{"@type":"PriceSpecification","minPrice":40000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Магистерская диссертация"},"priceSpecification":{"@type":"PriceSpecification","minPrice":60000,"priceCurrency":"RUB"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Кандидатская (по главам)"},"priceSpecification":{"@type":"PriceSpecification","minPrice":200000,"priceCurrency":"RUB"}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Почему «от»?","acceptedAnswer":{"@type":"Answer","text":"«От» — нижний порог за базовую сложность типа: стандартный объём и требования. Полную вилку под конкретную тему показывает пошаговый расчёт за минуту."}},{"@type":"Question","name":"Когда фиксируется смета?","acceptedAnswer":{"@type":"Answer","text":"После бесплатного согласования плана, когда известны объём и методичка. Зафиксированная смета не меняется по инициативе мастерской — пересчёт только при смене темы или объёма со стороны заказчика."}},{"@type":"Question","name":"Можно ли дешевле?","acceptedAnswer":{"@type":"Answer","text":"Да, без потери качества: уровень «Базовый» идёт без наценки за сопровождение, а свободный срок от 30 дней — без коэффициента за срочность."}},{"@type":"Question","name":"Как проходит оплата?","acceptedAnswer":{"@type":"Answer","text":"По этапам: каждый платёж вносится после показанного результата предыдущего этапа. Вся сумма вперёд не берётся, перед финальным платежом выдаётся отчёт о проверках."}}]}</script>
 <script src="assets/js/app.js?v=20260723i"></script>
@@ -1283,11 +1649,120 @@
 <script>
 (function(){
   'use strict';
+  /* Компактный режим: длинные главы становятся вкладками, досье — диалогом. */
+  var panelIds = ['formula','tiers','plan','services','pay'];
+  var panelBtns = Array.prototype.slice.call(document.querySelectorAll('.tar-switcher [role="tab"]'));
+  var panels = panelIds.map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  function activatePanel(id, focusTab){
+    if(panelIds.indexOf(id) < 0) id = 'formula';
+    panelBtns.forEach(function(btn){
+      var active = btn.getAttribute('data-panel') === id;
+      btn.setAttribute('aria-selected', String(active));
+      btn.tabIndex = active ? 0 : -1;
+      if(active && focusTab) btn.focus();
+    });
+    panels.forEach(function(panel){
+      var active = panel.id === id;
+      panel.classList.toggle('is-active', active);
+      panel.hidden = !active;
+    });
+  }
+  panelBtns.forEach(function(btn, index){
+    btn.addEventListener('click', function(){ activatePanel(btn.getAttribute('data-panel')); });
+    btn.addEventListener('keydown', function(ev){
+      if(ev.key !== 'ArrowRight' && ev.key !== 'ArrowLeft' && ev.key !== 'Home' && ev.key !== 'End') return;
+      ev.preventDefault();
+      var next = index;
+      if(ev.key === 'ArrowRight') next = (index + 1) % panelBtns.length;
+      if(ev.key === 'ArrowLeft') next = (index - 1 + panelBtns.length) % panelBtns.length;
+      if(ev.key === 'Home') next = 0;
+      if(ev.key === 'End') next = panelBtns.length - 1;
+      activatePanel(panelBtns[next].getAttribute('data-panel'), true);
+    });
+  });
+  document.querySelectorAll('[data-open-panel]').forEach(function(link){
+    link.addEventListener('click', function(){
+      activatePanel(link.getAttribute('data-open-panel'));
+    });
+  });
+  var hashPanel = location.hash === '#compare' ? 'pay' : location.hash.slice(1);
+  var initialPanel = panelIds.indexOf(hashPanel) >= 0 ? hashPanel : 'formula';
+  activatePanel(initialPanel);
+  document.body.classList.add('tar-ready');
+
+  /* Источники важны, но не участвуют в основном выборе — сворачиваем их отдельно. */
+  var sources = document.querySelector('.cmp-lit');
+  if(sources && !sources.closest('.tar-source-disclosure')){
+    var sourceDetails = document.createElement('details');
+    sourceDetails.className = 'tar-source-disclosure';
+    var sourceSummary = document.createElement('summary');
+    sourceSummary.textContent = 'Источники и нормативная база · 8 ссылок';
+    sources.parentNode.insertBefore(sourceDetails, sources);
+    sourceDetails.appendChild(sourceSummary);
+    sourceDetails.appendChild(sources);
+  }
+  var compareWrap = document.getElementById('compare');
+  var compareDetails = null;
+  if(compareWrap && !compareWrap.closest('.tar-compare-disclosure')){
+    compareDetails = document.createElement('details');
+    compareDetails.className = 'tar-compare-disclosure';
+    var compareSummary = document.createElement('summary');
+    compareSummary.textContent = 'Почему не биржа · сравнение по 7 критериям';
+    compareWrap.parentNode.insertBefore(compareDetails, compareWrap);
+    compareDetails.appendChild(compareSummary);
+    compareDetails.appendChild(compareWrap);
+    if(location.hash === '#compare') compareDetails.open = true;
+  }
+
+  /* В карточке две равноправные развилки: рассчитать или изучить досье. */
+  document.querySelectorAll('.cc').forEach(function(card){
+    var more = card.querySelector('.cc-more');
+    var cta = card.querySelector('.cc-cta');
+    if(!more || !cta || card.querySelector('.cc-actions')) return;
+    var actions = document.createElement('div');
+    actions.className = 'cc-actions';
+    card.appendChild(actions);
+    actions.appendChild(cta);
+    actions.appendChild(more);
+    more.setAttribute('aria-haspopup','dialog');
+    more.setAttribute('aria-controls','dossierDialog');
+  });
+
   /* Фильтр картотеки: мягкое исчезновение и появление карточек */
   var grid = document.getElementById('ccGrid');
   var btns = document.querySelectorAll('.cc-filters button');
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var busy = false;
+  var railPrev = document.getElementById('railPrev');
+  var railNext = document.getElementById('railNext');
+  var catalogProgress = document.getElementById('catalogProgress');
+  function visibleCards(){ return Array.prototype.slice.call(grid.querySelectorAll('.cc:not([hidden])')); }
+  function updateRail(){
+    var cards = visibleCards();
+    if(catalogProgress){
+      if(window.matchMedia('(max-width:640px)').matches && cards.length){
+        var closest = cards.reduce(function(best,card,index){
+          var delta = Math.abs(card.offsetLeft - grid.scrollLeft);
+          return delta < best.delta ? {index:index,delta:delta} : best;
+        },{index:0,delta:Infinity});
+        catalogProgress.textContent = (closest.index + 1) + ' / ' + cards.length;
+      } else {
+        catalogProgress.textContent = cards.length + (cards.length === 1 ? ' вариант' : cards.length < 5 ? ' варианта' : ' вариантов');
+      }
+    }
+    if(!railPrev || !railNext) return;
+    railPrev.disabled = grid.scrollLeft < 8;
+    railNext.disabled = grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 8;
+  }
+  function railStep(direction){
+    var card = visibleCards()[0];
+    var step = card ? card.getBoundingClientRect().width + 14 : grid.clientWidth * .8;
+    grid.scrollBy({left:direction * step,behavior:reduce ? 'auto' : 'smooth'});
+  }
+  if(railPrev) railPrev.addEventListener('click', function(){ railStep(-1); });
+  if(railNext) railNext.addEventListener('click', function(){ railStep(1); });
+  grid.addEventListener('scroll', function(){ requestAnimationFrame(updateRail); }, {passive:true});
+  window.addEventListener('resize', updateRail, {passive:true});
   btns.forEach(function(btn){
     btn.addEventListener('click', function(){
       if (busy) return;
@@ -1296,6 +1771,8 @@
       var cards = grid.querySelectorAll('.cc');
       function apply(){
         cards.forEach(function(c){ c.hidden = cat !== 'all' && c.getAttribute('data-cat') !== cat; });
+        grid.scrollLeft = 0;
+        updateRail();
       }
       if (reduce) { apply(); return; }
       busy = true;
@@ -1311,6 +1788,7 @@
       }, 190);
     });
   });
+  updateRail();
   /* Кнопки «Узнать стоимость» пишут черновик заказа: тип + уровень «Базовый» */
   document.querySelectorAll('a[data-type]').forEach(function(a){
     a.addEventListener('click', function(){
@@ -1335,23 +1813,70 @@
     });
   }
 
-  /* Формуляры: кнопка на карточке открывает досье и ведёт к нему */
+  /* Формуляры: подробный контент открывается поверх страницы и возвращает фокус. */
+  var dossierDialog = document.getElementById('dossierDialog');
+  var dossierDialogContent = document.getElementById('dossierDialogContent');
+  var dossierDialogTitle = document.getElementById('dossierDialogTitle');
+  var dossierDialogClose = document.getElementById('dossierDialogClose');
+  var dossierReturnFocus = null;
   function openDossier(id, scroll){
     var d = document.getElementById(id);
     if(!d) return;
-    document.querySelectorAll('.dossier[open]').forEach(function(o){ if(o!==d) o.removeAttribute('open'); });
-    d.setAttribute('open','');
-    if(scroll !== false){
-      setTimeout(function(){ d.scrollIntoView({behavior:'smooth', block:'start'}); }, 60);
+    if(dossierDialog && typeof dossierDialog.showModal === 'function'){
+      dossierReturnFocus = document.activeElement;
+      var title = d.querySelector('.ds-t');
+      var body = d.querySelector('.ds-body');
+      dossierDialogTitle.textContent = title ? title.textContent : 'Подробности услуги';
+      dossierDialogContent.replaceChildren(body ? body.cloneNode(true) : document.createTextNode('Подробности временно недоступны.'));
+      dossierDialogContent.querySelectorAll('[id]').forEach(function(el){ el.removeAttribute('id'); });
+      dossierDialog.showModal();
+      dossierDialogContent.scrollTop = 0;
+      requestAnimationFrame(function(){ dossierDialogClose.focus(); });
+      if(history.replaceState) history.replaceState(null,'','#' + id);
+    } else {
+      d.hidden = false;
+      d.setAttribute('open','');
+      d.closest('.dossier-stack').style.display = 'block';
+      if(scroll !== false) setTimeout(function(){ d.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); },60);
     }
   }
   document.querySelectorAll('.cc-more').forEach(function(b){
-    b.addEventListener('click', function(){ openDossier(b.getAttribute('data-dossier')); });
+    b.addEventListener('click', function(){ dossierReturnFocus = b; openDossier(b.getAttribute('data-dossier')); });
   });
+  if(dossierDialogClose) dossierDialogClose.addEventListener('click', function(){ dossierDialog.close(); });
+  if(dossierDialog){
+    dossierDialogContent.addEventListener('click', function(ev){
+      var a = ev.target.closest && ev.target.closest('a[data-type]');
+      if(!a || !(window.Salon && Salon.store)) return;
+      var draft = Salon.store.get('salon_draft', {}) || {};
+      draft.state = Object.assign({}, draft.state || {}, {type:a.getAttribute('data-type'),disc:'hum',term:'free',tier:'base'});
+      draft.idx = 0; draft.savedAt = Date.now();
+      Salon.store.set('salon_draft', draft);
+    });
+    dossierDialog.addEventListener('click', function(ev){ if(ev.target === dossierDialog) dossierDialog.close(); });
+    dossierDialog.addEventListener('close', function(){
+      dossierDialogContent.replaceChildren();
+      if(/^#d-[a-z_]+$/.test(location.hash) && history.replaceState) history.replaceState(null,'',location.pathname + location.search);
+      if(dossierReturnFocus && dossierReturnFocus.focus) dossierReturnFocus.focus();
+    });
+  }
   /* прямые ссылки tariffs.html#d-diplom открывают формуляр сами */
   if(/^#d-[a-z_]+$/.test(location.hash)){ openDossier(location.hash.slice(1)); }
+  if(location.hash === '#dossiers'){
+    if(history.replaceState) history.replaceState(null,'','#catalog');
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ document.getElementById('catalog').scrollIntoView({behavior:'auto',block:'start'}); }); });
+  }
   window.addEventListener('hashchange', function(){
-    if(/^#d-[a-z_]+$/.test(location.hash)) openDossier(location.hash.slice(1));
+    if(/^#d-[a-z_]+$/.test(location.hash)) { openDossier(location.hash.slice(1)); return; }
+    var id = location.hash === '#compare' ? 'pay' : location.hash.slice(1);
+    if(panelIds.indexOf(id) >= 0){
+      activatePanel(id);
+      if(location.hash === '#compare' && compareDetails) compareDetails.open = true;
+    }
+    if(location.hash === '#dossiers'){
+      if(history.replaceState) history.replaceState(null,'','#catalog');
+      document.getElementById('catalog').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+    }
   });
 
   /* «Не нашли свою задачу» — вопрос мастеру одной формой (тип custom) */

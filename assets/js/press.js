@@ -17,11 +17,15 @@
     if (window.Salon && Salon.motion) return Salon.motion.mode() === 'off';
     return rm || docEl.hasAttribute('data-calm');
   }
-  /* Поток — мобильная вёрстка, touch-устройства и любой
-     режим без движения. Reduced motion больше не оставляет
-     скрытую scroll-driven 3D-сцену. */
+  /* Поток — мобильная вёрстка, touch-устройства и явно включённый
+     пользователем спокойный режим. Системный reduced-motion на широком
+     экране сохраняет книгу в титуле, но превращает сцену в два статичных
+     состояния — закрытая книга и раскрытая смета. */
   function flat() {
-    return window.innerWidth <= 880 || (coarse && coarse.matches) || reduced();
+    return window.innerWidth <= 880 || (coarse && coarse.matches) || docEl.hasAttribute('data-calm');
+  }
+  function staticWide() {
+    return window.innerWidth > 880 && !(coarse && coarse.matches) && reduced() && !docEl.hasAttribute('data-calm');
   }
 
   /* На телефоне быстрый расчёт — это три коротких шага, а не длинный
@@ -92,13 +96,21 @@
   function applyMode() {
     if (flat()) docEl.setAttribute('data-pr-flat', '1');
     else docEl.removeAttribute('data-pr-flat');
+    if (staticWide()) {
+      docEl.setAttribute('data-pr-static', '1');
+      if (!track.hasAttribute('data-static-open')) track.style.setProperty('--p', '0');
+    } else {
+      docEl.removeAttribute('data-pr-static');
+      track.removeAttribute('data-static-open');
+      track.style.removeProperty('--p');
+    }
     if (flat()) initMobileEstimator();
     onScroll();
   }
 
   /* ---------- прогресс кино ---------- */
   function onScroll() {
-    if (docEl.hasAttribute('data-pr-flat')) return;
+    if (docEl.hasAttribute('data-pr-flat') || docEl.hasAttribute('data-pr-static')) return;
     var total = track.offsetHeight - window.innerHeight;
     if (total <= 0) return;
     var p = Math.min(1, Math.max(0, -track.getBoundingClientRect().top / total));
@@ -118,6 +130,13 @@
     if (docEl.hasAttribute('data-pr-flat')) {
       var s = document.getElementById('smeta');
       if (s) s.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+      return;
+    }
+    if (docEl.hasAttribute('data-pr-static')) {
+      track.setAttribute('data-static-open', '1');
+      track.style.setProperty('--p', '1');
+      document.body.classList.add('pr-open', 'pr-set');
+      scene.scrollIntoView({ behavior: 'auto', block: 'start' });
       return;
     }
     var total = track.offsetHeight - window.innerHeight;
