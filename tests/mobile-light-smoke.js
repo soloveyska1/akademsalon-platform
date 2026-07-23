@@ -283,6 +283,21 @@ async function inspectPage(page, ctaRequired) {
   });
   await page.waitForTimeout(100);
 
+  const header = await page.evaluate(() => {
+    const element = document.querySelector('.site-header');
+    if (!element) return null;
+    const style = getComputedStyle(element);
+    const rect = element.getBoundingClientRect();
+    if (element.hidden || style.display === 'none' || style.visibility === 'hidden') return null;
+    return {
+      position: style.position,
+      top: Math.round(rect.top),
+      bottom: Math.round(rect.bottom),
+      hiddenClass: element.classList.contains('hide'),
+      bodyHiddenClass: document.body.classList.contains('header-hidden')
+    };
+  });
+
   const dock = await page.evaluate(() => {
     const visible = (element) => {
       const style = getComputedStyle(element);
@@ -339,6 +354,15 @@ async function inspectPage(page, ctaRequired) {
   if (homeHero && (homeHero.bookVisible || homeHero.proofVisible || homeHero.storyVisible)) {
     failures.push(`перегруженный hero=${JSON.stringify(homeHero)}`);
   }
+  if (header && (
+    header.position !== 'fixed' ||
+    header.top < -1 ||
+    header.bottom <= 0 ||
+    header.hiddenClass ||
+    header.bodyHiddenClass
+  )) {
+    failures.push(`fixed header left viewport after scroll: ${JSON.stringify(header)}`);
+  }
   const dockOverlaps = dock.flatMap((item) =>
     item.overlaps.map((overlap) => `${item.selector} → ${overlap}`)
   );
@@ -346,7 +370,7 @@ async function inspectPage(page, ctaRequired) {
     failures.push(`fixed dock overlaps: ${dockOverlaps.join(', ')}`);
   }
 
-  return { theme, overflow, cta, homeHero, dock, failures };
+  return { theme, overflow, cta, homeHero, header, dock, failures };
 }
 
 async function inspectConfiguratorStep2(page) {

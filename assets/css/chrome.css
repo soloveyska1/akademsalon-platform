@@ -69,7 +69,7 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
    Верхний золотой обрез — пара к обрезу колофона: страница сайта
    живёт «в книжном блоке» между двумя золочёными кромками.
    При скролле шапка ужимается 64→56px и показывает точку-перо
-   на конце чернильного прогресса. Прячется при скролле вниз.
+   на конце чернильного прогресса. Всегда остаётся у верхней кромки.
    ============================================================ */
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:100;
@@ -85,7 +85,9 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
   opacity:.5;
 }
 :root[data-theme="dark"] .site-header::before{opacity:.7}
-.site-header.hide{transform:translateY(-100%)}
+/* Защитное правило: шапка не должна исчезать, даже если старый
+   закешированный скрипт успел добавить прежний класс hide. */
+.site-header.hide{transform:none}
 .site-header.scrolled{box-shadow:0 12px 34px -20px rgba(34,32,27,.4)}
 /* чернильный прогресс чтения — тонкая линия по нижней кромке шапки */
 .hdr-ink{
@@ -1148,7 +1150,7 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
   .site-header .brand{min-height:44px;gap:8px}
   .site-header .brand .b-para{width:27px;height:27px}
   .nav-cab,.menu-toggle{width:44px;min-width:44px;min-height:44px;padding:0}
-  .site-header.hide{transform:translateY(calc(-100% - env(safe-area-inset-top)))}
+  .site-header.hide{transform:none}
 
   /* док: фактический safe-area участвует и в резерве страницы */
   .mobile-cta{padding:6px max(7px,env(safe-area-inset-right)) max(7px,env(safe-area-inset-bottom)) max(7px,env(safe-area-inset-left));
@@ -1217,7 +1219,6 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
     gap:7px;margin:0 calc(var(--mobile-gutter) * -1) 14px;padding:9px var(--mobile-gutter);
     background:var(--paper);border-bottom:1px solid var(--hairline);scrollbar-width:none;
     transition:top .35s cubic-bezier(.22,1,.36,1)}
-  body.header-hidden main.tariffs .cc-filters{top:0}
   main.tariffs .cc-filters::-webkit-scrollbar{display:none}
   main.tariffs .cc-filters button{flex:0 0 auto;min-height:44px;padding:9px 13px}
   main.tariffs .cc-grid{gap:10px}

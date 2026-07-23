@@ -2098,23 +2098,19 @@
     (root || document).querySelectorAll(OBSERVED).forEach(function (n) { n.classList.add('in'); });
   };
 
-  /* ---------------- Умная шапка (прячется при скролле вниз) ----------------
-     Планирование через setTimeout, не rAF: энергосберегающие режимы браузеров
-     душат rAF, а шапка и чернильный прогресс должны жить везде. */
-  var lastY = window.scrollY, hidden = false, scheduled = false;
+  /* ---------------- Постоянная шапка и прогресс чтения ----------------
+     Шапка остаётся доступной при любой прокрутке. Планирование через
+     setTimeout, не rAF: энергосберегающие режимы браузеров душат rAF,
+     а чернильный прогресс должен жить везде. */
+  var scheduled = false;
   function onScrollFrame() {
     scheduled = false;
     var y = window.scrollY;
     var hdr = document.querySelector('.site-header');
     if (hdr) {
-      if (Math.abs(y - lastY) > 6) {
-        var goDown = y > lastY && y > 200;
-        if (goDown !== hidden) {
-          hidden = goDown;
-          hdr.classList.toggle('hide', hidden);
-          document.body.classList.toggle('header-hidden', hidden);
-        }
-      }
+      /* Снимаем устаревшее состояние после bfcache/частичной навигации. */
+      hdr.classList.remove('hide');
+      document.body.classList.remove('header-hidden');
       hdr.classList.toggle('scrolled', y > 12);
       var ink = hdr.querySelector('.hdr-ink');
       if (ink) {
@@ -2122,7 +2118,6 @@
         ink.style.width = Math.min(100, Math.max(0, (y / max) * 100)).toFixed(2) + '%';
       }
     }
-    lastY = y;
   }
   window.addEventListener('scroll', function () { if (!scheduled) { scheduled = true; setTimeout(onScrollFrame, 16); } }, { passive: true });
   setTimeout(onScrollFrame, 50);
