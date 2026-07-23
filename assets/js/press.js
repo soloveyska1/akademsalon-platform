@@ -9,6 +9,9 @@
   var docEl = document.documentElement;
   var track = document.getElementById('prTrack');
   var scene = document.querySelector('.pr-scene');
+  var bookTrigger = document.getElementById('prBookTrigger');
+  var formHeading = document.querySelector('.pr-formh');
+  var focusTimer = 0;
   if (!track || !scene) return;
 
   var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -98,7 +101,11 @@
     else docEl.removeAttribute('data-pr-flat');
     if (staticWide()) {
       docEl.setAttribute('data-pr-static', '1');
-      if (!track.hasAttribute('data-static-open')) track.style.setProperty('--p', '0');
+      if (!track.hasAttribute('data-static-open')) {
+        track.style.setProperty('--p', '0');
+        document.body.classList.remove('pr-open', 'pr-set');
+        if (bookTrigger) bookTrigger.setAttribute('aria-expanded', 'false');
+      }
     } else {
       docEl.removeAttribute('data-pr-static');
       track.removeAttribute('data-static-open');
@@ -117,6 +124,7 @@
     track.style.setProperty('--p', p.toFixed(4));
     document.body.classList.toggle('pr-open', p > .55);
     document.body.classList.toggle('pr-set', p > .82);
+    if (bookTrigger) bookTrigger.setAttribute('aria-expanded', p > .55 ? 'true' : 'false');
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', applyMode);
@@ -126,24 +134,38 @@
   /* ---------- ход к приёмной: конец кино, а не начало трека ----------
      Прод-CTA («Рассчитать» в шапке, мобильной панели, финале, прологе)
      ведут на #smeta — в кино-режиме перехватываем и довозим до разворота. */
-  function goPriyomnaya(smooth) {
+  function focusFormSoon(smooth) {
+    if (!formHeading) return;
+    window.clearTimeout(focusTimer);
+    focusTimer = window.setTimeout(function () {
+      formHeading.focus({ preventScroll: true });
+    }, smooth ? 620 : 60);
+  }
+  function goPriyomnaya(smooth, moveFocus) {
     if (docEl.hasAttribute('data-pr-flat')) {
       var s = document.getElementById('smeta');
       if (s) s.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+      if (moveFocus) focusFormSoon(smooth);
       return;
     }
     if (docEl.hasAttribute('data-pr-static')) {
       track.setAttribute('data-static-open', '1');
       track.style.setProperty('--p', '1');
       document.body.classList.add('pr-open', 'pr-set');
+      if (bookTrigger) bookTrigger.setAttribute('aria-expanded', 'true');
       scene.scrollIntoView({ behavior: 'auto', block: 'start' });
+      if (moveFocus) focusFormSoon(false);
       return;
     }
     var total = track.offsetHeight - window.innerHeight;
     var top = track.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top: top + total, behavior: smooth ? 'smooth' : 'auto' });
+    if (moveFocus) focusFormSoon(smooth);
   }
-  window.SalonPressGo = function () { goPriyomnaya(!reduced()); };
+  window.SalonPressGo = function () { goPriyomnaya(!reduced(), true); };
+  if (bookTrigger) {
+    bookTrigger.addEventListener('click', function () { goPriyomnaya(!reduced(), true); });
+  }
 
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href$="#smeta"]');
@@ -151,12 +173,12 @@
     var href = a.getAttribute('href') || '';
     if (href !== '#smeta' && href.indexOf('index.html#smeta') === -1) return;
     e.preventDefault();
-    goPriyomnaya(!reduced());
+    goPriyomnaya(!reduced(), true);
   });
 
   /* прямой заход с якорем (реклама, пролог, чужие страницы) */
   if (location.hash === '#smeta') {
-    setTimeout(function () { goPriyomnaya(false); }, 60);
+    setTimeout(function () { goPriyomnaya(false, false); }, 60);
   }
 
   /* ---------- наклон за курсором ---------- */
