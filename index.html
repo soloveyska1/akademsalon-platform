@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/css/pereplet.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723e" />
-<link rel="stylesheet" href="assets/css/press.css?v=20260723f" />
+<link rel="stylesheet" href="assets/css/press.css?v=20260723g" />
 <script>(function(){try{document.documentElement.classList.add("has-js");var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
 html.has-prelude{overflow:hidden}
@@ -167,37 +167,64 @@ window.SalonPreludeOpen=function(){
               </div>
               <div class="pr-cvin">
                 <div class="pr-pg pr-form">
-                  <span class="pg-caps caps">Приёмная мастерской · формуляр</span>
+                  <div class="pr-form-meta">
+                    <span class="pg-caps caps">Быстрый расчёт · формуляр</span>
+                    <span class="pr-form-time">≈ 1 минута</span>
+                  </div>
                   <h2 class="pr-formh" tabindex="-1">Три вопроса — и&nbsp;цена</h2>
-                  <p class="pr-formsub">Без телефона и почты: смета считается прямо здесь, заявка уходит мастеру с сайта.</p>
+                  <p class="pr-formsub">Без контактов. Выбирайте — смета справа обновится сразу.</p>
 
-                  <p class="plate-q"><span class="q-no">вопрос 1 из 3</span>Что за работа?</p>
-                  <div class="plates" data-plates="type" role="group" aria-label="Тип работы">
-                    <button type="button" data-v="diplom" aria-pressed="true">Диплом / ВКР</button>
-                    <button type="button" data-v="master" aria-pressed="false">Магистерская</button>
-                    <button type="button" data-v="course" aria-pressed="false">Курсовая</button>
-                    <button type="button" data-v="course_emp" aria-pressed="false">Курсовая с исследованием</button>
-                    <button type="button" data-v="vak" aria-pressed="false">Статья ВАК</button>
-                    <button type="button" data-v="kandidat" aria-pressed="false">Кандидатская</button>
-                  </div>
-                  <a class="plate-more link" href="configurator.html" id="qFull">Другой тип работы — полный расчёт →</a>
+                  <section class="pr-question" data-label="Работа">
+                    <div class="pr-qhead">
+                      <p class="plate-q"><span class="q-no">01</span><span>Тип работы</span></p>
+                      <button class="pr-info" type="button" aria-label="Как выбрать тип работы" aria-expanded="false"
+                        aria-describedby="prTipType"><span aria-hidden="true">?</span>
+                        <span class="pr-tip" id="prTipType" role="tooltip">Нет точного названия? Выберите ближайшее — тему уточним позже.</span>
+                      </button>
+                    </div>
+                    <div class="plates" data-plates="type" role="group" aria-label="Тип работы">
+                      <button type="button" data-v="diplom" aria-pressed="true">Диплом / ВКР</button>
+                      <button type="button" data-v="master" aria-pressed="false">Магистерская</button>
+                      <button type="button" data-v="course" aria-pressed="false">Курсовая</button>
+                      <button type="button" data-v="course_emp" aria-pressed="false">Курсовая + исследование</button>
+                      <button type="button" data-v="vak" aria-pressed="false">Статья ВАК</button>
+                      <button type="button" data-v="kandidat" aria-pressed="false">Кандидатская</button>
+                    </div>
+                    <a class="plate-more link" href="configurator.html" id="qFull">Другой тип →</a>
+                  </section>
 
-                  <p class="plate-q"><span class="q-no">вопрос 2 из 3</span>Какое направление?</p>
-                  <div class="plates" data-plates="disc" role="group" aria-label="Направление">
-                    <button type="button" data-v="hum" aria-pressed="true">Гуманитарное, экономика</button>
-                    <button type="button" data-v="law" aria-pressed="false">Право, педагогика, психология</button>
-                    <button type="button" data-v="tech" aria-pressed="false">Техническое, IT</button>
-                    <button type="button" data-v="med" aria-pressed="false">Медицина, финансы</button>
-                  </div>
+                  <section class="pr-question" data-label="Направление">
+                    <div class="pr-qhead">
+                      <p class="plate-q"><span class="q-no">02</span><span>Направление</span></p>
+                      <button class="pr-info" type="button" aria-label="Как выбрать направление" aria-expanded="false"
+                        aria-describedby="prTipDisc"><span aria-hidden="true">?</span>
+                        <span class="pr-tip" id="prTipDisc" role="tooltip">Ориентируйтесь на требования кафедры, а не только на название специальности.</span>
+                      </button>
+                    </div>
+                    <div class="plates" data-plates="disc" role="group" aria-label="Направление">
+                      <button type="button" data-v="hum" aria-pressed="true">Гуманитарное, экономика</button>
+                      <button type="button" data-v="law" aria-pressed="false">Право, педагогика, психология</button>
+                      <button type="button" data-v="tech" aria-pressed="false">Техническое, IT</button>
+                      <button type="button" data-v="med" aria-pressed="false">Медицина, финансы</button>
+                    </div>
+                  </section>
 
-                  <p class="plate-q"><span class="q-no">вопрос 3 из 3</span>Когда сдавать?</p>
-                  <div class="plates cols-3" data-plates="term" role="group" aria-label="Срок">
-                    <button type="button" data-v="free" aria-pressed="true">От 30 дней</button>
-                    <button type="button" data-v="mid" aria-pressed="false">14–30 дней</button>
-                    <button type="button" data-v="urgent" aria-pressed="false">До 14 дней</button>
-                  </div>
+                  <section class="pr-question" data-label="Срок">
+                    <div class="pr-qhead">
+                      <p class="plate-q"><span class="q-no">03</span><span>Срок до сдачи</span></p>
+                      <button class="pr-info" type="button" aria-label="Как указать срок" aria-expanded="false"
+                        aria-describedby="prTipTerm"><span aria-hidden="true">?</span>
+                        <span class="pr-tip" id="prTipTerm" role="tooltip">Укажите дату первого результата. Чем больше времени, тем ниже коэффициент.</span>
+                      </button>
+                    </div>
+                    <div class="plates cols-3" data-plates="term" role="group" aria-label="Срок">
+                      <button type="button" data-v="free" aria-pressed="true">30+ дней</button>
+                      <button type="button" data-v="mid" aria-pressed="false">14–30 дней</button>
+                      <button type="button" data-v="urgent" aria-pressed="false">До 14 дней</button>
+                    </div>
+                  </section>
                   <noscript><p class="petit">Калькулятор работает при включённом JavaScript. Или напишите нам: <a class="link" href="https://vk.me/academicsaloon">ВКонтакте</a> · <a class="link" href="https://t.me/academicsaloon">Telegram</a> — посчитаем за минуту.</p></noscript>
-                  <p class="pr-pgfoot">Точную смету фиксирует мастер после разбора темы — бесплатно и без обязательств.</p>
+                  <p class="pr-pgfoot"><span>Без телефона и почты</span> Финальную цену мастер подтвердит после темы — бесплатно.</p>
                 </div>
               </div>
             </div>
@@ -308,6 +335,6 @@ window.SalonPreludeOpen=function(){
 <script src="assets/js/app.js?v=20260723i"></script>
 <script src="assets/js/extras.js?v=20260723f"></script>
 <script src="assets/js/pereplet.js?v=20260723a"></script>
-<script src="assets/js/press.js?v=20260723f"></script>
+<script src="assets/js/press.js?v=20260723g"></script>
 </body>
 </html>

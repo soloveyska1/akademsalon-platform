@@ -54,10 +54,9 @@
   function initMobileEstimator() {
     var form = document.querySelector('.pr-form');
     if (!form || form.getAttribute('data-mobile-flow') === '1') return;
-    var questions = Array.prototype.slice.call(form.querySelectorAll('.plate-q'));
+    var questions = Array.prototype.slice.call(form.querySelectorAll('.pr-question'));
     var foot = form.querySelector('.pr-pgfoot');
     if (questions.length !== 3 || !foot) return;
-    form.setAttribute('data-mobile-flow', '1');
 
     var progress = document.createElement('div');
     progress.className = 'pr-qprog';
@@ -65,17 +64,11 @@
     form.insertBefore(progress, questions[0]);
 
     var steps = [];
-    questions.forEach(function (question, i) {
-      var stop = questions[i + 1] || foot;
+    questions.forEach(function (question) {
       var step = document.createElement('div');
       step.className = 'pr-qstep';
       form.insertBefore(step, question);
-      var node = question;
-      while (node && node !== stop) {
-        var next = node.nextSibling;
-        step.appendChild(node);
-        node = next;
-      }
+      step.appendChild(question);
       steps.push(step);
     });
 
@@ -86,12 +79,19 @@
     form.insertBefore(nav, foot);
     var back = nav.querySelector('.pr-qback');
     var nextBtn = nav.querySelector('.pr-qnext');
+    var price = document.getElementById('qPrice');
     var current = 0;
 
+    function priceText() {
+      return price ? price.textContent.replace(/\s+/g, ' ').trim() : '';
+    }
     function show(i, focus) {
       current = Math.max(0, Math.min(steps.length - 1, i));
       steps.forEach(function (step, n) { step.classList.toggle('active', n === current); });
-      progress.innerHTML = '<span>Вопрос ' + (current + 1) + ' из ' + steps.length + '</span>' +
+      var question = steps[current].querySelector('.pr-question');
+      var label = question ? question.getAttribute('data-label') : '';
+      progress.innerHTML = '<span>Шаг ' + (current + 1) + '/' + steps.length + (label ? ' · ' + label : '') + '</span>' +
+        '<em>' + priceText() + '</em>' +
         '<i><b style="width:' + ((current + 1) / steps.length * 100) + '%"></b></i>';
       back.hidden = current === 0;
       nextBtn.innerHTML = current === steps.length - 1
@@ -109,6 +109,13 @@
       var receipt = document.querySelector('.pr-first');
       if (receipt) receipt.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
     });
+    if (price && window.MutationObserver) {
+      new MutationObserver(function () {
+        var livePrice = progress.querySelector('em');
+        if (livePrice) livePrice.textContent = priceText();
+      }).observe(price, { childList: true, characterData: true, subtree: true });
+    }
+    form.setAttribute('data-mobile-flow', '1');
     show(0, false);
   }
 
@@ -186,6 +193,27 @@
   if (bookTrigger) {
     bookTrigger.addEventListener('click', function () { goPriyomnaya(!reduced(), true); });
   }
+  var infoButtons = Array.prototype.slice.call(document.querySelectorAll('.pr-info'));
+  function closeTips(except) {
+    infoButtons.forEach(function (button) {
+      if (button !== except) button.setAttribute('aria-expanded', 'false');
+    });
+  }
+  infoButtons.forEach(function (button) {
+    button.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var opening = button.getAttribute('aria-expanded') !== 'true';
+      closeTips(button);
+      button.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', function () { closeTips(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var info = e.target.closest && e.target.closest('.pr-info');
+    closeTips();
+    if (info) info.blur();
+  });
 
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href$="#smeta"]');
