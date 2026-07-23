@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <meta name="referrer" content="no-referrer">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Калькулятор стоимости онлайн: курсовая, диплом, ВКР — смета за минуту | Академический Салон</title>
@@ -9,7 +10,7 @@
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260723d" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260723e" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -889,7 +890,7 @@
 
 <script src="assets/js/app.js?v=20260723j"></script>
 <script src="assets/js/extras.js?v=20260723g"></script>
-<script src="assets/js/cart.js?v=20260723d"></script>
+<script src="assets/js/cart.js?v=20260723e"></script>
 <script>
 function initConf() {
   'use strict';
@@ -2086,6 +2087,8 @@ function initConf() {
     if (submitting) return;
     var authed = !!(S.api && S.api.token());
     var cartHasItems = !!(window.SalonCart && window.SalonCart.hasItems());
+    if (cartHasItems && window.SalonCart.validate && !window.SalonCart.validate()) return;
+    if (!cartHasItems && !cartCurrentValid()) return;
     var contact = $('fContact') ? $('fContact').value.trim() : '';
     var name = $('fName') ? $('fName').value.trim() : '';
     if (!authed) {
@@ -2104,7 +2107,7 @@ function initConf() {
     }
     /* ответы анкеты услуги — сводкой в требования (мастер видит всё сразу) */
     var askText = '';
-    if (svc && svc.ask && svc.ask.length) {
+    if (!cartHasItems && svc && svc.ask && svc.ask.length) {
       var missing = null;
       askText = svc.ask.map(function (q) {
         var v = q.type === 'chips'
@@ -2113,7 +2116,7 @@ function initConf() {
         if (q.req && !v && !missing) missing = q;
         return v ? (q.short || q.label) + ': ' + v : '';
       }).filter(Boolean).join('\n');
-      if (missing && !cartHasItems) {
+      if (missing) {
         S.toast('Ответьте, пожалуйста: ' + missing.label.toLowerCase());
         var mel = document.querySelector('#svcAsk [data-ask="' + missing.id + '"], #ask_' + missing.id);
         if (mel && mel.scrollIntoView) mel.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -2149,11 +2152,13 @@ function initConf() {
       payload.disc = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.disc : 'hum';
       payload.term = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.term : 'free';
       payload.tier = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.tier : 'base';
-      payload.topic = topicIn.value.trim() || (cartItems.length > 1
+      payload.topic = cartItems.length > 1
         ? 'Комплексный заказ · ' + window.SalonCart.positionLabel(submittedCartCount)
-        : cartFirst.label);
-      payload.details = window.SalonCart.summary() +
-        (payload.details ? '\n\nОБЩИЙ КОММЕНТАРИЙ\n' + payload.details : '');
+        : (cartFirst.topic || cartFirst.label);
+      payload.deadline = cartItems.length === 1 ? (cartFirst.deadline || '') : '';
+      /* Текущая незаписанная карточка конфигуратора не является частью сметы.
+         В комплексную заявку уходят только сохранённые позиции и их уточнения. */
+      payload.details = window.SalonCart.summary();
       payload.page = 'configurator.html#cart';
       payload.cart = window.SalonCart.payload();
     }

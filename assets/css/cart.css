@@ -234,7 +234,16 @@ html[data-motion="off"] .cart-tab,html[data-motion="off"] .cart-dock,html[data-m
 .cart-item-meta span+span::before{content:" · ";color:var(--ink-faint)}
 .cart-item.is-addon{margin-left:16px;border-left:3px solid color-mix(in srgb,var(--wax) 55%,var(--hairline))}
 .cart-item.is-addon::before{content:"+"}
+.cart-work-groups{display:grid;gap:10px}
+.cart-work-group{display:grid;gap:6px;padding:7px;border:1px solid color-mix(in srgb,var(--hairline) 78%,transparent);
+  border-radius:6px;background:color-mix(in srgb,var(--sheet) 72%,transparent)}
+.cart-work-group>.cart-item{border-color:var(--hairline-strong);background:var(--paper)}
+.cart-child-list{display:grid;gap:6px;padding-left:14px}
+.cart-child-list .cart-item.is-addon{margin-left:0}
 .cart-one{font-size:9.5px}
+.cart-complete{margin-left:auto;padding:4px 0;border:0;border-bottom:1px solid currentColor;background:transparent;
+  color:var(--ink-faint);font:600 10px var(--sans);cursor:pointer}
+.cart-complete:hover,.cart-complete.needs{color:var(--wax)}
 .cart-addons{margin-top:13px;padding:13px;border:1px solid var(--hairline);border-radius:5px;background:var(--sheet)}
 .cart-addon-list{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .cart-addon-list button{display:flex;justify-content:space-between;align-items:baseline;gap:8px;min-height:43px;padding:8px 9px;
@@ -243,6 +252,16 @@ html[data-motion="off"] .cart-tab,html[data-motion="off"] .cart-dock,html[data-m
 .cart-addon-list button:disabled{cursor:default;opacity:.58}
 .cart-addon-list button span{font-size:11px;line-height:1.25}
 .cart-addon-list button b{font:600 9px/1 var(--mono);white-space:nowrap;color:var(--wax)}
+.cart-addon-compose{margin-top:13px;padding:14px;border:1px solid color-mix(in srgb,var(--wax) 55%,var(--hairline));
+  border-radius:5px;background:linear-gradient(145deg,var(--sheet),color-mix(in srgb,var(--wax-soft) 54%,var(--sheet)))}
+.cart-addon-field{display:grid;gap:5px;margin-top:9px}
+.cart-addon-field>span{font-size:11px;color:var(--ink-soft)}
+.cart-addon-field>span b{margin-left:4px;color:var(--wax);font:600 8px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.cart-addon-field input,.cart-addon-field select{width:100%;min-height:42px;padding:8px 10px;border:1px solid var(--hairline-strong);
+  border-radius:3px;background:var(--paper);color:var(--ink);font:12px var(--sans)}
+.cart-addon-field input:focus,.cart-addon-field select:focus{outline:2px solid var(--stamp);outline-offset:1px;border-color:transparent}
+.cart-addon-compose-actions{display:grid;grid-template-columns:.8fr 1.2fr;gap:7px;margin-top:12px}
+.cart-addon-compose-actions .btn{min-height:43px}
 
 .cart-tools{margin-top:14px;padding:13px;border:1px solid var(--hairline);border-radius:5px;background:var(--sheet)}
 .cart-tool{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;padding:10px 0;border-top:1px solid var(--hairline)}
@@ -309,6 +328,8 @@ html[data-motion="off"] .cart-tab,html[data-motion="off"] .cart-dock,html[data-m
   .cart-guide{gap:5px;padding:9px 8px}
   .cart-guide button{font-size:8px}
   .cart-guide button b{width:20px;height:20px}
+  .cart-child-list{padding-left:7px}
+  .cart-addon-compose-actions{grid-template-columns:1fr}
 }
 
 body.cart-checkout #promoBox,

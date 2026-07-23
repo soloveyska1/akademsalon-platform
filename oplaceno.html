@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Оплата прошла — Академический Салон</title>
+<title>Проверяем оплату — Академический Салон</title>
 <meta name="robots" content="noindex,nofollow" />
-<meta name="referrer" content="same-origin" />
+<meta name="referrer" content="no-referrer" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -31,8 +31,8 @@ body{min-height:100vh;display:grid;place-items:center;padding:24px}
 <body>
 <main class="op" id="main">
   <div class="seal" aria-hidden="true">¶</div>
-  <h1>Оплата прошла</h1>
-  <p id="opText">Открываем ваше дело…</p>
+  <h1>Проверяем оплату</h1>
+  <p id="opText">Открываем нужный раздел. Подтверждение появится только после ответа кассы.</p>
   <div class="links">
     <a href="dashboard.html">Мой кабинет</a>
     <a href="index.html">На главную</a>
@@ -48,7 +48,9 @@ body{min-height:100vh;display:grid;place-items:center;padding:24px}
   'use strict';
   function q(n) {
     var m = (location.search || '').match(new RegExp('[?&]' + n + '=([^&]+)'));
-    return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : '';
+    if (!m) return '';
+    try { return decodeURIComponent(m[1].replace(/\+/g, ' ')); }
+    catch (e) { return ''; }
   }
   var k = q('Shp_k'), gift = q('Shp_gift'), kind = q('Shp_kind'), ord = q('Shp_order');
   var to = '';
@@ -59,8 +61,8 @@ body{min-height:100vh;display:grid;place-items:center;padding:24px}
   else if (ord) to = 'dashboard.html?paid=' + encodeURIComponent(ord);
   if (!to) {
     var t = document.getElementById('opText');
-    if (t) t.textContent = 'Платёж принят. Дело открыто в вашем кабинете — ' +
-      'зайдите в него по кнопке ниже. Если чего-то не хватает, напишите мастеру.';
+    if (t) t.textContent = 'Откройте кабинет: статус изменится после серверного ' +
+      'подтверждения кассы. Если оплата ещё не видна, обновите страницу через минуту.';
     return;
   }
   /* replace, а не href: кнопка «назад» не должна возвращать на кассу */
@@ -69,8 +71,8 @@ body{min-height:100vh;display:grid;place-items:center;padding:24px}
 </script>
 <noscript>
   <p style="text-align:center;max-width:34rem;margin:0 auto;color:var(--ink-soft)">
-    Платёж принят. Откройте <a href="dashboard.html">кабинет</a>, чтобы увидеть дело.
-    Если вы платили по ссылке-заявке — вернитесь по ней же, она откроет дело.
+    Откройте <a href="dashboard.html">кабинет</a>: статус оплаты появится только
+    после подтверждения кассы. Если вы платили по ссылке-заявке — вернитесь по ней.
   </p>
 </noscript>
 </body>

@@ -2147,6 +2147,54 @@ function initGodEye() {
     }).join('') + '</div>';
   }
 
+  function orderItemsBlock(o) {
+    var items = o.items || [];
+    if (!items.length) return '';
+    var linked = {};
+    var byParent = {};
+    items.forEach(function (item) {
+      var key = item.parent_client_id || '';
+      (byParent[key] || (byParent[key] = [])).push(item);
+    });
+    function itemPrice(item) {
+      var low = item.final_price || item.quote_low || 0;
+      var high = item.final_price || item.quote_high || low;
+      if (!low) return 'без вилки';
+      return (low === high ? money(low) : money(low) + '–' + money(high)) + ' ₽';
+    }
+    function row(item, child) {
+      var facts = [];
+      if (item.topic) facts.push('<b>Тема:</b> ' + esc(item.topic));
+      if (item.deadline_text) facts.push('<b>Срок:</b> ' + esc(item.deadline_text));
+      if (item.requirements) facts.push('<b>Требования:</b> ' + esc(item.requirements));
+      if (item.note) facts.push('<b>Комментарий:</b> ' + esc(item.note));
+      Object.keys(item.answers || {}).forEach(function (key) {
+        var value = item.answers[key];
+        if (value !== '' && value != null) facts.push('<b>' + esc(key) + ':</b> ' + esc(value));
+      });
+      return '<div class="ag-ci' + (child ? ' child' : '') + '">' +
+        '<span class="ag-ci-no">' + (child ? '↳' : item.position) + '</span>' +
+        '<div class="ag-ci-main"><div><b>' + esc(item.label || '') + '</b>' +
+        ((item.qty || 1) > 1 ? ' × ' + item.qty : '') + '</div>' +
+        (facts.length ? '<details><summary>Анкета и требования · ' + facts.length +
+          '</summary><p>' + facts.join('<br>') + '</p></details>' : '') + '</div>' +
+        '<span class="ag-ci-price">' + itemPrice(item) + '</span></div>';
+    }
+    var rows = '';
+    items.filter(function (item) { return item.kind === 'work'; }).forEach(function (work) {
+      rows += row(work, false);
+      (byParent[work.client_id] || []).forEach(function (service) {
+        linked[service.id] = true;
+        rows += row(service, true);
+      });
+    });
+    items.filter(function (item) {
+      return item.kind !== 'work' && !linked[item.id];
+    }).forEach(function (service) { rows += row(service, false); });
+    return '<div class="ag-sec ag-compose"><span class="caps">Состав сметы <span class="sub">' +
+      items.length + ' поз.</span></span><div class="ag-ci-list">' + rows + '</div></div>';
+  }
+
   /* быстрые действия мастера: пин, цвет, скрыть, корзина — прямо в шапке дела */
   function quickRow(o) {
     var pal = ['red', 'gold', 'green', 'blue', 'violet'].map(function (c) {
@@ -2228,6 +2276,7 @@ function initGodEye() {
       (o.topic ? '<p class="ag-topic">«' + esc(o.topic) + '»</p>' : '') +
       clientLine(o) +
       (hint ? '<div class="ag-next ' + hint[0] + '">' + hint[1] + '</div>' : '') +
+      orderItemsBlock(o) +
       moneyBlock(o) +
       planBlock(o) +
       offerBlock(o) +

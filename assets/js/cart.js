@@ -9,7 +9,7 @@
   var VERSION = 1;
   var api = null, S = null, box = null, tab = null, dock = null, body = null, foot = null;
   var data = { version: VERSION, items: [], checkout: { useBonus: false, bonusAmount: 0 }, updatedAt: 0 };
-  var member = null, removed = null, undoTimer = null, lastFocus = null;
+  var member = null, removed = null, undoTimer = null, lastFocus = null, pendingAddon = null;
   var visible = true, focusRestore = null;
   var benefitMessage = { promo:'', gift:'' };
 
@@ -36,6 +36,7 @@
     data = raw;
     data.checkout = data.checkout || { useBonus:false, bonusAmount:0 };
     data.items = data.items.filter(function (x) { return x && x.label && x.type; }).slice(0, 30);
+    data.items.forEach(syncNeeds);
   }
   function write() {
     data.updatedAt = Date.now();
@@ -46,6 +47,42 @@
     render();
     if (api && api.onChange) api.onChange();
     try { document.dispatchEvent(new CustomEvent('salon:cart', { detail:{ count:count(), quote:quote() } })); } catch (e) {}
+  }
+  function serviceById(id) {
+    var found = null;
+    (window.SalonServices || []).some(function (x) {
+      if (x.id === id) { found = x; return true; }
+      return false;
+    });
+    return found;
+  }
+  function requiredQuestions(serviceId) {
+    var svc = serviceById(serviceId);
+    return svc && Array.isArray(svc.ask) ? svc.ask.filter(function (q) { return !!q.req; }) : [];
+  }
+  function answerFor(item, q) {
+    return String(item && item.answers && item.answers[q.id] || '').trim();
+  }
+  function syncNeeds(item) {
+    if (!item || item.kind !== 'service') return item;
+    item.needs = requiredQuestions(item.serviceId).reduce(function (n, q) {
+      return n + (answerFor(item, q) ? 0 : 1);
+    }, 0);
+    return item;
+  }
+  function workById(id) {
+    var found = null;
+    data.items.some(function (x) {
+      if (x.kind === 'work' && x.id === id) { found = x; return true; }
+      return false;
+    });
+    return found;
+  }
+  function addonExists(serviceId, parentId, ignoreId) {
+    return data.items.some(function (x) {
+      return x.kind === 'service' && x.serviceId === serviceId &&
+        String(x.parentId || '') === String(parentId || '') && x.id !== ignoreId;
+    });
   }
   function count() {
     return data.items.reduce(function (n, x) { return n + Math.max(1, parseInt(x.qty, 10) || 1); }, 0);
@@ -127,6 +164,7 @@
     if (!a || !b || a.kind !== b.kind || a.type !== b.type) return false;
     if (a.kind === 'service') {
       return JSON.stringify(a.answers || {}) === JSON.stringify(b.answers || {}) &&
+        String(a.parentId || '') === String(b.parentId || '') &&
         String(a.topic || '') === String(b.topic || '') &&
         String(a.deadline || '') === String(b.deadline || '') &&
         String(a.requirements || '') === String(b.requirements || '');
@@ -172,13 +210,18 @@
   function addCurrent() {
     if (!api || !api.getCurrent) return;
     var current = api.getCurrent();
-    if (contains(current)) { open(); return; }
-    add(current);
+    if (contains(current)) { open(); return true; }
+    if (api.validateCurrent && api.validateCurrent() === false) return false;
+    return add(current);
   }
   function remove(id) {
     var at = -1;
     data.items.forEach(function (x, i) { if (x.id === id) at = i; });
     if (at < 0) return;
+    if (data.items[at].kind === 'work' && data.items.some(function (x) { return x.parentId === id; })) {
+      if (S && S.toast) S.toast('Сначала уберите или перенесите дополнения этой работы');
+      return;
+    }
     removed = { item:data.items[at], at:at };
     data.items.splice(at, 1);
     write();
@@ -203,6 +246,7 @@
   }
   function clear() {
     data.items = []; data.checkout = { useBonus:false, bonusAmount:0 }; removed = null;
+    pendingAddon = null;
     write();
   }
   function serviceType(id) {
@@ -211,30 +255,133 @@
       norm:'svc_norm', defense:'svc_defense', defensepack:'svc_defense_pack'
     }[id] || 'custom';
   }
-  function addAddon(id) {
-    var svc = null;
-    (window.SalonServices || []).some(function (x) {
-      if (x.id === id) { svc = x; return true; }
-      return false;
+  function addonItem(svc, parentId, answers, existing) {
+    answers = answers || {};
+    var answerLines = [];
+    (svc.ask || []).forEach(function (q) {
+      var answer = String(answers[q.id] || '').trim();
+      if (answer) answerLines.push((q.short || q.label) + ': ' + answer);
     });
+    var item = existing || {};
+    item.kind = 'service'; item.type = serviceType(svc.id); item.serviceId = svc.id;
+    item.serviceCode = svc.code; item.label = svc.label;
+    item.serviceMeta = 'дополнение к работе';
+    item.low = svc.from; item.high = svc.fixed ? svc.from : (svc.to || svc.from);
+    item.fixed = !!svc.fixed; item.allowQty = false; item.answers = answers;
+    item.answerLines = answerLines; item.topic = item.topic || ''; item.deadline = item.deadline || '';
+    item.requirements = item.requirements || ''; item.note = item.note || '';
+    item.parentId = parentId || ''; item.isAddon = true;
+    return syncNeeds(item);
+  }
+  function beginAddon(id, editId) {
+    var svc = serviceById(id);
     if (!svc) return;
-    var parent = null;
-    data.items.some(function (x) {
-      if (x.kind === 'work') { parent = x; return true; }
+    var editing = null;
+    if (editId) data.items.some(function (x) {
+      if (x.id === editId) { editing = x; return true; }
       return false;
     });
-    var item = {
-      kind:'service', type:serviceType(svc.id), serviceId:svc.id, serviceCode:svc.code,
-      label:svc.label, serviceMeta:'дополнение к работе', low:svc.from,
-      high:svc.fixed ? svc.from : (svc.to || svc.from), fixed:!!svc.fixed,
-      allowQty:false, answers:{}, answerLines:[], topic:'', deadline:'', requirements:'', note:'',
-      parentId:parent ? parent.id : '', isAddon:true
+    if (editing && !editing.isAddon && !editing.parentId) {
+      pendingAddon = {
+        serviceId:svc.id, parentId:'', answers:Object.assign({}, editing.answers || {}),
+        editId:editing.id, standalone:true
+      };
+      render();
+      setTimeout(function () {
+        var field = box && box.querySelector('[data-cart-addon-answer]');
+        if (field && field.focus) field.focus();
+      }, 20);
+      return;
+    }
+    var works = data.items.filter(function (x) { return x.kind === 'work'; });
+    var available = works.filter(function (x) {
+      return !addonExists(svc.id, x.id, editing && editing.id);
+    });
+    if (!available.length) {
+      if (S && S.toast) S.toast('Эта услуга уже добавлена к каждой работе');
+      return;
+    }
+    var parentId = editing && workById(editing.parentId) ? editing.parentId : available[0].id;
+    var required = requiredQuestions(svc.id);
+    if (works.length === 1 && !required.length && !editing) {
+      add(addonItem(svc, parentId, {}));
+      return;
+    }
+    pendingAddon = {
+      serviceId:svc.id, parentId:parentId, answers:Object.assign({}, editing && editing.answers || {}),
+      editId:editing ? editing.id : ''
     };
-    if (contains(item)) { open(); return; }
-    add(item);
+    render();
+    setTimeout(function () {
+      var target = box && box.querySelector('[data-cart-addon-answer], [data-cart-addon-parent], [data-cart-addon-confirm]');
+      if (target && target.focus) target.focus();
+    }, 20);
+  }
+  function savePendingAddon() {
+    if (!pendingAddon) return false;
+    var svc = serviceById(pendingAddon.serviceId);
+    var parent = workById(pendingAddon.parentId);
+    if (!svc || (!pendingAddon.standalone && !parent)) {
+      if (S && S.toast) S.toast('Выберите работу для дополнения', { type:'error' });
+      return false;
+    }
+    var missing = requiredQuestions(svc.id).filter(function (q) {
+      return !String(pendingAddon.answers[q.id] || '').trim();
+    })[0];
+    if (missing) {
+      if (S && S.toast) S.toast('Ответьте: ' + missing.label.toLowerCase(), { type:'error' });
+      var field = box && box.querySelector('[data-cart-addon-answer="' + missing.id + '"]');
+      if (field && field.focus) field.focus();
+      return false;
+    }
+    if (!pendingAddon.standalone && addonExists(svc.id, parent.id, pendingAddon.editId)) {
+      if (S && S.toast) S.toast('Эта услуга уже есть у выбранной работы');
+      return false;
+    }
+    if (pendingAddon.editId) {
+      var editing = null;
+      data.items.some(function (x) {
+        if (x.id === pendingAddon.editId) { editing = x; return true; }
+        return false;
+      });
+      if (!editing) return false;
+      if (pendingAddon.standalone) {
+        editing.answers = pendingAddon.answers;
+        editing.answerLines = [];
+        (svc.ask || []).forEach(function (q) {
+          var answer = String(pendingAddon.answers[q.id] || '').trim();
+          if (answer) editing.answerLines.push((q.short || q.label) + ': ' + answer);
+        });
+        syncNeeds(editing);
+      } else {
+        addonItem(svc, parent.id, pendingAddon.answers, editing);
+      }
+      pendingAddon = null;
+      write();
+      return true;
+    }
+    var item = addonItem(svc, parent.id, pendingAddon.answers);
+    pendingAddon = null;
+    return add(item);
+  }
+  function validate() {
+    var invalid = null;
+    data.items.some(function (x) {
+      syncNeeds(x);
+      if (x.kind === 'service' && x.needs) { invalid = x; return true; }
+      return false;
+    });
+    if (!invalid) return true;
+    open();
+    beginAddon(invalid.serviceId, invalid.id);
+    if (S && S.toast) S.toast('Дополните обязательные сведения для «' + invalid.label + '»', { type:'error' });
+    return false;
   }
   function lineItem(x, i) {
     var q = itemQuote(x), m = meta(x);
+    var parent = x.parentId ? workById(x.parentId) : null;
+    if (parent) m.unshift('Для: ' + parent.label);
+    syncNeeds(x);
     var titleId = 'cartItem_' + esc(x.id);
     return '<article class="cart-item ' + (x.kind === 'service' ? 'is-service' : 'is-work') +
       (x.isAddon || x.parentId ? ' is-addon' : '') + '" data-cart-id="' + esc(x.id) +
@@ -255,6 +402,10 @@
         '<button type="button" data-cart-qty="1" aria-label="Увеличить количество «' + esc(x.label) + '»"' +
         ((x.qty || 1) >= 10 ? ' disabled' : '') + '>+</button></div>' :
         '<span class="cart-one">1 ' + (x.kind === 'service' ? 'услуга' : 'работа') + '</span>') +
+      (x.kind === 'service' && x.isAddon
+        ? '<button type="button" class="cart-complete' + (x.needs ? ' needs' : '') +
+          '" data-cart-edit-addon="' + esc(x.id) + '">' +
+          (x.needs ? 'Дополнить сведения' : 'Изменить работу') + '</button>' : '') +
       '<button type="button" class="cart-remove" data-cart-remove="' + esc(x.id) +
       '" aria-label="Убрать «' + esc(x.label) + '» из состава">Убрать</button></div></article>';
   }
@@ -338,21 +489,48 @@
     return out + '</section>';
   }
   function addonsHtml() {
-    var hasWork = data.items.some(function (x) { return x.kind === 'work'; });
-    if (!hasWork) return '';
+    var works = data.items.filter(function (x) { return x.kind === 'work'; });
+    if (!works.length) return '';
     var ids = ['norm', 'defense', 'ai', 'review'];
     var rows = [];
     ids.forEach(function (id) {
-      var svc = null;
-      (window.SalonServices || []).some(function (x) { if (x.id === id) { svc = x; return true; } return false; });
+      var svc = serviceById(id);
       if (!svc) return;
-      var already = data.items.some(function (x) { return x.kind === 'service' && x.serviceId === id; });
-      rows.push('<button type="button" data-cart-addon="' + id + '"' + (already ? ' disabled' : '') + '>' +
-        '<span>' + (already ? '✓' : '+') + ' ' + esc(svc.label) + '</span><b>от ' + money(svc.from) + ' ₽</b></button>');
+      var available = works.some(function (x) { return !addonExists(id, x.id); });
+      rows.push('<button type="button" data-cart-addon="' + id + '"' + (available ? '' : ' disabled') + '>' +
+        '<span>' + (available ? '+' : '✓') + ' ' + esc(svc.label) + '</span><b>' +
+        (available ? 'от ' + money(svc.from) + ' ₽' : 'добавлено') + '</b></button>');
     });
     return '<section class="cart-addons"><div class="cart-section-head compact"><span class="cart-section-no">+</span>' +
       '<div><h3>Дополнить работу</h3><p>Добавляется к той же заявке одним нажатием</p></div></div>' +
       '<div class="cart-addon-list">' + rows.join('') + '</div></section>';
+  }
+  function addonComposerHtml() {
+    if (!pendingAddon) return '';
+    var svc = serviceById(pendingAddon.serviceId);
+    if (!svc) return '';
+    var works = data.items.filter(function (x) {
+      return x.kind === 'work' && !addonExists(svc.id, x.id, pendingAddon.editId);
+    });
+    var options = works.map(function (x) {
+      return '<option value="' + esc(x.id) + '"' +
+        (x.id === pendingAddon.parentId ? ' selected' : '') + '>' + esc(x.label) + '</option>';
+    }).join('');
+    var questions = requiredQuestions(svc.id).map(function (q) {
+      var value = String(pendingAddon.answers[q.id] || '');
+      return '<label class="cart-addon-field"><span>' + esc(q.label) + ' <b>обязательно</b></span>' +
+        '<input type="text" maxlength="160" data-cart-addon-answer="' + esc(q.id) +
+        '" value="' + esc(value) + '" placeholder="' + esc(q.ph || 'Уточните для мастера') + '"></label>';
+    }).join('');
+    return '<section class="cart-addon-compose" id="cartAddonCompose" aria-labelledby="cartAddonTitle">' +
+      '<div class="cart-section-head compact"><span class="cart-section-no">+</span><div><h3 id="cartAddonTitle">' +
+      (pendingAddon.editId ? 'Дополнить сведения' : 'Куда добавить услугу?') + '</h3><p>' +
+      esc(svc.label) + '</p></div></div>' +
+      (pendingAddon.standalone ? '' :
+        '<label class="cart-addon-field"><span>Работа</span><select data-cart-addon-parent>' + options + '</select></label>') +
+      questions + '<div class="cart-addon-compose-actions"><button type="button" class="btn btn-line" data-cart-addon-cancel>Отмена</button>' +
+      '<button type="button" class="btn btn-wax" data-cart-addon-confirm>' +
+      (pendingAddon.editId ? 'Сохранить' : 'Добавить к работе') + '</button></div></section>';
   }
   function totalsHtml(b) {
     var discountLabel = b.discountKind === 'promo' ? 'Промокод' : (b.discountKind === 'sub' ? 'Салон+' : 'Скидки');
@@ -419,14 +597,20 @@
     }
     var works = data.items.filter(function (x) { return x.kind !== 'service'; });
     var services = data.items.filter(function (x) { return x.kind === 'service'; });
+    var unattached = services.filter(function (x) { return !workById(x.parentId); });
     var groups = '<section class="cart-group" id="cartItems"><div class="cart-section-head"><span class="cart-section-no">01</span>' +
       '<div><h3>Позиции сметы</h3><p>' + positionLabel(n) + ' · можно изменить до отправки</p></div></div>';
-    if (works.length) groups += '<h4>Работы</h4><div class="cart-list">' +
-      works.map(function (x) { return lineItem(x, data.items.indexOf(x)); }).join('') + '</div>';
-    if (services.length) groups += '<h4>Дополнительные услуги</h4><div class="cart-list service-list">' +
-      services.map(function (x) { return lineItem(x, data.items.indexOf(x)); }).join('') + '</div>';
+    if (works.length) groups += '<h4>Работы и дополнения</h4><div class="cart-work-groups">' +
+      works.map(function (work) {
+        var children = services.filter(function (x) { return x.parentId === work.id; });
+        return '<div class="cart-work-group">' + lineItem(work, data.items.indexOf(work)) +
+          (children.length ? '<div class="cart-child-list" aria-label="Дополнения к «' + esc(work.label) + '»">' +
+            children.map(function (x) { return lineItem(x, data.items.indexOf(x)); }).join('') + '</div>' : '') + '</div>';
+      }).join('') + '</div>';
+    if (unattached.length) groups += '<h4>Самостоятельные услуги</h4><div class="cart-list service-list">' +
+      unattached.map(function (x) { return lineItem(x, data.items.indexOf(x)); }).join('') + '</div>';
     groups += '</section>';
-    body.innerHTML = guide + groups + addonsHtml() +
+    body.innerHTML = guide + groups + addonComposerHtml() + addonsHtml() +
       (removed ? '<div class="cart-undo"><span>Позиция убрана</span><button type="button" data-cart-undo>Вернуть</button></div>' : '') +
       benefitToolsHtml(b) +
       '<button type="button" class="cart-clear" data-cart-clear>Очистить состав</button>' +
@@ -510,12 +694,24 @@
     if (t.closest('[data-cart-remove]')) { remove(t.closest('[data-cart-remove]').getAttribute('data-cart-remove')); return; }
     if (t.closest('[data-cart-undo]')) { undo(); return; }
     if (t.closest('[data-cart-qty]') && id) { setQty(id, parseInt(t.closest('[data-cart-qty]').getAttribute('data-cart-qty'), 10)); return; }
-    if (t.closest('[data-cart-addon]')) { addAddon(t.closest('[data-cart-addon]').getAttribute('data-cart-addon')); return; }
+    if (t.closest('[data-cart-addon]')) { beginAddon(t.closest('[data-cart-addon]').getAttribute('data-cart-addon')); return; }
+    if (t.closest('[data-cart-edit-addon]')) {
+      var editId = t.closest('[data-cart-edit-addon]').getAttribute('data-cart-edit-addon');
+      var editItem = null;
+      data.items.some(function (x) { if (x.id === editId) { editItem = x; return true; } return false; });
+      if (editItem) beginAddon(editItem.serviceId, editItem.id);
+      return;
+    }
+    if (t.closest('[data-cart-addon-cancel]')) { pendingAddon = null; render(); return; }
+    if (t.closest('[data-cart-addon-confirm]')) { savePendingAddon(); return; }
     if (t.closest('[data-cart-another]')) {
       var kind = t.closest('[data-cart-another]').getAttribute('data-cart-another') || 'work';
       close(); if (api && api.another) api.another(kind); return;
     }
-    if (t.closest('[data-cart-checkout]')) { close(); if (api && api.checkout) api.checkout(); return; }
+    if (t.closest('[data-cart-checkout]')) {
+      if (!validate()) return;
+      close(); if (api && api.checkout) api.checkout(); return;
+    }
     if (t.closest('[data-cart-jump]')) {
       var jump = box.querySelector('#' + t.closest('[data-cart-jump]').getAttribute('data-cart-jump'));
       if (jump && jump.scrollIntoView) jump.scrollIntoView({
@@ -570,6 +766,10 @@
   }
   function input(e) {
     var t = e.target;
+    if (pendingAddon && t.hasAttribute('data-cart-addon-answer')) {
+      pendingAddon.answers[t.getAttribute('data-cart-addon-answer')] = t.value;
+      return;
+    }
     if (t.hasAttribute('data-cart-note')) { setNote(t.getAttribute('data-cart-note'), t.value); return; }
     if (t.id === 'cartBonus') {
       data.checkout.useBonus = !!t.checked;
@@ -583,6 +783,10 @@
     }
   }
   function change(e) {
+    if (pendingAddon && e.target && e.target.hasAttribute('data-cart-addon-parent')) {
+      pendingAddon.parentId = e.target.value;
+      return;
+    }
     if (e.target && e.target.id === 'cartBonusRange') {
       data.updatedAt = Date.now();
       if (S && S.store) S.store.set(KEY, data);
@@ -598,7 +802,9 @@
       e.preventDefault(); var gb = box.querySelector('[data-cart-gift-apply]'); if (gb) gb.click(); return;
     }
     if (e.key !== 'Tab') return;
-    var f = Array.prototype.slice.call(box.querySelectorAll('button:not([disabled]),a[href],input:not([disabled])'))
+    var f = Array.prototype.slice.call(box.querySelectorAll(
+      'button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled])'
+    ))
       .filter(function (x) { return x.offsetParent !== null; });
     if (!f.length) return;
     if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length-1].focus(); }
@@ -686,7 +892,30 @@
     init:init, open:open, add:add, clear:clear, count:count, hasItems:function(){ return !!data.items.length; },
     items:function(){ return data.items.slice(); }, first:first, quote:quote, benefits:benefits,
     summary:summary, payload:payload, snapshot:snapshot, contains:contains, ensure:ensure,
-    setVisible:setVisible, refresh:notify, positionLabel:positionLabel,
+    setVisible:setVisible, refresh:notify, positionLabel:positionLabel, validate:validate,
     bonusIntent:function(){ return data.checkout.useBonus ? benefits().bonus : 0; }
   };
+  /* Изолированный Node-harness включает этот адаптер флагом до загрузки файла.
+     В обычном браузере дополнительного публичного API нет. */
+  if (window.__SALON_CART_TEST__) {
+    window.__SalonCartTest = {
+      reset:function(next, opts) {
+        opts = opts || {};
+        data = next || { version:VERSION, items:[], checkout:{ useBonus:false, bonusAmount:0 }, updatedAt:0 };
+        data.checkout = data.checkout || { useBonus:false, bonusAmount:0 };
+        S = opts.S || S;
+        api = opts.api || {};
+        box = tab = dock = body = foot = null;
+        pendingAddon = null;
+        data.items.forEach(syncNeeds);
+      },
+      state:function() { return JSON.parse(JSON.stringify(data)); },
+      read:read, write:write, payload:payload, validate:validate,
+      addCurrent:addCurrent, equivalent:equivalent, addonItem:addonItem,
+      beginAddon:beginAddon, savePendingAddon:savePendingAddon,
+      pending:function() { return pendingAddon ? JSON.parse(JSON.stringify(pendingAddon)) : null; },
+      setPendingParent:function(id) { if (pendingAddon) pendingAddon.parentId = id; },
+      setPendingAnswer:function(id, value) { if (pendingAddon) pendingAddon.answers[id] = value; }
+    };
+  }
 })();

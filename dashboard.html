@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <meta name="referrer" content="no-referrer">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Личный кабинет — Академический Салон</title>
@@ -218,6 +219,22 @@
   .ord-price-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px 12px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:3px double var(--ink)}
   .ord-price{font-size:clamp(18px,2.4vw,22px);letter-spacing:-.02em;white-space:nowrap}
   .ord-price-note{margin-top:8px}
+  .ord-composition{margin:18px 0 4px;border:1px solid var(--hairline-strong);
+    border-radius:var(--r);background:var(--paper-2);overflow:hidden}
+  .oc-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+    padding:10px 13px;border-bottom:1px solid var(--hairline);color:var(--ink-faint);
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.06em}
+  .oc-list{display:grid}
+  .oci-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;
+    align-items:start;padding:10px 13px;border-bottom:1px solid var(--hairline)}
+  .oci-row:last-child{border-bottom:0}
+  .oci-row.child{padding-left:28px;background:color-mix(in srgb,var(--wax) 4%,transparent)}
+  .oci-no{font:10.5px/1.5 var(--mono);color:var(--ink-faint)}
+  .oci-row.child .oci-no{color:var(--wax)}
+  .oci-main{min-width:0}
+  .oci-main b{display:block;font-size:13.5px;font-weight:560;line-height:1.35}
+  .oci-main small{display:block;margin-top:2px;color:var(--ink-soft);font-size:11.5px;line-height:1.45}
+  .oci-price{font:11.5px/1.45 var(--mono);color:var(--ink-soft);white-space:nowrap}
 
   /* разделы дела: волосяная линия + caps-заголовок */
   .fs-sec{margin-top:clamp(24px,4vw,34px);padding-top:clamp(16px,2.6vw,22px);border-top:1px solid var(--hairline)}
@@ -558,6 +575,9 @@
     .cab-id .ci-dot{display:none}
     .act-row{flex-direction:column}
     .act-row .btn{width:100%}
+    .oci-row{grid-template-columns:22px minmax(0,1fr);padding:10px 11px}
+    .oci-row.child{padding-left:20px}
+    .oci-price{grid-column:2;margin-top:2px}
     .chat-m{max-width:100%}
     .stg-row .st-tag{display:none}
     .sheet-pad{padding:16px 14px}
@@ -635,6 +655,6 @@
 
 <script src="assets/js/app.js?v=20260723j"></script>
 <script src="assets/js/extras.js?v=20260723g"></script>
-<script src="assets/js/cabinet.js?v=20260723f"></script>
+<script src="assets/js/cabinet.js?v=20260723g"></script>
 </body>
 </html>

@@ -1191,6 +1191,50 @@ function initCabinet() {
     return giftFold(o);
   }
 
+  function itemQuote(item) {
+    var low = item.final_price || item.quote_low || 0;
+    var high = item.final_price || item.quote_high || low;
+    if (!low) return '';
+    return low === high ? money(low) + ' ₽' : money(low) + '–' + money(high) + ' ₽';
+  }
+
+  function orderItemsBlock(o) {
+    var items = o.items || [];
+    if (!items.length) return '';
+    var byParent = {};
+    items.forEach(function (item) {
+      var key = item.parent_client_id || '';
+      (byParent[key] || (byParent[key] = [])).push(item);
+    });
+    function row(item, child) {
+      var facts = [];
+      if ((item.qty || 1) > 1) facts.push('× ' + item.qty);
+      if (item.deadline_text) facts.push('срок: ' + esc(item.deadline_text));
+      if (item.topic) facts.push('«' + esc(item.topic) + '»');
+      return '<div class="oci-row' + (child ? ' child' : '') + '">' +
+        '<span class="oci-no">' + (child ? '↳' : String(item.position).padStart(2, '0')) + '</span>' +
+        '<span class="oci-main"><b>' + esc(item.label || '') + '</b>' +
+        (facts.length ? '<small>' + facts.join(' · ') + '</small>' : '') + '</span>' +
+        '<span class="oci-price">' + itemQuote(item) + '</span></div>';
+    }
+    var linked = {};
+    var html = '';
+    items.filter(function (item) { return item.kind === 'work'; }).forEach(function (work) {
+      html += row(work, false);
+      (byParent[work.client_id] || []).forEach(function (service) {
+        linked[service.id] = true;
+        html += row(service, true);
+      });
+    });
+    items.filter(function (item) {
+      return item.kind !== 'work' && !linked[item.id];
+    }).forEach(function (service) { html += row(service, false); });
+    return '<section class="ord-composition" aria-label="Состав сметы">' +
+      '<div class="oc-head"><span class="caps">Состав сметы</span><span>' +
+      items.length + ' ' + plural(items.length, 'позиция', 'позиции', 'позиций') +
+      '</span></div><div class="oc-list">' + html + '</div></section>';
+  }
+
   /* -------- подарочный сертификат в деле: привязать код / показать привязку.
      Средство платежа, не скидка: зачёт считает сервер при цене -------- */
   function giftFold(o) {
@@ -1903,6 +1947,7 @@ function initCabinet() {
       '<h2 class="ord-type">' + esc(o.work_label || '') + '</h2>' +
       (o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
       '<p class="petit">' + meta.join(' · ') + ' ' + deadlineChip(o) + '</p>' +
+      orderItemsBlock(o) +
       jumpChips(o) +
       pauseBand(o) + finalBand(o) + partBand(o) + dueBand(o) +
       priceBlock(o) + giftRestStrip(o) + actionsBlock(o) +
