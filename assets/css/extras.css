@@ -652,13 +652,22 @@
   .mn-msg{font-size:14px}
 }
 @media(max-width:480px){
-  .mnote--call{gap:10px;padding:13px 12px}
+  .mrail{left:10px;right:10px}
+  .mnote{border-radius:5px;box-shadow:0 1px 0 var(--hairline),0 12px 30px rgba(34,32,27,.2)}
+  .mnote--call{gap:7px;padding:10px 7px 10px 12px;border-left-width:2px}
   .mn-seal{display:none}                 /* текст важнее декора */
-  .mn-cap{font-size:10px;letter-spacing:.1em;gap:6px}
-  .mn-act{flex-direction:column;align-items:stretch;gap:8px}
-  .mn-later{justify-content:center}
+  .mn-cap{gap:6px;margin-bottom:3px;font-size:9px;letter-spacing:.1em;color:var(--ink-faint)}
+  .mn-cap::before{content:"";width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:var(--stamp)}
+  .mnote.is-wax .mn-cap::before{background:var(--wax)}
+  .mnote.is-verify .mn-cap::before{background:var(--verify)}
+  .mn-cap .mc-dots,.mn-cap .mc-st{display:none}
+  .mn-t{font-size:15.5px;line-height:1.25}
+  .mn-sub{margin-top:3px;font-size:12px;line-height:1.35}
+  .mn-act{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:7px;margin-top:8px}
+  .mn-go{min-height:44px;padding:8px 12px;font-size:13px;justify-content:center}
+  .mn-later{min-height:44px;padding:0 9px;justify-content:center;font-size:12px;text-decoration:none}
   .mnote--echo{padding-left:12px;gap:7px}
-  .mnote--call .mn-x{margin:-2px -2px 0 0}
+  .mnote--call .mn-x{margin:-4px -2px 0 0}
 }
 
 /* ============================================================
