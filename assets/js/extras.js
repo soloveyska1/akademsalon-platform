@@ -201,31 +201,168 @@
     });
   };
 
-  /* ---------------- Куки-плашка ---------------- */
+  /* ---------------- Настройки данных · consent v2 ---------------- */
   (function cookieBar() {
-    if (QUIET_PAGES[here]) return;
-    var saved = S.store.get('salon_consent', null);
-    if (saved && saved.v >= 1) return;
-    var el = document.createElement('div');
-    el.className = 'cookiebar';
-    el.setAttribute('role', 'region');
-    el.setAttribute('aria-label', 'Сообщение о cookie');
-    el.innerHTML =
-      '<p><b>Пара слов о данных.</b> Сайт хранит служебные записи: тему оформления, ' +
-      'черновик расчёта и доступ к вашим заказам. После «Хорошо» включится ' +
-      'обезличенная статистика Яндекс.Метрики — рекламных трекеров нет.</p>' +
-      '<div class="cb-row">' +
-        '<button type="button" class="btn btn-ink" data-cb-ok>Хорошо</button>' +
-        '<a class="cb-more" href="privacy.html#cookies">Подробнее</a>' +
-      '</div>';
-    document.body.appendChild(el);
-    setTimeout(function () { el.classList.add('in'); }, 900);
-    el.querySelector('[data-cb-ok]').addEventListener('click', function () {
-      S.store.set('salon_consent', { v: 1, at: new Date().toISOString(), necessary: true });
-      document.dispatchEvent(new CustomEvent('salon:consent'));
-      el.classList.remove('in');
-      setTimeout(function () { el.remove(); }, 400);
+    if (!S.consent) return;
+    var bar = null, prefs = null, prefsOpener = null;
+
+    function closeBar() {
+      if (!bar) return;
+      var old = bar;
+      bar = null;
+      old.classList.remove('in');
+      setTimeout(function () { if (old.parentNode) old.remove(); }, reduceMotion ? 0 : 360);
+    }
+
+    function choose(analytics, source) {
+      S.consent.save(analytics === true, source || 'banner');
+      closeBar();
+      closePrefs();
+      if (S.toast) {
+        S.toast(analytics ? 'Аналитика разрешена — выбор можно изменить внизу страницы'
+                          : 'Сохранены только необходимые данные');
+      }
+    }
+
+    function showBar() {
+      if (bar || QUIET_PAGES[here]) return;
+      bar = document.createElement('section');
+      bar.className = 'cookiebar';
+      bar.setAttribute('role', 'region');
+      bar.setAttribute('aria-labelledby', 'cb-title');
+      bar.innerHTML =
+        '<div class="cb-head">' +
+          '<span class="cb-mark" aria-hidden="true">¶</span>' +
+          '<span class="cb-kicker">Приватность · выбор за вами</span>' +
+          '<h2 id="cb-title">Настройки данных</h2>' +
+        '</div>' +
+        '<p>Обязательное хранилище сохраняет корзину, настройки и безопасный вход. ' +
+          'С вашего согласия включим собственную аналитику и Яндекс.Метрику. ' +
+          'Отказ не повлияет на сайт и оформление заказа.</p>' +
+        '<div class="cb-actions">' +
+          '<button type="button" class="btn btn-ink" data-cb-allow>Разрешить аналитику</button>' +
+          '<button type="button" class="btn btn-line" data-cb-reject>Только необходимые</button>' +
+        '</div>' +
+        '<div class="cb-foot">' +
+          '<button type="button" class="cb-more" data-cb-settings>Настроить</button>' +
+          '<a class="cb-more" href="privacy.html#cookies">Политика и сроки</a>' +
+          '<span>Без рекламных трекеров</span>' +
+        '</div>';
+      document.body.appendChild(bar);
+      if (S.railAdopt) S.railAdopt();
+      setTimeout(function () { if (bar) bar.classList.add('in'); }, reduceMotion ? 0 : 650);
+      bar.querySelector('[data-cb-allow]').addEventListener('click', function () {
+        choose(true, 'banner');
+      });
+      bar.querySelector('[data-cb-reject]').addEventListener('click', function () {
+        choose(false, 'banner');
+      });
+      bar.querySelector('[data-cb-settings]').addEventListener('click', function (e) {
+        openPrefs(e.currentTarget);
+      });
+    }
+
+    function prefsHTML(checked) {
+      return '<div class="cp-back" data-cp-close></div>' +
+        '<section class="cp-card" aria-labelledby="cp-title">' +
+          '<button type="button" class="cp-x" data-cp-close aria-label="Закрыть настройки">×</button>' +
+          '<p class="cp-kicker">Академический Салон · данные</p>' +
+          '<h2 id="cp-title">Ваш выбор</h2>' +
+          '<p class="cp-lead">Необязательные данные выключены, пока вы сами их не разрешите. ' +
+            'Выбор можно изменить в любой момент.</p>' +
+          '<div class="cp-list">' +
+            '<div class="cp-item is-required">' +
+              '<span class="cp-no">01</span><span class="cp-copy"><b>Необходимые</b>' +
+                '<small>Корзина и черновик, тема сайта, защита форм, безопасный вход и запись этого выбора.</small></span>' +
+              '<span class="cp-lock" aria-label="Всегда включены">Всегда</span>' +
+            '</div>' +
+            '<label class="cp-item" for="cp-analytics">' +
+              '<span class="cp-no">02</span><span class="cp-copy"><b>Аналитика</b>' +
+                '<small>Собственная статистика и Яндекс.Метрика: страницы без секретных параметров, источник, устройство, клики и технические ошибки. Вебвизор и ecommerce отключены.</small></span>' +
+              '<span class="cp-switch"><input id="cp-analytics" type="checkbox"' + (checked ? ' checked' : '') + '>' +
+                '<span aria-hidden="true"></span></span>' +
+            '</label>' +
+          '</div>' +
+          '<p class="cp-none"><span aria-hidden="true">✓</span> Рекламные cookies и рекламные трекеры не используются.</p>' +
+          '<details class="cp-legal">' +
+            '<summary>Что означает согласие</summary>' +
+            '<p>Разрешая аналитику, вы даёте Семёнову Семёну Юрьевичу, ИНН 212885750445, ' +
+              'отдельное согласие на автоматизированную обработку данных о посещении akademsalon.ru ' +
+              'для анализа посещаемости, поиска ошибок и улучшения сайта: случайного ID браузера, ' +
+              'IP-адреса и приблизительного региона, времени визита, очищенных адресов страниц, ' +
+              'источника, устройства, браузера, ОС, кликов и технических ошибок. Обработка включает ' +
+              'сбор, запись, хранение, использование, передачу ООО «ЯНДЕКС» по поручению оператора, ' +
+              'обезличивание и удаление. Согласие действует 12 месяцев или до отзыва здесь. ' +
+              '<a href="privacy.html#cookies">Полный состав и сроки</a>.</p>' +
+          '</details>' +
+          '<div class="cp-actions">' +
+            '<button type="button" class="btn btn-ink" data-cp-save>Сохранить выбор</button>' +
+            '<button type="button" class="btn btn-line" data-cp-all>Разрешить аналитику</button>' +
+          '</div>' +
+        '</section>';
+    }
+
+    function openPrefs(opener) {
+      if (prefs) return;
+      prefsOpener = opener || document.activeElement;
+      var saved = S.consent.read();
+      prefs = document.createElement('div');
+      prefs.className = 'cookieprefs';
+      prefs.setAttribute('role', 'dialog');
+      prefs.setAttribute('aria-modal', 'true');
+      prefs.setAttribute('aria-labelledby', 'cp-title');
+      prefs.innerHTML = prefsHTML(!!(saved && saved.analytics));
+      document.body.appendChild(prefs);
+      if (bar) { bar.classList.add('is-behind'); bar.setAttribute('aria-hidden', 'true'); }
+      void prefs.offsetWidth;
+      prefs.classList.add('open');
+      document.addEventListener('keydown', onPrefsKey);
+      prefs.querySelector('.cp-x').focus();
+      prefs.addEventListener('click', function (e) {
+        if (e.target.closest('[data-cp-close]')) { closePrefs(); return; }
+        if (e.target.closest('[data-cp-all]')) { choose(true, 'settings'); return; }
+        if (e.target.closest('[data-cp-save]')) {
+          choose(prefs.querySelector('#cp-analytics').checked, 'settings');
+        }
+      });
+    }
+
+    function closePrefs() {
+      if (!prefs) return;
+      var old = prefs, opener = prefsOpener;
+      prefs = null;
+      prefsOpener = null;
+      old.classList.remove('open');
+      document.removeEventListener('keydown', onPrefsKey);
+      if (bar) { bar.classList.remove('is-behind'); bar.removeAttribute('aria-hidden'); }
+      setTimeout(function () {
+        if (old.parentNode) old.remove();
+        if (opener && opener.focus && document.contains(opener)) {
+          try { opener.focus(); } catch (e) {}
+        }
+      }, reduceMotion ? 0 : 220);
+    }
+
+    function onPrefsKey(e) {
+      if (!prefs) return;
+      if (e.key === 'Escape') { e.preventDefault(); closePrefs(); return; }
+      if (e.key !== 'Tab') return;
+      var f = Array.prototype.slice.call(prefs.querySelectorAll('button:not([disabled]),input:not([disabled]),summary,a[href]'));
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+
+    S.cookieSettings = { open: openPrefs };
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('[data-cookie-settings]');
+      if (!b) return;
+      e.preventDefault();
+      openPrefs(b);
     });
+
+    if (!S.consent.read()) showBar();
   })();
 
   /* ---------------- Переходы между страницами ---------------- */

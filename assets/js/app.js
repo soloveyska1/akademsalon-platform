@@ -218,6 +218,59 @@
     set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
     del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
   };
+  /* Отдельное согласие на необязательную аналитику. Старый v1 намеренно
+     не мигрируем: его кнопка «Хорошо» не фиксировала предметный выбор.
+     Через 12 месяцев и при новой версии текст согласия показывается заново. */
+  Salon.consent = (function () {
+    var KEY = 'salon_consent';
+    var VERSION = 2;
+    var TTL = 365 * 24 * 60 * 60 * 1000;
+    function read() {
+      var c = Salon.store.get(KEY, null);
+      var exp = c && c.expiresAt ? Date.parse(c.expiresAt) : NaN;
+      if (!c || c.v !== VERSION || typeof c.analytics !== 'boolean' ||
+          !c.at || !isFinite(exp) || exp <= Date.now()) {
+        if (c) Salon.store.del(KEY);
+        return null;
+      }
+      return c;
+    }
+    function emit(c) {
+      try {
+        document.dispatchEvent(new CustomEvent('salon:consent', { detail: c }));
+      } catch (e) {
+        var ev = document.createEvent('CustomEvent');
+        ev.initCustomEvent('salon:consent', false, false, c);
+        document.dispatchEvent(ev);
+      }
+    }
+    function save(analytics, source) {
+      var now = new Date();
+      var c = {
+        v: VERSION,
+        document: 'analytics-consent-2.0',
+        necessary: true,
+        analytics: analytics === true,
+        action: analytics === true ? 'allow' : 'reject',
+        source: source || 'banner',
+        at: now.toISOString(),
+        expiresAt: new Date(now.getTime() + TTL).toISOString()
+      };
+      Salon.store.set(KEY, c);
+      if (!c.analytics) Salon.store.del('salon_vid');
+      emit(c);
+      return c;
+    }
+    function allowed() {
+      var c = read();
+      return !!(c && c.analytics === true);
+    }
+    window.addEventListener('storage', function (e) {
+      if (e.key !== KEY) return;
+      emit(read() || { v: VERSION, necessary: true, analytics: false, action: 'reject' });
+    });
+    return { key: KEY, version: VERSION, ttl: TTL, read: read, save: save, allowed: allowed };
+  })();
 
   /* ---------------- Фирменный motion-язык ----------------
      Один реактивный источник вместо разрозненных проверок.
@@ -1675,7 +1728,7 @@
       '<summary><span>Реквизиты и документы</span><small>самозанятый · ИНН 212885750445</small><i aria-hidden="true">+</i></summary>' +
       '<div class="cf7-legal-in">' +
         '<p><b>Семёнов Семён Юрьевич</b><br>Плательщик налога на профессиональный доход · г.&nbsp;Казань</p>' +
-        '<nav aria-label="Юридические документы"><a href="oferta.html">Оферта</a><a href="privacy.html">Политика ПДн</a><a href="consent.html">Согласие</a><a href="terms.html">Соглашение</a><a href="requisites.html">Реквизиты</a></nav>' +
+        '<nav aria-label="Юридические документы"><a href="oferta.html">Оферта</a><a href="privacy.html">Политика ПДн</a><a href="consent.html">Согласие</a><a href="terms.html">Соглашение</a><a href="requisites.html">Реквизиты</a><button type="button" class="cf7-data" data-cookie-settings>Настройки данных</button></nav>' +
         '<a class="cf7-fns" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">Проверить статус в ФНС <span aria-hidden="true">↗</span><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
       '</div>' +
     '</details>' +
@@ -1787,9 +1840,8 @@
      здесь он молча выходил на проверке !Salon.api и не рисовался никогда */
 
   /* ---------------- Яндекс.Метрика ----------------
-     Включается только после «Хорошо» на куки-плашке (salon_consent,
-     privacy.html п. 2.3.1) и молчит в кабинете и админке — там
-     переписка клиентов, вебвизору она ни к чему. */
+     Включается только после отдельного analytics:true (consent v2).
+     Вебвизор и ecommerce выключены; URL передаётся без query/hash. */
   (function metrika() {
     var ID = 110565162;
     /* zayavka.html — страница оплаты по ссылке мастера: там человек принимает
@@ -1797,7 +1849,7 @@
     if (here === 'admin.html' || here === 'dashboard.html' || here === '404.html'
         || here === 'zayavka.html') return;
     function boot() {
-      if (boot.done) return;
+      if (boot.done || !Salon.consent.allowed()) return;
       boot.done = true;
       (function (m, e, t, r, i, k, a) {
         m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
@@ -1807,19 +1859,52 @@
         k.async = 1; k.src = r; a.parentNode.insertBefore(k, a);
       })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=' + ID, 'ym');
       window.ym(ID, 'init', {
-        ssr: true, webvisor: true, clickmap: true, ecommerce: 'dataLayer',
-        referrer: document.referrer, url: location.href,
+        ssr: true, webvisor: false, clickmap: true,
+        referrer: safeReferrer(), url: location.origin + location.pathname,
         accurateTrackBounce: true, trackLinks: true
       });
+    }
+    function safeReferrer() {
+      try {
+        if (!document.referrer) return '';
+        var u = new URL(document.referrer);
+        return u.origin + u.pathname;
+      } catch (e) { return ''; }
+    }
+    function forgetBrowserData() {
+      try {
+        Object.keys(localStorage).forEach(function (k) {
+          if (/^_ym/i.test(k)) localStorage.removeItem(k);
+        });
+        document.cookie.split(';').forEach(function (part) {
+          var name = part.split('=')[0].trim();
+          if (/^_ym/i.test(name)) {
+            document.cookie = name + '=; Max-Age=0; path=/; SameSite=Lax';
+            document.cookie = name + '=; Max-Age=0; path=/; domain=.' + location.hostname + '; SameSite=Lax';
+          }
+        });
+      } catch (e) {}
+    }
+    function stop() {
+      if (boot.done && window.ym) {
+        try { window.ym(ID, 'destruct'); } catch (e) {}
+      }
+      boot.done = false;
+      forgetBrowserData();
     }
     Salon.metrika = {
       id: ID,
       boot: boot,
-      goal: function (name) { if (boot.done && window.ym) window.ym(ID, 'reachGoal', name); }
+      stop: stop,
+      goal: function (name) {
+        if (boot.done && Salon.consent.allowed() && window.ym) window.ym(ID, 'reachGoal', name);
+      }
     };
-    var c = Salon.store.get('salon_consent', null);
-    if (c && c.v >= 1) boot();
-    else document.addEventListener('salon:consent', boot, { once: true });
+    if (Salon.consent.allowed()) boot();
+    document.addEventListener('salon:consent', function (e) {
+      if (e.detail && e.detail.analytics === true) boot();
+      else stop();
+    });
     /* цели: уходы в каналы — ВК, MAX, Telegram */
     document.addEventListener('click', function (e) {
       var a = e.target.closest ? e.target.closest('a[href]') : null;
@@ -2111,11 +2196,9 @@
   /* бейдж «есть живое дело» на кнопке кабинета — теперь, когда api готов */
   if (Salon.cabBadge) Salon.cabBadge();
 
-  /* ---------------- Маячок визитов («Глаз бога») ----------------
-     Служебная запись уровня серверного лога: страница, источник и шаг,
-     на котором остановились, — мастер видит их в своей админке.
-     Токены доступа из адреса вычищаются и здесь, и на сервере.
-     Молчит в админке; не трогает бюджет обычных запросов (свой лимит). */
+  /* ---------------- Собственная аналитика визитов ----------------
+     Работает только после analytics:true. Не получает секретные параметры
+     URL, токен кабинета и идентификатор заказа. */
   Salon.visit = (function () {
     var here = (location.pathname.split('/').pop() || 'index.html');
     /* молчим в админке, на локальных превью и в «тихом» кабинете мастера —
@@ -2138,17 +2221,14 @@
       Salon.store.set('salon_vid', v);
       return v;
     }
-    function page() {
-      var q = location.search.replace(/(token|resume|session|claim)=[^&#]*/g, '$1=…');
-      return (location.pathname + q).slice(0, 200);
-    }
+    function allowed() { return Salon.consent && Salon.consent.allowed(); }
+    function page() { return location.pathname.slice(0, 200); }
     function send(extra, _retried) {
+      if (!allowed()) return;
       try {
         var body = { vid: vid(), page: page() };
         for (var k in extra) body[k] = extra[k];
         var h = { 'Content-Type': 'text/plain' };
-        var t = Salon.api.token();
-        if (t) h['Authorization'] = 'Bearer ' + t;
         function again() {
           /* окно рестарта сервера: один тихий повтор, пока вкладка жива */
           if (_retried || document.visibilityState === 'hidden') return;
@@ -2164,22 +2244,28 @@
     function view() {
       var ref = '';
       try {
-        if (document.referrer &&
-            document.referrer.indexOf(location.origin) !== 0) ref = document.referrer;
-        var utm = /(utm_[a-z]+|yclid|gclid)=/.test(location.search) ? location.search : '';
-        if (utm) ref += (ref ? ' · ' : '') + utm.slice(0, 180);
+        if (document.referrer && document.referrer.indexOf(location.origin) !== 0) {
+          var u = new URL(document.referrer);
+          ref = u.origin + u.pathname;
+        }
       } catch (e) {}
       send({ kind: 'view', ref: ref.slice(0, 380) || undefined });
     }
-    if (document.prerendering) {
-      document.addEventListener('prerenderingchange', view, { once: true });
-    } else {
-      view();
+    function start() {
+      if (!allowed() || start.done) return;
+      start.done = true;
+      if (document.prerendering) document.addEventListener('prerenderingchange', view, { once: true });
+      else view();
     }
+    if (allowed()) start();
+    document.addEventListener('salon:consent', function (e) {
+      if (e.detail && e.detail.analytics === true) start();
+      else start.done = false;
+    });
     return {
-      /* mark('шаг 3 из 4') — где человек сейчас; order(id, token) — дошёл до заявки */
+      /* Конверсию считаем без номера дела и без токена доступа. */
       mark: function (step) { send({ kind: 'mark', step: String(step || '').slice(0, 120) }); },
-      order: function (id, token) { send({ kind: 'order', order: id, token: token || undefined }); }
+      order: function () { send({ kind: 'mark', step: 'заявка отправлена' }); }
     };
   })();
 
