@@ -203,69 +203,89 @@ function initCabinet() {
   /* ---------------- экраны входа/пустоты ---------------- */
   function tplLogin(pending) {
     var pendingBlock = pending
-      ? '<div class="req-slip" style="margin-bottom:14px"><p class="petit" style="margin:0"><b>Ждём подтверждение в Telegram.</b> ' +
-        'Откройте бота и нажмите <b>Start</b> — эта страница поймает вход сама, даже если вы её перезагрузите.</p>' +
-        '<div class="act-row"><a class="btn btn-wax" href="' + (pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Открыть Telegram</a>' +
-        '<button type="button" class="btn btn-line" id="cabTgCancel">Отменить вход</button></div></div>'
+      ? '<div class="cab-login-pending" role="status" aria-live="polite">' +
+        '<span class="cab-pending-mark" aria-hidden="true"><i></i></span>' +
+        '<div><b>Остался один шаг в Telegram</b>' +
+        '<p>Откройте бота и нажмите <b>Start</b>. Кабинет войдёт сам — страницу можно не держать открытой.</p>' +
+        '<div class="cab-pending-actions"><a class="btn btn-wax" href="' + (pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Открыть Telegram <span class="ar">↗</span></a>' +
+        '<button type="button" class="btn btn-line" id="cabTgCancel">Выбрать другой способ</button></div></div></div>'
       : '';
-    /* Telegram — первым: одна кнопка, самый надёжный канал. Остальные способы —
-       тихим рядом под чертой «или»: экран входа не должен быть простынёй. */
+    /* Показываем только способы, которые сервер действительно включил.
+       Почта универсальна, поэтому становится главным действием; Telegram и
+       OAuth-провайдеры остаются равноценными быстрыми альтернативами. */
     var f = st.features || {};
     var provBtns = [];
+    if (f.email_login) {
+      provBtns.push('<button type="button" class="cab-provider cab-provider-tg" id="cabTg">' +
+        '<span class="cab-provider-ic" aria-hidden="true">↗</span><span>Telegram</span></button>');
+    }
     if (f.vk_login) {
-      provBtns.push('<button type="button" class="btn btn-line" data-oauth="vk">' +
-        '<span class="pv-ic pv-vk">VK</span>ВКонтакте</button>');
+      provBtns.push('<button type="button" class="cab-provider cab-provider-vk" data-oauth="vk">' +
+        '<span class="cab-provider-ic" aria-hidden="true">VK</span><span>VK ID</span></button>');
     }
     if (f.mailru_login) {
-      provBtns.push('<button type="button" class="btn btn-line" data-oauth="mailru">' +
-        '<span class="pv-ic pv-mr">@</span>Mail.ru</button>');
+      provBtns.push('<button type="button" class="cab-provider cab-provider-mail" data-oauth="mailru">' +
+        '<span class="cab-provider-ic" aria-hidden="true">@</span><span>Mail ID</span></button>');
     }
-    if (f.email_login) {
-      provBtns.push('<button type="button" class="btn btn-line" id="cabEmailTgl">' +
-        '<span class="pv-ic">✉</span>Код на почту</button>');
+    if (f.max_login) {
+      provBtns.push('<button type="button" class="cab-provider cab-provider-max" data-oauth="max">' +
+        '<span class="cab-provider-ic" aria-hidden="true">M</span><span>MAX</span></button>');
     }
     var emailBlock = '';
-    if (provBtns.length) {
-      emailBlock = '<div class="cab-or" aria-hidden="true">или</div>' +
-        '<div class="cab-prov">' + provBtns.join('') + '</div>' +
-        (f.email_login
-          ? '<div id="cabEmailWrap" hidden>' +
-            '<p class="petit" style="margin:12px 0 8px">Пришлём 6-значный код — без паролей. ' +
-            'Адреса @mail.ru и @bk.ru иногда задерживают письма — тогда надёжнее Telegram.</p>' +
-            '<div class="act-row" id="cabEmailBox" style="margin:0">' +
-              '<input type="email" id="cabEmailIn" placeholder="you@mail.ru" autocomplete="email" ' +
-                'style="flex:2;min-width:0;font:inherit;font-size:16px;padding:11px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
-              '<button type="button" class="btn btn-wax" id="cabEmailSend" style="flex:1">Получить код</button>' +
-            '</div></div>'
-          : '');
+    if (f.email_login) {
+      emailBlock = '<div class="cab-email-panel" id="cabEmailWrap" hidden>' +
+        '<p>Пришлём одноразовый код. Пароль придумывать и запоминать не нужно.</p>' +
+        '<div class="cab-email-row" id="cabEmailBox">' +
+          '<label class="visually-hidden" for="cabEmailIn">Электронная почта</label>' +
+          '<input class="cab-login-input" type="email" id="cabEmailIn" placeholder="name@example.ru" autocomplete="email" inputmode="email">' +
+          '<button type="button" class="btn btn-wax" id="cabEmailSend">Получить код</button>' +
+        '</div></div>';
     }
     /* пришли за «Салон+» с витрины (#plus), а сессии нет — не встречать гостя
        голой стеной входа: объясняем, что абонемент ждёт сразу за дверью */
     var plusTeaser = (typeof hashPlusScroll !== 'undefined' && hashPlusScroll)
-      ? '<div class="req-slip" style="margin-bottom:14px"><p class="petit" style="margin:0">' +
-        '⭐ <b>Абонемент «Салон+»</b> привязывается к аккаунту: скидка на каждый заказ (от −5%, ' +
-        'в плане «Про» — до −10% и 3 000 ₽), приоритет мастера и куратор сессии. ' +
-        'Войдите через Telegram — это минута, без паролей — и витрина планов откроется сама.</p></div>'
+      ? '<div class="cab-login-teaser">⭐ <span><b>Абонемент «Салон+» уже рядом.</b> ' +
+        'Войдите любым способом — и витрина планов откроется автоматически.</span></div>'
       : '';
-    return '<div class="sheet sheet-pad stacked cab-login reveal">' +
-      '<p class="caps">Вход в кабинет</p>' +
-      '<h2 class="ord-type">Ваши заказы — здесь, на сайте</h2>' +
-      '<p class="petit" style="margin-bottom:16px">Без паролей: одна кнопка — и кабинет ваш. ' +
-      'Заказы этого устройства открываются и без входа.</p>' +
-      plusTeaser +
-      pendingBlock +
-      (pending ? '' : '<button type="button" class="btn btn-wax btn-block" id="cabTg">Войти через Telegram <span class="ar">→</span></button>') +
-      '<p class="petit cab-login-hint" id="cabTgHint" hidden></p>' +
-      emailBlock +
-      '<details class="cab-alt" style="margin-top:16px"><summary>У меня есть ссылка доступа к делу</summary>' +
-      '<p class="petit" style="margin:6px 0 10px">Она была на экране «Заявка принята» — вставьте её целиком, дело откроется без входа.</p>' +
-      '<div class="act-row" style="margin:0 0 12px">' +
-        '<input type="text" id="cabClaimIn" placeholder="Ссылка доступа или код дела" style="flex:2;min-width:0;font:inherit;font-size:16px;padding:11px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
-        '<button type="button" class="btn btn-line" id="cabClaimBtn" style="flex:1">Открыть дело</button>' +
-      '</div></details>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--hairline)">' +
-        '<a class="btn btn-line" style="flex:1" href="configurator.html">Оформить первый заказ <span class="ar">→</span></a>' +
-      '</div>' +
+    var mainAction = f.email_login
+      ? '<button type="button" class="btn btn-wax btn-block cab-login-main" id="cabEmailTgl" aria-expanded="false" aria-controls="cabEmailWrap">' +
+        '<span aria-hidden="true">✉</span> Продолжить по почте <span class="ar">→</span></button>'
+      : '<button type="button" class="btn btn-wax btn-block cab-login-main" id="cabTg">Продолжить с Telegram <span class="ar">→</span></button>';
+    return '<div class="cab-login reveal">' +
+      '<section class="cab-login-card" aria-labelledby="cabLoginTitle">' +
+        '<div class="cab-login-story">' +
+          '<div class="cab-login-seal" aria-hidden="true"><span>АС</span></div>' +
+          '<p class="caps">Личный зал</p>' +
+          '<h2 id="cabLoginTitle">Все дела —<br>в одном формуляре</h2>' +
+          '<p class="cab-story-lead">Заказы, сроки, файлы и сообщения мастера. Спокойно, прозрачно, без потерянных переписок.</p>' +
+          '<ul class="cab-login-promises">' +
+            '<li><span>01</span>Статус работы в реальном времени</li>' +
+            '<li><span>02</span>Файлы и история всегда под рукой</li>' +
+            '<li><span>03</span>Без паролей и лишней регистрации</li>' +
+          '</ul>' +
+          '<p class="cab-story-note"><span aria-hidden="true">◇</span> Доступ защищён одноразовым кодом или подтверждением у выбранного сервиса.</p>' +
+        '</div>' +
+        '<div class="cab-login-auth">' +
+          '<div class="cab-auth-head"><p class="caps">Вход в кабинет</p>' +
+          '<h3>С возвращением</h3>' +
+          '<p>Выберите удобный способ. Мы соберём ваши заказы в одном кабинете.</p></div>' +
+          plusTeaser +
+          pendingBlock +
+          (pending ? '' : mainAction + emailBlock +
+            (provBtns.length ? '<div class="cab-or" aria-hidden="true"><span>или быстрее через</span></div>' +
+              '<div class="cab-prov">' + provBtns.join('') + '</div>' : '')) +
+          '<p class="cab-login-hint" id="cabTgHint" role="status" aria-live="polite" hidden></p>' +
+          '<p class="cab-login-legal">Продолжая, вы соглашаетесь с <a href="privacy.html">политикой конфиденциальности</a>.</p>' +
+          '<details class="cab-alt"><summary>Есть ссылка доступа к отдельному делу</summary>' +
+            '<p>Вставьте ссылку с экрана «Заявка принята» — заказ откроется без входа.</p>' +
+            '<div class="cab-claim-row">' +
+              '<label class="visually-hidden" for="cabClaimIn">Ссылка доступа или код дела</label>' +
+              '<input class="cab-login-input" type="text" id="cabClaimIn" placeholder="Ссылка доступа или код дела" autocomplete="off">' +
+              '<button type="button" class="btn btn-line" id="cabClaimBtn">Открыть</button>' +
+            '</div></details>' +
+          '<a class="cab-first-order" href="configurator.html"><span>Впервые у нас?</span><b>Оформить первый заказ <i aria-hidden="true">→</i></b></a>' +
+        '</div>' +
+      '</section>' +
       '</div>';
   }
 
@@ -298,11 +318,11 @@ function initCabinet() {
       var box = document.getElementById('cabEmailBox');
       if (!box) return;
       box.innerHTML =
-        '<input type="text" id="cabEmailCode" inputmode="numeric" maxlength="6" placeholder="Код из письма" ' +
-          'style="flex:2;min-width:0;font:inherit;font-size:14px;padding:10px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;letter-spacing:.2em">' +
-        '<button type="button" class="btn btn-wax" id="cabEmailGo" style="flex:1">Войти</button>';
+        '<label class="visually-hidden" for="cabEmailCode">Шестизначный код из письма</label>' +
+        '<input class="cab-login-input cab-code-input" type="text" id="cabEmailCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Код из письма">' +
+        '<button type="button" class="btn btn-wax" id="cabEmailGo">Войти</button>';
       box.insertAdjacentHTML('afterend',
-        '<p class="petit" id="cabEmailNote" style="margin:-8px 0 18px">Код отправлен на <b>' + esc(email) + '</b> — действует 10 минут. ' +
+        '<p class="cab-email-note" id="cabEmailNote" role="status">Код отправлен на <b>' + esc(email) + '</b> — действует 10 минут. ' +
         'Не пришёл? Проверьте «Спам» или <button type="button" class="linkbtn" id="cabEmailAgain">отправьте ещё раз</button>.</p>');
       var code = document.getElementById('cabEmailCode');
       if (code) code.focus();
@@ -336,9 +356,9 @@ function initCabinet() {
     var box = document.getElementById('cabEmailBox');
     if (!box) return;
     box.innerHTML =
-      '<input type="email" id="cabEmailIn" placeholder="you@mail.ru" autocomplete="email" ' +
-        'style="flex:2;min-width:0;font:inherit;font-size:14px;padding:10px 12px;color:inherit;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent">' +
-      '<button type="button" class="btn btn-wax" id="cabEmailSend" style="flex:1">Получить код</button>';
+      '<label class="visually-hidden" for="cabEmailIn">Электронная почта</label>' +
+      '<input class="cab-login-input" type="email" id="cabEmailIn" placeholder="name@example.ru" autocomplete="email" inputmode="email">' +
+      '<button type="button" class="btn btn-wax" id="cabEmailSend">Получить код</button>';
     var inp = document.getElementById('cabEmailIn');
     if (inp) { inp.value = st.emailTo || ''; inp.focus(); }
   }
@@ -2492,6 +2512,7 @@ function initCabinet() {
       var ew = document.getElementById('cabEmailWrap');
       if (ew) {
         ew.hidden = !ew.hidden;
+        t.closest('#cabEmailTgl').setAttribute('aria-expanded', ew.hidden ? 'false' : 'true');
         if (!ew.hidden) { var ei = document.getElementById('cabEmailIn'); if (ei) ei.focus(); }
       }
       return;
