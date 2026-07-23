@@ -22,10 +22,10 @@
     link.media = 'screen and (max-width: 880px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260723s', source).href
-        : 'assets/css/mobile.css?v=20260723s';
+      link.href = source ? new URL('../css/mobile.css?v=20260723t', source).href
+        : 'assets/css/mobile.css?v=20260723t';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260723s';
+      link.href = 'assets/css/mobile.css?v=20260723t';
     }
     document.head.appendChild(link);
   })();
@@ -1449,7 +1449,8 @@
     if (document.querySelector('.toc')) return;
     var toc = document.createElement('div');
     toc.className = 'toc'; toc.id = 'toc';
-    toc.setAttribute('role', 'dialog'); toc.setAttribute('aria-modal', 'true'); toc.setAttribute('aria-label', 'Путеводитель по сайту');
+    toc.setAttribute('role', 'dialog'); toc.setAttribute('aria-modal', 'true');
+    toc.setAttribute('aria-labelledby', 'tocTitle'); toc.setAttribute('aria-hidden', 'true');
     var routeRow = ROUTE.map(function (r, i) {
       return '<a class="tr-step" href="' + r.href + '"><i>' + (i + 1) + '</i>' +
         '<span><b>' + r.label + '</b><small>' + r.note + '</small></span></a>';
@@ -1471,9 +1472,9 @@
       return '<a href="' + d[0] + '">' + d[1] + '</a>';
     }).join('');
     toc.innerHTML = '<div class="toc-inner">' +
-      '<div class="toc-head"><div><span class="toc-kicker">Навигация по Салону</span>' +
-        '<h2 class="toc-title">Куда вам сейчас?</h2><p>Выберите задачу или найдите нужное своими словами.</p></div>' +
-        '<button class="toc-close" type="button" aria-label="Закрыть путеводитель"><span aria-hidden="true">×</span></button></div>' +
+      '<div class="toc-head"><div><span class="toc-kicker">Академический Салон · меню</span>' +
+        '<h2 class="toc-title" id="tocTitle">Куда вам сейчас?</h2><p>Выберите задачу или найдите нужное своими словами.</p></div>' +
+        '<button class="toc-close" type="button" aria-label="Закрыть меню"><span aria-hidden="true">×</span></button></div>' +
       '<div class="toc-search"><span class="tcs-mark" aria-hidden="true">⌕</span><input type="search" id="tocQ" autocomplete="off" ' +
         'placeholder="Например: курсовая, оплата, речь…" aria-label="Поиск по сайту" />' +
         '<kbd>⌘ K</kbd><div class="toc-sr" id="tocSR" hidden></div></div>' +
@@ -1495,22 +1496,51 @@
       /* .tg-pill теперь ребёнок .mrail — прячем сами рельсы, иначе
          под открытым Путеводителем осталась бы висеть карточка */
       return ['.site-header', 'main', '.site-footer', '.mobile-cta', '.lasse',
-              '.mrail', '.lrail', '.mledger']
+              '.mrail', '.lrail', '.mledger', '.skip-link']
         .map(function (s) { return document.querySelector(s); }).filter(Boolean);
     }
+    var tocScrollY = 0;
+    var tocTrigger = null;
+    var tocFocusTimer = 0;
     function setToc(open) {
+      if (open === toc.classList.contains('open')) return;
+      if (open) {
+        tocScrollY = window.scrollY || window.pageYOffset || 0;
+        tocTrigger = document.activeElement && document.activeElement.closest
+          ? document.activeElement.closest('.menu-toggle')
+          : null;
+        document.body.style.top = '-' + tocScrollY + 'px';
+      }
       toc.classList.toggle('open', open);
       document.body.classList.toggle('toc-lock', open);
+      document.body.classList.toggle('menu-lock', open);
+      document.documentElement.classList.toggle('menu-lock', open);
+      toc.setAttribute('aria-hidden', String(!open));
+      if (open) {
+        toc.scrollTop = 0;
+        var initialFocus = toc.querySelector('.toc-close');
+        if (initialFocus) initialFocus.focus();
+      }
       tocSiblings().forEach(function (el) { if (open) el.setAttribute('inert', ''); else el.removeAttribute('inert'); });
       document.querySelectorAll('.menu-toggle').forEach(function (t) {
         t.setAttribute('aria-expanded', String(open));
         t.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
       });
+      window.clearTimeout(tocFocusTimer);
       if (open) {
-        toc.scrollTop = 0;
-        var f = toc.querySelector('.toc-close'); if (f) f.focus();
+        tocFocusTimer = window.setTimeout(function () {
+          var f = toc.querySelector('.toc-close');
+          if (f) f.focus();
+        }, 32);
+      } else {
+        document.body.style.top = '';
+        window.scrollTo(0, tocScrollY);
+        var returnFocus = tocTrigger || document.querySelector('.menu-toggle');
+        if (returnFocus) returnFocus.focus();
+        tocFocusTimer = window.setTimeout(function () {
+          if (returnFocus) returnFocus.focus();
+        }, 32);
       }
-      else { var mt = document.querySelector('.menu-toggle'); if (mt) mt.focus(); }
     }
     Salon.toc = { open: function () { setToc(true); }, close: function () { setToc(false); }, isOpen: function () { return toc.classList.contains('open'); } };
     /* страховочная петля Tab для браузеров без inert */
@@ -1528,6 +1558,7 @@
     toc.addEventListener('click', function (e) {
       if (e.target.closest && e.target.closest('a[href]')) setToc(false);
       else if (e.target.closest && e.target.closest('[data-contact]')) setToc(false);
+      else if (e.target === toc) setToc(false);
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && toc.classList.contains('open')) setToc(false); });
 
@@ -1573,6 +1604,7 @@
       document.addEventListener('keydown', function (e) {
         if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
           e.preventDefault();
+          if (document.querySelector('.cart-shell.open,.contact-sheet.open,.sdlg.open,.tour-veil')) return;
           if (!toc.classList.contains('open')) setToc(true);
           q.focus();
         }

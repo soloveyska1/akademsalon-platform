@@ -373,6 +373,385 @@ async function inspectPage(page, ctaRequired) {
   return { theme, overflow, cta, homeHero, header, dock, failures };
 }
 
+async function inspectMobileHeaderMenu(page) {
+  await page.waitForFunction(() => {
+    const toggle = document.querySelector('.menu-toggle');
+    const toc = document.getElementById('toc');
+    return toggle && toc && window.Salon && Salon.toc;
+  }, null, { timeout: 10_000 });
+
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(80);
+
+  const header = await page.evaluate(() => {
+    const visible = (element) => {
+      if (!element) return false;
+      const style = getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return style.display !== 'none' &&
+        style.visibility !== 'hidden' &&
+        Number(style.opacity) !== 0 &&
+        rect.width > 0 &&
+        rect.height > 0;
+    };
+    const box = (element) => {
+      const rect = element.getBoundingClientRect();
+      return {
+        left: Math.round(rect.left),
+        top: Math.round(rect.top),
+        right: Math.round(rect.right),
+        bottom: Math.round(rect.bottom),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height)
+      };
+    };
+    const overlap = (a, b) =>
+      a.right > b.left + 1 && a.left < b.right - 1 &&
+      a.bottom > b.top + 1 && a.top < b.bottom - 1;
+    const siteHeader = document.querySelector('.site-header');
+    const controls = [
+      document.querySelector('.site-header .brand'),
+      document.querySelector('.site-header .nav-cab'),
+      document.querySelector('.site-header .menu-toggle')
+    ].filter(Boolean).map((element) => ({
+      selector: element.classList.contains('brand') ? '.brand' :
+        element.classList.contains('nav-cab') ? '.nav-cab' : '.menu-toggle',
+      visible: visible(element),
+      box: box(element),
+      label: element.getAttribute('aria-label') || String(element.textContent || '').trim()
+    }));
+    const overlaps = [];
+    for (let i = 0; i < controls.length; i += 1) {
+      for (let j = i + 1; j < controls.length; j += 1) {
+        if (overlap(controls[i].box, controls[j].box)) {
+          overlaps.push(`${controls[i].selector} ↔ ${controls[j].selector}`);
+        }
+      }
+    }
+    const toggle = document.querySelector('.menu-toggle');
+    return {
+      visible: visible(siteHeader),
+      position: getComputedStyle(siteHeader).position,
+      box: box(siteHeader),
+      controls,
+      overlaps,
+      viewport: { width: innerWidth, height: innerHeight },
+      toggle: {
+        expanded: toggle.getAttribute('aria-expanded'),
+        controls: toggle.getAttribute('aria-controls'),
+        label: toggle.getAttribute('aria-label')
+      }
+    };
+  });
+
+  const failures = [];
+  if (!header.visible || !['fixed', 'sticky'].includes(header.position)) {
+    failures.push(`mobile header: visibility/position=${JSON.stringify(header)}`);
+  }
+  if (header.box.left < -1 ||
+      header.box.right > header.viewport.width + 1 ||
+      header.box.top < -1 ||
+      header.box.bottom > header.viewport.height + 1) {
+    failures.push(`mobile header clipped: ${JSON.stringify(header.box)}`);
+  }
+  if (header.controls.length !== 3) {
+    failures.push(`mobile header controls: expected 3, got ${header.controls.length}`);
+  }
+  for (const control of header.controls) {
+    if (!control.visible ||
+        control.box.width < 44 ||
+        control.box.height < 44 ||
+        control.box.left < -1 ||
+        control.box.right > header.viewport.width + 1) {
+      failures.push(`mobile header target ${control.selector}: ${JSON.stringify(control)}`);
+    }
+  }
+  if (header.overlaps.length) {
+    failures.push(`mobile header overlaps: ${header.overlaps.join(', ')}`);
+  }
+  if (header.toggle.expanded !== 'false' ||
+      header.toggle.controls !== 'toc' ||
+      header.toggle.label !== 'Открыть меню') {
+    failures.push(`mobile menu initial ARIA: ${JSON.stringify(header.toggle)}`);
+  }
+
+  await page.click('.menu-toggle');
+  await page.waitForFunction(() => document.getElementById('toc')?.classList.contains('open'));
+  await page.waitForTimeout(450);
+  const openState = await page.evaluate(() => {
+    const box = (element) => {
+      const rect = element.getBoundingClientRect();
+      return {
+        left: Math.round(rect.left),
+        top: Math.round(rect.top),
+        right: Math.round(rect.right),
+        bottom: Math.round(rect.bottom),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height)
+      };
+    };
+    const visible = (element) => {
+      if (!element) return false;
+      const style = getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return style.display !== 'none' &&
+        style.visibility !== 'hidden' &&
+        Number(style.opacity) !== 0 &&
+        rect.width > 0 &&
+        rect.height > 0;
+    };
+    const toggle = document.querySelector('.menu-toggle');
+    const toc = document.getElementById('toc');
+    const tocHead = toc.querySelector('.toc-head');
+    const tocTitle = toc.querySelector('.toc-title');
+    const close = toc.querySelector('.toc-close');
+    const search = toc.querySelector('#tocQ');
+    const routeLink = toc.querySelector('.toc-route .tr-head>a');
+    const directory = toc.querySelector('.toc-directory>summary');
+    const keyTargets = [
+      close,
+      search,
+      ...Array.from(toc.querySelectorAll('.toc-choice')),
+      routeLink,
+      directory
+    ].filter(Boolean).map((element) => ({
+      selector: element === close ? '.toc-close' :
+        element === search ? '#tocQ' :
+        element === routeLink ? '.toc-route .tr-head>a' :
+        element === directory ? '.toc-directory>summary' :
+        '.toc-choice',
+      visible: visible(element),
+      box: box(element)
+    }));
+    const siblings = ['.site-header', 'main', '.site-footer', '.mobile-cta']
+      .map((selector) => {
+        const element = document.querySelector(selector);
+        return element ? {
+          selector,
+          inert: element.hasAttribute('inert')
+        } : null;
+      }).filter(Boolean);
+    return {
+      open: toc.classList.contains('open'),
+      role: toc.getAttribute('role'),
+      ariaModal: toc.getAttribute('aria-modal'),
+      ariaLabelledBy: toc.getAttribute('aria-labelledby'),
+      dialog: box(toc),
+      head: box(tocHead),
+      title: box(tocTitle),
+      close: box(close),
+      search: box(search),
+      titleCloseOverlap: (() => {
+        const a = tocTitle.getBoundingClientRect();
+        const b = close.getBoundingClientRect();
+        return a.right > b.left + 1 && a.left < b.right - 1 &&
+          a.bottom > b.top + 1 && a.top < b.bottom - 1;
+      })(),
+      headSearchOverlap: (() => {
+        const a = tocHead.getBoundingClientRect();
+        const b = search.getBoundingClientRect();
+        return a.right > b.left + 1 && a.left < b.right - 1 &&
+          a.bottom > b.top + 1 && a.top < b.bottom - 1;
+      })(),
+      tocOverflowY: getComputedStyle(toc).overflowY,
+      bodyLocked: document.body.classList.contains('toc-lock'),
+      bodyOverflow: getComputedStyle(document.body).overflow,
+      bodyPosition: getComputedStyle(document.body).position,
+      scrollingElement: document.scrollingElement === document.body ? 'body' : 'html',
+      scrollingOverflow: getComputedStyle(document.scrollingElement).overflow,
+      toggleExpanded: toggle.getAttribute('aria-expanded'),
+      toggleLabel: toggle.getAttribute('aria-label'),
+      activeClass: document.activeElement?.className || '',
+      activeLabel: document.activeElement?.getAttribute('aria-label') || '',
+      keyTargets,
+      siblings,
+      scrollY: Math.round(scrollY),
+      viewport: { width: innerWidth, height: innerHeight }
+    };
+  });
+
+  if (!openState.open ||
+      openState.role !== 'dialog' ||
+      openState.ariaModal !== 'true' ||
+      openState.ariaLabelledBy !== 'tocTitle') {
+    failures.push(`mobile menu dialog semantics: ${JSON.stringify(openState)}`);
+  }
+  if (openState.toggleExpanded !== 'true' ||
+      openState.toggleLabel !== 'Закрыть меню') {
+    failures.push(
+      `mobile menu open ARIA: expanded=${openState.toggleExpanded}, label=${openState.toggleLabel}`
+    );
+  }
+  if (openState.activeLabel !== 'Закрыть меню') {
+    failures.push(
+      `mobile menu open focus: class=${openState.activeClass}, label=${openState.activeLabel}`
+    );
+  }
+  if (!openState.bodyLocked ||
+      !/(hidden|clip)/.test(openState.bodyOverflow) ||
+      (openState.scrollingElement === 'html' &&
+        !/(hidden|clip)/.test(openState.scrollingOverflow) &&
+        openState.bodyPosition !== 'fixed') ||
+      !/(auto|scroll)/.test(openState.tocOverflowY)) {
+    failures.push(
+      `mobile menu scroll lock: bodyClass=${openState.bodyLocked}, bodyOverflow=${openState.bodyOverflow}, bodyPosition=${openState.bodyPosition}, scrolling=${openState.scrollingElement}/${openState.scrollingOverflow}, tocOverflow=${openState.tocOverflowY}`
+    );
+  }
+  if (openState.dialog.left < -1 ||
+      openState.dialog.right > openState.viewport.width + 1 ||
+      openState.dialog.top < -1 ||
+      openState.dialog.bottom > openState.viewport.height + 1) {
+    failures.push(`mobile menu dialog clipped: ${JSON.stringify(openState.dialog)}`);
+  }
+  if (openState.head.top > 1 ||
+      openState.head.left < -1 ||
+      openState.head.right > openState.viewport.width + 1 ||
+      openState.titleCloseOverlap ||
+      openState.headSearchOverlap) {
+    failures.push(
+      `mobile menu sticky head: head=${JSON.stringify(openState.head)}, title=${JSON.stringify(openState.title)}, close=${JSON.stringify(openState.close)}, search=${JSON.stringify(openState.search)}, titleOverlap=${openState.titleCloseOverlap}, searchOverlap=${openState.headSearchOverlap}`
+    );
+  }
+  if (openState.siblings.some((item) => !item.inert)) {
+    failures.push(`mobile menu background not inert: ${JSON.stringify(openState.siblings)}`);
+  }
+  for (const target of openState.keyTargets) {
+    if (!target.visible || target.box.width < 44 || target.box.height < 44) {
+      failures.push(`mobile menu target ${target.selector}: ${JSON.stringify(target)}`);
+    }
+  }
+
+  await page.fill('#tocQ', 'оплата');
+  await page.waitForTimeout(60);
+  const searchState = await page.evaluate(() => ({
+    results: document.querySelectorAll('#tocSR a.dotrow').length,
+    homeHidden: Array.from(document.querySelectorAll('[data-toc-home]')).every((element) =>
+      element.hidden && getComputedStyle(element).display === 'none'
+    ),
+    overflow: document.documentElement.scrollWidth - innerWidth
+  }));
+  if (searchState.results < 1 || !searchState.homeHidden || searchState.overflow > 1) {
+    failures.push(`mobile menu search state: ${JSON.stringify(searchState)}`);
+  }
+  await page.fill('#tocQ', '');
+  await page.waitForTimeout(40);
+  await page.focus('.toc-close');
+
+  await page.keyboard.press('Shift+Tab');
+  const backwardsTrap = await page.evaluate(() => ({
+    inside: document.getElementById('toc')?.contains(document.activeElement),
+    selector: document.activeElement?.className || document.activeElement?.id || ''
+  }));
+  await page.keyboard.press('Tab');
+  const forwardsTrap = await page.evaluate(() => ({
+    inside: document.getElementById('toc')?.contains(document.activeElement),
+    label: document.activeElement?.getAttribute('aria-label') || '',
+    selector: document.activeElement?.className || document.activeElement?.id || ''
+  }));
+  if (!backwardsTrap.inside ||
+      !forwardsTrap.inside ||
+      forwardsTrap.label !== 'Закрыть меню') {
+    failures.push(
+      `mobile menu focus trap: backwards=${JSON.stringify(backwardsTrap)}, forwards=${JSON.stringify(forwardsTrap)}`
+    );
+  }
+
+  let wheelSupported = true;
+  try {
+    await page.mouse.wheel(0, 700);
+    await page.waitForTimeout(80);
+  } catch (error) {
+    if (/not supported in mobile WebKit/i.test(error.message)) wheelSupported = false;
+    else throw error;
+  }
+  const scrollLock = await page.evaluate(({ before, supported }) => {
+    const state = {
+      supported,
+      before,
+      after: Math.round(scrollY),
+      tocScrollTop: Math.round(document.getElementById('toc')?.scrollTop || 0)
+    };
+    window.scrollTo(0, before);
+    return state;
+  }, { before: openState.scrollY, supported: wheelSupported });
+  if (scrollLock.supported && scrollLock.after !== scrollLock.before) {
+    failures.push(`mobile menu background scrolled: ${JSON.stringify(scrollLock)}`);
+  }
+
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(50);
+  const escapeClose = await page.evaluate(() => ({
+    open: document.getElementById('toc')?.classList.contains('open'),
+    expanded: document.querySelector('.menu-toggle')?.getAttribute('aria-expanded'),
+    label: document.querySelector('.menu-toggle')?.getAttribute('aria-label'),
+    activeIsToggle: document.activeElement === document.querySelector('.menu-toggle'),
+    bodyLocked: document.body.classList.contains('toc-lock'),
+    backgroundInert: ['.site-header', 'main', '.site-footer', '.mobile-cta']
+      .map((selector) => document.querySelector(selector))
+      .filter(Boolean)
+      .some((element) => element.hasAttribute('inert'))
+  }));
+  if (escapeClose.open ||
+      escapeClose.expanded !== 'false' ||
+      escapeClose.label !== 'Открыть меню' ||
+      !escapeClose.activeIsToggle ||
+      escapeClose.bodyLocked ||
+      escapeClose.backgroundInert) {
+    failures.push(`mobile menu Escape close: ${JSON.stringify(escapeClose)}`);
+  }
+
+  await page.click('.menu-toggle');
+  await page.waitForFunction(() => document.getElementById('toc')?.classList.contains('open'));
+  await page.click('.toc-close');
+  await page.waitForTimeout(50);
+  const closeButton = await page.evaluate(() => ({
+    open: document.getElementById('toc')?.classList.contains('open'),
+    expanded: document.querySelector('.menu-toggle')?.getAttribute('aria-expanded'),
+    activeIsToggle: document.activeElement === document.querySelector('.menu-toggle'),
+    bodyLocked: document.body.classList.contains('toc-lock')
+  }));
+  if (closeButton.open ||
+      closeButton.expanded !== 'false' ||
+      !closeButton.activeIsToggle ||
+      closeButton.bodyLocked) {
+    failures.push(`mobile menu close button: ${JSON.stringify(closeButton)}`);
+  }
+
+  await page.click('.menu-toggle');
+  await page.waitForFunction(() => document.getElementById('toc')?.classList.contains('open'));
+  const outsideClose = await page.evaluate(() => {
+    const toc = document.getElementById('toc');
+    toc.dispatchEvent(new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      clientX: 1,
+      clientY: 1
+    }));
+    return {
+      open: toc.classList.contains('open'),
+      expanded: document.querySelector('.menu-toggle')?.getAttribute('aria-expanded'),
+      bodyLocked: document.body.classList.contains('toc-lock')
+    };
+  });
+  if (outsideClose.open || outsideClose.expanded !== 'false' || outsideClose.bodyLocked) {
+    failures.push(`mobile menu outside click does not close: ${JSON.stringify(outsideClose)}`);
+    await page.evaluate(() => window.Salon?.toc?.close());
+  }
+
+  return {
+    header,
+    openState,
+    searchState,
+    backwardsTrap,
+    forwardsTrap,
+    scrollLock,
+    escapeClose,
+    closeButton,
+    outsideClose,
+    failures
+  };
+}
+
 async function inspectConfiguratorStep2(page) {
   await page.waitForFunction(() => {
     const title = document.getElementById('ws2t');
@@ -1143,6 +1522,7 @@ async function main() {
             const label = `${browserName}/${sanitizePageName(pageName)}-${viewport.width}`;
             const url = `${server.baseURL}/${pageName}`;
             let inspection = null;
+            let headerMenuInspection = null;
             let configuratorInspection = null;
             let navigationError = null;
             try {
@@ -1155,6 +1535,27 @@ async function main() {
               }
               await page.waitForTimeout(700);
               await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
+              if (pageName === 'index.html') {
+                headerMenuInspection = await inspectMobileHeaderMenu(page);
+                if (options.screenshots) {
+                  await page.reload({ waitUntil: 'domcontentloaded' });
+                  await page.waitForTimeout(700);
+                  await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
+                  await page.click('.menu-toggle');
+                  await page.waitForFunction(() =>
+                    document.getElementById('toc')?.classList.contains('open')
+                  );
+                  await page.waitForTimeout(450);
+                  const menuPath = path.join(
+                    OUTPUT_ROOT,
+                    `${label}-menu-open.png`
+                  );
+                  fs.mkdirSync(path.dirname(menuPath), { recursive: true });
+                  await page.screenshot({ path: menuPath, fullPage: false });
+                  await page.keyboard.press('Escape');
+                  await page.waitForTimeout(50);
+                }
+              }
               if (/^configurator\.html\?step=2(?:&|$)/.test(pageName)) {
                 configuratorInspection = await inspectConfiguratorStep2(page);
                 if (options.screenshots) {
@@ -1216,6 +1617,7 @@ async function main() {
             const failures = [
               ...(navigationError ? [`navigation: ${navigationError}`] : []),
               ...(inspection ? inspection.failures : []),
+              ...(headerMenuInspection ? headerMenuInspection.failures : []),
               ...(configuratorInspection ? configuratorInspection.failures : []),
               ...consoleErrors
             ];

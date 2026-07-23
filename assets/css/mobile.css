@@ -7,7 +7,7 @@
 @media screen and (max-width:880px){
   :root{
     --mobile-gutter:clamp(16px,4.7vw,20px);
-    --mobile-header-h:58px;
+    --mobile-header-h:calc(58px + env(safe-area-inset-top));
     --mobile-dock-h:calc(58px + env(safe-area-inset-bottom));
     --mobile-bottom-clear:calc(var(--mobile-dock-h) + 12px);
     --tap:48px;
@@ -36,13 +36,31 @@
   section[id],[id].chapter{scroll-margin-top:calc(var(--mobile-header-h) + 12px)}
 
   /* Один режим колонтитула на всём диапазоне мобильного дока. */
-  .site-header{background:var(--paper)}
+  .site-header{
+    padding-top:env(safe-area-inset-top);
+    background:var(--paper);
+  }
+  .site-header .wrap.nav{
+    padding-left:max(var(--mobile-gutter),env(safe-area-inset-left));
+    padding-right:max(var(--mobile-gutter),env(safe-area-inset-right));
+  }
   .site-header .nav,
-  .site-header.scrolled .nav{height:var(--mobile-header-h);gap:8px}
+  .site-header.scrolled .nav{height:58px;gap:8px}
   .site-header .nav-links{display:none!important}
   .site-header .nav-cta>.btn{display:none!important}
-  .site-header .brand{min-width:0;min-height:44px;gap:8px}
-  .site-header .brand .b-name{overflow:hidden;text-overflow:ellipsis}
+  .site-header .brand{
+    flex:1 1 auto;
+    min-width:0;
+    min-height:44px;
+    gap:8px;
+    overflow:hidden;
+  }
+  .site-header .brand .b-name{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .site-header .nav-cta{flex:0 0 auto;margin-left:0}
   .nav-cab,.menu-toggle{
     display:inline-flex;
     align-items:center;
@@ -1057,7 +1075,190 @@
   main.tariffs .tier,
   .shelf>*{scroll-snap-align:start}
   main.tariffs .cc-filters{position:sticky!important;top:var(--mobile-header-h)!important}
-  .wprog,.toc-head{top:var(--mobile-header-h)}
+  .wprog{top:var(--mobile-header-h)}
+
+  /* Меню — отдельный мобильный экран, а не ещё одна шапка под шапкой. */
+  html.menu-lock,
+  body.menu-lock{
+    overflow:hidden!important;
+    overscroll-behavior:none;
+  }
+  body.menu-lock{
+    position:fixed;
+    left:0;
+    right:0;
+    width:100%;
+  }
+  body.menu-lock .site-header,
+  body.menu-lock .mobile-cta{
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .toc{
+    --toc-left:max(var(--mobile-gutter),env(safe-area-inset-left));
+    --toc-right:max(var(--mobile-gutter),env(safe-area-inset-right));
+    z-index:220;
+    height:100dvh;
+    max-height:100dvh;
+    overflow-x:hidden;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+  .toc-inner{
+    display:flex;
+    flex-direction:column;
+    min-height:100%;
+    padding:0 var(--toc-right) calc(14px + env(safe-area-inset-bottom)) var(--toc-left);
+  }
+  .toc .toc-head{
+    top:0;
+    gap:10px;
+    min-height:66px;
+    margin:0 calc(var(--toc-right) * -1) 10px calc(var(--toc-left) * -1);
+    padding:calc(9px + env(safe-area-inset-top)) var(--toc-right) 9px var(--toc-left);
+  }
+  .toc .toc-head>div{min-width:0}
+  .toc-kicker{
+    margin-bottom:3px;
+    font-size:8px;
+    letter-spacing:.18em;
+  }
+  .toc-title{
+    overflow:hidden;
+    font-size:24px;
+    line-height:1.05;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .toc-close{
+    width:44px;
+    height:44px;
+    flex-basis:44px;
+    border-color:color-mix(in srgb,var(--wax) 34%,var(--hairline));
+    background:var(--wax-soft);
+    color:var(--wax);
+  }
+  .toc-search{flex:0 0 auto;margin-bottom:9px}
+  .toc [data-toc-home][hidden]{display:none!important}
+  .toc-search input{
+    height:48px;
+    padding-left:43px;
+    padding-right:14px;
+    border-radius:6px;
+    box-shadow:none;
+  }
+  .toc-choices{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+    margin-bottom:9px;
+  }
+  .toc-choice{
+    min-height:88px;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-rows:auto minmax(0,1fr);
+    align-items:start;
+    gap:6px 8px;
+    padding:10px 11px;
+    border-radius:6px;
+  }
+  .toc-choice.is-main{
+    box-shadow:inset 3px 0 0 var(--wax);
+  }
+  .tch-no{
+    grid-column:1;
+    grid-row:1;
+    align-self:auto;
+    padding:0;
+    font-size:8.5px;
+  }
+  .tch-copy{
+    grid-column:1/-1;
+    grid-row:2;
+    align-self:end;
+  }
+  .tch-copy b{
+    font-size:15.5px;
+    line-height:1.14;
+  }
+  .tch-copy small{display:none}
+  .tch-go{
+    grid-column:2;
+    grid-row:1;
+    font-size:15px;
+    line-height:1;
+  }
+  .toc-route{
+    display:flex;
+    align-items:center;
+    min-height:48px;
+    margin:0 0 9px;
+    padding:0 11px;
+    border:1px solid var(--hairline);
+    border-radius:6px;
+    background:color-mix(in srgb,var(--sheet) 72%,transparent);
+  }
+  .toc-route .tr-head{
+    width:100%;
+    margin:0;
+    padding:0;
+    align-items:center;
+  }
+  .toc-route .tr-head .toc-grp-t{
+    margin:0;
+    color:var(--ink-soft);
+    letter-spacing:.13em;
+  }
+  .toc-route .tr-head>a{
+    min-height:44px;
+    display:inline-flex;
+    align-items:center;
+    color:var(--wax);
+  }
+  .toc-route .tr-steps{display:none}
+  .toc-directory{
+    flex:0 0 auto;
+    margin-bottom:0;
+    border-radius:6px;
+  }
+  .toc-directory>summary{
+    min-height:50px;
+    padding:7px 11px;
+  }
+  .toc-directory>summary b{font-size:15.5px}
+  .toc-directory>summary small{font-size:10px}
+  .toc-grid{padding:12px 11px}
+  .toc-sr .dotrow>span:first-child{
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
+  .toc-sr .dots{min-width:12px}
+  .toc-footbar{
+    flex:0 0 auto;
+    margin-top:auto;
+    padding:10px 0 0;
+  }
+  .toc-footbar button{
+    width:100%;
+    min-height:50px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 13px;
+    border-radius:6px;
+    background:var(--wax);
+    color:#FFFEF9;
+    text-align:left;
+  }
+  .toc-footbar button span{
+    color:color-mix(in srgb,#FFFEF9 72%,transparent);
+    font-size:10px;
+  }
+  .toc-footbar button b{
+    color:#FFFEF9;
+    font-size:14px;
+  }
 
   /* Кабинет и ссылка оплаты: узкие строки становятся двухрядными. */
   .file-line{
@@ -1106,10 +1307,13 @@
   .cookiebar .cb-foot{margin-top:7px;padding-top:7px}
 }
 
-@media screen and (max-width:420px){
+@media screen and (max-width:480px){
   .site-header .brand .b-full{display:none!important}
   .site-header .brand .b-short{display:inline!important}
   .site-header .brand .b-name{font-size:14px}
+}
+
+@media screen and (max-width:420px){
   .mnav .mn-i{font-size:10px;letter-spacing:0}
   .conf-mcta .mq-bar{
     grid-template-columns:46px minmax(0,1fr) minmax(106px,.74fr);
