@@ -19,7 +19,9 @@
   var QUIET_PAGES = { 'admin.html': 1, '404.html': 1, 'zayavka.html': 1 };
 
   /* ---------------- Диалоги ---------------- */
+  var dlgUid = 0;
   function buildDlg(opts) {
+    var uid = 'sdlg-' + (++dlgUid), titleId = uid + '-title', textId = uid + '-text';
     var el = document.createElement('div');
     el.className = 'sdlg';
     el.setAttribute('role', 'dialog');
@@ -27,8 +29,8 @@
     el.innerHTML =
       '<div class="sdlg-back" data-x></div>' +
       '<div class="sdlg-card">' +
-        (opts.title ? '<h3></h3>' : '') +
-        (opts.text ? '<p></p>' : '') +
+        (opts.title ? '<h3 id="' + titleId + '"></h3>' : '') +
+        (opts.text ? '<p id="' + textId + '"></p>' : '') +
         (opts.input === 'textarea'
           ? '<textarea rows="3" maxlength="' + (opts.maxlength || 500) + '"></textarea>'
           : opts.input ? '<input type="' + opts.input + '">' : '') +
@@ -38,6 +40,9 @@
         '</div>' +
         (opts.note ? '<p class="sdlg-note"></p>' : '') +
       '</div>';
+    if (opts.title) el.setAttribute('aria-labelledby', titleId);
+    else el.setAttribute('aria-label', opts.ariaLabel || 'Диалог мастерской');
+    if (opts.text) el.setAttribute('aria-describedby', textId);
     if (opts.title) el.querySelector('h3').textContent = opts.title;
     if (opts.text) el.querySelector('.sdlg-card > p').textContent = opts.text;
     if (opts.note) el.querySelector('.sdlg-note').textContent = opts.note;
@@ -51,6 +56,7 @@
      → Promise<{ok:boolean, value:string}> */
   S.confirm = function (opts) {
     return new Promise(function (res) {
+      var opener = document.activeElement, closed = false;
       var el = buildDlg(opts || {});
       document.body.appendChild(el);
       /* .open — БЕЗ requestAnimationFrame: в браузерах с придушенным rAF
@@ -63,14 +69,26 @@
       var okBtn = el.querySelector('[data-ok]');
       (field || okBtn).focus();
       function close(ok) {
+        if (closed) return;
+        closed = true;
         el.classList.remove('open');
-        setTimeout(function () { el.remove(); }, 240);
+        setTimeout(function () {
+          el.remove();
+          if (opener && opener.focus && document.contains(opener)) { try { opener.focus(); } catch (e) {} }
+        }, S.motion && S.motion.mode() === 'off' ? 0 : 240);
         document.removeEventListener('keydown', onKey);
         res({ ok: ok, value: field ? field.value.trim() : '' });
       }
       function onKey(e) {
         if (e.key === 'Escape') close(false);
         if (e.key === 'Enter' && (!field || field.tagName !== 'TEXTAREA')) close(true);
+        if (e.key === 'Tab') {
+          var f = Array.prototype.slice.call(el.querySelectorAll('button:not([disabled]),input:not([disabled]),textarea:not([disabled]),a[href]'));
+          if (!f.length) return;
+          var first = f[0], last = f[f.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
       }
       document.addEventListener('keydown', onKey);
       okBtn.addEventListener('click', function () { close(true); });
@@ -82,13 +100,30 @@
   /* ---------------- Печать-вспышка ---------------- */
   S.stamp = function (text, opts) {
     opts = opts || {};
+    var impact = opts.impact;
+    if (!impact) {
+      if (/(оплачен|оплачено|оплата)/i.test(text || '')) impact = 'transaction';
+      else if (/(принят|утвержд|согласован|заявка)/i.test(text || '')) impact = 'approval';
+      else impact = 'micro';
+    }
+    /* Копирование, бонус и прочие малые успехи не
+       перекрывают экран: это тихая пометка на полях. */
+    if (impact === 'micro' || (S.motion && S.motion.mode() === 'off')) {
+      if (S.toast) return S.toast(text || 'Готово', { type: 'success' });
+      return null;
+    }
     var el = document.createElement('div');
-    el.className = 'stamp-burst' + (opts.tone === 'wax' ? ' wax' : '');
-    el.innerHTML = '<span class="sb-seal"></span>';
+    var tone = opts.tone || (impact === 'approval' ? 'wax' : 'verify');
+    el.className = 'stamp-burst stamp-burst--' + impact + ' is-' + tone;
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.innerHTML = '<span class="sb-rule" aria-hidden="true"></span><span class="sb-seal"></span>';
     el.querySelector('.sb-seal').textContent = text || 'Готово';
     document.body.appendChild(el);
-    setTimeout(function () { el.classList.add('fade'); }, opts.hold || 1500);
-    setTimeout(function () { el.remove(); }, (opts.hold || 1500) + 600);
+    var hold = opts.hold != null ? opts.hold : (impact === 'transaction' ? 820 : 620);
+    setTimeout(function () { el.classList.add('fade'); }, hold);
+    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, hold + 520);
+    return el;
   };
 
   /* ---------------- «Пригласительное письмо» ----------------
@@ -195,11 +230,15 @@
 
   /* ---------------- Переходы между страницами ---------------- */
   (function pageTurn() {
-    if (reduceMotion) return;
+    /* CSSViewTransitionRule означает, что @view-transition navigation:auto
+       умеет сам передать снимки между документами. В этом
+       случае ничего не перехватываем: нет двойного fade и 250-ms паузы. */
+    if (reduceMotion || (S.motion && S.motion.mode() === 'off') || ('CSSViewTransitionRule' in window)) return;
     var veil = document.createElement('div');
     veil.className = 'page-veil';
     veil.setAttribute('aria-hidden', 'true');
-    veil.innerHTML = '<span class="pv-line"></span><span class="pv-para">¶</span>';
+    veil.innerHTML = '<span class="pv-folio">следующий лист</span>' +
+      '<span class="pv-line"></span><span class="pv-para">¶</span><span class="pv-caption"></span>';
     document.body.appendChild(veil);
     /* выход: если пришли переходом — мягко проявляем страницу */
     try {
@@ -222,10 +261,12 @@
       /* переход на ту же страницу с якорем — не перехватываем */
       if (a.pathname === location.pathname && a.hash) return;
       e.preventDefault();
+      var cap = veil.querySelector('.pv-caption');
+      if (cap) cap.textContent = (a.getAttribute('data-turn-label') || a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 42);
       try { sessionStorage.setItem('salon_turn', '1'); } catch (err) {}
       veil.classList.remove('out');
       veil.classList.add('act');
-      setTimeout(function () { location.href = a.href; }, 250);
+      setTimeout(function () { location.href = a.href; }, 190);
     });
   })();
 

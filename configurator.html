@@ -7,8 +7,8 @@
 <meta name="description" content="Соберите смету за четыре шага: тип работы, направление, срок и уровень сопровождения. Живой расчёт и порядок оплаты — до заявки." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723g" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723d" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260723e" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -217,7 +217,7 @@
   .deal-money{margin:4px 0 0}
   .deal-note{margin:8px 0 0;color:var(--ink-faint)}
 
-  /* ===== вуаль отправки: письмо уходит в конверт, печать дышит =====
+  /* ===== вуаль отправки: один жест — письмо уходит в конверт =====
      Анимации только transform/дискретные — при спящем рендере остаётся
      честная статичная картинка, ничего не исчезает. */
   .send-veil{position:fixed;inset:0;z-index:290;display:flex;align-items:center;justify-content:center;padding:20px}
@@ -239,18 +239,13 @@
   @keyframes svDrop{0%{transform:translateY(0)}55%{transform:translateY(26px)}75%{transform:translateY(22px)}100%{transform:translateY(0)}}
   .sv-seal{position:absolute;right:2px;bottom:0;width:34px;height:34px;border-radius:50%;
     background:var(--wax,#A8402F);color:#F6F1E7;font-family:var(--serif);font-size:13px;font-weight:600;
-    display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(168,64,47,.4);
-    animation:svBreath 1.6s ease-in-out infinite}
-  @keyframes svBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}
+    display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(168,64,47,.4)}
   .sv-h{font-family:var(--serif);font-weight:520;font-size:clamp(19px,2.4vw,22px);margin:6px 0 8px;min-height:1.3em}
   .sv-sub{margin:0;min-height:2.6em}
   .sv-dots{display:inline-flex;gap:7px;margin-top:14px}
   .sv-dots i{width:7px;height:7px;border-radius:50%;background:var(--ink,#22201B);opacity:.3}
-  .sv-dots i:nth-child(1){animation:svDot 1.2s ease-in-out infinite}
-  .sv-dots i:nth-child(2){animation:svDot 1.2s ease-in-out .2s infinite}
-  .sv-dots i:nth-child(3){animation:svDot 1.2s ease-in-out .4s infinite}
-  @keyframes svDot{0%,100%{opacity:.3}50%{opacity:1}}
-  @media (prefers-reduced-motion:reduce){.sv-letter,.sv-seal,.sv-dots i{animation:none}}
+  @media (prefers-reduced-motion:reduce){.sv-letter{animation:none}}
+  html[data-motion="off"] .sv-letter{animation:none}
 
   /* ===== запасной ход: смета текстом + копирование + мессенджеры ===== */
   .fb-box{margin:14px 0 6px;text-align:left}
@@ -665,8 +660,8 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260723h"></script>
-<script src="assets/js/extras.js?v=20260723e"></script>
+<script src="assets/js/app.js?v=20260723i"></script>
+<script src="assets/js/extras.js?v=20260723f"></script>
 <script>
 function initConf() {
   'use strict';
@@ -1754,11 +1749,18 @@ function initConf() {
     var contact = $('fContact') ? $('fContact').value.trim() : '';
     var name = $('fName') ? $('fName').value.trim() : '';
     if (!authed) {
-      if (!contact) { S.toast('Оставьте контакт или войдите через Telegram'); $('fContact').focus(); return; }
-      if (S.valid && S.valid.contact && !S.valid.contact(contact)) {
-        S.toast('Контакт не похож на телефон, ВК, Telegram или почту'); $('fContact').focus(); return;
+      if (!contact) {
+        S.toast('Укажите @ник, ссылку VK, телефон или почту', { type: 'error' });
+        if (S.motion) S.motion.field($('fContact'), 'error'); $('fContact').focus(); return;
       }
-      if ($('fConsent') && !$('fConsent').checked) { S.toast('Отметьте согласие на обработку данных'); return; }
+      if (S.valid && S.valid.contact && !S.valid.contact(contact)) {
+        S.toast('Укажите @ник, ссылку VK, телефон или почту', { type: 'error' });
+        if (S.motion) S.motion.field($('fContact'), 'error'); $('fContact').focus(); return;
+      }
+      if ($('fConsent') && !$('fConsent').checked) {
+        S.toast('Нужно согласие, чтобы передать контакт мастеру', { type: 'error' });
+        if (S.motion) S.motion.field($('fConsent'), 'error'); $('fConsent').focus(); return;
+      }
     }
     /* ответы анкеты услуги — сводкой в требования (мастер видит всё сразу) */
     var askText = '';
@@ -1898,7 +1900,7 @@ function initConf() {
         }
       }
     }
-    if (S.stamp) S.stamp('Заявка принята');
+    if (S.stamp) S.stamp('Заявка принята', { impact: 'approval', tone: 'wax' });
     /* гостям — ссылка доступа к делу + необязательная привязка Telegram */
     if (r.token && S.orderNudge) {
       var sheetEl = document.querySelector('#confDone .done-sheet');

@@ -13,13 +13,15 @@
 
   var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var coarse = window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)');
-  /* Поток — мобильная вёрстка, no-JS и ЯВНЫЙ «Спокойный режим» (тумблер
-     в шапке ставит html[data-calm] и шлёт resize). Системный reduce-motion
-     НЕ понижает раскладку (решение владельца 2026-07-22: полная красота
-     по умолчанию для всех — ЯБ/macOS часто шлют reduce без ведома людей),
-     он лишь глушит фоновое: пылинки, дыхание света, тилт, каскад оттиска. */
+  function reduced() {
+    if (window.Salon && Salon.motion) return Salon.motion.mode() === 'off';
+    return rm || docEl.hasAttribute('data-calm');
+  }
+  /* Поток — мобильная вёрстка, touch-устройства и любой
+     режим без движения. Reduced motion больше не оставляет
+     скрытую scroll-driven 3D-сцену. */
   function flat() {
-    return window.innerWidth <= 880 || (coarse && coarse.matches) || docEl.hasAttribute('data-calm');
+    return window.innerWidth <= 880 || (coarse && coarse.matches) || reduced();
   }
 
   /* На телефоне быстрый расчёт — это три коротких шага, а не длинный
@@ -74,14 +76,14 @@
       if (focus) {
         var heading = steps[current].querySelector('.plate-q');
         if (heading) { heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); }
-        form.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'start' });
+        form.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
       }
     }
     back.addEventListener('click', function () { show(current - 1, true); });
     nextBtn.addEventListener('click', function () {
       if (current < steps.length - 1) { show(current + 1, true); return; }
       var receipt = document.querySelector('.pr-first');
-      if (receipt) receipt.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'start' });
+      if (receipt) receipt.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
     });
     show(0, false);
   }
@@ -106,6 +108,7 @@
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', applyMode);
+  window.addEventListener('salon:motionchange', applyMode);
   applyMode();
 
   /* ---------- ход к приёмной: конец кино, а не начало трека ----------
@@ -121,7 +124,7 @@
     var top = track.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top: top + total, behavior: smooth ? 'smooth' : 'auto' });
   }
-  window.SalonPressGo = function () { goPriyomnaya(!rm); };
+  window.SalonPressGo = function () { goPriyomnaya(!reduced()); };
 
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href$="#smeta"]');
@@ -129,7 +132,7 @@
     var href = a.getAttribute('href') || '';
     if (href !== '#smeta' && href.indexOf('index.html#smeta') === -1) return;
     e.preventDefault();
-    goPriyomnaya(!rm);
+    goPriyomnaya(!reduced());
   });
 
   /* прямой заход с якорем (реклама, пролог, чужие страницы) */
@@ -138,7 +141,7 @@
   }
 
   /* ---------- наклон за курсором ---------- */
-  if (!rm && window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+  if (!reduced() && window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
     scene.addEventListener('mousemove', function (e) {
       if (docEl.hasAttribute('data-pr-flat')) return;
       var r = scene.getBoundingClientRect();
@@ -149,8 +152,9 @@
 
   /* ---------- пылинки в луче ---------- */
   var cv = document.getElementById('prDust');
-  if (cv && !rm && !flat()) {
+  if (cv && !reduced() && !flat()) {
     var ctx = cv.getContext('2d'), W, H, ps = [], i;
+    var dustFrame = 0;
     var size = function () { W = cv.width = cv.offsetWidth; H = cv.height = cv.offsetHeight; };
     size(); window.addEventListener('resize', size);
     for (i = 0; i < 45; i++) ps.push({
@@ -160,8 +164,10 @@
       vy: -.00003 - Math.random() * .00009,
       ph: Math.random() * Math.PI * 2
     });
-    (function tick(t) {
-      if (!docEl.hasAttribute('data-pr-flat')) {
+    function tick(t) {
+      dustFrame = 0;
+      if (!docEl.hasAttribute('data-pr-flat') && !document.hidden && !reduced() &&
+          (!Salon.motion || Salon.motion.can(true))) {
         ctx.clearRect(0, 0, W, H);
         var cx = W * .4, cy = H * .3, rad = Math.min(W, H) * .55;
         for (i = 0; i < ps.length; i++) {
@@ -177,8 +183,21 @@
           ctx.fillStyle = '#FFF6DC';
           ctx.beginPath(); ctx.arc(p.x * W, p.y * H, p.r, 0, 6.283); ctx.fill();
         }
+        dustFrame = requestAnimationFrame(tick);
+      } else {
+        ctx.clearRect(0, 0, W, H);
       }
-      requestAnimationFrame(tick);
-    })(0);
+    }
+    function syncDust() {
+      if (!document.hidden && !flat() && !reduced() && (!Salon.motion || Salon.motion.can(true))) {
+        if (!dustFrame) dustFrame = requestAnimationFrame(tick);
+      } else if (dustFrame) {
+        cancelAnimationFrame(dustFrame); dustFrame = 0; ctx.clearRect(0, 0, W, H);
+      }
+    }
+    document.addEventListener('visibilitychange', syncDust);
+    window.addEventListener('salon:motionchange', syncDust);
+    window.addEventListener('resize', syncDust);
+    syncDust();
   }
 })();

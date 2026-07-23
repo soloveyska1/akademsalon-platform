@@ -7,12 +7,39 @@
    и использует их токены. Здесь ничего страничного нет.
    ============================================================ */
 
-/* ---------- Переходы между страницами ---------- */
+/* ============================================================
+   MOTION-ЯЗЫК «ОТТИСК»
+   Один ритм для листа, чернил, печати и пометок. В JS
+   data-motion реактивно учитывает reduced motion,
+   «Спокойный режим», Save-Data и слабое устройство.
+   ============================================================ */
+:root{
+  --motion-instant:80ms;--motion-tap:110ms;--motion-fast:150ms;
+  --motion-ui:220ms;--motion-sheet:300ms;--motion-stamp:340ms;--motion-page:420ms;
+  --ease-ink:cubic-bezier(.2,.72,.25,1);
+  --ease-paper:cubic-bezier(.22,1,.36,1);
+  --ease-press:cubic-bezier(.18,.88,.28,1.16);
+  --ease-exit:cubic-bezier(.4,0,1,1);
+}
+@media(max-width:880px),(hover:none) and (pointer:coarse){
+  :root{--motion-ui:180ms;--motion-sheet:230ms;--motion-stamp:280ms;--motion-page:220ms}
+}
+html[data-motion="lite"]{--motion-sheet:220ms;--motion-stamp:260ms;--motion-page:200ms}
+
+/* Native cross-document transition — основной. JS-вуаль
+   в extras.js остаётся только fallback, поэтому двойного
+   fade и задержки больше нет. */
 @view-transition{navigation:auto}
-::view-transition-old(root){animation:vt-out .22s ease both}
-::view-transition-new(root){animation:vt-in .28s ease both}
-@keyframes vt-out{to{opacity:0;transform:translateX(-12px)}}
-@keyframes vt-in{from{opacity:0;transform:translateX(14px)}}
+::view-transition-old(root){animation:vt-out var(--motion-fast) var(--ease-exit) both}
+::view-transition-new(root){animation:vt-in var(--motion-page) var(--ease-paper) both}
+::view-transition-old(site-header),::view-transition-new(site-header),
+::view-transition-old(mobile-dock),::view-transition-new(mobile-dock){animation:none;mix-blend-mode:normal}
+@keyframes vt-out{to{opacity:.88;transform:translateX(-6px)}}
+@keyframes vt-in{from{opacity:.58;transform:translateX(7px);clip-path:inset(0 0 0 2.5%)}to{opacity:1;transform:none;clip-path:inset(0)}}
+@media(max-width:880px),(hover:none) and (pointer:coarse){
+  @keyframes vt-out{to{opacity:.9;transform:none}}
+  @keyframes vt-in{from{opacity:.72;transform:translateY(2px)}to{opacity:1;transform:none}}
+}
 
 /* ---------- Смена темы: чернила растекаются от кнопки ----------
    Класс html.vt-theme ставит app.js на время startViewTransition:
@@ -46,10 +73,11 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
    ============================================================ */
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:100;
+  view-transition-name:site-header;
   background:color-mix(in srgb, var(--paper) 86%, transparent);
   -webkit-backdrop-filter:blur(14px) saturate(1.05);backdrop-filter:blur(14px) saturate(1.05);
   border-bottom:1px solid var(--hairline);
-  transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .3s ease;
+  transition:transform var(--motion-sheet) var(--ease-paper),box-shadow var(--motion-ui) ease;
 }
 .site-header::before{ /* верхний золотой обрез */
   content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:2;pointer-events:none;
@@ -87,7 +115,7 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
   transition:transform .45s cubic-bezier(.34,1.56,.5,1);
 }
 :root[data-theme="dark"] .brand .b-para{box-shadow:inset 0 1px 3px rgba(0,0,0,.55),inset 0 -1px 0 rgba(255,255,255,.06)}
-.brand:hover .b-para{transform:rotate(8deg) scale(1.08)}
+.brand:hover .b-para{transform:rotate(3deg) scale(1.03)}
 .brand .b-name{font-weight:500}
 .brand .b-short{display:none}
 .nav-links{display:flex;gap:clamp(12px,2vw,26px);margin-left:auto}
@@ -896,6 +924,7 @@ main[tabindex="-1"]:focus{outline:none}
 @media(max-width:880px){.tg-pill{display:none}}
 
 .mobile-cta{
+  view-transition-name:mobile-dock;
   position:fixed;left:0;right:0;bottom:0;z-index:95;display:none;
   padding:10px max(12px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
   background:color-mix(in srgb, var(--paper) 92%, transparent);
@@ -1028,6 +1057,55 @@ html[data-calm][data-theme="dark"]{
   --hairline:#4A453B;--hairline-strong:#645E50;
 }
 html[data-calm] .cf-cn{animation:none!important;opacity:1!important}
+
+/* ---------- Микрожесты: чернила, набор, редакторская пометка ---------- */
+.btn-wax,.mn-calc,[data-motion-press]{position:relative;overflow:hidden;isolation:isolate}
+.motion-ink-drop{
+  position:absolute;z-index:3;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;
+  pointer-events:none;background:color-mix(in srgb,#fff 42%,transparent);
+  transform:scale(0);opacity:.72;animation:motion-ink-drop 480ms var(--ease-ink) forwards;
+}
+@keyframes motion-ink-drop{70%{opacity:.16}to{transform:scale(13);opacity:0}}
+
+.motion-loader{display:inline-flex;align-items:center;gap:4px;min-width:24px;height:1em}
+.motion-loader i{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.26;animation:motion-typeset 960ms steps(2,end) infinite}
+.motion-loader i:nth-child(2){animation-delay:160ms}.motion-loader i:nth-child(3){animation-delay:320ms}
+@keyframes motion-typeset{0%,70%,100%{opacity:.22;transform:translateY(0)}35%{opacity:1;transform:translateY(-2px)}}
+.btn.is-loading{cursor:wait}
+
+input.motion-field-error,textarea.motion-field-error,select.motion-field-error,
+input.invalid,textarea.invalid,select.invalid{
+  border-color:var(--wax)!important;
+  box-shadow:inset 3px 0 0 var(--wax),0 0 0 1px color-mix(in srgb,var(--wax) 16%,transparent)!important;
+}
+html[data-motion]:not([data-motion="off"]) .motion-field-kick,
+html[data-motion]:not([data-motion="off"]) input.invalid,
+html[data-motion]:not([data-motion="off"]) textarea.invalid{
+  animation:motion-proofmark 170ms var(--ease-ink) both;
+}
+.motion-payment-note{animation:motion-proofmark 170ms var(--ease-ink) both}
+@keyframes motion-proofmark{0%,100%{transform:none}35%{transform:translateX(-3px)}68%{transform:translateX(2px)}}
+.motion-field-ok{animation:motion-field-ok 420ms var(--ease-paper)}
+@keyframes motion-field-ok{0%{box-shadow:inset 0 0 0 var(--verify)}45%{box-shadow:inset 3px 0 0 var(--verify)}100%{box-shadow:inset 0 0 0 var(--verify)}}
+
+/* Обычный текст не «вылетает»: лист только мягко ложится. */
+html.has-js[data-motion] .reveal{transform:translateY(7px);transition:opacity var(--motion-sheet) ease,transform var(--motion-sheet) var(--ease-paper)}
+html.has-js[data-motion] .reveal.in{transform:none}
+html[data-motion="off"] .reveal,html[data-motion="off"] .rule.draw,
+html[data-motion="off"] .seal.press,html[data-motion="off"] .paysteps{opacity:1!important;transform:none!important}
+
+@media(hover:hover) and (pointer:fine){
+  .btn:not(:disabled):active{transform:translateY(1px) scale(.99)}
+}
+@media(max-width:880px),(hover:none) and (pointer:coarse){
+  /* На телефоне нет фонового «театра»: движение только в ответ на tap. */
+  .pr-light,.b-sway,.cf-cn,.tg-pill .tp-dot,.plus-card .pc-seal{animation:none!important}
+  .btn:not(:disabled):active,.mn-i:active{transform:translateY(1px) scale(.99);transition-duration:var(--motion-tap)}
+}
+html[data-motion="lite"] .pr-light,html[data-motion="lite"] .b-sway,
+html[data-motion="lite"] .cf-cn,html[data-motion="lite"] .tg-pill .tp-dot{animation:none!important}
+html[data-motion="off"] .motion-ink-drop{display:none!important}
+html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!important;transform:none!important}
 @media(max-width:640px){
   /* на телефоне шапка тесная: тумблер живёт в путеводителе */
   .site-header .calm-toggle{display:none}

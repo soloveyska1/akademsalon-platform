@@ -8,8 +8,8 @@
 <meta name="referrer" content="same-origin" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723g" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723d" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260723e" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
@@ -276,6 +276,8 @@
 #zkMcta .zk-ml b{font-family:var(--serif);font-size:19px;letter-spacing:0;text-transform:none;
   color:var(--wax);font-variant-numeric:tabular-nums}
 #zkMcta .btn{flex:0 0 auto;min-width:46%;min-height:48px}
+#zkMctaNote{display:block;max-width:48vw;margin-top:3px;font:10.5px/1.25 var(--sans);letter-spacing:0;text-transform:none;color:var(--wax)}
+#zkMctaNote[hidden]{display:none}
 
 /* доступность */
 #zkMain :focus-visible,#zkMcta :focus-visible{outline:2px solid var(--stamp);outline-offset:3px}
@@ -589,14 +591,14 @@
 
 <!-- липкая панель: класс mobile-cta гасит общую нижнюю навигацию app.js -->
 <div class="mobile-cta" id="zkMcta" hidden>
-  <span class="zk-ml">К оплате сейчас<b id="zkMctaSum">—</b></span>
+  <span class="zk-ml">К оплате сейчас<b id="zkMctaSum">—</b><small id="zkMctaNote" hidden></small></span>
   <button type="button" class="btn btn-wax" id="zkMctaBtn">Оплатить</button>
 </div>
 
 <footer class="site-footer" hidden></footer>
 
-<script src="assets/js/app.js?v=20260723h"></script>
-<script src="assets/js/extras.js?v=20260723e"></script>
+<script src="assets/js/app.js?v=20260723i"></script>
+<script src="assets/js/extras.js?v=20260723f"></script>
 <script>
 /* Собранная заявка: смотрит, соглашается, платит. ES5-стиль проекта. */
 (function () {
@@ -640,7 +642,7 @@
   var TG = 'https://t.me/academicsaloon';   /* подменится из ответа сервера */
 
   var state = { code: '', nonce: '', data: null, busy: false, preview: false,
-                timer: null, gap: 25000, req: null };
+                timer: null, gap: 25000, req: null, paidCelebrated: false };
 
   /* --- код заявки: только из фрагмента --------------------------------
      Фрагмент не уходит ни в access-лог nginx, ни в Referer при переходе
@@ -684,10 +686,12 @@
     if (id !== 'zkDoc') $('zkMcta').hidden = true;
   }
   function note(t, ok) {
-    var n = $('zkNote');
-    n.hidden = false;
-    n.textContent = t;
-    n.style.color = ok ? 'var(--verify)' : 'var(--wax)';
+    ['zkNote', 'zkMctaNote'].forEach(function (id) {
+      var n = $(id); if (!n) return;
+      n.hidden = false; n.textContent = t;
+      n.style.color = ok ? 'var(--verify)' : 'var(--wax)';
+    });
+    if (!ok && S.motion && !$('zkMcta').hidden) S.motion.replay($('zkMcta'), 'motion-payment-note', 360);
   }
   function wireContacts(c) {
     if (c && c.tg) TG = c.tg;
@@ -1105,7 +1109,10 @@
         } catch (e) { no(); }
       });
     }
-    if (S.stamp) S.stamp('Оплачено');
+    if (!state.paidCelebrated && S.stamp) {
+      state.paidCelebrated = true;
+      S.stamp('Оплачено', { impact: 'transaction', tone: 'verify' });
+    }
   }
 
   function drawDoneLocked() {
@@ -1128,6 +1135,7 @@
   }
 
   function payLoading(on) {
+    if (on && $('zkMctaNote')) $('zkMctaNote').hidden = true;
     ['zkPay', 'zkMctaBtn'].forEach(function (id) {
       var btn = $(id);
       if (S.btnLoading && btn) S.btnLoading(btn, on, 'Открываем кассу…');
@@ -1160,7 +1168,7 @@
     }, function () {
       state.busy = false;
       payLoading(false);
-      note('Связь подвела. Попробуйте ещё раз через минуту.', false);
+      note('Касса не ответила. Деньги не списаны — повторите', false);
     });
   }
   $('zkPay').addEventListener('click', pay);

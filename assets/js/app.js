@@ -218,6 +218,80 @@
     set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
     del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
   };
+
+  /* ---------------- Фирменный motion-язык ----------------
+     Один реактивный источник вместо разрозненных проверок.
+     full — полная типографская хореография; lite — те же жесты,
+     но без ambient-циклов; off — статичный итог без движения. */
+  Salon.motion = (function () {
+    var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    var current = '';
+    function lowPower() {
+      var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      return !!((c && c.saveData) ||
+        (navigator.deviceMemory && navigator.deviceMemory <= 2) ||
+        (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2));
+    }
+    function read() {
+      if (docEl.hasAttribute('data-calm') || (mq && mq.matches)) return 'off';
+      return lowPower() ? 'lite' : 'full';
+    }
+    function refresh() {
+      var next = read(), changed = next !== current;
+      current = next;
+      docEl.setAttribute('data-motion', next);
+      reduceMotion = next === 'off';
+      Salon.reduceMotion = reduceMotion;
+      if (changed) {
+        try { window.dispatchEvent(new CustomEvent('salon:motionchange', { detail: { mode: next } })); } catch (e) {}
+      }
+      return next;
+    }
+    function can(ambient) { return current !== 'off' && (!ambient || current === 'full'); }
+    function replay(el, cls, hold) {
+      if (!el) return;
+      el.classList.remove(cls);
+      if (current === 'off') return;
+      void el.offsetWidth;
+      el.classList.add(cls);
+      setTimeout(function () { if (el) el.classList.remove(cls); }, hold || 420);
+    }
+    function field(el, state) {
+      if (!el) return;
+      if (state === 'error') {
+        el.setAttribute('aria-invalid', 'true');
+        el.classList.add('motion-field-error');
+        replay(el, 'motion-field-kick', 360);
+      } else {
+        el.removeAttribute('aria-invalid');
+        el.classList.remove('motion-field-error', 'motion-field-kick');
+        if (state === 'success') replay(el, 'motion-field-ok', 520);
+      }
+    }
+    refresh();
+    if (mq) {
+      if (mq.addEventListener) mq.addEventListener('change', refresh);
+      else if (mq.addListener) mq.addListener(refresh);
+    }
+    var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (conn && conn.addEventListener) conn.addEventListener('change', refresh);
+    document.addEventListener('invalid', function (e) { field(e.target, 'error'); }, true);
+    document.addEventListener('input', function (e) {
+      if (e.target && e.target.classList && e.target.classList.contains('motion-field-error')) field(e.target, 'clear');
+    }, true);
+    document.addEventListener('pointerdown', function (e) {
+      if (!can(false) || e.button > 0) return;
+      var b = e.target.closest && e.target.closest('.btn-wax, .mn-calc, [data-motion-press]');
+      if (!b || b.disabled || b.querySelector('.motion-ink-drop')) return;
+      var r = b.getBoundingClientRect(), d = document.createElement('span');
+      d.className = 'motion-ink-drop'; d.setAttribute('aria-hidden', 'true');
+      d.style.left = (e.clientX - r.left) + 'px'; d.style.top = (e.clientY - r.top) + 'px';
+      b.appendChild(d);
+      setTimeout(function () { if (d.parentNode) d.parentNode.removeChild(d); }, 520);
+    }, { passive: true });
+    return { mode: function () { return current; }, can: can, refresh: refresh, replay: replay, field: field };
+  })();
+
   Salon.plural = function (n, forms) {
     var a = Math.abs(n) % 100, b = a % 10;
     return forms[(a > 10 && a < 20) ? 2 : (b > 1 && b < 5) ? 1 : (b === 1) ? 0 : 2];
@@ -273,6 +347,7 @@
         l.textContent = mode ? 'Спокойный режим — включён' : 'Спокойный режим';
       });
       if (persist) { try { localStorage.setItem('salon_calm', mode ? '1' : ''); } catch (e) {} }
+      if (Salon.motion) Salon.motion.refresh();
       try { window.dispatchEvent(new Event('resize')); } catch (e) {}
     }
     document.addEventListener('click', function (e) {
@@ -308,7 +383,8 @@
     }
     /* чернильная заливка от точки (x, y) */
     function switchFrom(mode, x, y) {
-      var canVT = typeof document.startViewTransition === 'function' && !reduceMotion && !vtBusy;
+      var canVT = typeof document.startViewTransition === 'function' &&
+        (!Salon.motion || Salon.motion.mode() === 'full') && !document.hidden && !vtBusy;
       if (!canVT) { apply(mode, true); return; }
       vtBusy = true;
       docEl.classList.add('vt-theme');
@@ -321,7 +397,8 @@
         var r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)) + 24;
         docEl.animate(
           { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + r + 'px at ' + x + 'px ' + y + 'px)'] },
-          { duration: 620, easing: 'cubic-bezier(.3,0,.3,1)', pseudoElement: '::view-transition-new(root)' }
+          { duration: Salon.motion && Salon.motion.mode() === 'lite' ? 340 : 460,
+            easing: 'cubic-bezier(.2,.72,.25,1)', pseudoElement: '::view-transition-new(root)' }
         );
       }).catch(function () {});
       vt.finished.then(done, done);
@@ -366,7 +443,10 @@
     var S = window.Salon || (window.Salon = {});
     var docEl = document.documentElement;
     var here = (location.pathname.split('/').pop() || 'index.html');
-    var RM = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+    function rmNow() {
+      return S.motion ? S.motion.mode() === 'off' :
+        !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+    }
 
     /* страницы решения: карточка не выходит ни при каких событиях */
     var HUSH_ALL = {
@@ -566,7 +646,7 @@
       if (!el) return;
       if (n) { el.textContent = n > 9 ? '9+' : String(n); el.hidden = false; }
       else { el.hidden = true; }
-      if (printed && n && !RM) { el.classList.remove('ink'); void el.offsetWidth; el.classList.add('ink'); }
+      if (printed && n && !rmNow()) { el.classList.remove('ink'); void el.offsetWidth; el.classList.add('ink'); }
     }
 
     function mountMarks() {
@@ -684,7 +764,7 @@
       ledger.classList.remove('open');
       var b = document.querySelector('.nav-marks');
       if (b) { b.setAttribute('aria-expanded', 'false'); try { b.focus(); } catch (e) {} }
-      setTimeout(function () { if (ledger) ledger.hidden = true; }, RM ? 0 : 200);
+      setTimeout(function () { if (ledger) ledger.hidden = true; }, rmNow() ? 0 : 200);
       document.removeEventListener('click', outside, true);
       kick();   /* реестр закрылся — занятость снята, очередь может пойти */
     }
@@ -745,9 +825,11 @@
        читает «галочка», а «Оттиск» не держит в наборе эмодзи. */
     var OK_RE = /[✅✔✓⭐]|🎉|\uD83D[\uDCC5\uDCE6\uDD12\uDD14\uDCDD\uDCE3\uDD04]/;
     var BAD_RE = /[⛔❌❗⚠]|🚫/;
+    var OK_WORD_RE = /(готов|принят|оплачен|скопирован|сохранён|сохранен|вошли|в буфере|подтверждён|подтвержден)/i;
+    var BAD_WORD_RE = /(ошиб|не получилось|не отправил|не принял|не похож|оставьте|отметьте|слишком|нужно от|доступ ограничен|сеть шалит|подождите)/i;
     function sniff(raw) {
-      if (BAD_RE.test(raw)) return 'wax';
-      if (OK_RE.test(raw)) return 'verify';
+      if (BAD_RE.test(raw) || BAD_WORD_RE.test(raw)) return 'wax';
+      if (OK_RE.test(raw) || OK_WORD_RE.test(raw)) return 'verify';
       return 'stamp';
     }
     function clean(s) {
@@ -852,7 +934,7 @@
         life = o.duration ? o.duration : Math.min(9000, 5500 + String(o.text || '').length * 60);
         if (o.href || o.action) life = Math.min(12000, Math.round(life * 1.6));
         lead = el.querySelector('.mn-lead i');
-        if (RM || !lead) {
+        if (rmNow() || !lead) {
           el._timer = setTimeout(function () { close(el, false); }, life);
         } else {
           /* фирменный приём: отточие само себя стирает справа налево.
@@ -890,7 +972,7 @@
         if (el.parentNode) el.parentNode.removeChild(el);
         measure();
         kick();
-      }, RM ? 200 : 340);
+      }, rmNow() ? 200 : 340);
     }
 
     /* ---------------- свайп вправо (телефон) ---------------- */
@@ -1082,9 +1164,21 @@
     contact: function (v) { return Salon.valid.phone(v) || Salon.valid.telegram(v) || Salon.valid.email(v) || Salon.valid.vk(v); }
   };
   Salon.btnLoading = function (btn, on, txt) {
-    if (on) { btn.dataset._t = btn.innerHTML; btn.disabled = true; btn.classList.add('is-loading');
-      btn.innerHTML = '<span class="spin"></span>' + (txt || 'Отправляем…'); }
-    else { btn.disabled = false; btn.classList.remove('is-loading'); if (btn.dataset._t) btn.innerHTML = btn.dataset._t; }
+    if (!btn) return;
+    if (on) {
+      if (!btn.classList.contains('is-loading')) btn.dataset._t = btn.innerHTML;
+      btn.disabled = true;
+      btn.classList.add('is-loading');
+      btn.setAttribute('aria-busy', 'true');
+      btn.innerHTML = '<span class="motion-loader" aria-hidden="true"><i></i><i></i><i></i></span>' +
+        '<span class="motion-loading-text"></span>';
+      btn.querySelector('.motion-loading-text').textContent = txt || 'Отправляем…';
+    } else {
+      btn.disabled = false;
+      btn.classList.remove('is-loading');
+      btn.removeAttribute('aria-busy');
+      if (btn.dataset._t) btn.innerHTML = btn.dataset._t;
+    }
   };
 
   /* Одометр: цифры «допечатываются» до значения. countTo(el, 79500, {suffix:' ₽'}) */
