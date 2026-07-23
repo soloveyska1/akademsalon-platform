@@ -1465,30 +1465,6 @@
     });
   }
 
-  /* «Дальше по маршруту» — тонкий штурман внизу страниц маршрута:
-     показывает, где читатель находится, и ведёт за руку к следующему шагу */
-  function mountRouteNext() {
-    if (CHROME_OFF) return;
-    var i = -1;
-    ROUTE.forEach(function (r, k) { if (r.href === here) i = k; });
-    if (i < 0 || i >= ROUTE.length - 1) return; /* вне маршрута или финал */
-    var next = ROUTE[i + 1];
-    var el = document.createElement('aside');
-    el.className = 'route-next';
-    el.setAttribute('aria-label', 'Маршрут по сайту');
-    el.innerHTML = '<div class="wrap rn-in">' +
-      '<span class="rn-step">Маршрут новичка · шаг ' + (i + 1) + ' из ' + ROUTE.length + '</span>' +
-      '<span class="rn-dots" aria-hidden="true">' + ROUTE.map(function (_, k) {
-        return '<i' + (k <= i ? ' class="on"' : '') + '></i>';
-      }).join('') + '</span>' +
-      '<a class="rn-next" href="' + next.href + '">Дальше: ' + next.label + ' <span class="ar">→</span></a>' +
-      '<a class="rn-map" href="start.html">вся карта</a>' +
-    '</div>';
-    var f = document.querySelector('.site-footer');
-    if (f && f.parentNode) f.parentNode.insertBefore(el, f);
-    else document.body.appendChild(el);
-  }
-
   /* ---------------- Возврат к начатому заказу ----------------
      Подпись кнопки не меняем (шапка всегда одинаковая) — черновик
      тихо продолжается: ссылка ведёт на нужный шаг конфигуратора. */
@@ -1643,10 +1619,6 @@
       }, 20000);
     })();
   }
-  mountRouteNext(); /* штурман «Дальше по маршруту» — сразу над колофоном.
-                       ВАЖНО: вызов обязан оставаться ПОСЛЕ создания подвала —
-                       иначе полоса уедет под колофон через fallback appendChild. */
-
   /* ---------------- Плавающая пилюля связи (десктоп) ----------------
      Открывает лист каналов: сайт → ВК → MAX → Telegram. */
   if (!CHROME_OFF && !document.querySelector('.tg-pill') && here !== 'configurator.html' && here !== '404.html') {
