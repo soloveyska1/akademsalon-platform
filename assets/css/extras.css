@@ -584,6 +584,35 @@
 .helpfab .hf-x:hover{color:var(--ink);background:var(--mark)}
 .helpfab .hf-open:focus-visible,.helpfab .hf-x:focus-visible{outline:2px solid var(--wax);outline-offset:-2px}
 
+/* Контекстная помощь не создаёт второй CTA: на ПК раскрывает .tg-pill,
+   на телефоне отмечает уже существующий пункт «Мастер» в доке. */
+.tg-pill.is-context{
+  min-width:318px;min-height:62px;padding:7px 11px 7px 10px;gap:10px;
+  border-radius:5px;border-left:2px solid var(--wax);transform:none;
+  background:var(--sheet);color:var(--ink);
+}
+.tg-pill.is-context:hover{transform:translateY(-2px)}
+.tg-pill .tp-seal{
+  width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;
+  border:1.5px solid var(--wax);border-radius:50%;color:var(--wax);
+  background:color-mix(in srgb,var(--wax-soft) 65%,var(--sheet));
+  font:italic 17px/1 var(--serif);transform:rotate(-6deg);
+}
+.tg-pill .tp-copy{min-width:0;display:grid;gap:2px;text-align:left;flex:1}
+.tg-pill .tp-copy b{font-family:var(--serif);font-size:15.5px;font-weight:500;line-height:1.15}
+.tg-pill .tp-copy small{font-size:10.5px;font-weight:400;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tg-pill .tp-arr{font:18px/1 var(--serif);color:var(--wax);transition:transform .15s}
+.tg-pill.is-context:hover .tp-arr{transform:translateX(2px)}
+@media(max-width:880px){
+  .mnav .mn-link.is-help{color:var(--wax)}
+  .mnav .mn-link.is-help .mn-ic{position:relative}
+  .mnav .mn-link.is-help .mn-ic::after{
+    content:"?";position:absolute;top:-7px;right:-9px;width:15px;height:15px;
+    display:grid;place-items:center;border:2px solid var(--paper);border-radius:50%;
+    background:var(--wax);color:#fff;font:8px/1 var(--mono);
+  }
+}
+
 /* ============================================================
    ТЁМНАЯ ТЕМА
    Ни одного захардкоженного цвета: --wax/--verify/--stamp/--ink-soft

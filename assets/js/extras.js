@@ -553,10 +553,48 @@
       if (document.querySelector('.contact-sheet, .sdlg.open, .toc.open')) return true;
       return false;
     }
+    function useExistingContact(tx) {
+      var mobile = window.matchMedia && window.matchMedia('(max-width:880px)').matches;
+      var target, label;
+      if (mobile) {
+        /* В обычном мобильном доке уже есть «Мастер». Подсвечиваем его и
+           передаём контекст в лист связи — второй плавающий CTA не нужен.
+           В конфигураторе док занят шагами расчёта, поэтому там остаётся
+           самостоятельная закладка ниже. */
+        target = document.querySelector('.mobile-cta:not(.conf-mcta) [data-contact]');
+        if (!target) return false;
+        target.classList.add('is-help');
+        target.setAttribute('data-msg-lead', tx.lead);
+        target.setAttribute('aria-label', 'Спросить мастера. ' + tx.s);
+        label = target.querySelector('.mn-l');
+        if (label) label.textContent = 'Помощь';
+        return true;
+      }
+      /* На ПК контекст временно раскрывает уже существующую правую кнопку.
+         Перехватываем её клик в capture-фазе, чтобы открыть лист ровно один
+         раз и с полезным пояснением по текущей странице. */
+      target = document.querySelector('.tg-pill');
+      if (!target) return false;
+      target.classList.add('is-context');
+      target.setAttribute('aria-label', 'Спросить мастера. ' + tx.s);
+      target.innerHTML = '<span class="tp-seal" aria-hidden="true">м</span>' +
+        '<span class="tp-copy"><b>Спросить мастера</b><small>' + tx.s + '</small></span>' +
+        '<span class="tp-arr" aria-hidden="true">→</span>';
+      target.addEventListener('click', function contextualContact(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (S.contact) S.contact({ lead: tx.lead });
+      }, true);
+      return true;
+    }
     function show(reason) {
       if (shown || dismissed || busy()) return;
       var tx = TEXTS[reason] || TEXTS.dwell;
       shown = true;
+      if (useExistingContact(tx)) {
+        if (S.visit) S.visit.mark('подсказка помощи: ' + reason);
+        return;
+      }
       el = document.createElement('div');
       el.className = 'helpfab';
       el.setAttribute('role', 'region');
