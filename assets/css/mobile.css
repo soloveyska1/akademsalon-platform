@@ -8,7 +8,7 @@
   :root{
     --mobile-gutter:clamp(16px,4.7vw,20px);
     --mobile-header-h:58px;
-    --mobile-dock-h:calc(70px + env(safe-area-inset-bottom));
+    --mobile-dock-h:calc(58px + env(safe-area-inset-bottom));
     --mobile-bottom-clear:calc(var(--mobile-dock-h) + 12px);
     --tap:48px;
   }
@@ -89,18 +89,42 @@
   .doc img,.doc video,.doc iframe{max-width:100%;height:auto}
   .doc .btn{width:100%;justify-content:center}
 
-  /* Нижняя навигация: один резерв безопасной зоны. */
+  /* Нижняя навигация — компактная системная полоса. На телефоне печать,
+     выступавшая над панелью, спорила с контентом и с браузерным chrome. */
   .mobile-cta.mnav{
     display:grid;
     min-height:var(--mobile-dock-h);
-    padding:6px max(7px,env(safe-area-inset-right))
-      max(7px,env(safe-area-inset-bottom))
-      max(7px,env(safe-area-inset-left));
-    background:var(--paper);
-    box-shadow:0 -10px 30px -24px rgba(34,32,27,.55);
+    padding:4px max(6px,env(safe-area-inset-right))
+      max(4px,env(safe-area-inset-bottom))
+      max(6px,env(safe-area-inset-left));
+    border-top-color:color-mix(in srgb,var(--ink) 14%,transparent);
+    background:color-mix(in srgb,var(--paper) 98%,transparent);
+    box-shadow:0 -8px 24px -22px rgba(34,32,27,.48);
   }
-  .mnav .mn-i{min-height:56px;gap:4px;font-size:10.5px}
-  .mnav .mn-calc .mn-ic{width:48px;height:48px;margin-top:-23px}
+  .mnav .mn-i{
+    min-height:50px;
+    justify-content:center;
+    gap:3px;
+    padding:4px 2px;
+    border-radius:3px;
+    font-size:10px;
+    letter-spacing:.01em;
+  }
+  .mnav .mn-i .mn-ic{height:20px;font-size:17px}
+  .mnav .mn-calc .mn-ic{
+    width:auto;
+    height:20px;
+    margin-top:0;
+    border:0;
+    border-radius:0;
+    background:none;
+    color:currentColor;
+    box-shadow:none;
+  }
+  .mnav .mn-calc:active .mn-ic{
+    transform:none;
+    box-shadow:none;
+  }
   .mnav .mn-calc.has-draft .mn-ic::after{
     content:"";
     position:absolute;
@@ -214,9 +238,40 @@
     overflow:visible!important;
   }
   .home .pr-stage{min-height:0!important;height:auto!important}
-  .home .pr-bookwrap,.home .pr-book,
-  .home .pr-cover,.home .pr-first,
-  .home .pr-cvout,.home .pr-cvinner{
+  /* На мобильной главной остаётся одна CTA в hero. Закрытая декоративная
+     книга скрыта; по оранжевой кнопке сразу открывается полноэкранный лист. */
+  html.has-js[data-pr-flat] body:not(.pr-open) .home .pr-bookwrap{
+    display:none!important;
+  }
+  /* Компактная книжная геометрия остаётся только как no-JS fallback.
+     Открытый интерактивный формуляр ниже получает всю ширину. */
+  .home .pr-bookwrap{
+    min-width:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    padding-left:0!important;
+    padding-right:0!important;
+  }
+  .home .pr-book{
+    min-width:0!important;
+    width:min(68vw,232px)!important;
+    max-width:232px!important;
+    margin:18px auto 0!important;
+  }
+  .home .pr-cover,.home .pr-cvout{
+    min-width:0!important;
+    width:100%!important;
+    max-width:100%!important;
+  }
+  html.has-js[data-pr-flat] .home .pr-cvout{
+    height:auto!important;
+    aspect-ratio:340/472;
+  }
+  html.has-js[data-pr-flat] .home .pr-book-trigger{
+    width:100%!important;
+    height:100%!important;
+  }
+  .home .pr-first,.home .pr-cvin{
     min-width:0!important;
     width:100%!important;
     max-width:100%!important;
@@ -227,12 +282,16 @@
     overflow-wrap:normal;
     word-break:normal;
   }
-  .home .pr-cvinner{padding:0 26px 62px}
-  .home .pr-cvpara{font-size:48px;margin-bottom:16px}
+  .home .pr-cvinner{
+    width:100%!important;
+    padding:0 20px 52px!important;
+  }
+  .home .pr-cvpara{font-size:40px;margin-bottom:12px}
   .home .pr-cvname{
-    font-size:clamp(24px,7vw,28px);
+    font-size:clamp(14px,4.1vw,16px);
     line-height:1.16;
-    letter-spacing:.025em;
+    letter-spacing:.01em;
+    white-space:nowrap;
   }
   .home .pr-cvrule{margin-top:14px}
   /* На маленькой обложке служебные строки конкурировали с действием
@@ -240,12 +299,12 @@
   .home .pr-cvsub,.home .pr-cvblind{display:none!important}
   .home .pr-book-trigger-label,
   html.has-js[data-pr-flat] .home .pr-book-trigger-label{
-    inset:auto 24px 22px 24px!important;
+    inset:auto 12px 12px!important;
     width:auto!important;
-    height:58px!important;
-    grid-template-columns:minmax(0,1fr) 28px!important;
-    gap:10px!important;
-    padding:0 14px!important;
+    height:44px!important;
+    grid-template-columns:minmax(0,1fr) 22px!important;
+    gap:7px!important;
+    padding:0 10px!important;
     border:1px solid color-mix(in srgb,var(--wax) 46%,var(--hairline))!important;
     border-radius:4px!important;
     background:color-mix(in srgb,var(--sheet) 94%,transparent)!important;
@@ -258,15 +317,15 @@
   .home .pr-book-trigger-copy strong{
     color:var(--ink);
     font-family:var(--serif);
-    font-size:16px;
+    font-size:14px;
     font-weight:600;
   }
   .home .pr-book-trigger-copy small{display:none!important}
   .home .pr-book-trigger-arrow{
-    width:28px;
-    height:28px;
+    width:22px;
+    height:22px;
     color:var(--wax);
-    font-size:19px;
+    font-size:16px;
   }
   .home .pr-pg{min-height:0!important}
   .home .pr-form[data-estimator-flow="1"] .plates button{min-height:50px}
@@ -310,6 +369,7 @@
   body.pr-open .home .pr-bshadow{display:none!important}
   body.pr-open .home .pr-book{
     width:min(100%,560px)!important;
+    max-width:560px!important;
     margin:0 auto!important;
     transform:none!important;
   }
@@ -318,6 +378,8 @@
     min-height:calc(100svh - max(18px,env(safe-area-inset-top) + env(safe-area-inset-bottom)))!important;
     padding-bottom:18px!important;
   }
+  body.pr-open .home .pr-form-meta,
+  body.pr-open .home .pr-estimate-head{padding-right:52px}
   body.pr-open .home .pr-qnav{
     position:sticky;
     bottom:0;
@@ -444,4 +506,12 @@
   .sdlg-card,.tour-card,.dossier-dialog,.mledger{max-height:94svh}
   .home .pr-h{font-size:35px}
   .home .pr-lead{font-size:14px;line-height:1.5}
+  .home .pr-cta{margin-top:18px!important}
+  .home .pr-note{margin-top:10px!important}
+  .home .story-chip{
+    min-height:44px;
+    margin-top:10px;
+    padding-top:9px;
+    padding-bottom:9px;
+  }
 }
