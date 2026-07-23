@@ -3,77 +3,166 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>С чего начать: весь Академический Салон за 60 секунд — маршрут от цены до заявки</title>
-<meta name="description" content="Карта сайта человеческим языком: 5 шагов от «сколько стоит» до отправленной заявки. Цены, уровни, оплата, гарантии, отзывы — и три быстрые двери, если читать некогда." />
+<title>С чего начать — выберите свой короткий маршрут | Академический Салон</title>
+<meta name="description" content="Выберите, что нужно сейчас: узнать цену и срок, спасти дедлайн, доработать готовый текст или проверить мастерскую. Короткие маршруты без лишнего чтения." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260723i" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
-     С ЧЕГО НАЧАТЬ — «ФОРЗАЦ»: карта сайта человеческим языком.
-     Один экран сути, пять шагов за ручку, шесть дверей ситуаций.
+     С ЧЕГО НАЧАТЬ — компактный выбор по намерению.
+     Меньше карточек, больше прямых маршрутов и нативных деталей.
      ============================================================ */
-  .st-hero{padding:calc(64px + clamp(40px,7vh,76px)) 0 0;text-align:left}
-  .st-hero h1{max-width:22ch;margin:14px 0 clamp(14px,2vw,20px)}
-  .st-hero .lead{max-width:56ch}
-
-  /* три двери для тех, кому некогда */
-  .st-doors{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:clamp(24px,4vw,36px)}
-  .st-door{display:flex;flex-direction:column;gap:6px;padding:18px 18px 16px;border:1px solid var(--hairline);border-radius:3px;background:var(--sheet);color:var(--ink);transition:transform .18s,border-color .18s,box-shadow .18s;cursor:pointer;font:inherit;text-align:left}
-  .st-door:hover{transform:translateY(-3px);border-color:var(--wax);box-shadow:0 10px 24px rgba(107,94,64,.14)}
-  :root[data-theme="dark"] .st-door:hover{box-shadow:0 10px 24px rgba(0,0,0,.45)}
-  .st-door .sd-ic{font-size:19px}
-  .st-door b{font-size:15.5px;font-weight:500}
-  .st-door small{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
-  .st-door.prim{border-color:var(--wax);background:linear-gradient(0deg,var(--wax-soft),var(--wax-soft)),var(--sheet)}
-  @media(max-width:760px){.st-doors{grid-template-columns:1fr}}
-
-  /* маршрут: 5 крупных шагов-разворотов */
-  .st-steps{counter-reset:stp;display:flex;flex-direction:column;gap:14px;margin-top:clamp(24px,4vw,36px)}
-  .st-step{
-    counter-increment:stp;position:relative;display:grid;grid-template-columns:64px 1.05fr .8fr;
-    gap:clamp(14px,2.6vw,30px);align-items:start;
-    background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;
-    padding:clamp(20px,3vw,28px);
+  .st-hero{padding:calc(64px + clamp(36px,6.5vh,70px)) 0 0;text-align:left}
+  .st-hero-grid{
+    display:grid;grid-template-columns:minmax(0,1.02fr) minmax(380px,.88fr);
+    gap:clamp(34px,6vw,76px);align-items:start;
   }
-  .st-step::before{
-    content:counter(stp,decimal-leading-zero);
-    font-family:var(--serif);font-size:clamp(30px,4vw,44px);line-height:1;color:var(--wax);
-    border-bottom:3px double var(--hairline-strong);padding-bottom:8px;
+  .st-intro{padding-top:8px}
+  .st-hero h1{max-width:15ch;margin:14px 0 18px}
+  .st-hero .lead{max-width:48ch}
+  .st-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+  .st-assurance{
+    display:flex;gap:0;list-style:none;margin-top:clamp(24px,4vw,34px);
+    padding-top:14px;border-top:1px solid var(--hairline);
   }
-  .st-step h2{font-size:clamp(19px,2.4vw,25px);margin-bottom:6px}
-  .st-step .ss-min{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:8px}
-  .st-step p{font-size:14.5px;color:var(--ink-soft);line-height:1.65;max-width:52ch}
-  .st-step .ss-links{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-  .st-step .ss-links .btn{align-self:stretch;text-align:center}
-  .st-step .ss-sub{font-size:13px;line-height:1.9;color:var(--ink-soft)}
-  @media(max-width:880px){
-    .st-step{grid-template-columns:44px 1fr}
-    .st-step .ss-links{grid-column:1 / -1}
-    .st-step::before{font-size:26px}
+  .st-assurance li{
+    display:flex;align-items:baseline;gap:7px;min-width:0;padding-right:18px;
+    font-size:12.5px;color:var(--ink-soft);white-space:nowrap;
   }
+  .st-assurance li+li{padding-left:18px;border-left:1px solid var(--hairline)}
+  .st-assurance span{font:10px/1 var(--mono);letter-spacing:.08em;color:var(--wax)}
 
-  /* частые ситуации */
-  .sit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:clamp(20px,3vw,28px)}
-  .sit{display:flex;flex-direction:column;gap:6px;padding:16px;border:1px solid var(--hairline);border-radius:3px;background:var(--sheet);color:var(--ink);transition:transform .18s,border-color .18s}
-  .sit:hover{transform:translateY(-3px);border-color:var(--wax)}
-  .sit .si-q{font-family:var(--serif);font-size:15.5px;font-weight:500;line-height:1.35}
-  .sit small{font-size:12.5px;color:var(--ink-soft);line-height:1.5;flex:1}
-  .sit .si-go{font-size:12.5px;color:var(--wax)}
-  @media(max-width:880px){.sit-grid{grid-template-columns:1fr 1fr}}
-  @media(max-width:600px){.sit-grid{grid-template-columns:1fr}}
+  /* Нативный навигатор по ситуации: работает и без JavaScript. */
+  .st-picker{padding:clamp(20px,3vw,28px);overflow:hidden}
+  .st-picker-head{display:flex;justify-content:space-between;gap:18px;align-items:start;margin-bottom:10px}
+  .st-picker-head h2{font-size:clamp(21px,2.3vw,27px);margin:0 0 5px}
+  .st-picker-head p{font-size:13px;color:var(--ink-soft);line-height:1.5;max-width:34ch}
+  .st-picker-mark{font:22px/1 var(--serif);color:var(--wax);padding-top:2px}
+  .st-intent{border-top:1px solid var(--hairline)}
+  .st-intent:last-child{border-bottom:1px solid var(--hairline)}
+  .st-intent summary{
+    list-style:none;cursor:pointer;display:grid;grid-template-columns:30px 1fr auto;
+    gap:10px;align-items:center;min-height:67px;padding:10px 4px;
+    transition:color .15s,background .15s;
+  }
+  .st-intent summary::-webkit-details-marker{display:none}
+  .st-intent summary:hover{color:var(--wax)}
+  .st-intent summary::after{
+    content:"+";font:22px/1 var(--serif);color:var(--ink-soft);
+    transition:transform .18s,color .18s;
+  }
+  .st-intent[open] summary::after{transform:rotate(45deg);color:var(--wax)}
+  .st-intent[open] summary{color:var(--ink)}
+  .st-pick-no{font:10px/1 var(--mono);letter-spacing:.12em;color:var(--wax)}
+  .st-intent summary b{display:block;font-size:14.5px;font-weight:500;line-height:1.3}
+  .st-intent summary small{display:block;margin-top:3px;font-size:12px;color:var(--ink-soft);line-height:1.4}
+  .st-pick-body{padding:0 30px 17px 44px}
+  .st-pick-body p{font-size:13px;color:var(--ink-soft);line-height:1.55;margin-bottom:11px}
+  .st-pick-actions{display:flex;align-items:center;gap:9px 14px;flex-wrap:wrap}
+  .st-pick-actions .btn{min-height:42px;padding:10px 15px;font-size:13.5px}
+  .st-pick-actions .link{font-size:12.5px}
 
-  .st-map{margin-top:clamp(24px,4vw,36px);padding:18px 20px;border:1px dashed var(--hairline-strong);border-radius:3px;background:var(--sheet);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
-  .st-map p{font-size:13.5px;color:var(--ink-soft);flex:1;min-width:240px;line-height:1.6;margin:0}
+  /* Короткий процесс вместо пяти больших разворотов. */
+  .st-section-head{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.56fr);
+    gap:clamp(24px,5vw,60px);align-items:end;margin-bottom:clamp(26px,4vw,38px);
+  }
+  .st-section-head h2{margin:0;max-width:19ch}
+  .st-section-head p{font-size:14px;color:var(--ink-soft);line-height:1.6}
+  .st-route{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3.5vw,42px)}
+  .st-route-step{position:relative;padding:32px 16px 0 0;border-top:1px solid var(--hairline-strong)}
+  .st-route-step::before{
+    content:"";position:absolute;top:-5px;left:0;width:9px;height:9px;border-radius:50%;
+    background:var(--paper);border:1px solid var(--ink);
+  }
+  .st-route-step:first-child::before{background:var(--wax);border-color:var(--wax)}
+  .st-route-no{display:block;margin-bottom:9px;font:10.5px/1 var(--mono);letter-spacing:.14em;color:var(--ink-faint)}
+  .st-route-step h3{font-size:clamp(18px,2vw,22px);margin-bottom:8px}
+  .st-route-step p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:13px}
+  .st-route-links{display:flex;gap:6px 14px;flex-wrap:wrap}
+  .st-route-links a{font-size:12.5px}
 
-  .final-cta{padding:var(--block) 0 0;text-align:center}
-  .final-cta .fc-rule{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,5vw,44px)}
-  .final-cta .fc-rule::before,.final-cta .fc-rule::after{content:"";height:1px;background:var(--hairline);flex:1}
-  .final-cta .fc-rule span{font-family:var(--serif);color:var(--ink-faint);font-size:18px}
-  .final-cta h2{margin-bottom:22px}
-  .final-cta .petit{margin-top:14px}
+  /* Спокойный каталог оставшихся сценариев + один блок решения. */
+  .st-support-grid{
+    display:grid;grid-template-columns:minmax(0,1.08fr) minmax(330px,.72fr);
+    gap:clamp(20px,3.5vw,38px);align-items:start;
+  }
+  .st-shortcuts{overflow:hidden}
+  .st-shortcut{
+    display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;
+    min-height:78px;padding:13px 18px;border-bottom:1px solid var(--hairline);
+    transition:background .15s,color .15s;
+  }
+  .st-shortcut:last-child{border-bottom:0}
+  .st-shortcut:hover{background:var(--mark)}
+  .st-shortcut-no{font:10px/1 var(--mono);letter-spacing:.12em;color:var(--wax)}
+  .st-shortcut b{display:block;font-size:14.5px;font-weight:500;line-height:1.35}
+  .st-shortcut small{display:block;margin-top:3px;font-size:12.5px;color:var(--ink-soft);line-height:1.4}
+  .st-shortcut-go{font:20px/1 var(--serif);color:var(--wax);transition:transform .15s}
+  .st-shortcut:hover .st-shortcut-go{transform:translateX(3px)}
+  .st-before{padding:clamp(22px,3vw,28px)}
+  .st-before .caps{display:block;margin-bottom:10px}
+  .st-before h3{font-size:clamp(21px,2.3vw,27px);margin-bottom:15px}
+  .st-before-list{list-style:none;border-top:1px solid var(--hairline);margin-bottom:20px}
+  .st-before-list li{
+    position:relative;padding:11px 0 11px 22px;border-bottom:1px solid var(--hairline);
+    font-size:13px;color:var(--ink-soft);line-height:1.5;
+  }
+  .st-before-list li::before{content:"✓";position:absolute;left:0;color:var(--verify);font-weight:600}
+  .st-before-actions{display:grid;gap:9px}
+  .st-before-actions .btn{width:100%}
+  .st-before-note{text-align:center;margin-top:10px;font-size:11.5px;color:var(--ink-faint)}
+  .st-map{
+    margin-top:clamp(20px,3vw,28px);padding:15px 18px;border:1px dashed var(--hairline-strong);
+    border-radius:3px;display:flex;gap:14px;align-items:center;background:var(--sheet);
+  }
+  .st-map-mark{font:20px/1 var(--serif);color:var(--wax)}
+  .st-map p{font-size:13px;color:var(--ink-soft);flex:1;line-height:1.55;margin:0}
+  .st-map .btn{min-height:42px;padding:10px 16px;font-size:13px}
+
+  @media(max-width:900px){
+    .st-hero-grid,.st-support-grid{grid-template-columns:1fr}
+    .st-hero-grid{gap:34px}
+    .st-picker{max-width:680px}
+    .st-section-head{grid-template-columns:1fr;gap:10px}
+    .st-section-head p{max-width:56ch}
+  }
+  @media(max-width:680px){
+    main.start .st-hero{padding-top:92px}
+    main.start .st-hero h1{max-width:13ch;margin-top:10px;font-size:clamp(34px,10.5vw,44px)}
+    main.start .st-hero .lead{font-size:15px;line-height:1.56}
+    .st-actions{display:grid;grid-template-columns:1fr 1fr;margin-top:21px}
+    .st-actions .btn{padding:12px 13px;font-size:13.5px;white-space:normal;text-align:center}
+    .st-assurance{display:grid;grid-template-columns:repeat(3,1fr);margin-top:20px}
+    .st-assurance li{display:block;padding:0 8px 0 0;white-space:normal;font-size:11.5px;line-height:1.4}
+    .st-assurance li+li{padding-left:10px}
+    .st-assurance span{display:block;margin-bottom:5px}
+    .st-picker{padding:18px 16px}
+    .st-picker-head{margin-bottom:8px}
+    .st-picker-head h2{font-size:21px}
+    .st-picker-head p{font-size:12.5px}
+    .st-intent summary{grid-template-columns:26px 1fr auto;gap:8px;min-height:63px;padding:9px 2px}
+    .st-intent summary b{font-size:14px}
+    .st-pick-body{padding:0 20px 15px 34px}
+    .st-pick-actions .btn{width:100%}
+    .st-route{grid-template-columns:1fr;gap:0}
+    .st-route-step{padding:2px 0 24px 30px;border-top:0;border-left:1px solid var(--hairline-strong)}
+    .st-route-step:last-child{padding-bottom:0;border-left-color:transparent}
+    .st-route-step::before{top:3px;left:-5px}
+    .st-route-no{margin-bottom:7px}
+    .st-route-step p{margin-bottom:9px}
+    .st-shortcut{grid-template-columns:28px minmax(0,1fr) auto;gap:9px;min-height:72px;padding:12px 14px}
+    .st-map{align-items:flex-start;flex-wrap:wrap;padding:14px}
+    .st-map p{min-width:calc(100% - 42px)}
+    .st-map .btn{width:100%}
+  }
+  @media(max-width:360px){
+    .st-actions{grid-template-columns:1fr}
+    .st-assurance li{font-size:11px}
+  }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/start.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -84,179 +173,221 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="С чего начать — весь Салон за 60 секунд" />
-<meta property="og:description" content="5 шагов от «сколько стоит» до отправленной заявки: цены, уровни, оплата, гарантии — и быстрые двери, если некогда читать." />
+<meta property="og:title" content="С чего начать — выберите свой короткий маршрут" />
+<meta property="og:description" content="Цена, срочный дедлайн, доработка готового текста или проверка мастерской — один экран, чтобы быстро выбрать следующий шаг." />
 <meta property="og:url" content="https://akademsalon.ru/start.html" />
 <meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="С чего начать — Академический Салон" />
-<meta name="twitter:description" content="Карта сайта человеческим языком: маршрут от цены до заявки за 60 секунд." />
+<meta name="twitter:description" content="Выберите свою ситуацию и получите короткий следующий шаг без лишнего чтения." />
 </head>
 <body>
 
 <main class="start">
   <div class="wrap">
 
-    <!-- ФОРЗАЦ -->
+    <!-- КОРОТКИЙ ВХОД + ВЫБОР СИТУАЦИИ -->
     <section class="st-hero reveal" data-chapter="С чего начать">
-      <span class="caps">Форзац · карта для впервые зашедших</span>
-      <h1 class="h-display">Весь Салон — за 60 секунд</h1>
-      <p class="lead">Здесь много страниц, потому что мы отвечаем на всё честно и подробно. Но теряться в них не нужно: вот короткий маршрут за ручку — от «сколько это стоит» до отправленной заявки. А если читать некогда — три двери прямо под этим абзацем.</p>
+      <div class="st-hero-grid">
+        <div class="st-intro">
+          <span class="caps">Путеводитель · один понятный шаг</span>
+          <h1 class="h-display">Начните с того, что нужно сейчас</h1>
+          <p class="lead">Не обязательно разбираться во всём сайте. Выберите свою ситуацию — покажем короткий маршрут без звонка, оплаты и обязательств.</p>
 
-      <div class="st-doors">
-        <a class="st-door prim" href="configurator.html">
-          <span class="sd-ic">01</span><b>Просто узнать стоимость</b>
-          <small>Четыре вопроса, минута времени — предварительная вилка. Ни к чему не обязывает.</small>
-        </a>
-        <button type="button" class="st-door" data-contact>
-          <span class="sd-ic">02</span><b>Спросить живого человека</b>
-          <small>Telegram, ВКонтакте или бот — отвечаем в течение 15–30 минут в рабочее время.</small>
-        </button>
-        <a class="st-door" href="priyomnaya.html">
-          <span class="sd-ic">03</span><b>Спросить анонимно</b>
-          <small>Открытая приёмная: вопрос без имени и регистрации, ответ мастера — публично.</small>
-        </a>
+          <div class="st-actions">
+            <a class="btn btn-wax" href="configurator.html">Узнать цену и срок <span class="ar">→</span></a>
+            <a class="btn btn-line" href="https://t.me/academicsaloon" target="_blank" rel="noopener" data-contact>Задать вопрос</a>
+          </div>
+
+          <ul class="st-assurance" aria-label="Что будет на старте">
+            <li><span>01</span> около минуты</li>
+            <li><span>02</span> без оплаты</li>
+            <li><span>03</span> без звонка</li>
+          </ul>
+        </div>
+
+        <aside class="st-picker sheet stacked" aria-labelledby="stPickerTitle">
+          <div class="st-picker-head">
+            <div>
+              <h2 id="stPickerTitle">Что у вас сейчас?</h2>
+              <p>Откройте подходящую строку — внутри только нужные действия.</p>
+            </div>
+            <span class="st-picker-mark" aria-hidden="true">¶</span>
+          </div>
+
+          <details class="st-intent" name="start-intent" open>
+            <summary>
+              <span class="st-pick-no">01</span>
+              <span><b>Нужны цена и срок</b><small>Хочу быстро понять порядок цифр</small></span>
+            </summary>
+            <div class="st-pick-body">
+              <p>Ответьте на четыре вопроса — получите предварительную вилку сразу на экране.</p>
+              <div class="st-pick-actions">
+                <a class="btn btn-wax" href="configurator.html">Рассчитать за минуту <span class="ar">→</span></a>
+                <a class="link" href="tariffs.html">Сначала посмотреть цены</a>
+              </div>
+            </div>
+          </details>
+
+          <details class="st-intent" name="start-intent">
+            <summary>
+              <span class="st-pick-no">02</span>
+              <span><b>Поджимает дедлайн</b><small>Нужно понять, реально ли успеть</small></span>
+            </summary>
+            <div class="st-pick-body">
+              <p>Укажите срок в заявке — сразу честно скажем, берёмся ли и какой график реалистичен.</p>
+              <div class="st-pick-actions">
+                <a class="btn btn-wax" href="configurator.html">Оценить срочную работу <span class="ar">→</span></a>
+                <a class="link" href="https://t.me/academicsaloon" target="_blank" rel="noopener" data-contact>Спросить человека</a>
+              </div>
+            </div>
+          </details>
+
+          <details class="st-intent" name="start-intent">
+            <summary>
+              <span class="st-pick-no">03</span>
+              <span><b>Работа уже есть</b><small>Нужна проверка, правки или защита</small></span>
+            </summary>
+            <div class="st-pick-body">
+              <p>Можно заказать только нужную часть — переписывать или оплачивать всю работу не придётся.</p>
+              <div class="st-pick-actions">
+                <a class="link" href="configurator.html?service=rv">Разобрать готовую</a>
+                <a class="link" href="configurator.html?service=nm">Пройти нормоконтроль</a>
+                <a class="link" href="configurator.html?service=dp">Подготовить защиту</a>
+              </div>
+            </div>
+          </details>
+
+          <details class="st-intent" name="start-intent">
+            <summary>
+              <span class="st-pick-no">04</span>
+              <span><b>Сначала хочу проверить вас</b><small>Условия, отзывы и вопрос без имени</small></span>
+            </summary>
+            <div class="st-pick-body">
+              <p>Начните с документов и живых историй — связываться с нами для проверки не нужно.</p>
+              <div class="st-pick-actions">
+                <a class="link" href="guarantees.html">Гарантии</a>
+                <a class="link" href="reviews.html">Отзывы</a>
+                <a class="link" href="priyomnaya.html">Спросить анонимно</a>
+              </div>
+            </div>
+          </details>
+        </aside>
       </div>
     </section>
 
-    <!-- МАРШРУТ -->
-    <section class="chapter reveal" id="marshrut" data-chapter="Маршрут за ручку">
-      <div class="ch-rule"><span class="ch-no">§ 01 · Маршрут — пять шагов до заявки</span></div>
-      <h2>Идите по номерам — не заблудитесь</h2>
-
-      <div class="st-steps">
-        <article class="st-step">
-          <div>
-            <span class="ss-min">Шаг 1 · ~20 секунд</span>
-            <h2>Узнайте, сколько это стоит</h2>
-            <p>Цены у нас открыты полностью — от реферата за 2 500 ₽ до кандидатской. В каталоге каждая работа раскрывается в «формуляр»: что это такое, как делается и на что смотреть, — написано так, чтобы понял даже первокурсник.</p>
-          </div>
-          <div class="ss-links">
-            <a class="btn btn-line" href="tariffs.html">Каталог работ и цен <span class="ar">→</span></a>
-            <span class="ss-sub">Или сразу узнайте предварительную вилку: <a class="link" href="configurator.html">конфигуратор сметы</a></span>
-          </div>
-        </article>
-
-        <article class="st-step">
-          <div>
-            <span class="ss-min">Шаг 2 · ~15 секунд</span>
-            <h2>Выберите, сколько заботы нужно</h2>
-            <p>Один и тот же текст можно получить тремя способами: просто готовую работу («Базовый»), с ведением по главам до защиты («Под ключ») или с подготовкой самой защиты («VIP»). Качество текста одинаковое — меняется плотность сопровождения.</p>
-          </div>
-          <div class="ss-links">
-            <a class="btn btn-line" href="vedenie.html">Уровни ведения <span class="ar">→</span></a>
-            <span class="ss-sub">Не уверены — берите «Под ключ», его выбирают чаще всего</span>
-          </div>
-        </article>
-
-        <article class="st-step">
-          <div>
-            <span class="ss-min">Шаг 3 · ~15 секунд</span>
-            <h2>Поймите, как устроены деньги</h2>
-            <p>Всю сумму вперёд мы не берём никогда. Обычно — 50/50 или 30/40/30: каждый платёж после того, как вы увидели результат. Онлайн-касса или перевод, чек налоговой на каждый платёж, возврат — по закону.</p>
-          </div>
-          <div class="ss-links">
-            <a class="btn btn-line" href="oplata.html">Как проходит оплата <span class="ar">→</span></a>
-            <span class="ss-sub"><a class="link" href="oplata.html#zaruchku">Дорожка «за ручку»: что увидите на экране и куда нажать</a> · денег впритык? там же — честные способы платить меньше</span>
-          </div>
-        </article>
-
-        <article class="st-step">
-          <div>
-            <span class="ss-min">Шаг 4 · ~30 секунд, если вы скептик</span>
-            <h2>Проверьте нас — до всяких денег</h2>
-            <p>Устав гарантий с опорой на законы, отзывы со скринами, обезличенные образцы работ и «испытание скептика»: пять проверок за семь минут, все — без нашего участия. Сомнения — это нормально; мы построили целую страницу, чтобы их снять.</p>
-          </div>
-          <div class="ss-links">
-            <a class="btn btn-line" href="guarantees.html">Гарантии · устав <span class="ar">→</span></a>
-            <span class="ss-sub"><a class="link" href="reviews.html">Отзывы</a> · <a class="link" href="priyomnaya.html">задать вопрос анонимно</a></span>
-          </div>
-        </article>
-
-        <article class="st-step">
-          <div>
-            <span class="ss-min">Шаг 5 · ~2 минуты</span>
-            <h2>Оставьте заявку — и выдохните</h2>
-            <p>Конфигуратор соберёт смету и отправит заявку мастеру. Ответ — обычно за 15–30 минут в рабочее время: план, точная цена, срок. Платить на этом шаге не нужно — сначала вы всё увидите и решите.</p>
-          </div>
-          <div class="ss-links">
-            <a class="btn btn-wax" href="configurator.html">Рассчитать и отправить <span class="ar">→</span></a>
-            <span class="ss-sub">Дальше всё живёт в <a class="link" href="dashboard.html">личном кабинете</a>: статусы, файлы, переписка</span>
-          </div>
-        </article>
+    <!-- КАК ВСЁ ПРОИСХОДИТ -->
+    <section class="chapter reveal" id="marshrut" data-chapter="Как всё устроено">
+      <div class="ch-rule"><span class="ch-no">§ 01 · От оценки до старта</span></div>
+      <div class="st-section-head">
+        <h2>Три шага — без прыжка в неизвестность</h2>
+        <p>На каждом этапе вы сначала видите результат и условия, а уже потом решаете, идти ли дальше.</p>
       </div>
+
+      <ol class="st-route" aria-label="Как начинается работа">
+        <li class="st-route-step">
+          <span class="st-route-no">01 · ОРИЕНТИР</span>
+          <h3>Получаете вилку</h3>
+          <p>Четыре ответа дают предварительную цену и срок. Контакты для расчёта не нужны.</p>
+          <div class="st-route-links">
+            <a class="link" href="tariffs.html">Открытые цены</a>
+          </div>
+        </li>
+        <li class="st-route-step">
+          <span class="st-route-no">02 · ПЛАН</span>
+          <h3>Согласуем детали</h3>
+          <p>Мастер смотрит задание, фиксирует объём, точную сумму, график и уровень сопровождения.</p>
+          <div class="st-route-links">
+            <a class="link" href="vedenie.html">Уровни ведения</a>
+          </div>
+        </li>
+        <li class="st-route-step">
+          <span class="st-route-no">03 · РЕШЕНИЕ</span>
+          <h3>Вы решаете</h3>
+          <p>Оплата только по согласованному плану и частями. Статусы, файлы и переписка остаются в кабинете.</p>
+          <div class="st-route-links">
+            <a class="link" href="oplata.html">Как проходит оплата</a>
+            <a class="link" href="dashboard.html">Кабинет</a>
+          </div>
+        </li>
+      </ol>
     </section>
 
-    <!-- ЧАСТЫЕ СИТУАЦИИ -->
-    <section class="chapter reveal" id="situacii" data-chapter="Частые ситуации">
-      <div class="ch-rule"><span class="ch-no">§ 02 · Частые ситуации — двери напрямую</span></div>
-      <h2>Узнали себя? Вам сюда</h2>
-      <div class="sit-grid">
-        <a class="sit" href="configurator.html">
-          <span class="si-q">«Горит срок, всё уже вчера»</span>
-          <small>Берём и срочные — до 14 дней с коэффициентом ×1.45. Честно скажем на заявке, успеваем ли.</small>
-          <span class="si-go">Рассчитать срочную →</span>
-        </a>
-        <a class="sit" href="tariffs.html#dossiers">
-          <span class="si-q">«Я первый раз, ничего не понимаю»</span>
-          <small>Формуляры каталога написаны для вас: что такое курсовая изнутри, как выглядит процесс, чего ждать.</small>
-          <span class="si-go">Читать формуляры →</span>
-        </a>
-        <a class="sit" href="oplata.html#zaruchku">
-          <span class="si-q">«Не понимаю, как тут платить»</span>
-          <small>Проведём за ручку: две дорожки с картинками — что увидите на сайте и в боте, куда нажать. Платят по частям, не всё сразу.</small>
-          <span class="si-go">Первый платёж по шагам →</span>
-        </a>
-        <a class="sit" href="tariffs.html#services">
-          <span class="si-q">«Работа почти готова, нужна помощь с частью»</span>
-          <small>Нормоконтроль, чистка от следов ИИ, презентация и речь, разбор готовой работы — по отдельности.</small>
-          <span class="si-go">Отдельные услуги →</span>
-        </a>
-        <a class="sit" href="plan.html">
-          <span class="si-q">«Пока просто присматриваюсь»</span>
-          <small>Начните с разбора плана за 3 000 ₽: структура, срок, зафиксированная смета. Продолжите — сумма зачтётся.</small>
-          <span class="si-go">Разбор плана →</span>
-        </a>
-        <a class="sit" href="gift.html">
-          <span class="si-q">«Хочу помочь другому человеку»</span>
-          <small>Подарочный сертификат: вы платите — он предъявляет код. Остаток не сгорает, действует год.</small>
-          <span class="si-go">Подарить помощь →</span>
-        </a>
-        <a class="sit" href="priyomnaya.html">
-          <span class="si-q">«Стесняюсь спросить напрямую»</span>
-          <small>Открытая приёмная: вопрос анонимно, без регистрации. Или напишите человеку — мы не кусаемся.</small>
-          <span class="si-go">Спросить анонимно →</span>
-        </a>
+    <!-- ДОПОЛНИТЕЛЬНЫЕ КОРОТКИЕ МАРШРУТЫ -->
+    <section class="chapter reveal" id="situacii" data-chapter="Другие маршруты">
+      <div class="ch-rule"><span class="ch-no">§ 02 · Если задача точечная</span></div>
+      <div class="st-section-head">
+        <h2>Можно начать не с большой заявки</h2>
+        <p>Разбор плана, одна доработка или подготовка к защите — самостоятельные услуги, а не обязательные дополнения.</p>
+      </div>
+
+      <div class="st-support-grid">
+        <nav class="st-shortcuts sheet" aria-label="Короткие маршруты">
+          <a class="st-shortcut" href="plan.html">
+            <span class="st-shortcut-no">01</span>
+            <span><b>Разобрать тему и план</b><small>Понять структуру, срок и реальный объём</small></span>
+            <span class="st-shortcut-go" aria-hidden="true">→</span>
+          </a>
+          <a class="st-shortcut" href="configurator.html?service=rv">
+            <span class="st-shortcut-no">02</span>
+            <span><b>Доработать готовый текст</b><small>Проверка, замечания и точечные правки</small></span>
+            <span class="st-shortcut-go" aria-hidden="true">→</span>
+          </a>
+          <a class="st-shortcut" href="configurator.html?service=dp">
+            <span class="st-shortcut-no">03</span>
+            <span><b>Подготовиться к защите</b><small>Речь, презентация и ответы на вопросы</small></span>
+            <span class="st-shortcut-go" aria-hidden="true">→</span>
+          </a>
+          <a class="st-shortcut" href="gift.html">
+            <span class="st-shortcut-no">04</span>
+            <span><b>Подарить помощь</b><small>Сертификат на любую услугу, действует год</small></span>
+            <span class="st-shortcut-go" aria-hidden="true">→</span>
+          </a>
+        </nav>
+
+        <aside class="st-before sheet stacked">
+          <span class="caps">До отправки заявки</span>
+          <h3>Важно знать заранее</h3>
+          <ul class="st-before-list">
+            <li>Всю сумму вперёд не берём</li>
+            <li>Цена фиксируется до старта</li>
+            <li>На заявку можно ответить «нет»</li>
+          </ul>
+          <div class="st-before-actions">
+            <a class="btn btn-wax" href="configurator.html">Получить предварительную смету <span class="ar">→</span></a>
+            <a class="btn btn-line" href="https://t.me/academicsaloon" target="_blank" rel="noopener" data-contact>Обсудить с мастером</a>
+          </div>
+          <p class="st-before-note">Обычно отвечаем за 15–30 минут в рабочее время</p>
+        </aside>
       </div>
 
       <div class="st-map">
-        <p>Ищете что-то конкретное — гайд про речь на защиту, правила бонусов, реквизиты? В шапке любой страницы есть кнопка <b>«Меню»</b>: там путеводитель по всем разделам и живой поиск — наберите два-три слова, и страница найдётся.</p>
-        <button type="button" class="btn btn-line" id="stOpenMap">Открыть путеводитель</button>
+        <span class="st-map-mark" aria-hidden="true">⌕</span>
+        <p><b>Нужно что-то конкретное?</b> В путеводителе есть поиск по услугам, гайдам и документам.</p>
+        <a class="btn btn-line" href="knowledge.html" data-toc-open>Открыть поиск по сайту</a>
       </div>
-    </section>
-
-    <!-- ФИНАЛЬНЫЙ CTA -->
-    <section class="final-cta reveal" data-chapter="Смета">
-      <div class="fc-rule"><span>¶</span></div>
-      <h2>Минута — и у вас предварительная вилка</h2>
-      <a class="btn btn-wax btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>
-      <p class="petit">Бесплатно и ни к чему не обязывает. Платить — только после согласованного плана.</p>
     </section>
 
   </div>
 </main>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Как заказать работу в Академическом Салоне","description":"Пять шагов от расчёта цены до отправленной заявки","step":[{"@type":"HowToStep","position":1,"name":"Узнайте цену","url":"https://akademsalon.ru/tariffs.html"},{"@type":"HowToStep","position":2,"name":"Выберите уровень ведения","url":"https://akademsalon.ru/vedenie.html"},{"@type":"HowToStep","position":3,"name":"Поймите порядок оплаты","url":"https://akademsalon.ru/oplata.html"},{"@type":"HowToStep","position":4,"name":"Проверьте гарантии и отзывы","url":"https://akademsalon.ru/guarantees.html"},{"@type":"HowToStep","position":5,"name":"Отправьте заявку","url":"https://akademsalon.ru/configurator.html"}]}</script>
-<script src="assets/js/app.js?v=20260723m"></script>
-<script src="assets/js/extras.js?v=20260723h"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Как начать работу с Академическим Салоном","description":"Три прозрачных шага от предварительной оценки до решения о старте","step":[{"@type":"HowToStep","position":1,"name":"Получите предварительную цену и срок","url":"https://akademsalon.ru/configurator.html"},{"@type":"HowToStep","position":2,"name":"Согласуйте точный план и условия","url":"https://akademsalon.ru/vedenie.html"},{"@type":"HowToStep","position":3,"name":"Примите решение и выберите порядок оплаты","url":"https://akademsalon.ru/oplata.html"}]}</script>
+<script src="assets/js/app.js?v=20260723n"></script>
+<script src="assets/js/extras.js?v=20260723i"></script>
 <script>
 (function(){
   'use strict';
-  var b = document.getElementById('stOpenMap');
-  if (b) b.addEventListener('click', function(){
-    if (window.Salon && Salon.toc) Salon.toc.open();
+  /* Оставляем открытую только одну ситуацию и в браузерах без details[name]. */
+  var intents = document.querySelectorAll('.st-intent');
+  intents.forEach(function(intent){
+    intent.addEventListener('toggle', function(){
+      if (!intent.open) return;
+      intents.forEach(function(other){
+        if (other !== intent) other.open = false;
+      });
+    });
   });
 })();
 </script>
