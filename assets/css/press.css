@@ -327,6 +327,39 @@
 .pr-append .caps{display:block;font-size:10px;margin-bottom:4px;color:var(--ink-faint)}
 /* финал «Начнём?» — прод-блок blank-chapter живёт в pereplet.css */
 .pr-toc .blank-chapter{margin-top:clamp(46px,7vh,72px)}
+@media(max-width:680px){
+  .pr-toc .blank-chapter .bc-cta{
+    display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;
+    gap:8px;margin-top:26px;
+  }
+  .pr-toc .blank-chapter .bc-q{
+    display:flex;align-items:center;gap:12px;width:100%;margin:0 0 3px;
+    font-size:18px;line-height:1.2;
+  }
+  .pr-toc .blank-chapter .bc-q::after{
+    content:"";height:1px;flex:1;background:var(--hairline-strong);
+  }
+  .pr-toc .blank-chapter .bc-cta .btn{width:100%;margin:0}
+  .pr-toc .blank-chapter .bc-cta .btn-wax{min-height:54px}
+  .pr-toc .blank-chapter .bc-cta .btn-line{
+    display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:9px;
+    min-height:48px;padding:9px 4px;border-width:1px 0;border-radius:0;
+    font-family:var(--serif);font-size:15px;font-weight:500;text-align:left;
+  }
+  .pr-toc .blank-chapter .bc-cta .btn-line::before{
+    content:"Живой мастер";font:8px/1 var(--mono);letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-faint);
+  }
+  .pr-toc .blank-chapter .bc-cta .btn-line::after{
+    content:"→";font:18px/1 var(--serif);color:var(--wax);
+  }
+}
+@media(max-width:360px){
+  .pr-toc .blank-chapter .bc-row{gap:8px;font-size:22px;flex-wrap:nowrap}
+  .pr-toc .blank-chapter .bc-row>span:not(.dots){white-space:nowrap}
+  .pr-toc .blank-chapter .bc-row .dots{min-width:0}
+  .pr-toc .blank-chapter .bc-val{display:none}
+}
 
 /* ============================================================
    ПОТОК: html[data-pr-flat] (мобильные, reduce-motion — ставит press.js)
