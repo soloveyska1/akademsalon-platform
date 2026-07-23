@@ -216,60 +216,74 @@
   opacity:calc(1 - var(--po));
 }
 .pr-book-trigger{
-  position:absolute;inset:0;z-index:12;transform:translateZ(31px);
-  border:0;border-radius:3px 8px 8px 3px;background:transparent;
+  position:absolute;left:calc(100% - 17px);bottom:82px;z-index:12;
+  width:156px;height:64px;padding:0;transform:translateZ(31px);
+  border:0;background:transparent;
   color:#76531A;cursor:pointer;-webkit-tap-highlight-color:transparent;
-}
-.pr-book-trigger::after{
-  content:"";position:absolute;inset:13px 13px 13px 39px;border-radius:2px;
-  box-shadow:0 0 0 0 rgba(225,184,98,0);
-  transition:box-shadow .2s ease,background .2s ease;
+  transition:opacity .18s ease,visibility .18s ease;
 }
 .pr-book-trigger-label{
-  position:absolute;left:62px;right:48px;bottom:58px;min-height:78px;
-  display:flex;align-items:center;justify-content:space-between;gap:18px;
-  padding:13px 14px 13px 17px;border:1px solid rgba(118,83,26,.34);border-radius:2px;
-  background:rgba(255,253,247,.72);
-  box-shadow:0 12px 28px -22px rgba(70,50,20,.55),inset 0 0 0 1px rgba(255,255,255,.45);
+  position:absolute;inset:5px 0;
+  display:grid;grid-template-columns:27px minmax(0,1fr) 29px;align-items:center;gap:8px;
+  padding:0 10px 0 5px;border:1px solid rgba(118,83,26,.32);border-left:3px solid var(--wax);
+  border-radius:0 3px 3px 0;
+  background:
+    linear-gradient(90deg,rgba(118,83,26,.055) 0 26px,transparent 26px),
+    linear-gradient(180deg,rgba(255,254,249,.98),rgba(242,234,215,.97));
+  box-shadow:0 13px 24px -17px rgba(58,39,12,.72),inset 0 1px rgba(255,255,255,.72);
   text-shadow:0 1px 0 rgba(255,255,255,.72);
-  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
-  transition:color .18s ease,border-color .18s ease,background .18s ease,transform .18s ease,box-shadow .18s ease;
+  transform:translateX(-1px);
+  transition:color .2s ease,border-color .2s ease,background .2s ease,transform .24s cubic-bezier(.22,1,.36,1),box-shadow .2s ease;
+}
+.pr-book-trigger-index{
+  display:grid;place-items:center;align-self:stretch;border-right:1px solid rgba(118,83,26,.16);
+  font:9px/1 var(--mono);letter-spacing:.12em;color:#9A835A;
+  writing-mode:vertical-rl;transform:rotate(180deg)
 }
 .pr-book-trigger-copy{display:flex;min-width:0;flex-direction:column;align-items:flex-start;text-align:left}
 .pr-book-trigger-copy small{
-  font-family:var(--mono);font-size:10px;line-height:1.2;letter-spacing:.16em;text-transform:uppercase;color:#8A7858
+  margin-top:4px;white-space:nowrap;font-family:var(--mono);font-size:8px;line-height:1;
+  letter-spacing:.09em;text-transform:uppercase;color:#8A7858
 }
 .pr-book-trigger-copy strong{
-  margin-top:5px;font-family:var(--serif);font-size:20px;line-height:1;font-weight:600;letter-spacing:.01em;color:#4F3813
+  font-family:var(--serif);font-size:16px;line-height:1;font-weight:600;letter-spacing:.01em;color:#4F3813
 }
 .pr-book-trigger-arrow{
-  display:grid;place-items:center;flex:0 0 45px;width:45px;height:45px;border-radius:50%;
-  background:var(--wax);color:#FFFCF4;text-shadow:none;font:22px/1 var(--serif);
-  box-shadow:0 8px 18px -11px rgba(125,45,24,.8);
+  display:grid;place-items:center;width:27px;height:27px;border:1px solid rgba(118,83,26,.27);border-radius:50%;
+  color:#76531A;text-shadow:none;font:16px/1 var(--serif);
   animation:pr-open-cue 4.6s cubic-bezier(.22,1,.36,1) 1.2s infinite;
-  transition:transform .18s ease
+  transition:color .18s ease,border-color .18s ease,background .18s ease,transform .18s ease
 }
 .pr-book-trigger:hover .pr-book-trigger-label{
-  color:#4F3813;border-color:rgba(105,72,20,.58);background:rgba(255,253,247,.88);
-  transform:translateY(-3px);box-shadow:0 18px 34px -24px rgba(70,50,20,.7),inset 0 0 0 1px rgba(255,255,255,.58)
+  color:#4F3813;border-color:rgba(105,72,20,.52);border-left-color:var(--wax);
+  transform:translateX(8px);box-shadow:0 16px 28px -17px rgba(58,39,12,.78),inset 0 1px rgba(255,255,255,.8)
 }
-.pr-book-trigger:hover .pr-book-trigger-arrow{animation:none;transform:translateX(4px)}
-.pr-book-trigger:hover::after{background:radial-gradient(circle at 48% 52%,rgba(118,83,26,.045),transparent 50%)}
+.pr-book-trigger:hover .pr-book-trigger-arrow{
+  animation:none;transform:translateX(2px);border-color:var(--wax);background:var(--wax);color:#FFFCF4
+}
 .pr-book-trigger:focus-visible{outline:0}
-.pr-book-trigger:focus-visible::after{box-shadow:0 0 0 2px #8A6420,0 0 0 6px rgba(247,241,229,.92)}
+.pr-book-trigger:focus-visible .pr-book-trigger-label{
+  transform:translateX(8px);box-shadow:0 0 0 2px #8A6420,0 0 0 6px rgba(247,241,229,.92),0 16px 28px -17px rgba(58,39,12,.78)
+}
 :root[data-theme="dark"] .pr-book-trigger{color:#D9B467}
 :root[data-theme="dark"] .pr-book-trigger-label{
-  border-color:rgba(220,177,85,.38);background:rgba(19,16,12,.68);
-  box-shadow:0 14px 30px -22px rgba(0,0,0,.85),inset 0 0 0 1px rgba(255,255,255,.025);
+  border-color:rgba(220,177,85,.32);border-left-color:var(--wax);
+  background:
+    linear-gradient(90deg,rgba(220,177,85,.05) 0 26px,transparent 26px),
+    linear-gradient(180deg,rgba(43,37,28,.98),rgba(27,23,18,.98));
+  box-shadow:0 14px 27px -18px rgba(0,0,0,.92),inset 0 1px rgba(255,255,255,.035);
   text-shadow:0 1px 0 rgba(0,0,0,.65)
 }
+:root[data-theme="dark"] .pr-book-trigger-index{border-right-color:rgba(220,177,85,.14);color:#8F7C57}
 :root[data-theme="dark"] .pr-book-trigger-copy small{color:#8F7C57}
 :root[data-theme="dark"] .pr-book-trigger-copy strong{color:#E8D8B5}
+:root[data-theme="dark"] .pr-book-trigger-arrow{border-color:rgba(220,177,85,.3);color:#D9B467}
 :root[data-theme="dark"] .pr-book-trigger:hover .pr-book-trigger-label{
-  color:#F0D797;border-color:rgba(240,205,132,.62);background:rgba(25,21,16,.84)
+  color:#F0D797;border-color:rgba(240,205,132,.58);border-left-color:var(--wax)
 }
-:root[data-theme="dark"] .pr-book-trigger:hover::after{background:radial-gradient(circle at 48% 52%,rgba(220,177,85,.045),transparent 50%)}
-:root[data-theme="dark"] .pr-book-trigger:focus-visible::after{box-shadow:0 0 0 2px rgba(242,216,157,.9),0 0 0 6px rgba(28,25,21,.8)}
+:root[data-theme="dark"] .pr-book-trigger:focus-visible .pr-book-trigger-label{
+  box-shadow:0 0 0 2px rgba(242,216,157,.9),0 0 0 6px rgba(28,25,21,.8),0 16px 28px -17px rgba(0,0,0,.92)
+}
 .pr-open .pr-book-trigger{opacity:0;visibility:hidden;pointer-events:none}
 @keyframes pr-open-cue{
   0%,68%,100%{transform:translateX(0)}

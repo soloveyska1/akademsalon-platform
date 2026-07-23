@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/css/pereplet.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<link rel="stylesheet" href="assets/css/press.css?v=20260723h" />
+<link rel="stylesheet" href="assets/css/press.css?v=20260723i" />
 <script>(function(){try{document.documentElement.classList.add("has-js");var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
 html.has-prelude{overflow:hidden}
@@ -232,10 +232,11 @@ window.SalonPreludeOpen=function(){
             <button class="pr-book-trigger" id="prBookTrigger" type="button"
               aria-controls="smeta" aria-expanded="false"
               aria-label="Открыть книгу и рассчитать предварительную смету за минуту">
-              <span class="pr-book-trigger-label">
+              <span class="pr-book-trigger-label" aria-hidden="true">
+                <span class="pr-book-trigger-index">01</span>
                 <span class="pr-book-trigger-copy">
-                  <small>Нажмите на обложку · 1 минута</small>
-                  <strong>Открыть смету</strong>
+                  <strong>Открыть</strong>
+                  <small>смета · ≈ 1 мин</small>
                 </span>
                 <span class="pr-book-trigger-arrow" aria-hidden="true">→</span>
               </span>
