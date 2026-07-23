@@ -250,6 +250,26 @@ async function inspectPage(page, ctaRequired) {
     return { count: matches.length, matches, required };
   }, ctaRequired);
 
+  const homeHero = await page.evaluate((required) => {
+    if (!required) return null;
+    const visible = (selector) => {
+      const element = document.querySelector(selector);
+      if (!element) return false;
+      const style = getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return style.display !== 'none' &&
+        style.visibility !== 'hidden' &&
+        Number(style.opacity) !== 0 &&
+        rect.width > 0 &&
+        rect.height > 0;
+    };
+    return {
+      bookVisible: visible('.pr-bookwrap'),
+      proofVisible: visible('.pr-note'),
+      storyVisible: visible('.story-chip')
+    };
+  }, ctaRequired);
+
   await page.evaluate(() => {
     const scrolling = document.scrollingElement || document.documentElement;
     window.scrollTo(0, scrolling.scrollHeight);
@@ -309,6 +329,9 @@ async function inspectPage(page, ctaRequired) {
   if (cta.count > 1 || (cta.required && cta.count !== 1)) {
     failures.push(`основных CTA быстрого расчёта: ${cta.count}; matches=${cta.matches.join(', ') || 'none'}`);
   }
+  if (homeHero && (homeHero.bookVisible || homeHero.proofVisible || homeHero.storyVisible)) {
+    failures.push(`перегруженный hero=${JSON.stringify(homeHero)}`);
+  }
   const dockOverlaps = dock.flatMap((item) =>
     item.overlaps.map((overlap) => `${item.selector} → ${overlap}`)
   );
@@ -316,7 +339,7 @@ async function inspectPage(page, ctaRequired) {
     failures.push(`fixed dock overlaps: ${dockOverlaps.join(', ')}`);
   }
 
-  return { theme, overflow, cta, dock, failures };
+  return { theme, overflow, cta, homeHero, dock, failures };
 }
 
 async function main() {

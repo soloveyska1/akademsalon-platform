@@ -238,6 +238,93 @@
     overflow:visible!important;
   }
   .home .pr-stage{min-height:0!important;height:auto!important}
+  /* Мобильный титул: одна ось и одна иерархия вместо набора декоративных
+     полос. Дата издания, знак §, вторичная статистика и сториз остаются
+     за пределами первого экрана. */
+  html[data-pr-flat] .home .pr-copy,
+  html:not(.has-js) .home .pr-copy{
+    max-width:520px;
+    padding-left:var(--mobile-gutter);
+    padding-right:var(--mobile-gutter);
+  }
+  html[data-pr-flat] .home .pr-kicker,
+  html:not(.has-js) .home .pr-kicker{
+    min-height:28px;
+    gap:9px;
+    margin-bottom:20px;
+    padding:0;
+    border:0;
+    font-size:8.5px;
+    letter-spacing:.17em;
+  }
+  html[data-pr-flat] .home .pr-kicker::before,
+  html:not(.has-js) .home .pr-kicker::before{
+    width:28px;
+    height:28px;
+    flex-basis:28px;
+    font-size:17px;
+  }
+  html[data-pr-flat] .home .pr-kicker::after,
+  html:not(.has-js) .home .pr-kicker::after{display:none!important}
+  .home .pr-h{
+    font-size:clamp(36px,10.4vw,42px);
+    line-height:.96;
+    letter-spacing:-.03em;
+  }
+  .home .pr-h .ln:nth-child(2),
+  .home .pr-h .ln:nth-child(3){padding-left:0}
+  .home .pr-lead{
+    margin-top:20px;
+    padding:16px 0 0;
+    border-top:1px solid var(--hairline-strong);
+    font-size:15px;
+    line-height:1.52;
+  }
+  .home .pr-lead::before{display:none}
+  html[data-pr-flat] .home .pr-cta,
+  html:not(.has-js) .home .pr-cta{margin-top:20px}
+  html[data-pr-flat] .home .pr-note,
+  html:not(.has-js) .home .pr-note,
+  .home .story-chip{display:none!important}
+  .home .slot-line--cover{
+    justify-content:space-between;
+    gap:10px;
+    margin-top:16px;
+    margin-bottom:0;
+    padding:12px 0 0;
+    border-top:1px solid var(--hairline);
+    border-bottom:0;
+  }
+  .home .slot-line--cover .sl-k{
+    font-size:9px;
+    letter-spacing:.14em;
+  }
+  .home .slot-line--cover .sl-v{font-size:14px}
+
+  /* Переход к содержанию — продолжение листа, а не новая стопка карточек. */
+  .home .pr-toc{
+    padding:44px var(--mobile-gutter) 56px;
+  }
+  .home .pr-toccaps{display:none}
+  .home .pr-toc h2{
+    margin:0 0 8px;
+    font-size:30px;
+  }
+  .home .pr-tocsub{
+    max-width:29ch;
+    margin:0 auto 24px;
+    font-size:14px;
+    line-height:1.5;
+  }
+  .home .pr-first-here{
+    margin-bottom:18px;
+    padding:14px 4px;
+    border-width:1px 0;
+    border-radius:0;
+    background:transparent;
+  }
+  .home .pr-first-here .s{line-height:1.45}
+  .home .pr-row{padding:12px 4px}
   /* На мобильной главной остаётся одна CTA в hero. Закрытая декоративная
      книга скрыта; по оранжевой кнопке сразу открывается полноэкранный лист. */
   html.has-js[data-pr-flat] body:not(.pr-open) .home .pr-bookwrap{
