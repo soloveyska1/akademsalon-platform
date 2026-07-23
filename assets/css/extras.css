@@ -489,7 +489,7 @@
 .mn-x:hover{color:var(--ink);background:var(--mark)}
 
 /* ============================================================
-   ОТКРЫВАЛКА ПОЛЕЙ В ШАПКЕ
+   ТИХАЯ ЛЕНТА ДЕЛ — открывалка в шапке
    ============================================================ */
 .nav-marks{
   position:relative;display:inline-flex;align-items:center;justify-content:center;
@@ -498,15 +498,15 @@
   color:var(--ink-soft);transition:color .15s,border-color .15s,background .15s;
 }
 .nav-marks[hidden]{display:none}
-.nav-marks .nm-g{font-family:var(--serif);font-size:19px;line-height:1}
+.nav-marks .nm-g{position:relative;width:15px;height:18px;border:1.5px solid currentColor;border-radius:1px;background:var(--paper)}
+.nav-marks .nm-g::before{content:"";position:absolute;right:-1.5px;top:-1.5px;width:6px;height:6px;background:var(--paper);border-left:1.5px solid currentColor;border-bottom:1.5px solid currentColor}
+.nav-marks .nm-g::after{content:"";position:absolute;left:3px;bottom:4px;width:7px;height:1px;background:currentColor;box-shadow:0 -4px 0 currentColor;opacity:.55}
 .nav-marks:hover,.nav-marks[aria-expanded="true"]{color:var(--ink);border-color:var(--hairline-strong);background:var(--mark)}
 .nav-marks:focus-visible{outline:2px solid var(--wax);outline-offset:2px}
-/* счётчик — штемпельная синь, а не сургуч: квота сургуча остаётся у листа.
-   Конвенция уже есть в проекте — .mn-badge.calm (chrome.css:678) */
 .nav-marks .nm-n{
-  position:absolute;top:0;right:-2px;min-width:16px;height:16px;padding:0 4px;
+  position:absolute;top:1px;right:0;min-width:15px;height:15px;padding:0 3px;
   border-radius:999px;background:var(--stamp);color:#FFFEF9;border:2px solid var(--paper);
-  font-family:var(--mono);font-size:9.5px;font-weight:600;line-height:1;
+  font-family:var(--mono);font-size:8.5px;font-weight:600;line-height:1;
   display:inline-flex;align-items:center;justify-content:center;
 }
 .nav-marks .nm-n[hidden]{display:none}
@@ -518,64 +518,58 @@
   100%{transform:rotate(0) scale(1);opacity:1}
 }
 
-/* ============================================================
-   РЕЕСТР «ПОЛЯ» — где лежит всё тихое
-   ============================================================ */
+/* Тихая лента: компактный поповер на ПК, нижний лист на телефоне. */
 .mledger{
   position:fixed;top:calc(var(--hdr-h) + 8px);right:clamp(12px,2vw,22px);z-index:198;
-  width:min(94vw,392px);max-height:min(70svh,520px);overflow:auto;
-  background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:var(--r);
-  box-shadow:0 2px 0 var(--hairline),0 22px 54px rgba(34,32,27,.26);
+  width:min(94vw,372px);max-height:min(68svh,470px);overflow:auto;
+  background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:5px;
+  box-shadow:0 1px 0 var(--hairline),0 18px 46px rgba(34,32,27,.22);
   opacity:0;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease;
 }
 .mledger.open{opacity:1;transform:none}
 .mledger[hidden]{display:none}
 .ml-head{
   display:flex;align-items:center;justify-content:space-between;gap:8px;
-  padding:8px 8px 8px 16px;border-bottom:1px solid var(--hairline);
+  padding:12px 8px 10px 15px;border-bottom:1px solid var(--hairline);
   position:sticky;top:0;background:var(--sheet);z-index:1;
 }
-.ml-head h3{font-family:var(--serif);font-size:17px;font-weight:500;margin:0}
+.ml-kicker{display:block;margin-bottom:3px;font:8.5px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+.ml-head h3{font-family:var(--serif);font-size:18px;line-height:1.1;font-weight:500;margin:0}
 .ml-x{
   width:44px;height:44px;min-width:44px;border:0;background:none;cursor:pointer;
   font-size:22px;line-height:1;color:var(--ink-soft);border-radius:50%;
   display:inline-flex;align-items:center;justify-content:center;
 }
 .ml-x:hover{color:var(--ink);background:var(--mark)}
-/* обрез страницы: вертикальная линейка вдоль полей */
-.ml-list{list-style:none;margin:0 0 0 14px;padding:0;border-left:1px solid var(--hairline)}
+.ml-list{list-style:none;margin:0;padding:0}
 .ml-go{
-  display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;min-height:44px;
-  padding:11px 14px 11px 12px;text-decoration:none;color:var(--ink);
+  display:grid;grid-template-columns:8px minmax(0,1fr) 18px;align-items:center;gap:10px;min-height:64px;
+  padding:10px 13px;text-decoration:none;color:var(--ink);
   border-bottom:1px solid var(--hairline);
 }
 .ml-row:last-child .ml-go{border-bottom:0}
 .ml-go:hover{background:var(--paper-2)}
-.ml-what{flex:0 1 auto;font-size:14.5px;line-height:1.45}
-.ml-dots{
-  flex:1 1 auto;min-width:14px;height:.9em;align-self:baseline;
-  background-image:radial-gradient(circle,var(--hairline-strong) 1px,transparent 1.4px);
-  background-size:9px 3px;background-repeat:repeat-x;background-position:0 100%;
-}
-.ml-no{flex:0 0 auto;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);white-space:nowrap}
-.ml-when{
-  flex:0 0 100%;margin-top:3px;
-  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-soft);
-}
-.ml-row.is-new .ml-go{background:var(--mark);border-left:2px solid var(--stamp);padding-left:10px}
-.ml-empty{padding:26px 16px;font-size:14px;color:var(--ink-soft);margin:0;text-align:center}
+.ml-pin{width:6px;height:6px;border:1px solid var(--hairline-strong);border-radius:50%;background:transparent}
+.ml-main{min-width:0;display:grid;gap:4px}.ml-what{font-size:13.5px;line-height:1.35}
+.ml-meta{display:flex;align-items:center;gap:7px;font:9px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+.ml-no::after{content:"·";margin-left:7px;color:var(--hairline-strong)}
+.ml-arrow{font-family:var(--serif);font-size:17px;color:var(--hairline-strong);transition:transform .15s,color .15s}
+.ml-go:hover .ml-arrow{transform:translateX(2px);color:var(--wax)}
+.ml-row.is-new .ml-go{background:color-mix(in srgb,var(--stamp) 7%,var(--sheet))}.ml-row.is-new .ml-pin{border-color:var(--stamp);background:var(--stamp);box-shadow:0 0 0 3px color-mix(in srgb,var(--stamp) 12%,transparent)}
+.ml-empty{padding:28px 18px;display:grid;justify-items:center;gap:5px;color:var(--ink-soft);text-align:center}
+.ml-empty>span{width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--hairline-strong);border-radius:50%;color:var(--stamp);font-size:12px;margin-bottom:3px}
+.ml-empty b{font-family:var(--serif);font-size:16px;font-weight:500;color:var(--ink)}.ml-empty small{font-size:11.5px}
 .ml-empty[hidden]{display:none}
-.ml-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 14px 10px}
+.ml-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 13px 8px;border-top:1px solid var(--hairline)}
 .ml-foot[hidden]{display:none}
 .ml-clear{
   background:none;border:0;cursor:pointer;padding:0;min-height:44px;
-  display:inline-flex;align-items:center;font:inherit;font-size:12.5px;color:var(--ink-soft);
-  text-decoration:underline;text-decoration-color:var(--hairline-strong);text-underline-offset:3px;
+  display:inline-flex;align-items:center;font:inherit;font-size:11.5px;color:var(--ink-soft);
 }
+.ml-clear[hidden]{visibility:hidden;display:inline-flex}
 .ml-clear:hover{color:var(--ink)}
 .ml-all{
-  font-size:13px;color:var(--wax);text-decoration:none;min-height:44px;
+  font-size:12.5px;color:var(--wax);text-decoration:none;min-height:44px;
   display:inline-flex;align-items:center;gap:5px;border-bottom:1px solid transparent;
 }
 .ml-all:hover{border-bottom-color:var(--wax)}
@@ -639,11 +633,14 @@
   .mn-go{flex:1 1 auto;justify-content:center}
   .nav-marks{width:44px;height:44px;min-width:44px}
   .mledger{
-    top:auto;left:0;right:0;bottom:0;width:auto;max-height:82svh;
-    border-radius:6px 6px 0 0;border-bottom:0;transform:translateY(10px);
+    top:auto;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));width:auto;max-height:68svh;
+    border-radius:12px;border:1px solid var(--hairline-strong);transform:translateY(10px);
     padding-bottom:max(10px,env(safe-area-inset-bottom));
+    box-shadow:0 0 0 100vmax rgba(34,32,27,.18),0 18px 48px rgba(34,32,27,.28);
   }
   .mledger.open{transform:none}
+  .ml-head{padding:11px 8px 9px 14px}.ml-head h3{font-size:17px}
+  .ml-go{min-height:60px;padding:9px 12px}.ml-foot{padding-bottom:3px}
 }
 @media(max-width:760px){
   .mn-t{font-size:16px;line-height:1.35}

@@ -579,8 +579,8 @@
       b.hidden = true;
       b.setAttribute('aria-expanded', 'false');
       b.setAttribute('aria-controls', 'mledger');
-      b.setAttribute('aria-label', 'Пометки на полях');
-      b.innerHTML = '<span class="nm-g" aria-hidden="true">¶</span><span class="nm-n" hidden></span>';
+      b.setAttribute('aria-label', 'События по вашим делам');
+      b.innerHTML = '<span class="nm-g" aria-hidden="true"></span><span class="nm-n" hidden></span>';
       cab = cta.querySelector('.nav-cab');
       if (cab) cta.insertBefore(b, cab); else cta.appendChild(b);
       b.addEventListener('click', function () { if (ledger && !ledger.hidden) closeLedger(); else openLedger(); });
@@ -604,14 +604,14 @@
       ledger.hidden = true;
       ledger.innerHTML =
         '<div class="ml-head">' +
-          '<h3 id="mlH">Пометки на полях</h3>' +
-          '<button type="button" class="ml-x" data-ml-x aria-label="Закрыть">×</button>' +
+          '<div><span class="ml-kicker">Пометки на полях</span><h3 id="mlH">По вашим делам</h3></div>' +
+          '<button type="button" class="ml-x" data-ml-x aria-label="Закрыть"><span aria-hidden="true">×</span></button>' +
         '</div>' +
         '<ol class="ml-list"></ol>' +
-        '<p class="ml-empty" hidden>Поля чистые. Всё по делу — в кабинете.</p>' +
+        '<div class="ml-empty" hidden><span aria-hidden="true">✓</span><b>Здесь пока тихо</b><small>Новые сообщения и статусы появятся здесь.</small></div>' +
         '<div class="ml-foot">' +
-          '<button type="button" class="ml-clear" data-ml-clear>Отметить всё прочтённым</button>' +
-          '<a class="ml-all" href="dashboard.html">Все дела <span class="ar" aria-hidden="true">→</span></a>' +
+          '<button type="button" class="ml-clear" data-ml-clear>Прочитать всё</button>' +
+          '<a class="ml-all" href="dashboard.html">Открыть кабинет <span class="ar" aria-hidden="true">→</span></a>' +
         '</div>';
       document.body.appendChild(ledger);
       ledger.addEventListener('click', function (e) {
@@ -625,7 +625,7 @@
     }
 
     function drawLedger() {
-      var box = buildLedger(), list = box.querySelector('.ml-list'), a = marks(), i, li, go, sp;
+      var box = buildLedger(), list = box.querySelector('.ml-list'), a = marks(), i, li, go, sp, main, meta;
       while (list.firstChild) list.removeChild(list.firstChild);
       for (i = 0; i < a.length; i++) {
         li = document.createElement('li');
@@ -635,23 +635,30 @@
         go.setAttribute('href', a[i].href || 'dashboard.html');
         go.setAttribute('data-k', a[i].k);
 
-        sp = document.createElement('span'); sp.className = 'ml-what';
-        sp.textContent = a[i].text || ''; go.appendChild(sp);
-
-        sp = document.createElement('span'); sp.className = 'ml-dots';
+        sp = document.createElement('span'); sp.className = 'ml-pin';
         sp.setAttribute('aria-hidden', 'true'); go.appendChild(sp);
 
-        sp = document.createElement('span'); sp.className = 'ml-no';
-        sp.textContent = a[i].no ? String(a[i].no) : ''; go.appendChild(sp);
-
+        main = document.createElement('span'); main.className = 'ml-main';
+        sp = document.createElement('span'); sp.className = 'ml-what';
+        sp.textContent = a[i].text || ''; main.appendChild(sp);
+        meta = document.createElement('span'); meta.className = 'ml-meta';
+        if (a[i].no) {
+          sp = document.createElement('span'); sp.className = 'ml-no';
+          sp.textContent = String(a[i].no); meta.appendChild(sp);
+        }
         sp = document.createElement('span'); sp.className = 'ml-when';
-        sp.textContent = when(a[i].ts); go.appendChild(sp);
+        sp.textContent = when(a[i].ts); meta.appendChild(sp);
+        main.appendChild(meta); go.appendChild(main);
+
+        sp = document.createElement('span'); sp.className = 'ml-arrow';
+        sp.setAttribute('aria-hidden', 'true'); sp.textContent = '→'; go.appendChild(sp);
 
         li.appendChild(go);
         list.appendChild(li);
       }
       box.querySelector('.ml-empty').hidden = a.length > 0;
       box.querySelector('.ml-foot').hidden = a.length === 0;
+      box.querySelector('.ml-clear').hidden = unreadN() === 0;
     }
 
     function outside(e) {
@@ -1145,15 +1152,18 @@
     { href: 'reviews.html',    label: 'Отзывы', x2: true },
     { href: 'knowledge.html',  label: 'Полезные материалы', x: true }
   ];
-  /* Маршрут новичка: линейный путь «за ручку» от цен до заявки.
-     Он же рисует полоску «Дальше по маршруту» внизу этих страниц. */
+  /* Короткий маршрут новичка: не заставляем читать сайт по кругу.
+     Три решения ведут от ориентира по цене к заявке. */
   var ROUTE = [
-    { href: 'tariffs.html',      label: 'Цены и каталог' },
-    { href: 'vedenie.html',      label: 'Уровни ведения' },
-    { href: 'oplata.html',       label: 'Оплата' },
-    { href: 'guarantees.html',   label: 'Гарантии' },
-    { href: 'reviews.html',      label: 'Отзывы' },
-    { href: 'configurator.html', label: 'Рассчитать и отправить' }
+    { href: 'tariffs.html',      label: 'Свериться с ценой', note: '1 мин' },
+    { href: 'guarantees.html',   label: 'Проверить условия', note: 'по делу' },
+    { href: 'configurator.html', label: 'Получить смету', note: 'без звонка' }
+  ];
+  var QUICK = [
+    { href: 'configurator.html', no: '01', label: 'Узнать цену своей работы', note: 'Смета за минуту · без телефона', main: true },
+    { href: 'start.html', no: '02', label: 'Понять, как всё устроено', note: 'Коротко: от заявки до защиты' },
+    { href: 'knowledge.html', no: '03', label: 'Найти полезный разбор', note: 'ГОСТ, структура, защита' },
+    { href: 'dashboard.html', no: '04', label: 'Вернуться к своему делу', note: 'Статус, файлы и переписка' }
   ];
   /* Путеводитель: разделы сгруппированы по смыслу, у каждого — подсказка */
   var GROUPS = [
@@ -1267,17 +1277,22 @@
       '<span class="b-short" aria-hidden="true">Академсалон</span></span></a>';
   }
 
-  /* Полноэкранное меню-«Путеводитель» — одно на страницу: живой поиск по
-     всем страницам, маршрут новичка и разделы по смыслу с подсказками.
-     Задача: даже впервые зашедший находит любую страницу за секунды. */
+  /* Путеводитель строится от намерения, а не от структуры сайта:
+     четыре быстрых входа, поиск, три шага новичка и тихий полный индекс. */
   function mountTOC() {
     if (document.querySelector('.toc')) return;
     var toc = document.createElement('div');
     toc.className = 'toc'; toc.id = 'toc';
     toc.setAttribute('role', 'dialog'); toc.setAttribute('aria-modal', 'true'); toc.setAttribute('aria-label', 'Путеводитель по сайту');
     var routeRow = ROUTE.map(function (r, i) {
-      return '<a class="tr-step" href="' + r.href + '"><i>' + (i + 1) + '</i>' + r.label + '</a>';
+      return '<a class="tr-step" href="' + r.href + '"><i>' + (i + 1) + '</i>' +
+        '<span><b>' + r.label + '</b><small>' + r.note + '</small></span></a>';
     }).join('<span class="tr-arr" aria-hidden="true">→</span>');
+    var quickRows = QUICK.map(function (q) {
+      return '<a class="toc-choice' + (q.main ? ' is-main' : '') + '" href="' + q.href + '">' +
+        '<span class="tch-no">' + q.no + '</span><span class="tch-copy"><b>' + q.label +
+        '</b><small>' + q.note + '</small></span><span class="tch-go" aria-hidden="true">→</span></a>';
+    }).join('');
     var rows = GROUPS.map(function (g) {
       return '<div class="toc-grp"><span class="toc-grp-t">' + g.t + '</span>' +
         g.items.map(function (it) {
@@ -1290,30 +1305,23 @@
       return '<a href="' + d[0] + '">' + d[1] + '</a>';
     }).join('');
     toc.innerHTML = '<div class="toc-inner">' +
-      '<div class="toc-head"><span class="toc-title">Путеводитель</span>' +
-        '<button class="toc-close" type="button">Закрыть</button></div>' +
-      '<div class="toc-search"><input type="search" id="tocQ" autocomplete="off" ' +
-        'placeholder="Куда вам? Наберите: «курсовая», «оплата», «речь»…" aria-label="Поиск по сайту" />' +
-        '<div class="toc-sr" id="tocSR" hidden></div></div>' +
-      '<div class="toc-route" id="tocRoute"><span class="toc-grp-t">Впервые здесь? Маршрут до заявки — 6 шагов</span>' +
-        '<nav class="tr-steps" aria-label="Маршрут новичка">' + routeRow + '</nav>' +
-        '<a class="tr-all link" href="start.html">Вся карта с пояснениями — «С чего начать» →</a></div>' +
-      '<div class="toc-grid">' +
-        '<nav class="toc-primary" aria-label="Разделы сайта">' + rows + '</nav>' +
-        '<div class="toc-side">' +
-          '<div><span class="toc-grp-t">Документы</span><nav class="toc-docs" aria-label="Правовые документы">' + docRows + '</nav></div>' +
-          '<div><span class="toc-grp-t">Приёмная</span><div class="toc-contacts">' +
-            '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener"><span>ВКонтакте · написать</span><span class="tc-v">vk.me/academicsaloon</span></a>' +
-            '<a href="' + LINKS.max + '" target="_blank" rel="noopener"><span>MAX · канал</span><span class="tc-v">Академический Салон</span></a>' +
-            '<a href="' + LINKS.tgc + '" target="_blank" rel="noopener"><span>Telegram · канал</span><span class="tc-v">@akademsalon</span></a>' +
-            '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span>Telegram · человек</span><span class="tc-v">@academicsaloon</span></a>' +
-            '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span>Telegram · бот</span><span class="tc-v">@academic_saloon_bot</span></a>' +
-          '</div></div>' +
-          '<div class="toc-theme-row"><span class="ttr-lbl" data-theme-label>Светлая тема</span>' + Salon.themeToggleHTML() + '</div>' +
-          '<div class="toc-theme-row"><span class="ttr-lbl" data-calm-label>Спокойный режим</span>' + Salon.calmToggleHTML() + '</div>' +
-          '<a class="btn btn-wax btn-block btn-lg toc-cta" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>' +
-        '</div>' +
-      '</div></div>';
+      '<div class="toc-head"><div><span class="toc-kicker">Навигация по Салону</span>' +
+        '<h2 class="toc-title">Куда вам сейчас?</h2><p>Выберите задачу или найдите нужное своими словами.</p></div>' +
+        '<button class="toc-close" type="button" aria-label="Закрыть путеводитель"><span aria-hidden="true">×</span></button></div>' +
+      '<div class="toc-search"><span class="tcs-mark" aria-hidden="true">⌕</span><input type="search" id="tocQ" autocomplete="off" ' +
+        'placeholder="Например: курсовая, оплата, речь…" aria-label="Поиск по сайту" />' +
+        '<kbd>⌘ K</kbd><div class="toc-sr" id="tocSR" hidden></div></div>' +
+      '<nav class="toc-choices" aria-label="Быстрый выбор" data-toc-home>' + quickRows + '</nav>' +
+      '<section class="toc-route" id="tocRoute" data-toc-home><div class="tr-head"><span class="toc-grp-t">Впервые здесь</span>' +
+        '<a href="start.html">Подробная карта →</a></div><nav class="tr-steps" aria-label="Маршрут новичка">' + routeRow + '</nav></section>' +
+      '<details class="toc-directory" data-toc-home><summary><span><b>Весь Салон</b><small>Услуги, гарантии, материалы и документы</small></span><i aria-hidden="true">+</i></summary>' +
+        '<div class="toc-grid"><nav class="toc-primary" aria-label="Разделы сайта">' + rows + '</nav>' +
+          '<div class="toc-side"><div><span class="toc-grp-t">Документы</span><nav class="toc-docs" aria-label="Правовые документы">' + docRows + '</nav></div>' +
+            '<div class="toc-theme-row"><span class="ttr-lbl" data-theme-label>Светлая тема</span>' + Salon.themeToggleHTML() + '</div>' +
+            '<div class="toc-theme-row"><span class="ttr-lbl" data-calm-label>Спокойный режим</span>' + Salon.calmToggleHTML() + '</div>' +
+          '</div></div></details>' +
+      '<div class="toc-footbar" data-toc-home><button type="button" data-contact="1"><span>Нужен человек?</span><b>Связаться с мастером →</b></button>' +
+        '<span>Без звонка и обязательств</span></div></div>';
     document.body.appendChild(toc);
     if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк подписи темы */
 
@@ -1353,19 +1361,23 @@
        поиска появляются позже — ловим кликом-делегатом */
     toc.addEventListener('click', function (e) {
       if (e.target.closest && e.target.closest('a[href]')) setToc(false);
+      else if (e.target.closest && e.target.closest('[data-contact]')) setToc(false);
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && toc.classList.contains('open')) setToc(false); });
 
     /* --- живой поиск: label+теги, топ-9, Enter открывает первый --- */
     (function () {
       var q = toc.querySelector('#tocQ'), sr = toc.querySelector('#tocSR');
-      var route = toc.querySelector('#tocRoute'), grid = toc.querySelector('.toc-grid');
+      var home = toc.querySelectorAll('[data-toc-home]');
       if (!q || !sr) return;
+      function showHome(show) {
+        for (var h = 0; h < home.length; h++) home[h].hidden = !show;
+      }
       function draw() {
         var v = (q.value || '').trim().toLowerCase();
         if (v.length < 2) {
           sr.hidden = true; sr.innerHTML = '';
-          route.hidden = false; grid.hidden = false;
+          showHome(true);
           return;
         }
         var hits = [];
@@ -1381,7 +1393,7 @@
           : '<p class="toc-sr-none">Ничего не нашлось. Напишите нам — найдём вместе: ' +
             '<a class="link" href="' + LINKS.human + '" target="_blank" rel="noopener">@academicsaloon</a> · ' +
             '<a class="link" href="priyomnaya.html">анонимно в приёмную</a></p>';
-        sr.hidden = false; route.hidden = true; grid.hidden = true;
+        sr.hidden = false; showHome(false);
       }
       q.addEventListener('input', draw);
       q.addEventListener('keydown', function (e) {
@@ -1390,6 +1402,13 @@
           if (a) { setToc(false); location.href = a.getAttribute('href'); }
         } else if (e.key === 'Escape' && q.value) {
           e.stopPropagation(); q.value = ''; draw();
+        }
+      });
+      document.addEventListener('keydown', function (e) {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          if (!toc.classList.contains('open')) setToc(true);
+          q.focus();
         }
       });
     })();
