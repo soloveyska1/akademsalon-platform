@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260723a" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260723c" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -140,19 +140,47 @@
   .lq-sheet>.cart-add{width:calc(100% - 36px);margin:0 18px 18px}
 
   /* экран успеха */
-  .conf-done{max-width:660px;margin:0 auto}
-  .done-sheet{padding:clamp(26px,5vw,44px);position:relative}
-  .done-seal{position:absolute;top:16px;right:20px}
-  .done-h{font-size:clamp(24px,3.2vw,34px);margin:6px 0 4px}
+  .conf-done{max-width:780px;margin:0 auto}
+  .done-sheet{padding:0;position:relative;overflow:hidden}
+  .done-hero{position:relative;padding:clamp(24px,4vw,38px);padding-right:clamp(120px,18vw,170px);
+    border-bottom:1px solid var(--hairline);background:linear-gradient(130deg,var(--wax-soft),transparent 68%)}
+  .done-seal{position:absolute;top:22px;right:26px}
+  .done-h{font-size:clamp(27px,3.6vw,39px);margin:7px 0 7px;max-width:15ch;letter-spacing:-.025em}
   .done-h:focus{outline:none}
-  .done-no{font-family:var(--mono);font-size:15px;letter-spacing:.06em;color:var(--ink-soft);font-variant-numeric:tabular-nums;margin-bottom:22px}
-  .done-steps{list-style:none;margin:8px 0 26px;display:flex;flex-direction:column}
+  .done-no{display:flex;align-items:center;gap:7px;margin:0;font-family:var(--mono);font-size:12px;
+    letter-spacing:.05em;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .done-live{width:7px;height:7px;border-radius:50%;background:var(--verify);box-shadow:0 0 0 4px var(--verify-soft)}
+  .done-lead{margin:13px 0 0;max-width:46ch;color:var(--ink-soft);font-size:13.5px;line-height:1.5}
+  .done-steps{list-style:none;margin:0;padding:18px clamp(22px,4vw,38px);display:grid;grid-template-columns:repeat(3,1fr);
+    gap:0;border-bottom:1px solid var(--hairline)}
   /* авторские display перебивают hidden — на экране «не отправилось» шаги и апселл обязаны исчезать */
   .done-steps[hidden],.done-plus[hidden],#doneBot[hidden]{display:none}
-  .done-steps li{display:flex;gap:14px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--hairline);font-size:15px}
-  .done-steps li:first-child{border-top:1px solid var(--hairline)}
-  .done-steps .dn{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);flex:0 0 18px;font-variant-numeric:tabular-nums}
-  .done-note{margin-top:14px}
+  .done-steps li{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;padding:4px 14px;
+    border-right:1px solid var(--hairline)}
+  .done-steps li:first-child{padding-left:0}
+  .done-steps li:last-child{padding-right:0;border-right:0}
+  .done-steps .dn{padding-top:2px;font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--wax);font-variant-numeric:tabular-nums}
+  .done-steps b{display:block;font-size:12.5px;font-weight:600}
+  .done-steps small{display:block;margin-top:3px;color:var(--ink-faint);font-size:10.5px;line-height:1.35}
+  .done-receipt{margin:18px clamp(22px,4vw,38px) 0;border:1px solid var(--hairline);border-radius:4px;background:var(--sheet)}
+  .done-receipt-head{display:flex;justify-content:space-between;gap:16px;padding:10px 13px;border-bottom:1px solid var(--hairline)}
+  .done-receipt-head>span:last-child{font:600 11px var(--mono);color:var(--wax)}
+  .done-receipt-list{display:grid}
+  .done-receipt-row{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:9px;align-items:center;padding:9px 13px;
+    border-bottom:1px solid var(--hairline);font-size:12px}
+  .done-receipt-row:last-child{border-bottom:0}
+  .done-receipt-row .dr-no{font:9px var(--mono);color:var(--ink-faint)}
+  .done-receipt-row .dr-price{font:10px var(--mono);color:var(--ink-soft);white-space:nowrap}
+  .done-access{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;
+    margin:18px clamp(22px,4vw,38px);padding:16px 18px;border:1px solid var(--ink);border-radius:4px;background:var(--paper-2)}
+  .done-access h3{margin:5px 0 5px;font:500 21px/1.15 var(--serif)}
+  .done-access p{margin:0;max-width:48ch;color:var(--ink-soft);font-size:11.5px;line-height:1.45}
+  .done-actions{display:grid;gap:7px;min-width:210px}
+  .done-actions .btn{text-align:center;justify-content:center}
+  .done-note{margin:0 clamp(22px,4vw,38px) 12px;color:var(--ink-soft)}
+  .done-note:empty{display:none}
+  .done-new{display:block;width:max-content;margin:14px auto 22px;font-size:11.5px}
 
   /* мобильная нижняя панель (своя, вместо инжекта app.js) */
   .conf-mcta{flex-direction:column;align-items:stretch;gap:10px}
@@ -184,7 +212,7 @@
   .att-item .ai-x{border:0;background:none;color:var(--ink-faint);font-size:16px;line-height:1;cursor:pointer;padding:2px 6px;border-radius:50%}
   .att-item .ai-x:hover{color:var(--wax)}
   .att-item .ai-retry{border:0;background:none;color:var(--wax);cursor:pointer;font-size:12.5px;border-bottom:1px solid currentColor;padding:0;margin-left:4px}
-  .done-files{margin:-10px 0 24px}
+  .done-files{margin:18px clamp(22px,4vw,38px)}
   .done-files .caps{display:block;margin-bottom:8px}
 
   /* услуги-ссылки на шаге 1: тот же ряд, но ведут в короткий лист заявки */
@@ -204,9 +232,10 @@
   /* строка выгоды «Салон+» в смете и купон на экране успеха */
   .lq-plus{margin-top:10px;padding:9px 11px;border:1px dashed var(--hairline-strong);border-radius:var(--r);background:var(--paper-2)}
   .lq-plus[hidden]{display:none}
-  .done-plus{display:flex;gap:10px;align-items:flex-start;border:1px dashed var(--hairline-strong);
-    border-radius:var(--r);background:var(--paper-2);padding:12px 14px;margin-bottom:14px;text-align:left}
-  .done-plus .dp-star{font-size:17px;line-height:1.3}
+  .done-plus{margin:0 clamp(22px,4vw,38px);border-top:1px dashed var(--hairline-strong);padding-top:11px}
+  .done-plus>summary{cursor:pointer;color:var(--ink-soft);font-size:11.5px}
+  .done-plus>div{padding:10px 0 0}
+  .done-plus p{margin:0;line-height:1.5}
 
   /* применённый промокод — строка в смете (обе панели) */
   .lq-promo{margin-top:10px;padding:9px 11px;border:1px dashed var(--verify);border-radius:var(--r);
@@ -293,6 +322,19 @@
       letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
     .mq-panel .lq-mobile-formula .ledger{margin-top:7px}
     .mq-panel .lq-mobile-info{margin-top:10px;padding-top:10px;border-top:1px dashed var(--hairline-strong)}
+    .conf-done{margin-top:-12px}
+    .done-hero{padding:24px 96px 22px 20px}
+    .done-seal{top:18px;right:12px;transform:scale(.78);transform-origin:top right}
+    .done-h{font-size:28px}
+    .done-steps{grid-template-columns:1fr;padding:12px 20px}
+    .done-steps li,.done-steps li:first-child,.done-steps li:last-child{padding:10px 0;border-right:0;border-bottom:1px solid var(--hairline)}
+    .done-steps li:last-child{border-bottom:0}
+    .done-receipt,.done-access,.done-files{margin-left:14px;margin-right:14px}
+    .done-access{grid-template-columns:1fr;gap:14px;padding:15px}
+    .done-actions{min-width:0}
+    .done-note,.done-plus{margin-left:14px;margin-right:14px}
+    .done-receipt-row{grid-template-columns:20px minmax(0,1fr)}
+    .done-receipt-row .dr-price{grid-column:2}
   }
 
   /* ===== применённая выгода в смете: перечёркнутый итог + новая цена ===== */
@@ -712,31 +754,46 @@
       <!-- ЭКРАН УСПЕХА (вместо визарда) -->
       <div id="confDone" class="conf-done" hidden>
         <div class="sheet sheet-pad stacked done-sheet">
-          <div class="done-seal" data-seal="ПРИНЯТО В РАБОТУ · АКАДЕМИЧЕСКИЙ САЛОН · " data-seal-center="¶" data-seal-cls="seal--wax" data-seal-size="112"></div>
-          <p class="caps">Заявка принята</p>
-          <h2 class="done-h" id="doneH" tabindex="-1">Ваш заказ в очереди разбора</h2>
-          <p class="done-no">№ <span id="doneNo">AS-0000</span></p>
-          <p class="caps" style="margin-bottom:4px">Что дальше</p>
-          <ol class="done-steps">
-            <li><span class="dn">1</span><span>Мастер изучит заявку — ответ обычно за 15–30 минут в рабочее время</span></li>
-            <li><span class="dn">2</span><span>Пришлём план и точную смету — в кабинет на сайте (и в мессенджер, если привяжете)</span></li>
-            <li><span class="dn">3</span><span>Первый платёж — только после согласования плана</span></li>
+          <div class="done-hero">
+            <div class="done-seal" data-seal="ПРИНЯТО К РАЗБОРУ · АКАДЕМИЧЕСКИЙ САЛОН · " data-seal-center="¶" data-seal-cls="seal--wax" data-seal-size="96"></div>
+            <p class="caps">Доставлено мастеру</p>
+            <h2 class="done-h" id="doneH" tabindex="-1">Заявка принята к разбору</h2>
+            <p class="done-no"><span class="done-live" aria-hidden="true"></span>Заявка №<span id="doneNo">AS-0000</span></p>
+            <p class="done-lead">Мы получили состав и контакты. Сейчас ничего оплачивать не нужно.</p>
+          </div>
+          <ol class="done-steps" aria-label="Что произойдёт дальше">
+            <li><span class="dn">Сейчас</span><span><b>Проверяем требования</b><small>Обычно 15–30 минут в рабочее время</small></span></li>
+            <li><span class="dn">Затем</span><span><b>Пришлём точную смету</b><small>Состав, срок и этапы будут зафиксированы</small></span></li>
+            <li><span class="dn">После</span><span><b>Решение остаётся за вами</b><small>Оплата — только после согласования</small></span></li>
           </ol>
+          <section class="done-receipt" id="doneReceipt" hidden aria-labelledby="doneReceiptTitle">
+            <div class="done-receipt-head"><span class="caps" id="doneReceiptTitle">Что отправлено</span><span id="doneReceiptTotal"></span></div>
+            <div class="done-receipt-list" id="doneReceiptList"></div>
+          </section>
           <div class="done-files" id="doneFiles" hidden>
             <span class="caps">Файлы — мастеру</span>
             <div class="att-list" id="doneAttList"></div>
           </div>
-          <div class="done-plus">
-            <span class="dp-star" aria-hidden="true">⭐</span>
-            <p class="petit" style="margin:0">Пока мастер считает: абонемент <b>«Салон+»</b> даёт скидку на каждый заказ
-            (до −10%, до 3 000 ₽), приоритет мастера и куратора сессии — и применится уже к этой работе.
-            От 449 ₽/мес, без автосписаний. <a class="link" href="dashboard.html#plus">Посмотреть планы →</a></p>
+          <div class="done-access">
+            <div>
+              <span class="caps">Статус и связь</span>
+              <h3>Заявка всегда под рукой</h3>
+              <p>В кабинете появится точная смета, переписка и файлы. Telegram можно подключить только для уведомлений.</p>
+            </div>
+            <div class="done-actions">
+              <a class="btn btn-wax" id="doneCab" href="dashboard.html">Открыть заявку <span class="ar">→</span></a>
+              <a class="btn btn-line" id="doneBot" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Получать статусы в Telegram</a>
+            </div>
           </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
-            <a class="btn btn-wax" href="dashboard.html">Открыть кабинет <span class="ar">→</span></a>
-            <a class="btn btn-line" id="doneBot" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Продублировать в Telegram</a>
-          </div>
-          <p class="petit done-note">Заявка уже у мастера — статус и переписка ждут в кабинете на сайте. Ниже — как не потерять доступ к делу.</p>
+          <p class="petit done-note" aria-live="polite"></p>
+          <details class="done-plus">
+            <summary>Дополнительно · скидки и приоритет</summary>
+            <div id="doneExtraBody">
+              <p class="petit">Абонемент <b>«Салон+»</b> даёт скидку до 10% и приоритет мастера — без автосписаний.
+              <a class="link" href="dashboard.html#plus">Посмотреть планы →</a></p>
+            </div>
+          </details>
+          <a class="done-new link" href="configurator.html">Оформить ещё одну заявку</a>
         </div>
       </div>
 
@@ -818,7 +875,7 @@
 
 <script src="assets/js/app.js?v=20260723j"></script>
 <script src="assets/js/extras.js?v=20260723g"></script>
-<script src="assets/js/cart.js?v=20260723a"></script>
+<script src="assets/js/cart.js?v=20260723c"></script>
 <script>
 function initConf() {
   'use strict';
@@ -826,6 +883,11 @@ function initConf() {
   if (!C || !S) return;
 
   function $(id) { return document.getElementById(id); }
+  function escHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
   function find(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i]; return list[0]; }
   function has(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id) return true; return false; }
   function kfmt(k) { return k === Math.round(k) ? k.toFixed(1) : String(k); }
@@ -1279,7 +1341,7 @@ function initConf() {
     var cartOn = window.SalonCart && window.SalonCart.hasItems();
     if (cartOn) {
       var cartPositionLabel = window.SalonCart.positionLabel(window.SalonCart.count());
-      put('type', 'Корзина · ' + cartPositionLabel);
+      put('type', 'Состав · ' + cartPositionLabel);
       put('base', cartPositionLabel);
       put('discLbl', 'Разные направления');
       put('disc', '—');
@@ -1288,7 +1350,7 @@ function initConf() {
       put('tierLbl', 'Сопровождение по строкам');
       put('tier', '—');
       put('low', C.fmt(q.low) + ' ₽');
-      put('high', 'до ' + C.fmt(q.high || q.low) + ' ₽ за всю корзину');
+      put('high', 'до ' + C.fmt(q.high || q.low) + ' ₽ за всю заявку');
       if (priceEl) S.countTo(priceEl, q.low, { suffix:' ₽' });
       if (priceSrEl) priceSrEl.textContent = C.fmt(q.low) + ' ₽';
     }
@@ -1424,7 +1486,7 @@ function initConf() {
     if (mNext) {
       var mobileCartN = window.SalonCart && window.SalonCart.hasItems ? window.SalonCart.count() : 0;
       mNext.textContent = idx === 3
-        ? (mobileCartN ? 'Оформить корзину · ' + mobileCartN : 'Отправить')
+        ? (mobileCartN ? 'Оформить состав · ' + mobileCartN : 'Отправить')
         : 'Далее';
     }
     if (mqPanel && !mqPanel.hidden) {
@@ -1955,6 +2017,29 @@ function initConf() {
 
   var submitting = false;
   var submittedCartCount = 0;
+  var submittedCartSnapshot = null;
+  var pendingRequestId = '';
+  function requestId() {
+    if (pendingRequestId) return pendingRequestId;
+    try { pendingRequestId = crypto.randomUUID(); }
+    catch (e) { pendingRequestId = 'web_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
+    return pendingRequestId;
+  }
+  function renderDoneReceipt(snap) {
+    var receipt = $('doneReceipt'), list = $('doneReceiptList'), total = $('doneReceiptTotal');
+    if (!receipt || !list || !total) return;
+    if (!snap || !snap.items || !snap.items.length) {
+      receipt.hidden = true; list.innerHTML = ''; total.textContent = ''; return;
+    }
+    receipt.hidden = false;
+    total.textContent = C.fmt(snap.low) + (snap.high > snap.low ? '–' + C.fmt(snap.high) : '') + ' ₽';
+    list.innerHTML = snap.items.map(function (x, i) {
+      return '<div class="done-receipt-row"><span class="dr-no">' + String(i + 1).padStart(2, '0') + '</span>' +
+        '<span>' + escHtml(x.label) + (x.qty > 1 ? ' × ' + x.qty : '') + '</span>' +
+        '<span class="dr-price">' + (x.fixed ? '' : 'от ') + C.fmt(x.low) +
+        (x.high > x.low ? '–' + C.fmt(x.high) : '') + ' ₽</span></div>';
+    }).join('');
+  }
   function submit() {
     if (submitting) return;
     var authed = !!(S.api && S.api.token());
@@ -2008,14 +2093,17 @@ function initConf() {
       consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
       consent_doc: 'consent 1.4 · privacy 2.0 · oferta 1.9 · форма конфигуратора',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
-      ref: (S.refCode && S.refCode()) || undefined
+      ref: (S.refCode && S.refCode()) || undefined,
+      client_request_id: requestId()
     };
     submittedCartCount = 0;
     if (window.SalonCart && window.SalonCart.hasItems()) {
+      window.SalonCart.ensure(cartCurrentItem());
       var cartItems = window.SalonCart.items();
       var cartFirst = cartItems[0];
-      submittedCartCount = window.SalonCart.count();
-      payload.type = submittedCartCount > 1 ? 'custom' : cartFirst.type;
+      submittedCartCount = cartItems.length;
+      submittedCartSnapshot = window.SalonCart.snapshot();
+      payload.type = cartItems.length > 1 ? 'custom' : cartFirst.type;
       payload.disc = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.disc : 'hum';
       payload.term = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.term : 'free';
       payload.tier = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.tier : 'base';
@@ -2025,6 +2113,7 @@ function initConf() {
       payload.details = window.SalonCart.summary() +
         (payload.details ? '\n\nОБЩИЙ КОММЕНТАРИЙ\n' + payload.details : '');
       payload.page = 'configurator.html#cart';
+      payload.cart = window.SalonCart.payload();
     }
     function unlock() {
       submitting = false;
@@ -2074,9 +2163,14 @@ function initConf() {
   }
 
   function onSubmitOk(r) {
+    pendingRequestId = '';
     if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
     S.store.del('salon_draft');
-    if (submittedCartCount && window.SalonCart) window.SalonCart.clear();
+    renderDoneReceipt(submittedCartSnapshot);
+    if (submittedCartCount && window.SalonCart) {
+      window.SalonCart.clear();
+      window.SalonCart.setVisible(false);
+    }
     if (S.metrika) S.metrika.goal('order_submitted');
     if (S.visit) S.visit.order(r.id, r.token);
     /* файлы — следом за заявкой, статусы на экране успеха */
@@ -2087,15 +2181,17 @@ function initConf() {
     var claim = r.token
       ? 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(r.token)
       : 'https://t.me/academic_saloon_bot';
-    if (bl) bl.href = claim; /* гостю — привязка заказа к Telegram в один тап */
-    showDone('№' + r.id);
+    if (bl) bl.href = claim; /* гостю — привязка уведомлений Telegram в один тап */
+    var cabLink = $('doneCab');
+    if (cabLink && r.token) cabLink.href = 'dashboard.html#claim=' + encodeURIComponent(r.token);
+    showDone(String(r.id));
     if (submittedCartCount > 1) {
       var doneHCart = $('doneH');
-      if (doneHCart) doneHCart.textContent = 'Комплексный заказ принят';
+      if (doneHCart) doneHCart.textContent = 'Комплексная заявка принята';
       var doneStepsCart = document.querySelectorAll('.done-steps li span:last-child');
-      if (doneStepsCart[0]) doneStepsCart[0].textContent = 'Мастер разберёт состав корзины как одну заявку';
-      if (doneStepsCart[1]) doneStepsCart[1].textContent = 'Каждая работа получит отдельную строку в точной смете';
-      if (doneStepsCart[2]) doneStepsCart[2].textContent = 'Оплата начнётся только после согласования всего состава';
+      if (doneStepsCart[0]) doneStepsCart[0].innerHTML = '<b>Проверяем весь состав</b><small>Каждая работа сохранена отдельной строкой</small>';
+      if (doneStepsCart[1]) doneStepsCart[1].innerHTML = '<b>Пришлём общую смету</b><small>С ценой и сроком по каждой позиции</small>';
+      if (doneStepsCart[2]) doneStepsCart[2].innerHTML = '<b>Согласуете всё целиком</b><small>До этого платить ничего не нужно</small>';
     }
     if (promoCode && r.promo) {
       var dnote = document.querySelector('.done-note');
@@ -2119,7 +2215,7 @@ function initConf() {
       try { qHigh = (svc ? 0 : (SalonCalc.quote(state.type, state.disc, state.term, state.tier) || {}).high) || 0; } catch (e) {}
       var rest = r.gift_balance - qHigh;
       if (rest >= 2000) {
-        var sheet = document.querySelector('#confDone .done-sheet');
+        var sheet = document.querySelector('#doneExtraBody');
         if (sheet && !document.getElementById('giftRestCard')) {
           var card = document.createElement('div');
           card.id = 'giftRestCard';
@@ -2138,15 +2234,12 @@ function initConf() {
       }
     }
     if (S.stamp) S.stamp('Заявка принята', { impact: 'approval', tone: 'wax' });
-    /* гостям — ссылка доступа к делу + необязательная привязка Telegram */
-    if (r.token && S.orderNudge) {
-      var sheetEl = document.querySelector('#confDone .done-sheet');
-      if (sheetEl) S.orderNudge(sheetEl, r.token);
-    }
+    submittedCartSnapshot = null;
   }
 
   /* сервер жив и ответил ошибкой — говорим словами, форма остаётся */
   function onSubmitErr(r) {
+    pendingRequestId = '';
     var e = (r && r.error) || '';
     if (e === 'rate_limit' || e === 'rate_limited') { S.toast('Слишком много заявок подряд — подождите минуту'); return; }
     if (e === 'contact_required') { S.toast('Оставьте контакт или войдите через Telegram'); return; }
@@ -2256,46 +2349,39 @@ function initConf() {
     done.hidden = false;
     { /* сброс следов прежнего «не отправилось»: успех после ретрая обязан быть чистым */
       var sheet0 = done.querySelector('.done-sheet');
-      var capsAll = sheet0 ? sheet0.querySelectorAll('.caps') : [];
-      if (capsAll[0]) capsAll[0].textContent = 'Заявка принята';
-      if (capsAll[1]) capsAll[1].hidden = false;
+      var heroCap = sheet0 ? sheet0.querySelector('.done-hero>.caps') : null;
+      if (heroCap) heroCap.textContent = 'Доставлено мастеру';
       var dh0 = $('doneH');
-      if (dh0) dh0.textContent = 'Ваш заказ в очереди разбора';
-      ['.done-steps', '.done-plus', '.done-seal'].forEach(function (sel) {
+      if (dh0) dh0.textContent = 'Заявка принята к разбору';
+      ['.done-steps', '.done-plus', '.done-seal', '.done-access', '.done-new'].forEach(function (sel) {
         var el = done.querySelector(sel);
         if (el) el.hidden = false;
       });
-      var cab0 = done.querySelector('a.btn-wax[href="dashboard.html"]');
+      var cab0 = $('doneCab');
       if (cab0) cab0.hidden = false;
       var bot0 = $('doneBot');
       if (bot0) bot0.hidden = false;
       var fb0 = document.getElementById('fbBox');
       if (fb0) fb0.remove();
       var note0 = done.querySelector('.done-note');
-      if (note0) note0.textContent = 'Заявка уже у мастера — статус и переписка ждут в кабинете на сайте. Ниже — как не потерять доступ к делу.';
+      if (note0) note0.textContent = '';
     }
     if (failed) { /* экран говорит правду: не отправилось */
       var sheet = done.querySelector('.done-sheet');
-      var caps = sheet ? sheet.querySelector('.caps') : null;
-      if (caps) caps.textContent = 'Не отправилось';
+      var caps = sheet ? sheet.querySelector('.done-hero>.caps') : null;
+      if (caps) caps.textContent = 'Не удалось подтвердить отправку';
       var dh = $('doneH');
-      if (dh) dh.textContent = 'Сеть подвела — продублируйте смету в Telegram';
-      var stepsCap = sheet ? sheet.querySelectorAll('.caps')[1] : null;
-      if (stepsCap) stepsCap.hidden = true;
-      var steps = done.querySelector('.done-steps');
-      if (steps) steps.hidden = true;
-      var plus = done.querySelector('.done-plus');
-      if (plus) plus.hidden = true;
-      var cab = done.querySelector('a.btn-wax[href="dashboard.html"]');
-      if (cab) cab.hidden = true;
-      var sl = done.querySelector('.done-seal');
-      if (sl) sl.hidden = true; /* печать «ПРИНЯТО В РАБОТУ» — только для принятых */
+      if (dh) dh.textContent = 'Ответ сервера не пришёл — смета сохранена';
+      ['.done-steps', '.done-plus', '.done-seal', '.done-access', '.done-receipt', '.done-new'].forEach(function (sel) {
+        var el = done.querySelector(sel);
+        if (el) el.hidden = true;
+      });
     }
     if (svc && svc.id === 'plan') {
       var doneSpans = done.querySelectorAll('.done-steps li span:last-child');
-      if (doneSpans[0]) doneSpans[0].textContent = 'Изучим тему, требования и методичку';
-      if (doneSpans[1]) doneSpans[1].textContent = 'Проведём разбор — структура глав, срок и фиксированная смета';
-      if (doneSpans[2]) doneSpans[2].textContent = 'Продолжите работу — стоимость разбора зачтётся в смету';
+      if (doneSpans[0]) doneSpans[0].innerHTML = '<b>Изучим материалы</b><small>Тема, требования и методичка</small>';
+      if (doneSpans[1]) doneSpans[1].innerHTML = '<b>Проведём разбор</b><small>Структура глав, срок и фиксированная смета</small>';
+      if (doneSpans[2]) doneSpans[2].innerHTML = '<b>Продолжите с ясным планом</b><small>Стоимость разбора зачтётся в работу</small>';
     }
     if (S.observeReveal) S.observeReveal(done);
     var seal = done.querySelector('.seal');
@@ -2347,9 +2433,10 @@ function initConf() {
       return {
         kind:'service', type:svcSrvId, serviceId:svc.id, serviceCode:svc.code,
         label:svc.label, serviceMeta:svc.unit ? 'услуга · ' + svc.unit.replace('/', '').trim() : 'услуга мастерской',
-        low:sp, high:svc.fixed ? sp : sp, fixed:!!svc.fixed, answers:answers, answerLines:answerLines,
+        low:sp, high:svc.fixed ? sp : (svc.to || sp), fixed:!!svc.fixed,
+        allowQty:/час|страниц|единиц/i.test(svc.unit || ''), answers:answers, answerLines:answerLines,
         topic:topicIn ? topicIn.value.trim() : '', deadline:deadlineIn ? deadlineIn.value.trim() : '',
-        requirements:detailsIn ? detailsIn.value.trim() : '', note:topicIn ? topicIn.value.trim() : ''
+        requirements:detailsIn ? detailsIn.value.trim() : '', note:''
       };
     }
     var t = find(C.types, state.type);
@@ -2358,12 +2445,29 @@ function initConf() {
       kind:'work', type:state.type, label:t.label, disc:state.disc, term:state.term, tier:state.tier,
       low:q.low, high:q.high, fixed:false,
       topic:topicIn ? topicIn.value.trim() : '', deadline:deadlineIn ? deadlineIn.value.trim() : '',
-      requirements:detailsIn ? detailsIn.value.trim() : '', note:topicIn ? topicIn.value.trim() : ''
+      requirements:detailsIn ? detailsIn.value.trim() : '', note:''
     };
+  }
+  function cartCurrentValid() {
+    if (!svc || !svc.ask || !svc.ask.length) return true;
+    var missing = null;
+    svc.ask.some(function (q) {
+      var answer = q.type === 'chips'
+        ? (svcAnswers[q.id] || '')
+        : (($('ask_' + q.id) || {}).value || '').trim();
+      if (q.req && !answer) { missing = q; return true; }
+      return false;
+    });
+    if (!missing) return true;
+    S.toast('Сначала ответьте: ' + missing.label.toLowerCase(), { type:'error' });
+    var el = document.querySelector('#svcAsk [data-ask="' + missing.id + '"], #ask_' + missing.id);
+    if (el && el.scrollIntoView) el.scrollIntoView({ block:'center', behavior:S.reduceMotion ? 'auto' : 'smooth' });
+    return false;
   }
   if (window.SalonCart) {
     window.SalonCart.init({
       getCurrent:cartCurrentItem,
+      validateCurrent:cartCurrentValid,
       getDeals:function () {
         return {
           promoCode:promoCode, promoLabel:promoLabel, promoDeal:promoDeal,
@@ -2373,6 +2477,9 @@ function initConf() {
       onChange:function () { renderDeal(); },
       another:function () {
         if (svc) { location.href = 'configurator.html'; return; }
+        if (topicIn) topicIn.value = '';
+        if (deadlineIn) deadlineIn.value = '';
+        if (detailsIn) detailsIn.value = '';
         go(0, true);
         var h = document.querySelector('.conf-head h1');
         if (h && h.scrollIntoView) h.scrollIntoView({ behavior:S.reduceMotion ? 'auto' : 'smooth', block:'start' });

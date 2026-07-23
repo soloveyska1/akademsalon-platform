@@ -7,9 +7,10 @@
   'use strict';
   var KEY = 'salon_cart_v1';
   var VERSION = 1;
-  var api = null, S = null, box = null, tab = null, body = null;
+  var api = null, S = null, box = null, tab = null, dock = null, body = null, foot = null;
   var data = { version: VERSION, items: [], checkout: { useBonus: false, bonusAmount: 0 }, updatedAt: 0 };
   var member = null, removed = null, undoTimer = null, lastFocus = null;
+  var visible = true, focusRestore = null;
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -48,6 +49,7 @@
   function count() {
     return data.items.reduce(function (n, x) { return n + Math.max(1, parseInt(x.qty, 10) || 1); }, 0);
   }
+  function lineCount() { return data.items.length; }
   function itemQuote(x) {
     var q = Math.max(1, parseInt(x.qty, 10) || 1);
     if (x.kind === 'work' && window.SalonCalc) {
@@ -111,20 +113,29 @@
       label(C.tiers, x.tier)
     ];
   }
-  function same(a, b) {
+  function equivalent(a, b) {
     if (!a || !b || a.kind !== b.kind || a.type !== b.type) return false;
     if (a.kind === 'service') {
-      return JSON.stringify(a.answers || {}) === JSON.stringify(b.answers || {});
+      return JSON.stringify(a.answers || {}) === JSON.stringify(b.answers || {}) &&
+        String(a.topic || '') === String(b.topic || '') &&
+        String(a.deadline || '') === String(b.deadline || '') &&
+        String(a.requirements || '') === String(b.requirements || '');
     }
     return a.disc === b.disc && a.term === b.term && a.tier === b.tier &&
       String(a.topic || '') === String(b.topic || '') &&
       String(a.deadline || '') === String(b.deadline || '') &&
       String(a.requirements || '') === String(b.requirements || '');
   }
-  function add(item) {
+  function contains(item) {
+    return data.items.some(function (x) { return equivalent(x, item); });
+  }
+  function add(item, opts) {
     if (!item || !item.type) return false;
+    opts = opts || {};
     var existing = null;
-    data.items.forEach(function (x) { if (!existing && same(x, item)) existing = x; });
+    if (item.allowQty) {
+      data.items.forEach(function (x) { if (!existing && x.allowQty && equivalent(x, item)) existing = x; });
+    }
     if (existing) existing.qty = Math.min(10, (existing.qty || 1) + 1);
     else {
       item.id = uid(); item.qty = 1; item.note = item.note || ''; item.addedAt = Date.now();
@@ -134,12 +145,19 @@
     if (tab) {
       tab.classList.remove('bump'); void tab.offsetWidth; tab.classList.add('bump');
     }
-    if (S && S.toast) S.toast(existing ? 'Добавили ещё одну такую позицию' : 'Позиция в корзине ✓');
+    if (!opts.silent && S && S.toast) {
+      S.toast(existing ? 'Количество обновлено · состав заявки' : 'Добавлено в состав заявки ✓');
+    }
     return true;
+  }
+  function ensure(item) {
+    if (!item || contains(item)) return false;
+    return add(item, { silent:true });
   }
   function addCurrent() {
     if (!api || !api.getCurrent) return;
-    if (add(api.getCurrent())) open();
+    if (api.validateCurrent && api.validateCurrent() === false) return;
+    add(api.getCurrent());
   }
   function remove(id) {
     var at = -1;
@@ -160,6 +178,7 @@
     data.items.forEach(function (x) {
       if (x.id === id) x.qty = Math.max(1, Math.min(10, (x.qty || 1) + d));
     });
+    focusRestore = { id:id, qty:d };
     write();
   }
   function setNote(id, value) {
@@ -172,18 +191,25 @@
   }
   function lineItem(x, i) {
     var q = itemQuote(x), m = meta(x);
-    return '<article class="cart-item" data-cart-id="' + esc(x.id) + '">' +
-      '<div class="cart-item-top"><div><h3>' + esc(x.label) + '</h3>' +
+    var titleId = 'cartItem_' + esc(x.id);
+    return '<article class="cart-item" data-cart-id="' + esc(x.id) + '" aria-labelledby="' + titleId + '">' +
+      '<div class="cart-item-top"><div><h3 id="' + titleId + '">' + esc(x.label) + '</h3>' +
       '<div class="cart-item-meta">' + m.map(function (v) { return '<span>' + esc(v) + '</span>'; }).join('') + '</div></div>' +
       '<div class="cart-price"><b>' + (x.fixed ? '' : 'от ') + money(q.low) + ' ₽</b>' +
-      '<small>' + (q.high > q.low ? 'до ' + money(q.high) + ' ₽' : 'фиксированная ставка') + '</small></div></div>' +
-      '<input class="cart-note" data-cart-note="' + esc(x.id) + '" maxlength="240" value="' + esc(x.note || '') +
-      '" placeholder="Тема или уточнение к этой позиции">' +
-      '<div class="cart-item-foot"><div class="cart-qty" aria-label="Количество">' +
-      '<button type="button" data-cart-qty="-1" aria-label="Уменьшить количество">−</button>' +
-      '<b aria-live="polite">' + (x.qty || 1) + '</b>' +
-      '<button type="button" data-cart-qty="1" aria-label="Увеличить количество">+</button></div>' +
-      '<button type="button" class="cart-remove" data-cart-remove="' + esc(x.id) + '">Убрать</button></div></article>';
+      '<small>' + (q.high > q.low ? 'до ' + money(q.high) + ' ₽' : (x.fixed ? 'фиксированная ставка' : 'точнее после проверки')) + '</small></div></div>' +
+      '<details class="cart-item-extra"' + (x.note ? ' open' : '') + '><summary>Уточнение к позиции</summary>' +
+      '<label class="sr-only" for="cartNote_' + esc(x.id) + '">Тема или уточнение для «' + esc(x.label) + '»</label>' +
+      '<input id="cartNote_' + esc(x.id) + '" class="cart-note" data-cart-note="' + esc(x.id) +
+      '" maxlength="240" value="' + esc(x.note || '') + '" placeholder="Например: две главы или особое требование"></details>' +
+      '<div class="cart-item-foot">' +
+      (x.allowQty ? '<div class="cart-qty" role="group" aria-label="Количество для «' + esc(x.label) + '»">' +
+        '<button type="button" data-cart-qty="-1" aria-label="Уменьшить количество «' + esc(x.label) + '»"' +
+        ((x.qty || 1) <= 1 ? ' disabled' : '') + '>−</button>' +
+        '<b aria-live="polite">' + (x.qty || 1) + '</b>' +
+        '<button type="button" data-cart-qty="1" aria-label="Увеличить количество «' + esc(x.label) + '»"' +
+        ((x.qty || 1) >= 10 ? ' disabled' : '') + '>+</button></div>' : '<span class="cart-one">1 работа</span>') +
+      '<button type="button" class="cart-remove" data-cart-remove="' + esc(x.id) +
+      '" aria-label="Убрать «' + esc(x.label) + '» из состава">Убрать</button></div></article>';
   }
   function benefitHtml(b) {
     var out = '';
@@ -197,10 +223,6 @@
         esc(b.sub.label || 'Салон+') + '</b><small>−' + (b.sub.discount_pct || 0) +
         '% автоматически, до ' + money(b.sub.discount_cap || 0) + ' ₽</small></span>' +
         '<span class="cart-benefit-val">−' + money(b.subSave) + ' ₽</span></div>';
-    } else {
-      out += '<div class="cart-benefit off"><span class="cart-benefit-ico">+</span><span><b>Салон+</b>' +
-        '<small>Подписка применится автоматически после согласования цены</small></span>' +
-        '<a class="cart-benefit-login" href="plus.html">посмотреть</a></div>';
     }
     if (member && member.bonus) {
       out += '<div class="cart-benefit' + (b.bonusCap ? '' : ' off') + '"><span class="cart-benefit-ico">Б</span><span>' +
@@ -211,10 +233,6 @@
         (data.checkout.useBonus ? '−' + money(b.bonus) + ' ₽' : 'не списывать') + '</span>' +
         (data.checkout.useBonus && b.bonusCap ? '<input class="cart-bonus-range" id="cartBonusRange" type="range" min="0" max="' +
           b.bonusCap + '" step="50" value="' + b.bonus + '" aria-label="Сколько бонусов планируется списать">' : '') + '</div>';
-    } else {
-      out += '<div class="cart-benefit off"><span class="cart-benefit-ico">Б</span><span><b>Бонусы</b>' +
-        '<small>Войдите, чтобы увидеть баланс. Фактическое списание доступно после цены мастера.</small></span>' +
-        '<a class="cart-benefit-login" href="dashboard.html">войти</a></div>';
     }
     if (b.deal.giftCode) {
       out += '<div class="cart-benefit"><span class="cart-benefit-ico">С</span><span><b>Сертификат ' +
@@ -227,85 +245,125 @@
   function totalsHtml(b) {
     var discountLabel = b.discountKind === 'promo' ? 'Промокод' : (b.discountKind === 'sub' ? 'Салон+' : 'Скидки');
     return '<div class="cart-totals">' +
-      '<div class="cart-total-row"><span>Предварительная стоимость</span><b>' + money(b.quote.low) +
+      '<div class="cart-total-main"><span>Ориентир по заявке</span><b>' + money(b.quote.low) +
       (b.quote.high > b.quote.low ? '–' + money(b.quote.high) : '') + ' ₽</b></div>' +
       (b.discount ? '<div class="cart-total-row minus"><span>' + discountLabel + '</span><b>−' + money(b.discount) + ' ₽</b></div>' : '') +
       (b.promo && b.subSave ? '<div class="cart-total-row"><span>Промокод и подписка</span><b>учтём выгоднейший</b></div>' : '') +
       (b.bonus ? '<div class="cart-total-row minus"><span>Планируем списать бонусами</span><b>−' + money(b.bonus) + ' ₽</b></div>' : '') +
       (b.gift ? '<div class="cart-total-row minus"><span>Сертификат</span><b>−' + money(b.gift) + ' ₽</b></div>' : '') +
-      '<div class="cart-total-main"><span>Деньгами, ориентир от</span><b>' + money(b.due) + ' ₽</b></div>' +
-      '<p class="cart-total-note">Это предварительный расчёт. Мастер проверит требования и зафиксирует одну точную смету. ' +
-      'Бонусы фактически списываются только после её подтверждения и до первой оплаты.</p></div>';
+      ((b.discount || b.bonus || b.gift) ? '<div class="cart-total-row cart-total-after"><span>После подтверждённых зачётов, от</span><b>' +
+        money(b.due) + ' ₽</b></div>' : '') +
+      '<p class="cart-total-note">Мастер проверит каждую позицию и пришлёт точную общую смету. Сейчас платить ничего не нужно.</p></div>';
+  }
+  function entryHtml(n, compact) {
+    var q = quote();
+    return '<span class="cart-entry-icon" aria-hidden="true">≡</span>' +
+      '<span class="cart-entry-copy"><b>Состав заявки</b>' +
+      (compact ? '' : '<small>' + positionLabel(n) + (n ? ' · от ' + money(q.low) + ' ₽' : '') + '</small>') +
+      '</span><span class="cart-tab-count" role="status" aria-live="polite">' + n + '</span>';
+  }
+  function syncEntry(el, n, compact) {
+    if (!el) return;
+    el.classList.toggle('is-empty', !n || !visible);
+    el.innerHTML = entryHtml(n, compact);
+    el.setAttribute('aria-label', n ? 'Открыть состав заявки, ' + positionLabel(n) : 'Состав заявки пуст');
+    el.setAttribute('aria-expanded', box && box.classList.contains('open') ? 'true' : 'false');
   }
   function render() {
-    if (!box || !body || !tab) return;
-    var n = count(), b = benefits();
-    tab.classList.toggle('is-empty', !n);
-    var cn = tab.querySelector('.cart-tab-count'); if (cn) cn.textContent = n;
-    tab.setAttribute('aria-label', 'Корзина, ' + positionLabel(n));
+    if (!box || !body || !foot) return;
+    var n = lineCount(), b = benefits(), bh = benefitHtml(b);
+    syncEntry(tab, n, true);
+    syncEntry(dock, n, false);
     document.querySelectorAll('[data-cart-submit]').forEach(function (el) {
-      el.textContent = n ? 'Оформить корзину · ' + n : 'Отправить заявку мастеру';
+      el.textContent = n ? 'Перейти к контактам · ' + positionLabel(n) : 'Отправить заявку мастеру';
     });
     if (!n) {
-      body.innerHTML = '<div class="cart-empty"><div class="cart-empty-mark">¶</div><h3>Корзина пока пуста</h3>' +
-        '<p>Настройте работу в калькуляторе и добавьте её сюда. Можно собрать несколько разных работ и оформить одной заявкой.</p>' +
+      body.innerHTML = '<div class="cart-empty"><div class="cart-empty-mark">¶</div><h3>Состав пока пуст</h3>' +
+        '<p>Добавьте одну или несколько работ — они уйдут мастеру одной аккуратной заявкой.</p>' +
         '<button type="button" class="btn btn-wax" data-cart-close>Вернуться к расчёту</button></div>' +
         (removed ? '<div class="cart-undo"><span>Позиция убрана</span><button type="button" data-cart-undo>Вернуть</button></div>' : '');
+      foot.innerHTML = '';
       return;
     }
     body.innerHTML = '<div class="cart-list">' + data.items.map(lineItem).join('') + '</div>' +
       (removed ? '<div class="cart-undo"><span>Позиция убрана</span><button type="button" data-cart-undo>Вернуть</button></div>' : '') +
-      '<section class="cart-benefits"><div class="cart-benefits-head"><b>Выгода и способы зачёта</b></div>' +
-      benefitHtml(b) + '</section>' + totalsHtml(b) +
-      '<div class="cart-actions"><button type="button" class="btn btn-line" data-cart-another>+ Добавить ещё</button>' +
-      '<button type="button" class="btn btn-wax" data-cart-checkout>Оформить вместе →</button></div>' +
-      '<button type="button" class="cart-clear" data-cart-clear>Очистить корзину</button>' +
-      '<p class="cart-legal">Корзина — локальный черновик на этом устройстве. Промокод, подписка, бонусы и сертификат ' +
-      'окончательно применяются к согласованной цене по правилам программы лояльности.</p>';
+      (bh ? '<details class="cart-benefits"><summary><span><b>Скидки и зачёты</b><small>Проверим после точной сметы</small></span><span aria-hidden="true">+</span></summary>' +
+        '<div class="cart-benefits-body">' + bh + '</div></details>' :
+        '<p class="cart-benefits-hint">Промокод, бонусы или сертификат можно указать на последнем шаге.</p>') +
+      '<button type="button" class="cart-clear" data-cart-clear>Очистить состав</button>' +
+      '<p class="cart-legal">До отправки состав хранится только на этом устройстве.</p>';
+    foot.innerHTML = totalsHtml(b) +
+      '<div class="cart-actions"><button type="button" class="btn btn-line" data-cart-another>Добавить ещё</button>' +
+      '<button type="button" class="btn btn-wax" data-cart-checkout>К контактам · ' + n + ' →</button></div>';
+    if (focusRestore) {
+      var fr = focusRestore; focusRestore = null;
+      requestAnimationFrame(function () {
+        var row = Array.prototype.find.call(box.querySelectorAll('[data-cart-id]'), function (x) {
+          return x.getAttribute('data-cart-id') === fr.id;
+        });
+        var el = row && row.querySelector('[data-cart-qty="' + fr.qty + '"]');
+        if (el) el.focus();
+      });
+    }
   }
   function build() {
     tab = document.createElement('button');
-    tab.type = 'button'; tab.className = 'cart-tab is-empty';
-    tab.innerHTML = '<span class="cart-tab-mark">Картотека</span><b>Корзина</b><span class="cart-tab-count">0</span>';
-    document.body.appendChild(tab);
+    tab.type = 'button'; tab.className = 'cart-tab is-empty'; tab.setAttribute('data-cart-open', '1');
+    tab.setAttribute('aria-controls', 'cartDrawer'); tab.setAttribute('aria-expanded', 'false');
+    var mqBar = document.querySelector('.mq-bar');
+    var mqNext = document.getElementById('mNext');
+    if (mqBar) mqBar.insertBefore(tab, mqNext || null);
+    else document.body.appendChild(tab);
+    var docHead = document.querySelector('.lq-dochead');
+    if (docHead) {
+      dock = document.createElement('button');
+      dock.type = 'button'; dock.className = 'cart-dock is-empty'; dock.setAttribute('data-cart-open', '1');
+      dock.setAttribute('aria-controls', 'cartDrawer'); dock.setAttribute('aria-expanded', 'false');
+      docHead.appendChild(dock);
+    }
     box = document.createElement('div');
-    box.className = 'cart-shell'; box.setAttribute('aria-hidden', 'true');
-    box.innerHTML = '<button type="button" class="cart-back" data-cart-close tabindex="-1" aria-label="Закрыть корзину"></button>' +
-      '<aside class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle">' +
-      '<header class="cart-head"><div><span class="cart-folio">Сводный лист заказа</span><h2 id="cartTitle">Корзина работ</h2>' +
-      '<p>Одна заявка · отдельная строка на каждую работу</p></div>' +
+    box.className = 'cart-shell'; box.id = 'cartDrawer'; box.setAttribute('aria-hidden', 'true');
+    box.innerHTML = '<button type="button" class="cart-back" data-cart-close tabindex="-1" aria-label="Закрыть состав заявки"></button>' +
+      '<aside class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-describedby="cartIntro">' +
+      '<span class="cart-handle" aria-hidden="true"></span>' +
+      '<header class="cart-head"><div><span class="cart-folio">Комплексная заявка</span><h2 id="cartTitle">Состав заявки</h2>' +
+      '<p id="cartIntro">Несколько работ — одна отправка мастеру</p></div>' +
       '<button type="button" class="cart-close" data-cart-close aria-label="Закрыть">×</button></header>' +
-      '<div class="cart-body"></div></aside>';
+      '<div class="cart-body"></div><footer class="cart-foot"></footer></aside>';
     document.body.appendChild(box);
     body = box.querySelector('.cart-body');
+    foot = box.querySelector('.cart-foot');
     var aside = document.querySelector('.conf-aside .sheet');
     if (aside) {
       var a = document.createElement('button'); a.type = 'button'; a.className = 'cart-add';
-      a.setAttribute('data-cart-add', '1'); a.textContent = 'Добавить этот расчёт в корзину';
+      a.setAttribute('data-cart-add', '1'); a.textContent = 'Добавить в состав заявки';
       aside.appendChild(a);
     }
     var submit = document.getElementById('btnSubmit');
     if (submit) {
       submit.setAttribute('data-cart-submit', '1');
       var a2 = document.createElement('button'); a2.type = 'button'; a2.className = 'cart-add';
-      a2.setAttribute('data-cart-add', '1'); a2.textContent = 'Добавить эту позицию и выбрать ещё';
+      a2.setAttribute('data-cart-add', '1'); a2.textContent = 'Добавить в состав и выбрать ещё работу';
       submit.insertAdjacentElement('afterend', a2);
     }
-    tab.addEventListener('click', open);
+    document.querySelectorAll('[data-cart-open]').forEach(function (el) { el.addEventListener('click', open); });
     box.addEventListener('click', click);
     box.addEventListener('input', input);
+    box.addEventListener('change', change);
     box.addEventListener('keydown', trap);
   }
   function open() {
-    if (!box) return;
+    if (!box || !visible) return;
     lastFocus = document.activeElement;
     render(); box.classList.add('open'); box.setAttribute('aria-hidden', 'false');
+    document.querySelectorAll('[data-cart-open]').forEach(function (el) { el.setAttribute('aria-expanded', 'true'); });
     document.documentElement.style.overflow = 'hidden';
     setTimeout(function () { var x = box.querySelector('.cart-close'); if (x) x.focus(); }, 30);
   }
   function close() {
     if (!box) return;
     box.classList.remove('open'); box.setAttribute('aria-hidden', 'true');
+    document.querySelectorAll('[data-cart-open]').forEach(function (el) { el.setAttribute('aria-expanded', 'false'); });
     document.documentElement.style.overflow = '';
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
@@ -319,9 +377,9 @@
     if (t.closest('[data-cart-checkout]')) { close(); if (api && api.checkout) api.checkout(); return; }
     if (t.closest('[data-cart-clear]')) {
       var go = function () { clear(); };
-      if (S && S.confirm) S.confirm({ title:'Очистить корзину?', text:'Все позиции исчезнут с этого устройства.', okLabel:'Очистить', noLabel:'Оставить', danger:true })
+      if (S && S.confirm) S.confirm({ title:'Очистить состав?', text:'Все позиции исчезнут с этого устройства.', okLabel:'Очистить', noLabel:'Оставить', danger:true })
         .then(function (r) { if (r && r.ok) go(); });
-      else if (window.confirm('Очистить корзину?')) go();
+      else if (window.confirm('Очистить состав?')) go();
     }
   }
   function input(e) {
@@ -333,6 +391,14 @@
     }
     if (t.id === 'cartBonusRange') {
       data.checkout.bonusAmount = parseInt(t.value, 10) || 0;
+      var row = t.closest('.cart-benefit');
+      var val = row && row.querySelector('.cart-benefit-val');
+      if (val) val.textContent = '−' + money(data.checkout.bonusAmount) + ' ₽';
+    }
+  }
+  function change(e) {
+    if (e.target && e.target.id === 'cartBonusRange') {
+      data.updatedAt = Date.now();
       if (S && S.store) S.store.set(KEY, data);
       render();
     }
@@ -348,7 +414,7 @@
   }
   function summary() {
     var q = quote();
-    var rows = ['СОСТАВ КОРЗИНЫ · ' + positionLabel(count()).toUpperCase()];
+    var rows = ['СОСТАВ ЗАЯВКИ · ' + positionLabel(count()).toUpperCase()];
     data.items.forEach(function (x, i) {
       var z = itemQuote(x), m = meta(x);
       rows.push('', (i + 1) + '. ' + x.label + ((x.qty || 1) > 1 ? ' × ' + x.qty : ''),
@@ -360,11 +426,55 @@
         Array.isArray(x.answerLines) && x.answerLines.length ? 'Анкета услуги:\n' + x.answerLines.join('\n') : '',
         'Ориентир: ' + (x.fixed ? '' : 'от ') + money(z.low) + (z.high > z.low ? ' до ' + money(z.high) : '') + ' ₽');
     });
-    rows.push('', 'Предварительный ориентир корзины: от ' + money(q.low) +
+    rows.push('', 'Предварительный ориентир заявки: от ' + money(q.low) +
       (q.high > q.low ? ' до ' + money(q.high) : '') + ' ₽.');
     if (data.checkout.useBonus) rows.push('Пожелание клиента: списать до ' + money(benefits().bonus) + ' бонусов после согласования точной цены.');
     rows.push('Промокод, подписка, бонусы и сертификат применяются сервером к точной цене мастера.');
     return rows.filter(function (x) { return x !== ''; }).join('\n');
+  }
+  function payload() {
+    var q = quote();
+    return {
+      version: VERSION,
+      currency: 'RUB',
+      items: data.items.map(function (x, i) {
+        return {
+          client_id: String(x.id || ''),
+          position: i + 1,
+          kind: x.kind === 'service' ? 'service' : 'work',
+          type: String(x.type || ''),
+          service_id: String(x.serviceId || ''),
+          label: String(x.label || '').slice(0, 160),
+          qty: Math.max(1, Math.min(10, parseInt(x.qty, 10) || 1)),
+          disc: String(x.disc || ''),
+          term: String(x.term || ''),
+          tier: String(x.tier || ''),
+          topic: String(x.topic || '').slice(0, 400),
+          deadline: String(x.deadline || '').slice(0, 120),
+          requirements: String(x.requirements || '').slice(0, 1500),
+          note: String(x.note || '').slice(0, 240),
+          answers: x.answers && typeof x.answers === 'object' ? x.answers : {},
+          quote_preview: itemQuote(x)
+        };
+      }),
+      benefits_intent: { use_bonus:!!data.checkout.useBonus, bonus_amount:benefits().bonus || 0 },
+      quote_preview: { low:q.low, high:q.high }
+    };
+  }
+  function snapshot() {
+    var q = quote();
+    return {
+      count:lineCount(), units:count(), low:q.low, high:q.high,
+      items:data.items.map(function (x) {
+        var z = itemQuote(x);
+        return { label:x.label, qty:x.qty || 1, low:z.low, high:z.high, fixed:!!x.fixed };
+      })
+    };
+  }
+  function setVisible(next) {
+    visible = next !== false;
+    if (!visible) close();
+    render();
   }
   function first() { return data.items[0] || null; }
   function init(opts) {
@@ -382,7 +492,8 @@
   window.SalonCart = {
     init:init, open:open, add:add, clear:clear, count:count, hasItems:function(){ return !!data.items.length; },
     items:function(){ return data.items.slice(); }, first:first, quote:quote, benefits:benefits,
-    summary:summary, refresh:notify, positionLabel:positionLabel,
+    summary:summary, payload:payload, snapshot:snapshot, contains:contains, ensure:ensure,
+    setVisible:setVisible, refresh:notify, positionLabel:positionLabel,
     bonusIntent:function(){ return data.checkout.useBonus ? benefits().bonus : 0; }
   };
 })();
