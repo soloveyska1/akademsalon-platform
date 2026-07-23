@@ -1160,7 +1160,10 @@
      ушёл, вернулся на витрину — напоминаем одной строкой-«ляссе». Возврат
      брошенной заявки без email и промокодов: просто дверь туда, где остановился. */
   (function resumeBar() {
-    if (here !== 'index.html' && here !== 'tariffs.html') return;
+    var mobileResume = !!(window.matchMedia && window.matchMedia('(max-width:880px)').matches);
+    /* На десктопе отдельная закладка нужна только на двух витринах.
+       На телефоне центральный пункт дока доступен на любой странице. */
+    if (here !== 'index.html' && here !== 'tariffs.html' && !mobileResume) return;
     var d = S.store.get('salon_draft', null);
     if (!d || !d.savedAt || !d.state || !window.SalonCalc) return;
     if (Date.now() - d.savedAt > 14 * 24 * 3600 * 1000) return; /* двухнедельная память */
@@ -1173,6 +1176,21 @@
     var resumeStep = Math.max(1, Math.min(4, (d.idx || 0) + 1));
     var resumeHref = 'configurator.html?step=' + resumeStep;
     var typeLabel = t.label.split(' (')[0];
+    /* На телефоне отдельная фиксированная карточка перекрывала CTA и
+       занимала значимую часть экрана. Черновик уже имеет естественное
+       место — центральную кнопку мобильного дока. */
+    if (mobileResume) {
+      var calcLink = document.querySelector('.mnav .mn-calc');
+      if (calcLink) {
+        calcLink.href = resumeHref;
+        calcLink.classList.add('has-draft');
+        calcLink.setAttribute('aria-label', 'Продолжить смету: ' + typeLabel + ', от ' + q.lowFmt + ' рублей');
+        var calcLabel = calcLink.querySelector('.mn-l');
+        if (calcLabel) calcLabel.textContent = 'Продолжить';
+      }
+      if (S.visit) S.visit.mark('черновик сметы в мобильном доке');
+      return;
+    }
     var bar = document.createElement('div');
     bar.className = 'resume-bar';
     bar.setAttribute('role', 'note');

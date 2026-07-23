@@ -11,6 +11,25 @@
   docEl.classList.add('has-js');
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* Финальный мобильный слой грузится после всех страничных <style>.
+     Так одна геометрия телефона побеждает поздние локальные правила
+     главной, каталога, кабинета и конфигуратора. */
+  (function mobileEdition() {
+    if (document.querySelector('link[data-mobile-edition]')) return;
+    var link = document.createElement('link');
+    var source = document.currentScript && document.currentScript.src;
+    link.rel = 'stylesheet';
+    link.media = 'screen and (max-width: 880px)';
+    link.setAttribute('data-mobile-edition', '1');
+    try {
+      link.href = source ? new URL('../css/mobile.css?v=20260723n', source).href
+        : 'assets/css/mobile.css?v=20260723n';
+    } catch (e) {
+      link.href = 'assets/css/mobile.css?v=20260723n';
+    }
+    document.head.appendChild(link);
+  })();
+
   /* ---------------- Калькулятор (единая логика, менять запрещено) ---------------- */
   var SalonCalc = {
     types: [

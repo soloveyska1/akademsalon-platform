@@ -852,8 +852,8 @@ function initCabinet() {
       (rows ? '<div class="due-box">' + rows + '</div>' : '') +
       (canMore
         ? '<div class="act-row" style="margin-top:8px">' +
-          '<input type="text" id="msTitle" maxlength="120" placeholder="Что сдаёте — например, «Курсовая по ТГП»" style="flex:2;min-width:0;font:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
-          '<input type="date" id="msDate" style="font:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
+          '<input type="text" id="msTitle" maxlength="120" aria-label="Название сдачи или экзамена" placeholder="Что сдаёте — например, «Курсовая по ТГП»" style="flex:2;min-width:0;font:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
+          '<input type="date" id="msDate" aria-label="Дата сдачи или экзамена" style="font:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
           '<button type="button" class="btn btn-line" id="msAdd">Добавить</button></div>'
         : '<p class="petit" style="margin-top:6px">Лимит записей достигнут — с подпиской «Салон+» график безлимитный.</p>') +
       '</div>';
@@ -1253,7 +1253,7 @@ function initCabinet() {
     var inner = '<div class="due-box" id="gattBox" style="margin-top:0">' +
       '<p class="petit" style="margin:0 0 8px">Есть подарочный сертификат? Привяжите код — сумма спишется с итога' +
       (o.price ? ' сразу' : ', когда мастер назовёт цену') + '. Остаток сохранится на коде.</p>' +
-      '<div class="cbn-row"><input type="text" id="gattCode" maxlength="24" autocomplete="off" placeholder="AS-XXXX-XXXX-XXXX" ' +
+      '<div class="cbn-row"><input type="text" id="gattCode" maxlength="24" autocomplete="off" aria-label="Код подарочного сертификата" placeholder="AS-XXXX-XXXX-XXXX" ' +
       'style="flex:1;min-width:0;background:transparent;border:1px solid var(--hairline-strong);border-radius:6px;padding:9px 10px;color:var(--ink);font:inherit;font-size:16px">' +
       '<button type="button" class="btn btn-line" id="gattApply">Применить</button></div></div>';
     return fold('secGift', '🎁 Сертификат', 'применить код к делу', inner, false);
@@ -1438,7 +1438,7 @@ function initCabinet() {
       (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="fs-meta">правки — без лимита, в рамках задания</span>' : '') +
       '</div>' + partsNote + '<div class="act-row" style="margin-top:0">' + b.join('') + '</div>' +
       '<div class="fix-form" id="fixForm" hidden>' +
-        '<textarea id="fixText" rows="3" maxlength="2000" placeholder="Что поправить? Например: «во 2-й главе обновить данные за 2025 год»"></textarea>' +
+        '<textarea id="fixText" rows="3" maxlength="2000" aria-label="Что нужно поправить" placeholder="Что поправить? Например: «во 2-й главе обновить данные за 2025 год»"></textarea>' +
         '<div class="act-row"><button type="button" class="btn btn-wax" data-act-fix-send>Отправить на правки</button>' +
         '<button type="button" class="btn btn-line" data-act-fix-cancel>Передумал(а)</button></div>' +
       '</div></div>' + pay;
@@ -1553,9 +1553,9 @@ function initCabinet() {
     for (var n = 1; n <= 5; n++)
       stars += '<button type="button" class="rv-star' + (n <= cur ? ' on' : '') + '" data-star="' + n + '" aria-label="' + n + ' из 5">★</button>';
     return '<div class="rv-stars" id="rvStars" data-val="' + cur + '">' + stars + '</div>' +
-      '<textarea id="rvText" rows="3" maxlength="2000" placeholder="Пара слов — по желанию: как прошла защита, что понравилось">' + (r && r.text ? esc(r.text) : '') + '</textarea>' +
+      '<textarea id="rvText" rows="3" maxlength="2000" aria-label="Текст отзыва" placeholder="Пара слов — по желанию: как прошла защита, что понравилось">' + (r && r.text ? esc(r.text) : '') + '</textarea>' +
       '<div class="act-row" style="margin-top:10px">' +
-      '<input type="text" id="rvAuthor" maxlength="60" placeholder="Подпись (например, «Мария, ВКР») — можно пусто" style="flex:2;min-width:0;font:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
+      '<input type="text" id="rvAuthor" maxlength="60" aria-label="Подпись к отзыву, необязательно" placeholder="Подпись (например, «Мария, ВКР») — можно пусто" style="flex:2;min-width:0;font:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
       '<button type="button" class="btn btn-wax" data-review-send>' + (r ? 'Обновить отзыв' : 'Отправить отзыв') + '</button></div>' +
       '<div class="act-row" style="margin-top:8px">' +
       '<label class="btn btn-line btn-upload">📎 Приложить скрин (оценка, переписка)<input type="file" id="cabReviewShot" hidden accept="image/*,.pdf"></label></div>' +
@@ -1650,7 +1650,7 @@ function initCabinet() {
     var meta = o.unread ? ('новых: ' + o.unread) : (S.api.token() ? 'синхронно с Telegram' : 'мастер видит сразу');
     return fold('secChat', '💬 Переписка по заказу', meta,
       '<div class="chat-feed" id="chatFeed">' + (feed || '<p class="petit" style="text-align:center">Пока тихо. Напишите первым — мастер ответит прямо здесь.</p>') + '</div>' +
-      '<div class="chat-form"><textarea id="chatText" rows="2" maxlength="3000" placeholder="Сообщение мастеру…"></textarea>' +
+      '<div class="chat-form"><textarea id="chatText" rows="2" maxlength="3000" aria-label="Сообщение мастеру" placeholder="Сообщение мастеру…"></textarea>' +
       '<button type="button" class="btn btn-wax" id="chatSend">Отправить</button></div>',
       hasMsgs || !!o.unread);
   }
