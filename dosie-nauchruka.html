@@ -1,409 +1,460 @@
-<!DOCTYPE html><html lang="ru"><head>
-<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Досье научного руководителя: как мы читаем того, кто примет вашу работу</title>
-<meta name="description" content="Перед стартом каждой работы мастерская собирает досье научного руководителя: интересы, публикации, словарь, требования и вероятные вопросы на защите. Как это устроено — с настоящими примерами из практики." />
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Досье научного руководителя — работа под того, кто её принимает | Академический Салон</title>
+<meta name="description" content="Перед стартом мы изучаем открытые публикации, темы и язык научного руководителя. Показываем, как досье превращается в план, текст и уверенные ответы на защите." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<style>
+  .sr{padding-bottom:var(--block)}
+  .sr .doc-crumb{padding-top:82px}
+  .sr-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.76fr);gap:clamp(34px,6vw,82px);align-items:center;padding:clamp(34px,6vw,72px) 0 clamp(46px,8vw,88px)}
+  .sr-hero h1{max-width:15ch;margin:13px 0 18px}
+  .sr-hero .lead{max-width:60ch}
+  .sr-hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .sr-included{display:flex;gap:10px;align-items:flex-start;max-width:58ch;margin-top:18px;padding-top:15px;border-top:1px solid var(--hairline);font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+  .sr-included::before{content:"✓";flex:0 0 auto;color:var(--verify);font-family:var(--mono)}
+  .sr-included b{color:var(--ink);font-weight:500}
+
+  .sr-file{position:relative;padding:25px 22px 20px;background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:4px;box-shadow:10px 13px 0 var(--paper-2),10px 13px 0 1px var(--hairline),0 30px 60px -46px rgba(34,32,27,.62);transform:rotate(.45deg)}
+  .sr-file::before{content:"Досье № 24-071";position:absolute;top:-14px;left:18px;padding:5px 12px;background:var(--paper-2);border:1px solid var(--hairline-strong);border-bottom-color:var(--sheet);border-radius:3px 3px 0 0;font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint)}
+  .sr-file::after{content:"ОБЕЗЛИЧЕНО";position:absolute;right:17px;top:17px;padding:5px 8px;border:1.5px solid var(--wax);border-radius:2px;color:var(--wax);font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.14em;transform:rotate(2.5deg)}
+  .sr-file-head{padding-right:92px;margin-bottom:15px}
+  .sr-file-head .caps{display:block;margin-bottom:5px}
+  .sr-file-head h2{font-size:clamp(20px,2.4vw,27px);margin:0}
+  .sr-file dl{margin:0}
+  .sr-file dl>div{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:11px 0;border-bottom:1px dotted var(--hairline)}
+  .sr-file dl>div:last-child{border-bottom:0}
+  .sr-file dt{padding-top:2px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+  .sr-file dd{font-size:13px;line-height:1.48;color:var(--ink-soft)}
+  .sr-mark{display:inline-block;margin-right:6px;padding:2px 5px;border:1px solid currentColor;border-radius:2px;font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;vertical-align:1px}
+  .sr-mark.fact{color:var(--verify)}
+  .sr-mark.inference{color:var(--stamp-blue,#3A4E7A)}
+  .sr-file-note{margin-top:13px;padding-top:11px;border-top:1px solid var(--hairline);font-size:11px;line-height:1.5;color:var(--ink-faint)}
+
+  .sr-thesis{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:clamp(26px,6vw,84px);align-items:start;padding:clamp(30px,5vw,54px);background:var(--ink);border-radius:4px;color:var(--paper)}
+  .sr-thesis .caps{color:color-mix(in srgb,var(--paper) 54%,transparent)}
+  .sr-thesis h2{max-width:13ch;margin:8px 0 0;color:var(--paper)}
+  .sr-thesis-copy{font-family:var(--serif);font-size:clamp(19px,2.5vw,28px);line-height:1.47}
+  .sr-thesis-copy em{color:#E9C972;font-style:italic}
+  .sr-thesis-small{margin-top:14px;font-family:var(--sans);font-size:12.5px;line-height:1.6;color:color-mix(in srgb,var(--paper) 65%,transparent)}
+
+  .sr-method{padding-top:var(--block)}
+  .sr-section-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.62fr);gap:24px;align-items:end;margin-bottom:24px}
+  .sr-section-head h2{margin:7px 0 0}
+  .sr-section-head p{font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  .sr-steps{display:grid;grid-template-columns:repeat(4,1fr);margin:0;padding:0;list-style:none;border:1px solid var(--hairline-strong);border-radius:4px;overflow:hidden;background:var(--sheet)}
+  .sr-step{position:relative;min-height:210px;padding:23px 19px;border-right:1px solid var(--hairline)}
+  .sr-step:last-child{border-right:0}
+  .sr-step .no{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--wax)}
+  .sr-step h3{font-size:19px;margin:22px 0 8px}
+  .sr-step p{font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+  .sr-step .artifact{display:block;margin-top:14px;padding-top:10px;border-top:1px dotted var(--hairline);font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-faint)}
+  .sr-step:not(:last-child)::after{content:"→";position:absolute;right:-8px;top:25px;z-index:2;padding:0 3px;background:var(--sheet);color:var(--wax);font-family:var(--mono)}
+
+  .sr-case{padding-top:var(--block);scroll-margin-top:84px}
+  .sr-case-shell{display:grid;grid-template-columns:minmax(280px,.64fr) minmax(0,1.36fr);gap:14px;align-items:stretch}
+  .sr-case-nav{padding:22px;background:var(--paper-2);border:1px solid var(--hairline);border-radius:4px}
+  .sr-case-nav h2{font-size:clamp(24px,3vw,34px);margin:7px 0 9px}
+  .sr-case-nav>p{font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+  .sr-case-tabs{display:grid;gap:7px;margin-top:20px}
+  .sr-case-tab{position:relative;display:grid;grid-template-columns:28px 1fr auto;gap:9px;align-items:center;min-height:54px;padding:9px 10px;border:1px solid var(--hairline);border-radius:3px;background:transparent;color:var(--ink);text-align:left;cursor:pointer}
+  .sr-case-tab[aria-selected="true"]{border-color:var(--wax);background:var(--sheet);box-shadow:inset 3px 0 0 var(--wax)}
+  .sr-case-tab .no{font-family:var(--mono);font-size:9px;color:var(--ink-faint)}
+  .sr-case-tab b{font-size:13px;font-weight:500}
+  .sr-case-tab .go{color:var(--wax)}
+  .sr-case-ethics{margin-top:17px;padding-top:14px;border-top:1px dotted var(--hairline);font-size:11px;line-height:1.55;color:var(--ink-faint)}
+  .sr-case-panels{background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:4px}
+  .sr-case-panels.is-enhanced .sr-case-panel[hidden]{display:none}
+  .sr-case-panel{min-height:100%;padding:clamp(24px,4vw,40px)}
+  .sr-case-panels:not(.is-enhanced) .sr-case-panel+.sr-case-panel{border-top:1px solid var(--hairline)}
+  .sr-case-kicker{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--hairline)}
+  .sr-case-kicker span:first-child{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+  .sr-case-kicker span:last-child{font-family:var(--mono);font-size:9px;color:var(--wax)}
+  .sr-case-panel h3{max-width:25ch;font-size:clamp(25px,3.3vw,38px);margin:0 0 12px}
+  .sr-case-lead{max-width:66ch;font-size:14px;line-height:1.65;color:var(--ink-soft)}
+  .sr-evidence{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:22px}
+  .sr-evidence-card{padding:15px 13px;background:var(--paper-2);border:1px solid var(--hairline);border-radius:3px}
+  .sr-evidence-card .src{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--verify)}
+  .sr-evidence-card b{display:block;margin:9px 0 5px;font-size:13.5px;font-weight:500}
+  .sr-evidence-card p{font-size:11.5px;line-height:1.5;color:var(--ink-soft)}
+  .sr-factline{display:grid;grid-template-columns:104px 1fr;gap:14px;padding:13px 0;border-bottom:1px dotted var(--hairline)}
+  .sr-factline:last-of-type{border-bottom:0}
+  .sr-factline dt{padding-top:2px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .sr-factline dd{font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+  .sr-lexicon{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+  .sr-lexicon span{padding:7px 10px;border:1px solid var(--hairline-strong);border-radius:999px;background:var(--paper-2);font-family:var(--serif);font-size:13px;font-style:italic}
+  .sr-plan{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:22px}
+  .sr-plan-card{padding:18px 16px;border:1px solid var(--hairline);border-radius:3px}
+  .sr-plan-card.before{background:var(--paper-2);color:var(--ink-soft)}
+  .sr-plan-card.after{background:var(--sheet);border-color:color-mix(in srgb,var(--verify) 52%,var(--hairline))}
+  .sr-plan-card .tag{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .sr-plan-card h4{font-family:var(--serif);font-size:17px;margin:10px 0 9px}
+  .sr-plan-card ul{margin:0;padding-left:17px}
+  .sr-plan-card li{margin:6px 0;font-size:12px;line-height:1.45}
+  .sr-questions{display:grid;gap:9px;margin-top:20px}
+  .sr-question{display:grid;grid-template-columns:32px 1fr;gap:12px;padding:13px 14px;background:var(--paper-2);border-left:3px solid var(--stamp-blue,#3A4E7A)}
+  .sr-question .q{font-family:var(--serif);font-size:18px;color:var(--stamp-blue,#3A4E7A)}
+  .sr-question b{display:block;margin-bottom:4px;font-size:13.5px;font-weight:500}
+  .sr-question small{font-size:11.5px;line-height:1.45;color:var(--ink-soft)}
+  .sr-case-live{min-height:18px;margin-top:10px;font-size:11px;color:var(--ink-faint)}
+
+  .sr-impact{display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,.78fr);gap:clamp(28px,6vw,80px);align-items:center;padding-top:var(--block)}
+  .sr-impact h2{max-width:18ch;margin:8px 0 13px}
+  .sr-impact-copy>p{max-width:64ch;font-size:14px;line-height:1.68;color:var(--ink-soft)}
+  .sr-impact-list{margin:20px 0 0;padding:0;list-style:none}
+  .sr-impact-list li{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 0;border-bottom:1px dotted var(--hairline);font-size:13px;line-height:1.5}
+  .sr-impact-list .n{font-family:var(--mono);font-size:9px;color:var(--wax)}
+  .sr-note-card{position:relative;padding:24px 22px;background:var(--paper-2);border:1px solid var(--hairline-strong);border-radius:4px}
+  .sr-note-card::before{content:"Редакторская помета";position:absolute;top:-12px;left:15px;padding:4px 9px;background:var(--paper);border:1px solid var(--hairline-strong);font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .sr-note-card blockquote{margin:0;font-family:var(--serif);font-size:clamp(19px,2.2vw,25px);font-style:italic;line-height:1.5}
+  .sr-note-card p{margin-top:16px;padding-top:13px;border-top:1px solid var(--hairline);font-size:11.5px;line-height:1.55;color:var(--ink-soft)}
+
+  .sr-proof-section{padding-top:var(--block)}
+  .sr-proof-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+  .sr-proof-head h2{margin:7px 0 0}
+  .sr-proof-head p{max-width:45ch;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+  .sr-proofs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .sr-proof{position:relative;display:block;width:100%;padding:10px 10px 13px;background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:3px;color:var(--ink);text-align:left;cursor:zoom-in;transition:transform .2s,box-shadow .2s}
+  .sr-proof:hover,.sr-proof:focus-visible{transform:translateY(-5px) rotate(var(--r,0deg));box-shadow:0 18px 38px -28px rgba(34,32,27,.7)}
+  .sr-proof:nth-child(1){--r:-.4deg}
+  .sr-proof:nth-child(3){--r:.4deg}
+  .sr-proof img{display:block;width:100%;aspect-ratio:960/750;object-fit:cover;object-position:top;border:1px solid var(--hairline);background:#fff}
+  .sr-proof b{display:block;margin:11px 3px 4px;font-family:var(--serif);font-size:16px}
+  .sr-proof small{display:block;margin:0 3px;font-size:10.5px;color:var(--ink-faint)}
+  .sr-proof .zoom{position:absolute;right:18px;top:18px;width:31px;height:31px;display:grid;place-items:center;border-radius:50%;background:var(--wax);color:#fff;font-family:var(--mono);font-size:15px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+  .sr-pdf{margin-top:14px;font-size:12px;color:var(--ink-soft)}
+
+  .sr-dialog{width:min(760px,calc(100vw - 28px));max-height:92vh;padding:0;border:0;border-radius:4px;background:var(--sheet);color:var(--ink);box-shadow:0 30px 90px rgba(0,0,0,.48)}
+  .sr-dialog::backdrop{background:rgba(34,32,27,.68);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+  .sr-dialog-bar{display:flex;justify-content:space-between;gap:12px;align-items:center;min-height:56px;padding:9px 12px 9px 17px;border-bottom:1px solid var(--hairline)}
+  .sr-dialog-bar span{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-soft)}
+  .sr-dialog-close{width:44px;height:44px;border:1px solid var(--hairline-strong);border-radius:50%;background:var(--paper-2);color:var(--ink);font-size:20px;cursor:pointer}
+  .sr-dialog-viewport{max-height:calc(92vh - 112px);overflow:auto;background:#fff}
+  .sr-dialog-viewport img{display:block;width:100%;height:auto}
+  .sr-dialog-nav{display:flex;justify-content:space-between;gap:10px;padding:9px 12px;border-top:1px solid var(--hairline)}
+  .sr-dialog-nav button{min-height:44px;padding:8px 11px;border:1px solid var(--hairline);border-radius:3px;background:var(--paper-2);color:var(--ink);font:500 11px var(--sans);cursor:pointer}
+
+  .sr-ethics{display:grid;grid-template-columns:minmax(0,.74fr) minmax(0,1.26fr);gap:clamp(26px,6vw,78px);align-items:start;margin-top:var(--block);padding:clamp(24px,4vw,42px);background:var(--paper-2);border:1px solid var(--hairline);border-radius:4px}
+  .sr-ethics h2{max-width:15ch;margin:7px 0 0}
+  .sr-ethics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .sr-ethic{padding:15px 14px;background:var(--sheet);border:1px solid var(--hairline);border-radius:3px}
+  .sr-ethic b{display:block;margin-bottom:6px;font-size:13.5px;font-weight:500}
+  .sr-ethic p{font-size:11.5px;line-height:1.5;color:var(--ink-soft)}
+
+  .sr-final{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:25px;align-items:center;margin-top:clamp(42px,7vw,78px);padding:clamp(26px,4vw,44px);border:1px solid var(--hairline-strong);border-left:6px solid var(--wax);border-radius:4px;background:var(--sheet)}
+  .sr-final h2{max-width:20ch;margin:7px 0 9px}
+  .sr-final p{max-width:62ch;font-size:13px;line-height:1.6;color:var(--ink-soft)}
+  .sr-final-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+  :root[data-theme="dark"] .sr .btn-wax{color:#1F1B15}
+
+  @media(max-width:980px){
+    .sr-hero,.sr-thesis,.sr-impact,.sr-ethics{grid-template-columns:1fr}
+    .sr-file{max-width:640px;transform:none}
+    .sr-steps{grid-template-columns:1fr 1fr}
+    .sr-step{min-height:165px;border-bottom:1px solid var(--hairline)}
+    .sr-step:nth-child(2){border-right:0}
+    .sr-step:nth-child(3),.sr-step:nth-child(4){border-bottom:0}
+    .sr-step:nth-child(2)::after{display:none}
+    .sr-case-shell{grid-template-columns:1fr}
+    .sr-case-tabs{grid-template-columns:repeat(4,1fr)}
+    .sr-case-tab{grid-template-columns:1fr;min-height:68px}
+    .sr-case-tab .go{display:none}
+    .sr-final{grid-template-columns:1fr}
+    .sr-final-actions{justify-content:flex-start}
+  }
+  @media(max-width:700px){
+    .sr .doc-crumb{padding-top:72px}
+    .sr-hero{padding-top:29px}
+    .sr-hero h1{max-width:12ch}
+    .sr-file{padding:23px 15px 17px}
+    .sr-file::after{top:13px;right:12px}
+    .sr-file dl>div{grid-template-columns:1fr;gap:5px}
+    .sr-file-head{padding-right:92px}
+    .sr-section-head,.sr-proof-head{display:block}
+    .sr-section-head p,.sr-proof-head p{margin-top:9px}
+    .sr-steps{grid-template-columns:1fr}
+    .sr-step{min-height:0;border-right:0;border-bottom:1px solid var(--hairline)}
+    .sr-step:nth-child(3){border-bottom:1px solid var(--hairline)}
+    .sr-step:not(:last-child)::after{content:"↓";right:16px;top:auto;bottom:-9px}
+    .sr-case-nav{padding:18px 15px}
+    .sr-case-tabs{grid-template-columns:1fr 1fr}
+    .sr-case-tab{min-height:58px}
+    .sr-case-panel{padding:22px 16px}
+    .sr-evidence,.sr-plan{grid-template-columns:1fr}
+    .sr-factline{grid-template-columns:1fr;gap:5px}
+    .sr-proofs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding:3px 3px 13px}
+    .sr-proof{flex:0 0 82%;scroll-snap-align:center}
+    .sr-ethics-grid{grid-template-columns:1fr}
+    .sr-final-actions .btn{width:100%;justify-content:center}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .sr-proof{transition:none}
+  }
+</style>
 <link rel="canonical" href="https://akademsalon.ru/dosie-nauchruka.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
 <meta name="theme-color" content="#F6F1E7" />
-<meta property="og:type" content="article" /><meta property="og:site_name" content="Академический Салон" />
-<meta property="og:title" content="Досье научного руководителя: работа пишется под человека" /><meta property="og:description" content="Интересы, словарь, требования и вероятные вопросы на защите — что мастерская узнаёт о научруке до первой строки текста." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Работа начинается с досье научного руководителя" />
+<meta property="og:description" content="Изучаем открытые публикации, темы и язык того, кто примет работу, — и превращаем это в план, текст и ответы на защите." />
 <meta property="og:url" content="https://akademsalon.ru/dosie-nauchruka.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og/og-supervisor-dossier.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Досье научного руководителя — фирменная редакторская папка Академического Салона" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
-<style>
-  /* формуляры досье — как на столе мастера (автономная копия стилей разворота) */
-  .dsx{background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:3px;
-    padding:20px 22px;position:relative;margin:26px 0;
-    box-shadow:0 2px 3px rgba(34,32,27,.08),0 18px 40px -20px rgba(34,32,27,.22)}
-  .dsx-tab{position:absolute;top:-13px;left:16px;background:var(--paper-2);
-    border:1px solid var(--hairline-strong);border-bottom-color:var(--sheet);
-    border-radius:3px 3px 0 0;padding:4px 14px 6px;
-    font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
-  .dsx-rows{margin:6px 0 0}
-  .dsx-rows > div{display:grid;grid-template-columns:118px 1fr;gap:10px;padding:10px 0;border-bottom:1px dotted var(--hairline)}
-  .dsx-rows > div:last-child{border-bottom:0}
-  .dsx-rows dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);padding-top:3px}
-  .dsx-rows dd{font-size:14.5px;line-height:1.6;color:var(--ink);margin:0}
-  @media(max-width:560px){.dsx-rows > div{grid-template-columns:1fr;gap:3px;padding:9px 0}}
-  .tag-f,.tag-i{display:inline-block;font-style:normal;font-family:var(--mono);font-size:9.5px;
-    letter-spacing:.08em;text-transform:uppercase;border-radius:2px;padding:1.5px 6px;margin-right:6px;vertical-align:1px}
-  .tag-f{color:var(--verify,#3D6B50);border:1px solid color-mix(in srgb,var(--verify,#3D6B50) 45%,transparent)}
-  .tag-i{color:#3A4E7A;border:1px solid color-mix(in srgb,#3A4E7A 40%,transparent)}
-  .dsx-note{font-size:12.5px;line-height:1.6;color:var(--ink-soft);margin-top:12px}
-  /* словарь научрука — чипы терминов */
-  .lex{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
-  .lex span{font-family:var(--mono);font-size:12px;letter-spacing:.02em;color:var(--ink);
-    border:1px solid var(--hairline-strong);border-radius:999px;padding:6px 12px;background:var(--sheet)}
-  /* вопросы на защите — карточки */
-  .qcards{display:grid;gap:10px;margin:16px 0}
-  .qcard{border:1px solid var(--hairline);border-left:3px solid var(--wax);border-radius:3px;
-    background:var(--sheet);padding:13px 16px;font-size:14.5px;line-height:1.6}
-  .qcard b{font-family:var(--serif)}
-  .qcard small{display:block;margin-top:6px;font-size:12.5px;color:var(--ink-soft)}
-  /* иллюстрации: страницы работы */
-  .figrow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
-  @media(max-width:640px){.figrow{grid-template-columns:1fr}}
-  .figrow figure{margin:0;background:#fff;border:1px solid var(--hairline);border-radius:3px;overflow:hidden;
-    box-shadow:0 12px 28px -20px rgba(34,32,27,.4)}
-  .figrow img{display:block;width:100%;height:auto}
-  :root[data-theme="dark"] .figrow img{filter:brightness(.93)}
-  .figrow figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--ink-soft);
-    padding:9px 12px;border-top:1px solid var(--hairline);background:var(--sheet)}
-  /* этика — тихая рамка */
-  .ethics{border:1px dashed var(--hairline-strong);border-radius:3px;padding:16px 18px;margin:24px 0;background:var(--sheet)}
-  .ethics p{margin:0;font-size:14px;line-height:1.65;color:var(--ink-soft)}
-</style>
-</head><body>
-<main class="wrap doc-wrap">
-<nav class="doc-crumb" aria-label="Хлебные крошки"><a href="index.html">Главная</a> · <a href="knowledge.html">Полезные материалы</a> · Досье научного руководителя</nav>
-<article class="doc">
-  <h1>Досье научного руководителя: работа пишется под человека, который будет её принимать</h1>
-  <p class="doc-subtitle">Методичка задаёт формат, но принимает работу не методичка, а живой человек — со своими темами, словарём и представлением о том, что такое «хорошо». Поэтому перед стартом каждой работы, у которой есть научный руководитель, мастерская собирает его досье. Ниже — как это устроено, с настоящими фрагментами из практики.</p>
-  <p class="doc-meta">Обновлено 20 июля 2026 · Академический Салон</p>
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og/og-supervisor-dossier.png" />
+</head>
+<body>
 
-  <h2>Зачем вообще читать научрука</h2>
-  <p>Две работы, одинаково аккуратные по ГОСТу, у одного и того же руководителя получают разные оценки. Разница почти всегда не в оформлении, а в попадании: одна написана «в формат вуза», другая — под человека. Руководитель-практик ждёт работающую схему и цифры; руководитель-теоретик — строгий понятийный аппарат и полемику с источниками; руководитель, который двадцать лет пишет об одном методе, безошибочно замечает, что его метод в списке литературы отсутствует.</p>
-  <p>Досье — это способ узнать всё это <em>до первой строки текста</em>, а не на предзащите, когда переделывать уже дорого.</p>
+<main class="sr">
+  <div class="wrap">
+    <nav class="doc-crumb" aria-label="Хлебные крошки"><a href="index.html">Главная</a> · Мастерская изнутри · Досье научного руководителя</nav>
 
-  <h2>Как выглядит досье</h2>
-  <p>Вот собирательный фрагмент настоящего досье из практики мастерской — имена, вуз и узнаваемые детали убраны, приём сохранён полностью. Работа — ВКР по социальной работе; руководитель оказался не «кабинетным» преподавателем, а действующим практиком:</p>
+    <section class="sr-hero reveal" data-chapter="Досье научрука">
+      <div>
+        <span class="caps">Наш метод · до первой строки текста</span>
+        <h1 class="h-display">Пишем не только по методичке. Пишем под того, кто будет принимать</h1>
+        <p class="lead">Методичка задаёт форму. Научный руководитель решает, что для него убедительно. Поэтому до старта мы изучаем его открытые работы, темы и профессиональный язык — и собираем <em class="pen">досье для одной конкретной работы</em>.</p>
+        <div class="sr-hero-actions">
+          <a class="btn btn-wax btn-lg" href="#case">Посмотреть живой пример <span class="ar">↓</span></a>
+          <a class="btn btn-line" href="plan.html">Разобрать мой план</a>
+        </div>
+        <p class="sr-included"><span><b>Досье входит в работу с научным руководителем</b> и не продаётся как доплата. Если руководителя ещё не назначили, собираем его после назначения и бесплатно уточняем план.</span></p>
+      </div>
 
-  <div class="dsx" role="img" aria-label="Фрагмент досье научного руководителя (обезличено)">
-    <span class="dsx-tab">досье научрука · ВКР, социальная работа · обезличено</span>
-    <dl class="dsx-rows">
-      <div><dt>Кто это</dt><dd><i class="tag-f">факт</i>старший преподаватель профильной кафедры — и одновременно руководитель в действующем центре социальной помощи: смотрит на предмет и как преподаватель, и как управленец-практик</dd></div>
-      <div><dt>Его темы</dt><dd><i class="tag-f">факт</i>социальная реабилитация, инклюзивные технологии, комплексная организация помощи — по публичным докладам и программам конференций за три года</dd></div>
-      <div><dt>Рабочая формула</dt><dd><i class="tag-i">вывод</i>«социальная работа должна быть технологичной, институционально описанной и доказуемой через реально работающий маршрут помощи» — кабинетная теория без практического контура его не убедит</dd></div>
-      <div><dt>Что это меняет</dt><dd><i class="tag-i">вывод</i>практическая глава строится как маршрут клиента через конкретные службы, с показателями на каждом шаге — не «рекомендации» списком, а работающая схема</dd></div>
-    </dl>
-    <p class="dsx-note">Пометки «факт» и «вывод» разведены сознательно: факт подтверждён открытым источником, вывод — осторожная профессиональная интерпретация. Мы не гадаем — мы помечаем, где что.</p>
-  </div>
+      <aside class="sr-file" aria-label="Обезличенный фрагмент досье научного руководителя">
+        <div class="sr-file-head"><span class="caps">ВКР · социальная работа</span><h2>Профиль руководителя</h2></div>
+        <dl>
+          <div><dt>Кто это</dt><dd><span class="sr-mark fact">факт</span>Преподаватель и руководитель действующего центра помощи: оценивает и теорию, и применимость.</dd></div>
+          <div><dt>Его темы</dt><dd><span class="sr-mark fact">факт</span>Реабилитация, инклюзивные технологии, организация маршрута помощи.</dd></div>
+          <div><dt>Рабочая логика</dt><dd><span class="sr-mark inference">вывод</span>Кабинетная теория без реального процесса и показателей его не убедит.</dd></div>
+          <div><dt>Что меняем</dt><dd><span class="sr-mark inference">решение</span>Практическую главу строим как маршрут клиента через конкретные службы.</dd></div>
+        </dl>
+        <p class="sr-file-note">Факты и профессиональные выводы всегда разделены. Никаких догадок о частной жизни — только открытая научная и преподавательская деятельность.</p>
+      </aside>
+    </section>
 
-  <h2>Словарь научрука</h2>
-  <p>У каждого руководителя есть язык, на котором он думает: термины из его собственных публикаций и докладов. Когда работа говорит на этом языке, она читается «своей». Из того же досье:</p>
-  <div class="lex" aria-label="Термины из публикаций руководителя">
-    <span>социальная реабилитация</span><span>маршрут помощи</span><span>инклюзивные технологии</span><span>комплексная помощь</span><span>социально-бытовая адаптация</span><span>сопровождение семьи</span>
-  </div>
-  <p>Это не подстройка ради подстройки: терминологическая рамка — половина ответа на вопрос «раскрыта ли тема». Вторая половина — чтобы за терминами стояло содержание.</p>
+    <section class="sr-thesis reveal" aria-labelledby="thesisTitle">
+      <div><span class="caps">Почему это работает</span><h2 id="thesisTitle">Две работы по одному ГОСТу могут получить разные оценки</h2></div>
+      <div>
+        <p class="sr-thesis-copy">Разница часто не в полях и сносках, а в попадании: <em>какие доказательства руководитель считает сильными, каким словам доверяет и какой вопрос задаст первым.</em></p>
+        <p class="sr-thesis-small">Досье помогает понять это до того, как глава вернётся с расплывчатым «переработать».</p>
+      </div>
+    </section>
 
-  <h2>Вероятные вопросы на защите</h2>
-  <p>Финальный раздел каждого досье — прогноз вопросов. Он строится из повторяющихся акцентов руководителя: о чём он говорит в докладах, к чему цепляется в чужих работах, что спрашивал у прошлых выпускников. Примеры из практики:</p>
-  <div class="qcards">
-    <div class="qcard"><b>«А как ваша модель заработает в реальном учреждении?»</b><small>руководитель-практик · заготовлен ответ с опорой на действующий регламент и штатную структуру</small></div>
-    <div class="qcard"><b>«Почему выбраны именно эти методики диагностики?»</b><small>руководитель-психолог · в работе методики обоснованы через его же критерии валидности</small></div>
-    <div class="qcard"><b>«Чем ваш вывод отличается от того, что уже написано по теме?»</b><small>руководитель-теоретик · в заключении явно сформулирован элемент новизны</small></div>
-  </div>
-  <p>Клиент получает эти вопросы вместе с готовыми линиями ответа — на защите они перестают быть сюрпризом.</p>
+    <section class="sr-method reveal" aria-labelledby="methodTitle">
+      <div class="sr-section-head">
+        <div><span class="caps">От источника до защиты</span><h2 id="methodTitle">Четыре шага, которые меняют всю работу</h2></div>
+        <p>Мы не имитируем «психологический портрет». Каждый вывод должен привести к наблюдаемому решению в плане, тексте или подготовке ответа.</p>
+      </div>
+      <ol class="sr-steps">
+        <li class="sr-step"><span class="no">01 · НАХОДИМ</span><h3>Открытые факты</h3><p>Публикации, программы конференций, профиль кафедры, авторефераты и учебные материалы.</p><span class="artifact">Результат · карта источников</span></li>
+        <li class="sr-step"><span class="no">02 · ЧИТАЕМ</span><h3>Темы и словарь</h3><p>Повторяющиеся понятия, любимые методы, критерии доказательности и профессиональная оптика.</p><span class="artifact">Результат · профиль требований</span></li>
+        <li class="sr-step"><span class="no">03 · ПЕРЕВОДИМ</span><h3>Решения в работе</h3><p>Уточняем план, методы, источники, форму анализа и логику практической главы.</p><span class="artifact">Результат · редакторское задание</span></li>
+        <li class="sr-step"><span class="no">04 · ГОТОВИМ</span><h3>Вопросы защиты</h3><p>Прогнозируем сильные вопросы и закладываем ответы в текст, доклад и репетицию.</p><span class="artifact">Результат · карта ответов</span></li>
+      </ol>
+    </section>
 
-  <h2>Откуда берутся данные</h2>
-  <p>Только открытые источники — то, что руководитель сам опубликовал о себе как о специалисте:</p>
-  <ul>
-    <li>официальные страницы вуза: должность, дисциплины, научные интересы;</li>
-    <li>публикации в eLibrary/РИНЦ и материалы конференций — темы и словарь;</li>
-    <li>публичные доклады, программы семинаров, методические материалы;</li>
-    <li>требования кафедры и методичка — как рамка, поверх которой живёт человек.</li>
-  </ul>
-  <div class="ethics">
-    <p><b>Этика досье.</b> Мы собираем профессиональный портрет, а не личный: никакой частной жизни, только научная и преподавательская роль. Досье готовится для одной работы, никому не передаётся и не публикуется — фрагменты в этой статье обезличены до неузнаваемости. В документах мастерской клиент — «Заказчик»; та же конфиденциальность укрывает и руководителей.</p>
-  </div>
-
-  <h2>Как досье превращается в оценку</h2>
-  <p>Пример из практики. Магистерская по психологии: из досье стало ясно, что руководитель годами работает с тревожностью и доверяет классическим методикам с проверенной валидностью. Эмпирику собрали на Спилбергере—Ханине и Прихожан — тех самых инструментах, на которых руководитель вырос как исследователь. Вопросов к выбору методик на защите не было вовсе; работа прошла на «отлично».</p>
-  <p>Страницы этой работы (обезличенные — тема перефразирована, имена и вуз скрыты) — прямо здесь:</p>
-  
-  <!-- Гранки: интерактивная стопка листов с лайтбоксом и лупой (переехала с главной «Пресс», 2026-07-22) -->
-  <style>
-.proof-stack{position:relative;display:grid;max-width:520px;margin-inline:auto;perspective:1200px}
-.pf-leaf{
-  grid-area:1/1;margin:0;background:#fff;border:1px solid var(--hairline);
-  border-radius:2px;overflow:hidden;cursor:zoom-in;
-  box-shadow:0 2px 3px rgba(34,32,27,.10),0 24px 48px -22px rgba(34,32,27,.28);
-  transition:transform .38s cubic-bezier(.22,1,.36,1),box-shadow .38s,opacity .3s;
-  aspect-ratio:960/1358;
-}
-.pf-leaf img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
-:root[data-theme="dark"] .pf-leaf{background:#fff}
-:root[data-theme="dark"] .pf-leaf img{filter:brightness(.92)}
-.pf-leaf.top{z-index:3;transform:none}
-.pf-leaf.mid{z-index:2;transform:rotate(-2.4deg) translate(-14px,10px)}
-.pf-leaf.low{z-index:1;transform:rotate(1.6deg) translate(12px,-6px)}
-.enhanced .pf-leaf.top:hover{transform:translateY(-10px) scale(1.015);box-shadow:0 4px 6px rgba(34,32,27,.12),0 34px 60px -20px rgba(34,32,27,.36)}
-.pf-leaf.away{transform:translateX(46%) rotate(6deg)!important;opacity:0}
-.pf-clip{
-  position:absolute;top:-12px;left:50%;transform:translateX(-50%);z-index:5;
-  width:74px;height:26px;border-radius:4px 4px 6px 6px;
-  background:linear-gradient(160deg,#D9B25C,#B98A2F 55%,#8F6A20);
-  box-shadow:0 2px 4px rgba(34,32,27,.35),inset 0 1px 0 rgba(255,255,255,.5);
-}
-.pf-clip::after{content:"";position:absolute;inset:6px 10px;border-radius:2px;
-  background:linear-gradient(160deg,rgba(255,255,255,.35),transparent 60%)}
-.pf-tag{
-  position:absolute;z-index:6;top:14px;right:-9px;transform:rotate(2deg);
-  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:#FFF8EE;background:var(--wax);padding:5px 12px;border-radius:2px;
-  box-shadow:0 2px 5px rgba(140,45,24,.35);
-}
-.pf-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;max-width:520px;margin:16px auto 0}
-.pf-counter{
-  font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink);
-  border:1px solid var(--hairline-strong);background:var(--sheet);border-radius:999px;
-  padding:9px 16px;min-height:40px;cursor:pointer;transition:border-color .15s,color .15s;
-}
-.pf-counter:hover{border-color:var(--wax);color:var(--wax)}
-.pf-counter b{font-weight:600}
-
-/* формуляр досье с язычком */
-.dossier{background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:3px;
-  padding:18px 20px;position:relative;
-  box-shadow:0 2px 3px rgba(34,32,27,.08),0 18px 40px -20px rgba(34,32,27,.22)}
-.dossier--tab{margin-top:6px}
-.ds-tab{
-  position:absolute;top:-13px;left:16px;background:var(--paper-2);
-  border:1px solid var(--hairline-strong);border-bottom-color:var(--sheet);
-  border-radius:3px 3px 0 0;padding:4px 14px 6px;
-  font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);
-}
-.ds-rows{margin:6px 0 0}
-.ds-rows > div{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:9px 0;border-bottom:1px dotted var(--hairline)}
-.ds-rows > div:last-child{border-bottom:0}
-.ds-rows dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);padding-top:3px}
-.ds-rows dd{font-size:14px;line-height:1.55;color:var(--ink)}
-.ds-f,.ds-i{display:inline-block;font-style:normal;font-family:var(--mono);font-size:9.5px;
-  letter-spacing:.08em;text-transform:uppercase;border-radius:2px;padding:1.5px 6px;margin-right:5px;vertical-align:1px}
-.ds-f{color:var(--verify);border:1px solid color-mix(in srgb,var(--verify) 45%,transparent)}
-.ds-i{color:var(--stamp-blue,#3A4E7A);border:1px solid color-mix(in srgb,#3A4E7A 40%,transparent)}
-.ds-note{font-size:12px;line-height:1.6;color:var(--ink-soft);margin-top:12px}
-
-/* корешок-трипваер с перфорацией */
-.stub{
-  display:flex;align-items:center;gap:14px;margin-top:22px;padding:14px 18px;
-  border:1px dashed var(--hairline-strong);border-radius:3px;background:var(--sheet);
-  transition:border-color .2s,transform .2s;position:relative;
-}
-.stub::before{content:"";position:absolute;left:-6px;top:50%;width:12px;height:12px;border-radius:50%;
-  transform:translateY(-50%);background:var(--paper);border:1px dashed var(--hairline-strong)}
-.stub:hover{border-color:var(--wax);transform:translateY(-2px)}
-.stub-scis{color:var(--ink-faint);font-size:15px}
-.stub-t{flex:1;font-size:14.5px;line-height:1.45}
-.stub-t b{font-family:var(--mono);font-weight:600}
-.stub-t small{display:block;font-size:12px;color:var(--ink-soft)}
-.stub-ar{font-family:var(--serif);color:var(--ink-soft);transition:transform .2s,color .2s}
-.stub:hover .stub-ar{color:var(--wax);transform:translateX(3px)}
-
-/* лайтбокс листа */
-.pf-box{position:fixed;inset:0;z-index:700;display:flex;align-items:center;justify-content:center;padding:20px}
-.pf-box[hidden]{display:none}
-.pf-box-bg{position:absolute;inset:0;background:rgba(34,32,27,.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
-.pf-box-fig{position:relative;margin:0;max-height:92vh;max-width:min(92vw,720px);display:flex;flex-direction:column}
-.pf-pan{overflow:auto;border-radius:3px;background:#fff;max-height:calc(92vh - 40px);
-  box-shadow:0 30px 80px rgba(0,0,0,.45);border:1px solid var(--hairline)}
-.pf-pan img{display:block;width:100%;height:auto;transition:transform .3s;transform-origin:top left}
-.pf-box-fig.zoomed .pf-pan img{transform:scale(2)}
-.pf-box-fig figcaption{
-  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:#F6F1E7;
-  text-align:center;padding:12px 6px 0;
-}
-.pf-close{
-  position:absolute;top:-14px;right:-14px;width:40px;height:40px;border-radius:50%;
-  background:var(--wax);color:#FFF8EE;border:0;font-size:20px;line-height:1;cursor:pointer;
-  box-shadow:0 4px 12px rgba(0,0,0,.35);
-}
-.pf-zoom{
-  position:absolute;bottom:44px;right:10px;min-width:44px;min-height:44px;border-radius:50%;
-  border:1px solid var(--hairline-strong);background:var(--sheet);color:var(--ink);
-  font-family:var(--mono);font-size:13px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.25);
-}
-.pf-lens{
-  position:fixed;z-index:720;width:190px;height:190px;border-radius:50%;pointer-events:none;
-  border:2px solid #B98A2F;box-shadow:0 0 0 1px rgba(255,255,255,.5),0 14px 34px rgba(0,0,0,.4);
-  background-repeat:no-repeat;background-color:#fff;
-}
-/* направление в тексте честное на любом экране: на десктопе гранки СЛЕВА,
-   на мобиле колонки складываются и гранки оказываются СВЕРХУ */
-.dir-mob{display:none}
-@media(max-width:880px){
-  .ws-grid{grid-template-columns:1fr}
-  .proof-stack{max-width:420px}
-  .pf-bar{max-width:420px}
-  .dir-desk{display:none}
-  .dir-mob{display:inline}
-}
-
-  </style>
-  <div class="pf-embed">
-    <div class="proof-stack" id="proofStack" role="group" aria-label="Гранки обезличенной работы — три листа">
-            <figure class="pf-leaf top" data-cap="Оглавление · три главы · обезличено">
-              <img src="assets/img/showcase/showcase-2.jpg" width="960" height="1358" alt="Оглавление настоящей магистерской работы (обезличено)" loading="lazy">
-            </figure>
-            <figure class="pf-leaf mid" data-cap="Введение · постановка проблемы · обезличено">
-              <img src="assets/img/showcase/showcase-3.jpg" width="960" height="1358" alt="Введение настоящей магистерской работы (обезличено)" loading="lazy">
-            </figure>
-            <figure class="pf-leaf low" data-cap="Глава 2 · эмпирика, стр. 63 · обезличено">
-              <img src="assets/img/showcase/showcase-4.jpg" width="960" height="1358" alt="Страница эмпирической главы с таблицей результатов (обезличено)" loading="lazy">
-            </figure>
-            <span class="pf-clip" aria-hidden="true"></span>
-            <span class="pf-tag">обезличено</span>
+    <section class="sr-case reveal" id="case" aria-labelledby="caseTitle">
+      <div class="sr-case-shell">
+        <aside class="sr-case-nav">
+          <span class="caps">Обезличенный кейс</span>
+          <h2 id="caseTitle">Полистайте настоящее досье</h2>
+          <p>Один руководитель, одна ВКР, четыре слоя работы. Переключайтесь от источников к защите.</p>
+          <div class="sr-case-tabs" role="tablist" aria-label="Слои досье">
+            <button class="sr-case-tab" type="button" role="tab" id="case-tab-source" aria-controls="case-source" aria-selected="true" tabindex="0" data-case="source"><span class="no">01</span><b>Источники</b><span class="go">→</span></button>
+            <button class="sr-case-tab" type="button" role="tab" id="case-tab-profile" aria-controls="case-profile" aria-selected="false" tabindex="-1" data-case="profile"><span class="no">02</span><b>Профиль</b><span class="go">→</span></button>
+            <button class="sr-case-tab" type="button" role="tab" id="case-tab-plan" aria-controls="case-plan" aria-selected="false" tabindex="-1" data-case="plan"><span class="no">03</span><b>Решения</b><span class="go">→</span></button>
+            <button class="sr-case-tab" type="button" role="tab" id="case-tab-defense" aria-controls="case-defense" aria-selected="false" tabindex="-1" data-case="defense"><span class="no">04</span><b>Защита</b><span class="go">→</span></button>
           </div>
-          <div class="pf-bar">
-            <button type="button" class="pf-counter" id="pfNext">лист <b id="pfNo">1</b> / 3 — листнуть →</button>
-            <span class="petit">нажмите лист, чтобы рассмотреть вблизи</span>
-          </div>
-    <div class="pf-box" id="pfBox" hidden role="dialog" aria-modal="true" aria-label="Лист работы крупно">
-      <div class="pf-box-bg" data-pf-close></div>
-      <figure class="pf-box-fig">
-        <div class="pf-pan" id="pfPan"><img id="pfBoxImg" src="" alt="Лист работы крупно"></div>
-        <figcaption id="pfBoxCap"></figcaption>
-        <button type="button" class="pf-zoom" id="pfZoom" hidden>2×</button>
-        <button type="button" class="pf-close" data-pf-close aria-label="Закрыть">×</button>
-      </figure>
-      <div class="pf-lens" id="pfLens" hidden aria-hidden="true"></div>
-    </div>
+          <p class="sr-case-ethics">Имена, вуз и тема изменены. Научная логика примера сохранена. Частные сведения не собирались и не использовались.</p>
+        </aside>
+
+        <div class="sr-case-panels" id="casePanels">
+          <article class="sr-case-panel" id="case-source" role="tabpanel" aria-labelledby="case-tab-source" data-case="source">
+            <div class="sr-case-kicker"><span>Лист 01 · проверяемая основа</span><span>только открытые данные</span></div>
+            <h3>Сначала — не мнение, а след из источников</h3>
+            <p class="sr-case-lead">В течение нескольких лет руководитель возвращается к одной связке: технологичный маршрут помощи, межведомственное взаимодействие и измеримый результат для клиента.</p>
+            <div class="sr-evidence">
+              <div class="sr-evidence-card"><span class="src">Публикации · 3 года</span><b>«Маршрут помощи»</b><p>Фраза и схема повторяются в двух статьях и методическом материале.</p></div>
+              <div class="sr-evidence-card"><span class="src">Конференции</span><b>Инклюзивные технологии</b><p>Три доклада связывают технологию с реальным учреждением.</p></div>
+              <div class="sr-evidence-card"><span class="src">Профиль кафедры</span><b>Практическая проверка</b><p>В критериях работ отдельно выделена применимость рекомендаций.</p></div>
+            </div>
+          </article>
+
+          <article class="sr-case-panel" id="case-profile" role="tabpanel" aria-labelledby="case-tab-profile" data-case="profile">
+            <div class="sr-case-kicker"><span>Лист 02 · факт отдельно от вывода</span><span>проверяем логику</span></div>
+            <h3>Из повторений складывается рабочий профиль</h3>
+            <dl>
+              <div class="sr-factline"><dt>Факт</dt><dd>Руководитель одновременно преподаёт и управляет профильным учреждением.</dd></div>
+              <div class="sr-factline"><dt>Факт</dt><dd>В публикациях описывает помощь как последовательность действий и ответственных служб.</dd></div>
+              <div class="sr-factline"><dt>Вывод</dt><dd>Общие рекомендации без исполнителя, срока и показателя будут выглядеть для него декоративно.</dd></div>
+              <div class="sr-factline"><dt>Проверка</dt><dd>Вывод влияет на план только там, где подтверждается несколькими открытыми источниками.</dd></div>
+            </dl>
+            <div class="sr-lexicon" aria-label="Словарь руководителя"><span>«маршрут помощи»</span><span>«межведомственное взаимодействие»</span><span>«оценка результата»</span><span>«технологичность»</span></div>
+          </article>
+
+          <article class="sr-case-panel" id="case-plan" role="tabpanel" aria-labelledby="case-tab-plan" data-case="plan">
+            <div class="sr-case-kicker"><span>Лист 03 · изменение в работе</span><span>видимый результат</span></div>
+            <h3>Не «угадали характер», а перестроили практическую главу</h3>
+            <p class="sr-case-lead">Досье полезно, только если после него меняется документ. В этом кейсе вместо списка советов появилась работающая модель.</p>
+            <div class="sr-plan">
+              <div class="sr-plan-card before"><span class="tag">До досье · общий план</span><h4>Глава 3. Рекомендации</h4><ul><li>развивать взаимодействие;</li><li>повысить информированность;</li><li>улучшить качество помощи.</li></ul></div>
+              <div class="sr-plan-card after"><span class="tag">После досье · под критерии</span><h4>Глава 3. Маршрут клиента</h4><ul><li>пять этапов и ответственные службы;</li><li>показатель результата на каждом шаге;</li><li>регламент внедрения и ограничения.</li></ul></div>
+            </div>
+          </article>
+
+          <article class="sr-case-panel" id="case-defense" role="tabpanel" aria-labelledby="case-tab-defense" data-case="defense">
+            <div class="sr-case-kicker"><span>Лист 04 · вопросы до комиссии</span><span>готовим ответ заранее</span></div>
+            <h3>Защита перестаёт быть лотереей</h3>
+            <p class="sr-case-lead">Вероятные вопросы вытекают из профессиональной оптики руководителя. Ответы закладываются в саму работу, а не придумываются в коридоре.</p>
+            <div class="sr-questions">
+              <div class="sr-question"><span class="q">?</span><span><b>«Кто отвечает за каждый этап маршрута?»</b><small>В приложении — матрица ответственности, в докладе — один слайд со схемой.</small></span></div>
+              <div class="sr-question"><span class="q">?</span><span><b>«Как вы поймёте, что модель работает?»</b><small>В главе — показатели до/после и допустимые ограничения интерпретации.</small></span></div>
+              <div class="sr-question"><span class="q">?</span><span><b>«Можно ли внедрить это в обычном учреждении?»</b><small>Подготовлен ответ через действующий регламент и штатную структуру.</small></span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <p class="sr-case-live" id="caseLive" aria-live="polite"></p>
+    </section>
+
+    <section class="sr-impact reveal" aria-labelledby="impactTitle">
+      <div class="sr-impact-copy">
+        <span class="caps">Что получает клиент</span>
+        <h2 id="impactTitle">Досье работает на каждом следующем этапе</h2>
+        <p>Это не красивый PDF «для галочки». Профиль руководителя остаётся редакторской картой проекта: по ней мастер проверяет аргументы, язык, структуру практической части и подготовку к разговору.</p>
+        <ul class="sr-impact-list">
+          <li><span class="n">01</span><span><b>План легче согласовать:</b> он уже говорит на языке кафедры и руководителя.</span></li>
+          <li><span class="n">02</span><span><b>Меньше пустых переделок:</b> критерии убедительности учитываются до написания.</span></li>
+          <li><span class="n">03</span><span><b>Замечания понятнее:</b> мы читаем их в контексте научной позиции человека.</span></li>
+          <li><span class="n">04</span><span><b>Защита предсказуемее:</b> сильные вопросы встречаются в тексте заранее.</span></li>
+        </ul>
+      </div>
+      <aside class="sr-note-card">
+        <blockquote>«Работа должна выглядеть так, будто автор понимает не только тему, но и способ думать в этой научной школе».</blockquote>
+        <p>Это и есть задача досье: не подражать человеку, а попасть в профессиональную систему координат, в которой он оценивает доказательства.</p>
+      </aside>
+    </section>
+
+    <section class="sr-proof-section reveal" aria-labelledby="proofTitle">
+      <div class="sr-proof-head">
+        <div><span class="caps">Гранки реальной работы</span><h2 id="proofTitle">Посмотрите, во что превращается метод</h2></div>
+        <p>Обезличенные страницы магистерской: структура, постановка проблемы и эмпирическая глава. Откройте любую.</p>
+      </div>
+      <div class="sr-proofs">
+        <button class="sr-proof" type="button" data-proof="0" data-src="assets/img/showcase/showcase-2.jpg" data-caption="Оглавление · три главы · обезличено"><img src="assets/img/showcase/showcase-2.jpg" width="960" height="1358" alt="Оглавление обезличенной магистерской работы" loading="lazy"><span class="zoom" aria-hidden="true">+</span><b>Оглавление</b><small>Логика исследования от теории к модели</small></button>
+        <button class="sr-proof" type="button" data-proof="1" data-src="assets/img/showcase/showcase-3.jpg" data-caption="Введение · постановка проблемы · обезличено"><img src="assets/img/showcase/showcase-3.jpg" width="960" height="1358" alt="Введение обезличенной магистерской работы" loading="lazy"><span class="zoom" aria-hidden="true">+</span><b>Введение</b><small>Проблема и аппарат исследования</small></button>
+        <button class="sr-proof" type="button" data-proof="2" data-src="assets/img/showcase/showcase-4.jpg" data-caption="Глава 2 · эмпирика · обезличено"><img src="assets/img/showcase/showcase-4.jpg" width="960" height="1358" alt="Страница эмпирической главы с таблицей результатов" loading="lazy"><span class="zoom" aria-hidden="true">+</span><b>Эмпирическая глава</b><small>Методики, данные и интерпретация</small></button>
+      </div>
+      <p class="sr-pdf">Полные образцы PDF: <a class="link" href="assets/samples/obrazec-vvedenie-vkr.pdf" target="_blank" rel="noopener">введение ВКР</a> · <a class="link" href="assets/samples/obrazec-glava-analiz.pdf" target="_blank" rel="noopener">глава с анализом</a> · <a class="link" href="assets/samples/obrazec-spisok-literatury.pdf" target="_blank" rel="noopener">список по ГОСТу</a>.</p>
+    </section>
+
+    <section class="sr-ethics reveal" aria-labelledby="ethicsTitle">
+      <div><span class="caps">Граница метода</span><h2 id="ethicsTitle">Профессионально — значит бережно</h2></div>
+      <div class="sr-ethics-grid">
+        <div class="sr-ethic"><b>Только открытые источники</b><p>Публикации, страницы вуза, конференции и научные материалы. Никакого доступа к закрытым данным.</p></div>
+        <div class="sr-ethic"><b>Факт ≠ вывод</b><p>Каждая интерпретация помечена и проверяется несколькими источниками, прежде чем повлиять на план.</p></div>
+        <div class="sr-ethic"><b>Никакой частной жизни</b><p>Нас интересует только научная, преподавательская и профессиональная роль руководителя.</p></div>
+        <div class="sr-ethic"><b>Досье не публикуется</b><p>Оно готовится для одной работы и остаётся внутри проекта. Все показанные кейсы обезличены.</p></div>
+      </div>
+    </section>
+
+    <section class="sr-final reveal" aria-labelledby="finalTitle">
+      <div><span class="caps">Начать с самого полезного</span><h2 id="finalTitle">Проверим план через оптику вашего руководителя</h2><p>Разбор плана стоит 3 000 ₽: структура глав, реалистичный срок и смета. Если продолжим работу, сумма зачтётся полностью.</p></div>
+      <div class="sr-final-actions">
+        <a class="btn btn-wax btn-lg" href="plan.html">Разбор плана — 3 000 ₽ <span class="ar">→</span></a>
+        <a class="btn btn-line" href="configurator.html">Рассчитать всё</a>
+      </div>
+    </section>
   </div>
-  <script>
-(function () {
-  'use strict';
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  /* ---------------- Стол мастера (— 02 —): гранки, лайтбокс, лупа ----------------
-     Перелистывание: верхний лист уезжает (.away), в слепой фазе setTimeout
-     роли top/mid/low сдвигаются по кругу. Лупа — только в лайтбоксе и только
-     на точных указателях; на таче вместо неё кнопка 2× и нативный пан. */
-  (function proofDesk() {
-    var stack = document.getElementById('proofStack');
-    if (!stack) return;
-    var leaves = Array.prototype.slice.call(stack.querySelectorAll('.pf-leaf'));
-    if (leaves.length < 2) return;
-    var order = leaves.slice(); /* order[0] — верхний */
-    var noEl = document.getElementById('pfNo');
-    var busy = false;
-
-    function paint() {
-      order.forEach(function (leaf, i) {
-        leaf.classList.toggle('top', i === 0);
-        leaf.classList.toggle('mid', i === 1);
-        leaf.classList.toggle('low', i === 2);
-      });
-      if (noEl) noEl.textContent = String(leaves.indexOf(order[0]) + 1);
-    }
-    function flip() {
-      if (busy) return;
-      busy = true;
-      var top = order[0];
-      if (reduceMotion) {
-        order.push(order.shift()); paint(); busy = false; return;
-      }
-      top.classList.add('away');
-      setTimeout(function () {          /* слепая фаза: роли меняются за кадром */
-        order.push(order.shift());
-        paint();
-        top.classList.remove('away');
-        setTimeout(function () { busy = false; }, 380);
-      }, 300);
-    }
-    var nextBtn = document.getElementById('pfNext');
-    if (nextBtn) nextBtn.addEventListener('click', flip);
-    paint();
-
-    /* лайтбокс */
-    var box = document.getElementById('pfBox'),
-        img = document.getElementById('pfBoxImg'),
-        cap = document.getElementById('pfBoxCap'),
-        zoomBtn = document.getElementById('pfZoom'),
-        lens = document.getElementById('pfLens'),
-        fig = box ? box.querySelector('.pf-box-fig') : null,
-        lastFocus = null;
-    var fine = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-
-    function openBox(leaf) {
-      if (!box) return;
-      lastFocus = document.activeElement;
-      var src = leaf.querySelector('img').getAttribute('src');
-      img.src = src;
-      cap.textContent = (leaf.getAttribute('data-cap') || '') + ' · водяной знак';
-      fig.classList.remove('zoomed');
-      zoomBtn.hidden = fine;           /* на таче — кнопка 2×, на мыши — лупа */
-      zoomBtn.textContent = '2×';
-      box.hidden = false;
-      document.documentElement.style.overflow = 'hidden';
-      var closer = box.querySelector('.pf-close');
-      if (closer) closer.focus();
-    }
-    function closeBox() {
-      if (!box || box.hidden) return;
-      box.hidden = true;
-      lens.hidden = true;
-      document.documentElement.style.overflow = '';
-      if (lastFocus && lastFocus.focus) lastFocus.focus();
-    }
-    leaves.forEach(function (leaf) {
-      leaf.addEventListener('click', function () {
-        if (leaf !== order[0]) { flip(); return; }  /* нижние листы — перелистнуть */
-        openBox(leaf);
-      });
-    });
-    if (box) {
-      box.addEventListener('click', function (e) {
-        if (e.target.closest('[data-pf-close]')) closeBox();
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeBox();
-      });
-      if (zoomBtn) zoomBtn.addEventListener('click', function () {
-        var z = fig.classList.toggle('zoomed');
-        zoomBtn.textContent = z ? '1×' : '2×';
-      });
-      /* лупа: mousemove с троттлингом временем, без rAF */
-      if (fine) {
-        var lastMove = 0;
-        img.addEventListener('mousemove', function (e) {
-          var now = Date.now();
-          if (now - lastMove < 40) return;
-          lastMove = now;
-          var r = img.getBoundingClientRect();
-          var rx = (e.clientX - r.left) / r.width, ry = (e.clientY - r.top) / r.height;
-          lens.hidden = false;
-          lens.style.left = (e.clientX - 95) + 'px';
-          lens.style.top = (e.clientY - 95) + 'px';
-          lens.style.backgroundImage = 'url("' + img.src + '")';
-          lens.style.backgroundSize = (r.width * 2.4) + 'px auto';
-          lens.style.backgroundPosition =
-            (-(rx * r.width * 2.4 - 95)) + 'px ' + (-(ry * r.height * 2.4 - 95)) + 'px';
-        });
-        img.addEventListener('mouseleave', function () { lens.hidden = true; });
-      }
-    }
-  })();
-})();
-  </script>
-
-  <p class="caps" style="margin:26px 0 8px">Образцы наших текстов · PDF</p>
-  <p><a class="link" href="assets/samples/obrazec-vvedenie-vkr.pdf" target="_blank" rel="noopener">Введение ВКР</a> · <a class="link" href="assets/samples/obrazec-glava-analiz.pdf" target="_blank" rel="noopener">Глава с анализом</a> · <a class="link" href="assets/samples/obrazec-spisok-literatury.pdf" target="_blank" rel="noopener">Список литературы по ГОСТу</a> — фрагменты реальных работ, обезличены.</p>
-
-  <h2>Когда досье собирается</h2>
-  <p>Под каждую работу, у которой есть научный руководитель, — до старта, вместе с планом. Отдельно оно не продаётся и не тарифицируется: это часть подхода, а не опция. Если руководителя ещё не назначили, досье готовится, как только появится имя, — и план при необходимости корректируется бесплатно.</p>
-
-  <div style="margin-top:36px"><p class="caps" style="margin-bottom:10px">Читайте также</p><ul style="list-style:none;margin:0;padding:0">
-    <li style="padding:7px 0;border-bottom:1px solid var(--hairline)"><a class="link" href="guide-otzyv-rukovoditelya-vkr.html">Отзыв руководителя на ВКР: структура и готовый образец</a></li>
-    <li style="padding:7px 0;border-bottom:1px solid var(--hairline)"><a class="link" href="guide-zashchita-diploma.html">Защита диплома: как проходит и как подготовиться</a></li>
-    <li style="padding:7px 0"><a class="link" href="guide-temy-vkr.html">Темы ВКР: 5 критериев выбора и 50 примеров</a></li>
-  </ul></div>
-
-  <aside class="sheet sheet-pad stacked" style="margin-top:36px"><p class="caps" style="margin-bottom:8px">Хотите так же — под вашего руководителя?</p><p class="lead" style="margin-bottom:16px">Начните с разбора плана за 3 000 ₽: структура глав, реалистичный срок и смета — с учётом того, кто будет принимать работу. При продолжении сумма зачтётся полностью.</p><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-wax" href="plan.html">Разбор плана — 3 000 ₽ <span class="ar">→</span></a><a class="btn btn-line" href="configurator.html">Рассчитать работу целиком</a></div></aside>
-</article>
-<p class="doc-back"><a class="link" href="knowledge.html">← Все полезные материалы</a></p>
 </main>
+
+<dialog class="sr-dialog" id="proofDialog" aria-labelledby="proofDialogTitle">
+  <div class="sr-dialog-bar"><span id="proofDialogTitle">Лист работы · обезличено</span><button class="sr-dialog-close" type="button" data-proof-close aria-label="Закрыть">×</button></div>
+  <div class="sr-dialog-viewport"><img id="proofDialogImg" src="" alt=""></div>
+  <div class="sr-dialog-nav"><button type="button" data-proof-prev>← Предыдущий лист</button><button type="button" data-proof-next>Следующий лист →</button></div>
+</dialog>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Досье научного руководителя: работа под того, кто её принимает","description":"Как Академический Салон изучает открытые публикации, темы и язык научного руководителя и превращает досье в план, текст и подготовку к защите.","inLanguage":"ru","author":{"@type":"Organization","name":"Академический Салон"},"publisher":{"@type":"Organization","name":"Академический Салон"},"url":"https://akademsalon.ru/dosie-nauchruka.html","datePublished":"2026-07-20","dateModified":"2026-07-23"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Мастерская изнутри","item":"https://akademsalon.ru/dosie-nauchruka.html"},{"@type":"ListItem","position":3,"name":"Досье научного руководителя"}]}</script>
 <script src="assets/js/app.js?v=20260723q"></script>
 <script src="assets/js/extras.js?v=20260723h"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Досье научного руководителя: работа пишется под человека","description":"Как мастерская собирает досье научрука: интересы, словарь, требования и вероятные вопросы на защите — с настоящими обезличенными примерами.","inLanguage":"ru","author":{"@type":"Organization","name":"Академический Салон"},"publisher":{"@type":"Organization","name":"Академический Салон"},"url":"https://akademsalon.ru/dosie-nauchruka.html","datePublished":"2026-07-20","dateModified":"2026-07-20"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Полезные материалы","item":"https://akademsalon.ru/knowledge.html"},{"@type":"ListItem","position":3,"name":"Досье научного руководителя"}]}</script>
-</body></html>
+<script>
+(function(){
+  'use strict';
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.sr-case-tab'));
+  var panelsBox = document.getElementById('casePanels');
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.sr-case-panel'));
+  var live = document.getElementById('caseLive');
+  var names = {source:'Источники',profile:'Профиль руководителя',plan:'Решения в работе',defense:'Подготовка к защите'};
+  function showCase(id, focus){
+    tabs.forEach(function(tab){
+      var on = tab.getAttribute('data-case') === id;
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+      if(on && focus) tab.focus();
+    });
+    panels.forEach(function(panel){panel.hidden = panel.getAttribute('data-case') !== id;});
+    if(live) live.textContent = 'Открыт слой: ' + names[id] + '.';
+  }
+  if(panelsBox){panelsBox.classList.add('is-enhanced');showCase('source',false);}
+  tabs.forEach(function(tab,index){
+    tab.addEventListener('click',function(){showCase(tab.getAttribute('data-case'),false);});
+    tab.addEventListener('keydown',function(e){
+      if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight'&&e.key!=='ArrowUp'&&e.key!=='ArrowDown'&&e.key!=='Home'&&e.key!=='End')return;
+      e.preventDefault();
+      var next = e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+((e.key==='ArrowRight'||e.key==='ArrowDown')?1:-1)+tabs.length)%tabs.length;
+      showCase(tabs[next].getAttribute('data-case'),true);
+    });
+  });
+
+  var dialog = document.getElementById('proofDialog');
+  var dialogImg = document.getElementById('proofDialogImg');
+  var dialogTitle = document.getElementById('proofDialogTitle');
+  var proofButtons = Array.prototype.slice.call(document.querySelectorAll('.sr-proof'));
+  var proofIndex = 0;
+  var proofReturn = null;
+  function paintProof(index){
+    proofIndex = (index + proofButtons.length) % proofButtons.length;
+    var button = proofButtons[proofIndex];
+    var image = button.querySelector('img');
+    dialogImg.src = button.getAttribute('data-src');
+    dialogImg.alt = image ? image.alt : 'Лист работы крупно';
+    dialogTitle.textContent = button.getAttribute('data-caption') || 'Лист работы · обезличено';
+    var viewport = dialog.querySelector('.sr-dialog-viewport');
+    if(viewport) viewport.scrollTop = 0;
+  }
+  proofButtons.forEach(function(button,index){
+    button.addEventListener('click',function(){
+      proofReturn = button;
+      paintProof(index);
+      if(dialog && dialog.showModal) dialog.showModal();
+    });
+  });
+  if(dialog){
+    dialog.querySelector('[data-proof-close]').addEventListener('click',function(){dialog.close();});
+    dialog.querySelector('[data-proof-prev]').addEventListener('click',function(){paintProof(proofIndex-1);});
+    dialog.querySelector('[data-proof-next]').addEventListener('click',function(){paintProof(proofIndex+1);});
+    dialog.addEventListener('click',function(e){
+      var r = dialog.getBoundingClientRect();
+      if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom) dialog.close();
+    });
+    dialog.addEventListener('close',function(){if(proofReturn)proofReturn.focus();});
+  }
+})();
+</script>
+</body>
+</html>

@@ -3,87 +3,158 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Уровни ведения: Базовый, Под ключ, VIP — что входит и какой выбрать | Академический Салон</title>
-<meta name="description" content="Три уровня сопровождения работы: Базовый ×1 — готовая работа с отчётом о проверках, Под ключ ×1.33 — ведение до защиты, VIP ×2 — личное ведение до защиты. Честный разбор, что входит в каждый." />
+<title>Уровни сопровождения: Базовый, Под ключ или VIP | Академический Салон</title>
+<meta name="description" content="Сравните три уровня сопровождения на одном экране: что входит, сколько стоит и какой подходит именно вам. Качество текста одинаково — меняется объём заботы вокруг работы." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
-  /* ============================================================
-     УРОВНИ ВЕДЕНИЯ — «ПРОСПЕКТ ПЕРЕПЛЁТОВ»: одна рукопись,
-     три переплёта. Каждый уровень — полноценное досье.
-     ============================================================ */
-  .vd-hero{padding:calc(64px + clamp(40px,7vh,80px)) 0 0;text-align:left}
-  .vd-hero h1{max-width:24ch;margin:14px 0 clamp(14px,2vw,20px)}
-  .vd-hero .lead{max-width:58ch}
-  .vd-strip{display:flex;gap:8px 22px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin-top:22px;font-variant-numeric:tabular-nums}
-  .vd-strip b{color:var(--ink);font-weight:600}
-  .vd-strip .sep{color:var(--hairline-strong)}
+  .lv{--lv-accent:var(--wax);padding-bottom:var(--block)}
+  .lv .doc-crumb{padding-top:82px}
+  .lv-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(330px,.72fr);gap:clamp(30px,6vw,78px);align-items:center;padding:clamp(34px,6vw,76px) 0 clamp(42px,6vw,72px)}
+  .lv-hero h1{max-width:14ch;margin:12px 0 18px}
+  .lv-hero .lead{max-width:61ch}
+  .lv-promise{display:flex;gap:10px 20px;flex-wrap:wrap;margin-top:22px;color:var(--ink-soft);font-size:13px}
+  .lv-promise span{display:inline-flex;align-items:center;gap:7px}
+  .lv-promise span::before{content:"✓";font-family:var(--mono);color:var(--verify)}
+  .lv-quick{position:relative;padding:24px 24px 20px;background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:4px;box-shadow:0 20px 50px -34px rgba(54,45,28,.45)}
+  .lv-quick::before{content:"Лист выбора · 01";position:absolute;top:-13px;left:18px;padding:5px 11px;background:var(--paper-2);border:1px solid var(--hairline-strong);border-bottom-color:var(--sheet);border-radius:3px 3px 0 0;font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint)}
+  .lv-quick h2{font-size:clamp(21px,2.3vw,27px);margin:4px 0 8px}
+  .lv-quick>p{font-size:13px;line-height:1.55;color:var(--ink-soft)}
+  .lv-scenarios{display:grid;gap:7px;margin-top:16px}
+  .lv-scenario{width:100%;display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;min-height:50px;padding:9px 10px;border:1px solid var(--hairline);border-radius:3px;background:transparent;color:var(--ink);text-align:left;cursor:pointer;transition:border-color .16s,background .16s,transform .16s}
+  .lv-scenario:hover,.lv-scenario:focus-visible{border-color:var(--wax);background:var(--wax-soft);transform:translateX(2px)}
+  .lv-scenario .n{font-family:var(--mono);font-size:10px;color:var(--ink-faint)}
+  .lv-scenario b{font-size:13.5px;font-weight:500}
+  .lv-scenario .go{color:var(--wax)}
+  .lv-quick-foot{margin-top:13px;padding-top:12px;border-top:1px dotted var(--hairline);font-family:var(--mono);font-size:10.5px;color:var(--ink-faint)}
 
-  /* три корешка-навигатора */
-  .vd-spines{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:clamp(28px,4vw,40px)}
-  .vd-spine{position:relative;display:flex;flex-direction:column;gap:6px;padding:20px 18px 16px;background:var(--sheet);border:1px solid var(--hairline);border-left:6px solid var(--hairline-strong);border-radius:3px;color:var(--ink);transition:transform .18s,border-color .18s,box-shadow .18s}
-  .vd-spine:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(107,94,64,.16)}
-  :root[data-theme="dark"] .vd-spine:hover{box-shadow:0 12px 26px rgba(0,0,0,.5)}
-  .vd-spine .sp-k{font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
-  .vd-spine h2{font-size:clamp(19px,2.2vw,24px);margin:0}
-  .vd-spine .sp-sub{font-size:13px;color:var(--ink-soft)}
-  .vd-spine .sp-go{margin-top:8px;font-size:13px;color:var(--wax)}
-  .vd-spine.s-turn{border-left-color:var(--wax)}
-  .vd-spine.s-vip{border-left-color:var(--stamp)}
+  .lv-workbench{scroll-margin-top:86px}
+  .lv-intro{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}
+  .lv-intro h2{margin:5px 0 0}
+  .lv-intro p{max-width:46ch;color:var(--ink-soft);font-size:13.5px}
+  .lv-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:7px;background:var(--paper-2);border:1px solid var(--hairline);border-radius:5px}
+  .lv-tab{position:relative;min-height:74px;padding:12px 14px;border:1px solid transparent;border-radius:3px;background:transparent;color:var(--ink);text-align:left;cursor:pointer;transition:background .16s,border-color .16s,box-shadow .16s}
+  .lv-tab::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:3px;background:var(--tab-color,var(--hairline-strong));opacity:.8}
+  .lv-tab[data-level="turn"]{--tab-color:var(--wax)}
+  .lv-tab[data-level="vip"]{--tab-color:var(--stamp-blue,#3A4E7A)}
+  .lv-tab[aria-selected="true"]{background:var(--sheet);border-color:var(--hairline-strong);box-shadow:0 8px 24px -20px rgba(34,32,27,.7)}
+  .lv-tab .lv-tab-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+  .lv-tab b{font-family:var(--serif);font-size:19px;font-weight:600}
+  .lv-tab .x{font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+  .lv-tab small{display:block;margin-top:4px;color:var(--ink-soft);font-size:11.5px;line-height:1.35}
+  .lv-tab .fav{display:inline-block;margin-left:5px;padding:2px 6px;border-radius:999px;background:var(--wax);color:#fff;font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;vertical-align:2px}
 
-  /* досье уровня */
-  .vd-art{padding-top:var(--block);scroll-margin-top:70px}
-  .vd-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:6px}
-  .vd-head .vh-k{font-family:var(--mono);font-size:clamp(18px,2.4vw,24px);color:var(--ink-faint)}
-  .vd-head .vh-flag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;background:var(--wax);color:#FFFEF9;padding:4px 10px;border-radius:2px}
-  .vd-motto{font-family:var(--serif);font-style:italic;font-size:clamp(17px,2vw,21px);color:var(--ink-soft);max-width:52ch;margin:4px 0 clamp(20px,3vw,30px)}
-  .vd-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4.5vw,56px);align-items:start}
-  .vd-grid .gtext{font-size:15px;line-height:1.7;max-width:64ch}
-  .vd-grid .gtext+.gtext{margin-top:10px}
-  .vd-h{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);display:block;margin:22px 0 10px}
-  .vd-main>.vd-h:first-child{margin-top:0}
-  .vd-week{list-style:none;border-left:2px solid var(--hairline-strong);margin:6px 0 0;padding:0}
-  .vd-week li{position:relative;padding:10px 0 10px 22px;font-size:14px;line-height:1.6;color:var(--ink-soft)}
-  .vd-week li::before{content:"";position:absolute;left:-5px;top:17px;width:8px;height:8px;border-radius:50%;background:var(--paper);border:2px solid var(--wax)}
-  .vd-week li b{color:var(--ink);font-weight:500}
-  .vd-inc .dotrow{font-size:14.5px;padding:10px 2px;min-height:0}
-  .vd-not{margin-top:6px;list-style:none}
-  .vd-not li{position:relative;padding:7px 0 7px 24px;font-size:13.5px;color:var(--ink-soft);line-height:1.55}
-  .vd-not li::before{content:"—";position:absolute;left:2px;color:var(--ink-faint)}
-  .vd-price{background:var(--paper);border:1px solid var(--hairline);border-radius:2px;padding:18px 16px;position:relative}
-  .vd-price::after{content:"";position:absolute;inset:6px;border:1px solid var(--hairline);pointer-events:none;border-radius:1px}
-  .vd-price .caps{display:block;margin-bottom:10px;font-size:10.5px}
-  .vd-price .dotrow{font-size:13.5px;padding:7px 2px;min-height:0}
-  .vd-price .vp-note{font-size:12px;color:var(--ink-faint);margin-top:10px;line-height:1.55}
-  .vd-quote{margin-top:16px;border-left:3px solid var(--wax);padding:10px 0 10px 16px;font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.65;color:var(--ink)}
-  .vd-quote .q-src{display:block;margin-top:6px;font-family:var(--sans);font-style:normal;font-size:12px;color:var(--ink-faint)}
-  .vd-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(20px,3vw,28px);align-items:center}
-  .vd-cta .petit{flex-basis:100%}
+  .lv-panels{margin-top:12px}
+  .lv-panel{--panel-color:var(--hairline-strong);position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(290px,.72fr);gap:clamp(24px,4.4vw,54px);padding:clamp(24px,4vw,42px);background:var(--sheet);border:1px solid var(--hairline-strong);border-top:5px solid var(--panel-color);border-radius:4px;box-shadow:0 22px 56px -42px rgba(34,32,27,.55)}
+  .lv-panel[data-level="turn"]{--panel-color:var(--wax)}
+  .lv-panel[data-level="vip"]{--panel-color:var(--stamp-blue,#3A4E7A)}
+  .lv-panels:not(.is-enhanced) .lv-panel+.lv-panel{margin-top:22px}
+  .lv-panels.is-enhanced .lv-panel[hidden]{display:none}
+  .lv-panel-head{display:flex;gap:12px 18px;align-items:baseline;flex-wrap:wrap}
+  .lv-panel-head h3{font-size:clamp(28px,4vw,44px);margin:0}
+  .lv-panel-head .factor{font-family:var(--mono);font-size:13px;color:var(--ink-faint)}
+  .lv-panel-head .label{padding:4px 8px;background:var(--wax);border-radius:2px;color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase}
+  .lv-thesis{max-width:59ch;margin:9px 0 20px;font-family:var(--serif);font-size:clamp(17px,2vw,21px);font-style:italic;line-height:1.5;color:var(--ink-soft)}
+  .lv-fit{display:flex;gap:9px;align-items:flex-start;margin-bottom:20px;padding:12px 14px;background:var(--paper-2);border-radius:3px;font-size:13.5px;line-height:1.55}
+  .lv-fit strong{flex:0 0 auto;font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--wax);padding-top:3px}
+  .lv-route-title,.lv-list-title{display:block;margin:20px 0 9px;font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint)}
+  .lv-route{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:0;padding:0;list-style:none;border:1px solid var(--hairline);border-radius:3px;overflow:hidden}
+  .lv-route li{position:relative;padding:14px 12px 13px;border-right:1px solid var(--hairline);font-size:12px;line-height:1.45;color:var(--ink-soft)}
+  .lv-route li:last-child{border-right:0}
+  .lv-route b{display:block;margin-bottom:5px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--ink)}
+  .lv-route li:not(:last-child)::after{content:"→";position:absolute;right:-7px;top:14px;z-index:2;padding:0 2px;background:var(--sheet);color:var(--panel-color);font-family:var(--mono)}
+  .lv-action{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:22px}
+  .lv-action .petit{flex-basis:100%;margin-top:0}
 
-  /* сравнение и сценарии */
-  .vd-cmp .dotrow{font-size:14px;min-height:0;padding:10px 2px}
-  .vd-cmp .dr-val{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
-  .pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:clamp(20px,3vw,28px)}
-  .pick{padding:clamp(18px,2.4vw,24px);display:flex;flex-direction:column;gap:8px}
-  .pick .pk-if{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
-  .pick p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;flex:1}
-  .pick .pk-ans{font-size:14px;font-weight:500}
-  .pick .pk-ans a{border-bottom:1px solid var(--hairline-strong)}
-  .pick .pk-ans a:hover{color:var(--wax);border-color:var(--wax)}
-  .vd-faq{max-width:760px}
+  .lv-side{display:flex;flex-direction:column;gap:14px}
+  .lv-receipt{position:relative;padding:20px 18px;background:var(--paper);border:1px solid var(--hairline);border-radius:2px}
+  .lv-receipt::after{content:"";position:absolute;inset:6px;border:1px solid var(--hairline);pointer-events:none}
+  .lv-receipt .caps{display:block;margin-bottom:10px}
+  .lv-receipt .dotrow{min-height:0;padding:7px 2px;font-size:13px}
+  .lv-receipt .dr-val{font-family:var(--mono);font-size:11.5px;white-space:nowrap}
+  .lv-receipt .total{margin-top:6px;padding-top:10px;border-top:1.5px solid var(--ink)}
+  .lv-receipt .total .dr-val{font-size:14px;color:var(--ink)}
+  .lv-checks{margin:0;padding:0;list-style:none}
+  .lv-checks li{position:relative;padding:8px 0 8px 24px;border-bottom:1px dotted var(--hairline);font-size:13.5px;line-height:1.45;color:var(--ink-soft)}
+  .lv-checks li::before{content:"✓";position:absolute;left:2px;top:8px;color:var(--verify);font-family:var(--mono)}
+  .lv-checks li:last-child{border-bottom:0}
+  .lv-checks b{color:var(--ink);font-weight:500}
+  .lv-honest{padding:13px 14px;border-left:3px solid var(--panel-color);background:color-mix(in srgb,var(--paper-2) 72%,transparent);font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+  .lv-honest b{display:block;margin-bottom:3px;color:var(--ink);font-weight:500}
 
-  .final-cta{padding:var(--block) 0 0;text-align:center}
-  .final-cta .fc-rule{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,5vw,44px)}
-  .final-cta .fc-rule::before,.final-cta .fc-rule::after{content:"";height:1px;background:var(--hairline);flex:1}
-  .final-cta .fc-rule span{font-family:var(--serif);color:var(--ink-faint);font-size:18px}
-  .final-cta h2{margin-bottom:22px}
-  .final-cta .petit{margin-top:14px}
+  .lv-compare{padding-top:var(--block);scroll-margin-top:84px}
+  .lv-compare-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,.6fr);gap:24px;align-items:end;margin-bottom:22px}
+  .lv-compare-head p{font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  .lv-table-wrap{overflow-x:auto;border:1px solid var(--hairline-strong);border-radius:4px;background:var(--sheet)}
+  .lv-table{width:100%;min-width:720px;border-collapse:collapse}
+  .lv-table th,.lv-table td{padding:12px 14px;border-bottom:1px solid var(--hairline);text-align:center;font-size:13px}
+  .lv-table th:first-child,.lv-table td:first-child{text-align:left;width:43%}
+  .lv-table thead th{background:var(--paper-2);font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+  .lv-table thead th:nth-child(3){box-shadow:inset 0 3px 0 var(--wax)}
+  .lv-table tbody tr:last-child td{border-bottom:0}
+  .lv-table .yes{color:var(--verify);font-family:var(--mono)}
+  .lv-table .no{color:var(--ink-faint)}
+  .lv-table .word{font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
 
-  @media(max-width:1020px){.vd-grid{grid-template-columns:1fr}}
-  @media(max-width:880px){.vd-spines{grid-template-columns:1fr}.pick-grid{grid-template-columns:1fr}}
+  .lv-calc{display:grid;grid-template-columns:minmax(0,.82fr) minmax(320px,1fr);gap:clamp(24px,5vw,64px);align-items:center;margin-top:clamp(34px,6vw,68px);padding:clamp(24px,4vw,40px);background:var(--paper-2);border:1px solid var(--hairline);border-radius:4px}
+  .lv-calc h2{margin:7px 0 9px}
+  .lv-calc p{font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  .lv-select{width:100%;min-height:48px;margin-top:17px;padding:0 42px 0 13px;border:1px solid var(--hairline-strong);border-radius:3px;background:var(--sheet);color:var(--ink);font:500 14px var(--sans)}
+  .lv-prices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .lv-price{position:relative;min-height:128px;padding:16px 14px;background:var(--sheet);border:1px solid var(--hairline);border-top:4px solid var(--p-color,var(--hairline-strong));border-radius:3px}
+  .lv-price:nth-child(2){--p-color:var(--wax)}
+  .lv-price:nth-child(3){--p-color:var(--stamp-blue,#3A4E7A)}
+  .lv-price span{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .lv-price b{display:block;margin:13px 0 5px;font-family:var(--mono);font-size:clamp(18px,2.4vw,24px);font-weight:600;white-space:nowrap}
+  .lv-price small{color:var(--ink-soft);font-size:11px;line-height:1.35}
+
+  .lv-final{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;margin-top:clamp(40px,7vw,76px);padding:clamp(24px,4vw,42px);background:var(--ink);color:var(--paper);border-radius:4px}
+  .lv-final .caps{color:color-mix(in srgb,var(--paper) 58%,transparent)}
+  .lv-final h2{max-width:19ch;margin:7px 0 8px;color:var(--paper)}
+  .lv-final p{max-width:60ch;color:color-mix(in srgb,var(--paper) 70%,transparent);font-size:13.5px}
+  .lv-final-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+  .lv-final .btn-line{border-color:color-mix(in srgb,var(--paper) 38%,transparent);color:var(--paper)}
+  .lv-faq{max-width:780px;margin-top:clamp(36px,6vw,64px)}
+  .lv-faq h2{margin-bottom:16px}
+  .lv-live{margin-top:12px;min-height:20px;font-size:12px;color:var(--ink-soft)}
+  .lv-live b{color:var(--wax)}
+  :root[data-theme="dark"] .lv-tab .fav,
+  :root[data-theme="dark"] .lv-panel-head .label,
+  :root[data-theme="dark"] .lv .btn-wax{color:#1F1B15}
+
+  @media(max-width:980px){
+    .lv-hero,.lv-panel,.lv-calc{grid-template-columns:1fr}
+    .lv-hero{padding-top:30px}
+    .lv-side{display:grid;grid-template-columns:1fr 1fr}
+    .lv-honest{grid-column:1/-1}
+    .lv-final{grid-template-columns:1fr}
+    .lv-final-actions{justify-content:flex-start}
+  }
+  @media(max-width:700px){
+    .lv .doc-crumb{padding-top:72px}
+    .lv-hero h1{max-width:12ch}
+    .lv-intro,.lv-compare-head{display:block}
+    .lv-intro p,.lv-compare-head p{margin-top:9px}
+    .lv-tabs{grid-template-columns:1fr}
+    .lv-tab{min-height:60px}
+    .lv-tab small{padding-right:16px}
+    .lv-panel{padding:22px 17px}
+    .lv-route{grid-template-columns:1fr}
+    .lv-route li{border-right:0;border-bottom:1px solid var(--hairline);padding:11px 13px}
+    .lv-route li:last-child{border-bottom:0}
+    .lv-route li:not(:last-child)::after{content:"↓";right:12px;top:auto;bottom:-9px}
+    .lv-side{display:flex}
+    .lv-prices{grid-template-columns:1fr}
+    .lv-price{min-height:0}
+    .lv-price b{margin:7px 0 3px}
+    .lv-final-actions .btn{width:100%;justify-content:center}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .lv-scenario,.lv-tab{transition:none}
+  }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/vedenie.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -94,309 +165,321 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Уровни ведения работы: Базовый · Под ключ · VIP" />
-<meta property="og:description" content="Одна рукопись — три переплёта. Честный разбор уровней сопровождения: что входит, как ощущается, какой выбрать." />
+<meta property="og:title" content="Три уровня сопровождения — без мелкого шрифта" />
+<meta property="og:description" content="Базовый, Под ключ или VIP: сравните заботу вокруг работы и выберите свой сценарий за минуту." />
 <meta property="og:url" content="https://akademsalon.ru/vedenie.html" />
 <meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Уровни ведения — Академический Салон" />
-<meta name="twitter:description" content="Базовый, Под ключ, VIP: что входит в каждый уровень и какой выбрать под вашу ситуацию." />
 </head>
 <body>
 
-<main class="vedenie">
+<main class="lv">
   <div class="wrap">
+    <nav class="doc-crumb" aria-label="Хлебные крошки"><a href="index.html">Главная</a> · <a href="tariffs.html">Цены</a> · Уровни сопровождения</nav>
 
-    <!-- ТИТУЛ -->
-    <section class="vd-hero reveal" data-chapter="Уровни ведения">
-      <span class="caps">Проспект мастерской · уровни ведения</span>
-      <h1 class="h-display">Одна рукопись — три переплёта</h1>
-      <p class="lead">Текст мы пишем одинаково хорошо на любом уровне — это не обсуждается. Уровень ведения отвечает на другой вопрос: <em class="pen">сколько пути до защиты вы хотите пройти сами, а сколько — переложить на нас</em>. Выбирайте честно под свою ситуацию: любой из трёх — полноценный способ дойти до цели.</p>
-      <div class="vd-strip">
-        <span><b>Базовый ×1</b> — готовая работа</span><span class="sep">·</span>
-        <span><b>Под ключ ×1.33</b> — до защиты</span><span class="sep">·</span>
-        <span><b>VIP ×2</b> — до защиты за руку</span>
+    <section class="lv-hero reveal" data-chapter="Уровни сопровождения">
+      <div>
+        <span class="caps">Три уровня · одно качество текста</span>
+        <h1 class="h-display">Выберите, сколько заботы оставить нам</h1>
+        <p class="lead">На любом уровне вы получаете работу одного стандарта. Разница — в том, <em class="pen">кто ведёт диалог с процессом</em>: вы сами, мастерская вместе с вами или личный мастер до самой защиты.</p>
+        <div class="lv-promise" aria-label="Общее для всех уровней">
+          <span>оформление по методичке</span>
+          <span>отчёт до финальной оплаты</span>
+          <span>правки бесплатно до защиты</span>
+        </div>
       </div>
 
-      <div class="vd-spines">
-        <a class="vd-spine" href="#base">
-          <span class="sp-k">× 1.0</span>
-          <h2>Базовый</h2>
-          <span class="sp-sub">Готовая работа с отчётом о проверках — уверенная классика</span>
-          <span class="sp-go">Досье уровня ↓</span>
-        </a>
-        <a class="vd-spine s-turn" href="#turn">
-          <span class="sp-k">× 1.33</span>
-          <h2>Под ключ</h2>
-          <span class="sp-sub">Сопровождение до защиты — спокойствие как процесс</span>
-          <span class="sp-go">Досье уровня ↓</span>
-        </a>
-        <a class="vd-spine s-vip" href="#vip">
-          <span class="sp-k">× 2.0</span>
-          <h2>VIP</h2>
-          <span class="sp-sub">Личное ведение и подготовка защиты — научный консьерж</span>
-          <span class="sp-go">Досье уровня ↓</span>
-        </a>
+      <aside class="lv-quick" aria-labelledby="quickTitle">
+        <h2 id="quickTitle">Что вам ближе?</h2>
+        <p>Выберите фразу — покажем подходящий уровень. Решение ни к чему не обязывает.</p>
+        <div class="lv-scenarios">
+          <button class="lv-scenario" type="button" data-pick="base"><span class="n">01</span><b>«Текст нужен, дальше справлюсь»</b><span class="go">→</span></button>
+          <button class="lv-scenario" type="button" data-pick="turn"><span class="n">02</span><b>«Сдавать по главам и разбирать правки»</b><span class="go">→</span></button>
+          <button class="lv-scenario" type="button" data-pick="vip"><span class="n">03</span><b>«Подготовьте ещё и меня к защите»</b><span class="go">→</span></button>
+        </div>
+        <p class="lv-quick-foot">Можно повысить уровень в процессе · доплачивается только разница</p>
+      </aside>
+    </section>
+
+    <section class="lv-workbench reveal" id="dossier" aria-labelledby="dossierTitle">
+      <div class="lv-intro">
+        <div><span class="caps">Интерактивное досье</span><h2 id="dossierTitle">Три режима — рядом и без мелкого шрифта</h2></div>
+        <p>Переключайте уровни: состав, путь и честные ограничения меняются в одном месте.</p>
+      </div>
+
+      <div class="lv-tabs" role="tablist" aria-label="Уровни сопровождения">
+        <button class="lv-tab" type="button" role="tab" id="tab-base" aria-controls="base" aria-selected="true" tabindex="0" data-level="base">
+          <span class="lv-tab-top"><b>Базовый</b><span class="x">× 1.0</span></span>
+          <small>Готовая работа · вы ведёте процесс</small>
+        </button>
+        <button class="lv-tab" type="button" role="tab" id="tab-turn" aria-controls="turn" aria-selected="false" tabindex="-1" data-level="turn">
+          <span class="lv-tab-top"><b>Под ключ <span class="fav">для ВКР</span></b><span class="x">× 1.33</span></span>
+          <small>Главы и замечания · процесс ведём мы</small>
+        </button>
+        <button class="lv-tab" type="button" role="tab" id="tab-vip" aria-controls="vip" aria-selected="false" tabindex="-1" data-level="vip">
+          <span class="lv-tab-top"><b>VIP</b><span class="x">× 2.0</span></span>
+          <small>Приоритет и защита · личное ведение</small>
+        </button>
+      </div>
+
+      <div class="lv-panels" id="levelPanels">
+        <article class="lv-panel" id="base" role="tabpanel" aria-labelledby="tab-base" data-level="base">
+          <div>
+            <div class="lv-panel-head"><h3>Базовый</h3><span class="factor">без наценки</span></div>
+            <p class="lv-thesis">«Сделайте сильную работу. Общение с научруком и сдачу я возьму на себя».</p>
+            <div class="lv-fit"><strong>Подойдёт</strong><span>Если вы спокойно контролируете сроки, умеете договориться с руководителем и хотите лучшую цену.</span></div>
+            <span class="lv-route-title">Как проходит</span>
+            <ol class="lv-route">
+              <li><b>01 · План</b>Согласуем структуру и фиксируем смету.</li>
+              <li><b>02 · Работа</b>Мастер готовит текст целиком.</li>
+              <li><b>03 · Проверки</b>Вы видите отчёт до финальной оплаты.</li>
+              <li><b>04 · Правки</b>Замечания до защиты вносим бесплатно.</li>
+            </ol>
+            <div class="lv-action">
+              <a class="btn btn-wax" href="configurator.html" data-tier="base">Выбрать «Базовый» <span class="ar">→</span></a>
+              <a class="btn btn-line" href="tariffs.html#catalog">Посмотреть цены</a>
+              <p class="petit">Для рефератов и коротких работ почти всегда достаточно этого уровня.</p>
+            </div>
+          </div>
+          <aside class="lv-side">
+            <div class="lv-receipt">
+              <span class="caps">Пример · диплом от 40 000 ₽</span>
+              <div class="dotrow"><span>Текст и оформление</span><span class="dots"></span><span class="dr-val">включено</span></div>
+              <div class="dotrow"><span>Отчёт о проверках</span><span class="dots"></span><span class="dr-val">включено</span></div>
+              <div class="dotrow"><span>Множитель уровня</span><span class="dots"></span><span class="dr-val">× 1.0</span></div>
+              <div class="dotrow total"><span>Ориентир</span><span class="dots"></span><span class="dr-val">от 40 000 ₽</span></div>
+            </div>
+            <ul class="lv-checks" aria-label="Что входит в Базовый">
+              <li><b>Готовая работа</b> целиком к согласованному сроку</li>
+              <li><b>Методичка и ГОСТ</b> учтены до передачи</li>
+              <li><b>Правки до защиты</b> — без доплаты в рамках задания</li>
+            </ul>
+            <div class="lv-honest"><b>Честное ограничение</b>Главы по мере готовности не выдаём, замечания между этапами не разбираем. Это формат самостоятельной сдачи.</div>
+          </aside>
+        </article>
+
+        <article class="lv-panel" id="turn" role="tabpanel" aria-labelledby="tab-turn" data-level="turn">
+          <div>
+            <div class="lv-panel-head"><h3>Под ключ</h3><span class="factor">× 1.33</span><span class="label">для ВКР и магистерской</span></div>
+            <p class="lv-thesis">«Я показываю главы научруку, а вы переводите замечания в понятные действия и ведёте дальше».</p>
+            <div class="lv-fit"><strong>Подойдёт</strong><span>Если кафедра требует сдавать по главам, руководитель активно комментирует, а вам нужен управляемый процесс без хаоса версий.</span></div>
+            <span class="lv-route-title">Как проходит</span>
+            <ol class="lv-route">
+              <li><b>01 · План</b>График привязываем к встречам и предзащите.</li>
+              <li><b>02 · Главы</b>Передаём части по мере готовности.</li>
+              <li><b>03 · Замечания</b>Разбираем пометки и вносим изменения.</li>
+              <li><b>04 · Финал</b>Сводим версии и ведём до допуска.</li>
+            </ol>
+            <div class="lv-action">
+              <a class="btn btn-wax" href="configurator.html" data-tier="turn">Выбрать «Под ключ» <span class="ar">→</span></a>
+              <a class="btn btn-line" href="dosie-nauchruka.html">Как учитываем научрука</a>
+              <p class="petit">Оплата остаётся этапной: 30% · 40% · 30%, после показанного результата.</p>
+            </div>
+          </div>
+          <aside class="lv-side">
+            <div class="lv-receipt">
+              <span class="caps">Пример · диплом от 40 000 ₽</span>
+              <div class="dotrow"><span>Всё из «Базового»</span><span class="dots"></span><span class="dr-val">включено</span></div>
+              <div class="dotrow"><span>Главы и разбор правок</span><span class="dots"></span><span class="dr-val">+ 33%</span></div>
+              <div class="dotrow"><span>Множитель уровня</span><span class="dots"></span><span class="dr-val">× 1.33</span></div>
+              <div class="dotrow total"><span>Ориентир</span><span class="dots"></span><span class="dr-val">≈ 53 200 ₽</span></div>
+            </div>
+            <ul class="lv-checks" aria-label="Что входит в Под ключ">
+              <li><b>Сдача по главам</b> по реальному графику кафедры</li>
+              <li><b>Разбор замечаний</b> научного руководителя</li>
+              <li><b>Единая версия</b> без потерянных файлов и конфликтов</li>
+              <li><b>Досье научрука</b> учитывается в плане и тексте</li>
+            </ul>
+            <div class="lv-honest"><b>Честное ограничение</b>Доклад, презентация и репетиция защиты не входят. Их можно заказать отдельно или выбрать VIP.</div>
+          </aside>
+        </article>
+
+        <article class="lv-panel" id="vip" role="tabpanel" aria-labelledby="tab-vip" data-level="vip">
+          <div>
+            <div class="lv-panel-head"><h3>VIP</h3><span class="factor">× 2.0</span></div>
+            <p class="lv-thesis">«Доведите не только работу, но и меня: от первой главы до уверенного ответа комиссии».</p>
+            <div class="lv-fit"><strong>Подойдёт</strong><span>Если цена ошибки высока, сроки плотные, защита пугает или вам нужен один человек, который знает весь проект и отвечает без очереди.</span></div>
+            <span class="lv-route-title">Как проходит</span>
+            <ol class="lv-route">
+              <li><b>01 · Приоритет</b>Главы и правки получают приоритет в согласованном графике.</li>
+              <li><b>02 · Ведение</b>Личный мастер держит весь контекст.</li>
+              <li><b>03 · Защита</b>Готовим доклад, слайды и раздатку.</li>
+              <li><b>04 · Репетиция</b>Прогоняем вопросы и ответы комиссии.</li>
+            </ol>
+            <div class="lv-action">
+              <a class="btn btn-wax" href="configurator.html" data-tier="vip">Выбрать «VIP» <span class="ar">→</span></a>
+              <a class="btn btn-line" href="guarantees.html">Гарантии мастерской</a>
+              <p class="petit">Количество VIP-проектов ограничено: личный приоритет нельзя обещать без лимита.</p>
+            </div>
+          </div>
+          <aside class="lv-side">
+            <div class="lv-receipt">
+              <span class="caps">Пример · диплом от 40 000 ₽</span>
+              <div class="dotrow"><span>Всё из «Под ключ»</span><span class="dots"></span><span class="dr-val">включено</span></div>
+              <div class="dotrow"><span>Защита и приоритет</span><span class="dots"></span><span class="dr-val">включено</span></div>
+              <div class="dotrow"><span>Множитель уровня</span><span class="dots"></span><span class="dr-val">× 2.0</span></div>
+              <div class="dotrow total"><span>Ориентир</span><span class="dots"></span><span class="dr-val">от 80 000 ₽</span></div>
+            </div>
+            <ul class="lv-checks" aria-label="Что входит в VIP">
+              <li><b>Приоритетный график</b> для глав и срочных правок</li>
+              <li><b>Доклад и презентация</b> под регламент защиты</li>
+              <li><b>Репетиция</b> вероятных вопросов комиссии</li>
+              <li><b>Короткое плечо связи</b> с личным мастером</li>
+            </ul>
+            <div class="lv-honest"><b>Когда VIP не нужен</b>Если вы уверенно выступаете и научрук отвечает предсказуемо, «Под ключ» закроет процесс без лишних расходов. Оценку в любом случае принимает вуз, а защищаетесь вы сами.</div>
+          </aside>
+        </article>
+      </div>
+      <p class="lv-live" id="levelLive" aria-live="polite"></p>
+    </section>
+
+    <section class="lv-compare reveal" id="compare" aria-labelledby="compareTitle">
+      <div class="lv-compare-head">
+        <div><span class="caps">Сводная ведомость</span><h2 id="compareTitle">Что меняется от уровня к уровню</h2></div>
+        <p>Качество текста, отчёт о проверках и бесплатные правки общие для всех. Вы платите только за плотность сопровождения.</p>
+      </div>
+      <div class="lv-table-wrap">
+        <table class="lv-table">
+          <caption class="sr-only">Сравнение возможностей трёх уровней сопровождения</caption>
+          <thead><tr><th scope="col">Возможность</th><th scope="col">Базовый</th><th scope="col">Под ключ</th><th scope="col">VIP</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Готовая работа и оформление</th><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><th scope="row">Отчёт о проверках до финальной оплаты</th><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><th scope="row">Правки по замечаниям до защиты</th><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><th scope="row">Сдача по главам и разбор замечаний</th><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><th scope="row">Досье научного руководителя</th><td class="word">в плане</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><th scope="row">Доклад, презентация и репетиция</th><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+            <tr><th scope="row">Приоритетный график</th><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+            <tr><th scope="row">Множитель базовой цены</th><td class="word">× 1.0</td><td class="word">× 1.33</td><td class="word">× 2.0</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
-    <!-- ДОСЬЕ I: БАЗОВЫЙ -->
-    <article class="chapter vd-art reveal" id="base" data-chapter="Уровень I · Базовый">
-      <div class="ch-rule"><span class="ch-no">Досье I · Базовый</span></div>
-      <div class="vd-head"><h2>Базовый</h2><span class="vh-k">× 1.0 — без наценки</span></div>
-      <p class="vd-motto">«Мне нужна отличная работа. Остальное я сделаю сам».</p>
-
-      <div class="vd-grid">
-        <div class="vd-main">
-          <span class="vd-h">Кому это</span>
-          <p class="gtext">Вы умеете разговаривать с научруком, спокойно сдадите работу сами — вам нужен только безупречный текст в срок. Базовый — это не «урезанный» уровень, а самостоятельная классика: та же рука мастера, тот же стандарт оформления, тот же отчёт о проверках перед финалом. Мы просто не идём с вами на кафедру — потому что вы не просили.</p>
-          <p class="gtext">Именно Базовый выбирают старосты, отличники в цейтноте и все, кто заказывает не первый раз: они знают, что качество текста здесь то же, что и в VIP, — и берут ровно то, что нужно.</p>
-
-          <span class="vd-h">Как это выглядит в деле</span>
-          <ul class="vd-week">
-            <li><b>День 0.</b> Согласовали план и смету — она зафиксировалась. Внесли стартовый платёж.</li>
-            <li><b>Дни работы.</b> Мастер пишет. Вы живёте свою жизнь; статус дела виден в кабинете в любой момент.</li>
-            <li><b>Готово.</b> Получаете уведомление: работа celиком + отчёт о проверках — сначала смотрите, потом закрываете финальный платёж.</li>
-            <li><b>Если научрук вернул с замечаниями</b> — присылаете список, правим бесплатно до защиты.</li>
-          </ul>
-
-          <span class="vd-h">Что входит</span>
-          <div class="vd-inc">
-            <div class="dotrow"><span>Готовая работа целиком к сроку</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Оформление по методичке и ГОСТ</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Отчёт о проверках — до финальной оплаты</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Правки по замечаниям — бесплатно до защиты</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Оплата по этапам, спецификация PDF</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-          </div>
-
-          <span class="vd-h">Чего здесь нет — честно</span>
-          <ul class="vd-not">
-            <li>Сдачи по главам: работу вы получаете целиком, когда она готова.</li>
-            <li>Разбора замечаний научрука «на лету» между главами — этот жанр живёт в «Под ключ».</li>
-            <li>Подготовки к защите: доклад и презентация заказываются отдельно (от 6 000 ₽) — или входят в VIP.</li>
-          </ul>
-
-          <div class="vd-cta">
-            <a class="btn btn-wax" href="configurator.html" data-tier="base">Рассчитать с уровнем «Базовый» <span class="ar">→</span></a>
-            <a class="btn btn-line" href="tariffs.html#catalog">Каталог работ и цен</a>
-            <p class="petit">Уровень можно повысить позже — доплатой разницы, без пересборки заказа.</p>
-          </div>
-        </div>
-
-        <aside>
-          <div class="vd-price">
-            <span class="caps">Цена на примере диплома</span>
-            <div class="dotrow"><span>ВКР · гуманитарная · от 30 дней</span><span class="dots"></span><span class="dr-val">от 40 000 ₽</span></div>
-            <div class="dotrow"><span>Наценка уровня</span><span class="dots"></span><span class="dr-val">× 1.0 — нет</span></div>
-            <div class="dotrow"><span>Курсовая теоретическая</span><span class="dots"></span><span class="dr-val">от 14 000 ₽</span></div>
-            <div class="dotrow"><span>Реферат</span><span class="dots"></span><span class="dr-val">от 2 500 ₽</span></div>
-            <p class="vp-note">Базовый — это цены каталога как они есть: ×1 значит «без наценки вообще». Дешевле уровня не существует.</p>
-          </div>
-          <blockquote class="vd-quote">Заказывала курсовую «базово», думала — придётся допинывать. Не пришлось: отчёт прислали раньше, чем я спросила.<span class="q-src">— из отзыва, орфография автора · <a class="link" href="reviews.html">все отзывы</a></span></blockquote>
-          <p class="marginalia">Совет мастерской: если научрук у вас лояльный, а сроки не горят — Базовый закрывает 100% задачи. Переплачивать не за что, и мы первые вам это скажем.</p>
-        </aside>
+    <section class="lv-calc reveal" aria-labelledby="calcTitle">
+      <div>
+        <span class="caps">Пример без калькулятора в голове</span>
+        <h2 id="calcTitle">Посмотрите разницу в рублях</h2>
+        <p>Выберите тип работы. Это ориентир от базовой цены; точная смета зависит от темы, дисциплины и срока.</p>
+        <label class="sr-only" for="lvService">Тип работы</label>
+        <select class="lv-select" id="lvService">
+          <option value="14000">Курсовая теоретическая — от 14 000 ₽</option>
+          <option value="20000">Курсовая с исследованием — от 20 000 ₽</option>
+          <option value="40000" selected>Диплом / ВКР — от 40 000 ₽</option>
+          <option value="60000">Магистерская — от 60 000 ₽</option>
+        </select>
       </div>
-    </article>
-
-    <!-- ДОСЬЕ II: ПОД КЛЮЧ -->
-    <article class="chapter vd-art reveal" id="turn" data-chapter="Уровень II · Под ключ">
-      <div class="ch-rule"><span class="ch-no">Досье II · Под ключ</span></div>
-      <div class="vd-head"><h2>Под ключ</h2><span class="vh-k">× 1.33</span><span class="vh-flag">выбирают чаще всего</span></div>
-      <p class="vd-motto">«Хочу сдавать по главам, показывать научруку и ни о чём не думать».</p>
-
-      <div class="vd-grid">
-        <div class="vd-main">
-          <span class="vd-h">Кому это</span>
-          <p class="gtext">Настоящая жизнь дипломника устроена не как «сдал и забыл», а как сериал: научрук просит главу к пятнице, потом возвращает с пометками, потом кафедра переносит предзащиту. «Под ключ» создан ровно под этот ритм. Вы получаете главы по мере готовности, спокойно носите их руководителю — а его замечания разбираем мы: переводим с «переработайте параграф» на язык конкретных правок и вносим их.</p>
-          <p class="gtext">Треть цены сверху покупает вам главное — <em class="pen">процесс перестаёт быть вашей проблемой</em>. Дедлайны глав, реакции на замечания, состыковка версий — всё это происходит на нашей стороне, а у вас в кабинете просто появляются готовые куски и короткие понятные уведомления.</p>
-
-          <span class="vd-h">Как это выглядит в деле</span>
-          <ul class="vd-week">
-            <li><b>Неделя 1.</b> План согласован, введение и глава 1 у вас. Отнесли научруку.</li>
-            <li><b>Неделя 2.</b> Научрук вернул пометки. Пересылаете фото страниц нам — через два дня глава обновлена, изменения отмечены.</li>
-            <li><b>Недели 3–4.</b> Глава 2 с расчётами, затем глава 3. Каждая — через тот же цикл «показали → учли».</li>
-            <li><b>Финал.</b> Заключение, оформление, отчёт о проверках. К приёмке на кафедре работа уже «обкатана» научруком — сюрпризов не бывает.</li>
-          </ul>
-
-          <span class="vd-h">Что входит</span>
-          <div class="vd-inc">
-            <div class="dotrow"><span>Всё, что в «Базовом», — целиком</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Сдача по главам — по мере готовности</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Разбор замечаний научрука + внесение</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Ведение до защиты работы на кафедре</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Подстройка графика под предзащиту</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-          </div>
-
-          <span class="vd-h">Чего здесь нет — честно</span>
-          <ul class="vd-not">
-            <li>Подготовки самой защиты: доклад, презентация и репетиция вопросов — это VIP или отдельная услуга.</li>
-            <li>Первого приоритета в очереди: в сезон работы «Под ключ» идут в порядке графика — вне очереди пропускаем только VIP.</li>
-          </ul>
-
-          <div class="vd-cta">
-            <a class="btn btn-wax" href="configurator.html" data-tier="turn">Рассчитать с уровнем «Под ключ» <span class="ar">→</span></a>
-            <a class="btn btn-line" href="oplata.html">Как проходит оплата</a>
-            <p class="petit">Оплата тоже по главам: 30% старт · 40% середина · 30% финал — каждый платёж после показанного.</p>
-          </div>
-        </div>
-
-        <aside>
-          <div class="vd-price">
-            <span class="caps">Цена на примере диплома</span>
-            <div class="dotrow"><span>ВКР · гуманитарная · от 30 дней</span><span class="dots"></span><span class="dr-val">от 53 000 ₽</span></div>
-            <div class="dotrow"><span>Против «Базового»</span><span class="dots"></span><span class="dr-val">+ 13 000 ₽</span></div>
-            <div class="dotrow"><span>Это по месяцам работы</span><span class="dots"></span><span class="dr-val">≈ +4 300 ₽/мес</span></div>
-            <p class="vp-note">13 тысяч за три месяца — цена того, что замечания научрука перестают быть вашими бессонными ночами. Одна «переделка к понедельнику» своими силами стоит дороже.</p>
-          </div>
-          <blockquote class="vd-quote">Научрук у меня — человек-ураган: три раза менял требования к практической части. Всё три раза переделали без «а это за отдельные деньги».<span class="q-src">— из отзыва · <a class="link" href="reviews.html">все отзывы</a></span></blockquote>
-          <p class="marginalia">«Под ключ» — режим по умолчанию для ВКР и магистерских: сдача по главам совпадает с тем, как реально работают кафедры.</p>
-        </aside>
-      </div>
-    </article>
-
-    <!-- ДОСЬЕ III: VIP -->
-    <article class="chapter vd-art reveal" id="vip" data-chapter="Уровень III · VIP">
-      <div class="ch-rule"><span class="ch-no">Досье III · VIP</span></div>
-      <div class="vd-head"><h2>VIP</h2><span class="vh-k">× 2.0</span></div>
-      <p class="vd-motto">«Доведите меня до защиты за руку — и чтобы на трибуне я был готов лучше всех».</p>
-
-      <div class="vd-grid">
-        <div class="vd-main">
-          <span class="vd-h">Кому это</span>
-          <p class="gtext">VIP берут, когда ставки выше обычного: красный диплом на кону, работа днём и учёба ночью, страх сцены, придирчивая комиссия — или просто желание пройти финал студенчества без единой нервной клетки. Здесь мастерская работает как личный научный консьерж: не «выдали работу», а <em class="pen">довели человека до защищённой оценки</em>.</p>
-          <p class="gtext">Двойная ставка покупает три вещи, которых нет ниже. Первое — приоритет: ваши главы и правки идут первыми в очереди мастера, всегда, даже в июньский шторм. Второе — защита готовится как продукт: доклад на 7 минут, презентация, раздаточный материал. Третье — репетиция: прогоняем вероятные вопросы комиссии по вашей работе, пока ответы не станут рефлексом. На трибуну вы выходите подготовленным лучше, чем комиссия ожидает.</p>
-
-          <span class="vd-h">Как это выглядит в деле</span>
-          <ul class="vd-week">
-            <li><b>Весь срок.</b> Всё как в «Под ключ» — главы, разборы замечаний — но ваши задачи в очереди всегда первые.</li>
-            <li><b>За 2–3 недели до защиты.</b> Готова презентация и текст доклада, выверенный на 7 минут ровно.</li>
-            <li><b>За неделю.</b> Репетиция: 10+ вероятных вопросов комиссии по вашей работе — с тезисами ответов и «фразами-мостами» на случай ступора.</li>
-            <li><b>Накануне.</b> Финальный прогон и спокойный сон. Мы на связи до и после защиты.</li>
-          </ul>
-
-          <span class="vd-h">Что входит</span>
-          <div class="vd-inc">
-            <div class="dotrow"><span>Всё, что в «Под ключ», — целиком</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Первый приоритет по срокам — всегда</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Доклад и презентация к защите</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Репетиция вопросов комиссии</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-            <div class="dotrow"><span>Связь с мастером — короткое плечо, без очереди</span><span class="dots"></span><span class="dr-val verify">✓</span></div>
-          </div>
-
-          <span class="vd-h">Арифметика уровня — стоит ли он двойной цены</span>
-          <p class="gtext pale" style="font-size:13.5px;color:var(--ink-soft)">Посчитаем на дипломе: VIP против «Под ключ» — разница 27 000 ₽. Отдельно презентация и речь стоят от 6 000 ₽, репетиция защиты — от 2 500 ₽, и это без приоритета и консьерж-связи. Если защита для вас — событие с высокой ценой ошибки, VIP окупается спокойствием; если нет — честно берите «Под ключ», мы не обидимся.</p>
-
-          <div class="vd-cta">
-            <a class="btn btn-wax" href="configurator.html" data-tier="vip">Рассчитать с уровнем «VIP» <span class="ar">→</span></a>
-            <a class="btn btn-line" href="guarantees.html">Устав гарантий</a>
-            <p class="petit">Мест на VIP в сезон немного — приоритет обеспечен тем, что мы не берём таких заказов больше, чем можем вести лично.</p>
-          </div>
-        </div>
-
-        <aside>
-          <div class="vd-price">
-            <span class="caps">Цена на примере диплома</span>
-            <div class="dotrow"><span>ВКР · гуманитарная · от 30 дней</span><span class="dots"></span><span class="dr-val">от 80 000 ₽</span></div>
-            <div class="dotrow"><span>Против «Под ключ»</span><span class="dots"></span><span class="dr-val">+ 27 000 ₽</span></div>
-            <div class="dotrow"><span>В том числе защита «в подарок»</span><span class="dots"></span><span class="dr-val">−8 500 ₽ ценности</span></div>
-            <p class="vp-note">Двойная ставка — это цена личного ведения: ваших задач первыми в очереди и мастера, который знает вашу работу наизусть к дню защиты.</p>
-          </div>
-          <blockquote class="vd-quote">На защите комиссия спросила ровно два вопроса из тех десяти, что мы репетировали. Отвечал, честно говоря, на автопилоте.<span class="q-src">— из отзыва · <a class="link" href="reviews.html">все отзывы</a></span></blockquote>
-          <p class="marginalia">VIP — единственный уровень, где мы готовим не только работу, но и вас. Разница чувствуется на трибуне.</p>
-        </aside>
-      </div>
-    </article>
-
-    <!-- СВОДНОЕ СРАВНЕНИЕ -->
-    <section class="chapter reveal" id="sravnenie" data-chapter="Сравнение уровней">
-      <div class="ch-rule"><span class="ch-no">§ · Рядом на одной полке</span></div>
-      <h2>Три переплёта рядом</h2>
-      <div class="split" style="align-items:start">
-        <div class="sheet sheet-pad stacked vd-cmp">
-          <div class="dotrow"><span>Готовая работа + отчёт о проверках</span><span class="dots"></span><span class="dr-val">все три</span></div>
-          <div class="dotrow"><span>Правки бесплатно до защиты</span><span class="dots"></span><span class="dr-val">все три</span></div>
-          <div class="dotrow"><span>Сдача по главам, разбор замечаний</span><span class="dots"></span><span class="dr-val">Под ключ · VIP</span></div>
-          <div class="dotrow"><span>Ведение до защиты на кафедре</span><span class="dots"></span><span class="dr-val">Под ключ · VIP</span></div>
-          <div class="dotrow"><span>Доклад + презентация + репетиция</span><span class="dots"></span><span class="dr-val">VIP</span></div>
-          <div class="dotrow"><span>Первый приоритет в очереди</span><span class="dots"></span><span class="dr-val">VIP</span></div>
-          <div class="dotrow"><span>Наценка к базовой цене</span><span class="dots"></span><span class="dr-val">×1 · ×1.33 · ×2</span></div>
-        </div>
-        <p class="marginalia">Уровень — четвёртый множитель <a class="link" href="tariffs.html#formula">формулы цены</a>. Он не меняет автора, стандарт текста и гарантии — они общие для всей мастерской и закреплены <a class="link" href="guarantees.html">уставом</a>.</p>
-      </div>
-
-      <div class="pick-grid">
-        <div class="pick sheet stacked">
-          <span class="pk-if">Если вы…</span>
-          <p>…спокойно общаетесь с научруком, любите контролировать сами и хотите лучшую цену — без наценок вообще.</p>
-          <span class="pk-ans">Ваш уровень — <a href="#base">Базовый</a></span>
-        </div>
-        <div class="pick sheet stacked">
-          <span class="pk-if">Если вы…</span>
-          <p>…сдаёте по главам, научрук требует показывать процесс, а вам хочется, чтобы «оно само» — при живом участии, но без вашей нервотрёпки.</p>
-          <span class="pk-ans">Ваш уровень — <a href="#turn">Под ключ</a></span>
-        </div>
-        <div class="pick sheet stacked">
-          <span class="pk-if">Если вы…</span>
-          <p>…работаете, учитесь и защищаетесь одновременно, боитесь трибуны или цена ошибки слишком высока, чтобы рисковать.</p>
-          <span class="pk-ans">Ваш уровень — <a href="#vip">VIP</a></span>
-        </div>
+      <div class="lv-prices" aria-live="polite">
+        <div class="lv-price"><span>Базовый · ×1</span><b data-price="base">40 000 ₽</b><small>текст + проверки + правки</small></div>
+        <div class="lv-price"><span>Под ключ · ×1.33</span><b data-price="turn">53 200 ₽</b><small>ещё главы и замечания</small></div>
+        <div class="lv-price"><span>VIP · ×2</span><b data-price="vip">80 000 ₽</b><small>ещё приоритет и защита</small></div>
       </div>
     </section>
 
-    <!-- FAQ -->
-    <section class="chapter reveal" id="faq" data-chapter="Вопросы об уровнях">
-      <div class="ch-rule"><span class="ch-no">§ · Вопросы об уровнях</span></div>
-      <h2>Четыре вопроса, которые задают перед выбором</h2>
-      <div class="vd-faq">
-        <details class="faq-item">
-          <summary>Текст в «Базовом» хуже, чем в VIP?</summary>
-          <p>Нет — и это принципиально. Работу пишет тот же мастер по тому же стандарту; отчёт о проверках одинаков для всех уровней. Уровень покупает сопровождение вокруг текста, а не качество самого текста. Экономить на уровне — можно; на тексте у нас сэкономить не получится.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Можно сменить уровень посреди работы?</summary>
-          <p>Вверх — да, в любой момент: доплачиваете разницу множителей от зафиксированной сметы, и с этого дня действуют условия нового уровня. Так часто делают после первой встречи с научруком. Вниз — до старта работ; после старта спуститься нельзя, потому что сопровождение уже оказывается.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Почему «Под ключ» стоит именно на треть дороже?</summary>
-          <p>Потому что это честная себестоимость процесса: сдача по главам означает несколько циклов «показ → замечания → правки» вместо одного, а разбор пометок научрука — отдельные часы мастера каждую неделю. Треть цены — это не «за бренд», это за реальные человеко-часы, которые видно в кабинете по истории дела.</p>
-        </details>
-        <details class="faq-item">
-          <summary>У меня малая работа — есть смысл в уровнях?</summary>
-          <p>Для рефератов и контрольных почти всегда достаточно «Базового»: сопровождение там просто не успевает понадобиться. Уровни раскрываются на курсовых и выше — там, где есть научрук, этапы и защита. Конфигуратор посчитает все три варианта, выбор останется за вами.</p>
-        </details>
+    <section class="lv-faq reveal" aria-labelledby="faqTitle">
+      <span class="caps">Коротко о важном</span>
+      <h2 id="faqTitle">Вопросы перед выбором</h2>
+      <details class="faq-item">
+        <summary>В «Базовом» текст хуже, чем в VIP?</summary>
+        <p>Нет. Стандарт текста, оформление, проверки и гарантия правок одинаковы. Уровень меняет объём сопровождения вокруг текста.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Можно повысить уровень уже после старта?</summary>
+        <p>Да. Доплачивается разница от зафиксированной сметы, после чего действуют условия нового уровня. Понизить уровень можно только до начала работы.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Почему «Под ключ» дороже на треть?</summary>
+        <p>Потому что вместо одной передачи появляются несколько циклов: глава, обратная связь руководителя, разбор, новая версия. Наценка — это дополнительные часы мастера, а не другой класс текста.</p>
+      </details>
+    </section>
+
+    <section class="lv-final reveal" aria-labelledby="finalTitle">
+      <div><span class="caps">Не обязательно решать сейчас</span><h2 id="finalTitle">Сначала получите три цифры для своей работы</h2><p>Конфигуратор покажет все уровни рядом. Контакт не нужен, выбор сохранится черновиком.</p></div>
+      <div class="lv-final-actions">
+        <a class="btn btn-wax btn-lg" href="configurator.html">Рассчитать за минуту <span class="ar">→</span></a>
+        <button class="btn btn-line" type="button" data-contact="1">Спросить мастера</button>
       </div>
     </section>
-
-    <!-- ФИНАЛЬНЫЙ CTA -->
-    <section class="final-cta reveal" data-chapter="Расчёт">
-      <div class="fc-rule"><span>¶</span></div>
-      <h2>Примерьте уровень к своей работе</h2>
-      <a class="btn btn-wax btn-lg" href="configurator.html">Рассчитать стоимость <span class="ar">→</span></a>
-      <p class="petit">Конфигуратор покажет цену всех трёх уровней — сравните и решите без спешки.</p>
-    </section>
-
   </div>
 </main>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Текст в «Базовом» уровне хуже, чем в VIP?","acceptedAnswer":{"@type":"Answer","text":"Нет. Работу пишет тот же мастер по тому же стандарту, отчёт о проверках одинаков для всех уровней. Уровень покупает сопровождение вокруг текста, а не качество текста."}},{"@type":"Question","name":"Можно ли сменить уровень посреди работы?","acceptedAnswer":{"@type":"Answer","text":"Вверх — да, в любой момент: доплачивается разница множителей от зафиксированной сметы. Вниз — только до старта работ."}},{"@type":"Question","name":"Почему «Под ключ» дороже на треть?","acceptedAnswer":{"@type":"Answer","text":"Сдача по главам означает несколько циклов показа и правок вместо одного, а разбор замечаний научного руководителя — отдельные часы мастера каждую неделю. Наценка отражает реальные человеко-часы сопровождения."}},{"@type":"Question","name":"Нужны ли уровни для малых работ?","acceptedAnswer":{"@type":"Answer","text":"Для рефератов и контрольных почти всегда достаточно «Базового». Уровни раскрываются на курсовых и выше — где есть научный руководитель, этапы и защита."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"В Базовом уровне текст хуже, чем в VIP?","acceptedAnswer":{"@type":"Answer","text":"Нет. Стандарт текста, оформление, проверки и гарантия правок одинаковы. Уровень меняет объём сопровождения вокруг текста."}},{"@type":"Question","name":"Можно ли повысить уровень после старта?","acceptedAnswer":{"@type":"Answer","text":"Да. Доплачивается разница от зафиксированной сметы, после чего действуют условия нового уровня. Понизить уровень можно только до начала работы."}},{"@type":"Question","name":"Почему уровень Под ключ дороже на треть?","acceptedAnswer":{"@type":"Answer","text":"Вместо одной передачи появляются несколько циклов: глава, обратная связь руководителя, разбор и новая версия. Наценка отражает дополнительные часы мастера."}}]}</script>
 <script src="assets/js/app.js?v=20260723q"></script>
 <script src="assets/js/extras.js?v=20260723h"></script>
 <script>
 (function(){
   'use strict';
-  /* Кнопки «Рассчитать с уровнем …» кладут выбранный уровень в черновик:
-     тип работы человек выберет первым шагом конфигуратора сам */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.lv-tab'));
+  var panelsBox = document.getElementById('levelPanels');
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.lv-panel'));
+  var live = document.getElementById('levelLive');
+  var labels = {base:'Базовый — готовая работа без наценки',turn:'Под ключ — главы и сопровождение до защиты',vip:'VIP — личное ведение и подготовка защиты'};
+
+  function selectLevel(level, focus, announce){
+    var found = false;
+    tabs.forEach(function(tab){
+      var on = tab.getAttribute('data-level') === level;
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+      if(on && focus) tab.focus();
+      if(on) found = true;
+    });
+    if(!found) return;
+    panels.forEach(function(panel){ panel.hidden = panel.getAttribute('data-level') !== level; });
+    if(announce && live) live.innerHTML = 'Подходит: <b>' + labels[level] + '</b>. Ниже — состав и цена.';
+  }
+
+  if(panelsBox){
+    panelsBox.classList.add('is-enhanced');
+    var initial = location.hash === '#turn' ? 'turn' : location.hash === '#vip' ? 'vip' : 'base';
+    selectLevel(initial, false, false);
+  }
+  tabs.forEach(function(tab, index){
+    tab.addEventListener('click', function(){
+      var level = tab.getAttribute('data-level');
+      selectLevel(level, false, false);
+      if(history.replaceState) history.replaceState(null, '', '#' + level);
+    });
+    tab.addEventListener('keydown', function(e){
+      if(e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && e.key !== 'Home' && e.key !== 'End') return;
+      e.preventDefault();
+      var next = e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : (index + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+      selectLevel(tabs[next].getAttribute('data-level'), true, false);
+    });
+  });
+  document.querySelectorAll('[data-pick]').forEach(function(button){
+    button.addEventListener('click', function(){
+      var level = button.getAttribute('data-pick');
+      selectLevel(level, false, true);
+      document.getElementById('dossier').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+      if(history.replaceState) history.replaceState(null, '', '#' + level);
+    });
+  });
+
+  var service = document.getElementById('lvService');
+  function fmt(n){return Math.round(n).toLocaleString('ru-RU') + ' ₽';}
+  function paintPrices(){
+    if(!service) return;
+    var base = Number(service.value) || 0;
+    var baseEl = document.querySelector('[data-price="base"]');
+    var turnEl = document.querySelector('[data-price="turn"]');
+    var vipEl = document.querySelector('[data-price="vip"]');
+    if(baseEl) baseEl.textContent = fmt(base);
+    if(turnEl) turnEl.textContent = fmt(base * 1.33);
+    if(vipEl) vipEl.textContent = fmt(base * 2);
+  }
+  if(service){service.addEventListener('change',paintPrices);paintPrices();}
+
   document.querySelectorAll('a[data-tier]').forEach(function(a){
-    a.addEventListener('click', function(){
+    a.addEventListener('click',function(){
       if(!(window.Salon && Salon.store)) return;
       var old = (Salon.store.get && Salon.store.get('salon_draft')) || {};
       var st = (old && old.state) || {};
-      Salon.store.set('salon_draft', { state:{
-        type: st.type || 'diplom', disc: st.disc || 'hum',
-        term: st.term || 'free', tier: a.getAttribute('data-tier')
-      }, idx: 0, savedAt: 0 });
+      var next = Object.assign({},old,{state:{
+        type:st.type||'diplom',disc:st.disc||'hum',term:st.term||'free',tier:a.getAttribute('data-tier')
+      },savedAt:Date.now()});
+      if(typeof next.idx!=='number') next.idx=0;
+      Salon.store.set('salon_draft',next);
     });
   });
 })();
