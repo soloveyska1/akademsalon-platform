@@ -950,26 +950,47 @@
     if (!t) return;
     var q = C.quote(d.state.type, d.state.disc, d.state.term, d.state.tier || 'base');
     var hasText = d.fields && (d.fields.topic || d.fields.details);
+    var resumeStep = Math.max(1, Math.min(4, (d.idx || 0) + 1));
+    var resumeHref = 'configurator.html?step=' + resumeStep;
+    var typeLabel = t.label.split(' (')[0];
     var bar = document.createElement('div');
     bar.className = 'resume-bar';
     bar.setAttribute('role', 'note');
     bar.innerHTML =
       /* z 235, а не 240: ничья с .contact-sheet (240) решалась порядком в DOM */
-      '<style>.resume-bar{position:fixed;left:0;right:0;bottom:0;z-index:235;background:var(--mark);' +
-      'border-top:1px solid var(--hairline-strong);padding:10px 16px calc(10px + env(safe-area-inset-bottom));' +
-      'display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:var(--ink)}' +
-      '.resume-bar b{font-weight:600}.resume-bar a{white-space:nowrap}' +
-      /* цель 44×44, как у крестиков плашек: было 17×24 — промах мимо него
-         уводил в конфигуратор вместо закрытия, и это на телефоне */
-      '.resume-bar .rb-x{border:none;background:none;cursor:pointer;color:var(--ink-soft);' +
-      'font-size:18px;line-height:1;width:44px;height:44px;min-width:44px;padding:0;border-radius:50%;' +
-      'display:inline-flex;align-items:center;justify-content:center;margin:-10px -8px -10px 0}' +
-      '.resume-bar .rb-x:hover{color:var(--ink);background:var(--sheet)}' +
+      '<style>.resume-bar{position:fixed;left:50%;right:auto;bottom:14px;z-index:235;' +
+      'width:min(720px,calc(100vw - 28px));transform:translateX(-50%);padding:4px;' +
+      'display:grid;grid-template-columns:minmax(0,1fr) 44px;align-items:center;' +
+      'background:color-mix(in srgb,var(--sheet) 97%,transparent);border:1px solid var(--hairline-strong);' +
+      'border-left:3px solid var(--wax);border-radius:4px;box-shadow:0 12px 36px rgba(35,31,24,.16);' +
+      'color:var(--ink);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}' +
+      '.resume-bar .rb-main{min-width:0;min-height:54px;padding:6px 7px;display:grid;' +
+      'grid-template-columns:32px minmax(0,1fr) 22px;align-items:center;gap:9px;color:inherit;text-decoration:none}' +
+      '.resume-bar .rb-mark{width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--wax);' +
+      'border-radius:50%;font:18px/1 var(--serif);color:var(--wax);background:var(--wax-soft)}' +
+      '.resume-bar .rb-copy{min-width:0;display:grid;gap:2px}' +
+      '.resume-bar .rb-copy small{font:10px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}' +
+      '.resume-bar .rb-line{min-width:0;display:flex;align-items:baseline;gap:8px}' +
+      '.resume-bar .rb-type{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13.5px;font-weight:600}' +
+      '.resume-bar .rb-price{flex:none;white-space:nowrap;font:11.5px/1.2 var(--mono);color:var(--wax)}' +
+      '.resume-bar .rb-go{font:22px/1 var(--serif);color:var(--wax)}' +
+      '.resume-bar .rb-x{border:0;border-left:1px solid var(--hairline);background:none;cursor:pointer;color:var(--ink-faint);' +
+      'font-size:18px;line-height:1;width:44px;height:44px;min-width:44px;padding:0;' +
+      'display:inline-flex;align-items:center;justify-content:center}' +
+      '.resume-bar .rb-main:hover{background:var(--wax-soft)}.resume-bar .rb-x:hover{color:var(--ink);background:var(--mark)}' +
+      '@media(max-width:880px){.resume-bar{left:10px;right:10px;width:auto;transform:none;border-radius:3px;' +
+      'box-shadow:0 8px 24px rgba(35,31,24,.14);backdrop-filter:none;-webkit-backdrop-filter:none}' +
+      '.resume-bar .rb-main{min-height:52px;padding:4px 5px;grid-template-columns:29px minmax(0,1fr) 18px;gap:8px}' +
+      '.resume-bar .rb-mark{width:29px;height:29px;font-size:16px}.resume-bar .rb-type{font-size:13px}' +
+      '.resume-bar .rb-price{font-size:10.5px}.resume-bar .rb-copy small{font-size:9.5px}.resume-bar .rb-go{font-size:19px}}' +
       '</style>' +
-      '<span>✒ Ваша смета ждёт: <b>' + t.label.split(' (')[0] + ' · от ' + q.lowFmt + ' ₽</b>' +
-      (hasText ? ' — тема и требования сохранены' : '') + '</span>' +
-      '<a class="link" href="configurator.html">Продолжить оформление →</a>' +
-      '<button type="button" class="rb-x" aria-label="Скрыть">×</button>';
+      '<a class="rb-main" href="' + resumeHref + '" aria-label="Продолжить смету: ' + typeLabel + ', от ' + q.lowFmt + ' рублей">' +
+        '<span class="rb-mark" aria-hidden="true">¶</span>' +
+        '<span class="rb-copy"><small>' + (hasText ? 'Черновик сохранён' : 'Черновик сметы') + '</small>' +
+          '<span class="rb-line"><span class="rb-type">' + typeLabel + '</span><span class="rb-price">от ' + q.lowFmt + ' ₽</span></span></span>' +
+        '<span class="rb-go" aria-hidden="true">→</span>' +
+      '</a>' +
+      '<button type="button" class="rb-x" aria-label="Закрыть черновик сметы">×</button>';
     bar.querySelector('.rb-x').addEventListener('click', function () {
       try { sessionStorage.setItem('salon_resume_hidden', '1'); } catch (e) {}
       bar.remove();
@@ -987,7 +1008,7 @@
       }
       var nav = document.querySelector('.mobile-cta'), navH = 0;
       if (nav && getComputedStyle(nav).display !== 'none') navH = nav.getBoundingClientRect().height;
-      bar.style.bottom = navH ? Math.round(navH) + 'px' : '0px';
+      bar.style.bottom = navH ? Math.round(navH + 8) + 'px' : '14px';
       var top = bar.getBoundingClientRect().top;
       document.documentElement.style.setProperty('--resume-clear', Math.max(0, Math.round(window.innerHeight - top)) + 'px');
       /* --floor считает ЗАНЯТУЮ КРОМКУ, а не сумму высот: полоса стоит
