@@ -53,6 +53,8 @@
   .wnav{display:flex;gap:12px;margin-top:26px}
   .wnav .btn{min-width:128px}
   .wsubmit-note{max-width:52ch}
+  .conf-final-intro,.final-section-head,.final-more-toggle,.contact-or{display:none}
+  #tgLoginBtn{margin-bottom:14px}
 
   /* каталог работ: быстрый поиск, рубрики и компактные карточки */
   .service-finder{margin:0 0 15px}
@@ -561,34 +563,50 @@
             </div>
 
             <!-- ШАГ 4: тема и заявка -->
-            <div class="wstep" role="group" aria-labelledby="ws4t">
-              <h2 class="ws-title" id="ws4t" tabindex="-1">Тема и заявка</h2>
+            <div class="wstep wstep-final" role="group" aria-labelledby="ws4t">
+              <h2 class="ws-title" id="ws4t" tabindex="-1">Заявка мастеру</h2>
+              <div class="conf-final-intro">
+                <span class="caps">Финальный шаг</span>
+                <p>Заполните только то, что уже известно. Остальное мастер уточнит после заявки.</p>
+              </div>
               <!-- анкета отдельной услуги: вопросы приходят из SalonServices[].ask -->
               <div id="svcAsk" hidden></div>
-              <div class="field">
-                <label for="fTopic">Тема работы · необязательно</label>
-                <input type="text" id="fTopic" maxlength="160" autocomplete="off" placeholder="Если тема уже утверждена — впишите её" />
-              </div>
-              <div class="field">
-                <label for="fDeadline">Точная дата сдачи · необязательно</label>
-                <input type="text" id="fDeadline" maxlength="60" autocomplete="off" placeholder="Например, «25 июля» или «до конца сессии»" />
-              </div>
-              <div class="field">
-                <label for="fDetails">Требования · необязательно</label>
-                <textarea id="fDetails" rows="2" maxlength="1200" placeholder="Объём в страницах, % оригинальности и система проверки, оформление по методичке"></textarea>
-              </div>
+              <section class="final-section final-task">
+                <header class="final-section-head">
+                  <span class="final-section-no">03</span>
+                  <span><b>Детали задачи</b><small>Необязательно — заполните только то, что уже известно</small></span>
+                </header>
+                <div class="field">
+                  <label for="fTopic">Тема работы <span class="field-optional">необязательно</span></label>
+                  <input type="text" id="fTopic" maxlength="160" autocomplete="off" placeholder="Например: развитие туризма в Татарстане" />
+                </div>
+                <div class="field">
+                  <label for="fDeadline">Срок сдачи <span class="field-optional">необязательно</span></label>
+                  <input type="text" id="fDeadline" maxlength="60" autocomplete="off" placeholder="Например: 25 июля" />
+                </div>
+                <div class="field">
+                  <label for="fDetails">Требования <span class="field-optional">необязательно</span></label>
+                  <textarea id="fDetails" rows="2" maxlength="1200" placeholder="Объём, оригинальность, методичка и другие требования"></textarea>
+                </div>
+              </section>
 
               <!-- файлы: то, ради чего заявку удобно отправлять именно с сайта -->
-              <div class="field">
-                <label for="fFiles">Методичка и ТЗ · необязательно</label>
-                <input type="file" id="fFiles" multiple hidden />
-                <button type="button" class="att-add" id="attAdd" aria-describedby="attHint">
-                  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.2 12.7 13 19.9a5 5 0 0 1-7.1-7.1l7.9-7.8a3.35 3.35 0 0 1 4.7 4.7l-7.8 7.9a1.68 1.68 0 0 1-2.4-2.4l7.2-7.2"/></svg>
-                  <span>Прикрепить файлы — методичка, ТЗ, черновик</span>
-                </button>
-                <div class="att-list" id="attList" hidden></div>
-                <p class="petit" id="attHint" style="margin-top:8px">До 5 файлов по 20 МБ. С файлами мастер называет точную смету с первого ответа — не придётся пересылать их позже в переписке.</p>
-              </div>
+              <section class="final-section final-files">
+                <header class="final-section-head">
+                  <span class="final-section-no">02</span>
+                  <span><b>Материалы</b><small>Можно приложить сейчас или прислать мастеру позже</small></span>
+                </header>
+                <div class="field">
+                  <label for="fFiles">Методичка, ТЗ или черновик <span class="field-optional">необязательно</span></label>
+                  <input type="file" id="fFiles" multiple hidden />
+                  <button type="button" class="att-add" id="attAdd" aria-describedby="attHint">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.2 12.7 13 19.9a5 5 0 0 1-7.1-7.1l7.9-7.8a3.35 3.35 0 0 1 4.7 4.7l-7.8 7.9a1.68 1.68 0 0 1-2.4-2.4l7.2-7.2"/></svg>
+                    <span>Прикрепить методичку или ТЗ</span>
+                  </button>
+                  <div class="att-list" id="attList" hidden></div>
+                  <p class="petit" id="attHint">До 5 файлов по 20 МБ. Так мастер сможет сразу назвать точную цену.</p>
+                </div>
+              </section>
 
               <div class="compose-gate" id="composeGate" hidden>
                 <span class="caps">Сначала — состав сметы</span>
@@ -599,37 +617,49 @@
 
               <div id="checkoutFields">
               <!-- как с вами связаться: Telegram-вход или контакт вручную -->
-              <div id="ctAuthed" hidden>
-                <p class="petit" style="margin-bottom:14px">✓ Вы вошли через Telegram как <b id="ctName">гость</b>.
-                Заявка сразу привяжется к вашему кабинету — ответим здесь и в боте.</p>
-              </div>
-              <div id="ctGuest">
-                <p class="caps" style="margin-bottom:8px">Как с вами связаться</p>
-                <div class="field">
-                  <label for="fName">Как к вам обращаться · необязательно</label>
-                  <input type="text" id="fName" maxlength="80" autocomplete="name" placeholder="Имя" />
+              <section class="final-section final-contact">
+                <header class="final-section-head">
+                  <span class="final-section-no">01</span>
+                  <span><b>Куда прислать смету</b><small>Выберите быстрый вход или оставьте удобный контакт</small></span>
+                </header>
+                <div id="ctAuthed" hidden>
+                  <p class="petit">✓ Вы вошли через Telegram как <b id="ctName">гость</b>. Заявка появится в кабинете, ответ — здесь и в боте.</p>
                 </div>
-                <div class="field">
-                  <label for="fContact">Где вас искать — мессенджер, телефон или почта</label>
-                  <div class="ct-chips" id="ctChips" role="group" aria-label="Способ связи">
-                    <button type="button" class="ct-chip on" data-ct="tg">Telegram</button>
-                    <button type="button" class="ct-chip" data-ct="vk">ВКонтакте</button>
-                    <button type="button" class="ct-chip" data-ct="wa">WhatsApp</button>
-                    <button type="button" class="ct-chip" data-ct="ph">Телефон</button>
-                    <button type="button" class="ct-chip" data-ct="em">Почта</button>
+                <div id="ctGuest">
+                  <button type="button" class="btn btn-line btn-block" id="tgLoginBtn">Продолжить через Telegram</button>
+                  <p class="contact-or"><span>или оставьте контакт</span></p>
+                  <div class="field field-name">
+                    <label for="fName">Как к вам обращаться <span class="field-optional">необязательно</span></label>
+                    <input type="text" id="fName" maxlength="80" autocomplete="name" placeholder="Имя" />
                   </div>
-                  <input type="text" id="fContact" maxlength="120" autocomplete="tel" placeholder="@nickname — ник в Telegram" />
-                  <p class="petit" id="ctHint" style="margin-top:6px">Лучше всего — ссылка или ник: мастер сможет написать вам напрямую, даже если бот или сайт закапризничают.</p>
+                  <div class="field">
+                    <label for="fContact">Куда прислать ответ</label>
+                    <div class="ct-chips" id="ctChips" role="group" aria-label="Способ связи">
+                      <button type="button" class="ct-chip on" data-ct="tg">Telegram</button>
+                      <button type="button" class="ct-chip" data-ct="vk">ВКонтакте</button>
+                      <button type="button" class="ct-chip" data-ct="wa">WhatsApp</button>
+                      <button type="button" class="ct-chip" data-ct="ph">Телефон</button>
+                      <button type="button" class="ct-chip" data-ct="em">Почта</button>
+                    </div>
+                    <input type="text" id="fContact" maxlength="120" autocomplete="tel" placeholder="@nickname — ник в Telegram" />
+                    <p class="petit" id="ctHint">Укажите ник или ссылку — мастер напишет напрямую.</p>
+                  </div>
+                  <label class="petit consent-row">
+                    <input type="checkbox" id="fConsent" />
+                    <span>Согласен(на) на обработку данных для связи и выполнения заказа — <a class="link" href="consent.html" target="_blank">согласие</a> и <a class="link" href="privacy.html" target="_blank">политика ПДн</a></span>
+                  </label>
                 </div>
-                <label class="petit" style="display:flex;gap:8px;align-items:flex-start;margin-bottom:14px;cursor:pointer">
-                  <input type="checkbox" id="fConsent" style="margin-top:3px" />
-                  <span>Согласен(на) на обработку данных для связи и выполнения заказа — <a class="link" href="consent.html" target="_blank">согласие</a> и <a class="link" href="privacy.html" target="_blank">политика ПДн</a></span>
-                </label>
-                <button type="button" class="btn btn-line btn-block" id="tgLoginBtn" style="margin-bottom:14px">Или войти через Telegram — без анкеты</button>
-              </div>
+              </section>
 
-              <!-- промокод: купон — свёрнут в строку купона, разворачивается по клику или из ?promo= -->
-              <div class="coupon" id="promoBox">
+              <button type="button" class="final-more-toggle" id="finalMoreToggle"
+                      aria-expanded="false" aria-controls="finalMoreBody">
+                <span class="final-more-mark" aria-hidden="true">+</span>
+                <span><b>Скидки и другие варианты</b><small>Промокод, сертификат или сохранить смету</small></span>
+                <span class="final-more-arrow" aria-hidden="true">+</span>
+              </button>
+              <div class="final-more-body" id="finalMoreBody">
+                <!-- промокод: купон — свёрнут в строку купона, разворачивается по клику или из ?promo= -->
+                <div class="coupon" id="promoBox">
                 <button type="button" class="cp-toggle" id="promoShow" aria-expanded="false" aria-controls="promoField">
                   <span aria-hidden="true">🎟</span>
                   <span class="cp-lbl">У меня есть промокод</span>
@@ -649,10 +679,10 @@
                   <span class="cp-what" id="promoDoneLbl"></span>
                   <button type="button" class="cp-x" id="promoRemove" aria-label="Убрать промокод">×</button>
                 </div>
-              </div>
+                </div>
 
-              <!-- подарочный сертификат: тот же купон-механизм, что и промокод -->
-              <div class="coupon" id="giftBox">
+                <!-- подарочный сертификат: тот же купон-механизм, что и промокод -->
+                <div class="coupon" id="giftBox">
                 <button type="button" class="cp-toggle" id="giftShow" aria-expanded="false" aria-controls="giftField">
                   <span aria-hidden="true">🎁</span>
                   <span class="cp-lbl">У меня есть сертификат</span>
@@ -672,35 +702,36 @@
                   <span class="cp-what" id="giftDoneLbl"></span>
                   <button type="button" class="cp-x" id="giftRemove" aria-label="Убрать сертификат">×</button>
                 </div>
+                </div>
+
+                <div class="contact-fallbacks">
+                  <a class="btn btn-line" href="https://vk.me/academicsaloon" target="_blank" rel="noopener">Написать во ВКонтакте</a>
+                  <a class="btn btn-line" href="https://t.me/academicsaloon" target="_blank" rel="noopener">В Telegram</a>
+                </div>
+
+                <!-- смета письмом: уйти подумать, не потеряв расчёт -->
+                <div class="qm-card" id="qmCard">
+                  <div class="qm-head">
+                    <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>
+                    <div style="flex:1;min-width:0">
+                      <p class="qm-t"><b>Сохранить смету на почту</b></p>
+                      <p class="petit">Пришлём ссылку — ответы сохранятся.</p>
+                    </div>
+                    <button type="button" class="qm-open" id="qmShow" aria-expanded="false" aria-controls="qmField">Указать почту</button>
+                  </div>
+                  <div class="qm-form" id="qmField" hidden>
+                    <label class="caps" for="qmEmail" style="display:block;margin-bottom:8px">Почта для сметы</label>
+                    <div class="cp-row">
+                      <input type="email" id="qmEmail" maxlength="120" autocomplete="email" placeholder="you@example.com" />
+                      <button type="button" class="btn btn-line" id="qmSend">Отправить</button>
+                    </div>
+                    <p class="petit" id="qmNote" style="margin-top:8px" hidden></p>
+                  </div>
+                </div>
               </div>
 
               <button type="button" class="btn btn-wax btn-block" id="btnSubmit">Отправить заявку мастеру <span class="ar">→</span></button>
-              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-                <a class="btn btn-line" style="flex:1" href="https://vk.me/academicsaloon" target="_blank" rel="noopener">Написать во ВКонтакте</a>
-                <a class="btn btn-line" style="flex:1" href="https://t.me/academicsaloon" target="_blank" rel="noopener">В Telegram</a>
-              </div>
-
-              <!-- смета письмом: уйти подумать, не потеряв расчёт -->
-              <div class="qm-card" id="qmCard">
-                <div class="qm-head">
-                  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>
-                  <div style="flex:1;min-width:0">
-                    <p class="qm-t"><b>Не готовы отправить сейчас?</b></p>
-                    <p class="petit">Пришлём смету письмом — вернётесь по ссылке с любого устройства, ответы сохранятся.</p>
-                  </div>
-                  <button type="button" class="qm-open" id="qmShow" aria-expanded="false" aria-controls="qmField">На почту</button>
-                </div>
-                <div class="qm-form" id="qmField" hidden>
-                  <label class="caps" for="qmEmail" style="display:block;margin-bottom:8px">Почта для сметы</label>
-                  <div class="cp-row">
-                    <input type="email" id="qmEmail" maxlength="120" autocomplete="email" placeholder="you@example.com" />
-                    <button type="button" class="btn btn-line" id="qmSend">Отправить</button>
-                  </div>
-                  <p class="petit" id="qmNote" style="margin-top:8px" hidden></p>
-                </div>
-              </div>
-
-              <p class="petit mt-s wsubmit-note">Оценка бесплатна: мастер сразу получит заявку вместе с файлами, статус и переписка появятся в <a class="link" href="dashboard.html">кабинете</a> на сайте — а если захотите, продублируем в мессенджер. Решение вы принимаете, уже зная точную смету, — она фиксируется после разбора плана и не меняется по нашей инициативе.</p>
+              <p class="petit mt-s wsubmit-note"><span aria-hidden="true">✓</span> Оценка бесплатна. Мастер проверит детали и пришлёт точную смету — решение останется за вами.</p>
               </div>
             </div>
 
@@ -888,7 +919,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260723n"></script>
+<script src="assets/js/app.js?v=20260723p"></script>
 <script src="assets/js/extras.js?v=20260723i"></script>
 <script src="assets/js/cart.js?v=20260723e"></script>
 <script>
@@ -967,6 +998,22 @@ function initConf() {
   var deadlineIn = $('fDeadline'), detailsIn = $('fDetails');
   var mcta = $('confMcta'), mqPanel = $('mqPanel'), mqToggle = $('mqToggle'), mqMore = $('mqMore'),
       mBack = $('mBack'), mNext = $('mNext');
+  var finalMoreToggle = $('finalMoreToggle'), finalMoreBody = $('finalMoreBody');
+  function setFinalMore(open) {
+    if (!finalMoreBody || !finalMoreToggle) return;
+    finalMoreBody.hidden = !open;
+    finalMoreToggle.setAttribute('aria-expanded', String(open));
+    finalMoreToggle.classList.toggle('open', open);
+  }
+  function revealFinalMore() { setFinalMore(true); }
+  if (finalMoreToggle && finalMoreBody) {
+    var finalMoreMobile = !svc && window.matchMedia &&
+      window.matchMedia('(max-width:880px)').matches;
+    setFinalMore(!finalMoreMobile);
+    finalMoreToggle.addEventListener('click', function () {
+      setFinalMore(finalMoreBody.hidden);
+    });
+  }
 
   /* Быстрый каталог работает одинаково на телефоне и десктопе:
      рубрики дают обзор, поиск мгновенно оставляет только совпадения. */
@@ -1516,7 +1563,7 @@ function initConf() {
     if (mBack) mBack.hidden = svc ? true : idx === 0;
     if (mNext) {
       mNext.hidden = svc && !document.body.classList.contains('svc-checkout');
-      mNext.textContent = idx === 3 ? 'Отправить заявку' : 'Далее';
+      mNext.textContent = idx === 3 ? 'Отправить' : 'Далее';
     }
     if (mqPanel && !mqPanel.hidden) {
       mqPanel.hidden = true;
@@ -1652,7 +1699,7 @@ function initConf() {
   if (tgBtn) tgBtn.addEventListener('click', function () {
     tgBtn.disabled = true; tgBtn.textContent = 'Открываем Telegram…';
     S.tgLogin(tgDone, function () {
-      tgBtn.disabled = false; tgBtn.textContent = 'Или войти через Telegram — без анкеты';
+      tgBtn.disabled = false; tgBtn.textContent = 'Продолжить через Telegram';
       S.toast('Вход не подтвердился — попробуйте ещё раз');
     }, function (link, opened) {
       tgBtn.textContent = 'Подтвердите вход в боте…';
@@ -1688,6 +1735,7 @@ function initConf() {
     promoNote.style.color = ok ? 'var(--verify)' : 'var(--wax)';
   }
   function promoOpen() {
+    revealFinalMore();
     var f = $('promoField');
     if (f) f.hidden = false;
     if (promoBox) {
@@ -1801,6 +1849,7 @@ function initConf() {
     giftNote.style.color = ok ? 'var(--verify)' : 'var(--wax)';
   }
   function giftOpen() {
+    revealFinalMore();
     var f = $('giftField');
     if (f) f.hidden = false;
     if (giftBox) {

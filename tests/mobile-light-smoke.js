@@ -28,7 +28,8 @@ const DEFAULT_PAGES = [
   'tariffs.html',
   'zayavka.html',
   'dashboard.html',
-  'configurator.html?step=2'
+  'configurator.html?step=2',
+  'configurator.html?step=4'
 ];
 const VIEWPORTS = [
   { name: 'iphone-320', width: 320, height: 568 },
@@ -613,6 +614,441 @@ async function inspectConfiguratorStep2(page) {
   return { layout, panel, backState, nextState, sticky, failures };
 }
 
+async function inspectConfiguratorStep4(page) {
+  await page.waitForFunction(() => {
+    const title = document.getElementById('ws4t');
+    const step = title && title.closest('.wstep');
+    const mobileEdition = document.querySelector('link[data-mobile-edition]');
+    return step && step.classList.contains('active') &&
+      mobileEdition && mobileEdition.sheet &&
+      document.body.classList.contains('conf-step-final') &&
+      document.getElementById('fContact') &&
+      document.getElementById('fConsent') &&
+      document.getElementById('mNext');
+  }, null, { timeout: 10_000 });
+
+  const layout = await page.evaluate(() => {
+    const visible = (element) => {
+      if (!element) return false;
+      const style = getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return !element.hidden &&
+        style.display !== 'none' &&
+        style.visibility !== 'hidden' &&
+        Number(style.opacity) !== 0 &&
+        rect.width > 0 &&
+        rect.height > 0;
+    };
+    const box = (element) => {
+      const rect = element.getBoundingClientRect();
+      return {
+        left: Math.round(rect.left),
+        top: Math.round(rect.top),
+        right: Math.round(rect.right),
+        bottom: Math.round(rect.bottom),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height)
+      };
+    };
+    const overlap = (a, b) =>
+      a.right > b.left + 1 && a.left < b.right - 1 &&
+      a.bottom > b.top + 1 && a.top < b.bottom - 1;
+    const activeSteps = Array.from(document.querySelectorAll('.wstep.active'));
+    const dock = document.getElementById('confMcta');
+    const bar = dock && dock.querySelector('.mq-bar');
+    const controls = [
+      document.getElementById('mBack'),
+      document.getElementById('mqToggle'),
+      document.getElementById('mNext')
+    ].filter(Boolean);
+    const controlBoxes = controls.map((element) => ({
+      selector: `#${element.id}`,
+      visible: visible(element),
+      text: String(element.textContent || '').replace(/\s+/g, ' ').trim(),
+      box: box(element)
+    }));
+    const overlaps = [];
+    for (let i = 0; i < controlBoxes.length; i += 1) {
+      for (let j = i + 1; j < controlBoxes.length; j += 1) {
+        if (overlap(controlBoxes[i].box, controlBoxes[j].box)) {
+          overlaps.push(`${controlBoxes[i].selector} ↔ ${controlBoxes[j].selector}`);
+        }
+      }
+    }
+    const labels = ['fTopic', 'fDeadline', 'fDetails', 'fFiles', 'fContact'].map((id) => ({
+      id,
+      label: String(document.querySelector(`label[for="${id}"]`)?.textContent || '')
+        .replace(/\s+/g, ' ').trim(),
+      visible: visible(document.getElementById(id)) ||
+        (id === 'fFiles' && visible(document.getElementById('attAdd')))
+    }));
+    const contactChips = Array.from(document.querySelectorAll('#ctChips .ct-chip')).map((element) => ({
+      text: String(element.textContent || '').trim(),
+      selected: element.classList.contains('on'),
+      visible: visible(element),
+      box: box(element)
+    }));
+    const fill = document.getElementById('wpFill');
+    const consent = document.getElementById('fConsent');
+    const consentLabel = consent && consent.closest('label');
+    return {
+      activeStepCount: activeSteps.length,
+      activeStepTitle: activeSteps[0] &&
+        String(activeSteps[0].querySelector('.ws-title')?.textContent || '').trim(),
+      laterClass: document.body.classList.contains('conf-step-later'),
+      finalClass: document.body.classList.contains('conf-step-final'),
+      progressLabel: String(document.getElementById('wpLbl')?.textContent || '').trim(),
+      progressFill: fill ? parseFloat(getComputedStyle(fill).width) /
+        Math.max(1, parseFloat(getComputedStyle(fill.parentElement).width)) : 0,
+      helpVisible: Array.from(document.querySelectorAll('.helpfab')).some(visible),
+      introVisible: visible(document.querySelector('.conf-head')),
+      cartTabVisible: visible(bar && bar.querySelector('.cart-tab')),
+      dock: dock ? {
+        visible: visible(dock),
+        position: getComputedStyle(dock).position,
+        box: box(dock)
+      } : null,
+      controls: controlBoxes,
+      overlaps,
+      labels,
+      nameVisible: visible(document.getElementById('fName')),
+      sectionOrder: ['.final-contact', '.final-files', '.final-task'].map((selector) => {
+        const element = document.querySelector(selector);
+        return {
+          selector,
+          top: element ? Math.round(element.getBoundingClientRect().top + scrollY) : -1,
+          visible: visible(element)
+        };
+      }),
+      contactChips,
+      initialContact: (() => {
+        const input = document.getElementById('fContact');
+        return {
+          type: input.type,
+          inputMode: input.getAttribute('inputmode'),
+          autocomplete: input.getAttribute('autocomplete'),
+          enterKeyHint: input.getAttribute('enterkeyhint'),
+          placeholder: input.placeholder,
+          fontSize: parseFloat(getComputedStyle(input).fontSize)
+        };
+      })(),
+      attachment: (() => {
+        const button = document.getElementById('attAdd');
+        return {
+          visible: visible(button),
+          describedBy: button?.getAttribute('aria-describedby') || '',
+          box: button ? box(button) : null
+        };
+      })(),
+      consent: {
+        visible: visible(consent),
+        wrappedByLabel: !!consentLabel,
+        labelText: String(consentLabel?.textContent || '').replace(/\s+/g, ' ').trim()
+      },
+      desktopSubmitVisible: visible(document.getElementById('btnSubmit')),
+      viewport: { width: innerWidth, height: innerHeight }
+    };
+  });
+
+  const failures = [];
+  if (layout.activeStepCount !== 1 || !/заявка мастеру/i.test(layout.activeStepTitle || '')) {
+    failures.push(
+      `configurator step 4: active=${layout.activeStepCount}, title=${layout.activeStepTitle || 'none'}`
+    );
+  }
+  if (!layout.laterClass || !layout.finalClass) {
+    failures.push(
+      `configurator step 4: body classes later=${layout.laterClass}, final=${layout.finalClass}`
+    );
+  }
+  if (layout.progressLabel !== 'Шаг 4 из 4' || Math.abs(layout.progressFill - 1) > 0.03) {
+    failures.push(
+      `configurator step 4 progress: label=${layout.progressLabel || 'none'}, fill=${Math.round(layout.progressFill * 100)}%`
+    );
+  }
+  if (layout.helpVisible) failures.push('configurator step 4: .helpfab is visible');
+  if (layout.introVisible) failures.push('configurator step 4: introductory .conf-head still visible');
+  if (layout.cartTabVisible) failures.push('configurator step 4: .cart-tab must stay hidden');
+  if (!layout.dock || !layout.dock.visible || layout.dock.position !== 'fixed') {
+    failures.push('configurator step 4 action bar: not visible/fixed');
+  } else {
+    if (layout.dock.box.left < -1 ||
+        layout.dock.box.right > layout.viewport.width + 1 ||
+        layout.dock.box.bottom > layout.viewport.height + 1) {
+      failures.push(`configurator step 4 action bar: clipped ${JSON.stringify(layout.dock.box)}`);
+    }
+    if (layout.controls.length !== 3) {
+      failures.push(`configurator step 4 action bar: expected 3 controls, got ${layout.controls.length}`);
+    }
+    for (const control of layout.controls) {
+      if (!control.visible) failures.push(`configurator step 4 action bar: ${control.selector} hidden`);
+      if (control.box.height < 44 || control.box.width < 44) {
+        failures.push(
+          `configurator step 4 action bar: ${control.selector} touch target ${control.box.width}×${control.box.height}`
+        );
+      }
+    }
+    if (layout.overlaps.length) {
+      failures.push(`configurator step 4 action bar overlaps: ${layout.overlaps.join(', ')}`);
+    }
+    const next = layout.controls.find((item) => item.selector === '#mNext');
+    if (!next || next.text !== 'Отправить') {
+      failures.push(`configurator step 4 submit copy=${next ? next.text : 'none'}`);
+    }
+  }
+  if (layout.desktopSubmitVisible) {
+    failures.push('configurator step 4: desktop #btnSubmit is also visible');
+  }
+  for (const field of layout.labels) {
+    if (!field.label || !field.visible) {
+      failures.push(`configurator step 4 field ${field.id}: label/visibility=${JSON.stringify(field)}`);
+    }
+  }
+  if (layout.nameVisible) {
+    failures.push('configurator step 4: optional name field should stay hidden on mobile');
+  }
+  if (layout.sectionOrder.some((item) => !item.visible) ||
+      !(layout.sectionOrder[0].top < layout.sectionOrder[1].top &&
+        layout.sectionOrder[1].top < layout.sectionOrder[2].top)) {
+    failures.push(`configurator step 4 section order: ${JSON.stringify(layout.sectionOrder)}`);
+  }
+  if (!layout.attachment.visible ||
+      !layout.attachment.box ||
+      layout.attachment.box.height < 44 ||
+      layout.attachment.describedBy !== 'attHint') {
+    failures.push(`configurator attachments trigger: ${JSON.stringify(layout.attachment)}`);
+  }
+  if (layout.contactChips.length !== 5 ||
+      layout.contactChips.filter((item) => item.selected).length !== 1 ||
+      layout.contactChips.some((item) => !item.visible || item.box.height < 44)) {
+    failures.push(`configurator contact chips: ${JSON.stringify(layout.contactChips)}`);
+  }
+  if (layout.initialContact.type !== 'text' ||
+      layout.initialContact.inputMode !== 'text' ||
+      layout.initialContact.autocomplete !== 'off' ||
+      layout.initialContact.enterKeyHint !== 'done' ||
+      !/@nickname/i.test(layout.initialContact.placeholder) ||
+      layout.initialContact.fontSize < 16) {
+    failures.push(`configurator Telegram field metadata: ${JSON.stringify(layout.initialContact)}`);
+  }
+  if (!layout.consent.visible ||
+      !layout.consent.wrappedByLabel ||
+      !/обработку данных/i.test(layout.consent.labelText)) {
+    failures.push(`configurator consent label: ${JSON.stringify(layout.consent)}`);
+  }
+
+  await page.evaluate(() => {
+    const contact = document.getElementById('fContact');
+    const consent = document.getElementById('fConsent');
+    contact.value = '';
+    contact.dispatchEvent(new Event('input', { bubbles: true }));
+    consent.checked = false;
+    consent.dispatchEvent(new Event('change', { bubbles: true }));
+    document.getElementById('mNext')?.click();
+  });
+  await page.waitForTimeout(80);
+  const emptyValidation = await page.evaluate(() => ({
+    activeId: document.activeElement?.id || '',
+    contactInvalid: document.getElementById('fContact')?.getAttribute('aria-invalid'),
+    consentInvalid: document.getElementById('fConsent')?.getAttribute('aria-invalid'),
+    step4Active: document.getElementById('ws4t')?.closest('.wstep')?.classList.contains('active')
+  }));
+  if (emptyValidation.activeId !== 'fContact' ||
+      emptyValidation.contactInvalid !== 'true' ||
+      !emptyValidation.step4Active) {
+    failures.push(`configurator empty contact validation: ${JSON.stringify(emptyValidation)}`);
+  }
+
+  await page.fill('#fContact', 'not-a-contact');
+  await page.click('#mNext');
+  await page.waitForTimeout(80);
+  const invalidValidation = await page.evaluate(() => ({
+    activeId: document.activeElement?.id || '',
+    invalid: document.getElementById('fContact')?.getAttribute('aria-invalid'),
+    value: document.getElementById('fContact')?.value
+  }));
+  if (invalidValidation.activeId !== 'fContact' ||
+      invalidValidation.invalid !== 'true' ||
+      invalidValidation.value !== 'not-a-contact') {
+    failures.push(`configurator invalid contact validation: ${JSON.stringify(invalidValidation)}`);
+  }
+
+  await page.click('#ctChips [data-ct="em"]');
+  await page.waitForTimeout(30);
+  const emailMode = await page.evaluate(() => {
+    const input = document.getElementById('fContact');
+    const selected = document.querySelector('#ctChips .ct-chip.on');
+    return {
+      selected: selected?.getAttribute('data-ct') || '',
+      type: input.type,
+      inputMode: input.getAttribute('inputmode'),
+      autocomplete: input.getAttribute('autocomplete'),
+      enterKeyHint: input.getAttribute('enterkeyhint'),
+      placeholder: input.placeholder,
+      activeId: document.activeElement?.id || ''
+    };
+  });
+  if (emailMode.selected !== 'em' ||
+      emailMode.type !== 'email' ||
+      emailMode.inputMode !== 'email' ||
+      emailMode.autocomplete !== 'email' ||
+      emailMode.enterKeyHint !== 'done' ||
+      emailMode.placeholder !== 'you@mail.ru' ||
+      emailMode.activeId !== 'fContact') {
+    failures.push(`configurator email mode: ${JSON.stringify(emailMode)}`);
+  }
+
+  await page.fill('#fContact', 'student@example.com');
+  await page.click('#mNext');
+  await page.waitForTimeout(80);
+  const consentValidation = await page.evaluate(() => ({
+    activeId: document.activeElement?.id || '',
+    consentInvalid: document.getElementById('fConsent')?.getAttribute('aria-invalid'),
+    contactInvalid: document.getElementById('fContact')?.getAttribute('aria-invalid'),
+    step4Active: document.getElementById('ws4t')?.closest('.wstep')?.classList.contains('active')
+  }));
+  if (consentValidation.activeId !== 'fConsent' ||
+      consentValidation.consentInvalid !== 'true' ||
+      !consentValidation.step4Active) {
+    failures.push(`configurator consent validation: ${JSON.stringify(consentValidation)}`);
+  }
+
+  const firstAttachment = {
+    name: 'method-guide.pdf',
+    mimeType: 'application/pdf',
+    buffer: Buffer.from('%PDF-1.4 mobile smoke')
+  };
+  await page.setInputFiles('#fFiles', firstAttachment);
+  await page.setInputFiles('#fFiles', firstAttachment);
+  let attachments = await page.evaluate(() => ({
+    hidden: document.getElementById('attList')?.hidden,
+    count: document.querySelectorAll('#attList .att-item').length,
+    names: Array.from(document.querySelectorAll('#attList .ai-name'))
+      .map((element) => element.textContent.trim()),
+    removeLabels: Array.from(document.querySelectorAll('#attList [data-att-x]'))
+      .map((element) => element.getAttribute('aria-label') || '')
+  }));
+  if (attachments.hidden ||
+      attachments.count !== 1 ||
+      attachments.names[0] !== firstAttachment.name ||
+      !attachments.removeLabels[0]?.includes(firstAttachment.name)) {
+    failures.push(`configurator attachment add/dedupe: ${JSON.stringify(attachments)}`);
+  }
+
+  const extraAttachments = Array.from({ length: 6 }, (_, index) => ({
+    name: `brief-${index + 1}.txt`,
+    mimeType: 'text/plain',
+    buffer: Buffer.from(`mobile smoke attachment ${index + 1}`)
+  }));
+  await page.setInputFiles('#fFiles', extraAttachments);
+  attachments = await page.evaluate(() => ({
+    hidden: document.getElementById('attList')?.hidden,
+    count: document.querySelectorAll('#attList .att-item').length,
+    names: Array.from(document.querySelectorAll('#attList .ai-name'))
+      .map((element) => element.textContent.trim())
+  }));
+  if (attachments.hidden || attachments.count !== 5) {
+    failures.push(`configurator attachment limit: ${JSON.stringify(attachments)}`);
+  }
+  await page.click('#attList [data-att-x]');
+  const attachmentRemoval = await page.evaluate(() => ({
+    hidden: document.getElementById('attList')?.hidden,
+    count: document.querySelectorAll('#attList .att-item').length,
+    firstName: document.querySelector('#attList .ai-name')?.textContent.trim() || ''
+  }));
+  if (attachmentRemoval.hidden ||
+      attachmentRemoval.count !== 4 ||
+      attachmentRemoval.firstName === firstAttachment.name) {
+    failures.push(`configurator attachment removal: ${JSON.stringify(attachmentRemoval)}`);
+  }
+
+  await page.evaluate(() => {
+    const input = document.getElementById('fContact');
+    input.scrollIntoView({ block: 'center' });
+    input.focus();
+  });
+  await page.waitForTimeout(80);
+  const focusedField = await page.evaluate(() => {
+    const input = document.getElementById('fContact');
+    const rect = input.getBoundingClientRect();
+    return {
+      activeId: document.activeElement?.id || '',
+      left: Math.round(rect.left),
+      right: Math.round(rect.right),
+      top: Math.round(rect.top),
+      bottom: Math.round(rect.bottom),
+      fontSize: parseFloat(getComputedStyle(input).fontSize),
+      viewport: { width: innerWidth, height: innerHeight }
+    };
+  });
+  if (focusedField.activeId !== 'fContact' ||
+      focusedField.fontSize < 16 ||
+      focusedField.left < -1 ||
+      focusedField.right > focusedField.viewport.width + 1 ||
+      focusedField.top < -1 ||
+      focusedField.bottom > focusedField.viewport.height + 1) {
+    failures.push(`configurator focused contact field: ${JSON.stringify(focusedField)}`);
+  }
+
+  const keyboardState = await page.evaluate(() => {
+    const testStyle = document.createElement('style');
+    testStyle.id = 'mobile-smoke-no-dock-transition';
+    testStyle.textContent = '.mobile-cta{transition:none!important}';
+    document.head.appendChild(testStyle);
+    document.documentElement.classList.add('keyboard-open');
+    const dock = document.getElementById('confMcta');
+    void dock.offsetHeight;
+    const rect = dock.getBoundingClientRect();
+    const style = getComputedStyle(dock);
+    const state = {
+      keyboardClass: document.documentElement.classList.contains('keyboard-open'),
+      transform: style.transform,
+      top: Math.round(rect.top),
+      bottom: Math.round(rect.bottom),
+      viewportHeight: innerHeight,
+      activeId: document.activeElement?.id || ''
+    };
+    document.documentElement.classList.remove('keyboard-open');
+    void dock.offsetHeight;
+    return state;
+  });
+  if (!keyboardState.keyboardClass ||
+      keyboardState.transform === 'none' ||
+      keyboardState.top < keyboardState.viewportHeight ||
+      keyboardState.activeId !== 'fContact') {
+    failures.push(`configurator keyboard-open state: ${JSON.stringify(keyboardState)}`);
+  }
+  const dockRestored = await page.evaluate(() => {
+    const dock = document.getElementById('confMcta');
+    const rect = dock.getBoundingClientRect();
+    return {
+      keyboardClass: document.documentElement.classList.contains('keyboard-open'),
+      top: Math.round(rect.top),
+      bottom: Math.round(rect.bottom),
+      viewportHeight: innerHeight
+    };
+  });
+  if (dockRestored.keyboardClass ||
+      dockRestored.top >= dockRestored.viewportHeight ||
+      dockRestored.bottom > dockRestored.viewportHeight + 1) {
+    failures.push(`configurator action bar restore: ${JSON.stringify(dockRestored)}`);
+  }
+
+  return {
+    layout,
+    emptyValidation,
+    invalidValidation,
+    emailMode,
+    consentValidation,
+    attachments,
+    attachmentRemoval,
+    focusedField,
+    keyboardState,
+    dockRestored,
+    failures
+  };
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const playwright = loadPlaywright();
@@ -713,6 +1149,34 @@ async function main() {
                   await page.evaluate(() => document.getElementById('mqToggle')?.click());
                   await page.waitForTimeout(50);
                   await page.screenshot({ path: viewportPath, fullPage: false });
+                }
+              }
+              if (/^configurator\.html\?step=4(?:&|$)/.test(pageName)) {
+                configuratorInspection = await inspectConfiguratorStep4(page);
+                if (options.screenshots) {
+                  const formPath = path.join(
+                    OUTPUT_ROOT,
+                    `${label}-step4-form.png`
+                  );
+                  const keyboardPath = path.join(
+                    OUTPUT_ROOT,
+                    `${label}-step4-keyboard-state.png`
+                  );
+                  fs.mkdirSync(path.dirname(formPath), { recursive: true });
+                  await page.screenshot({ path: formPath, fullPage: false });
+                  await page.evaluate(() => {
+                    const style = document.createElement('style');
+                    style.id = 'mobile-smoke-keyboard-screenshot';
+                    style.textContent =
+                      'html[data-smoke-keyboard] .mobile-cta{transform:translateY(110%)!important;transition:none!important}';
+                    document.head.appendChild(style);
+                    document.documentElement.setAttribute('data-smoke-keyboard', '');
+                  });
+                  await page.screenshot({ path: keyboardPath, fullPage: false });
+                  await page.evaluate(() => {
+                    document.documentElement.removeAttribute('data-smoke-keyboard');
+                    document.getElementById('mobile-smoke-keyboard-screenshot')?.remove();
+                  });
                 }
               }
               inspection = await inspectPage(page, pageName === 'index.html');
