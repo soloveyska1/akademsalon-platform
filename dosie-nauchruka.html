@@ -37,12 +37,11 @@
   .sr-mark.inference{color:var(--stamp-blue,#3A4E7A)}
   .sr-file-note{margin-top:13px;padding-top:11px;border-top:1px solid var(--hairline);font-size:11px;line-height:1.5;color:var(--ink-faint)}
 
-  .sr-thesis{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:clamp(26px,6vw,84px);align-items:start;padding:clamp(30px,5vw,54px);background:var(--ink);border-radius:4px;color:var(--paper)}
-  .sr-thesis .caps{color:color-mix(in srgb,var(--paper) 54%,transparent)}
-  .sr-thesis h2{max-width:13ch;margin:8px 0 0;color:var(--paper)}
-  .sr-thesis-copy{font-family:var(--serif);font-size:clamp(19px,2.5vw,28px);line-height:1.47}
-  .sr-thesis-copy em{color:#E9C972;font-style:italic}
-  .sr-thesis-small{margin-top:14px;font-family:var(--sans);font-size:12.5px;line-height:1.6;color:color-mix(in srgb,var(--paper) 65%,transparent)}
+  .sr-thesis{display:grid;grid-template-columns:minmax(250px,.82fr) minmax(0,1.18fr);gap:clamp(28px,6vw,78px);align-items:center;padding:clamp(24px,3.5vw,36px) 0;border-top:1px solid var(--hairline-strong);border-bottom:1px solid var(--hairline-strong)}
+  .sr-thesis h2{max-width:17ch;margin:7px 0 0;font-size:clamp(26px,3.35vw,43px)}
+  .sr-thesis-copy{padding-left:20px;border-left:2px solid var(--wax);font-family:var(--serif);font-size:clamp(17px,1.8vw,22px);line-height:1.52}
+  .sr-thesis-copy em{font-style:italic;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--wax) 42%,transparent);text-decoration-thickness:1px;text-underline-offset:4px}
+  .sr-thesis-small{margin-top:11px;padding-left:22px;font-size:12px;line-height:1.55;color:var(--ink-soft)}
 
   .sr-method{padding-top:var(--block)}
   .sr-section-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.62fr);gap:24px;align-items:end;margin-bottom:24px}
@@ -116,18 +115,30 @@
   .sr-note-card p{margin-top:16px;padding-top:13px;border-top:1px solid var(--hairline);font-size:11.5px;line-height:1.55;color:var(--ink-soft)}
 
   .sr-proof-section{padding-top:var(--block)}
-  .sr-proof-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+  .sr-proof-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:20px}
   .sr-proof-head h2{margin:7px 0 0}
   .sr-proof-head p{max-width:45ch;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
-  .sr-proofs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .sr-proof{position:relative;display:block;width:100%;padding:10px 10px 13px;background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:3px;color:var(--ink);text-align:left;cursor:zoom-in;transition:transform .2s,box-shadow .2s}
-  .sr-proof:hover,.sr-proof:focus-visible{transform:translateY(-5px) rotate(var(--r,0deg));box-shadow:0 18px 38px -28px rgba(34,32,27,.7)}
-  .sr-proof:nth-child(1){--r:-.4deg}
-  .sr-proof:nth-child(3){--r:.4deg}
-  .sr-proof img{display:block;width:100%;aspect-ratio:960/750;object-fit:cover;object-position:top;border:1px solid var(--hairline);background:#fff}
-  .sr-proof b{display:block;margin:11px 3px 4px;font-family:var(--serif);font-size:16px}
-  .sr-proof small{display:block;margin:0 3px;font-size:10.5px;color:var(--ink-faint)}
-  .sr-proof .zoom{position:absolute;right:18px;top:18px;width:31px;height:31px;display:grid;place-items:center;border-radius:50%;background:var(--wax);color:#fff;font-family:var(--mono);font-size:15px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+  .sr-proof-desk{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(255px,.6fr);overflow:hidden;border:1px solid var(--hairline-strong);border-radius:4px;background:var(--sheet)}
+  .sr-proof-preview{display:block;width:100%;padding:16px;border:0;border-right:1px solid var(--hairline);background:var(--paper-2);color:var(--ink);text-align:left;cursor:zoom-in}
+  .sr-proof-preview-frame{position:relative;display:block;overflow:hidden;aspect-ratio:16/9.5;border:1px solid var(--hairline-strong);background:#fff}
+  .sr-proof-preview-frame::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 8px color-mix(in srgb,var(--sheet) 44%,transparent);pointer-events:none}
+  .sr-proof-preview img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;background:#fff;transition:opacity .16s ease}
+  .sr-proof-preview:hover img,.sr-proof-preview:focus-visible img{opacity:.92}
+  .sr-proof-preview-meta{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-top:12px}
+  .sr-proof-preview-meta span:first-child{min-width:0}
+  .sr-proof-preview-meta small{display:block;margin-bottom:3px;font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .sr-proof-preview-meta b{display:block;font-family:var(--serif);font-size:17px;font-weight:400}
+  .sr-proof-open{flex:0 0 auto;font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--wax)}
+  .sr-proof-index{display:flex;flex-direction:column;padding:19px 18px 17px}
+  .sr-proof-index>.caps{margin-bottom:10px}
+  .sr-proof-row{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;width:100%;min-height:67px;padding:10px 8px;border:0;border-top:1px dotted var(--hairline);background:transparent;color:var(--ink);text-align:left;cursor:pointer}
+  .sr-proof-row:last-of-type{border-bottom:1px dotted var(--hairline)}
+  .sr-proof-row[aria-pressed="true"]{background:var(--paper-2);box-shadow:inset 3px 0 0 var(--wax)}
+  .sr-proof-row .no{font-family:var(--mono);font-size:9px;color:var(--ink-faint)}
+  .sr-proof-row b{display:block;font-size:13px;font-weight:500}
+  .sr-proof-row small{display:block;margin-top:3px;font-size:10.5px;line-height:1.35;color:var(--ink-soft)}
+  .sr-proof-row .go{color:var(--wax)}
+  .sr-proof-hint{margin-top:auto;padding-top:15px;font-size:10.5px;line-height:1.45;color:var(--ink-faint)}
   .sr-pdf{margin-top:14px;font-size:12px;color:var(--ink-soft)}
 
   .sr-dialog{width:min(760px,calc(100vw - 28px));max-height:92vh;padding:0;border:0;border-radius:4px;background:var(--sheet);color:var(--ink);box-shadow:0 30px 90px rgba(0,0,0,.48)}
@@ -140,17 +151,26 @@
   .sr-dialog-nav{display:flex;justify-content:space-between;gap:10px;padding:9px 12px;border-top:1px solid var(--hairline)}
   .sr-dialog-nav button{min-height:44px;padding:8px 11px;border:1px solid var(--hairline);border-radius:3px;background:var(--paper-2);color:var(--ink);font:500 11px var(--sans);cursor:pointer}
 
-  .sr-ethics{display:grid;grid-template-columns:minmax(0,.74fr) minmax(0,1.26fr);gap:clamp(26px,6vw,78px);align-items:start;margin-top:var(--block);padding:clamp(24px,4vw,42px);background:var(--paper-2);border:1px solid var(--hairline);border-radius:4px}
-  .sr-ethics h2{max-width:15ch;margin:7px 0 0}
-  .sr-ethics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .sr-ethic{padding:15px 14px;background:var(--sheet);border:1px solid var(--hairline);border-radius:3px}
-  .sr-ethic b{display:block;margin-bottom:6px;font-size:13.5px;font-weight:500}
-  .sr-ethic p{font-size:11.5px;line-height:1.5;color:var(--ink-soft)}
+  .sr-ethics{display:grid;grid-template-columns:minmax(230px,.64fr) minmax(0,1.36fr);align-items:stretch;margin-top:var(--block);border-top:1px solid var(--hairline-strong);border-bottom:1px solid var(--hairline-strong)}
+  .sr-ethics-head{padding:25px clamp(24px,5vw,66px) 25px 0}
+  .sr-ethics h2{max-width:15ch;margin:7px 0 0;font-size:clamp(25px,3vw,36px)}
+  .sr-ethics-grid{display:grid;grid-template-columns:1fr 1fr;border-left:1px solid var(--hairline)}
+  .sr-ethic{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:19px 18px;border-bottom:1px dotted var(--hairline)}
+  .sr-ethic:nth-child(odd){border-right:1px dotted var(--hairline)}
+  .sr-ethic:nth-last-child(-n+2){border-bottom:0}
+  .sr-ethic .no{padding-top:2px;font-family:var(--mono);font-size:9px;color:var(--wax)}
+  .sr-ethic b{display:block;margin-bottom:5px;font-size:12.5px;font-weight:500}
+  .sr-ethic p{font-size:10.5px;line-height:1.48;color:var(--ink-soft)}
 
-  .sr-final{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:25px;align-items:center;margin-top:clamp(42px,7vw,78px);padding:clamp(26px,4vw,44px);border:1px solid var(--hairline-strong);border-left:6px solid var(--wax);border-radius:4px;background:var(--sheet)}
-  .sr-final h2{max-width:20ch;margin:7px 0 9px}
-  .sr-final p{max-width:62ch;font-size:13px;line-height:1.6;color:var(--ink-soft)}
-  .sr-final-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+  .sr-final{display:grid;grid-template-columns:145px minmax(0,1fr) auto;gap:clamp(18px,3vw,32px);align-items:center;margin-top:clamp(30px,5vw,48px);padding:19px 0;border-top:1px dashed var(--hairline-strong);border-bottom:1px dashed var(--hairline-strong)}
+  .sr-final-price{align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding-right:20px;border-right:1px dotted var(--hairline)}
+  .sr-final-price b{font-family:var(--serif);font-size:27px;font-weight:400;white-space:nowrap}
+  .sr-final-price small{margin-top:4px;font-family:var(--mono);font-size:8.5px;line-height:1.4;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
+  .sr-final h2{max-width:24ch;margin:6px 0 6px;font-size:clamp(24px,2.7vw,34px)}
+  .sr-final p{max-width:62ch;font-size:11.5px;line-height:1.55;color:var(--ink-soft)}
+  .sr-final-actions{display:flex;flex-direction:column;align-items:stretch;gap:8px;min-width:220px}
+  .sr-final-actions .btn{justify-content:center}
+  .sr-final-link{align-self:center;font-size:11px;color:var(--ink-soft);text-decoration:underline;text-underline-offset:3px}
   :root[data-theme="dark"] .sr .btn-wax{color:#1F1B15}
 
   @media(max-width:980px){
@@ -165,8 +185,11 @@
     .sr-case-tabs{grid-template-columns:repeat(4,1fr)}
     .sr-case-tab{grid-template-columns:1fr;min-height:68px}
     .sr-case-tab .go{display:none}
-    .sr-final{grid-template-columns:1fr}
-    .sr-final-actions{justify-content:flex-start}
+    .sr-proof-desk{grid-template-columns:minmax(0,1.25fr) minmax(240px,.75fr)}
+    .sr-ethics-head{padding-right:0}
+    .sr-ethics-grid{border-top:1px solid var(--hairline);border-left:0}
+    .sr-final{grid-template-columns:145px minmax(0,1fr)}
+    .sr-final-actions{grid-column:2;flex-direction:row;align-items:center;min-width:0}
   }
   @media(max-width:700px){
     .sr .doc-crumb{padding-top:72px}
@@ -188,13 +211,26 @@
     .sr-case-panel{padding:22px 16px}
     .sr-evidence,.sr-plan{grid-template-columns:1fr}
     .sr-factline{grid-template-columns:1fr;gap:5px}
-    .sr-proofs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding:3px 3px 13px}
-    .sr-proof{flex:0 0 82%;scroll-snap-align:center}
+    .sr-thesis-copy{padding-left:14px}
+    .sr-thesis-small{padding-left:16px}
+    .sr-proof-desk{grid-template-columns:1fr}
+    .sr-proof-preview{padding:10px;border-right:0;border-bottom:1px solid var(--hairline)}
+    .sr-proof-preview-frame{aspect-ratio:4/3}
+    .sr-proof-preview-meta{gap:10px}
+    .sr-proof-index{padding:15px 12px}
+    .sr-proof-row{min-height:61px}
+    .sr-proof-hint{margin-top:12px}
     .sr-ethics-grid{grid-template-columns:1fr}
+    .sr-ethic:nth-child(odd){border-right:0}
+    .sr-ethic:nth-last-child(2){border-bottom:1px dotted var(--hairline)}
+    .sr-final{grid-template-columns:1fr;gap:15px}
+    .sr-final-price{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:0 0 13px;border-right:0;border-bottom:1px dotted var(--hairline)}
+    .sr-final-price small{margin:0}
+    .sr-final-actions{grid-column:auto;flex-direction:column;align-items:stretch}
     .sr-final-actions .btn{width:100%;justify-content:center}
   }
   @media(prefers-reduced-motion:reduce){
-    .sr-proof{transition:none}
+    .sr-proof-preview img{transition:none}
   }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/dosie-nauchruka.html" />
@@ -247,10 +283,10 @@
     </section>
 
     <section class="sr-thesis reveal" aria-labelledby="thesisTitle">
-      <div><span class="caps">Почему это работает</span><h2 id="thesisTitle">Две работы по одному ГОСТу могут получить разные оценки</h2></div>
+      <div><span class="caps">Почему это работает</span><h2 id="thesisTitle">Один ГОСТ. Разная логика оценки.</h2></div>
       <div>
-        <p class="sr-thesis-copy">Разница часто не в полях и сносках, а в попадании: <em>какие доказательства руководитель считает сильными, каким словам доверяет и какой вопрос задаст первым.</em></p>
-        <p class="sr-thesis-small">Досье помогает понять это до того, как глава вернётся с расплывчатым «переработать».</p>
+        <p class="sr-thesis-copy">Оформление задаёт форму. Досье показывает содержание оценки: <em>какие доказательства руководитель считает сильными, каким словам доверяет и какой вопрос задаст первым.</em></p>
+        <p class="sr-thesis-small">Это становится понятно до того, как глава вернётся с расплывчатым «переработать».</p>
       </div>
     </section>
 
@@ -351,32 +387,41 @@
 
     <section class="sr-proof-section reveal" aria-labelledby="proofTitle">
       <div class="sr-proof-head">
-        <div><span class="caps">Гранки реальной работы</span><h2 id="proofTitle">Посмотрите, во что превращается метод</h2></div>
-        <p>Обезличенные страницы магистерской: структура, постановка проблемы и эмпирическая глава. Откройте любую.</p>
+        <div><span class="caps">Фрагменты реальной работы</span><h2 id="proofTitle">Как метод выглядит на странице</h2></div>
+        <p>Один компактный просмотрщик вместо галереи: выберите лист, а затем откройте его крупно.</p>
       </div>
-      <div class="sr-proofs">
-        <button class="sr-proof" type="button" data-proof="0" data-src="assets/img/showcase/showcase-2.jpg" data-caption="Оглавление · три главы · обезличено"><img src="assets/img/showcase/showcase-2.jpg" width="960" height="1358" alt="Оглавление обезличенной магистерской работы" loading="lazy"><span class="zoom" aria-hidden="true">+</span><b>Оглавление</b><small>Логика исследования от теории к модели</small></button>
-        <button class="sr-proof" type="button" data-proof="1" data-src="assets/img/showcase/showcase-3.jpg" data-caption="Введение · постановка проблемы · обезличено"><img src="assets/img/showcase/showcase-3.jpg" width="960" height="1358" alt="Введение обезличенной магистерской работы" loading="lazy"><span class="zoom" aria-hidden="true">+</span><b>Введение</b><small>Проблема и аппарат исследования</small></button>
-        <button class="sr-proof" type="button" data-proof="2" data-src="assets/img/showcase/showcase-4.jpg" data-caption="Глава 2 · эмпирика · обезличено"><img src="assets/img/showcase/showcase-4.jpg" width="960" height="1358" alt="Страница эмпирической главы с таблицей результатов" loading="lazy"><span class="zoom" aria-hidden="true">+</span><b>Эмпирическая глава</b><small>Методики, данные и интерпретация</small></button>
+      <div class="sr-proof-desk">
+        <button class="sr-proof-preview" id="proofPreview" type="button" aria-label="Открыть оглавление крупно">
+          <span class="sr-proof-preview-frame"><img id="proofPreviewImg" src="assets/img/showcase/showcase-2.jpg" width="960" height="1358" alt="Оглавление обезличенной магистерской работы" loading="lazy"></span>
+          <span class="sr-proof-preview-meta" aria-live="polite"><span><small id="proofPreviewKicker">Лист 01 · обезличено</small><b id="proofPreviewTitle">Оглавление</b></span><span class="sr-proof-open">Открыть крупно ↗</span></span>
+        </button>
+        <div class="sr-proof-index" aria-label="Листы работы">
+          <span class="caps">Выберите лист</span>
+          <button class="sr-proof-row" type="button" data-proof="0" data-src="assets/img/showcase/showcase-2.jpg" data-caption="Оглавление · три главы · обезличено" data-kicker="Лист 01 · обезличено" data-title="Оглавление" data-alt="Оглавление обезличенной магистерской работы" aria-pressed="true"><span class="no">01</span><span><b>Оглавление</b><small>Логика от теории к модели</small></span><span class="go">→</span></button>
+          <button class="sr-proof-row" type="button" data-proof="1" data-src="assets/img/showcase/showcase-3.jpg" data-caption="Введение · постановка проблемы · обезличено" data-kicker="Лист 02 · обезличено" data-title="Введение" data-alt="Введение обезличенной магистерской работы" aria-pressed="false"><span class="no">02</span><span><b>Введение</b><small>Проблема и аппарат исследования</small></span><span class="go">→</span></button>
+          <button class="sr-proof-row" type="button" data-proof="2" data-src="assets/img/showcase/showcase-4.jpg" data-caption="Глава 2 · эмпирика · обезличено" data-kicker="Лист 03 · обезличено" data-title="Эмпирическая глава" data-alt="Страница эмпирической главы с таблицей результатов" aria-pressed="false"><span class="no">03</span><span><b>Эмпирическая глава</b><small>Методики, данные и интерпретация</small></span><span class="go">→</span></button>
+          <p class="sr-proof-hint">Листы обезличены. Полный документ откроется только по вашему действию.</p>
+        </div>
       </div>
       <p class="sr-pdf">Полные образцы PDF: <a class="link" href="assets/samples/obrazec-vvedenie-vkr.pdf" target="_blank" rel="noopener">введение ВКР</a> · <a class="link" href="assets/samples/obrazec-glava-analiz.pdf" target="_blank" rel="noopener">глава с анализом</a> · <a class="link" href="assets/samples/obrazec-spisok-literatury.pdf" target="_blank" rel="noopener">список по ГОСТу</a>.</p>
     </section>
 
     <section class="sr-ethics reveal" aria-labelledby="ethicsTitle">
-      <div><span class="caps">Граница метода</span><h2 id="ethicsTitle">Профессионально — значит бережно</h2></div>
+      <div class="sr-ethics-head"><span class="caps">Граница метода</span><h2 id="ethicsTitle">Четыре правила бережной работы</h2></div>
       <div class="sr-ethics-grid">
-        <div class="sr-ethic"><b>Только открытые источники</b><p>Публикации, страницы вуза, конференции и научные материалы. Никакого доступа к закрытым данным.</p></div>
-        <div class="sr-ethic"><b>Факт ≠ вывод</b><p>Каждая интерпретация помечена и проверяется несколькими источниками, прежде чем повлиять на план.</p></div>
-        <div class="sr-ethic"><b>Никакой частной жизни</b><p>Нас интересует только научная, преподавательская и профессиональная роль руководителя.</p></div>
-        <div class="sr-ethic"><b>Досье не публикуется</b><p>Оно готовится для одной работы и остаётся внутри проекта. Все показанные кейсы обезличены.</p></div>
+        <div class="sr-ethic"><span class="no">01</span><span><b>Только открытые источники</b><p>Публикации, страницы вуза, конференции и научные материалы — никаких закрытых данных.</p></span></div>
+        <div class="sr-ethic"><span class="no">02</span><span><b>Факт отдельно от вывода</b><p>Интерпретации помечены и проверяются несколькими источниками до изменения плана.</p></span></div>
+        <div class="sr-ethic"><span class="no">03</span><span><b>Никакой частной жизни</b><p>Только научная, преподавательская и профессиональная роль руководителя.</p></span></div>
+        <div class="sr-ethic"><span class="no">04</span><span><b>Досье остаётся внутри проекта</b><p>Оно готовится для одной работы. Все публичные примеры обезличены.</p></span></div>
       </div>
     </section>
 
     <section class="sr-final reveal" aria-labelledby="finalTitle">
-      <div><span class="caps">Начать с самого полезного</span><h2 id="finalTitle">Проверим план через оптику вашего руководителя</h2><p>Разбор плана стоит 3 000 ₽: структура глав, реалистичный срок и смета. Если продолжим работу, сумма зачтётся полностью.</p></div>
+      <div class="sr-final-price"><b>3 000 ₽</b><small>зачтём полностью<br>при продолжении</small></div>
+      <div><span class="caps">Начать с самого полезного</span><h2 id="finalTitle">Сначала — проверка плана</h2><p>Проверим структуру глав через научную оптику руководителя, определим реалистичный срок и смету.</p></div>
       <div class="sr-final-actions">
-        <a class="btn btn-wax btn-lg" href="plan.html">Разбор плана — 3 000 ₽ <span class="ar">→</span></a>
-        <a class="btn btn-line" href="configurator.html">Рассчитать всё</a>
+        <a class="btn btn-wax" href="plan.html">Разобрать план <span class="ar">→</span></a>
+        <a class="sr-final-link" href="configurator.html">Рассчитать всю работу</a>
       </div>
     </section>
   </div>
@@ -424,26 +469,53 @@
   var dialog = document.getElementById('proofDialog');
   var dialogImg = document.getElementById('proofDialogImg');
   var dialogTitle = document.getElementById('proofDialogTitle');
-  var proofButtons = Array.prototype.slice.call(document.querySelectorAll('.sr-proof'));
+  var proofPreview = document.getElementById('proofPreview');
+  var proofPreviewImg = document.getElementById('proofPreviewImg');
+  var proofPreviewKicker = document.getElementById('proofPreviewKicker');
+  var proofPreviewTitle = document.getElementById('proofPreviewTitle');
+  var proofRows = Array.prototype.slice.call(document.querySelectorAll('.sr-proof-row'));
   var proofIndex = 0;
   var proofReturn = null;
+  function selectProof(index, focus){
+    if(!proofRows.length)return;
+    proofIndex = (index + proofRows.length) % proofRows.length;
+    var row = proofRows[proofIndex];
+    proofRows.forEach(function(item,i){item.setAttribute('aria-pressed',String(i===proofIndex));});
+    if(proofPreviewImg){
+      proofPreviewImg.src = row.getAttribute('data-src');
+      proofPreviewImg.alt = row.getAttribute('data-alt') || 'Лист работы';
+    }
+    if(proofPreviewKicker)proofPreviewKicker.textContent = row.getAttribute('data-kicker') || 'Лист работы · обезличено';
+    if(proofPreviewTitle)proofPreviewTitle.textContent = row.getAttribute('data-title') || 'Лист работы';
+    if(proofPreview)proofPreview.setAttribute('aria-label','Открыть ' + (row.getAttribute('data-title') || 'лист работы') + ' крупно');
+    if(focus)row.focus();
+  }
   function paintProof(index){
-    proofIndex = (index + proofButtons.length) % proofButtons.length;
-    var button = proofButtons[proofIndex];
-    var image = button.querySelector('img');
-    dialogImg.src = button.getAttribute('data-src');
-    dialogImg.alt = image ? image.alt : 'Лист работы крупно';
-    dialogTitle.textContent = button.getAttribute('data-caption') || 'Лист работы · обезличено';
+    selectProof(index,false);
+    var row = proofRows[proofIndex];
+    dialogImg.src = row.getAttribute('data-src');
+    dialogImg.alt = row.getAttribute('data-alt') || 'Лист работы крупно';
+    dialogTitle.textContent = row.getAttribute('data-caption') || 'Лист работы · обезличено';
     var viewport = dialog.querySelector('.sr-dialog-viewport');
     if(viewport) viewport.scrollTop = 0;
   }
-  proofButtons.forEach(function(button,index){
-    button.addEventListener('click',function(){
-      proofReturn = button;
-      paintProof(index);
-      if(dialog && dialog.showModal) dialog.showModal();
+  proofRows.forEach(function(row,index){
+    row.addEventListener('click',function(){selectProof(index,false);});
+    row.addEventListener('keydown',function(e){
+      if(e.key!=='ArrowUp'&&e.key!=='ArrowDown'&&e.key!=='Home'&&e.key!=='End')return;
+      e.preventDefault();
+      var next = e.key==='Home'?0:e.key==='End'?proofRows.length-1:(index+(e.key==='ArrowDown'?1:-1)+proofRows.length)%proofRows.length;
+      selectProof(next,true);
     });
   });
+  if(proofPreview){
+    proofPreview.addEventListener('click',function(){
+      proofReturn = proofPreview;
+      paintProof(proofIndex);
+      if(dialog && dialog.showModal)dialog.showModal();
+    });
+  }
+  selectProof(0,false);
   if(dialog){
     dialog.querySelector('[data-proof-close]').addEventListener('click',function(){dialog.close();});
     dialog.querySelector('[data-proof-prev]').addEventListener('click',function(){paintProof(proofIndex-1);});
