@@ -226,26 +226,57 @@
   transition:box-shadow .2s ease,background .2s ease;
 }
 .pr-book-trigger-label{
-  position:absolute;left:70px;bottom:73px;
-  display:inline-flex;align-items:center;gap:12px;white-space:nowrap;
-  padding:9px 0 7px;border-top:1px solid rgba(118,83,26,.32);border-bottom:1px solid rgba(118,83,26,.2);
-  font-family:var(--mono);font-size:14px;line-height:1;letter-spacing:.18em;text-transform:uppercase;
+  position:absolute;left:62px;right:48px;bottom:58px;min-height:78px;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:13px 14px 13px 17px;border:1px solid rgba(118,83,26,.34);border-radius:2px;
+  background:rgba(255,253,247,.72);
+  box-shadow:0 12px 28px -22px rgba(70,50,20,.55),inset 0 0 0 1px rgba(255,255,255,.45);
   text-shadow:0 1px 0 rgba(255,255,255,.72);
-  transition:color .18s ease,gap .18s ease,border-color .18s ease;
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  transition:color .18s ease,border-color .18s ease,background .18s ease,transform .18s ease,box-shadow .18s ease;
 }
-.pr-book-trigger:hover .pr-book-trigger-label{color:#4F3813;gap:17px;border-color:rgba(105,72,20,.58)}
+.pr-book-trigger-copy{display:flex;min-width:0;flex-direction:column;align-items:flex-start;text-align:left}
+.pr-book-trigger-copy small{
+  font-family:var(--mono);font-size:10px;line-height:1.2;letter-spacing:.16em;text-transform:uppercase;color:#8A7858
+}
+.pr-book-trigger-copy strong{
+  margin-top:5px;font-family:var(--serif);font-size:20px;line-height:1;font-weight:600;letter-spacing:.01em;color:#4F3813
+}
+.pr-book-trigger-arrow{
+  display:grid;place-items:center;flex:0 0 45px;width:45px;height:45px;border-radius:50%;
+  background:var(--wax);color:#FFFCF4;text-shadow:none;font:22px/1 var(--serif);
+  box-shadow:0 8px 18px -11px rgba(125,45,24,.8);
+  animation:pr-open-cue 4.6s cubic-bezier(.22,1,.36,1) 1.2s infinite;
+  transition:transform .18s ease
+}
+.pr-book-trigger:hover .pr-book-trigger-label{
+  color:#4F3813;border-color:rgba(105,72,20,.58);background:rgba(255,253,247,.88);
+  transform:translateY(-3px);box-shadow:0 18px 34px -24px rgba(70,50,20,.7),inset 0 0 0 1px rgba(255,255,255,.58)
+}
+.pr-book-trigger:hover .pr-book-trigger-arrow{animation:none;transform:translateX(4px)}
 .pr-book-trigger:hover::after{background:radial-gradient(circle at 48% 52%,rgba(118,83,26,.045),transparent 50%)}
 .pr-book-trigger:focus-visible{outline:0}
 .pr-book-trigger:focus-visible::after{box-shadow:0 0 0 2px #8A6420,0 0 0 6px rgba(247,241,229,.92)}
 :root[data-theme="dark"] .pr-book-trigger{color:#D9B467}
 :root[data-theme="dark"] .pr-book-trigger-label{
-  border-top-color:rgba(220,177,85,.5);border-bottom-color:rgba(220,177,85,.25);
+  border-color:rgba(220,177,85,.38);background:rgba(19,16,12,.68);
+  box-shadow:0 14px 30px -22px rgba(0,0,0,.85),inset 0 0 0 1px rgba(255,255,255,.025);
   text-shadow:0 1px 0 rgba(0,0,0,.65)
 }
-:root[data-theme="dark"] .pr-book-trigger:hover .pr-book-trigger-label{color:#F0D797;border-color:rgba(240,205,132,.7)}
+:root[data-theme="dark"] .pr-book-trigger-copy small{color:#8F7C57}
+:root[data-theme="dark"] .pr-book-trigger-copy strong{color:#E8D8B5}
+:root[data-theme="dark"] .pr-book-trigger:hover .pr-book-trigger-label{
+  color:#F0D797;border-color:rgba(240,205,132,.62);background:rgba(25,21,16,.84)
+}
 :root[data-theme="dark"] .pr-book-trigger:hover::after{background:radial-gradient(circle at 48% 52%,rgba(220,177,85,.045),transparent 50%)}
 :root[data-theme="dark"] .pr-book-trigger:focus-visible::after{box-shadow:0 0 0 2px rgba(242,216,157,.9),0 0 0 6px rgba(28,25,21,.8)}
 .pr-open .pr-book-trigger{opacity:0;visibility:hidden;pointer-events:none}
+@keyframes pr-open-cue{
+  0%,68%,100%{transform:translateX(0)}
+  76%{transform:translateX(5px)}
+  84%{transform:translateX(0)}
+  90%{transform:translateX(3px)}
+}
 
 /* ---------- страницы приёмной ---------- */
 .pr-pg{position:absolute;inset:0;padding:28px 32px;font-size:13px;color:var(--ink);overflow:hidden}
@@ -637,6 +668,7 @@ html[data-pr-flat] .story-chip, html:not(.has-js) .story-chip{animation:none;opa
 @media (prefers-reduced-motion: reduce){
   .pr-light,.pr-hint .ln::after{animation:none}
   .pr-h .ln,.pr-kicker,.pr-lead,.pr-cta,.pr-note,.pr-copy .slot-line,.story-chip{animation:none;opacity:1;transform:none}
+  .pr-book-trigger-arrow{animation:none}
   .pr-tip{transition:none}
 }
 
