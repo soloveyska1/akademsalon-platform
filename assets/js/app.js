@@ -274,7 +274,7 @@
       var now = new Date();
       var c = {
         v: VERSION,
-        document: 'analytics-consent-2.0',
+        document: 'analytics-consent-2.1',
         necessary: true,
         analytics: analytics === true,
         action: analytics === true ? 'allow' : 'reject',
@@ -1429,6 +1429,11 @@
     ['guide-apellyaciya.html', 'Гайд · апелляция на оценку', 'апелляция пересдача оценка'],
     ['oferta.html', 'Публичная оферта', 'договор оферта условия'],
     ['privacy.html', 'Политика персональных данных', 'политика данные приватность'],
+    ['refunds.html', 'Отказ и возврат', 'возврат отказаться деньги претензия'],
+    ['academic-integrity.html', 'Границы услуг', 'академическая добросовестность запрет'],
+    ['consent-analytics.html', 'Согласие на аналитику', 'аналитика метрика согласие'],
+    ['consent-marketing.html', 'Согласие на рекламу', 'реклама рассылка согласие'],
+    ['consent-publication.html', 'Согласие на публикацию', 'отзыв публикация распространение'],
     ['consent.html', 'Согласие на обработку данных', 'согласие'],
     ['loyalty.html', 'Правила лояльности', 'бонусы правила подписка'],
     ['terms.html', 'Пользовательское соглашение', 'соглашение'],
@@ -1786,7 +1791,7 @@
       '<summary><span>Реквизиты и документы</span><small>самозанятый · ИНН 212885750445</small><i aria-hidden="true">+</i></summary>' +
       '<div class="cf7-legal-in">' +
         '<p><b>Семёнов Семён Юрьевич</b><br>Плательщик налога на профессиональный доход · г.&nbsp;Казань</p>' +
-        '<nav aria-label="Юридические документы"><a href="oferta.html">Оферта</a><a href="privacy.html">Политика ПДн</a><a href="consent.html">Согласие</a><a href="terms.html">Соглашение</a><a href="requisites.html">Реквизиты</a><button type="button" class="cf7-data" data-cookie-settings>Настройки данных</button></nav>' +
+        '<nav aria-label="Юридические документы"><a href="oferta.html">Оферта</a><a href="privacy.html">Политика ПДн</a><a href="refunds.html">Возврат</a><a href="academic-integrity.html">Границы услуг</a><a href="consent.html">Лояльность</a><a href="terms.html">Соглашение</a><a href="requisites.html">Все документы</a><button type="button" class="cf7-data" data-cookie-settings>Настройки данных</button></nav>' +
         '<a class="cf7-fns" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">Проверить статус в ФНС <span aria-hidden="true">↗</span><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
       '</div>' +
     '</details>' +

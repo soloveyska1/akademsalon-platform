@@ -834,28 +834,65 @@
     var q = quote();
     return {
       version: VERSION,
+      schema_version: '2.0-request',
+      legal_status: 'request_only_not_contract_price',
       currency: 'RUB',
       items: data.items.map(function (x, i) {
+        var clientId = String(x.id || '');
+        var qPreview = itemQuote(x);
+        var legalType = x.kind === 'service' ? 'consultation' : 'methodological_material';
+        if (/edit|red|corr/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'editing';
+        if (/format|norm|gost/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'formatting';
+        if (/tutor|consult|razbor/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'consultation';
         return {
-          client_id: String(x.id || ''),
+          client_id: clientId,
+          requested_line_id: clientId,
           position: i + 1,
+          selected_by_customer: true,
           kind: x.kind === 'service' ? 'service' : 'work',
+          legal_service_type: legalType,
           type: String(x.type || ''),
           service_id: String(x.serviceId || ''),
           label: String(x.label || '').slice(0, 160),
           qty: Math.max(1, Math.min(10, parseInt(x.qty, 10) || 1)),
+          unit: (parseInt(x.qty, 10) || 1) > 1 ? 'идентичная единица услуги' : 'позиция',
+          unit_definition_pending: true,
           disc: String(x.disc || ''),
           term: String(x.term || ''),
           tier: String(x.tier || ''),
           topic: String(x.topic || '').slice(0, 400),
           deadline: String(x.deadline || '').slice(0, 120),
+          schedule: {
+            customer_requested_deadline: String(x.deadline || '').slice(0, 120),
+            contractor_due_at_pending: true,
+            start_conditions_pending: true
+          },
           requirements: String(x.requirements || '').slice(0, 1500),
           note: String(x.note || '').slice(0, 240),
           parent_client_id: String(x.parentId || ''),
+          parent_requested_line_id: String(x.parentId || ''),
+          separability_pending: true,
+          scope: {
+            topic: String(x.topic || '').slice(0, 400),
+            customer_requirements: String(x.requirements || '').slice(0, 1500),
+            included_pending: true,
+            excluded_pending: true
+          },
+          deliverables_pending: true,
+          acceptance_criteria_pending: true,
+          corrections_pending: true,
+          price_status: 'estimate_only',
           answers: x.answers && typeof x.answers === 'object' ? x.answers : {},
-          quote_preview: itemQuote(x)
+          quote_preview: qPreview
         };
       }),
+      specification_required_before_payment: true,
+      required_contract_fields: [
+        'server_line_id', 'unit_definition', 'included', 'excluded', 'customer_inputs',
+        'deliverables', 'contractor_due_at', 'dependencies', 'acceptance_criteria',
+        'unit_price_minor', 'line_price_minor', 'discount_allocations',
+        'payment_stage_allocations', 'cancellation_effect'
+      ],
       benefits_intent: { use_bonus:!!data.checkout.useBonus, bonus_amount:benefits().bonus || 0 },
       quote_preview: { low:q.low, high:q.high }
     };
