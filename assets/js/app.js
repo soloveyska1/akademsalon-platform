@@ -168,14 +168,21 @@
   window.SalonServices = [
     { id:'plan', label:'Разбор плана', from:3000, unit:'', code:'pl', fixed:true,
       desc:'Структура глав, реалистичный срок и фиксированная смета за 1–2 дня. При продолжении работы стоимость разбора зачитывается полностью.',
-      priceFor:function(a){ return (a.work === 'Магистерская' || a.work === 'Кандидатская') ? 5000 : 3000; },
+      priceFor:function(a){ return (a.work === 'master' || a.work === 'candidate') ? 5000 : 3000; },
       ask:[
         { id:'work', label:'Для какой работы нужен план?', short:'Работа', type:'chips', req:true,
-          opts:['Курсовая','Диплом / ВКР','Магистерская','Кандидатская','Отчёт по практике','Другое'] },
+          opts:[
+            { value:'course', label:'Курсовая' },
+            { value:'diplom', label:'Диплом / ВКР' },
+            { value:'master', label:'Магистерская' },
+            { value:'candidate', label:'Кандидатская' },
+            { value:'practice', label:'Отчёт по практике' },
+            { value:'other', label:'Другое' }
+          ] },
         { id:'disc', label:'Направление', short:'Направление', type:'chips',
           opts:['Гуманитарные / экономика','Юриспруденция / педагогика','Технические / IT','Медицина / финансы'] },
         { id:'req', label:'Требования кафедры', short:'Требования', type:'textarea',
-          ph:'Объём, число глав, особые пожелания. Методичку приложите файлом после отправки.' }
+          ph:'Объём, число глав, пожелания научного руководителя — всё, что уже известно.' }
       ] },
     { id:'ai',    label:'Чистка текста от следов ИИ',        from:2500, unit:'',       code:'ai',
       desc:'Редактура и стилистическая доработка: убираем машинальные обороты и канцелярит, текст читается как живой.',
@@ -1231,7 +1238,7 @@
   Salon.valid = {
     email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); },
     phone: function (v) { return v.replace(/\D/g, '').length === 11; },
-    telegram: function (v) { return /^@\w{4,}$/.test(v); },
+    telegram: function (v) { return /^@\w{4,}$/.test(v) || /^(https?:\/\/)?t\.me\/\w{4,}$/i.test(v.trim()); },
     vk: function (v) { return /^(https?:\/\/)?(m\.)?(vk\.com|vk\.me)\/[A-Za-z0-9_.]{2,}$/i.test(v.trim()); },
     contact: function (v) { return Salon.valid.phone(v) || Salon.valid.telegram(v) || Salon.valid.email(v) || Salon.valid.vk(v); }
   };

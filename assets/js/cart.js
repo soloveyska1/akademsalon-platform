@@ -578,7 +578,7 @@
         : 'Добавить ' + (current && current.kind === 'service' ? 'услугу' : 'работу') + ' в смету';
     });
     document.querySelectorAll('[data-cart-submit]').forEach(function (el) {
-      el.textContent = 'Отправить заявку мастеру';
+      el.textContent = el.getAttribute('data-cart-submit-label') || 'Отправить заявку мастеру';
     });
     var guide = '<nav class="cart-guide" aria-label="Этапы оформления">' +
       '<button type="button" class="done" data-cart-jump="cartItems"><b>01</b> Состав</button><i></i><button type="button" class="' +

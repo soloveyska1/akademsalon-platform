@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
 <link rel="stylesheet" href="assets/css/cart.css?v=20260723e" />
-<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <style>
   /* ============================================================
      РАСЧЁТ ЗАКАЗА — пошаговый бланк (визард) + липкая смета
@@ -403,6 +403,246 @@
   .fb-copied{color:var(--verify,#2E6B4F);font-weight:600}
   #fbCopy{margin-top:2px}
   #fbRetry{margin-top:12px}
+
+  /* ============================================================
+     РАЗБОР ПЛАНА · ЛИСТ PL-01
+     Отдельный редакционный формуляр вместо обрезанного калькулятора.
+     ============================================================ */
+  html.service-plan .chapter.conf-chapter{padding-top:calc(56px + clamp(22px,4vh,38px))}
+  html.service-plan .conf-chapter>.ch-rule{margin-bottom:0}
+  html.service-plan .conf-chapter>.ch-rule .ch-no{color:var(--wax)}
+  html.service-plan .conf-head{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,.72fr);
+    gap:clamp(24px,5vw,62px);align-items:center;margin:0;padding:clamp(26px,4vw,44px);
+    border:1px solid var(--hairline-strong);border-bottom:0;border-radius:4px 4px 0 0;
+    background:var(--sheet);
+  }
+  html.service-plan .conf-head::before{
+    content:"Разбор плана · готовность 1–2 дня";grid-column:1;align-self:end;
+    font:9px/1.25 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--wax);
+  }
+  html.service-plan .conf-head h1{
+    grid-column:1;margin:7px 0 12px;max-width:13ch;
+    font:400 clamp(38px,5.6vw,64px)/.98 var(--serif);letter-spacing:-.035em;
+  }
+  html.service-plan .conf-head>.petit{
+    grid-column:1;max-width:48ch;margin:0;font-size:14px;line-height:1.62;color:var(--ink-soft);
+  }
+  html.service-plan .estimate-builder-note{display:none}
+  html.service-plan .plan-offer{
+    grid-column:2;grid-row:1/5;width:100%;max-width:none;margin:0;padding:0;
+    border:1px solid var(--hairline-strong);border-radius:3px;background:var(--paper);
+    box-shadow:0 18px 46px -42px rgba(34,32,27,.58);
+  }
+  html.service-plan .plan-offer .po-head{
+    position:relative;margin:0;padding:15px 16px 13px;border-bottom:3px double var(--hairline-strong);
+  }
+  html.service-plan .plan-offer .po-head::after{
+    content:"PL–01";position:absolute;right:16px;bottom:12px;
+    font:8px/1 var(--mono);letter-spacing:.12em;color:var(--ink-faint);
+  }
+  html.service-plan .plan-offer .po-head .caps{max-width:18ch;line-height:1.45}
+  html.service-plan .plan-offer .po-price{
+    padding-right:54px;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  }
+  html.service-plan .plan-offer .po-price b{font-size:24px}
+  html.service-plan .plan-offer .po-list{gap:0;padding:3px 15px 5px}
+  html.service-plan .plan-offer .po-list li{
+    display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;padding:9px 0;
+    border-bottom:1px dotted var(--hairline);font-size:12.5px;line-height:1.4;
+  }
+  html.service-plan .plan-offer .po-list li:last-child{border-bottom:0}
+  html.service-plan .plan-offer .po-list li small{
+    display:block;margin-top:2px;color:var(--ink-faint);font-size:10.5px;line-height:1.35;
+  }
+  html.service-plan .plan-offer .po-list li::before{
+    content:counter(plan-result,decimal-leading-zero);counter-increment:plan-result;
+    margin:2px 0 0;font:8px/1.2 var(--mono);color:var(--wax);
+  }
+  html.service-plan .plan-offer .po-list{counter-reset:plan-result}
+  html.service-plan .plan-offer .po-note{
+    margin:0;padding:12px 15px;border-top:1px solid var(--hairline);
+    background:var(--verify-soft);font-size:11.5px;line-height:1.5;color:var(--ink-soft);
+  }
+  html.service-plan .plan-offer .po-note::before{
+    content:"✓";margin-right:7px;color:var(--verify);font-family:var(--mono);
+  }
+
+  html.service-plan .split{display:block}
+  html.service-plan .conf-steps{
+    position:relative;padding:clamp(24px,4vw,42px);border:1px solid var(--hairline-strong);
+    border-top:3px double var(--hairline-strong);border-radius:0 0 4px 4px;background:var(--sheet);
+    box-shadow:0 25px 70px -60px rgba(34,32,27,.65);
+  }
+  html.service-plan .conf-steps::after{
+    content:"¶";position:absolute;right:clamp(18px,3vw,34px);top:18px;
+    color:var(--wax);opacity:.12;font:italic 66px/1 var(--serif);transform:rotate(-7deg);pointer-events:none;
+  }
+  html.service-plan .wprog,html.service-plan .wnav{display:none!important}
+  html.service-plan .wstep-final{max-width:920px;margin:0 auto}
+  html.service-plan .wstep-final>#ws4t{
+    margin:0 80px 7px 0;font:400 clamp(27px,3.3vw,38px)/1.08 var(--serif);
+  }
+  html.service-plan .conf-final-intro{
+    display:block;margin:0 0 23px;padding-bottom:17px;border-bottom:1px solid var(--hairline);
+  }
+  html.service-plan .conf-final-intro .caps{display:block;margin-bottom:5px;color:var(--wax)}
+  html.service-plan .conf-final-intro p{max-width:62ch;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+  .plan-form-head{display:none}
+  html.service-plan .plan-form-head{
+    display:grid;grid-template-columns:33px minmax(0,1fr);gap:11px;align-items:start;
+    margin:0 0 14px;padding:0 0 12px;border-bottom:1px solid var(--hairline);
+  }
+  html.service-plan .plan-form-head .plan-form-no,
+  html.service-plan .final-section-no{
+    display:grid;place-items:center;width:29px;height:29px;border:1px solid var(--hairline-strong);
+    border-radius:50%;font:8.5px/1 var(--mono);color:var(--wax);
+  }
+  html.service-plan .plan-form-head b,
+  html.service-plan .final-section-head b{
+    display:block;font:500 19px/1.15 var(--serif);color:var(--ink);
+  }
+  html.service-plan .plan-form-head small,
+  html.service-plan .final-section-head small{
+    display:block;margin-top:3px;font-size:11px;line-height:1.4;color:var(--ink-faint);
+  }
+  html.service-plan #svcAsk{
+    display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-bottom:4px;
+  }
+  html.service-plan #svcAsk .svc-q:first-of-type{grid-column:1/-1}
+  html.service-plan .svc-q{
+    min-width:0;margin:0;padding:14px 0 17px;border:0;border-bottom:1px dotted var(--hairline);
+  }
+  html.service-plan .svc-q>legend,
+  html.service-plan .svc-q>label{
+    display:block;width:100%;margin:0 0 9px;padding:0;
+    font:600 10px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  html.service-plan .plan-choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+  html.service-plan .svc-q[data-plan-question="disc"] .plan-choice-grid{grid-template-columns:1fr 1fr}
+  html.service-plan .plan-choice{
+    position:relative;display:flex;align-items:center;min-height:48px;padding:9px 30px 9px 11px;
+    border:1px solid var(--hairline);border-radius:3px;background:var(--paper);
+    color:var(--ink-soft);font:12.5px/1.3 var(--sans);text-align:left;cursor:pointer;
+    transition:border-color .15s,background .15s,color .15s;
+  }
+  html.service-plan .plan-choice:hover{border-color:var(--hairline-strong);color:var(--ink)}
+  html.service-plan .plan-choice[aria-pressed="true"]{
+    border-color:var(--wax);background:linear-gradient(105deg,var(--wax-soft),var(--paper) 78%);color:var(--ink);
+  }
+  html.service-plan .plan-choice[aria-pressed="true"]::after{
+    content:"✓";position:absolute;right:10px;top:50%;transform:translateY(-50%);
+    color:var(--wax);font:11px/1 var(--mono);
+  }
+  html.service-plan .plan-choice:focus-visible{outline:2px solid var(--wax);outline-offset:2px}
+  html.service-plan .svc-q textarea{min-height:112px;padding:12px 13px;border-radius:3px}
+  html.service-plan .final-section{margin:0;padding:19px 0 3px;border:0;border-bottom:1px solid var(--hairline)}
+  html.service-plan .final-section-head{
+    display:grid;grid-template-columns:33px minmax(0,1fr);gap:11px;align-items:start;
+    margin:0 0 15px;
+  }
+  html.service-plan .final-task{display:grid;grid-template-columns:1fr .55fr;gap:0 16px}
+  html.service-plan .final-task .final-section-head{grid-column:1/-1}
+  html.service-plan .final-task .field{margin-bottom:14px}
+  html.service-plan .final-task .field:has(#fDetails){display:none}
+  html.service-plan .final-section .field>label,
+  html.service-plan #ctGuest .field>label{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    margin-bottom:7px;font-size:9.5px;letter-spacing:.1em;
+  }
+  html.service-plan .field-optional{
+    padding:3px 6px;border-radius:999px;background:var(--paper-2);
+    color:var(--ink-faint);font:8px/1 var(--sans);letter-spacing:.02em;text-transform:none;
+  }
+  html.service-plan .final-files .field{margin-bottom:14px}
+  html.service-plan .att-add{
+    justify-content:flex-start;min-height:58px;border-radius:3px;background:var(--paper-2);text-align:left;
+  }
+  html.service-plan .compose-gate{display:none!important}
+  html.service-plan #checkoutFields{display:block!important}
+  html.service-plan .final-contact{border-bottom:0}
+  html.service-plan #ctAuthed{padding:13px 14px;border:1px solid var(--verify);background:var(--verify-soft)}
+  html.service-plan #ctGuest{
+    display:grid;grid-template-columns:minmax(0,.66fr) minmax(0,1.34fr);gap:0 16px;
+  }
+  html.service-plan #ctGuest>#tgLoginBtn,
+  html.service-plan #ctGuest>.contact-or,
+  html.service-plan #ctGuest>.consent-row{grid-column:1/-1}
+  html.service-plan #ctGuest .contact-or{
+    display:flex;align-items:center;gap:10px;margin:2px 0 14px;color:var(--ink-faint);
+    font:8.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  }
+  html.service-plan #ctGuest .contact-or::before,
+  html.service-plan #ctGuest .contact-or::after{content:"";height:1px;flex:1;background:var(--hairline)}
+  html.service-plan #tgLoginBtn{margin-bottom:11px}
+  html.service-plan .consent-row{margin:4px 0 0}
+  html.service-plan .final-more-toggle,
+  html.service-plan .final-more-body{display:none!important}
+  html.service-plan #btnSubmit{
+    width:100%;min-height:54px;margin-top:19px;justify-content:center;font-size:14px;
+  }
+  html.service-plan .wsubmit-note{margin:10px auto 0;text-align:center;max-width:66ch}
+  html.service-plan .conf-aside{display:none}
+  html.service-plan .site-footer{margin-top:clamp(34px,5vw,58px)}
+  html[data-theme="dark"].service-plan .btn-wax{color:#211914}
+
+  @media(max-width:880px){
+    html.service-plan .conf-head{
+      grid-template-columns:1fr;gap:20px;padding:24px 20px;
+    }
+    html.service-plan .conf-head::before,
+    html.service-plan .conf-head h1,
+    html.service-plan .conf-head>.petit,
+    html.service-plan .plan-offer{grid-column:1;grid-row:auto}
+    html.service-plan .conf-head h1{font-size:clamp(36px,9vw,50px)}
+    html.service-plan .plan-offer{max-width:none}
+    html.service-plan .conf-steps{padding:23px 18px}
+    html.service-plan #svcAsk{grid-template-columns:1fr}
+    html.service-plan #svcAsk .svc-q{grid-column:1}
+    html.service-plan .plan-choice-grid{grid-template-columns:1fr 1fr}
+    html.service-plan #btnSubmit{display:none}
+    html.service-plan .conf-mcta .mq-panel{display:none!important}
+    html.service-plan .conf-mcta .mq-bar{display:grid;grid-template-columns:minmax(0,.78fr) minmax(148px,1.22fr)}
+    html.service-plan .conf-mcta #mBack{display:none!important}
+    html.service-plan .conf-mcta .mq-total{
+      min-width:0;justify-content:flex-start;padding:6px 12px;pointer-events:none;
+    }
+    html.service-plan .conf-mcta .mq-more{display:none}
+    html.service-plan .conf-mcta #mNext{display:flex;justify-content:center}
+  }
+  @media(max-width:560px){
+    html.service-plan .conf-chapter>.ch-rule{margin-left:2px;margin-right:2px}
+    html.service-plan .conf-head{padding:22px 16px}
+    html.service-plan .conf-head h1{font-size:38px}
+    html.service-plan .plan-offer .po-head{padding:13px}
+    html.service-plan .plan-offer .po-list{
+      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:4px 9px;
+    }
+    html.service-plan .plan-offer .po-list li{
+      display:block;min-width:0;padding:8px 7px;border-bottom:0;border-right:1px dotted var(--hairline);
+      font-size:10.5px;line-height:1.3;
+    }
+    html.service-plan .plan-offer .po-list li:last-child{border-right:0}
+    html.service-plan .plan-offer .po-list li::before{display:block;margin:0 0 4px}
+    html.service-plan .plan-offer .po-list li small{display:none}
+    html.service-plan .conf-steps{padding:21px 14px}
+    html.service-plan .wstep-final>#ws4t{margin-right:52px;font-size:29px}
+    html.service-plan .conf-steps::after{right:13px;font-size:50px}
+    html.service-plan .plan-choice-grid,
+    html.service-plan .svc-q[data-plan-question="disc"] .plan-choice-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+    html.service-plan .plan-choice{min-width:0;min-height:50px;padding-left:9px;font-size:11.8px}
+    html.service-plan .final-task{grid-template-columns:1fr}
+    html.service-plan #ctGuest{grid-template-columns:1fr}
+    html.service-plan #ctGuest>.field-name{display:none}
+    html.service-plan .ct-chips{gap:5px}
+    html.service-plan .ct-chip{padding:7px 9px;font-size:11px}
+    html.service-plan .conf-mcta .mq-bar{grid-template-columns:minmax(0,.72fr) minmax(154px,1.28fr)}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html.service-plan .plan-choice{transition:none}
+  }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -570,6 +810,10 @@
                 <p>Заполните только то, что уже известно. Остальное мастер уточнит после заявки.</p>
               </div>
               <!-- анкета отдельной услуги: вопросы приходят из SalonServices[].ask -->
+              <header class="plan-form-head">
+                <span class="plan-form-no">01</span>
+                <span><b>Основа плана</b><small>Выберите вид работы и добавьте всё, что уже известно</small></span>
+              </header>
               <div id="svcAsk" hidden></div>
               <section class="final-section final-task">
                 <header class="final-section-head">
@@ -635,11 +879,11 @@
                   <div class="field">
                     <label for="fContact">Куда прислать ответ</label>
                     <div class="ct-chips" id="ctChips" role="group" aria-label="Способ связи">
-                      <button type="button" class="ct-chip on" data-ct="tg">Telegram</button>
-                      <button type="button" class="ct-chip" data-ct="vk">ВКонтакте</button>
-                      <button type="button" class="ct-chip" data-ct="wa">WhatsApp</button>
-                      <button type="button" class="ct-chip" data-ct="ph">Телефон</button>
-                      <button type="button" class="ct-chip" data-ct="em">Почта</button>
+                      <button type="button" class="ct-chip on" data-ct="tg" aria-pressed="true">Telegram</button>
+                      <button type="button" class="ct-chip" data-ct="vk" aria-pressed="false">ВКонтакте</button>
+                      <button type="button" class="ct-chip" data-ct="wa" aria-pressed="false">WhatsApp</button>
+                      <button type="button" class="ct-chip" data-ct="ph" aria-pressed="false">Телефон</button>
+                      <button type="button" class="ct-chip" data-ct="em" aria-pressed="false">Почта</button>
                     </div>
                     <input type="text" id="fContact" maxlength="120" autocomplete="tel" placeholder="@nickname — ник в Telegram" />
                     <p class="petit" id="ctHint">Укажите ник или ссылку — мастер напишет напрямую.</p>
@@ -919,9 +1163,9 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260723q"></script>
+<script src="assets/js/app.js?v=20260723r"></script>
 <script src="assets/js/extras.js?v=20260723i"></script>
-<script src="assets/js/cart.js?v=20260723e"></script>
+<script src="assets/js/cart.js?v=20260723f"></script>
 <script>
 function initConf() {
   'use strict';
@@ -965,6 +1209,8 @@ function initConf() {
   } catch (e) {}
   var svcSrvId = svc ? ({ plan: 'svc_plan', ai: 'svc_ai', review: 'svc_review', tutor: 'svc_tutor',
                           norm: 'svc_norm', defense: 'svc_defense', defensepack: 'svc_defense_pack' }[svc.id] || 'custom') : '';
+  var isPlanService = !!(svc && svc.id === 'plan');
+  var SERVICE_DRAFT_KEY = 'salon_service_draft_v1';
 
   /* --- восстановление черновика (главная/прайс пишут сюда предвыбор) --- */
   var draft = S.store.get('salon_draft', null);
@@ -1080,21 +1326,71 @@ function initConf() {
     document.body.classList.add('svc-compose');
     var composeGate = $('composeGate');
     var checkoutFields = $('checkoutFields');
-    if (composeGate) composeGate.hidden = false;
-    if (checkoutFields) checkoutFields.hidden = true;
+    if (isPlanService) {
+      document.body.classList.add('svc-plan', 'svc-checkout');
+      if (composeGate) composeGate.hidden = true;
+      if (checkoutFields) checkoutFields.hidden = false;
+    } else {
+      if (composeGate) composeGate.hidden = false;
+      if (checkoutFields) checkoutFields.hidden = true;
+    }
     var svcFrom = 'от ' + C.fmt(svc.from) + ' ₽' + (svc.unit || '');
     var head = document.querySelector('.conf-head');
     if (head) {
       var h1 = head.querySelector('h1');
-      if (h1) h1.textContent = svc.label;
+      if (h1) h1.textContent = isPlanService ? 'Сначала — ясная структура' : svc.label;
       var sub = head.querySelector('.petit:not(.plan-note)');
-      if (sub) sub.textContent = svc.desc + ' Оценка бесплатна: мастер уточнит детали и назовёт точную цену — решение останется за вами.';
+      if (sub) sub.textContent = isPlanService
+        ? 'Пришлите тему и, если есть, методичку. Мастер составит главы и параграфы, календарь работы и зафиксирует её полную стоимость.'
+        : svc.desc + ' Оценка бесплатна: мастер уточнит детали и назовёт точную цену — решение останется за вами.';
     }
     var wsT = $('ws4t');
-    if (wsT) wsT.textContent = 'Детали задачи';
+    if (wsT) wsT.textContent = isPlanService ? 'Формуляр разбора' : 'Детали задачи';
     var wp = document.querySelector('.wprog');
     if (wp) wp.style.display = 'none'; /* hidden перебивается display:flex из CSS */
-    if (detailsIn) detailsIn.placeholder = 'Объём (страницы), вуз и методичка, особые пожелания — всё, что знаете';
+    if (detailsIn) detailsIn.placeholder = isPlanService
+      ? 'Требования кафедры, пожелания научного руководителя, число глав'
+      : 'Объём (страницы), вуз и методичка, особые пожелания — всё, что знаете';
+    if (isPlanService) {
+      var finalIntro = document.querySelector('.conf-final-intro');
+      if (finalIntro) {
+        var introCap = finalIntro.querySelector('.caps');
+        var introText = finalIntro.querySelector('p');
+        if (introCap) introCap.textContent = 'Лист PL–01 · заполнение 3–5 минут';
+        if (introText) introText.textContent = 'Заполните только известное. Тему можно написать черновиком, а методичку — приложить сейчас или прислать позже.';
+      }
+      var taskHead = document.querySelector('.final-task .final-section-head');
+      var filesHead = document.querySelector('.final-files .final-section-head');
+      var contactHead = document.querySelector('.final-contact .final-section-head');
+      if (taskHead) {
+        taskHead.querySelector('.final-section-no').textContent = '02';
+        taskHead.querySelector('b').textContent = 'Тема и срок';
+        taskHead.querySelector('small').textContent = 'Можно указать черновую формулировку и желаемую дату';
+      }
+      if (filesHead) {
+        filesHead.querySelector('.final-section-no').textContent = '03';
+        filesHead.querySelector('b').textContent = 'Материалы';
+        filesHead.querySelector('small').textContent = 'Методичка, ТЗ или комментарии научного руководителя';
+      }
+      if (contactHead) {
+        contactHead.querySelector('.final-section-no').textContent = '04';
+        contactHead.querySelector('b').textContent = 'Куда прислать подтверждение';
+        contactHead.querySelector('small').textContent = 'Мастер проверит тему и подтвердит старт';
+      }
+      var topicLabel = topicIn && topicIn.closest('.field') && topicIn.closest('.field').querySelector('label');
+      if (topicLabel) topicLabel.innerHTML = 'Тема или направление темы <span class="field-optional">можно черновиком</span>';
+      if (topicIn) topicIn.placeholder = 'Например: цифровизация туризма в Татарстане';
+      if (deadlineIn) deadlineIn.placeholder = 'Например: план нужен к 25 июля';
+      if (detailsIn && detailsIn.closest('.field')) detailsIn.closest('.field').hidden = true;
+      var fileText = $('attAdd') && $('attAdd').querySelector('span');
+      if (fileText) fileText.textContent = 'Прикрепить методичку или комментарии научрука';
+      var submitNote = document.querySelector('.wsubmit-note');
+      if (submitNote) submitNote.innerHTML = '<span aria-hidden="true">✓</span> Сейчас ничего не списываем. Обычно отвечаем за 15–30 минут в рабочее время.';
+      if (btnSubmit) {
+        btnSubmit.setAttribute('data-cart-submit-label','Отправить заявку на разбор · 3 000 ₽');
+        btnSubmit.textContent = 'Отправить заявку на разбор · 3 000 ₽';
+      }
+    }
     /* смета «от» без множителей — и в колонке, и в мобильной панели */
     document.querySelectorAll('.lq-head').forEach(function (el) {
       el.textContent = 'Смета · отдельная услуга';
@@ -1116,7 +1412,9 @@ function initConf() {
     if (priceSrEl) priceSrEl.textContent = svcFrom;
     put('high', 'итог зависит от объёма — смету зафиксируем после разбора');
     put('pay', 'Оплата — после согласования точной сметы; небольшие услуги обычно оплачиваются одним платежом.');
-    document.title = svc.label + ' — заявка | Академический Салон';
+    document.title = isPlanService
+      ? 'Заказать разбор плана — 3 000 ₽ | Академический Салон'
+      : svc.label + ' — заявка | Академический Салон';
     /* пришли из готового дела («Впереди защита?») — работа уже у мастера,
        тему не переспрашиваем, а подставляем ссылку на дело */
     try {
@@ -1132,6 +1430,19 @@ function initConf() {
 
   /* --- анкета услуги: свои вопросы под каждую особенную позицию --- */
   var svcAnswers = {};
+  var svcDraft = isPlanService ? S.store.get(SERVICE_DRAFT_KEY, null) : null;
+  if (svcDraft && svcDraft.service === svc.id && svcDraft.answers) {
+    Object.keys(svcDraft.answers).forEach(function (k) { svcAnswers[k] = svcDraft.answers[k]; });
+  }
+  function svcOptValue(o) { return o && typeof o === 'object' ? o.value : o; }
+  function svcOptLabel(o) { return o && typeof o === 'object' ? o.label : o; }
+  function svcAnswerLabel(q, value) {
+    var opts = (q && q.opts) || [];
+    for (var i = 0; i < opts.length; i++) {
+      if (String(svcOptValue(opts[i])) === String(value)) return String(svcOptLabel(opts[i]));
+    }
+    return value || '';
+  }
   function svcPriceVal() {
     return svc && svc.priceFor ? svc.priceFor(svcAnswers) : (svc ? svc.from : 0);
   }
@@ -1144,6 +1455,12 @@ function initConf() {
     if (priceSrEl) priceSrEl.textContent = v;
     var op = $('svcOfferPrice');
     if (op) op.textContent = v;
+    if (isPlanService && btnSubmit) {
+      var submitLabel = 'Отправить заявку на разбор · ' + v;
+      btnSubmit.setAttribute('data-cart-submit-label',submitLabel);
+      btnSubmit.textContent = submitLabel;
+    }
+    if (isPlanService && mNext) mNext.textContent = 'Отправить заявку';
     renderDeal();
   }
   if (svc) {
@@ -1153,17 +1470,34 @@ function initConf() {
       askWrap.innerHTML = svc.ask.map(function (q) {
         var lbl = q.label + (q.req ? '' : ' · необязательно');
         if (q.type === 'chips') {
-          return '<div class="field svc-q"><label>' + lbl + '</label>' +
-            '<div class="ct-chips" role="group" aria-label="' + q.label + '">' +
+          var planClass = isPlanService ? ' plan-choice-grid' : ' ct-chips';
+          var outer = isPlanService
+            ? '<fieldset class="field svc-q" data-plan-question="' + q.id + '"><legend>' + lbl + '</legend>'
+            : '<div class="field svc-q"><label>' + lbl + '</label>';
+          return outer +
+            '<div class="' + planClass.trim() + '" role="group" aria-label="' + q.label + '">' +
             q.opts.map(function (o) {
-              return '<button type="button" class="ct-chip" data-ask="' + q.id + '" data-val="' + o + '">' + o + '</button>';
-            }).join('') + '</div></div>';
+              var value = svcOptValue(o), label = svcOptLabel(o);
+              var on = String(svcAnswers[q.id] || '') === String(value);
+              return '<button type="button" class="' + (isPlanService ? 'plan-choice' : 'ct-chip') +
+                (on ? ' on' : '') + '" data-ask="' + q.id + '" data-val="' + value +
+                '" aria-pressed="' + String(on) + '">' + label + '</button>';
+            }).join('') + '</div>' + (isPlanService ? '</fieldset>' : '</div>');
         }
         var inner = q.type === 'textarea'
           ? '<textarea id="ask_' + q.id + '" rows="3" maxlength="800" placeholder="' + (q.ph || '') + '"></textarea>'
           : '<input type="text" id="ask_' + q.id + '" maxlength="200" autocomplete="off" placeholder="' + (q.ph || '') + '" />';
-        return '<div class="field svc-q"><label for="ask_' + q.id + '">' + lbl + '</label>' + inner + '</div>';
+        return isPlanService
+          ? '<fieldset class="field svc-q" data-plan-question="' + q.id + '"><legend>' + lbl + '</legend>' + inner + '</fieldset>'
+          : '<div class="field svc-q"><label for="ask_' + q.id + '">' + lbl + '</label>' + inner + '</div>';
       }).join('');
+      if (svcDraft && svcDraft.answers) {
+        svc.ask.forEach(function (q) {
+          if (q.type === 'chips') return;
+          var el = $('ask_' + q.id);
+          if (el && svcDraft.answers[q.id]) el.value = svcDraft.answers[q.id];
+        });
+      }
       askWrap.addEventListener('click', function (e) {
         var chip = e.target.closest('[data-ask]');
         if (!chip) return;
@@ -1171,26 +1505,32 @@ function initConf() {
         svcAnswers[qid] = chip.getAttribute('data-val');
         askWrap.querySelectorAll('[data-ask="' + qid + '"]').forEach(function (c) {
           c.classList.toggle('on', c === chip);
+          c.setAttribute('aria-pressed', String(c === chip));
+          c.removeAttribute('aria-invalid');
         });
         svcPricePaint();
+        saveDraftSoon();
+      });
+      askWrap.addEventListener('input', function (e) {
+        if (e.target && e.target.removeAttribute) e.target.removeAttribute('aria-invalid');
+        saveDraftSoon();
       });
     }
     /* карточка-квитанция в шапке: у разбора плана — полная, у прочих — цена */
     var offer = $('svcOffer');
     if (offer) {
       offer.hidden = false;
-      $('svcOfferCap').textContent = 'Отдельная услуга · ' + svc.label;
+      $('svcOfferCap').textContent = isPlanService ? 'Лист результата' : 'Отдельная услуга · ' + svc.label;
       $('svcOfferPrice').textContent = svc.fixed
         ? C.fmt(svc.from) + ' ₽' : 'от ' + C.fmt(svc.from) + ' ₽' + (svc.unit || '');
       if (svc.id === 'plan') {
         $('svcOfferList').innerHTML =
-          '<li><b>Структура глав</b> — план, который можно нести научному руководителю</li>' +
-          '<li><b>Реалистичный срок</b> — календарь сдачи по частям</li>' +
-          '<li><b>Фиксированная смета</b> — цена работы после разбора не меняется</li>';
+          '<li><span><b>Структура глав и параграфов</b><small>Можно нести научному руководителю</small></span></li>' +
+          '<li><span><b>Реалистичный календарь</b><small>Сроки по частям и честный дедлайн</small></span></li>' +
+          '<li><span><b>Фиксированная смета</b><small>Цена всей работы до её начала</small></span></li>';
         var on = $('svcOfferNote');
         on.hidden = false;
-        on.innerHTML = 'Продолжите работу в течение 14 дней — стоимость разбора <b>зачтётся полностью</b>. ' +
-          'Магистерские и кандидатские — 5 000 ₽ (цена ниже пересчитается сама).';
+        on.innerHTML = 'Продолжите работу в течение 14 дней — <b>зачтём всю сумму</b>. Магистерские и кандидатские — 5 000 ₽.';
       } else {
         $('svcOfferList').innerHTML = '';
       }
@@ -1317,7 +1657,30 @@ function initConf() {
   })();
 
   function saveDraft() {
-    if (!canSave || svc) return; /* заявка на услугу не трогает черновик расчёта */
+    if (!canSave) return;
+    if (svc) {
+      if (!isPlanService) return;
+      var serviceAnswers = {};
+      (svc.ask || []).forEach(function (q) {
+        serviceAnswers[q.id] = q.type === 'chips'
+          ? (svcAnswers[q.id] || '')
+          : (($('ask_' + q.id) || {}).value || '').trim();
+      });
+      S.store.set(SERVICE_DRAFT_KEY, {
+        service:svc.id,
+        answers:serviceAnswers,
+        fields:{
+          topic:topicIn ? topicIn.value : '',
+          deadline:deadlineIn ? deadlineIn.value : '',
+          name:$('fName') ? $('fName').value : '',
+          contact:$('fContact') ? $('fContact').value : '',
+          ct:ctKind || 'tg'
+        },
+        savedAt:Date.now()
+      });
+      return;
+    }
+    /* калькулятор полной работы хранит собственный независимый черновик */
     S.store.set('salon_draft', {
       state: { type: state.type, disc: state.disc, term: state.term, tier: state.tier },
       idx: idx,
@@ -1401,7 +1764,7 @@ function initConf() {
     return Math.max(0, Math.min(d, base));
   }
   function baseQuote() {
-    if (window.SalonCart && window.SalonCart.hasItems()) {
+    if (!isPlanService && window.SalonCart && window.SalonCart.hasItems()) {
       var cq = window.SalonCart.quote();
       return { low: cq.low, high: cq.high, fixed: cq.low === cq.high };
     }
@@ -1414,7 +1777,7 @@ function initConf() {
   }
   function renderDeal() {
     var q = baseQuote();
-    var cartOn = window.SalonCart && window.SalonCart.hasItems();
+    var cartOn = !isPlanService && window.SalonCart && window.SalonCart.hasItems();
     if (cartOn) {
       var cartPositionLabel = window.SalonCart.positionLabel(window.SalonCart.count());
       put('type', 'Состав · ' + cartPositionLabel);
@@ -1563,7 +1926,9 @@ function initConf() {
     if (mBack) mBack.hidden = svc ? true : idx === 0;
     if (mNext) {
       mNext.hidden = svc && !document.body.classList.contains('svc-checkout');
-      mNext.textContent = idx === 3 ? 'Отправить' : 'Далее';
+      mNext.textContent = isPlanService
+        ? 'Отправить заявку'
+        : (idx === 3 ? 'Отправить' : 'Далее');
     }
     if (mqPanel && !mqPanel.hidden) {
       mqPanel.hidden = true;
@@ -1587,6 +1952,12 @@ function initConf() {
     var lines = ['Заявка с сайта · ' + id];
     if (svc) {
       lines.push('Услуга: ' + svc.label);
+      (svc.ask || []).forEach(function (q) {
+        var answer = q.type === 'chips'
+          ? (svcAnswers[q.id] || '')
+          : (($('ask_' + q.id) || {}).value || '').trim();
+        if (answer) lines.push((q.short || q.label) + ': ' + svcAnswerLabel(q, answer));
+      });
     } else {
       var t = find(C.types, state.type), d = find(C.disciplines, state.disc);
       var s = find(C.terms, state.term), v = find(C.tiers, state.tier);
@@ -1599,7 +1970,9 @@ function initConf() {
     if (dt) lines.push('Требования: ' + dt);
     if (plan) lines.push('Формат: начать с разбора плана');
     if (svc) {
-      lines.push('Ставка: от ' + C.fmt(svc.from) + ' ₽' + (svc.unit || '') + ' — точная цена после разбора');
+      var servicePrice = svc.fixed ? svcPriceVal() : svc.from;
+      lines.push('Ставка: ' + (svc.fixed ? '' : 'от ') + C.fmt(servicePrice) + ' ₽' + (svc.unit || '') +
+        (svc.fixed ? ' — цена фиксированная' : ' — точная цена после разбора'));
     } else {
       var q = C.quote(state.type, state.disc, state.term, state.tier);
       lines.push('Смета: от ' + q.lowFmt + ' до ' + q.highFmt + ' ₽');
@@ -1630,7 +2003,10 @@ function initConf() {
     var b = e.target.closest('.ct-chip');
     if (!b) return;
     ctKind = b.getAttribute('data-ct');
-    ctChips.querySelectorAll('.ct-chip').forEach(function (x) { x.classList.toggle('on', x === b); });
+    ctChips.querySelectorAll('.ct-chip').forEach(function (x) {
+      x.classList.toggle('on', x === b);
+      x.setAttribute('aria-pressed', String(x === b));
+    });
     var inp = $('fContact'), hint = $('ctHint');
     if (inp) { applyContactMode(inp); inp.focus(); }
     if (hint) hint.textContent = CT_META[ctKind][1];
@@ -1639,18 +2015,20 @@ function initConf() {
   /* восстановление набранных полей из черновика: уход в Telegram или
      случайная перезагрузка больше не стирают тему, требования и контакт */
   (function () {
-    if (svc) return;
-    var f = draft && draft.fields;
+    if (svc && !isPlanService) return;
+    var f = isPlanService ? (svcDraft && svcDraft.fields) : (draft && draft.fields);
     if (f) {
       if (topicIn && !topicIn.value && f.topic) topicIn.value = f.topic;
       if (deadlineIn && !deadlineIn.value && f.deadline) deadlineIn.value = f.deadline;
-      if (detailsIn && !detailsIn.value && f.details) detailsIn.value = f.details;
+      if (!isPlanService && detailsIn && !detailsIn.value && f.details) detailsIn.value = f.details;
       if ($('fName') && !$('fName').value && f.name) $('fName').value = f.name;
       if ($('fContact') && !$('fContact').value && f.contact) $('fContact').value = f.contact;
       if (f.ct && CT_META[f.ct] && ctChips) {
         ctKind = f.ct;
         ctChips.querySelectorAll('.ct-chip').forEach(function (x) {
-          x.classList.toggle('on', x.getAttribute('data-ct') === ctKind);
+          var on = x.getAttribute('data-ct') === ctKind;
+          x.classList.toggle('on', on);
+          x.setAttribute('aria-pressed', String(on));
         });
         var rInp = $('fContact'), rHint = $('ctHint');
         if (rInp) applyContactMode(rInp);
@@ -1659,7 +2037,10 @@ function initConf() {
     }
     ['fTopic', 'fDeadline', 'fDetails', 'fName', 'fContact'].forEach(function (id) {
       var el = $(id);
-      if (el) el.addEventListener('input', saveDraftSoon);
+      if (el) el.addEventListener('input', function () {
+        el.removeAttribute('aria-invalid');
+        saveDraftSoon();
+      });
     });
   })();
   var CT_TAG = { tg: 'Telegram', vk: 'ВК', wa: 'WhatsApp', ph: 'Телефон', em: 'Почта' };
@@ -2137,7 +2518,7 @@ function initConf() {
   function submit() {
     if (submitting) return;
     var authed = !!(S.api && S.api.token());
-    var cartHasItems = !!(window.SalonCart && window.SalonCart.hasItems());
+    var cartHasItems = !!(!isPlanService && window.SalonCart && window.SalonCart.hasItems());
     if (cartHasItems && window.SalonCart.validate && !window.SalonCart.validate()) return;
     if (!cartHasItems && !cartCurrentValid()) return;
     var contact = $('fContact') ? $('fContact').value.trim() : '';
@@ -2145,11 +2526,13 @@ function initConf() {
     if (!authed) {
       if (!contact) {
         S.toast('Укажите @ник, ссылку VK, телефон или почту', { type: 'error' });
-        if (S.motion) S.motion.field($('fContact'), 'error'); $('fContact').focus(); return;
+        if (S.motion) S.motion.field($('fContact'), 'error');
+        $('fContact').setAttribute('aria-invalid','true'); $('fContact').focus(); return;
       }
       if (S.valid && S.valid.contact && !S.valid.contact(contact)) {
         S.toast('Укажите @ник, ссылку VK, телефон или почту', { type: 'error' });
-        if (S.motion) S.motion.field($('fContact'), 'error'); $('fContact').focus(); return;
+        if (S.motion) S.motion.field($('fContact'), 'error');
+        $('fContact').setAttribute('aria-invalid','true'); $('fContact').focus(); return;
       }
       if ($('fConsent') && !$('fConsent').checked) {
         S.toast('Нужно согласие, чтобы передать контакт мастеру', { type: 'error' });
@@ -2165,12 +2548,16 @@ function initConf() {
           ? (svcAnswers[q.id] || '')
           : (($('ask_' + q.id) || {}).value || '').trim();
         if (q.req && !v && !missing) missing = q;
-        return v ? (q.short || q.label) + ': ' + v : '';
+        return v ? (q.short || q.label) + ': ' + svcAnswerLabel(q, v) : '';
       }).filter(Boolean).join('\n');
       if (missing) {
         S.toast('Ответьте, пожалуйста: ' + missing.label.toLowerCase());
         var mel = document.querySelector('#svcAsk [data-ask="' + missing.id + '"], #ask_' + missing.id);
-        if (mel && mel.scrollIntoView) mel.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        if (mel) {
+          mel.setAttribute('aria-invalid', 'true');
+          if (mel.scrollIntoView) mel.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          if (mel.focus) mel.focus({ preventScroll:true });
+        }
         return;
       }
       if (svc.fixed) askText += (askText ? '\n' : '') + 'Прайс услуги: ' + C.fmt(svcPriceVal()) + ' ₽';
@@ -2194,7 +2581,8 @@ function initConf() {
       client_request_id: requestId()
     };
     submittedCartCount = 0;
-    if (window.SalonCart && window.SalonCart.hasItems()) {
+    submittedCartSnapshot = null;
+    if (cartHasItems) {
       var cartItems = window.SalonCart.items();
       var cartFirst = cartItems[0];
       submittedCartCount = cartItems.length;
@@ -2263,7 +2651,8 @@ function initConf() {
   function onSubmitOk(r) {
     pendingRequestId = '';
     if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
-    S.store.del('salon_draft');
+    if (isPlanService) S.store.del(SERVICE_DRAFT_KEY);
+    else if (!svc) S.store.del('salon_draft');
     renderDoneReceipt(submittedCartSnapshot);
     if (submittedCartCount && window.SalonCart) {
       window.SalonCart.clear();
@@ -2377,7 +2766,7 @@ function initConf() {
      с выдуманным номером — это потерянные лиды и доверие. --- */
   function fallbackPanel() {
     var id = 'AS-' + (1000 + Math.floor(Math.random() * 9000));
-    var text = ((window.SalonCart && window.SalonCart.hasItems())
+    var text = ((!isPlanService && window.SalonCart && window.SalonCart.hasItems())
         ? window.SalonCart.summary() : summaryText('черновик ' + id)) + '\n' +
       (($('fName') && $('fName').value.trim()) ? 'Имя: ' + $('fName').value.trim() + '\n' : '') +
       (contactValue() ? 'Связь: ' + contactValue() : '');
@@ -2470,16 +2859,22 @@ function initConf() {
       if (caps) caps.textContent = 'Не удалось подтвердить отправку';
       var dh = $('doneH');
       if (dh) dh.textContent = 'Ответ сервера не пришёл — смета сохранена';
+      var failedLead = done.querySelector('.done-lead');
+      if (failedLead) failedLead.textContent = 'Автоматическую отправку подтвердить не удалось. Ниже — сохранённая заявка и прямые способы передать её мастеру.';
       ['.done-steps', '.done-plus', '.done-seal', '.done-access', '.done-receipt', '.done-new'].forEach(function (sel) {
         var el = done.querySelector(sel);
         if (el) el.hidden = true;
       });
     }
-    if (svc && svc.id === 'plan') {
+    if (isPlanService && !failed) {
+      var planDoneH = $('doneH');
+      if (planDoneH) planDoneH.textContent = 'Заявка на разбор принята';
+      var planDoneLead = done.querySelector('.done-lead');
+      if (planDoneLead) planDoneLead.textContent = 'Сейчас ничего оплачивать не нужно. Мастер проверит материалы и подтвердит состав разбора.';
       var doneSpans = done.querySelectorAll('.done-steps li span:last-child');
-      if (doneSpans[0]) doneSpans[0].innerHTML = '<b>Изучим материалы</b><small>Тема, требования и методичка</small>';
-      if (doneSpans[1]) doneSpans[1].innerHTML = '<b>Проведём разбор</b><small>Структура глав, срок и фиксированная смета</small>';
-      if (doneSpans[2]) doneSpans[2].innerHTML = '<b>Продолжите с ясным планом</b><small>Стоимость разбора зачтётся в работу</small>';
+      if (doneSpans[0]) doneSpans[0].innerHTML = '<b>Проверим материалы</b><small>Тему, требования и методичку</small>';
+      if (doneSpans[1]) doneSpans[1].innerHTML = '<b>Подтвердим цену и срок</b><small>До оплаты вы увидите точные условия</small>';
+      if (doneSpans[2]) doneSpans[2].innerHTML = '<b>Подготовим план</b><small>Структура, календарь и смета за 1–2 дня</small>';
     }
     if (S.observeReveal) S.observeReveal(done);
     var seal = done.querySelector('.seal');
@@ -2526,7 +2921,7 @@ function initConf() {
           ? (svcAnswers[q.id] || '')
           : (($('ask_' + q.id) || {}).value || '').trim();
         answers[q.id] = answer;
-        if (answer) answerLines.push((q.short || q.label) + ': ' + answer);
+        if (answer) answerLines.push((q.short || q.label) + ': ' + svcAnswerLabel(q, answer));
         if (q.req && !answer) needs += 1;
       });
       var sp = svc.fixed ? svcPriceVal() : svc.from;
@@ -2562,7 +2957,11 @@ function initConf() {
     if (!missing) return true;
     S.toast('Сначала ответьте: ' + missing.label.toLowerCase(), { type:'error' });
     var el = document.querySelector('#svcAsk [data-ask="' + missing.id + '"], #ask_' + missing.id);
-    if (el && el.scrollIntoView) el.scrollIntoView({ block:'center', behavior:S.reduceMotion ? 'auto' : 'smooth' });
+    if (el) {
+      el.setAttribute('aria-invalid', 'true');
+      if (el.scrollIntoView) el.scrollIntoView({ block:'center', behavior:S.reduceMotion ? 'auto' : 'smooth' });
+      if (el.focus) el.focus({ preventScroll:true });
+    }
     return false;
   }
   if (window.SalonCart) {
