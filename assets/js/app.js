@@ -1866,7 +1866,10 @@
     var mnav = document.createElement('nav');
     mnav.className = 'mobile-cta mnav';
     mnav.setAttribute('aria-label', 'Быстрая навигация');
-    var mnCalc = here === 'index.html' ? '#smeta' : 'configurator.html';
+    var planLanding = here === 'plan.html';
+    var mnCalc = here === 'index.html' ? '#smeta'
+      : (planLanding ? 'configurator.html?service=pl' : 'configurator.html');
+    var mnCalcLabel = planLanding ? 'Разбор' : 'Смета';
     var CAB_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 19.4c.9-3.4 3.5-5 6.5-5s5.6 1.6 6.5 5"/></svg>';
     function mnItem(href, label, icon, cls) {
       var cur = href === here ? ' aria-current="page"' : '';
@@ -1882,7 +1885,7 @@
     mnav.innerHTML =
       mnItem('index.html', 'Главная', '¶') +
       mnItem('tariffs.html', 'Цены', '₽') +
-      mnItem(mnCalc, 'Смета', PEN_SVG, ' mn-calc') +
+      mnItem(mnCalc, mnCalcLabel, PEN_SVG, ' mn-calc') +
       mnItem('dashboard.html', 'Кабинет', CAB_SVG, ' mn-cab') +
       '<button class="mn-i mn-link" type="button" data-contact="1">' +
         '<span class="mn-ic" aria-hidden="true">' + CHAT_SVG + '</span>' +

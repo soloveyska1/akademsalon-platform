@@ -1434,6 +1434,14 @@ function initConf() {
   if (svcDraft && svcDraft.service === svc.id && svcDraft.answers) {
     Object.keys(svcDraft.answers).forEach(function (k) { svcAnswers[k] = svcDraft.answers[k]; });
   }
+  if (isPlanService) {
+    try {
+      var workFromPage = new URLSearchParams(location.search).get('work');
+      if ({ course:1, diplom:1, master:1, candidate:1, practice:1, other:1 }[workFromPage]) {
+        svcAnswers.work = workFromPage;
+      }
+    } catch (e) {}
+  }
   function svcOptValue(o) { return o && typeof o === 'object' ? o.value : o; }
   function svcOptLabel(o) { return o && typeof o === 'object' ? o.label : o; }
   function svcAnswerLabel(q, value) {

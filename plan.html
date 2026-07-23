@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Разбор плана курсовой или диплома за 3 000 ₽ — структура, срок и точная смета | Академический Салон</title>
-<meta name="description" content="Не готовы заказывать работу целиком? Мастер разберёт вашу тему: структура глав, реалистичный срок и фиксированная смета за 1–2 дня. 3 000 ₽ зачитываются в стоимость работы при продолжении." />
+<meta name="theme-color" content="#F6F1E7" />
+<title>Разбор плана курсовой и ВКР — 3 000–5 000 ₽ | Академический Салон</title>
+<meta name="description" content="Мастер проверит тему и методичку, соберёт структуру глав, календарь и точную смету. Без оплаты при заявке. Результат за 1–2 дня." />
 <link rel="canonical" href="https://akademsalon.ru/plan.html" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260724a" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260724a" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
@@ -17,208 +18,583 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Разбор плана — 3 000 ₽, зачитывается в стоимость работы" />
-<meta property="og:description" content="Структура глав, реалистичный срок и фиксированная смета за 1–2 дня. Продолжите работу — разбор бесплатный." />
+<meta property="og:title" content="Сначала — ясная структура. Разбор плана за 1–2 дня" />
+<meta property="og:description" content="Структура глав, календарь и точная смета. Заявка без оплаты; продолжать всю работу необязательно." />
 <meta property="og:url" content="https://akademsalon.ru/plan.html" />
 <meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Разбор плана — 3 000 ₽, зачитывается в стоимость работы" />
-<meta name="twitter:description" content="Структура глав, срок и фиксированная смета за 1–2 дня." />
+<meta name="twitter:title" content="Сначала — ясная структура. Разбор плана за 1–2 дня" />
+<meta name="twitter:description" content="Структура глав, календарь и точная смета. Заявка без оплаты." />
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
-  /* ============================================================
-     РАЗБОР ПЛАНА — посадочная услуги: первый лёгкий шаг к работе.
-     Язык «Оттиска»: квитанция, печать «зачтётся», шаги-формуляры.
-     ============================================================ */
-  .pl-hero{padding:calc(64px + clamp(40px,7vh,80px)) 0 0}
-  .pl-hero .caps{display:block;margin-bottom:14px}
-  .pl-hero h1{max-width:24ch;margin-bottom:clamp(14px,2vw,20px)}
-  .pl-hero .lead{max-width:56ch}
-  .pl-cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:clamp(20px,3vw,28px)}
-  .pl-price-tag{font-family:var(--serif);font-size:clamp(20px,2.6vw,26px);font-weight:600;white-space:nowrap}
-  .pl-price-tag small{display:block;font-family:var(--sans);font-size:12px;font-weight:400;color:var(--ink-soft)}
-
-  /* что на руках: три карточки-выписки */
-  .pl-out{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:clamp(18px,2.6vw,26px)}
-  .pl-card{background:var(--sheet);border:1px solid var(--hairline);border-top:3px solid var(--ink);
-    border-radius:var(--r);padding:20px 18px;box-shadow:0 1px 0 var(--hairline)}
-  .pl-card .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-faint)}
-  .pl-card h3{font-family:var(--serif);font-size:18px;font-weight:500;margin:8px 0 6px}
-  .pl-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin:0}
-
-  /* печать-квитанция про зачёт */
-  .pl-deal{position:relative;background:var(--sheet);border:1px dashed var(--hairline-strong);
-    border-radius:var(--r);padding:clamp(20px,3vw,28px);margin-top:clamp(20px,3.2vw,30px);
-    display:flex;gap:20px;align-items:center;flex-wrap:wrap}
-  .pl-deal .big{font-family:var(--serif);font-size:clamp(18px,2.4vw,23px);line-height:1.45;max-width:34ch;flex:1;min-width:min(100%,300px)}
-  .pl-deal .big b{color:var(--wax)}
-  .pl-seal-slot{flex:0 0 auto;margin-left:auto}
-
-  /* шаги */
-  .pl-steps{counter-reset:pls;display:grid;gap:0;margin-top:clamp(18px,2.6vw,26px)}
-  .pl-step{display:flex;gap:16px;padding:16px 0;border-top:1px solid var(--hairline);align-items:baseline}
-  .pl-step:last-child{border-bottom:1px solid var(--hairline)}
-  .pl-step .n{counter-increment:pls;flex:0 0 34px;font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
-  .pl-step .n::before{content:"0" counter(pls)}
-  .pl-step .t b{display:block;font-size:15.5px;font-weight:600;margin-bottom:3px}
-  .pl-step .t p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin:0;max-width:64ch}
-
-  /* для кого */
-  .pl-who{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:clamp(18px,2.6vw,26px)}
-  .pl-who .w{border-left:3px solid var(--hairline-strong);padding:2px 0 2px 14px;font-size:14px;color:var(--ink-soft);line-height:1.6}
-  .pl-who .w b{color:var(--ink)}
-
-  .pl-final{margin-top:clamp(26px,4vw,40px);text-align:center}
-  .pl-final .petit{margin-top:10px}
-
-  @media(max-width:860px){.pl-out,.pl-who{grid-template-columns:1fr}}
-  @media(max-width:560px){
-    .pl-cta-row .btn{width:100%}
-    .pl-deal{flex-direction:column;align-items:flex-start}
-    .pl-seal-slot{margin:0 auto}
+  /* «Рабочее дело PL–01»: страница показывает сам продукт, а не набор обещаний. */
+  .plan-page{--pl-rule:color-mix(in srgb,var(--ink) 14%,transparent)}
+  .plan-page main{overflow:hidden}
+  .pl-cover{
+    display:grid;grid-template-columns:minmax(0,1.04fr) minmax(390px,.96fr);gap:clamp(34px,6vw,76px);
+    align-items:center;padding:calc(64px + clamp(38px,6vh,68px)) 0 clamp(42px,6vw,76px);
   }
+  .pl-cover-copy{min-width:0}
+  .pl-cover-kicker{display:flex;align-items:center;gap:10px;margin-bottom:17px}
+  .pl-cover-kicker::before{content:"PL–01";padding:5px 7px;border:1px solid var(--hairline-strong);
+    border-radius:2px;font:8.5px/1 var(--mono);letter-spacing:.12em;color:var(--wax)}
+  .pl-cover h1{max-width:12.8ch;margin:0 0 19px;font-size:clamp(48px,5.7vw,74px);line-height:.96}
+  .pl-cover .lead{max-width:54ch;margin:0;font-size:clamp(16px,1.65vw,19px);line-height:1.58}
+  .pl-cover-proof{display:flex;gap:6px;flex-wrap:wrap;margin:22px 0 0;padding:0;list-style:none}
+  .pl-cover-proof li{padding:6px 9px;border:1px solid var(--hairline);border-radius:999px;
+    background:color-mix(in srgb,var(--sheet) 72%,transparent);font:9px/1.2 var(--mono);
+    letter-spacing:.05em;color:var(--ink-soft)}
+  .pl-cover-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:25px}
+  .pl-cover-actions .btn{min-height:52px}
+  .pl-cover-price{display:grid;gap:2px;width:176px}
+  .pl-cover-price b{font:600 23px/1 var(--serif);font-variant-numeric:tabular-nums}
+  .pl-cover-price small{max-width:20ch;font-size:10.5px;line-height:1.35;color:var(--ink-faint)}
+  .pl-no-pay{display:flex;gap:8px;align-items:flex-start;max-width:54ch;margin:13px 0 0;
+    font-size:11.5px;line-height:1.5;color:var(--ink-soft)}
+  .pl-no-pay::before{content:"✓";color:var(--verify);font-family:var(--mono)}
+
+  /* Образец документа на первом экране */
+  .pl-file{
+    position:relative;min-width:0;padding:clamp(22px,3vw,32px);border:1px solid var(--hairline-strong);
+    border-top:3px double var(--hairline-strong);border-radius:2px 2px 5px 5px;background:var(--sheet);
+    box-shadow:18px 22px 0 -17px var(--paper-2),18px 22px 0 -16px var(--hairline),
+      0 35px 70px -58px rgba(34,32,27,.75);transform:rotate(.45deg)
+  }
+  .pl-file::before{content:"ОБЕЗЛИЧЕННЫЙ ФРАГМЕНТ";position:absolute;right:15px;top:-9px;
+    padding:3px 6px;background:var(--paper);border:1px solid var(--hairline);
+    font:7px/1 var(--mono);letter-spacing:.1em;color:var(--ink-faint)}
+  .pl-file-head{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start;
+    padding-bottom:15px;border-bottom:3px double var(--hairline-strong)}
+  .pl-file-head .caps{color:var(--wax)}
+  .pl-file-code{text-align:right;font:8px/1.5 var(--mono);letter-spacing:.08em;color:var(--ink-faint)}
+  .pl-file-topic{padding:16px 0 13px;border-bottom:1px solid var(--hairline)}
+  .pl-file-topic small{display:block;margin-bottom:5px;font:8px/1.2 var(--mono);
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .pl-file-topic b{display:block;font:500 17px/1.32 var(--serif)}
+  .pl-file-tree{list-style:none;margin:0;padding:8px 0}
+  .pl-file-tree li{display:grid;grid-template-columns:23px minmax(0,1fr);gap:8px;padding:8px 0;
+    border-bottom:1px dotted var(--hairline);font-size:11.5px;line-height:1.38;color:var(--ink-soft)}
+  .pl-file-tree li:last-child{border-bottom:0}
+  .pl-file-tree i{font:8px/1.4 var(--mono);font-style:normal;color:var(--wax)}
+  .pl-file-tree b{display:block;margin-bottom:2px;font-size:12px;color:var(--ink)}
+  .pl-file-note{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:10px;border-top:1px solid var(--hairline)}
+  .pl-file-note span{padding:8px 9px;background:var(--paper-2);font-size:9.5px;line-height:1.4;color:var(--ink-soft)}
+  .pl-file-note b{display:block;margin-bottom:2px;font:7px/1.2 var(--mono);letter-spacing:.08em;
+    text-transform:uppercase;color:var(--ink-faint)}
+  .pl-file-foot{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:11px;
+    padding-top:9px;border-top:1px solid var(--hairline);font:8px/1.3 var(--mono);
+    letter-spacing:.05em;color:var(--ink-faint)}
+  .pl-file-foot strong{color:var(--verify);font-weight:600}
+
+  .pl-quick-nav{display:flex;align-items:center;gap:5px;margin:0 0 clamp(34px,5vw,58px);
+    padding:7px;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+  .pl-quick-nav a{flex:1;padding:9px 10px;color:var(--ink-soft);font:9px/1.2 var(--mono);
+    letter-spacing:.06em;text-transform:uppercase;text-align:center;text-decoration:none}
+  .pl-quick-nav a:hover{background:var(--paper-2);color:var(--ink)}
+
+  .pl-chapter{padding:clamp(44px,6vw,74px) 0;border-top:1px solid var(--hairline)}
+  .pl-chapter-head{display:grid;grid-template-columns:minmax(0,.62fr) minmax(300px,.38fr);gap:30px;
+    align-items:end;margin-bottom:clamp(24px,4vw,40px)}
+  .pl-chapter-head .caps{display:block;margin-bottom:9px;color:var(--wax)}
+  .pl-chapter-head h2{max-width:18ch;margin:0}
+  .pl-chapter-head p{margin:0;font-size:13.5px;line-height:1.65;color:var(--ink-soft)}
+
+  /* Главный интерактив: один обезличенный рабочий комплект */
+  .pl-tabs{display:flex;gap:7px;overflow-x:auto;padding:0 0 10px;scrollbar-width:none}
+  .pl-tabs::-webkit-scrollbar{display:none}
+  .pl-tab{flex:0 0 auto;min-height:42px;padding:8px 13px;border:1px solid var(--hairline);
+    border-radius:2px;background:transparent;color:var(--ink-soft);font:11.5px/1.2 var(--sans);cursor:pointer}
+  .pl-tab:hover{border-color:var(--hairline-strong);color:var(--ink)}
+  .pl-tab[aria-selected="true"]{border-color:var(--wax);background:var(--wax-soft);color:var(--ink)}
+  .pl-tab:focus-visible{outline:2px solid var(--wax);outline-offset:2px}
+  .pl-demo{
+    display:grid;grid-template-columns:minmax(225px,.34fr) minmax(0,.66fr);border:1px solid var(--hairline-strong);
+    border-top:3px double var(--hairline-strong);border-radius:3px;background:var(--sheet);
+    box-shadow:0 28px 60px -56px rgba(34,32,27,.7)
+  }
+  .pl-demo-source{padding:clamp(22px,3vw,31px);border-right:1px solid var(--hairline);background:var(--paper-2)}
+  .pl-demo-label{display:block;margin-bottom:10px;font:8px/1.2 var(--mono);letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-faint)}
+  .pl-demo-source blockquote{margin:0;font:italic 22px/1.32 var(--serif);color:var(--ink)}
+  .pl-demo-source p{margin:18px 0 0;padding-top:14px;border-top:1px dotted var(--hairline);
+    font-size:11.5px;line-height:1.55;color:var(--ink-soft)}
+  .pl-demo-source p::before{content:"→";display:block;margin-bottom:4px;color:var(--wax);font-family:var(--mono)}
+  .pl-demo-result{min-width:0;padding:clamp(22px,3vw,32px)}
+  .pl-demo-result-head{display:flex;justify-content:space-between;gap:16px;align-items:start;
+    margin-bottom:15px;padding-bottom:13px;border-bottom:3px double var(--hairline-strong)}
+  .pl-demo-result-head h3{margin:3px 0 0;font:500 clamp(20px,2.3vw,27px)/1.15 var(--serif)}
+  .pl-demo-price{text-align:right;white-space:nowrap}
+  .pl-demo-price b{display:block;font:600 20px/1 var(--serif);color:var(--wax)}
+  .pl-demo-price small{font-size:9px;color:var(--ink-faint)}
+  .pl-outline{list-style:none;margin:0;padding:0}
+  .pl-outline>li{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:9px;align-items:start;
+    padding:11px 0;border-bottom:1px dotted var(--hairline)}
+  .pl-outline>li:last-child{border-bottom:0}
+  .pl-outline-no{font:9px/1.4 var(--mono);color:var(--wax)}
+  .pl-outline-title b{display:block;margin-bottom:3px;font-size:13px}
+  .pl-outline-title small{display:block;max-width:55ch;font-size:10.5px;line-height:1.45;color:var(--ink-soft)}
+  .pl-outline-mark{padding:4px 6px;border:1px solid var(--hairline);border-radius:2px;
+    font:7px/1 var(--mono);letter-spacing:.06em;color:var(--ink-faint)}
+  .pl-demo-ledger{display:grid;grid-template-columns:repeat(3,1fr);margin-top:16px;border:1px solid var(--hairline)}
+  .pl-demo-ledger div{min-width:0;padding:12px 13px;border-right:1px solid var(--hairline)}
+  .pl-demo-ledger div:last-child{border-right:0}
+  .pl-demo-ledger small{display:block;margin-bottom:4px;font:7.5px/1.2 var(--mono);
+    letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+  .pl-demo-ledger b{display:block;font-size:11.5px;line-height:1.4}
+  .pl-credit{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-top:12px;
+    padding:12px 15px;border:1px solid color-mix(in srgb,var(--verify) 38%,var(--hairline));
+    border-radius:3px;background:var(--verify-soft);font-size:11.5px;line-height:1.5;color:var(--ink-soft)}
+  .pl-credit b{color:var(--ink)}
+  .pl-credit .num{flex:0 0 auto;color:var(--verify);font:600 12px/1.2 var(--mono)}
+  .pl-supervisor-note{display:flex;justify-content:space-between;gap:20px;align-items:start;margin-top:14px;
+    padding:14px 16px;border-left:3px solid var(--wax);background:var(--paper-2);
+    font-size:11.5px;line-height:1.55;color:var(--ink-soft)}
+  .pl-supervisor-note a{flex:0 0 auto;white-space:nowrap}
+
+  /* Процесс + честные границы */
+  .pl-method{display:grid;grid-template-columns:minmax(0,.57fr) minmax(320px,.43fr);gap:clamp(24px,4vw,48px)}
+  .pl-process{list-style:none;counter-reset:pl-process;margin:0;padding:0}
+  .pl-process li{counter-increment:pl-process;display:grid;grid-template-columns:38px minmax(0,1fr);
+    gap:12px;padding:18px 0;border-top:1px solid var(--hairline)}
+  .pl-process li:last-child{border-bottom:1px solid var(--hairline)}
+  .pl-process li::before{content:"0" counter(pl-process);display:grid;place-items:center;width:30px;height:30px;
+    border:1px solid var(--hairline-strong);border-radius:50%;font:8px/1 var(--mono);color:var(--wax)}
+  .pl-process b{display:block;margin-bottom:4px;font-size:14px}
+  .pl-process p{max-width:61ch;margin:0;font-size:12px;line-height:1.58;color:var(--ink-soft)}
+  .pl-boundaries{align-self:start;padding:clamp(22px,3vw,30px);border:1px solid var(--hairline-strong);
+    border-top:3px double var(--hairline-strong);border-radius:3px;background:var(--sheet)}
+  .pl-boundaries h3{margin:5px 0 15px;font:500 24px/1.15 var(--serif)}
+  .pl-boundaries ul{list-style:none;margin:0;padding:0}
+  .pl-boundaries li{position:relative;padding:10px 0 10px 20px;border-top:1px dotted var(--hairline);
+    font-size:11.5px;line-height:1.55;color:var(--ink-soft)}
+  .pl-boundaries li::before{content:"✓";position:absolute;left:0;top:11px;color:var(--verify);font-family:var(--mono)}
+  .pl-boundaries li:last-child::before{content:"!" ;color:var(--wax)}
+  .pl-boundaries .pl-boundary-foot{margin:15px 0 0;padding-top:13px;border-top:3px double var(--hairline);
+    font-size:10.5px;line-height:1.5;color:var(--ink-faint)}
+
+  /* FAQ и квитанция действия — один заключительный лист */
+  .pl-close{display:grid;grid-template-columns:minmax(0,.61fr) minmax(310px,.39fr);gap:clamp(26px,5vw,58px);
+    align-items:start}
+  .pl-faq-head{margin-bottom:16px}
+  .pl-faq-head .caps{display:block;margin-bottom:8px;color:var(--wax)}
+  .pl-faq-head h2{margin:0}
+  .pl-faq .faq-item{border-color:var(--hairline)}
+  .pl-faq .faq-item summary{font-size:13.5px}
+  .pl-ticket{position:sticky;top:92px;padding:clamp(24px,3vw,34px);border:1px solid var(--hairline-strong);
+    border-top:3px double var(--hairline-strong);border-radius:3px;background:var(--sheet);
+    box-shadow:0 26px 54px -52px rgba(34,32,27,.7)}
+  .pl-ticket-code{display:flex;justify-content:space-between;gap:12px;margin-bottom:20px;padding-bottom:12px;
+    border-bottom:1px solid var(--hairline);font:8px/1.3 var(--mono);letter-spacing:.09em;color:var(--ink-faint)}
+  .pl-ticket h2{margin:0 0 12px;font:500 clamp(28px,3.2vw,38px)/1.05 var(--serif)}
+  .pl-ticket>p{margin:0 0 18px;font-size:12px;line-height:1.58;color:var(--ink-soft)}
+  .pl-ticket-price{display:flex;justify-content:space-between;gap:18px;align-items:end;margin:0 0 14px;
+    padding:13px 0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+  .pl-ticket-price span{font:8px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+  .pl-ticket-price b{font:600 24px/1 var(--serif);font-variant-numeric:tabular-nums}
+  .pl-ticket .btn{width:100%;min-height:52px;justify-content:center}
+  .pl-ticket-note{display:flex;gap:7px;margin:11px 0 0!important;font-size:10.5px!important}
+  .pl-ticket-note::before{content:"✓";color:var(--verify);font-family:var(--mono)}
+  .pl-ticket-stamp{display:block;width:max-content;margin:18px 0 0 auto;padding:7px 10px;
+    border:2px solid color-mix(in srgb,var(--verify) 72%,transparent);border-radius:3px;
+    color:var(--verify);font:600 8px/1 var(--mono);letter-spacing:.11em;transform:rotate(-2deg)}
+
+  html[data-theme="dark"] .plan-page .btn-wax{color:#211914}
+  html[data-theme="dark"] .plan-page .pl-file,
+  html[data-theme="dark"] .plan-page .pl-demo,
+  html[data-theme="dark"] .plan-page .pl-boundaries,
+  html[data-theme="dark"] .plan-page .pl-ticket{
+    box-shadow:0 24px 64px -56px rgba(0,0,0,.9)
+  }
+
+  @media(max-width:920px){
+    .pl-cover{grid-template-columns:1fr;gap:34px;padding-top:calc(64px + 34px)}
+    .pl-cover h1{max-width:14ch}
+    .pl-file{max-width:650px;transform:none}
+    .pl-chapter-head{grid-template-columns:1fr;gap:13px;align-items:start}
+    .pl-demo{grid-template-columns:1fr}
+    .pl-demo-source{border-right:0;border-bottom:1px solid var(--hairline)}
+    .pl-demo-source blockquote{font-size:19px}
+    .pl-method,.pl-close{grid-template-columns:1fr}
+    .pl-ticket{position:static}
+  }
+  @media(max-width:620px){
+    .pl-cover{padding-top:calc(64px + 27px);padding-bottom:40px}
+    .pl-cover h1{font-size:clamp(42px,12.5vw,54px)}
+    .pl-cover .lead{font-size:15.5px}
+    .pl-cover-actions{align-items:stretch}
+    .pl-cover-actions .btn{width:100%;justify-content:center}
+    .pl-cover-price{grid-template-columns:auto 1fr;align-items:baseline;gap:10px;width:auto}
+    .pl-cover-price small{max-width:22ch}
+    .pl-file{padding:19px 16px}
+    .pl-file-tree li:nth-child(3){display:none}
+    .pl-file-note{grid-template-columns:1fr}
+    .pl-file-note span:last-child{display:none}
+    .pl-quick-nav{overflow-x:auto;justify-content:flex-start}
+    .pl-quick-nav a{flex:0 0 auto;padding-left:12px;padding-right:12px}
+    .pl-chapter{padding:42px 0}
+    .pl-chapter-head h2{font-size:34px}
+    .pl-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow:visible}
+    .pl-tab{min-width:0;min-height:48px;padding:8px;white-space:normal}
+    .pl-demo-result{padding:20px 15px}
+    .pl-outline>li{grid-template-columns:27px minmax(0,1fr)}
+    .pl-outline-mark{display:none}
+    .pl-demo-ledger{grid-template-columns:1fr}
+    .pl-demo-ledger div{display:grid;grid-template-columns:82px 1fr;align-items:start;gap:8px;
+      border-right:0;border-bottom:1px solid var(--hairline)}
+    .pl-demo-ledger div:last-child{border-bottom:0}
+    .pl-credit,.pl-supervisor-note{display:block}
+    .pl-credit .num{display:block;margin-top:6px}
+    .pl-supervisor-note a{display:inline-block;margin-top:7px;white-space:normal}
+    .pl-boundaries,.pl-ticket{padding:22px 18px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .pl-file{transform:none}
+    .pl-tab{transition:none}
+  }
+  html[data-calm="1"] .pl-file{transform:none}
 </style>
 </head>
-<body>
+<body class="plan-page">
 
-<main>
+<main id="main" tabindex="-1">
   <div class="wrap">
 
-    <!-- ГЕРОЙ -->
-    <section class="pl-hero reveal" data-chapter="Разбор плана">
-      <span class="caps">Услуга · первый шаг</span>
-      <h1 class="h-display">Не готовы заказывать целиком? Начните с разбора плана</h1>
-      <p class="lead">За 1–2 дня мастер превращает вашу тему в рабочий документ: согласованная структура глав,
-      честный календарь и зафиксированная смета. Дальше решаете сами — продолжать с нами или писать по плану самостоятельно.</p>
-      <div class="pl-cta-row">
-        <a class="btn btn-wax" id="planCta" href="configurator.html?service=pl">Заказать разбор плана <span class="ar">→</span></a>
-        <span class="pl-price-tag">3 000 ₽<small>магистерские и кандидатские — 5 000 ₽</small></span>
-      </div>
-      <p class="marginalia" style="margin-top:14px">Продолжите работу в течение 14 дней — вся сумма зачтётся в её стоимость.</p>
-    </section>
-
-    <!-- § 01 — ЧТО НА РУКАХ -->
-    <section class="chapter reveal" id="result" data-chapter="§ 01 · Что вы получаете">
-      <div class="ch-rule"><span class="ch-no">§ 01 · Что вы получаете</span></div>
-      <h2>Три документа на руках</h2>
-      <div class="pl-out">
-        <div class="pl-card">
-          <span class="no">ВЫПИСКА · 1</span>
-          <h3>Структура глав</h3>
-          <p>План работы под вашу тему и методичку: главы, параграфы, что в каждом доказываем.
-          Такой план можно сразу показать научному руководителю.</p>
+    <section class="pl-cover reveal" data-chapter="Разбор плана">
+      <div class="pl-cover-copy">
+        <div class="pl-cover-kicker"><span class="caps">Разбор темы и методички · 1–2 дня</span></div>
+        <h1 class="h-display">Сначала — ясная структура</h1>
+        <p class="lead">Мастер разложит тему по главам и этапам, проверит реальный срок и зафиксирует стоимость. Вы получите рабочий комплект для согласования с научным руководителем — продолжать с нами необязательно.</p>
+        <ul class="pl-cover-proof" aria-label="Ключевые условия">
+          <li>структура под вашу тему</li>
+          <li>правки включены</li>
+          <li>без созвона</li>
+        </ul>
+        <div class="pl-cover-actions">
+          <a class="btn btn-wax" data-plan-cta href="configurator.html?service=pl">Отправить заявку на разбор <span class="ar">→</span></a>
+          <span class="pl-cover-price"><b data-plan-price>3 000 ₽</b><small data-plan-price-note>5 000 ₽ — магистерская и кандидатская</small></span>
         </div>
-        <div class="pl-card">
-          <span class="no">ВЫПИСКА · 2</span>
-          <h3>Реалистичный срок</h3>
-          <p>Календарь по частям: когда будет первая глава, когда практическая, когда финал.
-          И честный вердикт — успеваем к вашей дате или нет.</p>
+        <p class="pl-no-pay">Сейчас ничего не списываем. Сначала мастер проверит материалы и подтвердит состав разбора.</p>
+      </div>
+
+      <aside class="pl-file" aria-label="Обезличенный фрагмент рабочего комплекта">
+        <div class="pl-file-head">
+          <span class="caps">Лист результата</span>
+          <span class="pl-file-code">ДЕЛО · PL–01<br />ВЕРСИЯ · 01</span>
         </div>
-        <div class="pl-card">
-          <span class="no">ВЫПИСКА · 3</span>
-          <h3>Фиксированная смета</h3>
-          <p>Точная цена вместо вилки: после разбора известны объём и требования, поэтому
-          смета фиксируется и не растёт по ходу работы.</p>
+        <div class="pl-file-topic">
+          <small>Тема для согласования</small>
+          <b>Цифровизация туристических услуг в Республике Татарстан</b>
+        </div>
+        <ol class="pl-file-tree">
+          <li><i>01</i><span><b>Теоретическая рамка</b>Понятия, подходы и критерии оценки цифрового сервиса</span></li>
+          <li><i>02</i><span><b>Анализ текущего состояния</b>Данные, выборка и разбор действующих решений</span></li>
+          <li><i>03</i><span><b>Проектные рекомендации</b>Что меняем, как измеряем результат и ограничения</span></li>
+        </ol>
+        <div class="pl-file-note">
+          <span><b>Календарь всей работы</b>Первая глава · 6 дней<br />Практика · 9 дней</span>
+          <span><b>Комментарий мастера</b>Сузить объект до региональных сервисов</span>
+        </div>
+        <div class="pl-file-foot">
+          <span>СТРУКТУРА · СРОК · СМЕТА</span>
+          <strong>ГОТОВО К СОГЛАСОВАНИЮ</strong>
+        </div>
+      </aside>
+    </section>
+
+    <nav class="pl-quick-nav reveal" aria-label="Содержание страницы">
+      <a href="#example">Пример результата</a>
+      <a href="#process">Как начать</a>
+      <a href="#questions">Вопросы</a>
+    </nav>
+
+    <section class="pl-chapter reveal" id="example" data-chapter="§ 01 · Рабочий комплект">
+      <div class="pl-chapter-head">
+        <div>
+          <span class="caps">§ 01 · Не обещание, а артефакт</span>
+          <h2>Посмотрите, во что превращается тема</h2>
+        </div>
+        <p>Ниже — обезличенный фрагмент. Для вашей темы структура, сроки и смета будут собраны заново по методичке и замечаниям научного руководителя.</p>
+      </div>
+
+      <div class="pl-tabs" role="tablist" aria-label="Примеры по типу работы">
+        <button class="pl-tab" type="button" role="tab" id="tab-course" aria-selected="false" aria-controls="planExample" tabindex="-1" data-plan-type="course">Курсовая</button>
+        <button class="pl-tab" type="button" role="tab" id="tab-diplom" aria-selected="true" aria-controls="planExample" data-plan-type="diplom">Диплом / ВКР</button>
+        <button class="pl-tab" type="button" role="tab" id="tab-master" aria-selected="false" aria-controls="planExample" tabindex="-1" data-plan-type="master">Магистерская</button>
+        <button class="pl-tab" type="button" role="tab" id="tab-candidate" aria-selected="false" aria-controls="planExample" tabindex="-1" data-plan-type="candidate">Кандидатская</button>
+      </div>
+      <p class="visually-hidden" id="planExampleStatus" role="status" aria-live="polite"></p>
+
+      <div class="pl-demo" id="planExample" role="tabpanel" aria-labelledby="tab-diplom">
+        <div class="pl-demo-source">
+          <span class="pl-demo-label">До разбора · формулировка из заявки</span>
+          <blockquote id="demoRaw">«Цифровизация туристических услуг»</blockquote>
+          <p id="demoDiagnosis">Тема слишком широкая: непонятны территория, объект анализа и измеримый результат.</p>
+        </div>
+        <div class="pl-demo-result">
+          <header class="pl-demo-result-head">
+            <div>
+              <span class="pl-demo-label">После разбора · каркас для согласования</span>
+              <h3 id="demoTopic">Цифровизация туристических услуг в Республике Татарстан</h3>
+            </div>
+            <span class="pl-demo-price"><b id="demoPrice">3 000 ₽</b><small>разбор PL–01</small></span>
+          </header>
+          <ol class="pl-outline" id="demoOutline">
+            <li><span class="pl-outline-no">01</span><span class="pl-outline-title"><b>Теоретическая рамка цифровой услуги</b><small>Фиксируем понятия и критерии, по которым дальше оцениваем сервис.</small></span><span class="pl-outline-mark">ЛОГИКА</span></li>
+            <li><span class="pl-outline-no">02</span><span class="pl-outline-title"><b>Анализ региональных туристических сервисов</b><small>Выборка, метод оценки и фактические разрывы пользовательского пути.</small></span><span class="pl-outline-mark">ДАННЫЕ</span></li>
+            <li><span class="pl-outline-no">03</span><span class="pl-outline-title"><b>Рекомендации и оценка эффекта</b><small>Предлагаем изменения и заранее определяем, чем измерить результат.</small></span><span class="pl-outline-mark">ВЫВОД</span></li>
+          </ol>
+          <div class="pl-demo-ledger">
+            <div><small>Структура</small><b id="demoStructure">3 главы · 8 параграфов</b></div>
+            <div><small>Срок всей работы</small><b id="demoCalendar">22–26 рабочих дней</b></div>
+            <div><small>Смета всей работы</small><b id="demoEstimate">пример · 48 000 ₽</b></div>
+          </div>
         </div>
       </div>
 
-      <div class="pl-deal">
-        <p class="big">Продолжаете работу в течение 14 дней — <b>3 000 ₽ зачитываются полностью</b>.
-        По сути, при продолжении разбор бесплатный. Не продолжаете — план и календарь остаются у вас.</p>
-        <span class="pl-seal-slot" data-seal="ЗАЧТЁТСЯ В ОПЛАТУ · 14 ДНЕЙ · " data-seal-center="₽" data-seal-cls="seal--verify" data-seal-size="98" aria-hidden="true"></span>
+      <div class="pl-credit">
+        <span><b>Продолжите работу в течение 14 дней — зачтём всю стоимость разбора.</b> Не продолжите — комплект и правки по нему останутся у вас.</span>
+        <span class="num" id="creditPrice">3 000 ₽ → В ЗАЧЁТ</span>
+      </div>
+      <div class="pl-supervisor-note">
+        <span>Если научный руководитель уже назначен, при необходимости учитываем его открытые публикации и профессиональные акценты — без поиска частной информации.</span>
+        <a class="link" href="dosie-nauchruka.html">Как устроено досье научрука →</a>
       </div>
     </section>
 
-    <!-- § 02 — КАК ПРОХОДИТ -->
-    <section class="chapter reveal" id="how" data-chapter="§ 02 · Как проходит">
-      <div class="ch-rule"><span class="ch-no">§ 02 · Как проходит</span></div>
-      <h2>Четыре шага, без созвонов</h2>
-      <div class="pl-steps">
-        <div class="pl-step"><span class="n"></span><span class="t">
-          <b>Заявка за две минуты</b>
-          <p>Тема (даже черновая), тип работы и методичка, если есть. Всё — через конфигуратор, анкет и звонков нет.</p>
-        </span></div>
-        <div class="pl-step"><span class="n"></span><span class="t">
-          <b>Мастер изучает задачу</b>
-          <p>Смотрит тему, требования кафедры и источники по направлению. Если тема сформулирована неудачно — предложит, как поправить.</p>
-        </span></div>
-        <div class="pl-step"><span class="n"></span><span class="t">
-          <b>План приходит в кабинет</b>
-          <p>Через 1–2 дня в вашем деле на сайте: структура, календарь, смета. Вопросы — прямо в переписке дела.</p>
-        </span></div>
-        <div class="pl-step"><span class="n"></span><span class="t">
-          <b>Решение за вами</b>
-          <p>Продолжаете — 3 000 ₽ зачитываются в стоимость, работа стартует по готовому плану. Нет — расстаёмся без обид, план ваш.</p>
-        </span></div>
+    <section class="pl-chapter reveal" id="process" data-chapter="§ 02 · Как начать">
+      <div class="pl-chapter-head">
+        <div>
+          <span class="caps">§ 02 · Без оплаты при заявке</span>
+          <h2>Три шага до рабочего комплекта</h2>
+        </div>
+        <p>Никакого скрытого платежа в форме: сначала проверка темы и материалов, затем подтверждение цены, и только потом — старт.</p>
+      </div>
+
+      <div class="pl-method">
+        <ol class="pl-process">
+          <li><div><b>Отправьте тему</b><p>Черновой формулировки достаточно. Методичку можно приложить сразу или прислать позже. Формуляр занимает 3–5 минут.</p></div></li>
+          <li><div><b>Получите подтверждение мастера</b><p>Мастер проверит материалы, уточнит недостающее и подтвердит цену: 3 000 или 5 000 ₽. До этого платить ничего не нужно.</p></div></li>
+          <li><div><b>Получите PL–01 через 1–2 дня</b><p>После подтверждения и оплаты структура, календарь и смета появятся в вашем деле. Там же принимаем замечания научного руководителя.</p></div></li>
+        </ol>
+
+        <aside class="pl-boundaries" aria-labelledby="planBoundariesTitle">
+          <span class="caps">Честные границы</span>
+          <h3 id="planBoundariesTitle">Что именно мы обещаем</h3>
+          <ul>
+            <li>План собирается под тему и методичку, а не берётся из шаблона.</li>
+            <li>Замечания в рамках исходной темы дорабатываются без доплаты.</li>
+            <li>Цена всей работы меняется только вместе с самой задачей.</li>
+            <li>Результат — версия для согласования: окончательное решение принимает научный руководитель.</li>
+          </ul>
+          <p class="pl-boundary-foot">Материалы имеют консультационный формат и остаются основой для вашей самостоятельной работы.</p>
+        </aside>
       </div>
     </section>
 
-    <!-- § 03 — ДЛЯ КОГО -->
-    <section class="chapter reveal" id="who" data-chapter="§ 03 · Для кого">
-      <div class="ch-rule"><span class="ch-no">§ 03 · Для кого это</span></div>
-      <h2>Три ситуации, где разбор решает</h2>
-      <div class="pl-who">
-        <p class="w"><b>«Тема есть, а с чего начать — непонятно».</b> Разбор превращает пугающую тему в понятную дорожную карту.</p>
-        <p class="w"><b>«Боюсь отдавать всю сумму незнакомым людям».</b> Лёгкий первый шаг: вы платите 3 000 ₽ и смотрите на качество мышления мастера до большого заказа.</p>
-        <p class="w"><b>«Научник требует план до конца недели».</b> Получите структуру, которую не стыдно нести на кафедру, — быстрее, чем писать самому с нуля.</p>
+    <section class="pl-chapter pl-close reveal" id="questions" data-chapter="§ 03 · Вопросы">
+      <div class="pl-faq">
+        <div class="pl-faq-head">
+          <span class="caps">§ 03 · Перед стартом</span>
+          <h2>Короткие ответы</h2>
+        </div>
+        <div class="faq-wrap">
+          <details class="faq-item">
+            <summary>Можно отправить только тему, без методички?</summary>
+            <p>Да. Черновой темы достаточно для первой проверки. Если без требований кафедры нельзя точно собрать план, мастер попросит прислать методичку до оплаты.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Когда и за что нужно платить?</summary>
+            <p>Не в момент заявки. Сначала мастер проверит тему и материалы, подтвердит состав разбора, срок и цену. После оплаты вы получите структуру, календарь и фиксированную смету.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Что если научный руководитель вернёт план?</summary>
+            <p>Передайте замечания в переписке дела. Правки в рамках исходной темы входят в разбор и выполняются без доплаты.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Может ли зафиксированная смета измениться?</summary>
+            <p>Только если меняется сама задача: тема, объём, срок или требования после согласования. До старта мастер отдельно объяснит, что именно повлияло на цену.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Обязательно ли потом заказывать всю работу?</summary>
+            <p>Нет. Рабочий комплект остаётся у вас. Если продолжите с нами в течение 14 дней, зачтём всю стоимость разбора в общую смету.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Почему магистерская и кандидатская стоят 5 000 ₽?</summary>
+            <p>Для них глубже проверяются методология, научная новизна и логика исследования. Эти 5 000 ₽ также полностью зачитываются при продолжении.</p>
+          </details>
+        </div>
       </div>
-    </section>
 
-    <!-- § 04 — ВОПРОСЫ -->
-    <section class="chapter reveal" id="faq" data-chapter="§ 04 · Вопросы">
-      <div class="ch-rule"><span class="ch-no">§ 04 · Вопросы</span></div>
-      <h2>Короткие ответы</h2>
-      <div class="faq-wrap">
-        <details class="faq-item">
-          <summary>Чем разбор отличается от бесплатной сметы в калькуляторе?</summary>
-          <p>Калькулятор считает вилку по параметрам — это оценка «в среднем по типу». Разбор — работа мастера с вашей конкретной темой и методичкой: структура, календарь и уже зафиксированная цена.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Что если план не понравится?</summary>
-          <p>Правки по плану — бесплатно: это часть услуги. Обсудите замечания в переписке дела, мастер доработает структуру под требования кафедры.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Почему для магистерских и кандидатских дороже?</summary>
-          <p>Там разбор глубже: анализ источников по теме, требования к новизне и методологии. Это 5 000 ₽ — и они точно так же зачитываются при продолжении.</p>
-        </details>
-        <details class="faq-item">
-          <summary>Куда придёт результат?</summary>
-          <p>В ваше дело в кабинете на сайте — по секретной ссылке, без регистрации. По желанию привяжете Telegram, и всё продублируется в боте.</p>
-        </details>
-      </div>
-    </section>
-
-    <!-- ФИНАЛЬНЫЙ CTA -->
-    <section class="chapter reveal pl-final" data-chapter="Начать">
-      <h2 style="max-width:26ch;margin:0 auto 18px">Начните с плана — дальше будет проще</h2>
-      <a class="btn btn-wax" id="planCta2" href="configurator.html?service=pl">Заказать разбор плана · 3 000 ₽ <span class="ar">→</span></a>
-      <p class="petit">Оценка темы бесплатна и ни к чему не обязывает. Формат консультационный:
-      материалы — основа для вашей самостоятельной работы.</p>
+      <aside class="pl-ticket" aria-label="Начать разбор плана">
+        <div class="pl-ticket-code"><span>ФОРМУЛЯР · PL–01</span><span>3–5 МИНУТ</span></div>
+        <h2>Сначала проверим тему</h2>
+        <p>Мастер скажет, подходит ли вам этот формат, и подтвердит условия. Решение об оплате примете после ответа.</p>
+        <div class="pl-ticket-price"><span>Стоимость после проверки</span><b data-plan-price>3 000 ₽</b></div>
+        <a class="btn btn-wax" data-plan-cta href="configurator.html?service=pl">Открыть формуляр <span class="ar">→</span></a>
+        <p class="pl-ticket-note">Без оплаты сейчас · ответ после проверки материалов</p>
+        <span class="pl-ticket-stamp">ВСЯ СУММА → В ЗАЧЁТ</span>
+      </aside>
     </section>
 
   </div>
 </main>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Разбор плана учебной работы","provider":{"@type":"ProfessionalService","name":"Академический Салон","url":"https://akademsalon.ru"},"description":"Структура глав, реалистичный срок и фиксированная смета за 1–2 дня. Стоимость зачитывается в цену работы при продолжении в течение 14 дней.","offers":{"@type":"Offer","priceSpecification":{"@type":"PriceSpecification","minPrice":3000,"maxPrice":5000,"priceCurrency":"RUB"},"priceCurrency":"RUB","url":"https://akademsalon.ru/plan.html"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Чем разбор плана отличается от бесплатной сметы?","acceptedAnswer":{"@type":"Answer","text":"Калькулятор считает вилку по параметрам, а разбор — работа мастера с конкретной темой и методичкой: структура глав, календарь и зафиксированная цена."}},{"@type":"Question","name":"Что если план не понравится?","acceptedAnswer":{"@type":"Answer","text":"Правки по плану бесплатны — это часть услуги. Мастер дорабатывает структуру под требования кафедры."}},{"@type":"Question","name":"Зачитывается ли стоимость разбора?","acceptedAnswer":{"@type":"Answer","text":"Да, полностью: при продолжении работы в течение 14 дней 3 000 ₽ идут в зачёт её стоимости."}}]}</script>
-<script src="assets/js/app.js?v=20260723q"></script>
-<script src="assets/js/extras.js?v=20260723h"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Разбор плана учебной работы","provider":{"@type":"ProfessionalService","name":"Академический Салон","url":"https://akademsalon.ru"},"description":"Разбор темы и методички: структура глав, календарь и фиксированная смета за 1–2 дня. Заявка отправляется без оплаты.","offers":{"@type":"AggregateOffer","lowPrice":3000,"highPrice":5000,"priceCurrency":"RUB","offerCount":2,"url":"https://akademsalon.ru/plan.html"},"areaServed":"RU","inLanguage":"ru"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Можно отправить только тему, без методички?","acceptedAnswer":{"@type":"Answer","text":"Да. Черновой темы достаточно для первой проверки. Если без требований кафедры нельзя точно собрать план, мастер попросит прислать методичку до оплаты."}},{"@type":"Question","name":"Когда и за что нужно платить?","acceptedAnswer":{"@type":"Answer","text":"Не в момент заявки. Сначала мастер проверит тему и материалы, подтвердит состав разбора, срок и цену. После оплаты вы получите структуру, календарь и фиксированную смету."}},{"@type":"Question","name":"Что если научный руководитель вернёт план?","acceptedAnswer":{"@type":"Answer","text":"Передайте замечания в переписке дела. Правки в рамках исходной темы входят в разбор и выполняются без доплаты."}},{"@type":"Question","name":"Может ли зафиксированная смета измениться?","acceptedAnswer":{"@type":"Answer","text":"Только если меняется сама задача: тема, объём, срок или требования после согласования. До старта мастер отдельно объяснит, что именно повлияло на цену."}},{"@type":"Question","name":"Обязательно ли потом заказывать всю работу?","acceptedAnswer":{"@type":"Answer","text":"Нет. Рабочий комплект остаётся у вас. Если продолжите с нами в течение 14 дней, зачтём всю стоимость разбора в общую смету."}},{"@type":"Question","name":"Почему магистерская и кандидатская стоят 5 000 ₽?","acceptedAnswer":{"@type":"Answer","text":"Для них глубже проверяются методология, научная новизна и логика исследования. Эти 5 000 ₽ также полностью зачитываются при продолжении."}}]}</script>
+<script src="assets/js/app.js?v=20260724a"></script>
+<script src="assets/js/extras.js?v=20260724a"></script>
 <script>
 (function () {
   'use strict';
-  /* рекламные ссылки: пробрасываем ?promo= из объявления в конфигуратор */
-  try {
-    var promo = new URLSearchParams(location.search).get('promo');
-    if (promo) {
-      ['planCta', 'planCta2'].forEach(function (id) {
-        var a = document.getElementById(id);
-        if (a) a.href += '&promo=' + encodeURIComponent(promo);
-      });
+
+  var examples = {
+    course: {
+      raw:'«Как соцсети влияют на выбор путешествий»',
+      diagnosis:'Нужны конкретная аудитория, измеримые факторы выбора и доступный способ собрать данные.',
+      topic:'Влияние коротких видео на выбор туристического маршрута студентами',
+      price:'3 000 ₽',
+      priceNote:'5 000 ₽ — магистерская и кандидатская',
+      structure:'2 главы · 6 параграфов',
+      calendar:'вся работа · 10–14 рабочих дней',
+      estimate:'пример · 16 000 ₽',
+      outline:[
+        ['01','Механика выбора туристического маршрута','Определяем факторы решения и роль визуального контента.','РАМКА'],
+        ['02','Исследование студенческой аудитории','Выборка, анкета и сопоставление мотивов с медиапотреблением.','ДАННЫЕ'],
+        ['03','Выводы и практические рекомендации','Отвечаем на вопрос темы без искусственной третьей главы.','ВЫВОД']
+      ]
+    },
+    diplom: {
+      raw:'«Цифровизация туристических услуг»',
+      diagnosis:'Тема слишком широкая: непонятны территория, объект анализа и измеримый результат.',
+      topic:'Цифровизация туристических услуг в Республике Татарстан',
+      price:'3 000 ₽',
+      priceNote:'5 000 ₽ — магистерская и кандидатская',
+      structure:'3 главы · 8 параграфов',
+      calendar:'вся работа · 22–26 рабочих дней',
+      estimate:'пример · 48 000 ₽',
+      outline:[
+        ['01','Теоретическая рамка цифровой услуги','Фиксируем понятия и критерии, по которым дальше оцениваем сервис.','ЛОГИКА'],
+        ['02','Анализ региональных туристических сервисов','Выборка, метод оценки и фактические разрывы пользовательского пути.','ДАННЫЕ'],
+        ['03','Рекомендации и оценка эффекта','Предлагаем изменения и заранее определяем, чем измерить результат.','ВЫВОД']
+      ]
+    },
+    master: {
+      raw:'«Персонализация туристических сервисов с помощью данных»',
+      diagnosis:'Нужно отделить технологию от исследовательского вклада: определить модель, данные и способ верификации.',
+      topic:'Модель персонализации цифрового туристического сервиса на основе поведенческих данных',
+      price:'5 000 ₽',
+      priceNote:'методология и научная новизна включены',
+      structure:'3 главы · 9 параграфов',
+      calendar:'вся работа · 30–36 рабочих дней',
+      estimate:'пример · 78 000 ₽',
+      outline:[
+        ['01','Теоретическая модель персонализации','Связываем подходы, переменные и ограничения исследования.','МОДЕЛЬ'],
+        ['02','Методология и проверка гипотез','Данные, выборка, метрики и воспроизводимый дизайн анализа.','МЕТОД'],
+        ['03','Авторская модель и её верификация','Показываем вклад, границы применимости и научную новизну.','НОВИЗНА']
+      ]
+    },
+    candidate: {
+      raw:'«Институциональные факторы цифровой трансформации отрасли»',
+      diagnosis:'Для кандидатской нужны проверяемая новизна, собственная модель и заранее определённая эмпирическая база.',
+      topic:'Институциональная модель цифровой трансформации регионального туристического комплекса',
+      price:'5 000 ₽',
+      priceNote:'методология и научная новизна включены',
+      structure:'4 главы · 12 параграфов',
+      calendar:'вся работа · 45–60 рабочих дней',
+      estimate:'пример · 120 000 ₽',
+      outline:[
+        ['01','Теоретические основания трансформации','Формируем понятийную рамку и выявляем исследовательский разрыв.','РАЗРЫВ'],
+        ['02','Методология и эмпирическая база','Описываем данные, методы и границы доказательности.','МЕТОД'],
+        ['03','Авторская институциональная модель','Формулируем положения, выносимые на защиту, и проверяем связи.','ВКЛАД']
+      ]
     }
-  } catch (e) {}
+  };
+
+  var active = 'diplom';
+  var typeChosen = false;
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-plan-type]'));
+  var promo = '';
+  try { promo = new URLSearchParams(location.search).get('promo') || ''; } catch (e) {}
+
+  function setText(id, value) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+  function ctaHref() {
+    var href = 'configurator.html?service=pl';
+    if (typeChosen) href += '&work=' + encodeURIComponent(active);
+    if (promo) href += '&promo=' + encodeURIComponent(promo);
+    return href;
+  }
+  function paint() {
+    var data = examples[active];
+    if (!data) return;
+    tabs.forEach(function (tab) {
+      var on = tab.getAttribute('data-plan-type') === active;
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+    });
+    setText('demoRaw', '«' + data.raw.replace(/^«|»$/g, '') + '»');
+    setText('demoDiagnosis', data.diagnosis);
+    setText('demoTopic', data.topic);
+    setText('demoPrice', data.price);
+    setText('demoStructure', data.structure);
+    setText('demoCalendar', data.calendar);
+    setText('demoEstimate', data.estimate);
+    setText('creditPrice', data.price + ' → В ЗАЧЁТ');
+    document.querySelectorAll('[data-plan-price]').forEach(function (el) { el.textContent = data.price; });
+    document.querySelectorAll('[data-plan-price-note]').forEach(function (el) { el.textContent = data.priceNote; });
+    var outline = document.getElementById('demoOutline');
+    if (outline) {
+      outline.innerHTML = data.outline.map(function (row) {
+        return '<li><span class="pl-outline-no">' + row[0] + '</span>' +
+          '<span class="pl-outline-title"><b>' + row[1] + '</b><small>' + row[2] + '</small></span>' +
+          '<span class="pl-outline-mark">' + row[3] + '</span></li>';
+      }).join('');
+    }
+    document.querySelectorAll('[data-plan-cta]').forEach(function (link) { link.href = ctaHref(); });
+    var panel = document.getElementById('planExample');
+    var currentTab = document.querySelector('[data-plan-type="' + active + '"]');
+    if (panel && currentTab) panel.setAttribute('aria-labelledby', currentTab.id);
+    var mobileCta = document.querySelector('.mnav .mn-calc');
+    if (mobileCta) {
+      mobileCta.href = ctaHref();
+      mobileCta.setAttribute('aria-label', typeChosen
+        ? 'Разбор плана · ' + currentTab.textContent.trim() + ' · ' + data.price
+        : 'Разбор плана');
+    }
+    if (typeChosen && currentTab) {
+      setText('planExampleStatus', 'Выбран пример «' + currentTab.textContent.trim() +
+        '». Стоимость разбора — ' + data.price + '.');
+    }
+  }
+  function choose(type, focus) {
+    if (!examples[type]) return;
+    active = type;
+    typeChosen = true;
+    paint();
+    var selected = document.querySelector('[data-plan-type="' + type + '"]');
+    if (focus && selected) selected.focus();
+    if (window.Salon && Salon.visit) Salon.visit.mark('пример плана: ' + type);
+  }
+
+  tabs.forEach(function (tab, index) {
+    tab.addEventListener('click', function () { choose(tab.getAttribute('data-plan-type'), false); });
+    tab.addEventListener('keydown', function (e) {
+      var next = index;
+      if (e.key === 'ArrowRight') next = (index + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') next = 0;
+      else if (e.key === 'End') next = tabs.length - 1;
+      else return;
+      e.preventDefault();
+      choose(tabs[next].getAttribute('data-plan-type'), true);
+    });
+  });
+  paint();
 })();
 </script>
 </body>
