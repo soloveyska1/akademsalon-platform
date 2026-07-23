@@ -9,8 +9,8 @@
 <link rel="stylesheet" href="assets/css/pereplet.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<link rel="stylesheet" href="assets/css/press.css?v=20260723i" />
-<script>(function(){try{document.documentElement.classList.add("has-js");var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/css/press.css?v=20260723k" />
+<script>(function(){try{document.documentElement.classList.add("has-js");if(window.matchMedia&&window.matchMedia("(max-width:1120px),(max-height:680px),(hover:none) and (pointer:coarse)").matches)document.documentElement.setAttribute("data-pr-flat","1");var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
 html.has-prelude{overflow:hidden}
 html.has-prelude body{overflow:hidden}
@@ -128,28 +128,43 @@ window.SalonPreludeOpen=function(){
             <div class="pr-edge-r" aria-hidden="true"></div>
             <div class="pr-edge-b" aria-hidden="true"></div>
 
-            <!-- первая страница: чек-смета (живёт механикой pereplet.js) -->
+            <!-- первая страница: спокойная вкладная смета (живёт механикой pereplet.js) -->
             <div class="pr-first">
               <div class="pr-pg pr-ledger ledger-page">
-                <span class="pg-caps caps">Чек-смета · базовый уровень</span>
-                <div class="lg-row"><span id="qType">Дипломная работа / ВКР</span><span class="num" id="qBase">40 000 ₽</span></div>
-                <div class="lg-row"><span>Направление</span><span class="num" id="qDisc">×1.0</span></div>
-                <div class="lg-row"><span>Срок</span><span class="num" id="qTerm">×1.0</span></div>
-                <div class="lg-total">
-                  <span class="lbl">Итого</span>
+                <div class="pr-estimate-head">
+                  <span class="pg-caps caps">Предварительная смета</span>
+                  <span class="pr-folio">лист 02</span>
+                </div>
+                <div class="pr-estimate-work">
+                  <span class="caps">Вы выбрали</span>
+                  <h2 id="qType">Дипломная работа / ВКР</h2>
+                </div>
+                <div class="pr-estimate-total">
+                  <span class="caps">Ориентир</span>
                   <span class="price-xl" id="qPrice">от 40 000 ₽</span>
                   <span class="visually-hidden" id="qPriceLive" aria-live="polite"></span>
                 </div>
-                <p class="petit" id="qStart" style="margin:6px 0 0">начать сегодня — 12 000 ₽ (30%) · остальное после показанного результата</p>
-                <p class="petit" id="qSlots" hidden style="margin:6px 0 0;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-soft)"></p>
-                <p class="calc-note">Это нижняя граница базового уровня. Точную цену под вашу тему назовём после короткого диалога — бесплатно; решение вы примете, уже зная финальную цифру.</p>
-                <div class="calc-cta">
-                  <a class="btn btn-wax btn-block" id="qSend" href="configurator.html?step=4">Оформить заявку на сайте <span class="ar">→</span></a>
-                  <p class="petit">Расчёт сохранится — останется добавить тему и файлы, заявка уйдёт мастеру напрямую. Удобнее в Telegram? <a class="link" id="qSendTg" href="https://t.me/academic_saloon_bot?start=web" target="_blank" rel="noopener">Отправьте смету боту<span class="visually-hidden"> (откроется в новом окне)</span></a>.</p>
-                  <p class="petit">Не уверены в теме? <a class="link" href="plan.html">Разбор плана — 3 000 ₽</a>: старт любой работы, зачтётся в её цену.</p>
+                <div class="pr-estimate-basis" aria-label="Основа расчёта">
+                  <span><small>База</small><b id="qBase">40 000 ₽</b></span>
+                  <span><small>Направление</small><b id="qDisc">×1.0</b></span>
+                  <span><small>Срок</small><b id="qTerm">×1.0</b></span>
                 </div>
-                <p class="pr-trust"><span>6 лет</span><span>1000+ защит</span><span>0 утечек</span></p>
-                <div class="calc-seal calc-seal--foot" id="qSeal" aria-hidden="true"><span data-seal="СМЕТА · ЗА МИНУТУ · БЕЗ ПРЕДОПЛАТЫ · " data-seal-center="¶" data-seal-cls="seal--wax" data-seal-size="92"></span></div>
+                <div class="pr-payment-card">
+                  <span class="caps">Стартовый этап</span>
+                  <strong id="qStart">12 000 ₽</strong>
+                  <p id="qStartNote">30% на старт · остальное после показанного результата</p>
+                </div>
+                <p class="petit pr-slots" id="qSlots" hidden></p>
+                <p class="pr-estimate-note">Точную сумму мастер назовёт после темы и методички — бесплатно и до решения об оплате.</p>
+                <div class="calc-cta">
+                  <a class="btn btn-wax btn-block" id="qSend" href="configurator.html?step=4">Получить точную смету <span class="ar">→</span></a>
+                </div>
+                <div class="pr-estimate-foot">
+                  <a class="link" id="qSendTg" href="https://t.me/academic_saloon_bot?start=web" target="_blank" rel="noopener">Продолжить в Telegram ↗<span class="visually-hidden"> (откроется в новом окне)</span></a>
+                  <p class="pr-trust"><span>6 лет практики</span><span>1000+ работ</span><span>конфиденциально</span></p>
+                </div>
+                <button class="pr-edit-estimate" id="prEditEstimate" type="button">← Изменить параметры</button>
+                <span class="pr-estimate-mark" aria-hidden="true">¶</span>
               </div>
             </div>
 
@@ -168,54 +183,45 @@ window.SalonPreludeOpen=function(){
               <div class="pr-cvin">
                 <div class="pr-pg pr-form">
                   <div class="pr-form-meta">
-                    <span class="pg-caps caps">Быстрый расчёт · формуляр</span>
-                    <span class="pr-form-time">≈ 1 минута</span>
+                    <span class="pg-caps caps">Формуляр · быстрый расчёт</span>
+                    <span class="pr-folio">лист 01</span>
                   </div>
-                  <h2 class="pr-formh" tabindex="-1">Три вопроса — и&nbsp;цена</h2>
-                  <p class="pr-formsub">Без контактов. Выбирайте — смета справа обновится сразу.</p>
+                  <h2 class="pr-formh" tabindex="-1">Расчёт за минуту</h2>
+                  <p class="pr-formsub">Три параметра · без телефона и почты</p>
 
-                  <section class="pr-question" data-label="Работа">
+                  <section class="pr-question" data-label="Работа"
+                    data-tip="Нет точного названия? Выберите ближайшее — тему уточним до фиксации сметы.">
                     <div class="pr-qhead">
-                      <p class="plate-q"><span class="q-no">01</span><span>Тип работы</span></p>
-                      <button class="pr-info" type="button" aria-label="Как выбрать тип работы" aria-expanded="false"
-                        aria-describedby="prTipType"><span aria-hidden="true">?</span>
-                        <span class="pr-tip" id="prTipType" role="tooltip">Нет точного названия? Выберите ближайшее — тему уточним позже.</span>
-                      </button>
+                      <p class="plate-q"><span class="q-no">01</span><span>Что готовим</span></p>
                     </div>
-                    <div class="plates" data-plates="type" role="group" aria-label="Тип работы">
+                    <div class="plates pr-type-choices" data-plates="type" role="group" aria-label="Тип работы">
                       <button type="button" data-v="diplom" aria-pressed="true">Диплом / ВКР</button>
                       <button type="button" data-v="master" aria-pressed="false">Магистерская</button>
                       <button type="button" data-v="course" aria-pressed="false">Курсовая</button>
-                      <button type="button" data-v="course_emp" aria-pressed="false">Курсовая + исследование</button>
                       <button type="button" data-v="vak" aria-pressed="false">Статья ВАК</button>
-                      <button type="button" data-v="kandidat" aria-pressed="false">Кандидатская</button>
+                      <button class="pr-choice-secondary" type="button" data-v="course_emp" aria-pressed="false">Курсовая с исследованием</button>
+                      <button class="pr-choice-secondary" type="button" data-v="kandidat" aria-pressed="false">Кандидатская</button>
+                      <a class="plate-more link" href="configurator.html" id="qFull">Другой тип →</a>
                     </div>
-                    <a class="plate-more link" href="configurator.html" id="qFull">Другой тип →</a>
                   </section>
 
-                  <section class="pr-question" data-label="Направление">
+                  <section class="pr-question" data-label="Направление"
+                    data-tip="Ориентируйтесь на требования кафедры. Точное направление мастер проверит по методичке.">
                     <div class="pr-qhead">
                       <p class="plate-q"><span class="q-no">02</span><span>Направление</span></p>
-                      <button class="pr-info" type="button" aria-label="Как выбрать направление" aria-expanded="false"
-                        aria-describedby="prTipDisc"><span aria-hidden="true">?</span>
-                        <span class="pr-tip" id="prTipDisc" role="tooltip">Ориентируйтесь на требования кафедры, а не только на название специальности.</span>
-                      </button>
                     </div>
                     <div class="plates" data-plates="disc" role="group" aria-label="Направление">
                       <button type="button" data-v="hum" aria-pressed="true">Гуманитарное, экономика</button>
-                      <button type="button" data-v="law" aria-pressed="false">Право, педагогика, психология</button>
+                      <button type="button" data-v="law" aria-pressed="false">Право, социальные науки</button>
                       <button type="button" data-v="tech" aria-pressed="false">Техническое, IT</button>
                       <button type="button" data-v="med" aria-pressed="false">Медицина, финансы</button>
                     </div>
                   </section>
 
-                  <section class="pr-question" data-label="Срок">
+                  <section class="pr-question" data-label="Срок"
+                    data-tip="Укажите срок до первого содержательного результата. Чем больше времени, тем ниже коэффициент.">
                     <div class="pr-qhead">
-                      <p class="plate-q"><span class="q-no">03</span><span>Срок до сдачи</span></p>
-                      <button class="pr-info" type="button" aria-label="Как указать срок" aria-expanded="false"
-                        aria-describedby="prTipTerm"><span aria-hidden="true">?</span>
-                        <span class="pr-tip" id="prTipTerm" role="tooltip">Укажите дату первого результата. Чем больше времени, тем ниже коэффициент.</span>
-                      </button>
+                      <p class="plate-q"><span class="q-no">03</span><span>Срок до первого результата</span></p>
                     </div>
                     <div class="plates cols-3" data-plates="term" role="group" aria-label="Срок">
                       <button type="button" data-v="free" aria-pressed="true">30+ дней</button>
@@ -224,30 +230,32 @@ window.SalonPreludeOpen=function(){
                     </div>
                   </section>
                   <noscript><p class="petit">Калькулятор работает при включённом JavaScript. Или напишите нам: <a class="link" href="https://vk.me/academicsaloon">ВКонтакте</a> · <a class="link" href="https://t.me/academicsaloon">Telegram</a> — посчитаем за минуту.</p></noscript>
-                  <p class="pr-pgfoot"><span>Без телефона и почты</span> Финальную цену мастер подтвердит после темы — бесплатно.</p>
+                  <p class="pr-step-help" id="prStepHelp">Нет точного варианта? Выберите ближайший — мастер всё уточнит до фиксации сметы.</p>
+                  <p class="pr-pgfoot"><span>Выбор сохранится</span> Тему и требования добавите следующим шагом.</p>
                 </div>
               </div>
             </div>
 
             <button class="pr-book-trigger" id="prBookTrigger" type="button"
-              aria-controls="smeta" aria-expanded="false"
+              aria-expanded="false"
               aria-label="Открыть книгу и рассчитать предварительную смету за минуту">
               <span class="pr-book-trigger-label" aria-hidden="true">
-                <span class="pr-book-trigger-index">01</span>
+                <span class="pr-book-trigger-index">открыть</span>
                 <span class="pr-book-trigger-copy">
-                  <strong>Открыть</strong>
-                  <small>смета · ≈ 1 мин</small>
+                  <strong>Смета за минуту</strong>
+                  <small>нажмите на обложку</small>
                 </span>
                 <span class="pr-book-trigger-arrow" aria-hidden="true">→</span>
               </span>
             </button>
+            <button class="pr-book-close" id="prBookClose" type="button" aria-label="Закрыть книгу">×</button>
             <div class="pr-ribbon" aria-hidden="true"></div>
           </div>
         </div>
 
       </div>
 
-      <div class="pr-hint" aria-hidden="true"><span>Прокрутите или нажмите на книгу</span><span class="ln"></span></div>
+      <div class="pr-hint" aria-hidden="true"><span>Нажмите на книгу — внутри смета</span><span class="ln"></span></div>
     </section>
   </div>
 
@@ -339,7 +347,7 @@ window.SalonPreludeOpen=function(){
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://akademsalon.ru/#org","name":"Академический Салон","description":"Помощь и сопровождение в подготовке академических работ: консультации, редактура, разбор, репетиторство, оформление по методичке. Оплата по этапам, отчёт о проверках до оплаты, правки до защиты.","url":"https://akademsalon.ru/","image":"https://akademsalon.ru/assets/img/og-cover.png","logo":"https://akademsalon.ru/assets/img/mail-avatar-512.png","foundingDate":"2020","areaServed":{"@type":"Country","name":"Россия"},"knowsLanguage":"ru","priceRange":"от 2500 ₽","contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://t.me/academicsaloon","availableLanguage":"ru"},"sameAs":["https://vk.com/academicsaloon","https://t.me/akademsalon","https://t.me/academicsaloon","https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs","https://t.me/academic_saloon_bot"],"makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с курсовой работой","url":"https://akademsalon.ru/kursovaya-rabota.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с дипломной работой (ВКР)","url":"https://akademsalon.ru/diplomnaya-rabota.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с магистерской диссертацией","url":"https://akademsalon.ru/magisterskaya-dissertaciya.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с кандидатской диссертацией","url":"https://akademsalon.ru/kandidatskaya-dissertaciya.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с отчётом по практике","url":"https://akademsalon.ru/otchet-po-praktike.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Помощь с научной статьёй","url":"https://akademsalon.ru/nauchnaya-statya.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Реферат, эссе, контрольная","url":"https://akademsalon.ru/referat.html"}}]}</script>
 <script src="assets/js/app.js?v=20260723j"></script>
 <script src="assets/js/extras.js?v=20260723g"></script>
-<script src="assets/js/pereplet.js?v=20260723a"></script>
-<script src="assets/js/press.js?v=20260723g"></script>
+<script src="assets/js/pereplet.js?v=20260723b"></script>
+<script src="assets/js/press.js?v=20260723j"></script>
 </body>
 </html>

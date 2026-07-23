@@ -175,13 +175,18 @@
         slotsEl.hidden = false;
       }
       var startEl = document.getElementById('qStart');
+      var startNote = document.getElementById('qStartNote');
       if (startEl) {
         if (state.type === 'kandidat') {
-          startEl.textContent = 'кандидатская считается по главам — у каждой главы своя смета и свой график';
+          startEl.textContent = 'По главам';
+          if (startNote) startNote.textContent = 'У каждой главы — своя смета, срок и этап оплаты';
         } else {
           var big = ['diplom', 'master', 'chapter'].indexOf(state.type) > -1;
-          startEl.textContent = 'начать сегодня — ' + C.fmt(C.round500(q.low * (big ? 0.3 : 0.5))) +
-            ' ₽ (' + (big ? '30%' : 'половина, 50/50') + ') · остальное после показанного результата';
+          startEl.textContent = C.fmt(C.round500(q.low * (big ? 0.3 : 0.5))) + ' ₽';
+          if (startNote) {
+            startNote.textContent = (big ? '30% на старт' : '50% на старт') +
+              ' · остальное после показанного результата';
+          }
         }
       }
 

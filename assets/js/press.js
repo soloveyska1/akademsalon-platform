@@ -10,12 +10,18 @@
   var track = document.getElementById('prTrack');
   var scene = document.querySelector('.pr-scene');
   var bookTrigger = document.getElementById('prBookTrigger');
+  var bookClose = document.getElementById('prBookClose');
+  var editEstimate = document.getElementById('prEditEstimate');
+  var bookEl = document.getElementById('smeta');
   var formHeading = document.querySelector('.pr-formh');
   var concealedPages = [
     document.querySelector('.pr-first'),
     document.querySelector('.pr-cvin')
   ].filter(Boolean);
   var focusTimer = 0;
+  var bookFrame = 0;
+  var bookProgress = 0;
+  var bookState = 'closed';
   if (!track || !scene) return;
 
   var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -24,43 +30,56 @@
     if (window.Salon && Salon.motion) return Salon.motion.mode() === 'off';
     return rm || docEl.hasAttribute('data-calm');
   }
-  /* Поток — мобильная вёрстка, touch-устройства и явно включённый
-     пользователем спокойный режим. Системный reduced-motion на широком
-     экране сохраняет книгу в титуле, но превращает сцену в два статичных
-     состояния — закрытая книга и раскрытая смета. */
+  /* Полный 3D-разворот безопасен только на достаточно широком и высоком
+     экране. Ниже остаётся та же книга, но открывается в устойчивый лист. */
   function flat() {
-    return window.innerWidth <= 880 || (coarse && coarse.matches) || docEl.hasAttribute('data-calm');
-  }
-  function staticWide() {
-    return window.innerWidth > 880 && !(coarse && coarse.matches) && reduced() && !docEl.hasAttribute('data-calm');
+    return window.innerWidth <= 1120 || window.innerHeight <= 680 ||
+      (coarse && coarse.matches) || docEl.hasAttribute('data-calm');
   }
   function syncBookState(open) {
-    var conceal = !docEl.hasAttribute('data-pr-flat') && !open;
+    var isFlat = docEl.hasAttribute('data-pr-flat');
+    var result = !!(bookEl && bookEl.classList.contains('mobile-result'));
     var active = document.activeElement;
-    if (conceal && bookTrigger && concealedPages.some(function (page) { return page.contains(active); })) {
+    var activeWillHide = concealedPages.some(function (page) {
+      if (!page.contains(active)) return false;
+      if (!open) return true;
+      if (!isFlat) return false;
+      return page.classList.contains('pr-first') ? !result : result;
+    });
+    if (activeWillHide && bookTrigger) {
       bookTrigger.focus({ preventScroll: true });
     }
     concealedPages.forEach(function (page) {
-      page.inert = conceal;
-      if (conceal) page.setAttribute('aria-hidden', 'true');
+      var show = open && (!isFlat ||
+        (page.classList.contains('pr-first') ? result : !result));
+      page.inert = !show;
+      if (!show) page.setAttribute('aria-hidden', 'true');
       else page.removeAttribute('aria-hidden');
     });
     if (bookTrigger) bookTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (bookClose) bookClose.hidden = !open;
   }
 
-  /* На телефоне быстрый расчёт — это три коротких шага, а не длинный
-     книжный разворот. Сами группы и расчёт остаются прежними: меняется
-     только мобильная подача, поэтому один источник цен не раздваивается. */
-  function initMobileEstimator() {
+  /* Один и тот же пошаговый формуляр работает внутри 3D-разворота и на
+     телефоне. Цены и выбор по-прежнему считает только pereplet.js. */
+  var showEstimatorStep = null;
+  function initEstimatorFlow() {
     var form = document.querySelector('.pr-form');
-    if (!form || form.getAttribute('data-mobile-flow') === '1') return;
+    if (!form || form.getAttribute('data-estimator-flow') === '1') return;
     var questions = Array.prototype.slice.call(form.querySelectorAll('.pr-question'));
     var foot = form.querySelector('.pr-pgfoot');
+    var help = form.querySelector('.pr-step-help');
     if (questions.length !== 3 || !foot) return;
 
     var progress = document.createElement('div');
     progress.className = 'pr-qprog';
-    progress.setAttribute('aria-live', 'polite');
+    progress.innerHTML = '<div class="pr-step-tabs" role="group" aria-label="Шаги расчёта">' +
+      questions.map(function (q, i) {
+        return '<button class="pr-step-tab" type="button" data-step="' + i +
+          '" aria-label="Шаг ' + (i + 1) + ': ' + q.getAttribute('data-label') + '">' +
+          String(i + 1).padStart(2, '0') + '</button>';
+      }).join('') + '</div><div class="pr-qprice" aria-live="polite">' +
+      '<span>Ориентир</span><em></em></div>';
     form.insertBefore(progress, questions[0]);
 
     var steps = [];
@@ -80,6 +99,7 @@
     var back = nav.querySelector('.pr-qback');
     var nextBtn = nav.querySelector('.pr-qnext');
     var price = document.getElementById('qPrice');
+    var stepTabs = Array.prototype.slice.call(progress.querySelectorAll('.pr-step-tab'));
     var current = 0;
 
     function priceText() {
@@ -89,25 +109,50 @@
       current = Math.max(0, Math.min(steps.length - 1, i));
       steps.forEach(function (step, n) { step.classList.toggle('active', n === current); });
       var question = steps[current].querySelector('.pr-question');
-      var label = question ? question.getAttribute('data-label') : '';
-      progress.innerHTML = '<span>Шаг ' + (current + 1) + '/' + steps.length + (label ? ' · ' + label : '') + '</span>' +
-        '<em>' + priceText() + '</em>' +
-        '<i><b style="width:' + ((current + 1) / steps.length * 100) + '%"></b></i>';
+      stepTabs.forEach(function (tab, n) {
+        if (n === current) tab.setAttribute('aria-current', 'step');
+        else tab.removeAttribute('aria-current');
+      });
+      var livePrice = progress.querySelector('em');
+      if (livePrice) livePrice.textContent = priceText();
+      if (help && question) {
+        help.textContent = question.getAttribute('data-tip') ||
+          'Выберите ближайший вариант — мастер всё уточнит до фиксации сметы.';
+      }
       back.hidden = current === 0;
       nextBtn.innerHTML = current === steps.length - 1
-        ? 'Показать смету <span aria-hidden="true">↓</span>'
+        ? 'Смета готова <span aria-hidden="true">→</span>'
         : 'Далее <span aria-hidden="true">→</span>';
       if (focus) {
         var heading = steps[current].querySelector('.plate-q');
         if (heading) { heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); }
-        form.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
+        if (docEl.hasAttribute('data-pr-flat')) {
+          form.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
+        }
       }
     }
+    showEstimatorStep = show;
+    stepTabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        if (bookEl) bookEl.classList.remove('mobile-result');
+        show(parseInt(tab.getAttribute('data-step'), 10) || 0, true);
+        syncBookState(true);
+      });
+    });
     back.addEventListener('click', function () { show(current - 1, true); });
     nextBtn.addEventListener('click', function () {
       if (current < steps.length - 1) { show(current + 1, true); return; }
       var receipt = document.querySelector('.pr-first');
-      if (receipt) receipt.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
+      if (docEl.hasAttribute('data-pr-flat') && bookEl) {
+        bookEl.classList.add('mobile-result');
+        syncBookState(true);
+      }
+      if (receipt) {
+        receipt.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
+        var total = receipt.querySelector('.pr-estimate-total');
+        if (total) total.setAttribute('tabindex', '-1');
+        if (total) total.focus({ preventScroll: true });
+      }
     });
     if (price && window.MutationObserver) {
       new MutationObserver(function () {
@@ -115,104 +160,115 @@
         if (livePrice) livePrice.textContent = priceText();
       }).observe(price, { childList: true, characterData: true, subtree: true });
     }
-    form.setAttribute('data-mobile-flow', '1');
+    form.setAttribute('data-estimator-flow', '1');
     show(0, false);
   }
 
-  /* режим потока: мобильные и «спокойные» получают страницы без кино */
-  function applyMode() {
-    if (flat()) docEl.setAttribute('data-pr-flat', '1');
-    else docEl.removeAttribute('data-pr-flat');
-    if (staticWide()) {
-      docEl.setAttribute('data-pr-static', '1');
-      if (!track.hasAttribute('data-static-open')) {
-        track.style.setProperty('--p', '0');
-        document.body.classList.remove('pr-open', 'pr-set');
-        if (bookTrigger) bookTrigger.setAttribute('aria-expanded', 'false');
-      }
-    } else {
-      docEl.removeAttribute('data-pr-static');
-      track.removeAttribute('data-static-open');
-      track.style.removeProperty('--p');
-    }
-    if (flat()) initMobileEstimator();
-    onScroll();
+  function setProgress(value) {
+    bookProgress = Math.max(0, Math.min(1, value));
+    track.style.setProperty('--p', bookProgress.toFixed(4));
   }
-
-  /* ---------- прогресс кино ---------- */
-  function onScroll() {
-    if (docEl.hasAttribute('data-pr-flat') || docEl.hasAttribute('data-pr-static')) {
-      syncBookState(document.body.classList.contains('pr-open'));
+  function animateBook(to, done) {
+    if (bookFrame) cancelAnimationFrame(bookFrame);
+    var from = bookProgress;
+    var duration = reduced() ? 0 : 760;
+    if (!duration || docEl.hasAttribute('data-pr-flat')) {
+      setProgress(to);
+      if (done) done();
       return;
     }
-    var total = track.offsetHeight - window.innerHeight;
-    if (total <= 0) return;
-    var p = Math.min(1, Math.max(0, -track.getBoundingClientRect().top / total));
-    track.style.setProperty('--p', p.toFixed(4));
-    document.body.classList.toggle('pr-open', p > .55);
-    document.body.classList.toggle('pr-set', p > .82);
-    syncBookState(p > .55);
+    var started = 0;
+    function frame(t) {
+      if (!started) started = t;
+      var x = Math.min(1, (t - started) / duration);
+      var eased = 1 - Math.pow(1 - x, 3);
+      setProgress(from + (to - from) * eased);
+      if (x < 1) bookFrame = requestAnimationFrame(frame);
+      else { bookFrame = 0; if (done) done(); }
+    }
+    bookFrame = requestAnimationFrame(frame);
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', applyMode);
-  window.addEventListener('salon:motionchange', applyMode);
-  applyMode();
 
-  /* ---------- ход к приёмной: конец кино, а не начало трека ----------
-     Прод-CTA («Рассчитать» в шапке, мобильной панели, финале, прологе)
-     ведут на #smeta — в кино-режиме перехватываем и довозим до разворота. */
   function focusFormSoon(smooth) {
     if (!formHeading) return;
     window.clearTimeout(focusTimer);
     focusTimer = window.setTimeout(function () {
       formHeading.focus({ preventScroll: true });
-    }, smooth ? 620 : 60);
+    }, smooth ? 120 : 0);
   }
-  function goPriyomnaya(smooth, moveFocus) {
-    if (docEl.hasAttribute('data-pr-flat')) {
-      var s = document.getElementById('smeta');
-      if (s) s.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
-      if (moveFocus) focusFormSoon(smooth);
-      return;
-    }
-    if (docEl.hasAttribute('data-pr-static')) {
-      track.setAttribute('data-static-open', '1');
-      track.style.setProperty('--p', '1');
-      document.body.classList.add('pr-open', 'pr-set');
-      syncBookState(true);
-      scene.scrollIntoView({ behavior: 'auto', block: 'start' });
+  function openBook(smooth, moveFocus) {
+    if (bookState === 'open' || bookState === 'opening') {
       if (moveFocus) focusFormSoon(false);
       return;
     }
-    var total = track.offsetHeight - window.innerHeight;
-    var top = track.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: top + total, behavior: smooth ? 'smooth' : 'auto' });
-    if (moveFocus) focusFormSoon(smooth);
+    bookState = 'opening';
+    document.body.classList.add('pr-opening');
+    if (bookTrigger) bookTrigger.disabled = true;
+    scene.scrollIntoView({ behavior: smooth && !flat() ? 'smooth' : 'auto', block: 'start' });
+    animateBook(1, function () {
+      bookState = 'open';
+      document.body.classList.remove('pr-opening', 'pr-closing');
+      document.body.classList.add('pr-open', 'pr-set');
+      if (bookTrigger) bookTrigger.disabled = false;
+      syncBookState(true);
+      if (docEl.hasAttribute('data-pr-flat')) {
+        var form = document.querySelector('.pr-form');
+        if (form) form.scrollIntoView({ behavior: smooth && !reduced() ? 'smooth' : 'auto', block: 'start' });
+      }
+      if (moveFocus) focusFormSoon(smooth);
+    });
+  }
+  function closeBook(restoreFocus) {
+    if (bookState === 'closed' || bookState === 'closing') return;
+    bookState = 'closing';
+    if (bookEl) bookEl.classList.remove('mobile-result');
+    document.body.classList.remove('pr-open', 'pr-set', 'pr-opening');
+    document.body.classList.add('pr-closing');
+    syncBookState(false);
+    animateBook(0, function () {
+      bookState = 'closed';
+      document.body.classList.remove('pr-closing');
+      if (restoreFocus && bookTrigger) bookTrigger.focus({ preventScroll: true });
+    });
+  }
+
+  /* режим листа вычисляется до взаимодействия; состояние книги дискретное,
+     скрытые страницы никогда не становятся активны посреди анимации. */
+  function applyMode() {
+    if (flat()) docEl.setAttribute('data-pr-flat', '1');
+    else docEl.removeAttribute('data-pr-flat');
+    docEl.removeAttribute('data-pr-static');
+    initEstimatorFlow();
+    setProgress(bookState === 'open' ? 1 : 0);
+    syncBookState(bookState === 'open');
+  }
+  window.addEventListener('resize', applyMode);
+  window.addEventListener('salon:motionchange', applyMode);
+  applyMode();
+
+  /* Прод-CTA, обложка и прямой #smeta открывают одно и то же состояние. */
+  function goPriyomnaya(smooth, moveFocus) {
+    openBook(smooth, moveFocus);
   }
   window.SalonPressGo = function () { goPriyomnaya(!reduced(), true); };
+  window.SalonPressClose = function () { closeBook(false); };
   if (bookTrigger) {
     bookTrigger.addEventListener('click', function () { goPriyomnaya(!reduced(), true); });
   }
-  var infoButtons = Array.prototype.slice.call(document.querySelectorAll('.pr-info'));
-  function closeTips(except) {
-    infoButtons.forEach(function (button) {
-      if (button !== except) button.setAttribute('aria-expanded', 'false');
+  if (bookClose) {
+    bookClose.addEventListener('click', function () { closeBook(true); });
+  }
+  if (editEstimate) {
+    editEstimate.addEventListener('click', function () {
+      if (bookEl) bookEl.classList.remove('mobile-result');
+      if (showEstimatorStep) showEstimatorStep(2, false);
+      syncBookState(true);
+      var form = document.querySelector('.pr-form');
+      if (form) form.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
     });
   }
-  infoButtons.forEach(function (button) {
-    button.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var opening = button.getAttribute('aria-expanded') !== 'true';
-      closeTips(button);
-      button.setAttribute('aria-expanded', opening ? 'true' : 'false');
-    });
-  });
-  document.addEventListener('click', function () { closeTips(); });
   document.addEventListener('keydown', function (e) {
-    if (e.key !== 'Escape') return;
-    var info = e.target.closest && e.target.closest('.pr-info');
-    closeTips();
-    if (info) info.blur();
+    if (e.key === 'Escape' && bookState === 'open') closeBook(true);
   });
 
   document.addEventListener('click', function (e) {
@@ -226,6 +282,10 @@
 
   /* прямой заход с якорем (реклама, пролог, чужие страницы) */
   if (location.hash === '#smeta') {
+    /* Убираем нативное fragment-позиционирование: у 3D-элемента оно
+       вычисляется до раскрытия и способно утащить верх страницы под шапку. */
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    window.scrollTo(0, 0);
     setTimeout(function () { goPriyomnaya(false, false); }, 60);
   }
 
