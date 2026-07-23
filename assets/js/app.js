@@ -1302,7 +1302,7 @@
         '<nav class="toc-primary" aria-label="Разделы сайта">' + rows + '</nav>' +
         '<div class="toc-side">' +
           '<div><span class="toc-grp-t">Документы</span><nav class="toc-docs" aria-label="Правовые документы">' + docRows + '</nav></div>' +
-          '<div><span class="toc-grp-t">Связь</span><div class="toc-contacts">' +
+          '<div><span class="toc-grp-t">Приёмная</span><div class="toc-contacts">' +
             '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener"><span>ВКонтакте · написать</span><span class="tc-v">vk.me/academicsaloon</span></a>' +
             '<a href="' + LINKS.max + '" target="_blank" rel="noopener"><span>MAX · канал</span><span class="tc-v">Академический Салон</span></a>' +
             '<a href="' + LINKS.tgc + '" target="_blank" rel="noopener"><span>Telegram · канал</span><span class="tc-v">@akademsalon</span></a>' +
@@ -1562,7 +1562,7 @@
         '</div>' +
         '<div class="cf7-cta">' +
           '<a class="cf7-btn cf7-btn--gold" href="configurator.html">Оформить заявку <span aria-hidden="true">→</span></a>' +
-          '<button class="cf7-btn cf7-btn--ghost" type="button" data-contact="1">Спросить человека</button>' +
+          '<button class="cf7-btn cf7-btn--ghost" type="button" data-contact="1">Спросить мастера</button>' +
         '</div>' +
         '<p class="cf7-facts"><span>6 лет</span><span>1000+ защит</span><span>0 утечек</span><span>чек НПД</span></p>' +
       '</div>' +
@@ -1616,7 +1616,7 @@
   if (!CHROME_OFF && !document.querySelector('.site-footer')) {
     var footer = document.createElement('footer');
     footer.className = 'site-footer';
-    footer.setAttribute('aria-label', 'Связь и документы');
+    footer.setAttribute('aria-label', 'Приёмная и документы');
     footer.innerHTML = Salon.footerHTML();
     document.body.appendChild(footer);
     /* мостик открывает диалог — сообщаем это вспомогательным технологиям
@@ -1654,7 +1654,7 @@
     pill.className = 'tg-pill';
     pill.href = '#';
     pill.setAttribute('role', 'button');
-    pill.innerHTML = '<span class="tp-dot" aria-hidden="true"></span>Связаться';
+    pill.innerHTML = '<span class="tp-dot" aria-hidden="true"></span>Спросить мастера';
     pill.addEventListener('click', function (e) {
       e.preventDefault();
       if (Salon.contact) Salon.contact();
@@ -1679,7 +1679,7 @@
         '<span class="mn-l">' + label + '</span>' +
         (cls === ' mn-cab' ? '<span class="mn-badge" hidden></span>' : '') + '</a>';
     }
-    /* «Связь» открывает лист каналов (Salon.contact) — глобальный [data-contact] */
+    /* «Мастер» открывает короткую приёмную — глобальный [data-contact] */
     var CHAT_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.2h16v10.4H8.6L4 20V6.2z"/><path d="M7.6 10h8.8M7.6 13h5.6"/></svg>';
     /* перо на печати — SVG: глифа ✒ нет в фирменных подмножествах шрифтов */
     var PEN_SVG = '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2c2.7 1.9 4.4 4.1 4.4 6.8 0 1.8-.9 3.4-2.4 4.4L12 20.4l-2-6c-1.5-1-2.4-2.6-2.4-4.4 0-2.7 1.7-4.9 4.4-6.8z"/><circle cx="12" cy="10.2" r="1.5"/></svg>';
@@ -1690,7 +1690,7 @@
       mnItem('dashboard.html', 'Кабинет', CAB_SVG, ' mn-cab') +
       '<button class="mn-i mn-link" type="button" data-contact="1">' +
         '<span class="mn-ic" aria-hidden="true">' + CHAT_SVG + '</span>' +
-        '<span class="mn-l">Связь</span></button>';
+        '<span class="mn-l">Мастер</span></button>';
     document.body.appendChild(mnav);
   }
   /* Внизу колофона зарезервированы 96px под нижнюю панель. Панель бывает
@@ -1746,51 +1746,79 @@
     }, true);
   })();
 
-  /* ---------------- Лист связи (сайт → ВК → MAX → Telegram) ----------------
-     Главная дверь — конфигуратор на сайте: заявка, файлы и кабинет без
-     мессенджеров. Каналы — по желанию. [data-msg]/[data-contact] — триггеры. */
+  /* ---------------- Приёмная мастера -----------------------------------------
+     Два ясных начала: личный ответ или заявка на сайте. Остальные каналы
+     остаются рядом, но не спорят с главным выбором. */
   (function () {
     var sheet, lastFocus, inerted = [];
     function build(opts) {
       opts = opts || {};
       var el = document.createElement('div');
-      el.className = 'contact-sheet';
+      el.className = 'contact-sheet contact-v2';
       el.setAttribute('role', 'dialog');
       el.setAttribute('aria-modal', 'true');
-      el.setAttribute('aria-label', 'Как с нами связаться');
+      el.setAttribute('aria-labelledby', 'csTitle');
       var order = opts.orderLink || LINKS.bot;
+      var mskH = (new Date().getUTCHours() + 3) % 24;
+      var day = mskH >= 9 && mskH < 23;
       el.innerHTML =
+        '<style>' +
+          '.contact-v2 .cs-card{width:min(100%,460px);padding:22px 22px 18px;border:1px solid var(--hairline-strong);' +
+            'border-radius:8px 8px 0 0;background:var(--sheet);box-shadow:0 -16px 50px rgba(28,25,20,.18)}' +
+          '.contact-v2 .cs-head{margin:0 0 4px;min-height:44px}.contact-v2 .cs-kicker{font:10px/1.3 var(--mono);' +
+            'letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}' +
+          '.contact-v2 .cs-title{margin:0 0 7px;font:400 29px/1.05 var(--serif);color:var(--ink)}' +
+          '.contact-v2 .cs-lead{margin:0 0 10px;max-width:39ch;font-size:13.5px;line-height:1.48;color:var(--ink-soft)}' +
+          '.contact-v2 .cs-live{display:flex;align-items:center;gap:8px;min-height:30px;margin:0 0 12px;' +
+            'padding:5px 9px;background:var(--mark);font-size:11.5px;color:var(--ink-soft)}' +
+          '.contact-v2 .cs-live i{width:7px;height:7px;border-radius:50%;flex:none;background:var(--verify,#3D6B50)}' +
+          '.contact-v2 .cs-live.night i{background:var(--foil,#B98A2F)}' +
+          '.contact-v2 .cs-routes{display:grid;gap:7px}.contact-v2 .cs-route{min-height:60px;padding:10px 11px;' +
+            'display:grid;grid-template-columns:26px minmax(0,1fr) 18px;align-items:center;gap:10px;' +
+            'border:1px solid var(--hairline-strong);border-radius:3px;color:var(--ink);text-decoration:none}' +
+          '.contact-v2 .cs-route--main{border-color:var(--wax);background:var(--wax-soft)}' +
+          '.contact-v2 .cs-route:hover{background:var(--mark);border-color:var(--ink)}' +
+          '.contact-v2 .cs-num{font:10px/1 var(--mono);letter-spacing:.08em;color:var(--wax)}' +
+          '.contact-v2 .cs-route-copy{min-width:0;display:grid;gap:2px}.contact-v2 .cs-route-copy b{font-size:14.5px;font-weight:600}' +
+          '.contact-v2 .cs-route-copy small{font-size:11.5px;line-height:1.3;color:var(--ink-soft)}' +
+          '.contact-v2 .cs-arrow{font:20px/1 var(--serif);color:var(--wax)}' +
+          '.contact-v2 .cs-alt{margin-top:13px;padding-top:10px;border-top:1px solid var(--hairline)}' +
+          '.contact-v2 .cs-alt-label{display:block;margin-bottom:7px;font:9.5px/1.2 var(--mono);letter-spacing:.12em;' +
+            'text-transform:uppercase;color:var(--ink-faint)}' +
+          '.contact-v2 .cs-alt-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}' +
+          '.contact-v2 .cs-alt-grid a{min-height:44px;padding:7px 4px;display:grid;place-items:center;border:1px solid var(--hairline);' +
+            'border-radius:3px;font-size:11.5px;text-align:center;color:var(--ink-soft);text-decoration:none}' +
+          '.contact-v2 .cs-alt-grid a:hover{border-color:var(--wax);color:var(--wax)}' +
+          '.contact-v2 .cs-foot{margin:11px 0 0;font-size:11.5px;color:var(--ink-faint);text-align:center}' +
+          '.contact-v2 .cs-foot b{font-weight:600;color:var(--ink-soft)}' +
+          '@media(min-width:560px){.contact-v2 .cs-card{border-radius:6px;box-shadow:0 20px 70px rgba(28,25,20,.28)}}' +
+          '@media(max-width:559px){.contact-v2 .cs-card{width:100%;max-height:88svh;padding:22px var(--mobile-gutter) calc(15px + env(safe-area-inset-bottom));' +
+            'border-radius:10px 10px 0 0}.contact-v2 .cs-card::before{top:8px}.contact-v2 .cs-title{font-size:27px}' +
+            '.contact-v2 .cs-route{min-height:58px;padding:8px 10px}.contact-v2 .cs-lead{font-size:13px}}' +
+        '</style>' +
         '<div class="cs-backdrop" data-cs-close></div>' +
         '<div class="cs-card sheet">' +
-          '<div class="cs-head"><span class="caps">Связаться с Салоном</span>' +
-            '<button class="cs-x" type="button" aria-label="Закрыть" data-cs-close>×</button></div>' +
+          '<div class="cs-head"><span class="cs-kicker">Приёмная · без обязательств</span>' +
+            '<button class="cs-x" type="button" aria-label="Закрыть приёмную" data-cs-close>×</button></div>' +
+          '<h2 class="cs-title" id="csTitle">Спросить мастера</h2>' +
           '<p class="cs-lead">' + (opts.lead ||
-            'Напишите тему и срок — бесплатно оценим объём и назовём цену. Решение останется за вами.') + '</p>' +
-          /* честный индикатор доступности: тишина после «написать» — главный страх */
-          (function () {
-            var mskH = (new Date().getUTCHours() + 3) % 24;
-            var day = mskH >= 9 && mskH < 23;
-            return '<p style="display:flex;align-items:center;gap:8px;margin:-6px 0 12px;font-size:12.5px;color:var(--ink-soft)">' +
-              '<span style="width:8px;height:8px;border-radius:50%;flex:none;background:' +
-              (day ? 'var(--verify,#3D6B50)' : 'var(--foil,#B98A2F)') + '"></span>' +
-              (day ? 'Мастер на связи — обычно отвечаем за 15–30 минут'
-                   : 'В мастерской ночь — отвечаем и ночью, просто чуть дольше') + '</p>';
-          })() +
-          '<a class="cs-opt cs-opt--wax" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
-            '<span class="cs-o-ic" aria-hidden="true">✆</span>' +
-            '<span class="cs-o-txt"><b>Написать человеку</b><small>Telegram · обычно отвечаем за 15–30 минут днём</small></span>' +
-            '<span class="ar" aria-hidden="true">→</span></a>' +
-          '<a class="cs-opt" href="configurator.html">' +
-            '<span class="cs-o-ic" aria-hidden="true">✎</span>' +
-            '<span class="cs-o-txt"><b>Оформить заявку на сайте</b><small>Расчёт, файлы и кабинет — без регистрации</small></span>' +
-            '<span class="ar" aria-hidden="true">→</span></a>' +
-          '<details class="cs-more"><summary>Другие способы связи <span aria-hidden="true">+</span></summary>' +
-            '<div class="cs-more-in">' +
-              '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener"><b>ВКонтакте</b><small>Диалог с сообществом</small><i aria-hidden="true">↗</i></a>' +
-              '<a href="' + LINKS.max + '" target="_blank" rel="noopener"><b>MAX</b><small>Канал мастерской</small><i aria-hidden="true">↗</i></a>' +
-              '<a href="' + order + '" target="_blank" rel="noopener"><b>Telegram-бот</b><small>Заявки и статусы 24/7</small><i aria-hidden="true">↗</i></a>' +
-            '</div></details>' +
-          '<p class="cs-note">Заявка с сайта попадает мастеру напрямую, переписка и статусы — в <a href="dashboard.html">кабинете</a>. Нажимая, вы принимаете <a href="oferta.html">оферту</a> и <a href="privacy.html">политику ПДн</a>.</p>' +
+            'Напишите тему и срок. Скажем, возьмёмся ли, сколько это стоит и что понадобится от вас.') + '</p>' +
+          '<div class="cs-live' + (day ? '' : ' night') + '"><i aria-hidden="true"></i><span>' +
+            (day ? 'Сейчас отвечаем · обычно 15–30 минут' : 'В мастерской ночь · ответим утром или раньше') + '</span></div>' +
+          '<div class="cs-routes">' +
+            '<a class="cs-route cs-route--main" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
+              '<span class="cs-num" aria-hidden="true">01</span><span class="cs-route-copy"><b>Написать мастеру</b>' +
+              '<small>Личный диалог в Telegram</small></span><span class="cs-arrow" aria-hidden="true">→</span></a>' +
+            '<a class="cs-route" href="configurator.html">' +
+              '<span class="cs-num" aria-hidden="true">02</span><span class="cs-route-copy"><b>Оставить заявку на сайте</b>' +
+              '<small>Смета, файлы и статус в одном месте</small></span><span class="cs-arrow" aria-hidden="true">→</span></a>' +
+          '</div>' +
+          '<div class="cs-alt"><span class="cs-alt-label">Другой путь</span><div class="cs-alt-grid">' +
+            '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener">ВКонтакте</a>' +
+            '<a href="' + order + '" target="_blank" rel="noopener">Бот 24/7</a>' +
+            '<a href="priyomnaya.html">Анонимно</a>' +
+          '</div></div>' +
+          '<p class="cs-foot"><b>Без оплаты:</b> сначала ответ и понятная цена.</p>' +
         '</div>';
       return el;
     }
