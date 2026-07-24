@@ -21,6 +21,8 @@ log = logging.getLogger(__name__)
 _FONT_REGULAR = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
     "/usr/share/fonts/TTF/DejaVuSans.ttf",
+    "/Applications/LibreOffice.app/Contents/Resources/fonts/truetype/DejaVuSans.ttf",
+    "/opt/homebrew/lib/python3.11/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf",
     "/Library/Fonts/DejaVuSans.ttf",
     os.path.expanduser("~/Library/Fonts/DejaVuSans.ttf"),
     "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",
@@ -30,6 +32,8 @@ _FONT_REGULAR = [
 _FONT_BOLD = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
     "/usr/share/fonts/TTF/DejaVuSans-Bold.ttf",
+    "/Applications/LibreOffice.app/Contents/Resources/fonts/truetype/DejaVuSans-Bold.ttf",
+    "/opt/homebrew/lib/python3.11/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf",
     "/Library/Fonts/DejaVuSans-Bold.ttf",
     os.path.expanduser("~/Library/Fonts/DejaVuSans-Bold.ttf"),
     "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
@@ -278,6 +282,10 @@ def _normal_line(raw: dict[str, Any], position: int, o: dict[str, Any]) -> dict[
                                       else "author_order_non_attestation"))[:100],
         "service_code": str(raw.get("service_code") or raw.get("type") or "")[:100],
         "title": title,
+        "receipt_name": str(
+            raw.get("receipt_name")
+            or f"Информационно-консультационная услуга: {title}"
+        )[:128],
         "plain_description": str(raw.get("plain_description") or result)[:1200],
         "quantity": max(1, min(100, int(raw.get("quantity") or raw.get("qty") or 1))),
         "unit": unit,
@@ -319,7 +327,8 @@ def _validate_offered(spec: dict[str, Any]) -> None:
     if len(ids) != len(set(ids)):
         raise ValueError("specification_line_ids_not_unique")
     required = (
-        "permitted_purpose", "title", "unit_definition", "actual_author", "rights_mode",
+        "permitted_purpose", "title", "receipt_name", "unit_definition",
+        "actual_author", "rights_mode",
     )
     for line in lines:
         if line["contract_contour"] not in ("A", "B1", "B2"):

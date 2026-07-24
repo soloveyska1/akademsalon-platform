@@ -11,6 +11,7 @@ from unittest.mock import AsyncMock, patch
 
 import aiosqlite
 from aiohttp.test_utils import make_mocked_request
+from cryptography.fernet import Fernet
 
 from app import config, db, webapp
 
@@ -31,6 +32,8 @@ class _JsonRequest:
 
 class SecurityContractTests(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self) -> None:
+        self.previous_order_token_key = config.ORDER_ACCESS_TOKEN_KEY
+        config.ORDER_ACCESS_TOKEN_KEY = Fernet.generate_key().decode("ascii")
         self.tmp = tempfile.TemporaryDirectory()
         self.db_path = str(Path(self.tmp.name) / "test.sqlite3")
         await db.init(self.db_path)
@@ -50,6 +53,7 @@ class SecurityContractTests(unittest.IsolatedAsyncioTestCase):
 
     async def asyncTearDown(self) -> None:
         await db.close()
+        config.ORDER_ACCESS_TOKEN_KEY = self.previous_order_token_key
         self.tmp.cleanup()
 
     async def test_migrations_are_versioned_and_idempotent(self) -> None:
@@ -64,12 +68,13 @@ class SecurityContractTests(unittest.IsolatedAsyncioTestCase):
                 "0003_gift_purchase_consent",
                 "0004_order_consent_enforcement",
                 "0005_session_token_hash",
+                "0006_payment_receipts",
             ],
         )
         await db.close()
         await db.init(self.db_path)
         cur = await db.conn().execute("SELECT count(*) AS n FROM schema_migrations")
-        self.assertEqual((await cur.fetchone())["n"], 5)
+        self.assertEqual((await cur.fetchone())["n"], 6)
 
     def test_consent_versions_match_database_guards(self) -> None:
         migration_dir = Path(__file__).resolve().parents[1] / "migrations"

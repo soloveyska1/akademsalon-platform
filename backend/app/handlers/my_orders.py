@@ -402,8 +402,9 @@ async def cb_requisites(cb: CallbackQuery) -> None:
         await cb.message.answer(
             f"💳 <b>{label}: {config.fmt_money(amount)} ₽</b>\n"
             f"Заказ {config.order_no(o['id'])}\n\n{texts.esc(req)}\n\n"
-            + ("Оплатите картой по кнопке (чек придёт сам, статус двинется без отметок) — "
-               "или переводом по реквизитам выше, тогда после перевода нажмите «Я оплатил(а)»."
+            + ("Оплатите картой по кнопке: официальный чек НПД Robokassa отправит "
+               "на e-mail, указанный на странице оплаты, а статус изменится автоматически. "
+               "Или переведите по реквизитам выше и нажмите «Я оплатил(а)»."
                if pay_url else
                "После перевода нажмите «Я оплатил(а)» — мастер сверит поступление."),
             reply_markup=markup)
@@ -479,8 +480,9 @@ async def cb_receipt(cb: CallbackQuery, state: FSMContext) -> None:
         return
     await state.set_state(Receipt.waiting)
     await state.update_data(receipt_order_id=o["id"])
-    await cb.message.answer("Пришлите чек одним сообщением — фото или PDF. "
-                            "Мастер сверит поступление быстрее.")
+    await cb.message.answer(
+        "Пришлите подтверждение перевода одним сообщением — фото или PDF. "
+        "Это поможет мастеру быстрее сверить поступление.")
     await cb.answer()
 
 
@@ -495,33 +497,37 @@ async def got_receipt(m: Message, state: FSMContext) -> None:
     no = config.order_no(order_id)
     if m.document:
         await db.add_file(order_id, "client", m.document.file_id, m.document.file_unique_id,
-                          m.document.file_name, m.document.file_size, "document", label="чек")
+                          m.document.file_name, m.document.file_size, "document",
+                          label="подтверждение перевода")
     else:
         ph = m.photo[-1]
         await db.add_file(order_id, "client", ph.file_id, ph.file_unique_id,
-                          None, ph.file_size, "photo", label="чек")
-    await db.msg_add(order_id, "client", m.caption or "🧾 Чек об оплате",
+                          None, ph.file_size, "photo", label="подтверждение перевода")
+    await db.msg_add(order_id, "client", m.caption or "🧾 Подтверждение перевода",
                      kind="document" if m.document else "photo",
-                     file_name=m.document.file_name if m.document else "чек.jpg",
+                     file_name=m.document.file_name if m.document else "podtverzhdenie.jpg",
                      tg_file_id=m.document.file_id if m.document else m.photo[-1].file_id)
-    await db.add_event(order_id, "receipt", "чек приложен")
+    await db.add_event(order_id, "receipt", "подтверждение перевода приложено")
     who = _who_msg(m)
-    header = f"🧾 <b>Чек по заказу {no}</b> · {who} — сверьте и подтвердите оплату."
+    header = (f"🧾 <b>Подтверждение перевода по заказу {no}</b> · {who} — "
+              "сверьте и подтвердите оплату.")
     kind, amount = await payments.confirm_amount(o)
     claim_kb = kb.claim_check_kb(o, amount) if amount > 0 else None
     g = await grp.relay_copy(m.bot, order_id, m, header, reply_markup=claim_kb)
     await notify.notify_admins(m.bot, header, reply_markup=claim_kb,
                                map_client=(m.from_user.id, order_id),
                                group_sent=bool(g))
-    await m.answer(f"🧾 Чек передали мастеру · заказ {no}. Как только он сверит "
-                   "поступление — заказ двинется дальше, уведомим здесь.")
+    await m.answer(
+        f"🧾 Подтверждение передали мастеру · заказ {no}. Как только он сверит "
+        "поступление — заказ двинется дальше, уведомим здесь.")
 
 
 @router.message(Receipt.waiting)
 async def receipt_hint(m: Message, state: FSMContext) -> None:
     await state.clear()
-    await m.answer("Чек не пришёл (нужно фото или файл). Откройте карточку заказа и "
-                   "нажмите «📎 Приложить чек» ещё раз — или просто напишите мастеру.")
+    await m.answer(
+        "Подтверждение не пришло (нужно фото или файл). Откройте карточку заказа и "
+        "нажмите «📎 Подтверждение перевода» ещё раз — или напишите мастеру.")
 
 
 def _who_msg(m: Message) -> str:

@@ -40,6 +40,11 @@ async def _tick(bot: Bot) -> None:
     # Выдача файлов важнее маркетинговых задач: восстанавливаем её каждый tick.
     from . import handoff
     await handoff.retry_pending(bot)
+    # Подтверждение платежа имеет отдельный долговечный outbox: SMTP или
+    # Telegram могут быть недоступны в момент callback, платёж от этого не
+    # откатывается, а недостающий канал будет дослан после восстановления.
+    from . import payment_delivery
+    await payment_delivery.retry_pending(bot)
     await _ping_stale_new_orders(bot)
     await _client_followups(bot)
     await _channel_sweep_maybe()

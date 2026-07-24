@@ -18,6 +18,7 @@ import logging
 import secrets
 import uuid
 from datetime import datetime, timedelta, timezone
+from decimal import Decimal, InvalidOperation
 from urllib.parse import quote, urlencode
 
 import aiohttp
@@ -310,14 +311,18 @@ async def confirm(bot: Bot, order_id: int, kind: str, amount: int,
     if row["status"] == "canceled":
         return {"ok": False, "error": "payment_canceled"}
 
+    # Outbox должен существовать ДО атомарного перевода payments→paid. Тогда
+    # crash между записью денег и бизнес-эффектами можно отличить от старого
+    # легаси-платежа, который был проведён ещё до появления effects-ledger.
+    from . import payment_delivery
+    receipt_before = await db.receipt_for_payment(int(pay_id))
+    historic_paid_without_ledger = (
+        row["status"] == "paid" and receipt_before is None
+    )
+    await payment_delivery.prepare_for_payment(o, row)
+
     claim = await db.payment_claim_paid_exact(
         pay_id, order_id, kind, int(amount), method, external_id)
-    if claim == "already_paid":
-        # Основные эффекты уже были заняты первым обработчиком. Выдача файла
-        # имеет собственный ledger и безопасно доводится после crash/retry.
-        from . import handoff
-        await handoff.release_if_paid(bot, order_id)
-        return {"ok": True, "duplicate_callback": True, "pay_id": pay_id}
     if claim == "duplicate_kind":
         if method == "deposit":
             # Внутренний кошелёк ещё можно компенсировать: не изображаем
@@ -335,9 +340,51 @@ async def confirm(bot: Bot, order_id: int, kind: str, amount: int,
                "свяжитесь с клиентом и оформите возврат второго платежа.")
         await _grp_send(bot, order_id, dup)
         await notify.notify_admins(bot, dup)
+        duplicate_payment = await db.payment_get(int(pay_id))
+        await payment_delivery.prepare_for_payment(o, duplicate_payment)
+        await db.receipt_effects_mark(int(pay_id), applied=True)
+        await payment_delivery.schedule_for_payment(bot, order_id, int(pay_id))
         return {"ok": False, "error": "duplicate_payment", "pay_id": pay_id}
-    if claim != "claimed":
+    if claim not in ("claimed", "already_paid"):
         return {"ok": False, "error": f"payment_{claim}"}
+
+    fresh_payment = await db.payment_get(int(pay_id))
+    receipt = await payment_delivery.prepare_for_payment(o, fresh_payment)
+    if not receipt:
+        return {"ok": False, "error": "payment_effects_ledger_missing"}
+
+    if historic_paid_without_ledger:
+        # Миграция не должна повторно запускать статусы/бонусы по старым уже
+        # проведённым платежам. Подтверждение клиенту при этом создаём и доводим.
+        await db.receipt_effects_mark(int(pay_id), applied=True)
+        from . import handoff
+        await handoff.release_if_paid(bot, order_id)
+        await payment_delivery.schedule_for_payment(bot, order_id, int(pay_id))
+        return {
+            "ok": True,
+            "duplicate_callback": True,
+            "historic_payment": True,
+            "pay_id": pay_id,
+        }
+
+    effects_claim = await db.receipt_effects_claim(int(pay_id))
+    if effects_claim == "applied":
+        # Основные эффекты завершены. Выдача файла и подтверждения имеют свои
+        # идемпотентные ledgers и безопасно доводятся после crash/retry.
+        from . import handoff
+        await handoff.release_if_paid(bot, order_id)
+        await payment_delivery.schedule_for_payment(bot, order_id, int(pay_id))
+        return {"ok": True, "duplicate_callback": True, "pay_id": pay_id}
+    if effects_claim != "claimed":
+        return {
+            "ok": False,
+            "error": (
+                "payment_effects_in_progress"
+                if effects_claim == "in_progress"
+                else "payment_effects_ledger_missing"
+            ),
+            "pay_id": pay_id,
+        }
 
     # Деньги по делу из корзины: доступ клиент уже потерял (для него 404) —
     # платёж фиксируем, конвейер не двигаем, мастер разбирается руками.
@@ -349,6 +396,8 @@ async def confirm(bot: Bot, order_id: int, kind: str, amount: int,
                        f"({method}). Клиент дело не видит: восстановите его "
                        "из корзины или верните деньги.")
         await notify.notify_admins(bot, trash_alert)
+        await payment_delivery.schedule_for_payment(bot, order_id, int(pay_id))
+        await db.receipt_effects_mark(int(pay_id), applied=True)
         return {"ok": True, "deleted_order": True, "pay_id": pay_id}
 
     # счета-близнецы этого же этапа (вторая вкладка, старое сообщение бота)
@@ -369,13 +418,13 @@ async def confirm(bot: Bot, order_id: int, kind: str, amount: int,
     from . import subs  # локальный импорт против цикла payments↔subs
     if subs.is_sub_order(o):
         activated = await subs.maybe_activate(bot, order_id)
-        await mailer.order_event(await db.get_order(order_id), "payment",
-                                 pay_kind=kind, amount=amount)
+        await payment_delivery.schedule_for_payment(bot, order_id, int(pay_id))
         if not activated and o["user_id"]:
             await notify.notify_client(
                 bot, o["user_id"],
                 f"✅ Оплата по подписке (заказ {config.order_no(order_id)}) получена — "
                 "активируем и напишем сюда.")
+        await db.receipt_effects_mark(int(pay_id), applied=True)
         return {"ok": True, "pay_id": pay_id}
 
     no = config.order_no(order_id)
@@ -457,8 +506,7 @@ async def confirm(bot: Bot, order_id: int, kind: str, amount: int,
                 bot, o["user_id"],
                 f"✅ {stage_label(o2, kind)} по заказу {no} получена "
                 f"({config.fmt_money(amount)} ₽) — спасибо! Продолжаем работу.")
-    await mailer.order_event(await db.get_order(order_id), "payment",
-                             pay_kind=kind, amount=amount)
+    await payment_delivery.schedule_for_payment(bot, order_id, int(pay_id))
     # бонусные хуки (кэшбэк + рефералка) — после ПОЛНОЙ оплаты заказа
     await bonus.on_payment(bot, order_id)
 
@@ -513,6 +561,7 @@ async def confirm(bot: Bot, order_id: int, kind: str, amount: int,
             f"Ссылка клиента на дело:\n{link}\n\n"
             "Продублируйте её в переписку — если браузер клиента почистят, "
             "это его единственный ключ.")
+    await db.receipt_effects_mark(int(pay_id), applied=True)
     return {"ok": True, "pay_id": pay_id}
 
 
@@ -563,7 +612,27 @@ def _robo_sig(*parts: object) -> str:
     return hashlib.md5(":".join(str(p) for p in parts).encode("utf-8")).hexdigest()
 
 
-def _robo_receipt(name: str, amount: int) -> str:
+def _robo_expiration() -> str:
+    """Срок действия счёта в формате Robokassa, по времени магазина (МСК)."""
+    return (datetime.now(config.MSK) + timedelta(days=ROBO_LINK_TTL_DAYS)) \
+        .strftime("%Y-%m-%dT%H:%M")
+
+
+def _robo_email(value: str | None) -> str | None:
+    """Только валидный e-mail: Robokassa использует Email для отправки чека."""
+    email = str(value or "").strip().lower()[:120]
+    return email if mailer.looks_email(email) else None
+
+
+async def _user_email(user_id: int | None) -> str | None:
+    if not user_id:
+        return None
+    user = await db.get_user(user_id)
+    return _robo_email(user["email"] if user else None)
+
+
+def _robo_receipt(name: str, amount: int,
+                  payment_method: str = "full_payment") -> str:
     """Номенклатура чека (Receipt) — однократно URL-закодированный JSON.
 
     Обязательна для «Робочеков СМЗ»: без состава корзины чек НПД формируется
@@ -573,19 +642,86 @@ def _robo_receipt(name: str, amount: int) -> str:
     в query urlencode() закодирует её второй раз — так и требуется для GET.
     tax=none — самозанятый работает без НДС.
     """
-    receipt = {"items": [{
-        "name": name[:128],
-        "quantity": 1,
-        "sum": amount,
-        "tax": "none",
-        "payment_method": "full_payment",
-        "payment_object": "service",
-    }]}
+    return _robo_receipt_items(
+        [{"name": name, "amount": amount}],
+        payment_method=payment_method,
+    )
+
+
+def _robo_receipt_items(
+    items: list[dict],
+    *,
+    payment_method: str = "full_payment",
+) -> str:
+    """Зафиксировать состав Receipt; сумма каждой позиции — целые рубли."""
+    receipt_items = []
+    for item in items:
+        item_amount = int(item.get("amount") or 0)
+        item_name = str(item.get("name") or "").strip()[:128]
+        if item_amount <= 0 or not item_name:
+            continue
+        receipt_items.append({
+            "name": item_name,
+            "quantity": 1,
+            "sum": item_amount,
+            "tax": "none",
+            "payment_method": payment_method,
+            "payment_object": "service",
+        })
+    if not receipt_items:
+        raise ValueError("Robokassa Receipt requires at least one positive item")
+    receipt = {"items": receipt_items}
     raw = json.dumps(receipt, ensure_ascii=False, separators=(",", ":"))
     return quote(raw, safe="")
 
 
-async def robo_create_link(o, kind: str, amount: int, extra: dict | None = None) -> str | None:
+async def _robo_order_receipt(o, kind: str, amount: int, label: str) -> str:
+    """Receipt из замороженной Спецификации, предъявленной до оплаты."""
+    frozen = await db.specification_latest(o["id"])
+    try:
+        spec = json.loads(frozen["specification_json"]) if frozen else {}
+        lines = {
+            str(line.get("line_id") or ""): line
+            for line in (spec.get("lines") or [])
+            if isinstance(line, dict)
+        }
+        stage = next(
+            (
+                stage
+                for stage in (spec.get("payment_schedule") or [])
+                if isinstance(stage, dict) and stage.get("kind") == kind
+            ),
+            None,
+        )
+        allocations = stage.get("allocations") if stage else None
+        receipt_items = []
+        for allocation in allocations or []:
+            line = lines.get(str(allocation.get("line_id") or "")) or {}
+            receipt_items.append({
+                "name": (
+                    line.get("receipt_name")
+                    or line.get("title")
+                    or "Информационно-консультационная услуга"
+                ),
+                "amount": int(allocation.get("amount_rub") or 0),
+            })
+        if sum(int(item["amount"]) for item in receipt_items) == int(amount):
+            return _robo_receipt_items(receipt_items)
+    except (TypeError, ValueError, json.JSONDecodeError):
+        log.warning(
+            "frozen specification cannot build Receipt order=%s kind=%s",
+            o["id"],
+            kind,
+        )
+    return _robo_receipt(
+        f"Информационно-консультационные услуги, заказ №{o['id']} — "
+        f"{label.lower()}",
+        amount,
+    )
+
+
+async def robo_create_link(o, kind: str, amount: int, extra: dict | None = None,
+                           receipt_email: str | None = None) -> str | None:
     """Платёжная ссылка Robokassa (интерфейс оплаты).
 
     InvId = id строки payments: уникален, по нему ResultURL находит платёж.
@@ -597,9 +733,9 @@ async def robo_create_link(o, kind: str, amount: int, extra: dict | None = None)
     pid = await db.payment_create(o["id"], kind, amount, "robokassa", None)
     out = f"{amount:.2f}"
     label = stage_label(o, kind)
-    receipt = _robo_receipt(
-        f"Информационно-консультационные услуги, заказ №{o['id']} — {label.lower()}",
-        amount)
+    receipt = await _robo_order_receipt(o, kind, amount, label)
+    email = _robo_email(receipt_email) or await mailer.order_recipient(o)
+    email = _robo_email(email)
     shp = {"Shp_kind": kind, "Shp_order": str(o["id"])}
     # Robokassa дописывает все Shp_* к SuccessURL — по ним посадочная
     # oplaceno.html понимает, куда вернуть человека. Подпись их уже
@@ -616,18 +752,25 @@ async def robo_create_link(o, kind: str, amount: int, extra: dict | None = None)
         "OutSum": out,
         "InvId": pid,
         "Receipt": receipt,
-        "Description": f"Заказ №{o['id']} · {label} · Академический Салон",
+        "Description": f"Заказ {o['id']} - {label} - Академический Салон"[:100],
         "SignatureValue": sig,
         "Culture": "ru",
         "Encoding": "utf-8",
+        "ExpirationDate": _robo_expiration(),
     }
+    if email:
+        q["Email"] = email
     q.update(shp)
     # Срок жизни счёта: без него выписанная ссылка оплачивается даже после
     # пересборки цены — старой дешёвой можно закрыть подорожавший этап.
-    q["ExpirationDate"] = (datetime.now(timezone.utc)
-                           + timedelta(days=ROBO_LINK_TTL_DAYS)).strftime("%Y-%m-%dT%H:%M:%S")
     if config.ROBOKASSA_TEST:
         q["IsTest"] = 1
+    await db.receipt_invoice_upsert(
+        provider="robokassa", inv_id=pid, scope="order", scope_id=o["id"],
+        order_id=o["id"], user_id=o["user_id"], payment_id=pid,
+        kind=kind, amount=amount, buyer_email=email,
+        receipt_payload=receipt, expires_at=q["ExpirationDate"],
+    )
     await db.add_event(o["id"], "payment_link", f"{kind} {amount} ₽ · Robokassa")
     return f"{ROBO_PAY_URL}?{urlencode(q)}"
 
@@ -642,7 +785,8 @@ async def robo_create_link_gift(g) -> str | None:
     out = f"{amount:.2f}"
     receipt = _robo_receipt(
         "Подарочный сертификат мастерской (аванс за информационно-"
-        "консультационные услуги)", amount)
+        "консультационные услуги)", amount, payment_method="advance")
+    email = _robo_email(g["buyer_contact"])
     sig = _robo_sig(config.ROBOKASSA_LOGIN, out, inv, receipt,
                     config.robo_pass1(),
                     *(f"{k}={v}" for k, v in sorted(shp.items())))
@@ -651,14 +795,23 @@ async def robo_create_link_gift(g) -> str | None:
         "OutSum": out,
         "InvId": inv,
         "Receipt": receipt,
-        "Description": f"Подарочный сертификат на {amount} ₽ · Академический Салон",
+        "Description": f"Подарочный сертификат на {amount} руб. - Академический Салон"[:100],
         "SignatureValue": sig,
         "Culture": "ru",
         "Encoding": "utf-8",
+        "ExpirationDate": _robo_expiration(),
     }
+    if email:
+        q["Email"] = email
     q.update(shp)
     if config.ROBOKASSA_TEST:
         q["IsTest"] = 1
+    await db.receipt_invoice_upsert(
+        provider="robokassa", inv_id=inv, scope="gift", scope_id=g["id"],
+        user_id=g["buyer_user_id"], kind="gift", amount=amount,
+        buyer_email=email, receipt_payload=receipt,
+        expires_at=q["ExpirationDate"],
+    )
     return f"{ROBO_PAY_URL}?{urlencode(q)}"
 
 
@@ -673,6 +826,7 @@ async def robo_create_link_sub(s) -> str | None:
     receipt = _robo_receipt(
         f"Подписка «Салон+» на {s['period_days']} дней (пакет привилегий сервиса)",
         amount)
+    email = await _user_email(s["user_id"])
     sig = _robo_sig(config.ROBOKASSA_LOGIN, out, inv, receipt,
                     config.robo_pass1(),
                     *(f"{k}={v}" for k, v in sorted(shp.items())))
@@ -681,14 +835,23 @@ async def robo_create_link_sub(s) -> str | None:
         "OutSum": out,
         "InvId": inv,
         "Receipt": receipt,
-        "Description": f"Подписка «Салон+» ({s['plan']}) · Академический Салон",
+        "Description": f"Подписка Салон+ ({s['plan']}) - Академический Салон"[:100],
         "SignatureValue": sig,
         "Culture": "ru",
         "Encoding": "utf-8",
+        "ExpirationDate": _robo_expiration(),
     }
+    if email:
+        q["Email"] = email
     q.update(shp)
     if config.ROBOKASSA_TEST:
         q["IsTest"] = 1
+    await db.receipt_invoice_upsert(
+        provider="robokassa", inv_id=inv, scope="subscription",
+        scope_id=s["id"], user_id=s["user_id"], kind="subscription",
+        amount=amount, buyer_email=email, receipt_payload=receipt,
+        expires_at=q["ExpirationDate"],
+    )
     return f"{ROBO_PAY_URL}?{urlencode(q)}"
 
 
@@ -701,7 +864,9 @@ async def robo_create_link_dep(d) -> str | None:
     shp = {"Shp_kind": "deposit", "Shp_dep": str(d["id"])}
     out = f"{amount:.2f}"
     receipt = _robo_receipt(
-        "Аванс на услуги мастерской (пополнение депозитного счёта)", amount)
+        "Аванс на услуги мастерской (пополнение депозитного счёта)", amount,
+        payment_method="advance")
+    email = await _user_email(d["user_id"])
     sig = _robo_sig(config.ROBOKASSA_LOGIN, out, inv, receipt,
                     config.robo_pass1(),
                     *(f"{k}={v}" for k, v in sorted(shp.items())))
@@ -710,14 +875,23 @@ async def robo_create_link_dep(d) -> str | None:
         "OutSum": out,
         "InvId": inv,
         "Receipt": receipt,
-        "Description": "Депозит мастерской · Академический Салон",
+        "Description": "Аванс на услуги - Академический Салон",
         "SignatureValue": sig,
         "Culture": "ru",
         "Encoding": "utf-8",
+        "ExpirationDate": _robo_expiration(),
     }
+    if email:
+        q["Email"] = email
     q.update(shp)
     if config.ROBOKASSA_TEST:
         q["IsTest"] = 1
+    await db.receipt_invoice_upsert(
+        provider="robokassa", inv_id=inv, scope="deposit", scope_id=d["id"],
+        user_id=d["user_id"], kind="deposit", amount=amount,
+        buyer_email=email, receipt_payload=receipt,
+        expires_at=q["ExpirationDate"],
+    )
     return f"{ROBO_PAY_URL}?{urlencode(q)}"
 
 
@@ -733,6 +907,7 @@ async def robo_create_link_tip(tip, order) -> str | None:
     receipt = _robo_receipt(
         f"Добровольная благодарность за оказанные информационно-"
         f"консультационные услуги, заказ №{order['id']}", amount)
+    email = _robo_email(await mailer.order_recipient(order))
     sig = _robo_sig(config.ROBOKASSA_LOGIN, out, inv, receipt,
                     config.robo_pass1(),
                     *(f"{k}={v}" for k, v in sorted(shp.items())))
@@ -741,16 +916,23 @@ async def robo_create_link_tip(tip, order) -> str | None:
         "OutSum": out,
         "InvId": inv,
         "Receipt": receipt,
-        "Description": f"Благодарность мастерской · заказ №{order['id']}",
+        "Description": f"Благодарность мастерской - заказ {order['id']}"[:100],
         "SignatureValue": sig,
         "Culture": "ru",
         "Encoding": "utf-8",
-        "ExpirationDate": (datetime.now(timezone.utc)
-                           + timedelta(days=ROBO_LINK_TTL_DAYS)).strftime("%Y-%m-%dT%H:%M:%S"),
+        "ExpirationDate": _robo_expiration(),
     }
+    if email:
+        q["Email"] = email
     q.update(shp)
     if config.ROBOKASSA_TEST:
         q["IsTest"] = 1
+    await db.receipt_invoice_upsert(
+        provider="robokassa", inv_id=inv, scope="tip", scope_id=tip["id"],
+        order_id=order["id"], user_id=order["user_id"], kind="tip",
+        amount=amount, buyer_email=email, receipt_payload=receipt,
+        expires_at=q["ExpirationDate"],
+    )
     return f"{ROBO_PAY_URL}?{urlencode(q)}"
 
 
@@ -771,9 +953,14 @@ def robo_result_ok(data) -> tuple[int, int] | None:
     if not (got and secrets.compare_digest(want, got)):
         return None
     try:
-        amount = int(float(out))
-    except ValueError:
-        amount = 0
+        parsed = Decimal(out)
+        if not parsed.is_finite() or parsed <= 0 \
+                or parsed != parsed.quantize(Decimal("0.01")) \
+                or parsed != parsed.to_integral_value():
+            return None
+        amount = int(parsed)
+    except (InvalidOperation, ValueError):
+        return None
     return inv, amount
 
 

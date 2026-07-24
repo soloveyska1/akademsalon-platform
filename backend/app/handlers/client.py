@@ -417,8 +417,14 @@ async def cmd_delete_me(m: Message) -> None:
     """Право на отзыв согласия (consent.html §9): удаление профиля по 152-ФЗ."""
     from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
     await m.answer(
-        "Вы просите удалить ваши данные. Мы удалим профиль, сессии сайта и обезличим "
-        "ваши заказы (переписка потеряет привязку к вам). Действие необратимо.\n\n"
+        "Мы сразу удалим локальный профиль, входы на сайт, рекламную подписку "
+        "и бонусный счёт; Telegram ID будет отвязан от заказов, гостевые ссылки "
+        "отключены.\n\n"
+        "Договорные и налоговые записи, которые нужно хранить по закону, останутся "
+        "только для этой обязанности. Команда не удаляет автоматически копии "
+        "переписки и файлов на стороне Telegram. Полную ручную проверку можно "
+        "запросить через support@akademsalon.ru.\n\n"
+        "Локальное удаление необратимо. "
         "<b>Подтверждаете?</b>",
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="🗑 Да, удалить мои данные", callback_data="cl:delme")],
@@ -433,7 +439,11 @@ async def cb_delete_me(cb: CallbackQuery, state: FSMContext) -> None:
     who = texts.user_link(uid, cb.from_user.first_name, cb.from_user.username)
     await db.forget_user(uid)
     await cb.message.edit_text(
-        "Готово. Профиль удалён, заказы обезличены, доступ с сайта отключён.\n"
+        "Готово. Локальный профиль удалён, Telegram ID отвязан от заказов, "
+        "сессии и доступ с сайта отключены. Обязательные договорные и налоговые "
+        "записи используются только в пределах законного срока.\n\n"
+        "Если нужна ручная проверка копий в рабочих системах, напишите на "
+        "support@akademsalon.ru.\n"
         "Если вернётесь — просто напишите /start, начнём с чистого листа. 🕊")
     await cb.answer("Данные удалены")
     await notify.notify_admins(cb.bot, f"🗑 {who} воспользовался правом на удаление данных (/delete_me).")

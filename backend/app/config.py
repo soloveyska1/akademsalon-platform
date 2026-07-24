@@ -26,6 +26,10 @@ SUPPORT_USERNAME = os.environ.get("SUPPORT_USERNAME", "academicsaloon")
 BOT_USERNAME = os.environ.get("BOT_USERNAME", "academic_saloon_bot")
 SESSION_IDLE_TTL_SECONDS = int(os.environ.get("SESSION_IDLE_TTL_SECONDS", "604800"))
 SESSION_ABSOLUTE_TTL_SECONDS = int(os.environ.get("SESSION_ABSOLUTE_TTL_SECONDS", "2592000"))
+# Отдельный Fernet-ключ для capability-ссылок заказов. Не переиспользуем
+# BOT_TOKEN, платёжные или почтовые секреты: этот ключ должен переживать
+# рестарты и деплои, иначе существующие ссылки невозможно расшифровать.
+ORDER_ACCESS_TOKEN_KEY = os.environ.get("ORDER_ACCESS_TOKEN_KEY", "").strip()
 IMPERSONATION_IDLE_TTL_SECONDS = int(os.environ.get("IMPERSONATION_IDLE_TTL_SECONDS", "900"))
 IMPERSONATION_ABSOLUTE_TTL_SECONDS = int(
     os.environ.get("IMPERSONATION_ABSOLUTE_TTL_SECONDS", "3600")

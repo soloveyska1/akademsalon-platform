@@ -17,12 +17,16 @@ log = logging.getLogger(__name__)
 _FONT_REGULAR = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
     "/usr/share/fonts/TTF/DejaVuSans.ttf",
+    "/Applications/LibreOffice.app/Contents/Resources/fonts/truetype/DejaVuSans.ttf",
+    "/opt/homebrew/lib/python3.11/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf",
     "/Library/Fonts/DejaVuSans.ttf",
     os.path.expanduser("~/Library/Fonts/DejaVuSans.ttf"),
 ]
 _FONT_BOLD = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
     "/usr/share/fonts/TTF/DejaVuSans-Bold.ttf",
+    "/Applications/LibreOffice.app/Contents/Resources/fonts/truetype/DejaVuSans-Bold.ttf",
+    "/opt/homebrew/lib/python3.11/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf",
     "/Library/Fonts/DejaVuSans-Bold.ttf",
     os.path.expanduser("~/Library/Fonts/DejaVuSans-Bold.ttf"),
 ]

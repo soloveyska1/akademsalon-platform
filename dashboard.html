@@ -265,6 +265,13 @@
   .req-slip{border:1px solid var(--hairline-strong);border-left:3px solid var(--wax);border-radius:var(--r);padding:14px 16px;background:var(--paper-2);margin-bottom:12px}
   .req-slip .caps{display:block;margin-bottom:6px}
   .req-pre{white-space:pre-wrap;word-break:break-word;font-size:13.5px;margin:6px 0 0;line-height:1.6}
+  .pay-email{display:grid;gap:6px;margin:12px 0 2px;padding:13px 14px;
+    border:1px solid var(--hairline);border-radius:var(--r);background:var(--paper-2)}
+  .pay-email input{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--hairline-strong);
+    border-radius:var(--r);background:var(--sheet);color:var(--ink);font:inherit;font-size:16px}
+  .pay-email input:focus{outline:2px solid color-mix(in srgb,var(--wax) 34%,transparent);
+    outline-offset:1px;border-color:var(--wax)}
+  .pay-history .linkbtn{display:inline-block;margin-left:5px}
 
   .act-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
   .act-row .btn{flex:1 1 auto}
@@ -571,6 +578,7 @@
     .cab-first-order{margin-top:26px}
   }
   @media(max-width:540px){
+    .cbar-card .cbp-name{white-space:normal;overflow:visible;text-overflow:clip}
     .cab-id{row-gap:4px}
     .cab-id .ci-dot{display:none}
     .act-row{flex-direction:column}
@@ -609,6 +617,18 @@
     .cab-pending-actions{display:grid}
     .cab-pending-actions .btn{width:100%}
     .cab-first-order{display:grid;gap:4px}
+  }
+  @media(max-width:340px){
+    .cbar-card.guest{
+      display:grid;
+      grid-template-columns:40px minmax(0,1fr);
+      gap:8px 10px;
+    }
+    .cbar-card.guest .cbp-in{
+      grid-column:1/-1;
+      width:100%;
+      min-height:44px;
+    }
   }
 </style>
 <link rel="canonical" href="https://akademsalon.ru/dashboard.html" />

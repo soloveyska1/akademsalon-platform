@@ -307,7 +307,7 @@
     .sf-filters{margin-left:calc(var(--mobile-gutter) * -1);margin-right:calc(var(--mobile-gutter) * -1);
       padding:0 var(--mobile-gutter) 5px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
     .sf-filters::-webkit-scrollbar{display:none}
-    .sf-filter{flex:0 0 auto;min-height:38px}
+    .sf-filter{flex:0 0 auto;min-height:44px}
     #typeGroup{grid-template-columns:1fr;gap:9px}
     #typeGroup .opt-group{padding:11px}
     #typeGroup .svc-group{grid-column:auto}
@@ -1199,6 +1199,7 @@ function initConf() {
   var state = { type: 'diplom', disc: 'hum', term: 'free', tier: 'base' };
   var idx = 0;
   var canSave = false; /* черновик пишем, только если он был или пользователь что-то тронул */
+  var typeConfirmed = false; /* дефолт — ориентир, а не молчаливый выбор клиента */
 
   /* --- режим отдельной услуги: ?service=ai|rv|tu|nm (код или id из SalonServices).
      Один шаг вместо четырёх: детали, файлы, контакт. Цена «от» — точную
@@ -1224,7 +1225,10 @@ function initConf() {
   var draft = S.store.get('salon_draft', null);
   if (!svc && draft && draft.state) {
     canSave = true;
-    if (has(C.types, draft.state.type)) state.type = draft.state.type;
+    if (has(C.types, draft.state.type)) {
+      state.type = draft.state.type;
+      typeConfirmed = true;
+    }
     if (has(C.disciplines, draft.state.disc)) state.disc = draft.state.disc;
     if (has(C.terms, draft.state.term)) state.term = draft.state.term;
     if (has(C.tiers, draft.state.tier)) state.tier = draft.state.tier;
@@ -1233,7 +1237,10 @@ function initConf() {
   /* --- deep-link ?step=1..4 --- */
   try {
     var qs = new URLSearchParams(location.search).get('step');
-    if (!svc && qs) { var n = parseInt(qs, 10); if (n >= 1 && n <= 4) idx = n - 1; }
+    if (!svc && qs) {
+      var n = parseInt(qs, 10);
+      if (n >= 1 && n <= 4) idx = (n > 1 && !typeConfirmed) ? 0 : n - 1;
+    }
   } catch (e) {}
   /* легаси-режим «полная работа, начиная с разбора» упразднён:
      разбор плана — отдельная услуга со своей анкетой (?service=pl) */
@@ -1909,7 +1916,13 @@ function initConf() {
     };
   }
 
-  var rgType = radioGroup($('typeGroup'), function (id) { state.type = id; render(); touch(); });
+  var rgType = radioGroup($('typeGroup'), function (id) {
+    state.type = id;
+    typeConfirmed = true;
+    render();
+    touch();
+    syncTypeGate();
+  });
   var rgDisc = radioGroup($('discGroup'), function (id) { state.disc = id; render(); touch(); });
   var rgTier = radioGroup($('tierGroup'), function (id) { state.tier = id; render(); touch(); });
 
@@ -1954,6 +1967,7 @@ function initConf() {
         ? 'Отправить заявку'
         : (idx === 3 ? 'Отправить' : 'Далее');
     }
+    syncTypeGate();
     if (mqPanel && !mqPanel.hidden) {
       mqPanel.hidden = true;
       if (mqToggle) mqToggle.setAttribute('aria-expanded', 'false');
@@ -1965,6 +1979,20 @@ function initConf() {
       if (t) t.focus({ preventScroll: true });
       var r = wiz.getBoundingClientRect();
       if (r.top < 56) window.scrollTo({ top: window.scrollY + r.top - 76, behavior: S.reduceMotion ? 'auto' : 'smooth' });
+    }
+  }
+  function syncTypeGate() {
+    var waiting = !svc && idx === 0 && !typeConfirmed;
+    if (btnNext) {
+      btnNext.disabled = waiting;
+      btnNext.setAttribute('aria-disabled', String(waiting));
+    }
+    if (mNext) {
+      mNext.disabled = waiting;
+      mNext.setAttribute('aria-disabled', String(waiting));
+      mNext.textContent = waiting
+        ? 'Выберите тип'
+        : (isPlanService ? 'Отправить заявку' : (idx === 3 ? 'Отправить' : 'Далее'));
     }
   }
   btnNext.addEventListener('click', function () { canSave = true; go(idx + 1, true); });
@@ -2392,7 +2420,10 @@ function initConf() {
         if (!r || !r.ok || !r.state) return;
         var q = r.state;
         canSave = true;
-        if (has(C.types, q.type)) state.type = q.type;
+        if (has(C.types, q.type)) {
+          state.type = q.type;
+          typeConfirmed = true;
+        }
         if (has(C.disciplines, q.disc)) state.disc = q.disc;
         if (has(C.terms, q.term)) state.term = q.term;
         if (has(C.tiers, q.tier)) state.tier = q.tier;

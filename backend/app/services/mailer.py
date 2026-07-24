@@ -294,6 +294,16 @@ async def _send_letter(to: str, L: dict) -> bool:
     msg["Auto-Submitted"] = "auto-generated"  # транзакционное, не реклама
     msg.set_content(_render_text(L))
     msg.add_alternative(_render_html(L), subtype="html")
+    for attachment in L.get("attachments") or []:
+        data = attachment.get("data")
+        if not isinstance(data, (bytes, bytearray)):
+            continue
+        msg.add_attachment(
+            bytes(data),
+            maintype=attachment.get("maintype") or "application",
+            subtype=attachment.get("subtype") or "octet-stream",
+            filename=attachment.get("filename") or "document.bin",
+        )
     try:
         await asyncio.to_thread(_send_sync, msg)
         return True
@@ -302,10 +312,23 @@ async def _send_letter(to: str, L: dict) -> bool:
         return False
 
 
-async def send(to: str, subject: str, text: str) -> bool:
+async def send(
+    to: str,
+    subject: str,
+    text: str,
+    *,
+    attachments: list[dict] | None = None,
+) -> bool:
     """Совместимость: произвольное письмо из готового текста."""
     paras = [p.strip() for p in text.split("\n\n") if p.strip()]
-    return await _send_letter(to, {"subject": subject, "paras": paras})
+    return await _send_letter(
+        to,
+        {
+            "subject": subject,
+            "paras": paras,
+            "attachments": attachments or [],
+        },
+    )
 
 
 def _code_letter(code: str) -> dict:
@@ -476,6 +499,15 @@ def _order_letter(o, kind: str, **kw) -> dict | None:
     elif kind == "payment":
         amount = kw.get("amount")
         pk = kw.get("pay_kind")
+        provider = kw.get("provider")
+        receipt_note = (
+            "Официальный чек НПД формирует Robokassa и отправляет отдельным "
+            "письмом на e-mail, указанный при оплате. Приложенный документ — "
+            "подтверждение платежа мастерской, он не заменяет налоговый чек."
+            if provider == "robokassa" else
+            "Приложенный документ подтверждает платёж мастерской и не заменяет "
+            "налоговый чек НПД; налоговый чек направляется отдельно."
+        )
         # «финальная» — только когда закрыт действительно последний этап:
         # оплата части 2 из 3 (stage2) приходила письмом «все файлы открыты»
         if pk == "prepay":
@@ -484,19 +516,22 @@ def _order_letter(o, kind: str, **kw) -> dict | None:
                  "paras": ["Спасибо, платёж получен — работа взята в производство. "
                            "Дальше всё важное будет приходить письмами и появляться "
                            "в деле заказа."],
-                 "facts": [order_fact, ("Платёж", _rub(amount))], "button": button}
+                 "facts": [order_fact, ("Платёж", _rub(amount))],
+                 "paras2": [receipt_note], "button": button}
         elif pk == "rest":
             L = {"subject": f"Финальная оплата по заказу {no} получена",
                  "title": "Финальная оплата получена",
                  "paras": ["Спасибо, финальный платёж получен! Все файлы работы открыты "
                            "в деле заказа. Мы на связи до вашей защиты."],
-                 "facts": [order_fact, ("Платёж", _rub(amount))], "button": button}
+                 "facts": [order_fact, ("Платёж", _rub(amount))],
+                 "paras2": [receipt_note], "button": button}
         else:
             L = {"subject": f"Оплата этапа по заказу {no} получена",
                  "title": "Оплата этапа получена",
                  "paras": ["Спасибо, платёж по этапу получен — продолжаем работу. "
                            "Следующая часть придёт в дело заказа, как будет готова."],
-                 "facts": [order_fact, ("Платёж", _rub(amount))], "button": button}
+                 "facts": [order_fact, ("Платёж", _rub(amount))],
+                 "paras2": [receipt_note], "button": button}
 
     elif kind == "final_ready":
         amount = kw.get("amount")
@@ -555,7 +590,12 @@ async def order_event(o, kind: str, **kw) -> bool:
     try:
         if not config.mail_on() or not o:
             return False
-        to = await order_recipient(o)
+        requested_recipient = str(kw.get("recipient") or "").strip().lower()
+        to = (
+            requested_recipient
+            if looks_email(requested_recipient)
+            else await order_recipient(o)
+        )
         if not to:
             return False
         if kind == "message":
@@ -567,6 +607,8 @@ async def order_event(o, kind: str, **kw) -> bool:
         L = _order_letter(o, kind, **kw)
         if not L:
             return False
+        if kw.get("attachments"):
+            L["attachments"] = kw["attachments"]
         return await _send_letter(to, L)
     except Exception as e:  # noqa: BLE001
         log.warning("order mail %s/%s failed: %s", o["id"] if o else "?", kind, e)

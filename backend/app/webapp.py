@@ -37,6 +37,7 @@ from .services import (
     mailer,
     notify,
     pamyatka,
+    payment_delivery,
     payments,
     sanitize,
     subs,
@@ -394,10 +395,27 @@ async def _order_full_json(o) -> dict:
         d["requisites"] = await db.setting_get("requisites")
     # оплата и бонусы — для кабинета
     d["pay_online"] = bool(config.pay_provider())
+    d["receipt_email"] = (await mailer.order_recipient(o)) or ""
     pays = await db.payments_for_order(o["id"])
+    receipt_rows = await db.receipts_for_order(o["id"])
+    receipts_by_payment = {
+        int(r["payment_id"]): r for r in receipt_rows if r["payment_id"]
+    }
     d["payments"] = [{
         "id": p["id"], "kind": p["kind"], "amount": p["amount"], "method": p["method"],
         "status": p["status"], "at": p["paid_at"] or p["created_at"],
+        "fiscal_status": (
+            receipts_by_payment[p["id"]]["fiscal_status"]
+            if p["id"] in receipts_by_payment else None
+        ),
+        "receipt_email": (
+            receipts_by_payment[p["id"]]["buyer_email"]
+            if p["id"] in receipts_by_payment else None
+        ),
+        "confirmation_url": (
+            f"/api/orders/{o['id']}/payments/{p['id']}/confirmation.pdf"
+            if p["status"] == "paid" else None
+        ),
     } for p in pays]
     # план оплат по этапам + что «созрело» сейчас (отметка «оплатил» не в счёт)
     d["plan"] = payments.plan_state(o, pays)
@@ -746,6 +764,23 @@ async def me(request: web.Request) -> web.Response:
     p = await db.promo_unused_for_user(user["id"])
     if p is not None:
         promo_hint = {"code": p["code"], "label": promo_svc.label(p)}
+    receipt_labels = {
+        "order": "Заказ",
+        "subscription": "Подписка «Салон+»",
+        "gift": "Подарочный сертификат",
+        "deposit": "Пополнение депозита",
+        "tip": "Благодарность мастерской",
+    }
+    payment_confirmations = [{
+        "id": r["id"],
+        "scope": r["scope"],
+        "label": receipt_labels.get(r["scope"], "Оплата"),
+        "reference": r["scope_id"],
+        "amount": r["amount"],
+        "at": r["paid_at"],
+        "provider": r["provider"],
+        "url": f"/api/payment-confirmations/{r['id']}.pdf",
+    } for r in await db.receipts_for_user(user["id"], limit=30)]
     return _json({"ok": True,
                   "promo_hint": promo_hint,
                   "user": {"id": user["id"], "name": user["first_name"] or "Гость",
@@ -760,6 +795,7 @@ async def me(request: web.Request) -> web.Response:
                   "sub": await subs.summary(user["id"]),
                   "sub_pending": (await _sub_pay_json(pending_sub)
                                   if pending_sub else None),
+                  "payment_confirmations": payment_confirmations,
                   "milestones": [{"id": m["id"], "title": m["title"],
                                   "due": m["due_date"]}
                                  for m in await db.milestones_for(user["id"])],
@@ -2808,6 +2844,66 @@ async def order_contract(request: web.Request) -> web.Response:
     })
 
 
+async def order_payment_confirmation(request: web.Request) -> web.Response:
+    """Фирменное подтверждение платежа; не является налоговым чеком НПД."""
+    order_id = int(request.match_info["id"])
+    payment_id = int(request.match_info["pid"])
+    o, _user = await _order_access(request, order_id)
+    if not o:
+        return _err("not_found", 404)
+    payment = await db.payment_get(payment_id)
+    if not payment or payment["order_id"] != order_id \
+            or payment["status"] != "paid":
+        return _err("not_found", 404)
+    try:
+        from .services import payment_delivery
+        pdf = await payment_delivery.confirmation_bytes(o, payment)
+    except Exception:  # noqa: BLE001 - платёж остаётся виден, документ повторим
+        log.exception(
+            "payment confirmation PDF failed order=%s payment=%s",
+            order_id,
+            payment_id,
+        )
+        return _err("unavailable", 503)
+    return web.Response(body=pdf, content_type="application/pdf", headers={
+        **CORS,
+        "Content-Disposition": (
+            f'attachment; filename="podtverzhdenie-oplaty-'
+            f'{order_id}-{payment_id}.pdf"'
+        ),
+        "Cache-Control": "private, no-store, max-age=0",
+        "X-Document-Kind": "payment-confirmation-not-fiscal-receipt",
+    })
+
+
+async def payment_confirmation(request: web.Request) -> web.Response:
+    """Архив подтверждений аккаунта для заказов, подписок и авансов."""
+    user = await _session_user(request)
+    if not user:
+        return _err("unauthorized", 401)
+    receipt_id = int(request.match_info["rid"])
+    receipt = await db.receipt_by_id(receipt_id)
+    if not receipt or int(receipt["user_id"] or 0) != int(user["id"]) \
+            or receipt["payment_status"] != "paid":
+        return _err("not_found", 404)
+    try:
+        pdf = await payment_delivery.confirmation_bytes_for_receipt(receipt)
+    except Exception:  # noqa: BLE001 - документ можно повторить
+        log.exception("payment confirmation PDF failed receipt=%s", receipt_id)
+        return _err("unavailable", 503)
+    scope = re.sub(r"[^a-z0-9_-]+", "", str(receipt["scope"] or "payment"))
+    filename = (
+        f"podtverzhdenie-oplaty-{scope or 'payment'}-"
+        f"{int(receipt['scope_id'])}-{int(receipt['inv_id'])}.pdf"
+    )
+    return web.Response(body=pdf, content_type="application/pdf", headers={
+        **CORS,
+        "Content-Disposition": f'attachment; filename="{filename}"',
+        "Cache-Control": "private, no-store, max-age=0",
+        "X-Document-Kind": "payment-confirmation-not-fiscal-receipt",
+    })
+
+
 async def order_pamyatka(request: web.Request) -> web.Response:
     """Персональная памятка «что дальше» (PDF) — после передачи финала."""
     order_id = int(request.match_info["id"])
@@ -2841,7 +2937,7 @@ async def pamyatka_welcome(request: web.Request) -> web.Response:
 
 
 async def order_pay(request: web.Request) -> web.Response:
-    """Ссылка на онлайн-оплату (ЮKassa). Если оплата не подключена — реквизиты."""
+    """Ссылка на онлайн-оплату. Email передаётся кассе для официального чека."""
     order_id = int(request.match_info["id"])
     o, _user = await _order_access(request, order_id)
     if not o:
@@ -2851,13 +2947,23 @@ async def order_pay(request: web.Request) -> web.Response:
     kind, amount = await payments.stage_amount(o)
     if amount <= 0:
         return _err("nothing_due")
+    try:
+        body = await request.json()
+        if not isinstance(body, dict):
+            body = {}
+    except Exception:  # noqa: BLE001
+        body = {}
+    receipt_email = str(body.get("email") or "").strip().lower()[:120]
+    if receipt_email and not mailer.looks_email(receipt_email):
+        return _err("bad_email")
     prov = config.pay_provider()
     if not prov:
         return _json({"ok": True, "online": False,
                       "requisites": await db.setting_get("requisites"),
                       "kind": kind, "amount": amount})
     if prov == "robokassa":
-        url = await payments.robo_create_link(o, kind, amount)
+        url = await payments.robo_create_link(
+            o, kind, amount, receipt_email=receipt_email or None)
         if not url:
             return _err("pay_failed", 502)
         return _json({"ok": True, "online": True, "url": url,
@@ -3028,8 +3134,6 @@ async def yk_webhook(request: web.Request) -> web.Response:
         return web.Response(status=200)
     if row["status"] == "canceled":
         return web.Response(status=200)
-    if row["status"] == "paid":
-        return web.Response(status=200)
     order_id = row["order_id"]
     if paid_value != Decimal(int(row["amount"] or 0)) \
             or str(metadata.get("order_id") or "") != str(order_id) \
@@ -3041,7 +3145,16 @@ async def yk_webhook(request: web.Request) -> web.Response:
     conducted = await payments.confirm(
         bot, order_id, row["kind"], amount, method="yookassa",
         external_id=pid, pay_id=row["id"], actor="ЮKassa")
-    if not conducted.get("ok") or conducted.get("duplicate_callback"):
+    if not conducted.get("ok"):
+        if conducted.get("error") == "duplicate_payment":
+            return web.Response(status=200)
+        log.error(
+            "yookassa effects pending for payment id=%s: %s",
+            row["id"],
+            conducted.get("error"),
+        )
+        return web.Response(status=503, text="payment effects pending")
+    if conducted.get("duplicate_callback"):
         return web.Response(status=200)
     o = await db.get_order(order_id)
     if o:
@@ -3067,6 +3180,19 @@ async def robo_webhook(request: web.Request) -> web.Response:
         log.warning("robokassa result: bad signature from %s", _ip(request))
         return web.Response(status=400, text="bad sign")
     inv_id, amount = res
+    # Robokassa возвращает в ResultURL адрес, который покупатель подтвердил
+    # на платёжной странице. Он может отличаться от предзаполненного Email;
+    # сохраняем его только после успешной проверки подписи уведомления.
+    callback_email = str(
+        data.get("EMail") or data.get("Email") or data.get("email") or ""
+    ).strip().lower()[:120]
+    receipt_at_callback = await db.receipt_get("robokassa", inv_id)
+    if callback_email and mailer.looks_email(callback_email) \
+            and receipt_at_callback \
+            and int(receipt_at_callback["amount"] or 0) == int(amount):
+        await db.receipt_set_buyer_email(
+            int(receipt_at_callback["id"]), callback_email
+        )
     if inv_id >= payments.SUB_INV_OFFSET:
         # платёж за подписку (свой контур): InvId = OFFSET + sub_id
         s = await db.sub_get(inv_id - payments.SUB_INV_OFFSET)
@@ -3075,6 +3201,17 @@ async def robo_webhook(request: web.Request) -> web.Response:
         if amount != int(s["price"] or 0):
             return web.Response(status=400, text="bad amount")
         bot_s: Bot = request.app["bot"]
+        if s["status"] not in ("pending", "active"):
+            await db.receipt_mark_paid(
+                "robokassa", inv_id, allocated=False)
+            await notify.notify_admins(
+                bot_s,
+                f"⚠️ Robokassa приняла {config.fmt_money(amount)} ₽ по уже "
+                f"закрытому оформлению подписки #{s['id']} "
+                f"(статус {s['status']}). Деньги не распределены автоматически; "
+                "сверьте операцию и свяжитесь с клиентом.")
+            return web.Response(text=f"OK{inv_id}")
+        await db.receipt_mark_paid("robokassa", inv_id, allocated=True)
         if s["status"] != "active":
             s2 = await subs.activate_paid(bot_s, s["id"], method="robokassa",
                                           actor="Robokassa")
@@ -3082,7 +3219,11 @@ async def robo_webhook(request: web.Request) -> web.Response:
                 await notify.notify_admins(
                     bot_s, f"💳 Robokassa: подписка «{subs.plan_label(s['plan'])}» "
                            f"оплачена ({config.fmt_money(amount or s['price'])} ₽) "
-                           "и активирована. Чек НПД: с «Робочеками СМЗ» уходит сам.")
+                           "и активирована. Данные чека переданы Robokassa; "
+                           "подтверждение платежа поставлено в доставку покупателю.")
+        await payment_delivery.schedule_for_receipt(
+            bot_s, "robokassa", inv_id
+        )
         return web.Response(text=f"OK{inv_id}")
     if inv_id >= payments.GIFT_INV_OFFSET:
         # платёж за подарочный сертификат (свой контур): InvId = OFFSET + gift_id
@@ -3092,6 +3233,16 @@ async def robo_webhook(request: web.Request) -> web.Response:
         if amount != int(g["amount"] or 0):
             return web.Response(status=400, text="bad amount")
         bot_g: Bot = request.app["bot"]
+        if g["status"] not in ("pending", "active"):
+            await db.receipt_mark_paid(
+                "robokassa", inv_id, allocated=False)
+            await notify.notify_admins(
+                bot_g,
+                f"⚠️ Robokassa приняла {config.fmt_money(amount)} ₽ по уже "
+                f"закрытому сертификату #{g['id']} (статус {g['status']}). "
+                "Деньги не распределены автоматически; требуется сверка.")
+            return web.Response(text=f"OK{inv_id}")
+        await db.receipt_mark_paid("robokassa", inv_id, allocated=True)
         if g["status"] != "active":
             g2 = await gift_svc.activate_paid(bot_g, g["id"], method="robokassa",
                                               actor="Robokassa")
@@ -3099,8 +3250,10 @@ async def robo_webhook(request: web.Request) -> web.Response:
                 await notify.notify_admins(
                     bot_g, f"💳 Robokassa: подарочный сертификат {g2['code']} "
                            f"оплачен ({config.fmt_money(amount or g['amount'])} ₽) "
-                           "и выпущен — письма ушли сами. Чек НПД: с «Робочеками "
-                           "СМЗ» уходит сам.")
+                           "и выпущен. Данные чека переданы Robokassa.")
+        await payment_delivery.schedule_for_receipt(
+            bot_g, "robokassa", inv_id
+        )
         return web.Response(text=f"OK{inv_id}")
     if inv_id >= payments.DEP_INV_OFFSET:
         # пополнение депозита (свой контур): InvId = OFFSET + deposit_id
@@ -3110,6 +3263,17 @@ async def robo_webhook(request: web.Request) -> web.Response:
         if amount != int(d["amount"] or 0):
             return web.Response(status=400, text="bad amount")
         bot_d: Bot = request.app["bot"]
+        if d["status"] not in ("pending", "active"):
+            await db.receipt_mark_paid(
+                "robokassa", inv_id, allocated=False)
+            await notify.notify_admins(
+                bot_d,
+                f"⚠️ Robokassa приняла {config.fmt_money(amount)} ₽ по уже "
+                f"закрытому пополнению депозита #{d['id']} "
+                f"(статус {d['status']}). Деньги не зачислены автоматически; "
+                "требуется ручная сверка.")
+            return web.Response(text=f"OK{inv_id}")
+        await db.receipt_mark_paid("robokassa", inv_id, allocated=True)
         if d["status"] != "active":
             d2 = await deposit.activate_paid(bot_d, d["id"], method="robokassa",
                                              actor="Robokassa")
@@ -3118,9 +3282,11 @@ async def robo_webhook(request: web.Request) -> web.Response:
                     bot_d, f"💼 Robokassa: депозит пополнен на "
                            f"{config.fmt_money(amount or d['amount'])} ₽ "
                            f"(+{config.fmt_money(d2['bonus_amount'])} бонусами, "
-                           f"+{d2['bonus_pct']}%). Чек НПД: аванс — с «Робочеками "
-                           "СМЗ» уходит сам. Оплата этапов этим депозитом чек "
-                           "повторно не требует.")
+                           f"+{d2['bonus_pct']}%). Данные чека на аванс переданы "
+                           "Robokassa; подтверждение платежа поставлено в доставку.")
+        await payment_delivery.schedule_for_receipt(
+            bot_d, "robokassa", inv_id
+        )
         return web.Response(text=f"OK{inv_id}")
     if inv_id >= payments.TIP_INV_OFFSET:
         # добровольная благодарность: отдельный контур, дело не двигаем
@@ -3131,15 +3297,19 @@ async def robo_webhook(request: web.Request) -> web.Response:
             log.warning("robokassa tip amount mismatch: inv=%s got=%s expected=%s",
                         inv_id, amount, tip["amount"])
             return web.Response(status=400, text="bad amount")
+        await db.receipt_mark_paid("robokassa", inv_id, allocated=True)
         if await db.tip_mark_paid(tip["id"]):
             await db.add_event(tip["order_id"], "tip_paid",
                                f"{tip['amount']} ₽ · Robokassa")
             msg = (f"💛 <b>Благодарность по завершённому заказу "
                    f"{config.order_no(tip['order_id'])}</b>: "
                    f"{config.fmt_money(tip['amount'])} ₽. Спасибо клиенту! "
-                   "Чек НПД уходит через «Робочеки СМЗ».")
+                   "Данные чека переданы Robokassa.")
             g = await grp.send(request.app["bot"], tip["order_id"], msg)
             await notify.notify_admins(request.app["bot"], msg, group_sent=bool(g))
+        await payment_delivery.schedule_for_receipt(
+            request.app["bot"], "robokassa", inv_id
+        )
         return web.Response(text=f"OK{inv_id}")
     row = await db.payment_get(inv_id)
     if not row or row["method"] != "robokassa":
@@ -3150,31 +3320,45 @@ async def robo_webhook(request: web.Request) -> web.Response:
     if row["status"] == "canceled":
         # деньги по ОТМЕНЁННОМУ счёту (пересобранная заявка) — на ручной
         # разбор, автопроводки нет: сумма могла устареть.
+        await db.receipt_mark_paid(
+            "robokassa", inv_id, allocated=False)
         await notify.notify_admins(request.app["bot"],
             f"⚠️ Оплата по отменённому счёту InvId {inv_id} "
             f"(заказ {row['order_id']}). Не проведено автоматически — проверьте.")
         return web.Response(text=f"OK{inv_id}")
-    if row["status"] == "paid":  # повтор уведомления — просто подтверждаем
-        return web.Response(text=f"OK{inv_id}")
+    await db.receipt_mark_paid("robokassa", inv_id, allocated=True)
     order_id = row["order_id"]
     bot: Bot = request.app["bot"]
     conducted = await payments.confirm(
         bot, order_id, row["kind"], amount,
         method="robokassa", external_id=str(inv_id),
         pay_id=inv_id, actor="Robokassa")
-    if not conducted.get("ok") or conducted.get("duplicate_callback"):
+    if not conducted.get("ok"):
+        if conducted.get("error") == "duplicate_payment":
+            return web.Response(text=f"OK{inv_id}")
+        log.error(
+            "robokassa effects pending for InvId=%s: %s",
+            inv_id,
+            conducted.get("error"),
+        )
+        # Не отвечаем OK, пока основной ledger не завершён: провайдер должен
+        # повторить ResultURL, а не считать деньги успешно распределёнными.
+        return web.Response(status=503, text="payment effects pending")
+    if conducted.get("duplicate_callback"):
         return web.Response(text=f"OK{inv_id}")
     o = await db.get_order(order_id)
     if o:
         g = await grp.send_card(bot, order_id,
                                 alert=f"💳 Онлайн-оплата подтверждена (Robokassa): "
                                       f"{config.fmt_money(amount or row['amount'])} ₽. "
-                                      "Чек НПД: с «Робочеками СМЗ» уходит сам, иначе — «Мой налог».")
+                                      "Данные чека переданы Robokassa; подтверждение "
+                                      "платежа доступно клиенту.")
         await grp.status_sync(bot, order_id)
         await notify.notify_admins(
             bot, f"💳 Robokassa: оплата по заказу №{order_id} подтверждена "
                  f"({config.fmt_money(amount or row['amount'])} ₽). "
-                 "Чек НПД: с «Робочеками СМЗ» уходит сам, иначе — «Мой налог».",
+                 "Данные чека переданы Robokassa; подтверждение платежа "
+                 "доступно клиенту.",
             group_sent=bool(g))
     return web.Response(text=f"OK{inv_id}")
 
@@ -3188,7 +3372,7 @@ def _client_label(o) -> str:
 
 # ------------------------------------------------------------------- файлы
 
-_UPLOAD_LABELS = {"receipt": "чек", "review": "отзыв", "fix": "правки"}
+_UPLOAD_LABELS = {"receipt": "подтверждение перевода", "review": "отзыв", "fix": "правки"}
 
 
 async def order_upload(request: web.Request) -> web.Response:
@@ -3224,12 +3408,12 @@ async def order_upload(request: web.Request) -> web.Response:
         return _err("empty")
     bot: Bot = request.app["bot"]
     who = _client_label(o)
-    head = {"receipt": "🧾 Чек об оплате", "review": "⭐ Скрин к отзыву",
+    head = {"receipt": "🧾 Подтверждение перевода", "review": "⭐ Скрин к отзыву",
             "fix": "✏️ Материалы к правкам"}.get(kind_q, "📎 Файл")
     caption = f"{head} · заказ №{order_id} · от {who} (с сайта)"
     file_kb = None
     if kind_q == "receipt":
-        # чек — это просьба сверить оплату: кнопки подтверждения сразу при файле
+        # подтверждение перевода — просьба сверить оплату; это не чек НПД
         caption += " — сверьте и подтвердите оплату."
         _, claim_amt = await payments.confirm_amount(o)
         if claim_amt > 0:
@@ -3265,7 +3449,7 @@ async def order_upload(request: web.Request) -> web.Response:
     if not tg_file_id:
         return _err("relay_failed", 502)
     if kind_q == "receipt":
-        await db.add_event(order_id, "receipt", "чек приложен (сайт)")
+        await db.add_event(order_id, "receipt", "подтверждение перевода приложено (сайт)")
     else:
         # любой файл клиента — активность: авто-приёмка молчания смотрит на
         # события, и без этой строки ответ файлом без текста считался тишиной
@@ -5545,6 +5729,14 @@ def build_app(bot: Bot) -> web.Application:
     r.add_post("/api/orders/{id:\\d+}/upload", order_upload)
     r.add_get("/api/orders/{id:\\d+}/file/{fid:\\d+}", order_file_download)
     r.add_get("/api/orders/{id:\\d+}/contract", order_contract)
+    r.add_get(
+        "/api/orders/{id:\\d+}/payments/{pid:\\d+}/confirmation.pdf",
+        order_payment_confirmation,
+    )
+    r.add_get(
+        "/api/payment-confirmations/{rid:\\d+}.pdf",
+        payment_confirmation,
+    )
     r.add_get("/api/orders/{id:\\d+}/pamyatka", order_pamyatka)
     r.add_get("/api/pamyatka/welcome", pamyatka_welcome)
     r.add_get("/api/orders/{id:\\d+}/msgmedia/{mid:\\d+}", order_msg_media)

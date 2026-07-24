@@ -316,7 +316,13 @@
       void prefs.offsetWidth;
       prefs.classList.add('open');
       document.addEventListener('keydown', onPrefsKey);
-      prefs.querySelector('.cp-x').focus();
+      /* visibility меняется переходом: WebKit/Chromium могут проигнорировать
+         focus() в тот же кадр. Фокусируем после покраски открытого диалога. */
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          if (prefs) prefs.querySelector('.cp-x').focus();
+        });
+      });
       prefs.addEventListener('click', function (e) {
         if (e.target.closest('[data-cp-close]')) { closePrefs(); return; }
         if (e.target.closest('[data-cp-all]')) { choose(true, 'settings'); return; }
@@ -349,7 +355,11 @@
       var f = Array.prototype.slice.call(prefs.querySelectorAll('button:not([disabled]),input:not([disabled]),summary,a[href]'));
       if (!f.length) return;
       var first = f[0], last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      if (!prefs.contains(document.activeElement)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      }
+      else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
 

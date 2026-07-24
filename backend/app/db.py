@@ -11,6 +11,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Iterable
 
 import aiosqlite
+from cryptography.fernet import Fernet, InvalidToken
 
 from . import config, migrations
 
@@ -484,6 +485,8 @@ MIGRATE_COLUMNS = {
     ],
     "orders": [
         ("access_token", "TEXT"),      # гостевой доступ к заказу из кабинета сайта
+        # Поиск идёт только по SHA-256; access_token содержит Fernet ciphertext.
+        ("access_token_digest", "TEXT"),
         ("guest_name", "TEXT"),
         ("guest_contact", "TEXT"),
         ("cancel_reason", "TEXT"),     # причина отказа (клиент указывает по желанию)
@@ -628,6 +631,123 @@ def now_iso() -> str:
 
 
 _SESSION_HASH_PREFIX = "s1$"
+_ORDER_TOKEN_CIPHER_PREFIX = "e1$"
+_ORDER_TOKEN_DIGEST_PREFIX = "d1$"
+
+
+def _order_token_cipher() -> Fernet:
+    """Вернуть шифратор, не раскрывая значение ключа в исключениях."""
+    try:
+        key = config.ORDER_ACCESS_TOKEN_KEY.encode("ascii")
+        if not key:
+            raise ValueError
+        return Fernet(key)
+    except (UnicodeEncodeError, TypeError, ValueError) as exc:
+        raise RuntimeError(
+            "ORDER_ACCESS_TOKEN_KEY должен быть постоянным корректным Fernet-ключом"
+        ) from exc
+
+
+def _order_token_digest(token: str) -> str:
+    """Стабильный lookup-ключ; исходный capability-токен в SQL не попадает."""
+    return _ORDER_TOKEN_DIGEST_PREFIX + hashlib.sha256(
+        token.encode("utf-8")
+    ).hexdigest()
+
+
+def _encrypt_order_token(token: str) -> str:
+    encrypted = _order_token_cipher().encrypt(token.encode("utf-8")).decode("ascii")
+    return _ORDER_TOKEN_CIPHER_PREFIX + encrypted
+
+
+def _decrypt_order_token(stored: str | None) -> str | None:
+    """Расшифровать новое значение; plaintext принимается только для миграции."""
+    if not stored:
+        return stored
+    if not stored.startswith(_ORDER_TOKEN_CIPHER_PREFIX):
+        return stored
+    try:
+        payload = stored[len(_ORDER_TOKEN_CIPHER_PREFIX):].encode("ascii")
+        return _order_token_cipher().decrypt(payload).decode("utf-8")
+    except (InvalidToken, UnicodeDecodeError, UnicodeEncodeError) as exc:
+        raise RuntimeError(
+            "Не удалось расшифровать access token заказа; проверьте постоянный ключ"
+        ) from exc
+
+
+def _encode_order_token(token: str | None) -> tuple[str | None, str | None]:
+    if token is None or token == "":
+        return None, None
+    if not isinstance(token, str):
+        raise TypeError("access_token должен быть строкой или None")
+    return _encrypt_order_token(token), _order_token_digest(token)
+
+
+def _prepare_order_fields(fields: dict[str, Any]) -> dict[str, Any]:
+    """Не позволить общим INSERT/UPDATE положить raw token или чужой digest."""
+    prepared = dict(fields)
+    prepared.pop("access_token_digest", None)
+    if "access_token" in prepared:
+        stored, digest = _encode_order_token(prepared["access_token"])
+        prepared["access_token"] = stored
+        prepared["access_token_digest"] = digest
+    return prepared
+
+
+class _OrderTokenRow:
+    """Совместимая с sqlite3.Row обёртка для прозрачного чтения старым кодом.
+
+    Приложение продолжает получать ``row["access_token"]`` для действующих
+    email/claim-ссылок. Внутренний digest не попадает в ``dict(row)`` и JSON.
+    """
+
+    __slots__ = ("_row", "_keys", "_indices")
+
+    def __init__(self, row: aiosqlite.Row) -> None:
+        self._row = row
+        all_keys = row.keys()
+        self._indices = [
+            index
+            for index, key in enumerate(all_keys)
+            if key != "access_token_digest"
+        ]
+        self._keys = [all_keys[index] for index in self._indices]
+
+    def keys(self) -> list[str]:
+        return list(self._keys)
+
+    def __len__(self) -> int:
+        return len(self._keys)
+
+    def __iter__(self):
+        for index in self._indices:
+            value = self._row[index]
+            if self._row.keys()[index] == "access_token":
+                value = _decrypt_order_token(value)
+            yield value
+
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            return tuple(self)[key]
+        if isinstance(key, int):
+            index = self._indices[key]
+            value = self._row[index]
+            if self._row.keys()[index] == "access_token":
+                return _decrypt_order_token(value)
+            return value
+        if key == "access_token_digest":
+            raise IndexError("No item with that key")
+        value = self._row[key]
+        if key == "access_token":
+            return _decrypt_order_token(value)
+        return value
+
+
+def _secure_row_factory(cursor, values):
+    row = aiosqlite.Row(cursor, values)
+    if "access_token" in row.keys():
+        return _OrderTokenRow(row)
+    return row
 
 
 def _session_token_key(token: str) -> str:
@@ -654,6 +774,50 @@ async def _harden_session_tokens() -> None:
     await conn().commit()
 
 
+async def _harden_order_access_tokens() -> None:
+    """Зашифровать legacy-токены и создать digest без смены клиентских ссылок.
+
+    Сначала полностью готовим изменения в памяти. Если ключ отсутствует,
+    неверен или не подходит к хотя бы одной строке, SQLite не меняется.
+    Повторный запуск не перешифровывает уже защищённые значения.
+    """
+    cur = await conn().execute(
+        "SELECT id,access_token AS stored_access_token,access_token_digest "
+        "FROM orders "
+        "WHERE access_token IS NOT NULL OR access_token_digest IS NOT NULL"
+    )
+    updates: list[tuple[str | None, str | None, int]] = []
+    for row in await cur.fetchall():
+        stored = row["stored_access_token"]
+        current_digest = row["access_token_digest"]
+        if not stored:
+            if current_digest is not None:
+                updates.append((None, None, int(row["id"])))
+            continue
+        raw = _decrypt_order_token(stored)
+        if raw is None:
+            continue
+        expected_digest = _order_token_digest(raw)
+        protected = (
+            stored
+            if stored.startswith(_ORDER_TOKEN_CIPHER_PREFIX)
+            else _encrypt_order_token(raw)
+        )
+        if protected != stored or current_digest != expected_digest:
+            updates.append((protected, expected_digest, int(row["id"])))
+
+    if updates:
+        await conn().executemany(
+            "UPDATE orders SET access_token=?,access_token_digest=? WHERE id=?",
+            updates,
+        )
+    await conn().execute(
+        "CREATE INDEX IF NOT EXISTS idx_orders_access_token_digest "
+        "ON orders(access_token_digest) WHERE access_token_digest IS NOT NULL"
+    )
+    await conn().commit()
+
+
 def to_msk(iso: str | None) -> str:
     if not iso:
         return "—"
@@ -668,7 +832,7 @@ async def init(path: str) -> None:
     global _conn, _db_path
     _db_path = path
     _conn = await aiosqlite.connect(path)
-    _conn.row_factory = aiosqlite.Row
+    _conn.row_factory = _secure_row_factory
     await _conn.execute("PRAGMA journal_mode=WAL")
     await _conn.execute("PRAGMA foreign_keys=ON")
     await _conn.execute("PRAGMA busy_timeout=5000")
@@ -681,6 +845,14 @@ async def init(path: str) -> None:
                 await _conn.execute(f"ALTER TABLE {table} ADD COLUMN {name} {decl}")
     await migrations.apply_pending(_conn)
     await _harden_session_tokens()
+    try:
+        await _harden_order_access_tokens()
+    except Exception:
+        # Не оставляем полуинициализированное соединение после ошибки ключа.
+        await _conn.close()
+        _conn = None
+        _db_path = None
+        raise
     # Показанная клиенту редакция является доказательным снимком. Обычные поля
     # offers (status, opens, payment nonce) меняются, договорные байты и хэши —
     # никогда. Новая редакция всегда создаётся новой строкой offers.
@@ -806,6 +978,7 @@ async def is_new_user(user_id: int) -> bool:
 # ------------------------------------------------------------------ orders
 
 async def create_order(**f) -> int:
+    f = _prepare_order_fields(f)
     ts = now_iso()
     keys = list(f.keys()) + ["created_at", "updated_at"]
     vals = list(f.values()) + [ts, ts]
@@ -826,6 +999,7 @@ async def create_order_bundle(items: list[dict], **f) -> int:
     """
     if not _db_path:
         raise RuntimeError("db.init() не вызван")
+    f = _prepare_order_fields(f)
     ts = now_iso()
     keys = list(f.keys()) + ["created_at", "updated_at"]
     vals = list(f.values()) + [ts, ts]
@@ -890,6 +1064,7 @@ async def get_order(order_id: int) -> aiosqlite.Row | None:
 
 
 async def update_order(order_id: int, **f) -> None:
+    f = _prepare_order_fields(f)
     f["updated_at"] = now_iso()
     sets = ",".join(f"{k}=?" for k in f)
     await _exec(f"UPDATE orders SET {sets} WHERE id=?", list(f.values()) + [order_id])
@@ -1639,7 +1814,10 @@ async def unread_for_orders(order_ids: list[int]) -> dict[int, int]:
 async def order_by_access_token(token: str) -> aiosqlite.Row | None:
     if not token:
         return None
-    cur = await conn().execute("SELECT * FROM orders WHERE access_token=?", (token,))
+    cur = await conn().execute(
+        "SELECT * FROM orders WHERE access_token_digest=?",
+        (_order_token_digest(token),),
+    )
     return await cur.fetchone()
 
 
@@ -1647,7 +1825,9 @@ async def order_by_token(order_id: int, token: str) -> aiosqlite.Row | None:
     if not token:
         return None
     cur = await conn().execute(
-        "SELECT * FROM orders WHERE id=? AND access_token=?", (order_id, token))
+        "SELECT * FROM orders WHERE id=? AND access_token_digest=?",
+        (order_id, _order_token_digest(token)),
+    )
     return await cur.fetchone()
 
 
@@ -1658,10 +1838,11 @@ async def orders_by_tokens(tokens: list[str]) -> list[aiosqlite.Row]:
     tokens = [t for t in tokens if t][:30]
     if not tokens:
         return []
-    q = ",".join("?" * len(tokens))
+    digests = [_order_token_digest(token) for token in tokens]
+    q = ",".join("?" * len(digests))
     cur = await conn().execute(
-        f"SELECT * FROM orders WHERE access_token IN ({q}) "
-        "AND coalesce(deleted,0)=0 ORDER BY id DESC", tokens)
+        f"SELECT * FROM orders WHERE access_token_digest IN ({q}) "
+        "AND coalesce(deleted,0)=0 ORDER BY id DESC", digests)
     return list(await cur.fetchall())
 
 
@@ -1677,8 +1858,12 @@ async def ensure_access_token(order_id: int) -> str | None:
         return o["access_token"]
     import secrets as _secrets
     token = _secrets.token_urlsafe(24)
-    await _exec("UPDATE orders SET access_token=? WHERE id=? AND access_token IS NULL",
-                (token, order_id))
+    stored, digest = _encode_order_token(token)
+    await _exec(
+        "UPDATE orders SET access_token=?,access_token_digest=? "
+        "WHERE id=? AND access_token IS NULL",
+        (stored, digest, order_id),
+    )
     o2 = await get_order(order_id)
     return o2["access_token"] if o2 else token
 
@@ -1689,12 +1874,23 @@ async def claim_order_to_user(order_id: int, claim_token: str, user_id: int) -> 
     Новый кабинетный token увидит только уже связанный клиент в сообщении бота;
     старая ссылка, которую могли переслать до привязки, сразу перестаёт работать.
     """
+    if not claim_token:
+        return False
     import secrets as _secrets
     new_token = _secrets.token_urlsafe(24)
+    stored, digest = _encode_order_token(new_token)
     cur = await conn().execute(
-        "UPDATE orders SET user_id=?,access_token=?,updated_at=? "
-        "WHERE id=? AND access_token=? AND user_id IS NULL",
-        (user_id, new_token, now_iso(), order_id, claim_token))
+        "UPDATE orders SET user_id=?,access_token=?,access_token_digest=?,updated_at=? "
+        "WHERE id=? AND access_token_digest=? AND user_id IS NULL",
+        (
+            user_id,
+            stored,
+            digest,
+            now_iso(),
+            order_id,
+            _order_token_digest(claim_token),
+        ),
+    )
     await conn().commit()
     return cur.rowcount == 1
 
@@ -1703,8 +1899,11 @@ async def rotate_access_token(order_id: int) -> str:
     """Отзывает прежнюю гостевую ссылку и возвращает новый ключ кабинета."""
     import secrets as _secrets
     token = _secrets.token_urlsafe(24)
-    await _exec("UPDATE orders SET access_token=?,updated_at=? WHERE id=?",
-                (token, now_iso(), order_id))
+    stored, digest = _encode_order_token(token)
+    await _exec(
+        "UPDATE orders SET access_token=?,access_token_digest=?,updated_at=? WHERE id=?",
+        (stored, digest, now_iso(), order_id),
+    )
     return token
 
 
@@ -1742,10 +1941,12 @@ async def claim_orders(tokens: list[str], user_id: int) -> int:
     tokens = [t for t in tokens if t][:30]
     if not tokens:
         return 0
-    q = ",".join("?" * len(tokens))
+    digests = [_order_token_digest(token) for token in tokens]
+    q = ",".join("?" * len(digests))
     cur = await _exec(
-        f"UPDATE orders SET user_id=? WHERE access_token IN ({q}) AND user_id IS NULL",
-        [user_id, *tokens])
+        f"UPDATE orders SET user_id=? "
+        f"WHERE access_token_digest IN ({q}) AND user_id IS NULL",
+        [user_id, *digests])
     return cur.rowcount
 
 
@@ -1757,7 +1958,8 @@ async def file_by_id(file_row_id: int) -> aiosqlite.Row | None:
 async def forget_user(user_id: int) -> None:
     """152-ФЗ: удаление профиля и обезличивание заказов по запросу субъекта."""
     await _exec("UPDATE orders SET user_id=NULL, guest_name='(данные удалены)', "
-                "guest_contact=NULL, access_token=NULL WHERE user_id=?", (user_id,))
+                "guest_contact=NULL, access_token=NULL,access_token_digest=NULL "
+                "WHERE user_id=?", (user_id,))
     await _exec("DELETE FROM sessions WHERE user_id=?", (user_id,))
     await _exec("DELETE FROM msg_map WHERE client_id=?", (user_id,))
     await _exec("DELETE FROM bonus_ledger WHERE user_id=?", (user_id,))
@@ -1861,6 +2063,254 @@ async def payment_create(order_id: int, kind: str, amount: int, method: str = "m
 async def payment_get(payment_id: int) -> aiosqlite.Row | None:
     cur = await conn().execute("SELECT * FROM payments WHERE id=?", (payment_id,))
     return await cur.fetchone()
+
+
+async def receipt_invoice_upsert(
+    *,
+    provider: str,
+    inv_id: int,
+    scope: str,
+    scope_id: int,
+    kind: str,
+    amount: int,
+    receipt_payload: str,
+    order_id: int | None = None,
+    user_id: int | None = None,
+    payment_id: int | None = None,
+    buyer_email: str | None = None,
+    expires_at: str | None = None,
+) -> aiosqlite.Row:
+    """Зафиксировать неизменяемый снимок счёта до ухода клиента к провайдеру.
+
+    Повторное открытие той же ссылки может уточнить e-mail и срок, но не сумму,
+    владельца или состав Receipt. Любая попытка изменить их падает закрыто.
+    """
+    provider = str(provider).strip().lower()
+    payload_hash = hashlib.sha256(receipt_payload.encode("utf-8")).hexdigest()
+    ts = now_iso()
+    await conn().execute(
+        "INSERT INTO payment_receipts("
+        "provider,inv_id,scope,scope_id,order_id,user_id,payment_id,kind,amount,"
+        "buyer_email,receipt_payload,receipt_payload_sha256,expires_at,"
+        "created_at,updated_at"
+        ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
+        "ON CONFLICT(provider,inv_id) DO UPDATE SET "
+        "buyer_email=COALESCE(excluded.buyer_email,payment_receipts.buyer_email),"
+        "expires_at=COALESCE(excluded.expires_at,payment_receipts.expires_at),"
+        "updated_at=excluded.updated_at",
+        (
+            provider, int(inv_id), scope, int(scope_id), order_id, user_id,
+            payment_id, kind, int(amount), buyer_email, receipt_payload,
+            payload_hash, expires_at, ts, ts,
+        ),
+    )
+    await conn().commit()
+    cur = await conn().execute(
+        "SELECT * FROM payment_receipts WHERE provider=? AND inv_id=?",
+        (provider, int(inv_id)),
+    )
+    row = await cur.fetchone()
+    if not row or row["scope"] != scope or int(row["scope_id"]) != int(scope_id) \
+            or int(row["amount"]) != int(amount) \
+            or row["receipt_payload_sha256"] != payload_hash:
+        raise RuntimeError("invoice snapshot conflict")
+    return row
+
+
+async def receipt_mark_paid(
+    provider: str,
+    inv_id: int,
+    *,
+    payment_method: str | None = None,
+    allocated: bool = True,
+) -> aiosqlite.Row | None:
+    """Отметить приход денег, не выдавая желаемое за готовый налоговый чек."""
+    ts = now_iso()
+    fiscal = "provider_processing" if provider == "robokassa" else "manual_required"
+    status = "paid" if allocated else "paid_unallocated"
+    await conn().execute(
+        "UPDATE payment_receipts SET payment_status=?,fiscal_status=?,"
+        "provider_payment_method=COALESCE(?,provider_payment_method),"
+        "paid_at=COALESCE(paid_at,?),updated_at=?,last_error=NULL "
+        "WHERE provider=? AND inv_id=?",
+        (status, fiscal, payment_method, ts, ts, provider, int(inv_id)),
+    )
+    await conn().commit()
+    cur = await conn().execute(
+        "SELECT * FROM payment_receipts WHERE provider=? AND inv_id=?",
+        (provider, int(inv_id)),
+    )
+    return await cur.fetchone()
+
+
+async def receipt_effects_claim(payment_id: int) -> str:
+    """CAS для бизнес-эффектов платежа.
+
+    ``claimed`` получает первый обработчик либо восстановитель зависшего более
+    пяти минут шага. Параллельный callback видит ``in_progress``; завершённый —
+    ``applied``. Так полученные деньги не теряются после падения между записью
+    платежа и запуском заказа.
+    """
+    ts = now_iso()
+    cur = await conn().execute(
+        "UPDATE payment_receipts SET effects_status='applying',"
+        "effects_updated_at=?,effects_error=NULL,updated_at=? "
+        "WHERE payment_id=? AND payment_status='paid' AND ("
+        "effects_status IN ('pending','failed') OR "
+        "(effects_status='applying' AND "
+        " datetime(effects_updated_at)<=datetime('now','-5 minutes'))"
+        ")",
+        (ts, ts, int(payment_id)),
+    )
+    await conn().commit()
+    if cur.rowcount == 1:
+        return "claimed"
+    row = await receipt_for_payment(payment_id)
+    if not row:
+        return "missing"
+    if row["effects_status"] == "applied":
+        return "applied"
+    return "in_progress"
+
+
+async def receipt_effects_mark(
+    payment_id: int,
+    *,
+    applied: bool,
+    error: str | None = None,
+) -> None:
+    ts = now_iso()
+    await _exec(
+        "UPDATE payment_receipts SET effects_status=?,effects_updated_at=?,"
+        "effects_error=?,updated_at=? WHERE payment_id=?",
+        (
+            "applied" if applied else "failed",
+            ts,
+            None if applied else (error or "payment effects failed")[:500],
+            ts,
+            int(payment_id),
+        ),
+    )
+
+
+async def receipt_for_payment(payment_id: int) -> aiosqlite.Row | None:
+    cur = await conn().execute(
+        "SELECT * FROM payment_receipts WHERE payment_id=? "
+        "ORDER BY id DESC LIMIT 1",
+        (payment_id,),
+    )
+    return await cur.fetchone()
+
+
+async def receipt_get(provider: str, inv_id: int) -> aiosqlite.Row | None:
+    cur = await conn().execute(
+        "SELECT * FROM payment_receipts WHERE provider=? AND inv_id=?",
+        (str(provider).strip().lower(), int(inv_id)),
+    )
+    return await cur.fetchone()
+
+
+async def receipt_by_id(receipt_id: int) -> aiosqlite.Row | None:
+    cur = await conn().execute(
+        "SELECT * FROM payment_receipts WHERE id=?",
+        (int(receipt_id),),
+    )
+    return await cur.fetchone()
+
+
+async def receipt_set_buyer_email(
+    receipt_id: int,
+    buyer_email: str | None,
+) -> None:
+    """Дополнить адрес доставки, не перезаписывая уже зафиксированный."""
+    clean = (buyer_email or "").strip().lower()[:120] or None
+    if not clean:
+        return
+    await _exec(
+        "UPDATE payment_receipts SET "
+        "buyer_email=COALESCE(buyer_email,?),updated_at=? WHERE id=?",
+        (clean, now_iso(), int(receipt_id)),
+    )
+
+
+async def receipts_for_order(order_id: int) -> list[aiosqlite.Row]:
+    cur = await conn().execute(
+        "SELECT * FROM payment_receipts WHERE order_id=? ORDER BY id DESC",
+        (order_id,),
+    )
+    return list(await cur.fetchall())
+
+
+async def receipts_for_user(
+    user_id: int,
+    *,
+    paid_only: bool = True,
+    limit: int = 50,
+) -> list[aiosqlite.Row]:
+    sql = "SELECT * FROM payment_receipts WHERE user_id=?"
+    args: list[Any] = [int(user_id)]
+    if paid_only:
+        sql += " AND payment_status='paid'"
+    sql += " ORDER BY paid_at DESC,id DESC LIMIT ?"
+    args.append(max(1, min(int(limit), 100)))
+    cur = await conn().execute(sql, tuple(args))
+    return list(await cur.fetchall())
+
+
+async def receipt_delivery_mark(
+    receipt_id: int,
+    channel: str,
+    *,
+    error: str | None = None,
+) -> None:
+    if channel not in ("email", "tg"):
+        raise ValueError("unsupported receipt delivery channel")
+    ts = now_iso()
+    column = "confirmation_email_at" if channel == "email" else "confirmation_tg_at"
+    attempted = (
+        "confirmation_email_attempted_at"
+        if channel == "email" else "confirmation_tg_attempted_at"
+    )
+    attempts = (
+        "confirmation_email_attempts"
+        if channel == "email" else "confirmation_tg_attempts"
+    )
+    await _exec(
+        f"UPDATE payment_receipts SET {column}=?,{attempted}=?,"
+        f"{attempts}={attempts}+1,last_error=?,updated_at=? WHERE id=?",
+        (
+            None if error else ts,
+            ts,
+            (error or None)[:500] if error else None,
+            ts,
+            receipt_id,
+        ),
+    )
+
+
+async def receipt_pending_deliveries(limit: int = 30) -> list[aiosqlite.Row]:
+    """Оплаченные операции с недоставленным подтверждением.
+
+    Не молотим неработающий канал каждую минуту: повтор — не раньше чем через
+    15 минут. Официальный чек НПД в эту очередь не входит, его доставляет
+    Robokassa/«Мой налог».
+    """
+    cur = await conn().execute(
+        "SELECT * FROM payment_receipts "
+        "WHERE payment_status='paid' AND ("
+        "(buyer_email IS NOT NULL AND confirmation_email_at IS NULL "
+        " AND (confirmation_email_attempted_at IS NULL OR "
+        "      datetime(confirmation_email_attempted_at)"
+        "      <=datetime('now','-15 minutes'))) "
+        "OR (user_id IS NOT NULL AND user_id>0 AND confirmation_tg_at IS NULL "
+        " AND (confirmation_tg_attempted_at IS NULL OR "
+        "      datetime(confirmation_tg_attempted_at)"
+        "      <=datetime('now','-15 minutes')))"
+        ") "
+        "ORDER BY paid_at,id LIMIT ?",
+        (max(1, min(int(limit), 100)),),
+    )
+    return list(await cur.fetchall())
 
 
 async def payment_claim_paid_exact(payment_id: int, order_id: int, kind: str,

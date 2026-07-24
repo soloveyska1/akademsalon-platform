@@ -648,8 +648,8 @@ function initCabinet() {
   }
 
   /* -------- депозит мастерской: кошелёк-аванс с бонусом за пополнение ------
-     Деньги кошелька оплачивают этапы заказов в один клик (чек НПД пробит
-     при пополнении); бонусы сверху приходят на общий бонусный счёт. */
+     Данные для чека НПД передаются при пополнении; внутреннее списание
+     аванса на этап не изображаем отдельным денежным расчётом. */
   function depCard() {
     var d = st.me && st.me.deposit;
     if (!d) return '';
@@ -681,7 +681,7 @@ function initCabinet() {
       '<span class="bc-num">' + money(d.balance) + '</span></div>' +
       '<div class="bc-side">' +
       '<p class="bc-exp">Пополнили кошелёк — бонусы сверху: от +8% за 20 000 ₽ до +15% за 60 000 ₽. ' +
-      'Кошельком оплачиваются этапы заказов в один клик; чек приходит при пополнении.</p>' +
+      'Кошельком оплачиваются этапы заказов в один клик; официальный чек и подтверждение относятся к пополнению.</p>' +
       tops +
       '<div class="bc-act"><button type="button" class="btn btn-line" id="depLogBtn">' +
         (st.depLedgerOpen ? 'Скрыть журнал' : 'Журнал кошелька') + '</button></div>' +
@@ -1433,10 +1433,20 @@ function initCabinet() {
     if (!paid.length) return '';
     var lbl = {};
     (o.plan || []).forEach(function (p) { lbl[p.kind] = p.label; });
-    return '<p class="petit" style="margin-top:8px">Оплачено: ' + paid.map(function (p) {
+    return '<div class="pay-history" style="margin-top:10px"><p class="petit" style="margin:0 0 6px">Оплачено:</p>' +
+      paid.map(function (p) {
       var what = lbl[p.kind] || (p.kind === 'prepay' ? 'предоплата' : 'остаток');
-      return money(p.amount) + ' ₽ (' + esc(what.toLowerCase()) + ', ' + dt(p.at) + ')';
-    }).join(' · ') + '</p>';
+      var confirmation = p.confirmation_url
+        ? ' <a class="linkbtn wax" href="#" data-protected-asset="' +
+          apiPath(o.id, '/payments/' + p.id + '/confirmation.pdf') +
+          '" data-order-id="' + o.id + '" data-filename="podtverzhdenie-oplaty-' +
+          o.id + '-' + p.id + '.pdf">Скачать подтверждение</a>'
+        : '';
+      return '<p class="petit" style="margin:4px 0">' + money(p.amount) + ' ₽ — ' +
+        esc(what.toLowerCase()) + ', ' + dt(p.at) + '.' + confirmation + '</p>';
+    }).join('') +
+      '<p class="petit" style="margin:7px 0 0">Официальный чек НПД формирует Robokassa ' +
+      'и отправляет на e-mail, указанный при оплате. Подтверждение выше не заменяет налоговый чек.</p></div>';
   }
 
   /* -------- реквизиты: платёжный лист с крупной суммой и копированием --------
@@ -1472,7 +1482,7 @@ function initCabinet() {
       '<div class="ps-steps">' +
         '<span><b>1</b> переведите сумму</span><span class="ps-ar">→</span>' +
         '<span><b>2</b> нажмите «Я оплатил(а)»</span><span class="ps-ar">→</span>' +
-        '<span><b>3</b> приложите чек — сверка быстрее</span></div>' +
+        '<span><b>3</b> приложите подтверждение — сверка быстрее</span></div>' +
       '</div>';
   }
 
@@ -1488,9 +1498,9 @@ function initCabinet() {
       return head +
         '<div class="req-slip"><span class="caps">Отметка «оплатил» у мастера</span>' +
         '<p class="petit" style="margin:8px 0 0">Мастер сверяет поступление — как подтвердит, заказ двинется дальше и придёт уведомление. ' +
-        'Чек ускорит сверку.</p></div>' +
+        'Подтверждение перевода ускорит сверку.</p></div>' +
         '<div class="act-row">' +
-        '<label class="btn btn-line btn-upload">📎 Приложить чек<input type="file" id="cabReceipt" hidden accept="image/*,.pdf"></label>' +
+        '<label class="btn btn-line btn-upload">📎 Приложить подтверждение перевода<input type="file" id="cabReceipt" hidden accept="image/*,.pdf"></label>' +
         '<button type="button" class="btn btn-line" data-act="paid_undo">↩️ Я ещё не оплатил — снять отметку</button>' +
         '<button type="button" class="btn btn-line" data-chat-focus>Вопрос по оплате</button></div>' +
         payHistory(o) + '</div>';
@@ -1501,12 +1511,19 @@ function initCabinet() {
     var depBal = (st.me && st.me.deposit && st.me.deposit.balance) || 0;
     var depDue = (o.due_now && o.due_now.amount) || 0;
     var depBtn = depBal >= depDue && depDue > 0;
+    var receiptEmail = esc(o.receipt_email || '');
+    var receiptField = o.pay_online
+      ? '<label class="pay-email"><span class="petit">E-mail для официального чека НПД</span>' +
+        '<input type="email" id="payReceiptEmail" autocomplete="email" inputmode="email" ' +
+        'placeholder="name@example.ru" value="' + receiptEmail + '" required>' +
+        '<span class="petit">Передадим только Robokassa для чека и уведомления об оплате.</span></label>'
+      : '';
     var payBtns = '<div class="act-row">' +
       (depBtn ? '<button type="button" class="btn btn-wax" data-act-pay-dep>💼 С депозита — ' + money(depDue) + ' ₽</button>' : '') +
       (o.pay_online ? '<button type="button" class="btn ' + (depBtn ? 'btn-line' : 'btn-wax') + '" data-act-pay>💳 Оплатить картой онлайн</button>' : '') +
       '<button type="button" class="btn ' + (o.pay_online || depBtn ? 'btn-line' : 'btn-wax') + '" data-act="paid">Я оплатил(а) переводом</button>' +
       '<button type="button" class="btn btn-line" data-chat-focus>Вопрос по оплате</button></div>';
-    return head + req + payBtns + payHistory(o) + '</div>';
+    return head + req + receiptField + payBtns + payHistory(o) + '</div>';
   }
 
   function actionsBlock(o) {
@@ -1979,9 +1996,31 @@ function initCabinet() {
       '<button type="button" class="btn btn-wax" id="cabTg">Войти через Telegram</button></div>';
   }
 
+  function paymentDocumentsCard() {
+    if (!st.me) return '';
+    var docs = st.me.payment_confirmations || [];
+    if (!docs.length) return '';
+    return '<div class="sheet sheet-pad stacked reveal">' +
+      '<p class="caps" style="margin-bottom:10px">Документы об оплате</p>' +
+      '<div class="pay-history">' + docs.map(function (d) {
+        var ref = d.scope === 'order' ? ' · заказ №' + d.reference : '';
+        var filename = 'podtverzhdenie-oplaty-' + (d.scope || 'payment') +
+          '-' + d.reference + '-' + d.id + '.pdf';
+        return '<p class="petit" style="margin:7px 0">' +
+          '<b>' + esc(d.label || 'Оплата') + '</b>' + ref + ' · ' +
+          money(d.amount || 0) + ' ₽ · ' + dt(d.at) +
+          ' <a class="linkbtn wax" href="#" data-protected-asset="' +
+          esc(d.url || '') + '" data-filename="' + esc(filename) +
+          '">Скачать PDF</a></p>';
+      }).join('') + '</div>' +
+      '<p class="petit" style="margin-top:10px">PDF подтверждает платёж мастерской ' +
+      'и хранится в кабинете. Это не налоговый чек НПД: официальный чек ' +
+      'Robokassa отправляет отдельно на e-mail, указанный при оплате.</p></div>';
+  }
+
   function walletTab() {
     if (!st.me) return loginNudge('Кошелёк — после входа');
-    return promoHintStrip() + bonusCard() + depCard();
+    return promoHintStrip() + bonusCard() + depCard() + paymentDocumentsCard();
   }
 
   function clubTab() {
@@ -2000,7 +2039,7 @@ function initCabinet() {
     if (!st.me) {
       st.orders.forEach(function (o) { access += accessBlock(o, true); });
     }
-    return notiRow() + linksRow() + access +
+    return notiRow() + linksRow() + access + paymentDocumentsCard() +
       '<div class="sheet sheet-pad stacked reveal">' +
       '<p class="caps" style="margin-bottom:10px">Связь и полезное</p>' +
       '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">' +
@@ -2366,8 +2405,15 @@ function initCabinet() {
 
   function payOnline() {
     if (st.busy) return;
+    var emailEl = document.getElementById('payReceiptEmail');
+    var email = emailEl ? String(emailEl.value || '').trim().toLowerCase() : '';
+    if (emailEl && (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))) {
+      toast('Укажите рабочий e-mail — на него Robokassa отправит официальный чек');
+      emailEl.focus();
+      return;
+    }
     st.busy = true;
-    S.api.post('/orders/' + st.currentId + '/pay', {}, orderHeaders(st.currentId))
+    S.api.post('/orders/' + st.currentId + '/pay', { email: email }, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
         if (!r.ok) { toast('Не получилось открыть оплату — воспользуйтесь реквизитами'); return; }

@@ -240,7 +240,7 @@ def client_order(o, files_count: int = 0, bonus_balance: int = 0,
                              callback_data=f"cl:bspend:{oid}")])
     if s == "prepay":
         if claimed:  # отметка «оплатил» уже стоит — не дублируем кнопки оплаты
-            rows.append([Btn(text="🧾 Приложить чек — ускорит сверку",
+            rows.append([Btn(text="🧾 Приложить подтверждение перевода",
                              callback_data=f"cl:receipt:{oid}")])
             rows.append([Btn(text="↩️ Я ещё не оплатил — снять отметку",
                              callback_data=f"cl:unpaid:{oid}")])
@@ -413,7 +413,7 @@ def decline_reason_kb(oid: int) -> Kb:
 def prepay_kb(oid: int) -> Kb:
     return Kb(inline_keyboard=[
         [Btn(text="✅ Я оплатил(а)", callback_data=f"cl:paid:{oid}")],
-        [Btn(text="📎 Приложить чек", callback_data=f"cl:receipt:{oid}"),
+        [Btn(text="📎 Подтверждение перевода", callback_data=f"cl:receipt:{oid}"),
          Btn(text="💬 Вопрос по оплате", callback_data=f"cl:chat:{oid}")],
     ])
 
@@ -432,9 +432,9 @@ def with_pay_url(markup: Kb, url: str | None, amount: int) -> Kb:
 
 
 def paid_marked_kb(oid: int) -> Kb:
-    """После «Я оплатил»: чек ускоряет сверку, отметку можно снять."""
+    """После «Я оплатил»: подтверждение ускоряет сверку, отметку можно снять."""
     return Kb(inline_keyboard=[
-        [Btn(text="📎 Приложить чек — ускорит сверку", callback_data=f"cl:receipt:{oid}")],
+        [Btn(text="📎 Приложить подтверждение перевода", callback_data=f"cl:receipt:{oid}")],
         [Btn(text="↩️ Я ещё не оплатил — снять отметку", callback_data=f"cl:unpaid:{oid}")],
         [Btn(text="💬 Вопрос по оплате", callback_data=f"cl:chat:{oid}")],
     ])
