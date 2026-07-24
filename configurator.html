@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260723e" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260724a" />
 <link rel="stylesheet" href="assets/css/service-v2.css?v=20260724a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <style>
@@ -765,7 +765,7 @@
                     <a class="optrow optrow-link" href="configurator.html?service=tu"><span>Репетиторство и консультации</span><span class="dots"></span><span class="o-val">от 3&nbsp;000&nbsp;₽/час</span></a>
                     <a class="optrow optrow-link" href="configurator.html?service=au"><span>Авторский текст вне аттестации</span><span class="dots"></span><span class="o-val">от 12&nbsp;000&nbsp;₽</span></a>
                   </div>
-                  <p class="petit" style="margin-top:8px">Эти заявки короче: один лист — описываете задачу, прикладываете работу, мастер называет точную цену.</p>
+                  <p class="petit" style="margin-top:8px">Эти заявки короче: одна самостоятельная позиция — описываете задачу, прикладываете материал, мастер называет точную цену.</p>
                 </div>
               </div>
               <div class="sf-empty" id="workEmpty" hidden>
@@ -1170,8 +1170,8 @@
 </div>
 
 <script src="assets/js/app.js?v=20260723r"></script>
-<script src="assets/js/extras.js?v=20260723i"></script>
-<script src="assets/js/cart.js?v=20260723f"></script>
+<script src="assets/js/extras.js?v=20260724a"></script>
+<script src="assets/js/cart.js?v=20260724a"></script>
 <script>
 function initConf() {
   'use strict';
@@ -2593,7 +2593,7 @@ function initConf() {
       gift: giftCode || undefined,
       consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
       privacy_notice_ack: !!(authed || ($('fConsent') && $('fConsent').checked)),
-      consent_doc: 'договорное уведомление · privacy 2.1 · форма конфигуратора 2.0',
+      consent_doc: 'договорное уведомление · privacy 3.0 · oferta 3.0 · форма конфигуратора 2.0',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
       ref: (S.refCode && S.refCode()) || undefined,
       client_request_id: requestId()

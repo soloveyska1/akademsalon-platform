@@ -2079,6 +2079,144 @@ function initGodEye() {
         + '</span>' : '<span>добавьте первую позицию из каталога</span>');
   }
 
+  function specificationContour(value, serviceId) {
+    value = String(value || '').toUpperCase();
+    if (value.indexOf('B2') === 0 || value.indexOf('Б2') === 0) return 'B2';
+    if (value.indexOf('B1') === 0 || value.indexOf('Б1') === 0) return 'B1';
+    if (value.indexOf('A') === 0 || value.indexOf('А') === 0) return 'A';
+    return serviceId === 'author' || serviceId === 'svc_author_order' ? 'B_PENDING' : 'A';
+  }
+  function specificationAllocation(total, rows) {
+    var weights = rows.map(function (row) {
+      return Math.max(1, parseInt(row.final_price || row.price_rub || row.quote_low ||
+        (row.quote_preview && row.quote_preview.low) || 1, 10) || 1);
+    });
+    var weightSum = weights.reduce(function (sum, value) { return sum + value; }, 0);
+    var amounts = weights.map(function (value) { return Math.floor(total * value / weightSum); });
+    var rest = total - amounts.reduce(function (sum, value) { return sum + value; }, 0);
+    for (var i = 0; i < rest; i++) amounts[i % amounts.length]++;
+    return amounts;
+  }
+  function specificationLinesForPrice(o, total) {
+    var saved = o.specification_lines ||
+      (o.specification && o.specification.lines) ||
+      (o.offer && o.offer.specification_lines) ||
+      (o.offer && o.offer.specification && o.offer.specification.lines) || [];
+    var rows = saved.length ? saved : (o.items || []);
+    if (!rows.length) {
+      rows = [{
+        id:'order-' + o.id, label:o.work_label || 'Индивидуальная услуга',
+        topic:o.topic || '', deadline_text:o.deadline_text || '',
+        requirements:o.details || '', contract_contour:'A'
+      }];
+    }
+    var amounts = specificationAllocation(total, rows);
+    return rows.map(function (source, index) {
+      var row = {};
+      Object.keys(source || {}).forEach(function (key) { row[key] = source[key]; });
+      var answers = row.answers && typeof row.answers === 'object' ? row.answers : {};
+      var authorProfile = row.actual_author_profile && typeof row.actual_author_profile === 'object'
+        ? row.actual_author_profile : {};
+      var scope = row.scope && typeof row.scope === 'object' ? row.scope : {};
+      var inputs = row.customer_inputs && typeof row.customer_inputs === 'object'
+        ? row.customer_inputs : {};
+      var serviceId = String(row.service_id || row.serviceId || row.catalog_id || row.type || '');
+      var contour = specificationContour(row.contract_contour || answers.author_model, serviceId);
+      var title = String(row.title || row.label || o.work_label || ('Позиция ' + (index + 1)));
+      var topic = String(row.topic || scope.topic || o.topic || '');
+      var requirements = String(row.requirements || scope.customer_requirements || o.details || '');
+      var actualAuthor = String(row.actual_author || authorProfile.author_name || '');
+      if (!actualAuthor) {
+        actualAuthor = contour === 'A'
+          ? 'Заказчик — автор содержательной основы; мастерская оказывает согласованную консультационную или редакторскую услугу'
+          : (contour === 'B1' ? 'Семёнов Семён Юрьевич — фактический автор результата' : '');
+      }
+      var rights = String(row.rights_mode || row.intellectual_rights_profile || answers.rights || '');
+      if (!rights && contour === 'A') {
+        rights = 'Права на исходник сохраняются у Заказчика; мастерская отвечает за собственные консультационные и редакторские материалы';
+      }
+      var result = String(row.deliverable || row.result || row.plain_description || '');
+      if (!result) {
+        if (contour !== 'A') result = 'Авторский материал «' + title + '» в согласованном формате';
+        else if (/norm|format|gost/i.test(serviceId)) result = 'Оформленная версия исходника с видимыми изменениями и листом проверки';
+        else if (/review|razbor/i.test(serviceId)) result = 'Письменное экспертное заключение и карта замечаний по исходнику';
+        else result = 'Письменный разбор, редакторские комментарии и согласованные изменения в материале Заказчика';
+      }
+      var included = row.inclusions || row.included || scope.included;
+      if (!Array.isArray(included) || !included.length) included = [
+        'проверка исходника и требований, переданных по этой позиции',
+        'операции, прямо названные в теме, требованиях и переписке дела',
+        'передача согласованного результата в проверяемом формате'
+      ];
+      var excluded = row.exclusions || row.excluded || scope.excluded;
+      if (!Array.isArray(excluded) || !excluded.length) excluded = contour === 'A'
+        ? [
+          'выполнение и сдача аттестационной работы вместо Заказчика',
+          'гарантия оценки, допуска, процента оригинальности или решения комиссии'
+        ]
+        : [
+          'использование результата в учебной или научной аттестации',
+          'гарантия публикации, одобрения либо иного решения третьего лица'
+        ];
+      var criteria = row.acceptance_criteria;
+      if (!Array.isArray(criteria) || !criteria.length) criteria = [
+        'передан читаемый файл или иной прямо согласованный результат',
+        'выполнены операции, перечисленные во включённом составе позиции',
+        'тема, объём и формат соответствуют зафиксированным условиям'
+      ];
+      var performers = row.third_party_performers;
+      if (!Array.isArray(performers)) performers = [];
+      if (contour === 'B2' && !performers.length && actualAuthor) {
+        performers = [actualAuthor + ' — фактический автор результата'];
+      }
+      return {
+        line_id:String(row.line_id || row.requested_line_id || row.client_id || row.id ||
+          ('LN-' + String(index + 1).padStart(3, '0'))),
+        parent_line_id:row.parent_line_id || row.parent_client_id || null,
+        position:index + 1,
+        contract_contour:contour,
+        legal_service_type:row.legal_service_type ||
+          (contour === 'A' ? 'academic_support' : 'author_order_non_attestation'),
+        title:title,
+        label:title,
+        t:title,
+        plain_description:result,
+        deliverable:result,
+        quantity:Math.max(1, parseInt(row.quantity || row.qty || 1, 10) || 1),
+        qty:Math.max(1, parseInt(row.quantity || row.qty || 1, 10) || 1),
+        unit:row.unit || 'позиция',
+        unit_definition:row.unit_definition ||
+          ('1 позиция = один результат «' + title + '» с указанным составом'),
+        permitted_purpose:row.permitted_purpose || answers.purpose ||
+          (contour === 'A'
+            ? 'Самостоятельная работа Заказчика с консультационной, редакторской или учебно-методической помощью мастерской'
+            : 'Использование авторского материала только для прямо согласованной цели вне учебной и научной аттестации'),
+        topic:topic,
+        scope:{ topic:topic, included:included, excluded:excluded },
+        inclusions:included,
+        exclusions:excluded,
+        customer_inputs:{
+          description:inputs.description || topic || requirements ||
+            'Исходные материалы и требования, переданные в деле заказа',
+          version:inputs.version || 'версия, зафиксированная в деле до начала позиции'
+        },
+        acceptance_criteria:criteria,
+        deadline_text:row.deadline_text || row.deadline || o.deadline_text || '',
+        deadline_date:row.deadline_date || o.deadline_date || '',
+        correction_window:{ days:7, scope:'устранение подтверждённых несоответствий этой позиции' },
+        iterations:1,
+        actual_author:actualAuthor,
+        rights_mode:rights,
+        third_party_performers:performers,
+        price_amount:amounts[index],
+        final_price:amounts[index],
+        a:amounts[index],
+        payment_allocation:['распределяется сервером по утверждённому графику платежей'],
+        cancellation_effect:'расчёт за фактически оказанное по этой позиции'
+      };
+    });
+  }
+
   function planBlock(o) {
     var plan = o.plan || [];
     var cur = o.stages_total || 1;
@@ -2111,7 +2249,8 @@ function initGodEye() {
       planSel +
       '<button type="button" class="btn btn-wax" id="agPriceSend">' + (o.price ? 'Обновить предложение' : 'Отправить предложение') + '</button>' +
       '</div>' +
-      '<p class="ag-note">Первый платёж можно не указывать — посчитается по плану (целиком, 50% или 30%). Предложение уйдёт клиенту с кнопками в Telegram и в кабинет.</p>' +
+      '<p class="ag-note">Первый платёж можно не указывать — посчитается по плану (целиком, 50% или 30%). Перед отправкой сервер заморозит новую редакцию спецификации по ' +
+      ((o.items && o.items.length) || 1) + ' поз.; клиент получит тот же PDF в Telegram и кабинете.</p>' +
       (plan.length ? '<div class="ag-plan">' + rows + '</div>' : '') +
       (paid.length ? '<p class="ag-note">💰 Получено: ' + paid.map(function (p) {
         return money(p.amount) + ' ₽ (' + dt(p.at) + ', ' + (METHOD_LBL[p.method] || esc(p.method)) + ')';
@@ -3572,8 +3711,19 @@ function initGodEye() {
       var prepay = parseInt((document.getElementById('agPrepay') || {}).value, 10);
       var stages = parseInt((document.getElementById('agPlanSel') || {}).value, 10);
       if (!price || price <= 0) { toast('Введите цену'); return; }
-      api('/admin/orders/' + st.sel + '/price', { price: price, prepay: prepay || undefined, stages: stages || undefined })
-        .then(function (r) { afterOrder(r, 'Предложение ушло клиенту 💰'); });
+      var priceSpecLines = specificationLinesForPrice(st.card || {}, price);
+      api('/admin/orders/' + st.sel + '/price', {
+        price:price, prepay:prepay || undefined, stages:stages || undefined,
+        specification_lines:priceSpecLines,
+        specification:{ version:2, document_mode:'single_order_multi_line', lines:priceSpecLines }
+      }).then(function (r) {
+        if (!r || !r.ok) {
+          var detail = r && r.detail ? ' · ' + r.detail : '';
+          toast('Не удалось выпустить спецификацию' + detail);
+          return;
+        }
+        afterOrder(r, 'Предложение и спецификация ушли клиенту 💰');
+      });
       return;
     }
     var payBtn = t.closest('[data-pay-kind]');

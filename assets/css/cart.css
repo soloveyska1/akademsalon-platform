@@ -76,6 +76,11 @@
 .cart-price small{font-size:9.5px;color:var(--ink-faint)}
 .cart-item-extra{margin-top:8px;border-top:1px dashed var(--hairline);padding-top:7px}
 .cart-item-extra summary{cursor:pointer;color:var(--ink-faint);font-size:10.5px}
+.cart-item-facts{display:grid;gap:5px;margin:9px 0 2px}
+.cart-item-facts>div{display:grid;grid-template-columns:minmax(88px,.34fr) minmax(0,1fr);gap:8px;padding-bottom:5px;
+  border-bottom:1px solid color-mix(in srgb,var(--hairline) 72%,transparent)}
+.cart-item-facts dt{font:600 8.5px/1.35 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
+.cart-item-facts dd{min-width:0;margin:0;font-size:11px;line-height:1.38;color:var(--ink-soft);overflow-wrap:anywhere}
 .cart-note{width:100%;margin-top:7px;padding:8px 9px;border:1px solid var(--hairline);
   background:var(--paper-2);color:var(--ink);font:12px var(--sans);border-radius:3px}
 .cart-note:focus{outline:2px solid var(--stamp);outline-offset:1px;border-color:transparent}
@@ -320,6 +325,7 @@ html[data-motion="off"] .cart-tab,html[data-motion="off"] .cart-dock,html[data-m
   .estimate-builder-note button{grid-column:2;justify-self:start}
 }
 @media(max-width:520px){
+  .cart-item-facts>div{grid-template-columns:1fr;gap:2px}
   .cart-addon-list{grid-template-columns:1fr}
   .cart-actions{grid-template-columns:1fr}
   .cart-add-more{order:2}

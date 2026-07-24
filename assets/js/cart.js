@@ -160,6 +160,42 @@
       label(C.tiers, x.tier)
     ];
   }
+  function contourLabel(x) {
+    if (!x || x.serviceId !== 'author') return 'Контур А · академическое сопровождение';
+    var model = String(x.answers && x.answers.author_model || '');
+    if (model.indexOf('Б1') >= 0) return 'Контур Б1 · автор — мастерская';
+    if (model.indexOf('Б2') >= 0) return 'Контур Б2 · иной согласованный автор';
+    return 'Контур Б · вариант автора нужно уточнить';
+  }
+  function positionDetails(x) {
+    var rows = [];
+    function push(label, value) {
+      value = String(value || '').trim();
+      if (value) rows.push('<div><dt>' + esc(label) + '</dt><dd>' + esc(value) + '</dd></div>');
+    }
+    push('Контур', contourLabel(x));
+    if (x.parentId) {
+      var parent = workById(x.parentId);
+      push('Связана с позицией', parent && parent.label);
+    }
+    if (x.kind === 'service') {
+      var svc = serviceById(x.serviceId);
+      var answers = x.answers && typeof x.answers === 'object' ? x.answers : {};
+      (svc && Array.isArray(svc.ask) ? svc.ask : []).forEach(function (q) {
+        push(q.short || q.label, answers[q.id]);
+      });
+    } else {
+      push('Тема', x.topic);
+      push('Срок клиента', x.deadline);
+      push('Требования', x.requirements);
+    }
+    if (x.kind === 'service') {
+      push('Тема', x.topic);
+      push('Срок клиента', x.deadline);
+      push('Требования', x.requirements);
+    }
+    return rows;
+  }
   function equivalent(a, b) {
     if (!a || !b || a.kind !== b.kind || a.type !== b.type) return false;
     if (a.kind === 'service') {
@@ -382,9 +418,8 @@
     var q = itemQuote(x), m = meta(x);
     var position = String(Math.max(0, i) + 1).padStart(2, '0');
     var parent = x.parentId ? workById(x.parentId) : null;
-    m.unshift(x.serviceId === 'author'
-      ? 'Контур Б · авторский заказ вне аттестации'
-      : 'Контур А · академическое сопровождение');
+    var details = positionDetails(x);
+    m.unshift(contourLabel(x));
     if (parent) m.unshift('Для: ' + parent.label);
     syncNeeds(x);
     var titleId = 'cartItem_' + esc(x.id);
@@ -396,10 +431,12 @@
       '<div class="cart-item-meta">' + m.map(function (v) { return '<span>' + esc(v) + '</span>'; }).join('') + '</div></div>' +
       '<div class="cart-price"><b>' + (x.fixed ? '' : 'от ') + money(q.low) + ' ₽</b>' +
       '<small>' + (q.high > q.low ? 'до ' + money(q.high) + ' ₽' : (x.fixed ? 'фиксированная ставка' : 'точнее после проверки')) + '</small></div></div>' +
-      '<details class="cart-item-extra"' + (x.note ? ' open' : '') + '><summary>Уточнение к позиции</summary>' +
+      '<details class="cart-item-extra"' + ((x.note || x.serviceId === 'author') ? ' open' : '') +
+      '><summary>Состав и сведения позиции' + (details.length ? ' · ' + details.length : '') + '</summary>' +
+      (details.length ? '<dl class="cart-item-facts">' + details.join('') + '</dl>' : '') +
       '<label class="sr-only" for="cartNote_' + esc(x.id) + '">Тема или уточнение для «' + esc(x.label) + '»</label>' +
       '<input id="cartNote_' + esc(x.id) + '" class="cart-note" data-cart-note="' + esc(x.id) +
-      '" maxlength="240" value="' + esc(x.note || '') + '" placeholder="Например: две главы или особое требование"></details>' +
+      '" maxlength="240" value="' + esc(x.note || '') + '" placeholder="Дополнительное уточнение к этой позиции"></details>' +
       '<div class="cart-item-foot">' +
       (x.allowQty ? '<div class="cart-qty" role="group" aria-label="Количество для «' + esc(x.label) + '»">' +
         '<button type="button" data-cart-qty="-1" aria-label="Уменьшить количество «' + esc(x.label) + '»"' +

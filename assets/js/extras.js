@@ -1141,7 +1141,7 @@
         details: q, name: '', contact: c, website: '', deadline: '',
         consent: true,
         privacy_notice_ack: true,
-        consent_doc: 'договорное уведомление · privacy 2.1 · вопрос с гайда 2.0',
+        consent_doc: 'договорное уведомление · privacy 3.0 · oferta 3.0 · вопрос с гайда 2.0',
         page: here
       }).then(function (r) {
         S.btnLoading(btn, false);
