@@ -1011,7 +1011,7 @@
         if (!S.lead()) return;                           /* опрашивает только вкладка-лидер */
         var t = S.api.token(), g = S.api.guestTokens();
         if (!t && !g.length) return;
-        S.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
+        S.api.get('/orders', g.length ? { 'X-Order-Tokens': g.join(',') } : {}).then(function (r) {
           if (!r || !r.ok || !r.orders) return;
           var prev = S.store.get('salon_watch', null);
           var first = prev === null;
@@ -1107,6 +1107,7 @@
     if (!host) return;
     var authed = function () { return !!S.api.token(); };
     var box = document.createElement('div');
+    box.setAttribute('data-guide-lead', '');
     box.style.cssText = 'margin-top:18px;padding-top:16px;border-top:1px solid var(--hairline)';
     box.innerHTML =
       '<p class="caps" style="margin-bottom:8px">Или спросите мастера прямо здесь</p>' +
@@ -1119,10 +1120,9 @@
       '</div>' +
       '<label class="petit" id="glOkRow" style="display:flex;gap:8px;align-items:flex-start;margin-top:10px;cursor:pointer">' +
         '<input type="checkbox" id="glOk" style="margin-top:3px">' +
-        '<span>Мне исполнилось 18 лет; контакт используется только для ответа. Я ознакомлен(а) с <a class="link" href="privacy.html" target="_blank">политикой ПДн</a>.</span></label>' +
+        '<span>Даю отдельное <a class="link" href="consent-request.html" target="_blank">согласие на обработку персональных данных</a> для ответа. Условия хранения — в <a class="link" href="privacy.html" target="_blank">политике ПДн</a>. Без рекламной рассылки.</span></label>' +
       '<p class="petit" style="margin-top:8px;color:var(--ink-faint)">Вопрос бесплатный и ни к чему не обязывает — попадёт мастеру вместе с названием статьи.</p>';
     host.appendChild(box);
-    if (authed()) { var r0 = box.querySelector('#glOkRow'); if (r0) r0.hidden = true; }
     box.querySelector('#glGo').addEventListener('click', function () {
       var q = box.querySelector('#glQ').value.trim();
       var c = box.querySelector('#glC').value.trim();
@@ -1130,7 +1130,11 @@
       if (!authed()) {
         if (!c) { S.toast('Оставьте контакт — куда прислать ответ'); return; }
         if (S.valid && S.valid.contact && !S.valid.contact(c)) { S.toast('Контакт не похож на телефон, ВК, Telegram или почту'); return; }
-        if (!box.querySelector('#glOk').checked) { S.toast('Подтвердите возраст и ознакомление с политикой'); return; }
+      }
+      if (!box.querySelector('#glOk').checked) {
+        S.toast('Нужно отдельное согласие на обработку данных для этого вопроса');
+        box.querySelector('#glOk').focus();
+        return;
       }
       var btn = box.querySelector('#glGo');
       S.btnLoading(btn, true, 'Отправляем…');
@@ -1139,9 +1143,9 @@
         type: 'svc_tutor', disc: 'hum', term: 'free', tier: 'base',
         topic: 'Вопрос с гайда: ' + (h1 ? h1.textContent.trim().slice(0, 120) : here),
         details: q, name: '', contact: c, website: '', deadline: '',
-        consent: true,
-        privacy_notice_ack: true,
-        consent_doc: 'договорное уведомление · privacy 3.0 · oferta 3.0 · вопрос с гайда 2.0',
+        consent: box.querySelector('#glOk').checked,
+        privacy_notice_ack: box.querySelector('#glOk').checked,
+        consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.0',
         page: here
       }).then(function (r) {
         S.btnLoading(btn, false);
@@ -1152,7 +1156,12 @@
           if (S.metrika) S.metrika.goal('guide_lead');
           if (S.visit) S.visit.mark('вопрос с гайда');
         } else {
-          S.toast('Не отправилось — сеть шалит. Продублируйте вопрос боту: t.me/academic_saloon_bot');
+          var scopeMessage = S.api && S.api.outsideScopeMessage
+            ? S.api.outsideScopeMessage(r)
+            : '';
+          S.toast(scopeMessage ||
+            'Не отправилось — сеть шалит. Продублируйте вопрос боту: t.me/academic_saloon_bot');
+          if (scopeMessage) box.querySelector('#glQ').focus();
         }
       });
     });
@@ -1344,7 +1353,13 @@
       if (!legacy && a.querySelector('a[href^="configurator"]')) legacy = a;
     });
     if (legacy && legacy.parentNode) {
+      var guideLead = legacy.querySelector('[data-guide-lead]');
       legacy.parentNode.insertBefore(box, legacy);
+      if (guideLead) {
+        guideLead.className = 'guide-lead sheet sheet-pad stacked';
+        guideLead.style.cssText = 'margin-top:18px';
+        legacy.parentNode.insertBefore(guideLead, legacy);
+      }
       legacy.remove();
     } else {
       document.querySelector('main').appendChild(box);

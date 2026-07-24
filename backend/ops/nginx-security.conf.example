@@ -1,0 +1,31 @@
+# Include inside the HTTPS server block after testing on staging.
+# The log format intentionally omits $request and $args: guest capability
+# tokens still occur in legacy query strings and must never enter access logs.
+log_format salon_no_args
+  '$remote_addr - $remote_user [$time_local] '
+  '"$request_method $uri $server_protocol" $status $body_bytes_sent '
+  '"$http_referer" "$http_user_agent"';
+access_log /var/log/nginx/akademsalon.access.log salon_no_args;
+
+add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header X-Frame-Options "DENY" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+add_header Permissions-Policy
+  "camera=(), microphone=(), geolocation=(), payment=(), usb=()" always;
+add_header Cross-Origin-Opener-Policy "same-origin-allow-popups" always;
+
+# Start in Report-Only because the current static site contains inline scripts.
+# After browser smoke tests, remove "-Report-Only" to enforce.
+add_header Content-Security-Policy-Report-Only
+  "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://mc.yandex.ru; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://mc.yandex.ru; font-src 'self' data:; connect-src 'self' https://mc.yandex.ru; media-src 'self' blob:; worker-src 'self' blob:; upgrade-insecure-requests" always;
+
+location /api/ {
+  proxy_pass http://127.0.0.1:8090;
+  proxy_http_version 1.1;
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_hide_header Server;
+}

@@ -6,3 +6,7 @@
 # рабочие бэкапы файлов при правках
 *.bak-*
 zk-test.html
+dist/
+.playwright-cli/
+output/
+tmp/

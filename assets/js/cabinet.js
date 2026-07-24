@@ -129,20 +129,78 @@ function initCabinet() {
       if (st.orders[i].id === id && st.orders[i].token) return st.orders[i].token;
     return null;
   }
-  function qs(id) { /* хвост авторизации для GET-ссылок (скачивание) и запросов гостя */
+  function orderHeaders(id) {
     var t = tokenFor(id);
-    if (t) return 'token=' + encodeURIComponent(t);
-    var s = S.api.token();
-    return s ? 'session=' + encodeURIComponent(s) : '';
+    return t ? { 'X-Order-Token': t } : {};
+  }
+  function ordersHeaders(tokens) {
+    return tokens && tokens.length ? { 'X-Order-Tokens': tokens.join(',') } : {};
   }
   function apiPath(id, tail) {
-    var q = qs(id);
-    return '/orders/' + id + (tail || '') + (q ? '?' + q : '');
+    return '/orders/' + id + (tail || '');
+  }
+  var protectedObjectUrls = [];
+  function rememberObjectUrl(url) {
+    protectedObjectUrls.push(url);
+    return url;
+  }
+  function releaseObjectUrls() {
+    protectedObjectUrls.forEach(function (url) {
+      try { URL.revokeObjectURL(url); } catch (e) {}
+    });
+    protectedObjectUrls = [];
+  }
+  function protectedFetch(orderId, path) {
+    var h = orderHeaders(orderId);
+    var sess = S.api.token();
+    if (sess) h.Authorization = 'Bearer ' + sess;
+    return fetch(S.api.base + path, {
+      method: 'GET',
+      headers: h,
+      credentials: 'same-origin',
+      cache: 'no-store'
+    });
+  }
+  function protectedFilename(resp, fallback) {
+    var disp = resp.headers.get('Content-Disposition') || '';
+    var m = disp.match(/filename\*=UTF-8''([^;]+)/i);
+    if (m) {
+      try { return decodeURIComponent(m[1]); } catch (e) {}
+    }
+    return fallback || 'файл';
+  }
+  function hydrateProtectedMedia(scope) {
+    (scope || root).querySelectorAll('[data-protected-media]').forEach(function (el) {
+      if (el.getAttribute('data-protected-loading') === '1') return;
+      el.setAttribute('data-protected-loading', '1');
+      var orderId = parseInt(el.getAttribute('data-order-id'), 10);
+      var path = el.getAttribute('data-protected-media');
+      protectedFetch(orderId, path).then(function (resp) {
+        if (!resp.ok) throw new Error('http_' + resp.status);
+        return resp.blob();
+      }).then(function (blob) {
+        if (!el.isConnected) return;
+        var url = rememberObjectUrl(URL.createObjectURL(blob));
+        el.src = url;
+        var open = el.closest('[data-protected-media-open]');
+        if (open) {
+          open.href = url;
+          open.removeAttribute('aria-disabled');
+        }
+      }).catch(function () {
+        if (el.isConnected) {
+          el.setAttribute('aria-label', 'Вложение сейчас недоступно');
+          el.classList.add('is-unavailable');
+        }
+      });
+    });
   }
   function render(html) {
+    releaseObjectUrls();
     root.innerHTML = html;
     if (S.observeReveal) S.observeReveal(root);
     root.querySelectorAll('.reveal').forEach(function (n) { n.classList.add('in'); });
+    hydrateProtectedMedia(root);
     giftRestFill(); /* остаток сертификата в завершённом деле — дозагружается тихо */
     var ph = document.getElementById('promoHintHide');
     if (ph) ph.addEventListener('click', function () {
@@ -369,7 +427,7 @@ function initCabinet() {
     var m = s.match(/(?:claim|token)=([A-Za-z0-9_-]+)/);
     var tok = m ? m[1] : (/^[A-Za-z0-9_-]{16,}$/.test(s) ? s : '');
     if (!tok) { toast('Не похоже на ссылку доступа — скопируйте её целиком'); return; }
-    S.api.get('/orders?tokens=' + encodeURIComponent(tok)).then(function (r) {
+    S.api.get('/orders', ordersHeaders([tok])).then(function (r) {
       if (!r.ok) { toast('Не получилось связаться с картотекой — попробуйте ещё раз'); return; }
       if (!(r.orders || []).length) { toast('По этому коду дело не нашлось — проверьте ссылку'); return; }
       S.api.addGuestToken(tok);
@@ -428,8 +486,8 @@ function initCabinet() {
 
   function linksRow() {
     /* связанные входы: показываем, только когда ВК/Mail.ru включены на сервере.
-       Привязка = тот же серверный OAuth с текущей сессией (?session=) — после
-       неё в кабинет можно попадать любым из способов, всё синхронно. */
+       URL привязки сервер выдаёт только после Bearer-проверки; сессионный
+       секрет не попадает в адресную строку, логи и Referer. */
     var me = st.me || {};
     var f = me.features || {};
     if (!f.vk_login && !f.mailru_login && !f.max_login) return '';
@@ -1146,8 +1204,8 @@ function initCabinet() {
 
   function specLink(o) {
     if (!o.price) return '';
-    return '<p class="petit" style="margin-top:8px">📄 <a class="link" href="' +
-      S.api.base + apiPath(o.id, '/contract') + '" target="_blank" rel="noopener">' +
+    return '<p class="petit" style="margin-top:8px">📄 <a class="link" href="#" ' +
+      'data-protected-asset="' + apiPath(o.id, '/contract') + '" data-order-id="' + o.id + '" data-open="1">' +
       'Спецификация заказа (PDF)</a> — один документ со всеми позициями: у каждой отдельно указаны результат, исходник, включения и исключения, критерии приёмки, срок, цена, платежи и порядок корректировок. Действует вместе с <a class="link" href="oferta.html">офертой</a>, ' +
       'подписывать ничего не нужно. <a class="link" href="specifikaciya.html" target="_blank" rel="noopener">Что это такое — простыми словами →</a></p>' + pamyatkaLink(o);
   }
@@ -1155,8 +1213,8 @@ function initCabinet() {
   /* персональная памятка «что дальше» — появляется с передачей финала */
   function pamyatkaLink(o) {
     if (!o.pamyatka) return '';
-    return '<p class="petit" style="margin-top:2px">📘 <a class="link" href="' +
-      S.api.base + apiPath(o.id, '/pamyatka') + '" target="_blank" rel="noopener">' +
+    return '<p class="petit" style="margin-top:2px">📘 <a class="link" href="#" ' +
+      'data-protected-asset="' + apiPath(o.id, '/pamyatka') + '" data-order-id="' + o.id + '" data-open="1">' +
       'Памятка «что дальше» (PDF)</a> — порядок первичной проверки, фиксация замечаний по критериям и самостоятельная подготовка клиента к использованию результата.</p>';
   }
 
@@ -1657,7 +1715,8 @@ function initCabinet() {
       return '<div class="file-line">' + CLIP_SVG +
         '<span class="fl-name">' + esc(f.name) + tags + '</span>' +
         '<span class="fl-meta">' + who + ' · ' + dt(f.at) + '</span>' +
-        '<a class="link" href="' + S.api.base + apiPath(o.id, '/file/' + f.id) + '" download>скачать</a></div>';
+        '<a class="link" href="#" data-protected-asset="' + apiPath(o.id, '/file/' + f.id) +
+        '" data-order-id="' + o.id + '" data-filename="' + esc(f.name) + '">скачать</a></div>';
     }).join('');
     var n = (o.files || []).length;
     var meta = n ? (n + (o.files_new ? ' · есть новые' : '')) : 'приложить методичку или задание';
@@ -1670,13 +1729,15 @@ function initCabinet() {
 
   function mediaHtml(o, m) {
     /* голосовые и фото из переписки проигрываются прямо в деле */
-    var src = S.api.base + apiPath(o.id, '/msgmedia/' + m.id);
+    var path = apiPath(o.id, '/msgmedia/' + m.id);
+    var attrs = ' data-protected-media="' + path + '" data-order-id="' + o.id + '"';
     if (m.kind === 'voice' || m.kind === 'audio')
-      return '<audio controls preload="none" src="' + src + '" style="max-width:100%;height:36px"></audio>';
+      return '<audio controls preload="none"' + attrs + ' style="max-width:100%;height:36px"></audio>';
     if (m.kind === 'photo')
-      return '<a href="' + src + '" target="_blank" rel="noopener"><img src="' + src + '" alt="фото из переписки" loading="lazy" style="max-width:min(260px,100%);border-radius:6px;display:block"></a>';
+      return '<a href="#" target="_blank" rel="noopener" data-protected-media-open aria-disabled="true"><img' +
+        attrs + ' alt="фото из переписки" loading="lazy" style="max-width:min(260px,100%);border-radius:6px;display:block"></a>';
     if (m.kind === 'video' || m.kind === 'video_note')
-      return '<video controls preload="none" src="' + src + '" style="max-width:min(280px,100%);border-radius:6px"></video>';
+      return '<video controls preload="none"' + attrs + ' style="max-width:min(280px,100%);border-radius:6px"></video>';
     return '';
   }
 
@@ -2065,7 +2126,7 @@ function initCabinet() {
        дела», но раньше при живом входе tokens не передавались вовсе — человек
        с аккаунтом сайта, оплативший заявку по ссылке, не видел это дело
        и не мог оплатить вторую часть */
-    S.api.get('/orders' + (g.length ? '?tokens=' + encodeURIComponent(g.join(',')) : '')).then(function (r) {
+    S.api.get('/orders', ordersHeaders(g)).then(function (r) {
       if (!r.ok) { render(tplError()); return; }
       st.orders = r.orders || [];
       watchSync();
@@ -2115,16 +2176,14 @@ function initCabinet() {
     var id = order.id;
     seenTimer = setTimeout(function () {
       if (document.hidden || st.currentId !== id) return;
-      var t = tokenFor(id);
       var body = { action: 'files_seen' };
-      if (t) body.token = t;
-      S.api.post('/orders/' + id + '/action' + (t ? '?token=' + encodeURIComponent(t) : ''), body);
+      S.api.post('/orders/' + id + '/action', body, orderHeaders(id));
     }, 7000);
   }
 
   function loadDetail(silent) {
     var id = st.currentId;
-    S.api.get(apiPath(id)).then(function (r) {
+    S.api.get(apiPath(id), orderHeaders(id)).then(function (r) {
       if (!r.ok) { if (!silent) render(tplError()); return; }
       var was = st.detail;
       /* полное сравнение: платежи/план/готовность части меняются без
@@ -2167,7 +2226,7 @@ function initCabinet() {
   function refreshListSilent() {
     var t = S.api.token(), g = S.api.guestTokens();
     if (!t && !g.length) return;
-    S.api.get('/orders' + (g.length ? '?tokens=' + encodeURIComponent(g.join(',')) : '')).then(function (r) {
+    S.api.get('/orders', ordersHeaders(g)).then(function (r) {
       if (!r.ok) return;
       var mini = function (o) { return [o.id, o.status, o.unread, o.files_new, o.pinned, o.archived].join(':'); };
       var before = st.orders.map(mini).join('|');
@@ -2212,10 +2271,8 @@ function initCabinet() {
     /* сообщить мастеру «клиент ждёт проверок» — тихо, раз за сессию */
     if (!id || waitChkSent[id]) return;
     waitChkSent[id] = true;
-    var t = tokenFor(id);
     var body = { action: 'wait_checks' };
-    if (t) body.token = t;
-    S.api.post('/orders/' + id + '/action' + (t ? '?token=' + encodeURIComponent(t) : ''), body)
+    S.api.post('/orders/' + id + '/action', body, orderHeaders(id))
       .then(function (r) { if (r.ok && r.order) { st.detail = r.order; } });
   }
 
@@ -2234,9 +2291,7 @@ function initCabinet() {
         st.detail && st.detail.handoff_artifact_id) {
       body.artifact_id = st.detail.handoff_artifact_id;
     }
-    var t = tokenFor(st.currentId);
-    if (t) body.token = t;
-    S.api.post('/orders/' + st.currentId + '/action' + (t ? '?token=' + encodeURIComponent(t) : ''), body)
+    S.api.post('/orders/' + st.currentId + '/action', body, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
         if (!r.ok) {
@@ -2312,9 +2367,7 @@ function initCabinet() {
   function payOnline() {
     if (st.busy) return;
     st.busy = true;
-    var t = tokenFor(st.currentId);
-    S.api.post('/orders/' + st.currentId + '/pay' + (t ? '?token=' + encodeURIComponent(t) : ''),
-               t ? { token: t } : {})
+    S.api.post('/orders/' + st.currentId + '/pay', {}, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
         if (!r.ok) { toast('Не получилось открыть оплату — воспользуйтесь реквизитами'); return; }
@@ -2336,10 +2389,8 @@ function initCabinet() {
       return;
     }
     st.busy = true;
-    var t = tokenFor(st.currentId);
     var body = { amount: amount };
-    if (t) body.token = t;
-    S.api.post('/orders/' + st.currentId + '/tip' + (t ? '?token=' + encodeURIComponent(t) : ''), body)
+    S.api.post('/orders/' + st.currentId + '/tip', body, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
         if (!r.ok) {
@@ -2356,9 +2407,8 @@ function initCabinet() {
           }) : Promise.resolve({ ok: window.confirm('Перевести ' + money(amount) + ' ₽ по реквизитам:\n\n' + r.requisites + '\n\nУже перевели?') });
           ask.then(function (ans) {
             if (!ans.ok) return;
-            var claimBody = t ? { token: t } : {};
-            S.api.post('/orders/' + st.currentId + '/tip/' + r.tip_id + '/claim' +
-              (t ? '?token=' + encodeURIComponent(t) : ''), claimBody).then(function (cr) {
+            S.api.post('/orders/' + st.currentId + '/tip/' + r.tip_id + '/claim',
+              {}, orderHeaders(st.currentId)).then(function (cr) {
                 toast(cr.ok ? 'Спасибо 💛 Передали мастеру на сверку' : 'Не получилось поставить отметку — напишите мастеру');
               });
           });
@@ -2392,7 +2442,7 @@ function initCabinet() {
   function payDeposit() {
     if (st.busy) return;
     st.busy = true;
-    S.api.post('/orders/' + st.currentId + '/pay-deposit', {})
+    S.api.post('/orders/' + st.currentId + '/pay-deposit', {}, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
         if (!r.ok) {
@@ -2411,8 +2461,7 @@ function initCabinet() {
     var text = ta.value.trim();
     if (!text || st.busy) return;
     st.busy = true;
-    var t = tokenFor(st.currentId);
-    S.api.post('/orders/' + st.currentId + '/message' + (t ? '?token=' + encodeURIComponent(t) : ''), { text: text })
+    S.api.post('/orders/' + st.currentId + '/message', { text: text }, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
         if (!r.ok) { toast(r.error === 'rate_limit' ? 'Слишком часто — подождите минуту' : 'Не отправилось, попробуйте ещё раз'); return; }
@@ -2429,12 +2478,11 @@ function initCabinet() {
     if (note) { note.hidden = false; note.textContent = 'Загружаем «' + f.name + '»…'; }
     var fd = new FormData();
     fd.append('file', f, f.name);
-    var t = tokenFor(st.currentId);
-    var url = S.api.base + '/orders/' + st.currentId + '/upload?' + qs(st.currentId) +
-      (kind ? '&kind=' + kind : '');
-    var h = {};
+    var url = S.api.base + '/orders/' + st.currentId + '/upload' +
+      (kind ? '?kind=' + encodeURIComponent(kind) : '');
+    var h = orderHeaders(st.currentId);
     var sess = S.api.token();
-    if (sess && !t) h['Authorization'] = 'Bearer ' + sess;
+    if (sess) h.Authorization = 'Bearer ' + sess;
     fetch(url, { method: 'POST', body: fd, headers: h })
       .then(function (resp) {
         if (resp.status === 413) throw new Error('too_big');
@@ -2477,6 +2525,57 @@ function initCabinet() {
   /* ---------------- события ---------------- */
   root.addEventListener('click', function (e) {
     var t = e.target;
+    var protectedAsset = t.closest('[data-protected-asset]');
+    if (protectedAsset) {
+      e.preventDefault();
+      if (protectedAsset.getAttribute('aria-busy') === 'true') return;
+      var assetOrderId = parseInt(protectedAsset.getAttribute('data-order-id'), 10);
+      var assetPath = protectedAsset.getAttribute('data-protected-asset');
+      var openAsset = protectedAsset.getAttribute('data-open') === '1';
+      var popup = null;
+      if (openAsset) {
+        try {
+          popup = window.open('about:blank', '_blank');
+          if (popup) popup.opener = null;
+        } catch (err) {}
+      }
+      protectedAsset.setAttribute('aria-busy', 'true');
+      protectedFetch(assetOrderId, assetPath).then(function (resp) {
+        if (!resp.ok) throw new Error('http_' + resp.status);
+        var filename = protectedFilename(
+          resp,
+          protectedAsset.getAttribute('data-filename') || (openAsset ? 'документ.pdf' : 'файл')
+        );
+        return resp.blob().then(function (blob) { return { blob: blob, filename: filename }; });
+      }).then(function (asset) {
+        var url = URL.createObjectURL(asset.blob);
+        if (openAsset && popup) {
+          popup.location.replace(url);
+        } else {
+          if (popup) popup.close();
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = asset.filename;
+          a.rel = 'noopener';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
+        setTimeout(function () { try { URL.revokeObjectURL(url); } catch (err) {} }, openAsset ? 300000 : 60000);
+      }).catch(function () {
+        if (popup) popup.close();
+        toast('Файл сейчас не открылся — обновите дело и попробуйте ещё раз');
+      }).then(function () {
+        if (protectedAsset.isConnected) protectedAsset.removeAttribute('aria-busy');
+      });
+      return;
+    }
+    var protectedMediaOpen = t.closest('[data-protected-media-open][aria-disabled="true"]');
+    if (protectedMediaOpen) {
+      e.preventDefault();
+      toast('Вложение ещё загружается');
+      return;
+    }
     var tabBtn = t.closest('[data-tab]');
     if (tabBtn) { setTab(tabBtn.getAttribute('data-tab')); return; }
     var sw = t.closest('button[data-ord]');
@@ -2621,9 +2720,18 @@ function initCabinet() {
     }
     var oaLink = t.closest('[data-oauth-link]');
     if (oaLink) {
-      /* привязка к текущему аккаунту: сессия уезжает в ?session= */
-      window.location.href = S.api.base + '/auth/' + oaLink.getAttribute('data-oauth-link') +
-        '/start?session=' + encodeURIComponent(S.api.token() || '');
+      var provider = oaLink.getAttribute('data-oauth-link');
+      oaLink.disabled = true;
+      S.api.post('/auth/' + provider + '/link-start', {}).then(function (r) {
+        if (!r.ok || !r.url) {
+          oaLink.disabled = false;
+          toast(r.error === 'provider_off'
+            ? 'Этот способ входа пока не подключён'
+            : 'Не получилось начать привязку — войдите заново и повторите');
+          return;
+        }
+        window.location.href = r.url;
+      });
       return;
     }
     if (t.closest('#cabEmailTgl')) {

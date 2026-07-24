@@ -21,13 +21,13 @@
 <meta property="og:title" content="Подарочный сертификат мастерской — подарите уверенность" />
 <meta property="og:description" content="Именной сертификат на консультационные и редакторские услуги. Неиспользованный аванс не сгорает." />
 <meta property="og:url" content="https://akademsalon.ru/gift.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Подарочный сертификат мастерской — подарите уверенность" />
 <meta name="twitter:description" content="Именной сертификат на консультационные и редакторские услуги. Неиспользованный аванс не сгорает." />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -209,7 +209,7 @@
     <section class="chapter reveal gf-viewwrap" id="gfView" hidden data-chapter="Ваш сертификат">
       <div style="text-align:center">
         <span class="caps">Предъявительский лист</span>
-        <h1 style="margin-top:10px">Ваш подарочный сертификат</h1>
+        <h2 style="margin-top:10px">Ваш подарочный сертификат</h2>
       </div>
       <div class="gcert" style="position:relative">
         <span class="gc-stamp" id="gvStamp">Действителен</span>
@@ -287,7 +287,7 @@
           <input type="text" id="gfWebsite" tabindex="-1" autocomplete="off" style="position:absolute;left:-5000px" aria-hidden="true" />
 
           <label class="gf-consent"><input type="checkbox" id="gfConsent" />
-            <span>Мне исполнилось 18 лет; я ознакомлен(а) с <a class="link" href="privacy.html" target="_blank">политикой ПДн</a>. Имя и поздравление печатаются на сертификате и не используются для рекламы.</span></label>
+            <span>Даю отдельное <a class="link" href="consent-request.html" target="_blank">согласие на обработку персональных данных</a> для выпуска и доставки сертификата. Условия хранения — в <a class="link" href="privacy.html" target="_blank">политике ПДн</a>. Имя и поздравление печатаются на сертификате и не используются для рекламы.</span></label>
 
           <button type="button" class="btn btn-wax btn-block" id="gfSubmit">Оформить сертификат · <span id="gfSum">5 000 ₽</span> <span class="ar">→</span></button>
           <p class="petit gf-note" id="gfNote" hidden></p>
@@ -549,7 +549,7 @@
       consent: true,
       privacy_notice_ack: true,
       recipient_data_authority: !!(dlvEmail && $('gfRecipientAuth').checked),
-      consent_doc: 'договорное уведомление · privacy 3.0 · oferta 3.0 · gift form 2.0',
+      consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.0 · gift form 2.0',
       website: $('gfWebsite').value
     };
     S.btnLoading(this, true, 'Оформляем…');

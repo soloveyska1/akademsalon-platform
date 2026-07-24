@@ -149,11 +149,48 @@ function initGodEye() {
     for (var i = 1; i <= 5; i++) out += i <= n ? '★' : '<span class="dim">★</span>';
     return out;
   }
-  function mediaSrc(orderId, msgId) {
-    return S.api.base + '/orders/' + orderId + '/msgmedia/' + msgId + '?session=' + encodeURIComponent(S.api.token());
+  function mediaPath(orderId, msgId) {
+    return '/orders/' + orderId + '/msgmedia/' + msgId;
   }
-  function fileSrc(orderId, fid) {
-    return S.api.base + '/orders/' + orderId + '/file/' + fid + '?session=' + encodeURIComponent(S.api.token());
+  function filePath(orderId, fid) {
+    return '/orders/' + orderId + '/file/' + fid;
+  }
+  var adminObjectUrls = [];
+  function releaseAdminObjectUrls() {
+    adminObjectUrls.forEach(function (url) {
+      try { URL.revokeObjectURL(url); } catch (e) {}
+    });
+    adminObjectUrls = [];
+  }
+  function adminProtectedFetch(path) {
+    return fetch(S.api.base + path, {
+      method: 'GET',
+      headers: { Authorization: 'Bearer ' + (S.api.token() || '') },
+      credentials: 'same-origin',
+      cache: 'no-store'
+    });
+  }
+  function hydrateAdminMedia(scope) {
+    (scope || root).querySelectorAll('[data-admin-media]').forEach(function (el) {
+      if (el.getAttribute('data-admin-loading') === '1') return;
+      el.setAttribute('data-admin-loading', '1');
+      adminProtectedFetch(el.getAttribute('data-admin-media')).then(function (resp) {
+        if (!resp.ok) throw new Error('http_' + resp.status);
+        return resp.blob();
+      }).then(function (blob) {
+        if (!el.isConnected) return;
+        var url = URL.createObjectURL(blob);
+        adminObjectUrls.push(url);
+        el.src = url;
+        var open = el.closest('[data-admin-media-open]');
+        if (open) {
+          open.href = url;
+          open.removeAttribute('aria-disabled');
+        }
+      }).catch(function () {
+        if (el.isConnected) el.setAttribute('aria-label', 'Вложение сейчас недоступно');
+      });
+    });
   }
 
   /* ---------------- вход/гейт ---------------- */
@@ -836,6 +873,7 @@ function initGodEye() {
   function drawBody() {
     var box = document.getElementById('agBody');
     if (!box) return;
+    releaseAdminObjectUrls();
     if (st.tab === 'summary') {
       box.innerHTML = tplSummary();
       if (st.visits === null) loadVisits(); /* мини-лента заходов дозагрузится сама */
@@ -2361,12 +2399,14 @@ function initGodEye() {
       var x = f.m;
       var me = x.from === 'master';
       var body = x.text ? esc(x.text) : '';
+      var path = mediaPath(o.id, x.id);
       if (x.media && (x.kind === 'voice' || x.kind === 'audio'))
-        body += (body ? '<br>' : '') + '<audio controls preload="none" src="' + mediaSrc(o.id, x.id) + '"></audio>';
+        body += (body ? '<br>' : '') + '<audio controls preload="none" data-admin-media="' + path + '"></audio>';
       else if (x.media && x.kind === 'photo')
-        body += (body ? '<br>' : '') + '<a href="' + mediaSrc(o.id, x.id) + '" target="_blank" rel="noopener"><img loading="lazy" src="' + mediaSrc(o.id, x.id) + '" alt="фото"></a>';
+        body += (body ? '<br>' : '') + '<a href="#" target="_blank" rel="noopener" data-admin-media-open aria-disabled="true">' +
+          '<img loading="lazy" data-admin-media="' + path + '" alt="фото"></a>';
       else if (x.media && (x.kind === 'video' || x.kind === 'video_note'))
-        body += (body ? '<br>' : '') + '<video controls preload="none" style="max-width:min(260px,100%)" src="' + mediaSrc(o.id, x.id) + '"></video>';
+        body += (body ? '<br>' : '') + '<video controls preload="none" style="max-width:min(260px,100%)" data-admin-media="' + path + '"></video>';
       else if (!body || x.file_name)
         body += (body ? '<br>' : '') + '📎 ' + esc(x.file_name || ('вложение (' + esc(x.kind || '') + ')'));
       return '<div class="ag-m' + (me ? ' master' : '') + '"><span class="who">' + (me ? 'Мастерская' : 'Клиент') + ' · ' + dt(f.at) + '</span>' +
@@ -2403,7 +2443,8 @@ function initGodEye() {
         if (f.label) tags += '<span class="fl-tag">' + esc(f.label) + '</span>';
         return '<div class="ag-file"><span class="fname">📎 ' + esc(f.name) + tags + '</span>' +
           '<span class="fmeta">' + (f.from === 'master' ? 'от вас' : 'от клиента') + ' · ' + dt(f.at) + '</span>' +
-          '<a class="ag-linkbtn" href="' + fileSrc(o.id, f.id) + '" download>скачать</a></div>';
+          '<a class="ag-linkbtn" href="#" data-admin-download="' + filePath(o.id, f.id) +
+          '" data-filename="' + esc(f.name) + '">скачать</a></div>';
       }).join('') : '<p class="ag-note">Файлов пока нет.</p>') + '</div>';
   }
 
@@ -2625,6 +2666,7 @@ function initGodEye() {
     var box = document.getElementById('agCard');
     var o = st.card;
     if (!box || !o) return;
+    releaseAdminObjectUrls();
     /* переписка не должна прыгать в конец при каждом действии/тихом обновлении:
        к низу — только на свежем открытии дела и после отправки сообщения */
     var prevFeed = document.getElementById('agFeed');
@@ -2658,6 +2700,7 @@ function initGodEye() {
       (o.events || []).map(function (e) {
         return dt(e.at) + ' · ' + esc(evLabel(e.kind)) + (e.data ? ' — ' + esc(evData(e).slice(0, 70)) : '');
       }).join('<br>') + '</div></div>';
+    hydrateAdminMedia(box);
     if (st.offnew) setTimeout(function () {
       offSumRender(); offRowsRender(); offCatalogState(); offCatalogFilter();
     }, 0);
@@ -3136,6 +3179,46 @@ function initGodEye() {
 
   root.addEventListener('click', function (e) {
     var t = e.target;
+    var protectedDownload = t.closest('[data-admin-download]');
+    if (protectedDownload) {
+      e.preventDefault();
+      if (protectedDownload.getAttribute('aria-busy') === 'true') return;
+      protectedDownload.setAttribute('aria-busy', 'true');
+      adminProtectedFetch(protectedDownload.getAttribute('data-admin-download'))
+        .then(function (resp) {
+          if (!resp.ok) throw new Error('http_' + resp.status);
+          var disp = resp.headers.get('Content-Disposition') || '';
+          var m = disp.match(/filename\*=UTF-8''([^;]+)/i);
+          var fallback = protectedDownload.getAttribute('data-filename') || 'файл';
+          var filename = fallback;
+          if (m) {
+            try { filename = decodeURIComponent(m[1]); } catch (err) {}
+          }
+          return resp.blob().then(function (blob) { return { blob: blob, filename: filename }; });
+        })
+        .then(function (asset) {
+          var url = URL.createObjectURL(asset.blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = asset.filename;
+          a.rel = 'noopener';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(function () { try { URL.revokeObjectURL(url); } catch (err) {} }, 60000);
+        })
+        .catch(function () { toast('Файл сейчас не скачался — обновите дело и повторите'); })
+        .then(function () {
+          if (protectedDownload.isConnected) protectedDownload.removeAttribute('aria-busy');
+        });
+      return;
+    }
+    var pendingMedia = t.closest('[data-admin-media-open][aria-disabled="true"]');
+    if (pendingMedia) {
+      e.preventDefault();
+      toast('Вложение ещё загружается');
+      return;
+    }
     if (t.closest('#agMoreTabs')) {
       var more = document.getElementById('agMorePop');
       var mb = document.getElementById('agMoreTabs');
@@ -4438,12 +4521,14 @@ function initGodEye() {
     }
     var t = wzPick(C.types, p.type), d = wzPick(C.disciplines, p.disc);
     var s = wzPick(C.terms, p.term), v = wzPick(C.tiers, p.tier);
-    var low = wzR500(t.base * d.k * s.k * v.k);
+    var selectedBase = t.prices && t.prices[v.priceKey]
+      ? t.prices[v.priceKey] : t.base;
+    var quote = C.quote(p.type, p.disc, p.term, p.tier);
     return { svc: 0, t: t, d: d, s: s, v: v,
-             p0: wzR500(t.base),
-             p1: wzR500(t.base * d.k),
-             p2: wzR500(t.base * d.k * s.k),
-             low: low, high: wzR500(low * 1.4) };
+             p0: C.round500(selectedBase),
+             p1: C.round500(selectedBase * d.k),
+             p2: C.round500(selectedBase * d.k * s.k),
+             low: quote.low, high: quote.high };
   }
 
   function wzPrice() {
@@ -4516,7 +4601,7 @@ function initGodEye() {
       out.push({ t: q.t.label + (un ? ' — цена за один ' + un : ' — услуга мастерской'),
                  a: q.p0 });
     } else {
-      out.push({ t: q.t.label + ' — помощь с исходным материалом клиента', a: q.p0 });
+      out.push({ t: q.t.label + ' · ' + q.v.label + ' — выбранный результат', a: q.p0 });
       if (q.p1 !== q.p0) out.push({ t: 'Направление: ' + WZ_DNOTE[wz.p.disc], a: q.p1 - q.p0 });
       if (q.p2 !== q.p1) out.push({ t: 'Срок: ' + WZ_TNOTE[wz.p.term], a: q.p2 - q.p1 });
       if (q.low !== q.p2)

@@ -21,11 +21,11 @@
 <meta property="og:title" content="Книга благодарностей · Академический Салон" />
 <meta property="og:description" content="Сообщения клиентов о консультациях, редактуре, сроках и процессе сопровождения." />
 <meta property="og:url" content="https://akademsalon.ru/reviews.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <style>
   /* ============================================================
      ОТЗЫВЫ — «КНИГА ОТЗЫВОВ»: бегущая строка цитат и записи
@@ -235,7 +235,7 @@
   .rv-more-wrap[hidden]{display:none!important}
   .rv-status{min-height:1.4em;margin:13px 0 0;text-align:center;font:8px/1.4 var(--mono);letter-spacing:.07em;color:var(--ink-faint)}
   .rv-note{padding-top:14px;border-top:1px solid var(--hairline)}
-  .rv-live{display:none!important}
+  .rv-live{display:block}
   .final-cta{padding-top:clamp(54px,8vw,84px)}
   .lb-cnt{display:none}
 
@@ -269,14 +269,14 @@
   <section class="rv-hero" data-chapter="Книга благодарностей">
     <div class="wrap rv-hero-grid">
       <div class="reveal">
-        <div class="rv-folio"><span class="caps">Книга благодарностей · архив мастерской</span></div>
-        <h1 class="h-display">Здесь ставят точку — и пишут нам</h1>
-        <p class="lead rv-lead">Сообщения после консультаций, согласований, правок и долгого сопровождения. Архив помогает увидеть процесс глазами клиентов: насколько понятны этапы, обратная связь и границы заказа.</p>
+        <div class="rv-folio"><span class="caps">Книга благодарностей · проверенные публикации</span></div>
+        <h1 class="h-display">Отзывы, которые разрешили показать</h1>
+        <p class="lead rv-lead">Здесь появляются записи из завершённых дел, если клиент отдельно разрешил публикацию оценки и текста. Без такого согласия отзыв остаётся только в его кабинете.</p>
         <div class="rv-cover-actions">
-          <a class="btn btn-wax" href="#archive">Смотреть архив <span class="ar" aria-hidden="true">↓</span></a>
+          <a class="btn btn-wax" href="#rvLive">Смотреть отзывы <span class="ar" aria-hidden="true">↓</span></a>
           <a class="btn btn-line" href="dashboard.html">Оставить свой отзыв</a>
         </div>
-        <p class="rv-cover-note">Это архивные сообщения клиентов. Прямые идентификаторы скрыты. Слова клиента описывают его личный опыт и не меняют предмет услуги, не подтверждают авторство и не являются гарантией оценки.</p>
+        <p class="rv-cover-note">Отзыв описывает личный опыт клиента. Он не обещает такую же оценку, решение преподавателя или результат проверки другому человеку.</p>
       </div>
       <aside class="rv-volume reveal d1" aria-label="Навигация по книге">
         <div class="rv-volume-head">
@@ -299,7 +299,7 @@
     </div>
   </section>
 
-  <div class="rv-marq" aria-hidden="true">
+  <div class="rv-marq" aria-hidden="true" hidden>
     <div class="mq-track">
       <span class="mq-i">«Ответил на все вопросы»</span>
       <span class="mq-i">«Стало понятно, что исправлять»</span>
@@ -320,7 +320,8 @@
     </div>
   </div>
 
-  <section class="rv-body reveal" id="archive" data-chapter="Контактная книга">
+  <!-- RELEASE-EXCLUDE:START private historical review archive -->
+  <section class="rv-body reveal" id="archive" data-chapter="Контактная книга" hidden aria-hidden="true">
     <div class="wrap">
       <div class="rv-archive-head">
         <div>
@@ -824,13 +825,14 @@
       <p class="rv-note">Архив включает эмоциональные формулировки клиентов и сообщения разных лет. Они не являются описанием предмета нового заказа. Актуальный состав услуги фиксируется только в спецификации; мастерская не гарантирует оценку, допуск, защиту, публикацию или процент проверки и не выполняет аттестацию вместо обучающегося.</p>
     </div>
   </section>
+  <!-- RELEASE-EXCLUDE:END -->
 
   <!-- Живая книга: отзывы из кабинета, прошедшие модерацию, — прямо из картотеки -->
-  <section class="rv-live reveal" id="rvLive" hidden data-chapter="Свежие записи">
+  <section class="rv-live reveal" id="rvLive" data-chapter="Проверенные отзывы">
     <div class="wrap">
-      <div class="ch-rule"><span class="ch-no">§ Свежие записи в книге</span></div>
-      <p class="petit" style="max-width:60ch;margin:10px 0 18px">Эти отзывы оставлены в кабинете после завершения заказа. Публикация возможна только после модерации и проверки отдельного согласия на распространение персональных данных; без такого согласия запись остаётся непубличной.</p>
-      <div class="rvl-grid" id="rvLiveGrid"></div>
+      <div class="ch-rule"><span class="ch-no">§ Проверенные записи</span></div>
+      <p class="petit" style="max-width:60ch;margin:10px 0 18px">Отзыв проходит модерацию и появляется здесь только после проверки отдельного согласия на публикацию. Имя и скриншот требуют собственных дополнительных отметок.</p>
+      <div class="rvl-grid" id="rvLiveGrid"><p class="petit">Загружаем проверенные записи…</p></div>
     </div>
   </section>
   <style>
@@ -858,7 +860,7 @@
   <button class="lb-x" type="button" aria-label="Закрыть">×</button>
   <button class="lb-nav lb-prev" type="button" aria-label="Предыдущий отзыв">←</button>
   <figure>
-    <img id="lbImg" src="" alt="" />
+    <img id="lbImg" alt="" />
     <figcaption><span id="lbCap"></span><span class="lb-cnt" id="lbCnt"></span></figcaption>
   </figure>
   <button class="lb-nav lb-next" type="button" aria-label="Следующий отзыв">→</button>
@@ -872,6 +874,7 @@
   var cards = Array.prototype.slice.call(document.querySelectorAll('.rv-item')).filter(function(card){
     return !!card.querySelector('.rv-shot');
   });
+  if (!cards.length) return;
   var groups = {
     defense: ['14','02','13','06','12','03','11','15','16','17','18','19','45','32','25','21','24','23','33','35','36','44','50','34','28','22','37','20','31'],
     accepted: ['02','05','01','04','08','10','15','21','29','42','48','49','46','40','47'],
@@ -933,9 +936,12 @@
   function boot(){
     if (!window.Salon || !Salon.api) return;
     Salon.api.get('/reviews').then(function(r){
-      if (!r.ok || !(r.reviews||[]).length) return;
       var sec = document.getElementById('rvLive'), grid = document.getElementById('rvLiveGrid');
       if (!sec || !grid) return;
+      if (!r.ok || !(r.reviews||[]).length) {
+        grid.innerHTML = '<div class="rvl-card"><p class="rvl-text">Новые публичные записи появятся после проверки отдельного согласия клиентов.</p><p class="rvl-meta">Старый архив временно снят с публикации — приватность важнее количества карточек.</p></div>';
+        return;
+      }
       grid.innerHTML = r.reviews.map(function(rv){
         var full = Math.max(1, Math.min(rv.rating||5,5));
         var stars = '';
@@ -946,7 +952,6 @@
           (rv.text?'<p class="rvl-text">«'+esc(rv.text)+'»</p>':'<p class="rvl-text" style="opacity:.7">Оценка без слов — но какая!</p>')+
           '<p class="rvl-meta">'+esc(rv.author||'Клиент мастерской')+(rv.work_label?' · '+esc(rv.work_label):'')+(when?' · '+when:'')+'</p></div>';
       }).join('');
-      sec.hidden = false;
       if (Salon.observeReveal) Salon.observeReveal(sec);
       sec.classList.add('in');
     });
@@ -992,7 +997,7 @@
     document.body.classList.remove('toc-lock');
     inerted.forEach(function(el){ el.inert = false; });
     inerted = [];
-    img.src = '';
+    img.removeAttribute('src');
     if (last && last.focus) last.focus();
   }
   shots.forEach(function(b, i){ b.addEventListener('click', function(){ open(i); }); });

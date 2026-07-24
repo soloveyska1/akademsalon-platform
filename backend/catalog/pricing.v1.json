@@ -1,0 +1,102 @@
+{
+  "schema_version": "pricing.v1",
+  "currency": "RUB",
+  "range_multiplier": 1.4,
+  "rounding": 500,
+  "tiers": {
+    "base": {
+      "result": "diagnostic",
+      "label": "Диагностика",
+      "note": "Аудит и карта следующих шагов"
+    },
+    "turn": {
+      "result": "editing",
+      "label": "Редакторский аудит",
+      "note": "Правки в вашем тексте и комментарии"
+    },
+    "vip": {
+      "result": "support",
+      "label": "Сопровождение",
+      "note": "Проверка этапов, консультации и подготовка к защите"
+    }
+  },
+  "types": [
+    {
+      "id": "diplom",
+      "code": "dp",
+      "label": "ВКР / диплом",
+      "emoji": "🎓",
+      "prices": {"diagnostic": 3000, "editing": 24000, "support": 40000}
+    },
+    {
+      "id": "master",
+      "code": "ms",
+      "label": "Магистерское исследование",
+      "emoji": "🎓",
+      "prices": {"diagnostic": 5000, "editing": 36000, "support": 60000}
+    },
+    {
+      "id": "chapter",
+      "code": "ch",
+      "label": "Глава вашего исследования",
+      "emoji": "📑",
+      "prices": {"diagnostic": 3000, "editing": 9000, "support": 30000}
+    },
+    {
+      "id": "kandidat",
+      "code": "kd",
+      "label": "Диссертационное исследование",
+      "emoji": "🏛",
+      "prices": {"diagnostic": 7500, "editing": 60000, "support": 200000}
+    },
+    {
+      "id": "course",
+      "code": "cr",
+      "label": "Курсовая работа",
+      "emoji": "📘",
+      "prices": {"diagnostic": 2500, "editing": 9000, "support": 14000}
+    },
+    {
+      "id": "course_emp",
+      "code": "ce",
+      "label": "Курсовая с исследованием",
+      "emoji": "📊",
+      "prices": {"diagnostic": 3000, "editing": 14000, "support": 20000}
+    },
+    {
+      "id": "practice",
+      "code": "pr",
+      "label": "Отчёт по практике",
+      "emoji": "🗂",
+      "prices": {"diagnostic": 2500, "editing": 8000, "support": 14000}
+    },
+    {
+      "id": "vak",
+      "code": "vk",
+      "label": "Научная статья ВАК",
+      "emoji": "📰",
+      "prices": {"diagnostic": 3000, "editing": 12000, "support": 18000}
+    },
+    {
+      "id": "scopus",
+      "code": "sc",
+      "label": "Статья Scopus / Web of Science",
+      "emoji": "🌍",
+      "prices": {"diagnostic": 5000, "editing": 22000, "support": 35000}
+    },
+    {
+      "id": "rinc",
+      "code": "rc",
+      "label": "Научная статья РИНЦ",
+      "emoji": "📰",
+      "prices": {"diagnostic": 2500, "editing": 7000, "support": 9000}
+    },
+    {
+      "id": "self",
+      "code": "sf",
+      "label": "Реферат или эссе",
+      "emoji": "📝",
+      "prices": {"diagnostic": 1500, "editing": 2500, "support": 2500}
+    }
+  ]
+}

@@ -155,7 +155,7 @@
       var q = C.quote(state.type, state.disc, state.term, 'base');
 
       if (typeLbl) typeLbl.textContent = t.label;
-      rowBase.textContent = C.fmt(t.base) + ' ₽';
+      rowBase.textContent = C.fmt(q.base) + ' ₽';
       rowDisc.textContent = '×' + d.k.toFixed(2).replace(/0$/, '');
       rowTerm.textContent = '×' + s.k.toFixed(2).replace(/0$/, '');
       priceEl.textContent = 'от ' + q.lowFmt + ' ₽';
@@ -167,8 +167,8 @@
       }
       if (live) live.textContent = 'Итого: от ' + q.lowFmt + ' ₽';
 
-      /* входной билет в рублях: большая цифра пугает, а стартовый платёж
-         втрое меньше — показываем его сразу, это честно и снимает шок */
+      /* Первый шаг — самостоятельный диагностический результат, а не
+         искусственно уменьшенный аванс от большой неопределённой услуги. */
       var slotsEl = document.getElementById('qSlots');
       if (slotsEl && window.SalonSlots && window.SalonSlots.enabled) {
         slotsEl.textContent = window.SalonSlots.label;
@@ -177,17 +177,9 @@
       var startEl = document.getElementById('qStart');
       var startNote = document.getElementById('qStartNote');
       if (startEl) {
-        if (state.type === 'kandidat') {
-          startEl.textContent = 'По главам';
-          if (startNote) startNote.textContent = 'У каждой главы — своя смета, срок и этап оплаты';
-        } else {
-          var big = ['diplom', 'master', 'chapter'].indexOf(state.type) > -1;
-          startEl.textContent = C.fmt(C.round500(q.low * (big ? 0.3 : 0.5))) + ' ₽';
-          if (startNote) {
-            startNote.textContent = (big ? '30% на старт' : '50% на старт') +
-              ' · остальное после показанного результата';
-          }
-        }
+        startEl.textContent = 'Диагностика';
+        if (startNote) startNote.textContent =
+          'разбор материалов и карта следующих действий — отдельный результат';
       }
 
       if (!first && animate) {

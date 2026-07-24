@@ -167,6 +167,15 @@
   function setProgress(value) {
     bookProgress = Math.max(0, Math.min(1, value));
     track.style.setProperty('--p', bookProgress.toFixed(4));
+    [
+      ['--pcopy', .16, 4.16],
+      ['--pm', .20, 3.12],
+      ['--po', .44, 3.57],
+      ['--ps', .66, 4.16]
+    ].forEach(function (phase) {
+      var progress = Math.max(0, Math.min(1, (bookProgress - phase[1]) * phase[2]));
+      track.style.setProperty(phase[0], progress.toFixed(4));
+    });
   }
   function animateBook(to, done) {
     if (bookFrame) cancelAnimationFrame(bookFrame);
