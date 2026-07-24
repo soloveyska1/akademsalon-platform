@@ -155,6 +155,7 @@ test('quick Telegram acquisition links use the production one-message flow', () 
 test('sitemap and hub expose every new growth page', () => {
   const sitemap = read('sitemap.xml');
   const hub = read('knowledge.html');
+  const home = read('index.html');
   const app = read('assets/js/app.js');
   for (const page of pages) {
     assert.match(sitemap, new RegExp(`<loc>${page.canonical.replaceAll('.', '\\.')}</loc>`));
@@ -162,7 +163,9 @@ test('sitemap and hub expose every new growth page', () => {
   }
   for (const tool of ['proverka-istochnikov-vkr.html', 'audit-temy-vkr.html', 'check.html']) {
     assert.match(hub, new RegExp(`href="${tool.replaceAll('.', '\\.')}"`));
+    assert.match(home, new RegExp(`href="${tool.replaceAll('.', '\\.')}"`));
   }
+  assert.match(home, /Проверьте материал до заявки/);
 });
 
 test('style checker has crawlable guidance and truthful application schema', () => {
