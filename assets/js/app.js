@@ -31,22 +31,23 @@
   })();
 
   /* ---------------- Калькулятор (единая логика) ----------------
-     Тип ниже — это академический контекст, а цена относится к выбранному
-     формату сопровождения. Так интерфейс не обещает готовую аттестационную
-     работу и при этом сохраняет прежние URL, deep-link и механику сметы. */
+     Цена задаётся не за «готовую работу», а за конкретный результат:
+     диагностику, редакторский аудит или поэтапное сопровождение. Уровни
+     хранят явные суммы — диагностика больше не считается искусственным
+     коэффициентом от полной программы сопровождения. */
   var SalonCalc = {
     types: [
-      { id: 'diplom',     label: 'Сопровождение ВКР / диплома',                         base: 24000 },
-      { id: 'master',     label: 'Сопровождение магистерского исследования',             base: 36000 },
-      { id: 'chapter',    label: 'Редактура отдельной главы исследования',                base: 9000 },
-      { id: 'kandidat',   label: 'Научное консультирование по диссертации',               base: 60000 },
-      { id: 'course',     label: 'Разбор и редактура курсовой',                            base: 9000 },
-      { id: 'course_emp', label: 'Консультация по исследовательской части курсовой',      base: 14000 },
-      { id: 'practice',   label: 'Разбор и оформление отчёта по практике',                 base: 8000 },
-      { id: 'vak',        label: 'Научная редактура статьи ВАК',                          base: 12000 },
-      { id: 'scopus',     label: 'Научная редактура статьи Scopus / Web of Science',      base: 22000 },
-      { id: 'rinc',       label: 'Научная редактура статьи РИНЦ',                          base: 7000 },
-      { id: 'self',       label: 'Консультация по реферату, эссе или контрольной',         base: 2500 }
+      { id: 'diplom',     label: 'ВКР / диплом',                     base: 40000,  prices: { diagnostic: 3000, editing: 24000, support: 40000 } },
+      { id: 'master',     label: 'Магистерское исследование',        base: 60000,  prices: { diagnostic: 5000, editing: 36000, support: 60000 } },
+      { id: 'chapter',    label: 'Глава вашего исследования',        base: 30000,  prices: { diagnostic: 3000, editing: 9000,  support: 30000 } },
+      { id: 'kandidat',   label: 'Диссертационное исследование',     base: 200000, prices: { diagnostic: 7500, editing: 60000, support: 200000 } },
+      { id: 'course',     label: 'Курсовая работа',                  base: 14000,  prices: { diagnostic: 2500, editing: 9000,  support: 14000 } },
+      { id: 'course_emp', label: 'Курсовая с исследованием',         base: 20000,  prices: { diagnostic: 3000, editing: 14000, support: 20000 } },
+      { id: 'practice',   label: 'Отчёт по практике',                base: 14000,  prices: { diagnostic: 2500, editing: 8000,  support: 14000 } },
+      { id: 'vak',        label: 'Научная статья ВАК',               base: 18000,  prices: { diagnostic: 3000, editing: 12000, support: 18000 } },
+      { id: 'scopus',     label: 'Статья Scopus / Web of Science',   base: 35000,  prices: { diagnostic: 5000, editing: 22000, support: 35000 } },
+      { id: 'rinc',       label: 'Научная статья РИНЦ',              base: 9000,   prices: { diagnostic: 2500, editing: 7000,  support: 9000 } },
+      { id: 'self',       label: 'Реферат или эссе',                 base: 2500,   prices: { diagnostic: 1500, editing: 2500,  support: 2500 } }
     ],
     disciplines: [
       { id: 'hum',  label: 'Гуманитарные / экономика',                 k: 1.0 },
@@ -60,9 +61,9 @@
       { id: 'urgent', label: 'Срочно (до 14 дней)',    k: 1.45 }
     ],
     tiers: [
-      { id: 'base', label: 'Диагностика',  k: 1.0,  note: 'Аудит и карта правок' },
-      { id: 'turn', label: 'Редактура',     k: 1.33, note: 'Правки в вашем тексте и комментарии' },
-      { id: 'vip',  label: 'Сопровождение', k: 2.0,  note: 'Редактура, консультации и репетиция защиты' }
+      { id: 'base', label: 'Диагностика',          priceKey: 'diagnostic', note: 'Аудит и карта следующих шагов' },
+      { id: 'turn', label: 'Редакторский аудит',   priceKey: 'editing',    note: 'Правки в вашем тексте и комментарии' },
+      { id: 'vip',  label: 'Сопровождение',        priceKey: 'support',    note: 'Проверка этапов, консультации и подготовка к защите' }
     ],
     round500: function (n) { return Math.round(n / 500) * 500; },
     fmt: function (n) { return n.toLocaleString('ru-RU'); },
@@ -71,9 +72,17 @@
       var d = this.disciplines.find(function (x) { return x.id === discId; }) || this.disciplines[0];
       var s = this.terms.find(function (x) { return x.id === termId; }) || this.terms[0];
       var v = this.tiers.find(function (x) { return x.id === tierId; }) || this.tiers[1];
-      var low = this.round500(t.base * d.k * s.k * v.k);
+      var selectedBase = t.prices && t.prices[v.priceKey] ? t.prices[v.priceKey] : t.base;
+      var low = this.round500(selectedBase * d.k * s.k);
       var high = this.round500(low * 1.4);
-      return { low: low, high: high, lowFmt: this.fmt(low), highFmt: this.fmt(high), range: this.fmt(low) + ' – ' + this.fmt(high) + ' ₽' };
+      return {
+        base: selectedBase,
+        low: low,
+        high: high,
+        lowFmt: this.fmt(low),
+        highFmt: this.fmt(high),
+        range: this.fmt(low) + ' – ' + this.fmt(high) + ' ₽'
+      };
     }
   };
   window.SalonCalc = SalonCalc;
@@ -1455,7 +1464,8 @@
     ['consent-analytics.html', 'Согласие на аналитику', 'аналитика метрика согласие'],
     ['consent-marketing.html', 'Согласие на рекламу', 'реклама рассылка согласие'],
     ['consent-publication.html', 'Согласие на публикацию', 'отзыв публикация распространение'],
-    ['consent.html', 'Согласие на обработку данных', 'согласие'],
+    ['consent-request.html', 'Согласие для заявки', 'согласие заявка данные'],
+    ['consent.html', 'Согласие для программы лояльности', 'согласие бонусы лояльность'],
     ['loyalty.html', 'Правила лояльности', 'бонусы правила подписка'],
     ['terms.html', 'Пользовательское соглашение', 'соглашение'],
     ['requisites.html', 'Реквизиты исполнителя', 'инн самозанятый реквизиты']
@@ -1463,7 +1473,8 @@
   var DOCS = [
     ['oferta.html', 'Публичная оферта'],
     ['privacy.html', 'Политика ПДн'],
-    ['consent.html', 'Согласие на обработку ПДн'],
+    ['consent-request.html', 'Согласие для заявки'],
+    ['consent.html', 'Согласие для программы лояльности'],
     ['loyalty.html', 'Правила лояльности'],
     ['terms.html', 'Пользовательское соглашение'],
     ['requisites.html', 'Реквизиты']
@@ -1648,8 +1659,8 @@
     (function () {
       var kab = toc.querySelector('a[href="dashboard.html"] span');
       if (!kab || !Salon.api || !Salon.api.identified()) return;
-      var t = Salon.api.token(), g = Salon.api.guestTokens();
-      Salon.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
+      var g = Salon.api.guestTokens();
+      Salon.api.get('/orders', g.length ? { 'X-Order-Tokens': g.join(',') } : {}).then(function (r) {
         if (!r.ok || !r.orders || !r.orders.length) return;
         var un = r.orders.reduce(function (s, o) { return s + (o.unread || 0); }, 0);
         kab.textContent = 'Личный кабинет · ' + r.orders.length + (un ? ' · ' + un + ' нов.' : '');
@@ -1692,8 +1703,8 @@
   Salon.cabBadge = function () {
     var slots = [].slice.call(document.querySelectorAll('.nav-cab .nc-badge, .mn-cab .mn-badge'));
     if (!slots.length || !Salon.api || !Salon.api.identified || !Salon.api.identified()) return;
-    var t = Salon.api.token(), g = Salon.api.guestTokens();
-    Salon.api.get('/orders' + (t ? '' : '?tokens=' + encodeURIComponent(g.join(',')))).then(function (r) {
+    var g = Salon.api.guestTokens();
+    Salon.api.get('/orders', g.length ? { 'X-Order-Tokens': g.join(',') } : {}).then(function (r) {
       if (!r.ok || !r.orders || !r.orders.length) return;
       var un = r.orders.reduce(function (s, o) { return s + (o.unread || 0); }, 0);
       var act = r.orders.filter(function (o) { return 'done cancel'.indexOf(o.status) < 0 && !o.archived; }).length;
@@ -1811,7 +1822,7 @@
       '<summary><span>Реквизиты и документы</span><small>ИНН 212885750445 · статус проверяется в ФНС</small><i aria-hidden="true">+</i></summary>' +
       '<div class="cf7-legal-in">' +
         '<p><b>Семёнов Семён Юрьевич</b><br>ИНН 212885750445 · г.&nbsp;Казань · актуальный статус проверяется на дату оплаты</p>' +
-        '<nav aria-label="Юридические документы"><a href="oferta.html">Оферта</a><a href="privacy.html">Политика ПДн</a><a href="refunds.html">Возврат</a><a href="academic-integrity.html">Границы услуг</a><a href="consent.html">Лояльность</a><a href="terms.html">Соглашение</a><a href="requisites.html">Все документы</a><button type="button" class="cf7-data" data-cookie-settings>Настройки данных</button></nav>' +
+        '<nav aria-label="Юридические документы"><a href="oferta.html">Оферта</a><a href="privacy.html">Политика ПДн</a><a href="consent-request.html">Согласие для заявки</a><a href="refunds.html">Возврат</a><a href="academic-integrity.html">Границы услуг</a><a href="loyalty.html">Лояльность</a><a href="terms.html">Соглашение</a><a href="requisites.html">Все документы</a><button type="button" class="cf7-data" data-cookie-settings>Настройки данных</button></nav>' +
         '<a class="cf7-fns" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">Проверить статус в ФНС <span aria-hidden="true">↗</span><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
       '</div>' +
     '</details>' +
@@ -2235,16 +2246,28 @@
       if (t && v.indexOf(t) < 0) { v.push(t); Salon.store.set('salon_tokens', v.slice(-30)); }
     },
     identified: function () { return !!(Salon.api.token() || Salon.api.guestTokens().length); },
-    req: function (method, path, body, _retried) {
+    outsideScopeMessage: function (response) {
+      if (!response || response.error !== 'request_outside_scope') return '';
+      var intro = response.message ||
+        'Такую задачу нельзя оформить как коммерческий заказ. Выберите разрешённый формат помощи.';
+      var routes = Array.isArray(response.allowed_routes)
+        ? response.allowed_routes.filter(Boolean).slice(0, 3)
+        : [];
+      return intro + (routes.length ? ' Подойдут: ' + routes.join('; ') + '.' : '');
+    },
+    req: function (method, path, body, _retried, extraHeaders) {
       var h = {};
       if (body !== undefined) h['Content-Type'] = 'application/json';
       var t = Salon.api.token();
       if (t) h['Authorization'] = 'Bearer ' + t;
+      Object.keys(extraHeaders || {}).forEach(function (key) {
+        if (extraHeaders[key] != null && extraHeaders[key] !== '') h[key] = extraHeaders[key];
+      });
       /* GET безопасно повторить один раз: короткое окно рестарта сервера
          (деплой) отдаёт 502/обрыв на пару секунд — не теряем посетителя */
       function again() {
         return new Promise(function (res) {
-          setTimeout(function () { res(Salon.api.req(method, path, body, true)); }, 1800);
+          setTimeout(function () { res(Salon.api.req(method, path, body, true, extraHeaders)); }, 1800);
         });
       }
       return fetch(API_BASE + path, { method: method, headers: h, body: body !== undefined ? JSON.stringify(body) : undefined })
@@ -2263,8 +2286,8 @@
           return { ok: false, error: 'network' };
         });
     },
-    get: function (p) { return Salon.api.req('GET', p); },
-    post: function (p, b) { return Salon.api.req('POST', p, b || {}); },
+    get: function (p, h) { return Salon.api.req('GET', p, undefined, false, h); },
+    post: function (p, b, h) { return Salon.api.req('POST', p, b || {}, false, h); },
     logout: function () { Salon.api.setToken(null); Salon.api.setUser(null); }
   };
 

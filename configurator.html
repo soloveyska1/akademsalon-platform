@@ -8,9 +8,9 @@
 <meta name="description" content="Соберите заказ из одной или нескольких позиций. Для каждой видны результат, ориентир цены и детали; точные условия фиксируются в спецификации до оплаты." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260724i" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260724a" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260724b" />
 <link rel="stylesheet" href="assets/css/service-v2.css?v=20260724a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <style>
@@ -21,6 +21,11 @@
   .conf-head{margin-bottom:clamp(22px,3.5vw,36px)}
   .conf-head h1{font-size:clamp(28px,4vw,44px);font-weight:360;margin-bottom:8px}
   .conf-head .petit{max-width:52ch}
+  .conf-wrap{max-width:1440px}
+  .conf-chapter .split{
+    grid-template-columns:minmax(0,1.55fr) minmax(360px,.8fr);
+    gap:clamp(24px,3vw,40px)
+  }
 
   /* «Разбор плана» — карточка-квитанция услуги, а не бейдж с абзацем */
   .plan-offer{margin:14px 0 4px;padding:14px 16px;border:1px solid var(--hairline-strong);
@@ -81,26 +86,45 @@
   .sf-empty{padding:22px;border:1px dashed var(--hairline-strong);border-radius:4px;
     background:var(--sheet);text-align:center;color:var(--ink-soft)}
   .sf-empty[hidden],#typeGroup .filter-hidden{display:none!important}
-  #typeGroup{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;align-items:start}
-  #typeGroup .opt-group{margin:0;padding:14px;border:1px solid var(--hairline);
-    border-radius:4px;background:color-mix(in srgb,var(--sheet) 82%,transparent)}
-  #typeGroup .opt-group>.caps{margin-bottom:9px;color:var(--ink-faint)}
-  #typeGroup .opt-list{display:grid;gap:6px}
-  #typeGroup .optrow{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;
-    gap:5px 10px;align-items:center;min-height:48px;padding:9px 10px;border:1px solid transparent;
-    border-radius:3px;background:var(--sheet);text-align:left;box-shadow:0 1px 0 var(--hairline)}
-  #typeGroup .optrow .dots{display:none}
-  #typeGroup .optrow>span:first-child{min-width:0;font-size:13.5px;line-height:1.3;color:var(--ink)}
-  #typeGroup .optrow .o-val{font:11.5px/1.2 var(--mono);color:var(--ink-soft);white-space:nowrap}
+  .conf-chapter .purpose-note{
+    grid-template-columns:22px minmax(0,1fr);gap:10px;margin:14px 0;
+    padding:12px 14px;border-color:var(--hairline-strong);border-left:3px solid var(--wax);
+    background:color-mix(in srgb,var(--wax-soft) 58%,var(--sheet))
+  }
+  .conf-chapter .purpose-note p{font-size:13px;line-height:1.5}
+  #typeGroup{display:grid;grid-template-columns:repeat(2,minmax(320px,1fr));gap:18px 20px;align-items:start}
+  #typeGroup .opt-group{
+    margin:0;padding:11px 0 0;border:0;border-top:3px double var(--hairline-strong);
+    border-radius:0;background:transparent
+  }
+  #typeGroup .opt-group>.caps{margin:0 10px 9px;color:var(--ink-faint)}
+  #typeGroup .opt-list{display:grid;gap:4px}
+  #typeGroup .optrow{
+    position:relative;display:grid;
+    grid-template-columns:minmax(0,max-content) minmax(14px,1fr) auto;
+    gap:6px 9px;align-items:baseline;min-height:50px;padding:10px;
+    border:1px solid transparent;border-bottom-color:var(--hairline);
+    border-radius:3px;background:color-mix(in srgb,var(--sheet) 72%,transparent);
+    text-align:left;box-shadow:none
+  }
+  #typeGroup .optrow .dots{display:block;align-self:baseline}
+  #typeGroup .optrow>span:first-child{min-width:0;font-size:13.5px;line-height:1.32;color:var(--ink)}
+  #typeGroup .optrow .o-val{font:11px/1.2 var(--mono);color:var(--ink-soft);white-space:nowrap}
   #typeGroup button.optrow:hover,#typeGroup .optrow-link:hover{border-color:var(--hairline-strong);background:var(--paper-2)}
-  #typeGroup button.optrow[aria-checked="true"]{padding-left:25px;border-color:var(--wax);
+  #typeGroup button.optrow[aria-checked="true"]{padding-left:28px;border-color:var(--wax);
     background:linear-gradient(100deg,var(--wax-soft),var(--sheet) 74%)}
-  #typeGroup button.optrow[aria-checked="true"]::before{content:"✓";position:absolute;left:9px;top:50%;
+  #typeGroup button.optrow[aria-checked="true"]::before{content:"✓";position:absolute;left:10px;top:50%;
     transform:translateY(-50%);color:var(--wax);font:12px/1 var(--mono)}
   #typeGroup button.optrow[aria-checked="true"] .o-val{color:var(--wax)}
   #typeGroup .svc-group{grid-column:1/-1;border-top:3px double var(--hairline-strong)}
   #typeGroup .svc-group .opt-list{grid-template-columns:repeat(2,minmax(0,1fr))}
   #typeGroup .svc-group .petit{grid-column:1/-1}
+
+  @media(max-width:1240px){
+    #typeGroup{grid-template-columns:1fr;gap:16px}
+    #typeGroup .svc-group{grid-column:auto}
+    #typeGroup .svc-group .opt-list{grid-template-columns:1fr}
+  }
 
   /* живая смета: редакционный расчётный лист вместо длинной карточки */
   .conf-aside{position:sticky;top:76px}
@@ -307,7 +331,7 @@
     .sf-filters{margin-left:calc(var(--mobile-gutter) * -1);margin-right:calc(var(--mobile-gutter) * -1);
       padding:0 var(--mobile-gutter) 5px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
     .sf-filters::-webkit-scrollbar{display:none}
-    .sf-filter{flex:0 0 auto;min-height:38px}
+    .sf-filter{flex:0 0 auto;min-height:44px}
     #typeGroup{grid-template-columns:1fr;gap:9px}
     #typeGroup .opt-group{padding:11px}
     #typeGroup .svc-group{grid-column:auto}
@@ -655,28 +679,28 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Калькулятор стоимости — смета за минуту | Академический Салон" />
-<meta property="og:description" content="Четыре шага — увидите стоимость, план и порядок оплаты. Оценка бесплатна, решение остаётся за вами." />
+<meta property="og:title" content="Рассчитать помощь с курсовой или ВКР | Академический Салон" />
+<meta property="og:description" content="Выберите работу и нужный результат: диагностику, редакторский аудит или сопровождение. Предварительная цена появится сразу." />
 <meta property="og:url" content="https://akademsalon.ru/configurator.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Расчёт стоимости — Академический Салон" />
-<meta name="twitter:description" content="Четыре шага — стоимость, план и порядок оплаты." />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta name="twitter:title" content="Рассчитать помощь с курсовой или ВКР — Академический Салон" />
+<meta name="twitter:description" content="Четыре коротких шага: задача, направление, результат и заявка." />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 </head>
 <body>
 
 <main>
-  <div class="wrap">
+  <div class="wrap conf-wrap">
     <section class="chapter conf-chapter" id="order" data-chapter="Расчёт заказа">
       <div class="ch-rule"><span class="ch-no">§ 01 · Расчёт заказа</span></div>
 
       <div id="confBody">
         <header class="conf-head reveal">
-          <h1>Состав вашего заказа</h1>
-          <p class="petit">Выберите формат помощи и академический контекст. Одну или несколько позиций мастер превратит в понятную спецификацию до оплаты.</p>
+          <h1>Разберём вашу задачу</h1>
+          <p class="petit">Выберите работу и то, что нужно получить: разбор, редакторский аудит или сопровождение по этапам. Предварительная цена появится сразу.</p>
           <div class="estimate-builder-note">
             <span class="estimate-builder-mark" aria-hidden="true">¶</span>
             <span><b>Один заказ — несколько ясных строк</b><small>Каждая услуга сохраняет собственный результат, срок, цену и правила приёмки.</small></span>
@@ -702,10 +726,10 @@
 
             <!-- ШАГ 1: контекст и формат помощи -->
             <div class="wstep active" role="group" aria-labelledby="ws1t">
-              <h2 class="ws-title" id="ws1t" tabindex="-1">Что у вас за материал</h2>
+              <h2 class="ws-title" id="ws1t" tabindex="-1">С какой работой нужна помощь?</h2>
               <div class="purpose-note">
                 <span class="purpose-note__mark" aria-hidden="true">¶</span>
-                <p><b>Здесь выбирается контекст, а не готовая аттестационная работа.</b> Формат результата задаёт уровень на третьем шаге: диагностика, редактура или сопровождение. Отдельные услуги можно сразу добавить как самостоятельные позиции.</p>
+                <p><b>Вы пишете работу — мы помогаем пройти сложный участок.</b> На третьем шаге выберете конкретный результат: карту действий, правки в вашем тексте или поддержку по этапам.</p>
               </div>
               <div class="service-finder" role="search" aria-label="Поиск контекста или услуги">
                 <label class="visually-hidden" for="workSearch">Найти контекст или услугу</label>
@@ -729,27 +753,27 @@
                 <div class="opt-group" data-work-kind="degree">
                   <span class="caps">ВКР и исследования</span>
                   <div class="opt-list">
-                    <button type="button" class="optrow" role="radio" data-id="diplom" aria-checked="true" tabindex="0"><span>Сопровождение ВКР / диплома</span><span class="dots"></span><span class="o-val">от 24&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="master" aria-checked="false" tabindex="-1"><span>Магистерское исследование</span><span class="dots"></span><span class="o-val">от 36&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="chapter" aria-checked="false" tabindex="-1"><span>Отдельная глава исследования</span><span class="dots"></span><span class="o-val">от 9&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="kandidat" aria-checked="false" tabindex="-1"><span>Диссертационное исследование</span><span class="dots"></span><span class="o-val">от 60&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="diplom" aria-checked="true" tabindex="0"><span>ВКР / диплом</span><span class="dots"></span><span class="o-val">разбор от 3&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="master" aria-checked="false" tabindex="-1"><span>Магистерское исследование</span><span class="dots"></span><span class="o-val">разбор от 5&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="chapter" aria-checked="false" tabindex="-1"><span>Отдельная глава вашего исследования</span><span class="dots"></span><span class="o-val">разбор от 3&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="kandidat" aria-checked="false" tabindex="-1"><span>Диссертационное исследование</span><span class="dots"></span><span class="o-val">разбор от 7&nbsp;500&nbsp;₽</span></button>
                   </div>
                 </div>
                 <div class="opt-group" data-work-kind="course">
                   <span class="caps">Курсовые, практика, малые формы</span>
                   <div class="opt-list">
-                    <button type="button" class="optrow" role="radio" data-id="course_emp" aria-checked="false" tabindex="-1"><span>Курсовая с исследованием и расчётами</span><span class="dots"></span><span class="o-val">от 14&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="course" aria-checked="false" tabindex="-1"><span>Теоретическая курсовая</span><span class="dots"></span><span class="o-val">от 9&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="practice" aria-checked="false" tabindex="-1"><span>Ваш отчёт по практике</span><span class="dots"></span><span class="o-val">от 8&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="self" aria-checked="false" tabindex="-1"><span>Реферат, эссе или контрольная</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="course_emp" aria-checked="false" tabindex="-1"><span>Курсовая с исследованием и расчётами</span><span class="dots"></span><span class="o-val">разбор от 3&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="course" aria-checked="false" tabindex="-1"><span>Теоретическая курсовая</span><span class="dots"></span><span class="o-val">разбор от 2&nbsp;500&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="practice" aria-checked="false" tabindex="-1"><span>Отчёт по практике</span><span class="dots"></span><span class="o-val">разбор от 2&nbsp;500&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="self" aria-checked="false" tabindex="-1"><span>Реферат или эссе</span><span class="dots"></span><span class="o-val">разбор от 1&nbsp;500&nbsp;₽</span></button>
                   </div>
                 </div>
                 <div class="opt-group" data-work-kind="article">
                   <span class="caps">Научные статьи</span>
                   <div class="opt-list">
-                    <button type="button" class="optrow" role="radio" data-id="scopus" aria-checked="false" tabindex="-1"><span>Редактура статьи Scopus / Web of Science</span><span class="dots"></span><span class="o-val">от 22&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="vak" aria-checked="false" tabindex="-1"><span>Редактура статьи ВАК</span><span class="dots"></span><span class="o-val">от 12&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="rinc" aria-checked="false" tabindex="-1"><span>Редактура статьи РИНЦ</span><span class="dots"></span><span class="o-val">от 7&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="scopus" aria-checked="false" tabindex="-1"><span>Статья Scopus / Web of Science</span><span class="dots"></span><span class="o-val">разбор от 5&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="vak" aria-checked="false" tabindex="-1"><span>Статья ВАК</span><span class="dots"></span><span class="o-val">разбор от 3&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="rinc" aria-checked="false" tabindex="-1"><span>Статья РИНЦ</span><span class="dots"></span><span class="o-val">разбор от 2&nbsp;500&nbsp;₽</span></button>
                   </div>
                 </div>
                 <!-- работа уже написана — нужны отдельные услуги: короткий лист заявки -->
@@ -763,9 +787,9 @@
                     <a class="optrow optrow-link" href="configurator.html?service=df"><span>Подготовка к выступлению и защите</span><span class="dots"></span><span class="o-val">от 6&nbsp;000&nbsp;₽</span></a>
                     <a class="optrow optrow-link" href="configurator.html?service=dp"><span>Пакет: оформление + выступление</span><span class="dots"></span><span class="o-val">от 9&nbsp;500&nbsp;₽</span></a>
                     <a class="optrow optrow-link" href="configurator.html?service=tu"><span>Репетиторство и консультации</span><span class="dots"></span><span class="o-val">от 3&nbsp;000&nbsp;₽/час</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=au"><span>Авторский текст вне аттестации</span><span class="dots"></span><span class="o-val">от 12&nbsp;000&nbsp;₽</span></a>
                   </div>
                   <p class="petit" style="margin-top:8px">Эти заявки короче: одна самостоятельная позиция — описываете задачу, прикладываете материал, мастер называет точную цену.</p>
+                  <p class="petit" style="margin-top:7px">Нужен текст для бизнеса, медиа или выступления? Это отдельное <a class="link" href="avtorskiy-zakaz.html">авторское бюро</a>.</p>
                 </div>
               </div>
               <div class="sf-empty" id="workEmpty" hidden>
@@ -793,7 +817,7 @@
             <!-- ШАГ 3: срок и уровень -->
             <div class="wstep" role="group" aria-labelledby="ws3t">
               <h2 class="ws-title" id="ws3t" tabindex="-1">Срок и формат результата</h2>
-              <p class="caps" id="segTermLbl" style="margin-bottom:10px">Срок сдачи</p>
+              <p class="caps" id="segTermLbl" style="margin-bottom:10px">Когда нужен результат</p>
               <div class="seg seg-term" id="segTerm" role="group" aria-labelledby="segTermLbl">
                 <button type="button" data-id="free" class="active" aria-pressed="true"><b>От 30 дней</b><small>без наценки</small></button>
                 <button type="button" data-id="mid" aria-pressed="false"><b>14–30 дней</b><small>+15%</small></button>
@@ -801,9 +825,9 @@
               </div>
               <p class="caps" style="margin:22px 0 10px">Формат результата</p>
               <div id="tierGroup" role="radiogroup" aria-label="Формат результата" class="opt-list">
-                <button type="button" class="optrow" role="radio" data-id="base" aria-checked="true" tabindex="0"><span>Диагностика</span><span class="dots"></span><span class="o-val">×1.0</span><small>Аудит вашего текста и карта приоритетных правок</small></button>
-                <button type="button" class="optrow" role="radio" data-id="turn" aria-checked="false" tabindex="-1"><span>Редактура</span><span class="dots"></span><span class="o-val">×1.33</span><small>Правки в вашем файле, комментарии и лист изменений</small></button>
-                <button type="button" class="optrow" role="radio" data-id="vip" aria-checked="false" tabindex="-1"><span>Сопровождение</span><span class="dots"></span><span class="o-val">×2.0</span><small>Редактура, консультации, репетиция выступления и приоритет</small></button>
+                <button type="button" class="optrow" role="radio" data-id="base" aria-checked="true" tabindex="0"><span>Диагностика</span><span class="dots"></span><span class="o-val">от 3&nbsp;000&nbsp;₽</span><small>Разбор требований или черновика и карта следующих шагов</small></button>
+                <button type="button" class="optrow" role="radio" data-id="turn" aria-checked="false" tabindex="-1"><span>Редакторский аудит</span><span class="dots"></span><span class="o-val">от 24&nbsp;000&nbsp;₽</span><small>Правки в вашем файле, комментарии и отчёт редактора</small></button>
+                <button type="button" class="optrow" role="radio" data-id="vip" aria-checked="false" tabindex="-1"><span>Сопровождение по этапам</span><span class="dots"></span><span class="o-val">от 40&nbsp;000&nbsp;₽</span><small>Проверка ваших версий, консультации и подготовка к защите</small></button>
               </div>
               <p class="petit" style="margin-top:10px">Не уверены, какой уровень ваш? <a class="link" href="vedenie.html" target="_blank" rel="noopener">Проспект уровней</a> — что входит в каждый и как ощущается. Про деньги — <a class="link" href="oplata.html" target="_blank" rel="noopener">как проходит оплата</a>.</p>
             </div>
@@ -854,7 +878,7 @@
                     <span>Прикрепить методичку или ТЗ</span>
                   </button>
                   <div class="att-list" id="attList" hidden></div>
-                  <p class="petit" id="attHint">До 5 файлов по 20 МБ. Так мастер сможет сразу назвать точную цену.</p>
+                  <p class="petit" id="attHint">До 5 файлов по 20 МБ. Перед загрузкой удалите лишние ФИО, контакты и данные третьих лиц — для оценки они не нужны.</p>
                 </div>
               </section>
 
@@ -894,11 +918,12 @@
                     <input type="text" id="fContact" maxlength="120" autocomplete="tel" placeholder="@nickname — ник в Telegram" />
                     <p class="petit" id="ctHint">Укажите ник или ссылку — мастер напишет напрямую.</p>
                   </div>
-                  <label class="petit consent-row">
-                    <input type="checkbox" id="fConsent" />
-                    <span>Мне исполнилось 18 лет; я ознакомлен(а) с <a class="link" href="privacy.html" target="_blank">политикой ПДн</a>. Контакт используется для ответа и подготовки договора, а не для рекламы.</span>
-                  </label>
                 </div>
+                <label class="petit consent-row">
+                  <input type="checkbox" id="fConsent" />
+                  <span>Даю отдельное <a class="link" href="consent-request.html" target="_blank">согласие на обработку персональных данных</a> для ответа и подготовки предложения. Условия хранения — в <a class="link" href="privacy.html" target="_blank">политике ПДн</a>. Согласие не распространяется на рекламу.</span>
+                </label>
+                <p class="petit">Сервис предназначен для совершеннолетних клиентов. Отправляя заявку, вы подтверждаете, что вам исполнилось 18 лет.</p>
               </section>
 
               <button type="button" class="final-more-toggle" id="finalMoreToggle"
@@ -1005,19 +1030,19 @@
               <section class="lq-priceblock" aria-label="Предварительная стоимость">
                 <div class="lg-total">
                   <b>Итого, от</b>
-                  <span class="price-xl" id="lqLow" aria-hidden="true">24&nbsp;000&nbsp;₽</span>
-                  <span id="lqLowSr" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">24&nbsp;000&nbsp;₽</span>
+                  <span class="price-xl" id="lqLow" aria-hidden="true">3&nbsp;000&nbsp;₽</span>
+                  <span id="lqLowSr" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">3&nbsp;000&nbsp;₽</span>
                 </div>
-                <p class="lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
+                <p class="lq-high" data-lg="high">до 4&nbsp;000&nbsp;₽ в зависимости от объёма</p>
                 <div class="lq-deal" data-deal hidden></div>
               </section>
               <section class="lq-formula">
                 <div class="lq-formula-head"><span>Как сложилась цена</span><span>формула открыта</span></div>
                 <div class="ledger">
-                  <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">24&nbsp;000&nbsp;₽</span></div>
+                  <div class="lg-row"><span>Цена выбранного формата</span><span class="num" data-lg="base">3&nbsp;000&nbsp;₽</span></div>
                   <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
                   <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
-                  <div class="lg-row"><span data-lg="tierLbl">Формат · Диагностика</span><span class="num" data-lg="tier">×1.0</span></div>
+                  <div class="lg-row"><span data-lg="tierLbl">Результат · Диагностика</span><span class="num" data-lg="tier">включён</span></div>
                 </div>
               </section>
               <section class="lq-summary">
@@ -1038,7 +1063,7 @@
                   <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
                     <li data-lg="chTerm"></li>
                     <li data-lg="chTier"></li>
-                    <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span> — зачтём в цену работы.</li>
+                    <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span> — зачтём в цену сопровождения.</li>
                   </ul>
                 </details>
               </section>
@@ -1108,17 +1133,17 @@
       <span class="lq-step" data-conf-step>Шаг 1 / 4</span>
     </div>
     <div class="lq-mobile-price">
-      <div class="lg-total"><b>Итого, от</b><span class="num" data-lg="low">24&nbsp;000&nbsp;₽</span></div>
-      <p class="lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
+      <div class="lg-total"><b>Итого, от</b><span class="num" data-lg="low">3&nbsp;000&nbsp;₽</span></div>
+      <p class="lq-high" data-lg="high">до 4&nbsp;000&nbsp;₽ в зависимости от объёма</p>
       <div class="lq-deal" data-deal hidden></div>
     </div>
     <details class="lq-mobile-formula">
       <summary>Как рассчитали сумму</summary>
       <div class="ledger">
-        <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">24&nbsp;000&nbsp;₽</span></div>
+        <div class="lg-row"><span>Цена выбранного формата</span><span class="num" data-lg="base">3&nbsp;000&nbsp;₽</span></div>
         <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
         <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
-        <div class="lg-row"><span data-lg="tierLbl">Формат · Диагностика</span><span class="num" data-lg="tier">×1.0</span></div>
+        <div class="lg-row"><span data-lg="tierLbl">Результат · Диагностика</span><span class="num" data-lg="tier">включён</span></div>
       </div>
     </details>
     <details class="lq-mobile-terms">
@@ -1198,6 +1223,7 @@ function initConf() {
   var state = { type: 'diplom', disc: 'hum', term: 'free', tier: 'base' };
   var idx = 0;
   var canSave = false; /* черновик пишем, только если он был или пользователь что-то тронул */
+  var typeConfirmed = false; /* дефолт — ориентир, а не молчаливый выбор клиента */
 
   /* --- режим отдельной услуги: ?service=ai|rv|tu|nm (код или id из SalonServices).
      Один шаг вместо четырёх: детали, файлы, контакт. Цена «от» — точную
@@ -1223,7 +1249,10 @@ function initConf() {
   var draft = S.store.get('salon_draft', null);
   if (!svc && draft && draft.state) {
     canSave = true;
-    if (has(C.types, draft.state.type)) state.type = draft.state.type;
+    if (has(C.types, draft.state.type)) {
+      state.type = draft.state.type;
+      typeConfirmed = true;
+    }
     if (has(C.disciplines, draft.state.disc)) state.disc = draft.state.disc;
     if (has(C.terms, draft.state.term)) state.term = draft.state.term;
     if (has(C.tiers, draft.state.tier)) state.tier = draft.state.tier;
@@ -1232,7 +1261,10 @@ function initConf() {
   /* --- deep-link ?step=1..4 --- */
   try {
     var qs = new URLSearchParams(location.search).get('step');
-    if (!svc && qs) { var n = parseInt(qs, 10); if (n >= 1 && n <= 4) idx = n - 1; }
+    if (!svc && qs) {
+      var n = parseInt(qs, 10);
+      if (n >= 1 && n <= 4) idx = (n > 1 && !typeConfirmed) ? 0 : n - 1;
+    }
   } catch (e) {}
   /* легаси-режим «полная работа, начиная с разбора» упразднён:
      разбор плана — отдельная услуга со своей анкетой (?service=pl) */
@@ -1542,10 +1574,10 @@ function initConf() {
         $('svcOfferList').innerHTML =
           '<li><span><b>Структура глав и параграфов</b><small>Можно нести научному руководителю</small></span></li>' +
           '<li><span><b>Реалистичный календарь</b><small>Сроки по частям и честный дедлайн</small></span></li>' +
-          '<li><span><b>Фиксированная смета</b><small>Цена всей работы до её начала</small></span></li>';
+          '<li><span><b>Понятная рекомендация</b><small>Какой следующий формат нужен и сколько он стоит</small></span></li>';
         var on = $('svcOfferNote');
         on.hidden = false;
-        on.innerHTML = 'Продолжите работу в течение 14 дней — <b>зачтём всю сумму</b>. Магистерские и кандидатские — 5 000 ₽.';
+        on.innerHTML = 'Выберите сопровождение в течение 14 дней — <b>зачтём всю сумму диагностики</b>. Магистерские и кандидатские — 5 000 ₽.';
       } else {
         $('svcOfferList').innerHTML = '';
       }
@@ -1553,7 +1585,7 @@ function initConf() {
     if (svc.fixed) {
       put('high', 'цена фиксированная — доплат по ходу не будет');
       put('pay', svc.id === 'plan'
-        ? 'Один платёж после подтверждения мастером. При продолжении работы сумма зачитывается в её стоимость.'
+        ? 'Один платёж после подтверждения мастером. При переходе в сопровождение сумма диагностики зачитывается в его стоимость.'
         : 'Оплата одним платежом после подтверждения мастером.');
       svcPricePaint();
     }
@@ -1695,7 +1727,7 @@ function initConf() {
       });
       return;
     }
-    /* калькулятор полной работы хранит собственный независимый черновик */
+    /* калькулятор сопровождения хранит собственный независимый черновик */
     S.store.set('salon_draft', {
       state: { type: state.type, disc: state.disc, term: state.term, tier: state.tier },
       idx: idx,
@@ -1725,13 +1757,19 @@ function initConf() {
     var s = find(C.terms, state.term), v = find(C.tiers, state.tier);
     var q = C.quote(state.type, state.disc, state.term, state.tier);
     put('type', t.label);
-    put('base', C.fmt(t.base) + ' ₽');
+    put('base', C.fmt(q.base) + ' ₽');
     put('discLbl', 'Направление · ' + DISC_SHORT[state.disc]);
     put('disc', '×' + kfmt(d.k));
     put('termLbl', 'Срок · ' + TERM_SHORT[state.term]);
     put('term', '×' + kfmt(s.k));
-    put('tierLbl', 'Формат · ' + v.label);
-    put('tier', '×' + kfmt(v.k));
+    put('tierLbl', 'Результат · ' + v.label);
+    put('tier', 'включён');
+    document.querySelectorAll('#tierGroup [data-id]').forEach(function (button) {
+      var option = find(C.tiers, button.getAttribute('data-id'));
+      var amount = t.prices && option ? t.prices[option.priceKey] : 0;
+      var value = button.querySelector('.o-val');
+      if (value && amount) value.textContent = 'от ' + C.fmt(C.round500(amount * d.k * s.k)) + ' ₽';
+    });
     put('low', q.lowFmt + ' ₽');
     put('high', 'до ' + q.highFmt + ' ₽ в зависимости от объёма');
     S.countTo(priceEl, q.low, { suffix: ' ₽' });
@@ -1835,7 +1873,7 @@ function initConf() {
       var moneyLow = Math.max(0, payBase - giftBal);
       rows += '<p class="deal-money petit">💵 Деньгами останется: ' + (q.fixed ? '' : 'от ') +
         C.fmt(moneyLow) + ' ₽' + (moneyLow === 0
-          ? ' — сертификат может покрыть работу целиком'
+          ? ' — сертификат может покрыть заказ целиком'
           : ' — остальное закроет сертификат') + '</p>';
     }
     if (strike || gOn) rows += '<p class="deal-note petit">' + (strike
@@ -1902,7 +1940,13 @@ function initConf() {
     };
   }
 
-  var rgType = radioGroup($('typeGroup'), function (id) { state.type = id; render(); touch(); });
+  var rgType = radioGroup($('typeGroup'), function (id) {
+    state.type = id;
+    typeConfirmed = true;
+    render();
+    touch();
+    syncTypeGate();
+  });
   var rgDisc = radioGroup($('discGroup'), function (id) { state.disc = id; render(); touch(); });
   var rgTier = radioGroup($('tierGroup'), function (id) { state.tier = id; render(); touch(); });
 
@@ -1947,6 +1991,7 @@ function initConf() {
         ? 'Отправить заявку'
         : (idx === 3 ? 'Отправить' : 'Далее');
     }
+    syncTypeGate();
     if (mqPanel && !mqPanel.hidden) {
       mqPanel.hidden = true;
       if (mqToggle) mqToggle.setAttribute('aria-expanded', 'false');
@@ -1958,6 +2003,20 @@ function initConf() {
       if (t) t.focus({ preventScroll: true });
       var r = wiz.getBoundingClientRect();
       if (r.top < 56) window.scrollTo({ top: window.scrollY + r.top - 76, behavior: S.reduceMotion ? 'auto' : 'smooth' });
+    }
+  }
+  function syncTypeGate() {
+    var waiting = !svc && idx === 0 && !typeConfirmed;
+    if (btnNext) {
+      btnNext.disabled = waiting;
+      btnNext.setAttribute('aria-disabled', String(waiting));
+    }
+    if (mNext) {
+      mNext.disabled = waiting;
+      mNext.setAttribute('aria-disabled', String(waiting));
+      mNext.textContent = waiting
+        ? 'Выберите тип'
+        : (isPlanService ? 'Отправить заявку' : (idx === 3 ? 'Отправить' : 'Далее'));
     }
   }
   btnNext.addEventListener('click', function () { canSave = true; go(idx + 1, true); });
@@ -2385,7 +2444,10 @@ function initConf() {
         if (!r || !r.ok || !r.state) return;
         var q = r.state;
         canSave = true;
-        if (has(C.types, q.type)) state.type = q.type;
+        if (has(C.types, q.type)) {
+          state.type = q.type;
+          typeConfirmed = true;
+        }
         if (has(C.disciplines, q.disc)) state.disc = q.disc;
         if (has(C.terms, q.term)) state.term = q.term;
         if (has(C.tiers, q.tier)) state.tier = q.tier;
@@ -2551,10 +2613,12 @@ function initConf() {
         if (S.motion) S.motion.field($('fContact'), 'error');
         $('fContact').setAttribute('aria-invalid','true'); $('fContact').focus(); return;
       }
-      if ($('fConsent') && !$('fConsent').checked) {
-        S.toast('Подтвердите возраст и ознакомление с политикой', { type: 'error' });
-        if (S.motion) S.motion.field($('fConsent'), 'error'); $('fConsent').focus(); return;
-      }
+    }
+    if ($('fConsent') && !$('fConsent').checked) {
+      S.toast('Нужно отдельное согласие на обработку данных для этой заявки', { type: 'error' });
+      if (S.motion) S.motion.field($('fConsent'), 'error');
+      $('fConsent').focus();
+      return;
     }
     /* ответы анкеты услуги — сводкой в требования (мастер видит всё сразу) */
     var askText = '';
@@ -2591,9 +2655,9 @@ function initConf() {
                (detailsIn ? detailsIn.value.trim() : ''),
       promo: promoCode || undefined,
       gift: giftCode || undefined,
-      consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
-      privacy_notice_ack: !!(authed || ($('fConsent') && $('fConsent').checked)),
-      consent_doc: 'договорное уведомление · privacy 3.0 · oferta 3.0 · форма конфигуратора 2.0',
+      consent: !!($('fConsent') && $('fConsent').checked),
+      privacy_notice_ack: !!($('fConsent') && $('fConsent').checked),
+      consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.0',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
       ref: (S.refCode && S.refCode()) || undefined,
       client_request_id: requestId()
@@ -2746,6 +2810,17 @@ function initConf() {
   function onSubmitErr(r) {
     pendingRequestId = '';
     var e = (r && r.error) || '';
+    var scopeMessage = S.api && S.api.outsideScopeMessage
+      ? S.api.outsideScopeMessage(r)
+      : '';
+    if (scopeMessage) {
+      S.toast(scopeMessage, { type: 'error' });
+      if (detailsIn) {
+        detailsIn.setAttribute('aria-invalid', 'true');
+        detailsIn.focus();
+      }
+      return;
+    }
     if (e === 'rate_limit' || e === 'rate_limited') { S.toast('Слишком много заявок подряд — подождите минуту'); return; }
     if (e === 'contact_required') { S.toast('Оставьте контакт или войдите через Telegram'); return; }
     if (e === 'forbidden') { S.toast('Доступ ограничен — напишите нам напрямую, разберёмся'); return; }

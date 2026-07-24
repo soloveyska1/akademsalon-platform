@@ -1371,6 +1371,18 @@
   }
 }
 
+@media screen and (max-width:380px) and (max-height:620px){
+  /* На коротких телефонах не отдаём главный CTA под нижнюю навигацию. */
+  .home .pr-scope{display:none!important}
+  .home .pr-lead{margin-top:14px;padding-top:12px}
+  .home .pr-cta{margin-top:14px!important}
+  .rv-hero{padding-top:calc(var(--mobile-header-h) + 18px)!important}
+  .rv-hero .h-display{font-size:44px!important;line-height:.98!important}
+  .rv-hero .rv-lead{font-size:14.5px!important;line-height:1.45!important}
+  .rv-cover-actions{margin-top:16px!important}
+  .rv-cover-note{display:none!important}
+}
+
 @media screen and (max-width:880px) and (max-height:700px){
   .contact-sheet .cs-card{max-height:94svh}
   .sdlg-card,.tour-card,.dossier-dialog,.mledger{max-height:94svh}

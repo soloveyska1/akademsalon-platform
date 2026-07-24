@@ -129,20 +129,78 @@ function initCabinet() {
       if (st.orders[i].id === id && st.orders[i].token) return st.orders[i].token;
     return null;
   }
-  function qs(id) { /* хвост авторизации для GET-ссылок (скачивание) и запросов гостя */
+  function orderHeaders(id) {
     var t = tokenFor(id);
-    if (t) return 'token=' + encodeURIComponent(t);
-    var s = S.api.token();
-    return s ? 'session=' + encodeURIComponent(s) : '';
+    return t ? { 'X-Order-Token': t } : {};
+  }
+  function ordersHeaders(tokens) {
+    return tokens && tokens.length ? { 'X-Order-Tokens': tokens.join(',') } : {};
   }
   function apiPath(id, tail) {
-    var q = qs(id);
-    return '/orders/' + id + (tail || '') + (q ? '?' + q : '');
+    return '/orders/' + id + (tail || '');
+  }
+  var protectedObjectUrls = [];
+  function rememberObjectUrl(url) {
+    protectedObjectUrls.push(url);
+    return url;
+  }
+  function releaseObjectUrls() {
+    protectedObjectUrls.forEach(function (url) {
+      try { URL.revokeObjectURL(url); } catch (e) {}
+    });
+    protectedObjectUrls = [];
+  }
+  function protectedFetch(orderId, path) {
+    var h = orderHeaders(orderId);
+    var sess = S.api.token();
+    if (sess) h.Authorization = 'Bearer ' + sess;
+    return fetch(S.api.base + path, {
+      method: 'GET',
+      headers: h,
+      credentials: 'same-origin',
+      cache: 'no-store'
+    });
+  }
+  function protectedFilename(resp, fallback) {
+    var disp = resp.headers.get('Content-Disposition') || '';
+    var m = disp.match(/filename\*=UTF-8''([^;]+)/i);
+    if (m) {
+      try { return decodeURIComponent(m[1]); } catch (e) {}
+    }
+    return fallback || 'файл';
+  }
+  function hydrateProtectedMedia(scope) {
+    (scope || root).querySelectorAll('[data-protected-media]').forEach(function (el) {
+      if (el.getAttribute('data-protected-loading') === '1') return;
+      el.setAttribute('data-protected-loading', '1');
+      var orderId = parseInt(el.getAttribute('data-order-id'), 10);
+      var path = el.getAttribute('data-protected-media');
+      protectedFetch(orderId, path).then(function (resp) {
+        if (!resp.ok) throw new Error('http_' + resp.status);
+        return resp.blob();
+      }).then(function (blob) {
+        if (!el.isConnected) return;
+        var url = rememberObjectUrl(URL.createObjectURL(blob));
+        el.src = url;
+        var open = el.closest('[data-protected-media-open]');
+        if (open) {
+          open.href = url;
+          open.removeAttribute('aria-disabled');
+        }
+      }).catch(function () {
+        if (el.isConnected) {
+          el.setAttribute('aria-label', 'Вложение сейчас недоступно');
+          el.classList.add('is-unavailable');
+        }
+      });
+    });
   }
   function render(html) {
+    releaseObjectUrls();
     root.innerHTML = html;
     if (S.observeReveal) S.observeReveal(root);
     root.querySelectorAll('.reveal').forEach(function (n) { n.classList.add('in'); });
+    hydrateProtectedMedia(root);
     giftRestFill(); /* остаток сертификата в завершённом деле — дозагружается тихо */
     var ph = document.getElementById('promoHintHide');
     if (ph) ph.addEventListener('click', function () {
@@ -369,7 +427,7 @@ function initCabinet() {
     var m = s.match(/(?:claim|token)=([A-Za-z0-9_-]+)/);
     var tok = m ? m[1] : (/^[A-Za-z0-9_-]{16,}$/.test(s) ? s : '');
     if (!tok) { toast('Не похоже на ссылку доступа — скопируйте её целиком'); return; }
-    S.api.get('/orders?tokens=' + encodeURIComponent(tok)).then(function (r) {
+    S.api.get('/orders', ordersHeaders([tok])).then(function (r) {
       if (!r.ok) { toast('Не получилось связаться с картотекой — попробуйте ещё раз'); return; }
       if (!(r.orders || []).length) { toast('По этому коду дело не нашлось — проверьте ссылку'); return; }
       S.api.addGuestToken(tok);
@@ -428,8 +486,8 @@ function initCabinet() {
 
   function linksRow() {
     /* связанные входы: показываем, только когда ВК/Mail.ru включены на сервере.
-       Привязка = тот же серверный OAuth с текущей сессией (?session=) — после
-       неё в кабинет можно попадать любым из способов, всё синхронно. */
+       URL привязки сервер выдаёт только после Bearer-проверки; сессионный
+       секрет не попадает в адресную строку, логи и Referer. */
     var me = st.me || {};
     var f = me.features || {};
     if (!f.vk_login && !f.mailru_login && !f.max_login) return '';
@@ -590,8 +648,8 @@ function initCabinet() {
   }
 
   /* -------- депозит мастерской: кошелёк-аванс с бонусом за пополнение ------
-     Деньги кошелька оплачивают этапы заказов в один клик (чек НПД пробит
-     при пополнении); бонусы сверху приходят на общий бонусный счёт. */
+     Данные для чека НПД передаются при пополнении; внутреннее списание
+     аванса на этап не изображаем отдельным денежным расчётом. */
   function depCard() {
     var d = st.me && st.me.deposit;
     if (!d) return '';
@@ -623,7 +681,7 @@ function initCabinet() {
       '<span class="bc-num">' + money(d.balance) + '</span></div>' +
       '<div class="bc-side">' +
       '<p class="bc-exp">Пополнили кошелёк — бонусы сверху: от +8% за 20 000 ₽ до +15% за 60 000 ₽. ' +
-      'Кошельком оплачиваются этапы заказов в один клик; чек приходит при пополнении.</p>' +
+      'Кошельком оплачиваются этапы заказов в один клик; официальный чек и подтверждение относятся к пополнению.</p>' +
       tops +
       '<div class="bc-act"><button type="button" class="btn btn-line" id="depLogBtn">' +
         (st.depLedgerOpen ? 'Скрыть журнал' : 'Журнал кошелька') + '</button></div>' +
@@ -1146,8 +1204,8 @@ function initCabinet() {
 
   function specLink(o) {
     if (!o.price) return '';
-    return '<p class="petit" style="margin-top:8px">📄 <a class="link" href="' +
-      S.api.base + apiPath(o.id, '/contract') + '" target="_blank" rel="noopener">' +
+    return '<p class="petit" style="margin-top:8px">📄 <a class="link" href="#" ' +
+      'data-protected-asset="' + apiPath(o.id, '/contract') + '" data-order-id="' + o.id + '" data-open="1">' +
       'Спецификация заказа (PDF)</a> — один документ со всеми позициями: у каждой отдельно указаны результат, исходник, включения и исключения, критерии приёмки, срок, цена, платежи и порядок корректировок. Действует вместе с <a class="link" href="oferta.html">офертой</a>, ' +
       'подписывать ничего не нужно. <a class="link" href="specifikaciya.html" target="_blank" rel="noopener">Что это такое — простыми словами →</a></p>' + pamyatkaLink(o);
   }
@@ -1155,8 +1213,8 @@ function initCabinet() {
   /* персональная памятка «что дальше» — появляется с передачей финала */
   function pamyatkaLink(o) {
     if (!o.pamyatka) return '';
-    return '<p class="petit" style="margin-top:2px">📘 <a class="link" href="' +
-      S.api.base + apiPath(o.id, '/pamyatka') + '" target="_blank" rel="noopener">' +
+    return '<p class="petit" style="margin-top:2px">📘 <a class="link" href="#" ' +
+      'data-protected-asset="' + apiPath(o.id, '/pamyatka') + '" data-order-id="' + o.id + '" data-open="1">' +
       'Памятка «что дальше» (PDF)</a> — порядок первичной проверки, фиксация замечаний по критериям и самостоятельная подготовка клиента к использованию результата.</p>';
   }
 
@@ -1375,10 +1433,20 @@ function initCabinet() {
     if (!paid.length) return '';
     var lbl = {};
     (o.plan || []).forEach(function (p) { lbl[p.kind] = p.label; });
-    return '<p class="petit" style="margin-top:8px">Оплачено: ' + paid.map(function (p) {
+    return '<div class="pay-history" style="margin-top:10px"><p class="petit" style="margin:0 0 6px">Оплачено:</p>' +
+      paid.map(function (p) {
       var what = lbl[p.kind] || (p.kind === 'prepay' ? 'предоплата' : 'остаток');
-      return money(p.amount) + ' ₽ (' + esc(what.toLowerCase()) + ', ' + dt(p.at) + ')';
-    }).join(' · ') + '</p>';
+      var confirmation = p.confirmation_url
+        ? ' <a class="linkbtn wax" href="#" data-protected-asset="' +
+          apiPath(o.id, '/payments/' + p.id + '/confirmation.pdf') +
+          '" data-order-id="' + o.id + '" data-filename="podtverzhdenie-oplaty-' +
+          o.id + '-' + p.id + '.pdf">Скачать подтверждение</a>'
+        : '';
+      return '<p class="petit" style="margin:4px 0">' + money(p.amount) + ' ₽ — ' +
+        esc(what.toLowerCase()) + ', ' + dt(p.at) + '.' + confirmation + '</p>';
+    }).join('') +
+      '<p class="petit" style="margin:7px 0 0">Официальный чек НПД формирует Robokassa ' +
+      'и отправляет на e-mail, указанный при оплате. Подтверждение выше не заменяет налоговый чек.</p></div>';
   }
 
   /* -------- реквизиты: платёжный лист с крупной суммой и копированием --------
@@ -1414,7 +1482,7 @@ function initCabinet() {
       '<div class="ps-steps">' +
         '<span><b>1</b> переведите сумму</span><span class="ps-ar">→</span>' +
         '<span><b>2</b> нажмите «Я оплатил(а)»</span><span class="ps-ar">→</span>' +
-        '<span><b>3</b> приложите чек — сверка быстрее</span></div>' +
+        '<span><b>3</b> приложите подтверждение — сверка быстрее</span></div>' +
       '</div>';
   }
 
@@ -1430,9 +1498,9 @@ function initCabinet() {
       return head +
         '<div class="req-slip"><span class="caps">Отметка «оплатил» у мастера</span>' +
         '<p class="petit" style="margin:8px 0 0">Мастер сверяет поступление — как подтвердит, заказ двинется дальше и придёт уведомление. ' +
-        'Чек ускорит сверку.</p></div>' +
+        'Подтверждение перевода ускорит сверку.</p></div>' +
         '<div class="act-row">' +
-        '<label class="btn btn-line btn-upload">📎 Приложить чек<input type="file" id="cabReceipt" hidden accept="image/*,.pdf"></label>' +
+        '<label class="btn btn-line btn-upload">📎 Приложить подтверждение перевода<input type="file" id="cabReceipt" hidden accept="image/*,.pdf"></label>' +
         '<button type="button" class="btn btn-line" data-act="paid_undo">↩️ Я ещё не оплатил — снять отметку</button>' +
         '<button type="button" class="btn btn-line" data-chat-focus>Вопрос по оплате</button></div>' +
         payHistory(o) + '</div>';
@@ -1443,12 +1511,19 @@ function initCabinet() {
     var depBal = (st.me && st.me.deposit && st.me.deposit.balance) || 0;
     var depDue = (o.due_now && o.due_now.amount) || 0;
     var depBtn = depBal >= depDue && depDue > 0;
+    var receiptEmail = esc(o.receipt_email || '');
+    var receiptField = o.pay_online
+      ? '<label class="pay-email"><span class="petit">E-mail для официального чека НПД</span>' +
+        '<input type="email" id="payReceiptEmail" autocomplete="email" inputmode="email" ' +
+        'placeholder="name@example.ru" value="' + receiptEmail + '" required>' +
+        '<span class="petit">Передадим только Robokassa для чека и уведомления об оплате.</span></label>'
+      : '';
     var payBtns = '<div class="act-row">' +
       (depBtn ? '<button type="button" class="btn btn-wax" data-act-pay-dep>💼 С депозита — ' + money(depDue) + ' ₽</button>' : '') +
       (o.pay_online ? '<button type="button" class="btn ' + (depBtn ? 'btn-line' : 'btn-wax') + '" data-act-pay>💳 Оплатить картой онлайн</button>' : '') +
       '<button type="button" class="btn ' + (o.pay_online || depBtn ? 'btn-line' : 'btn-wax') + '" data-act="paid">Я оплатил(а) переводом</button>' +
       '<button type="button" class="btn btn-line" data-chat-focus>Вопрос по оплате</button></div>';
-    return head + req + payBtns + payHistory(o) + '</div>';
+    return head + req + receiptField + payBtns + payHistory(o) + '</div>';
   }
 
   function actionsBlock(o) {
@@ -1657,7 +1732,8 @@ function initCabinet() {
       return '<div class="file-line">' + CLIP_SVG +
         '<span class="fl-name">' + esc(f.name) + tags + '</span>' +
         '<span class="fl-meta">' + who + ' · ' + dt(f.at) + '</span>' +
-        '<a class="link" href="' + S.api.base + apiPath(o.id, '/file/' + f.id) + '" download>скачать</a></div>';
+        '<a class="link" href="#" data-protected-asset="' + apiPath(o.id, '/file/' + f.id) +
+        '" data-order-id="' + o.id + '" data-filename="' + esc(f.name) + '">скачать</a></div>';
     }).join('');
     var n = (o.files || []).length;
     var meta = n ? (n + (o.files_new ? ' · есть новые' : '')) : 'приложить методичку или задание';
@@ -1670,13 +1746,15 @@ function initCabinet() {
 
   function mediaHtml(o, m) {
     /* голосовые и фото из переписки проигрываются прямо в деле */
-    var src = S.api.base + apiPath(o.id, '/msgmedia/' + m.id);
+    var path = apiPath(o.id, '/msgmedia/' + m.id);
+    var attrs = ' data-protected-media="' + path + '" data-order-id="' + o.id + '"';
     if (m.kind === 'voice' || m.kind === 'audio')
-      return '<audio controls preload="none" src="' + src + '" style="max-width:100%;height:36px"></audio>';
+      return '<audio controls preload="none"' + attrs + ' style="max-width:100%;height:36px"></audio>';
     if (m.kind === 'photo')
-      return '<a href="' + src + '" target="_blank" rel="noopener"><img src="' + src + '" alt="фото из переписки" loading="lazy" style="max-width:min(260px,100%);border-radius:6px;display:block"></a>';
+      return '<a href="#" target="_blank" rel="noopener" data-protected-media-open aria-disabled="true"><img' +
+        attrs + ' alt="фото из переписки" loading="lazy" style="max-width:min(260px,100%);border-radius:6px;display:block"></a>';
     if (m.kind === 'video' || m.kind === 'video_note')
-      return '<video controls preload="none" src="' + src + '" style="max-width:min(280px,100%);border-radius:6px"></video>';
+      return '<video controls preload="none"' + attrs + ' style="max-width:min(280px,100%);border-radius:6px"></video>';
     return '';
   }
 
@@ -1918,9 +1996,31 @@ function initCabinet() {
       '<button type="button" class="btn btn-wax" id="cabTg">Войти через Telegram</button></div>';
   }
 
+  function paymentDocumentsCard() {
+    if (!st.me) return '';
+    var docs = st.me.payment_confirmations || [];
+    if (!docs.length) return '';
+    return '<div class="sheet sheet-pad stacked reveal">' +
+      '<p class="caps" style="margin-bottom:10px">Документы об оплате</p>' +
+      '<div class="pay-history">' + docs.map(function (d) {
+        var ref = d.scope === 'order' ? ' · заказ №' + d.reference : '';
+        var filename = 'podtverzhdenie-oplaty-' + (d.scope || 'payment') +
+          '-' + d.reference + '-' + d.id + '.pdf';
+        return '<p class="petit" style="margin:7px 0">' +
+          '<b>' + esc(d.label || 'Оплата') + '</b>' + ref + ' · ' +
+          money(d.amount || 0) + ' ₽ · ' + dt(d.at) +
+          ' <a class="linkbtn wax" href="#" data-protected-asset="' +
+          esc(d.url || '') + '" data-filename="' + esc(filename) +
+          '">Скачать PDF</a></p>';
+      }).join('') + '</div>' +
+      '<p class="petit" style="margin-top:10px">PDF подтверждает платёж мастерской ' +
+      'и хранится в кабинете. Это не налоговый чек НПД: официальный чек ' +
+      'Robokassa отправляет отдельно на e-mail, указанный при оплате.</p></div>';
+  }
+
   function walletTab() {
     if (!st.me) return loginNudge('Кошелёк — после входа');
-    return promoHintStrip() + bonusCard() + depCard();
+    return promoHintStrip() + bonusCard() + depCard() + paymentDocumentsCard();
   }
 
   function clubTab() {
@@ -1939,7 +2039,7 @@ function initCabinet() {
     if (!st.me) {
       st.orders.forEach(function (o) { access += accessBlock(o, true); });
     }
-    return notiRow() + linksRow() + access +
+    return notiRow() + linksRow() + access + paymentDocumentsCard() +
       '<div class="sheet sheet-pad stacked reveal">' +
       '<p class="caps" style="margin-bottom:10px">Связь и полезное</p>' +
       '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">' +
@@ -2065,7 +2165,7 @@ function initCabinet() {
        дела», но раньше при живом входе tokens не передавались вовсе — человек
        с аккаунтом сайта, оплативший заявку по ссылке, не видел это дело
        и не мог оплатить вторую часть */
-    S.api.get('/orders' + (g.length ? '?tokens=' + encodeURIComponent(g.join(',')) : '')).then(function (r) {
+    S.api.get('/orders', ordersHeaders(g)).then(function (r) {
       if (!r.ok) { render(tplError()); return; }
       st.orders = r.orders || [];
       watchSync();
@@ -2115,16 +2215,14 @@ function initCabinet() {
     var id = order.id;
     seenTimer = setTimeout(function () {
       if (document.hidden || st.currentId !== id) return;
-      var t = tokenFor(id);
       var body = { action: 'files_seen' };
-      if (t) body.token = t;
-      S.api.post('/orders/' + id + '/action' + (t ? '?token=' + encodeURIComponent(t) : ''), body);
+      S.api.post('/orders/' + id + '/action', body, orderHeaders(id));
     }, 7000);
   }
 
   function loadDetail(silent) {
     var id = st.currentId;
-    S.api.get(apiPath(id)).then(function (r) {
+    S.api.get(apiPath(id), orderHeaders(id)).then(function (r) {
       if (!r.ok) { if (!silent) render(tplError()); return; }
       var was = st.detail;
       /* полное сравнение: платежи/план/готовность части меняются без
@@ -2167,7 +2265,7 @@ function initCabinet() {
   function refreshListSilent() {
     var t = S.api.token(), g = S.api.guestTokens();
     if (!t && !g.length) return;
-    S.api.get('/orders' + (g.length ? '?tokens=' + encodeURIComponent(g.join(',')) : '')).then(function (r) {
+    S.api.get('/orders', ordersHeaders(g)).then(function (r) {
       if (!r.ok) return;
       var mini = function (o) { return [o.id, o.status, o.unread, o.files_new, o.pinned, o.archived].join(':'); };
       var before = st.orders.map(mini).join('|');
@@ -2212,10 +2310,8 @@ function initCabinet() {
     /* сообщить мастеру «клиент ждёт проверок» — тихо, раз за сессию */
     if (!id || waitChkSent[id]) return;
     waitChkSent[id] = true;
-    var t = tokenFor(id);
     var body = { action: 'wait_checks' };
-    if (t) body.token = t;
-    S.api.post('/orders/' + id + '/action' + (t ? '?token=' + encodeURIComponent(t) : ''), body)
+    S.api.post('/orders/' + id + '/action', body, orderHeaders(id))
       .then(function (r) { if (r.ok && r.order) { st.detail = r.order; } });
   }
 
@@ -2234,9 +2330,7 @@ function initCabinet() {
         st.detail && st.detail.handoff_artifact_id) {
       body.artifact_id = st.detail.handoff_artifact_id;
     }
-    var t = tokenFor(st.currentId);
-    if (t) body.token = t;
-    S.api.post('/orders/' + st.currentId + '/action' + (t ? '?token=' + encodeURIComponent(t) : ''), body)
+    S.api.post('/orders/' + st.currentId + '/action', body, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
         if (!r.ok) {
@@ -2311,10 +2405,15 @@ function initCabinet() {
 
   function payOnline() {
     if (st.busy) return;
+    var emailEl = document.getElementById('payReceiptEmail');
+    var email = emailEl ? String(emailEl.value || '').trim().toLowerCase() : '';
+    if (emailEl && (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))) {
+      toast('Укажите рабочий e-mail — на него Robokassa отправит официальный чек');
+      emailEl.focus();
+      return;
+    }
     st.busy = true;
-    var t = tokenFor(st.currentId);
-    S.api.post('/orders/' + st.currentId + '/pay' + (t ? '?token=' + encodeURIComponent(t) : ''),
-               t ? { token: t } : {})
+    S.api.post('/orders/' + st.currentId + '/pay', { email: email }, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
         if (!r.ok) { toast('Не получилось открыть оплату — воспользуйтесь реквизитами'); return; }
@@ -2336,10 +2435,8 @@ function initCabinet() {
       return;
     }
     st.busy = true;
-    var t = tokenFor(st.currentId);
     var body = { amount: amount };
-    if (t) body.token = t;
-    S.api.post('/orders/' + st.currentId + '/tip' + (t ? '?token=' + encodeURIComponent(t) : ''), body)
+    S.api.post('/orders/' + st.currentId + '/tip', body, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
         if (!r.ok) {
@@ -2356,9 +2453,8 @@ function initCabinet() {
           }) : Promise.resolve({ ok: window.confirm('Перевести ' + money(amount) + ' ₽ по реквизитам:\n\n' + r.requisites + '\n\nУже перевели?') });
           ask.then(function (ans) {
             if (!ans.ok) return;
-            var claimBody = t ? { token: t } : {};
-            S.api.post('/orders/' + st.currentId + '/tip/' + r.tip_id + '/claim' +
-              (t ? '?token=' + encodeURIComponent(t) : ''), claimBody).then(function (cr) {
+            S.api.post('/orders/' + st.currentId + '/tip/' + r.tip_id + '/claim',
+              {}, orderHeaders(st.currentId)).then(function (cr) {
                 toast(cr.ok ? 'Спасибо 💛 Передали мастеру на сверку' : 'Не получилось поставить отметку — напишите мастеру');
               });
           });
@@ -2392,7 +2488,7 @@ function initCabinet() {
   function payDeposit() {
     if (st.busy) return;
     st.busy = true;
-    S.api.post('/orders/' + st.currentId + '/pay-deposit', {})
+    S.api.post('/orders/' + st.currentId + '/pay-deposit', {}, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
         if (!r.ok) {
@@ -2411,8 +2507,7 @@ function initCabinet() {
     var text = ta.value.trim();
     if (!text || st.busy) return;
     st.busy = true;
-    var t = tokenFor(st.currentId);
-    S.api.post('/orders/' + st.currentId + '/message' + (t ? '?token=' + encodeURIComponent(t) : ''), { text: text })
+    S.api.post('/orders/' + st.currentId + '/message', { text: text }, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
         if (!r.ok) { toast(r.error === 'rate_limit' ? 'Слишком часто — подождите минуту' : 'Не отправилось, попробуйте ещё раз'); return; }
@@ -2429,12 +2524,11 @@ function initCabinet() {
     if (note) { note.hidden = false; note.textContent = 'Загружаем «' + f.name + '»…'; }
     var fd = new FormData();
     fd.append('file', f, f.name);
-    var t = tokenFor(st.currentId);
-    var url = S.api.base + '/orders/' + st.currentId + '/upload?' + qs(st.currentId) +
-      (kind ? '&kind=' + kind : '');
-    var h = {};
+    var url = S.api.base + '/orders/' + st.currentId + '/upload' +
+      (kind ? '?kind=' + encodeURIComponent(kind) : '');
+    var h = orderHeaders(st.currentId);
     var sess = S.api.token();
-    if (sess && !t) h['Authorization'] = 'Bearer ' + sess;
+    if (sess) h.Authorization = 'Bearer ' + sess;
     fetch(url, { method: 'POST', body: fd, headers: h })
       .then(function (resp) {
         if (resp.status === 413) throw new Error('too_big');
@@ -2477,6 +2571,57 @@ function initCabinet() {
   /* ---------------- события ---------------- */
   root.addEventListener('click', function (e) {
     var t = e.target;
+    var protectedAsset = t.closest('[data-protected-asset]');
+    if (protectedAsset) {
+      e.preventDefault();
+      if (protectedAsset.getAttribute('aria-busy') === 'true') return;
+      var assetOrderId = parseInt(protectedAsset.getAttribute('data-order-id'), 10);
+      var assetPath = protectedAsset.getAttribute('data-protected-asset');
+      var openAsset = protectedAsset.getAttribute('data-open') === '1';
+      var popup = null;
+      if (openAsset) {
+        try {
+          popup = window.open('about:blank', '_blank');
+          if (popup) popup.opener = null;
+        } catch (err) {}
+      }
+      protectedAsset.setAttribute('aria-busy', 'true');
+      protectedFetch(assetOrderId, assetPath).then(function (resp) {
+        if (!resp.ok) throw new Error('http_' + resp.status);
+        var filename = protectedFilename(
+          resp,
+          protectedAsset.getAttribute('data-filename') || (openAsset ? 'документ.pdf' : 'файл')
+        );
+        return resp.blob().then(function (blob) { return { blob: blob, filename: filename }; });
+      }).then(function (asset) {
+        var url = URL.createObjectURL(asset.blob);
+        if (openAsset && popup) {
+          popup.location.replace(url);
+        } else {
+          if (popup) popup.close();
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = asset.filename;
+          a.rel = 'noopener';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
+        setTimeout(function () { try { URL.revokeObjectURL(url); } catch (err) {} }, openAsset ? 300000 : 60000);
+      }).catch(function () {
+        if (popup) popup.close();
+        toast('Файл сейчас не открылся — обновите дело и попробуйте ещё раз');
+      }).then(function () {
+        if (protectedAsset.isConnected) protectedAsset.removeAttribute('aria-busy');
+      });
+      return;
+    }
+    var protectedMediaOpen = t.closest('[data-protected-media-open][aria-disabled="true"]');
+    if (protectedMediaOpen) {
+      e.preventDefault();
+      toast('Вложение ещё загружается');
+      return;
+    }
     var tabBtn = t.closest('[data-tab]');
     if (tabBtn) { setTab(tabBtn.getAttribute('data-tab')); return; }
     var sw = t.closest('button[data-ord]');
@@ -2621,9 +2766,18 @@ function initCabinet() {
     }
     var oaLink = t.closest('[data-oauth-link]');
     if (oaLink) {
-      /* привязка к текущему аккаунту: сессия уезжает в ?session= */
-      window.location.href = S.api.base + '/auth/' + oaLink.getAttribute('data-oauth-link') +
-        '/start?session=' + encodeURIComponent(S.api.token() || '');
+      var provider = oaLink.getAttribute('data-oauth-link');
+      oaLink.disabled = true;
+      S.api.post('/auth/' + provider + '/link-start', {}).then(function (r) {
+        if (!r.ok || !r.url) {
+          oaLink.disabled = false;
+          toast(r.error === 'provider_off'
+            ? 'Этот способ входа пока не подключён'
+            : 'Не получилось начать привязку — войдите заново и повторите');
+          return;
+        }
+        window.location.href = r.url;
+      });
       return;
     }
     if (t.closest('#cabEmailTgl')) {
