@@ -252,7 +252,8 @@
   function serviceType(id) {
     return {
       plan:'svc_plan', ai:'svc_ai', review:'svc_review', tutor:'svc_tutor',
-      norm:'svc_norm', defense:'svc_defense', defensepack:'svc_defense_pack'
+      norm:'svc_norm', defense:'svc_defense', defensepack:'svc_defense_pack',
+      author:'svc_author_order'
     }[id] || 'custom';
   }
   function addonItem(svc, parentId, answers, existing) {
@@ -265,7 +266,7 @@
     var item = existing || {};
     item.kind = 'service'; item.type = serviceType(svc.id); item.serviceId = svc.id;
     item.serviceCode = svc.code; item.label = svc.label;
-    item.serviceMeta = 'дополнение к работе';
+    item.serviceMeta = parentId ? 'связанная позиция' : 'самостоятельная услуга';
     item.low = svc.from; item.high = svc.fixed ? svc.from : (svc.to || svc.from);
     item.fixed = !!svc.fixed; item.allowQty = false; item.answers = answers;
     item.answerLines = answerLines; item.topic = item.topic || ''; item.deadline = item.deadline || '';
@@ -298,7 +299,7 @@
       return !addonExists(svc.id, x.id, editing && editing.id);
     });
     if (!available.length) {
-      if (S && S.toast) S.toast('Эта услуга уже добавлена к каждой работе');
+      if (S && S.toast) S.toast('Эта услуга уже добавлена к каждой основной позиции');
       return;
     }
     var parentId = editing && workById(editing.parentId) ? editing.parentId : available[0].id;
@@ -322,7 +323,7 @@
     var svc = serviceById(pendingAddon.serviceId);
     var parent = workById(pendingAddon.parentId);
     if (!svc || (!pendingAddon.standalone && !parent)) {
-      if (S && S.toast) S.toast('Выберите работу для дополнения', { type:'error' });
+      if (S && S.toast) S.toast('Выберите основную позицию для связи', { type:'error' });
       return false;
     }
     var missing = requiredQuestions(svc.id).filter(function (q) {
@@ -379,12 +380,17 @@
   }
   function lineItem(x, i) {
     var q = itemQuote(x), m = meta(x);
+    var position = String(Math.max(0, i) + 1).padStart(2, '0');
     var parent = x.parentId ? workById(x.parentId) : null;
+    m.unshift(x.serviceId === 'author'
+      ? 'Контур Б · авторский заказ вне аттестации'
+      : 'Контур А · академическое сопровождение');
     if (parent) m.unshift('Для: ' + parent.label);
     syncNeeds(x);
     var titleId = 'cartItem_' + esc(x.id);
     return '<article class="cart-item ' + (x.kind === 'service' ? 'is-service' : 'is-work') +
       (x.isAddon || x.parentId ? ' is-addon' : '') + '" data-cart-id="' + esc(x.id) +
+      '" data-cart-position="' + position +
       '" aria-labelledby="' + titleId + '">' +
       '<div class="cart-item-top"><div><h3 id="' + titleId + '">' + esc(x.label) + '</h3>' +
       '<div class="cart-item-meta">' + m.map(function (v) { return '<span>' + esc(v) + '</span>'; }).join('') + '</div></div>' +
@@ -401,11 +407,11 @@
         '<b aria-live="polite">' + (x.qty || 1) + '</b>' +
         '<button type="button" data-cart-qty="1" aria-label="Увеличить количество «' + esc(x.label) + '»"' +
         ((x.qty || 1) >= 10 ? ' disabled' : '') + '>+</button></div>' :
-        '<span class="cart-one">1 ' + (x.kind === 'service' ? 'услуга' : 'работа') + '</span>') +
+        '<span class="cart-one">1 позиция</span>') +
       (x.kind === 'service' && x.isAddon
         ? '<button type="button" class="cart-complete' + (x.needs ? ' needs' : '') +
           '" data-cart-edit-addon="' + esc(x.id) + '">' +
-          (x.needs ? 'Дополнить сведения' : 'Изменить работу') + '</button>' : '') +
+          (x.needs ? 'Дополнить сведения' : 'Изменить сведения') + '</button>' : '') +
       '<button type="button" class="cart-remove" data-cart-remove="' + esc(x.id) +
       '" aria-label="Убрать «' + esc(x.label) + '» из состава">Убрать</button></div></article>';
   }
@@ -502,7 +508,7 @@
         (available ? 'от ' + money(svc.from) + ' ₽' : 'добавлено') + '</b></button>');
     });
     return '<section class="cart-addons"><div class="cart-section-head compact"><span class="cart-section-no">+</span>' +
-      '<div><h3>Дополнить работу</h3><p>Добавляется к той же заявке одним нажатием</p></div></div>' +
+      '<div><h3>Связать позиции</h3><p>Услуга войдёт в тот же заказ, но сохранит свою цену и результат</p></div></div>' +
       '<div class="cart-addon-list">' + rows.join('') + '</div></section>';
   }
   function addonComposerHtml() {
@@ -527,10 +533,10 @@
       (pendingAddon.editId ? 'Дополнить сведения' : 'Куда добавить услугу?') + '</h3><p>' +
       esc(svc.label) + '</p></div></div>' +
       (pendingAddon.standalone ? '' :
-        '<label class="cart-addon-field"><span>Работа</span><select data-cart-addon-parent>' + options + '</select></label>') +
+        '<label class="cart-addon-field"><span>Основная позиция</span><select data-cart-addon-parent>' + options + '</select></label>') +
       questions + '<div class="cart-addon-compose-actions"><button type="button" class="btn btn-line" data-cart-addon-cancel>Отмена</button>' +
       '<button type="button" class="btn btn-wax" data-cart-addon-confirm>' +
-      (pendingAddon.editId ? 'Сохранить' : 'Добавить к работе') + '</button></div></section>';
+      (pendingAddon.editId ? 'Сохранить' : 'Связать позиции') + '</button></div></section>';
   }
   function totalsHtml(b) {
     var discountLabel = b.discountKind === 'promo' ? 'Промокод' : (b.discountKind === 'sub' ? 'Салон+' : 'Скидки');
@@ -552,7 +558,7 @@
     return '<span class="cart-entry-icon" aria-hidden="true">¶</span>' +
       '<span class="cart-entry-copy"><b>Ваша смета</b>' +
       '<small>' + (n ? positionLabel(n) + ' · от ' + money(q.low) + ' ₽' :
-        (compact ? 'можно объединить' : 'работы + услуги в одной заявке')) + '</small>' +
+        (compact ? 'можно объединить' : 'все позиции — в одной спецификации')) + '</small>' +
       '</span><span class="cart-tab-count" role="status" aria-live="polite">' + n + '</span>';
   }
   function syncEntry(el, n, compact) {
@@ -561,7 +567,7 @@
     el.hidden = !visible;
     el.innerHTML = entryHtml(n, compact);
     el.setAttribute('aria-label', n ? 'Открыть смету, ' + positionLabel(n) :
-      'Открыть пустую смету и узнать, как объединить работы и услуги');
+      'Открыть пустую смету и добавить позиции заказа');
     el.setAttribute('aria-expanded', box && box.classList.contains('open') ? 'true' : 'false');
   }
   function render() {
@@ -575,7 +581,7 @@
       el.classList.toggle('saved', !!currentSaved);
       el.textContent = currentSaved
         ? 'В смете · открыть'
-        : 'Добавить ' + (current && current.kind === 'service' ? 'услугу' : 'работу') + ' в смету';
+        : 'Добавить позицию в смету';
     });
     document.querySelectorAll('[data-cart-submit]').forEach(function (el) {
       el.textContent = el.getAttribute('data-cart-submit-label') || 'Отправить заявку мастеру';
@@ -586,9 +592,9 @@
       '<button type="button" data-cart-checkout' + (n ? '' : ' disabled') + '><b>03</b> Отправка</button></nav>';
     if (!n) {
       body.innerHTML = guide + '<div class="cart-empty" id="cartItems"><div class="cart-empty-mark">¶</div>' +
-        '<h3>Работы и услуги можно объединять</h3>' +
-        '<p>Соберите одну понятную смету: основная работа, дополнения и выгоды — мастер проверит всё вместе.</p>' +
-        '<div class="cart-empty-actions"><button type="button" class="btn btn-wax" data-cart-another="work">Выбрать работу</button>' +
+        '<h3>Один заказ может состоять из нескольких позиций</h3>' +
+        '<p>У каждой останутся своё наименование, результат, срок и цена. Перед оплатой мастер пришлёт их в одной спецификации.</p>' +
+        '<div class="cart-empty-actions"><button type="button" class="btn btn-wax" data-cart-another="work">Выбрать контекст</button>' +
         '<button type="button" class="btn btn-line" data-cart-another="service">Выбрать услугу</button></div></div>' +
         benefitToolsHtml(b) +
         (removed ? '<div class="cart-undo"><span>Позиция убрана</span><button type="button" data-cart-undo>Вернуть</button></div>' : '');
@@ -600,7 +606,7 @@
     var unattached = services.filter(function (x) { return !workById(x.parentId); });
     var groups = '<section class="cart-group" id="cartItems"><div class="cart-section-head"><span class="cart-section-no">01</span>' +
       '<div><h3>Позиции сметы</h3><p>' + positionLabel(n) + ' · можно изменить до отправки</p></div></div>';
-    if (works.length) groups += '<h4>Работы и дополнения</h4><div class="cart-work-groups">' +
+    if (works.length) groups += '<h4>Основные и связанные позиции</h4><div class="cart-work-groups">' +
       works.map(function (work) {
         var children = services.filter(function (x) { return x.parentId === work.id; });
         return '<div class="cart-work-group">' + lineItem(work, data.items.indexOf(work)) +
@@ -616,7 +622,7 @@
       '<button type="button" class="cart-clear" data-cart-clear>Очистить состав</button>' +
       '<p class="cart-legal">До отправки состав хранится только на этом устройстве.</p>';
     foot.innerHTML = totalsHtml(b) +
-      '<div class="cart-actions"><div class="cart-add-more"><button type="button" data-cart-another="work">+ Работа</button>' +
+      '<div class="cart-actions"><div class="cart-add-more"><button type="button" data-cart-another="work">+ Контекст</button>' +
       '<button type="button" data-cart-another="service">+ Услуга</button></div>' +
       '<button type="button" class="btn btn-wax" data-cart-checkout>Продолжить · контакты →</button></div>';
     if (focusRestore) {
@@ -651,7 +657,7 @@
       '<aside class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-describedby="cartIntro">' +
       '<span class="cart-handle" aria-hidden="true"></span>' +
       '<header class="cart-head"><div><span class="cart-folio">Конструктор сметы</span><h2 id="cartTitle">Ваша смета</h2>' +
-      '<p id="cartIntro">Работы, дополнения и выгоды — в одном месте</p></div>' +
+      '<p id="cartIntro">Каждая позиция — отдельной строкой будущей спецификации</p></div>' +
       '<button type="button" class="cart-close" data-cart-close aria-label="Закрыть">×</button></header>' +
       '<div class="cart-body"></div><footer class="cart-foot"></footer></aside>';
     document.body.appendChild(box);
@@ -660,7 +666,7 @@
     var aside = document.querySelector('.conf-aside .sheet');
     if (aside) {
       var a = document.createElement('button'); a.type = 'button'; a.className = 'cart-add';
-      a.setAttribute('data-cart-add', '1'); a.textContent = 'Добавить работу в смету';
+      a.setAttribute('data-cart-add', '1'); a.textContent = 'Добавить позицию в смету';
       aside.appendChild(a);
     }
     var submit = document.getElementById('btnSubmit');
@@ -812,7 +818,7 @@
   }
   function summary() {
     var q = quote();
-    var rows = ['СОСТАВ ЗАЯВКИ · ' + positionLabel(count()).toUpperCase()];
+    var rows = ['СОСТАВ ЗАЯВКИ · ' + positionLabel(lineCount()).toUpperCase()];
     data.items.forEach(function (x, i) {
       var z = itemQuote(x), m = meta(x);
       rows.push('', (i + 1) + '. ' + x.label + ((x.qty || 1) > 1 ? ' × ' + x.qty : ''),
@@ -841,6 +847,17 @@
         var clientId = String(x.id || '');
         var qPreview = itemQuote(x);
         var legalType = x.kind === 'service' ? 'consultation' : 'methodological_material';
+        var answerMap = x.answers && typeof x.answers === 'object' ? x.answers : {};
+        var authorModel = String(answerMap.author_model || '');
+        var contour = x.serviceId === 'author'
+          ? (authorModel.indexOf('Б1') >= 0 ? 'B1_personal_author_order'
+            : authorModel.indexOf('Б2') >= 0 ? 'B2_third_party_author_order'
+            : 'B_pending_variant')
+          : 'A_academic_support';
+        var permittedPurpose = x.serviceId === 'author'
+          ? String(answerMap.purpose || '').slice(0, 500)
+          : 'Самостоятельная работа Заказчика; консультация, аудит, редактура предоставленного материала или подготовка к выступлению без выполнения аттестации вместо Заказчика.';
+        if (x.serviceId === 'author') legalType = 'author_order_non_attestation';
         if (/edit|red|corr/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'editing';
         if (/format|norm|gost/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'formatting';
         if (/tutor|consult|razbor/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'consultation';
@@ -849,6 +866,9 @@
           requested_line_id: clientId,
           position: i + 1,
           selected_by_customer: true,
+          contract_contour: contour,
+          contract_contour_pending: contour === 'B_pending_variant',
+          permitted_purpose: permittedPurpose,
           kind: x.kind === 'service' ? 'service' : 'work',
           legal_service_type: legalType,
           type: String(x.type || ''),
@@ -878,11 +898,23 @@
             included_pending: true,
             excluded_pending: true
           },
+          customer_inputs: {
+            description: String(x.topic || x.requirements || '').slice(0, 1500),
+            version_pending: true
+          },
           deliverables_pending: true,
           acceptance_criteria_pending: true,
           corrections_pending: true,
+          intellectual_rights_profile: x.serviceId === 'author' ? String(answerMap.rights || '') : 'not_applicable_service_result',
+          intellectual_rights_profile_pending: x.serviceId === 'author' && !answerMap.rights,
+          actual_author_profile: x.serviceId === 'author'
+            ? { model:authorModel, author_name:String(answerMap.author_name || ''), confirmation_pending:!answerMap.author_name }
+            : { model:'customer_substantive_basis', author_name:'Заказчик', confirmation_pending:false },
+          actual_author_profile_pending: x.serviceId === 'author' && !answerMap.author_name,
+          third_party_performers: [],
+          third_party_performers_pending: contour === 'B2_third_party_author_order',
           price_status: 'estimate_only',
-          answers: x.answers && typeof x.answers === 'object' ? x.answers : {},
+          answers: answerMap,
           quote_preview: qPreview
         };
       }),
@@ -891,7 +923,8 @@
         'server_line_id', 'unit_definition', 'included', 'excluded', 'customer_inputs',
         'deliverables', 'contractor_due_at', 'dependencies', 'acceptance_criteria',
         'unit_price_minor', 'line_price_minor', 'discount_allocations',
-        'payment_stage_allocations', 'cancellation_effect'
+        'payment_stage_allocations', 'cancellation_effect', 'contract_contour',
+        'permitted_purpose', 'intellectual_rights_profile', 'actual_author_profile'
       ],
       benefits_intent: { use_bonus:!!data.checkout.useBonus, bonus_amount:benefits().bonus || 0 },
       quote_preview: { low:q.low, high:q.high }
@@ -926,7 +959,7 @@
     }
   }
   window.SalonCart = {
-    init:init, open:open, add:add, clear:clear, count:count, hasItems:function(){ return !!data.items.length; },
+    init:init, open:open, add:add, clear:clear, count:count, lineCount:lineCount, hasItems:function(){ return !!data.items.length; },
     items:function(){ return data.items.slice(); }, first:first, quote:quote, benefits:benefits,
     summary:summary, payload:payload, snapshot:snapshot, contains:contains, ensure:ensure,
     setVisible:setVisible, refresh:notify, positionLabel:positionLabel, validate:validate,

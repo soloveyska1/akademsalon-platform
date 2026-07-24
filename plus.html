@@ -117,8 +117,8 @@
     <div>
       <p class="pl-kicker">Абонемент читального зала</p>
       <h1>Привилегии тех, кто сдаёт в&nbsp;этом семестре</h1>
-      <p class="pl-lead">Подписка мастерской: ваша работа идёт первой в&nbsp;очереди, каждый заказ — со&nbsp;скидкой и&nbsp;кэшбэком бонусами, а&nbsp;куратор напоминает о&nbsp;дедлайнах раньше, чем о&nbsp;них вспомнит деканат.</p>
-      <p class="pl-facts"><span>разовый платёж</span><span>без автосписаний</span><span>активация в день оплаты</span></p>
+      <p class="pl-lead">Подписка мастерской: ваши консультационные слоты получают приоритет, каждый заказ — со&nbsp;скидкой и&nbsp;кэшбэком бонусами, а&nbsp;куратор напоминает о&nbsp;дедлайнах раньше, чем о&nbsp;них вспомнит деканат.</p>
+      <p class="pl-facts"><span>разовый платёж</span><span>без автосписаний</span><span>активация — по правилам тарифа</span></p>
     </div>
     <div class="pl-ticket" aria-hidden="true">
       <div class="pl-t-head"><span>Академический салон</span><span>серия С+ · № 0451</span></div>
@@ -147,7 +147,7 @@
         <p class="pl-c-alt" data-alt="plus">или 449 ₽ помесячно</p>
         <ul class="pl-c-perks">
           <li><span class="tick">✓</span><span><b>−5% на каждый заказ</b> · до 1 000 ₽ со всякого</span></li>
-          <li><span class="tick">✓</span><span><b>Первый в очереди</b> — приоритет мастера</span></li>
+          <li><span class="tick">✓</span><span><b>Приоритет</b> — в согласованном графике мастерской</span></li>
           <li><span class="tick">✓</span><span><b>Куратор сессии</b> — напомним за 7 · 3 · 1 день</span></li>
           <li><span class="tick">✓</span><span><b>Полка Салона</b> — чек-листы и памятки к защите</span></li>
         </ul>
@@ -169,16 +169,16 @@
         <a class="btn btn-wax" href="dashboard.html#plus">Оформить «Про»</a>
       </article>
 
-      <article class="pl-card" aria-label="Тариф Сессия под ключ">
-        <h2 class="pl-c-name">Сессия под ключ</h2>
+      <article class="pl-card" aria-label="Тариф Сессия с куратором">
+        <h2 class="pl-c-name">Сессия с куратором</h2>
         <p class="pl-c-tag">60 дней спокойствия в самый жаркий сезон</p>
         <p class="pl-c-price">2 990 ₽ <small>· 60 дней</small></p>
         <p class="pl-c-alt">разовый пакет · продление не требуется</p>
         <ul class="pl-c-perks">
           <li><span class="tick">✓</span><span><b>−7% на каждый заказ</b> · до 2 000 ₽ со всякого</span></li>
-          <li><span class="tick">✓</span><span><b>Бронь места</b> — набор месяца вас не касается</span></li>
+          <li><span class="tick">✓</span><span><b>Бронь слотов</b> — приоритет в пределах согласованного графика</span></li>
           <li><span class="tick">✓</span><span><b>Замок цен</b> — смета не растёт весь период</span></li>
-          <li><span class="tick">✓</span><span><b>SOS-день</b> — в день сдачи мастер отвечает в течение часа</span></li>
+          <li><span class="tick">✓</span><span><b>SOS-день</b> — один ответ в течение часа в рабочее время</span></li>
         </ul>
         <a class="btn btn-line" href="dashboard.html#plus">Взять «Сессию»</a>
       </article>
@@ -190,7 +190,7 @@
   <section class="pl-calc" aria-label="Чек окупаемости">
     <div>
       <h2>Окупится первым же заказом?</h2>
-      <p class="pl-calc-sub">Подвиньте, на какую сумму планируете заказать за семестр, — чек справа посчитает выгоду по каждому тарифу.</p>
+      <p class="pl-calc-sub">Укажите примерную сумму заказов за семестр — чек справа покажет ориентир с учётом процентов и потолков. Фактическая выгода зависит от числа, цены и состава заказов.</p>
       <input class="pl-range" type="range" id="plRange" min="15000" max="120000" step="5000" value="40000" aria-label="Сумма заказов за семестр">
       <p class="pl-sum" id="plSum">40 000 ₽</p>
       <p class="pl-orders" id="plOrders">примерно 1–2 заказа: диплом или пара курсовых</p>
@@ -200,7 +200,7 @@
       <div class="pl-ch-row"><span>«Салон+» за 999 ₽</span><span class="dots"></span><span class="win">вернёт <b id="plWinPlus">2 000 ₽</b></span></div>
       <div class="pl-ch-row"><span>«Про» за 2 690 ₽</span><span class="dots"></span><span class="win">вернёт <b id="plWinPro">7 000 ₽</b></span></div>
       <div class="pl-ch-row"><span>«Сессия» за 2 990 ₽</span><span class="dots"></span><span class="win">вернёт <b id="plWinSes">2 800 ₽</b></span></div>
-      <p class="pl-verdict" id="plVerdict">Выгоднее всего — <b>«Про»</b>: возвращает 7 000 ₽ выгоды, окупается в 2,6 раза. И это не считая тренажёра защиты и приоритета.</p>
+      <p class="pl-verdict" id="plVerdict">Предварительный расчёт: <b>«Про»</b> может дать до 7 000 ₽ скидками и бонусами при выбранном сценарии.</p>
     </div>
   </section>
 
@@ -212,13 +212,13 @@
       <p class="pl-calc-sub">Кошелёк-аванс: пополняете один раз — этапы любых заказов потом оплачиваются в один клик, без карты и ожиданий. Сверху — бонусы к вашему счёту, и чем больше пополнение, тем выше ставка.</p>
       <input class="pl-range" type="range" id="dpRange" min="20000" max="60000" step="5000" value="30000" aria-label="Сумма пополнения">
       <p class="pl-sum" id="dpSum">30 000 ₽</p>
-      <p class="pl-orders" id="dpNote">хватит на старт диплома и курсовую рядом</p>
+      <p class="pl-orders" id="dpNote">можно распределить между позициями нескольких заказов</p>
     </div>
     <div class="pl-check">
       <p class="cap">Квитанция пополнения</p>
       <div class="pl-ch-row"><span>На кошелёк</span><span class="dots"></span><b id="dpMoney">30 000 ₽</b></div>
       <div class="pl-ch-row"><span>Бонусами сверху</span><span class="dots"></span><span class="win"><b id="dpBonus">+3 000</b> <small id="dpPct">(+10%)</small></span></div>
-      <div class="pl-verdict" id="dpVerdict">Итого ценности — <b>33 000 ₽</b>: деньги тратятся на этапы заказов, бонусы дают скидку до 20% на каждый заказ. Чек НПД приходит сразу при пополнении.</div>
+      <div class="pl-verdict" id="dpVerdict">Расчётный баланс — <b>33 000 ₽</b>: деньги расходуются на этапы заказов, бонусы применяются в пределах правил. Платёжный документ зависит от статуса и способа оплаты.</div>
       <a class="btn btn-wax" style="width:100%;justify-content:center;margin-top:14px" href="dashboard.html#wallet">Пополнить в кабинете →</a>
       <p class="after-cta" style="margin-top:8px;text-align:center;font-size:10.5px;color:var(--ink-faint)">от 20 000 до 60 000 ₽ за раз · неиспользованный остаток возвратен · <a class="link" href="loyalty.html">правила</a></p>
     </div>
@@ -236,23 +236,23 @@
       <p>Нет, они складываются: скидка тарифа применяется к каждому заказу сразу, а кэшбэк «Про» приходит бонусами после полной оплаты и тратится на следующий заказ. Оплатить саму подписку бонусами нельзя — она всегда отдельный платёж (<a class="link" href="loyalty.html">правила</a>).</p>
     </details>
     <details class="faq-item">
-      <summary>А если я так и не закажу работу?</summary>
-      <p>Привилегии действуют весь оплаченный срок независимо от заказов: полка Салона открыта, куратор ведёт график сессии, место в очереди закреплено. Но честно: максимум подписка даёт тем, кто заказывает, — на этом и построена её математика.</p>
+      <summary>А если я так и не оформлю заказ?</summary>
+      <p>Доступ к непрерывным привилегиям действует весь оплаченный срок. Количественные услуги предоставляются по запросу и в пределах тарифа; неиспользованные компоненты и возврат рассчитываются по Правилам программы.</p>
     </details>
     <details class="faq-item">
-      <summary>Чем «Сессия под ключ» отличается от «Про»?</summary>
-      <p>«Про» — подписка на выгоду и подготовку к защите, продлевается пока нужна. «Сессия» — разовый штурмовой пакет на 60 дней: бронь места в наборе, замороженные цены и SOS-режим в день сдачи. Их можно сочетать с умом: спросите в боте, что подойдёт вашему графику.</p>
+      <summary>Чем «Сессия с куратором» отличается от «Про»?</summary>
+      <p>«Про» — подписка на выгоду и подготовку к защите, продлевается пока нужна. «Сессия с куратором» — разовый пакет на 60 дней: календарь, бронь консультационных слотов, замороженные цены и срочный канал в день сдачи. Их можно сочетать: спросите в боте, что подойдёт вашему графику.</p>
     </details>
     <details class="faq-item">
       <summary>Как оформить?</summary>
-      <p>В <a class="link" href="dashboard.html#plus">личном кабинете</a> — карта или перевод, чек самозанятого приходит на почту. Либо напишите <a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">боту</a> — он выставит счёт и активирует билет в день оплаты.</p>
+      <p>Откройте <a class="link" href="dashboard.html#plus">личный кабинет</a> или <a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">бот</a>. До оплаты должны быть показаны состав, срок, цена, получатель, способ оплаты и применимый платёжный документ. Активация выполняется в срок из Правил программы.</p>
     </details>
     <p class="pl-legal">Юридические условия — в <a class="link" href="loyalty.html">Правилах программы лояльности</a> (раздел 5) и <a class="link" href="oferta.html">Оферте</a>. Подписка — отдельная услуга мастерской; характер услуг сайта — информационно-консультационный.</p>
   </section>
 
 </main>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Абонемент «Салон+»","provider":{"@id":"https://akademsalon.ru/#org"},"description":"Подписка мастерской: приоритет в очереди, скидка на каждый заказ, кэшбэк бонусами, куратор сессии, полка материалов.","areaServed":{"@type":"Country","name":"Россия"},"offers":[{"@type":"Offer","name":"Салон+ · семестр","price":"999","priceCurrency":"RUB","url":"https://akademsalon.ru/plus.html"},{"@type":"Offer","name":"Салон+ Про · семестр","price":"2690","priceCurrency":"RUB","url":"https://akademsalon.ru/plus.html"},{"@type":"Offer","name":"Сессия под ключ · 60 дней","price":"2990","priceCurrency":"RUB","url":"https://akademsalon.ru/plus.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Абонемент «Салон+»","provider":{"@id":"https://akademsalon.ru/#org"},"description":"Подписка мастерской: приоритет в очереди, скидка на каждый заказ, кэшбэк бонусами, куратор сессии, полка материалов.","areaServed":{"@type":"Country","name":"Россия"},"offers":[{"@type":"Offer","name":"Салон+ · семестр","price":"999","priceCurrency":"RUB","url":"https://akademsalon.ru/plus.html"},{"@type":"Offer","name":"Салон+ Про · семестр","price":"2690","priceCurrency":"RUB","url":"https://akademsalon.ru/plus.html"},{"@type":"Offer","name":"Сессия с куратором · 60 дней","price":"2990","priceCurrency":"RUB","url":"https://akademsalon.ru/plus.html"}]}</script>
 <script src="assets/js/app.js?v=20260723q"></script>
 <script src="assets/js/extras.js?v=20260723h"></script>
 <script>
@@ -310,8 +310,8 @@
     var proPrice = per === 'm' ? P.pro.m * 5 : P.pro.s;
     var k = (wPro / proPrice).toFixed(1).replace('.', ',');
     document.getElementById('plVerdict').innerHTML = wPro >= proPrice
-      ? 'Выгоднее всего — <b>«Про»</b>: ' + fmt(wPro) + ' ₽ скидкой и бонусами, окупается в ' + k + ' раза. И это не считая тренажёра защиты и приоритета.'
-      : 'При таком объёме хватит <b>«Салон+»</b> за ' + fmt(per === 'm' ? P.plus.m : P.plus.s) + ' ₽ — он вернёт ' + fmt(wPlus) + ' ₽. Вырастет объём — «Про» станет выгоднее.';
+      ? 'В выбранном сценарии <b>«Про»</b> может дать до ' + fmt(wPro) + ' ₽ скидками и бонусами — около ' + k + ' стоимости тарифа.'
+      : 'В выбранном сценарии <b>«Салон+»</b> может дать до ' + fmt(wPlus) + ' ₽ скидки. Итог зависит от числа заказов и рублёвых потолков.';
   }
   if (range) { range.addEventListener('input', calc); }
   drawPrices(); calc();
@@ -320,10 +320,10 @@
   var DR = [[60000, 15], [45000, 12], [30000, 10], [20000, 8]];
   var dp = document.getElementById('dpRange');
   function dpNote(sum) {
-    if (sum < 30000) return 'хватит на старт диплома или курсовую целиком';
-    if (sum < 45000) return 'хватит на старт диплома и курсовую рядом';
-    if (sum < 60000) return 'хватит на магистерскую по этапам';
-    return 'полный выпускной сезон одним пополнением';
+    if (sum < 30000) return 'можно направить на одну или несколько позиций';
+    if (sum < 45000) return 'можно распределить между позициями нескольких заказов';
+    if (sum < 60000) return 'подходит для поэтапной оплаты крупного сопровождения';
+    return 'крупный аванс с распределением по согласованным этапам';
   }
   function dpCalc() {
     if (!dp) return;
@@ -335,8 +335,8 @@
     document.getElementById('dpBonus').textContent = '+' + fmt(bonus);
     document.getElementById('dpPct').textContent = '(+' + pct + '%)';
     document.getElementById('dpNote').textContent = dpNote(sum);
-    document.getElementById('dpVerdict').innerHTML = 'Итого ценности — <b>' + fmt(sum + bonus) +
-      ' ₽</b>: деньги тратятся на этапы заказов, бонусы дают скидку до 20% на каждый заказ. Чек НПД приходит сразу при пополнении.';
+    document.getElementById('dpVerdict').innerHTML = 'Расчётный баланс — <b>' + fmt(sum + bonus) +
+      ' ₽</b>: деньги тратятся на этапы заказов, бонусы применяются в пределах правил. Платёжный документ зависит от статуса и способа оплаты.';
   }
   if (dp) { dp.addEventListener('input', dpCalc); dpCalc(); }
 })();

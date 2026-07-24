@@ -13,9 +13,9 @@ function initGodEye() {
   if (!S || !S.api || !root) return;
 
   var ST_META = {
-    new: ['🆕', 'Новая'], priced: ['💰', 'Цена предложена'], prepay: ['⏳', 'Ждёт предоплату'],
-    work: ['🔨', 'В работе'], check: ['📤', 'На проверке'], fix: ['✏️', 'Правки'],
-    done: ['✅', 'Завершён'], cancel: ['🚫', 'Отменён']
+    new: ['🆕', 'Новая'], priced: ['💰', 'Спецификация предложена'], prepay: ['⏳', 'Ждёт первого платежа'],
+    work: ['🔨', 'Исполнение позиций'], check: ['📤', 'Результат на проверке'], fix: ['✏️', 'Корректировка результата'],
+    done: ['✅', 'Результат принят'], cancel: ['🚫', 'Закрыт']
   };
   var PLAN_LBL = { 1: 'Одним платежом · целиком', 2: '2 части · 50/50', 3: '3 части · 30/40/30' };
   var PL_ST = { paid: ['оплачен ✓', 'pl-paid'], claimed: ['клиент отметил — сверьте!', 'pl-claimed'],
@@ -27,33 +27,34 @@ function initGodEye() {
     price_accepted: 'клиент принял цену', payment_marked: 'клиент отметил оплату',
     payment_unmarked: 'клиент снял отметку об оплате', payment_confirmed: 'оплата подтверждена',
     payment_link: 'выдана ссылка на оплату', receipt: 'клиент приложил чек',
-    delivered: 'работа сдана на проверку', part_accepted: 'часть принята',
-    work_accepted: 'работа принята', accept_wait_pay: 'принято — ждём финальный платёж',
-    fix_requested: 'клиент запросил правки', client_msg: 'сообщение клиента',
+    delivered: 'результат передан на проверку', part_accepted: 'результат позиции принят',
+    work_accepted: 'результат принят, акт приёмки зафиксирован', accept_wait_pay: 'результат принят — ждём финальный платёж',
+    fix_requested: 'клиент запросил корректировку по критериям', client_msg: 'сообщение клиента',
     admin_msg: 'ваш ответ клиенту', admin_file: 'ваш файл клиенту',
     bonus_spent: 'клиент применил бонусы', bonus_canceled: 'бонусы возвращены на счёт',
     cancel_reason: 'причина отказа', client_archive: 'клиент: архив дела',
     admin_archive: 'архив мастера', review: 'отзыв клиента',
     paused: 'дело поставлено на паузу', unpaused: 'пауза снята',
     cancel_request: 'клиент просит закрыть дело', client_pin: 'клиент закрепил дело',
-    final_ready: 'финал готов — клиенту выставлен остаток',
-    part_ready: 'часть готова — клиенту выставлен счёт этапа',
+    final_ready: 'финальный пакет результата подготовлен — клиенту выставлен остаток',
+    part_ready: 'результат этапа подготовлен — клиенту выставлен счёт',
     pay_reminder: 'напоминание клиенту об оплате',
     pay_silent: 'клиент молчит по счёту — нужен личный контакт',
     delivered_unpaid: '⚠️ часть передана без оплаты этапа',
     admin_ping_pay: 'алерт: счёт без движения',
-    wait_checks: 'клиент ждёт проверок (научрук/предзащита)',
+    wait_checks: 'клиент продолжает первичную проверку результата',
     spec_sent: 'спецификация отправлена клиенту',
     broadcast: 'рассылка клиентам', defense_offered: 'предложены услуги к защите',
     plan_set: 'план оплаты изменён', tg_linked: 'клиент привязал Telegram',
     admin_ping: 'напоминание о заявке', client_followup: 'напоминание клиенту о проверке',
-    deadline1: 'скоро срок сдачи', deadline3: 'до срока 3 дня',
-    fix_ack: 'правки взяты в работу — клиенту сообщили',
+    deadline1: 'скоро срок результата', deadline3: 'до срока результата 3 дня',
+    fix_ack: 'корректировка взята в работу — клиенту сообщили',
     review_nudge: 'напоминание клиенту о проверке части',
     accept_warn: 'предупреждение об авто-приёмке части'
   };
-  var STATUS_WORD = { new: 'новая', priced: 'цена предложена', prepay: 'ждёт предоплату',
-    work: 'в работе', check: 'на проверке', fix: 'правки', done: 'завершён', cancel: 'закрыт' };
+  var STATUS_WORD = { new: 'новая', priced: 'спецификация предложена', prepay: 'ждёт первого платежа',
+    work: 'исполнение позиций', check: 'результат на проверке', fix: 'корректировка результата',
+    done: 'результат принят', cancel: 'закрыт' };
   function evLabel(kind) { return EV_LABEL[kind] || kind; }
   function evData(e) {
     var d = String(e.data == null ? '' : e.data);
@@ -1141,7 +1142,7 @@ function initGodEye() {
       if (left !== null && left < 0) {
         r = { sc: 100 + Math.min(-left, 30), ic: '🔥', why: 'срок вышел ' + (-left) + ' дн назад', cls: 'fire' };
       } else if (left !== null && left <= 2 && 'work check fix prepay priced new'.indexOf(o.status) >= 0) {
-        r = { sc: 96 - left, ic: '⏳', why: left === 0 ? 'сдача сегодня' : left === 1 ? 'сдача завтра' : 'сдача через 2 дня', cls: 'fire' };
+        r = { sc: 96 - left, ic: '⏳', why: left === 0 ? 'срок результата сегодня' : left === 1 ? 'срок результата завтра' : 'срок результата через 2 дня', cls: 'fire' };
       } else if (o.claimed) {
         r = { sc: 85, ic: '💳', why: 'клиент отметил оплату — сверьте и подтвердите', cls: 'act' };
       } else if (o.status === 'new') {
@@ -1430,7 +1431,7 @@ function initGodEye() {
       if (o.deadline_date && 'done cancel'.indexOf(o.status) < 0) {
         var left = Math.ceil((new Date(o.deadline_date + 'T23:59:59') - new Date()) / 86400000);
         if (!isNaN(left)) {
-          var word = left < 0 ? 'срок вышел' : left === 0 ? 'сдача сегодня' : left + ' дн.';
+          var word = left < 0 ? 'срок вышел' : left === 0 ? 'срок результата сегодня' : left + ' дн.';
           dl = ' · <span class="' + (left <= 0 ? 'r-due-hot' : '') + '">⏳ ' + word + '</span>';
         }
       }
@@ -1534,22 +1535,22 @@ function initGodEye() {
     if (o.final_ready && 'work fix'.indexOf(o.status) >= 0) {
       if (o.due_now && o.due_now.amount > 0) {
         var fAge = invoiceAgeDays(o);
-        return [fAge >= 2 ? 'due' : '', '🏁 Финал объявлен готовым — клиент получил счёт на остаток ' +
+        return [fAge >= 2 ? 'due' : '', '🏁 Финальный пакет результата подготовлен — клиент получил счёт на остаток ' +
           money(o.due_now.amount) + ' ₽' +
           (fAge >= 1 ? ' <b>ещё ' + fAge + ' дн. назад — не оплачен</b>' : '') +
           '. Файл придержан. Поторопить: кнопка «🔔 Напомнить об оплате» ниже (авто-напоминания идут раз в день, до 3 раз).'];
       }
-      return ['due', '🏁 <b>Остаток получен — передайте финальную часть.</b> Сдайте файлом ниже, клиент получит кнопки приёмки.'];
+      return ['due', '🏁 <b>Остаток получен — передайте финальную часть.</b> Загрузите результат ниже, клиент получит кнопки приёмки.'];
     }
     if (o.part_ready && 'work fix'.indexOf(o.status) >= 0) {
       if (o.due_now && o.due_now.amount > 0) {
         var pAge = invoiceAgeDays(o);
-        return [pAge >= 2 ? 'due' : '', '📘 Часть ' + o.part_ready + ' объявлена готовой — клиент получил счёт ' +
+        return [pAge >= 2 ? 'due' : '', '📘 Результат части ' + o.part_ready + ' подготовлен — клиент получил счёт ' +
           money(o.due_now.amount) + ' ₽ (' + esc((o.due_now.label || 'этап').toLowerCase()) + ')' +
           (pAge >= 1 ? ' <b>ещё ' + pAge + ' дн. назад — не оплачен</b>' : '') +
           '. Файл придержан. Поторопить: кнопка «🔔 Напомнить об оплате» ниже (авто-напоминания идут раз в день, до 3 раз).'];
       }
-      return ['due', '📘 <b>Оплата за часть ' + o.part_ready + ' получена — передайте её.</b> Сдайте файлом ниже, клиент получит кнопки приёмки.'];
+      return ['due', '📘 <b>Оплата за часть ' + o.part_ready + ' получена — передайте её результат.</b> Загрузите файл ниже, клиент получит кнопки приёмки.'];
     }
     if (o.due_now && o.due_now.amount > 0 && 'check work'.indexOf(o.status) >= 0)
       return ['due', '💳 <b>Созрел неоплаченный этап: ' + money(o.due_now.amount) + ' ₽ (' +
@@ -1558,7 +1559,7 @@ function initGodEye() {
     if (o.status === 'new')
       return ['due', '💰 <b>Новая заявка.</b> Изучите требования и отправьте предложение с ценой — клиент получит его в Telegram и в кабинете.'];
     if (o.status === 'fix')
-      return ['due', '✏️ <b>Клиент запросил правки' + ((o.stages_total || 1) > 1 ? ' по части ' + o.stage : '') + '.</b> Замечания — в переписке. Готовую версию сдайте файлом с пометкой «сдача» — клиент снова получит кнопки приёмки.' +
+      return ['due', '✏️ <b>Клиент запросил корректировку' + ((o.stages_total || 1) > 1 ? ' по части ' + o.stage : '') + '.</b> Замечания — в переписке. Передайте обновлённую версию как результат — клиент снова получит кнопки приёмки.' +
         (o.due_now && o.due_now.amount > 0 ? ' <b>Этап при этом не оплачен (' + money(o.due_now.amount) + ' ₽)</b> — исправления передавать можно, но напомните об оплате («🔔» ниже).' : '') +
         ' <button type="button" class="btn btn-line" id="agFixAck" style="margin-top:8px">🛠 Взял в работу — сообщить клиенту</button>'];
     if (o.status === 'priced')
@@ -1566,9 +1567,9 @@ function initGodEye() {
     if (o.status === 'prepay')
       return ['', '⏳ Ждём предоплату. Если клиент оплатил и отметил — здесь появится кнопка подтверждения.'];
     if (o.status === 'work')
-      return ['', '🔨 В работе' + ((o.stages_total || 1) > 1 ? ': часть ' + o.stage + ' из ' + o.stages_total : '') + '. Когда будет готово — сдайте файлом ниже.'];
+      return ['', '🔨 Исполнение' + ((o.stages_total || 1) > 1 ? ': часть ' + o.stage + ' из ' + o.stages_total : '') + '. Подготовленный результат передайте файлом ниже.'];
     if (o.status === 'check')
-      return ['', '📤 ' + ((o.stages_total || 1) > 1 ? 'Часть ' + o.stage + ' из ' + o.stages_total : 'Работа') + ' на проверке у клиента — он примет или запросит правки.'];
+      return ['', '📤 ' + ((o.stages_total || 1) > 1 ? 'Результат части ' + o.stage + ' из ' + o.stages_total : 'Результат') + ' на проверке у клиента — он примет его или запросит корректировку по критериям.'];
     if (o.status === 'cancel')
       return ['', '🚫 Заявка закрыта' + (o.cancel_reason ? ': «' + esc(o.cancel_reason) + '»' : '') + '. Можно возобновить — клиент получит предложение заново.'];
     return null;
@@ -1652,17 +1653,41 @@ function initGodEye() {
     if (!st.offnew) return head + linkRow + claimRow + btn + '</div>';
 
     var p = off || {};
+    var sd = specificationSeed(p);
     var form =
       '<div class="ag-card ag-off-form" style="max-height:none;margin-top:12px">' +
       '<div style="display:grid;gap:8px">' +
       '<input type="text" id="agOffName" maxlength="60" class="ag-inp" placeholder="Имя для обращения — только имя" value="' + esc(p.greet_name || '') + '">' +
       '<p class="ag-hint">Фамилию, вуз и научрука не пишем: ссылку могут переслать, а на предоплатной странице лишних данных быть не должно (Политика п. 4.4).</p>' +
       '<textarea id="agOffIntro" rows="3" maxlength="400" class="ag-inp" placeholder="Письмо клиенту, 2–3 предложения: «Анна, собрал по нашему вчерашнему разговору…»">' + esc(p.intro || '') + '</textarea>' +
-      '<input type="text" id="agOffVolume" maxlength="120" class="ag-inp" placeholder="Объём — 60–70 страниц" value="' + esc(p.volume || '') + '">' +
-      '<input type="text" id="agOffTier" maxlength="120" class="ag-inp" placeholder="Уровень ведения — «Под ключ: сдача по главам, разбор замечаний научрука»" value="' + esc(p.tier_label || '') + '">' +
-      '<input type="text" id="agOffReq" maxlength="200" class="ag-inp" placeholder="Требования одной строкой — методичка, оригинальность от 75%" value="' + esc(p.reqs_short || '') + '">' +
+      '<input type="text" id="agOffVolume" maxlength="120" class="ag-inp" placeholder="Объём исходника или единица услуги — 35 страниц / 2 таблицы" value="' + esc(p.volume || '') + '">' +
+      '<input type="text" id="agOffTier" maxlength="120" class="ag-inp" placeholder="Формат — Диагностика / Редактура / Сопровождение" value="' + esc(p.tier_label || '') + '">' +
+      '<input type="text" id="agOffReq" maxlength="200" class="ag-inp" placeholder="Критерии одной строкой — методичка, перечень проверок, формат результата" value="' + esc(p.reqs_short || '') + '">' +
       '<textarea id="agOffReqFull" rows="3" maxlength="2000" class="ag-inp" placeholder="Полный текст требований (складка на странице)">' + esc(p.reqs_full || '') + '</textarea>' +
-      '<textarea id="agOffTierFull" rows="3" maxlength="2000" class="ag-inp" placeholder="Что входит в уровень ведения целиком (складка)">' + esc(p.tier_full || '') + '</textarea>' +
+      '<textarea id="agOffTierFull" rows="3" maxlength="2000" class="ag-inp" placeholder="Что входит в выбранный формат целиком (складка)">' + esc(p.tier_full || '') + '</textarea>' +
+      '<fieldset class="ag-card" style="display:grid;gap:8px;margin:4px 0;padding:14px"><legend class="caps">Поля каждой строки спецификации</legend>' +
+        '<p class="ag-hint">Один заказ — один документ. Эти значения попадут в каждую строку сметы; результат и цена сохраняются отдельно для каждой позиции.</p>' +
+        '<select id="agOffContour" class="ag-inp" aria-label="Договорный контур">' +
+          '<option value="A"' + (sd.contract_contour === 'A' ? ' selected' : '') + '>A · академическая консультация и редактура исходника клиента</option>' +
+          '<option value="B1"' + (sd.contract_contour === 'B1' ? ' selected' : '') + '>B1 · авторский материал вне аттестации, лицензия</option>' +
+          '<option value="B2"' + (sd.contract_contour === 'B2' ? ' selected' : '') + '>B2 · авторский материал вне аттестации, отчуждение права</option>' +
+        '</select>' +
+        '<textarea id="agOffPurpose" rows="2" maxlength="1000" class="ag-inp" placeholder="Разрешённая цель использования">' + esc(sd.permitted_purpose) + '</textarea>' +
+        '<textarea id="agOffDeliverable" rows="2" maxlength="1000" class="ag-inp" placeholder="Результат / передаваемый артефакт">' + esc(sd.deliverable) + '</textarea>' +
+        '<div class="ag-actrow"><input id="agOffInput" maxlength="500" class="ag-inp" placeholder="Исходник клиента" value="' + esc(sd.input_description) + '">' +
+          '<input id="agOffInputVersion" maxlength="120" class="ag-inp" placeholder="Версия исходника" value="' + esc(sd.input_version) + '"></div>' +
+        '<textarea id="agOffInclusions" rows="2" maxlength="1000" class="ag-inp" placeholder="Включено — по одной операции с новой строки">' + esc(sd.inclusions_text) + '</textarea>' +
+        '<textarea id="agOffExclusions" rows="2" maxlength="1000" class="ag-inp" placeholder="Не включено — по одной границе с новой строки">' + esc(sd.exclusions_text) + '</textarea>' +
+        '<textarea id="agOffAcceptance" rows="2" maxlength="1200" class="ag-inp" placeholder="Критерии приёмки — проверяемые признаки результата">' + esc(sd.acceptance_text) + '</textarea>' +
+        '<textarea id="agOffDependencies" rows="2" maxlength="1000" class="ag-inp" placeholder="Зависимости срока — исходники, согласования, внешние данные">' + esc(sd.dependencies_text) + '</textarea>' +
+        '<div class="ag-actrow"><input id="agOffDiscount" type="number" min="0" step="100" class="ag-inp" placeholder="Скидка на строку, ₽" value="' + (sd.discount_amount || '') + '">' +
+          '<input id="agOffPaymentAllocation" maxlength="500" class="ag-inp" placeholder="Распределение платежа по строке" value="' + esc(sd.payment_allocation_text) + '"></div>' +
+        '<div class="ag-actrow"><input id="agOffCorrectionDays" type="number" min="0" max="365" class="ag-inp" placeholder="Окно первичной проверки, дней" value="' + sd.correction_days + '">' +
+          '<input id="agOffIterations" type="number" min="0" max="20" class="ag-inp" placeholder="Добровольных итераций" value="' + sd.iterations + '"></div>' +
+        '<div class="ag-actrow"><input id="agOffActualAuthor" maxlength="300" class="ag-inp" placeholder="Фактический автор исходника / результата" value="' + esc(sd.actual_author) + '">' +
+          '<input id="agOffRightsMode" maxlength="500" class="ag-inp" placeholder="Режим прав" value="' + esc(sd.rights_mode) + '"></div>' +
+        '<textarea id="agOffPerformers" rows="2" maxlength="1000" class="ag-inp" placeholder="Третьи лица / соисполнители и их роль">' + esc(sd.performers_text) + '</textarea>' +
+      '</fieldset>' +
       '<div class="ag-chips"><span class="caps">Что входит — добавить одним кликом</span>' +
         OFF_INCLS.map(function (t) { return offChip('incl', t); }).join('') + '</div>' +
       '<textarea id="agOffIncl" rows="5" class="ag-inp" placeholder="Что входит — и чего нет. Строка: «Отчёт о проверках | да». У невключённого можно дописать цену — «Презентация к защите | нет | 6000» — лист покажет её тихим предложением «можно довложить»">' + esc(jl2t(p.incl, 'in')) + '</textarea>' +
@@ -1690,7 +1715,7 @@ function initGodEye() {
           '<button type="button" class="ag-est-add" id="agOffCustom">+ Своя позиция</button></div>' +
           '<div class="ag-est-rows" id="agOffRows"></div>' +
           '<details class="ag-est-raw"><summary>Ручная правка строк</summary>' +
-          '<textarea id="agOffLedger" rows="4" class="ag-inp" placeholder="Название | 38000">' + esc(jl2t(p.ledger, 'a')) + '</textarea></details>' +
+          '<textarea id="agOffLedger" rows="4" class="ag-inp" placeholder="Название позиции | 38000">' + esc(jl2t(p.ledger, 'a')) + '</textarea></details>' +
         '</div>' +
         '<div class="ag-offsum" id="agOffSum"></div>' +
       '</section>' +
@@ -1758,32 +1783,178 @@ function initGodEye() {
     }).filter(Boolean);
   }
 
+  /* Расширенная строка спецификации. Старые t/a, label/final_price остаются
+     нейтральными aliases: старый PDF и API продолжают читать ту же смету,
+     а новые клиенты получают договорный профиль каждой позиции. */
+  function specList(v) {
+    if (Array.isArray(v)) return v.filter(Boolean).map(String);
+    return String(v || '').split(/\n|;/).map(function (x) { return x.trim(); }).filter(Boolean);
+  }
+  function specInputValue(id, fallback) {
+    var el = document.getElementById(id);
+    return el ? String(el.value || '').trim() : String(fallback || '').trim();
+  }
+  function specificationSeed(raw) {
+    raw = raw || {};
+    var lines = raw.specification_lines ||
+      (raw.specification && raw.specification.lines) || [];
+    var x = lines[0] || {};
+    var inp = x.input || {};
+    var contour = x.contract_contour || raw.contract_contour || 'A';
+    var isA = contour === 'A';
+    return {
+      contract_contour: contour,
+      permitted_purpose: x.permitted_purpose || raw.permitted_purpose ||
+        (isA ? 'Консультация, проверка и редактура самостоятельного материала клиента; не для подмены автора аттестационной работы.'
+             : 'Использование авторского материала вне учебной или научной аттестации в согласованных каналах.'),
+      deliverable: x.deliverable || x.result || '',
+      input_description: inp.description || x.input_description ||
+        (isA ? 'Черновик, данные и требования клиента' : 'Техническое задание и материалы заказчика'),
+      input_version: inp.version || x.input_version || 'версия на дату передачи',
+      inclusions_text: (x.inclusions || []).join('\n'),
+      exclusions_text: (x.exclusions || (isA
+        ? ['создание аттестационной работы вместо клиента', 'гарантия процента, оценки, сдачи или защиты']
+        : ['использование в учебной или научной аттестации'])).join('\n'),
+      acceptance_text: (x.acceptance_criteria ||
+        ['передан согласованный артефакт', 'результат соответствует операциям и границам строки']).join('\n'),
+      dependencies_text: (x.dependencies ||
+        ['срок начинается после получения полного комплекта исходников']).join('\n'),
+      discount_amount: (x.discount && x.discount.amount) || x.discount_amount || 0,
+      payment_allocation_text: Array.isArray(x.payment_allocation)
+        ? x.payment_allocation.join('\n') : (x.payment_allocation || 'по плану оплаты заказа'),
+      correction_days: (x.correction_window && x.correction_window.days != null)
+        ? x.correction_window.days : (x.correction_window_days != null ? x.correction_window_days : 7),
+      iterations: x.iterations != null ? x.iterations : 1,
+      actual_author: x.actual_author || (isA ? 'Клиент — автор исходного материала' : 'Исполнитель или указанный в строке привлечённый автор'),
+      rights_mode: x.rights_mode || (contour === 'B2'
+        ? 'Отчуждение исключительного права после полной оплаты'
+        : contour === 'B1' ? 'Лицензия в пределах согласованных способов использования'
+        : 'Права на исходник клиента сохраняются у клиента; исполнитель отвечает за свои редакторские материалы'),
+      performers_text: Array.isArray(x.third_party_performers)
+        ? x.third_party_performers.join('\n') : (x.third_party_performers || 'не привлекаются без согласования роли')
+    };
+  }
+  function specificationDefaultsFromForm(raw) {
+    var seed = specificationSeed(raw);
+    var contour = specInputValue('agOffContour', seed.contract_contour) || 'A';
+    var actual = specInputValue('agOffActualAuthor', seed.actual_author);
+    if (!actual) actual = contour === 'A' ? 'Клиент — автор исходного материала'
+      : 'Исполнитель или указанный в строке привлечённый автор';
+    return {
+      contract_contour: contour,
+      permitted_purpose: specInputValue('agOffPurpose', seed.permitted_purpose),
+      deliverable: specInputValue('agOffDeliverable', seed.deliverable),
+      input_description: specInputValue('agOffInput', seed.input_description),
+      input_version: specInputValue('agOffInputVersion', seed.input_version),
+      inclusions: specList(specInputValue('agOffInclusions', seed.inclusions_text)),
+      exclusions: specList(specInputValue('agOffExclusions', seed.exclusions_text)),
+      acceptance_criteria: specList(specInputValue('agOffAcceptance', seed.acceptance_text)),
+      dependencies: specList(specInputValue('agOffDependencies', seed.dependencies_text)),
+      discount_amount: parseInt(specInputValue('agOffDiscount', seed.discount_amount), 10) || 0,
+      payment_allocation: specList(specInputValue('agOffPaymentAllocation', seed.payment_allocation_text)),
+      correction_days: Math.max(0, parseInt(specInputValue('agOffCorrectionDays', seed.correction_days), 10) || 0),
+      iterations: Math.max(0, parseInt(specInputValue('agOffIterations', seed.iterations), 10) || 0),
+      actual_author: actual,
+      rights_mode: specInputValue('agOffRightsMode', seed.rights_mode),
+      third_party_performers: specList(specInputValue('agOffPerformers', seed.performers_text))
+    };
+  }
+  function buildSpecificationLines(ledger, cfg) {
+    cfg = cfg || {};
+    return (ledger || []).map(function (r, i) {
+      var amount = Number(r.a || r.final_price || 0);
+      var label = r.t || r.label || ('Позиция ' + (i + 1));
+      var result = r.result || r.deliverable || cfg.deliverable ||
+        ('Результат по позиции «' + label + '» в согласованном формате');
+      var inclusions = specList(r.inclusions || cfg.inclusions);
+      if (!inclusions.length) inclusions = ['операции и объём, прямо названные в позиции'];
+      var exclusions = specList(r.exclusions || cfg.exclusions);
+      var criteria = specList(r.acceptance_criteria || cfg.acceptance_criteria);
+      if (!criteria.length) criteria = ['передан согласованный артефакт', 'результат соответствует описанию позиции'];
+      var dependencies = specList(r.dependencies || cfg.dependencies);
+      var allocation = specList(r.payment_allocation || cfg.payment_allocation);
+      var correction = r.correction_window || {};
+      var correctionDays = correction.days != null ? correction.days
+        : (r.correction_window_days != null ? r.correction_window_days
+          : (cfg.correction_days == null ? 7 : cfg.correction_days));
+      var iterations = r.iterations != null ? r.iterations
+        : (cfg.iterations == null ? 1 : cfg.iterations);
+      return {
+        id: r.id || ('line-' + String(i + 1).padStart(2, '0')),
+        position: r.position || i + 1,
+        contract_contour: r.contract_contour || cfg.contract_contour || 'A',
+        permitted_purpose: r.permitted_purpose || cfg.permitted_purpose || '',
+        result: result,
+        deliverable: result,
+        input: {
+          description: (r.input && r.input.description) || r.input_description || cfg.input_description || '',
+          version: (r.input && r.input.version) || r.input_version || cfg.input_version || 'версия на дату передачи'
+        },
+        input_version: (r.input && r.input.version) || r.input_version || cfg.input_version || 'версия на дату передачи',
+        inclusions: inclusions,
+        exclusions: exclusions,
+        acceptance_criteria: criteria,
+        deadline: {
+          text: r.deadline_text || cfg.deadline_text || '',
+          date: r.deadline_date || cfg.deadline_date || ''
+        },
+        deadline_text: r.deadline_text || cfg.deadline_text || '',
+        deadline_date: r.deadline_date || cfg.deadline_date || '',
+        dependencies: dependencies,
+        price: { amount: amount, currency: 'RUB' },
+        price_amount: amount,
+        discount: { amount: Number((r.discount && r.discount.amount) || r.discount_amount || cfg.discount_amount || 0), currency: 'RUB' },
+        discount_amount: Number((r.discount && r.discount.amount) || r.discount_amount || cfg.discount_amount || 0),
+        payment_allocation: allocation.length ? allocation : ['по плану оплаты заказа'],
+        correction_window: {
+          days: correctionDays,
+          starts: correction.starts || 'с момента передачи результата',
+          scope: correction.scope || 'первичная проверка; подтверждённые недостатки исправляются по закону независимо от добровольных итераций'
+        },
+        correction_window_days: correctionDays,
+        iterations: iterations,
+        actual_author: r.actual_author || cfg.actual_author || '',
+        rights_mode: r.rights_mode || cfg.rights_mode || '',
+        third_party_performers: specList(r.third_party_performers || cfg.third_party_performers),
+        acceptance: {
+          status: (r.acceptance && r.acceptance.status) || r.acceptance_status || 'pending',
+          act: (r.acceptance && r.acceptance.act) || 'фиксируется отдельно по результату этой позиции'
+        },
+        /* совместимые aliases */
+        t: label,
+        a: amount,
+        label: label,
+        final_price: amount
+      };
+    });
+  }
+
   /* ── конструктор v3: каталог работ/услуг и состав — строки в один клик.
      Заявка спокойно несёт НЕСКОЛЬКО работ и услуг разом: каждая — строка
      сметы; «включено» и «можно довложить» — строки листа состава. ── */
   var OFF_CATS = [
-    ['all', 'Все'], ['work', 'Работы'], ['edit', 'Редактура'],
-    ['format', 'Оформление'], ['defense', 'Защита'], ['support', 'Консультации']
+    ['all', 'Все'], ['work', 'Академическая помощь'], ['edit', 'Редактура'],
+    ['format', 'Оформление'], ['defense', 'Подготовка выступления'], ['support', 'Консультации']
   ];
   var OFF_CATALOG = [
-    { k:'work', c:'work', m:'КР', t:'Курсовая работа', s:'авторские материалы и сопровождение', q:'курсач курсовик' },
-    { k:'work', c:'work', m:'ВКР', t:'Дипломная работа · ВКР', s:'бакалавриат и специалитет', q:'диплом дипломная выпускная' },
-    { k:'work', c:'work', m:'МАГ', t:'Магистерская диссертация', s:'исследование и защита', q:'магистр магистратура' },
-    { k:'work', c:'work', m:'ГЛ', t:'Глава диссертации', s:'отдельный исследовательский блок', q:'диссер глава кандидатская' },
-    { k:'work', c:'work', m:'ПР', t:'Отчёт по практике', s:'отчёт, дневник и задание', q:'практика дневник' },
-    { k:'work', c:'work', m:'СТ', t:'Научная статья', s:'статья для журнала или сборника', q:'вак ринц публикация' },
-    { k:'work', c:'work', m:'РФ', t:'Реферат · эссе', s:'компактная учебная работа', q:'эссе доклад' },
-    { k:'svc', c:'support', m:'ПЛ', t:'Разбор плана', s:'структура и дорожная карта', a:3000, q:'план структура' },
-    { k:'svc', c:'edit', m:'AI', t:'Чистка текста от следов ИИ', s:'стилистика и естественность текста', a:2500, q:'ии ai нейросеть текст' },
-    { k:'svc', c:'edit', m:'РЗ', t:'Разбор готовой работы', s:'аудит, замечания и план правок', a:2500, q:'проверка аудит готовая' },
+    { k:'work', c:'work', m:'КР', t:'Разбор и редактура курсовой', s:'исходный текст клиента, консультации и правки', q:'курсач курсовик аудит' },
+    { k:'work', c:'work', m:'ВКР', t:'Сопровождение ВКР', s:'аудит и редактура самостоятельного материала клиента', q:'диплом дипломная выпускная консультация' },
+    { k:'work', c:'work', m:'МАГ', t:'Сопровождение магистерского исследования', s:'методология, редактура и консультации', q:'магистр магистратура' },
+    { k:'work', c:'work', m:'ГЛ', t:'Редактура главы исследования', s:'отдельный блок исходного текста клиента', q:'диссер глава кандидатская' },
+    { k:'work', c:'work', m:'ПР', t:'Разбор отчёта по практике', s:'редактура отчёта, дневника и приложений клиента', q:'практика дневник' },
+    { k:'work', c:'work', m:'СТ', t:'Научная редактура статьи', s:'проверка аргументации и требований издания', q:'вак ринц публикация' },
+    { k:'work', c:'work', m:'РФ', t:'Консультация по реферату · эссе', s:'разбор структуры и редактура исходника', q:'эссе доклад' },
+    { k:'svc', c:'support', m:'ПЛ', t:'Разбор задачи и плана', s:'структура и дорожная карта самостоятельной работы', a:3000, q:'план структура' },
+    { k:'svc', c:'edit', m:'ЛР', t:'Литературная редактура', s:'стилистика, логика и естественность текста клиента', a:2500, q:'ии ai нейросеть текст редактура' },
+    { k:'svc', c:'edit', m:'ДГ', t:'Диагностика черновика', s:'аудит, замечания и карта правок', a:2500, q:'проверка аудит черновик' },
     { k:'svc', c:'format', m:'НК', t:'Нормоконтроль по методичке', s:'оформление и требования вуза', a:5000, q:'гост оформление методичка' },
-    { k:'svc', c:'defense', m:'ЗЩ', t:'Презентация и речь к защите', s:'слайды и доклад', a:6000, q:'защита презентация речь доклад слайды' },
-    { k:'svc', c:'defense', m:'PRO', t:'К защите под ключ', s:'презентация, речь и нормоконтроль', a:9500, q:'защита полный комплект' },
+    { k:'svc', c:'defense', m:'ВЫ', t:'Редактура доклада и слайдов', s:'правки в материалах клиента и репетиция ответов', a:6000, q:'защита презентация речь доклад слайды репетиция' },
+    { k:'svc', c:'defense', m:'PRO', t:'Пакет подготовки к выступлению', s:'редактура доклада и слайдов клиента, репетиция самостоятельных ответов', a:9500, q:'защита выступление комплект' },
     { k:'svc', c:'support', m:'1Ч', t:'Репетиторство · консультация', s:'один час с мастером', a:3000, q:'репетитор час консультация созвон' }
   ];
-  var OFF_INCLS = ['Работа по вашему материалу', 'Правки по замечаниям', 'Отчёт о проверках',
-                   'Презентация к защите', 'Речь к защите', 'Оформление по ГОСТ и методичке',
-                   'Сопровождение до самой защиты'];
+  var OFF_INCLS = ['Работа с исходником клиента', 'Видимые редакторские правки', 'Карта замечаний',
+                   'Редактура слайдов клиента', 'Редактура доклада клиента', 'Оформление по ГОСТ и методичке',
+                   'Репетиция самостоятельных ответов'];
   function offCatalogItem(x) {
     return '<button type="button" class="ag-est-item" data-off-add="' + x.k + '" data-off-cat-item="' + x.c +
       '" data-off-search="' + esc((x.t + ' ' + x.s + ' ' + (x.q || '')).toLowerCase()) +
@@ -1953,7 +2124,7 @@ function initGodEye() {
     if ('work check fix done'.indexOf(o.status) < 0 && !(total > 1 && o.price)) return '';
     if ('work check fix'.indexOf(o.status) >= 0) {
       var hp = o.handoff_phase || '';
-      var title = 'Передача работы клиенту';
+      var title = 'Передача результата клиенту';
       var state = '';
       var action = '';
       if (!o.handoff_artifact_id || hp === 'fix_requested') {
@@ -1961,7 +2132,7 @@ function initGodEye() {
           ? 'Клиент прислал замечания. Загрузите исправленный полный документ — новый счёт не создаётся.'
           : 'Загрузите полный документ один раз. Оригинал останется закрытым до принятия защищённой части и оплаты остатка.';
         action = '<label class="btn btn-wax btn-upload">📄 ' +
-          (o.status === 'fix' ? 'Загрузить исправленную версию' : 'Загрузить готовую работу') +
+          (o.status === 'fix' ? 'Загрузить исправленную версию' : 'Загрузить пакет результата') +
           '<input type="file" id="agPreviewFile" multiple accept=".pdf,.doc,.docx,.odt,.rtf,.txt,.ppt,.pptx"></label>';
       } else if (hp === 'master_review') {
         state = 'Версия v' + (o.handoff_version || 1) + ' подготовлена: ' +
@@ -1979,7 +2150,7 @@ function initGodEye() {
         '<span class="sub">версия ' + (o.handoff_version || 0) + '</span></span>' +
         '<p class="ag-note"><b>' + esc(state) + '</b></p>' +
         (action ? '<div class="ag-actrow">' + action + '</div>' : '') +
-        '<p class="ag-note">Можно выбрать сразу работу, презентацию и речь. Для каждого файла создаётся отдельная защищённая копия; чистый пакет уйдёт автоматически только после принятия и оплаты.</p>' +
+        '<p class="ag-note">Можно выбрать сразу основной результат, отредактированные слайды и доклад клиента. Для каждого файла создаётся отдельная защищённая копия; чистый пакет уйдёт автоматически только после принятия и оплаты.</p>' +
         ((o.handoff_files || []).length ? '<p class="ag-note"><b>Пакет:</b> ' +
           o.handoff_files.map(esc).join(' · ') + '</p>' : '') +
         '<p class="ag-note" id="agUpNote" hidden></p></div>';
@@ -2001,22 +2172,22 @@ function initGodEye() {
     var finalStage = total <= 1 || (o.stage || 1) >= total;
     var unpaid = (o.plan || []).some(function (p) { return p.state !== 'paid'; });
     var announced = (o.part_ready || 0) >= (o.stage || 1);
-    /* долг текущей части: в work сдача заблокирована сервером, пока не оплачено
+    /* долг текущей части: в work передача заблокирована сервером, пока не оплачено
        (в fix/check повторная передача той же части свободна — клиент её видел) */
     var debt = debtForPart(o, o.stage || 1);
     var held = o.status === 'work' && debt.amount > 0;
     var finBtn = '';
     if ('work fix'.indexOf(o.status) >= 0 && unpaid) {
       if (finalStage && !o.final_ready)
-        finBtn = '<button type="button" class="btn btn-wax" id="agFinalReady">🏁 Финал готов — счёт на остаток (файл придержать)</button>';
+        finBtn = '<button type="button" class="btn btn-wax" id="agFinalReady">🏁 Финальный результат подготовлен — счёт на остаток</button>';
       else if (!finalStage && !announced)
-        finBtn = '<button type="button" class="btn btn-wax" id="agPartReady">📣 Часть ' + o.stage + ' готова — счёт клиенту (файл придержать)</button>';
+        finBtn = '<button type="button" class="btn btn-wax" id="agPartReady">📣 Результат части ' + o.stage + ' подготовлен — счёт клиенту</button>';
       else if (o.due_now && o.due_now.amount > 0)
         finBtn = '<button type="button" class="btn btn-wax" data-remind-pay="1">🔔 Напомнить об оплате (' + money(o.due_now.amount) + ' ₽)</button>';
     }
     var deliverWord = o.final_ready ? 'финал'
-      : (total > 1 ? (announced ? 'Передать часть ' + o.stage : 'часть ' + o.stage) : 'работу');
-    return '<div class="ag-sec"><span class="caps">Сдача работы' +
+      : (total > 1 ? (announced ? 'Передать часть ' + o.stage : 'результат части ' + o.stage) : 'результат');
+    return '<div class="ag-sec"><span class="caps">Передача и приёмка результата' +
       '<span class="sub">' + (total > 1 ? 'часть ' + o.stage + ' из ' + total + ' · принято ' + (o.parts_done || 0) : '') +
       (o.final_ready ? ' · 🏁 финал придержан до оплаты'
         : (announced && 'work fix'.indexOf(o.status) >= 0 ? ' · 📣 счёт за часть ' + o.part_ready + ' выставлен, файл придержан' : '')) +
@@ -2026,17 +2197,17 @@ function initGodEye() {
         ? '<div class="ag-actrow" style="margin-top:8px">' +
           finBtn +
           '<label class="btn ' + (held ? 'btn-line' : 'btn-wax') + ' btn-upload">📦 ' +
-          (announced && !o.final_ready && total > 1 ? '' : 'Сдать ') + deliverWord + ' файлом' +
+          (announced && !o.final_ready && total > 1 ? '' : 'Передать ') + deliverWord + ' файлом' +
           (held ? ' · этап не оплачен ⚠️' : '') +
           '<input type="file" id="agDeliverFile"></label>' +
           '<label class="btn btn-line btn-upload">🔒 Предпросмотр клиенту<input type="file" id="agPreviewFile" multiple accept=".pdf,.doc,.docx,.odt,.rtf,.txt,.ppt,.pptx"></label>' +
           '<label class="btn btn-line btn-upload">📎 Просто отправить файл<input type="file" id="agPlainFile"></label>' +
-          (o.status !== 'check' ? '<button type="button" class="btn btn-line" id="agDeliverMark">Файлы уже у клиента — зафиксировать сдачу</button>' : '') +
+          (o.status !== 'check' ? '<button type="button" class="btn btn-line" id="agDeliverMark">Файлы уже у клиента — зафиксировать передачу</button>' : '') +
           '</div>' +
           '<p class="ag-note"><b>Правило мастерской: сначала оплата части — потом файл.</b> ' +
-          '«Часть готова / Финал готов» выставляет клиенту счёт этапа; файл передаёте после подтверждения оплаты — придёт напоминание. ' +
-          'Пока этап не оплачен, «Сдать файлом» и «Просто отправить» придерживаются — передать вопреки правилу можно только с отдельным подтверждением. ' +
-          '<b>«🔒 Предпросмотр»</b> — для «покажи работу до оплаты»: оригинал остаётся у вас, клиент получает копию с водяными знаками, её нельзя ни скопировать, ни сдать; счёт этапа приложится сам.</p>'
+          '«Результат части подготовлен / Финальный результат подготовлен» выставляет клиенту счёт этапа; файл передаёте после подтверждения оплаты — придёт напоминание. ' +
+          'Пока этап не оплачен, передача результата и обычного файла придерживается — передать вопреки правилу можно только с отдельным подтверждением. ' +
+          '<b>«🔒 Предпросмотр»</b> показывает защищённую копию до оплаты: оригинал остаётся у вас, а счёт этапа прикладывается автоматически.</p>'
         : '') +
       '<p class="ag-note" id="agUpNote" hidden></p></div>';
   }
@@ -2078,10 +2249,10 @@ function initGodEye() {
   var TPL = [
     ['👋 Взял в работу', 'Добрый день! Заявку получил, изучаю требования — вернусь с оценкой в ближайшее время.'],
     ['❓ Уточнение', 'Добрый день! Чтобы оценить точно, уточните, пожалуйста: '],
-    ['📦 Готово, проверьте', 'Работа готова и отправлена — посмотрите, пожалуйста. Если всё в порядке, нажмите «Принять»; замечания — кнопкой «Нужны правки», исправлю бесплатно.'],
+    ['📦 Результат на проверке', 'Результат передан — проверьте, пожалуйста, по критериям спецификации. Если всё в порядке, нажмите «Принять результат»; замечания по критериям отправьте кнопкой «Нужна корректировка».'],
     ['✏️ Правки принял', 'Замечания получил, всё поправлю — пришлю обновлённую версию и напишу здесь.'],
     ['💳 Про оплату', 'Напомню про оплату этапа — реквизиты в карточке заказа (кнопка «Оплатить»). Как поступит, сразу продолжаю.'],
-    ['🕊 Спасибо', 'Спасибо, что выбрали мастерскую! На связи до самой защиты — если появятся вопросы по работе, пишите прямо сюда.']
+    ['🕊 Спасибо', 'Спасибо, что выбрали мастерскую! Если появятся вопросы по принятому результату или отдельной услуге подготовки к выступлению, пишите прямо сюда.']
   ];
 
   function filesBlock(o) {
@@ -2148,51 +2319,107 @@ function initGodEye() {
   }
 
   function orderItemsBlock(o) {
-    var items = o.items || [];
+    var items = o.specification_lines ||
+      (o.specification && o.specification.lines) ||
+      (o.offer && o.offer.specification_lines) ||
+      (o.offer && o.offer.specification && o.offer.specification.lines) ||
+      o.items || [];
     if (!items.length) return '';
+    var isSpecification = !!(o.specification_lines ||
+      (o.specification && o.specification.lines) ||
+      (o.offer && o.offer.specification_lines) ||
+      (o.offer && o.offer.specification && o.offer.specification.lines));
     var linked = {};
     var byParent = {};
     items.forEach(function (item) {
       var key = item.parent_client_id || '';
       (byParent[key] || (byParent[key] = [])).push(item);
     });
+    function values(v) {
+      if (Array.isArray(v)) return v.filter(Boolean).map(String);
+      return v == null || v === '' ? [] : [String(v)];
+    }
+    function fact(facts, label, value) {
+      var list = values(value);
+      if (list.length) facts.push('<b>' + esc(label) + ':</b> ' + list.map(esc).join(' · '));
+    }
     function itemPrice(item) {
-      var low = item.final_price || item.quote_low || 0;
-      var high = item.final_price || item.quote_high || low;
+      var amount = item.price && item.price.amount != null ? item.price.amount
+        : (item.price_amount != null ? item.price_amount : null);
+      var low = amount != null ? amount : (item.final_price || item.quote_low || item.a || 0);
+      var high = amount != null ? amount : (item.final_price || item.quote_high || low);
       if (!low) return 'без вилки';
       return (low === high ? money(low) : money(low) + '–' + money(high)) + ' ₽';
     }
     function row(item, child) {
       var facts = [];
-      if (item.topic) facts.push('<b>Тема:</b> ' + esc(item.topic));
-      if (item.deadline_text) facts.push('<b>Срок:</b> ' + esc(item.deadline_text));
-      if (item.requirements) facts.push('<b>Требования:</b> ' + esc(item.requirements));
-      if (item.note) facts.push('<b>Комментарий:</b> ' + esc(item.note));
+      var input = item.input || {};
+      var deadline = item.deadline || {};
+      var correction = item.correction_window || {};
+      var discount = item.discount && item.discount.amount != null
+        ? item.discount.amount : item.discount_amount;
+      fact(facts, 'Контур', item.contract_contour);
+      fact(facts, 'Разрешённая цель', item.permitted_purpose);
+      fact(facts, 'Результат', item.deliverable || item.result);
+      fact(facts, 'Исходник', input.description || item.input_description);
+      fact(facts, 'Версия исходника', input.version || item.input_version);
+      fact(facts, 'Включено', item.inclusions);
+      fact(facts, 'Не включено', item.exclusions);
+      fact(facts, 'Критерии приёмки', item.acceptance_criteria);
+      fact(facts, 'Срок результата', deadline.text || item.deadline_text);
+      fact(facts, 'Дата результата', deadline.date || item.deadline_date);
+      fact(facts, 'Зависимости', item.dependencies);
+      if (discount) fact(facts, 'Скидка по строке', money(discount) + ' ₽');
+      fact(facts, 'Платёж по строке', item.payment_allocation);
+      if (correction.days != null || item.correction_window_days != null || item.iterations != null) {
+        var days = correction.days != null ? correction.days : item.correction_window_days;
+        fact(facts, 'Проверка и корректировки',
+          (days != null ? days + ' дн. первичной проверки' : '') +
+          (item.iterations != null ? ' · добровольных итераций: ' + item.iterations : '') +
+          (correction.scope ? ' · ' + correction.scope : ''));
+      }
+      fact(facts, 'Фактический автор', item.actual_author);
+      fact(facts, 'Режим прав', item.rights_mode);
+      fact(facts, 'Третьи лица', item.third_party_performers);
+      if (item.acceptance) {
+        fact(facts, 'Приёмка позиции',
+          [item.acceptance.status, item.acceptance.act].filter(Boolean).join(' · '));
+      }
+      if (item.topic) fact(facts, 'Тема', item.topic);
+      if (item.requirements) fact(facts, 'Требования', item.requirements);
+      if (item.note) fact(facts, 'Комментарий', item.note);
       Object.keys(item.answers || {}).forEach(function (key) {
         var value = item.answers[key];
         if (value !== '' && value != null) facts.push('<b>' + esc(key) + ':</b> ' + esc(value));
       });
+      var label = item.position_label || item.label || item.t || '';
+      var pos = item.position || item.id || '•';
       return '<div class="ag-ci' + (child ? ' child' : '') + '">' +
-        '<span class="ag-ci-no">' + (child ? '↳' : item.position) + '</span>' +
-        '<div class="ag-ci-main"><div><b>' + esc(item.label || '') + '</b>' +
+        '<span class="ag-ci-no">' + (child ? '↳' : esc(pos)) + '</span>' +
+        '<div class="ag-ci-main"><div><b>' + esc(label) + '</b>' +
         ((item.qty || 1) > 1 ? ' × ' + item.qty : '') + '</div>' +
-        (facts.length ? '<details><summary>Анкета и требования · ' + facts.length +
+        (facts.length ? '<details><summary>Условия и критерии позиции · ' + facts.length +
           '</summary><p>' + facts.join('<br>') + '</p></details>' : '') + '</div>' +
         '<span class="ag-ci-price">' + itemPrice(item) + '</span></div>';
     }
     var rows = '';
-    items.filter(function (item) { return item.kind === 'work'; }).forEach(function (work) {
-      rows += row(work, false);
-      (byParent[work.client_id] || []).forEach(function (service) {
-        linked[service.id] = true;
-        rows += row(service, true);
+    if (isSpecification) {
+      items.forEach(function (item) { rows += row(item, false); });
+    } else {
+      items.filter(function (item) { return item.kind === 'work'; }).forEach(function (work) {
+        rows += row(work, false);
+        (byParent[work.client_id] || []).forEach(function (service) {
+          linked[service.id] = true;
+          rows += row(service, true);
+        });
       });
-    });
-    items.filter(function (item) {
-      return item.kind !== 'work' && !linked[item.id];
-    }).forEach(function (service) { rows += row(service, false); });
-    return '<div class="ag-sec ag-compose"><span class="caps">Состав сметы <span class="sub">' +
-      items.length + ' поз.</span></span><div class="ag-ci-list">' + rows + '</div></div>';
+      items.filter(function (item) {
+        return item.kind !== 'work' && !linked[item.id];
+      }).forEach(function (service) { rows += row(service, false); });
+    }
+    return '<div class="ag-sec ag-compose"><span class="caps">Спецификация заказа <span class="sub">один документ · ' +
+      items.length + ' поз.</span></span><p class="ag-note">У каждой позиции свои результат, критерии, срок, цена, порядок корректировок и акт приёмки.</p>' +
+      '<div class="ag-ci-list">' + rows + '</div></div>';
   }
 
   /* быстрые действия мастера: пин, цвет, скрыть, корзина — прямо в шапке дела */
@@ -2716,8 +2943,8 @@ function initGodEye() {
     confirmDlg({
       title: 'Сначала оплата — потом файл',
       text: whatTxt + (deliver
-        ? ' По правилу мастерской выставьте счёт («Часть готова / Финал готов» — файл придержится, клиент получит реквизиты и кассу) или покажите работу «🔒 Предпросмотром». Передать оригинал без оплаты — на ваш риск.'
-        : ' Если это готовая работа — не отправляйте оригинал: выставьте счёт («Часть готова») или пошлите «🔒 Предпросмотр». Отправить как есть (это не сдача) — на ваш риск.'),
+        ? ' По правилу мастерской выставьте счёт («Результат части подготовлен / Финальный результат подготовлен» — файл придержится, клиент получит реквизиты и кассу) или покажите защищённый предпросмотр. Передать оригинал без оплаты — на ваш риск.'
+        : ' Если это результат позиции — не отправляйте оригинал: выставьте счёт за этап или пошлите защищённый предпросмотр. Обычная передача без оплаты — на ваш риск.'),
       okLabel: deliver ? '⚠️ Всё равно передать' : '⚠️ Отправить как есть',
       noLabel: 'Не отправлять', danger: true
     }).then(function (res) { if (res.ok) retry(); });
@@ -2760,8 +2987,8 @@ function initGodEye() {
           if (note) note.textContent = '✅ Пакет из ' + (r.file_count || files.length) + ' файлов подготовлен. Клиент его ещё не видел — откройте все проверочные копии в рабочей ветке и подтвердите отправку.';
           toast('Пакет готов к вашей проверке');
         } else {
-          if (note) note.textContent = deliver ? 'Сдано ✓ — клиент получил кнопки приёмки' : 'Файл у клиента ✓';
-          toast(deliver ? '📦 Сдача зафиксирована' : (r.delivered_tg ? 'Файл доставлен в Telegram ✓' : 'Файл в деле — клиент увидит в кабинете'));
+          if (note) note.textContent = deliver ? 'Передано ✓ — клиент получил кнопки приёмки' : 'Файл у клиента ✓';
+          toast(deliver ? '📦 Передача результата зафиксирована' : (r.delivered_tg ? 'Файл доставлен в Telegram ✓' : 'Файл в деле — клиент увидит в кабинете'));
         }
         if (r.order) { st.card = r.order; drawCard(); }
       })
@@ -3251,6 +3478,23 @@ function initGodEye() {
                   || (st.card && st.card.price) || 0;
       if (!price || price <= 0) { toast('Сначала укажите цену в блоке выше'); return; }
       var offerLedger = t2ledger((document.getElementById('agOffLedger') || {}).value);
+      var existingSpecLines = (st.card && st.card.offer && (
+        st.card.offer.specification_lines ||
+        (st.card.offer.specification && st.card.offer.specification.lines))) || [];
+      offerLedger = offerLedger.map(function (line, i) {
+        var old = existingSpecLines[i] || {};
+        var merged = {};
+        Object.keys(old).forEach(function (key) { merged[key] = old[key]; });
+        merged.t = line.t;
+        merged.a = line.a;
+        merged.label = line.t;
+        merged.final_price = line.a;
+        return merged;
+      });
+      var specCfg = specificationDefaultsFromForm(st.card && st.card.offer);
+      specCfg.deadline_text = (st.card && st.card.deadline_text) || '';
+      specCfg.deadline_date = (st.card && st.card.deadline_date) || '';
+      var offerSpecLines = buildSpecificationLines(offerLedger, specCfg);
       var prepay = parseInt((document.getElementById('agPrepay') || {}).value, 10);
       var stages = parseInt((document.getElementById('agPlanSel') || {}).value, 10);
       var was = st.card && st.card.offer;
@@ -3275,7 +3519,13 @@ function initGodEye() {
           tier_full: (document.getElementById('agOffTierFull') || {}).value || '',
           need_files: (document.getElementById('agOffFiles') || {}).checked ? 1 : 0,
           incl: t2incl((document.getElementById('agOffIncl') || {}).value),
-          ledger: offerLedger,
+          /* ledger остаётся совместимым: t/a читаются старым рендерером,
+             новые поля едут в тех же строках и отдельном v2-контейнере. */
+          ledger: offerSpecLines,
+          specification_lines: offerSpecLines,
+          specification: { version: 2, document_mode: 'single_order_multi_line', lines: offerSpecLines },
+          contract_contour: specCfg.contract_contour,
+          permitted_purpose: specCfg.permitted_purpose,
           rail: t2rail((document.getElementById('agOffRail') || {}).value),
           ttl_days: parseInt((document.getElementById('agOffTtl') || {}).value, 10) || 14
         }).then(function (r) {
@@ -3346,13 +3596,13 @@ function initGodEye() {
     var stb = t.closest('.ag-stbtn');
     if (stb) {
       var stTo = stb.getAttribute('data-st');
-      /* ручной check/done обходит механику сдач: клиент получит «работа
-         готова — примите» без файла или закрытие мимо плана оплат */
+      /* ручной check/done обходит механику передачи: клиент получит запрос
+         приёмки без файла или закрытие мимо плана оплат */
       if (stTo === 'check' || stTo === 'done') {
         confirmDlg({
           title: stTo === 'check' ? 'Перевести в «На проверке» вручную?' : 'Завершить дело вручную?',
           text: stTo === 'check'
-            ? 'Клиент получит «работа готова — посмотрите» с кнопками приёмки. Если файл ещё не передан, он увидит пустую проверку. Для сдачи файла с придержкой до оплаты пользуйтесь блоком «Сдача работы» — он всё сделает по правилам.'
+            ? 'Клиент получит запрос проверить результат с кнопками приёмки. Если файл ещё не передан, он увидит пустую проверку. Для передачи файла с придержкой до оплаты пользуйтесь блоком «Передача и приёмка результата».'
             : 'Дело закроется мимо плана оплат и приёмки. Обычно завершение происходит само: клиент принимает финал после полной оплаты. Продолжайте, только если понимаете, зачем.',
           okLabel: 'Всё равно перевести', noLabel: 'Отмена', danger: true
         }).then(function (res) {
@@ -3376,9 +3626,9 @@ function initGodEye() {
     }
     if (t.closest('#agFinalReady')) {
       confirmDlg({
-        title: 'Финал готов — выставить счёт на остаток?',
-        text: 'Клиент получит уведомление: работа готова целиком, финальная часть передаётся после закрытия остатка. ' +
-              'Файл пока не отправляйте — как подтвердите оплату, придёт напоминание сдать.',
+        title: 'Финальный результат подготовлен — выставить счёт на остаток?',
+        text: 'Клиент получит уведомление: финальный пакет результата подготовлен и передаётся после закрытия остатка. ' +
+              'Файл пока не отправляйте — после подтверждения оплаты придёт напоминание передать.',
         okLabel: 'Выставить счёт', noLabel: 'Отмена'
       }).then(function (res) {
         if (!res.ok) return;
@@ -3390,8 +3640,8 @@ function initGodEye() {
     if (t.closest('#agPartReady')) {
       var prPart = (st.card && st.card.stage) || 1;
       confirmDlg({
-        title: 'Часть ' + prPart + ' готова — выставить счёт этапа?',
-        text: 'Клиент получит уведомление: часть готова и передаётся после оплаты этапа (с подписью «оплата части ' + prPart + '»). ' +
+        title: 'Результат части ' + prPart + ' подготовлен — выставить счёт этапа?',
+        text: 'Клиент получит уведомление: результат части подготовлен и передаётся после оплаты этапа (с подписью «оплата части ' + prPart + '»). ' +
               'Файл пока не отправляйте — как подтвердите оплату, придёт напоминание передать.',
         okLabel: 'Выставить счёт', noLabel: 'Отмена'
       }).then(function (res) {
@@ -3437,9 +3687,9 @@ function initGodEye() {
     }
     if (t.closest('#agDeliverMark')) {
       confirmDlg({
-        title: 'Зафиксировать сдачу?',
-        text: 'Клиент получит кнопки «принять / нужны правки». Используйте, если файлы уже отправили ему раньше (в группе или в боте).',
-        okLabel: 'Сдать на проверку', noLabel: 'Отмена'
+        title: 'Зафиксировать передачу результата?',
+        text: 'Клиент получит кнопки «принять результат / нужна корректировка». Используйте, если файлы уже отправили ему раньше (в группе или в боте).',
+        okLabel: 'Передать на проверку', noLabel: 'Отмена'
       }).then(function (res) {
         if (!res.ok) return;
         api('/admin/orders/' + st.sel + '/deliver', {})
@@ -3447,7 +3697,7 @@ function initGodEye() {
             if (!r.ok && r.error === 'stage_unpaid') {
               unpaidDialog(r, true, function () {
                 api('/admin/orders/' + st.sel + '/deliver', { force: true })
-                  .then(function (r2) { afterOrder(r2, '📦 Сдача зафиксирована (без оплаты — в хронике)'); });
+                  .then(function (r2) { afterOrder(r2, '📦 Передача результата зафиксирована (без оплаты — в хронике)'); });
               });
               return;
             }
@@ -3853,56 +4103,51 @@ function initGodEye() {
      страницы. Развёрнутые пояснения живут в tier_full — он рисуется абзацем. */
   var WZ_TIER = {
     base: {
-      label: 'Базовый — готовая работа',
-      ledger: 'работа по стандарту мастерской',
-      full: 'Готовую работу вы получаете целиком к сроку, оформленную по методичке ' +
-            'вашего вуза и ГОСТ 7.32. Отчёт о проверках — до финальной оплаты. Правки ' +
-            'по замечаниям вносим бесплатно до защиты. Сдача по главам, разбор ' +
-            'замечаний научного руководителя между главами и подготовка защиты в этот ' +
-            'уровень не входят — доклад и презентация заказываются отдельно, от 6 000 ₽.',
+      label: 'Диагностика',
+      ledger: 'аудит исходника и карта правок',
+      full: 'Проверяем предоставленный клиентом материал: структуру, аргументацию, ' +
+            'источники и оформление. Результат — файл с комментариями и карта правок. ' +
+            'Редакторское внесение изменений, консультации и подготовка выступления ' +
+            'в этот формат не входят и фиксируются отдельными позициями.',
       incl: [
-        ['Готовая работа к сроку', 1],
-        ['Оформление по ГОСТ', 1],
-        ['Отчёт о проверках', 1],
-        ['Правки до защиты', 1],
+        ['Аудит исходника клиента', 1],
+        ['Карта замечаний', 1],
+        ['Критерии приёмки', 1],
+        ['Редактура файла клиента', 0],
         ['Оплата по этапам', 1],
-        ['Сдача по главам', 0],
-        ['Разбор замечаний научрука', 0],
-        /* цена = svc_defense (config.SERVICES): лист превратит строку
-           в тихое предложение «можно довложить» */
-        ['Доклад и презентация к защите', 0, 6000]
+        ['Консультация по замечаниям', 0],
+        ['Репетиция самостоятельных ответов', 0, 6000]
       ]
     },
     turn: {
-      label: 'Под ключ — сопровождение до защиты',
-      ledger: 'сдача по главам и разбор замечаний научрука',
-      full: 'Работа идёт по главам: вы получаете их по мере готовности, показываете ' +
-            'научному руководителю, а мы разбираем его замечания и вносим правки. ' +
-            'График подстраиваем под предзащиту, ведём до защиты работы на кафедре. ' +
-            'Подготовка самой защиты — доклад, презентация, репетиция вопросов — идёт ' +
-            'отдельно; вне очереди работает только VIP.',
+      label: 'Редактура',
+      ledger: 'видимые правки в исходнике клиента',
+      full: 'После диагностики вносим согласованные изменения в предоставленный ' +
+            'клиентом текст с видимой историей правок и комментариями. Проверяем ' +
+            'устранение замечаний по критериям позиции. Новая тема, новые данные и ' +
+            'дополнительный объём оформляются отдельной строкой.',
       incl: [
-        ['Всё из «Базового»', 1],
-        ['Сдача по главам', 1],
-        ['Разбор замечаний научрука', 1],
-        ['Ведение до защиты', 1],
-        ['График под предзащиту', 1],
-        ['Доклад и презентация', 0],
-        ['Первый приоритет в очереди', 0]
+        ['Всё из «Диагностики»', 1],
+        ['Видимые правки в файле', 1],
+        ['Комментарии редактора', 1],
+        ['Сверка по критериям', 1],
+        ['Новая тема и новые данные', 0],
+        ['Редактура доклада и слайдов', 0],
+        ['Репетиция ответов', 0]
       ]
     },
     vip: {
-      label: 'VIP — личное ведение и защита',
-      ledger: 'первый приоритет, доклад и репетиция защиты',
-      full: 'Личное ведение: первый приоритет по срокам всегда, короткое плечо связи ' +
-            'с мастером без очереди. К защите готовим полностью — доклад, презентация, ' +
-            'репетиция вопросов комиссии.',
+      label: 'Сопровождение',
+      ledger: 'редактура, консультации и репетиция ответов',
+      full: 'Редактура исходника клиента дополняется консультациями по принятым ' +
+            'решениям. Для выступления редактируем подготовленные клиентом тезисы и ' +
+            'слайды, затем репетируем его самостоятельные ответы на вероятные вопросы.',
       incl: [
-        ['Всё из «Под ключ»', 1],
-        ['Первый приоритет по срокам', 1],
-        ['Доклад и презентация', 1],
-        ['Репетиция вопросов комиссии', 1],
-        ['Связь без очереди', 1]
+        ['Всё из «Редактуры»', 1],
+        ['Консультации по решениям', 1],
+        ['Редактура доклада клиента', 1],
+        ['Редактура слайдов клиента', 1],
+        ['Репетиция самостоятельных ответов', 1]
       ]
     }
   };
@@ -3923,73 +4168,73 @@ function initGodEye() {
      значок платежа на лишней остановке просто исчезнет, тихо и без ошибки. */
   var WZ_RAIL = {
     work: [
-      [0.00, 'Старт работы', 'план глав и фиксированная смета на руках', 'prepay'],
-      [0.25, 'План согласован', 'развёрнутый план глав и список источников', ''],
-      [0.60, 'Основная часть готова', 'главы с расчётами — на вашу вычитку', 'stage2'],
-      [1.00, 'Финал и отчёт о проверках', 'полный текст, оформление по методичке, отчёт', 'rest']
+      [0.00, 'Старт исполнения', 'спецификация и исходная версия зафиксированы', 'prepay'],
+      [0.25, 'Диагностика завершена', 'карта замечаний и порядок редакторских действий', ''],
+      [0.60, 'Промежуточный результат', 'согласованный блок правок — на проверку', 'stage2'],
+      [1.00, 'Результат позиции', 'отредактированный материал и комментарии', 'rest']
     ],
     art: [
-      [0.00, 'Старт работы', 'структура статьи и подбор журнала', 'prepay'],
-      [0.55, 'Черновик готов', 'текст с выводами — на вашу вычитку', 'stage2'],
-      [1.00, 'Финал и отчёт о проверках', 'статья по требованиям редакции, отчёт', 'rest']
+      [0.00, 'Старт исполнения', 'требования издания и исходник зафиксированы', 'prepay'],
+      [0.55, 'Научная редактура', 'правки и комментарии — на проверку', 'stage2'],
+      [1.00, 'Результат позиции', 'отредактированный материал и реестр проверки', 'rest']
     ],
     prac: [
-      [0.00, 'Старт работы', 'структура отчёта и фиксированная смета', 'prepay'],
-      [0.50, 'Основная часть готова', 'разделы отчёта и дневник — на вычитку', 'stage2'],
-      [1.00, 'Финал и отчёт о проверках', 'отчёт, дневник, характеристика, оформление', 'rest']
+      [0.00, 'Старт исполнения', 'исходники и требования зафиксированы', 'prepay'],
+      [0.50, 'Промежуточный результат', 'правки отчёта и приложений — на проверку', 'stage2'],
+      [1.00, 'Результат позиции', 'отредактированные материалы и комментарии', 'rest']
     ],
     sml: [
-      [0.00, 'Старт работы', 'тема принята, смета зафиксирована', 'prepay'],
-      [1.00, 'Готовая работа и отчёт о проверках', 'текст, оформление, отчёт', 'rest']
+      [0.00, 'Старт исполнения', 'задача, исходник и смета зафиксированы', 'prepay'],
+      [1.00, 'Результат позиции', 'согласованный артефакт и комментарии', 'rest']
     ]
   };
   var WZ_FAM = { vak: 'art', scopus: 'art', rinc: 'art', practice: 'prac', self: 'sml' };
 
   /* услуги: цена фиксированная, коэффициентов нет (config.py SERVICES) */
   var WZ_SVC = {
-    svc_plan: { label: 'Разбор плана', price: 3000, days: 2,
-      full: 'Структура глав, реалистичный срок и фиксированная смета за 1–2 дня. При продолжении работы зачитывается полностью.' },
-    svc_ai: { label: 'Чистка текста от следов ИИ', price: 2500, days: 3,
-      full: 'Редактура и стилистическая доработка: уберём машинные обороты, текст будет читаться как живой.' },
-    svc_review: { label: 'Разбор готовой работы', price: 2500, days: 3,
-      full: 'Объясним структуру и логику вашей работы, подготовим к вопросам на защите.' },
+    svc_plan: { label: 'Разбор задачи и плана', price: 3000, days: 2,
+      full: 'Проверим требования, предложим логику разделов и дорожную карту самостоятельной работы клиента.' },
+    svc_ai: { label: 'Литературная редактура', price: 2500, days: 3,
+      full: 'Исправим канцелярит, повторы и машинальные обороты в исходном тексте клиента с сохранением видимой истории правок.' },
+    svc_review: { label: 'Диагностика черновика', price: 2500, days: 3,
+      full: 'Проверим структуру и доказательность черновика, составим карту замечаний и критерии доработки.' },
     svc_tutor: { label: 'Репетиторство и консультации', price: 3000, days: 7, unit: 'час',
-      full: 'Индивидуальные занятия: методология, оформление, подготовка к сдаче. Цена указана за час — поправьте её под число занятий.' },
+      full: 'Индивидуальные занятия: методология, оформление и разбор самостоятельных решений клиента. Цена указана за час.' },
     svc_norm: { label: 'Нормоконтроль и оформление', price: 5000, days: 4,
-      full: 'Приведём работу в соответствие методичке и ГОСТу: поля, ссылки, список литературы.' },
-    svc_defense: { label: 'Презентация и речь к защите', price: 6000, days: 5,
-      full: 'Слайды по готовой работе, текст доклада на 7 минут и вероятные вопросы комиссии.' },
-    svc_defense_pack: { label: '«К защите под ключ»', price: 9500, days: 7,
-      full: 'Пакет со скидкой: нормоконтроль по методичке + презентация и речь к защите.' }
+      full: 'Проверим и исправим оформление исходного материала клиента: поля, ссылки, список литературы и приложения.' },
+    svc_defense: { label: 'Редактура доклада и слайдов', price: 6000, days: 5,
+      full: 'Отредактируем подготовленные клиентом тезисы и слайды, затем разберём вероятные вопросы для самостоятельных ответов.' },
+    svc_defense_pack: { label: 'Пакет подготовки к выступлению', price: 9500, days: 7,
+      full: 'Редактура подготовленных клиентом доклада и слайдов, затем репетиция его самостоятельных ответов на вероятные вопросы.' }
   };
   var WZ_SVC_ORDER = ['svc_plan', 'svc_ai', 'svc_review', 'svc_tutor',
                       'svc_norm', 'svc_defense', 'svc_defense_pack'];
 
   /* полка: порядок — по частоте в базе */
   var WZ_SHELF = [
-    { id: 'dip_hum',  ico: '🎓', nm: 'Диплом · Базовый',
-      sub: 'гуманитарные / экономика · свободный срок',
+    { id: 'dip_hum',  ico: '🎓', nm: 'ВКР · Диагностика',
+      sub: 'гуманитарные / экономика · аудит исходника',
       type: 'diplom', disc: 'hum', term: 'free', tier: 'base' },
-    { id: 'dip_law',  ico: '🎓', nm: 'Диплом · Базовый',
-      sub: 'юриспруденция / педагогика / психология · свободный',
+    { id: 'dip_law',  ico: '🎓', nm: 'ВКР · Диагностика',
+      sub: 'юриспруденция / педагогика / психология · аудит исходника',
       type: 'diplom', disc: 'law', term: 'free', tier: 'base' },
-    { id: 'dip_urg',  ico: '🔥', nm: 'Диплом срочно',
-      sub: 'юриспруденция · до 14 дней · Базовый',
+    { id: 'dip_urg',  ico: '🔥', nm: 'ВКР · срочная диагностика',
+      sub: 'юриспруденция · до 14 дней · Диагностика',
       type: 'diplom', disc: 'law', term: 'urgent', tier: 'base' },
-    { id: 'dip_turn', ico: '🎓', nm: 'Диплом под ключ',
-      sub: 'гуманитарные · свободный · сопровождение до защиты',
+    { id: 'dip_turn', ico: '🎓', nm: 'ВКР · Редактура',
+      sub: 'гуманитарные · видимые правки в исходнике',
       type: 'diplom', disc: 'hum', term: 'free', tier: 'turn' },
-    { id: 'dip_vip',  ico: '👑', nm: 'Диплом VIP',
-      sub: 'гуманитарные · свободный · ведение и защита',
+    { id: 'dip_vip',  ico: '👑', nm: 'ВКР · Сопровождение',
+      sub: 'редактура, консультации и репетиция ответов',
       type: 'diplom', disc: 'hum', term: 'free', tier: 'vip' },
-    { id: 'crs',      ico: '📘', nm: 'Курсовая',
-      sub: 'гуманитарные · свободный · Базовый',
+    { id: 'crs',      ico: '📘', nm: 'Курсовая · Диагностика',
+      sub: 'гуманитарные · аудит исходника',
       type: 'course', disc: 'hum', term: 'free', tier: 'base' },
-    { id: 'crs_emp',  ico: '📊', nm: 'Курсовая с исследованием',
-      sub: 'юриспруденция · свободный · Базовый',
+    { id: 'crs_emp',  ico: '📊', nm: 'Исследовательская часть · Диагностика',
+      sub: 'проверка методологии и данных клиента',
       type: 'course_emp', disc: 'law', term: 'free', tier: 'base' },
-    { id: 'mag',      ico: '🎓', nm: 'Магистерская',
-      sub: 'юриспруденция · свободный · Базовый',
+    { id: 'mag',      ico: '🎓', nm: 'Магистерское исследование',
+      sub: 'юриспруденция · Диагностика исходника',
       type: 'master', disc: 'law', term: 'free', tier: 'base' }
   ];
 
@@ -3997,7 +4242,7 @@ function initGodEye() {
                 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 
   var wz = { step: 1, p: null, adj: '0', own: 0, exact: '', dshift: 0,
-             stages: 2, ttl: 14, files: 1, tone: 'work', orig: 75, avuz: 0,
+             stages: 2, ttl: 14, files: 1, tone: 'work', orig: 0, avuz: 0,
              topic: '', name: '', noname: 0,
              res: null, oid: 0, sent: false };
 
@@ -4030,8 +4275,8 @@ function initGodEye() {
     return arr[0];
   }
 
-  /* Уровень берём ЯВНО по id: SalonCalc.quote при неизвестном уровне падает
-     в tiers[1] = «Под ключ» ×1.33 (app.js:49), а не в «Базовый». */
+  /* Уровень берём ЯВНО по id: legacy-код turn имеет отдельный коэффициент,
+     а видимый ярлык в этом интерфейсе — «Редактура». */
   function wzQuote(p) {
     var C = window.SalonCalc, sv;
     if (p.svc) {
@@ -4121,7 +4366,7 @@ function initGodEye() {
       out.push({ t: q.t.label + (un ? ' — цена за один ' + un : ' — услуга мастерской'),
                  a: q.p0 });
     } else {
-      out.push({ t: q.t.label + ' — работа по стандарту мастерской', a: q.p0 });
+      out.push({ t: q.t.label + ' — помощь с исходным материалом клиента', a: q.p0 });
       if (q.p1 !== q.p0) out.push({ t: 'Направление: ' + WZ_DNOTE[wz.p.disc], a: q.p1 - q.p0 });
       if (q.p2 !== q.p1) out.push({ t: 'Срок: ' + WZ_TNOTE[wz.p.term], a: q.p2 - q.p1 });
       if (q.low !== q.p2)
@@ -4136,9 +4381,9 @@ function initGodEye() {
 
   function wzIncl() {
     if (wz.p.svc) {
-      return [{ t: 'Работа по вашему материалу', 'in': 1 },
-              { t: 'Правки по замечаниям', 'in': 1 },
-              { t: 'Написание работы с нуля', 'in': 0 }];
+      return [{ t: 'Исходный материал клиента', 'in': 1 },
+              { t: 'Согласованные редакторские действия', 'in': 1 },
+              { t: 'Подмена автора аттестационной работы', 'in': 0 }];
     }
     var src = WZ_TIER[wz.p.tier].incl, xtra = WZ_XTRA[wz.p.type], out = [], i, row;
     for (i = 0; i < src.length; i++) {
@@ -4206,29 +4451,64 @@ function initGodEye() {
   }
   function wzDaysWord(n) { return n + ' ' + wzPlural(n, 'день', 'дня', 'дней'); }
 
-  /* Оригинальность и ГОСТ производит только работа с нуля. Обещать их
-     в заявке, оплата которой = акцепт оферты, мы не вправе: чистка текста
-     заимствований не снижает, а репетиторство вообще ничего не сдаёт.
-     Исключения — нормоконтроль и пакет «к защите», они как раз про оформление. */
-  var WZ_REQ_OK = { svc_norm: 1, svc_defense_pack: 1 };
+  /* Требования описывают только проверяемые операции и артефакты.
+     Решения внешних систем и третьих лиц результатами услуги не являются.
+     Старые reqs_* aliases сохраняются для API/PDF. */
+  var WZ_REQ_OK = { svc_norm: 1 };
   function wzReqApplies() { return !wz.p.svc || WZ_REQ_OK[wz.p.type]; }
   function wzReqShort() {
     if (!wzReqApplies()) {
       if (wz.p.type === 'svc_ai')
-        return 'Снижаем долю машинного текста · отчёт «до и после»';
-      return '';
+        return 'Видимые стилистические правки · комментарии редактора';
+      return 'Результат и критерии фиксируются в строке спецификации';
     }
-    var a = ['Оформление по методичке вуза', 'Оригинальность от ' + wz.orig + ' %'];
-    if (wz.avuz) a.push('Проверка в Антиплагиат.ВУЗ');
+    var a = ['Проверка по методичке', 'Видимые правки в исходнике клиента'];
+    if (wz.avuz) a.push('Отчёт технической проверки без обещания процента');
     return a.join(' · ');
   }
   function wzReqFull() {
-    var s = 'Оформление строго по методичке вашего вуза и ГОСТ 7.32: поля, шрифт, ' +
-      'нумерация, оформление ссылок и списка литературы.\n' +
-      'Оригинальность — не ниже ' + wz.orig + ' % по системе вашего вуза; отчёт ' +
-      'о проверке вы получаете до финальной оплаты.\n';
-    if (wz.avuz) s += 'Дополнительно проверяем в системе «Антиплагиат.ВУЗ», отчёт прикладываем.\n';
-    return s + 'Если методичка требует чего-то особенного — пришлите её, подстроимся без доплаты.';
+    var s = 'Проверяем оформление по переданной методичке: поля, нумерацию, ссылки, ' +
+      'список литературы и приложения. Редакторские изменения видны в файле.\n';
+    if (wz.avuz) s += 'Прикладываем доступный технический отчёт без гарантии процента и решения внешней системы.\n';
+    return s + 'Дополнительные требования, новая версия исходника и новый объём сначала фиксируются в спецификации.';
+  }
+
+  function wzSpecificationLines(price, iso, dlText) {
+    var included = wzIncl().filter(function (x) { return x['in']; }).map(function (x) { return x.t; });
+    var excluded = wzIncl().filter(function (x) { return !x['in']; }).map(function (x) { return x.t; });
+    excluded.push('гарантия процента, оценки, допуска, сдачи или защиты');
+    var payments = wzPlan(price).map(function (amount, i) {
+      return 'платёж ' + (i + 1) + ': ' + amount + ' RUB';
+    });
+    var result = wz.p.svc
+      ? WZ_SVC[wz.p.type].label + ' — согласованный результат по исходнику клиента'
+      : 'Отредактированный материал клиента, карта замечаний и согласованные консультационные материалы';
+    return buildSpecificationLines(wzLedger(), {
+      contract_contour: 'A',
+      permitted_purpose: 'Консультация, проверка и редактура самостоятельного материала клиента; клиент использует рекомендации при самостоятельной подготовке.',
+      deliverable: result,
+      input_description: wz.files ? 'Полный комплект исходников, данных и требований клиента' : 'Исходник и требования, переданные клиентом к началу исполнения',
+      input_version: 'версия, переданная при старте позиции',
+      inclusions: included,
+      exclusions: excluded,
+      acceptance_criteria: [
+        'передан результат в согласованном формате',
+        'выполнены операции, прямо перечисленные в строке',
+        'редакторские изменения и замечания доступны для проверки клиентом'
+      ],
+      dependencies: wz.files
+        ? ['срок начинается после получения полного комплекта исходников', 'изменение исходника требует обновления строки спецификации']
+        : ['изменение исходника, объёма или требований требует обновления строки спецификации'],
+      discount_amount: 0,
+      payment_allocation: payments,
+      correction_days: 7,
+      iterations: 1,
+      actual_author: 'Клиент — автор исходного академического материала',
+      rights_mode: 'Права на исходник сохраняются у клиента; исполнитель отвечает за свои редакторские и консультационные материалы',
+      third_party_performers: ['не привлекаются без согласования роли'],
+      deadline_text: dlText,
+      deadline_date: iso
+    });
   }
 
   function wzCut(s, n) {
@@ -4255,20 +4535,20 @@ function initGodEye() {
        «...следов ИИ. работа у вас на руках». */
     var hasTier = !wz.p.svc;
     var lvl = hasTier ? ' Уровень «' + WZ_TIER[wz.p.tier].label + '»,' : '';
-    var W = hasTier ? ' работа' : ' Работа';
-    var F = hasTier ? ' финал' : ' Финал';
+    var W = hasTier ? ' результат' : ' Результат';
+    var F = hasTier ? ' результат' : ' Результат';
     var s;
     if (wz.tone === 'short')
       s = 'Заявка: ' + head + '.' + lvl + ' ' + wzDaysWord(days) +
-          ',' + W.toLowerCase() + ' на руках ' + fin + '. Смета и этапы ниже. ' +
+          ',' + W.toLowerCase() + ' передадим ' + fin + '. Смета и этапы ниже. ' +
           'Стартуем со стартового платежа.';
     else if (wz.tone === 'warm')
       s = 'Здравствуйте! Ниже — всё, о чём договорились, в одном месте: ' + head +
-          '.' + lvl + F.toLowerCase() + ' ' + fin + '. Посмотрите спокойно ' +
+          '.' + lvl + F.toLowerCase() + ' передадим ' + fin + '. Посмотрите спокойно ' +
           'календарь и смету. Вопросы можно задать до оплаты — заполнять ничего не надо.';
     else
       s = 'Собрал заявку по нашему разговору: ' + head + '.' + lvl +
-          W + ' у вас на руках ' + fin + '. Ниже — что входит, смета по строкам ' +
+          W + ' передадим ' + fin + '. Ниже — что входит, смета по строкам ' +
           'и календарь с датами. Цена зафиксирована, пока ссылка жива; ничего ' +
           'не спишется само.';
     return s.length > 400 ? wzCut(s, 397) : s;
@@ -4379,9 +4659,9 @@ function initGodEye() {
       h += '<li><span class="d">' + esc(wzRu(wzParse(rail[i].d))) + '</span>' + esc(rail[i].t) +
         ' — ' + esc(rail[i].g) + (rail[i].pay ? ' · платёж' : '') + '</li>';
     h += '</ul></div>';
-    h += '<div class="wz-pv"><span class="caps">Объём и требования</span>' +
+    h += '<div class="wz-pv"><span class="caps">Исходник и критерии</span>' +
       esc((wz.p.svc ? '' : (WZ_VOL[wz.p.type] || '') + ' · ') + wzReqShort()) + '</div>';
-    h += '<div class="wz-pv"><span class="caps">Уровень ведения — складка</span>' +
+    h += '<div class="wz-pv"><span class="caps">Формат помощи — складка</span>' +
       esc(wz.p.svc ? WZ_SVC[wz.p.type].full : WZ_TIER[wz.p.tier].full) + '</div>';
     return h;
   }
@@ -4390,7 +4670,7 @@ function initGodEye() {
     var q = wzQuote(wz.p), price = wzPrice(), days = wzDays(), fin = wzFinal();
     var h =
       '<div class="wz-say" id="wzSay" aria-live="polite"></div>' +
-      '<label class="wz-fl">Тема работы' +
+      '<label class="wz-fl">Тема или задача клиента' +
       '<input type="text" id="wzTopic" class="wz-inp big" maxlength="400" ' +
       'placeholder="Мотивация персонала в розничной торговле" value="' + esc(wz.topic) + '">' +
       '<span class="wz-hint">Единственное, что придётся напечатать.</span></label>' +
@@ -4411,7 +4691,7 @@ function initGodEye() {
                               ['top', 'верх вилки ' + wzMoney(q.high)]], wz.adj) +
       '<p class="ag-note" id="wzRange">' + esc(wzRangeText()) + '</p></div>';
 
-    h += '<div class="wz-row"><span class="caps">Работа на руках</span>' +
+    h += '<div class="wz-row"><span class="caps">Дата передачи результата</span>' +
       '<div class="wz-big"><span class="wz-val" id="wzDateV">' + wzRu(fin) + ' · ' + wzDaysWord(days) +
       '</span><input type="date" id="wzDateIn" class="wz-inp wz-date" value="' +
       wzISO(fin) + '"></div>' +
@@ -4425,9 +4705,8 @@ function initGodEye() {
                              ['1', 'Одним платежом']], wz.stages) +
       '<p class="ag-note" id="wzPayNote">' + esc(wzPayNote(price)) + '</p></div>';
 
-    h += '<div class="wz-row"><span class="caps">Требования</span>' +
-      wzChips('data-wz-orig', [['70', 'оригинальность 70 %'], ['75', '75 %'], ['80', '80 %']], wz.orig) +
-      wzChips('data-wz-avuz', [['1', 'Антиплагиат.ВУЗ']], wz.avuz ? '1' : '') +
+    h += '<div class="wz-row"><span class="caps">Критерии и исходники</span>' +
+      wzChips('data-wz-avuz', [['1', 'Приложить доступный технический отчёт']], wz.avuz ? '1' : '') +
       '<label class="ag-hint"><input type="checkbox" id="wzFiles"' +
       (wz.files ? ' checked' : '') + '> Ждём материалы от клиента — срок пойдёт ' +
       'и с их получения</label></div>';
@@ -4487,7 +4766,6 @@ function initGodEye() {
     wzMark('data-wz-st', wz.stages);
     wzMark('data-wz-ttl', wz.ttl);
     wzMark('data-wz-tone', wz.tone);
-    wzMark('data-wz-orig', wz.orig);
     wzMark('data-wz-avuz', wz.avuz ? '1' : '');
     wzMark('data-wz-noname', wz.noname ? '1' : '');
     wzMark('data-wz-type', wz.p.svc ? '' : wz.p.type);
@@ -4554,7 +4832,7 @@ function initGodEye() {
     if (!ov) { wzMount(); ov = document.getElementById('wzOv'); }
     if (!ov) return;
     wz.step = 1; wz.p = null; wz.adj = '0'; wz.own = 0; wz.exact = ''; wz.dshift = 0;
-    wz.stages = 2; wz.ttl = 14; wz.files = 1; wz.tone = 'work'; wz.orig = 75; wz.avuz = 0;
+    wz.stages = 2; wz.ttl = 14; wz.files = 1; wz.tone = 'work'; wz.orig = 0; wz.avuz = 0;
     wz.topic = ''; wz.name = ''; wz.noname = 0;
     wz.res = null; wz.oid = 0; wz.sent = false;
     wz._opener = document.activeElement;   /* вернём фокус сюда при закрытии */
@@ -4633,6 +4911,7 @@ function initGodEye() {
 
     var price = wzPrice(), days = wzDays(), fin = wzFinal(), iso = wzISO(fin);
     var dlText = 'к ' + wzRu(fin) + ', ' + wzDaysWord(days) + ' с начала работы';
+    var specLines = wzSpecificationLines(price, iso, dlText);
     var btn = document.getElementById('wzFire');
     if (btn) { btn.disabled = true; btn.textContent = 'Собираем…'; }
     wzSay('Заводим дело…');
@@ -4660,11 +4939,19 @@ function initGodEye() {
            строку не рисует. Описание услуги уходит в tier_full, где оно к месту. */
         tier_label: wz.p.svc ? '' : WZ_TIER[wz.p.tier].label,
         tier_full: wz.p.svc ? WZ_SVC[wz.p.type].full : WZ_TIER[wz.p.tier].full,
-        // reqs_full обещает ГОСТ и оригинальность; у услуги их нет,
-        // а оплата листа = акцепт оферты — обещать нечем (ст. 10 ЗоЗПП).
+        /* reqs_full применяется только там, где методичка действительно входит
+           в позицию; старый alias сохраняем для существующего API/PDF. */
         reqs_short: wzReqShort(), reqs_full: wzReqApplies() ? wzReqFull() : '',
         need_files: wz.files,
-        incl: wzIncl(), ledger: wzLedger(), rail: wzRail(),
+        incl: wzIncl(), ledger: specLines, rail: wzRail(),
+        specification_lines: specLines,
+        specification: {
+          version: 2,
+          document_mode: 'single_order_multi_line',
+          lines: specLines
+        },
+        contract_contour: 'A',
+        permitted_purpose: 'Консультация, проверка и редактура самостоятельного материала клиента; клиент использует рекомендации при самостоятельной подготовке.',
         deadline_text: dlText, deadline_date: iso, ttl_days: wz.ttl
       }).then(function (r2) {
         if (!r2 || !r2.ok) {
@@ -4738,8 +5025,6 @@ function initGodEye() {
       if (b) { wz.ttl = parseInt(b.getAttribute('data-wz-ttl'), 10); wzSync(); return; }
       b = t.closest('[data-wz-tone]');
       if (b) { wz.tone = b.getAttribute('data-wz-tone'); wzSync(); return; }
-      b = t.closest('[data-wz-orig]');
-      if (b) { wz.orig = parseInt(b.getAttribute('data-wz-orig'), 10); wzSync(); return; }
       if (t.closest('[data-wz-avuz]')) { wz.avuz = wz.avuz ? 0 : 1; wzSync(); return; }
       if (t.closest('[data-wz-noname]')) { wz.noname = wz.noname ? 0 : 1; wzSync(); return; }
 

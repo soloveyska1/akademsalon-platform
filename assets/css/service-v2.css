@@ -1,0 +1,137 @@
+/* ============================================================
+   «ОТТИСК 2.0» — маршруты услуг и договорные паспорта
+   Фирменная бумага, книжная сетка, минимум декоративного шума.
+   ============================================================ */
+.service-routes{
+  position:relative;
+  padding:clamp(56px,8vw,104px) 0;
+  background:var(--paper);
+  border-top:1px solid var(--hairline);
+  border-bottom:1px solid var(--hairline);
+}
+.service-routes::before{
+  content:"";
+  position:absolute;
+  inset:12px 0 auto;
+  height:1px;
+  background:var(--hairline);
+}
+.service-routes__inner{width:min(1180px,calc(100% - 36px));margin:0 auto}
+.service-routes__head{
+  display:grid;
+  grid-template-columns:minmax(0,.78fr) minmax(280px,.42fr);
+  gap:clamp(24px,5vw,72px);
+  align-items:end;
+  margin-bottom:clamp(24px,4vw,44px);
+}
+.service-routes__head h2{
+  max-width:12ch;
+  margin:7px 0 0;
+  font:500 clamp(34px,5vw,62px)/1.02 var(--serif);
+  letter-spacing:-.035em;
+}
+.service-routes__head p:last-child{
+  margin:0;
+  max-width:45ch;
+  font-size:15px;
+  line-height:1.65;
+  color:var(--ink-soft);
+}
+.route-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.route-card{
+  position:relative;
+  display:flex;
+  min-height:360px;
+  flex-direction:column;
+  padding:clamp(22px,2.7vw,32px);
+  overflow:hidden;
+  color:var(--ink);
+  background:var(--sheet);
+  border:1px solid var(--hairline-strong);
+  border-radius:3px;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.route-card:hover,.route-card:focus-visible{
+  transform:translateY(-3px);
+  border-color:var(--ink);
+  box-shadow:0 18px 46px rgba(34,32,27,.09);
+}
+.route-card--accent{border-color:var(--wax)}
+.route-card__top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.route-card__no,.route-card__tag{
+  font:500 10px/1.35 var(--mono);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.route-card__no{color:var(--wax)}
+.route-card__tag{color:var(--ink-faint);text-align:right}
+.route-card h3{
+  max-width:15ch;
+  margin:24px 0 10px;
+  font:500 clamp(23px,2.6vw,31px)/1.09 var(--serif);
+  letter-spacing:-.02em;
+}
+.route-card__lead{margin:0 0 20px;font-size:14px;line-height:1.6;color:var(--ink-soft)}
+.route-card__list{list-style:none;margin:auto 0 0;padding:0;border-top:1px solid var(--hairline)}
+.route-card__list li{padding:9px 0;border-bottom:1px solid var(--hairline);font-size:12.5px;color:var(--ink-soft)}
+.route-card__list li::before{content:"—";margin-right:8px;color:var(--wax)}
+.route-card__go{display:flex;justify-content:space-between;align-items:center;margin-top:22px;font-size:13.5px;font-weight:500}
+.route-card__go span:last-child{font:22px var(--serif);transition:transform .18s ease}
+.route-card:hover .route-card__go span:last-child{transform:translateX(4px)}
+.route-proof{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  margin-top:18px;
+  border-top:3px double var(--ink);
+  border-bottom:1px solid var(--hairline);
+}
+.route-proof span{padding:14px 18px;border-right:1px solid var(--hairline);font-size:12px;color:var(--ink-soft)}
+.route-proof span:last-child{border-right:0}
+.route-proof b{display:block;margin-bottom:3px;font:600 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+
+.service-passport{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  margin:24px 0 32px;
+  border-top:3px double var(--ink);
+  border-bottom:1px solid var(--hairline);
+}
+.service-passport>div{padding:16px 18px;border-right:1px solid var(--hairline)}
+.service-passport>div:last-child{border-right:0}
+.service-passport b{display:block;margin-bottom:6px;font:600 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--wax)}
+.service-passport span{font-size:13px;line-height:1.5;color:var(--ink-soft)}
+
+.purpose-note{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:14px;
+  align-items:start;
+  margin:20px 0;
+  padding:17px 19px;
+  background:var(--wax-soft);
+  border:1px solid color-mix(in srgb,var(--wax) 45%,var(--hairline));
+  border-radius:3px;
+}
+.purpose-note__mark{font:500 21px var(--serif);color:var(--wax)}
+.purpose-note p{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+.purpose-note b{color:var(--ink);font-weight:600}
+
+@media(max-width:880px){
+  .service-routes__head{grid-template-columns:1fr;gap:14px}
+  .service-routes__head h2{max-width:15ch}
+  .route-grid{grid-template-columns:1fr}
+  .route-card{min-height:0}
+  .service-passport{grid-template-columns:1fr 1fr}
+  .service-passport>div:nth-child(2){border-right:0}
+  .service-passport>div:nth-child(-n+2){border-bottom:1px solid var(--hairline)}
+}
+@media(max-width:560px){
+  .service-routes__inner{width:min(100% - 24px,1180px)}
+  .route-proof{grid-template-columns:1fr}
+  .route-proof span{border-right:0;border-bottom:1px solid var(--hairline)}
+  .route-proof span:last-child{border-bottom:0}
+  .service-passport{grid-template-columns:1fr}
+  .service-passport>div{border-right:0;border-bottom:1px solid var(--hairline)}
+  .service-passport>div:last-child{border-bottom:0}
+}

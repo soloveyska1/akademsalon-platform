@@ -83,11 +83,11 @@ function initCabinet() {
 
   /* печати и подписи для смен статуса — «красивые уведомления» */
   var STATUS_STAMP = {
-    work: ['В работе', 'Оплата получена — работа пошла'],
-    check: ['Готово', 'Работа ждёт вашей проверки'],
-    done: ['Принято', 'Заказ завершён — спасибо!'],
-    priced: [null, 'Мастер назначил цену — решение за вами'],
-    fix: [null, 'Приняли в правки']
+    work: ['Исполнение', 'Оплата получена — началось исполнение позиций'],
+    check: ['На проверке', 'Результат ждёт вашей проверки'],
+    done: ['Результат принят', 'Заказ завершён — акт приёмки зафиксирован'],
+    priced: [null, 'Спецификация и цена предложены — решение за вами'],
+    fix: [null, 'Корректировка принята в работу']
   };
 
   /* ---------------- утилиты ---------------- */
@@ -109,7 +109,7 @@ function initCabinet() {
     if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
     return many;
   }
-  /* обратный отсчёт до сдачи — по deadline_date, только для живых дел */
+  /* обратный отсчёт до срока результата — по deadline_date, только для живых дел */
   function daysLeft(o) {
     if (!o.deadline_date || o.step < 0 || o.status === 'done') return null;
     var d = new Date(o.deadline_date + 'T23:59:59');
@@ -120,8 +120,8 @@ function initCabinet() {
     var n = daysLeft(o);
     if (n === null) return '';
     if (n < 0) return '<span class="dl-chip late">⏰ срок вышел — обсудите с мастером</span>';
-    if (n === 0) return '<span class="dl-chip warn">⏰ сдача сегодня</span>';
-    return '<span class="dl-chip' + (n <= 3 ? ' warn' : '') + '">⏳ до сдачи ' + n + ' ' +
+    if (n === 0) return '<span class="dl-chip warn">⏰ срок результата сегодня</span>';
+    return '<span class="dl-chip' + (n <= 3 ? ' warn' : '') + '">⏳ до срока результата ' + n + ' ' +
       plural(n, 'день', 'дня', 'дней') + '</span>';
   }
   function tokenFor(id) {
@@ -170,9 +170,9 @@ function initCabinet() {
       if (!(bal > 0)) { box.remove(); return; }
       box.innerHTML =
         '<div class="dr"><span>💳 Остаток на сертификате ' + esc(code) + '</span><b>' + money(bal) + ' ₽</b></div>' +
-        '<p class="petit" style="margin:6px 0 8px">Он не сгорел и ждёт: хватит на презентацию и речь к защите, нормоконтроль или часть новой работы.</p>' +
+        '<p class="petit" style="margin:6px 0 8px">Он не сгорел: можно оплатить редактуру ваших слайдов и доклада, репетицию самостоятельных ответов, нормоконтроль или новую консультационную позицию.</p>' +
         '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
-        '<a class="btn btn-line" href="configurator.html?service=df&gift=' + encodeURIComponent(code) + '">🎤 Презентация и речь</a>' +
+        '<a class="btn btn-line" href="configurator.html?service=df&gift=' + encodeURIComponent(code) + '">🎤 Редактура выступления</a>' +
         '<a class="btn btn-line" href="configurator.html?gift=' + encodeURIComponent(code) + '">📝 Новая заявка с кодом</a>' +
         '<button type="button" class="linkbtn" id="giftRestHide">не напоминать</button></div>';
       box.hidden = false;
@@ -482,13 +482,13 @@ function initCabinet() {
     if (!due && o.status === 'prepay') due = o.prepay_due || 0;
     var msg, sub, cta, jump;
     if (score === 5) {
-      var what = (o.final_ready && o.status !== 'prepay') ? 'Работа готова целиком'
-        : (o.part_ready && o.status !== 'prepay') ? 'Часть ' + o.part_ready + ' готова'
-        : 'Смета согласована';
+      var what = (o.final_ready && o.status !== 'prepay') ? 'Финальный пакет результата подготовлен'
+        : (o.part_ready && o.status !== 'prepay') ? 'Результат части ' + o.part_ready + ' подготовлен'
+        : 'Спецификация согласована';
       msg = what + ' — дело за оплатой' + (due ? ': <b>' + money(due) + ' ₽</b>' : '') + '.';
       sub = o.status === 'prepay'
         ? 'Мастер приступит сразу после первого платежа. Реквизиты и оплата картой — в один клик.'
-        : 'Файл придёт сразу, как подтвердится оплата этапа. Правки после — бесплатны.';
+        : 'Файл придёт после подтверждения оплаты этапа. Проверка и корректировки — по условиям соответствующей позиции.';
       cta = 'Перейти к оплате'; jump = 'secPay';
     } else if (score === 4) {
       msg = 'Мастер назвал цену: <b>' + money(o.price) + ' ₽</b> — решение за вами.';
@@ -497,9 +497,9 @@ function initCabinet() {
         : 'Можно применить бонусы, обсудить детали в переписке или принять предложение.';
       cta = 'Посмотреть предложение'; jump = 'secDecide';
     } else if (score === 3) {
-      var partW = (o.stages_total || 1) > 1 ? 'Часть ' + (o.stage || 1) + ' из ' + o.stages_total : 'Работа';
+      var partW = (o.stages_total || 1) > 1 ? 'Результат части ' + (o.stage || 1) + ' из ' + o.stages_total : 'Результат';
       msg = partW + ' на вашей проверке.';
-      sub = 'Посмотрите материал: примите — или запросите правки, это бесплатно.';
+      sub = 'Сверьте результат с критериями позиции: примите его или запросите обоснованную корректировку.';
       cta = 'Проверить и решить'; jump = 'secDecide';
     } else if (score === 2) {
       msg = 'Новые файлы от мастерской в деле ' + esc(o.no) + '.';
@@ -700,7 +700,7 @@ function initCabinet() {
       head = '<div class="cbn-card reveal" id="plusCard">' +
         '<div><span class="bc-cap">⭐ Салон+</span>' +
         '<span class="bc-num" style="font-size:20px">от 449 ₽</span></div>' +
-        '<div class="bc-side"><p class="bc-exp">Скидка на каждый заказ, приоритет, куратор сессии и подготовка к защите. Без автосписаний.</p>' +
+        '<div class="bc-side"><p class="bc-exp">Скидка на каждый заказ, приоритет, куратор сессии и отдельная редактура материалов клиента к выступлению. Без автосписаний.</p>' +
         '<div class="bc-act"><button type="button" class="btn ' + (st.plusOpen ? 'btn-line' : 'btn-wax') + '" id="plusToggle">' +
         (st.plusOpen ? 'Свернуть' : 'Выбрать план') + '</button></div></div></div>';
     }
@@ -1071,8 +1071,8 @@ function initCabinet() {
   }
   function shortStatus(o) {
     if (o.paused && o.status !== 'done' && o.status !== 'cancel') return '⏸ на паузе';
-    return { new: 'на оценке', priced: 'ждёт решения', prepay: 'ждёт оплату', work: 'в работе',
-             check: 'на проверке', fix: 'правки', done: 'завершён', cancel: 'закрыт' }[o.status] || '';
+    return { new: 'на оценке', priced: 'ждёт решения', prepay: 'ждёт оплату', work: 'исполнение',
+             check: 'результат на проверке', fix: 'корректировка', done: 'результат принят', cancel: 'закрыт' }[o.status] || '';
   }
 
   /* ход дела свёрнут, когда у клиента есть действие поважнее (оплата/решение) —
@@ -1096,10 +1096,10 @@ function initCabinet() {
       new: 'Мастер изучает заявку — ответ обычно за 15–30 минут в рабочее время',
       priced: 'Предложение готово — решение за вами (кнопки ниже)',
       prepay: 'Ожидаем оплату — реквизиты и кнопки в блоке «Оплата» ниже',
-      work: 'Работа идёт; вопросы можно задать в чате',
-      fix: 'Вносим правки по вашим замечаниям',
-      check: 'Готово! Посмотрите работу и примите её — или запросите правки',
-      done: 'Заказ завершён. Мы на связи до вашей защиты'
+      work: 'Исполняются позиции спецификации; вопросы можно задать в чате',
+      fix: 'Выполняется корректировка результата по вашим замечаниям и критериям позиции',
+      check: 'Результат передан: сверьте его с критериями позиции, примите или запросите корректировку',
+      done: 'Результат принят, заказ и акт приёмки зафиксированы'
     };
     /* не обещаем реквизиты, которых нет: без созревшего платежа и отметки —
        честное «счёт готовится» (бывает при ручной смене статуса без цены) */
@@ -1120,7 +1120,7 @@ function initCabinet() {
       }).join('') + '</div></div>' + partsRows(o);
   }
 
-  /* -------- сдача по частям: где мы в 2 или 3 выдачах -------- */
+  /* -------- передача по частям: где мы в 2 или 3 выдачах -------- */
   function partsRows(o) {
     var total = o.stages_total || 1;
     if (total < 2 || !('work check fix done'.indexOf(o.status) + 1)) return '';
@@ -1132,15 +1132,15 @@ function initCabinet() {
         state = 'now';
         tag = o.status === 'check' ? 'на вашей проверке'
             : o.status === 'fix' ? 'в правках'
-            : (o.part_ready === n ? 'готова — ждёт оплату этапа' : 'в работе');
+            : (o.part_ready === n ? 'результат подготовлен — ждёт оплату этапа' : 'исполнение');
       } else { state = ''; tag = 'впереди'; }
       rows += '<div class="stg-row ' + state + '"><span class="sn">' + (state === 'past' ? '✓' : '§' + n) + '</span>' +
         '<span class="sb"><b>Часть ' + n + ' из ' + total + '</b>' +
-        (n === o.stage && o.status === 'check' ? '<small>Посмотрите материал: принять или запросить правки — кнопки ниже</small>' : '') +
+        (n === o.stage && o.status === 'check' ? '<small>Сверьте результат с критериями: принять или запросить корректировку — кнопки ниже</small>' : '') +
         '</span><span class="st-tag">' + tag + '</span></div>';
     }
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Сдача по частям</span>' +
-      '<span class="fs-meta">правки — без лимита, в рамках задания</span></div>' +
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Передача и приёмка по частям</span>' +
+      '<span class="fs-meta">условия проверки — отдельно для каждой позиции</span></div>' +
       '<div class="stg">' + rows + '</div></div>';
   }
 
@@ -1148,8 +1148,7 @@ function initCabinet() {
     if (!o.price) return '';
     return '<p class="petit" style="margin-top:8px">📄 <a class="link" href="' +
       S.api.base + apiPath(o.id, '/contract') + '" target="_blank" rel="noopener">' +
-      'Спецификация заказа (PDF)</a> — условия одним листом: что входит в цену, ' +
-      'этапы оплаты, правки. Действует вместе с <a class="link" href="oferta.html">офертой</a>, ' +
+      'Спецификация заказа (PDF)</a> — один документ со всеми позициями: у каждой отдельно указаны результат, исходник, включения и исключения, критерии приёмки, срок, цена, платежи и порядок корректировок. Действует вместе с <a class="link" href="oferta.html">офертой</a>, ' +
       'подписывать ничего не нужно. <a class="link" href="specifikaciya.html" target="_blank" rel="noopener">Что это такое — простыми словами →</a></p>' + pamyatkaLink(o);
   }
 
@@ -1158,8 +1157,7 @@ function initCabinet() {
     if (!o.pamyatka) return '';
     return '<p class="petit" style="margin-top:2px">📘 <a class="link" href="' +
       S.api.base + apiPath(o.id, '/pamyatka') + '" target="_blank" rel="noopener">' +
-      'Памятка «что дальше» (PDF)</a> — приёмка за 48 часов, антиплагиат без паники, ' +
-      'письмо научруку, окна бесплатных правок с датами и план подготовки к защите.</p>';
+      'Памятка «что дальше» (PDF)</a> — порядок первичной проверки, фиксация замечаний по критериям и самостоятельная подготовка клиента к использованию результата.</p>';
   }
 
   function priceBlock(o) {
@@ -1168,7 +1166,7 @@ function initCabinet() {
         '<span class="mono ord-price">' + money(o.price) + ' ₽</span></div>' + specLink(o);
       if (o.bonus_spent || o.sub_discount || o.promo_discount || o.gift_amount) {
         out += '<div class="due-box">' +
-          '<div class="dr"><span>Цена работы</span><b>' + money(o.price) + ' ₽</b></div>' +
+          '<div class="dr"><span>Цена заказа</span><b>' + money(o.price) + ' ₽</b></div>' +
           (o.sub_discount ? '<div class="dr"><span>⭐ Скидка «Салон+»</span><b class="minus">−' + money(o.sub_discount) + '</b></div>' : '') +
           (o.promo_discount ? '<div class="dr"><span>🎟 Промокод' + (o.promo_code ? ' ' + esc(o.promo_code) : '') + '</span><b class="minus">−' + money(o.promo_discount) + '</b></div>' : '') +
           (o.bonus_spent ? '<div class="dr"><span>Оплачено бонусами</span><b class="minus">−' + money(o.bonus_spent) + '</b></div>' : '') +
@@ -1192,47 +1190,97 @@ function initCabinet() {
   }
 
   function itemQuote(item) {
-    var low = item.final_price || item.quote_low || 0;
-    var high = item.final_price || item.quote_high || low;
+    var amount = item.price && item.price.amount != null ? item.price.amount
+      : (item.price_amount != null ? item.price_amount : null);
+    var low = amount != null ? amount : (item.final_price || item.quote_low || item.a || 0);
+    var high = amount != null ? amount : (item.final_price || item.quote_high || low);
     if (!low) return '';
     return low === high ? money(low) + ' ₽' : money(low) + '–' + money(high) + ' ₽';
   }
 
   function orderItemsBlock(o) {
-    var items = o.items || [];
+    var items = o.specification_lines ||
+      (o.specification && o.specification.lines) ||
+      (o.offer && o.offer.specification_lines) ||
+      (o.offer && o.offer.specification && o.offer.specification.lines) ||
+      o.items || [];
     if (!items.length) return '';
+    var isSpecification = !!(o.specification_lines ||
+      (o.specification && o.specification.lines) ||
+      (o.offer && o.offer.specification_lines) ||
+      (o.offer && o.offer.specification && o.offer.specification.lines));
     var byParent = {};
     items.forEach(function (item) {
       var key = item.parent_client_id || '';
       (byParent[key] || (byParent[key] = [])).push(item);
     });
+    function values(v) {
+      if (Array.isArray(v)) return v.filter(Boolean).map(String);
+      return v == null || v === '' ? [] : [String(v)];
+    }
+    function fact(facts, label, value) {
+      var list = values(value);
+      if (list.length) facts.push('<b>' + esc(label) + ':</b> ' + list.map(esc).join(' · '));
+    }
     function row(item, child) {
       var facts = [];
+      var input = item.input || {};
+      var deadline = item.deadline || {};
+      var correction = item.correction_window || {};
       if ((item.qty || 1) > 1) facts.push('× ' + item.qty);
-      if (item.deadline_text) facts.push('срок: ' + esc(item.deadline_text));
-      if (item.topic) facts.push('«' + esc(item.topic) + '»');
+      fact(facts, 'Контур', item.contract_contour);
+      fact(facts, 'Разрешённая цель', item.permitted_purpose);
+      fact(facts, 'Результат', item.deliverable || item.result);
+      fact(facts, 'Исходник', input.description || item.input_description);
+      fact(facts, 'Версия', input.version || item.input_version);
+      fact(facts, 'Включено', item.inclusions);
+      fact(facts, 'Не включено', item.exclusions);
+      fact(facts, 'Критерии приёмки', item.acceptance_criteria);
+      fact(facts, 'Срок результата', deadline.text || item.deadline_text);
+      fact(facts, 'Зависимости', item.dependencies);
+      fact(facts, 'Платежи по позиции', item.payment_allocation);
+      if (correction.days != null || item.correction_window_days != null || item.iterations != null) {
+        var days = correction.days != null ? correction.days : item.correction_window_days;
+        fact(facts, 'Проверка и корректировки',
+          (days != null ? days + ' дн. первичной проверки' : '') +
+          (item.iterations != null ? ' · добровольных итераций: ' + item.iterations : '') +
+          (correction.scope ? ' · ' + correction.scope : ''));
+      }
+      fact(facts, 'Фактический автор', item.actual_author);
+      fact(facts, 'Режим прав', item.rights_mode);
+      fact(facts, 'Третьи лица', item.third_party_performers);
+      if (item.acceptance)
+        fact(facts, 'Приёмка позиции', [item.acceptance.status, item.acceptance.act].filter(Boolean).join(' · '));
+      if (item.topic) fact(facts, 'Тема', item.topic);
+      var label = item.position_label || item.label || item.t || '';
+      var pos = item.position || item.id || '•';
       return '<div class="oci-row' + (child ? ' child' : '') + '">' +
-        '<span class="oci-no">' + (child ? '↳' : String(item.position).padStart(2, '0')) + '</span>' +
-        '<span class="oci-main"><b>' + esc(item.label || '') + '</b>' +
-        (facts.length ? '<small>' + facts.join(' · ') + '</small>' : '') + '</span>' +
+        '<span class="oci-no">' + (child ? '↳' : esc(String(pos).padStart(2, '0'))) + '</span>' +
+        '<span class="oci-main"><b>' + esc(label) + '</b>' +
+        (facts.length ? '<details><summary>Условия позиции</summary><small>' + facts.join('<br>') + '</small></details>' : '') + '</span>' +
         '<span class="oci-price">' + itemQuote(item) + '</span></div>';
     }
     var linked = {};
     var html = '';
-    items.filter(function (item) { return item.kind === 'work'; }).forEach(function (work) {
-      html += row(work, false);
-      (byParent[work.client_id] || []).forEach(function (service) {
-        linked[service.id] = true;
-        html += row(service, true);
+    if (isSpecification) {
+      items.forEach(function (item) { html += row(item, false); });
+    } else {
+      items.filter(function (item) { return item.kind === 'work'; }).forEach(function (work) {
+        html += row(work, false);
+        (byParent[work.client_id] || []).forEach(function (service) {
+          linked[service.id] = true;
+          html += row(service, true);
+        });
       });
-    });
-    items.filter(function (item) {
-      return item.kind !== 'work' && !linked[item.id];
-    }).forEach(function (service) { html += row(service, false); });
-    return '<section class="ord-composition" aria-label="Состав сметы">' +
-      '<div class="oc-head"><span class="caps">Состав сметы</span><span>' +
+      items.filter(function (item) {
+        return item.kind !== 'work' && !linked[item.id];
+      }).forEach(function (service) { html += row(service, false); });
+    }
+    return '<section class="ord-composition" aria-label="Спецификация заказа">' +
+      '<div class="oc-head"><span class="caps">Спецификация заказа · один документ</span><span>' +
       items.length + ' ' + plural(items.length, 'позиция', 'позиции', 'позиций') +
-      '</span></div><div class="oc-list">' + html + '</div></section>';
+      '</span></div><p class="petit">Каждая позиция имеет собственные результат, критерии, срок, цену и акт приёмки.</p>' +
+      '<div class="oc-list">' + html + '</div></section>';
   }
 
   /* -------- подарочный сертификат в деле: привязать код / показать привязку.
@@ -1268,7 +1316,7 @@ function initCabinet() {
     var plan = o.plan || [];
     if (plan.length < 2) {
       if (o.prepay && (o.status === 'priced' || o.status === 'prepay') && !o.bonus_spent)
-        return '<p class="petit ord-price-note">Предоплата — ' + money(o.prepay_due || o.prepay) + ' ₽, остальное после проверки работы.</p>';
+        return '<p class="petit ord-price-note">Первый платёж — ' + money(o.prepay_due || o.prepay) + ' ₽, остальное по плану после передачи результата этапа.</p>';
       return '';
     }
     return '<div class="due-box plan-box">' +
@@ -1415,7 +1463,7 @@ function initCabinet() {
         partsNote = '<p class="petit" style="margin:0 0 10px">Полная стоимость — <b>' +
           money(o.due_total || o.price) + ' ₽</b>, но платить её сразу не нужно: сейчас — только ' +
           '<b>первая часть ' + money(plan0[0].amount) + ' ₽</b>. Каждый следующий платёж — после ' +
-          'того, как увидите готовую часть работы (план — выше, рядом с ценой).</p>';
+          'того, как результат соответствующей части будет подготовлен (план — выше, рядом с ценой).</p>';
       } else {
         b.push('<button type="button" class="btn btn-wax" data-act="accept_price">Принять цену — к оплате ' + money(o.due_total || o.price) + ' ₽</button>');
       }
@@ -1423,9 +1471,9 @@ function initCabinet() {
     }
     if (o.actions.indexOf('accept_work') >= 0) {
       var lastPart = total <= 1 || (o.stage || 1) >= total;
-      var acceptLabel = lastPart ? 'Принять работу' : 'Принять часть ' + (o.stage || 1);
+      var acceptLabel = lastPart ? 'Принять результат' : 'Принять результат части ' + (o.stage || 1);
       b.push('<button type="button" class="btn btn-wax" data-act="accept_work">' + acceptLabel + '</button>');
-      b.push('<button type="button" class="btn btn-line" data-act-fix>Нужны правки' + (total > 1 ? ' по части ' + (o.stage || 1) : '') + '</button>');
+      b.push('<button type="button" class="btn btn-line" data-act-fix>Нужна корректировка' + (total > 1 ? ' по части ' + (o.stage || 1) : '') + '</button>');
     }
     if (o.actions.indexOf('resume') >= 0) {
       b.push('<button type="button" class="btn btn-wax" data-act="resume">🔄 Возобновить заказ</button>');
@@ -1435,11 +1483,11 @@ function initCabinet() {
       ? payBlock(o) : '';
     if (!b.length) return pay || (payHistory(o) ? '<div class="fs-sec" id="secPay"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '');
     return '<div class="fs-sec" id="secDecide"><div class="fs-head"><span class="caps">Решение по заказу</span>' +
-      (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="fs-meta">правки — без лимита, в рамках задания</span>' : '') +
+      (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="fs-meta">проверка и итерации — по условиям позиции</span>' : '') +
       '</div>' + partsNote + '<div class="act-row" style="margin-top:0">' + b.join('') + '</div>' +
       '<div class="fix-form" id="fixForm" hidden>' +
-        '<textarea id="fixText" rows="3" maxlength="2000" aria-label="Что нужно поправить" placeholder="Что поправить? Например: «во 2-й главе обновить данные за 2025 год»"></textarea>' +
-        '<div class="act-row"><button type="button" class="btn btn-wax" data-act-fix-send>Отправить на правки</button>' +
+        '<textarea id="fixText" rows="3" maxlength="2000" aria-label="Что нужно скорректировать" placeholder="Укажите критерий позиции и конкретное расхождение результата"></textarea>' +
+        '<div class="act-row"><button type="button" class="btn btn-wax" data-act-fix-send>Запросить корректировку</button>' +
         '<button type="button" class="btn btn-line" data-act-fix-cancel>Передумал(а)</button></div>' +
       '</div></div>' + pay;
   }
@@ -1450,7 +1498,7 @@ function initCabinet() {
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
     if (due > 0) {
       return '<div class="pause-band fin-band"><span class="pb-ic">🏁</span><span class="pb-txt">' +
-        '<b>Работа готова целиком!</b> Финальная часть передаётся после закрытия остатка — ' +
+        '<b>Финальный пакет результата подготовлен.</b> Он передаётся после закрытия остатка — ' +
         '<b>' + money(due) + ' ₽</b>. Как только мастер подтвердит поступление, файлы придут сразу. ' +
         '<button type="button" class="linkbtn" data-jump="secPay">Перейти к оплате ↓</button></span></div>';
     }
@@ -1460,19 +1508,19 @@ function initCabinet() {
   }
 
   function partBand(o) {
-    /* промежуточная часть готова: «сначала оплата этапа — потом файл» */
+    /* промежуточный результат подготовлен: «сначала оплата этапа — потом файл» */
     if (!o.part_ready || o.final_ready || 'work fix'.indexOf(o.status) < 0) return '';
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
     if (due > 0) {
       return '<div class="pause-band fin-band"><span class="pb-ic">📘</span><span class="pb-txt">' +
-        '<b>Часть ' + o.part_ready + ' готова!</b> Она передаётся после оплаты этапа — ' +
+        '<b>Результат части ' + o.part_ready + ' подготовлен.</b> Он передаётся после оплаты этапа — ' +
         '<b>' + money(due) + ' ₽</b>' + (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ')' : '') +
         '. После подтверждения файл придёт сразу. ' +
         '<button type="button" class="linkbtn" data-jump="secPay">Перейти к оплате ↓</button></span></div>';
     }
     return '<div class="pause-band fin-band"><span class="pb-ic">📘</span><span class="pb-txt">' +
-      (o.claimed ? 'Часть ' + o.part_ready + ' готова; ваша отметка об оплате на сверке — после подтверждения мастер передаст файл.'
-                 : 'Часть ' + o.part_ready + ' готова, этап оплачен — мастер передаёт файл.') + '</span></div>';
+      (o.claimed ? 'Результат части ' + o.part_ready + ' подготовлен; ваша отметка об оплате на сверке — после подтверждения мастер передаст файл.'
+                 : 'Результат части ' + o.part_ready + ' подготовлен, этап оплачен — мастер передаёт файл.') + '</span></div>';
   }
 
   /* -------- часть уже у клиента, а этап не оплачен: честная лента -------- */
@@ -1483,7 +1531,7 @@ function initCabinet() {
     return '<div class="pause-band fin-band"><span class="pb-ic">💳</span><span class="pb-txt">' +
       'По плану оплат за эту часть — <b>' + money(due) + ' ₽</b>' +
       (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ')' : '') +
-      '. Мастерская передала её, доверившись вам — закройте этап, и работа продолжится без пауз. ' +
+      '. Мастерская передала результат, доверившись вам — закройте этап, и исполнение продолжится без пауз. ' +
       '<button type="button" class="linkbtn" data-jump="secPay">Перейти к оплате ↓</button></span></div>';
   }
 
@@ -1492,7 +1540,7 @@ function initCabinet() {
     if (!o.paused) return '';
     var by = o.paused_by === 'admin'
       ? 'Мастер приостановил дело — вопросы можно задать в переписке ниже.'
-      : 'Вы поставили дело на паузу: работа и напоминания подождут вашего сигнала.';
+      : 'Вы поставили дело на паузу: исполнение и напоминания подождут вашего сигнала.';
     return '<div class="pause-band"><span class="pb-ic">⏸</span><span class="pb-txt">' + by +
       (o.actions.indexOf('unpause') >= 0
         ? ' <button type="button" class="linkbtn" data-act="unpause">Снять с паузы</button>' : '') +
@@ -1515,15 +1563,15 @@ function initCabinet() {
       '<div class="act-row" style="margin-top:0">' + items.join('') + '</div>', false);
   }
 
-  /* -------- после завершения: услуги «к защите» -------- */
+  /* -------- после завершения: отдельная подготовка к выступлению -------- */
   function defenseBlock(o) {
     if (o.status !== 'done' || /^svc_/.test(o.work_type || '')) return '';
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Впереди защита?</span>' +
-      '<span class="fs-meta">по вашей готовой работе</span></div>' +
-      '<p class="petit" style="margin-bottom:12px">Работа уже у нас — заново ничего описывать не придётся. Бонусы с этого заказа на счету, их можно применить.</p>' +
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Нужна подготовка к выступлению?</span>' +
+      '<span class="fs-meta">по вашим материалам</span></div>' +
+      '<p class="petit" style="margin-bottom:12px">Можно отдельно заказать редактуру вашего доклада и слайдов, а также репетицию самостоятельных ответов. Бонусы с этого заказа можно применить.</p>' +
       '<div class="act-row" style="margin-top:0">' +
-      '<a class="btn btn-wax" href="configurator.html?service=dp&order=' + o.id + '">🎁 «К защите под ключ» · от 9 500 ₽</a>' +
-      '<a class="btn btn-line" href="configurator.html?service=df&order=' + o.id + '">🎤 Презентация и речь · от 6 000 ₽</a>' +
+      '<a class="btn btn-wax" href="configurator.html?service=dp&order=' + o.id + '">🎁 Пакет подготовки к выступлению · от 9 500 ₽</a>' +
+      '<a class="btn btn-line" href="configurator.html?service=df&order=' + o.id + '">🎤 Редактура доклада и слайдов · от 6 000 ₽</a>' +
       '<a class="btn btn-line" href="configurator.html?service=nm&order=' + o.id + '">📏 Нормоконтроль · от 5 000 ₽</a>' +
       '</div>' +
       '<p class="petit" style="margin-top:10px">Пакет выгоднее на 1 500 ₽, чем услуги по отдельности (11 000 ₽).</p></div>';
@@ -1542,7 +1590,7 @@ function initCabinet() {
         '<div class="act-row"><button type="button" class="btn btn-line" data-review-edit>Изменить отзыв</button></div>' +
         '<div id="reviewForm" hidden>' + reviewFormInner(r) + '</div></div>';
     }
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Как вам работа?</span>' +
+    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Как вам результат и сервис?</span>' +
       '<span class="fs-meta">займёт полминуты</span></div>' +
       '<p class="petit" style="margin-bottom:10px">Оценка и пара слов помогают другим студентам решиться — а нам делают день. Публикуется после модерации, можно анонимно.</p>' +
       '<div id="reviewForm">' + reviewFormInner(null) + '</div></div>';
@@ -1553,7 +1601,7 @@ function initCabinet() {
     for (var n = 1; n <= 5; n++)
       stars += '<button type="button" class="rv-star' + (n <= cur ? ' on' : '') + '" data-star="' + n + '" aria-label="' + n + ' из 5">★</button>';
     return '<div class="rv-stars" id="rvStars" data-val="' + cur + '">' + stars + '</div>' +
-      '<textarea id="rvText" rows="3" maxlength="2000" aria-label="Текст отзыва" placeholder="Пара слов — по желанию: как прошла защита, что понравилось">' + (r && r.text ? esc(r.text) : '') + '</textarea>' +
+      '<textarea id="rvText" rows="3" maxlength="2000" aria-label="Текст отзыва" placeholder="Пара слов — по желанию: что было полезно и удобно">' + (r && r.text ? esc(r.text) : '') + '</textarea>' +
       '<div class="act-row" style="margin-top:10px">' +
       '<input type="text" id="rvAuthor" maxlength="60" aria-label="Подпись к отзыву, необязательно" placeholder="Подпись (например, «Мария, ВКР») — можно пусто" style="flex:2;min-width:0;font:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
       '<button type="button" class="btn btn-wax" data-review-send>' + (r ? 'Обновить отзыв' : 'Отправить отзыв') + '</button></div>' +
@@ -1584,7 +1632,7 @@ function initCabinet() {
     return '<div class="fs-sec"><div class="thanks-card" id="thanksCard" data-tip="500">' +
       '<span class="caps">После финальной точки</span>' +
       '<h3 class="th-title">Оставить благодарность мастерской</h3>' +
-      '<p class="th-copy">Если работа и сопровождение правда помогли, можно поддержать развитие проекта. Только по желанию — на заказ, правки и отношение это никак не влияет.</p>' +
+      '<p class="th-copy">Если результат и сопровождение помогли, можно поддержать развитие проекта. Только по желанию — на заказ, корректировки и отношение это никак не влияет.</p>' +
       paid +
       '<div class="th-amounts" role="group" aria-label="Сумма благодарности">' +
         '<button type="button" class="th-chip" data-tip-preset="300" aria-pressed="false">300 ₽</button>' +
@@ -2226,16 +2274,16 @@ function initCabinet() {
           var ai = r.accept || {};
           S.stamp(ai.final ? 'Принято' : 'Часть ' + (ai.part || '') + ' принята');
         }
-        if (action === 'resume' && S.stamp) S.stamp('Снова в работе');
+        if (action === 'resume' && S.stamp) S.stamp('Исполнение возобновлено');
         if (action === 'pause' && S.stamp) S.stamp('На паузе');
         if (action === 'unpause' && S.stamp) S.stamp('Продолжаем');
         if (action === 'bonus_apply' && S.stamp) S.stamp('−' + money(r.spent || 0) + ' бонусами', { tone: 'wax' });
         if (action === 'bonus_cancel' && S.stamp) S.stamp('+' + money(r.restored || 0) + ' на счёт', { tone: 'wax' });
         if (action === 'gift_apply' && S.stamp) S.stamp(r.gift_amount ? '−' + money(r.gift_amount) + ' сертификатом' : 'Сертификат привязан', { tone: 'wax' });
         var msgA = { accept_price: 'Принято! Дальше — предоплата', paid: 'Передали мастеру на сверку',
-                request_fixes: 'Отправили на правки — исправим и вернём',
+                request_fixes: 'Запрос корректировки отправлен — результат проверят и обновят',
                 decline: 'Заявка закрыта — её можно возобновить в любой момент',
-                resume: 'Заявка снова в работе — мастер уже видит',
+                resume: 'Исполнение заявки возобновлено — мастер уже видит',
                 bonus_apply: 'Бонусы применены', bonus_cancel: 'Бонусы вернулись на счёт',
                 gift_apply: 'Сертификат привязан к делу',
                 gift_remove: 'Сертификат откреплён — сумма вернулась на код',
@@ -2243,7 +2291,7 @@ function initCabinet() {
                 archive: 'Дело убрано в архив — вернуть можно в любой момент',
                 unarchive: 'Дело вернулось в список',
                 pause: 'Дело на паузе — продолжим по вашему сигналу',
-                unpause: 'Пауза снята — работа продолжается',
+                unpause: 'Пауза снята — исполнение продолжается',
                 pin: 'Закрепили — дело теперь первое в списке',
                 unpin: 'Закрепление снято',
                 cancel_request: 'Запрос отправлен — мастер свяжется с вами',
@@ -2253,7 +2301,7 @@ function initCabinet() {
           msgA = a2.final
             ? (a2.need_pay ? 'Принято! Остался финальный платёж ' + money(a2.due || 0) + ' ₽'
                            : 'Заказ завершён — спасибо!')
-            : 'Часть принята — мастер работает дальше';
+            : 'Результат части принят — мастер переходит к следующему этапу';
         }
         toast(msgA || 'Готово');
         loadList(true);
@@ -2651,21 +2699,19 @@ function initCabinet() {
         var od2 = st.detail || {};
         var isFinal = (od2.stage || 1) >= (od2.stages_total || 1);
         S.confirm(isFinal ? {
-          title: 'Принять и завершить заказ?',
-          text: 'Правки в рамках задания бесплатны — до приёмки и в сервисном окне после неё ' +
-                '(замечания научного руководителя и комиссии — до защиты). ' +
-                'Ещё ждёте проверок? Нажмите «Пока жду проверок» — дело останется открытым, а сервисное окно продлится. ' +
-                'Появились замечания — «Нужны правки» в карточке.',
-          okLabel: 'Всё проверено — завершить', noLabel: 'Пока жду проверок'
+          title: 'Принять результат и завершить заказ?',
+          text: 'Сверьте результат с критериями каждой позиции спецификации. Первичная проверка и добровольные итерации действуют в указанном для позиции окне; подтверждённые недостатки рассматриваются по закону независимо от этих итераций. ' +
+                'Если проверка ещё идёт, нажмите «Пока продолжаю проверку». Для конкретного расхождения используйте «Нужна корректировка».',
+          okLabel: 'Результат проверен — принять', noLabel: 'Пока продолжаю проверку'
         } : {
-          title: 'Принять часть ' + (od2.stage || 1) + '?',
-          text: 'Мастер продолжит со следующей частью. Замечания по этой части лучше отправить сейчас — кнопкой «Нужны правки», это бесплатно.',
-          okLabel: 'Принять часть', noLabel: 'Ещё посмотрю'
+          title: 'Принять результат части ' + (od2.stage || 1) + '?',
+          text: 'Мастер продолжит со следующей частью. Сначала сверьте результат с критериями соответствующей позиции; конкретное расхождение отправьте кнопкой «Нужна корректировка».',
+          okLabel: 'Принять результат части', noLabel: 'Ещё посмотрю'
         }).then(function (res) {
           if (res.ok) { doAction('accept_work'); return; }
           if (isFinal) {
-            /* «жду проверок» — не правки и не завершение: дело остаётся открытым */
-            toast('Дело остаётся открытым — правки бесплатны до приёмки. Мастер предупреждён.');
+            /* продолжение первичной проверки — не корректировка и не завершение */
+            toast('Дело остаётся открытым на время первичной проверки. Мастер предупреждён.');
             waitChecksOnce(st.currentId);
           }
         });
@@ -2690,7 +2736,7 @@ function initCabinet() {
     if (t.closest('[data-act-pause]')) {
       (S.confirm ? S.confirm({
         title: 'Поставить дело на паузу?',
-        text: 'Работа и напоминания подождут, пока вы не снимете паузу. Это не отмена: ' +
+        text: 'Исполнение и напоминания подождут, пока вы не снимете паузу. Это не отмена: ' +
               'цена, файлы и договорённости сохраняются. Мастер получит уведомление.',
         okLabel: 'Поставить на паузу', noLabel: 'Передумал(а)'
       }) : Promise.resolve({ ok: window.confirm('Поставить дело на паузу?') }))
@@ -2699,7 +2745,7 @@ function initCabinet() {
     }
     if (t.closest('[data-act-cancelreq]')) {
       (S.confirm ? S.confirm({
-        title: 'Закрыть дело, когда работа уже идёт?',
+        title: 'Закрыть дело во время исполнения?',
         text: 'По делу уже есть выполненная часть, поэтому закрытие согласуем лично: ' +
               'мастер свяжется с вами, решите вопрос по материалам и оплате. ' +
               'Если нужен просто перерыв — удобнее пауза.',

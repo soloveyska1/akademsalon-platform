@@ -4,13 +4,14 @@
   <meta name="referrer" content="no-referrer">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Калькулятор стоимости онлайн: курсовая, диплом, ВКР — смета за минуту | Академический Салон</title>
-<meta name="description" content="Соберите смету за четыре шага: тип работы, направление, срок и уровень сопровождения. Живой расчёт и порядок оплаты — до заявки." />
+<title>Конструктор услуг: аудит, редактура и консультации — Академический Салон</title>
+<meta name="description" content="Соберите заказ из одной или нескольких позиций. Для каждой видны результат, ориентир цены и детали; точные условия фиксируются в спецификации до оплаты." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
 <link rel="stylesheet" href="assets/css/cart.css?v=20260723e" />
+<link rel="stylesheet" href="assets/css/service-v2.css?v=20260724a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -674,11 +675,11 @@
 
       <div id="confBody">
         <header class="conf-head reveal">
-          <h1>Смета вашей работы</h1>
-          <p class="petit">Четыре шага — увидите стоимость, план и порядок оплаты. Оценка бесплатна, решение остаётся за вами.</p>
+          <h1>Состав вашего заказа</h1>
+          <p class="petit">Выберите формат помощи и академический контекст. Одну или несколько позиций мастер превратит в понятную спецификацию до оплаты.</p>
           <div class="estimate-builder-note">
             <span class="estimate-builder-mark" aria-hidden="true">¶</span>
-            <span><b>Соберите одну смету</b><small>Работы и дополнительные услуги можно объединить, применить промокод, сертификат и бонусы.</small></span>
+            <span><b>Один заказ — несколько ясных строк</b><small>Каждая услуга сохраняет собственный результат, срок, цену и правила приёмки.</small></span>
             <button type="button" data-cart-open aria-label="Открыть вашу смету">Открыть смету →</button>
           </div>
           <!-- карточка-квитанция услуги: заполняется в сервисном режиме (?service=…) -->
@@ -699,11 +700,15 @@
             </div>
             <noscript><p class="petit" style="margin-bottom:18px">Для пошагового бланка нужен JavaScript. Все цены и формула открыты на странице «Цены».</p></noscript>
 
-            <!-- ШАГ 1: тип работы -->
+            <!-- ШАГ 1: контекст и формат помощи -->
             <div class="wstep active" role="group" aria-labelledby="ws1t">
-              <h2 class="ws-title" id="ws1t" tabindex="-1">Тип работы</h2>
-              <div class="service-finder" role="search" aria-label="Поиск работы или услуги">
-                <label class="visually-hidden" for="workSearch">Найти работу или услугу</label>
+              <h2 class="ws-title" id="ws1t" tabindex="-1">Что у вас за материал</h2>
+              <div class="purpose-note">
+                <span class="purpose-note__mark" aria-hidden="true">¶</span>
+                <p><b>Здесь выбирается контекст, а не готовая аттестационная работа.</b> Формат результата задаёт уровень на третьем шаге: диагностика, редактура или сопровождение. Отдельные услуги можно сразу добавить как самостоятельные позиции.</p>
+              </div>
+              <div class="service-finder" role="search" aria-label="Поиск контекста или услуги">
+                <label class="visually-hidden" for="workSearch">Найти контекст или услугу</label>
                 <div class="sf-search">
                   <span class="sf-mark" aria-hidden="true">¶</span>
                   <input type="search" id="workSearch" autocomplete="off"
@@ -713,51 +718,52 @@
                 </div>
                 <div class="sf-filters" id="workFilters" role="group" aria-label="Рубрика">
                   <button type="button" class="sf-filter" data-work-filter="all" aria-pressed="true">Все</button>
-                  <button type="button" class="sf-filter" data-work-filter="degree" aria-pressed="false">Дипломы</button>
+                  <button type="button" class="sf-filter" data-work-filter="degree" aria-pressed="false">Исследования</button>
                   <button type="button" class="sf-filter" data-work-filter="course" aria-pressed="false">Курсовые</button>
                   <button type="button" class="sf-filter" data-work-filter="article" aria-pressed="false">Статьи</button>
                   <button type="button" class="sf-filter" data-work-filter="service" aria-pressed="false">Услуги</button>
                 </div>
-                <p class="sf-status"><span id="workResult" role="status" aria-live="polite">18 вариантов</span><span>цена видна сразу</span></p>
+                <p class="sf-status"><span id="workResult" role="status" aria-live="polite">19 вариантов</span><span>ориентир виден сразу</span></p>
               </div>
               <div id="typeGroup" role="radiogroup" aria-label="Тип работы">
                 <div class="opt-group" data-work-kind="degree">
-                  <span class="caps">Дипломы и диссертации</span>
+                  <span class="caps">ВКР и исследования</span>
                   <div class="opt-list">
-                    <button type="button" class="optrow" role="radio" data-id="diplom" aria-checked="true" tabindex="0"><span>Дипломная работа / ВКР</span><span class="dots"></span><span class="o-val">от 40&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="master" aria-checked="false" tabindex="-1"><span>Магистерская диссертация</span><span class="dots"></span><span class="o-val">от 60&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="chapter" aria-checked="false" tabindex="-1"><span>Глава диссертации</span><span class="dots"></span><span class="o-val">от 30&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="kandidat" aria-checked="false" tabindex="-1"><span>Кандидатская (по главам)</span><span class="dots"></span><span class="o-val">от 200&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="diplom" aria-checked="true" tabindex="0"><span>Сопровождение ВКР / диплома</span><span class="dots"></span><span class="o-val">от 24&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="master" aria-checked="false" tabindex="-1"><span>Магистерское исследование</span><span class="dots"></span><span class="o-val">от 36&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="chapter" aria-checked="false" tabindex="-1"><span>Отдельная глава исследования</span><span class="dots"></span><span class="o-val">от 9&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="kandidat" aria-checked="false" tabindex="-1"><span>Диссертационное исследование</span><span class="dots"></span><span class="o-val">от 60&nbsp;000&nbsp;₽</span></button>
                   </div>
                 </div>
                 <div class="opt-group" data-work-kind="course">
-                  <span class="caps">Курсовые и практика</span>
+                  <span class="caps">Курсовые, практика, малые формы</span>
                   <div class="opt-list">
-                    <button type="button" class="optrow" role="radio" data-id="course_emp" aria-checked="false" tabindex="-1"><span>Курсовая с исследованием (практика, расчёты)</span><span class="dots"></span><span class="o-val">от 20&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="course" aria-checked="false" tabindex="-1"><span>Курсовая теоретическая</span><span class="dots"></span><span class="o-val">от 14&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="practice" aria-checked="false" tabindex="-1"><span>Отчёт по практике</span><span class="dots"></span><span class="o-val">от 14&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="self" aria-checked="false" tabindex="-1"><span>Реферат, эссе, контрольная</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="course_emp" aria-checked="false" tabindex="-1"><span>Курсовая с исследованием и расчётами</span><span class="dots"></span><span class="o-val">от 14&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="course" aria-checked="false" tabindex="-1"><span>Теоретическая курсовая</span><span class="dots"></span><span class="o-val">от 9&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="practice" aria-checked="false" tabindex="-1"><span>Ваш отчёт по практике</span><span class="dots"></span><span class="o-val">от 8&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="self" aria-checked="false" tabindex="-1"><span>Реферат, эссе или контрольная</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></button>
                   </div>
                 </div>
                 <div class="opt-group" data-work-kind="article">
                   <span class="caps">Научные статьи</span>
                   <div class="opt-list">
-                    <button type="button" class="optrow" role="radio" data-id="scopus" aria-checked="false" tabindex="-1"><span>Scopus / Web of Science</span><span class="dots"></span><span class="o-val">от 35&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="vak" aria-checked="false" tabindex="-1"><span>Статья ВАК</span><span class="dots"></span><span class="o-val">от 18&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="rinc" aria-checked="false" tabindex="-1"><span>Статья РИНЦ</span><span class="dots"></span><span class="o-val">от 9&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="scopus" aria-checked="false" tabindex="-1"><span>Редактура статьи Scopus / Web of Science</span><span class="dots"></span><span class="o-val">от 22&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="vak" aria-checked="false" tabindex="-1"><span>Редактура статьи ВАК</span><span class="dots"></span><span class="o-val">от 12&nbsp;000&nbsp;₽</span></button>
+                    <button type="button" class="optrow" role="radio" data-id="rinc" aria-checked="false" tabindex="-1"><span>Редактура статьи РИНЦ</span><span class="dots"></span><span class="o-val">от 7&nbsp;000&nbsp;₽</span></button>
                   </div>
                 </div>
                 <!-- работа уже написана — нужны отдельные услуги: короткий лист заявки -->
                 <div class="opt-group svc-group" data-work-kind="service">
-                  <span class="caps">Работа уже есть — нужна услуга</span>
+                  <span class="caps">Отдельные услуги — каждая своей строкой</span>
                   <div class="opt-list">
-                    <a class="optrow optrow-link" href="configurator.html?service=pl"><span>Разбор плана — старт любой работы, зачтётся в её цену</span><span class="dots"></span><span class="o-val">3&nbsp;000&nbsp;₽</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=ai"><span>Чистка текста от следов ИИ</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=rv"><span>Разбор готовой работы перед защитой</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
+                    <a class="optrow optrow-link" href="configurator.html?service=pl"><span>Разбор задачи и плана самостоятельной работы</span><span class="dots"></span><span class="o-val">3&nbsp;000&nbsp;₽</span></a>
+                    <a class="optrow optrow-link" href="configurator.html?service=ai"><span>Литературная редактура текста</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
+                    <a class="optrow optrow-link" href="configurator.html?service=rv"><span>Экспертная диагностика черновика</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
                     <a class="optrow optrow-link" href="configurator.html?service=nm"><span>Нормоконтроль и оформление по ГОСТ</span><span class="dots"></span><span class="o-val">от 5&nbsp;000&nbsp;₽</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=df"><span>Презентация и речь к защите</span><span class="dots"></span><span class="o-val">от 6&nbsp;000&nbsp;₽</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=dp"><span>«К защите под ключ»: презентация + речь + нормоконтроль</span><span class="dots"></span><span class="o-val">от 9&nbsp;500&nbsp;₽</span></a>
+                    <a class="optrow optrow-link" href="configurator.html?service=df"><span>Подготовка к выступлению и защите</span><span class="dots"></span><span class="o-val">от 6&nbsp;000&nbsp;₽</span></a>
+                    <a class="optrow optrow-link" href="configurator.html?service=dp"><span>Пакет: оформление + выступление</span><span class="dots"></span><span class="o-val">от 9&nbsp;500&nbsp;₽</span></a>
                     <a class="optrow optrow-link" href="configurator.html?service=tu"><span>Репетиторство и консультации</span><span class="dots"></span><span class="o-val">от 3&nbsp;000&nbsp;₽/час</span></a>
+                    <a class="optrow optrow-link" href="configurator.html?service=au"><span>Авторский текст вне аттестации</span><span class="dots"></span><span class="o-val">от 12&nbsp;000&nbsp;₽</span></a>
                   </div>
                   <p class="petit" style="margin-top:8px">Эти заявки короче: один лист — описываете задачу, прикладываете работу, мастер называет точную цену.</p>
                 </div>
@@ -767,8 +773,8 @@
                 <p class="petit" style="margin:5px 0 0">Попробуйте «диплом», «статья», «оформление» — или напишите мастеру.</p>
               </div>
               <p class="petit" id="planEntry" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--hairline-strong)">
-                Не готовы заказывать целиком? <a class="link" href="configurator.html?service=pl"><b>Начните с разбора плана — 3&nbsp;000&nbsp;₽</b></a>:
-                структура глав, срок и фиксированная смета, при продолжении зачтётся полностью.
+                Пока неясно, с чего начать? <a class="link" href="configurator.html?service=pl"><b>Разберите задачу и план — 3&nbsp;000&nbsp;₽</b></a>:
+                требования, структура и календарь самостоятельной работы; при продолжении сопровождения сумма зачтётся.
                 <a class="link" href="plan.html">Подробнее об услуге →</a></p>
             </div>
 
@@ -786,18 +792,18 @@
 
             <!-- ШАГ 3: срок и уровень -->
             <div class="wstep" role="group" aria-labelledby="ws3t">
-              <h2 class="ws-title" id="ws3t" tabindex="-1">Срок и уровень</h2>
+              <h2 class="ws-title" id="ws3t" tabindex="-1">Срок и формат результата</h2>
               <p class="caps" id="segTermLbl" style="margin-bottom:10px">Срок сдачи</p>
               <div class="seg seg-term" id="segTerm" role="group" aria-labelledby="segTermLbl">
                 <button type="button" data-id="free" class="active" aria-pressed="true"><b>От 30 дней</b><small>без наценки</small></button>
                 <button type="button" data-id="mid" aria-pressed="false"><b>14–30 дней</b><small>+15%</small></button>
                 <button type="button" data-id="urgent" aria-pressed="false"><b>До 14 дней</b><small>+45%</small></button>
               </div>
-              <p class="caps" style="margin:22px 0 10px">Уровень сопровождения</p>
-              <div id="tierGroup" role="radiogroup" aria-label="Уровень сопровождения" class="opt-list">
-                <button type="button" class="optrow" role="radio" data-id="base" aria-checked="true" tabindex="0"><span>Базовый</span><span class="dots"></span><span class="o-val">×1.0</span><small>Готовая работа с отчётом о проверках</small></button>
-                <button type="button" class="optrow" role="radio" data-id="turn" aria-checked="false" tabindex="-1"><span>Под ключ</span><span class="dots"></span><span class="o-val">×1.33</span><small>Правки и сопровождение до защиты</small></button>
-                <button type="button" class="optrow" role="radio" data-id="vip" aria-checked="false" tabindex="-1"><span>VIP</span><span class="dots"></span><span class="o-val">×2.0</span><small>Личное ведение, подготовка к защите, приоритет в очереди</small></button>
+              <p class="caps" style="margin:22px 0 10px">Формат результата</p>
+              <div id="tierGroup" role="radiogroup" aria-label="Формат результата" class="opt-list">
+                <button type="button" class="optrow" role="radio" data-id="base" aria-checked="true" tabindex="0"><span>Диагностика</span><span class="dots"></span><span class="o-val">×1.0</span><small>Аудит вашего текста и карта приоритетных правок</small></button>
+                <button type="button" class="optrow" role="radio" data-id="turn" aria-checked="false" tabindex="-1"><span>Редактура</span><span class="dots"></span><span class="o-val">×1.33</span><small>Правки в вашем файле, комментарии и лист изменений</small></button>
+                <button type="button" class="optrow" role="radio" data-id="vip" aria-checked="false" tabindex="-1"><span>Сопровождение</span><span class="dots"></span><span class="o-val">×2.0</span><small>Редактура, консультации, репетиция выступления и приоритет</small></button>
               </div>
               <p class="petit" style="margin-top:10px">Не уверены, какой уровень ваш? <a class="link" href="vedenie.html" target="_blank" rel="noopener">Проспект уровней</a> — что входит в каждый и как ощущается. Про деньги — <a class="link" href="oplata.html" target="_blank" rel="noopener">как проходит оплата</a>.</p>
             </div>
@@ -821,16 +827,16 @@
                   <span><b>Детали задачи</b><small>Необязательно — заполните только то, что уже известно</small></span>
                 </header>
                 <div class="field">
-                  <label for="fTopic">Тема работы <span class="field-optional">необязательно</span></label>
+                  <label for="fTopic">Тема материала <span class="field-optional">необязательно</span></label>
                   <input type="text" id="fTopic" maxlength="160" autocomplete="off" placeholder="Например: развитие туризма в Татарстане" />
                 </div>
                 <div class="field">
-                  <label for="fDeadline">Срок сдачи <span class="field-optional">необязательно</span></label>
+                  <label for="fDeadline">Желаемый срок результата <span class="field-optional">необязательно</span></label>
                   <input type="text" id="fDeadline" maxlength="60" autocomplete="off" placeholder="Например: 25 июля" />
                 </div>
                 <div class="field">
                   <label for="fDetails">Требования <span class="field-optional">необязательно</span></label>
-                  <textarea id="fDetails" rows="2" maxlength="1200" placeholder="Объём, оригинальность, методичка и другие требования"></textarea>
+                  <textarea id="fDetails" rows="2" maxlength="1200" placeholder="Объём, методичка, замечания, формат файла и другие требования"></textarea>
                 </div>
               </section>
 
@@ -992,15 +998,15 @@
                 <div class="lq-head">Смета · обновляется сразу</div>
                 <h2>Ваш расчёт</h2>
                 <div class="lq-context">
-                  <p class="lq-type" data-lg="type">Дипломная работа / ВКР</p>
+                <p class="lq-type" data-lg="type">Сопровождение ВКР / диплома</p>
                   <span class="lq-step" data-conf-step>Шаг 1 / 4</span>
                 </div>
               </header>
               <section class="lq-priceblock" aria-label="Предварительная стоимость">
                 <div class="lg-total">
                   <b>Итого, от</b>
-                  <span class="price-xl" id="lqLow" aria-hidden="true">40&nbsp;000&nbsp;₽</span>
-                  <span id="lqLowSr" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">40&nbsp;000&nbsp;₽</span>
+                  <span class="price-xl" id="lqLow" aria-hidden="true">24&nbsp;000&nbsp;₽</span>
+                  <span id="lqLowSr" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">24&nbsp;000&nbsp;₽</span>
                 </div>
                 <p class="lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
                 <div class="lq-deal" data-deal hidden></div>
@@ -1008,10 +1014,10 @@
               <section class="lq-formula">
                 <div class="lq-formula-head"><span>Как сложилась цена</span><span>формула открыта</span></div>
                 <div class="ledger">
-                  <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">40&nbsp;000&nbsp;₽</span></div>
+                  <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">24&nbsp;000&nbsp;₽</span></div>
                   <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
                   <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
-                  <div class="lg-row"><span data-lg="tierLbl">Уровень · Базовый</span><span class="num" data-lg="tier">×1.0</span></div>
+                  <div class="lg-row"><span data-lg="tierLbl">Формат · Диагностика</span><span class="num" data-lg="tier">×1.0</span></div>
                 </div>
               </section>
               <section class="lq-summary">
@@ -1019,7 +1025,7 @@
                   <span class="lq-fact"><i>✓</i>Оценка бесплатна</span>
                   <span class="lq-fact"><i>✓</i>Цена фиксируется до старта</span>
                 </div>
-                <p class="lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
+                <p class="lq-pay" data-lg="pay">Точные этапы и результат каждой позиции будут перечислены в спецификации до оплаты.</p>
                 <details class="lq-explain">
                   <summary>Почему сейчас показана вилка?</summary>
                   <p class="petit lq-when">Расчёт меняется сразу с вашими ответами. После заявки мастер проверит объём и требования, назовёт точную цену и зафиксирует её до старта. Максимальный коэффициент срочности — ×1,45.</p>
@@ -1097,22 +1103,22 @@
     <div class="lq-mobile-head">
       <div>
         <span class="lq-head">Предварительная смета</span>
-        <p class="lq-type" data-lg="type">Дипломная работа / ВКР</p>
+        <p class="lq-type" data-lg="type">Сопровождение ВКР / диплома</p>
       </div>
       <span class="lq-step" data-conf-step>Шаг 1 / 4</span>
     </div>
     <div class="lq-mobile-price">
-      <div class="lg-total"><b>Итого, от</b><span class="num" data-lg="low">40&nbsp;000&nbsp;₽</span></div>
+      <div class="lg-total"><b>Итого, от</b><span class="num" data-lg="low">24&nbsp;000&nbsp;₽</span></div>
       <p class="lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
       <div class="lq-deal" data-deal hidden></div>
     </div>
     <details class="lq-mobile-formula">
       <summary>Как рассчитали сумму</summary>
       <div class="ledger">
-        <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">40&nbsp;000&nbsp;₽</span></div>
+        <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">24&nbsp;000&nbsp;₽</span></div>
         <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
         <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
-        <div class="lg-row"><span data-lg="tierLbl">Уровень · Базовый</span><span class="num" data-lg="tier">×1.0</span></div>
+        <div class="lg-row"><span data-lg="tierLbl">Формат · Диагностика</span><span class="num" data-lg="tier">×1.0</span></div>
       </div>
     </details>
     <details class="lq-mobile-terms">
@@ -1208,7 +1214,8 @@ function initConf() {
     }
   } catch (e) {}
   var svcSrvId = svc ? ({ plan: 'svc_plan', ai: 'svc_ai', review: 'svc_review', tutor: 'svc_tutor',
-                          norm: 'svc_norm', defense: 'svc_defense', defensepack: 'svc_defense_pack' }[svc.id] || 'custom') : '';
+                          norm: 'svc_norm', defense: 'svc_defense', defensepack: 'svc_defense_pack',
+                          author: 'svc_author_order' }[svc.id] || 'custom') : '';
   var isPlanService = !!(svc && svc.id === 'plan');
   var SERVICE_DRAFT_KEY = 'salon_service_draft_v1';
 
@@ -1350,7 +1357,7 @@ function initConf() {
     if (wp) wp.style.display = 'none'; /* hidden перебивается display:flex из CSS */
     if (detailsIn) detailsIn.placeholder = isPlanService
       ? 'Требования кафедры, пожелания научного руководителя, число глав'
-      : 'Объём (страницы), вуз и методичка, особые пожелания — всё, что знаете';
+        : 'Объём, формат файла, исходные материалы и особые пожелания — всё, что знаете';
     if (isPlanService) {
       var finalIntro = document.querySelector('.conf-final-intro');
       if (finalIntro) {
@@ -1723,7 +1730,7 @@ function initConf() {
     put('disc', '×' + kfmt(d.k));
     put('termLbl', 'Срок · ' + TERM_SHORT[state.term]);
     put('term', '×' + kfmt(s.k));
-    put('tierLbl', 'Уровень · ' + v.label);
+    put('tierLbl', 'Формат · ' + v.label);
     put('tier', '×' + kfmt(v.k));
     put('low', q.lowFmt + ' ₽');
     put('high', 'до ' + q.highFmt + ' ₽ в зависимости от объёма');
@@ -1732,10 +1739,10 @@ function initConf() {
     if (planPriceEl) planPriceEl.textContent =
       (state.type === 'master' || state.type === 'kandidat') ? '5 000 ₽' : '3 000 ₽';
     var pay = state.type === 'kandidat'
-      ? 'Кандидатскую считаем по главам — у каждой главы своя смета и свой график оплаты. Детали зафиксируем после разбора плана.'
+      ? 'Научное сопровождение делится на самостоятельные позиции: у каждой свой результат, срок и цена в спецификации.'
       : BIG.indexOf(state.type) > -1
-        ? 'Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.'
-        : 'Оплата 50/50: половина после согласования плана, половина после отчёта о проверках.';
+        ? 'Этапы оплаты привязываются к конкретным результатам и фиксируются в персональной спецификации до оплаты.'
+        : 'Точный результат, цена и порядок оплаты будут перечислены по строкам в спецификации до оплаты.';
     put('pay', pay);
     /* выгода абонемента «Салон+» — честный расчёт от середины вилки:
        до 10% (план «Про»), потолок 3 000 ₽ с заказа */
@@ -1752,8 +1759,8 @@ function initConf() {
       : 'Свободный срок уже выбран — наценки за срочность нет.');
     var qTierBase = C.quote(state.type, state.disc, state.term, 'base');
     put('chTier', state.tier !== 'base'
-      ? 'Уровень «Базовый» вместо «' + v.label + '» — минус ~' + C.fmt(q.low - qTierBase.low) + ' ₽ (сопровождение можно докупить позже).'
-      : 'Уровень «Базовый» уже выбран — без наценки за сопровождение.');
+      ? 'Формат «Диагностика» вместо «' + v.label + '» — минус ~' + C.fmt(q.low - qTierBase.low) + ' ₽ (редактуру можно добавить отдельной строкой).'
+      : 'Формат «Диагностика» уже выбран — без наценки за редактуру.');
     put('chPlan', (state.type === 'master' || state.type === 'kandidat') ? '5 000 ₽' : '3 000 ₽');
     if (profileEl && window.SalonExperts) profileEl.textContent = (window.SalonExperts[state.disc] || {}).desc || '';
     renderDeal();
@@ -1787,7 +1794,9 @@ function initConf() {
     var q = baseQuote();
     var cartOn = !isPlanService && window.SalonCart && window.SalonCart.hasItems();
     if (cartOn) {
-      var cartPositionLabel = window.SalonCart.positionLabel(window.SalonCart.count());
+      var cartPositionLabel = window.SalonCart.positionLabel(
+        window.SalonCart.lineCount ? window.SalonCart.lineCount() : window.SalonCart.snapshot().count
+      );
       put('type', 'Состав · ' + cartPositionLabel);
       put('base', cartPositionLabel);
       put('discLbl', 'Разные направления');
