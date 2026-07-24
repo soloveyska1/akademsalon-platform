@@ -1393,6 +1393,11 @@
       ['check.html', 'Проверка текста', 'бесплатный сервис'],
       ['requisites.html', 'Реквизиты', 'ИНН открыт — проверяйте']
     ]},
+    { t: 'Бесплатные инструменты', items: [
+      ['proverka-istochnikov-vkr.html', 'Проверить DOI и источники', 'Crossref · до 20 DOI'],
+      ['audit-temy-vkr.html', 'Проверить тему ВКР', 'цель · объект · данные · задачи'],
+      ['check.html', 'Проверить стиль текста', 'канцелярит · ритм · ясность']
+    ]},
     { t: 'Клуб и материалы', items: [
       ['referral.html', 'Клуб и бонусы', 'кэшбэк и рефералка'],
       ['dashboard.html#plus', 'Подписка «Салон+»', 'скидки · приоритет · полка'],
@@ -1417,6 +1422,10 @@
     ['plan.html', 'Разбор плана', 'план структура старт'],
     ['razbor-zamechaniy-nauchruka.html', 'Разбор замечаний научного руководителя', 'научрук замечания комментарии правки черновик разбор'],
     ['normokontrol-vkr.html', 'Нормоконтроль ВКР и курсовой', 'нормоконтроль гост методичка оформление поля таблицы ссылки'],
+    ['proverka-istochnikov-vkr.html', 'Бесплатная проверка DOI и источников', 'doi crossref источник литература ссылка выдуманная нейросеть проверить'],
+    ['audit-temy-vkr.html', 'Бесплатная проверка темы ВКР', 'тема цель объект предмет задачи данные паспорт исследование аудит'],
+    ['redaktura-posle-ii.html', 'Редактура текста после ИИ', 'chatgpt чатгпт нейросеть факты источники логика редактура проверить'],
+    ['dorabotka-otcheta-po-praktike.html', 'Доработка отчёта по практике', 'практика исправить замечания дневник отчет повторная сдача'],
     ['gift.html', 'Подарочный сертификат', 'подарок подарить код'],
     ['guarantees.html', 'Гарантии · устав мастерской', 'гарантия закон возврат договор правки антиплагиат скептик'],
     ['reviews.html', 'Отзывы', 'отзыв истории скрины переписки'],
@@ -2405,7 +2414,7 @@
     var imp = false;
     try { imp = sessionStorage.getItem('salon_imp') === '1'; } catch (e) {}
     if (here.indexOf('admin') === 0 || here === 'zayavka.html' || imp
-        || /^(localhost|127\.)/.test(location.hostname)) {
+        || location.protocol !== 'https:' || location.hostname !== 'akademsalon.ru') {
       return { mark: function () {}, order: function () {} };
     }
     function vid() {
@@ -2458,9 +2467,49 @@
     return {
       /* Конверсию считаем без номера дела и без токена доступа. */
       mark: function (step) { send({ kind: 'mark', step: String(step || '').slice(0, 120) }); },
-      order: function () { send({ kind: 'mark', step: 'заявка отправлена' }); }
+      order: function () { send({ kind: 'order', step: 'заявка отправлена' }); },
+      event: function (name, detail) {
+        name = String(name || '').toLowerCase();
+        if (!/^[a-z][a-z0-9_]{2,31}$/.test(name)) return;
+        detail = detail || {};
+        var cta = String(detail.cta || '').toLowerCase().replace(/[^a-z0-9_:-]/g, '').slice(0, 64);
+        var variant = String(detail.variant || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 32);
+        send({
+          kind: 'event',
+          event: name,
+          cta_id: cta || undefined,
+          variant: variant || undefined
+        });
+      }
     };
   })();
+
+  /* Privacy-safe CTA attribution: only a small semantic id is sent, never
+     link query strings, form values, order numbers or access tokens. */
+  document.addEventListener('click', function (e) {
+    if (!Salon.visit || !Salon.visit.event || !e.target.closest) return;
+    var target = e.target.closest('a,button');
+    if (!target) return;
+    var href = target.getAttribute('href') || '';
+    var cta = target.getAttribute('data-cta') || '';
+    var event = 'cta_click';
+    if (!cta && target.hasAttribute('data-contact')) cta = 'contact_sheet';
+    if (!cta && /configurator\.html/.test(href)) {
+      cta = 'configurator';
+      try {
+        var service = new URL(href, location.href).searchParams.get('service');
+        if (service && /^[a-z0-9_-]{1,12}$/i.test(service)) cta += ':' + service.toLowerCase();
+      } catch (err) {}
+    }
+    if (/t\.me\/academic_saloon_bot/i.test(href)) {
+      cta = 'telegram_bot'; event = 'tg_open';
+    } else if (/t\.me\/academicsaloon/i.test(href)) {
+      cta = 'telegram_human'; event = 'tg_open';
+    } else if (/t\.me\/akademsalon/i.test(href)) {
+      cta = 'telegram_channel'; event = 'tg_open';
+    }
+    if (cta) Salon.visit.event(event, { cta: cta });
+  }, true);
 
   /* ---------------- Чёрный ящик: JS-ошибки посетителей ----------------
      Скрипт упал у клиента — метка «js: …» уходит маячком в «Визиты»

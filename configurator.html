@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Конструктор услуг: аудит, редактура и консультации — Академический Салон</title>
 <meta name="description" content="Соберите заказ из одной или нескольких позиций. Для каждой видны результат, ориентир цены и детали; точные условия фиксируются в спецификации до оплаты." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo1" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260724i" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260724seo1" />
 <link rel="stylesheet" href="assets/css/cart.css?v=20260724b" />
-<link rel="stylesheet" href="assets/css/service-v2.css?v=20260724a" />
+<link rel="stylesheet" href="assets/css/service-v2.css?v=20260724b" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -689,7 +689,7 @@
 <meta name="twitter:title" content="Рассчитать помощь с курсовой или ВКР — Академический Салон" />
 <meta name="twitter:description" content="Четыре коротких шага: задача, направление, результат и заявка." />
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
-<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260724seo1" media="screen and (max-width: 880px)" data-mobile-edition="1" />
 </head>
 <body>
@@ -1196,7 +1196,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260724seo1"></script>
+<script src="assets/js/app.js?v=20260724seo2"></script>
 <script src="assets/js/extras.js?v=20260724a"></script>
 <script src="assets/js/cart.js?v=20260724a"></script>
 <script>
@@ -1467,6 +1467,9 @@ function initConf() {
     } catch (e) {}
     if (S.metrika) S.metrika.goal('service_form');
     if (S.visit) S.visit.mark('услуга: ' + svc.label);
+  }
+  if (S.visit && S.visit.event) {
+    S.visit.event('config_open', { cta: svc ? 'service:' + (svc.code || svc.id) : 'calculator' });
   }
 
   /* --- анкета услуги: свои вопросы под каждую особенную позицию --- */
@@ -1984,6 +1987,7 @@ function initConf() {
       el.textContent = svc ? 'Один лист' : 'Шаг ' + (idx + 1) + ' / 4';
     });
     if (S.visit) S.visit.mark('шаг ' + (idx + 1) + ' из 4');
+    if (S.visit && S.visit.event) S.visit.event('step_view', { cta: 'step_' + (idx + 1) });
     btnBack.hidden = svc ? true : idx === 0;
     btnNext.hidden = svc ? true : idx === 3;
     if (mBack) mBack.hidden = svc ? true : idx === 0;
@@ -2623,6 +2627,9 @@ function initConf() {
       return;
     }
     if (S.visit) S.visit.mark('заявка: форма заполнена');
+    if (S.visit && S.visit.event) {
+      S.visit.event('submit_attempt', { cta: svc ? 'service:' + (svc.code || svc.id) : 'calculator' });
+    }
     /* ответы анкеты услуги — сводкой в требования (мастер видит всё сразу) */
     var askText = '';
     if (!cartHasItems && svc && svc.ask && svc.ask.length) {
@@ -2694,12 +2701,12 @@ function initConf() {
       veilHide();
       S.btnLoading(btnSubmit, false); if (mNext) S.btnLoading(mNext, false);
     }
-    /* попытка 1 — до 25с; обрыв/мёртвый шлюз (0/502/503) — тихий повтор через 2.5с.
-       504/500 не повторяем: заявка могла долететь — дубль хуже паузы. */
+    /* Попытка 1 — до 25с; обрыв/5xx — тихий повтор тем же client_request_id.
+       Серверная идемпотентность вернёт уже созданную заявку без дубля. */
     submitFetch(payload, 25000).then(function (a1) {
       if (a1.r && a1.r.ok && a1.r.id) { unlock(); onSubmitOk(a1.r); return; }
       if (a1.r && a1.r.ok === false && a1.st < 500 && a1.st > 0) { unlock(); onSubmitErr(a1.r); return; }
-      if (a1.st === 0 || a1.st === 502 || a1.st === 503) {
+      if (a1.st === 0 || [500, 502, 503, 504].indexOf(a1.st) >= 0) {
         veilStage('Первая попытка не прошла — пробуем ещё…',
                   'Такое бывает на секунду-другую. Держим вашу смету крепко.');
         setTimeout(function () {
@@ -2815,6 +2822,7 @@ function initConf() {
   /* сервер жив и ответил ошибкой — говорим словами, форма остаётся */
   function onSubmitErr(r) {
     pendingRequestId = '';
+    if (S.visit && S.visit.event) S.visit.event('submit_fail', { cta: 'server_rejected' });
     var e = (r && r.error) || '';
     var scopeMessage = S.api && S.api.outsideScopeMessage
       ? S.api.outsideScopeMessage(r)
@@ -2923,7 +2931,18 @@ function initConf() {
       });
     }
     if (S.visit) S.visit.mark('отправка не прошла — запасной ход');
+    if (S.visit && S.visit.event) S.visit.event('submit_fail', { cta: 'network_fallback' });
   }
+  (function trackFirstInput() {
+    var body = $('confBody');
+    if (!body) return;
+    body.addEventListener('input', function firstInput() {
+      body.removeEventListener('input', firstInput);
+      if (S.visit && S.visit.event) {
+        S.visit.event('first_input', { cta: svc ? 'service:' + (svc.code || svc.id) : 'calculator' });
+      }
+    });
+  })();
   btnSubmit.addEventListener('click', submit);
 
   function showDone(id, failed) {

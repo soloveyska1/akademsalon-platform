@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ru">
+  <title>Академический Салон — полезные материалы</title>
+  <subtitle>Практические руководства по ВКР, курсовым, практике, оформлению и защите.</subtitle>
+  <link rel="alternate" type="text/html" href="https://akademsalon.ru/knowledge.html"/>
+  <link rel="self" type="application/atom+xml" href="https://akademsalon.ru/feed.xml"/>
+  <id>https://akademsalon.ru/feed.xml</id>
+  <updated>2026-07-24T00:00:00Z</updated>
+  <author>
+    <name>Редакция Академического Салона</name>
+    <uri>https://akademsalon.ru/about.html</uri>
+  </author>
+  <rights>© Академический Салон</rights>
+  <generator uri="https://akademsalon.ru/">Академический Салон</generator>
+  <entry>
+    <title>Антиплагиат и детекторы ИИ в 2026: как честно повысить оригинальность</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-antiplagiat-ai.html"/>
+    <id>https://akademsalon.ru/guide-antiplagiat-ai.html</id>
+    <published>2026-07-02T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Как работают антиплагиат и детекторы ИИ в 2026 году, почему возникают ошибки и как честно повысить оригинальность: цитирование, структура и редактура.</summary>
+  </entry>
+  <entry>
+    <title>Апелляция на оценку в вузе: когда есть смысл, порядок и шаблон заявления</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-apellyaciya.html"/>
+    <id>https://akademsalon.ru/guide-apellyaciya.html</id>
+    <published>2026-07-16T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Как подать апелляцию на оценку за экзамен или защиту: законные основания, сроки, заседание комиссии, шаблон заявления и типичные ошибки.</summary>
+  </entry>
+  <entry>
+    <title>Дневник практики: как заполнить + готовые примеры записей по дням</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-dnevnik-praktiki.html"/>
+    <id>https://akademsalon.ru/guide-dnevnik-praktiki.html</id>
+    <published>2026-07-16T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Как заполнить дневник практики: структура, примеры записей по дням, согласование с отчётом и характеристикой, типичные ошибки.</summary>
+  </entry>
+  <entry>
+    <title>Характеристика с места практики: кто пишет, что внутри + готовый шаблон</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-harakteristika-s-praktiki.html"/>
+    <id>https://akademsalon.ru/guide-harakteristika-s-praktiki.html</id>
+    <published>2026-07-16T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Характеристика студента с места практики: структура, факты о выполненных задачах, кто подписывает, нужна ли печать и как согласовать документ с дневником.</summary>
+  </entry>
+  <entry>
+    <title>Как написать курсовую за неделю: план на 7 дней — Академический Салон</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-kursovaya-za-nedelyu.html"/>
+    <id>https://akademsalon.ru/guide-kursovaya-za-nedelyu.html</id>
+    <published>2026-07-02T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Как написать курсовую за 7 дней: выбор темы, поиск источников, теория, практическая часть, оформление по требованиям вуза и подготовка к сдаче.</summary>
+  </entry>
+  <entry>
+    <title>Нормоконтроль ВКР и курсовой: ГОСТ, оформление и чек-лист</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-normocontrol.html"/>
+    <id>https://akademsalon.ru/guide-normocontrol.html</id>
+    <published>2026-07-02T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Пошаговый разбор: поля, шрифт, интервалы, нумерация, таблицы, рисунки, ссылки и список литературы по ГОСТ 7.32 и методичке. Топ ошибок нормоконтроля и чек-лист перед сдачей.</summary>
+  </entry>
+  <entry>
+    <title>Объект и предмет исследования: как сформулировать + примеры</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-obekt-predmet-cel-zadachi.html"/>
+    <id>https://akademsalon.ru/guide-obekt-predmet-cel-zadachi.html</id>
+    <published>2026-07-18T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Чем объект отличается от предмета исследования: формулы-конструкторы, примеры по 8 дисциплинам, цель и задачи курсовой и ВКР, топ-6 ошибок и чек-лист.</summary>
+  </entry>
+  <entry>
+    <title>Отчёт по практике: структура, дневник и характеристика — как написать + примеры</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-otchet-po-praktike.html"/>
+    <id>https://akademsalon.ru/guide-otchet-po-praktike.html</id>
+    <published>2026-07-10T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Как написать отчёт по учебной, производственной или преддипломной практике: структура, реальные записи в дневнике, характеристика и чек-лист.</summary>
+  </entry>
+  <entry>
+    <title>Отзыв руководителя на ВКР: структура + готовый образец</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-otzyv-rukovoditelya-vkr.html"/>
+    <id>https://akademsalon.ru/guide-otzyv-rukovoditelya-vkr.html</id>
+    <published>2026-07-18T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Отзыв научного руководителя на ВКР: кто составляет документ, чем он отличается от рецензии, структура, факты для руководителя и пример.</summary>
+  </entry>
+  <entry>
+    <title>Практическая часть курсовой: как написать + где взять данные</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-prakticheskaya-chast-kursovoy.html"/>
+    <id>https://akademsalon.ru/guide-prakticheskaya-chast-kursovoy.html</id>
+    <published>2026-07-18T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Как написать практическую часть курсовой: пять источников данных, доступных студенту, методы по дисциплинам, скелет главы 2 и мини-пример анализа с выводами.</summary>
+  </entry>
+  <entry>
+    <title>Презентация к защите диплома: 12 слайдов, оформление и типовые ошибки</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-prezentaciya-k-zashchite.html"/>
+    <id>https://akademsalon.ru/guide-prezentaciya-k-zashchite.html</id>
+    <published>2026-07-12T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Сколько слайдов нужно на защиту ВКР: послайдовый план, правила оформления, чек-лист перед печатью и типовые ошибки.</summary>
+  </entry>
+  <entry>
+    <title>Рецензия на ВКР: кто пишет, структура и материалы для рецензента</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-recenziya-na-vkr.html"/>
+    <id>https://akademsalon.ru/guide-recenziya-na-vkr.html</id>
+    <published>2026-07-16T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Рецензия на дипломную работу: кто может быть рецензентом, что он оценивает, какие материалы ему передать и как подготовить ответы на реальные замечания.</summary>
+  </entry>
+  <entry>
+    <title>Речь на защиту диплома: структура на 7 минут + полный пример текста доклада</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-rech-na-zashchitu.html"/>
+    <id>https://akademsalon.ru/guide-rech-na-zashchitu.html</id>
+    <published>2026-07-10T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Готовая структура защитной речи с таймингом по блокам, полный пример текста доклада для ВКР, фразы-связки со слайдами, чего не говорить комиссии — и чек-лист репетиции.</summary>
+  </entry>
+  <entry>
+    <title>Статья РИНЦ: как написать и опубликовать — пошаговая инструкция</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-rinc-statya.html"/>
+    <id>https://akademsalon.ru/guide-rinc-statya.html</id>
+    <published>2026-07-16T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Как опубликовать статью в РИНЦ: выбор издания, структура и аннотация, сроки, оргвзносы и признаки недобросовестного журнала.</summary>
+  </entry>
+  <entry>
+    <title>Сколько стоит помощь с дипломом и ВКР в 2026 году</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-skolko-stoit-diplomnaya.html"/>
+    <id>https://akademsalon.ru/guide-skolko-stoit-diplomnaya.html</id>
+    <published>2026-07-17T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Цены на помощь с ВКР в 2026 году: диагностика от 3 000 ₽, редакторский аудит от 24 000 ₽, сопровождение от 40 000 ₽. Состав и факторы цены.</summary>
+  </entry>
+  <entry>
+    <title>Сколько стоит помощь с курсовой в 2026 году: разбор, редактура, сопровождение</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-skolko-stoit-kursovaya.html"/>
+    <id>https://akademsalon.ru/guide-skolko-stoit-kursovaya.html</id>
+    <published>2026-07-16T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Цены на помощь с курсовой в 2026 году: диагностика от 2 500 ₽, редакторский аудит от 9 000 ₽, сопровождение от 14 000 ₽. Что входит и как выбрать формат.</summary>
+  </entry>
+  <entry>
+    <title>Введение курсовой работы: структура, шаблонные фразы и полный пример</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-vvedenie-kursovoy.html"/>
+    <id>https://akademsalon.ru/guide-vvedenie-kursovoy.html</id>
+    <published>2026-07-12T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Как написать введение курсовой: актуальность, цель, задачи, объект и предмет. Фразы-клише, полный пример и пять типичных ошибок.</summary>
+  </entry>
+  <entry>
+    <title>Заключение курсовой: структура, фразы и полный пример</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-zaklyuchenie-kursovoy.html"/>
+    <id>https://akademsalon.ru/guide-zaklyuchenie-kursovoy.html</id>
+    <published>2026-07-18T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Как написать заключение курсовой: структура из 4 блоков, готовые фразы-клише, полный пример на страницу и чек-лист из 7 пунктов перед сдачей.</summary>
+  </entry>
+  <entry>
+    <title>Заключение курсовой и ВКР: как написать, шаблонные фразы и полный пример</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-zaklyuchenie-vkr.html"/>
+    <id>https://akademsalon.ru/guide-zaklyuchenie-vkr.html</id>
+    <published>2026-07-12T00:00:00Z</published>
+    <updated>2026-07-24T00:00:00Z</updated>
+    <summary type="text">Как написать заключение дипломной или курсовой работы: формула «задача → вывод», фразы-клише, полный пример и типовые ошибки.</summary>
+  </entry>
+  <entry>
+    <title>Приложения в курсовой и ВКР: оформление по ГОСТ + примеры</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-prilozheniya-po-gost.html"/>
+    <id>https://akademsalon.ru/guide-prilozheniya-po-gost.html</id>
+    <published>2026-07-18T00:00:00Z</published>
+    <updated>2026-07-18T00:00:00Z</updated>
+    <summary type="text">Как оформить приложения в курсовой и дипломе по ГОСТ 7.32-2017: буквы А, Б, В (без Ё, З, Й, О), ссылки в тексте, «Таблица А.1», макет страницы и чек-лист.</summary>
+  </entry>
+  <entry>
+    <title>Титульный лист курсовой и диплома по ГОСТ 2026: образец и частые ошибки</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-titulnyj-list.html"/>
+    <id>https://akademsalon.ru/guide-titulnyj-list.html</id>
+    <published>2026-07-17T00:00:00Z</published>
+    <updated>2026-07-17T00:00:00Z</updated>
+    <summary type="text">Как оформить титульный лист курсовой, реферата и ВКР по ГОСТ 7.32-2017: порядок блоков, образец и семь ошибок нормоконтроля.</summary>
+  </entry>
+  <entry>
+    <title>Темы ВКР и дипломных работ: 50 примеров по направлениям + как выбрать</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-temy-vkr.html"/>
+    <id>https://akademsalon.ru/guide-temy-vkr.html</id>
+    <published>2026-07-16T00:00:00Z</published>
+    <updated>2026-07-16T00:00:00Z</updated>
+    <summary type="text">Как выбрать тему ВКР: 5 критериев и 50 примеров по экономике, менеджменту, праву, педагогике, психологии, IT и маркетингу.</summary>
+  </entry>
+  <entry>
+    <title>Список литературы по ГОСТ 2026: правила и примеры оформления</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-spisok-literatury.html"/>
+    <id>https://akademsalon.ru/guide-spisok-literatury.html</id>
+    <published>2026-07-10T00:00:00Z</published>
+    <updated>2026-07-10T00:00:00Z</updated>
+    <summary type="text">Как оформить список литературы по ГОСТ: книги, статьи, сайты, законы и диссертации. Порядок источников, готовые образцы, ошибки и чек-лист.</summary>
+  </entry>
+  <entry>
+    <title>Введение к ВКР: структура, объём, цель и задачи</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-vkr-struktura.html"/>
+    <id>https://akademsalon.ru/guide-vkr-struktura.html</id>
+    <published>2026-07-02T00:00:00Z</published>
+    <updated>2026-07-10T00:00:00Z</updated>
+    <summary type="text">Как написать введение к ВКР: актуальность, цель и задачи, объект и предмет, гипотеза, методы и новизна. Примеры и чек-лист.</summary>
+  </entry>
+  <entry>
+    <title>Защита диплома: доклад, презентация и ответы комиссии</title>
+    <link rel="alternate" type="text/html" href="https://akademsalon.ru/guide-zashchita-diploma.html"/>
+    <id>https://akademsalon.ru/guide-zashchita-diploma.html</id>
+    <published>2026-07-02T00:00:00Z</published>
+    <updated>2026-07-10T00:00:00Z</updated>
+    <summary type="text">Как подготовиться к защите диплома: доклад на 7 минут, слайды, раздаточные материалы, ответы комиссии, работа с волнением и чек-лист.</summary>
+  </entry>
+</feed>

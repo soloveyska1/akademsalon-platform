@@ -1,0 +1,66 @@
+/* Бесплатные инструменты Академического Салона.
+   Общая сетка намеренно наследует книжную типографику основных страниц. */
+.tool-hero{padding:calc(56px + clamp(34px,7vh,76px)) 0 clamp(24px,4vw,48px)}
+.tool-shell{max-width:880px;margin:0 auto}
+.tool-hero h1{max-width:18ch;margin:0 0 16px;font:400 clamp(34px,5.6vw,62px)/1.02 var(--serif);letter-spacing:-.035em}
+.tool-hero .lead{max-width:66ch}
+.tool-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tool-badge{padding:7px 10px;border:1px solid var(--hairline-strong);border-radius:999px;font:500 10px/1.2 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft)}
+.tool-panel{margin:0 auto clamp(32px,6vw,64px);max-width:880px}
+.tool-panel textarea{min-height:180px;line-height:1.55;resize:vertical}
+.tool-help{display:flex;justify-content:space-between;gap:16px;margin-top:8px;font-size:12px;line-height:1.45;color:var(--ink-soft)}
+.tool-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.tool-status{min-height:24px;margin:16px 0 0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.tool-status[data-state="error"]{color:var(--wax)}
+.tool-status[data-state="ok"]{color:var(--verify)}
+.tool-results{display:grid;gap:12px;margin-top:20px}
+.tool-result{padding:18px;border:1px solid var(--hairline);background:var(--paper);border-radius:3px}
+.tool-result__head{display:flex;justify-content:space-between;align-items:start;gap:16px}
+.tool-result__state{flex:0 0 auto;padding:5px 8px;border-radius:999px;font:600 9px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.tool-result__state--found{color:var(--verify);border:1px solid color-mix(in srgb,var(--verify) 45%,var(--hairline))}
+.tool-result__state--review{color:var(--wax);border:1px solid color-mix(in srgb,var(--wax) 45%,var(--hairline))}
+.tool-result h3{margin:8px 0 6px;font:500 clamp(18px,2.5vw,23px)/1.2 var(--serif)}
+.tool-result p{margin:4px 0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.tool-doi{font:500 11px/1.4 var(--mono);overflow-wrap:anywhere;color:var(--ink)}
+.tool-source-link{display:inline-block;margin-top:8px;font-size:12px}
+.tool-privacy{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin-top:20px;padding:15px 17px;border:1px solid var(--hairline);background:var(--sheet)}
+.tool-privacy b{font:500 19px/1 var(--serif);color:var(--wax)}
+.tool-privacy p{margin:0;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+.tool-content{max-width:760px;margin:0 auto}
+.tool-cover{margin:0 0 clamp(32px,6vw,60px)}
+.tool-cover img{display:block;width:100%;height:auto;border:1px solid var(--hairline);border-radius:3px}
+.tool-cover figcaption{margin-top:9px;font-size:11.5px;line-height:1.5;color:var(--ink-soft)}
+.tool-content>section{padding:clamp(30px,5vw,54px) 0;border-top:1px solid var(--hairline)}
+.tool-content h2{max-width:20ch}
+.tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0}
+.tool-mini{padding:18px;border:1px solid var(--hairline);background:var(--sheet)}
+.tool-mini b{display:block;margin-bottom:8px;font:500 17px/1.25 var(--serif)}
+.tool-mini p{margin:0;font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+.tool-cta{margin:clamp(34px,6vw,70px) auto;max-width:880px}
+
+.passport-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.passport-grid .field{margin:0}
+.passport-grid .field--wide{grid-column:1/-1}
+.passport-grid textarea{min-height:112px}
+.audit-meter{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--hairline)}
+.audit-score{font:500 clamp(42px,7vw,64px)/1 var(--serif);letter-spacing:-.04em}
+.audit-score small{font-size:.35em;color:var(--ink-soft)}
+.audit-meter h2{margin:0 0 4px;font-size:clamp(20px,3vw,28px)}
+.audit-meter p{margin:0;font-size:13px;color:var(--ink-soft)}
+.audit-list{list-style:none;margin:18px 0 0;padding:0}
+.audit-list li{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--hairline);font-size:13px;line-height:1.55}
+.audit-list li::before{content:"○";font:600 15px var(--mono);color:var(--wax)}
+.audit-list li[data-pass="true"]::before{content:"✓";color:var(--verify)}
+.audit-list b{display:block;margin-bottom:2px}
+
+@media(max-width:720px){
+  .tool-shell,.tool-panel,.tool-cta{max-width:100%}
+  .tool-grid{grid-template-columns:1fr}
+  .passport-grid{grid-template-columns:1fr}
+  .passport-grid .field--wide{grid-column:auto}
+}
+@media(max-width:520px){
+  .tool-help,.tool-result__head{flex-direction:column}
+  .tool-result__state{align-self:flex-start}
+  .tool-actions .btn{width:100%;justify-content:center}
+}

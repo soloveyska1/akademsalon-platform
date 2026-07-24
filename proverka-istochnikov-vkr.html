@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Проверка DOI и источников ВКР онлайн — бесплатно</title>
+<meta name="description" content="Бесплатно проверьте до 20 DOI по реестру Crossref. Инструмент покажет название, авторов и год, а сомнительные источники отправит на ручную проверку." />
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260724i" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/service-v2.css?v=20260724b" />
+<link rel="stylesheet" href="assets/css/tools.css?v=20260724a" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<link rel="canonical" href="https://akademsalon.ru/proverka-istochnikov-vkr.html" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#F6F1E7" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Академический Салон" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Проверка DOI и источников — бесплатно" />
+<meta property="og:description" content="Сверьте до 20 DOI с Crossref и получите понятный маршрут ручной проверки." />
+<meta property="og:url" content="https://akademsalon.ru/proverka-istochnikov-vkr.html" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og/og-doi-checker.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Бесплатная проверка DOI и источников" />
+<meta name="twitter:description" content="Проверка по Crossref без загрузки вашей работы на сайт." />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og/og-doi-checker.jpg" />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260724seo2" media="screen and (max-width: 880px)" data-mobile-edition="1" />
+</head>
+<body>
+<main>
+  <section class="tool-hero" data-chapter="Бесплатный инструмент">
+    <div class="wrap">
+      <div class="tool-shell">
+        <nav class="doc-crumb" aria-label="Хлебные крошки"><a href="/">Главная</a> · <a href="knowledge.html">Полезные материалы</a> · Проверка источников</nav>
+        <p class="caps">Crossref · до 20 DOI · без регистрации</p>
+        <h1>Проверьте DOI и найдите подозрительные источники</h1>
+        <p class="lead">Вставьте DOI или библиографический список. Мы сверим идентификаторы с реестром Crossref и покажем метаданные публикаций. Весь текст работы загружать не нужно.</p>
+        <div class="tool-badges" aria-label="Особенности инструмента">
+          <span class="tool-badge">бесплатно</span>
+          <span class="tool-badge">без аккаунта</span>
+          <span class="tool-badge">до 20 DOI</span>
+          <span class="tool-badge">результат сразу</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="doiToolTitle">
+    <div class="tool-panel sheet sheet-pad stacked">
+      <h2 id="doiToolTitle" style="margin-top:0">Сверка с реестром Crossref</h2>
+      <div class="field">
+        <label for="doiInput">DOI или фрагмент списка литературы</label>
+        <textarea id="doiInput" data-doi-input spellcheck="false" placeholder="Например: 10.1016/j.patter.2023.100779&#10;Можно вставить несколько библиографических записей целиком."></textarea>
+        <div class="tool-help"><span>Поддерживаем DOI и ссылки вида doi.org/…</span><span>Ctrl/⌘ + Enter — запустить</span></div>
+      </div>
+      <div class="tool-actions">
+        <button class="btn btn-wax" type="button" data-doi-run>Проверить DOI <span class="ar">→</span></button>
+        <button class="btn btn-line" type="button" data-doi-sample>Подставить пример</button>
+        <button class="btn btn-line" type="button" data-doi-share hidden>Поделиться инструментом</button>
+      </div>
+      <p class="tool-status" data-doi-status role="status" aria-live="polite">Инструмент извлечёт DOI из текста и проверит их по одному.</p>
+      <div class="tool-results" data-doi-results aria-live="polite"></div>
+      <noscript><p class="doc-note">Для автоматической проверки нужен JavaScript. Можно открыть DOI вручную по адресу doi.org/ваш-doi.</p></noscript>
+      <div class="tool-privacy"><b>§</b><p><strong>Как обрабатываются данные.</strong> Страница извлекает только DOI на вашем устройстве и отправляет их напрямую в публичный API Crossref. Библиографический список и текст работы на сервер Академического Салона не передаются. Не вставляйте сюда персональные или конфиденциальные сведения.</p></div>
+    </div>
+  </section>
+
+  <article class="wrap">
+    <div class="tool-content doc">
+      <figure class="tool-cover">
+        <img src="assets/img/og/og-doi-checker.jpg" width="1200" height="630" loading="lazy" alt="Редакторская проверка карточек источников и идентификаторов публикаций" />
+        <figcaption>Автоматическая сверка помогает найти расхождения, но окончательный вывод требует карточки издателя и чтения первоисточника.</figcaption>
+      </figure>
+      <section>
+        <h2>Что означает «не найдено в Crossref»</h2>
+        <p>Это сигнал для проверки, а не доказательство выдуманного источника. Crossref покрывает множество журналов и издательств, но не весь научный мир: у документа может не быть DOI, метаданные могли попасть в другой реестр или издатель мог зарегистрировать запись с задержкой.</p>
+        <div class="tool-grid">
+          <div class="tool-mini"><b>1. Откройте DOI</b><p>Проверьте, куда ведёт адрес doi.org и совпадает ли страница издателя с описанием в списке.</p></div>
+          <div class="tool-mini"><b>2. Сверьте реквизиты</b><p>Название, авторы, год, журнал, том и страницы должны описывать один и тот же документ.</p></div>
+          <div class="tool-mini"><b>3. Найдите первоисточник</b><p>Ищите по названию в каталоге библиотеки, на сайте журнала или издательства, а не только в поисковой выдаче.</p></div>
+        </div>
+        <p>Технические ограничения и правила публичного API описаны в <a class="link" href="https://www.crossref.org/documentation/retrieve-metadata/rest-api/" target="_blank" rel="noopener noreferrer">документации Crossref ↗</a>.</p>
+      </section>
+
+      <section>
+        <h2>Как проверить список литературы перед сдачей</h2>
+        <ol>
+          <li><strong>Существование.</strong> У публикации есть проверяемая карточка издателя, журнала, библиотеки или репозитория.</li>
+          <li><strong>Соответствие.</strong> DOI ведёт именно на тот материал, который описан в списке.</li>
+          <li><strong>Цитирование.</strong> Позиция действительно используется в тексте, а ссылка стоит рядом с утверждением, которое поддерживает источник.</li>
+          <li><strong>Качество.</strong> Источник подходит задаче по типу, дате, методам и уровню доказательности.</li>
+          <li><strong>Оформление.</strong> Описание приведено к требованиям вуза и выбранному стандарту без потери исходных данных.</li>
+        </ol>
+        <p>Если задача только в оформлении, поможет наш <a class="link" href="guide-spisok-literatury.html">разбор списка литературы по ГОСТ</a>. Если источники появились после генерации или пересказа ИИ, нужна ещё и проверка фактов: языковая убедительность не гарантирует существование публикации.</p>
+      </section>
+
+      <section>
+        <h2>Что автоматическая проверка не умеет</h2>
+        <ul>
+          <li>определять научную ценность и качество исследования;</li>
+          <li>проверять, подтверждает ли источник конкретный вывод вашей работы;</li>
+          <li>находить документы без DOI во всех библиотечных каталогах;</li>
+          <li>заменять чтение первоисточника и ручную фактологическую сверку.</li>
+        </ul>
+        <p class="doc-note">Поэтому мы не маркируем отсутствующую запись как «фейк». Корректный вывод только один: идентификатор не подтверждён Crossref и требует ручной проверки.</p>
+      </section>
+
+      <section>
+        <h2>Частые вопросы</h2>
+        <h3>Можно вставить весь список литературы?</h3>
+        <p>Можно, если в нём нет персональных или конфиденциальных данных. Страница найдёт только фрагменты, похожие на DOI; за один запуск проверяются первые 20 уникальных идентификаторов.</p>
+        <h3>Crossref нашёл DOI — значит источник оформлен правильно?</h3>
+        <p>Нет. Наличие записи подтверждает метаданные, но не формат вашей библиографической ссылки, качество публикации и уместность цитирования.</p>
+        <h3>Можно проверить книги, сайты и законы?</h3>
+        <p>Только если у конкретного документа есть DOI и его метаданные зарегистрированы в Crossref. Для остальных типов нужны каталоги библиотек, официальные сайты и профильные реестры.</p>
+        <h3>Вы храните проверенные DOI?</h3>
+        <p>Нет. Запрос идёт из браузера напрямую в Crossref; Академический Салон не получает содержимое поля и результаты проверки.</p>
+      </section>
+    </div>
+  </article>
+
+  <aside class="wrap">
+    <div class="tool-cta sheet sheet-pad stacked">
+      <p class="caps" style="margin-bottom:8px">Нужна проверка человеком</p>
+      <h2 style="margin-top:0">Разберём источники, факты и логику цитирования</h2>
+      <p class="lead">Мастер сначала оценит фрагмент и зафиксирует состав проверки. Диагностика предоставленного черновика — от 2 500 ₽; заявка без оплаты.</p>
+      <div class="tool-actions">
+        <a class="btn btn-wax" href="configurator.html?service=rv">Получить смету <span class="ar">→</span></a>
+        <a class="btn btn-line" href="https://t.me/academic_saloon_bot?start=webq_rv_doi" target="_blank" rel="noopener">Прислать один источник в Telegram ↗</a>
+        <a class="btn btn-line" href="guide-spisok-literatury.html">Оформить список самостоятельно</a>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<script src="assets/js/app.js?v=20260724seo2"></script>
+<script src="assets/js/extras.js?v=20260723h"></script>
+<script src="assets/js/doi-checker.js?v=20260724a"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Проверка DOI и источников ВКР","url":"https://akademsalon.ru/proverka-istochnikov-vkr.html","image":"https://akademsalon.ru/assets/img/og/og-doi-checker.jpg","applicationCategory":"EducationalApplication","operatingSystem":"Any","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"RUB"},"description":"Бесплатная браузерная проверка до 20 DOI по публичному реестру Crossref. Отсутствие записи не считается доказательством вымышленного источника.","provider":{"@id":"https://akademsalon.ru/#org"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Можно вставить весь список литературы?","acceptedAnswer":{"@type":"Answer","text":"Можно, если в нём нет персональных или конфиденциальных данных. Страница извлекает DOI и проверяет первые 20 уникальных идентификаторов."}},{"@type":"Question","name":"Запись в Crossref означает, что источник оформлен правильно?","acceptedAnswer":{"@type":"Answer","text":"Нет. Запись подтверждает метаданные, но не формат библиографической ссылки, качество публикации и уместность цитирования."}},{"@type":"Question","name":"Можно проверить книги, сайты и законы?","acceptedAnswer":{"@type":"Answer","text":"Только документы с DOI, зарегистрированным в Crossref. Для остальных типов нужны официальные сайты и профильные каталоги."}},{"@type":"Question","name":"Хранит ли сайт проверенные DOI?","acceptedAnswer":{"@type":"Answer","text":"Нет. Запрос выполняется из браузера напрямую к Crossref; содержимое поля и результаты не передаются серверу Академического Салона."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Полезные материалы","item":"https://akademsalon.ru/knowledge.html"},{"@type":"ListItem","position":3,"name":"Проверка DOI и источников"}]}</script>
+</body>
+</html>
