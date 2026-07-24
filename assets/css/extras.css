@@ -478,6 +478,10 @@ html[data-motion="off"] .stamp-burst{display:none!important}
 /* --floor — ЕДИНСТВЕННЫЙ нижний якорь. Заменяет --resume-clear
    у всех шести прежних потребителей. Ставит JS (Salon.floor). */
 :root{ --floor:0px; --hdr-h:64px; --lrail-h:0px; }
+/* Нижний док монтируется JavaScript в конце документа. Его фактическая
+   высота на телефоне — 59px; резервируем кромку до первого кадра, чтобы
+   consent-rail не сдвигался вверх после DOMContentLoaded. */
+@media(max-width:880px){:root{--floor:59px}}
 
 .mrail,.lrail{
   position:fixed;z-index:96;

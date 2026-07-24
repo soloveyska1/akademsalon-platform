@@ -806,7 +806,7 @@ function initGodEye() {
         '<span class="ld"></span><span>на сайте <b id="agLiveN">0</b></span></button>' +
       '<div class="ag-user">' + (S.themeToggleHTML ? S.themeToggleHTML() : '') +
       '<span>мастер: <b>' + esc(u.name || '—') + '</b></span>' +
-      '<a class="ag-linkbtn" href="index.html">на сайт</a>' +
+      '<a class="ag-linkbtn" href="/">на сайт</a>' +
       '<a class="ag-linkbtn" href="dashboard.html">клиентский кабинет</a>' +
       '<button type="button" class="ag-linkbtn" id="agLogout">выйти</button></div></div>' +
       '<div class="ag-nav" id="agNav" role="tablist" aria-label="Разделы кабинета"></div>' +

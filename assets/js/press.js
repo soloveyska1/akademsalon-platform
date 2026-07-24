@@ -284,7 +284,7 @@
     var a = e.target.closest && e.target.closest('a[href$="#smeta"]');
     if (!a) return;
     var href = a.getAttribute('href') || '';
-    if (href !== '#smeta' && href.indexOf('index.html#smeta') === -1) return;
+    if (href !== '#smeta' && href.indexOf('/#smeta') === -1 && href.indexOf('index.html#smeta') === -1) return;
     e.preventDefault();
     goPriyomnaya(!reduced(), true);
   });

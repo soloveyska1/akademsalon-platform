@@ -22,10 +22,10 @@
     link.media = 'screen and (max-width: 880px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260723t', source).href
-        : 'assets/css/mobile.css?v=20260723t';
+      link.href = source ? new URL('../css/mobile.css?v=20260724seo1', source).href
+        : 'assets/css/mobile.css?v=20260724seo1';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260723t';
+      link.href = 'assets/css/mobile.css?v=20260724seo1';
     }
     document.head.appendChild(link);
   })();
@@ -702,7 +702,13 @@
       }
       measure();
     }
-    S.railAdopt = adopt;
+    /* Внешние виджеты (в первую очередь consent) могут появиться раньше
+       DOMContentLoaded. Создаём рельсы синхронно до первой отрисовки,
+       чтобы элемент сразу получил финальную геометрию и не создавал CLS. */
+    S.railAdopt = function () {
+      ensure();
+      adopt();
+    };
 
     /* ---------------- реестр «Поля» ---------------- */
     function marks() {
@@ -1375,9 +1381,12 @@
       ['vedenie.html', 'Форматы сопровождения', 'Диагностика · Редактура · Сопровождение'],
       ['oplata.html', 'Как проходит оплата', '50/50 · 30/40/30 · чеки'],
       ['plan.html', 'Разбор плана', '3 000 ₽, зачтётся в оплату'],
+      ['razbor-zamechaniy-nauchruka.html', 'Разбор замечаний научрука', 'карта правок · от 2 500 ₽'],
+      ['normokontrol-vkr.html', 'Нормоконтроль по методичке', 'оформление · от 5 000 ₽'],
       ['gift.html', 'Подарочный сертификат', 'помощь в подарок']
     ]},
     { t: 'Доверие', items: [
+      ['about.html', 'О мастерской и редакции', 'кто отвечает · авторство · источники'],
       ['guarantees.html', 'Гарантии · устав', '7 статей с опорой на закон'],
       ['reviews.html', 'Отзывы · живые истории', 'скрины и живые истории'],
       ['priyomnaya.html', 'Открытая приёмная', 'спросить анонимно'],
@@ -1396,6 +1405,7 @@
   /* Живой поиск путеводителя: любая страница сайта — в две буквы.
      [href, подпись, теги-синонимы] — теги в нижнем регистре. */
   var SEARCH = [
+    ['about.html', 'О мастерской, редакции и авторах', 'кто отвечает автор редактор издатель семенов редакционная политика'],
     ['start.html', 'С чего начать — короткий маршрут', 'новичок карта маршрут впервые гид путеводитель цена срок'],
     ['configurator.html', 'Рассчитать заказ · конфигуратор', 'смета цена калькулятор заявка заказать'],
     ['tariffs.html', 'Цены и каталог услуг', 'прайс стоимость сколько стоит картотека формуляр'],
@@ -1405,6 +1415,8 @@
     ['specifikaciya.html', 'Спецификация заказа — что это + образец', 'спецификация договор документ условия pdf образец'],
     ['https://akademsalon.ru/api/pamyatka/welcome', 'Памятка новичка — путеводитель (PDF)', 'памятка новичок путеводитель pdf правила'],
     ['plan.html', 'Разбор плана', 'план структура старт'],
+    ['razbor-zamechaniy-nauchruka.html', 'Разбор замечаний научного руководителя', 'научрук замечания комментарии правки черновик разбор'],
+    ['normokontrol-vkr.html', 'Нормоконтроль ВКР и курсовой', 'нормоконтроль гост методичка оформление поля таблицы ссылки'],
     ['gift.html', 'Подарочный сертификат', 'подарок подарить код'],
     ['guarantees.html', 'Гарантии · устав мастерской', 'гарантия закон возврат договор правки антиплагиат скептик'],
     ['reviews.html', 'Отзывы', 'отзыв истории скрины переписки'],
@@ -1413,7 +1425,7 @@
     ['referral.html', 'Клуб и бонусы', 'реферал бонус кэшбэк скидка друг'],
     ['knowledge.html', 'Полезные материалы — все гайды', 'база знаний статьи гайды'],
     ['dashboard.html', 'Личный кабинет', 'вход дело статус заказы кабинет'],
-    ['index.html', 'Главная', 'главная начало'],
+    ['/', 'Главная', 'главная начало'],
     ['avtorskiy-zakaz.html', 'Авторский текст вне аттестации', 'статья речь сценарий отчет бизнес авторский заказ права'],
     ['kursovaya-rabota.html', 'Курсовая работа — услуга', 'курсовая курсач'],
     ['diplomnaya-rabota.html', 'Дипломная / ВКР — услуга', 'диплом вкр выпускная'],
@@ -1481,10 +1493,11 @@
   ];
 
   function brandHTML() {
-    return '<a class="brand" href="index.html" aria-label="Академический Салон — на главную">' +
+    return '<a class="brand" href="/">' +
       '<span class="b-para" aria-hidden="true">¶</span>' +
       '<span class="b-name"><span class="b-full">Академический Салон</span>' +
-      '<span class="b-short" aria-hidden="true">Академсалон</span></span></a>';
+      '<span class="b-short">Академсалон</span></span>' +
+      '<span class="visually-hidden"> — на главную</span></a>';
   }
 
   /* Путеводитель строится от намерения, а не от структуры сайта:
@@ -1813,7 +1826,7 @@
       '<div class="cf7-route">' +
         '<a class="cf7-guide" href="start.html" data-toc-open><span class="cf7-guide-mark" aria-hidden="true">¶</span><span><b>Путеводитель по сайту</b><small>Все услуги, гайды и документы</small></span><i aria-hidden="true">→</i></a>' +
         '<nav class="cf7-quick foot-links" aria-label="Быстрые ссылки">' +
-          '<a href="tariffs.html">Цены</a><a href="guarantees.html">Гарантии</a><a href="reviews.html">Отзывы</a><a href="dashboard.html">Кабинет</a><a href="knowledge.html">Гайды</a>' +
+          '<a href="tariffs.html">Цены</a><a href="guarantees.html">Гарантии</a><a href="reviews.html">Отзывы</a><a href="about.html">О мастерской</a><a href="dashboard.html">Кабинет</a><a href="knowledge.html">Гайды</a>' +
         '</nav>' +
       '</div>' +
     '</div>' +
@@ -1822,7 +1835,7 @@
       '<summary><span>Реквизиты и документы</span><small>ИНН 212885750445 · статус проверяется в ФНС</small><i aria-hidden="true">+</i></summary>' +
       '<div class="cf7-legal-in">' +
         '<p><b>Семёнов Семён Юрьевич</b><br>ИНН 212885750445 · г.&nbsp;Казань · актуальный статус проверяется на дату оплаты</p>' +
-        '<nav aria-label="Юридические документы"><a href="oferta.html">Оферта</a><a href="privacy.html">Политика ПДн</a><a href="consent-request.html">Согласие для заявки</a><a href="refunds.html">Возврат</a><a href="academic-integrity.html">Границы услуг</a><a href="loyalty.html">Лояльность</a><a href="terms.html">Соглашение</a><a href="requisites.html">Все документы</a><button type="button" class="cf7-data" data-cookie-settings>Настройки данных</button></nav>' +
+        '<nav aria-label="Юридические документы"><a href="about.html">О мастерской и редакции</a><a href="oferta.html">Оферта</a><a href="privacy.html">Политика ПДн</a><a href="consent-request.html">Согласие для заявки</a><a href="refunds.html">Возврат</a><a href="academic-integrity.html">Границы услуг</a><a href="loyalty.html">Лояльность</a><a href="terms.html">Соглашение</a><a href="requisites.html">Все документы</a><button type="button" class="cf7-data" data-cookie-settings>Настройки данных</button></nav>' +
         '<a class="cf7-fns" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">Проверить статус в ФНС <span aria-hidden="true">↗</span><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
       '</div>' +
     '</details>' +
@@ -1908,7 +1921,7 @@
     var mnCalcLabel = planLanding ? 'Разбор' : 'Смета';
     var CAB_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 19.4c.9-3.4 3.5-5 6.5-5s5.6 1.6 6.5 5"/></svg>';
     function mnItem(href, label, icon, cls) {
-      var cur = href === here ? ' aria-current="page"' : '';
+      var cur = (href === here || (href === '/' && here === 'index.html')) ? ' aria-current="page"' : '';
       return '<a class="mn-i' + (cls || '') + '" href="' + href + '"' + cur + '>' +
         '<span class="mn-ic" aria-hidden="true">' + icon + '</span>' +
         '<span class="mn-l">' + label + '</span>' +
@@ -1919,7 +1932,7 @@
     /* перо на печати — SVG: глифа ✒ нет в фирменных подмножествах шрифтов */
     var PEN_SVG = '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2c2.7 1.9 4.4 4.1 4.4 6.8 0 1.8-.9 3.4-2.4 4.4L12 20.4l-2-6c-1.5-1-2.4-2.6-2.4-4.4 0-2.7 1.7-4.9 4.4-6.8z"/><circle cx="12" cy="10.2" r="1.5"/></svg>';
     mnav.innerHTML =
-      mnItem('index.html', 'Главная', '¶') +
+      mnItem('/', 'Главная', '¶') +
       mnItem('tariffs.html', 'Цены', '₽') +
       mnItem(mnCalc, mnCalcLabel, PEN_SVG, ' mn-calc') +
       mnItem('dashboard.html', 'Кабинет', CAB_SVG, ' mn-cab') +
@@ -2005,11 +2018,20 @@
     /* цели: уходы в каналы — ВК, MAX, Telegram */
     document.addEventListener('click', function (e) {
       var a = e.target.closest ? e.target.closest('a[href]') : null;
+      var contact = e.target.closest ? e.target.closest('[data-contact]') : null;
+      if (contact) {
+        Salon.metrika.goal('contact_open');
+        if (Salon.visit) Salon.visit.mark('cta: спросить мастера');
+      }
       if (!a) return;
       var h = a.getAttribute('href') || '';
       if (h.indexOf('t.me/') > -1) Salon.metrika.goal('tg_click');
       else if (h.indexOf('vk.com/') > -1 || h.indexOf('vk.me/') > -1) Salon.metrika.goal('vk_click');
       else if (h.indexOf('max.ru/') > -1) Salon.metrika.goal('max_click');
+      if (h.indexOf('configurator.html') > -1) {
+        Salon.metrika.goal(h.indexOf('service=') > -1 ? 'service_cta' : 'configurator_click');
+        if (Salon.visit) Salon.visit.mark('cta: конфигуратор');
+      }
     }, true);
   })();
 
@@ -2300,6 +2322,79 @@
   /* бейдж «есть живое дело» на кнопке кабинета — теперь, когда api готов */
   if (Salon.cabBadge) Salon.cabBadge();
 
+  /* ---------------- Атрибуция без персональных параметров ----------------
+     Сохраняется только после analytics:true. Берём ограниченный белый список
+     рекламных меток и путь входа; произвольный query, контакты и содержимое
+     формы сюда никогда не попадают. */
+  Salon.attribution = (function () {
+    var KEY = 'salon_attr_v1';
+    var PARAMS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','yclid','gclid'];
+    function allowed() { return Salon.consent && Salon.consent.allowed(); }
+    function clean(v) {
+      return String(v || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 80);
+    }
+    function campaign() {
+      try {
+        var src = new URLSearchParams(location.search), out = new URLSearchParams();
+        PARAMS.forEach(function (key) {
+          var value = clean(src.get(key));
+          if (value) out.set(key, value);
+        });
+        return out.toString();
+      } catch (e) { return ''; }
+    }
+    function externalRef() {
+      try {
+        if (!document.referrer) return '';
+        var u = new URL(document.referrer);
+        return u.origin === location.origin ? '' : u.origin + u.pathname;
+      } catch (e) { return ''; }
+    }
+    function capture() {
+      if (!allowed()) return null;
+      var c = campaign(), ref = externalRef(), source = c ? '?' + c : ref;
+      var saved = Salon.store.get(KEY, null) || {};
+      if (!saved.first && source) {
+        saved.first = source;
+        saved.entry = location.pathname.slice(0, 120);
+        saved.firstAt = Date.now();
+      }
+      if (source) {
+        saved.last = source;
+        saved.lastEntry = location.pathname.slice(0, 120);
+        saved.lastAt = Date.now();
+      }
+      if (source || saved.first) Salon.store.set(KEY, saved);
+      return saved;
+    }
+    function ref() {
+      if (!allowed()) return '';
+      var c = campaign();
+      capture();
+      return c ? '?' + c : externalRef();
+    }
+    function decoratePage(base) {
+      base = String(base || '').slice(0, 120);
+      if (!allowed()) return base;
+      var saved = capture() || {};
+      var bits = [];
+      if (saved.entry) bits.push('entry=' + clean(saved.entry));
+      try {
+        var first = new URLSearchParams(String(saved.first || '').replace(/^\?/, ''));
+        ['utm_source','utm_medium','utm_campaign'].forEach(function (key) {
+          var value = clean(first.get(key));
+          if (value) bits.push(key + '=' + value);
+        });
+      } catch (e) {}
+      return (base + (bits.length ? ' | ' + bits.join('&') : '')).slice(0, 200);
+    }
+    if (allowed()) capture();
+    document.addEventListener('salon:consent', function (e) {
+      if (e.detail && e.detail.analytics === true) capture();
+    });
+    return { ref: ref, capture: capture, decoratePage: decoratePage };
+  })();
+
   /* ---------------- Собственная аналитика визитов ----------------
      Работает только после analytics:true. Не получает секретные параметры
      URL, токен кабинета и идентификатор заказа. */
@@ -2346,13 +2441,7 @@
       } catch (e) {}
     }
     function view() {
-      var ref = '';
-      try {
-        if (document.referrer && document.referrer.indexOf(location.origin) !== 0) {
-          var u = new URL(document.referrer);
-          ref = u.origin + u.pathname;
-        }
-      } catch (e) {}
+      var ref = Salon.attribution ? Salon.attribution.ref() : '';
       send({ kind: 'view', ref: ref.slice(0, 380) || undefined });
     }
     function start() {

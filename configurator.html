@@ -6,10 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Конструктор услуг: аудит, редактура и консультации — Академический Салон</title>
 <meta name="description" content="Соберите заказ из одной или нескольких позиций. Для каждой видны результат, ориентир цены и детали; точные условия фиксируются в спецификации до оплаты." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo1" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260724i" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260724seo1" />
 <link rel="stylesheet" href="assets/css/cart.css?v=20260724b" />
 <link rel="stylesheet" href="assets/css/service-v2.css?v=20260724a" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
@@ -689,6 +689,8 @@
 <meta name="twitter:title" content="Рассчитать помощь с курсовой или ВКР — Академический Салон" />
 <meta name="twitter:description" content="Четыре коротких шага: задача, направление, результат и заявка." />
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260724seo1" media="screen and (max-width: 880px)" data-mobile-edition="1" />
 </head>
 <body>
 
@@ -1194,7 +1196,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260723r"></script>
+<script src="assets/js/app.js?v=20260724seo1"></script>
 <script src="assets/js/extras.js?v=20260724a"></script>
 <script src="assets/js/cart.js?v=20260724a"></script>
 <script>
@@ -2620,6 +2622,7 @@ function initConf() {
       $('fConsent').focus();
       return;
     }
+    if (S.visit) S.visit.mark('заявка: форма заполнена');
     /* ответы анкеты услуги — сводкой в требования (мастер видит всё сразу) */
     var askText = '';
     if (!cartHasItems && svc && svc.ask && svc.ask.length) {
@@ -2682,6 +2685,9 @@ function initConf() {
       payload.details = window.SalonCart.summary();
       payload.page = 'configurator.html#cart';
       payload.cart = window.SalonCart.payload();
+    }
+    if (S.attribution && S.attribution.decoratePage) {
+      payload.page = S.attribution.decoratePage(payload.page);
     }
     function unlock() {
       submitting = false;

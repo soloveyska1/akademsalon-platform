@@ -2,94 +2,40 @@
    (Google Fonts с некоторых VPN-выходов висит и блокирует отрисовку).
    Literata, Golos Text, JetBrains Mono — лицензия OFL. */
 
-/* Golos Text · normal 400 · cyrillic */
+/* Golos Text · variable 400–600 · cyrillic */
 @font-face {
   font-family: 'Golos Text';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 600;
   font-display: swap;
   src: url(golos-text-normal-400-cyrillic.woff2) format('woff2');
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
-/* Golos Text · normal 400 · latin */
+/* Golos Text · variable 400–600 · latin */
 @font-face {
   font-family: 'Golos Text';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 600;
   font-display: swap;
   src: url(golos-text-normal-400-latin.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-/* Golos Text · normal 500 · cyrillic */
-@font-face {
-  font-family: 'Golos Text';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(golos-text-normal-500-cyrillic.woff2) format('woff2');
-  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-}
-/* Golos Text · normal 500 · latin */
-@font-face {
-  font-family: 'Golos Text';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(golos-text-normal-500-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-/* Golos Text · normal 600 · cyrillic */
-@font-face {
-  font-family: 'Golos Text';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(golos-text-normal-600-cyrillic.woff2) format('woff2');
-  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-}
-/* Golos Text · normal 600 · latin */
-@font-face {
-  font-family: 'Golos Text';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(golos-text-normal-600-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-/* JetBrains Mono · normal 400 · cyrillic */
+/* JetBrains Mono · variable 400–600 · cyrillic */
 @font-face {
   font-family: 'JetBrains Mono';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 600;
   font-display: swap;
   src: url(jetbrains-mono-normal-400-cyrillic.woff2) format('woff2');
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
-/* JetBrains Mono · normal 400 · latin */
+/* JetBrains Mono · variable 400–600 · latin */
 @font-face {
   font-family: 'JetBrains Mono';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 600;
   font-display: swap;
   src: url(jetbrains-mono-normal-400-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-/* JetBrains Mono · normal 600 · cyrillic */
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(jetbrains-mono-normal-600-cyrillic.woff2) format('woff2');
-  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-}
-/* JetBrains Mono · normal 600 · latin */
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(jetbrains-mono-normal-600-latin.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /* Literata · italic 400 · cyrillic */
@@ -151,53 +97,27 @@
       файле, — составы разные (в Golos нет ≠ и ▶, в Literata нет ↗). Заявить
       лишний код нельзя: браузер выберет это начертание и рисовать будет
       нечем.
-   2. font-weight обязан повторять соседние правила ОДИН В ОДИН, а не
-      задаваться диапазоном. При font-weight:700 (<strong>) буквы возьмут
-      ближайшее объявленное начертание (600), а символ с диапазоном 400-900
-      взял бы ровно 700 — и оказался бы жирнее строки, в которой стоит.
+   2. font-weight повторяет диапазон соседнего переменного начертания:
+      400–600 для Golos Text и JetBrains Mono.
 
    ★ ✂ ✉ ✒ ✓ сюда не попали: их нет ни в одном из трёх семейств, они и
    дальше берутся системным шрифтом. */
 
-/* Golos Text · символы · 400/500/600 — один файл на три начертания */
+/* Golos Text · символы · variable 400–600 */
 @font-face {
   font-family: 'Golos Text';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 600;
   font-display: swap;
   src: url(golos-text-symbols.woff2) format('woff2');
   unicode-range: U+20BD, U+2190, U+2192, U+2197, U+2248, U+2264;
 }
-@font-face {
-  font-family: 'Golos Text';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(golos-text-symbols.woff2) format('woff2');
-  unicode-range: U+20BD, U+2190, U+2192, U+2197, U+2248, U+2264;
-}
-@font-face {
-  font-family: 'Golos Text';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(golos-text-symbols.woff2) format('woff2');
-  unicode-range: U+20BD, U+2190, U+2192, U+2197, U+2248, U+2264;
-}
-/* JetBrains Mono · символы · 400/600 — ширина ₽ 600/1000, как у цифр:
+/* JetBrains Mono · символы · variable 400–600 — ширина ₽ 600/1000, как у цифр:
    моноширинность и tabular-nums не ломаются */
 @font-face {
   font-family: 'JetBrains Mono';
   font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(jetbrains-mono-symbols.woff2) format('woff2');
-  unicode-range: U+20BD, U+2190, U+2192, U+2197, U+2248, U+2260, U+2264, U+25B6;
-}
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-weight: 600;
+  font-weight: 400 600;
   font-display: swap;
   src: url(jetbrains-mono-symbols.woff2) format('woff2');
   unicode-range: U+20BD, U+2190, U+2192, U+2197, U+2248, U+2260, U+2264, U+25B6;

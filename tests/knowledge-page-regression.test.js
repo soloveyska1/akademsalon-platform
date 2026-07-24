@@ -95,8 +95,8 @@ test('каждый гайд подключает читательский шаб
     assert.match(html, /assets\/js\/knowledge\.js\?v=20260724a/, `${file}: js`);
     const article = jsonLd(html).find((item) => item['@type'] === 'Article');
     assert.ok(article, `${file}: Article`);
-    assert.equal(article.image, 'https://akademsalon.ru/assets/img/og-cover.png', `${file}: image`);
-    assert.equal(article.author.url, 'https://akademsalon.ru/', `${file}: author`);
+    assert.equal(article.image, 'https://akademsalon.ru/assets/img/og-cover-v2.png', `${file}: image`);
+    assert.equal(article.author.url, 'https://akademsalon.ru/about.html', `${file}: author`);
     assert.equal(article.publisher.url, 'https://akademsalon.ru/', `${file}: publisher`);
     assert.equal(article.url, `https://akademsalon.ru/${file}`, `${file}: url`);
     assert.match(sitemap, new RegExp(`<loc>https://akademsalon\\.ru/${file.replace('.', '\\.')}`), `${file}: sitemap`);

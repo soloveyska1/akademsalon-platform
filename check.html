@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Бесплатная проверка текста на канцелярит и следы ИИ онлайн — Академический Салон</title>
-<meta name="description" content="Бесплатная рецензия на текст: отмечаем канцелярит и машинальные обороты, на которые срабатывают проверяющие. Анализ идёт в браузере — текст никуда не отправляется." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
+<title>Проверка стиля академического текста онлайн бесплатно</title>
+<meta name="description" content="Бесплатный экспресс-анализ стиля: найдёт канцелярит, шаблонные обороты и однообразный ритм. Работает в браузере; это не детектор авторства и не рецензия человека." />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo1" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260724i" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260724seo1" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   /* ============================================================
@@ -65,16 +65,18 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Бесплатная проверка текста на канцелярит и следы ИИ" />
-<meta property="og:description" content="Отмечаем канцелярит и машинальные обороты, на которые срабатывают проверяющие. Анализ идёт в браузере — текст никуда не отправляется." />
+<meta property="og:title" content="Бесплатный экспресс-анализ стиля академического текста" />
+<meta property="og:description" content="Находит канцелярит, шаблонные обороты и однообразный ритм. Текст не покидает ваш браузер." />
 <meta property="og:url" content="https://akademsalon.ru/check.html" />
 <meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Бесплатная проверка текста — Академический Салон" />
-<meta name="twitter:description" content="Отмечаем канцелярит и машинальные обороты, на которые срабатывают проверяющие. Анализ идёт на устройстве." />
+<meta name="twitter:description" content="Находит канцелярит, шаблонные обороты и однообразный ритм. Анализ идёт на устройстве." />
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260724seo1" media="screen and (max-width: 880px)" data-mobile-edition="1" />
 </head>
 <body>
 
@@ -85,8 +87,8 @@
       <div class="check-col">
 
         <div class="reveal">
-          <h1>Бесплатная рецензия на&nbsp;ваш текст</h1>
-          <p class="lead">Отмечаем канцелярит и машинальные обороты, на которые срабатывают проверяющие. Текст не покидает ваш браузер — анализ идёт на устройстве.</p>
+          <h1>Бесплатный экспресс-анализ стиля</h1>
+          <p class="lead">Ищем канцелярит, шаблонные обороты и однообразный ритм. Текст не покидает ваш браузер. Это не детектор авторства и не рецензия человека.</p>
         </div>
 
         <!-- Инструмент -->
@@ -107,20 +109,20 @@
           <noscript><p class="petit" style="margin-top:14px">Для проверки нужен включённый JavaScript — анализ выполняется прямо в вашем браузере.</p></noscript>
         </div>
 
-        <!-- Рецензионный лист -->
-        <section class="report-sheet sheet sheet-pad stacked" id="result" hidden aria-label="Рецензионный лист">
+        <!-- Лист экспресс-анализа -->
+        <section class="report-sheet sheet sheet-pad stacked" id="result" hidden aria-label="Лист экспресс-анализа">
           <div class="rp-head">
-            <span class="rp-title">Рецензионный лист</span>
+            <span class="rp-title">Лист экспресс-анализа</span>
             <span class="tag tag-ink" id="rlTag">—</span>
           </div>
 
           <div class="rl-scores" aria-live="polite">
             <div>
-              <span class="caps">Машинальность</span>
+              <span class="caps">Шаблонность</span>
               <div class="rl-big"><span id="rlRisk">0</span><span class="rl-den">/100</span></div>
             </div>
             <div>
-              <span class="caps">Живость</span>
+              <span class="caps">Ясность</span>
               <div class="rl-big"><span id="rlVit">0</span><span class="rl-den">/100</span></div>
             </div>
           </div>
@@ -146,11 +148,11 @@
           <p class="rl-verdict" id="rlVerdict"></p>
 
           <div class="rl-meta">
-            <p class="marginalia">Это предварительная оценка по лингвистическим признакам. Вузовскую систему она не заменяет: используйте результат как подсказку для редактуры, а не как гарантию.</p>
-            <span class="rl-seal" data-seal="РЕЦЕНЗИЯ · ТЕКСТ НЕ ОТПРАВЛЯЕТСЯ · " data-seal-center="¶" data-seal-cls="seal--stamp" data-seal-size="96" aria-hidden="true"></span>
+            <p class="marginalia">Это браузерная эвристика, а не детектор ИИ, вывод об авторстве или рецензия редактора. Используйте результат только как подсказку для самостоятельной правки.</p>
+            <span class="rl-seal" data-seal="ЭКСПРЕСС-АНАЛИЗ · ТЕКСТ НЕ ОТПРАВЛЯЕТСЯ · " data-seal-center="¶" data-seal-cls="seal--stamp" data-seal-size="96" aria-hidden="true"></span>
           </div>
 
-          <a class="btn btn-wax btn-block cta-wide" href="configurator.html">Доверить работу мастерской — рассчитать стоимость <span class="ar">→</span></a>
+          <a class="btn btn-wax btn-block cta-wide" href="configurator.html">Заказать разбор редактора — рассчитать <span class="ar">→</span></a>
         </section>
 
       </div>
@@ -159,8 +161,8 @@
   </div>
 </main>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Бесплатная проверка текста","url":"https://akademsalon.ru/check.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"RUB"},"description":"Бесплатный инструмент: отмечает канцелярит и машинальные обороты в академическом тексте. Анализ выполняется в браузере, текст не отправляется на сервер."}</script>
-<script src="assets/js/app.js?v=20260723q"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Экспресс-анализ стиля академического текста","url":"https://akademsalon.ru/check.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"RUB"},"description":"Бесплатная браузерная эвристика: отмечает канцелярит, шаблонные обороты и однообразный ритм. Это не детектор авторства и не рецензия человека; текст не отправляется на сервер."}</script>
+<script src="assets/js/app.js?v=20260724seo1"></script>
 <script src="assets/js/extras.js?v=20260723h"></script>
 <script>
 (function(){
@@ -353,14 +355,14 @@
       verdict='Текст читается естественно: ритм меняется, штампов немного. Можно ещё усилить отдельные места — смотрите подсказки выше.';
     } else if(a.risk<=65){
       tagTxt='заметная'; tagCls='tag tag-ink';
-      verdict='Есть машинальные обороты и однообразие. Несколько точечных правок заметно повысят живость текста.';
+      verdict='Есть шаблонные обороты и однообразие. Несколько точечных правок сделают текст яснее.';
     } else {
       tagTxt='высокая'; tagCls='tag tag-wax';
       verdict='Текст звучит шаблонно: много клише, ровный ритм, бедная лексика. Рекомендуем переписать ключевые фрагменты — начните с подсказок выше.';
     }
     var tag=document.getElementById('rlTag');
     tag.className=tagCls;
-    tag.textContent='машинальность · '+tagTxt;
+    tag.textContent='шаблонность · '+tagTxt;
 
     // две крупные цифры
     var riskEl=document.getElementById('rlRisk'), vitEl=document.getElementById('rlVit');

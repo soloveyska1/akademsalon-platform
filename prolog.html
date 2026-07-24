@@ -8,8 +8,8 @@
 <meta name="robots" content="noindex" />
 <meta name="theme-color" content="#12100B" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
-<link rel="prefetch" href="index.html" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo1" />
+<link rel="prefetch" href="/" />
 <style>
 /* ============================================================
    «СТОРИЗ МАСТЕРСКОЙ» — быстрый трейлер доверия вместо скролл-
@@ -490,13 +490,13 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;
     if (closed) return; closed = true;
     clearInterval(timer);
     try { localStorage.setItem('salon_prelude_seen', '1'); } catch (e) {}
-    if (standalone) { location.href = goto || 'index.html'; return; }
-    try { window.parent.postMessage({ salonPrelude: 'close', goto: goto || 'index.html' }, '*'); } catch (e) {}
+    if (standalone) { location.href = goto || '/'; return; }
+    try { window.parent.postMessage({ salonPrelude: 'close', goto: goto || '/' }, '*'); } catch (e) {}
   }
 
   document.getElementById('btnSkip').addEventListener('click', function () { close(); });
   document.getElementById('btnSite').addEventListener('click', function () { close(); });
-  document.getElementById('btnCalc').addEventListener('click', function () { close('index.html#smeta'); });
+  document.getElementById('btnCalc').addEventListener('click', function () { close('/#smeta'); });
   document.getElementById('btnAgain').addEventListener('click', function () {
     counted = false; stamped = false;
     document.getElementById('cnt').textContent = '2020';

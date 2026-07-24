@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Форматы помощи: диагностика, редактура или сопровождение | Академический Салон</title>
 <meta name="description" content="Сравните три формата помощи с собственным материалом: диагностика, редактура и сопровождение. Результат, границы и цена каждой позиции фиксируются в спецификации." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo1" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260724i" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260724seo1" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   .lv{--lv-accent:var(--wax);padding-bottom:clamp(28px,5vw,56px)}
@@ -222,12 +222,14 @@
 <meta property="og:url" content="https://akademsalon.ru/vedenie.html" />
 <meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta name="twitter:card" content="summary_large_image" />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260724seo1" media="screen and (max-width: 880px)" data-mobile-edition="1" />
 </head>
 <body class="levels-page">
 
 <main class="lv">
   <div class="wrap">
-    <nav class="doc-crumb" aria-label="Хлебные крошки"><a href="index.html">Главная</a> · <a href="tariffs.html">Цены</a> · Уровни сопровождения</nav>
+    <nav class="doc-crumb" aria-label="Хлебные крошки"><a href="/">Главная</a> · <a href="tariffs.html">Цены</a> · Уровни сопровождения</nav>
 
     <section class="lv-hero reveal" data-chapter="Уровни сопровождения">
       <div>
@@ -261,15 +263,15 @@
 
       <div class="lv-tabs" role="tablist" aria-label="Уровни сопровождения">
         <button class="lv-tab" type="button" role="tab" id="tab-base" aria-controls="base" aria-selected="true" tabindex="0" data-level="base">
-          <span class="lv-tab-top"><b>Диагностика</b><span class="x">× 1.0</span></span>
+          <span class="lv-tab-top"><b>Диагностика</b><span class="x">от 3 000 ₽</span></span>
           <small>Аудит · карта замечаний · консультация</small>
         </button>
         <button class="lv-tab" type="button" role="tab" id="tab-turn" aria-controls="turn" aria-selected="false" tabindex="-1" data-level="turn">
-          <span class="lv-tab-top"><b>Редактура <span class="fav">видимые правки</span></b><span class="x">× 1.33</span></span>
+          <span class="lv-tab-top"><b>Редактура <span class="fav">видимые правки</span></b><span class="x">от 24 000 ₽</span></span>
           <small>Правки в вашем файле · история изменений</small>
         </button>
         <button class="lv-tab" type="button" role="tab" id="tab-vip" aria-controls="vip" aria-selected="false" tabindex="-1" data-level="vip">
-          <span class="lv-tab-top"><b>Сопровождение</b><span class="x">× 2.0</span></span>
+          <span class="lv-tab-top"><b>Сопровождение</b><span class="x">от 40 000 ₽</span></span>
           <small>Редактура · консультации · подготовка к защите</small>
         </button>
       </div>
@@ -277,7 +279,7 @@
       <div class="lv-panels" id="levelPanels">
         <article class="lv-panel" id="base" role="tabpanel" aria-labelledby="tab-base" data-level="base">
           <div>
-            <div class="lv-panel-head"><h3>Диагностика</h3><span class="factor">без наценки</span></div>
+            <div class="lv-panel-head"><h3>Диагностика</h3><span class="factor">от 3 000 ₽</span></div>
             <p class="lv-thesis">«Покажите, что в моём тексте не работает и как это исправить — дальше сделаю сам».</p>
             <div class="lv-fit"><strong>Подойдёт</strong><span>Если у вас уже есть собственный материал, вы контролируете сроки и хотите получить ясный приоритетный план доработки.</span></div>
             <span class="lv-route-title">Как проходит</span>
@@ -295,11 +297,11 @@
           </div>
           <aside class="lv-side">
             <div class="lv-receipt">
-              <span class="caps">Пример · сопровождение ВКР от 24 000 ₽</span>
+              <span class="caps">Пример · ВКР / диплом</span>
               <div class="dotrow"><span>Диагностический аудит</span><span class="dots"></span><span class="dr-val">включено</span></div>
               <div class="dotrow"><span>Карта замечаний</span><span class="dots"></span><span class="dr-val">включено</span></div>
-              <div class="dotrow"><span>Множитель уровня</span><span class="dots"></span><span class="dr-val">× 1.0</span></div>
-              <div class="dotrow total"><span>Ориентир</span><span class="dots"></span><span class="dr-val">от 24 000 ₽</span></div>
+              <div class="dotrow"><span>Результат уровня</span><span class="dots"></span><span class="dr-val">лист + консультация</span></div>
+              <div class="dotrow total"><span>Ориентир</span><span class="dots"></span><span class="dr-val">от 3 000 ₽</span></div>
             </div>
             <ul class="lv-checks" aria-label="Что входит в Диагностику">
               <li><b>Диагностический лист</b> по согласованным критериям</li>
@@ -312,7 +314,7 @@
 
         <article class="lv-panel" id="turn" role="tabpanel" aria-labelledby="tab-turn" data-level="turn">
           <div>
-            <div class="lv-panel-head"><h3>Редактура</h3><span class="factor">× 1.33</span><span class="label">правки в вашем файле</span></div>
+            <div class="lv-panel-head"><h3>Редактура</h3><span class="factor">от 24 000 ₽</span><span class="label">правки в вашем файле</span></div>
             <p class="lv-thesis">«Я показываю главы научруку, а вы переводите замечания в понятные действия и ведёте дальше».</p>
             <div class="lv-fit"><strong>Подойдёт</strong><span>Если кафедра требует сдавать по главам, руководитель активно комментирует, а вам нужен управляемый процесс без хаоса версий.</span></div>
             <span class="lv-route-title">Как проходит</span>
@@ -330,11 +332,11 @@
           </div>
           <aside class="lv-side">
             <div class="lv-receipt">
-              <span class="caps">Пример · сопровождение ВКР от 24 000 ₽</span>
+              <span class="caps">Пример · ВКР / диплом</span>
               <div class="dotrow"><span>Всё из «Диагностики»</span><span class="dots"></span><span class="dr-val">включено</span></div>
-              <div class="dotrow"><span>Главы и разбор правок</span><span class="dots"></span><span class="dr-val">+ 33%</span></div>
-              <div class="dotrow"><span>Множитель уровня</span><span class="dots"></span><span class="dr-val">× 1.33</span></div>
-              <div class="dotrow total"><span>Ориентир</span><span class="dots"></span><span class="dr-val">от 32 000 ₽</span></div>
+              <div class="dotrow"><span>Главы и разбор правок</span><span class="dots"></span><span class="dr-val">включено</span></div>
+              <div class="dotrow"><span>Результат уровня</span><span class="dots"></span><span class="dr-val">файл с правками</span></div>
+              <div class="dotrow total"><span>Ориентир</span><span class="dots"></span><span class="dr-val">от 24 000 ₽</span></div>
             </div>
             <ul class="lv-checks" aria-label="Что входит в Редактуру">
               <li><b>Редактура по частям</b> по согласованному графику</li>
@@ -348,7 +350,7 @@
 
         <article class="lv-panel" id="vip" role="tabpanel" aria-labelledby="tab-vip" data-level="vip">
           <div>
-            <div class="lv-panel-head"><h3>Сопровождение</h3><span class="factor">× 2.0</span></div>
+            <div class="lv-panel-head"><h3>Сопровождение</h3><span class="factor">от 40 000 ₽</span></div>
             <p class="lv-thesis">«Помогите мне системно доработать свой материал и уверенно объяснить его на защите».</p>
             <div class="lv-fit"><strong>Подойдёт</strong><span>Если сроки плотные, замечаний много и вам нужен один ответственный, который держит контекст версий, консультаций и подготовки к выступлению.</span></div>
             <span class="lv-route-title">Как проходит</span>
@@ -366,11 +368,11 @@
           </div>
           <aside class="lv-side">
             <div class="lv-receipt">
-              <span class="caps">Пример · сопровождение ВКР от 24 000 ₽</span>
+              <span class="caps">Пример · ВКР / диплом</span>
               <div class="dotrow"><span>Всё из «Редактуры»</span><span class="dots"></span><span class="dr-val">включено</span></div>
               <div class="dotrow"><span>Консультации и репетиция</span><span class="dots"></span><span class="dr-val">по спецификации</span></div>
-              <div class="dotrow"><span>Множитель уровня</span><span class="dots"></span><span class="dr-val">× 2.0</span></div>
-              <div class="dotrow total"><span>Ориентир</span><span class="dots"></span><span class="dr-val">от 48 000 ₽</span></div>
+              <div class="dotrow"><span>Результат уровня</span><span class="dots"></span><span class="dr-val">этапы + консультации</span></div>
+              <div class="dotrow total"><span>Ориентир</span><span class="dots"></span><span class="dr-val">от 40 000 ₽</span></div>
             </div>
             <ul class="lv-checks" aria-label="Что входит в Сопровождение">
               <li><b>Приоритетный график</b> для глав и срочных правок</li>
@@ -396,18 +398,18 @@
           <details class="lv-work-picker" id="lvWorkPicker">
             <summary>
               <span><small id="calcTitle">Пример контекста</small><b id="lvWorkSummary">Сопровождение ВКР</b></span>
-              <span class="lv-work-base" id="lvWorkBase">от 24 000 ₽</span>
+              <span class="lv-work-base" id="lvWorkBase">от 3 000 ₽</span>
             </summary>
             <fieldset class="lv-service-list">
               <legend class="visually-hidden">Выберите академический контекст для сравнения форматов</legend>
-              <input class="lv-service-input" type="radio" name="lv-service" id="lvServiceCourse" value="course" data-label="Разбор курсовой" data-base="9000">
-              <label class="lv-service-option" for="lvServiceCourse"><span class="no">01</span><b>Разбор курсовой</b><span class="price">от 9 000 ₽</span><span class="picked">выбрано</span></label>
-              <input class="lv-service-input" type="radio" name="lv-service" id="lvServiceCourseEmp" value="course_emp" data-label="Исследовательская часть курсовой" data-base="14000">
-              <label class="lv-service-option" for="lvServiceCourseEmp"><span class="no">02</span><b>Исследовательская часть курсовой</b><span class="price">от 14 000 ₽</span><span class="picked">выбрано</span></label>
-              <input class="lv-service-input" type="radio" name="lv-service" id="lvServiceDiplom" value="diplom" data-label="Сопровождение ВКР" data-base="24000" checked>
-              <label class="lv-service-option" for="lvServiceDiplom"><span class="no">03</span><b>Сопровождение ВКР</b><span class="price">от 24 000 ₽</span><span class="picked">выбрано</span></label>
-              <input class="lv-service-input" type="radio" name="lv-service" id="lvServiceMaster" value="master" data-label="Магистерское исследование" data-base="36000">
-              <label class="lv-service-option" for="lvServiceMaster"><span class="no">04</span><b>Магистерское исследование</b><span class="price">от 36 000 ₽</span><span class="picked">выбрано</span></label>
+              <input class="lv-service-input" type="radio" name="lv-service" id="lvServiceCourse" value="course" data-label="Разбор курсовой" data-base="2500">
+              <label class="lv-service-option" for="lvServiceCourse"><span class="no">01</span><b>Разбор курсовой</b><span class="price">от 2 500 ₽</span><span class="picked">выбрано</span></label>
+              <input class="lv-service-input" type="radio" name="lv-service" id="lvServiceCourseEmp" value="course_emp" data-label="Исследовательская часть курсовой" data-base="3000">
+              <label class="lv-service-option" for="lvServiceCourseEmp"><span class="no">02</span><b>Исследовательская часть курсовой</b><span class="price">от 3 000 ₽</span><span class="picked">выбрано</span></label>
+              <input class="lv-service-input" type="radio" name="lv-service" id="lvServiceDiplom" value="diplom" data-label="Сопровождение ВКР" data-base="3000" checked>
+              <label class="lv-service-option" for="lvServiceDiplom"><span class="no">03</span><b>Сопровождение ВКР</b><span class="price">от 3 000 ₽</span><span class="picked">выбрано</span></label>
+              <input class="lv-service-input" type="radio" name="lv-service" id="lvServiceMaster" value="master" data-label="Магистерское исследование" data-base="5000">
+              <label class="lv-service-option" for="lvServiceMaster"><span class="no">04</span><b>Магистерское исследование</b><span class="price">от 5 000 ₽</span><span class="picked">выбрано</span></label>
             </fieldset>
             <p class="lv-picker-note">Показаны четыре частых сценария. Остальные типы есть в полном конфигураторе.</p>
           </details>
@@ -434,18 +436,18 @@
             <thead>
               <tr>
                 <th scope="col">Что сравниваем</th>
-                <th scope="col">Диагностика<small>× 1</small></th>
-                <th scope="col">Редактура<small>× 1.33</small></th>
-                <th scope="col">Сопровождение<small>× 2</small></th>
+                <th scope="col">Диагностика<small>аудит</small></th>
+                <th scope="col">Редактура<small>видимые правки</small></th>
+                <th scope="col">Сопровождение<small>этапы и консультации</small></th>
               </tr>
             </thead>
             <tbody>
-              <tr><th scope="row">Что получаете</th><td data-label="Диагностика · ×1">Карту правок</td><td data-label="Редактура · ×1.33">Файл с правками</td><td data-label="Сопровождение · ×2">Файл + консультации</td></tr>
-              <tr><th scope="row">Когда разбираем замечания</th><td data-label="Диагностика · ×1">На консультации</td><td data-label="Редактура · ×1.33">В комментариях к файлу</td><td data-label="Сопровождение · ×2">На согласованных встречах</td></tr>
-              <tr><th scope="row">Как используем досье научрука</th><td data-label="Диагностика · ×1">На старте проверки</td><td data-label="Редактура · ×1.33">При проверке решений</td><td data-label="Сопровождение · ×2">На согласованных этапах</td></tr>
-              <tr><th scope="row">Подготовка к защите</th><td data-label="Диагностика · ×1">Отдельно</td><td data-label="Редактура · ×1.33">Отдельно</td><td data-label="Сопровождение · ×2">Включена по спецификации</td></tr>
-              <tr><th scope="row">Очередь и график</th><td data-label="Диагностика · ×1">Общий график</td><td data-label="Редактура · ×1.33">Общий график</td><td data-label="Сопровождение · ×2">Согласованный приоритет</td></tr>
-              <tr><th scope="row">Ориентир для выбранного контекста</th><td class="lv-money" data-label="Диагностика · ×1" data-price="base">24 000 ₽</td><td class="lv-money" data-label="Редактура · ×1.33" data-price="turn">32 000 ₽</td><td class="lv-money" data-label="Сопровождение · ×2" data-price="vip">48 000 ₽</td></tr>
+              <tr><th scope="row">Что получаете</th><td data-label="Диагностика">Карту правок</td><td data-label="Редактура">Файл с правками</td><td data-label="Сопровождение">Файл + консультации</td></tr>
+              <tr><th scope="row">Когда разбираем замечания</th><td data-label="Диагностика">На консультации</td><td data-label="Редактура">В комментариях к файлу</td><td data-label="Сопровождение">На согласованных встречах</td></tr>
+              <tr><th scope="row">Как используем карту требований</th><td data-label="Диагностика">На старте проверки</td><td data-label="Редактура">При проверке решений</td><td data-label="Сопровождение">На согласованных этапах</td></tr>
+              <tr><th scope="row">Подготовка к защите</th><td data-label="Диагностика">Отдельно</td><td data-label="Редактура">Отдельно</td><td data-label="Сопровождение">Включена по спецификации</td></tr>
+              <tr><th scope="row">Очередь и график</th><td data-label="Диагностика">Общий график</td><td data-label="Редактура">Общий график</td><td data-label="Сопровождение">Согласованный приоритет</td></tr>
+              <tr><th scope="row">Ориентир для выбранного контекста</th><td class="lv-money" data-label="Диагностика" data-price="base">3 000 ₽</td><td class="lv-money" data-label="Редактура" data-price="turn">24 000 ₽</td><td class="lv-money" data-label="Сопровождение" data-price="vip">40 000 ₽</td></tr>
             </tbody>
           </table>
         </div>
@@ -487,7 +489,7 @@
 </main>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Чем диагностика отличается от редактуры?","acceptedAnswer":{"@type":"Answer","text":"Диагностика даёт карту замечаний и консультацию. В редактуре мастер также вносит согласованные правки в исходный файл с отслеживанием изменений."}},{"@type":"Question","name":"Можно ли изменить формат после согласования?","acceptedAnswer":{"@type":"Answer","text":"Да. Изменение оформляется новой редакцией спецификации с пересчётом затронутой позиции и действует после подтверждения."}},{"@type":"Question","name":"Что входит в сопровождение?","acceptedAnswer":{"@type":"Answer","text":"Редактура, согласованное число консультаций и подготовка к защите. Точный перечень и сроки фиксируются в спецификации."}}]}</script>
-<script src="assets/js/app.js?v=20260723q"></script>
+<script src="assets/js/app.js?v=20260724seo1"></script>
 <script src="assets/js/extras.js?v=20260723h"></script>
 <script>
 (function(){
@@ -558,10 +560,16 @@
     return serviceRadios[0] || null;
   }
   function fmt(n){return Math.round(n).toLocaleString('ru-RU') + ' ₽';}
+  var fallbackPrices = {
+    course:{base:2500,turn:9000,vip:14000},
+    course_emp:{base:3000,turn:14000,vip:20000},
+    diplom:{base:3000,turn:24000,vip:40000},
+    master:{base:5000,turn:36000,vip:60000}
+  };
   function quote(type,tier,fallback){
     if(window.SalonCalc && typeof SalonCalc.quote === 'function')return SalonCalc.quote(type,'hum','free',tier).low;
-    var k = tier === 'turn' ? 1.33 : tier === 'vip' ? 2 : 1;
-    return Math.round((fallback * k) / 500) * 500;
+    var row = fallbackPrices[type] || {};
+    return row[tier] || fallback;
   }
   function paintPrices(){
     var work = chosenWork();
