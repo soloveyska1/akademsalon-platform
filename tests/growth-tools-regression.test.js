@@ -146,6 +146,10 @@ test('quick Telegram acquisition links use the production one-message flow', () 
     read('razbor-zamechaniy-nauchruka.html'),
     /start=webq_rv_comments/,
   );
+  assert.match(read('index.html'), /start=webq_home_diplom/);
+  assert.match(read('index.html'), /Отправить задачу одним сообщением/);
+  assert.doesNotMatch(read('index.html'), /start=web"/);
+  assert.match(read('assets/js/pereplet.js'), /start=webq_/);
 });
 
 test('sitemap and hub expose every new growth page', () => {

@@ -187,7 +187,10 @@
         void priceEl.offsetWidth;                    /* перезапуск анимации */
         priceEl.classList.add('restamp');
       }
-      if (tgAlt && window.SalonBotLink) tgAlt.href = window.SalonBotLink(state);
+      if (tgAlt) {
+        var quickSource = ('home_' + state.type).replace(/[^a-z0-9_]/g, '').slice(0, 42);
+        tgAlt.href = 'https://t.me/academic_saloon_bot?start=webq_' + quickSource;
+      }
     }
 
     function selectPlate(key, value) {
