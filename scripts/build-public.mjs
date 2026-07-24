@@ -19,7 +19,6 @@ const allowedRootExtensions = new Set([
 ]);
 const publicDirectories = ['assets', 'bimi'];
 const excludedRelativePaths = new Set([
-  'assets/img/reviews',
   'assets/img/vk',
   // Снятые демонстрационные фрагменты сохраняются в истории проекта,
   // но не публикуются: релиз показывает только результат редакторской помощи.

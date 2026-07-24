@@ -19,6 +19,8 @@ test('весь архив присутствует, но точный счётч
 
 test('контактная книга компактна и управляется фильтрами', () => {
   assert.match(reviews, /class="rv-grid"/);
+  assert.match(reviews, /id="archive" data-chapter="Контактная книга">/);
+  assert.doesNotMatch(reviews, /RELEASE-EXCLUDE/);
   assert.equal((reviews.match(/class="rv-shot"/g) || []).length, 48);
   for (const filter of ['all', 'defense', 'accepted', 'timing', 'journey']) {
     assert.match(reviews, new RegExp(`data-filter="${filter}"`));

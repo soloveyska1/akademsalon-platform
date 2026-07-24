@@ -7,7 +7,7 @@
 <meta name="description" content="Отзывы клиентов Академического Салона о консультациях, редактуре, понятности процесса, сроках и подготовке к самостоятельной работе." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260724i" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/reviews.html" />
@@ -236,6 +236,7 @@
   .rv-status{min-height:1.4em;margin:13px 0 0;text-align:center;font:8px/1.4 var(--mono);letter-spacing:.07em;color:var(--ink-faint)}
   .rv-note{padding-top:14px;border-top:1px solid var(--hairline)}
   .rv-live{display:block}
+  .rv-live[hidden]{display:none}
   .final-cta{padding-top:clamp(54px,8vw,84px)}
   .lb-cnt{display:none}
 
@@ -269,11 +270,11 @@
   <section class="rv-hero" data-chapter="Книга благодарностей">
     <div class="wrap rv-hero-grid">
       <div class="reveal">
-        <div class="rv-folio"><span class="caps">Книга благодарностей · проверенные публикации</span></div>
-        <h1 class="h-display">Отзывы, которые разрешили показать</h1>
-        <p class="lead rv-lead">Отзывы из завершённых дел. Оценку и текст публикуем только с отдельного согласия клиента; без него запись остаётся в кабинете.</p>
+        <div class="rv-folio"><span class="caps">Книга благодарностей · проверенный архив</span></div>
+        <h1 class="h-display">Отзывы клиентов — как они есть</h1>
+        <p class="lead rv-lead">Сообщения после консультаций, правок и завершённых дел. Архив проверен перед публикацией, а контакты и лишние личные данные скрыты.</p>
         <div class="rv-cover-actions">
-          <a class="btn btn-wax" href="#rvLive">Смотреть отзывы <span class="ar" aria-hidden="true">↓</span></a>
+          <a class="btn btn-wax" href="#archive">Открыть книгу отзывов <span class="ar" aria-hidden="true">↓</span></a>
           <a class="btn btn-line" href="dashboard.html">Оставить свой отзыв</a>
         </div>
         <p class="rv-cover-note">Отзыв описывает личный опыт клиента. Он не обещает такую же оценку, решение преподавателя или результат проверки другому человеку.</p>
@@ -320,8 +321,7 @@
     </div>
   </div>
 
-  <!-- RELEASE-EXCLUDE:START private historical review archive -->
-  <section class="rv-body reveal" id="archive" data-chapter="Контактная книга" hidden aria-hidden="true">
+  <section class="rv-body reveal" id="archive" data-chapter="Контактная книга">
     <div class="wrap">
       <div class="rv-archive-head">
         <div>
@@ -825,8 +825,6 @@
       <p class="rv-note">Архив включает эмоциональные формулировки клиентов и сообщения разных лет. Они не являются описанием предмета нового заказа. Актуальный состав услуги фиксируется только в спецификации; мастерская не гарантирует оценку, допуск, защиту, публикацию или процент проверки и не выполняет аттестацию вместо обучающегося.</p>
     </div>
   </section>
-  <!-- RELEASE-EXCLUDE:END -->
-
   <!-- Живая книга: отзывы из кабинета, прошедшие модерацию, — прямо из картотеки -->
   <section class="rv-live reveal" id="rvLive" data-chapter="Проверенные отзывы">
     <div class="wrap">
@@ -939,9 +937,10 @@
       var sec = document.getElementById('rvLive'), grid = document.getElementById('rvLiveGrid');
       if (!sec || !grid) return;
       if (!r.ok || !(r.reviews||[]).length) {
-        grid.innerHTML = '<div class="rvl-card"><p class="rvl-text">Новые публичные записи появятся после проверки отдельного согласия клиентов.</p><p class="rvl-meta">Старый архив временно снят с публикации — приватность важнее количества карточек.</p></div>';
+        sec.hidden = true;
         return;
       }
+      sec.hidden = false;
       grid.innerHTML = r.reviews.map(function(rv){
         var full = Math.max(1, Math.min(rv.rating||5,5));
         var stars = '';

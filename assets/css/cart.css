@@ -172,7 +172,7 @@ html[data-motion="off"] .cart-tab,html[data-motion="off"] .cart-dock,html[data-m
   border-color:color-mix(in srgb,var(--wax) 36%,var(--hairline));
   background:linear-gradient(135deg,var(--sheet),color-mix(in srgb,var(--sheet) 86%,var(--wax-soft)));
 }
-.cart-dock.is-empty{display:flex!important}
+.cart-dock.is-empty{display:none!important}
 .cart-entry-icon{font-style:italic}
 .cart-entry-copy b{font-size:16px}
 .cart-entry-copy small{font-size:11.5px;line-height:1.35}

@@ -120,6 +120,16 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
 .brand:hover .b-para{transform:rotate(3deg) scale(1.03)}
 .brand .b-name{font-weight:500}
 .brand .b-short{display:none}
+/* У бренда фокус остаётся заметным, но не превращает всё название
+   в большую сургучную кнопку. */
+.site-header .brand:focus-visible{outline:none}
+.site-header .brand:focus-visible .b-para{
+  outline:2px solid var(--wax);outline-offset:3px
+}
+.site-header .brand:focus-visible .b-name{
+  text-decoration-line:underline;text-decoration-color:var(--wax);
+  text-decoration-thickness:1px;text-underline-offset:4px
+}
 .nav-links{display:flex;gap:clamp(12px,2vw,26px);margin-left:auto}
 .nav-links a{
   position:relative;font-size:14.5px;color:var(--ink-soft);white-space:nowrap;
