@@ -3537,8 +3537,12 @@ function initGodEye() {
       var pb = t.closest('#agHandoffPublish');
       if (!st.card || !st.card.handoff_artifact_id) return;
       pb.disabled = true;
-      busyPost('/admin/orders/' + st.sel + '/handoff/' + st.card.handoff_artifact_id + '/publish', {})
-        .then(function (r) { afterOrder(r, r.ok ? 'Защищённая версия отправлена клиенту ✓' : ''); })
+      api('/admin/orders/' + st.sel + '/handoff/' + st.card.handoff_artifact_id + '/publish', {})
+        .then(function (r) {
+          /* не отпустили — вернуть кнопку, иначе публикация недоступна до перезагрузки */
+          if (!r.ok) pb.disabled = false;
+          afterOrder(r, r.ok ? 'Защищённая версия отправлена клиенту ✓' : '');
+        })
         .catch(function () { pb.disabled = false; toast('Сеть прервалась — попробуйте ещё раз'); });
       return;
     }
