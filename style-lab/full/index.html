@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f3eee4">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Академический Салон — редакторская мастерская</title>
+  <meta name="description" content="Редакторская работа, консультации и сопровождение академических проектов.">
+  <link rel="icon" href="../../assets/img/favicon.svg">
+  <link rel="stylesheet" href="../../assets/fonts/fonts.css">
+  <link rel="stylesheet" href="./style.css?v=20260725-polish15">
+  <script>
+    document.documentElement.classList.add("has-js");
+    try {
+      const savedTheme = localStorage.getItem("as_stylelab_full_theme");
+      document.documentElement.dataset.theme = savedTheme === "dark" || savedTheme === "light"
+        ? savedTheme
+        : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    } catch {
+      document.documentElement.dataset.theme = "light";
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#routeView">К содержанию</a>
+
+  <header class="site-header" data-site-header>
+    <div class="site-header__inner">
+      <a class="brand" href="#/home" data-route="home" aria-label="Академический Салон — главная">
+        <img class="brand__mark" src="../../bimi/logo.svg" alt="">
+        <span class="brand__name">
+          <strong>Академический Салон</strong>
+          <small>Редакторская мастерская</small>
+        </span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Основная навигация">
+        <a href="#/services" data-route="services">Услуги</a>
+        <a href="#/tariffs" data-route="tariffs">Цены</a>
+        <a href="#/knowledge" data-route="knowledge">Библиотека</a>
+        <a href="#/about" data-route="about">О мастерской</a>
+        <a href="#/referral" data-route="referral">Выгоды</a>
+      </nav>
+
+      <div class="site-header__actions">
+        <button class="header-action header-action--search" type="button" data-open-search>
+          <span aria-hidden="true">⌕</span>
+          <span>Найти</span>
+          <kbd>/</kbd>
+        </button>
+        <button class="header-theme-toggle" type="button" data-toggle-theme aria-label="Сменить тему оформления">
+          <span data-theme-glyph aria-hidden="true">◐</span>
+          <span class="sr-only" data-theme-action>Включить тёмную тему</span>
+        </button>
+        <a class="header-action" href="#/dashboard" data-route="dashboard">
+          <span class="header-action__dot" aria-hidden="true"></span>
+          Кабинет
+        </a>
+        <a class="button button--primary button--compact" href="#/start" data-route="start">
+          Описать задачу
+          <span aria-hidden="true">→</span>
+        </a>
+        <button class="icon-button header-menu-button" type="button" data-open-menu aria-label="Открыть меню">
+          <i aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <header class="mobile-appbar" data-mobile-appbar>
+    <button class="mobile-appbar__back" type="button" data-go-back aria-label="Вернуться назад">
+      <span aria-hidden="true">←</span>
+    </button>
+    <a class="mobile-appbar__brand" href="#/home" data-route="home" aria-label="Академический Салон — главная">
+      <img src="../../bimi/logo.svg" alt="">
+      <span>
+        <strong data-mobile-title>Академический Салон</strong>
+        <small data-mobile-kicker>Редакторская мастерская</small>
+      </span>
+    </a>
+    <button class="mobile-appbar__help" type="button" data-open-search aria-label="Найти раздел или материал">
+      <span aria-hidden="true">⌕</span>
+    </button>
+    <button class="mobile-appbar__theme" type="button" data-toggle-theme aria-label="Сменить тему оформления">
+      <span data-theme-glyph aria-hidden="true">◐</span>
+      <span class="sr-only" data-theme-action>Включить тёмную тему</span>
+    </button>
+    <button class="mobile-appbar__menu" type="button" data-open-menu aria-label="Открыть меню">
+      <i aria-hidden="true"></i>
+    </button>
+  </header>
+
+  <div id="content" tabindex="-1">
+    <div class="route-view" id="routeView" tabindex="-1"></div>
+  </div>
+
+  <footer class="site-footer" data-site-footer>
+    <div class="site-footer__main">
+      <div class="site-footer__brand">
+        <img src="../../bimi/logo.svg" alt="">
+        <div>
+          <strong>Академический Салон</strong>
+          <p>Редакторская работа, консультации и сопровождение академических проектов.</p>
+        </div>
+      </div>
+      <nav aria-label="Услуги">
+        <strong>Помощь</strong>
+        <a href="#/services" data-route="services">Все услуги</a>
+        <a href="#/tariffs" data-route="tariffs">Цены</a>
+        <a href="#/start" data-route="start">Описать задачу</a>
+        <a href="#/guarantees" data-route="guarantees">Гарантии</a>
+      </nav>
+      <nav aria-label="Полезные разделы">
+        <strong>Библиотека</strong>
+        <a href="#/knowledge" data-route="knowledge">Библиотека</a>
+        <a href="#/tools" data-route="tools">Инструменты</a>
+        <a href="#/plus" data-route="plus">Абонемент «Салон+»</a>
+        <a href="#/deposit" data-route="deposit">Депозит мастерской</a>
+        <a href="#/reviews" data-route="reviews">Отзывы</a>
+        <a href="#/priyomnaya" data-route="priyomnaya">Приёмная</a>
+      </nav>
+      <nav aria-label="Информация">
+        <strong>О сервисе</strong>
+        <a href="#/about" data-route="about">О мастерской</a>
+        <a href="#/academic-integrity" data-route="academic-integrity">Границы помощи</a>
+        <a href="#/privacy" data-route="privacy">Конфиденциальность</a>
+        <a href="#/terms" data-route="terms">Документы</a>
+      </nav>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© 2020–2026 Академический Салон</span>
+      <span>Состав, срок и стоимость фиксируются до оплаты</span>
+      <button type="button" data-toggle-theme><span data-theme-action>Включить тёмную тему</span></button>
+    </div>
+  </footer>
+
+  <nav class="mobile-dock" aria-label="Основные разделы">
+    <a href="#/home" data-route="home" data-dock-route="home">
+      <span class="dock-icon dock-icon--home" aria-hidden="true"></span>
+      <small>Главная</small>
+    </a>
+    <a href="#/services" data-route="services" data-dock-route="services">
+      <span class="dock-icon dock-icon--services" aria-hidden="true"></span>
+      <small>Услуги</small>
+    </a>
+    <a class="mobile-dock__primary" href="#/start" data-route="start" data-dock-route="start">
+      <span class="mobile-dock__seal" aria-hidden="true">АС</span>
+      <small data-start-label>Описать</small>
+    </a>
+    <a href="#/knowledge" data-route="knowledge" data-dock-route="knowledge">
+      <span class="dock-icon dock-icon--library" aria-hidden="true"></span>
+      <small>Библиотека</small>
+    </a>
+    <a href="#/dashboard" data-route="dashboard" data-dock-route="dashboard">
+      <span class="dock-icon dock-icon--profile" aria-hidden="true"></span>
+      <small>Кабинет</small>
+    </a>
+  </nav>
+
+  <div class="task-bar" data-task-bar hidden>
+    <button class="button button--secondary task-bar__back" type="button" data-task-back aria-label="Вернуться к предыдущему шагу">
+      <span aria-hidden="true">←</span>
+    </button>
+    <div>
+      <span data-task-meta>Шаг 1 из 5</span>
+      <strong data-task-summary>Начало заявки</strong>
+    </div>
+    <button class="button button--primary" type="button" data-task-next>
+      Продолжить <span aria-hidden="true">→</span>
+    </button>
+  </div>
+
+  <dialog class="overlay overlay--menu" id="menuDialog" aria-labelledby="menuTitle">
+    <div class="overlay__panel">
+      <header class="overlay__header">
+        <div>
+          <span class="eyebrow">Навигация</span>
+          <h2 id="menuTitle">Все разделы</h2>
+        </div>
+        <button class="icon-button icon-button--close" type="button" data-close-dialog aria-label="Закрыть меню">×</button>
+      </header>
+      <div class="menu-layout">
+        <div class="menu-layout__primary">
+          <a href="#/home" data-route="home"><span>01</span><strong>Главная</strong><small>С чего начать</small></a>
+          <a href="#/services" data-route="services"><span>02</span><strong>Услуги</strong><small>По задаче и виду работы</small></a>
+          <a href="#/tariffs" data-route="tariffs"><span>03</span><strong>Цены</strong><small>Состав и стоимость</small></a>
+          <a href="#/knowledge" data-route="knowledge"><span>04</span><strong>Библиотека</strong><small>Статьи и образцы</small></a>
+          <a href="#/dashboard" data-route="dashboard"><span>05</span><strong>Кабинет</strong><small>Дела, документы, оплата</small></a>
+        </div>
+        <div class="menu-layout__secondary">
+          <section>
+            <h3>Мастерская</h3>
+            <a href="#/about" data-route="about">О мастерской</a>
+            <a href="#/guarantees" data-route="guarantees">Гарантии</a>
+            <a href="#/reviews" data-route="reviews">Отзывы</a>
+            <a href="#/priyomnaya" data-route="priyomnaya">Приёмная</a>
+          </section>
+          <section>
+            <h3>Самостоятельно</h3>
+            <a href="#/tools" data-route="tools">Инструменты</a>
+            <a href="#/check" data-route="check">Проверка текста</a>
+            <a href="#/audit-temy-vkr" data-route="audit-temy-vkr">Проверка темы</a>
+            <a href="#/proverka-istochnikov-vkr" data-route="proverka-istochnikov-vkr">Проверка источников</a>
+          </section>
+          <section>
+            <h3>Выгоды</h3>
+            <a href="#/referral" data-route="referral">Клуб и бонусы</a>
+            <a href="#/plus" data-route="plus">Абонемент «Салон+»</a>
+            <a href="#/deposit" data-route="deposit">Депозит мастерской</a>
+            <a href="#/gift" data-route="gift">Сертификаты</a>
+            <a href="#/academic-integrity" data-route="academic-integrity">Границы помощи</a>
+            <a href="#/terms" data-route="terms">Документы</a>
+          </section>
+        </div>
+      </div>
+      <footer class="overlay__footer">
+        <div class="theme-choice">
+          <span><strong>Тема оформления</strong><small>Выбор сохраняется в этом браузере</small></span>
+          <div role="group" aria-label="Выбрать тему оформления">
+            <button type="button" data-set-theme="light">Светлая</button>
+            <button type="button" data-set-theme="dark">Тёмная</button>
+          </div>
+        </div>
+        <button class="button button--primary" type="button" data-dialog-route="start">
+          Описать задачу <span aria-hidden="true">→</span>
+        </button>
+      </footer>
+    </div>
+  </dialog>
+
+  <dialog class="overlay overlay--search" id="searchDialog" aria-labelledby="searchTitle">
+    <div class="overlay__panel overlay__panel--search">
+      <h2 class="sr-only" id="searchTitle">Поиск по сайту</h2>
+      <header class="search-head">
+        <img src="../../bimi/logo.svg" alt="">
+        <div>
+          <label class="sr-only" for="siteSearch">Поиск по сайту</label>
+          <input id="siteSearch" type="search" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="siteSearchResults" placeholder="Услуга, статья или раздел" autocomplete="off">
+        </div>
+        <button class="icon-button icon-button--close" type="button" data-close-dialog aria-label="Закрыть поиск">×</button>
+      </header>
+      <div class="search-suggestions">
+        <span>Попробуйте:</span>
+        <button type="button" data-search-query="замечания руководителя">замечания руководителя</button>
+        <button type="button" data-search-query="нормоконтроль">нормоконтроль</button>
+        <button type="button" data-search-query="цены">цены</button>
+      </div>
+      <div class="search-results" id="siteSearchResults" role="listbox" data-search-results aria-live="polite" aria-label="Результаты поиска"></div>
+      <footer class="search-footer">
+        <span><kbd>↑</kbd><kbd>↓</kbd> выбрать</span>
+        <span><kbd>Enter</kbd> открыть</span>
+        <span><kbd>Esc</kbd> закрыть</span>
+      </footer>
+    </div>
+  </dialog>
+
+  <dialog class="overlay overlay--sheet" id="supportDialog" aria-labelledby="supportTitle">
+    <div class="overlay__panel overlay__panel--sheet">
+      <header class="overlay__header">
+        <div>
+          <span class="eyebrow">Приёмная</span>
+          <h2 id="supportTitle">Задайте вопрос редактору</h2>
+        </div>
+        <button class="icon-button icon-button--close" type="button" data-close-dialog aria-label="Закрыть">×</button>
+      </header>
+      <div class="support-card">
+        <p>Опишите задачу своими словами. Если есть методичка или замечания преподавателя, коротко перечислите их в вопросе.</p>
+        <label class="field">
+          <span>Ваш вопрос</span>
+          <textarea rows="5" data-support-message placeholder="Например: нужно проверить структуру введения и список источников"></textarea>
+        </label>
+        <label class="field">
+          <span>Куда ответить</span>
+          <input type="text" data-support-contact placeholder="Telegram, телефон или почта">
+        </label>
+        <div class="support-card__actions">
+          <button class="button button--primary" type="button" data-send-support>Сохранить вопрос</button>
+          <button class="button button--secondary" type="button" data-dialog-route="priyomnaya">Открыть приёмную</button>
+        </div>
+        <small>Сейчас вопрос сохранится в этой вкладке и не будет отправлен.</small>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="overlay overlay--sheet" id="actionDialog" aria-labelledby="actionDialogTitle">
+    <div class="overlay__panel overlay__panel--sheet" data-action-dialog-content></div>
+  </dialog>
+
+  <div class="toast-region" aria-live="polite" aria-atomic="true" data-toast-region></div>
+  <div class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-live-region></div>
+
+  <script type="module" src="./app.js?v=20260725-polish15"></script>
+</body>
+</html>

@@ -16,3 +16,11 @@ content/telegram/private/
 tmp/
 output/
 media/
+
+# контент-пак Telegram: тексты и скрипты версионируем, рендеры — нет,
+# они пересобираются из тех же исходников и весят 91 МБ
+content/telegram/motion/
+content/telegram/shelf/
+content/telegram/visuals/
+content/telegram/carousel/
+content/telegram/__pycache__/

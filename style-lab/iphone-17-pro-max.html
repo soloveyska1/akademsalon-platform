@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>iPhone 17 Pro Max — Академический Салон</title>
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <style>
+    :root {
+      --paper: #f4efe5;
+      --sheet: #fffdf8;
+      --ink: #1d1c18;
+      --muted: #69645a;
+      --line: #d8cebd;
+      --wax: #a9432c;
+      --green: #3d614a;
+      --serif: "Literata", Georgia, serif;
+      --sans: "Golos Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      overflow: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 65% 18%, rgba(255,255,255,.72), transparent 26%),
+        repeating-linear-gradient(0deg, rgba(48,40,28,.015) 0 1px, transparent 1px 4px),
+        var(--paper);
+      font: 400 14px/1.5 var(--sans);
+    }
+
+    button, a { color: inherit; font: inherit; }
+    button { cursor: pointer; }
+    a { text-decoration: none; }
+    :focus-visible { outline: 2px solid var(--wax); outline-offset: 3px; }
+
+    .lab {
+      display: grid;
+      min-height: 100dvh;
+      grid-template-columns: minmax(250px, 320px) minmax(500px, 1fr);
+    }
+
+    .sidebar {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      min-height: 100dvh;
+      flex-direction: column;
+      padding: 34px 30px 28px;
+      background: rgba(255,253,248,.72);
+      border-right: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .brand__mark {
+      display: grid;
+      width: 34px;
+      height: 38px;
+      place-items: center;
+      color: var(--wax);
+      border: 1px solid #b9ad99;
+      font: 500 22px/1 var(--serif);
+    }
+
+    .brand strong {
+      display: block;
+      font: 520 17px/1.2 var(--serif);
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 3px;
+      color: #8d8576;
+      font: 600 9px/1.2 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      color: var(--wax);
+      font: 600 10px/1.4 var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .device-copy { margin-top: clamp(48px, 9vh, 90px); }
+
+    h1 {
+      max-width: 9ch;
+      margin-top: 13px;
+      font: 430 clamp(32px, 3.2vw, 46px)/1.03 var(--serif);
+      letter-spacing: -.04em;
+    }
+
+    .lead {
+      max-width: 30ch;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .spec {
+      display: grid;
+      margin-top: 28px;
+      border-top: 3px double var(--ink);
+    }
+
+    .spec div {
+      display: flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .spec span {
+      color: #8d8576;
+      font: 600 9px var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .spec b { font: 520 12px var(--mono); }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 22px;
+      color: var(--green);
+      font: 600 9px var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(61,97,74,.1);
+    }
+
+    .controls {
+      display: grid;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .control {
+      display: flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 11px 14px;
+      background: transparent;
+      border: 1px solid #b9ad99;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    .control:hover { background: #eee5d5; }
+
+    .control.is-active {
+      color: #fffaf2;
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .control span:last-child { font-family: var(--serif); font-size: 18px; }
+
+    .stage {
+      position: relative;
+      display: grid;
+      min-width: 0;
+      place-items: center;
+      overflow: auto;
+      padding: 28px 44px;
+    }
+
+    .stage::before {
+      content: "MOBILE · 440 × 956";
+      position: fixed;
+      top: 18px;
+      right: 24px;
+      color: #8d8576;
+      font: 600 9px var(--mono);
+      letter-spacing: .12em;
+    }
+
+    .device-slot {
+      position: relative;
+      width: 468px;
+      height: 984px;
+      flex: 0 0 auto;
+    }
+
+    .device {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 468px;
+      height: 984px;
+      padding: 14px;
+      background: #181713;
+      border: 1px solid #575149;
+      border-radius: 58px;
+      box-shadow:
+        0 50px 120px rgba(44,35,22,.24),
+        0 8px 24px rgba(44,35,22,.14),
+        inset 0 0 0 2px #282621;
+      transform-origin: top left;
+    }
+
+    .device::before {
+      content: "";
+      position: absolute;
+      top: 23px;
+      left: 50%;
+      z-index: 3;
+      width: 118px;
+      height: 30px;
+      border-radius: 999px;
+      background: #090909;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .device::after {
+      content: "";
+      position: absolute;
+      top: 33px;
+      left: calc(50% + 36px);
+      z-index: 4;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #11182a;
+      box-shadow: inset 0 0 0 2px #080b12;
+      pointer-events: none;
+    }
+
+    iframe {
+      display: block;
+      width: 440px;
+      height: 956px;
+      overflow: hidden;
+      background: var(--paper);
+      border: 0;
+      border-radius: 45px;
+    }
+
+    .scale-note {
+      position: fixed;
+      right: 24px;
+      bottom: 18px;
+      padding: 7px 9px;
+      color: #756e63;
+      background: rgba(255,253,248,.72);
+      border: 1px solid var(--line);
+      font: 600 9px var(--mono);
+      letter-spacing: .08em;
+      backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 900px) {
+      body { overflow: auto; }
+      .lab { grid-template-columns: 1fr; }
+      .sidebar {
+        min-height: auto;
+        padding: 22px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .device-copy { margin-top: 28px; }
+      h1 { max-width: none; }
+      .lead, .spec, .status { display: none; }
+      .controls { grid-template-columns: 1fr 1fr; margin-top: 22px; }
+      .stage { min-height: 760px; padding: 24px; }
+      .stage::before, .scale-note { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="lab">
+    <aside class="sidebar">
+      <a class="brand" href="./" target="_blank" rel="noopener">
+        <span class="brand__mark" aria-hidden="true">¶</span>
+        <span><strong>Академический Салон</strong><small>design preview</small></span>
+      </a>
+
+      <div class="device-copy">
+        <p class="eyebrow">Мобильная версия</p>
+        <h1>iPhone 17 Pro Max</h1>
+        <p class="lead">Живой интерфейс внутри точного CSS-viewport устройства. Можно прокручивать, открывать меню и собирать маршрут.</p>
+
+        <div class="spec" aria-label="Параметры устройства">
+          <div><span>CSS viewport</span><b>440 × 956</b></div>
+          <div><span>Device pixels</span><b>1320 × 2868</b></div>
+          <div><span>Pixel ratio</span><b>3×</b></div>
+          <div><span>Display</span><b>6.9″</b></div>
+        </div>
+
+        <p class="status">Интерактивный preview</p>
+      </div>
+
+      <div class="controls">
+        <button class="control is-active" type="button" data-fit>
+          <span>Вписать в окно</span><span aria-hidden="true">↙</span>
+        </button>
+        <button class="control" type="button" data-one-to-one>
+          <span>Масштаб 1:1</span><span aria-hidden="true">1×</span>
+        </button>
+        <a class="control" href="./" target="_blank" rel="noopener">
+          <span>Открыть desktop</span><span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </aside>
+
+    <section class="stage" aria-label="Эмуляция iPhone 17 Pro Max">
+      <div class="device-slot" data-slot>
+        <div class="device" data-device>
+          <iframe src="./" title="Академический Салон на iPhone 17 Pro Max"></iframe>
+        </div>
+      </div>
+      <span class="scale-note" data-scale-note>Масштаб предпросмотра</span>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+      var device = document.querySelector("[data-device]");
+      var slot = document.querySelector("[data-slot]");
+      var fitButton = document.querySelector("[data-fit]");
+      var oneButton = document.querySelector("[data-one-to-one]");
+      var scaleNote = document.querySelector("[data-scale-note]");
+      var naturalWidth = 468;
+      var naturalHeight = 984;
+      var mode = "fit";
+
+      function setActive(button) {
+        [fitButton, oneButton].forEach(function (item) {
+          item.classList.toggle("is-active", item === button);
+        });
+      }
+
+      function render() {
+        var scale = 1;
+        if (mode === "fit") {
+          var availableHeight = Math.max(520, window.innerHeight - 56);
+          var sidebarWidth = window.innerWidth > 900 ? 320 : 0;
+          var availableWidth = Math.max(320, window.innerWidth - sidebarWidth - 88);
+          scale = Math.min(1, availableHeight / naturalHeight, availableWidth / naturalWidth);
+        }
+        device.style.transform = "scale(" + scale.toFixed(4) + ")";
+        slot.style.width = Math.round(naturalWidth * scale) + "px";
+        slot.style.height = Math.round(naturalHeight * scale) + "px";
+        scaleNote.textContent = "Масштаб предпросмотра · " + Math.round(scale * 100) + "%";
+      }
+
+      fitButton.addEventListener("click", function () {
+        mode = "fit";
+        setActive(fitButton);
+        render();
+      });
+
+      oneButton.addEventListener("click", function () {
+        mode = "one";
+        setActive(oneButton);
+        render();
+      });
+
+      window.addEventListener("resize", render, { passive: true });
+      render();
+    }());
+  </script>
+</body>
+</html>
