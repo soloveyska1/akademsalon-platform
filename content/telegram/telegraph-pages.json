@@ -1,0 +1,22 @@
+{
+  "pages": {
+    "01-kak-nauchruk-chitaet-rabotu.md": {
+      "title": "Как научрук читает работу за первые семь минут",
+      "path": "Kak-nauchruk-chitaet-rabotu-za-pervye-sem-minut-07-23",
+      "url": "https://telegra.ph/Kak-nauchruk-chitaet-rabotu-za-pervye-sem-minut-07-23",
+      "source": "articles/01-kak-nauchruk-chitaet-rabotu.md"
+    },
+    "02-dedlain-sryvaetsya-ne-na-tekste.md": {
+      "title": "Дедлайн срывается не на тексте",
+      "path": "Dedlajn-sryvaetsya-ne-na-tekste-07-23",
+      "url": "https://telegra.ph/Dedlajn-sryvaetsya-ne-na-tekste-07-23",
+      "source": "articles/02-dedlain-sryvaetsya-ne-na-tekste.md"
+    },
+    "03-perevodchik-s-nauchrukovskogo.md": {
+      "title": "Переводчик с научруковского",
+      "path": "Perevodchik-s-nauchrukovskogo-07-23",
+      "url": "https://telegra.ph/Perevodchik-s-nauchrukovskogo-07-23",
+      "source": "articles/03-perevodchik-s-nauchrukovskogo.md"
+    }
+  }
+}
