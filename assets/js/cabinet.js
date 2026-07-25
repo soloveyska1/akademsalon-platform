@@ -24,9 +24,11 @@ function initCabinet() {
     ledger: null,     // журнал бонусов из /bonus
     depLedgerOpen: false,
     depLedger: null,  // журнал депозита из /deposit
-    archOpen: false,  // развёрнут ли «Архив» в корешках
+    archOpen: false,  // открыт ли отбор «Завершённые» по ярлыку под списком
     remOpen: false,   // развёрнуты ли «убранные» (архивированные) дела
     tab: 'home',  // активный раздел: home|orders|wallet|club|help
+    filter: 'all',    // отбор реестра дел: all|active|done (чипы эталона)
+    caseOpen: false,  // открыто ли дело отдельным экраном (как маршрут эталона)
     clubOpen: false,  // развёрнуты ли карточки бонусов/подписки (полоса «клуба»)
     plusOpen: false,  // развёрнута ли витрина «Салон+»
     ctorOpen: false,  // развёрнут ли конструктор подписки внутри витрины
@@ -269,7 +271,7 @@ function initCabinet() {
       ? '<div class="cab-login-pending" role="status" aria-live="polite">' +
         '<span class="cab-pending-mark" aria-hidden="true"><i></i></span>' +
         '<div><b>Остался один шаг в Telegram</b>' +
-        '<p>Откройте бота и нажмите <b>Start</b>. Кабинет войдёт сам — страницу можно не держать открытой.</p>' +
+        '<p>Откройте бота и нажмите кнопку «Начать». Кабинет войдёт сам — страницу можно не держать открытой.</p>' +
         '<div class="cab-pending-actions"><a class="btn btn-wax" href="' + (pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Открыть Telegram <span class="ar">↗</span></a>' +
         '<button type="button" class="btn btn-line" id="cabTgCancel">Выбрать другой способ</button></div></div></div>'
       : '';
@@ -300,14 +302,14 @@ function initCabinet() {
         '<p>Пришлём одноразовый код. Пароль придумывать и запоминать не нужно.</p>' +
         '<div class="cab-email-row" id="cabEmailBox">' +
           '<label class="visually-hidden" for="cabEmailIn">Электронная почта</label>' +
-          '<input class="cab-login-input" type="email" id="cabEmailIn" placeholder="name@example.ru" autocomplete="email" inputmode="email">' +
+          '<input class="cab-login-input" type="email" id="cabEmailIn" placeholder="pochta@example.ru" autocomplete="email" inputmode="email">' +
           '<button type="button" class="btn btn-wax" id="cabEmailSend">Получить код</button>' +
         '</div></div>';
     }
     /* пришли за «Салон+» с витрины (#plus), а сессии нет — не встречать гостя
        голой стеной входа: объясняем, что абонемент ждёт сразу за дверью */
     var plusTeaser = (typeof hashPlusScroll !== 'undefined' && hashPlusScroll)
-      ? '<div class="cab-login-teaser">⭐ <span><b>Абонемент «Салон+» уже рядом.</b> ' +
+      ? '<div class="cab-login-teaser"><span aria-hidden="true">АС+</span> <span><b>Абонемент «Салон+» уже рядом.</b> ' +
         'Войдите любым способом — и витрина планов откроется автоматически.</span></div>'
       : '';
     var mainAction = f.email_login
@@ -338,7 +340,7 @@ function initCabinet() {
             (provBtns.length ? '<div class="cab-or" aria-hidden="true"><span>или быстрее через</span></div>' +
               '<div class="cab-prov">' + provBtns.join('') + '</div>' : '')) +
           '<p class="cab-login-hint" id="cabTgHint" role="status" aria-live="polite" hidden></p>' +
-          '<p class="cab-login-legal">Мы используем email или Telegram только для входа и защиты кабинета. Подробнее — в <a href="privacy.html">политике ПДн</a>.</p>' +
+          '<p class="cab-login-legal">Мы используем почту или Telegram только для входа и защиты кабинета. Подробнее — в <a href="privacy.html">политике ПДн</a>.</p>' +
           '<details class="cab-alt"><summary>Есть ссылка доступа к отдельному делу</summary>' +
             '<p>Вставьте ссылку с экрана «Заявка принята» — заказ откроется без входа.</p>' +
             '<div class="cab-claim-row">' +
@@ -420,7 +422,7 @@ function initCabinet() {
     if (!box) return;
     box.innerHTML =
       '<label class="visually-hidden" for="cabEmailIn">Электронная почта</label>' +
-      '<input class="cab-login-input" type="email" id="cabEmailIn" placeholder="name@example.ru" autocomplete="email" inputmode="email">' +
+      '<input class="cab-login-input" type="email" id="cabEmailIn" placeholder="pochta@example.ru" autocomplete="email" inputmode="email">' +
       '<button type="button" class="btn btn-wax" id="cabEmailSend">Получить код</button>';
     var inp = document.getElementById('cabEmailIn');
     if (inp) { inp.value = st.emailTo || ''; inp.focus(); }
@@ -445,7 +447,7 @@ function initCabinet() {
     /* порядок по значимости: сначала дело (здесь — приглашение его завести),
        клубные карточки — после; личность живёт в стойке каркаса */
     return '<div class="case-state case-state--empty reveal">' +
-      '<header><span>EMPTY</span><i aria-hidden="true"></i></header>' +
+      '<header><span>204</span><i aria-hidden="true"></i></header>' +
       '<div class="case-state__body">' +
       '<span class="case-state__mark" aria-hidden="true">+</span>' +
       '<h2>Заказов пока нет</h2>' +
@@ -584,21 +586,22 @@ function initCabinet() {
       cta = 'Проверить и решить'; jump = 'secDecide';
     } else if (score === 2) {
       msg = 'Новые файлы от мастерской в деле ' + esc(o.no) + '.';
-      sub = 'Они уже в разделе «Файлы» — и в Telegram, если он привязан.';
-      cta = 'Открыть файлы'; jump = 'secFiles';
+      sub = 'Они уже в разделе «Документы» — и в Telegram, если он привязан.';
+      cta = 'Открыть документы'; jump = 'secFiles';
     } else {
       msg = 'Новое сообщение мастера по делу ' + esc(o.no) + '.';
       sub = 'Ответить можно прямо в переписке дела.';
       cta = 'Открыть переписку'; jump = 'secChat';
     }
-    return '<div class="now-card reveal">' +
-      '<div class="nc-cap"><span class="caps">Сейчас важно</span>' +
-      '<span class="nc-no">дело ' + esc(o.no) + ' · ' + esc(shortWork(o)) + '</span></div>' +
-      '<p class="nc-msg">' + msg + '</p>' +
-      '<p class="nc-sub">' + sub + '</p>' +
-      '<div class="nc-act"><button type="button" class="btn btn-wax" data-now-open="' + o.id +
-      '" data-now-jump="' + jump + '">' + cta + ' <span class="ar">→</span></button></div>' +
-      '</div>';
+    /* лента внимания в языке эталона: тот же .account-notice, что у пауз
+       и придержанных файлов внутри дела — своих компонентов не заводим */
+    return '<div class="account-notice account-notice--wax reveal">' +
+      '<span class="account-notice__mark" aria-hidden="true">' + (score >= 4 ? '₽' : '¶') + '</span>' +
+      '<div><strong>' + msg + '</strong><p>Дело ' + esc(o.no) + ' · ' + esc(shortWork(o)) +
+      '. ' + sub + '</p></div>' +
+      '<span class="account-notice__acts">' +
+      '<button type="button" class="line-link" data-now-open="' + o.id +
+      '" data-now-jump="' + jump + '">' + cta + ' <span aria-hidden="true">→</span></button></span></div>';
   }
 
   /* -------- «клуб»: бонусы + подписка одной строкой, детали — по клику.
@@ -678,7 +681,7 @@ function initCabinet() {
       '<h2>Бонусы — единицы скидки, не деньги.</h2></div>' +
       '<a class="line-link" href="loyalty.html">Правила программы <span aria-hidden="true">→</span></a></header>' +
       '<div class="account-panel">' +
-      '<header><span>Баланс счёта</span><small>АС · BON</small></header>' +
+      '<header><span>Баланс счёта</span><small>АС · БОН</small></header>' +
       '<strong class="account-panel__figure">' + money(b.balance) + ' бонусов</strong>' +
       '<p>Списание применяется один раз к одному заказу и только до первой оплаты. ' +
       'Стоимость абонемента бонусами не оплачивается.</p>' +
@@ -738,7 +741,7 @@ function initCabinet() {
       (st.depLedgerOpen ? 'Скрыть журнал' : 'Журнал счёта') + '</button></div>' +
       '</div>' +
       '<aside class="deposit-ledger-card">' +
-      '<header><span>Счёт мастерской</span><small>АС · DEP</small></header>' +
+      '<header><span>Счёт мастерской</span><small>АС · ДЕП</small></header>' +
       '<div><small>Денежный остаток</small><strong>' + money(d.balance) + ' ₽</strong>' +
       '<p>аванс для оплаты согласованных этапов</p></div>' +
       (bon ? '<div><small>Бонусный счёт</small><strong>+' + money(bon.balance || 0) + '</strong>' +
@@ -770,7 +773,7 @@ function initCabinet() {
           '<span><b>02</b>отметьте «Я оплатил(а)»</span>' +
           '<span><b>03</b>сверим — абонемент включится сам</span></div>'
         : '<p>Реквизиты появятся здесь в течение пары минут — либо оформите в Telegram: ' +
-          '<a class="line-link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a></p>';
+          '<a class="line-link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot</a></p>';
       controls = '<p class="eyebrow">Реквизиты для перевода</p><h3>Один платёж целиком.</h3>' +
         '<p>' + esc(p.label) + ' · ' + esc(p.period_label) +
         '. Это не заказ: без этапов и планов оплат, автосписаний нет.</p>' + slip +
@@ -793,7 +796,7 @@ function initCabinet() {
       '<div class="deposit-calculator reveal" id="subPaySheet">' +
       '<div class="deposit-calculator__controls">' + controls + '</div>' +
       '<aside class="deposit-receipt">' +
-      '<header><span>Платёж за абонемент</span><small>АС · PLUS</small></header>' +
+      '<header><span>Платёж за абонемент</span><small>АС · АБН</small></header>' +
       '<dl><div><dt>План</dt><dd>' + esc(p.label) + '</dd></div>' +
       '<div><dt>Срок действия</dt><dd>' + esc(p.period_label) + '</dd></div>' +
       '<div><dt>К оплате деньгами</dt><dd>' + money(p.price) + ' ₽</dd></div></dl>' +
@@ -830,7 +833,7 @@ function initCabinet() {
         '<dl><div><dt>Продление</dt><dd>' + (sub.auto_renew ? 'счёт вручную, без списания' : 'только вручную') + '</dd></div>' +
         '<div><dt>Скидка</dt><dd>' + (sub.discount_pct ? '−' + sub.discount_pct + ' % к подходящему заказу' : 'по составу плана') + '</dd></div>' +
         '<div><dt>Бонусы</dt><dd>учитываются отдельно</dd></div></dl>' +
-        '<footer><span>Абонемент активен</span><b>АС / PLUS</b></footer></aside>';
+        '<footer><span>Абонемент активен</span><b>АС / АБОНЕМЕНТ</b></footer></aside>';
       head = '<section class="account-section reveal" id="plusCard">' +
         '<header><div><p class="eyebrow">Абонемент «Салон+»</p>' +
         '<h2>План активен.</h2></div>' +
@@ -884,7 +887,7 @@ function initCabinet() {
     var price, priceNote, buy, buyLabel;
     if (p.once) {
       price = money(p.month_price) + ' ₽';
-      priceNote = 'разовый доступ · ' + p.period_days + ' дней';
+      priceNote = p.period_days ? 'разовый доступ · ' + p.period_days + ' дней' : 'разовый доступ · срок в условиях плана';
       buy = p.id + ':month';
       buyLabel = 'Оформить';
     } else if (per === 'sem') {
@@ -935,7 +938,7 @@ function initCabinet() {
         '<span class="builder-option__name">' + esc(f.label) + '</span>' +
         '<b>+' + money(f.price) + ' ₽</b>' +
         (f.hint ? '<small>' + esc(f.hint) + '</small>' : '') +
-        '<i aria-hidden="true">✓</i></button>';
+        '<i aria-hidden="true">+</i></button>';
     }).join('');
     var chosen = (pl.features || []).filter(function (f) { return st.ctorFeats.indexOf(f.id) >= 0; });
     var comp = '<div><dt>База абонемента</dt><dd>' + money(pl.base_price) + ' ₽</dd></div>' +
@@ -966,7 +969,7 @@ function initCabinet() {
       saveNote + '</p>' +
       '<div class="builder-options">' + opts + '</div></div>' +
       '<aside class="deposit-receipt">' +
-      '<header><span>Ваш абонемент</span><small>АС · CTOR</small></header>' +
+      '<header><span>Ваш абонемент</span><small>АС · НАБОР</small></header>' +
       '<dl>' + comp +
       '<div><dt>Итого ' + (st.ctorPeriod === 'sem' ? 'за 150 дней одной оплатой' : 'за 30 дней') + '</dt>' +
       '<dd id="ctorTotal">' + (chosen.length ? money(ctorTotal()) + ' ₽' : '—') + '</dd></div></dl>' +
@@ -1021,7 +1024,7 @@ function initCabinet() {
       '<h2>График сдач с напоминаниями.</h2></div>' +
       '<span class="account-count">' + ms.length + '</span></header>' +
       '<div class="account-panel">' +
-      '<header><span>Ваши сдачи и экзамены</span><small>АС · CUR</small></header>' +
+      '<header><span>Ваши сдачи и экзамены</span><small>АС · КУРАТОР</small></header>' +
       '<p>Внесите даты — мы напомним заранее, за 7, 3 и 1 день, и подстрахуем, если станет жарко.' +
       (canMore || ms.length ? '' : ' Без абонемента доступна одна запись, с «Салон+» — весь график.') + '</p>' +
       (rows ? '<div class="account-ledger">' + rows + '</div>' : '') +
@@ -1064,7 +1067,7 @@ function initCabinet() {
       '<div class="plus-plan-grid">' + cards + '</div>' +
       '<p class="commerce-caption">Абонемент активируется не позднее 24 часов после подтверждения оплаты. ' +
       'Скидка абонемента и бонусы учитываются раздельно; вместе они не превышают 25 % стоимости заказа. ' +
-      'Оформить можно и в Telegram: <a class="line-link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a></p>' +
+      'Оформить можно и в Telegram: <a class="line-link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot</a></p>' +
       extras + '</section>' + ctorBlock + curBlock;
   }
 
@@ -1088,7 +1091,7 @@ function initCabinet() {
           return;
         }
         /* подписка — не заказ: платёж живёт в карточке «Салон+», список дел не трогаем */
-        toast('Оформлено! Остался один перевод — реквизиты в карточке подписки ⭐');
+        toast('Оформлено. Остался один перевод — реквизиты в карточке абонемента');
         if (S.stamp) S.stamp('Салон+');
         if (st.me) st.me.sub_pending = r.sub || null;
         st.plusOpen = false;
@@ -1114,7 +1117,7 @@ function initCabinet() {
     already_claimed: 'Отметка уже стоит — мастер сверяет поступление',
     nothing_claimed: 'Отметки нет — снимать нечего',
     sub_state: 'Это оформление уже закрыто — выберите план заново',
-    sub_active: 'Подписка уже активна ⭐',
+    sub_active: 'Абонемент уже активен',
     unauthorized: 'Войдите через Telegram или почту',
     not_found: 'Оформление не нашлось — обновите страницу'
   };
@@ -1171,7 +1174,7 @@ function initCabinet() {
       if (hadPending && !r.sub_pending && r.sub) {
         toast('Подписка «' + (r.sub.label || 'Салон+') + '» активна — скидка уже работает');
         if (S.stamp) S.stamp('Салон+ активна');
-        if (document.hidden) systemNote('⭐', 'Подписка ' + (r.sub.label || '') + ' активирована');
+        if (document.hidden) systemNote('АС+', 'Абонемент ' + (r.sub.label || '') + ' активирован');
       }
       if (changed || force) rerenderHome();
     });
@@ -1212,41 +1215,110 @@ function initCabinet() {
       (!!(o.part_ready || o.final_ready) && (o.status === 'work' || o.status === 'fix'));
   }
 
-  function tabBtn(o) {
-    var on = o.id === st.currentId;
-    var badge = (o.unread || 0) + (o.files_new || 0);
-    return '<button type="button" role="tab" class="order-card order-card--compact' +
-      (on ? ' is-current' : '') + '" data-ord="' + o.id + '" aria-selected="' + on + '">' +
+  /* ---------------- Реестр дел: ОДНА карточка на весь кабинет ----------------
+     В утверждённом эталоне (style-lab/full → dashboardView) список дел один:
+     секция .account-orders с отбором .filter-tabs и сеткой .order-list из
+     одинаковых .order-card. Кабинет держал ЧЕТЫРЕ разных списка — на главной
+     полноразмерные карточки, а в «Делах», «Сообщениях» и «Документах» три
+     почти одинаковых набора компактных корешков. Теперь карточка одна: раздел
+     меняет только две справки под шкалой и подпись в подвале. */
+  function orderPct(o) {
+    if (o.status === 'done') return 100;
+    if (o.status === 'cancel' || (o.step || 0) < 0) return 0;
+    var total = Math.max(1, o.stages_total || 1);
+    var stage = Math.max(1, o.stage || 1);
+    return Math.max(8, Math.min(92, Math.round((stage - 0.35) / total * 100)));
+  }
+  function orderCard(o, mode) {
+    var files = (o.files && o.files.length) || o.files_count || 0;
+    var unread = o.unread || 0;
+    var fresh = o.files_new || 0;
+    var facts, foot;
+    if (mode === 'messages') {
+      facts = [['Непрочитанное', unread
+                  ? plural(unread, unread + ' сообщение', unread + ' сообщения', unread + ' сообщений')
+                  : 'всё прочитано'],
+               ['Файлы от мастерской', fresh
+                  ? plural(fresh, fresh + ' новый', fresh + ' новых', fresh + ' новых')
+                  : 'без изменений']];
+      foot = unread ? 'Ответить мастеру' : 'Открыть переписку';
+    } else if (mode === 'documents') {
+      facts = [['В деле', files
+                  ? plural(files, files + ' файл', files + ' файла', files + ' файлов')
+                  : 'файлов пока нет'],
+               ['Ближайший срок', o.deadline_text || 'уточняется']];
+      foot = fresh ? 'Есть новые файлы' : 'Открыть материалы дела';
+    } else {
+      facts = [['Сейчас', shortStatus(o) || o.status_label || 'в работе'],
+               ['Ближайший срок', o.deadline_text || 'уточняется']];
+      foot = needsAction(o) ? 'Требуется ваше решение'
+        : (unread || fresh) ? 'Есть новое событие'
+        : o.pinned ? 'Закреплено первым' : 'Открыть дело';
+    }
+    var pct = orderPct(o);
+    /* без .is-current: дело больше не раскрывается под списком, подсвечивать
+       «выбранную» карточку нечем — в эталоне такого состояния тоже нет */
+    return '<button type="button" class="order-card" data-ord="' + o.id +
+      '" data-order-status="' + esc(o.status || 'new') + '">' +
       '<div class="order-card__top">' +
-      '<span class="tag tag--status tag--' + esc(o.status || 'new') + '">' + esc(shortStatus(o)) + '</span>' +
-      '<span>' + esc(o.no) + '</span></div>' +
-      '<h3>' + esc(shortWork(o)) + '</h3>' +
-      '<footer><span>' + (badge ? 'новое в деле · ' + badge : (o.pinned ? 'закреплено' : 'открыть дело')) +
-      '</span><b aria-hidden="true">→</b></footer>' +
-      '</button>';
+      '<span class="tag tag--status tag--' + esc(o.status || 'new') + '">' +
+      esc(o.status_label || shortStatus(o) || 'дело') + '</span>' +
+      '<span>' + esc(o.no || ('№ ' + o.id)) + '</span></div>' +
+      '<h3>' + esc(o.work_label || 'Редакторская работа') + '</h3>' +
+      '<div class="order-card__progress" role="img" aria-label="Пройдено по делу: ' + pct +
+      ' процентов"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="order-card__stage">' + facts.map(function (f) {
+        return '<span><small>' + f[0] + '</small><strong>' + esc(f[1]) + '</strong></span>';
+      }).join('') + '</div>' +
+      '<footer><span>' + esc(foot) + '</span><b aria-hidden="true">→</b></footer></button>';
   }
 
-  function tplSwitch() {
-    var act = activeOrders(), arch = archOrders(), rem = removedOrders();
-    if (act.length + arch.length < 2 && !rem.length) return '';
-    var row = act.map(tabBtn).join('');
-    if (arch.length || rem.length) {
-      row += '<button type="button" class="order-card order-card--compact order-card--ghost' +
-        (st.archOpen ? ' is-current' : '') + '" data-arch-toggle aria-expanded="' + !!st.archOpen + '">' +
-        '<div class="order-card__top"><span class="tag">Архив</span><span>№ —</span></div>' +
-        '<h3>Завершённые · ' + arch.length + '</h3>' +
-        '<footer><span>' + (st.archOpen ? 'свернуть' : 'показать') + '</span><b aria-hidden="true">→</b></footer></button>';
+  /* отбор реестра — три чипа эталона (.filter-tabs--small) */
+  function registerFilters() {
+    return '<div class="filter-tabs filter-tabs--small" role="group" aria-label="Отбор дел">' +
+      [['all', 'Все'], ['active', 'Активные'], ['done', 'Завершённые']].map(function (f) {
+        var on = st.filter === f[0];
+        return '<button type="button" class="' + (on ? 'is-active' : '') +
+          '" data-order-filter="' + f[0] + '" aria-pressed="' + on + '">' + f[1] + '</button>';
+      }).join('') + '</div>';
+  }
+  function filteredOrders() {
+    var vis = visibleOrders();
+    var pool = st.filter === 'active' ? vis.filter(function (o) { return !isArch(o); })
+      : st.filter === 'done' ? vis.filter(isArch) : vis;
+    return st.remOpen ? pool.concat(removedOrders()) : pool;
+  }
+
+  /* реестр: заголовок с отбором, сетка карточек, тихая приписка о скрытых пулах */
+  function ordersRegister(mode) {
+    var title = mode === 'messages' ? 'Сообщения по делам'
+      : mode === 'documents' ? 'Документы по делам' : 'Ваши дела';
+    var list = filteredOrders();
+    if (mode === 'messages') {
+      list = list.slice().sort(function (a, b) {
+        return ((b.unread || 0) + (b.files_new || 0)) - ((a.unread || 0) + (a.files_new || 0));
+      });
     }
-    var archRow = '';
-    if (st.archOpen && (arch.length || rem.length)) {
-      archRow = '<div class="order-list reveal">' + arch.map(tabBtn).join('') +
-        (rem.length ? (st.remOpen
-          ? rem.map(tabBtn).join('') + '<button type="button" class="order-card order-card--compact order-card--ghost" data-rem-toggle><div class="order-card__top"><span class="tag">Убранные</span><span>№ —</span></div><h3>Спрятать убранные</h3><footer><span>свернуть</span><b aria-hidden="true">→</b></footer></button>'
-          : '<button type="button" class="order-card order-card--compact order-card--ghost" data-rem-toggle><div class="order-card__top"><span class="tag">Убранные</span><span>№ —</span></div><h3>Убранные · ' + rem.length + '</h3><footer><span>показать</span><b aria-hidden="true">→</b></footer></button>') : '') +
-        '</div>';
-    }
-    return '<div class="order-list reveal" role="tablist" aria-label="Ваши заказы">' + row + '</div>' +
-      (archRow || '');
+    var arch = visibleOrders().filter(isArch), rem = removedOrders();
+    var notes = [];
+    if (arch.length && st.filter !== 'done')
+      notes.push('Завершённых дел: ' + arch.length +
+        ' · <button type="button" class="line-link" data-arch-toggle aria-expanded="' +
+        !!st.archOpen + '">' + (st.archOpen ? 'вернуться ко всем' : 'показать только их') + '</button>');
+    if (rem.length)
+      notes.push('Убранных в архив: ' + rem.length +
+        ' · <button type="button" class="line-link" data-rem-toggle aria-expanded="' +
+        !!st.remOpen + '">' + (st.remOpen ? 'спрятать снова' : 'показать в списке') + '</button>');
+    var empty = mode === 'messages' ? 'В этом отборе переписок нет — смените отбор дел выше.'
+      : mode === 'documents' ? 'В этом отборе материалов нет — смените отбор дел выше.'
+      : 'В этом отборе дел нет — смените отбор выше.';
+    return '<section class="account-orders account-orders--all reveal">' +
+      '<header><h2>' + title + '</h2>' + registerFilters() + '</header>' +
+      (list.length
+        ? '<div class="order-list">' + list.map(function (o) { return orderCard(o, mode); }).join('') + '</div>'
+        : '<div class="account-empty"><p>' + empty + '</p></div>') +
+      (notes.length ? '<p class="account-note account-note--row">' + notes.join(' · ') + '</p>' : '') +
+      '</section>';
   }
   function shortWork(o) {
     var w = o.work_label || '';
@@ -1269,8 +1341,10 @@ function initCabinet() {
     var pct = o.status === 'done'
       ? 100
       : Math.max(5, Math.min(95, Math.round((o.step - 0.35) / o.steps.length * 100)));
-    return '<div class="case-progress-meta"><span>Пройдено этапов</span>' +
-      '<strong>' + o.step + ' из ' + o.steps.length + '</strong></div>' +
+    /* дробь «N из M» стоит в шапке разворота — здесь та же величина долей,
+       без тавтологии: рядом со шкалой уместен процент, как в эталоне */
+    return '<div class="case-progress-meta"><span>Готовность дела</span>' +
+      '<strong>' + pct + ' %</strong></div>' +
       '<div class="case-progress" role="img" aria-label="Пройдено этапов: ' +
       o.step + ' из ' + o.steps.length + '"><i class="' + pctBucket(pct) + '"></i></div>';
   }
@@ -1283,6 +1357,77 @@ function initCabinet() {
     return '<strong class="case-paid">Оплачено ' + money(paid) + ' ₽ из ' + money(total) + ' ₽</strong>' +
       '<div class="case-paid-scale" role="img" aria-label="Оплачено ' + pct +
       ' процентов"><i class="' + pctBucket(pct) + '"></i></div>';
+  }
+
+  /* -------- разворот эталона: текущий этап одним листом --------
+     .case-overview из caseView: надзаголовок «Текущий этап», название этапа,
+     серифная дробь «N из M», шкала готовности и три справки в одну линейку.
+     Раньше шкала висела голой строкой между шапкой и составом заказа. */
+  function caseOverview(o) {
+    var steps = o.steps || [];
+    if (o.step < 0 || !steps.length) return '';
+    var stepName = steps[Math.max(0, Math.min(steps.length - 1, o.step - 1))] || '';
+    var total = o.stages_total || 1;
+    var next = {
+      new: 'Оценка мастера',
+      priced: 'Ваше решение по цене',
+      prepay: 'Оплата первого этапа',
+      work: 'Работа мастерской',
+      fix: 'Корректировка мастером',
+      check: 'Ваша приёмка результата',
+      done: 'Дело завершено',
+      cancel: 'Дело закрыто'
+    }[o.status] || 'Уточняется';
+    if (o.paused && o.status !== 'done' && o.status !== 'cancel') next = 'Снять дело с паузы';
+    var facts = [
+      ['Результат', o.deadline_text || 'срок уточняется'],
+      [total > 1 ? 'Часть' : 'Позиций в деле',
+        total > 1 ? (o.stage || 1) + ' из ' + total
+          : String((o.specification_lines || o.items || []).length || 1)],
+      ['Следующее действие', next]
+    ];
+    return '<div class="fs-sec case-sec case-overview">' +
+      '<header><div><p class="eyebrow">Текущий этап</p><h3>' + esc(stepName) + '</h3></div>' +
+      '<strong class="case-overview__count"><small>Этапы</small>' + o.step + ' из ' + steps.length +
+      '</strong></header>' + caseProgress(o) +
+      '<div class="case-overview__facts">' + facts.map(function (f) {
+        return '<span><small>' + f[0] + '</small><strong>' + esc(f[1]) + '</strong></span>';
+      }).join('') + '</div></div>';
+  }
+
+  /* -------- правая колонка эталона: деньги короткой сводкой --------
+     .case-payment из caseView: закрытая часть суммы, шкала и переход
+     к самому платежу. Сама оплата (реквизиты, кнопки, история) живёт
+     в главной колонке — сводка её не дублирует, а доводит до неё. */
+  function caseAsidePay(o) {
+    var scale = payScale(o);
+    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
+    if (!scale && !due && !o.claimed) return '';
+    var note = due > 0
+      ? 'К оплате сейчас — ' + money(due) + ' ₽' +
+        (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ').' : '.')
+      : o.claimed ? 'Ваша отметка об оплате на сверке у мастера.'
+      : isArch(o) ? 'Расчёты по делу закрыты.'
+      : 'Следующий платёж появится по готовности этапа.';
+    return '<section class="fs-sec case-sec case-payment">' +
+      '<header><h3>Расчёты по делу</h3><span class="case-sec__note">' +
+      (due > 0 ? 'ждёт вас' : o.claimed ? 'на сверке' : 'по плану') + '</span></header>' +
+      (scale || '') + '<p class="case-note">' + note + '</p>' +
+      '<div class="case-acts"><button type="button" class="btn btn-line" data-jump="secPay">' +
+      (due > 0 ? 'Перейти к оплате' : 'История платежей') + '</button></div></section>';
+  }
+
+  /* -------- правая колонка эталона: .case-support -------- */
+  function caseSupport(o) {
+    return '<section class="fs-sec case-sec case-support">' +
+      '<span class="case-support__mark" aria-hidden="true">?</span>' +
+      '<h3>Нужна помощь?</h3>' +
+      '<p>Напишите мастеру прямо в деле — он видит номер ' + esc(o.no) +
+      ' и всю переписку. Общие вопросы удобнее задать в разделе «Помощь».</p>' +
+      '<div class="case-acts"><button type="button" class="btn btn-line" data-chat-focus>' +
+      'Написать по делу</button>' +
+      '<button type="button" class="line-link" data-tab="help">Связь с мастерской ' +
+      '<span aria-hidden="true">→</span></button></div></section>';
   }
 
   /* ход дела свёрнут, когда у клиента есть действие поважнее (оплата/решение) —
@@ -1616,7 +1761,7 @@ function initCabinet() {
         confirmation + '</dt><dd>' + money(p.amount) + ' ₽</dd></div>';
     }).join('') + '</dl>' +
       '<p class="case-note">Официальный чек НПД формирует Robokassa ' +
-      'и отправляет на e-mail, указанный при оплате. Подтверждение выше не заменяет налоговый чек.</p>';
+      'и отправляет на почту, указанную при оплате. Подтверждение выше не заменяет налоговый чек.</p>';
   }
 
   /* -------- реквизиты: платёжный лист с крупной суммой и копированием --------
@@ -1659,11 +1804,11 @@ function initCabinet() {
     var wantPay = due > 0;
     if (!wantPay && !o.claimed) return payHistory(o) ? '<div class="fs-sec case-sec case-pay" id="secPay">' +
       '<header><div><p class="eyebrow">Оплата</p><h3>История платежей</h3></div></header>' +
-      payScale(o) + payHistory(o) + '</div>' : '';
+      payHistory(o) + '</div>' : '';
     var head = '<div class="fs-sec case-sec case-pay" id="secPay">' +
       '<header><div><p class="eyebrow">Оплата</p><h3>' +
       esc((o.due_now && o.due_now.label) || 'Платёж по делу') + '</h3></div>' +
-      (due ? '<strong class="case-sum">' + money(due) + ' ₽</strong>' : '') + '</header>' + payScale(o);
+      (due ? '<strong class="case-sum">' + money(due) + ' ₽</strong>' : '') + '</header>';
     if (o.claimed) {
       return head +
         '<div class="account-notice"><span class="account-notice__mark" aria-hidden="true">₽</span>' +
@@ -1684,9 +1829,9 @@ function initCabinet() {
     var depBtn = depBal >= depDue && depDue > 0;
     var receiptEmail = esc(o.receipt_email || '');
     var receiptField = o.pay_online
-      ? '<label class="case-field"><span class="case-field__label">E-mail для официального чека НПД</span>' +
+      ? '<label class="case-field"><span class="case-field__label">Почта для официального чека НПД</span>' +
         '<input class="account-input" type="email" id="payReceiptEmail" autocomplete="email" inputmode="email" ' +
-        'placeholder="name@example.ru" value="' + receiptEmail + '" required>' +
+        'placeholder="pochta@example.ru" value="' + receiptEmail + '" required>' +
         '<span class="case-field__hint">Передадим только Robokassa для чека и уведомления об оплате.</span></label>'
       : '';
     var payBtns = '<div class="case-acts">' +
@@ -1729,7 +1874,7 @@ function initCabinet() {
       ? payBlock(o) : '';
     if (!b.length) return pay || (payHistory(o) ? '<div class="fs-sec case-sec case-pay" id="secPay">' +
       '<header><div><p class="eyebrow">Оплата</p><h3>История платежей</h3></div></header>' +
-      payScale(o) + payHistory(o) + '</div>' : '');
+      payHistory(o) + '</div>' : '');
     return '<div class="fs-sec case-sec" id="secDecide">' +
       '<header><div><p class="eyebrow">Решение по заказу</p><h3>Слово за вами</h3></div>' +
       (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="case-sec__note">проверка и итерации — по условиям позиции</span>' : '') +
@@ -1804,7 +1949,7 @@ function initCabinet() {
       ? 'Мастер приостановил дело — вопросы можно задать в переписке ниже.'
       : 'Вы поставили дело на паузу: исполнение и напоминания подождут вашего сигнала.';
     return '<div class="account-notice">' +
-      '<span class="account-notice__mark" aria-hidden="true">II</span>' +
+      '<span class="account-notice__mark" aria-hidden="true">П</span>' +
       '<div><strong>Дело на паузе</strong><p>' + by + '</p></div>' +
       (o.actions.indexOf('unpause') >= 0
         ? '<span class="account-notice__acts">' +
@@ -1824,7 +1969,7 @@ function initCabinet() {
     if (o.actions.indexOf('cancel_request') >= 0)
       items.push('<button type="button" class="btn btn-line" data-act-cancelreq>Закрыть дело…</button>');
     if (!items.length) return '';
-    return fold('secManage', 'Управление делом', 'пауза — не отмена: всё сохраняется',
+    return fold('secManage', 'Управление делом', 'пауза — не отмена',
       '<div class="case-acts">' + items.join('') + '</div>', false);
   }
 
@@ -1936,11 +2081,13 @@ function initCabinet() {
       ? (n + ' ' + plural(n, 'файл', 'файла', 'файлов') + (o.files_new ? ' · есть новые' : ''))
       : 'приложить методичку или задание';
     var open = n > 0 || o.status === 'new';
-    return fold('secFiles', 'Файлы', meta,
+    return fold('secFiles', 'Документы', meta,
       (rows ? '<div class="case-files">' + rows + '</div>'
             : '<p class="case-sec__lead">Пока пусто. Приложите методичку или задание — мастеру будет проще оценить работу точно.</p>') +
       '<div class="case-acts"><label class="btn btn-line case-upload">Приложить файл<input type="file" id="cabUpload" hidden></label></div>' +
-      '<p class="case-note up-note" id="upNote" hidden></p>', open);
+      '<p class="case-note up-note" id="upNote" hidden></p>' +
+      '<p class="case-note"><button type="button" class="line-link" data-tab="documents">' +
+      'Все документы кабинета <span aria-hidden="true">→</span></button></p>', open);
   }
 
   function mediaHtml(o, m) {
@@ -1970,7 +2117,7 @@ function initCabinet() {
       var body = i.text ? '<p>' + esc(i.text) + '</p>' : '';
       var media = (i.media && i.kind !== 'document') ? mediaHtml(o, i) : '';
       if (media) body = body + media;
-      else if (!body && i.kind && i.kind !== 'text') body = '<p>Вложение: ' + (i.file ? esc(i.file) : 'см. раздел «Файлы» или Telegram') + '</p>';
+      else if (!body && i.kind && i.kind !== 'text') body = '<p>Вложение: ' + (i.file ? esc(i.file) : 'см. раздел «Документы» или Telegram') + '</p>';
       else if (i.file) body += '<p>' + esc(i.file) + '</p>';
       return '<article class="message ' + (i.me ? 'message--client' : 'message--editor') + '">' +
         '<span aria-hidden="true">' + (i.me ? 'ВЫ' : 'МС') + '</span>' +
@@ -2015,9 +2162,9 @@ function initCabinet() {
     if (due > 0 || o.claimed)
       chips.push(['secPay', 'Оплата' + (due > 0 ? ' · ' + money(due) + ' ₽' : ''), true]);
     if (o.actions.indexOf('accept_work') >= 0) chips.push(['secDecide', 'Решение', true]);
-    chips.push(['secFiles', 'Файлы' + ((o.files || []).length ? ' · ' + o.files.length : ''), false]);
+    chips.push(['secFiles', 'Документы' + ((o.files || []).length ? ' · ' + o.files.length : ''), false]);
     chips.push(['secChat', 'Переписка' + (o.unread ? ' · ' + o.unread : ''), !!o.unread]);
-    if (o.status !== 'done' && o.status !== 'cancel') chips.push(['secManage', 'Управление', false]);
+    if (manageBlock(o)) chips.push(['secManage', 'Управление', false]);
     return '<div class="ord-jump" role="navigation" aria-label="Разделы дела">' +
       chips.map(function (c) {
         return '<button type="button" class="oj' + (c[2] ? ' hot' : '') + '" data-jump="' + c[0] + '">' + c[1] + '</button>';
@@ -2071,7 +2218,7 @@ function initCabinet() {
     if (!impMode()) return '';
     var nm = '';
     try { nm = sessionStorage.getItem('salon_imp_name') || ''; } catch (e) {}
-    return '<div class="imp-band reveal"><span>👁 <b>Режим мастера</b> — кабинет клиента' +
+    return '<div class="imp-band reveal"><span><b>Режим мастера</b> — кабинет клиента' +
       (nm ? ' <b>' + esc(nm) + '</b>' : '') +
       '. Действия настоящие, но тихо: визиты и метки «прочитано» не трогаются.</span>' +
       '<button type="button" class="linkbtn" id="cabImpExit">закрыть режим</button></div>';
@@ -2082,7 +2229,7 @@ function initCabinet() {
     if (impMode()) {
       var inm = '';
       try { inm = sessionStorage.getItem('salon_imp_name') || 'клиент'; } catch (e) {}
-      return '<button type="button" class="account-nav__person" data-tab="settings" aria-label="Открыть настройки профиля"><span aria-hidden="true">👁</span><div>' +
+      return '<button type="button" class="account-nav__person" data-tab="settings" aria-label="Открыть настройки профиля"><span aria-hidden="true">МС</span><div>' +
         '<strong>' + esc(inm) + '</strong><small>Режим мастера</small></div></button>';
     }
     var u = S.api.token() && S.api.user();
@@ -2135,6 +2282,7 @@ function initCabinet() {
 
   function setTab(tab, silentHash) {
     st.tab = tab;
+    st.caseOpen = false; /* раздел стойки всегда открывает свой список, не дело */
     if (tab === 'club') st.plusOpen = true;
     if (!silentHash) {
       try { history.replaceState(null, '', '#' + tab); } catch (e) { location.hash = tab; }
@@ -2180,20 +2328,6 @@ function initCabinet() {
     var act = activeOrders().length;
     var unread = 0;
     st.orders.forEach(function (o) { unread += (o.unread || 0) + (o.files_new || 0); });
-    var orderCards = st.orders.slice(0, 3).map(function (o) {
-      var total = Math.max(1, o.stages_total || 1);
-      var stage = Math.max(1, o.stage || 1);
-      var progress = o.status === 'done' ? 100 : Math.max(8, Math.min(92, Math.round((stage - .35) / total * 100)));
-      var next = needsAction(o) ? 'Требуется ваше решение' : ((o.unread || o.files_new) ? 'Есть новое событие' : shortStatus(o));
-      return '<button class="order-card" type="button" data-ord="' + o.id + '" data-order-status="' + esc(o.status || '') + '">' +
-        '<div class="order-card__top"><span class="tag tag--status tag--' + esc(o.status || 'new') + '">' +
-        esc(o.status_label || shortStatus(o)) + '</span><span>' + esc(o.no || ('№' + o.id)) + '</span></div>' +
-        '<h3>' + esc(o.work_label || 'Редакторская работа') + '</h3>' +
-        '<div class="order-card__progress"><i style="width:' + progress + '%"></i></div>' +
-        '<div class="order-card__stage"><span><small>Сейчас</small><strong>' + esc(shortWork(o)) + '</strong></span>' +
-        '<span><small>Ближайший срок</small><strong>' + esc(o.deadline_text || 'Уточняется') + '</strong></span></div>' +
-        '<footer><span>' + esc(next) + '</span><b aria-hidden="true">→</b></footer></button>';
-    }).join('');
     var sub = me.sub;
     return '<section class="account-summary">' +
       '<article><span class="status-dot"><i></i> сейчас</span><strong>' + act + '</strong><p>' +
@@ -2202,12 +2336,11 @@ function initCabinet() {
       plural(unread, 'новое событие', 'новых события', 'новых событий') + '</p></article>' +
       '<article><span>Бонусный счёт</span><strong>' + money(bon.balance || 0) + ' бонусов</strong><p>условия видны до списания</p></article>' +
       '</section>' +
-      draftSection() +
-      '<section class="account-orders"><header><h2>Ваши дела</h2>' +
-      '<button class="line-link" type="button" data-tab="orders">Открыть все <span aria-hidden="true">→</span></button></header>' +
-      (orderCards ? '<div class="order-list">' + orderCards + '</div>' :
-        '<div class="account-empty"><p>Здесь появятся сроки, файлы и сообщения редактора.</p>' +
-        '<a class="button button--primary" href="configurator.html">Описать задачу</a></div>') + '</section>' +
+      nowCard() + draftSection() +
+      (st.orders.length ? ordersRegister('') :
+        '<section class="account-orders"><header><h2>Ваши дела</h2></header>' +
+        '<div class="account-empty"><p>Здесь появятся сроки, файлы и сообщения мастера.</p>' +
+        '<a class="button button--primary" href="configurator.html">Описать задачу</a></div></section>') +
       '<section class="account-benefits"><header><div><p class="eyebrow">Счета и привилегии</p>' +
       '<h2>Разные механизмы — отдельный учёт.</h2></div><a class="line-link" href="loyalty.html">Правила программы</a></header><div>' +
       '<button class="account-benefit-card account-benefit-card--deposit" type="button" data-tab="wallet">' +
@@ -2220,7 +2353,8 @@ function initCabinet() {
       '<span class="account-benefit-card__mark">АС+</span><div><small>Абонемент</small><strong>' +
       (sub ? 'Активен до ' + esc(sub.expires_ru || '') : 'Не активен') + '</strong>' +
       '<p>состав, срок и цена доступны до оплаты</p></div><b>→</b></button></div></section>' +
-      '<section class="account-quick"><button type="button" data-tab="orders"><span>DOC</span><strong>Документы по делам</strong>' +
+      '<section class="account-quick"><button type="button" data-tab="documents"><span>¶</span>' +
+      '<strong>Документы по делам</strong>' +
       '<small>Спецификации, акты и файлы</small></button><button type="button" data-tab="help"><span>?</span>' +
       '<strong>Задать вопрос</strong><small>Ответ придёт в кабинет и Telegram</small></button>' +
       '<button type="button" data-tab="club"><span>АС</span><strong>Клуб Салона</strong><small>Бонусы и абонементы</small></button></section>';
@@ -2229,7 +2363,7 @@ function initCabinet() {
   function loginNudge(what) {
     return '<section class="account-section reveal">' +
       '<header><div><p class="eyebrow">' + what + '</p>' +
-      '<h2>Кошелёк, бонусы и подписка — после входа</h2></div></header>' +
+      '<h2>Кошелёк, бонусы и абонемент — после входа.</h2></div></header>' +
       '<p class="case-sec__lead">Всё это привязано к аккаунту. Войдите — данные появятся здесь.</p>' +
       '<div class="case-acts"><button type="button" class="btn btn-wax" id="cabTg">Войти через Telegram</button></div></section>';
   }
@@ -2258,7 +2392,7 @@ function initCabinet() {
       }).join('') + '</div>' +
       '<p class="account-note">PDF подтверждает платёж мастерской ' +
       'и хранится в кабинете. Это не налоговый чек НПД: официальный чек ' +
-      'Robokassa отправляет отдельно на e-mail, указанный при оплате.</p></section>';
+      'Robokassa отправляет отдельно на почту, указанную при оплате.</p></section>';
   }
 
   function walletTab() {
@@ -2285,7 +2419,7 @@ function initCabinet() {
     return notiRow() + linksRow() + access + paymentDocumentsCard() +
       '<section class="account-section reveal">' +
       '<header><div><p class="eyebrow">Связь и полезное</p>' +
-      '<h2>Куда написать и что почитать</h2></div></header>' +
+      '<h2>Куда написать и что почитать.</h2></div></header>' +
       '<div class="case-acts">' +
       '<button type="button" class="btn btn-wax" data-contact="1">Написать мастеру</button>' +
       '<a class="btn btn-line" href="priyomnaya.html">Открытая приёмная</a></div>' +
@@ -2317,58 +2451,37 @@ function initCabinet() {
   }
 
   function documentTab() {
-    return paymentDocumentsCard() +
-      '<section class="account-orders account-orders--all"><header><h2>Документы по делам</h2>' +
-      '<span class="account-count">' + st.orders.length + '</span></header>' +
-      (st.orders.length ? '<div class="order-list">' + st.orders.map(function (o) {
-        var files = (o.files && o.files.length) || o.files_count || 0;
-        return '<button type="button" class="order-card order-card--compact' +
-          (o.id === st.currentId ? ' is-current' : '') + '" data-ord="' + o.id + '">' +
-          '<div class="order-card__top"><span class="tag">Документы</span><span>' +
-          esc(o.no || ('№' + o.id)) + '</span></div><h3>' +
-          esc(o.work_label || 'Редакторская работа') + '</h3><footer><span>' +
-          (files ? plural(files, files + ' файл', files + ' файла', files + ' файлов') : 'Открыть материалы дела') +
-          '</span><b aria-hidden="true">→</b></footer></button>';
-      }).join('') + '</div>' : '<div class="account-empty">Документы появятся после оформления дела.</div>') +
-      '</section>' + (st.detail ? '<section class="account-case-production">' + tplDetail() + '</section>' : '');
+    if (!st.orders.length) return tplEmpty();
+    return paymentDocumentsCard() + ordersRegister('documents');
   }
 
   function messagesTab() {
     if (!st.orders.length) return tplEmpty();
-    var sorted = st.orders.slice().sort(function (a, b) {
-      return ((b.unread || 0) + (b.files_new || 0)) - ((a.unread || 0) + (a.files_new || 0));
-    });
-    return '<section class="account-orders account-orders--all"><header><h2>Сообщения по делам</h2>' +
-      '<span class="account-count">' + sorted.reduce(function (sum, order) {
-        return sum + (order.unread || 0);
-      }, 0) + '</span></header><div class="order-list">' + sorted.map(function (o) {
-        var unread = o.unread || 0;
-        return '<button type="button" class="order-card order-card--compact' +
-          (o.id === st.currentId ? ' is-current' : '') + '" data-ord="' + o.id + '">' +
-          '<div class="order-card__top"><span class="tag tag--status ' +
-          (unread ? 'tag--new' : 'tag--done') + '">' + (unread ? plural(unread, unread + ' новое', unread + ' новых', unread + ' новых') : 'Прочитано') +
-          '</span><span>' + esc(o.no || ('№' + o.id)) + '</span></div><h3>' +
-          esc(o.work_label || 'Редакторская работа') + '</h3><footer><span>Открыть переписку</span>' +
-          '<b aria-hidden="true">→</b></footer></button>';
-      }).join('') + '</div></section>' +
-      (st.detail ? '<section class="account-case-production">' + tplDetail() + '</section>' :
-        '<div class="account-loading" role="status">Выберите дело, чтобы открыть переписку.</div>');
+    return nowCard() + ordersRegister('messages');
   }
 
   function ordersTab() {
     if (!st.orders.length) return tplEmpty();
-    var cards = st.orders.map(function (o) {
-      return '<button type="button" class="order-card order-card--compact' +
-        (o.id === st.currentId ? ' is-current' : '') + '" data-ord="' + o.id + '">' +
-        '<div class="order-card__top"><span class="tag tag--status tag--' + esc(o.status || 'new') + '">' +
-        esc(o.status_label || shortStatus(o)) + '</span><span>' + esc(o.no || ('№' + o.id)) + '</span></div>' +
-        '<h3>' + esc(o.work_label || 'Редакторская работа') + '</h3><footer><span>' +
-        esc(o.deadline_text || shortWork(o)) + '</span><b aria-hidden="true">→</b></footer></button>';
-    }).join('');
-    return '<section class="account-orders account-orders--all"><header><h2>Все дела</h2>' +
-      '<span class="account-count">' + st.orders.length + '</span></header><div class="order-list">' + cards + '</div></section>' +
-      (st.detail ? '<section class="account-case-production">' + tplDetail() + '</section>' :
-        '<div class="account-loading" role="status">Открываем выбранное дело…</div>');
+    return nowCard() + draftSection() + ordersRegister('');
+  }
+
+  /* дело открыто? тогда рабочая полоса — это экран дела, как маршрут эталона:
+     список сюда не подмешивается, возврат к нему — ссылкой в шапке дела */
+  function caseVisible() {
+    return !!(st.caseOpen && st.currentId &&
+      (st.tab === 'orders' || st.tab === 'messages' || st.tab === 'documents' || st.tab === 'home'));
+  }
+
+  /* дело ещё летит по сети: та же шапка-возврат и честная строка ожидания */
+  function caseLoading() {
+    return '<article class="case-file reveal">' +
+      '<header class="case-file__head"><div class="case-file__title">' +
+      '<button type="button" class="back-link" data-case-back>' +
+      '<span aria-hidden="true">←</span> Все дела</button>' +
+      '<p class="eyebrow case-file__no">Дело № ' + st.currentId + '</p>' +
+      '<h2>Открываем дело…</h2></div></header>' +
+      '<div class="account-loading" role="status">Проверяем этапы, файлы и последние сообщения.</div>' +
+      '</article>';
   }
 
   function renderTab() {
@@ -2382,9 +2495,13 @@ function initCabinet() {
     else if (st.tab === 'help') inner = helpTab();
     else if (st.tab === 'settings') inner = settingsTab();
     else inner = homeTab();
+    var body = caseVisible()
+      ? '<section class="account-case-production">' +
+        ((st.detail && st.detail.id === st.currentId) ? tplDetail() : caseLoading()) + '</section>'
+      : tabHead() + '<div class="account-main__body">' + inner + '</div>';
     render(impBanner() + '<div class="account-shell">' +
       '<aside class="account-nav">' + profileCard() + navSide() + sideMini() + sideFoot() + '</aside>' +
-      '<main class="account-main">' + tabHead() + '<div class="account-main__body">' + inner + '</div></main>' +
+      '<main class="account-main">' + body + '</main>' +
       '</div>' + dockTabs());
     /* док появился ПОСЛЕ замеров app.js: будим measure() — иначе --floor=0
        и угловые пилюли («Связаться», куки) налезают на док до первого resize */
@@ -2400,11 +2517,14 @@ function initCabinet() {
     if (o.deadline_text) meta.push('срок: ' + esc(o.deadline_text));
     meta.push('заявка от ' + dt(o.created_at));
     var pinTitle = o.pinned ? 'Открепить дело' : 'Закрепить дело первым в списке';
-    /* порядок по значимости: решение и оплата — сразу после шапки; ход дела,
-       файлы и переписка — следом; сервисное (управление, доступ) — свёрнуто
-       в конце; клуб (бонусы и подписка) — всегда ПОСЛЕ дела */
+    /* Дело — отдельный экран, как маршрут #/order в эталоне: возврат к списку,
+       шапка с номером и статусом, дальше разворот из двух колонок. В главной —
+       всё, что требует решения и денег, ход дела и переписка; в правой стойке —
+       документы, сводка оплаты, служебное (управление, доступ) и помощь. */
     return '<article class="case-file reveal" aria-label="Дело заказа ' + esc(o.no) + '">' +
       '<header class="case-file__head"><div class="case-file__title">' +
+      '<button type="button" class="back-link" data-case-back>' +
+      '<span aria-hidden="true">←</span> Все дела</button>' +
       '<p class="eyebrow case-file__no">Дело ' + esc(o.no) + '</p>' +
       '<h2>' + esc(o.work_label || '') + '</h2>' +
       (o.topic ? '<p class="case-file__topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
@@ -2415,13 +2535,19 @@ function initCabinet() {
       '<button type="button" class="quiet-button' + (o.pinned ? ' is-on' : '') + '" data-act-pin title="' + pinTitle + '" aria-label="' + pinTitle + '" aria-pressed="' + !!o.pinned + '">' +
       (o.pinned ? 'закреплено' : 'закрепить') + '</button>' +
       '</div></header>' +
-      caseProgress(o) +
-      orderItemsBlock(o) +
       jumpChips(o) +
+      '<div class="case-layout">' +
+      '<div class="case-main">' +
       pauseBand(o) + finalBand(o) + partBand(o) + dueBand(o) +
+      caseOverview(o) + orderItemsBlock(o) +
       priceBlock(o) + giftRestStrip(o) + actionsBlock(o) +
       stageFold(o) + reviewBlock(o) + thanksBlock(o) + defenseBlock(o) +
-      filesBlock(o) + chatBlock(o) + manageBlock(o) + accessBlock(o) +
+      chatBlock(o) +
+      '</div>' +
+      '<aside class="case-aside">' +
+      filesBlock(o) + caseAsidePay(o) + manageBlock(o) + accessBlock(o) + caseSupport(o) +
+      '</aside>' +
+      '</div>' +
       (isArch(o) ? '<footer class="case-file__foot">' +
         '<p>Дело ' + (o.status === 'done' ? 'завершено' : 'закрыто') + '. ' +
         (o.archived
@@ -2453,7 +2579,7 @@ function initCabinet() {
     if (!t && !g.length) {
       /* если вход уже запущен (в т.ч. до перезагрузки страницы) — продолжаем ловить */
       var pending = S.resumeTgLogin(
-        function (u) { toast('Вы вошли' + (u && u.name ? ', ' + u.name : '') + ' ✓'); loadList(); },
+        function (u) { toast('Вы вошли' + (u && u.name ? ', ' + u.name : '') + '.'); loadList(); },
         function () { lastPending = null; render(tplLogin(null)); });
       lastPending = pending;
       render(tplLogin(pending));
@@ -2490,14 +2616,14 @@ function initCabinet() {
       watchSync();
       if (!st.orders.length) { renderTab(); return; }
       var visible = visibleOrders();
-      if (!visible.length) { st.archOpen = true; st.remOpen = true; }
+      /* все дела убраны в архив — иначе реестр выглядел бы пустым */
+      if (!visible.length) st.remOpen = true;
       var pool = visible.length ? visible : st.orders;
       var current = pool.some(function (o) { return o.id === st.currentId; });
       if (!keepCurrent || !current) st.currentId = pickDefaultId();
       if (!st.currentId) { renderTab(); return; }
-      /* выбранный заказ лежит в архиве — раскроем корешки, чтобы он был виден */
+      /* выбранное дело лежит среди убранных — покажем их в реестре */
       var cur = st.orders.filter(function (o) { return o.id === st.currentId; })[0];
-      if (cur && isArch(cur)) st.archOpen = true;
       if (cur && isRemoved(cur)) st.remOpen = true;
       loadDetail();
     });
@@ -2530,10 +2656,10 @@ function initCabinet() {
     if (impMode()) return;
     if (seenTimer) { clearTimeout(seenTimer); seenTimer = null; }
     var hasNew = (order.files || []).some(function (f) { return f.new; });
-    if (!hasNew) return;
+    if (!hasNew || !st.caseOpen) return; /* дело закрыто экраном — метки не гасим */
     var id = order.id;
     seenTimer = setTimeout(function () {
-      if (document.hidden || st.currentId !== id) return;
+      if (document.hidden || st.currentId !== id || !st.caseOpen) return;
       var body = { action: 'files_seen' };
       S.api.post('/orders/' + id + '/action', body, orderHeaders(id));
     }, 7000);
@@ -2727,7 +2853,7 @@ function initCabinet() {
     var emailEl = document.getElementById('payReceiptEmail');
     var email = emailEl ? String(emailEl.value || '').trim().toLowerCase() : '';
     if (emailEl && (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))) {
-      toast('Укажите рабочий e-mail — на него Robokassa отправит официальный чек');
+      toast('Укажите рабочую почту — на неё Robokassa отправит официальный чек');
       emailEl.focus();
       return;
     }
@@ -2774,7 +2900,7 @@ function initCabinet() {
             if (!ans.ok) return;
             S.api.post('/orders/' + st.currentId + '/tip/' + r.tip_id + '/claim',
               {}, orderHeaders(st.currentId)).then(function (cr) {
-                toast(cr.ok ? 'Спасибо 💛 Передали мастеру на сверку' : 'Не получилось поставить отметку — напишите мастеру');
+                toast(cr.ok ? 'Спасибо. Передали мастеру на сверку' : 'Не получилось поставить отметку — напишите мастеру');
               });
           });
           return;
@@ -2814,7 +2940,7 @@ function initCabinet() {
           toast(r.message || 'Не получилось списать с депозита — попробуйте картой');
           return;
         }
-        toast('Этап оплачен с депозита ✓ Остаток: ' + money(r.balance) + ' ₽');
+        toast('Этап оплачен с депозита. Остаток: ' + money(r.balance) + ' ₽');
         loadList(true);
         S.api.get('/me').then(function (rr) { if (rr.ok) { st.me = rr; } renderCurrent(); });
       });
@@ -2856,7 +2982,7 @@ function initCabinet() {
       })
       .then(function (r) {
         if (!r.ok) { if (note) note.textContent = 'Не получилось загрузить (' + (r.error || 'ошибка') + ') — попробуйте ещё раз.'; return; }
-        if (note) note.textContent = 'Файл у мастера ✓';
+        if (note) note.textContent = 'Файл у мастера.';
         loadDetail();
       })
       .catch(function (err) {
@@ -2872,14 +2998,14 @@ function initCabinet() {
     if (btn) { btn.disabled = true; btn.textContent = 'Открываем Telegram…'; }
     var hint = document.getElementById('cabTgHint');
     S.tgLogin(
-      function (user) { toast('Вы вошли' + (user && user.name ? ', ' + user.name : '') + ' ✓'); loadList(); },
+      function (user) { toast('Вы вошли' + (user && user.name ? ', ' + user.name : '') + '.'); loadList(); },
       function () { if (btn) { btn.disabled = false; btn.textContent = 'Войти через Telegram →'; } toast('Вход не подтвердился — попробуйте ещё раз'); },
       function (link, opened) {
         if (btn) btn.textContent = 'Ждём подтверждение в боте…';
         if (hint) {
           hint.hidden = false;
           /* НЕ уводим страницу в Telegram — иначе поллинг умрёт; даём ссылку-кнопку */
-          hint.innerHTML = (opened ? 'Окно Telegram открыто — нажмите в боте <b>Start</b>. '
+          hint.innerHTML = (opened ? 'Окно Telegram открыто — нажмите в боте кнопку «Начать». '
                                    : 'Telegram не открылся сам — ')
             + '<a class="link" href="' + link + '" target="_blank" rel="noopener">открыть бота</a>'
             + ' · ждём подтверждение, страница поймает вход сама.';
@@ -2945,21 +3071,47 @@ function initCabinet() {
     if (tabBtn) { setTab(tabBtn.getAttribute('data-tab')); return; }
     var sw = t.closest('button[data-ord]');
     if (sw) {
-      if (st.tab !== 'messages' && st.tab !== 'documents') st.tab = 'orders';
+      if (st.tab !== 'messages' && st.tab !== 'documents' && st.tab !== 'home') st.tab = 'orders';
       try { history.replaceState(null, '', '#' + st.tab); } catch (e) {}
-      st.currentId = parseInt(sw.getAttribute('data-ord'), 10);
-      loadDetail();
+      var newId = parseInt(sw.getAttribute('data-ord'), 10);
+      var sameCase = st.currentId === newId && !!st.detail;
+      st.currentId = newId;
+      st.caseOpen = true;
+      /* экран дела открываем сразу: уже загруженное дело показываем целиком,
+         новое — с честной строкой ожидания, пока идёт /orders/<id> */
+      renderTab();
+      loadDetail(sameCase);
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+    /* возврат к реестру — ссылка «Все дела» в шапке дела (маршрут эталона) */
+    if (t.closest('[data-case-back]')) {
+      st.caseOpen = false;
+      renderTab();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+    var filterBtn = t.closest('[data-order-filter]');
+    if (filterBtn) {
+      var fv = filterBtn.getAttribute('data-order-filter');
+      st.filter = (fv === 'active' || fv === 'done') ? fv : 'all';
+      st.archOpen = st.filter === 'done';
+      st.caseOpen = false;
+      renderTab();
       return;
     }
     var nowBtn = t.closest('[data-now-open]');
     if (nowBtn) {
-      st.tab = 'orders';
-      try { history.replaceState(null, '', '#orders'); } catch (e) {}
+      if (st.tab !== 'messages' && st.tab !== 'documents' && st.tab !== 'home') st.tab = 'orders';
+      try { history.replaceState(null, '', '#' + st.tab); } catch (e) {}
       var nid = parseInt(nowBtn.getAttribute('data-now-open'), 10);
       var njump = nowBtn.getAttribute('data-now-jump') || '';
-      if (st.currentId === nid && st.detail) { if (njump) scrollToEl(njump); return; }
+      var wasOpen = st.currentId === nid && st.detail && st.caseOpen;
       st.currentId = nid;
+      st.caseOpen = true;
+      if (wasOpen) { if (njump) scrollToEl(njump); return; }
       st.pendingJump = njump || null;
+      if (st.detail && st.detail.id === nid) renderTab();
       loadDetail();
       return;
     }
@@ -2970,8 +3122,19 @@ function initCabinet() {
       return;
     }
     if (t.closest('[data-open-plus]')) { setTab('club'); return; }
-    if (t.closest('[data-arch-toggle]')) { st.archOpen = !st.archOpen; renderCurrent(); return; }
-    if (t.closest('[data-rem-toggle]')) { st.remOpen = !st.remOpen; renderCurrent(); return; }
+    if (t.closest('[data-arch-toggle]')) {
+      st.archOpen = !st.archOpen;
+      st.filter = st.archOpen ? 'done' : 'all';
+      st.caseOpen = false;
+      renderTab();
+      return;
+    }
+    if (t.closest('[data-rem-toggle]')) {
+      st.remOpen = !st.remOpen;
+      st.caseOpen = false;
+      renderTab();
+      return;
+    }
     if (t.closest('#cabTg')) { doTgLogin(t.closest('#cabTg')); return; }
     if (t.closest('#cabTg2')) { doTgLogin(t.closest('#cabTg2')); return; }
     if (t.closest('#cabEmailSend')) { emailSendCode(); return; }
@@ -3064,7 +3227,7 @@ function initCabinet() {
           return;
         }
         if (st.me) st.me.milestones = r.milestones;
-        toast('Записали — напомним за 7, 3 и 1 день 📅');
+        toast('Записали — напомним за 7, 3 и 1 день');
         rerenderHome();
       });
       return;
@@ -3198,7 +3361,7 @@ function initCabinet() {
     if (cp) {
       var cv = cp.getAttribute('data-copy') || '';
       if (S.copy) S.copy(cv).then(function (okc) {
-        toast(okc ? 'Скопировано: ' + cv + ' ✓' : 'Не получилось — выделите и скопируйте вручную');
+        toast(okc ? 'Скопировано: ' + cv : 'Не получилось — выделите и скопируйте вручную');
       });
       return;
     }
@@ -3438,7 +3601,7 @@ function initCabinet() {
     if (claimTok) {
       S.api.addGuestToken(claimTok);
       history.replaceState(null, '', location.pathname);
-      toast('Дело добавлено на это устройство ✓');
+      toast('Дело добавлено на это устройство');
     }
   } catch (e) {}
   /* возврат из ВК/Mail.ru: сервер кладёт токен сессии во фрагмент адреса —
@@ -3451,7 +3614,7 @@ function initCabinet() {
       history.replaceState(null, '', location.pathname);
       var gtOa = S.api.guestTokens();
       if (gtOa.length) S.api.post('/orders/claim', { tokens: gtOa });
-      toast('Вы вошли ✓');
+      toast('Вы вошли');
     } else if (oauthErr) {
       history.replaceState(null, '', location.pathname);
       toast({
@@ -3466,6 +3629,7 @@ function initCabinet() {
     var paidId = new URLSearchParams(location.search).get('paid');
     if (paidId) {
       st.currentId = parseInt(paidId, 10) || null;
+      st.caseOpen = true;
       toast('Проверяем оплату — статус обновится в течение минуты');
       history.replaceState(null, '', location.pathname);
     }
@@ -3475,7 +3639,8 @@ function initCabinet() {
     var thanksId = new URLSearchParams(location.search).get('thanks');
     if (thanksId) {
       st.currentId = parseInt(thanksId, 10) || null;
-      toast('Спасибо за поддержку мастерской 💛 Платёж уже подтверждается');
+      st.caseOpen = true;
+      toast('Спасибо за поддержку мастерской. Платёж уже подтверждается');
       history.replaceState(null, '', location.pathname);
     }
   } catch (e) {}

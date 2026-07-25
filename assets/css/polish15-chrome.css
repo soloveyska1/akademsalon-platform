@@ -1057,10 +1057,12 @@ body .site-header .header-action--search,
 body .site-header .nav-cab{
   padding-inline:14px;
 }
-/* Ниже 1240 у «Найти» остаётся только значок ⌕ (chrome.css) —
+/* Ниже 1280 у «Найти» остаётся только лупа (chrome.css) —
    значит и мера у неё круглая, как у темы и «Меню». Подпись
-   кнопке даёт aria-label, поэтому безымянного кружка не выходит. */
-@media(max-width:1240px){
+   кнопке дают aria-label и title, поэтому безымянного кружка
+   не выходит. Порог совпадает с chrome.css: разъедутся — и
+   лупа поедет в пилюле шириной 121px. */
+@media(max-width:1280px){
   body .site-header .header-action--search{
     width:44px;
     min-width:44px;
@@ -1100,14 +1102,38 @@ body .site-header .nav-marks .nm-n{
   font-size:10px;
 }
 
-/* Точка статуса у кабинета: §3 запрещает обозначать состояние одним
-   цветом — рядом всегда стоит слово «Кабинет», поэтому точка декоративна
-   и приглушена, а не спорит с бейджем. */
+/* Точка статуса у кабинета. Раньше это был третий сигнал на одном
+   органе управления: точка + цифра + слово. Что значит точка, не
+   говорило ничего — а §3 запрещает обозначать состояние одним цветом.
+   Смысл теперь несут слово «Кабинет» и словесное имя бейджа
+   (Salon.cabBadge), поэтому точку из строки убираем. Сам хук
+   .header-action__dot остаётся: на него ссылается эталонная разметка
+   и он ещё пригодится там, где рядом появится подпись. */
 body .site-header .header-action__dot{
-  width:6px;
-  height:6px;
-  background:var(--verify);
+  display:none;
 }
+
+/* ---- Значки пульта: свои, не из шрифта ----
+   ⌕ (U+2315) и ◐ (U+25D0) не объявлены в unicode-range ни у Golos,
+   ни у JetBrains Mono, ни у Literata (assets/fonts/fonts.css) — их
+   рисовал системный шрифт, а на части Android они не находились
+   вовсе. Теперь это inline-SVG на currentColor: рисунок наш,
+   тема наследуется, подставить нечего. */
+body .ha-ico{
+  display:block;
+  flex:0 0 auto;
+  /* svg — inline-элемент: без этого он тянет за собой пробел базовой
+     линии и сбивает вертикальный центр круглых кнопок. */
+  vertical-align:middle;
+  pointer-events:none;
+}
+/* Кнопка темы показывает ЦЕЛЬ переключения, а не текущее состояние:
+   в светлой теме — месяц («включить тёмную»), в тёмной — солнце.
+   Состояние приходит из aria-pressed, который ставит Salon.theme.apply,
+   так что JS про значок ничего не знает. */
+body .ha-ico--theme .ha-sun{ display:none; }
+body .theme-toggle[aria-pressed="true"] .ha-ico--theme .ha-moon{ display:none; }
+body .theme-toggle[aria-pressed="true"] .ha-ico--theme .ha-sun{ display:inline; }
 
 /* ---- Знак мастерской ---- */
 body .site-header .brand__mark{

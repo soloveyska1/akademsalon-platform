@@ -7,10 +7,10 @@
 <title>Конструктор услуг: аудит, редактура и консультации — Академический Салон</title>
 <meta name="description" content="Соберите заказ из одной или нескольких позиций. Для каждой видны результат, ориентир цены и детали; точные условия фиксируются в спецификации до оплаты." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260725release14" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release14" />
-<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release14" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260725release14" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260725release15" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release15" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release15" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260725release15" />
 <link rel="stylesheet" href="assets/css/cart.css?v=20260724b" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
@@ -34,8 +34,8 @@
 <meta name="twitter:description" content="Четыре коротких шага: задача, направление, результат и заявка." />
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release14" media="screen and (max-width: 880px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260725release14" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release15" media="screen and (max-width: 880px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260725release15" />
 </head>
 <body class="configurator-task">
 
@@ -80,12 +80,12 @@
         <span><strong>Новая заявка</strong><small data-conf-step>Шаг 1 / 4</small></span>
       </a>
       <button class="theme-toggle tx-theme" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема">
-        <span aria-hidden="true">◐</span>
+        <span aria-hidden="true" class="ico-theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7"/><path d="M12 3.6a8.4 8.4 0 0 0 0 16.8z" fill="currentColor"/></svg></span>
       </button>
     </header>
     <div class="tx-task-actions" aria-label="Действия страницы">
       <button class="theme-toggle tx-theme" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема">
-        <span aria-hidden="true">◐</span>
+        <span aria-hidden="true" class="ico-theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7"/><path d="M12 3.6a8.4 8.4 0 0 0 0 16.8z" fill="currentColor"/></svg></span>
       </button>
       <a class="tx-close" href="/" aria-label="Закрыть заявку">×</a>
     </div>
@@ -282,10 +282,10 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260725release14"></script>
-<script defer src="assets/js/polish15-chrome.js?v=20260725release14"></script>
-<script src="assets/js/extras.js?v=20260725release14"></script>
-<script src="assets/js/cart.js?v=20260725release14"></script>
+<script src="assets/js/app.js?v=20260725release15"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260725release15"></script>
+<script src="assets/js/extras.js?v=20260725release15"></script>
+<script src="assets/js/cart.js?v=20260725release15"></script>
 <script>
 function initConf() {
   'use strict';
@@ -513,7 +513,7 @@ function initConf() {
       var fileText = $('attAdd') && $('attAdd').querySelector('span');
       if (fileText) fileText.textContent = 'Прикрепить методичку или комментарии научрука';
       var submitNote = document.querySelector('.wsubmit-note');
-      if (submitNote) submitNote.innerHTML = '<span aria-hidden="true">✓</span> Сейчас ничего не списываем. Обычно отвечаем за 15–30 минут в рабочее время.';
+      if (submitNote) submitNote.innerHTML = 'Сейчас ничего не списываем. Обычно отвечаем за 15–30 минут в рабочее время.';
       if (btnSubmit) {
         btnSubmit.setAttribute('data-cart-submit-label','Отправить заявку на разбор · 3 000 ₽');
         btnSubmit.textContent = 'Отправить заявку на разбор · 3 000 ₽';
@@ -752,7 +752,7 @@ function initConf() {
     box.hidden = !attQueue.length;
     if (!attQueue.length) return;
     list.innerHTML = attQueue.map(function (a, i) {
-      var st = a.st === 'ok' ? '<span class="ai-st ok">у мастера ✓</span>'
+      var st = a.st === 'ok' ? '<span class="ai-st ok">у мастера</span>'
         : a.st === 'err' ? '<span class="ai-st err">не ушёл</span><button type="button" class="ai-retry" data-att-retry="' + i + '">повторить</button>'
         : a.st === 'up' ? '<span class="ai-st">загружаем…</span>'
         : '<span class="ai-st">в очереди</span>';
@@ -1246,7 +1246,7 @@ function initConf() {
     var h = document.getElementById('tgOpenHint');
     if (h) h.remove();
     contactUI();
-    S.toast('Вы вошли' + (u && u.name ? ', ' + u.name : '') + ' ✓');
+    S.toast('Вы вошли' + (u && u.name ? ', ' + u.name : ''));
   }
   if (tgBtn) tgBtn.addEventListener('click', function () {
     tgBtn.disabled = true; tgBtn.textContent = 'Открываем Telegram…';
@@ -1520,7 +1520,7 @@ function initConf() {
     } }).then(function (r) {
       S.btnLoading($('qmSend'), false);
       if (r && r.ok) {
-        qmMsg('✓ Смета уехала на ' + em + (promoCode ? ' вместе с промокодом' : '') +
+        qmMsg('Смета уехала на ' + em + (promoCode ? ' вместе с промокодом' : '') +
           ' — письмо придёт в течение минуты', true);
         if (S.metrika) S.metrika.goal('quote_email');
         if (S.visit) S.visit.mark('запросил смету на почту');
@@ -1600,25 +1600,61 @@ function initConf() {
       el.setAttribute('role', 'dialog');
       el.setAttribute('aria-modal', 'true');
       el.setAttribute('aria-label', 'Код возврата к заявке');
+      /* галочки U+2713 и «копии» U+29C9 в подмножествах нет ни у одной
+         гарнитуры (fonts.css) — рисуем оба знака контуром, а не глифом */
+      var icoCopy = '<svg class="xc-ico xc-ico-copy" viewBox="0 0 16 16" width="14" height="14"' +
+        ' fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"' +
+        ' stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+        '<rect x="5.9" y="5.9" width="8.35" height="8.35" rx="1.6"/>' +
+        '<path d="M10.9 3.95V3.3a1.55 1.55 0 0 0-1.55-1.55H3.3A1.55 1.55 0 0 0 1.75 3.3v6.05A1.55 1.55 0 0 0 3.3 10.9h.65"/>' +
+        '</svg>';
+      var icoDone = '<svg class="xc-ico xc-ico-done" viewBox="0 0 16 16" width="14" height="14"' +
+        ' fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"' +
+        ' stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+        '<path d="M2.7 8.6l3.55 3.55L13.3 5.1"/></svg>';
       el.innerHTML =
         '<div class="sdlg-back" data-x></div>' +
         '<div class="sdlg-card">' +
-          '<p class="caps" style="margin-bottom:6px">Салон · код возврата</p>' +
+          '<p class="eyebrow">Салон · код возврата</p>' +
           '<h3>Смета подождёт вас</h3>' +
           '<p>Ответы сохранены в этом браузере, а это — ваш персональный код: ' +
           'отправьте заявку' + (g.until ? ' до ' + fmtDay(g.until) : ' в течение трёх дней') +
           ', и мастер вычтет скидку из счёта. Мы уже вписали его в купон заявки.</p>' +
-          '<div class="exit-code"><span class="xc-code"></span>' +
-            '<button type="button" class="xc-copy">Скопировать</button></div>' +
-          '<p class="exit-note">' + (g.label || '−5% (до 1 000 ₽) · для работ от 5 000 ₽') +
-          ' · одноразовый · не суммируется со скидкой «Салон+»</p>' +
+          '<div class="exit-code">' +
+            '<span class="xc-lbl">Персональный код</span>' +
+            '<div class="xc-row">' +
+              '<code class="xc-code"></code>' +
+              '<button type="button" class="btn btn-line xc-copy">' + icoCopy + icoDone +
+                '<span class="xc-copy-t" aria-live="polite">Скопировать</span></button>' +
+            '</div>' +
+          '</div>' +
+          '<ul class="exit-terms"></ul>' +
           '<div class="sdlg-row"><button type="button" class="btn btn-wax" data-ok>Вернуться к заявке</button></div>' +
         '</div>';
       el.querySelector('.xc-code').textContent = g.code;
+      /* условия купона — та же формулировка, но строками реестра, не прозой:
+         серверный label приходит склеенным через « · », поэтому режем по нему */
+      var terms = el.querySelector('.exit-terms');
+      ((g.label || '−5% (до 1 000 ₽) · для работ от 5 000 ₽') +
+       ' · одноразовый · не суммируется со скидкой «Салон+»')
+        .split(' · ').forEach(function (t) {
+          if (!t) return;
+          var li = document.createElement('li');
+          li.textContent = t;
+          terms.appendChild(li);
+        });
       document.body.appendChild(el);
-      requestAnimationFrame(function () { el.classList.add('open'); });
+      requestAnimationFrame(function () {
+        el.classList.add('open');
+        /* фокус только после .open: до него карточка ещё visibility:hidden,
+           и focus() молча не срабатывал — фокус оставался на <body> */
+        var first = el.querySelector('[data-ok]');
+        if (first) first.focus();
+      });
+      var cpTimer = 0;
       function close(toForm) {
         el.classList.remove('open');
+        clearTimeout(cpTimer);
         setTimeout(function () { el.remove(); }, 240);
         document.removeEventListener('keydown', onKey);
         if (toForm) go(3, true);
@@ -1627,11 +1663,20 @@ function initConf() {
       document.addEventListener('keydown', onKey);
       el.querySelector('[data-ok]').addEventListener('click', function () { close(true); });
       el.querySelector('.sdlg-back').addEventListener('click', function () { close(false); });
-      var cp = el.querySelector('.xc-copy');
+      var cp = el.querySelector('.xc-copy'), cpT = el.querySelector('.xc-copy-t');
       cp.addEventListener('click', function () {
-        S.copy(g.code).then(function (ok) { cp.textContent = ok ? 'Скопировано ✓' : g.code; });
+        S.copy(g.code).then(function (ok) {
+          /* подпись возвращаем сами: код рядом остаётся на месте и выделяется
+             целиком одним щелчком (user-select:all), если буфер недоступен */
+          cp.classList.toggle('is-copied', ok);
+          cpT.textContent = ok ? 'Скопировано' : 'Выделите код';
+          clearTimeout(cpTimer);
+          cpTimer = setTimeout(function () {
+            cp.classList.remove('is-copied');
+            cpT.textContent = 'Скопировать';
+          }, 2400);
+        });
       });
-      el.querySelector('[data-ok]').focus();
     }
     function offer() {
       if (!eligible()) return;
@@ -2005,7 +2050,7 @@ function initConf() {
       $('fbCopy').addEventListener('click', function () {
         var btn = this;
         S.copy(text).then(function (ok) {
-          btn.textContent = ok ? '✓ Скопировано — вставьте в чат' : 'Выделите текст выше и скопируйте вручную';
+          btn.textContent = ok ? 'Скопировано — вставьте в чат' : 'Выделите текст выше и скопируйте вручную';
           btn.classList.add('fb-copied');
           if (ok && S.stamp) S.stamp('В буфере');
         });
@@ -2521,7 +2566,7 @@ if (document.prerendering) {
       '<header class="wizard-main__head">' +
         '<div><p class="eyebrow">' + step.kicker + '</p><h1>' + step.title + '</h1><p>' + step.lead + '</p></div>' +
         '<div class="wizard-main__actions">' +
-          '<button class="theme-toggle wizard-theme" type="button" aria-label="Сменить тему оформления"><span aria-hidden="true">◐</span></button>' +
+          '<button class="theme-toggle wizard-theme" type="button" aria-label="Сменить тему оформления"><span aria-hidden="true" class="ico-theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7"/><path d="M12 3.6a8.4 8.4 0 0 0 0 16.8z" fill="currentColor"/></svg></span></button>' +
           '<a class="wizard-close" href="/" aria-label="Закрыть заявку">×</a>' +
         '</div>' +
       '</header>' +
@@ -2558,7 +2603,7 @@ if (document.prerendering) {
         if (index === state.step) button.setAttribute('aria-current','step');
         else button.removeAttribute('aria-current');
       }
-      if (marker) marker.textContent = index < state.step ? '✓' : String(index + 1).padStart(2,'0');
+      if (marker) marker.textContent = String(index + 1).padStart(2,'0');
     });
 
     document.querySelectorAll('[data-conf-step]').forEach(function (node) {
@@ -2686,7 +2731,7 @@ if (document.prerendering) {
       var number = (document.getElementById('doneNo') || {}).textContent || '';
       host.innerHTML =
         '<div class="concept-success">' +
-          '<div class="concept-success__mark">✓</div>' +
+          '<div class="concept-success__mark">¶</div>' +
           '<p class="eyebrow">Заявка доставлена мастеру</p>' +
           '<h1>Материалы приняты к разбору.</h1>' +
           '<p>Сейчас ничего оплачивать не нужно. Редактор проверит задачу и пришлёт состав, срок и точную стоимость.</p>' +
@@ -2694,11 +2739,11 @@ if (document.prerendering) {
           '<div class="concept-success__actions"><a class="button button--primary" href="dashboard.html">Открыть кабинет <span aria-hidden="true">→</span></a><a class="button button--secondary" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Получать статусы в Telegram</a></div>' +
         '</div>';
       document.getElementById('conceptTaskBar').hidden = true;
-      document.querySelectorAll('[data-tx-step]').forEach(function (item) {
+      document.querySelectorAll('[data-tx-step]').forEach(function (item, i) {
         item.classList.remove('is-current');
         item.classList.add('is-done');
         var marker = item.querySelector('button>span');
-        if (marker) marker.textContent = '✓';
+        if (marker) marker.textContent = String(i + 1).padStart(2, '0');
       });
     }).observe(done,{attributes:true,attributeFilter:['hidden']});
   }

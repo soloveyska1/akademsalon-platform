@@ -22,10 +22,10 @@
     link.media = 'screen and (max-width: 880px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260725release14', source).href
-        : 'assets/css/mobile.css?v=20260725release14';
+      link.href = source ? new URL('../css/mobile.css?v=20260725release15', source).href
+        : 'assets/css/mobile.css?v=20260725release15';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260725release14';
+      link.href = 'assets/css/mobile.css?v=20260725release15';
     }
     document.head.appendChild(link);
   })();
@@ -155,6 +155,40 @@
       '</svg>';
   }
   window.SalonMaxLogo = maxLogoSVG;
+
+  /* ---------------- значки пульта шапки ----------------
+     Рисуем сами, а не берём из шрифта. Причина проверяемая:
+     в assets/fonts/fonts.css ни одно из трёх семейств не объявляет
+     ⌕ (U+2315) и ◐ (U+25D0) в unicode-range — их подставлял
+     системный шрифт. То есть знак был не наш по рисунку и мог
+     вообще не найтись (на Android — пустой прямоугольник).
+     currentColor держит их в теме, focusable="false" убирает
+     из таб-порядка в IE/Edge-легаси. */
+  function icoSearch() {
+    return '<svg class="ha-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" ' +
+      'aria-hidden="true" focusable="false">' +
+      '<circle cx="10.5" cy="10.5" r="6.6" stroke="currentColor" stroke-width="1.7"/>' +
+      '<path d="M15.5 15.5 20 20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>' +
+      '</svg>';
+  }
+  /* Тема: солнце и месяц в одном значке. Показываем ЦЕЛЬ переключения
+     (в светлой теме — месяц), переключает видимость CSS по aria-pressed,
+     который уже ставит Salon.theme.apply. Сменный знак понятнее
+     половинки круга: он говорит, что произойдёт по нажатию. */
+  function icoTheme() {
+    return '<svg class="ha-ico ha-ico--theme" width="19" height="19" viewBox="0 0 24 24" fill="none" ' +
+      'aria-hidden="true" focusable="false">' +
+      '<g class="ha-moon">' +
+        '<path d="M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8a8.6 8.6 0 1 0 10.8 10.8z" ' +
+          'stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>' +
+      '</g>' +
+      '<g class="ha-sun">' +
+        '<circle cx="12" cy="12" r="4.4" stroke="currentColor" stroke-width="1.7"/>' +
+        '<path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6" ' +
+          'stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>' +
+      '</g></svg>';
+  }
+  window.SalonIco = { search: icoSearch, theme: icoTheme };
   /* короткие коды типов для deep-link в бота (?start=web_dp_h_u_t) */
   var TYPE_CODE = {
     diplom:'dp', master:'ms', chapter:'ch', kandidat:'kd', course:'cr',
@@ -1379,11 +1413,16 @@
      цену → снял сомнения → читает материалы. «Библиотека» правее, потому что
      она вне пути покупки. Пункт «Выгоды» убран из шапки: клуб, бонусы и
      сертификаты интересны ПОСЛЕ первого заказа, им место в меню и подвале. */
+  /* Порядок и состав — как в эталоне style-lab/full/index.html:38–44.
+     «Выгоды» вернулись в шапку по решению владельца от 25.07.2026:
+     это, по сути, УТП мастерской, и держать его только в подвале
+     значит прятать главный довод. */
   var NAV = [
     { href: 'services.html',  label: 'Услуги' },
     { href: 'tariffs.html',   label: 'Цены' },
+    { href: 'knowledge.html', label: 'Библиотека' },
     { href: 'about.html',     label: 'О мастерской' },
-    { href: 'knowledge.html', label: 'Библиотека' }
+    { href: 'referral.html',  label: 'Выгоды' }
   ];
   /* Короткий маршрут новичка: не заставляем читать сайт по кругу.
      Три решения ведут от ориентира по цене к заявке. */
@@ -1644,7 +1683,7 @@
       '<div class="toc-head"><div><span class="toc-kicker">Академический Салон · меню</span>' +
         '<h2 class="toc-title" id="tocTitle">Куда вам сейчас?</h2><p>Выберите задачу или найдите нужное своими словами.</p></div>' +
         '<button class="toc-close" type="button" aria-label="Закрыть меню"><span aria-hidden="true">×</span></button></div>' +
-      '<div class="toc-search"><span class="tcs-mark" aria-hidden="true">⌕</span><input type="search" id="tocQ" autocomplete="off" ' +
+      '<div class="toc-search"><span class="tcs-mark" aria-hidden="true">' + icoSearch() + '</span><input type="search" id="tocQ" autocomplete="off" ' +
         'placeholder="Например: курсовая, оплата, речь…" aria-label="Поиск по сайту" />' +
         '<kbd>⌘ K</kbd><div class="toc-sr" id="tocSR" hidden></div></div>' +
       '<div class="toc-appearance" data-toc-home role="group" aria-label="Оформление сайта">' +
@@ -1812,16 +1851,28 @@
       '<nav class="primary-nav nav-links" aria-label="Основная навигация">' + navLinks + '</nav>' +
       '<div class="site-header__actions nav-cta">' +
         /* aria-label обязателен: ниже 1240 подпись «Найти» и клавиша «/»
-           прячутся, а видимый ⌕ помечен aria-hidden — без имени кнопка
-           осталась бы безымянной для скринридера. Имя начинается со
-           слова «Найти», поэтому WCAG 2.5.3 (label in name) соблюдён. */
+           прячутся, остаётся только значок, помеченный aria-hidden —
+           без имени кнопка осталась бы безымянной для скринридера.
+           Имя начинается со слова «Найти», поэтому WCAG 2.5.3
+           (label in name) соблюдён. title — для мыши: под лупой без
+           подписи всё равно должно быть видно, что это поиск. */
         '<button class="header-action header-action--search" type="button" data-open-search' +
-          ' aria-label="Найти по сайту">' +
-          '<span aria-hidden="true">⌕</span><span>Найти</span><kbd>/</kbd></button>' +
+          ' aria-label="Найти по сайту" title="Найти по сайту">' +
+          icoSearch() + '<span class="ha-txt">Найти</span><kbd>/</kbd></button>' +
+        /* title ставит Salon.theme.apply — там же, где aria-pressed,
+           по которому CSS выбирает солнце или месяц. */
         '<button class="header-theme-toggle theme-toggle" type="button" aria-label="Сменить тему оформления">' +
-          '<span aria-hidden="true">◐</span><span class="visually-hidden" data-theme-action>Включить тёмную тему</span></button>' +
-        '<a class="header-action nav-cab" href="dashboard.html"' + (here === 'dashboard.html' ? ' aria-current="page"' : '') + '>' +
-          '<span class="header-action__dot" aria-hidden="true"></span><span class="nc-txt">Кабинет</span><span class="nc-badge" hidden></span></a>' +
+          icoTheme() + '<span class="visually-hidden" data-theme-action>Включить тёмную тему</span></button>' +
+        /* «Кабинет» — всегда со словом: по значку человек не поймёт, что
+           это личный кабинет (решение владельца от 25.07.2026). Число
+           событий само по себе тоже ничего не говорит, поэтому что оно
+           значит, пишет Salon.cabBadge в aria-label и title. Точка
+           статуса осталась хуком для сторонних правил, но роли
+           «индикатор одним цветом» у неё больше нет (§3). */
+        '<a class="header-action nav-cab" href="dashboard.html"' + (here === 'dashboard.html' ? ' aria-current="page"' : '') +
+          ' aria-label="Личный кабинет" title="Личный кабинет">' +
+          '<span class="header-action__dot" aria-hidden="true"></span><span class="nc-txt">Кабинет</span>' +
+          '<span class="nc-badge" aria-hidden="true" hidden></span></a>' +
         '<a class="button button--primary button--compact btn btn-wax" href="' + calcHref + '">Описать задачу <span aria-hidden="true">→</span></a>' +
         '<button class="icon-button header-menu-button menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><i aria-hidden="true"></i></button>' +
       '</div></div>';
@@ -1834,8 +1885,8 @@
       '<button class="mobile-appbar__back" type="button" data-go-back aria-label="Вернуться назад"><span aria-hidden="true">←</span></button>' +
       '<a class="mobile-appbar__brand" href="/" aria-label="Академический Салон — главная">' +
         brandMarkSVG() + '<span><strong></strong><small></small></span></a>' +
-      '<button class="mobile-appbar__help" type="button" data-open-search aria-label="Найти раздел или материал"><span aria-hidden="true">⌕</span></button>' +
-      '<button class="mobile-appbar__theme theme-toggle" type="button" aria-label="Сменить тему оформления"><span aria-hidden="true">◐</span><span class="visually-hidden" data-theme-action>Включить тёмную тему</span></button>' +
+      '<button class="mobile-appbar__help" type="button" data-open-search aria-label="Найти раздел или материал">' + icoSearch() + '</button>' +
+      '<button class="mobile-appbar__theme theme-toggle" type="button" aria-label="Сменить тему оформления">' + icoTheme() + '<span class="visually-hidden" data-theme-action>Включить тёмную тему</span></button>' +
       '<button class="mobile-appbar__menu menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><i aria-hidden="true"></i></button>';
     mobileHeader.querySelector('.mobile-appbar__brand strong').textContent = mobileHeaderMeta.title;
     mobileHeader.querySelector('.mobile-appbar__brand small').textContent = mobileHeaderMeta.kicker;
@@ -1844,7 +1895,17 @@
     if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк состояния кнопки темы */
   }
 
-  /* бейдж кабинета (шапка + нижняя панель): активные дела и непрочитанное */
+  /* бейдж кабинета (шапка + нижняя панель): активные дела и непрочитанное.
+     Само число ничего не объясняет — «4» рядом со словом «Кабинет» можно
+     прочитать и как счётчик дел, и как непрочитанное. Поэтому вместе с
+     цифрой всегда переписываем доступное имя и title владельца бейджа:
+     цифра остаётся для глаза, смысл — словами. */
+  function plural(n, one, few, many) {
+    var d10 = n % 10, d100 = n % 100;
+    if (d10 === 1 && d100 !== 11) return one;
+    if (d10 >= 2 && d10 <= 4 && (d100 < 12 || d100 > 14)) return few;
+    return many;
+  }
   Salon.cabBadge = function () {
     var slots = [].slice.call(document.querySelectorAll('.nav-cab .nc-badge, .mn-cab .mn-badge'));
     if (!slots.length || !Salon.api || !Salon.api.identified || !Salon.api.identified()) return;
@@ -1853,9 +1914,20 @@
       if (!r.ok || !r.orders || !r.orders.length) return;
       var un = r.orders.reduce(function (s, o) { return s + (o.unread || 0); }, 0);
       var act = r.orders.filter(function (o) { return 'done cancel'.indexOf(o.status) < 0 && !o.archived; }).length;
+      /* Что именно показывает бейдж — одной фразой, без цветовых намёков. */
+      var say = un > 0
+        ? un + ' ' + plural(un, 'новое сообщение', 'новых сообщения', 'новых сообщений')
+        : (act > 0 ? act + ' ' + plural(act, 'дело в работе', 'дела в работе', 'дел в работе') : '');
       slots.forEach(function (slot) {
         if (un > 0) { slot.textContent = un > 9 ? '9+' : un; slot.hidden = false; slot.classList.remove('calm'); }
         else if (act > 0) { slot.textContent = act; slot.hidden = false; slot.classList.add('calm'); }
+        /* Носитель имени — сама ссылка, а не бейдж: иначе скринридер
+           прочитает «Кабинет» и «4» двумя ничем не связанными узлами.
+           Видимое слово «Кабинет» входит в имя — WCAG 2.5.3 соблюдён. */
+        var host = slot.closest ? slot.closest('.nav-cab, .mn-cab') : null;
+        if (!host || !say) return;
+        host.setAttribute('aria-label', 'Личный кабинет, ' + say);
+        host.setAttribute('title', 'Личный кабинет · ' + say);
       });
     });
   };
@@ -2168,63 +2240,52 @@
       var mskH = (new Date().getUTCHours() + 3) % 24;
       var day = mskH >= 9 && mskH < 23;
       el.innerHTML =
-        '<style>' +
-          '.contact-v2 .cs-card{width:min(100%,460px);padding:22px 22px 18px;border:1px solid var(--hairline-strong);' +
-            'border-radius:8px 8px 0 0;background:var(--sheet);box-shadow:0 -16px 50px rgba(28,25,20,.18)}' +
-          '.contact-v2 .cs-head{margin:0 0 4px;min-height:44px}.contact-v2 .cs-kicker{font:10px/1.3 var(--mono);' +
-            'letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}' +
-          '.contact-v2 .cs-title{margin:0 0 7px;font:400 29px/1.05 var(--serif);color:var(--ink)}' +
-          '.contact-v2 .cs-lead{margin:0 0 10px;max-width:39ch;font-size:13.5px;line-height:1.48;color:var(--ink-soft)}' +
-          '.contact-v2 .cs-live{display:flex;align-items:center;gap:8px;min-height:30px;margin:0 0 12px;' +
-            'padding:5px 9px;background:var(--mark);font-size:11.5px;color:var(--ink-soft)}' +
-          '.contact-v2 .cs-live i{width:7px;height:7px;border-radius:50%;flex:none;background:var(--verify,#3D6B50)}' +
-          '.contact-v2 .cs-live.night i{background:var(--foil,#B98A2F)}' +
-          '.contact-v2 .cs-routes{display:grid;gap:7px}.contact-v2 .cs-route{min-height:60px;padding:10px 11px;' +
-            'display:grid;grid-template-columns:26px minmax(0,1fr) 18px;align-items:center;gap:10px;' +
-            'border:1px solid var(--hairline-strong);border-radius:3px;color:var(--ink);text-decoration:none}' +
-          '.contact-v2 .cs-route--main{border-color:var(--wax);background:var(--wax-soft)}' +
-          '.contact-v2 .cs-route:hover{background:var(--mark);border-color:var(--ink)}' +
-          '.contact-v2 .cs-num{font:10px/1 var(--mono);letter-spacing:.08em;color:var(--wax)}' +
-          '.contact-v2 .cs-route-copy{min-width:0;display:grid;gap:2px}.contact-v2 .cs-route-copy b{font-size:14.5px;font-weight:600}' +
-          '.contact-v2 .cs-route-copy small{font-size:11.5px;line-height:1.3;color:var(--ink-soft)}' +
-          '.contact-v2 .cs-arrow{font:20px/1 var(--serif);color:var(--wax)}' +
-          '.contact-v2 .cs-alt{margin-top:13px;padding-top:10px;border-top:1px solid var(--hairline)}' +
-          '.contact-v2 .cs-alt-label{display:block;margin-bottom:7px;font:9.5px/1.2 var(--mono);letter-spacing:.12em;' +
-            'text-transform:uppercase;color:var(--ink-faint)}' +
-          '.contact-v2 .cs-alt-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}' +
-          '.contact-v2 .cs-alt-grid a{min-height:44px;padding:7px 4px;display:grid;place-items:center;border:1px solid var(--hairline);' +
-            'border-radius:3px;font-size:11.5px;text-align:center;color:var(--ink-soft);text-decoration:none}' +
-          '.contact-v2 .cs-alt-grid a:hover{border-color:var(--wax);color:var(--wax)}' +
-          '.contact-v2 .cs-foot{margin:11px 0 0;font-size:11.5px;color:var(--ink-faint);text-align:center}' +
-          '.contact-v2 .cs-foot b{font-weight:600;color:var(--ink-soft)}' +
-          '@media(min-width:560px){.contact-v2 .cs-card{border-radius:6px;box-shadow:0 20px 70px rgba(28,25,20,.28)}}' +
-          '@media(max-width:559px){.contact-v2 .cs-card{width:100%;max-height:88svh;padding:22px var(--mobile-gutter) calc(15px + env(safe-area-inset-bottom));' +
-            'border-radius:10px 10px 0 0}.contact-v2 .cs-card::before{top:8px}.contact-v2 .cs-title{font-size:27px}' +
-            '.contact-v2 .cs-route{min-height:58px;padding:8px 10px}.contact-v2 .cs-lead{font-size:13px}}' +
-        '</style>' +
         '<div class="cs-backdrop" data-cs-close></div>' +
+        /* Лист языка «Оттиск-15»: плоская бумага с волосяной рамкой,
+           надзаголовок набором, сургуч — ровно на одном действии.
+           Стиль переехал в chrome.css: вставлять <style> на каждое
+           открытие — примета прошлого поколения этого листа. */
         '<div class="cs-card sheet">' +
-          '<div class="cs-head"><span class="cs-kicker">Приёмная · без обязательств</span>' +
-            '<button class="cs-x" type="button" aria-label="Закрыть приёмную" data-cs-close>×</button></div>' +
-          '<h2 class="cs-title" id="csTitle">Спросить мастера</h2>' +
-          '<p class="cs-lead">' + (opts.lead ||
-            'Напишите тему и срок. Скажем, возьмёмся ли, сколько это стоит и что понадобится от вас.') + '</p>' +
-          '<div class="cs-live' + (day ? '' : ' night') + '"><i aria-hidden="true"></i><span>' +
-            (day ? 'Мы на связи · срок ответа зависит от загрузки' : 'В мастерской ночь · ответим в рабочее время') + '</span></div>' +
-          '<div class="cs-routes">' +
-            '<a class="cs-route cs-route--main" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
-              '<span class="cs-num" aria-hidden="true">01</span><span class="cs-route-copy"><b>Написать мастеру</b>' +
-              '<small>Личный диалог в Telegram</small></span><span class="cs-arrow" aria-hidden="true">→</span></a>' +
-            '<a class="cs-route" href="configurator.html">' +
-              '<span class="cs-num" aria-hidden="true">02</span><span class="cs-route-copy"><b>Оставить заявку на сайте</b>' +
-              '<small>Смета, файлы и статус в одном месте</small></span><span class="cs-arrow" aria-hidden="true">→</span></a>' +
+          '<div class="cs-head">' +
+            '<div><span class="cs-kicker">Приёмная · без обязательств</span>' +
+              '<h2 class="cs-title" id="csTitle">Спросить мастера</h2></div>' +
+            '<button class="cs-x" type="button" aria-label="Закрыть приёмную" data-cs-close>' +
+              '<span aria-hidden="true">×</span></button></div>' +
+          '<div class="cs-body">' +
+            '<p class="cs-lead">' + (opts.lead ||
+              'Напишите тему и срок. Скажем, возьмёмся ли, сколько это стоит и что понадобится от вас.') + '</p>' +
+            /* Состояние — словами, а не цветом: §3 запрещает цвет как
+               единственный носитель смысла. Набором стоит сама метка
+               («НА СВЯЗИ» / «НОЧЬ»), цвет только поддерживает. */
+            /* Тире внутри второй строки, а не пробел между элементами:
+               флексбокс выбрасывает пробельные узлы между детьми, и
+               role="status" прочитался бы как «На связиСрок ответа…». */
+            '<p class="cs-live' + (day ? '' : ' night') + '" role="status">' +
+              '<b class="cs-live-tag">' + (day ? 'На связи' : 'Ночь') + '</b>' +
+              '<span>' + (day ? '— срок ответа зависит от загрузки мастерской'
+                              : '— ответим в рабочее время, с 9 до 23 по Москве') + '</span></p>' +
+            /* Список действий по мерке .sheet-action-list эталона:
+               строки разделены волосяной линией, без карточек-коробок. */
+            '<div class="cs-routes">' +
+              '<a class="cs-route cs-route--main" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
+                '<span class="cs-num" aria-hidden="true">01</span>' +
+                '<span class="cs-route-copy"><b>Написать мастеру</b>' +
+                '<small>Личный диалог в Telegram</small></span>' +
+                '<span class="cs-arrow" aria-hidden="true">→</span></a>' +
+              '<a class="cs-route" href="configurator.html">' +
+                '<span class="cs-num" aria-hidden="true">02</span>' +
+                '<span class="cs-route-copy"><b>Оставить заявку на сайте</b>' +
+                '<small>Смета, файлы и статус в одном месте</small></span>' +
+                '<span class="cs-arrow" aria-hidden="true">→</span></a>' +
+            '</div>' +
+            '<div class="cs-alt"><span class="cs-alt-label">Другой путь</span>' +
+              '<div class="cs-alt-grid">' +
+                '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener">ВКонтакте</a>' +
+                '<a href="' + order + '" target="_blank" rel="noopener">Бот 24/7</a>' +
+                '<a href="priyomnaya.html">Анонимно</a>' +
+              '</div></div>' +
+            '<p class="cs-foot"><b>Без оплаты:</b> сначала ответ и понятная цена.</p>' +
           '</div>' +
-          '<div class="cs-alt"><span class="cs-alt-label">Другой путь</span><div class="cs-alt-grid">' +
-            '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener">ВКонтакте</a>' +
-            '<a href="' + order + '" target="_blank" rel="noopener">Бот 24/7</a>' +
-            '<a href="priyomnaya.html">Анонимно</a>' +
-          '</div></div>' +
-          '<p class="cs-foot"><b>Без оплаты:</b> сначала ответ и понятная цена.</p>' +
         '</div>';
       return el;
     }
@@ -2249,6 +2310,9 @@
       inerted.forEach(function (el) { el.setAttribute('inert', ''); });
       void sheet.offsetWidth; /* показ без rAF — иначе шит невидим при спящем рендере */
       sheet.classList.add('open');
+      /* второй пересчёт — уже ПОСЛЕ класса: до него visibility ещё
+         hidden, а focus() по невидимому узлу ничего не делает. */
+      void sheet.offsetWidth;
       var f = sheet.querySelector('.cs-x');
       if (f) {
         f.focus({ preventScroll: true });

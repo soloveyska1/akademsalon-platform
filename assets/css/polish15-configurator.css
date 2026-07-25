@@ -1986,3 +1986,185 @@ html.service-plan .configurator-task .tx-wizard-sidebar .wprog{display:grid!impo
   .configurator-task .sv-letter{animation:none}
 }
 html[data-motion="off"] .configurator-task .sv-letter{animation:none}
+
+/* ============================================================
+   Код возврата (.exit-dlg) — лист, который уходящему гостю
+   выписывает одноразовый купон. Разметку собирает showExitDlg()
+   в configurator.html; база .sdlg живёт в extras.css, здесь
+   маршрутный лист переводит её на язык оверлеев эталона:
+   оверлей 18px, внутренние плиты 4px, органы управления 7px,
+   плоские листы на волосяных линейках, сургуч — только
+   единственному действию. Классы .exit-code / .xc-code /
+   .xc-copy / .exit-note до этого не были описаны нигде, поэтому
+   кнопка «Скопировать» рисовалась системной серой заглушкой.
+   ============================================================ */
+
+.configurator-task .exit-dlg .sdlg-back{
+  background:rgba(18,17,14,.58);
+  -webkit-backdrop-filter:blur(4px);
+  backdrop-filter:blur(4px);
+}
+
+.configurator-task .exit-dlg .sdlg-card{
+  width:min(94vw,470px);
+  padding:clamp(22px,3vw,30px);
+  border-color:var(--hairline);
+  border-radius:18px;
+  /* глубина набором листов, а не тяжёлой тенью */
+  box-shadow:0 1px 0 var(--hairline),0 22px 54px -20px rgba(24,21,15,.34);
+}
+
+.configurator-task .exit-dlg .eyebrow{
+  margin:0 0 10px;
+  color:var(--ink-faint);
+  font:550 9px/1.25 var(--mono);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.configurator-task .exit-dlg h3{
+  margin:0 0 9px;
+  color:var(--ink);
+  font:400 26px/1.12 var(--serif);
+  letter-spacing:-.02em;
+}
+
+.configurator-task .exit-dlg .sdlg-card>p{
+  margin:0;
+  color:var(--ink-soft);
+  font-size:13.5px;
+  line-height:1.55;
+}
+
+/* Плита кода: моноширинный набор своей строкой + своё действие */
+.configurator-task .exit-dlg .exit-code{
+  display:grid;
+  gap:10px;
+  margin:20px 0 0;
+  padding:14px 15px;
+  border:1px solid var(--hairline);
+  border-radius:4px;
+  background:var(--paper);
+}
+
+.configurator-task .exit-dlg .xc-lbl{
+  color:var(--ink-faint);
+  font:550 9px/1.2 var(--mono);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.configurator-task .exit-dlg .xc-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.configurator-task .exit-dlg .xc-code{
+  min-width:0;
+  color:var(--ink);
+  font:500 21px/1.25 var(--mono);
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.06em;
+  word-break:break-all;
+  -webkit-user-select:all;
+  user-select:all;
+}
+
+.configurator-task .exit-dlg .xc-copy{
+  min-height:44px;
+  flex:0 0 auto;
+  gap:7px;
+  padding:10px 15px;
+  border-color:var(--hairline-strong);
+  border-radius:7px;
+  color:var(--ink);
+  background:var(--sheet);
+  font-size:12px;
+  font-weight:550;
+  letter-spacing:0;
+}
+
+.configurator-task .exit-dlg .xc-copy:hover{
+  border-color:var(--ink-soft);
+  background:var(--paper-2);
+}
+
+.configurator-task .exit-dlg .xc-ico{display:block;flex:0 0 auto}
+.configurator-task .exit-dlg .xc-ico-done,
+.configurator-task .exit-dlg .xc-copy.is-copied .xc-ico-copy{display:none}
+.configurator-task .exit-dlg .xc-copy.is-copied .xc-ico-done{display:block}
+
+.configurator-task .exit-dlg .xc-copy.is-copied,
+.configurator-task .exit-dlg .xc-copy.is-copied:hover{
+  color:var(--verify);
+  border-color:var(--verify);
+  background:var(--verify-soft);
+}
+
+/* Условия купона: реестр строк на линейках вместо сплошной прозы */
+.configurator-task .exit-dlg .exit-terms{
+  margin:18px 0 0;
+  padding:0;
+  border-top:1px solid var(--hairline);
+  list-style:none;
+}
+
+.configurator-task .exit-dlg .exit-terms li{
+  padding:8px 1px;
+  border-bottom:1px solid var(--hairline);
+  color:var(--ink-soft);
+  font-size:12px;
+  line-height:1.4;
+}
+
+/* Кольцо фокуса глобальное (styles.css: 2px сургуча), но радиус там 2px —
+   на органах управления листа скругляем его по их же шкале */
+.configurator-task .exit-dlg :focus-visible{border-radius:7px}
+
+/* Единственное сургучное действие */
+.configurator-task .exit-dlg .sdlg-row{margin-top:20px}
+.configurator-task .exit-dlg .sdlg-row .btn{
+  min-height:46px;
+  padding:12px 22px;
+  border-radius:7px;
+  font-size:13px;
+}
+
+/* Телефон и планшет: порог читаемости 12px, действие под большой палец */
+@media(max-width:920px){
+  .configurator-task .exit-dlg .sdlg-card{
+    width:min(calc(100vw - 20px),470px);
+    padding:24px 20px;
+    border-radius:18px;
+  }
+  .configurator-task .exit-dlg .eyebrow,
+  .configurator-task .exit-dlg .xc-lbl{font-size:12px;letter-spacing:.08em}
+  .configurator-task .exit-dlg h3{font-size:24px}
+  .configurator-task .exit-dlg .sdlg-card>p{font-size:13.5px}
+  .configurator-task .exit-dlg .exit-terms li{font-size:12.5px}
+  .configurator-task .exit-dlg .xc-copy{
+    min-height:48px;
+    font-size:12.5px;
+  }
+  .configurator-task .exit-dlg .sdlg-row .btn{min-height:50px;font-size:13.5px}
+}
+
+/* Узкие телефоны: код и его действие встают в две строки */
+@media(max-width:430px){
+  .configurator-task .exit-dlg .xc-row{gap:11px}
+  .configurator-task .exit-dlg .xc-code{flex:1 0 100%;font-size:20px}
+  .configurator-task .exit-dlg .xc-copy{width:100%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .configurator-task .exit-dlg,
+  .configurator-task .exit-dlg .sdlg-card,
+  .configurator-task .exit-dlg .xc-copy,
+  .configurator-task .exit-dlg .sdlg-row .btn{transition:none!important}
+  .configurator-task .exit-dlg .sdlg-card{transform:none!important}
+}
+
+html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!important}

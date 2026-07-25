@@ -1693,6 +1693,11 @@
   .mobile-appbar__brand{
     display:flex;
     min-width:0;
+    /* Знак 34px и две строки подписи давали 34px в высоту — ниже пола
+       размера цели. Полосе это ничего не стоит: строка аппбара и так
+       44px по кнопкам, а её высоту задаёт --mobile-appbar-h (62px),
+       не содержимое. */
+    min-height:44px;
     align-items:center;
     gap:8px;
     color:var(--ink);

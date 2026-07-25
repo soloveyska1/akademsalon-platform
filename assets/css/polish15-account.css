@@ -3916,3 +3916,359 @@
 .is-account-route .account-drafts {
   margin-bottom: 24px;
 }
+
+/* ============================================================
+   РЕЕСТР ДЕЛ И ЭКРАН ДЕЛА (2026-07-25).
+   Организация, а не перекраска: приводим кабинет к устройству
+   утверждённого эталона style-lab/full.
+   1. Список дел один. В эталоне это секция .account-orders с
+      отбором .filter-tabs--small и сеткой .order-list. Раньше
+      кабинет держал четыре разных списка; теперь карточка одна,
+      а раздел меняет только две справки и подпись в подвале.
+   2. Дело — отдельный экран, как маршрут #/order. Возврат —
+      .back-link в шапке; содержимое — разворот .case-layout из
+      главной колонки и правой стойки (документы, сводка оплаты,
+      служебное, помощь), ровно как .case-main/.case-aside.
+   Радиусы: лист 4px, органы управления 7px, пилюля 999px —
+   только у отбора и ярлыков статуса. Сами листы дела остаются
+   без радиуса и тени: глубина набирается плоскими листами.
+   ============================================================ */
+
+/* ---------- клуб: разворот абонемента как .commerce-hero эталона ----------
+   в эталоне колонки выровнены по центру (align-items: center): образец
+   абонемента заведомо выше вводного текста, и при выравнивании по верху
+   под текстом оставалась дыра в полкарточки */
+.is-account-route .plus-intro {
+  align-items: center;
+}
+
+@media (max-width: 880px) {
+  .is-account-route .plus-intro {
+    align-items: stretch;
+  }
+}
+
+/* ---------- отбор реестра: пилюли эталона ---------- */
+.is-account-route .filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.is-account-route .filter-tabs button {
+  min-height: 40px;
+  padding: 9px 14px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font: 520 12px/1.2 var(--sans);
+  cursor: pointer;
+  transition: color .18s ease, background-color .18s ease, border-color .18s ease;
+}
+
+/* выбранный отбор — ночная пилюля эталона: --night/--night-ink одинаковы
+   в обеих темах, поэтому состояние видно и на светлой, и на тёмной бумаге */
+.is-account-route .filter-tabs button:hover,
+.is-account-route .filter-tabs button.is-active {
+  color: var(--night-ink);
+  background: var(--night);
+  border-color: var(--night);
+}
+
+.is-account-route .filter-tabs--small button {
+  min-height: 34px;
+  padding: 7px 11px;
+  font-size: 11px;
+}
+
+/* реестр целиком: у «Дел» он первый в полосе, отступ сверху меньше */
+.is-account-route .account-main__body > .account-orders--all:first-child {
+  margin-top: 34px;
+}
+
+/* приписка о скрытых пулах (завершённые, убранные) — строкой, не карточками */
+.is-account-route .account-orders--all > .account-note--row {
+  margin: 14px 0 0;
+  color: var(--quiet);
+  font-size: 10px;
+}
+
+/* дело теперь ЗАНИМАЕТ рабочую полосу, а не приписывается под списком:
+   разделительная линейка сверху лишняя — единственный рубеж в шапке дела */
+.is-account-route .account-main > .account-case-production {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* ---------- экран дела: возврат к реестру ---------- */
+.is-account-route .account-case-production .back-link {
+  display: inline-flex;
+  width: max-content;
+  min-height: 34px;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.is-account-route .account-case-production .back-link:hover {
+  color: var(--wax);
+}
+
+.is-account-route .account-case-production .back-link span {
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* ---------- разворот дела: главная колонка и правая стойка ---------- */
+.is-account-route .account-case-production .case-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+  gap: 24px;
+  align-items: start;
+  margin-top: 26px;
+}
+
+.is-account-route .account-case-production :is(.case-main, .case-aside) {
+  display: block;
+  min-width: 0;
+}
+
+/* верхний зазор несут сами листы (margin-top: 18px) — у первого его нет,
+   иначе колонки начинались бы ниже линейки шапки на лишние 18px */
+.is-account-route .account-case-production :is(.case-main, .case-aside) > :first-child {
+  margin-top: 0;
+}
+
+/* стойка уже: та же типографика, но воздуха внутри листа меньше */
+.is-account-route .account-case-production .case-aside :is(.case-sec, .case-fold) {
+  padding: 19px 20px;
+}
+
+.is-account-route .account-case-production .case-aside :is(.case-sec, .case-fold) h3 {
+  font-size: 17px;
+}
+
+/* ---------- текущий этап: лист-разворот .case-overview ----------
+   у этого листа шапка без линейки: границу внутри листа держит только
+   строка справок (border-top) — одна линейка на один рубеж, как в эталоне */
+.is-account-route .account-case-production .case-overview > header {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.is-account-route .account-case-production .case-overview__count {
+  display: grid;
+  gap: 3px;
+  color: var(--wax);
+  font: 500 26px/1 var(--serif);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.is-account-route .account-case-production .case-overview__count small {
+  color: var(--quiet);
+  font: 550 8px/1.2 var(--mono);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.is-account-route .account-case-production .case-overview__facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-overview__facts > span {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+  padding-right: 18px;
+}
+
+.is-account-route .account-case-production .case-overview__facts > span + span {
+  padding-left: 18px;
+  border-left: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-overview__facts small {
+  color: var(--quiet);
+  font: 550 8px/1.2 var(--mono);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.is-account-route .account-case-production .case-overview__facts strong {
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 560;
+}
+
+/* шкала внутри разворота: свой отступ листа, а не голой строки */
+.is-account-route .account-case-production .case-overview .case-progress-meta {
+  margin-top: 20px;
+}
+
+/* ---------- сводка оплаты в стойке ---------- */
+.is-account-route .account-case-production .case-payment .case-paid {
+  margin-top: 16px;
+  font-size: 19px;
+  text-wrap: balance;
+}
+
+.is-account-route .account-case-production .case-payment .case-acts {
+  margin-top: 15px;
+}
+
+.is-account-route .account-case-production .case-payment .case-acts .btn {
+  flex: 1 1 100%;
+}
+
+/* ---------- помощь в стойке: единственный центрированный лист ---------- */
+.is-account-route .account-case-production .case-support {
+  text-align: center;
+}
+
+.is-account-route .account-case-production .case-support h3 {
+  margin-top: 12px;
+}
+
+.is-account-route .account-case-production .case-support p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.is-account-route .account-case-production .case-support .case-acts {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 11px;
+}
+
+.is-account-route .account-case-production .case-support .line-link {
+  margin-inline: auto;
+}
+
+/* ---------- ≤1080: стойка дела сужается, справки ещё в строку ---------- */
+@media (max-width: 1080px) {
+  .is-account-route .account-case-production .case-layout {
+    grid-template-columns: minmax(0, 1.5fr) minmax(250px, .5fr);
+    gap: 18px;
+  }
+
+  .is-account-route .account-case-production .case-overview__count {
+    font-size: 22px;
+  }
+}
+
+/* ---------- ≤880: одна колонка; служебные подписи с полом 12px ---------- */
+@media (max-width: 880px) {
+  .is-account-route .account-case-production .case-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  /* в одной колонке первый лист стойки снова получает зазор листа */
+  .is-account-route .account-case-production .case-aside > :first-child {
+    margin-top: 18px;
+  }
+
+  .is-account-route .account-case-production .case-aside :is(.case-sec, .case-fold) {
+    padding: 20px;
+  }
+
+  .is-account-route .account-case-production .case-overview__facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .is-account-route .account-case-production .case-overview__facts > span {
+    padding: 11px 0 0;
+  }
+
+  .is-account-route .account-case-production .case-overview__facts > span + span {
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .is-account-route .account-case-production .case-overview__facts small,
+  .is-account-route .account-case-production .case-overview__facts strong,
+  .is-account-route .account-case-production .case-support p,
+  .is-account-route .account-case-production .back-link,
+  .is-account-route .account-orders--all > .account-note--row {
+    font-size: 12px;
+  }
+
+  /* отбор реестра — как в эталоне: строка с прокруткой во всю ширину полосы */
+  .is-account-route .filter-tabs {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .is-account-route .filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .is-account-route .filter-tabs button {
+    min-height: 44px;
+    flex: 0 0 auto;
+    font-size: 12px;
+  }
+
+  .is-account-route .filter-tabs--small button {
+    min-height: 44px;
+    padding: 9px 14px;
+    font-size: 12px;
+  }
+
+  /* палец: тихие ссылки-строки и слова-состояния добираются до 44 px
+     вертикальным полем — строка текста при этом не разъезжается */
+  .is-account-route .line-link,
+  .is-account-route .account-case-production .line-link {
+    padding-block: 16px;
+  }
+
+  .is-account-route .account-case-production .back-link,
+  .is-account-route .account-case-production .quiet-button,
+  .is-account-route .account-case-production .oj,
+  .is-account-route .account-case-production .ps-copy,
+  .is-account-route .account-case-production .case-chip,
+  .is-account-route .account-case-production .rv-star {
+    min-height: 44px;
+  }
+
+  .is-account-route .account-case-production .rv-star {
+    min-width: 44px;
+  }
+
+  /* тихие ссылки внутри дела читаемы с телефона */
+  .is-account-route .account-case-production .line-link {
+    font-size: 12px;
+  }
+}
+
+/* ---------- ≤620: стойка дела в один столбец кнопок ---------- */
+@media (max-width: 620px) {
+  .is-account-route .account-case-production .case-overview > header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .is-account-route .account-case-production .case-overview__count {
+    text-align: left;
+  }
+}

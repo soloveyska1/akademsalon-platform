@@ -15,20 +15,29 @@ const admin = read('admin.html');
 const adminJs = read('assets/js/admin.js');
 
 test('общая навигация повторяет финальный концепт', () => {
-  /* Решение владельца 25.07.2026: в шапке четыре пункта, порядок — по пути
-     клиента (DESIGN-STANDARDS §10). Пункт «Выгоды» убран: клуб, бонусы и
-     сертификаты относятся к удержанию после первого заказа, им место
-     в меню «Навигация» и в подвале, а не во входной навигации. */
-  for (const [href, label] of [
+  /* Решение владельца 25.07.2026 (отменяет более раннее решения того же дня
+     о четырёх пунктах): в шапке ПЯТЬ пунктов в порядке эталона
+     style-lab/full/index.html:38–44 — Услуги · Цены · Библиотека ·
+     О мастерской · Выгоды. «Выгоды» возвращены сознательно: клуб, бонусы
+     и сертификаты — это, по сути, УТП мастерской, и держать его только
+     в подвале значит прятать главный довод. */
+  const NAV_EXPECTED = [
     ['services.html', 'Услуги'],
     ['tariffs.html', 'Цены'],
-    ['about.html', 'О мастерской'],
     ['knowledge.html', 'Библиотека'],
-  ]) {
+    ['about.html', 'О мастерской'],
+    ['referral.html', 'Выгоды'],
+  ];
+  for (const [href, label] of NAV_EXPECTED) {
     assert.match(app, new RegExp(`href: '${href.replace('.', '\\.')}',\\s+label: '${label}'`));
   }
-  assert.doesNotMatch(app, /href: 'referral\.html',\s+label: 'Выгоды'/,
-    'пункт «Выгоды» не должен вернуться в шапку');
+  /* Порядок, а не только состав: он повторяет эталон и путь клиента. */
+  const navBlock = app.match(/var NAV = \[[\s\S]*?\];/);
+  assert.ok(navBlock, 'массив NAV должен находиться в assets/js/app.js');
+  assert.deepEqual(
+    [...navBlock[0].matchAll(/href: '([^']+)',\s+label: '([^']+)'/g)].map((m) => [m[1], m[2]]),
+    NAV_EXPECTED,
+    'порядок пунктов шапки должен совпадать с эталоном');
   /* Разделы «Выгод» обязаны остаться достижимыми из подвала. */
   for (const href of ['referral.html', 'plus.html', 'deposit.html', 'gift.html']) {
     assert.match(app, new RegExp(`<a href="${href.replace('.', '\\.')}">`),

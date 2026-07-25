@@ -861,33 +861,261 @@ main[tabindex="-1"]:focus{outline:none}
 
 /* Тосты и .onote заменены слоем «Пометки на полях» — extras.css, конец файла */
 
-.contact-sheet{position:fixed;inset:0;z-index:240;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:opacity .24s,visibility .24s}
-.contact-sheet.open{opacity:1;visibility:visible}
-.contact-sheet .cs-backdrop{position:absolute;inset:0;background:rgba(20,18,14,.5);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
-:root[data-theme="dark"] .contact-sheet .cs-backdrop{background:rgba(0,0,0,.62)}
-.contact-sheet .cs-card{
-  position:relative;background:var(--sheet);border:1px solid var(--hairline);
-  border-radius:6px 6px 0 0;padding:22px;width:min(100%,480px);max-height:86svh;overflow:auto;
-  transform:translateY(14px);transition:transform .24s cubic-bezier(.22,1,.36,1);
+/* ============================================================
+   ЛИСТ «СПРОСИТЬ МАСТЕРА» — язык «Оттиск-15»
+
+   Было прошлое поколение: коробки-карточки со своими рамками
+   внутри карточки-листа, тяжёлая тень 0 -16px 50px, четыре разных
+   радиуса (3/6/8/10px) и стиль, который app.js вставлял тегом
+   <style> на каждое открытие.
+
+   Стало по мерке эталона (style-lab/full/style.css §.overlay,
+   .overlay__header, .overlay--sheet, .support-card,
+   .sheet-action-list): плоская бумага с волосяной рамкой,
+   радиусы листа 4px и органов управления 7px, надзаголовок
+   набором, сургуч — ровно на одном действии в блоке,
+   состояние — словами, не цветом.
+   ============================================================ */
+.contact-sheet{
+  position:fixed;
+  inset:0;
+  z-index:240;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  visibility:hidden;
+  opacity:0;
+  /* visibility переключаем СТУПЕНЬКОЙ, а не переходом. Было
+     `visibility .24s`: пока переход не начался, вычисленное значение
+     оставалось hidden, и focus() по крестику в Salon.contact уходил
+     в пустоту — лист открывался без фокуса. Показ — мгновенно (0s),
+     скрытие — с задержкой на время затухания, чтобы лист не исчезал
+     рывком до конца анимации. */
+  transition:opacity .24s,visibility 0s linear .24s;
 }
+.contact-sheet.open{
+  visibility:visible;
+  opacity:1;
+  transition:opacity .24s,visibility 0s;
+}
+.contact-sheet .cs-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(20,18,14,.5);
+  -webkit-backdrop-filter:blur(6px);
+  backdrop-filter:blur(6px);
+}
+:root[data-theme="dark"] .contact-sheet .cs-backdrop{background:rgba(0,0,0,.62)}
+/* Лист. Тень — только чтобы отделить бумагу от шторки; рисует
+   границу волосяная рамка, как во всех листах эталона. */
+.contact-sheet .cs-card{
+  position:relative;
+  width:min(100%,520px);
+  max-height:88svh;
+  overflow:auto;
+  padding:26px 26px 22px;
+  background:var(--paper);
+  border:1px solid var(--hairline);
+  /* 14px — та же мерка, что у мобильной шторки в mobile.css: если
+     этот запас когда-нибудь окажется главным, скругление не прыгнет. */
+  border-radius:14px 14px 0 0;
+  box-shadow:0 -18px 46px rgba(28,25,20,.14);
+  transform:translateY(14px);
+  transition:transform .28s cubic-bezier(.22,1,.36,1);
+}
+:root[data-theme="dark"] .contact-sheet .cs-card{box-shadow:0 -18px 46px rgba(0,0,0,.5)}
 .contact-sheet.open .cs-card{transform:none}
-@media(min-width:560px){.contact-sheet{align-items:center}.contact-sheet .cs-card{border-radius:4px}}
-.cs-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.cs-x{font-size:26px;line-height:1;min-width:44px;min-height:44px;cursor:pointer;color:var(--ink-soft);background:none;border:0}
-.cs-x:hover{color:var(--wax)}
-.cs-lead{font-size:14.5px;color:var(--ink-soft);line-height:1.55;margin-bottom:14px}
-.cs-opt{display:flex;align-items:center;gap:12px;border:1px solid var(--hairline-strong);border-radius:3px;padding:14px;margin-bottom:10px;min-height:56px;transition:border-color .15s,background .15s}
-.cs-opt:hover{border-color:var(--ink);background:var(--mark)}
-.cs-opt--wax{border-color:var(--wax);background:var(--wax-soft,rgba(178,59,34,.06))}
-.cs-o-ic{font-size:19px;flex:0 0 30px;text-align:center;font-family:var(--serif)}
-.cs-o-txt{display:flex;flex-direction:column}
-.cs-o-txt b{font-size:15.5px;font-weight:500}
-.cs-o-txt small{font-size:12.5px;color:var(--ink-soft)}
-.cs-opt .ar{margin-left:auto;font-family:var(--serif);color:var(--ink-soft)}
-.cs-opt:hover .ar{color:var(--wax)}
-.cs-note{font-size:12px;color:var(--ink-soft);line-height:1.55;margin-top:8px}
-.cs-note a{border-bottom:1px solid var(--hairline-strong)}
-.cs-note a:hover{color:var(--wax);border-color:var(--wax)}
+@media(min-width:560px){
+  .contact-sheet{align-items:center}
+  /* Радиус листа эталона — 4px. Снизу лист больше не «приклеен»
+     к кромке экрана, поэтому скругление одинаковое со всех сторон. */
+  .contact-sheet .cs-card{border-radius:4px;box-shadow:0 24px 64px rgba(28,25,20,.18)}
+  :root[data-theme="dark"] .contact-sheet .cs-card{box-shadow:0 24px 64px rgba(0,0,0,.55)}
+}
+
+/* ---- Шапка листа: мерка .overlay__header ---- */
+.contact-sheet .cs-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--hairline);
+}
+.contact-sheet .cs-kicker{
+  display:block;
+  margin-bottom:6px;
+  color:var(--ink-faint);
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.contact-sheet .cs-title{
+  margin:0;
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:28px;
+  font-weight:400;
+  line-height:1.05;
+  letter-spacing:-.02em;
+}
+/* Крестик по мерке .overlay .icon-button--close. */
+.contact-sheet .cs-x{
+  display:grid;
+  flex:0 0 46px;
+  width:46px;
+  height:46px;
+  min-height:46px;
+  place-items:center;
+  padding:0;
+  color:var(--ink-soft);
+  background:var(--sheet);
+  border:1px solid var(--hairline-strong);
+  border-radius:50%;
+  font:400 24px/1 var(--serif);
+  cursor:pointer;
+  transition:color .17s ease,border-color .17s ease,transform .17s cubic-bezier(.22,1,.36,1);
+}
+.contact-sheet .cs-x:hover{color:var(--wax);border-color:var(--wax);transform:rotate(8deg)}
+
+.contact-sheet .cs-body{display:grid;gap:16px;padding-top:20px}
+.contact-sheet .cs-lead{
+  margin:0;
+  max-width:44ch;
+  color:var(--ink-soft);
+  font-size:14px;
+  line-height:1.5;
+}
+
+/* ---- Состояние мастерской ----
+   Смысл несёт слово в .cs-live-tag; цвет только поддерживает его,
+   поэтому правило §3 «не цветом единственным» соблюдено. */
+.contact-sheet .cs-live{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:38px;
+  margin:0;
+  padding:7px 11px;
+  border:1px solid var(--hairline);
+  border-radius:7px;
+  color:var(--ink-soft);
+  font-size:12.5px;
+  line-height:1.35;
+}
+.contact-sheet .cs-live-tag{
+  flex:0 0 auto;
+  color:var(--verify);
+  font-family:var(--mono);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.contact-sheet .cs-live.night .cs-live-tag{color:var(--foil)}
+
+/* ---- Список действий: мерка .sheet-action-list ----
+   Строки разделены волосяной линией, а не обведены каждая в рамку. */
+.contact-sheet .cs-routes{
+  display:grid;
+  border-top:1px solid var(--hairline);
+}
+.contact-sheet .cs-route{
+  display:grid;
+  min-height:56px;
+  align-items:center;
+  gap:12px;
+  grid-template-columns:22px minmax(0,1fr) 18px;
+  padding:12px 10px;
+  border-bottom:1px solid var(--hairline);
+  border-radius:7px;
+  color:var(--ink);
+  text-decoration:none;
+  transition:background-color .17s ease,color .17s ease;
+}
+.contact-sheet .cs-route:hover{background:var(--mark)}
+/* Сургуч — на одном действии в блоке, как велит язык эталона. */
+.contact-sheet .cs-route--main{
+  color:var(--wax);
+  background:var(--wax-soft);
+}
+.contact-sheet .cs-route--main .cs-route-copy small{color:var(--ink-soft)}
+.contact-sheet .cs-route--main:hover{background:color-mix(in srgb,var(--wax) 12%,transparent)}
+.contact-sheet .cs-num{
+  color:var(--ink-faint);
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.08em;
+}
+.contact-sheet .cs-route--main .cs-num{color:var(--wax)}
+.contact-sheet .cs-route-copy{display:grid;min-width:0;gap:2px}
+.contact-sheet .cs-route-copy b{font-size:14.5px;font-weight:600}
+.contact-sheet .cs-route-copy small{color:var(--ink-soft);font-size:12px;line-height:1.3}
+.contact-sheet .cs-arrow{
+  color:currentColor;
+  font-family:var(--serif);
+  font-size:18px;
+  line-height:1;
+  text-align:right;
+}
+
+/* ---- Другой путь ---- */
+.contact-sheet .cs-alt{display:grid;gap:8px}
+.contact-sheet .cs-alt-label{
+  color:var(--ink-faint);
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.contact-sheet .cs-alt-grid{
+  display:grid;
+  gap:7px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.contact-sheet .cs-alt-grid a{
+  display:grid;
+  min-height:44px;
+  place-items:center;
+  padding:7px 4px;
+  color:var(--ink-soft);
+  background:var(--sheet);
+  border:1px solid var(--hairline);
+  border-radius:7px;
+  font-size:12px;
+  text-align:center;
+  text-decoration:none;
+  transition:color .17s ease,border-color .17s ease;
+}
+.contact-sheet .cs-alt-grid a:hover{color:var(--wax);border-color:var(--wax)}
+
+.contact-sheet .cs-foot{
+  margin:0;
+  padding-top:14px;
+  border-top:1px solid var(--hairline);
+  color:var(--ink-faint);
+  font-size:12px;
+  line-height:1.4;
+}
+.contact-sheet .cs-foot b{color:var(--ink-soft);font-weight:600}
+
+/* Ширину, поля и верхний радиус мобильной шторки задаёт mobile.css
+   (@media max-width:880px, там же !important) — он грузится последним
+   и остаётся единственным хозяином её геометрии. Здесь только то,
+   чего он не трогает. */
+@media(max-width:559px){
+  .contact-sheet .cs-title{font-size:26px}
+  .contact-sheet .cs-alt-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  /* Без затухания задержка на visibility не нужна: лист должен
+     пропадать сразу, а не висеть прозрачным ещё 240мс. */
+  .contact-sheet,
+  .contact-sheet.open{transition:none}
+  .contact-sheet .cs-card{transform:none;transition:none}
+  .contact-sheet .cs-x:hover{transform:none}
+}
 
 /* ---------- Reduced motion ---------- */
 @media(prefers-reduced-motion:reduce){
@@ -1048,21 +1276,13 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
   .toc-docs a{min-height:44px;display:flex;align-items:center}
   .toc-footbar{padding:0 4px}.toc-footbar button{display:grid;gap:1px;text-align:left;min-height:44px}.toc-footbar>span{display:none}
 
-  /* лист связи: два главных действия, остальные — по запросу */
-  .contact-sheet .cs-card{width:100%;max-height:min(88svh,720px);padding:24px var(--mobile-gutter) calc(18px + env(safe-area-inset-bottom));
-    border-radius:12px 12px 0 0}
+  /* Лист связи: на телефоне это шторка от нижней кромки, поэтому
+     хватка-полоска сверху. Остальные мерки — в основном блоке
+     .contact-sheet выше по файлу; правила прошлого поколения
+     (.cs-opt / .cs-o-txt / .cs-more*) удалены вместе с разметкой,
+     которая их использовала. */
+  .contact-sheet .cs-card{max-height:min(88svh,720px);padding-top:26px}
   .contact-sheet .cs-card::before{content:"";position:absolute;top:8px;left:50%;width:42px;height:4px;border-radius:4px;background:var(--hairline-strong);transform:translateX(-50%)}
-  .cs-opt{min-height:64px;margin-bottom:8px;padding:11px 12px}
-  .cs-o-txt small{font-size:12.5px}
-  .cs-more{margin-top:4px;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
-  .cs-more>summary{list-style:none;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;cursor:pointer}
-  .cs-more>summary::-webkit-details-marker{display:none}
-  .cs-more>summary span{font:20px/1 var(--serif);color:var(--wax);transition:transform .2s}
-  .cs-more[open]>summary span{transform:rotate(45deg)}
-  .cs-more-in{padding:0 0 8px}
-  .cs-more-in a{min-height:48px;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px;border-top:1px solid var(--hairline);font-size:13.5px}
-  .cs-more-in small{color:var(--ink-soft)}
-  .cs-more-in i{font-style:normal;color:var(--wax)}
 
   /* контентные страницы читаются как короткие листы */
   .doc-wrap{padding-top:88px;padding-bottom:48px}
@@ -1831,14 +2051,36 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
 
 /* ============================================================
    ОБЩАЯ ШАПКА ФИНАЛЬНОГО КОНЦЕПТА (эталон style-lab/full)
-   Единственное место, где живёт колонтитул. Ступени эталона:
-     • шире 1240 — знак с подписью · навигация · «Найти» пилюлей
-       с клавишей «/» · тема · «Кабинет» · «Описать задачу»;
-     • 1041–1240 — «Найти» сжимается до значка ⌕, шаг навигации 18px;
-     • 881–1040 — подпись знака, «Найти» и «Кабинет» уходят;
-       вместо них появляется «Меню» — иначе на этой полосе
-       не остаётся входа в путеводитель и кабинет (у эталона
-       ниже 920 включается мобильный док, у сайта его нет);
+   Единственное место, где живёт колонтитул.
+
+   ПОЧЕМУ СТУПЕНИ НЕ СОВПАДАЮТ С ЭТАЛОННЫМИ. В эталоне тот же
+   набор — знак, пять пунктов, четыре органа управления — влезает
+   в 1041 ровно в ноль (замерено: свободно 0,4px). Его пульт
+   занимает 326px, потому что кнопки там 27/38/85px без рамок.
+   У нас тот же пульт — 367px: каждая вспомогательная кнопка
+   поднята до 44px (пол размера цели, DESIGN-STANDARDS) и носит
+   волосяную рамку. Эти лишние 41px и есть причина, по которой
+   каждую ступень пришлось сдвинуть вверх, а не скопировать.
+
+   Ступени (в скобках — свободное место в строке на нижней кромке
+   полосы, замерено на index.html после загрузки шрифтов):
+     • шире 1280 — знак с подписью · навигация · «Найти» пилюлей
+       с клавишей «/» · тема · «Кабинет» · «Описать задачу».
+       Шаг навигации 22px вместо эталонных 26px: пятый пункт
+       «Выгоды» иначе не оставляет запаса (47px);
+     • 1241–1280 — «Найти» сжимается до значка лупы (88px);
+     • 1181–1240 — шаг навигации 18px, как у эталона (73px);
+     • 1101–1180 — поджимаются поля, шаг строки и шаг
+       навигации (37px);
+     • 941–1100 — уходят подпись знака, «Найти», «Кабинет» и тема;
+       вместо них появляется «Меню». Это ступень эталона (у него
+       1040), сдвинутая вверх на те самые 41px. Всё убранное живёт
+       в «Меню»: «Кабинет» — первым в списке разделов, поиск — по
+       той же кнопке, а тема — СЛОВАМИ («Светлая» / «Тёмная»)
+       в подвале диалога, то есть понятнее, чем значком (153px);
+     • 881–940 — шаг навигации 10px: последняя настольная полоса,
+       у эталона её нет — он ниже 920 уже отдаёт экран
+       мобильному доку (29px);
      • 880 и уже — колонтитул скрыт, работает .mobile-appbar.
    ============================================================ */
 .site-header{
@@ -1936,7 +2178,9 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
 .site-header .primary-nav{
   display:flex;
   align-items:center;
-  gap:26px;
+  /* Эталонные 26px — при четырёх пунктах. С пятым («Выгоды») на
+     кромке 1241 они не оставляют запаса, поэтому шаг 22px. */
+  gap:22px;
   margin-left:auto;
 }
 .site-header .primary-nav a{
@@ -2138,25 +2382,45 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
   white-space:nowrap!important;
   border:0!important;
 }
+/* «Найти» сжимается до лупы — но остаётся кнопкой с именем
+   в aria-label и подсказкой в title, а не безымянным кружком.
+   Лупа — знак условный и однозначный, в отличие от «кабинета»
+   значком. Круглую меру ей задаёт polish15-chrome.css:
+   там же живёт общая мера пульта.
+   У эталона эта ступень на 1240. У нас на 1280: пилюля «Найти»
+   с клавишей «/» занимает 121px против эталонных 27px, и на
+   кромке 1241 в строке оставалось 11px — замерено. */
+@media(max-width:1280px){
+  .site-header .header-action--search .ha-txt,
+  .site-header .header-action--search kbd{display:none}
+}
 @media(max-width:1240px){
   /* Эталон здесь меняет только --gutter, шаг строки остаётся 32px. */
   .site-header__inner{padding-inline:clamp(22px,3.2vw,42px)}
   .site-header .primary-nav{gap:18px}
-  /* «Найти» сжимается до значка ⌕ — но остаётся кнопкой с именем
-     в aria-label, а не безымянным кружком. Круглую меру ей задаёт
-     polish15-chrome.css: там же живёт общая мера пульта. */
-  .site-header .header-action--search span:not(:first-child),
-  .site-header .header-action--search kbd{display:none}
 }
-@media(max-width:1040px){
-  .site-header__inner{gap:18px}
-  /* Эталон на этой ступени убирает подпись знака, «Найти»
-     и «Кабинет» целиком — не превращает их в безымянные кружки. */
+/* Промежуточная ступень, которой у эталона нет: пятый пункт
+   навигации съедает запас раньше, чем доходит дело до ступени
+   «Меню». Поджимаем поля и шаги, ничего не убирая. */
+@media(max-width:1180px){
+  .site-header__inner{gap:22px;padding-inline:clamp(22px,3vw,34px)}
+  .site-header .primary-nav{gap:14px}
+}
+@media(max-width:1100px){
+  .site-header__inner{gap:18px;padding-inline:26px}
+  /* Эталон на этой ступени (у него 1040) убирает подпись знака,
+     «Найти» и «Кабинет» целиком — не превращает их в безымянные
+     кружки. Вместе с ними уводим и тему: в диалоге она подписана
+     словами «Светлая»/«Тёмная», а значок вместо слова — ровно то,
+     чего просили не делать. Тема остаётся одним нажатием
+     в .mobile-appbar ниже 880. */
   .site-header .brand__name small,
   .site-header .header-action--search,
+  .site-header .header-theme-toggle,
   .site-header__actions>.header-action:not(.header-action--search){display:none}
-  /* …а вместо них показывает вход в путеводитель: там и «Кабинет»,
-     и поиск по сайту (PRIMARY в polish15-chrome.js). */
+  /* …а вместо них показывает вход в путеводитель: там и «Кабинет»
+     первым пунктом, и поиск по сайту (PRIMARY в polish15-chrome.js),
+     и выбор темы в подвале диалога. */
   .site-header .header-menu-button{display:grid}
 }
 /* Последняя настольная ступень. У эталона её нет: ниже 920 он уже
@@ -2165,5 +2429,5 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
    навигация и пульт перестают помещаться в одну строку. */
 @media(max-width:940px){
   .site-header__inner{gap:14px;padding-inline:22px}
-  .site-header .primary-nav{gap:14px}
+  .site-header .primary-nav{gap:10px}
 }
