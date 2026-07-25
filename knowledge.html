@@ -8,9 +8,9 @@
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260724i" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release1" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260724seo1" />
-<link rel="stylesheet" href="assets/css/knowledge.css?v=20260724a" />
+<link rel="stylesheet" href="assets/css/polish15-library.css?v=20260725release1" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/knowledge.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -30,329 +30,433 @@
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og/og-knowledge.png" />
 <link rel="alternate" type="application/atom+xml" title="Новые материалы Академического Салона" href="https://akademsalon.ru/feed.xml" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="assets/css/mobile.css?v=20260724seo1" media="screen and (max-width: 880px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release1" media="screen and (max-width: 880px)" data-mobile-edition="1" />
 </head>
-<body class="kb-page">
-<main data-knowledge-hub>
-  <section class="kb-hero" data-chapter="Полезные материалы">
-    <div class="wrap">
-      <div class="kb-cover reveal">
-        <div class="kb-cover-copy">
-          <p class="kb-issue">Читальный зал · выпуск 2026</p>
-          <h1 class="kb-title">Разобраться <em>и сделать</em></h1>
-          <p class="kb-intro">Не энциклопедия ради энциклопедии, а рабочие разборы для конкретного момента: выбрать тему, собрать исследование, исправить замечания, оформить и защитить.</p>
-          <div class="kb-cover-meta" aria-label="О разделе">
-            <span>Без регистрации</span>
-            <span>По делу и с примерами</span>
-            <span>Можно сохранить и отправить</span>
-          </div>
-        </div>
-
-        <aside class="kb-start" aria-labelledby="kbStartTitle">
-          <div class="kb-start-inner">
-            <p class="caps">Быстрый вход</p>
-            <h2 id="kbStartTitle">Что у вас происходит сейчас?</h2>
-            <ol class="kb-route-list">
-              <li><a class="kb-route" href="#catalog" data-route-topic="vkr"><span>Начинаю работу<small>тема, план, введение</small></span></a></li>
-              <li><a class="kb-route" href="#catalog" data-route-topic="check"><span>Вернули с замечаниями<small>проверки и исправления</small></span></a></li>
-              <li><a class="kb-route" href="#catalog" data-route-topic="gost"><span>Готовлю к сдаче<small>ГОСТ и нормоконтроль</small></span></a></li>
-              <li><a class="kb-route" href="#catalog" data-route-topic="defense"><span>Скоро защита<small>речь, слайды, вопросы</small></span></a></li>
-            </ol>
-          </div>
-        </aside>
+<body class="kb-page polish15-library">
+<main class="library-page" data-knowledge-hub>
+  <div class="page-shell">
+    <header class="page-head">
+      <div class="page-head__copy">
+        <p class="eyebrow">Редакционная библиотека</p>
+        <h1>Библиотека для самостоятельной работы.</h1>
+        <p class="page-head__lead">Статьи отвечают на конкретные вопросы и опираются на действующие требования. Там, где правила зависят от вуза, это указано прямо.</p>
       </div>
-    </div>
-  </section>
-
-  <section class="kb-discovery" id="catalog" aria-labelledby="catalogTitle">
-    <div class="wrap">
-      <div class="kb-discovery-head reveal">
-        <div class="kb-search-row" role="search">
-          <label class="kb-search-box">
-            <span class="sr-only">Поиск по полезным материалам</span>
-            <input class="kb-search" type="search" data-kb-search autocomplete="off" placeholder="Тема или проблема: объект и предмет, ГОСТ, речь на защиту…" />
-            <span class="kb-search-shortcut" aria-hidden="true">/</span>
-          </label>
-          <button class="kb-clear" type="button" data-kb-clear hidden>Очистить</button>
-        </div>
-        <div class="kb-filter-wrap">
-          <div class="kb-filters" aria-label="Темы материалов">
-            <button class="kb-filter" type="button" data-kb-topic="all" aria-pressed="true">Все</button>
-            <button class="kb-filter" type="button" data-kb-topic="vkr" aria-pressed="false">ВКР</button>
-            <button class="kb-filter" type="button" data-kb-topic="course" aria-pressed="false">Курсовая</button>
-            <button class="kb-filter" type="button" data-kb-topic="defense" aria-pressed="false">Защита</button>
-            <button class="kb-filter" type="button" data-kb-topic="gost" aria-pressed="false">Оформление и ГОСТ</button>
-            <button class="kb-filter" type="button" data-kb-topic="practice" aria-pressed="false">Практика</button>
-            <button class="kb-filter" type="button" data-kb-topic="publish" aria-pressed="false">Публикации</button>
-            <button class="kb-filter" type="button" data-kb-topic="check" aria-pressed="false">Проверки и права</button>
-          </div>
-        </div>
-        <div class="kb-filter-status">
-          <span data-kb-status aria-live="polite">В каталоге — 25 материалов</span>
-          <button class="kb-share" type="button" data-kb-share>Поделиться этой подборкой ↗</button>
-        </div>
+      <div class="page-head__side">
+        <div class="library-count"><strong>25</strong><span>разборов и инструкций</span></div>
       </div>
+    </header>
 
-      <section class="kb-section reveal" aria-labelledby="freeToolsTitle">
-        <header class="kb-section-heading">
-          <div>
-            <span class="caps">Сделать прямо сейчас</span>
-            <h2 id="freeToolsTitle">Бесплатные инструменты</h2>
-          </div>
-          <p>Работают без регистрации. Формулировки темы и текст работы не загружаются на наш сервер.</p>
-        </header>
-
-        <div class="kb-editorial-grid">
-          <a class="kb-feature-main" href="proverka-istochnikov-vkr.html">
-            <div class="kb-feature-copy">
-              <span class="caps">Источники · Crossref</span>
-              <h3>Проверить DOI и метаданные публикаций</h3>
-              <p>Вставьте DOI или список литературы: инструмент сверит до 20 идентификаторов и покажет, что требует ручной проверки.</p>
-            </div>
-            <span class="kb-feature-foot"><span>Проверить бесплатно →</span><small>2 минуты</small></span>
-          </a>
-          <div class="kb-feature-side">
-            <a class="kb-feature-brief" href="audit-temy-vkr.html">
-              <div>
-                <span class="caps">ВКР · старт</span>
-                <h3>Собрать паспорт темы</h3>
-                <p>Цель, объект, предмет, задачи, данные и границы — на одном листе.</p>
-              </div>
-              <span class="kb-arrow">→</span>
-            </a>
-            <a class="kb-feature-brief" href="check.html">
-              <div>
-                <span class="caps">Текст · стиль</span>
-                <h3>Найти канцелярит и шаблонность</h3>
-                <p>Локальная самопроверка ритма, ясности и повторяющихся оборотов.</p>
-              </div>
-              <span class="kb-arrow">→</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section class="kb-section reveal" aria-labelledby="editorChoiceTitle">
-        <header class="kb-section-heading">
-          <div>
-            <span class="caps">Выбор редакции</span>
-            <h2 id="editorChoiceTitle">Сильная точка входа</h2>
-          </div>
-          <p>Три разбора, с которых чаще всего начинается порядок в работе.</p>
-        </header>
-
-        <div class="kb-editorial-grid">
-          <a class="kb-feature-main" href="guide-vkr-struktura.html">
-            <div class="kb-feature-copy">
-              <span class="caps">ВКР · методология</span>
-              <h3>Введение, которое держит всю работу</h3>
-              <p>Как связать актуальность, объект, предмет, цель и задачи так, чтобы главы не жили отдельно от введения.</p>
-            </div>
-            <span class="kb-feature-foot"><span>Открыть разбор →</span><small>9 минут</small></span>
-          </a>
-          <div class="kb-feature-side">
-            <a class="kb-feature-brief" href="guide-normocontrol.html">
-              <div>
-                <span class="caps">Оформление</span>
-                <h3>Спокойно пройти нормоконтроль</h3>
-                <p>Поля, таблицы, ссылки, нумерация и список литературы.</p>
-              </div>
-              <span class="kb-arrow">→</span>
-            </a>
-            <a class="kb-feature-brief" href="guide-zashchita-diploma.html">
-              <div>
-                <span class="caps">Защита</span>
-                <h3>Собрать выступление в единый маршрут</h3>
-                <p>Доклад, презентация, репетиция и ответы комиссии.</p>
-              </div>
-              <span class="kb-arrow">→</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section class="kb-section reveal" aria-labelledby="catalogTitle">
-        <header class="kb-section-heading">
-          <div>
-            <span class="caps">Полный каталог</span>
-            <h2 id="catalogTitle">Найдите свой вопрос</h2>
-          </div>
-          <p>Все ссылки обычные и открываются без регистрации. Поиск только помогает быстрее отобрать нужное.</p>
-        </header>
-
-        <div class="kb-ledger">
-          <a class="kb-entry" href="guide-temy-vkr.html" data-guide data-topic="vkr" data-title="Темы ВКР: как выбрать" data-summary="Критерии сильной темы и примеры по направлениям" data-aliases="диплом тема выбор темы название исследования">
-            <span class="kb-entry-no">01</span><span><span class="kb-entry-tag">ВКР · старт</span><h3>Темы ВКР: как выбрать</h3><p>Пять критериев рабочей темы, формула формулировки и примеры по направлениям.</p></span><span class="kb-entry-side"><time>10 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-obekt-predmet-cel-zadachi.html" data-guide data-topic="vkr course" data-title="Объект, предмет, цель и задачи" data-summary="Как связать основу исследования без смысловых разрывов" data-aliases="методология введение актуальность задачи цель объект предмет">
-            <span class="kb-entry-no">02</span><span><span class="kb-entry-tag">Методология</span><h3>Объект, предмет, цель и задачи</h3><p>Простая логика формулировок и примеры для разных типов исследования.</p></span><span class="kb-entry-side"><time>7 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-vkr-struktura.html" data-guide data-topic="vkr" data-title="Как написать введение к ВКР" data-summary="Структура, объём, формулировки и самопроверка" data-aliases="введение диплом актуальность новизна гипотеза методы">
-            <span class="kb-entry-no">03</span><span><span class="kb-entry-tag">ВКР · введение</span><h3>Как написать введение к ВКР</h3><p>Все обязательные элементы по порядку, с формулировками и чек-листом.</p></span><span class="kb-entry-side"><time>9 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-vvedenie-kursovoy.html" data-guide data-topic="course" data-title="Введение курсовой" data-summary="Структура и полный пример введения" data-aliases="курсовая введение актуальность цель задачи объект предмет">
-            <span class="kb-entry-no">04</span><span><span class="kb-entry-tag">Курсовая · введение</span><h3>Введение курсовой</h3><p>Восемь элементов по порядку, рабочие фразы и пример цельного текста.</p></span><span class="kb-entry-side"><time>7 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-kursovaya-za-nedelyu.html" data-guide data-topic="course" data-title="Как собрать курсовую за неделю" data-summary="Реалистичный план от темы до оформления" data-aliases="срочно дедлайн семь дней план курсовой">
-            <span class="kb-entry-no">05</span><span><span class="kb-entry-tag">Курсовая · маршрут</span><h3>Как собрать курсовую за неделю</h3><p>Реалистичный порядок действий: тема, источники, теория, практика и оформление.</p></span><span class="kb-entry-side"><time>9 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-prakticheskaya-chast-kursovoy.html" data-guide data-topic="course" data-title="Практическая часть курсовой" data-summary="Данные, анализ и логика практической главы" data-aliases="исследование анализ расчеты эмпирика курсовая глава 2">
-            <span class="kb-entry-no">06</span><span><span class="kb-entry-tag">Курсовая · исследование</span><h3>Практическая часть курсовой</h3><p>Как выбрать данные, показать анализ и связать результат с целью работы.</p></span><span class="kb-entry-side"><time>8 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-zaklyuchenie-kursovoy.html" data-guide data-topic="course" data-title="Заключение курсовой" data-summary="Формула выводов и пример заключения" data-aliases="выводы итоги задачи курсовая конец">
-            <span class="kb-entry-no">07</span><span><span class="kb-entry-tag">Курсовая · выводы</span><h3>Заключение курсовой</h3><p>Как превратить решённые задачи в связные выводы без пересказа глав.</p></span><span class="kb-entry-side"><time>6 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-zaklyuchenie-vkr.html" data-guide data-topic="vkr" data-title="Заключение ВКР" data-summary="Задача, результат, вывод — в правильной последовательности" data-aliases="диплом выводы итоги заключение задачи рекомендации">
-            <span class="kb-entry-no">08</span><span><span class="kb-entry-tag">ВКР · выводы</span><h3>Заключение ВКР</h3><p>Формула «задача → результат → вывод», пример и проверка логики.</p></span><span class="kb-entry-side"><time>6 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-spisok-literatury.html" data-guide data-topic="vkr course gost publish" data-title="Список литературы по ГОСТ" data-summary="Готовые образцы для книг, статей, сайтов и законов" data-aliases="библиография источники ссылки гост 7.0.100 оформление">
-            <span class="kb-entry-no">09</span><span><span class="kb-entry-tag">Источники · ГОСТ</span><h3>Список литературы по ГОСТ</h3><p>Порядок источников и образцы описаний для основных типов публикаций.</p></span><span class="kb-entry-side"><time>8 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-normocontrol.html" data-guide data-topic="gost check vkr course" data-title="Нормоконтроль" data-summary="Поля, шрифты, таблицы, ссылки и частые ошибки" data-aliases="оформление гост проверка требования кафедра нумерация">
-            <span class="kb-entry-no">10</span><span><span class="kb-entry-tag">Оформление · проверка</span><h3>Нормоконтроль без хаоса</h3><p>Что сверить до отправки: от полей и нумерации до таблиц и ссылок.</p></span><span class="kb-entry-side"><time>8 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-titulnyj-list.html" data-guide data-topic="gost vkr course" data-title="Титульный лист" data-summary="Порядок блоков, поля и частые ошибки" data-aliases="титульник обложка гост вуз кафедра фио">
-            <span class="kb-entry-no">11</span><span><span class="kb-entry-tag">Оформление · начало</span><h3>Титульный лист</h3><p>Порядок блоков, параметры оформления и детали, которые надо сверить с вузом.</p></span><span class="kb-entry-side"><time>6 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-prilozheniya-po-gost.html" data-guide data-topic="gost vkr course practice" data-title="Приложения по ГОСТ" data-summary="Как вынести объёмные материалы за основной текст" data-aliases="таблицы анкеты документы приложение а б ссылки">
-            <span class="kb-entry-no">12</span><span><span class="kb-entry-tag">Оформление · приложения</span><h3>Приложения по ГОСТ</h3><p>Нумерация, ссылки из текста и оформление таблиц, анкет и документов.</p></span><span class="kb-entry-side"><time>6 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-antiplagiat-ai.html" data-guide data-topic="check vkr course publish" data-title="Антиплагиат и детекторы ИИ" data-summary="Как устроены проверки и как работать с текстом честно" data-aliases="оригинальность уникальность ии нейросеть проверка заимствования">
-            <span class="kb-entry-no">13</span><span><span class="kb-entry-tag">Проверки · текст</span><h3>Антиплагиат и детекторы ИИ</h3><p>Что именно ищут системы, как читать отчёт и улучшать текст без уловок.</p></span><span class="kb-entry-side"><time>10 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-otchet-po-praktike.html" data-guide data-topic="practice gost" data-title="Отчёт по практике" data-summary="Структура комплекта и связь с реальными задачами практики" data-aliases="практика отчет производственная учебная документы дневник">
-            <span class="kb-entry-no">14</span><span><span class="kb-entry-tag">Практика · отчёт</span><h3>Отчёт по практике</h3><p>Как собрать комплект документов вокруг реально выполненных задач.</p></span><span class="kb-entry-side"><time>9 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-dnevnik-praktiki.html" data-guide data-topic="practice" data-title="Дневник практики" data-summary="Логика записей и согласование с отчётом" data-aliases="практика дневник дни записи задания организация">
-            <span class="kb-entry-no">15</span><span><span class="kb-entry-tag">Практика · дневник</span><h3>Дневник практики</h3><p>Как описывать реальные действия по дням и не расходиться с отчётом.</p></span><span class="kb-entry-side"><time>7 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-harakteristika-s-praktiki.html" data-guide data-topic="practice" data-title="Характеристика с практики" data-summary="Структура проекта документа для согласования с руководителем" data-aliases="практика характеристика отзыв организация руководитель печать">
-            <span class="kb-entry-no">16</span><span><span class="kb-entry-tag">Практика · документ</span><h3>Характеристика с практики</h3><p>Какие сведения обычно входят в проект документа и кто его утверждает.</p></span><span class="kb-entry-side"><time>6 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-zashchita-diploma.html" data-guide data-topic="defense vkr" data-title="Подготовка к защите диплома" data-summary="Доклад, слайды, вопросы и репетиция" data-aliases="защита комиссия вкр диплом выступление ответы">
-            <span class="kb-entry-no">17</span><span><span class="kb-entry-tag">Защита · маршрут</span><h3>Подготовка к защите диплома</h3><p>Как связать доклад, слайды, раздатку, вопросы и репетицию.</p></span><span class="kb-entry-side"><time>12 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-prezentaciya-k-zashchite.html" data-guide data-topic="defense" data-title="Презентация к защите" data-summary="Логика двенадцати слайдов и правила оформления" data-aliases="слайды powerpoint презентация защита диплом">
-            <span class="kb-entry-no">18</span><span><span class="kb-entry-tag">Защита · слайды</span><h3>Презентация к защите</h3><p>Что вынести на каждый слайд и как оставить на экране только нужное.</p></span><span class="kb-entry-side"><time>6 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-rech-na-zashchitu.html" data-guide data-topic="defense" data-title="Речь на защиту" data-summary="Структура доклада на семь минут" data-aliases="доклад выступление текст речь тайминг защита">
-            <span class="kb-entry-no">19</span><span><span class="kb-entry-tag">Защита · доклад</span><h3>Речь на защиту</h3><p>Тайминг по блокам, связки со слайдами и пример структуры выступления.</p></span><span class="kb-entry-side"><time>7 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-otzyv-rukovoditelya-vkr.html" data-guide data-topic="defense vkr" data-title="Отзыв руководителя на ВКР" data-summary="Что обычно оценивается и как подготовить фактуру" data-aliases="научрук отзыв руководитель диплом защита документ">
-            <span class="kb-entry-no">20</span><span><span class="kb-entry-tag">Защита · документы</span><h3>Отзыв руководителя на ВКР</h3><p>Структура документа и факты, которые нужно подготовить для руководителя.</p></span><span class="kb-entry-side"><time>6 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-recenziya-na-vkr.html" data-guide data-topic="defense vkr" data-title="Рецензия на ВКР" data-summary="Кто рецензирует и что входит в оценку работы" data-aliases="рецензент рецензия замечания ответы защита диплом">
-            <span class="kb-entry-no">21</span><span><span class="kb-entry-tag">Защита · документы</span><h3>Рецензия на ВКР</h3><p>Кто может рецензировать работу, из чего состоит текст и как готовить ответы.</p></span><span class="kb-entry-side"><time>7 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-apellyaciya.html" data-guide data-topic="check" data-title="Апелляция на оценку" data-summary="Основания, доказательства и порядок действий" data-aliases="права оценка спор комиссия заявление срок процедура">
-            <span class="kb-entry-no">22</span><span><span class="kb-entry-tag">Права · процедура</span><h3>Апелляция на оценку</h3><p>Как отделить несогласие от процедурного нарушения и собрать документы.</p></span><span class="kb-entry-side"><time>8 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-rinc-statya.html" data-guide data-topic="publish" data-title="Статья РИНЦ" data-summary="Маршрут от рукописи до выбора издания" data-aliases="научная публикация журнал elibrary ринц статья">
-            <span class="kb-entry-no">23</span><span><span class="kb-entry-tag">Наука · публикации</span><h3>Статья РИНЦ</h3><p>Структура рукописи, проверка издания и маршрут первой публикации.</p></span><span class="kb-entry-side"><time>9 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-skolko-stoit-kursovaya.html" data-guide data-topic="course" data-title="Сколько стоит курсовая" data-summary="Из чего складывается цена и что сравнивать" data-aliases="цена стоимость бюджет курсовая заказать рынок смета">
-            <span class="kb-entry-no">24</span><span><span class="kb-entry-tag">Курсовая · стоимость</span><h3>Сколько стоит курсовая</h3><p>Что входит в смету, почему цены различаются и как сравнивать предложения.</p></span><span class="kb-entry-side"><time>8 мин</time><i>→</i></span>
-          </a>
-          <a class="kb-entry" href="guide-skolko-stoit-diplomnaya.html" data-guide data-topic="vkr" data-title="Сколько стоит дипломная работа" data-summary="Состав услуги, сроки и факторы цены" data-aliases="вкр диплом цена стоимость заказать рынок смета">
-            <span class="kb-entry-no">25</span><span><span class="kb-entry-tag">ВКР · стоимость</span><h3>Сколько стоит дипломная работа</h3><p>Какие этапы входят в работу, что влияет на срок и где скрываются доплаты.</p></span><span class="kb-entry-side"><time>8 мин</time><i>→</i></span>
-          </a>
-        </div>
-
-        <div class="kb-empty" data-kb-empty hidden>
-          <h3>Такого запроса пока нет</h3>
-          <p>Попробуйте короче — например, «ГОСТ», «защита» или «объект и предмет».</p>
-          <button type="button" class="btn btn-line" data-kb-clear>Показать все материалы</button>
-        </div>
-      </section>
-
-      <section class="kb-section reveal" aria-labelledby="toolsTitle">
-        <header class="kb-section-heading">
-          <div>
-            <span class="caps">Инструменты мастерской</span>
-            <h2 id="toolsTitle">Когда нужен не текст, а действие</h2>
-          </div>
-          <p>Отдельно от каталога: памятка, проверка готовой работы и разбор научного руководителя.</p>
-        </header>
-        <div class="kb-tools">
-          <a class="kb-tool" href="https://akademsalon.ru/api/pamyatka/welcome" target="_blank" rel="noopener">
-            <span class="kb-tool-mark">PDF · памятка</span>
-            <div><h3>Путеводитель заказчика</h3><p>Как устроен путь заказа, поэтапная оплата, гарантии и связь с мастером.</p></div>
-          </a>
-          <a class="kb-tool" href="check.html">
-            <span class="kb-tool-mark">Проверка · текст</span>
-            <div><h3>Разобрать готовую работу</h3><p>Структура, логика, оформление и замечания до следующей отправки.</p></div>
-          </a>
-          <a class="kb-tool" href="dosie-nauchruka.html">
-            <span class="kb-tool-mark">Досье · научрук</span>
-            <div><h3>Понять критерии руководителя</h3><p>Публикации, научный язык и вероятные требования к доказательствам.</p></div>
-          </a>
-        </div>
-      </section>
-
-      <section class="kb-section kb-journal-section reveal" aria-labelledby="journalTitle">
-        <div class="kb-journal">
-          <div class="kb-journal-intro">
-            <span class="kb-journal-ribbon" aria-hidden="true">¶</span>
-            <span class="caps">Продолжение читального зала</span>
-            <h2 id="journalTitle">Журнал мастерской</h2>
-            <p>Свежие рабочие заметки из канала: короткие разборы, наглядные карусели и ответы на вопросы, которые ещё не стали большой статьёй.</p>
-            <ul class="kb-journal-notes" aria-label="Что выходит в журнале">
-              <li>разборы замечаний</li>
-              <li>шаблоны и памятки</li>
-              <li>наблюдения мастерской</li>
-            </ul>
-            <div class="kb-journal-links">
-              <a class="btn btn-wax" href="https://t.me/akademsalon" target="_blank" rel="noopener" data-goal="tg_channel">Читать в Telegram</a>
-              <a class="link" href="https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs" target="_blank" rel="noopener" data-goal="max_channel">Канал в MAX</a>
-            </div>
-          </div>
-          <div class="kb-journal-stage" data-kb-journal-stage>
-            <div class="kb-journal-toolbar">
-              <div>
-                <span class="kb-journal-edition">Свежие выпуски</span>
-                <span class="kb-journal-status" data-kb-journal-status aria-live="polite">Загружаем из канала…</span>
-              </div>
-              <div class="kb-journal-controls" aria-label="Листание выпусков">
-                <button type="button" data-kb-journal-prev aria-label="Предыдущий выпуск" disabled>←</button>
-                <span class="kb-journal-counter" aria-hidden="true"><b data-kb-journal-index>01</b><i>/</i><span data-kb-journal-total>—</span></span>
-                <button type="button" data-kb-journal-next aria-label="Следующий выпуск" disabled>→</button>
-              </div>
-            </div>
-            <div class="kb-journal-viewport" data-kb-journal-viewport tabindex="0" aria-label="Свежие выпуски журнала мастерской" aria-busy="true">
-              <div class="kb-journal-track" data-kb-journal>
-                <a class="kb-journal-post is-fallback" href="https://t.me/akademsalon" target="_blank" rel="noopener" data-goal="tg_channel">
-                  <span class="kb-journal-media"><i aria-hidden="true">¶</i></span>
-                  <span class="kb-journal-copy">
-                    <span class="kb-journal-meta"><time>Новые выпуски</time><em>Telegram</em></span>
-                    <strong>Заметки прямо из мастерской</strong>
-                    <span>Разборы типовых замечаний, сезон защит и честные ответы на неудобные вопросы.</span>
-                    <span class="kb-journal-open">Открыть журнал <i>↗</i></span>
-                  </span>
-                </a>
-              </div>
-            </div>
-            <p class="kb-journal-hint">Листайте стрелками, свайпом или клавишами ← →. Полный выпуск откроется в канале.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="kb-final reveal" aria-labelledby="askTitle">
-        <div>
-          <h2 id="askTitle">Не нашли точного ответа?</h2>
-          <p>Опишите, что происходит с вашей работой. Мастер подскажет, с чего начать и какой материал открыть — даже если вы ничего не заказываете.</p>
-        </div>
-        <div class="kb-final-actions">
-          <button type="button" class="btn btn-wax" data-msg data-msg-lead="Опишите задачу по вашей работе — подскажем бесплатно и по делу.">Спросить мастера</button>
-          <a class="link" href="configurator.html">Рассчитать помощь →</a>
-        </div>
-      </section>
+    <div class="library-toolbar library-toolbar--primary">
+      <div class="filter-tabs" role="group" aria-label="Темы материалов">
+        <button class="is-active" type="button" data-kb-topic="all" aria-pressed="true">Все</button>
+              <button class="" type="button" data-kb-topic="vkr-start" aria-pressed="false">ВКР · старт</button>
+              <button class="" type="button" data-kb-topic="methodology" aria-pressed="false">Методология</button>
+              <button class="" type="button" data-kb-topic="vkr-intro" aria-pressed="false">ВКР · введение</button>
+              <button class="" type="button" data-kb-topic="course-intro" aria-pressed="false">Курсовая · введение</button>
+              <button class="" type="button" data-kb-topic="course-route" aria-pressed="false">Курсовая · маршрут</button>
+              <button class="" type="button" data-kb-topic="course-research" aria-pressed="false">Курсовая · исследование</button>
+      </div>
+      <label class="catalog-search">
+        <span class="sr-only">Поиск по библиотеке</span>
+        <input type="search" data-kb-search autocomplete="off" placeholder="Найти материал" />
+        <i aria-hidden="true">⌕</i>
+      </label>
+      <span class="sr-only" data-kb-status aria-live="polite" hidden>В каталоге — 25 материалов</span>
     </div>
-  </section>
+
+    <section class="featured-guide">
+      <div>
+        <span class="tag tag--wax">Выбор редакции</span>
+        <p class="eyebrow">ВКР · методология · 9 минут</p>
+        <h2>Введение, которое держит всю работу</h2>
+        <p>Как связать актуальность, объект, предмет, цель и задачи так, чтобы главы не жили отдельно от введения.</p>
+        <a class="button button--primary" href="guide-vkr-struktura.html">Читать материал <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="featured-guide__visual" aria-hidden="true">
+        <span class="featured-guide__folio">01</span>
+        <article>
+          <span>Актуальность</span><i></i><span>Объект</span><i></i><span>Предмет</span><i></i><span>Цель</span><i></i><span>Задачи</span>
+        </article>
+      </div>
+    </section>
+
+    <div class="article-grid" data-guide-grid>
+          <article class="article-card" data-guide data-catalog-index="0" data-topic="vkr-start" data-title="Темы ВКР: критерии выбора и примеры формулировок" data-summary="Критерии проверки темы: исследовательский вопрос, доступные данные, объём и срок.">
+            <a href="guide-temy-vkr.html">
+              <div class="article-card__number">01</div>
+              <div class="article-card__body">
+                <span class="tag">ВКР · старт</span>
+                <h3>Темы ВКР: критерии выбора и примеры формулировок</h3>
+                <p>Критерии проверки темы: исследовательский вопрос, доступные данные, объём и срок.</p>
+              </div>
+              <footer>
+                <span>10 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="1" data-topic="methodology" data-title="Объект, предмет, цель и задачи исследования" data-summary="Как связать объект, предмет, цель и задачи с будущей структурой работы.">
+            <a href="guide-obekt-predmet-cel-zadachi.html">
+              <div class="article-card__number">02</div>
+              <div class="article-card__body">
+                <span class="tag">Методология</span>
+                <h3>Объект, предмет, цель и задачи исследования</h3>
+                <p>Как связать объект, предмет, цель и задачи с будущей структурой работы.</p>
+              </div>
+              <footer>
+                <span>7 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="2" data-topic="vkr-intro" data-title="Введение к ВКР: структура и связь с главами" data-summary="Состав введения и проверка связи между задачами, главами и выводами.">
+            <a href="guide-vkr-struktura.html">
+              <div class="article-card__number">03</div>
+              <div class="article-card__body">
+                <span class="tag">ВКР · введение</span>
+                <h3>Введение к ВКР: структура и связь с главами</h3>
+                <p>Состав введения и проверка связи между задачами, главами и выводами.</p>
+              </div>
+              <footer>
+                <span>9 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="3" data-topic="course-intro" data-title="Введение курсовой работы: структура и пример" data-summary="Актуальность, объект, предмет, цель, задачи и методы — в рабочей последовательности.">
+            <a href="guide-vvedenie-kursovoy.html">
+              <div class="article-card__number">04</div>
+              <div class="article-card__body">
+                <span class="tag">Курсовая · введение</span>
+                <h3>Введение курсовой работы: структура и пример</h3>
+                <p>Актуальность, объект, предмет, цель, задачи и методы — в рабочей последовательности.</p>
+              </div>
+              <footer>
+                <span>7 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="4" data-topic="course-route" data-title="Как спланировать курсовую на семь дней" data-summary="План на семь дней для ситуации, когда тема определена, а источники и данные доступны.">
+            <a href="guide-kursovaya-za-nedelyu.html">
+              <div class="article-card__number">05</div>
+              <div class="article-card__body">
+                <span class="tag">Курсовая · маршрут</span>
+                <h3>Как спланировать курсовую на семь дней</h3>
+                <p>План на семь дней для ситуации, когда тема определена, а источники и данные доступны.</p>
+              </div>
+              <footer>
+                <span>9 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="5" data-topic="course-research" data-title="Практическая часть курсовой: данные и анализ" data-summary="Как выбрать данные и метод, показать результаты и сформулировать выводы.">
+            <a href="guide-prakticheskaya-chast-kursovoy.html">
+              <div class="article-card__number">06</div>
+              <div class="article-card__body">
+                <span class="tag">Курсовая · исследование</span>
+                <h3>Практическая часть курсовой: данные и анализ</h3>
+                <p>Как выбрать данные и метод, показать результаты и сформулировать выводы.</p>
+              </div>
+              <footer>
+                <span>8 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="6" data-topic="other" data-title="Заключение курсовой работы: структура и пример" data-summary="Четыре смысловых блока и связь между задачами, результатами и выводами.">
+            <a href="guide-zaklyuchenie-kursovoy.html">
+              <div class="article-card__number">07</div>
+              <div class="article-card__body">
+                <span class="tag">Курсовая · выводы</span>
+                <h3>Заключение курсовой работы: структура и пример</h3>
+                <p>Четыре смысловых блока и связь между задачами, результатами и выводами.</p>
+              </div>
+              <footer>
+                <span>6 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="7" data-topic="other" data-title="Заключение курсовой и ВКР: структура и связь с задачами" data-summary="Как собрать заключение из результатов готовых глав и не добавлять новые данные.">
+            <a href="guide-zaklyuchenie-vkr.html">
+              <div class="article-card__number">08</div>
+              <div class="article-card__body">
+                <span class="tag">ВКР · выводы</span>
+                <h3>Заключение курсовой и ВКР: структура и связь с задачами</h3>
+                <p>Как собрать заключение из результатов готовых глав и не добавлять новые данные.</p>
+              </div>
+              <footer>
+                <span>6 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="8" data-topic="other" data-title="Список литературы по ГОСТ: порядок и примеры" data-summary="Порядок списка и примеры описания книг, статей, электронных ресурсов и нормативных актов.">
+            <a href="guide-spisok-literatury.html">
+              <div class="article-card__number">09</div>
+              <div class="article-card__body">
+                <span class="tag">Источники · ГОСТ</span>
+                <h3>Список литературы по ГОСТ: порядок и примеры</h3>
+                <p>Порядок списка и примеры описания книг, статей, электронных ресурсов и нормативных актов.</p>
+              </div>
+              <footer>
+                <span>8 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="9" data-topic="other" data-title="Нормоконтроль: что проверить перед сдачей" data-summary="Параметры страницы, нумерация, таблицы, рисунки, ссылки и список источников.">
+            <a href="guide-normocontrol.html">
+              <div class="article-card__number">10</div>
+              <div class="article-card__body">
+                <span class="tag">Оформление · проверка</span>
+                <h3>Нормоконтроль: что проверить перед сдачей</h3>
+                <p>Параметры страницы, нумерация, таблицы, рисунки, ссылки и список источников.</p>
+              </div>
+              <footer>
+                <span>8 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="10" data-topic="other" data-title="Титульный лист курсовой и ВКР" data-summary="Порядок блоков и реквизиты, которые нужно сверить с образцом кафедры.">
+            <a href="guide-titulnyj-list.html">
+              <div class="article-card__number">11</div>
+              <div class="article-card__body">
+                <span class="tag">Оформление · начало</span>
+                <h3>Титульный лист курсовой и ВКР</h3>
+                <p>Порядок блоков и реквизиты, которые нужно сверить с образцом кафедры.</p>
+              </div>
+              <footer>
+                <span>6 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="11" data-topic="other" data-title="Приложения в курсовой и ВКР: оформление и ссылки" data-summary="Обозначения, ссылки из текста и оформление таблиц, анкет и документов.">
+            <a href="guide-prilozheniya-po-gost.html">
+              <div class="article-card__number">12</div>
+              <div class="article-card__body">
+                <span class="tag">Оформление · приложения</span>
+                <h3>Приложения в курсовой и ВКР: оформление и ссылки</h3>
+                <p>Обозначения, ссылки из текста и оформление таблиц, анкет и документов.</p>
+              </div>
+              <footer>
+                <span>6 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="12" data-topic="other" data-title="Антиплагиат и детекторы ИИ: что именно они проверяют" data-summary="Разница между поиском заимствований и детекторами ИИ, ограничения отчётов и содержательная переработка текста." hidden>
+            <a href="guide-antiplagiat-ai.html">
+              <div class="article-card__number">13</div>
+              <div class="article-card__body">
+                <span class="tag">Проверки · текст</span>
+                <h3>Антиплагиат и детекторы ИИ: что именно они проверяют</h3>
+                <p>Разница между поиском заимствований и детекторами ИИ, ограничения отчётов и содержательная переработка текста.</p>
+              </div>
+              <footer>
+                <span>10 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="13" data-topic="other" data-title="Отчёт по практике: структура и документы" data-summary="Как согласовать отчёт, дневник, характеристику и приложения по датам и задачам." hidden>
+            <a href="guide-otchet-po-praktike.html">
+              <div class="article-card__number">14</div>
+              <div class="article-card__body">
+                <span class="tag">Практика · отчёт</span>
+                <h3>Отчёт по практике: структура и документы</h3>
+                <p>Как согласовать отчёт, дневник, характеристику и приложения по датам и задачам.</p>
+              </div>
+              <footer>
+                <span>9 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="14" data-topic="other" data-title="Дневник практики: структура и примеры записей" data-summary="Как фиксировать реальные задачи по дням и сверять записи с отчётом." hidden>
+            <a href="guide-dnevnik-praktiki.html">
+              <div class="article-card__number">15</div>
+              <div class="article-card__body">
+                <span class="tag">Практика · дневник</span>
+                <h3>Дневник практики: структура и примеры записей</h3>
+                <p>Как фиксировать реальные задачи по дням и сверять записи с отчётом.</p>
+              </div>
+              <footer>
+                <span>7 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="15" data-topic="other" data-title="Характеристика с места практики: структура документа" data-summary="Какие факты подготовить для руководителя от организации и как устроен документ." hidden>
+            <a href="guide-harakteristika-s-praktiki.html">
+              <div class="article-card__number">16</div>
+              <div class="article-card__body">
+                <span class="tag">Практика · документ</span>
+                <h3>Характеристика с места практики: структура документа</h3>
+                <p>Какие факты подготовить для руководителя от организации и как устроен документ.</p>
+              </div>
+              <footer>
+                <span>6 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="16" data-topic="other" data-title="Подготовка к защите ВКР" data-summary="Доклад, презентация, раздаточный материал, репетиция и ответы на вопросы." hidden>
+            <a href="guide-zashchita-diploma.html">
+              <div class="article-card__number">17</div>
+              <div class="article-card__body">
+                <span class="tag">Защита · маршрут</span>
+                <h3>Подготовка к защите ВКР</h3>
+                <p>Доклад, презентация, раздаточный материал, репетиция и ответы на вопросы.</p>
+              </div>
+              <footer>
+                <span>12 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="17" data-topic="other" data-title="Презентация к защите ВКР" data-summary="Структура слайдов и правила читаемости, которые поддерживают доклад." hidden>
+            <a href="guide-prezentaciya-k-zashchite.html">
+              <div class="article-card__number">18</div>
+              <div class="article-card__body">
+                <span class="tag">Защита · слайды</span>
+                <h3>Презентация к защите ВКР</h3>
+                <p>Структура слайдов и правила читаемости, которые поддерживают доклад.</p>
+              </div>
+              <footer>
+                <span>6 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="18" data-topic="other" data-title="Речь на защите: структура доклада" data-summary="Распределение времени, смысловые блоки доклада и переходы между слайдами." hidden>
+            <a href="guide-rech-na-zashchitu.html">
+              <div class="article-card__number">19</div>
+              <div class="article-card__body">
+                <span class="tag">Защита · доклад</span>
+                <h3>Речь на защите: структура доклада</h3>
+                <p>Распределение времени, смысловые блоки доклада и переходы между слайдами.</p>
+              </div>
+              <footer>
+                <span>7 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="19" data-topic="other" data-title="Отзыв руководителя на ВКР" data-summary="Какие сведения подготовить руководителю и чем отзыв отличается от рецензии." hidden>
+            <a href="guide-otzyv-rukovoditelya-vkr.html">
+              <div class="article-card__number">20</div>
+              <div class="article-card__body">
+                <span class="tag">Защита · документы</span>
+                <h3>Отзыв руководителя на ВКР</h3>
+                <p>Какие сведения подготовить руководителю и чем отзыв отличается от рецензии.</p>
+              </div>
+              <footer>
+                <span>6 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="20" data-topic="other" data-title="Рецензия на ВКР: структура документа" data-summary="Кто может быть рецензентом, какие сведения нужны и как подготовить ответы на замечания." hidden>
+            <a href="guide-recenziya-na-vkr.html">
+              <div class="article-card__number">21</div>
+              <div class="article-card__body">
+                <span class="tag">Защита · документы</span>
+                <h3>Рецензия на ВКР: структура документа</h3>
+                <p>Кто может быть рецензентом, какие сведения нужны и как подготовить ответы на замечания.</p>
+              </div>
+              <footer>
+                <span>7 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="21" data-topic="other" data-title="Апелляция на оценку в вузе: основания и порядок подачи" data-summary="Как найти локальное положение, проверить основания, сроки и порядок подачи." hidden>
+            <a href="guide-apellyaciya.html">
+              <div class="article-card__number">22</div>
+              <div class="article-card__body">
+                <span class="tag">Права · процедура</span>
+                <h3>Апелляция на оценку в вузе: основания и порядок подачи</h3>
+                <p>Как найти локальное положение, проверить основания, сроки и порядок подачи.</p>
+              </div>
+              <footer>
+                <span>8 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="22" data-topic="other" data-title="Статья для журнала РИНЦ: подготовка и подача" data-summary="Выбор издания, подготовка рукописи, подача и проверка публикации в eLibrary." hidden>
+            <a href="guide-rinc-statya.html">
+              <div class="article-card__number">23</div>
+              <div class="article-card__body">
+                <span class="tag">Наука · публикации</span>
+                <h3>Статья для журнала РИНЦ: подготовка и подача</h3>
+                <p>Выбор издания, подготовка рукописи, подача и проверка публикации в eLibrary.</p>
+              </div>
+              <footer>
+                <span>9 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="23" data-topic="other" data-title="Из чего складывается стоимость редактуры курсовой" data-summary="Какие редакторские задачи входят в смету и что меняет срок и стоимость." hidden>
+            <a href="guide-skolko-stoit-kursovaya.html">
+              <div class="article-card__number">24</div>
+              <div class="article-card__body">
+                <span class="tag">Курсовая · стоимость</span>
+                <h3>Из чего складывается стоимость редактуры курсовой</h3>
+                <p>Какие редакторские задачи входят в смету и что меняет срок и стоимость.</p>
+              </div>
+              <footer>
+                <span>8 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+          <article class="article-card" data-guide data-catalog-index="24" data-topic="other" data-title="Из чего складывается стоимость редактуры ВКР" data-summary="Как разбить работу на этапы, сравнить предложения и согласовать дополнительные расходы." hidden>
+            <a href="guide-skolko-stoit-diplomnaya.html">
+              <div class="article-card__number">25</div>
+              <div class="article-card__body">
+                <span class="tag">ВКР · стоимость</span>
+                <h3>Из чего складывается стоимость редактуры ВКР</h3>
+                <p>Как разбить работу на этапы, сравнить предложения и согласовать дополнительные расходы.</p>
+              </div>
+              <footer>
+                <span>8 минут</span>
+                <span>Читать <b aria-hidden="true">→</b></span>
+              </footer>
+            </a>
+          </article>
+    </div>
+    <button class="catalog-more button button--secondary" type="button" data-kb-more>Показать остальные — 13</button>
+    <div class="catalog-empty" data-kb-empty role="status" hidden>
+      <strong>Материал не найден</strong>
+      <p>Сократите запрос или выберите другую тему.</p>
+      <button class="button button--secondary" type="button" data-kb-clear>Сбросить поиск</button>
+    </div>
+
+    <aside class="library-tools">
+      <div>
+        <p class="eyebrow">Проверить свой материал</p>
+        <h2>Бесплатные инструменты</h2>
+        <p>Можно начать с автоматической проверки и решить, нужен ли редактор.</p>
+      </div>
+      <div>
+        <a href="check.html"><span>Проверка академического текста</span><b aria-hidden="true">→</b></a>
+        <a href="audit-temy-vkr.html"><span>Паспорт темы ВКР</span><b aria-hidden="true">→</b></a>
+        <a href="proverka-istochnikov-vkr.html"><span>Проверка оформления источников</span><b aria-hidden="true">→</b></a>
+      </div>
+    </aside>
+  </div>
 </main>
 
-<script defer src="assets/js/app.js?v=20260724seo2"></script>
-<script defer src="assets/js/extras.js?v=20260723h"></script>
-<script defer src="assets/js/knowledge.js?v=20260724a"></script>
+<script defer src="assets/js/app.js?v=20260725release1"></script>
+<script defer src="assets/js/extras.js?v=20260725release1"></script>
+<script defer src="assets/js/knowledge.js?v=20260725release1"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

@@ -12,24 +12,28 @@ const pages = [
     canonical: 'https://akademsalon.ru/proverka-istochnikov-vkr.html',
     schema: 'WebApplication',
     service: 'rv',
+    visibleFaq: false,
   },
   {
     file: 'audit-temy-vkr.html',
     canonical: 'https://akademsalon.ru/audit-temy-vkr.html',
     schema: 'WebApplication',
     service: 'pl',
+    visibleFaq: false,
   },
   {
     file: 'redaktura-posle-ii.html',
     canonical: 'https://akademsalon.ru/redaktura-posle-ii.html',
     schema: 'Service',
     service: 'ai',
+    visibleFaq: true,
   },
   {
     file: 'dorabotka-otcheta-po-praktike.html',
     canonical: 'https://akademsalon.ru/dorabotka-otcheta-po-praktike.html',
     schema: 'Service',
     service: 'rv',
+    visibleFaq: true,
   },
 ];
 
@@ -81,9 +85,10 @@ test('growth pages have unique indexable metadata and valid schema', () => {
       schemas.some((node) => typeIncludes(node['@type'], page.schema)),
       `${page.file}: ${page.schema} schema`,
     );
-    assert.ok(
+    assert.equal(
       schemas.some((node) => typeIncludes(node['@type'], 'FAQPage')),
-      `${page.file}: FAQ schema`,
+      page.visibleFaq,
+      `${page.file}: FAQ schema follows visible content`,
     );
     assert.ok(
       schemas.some((node) => typeIncludes(node['@type'], 'BreadcrumbList')),
@@ -122,33 +127,28 @@ test('DOI checker is bounded, concurrency-safe and renders metadata as text', ()
 
 test('topic audit stays on-device and does not inject user HTML', () => {
   const html = read('audit-temy-vkr.html');
-  const js = read('assets/js/topic-audit.js');
+  const js = read('assets/js/polish15-operations.js');
   assert.doesNotMatch(html, /<form\b|type="submit"/i);
-  assert.match(html, /role="form"[^>]+data-topic-form/);
-  assert.match(html, /type="button" data-topic-analyze/);
-  assert.match(js, /navigator\.clipboard/);
-  assert.match(js, /textContent/);
-  assert.doesNotMatch(js, /\.innerHTML\s*=/);
+  assert.match(html, /class="topic-audit__form"[^>]+role="form"/);
+  assert.match(html, /type="button"[^>]+data-run-topic-audit/);
+  assert.match(js, /function topicAudit\(\)/);
+  assert.match(js, /safeStore\('salon_topic_passport'/);
+  assert.match(js, /escapeHTML\(topic\)/);
   assert.doesNotMatch(js, /addEventListener\(['"]submit/);
-  assert.match(js, /tasks\.length >= 3 && tasks\.length <= 7/);
+  assert.match(js, /result\.innerHTML/);
 });
 
-test('quick Telegram acquisition links use the production one-message flow', () => {
+test('growth pages lead into the approved configurator without restoring the old home CTA block', () => {
   for (const page of pages) {
     const html = read(page.file);
     assert.match(
       html,
-      /https:\/\/t\.me\/academic_saloon_bot\?start=webq_[a-z0-9_-]+/,
-      `${page.file}: webq deep link`,
+      new RegExp(`configurator\\.html\\?service=${page.service}`),
+      `${page.file}: configurator deep link`,
     );
   }
-  assert.match(
-    read('razbor-zamechaniy-nauchruka.html'),
-    /start=webq_rv_comments/,
-  );
-  assert.match(read('index.html'), /start=webq_home_diplom/);
-  assert.match(read('index.html'), /Отправить задачу одним сообщением/);
-  assert.doesNotMatch(read('index.html'), /start=web"/);
+  assert.doesNotMatch(read('index.html'), /Отправить задачу одним сообщением/);
+  assert.doesNotMatch(read('index.html'), /start=webq_home_diplom/);
   assert.match(read('assets/js/pereplet.js'), /start=webq_/);
 });
 
@@ -163,9 +163,9 @@ test('sitemap and hub expose every new growth page', () => {
   }
   for (const tool of ['proverka-istochnikov-vkr.html', 'audit-temy-vkr.html', 'check.html']) {
     assert.match(hub, new RegExp(`href="${tool.replaceAll('.', '\\.')}"`));
-    assert.match(home, new RegExp(`href="${tool.replaceAll('.', '\\.')}"`));
   }
-  assert.match(home, /Проверьте материал до заявки/);
+  assert.doesNotMatch(home, /Проверьте материал до заявки/);
+  assert.doesNotMatch(home, /class="home-tools"/);
 });
 
 test('style checker has crawlable guidance and truthful application schema', () => {

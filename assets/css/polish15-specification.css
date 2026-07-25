@@ -1,0 +1,451 @@
+/* ============================================================
+   Академический Салон · утверждённый экран спецификации
+   Точная production-версия full-концепта без элементов старой страницы.
+   ============================================================ */
+
+body.polish15-specification{
+  --canvas:#f3eee4;
+  --canvas-deep:#e9e1d3;
+  --paper:#faf6ee;
+  --paper-2:#e9e1d3;
+  --sheet:#fffdf8;
+  --sheet-rgb:255,253,248;
+  --ink:#1d1c18;
+  --ink-2:#292721;
+  --text:#38352f;
+  --muted:#68635a;
+  --quiet:#8b8375;
+  --faint:#aaa08f;
+  --ink-soft:#68635a;
+  --ink-faint:#8b8375;
+  --line:#d8cebd;
+  --line-soft:rgba(102,91,72,.12);
+  --line-strong:#b8aa94;
+  --hairline:#d8cebd;
+  --hairline-strong:#b8aa94;
+  --wax:#a63f29;
+  --wax-deep:#792b1d;
+  --wax-soft:#f2ddd5;
+  --green:#3c644c;
+  --green-soft:#dfe9e1;
+  --spec-page:1320px;
+  --spec-gutter:clamp(24px,4.25vw,72px);
+  --spec-section:clamp(72px,7.5vw,112px);
+  --spec-control-radius:7px;
+  --spec-paper-shadow:0 30px 90px rgba(54,45,31,.12),0 6px 20px rgba(54,45,31,.05);
+  --spec-ease:cubic-bezier(.22,1,.36,1);
+  min-width:320px;
+  overflow-x:clip;
+  color:var(--text);
+  background:
+    linear-gradient(90deg,transparent calc(50% - .5px),rgba(70,61,46,.025) 50%,transparent calc(50% + .5px)),
+    var(--canvas);
+  font:400 16px/1.58 var(--sans);
+}
+
+body.polish15-specification::before{
+  z-index:-1;
+  background:
+    radial-gradient(circle at 8% 8%,rgba(255,255,255,.42),transparent 24%),
+    radial-gradient(circle at 92% 16%,rgba(180,148,88,.1),transparent 24%),
+    repeating-linear-gradient(0deg,rgba(67,59,45,.013) 0 1px,transparent 1px 4px);
+}
+
+:root[data-theme="dark"] body.polish15-specification{
+  --canvas:#171714;
+  --canvas-deep:#11110f;
+  --paper:#1e1d19;
+  --paper-2:#11110f;
+  --sheet:#24221d;
+  --sheet-rgb:36,34,29;
+  --ink:#f2ecdf;
+  --ink-2:#e6decf;
+  --text:#d0c8ba;
+  --muted:#aaa293;
+  --quiet:#8b8478;
+  --faint:#6d675e;
+  --ink-soft:#aaa293;
+  --ink-faint:#8b8478;
+  --line:#3c3932;
+  --line-soft:rgba(242,236,223,.09);
+  --line-strong:#565148;
+  --hairline:#3c3932;
+  --hairline-strong:#565148;
+  --wax:#c65b41;
+  --wax-deep:#a4432d;
+  --wax-soft:#42251f;
+  --green:#7faa8b;
+  --green-soft:#23362a;
+}
+
+:root[data-theme="dark"] body.polish15-specification::before{opacity:.38}
+
+.polish15-specification .specification-view{
+  min-height:72vh;
+}
+
+.polish15-specification .specification-view :is(h1,h2,h3,h4){
+  color:var(--ink);
+  font-family:var(--serif);
+  font-weight:470;
+  line-height:1.08;
+  letter-spacing:-.035em;
+  text-wrap:balance;
+}
+
+.polish15-specification .specification-view p{text-wrap:pretty}
+
+.polish15-specification .spec-page-shell{
+  width:min(100%,calc(var(--spec-page) + var(--spec-gutter) * 2));
+  margin-inline:auto;
+  padding-inline:var(--spec-gutter);
+}
+
+.polish15-specification .spec-page-head{
+  display:grid;
+  grid-template-columns:minmax(0,1.2fr) minmax(250px,.65fr);
+  gap:clamp(32px,5vw,72px);
+  align-items:end;
+  padding-block:clamp(50px,4.5vw,68px) clamp(40px,3.8vw,56px);
+  border-bottom:1px solid var(--line);
+}
+
+.polish15-specification .spec-page-head__copy{
+  display:grid;
+  gap:15px;
+}
+
+.polish15-specification .spec-eyebrow{
+  color:var(--muted);
+  font:600 11px/1.35 var(--mono);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.polish15-specification .spec-page-head h1{
+  max-width:850px;
+  font-size:clamp(46px,4.8vw,68px);
+  line-height:1.01;
+}
+
+.polish15-specification .spec-page-head__lead{
+  max-width:720px;
+  color:var(--muted);
+  font-size:clamp(17px,1.5vw,20px);
+  line-height:1.55;
+}
+
+.polish15-specification .spec-page-head__action{
+  width:max-content;
+  margin-top:3px;
+}
+
+.polish15-specification .spec-page-head__side{padding-bottom:6px}
+
+.polish15-specification .spec-button{
+  display:inline-flex;
+  min-height:48px;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  padding:12px 19px;
+  color:var(--ink);
+  background:var(--sheet);
+  border:1px solid var(--line);
+  border-radius:var(--spec-control-radius);
+  cursor:pointer;
+  font-size:14px;
+  font-weight:560;
+  line-height:1.2;
+  letter-spacing:.005em;
+  text-align:center;
+  text-decoration:none;
+  transition:
+    transform .2s var(--spec-ease),
+    background-color .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+.polish15-specification .spec-button span{
+  font-family:var(--serif);
+  font-size:18px;
+  transition:transform .18s var(--spec-ease);
+}
+
+.polish15-specification .spec-button:hover{
+  border-color:var(--line-strong);
+  box-shadow:0 8px 24px rgba(47,38,25,.07);
+  transform:translateY(-2px);
+}
+
+.polish15-specification .spec-button:hover span{transform:translateX(3px)}
+.polish15-specification .spec-button:active{transform:translateY(0)}
+
+.polish15-specification .document-badge{
+  display:grid;
+  gap:7px;
+  padding:20px;
+  background:var(--paper);
+  border:1px solid var(--line);
+}
+
+.polish15-specification .document-badge span,
+.polish15-specification .document-badge small{
+  color:var(--quiet);
+  font:550 8px/1.2 var(--mono);
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.polish15-specification .document-badge strong{
+  color:var(--ink);
+  font:500 18px/1.2 var(--serif);
+}
+
+.polish15-specification .spec-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);
+  gap:clamp(40px,7vw,90px);
+  align-items:start;
+  padding-block:var(--spec-section);
+}
+
+.polish15-specification .spec-paper{
+  color:#3a362f;
+  background:#fffdf7;
+  border:1px solid #d8cebc;
+  box-shadow:var(--spec-paper-shadow);
+}
+
+.polish15-specification .spec-paper>header{
+  display:grid;
+  grid-template-columns:42px 1fr auto;
+  gap:13px;
+  align-items:center;
+  padding:24px 30px;
+  border-bottom:1px solid #d8cebc;
+}
+
+.polish15-specification .spec-paper>header img{
+  width:42px;
+  border-radius:50%;
+}
+
+.polish15-specification .spec-paper>header div{
+  display:grid;
+  gap:3px;
+}
+
+.polish15-specification .spec-paper>header span,
+.polish15-specification .spec-paper>header b,
+.polish15-specification .spec-paper>footer{
+  color:#82796a;
+  font:550 8px/1.2 var(--mono);
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.polish15-specification .spec-paper>header strong{
+  color:#2f2b25;
+  font:500 15px/1.2 var(--serif);
+}
+
+.polish15-specification .spec-paper>section{
+  padding:28px 30px;
+  border-bottom:1px solid #e0d6c5;
+}
+
+.polish15-specification .spec-paper h2{
+  color:#292620;
+  font-size:21px;
+}
+
+.polish15-specification .spec-paper dl{
+  margin-top:19px;
+  border-top:1px solid #ddd3c2;
+}
+
+.polish15-specification .spec-paper dl>div{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:18px;
+  padding:12px 0;
+  border-bottom:1px solid #e3dacb;
+}
+
+.polish15-specification .spec-paper dt{
+  color:#837a6c;
+  font-size:9px;
+}
+
+.polish15-specification .spec-paper dd,
+.polish15-specification .spec-paper section>p{
+  color:#3f3a32;
+  font-size:10px;
+}
+
+.polish15-specification .spec-paper>footer{
+  display:flex;
+  justify-content:space-between;
+  padding:14px 30px;
+}
+
+.polish15-specification .spec-notes{
+  position:sticky;
+  top:96px;
+}
+
+.polish15-specification .spec-notes h2{font-size:27px}
+
+.polish15-specification .spec-notes ul{
+  display:grid;
+  gap:0;
+  margin-top:18px;
+  padding:0;
+  list-style:none;
+  border-top:1px solid var(--line-strong);
+}
+
+.polish15-specification .spec-notes li{
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.polish15-specification .spec-notes li>span{
+  color:var(--wax);
+  font:600 9px/1.5 var(--mono);
+}
+
+.polish15-specification .spec-notes li div{
+  display:grid;
+  gap:3px;
+}
+
+.polish15-specification .spec-notes li strong{
+  color:var(--ink);
+  font-size:11px;
+}
+
+.polish15-specification .spec-notes li p{
+  color:var(--quiet);
+  font-size:9px;
+}
+
+.polish15-specification .spec-notes .spec-button{
+  width:100%;
+  margin-top:20px;
+}
+
+@media (max-width:920px){
+  .polish15-specification .spec-page-head{
+    grid-template-columns:1fr;
+    gap:30px;
+    padding-block:52px 42px;
+  }
+
+  .polish15-specification .spec-page-head h1{
+    font-size:clamp(40px,10vw,56px);
+  }
+
+  .polish15-specification .spec-page-head__lead{font-size:16px}
+
+  .polish15-specification .spec-layout{
+    grid-template-columns:1fr;
+    gap:34px;
+  }
+
+  .polish15-specification .spec-paper dl>div{
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+
+  .polish15-specification .spec-paper dd,
+  .polish15-specification .spec-paper section>p,
+  .polish15-specification .spec-notes li strong,
+  .polish15-specification .spec-notes li p{
+    font-size:12px;
+  }
+
+  .polish15-specification .spec-notes{position:static}
+}
+
+@media (max-width:620px){
+  body.polish15-specification{--spec-section:54px}
+
+  .polish15-specification .spec-page-shell{
+    padding-inline:max(16px,env(safe-area-inset-left));
+  }
+
+  .polish15-specification .spec-page-head h1{font-size:40px}
+
+  .polish15-specification .spec-page-head__action,
+  .polish15-specification .spec-page-head__action .spec-button{
+    width:100%;
+  }
+
+  .polish15-specification .spec-paper>header{
+    grid-template-columns:38px 1fr;
+    padding:20px;
+  }
+
+  .polish15-specification .spec-paper>header b{display:none}
+
+  .polish15-specification .spec-paper>section,
+  .polish15-specification .spec-paper>footer{
+    padding-inline:20px;
+  }
+}
+
+@media (max-width:360px){
+  .polish15-specification .spec-page-head h1{
+    font-size:38px;
+    overflow-wrap:anywhere;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .polish15-specification .spec-button,
+  .polish15-specification .spec-button span{
+    transition-duration:.01ms;
+  }
+}
+
+@media print{
+  body.polish15-specification{
+    padding:0!important;
+    color:#111;
+    background:#fff!important;
+    transition:none!important;
+  }
+
+  body.polish15-specification::before,
+  .polish15-specification>.site-header,
+  .polish15-specification>.mobile-appbar,
+  .polish15-specification>.mobile-cta,
+  .polish15-specification>.site-footer,
+  .polish15-specification .spec-page-head,
+  .polish15-specification .spec-notes{
+    display:none!important;
+  }
+
+  .polish15-specification .spec-page-shell{
+    width:100%;
+    padding:0;
+  }
+
+  .polish15-specification .spec-layout{
+    display:block;
+    padding:0;
+  }
+
+  .polish15-specification .spec-paper{
+    width:100%;
+    border-color:#b8b1a5;
+    box-shadow:none;
+    break-inside:avoid;
+  }
+}

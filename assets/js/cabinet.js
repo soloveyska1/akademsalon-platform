@@ -309,7 +309,7 @@ function initCabinet() {
       ? '<button type="button" class="btn btn-wax btn-block cab-login-main" id="cabEmailTgl" aria-expanded="false" aria-controls="cabEmailWrap">' +
         '<span aria-hidden="true">✉</span> Продолжить по почте <span class="ar">→</span></button>'
       : '<button type="button" class="btn btn-wax btn-block cab-login-main" id="cabTg">Продолжить с Telegram <span class="ar">→</span></button>';
-    return '<div class="cab-login reveal">' +
+    return '<main class="cab-login reveal">' +
       '<section class="cab-login-card" aria-labelledby="cabLoginTitle">' +
         '<div class="cab-login-story">' +
           '<div class="cab-login-seal" aria-hidden="true"><span>АС</span></div>' +
@@ -344,7 +344,7 @@ function initCabinet() {
           '<a class="cab-first-order" href="configurator.html"><span>Впервые у нас?</span><b>Оформить первый заказ <i aria-hidden="true">→</i></b></a>' +
         '</div>' +
       '</section>' +
-      '</div>';
+      '</main>';
   }
 
   /* ---------------- вход по почте: код на e-mail ---------------- */
@@ -1286,7 +1286,7 @@ function initCabinet() {
       var deadline = item.deadline || {};
       var correction = item.correction_window || {};
       if ((item.qty || 1) > 1) facts.push('× ' + item.qty);
-      fact(facts, 'Контур', item.contract_contour);
+      fact(facts, 'Тип договора', item.contract_contour);
       fact(facts, 'Разрешённая цель', item.permitted_purpose);
       fact(facts, 'Результат', item.deliverable || item.result);
       fact(facts, 'Исходник', input.description || item.input_description);
@@ -1828,18 +1828,6 @@ function initCabinet() {
      Постоянный каркас: строка личности + вкладки; контент собирается из
      прежних блоков. Вкладка живёт в location.hash — переживает F5 и даёт
      прямые ссылки (#orders, #wallet, #club, #help). */
-  var TABS = [['home', 'Обзор'], ['orders', 'Дела'], ['wallet', 'Кошелёк'],
-              ['club', 'Клуб'], ['help', 'Помощь']];
-
-  /* ── иконки разделов: гравюрные штрихи, currentColor ── */
-  var ICO = {
-    home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.2C10 4.9 7.6 4.3 4 4.3v13.4c3.6 0 6 .6 8 1.9 2-1.3 4.4-1.9 8-1.9V4.3c-3.6 0-6 .6-8 1.9z"/><path d="M12 6.2v13.4"/></svg>',
-    orders: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 17.5v-11A1.5 1.5 0 0 1 5 5h4l2 2.2h8a1.5 1.5 0 0 1 1.5 1.5v8.8A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M3.5 10.2h17"/></svg>',
-    wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6h11.7v2H5.5A1.5 1.5 0 0 1 4 7.5zm0 0V17a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 17V9.5A1.5 1.5 0 0 0 18.5 8"/><path d="M15.6 12.8h3"/></svg>',
-    club: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16v3.2a1.9 1.9 0 0 0 0 3.6V17H4v-3.2a1.9 1.9 0 0 0 0-3.6V7z"/><path d="M9.5 7v10" stroke-dasharray="2.4 2.6"/></svg>',
-    help: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.3"/><path d="M14.9 9.1l-1.7 4.1-4.1 1.7 1.7-4.1 4.1-1.7z"/></svg>'
-  };
-
   function tabBadges() {
     var unread = 0;
     st.orders.forEach(function (o) { unread += (o.unread || 0) + (o.files_new || 0); });
@@ -1848,24 +1836,33 @@ function initCabinet() {
       club: (st.me && st.me.sub_pending) ? '!' : ''
     };
   }
-  function tabRow(cls, icoCls, lblCls) {
-    var b = tabBadges();
-    return TABS.map(function (t) {
-      return '<button type="button" class="' + cls + (st.tab === t[0] ? ' on' : '') +
-        '" data-tab="' + t[0] + '" aria-current="' + (st.tab === t[0]) + '">' +
-        '<span class="' + icoCls + '" aria-hidden="true">' + ICO[t[0]] + '</span>' +
-        '<span class="' + lblCls + '">' + t[1] + '</span>' +
-        (b[t[0]] ? '<span class="cn-b">' + b[t[0]] + '</span>' : '') + '</button>';
-    }).join('');
-  }
-  /* стойка (десктоп) и нижний док (телефон) — одни и те же data-tab хуки */
+  /* Навигация кабинета повторяет финальный account-shell из дизайн-концепта.
+     data-tab остаётся единственным источником смены разделов. */
   function navSide() {
-    return '<nav class="cbar-nav reveal" aria-label="Разделы кабинета">' + tabRow('cnav-i', 'ci-ic', 'ci-l') + '</nav>';
+    var badge = tabBadges();
+    var bonus = st.me && st.me.bonus ? st.me.bonus.balance || 0 : 0;
+    var deposit = st.me && st.me.deposit ? st.me.deposit.balance || 0 : 0;
+    var documentCount = st.orders.reduce(function (sum, order) {
+      return sum + ((order.files && order.files.length) || order.files_count || 0);
+    }, 0);
+    var items = [
+      ['home', 'Дела', String(st.orders.length || '')],
+      ['messages', 'Сообщения', badge.orders || ''],
+      ['documents', 'Документы', documentCount ? String(documentCount) : ''],
+      ['wallet', 'Платежи', ''],
+      ['club', 'Клуб Салона', bonus ? money(bonus) : (badge.club || '')],
+      ['deposit', 'Депозит', deposit ? money(deposit) + ' ₽' : '']
+    ];
+    return '<nav aria-label="Разделы кабинета">' + items.map(function (item) {
+      return '<button type="button" class="' + (st.tab === item[0] ? 'is-current' : '') +
+        '" data-tab="' + item[0] + '" aria-current="' + (st.tab === item[0] ? 'page' : 'false') + '">' +
+        '<span>' + item[1] + '</span>' + (item[2] ? '<b' +
+        (item[0] === 'orders' && badge.orders ? ' class="badge-wax"' : '') + '>' + item[2] + '</b>' : '') +
+        '</button>';
+    }).join('') + '</nav>';
   }
   function dockTabs() {
-    /* класс mobile-cta даёт бесплатно: скрытие в печати, inert при открытом
-       путеводителе и учёт высоты в extras.js — как у общесайтовой панели */
-    return '<nav class="cabdock mobile-cta" aria-label="Разделы кабинета">' + tabRow('cd-i', 'cd-ic', 'cd-l') + '</nav>';
+    return '';
   }
 
   /* режим мастера — вымпел над каркасом (вместо строки личности) */
@@ -1879,65 +1876,60 @@ function initCabinet() {
       '<button type="button" class="linkbtn" id="cabImpExit">закрыть режим</button></div>';
   }
 
-  /* профиль в стойке: печать-инициал + статус; хуки #cabLogout/#cabTg живут здесь */
+  /* Личность — точная верхняя ячейка account-nav из концепта. */
   function profileCard() {
     if (impMode()) {
       var inm = '';
       try { inm = sessionStorage.getItem('salon_imp_name') || 'клиент'; } catch (e) {}
-      return '<div class="cbar-card reveal"><span class="cbav imp" aria-hidden="true">👁</span>' +
-        '<span class="cbp-txt"><b class="cbp-name">' + esc(inm) + '</b>' +
-        '<span class="cbp-sub">кабинет клиента · режим мастера</span></span></div>';
+      return '<button type="button" class="account-nav__person" data-tab="settings" aria-label="Открыть настройки профиля"><span aria-hidden="true">👁</span><div>' +
+        '<strong>' + esc(inm) + '</strong><small>Режим мастера</small></div></button>';
     }
     var u = S.api.token() && S.api.user();
     if (u) {
-      var letter = String(u.name || 'А').trim().charAt(0).toUpperCase() || 'А';
-      var sub = st.me && st.me.sub;
-      return '<div class="cbar-card reveal">' +
-        '<span class="cbav" aria-hidden="true">' + esc(letter) + '</span>' +
-        '<span class="cbp-txt"><b class="cbp-name">' + esc(u.name || 'Читатель') + '</b>' +
-        '<span class="cbp-sub">' + (u.username ? '@' + esc(u.username) + ' · ' : '') +
-        (sub ? '<b>Салон+</b> до ' + esc(sub.expires_ru || '') : 'аккаунт привязан') + '</span></span>' +
-        '<button type="button" class="linkbtn cbp-out" id="cabLogout">выйти</button></div>';
+      var name = String(u.name || 'Клиент').trim();
+      var parts = name.split(/\s+/);
+      var letter = ((parts[0] || 'А').charAt(0) + (parts[1] || '').charAt(0)).toUpperCase();
+      var joined = u.created_at ? new Date(u.created_at) : null;
+      var joinedLabel = joined && !isNaN(joined.getTime())
+        ? 'Клиент с ' + joined.getFullYear() + ' года'
+        : 'Клиент мастерской';
+      return '<button type="button" class="account-nav__person" data-tab="settings" aria-label="Открыть настройки профиля"><span aria-hidden="true">' + esc(letter || 'АС') + '</span><div>' +
+        '<strong>' + esc(name) + '</strong><small>' + joinedLabel + '</small></div></button>';
     }
-    return '<div class="cbar-card guest reveal">' +
-      '<span class="cbav guest" aria-hidden="true">¶</span>' +
-      '<span class="cbp-txt"><b class="cbp-name">Гостевой доступ</b>' +
-      '<span class="cbp-sub">заказы видны на этом устройстве</span></span>' +
-      '<button type="button" class="btn btn-wax cbp-in" id="cabTg">Войти через Telegram</button></div>';
+    return '<button type="button" class="account-nav__person" data-tab="settings" aria-label="Открыть настройки профиля"><span aria-hidden="true">АС</span><div>' +
+      '<strong>Гостевой доступ</strong><small>Дела этого устройства</small></div></button>';
   }
 
   /* мини-кошелёк стойки: бонусы и депозит формулярными строками */
   function sideMini() {
-    if (!st.me) return '';
-    var b = (st.me.bonus || {}).balance || 0;
-    var d = (st.me.deposit || {}).balance || 0;
-    return '<div class="cbar-mini reveal">' +
-      '<button type="button" class="cbm-row" data-tab="wallet"><span>Бонусы</span><i class="cbm-dots" aria-hidden="true"></i><b>' + money(b) + '</b></button>' +
-      '<button type="button" class="cbm-row" data-tab="wallet"><span>Кошелёк</span><i class="cbm-dots" aria-hidden="true"></i><b>' + money(d) + ' ₽</b></button>' +
-      '</div>';
+    return '';
   }
   function sideFoot() {
-    return '<div class="cbar-foot reveal"><button type="button" class="btn btn-line" data-contact="1">Написать мастеру</button></div>';
+    return '<div class="account-nav__bottom">' +
+      '<button type="button" data-tab="help">Помощь</button>' +
+      '<button type="button" data-tab="settings">Настройки</button>' +
+      '</div>';
   }
 
   /* заголовок рабочей полосы: раздел + живая мета */
   function tabHead() {
-    var names = { home: 'Обзор', orders: 'Дела', wallet: 'Кошелёк', club: 'Клуб', help: 'Помощь' };
-    var meta = '';
-    if (st.tab === 'home') {
-      meta = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
-    } else if (st.tab === 'orders') {
-      var a = activeOrders().length;
-      meta = st.orders.length ? ('активных · ' + a) : 'картотека пуста';
-    } else if (st.tab === 'wallet' && st.me) {
-      meta = money((st.me.bonus || {}).balance || 0) + ' бон. · ' + money((st.me.deposit || {}).balance || 0) + ' ₽';
-    } else if (st.tab === 'club') {
-      meta = st.me && st.me.sub ? 'Салон+ активен' : 'абонементы и куратор';
-    } else if (st.tab === 'help') {
-      meta = 'связь · доступ · документы';
-    }
-    return '<div class="cbh reveal"><h2 class="cbh-t">' + names[st.tab] + '</h2>' +
-      (meta ? '<span class="cbh-m mono">' + meta + '</span>' : '') + '</div>';
+    var u = S.api.token() && S.api.user();
+    var first = u && u.name ? String(u.name).trim().split(/\s+/)[0] : '';
+    var copy = {
+      home: ['Личный кабинет', first ? 'Добрый день, ' + esc(first) + '.' : 'Ваш личный кабинет.',
+        'Здесь собраны текущие дела, документы и вопросы редактора.'],
+      orders: ['Работа мастерской', 'Ваши дела.', 'Сроки, файлы, сообщения и оплата по каждому заказу.'],
+      messages: ['Личный кабинет', 'Сообщения.', 'Новые вопросы редактора и переписка собраны по делам.'],
+      documents: ['Личный кабинет', 'Документы.', 'Файлы, спецификации, акты и подтверждения оплаты.'],
+      wallet: ['Платежи и документы', 'Счета и привилегии.', 'Депозит, бонусы и подтверждения операций ведутся раздельно.'],
+      deposit: ['Платежи и документы', 'Депозит мастерской.', 'Пополнения и использование средств отражаются отдельно от бонусов.'],
+      club: ['Клуб Салона', 'Абонементы и сопровождение.', 'Состав, срок и стоимость видны до каждого отдельного платежа.'],
+      help: ['Связь с мастерской', 'Помощь по вашему делу.', 'Выберите удобный способ связи или восстановите доступ к заказу.'],
+      settings: ['Личный кабинет', 'Настройки.', 'Тема интерфейса, данные аккаунта и выход из кабинета.']
+    }[st.tab];
+    return '<header class="account-main__head"><div><p class="eyebrow">' + copy[0] + '</p>' +
+      '<h1>' + copy[1] + '</h1><p>' + copy[2] + '</p></div>' +
+      '<a class="button button--primary" href="configurator.html">Новая заявка <span aria-hidden="true">→</span></a></header>';
   }
 
   function setTab(tab, silentHash) {
@@ -1950,43 +1942,55 @@ function initCabinet() {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
 
-  function ovCard(tab, title, line, cta) {
-    return '<button type="button" class="ov-card reveal" data-tab="' + tab + '">' +
-      '<span class="ov-ico" aria-hidden="true">' + ICO[tab] + '</span>' +
-      '<span class="ov-t">' + title + '</span>' +
-      '<span class="ov-line">' + line + '</span>' +
-      '<span class="ov-cta">' + cta + ' <span class="ar">→</span></span></button>';
-  }
-
   function homeTab() {
     var me = st.me || {};
     var dep = me.deposit || {}, bon = me.bonus || {};
-    var pend = me.sub_pending, sub = me.sub;
     var act = activeOrders().length;
     var unread = 0;
     st.orders.forEach(function (o) { unread += (o.unread || 0) + (o.files_new || 0); });
-    var cards =
-      ovCard('orders', 'Дела',
-        st.orders.length
-          ? 'активных: <b>' + act + '</b>' + (unread ? ' · <b class="ov-warn">новое: ' + unread + '</b>' : '')
-          : 'картотека пока пуста',
-        st.orders.length ? 'Открыть' : 'Начать') +
-      ovCard('wallet', 'Кошелёк',
-        '<b>' + money(dep.balance || 0) + ' ₽</b> на депозите · <b>' + money(bon.balance || 0) + '</b> бонусов',
-        dep.balance ? 'Открыть' : 'Пополнить') +
-      ovCard('club', 'Клуб',
-        pend ? '<b class="ov-warn">подписка ждёт оплаты</b>'
-             : (sub ? 'Салон+ активен до ' + esc(sub.expires_ru || '') : 'Салон+ · от 449 ₽/мес'),
-        pend ? 'Оплатить' : 'Подробнее') +
-      ovCard('help', 'Помощь', 'связь · доступ к делу · документы', 'Открыть');
-    var intro = st.orders.length ? '' :
-      '<div class="sheet sheet-pad stacked reveal" style="margin-top:6px">' +
-      '<p class="caps" style="margin-bottom:8px">С чего начать</p>' +
-      '<p class="lead" style="margin-bottom:14px">Соберите смету за минуту — и дело появится здесь: с чатом мастера, файлами и оплатой по этапам.</p>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
-      '<a class="btn btn-wax" href="configurator.html">Рассчитать и оформить <span class="ar">→</span></a>' +
-      '<button type="button" class="btn btn-line" data-contact="1">Спросить мастера</button></div></div>';
-    return nowCard() + subPendingBand() + '<div class="ovg">' + cards + '</div>' + intro;
+    var orderCards = st.orders.slice(0, 3).map(function (o) {
+      var total = Math.max(1, o.stages_total || 1);
+      var stage = Math.max(1, o.stage || 1);
+      var progress = o.status === 'done' ? 100 : Math.max(8, Math.min(92, Math.round((stage - .35) / total * 100)));
+      var next = needsAction(o) ? 'Требуется ваше решение' : ((o.unread || o.files_new) ? 'Есть новое событие' : shortStatus(o));
+      return '<button class="order-card" type="button" data-ord="' + o.id + '" data-order-status="' + esc(o.status || '') + '">' +
+        '<div class="order-card__top"><span class="tag tag--status tag--' + esc(o.status || 'new') + '">' +
+        esc(o.status_label || shortStatus(o)) + '</span><span>' + esc(o.no || ('№' + o.id)) + '</span></div>' +
+        '<h3>' + esc(o.work_label || 'Редакторская работа') + '</h3>' +
+        '<div class="order-card__progress"><i style="width:' + progress + '%"></i></div>' +
+        '<div class="order-card__stage"><span><small>Сейчас</small><strong>' + esc(shortWork(o)) + '</strong></span>' +
+        '<span><small>Ближайший срок</small><strong>' + esc(o.deadline_text || 'Уточняется') + '</strong></span></div>' +
+        '<footer><span>' + esc(next) + '</span><b aria-hidden="true">→</b></footer></button>';
+    }).join('');
+    var sub = me.sub;
+    return '<section class="account-summary">' +
+      '<article><span class="status-dot"><i></i> сейчас</span><strong>' + act + '</strong><p>' +
+      plural(act, 'дело в работе', 'дела в работе', 'дел в работе') + '</p></article>' +
+      '<article><span>Требуется внимание</span><strong>' + unread + '</strong><p>' +
+      plural(unread, 'новое событие', 'новых события', 'новых событий') + '</p></article>' +
+      '<article><span>Бонусный счёт</span><strong>' + money(bon.balance || 0) + ' бонусов</strong><p>условия видны до списания</p></article>' +
+      '</section>' +
+      '<section class="account-orders"><header><h2>Ваши дела</h2>' +
+      '<button class="line-link" type="button" data-tab="orders">Открыть все <span aria-hidden="true">→</span></button></header>' +
+      (orderCards ? '<div class="order-list">' + orderCards + '</div>' :
+        '<div class="account-empty"><p>Здесь появятся сроки, файлы и сообщения редактора.</p>' +
+        '<a class="button button--primary" href="configurator.html">Описать задачу</a></div>') + '</section>' +
+      '<section class="account-benefits"><header><div><p class="eyebrow">Счета и привилегии</p>' +
+      '<h2>Разные механизмы — отдельный учёт.</h2></div><a class="line-link" href="loyalty.html">Правила программы</a></header><div>' +
+      '<button class="account-benefit-card account-benefit-card--deposit" type="button" data-tab="wallet">' +
+      '<span class="account-benefit-card__mark">₽</span><div><small>Депозит мастерской</small><strong>' +
+      money(dep.balance || 0) + ' ₽</strong><p>денежный остаток для согласованных этапов</p></div><b>→</b></button>' +
+      '<button class="account-benefit-card" type="button" data-tab="wallet"><span class="account-benefit-card__mark">Б</span>' +
+      '<div><small>Бонусный счёт</small><strong>' + money(bon.balance || 0) + ' бонусов</strong>' +
+      '<p>срок и условия списания видны до операции</p></div><b>→</b></button>' +
+      '<button class="account-benefit-card account-benefit-card--plus" type="button" data-tab="club">' +
+      '<span class="account-benefit-card__mark">АС+</span><div><small>Абонемент</small><strong>' +
+      (sub ? 'Активен до ' + esc(sub.expires_ru || '') : 'Не активен') + '</strong>' +
+      '<p>состав, срок и цена доступны до оплаты</p></div><b>→</b></button></div></section>' +
+      '<section class="account-quick"><button type="button" data-tab="orders"><span>DOC</span><strong>Документы по делам</strong>' +
+      '<small>Спецификации, акты и файлы</small></button><button type="button" data-tab="help"><span>?</span>' +
+      '<strong>Задать вопрос</strong><small>Ответ придёт в кабинет и Telegram</small></button>' +
+      '<button type="button" data-tab="club"><span>АС</span><strong>Клуб Салона</strong><small>Бонусы и абонементы</small></button></section>';
   }
 
   function loginNudge(what) {
@@ -2057,23 +2061,90 @@ function initCabinet() {
       '</div>';
   }
 
+  function settingsTab() {
+    var user = S.api.token() && S.api.user();
+    return '<div class="sheet sheet-pad stacked reveal">' +
+      '<p class="caps" style="margin-bottom:10px">Настройки кабинета</p>' +
+      '<p class="lead">' + (user && user.name ? esc(user.name) : 'Гостевой доступ') + '</p>' +
+      '<p class="petit" style="margin-top:8px">Тему оформления можно изменить в верхней панели. ' +
+      'Настройки аналитики доступны в разделе конфиденциальности.</p>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">' +
+      '<a class="btn btn-line" href="privacy.html">Настройки данных</a>' +
+      (S.api.token()
+        ? '<button type="button" class="btn btn-line" id="cabLogout">Выйти из кабинета</button>'
+        : '<button type="button" class="btn btn-wax" id="cabTg">Войти через Telegram</button>') +
+      '</div></div>';
+  }
+
+  function documentTab() {
+    return paymentDocumentsCard() +
+      '<section class="account-orders account-orders--all"><header><h2>Документы по делам</h2>' +
+      '<span class="account-count">' + st.orders.length + '</span></header>' +
+      (st.orders.length ? '<div class="order-list">' + st.orders.map(function (o) {
+        var files = (o.files && o.files.length) || o.files_count || 0;
+        return '<button type="button" class="order-card order-card--compact' +
+          (o.id === st.currentId ? ' is-current' : '') + '" data-ord="' + o.id + '">' +
+          '<div class="order-card__top"><span class="tag">Документы</span><span>' +
+          esc(o.no || ('№' + o.id)) + '</span></div><h3>' +
+          esc(o.work_label || 'Редакторская работа') + '</h3><footer><span>' +
+          (files ? plural(files, files + ' файл', files + ' файла', files + ' файлов') : 'Открыть материалы дела') +
+          '</span><b aria-hidden="true">→</b></footer></button>';
+      }).join('') + '</div>' : '<div class="account-empty">Документы появятся после оформления дела.</div>') +
+      '</section>' + (st.detail ? '<section class="account-case-production">' + tplDetail() + '</section>' : '');
+  }
+
+  function messagesTab() {
+    if (!st.orders.length) return tplEmpty();
+    var sorted = st.orders.slice().sort(function (a, b) {
+      return ((b.unread || 0) + (b.files_new || 0)) - ((a.unread || 0) + (a.files_new || 0));
+    });
+    return '<section class="account-orders account-orders--all"><header><h2>Сообщения по делам</h2>' +
+      '<span class="account-count">' + sorted.reduce(function (sum, order) {
+        return sum + (order.unread || 0);
+      }, 0) + '</span></header><div class="order-list">' + sorted.map(function (o) {
+        var unread = o.unread || 0;
+        return '<button type="button" class="order-card order-card--compact' +
+          (o.id === st.currentId ? ' is-current' : '') + '" data-ord="' + o.id + '">' +
+          '<div class="order-card__top"><span class="tag tag--status ' +
+          (unread ? 'tag--new' : 'tag--done') + '">' + (unread ? plural(unread, unread + ' новое', unread + ' новых', unread + ' новых') : 'Прочитано') +
+          '</span><span>' + esc(o.no || ('№' + o.id)) + '</span></div><h3>' +
+          esc(o.work_label || 'Редакторская работа') + '</h3><footer><span>Открыть переписку</span>' +
+          '<b aria-hidden="true">→</b></footer></button>';
+      }).join('') + '</div></section>' +
+      (st.detail ? '<section class="account-case-production">' + tplDetail() + '</section>' :
+        '<div class="account-loading" role="status">Выберите дело, чтобы открыть переписку.</div>');
+  }
+
   function ordersTab() {
     if (!st.orders.length) return tplEmpty();
-    return tplSwitch() + (st.detail ? tplDetail() :
-      '<p class="petit" style="margin:14px 0">Выберите дело на полке выше.</p>');
+    var cards = st.orders.map(function (o) {
+      return '<button type="button" class="order-card order-card--compact' +
+        (o.id === st.currentId ? ' is-current' : '') + '" data-ord="' + o.id + '">' +
+        '<div class="order-card__top"><span class="tag tag--status tag--' + esc(o.status || 'new') + '">' +
+        esc(o.status_label || shortStatus(o)) + '</span><span>' + esc(o.no || ('№' + o.id)) + '</span></div>' +
+        '<h3>' + esc(o.work_label || 'Редакторская работа') + '</h3><footer><span>' +
+        esc(o.deadline_text || shortWork(o)) + '</span><b aria-hidden="true">→</b></footer></button>';
+    }).join('');
+    return '<section class="account-orders account-orders--all"><header><h2>Все дела</h2>' +
+      '<span class="account-count">' + st.orders.length + '</span></header><div class="order-list">' + cards + '</div></section>' +
+      (st.detail ? '<section class="account-case-production">' + tplDetail() + '</section>' :
+        '<div class="account-loading" role="status">Открываем выбранное дело…</div>');
   }
 
   function renderTab() {
     var inner;
     if (st.tab === 'orders') inner = ordersTab();
+    else if (st.tab === 'messages') inner = messagesTab();
+    else if (st.tab === 'documents') inner = documentTab();
     else if (st.tab === 'wallet') inner = walletTab();
+    else if (st.tab === 'deposit') inner = walletTab();
     else if (st.tab === 'club') inner = clubTab();
     else if (st.tab === 'help') inner = helpTab();
+    else if (st.tab === 'settings') inner = settingsTab();
     else inner = homeTab();
-    render(impBanner() +
-      '<div class="cab2">' +
-        '<aside class="cbar">' + profileCard() + navSide() + sideMini() + sideFoot() + '</aside>' +
-        '<div class="cbody">' + tabHead() + inner + '</div>' +
+    render(impBanner() + '<div class="account-shell">' +
+      '<aside class="account-nav">' + profileCard() + navSide() + sideMini() + sideFoot() + '</aside>' +
+      '<main class="account-main">' + tabHead() + '<div class="account-main__body">' + inner + '</div></main>' +
       '</div>' + dockTabs());
     /* док появился ПОСЛЕ замеров app.js: будим measure() — иначе --floor=0
        и угловые пилюли («Связаться», куки) налезают на док до первого resize */
@@ -2142,7 +2213,7 @@ function initCabinet() {
       return;
     }
     /* первая загрузка: скелет формуляра вместо пустого экрана */
-    if (!root.querySelector('.cab2') && !root.querySelector('.cab-login')) {
+    if (!root.querySelector('.account-shell') && !root.querySelector('.cab-login')) {
       render('<div class="cab-skel reveal" aria-hidden="true">' +
         '<div class="sk sk1"></div><div class="sk sk2"></div><div class="sk sk3"></div></div>');
     }
@@ -2626,8 +2697,8 @@ function initCabinet() {
     if (tabBtn) { setTab(tabBtn.getAttribute('data-tab')); return; }
     var sw = t.closest('button[data-ord]');
     if (sw) {
-      st.tab = 'orders';
-      try { history.replaceState(null, '', '#orders'); } catch (e) {}
+      if (st.tab !== 'messages' && st.tab !== 'documents') st.tab = 'orders';
+      try { history.replaceState(null, '', '#' + st.tab); } catch (e) {}
       st.currentId = parseInt(sw.getAttribute('data-ord'), 10);
       loadDetail();
       return;
@@ -3100,7 +3171,7 @@ function initCabinet() {
     if (h0.indexOf('plus') >= 0) {
       st.tab = 'club'; st.plusOpen = true; st.clubOpen = true; hashPlusScroll = true;
     }
-    else if (['home', 'orders', 'wallet', 'club', 'help'].indexOf(h0) >= 0) {
+    else if (['home', 'orders', 'messages', 'documents', 'wallet', 'deposit', 'club', 'help', 'settings'].indexOf(h0) >= 0) {
       st.tab = h0;
       if (h0 === 'club') st.plusOpen = true;
     }
@@ -3108,7 +3179,7 @@ function initCabinet() {
   } catch (e) {}
   window.addEventListener('hashchange', function () {
     var h = (location.hash || '').replace('#', '');
-    if (['home', 'orders', 'wallet', 'club', 'help'].indexOf(h) >= 0 && h !== st.tab) setTab(h, true);
+    if (['home', 'orders', 'messages', 'documents', 'wallet', 'deposit', 'club', 'help', 'settings'].indexOf(h) >= 0 && h !== st.tab) setTab(h, true);
   });
   /* ссылка доступа с другого устройства: #claim=<токен> (или ?claim=) */
   try {

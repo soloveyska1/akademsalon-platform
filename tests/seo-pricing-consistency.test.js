@@ -6,6 +6,12 @@ const path = require('node:path');
 const root = path.join(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const money = (value) => Number(String(value).replace(/\s/g, ''));
+const jsonLd = (html) => [...html.matchAll(
+  /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/gi,
+)].flatMap((match) => {
+  const value = JSON.parse(match[1]);
+  return Array.isArray(value['@graph']) ? value['@graph'] : [value];
+});
 
 function canonicalPrices() {
   const source = read('assets/js/app.js');
@@ -33,18 +39,25 @@ test('canonical pricing source contains every primary service type', () => {
   }
 });
 
-test('primary landing pages match SalonCalc in visible, FAQ and schema prices', () => {
+test('primary landing pages show the canonical entry price and preserve schema bounds', () => {
   const prices = canonicalPrices();
+  const finalFaq = [
+    'Можно сначала заказать только диагностику?',
+    'Вы работаете без методички?',
+    'Как передаются правки?',
+    'Что происходит, если срок меняется?'
+  ];
   for (const [file, config] of Object.entries(pages)) {
     const html = read(file);
     const expected = prices[config.type];
     assert.deepEqual(config.visible.map(money), expected, `${file}: fixture must match SalonCalc`);
-    for (const amount of config.visible) {
-      assert.match(html, new RegExp(`${amount.replace(' ', '[ \\\\u00a0]')} (?:₽|рублей)`), `${file}: ${amount} is not visible`);
-    }
+    const entry = config.visible[0].replace(' ', '[ \\\\u00a0]');
+    assert.match(html, new RegExp(`от ${entry}[ \\\\u00a0]₽`), `${file}: canonical entry price is not visible`);
     assert.match(html, new RegExp(`"lowPrice":${expected[0]}\\b`), `${file}: wrong AggregateOffer.lowPrice`);
     assert.match(html, new RegExp(`"highPrice":${expected[2]}\\b`), `${file}: wrong AggregateOffer.highPrice`);
-    assert.match(html, new RegExp(`Диагностика[^"]*от ${config.visible[0].replace(' ', '[ \\\\u00a0]')} рублей`), `${file}: FAQ diagnostic price`);
+    const faq = jsonLd(html).find((node) => node['@type'] === 'FAQPage');
+    assert.ok(faq, `${file}: visible FAQ has matching schema`);
+    assert.deepEqual(faq.mainEntity.map((entry) => entry.name), finalFaq, `${file}: final FAQ schema`);
   }
 });
 
@@ -56,10 +69,19 @@ test('article and short-text CTAs open the advertised editing tier', () => {
   assert.match(read('referat.html'), /tier:'turn'/);
 });
 
-test('format comparison has explicit tier prices and no obsolete multipliers', () => {
+test('format comparison preserves the final three choices and truthful entry price', () => {
   const html = read('vedenie.html');
-  assert.match(html, /fallbackPrices\s*=\s*\{/);
-  assert.match(html, /diplom:\{base:3000,turn:24000,vip:40000\}/);
+  const operations = read('assets/js/polish15-operations.js');
+  for (const format of ['Диагностика', 'Редакторский этап', 'Сопровождение']) {
+    assert.match(html, new RegExp(`data-start-format="${format}"`));
+  }
+  assert.match(html, /от 2 500 ₽/);
+  assert.match(html, /по объёму задачи/);
+  assert.match(html, /поэтапная смета/);
+  assert.match(operations, /value === 'Диагностика' \? 'base'/);
+  assert.match(operations, /value === 'Сопровождение' \? 'vip' : 'turn'/);
+  assert.match(operations, /configurator\.html\?tier=/);
+  assert.doesNotMatch(html, /fallbackPrices\s*=\s*\{/);
   assert.doesNotMatch(html, /×\s*(?:1\.33|2\.0)/);
   assert.doesNotMatch(html, /(?:32|48)[ \u00a0]000 ₽/);
 });

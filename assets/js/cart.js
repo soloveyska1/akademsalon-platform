@@ -161,11 +161,11 @@
     ];
   }
   function contourLabel(x) {
-    if (!x || x.serviceId !== 'author') return 'Контур А · академическое сопровождение';
+    if (!x || x.serviceId !== 'author') return 'Академическое сопровождение';
     var model = String(x.answers && x.answers.author_model || '');
-    if (model.indexOf('Б1') >= 0) return 'Контур Б1 · автор — мастерская';
-    if (model.indexOf('Б2') >= 0) return 'Контур Б2 · иной согласованный автор';
-    return 'Контур Б · вариант автора нужно уточнить';
+    if (model.indexOf('Б1') >= 0) return 'Авторская работа · мастерская';
+    if (model.indexOf('Б2') >= 0) return 'Авторская работа · согласованный автор';
+    return 'Авторская работа · вариант автора нужно уточнить';
   }
   function positionDetails(x) {
     var rows = [];
@@ -173,7 +173,7 @@
       value = String(value || '').trim();
       if (value) rows.push('<div><dt>' + esc(label) + '</dt><dd>' + esc(value) + '</dd></div>');
     }
-    push('Контур', contourLabel(x));
+    push('Формат работы', contourLabel(x));
     if (x.parentId) {
       var parent = workById(x.parentId);
       push('Связана с позицией', parent && parent.label);

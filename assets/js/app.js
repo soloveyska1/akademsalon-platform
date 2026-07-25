@@ -22,10 +22,10 @@
     link.media = 'screen and (max-width: 880px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260724seo1', source).href
-        : 'assets/css/mobile.css?v=20260724seo1';
+      link.href = source ? new URL('../css/mobile.css?v=20260725release1', source).href
+        : 'assets/css/mobile.css?v=20260725release1';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260724seo1';
+      link.href = 'assets/css/mobile.css?v=20260725release1';
     }
     document.head.appendChild(link);
   })();
@@ -428,8 +428,7 @@
   };
   /* ---------------- «Спокойный режим»: движение — по желанию ----------------
      Тумблер в шапке и путеводителе: html[data-calm] глушит анимации всего
-     сайта (chrome.css), главная-«Пресс» раскладывается потоком (press.js
-     слышит сигнал resize), контраст слегка поднят. localStorage salon_calm. */
+     сайта (chrome.css), а контраст слегка поднят. localStorage salon_calm. */
   Salon.calmToggleHTML = function () {
     return '<button class="calm-toggle" type="button" aria-pressed="false" ' +
       'aria-label="Спокойный режим: без анимаций" title="Спокойный режим: без анимаций">' +
@@ -486,6 +485,9 @@
       });
       docEl.querySelectorAll('[data-theme-label]').forEach(function (l) {
         l.textContent = mode === 'dark' ? 'Тёмная тема' : 'Светлая тема';
+      });
+      docEl.querySelectorAll('[data-theme-action]').forEach(function (l) {
+        l.textContent = mode === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему';
       });
       if (persist) { try { localStorage.setItem('salon_theme', mode); } catch (e) {} }
     }
@@ -1353,12 +1355,13 @@
      ОДНА шапка на всех страницах, включая главную: те же ссылки,
      тот же порядок — читатель никогда не теряется. */
   var here = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
+  document.body.classList.add('concept-shell');
   var NAV = [
-    { href: 'start.html',      label: 'С чего начать' },
-    { href: 'tariffs.html',    label: 'Цены' },
-    { href: 'guarantees.html', label: 'Гарантии' },
-    { href: 'reviews.html',    label: 'Отзывы', x2: true },
-    { href: 'knowledge.html',  label: 'Полезные материалы', x: true }
+    { href: 'services.html',  label: 'Услуги' },
+    { href: 'tariffs.html',   label: 'Цены' },
+    { href: 'knowledge.html', label: 'Библиотека' },
+    { href: 'about.html',     label: 'О мастерской' },
+    { href: 'referral.html',  label: 'Выгоды' }
   ];
   /* Короткий маршрут новичка: не заставляем читать сайт по кругу.
      Три решения ведут от ориентира по цене к заявке. */
@@ -1411,7 +1414,11 @@
      [href, подпись, теги-синонимы] — теги в нижнем регистре. */
   var SEARCH = [
     ['about.html', 'О мастерской, редакции и авторах', 'кто отвечает автор редактор издатель семенов редакционная политика'],
+    ['prolog.html', 'Как устроена мастерская', 'процесс этапы приёмная спецификация редактура приёмка'],
     ['start.html', 'С чего начать — короткий маршрут', 'новичок карта маршрут впервые гид путеводитель цена срок'],
+    ['services.html', 'Все услуги', 'каталог задачи редактура консультация сопровождение'],
+    ['tools.html', 'Бесплатные инструменты', 'проверка текст тема источники самостоятельная работа'],
+    ['deposit.html', 'Депозит мастерской', 'аванс пополнение баланс бонус возврат'],
     ['configurator.html', 'Рассчитать заказ · конфигуратор', 'смета цена калькулятор заявка заказать'],
     ['tariffs.html', 'Цены и каталог услуг', 'прайс стоимость сколько стоит картотека формуляр'],
     ['vedenie.html', 'Форматы сопровождения', 'диагностика редактура сопровождение тариф'],
@@ -1503,10 +1510,68 @@
 
   function brandHTML() {
     return '<a class="brand" href="/">' +
-      '<span class="b-para" aria-hidden="true">¶</span>' +
-      '<span class="b-name"><span class="b-full">Академический Салон</span>' +
-      '<span class="b-short">Академсалон</span></span>' +
+      '<img class="b-mark brand__mark" src="bimi/logo.svg" alt="" width="39" height="39">' +
+      '<span class="b-lockup brand__name"><strong class="b-full">Академический Салон</strong>' +
+      '<strong class="b-short">Академсалон</strong>' +
+      '<small>Редакторская мастерская</small></span>' +
       '<span class="visually-hidden"> — на главную</span></a>';
+  }
+
+  function mobileMeta() {
+    if (here === 'index.html') {
+      return { title: 'Академический Салон', kicker: 'Редакторская мастерская' };
+    }
+    var fixed = {
+      'services.html': ['Услуги', 'Основное'],
+      'tariffs.html': ['Цены', 'Основное'],
+      'knowledge.html': ['Библиотека', 'Материалы'],
+      'tools.html': ['Инструменты', 'Материалы'],
+      'dashboard.html': ['Личный кабинет', 'Кабинет'],
+      'start.html': ['Новая заявка', 'Заказ'],
+      'configurator.html': ['Новая заявка', 'Заказ'],
+      'zayavka.html': ['Заявка', 'Заказ'],
+      'specifikaciya.html': ['Спецификация', 'Заказ'],
+      'oplata.html': ['Как проходит оплата', 'Заказ'],
+      'oplaceno.html': ['Проверка оплаты', 'Заказ'],
+      'vedenie.html': ['Форматы помощи', 'Основное'],
+      'about.html': ['О мастерской', 'Доверие'],
+      'guarantees.html': ['Гарантии', 'Доверие'],
+      'reviews.html': ['Отзывы', 'Доверие'],
+      'priyomnaya.html': ['Приёмная', 'Доверие'],
+      'prolog.html': ['Как устроена мастерская', 'Доверие'],
+      'referral.html': ['Клуб Салона', 'Выгоды'],
+      'plus.html': ['Абонемент «Салон+»', 'Выгоды'],
+      'deposit.html': ['Депозит мастерской', 'Выгоды'],
+      'gift.html': ['Подарочный сертификат', 'Выгоды'],
+      '404.html': ['Страница не найдена', 'Системные'],
+      '50x.html': ['Сервис недоступен', 'Системные'],
+      'maintenance.html': ['Технические работы', 'Системные'],
+      'expertise.html': ['Раздел перенесён', 'Системные']
+    };
+    if (fixed[here]) return { title: fixed[here][0], kicker: fixed[here][1] };
+    var slug = here.replace(/\.html$/, '');
+    var legal = ['privacy', 'terms', 'oferta', 'academic-integrity', 'refunds', 'requisites',
+      'consent-request', 'consent-analytics', 'consent-marketing', 'consent-publication',
+      'consent', 'loyalty'];
+    var toolsPages = ['check', 'audit-temy-vkr', 'proverka-istochnikov-vkr', 'dosie-nauchruka'];
+    var disciplines = ['kursovaya-po-ekonomike', 'kursovaya-po-informatike',
+      'kursovaya-po-menedzhmentu', 'kursovaya-po-pedagogike', 'kursovaya-po-psihologii',
+      'kursovaya-po-yurisprudencii', 'diplomnaya-po-ekonomike', 'diplomnaya-po-psihologii',
+      'diplomnaya-po-yurisprudencii'];
+    var services = ['avtorskiy-zakaz', 'diplomnaya-rabota', 'dorabotka-otcheta-po-praktike',
+      'kandidatskaya-dissertaciya', 'kursovaya-rabota', 'magisterskaya-dissertaciya',
+      'nauchnaya-statya', 'normokontrol-vkr', 'otchet-po-praktike', 'plan',
+      'razbor-zamechaniy-nauchruka', 'redaktura-posle-ii', 'referat'];
+    var heading = document.querySelector('main h1, body > h1, h1');
+    var title = heading ? heading.textContent.replace(/\s+/g, ' ').trim()
+      : document.title.split(/\s+[—|]\s+/)[0].trim();
+    var kicker = 'Академический Салон';
+    if (/^guide-/.test(slug)) kicker = 'Статьи';
+    else if (legal.indexOf(slug) !== -1) kicker = 'Документы';
+    else if (toolsPages.indexOf(slug) !== -1) kicker = 'Инструменты';
+    else if (disciplines.indexOf(slug) !== -1) kicker = 'Услуги по направлениям';
+    else if (services.indexOf(slug) !== -1) kicker = 'Услуги';
+    return { title: title, kicker: kicker };
   }
 
   /* Путеводитель строится от намерения, а не от структуры сайта:
@@ -1544,14 +1609,16 @@
       '<div class="toc-search"><span class="tcs-mark" aria-hidden="true">⌕</span><input type="search" id="tocQ" autocomplete="off" ' +
         'placeholder="Например: курсовая, оплата, речь…" aria-label="Поиск по сайту" />' +
         '<kbd>⌘ K</kbd><div class="toc-sr" id="tocSR" hidden></div></div>' +
+      '<div class="toc-appearance" data-toc-home role="group" aria-label="Оформление сайта">' +
+        '<div class="toc-theme-row"><span class="ttr-lbl" data-theme-label>Светлая тема</span>' + Salon.themeToggleHTML() + '</div>' +
+        '<div class="toc-theme-row"><span class="ttr-lbl" data-calm-label>Спокойный режим</span>' + Salon.calmToggleHTML() + '</div>' +
+      '</div>' +
       '<nav class="toc-choices" aria-label="Быстрый выбор" data-toc-home>' + quickRows + '</nav>' +
       '<section class="toc-route" id="tocRoute" data-toc-home><div class="tr-head"><span class="toc-grp-t">Впервые здесь</span>' +
         '<a href="start.html">Подробная карта →</a></div><nav class="tr-steps" aria-label="Маршрут новичка">' + routeRow + '</nav></section>' +
       '<details class="toc-directory" data-toc-home><summary><span><b>Весь Салон</b><small>Услуги, гарантии, материалы и документы</small></span><i aria-hidden="true">+</i></summary>' +
         '<div class="toc-grid"><nav class="toc-primary" aria-label="Разделы сайта">' + rows + '</nav>' +
           '<div class="toc-side"><div><span class="toc-grp-t">Документы</span><nav class="toc-docs" aria-label="Правовые документы">' + docRows + '</nav></div>' +
-            '<div class="toc-theme-row"><span class="ttr-lbl" data-theme-label>Светлая тема</span>' + Salon.themeToggleHTML() + '</div>' +
-            '<div class="toc-theme-row"><span class="ttr-lbl" data-calm-label>Спокойный режим</span>' + Salon.calmToggleHTML() + '</div>' +
           '</div></div></details>' +
       '<div class="toc-footbar" data-toc-home><button type="button" data-contact="1"><span>Нужен человек?</span><b>Связаться с мастером →</b></button>' +
         '<span>Без звонка и обязательств</span></div></div>';
@@ -1700,24 +1767,37 @@
     header.className = 'site-header';
     var navLinks = NAV.map(function (n) {
       var cur = n.href === here ? ' aria-current="page"' : '';
-      var cls = n.x ? ' class="nav-x"' : (n.x2 ? ' class="nav-x2"' : '');
-      return '<a href="' + n.href + '"' + cur + cls + '>' + n.label + '</a>';
+      return '<a href="' + n.href + '"' + cur + '>' + n.label + '</a>';
     }).join('');
-    var calcHref = here === 'index.html' ? '#smeta' : 'configurator.html';
-    header.innerHTML = '<div class="wrap nav">' + brandHTML() +
-      '<nav class="nav-links" aria-label="Разделы">' + navLinks + '</nav>' +
-      '<div class="nav-cta">' +
-        '<span class="nav-tools" role="group" aria-label="Оформление">' +
-          Salon.themeToggleHTML() +
-          Salon.calmToggleHTML() +
-        '</span>' +
-        '<a class="nav-cab" href="dashboard.html"' + (here === 'dashboard.html' ? ' aria-current="page"' : '') +
-          ' aria-label="Личный кабинет"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 19.4c.9-3.4 3.5-5 6.5-5s5.6 1.6 6.5 5"/></svg><span class="nc-txt">Кабинет</span><span class="nc-badge" hidden></span></a>' +
-        '<a class="btn btn-wax" href="' + calcHref + '">Рассчитать <span class="ar" aria-hidden="true">→</span></a>' +
-        '<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><span class="mt-txt">Меню</span> <i aria-hidden="true"></i></button>' +
-      '</div></div>' +
-      '<span class="hdr-ink" aria-hidden="true"><i class="hi-tip" aria-hidden="true"></i></span>';
+    var calcHref = 'configurator.html';
+    header.innerHTML = '<div class="site-header__inner">' + brandHTML() +
+      '<nav class="primary-nav nav-links" aria-label="Основная навигация">' + navLinks + '</nav>' +
+      '<div class="site-header__actions nav-cta">' +
+        '<button class="header-action header-action--search" type="button" data-open-search>' +
+          '<span aria-hidden="true">⌕</span><span>Найти</span><kbd>/</kbd></button>' +
+        '<button class="header-theme-toggle theme-toggle" type="button" aria-label="Сменить тему оформления">' +
+          '<span aria-hidden="true">◐</span><span class="visually-hidden" data-theme-action>Включить тёмную тему</span></button>' +
+        '<a class="header-action nav-cab" href="dashboard.html"' + (here === 'dashboard.html' ? ' aria-current="page"' : '') + '>' +
+          '<span class="header-action__dot" aria-hidden="true"></span><span class="nc-txt">Кабинет</span><span class="nc-badge" hidden></span></a>' +
+        '<a class="button button--primary button--compact btn btn-wax" href="' + calcHref + '">Описать задачу <span aria-hidden="true">→</span></a>' +
+        '<button class="icon-button header-menu-button menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><i aria-hidden="true"></i></button>' +
+      '</div></div>';
     document.body.insertBefore(header, document.body.firstChild);
+
+    var mobileHeader = document.createElement('header');
+    mobileHeader.className = 'mobile-appbar';
+    var mobileHeaderMeta = mobileMeta();
+    mobileHeader.innerHTML =
+      '<button class="mobile-appbar__back" type="button" data-go-back aria-label="Вернуться назад"><span aria-hidden="true">←</span></button>' +
+      '<a class="mobile-appbar__brand" href="/" aria-label="Академический Салон — главная">' +
+        '<img src="bimi/logo.svg" alt=""><span><strong></strong><small></small></span></a>' +
+      '<button class="mobile-appbar__help" type="button" data-open-search aria-label="Найти раздел или материал"><span aria-hidden="true">⌕</span></button>' +
+      '<button class="mobile-appbar__theme theme-toggle" type="button" aria-label="Сменить тему оформления"><span aria-hidden="true">◐</span><span class="visually-hidden" data-theme-action>Включить тёмную тему</span></button>' +
+      '<button class="mobile-appbar__menu menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><i aria-hidden="true"></i></button>';
+    mobileHeader.querySelector('.mobile-appbar__brand strong').textContent = mobileHeaderMeta.title;
+    mobileHeader.querySelector('.mobile-appbar__brand small').textContent = mobileHeaderMeta.kicker;
+    header.insertAdjacentElement('afterend', mobileHeader);
+    if (here !== 'index.html') mobileHeader.querySelector('.mobile-appbar__back').classList.add('is-visible');
     if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк состояния кнопки темы */
   }
 
@@ -1745,6 +1825,23 @@
       if (!t || !Salon.toc) return;
       e.preventDefault();
       Salon.toc.isOpen() ? Salon.toc.close() : Salon.toc.open();
+    });
+    document.addEventListener('click', function (e) {
+      var search = e.target.closest && e.target.closest('[data-open-search]');
+      if (!search || !Salon.toc) return;
+      e.preventDefault();
+      Salon.toc.open();
+      window.setTimeout(function () {
+        var field = document.getElementById('tocQ');
+        if (field) field.focus();
+      }, 80);
+    });
+    document.addEventListener('click', function (e) {
+      var back = e.target.closest && e.target.closest('[data-go-back]');
+      if (!back) return;
+      e.preventDefault();
+      if (history.length > 1) history.back();
+      else location.href = '/';
     });
   }
 
@@ -1795,66 +1892,41 @@
                    'Ответим по текущей загрузке'];
 
   Salon.footerHTML = function () {
-    var t = mskNow();
-    var night = t.day ? '' : ' night';
-
-    return '<div class="wrap">' +
-
-    '<div class="cf7-top">' +
-      '<div class="cf7-brand">' + brandHTML() +
-        '<p class="cf7-kicker">Издание мастерской · с 2020 года</p>' +
-        '<h2 class="cf7-title">Разберём по&nbsp;строкам.<br><em>Доведём до&nbsp;ясности.</em></h2>' +
-        '<p class="cf7-copy">Профильный специалист проверит ваш материал, объяснит решения и&nbsp;подготовит к&nbsp;защите.</p>' +
-        '<span class="cf7-stamp" aria-hidden="true">' + Salon.sealSVG({
-          ring: 'АКАДЕМИЧЕСКИЙ САЛОН · КАЗАНЬ · ', center: '¶', size: 94, cls: 'seal--wax'
-        }) + '</span>' +
+    return '<div class="site-footer__main">' +
+      '<div class="site-footer__brand">' +
+        '<img src="bimi/logo.svg" alt="">' +
+        '<div><strong>Академический Салон</strong><p>Редакторская работа, консультации и сопровождение академических проектов.</p></div>' +
       '</div>' +
-      '<div class="cf7-action">' +
-        '<div class="cf7-status">' +
-          '<p class="cf-clock" data-foot-clock>' +
-            '<span class="cf-lamp' + night + '" aria-hidden="true"></span>' +
-            '<span class="cf-cl-s">' + CLOCK_STATE[t.day ? 1 : 0] + '</span>' +
-            '<span class="cf-cl-t"><span class="cf-hh">' + pad2(t.h) + '</span><span class="cf-cn">:</span><span class="cf-mm">' + pad2(t.m) + '</span><span class="cf-tz">МСК</span></span>' +
-          '</p>' +
-          '<p class="cf-live" data-foot-eta><span class="fcl-dot' + night + '" aria-hidden="true"></span><span class="cf-live-t">' + CLOCK_ETA[t.day ? 1 : 0] + '</span></p>' +
-        '</div>' +
-        '<div class="cf7-cta">' +
-          '<a class="cf7-btn cf7-btn--gold" href="configurator.html">Оформить заявку <span aria-hidden="true">→</span></a>' +
-          '<button class="cf7-btn cf7-btn--ghost" type="button" data-contact="1">Спросить мастера</button>' +
-        '</div>' +
-        '<p class="cf7-facts"><span>с 2020 года</span><span>позиции отдельно</span><span>минимум данных</span><span>документы к заказу</span></p>' +
-      '</div>' +
-    '</div>' +
-
-    '<div class="cf7-board">' +
-      '<nav class="cf7-channels" aria-label="Каналы связи">' +
-        '<a href="' + LINKS.human + '" target="_blank" rel="noopener"><span class="cf7-no">01</span><span><b>Telegram</b><small>Отвечает человек</small></span><i aria-hidden="true">↗</i><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
-        '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener"><span class="cf7-no">02</span><span><b>ВКонтакте</b><small>Быстрый диалог</small></span><i aria-hidden="true">↗</i><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
-        '<a href="' + LINKS.bot + '" target="_blank" rel="noopener"><span class="cf7-no">03</span><span><b>Бот заказов</b><small>Смета и статус 24/7</small></span><i aria-hidden="true">↗</i><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
+      '<nav aria-label="Услуги">' +
+        '<strong>Помощь</strong>' +
+        '<a href="services.html">Все услуги</a>' +
+        '<a href="tariffs.html">Цены</a>' +
+        '<a href="configurator.html">Описать задачу</a>' +
+        '<a href="guarantees.html">Гарантии</a>' +
       '</nav>' +
-      '<div class="cf7-route">' +
-        '<a class="cf7-guide" href="start.html" data-toc-open><span class="cf7-guide-mark" aria-hidden="true">¶</span><span><b>Путеводитель по сайту</b><small>Все услуги, гайды и документы</small></span><i aria-hidden="true">→</i></a>' +
-        '<nav class="cf7-quick foot-links" aria-label="Быстрые ссылки">' +
-          '<a href="tariffs.html">Цены</a><a href="guarantees.html">Гарантии</a><a href="reviews.html">Отзывы</a><a href="about.html">О мастерской</a><a href="dashboard.html">Кабинет</a><a href="knowledge.html">Гайды</a>' +
-        '</nav>' +
-      '</div>' +
+      '<nav aria-label="Полезные разделы">' +
+        '<strong>Библиотека</strong>' +
+        '<a href="knowledge.html">Библиотека</a>' +
+        '<a href="tools.html">Инструменты</a>' +
+        '<a href="plus.html">Абонемент «Салон+»</a>' +
+        '<a href="deposit.html">Депозит мастерской</a>' +
+        '<a href="reviews.html">Отзывы</a>' +
+        '<a href="priyomnaya.html">Приёмная</a>' +
+      '</nav>' +
+      '<nav aria-label="Информация">' +
+        '<strong>О сервисе</strong>' +
+        '<a href="about.html">О мастерской</a>' +
+        '<a href="academic-integrity.html">Границы помощи</a>' +
+        '<a href="privacy.html">Конфиденциальность</a>' +
+        '<a href="terms.html">Документы</a>' +
+      '</nav>' +
     '</div>' +
-
-    '<details class="cf7-legal">' +
-      '<summary><span>Реквизиты и документы</span><small>ИНН 212885750445 · статус проверяется в ФНС</small><i aria-hidden="true">+</i></summary>' +
-      '<div class="cf7-legal-in">' +
-        '<p><b>Семёнов Семён Юрьевич</b><br>ИНН 212885750445 · г.&nbsp;Казань · актуальный статус проверяется на дату оплаты</p>' +
-        '<nav aria-label="Юридические документы"><a href="about.html">О мастерской и редакции</a><a href="oferta.html">Оферта</a><a href="privacy.html">Политика ПДн</a><a href="consent-request.html">Согласие для заявки</a><a href="refunds.html">Возврат</a><a href="academic-integrity.html">Границы услуг</a><a href="loyalty.html">Лояльность</a><a href="terms.html">Соглашение</a><a href="requisites.html">Все документы</a><button type="button" class="cf7-data" data-cookie-settings>Настройки данных</button></nav>' +
-        '<a class="cf7-fns" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">Проверить статус в ФНС <span aria-hidden="true">↗</span><span class="visually-hidden"> (откроется в новом окне)</span></a>' +
-      '</div>' +
-    '</details>' +
-
-    '<div class="cf7-finis">' +
-      '<p>© 2020–2026 «Академический Салон» <span>·</span> Казань</p>' +
-      '<p class="cf7-made">набрано и сверстано в мастерской</p>' +
-      '<a class="fc-top" href="#main">Наверх <span aria-hidden="true">↑</span></a>' +
-    '</div>' +
-
+    '<div class="site-footer__bottom">' +
+      '<span>© 2020–2026 Академический Салон</span>' +
+      '<span>Состав, срок и стоимость фиксируются до оплаты</span>' +
+      '<button class="theme-toggle" type="button"><span data-theme-action>' +
+        (Salon.theme && Salon.theme.current() === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему') +
+      '</span></button>' +
     '</div>';
   };
   /* «Наверх» в колофоне: мягкий скролл вместо прыжка по якорю */
@@ -1903,7 +1975,7 @@
   }
   /* ---------------- Плавающая пилюля связи (десктоп) ----------------
      Открывает лист каналов: сайт → ВК → MAX → Telegram. */
-  if (!CHROME_OFF && !document.querySelector('.tg-pill') && here !== 'configurator.html' && here !== '404.html') {
+  if (!document.body.classList.contains('concept-shell') && !CHROME_OFF && !document.querySelector('.tg-pill') && here !== 'configurator.html' && here !== '404.html') {
     var pill = document.createElement('a');
     pill.className = 'tg-pill';
     pill.href = '#';
@@ -1918,36 +1990,25 @@
 
   /* ---------------- Мобильная навигация: нижняя панель на всех страницах ----
      Кабинет всегда на виду (с бейджем), «Рассчитать» — сургучная кнопка. */
-  /* dashboard: кабинет несёт СВОЙ нижний док с вкладками — общий не монтируем */
-  var MCTA_OFF = CHROME_OFF || here === 'configurator.html' || here === '404.html' || here === 'dashboard.html';
+  var MCTA_OFF = CHROME_OFF || here === 'configurator.html' || here === '404.html';
   if (!MCTA_OFF && !document.querySelector('.mobile-cta')) {
     var mnav = document.createElement('nav');
-    mnav.className = 'mobile-cta mnav';
+    mnav.className = 'mobile-cta mnav mobile-dock';
     mnav.setAttribute('aria-label', 'Быстрая навигация');
-    var planLanding = here === 'plan.html';
-    var mnCalc = here === 'index.html' ? '#smeta'
-      : (planLanding ? 'configurator.html?service=pl' : 'configurator.html');
-    var mnCalcLabel = planLanding ? 'Разбор' : 'Смета';
-    var CAB_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 19.4c.9-3.4 3.5-5 6.5-5s5.6 1.6 6.5 5"/></svg>';
-    function mnItem(href, label, icon, cls) {
-      var cur = (href === here || (href === '/' && here === 'index.html')) ? ' aria-current="page"' : '';
-      return '<a class="mn-i' + (cls || '') + '" href="' + href + '"' + cur + '>' +
-        '<span class="mn-ic" aria-hidden="true">' + icon + '</span>' +
-        '<span class="mn-l">' + label + '</span>' +
+    function mnItem(href, label, iconClass, cls) {
+      var active = href === here || (href === '/' && here === 'index.html');
+      var cur = active ? ' aria-current="page"' : '';
+      return '<a class="mn-i' + (cls || '') + (active ? ' is-current' : '') + '" href="' + href + '"' + cur + '>' +
+        '<span class="mn-ic ' + iconClass + '" aria-hidden="true">' + (iconClass === 'mobile-dock__seal' ? 'АС' : '') + '</span>' +
+        '<small class="mn-l">' + label + '</small>' +
         (cls === ' mn-cab' ? '<span class="mn-badge" hidden></span>' : '') + '</a>';
     }
-    /* «Мастер» открывает короткую приёмную — глобальный [data-contact] */
-    var CHAT_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.2h16v10.4H8.6L4 20V6.2z"/><path d="M7.6 10h8.8M7.6 13h5.6"/></svg>';
-    /* перо на печати — SVG: глифа ✒ нет в фирменных подмножествах шрифтов */
-    var PEN_SVG = '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2c2.7 1.9 4.4 4.1 4.4 6.8 0 1.8-.9 3.4-2.4 4.4L12 20.4l-2-6c-1.5-1-2.4-2.6-2.4-4.4 0-2.7 1.7-4.9 4.4-6.8z"/><circle cx="12" cy="10.2" r="1.5"/></svg>';
     mnav.innerHTML =
-      mnItem('/', 'Главная', '¶') +
-      mnItem('tariffs.html', 'Цены', '₽') +
-      mnItem(mnCalc, mnCalcLabel, PEN_SVG, ' mn-calc') +
-      mnItem('dashboard.html', 'Кабинет', CAB_SVG, ' mn-cab') +
-      '<button class="mn-i mn-link" type="button" data-contact="1">' +
-        '<span class="mn-ic" aria-hidden="true">' + CHAT_SVG + '</span>' +
-        '<span class="mn-l">Мастер</span></button>';
+      mnItem('/', 'Главная', 'dock-icon dock-icon--home') +
+      mnItem('services.html', 'Услуги', 'dock-icon dock-icon--services') +
+      mnItem('configurator.html', 'Описать', 'mobile-dock__seal', ' mn-calc mobile-dock__primary') +
+      mnItem('knowledge.html', 'Библиотека', 'dock-icon dock-icon--library') +
+      mnItem('dashboard.html', 'Кабинет', 'dock-icon dock-icon--profile', ' mn-cab');
     document.body.appendChild(mnav);
   }
   /* Внизу колофона зарезервированы 96px под нижнюю панель. Панель бывает

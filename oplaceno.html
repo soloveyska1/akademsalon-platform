@@ -8,72 +8,61 @@
 <meta name="referrer" content="no-referrer" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
+<link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260725release1" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <meta name="theme-color" content="#F6F1E7" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
-<style>
-/* Посадочная после кассы. Ничего не решает сама: читает Shp_* и уводит туда,
-   где человек уже был. Видна доли секунды — но если скрипт не выполнится,
-   на ней должно остаться что-то осмысленное, поэтому разметка настоящая. */
-body{min-height:100vh;display:grid;place-items:center;padding:24px}
-.op{max-width:34rem;text-align:center}
-.op .seal{width:64px;height:64px;border-radius:50%;border:2px solid var(--verify);
-  color:var(--verify);display:grid;place-items:center;margin:0 auto 18px;
-  font-family:var(--serif);font-size:26px;transform:rotate(-6deg)}
-.op h1{font-size:clamp(24px,4vw,34px);margin:0 0 10px}
-.op p{color:var(--ink-soft);line-height:1.6;margin:0 0 18px}
-.op .links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.op .links a{min-height:44px;display:inline-flex;align-items:center;padding:10px 18px;
-  border:1px solid var(--hairline-strong);border-radius:var(--r);color:var(--ink)}
-.op .links a:hover{border-color:var(--wax);color:var(--wax)}
-</style>
 </head>
-<body>
-<main class="op" id="main">
-  <div class="seal" aria-hidden="true">¶</div>
-  <h1>Проверяем оплату</h1>
-  <p id="opText">Открываем нужный раздел. Подтверждение появится только после ответа кассы.</p>
-  <div class="links">
-    <a href="dashboard.html">Мой кабинет</a>
-    <a href="/">На главную</a>
-  </div>
+<body class="p15-operations p15-system p15-standalone">
+<main class="p15-operations system-page system-page--payment" id="main">
+  <section class="system-card">
+    <div class="system-card__mark is-loading">
+      <img src="bimi/logo.svg" alt="">
+      <i aria-hidden="true"></i>
+    </div>
+    <p class="eyebrow">Проверка оплаты</p>
+    <h1>Проверяем статус операции.</h1>
+    <p id="opText">Не повторяйте платёж. После ответа кассы откроется нужное дело или оплаченная услуга.</p>
+    <div class="system-card__facts">
+      <span><small>Статус</small><strong>запрашивается</strong></span>
+      <span><small>Повторный платёж</small><strong>не нужен</strong></span>
+      <span><small>Подтверждение</small><strong>на сервере</strong></span>
+    </div>
+    <div class="system-card__actions">
+      <a class="button button--primary" href="dashboard.html">Открыть кабинет <span aria-hidden="true">→</span></a>
+      <a class="button button--text" href="priyomnaya.html">Сообщить о проблеме</a>
+    </div>
+  </section>
 </main>
 <script>
-/* Единственная посадочная после кассы: SuccessURL у Robokassa один на весь
-   магазин, а возвращаться надо в разные места — заявка, сертификат, подписка,
-   дело. Robokassa дописывает к SuccessURL свои параметры, включая все Shp_*,
-   по ним и раскидываем. ES5, без зависимостей: страница обязана работать
-   даже если общий чром не загрузился. */
 (function () {
   'use strict';
-  function q(n) {
-    var m = (location.search || '').match(new RegExp('[?&]' + n + '=([^&]+)'));
-    if (!m) return '';
-    try { return decodeURIComponent(m[1].replace(/\+/g, ' ')); }
-    catch (e) { return ''; }
+  function query(name) {
+    var match = (location.search || '').match(new RegExp('[?&]' + name + '=([^&]+)'));
+    if (!match) return '';
+    try { return decodeURIComponent(match[1].replace(/\+/g, ' ')); }
+    catch (error) { return ''; }
   }
-  var k = q('Shp_k'), gift = q('Shp_gift'), kind = q('Shp_kind'), ord = q('Shp_order');
-  var to = '';
-  if (kind === 'tip' && ord) to = 'dashboard.html?thanks=' + encodeURIComponent(ord);
-  else if (k) to = 'zayavka.html#k=' + encodeURIComponent(k);
-  else if (gift) to = 'gift.html?code=' + encodeURIComponent(gift);
-  else if (kind === 'sub') to = 'dashboard.html#plus';
-  else if (ord) to = 'dashboard.html?paid=' + encodeURIComponent(ord);
-  if (!to) {
-    var t = document.getElementById('opText');
-    if (t) t.textContent = 'Откройте кабинет: статус изменится после серверного ' +
-      'подтверждения кассы. Если оплата ещё не видна, обновите страницу через минуту.';
+  var offer = query('Shp_k');
+  var gift = query('Shp_gift');
+  var kind = query('Shp_kind');
+  var order = query('Shp_order');
+  var target = '';
+  if (kind === 'tip' && order) target = 'dashboard.html?thanks=' + encodeURIComponent(order);
+  else if (offer) target = 'zayavka.html#k=' + encodeURIComponent(offer);
+  else if (gift) target = 'gift.html?code=' + encodeURIComponent(gift);
+  else if (kind === 'sub') target = 'dashboard.html#plus';
+  else if (order) target = 'dashboard.html?paid=' + encodeURIComponent(order);
+
+  if (!target) {
+    document.getElementById('opText').textContent =
+      'Откройте кабинет: статус изменится только после серверного подтверждения кассы. Если оплата ещё не видна, обновите страницу через минуту.';
     return;
   }
-  /* replace, а не href: кнопка «назад» не должна возвращать на кассу */
-  try { location.replace(to); } catch (e) { location.href = to; }
+  try { location.replace(target); }
+  catch (error) { location.href = target; }
 })();
 </script>
-<noscript>
-  <p style="text-align:center;max-width:34rem;margin:0 auto;color:var(--ink-soft)">
-    Откройте <a href="dashboard.html">кабинет</a>: статус оплаты появится только
-    после подтверждения кассы. Если вы платили по ссылке-заявке — вернитесь по ней.
-  </p>
-</noscript>
+<noscript><p style="position:fixed;right:16px;bottom:16px;left:16px;text-align:center">Откройте <a href="dashboard.html">кабинет</a>: статус изменится после подтверждения кассы.</p></noscript>
 </body>
 </html>

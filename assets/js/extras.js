@@ -710,6 +710,7 @@
        · просто долго читает             → «Нужна помощь?»
      Один показ за сессию, крестик прячет до конца сессии. */
   (function helpFab() {
+    if (document.body.classList.contains('concept-shell')) return;
     if (QUIET_PAGES[here] || here === 'dashboard.html') return;
     /* В мобильном конфигураторе подсказка становилась вторым fixed-слоем
        над сметой и перекрывала текущий шаг. Здесь помощь не должна
@@ -1290,7 +1291,9 @@
      конфигуратор с готовым черновиком. Тип определяется именем страницы,
      сами 41 HTML не правятся. */
   (function lasseQuote() {
-    if (QUIET_PAGES[here]) return;
+    /* The approved catalog/service composition already contains its own price
+       block. Do not append the legacy landing-page calculator below it. */
+    if (QUIET_PAGES[here] || document.querySelector('.p15-service,.p15-catalog')) return;
     var C = window.SalonCalc;
     if (!C || !document.querySelector('main')) return;
     function pageType() {
