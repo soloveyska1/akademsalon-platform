@@ -77,7 +77,7 @@
 }
 .cookieprefs.open .cp-card{transform:none}
 .cp-x{
-  position:absolute;right:13px;top:12px;width:34px;height:34px;border:0;border-radius:50%;
+  position:absolute;right:9px;top:8px;width:44px;height:44px;border:0;border-radius:50%;
   background:transparent;color:var(--ink-soft);cursor:pointer;font:24px/1 var(--serif)
 }
 .cp-x:hover{background:var(--paper);color:var(--ink)}
@@ -116,7 +116,7 @@
 .cp-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}
 .cp-actions .btn{width:100%;min-height:44px;padding:9px 12px;font-size:13px}
 .cf7-data{
-  appearance:none;border:0;background:none;padding:0;color:inherit;font:inherit;cursor:pointer;
+  appearance:none;border:0;background:none;min-height:44px;padding:10px 0;color:inherit;font:inherit;cursor:pointer;
   text-align:left;text-decoration:underline;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent);
   text-underline-offset:3px
 }
@@ -347,7 +347,7 @@ html[data-motion="off"] .stamp-burst{display:none!important}
 .fl-tag{display:inline-block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
   border:1px solid var(--hairline-strong);border-radius:999px;padding:1px 7px;margin-left:4px;
   color:var(--ink-soft);vertical-align:1px;white-space:nowrap}
-.fl-tag.fl-new{background:var(--wax);border-color:var(--wax);color:#FFFEF9;font-weight:600}
+.fl-tag.fl-new{background:var(--wax-cta,var(--wax));border-color:var(--wax);color:#FFFEF9;font-weight:600}
 .ot-unread.ot-file{background:var(--stamp,#3A4E7A)}
 .fin-band{border-color:var(--wax);background:var(--wax-soft,rgba(168,64,47,.06));color:var(--ink)}
 .fin-band .pb-ic{filter:none}
@@ -388,7 +388,7 @@ html[data-motion="off"] .stamp-burst{display:none!important}
   color:var(--ink-soft);white-space:nowrap;vertical-align:1px;
 }
 .dl-chip.warn{color:var(--wax);border-color:var(--wax)}
-.dl-chip.late{color:#FFFEF9;background:var(--wax);border-color:var(--wax)}
+.dl-chip.late{color:#FFFEF9;background:var(--wax-cta,var(--wax));border-color:var(--wax)}
 
 /* ---------- Платёжный лист: реквизиты, которые видно ---------- */
 .payslip{
@@ -451,7 +451,7 @@ html[data-motion="off"] .stamp-burst{display:none!important}
 }
 .inv-sheet .inv-seal{
   position:absolute;right:16px;bottom:-13px;width:40px;height:40px;border-radius:50%;
-  background:var(--wax);color:#FFFEF9;display:flex;align-items:center;justify-content:center;
+  background:var(--wax-cta,var(--wax));color:#FFFEF9;display:flex;align-items:center;justify-content:center;
   font-family:var(--serif);font-size:13px;letter-spacing:.06em;transform:rotate(-7deg);
   box-shadow:0 4px 10px rgba(24,21,15,.28);
 }
@@ -478,6 +478,10 @@ html[data-motion="off"] .stamp-burst{display:none!important}
 /* --floor — ЕДИНСТВЕННЫЙ нижний якорь. Заменяет --resume-clear
    у всех шести прежних потребителей. Ставит JS (Salon.floor). */
 :root{ --floor:0px; --hdr-h:64px; --lrail-h:0px; }
+/* Нижний док монтируется JavaScript в конце документа. Его фактическая
+   высота на телефоне — 59px; резервируем кромку до первого кадра, чтобы
+   consent-rail не сдвигался вверх после DOMContentLoaded. */
+@media(max-width:880px){:root{--floor:59px}}
 
 .mrail,.lrail{
   position:fixed;z-index:96;
@@ -753,7 +757,7 @@ html[data-motion="off"] .stamp-burst{display:none!important}
   .mnav .mn-link.is-help .mn-ic::after{
     content:"?";position:absolute;top:-7px;right:-9px;width:15px;height:15px;
     display:grid;place-items:center;border:2px solid var(--paper);border-radius:50%;
-    background:var(--wax);color:#fff;font:8px/1 var(--mono);
+    background:var(--wax-cta,var(--wax));color:#fff;font:8px/1 var(--mono);
   }
 }
 

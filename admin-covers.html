@@ -7,6 +7,8 @@
 <title>Мастерская обложек — Академический Салон</title>
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/css/styles.css?v=20260725release13">
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   :root{
     --paper:#F6F1E7; --paper-2:#F1EBDD; --sheet:#FFFEF9;
@@ -39,220 +41,461 @@
   canvas{width:100%;height:auto;display:block;box-shadow:0 10px 30px rgba(60,50,30,.14)}
   .foot{margin-top:12px;font-size:13px;color:var(--ink-soft)}
 </style>
+<link rel="stylesheet" href="assets/css/polish15-admin.css?v=20260725release13">
+<link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260725release13">
 </head>
-<body>
-<div class="wrap">
-  <h1>Мастерская обложек</h1>
-  <p class="lead">Картинки для постов в фирменном стиле: выберите рубрику, впишите заголовок — и скачайте PNG.
-  Пустые заготовки всех девяти рубрик лежат в папке репозитория «Макеты постов». Страница служебная, в поиск не попадает.</p>
-
-  <div class="grid">
-    <div class="panel">
-      <h2>Наборная касса</h2>
-      <label for="rub">Рубрика (подпись внизу)</label>
-      <select id="rub">
-        <option value="Отзывы">Отзывы</option>
-        <option value="Полезное" selected>Полезное</option>
-        <option value="Шаблоны">Шаблоны</option>
-        <option value="Кейсы">Кейсы</option>
-        <option value="Акции">Акции</option>
-        <option value="О нас">О нас</option>
-        <option value="Юмор">Юмор</option>
-        <option value="В цифрах">В цифрах</option>
-        <option value="FAQ">FAQ</option>
-      </select>
-      <label for="ttl">Заголовок (по центру)</label>
-      <textarea id="ttl" placeholder="Можно оставить пустым — будет чистая заготовка.&#10;Перенос строки — Enter."></textarea>
-      <label for="sub">Подзаголовок (серым, необязательно)</label>
-      <input type="text" id="sub" placeholder="одна короткая строка">
-      <div class="hint">Кегль подбирается сам: длинный заголовок аккуратно уменьшится, ₽ и стрелки — фирменным шрифтом.</div>
-      <div class="btns">
-        <button class="wax" id="dl2">Скачать PNG · 2400×1350</button>
-        <button class="ghost" id="dl1">PNG · 1200×675</button>
+<body class="is-admin-route p15-admin-covers">
+<div class="admin-page">
+  <header class="admin-mobile-appbar">
+    <a class="admin-mobile-appbar__back" href="admin.html" aria-label="Вернуться в редакционный кабинет">←</a>
+    <span class="admin-mobile-appbar__brand"><img src="bimi/logo.svg" alt=""><span><strong>Обложки</strong><small>Управление</small></span></span>
+    <button type="button" class="admin-mobile-appbar__search" data-admin-tab-link="orders" aria-label="Открыть поиск по делам">⌕</button>
+    <button type="button" class="theme-toggle" data-admin-theme aria-label="Сменить тему">◐</button>
+    <button type="button" class="admin-mobile-appbar__menu" data-admin-mobile-menu aria-expanded="false" aria-label="Открыть разделы"><i></i></button>
+  </header>
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <a class="admin-sidebar__brand" href="admin.html" data-admin-tab-link="summary">
+        <img src="bimi/logo.svg" alt="">
+        <span><strong>Академический Салон</strong><small>Редакционный кабинет</small></span>
+      </a>
+      <nav aria-label="Разделы администрирования">
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="summary"><i>⌂</i><span>Рабочий стол</span></a>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="visits"><i>V</i><span>Посещения</span></a>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="orders"><i>Д</i><span>Дела</span></a>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="clients"><i>К</i><span>Клиенты</span></a>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="reviews"><i>О</i><span>Отзывы</span></a>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="qa"><i>?</i><span>Приёмная</span></a>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="gifts"><i>П</i><span>Сертификаты</span></a>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="leads"><i>Л</i><span>Обращения</span></a>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="broadcast"><i>Р</i><span>Рассылки</span></a>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="settings"><i>⚙</i><span>Настройки</span></a>
+        <a class="ag-tab" href="knowledge.html"><i>М</i><span>Материалы</span></a>
+        <a class="ag-tab is-current" href="admin-covers.html" aria-current="page"><i>И</i><span>Обложки</span></a>
+      </nav>
+      <div class="admin-sidebar__section">
+        <span>Сервис</span>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="visits"><i>↗</i><span>Отчёты</span></a>
       </div>
-    </div>
-    <div class="stage">
-      <canvas id="cv" width="1200" height="675" aria-label="Предпросмотр обложки"></canvas>
-      <p class="foot">Предпросмотр обновляется на лету. Скачанный файл — точно такой же, в большем размере.</p>
-    </div>
+      <footer>
+        <a href="/">Открыть сайт <span>↗</span></a>
+        <button class="admin-theme-row" type="button" data-admin-theme><span aria-hidden="true">◐</span><span data-theme-label>Сменить тему</span></button>
+        <span>Рабочая среда</span>
+      </footer>
+    </aside>
+    <main class="admin-main">
+      <header class="admin-head">
+        <div><p class="eyebrow">Мастерская обложек</p><h1>Обложки для публикаций</h1><p>Единая система для сайта и социальных площадок</p></div>
+        <div><button class="button button--secondary" type="button" data-cover-archive>Архив</button><span class="admin-profile">СМ</span></div>
+      </header>
+      <div class="cover-studio">
+        <section class="cover-controls">
+          <h2>Новая обложка</h2>
+          <label class="field" for="ttl"><span>Заголовок</span><textarea id="ttl" rows="3">Как проверить структуру ВКР</textarea></label>
+          <input id="sub" type="hidden" value="">
+          <label class="field" for="rub"><span>Рубрика</span>
+            <select id="rub">
+              <option value="Методология" selected>Методология</option>
+              <option value="Оформление">Оформление</option>
+              <option value="Защита">Защита</option>
+              <option value="Публикации">Публикации</option>
+            </select>
+          </label>
+          <fieldset><legend>Композиция</legend><div class="cover-layout-options cover-layout-options--three"><button class="is-selected" type="button" data-cover-layout="editorial">Редакционная</button><button type="button" data-cover-layout="index">Индекс</button><button type="button" data-cover-layout="quote">Цитата</button></div></fieldset>
+          <fieldset><legend>Формат</legend><div class="cover-layout-options cover-layout-options--three"><button class="is-selected" type="button" data-cover-format="site">Сайт</button><button type="button" data-cover-format="feed">Лента</button><button type="button" data-cover-format="story">История</button></div></fieldset>
+          <button class="button button--primary" type="button" data-generate-cover>Обновить предпросмотр</button>
+          <button class="visually-hidden" id="dl2" type="button" tabindex="-1" aria-hidden="true">PNG · двойной размер</button>
+          <button class="visually-hidden" id="dl1" type="button" tabindex="-1" aria-hidden="true">PNG · 1200 × 675</button>
+        </section>
+        <section class="cover-canvas-wrap">
+          <header><span data-cover-dimensions>Предпросмотр · 1200 × 630</span><div class="cover-zoom"><button type="button" data-cover-zoom="-8" aria-label="Уменьшить масштаб">−</button><span data-cover-zoom-value>72%</span><button type="button" data-cover-zoom="8" aria-label="Увеличить масштаб">+</button></div></header>
+          <div class="cover-canvas-viewport">
+            <canvas id="cv" width="1200" height="630" aria-label="Предпросмотр обложки"></canvas>
+          </div>
+          <footer><button class="button button--secondary" type="button" data-export-size="2">Экспорт PNG</button><button class="button button--text" type="button" data-save-cover>Сохранить вариант</button></footer>
+        </section>
+      </div>
+      <dialog class="cover-archive" data-cover-archive-dialog aria-labelledby="coverArchiveTitle">
+        <header><div><p class="eyebrow">Мастерская обложек</p><h2 id="coverArchiveTitle">Сохранённые варианты</h2></div><button type="button" data-cover-archive-close aria-label="Закрыть">×</button></header>
+        <div data-cover-archive-list></div>
+      </dialog>
+      <p class="cover-live" data-cover-live aria-live="polite"></p>
+    </main>
   </div>
 </div>
 
 <script>
-(function(){
+(function () {
   'use strict';
-  var cv = document.getElementById('cv'), rub = document.getElementById('rub'),
-      ttl = document.getElementById('ttl'), sub = document.getElementById('sub');
-
-  // ── геометрия эталона 1200×675 (совпадает с пустыми заготовками) ──
-  var G = {
-    W:1200, H:675,
-    frameOut:{inset:20, lw:1.6, col:'rgba(34,32,27,.62)'},
-    frameIn:{inset:31, lw:1, col:'rgba(34,32,27,.20)'},
-    kicker:{y:89, size:21, ls:.46, col:'#AF3D28', text:'АКАДЕМИЧЕСКИЙ САЛОН'},
-    rule:{y:124.5, w:64, col:'#C2B89F'},
-    title:{cx:600, zoneTop:172, zoneBot:503, maxW:980, size:76, lh:1.14, col:'#25221C', min:40},
-    subt:{size:27, gap:18, col:'#8B8577'},
-    rubric:{x:84, yBase:585, size:19, ls:.36, col:'#AF3D28'},
-    seal:{cx:1066, cy:557, r:48}
+  var cv = document.getElementById('cv');
+  var rub = document.getElementById('rub');
+  var ttl = document.getElementById('ttl');
+  var formats = {
+    site: { width: 1200, height: 630, label: '1200 × 630' },
+    feed: { width: 1080, height: 1350, label: '1080 × 1350' },
+    story: { width: 1080, height: 1920, label: '1080 × 1920' }
   };
-
-  function spacedWidth(ctx, s, ls){
-    var w = 0;
-    for (var i = 0; i < s.length; i++) w += ctx.measureText(s[i]).width + (i < s.length-1 ? ls : 0);
-    return w;
-  }
-  function drawSpaced(ctx, s, x, y, ls){
-    for (var i = 0; i < s.length; i++){
-      ctx.fillText(s[i], x, y);
-      x += ctx.measureText(s[i]).width + ls;
-    }
-  }
-  function wrapLines(ctx, text, maxW){
-    var out = [];
-    text.split('\n').forEach(function(par){
-      var words = par.trim().split(/\s+/).filter(Boolean);
-      if (!words.length) return;
-      var line = words[0];
-      for (var i = 1; i < words.length; i++){
-        var probe = line + ' ' + words[i];
-        if (ctx.measureText(probe).width <= maxW) line = probe;
-        else { out.push(line); line = words[i]; }
-      }
-      out.push(line);
-    });
-    return out;
-  }
-  // детерминированное бумажное зерно (mulberry32)
-  function noiseLayer(w, h){
-    var c = document.createElement('canvas'); c.width = w; c.height = h;
-    var x = c.getContext('2d'), img = x.createImageData(w, h), d = img.data, seed = 20260718;
-    function rnd(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
-    for (var i = 0; i < d.length; i += 4){
-      var v = 90 + rnd()*130;
-      d[i] = d[i+1] = d[i+2] = v; d[i+3] = 13; // ≈ opacity .05
-    }
-    x.putImageData(img, 0, 0);
-    return c;
-  }
+  var state = { format: 'site', layout: 'editorial', zoom: 72 };
   var noiseCache = {};
 
-  function render(canvas, scale){
+  function dimensions() {
+    return formats[state.format] || formats.site;
+  }
+  function wrapLines(ctx, text, maxWidth) {
+    var output = [];
+    String(text || '').split('\n').forEach(function (paragraph) {
+      var words = paragraph.trim().split(/\s+/).filter(Boolean);
+      if (!words.length) return;
+      var line = words.shift();
+      words.forEach(function (word) {
+        var next = line + ' ' + word;
+        if (ctx.measureText(next).width <= maxWidth) line = next;
+        else { output.push(line); line = word; }
+      });
+      output.push(line);
+    });
+    return output;
+  }
+  function spaced(ctx, text, x, y, spacing) {
+    String(text).split('').forEach(function (letter, index, letters) {
+      ctx.fillText(letter, x, y);
+      x += ctx.measureText(letter).width + (index < letters.length - 1 ? spacing : 0);
+    });
+  }
+  function noiseLayer(width, height) {
+    var layer = document.createElement('canvas');
+    layer.width = width;
+    layer.height = height;
+    var context = layer.getContext('2d');
+    var image = context.createImageData(width, height);
+    var pixels = image.data;
+    var seed = 20260725;
+    function random() {
+      seed |= 0;
+      seed = seed + 0x6D2B79F5 | 0;
+      var value = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      value = value + Math.imul(value ^ value >>> 7, 61 | value) ^ value;
+      return ((value ^ value >>> 14) >>> 0) / 4294967296;
+    }
+    for (var index = 0; index < pixels.length; index += 4) {
+      var shade = 92 + random() * 120;
+      pixels[index] = pixels[index + 1] = pixels[index + 2] = shade;
+      pixels[index + 3] = 10;
+    }
+    context.putImageData(image, 0, 0);
+    return layer;
+  }
+  function drawSeal(ctx, x, y, radius) {
+    var gradient = ctx.createRadialGradient(x - radius * .2, y - radius * .28, 2, x, y, radius);
+    gradient.addColorStop(0, '#c94e35');
+    gradient.addColorStop(.58, '#ad3f29');
+    gradient.addColorStop(1, '#8f2f1d');
+    ctx.save();
+    ctx.shadowColor = 'rgba(68,30,18,.22)';
+    ctx.shadowBlur = radius * .13;
+    ctx.shadowOffsetY = radius * .06;
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle = 'rgba(255,245,234,.55)';
+    ctx.lineWidth = Math.max(1, radius * .035);
+    ctx.beginPath();
+    ctx.arc(x, y, radius * .78, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = '#fff6eb';
+    ctx.font = '600 ' + Math.round(radius * .77) + 'px "Literata"';
+    ctx.textAlign = 'center';
+    ctx.fillText('АС', x, y + radius * .26);
+    ctx.textAlign = 'start';
+  }
+  function render(canvas, scale) {
+    var size = dimensions();
+    var width = size.width;
+    var height = size.height;
     var ctx = canvas.getContext('2d');
-    canvas.width = G.W * scale; canvas.height = G.H * scale;
+    canvas.width = width * scale;
+    canvas.height = height * scale;
     ctx.setTransform(scale, 0, 0, scale, 0, 0);
     ctx.textBaseline = 'alphabetic';
 
-    // бумага + виньетка
-    ctx.fillStyle = '#F6F1E7'; ctx.fillRect(0, 0, G.W, G.H);
-    var vg = ctx.createRadialGradient(600, 256, 60, 600, 256, 950);
-    vg.addColorStop(0, 'rgba(255,255,255,.28)'); vg.addColorStop(1, 'rgba(97,84,58,.055)');
-    ctx.fillStyle = vg; ctx.fillRect(0, 0, G.W, G.H);
+    ctx.fillStyle = '#f7f1e7';
+    ctx.fillRect(0, 0, width, height);
+    var glow = ctx.createRadialGradient(width * .18, height * .08, 1, width * .5, height * .45, Math.max(width, height));
+    glow.addColorStop(0, 'rgba(255,255,255,.48)');
+    glow.addColorStop(1, 'rgba(150,119,71,.035)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, width, height);
 
-    // рамки
-    var fo = G.frameOut;
-    ctx.strokeStyle = fo.col; ctx.lineWidth = fo.lw;
-    ctx.strokeRect(fo.inset, fo.inset, G.W - 2*fo.inset, G.H - 2*fo.inset);
-    var fi = G.frameIn;
-    ctx.strokeStyle = fi.col; ctx.lineWidth = fi.lw;
-    ctx.strokeRect(fi.inset, fi.inset, G.W - 2*fi.inset, G.H - 2*fi.inset);
-
-    // шапка-набор
-    var k = G.kicker;
-    ctx.font = '600 ' + k.size + 'px "Golos Text"';
-    ctx.fillStyle = k.col;
-    var ls = k.size * k.ls;
-    drawSpaced(ctx, k.text, (G.W - spacedWidth(ctx, k.text, ls)) / 2, k.y, ls);
-    ctx.fillStyle = G.rule.col;
-    ctx.fillRect((G.W - G.rule.w) / 2, G.rule.y, G.rule.w, 1);
-
-    // заголовок + подзаголовок
-    var t = ttl.value.replace(/\s+$/,''), s = sub.value.trim();
-    if (t){
-      var T = G.title, size = T.size, lines;
-      do {
-        ctx.font = '540 ' + size + 'px "Literata"';
-        lines = wrapLines(ctx, t, T.maxW);
-        var block = lines.length * size * T.lh + (s ? G.subt.gap + G.subt.size*1.35 : 0);
-        if (block <= (T.zoneBot - T.zoneTop) && lines.every(function(l){ return ctx.measureText(l).width <= T.maxW; })) break;
-        size -= 2;
-      } while (size > T.min);
-      ctx.fillStyle = T.col; ctx.textAlign = 'center';
-      var lineH = size * T.lh;
-      var total = lines.length * lineH + (s ? G.subt.gap + G.subt.size*1.35 : 0);
-      var y0 = (T.zoneTop + T.zoneBot - total) / 2 + size * .82;
-      lines.forEach(function(l, i){ ctx.fillText(l, T.cx, y0 + i * lineH); });
-      if (s){
-        ctx.font = '400 ' + G.subt.size + 'px "Golos Text"';
-        ctx.fillStyle = G.subt.col;
-        ctx.fillText(s, T.cx, y0 + lines.length * lineH - lineH + size*.4 + G.subt.gap + G.subt.size);
-      }
-      ctx.textAlign = 'start';
+    var frame = Math.round(Math.min(width, height) * .038);
+    ctx.strokeStyle = '#c9bda9';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(frame, frame, width - frame * 2, height - frame * 2);
+    ctx.strokeStyle = 'rgba(188,174,151,.34)';
+    ctx.lineWidth = 1;
+    for (var grid = 1; grid < 4; grid += 1) {
+      var gridX = Math.round(width * grid / 4);
+      ctx.beginPath();
+      ctx.moveTo(gridX, frame);
+      ctx.lineTo(gridX, height - frame);
+      ctx.stroke();
     }
 
-    // рубрика
-    var r = G.rubric, rt = '—  ' + rub.value.toUpperCase() + '  —';
-    ctx.font = '600 ' + r.size + 'px "Golos Text"';
-    ctx.fillStyle = r.col;
-    drawSpaced(ctx, rt, r.x, r.yBase, r.size * r.ls);
+    var left = Math.round(width * .075);
+    var brandY = Math.round(height * .145);
+    var sealRadius = Math.max(24, Math.round(Math.min(width, height) * .042));
+    drawSeal(ctx, left + sealRadius, brandY, sealRadius);
+    ctx.fillStyle = '#29271f';
+    ctx.font = '500 ' + Math.max(19, Math.round(width * .021)) + 'px "Literata"';
+    ctx.fillText('Академический Салон', left + sealRadius * 2 + 20, brandY + 7);
 
-    // сургучная печать
-    var sl = G.seal;
-    var sg = ctx.createRadialGradient(sl.cx - 10, sl.cy - 17, 5, sl.cx, sl.cy, sl.r + 6);
-    sg.addColorStop(0, '#C4503A'); sg.addColorStop(.52, '#B23B22'); sg.addColorStop(1, '#8C2D18');
-    ctx.save();
-    ctx.shadowColor = 'rgba(76,29,15,.28)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2;
-    ctx.fillStyle = sg;
-    ctx.beginPath(); ctx.arc(sl.cx, sl.cy, sl.r, 0, 7); ctx.fill();
-    ctx.restore();
-    ctx.strokeStyle = 'rgba(255,244,233,.55)'; ctx.lineWidth = 1.4;
-    ctx.beginPath(); ctx.arc(sl.cx, sl.cy, sl.r - 7.7, 0, 7); ctx.stroke();
-    ctx.save();
-    ctx.shadowColor = 'rgba(70,20,8,.45)'; ctx.shadowBlur = 1; ctx.shadowOffsetY = 1;
-    ctx.font = '600 35px "Literata"'; ctx.fillStyle = '#FFF4E9'; ctx.textAlign = 'center';
-    ctx.fillText('АС', sl.cx, sl.cy + 12);
-    ctx.restore(); ctx.textAlign = 'start';
+    ctx.fillStyle = '#b13f28';
+    ctx.font = '600 ' + Math.max(13, Math.round(width * .013)) + 'px "Golos Text"';
+    spaced(ctx, '01 / ' + rub.value.toUpperCase(), left, Math.round(height * .255), Math.max(1.7, width * .002));
 
-    // зерно поверх
+    var title = ttl.value.trim() || 'Новая публикация';
+    var titleWidth = state.format === 'site' ? width * .62 : width * .78;
+    var titleSize = state.format === 'site' ? width * .072 : width * .082;
+    var minTitle = state.format === 'site' ? 44 : 50;
+    var lines;
+    do {
+      ctx.font = '520 ' + Math.round(titleSize) + 'px "Literata"';
+      lines = wrapLines(ctx, title, titleWidth);
+      if (lines.length <= (state.format === 'site' ? 3 : 5)) break;
+      titleSize -= 3;
+    } while (titleSize > minTitle);
+    var lineHeight = titleSize * 1.02;
+    var titleY = state.format === 'site' ? height * .52 : height * .42;
+
+    if (state.layout === 'index') {
+      ctx.fillStyle = 'rgba(174,63,40,.08)';
+      ctx.font = '520 ' + Math.round(Math.min(width, height) * .42) + 'px "Literata"';
+      ctx.textAlign = 'right';
+      ctx.fillText('01', width - left, titleY + titleSize);
+      ctx.textAlign = 'start';
+    } else if (state.layout === 'quote') {
+      ctx.fillStyle = '#b13f28';
+      ctx.font = '500 ' + Math.round(titleSize * 1.8) + 'px "Literata"';
+      ctx.fillText('“', left - 8, titleY - titleSize * .48);
+    }
+
+    ctx.fillStyle = '#29271f';
+    ctx.font = (state.layout === 'quote' ? '450 italic ' : '520 ') + Math.round(titleSize) + 'px "Literata"';
+    lines.forEach(function (line, index) {
+      ctx.fillText(line, left, titleY + index * lineHeight);
+    });
+
+    var ruleX = width * .72;
+    var ruleY = height * .74;
+    ctx.strokeStyle = '#9f9079';
+    ctx.lineWidth = 1.2;
+    [0, 13, 26].forEach(function (offset) {
+      ctx.beginPath();
+      ctx.moveTo(ruleX, ruleY + offset);
+      ctx.lineTo(width - left, ruleY + offset);
+      ctx.stroke();
+    });
+
+    var footerY = height - frame - Math.max(22, height * .055);
+    ctx.fillStyle = '#948a79';
+    ctx.font = '600 ' + Math.max(12, Math.round(width * .013)) + 'px "Golos Text"';
+    spaced(ctx, 'РЕДАКЦИОННАЯ БИБЛИОТЕКА', left, footerY, Math.max(1.3, width * .0017));
+    ctx.font = '600 ' + Math.max(10, Math.round(width * .009)) + 'px "Golos Text"';
+    ctx.textAlign = 'right';
+    spaced(ctx, 'AKADEMSALON.RU', width - left - ctx.measureText('AKADEMSALON.RU').width - width * .012, footerY, Math.max(1, width * .0012));
+    ctx.textAlign = 'start';
+
     var key = canvas.width + 'x' + canvas.height;
     if (!noiseCache[key]) noiseCache[key] = noiseLayer(canvas.width, canvas.height);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.drawImage(noiseCache[key], 0, 0);
   }
-
-  function slug(s){
+  function slug(text) {
     var map = {'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'c','ч':'ch','ш':'sh','щ':'sch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya'};
-    return s.toLowerCase().split('').map(function(ch){ return map[ch] !== undefined ? map[ch] : (/[a-z0-9]/.test(ch) ? ch : '-'); }).join('').replace(/-+/g,'-').replace(/^-|-$/g,'') || 'cover';
+    return String(text || '').toLowerCase().split('').map(function (letter) {
+      return map[letter] !== undefined ? map[letter] : (/[a-z0-9]/.test(letter) ? letter : '-');
+    }).join('').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'cover';
   }
-  function download(scale){
-    var off = document.createElement('canvas');
-    render(off, scale);
-    var a = document.createElement('a');
-    a.download = 'akademsalon-' + slug(rub.value) + (ttl.value.trim() ? '-' + slug(ttl.value.trim()).slice(0, 40) : '') + '-' + (1200*scale) + '.png';
-    a.href = off.toDataURL('image/png');
-    a.click();
+  function announce(message) {
+    var live = document.querySelector('[data-cover-live]');
+    if (!live) return;
+    live.textContent = '';
+    setTimeout(function () { live.textContent = message; }, 20);
+  }
+  function updateInterface() {
+    var size = dimensions();
+    var label = document.querySelector('[data-cover-dimensions]');
+    var zoom = document.querySelector('[data-cover-zoom-value]');
+    if (label) label.textContent = 'Предпросмотр · ' + size.label;
+    if (zoom) zoom.textContent = state.zoom + '%';
+    cv.style.setProperty('--cover-zoom', String(state.zoom / 72));
+  }
+  function repaint(immediate) {
+    if (immediate) {
+      render(cv, 1);
+      updateInterface();
+      return;
+    }
+    clearTimeout(repaint.timer);
+    repaint.timer = setTimeout(function () {
+      render(cv, 1);
+      updateInterface();
+    }, 60);
+  }
+  function download(scale) {
+    var size = dimensions();
+    var offscreen = document.createElement('canvas');
+    render(offscreen, scale);
+    var link = document.createElement('a');
+    link.download = 'akademsalon-' + slug(rub.value) + '-' + slug(ttl.value).slice(0, 40) + '-' + (size.width * scale) + 'x' + (size.height * scale) + '.png';
+    link.href = offscreen.toDataURL('image/png');
+    link.click();
+    announce('PNG подготовлен.');
+  }
+  function variants() {
+    try { return JSON.parse(localStorage.getItem('academic_cover_variants') || '[]'); }
+    catch (error) { return []; }
+  }
+  function renderArchive() {
+    var box = document.querySelector('[data-cover-archive-list]');
+    if (!box) return;
+    var saved = variants();
+    box.innerHTML = saved.length ? saved.map(function (item, index) {
+      return '<button type="button" data-cover-restore="' + index + '"><strong>' + escapeHTML(item.title) +
+        '</strong><span>' + escapeHTML(item.rubric) + ' · ' + escapeHTML(item.formatLabel) +
+        '</span><small>' + escapeHTML(item.savedLabel) + '</small></button>';
+    }).join('') : '<p>Здесь появятся варианты, которые вы сохраните в мастерской.</p>';
+  }
+  function escapeHTML(value) {
+    return String(value || '').replace(/[&<>"']/g, function (symbol) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[symbol];
+    });
+  }
+  function saveVariant() {
+    var saved = variants();
+    saved.unshift({
+      title: ttl.value.trim() || 'Без названия',
+      rubric: rub.value,
+      format: state.format,
+      formatLabel: dimensions().label,
+      layout: state.layout,
+      savedLabel: new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }).format(new Date())
+    });
+    try { localStorage.setItem('academic_cover_variants', JSON.stringify(saved.slice(0, 12))); } catch (error) {}
+    renderArchive();
+    announce('Вариант сохранён в этом браузере.');
+  }
+  function selectControls(selector, active) {
+    document.querySelectorAll(selector).forEach(function (button) {
+      var value = button.getAttribute(selector.indexOf('layout') > -1 ? 'data-cover-layout' : 'data-cover-format');
+      button.classList.toggle('is-selected', value === active);
+    });
   }
 
-  var queued = false;
-  function repaint(){
-    if (queued) return;
-    queued = true;
-    setTimeout(function(){ queued = false; render(cv, 1); }, 60);
-  }
-  ['input','change'].forEach(function(ev){
-    rub.addEventListener(ev, repaint); ttl.addEventListener(ev, repaint); sub.addEventListener(ev, repaint);
+  ['input', 'change'].forEach(function (eventName) {
+    rub.addEventListener(eventName, function () { repaint(false); });
+    ttl.addEventListener(eventName, function () { repaint(false); });
   });
-  document.getElementById('dl1').addEventListener('click', function(){ download(1); });
-  document.getElementById('dl2').addEventListener('click', function(){ download(2); });
+  document.querySelectorAll('[data-cover-layout]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      state.layout = button.getAttribute('data-cover-layout') || 'editorial';
+      selectControls('[data-cover-layout]', state.layout);
+      repaint(true);
+    });
+  });
+  document.querySelectorAll('[data-cover-format]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      state.format = button.getAttribute('data-cover-format') || 'site';
+      selectControls('[data-cover-format]', state.format);
+      repaint(true);
+    });
+  });
+  document.querySelectorAll('[data-cover-zoom]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      state.zoom = Math.max(56, Math.min(88, state.zoom + Number(button.getAttribute('data-cover-zoom') || 0)));
+      updateInterface();
+    });
+  });
+  document.querySelector('[data-generate-cover]').addEventListener('click', function () {
+    repaint(true);
+    announce('Предпросмотр обновлён.');
+  });
+  document.querySelector('[data-export-size]').addEventListener('click', function () { download(2); });
+  document.querySelector('[data-save-cover]').addEventListener('click', saveVariant);
+  document.getElementById('dl1').addEventListener('click', function () { download(1); });
+  document.getElementById('dl2').addEventListener('click', function () { download(2); });
 
-  // шрифты: рисуем только после загрузки нужных начертаний (иначе канвас возьмёт фолбэк)
+  var archive = document.querySelector('[data-cover-archive-dialog]');
+  document.querySelector('[data-cover-archive]').addEventListener('click', function () {
+    renderArchive();
+    if (archive.showModal) archive.showModal();
+    else archive.setAttribute('open', '');
+  });
+  document.querySelector('[data-cover-archive-close]').addEventListener('click', function () { archive.close(); });
+  archive.addEventListener('click', function (event) {
+    if (event.target === archive) archive.close();
+    var restore = event.target.closest('[data-cover-restore]');
+    if (!restore) return;
+    var item = variants()[Number(restore.getAttribute('data-cover-restore'))];
+    if (!item) return;
+    ttl.value = item.title;
+    rub.value = item.rubric;
+    state.format = item.format || 'site';
+    state.layout = item.layout || 'editorial';
+    selectControls('[data-cover-format]', state.format);
+    selectControls('[data-cover-layout]', state.layout);
+    repaint(true);
+    archive.close();
+    announce('Сохранённый вариант открыт.');
+  });
+
   Promise.all([
-    document.fonts.load('600 21px "Golos Text"', 'АКАДЕМИЧЕСКИЙ САЛОН FAQ'),
-    document.fonts.load('400 27px "Golos Text"', 'подзаголовок ₽'),
-    document.fonts.load('540 76px "Literata"', 'Пример Заголовка ₽ №'),
+    document.fonts.load('600 18px "Golos Text"', 'МЕТОДОЛОГИЯ РЕДАКЦИОННАЯ БИБЛИОТЕКА'),
+    document.fonts.load('520 76px "Literata"', 'Как проверить структуру ВКР'),
     document.fonts.load('600 35px "Literata"', 'АС')
-  ]).then(function(){ return document.fonts.ready; }).then(function(){ render(cv, 1); });
-  render(cv, 1); // черновой кадр до шрифтов, чтобы не пустовало
+  ]).then(function () { return document.fonts.ready; }).then(function () { repaint(true); });
+  repaint(true);
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+  function setTheme(next) {
+    if (next === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
+    try { localStorage.setItem('salon_theme', next); } catch (e) {}
+    document.querySelectorAll('[data-theme-label]').forEach(function (node) {
+      node.textContent = next === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему';
+    });
+  }
+  document.querySelectorAll('[data-admin-theme]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+  });
+  document.querySelectorAll('[data-admin-tab-link]').forEach(function (control) {
+    control.addEventListener('click', function () {
+      var tab = control.getAttribute('data-admin-tab-link');
+      try { localStorage.setItem('ag_tab', JSON.stringify(tab)); } catch (e) {}
+      if (control.tagName === 'BUTTON') location.href = 'admin.html';
+    });
+  });
+  var menu = document.querySelector('[data-admin-mobile-menu]');
+  if (menu) menu.addEventListener('click', function () {
+    var open = document.body.classList.toggle('admin-nav-expanded');
+    menu.setAttribute('aria-expanded', String(open));
+    menu.setAttribute('aria-label', open ? 'Закрыть разделы' : 'Открыть разделы');
+  });
+  function revealCurrentAdminSection() {
+    var nav = document.querySelector('.admin-sidebar nav');
+    var current = nav && nav.querySelector('[aria-current="page"]');
+    if (!nav || !current || window.innerWidth > 880) return;
+    nav.scrollLeft = Math.max(0, current.offsetLeft + current.offsetWidth - nav.clientWidth + 16);
+  }
+  window.addEventListener('resize', revealCurrentAdminSection);
+  requestAnimationFrame(revealCurrentAdminSection);
+  setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
 })();
 </script>
 </body>

@@ -77,16 +77,35 @@ function initGodEye() {
     desk: null, calDay: null, /* «Сегодня на столе»: активные дела + календарь сдач */
     subs: null,               /* /admin/subs: оформления подписки (свой контур) */
     gifts: null, gsel: null, gnew: false, gq: '', gfilter: '', giftBusy: false,  /* сертификаты: список, раскрытая карточка, форма, поиск/фильтр */
-    ov: null, timer: null, busy: false,
+    ov: null, ovAt: 0, ovFailed: false, timer: null, busy: false,
     visits: null, vstats: null,                    /* «Глаз бога»: лента заходов */
     vopts: { hours: 24, self: false, bots: false },
     vgeo: null, vanmore: false,                    /* выбранный город: фильтр ленты; раскрыт ли блок «ещё разрезы» */
     vopen: {},                                     /* раскрытые строки визитов */
     vtimer: null,
-    bulk: null                                     /* Set(id) — режим массовых действий */
+    bulk: null,                                    /* Set(id) — режим массовых действий */
+    contentQ: '', contentTopic: 'all'
   };
   var VALID_TABS = { summary: 1, visits: 1, orders: 1, clients: 1, reviews: 1,
-    qa: 1, gifts: 1, leads: 1, broadcast: 1, settings: 1 };
+    qa: 1, gifts: 1, leads: 1, broadcast: 1, settings: 1, content: 1 };
+  var CONTENT_GUIDES = [
+    ['guide-temy-vkr', 'Темы ВКР: критерии выбора и примеры формулировок', 'ВКР · старт', 'vkr',
+      'Критерии проверки темы: исследовательский вопрос, доступные данные, объём и срок.'],
+    ['guide-obekt-predmet-cel-zadachi', 'Объект, предмет, цель и задачи исследования', 'Методология', 'vkr',
+      'Как связать объект, предмет, цель и задачи с будущей структурой работы.'],
+    ['guide-vkr-struktura', 'Введение к ВКР: структура и связь с главами', 'ВКР · введение', 'vkr',
+      'Состав введения и проверка связи между задачами, главами и выводами.'],
+    ['guide-vvedenie-kursovoy', 'Введение курсовой работы: структура и пример', 'Курсовая · введение', 'course',
+      'Актуальность, объект, предмет, цель, задачи и методы — в рабочей последовательности.'],
+    ['guide-kursovaya-za-nedelyu', 'Как спланировать курсовую на семь дней', 'Курсовая · маршрут', 'course',
+      'План на семь дней для ситуации, когда тема определена, а источники и данные доступны.'],
+    ['guide-prakticheskaya-chast-kursovoy', 'Практическая часть курсовой: данные и анализ', 'Курсовая · исследование', 'course',
+      'Как выбрать данные и метод, показать результаты и сформулировать выводы.'],
+    ['guide-normocontrol', 'Нормоконтроль: что проверить перед сдачей', 'Оформление · проверка', 'format',
+      'Параметры страницы, нумерация, таблицы, рисунки, ссылки и список источников.'],
+    ['guide-zashchita-diploma', 'Подготовка к защите ВКР', 'Защита · маршрут', 'defense',
+      'Доклад, презентация, раздаточный материал, репетиция и ответы на вопросы.']
+  ];
 
   /* цветные метки заказов: имя → чернила «Оттиска» */
   var CLR = { red: '#B23B22', gold: '#8A6D1C', green: '#2E6B4F', blue: '#3A4E7A', violet: '#6B4B8A' };
@@ -149,16 +168,55 @@ function initGodEye() {
     for (var i = 1; i <= 5; i++) out += i <= n ? '★' : '<span class="dim">★</span>';
     return out;
   }
-  function mediaSrc(orderId, msgId) {
-    return S.api.base + '/orders/' + orderId + '/msgmedia/' + msgId + '?session=' + encodeURIComponent(S.api.token());
+  function mediaPath(orderId, msgId) {
+    return '/orders/' + orderId + '/msgmedia/' + msgId;
   }
-  function fileSrc(orderId, fid) {
-    return S.api.base + '/orders/' + orderId + '/file/' + fid + '?session=' + encodeURIComponent(S.api.token());
+  function filePath(orderId, fid) {
+    return '/orders/' + orderId + '/file/' + fid;
+  }
+  var adminObjectUrls = [];
+  function releaseAdminObjectUrls() {
+    adminObjectUrls.forEach(function (url) {
+      try { URL.revokeObjectURL(url); } catch (e) {}
+    });
+    adminObjectUrls = [];
+  }
+  function adminProtectedFetch(path) {
+    return fetch(S.api.base + path, {
+      method: 'GET',
+      headers: { Authorization: 'Bearer ' + (S.api.token() || '') },
+      credentials: 'same-origin',
+      cache: 'no-store'
+    });
+  }
+  function hydrateAdminMedia(scope) {
+    (scope || root).querySelectorAll('[data-admin-media]').forEach(function (el) {
+      if (el.getAttribute('data-admin-loading') === '1') return;
+      el.setAttribute('data-admin-loading', '1');
+      adminProtectedFetch(el.getAttribute('data-admin-media')).then(function (resp) {
+        if (!resp.ok) throw new Error('http_' + resp.status);
+        return resp.blob();
+      }).then(function (blob) {
+        if (!el.isConnected) return;
+        var url = URL.createObjectURL(blob);
+        adminObjectUrls.push(url);
+        el.src = url;
+        var open = el.closest('[data-admin-media-open]');
+        if (open) {
+          open.href = url;
+          open.removeAttribute('aria-disabled');
+        }
+      }).catch(function () {
+        if (el.isConnected) el.setAttribute('aria-label', 'Вложение сейчас недоступно');
+      });
+    });
   }
 
   /* ---------------- вход/гейт ---------------- */
   function tplLogin(pending, denied) {
-    return '<div class="ag-login sheet sheet-pad stacked">' +
+    return '<main class="ag-login sheet sheet-pad stacked">' +
+      '<div class="admin-login-brand"><img src="bimi/logo.svg" alt=""><div><p class="caps">Редакционный кабинет</p>' +
+      '<strong>Академический Салон</strong></div></div>' +
       '<p class="caps">Кабинет мастера</p>' +
       '<h1 style="font-size:26px;margin:6px 0 10px">Рабочий стол мастерской</h1>' +
       (denied ? '<p class="petit" style="color:var(--wax,#A8402F);margin-bottom:12px">Этот аккаунт Telegram не является мастером — доступа нет.</p>' : '') +
@@ -169,7 +227,7 @@ function initGodEye() {
         : '<button type="button" class="btn btn-wax btn-block" id="agTg">Войти через Telegram</button>') +
       (denied ? '<button type="button" class="btn btn-line btn-block" id="agLogout" style="margin-top:10px">Выйти и сменить аккаунт</button>' : '') +
       '<p class="ag-note" style="margin-top:14px">Вход подтверждается в боте мастерской. Посторонним сервер не отвечает.</p>' +
-      '</div>';
+      '</main>';
   }
 
   function gate() {
@@ -182,6 +240,8 @@ function initGodEye() {
       if (r.error === 'forbidden') { render(tplLogin(null, true)); return; }
       if (!r.ok) { render('<div class="ag-empty">Сервер недоступен. <button class="btn btn-line" id="agRetry">Повторить</button></div>'); return; }
       st.ov = r;
+      st.ovAt = Date.now();
+      st.ovFailed = false;
       /* вернуть последнюю вкладку (переживает F5 и релогин с бота), но не
          перебивать диплинк #o= — он уже увёл st.tab на «Заказы» */
       if (st.tab === 'summary') {
@@ -239,7 +299,17 @@ function initGodEye() {
       st.ovBusy = true;
       S.api.get('/admin/overview').then(function (r) {
         st.ovBusy = false;
-        if (r.ok) { st.ov = r; drawNav(); drawLive(); if (st.tab === 'summary') drawBody(); }
+        if (r.ok) {
+          st.ov = r;
+          st.ovAt = Date.now();
+          st.ovFailed = false;
+          drawNav();
+          drawLive();
+          if (st.tab === 'summary') drawBody();
+        } else {
+          st.ovFailed = true;
+          if (st.tab === 'summary') drawBody();
+        }
       });
     }
     loadSubs();
@@ -323,8 +393,12 @@ function initGodEye() {
   /* переход на вкладку: запоминаем её (переживёт перезагрузку и релогин с бота)
      и уводим фокус на тело — иначе он падает на <body> при каждой смене */
   function goTab(name, openFirst) {
+    if (!VALID_TABS[name]) return;
     st.tab = name;
     try { S.store.set('ag_tab', name); } catch (e) {}
+    try {
+      history.replaceState(null, '', location.pathname + (name === 'summary' ? '' : '#' + name));
+    } catch (e) {}
     drawNav();
     loadTab(openFirst);
     var body = document.getElementById('agBody');
@@ -760,20 +834,42 @@ function initGodEye() {
   /* ---------------- каркас ---------------- */
   function render(html) { root.innerHTML = html; }
 
+  function adminThemeButton() {
+    var action = S.theme && S.theme.current && S.theme.current() === 'dark'
+      ? 'Включить светлую тему'
+      : 'Включить тёмную тему';
+    return '<button class="theme-toggle" type="button" aria-label="Сменить тему оформления">' +
+      '<span aria-hidden="true">◐</span><span class="visually-hidden" data-theme-action>' +
+      action + '</span></button>';
+  }
+
   function renderShell() {
     var u = S.api.user() || {};
-    render(
-      '<div class="ag-mast"><h1><span class="mono">Академический салон · глаз бога</span>Кабинет мастера</h1>' +
-      '<button type="button" class="btn btn-wax wz-open" id="wzOpen">📄 Новая заявка</button>' +
-      '<button type="button" class="ag-live quiet" id="agLive" title="Кто на сайте прямо сейчас — открыть визиты">' +
-        '<span class="ld"></span><span>на сайте <b id="agLiveN">0</b></span></button>' +
-      '<div class="ag-user">' + (S.themeToggleHTML ? S.themeToggleHTML() : '') +
-      '<span>мастер: <b>' + esc(u.name || '—') + '</b></span>' +
-      '<a class="ag-linkbtn" href="index.html">на сайт</a>' +
-      '<a class="ag-linkbtn" href="dashboard.html">клиентский кабинет</a>' +
-      '<button type="button" class="ag-linkbtn" id="agLogout">выйти</button></div></div>' +
-      '<div class="ag-nav" id="agNav" role="tablist" aria-label="Разделы кабинета"></div>' +
-      '<div id="agBody" tabindex="-1"></div>');
+    render('<header class="admin-mobile-appbar">' +
+        '<button type="button" class="admin-mobile-appbar__back" data-admin-mobile-back aria-label="Вернуться назад">←</button>' +
+        '<span class="admin-mobile-appbar__brand"><img src="bimi/logo.svg" alt="">' +
+          '<span><strong>Редакционный кабинет</strong><small>Управление</small></span></span>' +
+        '<button type="button" class="admin-mobile-appbar__search" data-admin-mobile-search aria-label="Найти дело">⌕</button>' +
+        adminThemeButton() +
+        '<button type="button" class="admin-mobile-appbar__menu" data-admin-mobile-menu aria-expanded="false" aria-label="Открыть разделы"><i></i></button>' +
+      '</header>' +
+      '<div class="admin-shell">' +
+      '<aside class="admin-sidebar">' +
+        '<a class="admin-sidebar__brand" href="/"><img src="bimi/logo.svg" alt="">' +
+          '<span><strong>Академический Салон</strong><small>Редакционный кабинет</small></span></a>' +
+        '<nav id="agNav" aria-label="Разделы администрирования"></nav>' +
+        '<div class="admin-sidebar__section"><span>Сервис</span>' +
+          '<button type="button" class="ag-tab" data-tab="visits"><i>↗</i><span>Отчёты и визиты</span></button></div>' +
+        '<footer><a href="/">Открыть сайт <span>↗</span></a>' +
+          '<a href="dashboard.html">Кабинет клиента <span>↗</span></a>' +
+          '<div class="admin-theme-row">' + adminThemeButton() +
+            '<span data-theme-action>' + (S.theme && S.theme.current && S.theme.current() === 'dark'
+              ? 'Включить светлую тему' : 'Включить тёмную тему') + '</span></div>' +
+          '<button type="button" class="admin-logout" id="agLogout">Выйти · ' + esc(u.name || 'мастер') + '</button>' +
+          '<span>Рабочая среда</span></footer>' +
+      '</aside>' +
+      '<main class="admin-main"><header class="admin-head" id="agHead"></header>' +
+        '<div id="agBody" tabindex="-1"></div></main></div>');
     drawNav();
     drawLive();
   }
@@ -804,52 +900,102 @@ function initGodEye() {
     var b = navBadges();
     var online = (st.ov && st.ov.visits && st.ov.visits.online) || 0;
     var tabs = [
-      ['summary', '◉ Пульс', 0],
-      ['visits', '👁 Визиты', online],
-      ['orders', '🗂 Заказы', b.orders],
-      ['clients', '👥 Клиенты', 0],
-      ['reviews', '⭐ Отзывы', b.reviews],
-      ['qa', '📮 Приёмная', b.qa],
-      ['gifts', '🎁 Сертификаты', b.gifts],
-      ['leads', '🌐 Лиды', b.leads],
-      ['broadcast', '📣 Рассылка', 0],
-      ['settings', '⚙️ Настройки', 0]
+      ['summary', 'Рабочий стол', '⌂', 0],
+      ['visits', 'Посещения', 'V', online],
+      ['orders', 'Дела', 'Д', b.orders],
+      ['clients', 'Клиенты', 'К', 0],
+      ['reviews', 'Отзывы', 'О', b.reviews],
+      ['qa', 'Приёмная', '?', b.qa],
+      ['gifts', 'Сертификаты', 'П', b.gifts],
+      ['leads', 'Обращения', 'Л', b.leads],
+      ['broadcast', 'Рассылки', 'Р', 0],
+      ['settings', 'Настройки', '⚙', 0],
+      ['content', 'Материалы', 'М', 0]
     ];
-    var primary = { summary: 1, orders: 1, clients: 1 };
-    var extraTabs = tabs.filter(function (t) { return !primary[t[0]]; });
-    box.innerHTML =
-      '<button type="button" class="wz-navbtn" id="wzOpenNav">📄 Новая заявка</button>' +
-      tabs.map(function (t) {
-      var bcls = t[0] === 'visits' ? 'ag-badge mut' : 'ag-badge';
+    box.innerHTML = tabs.map(function (t) {
       var on = st.tab === t[0];
-      return '<button type="button" role="tab" aria-selected="' + (on ? 'true' : 'false') + '"' +
-        ' class="ag-tab' + (primary[t[0]] ? ' primary' : ' extra') + (on ? ' on' : '') + '" data-tab="' + t[0] + '">' + t[1] +
-        (t[2] ? '<span class="' + bcls + '">' + t[2] + '</span>' : '') + '</button>';
+      return '<button type="button" role="tab" aria-selected="' + (on ? 'true' : 'false') +
+        '" class="ag-tab' + (on ? ' is-current on' : '') + '" data-tab="' + t[0] + '">' +
+        '<i>' + t[2] + '</i><span>' + t[1] + '</span>' +
+        (t[3] ? '<b>' + t[3] + '</b>' : '') + '</button>';
     }).join('') +
-      '<button type="button" class="ag-tab ag-more-tabs' + (!primary[st.tab] ? ' on' : '') + '" id="agMoreTabs" aria-expanded="false" aria-controls="agMorePop">••• Ещё</button>' +
-      '<div class="ag-more-pop" id="agMorePop" role="menu" hidden>' + extraTabs.map(function (t) {
-        return '<button type="button" role="menuitem" class="ag-more-item' + (st.tab === t[0] ? ' on' : '') + '" data-tab="' + t[0] + '">' + t[1] +
-          (t[2] ? '<span class="ag-badge">' + t[2] + '</span>' : '') + '</button>';
-      }).join('') + '</div>';
+      '<a class="ag-tab admin-nav-link" href="admin-covers.html">' +
+        '<i>И</i><span>Обложки</span></a>';
+    drawHead();
+  }
+
+  function drawHead() {
+    var box = document.getElementById('agHead');
+    if (!box) return;
+    var u = S.api.user() || {};
+    var label = {
+      summary: ['Редакционный кабинет', 'Рабочий стол', 'Сводка на сегодня'],
+      visits: ['Аналитика', 'Посещения', 'Живые визиты и источники переходов'],
+      orders: ['Операционная работа', 'Дела', 'Сроки, оплаты и переписка'],
+      clients: ['Отношения с клиентами', 'Клиенты', 'История дел и начислений'],
+      reviews: ['Репутация', 'Отзывы', 'Публикация и модерация'],
+      qa: ['Открытая приёмная', 'Вопросы', 'Редакторские ответы посетителям'],
+      gifts: ['Подарочная программа', 'Сертификаты', 'Выпуск, оплата и остатки'],
+      leads: ['Обращения с сайта', 'Лиды', 'Новые задачи и контакты'],
+      broadcast: ['Коммуникации', 'Рассылки', 'Сегменты и история отправок'],
+      settings: ['Система', 'Настройки', 'Доступность сервисов и расписание'],
+      content: ['Редакционная система', 'Публикации сайта', '25 опубликованных материалов']
+    }[st.tab] || ['Редакционный кабинет', 'Рабочий стол', ''];
+    var initials = String(u.name || 'СМ').trim().split(/\s+/).map(function (p) {
+      return p.charAt(0);
+    }).join('').slice(0, 2).toUpperCase() || 'СМ';
+    var mobileTitle = {
+      summary: 'Редакционный кабинет',
+      visits: 'Посещения',
+      orders: 'Дела',
+      clients: 'Клиенты',
+      reviews: 'Отзывы',
+      qa: 'Приёмная',
+      gifts: 'Сертификаты',
+      leads: 'Обращения',
+      broadcast: 'Рассылки',
+      settings: 'Настройки',
+      content: 'Материалы'
+    }[st.tab] || 'Редакционный кабинет';
+    var mobileBrand = root.querySelector('.admin-mobile-appbar__brand strong');
+    if (mobileBrand) mobileBrand.textContent = mobileTitle;
+    var headAction = st.tab === 'content'
+      ? '<a class="header-action" href="knowledge.html" target="_blank" rel="noopener">Открыть библиотеку</a>'
+      : '<button type="button" class="header-action wz-open" id="wzOpen">Создать</button>';
+    box.innerHTML = '<div><p class="eyebrow">' + label[0] + '</p><h1>' + label[1] + '</h1>' +
+      '<p>' + label[2] + '</p></div><div>' +
+      headAction +
+      '<button type="button" class="ag-live quiet" id="agLive" title="Открыть посещения">' +
+        '<span class="ld"></span><span><b id="agLiveN">0</b> онлайн</span></button>' +
+      '<span class="admin-profile">' + esc(initials) + '</span></div>';
+    drawLive();
   }
 
   function drawBody() {
     var box = document.getElementById('agBody');
     if (!box) return;
+    releaseAdminObjectUrls();
     if (st.tab === 'summary') {
       box.innerHTML = tplSummary();
       if (st.visits === null) loadVisits(); /* мини-лента заходов дозагрузится сама */
+      return;
+    }
+    if (st.tab === 'content') {
+      box.innerHTML = tplContent();
+      drawContentRows();
       return;
     }
     if (st.tab === 'visits') { box.innerHTML = tplVisits(); drawVisits(); return; }
     if (st.tab === 'orders') {
       box.innerHTML =
         '<div class="ag-filters" id="agFilters"></div>' +
-        '<div class="ag-split">' +
+        '<section class="admin-order-register" aria-label="Реестр дел">' +
+          '<div class="admin-order-register__head"><span>Дело</span><span>Клиент и задача</span>' +
+            '<span>Статус</span><span>Ближайший срок</span><span>Сумма</span><span></span></div>' +
           '<div class="ag-list" id="agList"></div>' +
-          '<div class="ag-card" id="agCard"><div class="ag-empty">Выберите заказ слева</div></div>' +
-        '</div>' +
-        '<div id="agBulkWrap"></div>';
+        '</section><div id="agBulkWrap"></div>' +
+        '<button type="button" class="admin-order-backdrop" id="agCardBackdrop" aria-label="Закрыть карточку дела" hidden></button>' +
+        '<aside class="ag-card admin-order-drawer" id="agCard" aria-label="Карточка дела" aria-hidden="true"></aside>';
       drawFilters();
       drawList();
       if (st.card) drawCard();
@@ -1234,55 +1380,222 @@ function initGodEye() {
       '<div class="ag-cal">' + chips + '</div>' + selHtml;
   }
 
+  function pulseClock(ts) {
+    if (!ts) return '—';
+    var d = new Date(ts);
+    return (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' +
+      (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+  }
+
+  /* Первый экран мастера: только те цифры, по которым можно принять решение.
+     Это не монитор доступности — виджет честно говорит о свежести рабочих
+     данных и не выдаёт успешный /overview за проверку SSL, nginx или API. */
+  function pulseWidget(ov, by) {
+    var loading = st.desk === null;
+    var rows = loading ? [] : deskRows();
+    var qa = +((ov.qa && ov.qa.pending) || 0);
+    var reviews = +(ov.reviews_pending || 0);
+    var attention = loading ? null : rows.length + qa + reviews;
+    var vs = ov.visits || {};
+    var stale = !!st.ovFailed;
+    var cls = stale ? ' stale' : loading ? ' loading' : attention ? '' : ' calm';
+    var value = loading
+      ? 'Собираем пульс'
+      : attention
+        ? attention + ' ' + anPl(attention, 'требует', 'требуют', 'требуют') + ' внимания'
+        : 'Стол чист';
+    var copy = loading
+      ? 'Сверяем очередь, оплаты и ближайшие сроки.'
+      : attention
+        ? 'Самое важное уже поднято наверх — можно начать с первой строки справа.'
+        : 'Срочных действий нет. Живые сигналы продолжат обновляться автоматически.';
+    var stamp = stale
+      ? '<span class="pw-live"><i aria-hidden="true"></i>нет связи</span>' +
+        '<span class="pw-time">данные на ' + pulseClock(st.ovAt) + '</span>'
+      : '<span class="pw-live"><i aria-hidden="true"></i>живые данные</span>' +
+        '<span class="pw-time">обновлено ' + pulseClock(st.ovAt) + '</span>';
+    var queue;
+    var ctaGo = 'active';
+    var cta = 'Все активные дела →';
+    if (loading) {
+      queue = '<div class="pw-queue loading"><span class="pw-qic" aria-hidden="true">···</span>' +
+        '<span class="pw-qbody"><small>Первая задача</small><b>Собираем очередь</b>' +
+        '<span>Появится здесь через мгновение</span></span></div>';
+    } else if (rows.length) {
+      var r = rows[0], o = r.o;
+      queue = '<button type="button" class="pw-queue" data-open-order="' + o.id + '">' +
+        '<span class="pw-qic" aria-hidden="true">' + r.ic + '</span><span class="pw-qbody"><small>Первым делом</small>' +
+        '<b>№' + o.id + ' · ' + esc(o.work_label || 'Заявка') + '</b>' +
+        '<span>' + esc(r.why) + '</span></span><span class="pw-qgo" aria-hidden="true">→</span></button>';
+      ctaGo = 'attention';
+      cta = 'Открыть очередь →';
+    } else if (qa) {
+      queue = '<button type="button" class="pw-queue" data-go="@qa">' +
+        '<span class="pw-qic" aria-hidden="true">📮</span><span class="pw-qbody"><small>Первым делом</small>' +
+        '<b>Вопросы в приёмной · ' + qa + '</b><span>Ответить в течение дня</span></span>' +
+        '<span class="pw-qgo" aria-hidden="true">→</span></button>';
+      ctaGo = '@qa';
+      cta = 'Открыть приёмную →';
+    } else if (reviews) {
+      queue = '<button type="button" class="pw-queue" data-go="@reviews">' +
+        '<span class="pw-qic" aria-hidden="true">⭐</span><span class="pw-qbody"><small>Первым делом</small>' +
+        '<b>Отзывы на модерации · ' + reviews + '</b><span>Опубликовать или отклонить</span></span>' +
+        '<span class="pw-qgo" aria-hidden="true">→</span></button>';
+      ctaGo = '@reviews';
+      cta = 'Открыть отзывы →';
+    } else {
+      queue = '<div class="pw-queue calm"><span class="pw-qic" aria-hidden="true">✓</span>' +
+        '<span class="pw-qbody"><small>Очередь</small><b>Срочных действий нет</b>' +
+        '<span>Можно спокойно заняться активными делами</span></span></div>';
+    }
+    return '<section class="pw' + cls + '" aria-labelledby="agPulseTitle" aria-busy="' + (loading ? 'true' : 'false') + '">' +
+      '<div class="pw-main"><div class="pw-head">' +
+        '<span class="pw-kicker" id="agPulseTitle">¶ Пульс мастерской</span>' + stamp +
+      '</div><p class="pw-value">' + value + '</p><p class="pw-copy">' + copy + '</p>' +
+      (stale
+        ? '<button type="button" class="ag-linkbtn pw-cta" id="agPulseRetry">Повторить сейчас →</button>'
+        : '<button type="button" class="ag-linkbtn pw-cta" data-go="' + ctaGo + '">' + cta + '</button>') +
+      '</div><div class="pw-side"><div class="pw-metrics" aria-label="Короткая сводка">' +
+        '<button type="button" class="pw-metric" data-go="@visits"><b>' + (vs.online || 0) + '</b><span>на сайте</span></button>' +
+        '<button type="button" class="pw-metric" data-go="new"><b>' + (by.new || 0) + '</b><span>новых</span></button>' +
+        '<button type="button" class="pw-metric" data-go="attention"><b>' + (ov.claimed || 0) + '</b><span>оплат на сверке</span></button>' +
+      '</div>' + queue + '</div></section>';
+  }
+
   function tplSummary() {
     var ov = st.ov || {};
     var by = ov.by_status || {};
     var active = ['new', 'priced', 'prepay', 'work', 'check', 'fix']
       .reduce(function (s, k) { return s + (by[k] || 0); }, 0);
-    function tile(n, l, cls, go) {
-      return '<div class="ag-tile ' + (cls || '') + (go ? ' click" data-go="' + go : '') + '">' +
-        '<div class="t-num">' + n + '</div><div class="t-lbl">' + l + '</div></div>';
-    }
-    /* «Сегодня на столе» уже разбирает заказы по срочности, а плитки дают числа —
-       поэтому здесь только очереди, которых на столе НЕТ: отзывы и приёмная */
-    var attn = [];
-    if (ov.reviews_pending) attn.push({ f: '@reviews', ic: '⭐', t: '<b>Отзывы на модерации: ' + ov.reviews_pending + '</b> — опубликовать или отклонить' });
-    if (ov.qa && ov.qa.pending) attn.push({ f: '@qa', ic: '📮', t: '<b>Вопросы в приёмной: ' + ov.qa.pending + '</b> — ответить в течение дня' });
-    var vs = ov.visits || {};
-    return '' +
-      deskBlock() +
-      calBlock() +
-      '<p class="caps" style="margin:18px 0 8px">Пульс мастерской</p>' +
-      '<div class="ag-tiles">' +
-      tile(by.new || 0, 'новые заявки', by.new ? 'warn' : '', 'new') +
-      tile(ov.claimed || 0, 'оплаты на сверке', ov.claimed ? 'warn' : '', 'attention') +
-      tile(active, 'активные заказы', '', 'active') +
-      tile((by.fix || 0), 'в правках', by.fix ? 'warn' : '', 'fix') +
-      tile(money(ov.month && ov.month.revenue) + ' ₽', 'выручка за 30 дней', 'calm') +
-      tile('👁 ' + (vs.online || 0), 'на сайте сейчас', vs.online ? 'calm' : '', '@visits') +
-      tile(vs.uniq || 0, 'посетителей за сутки', '', '@visits') +
-      tile(ov.subs_active || 0, '⭐ подписчиков', 'calm') +
-      '</div>' +
-      weeksChart(ov) +
-      miniVisits() +
-      tplSubs(ov) +
-      (attn.length
-        ? '<p class="caps" style="margin-bottom:8px">Ещё на модерации</p><div class="ag-attn">' +
-          attn.map(function (a) {
-            return '<div class="aa-row" role="button" tabindex="0" data-go="' + a.f + '"><span>' + a.ic + '</span>' +
-              '<span class="aa-what">' + a.t + '</span><span class="aa-go">открыть →</span></div>';
-          }).join('') + '</div>'
-        : '') +
-      '<p class="caps" style="margin:18px 0 8px">Последние события</p>' +
-      '<div class="ag-attn" style="border-left-color:var(--hairline-strong)">' +
-      (st.ov.events || []).slice(0, 14).map(function (e) {
-        var raw = evData(e);
-        var txt = raw.length > 70 ? esc(raw.slice(0, 70)) + '…' : esc(raw);
-        return '<div class="aa-row" ' + (e.order_id ? 'role="button" tabindex="0" data-open-order="' + e.order_id + '"' : 'style="cursor:default"') + '>' +
-          '<span class="aa-go">' + dt(e.at) + '</span>' +
-          '<span class="aa-what">' + (e.order_id ? '№' + e.order_id + ' · ' : '') + esc(evLabel(e.kind)) +
-          (raw ? ' — ' + txt : '') + '</span></div>';
-      }).join('') + '</div>';
+    if (st.desk === null) loadDesk();
+    var queue = st.desk === null ? [] : deskRows();
+    var qa = +((ov.qa && ov.qa.pending) || 0);
+    var reviews = +(ov.reviews_pending || 0);
+    var attention = queue.length + qa + reviews;
+    var dueToday = (st.desk || []).filter(function (o) { return dlLeft(o) === 0; }).length;
+    var waiting = (by.priced || 0) + (by.prepay || 0) + (by.check || 0);
+    var events = (ov.events || []).slice(0, 2);
+    var weeks = (ov.weeks || []).slice(-7);
+    var maxWeek = Math.max.apply(null, weeks.map(function (x) { return x.revenue || 0; }).concat([1]));
+    var quality = ov.quality || {};
+    var alertCopy = attention
+      ? '<section class="admin-alert"><span>' + attention + '</span><div><strong>' +
+        attention + ' ' + anPl(attention, 'задача требует', 'задачи требуют', 'задач требуют') +
+        ' решения</strong><p>Сроки, новые вопросы и модерация собраны в одной очереди.</p></div>' +
+        '<button type="button" data-go="attention">Открыть очередь <span>→</span></button></section>'
+      : '<section class="admin-alert admin-alert--calm"><span>✓</span><div><strong>Срочных решений нет</strong>' +
+        '<p>Новые события появятся здесь автоматически.</p></div><button type="button" data-go="active">Активные дела <span>→</span></button></section>';
+    var queueHtml = queue.length
+      ? queue.slice(0, 4).map(function (r) {
+          var o = r.o;
+          var time = o.deadline_date ? dmLabel(o.deadline_date) : '—';
+          return '<button type="button" data-open-order="' + o.id + '"><span>' + esc(time) + '</span>' +
+            '<i class="admin-status admin-status--' + (r.cls === 'fire' ? 'attention' : 'work') + '"></i>' +
+            '<div><strong>' + esc(r.why) + '</strong><small>№' + o.id + ' · ' +
+            esc(o.work_label || 'Заявка') + '</small></div><b>→</b></button>';
+        }).join('')
+      : '<div class="admin-queue-empty"><i class="admin-status admin-status--done"></i>' +
+        '<span><strong>Очередь спокойна</strong><small>Срочных действий нет</small></span></div>';
+    var weekHtml = weeks.length
+      ? weeks.map(function (x, index) {
+          var value = x.revenue || 0;
+          var height = value ? Math.max(10, Math.round(value / maxWeek * 100)) : 3;
+          return '<span><i style="height:' + height + '%"></i><small>' +
+            esc(dmLabel(x.start || String(index + 1))) + '</small><b>' +
+            (value ? money(value) : '0') + '</b></span>';
+        }).join('')
+      : '<div class="admin-chart-empty">Данные появятся после подтверждённых платежей.</div>';
+    var inboxHtml = events.length
+      ? events.map(function (e) {
+          var raw = evData(e);
+          return '<button type="button"' + (e.order_id ? ' data-open-order="' + e.order_id + '"' : '') +
+            '><span>' + (e.order_id ? '№' : 'АС') + '</span><div><strong>' +
+            esc(evLabel(e.kind)) + '</strong><small>' + esc(raw || 'Событие мастерской') +
+            '</small></div><time>' + dt(e.at) + '</time></button>';
+        }).join('')
+      : '<div class="admin-inbox-empty">Новых событий пока нет.</div>';
+    return alertCopy +
+      '<section class="admin-metrics">' +
+        '<article data-go="active"><span>Активные дела</span><strong>' + active + '</strong><small>' +
+          (by.new || 0) + ' новых</small></article>' +
+        '<article data-go="attention"><span>На согласовании</span><strong>' + waiting + '</strong><small>' +
+          (ov.claimed || 0) + ' оплат на сверке</small></article>' +
+        '<article data-go="active"><span>Срок сегодня</span><strong>' + dueToday + '</strong><small>' +
+          (dueToday ? '<i class="warn">проверьте очередь</i>' : 'рисков не отмечено') + '</small></article>' +
+        '<article><span>Поступления за месяц</span><strong>' +
+          money((ov.month && ov.month.revenue) || 0) + ' ₽</strong><small>подтверждённые операции</small></article>' +
+      '</section>' +
+      '<div class="admin-dashboard-grid">' +
+        '<section class="admin-panel admin-queue"><header><div><h2>Сегодня</h2><span>По срочности</span></div>' +
+          '<button type="button" class="line-link" data-go="active">Вся очередь</button></header><div>' +
+          queueHtml + '</div></section>' +
+        '<section class="admin-panel admin-load"><header><div><h2>Поступления</h2><span>Последние недели</span></div></header>' +
+          '<div class="load-chart">' + weekHtml + '</div><footer><span><i class="admin-status admin-status--work"></i>' +
+          'Подтверждённые платежи</span></footer></section>' +
+        '<section class="admin-panel admin-quality"><header><div><h2>Качество</h2><span>По данным мастерской</span></div></header>' +
+          '<div><strong>' + (quality.first_accept_pct != null ? quality.first_accept_pct + '%' : '—') +
+          '</strong><span>этапов приняты с первого раза</span></div><dl>' +
+          '<div><dt>Средний ответ</dt><dd>' + esc(quality.reply_time || '—') + '</dd></div>' +
+          '<div><dt>На доработке</dt><dd>' + (by.fix || 0) + '</dd></div>' +
+          '<div><dt>Отзывы</dt><dd>' + reviews + '</dd></div></dl></section>' +
+        '<section class="admin-panel admin-inbox"><header><div><h2>Последние события</h2><span>' +
+          (ov.events || []).length + ' в сводке</span></div><button type="button" data-go="@visits">Посещения</button></header>' +
+          '<div>' + inboxHtml + '</div></section>' +
+      '</div>';
+  }
+
+  function tplContent() {
+    var topics = [
+      ['all', 'Все'],
+      ['vkr', 'ВКР'],
+      ['course', 'Курсовые'],
+      ['format', 'Оформление'],
+      ['defense', 'Защита']
+    ];
+    return '<section class="content-overview" aria-label="Состояние библиотеки">' +
+        '<article><span>Опубликовано</span><strong>25</strong><small>доступны читателям</small></article>' +
+        '<article><span>Разделы</span><strong>8</strong><small>от темы до защиты</small></article>' +
+        '<article><span>Правовые документы</span><strong>12</strong><small>с отдельной навигацией</small></article>' +
+        '<article><span>Обложки</span><strong>2</strong><small>формата выгрузки</small></article>' +
+      '</section>' +
+      '<section class="admin-content-toolbar" aria-label="Фильтры материалов">' +
+        '<label><span class="sr-only">Поиск публикаций</span>' +
+          '<input id="agContentQ" type="search" autocomplete="off" placeholder="Название или тема" value="' +
+          esc(st.contentQ) + '"><i aria-hidden="true">⌕</i></label>' +
+        '<div class="admin-content-tabs" role="group" aria-label="Темы публикаций">' +
+          topics.map(function (item) {
+            var on = st.contentTopic === item[0];
+            return '<button type="button" data-content-topic="' + item[0] + '" class="' +
+              (on ? 'is-active' : '') + '" aria-pressed="' + (on ? 'true' : 'false') + '">' +
+              item[1] + '</button>';
+          }).join('') +
+        '</div>' +
+        '<a class="admin-content-cover-link" href="admin-covers.html">Мастерская обложек <span>→</span></a>' +
+      '</section>' +
+      '<section class="content-list" id="agContentList" aria-live="polite"></section>';
+  }
+
+  function drawContentRows() {
+    var box = document.getElementById('agContentList');
+    if (!box) return;
+    var query = String(st.contentQ || '').toLocaleLowerCase('ru-RU').trim();
+    var rows = CONTENT_GUIDES.filter(function (guide) {
+      var topicOk = st.contentTopic === 'all' || guide[3] === st.contentTopic;
+      var textOk = !query || (guide[1] + ' ' + guide[2] + ' ' + guide[4])
+        .toLocaleLowerCase('ru-RU').indexOf(query) >= 0;
+      return topicOk && textOk;
+    });
+    box.innerHTML = rows.length ? rows.map(function (guide) {
+      var index = CONTENT_GUIDES.indexOf(guide) + 1;
+      return '<article>' +
+        '<span class="content-list__index">' + String(index).padStart(2, '0') + '</span>' +
+        '<div><span class="tag">' + esc(guide[2]) + '</span><h2>' + esc(guide[1]) +
+          '</h2><p>' + esc(guide[4]) + '</p></div>' +
+        '<div><span class="tag tag--green">Опубликовано</span><small>страница доступна</small></div>' +
+        '<div><a href="' + guide[0] + '.html" target="_blank" rel="noopener" ' +
+          'aria-label="Открыть материал: ' + esc(guide[1]) + '">↗</a></div>' +
+      '</article>';
+    }).join('') : '<div class="admin-content-empty">По этому запросу материалов нет.</div>';
   }
 
   /* -------- подписки «Салон+»: свой платёжный контур, сверка отдельно --------
@@ -1358,9 +1671,9 @@ function initGodEye() {
     var chips = [['attention', '❗ Требуют действий'], ['active', 'Активные'], ['', 'Все']]
       .concat(Object.keys(ST_META).map(function (k) { return [k, stMeta(k)[0] + ' ' + stMeta(k)[1]]; }))
       .concat([['archive', '🗄 Архив'], ['trash', '🗑 Корзина']]);
-    box.innerHTML = chips.map(function (c) {
+    box.innerHTML = '<div class="admin-filter-scroll">' + chips.map(function (c) {
       return '<button type="button" class="ag-chip' + (st.filter === c[0] ? ' on' : '') + '" data-f="' + c[0] + '">' + c[1] + '</button>';
-    }).join('') +
+    }).join('') + '</div><div class="admin-filter-tools">' +
       '<input class="ag-search" id="agQ" type="search" placeholder="Поиск: №, тема, ник… (Enter)" value="' + esc(st.q) + '">' +
       (st.q ? '<button type="button" class="ag-chip" id="agQClear" title="Сбросить поиск">✕ «' + esc(st.q.length > 16 ? st.q.slice(0, 15) + '…' : st.q) + '»</button>' : '') +
       '<select class="ag-sort" id="agSort" title="Порядок списка">' +
@@ -1369,7 +1682,7 @@ function initGodEye() {
         '<option value="deadline"' + (st.sort === 'deadline' ? ' selected' : '') + '>по сроку сдачи</option>' +
       '</select>' +
       '<button type="button" class="ag-chip' + (st.bulk ? ' on' : '') + '" id="agBulkToggle" ' +
-      'title="Выделить несколько заказов и разом закрепить, скрыть, покрасить или убрать в корзину">☑ Выбрать</button>';
+      'title="Выделить несколько заказов и разом закрепить, скрыть, покрасить или убрать в корзину">☑ Выбрать</button></div>';
   }
 
   /* панель массовых действий — живёт под списком, пока включён режим ☑ */
@@ -1443,17 +1756,20 @@ function initGodEye() {
       var ck = st.bulk
         ? '<span class="ag-ck-box' + (st.bulk.has(o.id) ? ' on' : '') + '" aria-hidden="true"></span>'
         : '';
+      var deadlineLabel = o.deadline_text || (o.deadline_date ? dmLabel(o.deadline_date) : '—');
       return '<button type="button" class="ag-row' + (o.id === st.sel ? ' sel' : '') +
         (o.pinned ? ' pin' : '') + '" data-id="' + o.id + '"' +
         (st.bulk ? ' aria-pressed="' + (st.bulk.has(o.id) ? 'true' : 'false') + '"' : '') + clrStyle + '>' +
-        ck +
-        (o.pinned ? '<span class="r-pin" title="закреплён">📌</span>' : '') +
-        '<span class="r-no">№' + o.id + '</span>' +
-        '<span class="r-main"><span class="r-t">' + m[0] + ' ' + esc(o.work_label || '') + '</span>' +
-        '<span class="r-s">' + esc(who) + ' · ' + dt(o.created_at) + dl +
-        (o.cancel_reason ? ' · 🚫 ' + esc(String(o.cancel_reason).slice(0, 30)) : '') + '</span></span>' +
-        '<span class="r-side">' + (pills || '') +
-        '<span class="r-price">' + (o.price ? money(o.price) + '₽' : (o.quote_low ? '~' + money(o.quote_low) : '')) + '</span></span>' +
+        '<span class="admin-order-id">' + ck +
+          (o.pinned ? '<span class="r-pin" title="закреплён">📌</span>' : '') +
+          '<span class="r-no">№' + o.id + '</span></span>' +
+        '<span class="r-main"><span class="r-t">' + esc(o.work_label || 'Заявка') + '</span>' +
+          '<span class="r-s">' + esc(who) + ' · ' + dt(o.created_at) + dl +
+          (o.cancel_reason ? ' · ' + esc(String(o.cancel_reason).slice(0, 30)) : '') + '</span></span>' +
+        '<span class="admin-order-state">' + stamp(o.status) + (pills ? '<small>' + pills + '</small>' : '') + '</span>' +
+        '<span class="admin-order-deadline">' + esc(deadlineLabel) + '</span>' +
+        '<span class="r-price">' + (o.price ? money(o.price) + ' ₽' : (o.quote_low ? 'от ' + money(o.quote_low) + ' ₽' : '—')) + '</span>' +
+        '<span class="admin-order-go" aria-hidden="true">→</span>' +
         '</button>';
     }).join('') +
     (arr.length > st.listLimit
@@ -1667,7 +1983,7 @@ function initGodEye() {
       '<textarea id="agOffTierFull" rows="3" maxlength="2000" class="ag-inp" placeholder="Что входит в выбранный формат целиком (складка)">' + esc(p.tier_full || '') + '</textarea>' +
       '<fieldset class="ag-card" style="display:grid;gap:8px;margin:4px 0;padding:14px"><legend class="caps">Поля каждой строки спецификации</legend>' +
         '<p class="ag-hint">Один заказ — один документ. Эти значения попадут в каждую строку сметы; результат и цена сохраняются отдельно для каждой позиции.</p>' +
-        '<select id="agOffContour" class="ag-inp" aria-label="Договорный контур">' +
+        '<select id="agOffContour" class="ag-inp" aria-label="Тип договора">' +
           '<option value="A"' + (sd.contract_contour === 'A' ? ' selected' : '') + '>A · академическая консультация и редактура исходника клиента</option>' +
           '<option value="B1"' + (sd.contract_contour === 'B1' ? ' selected' : '') + '>B1 · авторский материал вне аттестации, лицензия</option>' +
           '<option value="B2"' + (sd.contract_contour === 'B2' ? ' selected' : '') + '>B2 · авторский материал вне аттестации, отчуждение права</option>' +
@@ -2361,12 +2677,14 @@ function initGodEye() {
       var x = f.m;
       var me = x.from === 'master';
       var body = x.text ? esc(x.text) : '';
+      var path = mediaPath(o.id, x.id);
       if (x.media && (x.kind === 'voice' || x.kind === 'audio'))
-        body += (body ? '<br>' : '') + '<audio controls preload="none" src="' + mediaSrc(o.id, x.id) + '"></audio>';
+        body += (body ? '<br>' : '') + '<audio controls preload="none" data-admin-media="' + path + '"></audio>';
       else if (x.media && x.kind === 'photo')
-        body += (body ? '<br>' : '') + '<a href="' + mediaSrc(o.id, x.id) + '" target="_blank" rel="noopener"><img loading="lazy" src="' + mediaSrc(o.id, x.id) + '" alt="фото"></a>';
+        body += (body ? '<br>' : '') + '<a href="#" target="_blank" rel="noopener" data-admin-media-open aria-disabled="true">' +
+          '<img loading="lazy" data-admin-media="' + path + '" alt="фото"></a>';
       else if (x.media && (x.kind === 'video' || x.kind === 'video_note'))
-        body += (body ? '<br>' : '') + '<video controls preload="none" style="max-width:min(260px,100%)" src="' + mediaSrc(o.id, x.id) + '"></video>';
+        body += (body ? '<br>' : '') + '<video controls preload="none" style="max-width:min(260px,100%)" data-admin-media="' + path + '"></video>';
       else if (!body || x.file_name)
         body += (body ? '<br>' : '') + '📎 ' + esc(x.file_name || ('вложение (' + esc(x.kind || '') + ')'));
       return '<div class="ag-m' + (me ? ' master' : '') + '"><span class="who">' + (me ? 'Мастерская' : 'Клиент') + ' · ' + dt(f.at) + '</span>' +
@@ -2403,7 +2721,8 @@ function initGodEye() {
         if (f.label) tags += '<span class="fl-tag">' + esc(f.label) + '</span>';
         return '<div class="ag-file"><span class="fname">📎 ' + esc(f.name) + tags + '</span>' +
           '<span class="fmeta">' + (f.from === 'master' ? 'от вас' : 'от клиента') + ' · ' + dt(f.at) + '</span>' +
-          '<a class="ag-linkbtn" href="' + fileSrc(o.id, f.id) + '" download>скачать</a></div>';
+          '<a class="ag-linkbtn" href="#" data-admin-download="' + filePath(o.id, f.id) +
+          '" data-filename="' + esc(f.name) + '">скачать</a></div>';
       }).join('') : '<p class="ag-note">Файлов пока нет.</p>') + '</div>';
   }
 
@@ -2497,7 +2816,7 @@ function initGodEye() {
       var correction = item.correction_window || {};
       var discount = item.discount && item.discount.amount != null
         ? item.discount.amount : item.discount_amount;
-      fact(facts, 'Контур', item.contract_contour);
+      fact(facts, 'Тип договора', item.contract_contour);
       fact(facts, 'Разрешённая цель', item.permitted_purpose);
       fact(facts, 'Результат', item.deliverable || item.result);
       fact(facts, 'Исходник', input.description || item.input_description);
@@ -2625,6 +2944,11 @@ function initGodEye() {
     var box = document.getElementById('agCard');
     var o = st.card;
     if (!box || !o) return;
+    box.classList.add('is-open');
+    box.setAttribute('aria-hidden', 'false');
+    var backdrop = document.getElementById('agCardBackdrop');
+    if (backdrop) backdrop.hidden = false;
+    releaseAdminObjectUrls();
     /* переписка не должна прыгать в конец при каждом действии/тихом обновлении:
        к низу — только на свежем открытии дела и после отправки сообщения */
     var prevFeed = document.getElementById('agFeed');
@@ -2632,6 +2956,8 @@ function initGodEye() {
     var sameOrder = st._feedOrder === o.id;
     var hint = nextHint(o);
     box.innerHTML =
+      '<div class="admin-order-drawer__bar"><div><span>Карточка дела</span><strong>№' + o.id +
+      '</strong></div><button type="button" id="agCardClose" aria-label="Закрыть карточку дела">×</button></div>' +
       '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
       '<span class="mono petit">Дело №' + o.id + ' · ' + esc(o.source || '') + ' · создано ' + dt(o.created_at) +
       (o.archived_admin ? ' · 🗄 в архиве' : '') + (o.deleted ? ' · 🗑 в корзине' : '') + '</span>' +
@@ -2658,6 +2984,7 @@ function initGodEye() {
       (o.events || []).map(function (e) {
         return dt(e.at) + ' · ' + esc(evLabel(e.kind)) + (e.data ? ' — ' + esc(evData(e).slice(0, 70)) : '');
       }).join('<br>') + '</div></div>';
+    hydrateAdminMedia(box);
     if (st.offnew) setTimeout(function () {
       offSumRender(); offRowsRender(); offCatalogState(); offCatalogFilter();
     }, 0);
@@ -3136,6 +3463,67 @@ function initGodEye() {
 
   root.addEventListener('click', function (e) {
     var t = e.target;
+    if (t.closest('[data-admin-mobile-back]')) {
+      if (history.length > 1) history.back();
+      else location.href = '/';
+      return;
+    }
+    if (t.closest('[data-admin-mobile-search]')) {
+      document.body.classList.remove('admin-nav-expanded');
+      var menuButton = root.querySelector('[data-admin-mobile-menu]');
+      if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
+      if (st.tab !== 'orders') goTab('orders');
+      window.setTimeout(function () {
+        var search = document.querySelector('#agSearch, .admin-filter-tools input[type="search"], .ag-search input');
+        if (search) search.focus();
+      }, 80);
+      return;
+    }
+    if (t.closest('[data-admin-mobile-menu]')) {
+      var navOpen = document.body.classList.toggle('admin-nav-expanded');
+      t.closest('[data-admin-mobile-menu]').setAttribute('aria-expanded', String(navOpen));
+      return;
+    }
+    var protectedDownload = t.closest('[data-admin-download]');
+    if (protectedDownload) {
+      e.preventDefault();
+      if (protectedDownload.getAttribute('aria-busy') === 'true') return;
+      protectedDownload.setAttribute('aria-busy', 'true');
+      adminProtectedFetch(protectedDownload.getAttribute('data-admin-download'))
+        .then(function (resp) {
+          if (!resp.ok) throw new Error('http_' + resp.status);
+          var disp = resp.headers.get('Content-Disposition') || '';
+          var m = disp.match(/filename\*=UTF-8''([^;]+)/i);
+          var fallback = protectedDownload.getAttribute('data-filename') || 'файл';
+          var filename = fallback;
+          if (m) {
+            try { filename = decodeURIComponent(m[1]); } catch (err) {}
+          }
+          return resp.blob().then(function (blob) { return { blob: blob, filename: filename }; });
+        })
+        .then(function (asset) {
+          var url = URL.createObjectURL(asset.blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = asset.filename;
+          a.rel = 'noopener';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(function () { try { URL.revokeObjectURL(url); } catch (err) {} }, 60000);
+        })
+        .catch(function () { toast('Файл сейчас не скачался — обновите дело и повторите'); })
+        .then(function () {
+          if (protectedDownload.isConnected) protectedDownload.removeAttribute('aria-busy');
+        });
+      return;
+    }
+    var pendingMedia = t.closest('[data-admin-media-open][aria-disabled="true"]');
+    if (pendingMedia) {
+      e.preventDefault();
+      toast('Вложение ещё загружается');
+      return;
+    }
     if (t.closest('#agMoreTabs')) {
       var more = document.getElementById('agMorePop');
       var mb = document.getElementById('agMoreTabs');
@@ -3165,9 +3553,40 @@ function initGodEye() {
     if (t.closest('#agLogout')) { S.api.logout(); gate(); return; }
     if (t.closest('#agRetry')) { gate(); return; }
     if (t.closest('#agTabRetry')) { loadTab(true); return; }
+    if (t.closest('#agPulseRetry')) { doRefresh(); return; }
+    if (t.closest('#agCardClose') || t.closest('#agCardBackdrop')) {
+      st.sel = null;
+      st.card = null;
+      var drawer = document.getElementById('agCard');
+      var shade = document.getElementById('agCardBackdrop');
+      if (drawer) {
+        drawer.classList.remove('is-open');
+        drawer.setAttribute('aria-hidden', 'true');
+        drawer.innerHTML = '';
+      }
+      if (shade) shade.hidden = true;
+      drawList();
+      return;
+    }
 
+    var externalAdminLink = t.closest('a.ag-tab[href]:not([data-tab])');
+    if (externalAdminLink) return;
+    var contentTopic = t.closest('[data-content-topic]');
+    if (contentTopic) {
+      st.contentTopic = contentTopic.getAttribute('data-content-topic') || 'all';
+      drawBody();
+      return;
+    }
     var tab = t.closest('.ag-tab, .ag-more-pop [data-tab]');
-    if (tab) { goTab(tab.getAttribute('data-tab'), true); return; }
+    if (tab) {
+      document.body.classList.remove('admin-nav-expanded');
+      var mobileMenu = root.querySelector('[data-admin-mobile-menu]');
+      if (mobileMenu) mobileMenu.setAttribute('aria-expanded', 'false');
+      var nextTab = tab.getAttribute('data-tab');
+      if (nextTab === 'orders') { st.sel = null; st.card = null; }
+      goTab(nextTab, nextTab !== 'orders');
+      return;
+    }
     if (t.closest('#agLive')) { goTab('visits'); return; }
     var tabGo = t.closest('[data-tab-go]');
     if (tabGo) { goTab(tabGo.getAttribute('data-tab-go')); return; }
@@ -4117,6 +4536,11 @@ function initGodEye() {
       var cc = document.getElementById('agCQClear'); if (cc) cc.hidden = !st.cq;   /* держим ✕ в такт вводу */
       return;
     }
+    if (e.target && e.target.id === 'agContentQ') {
+      st.contentQ = e.target.value;
+      drawContentRows();
+      return;
+    }
     if (e.target && e.target.id === 'agBText') {
       var cel = document.getElementById('agBCnt');
       if (cel) {
@@ -4132,6 +4556,8 @@ function initGodEye() {
      карточка заказа открывается сразу (кнопка «Открыть в админке» в боте). */
   function tryLinkLogin(next) {
     var h = location.hash || '';
+    var mt = h.match(/^#(summary|visits|orders|clients|reviews|qa|gifts|leads|broadcast|settings|content)$/);
+    if (mt && VALID_TABS[mt[1]]) st.tab = mt[1];
     var mo = h.match(/(?:^#|[#&])o=(\d+)/);
     if (mo) { st.tab = 'orders'; st.filter = ''; st.sel = parseInt(mo[1], 10); }
     var mch = h.match(/alk=([A-Za-z0-9_-]+)/);
@@ -4156,6 +4582,10 @@ function initGodEye() {
   }
 
   root.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      var closeCard = document.getElementById('agCardClose');
+      if (closeCard) { closeCard.click(); return; }
+    }
     if (e.target && e.target.id === 'agQ' && e.key === 'Enter') {
       st.q = e.target.value.trim();
       st.listLimit = 40;
@@ -4438,12 +4868,14 @@ function initGodEye() {
     }
     var t = wzPick(C.types, p.type), d = wzPick(C.disciplines, p.disc);
     var s = wzPick(C.terms, p.term), v = wzPick(C.tiers, p.tier);
-    var low = wzR500(t.base * d.k * s.k * v.k);
+    var selectedBase = t.prices && t.prices[v.priceKey]
+      ? t.prices[v.priceKey] : t.base;
+    var quote = C.quote(p.type, p.disc, p.term, p.tier);
     return { svc: 0, t: t, d: d, s: s, v: v,
-             p0: wzR500(t.base),
-             p1: wzR500(t.base * d.k),
-             p2: wzR500(t.base * d.k * s.k),
-             low: low, high: wzR500(low * 1.4) };
+             p0: C.round500(selectedBase),
+             p1: C.round500(selectedBase * d.k),
+             p2: C.round500(selectedBase * d.k * s.k),
+             low: quote.low, high: quote.high };
   }
 
   function wzPrice() {
@@ -4516,7 +4948,7 @@ function initGodEye() {
       out.push({ t: q.t.label + (un ? ' — цена за один ' + un : ' — услуга мастерской'),
                  a: q.p0 });
     } else {
-      out.push({ t: q.t.label + ' — помощь с исходным материалом клиента', a: q.p0 });
+      out.push({ t: q.t.label + ' · ' + q.v.label + ' — выбранный результат', a: q.p0 });
       if (q.p1 !== q.p0) out.push({ t: 'Направление: ' + WZ_DNOTE[wz.p.disc], a: q.p1 - q.p0 });
       if (q.p2 !== q.p1) out.push({ t: 'Срок: ' + WZ_TNOTE[wz.p.term], a: q.p2 - q.p1 });
       if (q.low !== q.p2)

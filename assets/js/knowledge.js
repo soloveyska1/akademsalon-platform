@@ -79,8 +79,15 @@
     var status = root.querySelector('[data-kb-status]');
     var empty = root.querySelector('[data-kb-empty]');
     var share = root.querySelector('[data-kb-share]');
+    var more = root.querySelector('[data-kb-more]');
     var currentTopic = 'all';
     var query = '';
+    var expanded = false;
+    var compactMobile = window.matchMedia('(max-width: 620px)').matches;
+
+    function catalogLimit() {
+      return window.matchMedia('(max-width: 620px)').matches ? 8 : 12;
+    }
 
     entries.forEach(function (entry) {
       entry._kbHaystack = normalise([
@@ -113,14 +120,17 @@
     function render(mode) {
       var needle = normalise(query);
       var found = 0;
-      entries.forEach(function (entry) {
+      var limit = catalogLimit();
+      entries.forEach(function (entry, index) {
         var topics = String(entry.dataset.topic || '').split(/\s+/);
         var topicMatch = currentTopic === 'all' || topics.indexOf(currentTopic) !== -1;
         var textMatch = !needle || needle.split(' ').every(function (token) {
           return entry._kbHaystack.indexOf(token) !== -1;
         });
-        entry.hidden = !(topicMatch && textMatch);
-        if (!entry.hidden) found += 1;
+        var matches = topicMatch && textMatch;
+        if (matches) found += 1;
+        var compactCatalog = !expanded && !needle && currentTopic === 'all';
+        entry.hidden = !matches || (compactCatalog && index >= limit);
       });
 
       buttons.forEach(function (button) {
@@ -134,6 +144,10 @@
       }
       if (empty) empty.hidden = found !== 0;
       if (clear) clear.hidden = !query && currentTopic === 'all';
+      if (more) {
+        more.hidden = expanded || Boolean(needle) || currentTopic !== 'all' || found <= limit;
+        more.textContent = 'Показать остальные — ' + Math.max(0, found - limit);
+      }
       updateUrl(mode || 'replace');
     }
 
@@ -199,6 +213,16 @@
       });
     }
 
+    if (more) {
+      more.addEventListener('click', function () {
+        var limit = catalogLimit();
+        expanded = true;
+        render('replace');
+        var firstRevealed = entries[limit];
+        if (firstRevealed) firstRevealed.querySelector('a')?.focus({ preventScroll: true });
+      });
+    }
+
     document.addEventListener('keydown', function (event) {
       if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return;
       var target = event.target;
@@ -208,6 +232,12 @@
     });
 
     window.addEventListener('popstate', restoreFromUrl);
+    window.addEventListener('resize', function () {
+      var nextCompactMobile = window.matchMedia('(max-width: 620px)').matches;
+      if (nextCompactMobile === compactMobile) return;
+      compactMobile = nextCompactMobile;
+      render('replace');
+    }, { passive: true });
     restoreFromUrl();
   }
 
@@ -449,197 +479,6 @@
     updateProgress();
   }
 
-  function initJournal() {
-    var stage = document.querySelector('[data-kb-journal-stage]');
-    if (!stage) return;
-    var rail = stage.querySelector('[data-kb-journal]');
-    var viewport = stage.querySelector('[data-kb-journal-viewport]');
-    var previous = stage.querySelector('[data-kb-journal-prev]');
-    var next = stage.querySelector('[data-kb-journal-next]');
-    var current = stage.querySelector('[data-kb-journal-index]');
-    var total = stage.querySelector('[data-kb-journal-total]');
-    var status = stage.querySelector('[data-kb-journal-status]');
-    if (!rail || !viewport) return;
-
-    function escapeHtml(value) {
-      return String(value == null ? '' : value).replace(/[&<>"]/g, function (char) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char];
-      });
-    }
-
-    function compactText(value) {
-      return String(value || '')
-        .replace(/\r/g, '')
-        .replace(/https?:\/\/\S+/gi, '')
-        .replace(/(^|\s)#[^\s#]+/g, ' ')
-        .replace(/\n{3,}/g, '\n\n')
-        .trim();
-    }
-
-    function shorten(value, limit) {
-      var text = String(value || '').replace(/\s+/g, ' ').trim();
-      if (text.length <= limit) return text;
-      var cut = text.slice(0, limit + 1);
-      var space = cut.lastIndexOf(' ');
-      if (space > limit * .64) cut = cut.slice(0, space);
-      return cut.replace(/[.,:;!?—–-]+$/, '') + '…';
-    }
-
-    function postCopy(post) {
-      var text = compactText(post.text);
-      var lines = text.split('\n').map(function (line) { return line.trim(); }).filter(Boolean);
-      var title = (lines.shift() || '').replace(/^[^0-9A-Za-zА-Яа-яЁё]+/, '').trim();
-      if (!title) title = 'Лист журнала мастерской';
-      var summary = lines.join(' ');
-      if (!summary) {
-        summary = post.img
-          ? 'Наглядный выпуск из канала. Откройте карточку, чтобы рассмотреть материал целиком.'
-          : 'Короткая рабочая заметка из мастерской — без пересказа и сокращений.';
-      }
-      return {
-        title: shorten(title, 74),
-        summary: shorten(summary, 220)
-      };
-    }
-
-    function cardHtml(post, index) {
-      var copy = postCopy(post);
-      var number = post.id ? '№ ' + escapeHtml(post.id) : 'Лист ' + (index + 1);
-      var image = post.img
-        ? '<img src="' + escapeHtml(post.img) + '" alt="' + escapeHtml(copy.title) +
-          '" loading="lazy" decoding="async" />'
-        : '<i aria-hidden="true">¶</i>';
-      return '<a class="kb-journal-post" href="' +
-        escapeHtml(post.url || 'https://t.me/akademsalon') +
-        '" target="_blank" rel="noopener" data-goal="tg_channel" data-kb-journal-card>' +
-          '<span class="kb-journal-media">' + image +
-            '<span class="kb-journal-folio">' + number + '</span></span>' +
-          '<span class="kb-journal-copy">' +
-            '<span class="kb-journal-meta"><time>' +
-              escapeHtml(post.date || 'Новый выпуск') + '</time><em>Telegram</em></span>' +
-            '<strong>' + escapeHtml(copy.title) + '</strong>' +
-            '<span>' + escapeHtml(copy.summary) + '</span>' +
-            '<span class="kb-journal-open">Читать выпуск <i>↗</i></span>' +
-          '</span>' +
-        '</a>';
-    }
-
-    var activeIndex = 0;
-    var frame = 0;
-
-    function cards() {
-      return Array.prototype.slice.call(rail.querySelectorAll('[data-kb-journal-card]'));
-    }
-
-    function cardLeft(card) {
-      return card.getBoundingClientRect().left - rail.getBoundingClientRect().left;
-    }
-
-    function updateControls(index) {
-      var items = cards();
-      if (!items.length) return;
-      activeIndex = Math.max(0, Math.min(index, items.length - 1));
-      items.forEach(function (card, cardIndex) {
-        card.classList.toggle('is-current', cardIndex === activeIndex);
-      });
-      if (current) current.textContent = String(activeIndex + 1).padStart(2, '0');
-      if (total) total.textContent = String(items.length).padStart(2, '0');
-      if (previous) previous.disabled = activeIndex === 0;
-      if (next) next.disabled = activeIndex === items.length - 1;
-    }
-
-    function nearestCard() {
-      var items = cards();
-      if (!items.length) return 0;
-      var left = viewport.scrollLeft;
-      var nearest = 0;
-      var distance = Infinity;
-      items.forEach(function (card, index) {
-        var delta = Math.abs(cardLeft(card) - left);
-        if (delta < distance) {
-          distance = delta;
-          nearest = index;
-        }
-      });
-      return nearest;
-    }
-
-    function syncAfterScroll() {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(function () {
-        updateControls(nearestCard());
-      });
-    }
-
-    function goTo(index) {
-      var items = cards();
-      if (!items.length) return;
-      var target = Math.max(0, Math.min(index, items.length - 1));
-      viewport.scrollTo({
-        left: cardLeft(items[target]),
-        behavior: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 'auto'
-          : 'smooth'
-      });
-      updateControls(target);
-    }
-
-    if (previous) previous.addEventListener('click', function () { goTo(activeIndex - 1); });
-    if (next) next.addEventListener('click', function () { goTo(activeIndex + 1); });
-    viewport.addEventListener('scroll', syncAfterScroll, { passive: true });
-    viewport.addEventListener('keydown', function (event) {
-      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
-      event.preventDefault();
-      goTo(activeIndex + (event.key === 'ArrowRight' ? 1 : -1));
-    });
-    window.addEventListener('resize', syncAfterScroll, { passive: true });
-
-    function showFallback() {
-      viewport.setAttribute('aria-busy', 'false');
-      if (status) status.textContent = 'Свежие выпуски — в канале';
-      if (current) current.textContent = '01';
-      if (total) total.textContent = '01';
-    }
-
-    var request;
-    if (window.Salon && Salon.api) {
-      request = Salon.api.get('/channel');
-    } else if (window.fetch) {
-      request = window.fetch('/api/channel', { credentials: 'same-origin' }).then(function (response) {
-        if (!response.ok) throw new Error('Journal request failed');
-        return response.json();
-      });
-    }
-    if (!request) {
-      showFallback();
-      return;
-    }
-
-    request.then(function (response) {
-      if (!(response && response.ok && response.posts && response.posts.length)) {
-        showFallback();
-        return;
-      }
-      var posts = response.posts.filter(function (post) {
-        return post && (String(post.text || '').trim() || post.img);
-      }).slice(0, 8);
-      if (!posts.length) {
-        showFallback();
-        return;
-      }
-      rail.innerHTML = posts.map(cardHtml).join('');
-      viewport.setAttribute('aria-busy', 'false');
-      if (status) status.textContent = 'Обновлено из Telegram';
-      rail.querySelectorAll('img').forEach(function (image) {
-        image.addEventListener('error', function () {
-          image.closest('.kb-journal-media').classList.add('is-image-missing');
-          image.remove();
-        });
-      });
-      updateControls(0);
-    }).catch(showFallback);
-  }
-
   function fixResponsiveBrandNames() {
     document.querySelectorAll('a.brand[aria-label]').forEach(function (brand) {
       brand.removeAttribute('aria-label');
@@ -652,6 +491,5 @@
     fixResponsiveBrandNames();
     initKnowledgeHub();
     initGuidePage();
-    initJournal();
   });
 })();

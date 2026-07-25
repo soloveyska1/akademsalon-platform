@@ -6,3 +6,13 @@
 # рабочие бэкапы файлов при правках
 *.bak-*
 zk-test.html
+
+# локальные ключи редактирования Telegraph
+content/telegram/private/
+
+# рабочие каталоги: прогоны, снимки, медиа — в репозиторий не идут
+.codex_work/
+.playwright-cli/
+tmp/
+output/
+media/

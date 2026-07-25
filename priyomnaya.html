@@ -3,726 +3,122 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Открытая приёмная — вопросы об академическом сопровождении | Академический Салон</title>
-<meta name="description" content="Задайте вопрос о ВКР, курсовой, проверке текста или подготовке к выступлению. Разбираем законные форматы консультации, редактуры и сопровождения." />
+<title>Открытая приёмная — задать вопрос редактору | Академический Салон</title>
+<meta name="description" content="Задайте редактору вопрос о материалах, сроке и формате академического сопровождения до оформления заявки." />
 <link rel="canonical" href="https://akademsalon.ru/priyomnaya.html" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/polish15-supporting.css?v=20260725release13" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#F6F1E7" />
+<meta name="robots" content="index,follow" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Открытая приёмная — спросите мастера, не называя себя" />
-<meta property="og:description" content="Понятные ответы о консультации, редактуре, проверке текста, сроках и границах академического сопровождения." />
+<meta property="og:title" content="Открытая приёмная — спросите до оформления заявки" />
+<meta property="og:description" content="Редактор подскажет, какие материалы нужны, можно ли уложиться в срок и с чего разумно начать." />
 <meta property="og:url" content="https://akademsalon.ru/priyomnaya.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Открытая приёмная — спросите мастера, не называя себя" />
-<meta name="twitter:description" content="Вопросы о консультации, редактуре, проверке текста, сроках и границах академического сопровождения." />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
-<style>
-  /* ============================================================
-     ОТКРЫТАЯ ПРИЁМНАЯ — журнал входящих писем мастерской.
-     Формуляр пары: «Входящий №», вопрос-цитата, ответ за подписью
-     мастера, штамп ОТВЕЧЕНО. Тишина читального зала: без аватарок,
-     лайков и тредов.
-     ============================================================ */
-  .pr-hero{padding:calc(64px + clamp(36px,6vh,72px)) 0 0;max-width:760px}
-  .pr-hero .caps{display:block;margin-bottom:14px}
-  .pr-hero h1{max-width:20ch;margin-bottom:clamp(14px,2vw,20px)}
-  .pr-hero .lead{max-width:56ch}
-  .pr-sla{display:flex;gap:10px;align-items:flex-start;margin-top:clamp(16px,2.6vw,22px);
-    padding:10px 14px;background:var(--sheet);border:1px solid var(--hairline);border-radius:var(--r);
-    font-size:13.5px;color:var(--ink-soft)}
-  .pr-sla .dot{width:8px;height:8px;border-radius:50%;background:var(--verify);flex:0 0 auto;margin-top:5px}
-  .pr-hero-cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:clamp(16px,2.6vw,24px)}
-  @media (max-width:560px){.pr-hero-cta .btn{flex:1 1 auto;text-align:center}}
-
-  /* --- бланк вопроса --- */
-  .pr-ask{margin-top:clamp(28px,4.5vw,44px);max-width:760px}
-  .pr-ask[hidden],.pr-done[hidden],.pr-item[hidden],.pr-same-n[hidden],.pr-empty[hidden]{display:none}
-  .pr-blank{background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;
-    box-shadow:0 14px 34px -20px rgba(34,32,27,.35);padding:10px}
-  .pr-blank-in{border:1px solid var(--hairline-strong);border-radius:2px;padding:clamp(16px,2.8vw,26px)}
-  .pr-blank-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;
-    border-bottom:1px solid var(--hairline);padding-bottom:10px;margin-bottom:14px}
-  .pr-blank-head b{font-family:var(--serif);letter-spacing:.06em;font-size:15px}
-  .pr-blank-head span{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);letter-spacing:.14em;text-transform:uppercase}
-  .pr-field{margin-bottom:12px}
-  .pr-field label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--ink-soft);margin-bottom:6px}
-  .pr-field textarea,.pr-field input[type=text],.pr-field input[type=email]{width:100%;
-    background:var(--paper);border:1px solid var(--hairline-strong);border-radius:var(--r);
-    padding:10px 12px;font:inherit;font-size:16px;color:var(--ink)}
-  .pr-field textarea{min-height:110px;resize:vertical}
-  .pr-field textarea:focus,.pr-field input:focus{outline:2px solid var(--stamp);outline-offset:1px}
-  .pr-cnt{float:right;font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
-  .pr-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (max-width:620px){.pr-2col{grid-template-columns:1fr}}
-  .pr-quiet{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-soft);
-    background:var(--paper-2);border:1px dashed var(--hairline-strong);border-radius:var(--r);
-    padding:10px 12px;margin:4px 0 14px;cursor:pointer}
-  .pr-quiet input{margin-top:3px;accent-color:var(--wax)}
-  .pr-send-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-  .pr-note{font-size:12.5px;color:var(--ink-faint);max-width:46ch}
-  .pr-hp{position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden}
-  .pr-err{color:var(--wax);font-size:13.5px;margin-top:10px}
-
-  /* штамп «принято» */
-  .pr-done{margin-top:14px;background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;
-    padding:clamp(18px,3vw,26px);position:relative}
-  .pr-done b{font-family:var(--serif);font-size:17px}
-  .pr-done .stamp-got{position:absolute;top:14px;right:16px;transform:rotate(6deg);
-    border:2px solid var(--verify);color:var(--verify);border-radius:3px;
-    font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
-    padding:5px 10px;opacity:.85}
-
-  /* --- лента формуляров --- */
-  .pr-feed{margin-top:clamp(40px,6vw,64px)}
-  .pr-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:18px 0 22px}
-  .pr-chip{border:1px solid var(--hairline-strong);background:var(--sheet);color:var(--ink-soft);
-    border-radius:999px;padding:7px 14px;font-size:13px;cursor:pointer}
-  .pr-chip.is-on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .pr-search{margin-left:auto;flex:0 1 240px;min-width:170px}
-  .pr-search input{width:100%;background:var(--sheet);border:1px solid var(--hairline-strong);
-    border-radius:999px;padding:8px 14px;font:inherit;font-size:14px;color:var(--ink)}
-  .pr-list{display:grid;gap:clamp(16px,2.4vw,24px);max-width:820px}
-  .pr-item{background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;
-    padding:clamp(16px,2.6vw,24px);position:relative;
-    box-shadow:0 10px 26px -22px rgba(34,32,27,.4)}
-  .pr-item.is-hl{outline:2px solid var(--stamp);outline-offset:2px}
-  .pr-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--ink-faint);margin-bottom:12px}
-  .pr-num{color:var(--ink-soft)}
-  .pr-tagpill{border:1px solid var(--hairline);border-radius:999px;padding:2px 9px}
-  .pr-stamp{margin-left:auto;border:1.5px solid var(--stamp);color:var(--stamp);border-radius:3px;
-    padding:2px 8px;transform:rotate(-4deg);letter-spacing:.2em;opacity:.75}
-  .pr-q{margin:0 0 14px;padding:2px 0 2px 16px;border-left:2px solid var(--hairline-strong)}
-  .pr-q p{font-family:var(--serif);font-style:italic;font-size:clamp(15.5px,1.8vw,17.5px);
-    line-height:1.55;color:var(--ink)}
-  .pr-q footer{margin-top:8px;font-size:12.5px;color:var(--ink-faint);font-style:normal}
-  .pr-a{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
-  .pr-who{display:inline-flex;gap:7px;align-items:center;font-family:var(--serif);font-weight:700;
-    font-size:13px;letter-spacing:.05em;white-space:nowrap;padding-top:2px}
-  .pr-seal{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%, var(--wax), var(--wax-deep));
-    box-shadow:0 1px 2px rgba(0,0,0,.25);display:inline-block}
-  .pr-a p{font-size:15px;line-height:1.65;color:var(--ink);white-space:pre-line}
-  @media (max-width:560px){.pr-a{grid-template-columns:1fr;gap:6px}}
-  .pr-foot{display:flex;gap:10px;align-items:center;margin-top:14px;padding-top:12px;
-    border-top:1px dashed var(--hairline)}
-  .pr-same{border:1px solid var(--hairline-strong);background:transparent;color:var(--ink-soft);
-    border-radius:999px;padding:6px 13px;font-size:13px;cursor:pointer}
-  .pr-same:hover{border-color:var(--ink);color:var(--ink)}
-  .pr-same[disabled]{cursor:default;border-style:dashed;color:var(--ink-faint)}
-  .pr-same-n{font-size:12.5px;color:var(--ink-faint)}
-  .pr-empty{padding:26px;border:1px dashed var(--hairline-strong);border-radius:3px;
-    color:var(--ink-soft);text-align:center;max-width:820px}
-
-  /* правила приёмной */
-  .pr-rules{margin-top:clamp(36px,5vw,56px);max-width:760px}
-  .pr-rules details{background:var(--sheet);border:1px solid var(--hairline);border-radius:3px;
-    padding:14px 18px}
-  .pr-rules summary{cursor:pointer;font-family:var(--serif);font-weight:600;font-size:15px}
-  .pr-rules ol{margin:12px 0 4px 18px;display:grid;gap:8px;font-size:14px;color:var(--ink-soft)}
-  .pr-cta{margin:clamp(36px,5vw,60px) 0 clamp(44px,6vw,72px);max-width:760px;
-    background:var(--paper-2);border:1px solid var(--hairline);border-radius:3px;
-    padding:clamp(18px,3vw,26px);display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:space-between}
-  .pr-cta b{font-family:var(--serif);font-size:16.5px}
-  .pr-cta .marginalia{margin-top:4px}
-</style>
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release13" media="screen and (max-width: 880px)" data-mobile-edition="1" />
 </head>
-<body>
-
-<main>
-  <div class="wrap">
-
-    <section class="pr-hero reveal" data-chapter="Приёмная">
-      <span class="caps">Открытая приёмная</span>
-      <h1 class="h-display">Спросите мастера, не называя себя</h1>
-      <p class="lead">Здесь разбирают вопросы о курсовых, ВКР, проверке текста и
-      подготовке к выступлению — без регистрации и без обязательств. Мастер объясняет,
-      что можно включить в заказ, где проходит граница услуги и как это закрепляется
-      в спецификации.</p>
-      <div class="pr-sla"><span class="dot" aria-hidden="true"></span>
-        <span>Срок ответа зависит от загрузки. При публикации убираем имя и прямые
-        идентификаторы, но не обещаем абсолютную анонимность: не присылайте во
-        входящем вопросе сведения, которые не хотите раскрывать.</span></div>
-      <div class="pr-hero-cta">
-        <a class="btn btn-wax" href="#ask">Задать вопрос <span class="ar">→</span></a>
-        <a class="btn btn-line" href="#feed">Читать ответы</a>
+<body class="polish15-supporting support-route">
+<main id="main" class="support-page">
+  <div class="page-shell">
+    <header class="page-head">
+      <div class="page-head__copy">
+        <p class="eyebrow">Открытая приёмная</p>
+        <h1>Спросите до оформления заявки.</h1>
+        <p class="page-head__lead">Подскажем, какой материал нужен для оценки, можно ли уложиться в срок и с какого этапа разумно начать.</p>
+        <a class="button button--primary page-head__action" href="#support-form">Перейти к форме <span aria-hidden="true">↓</span></a>
       </div>
-      <p class="marginalia" style="margin-top:14px">Ответы показывают подход мастерской,
-      но условия конкретного заказа определяют оферта и согласованная спецификация.</p>
-    </section>
+    </header>
 
-    <!-- БЛАНК ВОПРОСА -->
-    <section class="pr-ask reveal" id="ask">
-      <form class="pr-blank" id="prForm" novalidate>
-        <div class="pr-blank-in">
-          <div class="pr-blank-head"><b>Бланк входящего вопроса</b><span>анонимно</span></div>
-          <div class="pr-field">
-            <label for="prQ">Ваш вопрос <span class="pr-cnt" id="prCnt">0 / 600</span></label>
-            <textarea id="prQ" maxlength="600" required
-              placeholder="Например: научрук завернул вторую главу, до защиты месяц — что делать?"></textarea>
-          </div>
-          <div class="pr-2col">
-            <div class="pr-field">
-              <label for="prName">Подпись под вопросом</label>
-              <input type="text" id="prName" maxlength="40" placeholder="Студент(ка) — можно не менять" />
-            </div>
-            <div class="pr-field">
-              <label for="prMail">Почта для ответа — по желанию</label>
-              <input type="email" id="prMail" maxlength="120" placeholder="не показывается в публичной ленте" />
-            </div>
-          </div>
-          <label class="pr-quiet"><input type="checkbox" id="prQuiet" />
-            <span><b>Тихий вопрос.</b> Не публиковать в ленте: ответ придёт только письмом
-            на почту. Для тех, кому спокойнее без публикации — даже анонимной.</span></label>
-          <div class="pr-hp" aria-hidden="true">
-            <label>Не заполняйте это поле<input type="text" id="prWebsite" tabindex="-1" autocomplete="off" /></label>
-          </div>
-          <div class="pr-send-row">
-            <button class="btn btn-wax" type="submit" id="prSend">Отправить в приёмную</button>
-            <span class="pr-note">Публикуем в литературной обработке; ссылки и контакты
-            вычищаются автоматически. Почта нужна только для письма с ответом.</span>
-          </div>
-          <p class="pr-err" id="prErr" hidden></p>
-        </div>
+    <div class="support-layout">
+      <form class="support-form-card" id="supportForm" novalidate>
+        <h2 id="support-form">Новый вопрос</h2>
+        <p>Опишите ситуацию и оставьте почту, если хотите получить уведомление об ответе. Личные сведения не публикуются.</p>
+
+        <label class="field">
+          <span>Ваш вопрос</span>
+          <textarea id="supportQuestion" rows="6" maxlength="600" required placeholder="Опишите ситуацию и желаемый результат"></textarea>
+        </label>
+
+        <label class="field">
+          <span>Как к вам обращаться</span>
+          <input id="supportName" type="text" maxlength="80" autocomplete="name" placeholder="Имя или псевдоним" />
+        </label>
+
+        <label class="field">
+          <span>Почта для ответа</span>
+          <input id="supportContact" type="email" maxlength="120" autocomplete="email" inputmode="email" placeholder="name@example.ru" />
+        </label>
+
+        <label class="file-drop file-drop--small">
+          <input id="supportFiles" type="file" multiple />
+          <span class="file-drop__icon" aria-hidden="true">+</span>
+          <span><strong>Добавить файл</strong><small id="supportFileName" aria-live="polite">Можно приложить документ после ответа редактора</small></span>
+        </label>
+
+        <label class="consent-check">
+          <input id="supportQuiet" type="checkbox" />
+          <span>Ответить только мне, без публикации вопроса.</span>
+        </label>
+
+        <label class="consent-check">
+          <input id="supportConsent" type="checkbox" required />
+          <span>Я соглашаюсь на обработку данных для ответа на вопрос и принимаю <a href="privacy.html">политику конфиденциальности</a>.</span>
+        </label>
+
+        <label class="visually-hidden" aria-hidden="true">Не заполняйте это поле
+          <input id="supportWebsite" type="text" tabindex="-1" autocomplete="off" />
+        </label>
+
+        <button class="button button--primary button--large" id="supportSend" type="submit">Отправить вопрос</button>
+        <p class="form-note" id="supportStatus" role="status" aria-live="polite" hidden></p>
+
+        <section class="support-success" id="supportSuccess" tabindex="-1" hidden>
+          <strong>Вопрос принят</strong>
+          <p data-support-success-copy>Редактор получил обращение.</p>
+          <p data-support-file-hint hidden>Файл не передавался через эту форму. Пришлите его в <a href="https://t.me/academic_saloon_bot?start=question" rel="noopener">защищённый чат с ботом</a>, когда редактор ответит.</p>
+        </section>
       </form>
 
-      <div class="pr-done" id="prDone" hidden>
-        <span class="stamp-got">Принято</span>
-        <b>Вопрос принят в приёмную.</b>
-        <p style="margin-top:8px;color:var(--ink-soft);max-width:56ch">Мастер отвечает в течение
-        дня. <span id="prDoneMode">Ответ появится на этой странице — загляните позже или
-        оставьте почту в следующий раз, чтобы получить его письмом.</span></p>
-      </div>
-    </section>
-
-    <!-- ЛЕНТА -->
-    <section class="pr-feed reveal" id="feed">
-      <span class="caps">Журнал входящих</span>
-      <h2 class="h-display" style="font-size:clamp(24px,3.4vw,34px);margin-top:10px">Вопросы, на которые уже отвечено</h2>
-      <div class="pr-toolbar" role="toolbar" aria-label="Фильтр вопросов">
-        <button class="pr-chip is-on" type="button" data-prtag="">Все</button><button class="pr-chip" type="button" data-prtag="diplom">Диплом и ВКР</button><button class="pr-chip" type="button" data-prtag="kursach">Курсовые</button><button class="pr-chip" type="button" data-prtag="antiplagiat">Антиплагиат и ИИ</button><button class="pr-chip" type="button" data-prtag="sroki">Сроки</button><button class="pr-chip" type="button" data-prtag="oplata">Оплата и гарантии</button><button class="pr-chip" type="button" data-prtag="process">Как всё устроено</button>
-        <span class="pr-search"><input type="search" id="prSearch" placeholder="Поиск по вопросам…" aria-label="Поиск по вопросам" /></span>
-      </div>
-      <div class="pr-list" id="prList">
-<article class="pr-item" id="q1" data-tag="diplom" data-qa="1">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;001</span>
-    <span class="pr-date">5 июня</span>
-    <span class="pr-tagpill">Диплом и ВКР</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Как подготовиться к вопросам комиссии и уверенно объяснить собственное исследование?</p><footer>— Аноним</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Начните с карты аргументов: проблема, цель, метод, данные, три главных вывода и ограничения. Затем своими словами объясните выбор методики и каждый ключевой термин. В сопровождение можно включить разбор вашего текста, репетицию, вопросы по нему и обратную связь по ответам. Мы не отвечаем за обучающегося и не маскируем чужое авторство: задача подготовки — помочь вам понимать и представлять собственный материал.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="1">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="1" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q2" data-tag="diplom" data-qa="2">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;002</span>
-    <span class="pr-date">8 июня</span>
-    <span class="pr-tagpill">Диплом и ВКР</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Чем магистерская отличается от обычного диплома? Поступила после бакалавриата и я в лёгкой панике от слова «диссертация».</p><footer>— Настя</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Спокойно: магистерская — это не кандидатская, слово «диссертация» в ней — самое страшное. Отличий от ВКР бакалавра по сути три: нужна научная новизна (хотя бы скромная — новый ракурс, уточнённая методика, свежие данные), обязательная апробация (обычно 1–2 статьи или выступление на конференции — это планируется заранее, а не в последний месяц) и более строгая методология во введении. Объём вырастает не сильно: 80–100 страниц против 60–80. Если у вас сейчас первый семестр — идеальный момент спланировать всё: тему, план, график статей. Такой разбор мы делаем за 5 000 ₽, и дальше два года идут по расписанию, а не в пожаре.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="2">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="2" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q3" data-tag="oplata" data-qa="3">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;003</span>
-    <span class="pr-date">10 июня</span>
-    <span class="pr-tagpill">Оплата и гарантии</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>У вас есть гарантии? Что произойдёт, если результат услуги не соответствует спецификации?</p><footer>— прагматик</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Гарантируем согласованный процесс и результат по каждой позиции, а не решение преподавателя, комиссии, редакции или системы проверки. Если позиция не соответствует зафиксированным критериям, действует окно исправления; если нарушение не устранено — применяются последствия из оферты и спецификации. При отказе заказчика расчёт ведётся по фактически оказанным позициям и подтверждённым расходам. Конкретная оценка, допуск, публикация и процент проверки не обещаются.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="3">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="3" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q4" data-tag="process" data-qa="4">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;004</span>
-    <span class="pr-date">12 июня</span>
-    <span class="pr-tagpill">Как всё устроено</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Кафедра обновила методичку, когда работа уже была готова. Теперь оформление «не по стандарту». Кто виноват и что делать?</p><footer>— Магистрант</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Сверьте дату и версию требований со спецификацией. Если новая методичка была предоставлена до контрольной даты и входила в согласованные исходные данные, проверим соответствие в рамках позиции. Если требования изменились позднее или меняют объём результата, оформим новую редакцию спецификации с перечнем отличий, сроком и ценой — только после вашего согласия. Никаких доплат «по умолчанию».</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="4">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="4" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q5" data-tag="process" data-qa="5">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;005</span>
-    <span class="pr-date">15 июня</span>
-    <span class="pr-tagpill">Как всё устроено</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Правки после сдачи платные? А то знаю контору, где каждая правка по 500 рублей.</p><footer>— Аноним</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Исправления несоответствий согласованным критериям входят в цену позиции в течение её сервисного окна. Новая тема, новый набор данных, новая методичка, дополнительный раздел или изменение назначения результата — это изменение заказа. Сначала показываем, что именно изменилось, затем согласуем новую редакцию спецификации, срок и цену. Количество циклов и контрольные даты должны быть указаны по каждой позиции отдельно.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="5">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="5" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q6" data-tag="oplata" data-qa="6">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;006</span>
-    <span class="pr-date">18 июня</span>
-    <span class="pr-tagpill">Оплата и гарантии</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Как у вас с оплатой? Если я переведу деньги, а вы пропадёте — что мне делать? Уже обжигался на «авторе» с сайта объявлений.</p><footer>— обжёгшийся</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>До оплаты вы получаете <a class="link" href="specifikaciya.html">спецификацию</a>: позиции, результат каждой услуги, исходные данные, сроки, цену, порядок приёмки и исправлений. Оплата и чек оформляются тем способом, который указан в заказе; не переводите деньги по реквизитам, не указанным на сайте или в официальном канале. Если позиций несколько, они принимаются и рассчитываются отдельно — спор по одной строке не делает неопределённым весь заказ.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="6">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="6" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q7" data-tag="process" data-qa="7">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;007</span>
-    <span class="pr-date">20 июня</span>
-    <span class="pr-tagpill">Как всё устроено</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Чем вы отличаетесь от бирж, где «2000 авторов онлайн»? Там дешевле.</p><footer>— скептик</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>У нас заказ разбирается по позициям, а результат каждой позиции заранее описывается: диагностика, комментарии, редактура вашего материала, проверка расчётов, оформление или репетиция. Вы видите не обещание «всё включено», а границы, критерии и цену. Если бюджет ограничен, можно выбрать критичную часть — например, аудит методологии или разбор расчётов — и самостоятельно доработать исследование по понятному плану.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="7">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="7" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q8" data-tag="oplata" data-qa="8">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;008</span>
-    <span class="pr-date">22 июня</span>
-    <span class="pr-tagpill">Оплата и гарантии</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Сколько по-честному стоит курсовая? У одних 800 рублей, у других 8 тысяч — я не понимаю, из чего цена вообще складывается.</p><footer>— Влад</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Цена зависит от состава услуги: объёма вашего материала, глубины разбора, расчётов и данных, требований к оформлению, числа этапов и срока. Конфигуратор показывает предварительную вилку, а окончательная цена появляется только после просмотра исходных данных и фиксируется по строкам спецификации. Поэтому можно заказать один нужный блок, не оплачивая абстрактную услугу «под ключ».</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="8">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="8" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q9" data-tag="process" data-qa="9">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;009</span>
-    <span class="pr-date">25 июня</span>
-    <span class="pr-tagpill">Как всё устроено</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Какие данные вы храните по заказу и что попадёт в спецификацию?</p><footer>— Аноним</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>В спецификации нужны идентификатор заказа, состав позиций, назначение результата, сроки, цена и версии исходных данных. ФИО, вуз и другие сведения запрашиваются только когда они действительно нужны для исполнения или оформления. Порядок обработки, сроки хранения и получатели данных описаны в политике конфиденциальности. Не присылайте лишние персональные данные и сведения третьих лиц без законного основания.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="9">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="9" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q10" data-tag="antiplagiat" data-qa="10">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;010</span>
-    <span class="pr-date">28 июня</span>
-    <span class="pr-tagpill">Антиплагиат и ИИ</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Антиплагиат показал 48%, сдача через неделю. Преподаватель сказал «поднимите хотя бы до 70». Реально ли это без того, чтобы переписывать всё с нуля?</p><footer>— Студентка, 4 курс</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Сначала нужен полный отчёт и требования организации. Мы можем объяснить источники совпадений, проверить цитирование, отметить шаблонные формулировки и предложить содержательную редактуру вашего текста. Заранее обещать конкретный процент нельзя: результат зависит от версии, базы и настроек системы. Цель услуги — корректный самостоятельный текст и прозрачные источники, а не обход проверки.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="10">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="10" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q11" data-tag="process" data-qa="11">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;011</span>
-    <span class="pr-date">30 июня</span>
-    <span class="pr-tagpill">Как всё устроено</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Можно заказать не всю работу, а только доработку? Диплом написал сам, но оформление и список литературы — беда, и введение препод завернул.</p><footer>— Игорь</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Можно и нужно — это нормальный формат, примерно треть наших заказов именно такие. Доработка считается от фактического объёма: смотрим вашу работу и замечания, называем цену за конкретные блоки — введение по канону кафедры, список по ГОСТ Р 7.0.100-2018, оформление по методичке, — а не «от половины стоимости диплома», как любят биржи. Свою работу вы при этом не «сдаёте нам насовсем»: правим аккуратно, с пометками, чтобы было видно, что изменилось, и вы могли защитить каждый абзац.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="11">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="11" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q12" data-tag="diplom" data-qa="12">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;012</span>
-    <span class="pr-date">2 июля</span>
-    <span class="pr-tagpill">Диплом и ВКР</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Научрук третий раз возвращает вторую главу со словами «мало анализа, одна вода». Я уже не понимаю, чего он хочет. До предзащиты полтора месяца.</p><footer>— Марина</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>«Мало анализа» почти всегда означает одно: в главе пересказаны чужие материалы, но нет ваших выводов из них. Проверьте по простому признаку: если абзац можно перенести в чужой диплом без правок — это вода; если в нём есть «из этого следует, что…» применительно к вашему объекту — это анализ. Обычно главу спасает не переписывание, а достройка: после каждого параграфа — микровывод, в конце — сопоставление подходов и ваша позиция, лучше таблицей. Полтора месяца — спокойный запас. Мы такие главы «доводим» регулярно: присылайте текст и замечания научрука — скажем, что именно достроить.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="12">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="12" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q13" data-tag="antiplagiat" data-qa="13">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;013</span>
-    <span class="pr-date">5 июля</span>
-    <span class="pr-tagpill">Антиплагиат и ИИ</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Используете ли вы нейросети при консультации и редактуре?</p><footer>— Аноним</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Допустимые инструменты и требования к конфиденциальности фиксируются в позиции заказа. Автоматические средства могут помогать с черновой классификацией, поиском противоречий или технической проверкой, но выводы и источники проверяет человек. Мы не обещаем прохождение «ИИ-детекторов»: такие оценки зависят от конкретной системы и не доказывают авторство. Если материал нельзя передавать внешнему сервису, это нужно прямо указать до начала работ.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="13">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="13" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q14" data-tag="sroki" data-qa="14">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;014</span>
-    <span class="pr-date">6 июля</span>
-    <span class="pr-tagpill">Сроки</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Можно помочь с отчётом по практике, если у меня пока не собраны фактические данные?</p><footer>— Аноним</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Можно разобрать методичку, составить перечень недостающих данных, шаблон наблюдений и план вашего отчёта. Факты о месте, датах и содержании практики должны быть достоверными; мы не создаём фиктивные дневники, характеристики, подписи или сведения об организации. Когда вы соберёте законные исходные данные, можно отдельно согласовать их проверку, редактуру и оформление.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="14">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="14" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q15" data-tag="sroki" data-qa="15">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;015</span>
-    <span class="pr-date">8 июля</span>
-    <span class="pr-tagpill">Сроки</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>До защиты диплома 3 недели, у меня готова только первая глава, и то криво. Вообще ничего не успеваю из-за работы. Это уже всё или ещё можно спасти?</p><footer>— на грани</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>За три недели можно провести диагностику уже написанного, расставить приоритеты, проверить методологию и организовать редактуру по этапам. Сначала определяем, что вы реально успеете сделать сами, какие исходные данные уже есть и какие блоки критичны. После этого спецификация фиксирует посильный объём помощи и контрольные даты. Обещать завершение исследования без анализа материалов было бы нечестно.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="15">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="15" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q16" data-tag="diplom" data-qa="16">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;016</span>
-    <span class="pr-date">10 июля</span>
-    <span class="pr-tagpill">Диплом и ВКР</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Я теряюсь на выступлениях. Можно отдельно подготовиться к защите своего исследования?</p><footer>— с ужасом жду июня</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Да. Отдельная позиция может включать структуру доклада по вашему тексту, проверку слайдов, банк вероятных вопросов и репетицию с обратной связью. Вы сами формулируете ответы и проходите аттестацию; мастер помогает сделать аргументацию яснее и увидеть слабые места. Результат — комплект подготовки, а не обещание оценки или поведения комиссии.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="16">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="16" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q17" data-tag="sroki" data-qa="17">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;017</span>
-    <span class="pr-date">12 июля</span>
-    <span class="pr-tagpill">Сроки</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Ночь перед сдачей курсовой, готово процентов 40. Кофе уже не помогает. Что реально успеть за ночь?</p><footer>— совсем всё</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Сначала сохраните текущую версию и проверьте обязательный минимум из задания. За короткий срок разумнее привести в порядок структуру, ссылки, список источников и явно обозначить незавершённые места, чем вставлять непроверенный чужой текст. Мы можем быстро провести аудит вашей версии и выдать приоритетный чек-лист; объём, который реально выполнить к сроку, фиксируется отдельной позицией.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="17">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="17" hidden></span>
-  </footer>
-</article>
-
-<article class="pr-item" id="q18" data-tag="diplom" data-qa="18">
-  <header class="pr-meta">
-    <span class="pr-num">Входящий №&nbsp;018</span>
-    <span class="pr-date">14 июля</span>
-    <span class="pr-tagpill">Диплом и ВКР</span>
-    <span class="pr-stamp" aria-label="Мастер ответил">отвечено</span>
-  </header>
-  <blockquote class="pr-q"><p>Получила задание на ВКР, там написано «провести эмпирическое исследование адаптационного потенциала». Я даже не понимаю, с чего начать. Помогите расшифровать, что от меня хотят?</p><footer>— первый раз пишу</footer></blockquote>
-  <div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>
-    <p>Это нормальное состояние: задание на ВКР пишется языком кафедры, а не человека. «Эмпирическое исследование адаптационного потенциала» по-человечески значит: взять группу людей (обычно 30–60), прогнать по двум-трём стандартным методикам (для адаптации это чаще всего опросник Роджерса–Даймонд или методика Маклакова), посчитать статистику и объяснить цифры. С чего начать: выбрать базу — где возьмёте респондентов, — согласовать методики с научруком и только потом писать теорию под них, а не наоборот. Для таких случаев у нас есть «разбор задания» за 3 000 ₽: расшифровка каждого пункта, план по главам и график — и эти 3 000 ₽ зачитываются, если продолжите работу с нами.</p></div>
-  <footer class="pr-foot">
-    <button class="pr-same" type="button" data-same="18">🙋 У меня такой же вопрос</button>
-    <span class="pr-same-n" data-same-n="18" hidden></span>
-  </footer>
-</article>
-      </div>
-      <p class="pr-empty" id="prEmpty" hidden>По этому фильтру пока пусто — задайте свой вопрос,
-      и он станет первым.</p>
-    </section>
-
-    <!-- ПРАВИЛА -->
-    <section class="pr-rules reveal">
-      <details>
-        <summary>Правила приёмной — коротко и честно</summary>
-        <ol>
-          <li>Вопросы публикуются анонимно и в литературной обработке: мастер вычищает
-          имена, вузы и любые детали, по которым автора можно узнать. Суть не меняется.</li>
-          <li>Почта не публикуется никогда и используется только для письма с ответом.
-          «Тихий вопрос» не публикуется вовсе.</li>
-          <li>В приёмную не попадают оскорбления, реклама и просьбы, нарушающие закон.
-          Такие письма остаются без ответа.</li>
-          <li>Ответ мастера — консультация по учебной работе, а не оферта: цены в ответах
-          ориентировочные, точную считает <a href="configurator.html">конфигуратор</a>.</li>
-        </ol>
-      </details>
-    </section>
-
-    <div class="pr-cta reveal">
-      <div>
-        <b>Вопрос оказался «про вашу работу целиком»?</b>
-        <p class="marginalia">Конфигуратор посчитает честную вилку за пару минут — без
-        контактов и звонков.</p>
-      </div>
-      <a class="btn btn-line" href="configurator.html">Рассчитать заказ <span class="ar">→</span></a>
+      <aside class="support-info">
+        <section>
+          <p class="eyebrow">Чтобы ответить точнее</p>
+          <h2>Укажите три вещи</h2>
+          <ol>
+            <li><span>01</span>тип и текущую готовность работы</li>
+            <li><span>02</span>что нужно получить</li>
+            <li><span>03</span>точный срок</li>
+          </ol>
+        </section>
+        <section>
+          <p class="eyebrow">Частые вопросы</p>
+          <details><summary>Можно без регистрации?<span aria-hidden="true">+</span></summary><p>Да. Для первичной оценки достаточно описания ситуации. Почта нужна только для уведомления об ответе.</p></details>
+          <details><summary>Файлы обязательны?<span aria-hidden="true">+</span></summary><p>Нет, но без них редактор сможет дать только общий ориентир. Документы безопаснее передать после первого ответа.</p></details>
+          <details><summary>Можно задать вопрос по текущему делу?<span aria-hidden="true">+</span></summary><p>Лучше написать внутри дела: там редактор увидит историю, согласованные решения и документы.</p></details>
+        </section>
+        <a class="button button--secondary" href="https://t.me/academic_saloon_bot?start=question" rel="noopener">Написать через Telegram</a>
+      </aside>
     </div>
-
   </div>
 </main>
 
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-  {"@type":"Question","name":"Что именно гарантирует академическое сопровождение?","acceptedAnswer":{"@type":"Answer","text":"Гарантируется согласованный процесс и результат по каждой позиции спецификации. Оценка, допуск, публикация, решение комиссии и процент проверки не гарантируются."}},
-  {"@type":"Question","name":"Как оформляются исправления и изменения заказа?","acceptedAnswer":{"@type":"Answer","text":"Несоответствия согласованным критериям исправляются в сервисное окно позиции. Новое задание, данные, методичка или дополнительный раздел оформляются новой редакцией спецификации после согласия заказчика."}},
-  {"@type":"Question","name":"Что фиксируется до оплаты?","acceptedAnswer":{"@type":"Answer","text":"Спецификация фиксирует позиции, результат каждой услуги, исходные данные и их версии, сроки, цену, порядок приёмки и исправлений."}},
-  {"@type":"Question","name":"Можно заказать только отдельный блок?","acceptedAnswer":{"@type":"Answer","text":"Да. Диагностика, разбор методологии, проверка расчётов, редактура вашего материала, оформление и репетиция могут быть самостоятельными позициями."}},
-  {"@type":"Question","name":"Можно ли обещать конкретный процент проверки текста?","acceptedAnswer":{"@type":"Answer","text":"Нет. Результат зависит от версии, базы и настроек системы. Услуга может включать разбор отчёта, проверку цитирования и содержательную редактуру собственного текста заказчика."}},
-  {"@type":"Question","name":"Можно помочь с отчётом по практике без фактических данных?","acceptedAnswer":{"@type":"Answer","text":"Можно разобрать требования и подготовить план сбора данных. Фиктивные дневники, характеристики, подписи и сведения об организации не создаются."}},
-  {"@type":"Question","name":"Можно отдельно подготовиться к защите?","acceptedAnswer":{"@type":"Answer","text":"Да. Отдельная позиция может включать структуру доклада по вашему тексту, проверку слайдов, вопросы и репетицию. Аттестацию заказчик проходит самостоятельно."}}
-]}
-</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Открытая приёмная","item":"https://akademsalon.ru/priyomnaya.html"}]}</script>
-
-<script src="assets/js/app.js?v=20260723q"></script>
-<script src="assets/js/extras.js?v=20260723h"></script>
-<script>
-/* Приёмная: живая лента с /api/qa (статика в HTML — для поиска и без-JS),
-   отправка вопроса, «у меня такой же вопрос», фильтры и поиск.
-   Без rAF и IntersectionObserver — переживает reduce-motion и Турбо-режимы. */
-(function () {
-  var S = window.Salon || {};
-  if (!S.api) return;
-  var TAGS = { diplom: 'Диплом и ВКР', kursach: 'Курсовые', antiplagiat: 'Антиплагиат и ИИ',
-               sroki: 'Сроки', oplata: 'Оплата и гарантии', process: 'Как всё устроено' };
-  var $ = function (id) { return document.getElementById(id); };
-  var list = $('prList'), state = { tag: '', q: '' };
-  var voted = (S.store && S.store.get('salon_qa_voted', [])) || [];
-  if (!Array.isArray(voted)) voted = [];
-
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>]/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c];
-    });
-  }
-  function vid() { return (S.store && S.store.get('salon_vid', '')) || ''; }
-
-  function itemHTML(it) {
-    return '<header class="pr-meta">' +
-      '<span class="pr-num">Входящий №&nbsp;' + esc(it.num.replace('№ ', '')) + '</span>' +
-      (it.date ? '<span class="pr-date">' + esc(it.date) + '</span>' : '') +
-      (it.tag_label ? '<span class="pr-tagpill">' + esc(it.tag_label) + '</span>' : '') +
-      '<span class="pr-stamp" aria-label="Мастер ответил">отвечено</span></header>' +
-      '<blockquote class="pr-q"><p>' + esc(it.question) + '</p>' +
-      '<footer>— ' + esc(it.pseudonym) + '</footer></blockquote>' +
-      '<div class="pr-a"><span class="pr-who"><i class="pr-seal" aria-hidden="true"></i>Мастер</span>' +
-      '<p>' + esc(it.answer) + '</p></div>' +
-      '<footer class="pr-foot">' +
-      '<button class="pr-same" type="button" data-same="' + it.id + '">🙋 У меня такой же вопрос</button>' +
-      '<span class="pr-same-n" data-same-n="' + it.id + '"' + (it.same ? '' : ' hidden') + '>' +
-      (it.same ? 'таких уже ' + it.same : '') + '</span></footer>';
-  }
-
-  function render(items) {
-    var html = items.map(function (it) {
-      return '<article class="pr-item" id="q' + it.id + '" data-tag="' + esc(it.tag) +
-        '" data-qa="' + it.id + '">' + itemHTML(it) + '</article>';
-    }).join('');
-    list.innerHTML = html;
-    applyFilter();
-    markVoted();
-  }
-
-  function applyFilter() {
-    var n = 0;
-    Array.prototype.forEach.call(list.children, function (el) {
-      var okTag = !state.tag || el.getAttribute('data-tag') === state.tag;
-      var okQ = !state.q || el.textContent.toLowerCase().indexOf(state.q) >= 0;
-      var show = okTag && okQ;
-      if (show) { el.removeAttribute('hidden'); n++; } else { el.setAttribute('hidden', ''); }
-    });
-    $('prEmpty').hidden = n > 0;
-  }
-
-  function markVoted() {
-    voted.forEach(function (id) {
-      var b = list.querySelector('[data-same="' + id + '"]');
-      if (b) { b.disabled = true; b.textContent = '🙋 Вы отметились'; }
-    });
-  }
-
-  function jumpHash() {
-    var m = /^#q(\d+)$/.exec(location.hash || '');
-    if (!m) return;
-    var el = document.getElementById('q' + m[1]);
-    if (!el || el.hidden) return;
-    el.classList.add('is-hl');
-    var y = el.getBoundingClientRect().top + window.pageYOffset - 84;
-    window.scrollTo(0, y);
-  }
-
-  /* живые данные: админские правки и новые ответы важнее статики */
-  S.api.get('/qa').then(function (r) {
-    if (r && r.ok && r.items && r.items.length) render(r.items);
-    jumpHash();
-  });
-
-  /* фильтры */
-  Array.prototype.forEach.call(document.querySelectorAll('.pr-chip'), function (ch) {
-    ch.addEventListener('click', function () {
-      Array.prototype.forEach.call(document.querySelectorAll('.pr-chip'), function (c) {
-        c.classList.toggle('is-on', c === ch);
-      });
-      state.tag = ch.getAttribute('data-prtag') || '';
-      applyFilter();
-    });
-  });
-  var searchT = null;
-  $('prSearch').addEventListener('input', function () {
-    clearTimeout(searchT);
-    var v = this.value;
-    searchT = setTimeout(function () {
-      state.q = v.trim().toLowerCase();
-      applyFilter();
-    }, 160);
-  });
-
-  /* «у меня такой же вопрос» */
-  list.addEventListener('click', function (ev) {
-    var b = ev.target.closest ? ev.target.closest('[data-same]') : null;
-    if (!b || b.disabled) return;
-    var id = parseInt(b.getAttribute('data-same'), 10);
-    if (voted.indexOf(id) >= 0 || !vid()) { b.disabled = true; return; }
-    b.disabled = true;
-    S.api.post('/qa/' + id + '/same', { vid: vid() }).then(function (r) {
-      if (!(r && r.ok)) { b.disabled = false; return; }
-      voted.push(id);
-      if (S.store) S.store.set('salon_qa_voted', voted.slice(-100));
-      b.textContent = '🙋 Вы отметились';
-      var n = list.querySelector('[data-same-n="' + id + '"]');
-      if (n && r.same) { n.hidden = false; n.textContent = 'таких уже ' + r.same; }
-      if (S.visit) S.visit.mark('приёмная: такой же вопрос №' + id);
-    });
-  });
-
-  /* счётчик знаков */
-  $('prQ').addEventListener('input', function () {
-    $('prCnt').textContent = this.value.length + ' / 600';
-  });
-
-  /* отправка вопроса */
-  $('prForm').addEventListener('submit', function (ev) {
-    ev.preventDefault();
-    var err = $('prErr');
-    err.hidden = true;
-    var q = $('prQ').value.trim();
-    var quiet = $('prQuiet').checked;
-    var mail = $('prMail').value.trim();
-    if (q.length < 10) { err.textContent = 'Опишите вопрос чуть подробнее — хотя бы одной фразой.'; err.hidden = false; return; }
-    if (quiet && !/^\S+@\S+\.\S+$/.test(mail)) {
-      err.textContent = 'Для «тихого вопроса» нужна почта — ответ придёт только письмом.';
-      err.hidden = false; return;
-    }
-    if (mail && !/^\S+@\S+\.\S+$/.test(mail)) {
-      err.textContent = 'Почта выглядит неполной — проверьте адрес или оставьте поле пустым.';
-      err.hidden = false; return;
-    }
-    var btn = $('prSend');
-    btn.disabled = true; btn.textContent = 'Отправляем…';
-    S.api.post('/qa', {
-      question: q, pseudonym: $('prName').value.trim(), email: mail,
-      quiet: quiet, vid: vid(), website: $('prWebsite').value
-    }).then(function (r) {
-      btn.disabled = false; btn.textContent = 'Отправить в приёмную';
-      if (!(r && r.ok)) {
-        var msgs = {
-          rate_limited: 'На сегодня лимит вопросов с этого устройства исчерпан — приходите завтра.',
-          too_short: 'Опишите вопрос чуть подробнее.',
-          email_required: 'Для «тихого вопроса» нужна почта.',
-          bad_email: 'Почта выглядит неполной — проверьте адрес.'
-        };
-        err.textContent = msgs[r && r.error] || 'Не получилось отправить — попробуйте ещё раз через минуту.';
-        err.hidden = false;
-        return;
-      }
-      $('prForm').hidden = true;
-      var mode = $('prDoneMode');
-      if (quiet) mode.textContent = 'Вопрос тихий: в ленту он не попадёт, ответ придёт письмом на ' + mail + '.';
-      else if (mail) mode.textContent = 'Ответ появится на этой странице, а на ' + mail + ' придёт письмо со ссылкой.';
-      $('prDone').hidden = false;
-      if (S.visit) S.visit.mark(quiet ? 'приёмная: тихий вопрос' : 'приёмная: вопрос задан');
-      try { if (S.metrika) S.metrika.goal('qa_asked'); } catch (e) {}
-    });
-  });
-})();
-</script>
-
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ContactPage","@id":"https://akademsalon.ru/priyomnaya.html#page","url":"https://akademsalon.ru/priyomnaya.html","name":"Открытая приёмная","description":"Форма вопроса редактору Академического Салона.","inLanguage":"ru","mainEntity":{"@id":"https://akademsalon.ru/#org"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Можно без регистрации?","acceptedAnswer":{"@type":"Answer","text":"Да. Для первичной оценки достаточно описания ситуации. Почта нужна только для уведомления об ответе."}},{"@type":"Question","name":"Файлы обязательны?","acceptedAnswer":{"@type":"Answer","text":"Нет, но без них редактор сможет дать только общий ориентир. Документы безопаснее передать после первого ответа."}},{"@type":"Question","name":"Можно задать вопрос по текущему делу?","acceptedAnswer":{"@type":"Answer","text":"Лучше написать внутри дела: там редактор увидит историю, согласованные решения и документы."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Открытая приёмная","item":"https://akademsalon.ru/priyomnaya.html"}]}]}</script>
+<script src="assets/js/app.js?v=20260725release13"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260725release13"></script>
+<script src="assets/js/polish15-supporting.js?v=20260725release13"></script>
 </body>
 </html>

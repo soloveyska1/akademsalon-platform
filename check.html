@@ -3,413 +3,87 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Бесплатная проверка текста на канцелярит и следы ИИ онлайн — Академический Салон</title>
-<meta name="description" content="Бесплатная рецензия на текст: отмечаем канцелярит и машинальные обороты, на которые срабатывают проверяющие. Анализ идёт в браузере — текст никуда не отправляется." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
-<style>
-  /* ============================================================
-     ПРОВЕРКА ТЕКСТА — лид-магнит: инструмент + «Рецензионный лист»
-     ============================================================ */
-  .check-hero{padding:calc(56px + clamp(36px,7vh,80px)) 0 0}
-  .check-col{max-width:760px;margin:0 auto}
-  .check-hero h1{font-size:clamp(30px,4.8vw,50px);font-weight:340;line-height:1.08;letter-spacing:-.015em;margin-bottom:14px}
-  .check-hero .lead{max-width:58ch}
-
-  /* инструмент */
-  .check-tool{margin-top:clamp(24px,4vw,40px)}
-  .check-tool .field{margin-bottom:0}
-  .check-tool textarea{min-height:220px;line-height:1.6}
-  .ta-meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:12.5px;color:var(--ink-soft);margin-top:8px}
-  #counter{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
-  #counter.ok{color:var(--verify)}
-  .check-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-
-  /* рецензионный лист */
-  #result{margin-top:clamp(28px,5vw,44px)}
-  #result[hidden]{display:none}
-  .rl-scores{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:14px 0 18px;border-bottom:1px solid var(--hairline)}
-  .rl-big{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:clamp(34px,6vw,46px);letter-spacing:-.03em;line-height:1;margin-top:8px}
-  .rl-big .rl-den{font-size:.42em;letter-spacing:0;color:var(--ink-soft)}
-  .rl-sub{display:block;font-size:12px;color:var(--ink-soft);margin-top:2px}
-  .rl-caps{display:block;margin:20px 0 4px}
-  .rl-tips{list-style:none;counter-reset:tip;margin:0}
-  .rl-tips li{counter-increment:tip;position:relative;padding:10px 0 10px 32px;border-top:1px solid var(--hairline);font-size:13px;color:var(--ink-soft);line-height:1.55}
-  .rl-tips li:first-child{border-top:0}
-  .rl-tips li::before{content:counter(tip,decimal-leading-zero);position:absolute;left:0;top:12px;font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
-  .rl-tips b{color:var(--ink);font-weight:500}
-  .rl-tips li>span{display:block;margin-top:2px}
-  .rl-verdict{margin-top:18px;padding-top:16px;border-top:1px solid var(--hairline);font-size:15px;line-height:1.6}
-  .rl-meta{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:16px}
-  .rl-meta .marginalia{max-width:52ch}
-  .rl-seal{flex:0 0 auto}
-  .cta-wide{margin-top:20px;white-space:normal;text-align:center;line-height:1.4;padding-top:13px;padding-bottom:13px}
-
-  @media(max-width:540px){
-    .rl-scores{gap:10px}
-    .rl-scores .caps{font-size:10.5px;letter-spacing:.1em}
-    .rl-meta{flex-direction:column;align-items:flex-start}
-    .rl-seal{align-self:flex-end;margin-top:-4px}
-  }
-</style>
+<title>Проверка академического текста — Академический Салон</title>
+<meta name="description" content="Бесплатная браузерная проверка длины предложений, повторов и тяжёлых оборотов. Текст не отправляется на сервер." />
+<meta name="robots" content="index,follow,max-image-preview:large" />
 <link rel="canonical" href="https://akademsalon.ru/check.html" />
-<link rel="icon" href="/favicon.ico" sizes="32x32" />
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
-<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
-
-<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-<meta name="theme-color" content="#F6F1E7" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Бесплатная проверка текста на канцелярит и следы ИИ" />
-<meta property="og:description" content="Отмечаем канцелярит и машинальные обороты, на которые срабатывают проверяющие. Анализ идёт в браузере — текст никуда не отправляется." />
+<meta property="og:title" content="Проверка академического текста — Академический Салон" />
+<meta property="og:description" content="Бесплатная браузерная проверка длины предложений, повторов и тяжёлых оборотов. Текст не отправляется на сервер." />
 <meta property="og:url" content="https://akademsalon.ru/check.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Бесплатная проверка текста — Академический Салон" />
-<meta name="twitter:description" content="Отмечаем канцелярит и машинальные обороты, на которые срабатывают проверяющие. Анализ идёт на устройстве." />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#F6F1E7" />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release13" media="screen and (max-width: 880px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260725release13" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 </head>
-<body>
-
-<main class="check-page">
-  <div class="wrap">
-
-    <section class="check-hero" data-chapter="Проверка текста">
-      <div class="check-col">
-
-        <div class="reveal">
-          <h1>Бесплатная рецензия на&nbsp;ваш текст</h1>
-          <p class="lead">Отмечаем канцелярит и машинальные обороты, на которые срабатывают проверяющие. Текст не покидает ваш браузер — анализ идёт на устройстве.</p>
-        </div>
-
-        <!-- Инструмент -->
-        <div class="check-tool sheet sheet-pad stacked reveal d1">
-          <div class="field">
-            <label for="src">Фрагмент работы</label>
-            <textarea id="src" placeholder="Вставьте абзац или раздел работы — от 200 символов. Чем больше текста, тем точнее оценка."></textarea>
-            <div class="ta-meta">
-              <span id="counter">0 символов</span>
-              <span>минимум — 200 символов</span>
-            </div>
-            <span id="srcError" class="visually-hidden" role="status"></span>
-          </div>
-          <div class="check-actions">
-            <button class="btn btn-wax" id="run">Проверить текст <span class="ar">→</span></button>
-            <button class="btn btn-line" id="sample">Подставить пример</button>
-          </div>
-          <noscript><p class="petit" style="margin-top:14px">Для проверки нужен включённый JavaScript — анализ выполняется прямо в вашем браузере.</p></noscript>
-        </div>
-
-        <!-- Рецензионный лист -->
-        <section class="report-sheet sheet sheet-pad stacked" id="result" hidden aria-label="Рецензионный лист">
-          <div class="rp-head">
-            <span class="rp-title">Рецензионный лист</span>
-            <span class="tag tag-ink" id="rlTag">—</span>
-          </div>
-
-          <div class="rl-scores" aria-live="polite">
-            <div>
-              <span class="caps">Машинальность</span>
-              <div class="rl-big"><span id="rlRisk">0</span><span class="rl-den">/100</span></div>
-            </div>
-            <div>
-              <span class="caps">Живость</span>
-              <div class="rl-big"><span id="rlVit">0</span><span class="rl-den">/100</span></div>
-            </div>
-          </div>
-
-          <div class="rl-rows">
-            <div class="rp-row">
-              <span>Ритм фраз<span class="rl-sub" id="rlRhythmSub"></span></span>
-              <span class="num" id="rlRhythm">—</span>
-            </div>
-            <div class="rp-row">
-              <span>Канцелярит<span class="rl-sub" id="rlWaterSub"></span></span>
-              <span class="num" id="rlWater">—</span>
-            </div>
-            <div class="rp-row">
-              <span>Разнообразие лексики<span class="rl-sub" id="rlLexSub"></span></span>
-              <span class="num" id="rlLex">—</span>
-            </div>
-          </div>
-
-          <span class="caps rl-caps">Что переписать в первую очередь</span>
-          <ol class="rl-tips" id="rlTips"></ol>
-
-          <p class="rl-verdict" id="rlVerdict"></p>
-
-          <div class="rl-meta">
-            <p class="marginalia">Это предварительная оценка по лингвистическим признакам. Вузовскую систему она не заменяет: используйте результат как подсказку для редактуры, а не как гарантию.</p>
-            <span class="rl-seal" data-seal="РЕЦЕНЗИЯ · ТЕКСТ НЕ ОТПРАВЛЯЕТСЯ · " data-seal-center="¶" data-seal-cls="seal--stamp" data-seal-size="96" aria-hidden="true"></span>
-          </div>
-
-          <a class="btn btn-wax btn-block cta-wide" href="configurator.html">Доверить работу мастерской — рассчитать стоимость <span class="ar">→</span></a>
-        </section>
-
-      </div>
-    </section>
-
+<body class="p15-operations p15-tool-workspace">
+<main class="p15-operations tool-workspace" id="main" tabindex="-1">
+  <div class="tool-workspace__head">
+    <header class="page-head">
+  <div class="page-head__copy">
+    <p class="eyebrow">Бесплатный инструмент</p>
+    <h1>Проверка <br>академического текста</h1>
+    <p class="page-head__lead">Вставьте фрагмент до 8 000 знаков. Анализ показывает длину предложений, повторы и слова, которые часто утяжеляют изложение.</p>
+    <!-- no side action -->
   </div>
+</header>
+  </div>
+  <div class="checker-layout">
+    <section class="checker-input">
+      <header><span>Исходный текст</span><span data-char-count>0 / 8 000</span></header>
+      <textarea maxlength="8000" data-check-text aria-label="Текст для проверки" placeholder="Вставьте один или несколько абзацев"></textarea>
+      <p class="p15-tool-note" data-p15-notice hidden></p>
+      <footer><button class="button button--primary" type="button" data-run-text-check>Проверить текст</button><button class="button button--text" type="button" data-fill-text-example>Вставить пример</button></footer>
+    </section>
+    <section class="checker-result" data-check-result>
+      <div class="checker-empty"><span>Аа</span><h2>Здесь появится разбор.</h2><p>Текст обрабатывается только в браузере и не сохраняется в заявке.</p></div>
+    </section>
+  </div>
+  <article class="tool-guidance" aria-label="Как читать результат проверки">
+    <header>
+      <p class="eyebrow">Перед правкой</p>
+      <h2>Что показывает эта проверка</h2>
+      <p>Инструмент не пытается определить автора текста. Он отмечает наблюдаемые свойства: длинные предложения, повторяющиеся слова и обороты, которые часто делают академическое изложение тяжёлым. Результат нужен как список мест для повторного чтения, а не как оценка работы.</p>
+    </header>
+    <div class="tool-guidance__grid">
+      <section><span>01</span><h3>Сначала смысл</h3><p>Проверьте факты, расчёты, цитаты и логику вывода. Стилистическая правка не исправит неверное утверждение и не заменит первоисточник.</p></section>
+      <section><span>02</span><h3>Затем структура</h3><p>Оставьте в абзаце один тезис и его обоснование. Если предложение содержит несколько разных действий, разделите их до работы над отдельными словами.</p></section>
+      <section><span>03</span><h3>После — формулировка</h3><p>Уберите вводные фразы, которые ничего не добавляют, и назовите действующее лицо, объект, период, показатель или причину там, где они действительно известны.</p></section>
+    </div>
+    <section>
+      <h2>Как пользоваться замечаниями</h2>
+      <p>Большое число отметок не означает, что текст плохой. В методологическом разделе предложения закономерно бывают длиннее, а ключевой термин может повторяться чаще обычного. Откройте каждое замечание и решите, мешает ли конкретная фраза пониманию. Если повтор нужен для точности, оставьте его. Если оборот скрывает простое действие, перепишите прямо.</p>
+      <p>Например, фраза «В рамках настоящего исследования представляется необходимым отметить рост показателя» сообщает меньше, чем «В выборке показатель вырос с 18 до 27%». Вторая версия сильнее не потому, что звучит «человечнее», а потому, что называет результат. Когда точных данных в исходнике нет, их нельзя придумывать ради более убедительной формулировки.</p>
+      <p>Проверка не оценивает научную новизну, соответствие методичке, корректность метода и качество аргументации. Она также не знает, подтверждает ли ссылка соседнее утверждение. Эти вопросы требуют чтения всей работы и сверки с требованиями программы.</p>
+    </section>
+    <section class="tool-guidance__faq">
+      <h2>Частые вопросы</h2>
+      <details><summary>Это детектор ChatGPT или ИИ?</summary><p>Нет. Одинаковые стилистические признаки встречаются в канцелярском тексте, после неудачной редактуры и в сгенерированном фрагменте. По ним нельзя достоверно установить авторство.</p></details>
+      <details><summary>Какой результат считать хорошим?</summary><p>Универсального порога нет. Важны конкретные замечания и то, стала ли мысль точнее после правки. Сверяйте изменения с фактами, источниками и задачей раздела.</p></details>
+      <details><summary>Сохраняется ли вставленный текст?</summary><p>Нет. Фрагмент обрабатывается локально в текущей вкладке и не отправляется в API Академического Салона. После перезагрузки содержимое поля исчезает.</p></details>
+      <details><summary>Что делать, если замечаний много?</summary><p>Начните с фактов и логики, затем соберите структуру абзацев и только после этого редактируйте стиль. Для ручного разбора можно <a href="configurator.html?service=ai">передать показательный фрагмент редактору</a>.</p></details>
+    </section>
+  </article>
 </main>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Бесплатная проверка текста","url":"https://akademsalon.ru/check.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"RUB"},"description":"Бесплатный инструмент: отмечает канцелярит и машинальные обороты в академическом тексте. Анализ выполняется в браузере, текст не отправляется на сервер."}</script>
-<script src="assets/js/app.js?v=20260723q"></script>
-<script src="assets/js/extras.js?v=20260723h"></script>
-<script>
-(function(){
-  'use strict';
-  var src    = document.getElementById('src');
-  var run    = document.getElementById('run');
-  var result = document.getElementById('result');
-  var counter= document.getElementById('counter');
-  var srcErr = document.getElementById('srcError');
-
-  /* ---------- счётчик символов ---------- */
-  function fmtCount(n){
-    var word = (n%10===1 && n%100!==11) ? 'символ'
-      : ([2,3,4].indexOf(n%10)>=0 && [12,13,14].indexOf(n%100)<0) ? 'символа' : 'символов';
-    return n+' '+word;
-  }
-  function updCount(){
-    var n=src.value.trim().length;
-    counter.textContent=fmtCount(n);
-    counter.className = n>=200 ? 'ok' : '';
-  }
-  src.addEventListener('input',updCount);
-  updCount();
-
-  /* ---------- пример текста (намеренно «машинальный») ---------- */
-  document.getElementById('sample').addEventListener('click',function(){
-    src.value='В современном мире данная проблема играет важную роль и является крайне актуальной. Таким образом, можно сделать вывод, что в современном обществе данный вопрос требует внимания. Следует отметить, что данный аспект является важным. Таким образом, рассмотрение данной темы является необходимым. Кроме того, необходимо отметить, что данная проблема является многогранной и требует комплексного подхода. В заключение следует сказать, что данный вопрос играет важную роль.';
-    updCount();
-    src.focus();
-  });
-
-  /* ---------- словари эвристик ---------- */
-  var CLICHE = [
-    'таким образом','в современном мире','в современном обществе','играет важную роль',
-    'играет ключевую роль','является важным','является актуальной','является актуальным',
-    'следует отметить','необходимо отметить','стоит отметить','в заключение',
-    'подводя итог','можно сделать вывод','не вызывает сомнений','на сегодняшний день',
-    'в настоящее время','комплексный подход','широкий спектр','неотъемлемой частью',
-    'трудно переоценить','с точки зрения','в рамках данного','в первую очередь'
-  ];
-  // одиночные канцелярские маркеры
-  var FILLER = ['данный','данная','данное','данные','данных','данным','данной','данную','данном','данному','является','являются','осуществляется','осуществление','реализуется','представляет собой','вышеуказанный','вышеперечисленный'];
-
-  function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
-
-  /* ---------- ядро анализа ---------- */
-  function analyze(text){
-    var t=text.replace(/\s+/g,' ').trim();
-    var lower=t.toLowerCase();
-
-    // слова
-    var words=lower.match(/[а-яёa-z0-9-]+/g)||[];
-    var wordCount=words.length;
-
-    // предложения: режем по . ! ? … и переносам, отбрасываем пустые
-    var sentences=t.split(/[.!?…]+(?:\s|$)/).map(function(s){return s.trim();}).filter(function(s){return s.length>0;});
-    var sentCount=sentences.length||1;
-
-    // длины предложений (в словах)
-    var lens=sentences.map(function(s){ var w=s.toLowerCase().match(/[а-яёa-z0-9-]+/g); return w?w.length:0; }).filter(function(n){return n>0;});
-    if(!lens.length) lens=[wordCount];
-    var avgLen=lens.reduce(function(a,b){return a+b;},0)/lens.length;
-    // стандартное отклонение длин — мера ритмического разнообразия
-    var mean=avgLen;
-    var variance=lens.reduce(function(a,b){return a+(b-mean)*(b-mean);},0)/lens.length;
-    var sd=Math.sqrt(variance);
-    var lenVarRatio = avgLen>0 ? sd/avgLen : 0; // коэффициент вариации
-
-    // клише
-    var clicheHits=0, clicheList={};
-    CLICHE.forEach(function(p){
-      var re=new RegExp(p.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&'),'g');
-      var m=lower.match(re);
-      if(m){ clicheHits+=m.length; clicheList[p]=m.length; }
-    });
-    var fillerHits=0;
-    FILLER.forEach(function(p){
-      var re=new RegExp('(^|[^а-яё])'+p.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&')+'([^а-яё]|$)','g');
-      var m=lower.match(re);
-      if(m) fillerHits+=m.length;
-    });
-    var waterTokens=clicheHits*2+fillerHits; // клише весомее одиночных маркеров
-    var waterRatio = wordCount>0 ? clamp(waterTokens/wordCount,0,1) : 0;
-    var fWater = clamp(waterRatio/0.16,0,1);
-
-    // лексическое разнообразие — двойная оценка: TTR для длинных текстов,
-    // индекс Гиро для коротких; вода дисконтирует «богатство» из клише
-    var uniq={}; words.forEach(function(w){uniq[w]=1;});
-    var uniqCount=Object.keys(uniq).length;
-    var ttr = wordCount>0 ? uniqCount/wordCount : 0;
-    var ttrScore = clamp((ttr-0.32)/(0.62-0.32),0,1);
-    var g = wordCount>0 ? uniqCount/Math.sqrt(wordCount) : 0;
-    var gScore = clamp((g-4.5)/2.5,0,1);
-    var lexScore = Math.min(ttrScore, gScore, 1 - fWater*0.6); // 0..1, где 1 — богатая лексика
-
-    // однообразие зачинов: первые два слова каждого предложения
-    var starts={}, repeatedStarts=0;
-    sentences.forEach(function(s){
-      var w=s.toLowerCase().match(/[а-яёa-z0-9-]+/g)||[];
-      var key=(w.slice(0,2).join(' '))||'';
-      if(key){ starts[key]=(starts[key]||0)+1; }
-    });
-    Object.keys(starts).forEach(function(k){ if(starts[k]>1) repeatedStarts+=starts[k]-1; });
-    var startMonotony = sentCount>1 ? clamp(repeatedStarts/(sentCount-1),0,1) : 0;
-
-    // ----- машинальность (0..100), больше = шаблоннее -----
-    // факторы: мало вариации длин, много воды, бедная лексика, однообразные зачины,
-    // слишком ровная средняя длина (17-24 слова — типичный «гладкий» машинный диапазон)
-    var fLenVar  = clamp(1-(lenVarRatio/0.45),0,1);            // 0 хорошо .. 1 плохо
-    var fLex     = clamp(1-lexScore,0,1);
-    var fStart   = startMonotony;
-    var fSmooth  = (avgLen>=16 && avgLen<=25) ? clamp(1-(lenVarRatio/0.4),0,1)*0.6 : 0;
-
-    var risk = (fLenVar*0.26 + fWater*0.30 + fLex*0.20 + fStart*0.16 + fSmooth*0.08)*100;
-    // короткий текст — меньше уверенности, чуть сглаживаем к центру
-    if(wordCount<40) risk = risk*0.7+18;
-    // сплошной канцелярит не бывает «живым» — держим пол
-    if (fWater >= 0.9) risk = Math.max(risk, 66);
-    risk=Math.round(clamp(risk,3,97));
-
-    // живость / читабельность (0..100, больше = живее)
-    var vit = Math.round(clamp(100 - risk*0.85 - fWater*10, 4, 98));
-
-    return {
-      wordCount:wordCount, sentCount:sentences.length, avgLen:avgLen, sd:sd,
-      lenVarRatio:lenVarRatio, clicheHits:clicheHits, clicheList:clicheList,
-      fillerHits:fillerHits, waterRatio:waterRatio, ttr:ttr, lexScore:lexScore,
-      startMonotony:startMonotony, repeatedStarts:repeatedStarts, topStart:topStart(starts),
-      risk:risk, vit:vit, factors:{len:fLenVar,water:fWater,lex:fLex,start:fStart}
-    };
-  }
-
-  function topStart(starts){
-    var best=null,bestN=0;
-    Object.keys(starts).forEach(function(k){ if(starts[k]>bestN){bestN=starts[k];best=k;} });
-    return bestN>1?{key:best,n:bestN}:null;
-  }
-
-  /* ---------- генерация советов из реальных метрик ---------- */
-  function buildAdvice(a){
-    var tips=[];
-    // 1. вода / клише
-    if(a.clicheHits>0){
-      var sample=Object.keys(a.clicheList).slice(0,2).map(function(k){return '«'+k+'»';}).join(', ');
-      tips.push({score:a.factors.water+0.4, t:'Уберите канцелярские клише ('+a.clicheHits+' шт.): '+sample+'. ', s:'Они выдают шаблонность. Замените на конкретику — кто, что и почему именно так.'});
-    }
-    if(a.fillerHits>=3){
-      tips.push({score:a.factors.water+0.2, t:'Сократите слова-наполнители (например «данный», «является») — встречаются '+a.fillerHits+' '+Salon.plural(a.fillerHits,['раз','раза','раз'])+'. ', s:'Чаще всего их можно удалить без потери смысла или заменить точным глаголом.'});
-    }
-    // 2. ритм предложений
-    if(a.lenVarRatio<0.30 && a.sentCount>=3){
-      tips.push({score:a.factors.len+0.3, t:'Разнообразьте длину предложений. ', s:'Сейчас они почти одинаковы (в среднем '+a.avgLen.toFixed(0)+' слов). Чередуйте короткие и развёрнутые фразы — это главный признак живого письма.'});
-    }
-    if(a.avgLen>26){
-      tips.push({score:0.5, t:'Разбейте длинные предложения. ', s:'Средняя длина '+a.avgLen.toFixed(0)+' слов затрудняет чтение — делите по одной мысли на фразу.'});
-    }
-    // 3. однообразие зачинов
-    if(a.topStart){
-      tips.push({score:a.factors.start+0.25, t:'Меняйте начала предложений. ', s:'Зачин «'+a.topStart.key+'…» повторяется '+a.topStart.n+' '+Salon.plural(a.topStart.n,['раз','раза','раз'])+'. Начинайте с разных частей мысли — с факта, с примера, с уточнения.'});
-    }
-    // 4. лексика
-    if(a.lexScore<0.5 && a.wordCount>=40){
-      tips.push({score:a.factors.lex+0.15, t:'Расширьте словарь. ', s:'Слова повторяются и держатся на клише — замените часть на синонимы и конкретику.'});
-    }
-    // запасные советы, если текст уже хорош
-    if(!tips.length){
-      tips.push({score:1, t:'Текст выглядит живым. ', s:'Сохраняйте чередование длинных и коротких фраз и конкретику в формулировках.'});
-      tips.push({score:.9, t:'Добавьте авторский голос. ', s:'Личная оценка, пример из практики или ссылка на источник делают текст ещё убедительнее для проверяющего.'});
-    } else if(tips.length<3){
-      tips.push({score:.1, t:'Добавьте конкретику и примеры. ', s:'Цифры, имена, ссылки на источники снижают «гладкость» и делают текст узнаваемо человеческим.'});
-    }
-    tips.sort(function(x,y){return y.score-x.score;});
-    return tips.slice(0,5);
-  }
-
-  /* ---------- отрисовка «Рецензионного листа» ---------- */
-  function pct(v){ return Math.round(clamp(v,0,1)*100); }
-
-  function setRow(id, txt, ok){
-    var el=document.getElementById(id);
-    el.textContent=txt;
-    el.classList.toggle('rp-ok', !!ok);
-  }
-
-  function render(a){
-    // уровень машинальности: штамп + вердикт
-    var tagTxt, tagCls, verdict;
-    if(a.risk<=35){
-      tagTxt='низкая'; tagCls='tag tag-verify';
-      verdict='Текст читается естественно: ритм меняется, штампов немного. Можно ещё усилить отдельные места — смотрите подсказки выше.';
-    } else if(a.risk<=65){
-      tagTxt='заметная'; tagCls='tag tag-ink';
-      verdict='Есть машинальные обороты и однообразие. Несколько точечных правок заметно повысят живость текста.';
-    } else {
-      tagTxt='высокая'; tagCls='tag tag-wax';
-      verdict='Текст звучит шаблонно: много клише, ровный ритм, бедная лексика. Рекомендуем переписать ключевые фрагменты — начните с подсказок выше.';
-    }
-    var tag=document.getElementById('rlTag');
-    tag.className=tagCls;
-    tag.textContent='машинальность · '+tagTxt;
-
-    // две крупные цифры
-    var riskEl=document.getElementById('rlRisk'), vitEl=document.getElementById('rlVit');
-    if(window.Salon && Salon.countTo){ Salon.countTo(riskEl,a.risk); Salon.countTo(vitEl,a.vit); }
-    else { riskEl.textContent=a.risk; vitEl.textContent=a.vit; }
-
-    // три строки-метрики
-    var rhythmPct=pct(clamp(a.lenVarRatio/0.45,0,1));
-    var waterPct=pct(clamp(a.waterRatio/0.16,0,1));
-    var lexPct=pct(a.lexScore);
-    setRow('rlRhythm', rhythmPct+'%', rhythmPct>=67);
-    document.getElementById('rlRhythmSub').textContent='средняя фраза '+a.avgLen.toFixed(0)+' сл. · разброс ±'+a.sd.toFixed(1);
-    setRow('rlWater', waterPct+'%', waterPct<=40);
-    document.getElementById('rlWaterSub').textContent=a.clicheHits+' клише · '+a.fillerHits+' наполн.';
-    setRow('rlLex', lexPct+'%', lexPct>=65);
-    document.getElementById('rlLexSub').textContent=Math.round(a.ttr*100)+'% уникальных слов';
-
-    // топ-3 совета из фактических метрик
-    var tips=buildAdvice(a).slice(0,3);
-    document.getElementById('rlTips').innerHTML=tips.map(function(t){
-      return '<li><b>'+t.t.replace(/«([^»]+)»/g,'<em class="pen">«$1»</em>')+'</b><span>'+t.s+'</span></li>';
-    }).join('');
-
-    // вердикт
-    document.getElementById('rlVerdict').textContent=verdict;
-
-    // показать лист
-    result.hidden=false;
-    if(window.Salon && Salon.observeReveal) Salon.observeReveal(result);
-    result.scrollIntoView({behavior:(window.Salon && Salon.reduceMotion)?'auto':'smooth',block:'start'});
-  }
-
-  /* ---------- запуск проверки ---------- */
-  run.addEventListener('click',function(){
-    var text=src.value.trim();
-    if(text.length<200){
-      src.classList.add('invalid');
-      src.focus();
-      counter.textContent=fmtCount(text.length)+' · нужно от 200';
-      counter.className='';
-      srcErr.textContent='Нужно от 200 символов — сейчас '+fmtCount(text.length)+'.';
-      src.addEventListener('input',function once(){ src.classList.remove('invalid'); srcErr.textContent=''; src.removeEventListener('input',once); });
-      return;
-    }
-    src.classList.remove('invalid');
-    srcErr.textContent='';
-    render(analyze(text));
-  });
-})();
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Проверка академического текста","url":"https://akademsalon.ru/check.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"RUB"},"description":"Браузерная проверка длины предложений, повторов и тяжёлых оборотов. Это не детектор авторства; текст не отправляется на сервер."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Это детектор ChatGPT или ИИ?","acceptedAnswer":{"@type":"Answer","text":"Нет. Одинаковые стилистические признаки встречаются в канцелярском тексте, после неудачной редактуры и в сгенерированном фрагменте. По ним нельзя достоверно установить авторство."}},{"@type":"Question","name":"Какой результат считать хорошим?","acceptedAnswer":{"@type":"Answer","text":"Универсального порога нет. Важны конкретные замечания и то, стала ли мысль точнее после правки. Сверяйте изменения с фактами, источниками и задачей раздела."}},{"@type":"Question","name":"Сохраняется ли вставленный текст?","acceptedAnswer":{"@type":"Answer","text":"Нет. Фрагмент обрабатывается локально в текущей вкладке и не отправляется в API Академического Салона. После перезагрузки содержимое поля исчезает."}},{"@type":"Question","name":"Что делать, если замечаний много?","acceptedAnswer":{"@type":"Answer","text":"Начните с фактов и логики, затем соберите структуру абзацев и только после этого редактируйте стиль. Для ручного разбора можно передать показательный фрагмент редактору."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Полезные материалы","item":"https://akademsalon.ru/knowledge.html"},{"@type":"ListItem","position":3,"name":"Проверка академического текста","item":"https://akademsalon.ru/check.html"}]}</script>
+<script src="assets/js/app.js?v=20260725release13"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260725release13"></script>
+<script src="assets/js/extras.js?v=20260725release13"></script>
+<script src="assets/js/polish15-operations.js?v=20260725release13"></script>
 </body>
 </html>

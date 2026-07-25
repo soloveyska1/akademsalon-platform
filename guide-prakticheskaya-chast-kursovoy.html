@@ -2,13 +2,14 @@
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Практическая часть курсовой: как написать + где взять данные</title>
 <meta name="description" content="Как написать практическую часть курсовой: пять источников данных, доступных студенту, методы по дисциплинам, скелет главы 2 и мини-пример анализа с выводами." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<link rel="stylesheet" href="assets/css/knowledge.css?v=20260724a" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260724seo1" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/guide-prakticheskaya-chast-kursovoy.html" />
+<link rel="alternate" type="application/atom+xml" title="Новые материалы Академического Салона" href="https://akademsalon.ru/feed.xml" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
@@ -17,32 +18,35 @@
 <meta property="og:type" content="article" /><meta property="og:site_name" content="Академический Салон" />
 <meta property="og:title" content="Практическая часть курсовой: как написать и где взять данные" /><meta property="og:description" content="Пять источников данных, методы по дисциплинам и мини-пример: как из таблицы вырастает параграф анализа." />
 <meta property="og:url" content="https://akademsalon.ru/guide-prakticheskaya-chast-kursovoy.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release13" media="screen and (max-width: 880px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-reading.css?v=20260725release13" />
 </head><body>
 <main class="wrap doc-wrap">
-<nav class="doc-crumb" aria-label="Хлебные крошки"><a href="index.html">Главная</a> · <a href="knowledge.html">Полезные материалы</a> · Практическая часть курсовой</nav>
+<nav class="doc-crumb" aria-label="Хлебные крошки"><a href="/">Главная</a> · <a href="knowledge.html">Полезные материалы</a> · Практическая часть курсовой</nav>
 <article class="doc">
-  <h1>Практическая часть курсовой: как написать, где взять данные, примеры анализа</h1>
-  <p class="doc-subtitle">От курсовой ждут не «исследование мирового уровня», а один-два корректно применённых метода и выводы из цифр. Разберём, где легально взять данные и как из простой таблицы вырастает параграф анализа.</p>
-  <p class="doc-meta">Обновлено 18 июля 2026 · Академический Салон</p>
+  <h1>Практическая часть курсовой: данные и анализ</h1>
+  <p class="doc-subtitle">Как выбрать данные и метод, показать результаты и сформулировать выводы.</p>
+  <p class="doc-meta">Обновлено 24 июля 2026 · <a class="link" href="about.html">Редакция Академического Салона</a></p>
 
   <p>Глава 2 — место, где курсовая «зависает»: теория готова, а анализ не начинается. На деле хватает доступного материала, названного по имени метода и комментария к каждой таблице.</p>
 
-  <h2>Что от вас ждут на самом деле</h2>
+  <h2>Что оценивают в практической главе</h2>
   <p>Курсовая — учебная работа: оценивают не научную новизну, а умение действовать по правилам. Конкретный материал, один-два стандартных метода, выводы из данных — а не из общих соображений.</p>
   <p>Отсюда разница типов. Теоретическая курсовая (обычно 1–2 курс) строится на сопоставлении источников — практической главы в ней нет. Практическая (3–4 курс) требует главу 2 с собственным анализом. Ориентир: есть в теме «на примере…» или «на материалах…» — ждут расчёты, опрос или разбор кейса.</p>
   <p class="doc-note">Три признака зачётной главы: у каждой цифры — источник и год; метод назван по имени; любой вывод проверяется по таблице, из которой он следует.</p>
 
-  <h2>Пять источников данных, которые реально доступны студенту</h2>
-  <p>Главный миф — «данные негде взять». Материал для главы 2 собирается за несколько вечеров.</p>
+  <h2>Пять доступных источников данных</h2>
+  <p>Данные для практической главы можно получить из открытой отчётности, официальной статистики, собственной выборки или проверяемых материалов организации. Источник, период и ограничения нужно указать в тексте.</p>
   <ul>
     <li><strong>Открытая отчётность компаний.</strong> Бухотчётность организаций публикуется в государственном ресурсе раскрытия — ищется бесплатно по ИНН; крупные компании дублируют её на своих сайтах. Что взять: баланс и отчёт о финансовых результатах за два года. Как сослаться: «по данным бухгалтерской отчётности ООО „Маяк“ за 2024–2025 гг.».</li>
     <li><strong>Росстат и ЕМИСС.</strong> Отраслевые объёмы, цены, зарплаты, демография по регионам — на сайте <a class="link" href="https://rosstat.gov.ru/" rel="nofollow noopener">Росстата</a> и в базе ЕМИСС. Что взять: динамику 3–5 показателей отрасли или региона за 3–5 лет. Как сослаться: как на электронный ресурс, с датой обращения.</li>
-    <li><strong>Собственный опрос.</strong> Анкета в конструкторе форм (Google Forms, Яндекс Формы); 30–50 ответов для курсовой достаточно — набираются за выходные через студенческие чаты. Что взять: 8–12 вопросов по предмету. Выборку опишите в тексте, анкету — в приложение.</li>
+    <li><strong>Собственный опрос.</strong> Анкета в конструкторе форм (Google Forms, Яндекс Формы); Размер и способ формирования выборки определяют по исследовательскому вопросу, методике и требованиям кафедры. Укажите ограничения доступной выборки. Что взять: 8–12 вопросов по предмету. Выборку опишите в тексте, анкету — в приложение.</li>
     <li><strong>База места практики.</strong> Попросите обезличенные данные: штатную численность, продажи по группам, статистику обращений. Название организации можно скрыть — «ООО „Ромашка“». Как сослаться: «по внутренним данным организации — базы практики».</li>
     <li><strong>Кейс-анализ открытых материалов.</strong> Юристам — судебные решения в открытых базах (СудАкт, картотека арбитражных дел): 15–20 дел по одной статье — уже материал. Педагогам — школьные программы и ФГОС. Как сослаться: номер дела и суд либо наименование документа и год.</li>
   </ul>
@@ -74,7 +78,7 @@
     </tbody>
   </table>
   </div>
-  <p>На главу достаточно 3–6 таблиц и рисунков. Железное правило: <strong>каждая таблица прокомментирована абзацем</strong> — перед ней предложение, зачем она, после — что из неё видно.</p>
+  <p>Количество таблиц определяется объёмом анализа. Перед каждой таблицей объясните её назначение. После таблицы сформулируйте наблюдение по данным.</p>
 
   <h2>Мини-пример: как из таблицы вырастает параграф</h2>
   <p>Условное ООО «Маяк», розница. Из открытой отчётности берём три строки за два года:</p>
@@ -116,7 +120,7 @@
 
   <p>Применённые методы должны быть перечислены во <a class="link" href="guide-vvedenie-kursovoy.html">введении</a>, а выводы 2.3 — откликнуться в <a class="link" href="guide-zaklyuchenie-vkr.html">заключении</a>. Эту сцепку руководитель проверяет первой.</p>
 
-  <h2>Частые вопросы</h2>
+  <h2>Вопросы о данных и методах</h2>
   <h3>Можно ли выдумать данные для практической части?</h3>
   <p>Рискованно. Отчётность проверяется по ИНН за минуту, а выдуманные цифры «плывут»: проценты не сходятся, динамика неправдоподобна. Надёжнее опрос на 30–50 человек за выходные или открытые данные.</p>
 
@@ -132,17 +136,18 @@
 
 <div style="margin-top:36px"><p class="caps" style="margin-bottom:10px">Читайте также</p><ul style="list-style:none;margin:0;padding:0">
 <li style="padding:9px 0;border-top:1px solid var(--hairline)"><a class="link" href="kursovaya-rabota.html">Помощь с курсовой работой: что входит и как строится</a></li>
-<li style="padding:9px 0;border-top:1px solid var(--hairline)"><a class="link" href="guide-vvedenie-kursovoy.html">Введение курсовой работы: структура, шаблонные фразы и полный пример</a></li>
+<li style="padding:9px 0;border-top:1px solid var(--hairline)"><a class="link" href="guide-vvedenie-kursovoy.html">Введение курсовой работы: структура и пример</a></li>
 <li style="padding:9px 0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)"><a class="link" href="guide-spisok-literatury.html">Список литературы по ГОСТ: правила и образцы записей</a></li>
 </ul></div>
 
-<aside class="sheet sheet-pad stacked" style="margin-top:36px"><p class="caps" style="margin-bottom:8px">Данных нет, а глава 2 нужна к сроку?</p><p class="lead" style="margin-bottom:16px">Формат «Курсовая с исследованием»: подберём доступные данные, посчитаем и оформим анализ, объясним каждый вывод. Оценка бесплатна, решение остаётся за вами.</p><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-wax" href="configurator.html" data-type="course">Рассчитать стоимость <span class="ar">→</span></a><button type="button" class="btn btn-line" data-contact="1">Задать вопрос</button></div></aside>
-<p class="doc-back"><a class="link" href="knowledge.html">← Все материалы полезных материалов</a></p>
+<aside class="sheet sheet-pad stacked" style="margin-top:36px"><p class="caps" style="margin-bottom:8px">Неясно, где взять данные для главы 2?</p><p class="lead" style="margin-bottom:16px">Разберём допустимые источники, объясним метод на аналогичном примере и проверим ваши расчёты и интерпретацию. Исследование, анализ и выводы выполняет студент.</p><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-wax" href="configurator.html" data-type="course">Рассчитать стоимость <span class="ar">→</span></a><button type="button" class="btn btn-line" data-contact="1">Задать вопрос</button></div></aside>
+<p class="doc-back"><a class="link" href="knowledge.html">← В библиотеку</a></p>
 </main>
-<script src="assets/js/app.js?v=20260723q"></script>
-<script src="assets/js/extras.js?v=20260723h"></script>
-<script src="assets/js/knowledge.js?v=20260724a"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Практическая часть курсовой: как написать, где взять данные, примеры анализа","description":"Пять источников данных для студента, методы по дисциплинам, скелет главы 2 и мини-пример анализа с выводами.","inLanguage":"ru","author":{"@type":"Organization","name":"Академический Салон","url":"https://akademsalon.ru/"},"publisher":{"@type":"Organization","name":"Академический Салон","url":"https://akademsalon.ru/"},"image":"https://akademsalon.ru/assets/img/og-cover.png","url":"https://akademsalon.ru/guide-prakticheskaya-chast-kursovoy.html","datePublished":"2026-07-18","dateModified":"2026-07-18"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Можно ли выдумать данные для практической части?","acceptedAnswer":{"@type":"Answer","text":"Рискованно: отчётность проверяется по ИНН, выдуманные цифры «плывут» при пересчёте. Надёжнее опрос на 30–50 человек или открытые данные."}},{"@type":"Question","name":"Сколько страниц должна занимать практическая часть?","acceptedAnswer":{"@type":"Answer","text":"Обычно 10–15 страниц при объёме курсовой 25–35 — около 40% работы. Глава 2 короче главы 1 — признак пересказа вместо анализа."}},{"@type":"Question","name":"Нужен ли эксперимент в курсовой по психологии?","acceptedAnswer":{"@type":"Answer","text":"На 2–3 курсе достаточно констатирующего исследования по 2–3 методикам. Формирующий эксперимент — уровень ВКР; смотрите методичку кафедры."}},{"@type":"Question","name":"Что делать, если предприятие не даёт данные?","acceptedAnswer":{"@type":"Answer","text":"Открытая бухотчётность, отраслевая статистика Росстата или смена объекта на публичную компанию по согласованию с руководителем."}}]}</script>
+<script src="assets/js/app.js?v=20260725release13"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260725release13"></script>
+<script src="assets/js/extras.js?v=20260725release13"></script>
+<script src="assets/js/polish15-reading.js?v=20260725release13"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://akademsalon.ru/guide-prakticheskaya-chast-kursovoy.html"},"headline":"Практическая часть курсовой: данные и анализ","description":"Пять источников данных для студента, методы по дисциплинам, скелет главы 2 и мини-пример анализа с выводами.","inLanguage":"ru","author":{"@id":"https://akademsalon.ru/about.html#editorial","@type":"Organization","name":"Редакция Академического Салона","url":"https://akademsalon.ru/about.html"},"publisher":{"@id":"https://akademsalon.ru/#org","@type":"Organization","name":"Академический Салон","url":"https://akademsalon.ru/"},"image":"https://akademsalon.ru/assets/img/og-cover-v2.png","url":"https://akademsalon.ru/guide-prakticheskaya-chast-kursovoy.html","datePublished":"2026-07-18","dateModified":"2026-07-24"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Можно ли выдумать данные для практической части?","acceptedAnswer":{"@type":"Answer","text":"Рискованно. Отчётность проверяется по ИНН за минуту, а выдуманные цифры «плывут»: проценты не сходятся, динамика неправдоподобна. Надёжнее опрос на 30–50 человек за выходные или открытые данные."}},{"@type":"Question","name":"Сколько страниц должна занимать практическая часть?","acceptedAnswer":{"@type":"Answer","text":"Обычно 10–15 страниц при объёме курсовой 25–35 — около 40% работы. Глава 2 заметно короче главы 1 — признак пересказа вместо анализа."}},{"@type":"Question","name":"Нужен ли эксперимент в курсовой по психологии?","acceptedAnswer":{"@type":"Answer","text":"На 2–3 курсе достаточно констатирующего исследования: диагностика выборки по 2–3 методикам. Формирующий эксперимент с контрольной группой — уровень ВКР. Точный ответ — в методичке кафедры."}},{"@type":"Question","name":"Что делать, если предприятие не даёт данные?","acceptedAnswer":{"@type":"Answer","text":"Три пути: открытая бухотчётность этой же или похожей организации; отраслевая статистика Росстата; согласованная с руководителем смена объекта на публичную компанию."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Полезные материалы","item":"https://akademsalon.ru/knowledge.html"},{"@type":"ListItem","position":3,"name":"Практическая часть курсовой"}]}</script>
 </body></html>

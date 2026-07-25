@@ -6,645 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Конструктор услуг: аудит, редактура и консультации — Академический Салон</title>
 <meta name="description" content="Соберите заказ из одной или нескольких позиций. Для каждой видны результат, ориентир цены и детали; точные условия фиксируются в спецификации до оплаты." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260724a" />
-<link rel="stylesheet" href="assets/css/service-v2.css?v=20260724a" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260724seo1" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260724b" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
-<style>
-  /* ============================================================
-     РАСЧЁТ ЗАКАЗА — пошаговый бланк (визард) + липкая смета
-     ============================================================ */
-  .chapter.conf-chapter{padding-top:calc(56px + clamp(24px,5vh,48px))}
-  .conf-head{margin-bottom:clamp(22px,3.5vw,36px)}
-  .conf-head h1{font-size:clamp(28px,4vw,44px);font-weight:360;margin-bottom:8px}
-  .conf-head .petit{max-width:52ch}
-
-  /* «Разбор плана» — карточка-квитанция услуги, а не бейдж с абзацем */
-  .plan-offer{margin:14px 0 4px;padding:14px 16px;border:1px solid var(--hairline-strong);
-    border-left:4px solid var(--wax);border-radius:var(--r);background:var(--sheet);max-width:560px}
-  .plan-offer .po-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px}
-  .plan-offer .po-price b{font:700 20px/1 var(--serif);color:var(--wax);white-space:nowrap}
-  .plan-offer .po-lead{font-size:13.5px;color:var(--ink-soft);margin:0 0 8px}
-  .plan-offer .po-list{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
-  .plan-offer .po-list li::before{content:"—";margin-right:8px;color:var(--wax)}
-  .plan-offer .po-list b{color:var(--ink)}
-  .plan-offer .po-note{margin:10px 0 0;padding-top:9px;border-top:1px dashed var(--hairline-strong);font-size:12.5px;color:var(--ink-soft)}
-
-  /* прогресс */
-  .wprog{display:flex;align-items:center;gap:14px;margin-bottom:clamp(18px,3vw,26px)}
-  .wprog .wp-lbl{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums}
-  .wprog .wp-track{flex:1;height:2px;background:var(--hairline);overflow:hidden}
-  .wprog .wp-fill{display:block;height:100%;background:var(--ink);width:25%;transition:width .35s cubic-bezier(.22,1,.36,1)}
-
-  /* шаги визарда: без JS видны все, с JS — один */
-  .has-js .wstep{display:none}
-  .has-js .wstep.active{display:block}
-  .ws-title{font-size:clamp(20px,2.4vw,26px);font-weight:400;margin-bottom:16px}
-  .ws-title:focus{outline:none}
-  .opt-group{margin-bottom:22px}
-  .opt-group .caps{display:block;margin-bottom:10px}
-  .opt-list{display:flex;flex-direction:column;gap:8px}
-  .disc-profile{margin-top:14px;min-height:1.6em;max-width:56ch}
-  .seg-term button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 12px}
-  .seg-term button b{font-weight:500;font-size:14px;color:var(--ink)}
-  .seg-term button small{font-size:11.5px;color:var(--ink-soft);letter-spacing:.02em}
-  .wnav{display:flex;gap:12px;margin-top:26px}
-  .wnav .btn{min-width:128px}
-  .wsubmit-note{max-width:52ch}
-  .conf-final-intro,.final-section-head,.final-more-toggle,.contact-or{display:none}
-  #tgLoginBtn{margin-bottom:14px}
-
-  /* каталог работ: быстрый поиск, рубрики и компактные карточки */
-  .service-finder{margin:0 0 15px}
-  .sf-search{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr) 40px;
-    align-items:center;background:var(--sheet);border:1px solid var(--hairline-strong);
-    border-radius:4px;box-shadow:0 8px 24px -22px rgba(34,32,27,.35)}
-  .sf-mark{display:grid;place-items:center;color:var(--wax);font:italic 17px/1 var(--serif)}
-  .sf-search input{width:100%;height:48px;padding:0;border:0;background:transparent;box-shadow:none;
-    font-size:14px;color:var(--ink)}
-  .sf-search input:focus{box-shadow:none}
-  .sf-clear{width:32px;height:32px;border:0;background:transparent;border-radius:50%;
-    color:var(--ink-faint);font:20px/1 var(--serif);cursor:pointer}
-  .sf-clear:hover{background:var(--paper-2);color:var(--wax)}
-  .sf-clear[hidden]{display:none}
-  .sf-filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
-  .sf-filter{min-height:34px;padding:6px 10px;border:1px solid var(--hairline);
-    border-radius:999px;background:transparent;color:var(--ink-soft);font:11.5px/1.2 var(--sans);
-    cursor:pointer;transition:border-color .15s,color .15s,background .15s}
-  .sf-filter:hover{border-color:var(--hairline-strong);color:var(--ink)}
-  .sf-filter[aria-pressed="true"]{border-color:var(--wax);background:var(--wax-soft);color:var(--wax)}
-  .sf-status{display:flex;justify-content:space-between;gap:12px;margin:9px 2px 0;
-    font:10px/1.35 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint)}
-  .sf-empty{padding:22px;border:1px dashed var(--hairline-strong);border-radius:4px;
-    background:var(--sheet);text-align:center;color:var(--ink-soft)}
-  .sf-empty[hidden],#typeGroup .filter-hidden{display:none!important}
-  #typeGroup{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;align-items:start}
-  #typeGroup .opt-group{margin:0;padding:14px;border:1px solid var(--hairline);
-    border-radius:4px;background:color-mix(in srgb,var(--sheet) 82%,transparent)}
-  #typeGroup .opt-group>.caps{margin-bottom:9px;color:var(--ink-faint)}
-  #typeGroup .opt-list{display:grid;gap:6px}
-  #typeGroup .optrow{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;
-    gap:5px 10px;align-items:center;min-height:48px;padding:9px 10px;border:1px solid transparent;
-    border-radius:3px;background:var(--sheet);text-align:left;box-shadow:0 1px 0 var(--hairline)}
-  #typeGroup .optrow .dots{display:none}
-  #typeGroup .optrow>span:first-child{min-width:0;font-size:13.5px;line-height:1.3;color:var(--ink)}
-  #typeGroup .optrow .o-val{font:11.5px/1.2 var(--mono);color:var(--ink-soft);white-space:nowrap}
-  #typeGroup button.optrow:hover,#typeGroup .optrow-link:hover{border-color:var(--hairline-strong);background:var(--paper-2)}
-  #typeGroup button.optrow[aria-checked="true"]{padding-left:25px;border-color:var(--wax);
-    background:linear-gradient(100deg,var(--wax-soft),var(--sheet) 74%)}
-  #typeGroup button.optrow[aria-checked="true"]::before{content:"✓";position:absolute;left:9px;top:50%;
-    transform:translateY(-50%);color:var(--wax);font:12px/1 var(--mono)}
-  #typeGroup button.optrow[aria-checked="true"] .o-val{color:var(--wax)}
-  #typeGroup .svc-group{grid-column:1/-1;border-top:3px double var(--hairline-strong)}
-  #typeGroup .svc-group .opt-list{grid-template-columns:repeat(2,minmax(0,1fr))}
-  #typeGroup .svc-group .petit{grid-column:1/-1}
-
-  /* живая смета: редакционный расчётный лист вместо длинной карточки */
-  .conf-aside{position:sticky;top:76px}
-  .lq-sheet{overflow:hidden;padding:0;border-color:var(--hairline-strong);
-    box-shadow:0 2px 0 var(--hairline),0 22px 52px -42px rgba(34,32,27,.5)}
-  .lq-dochead{position:relative;padding:17px 18px 14px;border-bottom:1px solid var(--hairline);
-    background:linear-gradient(120deg,var(--wax-soft),transparent 62%)}
-  .lq-dochead::after{content:"¶";position:absolute;right:16px;top:12px;color:var(--wax);
-    opacity:.18;font:italic 46px/1 var(--serif);transform:rotate(-7deg)}
-  .lq-head{font:9.5px/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--wax)}
-  .lq-dochead h2{margin:5px 40px 9px 0;font:500 23px/1.1 var(--serif);color:var(--ink)}
-  .lq-context{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .lq-type{margin:0;max-width:28ch;color:var(--ink-soft);font-size:12.5px;line-height:1.35}
-  .lq-step{flex:0 0 auto;border:1px solid var(--hairline-strong);border-radius:999px;
-    padding:4px 8px;background:var(--sheet);font:9px/1 var(--mono);letter-spacing:.06em;
-    text-transform:uppercase;color:var(--ink-faint)}
-  .lq-priceblock{padding:16px 18px;background:var(--sheet);border-bottom:1px solid var(--hairline)}
-  .lq-priceblock .lg-total{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;
-    padding:0;margin:0;border:0}
-  .lq-priceblock .lg-total b{padding-bottom:4px;font:10px/1.25 var(--mono);
-    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
-  .lq-priceblock .price-xl{font-size:clamp(32px,3.7vw,42px)}
-  .lq-high{display:inline-flex;margin:9px 0 0;padding:4px 8px;border-radius:999px;
-    background:var(--paper-2);color:var(--ink-soft);font-size:11.5px}
-  .lq-formula{padding:14px 18px;border-bottom:1px solid var(--hairline)}
-  .lq-formula-head{display:flex;justify-content:space-between;gap:12px;margin-bottom:3px;
-    font:9px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
-  .lq-formula .ledger .lg-row{padding:7px 0;font-size:12.5px}
-  .lq-formula .ledger .lg-row:last-child{border-bottom:0}
-  .lq-summary{padding:14px 18px 17px;background:color-mix(in srgb,var(--paper-2) 54%,transparent)}
-  .lq-facts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px}
-  .lq-fact{display:flex;gap:6px;align-items:flex-start;font-size:11.5px;line-height:1.35;color:var(--ink-soft)}
-  .lq-fact i{font-style:normal;color:var(--verify);font-family:var(--mono)}
-  .lq-pay{margin:0;padding:10px 11px;border:1px solid var(--hairline);border-radius:3px;
-    background:var(--sheet);font-size:11.5px;line-height:1.45;color:var(--ink-soft)}
-  .lq-explain{margin-top:9px;border-top:1px dashed var(--hairline-strong);padding-top:8px}
-  .lq-explain>summary{cursor:pointer;font-size:11.5px;color:var(--ink-soft)}
-  .lq-explain .lq-when{margin:8px 0 0;line-height:1.5;color:var(--ink-faint)}
-  .lq-summary .lq-promo,.lq-summary .lq-gift,.lq-summary .lq-plus{margin-top:9px}
-  .lq-summary .lq-cheaper{margin-top:9px!important}
-  .lq-sheet>.cart-add{width:calc(100% - 36px);margin:0 18px 18px}
-
-  /* экран успеха */
-  .conf-done{max-width:780px;margin:0 auto}
-  .done-sheet{padding:0;position:relative;overflow:hidden}
-  .done-hero{position:relative;padding:clamp(24px,4vw,38px);padding-right:clamp(120px,18vw,170px);
-    border-bottom:1px solid var(--hairline);background:linear-gradient(130deg,var(--wax-soft),transparent 68%)}
-  .done-seal{position:absolute;top:22px;right:26px}
-  .done-h{font-size:clamp(27px,3.6vw,39px);margin:7px 0 7px;max-width:15ch;letter-spacing:-.025em}
-  .done-h:focus{outline:none}
-  .done-no{display:flex;align-items:center;gap:7px;margin:0;font-family:var(--mono);font-size:12px;
-    letter-spacing:.05em;color:var(--ink-soft);font-variant-numeric:tabular-nums}
-  .done-live{width:7px;height:7px;border-radius:50%;background:var(--verify);box-shadow:0 0 0 4px var(--verify-soft)}
-  .done-lead{margin:13px 0 0;max-width:46ch;color:var(--ink-soft);font-size:13.5px;line-height:1.5}
-  .done-steps{list-style:none;margin:0;padding:18px clamp(22px,4vw,38px);display:grid;grid-template-columns:repeat(3,1fr);
-    gap:0;border-bottom:1px solid var(--hairline)}
-  /* авторские display перебивают hidden — на экране «не отправилось» шаги и апселл обязаны исчезать */
-  .done-steps[hidden],.done-plus[hidden],#doneBot[hidden]{display:none}
-  .done-steps li{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;padding:4px 14px;
-    border-right:1px solid var(--hairline)}
-  .done-steps li:first-child{padding-left:0}
-  .done-steps li:last-child{padding-right:0;border-right:0}
-  .done-steps .dn{padding-top:2px;font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--wax);font-variant-numeric:tabular-nums}
-  .done-steps b{display:block;font-size:12.5px;font-weight:600}
-  .done-steps small{display:block;margin-top:3px;color:var(--ink-faint);font-size:10.5px;line-height:1.35}
-  .done-receipt{margin:18px clamp(22px,4vw,38px) 0;border:1px solid var(--hairline);border-radius:4px;background:var(--sheet)}
-  .done-receipt-head{display:flex;justify-content:space-between;gap:16px;padding:10px 13px;border-bottom:1px solid var(--hairline)}
-  .done-receipt-head>span:last-child{font:600 11px var(--mono);color:var(--wax)}
-  .done-receipt-list{display:grid}
-  .done-receipt-row{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:9px;align-items:center;padding:9px 13px;
-    border-bottom:1px solid var(--hairline);font-size:12px}
-  .done-receipt-row:last-child{border-bottom:0}
-  .done-receipt-row .dr-no{font:9px var(--mono);color:var(--ink-faint)}
-  .done-receipt-row .dr-price{font:10px var(--mono);color:var(--ink-soft);white-space:nowrap}
-  .done-access{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;
-    margin:18px clamp(22px,4vw,38px);padding:16px 18px;border:1px solid var(--ink);border-radius:4px;background:var(--paper-2)}
-  .done-access h3{margin:5px 0 5px;font:500 21px/1.15 var(--serif)}
-  .done-access p{margin:0;max-width:48ch;color:var(--ink-soft);font-size:11.5px;line-height:1.45}
-  .done-actions{display:grid;gap:7px;min-width:210px}
-  .done-actions .btn{text-align:center;justify-content:center}
-  .done-note{margin:0 clamp(22px,4vw,38px) 12px;color:var(--ink-soft)}
-  .done-note:empty{display:none}
-  .done-new{display:block;width:max-content;margin:14px auto 22px;font-size:11.5px}
-
-  /* мобильная нижняя панель (своя, вместо инжекта app.js) */
-  .conf-mcta{flex-direction:column;align-items:stretch;gap:10px}
-  .conf-mcta[hidden]{display:none!important}
-  .mq-panel{background:var(--sheet);border:1px solid var(--hairline);border-radius:var(--r);padding:14px 16px;max-height:52vh;overflow:auto}
-  .mq-panel .ledger{font-size:13.5px}
-  .mq-panel .lg-total .num{font-size:20px;font-weight:600}
-  .mq-bar{display:flex;gap:10px}
-  .mq-total{flex:1.25;min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--hairline-strong);background:var(--sheet);border-radius:var(--r);font-size:13px;color:var(--ink);cursor:pointer;padding:6px 10px;white-space:nowrap}
-  .mq-total .num{font-weight:600}
-  .mq-more{color:var(--ink-soft);font-size:12px}
-
-  /* файлы в заявке: методичка и ТЗ уходят мастеру вместе с формой */
-  .att-add{
-    display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
-    min-height:52px;padding:12px 16px;background:var(--sheet);
-    border:1px dashed var(--hairline-strong);border-radius:var(--r);
-    color:var(--ink);font-size:14.5px;cursor:pointer;
-    transition:border-color .15s,color .15s,background .15s;
-  }
-  .att-add:hover,.att-add.dragover{border-color:var(--wax);color:var(--wax);background:var(--wax-soft)}
-  .att-add svg{flex:0 0 auto}
-  .att-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
-  .att-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--sheet);border:1px solid var(--hairline);border-radius:var(--r);font-size:13.5px}
-  .att-item .ai-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .att-item .ai-size,.att-item .ai-st{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);white-space:nowrap;font-variant-numeric:tabular-nums}
-  .att-item .ai-st.ok{color:var(--verify)}
-  .att-item .ai-st.err{color:var(--wax)}
-  .att-item .ai-x{border:0;background:none;color:var(--ink-faint);font-size:16px;line-height:1;cursor:pointer;padding:2px 6px;border-radius:50%}
-  .att-item .ai-x:hover{color:var(--wax)}
-  .att-item .ai-retry{border:0;background:none;color:var(--wax);cursor:pointer;font-size:12.5px;border-bottom:1px solid currentColor;padding:0;margin-left:4px}
-  .done-files{margin:18px clamp(22px,4vw,38px)}
-  .done-files .caps{display:block;margin-bottom:8px}
-
-  /* услуги-ссылки на шаге 1: тот же ряд, но ведут в короткий лист заявки */
-  .optrow-link{text-decoration:none;color:inherit}
-  .optrow-link:hover{border-color:var(--wax)}
-  .optrow-link:hover .o-val{color:var(--wax)}
-  .svc-group{border-top:1px solid var(--hairline);padding-top:18px}
-
-  /* выбор способа связи: мастеру нужен рабочий канал до лида */
-  .ct-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-  .ct-chip{border:1px solid var(--hairline-strong);background:transparent;color:var(--ink-soft);
-    border-radius:999px;padding:6px 12px;font:inherit;font-size:12.5px;cursor:pointer;
-    transition:background .15s,color .15s,border-color .15s}
-  .ct-chip:hover{border-color:var(--ink-soft);color:var(--ink)}
-  .ct-chip.on{background:var(--ink);border-color:var(--ink);color:var(--paper,#F6F1E7)}
-
-  /* строка выгоды «Салон+» в смете и купон на экране успеха */
-  .lq-plus{margin-top:10px;padding:9px 11px;border:1px dashed var(--hairline-strong);border-radius:var(--r);background:var(--paper-2)}
-  .lq-plus[hidden]{display:none}
-  .done-plus{margin:0 clamp(22px,4vw,38px);border-top:1px dashed var(--hairline-strong);padding-top:11px}
-  .done-plus>summary{cursor:pointer;color:var(--ink-soft);font-size:11.5px}
-  .done-plus>div{padding:10px 0 0}
-  .done-plus p{margin:0;line-height:1.5}
-
-  /* применённый промокод — строка в смете (обе панели) */
-  .lq-promo{margin-top:10px;padding:9px 11px;border:1px dashed var(--verify);border-radius:var(--r);
-    background:var(--verify-soft);color:var(--ink)}
-  .lq-promo[hidden]{display:none}
-  .lq-promo .num{font-family:var(--mono);letter-spacing:.06em}
-
-  /* промокод: купон в бланке заявки, а не сиротская ссылка */
-  .coupon{margin:0 0 14px;border:1px dashed var(--hairline-strong);border-radius:var(--r);
-    background:var(--paper-2);transition:border-color .15s,background .15s}
-  .coupon.open{background:var(--sheet)}
-  .coupon.on{border:1px solid var(--verify);background:var(--verify-soft)}
-  .cp-toggle{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;
-    background:none;border:0;font:inherit;font-size:14px;color:var(--ink);cursor:pointer;text-align:left}
-  .cp-toggle:hover .cp-lbl{color:var(--wax)}
-  .cp-toggle .cp-lbl{flex:1;transition:color .15s}
-  .cp-toggle .cp-ar{color:var(--ink-faint);font-family:var(--mono);transition:transform .2s}
-  .coupon.open .cp-ar{transform:rotate(90deg)}
-  .cp-body{padding:2px 14px 13px}
-  .cp-row{display:flex;gap:8px}
-  .cp-row input{flex:1;min-width:0;text-transform:uppercase;font-family:var(--mono);letter-spacing:.08em}
-  .cp-done{display:flex;align-items:center;gap:12px;padding:12px 14px}
-  .cp-done[hidden],.cp-toggle[hidden]{display:none}
-  .cp-done .cp-code{font-family:var(--mono);font-size:14px;letter-spacing:.1em;color:var(--verify);white-space:nowrap}
-  .cp-done .cp-what{flex:1;min-width:0;font-size:13px;line-height:1.45;color:var(--ink-soft)}
-  .cp-done .cp-x{border:0;background:none;color:var(--ink-faint);font-size:17px;line-height:1;
-    cursor:pointer;padding:2px 6px;border-radius:50%}
-  .cp-done .cp-x:hover{color:var(--wax)}
-
-  /* «смета письмом» — способ уйти подумать, не потеряв расчёт */
-  .qm-card{margin:18px 0 14px;padding:14px 16px;border:1px solid var(--hairline-strong);
-    border-left:4px solid var(--stamp,#3A4E7A);border-radius:var(--r);background:var(--sheet)}
-  .qm-head{display:flex;gap:12px;align-items:flex-start}
-  .qm-head svg{flex:0 0 auto;margin-top:2px;color:var(--stamp,#3A4E7A)}
-  .qm-head .qm-t{font-size:14.5px;margin:0 0 3px}
-  .qm-head .petit{margin:0}
-  .qm-open{flex:0 0 auto;align-self:center;border:1px solid var(--hairline-strong);background:transparent;
-    border-radius:var(--r);padding:8px 14px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;
-    white-space:nowrap;transition:border-color .15s,color .15s}
-  .qm-open:hover{border-color:var(--stamp,#3A4E7A);color:var(--stamp,#3A4E7A)}
-  .qm-form{margin-top:12px;padding-top:12px;border-top:1px dashed var(--hairline)}
-  .qm-form .cp-row input{text-transform:none;font-family:inherit;letter-spacing:normal}
-  @media(max-width:560px){
-    .qm-head{flex-wrap:wrap}
-    .qm-open{flex:1 1 100%;align-self:stretch;min-height:44px}
-  }
-
-  /* код возврата: модал с купоном (база — .sdlg из extras.css) */
-  .exit-code{display:flex;align-items:center;gap:12px;margin:4px 0 10px;padding:13px 16px;
-    border:1px dashed var(--wax);border-radius:var(--r);background:var(--wax-soft)}
-  .exit-code .xc-code{flex:1;font-family:var(--mono);font-size:clamp(17px,4.6vw,21px);
-    letter-spacing:.14em;color:var(--wax);white-space:nowrap;font-variant-numeric:tabular-nums}
-  .exit-code .xc-copy{border:0;background:none;color:var(--ink-soft);font:inherit;font-size:12.5px;
-    cursor:pointer;border-bottom:1px solid currentColor;padding:0;white-space:nowrap}
-  .exit-code .xc-copy:hover{color:var(--wax)}
-  .exit-note{font-size:12.5px;color:var(--ink-faint);margin:0 0 16px}
-
-  @media(max-width:880px){
-    .conf-aside{display:none}
-    #btnNext{display:none}   /* «Далее» на мобильном живёт в нижней панели */
-    #btnSubmit{display:none} /* «Отправить» — тоже */
-    .wnav{margin-top:20px}
-    .wnav .btn{min-width:0}
-    .ws-title{margin-bottom:12px}
-    .sf-filters{margin-left:calc(var(--mobile-gutter) * -1);margin-right:calc(var(--mobile-gutter) * -1);
-      padding:0 var(--mobile-gutter) 5px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
-    .sf-filters::-webkit-scrollbar{display:none}
-    .sf-filter{flex:0 0 auto;min-height:38px}
-    #typeGroup{grid-template-columns:1fr;gap:9px}
-    #typeGroup .opt-group{padding:11px}
-    #typeGroup .svc-group{grid-column:auto}
-    #typeGroup .svc-group .opt-list{grid-template-columns:1fr}
-    #typeGroup .optrow{min-height:52px}
-    .mq-panel .lq-mobile-head{display:flex;align-items:flex-start;justify-content:space-between;
-      gap:12px;margin-bottom:10px}
-    .mq-panel .lq-mobile-head .lq-type{font-size:13px;color:var(--ink)}
-    .mq-panel .lq-mobile-price{padding:12px;border:1px solid var(--hairline-strong);
-      border-radius:4px;background:linear-gradient(110deg,var(--wax-soft),var(--sheet) 72%)}
-    .mq-panel .lq-mobile-price .lg-total{display:flex;align-items:baseline;justify-content:space-between;
-      gap:12px;padding:0;margin:0;border:0}
-    .mq-panel .lq-mobile-price .lg-total .num{font-size:24px;color:var(--wax)}
-    .mq-panel .lq-mobile-formula{margin-top:10px}
-    .mq-panel .lq-mobile-formula>summary{cursor:pointer;font:10px/1.3 var(--mono);
-      letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
-    .mq-panel .lq-mobile-formula .ledger{margin-top:7px}
-    .mq-panel .lq-mobile-info{margin-top:10px;padding-top:10px;border-top:1px dashed var(--hairline-strong)}
-    .conf-done{margin-top:-12px}
-    .done-hero{padding:24px 96px 22px 20px}
-    .done-seal{top:18px;right:12px;transform:scale(.78);transform-origin:top right}
-    .done-h{font-size:28px}
-    .done-steps{grid-template-columns:1fr;padding:12px 20px}
-    .done-steps li,.done-steps li:first-child,.done-steps li:last-child{padding:10px 0;border-right:0;border-bottom:1px solid var(--hairline)}
-    .done-steps li:last-child{border-bottom:0}
-    .done-receipt,.done-access,.done-files{margin-left:14px;margin-right:14px}
-    .done-access{grid-template-columns:1fr;gap:14px;padding:15px}
-    .done-actions{min-width:0}
-    .done-note,.done-plus{margin-left:14px;margin-right:14px}
-    .done-receipt-row{grid-template-columns:20px minmax(0,1fr)}
-    .done-receipt-row .dr-price{grid-column:2}
-  }
-
-  /* ===== применённая выгода в смете: перечёркнутый итог + новая цена ===== */
-  .lg-total.struck .price-xl,.lg-total.struck > .num{
-    text-decoration:line-through;text-decoration-color:var(--wax,#A8402F);
-    text-decoration-thickness:2px;color:var(--ink-faint);
-    font-size:clamp(17px,2.2vw,20px);letter-spacing:0}
-  .lq-deal{margin-top:2px;padding-top:10px;border-top:1px dashed var(--hairline)}
-  .lq-deal[hidden]{display:none}
-  .deal-row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 10px;margin:0 0 6px}
-  .deal-chip{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
-    color:var(--wax,#A8402F);border:1px dashed var(--wax,#A8402F);border-radius:3px;
-    padding:2px 8px;background:var(--wax-soft,rgba(168,64,47,.07));white-space:nowrap;
-    max-width:100%;overflow:hidden;text-overflow:ellipsis}
-  .deal-off{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
-  .deal-total{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:8px 0 2px}
-  .deal-total b{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
-  .deal-price{font-family:var(--serif);font-size:clamp(24px,3vw,30px);font-weight:600;
-    color:var(--verify,#2E6B4F);white-space:nowrap;font-variant-numeric:tabular-nums}
-  .deal-money{margin:4px 0 0}
-  .deal-note{margin:8px 0 0;color:var(--ink-faint)}
-
-  /* ===== вуаль отправки: один жест — письмо уходит в конверт =====
-     Анимации только transform/дискретные — при спящем рендере остаётся
-     честная статичная картинка, ничего не исчезает. */
-  .send-veil{position:fixed;inset:0;z-index:290;display:flex;align-items:center;justify-content:center;padding:20px}
-  .send-veil[hidden]{display:none}
-  .sv-back{position:absolute;inset:0;background:var(--paper,#F6F1E7);opacity:.95}
-  .sv-card{position:relative;background:var(--sheet,#FDFBF5);border:1px solid var(--hairline-strong);
-    border-radius:4px;box-shadow:0 24px 60px -24px rgba(24,21,15,.35);
-    padding:30px 26px 26px;max-width:430px;width:100%;text-align:center}
-  .sv-post{position:relative;height:92px;margin:0 auto 14px;width:150px}
-  .sv-env{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:110px;height:60px;color:var(--ink,#22201B)}
-  .sv-env svg{display:block;width:100%;height:100%}
-  .sv-letter{position:absolute;left:50%;top:0;width:64px;height:40px;margin-left:-32px;z-index:1;
-    background:var(--paper,#F6F1E7);border:1.2px solid var(--hairline-strong);border-radius:2px;
-    display:flex;align-items:center;justify-content:center;
-    font-family:var(--serif);font-size:19px;color:var(--wax,#A8402F);
-    animation:svDrop 2.1s ease-in-out infinite}
-  .sv-env{z-index:2}
-  .sv-seal{z-index:3}
-  @keyframes svDrop{0%{transform:translateY(0)}55%{transform:translateY(26px)}75%{transform:translateY(22px)}100%{transform:translateY(0)}}
-  .sv-seal{position:absolute;right:2px;bottom:0;width:34px;height:34px;border-radius:50%;
-    background:var(--wax,#A8402F);color:#F6F1E7;font-family:var(--serif);font-size:13px;font-weight:600;
-    display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(168,64,47,.4)}
-  .sv-h{font-family:var(--serif);font-weight:520;font-size:clamp(19px,2.4vw,22px);margin:6px 0 8px;min-height:1.3em}
-  .sv-sub{margin:0;min-height:2.6em}
-  .sv-dots{display:inline-flex;gap:7px;margin-top:14px}
-  .sv-dots i{width:7px;height:7px;border-radius:50%;background:var(--ink,#22201B);opacity:.3}
-  @media (prefers-reduced-motion:reduce){.sv-letter{animation:none}}
-  html[data-motion="off"] .sv-letter{animation:none}
-
-  /* ===== запасной ход: смета текстом + копирование + мессенджеры ===== */
-  .fb-box{margin:14px 0 6px;text-align:left}
-  .fb-sheet{position:relative;border:1px solid var(--hairline-strong);border-radius:3px;
-    background:var(--paper,#F6F1E7);padding:14px 16px;margin:10px 0 12px;max-height:220px;overflow:auto}
-  .fb-sheet pre{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.65;
-    white-space:pre-wrap;word-break:break-word;color:var(--ink)}
-  .fb-sheet::after{content:'¶';position:absolute;top:8px;right:12px;
-    font-family:var(--serif);color:var(--wax,#A8402F);opacity:.5}
-  .fb-links{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
-  .fb-links .btn{flex:1 1 30%;min-width:130px;text-align:center;white-space:normal}
-  .fb-copied{color:var(--verify,#2E6B4F);font-weight:600}
-  #fbCopy{margin-top:2px}
-  #fbRetry{margin-top:12px}
-
-  /* ============================================================
-     РАЗБОР ПЛАНА · ЛИСТ PL-01
-     Отдельный редакционный формуляр вместо обрезанного калькулятора.
-     ============================================================ */
-  html.service-plan .chapter.conf-chapter{padding-top:calc(56px + clamp(22px,4vh,38px))}
-  html.service-plan .conf-chapter>.ch-rule{margin-bottom:0}
-  html.service-plan .conf-chapter>.ch-rule .ch-no{color:var(--wax)}
-  html.service-plan .conf-head{
-    display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,.72fr);
-    gap:clamp(24px,5vw,62px);align-items:center;margin:0;padding:clamp(26px,4vw,44px);
-    border:1px solid var(--hairline-strong);border-bottom:0;border-radius:4px 4px 0 0;
-    background:var(--sheet);
-  }
-  html.service-plan .conf-head::before{
-    content:"Разбор плана · готовность 1–2 дня";grid-column:1;align-self:end;
-    font:9px/1.25 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--wax);
-  }
-  html.service-plan .conf-head h1{
-    grid-column:1;margin:7px 0 12px;max-width:13ch;
-    font:400 clamp(38px,5.6vw,64px)/.98 var(--serif);letter-spacing:-.035em;
-  }
-  html.service-plan .conf-head>.petit{
-    grid-column:1;max-width:48ch;margin:0;font-size:14px;line-height:1.62;color:var(--ink-soft);
-  }
-  html.service-plan .estimate-builder-note{display:none}
-  html.service-plan .plan-offer{
-    grid-column:2;grid-row:1/5;width:100%;max-width:none;margin:0;padding:0;
-    border:1px solid var(--hairline-strong);border-radius:3px;background:var(--paper);
-    box-shadow:0 18px 46px -42px rgba(34,32,27,.58);
-  }
-  html.service-plan .plan-offer .po-head{
-    position:relative;margin:0;padding:15px 16px 13px;border-bottom:3px double var(--hairline-strong);
-  }
-  html.service-plan .plan-offer .po-head::after{
-    content:"PL–01";position:absolute;right:16px;bottom:12px;
-    font:8px/1 var(--mono);letter-spacing:.12em;color:var(--ink-faint);
-  }
-  html.service-plan .plan-offer .po-head .caps{max-width:18ch;line-height:1.45}
-  html.service-plan .plan-offer .po-price{
-    padding-right:54px;font-family:var(--mono);font-variant-numeric:tabular-nums;
-  }
-  html.service-plan .plan-offer .po-price b{font-size:24px}
-  html.service-plan .plan-offer .po-list{gap:0;padding:3px 15px 5px}
-  html.service-plan .plan-offer .po-list li{
-    display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;padding:9px 0;
-    border-bottom:1px dotted var(--hairline);font-size:12.5px;line-height:1.4;
-  }
-  html.service-plan .plan-offer .po-list li:last-child{border-bottom:0}
-  html.service-plan .plan-offer .po-list li small{
-    display:block;margin-top:2px;color:var(--ink-faint);font-size:10.5px;line-height:1.35;
-  }
-  html.service-plan .plan-offer .po-list li::before{
-    content:counter(plan-result,decimal-leading-zero);counter-increment:plan-result;
-    margin:2px 0 0;font:8px/1.2 var(--mono);color:var(--wax);
-  }
-  html.service-plan .plan-offer .po-list{counter-reset:plan-result}
-  html.service-plan .plan-offer .po-note{
-    margin:0;padding:12px 15px;border-top:1px solid var(--hairline);
-    background:var(--verify-soft);font-size:11.5px;line-height:1.5;color:var(--ink-soft);
-  }
-  html.service-plan .plan-offer .po-note::before{
-    content:"✓";margin-right:7px;color:var(--verify);font-family:var(--mono);
-  }
-
-  html.service-plan .split{display:block}
-  html.service-plan .conf-steps{
-    position:relative;padding:clamp(24px,4vw,42px);border:1px solid var(--hairline-strong);
-    border-top:3px double var(--hairline-strong);border-radius:0 0 4px 4px;background:var(--sheet);
-    box-shadow:0 25px 70px -60px rgba(34,32,27,.65);
-  }
-  html.service-plan .conf-steps::after{
-    content:"¶";position:absolute;right:clamp(18px,3vw,34px);top:18px;
-    color:var(--wax);opacity:.12;font:italic 66px/1 var(--serif);transform:rotate(-7deg);pointer-events:none;
-  }
-  html.service-plan .wprog,html.service-plan .wnav{display:none!important}
-  html.service-plan .wstep-final{max-width:920px;margin:0 auto}
-  html.service-plan .wstep-final>#ws4t{
-    margin:0 80px 7px 0;font:400 clamp(27px,3.3vw,38px)/1.08 var(--serif);
-  }
-  html.service-plan .conf-final-intro{
-    display:block;margin:0 0 23px;padding-bottom:17px;border-bottom:1px solid var(--hairline);
-  }
-  html.service-plan .conf-final-intro .caps{display:block;margin-bottom:5px;color:var(--wax)}
-  html.service-plan .conf-final-intro p{max-width:62ch;font-size:13px;line-height:1.55;color:var(--ink-soft)}
-  .plan-form-head{display:none}
-  html.service-plan .plan-form-head{
-    display:grid;grid-template-columns:33px minmax(0,1fr);gap:11px;align-items:start;
-    margin:0 0 14px;padding:0 0 12px;border-bottom:1px solid var(--hairline);
-  }
-  html.service-plan .plan-form-head .plan-form-no,
-  html.service-plan .final-section-no{
-    display:grid;place-items:center;width:29px;height:29px;border:1px solid var(--hairline-strong);
-    border-radius:50%;font:8.5px/1 var(--mono);color:var(--wax);
-  }
-  html.service-plan .plan-form-head b,
-  html.service-plan .final-section-head b{
-    display:block;font:500 19px/1.15 var(--serif);color:var(--ink);
-  }
-  html.service-plan .plan-form-head small,
-  html.service-plan .final-section-head small{
-    display:block;margin-top:3px;font-size:11px;line-height:1.4;color:var(--ink-faint);
-  }
-  html.service-plan #svcAsk{
-    display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-bottom:4px;
-  }
-  html.service-plan #svcAsk .svc-q:first-of-type{grid-column:1/-1}
-  html.service-plan .svc-q{
-    min-width:0;margin:0;padding:14px 0 17px;border:0;border-bottom:1px dotted var(--hairline);
-  }
-  html.service-plan .svc-q>legend,
-  html.service-plan .svc-q>label{
-    display:block;width:100%;margin:0 0 9px;padding:0;
-    font:600 10px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
-  }
-  html.service-plan .plan-choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-  html.service-plan .svc-q[data-plan-question="disc"] .plan-choice-grid{grid-template-columns:1fr 1fr}
-  html.service-plan .plan-choice{
-    position:relative;display:flex;align-items:center;min-height:48px;padding:9px 30px 9px 11px;
-    border:1px solid var(--hairline);border-radius:3px;background:var(--paper);
-    color:var(--ink-soft);font:12.5px/1.3 var(--sans);text-align:left;cursor:pointer;
-    transition:border-color .15s,background .15s,color .15s;
-  }
-  html.service-plan .plan-choice:hover{border-color:var(--hairline-strong);color:var(--ink)}
-  html.service-plan .plan-choice[aria-pressed="true"]{
-    border-color:var(--wax);background:linear-gradient(105deg,var(--wax-soft),var(--paper) 78%);color:var(--ink);
-  }
-  html.service-plan .plan-choice[aria-pressed="true"]::after{
-    content:"✓";position:absolute;right:10px;top:50%;transform:translateY(-50%);
-    color:var(--wax);font:11px/1 var(--mono);
-  }
-  html.service-plan .plan-choice:focus-visible{outline:2px solid var(--wax);outline-offset:2px}
-  html.service-plan .svc-q textarea{min-height:112px;padding:12px 13px;border-radius:3px}
-  html.service-plan .final-section{margin:0;padding:19px 0 3px;border:0;border-bottom:1px solid var(--hairline)}
-  html.service-plan .final-section-head{
-    display:grid;grid-template-columns:33px minmax(0,1fr);gap:11px;align-items:start;
-    margin:0 0 15px;
-  }
-  html.service-plan .final-task{display:grid;grid-template-columns:1fr .55fr;gap:0 16px}
-  html.service-plan .final-task .final-section-head{grid-column:1/-1}
-  html.service-plan .final-task .field{margin-bottom:14px}
-  html.service-plan .final-task .field:has(#fDetails){display:none}
-  html.service-plan .final-section .field>label,
-  html.service-plan #ctGuest .field>label{
-    display:flex;align-items:center;justify-content:space-between;gap:10px;
-    margin-bottom:7px;font-size:9.5px;letter-spacing:.1em;
-  }
-  html.service-plan .field-optional{
-    padding:3px 6px;border-radius:999px;background:var(--paper-2);
-    color:var(--ink-faint);font:8px/1 var(--sans);letter-spacing:.02em;text-transform:none;
-  }
-  html.service-plan .final-files .field{margin-bottom:14px}
-  html.service-plan .att-add{
-    justify-content:flex-start;min-height:58px;border-radius:3px;background:var(--paper-2);text-align:left;
-  }
-  html.service-plan .compose-gate{display:none!important}
-  html.service-plan #checkoutFields{display:block!important}
-  html.service-plan .final-contact{border-bottom:0}
-  html.service-plan #ctAuthed{padding:13px 14px;border:1px solid var(--verify);background:var(--verify-soft)}
-  html.service-plan #ctGuest{
-    display:grid;grid-template-columns:minmax(0,.66fr) minmax(0,1.34fr);gap:0 16px;
-  }
-  html.service-plan #ctGuest>#tgLoginBtn,
-  html.service-plan #ctGuest>.contact-or,
-  html.service-plan #ctGuest>.consent-row{grid-column:1/-1}
-  html.service-plan #ctGuest .contact-or{
-    display:flex;align-items:center;gap:10px;margin:2px 0 14px;color:var(--ink-faint);
-    font:8.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
-  }
-  html.service-plan #ctGuest .contact-or::before,
-  html.service-plan #ctGuest .contact-or::after{content:"";height:1px;flex:1;background:var(--hairline)}
-  html.service-plan #tgLoginBtn{margin-bottom:11px}
-  html.service-plan .consent-row{margin:4px 0 0}
-  html.service-plan .final-more-toggle,
-  html.service-plan .final-more-body{display:none!important}
-  html.service-plan #btnSubmit{
-    width:100%;min-height:54px;margin-top:19px;justify-content:center;font-size:14px;
-  }
-  html.service-plan .wsubmit-note{margin:10px auto 0;text-align:center;max-width:66ch}
-  html.service-plan .conf-aside{display:none}
-  html.service-plan .site-footer{margin-top:clamp(34px,5vw,58px)}
-  html[data-theme="dark"].service-plan .btn-wax{color:#211914}
-
-  @media(max-width:880px){
-    html.service-plan .conf-head{
-      grid-template-columns:1fr;gap:20px;padding:24px 20px;
-    }
-    html.service-plan .conf-head::before,
-    html.service-plan .conf-head h1,
-    html.service-plan .conf-head>.petit,
-    html.service-plan .plan-offer{grid-column:1;grid-row:auto}
-    html.service-plan .conf-head h1{font-size:clamp(36px,9vw,50px)}
-    html.service-plan .plan-offer{max-width:none}
-    html.service-plan .conf-steps{padding:23px 18px}
-    html.service-plan #svcAsk{grid-template-columns:1fr}
-    html.service-plan #svcAsk .svc-q{grid-column:1}
-    html.service-plan .plan-choice-grid{grid-template-columns:1fr 1fr}
-    html.service-plan #btnSubmit{display:none}
-    html.service-plan .conf-mcta .mq-panel{display:none!important}
-    html.service-plan .conf-mcta .mq-bar{display:grid;grid-template-columns:minmax(0,.78fr) minmax(148px,1.22fr)}
-    html.service-plan .conf-mcta #mBack{display:none!important}
-    html.service-plan .conf-mcta .mq-total{
-      min-width:0;justify-content:flex-start;padding:6px 12px;pointer-events:none;
-    }
-    html.service-plan .conf-mcta .mq-more{display:none}
-    html.service-plan .conf-mcta #mNext{display:flex;justify-content:center}
-  }
-  @media(max-width:560px){
-    html.service-plan .conf-chapter>.ch-rule{margin-left:2px;margin-right:2px}
-    html.service-plan .conf-head{padding:22px 16px}
-    html.service-plan .conf-head h1{font-size:38px}
-    html.service-plan .plan-offer .po-head{padding:13px}
-    html.service-plan .plan-offer .po-list{
-      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:4px 9px;
-    }
-    html.service-plan .plan-offer .po-list li{
-      display:block;min-width:0;padding:8px 7px;border-bottom:0;border-right:1px dotted var(--hairline);
-      font-size:10.5px;line-height:1.3;
-    }
-    html.service-plan .plan-offer .po-list li:last-child{border-right:0}
-    html.service-plan .plan-offer .po-list li::before{display:block;margin:0 0 4px}
-    html.service-plan .plan-offer .po-list li small{display:none}
-    html.service-plan .conf-steps{padding:21px 14px}
-    html.service-plan .wstep-final>#ws4t{margin-right:52px;font-size:29px}
-    html.service-plan .conf-steps::after{right:13px;font-size:50px}
-    html.service-plan .plan-choice-grid,
-    html.service-plan .svc-q[data-plan-question="disc"] .plan-choice-grid{
-      grid-template-columns:repeat(2,minmax(0,1fr));
-    }
-    html.service-plan .plan-choice{min-width:0;min-height:50px;padding-left:9px;font-size:11.8px}
-    html.service-plan .final-task{grid-template-columns:1fr}
-    html.service-plan #ctGuest{grid-template-columns:1fr}
-    html.service-plan #ctGuest>.field-name{display:none}
-    html.service-plan .ct-chips{gap:5px}
-    html.service-plan .ct-chip{padding:7px 9px;font-size:11px}
-    html.service-plan .conf-mcta .mq-bar{grid-template-columns:minmax(0,.72fr) minmax(154px,1.28fr)}
-  }
-  @media(prefers-reduced-motion:reduce){
-    html.service-plan .plan-choice{transition:none}
-  }
-</style>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -655,499 +23,244 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Калькулятор стоимости — смета за минуту | Академический Салон" />
-<meta property="og:description" content="Четыре шага — увидите стоимость, план и порядок оплаты. Оценка бесплатна, решение остаётся за вами." />
+<meta property="og:title" content="Рассчитать помощь с курсовой или ВКР | Академический Салон" />
+<meta property="og:description" content="Выберите работу и нужный результат: диагностику, редакторский аудит или сопровождение. Предварительная цена появится сразу." />
 <meta property="og:url" content="https://akademsalon.ru/configurator.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Расчёт стоимости — Академический Салон" />
-<meta name="twitter:description" content="Четыре шага — стоимость, план и порядок оплаты." />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<meta name="twitter:title" content="Рассчитать помощь с курсовой или ВКР — Академический Салон" />
+<meta name="twitter:description" content="Четыре коротких шага: задача, направление, результат и заявка." />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release13" media="screen and (max-width: 880px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260725release13" />
 </head>
-<body>
+<body class="configurator-task">
 
-<main>
-  <div class="wrap">
-    <section class="chapter conf-chapter" id="order" data-chapter="Расчёт заказа">
-      <div class="ch-rule"><span class="ch-no">§ 01 · Расчёт заказа</span></div>
-
+<main class="tx-wizard" id="main">
+  <aside class="tx-wizard-sidebar" aria-label="Этапы заявки">
+    <a class="tx-wizard-brand" href="/" aria-label="Академический Салон — на главную">
+      <img src="bimi/logo.svg" alt="" width="42" height="42" />
+      <span><strong>Академический Салон</strong><small>Новая заявка</small></span>
+    </a>
+    <div class="wprog" id="conceptProgress" role="progressbar" aria-label="Прогресс заявки" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1">
+      <div class="wp-track"><span class="wp-fill" id="conceptProgressFill"></span></div>
+      <span class="wp-lbl" id="conceptProgressLabel" aria-live="polite">Шаг 1 из 5</span>
+    </div>
+    <ol class="tx-wizard-steps">
+      <li class="tx-step is-current" data-tx-step="0">
+        <button type="button" data-concept-jump="0" aria-current="step"><span>01</span><strong>Ситуация</strong></button>
+      </li>
+      <li class="tx-step" data-tx-step="1">
+        <button type="button" data-concept-jump="1" disabled><span>02</span><strong>Тип работы</strong></button>
+      </li>
+      <li class="tx-step" data-tx-step="2">
+        <button type="button" data-concept-jump="2" disabled><span>03</span><strong>Результат</strong></button>
+      </li>
+      <li class="tx-step" data-tx-step="3">
+        <button type="button" data-concept-jump="3" disabled><span>04</span><strong>Срок</strong></button>
+      </li>
+      <li class="tx-step" data-tx-step="4">
+        <button type="button" data-concept-jump="4" disabled><span>05</span><strong>Контакты</strong></button>
+      </li>
+    </ol>
+    <div class="tx-wizard-help">
+      <span>Нужна помощь?</span>
+      <p>Можно сразу описать задачу редактору — без расчёта и лишних полей.</p>
+      <button type="button" data-contact data-msg-lead="Опишите задачу в свободной форме — мастер подскажет следующий шаг.">Открыть приёмную <span aria-hidden="true">→</span></button>
+    </div>
+  </aside>
+  <div class="wrap conf-wrap">
+    <header class="tx-mobile-head">
+      <a class="tx-mobile-back" href="/" aria-label="Закрыть заявку">←</a>
+      <a class="tx-mobile-brand" href="/">
+        <img src="bimi/logo.svg" alt="" width="34" height="34" />
+        <span><strong>Новая заявка</strong><small data-conf-step>Шаг 1 / 4</small></span>
+      </a>
+      <button class="theme-toggle tx-theme" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема">
+        <span aria-hidden="true">◐</span>
+      </button>
+    </header>
+    <div class="tx-task-actions" aria-label="Действия страницы">
+      <button class="theme-toggle tx-theme" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема">
+        <span aria-hidden="true">◐</span>
+      </button>
+      <a class="tx-close" href="/" aria-label="Закрыть заявку">×</a>
+    </div>
+    <section class="wizard-main concept-wizard-host" id="conceptWizard" aria-live="polite"></section>
+    <div class="mechanics-registry" id="order" hidden aria-hidden="true">
       <div id="confBody">
-        <header class="conf-head reveal">
-          <h1>Состав вашего заказа</h1>
-          <p class="petit">Выберите формат помощи и академический контекст. Одну или несколько позиций мастер превратит в понятную спецификацию до оплаты.</p>
-          <div class="estimate-builder-note">
-            <span class="estimate-builder-mark" aria-hidden="true">¶</span>
-            <span><b>Один заказ — несколько ясных строк</b><small>Каждая услуга сохраняет собственный результат, срок, цену и правила приёмки.</small></span>
-            <button type="button" data-cart-open aria-label="Открыть вашу смету">Открыть смету →</button>
-          </div>
-          <!-- карточка-квитанция услуги: заполняется в сервисном режиме (?service=…) -->
-          <div class="plan-offer" id="svcOffer" hidden>
-            <div class="po-head"><span class="caps" id="svcOfferCap"></span>
-              <span class="po-price"><b id="svcOfferPrice"></b></span></div>
-            <ul class="po-list" id="svcOfferList"></ul>
-            <p class="po-note" id="svcOfferNote" hidden></p>
+        <header class="conf-head">
+          <h1>Заявка</h1>
+          <p class="petit">Расчёт заявки</p>
+          <div id="svcOffer" hidden>
+            <span id="svcOfferCap"></span>
+            <b id="svcOfferPrice"></b>
+            <ul id="svcOfferList"></ul>
+            <p id="svcOfferNote" hidden></p>
           </div>
         </header>
-
-        <div class="split">
-          <!-- ЛЕВАЯ КОЛОНКА: шаги -->
-          <div class="conf-steps reveal">
-            <div class="wprog">
-              <span class="wp-lbl" id="wpLbl" aria-live="polite">Шаг 1 из 4</span>
-              <div class="wp-track"><span class="wp-fill" id="wpFill"></span></div>
-            </div>
-            <noscript><p class="petit" style="margin-bottom:18px">Для пошагового бланка нужен JavaScript. Все цены и формула открыты на странице «Цены».</p></noscript>
-
-            <!-- ШАГ 1: контекст и формат помощи -->
-            <div class="wstep active" role="group" aria-labelledby="ws1t">
-              <h2 class="ws-title" id="ws1t" tabindex="-1">Что у вас за материал</h2>
-              <div class="purpose-note">
-                <span class="purpose-note__mark" aria-hidden="true">¶</span>
-                <p><b>Здесь выбирается контекст, а не готовая аттестационная работа.</b> Формат результата задаёт уровень на третьем шаге: диагностика, редактура или сопровождение. Отдельные услуги можно сразу добавить как самостоятельные позиции.</p>
-              </div>
-              <div class="service-finder" role="search" aria-label="Поиск контекста или услуги">
-                <label class="visually-hidden" for="workSearch">Найти контекст или услугу</label>
-                <div class="sf-search">
-                  <span class="sf-mark" aria-hidden="true">¶</span>
-                  <input type="search" id="workSearch" autocomplete="off"
-                         placeholder="Например: курсовая, ВАК, нормоконтроль" />
-                  <button type="button" class="sf-clear" id="workSearchClear"
-                          aria-label="Очистить поиск" hidden>×</button>
-                </div>
-                <div class="sf-filters" id="workFilters" role="group" aria-label="Рубрика">
-                  <button type="button" class="sf-filter" data-work-filter="all" aria-pressed="true">Все</button>
-                  <button type="button" class="sf-filter" data-work-filter="degree" aria-pressed="false">Исследования</button>
-                  <button type="button" class="sf-filter" data-work-filter="course" aria-pressed="false">Курсовые</button>
-                  <button type="button" class="sf-filter" data-work-filter="article" aria-pressed="false">Статьи</button>
-                  <button type="button" class="sf-filter" data-work-filter="service" aria-pressed="false">Услуги</button>
-                </div>
-                <p class="sf-status"><span id="workResult" role="status" aria-live="polite">19 вариантов</span><span>ориентир виден сразу</span></p>
-              </div>
-              <div id="typeGroup" role="radiogroup" aria-label="Тип работы">
-                <div class="opt-group" data-work-kind="degree">
-                  <span class="caps">ВКР и исследования</span>
-                  <div class="opt-list">
-                    <button type="button" class="optrow" role="radio" data-id="diplom" aria-checked="true" tabindex="0"><span>Сопровождение ВКР / диплома</span><span class="dots"></span><span class="o-val">от 24&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="master" aria-checked="false" tabindex="-1"><span>Магистерское исследование</span><span class="dots"></span><span class="o-val">от 36&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="chapter" aria-checked="false" tabindex="-1"><span>Отдельная глава исследования</span><span class="dots"></span><span class="o-val">от 9&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="kandidat" aria-checked="false" tabindex="-1"><span>Диссертационное исследование</span><span class="dots"></span><span class="o-val">от 60&nbsp;000&nbsp;₽</span></button>
-                  </div>
-                </div>
-                <div class="opt-group" data-work-kind="course">
-                  <span class="caps">Курсовые, практика, малые формы</span>
-                  <div class="opt-list">
-                    <button type="button" class="optrow" role="radio" data-id="course_emp" aria-checked="false" tabindex="-1"><span>Курсовая с исследованием и расчётами</span><span class="dots"></span><span class="o-val">от 14&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="course" aria-checked="false" tabindex="-1"><span>Теоретическая курсовая</span><span class="dots"></span><span class="o-val">от 9&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="practice" aria-checked="false" tabindex="-1"><span>Ваш отчёт по практике</span><span class="dots"></span><span class="o-val">от 8&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="self" aria-checked="false" tabindex="-1"><span>Реферат, эссе или контрольная</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></button>
-                  </div>
-                </div>
-                <div class="opt-group" data-work-kind="article">
-                  <span class="caps">Научные статьи</span>
-                  <div class="opt-list">
-                    <button type="button" class="optrow" role="radio" data-id="scopus" aria-checked="false" tabindex="-1"><span>Редактура статьи Scopus / Web of Science</span><span class="dots"></span><span class="o-val">от 22&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="vak" aria-checked="false" tabindex="-1"><span>Редактура статьи ВАК</span><span class="dots"></span><span class="o-val">от 12&nbsp;000&nbsp;₽</span></button>
-                    <button type="button" class="optrow" role="radio" data-id="rinc" aria-checked="false" tabindex="-1"><span>Редактура статьи РИНЦ</span><span class="dots"></span><span class="o-val">от 7&nbsp;000&nbsp;₽</span></button>
-                  </div>
-                </div>
-                <!-- работа уже написана — нужны отдельные услуги: короткий лист заявки -->
-                <div class="opt-group svc-group" data-work-kind="service">
-                  <span class="caps">Отдельные услуги — каждая своей строкой</span>
-                  <div class="opt-list">
-                    <a class="optrow optrow-link" href="configurator.html?service=pl"><span>Разбор задачи и плана самостоятельной работы</span><span class="dots"></span><span class="o-val">3&nbsp;000&nbsp;₽</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=ai"><span>Литературная редактура текста</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=rv"><span>Экспертная диагностика черновика</span><span class="dots"></span><span class="o-val">от 2&nbsp;500&nbsp;₽</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=nm"><span>Нормоконтроль и оформление по ГОСТ</span><span class="dots"></span><span class="o-val">от 5&nbsp;000&nbsp;₽</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=df"><span>Подготовка к выступлению и защите</span><span class="dots"></span><span class="o-val">от 6&nbsp;000&nbsp;₽</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=dp"><span>Пакет: оформление + выступление</span><span class="dots"></span><span class="o-val">от 9&nbsp;500&nbsp;₽</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=tu"><span>Репетиторство и консультации</span><span class="dots"></span><span class="o-val">от 3&nbsp;000&nbsp;₽/час</span></a>
-                    <a class="optrow optrow-link" href="configurator.html?service=au"><span>Авторский текст вне аттестации</span><span class="dots"></span><span class="o-val">от 12&nbsp;000&nbsp;₽</span></a>
-                  </div>
-                  <p class="petit" style="margin-top:8px">Эти заявки короче: одна самостоятельная позиция — описываете задачу, прикладываете материал, мастер называет точную цену.</p>
-                </div>
-              </div>
-              <div class="sf-empty" id="workEmpty" hidden>
-                <b>Такого названия не нашли</b>
-                <p class="petit" style="margin:5px 0 0">Попробуйте «диплом», «статья», «оформление» — или напишите мастеру.</p>
-              </div>
-              <p class="petit" id="planEntry" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--hairline-strong)">
-                Пока неясно, с чего начать? <a class="link" href="configurator.html?service=pl"><b>Разберите задачу и план — 3&nbsp;000&nbsp;₽</b></a>:
-                требования, структура и календарь самостоятельной работы; при продолжении сопровождения сумма зачтётся.
-                <a class="link" href="plan.html">Подробнее об услуге →</a></p>
-            </div>
-
-            <!-- ШАГ 2: направление -->
-            <div class="wstep" role="group" aria-labelledby="ws2t">
-              <h2 class="ws-title" id="ws2t" tabindex="-1">Выберите направление</h2>
-              <div id="discGroup" role="radiogroup" aria-label="Направление работы" class="opt-list">
-                <button type="button" class="optrow" role="radio" data-id="hum" aria-checked="true" tabindex="0"><span>Гуманитарные / экономика</span><span class="dots"></span><span class="o-val">без наценки</span></button>
-                <button type="button" class="optrow" role="radio" data-id="law" aria-checked="false" tabindex="-1"><span>Юриспруденция / педагогика / психология</span><span class="dots"></span><span class="o-val">+15%</span></button>
-                <button type="button" class="optrow" role="radio" data-id="tech" aria-checked="false" tabindex="-1"><span>Технические / IT / программирование</span><span class="dots"></span><span class="o-val">+30%</span></button>
-                <button type="button" class="optrow" role="radio" data-id="med" aria-checked="false" tabindex="-1"><span>Медицина / финансы с расчётами</span><span class="dots"></span><span class="o-val">+40%</span></button>
-              </div>
-              <p class="petit disc-profile" id="discProfile" aria-live="polite">Социология, история, филология, менеджмент, маркетинг, экономическая теория.</p>
-            </div>
-
-            <!-- ШАГ 3: срок и уровень -->
-            <div class="wstep" role="group" aria-labelledby="ws3t">
-              <h2 class="ws-title" id="ws3t" tabindex="-1">Срок и формат результата</h2>
-              <p class="caps" id="segTermLbl" style="margin-bottom:10px">Срок сдачи</p>
-              <div class="seg seg-term" id="segTerm" role="group" aria-labelledby="segTermLbl">
-                <button type="button" data-id="free" class="active" aria-pressed="true"><b>От 30 дней</b><small>без наценки</small></button>
-                <button type="button" data-id="mid" aria-pressed="false"><b>14–30 дней</b><small>+15%</small></button>
-                <button type="button" data-id="urgent" aria-pressed="false"><b>До 14 дней</b><small>+45%</small></button>
-              </div>
-              <p class="caps" style="margin:22px 0 10px">Формат результата</p>
-              <div id="tierGroup" role="radiogroup" aria-label="Формат результата" class="opt-list">
-                <button type="button" class="optrow" role="radio" data-id="base" aria-checked="true" tabindex="0"><span>Диагностика</span><span class="dots"></span><span class="o-val">×1.0</span><small>Аудит вашего текста и карта приоритетных правок</small></button>
-                <button type="button" class="optrow" role="radio" data-id="turn" aria-checked="false" tabindex="-1"><span>Редактура</span><span class="dots"></span><span class="o-val">×1.33</span><small>Правки в вашем файле, комментарии и лист изменений</small></button>
-                <button type="button" class="optrow" role="radio" data-id="vip" aria-checked="false" tabindex="-1"><span>Сопровождение</span><span class="dots"></span><span class="o-val">×2.0</span><small>Редактура, консультации, репетиция выступления и приоритет</small></button>
-              </div>
-              <p class="petit" style="margin-top:10px">Не уверены, какой уровень ваш? <a class="link" href="vedenie.html" target="_blank" rel="noopener">Проспект уровней</a> — что входит в каждый и как ощущается. Про деньги — <a class="link" href="oplata.html" target="_blank" rel="noopener">как проходит оплата</a>.</p>
-            </div>
-
-            <!-- ШАГ 4: тема и заявка -->
-            <div class="wstep wstep-final" role="group" aria-labelledby="ws4t">
-              <h2 class="ws-title" id="ws4t" tabindex="-1">Заявка мастеру</h2>
-              <div class="conf-final-intro">
-                <span class="caps">Финальный шаг</span>
-                <p>Заполните только то, что уже известно. Остальное мастер уточнит после заявки.</p>
-              </div>
-              <!-- анкета отдельной услуги: вопросы приходят из SalonServices[].ask -->
-              <header class="plan-form-head">
-                <span class="plan-form-no">01</span>
-                <span><b>Основа плана</b><small>Выберите вид работы и добавьте всё, что уже известно</small></span>
-              </header>
-              <div id="svcAsk" hidden></div>
-              <section class="final-section final-task">
-                <header class="final-section-head">
-                  <span class="final-section-no">03</span>
-                  <span><b>Детали задачи</b><small>Необязательно — заполните только то, что уже известно</small></span>
-                </header>
-                <div class="field">
-                  <label for="fTopic">Тема материала <span class="field-optional">необязательно</span></label>
-                  <input type="text" id="fTopic" maxlength="160" autocomplete="off" placeholder="Например: развитие туризма в Татарстане" />
-                </div>
-                <div class="field">
-                  <label for="fDeadline">Желаемый срок результата <span class="field-optional">необязательно</span></label>
-                  <input type="text" id="fDeadline" maxlength="60" autocomplete="off" placeholder="Например: 25 июля" />
-                </div>
-                <div class="field">
-                  <label for="fDetails">Требования <span class="field-optional">необязательно</span></label>
-                  <textarea id="fDetails" rows="2" maxlength="1200" placeholder="Объём, методичка, замечания, формат файла и другие требования"></textarea>
-                </div>
-              </section>
-
-              <!-- файлы: то, ради чего заявку удобно отправлять именно с сайта -->
-              <section class="final-section final-files">
-                <header class="final-section-head">
-                  <span class="final-section-no">02</span>
-                  <span><b>Материалы</b><small>Можно приложить сейчас или прислать мастеру позже</small></span>
-                </header>
-                <div class="field">
-                  <label for="fFiles">Методичка, ТЗ или черновик <span class="field-optional">необязательно</span></label>
-                  <input type="file" id="fFiles" multiple hidden />
-                  <button type="button" class="att-add" id="attAdd" aria-describedby="attHint">
-                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.2 12.7 13 19.9a5 5 0 0 1-7.1-7.1l7.9-7.8a3.35 3.35 0 0 1 4.7 4.7l-7.8 7.9a1.68 1.68 0 0 1-2.4-2.4l7.2-7.2"/></svg>
-                    <span>Прикрепить методичку или ТЗ</span>
-                  </button>
-                  <div class="att-list" id="attList" hidden></div>
-                  <p class="petit" id="attHint">До 5 файлов по 20 МБ. Так мастер сможет сразу назвать точную цену.</p>
-                </div>
-              </section>
-
-              <div class="compose-gate" id="composeGate" hidden>
-                <span class="caps">Сначала — состав сметы</span>
-                <h3>Добавьте услугу, затем решите: дополнить или отправить</h3>
-                <p>Контакты понадобятся только после того, как вы проверите состав и выгоды.</p>
-                <button type="button" class="btn btn-wax btn-block" data-cart-add>Добавить услугу в смету <span class="ar">→</span></button>
-              </div>
-
-              <div id="checkoutFields">
-              <!-- как с вами связаться: Telegram-вход или контакт вручную -->
-              <section class="final-section final-contact">
-                <header class="final-section-head">
-                  <span class="final-section-no">01</span>
-                  <span><b>Куда прислать смету</b><small>Выберите быстрый вход или оставьте удобный контакт</small></span>
-                </header>
-                <div id="ctAuthed" hidden>
-                  <p class="petit">✓ Вы вошли через Telegram как <b id="ctName">гость</b>. Заявка появится в кабинете, ответ — здесь и в боте.</p>
-                </div>
-                <div id="ctGuest">
-                  <button type="button" class="btn btn-line btn-block" id="tgLoginBtn">Продолжить через Telegram</button>
-                  <p class="contact-or"><span>или оставьте контакт</span></p>
-                  <div class="field field-name">
-                    <label for="fName">Как к вам обращаться <span class="field-optional">необязательно</span></label>
-                    <input type="text" id="fName" maxlength="80" autocomplete="name" placeholder="Имя" />
-                  </div>
-                  <div class="field">
-                    <label for="fContact">Куда прислать ответ</label>
-                    <div class="ct-chips" id="ctChips" role="group" aria-label="Способ связи">
-                      <button type="button" class="ct-chip on" data-ct="tg" aria-pressed="true">Telegram</button>
-                      <button type="button" class="ct-chip" data-ct="vk" aria-pressed="false">ВКонтакте</button>
-                      <button type="button" class="ct-chip" data-ct="wa" aria-pressed="false">WhatsApp</button>
-                      <button type="button" class="ct-chip" data-ct="ph" aria-pressed="false">Телефон</button>
-                      <button type="button" class="ct-chip" data-ct="em" aria-pressed="false">Почта</button>
-                    </div>
-                    <input type="text" id="fContact" maxlength="120" autocomplete="tel" placeholder="@nickname — ник в Telegram" />
-                    <p class="petit" id="ctHint">Укажите ник или ссылку — мастер напишет напрямую.</p>
-                  </div>
-                  <label class="petit consent-row">
-                    <input type="checkbox" id="fConsent" />
-                    <span>Мне исполнилось 18 лет; я ознакомлен(а) с <a class="link" href="privacy.html" target="_blank">политикой ПДн</a>. Контакт используется для ответа и подготовки договора, а не для рекламы.</span>
-                  </label>
-                </div>
-              </section>
-
-              <button type="button" class="final-more-toggle" id="finalMoreToggle"
-                      aria-expanded="false" aria-controls="finalMoreBody">
-                <span class="final-more-mark" aria-hidden="true">+</span>
-                <span><b>Скидки и другие варианты</b><small>Промокод, сертификат или сохранить смету</small></span>
-                <span class="final-more-arrow" aria-hidden="true">+</span>
-              </button>
-              <div class="final-more-body" id="finalMoreBody">
-                <!-- промокод: купон — свёрнут в строку купона, разворачивается по клику или из ?promo= -->
-                <div class="coupon" id="promoBox">
-                <button type="button" class="cp-toggle" id="promoShow" aria-expanded="false" aria-controls="promoField">
-                  <span aria-hidden="true">🎟</span>
-                  <span class="cp-lbl">У меня есть промокод</span>
-                  <span class="cp-ar" aria-hidden="true">→</span>
-                </button>
-                <div class="cp-body" id="promoField" hidden>
-                  <div class="cp-row">
-                    <input type="text" id="fPromo" maxlength="24" autocomplete="off"
-                           placeholder="Ваш промокод" aria-label="Промокод" />
-                    <button type="button" class="btn btn-line" id="promoApply">Применить</button>
-                  </div>
-                  <p class="petit" id="promoNote" style="margin-top:8px" hidden></p>
-                </div>
-                <div class="cp-done" id="promoDone" hidden>
-                  <span aria-hidden="true">🎟</span>
-                  <span class="cp-code" id="promoDoneCode"></span>
-                  <span class="cp-what" id="promoDoneLbl"></span>
-                  <button type="button" class="cp-x" id="promoRemove" aria-label="Убрать промокод">×</button>
-                </div>
-                </div>
-
-                <!-- подарочный сертификат: тот же купон-механизм, что и промокод -->
-                <div class="coupon" id="giftBox">
-                <button type="button" class="cp-toggle" id="giftShow" aria-expanded="false" aria-controls="giftField">
-                  <span aria-hidden="true">🎁</span>
-                  <span class="cp-lbl">У меня есть сертификат</span>
-                  <span class="cp-ar" aria-hidden="true">→</span>
-                </button>
-                <div class="cp-body" id="giftField" hidden>
-                  <div class="cp-row">
-                    <input type="text" id="fGift" maxlength="24" autocomplete="off"
-                           placeholder="AS-XXXX-XXXX-XXXX" aria-label="Код сертификата" />
-                    <button type="button" class="btn btn-line" id="giftApply">Применить</button>
-                  </div>
-                  <p class="petit" id="giftNote" style="margin-top:8px" hidden></p>
-                </div>
-                <div class="cp-done" id="giftDone" hidden>
-                  <span aria-hidden="true">🎁</span>
-                  <span class="cp-code" id="giftDoneCode"></span>
-                  <span class="cp-what" id="giftDoneLbl"></span>
-                  <button type="button" class="cp-x" id="giftRemove" aria-label="Убрать сертификат">×</button>
-                </div>
-                </div>
-
-                <div class="contact-fallbacks">
-                  <a class="btn btn-line" href="https://vk.me/academicsaloon" target="_blank" rel="noopener">Написать во ВКонтакте</a>
-                  <a class="btn btn-line" href="https://t.me/academicsaloon" target="_blank" rel="noopener">В Telegram</a>
-                </div>
-
-                <!-- смета письмом: уйти подумать, не потеряв расчёт -->
-                <div class="qm-card" id="qmCard">
-                  <div class="qm-head">
-                    <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>
-                    <div style="flex:1;min-width:0">
-                      <p class="qm-t"><b>Сохранить смету на почту</b></p>
-                      <p class="petit">Пришлём ссылку — ответы сохранятся.</p>
-                    </div>
-                    <button type="button" class="qm-open" id="qmShow" aria-expanded="false" aria-controls="qmField">Указать почту</button>
-                  </div>
-                  <div class="qm-form" id="qmField" hidden>
-                    <label class="caps" for="qmEmail" style="display:block;margin-bottom:8px">Почта для сметы</label>
-                    <div class="cp-row">
-                      <input type="email" id="qmEmail" maxlength="120" autocomplete="email" placeholder="you@example.com" />
-                      <button type="button" class="btn btn-line" id="qmSend">Отправить</button>
-                    </div>
-                    <p class="petit" id="qmNote" style="margin-top:8px" hidden></p>
-                  </div>
-                </div>
-              </div>
-
-              <button type="button" class="btn btn-wax btn-block" id="btnSubmit">Отправить заявку мастеру <span class="ar">→</span></button>
-              <p class="petit mt-s wsubmit-note"><span aria-hidden="true">✓</span> Оценка бесплатна. Мастер проверит детали и пришлёт точную смету — решение останется за вами.</p>
-              </div>
-            </div>
-
-            <div class="wnav">
-              <button type="button" class="btn btn-line" id="btnBack" hidden>← Назад</button>
-              <button type="button" class="btn btn-ink" id="btnNext">Далее <span class="ar">→</span></button>
-            </div>
+        <div class="conf-steps">
+          <div class="wprog" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1">
+            <span id="wpLbl">Шаг 1 из 4</span><span id="wpFill"></span>
           </div>
-
-          <!-- ПРАВАЯ КОЛОНКА: живая смета -->
-          <aside class="conf-aside reveal d1" aria-label="Смета — живой расчёт">
-            <div class="sheet stacked lq-sheet">
-              <header class="lq-dochead">
-                <div class="lq-head">Смета · обновляется сразу</div>
-                <h2>Ваш расчёт</h2>
-                <div class="lq-context">
-                <p class="lq-type" data-lg="type">Сопровождение ВКР / диплома</p>
-                  <span class="lq-step" data-conf-step>Шаг 1 / 4</span>
-                </div>
-              </header>
-              <section class="lq-priceblock" aria-label="Предварительная стоимость">
-                <div class="lg-total">
-                  <b>Итого, от</b>
-                  <span class="price-xl" id="lqLow" aria-hidden="true">24&nbsp;000&nbsp;₽</span>
-                  <span id="lqLowSr" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">24&nbsp;000&nbsp;₽</span>
-                </div>
-                <p class="lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
-                <div class="lq-deal" data-deal hidden></div>
-              </section>
-              <section class="lq-formula">
-                <div class="lq-formula-head"><span>Как сложилась цена</span><span>формула открыта</span></div>
-                <div class="ledger">
-                  <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">24&nbsp;000&nbsp;₽</span></div>
-                  <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
-                  <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
-                  <div class="lg-row"><span data-lg="tierLbl">Формат · Диагностика</span><span class="num" data-lg="tier">×1.0</span></div>
-                </div>
-              </section>
-              <section class="lq-summary">
-                <div class="lq-facts" aria-label="Условия сметы">
-                  <span class="lq-fact"><i>✓</i>Оценка бесплатна</span>
-                  <span class="lq-fact"><i>✓</i>Цена фиксируется до старта</span>
-                </div>
-                <p class="lq-pay" data-lg="pay">Точные этапы и результат каждой позиции будут перечислены в спецификации до оплаты.</p>
-                <details class="lq-explain">
-                  <summary>Почему сейчас показана вилка?</summary>
-                  <p class="petit lq-when">Расчёт меняется сразу с вашими ответами. После заявки мастер проверит объём и требования, назовёт точную цену и зафиксирует её до старта. Максимальный коэффициент срочности — ×1,45.</p>
-                </details>
-                <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
-                <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
-                <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="plus.html">Про абонемент</a></p>
-                <details class="lq-cheaper petit">
-                  <summary class="link" style="cursor:pointer">Как снизить стоимость</summary>
-                  <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
-                    <li data-lg="chTerm"></li>
-                    <li data-lg="chTier"></li>
-                    <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span> — зачтём в цену работы.</li>
-                  </ul>
-                </details>
-              </section>
+          <section class="wstep active">
+            <h2 class="ws-title" tabindex="-1">Тип работы</h2>
+            <input type="search" id="workSearch" autocomplete="off" />
+            <button type="button" id="workSearchClear" hidden></button>
+            <div id="workFilters">
+              <button type="button" data-work-filter="all" aria-pressed="true"></button>
+              <button type="button" data-work-filter="degree" aria-pressed="false"></button>
+              <button type="button" data-work-filter="course" aria-pressed="false"></button>
+              <button type="button" data-work-filter="article" aria-pressed="false"></button>
+              <button type="button" data-work-filter="service" aria-pressed="false"></button>
             </div>
-          </aside>
-        </div>
-      </div>
-
-      <!-- ЭКРАН УСПЕХА (вместо визарда) -->
-      <div id="confDone" class="conf-done" hidden>
-        <div class="sheet sheet-pad stacked done-sheet">
-          <div class="done-hero">
-            <div class="done-seal" data-seal="ПРИНЯТО К РАЗБОРУ · АКАДЕМИЧЕСКИЙ САЛОН · " data-seal-center="¶" data-seal-cls="seal--wax" data-seal-size="96"></div>
-            <p class="caps">Доставлено мастеру</p>
-            <h2 class="done-h" id="doneH" tabindex="-1">Заявка принята к разбору</h2>
-            <p class="done-no"><span class="done-live" aria-hidden="true"></span>Заявка №<span id="doneNo">AS-0000</span></p>
-            <p class="done-lead">Мы получили состав и контакты. Сейчас ничего оплачивать не нужно.</p>
-          </div>
-          <ol class="done-steps" aria-label="Что произойдёт дальше">
-            <li><span class="dn">Сейчас</span><span><b>Проверяем требования</b><small>Обычно 15–30 минут в рабочее время</small></span></li>
-            <li><span class="dn">Затем</span><span><b>Пришлём точную смету</b><small>Состав, срок и этапы будут зафиксированы</small></span></li>
-            <li><span class="dn">После</span><span><b>Решение остаётся за вами</b><small>Оплата — только после согласования</small></span></li>
-          </ol>
-          <section class="done-receipt" id="doneReceipt" hidden aria-labelledby="doneReceiptTitle">
-            <div class="done-receipt-head"><span class="caps" id="doneReceiptTitle">Что отправлено</span><span id="doneReceiptTotal"></span></div>
-            <div class="done-receipt-list" id="doneReceiptList"></div>
+            <span id="workResult"></span>
+            <div id="typeGroup" role="radiogroup">
+              <div class="opt-group" data-work-kind="degree">
+                <button type="button" class="optrow" role="radio" data-id="diplom" aria-checked="true"><span>ВКР</span><span class="o-val"></span></button>
+                <button type="button" class="optrow" role="radio" data-id="master" aria-checked="false"><span>Магистерская</span><span class="o-val"></span></button>
+                <button type="button" class="optrow" role="radio" data-id="chapter" aria-checked="false"><span>Глава</span><span class="o-val"></span></button>
+                <button type="button" class="optrow" role="radio" data-id="kandidat" aria-checked="false"><span>Диссертация</span><span class="o-val"></span></button>
+              </div>
+              <div class="opt-group" data-work-kind="course">
+                <button type="button" class="optrow" role="radio" data-id="course_emp" aria-checked="false"><span>Курсовая с исследованием</span><span class="o-val"></span></button>
+                <button type="button" class="optrow" role="radio" data-id="course" aria-checked="false"><span>Курсовая</span><span class="o-val"></span></button>
+                <button type="button" class="optrow" role="radio" data-id="practice" aria-checked="false"><span>Практика</span><span class="o-val"></span></button>
+                <button type="button" class="optrow" role="radio" data-id="self" aria-checked="false"><span>Реферат</span><span class="o-val"></span></button>
+              </div>
+              <div class="opt-group" data-work-kind="article">
+                <button type="button" class="optrow" role="radio" data-id="scopus" aria-checked="false"><span>Scopus</span><span class="o-val"></span></button>
+                <button type="button" class="optrow" role="radio" data-id="vak" aria-checked="false"><span>ВАК</span><span class="o-val"></span></button>
+                <button type="button" class="optrow" role="radio" data-id="rinc" aria-checked="false"><span>РИНЦ</span><span class="o-val"></span></button>
+              </div>
+              <div class="opt-group" data-work-kind="service"></div>
+            </div>
+            <div id="workEmpty" hidden></div>
+            <p id="planEntry"></p>
           </section>
-          <div class="done-files" id="doneFiles" hidden>
-            <span class="caps">Файлы — мастеру</span>
-            <div class="att-list" id="doneAttList"></div>
-          </div>
-          <div class="done-access">
-            <div>
-              <span class="caps">Статус и связь</span>
-              <h3>Заявка всегда под рукой</h3>
-              <p>В кабинете появится точная смета, переписка и файлы. Telegram можно подключить только для уведомлений.</p>
+          <section class="wstep">
+            <h2 class="ws-title" tabindex="-1">Направление</h2>
+            <div id="discGroup" role="radiogroup">
+              <button type="button" class="optrow" role="radio" data-id="hum" aria-checked="true"></button>
+              <button type="button" class="optrow" role="radio" data-id="law" aria-checked="false"></button>
+              <button type="button" class="optrow" role="radio" data-id="tech" aria-checked="false"></button>
+              <button type="button" class="optrow" role="radio" data-id="med" aria-checked="false"></button>
             </div>
-            <div class="done-actions">
-              <a class="btn btn-wax" id="doneCab" href="dashboard.html">Открыть заявку <span class="ar">→</span></a>
-              <a class="btn btn-line" id="doneBot" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Получать статусы в Telegram</a>
+            <p id="discProfile"></p>
+          </section>
+          <section class="wstep">
+            <h2 class="ws-title" tabindex="-1">Срок и результат</h2>
+            <div id="segTerm">
+              <button type="button" data-id="free" aria-pressed="true"></button>
+              <button type="button" data-id="mid" aria-pressed="false"></button>
+              <button type="button" data-id="urgent" aria-pressed="false"></button>
             </div>
-          </div>
-          <p class="petit done-note" aria-live="polite"></p>
-          <details class="done-plus">
-            <summary>Дополнительно · скидки и приоритет</summary>
-            <div id="doneExtraBody">
-              <p class="petit">Абонемент <b>«Салон+»</b> даёт скидку до 10% и приоритет мастера — без автосписаний.
-              <a class="link" href="dashboard.html#plus">Посмотреть планы →</a></p>
+            <div id="tierGroup" role="radiogroup">
+              <button type="button" class="optrow" role="radio" data-id="base" aria-checked="true"><span class="o-val"></span></button>
+              <button type="button" class="optrow" role="radio" data-id="turn" aria-checked="false"><span class="o-val"></span></button>
+              <button type="button" class="optrow" role="radio" data-id="vip" aria-checked="false"><span class="o-val"></span></button>
             </div>
-          </details>
-          <a class="done-new link" href="configurator.html">Оформить ещё одну заявку</a>
+          </section>
+          <section class="wstep wstep-final">
+            <h2 class="ws-title" id="ws4t" tabindex="-1">Контакты</h2>
+            <div class="conf-final-intro"><span class="caps"></span><p></p></div>
+            <div id="svcAsk" hidden></div>
+            <section class="final-section final-task">
+              <header class="final-section-head"><span class="final-section-no"></span><span><b></b><small></small></span></header>
+              <div class="field"><label for="fTopic"></label><input type="text" id="fTopic" maxlength="160" /></div>
+              <div class="field"><label for="fDeadline"></label><input type="text" id="fDeadline" maxlength="60" /></div>
+              <div class="field"><label for="fDetails"></label><textarea id="fDetails" maxlength="1200"></textarea></div>
+            </section>
+            <section class="final-section final-files">
+              <header class="final-section-head"><span class="final-section-no"></span><span><b></b><small></small></span></header>
+              <input type="file" id="fFiles" multiple />
+              <button type="button" id="attAdd"><span>Добавить файл</span></button>
+              <div id="attList" hidden></div>
+            </section>
+            <div id="composeGate" hidden><button type="button" data-cart-add></button></div>
+            <div id="checkoutFields">
+              <section class="final-section final-contact">
+                <header class="final-section-head"><span class="final-section-no"></span><span><b></b><small></small></span></header>
+                <div id="ctAuthed" hidden><b id="ctName"></b></div>
+                <div id="ctGuest">
+                  <button type="button" id="tgLoginBtn"></button>
+                  <div class="field"><label for="fName"></label><input type="text" id="fName" maxlength="80" /></div>
+                  <div id="ctChips">
+                    <button type="button" class="ct-chip on" data-ct="tg" aria-pressed="true"></button>
+                    <button type="button" class="ct-chip" data-ct="vk" aria-pressed="false"></button>
+                    <button type="button" class="ct-chip" data-ct="wa" aria-pressed="false"></button>
+                    <button type="button" class="ct-chip" data-ct="ph" aria-pressed="false"></button>
+                    <button type="button" class="ct-chip" data-ct="em" aria-pressed="false"></button>
+                  </div>
+                  <input type="text" id="fContact" maxlength="120" />
+                  <p id="ctHint"></p>
+                </div>
+                <input type="checkbox" id="fConsent" />
+              </section>
+              <button type="button" id="finalMoreToggle" aria-expanded="false"><span></span></button>
+              <div id="finalMoreBody">
+                <div id="promoBox">
+                  <button type="button" class="cp-toggle" id="promoShow" aria-expanded="false"><span class="cp-ar"></span></button>
+                  <div id="promoField" hidden><input type="text" id="fPromo" maxlength="24" /><button type="button" id="promoApply"></button><p id="promoNote" hidden></p></div>
+                  <div id="promoDone" hidden><span id="promoDoneCode"></span><span id="promoDoneLbl"></span><button type="button" id="promoRemove"></button></div>
+                </div>
+                <div id="giftBox">
+                  <button type="button" class="cp-toggle" id="giftShow" aria-expanded="false"><span class="cp-ar"></span></button>
+                  <div id="giftField" hidden><input type="text" id="fGift" maxlength="24" /><button type="button" id="giftApply"></button><p id="giftNote" hidden></p></div>
+                  <div id="giftDone" hidden><span id="giftDoneCode"></span><span id="giftDoneLbl"></span><button type="button" id="giftRemove"></button></div>
+                </div>
+                <div id="qmCard"><button type="button" id="qmShow" aria-expanded="false"></button><div id="qmField" hidden><input type="email" id="qmEmail" /><button type="button" id="qmSend"></button><p id="qmNote" hidden></p></div></div>
+              </div>
+              <button type="button" id="btnSubmit"></button>
+              <p class="wsubmit-note"></p>
+            </div>
+          </section>
+          <button type="button" id="btnBack" hidden></button>
+          <button type="button" id="btnNext"></button>
+        </div>
+        <div class="lq-head"></div>
+        <span data-conf-step></span>
+        <div class="lg-total"><b></b><span id="lqLow"></span><span id="lqLowSr"></span></div>
+        <div data-deal hidden></div>
+        <div class="lg-row"><span data-lg="type"></span><span data-lg="base"></span></div>
+        <div class="lg-row"><span data-lg="discLbl"></span><span data-lg="disc"></span></div>
+        <div class="lg-row"><span data-lg="termLbl"></span><span data-lg="term"></span></div>
+        <div class="lg-row"><span data-lg="tierLbl"></span><span data-lg="tier"></span></div>
+        <span data-lg="low"></span><span data-lg="high"></span><span data-lg="pay"></span>
+        <span data-lg="plus" class="lq-plus"></span>
+        <span data-lg="chTerm"></span><span data-lg="chTier"></span><span data-lg="chPlan"></span>
+        <details class="lq-cheaper"></details><details class="lq-explain"></details>
+      </div>
+      <div id="confDone" class="conf-done" hidden>
+        <div class="done-sheet">
+          <div class="done-hero"><p class="caps"></p><h2 id="doneH" tabindex="-1"></h2><p class="done-lead"></p><span id="doneNo"></span></div>
+          <ol class="done-steps"><li><span></span><span><b></b><small></small></span></li><li><span></span><span><b></b><small></small></span></li><li><span></span><span><b></b><small></small></span></li></ol>
+          <section class="done-receipt" id="doneReceipt" hidden><span id="doneReceiptTotal"></span><div id="doneReceiptList"></div></section>
+          <div id="doneFiles" hidden><div id="doneAttList"></div></div>
+          <div class="done-access"><a id="doneCab" href="dashboard.html"></a><a id="doneBot" href="https://t.me/academic_saloon_bot"></a></div>
+          <p class="done-note"></p>
+          <details class="done-plus"><div id="doneExtraBody"></div></details>
+          <a class="done-new" href="configurator.html"></a>
         </div>
       </div>
-
-    </section>
+      <div id="confMcta" hidden>
+        <div id="mqPanel" hidden></div>
+        <button type="button" id="mBack" hidden></button>
+        <button type="button" id="mqToggle" aria-expanded="false"></button>
+        <span id="mqBarLow"></span><span id="mqMore"></span>
+        <button type="button" id="mNext"></button>
+      </div>
+    </div>
   </div>
 </main>
 
-<!-- МОБИЛЬНАЯ ПАНЕЛЬ: своя разметка (app.js не инжектит CTA на этой странице) -->
-<div class="mobile-cta conf-mcta" id="confMcta">
-  <div class="mq-panel" id="mqPanel" hidden>
-    <div class="lq-mobile-head">
-      <div>
-        <span class="lq-head">Предварительная смета</span>
-        <p class="lq-type" data-lg="type">Сопровождение ВКР / диплома</p>
-      </div>
-      <span class="lq-step" data-conf-step>Шаг 1 / 4</span>
-    </div>
-    <div class="lq-mobile-price">
-      <div class="lg-total"><b>Итого, от</b><span class="num" data-lg="low">24&nbsp;000&nbsp;₽</span></div>
-      <p class="lq-high" data-lg="high">до 56&nbsp;000&nbsp;₽ в зависимости от объёма</p>
-      <div class="lq-deal" data-deal hidden></div>
-    </div>
-    <details class="lq-mobile-formula">
-      <summary>Как рассчитали сумму</summary>
-      <div class="ledger">
-        <div class="lg-row"><span>Базовая ставка</span><span class="num" data-lg="base">24&nbsp;000&nbsp;₽</span></div>
-        <div class="lg-row"><span data-lg="discLbl">Направление · гуманитарные</span><span class="num" data-lg="disc">×1.0</span></div>
-        <div class="lg-row"><span data-lg="termLbl">Срок · от 30 дней</span><span class="num" data-lg="term">×1.0</span></div>
-        <div class="lg-row"><span data-lg="tierLbl">Формат · Диагностика</span><span class="num" data-lg="tier">×1.0</span></div>
-      </div>
-    </details>
-    <details class="lq-mobile-terms">
-      <summary>Условия и оплата</summary>
-      <div class="lq-mobile-info">
-        <p class="petit lq-pay" data-lg="pay">Оплата по этапам: 30% — старт и бронь · 40% — после показа основной части · 30% — перед финальной выдачей.</p>
-        <p class="petit lq-when"><b>Почему диапазон.</b> После заявки мастер проверит объём и требования, назовёт точную цену и зафиксирует её до старта.</p>
-        <p class="petit lq-promo" hidden>🎟 <span data-lg="promo"></span></p>
-        <p class="petit lq-gift" hidden>🎁 <span data-lg="gift"></span></p>
-        <p class="petit lq-plus">⭐ <span data-lg="plus"></span> <a class="link" href="plus.html">Про абонемент</a></p>
-        <details class="lq-cheaper petit">
-          <summary class="link" style="cursor:pointer">Как снизить стоимость</summary>
-          <ul style="margin:8px 0 0;padding-left:18px;line-height:1.6">
-            <li data-lg="chTerm"></li>
-            <li data-lg="chTier"></li>
-            <li>Начните с «Разбора плана» за <span data-lg="chPlan">3 000 ₽</span>.</li>
-          </ul>
-        </details>
-      </div>
-    </details>
-  </div>
-  <div class="mq-bar">
-    <button type="button" class="mq-back" id="mBack" aria-label="Назад" hidden>←</button>
-    <button type="button" class="mq-total" id="mqToggle" aria-expanded="false" aria-controls="mqPanel">
-      <span class="mq-total-copy" aria-live="polite" aria-atomic="true"><small>Итого</small><b class="num" id="mqBarLow">40&nbsp;000&nbsp;₽</b></span>
-      <span class="mq-more" id="mqMore">Смета</span>
-    </button>
-    <button type="button" class="btn btn-wax" id="mNext">Далее</button>
-  </div>
+<div class="concept-task-bar" id="conceptTaskBar">
+  <button type="button" class="concept-task-back" data-concept-back hidden>Назад</button>
+  <div><span data-concept-task-kicker>Шаг 1 из 5</span><strong data-concept-task-title>Ситуация</strong></div>
+  <button type="button" class="btn btn-wax" data-concept-next disabled>Продолжить <span aria-hidden="true">→</span></button>
 </div>
 
 <!-- вуаль отправки: заявка уходит «письмом» — с честными стадиями ожидания -->
@@ -1169,9 +282,10 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260723r"></script>
-<script src="assets/js/extras.js?v=20260724a"></script>
-<script src="assets/js/cart.js?v=20260724a"></script>
+<script src="assets/js/app.js?v=20260725release13"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260725release13"></script>
+<script src="assets/js/extras.js?v=20260725release13"></script>
+<script src="assets/js/cart.js?v=20260725release13"></script>
 <script>
 function initConf() {
   'use strict';
@@ -1198,6 +312,7 @@ function initConf() {
   var state = { type: 'diplom', disc: 'hum', term: 'free', tier: 'base' };
   var idx = 0;
   var canSave = false; /* черновик пишем, только если он был или пользователь что-то тронул */
+  var typeConfirmed = false; /* дефолт — ориентир, а не молчаливый выбор клиента */
 
   /* --- режим отдельной услуги: ?service=ai|rv|tu|nm (код или id из SalonServices).
      Один шаг вместо четырёх: детали, файлы, контакт. Цена «от» — точную
@@ -1223,7 +338,10 @@ function initConf() {
   var draft = S.store.get('salon_draft', null);
   if (!svc && draft && draft.state) {
     canSave = true;
-    if (has(C.types, draft.state.type)) state.type = draft.state.type;
+    if (has(C.types, draft.state.type)) {
+      state.type = draft.state.type;
+      typeConfirmed = true;
+    }
     if (has(C.disciplines, draft.state.disc)) state.disc = draft.state.disc;
     if (has(C.terms, draft.state.term)) state.term = draft.state.term;
     if (has(C.tiers, draft.state.tier)) state.tier = draft.state.tier;
@@ -1232,7 +350,10 @@ function initConf() {
   /* --- deep-link ?step=1..4 --- */
   try {
     var qs = new URLSearchParams(location.search).get('step');
-    if (!svc && qs) { var n = parseInt(qs, 10); if (n >= 1 && n <= 4) idx = n - 1; }
+    if (!svc && qs) {
+      var n = parseInt(qs, 10);
+      if (n >= 1 && n <= 4) idx = (n > 1 && !typeConfirmed) ? 0 : n - 1;
+    }
   } catch (e) {}
   /* легаси-режим «полная работа, начиная с разбора» упразднён:
      разбор плана — отдельная услуга со своей анкетой (?service=pl) */
@@ -1434,6 +555,9 @@ function initConf() {
     if (S.metrika) S.metrika.goal('service_form');
     if (S.visit) S.visit.mark('услуга: ' + svc.label);
   }
+  if (S.visit && S.visit.event) {
+    S.visit.event('config_open', { cta: svc ? 'service:' + (svc.code || svc.id) : 'calculator' });
+  }
 
   /* --- анкета услуги: свои вопросы под каждую особенную позицию --- */
   var svcAnswers = {};
@@ -1542,10 +666,10 @@ function initConf() {
         $('svcOfferList').innerHTML =
           '<li><span><b>Структура глав и параграфов</b><small>Можно нести научному руководителю</small></span></li>' +
           '<li><span><b>Реалистичный календарь</b><small>Сроки по частям и честный дедлайн</small></span></li>' +
-          '<li><span><b>Фиксированная смета</b><small>Цена всей работы до её начала</small></span></li>';
+          '<li><span><b>Понятная рекомендация</b><small>Какой следующий формат нужен и сколько он стоит</small></span></li>';
         var on = $('svcOfferNote');
         on.hidden = false;
-        on.innerHTML = 'Продолжите работу в течение 14 дней — <b>зачтём всю сумму</b>. Магистерские и кандидатские — 5 000 ₽.';
+        on.innerHTML = 'Выберите сопровождение в течение 14 дней — <b>зачтём всю сумму диагностики</b>. Магистерские и кандидатские — 5 000 ₽.';
       } else {
         $('svcOfferList').innerHTML = '';
       }
@@ -1553,7 +677,7 @@ function initConf() {
     if (svc.fixed) {
       put('high', 'цена фиксированная — доплат по ходу не будет');
       put('pay', svc.id === 'plan'
-        ? 'Один платёж после подтверждения мастером. При продолжении работы сумма зачитывается в её стоимость.'
+        ? 'Один платёж после подтверждения мастером. При переходе в сопровождение сумма диагностики зачитывается в его стоимость.'
         : 'Оплата одним платежом после подтверждения мастером.');
       svcPricePaint();
     }
@@ -1695,7 +819,7 @@ function initConf() {
       });
       return;
     }
-    /* калькулятор полной работы хранит собственный независимый черновик */
+    /* калькулятор сопровождения хранит собственный независимый черновик */
     S.store.set('salon_draft', {
       state: { type: state.type, disc: state.disc, term: state.term, tier: state.tier },
       idx: idx,
@@ -1725,13 +849,19 @@ function initConf() {
     var s = find(C.terms, state.term), v = find(C.tiers, state.tier);
     var q = C.quote(state.type, state.disc, state.term, state.tier);
     put('type', t.label);
-    put('base', C.fmt(t.base) + ' ₽');
+    put('base', C.fmt(q.base) + ' ₽');
     put('discLbl', 'Направление · ' + DISC_SHORT[state.disc]);
     put('disc', '×' + kfmt(d.k));
     put('termLbl', 'Срок · ' + TERM_SHORT[state.term]);
     put('term', '×' + kfmt(s.k));
-    put('tierLbl', 'Формат · ' + v.label);
-    put('tier', '×' + kfmt(v.k));
+    put('tierLbl', 'Результат · ' + v.label);
+    put('tier', 'включён');
+    document.querySelectorAll('#tierGroup [data-id]').forEach(function (button) {
+      var option = find(C.tiers, button.getAttribute('data-id'));
+      var amount = t.prices && option ? t.prices[option.priceKey] : 0;
+      var value = button.querySelector('.o-val');
+      if (value && amount) value.textContent = 'от ' + C.fmt(C.round500(amount * d.k * s.k)) + ' ₽';
+    });
     put('low', q.lowFmt + ' ₽');
     put('high', 'до ' + q.highFmt + ' ₽ в зависимости от объёма');
     S.countTo(priceEl, q.low, { suffix: ' ₽' });
@@ -1835,7 +965,7 @@ function initConf() {
       var moneyLow = Math.max(0, payBase - giftBal);
       rows += '<p class="deal-money petit">💵 Деньгами останется: ' + (q.fixed ? '' : 'от ') +
         C.fmt(moneyLow) + ' ₽' + (moneyLow === 0
-          ? ' — сертификат может покрыть работу целиком'
+          ? ' — сертификат может покрыть заказ целиком'
           : ' — остальное закроет сертификат') + '</p>';
     }
     if (strike || gOn) rows += '<p class="deal-note petit">' + (strike
@@ -1902,7 +1032,13 @@ function initConf() {
     };
   }
 
-  var rgType = radioGroup($('typeGroup'), function (id) { state.type = id; render(); touch(); });
+  var rgType = radioGroup($('typeGroup'), function (id) {
+    state.type = id;
+    typeConfirmed = true;
+    render();
+    touch();
+    syncTypeGate();
+  });
   var rgDisc = radioGroup($('discGroup'), function (id) { state.disc = id; render(); touch(); });
   var rgTier = radioGroup($('tierGroup'), function (id) { state.tier = id; render(); touch(); });
 
@@ -1934,10 +1070,13 @@ function initConf() {
     steps.forEach(function (el, n) { el.classList.toggle('active', n === idx); });
     wpLbl.textContent = 'Шаг ' + (idx + 1) + ' из 4';
     wpFill.style.width = ((idx + 1) * 25) + '%';
+    var progress = wpLbl.closest('[role="progressbar"]');
+    if (progress) progress.setAttribute('aria-valuenow', String(idx + 1));
     document.querySelectorAll('[data-conf-step]').forEach(function (el) {
       el.textContent = svc ? 'Один лист' : 'Шаг ' + (idx + 1) + ' / 4';
     });
     if (S.visit) S.visit.mark('шаг ' + (idx + 1) + ' из 4');
+    if (S.visit && S.visit.event) S.visit.event('step_view', { cta: 'step_' + (idx + 1) });
     btnBack.hidden = svc ? true : idx === 0;
     btnNext.hidden = svc ? true : idx === 3;
     if (mBack) mBack.hidden = svc ? true : idx === 0;
@@ -1947,6 +1086,7 @@ function initConf() {
         ? 'Отправить заявку'
         : (idx === 3 ? 'Отправить' : 'Далее');
     }
+    syncTypeGate();
     if (mqPanel && !mqPanel.hidden) {
       mqPanel.hidden = true;
       if (mqToggle) mqToggle.setAttribute('aria-expanded', 'false');
@@ -1958,6 +1098,20 @@ function initConf() {
       if (t) t.focus({ preventScroll: true });
       var r = wiz.getBoundingClientRect();
       if (r.top < 56) window.scrollTo({ top: window.scrollY + r.top - 76, behavior: S.reduceMotion ? 'auto' : 'smooth' });
+    }
+  }
+  function syncTypeGate() {
+    var waiting = !svc && idx === 0 && !typeConfirmed;
+    if (btnNext) {
+      btnNext.disabled = waiting;
+      btnNext.setAttribute('aria-disabled', String(waiting));
+    }
+    if (mNext) {
+      mNext.disabled = waiting;
+      mNext.setAttribute('aria-disabled', String(waiting));
+      mNext.textContent = waiting
+        ? 'Выберите тип'
+        : (isPlanService ? 'Отправить заявку' : (idx === 3 ? 'Отправить' : 'Далее'));
     }
   }
   btnNext.addEventListener('click', function () { canSave = true; go(idx + 1, true); });
@@ -2385,7 +1539,10 @@ function initConf() {
         if (!r || !r.ok || !r.state) return;
         var q = r.state;
         canSave = true;
-        if (has(C.types, q.type)) state.type = q.type;
+        if (has(C.types, q.type)) {
+          state.type = q.type;
+          typeConfirmed = true;
+        }
         if (has(C.disciplines, q.disc)) state.disc = q.disc;
         if (has(C.terms, q.term)) state.term = q.term;
         if (has(C.tiers, q.tier)) state.tier = q.tier;
@@ -2551,10 +1708,16 @@ function initConf() {
         if (S.motion) S.motion.field($('fContact'), 'error');
         $('fContact').setAttribute('aria-invalid','true'); $('fContact').focus(); return;
       }
-      if ($('fConsent') && !$('fConsent').checked) {
-        S.toast('Подтвердите возраст и ознакомление с политикой', { type: 'error' });
-        if (S.motion) S.motion.field($('fConsent'), 'error'); $('fConsent').focus(); return;
-      }
+    }
+    if ($('fConsent') && !$('fConsent').checked) {
+      S.toast('Нужно отдельное согласие на обработку данных для этой заявки', { type: 'error' });
+      if (S.motion) S.motion.field($('fConsent'), 'error');
+      $('fConsent').focus();
+      return;
+    }
+    if (S.visit) S.visit.mark('заявка: форма заполнена');
+    if (S.visit && S.visit.event) {
+      S.visit.event('submit_attempt', { cta: svc ? 'service:' + (svc.code || svc.id) : 'calculator' });
     }
     /* ответы анкеты услуги — сводкой в требования (мастер видит всё сразу) */
     var askText = '';
@@ -2591,9 +1754,9 @@ function initConf() {
                (detailsIn ? detailsIn.value.trim() : ''),
       promo: promoCode || undefined,
       gift: giftCode || undefined,
-      consent: !!(authed || ($('fConsent') && $('fConsent').checked)),
-      privacy_notice_ack: !!(authed || ($('fConsent') && $('fConsent').checked)),
-      consent_doc: 'договорное уведомление · privacy 3.0 · oferta 3.0 · форма конфигуратора 2.0',
+      consent: !!($('fConsent') && $('fConsent').checked),
+      privacy_notice_ack: !!($('fConsent') && $('fConsent').checked),
+      consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.0',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
       ref: (S.refCode && S.refCode()) || undefined,
       client_request_id: requestId()
@@ -2619,17 +1782,20 @@ function initConf() {
       payload.page = 'configurator.html#cart';
       payload.cart = window.SalonCart.payload();
     }
+    if (S.attribution && S.attribution.decoratePage) {
+      payload.page = S.attribution.decoratePage(payload.page);
+    }
     function unlock() {
       submitting = false;
       veilHide();
       S.btnLoading(btnSubmit, false); if (mNext) S.btnLoading(mNext, false);
     }
-    /* попытка 1 — до 25с; обрыв/мёртвый шлюз (0/502/503) — тихий повтор через 2.5с.
-       504/500 не повторяем: заявка могла долететь — дубль хуже паузы. */
+    /* Попытка 1 — до 25с; обрыв/5xx — тихий повтор тем же client_request_id.
+       Серверная идемпотентность вернёт уже созданную заявку без дубля. */
     submitFetch(payload, 25000).then(function (a1) {
       if (a1.r && a1.r.ok && a1.r.id) { unlock(); onSubmitOk(a1.r); return; }
       if (a1.r && a1.r.ok === false && a1.st < 500 && a1.st > 0) { unlock(); onSubmitErr(a1.r); return; }
-      if (a1.st === 0 || a1.st === 502 || a1.st === 503) {
+      if (a1.st === 0 || [500, 502, 503, 504].indexOf(a1.st) >= 0) {
         veilStage('Первая попытка не прошла — пробуем ещё…',
                   'Такое бывает на секунду-другую. Держим вашу смету крепко.');
         setTimeout(function () {
@@ -2745,7 +1911,19 @@ function initConf() {
   /* сервер жив и ответил ошибкой — говорим словами, форма остаётся */
   function onSubmitErr(r) {
     pendingRequestId = '';
+    if (S.visit && S.visit.event) S.visit.event('submit_fail', { cta: 'server_rejected' });
     var e = (r && r.error) || '';
+    var scopeMessage = S.api && S.api.outsideScopeMessage
+      ? S.api.outsideScopeMessage(r)
+      : '';
+    if (scopeMessage) {
+      S.toast(scopeMessage, { type: 'error' });
+      if (detailsIn) {
+        detailsIn.setAttribute('aria-invalid', 'true');
+        detailsIn.focus();
+      }
+      return;
+    }
     if (e === 'rate_limit' || e === 'rate_limited') { S.toast('Слишком много заявок подряд — подождите минуту'); return; }
     if (e === 'contact_required') { S.toast('Оставьте контакт или войдите через Telegram'); return; }
     if (e === 'forbidden') { S.toast('Доступ ограничен — напишите нам напрямую, разберёмся'); return; }
@@ -2842,7 +2020,18 @@ function initConf() {
       });
     }
     if (S.visit) S.visit.mark('отправка не прошла — запасной ход');
+    if (S.visit && S.visit.event) S.visit.event('submit_fail', { cta: 'network_fallback' });
   }
+  (function trackFirstInput() {
+    var body = $('confBody');
+    if (!body) return;
+    body.addEventListener('input', function firstInput() {
+      body.removeEventListener('input', firstInput);
+      if (S.visit && S.visit.event) {
+        S.visit.event('first_input', { cta: svc ? 'service:' + (svc.code || svc.id) : 'calculator' });
+      }
+    });
+  })();
   btnSubmit.addEventListener('click', submit);
 
   function showDone(id, failed) {
@@ -3050,6 +2239,472 @@ if (document.prerendering) {
 } else {
   initConf();
 }
+</script>
+<script>
+(function initConceptWizard() {
+  'use strict';
+
+  var host = document.getElementById('conceptWizard');
+  if (!host) return;
+
+  var STORE_KEY = 'salon_concept_request_v1';
+  var steps = [
+    {
+      key:'situation', kicker:'Шаг 1', title:'Что происходит с работой сейчас?',
+      lead:'Выберите ближайшую ситуацию. Это поможет не показывать лишние вопросы.',
+      options:[
+        ['topic','Есть тема или задание','Нужно проверить направление и собрать план.'],
+        ['draft','Есть черновик','Нужна оценка текста и список задач.'],
+        ['comments','Получены замечания','Нужно понять, что именно исправить.'],
+        ['defense','Скоро сдача или защита','Нужна проверка готовности и приоритетов.']
+      ]
+    },
+    {
+      key:'workType', kicker:'Шаг 2', title:'Какая это работа?',
+      lead:'Если подходящего варианта нет, выберите «Другое» и уточните в комментарии.',
+      options:[
+        ['Курсовая работа','Курсовая работа','Ваш черновик целиком или отдельная глава.'],
+        ['ВКР или дипломная','ВКР или дипломная','Бакалавриат или специалитет.'],
+        ['Магистерская','Магистерская','Исследование, данные и апробация.'],
+        ['Научная статья','Научная статья','РИНЦ, ВАК или сборник.'],
+        ['Отчёт по практике','Отчёт по практике','Отчёт, дневник и приложения.'],
+        ['Другое','Другое','Опишите задачу на последнем шаге.']
+      ]
+    },
+    {
+      key:'result', kicker:'Шаг 3', title:'Какой результат нужен в первую очередь?',
+      lead:'Можно выбрать один вариант. Остальные задачи редактор предложит только после просмотра материалов.',
+      options:[
+        ['Диагностика','Понять, что исправлять','Письменный разбор и порядок действий.'],
+        ['Редактура','Доработать текст','Правки и комментарии в документе.'],
+        ['Оформление','Пройти нормоконтроль','Сверка с методичкой и исправления.'],
+        ['Защита','Подготовиться к защите','Проверить речь и слайды, провести репетицию.'],
+        ['Нужна рекомендация','Редактор поможет выбрать формат','Решение после первичной оценки.']
+      ]
+    },
+    {
+      key:'deadline', kicker:'Шаг 4', title:'Когда нужен первый результат?',
+      lead:'Укажите реальный срок. Если редакция не сможет его соблюсти, вы узнаете об этом до оплаты.',
+      options:[
+        ['1–2 дня','В течение двух дней','Подходит только для отдельных задач.'],
+        ['3–5 дней','В течение рабочей недели','Обычно достаточно для диагностики и небольшого этапа.'],
+        ['1–2 недели','В течение двух недель','Подходит для редакторской работы по главам.'],
+        ['Срок обсуждается','Срок можно согласовать','Редактор предложит реалистичный график.']
+      ]
+    },
+    {
+      key:'contact', kicker:'Шаг 5', title:'Куда отправить предварительную оценку задачи?',
+      lead:'Контакт нужен только для ответа по этой заявке. Рассылки включаются отдельным согласием.',
+      options:[]
+    }
+  ];
+
+  function safeText(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g,function (char) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char];
+    });
+  }
+  function readSaved() {
+    try {
+      var value = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+      return value && typeof value === 'object' ? value : {};
+    } catch (e) { return {}; }
+  }
+  function saveSelections() {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify({
+        step:state.step,
+        situation:state.situation,
+        workType:state.workType,
+        result:state.result,
+        deadline:state.deadline
+      }));
+    } catch (e) {}
+  }
+
+  var saved = readSaved();
+  var state = {
+    step:Math.max(0,Math.min(4,Number(saved.step) || 0)),
+    situation:saved.situation || '',
+    workType:saved.workType || '',
+    result:saved.result || '',
+    deadline:saved.deadline || '',
+    name:'',
+    contact:'',
+    comment:'',
+    consent:false
+  };
+
+  var serviceCode = '';
+  try { serviceCode = new URLSearchParams(location.search).get('service') || ''; } catch (e) {}
+  if (serviceCode) {
+    var serviceLabels = {
+      pl:'Разбор задачи и плана', ai:'Литературная редактура',
+      rv:'Экспертная диагностика', nm:'Нормоконтроль',
+      df:'Подготовка к защите', dp:'Оформление и защита',
+      tu:'Консультация'
+    };
+    state.step = 4;
+    state.situation = 'topic';
+    state.workType = serviceLabels[serviceCode] || 'Другое';
+    state.result = serviceCode === 'nm' ? 'Оформление' : serviceCode === 'df' || serviceCode === 'dp' ? 'Защита' : serviceCode === 'rv' ? 'Диагностика' : 'Редактура';
+    state.deadline = 'Срок обсуждается';
+    state.comment = serviceLabels[serviceCode] ? 'Выбрана услуга: ' + serviceLabels[serviceCode] + '.' : '';
+  }
+
+  var legacyAsk = document.getElementById('svcAsk');
+  var legacyAskHome = legacyAsk && legacyAsk.parentNode;
+
+  function returnLegacyAsk() {
+    if (legacyAsk && host.contains(legacyAsk) && legacyAskHome) {
+      legacyAsk.hidden = true;
+      legacyAskHome.appendChild(legacyAsk);
+    }
+  }
+
+  function currentSelection() {
+    var key = steps[state.step].key;
+    return state[key] || '';
+  }
+
+  function legacyClick(selector) {
+    var control = document.querySelector(selector);
+    if (!control) return;
+    var selected = control.getAttribute('aria-checked') === 'true' || control.getAttribute('aria-pressed') === 'true';
+    if (!selected) control.click();
+  }
+
+  function syncLegacy() {
+    var typeMap = {
+      'Курсовая работа':'course_emp',
+      'ВКР или дипломная':'diplom',
+      'Магистерская':'master',
+      'Научная статья':'rinc',
+      'Отчёт по практике':'practice',
+      'Другое':'self'
+    };
+    var tierMap = {
+      'Диагностика':'base',
+      'Редактура':'turn',
+      'Оформление':'turn',
+      'Защита':'vip',
+      'Нужна рекомендация':'base'
+    };
+    var termMap = {
+      '1–2 дня':'urgent',
+      '3–5 дней':'urgent',
+      '1–2 недели':'mid',
+      'Срок обсуждается':'free'
+    };
+    if (typeMap[state.workType]) legacyClick('#typeGroup [data-id="' + typeMap[state.workType] + '"]');
+    if (tierMap[state.result]) legacyClick('#tierGroup [data-id="' + tierMap[state.result] + '"]');
+    if (termMap[state.deadline]) legacyClick('#segTerm [data-id="' + termMap[state.deadline] + '"]');
+
+    var name = document.getElementById('fName');
+    var contact = document.getElementById('fContact');
+    var topic = document.getElementById('fTopic');
+    var deadline = document.getElementById('fDeadline');
+    var details = document.getElementById('fDetails');
+    var consent = document.getElementById('fConsent');
+    if (name) name.value = state.name;
+    if (contact) contact.value = state.contact;
+    if (topic) topic.value = state.workType === 'Другое' ? '' : state.workType;
+    if (deadline) deadline.value = state.deadline;
+    if (details) {
+      var situation = {
+        topic:'Есть тема или задание',
+        draft:'Есть черновик',
+        comments:'Получены замечания',
+        defense:'Скоро сдача или защита'
+      }[state.situation] || '';
+      var context = [
+        situation ? 'Ситуация: ' + situation + '.' : '',
+        state.result ? 'Первый результат: ' + state.result + '.' : '',
+        state.comment
+      ].filter(Boolean).join('\n');
+      details.value = context.slice(0,1200);
+    }
+    if (consent) consent.checked = !!state.consent;
+  }
+
+  function fileNames() {
+    var input = document.getElementById('fFiles');
+    if (!input || !input.files) return [];
+    return Array.prototype.map.call(input.files,function (file) { return file.name; });
+  }
+
+  function contactMarkup() {
+    var files = fileNames();
+    var authed = document.getElementById('ctAuthed');
+    var loggedIn = authed && !authed.hidden;
+    return (
+      '<div class="contact-step">' +
+        '<div class="contact-step__form">' +
+          '<div class="concept-telegram-row">' +
+            (loggedIn
+              ? '<span class="concept-auth-ok"><i></i>Telegram подключён — заявка появится в кабинете и боте.</span>'
+              : '<button class="button button--secondary" type="button" data-concept-telegram>Продолжить через Telegram</button><span>или оставьте удобный контакт</span>') +
+          '</div>' +
+          '<label class="field"><span>Имя</span><input type="text" data-concept-field="name" value="' + safeText(state.name) + '" placeholder="Как к вам обращаться"></label>' +
+          '<label class="field"><span>Telegram, телефон или почта</span><input type="text" data-concept-field="contact" value="' + safeText(state.contact) + '" placeholder="Имя пользователя, +7… или name@example.ru"></label>' +
+          '<label class="field field--wide"><span>Что важно учесть</span><textarea rows="5" data-concept-field="comment" placeholder="Можно перечислить замечания, требования или вопросы">' + safeText(state.comment) + '</textarea></label>' +
+          '<button class="file-drop" type="button" data-concept-files>' +
+            '<span class="file-drop__icon" aria-hidden="true">+</span>' +
+            '<span><strong>Добавить материалы</strong><small>Word, PDF, изображения · до 5 файлов по 20 МБ</small></span>' +
+          '</button>' +
+          '<div class="file-list" data-concept-file-list>' +
+            files.map(function (file,index) { return '<span><i aria-hidden="true">DOC</i>' + safeText(file) + '<button type="button" data-concept-remove-file="' + index + '" aria-label="Удалить ' + safeText(file) + '">×</button></span>'; }).join('') +
+          '</div>' +
+          '<label class="consent-check">' +
+            '<input type="checkbox" data-concept-consent ' + (state.consent ? 'checked' : '') + '>' +
+            '<span><strong>Уведомление прочитано.</strong> Я ознакомился с обработкой данных и файлов, необходимых для оценки заявки. Аналитика, рассылки и программа лояльности подключаются отдельным выбором. <a href="consent-request.html" target="_blank" rel="noopener">Как обрабатываются данные</a></span>' +
+          '</label>' +
+          (serviceCode && legacyAsk && legacyAsk.children.length ? '<section class="concept-service-questions"><p class="eyebrow">Детали услуги</p><div data-concept-service-ask></div></section>' : '') +
+        '</div>' +
+        '<aside class="wizard-summary">' +
+          '<p class="eyebrow">Предварительно</p>' +
+          '<h2>' + safeText(state.workType || 'Задача не выбрана') + '</h2>' +
+          '<dl>' +
+            '<div><dt>Ситуация</dt><dd>' + safeText({topic:'Есть тема или задание',draft:'Есть черновик',comments:'Получены замечания',defense:'Скоро сдача'}[state.situation] || '—') + '</dd></div>' +
+            '<div><dt>Первый результат</dt><dd>' + safeText(state.result || '—') + '</dd></div>' +
+            '<div><dt>Срок</dt><dd>' + safeText(state.deadline || '—') + '</dd></div>' +
+            '<div><dt>Стоимость</dt><dd>после просмотра материалов</dd></div>' +
+          '</dl>' +
+          '<p>Точную стоимость редактор назовёт после просмотра материалов.</p>' +
+          (window.SalonCart && window.SalonCart.hasItems && window.SalonCart.hasItems()
+            ? '<button class="line-link concept-cart-link" type="button" data-cart-open>Открыть состав сметы <span aria-hidden="true">→</span></button>'
+            : '') +
+        '</aside>' +
+      '</div>'
+    );
+  }
+
+  function footerMarkup() {
+    var final = state.step === 4;
+    return (
+      '<footer class="wizard-main__footer">' +
+        '<div class="wizard-save"><i aria-hidden="true"></i><span><strong>Выбранный шаг сохраняется</strong><small>Контакты и текст не сохраняются при перезагрузке или закрытии вкладки</small></span></div>' +
+        '<div>' +
+          (state.step > 0 ? '<button class="button button--secondary" type="button" data-concept-back>Назад</button>' : '') +
+          '<button class="button button--primary" type="button" data-concept-next ' + (!canContinue() ? 'disabled' : '') + '>' +
+            (final ? 'Подготовить заявку' : 'Продолжить') + ' <span aria-hidden="true">→</span>' +
+          '</button>' +
+        '</div>' +
+      '</footer>'
+    );
+  }
+
+  function canContinue() {
+    if (state.step < 4) return !!currentSelection();
+    return !!(state.contact.trim() && state.consent);
+  }
+
+  function render() {
+    returnLegacyAsk();
+    var step = steps[state.step];
+    var selected = currentSelection();
+    var cards = '';
+    if (state.step < 4) {
+      cards = '<div class="decision-grid ' + (step.options.length > 4 ? 'decision-grid--compact' : '') + '" data-concept-options>' +
+        step.options.map(function (option) {
+          var active = selected === option[0];
+          return '<button class="decision-card ' + (active ? 'is-selected' : '') + '" type="button" data-concept-choice="' + safeText(option[0]) + '" aria-pressed="' + active + '">' +
+            '<span class="decision-card__radio" aria-hidden="true"><i></i></span>' +
+            '<span><strong>' + option[1] + '</strong><small>' + option[2] + '</small></span>' +
+          '</button>';
+        }).join('') + '</div>';
+    } else {
+      cards = contactMarkup();
+    }
+
+    host.innerHTML =
+      '<header class="wizard-main__head">' +
+        '<div><p class="eyebrow">' + step.kicker + '</p><h1>' + step.title + '</h1><p>' + step.lead + '</p></div>' +
+        '<div class="wizard-main__actions">' +
+          '<button class="theme-toggle wizard-theme" type="button" aria-label="Сменить тему оформления"><span aria-hidden="true">◐</span></button>' +
+          '<a class="wizard-close" href="/" aria-label="Закрыть заявку">×</a>' +
+        '</div>' +
+      '</header>' +
+      cards +
+      footerMarkup();
+
+    if (serviceCode && state.step === 4 && legacyAsk && legacyAsk.children.length) {
+      var slot = host.querySelector('[data-concept-service-ask]');
+      if (slot) {
+        legacyAsk.hidden = false;
+        slot.appendChild(legacyAsk);
+      }
+    }
+
+    updateChrome();
+    bindRendered();
+    syncLegacy();
+  }
+
+  function updateChrome() {
+    var progress = document.getElementById('conceptProgress');
+    var fill = document.getElementById('conceptProgressFill');
+    var label = document.getElementById('conceptProgressLabel');
+    if (progress) progress.setAttribute('aria-valuenow',String(state.step + 1));
+    if (fill) fill.style.width = ((state.step + 1) * 20) + '%';
+    if (label) label.textContent = 'Шаг ' + (state.step + 1) + ' из 5';
+    document.querySelectorAll('[data-tx-step]').forEach(function (item,index) {
+      var button = item.querySelector('button');
+      var marker = button && button.querySelector('span');
+      item.classList.toggle('is-current',index === state.step);
+      item.classList.toggle('is-done',index < state.step);
+      if (button) {
+        button.disabled = index > state.step;
+        if (index === state.step) button.setAttribute('aria-current','step');
+        else button.removeAttribute('aria-current');
+      }
+      if (marker) marker.textContent = index < state.step ? '✓' : String(index + 1).padStart(2,'0');
+    });
+
+    document.querySelectorAll('[data-conf-step]').forEach(function (node) {
+      node.textContent = 'Шаг ' + (state.step + 1) + ' / 5';
+    });
+    var taskKicker = document.querySelector('[data-concept-task-kicker]');
+    var taskTitle = document.querySelector('[data-concept-task-title]');
+    if (taskKicker) taskKicker.textContent = 'Шаг ' + (state.step + 1) + ' из 5';
+    if (taskTitle) taskTitle.textContent = ['Ситуация','Тип работы','Результат','Срок','Контакты'][state.step];
+    document.querySelectorAll('#conceptTaskBar [data-concept-back]').forEach(function (button) {
+      button.hidden = state.step === 0;
+    });
+    document.querySelectorAll('#conceptTaskBar [data-concept-next]').forEach(function (button) {
+      button.disabled = !canContinue();
+      button.innerHTML = (state.step === 4 ? 'Подготовить заявку' : 'Продолжить') + ' <span aria-hidden="true">→</span>';
+    });
+  }
+
+  function choose(value) {
+    state[steps[state.step].key] = value;
+    saveSelections();
+    syncLegacy();
+    render();
+  }
+
+  function go(next) {
+    state.step = Math.max(0,Math.min(4,next));
+    saveSelections();
+    render();
+    try { window.scrollTo({top:0,behavior:window.Salon && Salon.reduceMotion ? 'auto' : 'smooth'}); } catch (e) { window.scrollTo(0,0); }
+    var title = host.querySelector('h1');
+    if (title) {
+      title.setAttribute('tabindex','-1');
+      title.focus({preventScroll:true});
+    }
+  }
+
+  function submit() {
+    syncLegacy();
+    var submitButton = document.getElementById('btnSubmit');
+    if (submitButton) submitButton.click();
+  }
+
+  function next() {
+    if (!canContinue()) return;
+    if (state.step === 4) submit();
+    else go(state.step + 1);
+  }
+
+  function bindRendered() {
+    host.querySelectorAll('[data-concept-choice]').forEach(function (button) {
+      button.addEventListener('click',function () { choose(button.getAttribute('data-concept-choice') || ''); });
+    });
+    host.querySelectorAll('[data-concept-back]').forEach(function (button) {
+      button.addEventListener('click',function () { go(state.step - 1); });
+    });
+    host.querySelectorAll('[data-concept-next]').forEach(function (button) {
+      button.addEventListener('click',next);
+    });
+    host.querySelectorAll('[data-concept-field]').forEach(function (field) {
+      field.addEventListener('input',function () {
+        state[field.getAttribute('data-concept-field')] = field.value;
+        syncLegacy();
+        updateChrome();
+        var footerNext = host.querySelector('[data-concept-next]');
+        if (footerNext) footerNext.disabled = !canContinue();
+      });
+    });
+    var consent = host.querySelector('[data-concept-consent]');
+    if (consent) consent.addEventListener('change',function () {
+      state.consent = consent.checked;
+      syncLegacy();
+      updateChrome();
+      var footerNext = host.querySelector('[data-concept-next]');
+      if (footerNext) footerNext.disabled = !canContinue();
+    });
+    var fileButton = host.querySelector('[data-concept-files]');
+    if (fileButton) fileButton.addEventListener('click',function () {
+      var add = document.getElementById('attAdd');
+      if (add) add.click();
+    });
+    host.querySelectorAll('[data-concept-remove-file]').forEach(function (button) {
+      button.addEventListener('click',function () {
+        var index = Number(button.getAttribute('data-concept-remove-file'));
+        var remove = document.querySelectorAll('#attList .ai-x')[index];
+        if (remove) {
+          remove.click();
+          setTimeout(render,0);
+        }
+      });
+    });
+    var telegram = host.querySelector('[data-concept-telegram]');
+    if (telegram) telegram.addEventListener('click',function () {
+      var source = document.getElementById('tgLoginBtn');
+      if (source) source.click();
+    });
+  }
+
+  document.querySelectorAll('[data-concept-jump]').forEach(function (button) {
+    button.addEventListener('click',function () {
+      var target = Number(button.getAttribute('data-concept-jump'));
+      if (isFinite(target) && target <= state.step) go(target);
+    });
+  });
+  document.querySelectorAll('#conceptTaskBar [data-concept-back]').forEach(function (button) {
+    button.addEventListener('click',function () { go(state.step - 1); });
+  });
+  document.querySelectorAll('#conceptTaskBar [data-concept-next]').forEach(function (button) {
+    button.addEventListener('click',next);
+  });
+
+  var filesInput = document.getElementById('fFiles');
+  if (filesInput) filesInput.addEventListener('change',function () { setTimeout(render,0); });
+  var authed = document.getElementById('ctAuthed');
+  if (authed && window.MutationObserver) {
+    new MutationObserver(function () {
+      if (state.step === 4) render();
+    }).observe(authed,{attributes:true,attributeFilter:['hidden']});
+  }
+  var done = document.getElementById('confDone');
+  if (done && window.MutationObserver) {
+    new MutationObserver(function () {
+      if (done.hidden) return;
+      returnLegacyAsk();
+      var number = (document.getElementById('doneNo') || {}).textContent || '';
+      host.innerHTML =
+        '<div class="concept-success">' +
+          '<div class="concept-success__mark">✓</div>' +
+          '<p class="eyebrow">Заявка доставлена мастеру</p>' +
+          '<h1>Материалы приняты к разбору.</h1>' +
+          '<p>Сейчас ничего оплачивать не нужно. Редактор проверит задачу и пришлёт состав, срок и точную стоимость.</p>' +
+          '<dl><div><dt>Заявка</dt><dd>' + safeText(number || 'создана') + '</dd></div><div><dt>Следующий шаг</dt><dd>предварительная оценка</dd></div></dl>' +
+          '<div class="concept-success__actions"><a class="button button--primary" href="dashboard.html">Открыть кабинет <span aria-hidden="true">→</span></a><a class="button button--secondary" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Получать статусы в Telegram</a></div>' +
+        '</div>';
+      document.getElementById('conceptTaskBar').hidden = true;
+      document.querySelectorAll('[data-tx-step]').forEach(function (item) {
+        item.classList.remove('is-current');
+        item.classList.add('is-done');
+        var marker = item.querySelector('button>span');
+        if (marker) marker.textContent = '✓';
+      });
+    }).observe(done,{attributes:true,attributeFilter:['hidden']});
+  }
+
+  render();
+})();
 </script>
 </body>
 </html>

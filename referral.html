@@ -3,373 +3,103 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Клуб Салона — бонусы, приглашения и подписка «Салон+»</title>
-<meta name="description" content="Приветственный бонус, кэшбэк с каждого заказа, приглашения друзей и подписка «Салон+» со скидкой до 10%. Бонусы Академического Салона — просто и прозрачно." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723h" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<title>Клуб Салона — бонусы и приглашения | Академический Салон</title>
+<meta name="description" content="Как работают личная ссылка, бонусы пригласившему и новому клиенту, абонемент «Салон+» и депозит мастерской." />
 <link rel="canonical" href="https://akademsalon.ru/referral.html" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/polish15-supporting.css?v=20260725release13" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
-<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
 <meta name="theme-color" content="#F6F1E7" />
+<meta name="robots" content="index,follow" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
-<meta property="og:title" content="Клуб Салона — бонусы, приглашения и подписка «Салон+»" />
-<meta property="og:description" content="Приветственный бонус, кэшбэк с каждого заказа и подписка «Салон+» со скидкой до 10%." />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Клуб Салона — бонусы за личную рекомендацию" />
+<meta property="og:description" content="Личная ссылка в Telegram-боте, 5% пригласившему и 200 бонусов новому клиенту." />
 <meta property="og:url" content="https://akademsalon.ru/referral.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
-<style>
-  /* ============================================================
-     КЛУБ — членская карта с фольгой, бонусы с живыми цифрами,
-     приглашения и подписка «Салон+»
-     ============================================================ */
-  .clb-hero{padding:calc(64px + clamp(32px,6vh,72px)) 0 0}
-  .clb-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,72px);align-items:center}
-  .clb-hero .caps{display:block;margin-bottom:14px}
-  .clb-lead{max-width:52ch;margin-top:14px}
-  .clb-cta{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}
-
-  /* --- клубная карта --- */
-  .card3d{perspective:1200px;display:flex;justify-content:center}
-  .cd-tilt{
-    transform:rotateX(calc(var(--my,0)*6deg)) rotateY(calc(var(--mx,0)*8deg));
-    transition:transform .45s cubic-bezier(.2,.8,.3,1);transform-style:preserve-3d;
-  }
-  .clubcard{
-    position:relative;width:min(440px,86vw);aspect-ratio:8/5;border-radius:12px;
-    background:
-      radial-gradient(120% 140% at 20% 0%, #35301F 0%, transparent 50%),
-      linear-gradient(155deg,#2B2820 0%,#22201B 55%,#191712 100%);
-    box-shadow:0 2px 0 rgba(0,0,0,.7),0 24px 48px rgba(34,32,27,.35);
-    padding:clamp(20px,4vw,30px);display:flex;flex-direction:column;overflow:hidden;
-  }
-  :root[data-theme="dark"] .clubcard{box-shadow:0 2px 0 #000,0 24px 56px rgba(0,0,0,.6)}
-  .clubcard .cb-frame{position:absolute;inset:10px;border:1px solid rgba(205,164,85,.45);border-radius:8px;pointer-events:none}
-  .clubcard .cb-frame::after{content:"";position:absolute;inset:4px;border:1px solid rgba(205,164,85,.22);border-radius:6px}
-  .clubcard .cb-sheen{ /* блик фольги за курсором */
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(115deg, transparent 32%, rgba(255,246,214,.16) 48%, transparent 62%);
-    transform:translateX(calc(var(--mx,0)*60px));
-  }
-  .clubcard .cb-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-  .clubcard .cb-brand{font-family:var(--serif);font-size:14px;letter-spacing:.06em;color:#CFC8B8}
-  .clubcard .cb-brand .b-p{color:#CDA455;margin-right:8px}
-  .clubcard .cb-tier{font-family:var(--mono);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#8F8871}
-  .clubcard .cb-name{
-    margin:auto 0;font-family:var(--serif);font-size:clamp(23px,3.4vw,30px);line-height:1.16;letter-spacing:.03em;text-transform:uppercase;
-    background:linear-gradient(168deg,#8A6420 8%,#C99B3F 38%,#EDD388 52%,#C99B3F 66%,#8A6420 94%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .clubcard .cb-bot{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
-  .clubcard .cb-no{font-family:var(--mono);font-size:12.5px;letter-spacing:.18em;color:#9C9580}
-  .clubcard .cb-rate{text-align:right;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#8F8871}
-  .clubcard .cb-rate b{display:block;font-size:15px;letter-spacing:.02em;color:#E9C972;font-weight:600}
-  .clb-note-hero{margin-top:14px;text-align:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--ink-faint)}
-
-  /* --- бонусы --- */
-  .bonus-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:clamp(28px,5vw,40px);align-items:stretch}
-  .bonus-card{padding:clamp(20px,3vw,26px);display:flex;flex-direction:column}
-  .bonus-card .bc-n{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
-  .bonus-card .bc-v{font-family:var(--mono);font-size:clamp(30px,3.6vw,40px);font-weight:600;color:var(--wax);letter-spacing:-.03em;line-height:1;margin-bottom:10px;font-variant-numeric:tabular-nums}
-  .bonus-card h3{font-size:16.5px;font-weight:500;margin-bottom:6px}
-  .bonus-card p{font-size:14px;color:var(--ink-soft);line-height:1.55;flex:1}
-  .clb-note{margin-top:14px;font-size:13px;color:var(--ink-soft);line-height:1.6;max-width:70ch}
-
-  /* --- приглашения --- */
-  .ref-steps{position:relative;margin-bottom:18px}
-  .ref-steps::before{content:"";position:absolute;left:20px;top:26px;bottom:26px;width:1px;background:var(--hairline-strong)}
-  .rstep{display:flex;gap:16px;padding:13px 0;align-items:flex-start}
-  .rstep .rn{position:relative;z-index:1;flex:0 0 41px;height:41px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;color:var(--wax);border:1px solid var(--hairline-strong);border-radius:50%;background:var(--sheet)}
-  .rstep .rb b{display:block;font-size:16.5px;font-weight:500;margin-bottom:3px}
-  .rstep .rb small{font-size:13.5px;color:var(--ink-soft);line-height:1.55}
-  .ref-example .lg-total{display:flex;justify-content:space-between;align-items:baseline;padding-top:14px;margin-top:2px;border-top:3px double var(--ink)}
-
-  /* --- подписка --- */
-  .subs-benefit{margin:18px 0 4px;display:flex;gap:14px 28px;flex-wrap:wrap;align-items:baseline;padding:clamp(16px,2.4vw,22px)}
-  .subs{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:18px;margin-top:clamp(24px,4vw,36px);align-items:stretch}
-  .sub{padding:clamp(22px,3vw,30px);display:flex;flex-direction:column;position:relative}
-  .sub.feat{border-color:var(--wax)}
-  .sub .s-tag{position:absolute;top:-11px;left:24px;background:var(--wax);color:#FFFEF9;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;padding:4px 12px;border-radius:var(--r)}
-  .sub h3{font-size:21px;font-weight:500;margin-bottom:4px}
-  .sub .s-price{font-family:var(--mono);font-size:31px;font-weight:600;color:var(--ink);letter-spacing:-.02em;margin:8px 0 2px;font-variant-numeric:tabular-nums}
-  .sub .s-price small{font-size:14px;color:var(--ink-soft);font-weight:400}
-  .sub ul{list-style:none;margin:18px 0 22px;flex:1}
-  .sub li{font-size:14.5px;padding:9px 0 9px 24px;position:relative;border-top:1px solid var(--hairline);color:var(--ink)}
-  .sub li:first-child{border-top:0}
-  .sub li::before{content:"✓";position:absolute;left:0;color:var(--verify);font-weight:600}
-
-  /* финальный CTA */
-  .final-cta{padding:var(--block) 0 0;text-align:center}
-  .final-cta .fc-rule{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,5vw,44px)}
-  .final-cta .fc-rule::before,.final-cta .fc-rule::after{content:"";height:1px;background:var(--hairline);flex:1}
-  .final-cta .fc-rule span{font-family:var(--serif);color:var(--ink-faint);font-size:18px}
-  .final-cta h2{margin-bottom:14px}
-  .final-cta .clb-note{max-width:46ch;margin-left:auto;margin-right:auto}
-  .btn .btn-gift{flex:0 0 auto;transition:transform .15s}
-  .btn:hover .btn-gift{transform:rotate(-8deg) translateY(-1px)}
-
-  @media(max-width:960px){
-    .clb-grid{grid-template-columns:1fr;gap:36px}
-    .card3d{order:-1}
-  }
-  @media(max-width:880px){
-    .bonus-row{grid-template-columns:1fr}
-    .subs{grid-template-columns:1fr}
-    .sub.feat{order:-1}
-  }
-</style>
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release13" media="screen and (max-width: 880px)" data-mobile-edition="1" />
 </head>
-<body>
-<main>
-  <div class="wrap">
+<body class="polish15-supporting referral-route">
+<main id="main" class="club-page">
+  <div class="page-shell">
+    <nav class="benefit-nav" aria-label="Бонусы, абонемент и депозит">
+      <a class="is-current" href="referral.html" aria-current="page">Бонусы и приглашения</a>
+      <a href="plus.html">Абонемент «Салон+»</a>
+      <a href="deposit.html">Депозит мастерской</a>
+      <a href="gift.html">Сертификаты</a>
+      <a href="loyalty.html">Правила программы</a>
+    </nav>
 
-    <!-- ХИРО: КЛУБНАЯ КАРТА -->
-    <section class="clb-hero" data-chapter="Клуб Салона" id="top">
-      <div class="clb-grid">
-        <div class="reveal">
-          <span class="caps">Клуб Салона</span>
-          <h1 class="h-display">Чем дольше с нами — тем выгоднее</h1>
-          <p class="lead clb-lead">Бонусы за каждый заказ, приветственный подарок новичкам, приглашения друзей и подписка со скидкой. Всё считается автоматически — баланс виден в личном кабинете на сайте и в боте, ничего не нужно запоминать.</p>
-          <div class="clb-cta">
-            <a class="btn btn-wax btn-lg" href="dashboard.html">Мои бонусы — в кабинете <span class="ar">→</span></a>
-            <a class="btn btn-line btn-lg" href="https://t.me/academic_saloon_bot?start=club" target="_blank" rel="noopener">Клуб в Telegram-боте</a>
-            <a class="btn btn-line btn-lg" href="loyalty.html">Полные правила</a>
-          </div>
-        </div>
-        <div class="reveal d1">
-          <div class="card3d" id="cardScene" aria-hidden="true">
-            <div class="cd-tilt">
-              <div class="clubcard">
-                <span class="cb-frame"></span>
-                <span class="cb-sheen"></span>
-                <div class="cb-top">
-                  <span class="cb-brand"><span class="b-p">¶</span>Академический Салон</span>
-                  <span class="cb-tier">Member</span>
-                </div>
-                <div class="cb-name">Клубная карта<br>читателя</div>
-                <div class="cb-bot">
-                  <span class="cb-no">№ 0001 · MMXX</span>
-                  <span class="cb-rate"><b>1 бонус = 1 ₽</b>скидки на заказ</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <p class="clb-note-hero">Карта живёт в боте — заводится сама при первом заказе</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- § 01 БОНУСЫ -->
-    <section class="chapter reveal" id="bonuses" data-chapter="§ 01 · Бонусы">
-      <div class="ch-rule"><span class="ch-no">§ 01 · Бонусы</span></div>
-      <h2>1 бонус = 1 ₽ скидки на следующий заказ</h2>
-      <p class="lead">Бонусы копятся на счёте в боте и уменьшают стоимость будущих работ. Это не деньги и не выплаты — просто ваша скидка за то, что вы с нами.</p>
-      <div class="bonus-row">
-        <div class="bonus-card sheet stacked reveal">
-          <div class="bc-n">Новичкам</div>
-          <div class="bc-v"><span data-count="300" data-prefix="+">+300</span></div>
-          <h3>Приветственный бонус</h3>
-          <p>Начисляем один раз каждому новому пользователю бота. Действует 30 дней — попробуйте Салон со скидкой уже на первом заказе.</p>
-        </div>
-        <div class="bonus-card sheet stacked reveal d1">
-          <div class="bc-n">С каждого заказа</div>
-          <div class="bc-v"><span data-count="5" data-suffix="%">5%</span></div>
-          <h3>Кэшбэк бонусами</h3>
-          <p>После каждого оплаченного заказа возвращаем 5% его стоимости бонусами. Копятся и ждут следующей позиции или заказа.</p>
-        </div>
-        <div class="bonus-card sheet stacked reveal d2">
-          <div class="bc-n">Списание</div>
-          <div class="bc-v"><span data-count="20" data-prefix="до " data-suffix="%">до 20%</span></div>
-          <h3>Оплата бонусами</h3>
-          <p>Бонусами можно закрыть до 20% стоимости заказа (от 1000 ₽). Остальное — обычной оплатой. Так выгода честная для обеих сторон.</p>
-        </div>
-      </div>
-      <p class="clb-note">Списать бонусы можно прямо в карточке заказа — в кабинете сайта или в боте, когда мастер назначит цену. Бонусы не обмениваются на деньги и не передаются другим людям. Полные условия, сроки действия и защита от злоупотреблений — в <a class="link" href="loyalty.html">Правилах программы лояльности</a>.</p>
-    </section>
-
-    <!-- § 02 ПРИГЛАШЕНИЯ -->
-    <section class="chapter reveal" id="referral" data-chapter="§ 02 · Приглашения">
-      <div class="ch-rule"><span class="ch-no">§ 02 · Приглашения</span></div>
-      <h2>Приведите друга — бонусы получите оба</h2>
-      <div class="split">
+    <section class="club-hero">
+      <div>
+        <p class="eyebrow">Клуб Салона</p>
+        <h1>Бонусы за личную рекомендацию.</h1>
+        <p>Пригласившему начисляют 5 % бонусами от суммы, которую новый клиент оплатил деньгами. Часть, закрытая бонусами или сертификатом, в расчёт не входит. Приглашённый получает 200 бонусов после первого оплаченного заказа. Оба начисления действуют 90 дней.</p>
         <div>
-          <div class="ref-steps">
-            <div class="rstep"><span class="rn">01</span><div class="rb"><b>Берёте личную ссылку</b><small>в боте — «💎 Мои бонусы», на сайте — кабинет → «Пригласить друга»</small></div></div>
-            <div class="rstep"><span class="rn">02</span><div class="rb"><b>Друг переходит и делает заказ</b><small>ему +200 приветственных бонусов после первого заказа</small></div></div>
-            <div class="rstep"><span class="rn">03</span><div class="rb"><b>Вам — 5% бонусами</b><small>с каждого его оплаченного заказа — не разово, а всегда</small></div></div>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
-            <button type="button" class="btn btn-wax" id="refInvite">✉️ Составить пригласительное письмо</button>
-          </div>
-          <p class="clb-note" style="margin-top:12px">Готовое письмо с вашей личной ссылкой — отправьте в Telegram, ВК или WhatsApp одним нажатием.</p>
-          <p class="clb-note">Начисления — только с фактически оплаченных заказов. Приглашать самого себя и заводить фейковые аккаунты нельзя: такие бонусы аннулируются.</p>
+          <a class="button button--primary" href="loyalty.html">Прочитать полные правила</a>
+          <a class="button button--text" href="configurator.html">Описать новую задачу</a>
         </div>
-        <aside class="ref-example sheet sheet-pad stacked reveal d1" aria-label="Пример">
-          <div class="caps" style="margin-bottom:14px">Как это выглядит</div>
-          <div class="ledger">
-            <div class="lg-row"><span>Друг оплатил сопровождение</span><span class="num">20 000 ₽</span></div>
-            <div class="lg-row"><span>Другу — приветственные</span><span class="num verify">+200</span></div>
-            <div class="lg-row"><span>Вам — 5% бонусами</span><span class="num verify">+1 000</span></div>
-          </div>
-          <div class="lg-total">
-            <span class="caps">Ваша скидка</span>
-            <span class="price-xl" style="font-size:26px">1 000 <small>₽</small></span>
-          </div>
-          <p class="clb-note" style="margin-top:12px">Бонусами можно оплатить не более 20% нового заказа; пример показывает начисление, а не обещает бесплатную услугу.</p>
-        </aside>
       </div>
+      <aside aria-label="Основные условия">
+        <span class="club-seal" aria-hidden="true">АС</span>
+        <div><small>Пригласившему</small><strong>5 %</strong></div>
+        <div><small>Новому клиенту</small><strong>200 бонусов</strong></div>
+      </aside>
     </section>
 
-    <!-- § 03 ПОДПИСКА -->
-    <section class="chapter reveal" id="plus" data-chapter="§ 03 · Подписка «Салон+»">
-      <div class="ch-rule"><span class="ch-no">§ 03 · Подписка «Салон+»</span></div>
-      <h2>Скидка на каждый заказ, куратор сессии и приоритет в графике</h2>
-      <p class="lead">Оформляется за минуту на сайте или в боте, без автосписаний: закончилась — просто продлите. Скидка применяется сама, когда мастер называет цену.</p>
-      <div class="subs-benefit sheet">
-        <span class="caps">Считаем выгоду</span>
-        <span style="font-size:15px;color:var(--ink)">Заказ сопровождения на 40 000 ₽ с «Салон+ Про» — это <b class="wax">−3 000 ₽</b> сразу и ещё <b>+3 700 бонусов</b> кэшбэком ×2. Подписка за 1 190 ₽ окупается с одного крупного заказа — и действует на все заказы периода.</span>
-      </div>
-      <div class="subs">
-        <div class="sub sheet stacked reveal">
-          <h3>⭐ Салон+</h3>
-          <div class="s-price">449 <small>₽ / мес · семестр 999 ₽</small></div>
-          <ul>
-            <li>−5% на все заказы (до 1 000 ₽ с заказа)</li>
-            <li>Приоритет консультационных слотов в согласованном графике</li>
-            <li>Куратор сессии: график сдач с напоминаниями</li>
-            <li>Полка Салона: чек-листы и шаблоны к защите</li>
-          </ul>
-          <a class="btn btn-wax btn-block" href="dashboard.html#plus">Оформить на сайте</a>
-          <a class="btn btn-line btn-block" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener" style="margin-top:8px">Или в боте</a>
+    <section class="club-grid">
+      <article class="club-card club-card--invite">
+        <p class="eyebrow">Личная ссылка</p>
+        <h2>Ссылка создаётся в Telegram-боте.</h2>
+        <p>Откройте раздел «Мои бонусы» после входа в бот. Регистрация по ссылке сама по себе не даёт бонусов: начисление появляется только после подтверждённой оплаты.</p>
+        <div class="invite-action">
+          <span>Рабочая ссылка доступна после входа</span>
+          <div>
+            <input readonly value="@academic_saloon_bot · Мои бонусы" aria-label="Где получить личную ссылку" />
+            <a href="https://t.me/academic_saloon_bot?start=club" target="_blank" rel="noopener">Открыть бот</a>
+          </div>
         </div>
-        <div class="sub sheet stacked feat reveal d1">
-          <span class="s-tag">выгоднее</span>
-          <h3>🌟 Салон+ Про</h3>
-          <div class="s-price">1 190 <small>₽ / мес · семестр 2 690 ₽</small></div>
-          <ul>
-            <li>−10% на все заказы (до 3 000 ₽ с заказа)</li>
-            <li>Кэшбэк ×2: 10% бонусами с каждого заказа</li>
-            <li>Тренажёр защиты: 10 вероятных вопросов комиссии по вашей работе</li>
-            <li>Экспресс-разбор 15 минут в месяц</li>
-            <li>Всё из «Салон+»: приоритет, куратор, полка</li>
-          </ul>
-          <a class="btn btn-wax btn-block" href="dashboard.html#plus">Оформить на сайте</a>
-          <a class="btn btn-line btn-block" href="https://t.me/academic_saloon_bot?start=pluspro" target="_blank" rel="noopener" style="margin-top:8px">Или в боте</a>
-        </div>
-        <div class="sub sheet stacked reveal d2">
-          <span class="s-tag" style="background:var(--ink)">сезонный</span>
-          <h3>🎓 Сессия с куратором</h3>
-          <div class="s-price">2 990 <small>₽ · разово на 60 дней</small></div>
-          <ul>
-            <li>Бронь консультационных слотов в пределах согласованного графика</li>
-            <li>Замок цен: тарифы для вас заморожены на период</li>
-            <li>−7% на всё (до 2 000 ₽ с заказа)</li>
-            <li>SOS в день сдачи: один ответ в течение часа в рабочее время</li>
-            <li>Куратор сессии, приоритет, тренажёр защиты</li>
-          </ul>
-          <a class="btn btn-wax btn-block" href="dashboard.html#plus">Забронировать сессию</a>
-          <a class="btn btn-line btn-block" href="https://t.me/academic_saloon_bot?start=plus_session" target="_blank" rel="noopener" style="margin-top:8px">Или в боте</a>
-        </div>
-      </div>
-      <div class="subs-benefit sheet" style="margin-top:18px">
-        <span class="caps">🛠 Конструктор</span>
-        <span style="font-size:15px;color:var(--ink)">Не нужен готовый план? <b>Соберите свой Салон+</b>: база 199 ₽/мес — и только те опции, за которые вы готовы платить: скидка 3–10%, куратор, тренажёр защиты, бронь сессии, реф-буст… Цена пересчитывается на глазах. <a class="link" href="dashboard.html#plus">Открыть конструктор →</a></span>
-      </div>
-      <p class="clb-note">Общая скидка на один заказ (подписка + бонусы) — не более 25%; у скидки подписки есть потолок в рублях на заказ. Подписка — отдельная услуга и не оплачивается бонусами. Условия, продление и возврат — в <a class="link" href="loyalty.html">Правилах программы</a> и <a class="link" href="oferta.html">Оферте</a>.</p>
-    </section>
+      </article>
 
-    <section class="final-cta reveal" data-chapter="В клуб">
-      <div class="fc-rule"><span>¶</span></div>
-      <h2>Заберите свои 300 бонусов</h2>
-      <p class="lead" style="max-width:44ch;margin:0 auto 26px">Приветственный бонус ждёт в боте — начнём знакомство со скидки.</p>
-      <a class="btn btn-wax btn-lg" href="https://t.me/academic_saloon_bot?start=welcome_site" target="_blank" rel="noopener" id="clubClaim"><svg class="btn-gift" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.75 8h16.5v3.5H3.75z"/><path d="M5.25 11.5v7.75h13.5V11.5"/><path d="M12 8v11.25"/><path d="M12 8C9.9 8 8.1 7.5 7.4 6.5c-.7-1.05-.05-2.5 1.3-2.5C10.3 4 11.6 5.6 12 8Z"/><path d="M12 8c2.1 0 3.9-.5 4.6-1.5.7-1.05.05-2.5-1.3-2.5C13.7 4 12.4 5.6 12 8Z"/></svg>Забрать 300 бонусов <span class="ar">→</span></a>
-      <p class="clb-note" style="margin-top:12px">Начисляются в боте один раз на Telegram-аккаунт — после короткого подтверждения правил.</p>
-    </section>
+      <article class="club-card">
+        <p class="eyebrow">Как это работает</p>
+        <h2>Как начисляются бонусы</h2>
+        <div class="bonus-list">
+          <span><b>01</b><small>Новый клиент впервые открывает бота по вашей ссылке</small></span>
+          <span><b>02</b><small>Оформляет и оплачивает заказ</small></span>
+          <span><b>03</b><small>Бонусы начисляются после подтверждения оплаты</small></span>
+        </div>
+      </article>
 
+      <article class="club-card club-card--plus">
+        <p class="eyebrow">Абонемент</p>
+        <h2>Салон+</h2>
+        <p>Для тех, у кого несколько редакторских задач в течение семестра.</p>
+        <a class="line-link" href="plus.html">Посмотреть условия <span aria-hidden="true">→</span></a>
+      </article>
+
+      <article class="club-card club-card--deposit">
+        <p class="eyebrow">Авансовый счёт</p>
+        <h2>Депозит мастерской</h2>
+        <p>Для оплаты нескольких этапов из заранее внесённой суммы. Бонусы начисляются отдельно от денежного остатка.</p>
+        <a class="line-link" href="deposit.html">Разобраться в условиях <span aria-hidden="true">→</span></a>
+      </article>
+    </section>
   </div>
 </main>
-<script src="assets/js/app.js?v=20260723q"></script>
-<script src="assets/js/extras.js?v=20260723h"></script>
-<script>
-(function(){
-  /* «Пригласить друга»: письмо с личной ссылкой — для вошедших;
-     остальных мягко ведём в кабинет за ссылкой */
-  var btn = document.getElementById('refInvite');
-  if (btn && window.Salon && Salon.api) btn.addEventListener('click', function(){
-    if (Salon.api.token()) {
-      Salon.api.get('/me').then(function(r){
-        if (r && r.ok && Salon.invite) {
-          Salon.invite({ site: r.ref_link, tg: r.ref_link_tg });
-        } else if (Salon.toast) {
-          Salon.toast('Не получилось получить личную ссылку — попробуйте из кабинета');
-        }
-      });
-      return;
-    }
-    (Salon.confirm ? Salon.confirm({
-      title: 'Нужна личная ссылка',
-      text: 'Пригласительное письмо собирается с вашей личной ссылкой — по ней бонусы приходят именно вам. Ссылка появляется после входа в кабинет (Telegram или почта).',
-      okLabel: 'Открыть кабинет', noLabel: 'Позже'
-    }) : Promise.resolve({ ok: window.confirm('Открыть кабинет для входа?') }))
-      .then(function(res){ if (res.ok) location.href = 'dashboard.html'; });
-  });
-})();
-</script>
-<script>
-(function(){
-  var b = document.getElementById('clubClaim');
-  if (!b || !window.Salon || !Salon.api) return;
-  b.addEventListener('click', function(e){
-    e.preventDefault();
-    var fb = b.href;
-    Salon.api.post('/welcome/token').then(function(r){
-      var link = (r && r.ok && r.link) ? r.link : fb;
-      var w = window.open(link, '_blank', 'noopener');
-      if (!w) location.href = link;
-    });
-  });
-})();
-</script>
-<script>
-(function(){
-  'use strict';
-  /* Наклон клубной карты за мышью (только тонкий указатель, без тача) */
-  var scene = document.getElementById('cardScene');
-  if (!scene) return;
-  var tilt = scene.querySelector('.cd-tilt');
-  var fine = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!fine || reduce) return;
-  var hero = scene.closest('.clb-grid') || scene;
-  var queued = false, mx = 0, my = 0;
-  hero.addEventListener('mousemove', function(e){
-    var r = scene.getBoundingClientRect();
-    mx = ((e.clientX - r.left) / r.width) * 2 - 1;
-    my = ((e.clientY - r.top) / r.height) * 2 - 1;
-    mx = Math.max(-1.4, Math.min(1.4, mx));
-    my = Math.max(-1.4, Math.min(1.4, my));
-    if (!queued) {
-      queued = true;
-      requestAnimationFrame(function(){
-        queued = false;
-        tilt.style.setProperty('--mx', mx.toFixed(3));
-        tilt.style.setProperty('--my', (-my).toFixed(3));
-      });
-    }
-  }, { passive: true });
-  hero.addEventListener('mouseleave', function(){
-    tilt.style.setProperty('--mx', 0);
-    tilt.style.setProperty('--my', 0);
-  });
-})();
-</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","url":"https://akademsalon.ru/referral.html","name":"Клуб Салона — бонусы и приглашения","description":"Условия реферальной программы Академического Салона.","inLanguage":"ru","dateModified":"2026-07-25"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Бонусы и приглашения","item":"https://akademsalon.ru/referral.html"}]}]}</script>
+<script src="assets/js/app.js?v=20260725release13"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260725release13"></script>
 </body>
 </html>

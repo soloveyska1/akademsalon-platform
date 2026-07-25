@@ -3,393 +3,47 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>С чего начать — выберите свой короткий маршрут | Академический Салон</title>
-<meta name="description" content="Выберите, что нужно сейчас: узнать цену и срок, спасти дедлайн, доработать готовый текст или проверить мастерскую. Короткие маршруты без лишнего чтения." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723i" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
-<style>
-  /* ============================================================
-     С ЧЕГО НАЧАТЬ — компактный выбор по намерению.
-     Меньше карточек, больше прямых маршрутов и нативных деталей.
-     ============================================================ */
-  .st-hero{padding:calc(64px + clamp(36px,6.5vh,70px)) 0 0;text-align:left}
-  .st-hero-grid{
-    display:grid;grid-template-columns:minmax(0,1.02fr) minmax(380px,.88fr);
-    gap:clamp(34px,6vw,76px);align-items:start;
-  }
-  .st-intro{padding-top:8px}
-  .st-hero h1{max-width:15ch;margin:14px 0 18px}
-  .st-hero .lead{max-width:48ch}
-  .st-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
-  .st-assurance{
-    display:flex;gap:0;list-style:none;margin-top:clamp(24px,4vw,34px);
-    padding-top:14px;border-top:1px solid var(--hairline);
-  }
-  .st-assurance li{
-    display:flex;align-items:baseline;gap:7px;min-width:0;padding-right:18px;
-    font-size:12.5px;color:var(--ink-soft);white-space:nowrap;
-  }
-  .st-assurance li+li{padding-left:18px;border-left:1px solid var(--hairline)}
-  .st-assurance span{font:10px/1 var(--mono);letter-spacing:.08em;color:var(--wax)}
-
-  /* Нативный навигатор по ситуации: работает и без JavaScript. */
-  .st-picker{padding:clamp(20px,3vw,28px);overflow:hidden}
-  .st-picker-head{display:flex;justify-content:space-between;gap:18px;align-items:start;margin-bottom:10px}
-  .st-picker-head h2{font-size:clamp(21px,2.3vw,27px);margin:0 0 5px}
-  .st-picker-head p{font-size:13px;color:var(--ink-soft);line-height:1.5;max-width:34ch}
-  .st-picker-mark{font:22px/1 var(--serif);color:var(--wax);padding-top:2px}
-  .st-intent{border-top:1px solid var(--hairline)}
-  .st-intent:last-child{border-bottom:1px solid var(--hairline)}
-  .st-intent summary{
-    list-style:none;cursor:pointer;display:grid;grid-template-columns:30px 1fr auto;
-    gap:10px;align-items:center;min-height:67px;padding:10px 4px;
-    transition:color .15s,background .15s;
-  }
-  .st-intent summary::-webkit-details-marker{display:none}
-  .st-intent summary:hover{color:var(--wax)}
-  .st-intent summary::after{
-    content:"+";font:22px/1 var(--serif);color:var(--ink-soft);
-    transition:transform .18s,color .18s;
-  }
-  .st-intent[open] summary::after{transform:rotate(45deg);color:var(--wax)}
-  .st-intent[open] summary{color:var(--ink)}
-  .st-pick-no{font:10px/1 var(--mono);letter-spacing:.12em;color:var(--wax)}
-  .st-intent summary b{display:block;font-size:14.5px;font-weight:500;line-height:1.3}
-  .st-intent summary small{display:block;margin-top:3px;font-size:12px;color:var(--ink-soft);line-height:1.4}
-  .st-pick-body{padding:0 30px 17px 44px}
-  .st-pick-body p{font-size:13px;color:var(--ink-soft);line-height:1.55;margin-bottom:11px}
-  .st-pick-actions{display:flex;align-items:center;gap:9px 14px;flex-wrap:wrap}
-  .st-pick-actions .btn{min-height:42px;padding:10px 15px;font-size:13.5px}
-  .st-pick-actions .link{font-size:12.5px}
-
-  /* Короткий процесс вместо пяти больших разворотов. */
-  .st-section-head{
-    display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.56fr);
-    gap:clamp(24px,5vw,60px);align-items:end;margin-bottom:clamp(26px,4vw,38px);
-  }
-  .st-section-head h2{margin:0;max-width:19ch}
-  .st-section-head p{font-size:14px;color:var(--ink-soft);line-height:1.6}
-  .st-route{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3.5vw,42px)}
-  .st-route-step{position:relative;padding:32px 16px 0 0;border-top:1px solid var(--hairline-strong)}
-  .st-route-step::before{
-    content:"";position:absolute;top:-5px;left:0;width:9px;height:9px;border-radius:50%;
-    background:var(--paper);border:1px solid var(--ink);
-  }
-  .st-route-step:first-child::before{background:var(--wax);border-color:var(--wax)}
-  .st-route-no{display:block;margin-bottom:9px;font:10.5px/1 var(--mono);letter-spacing:.14em;color:var(--ink-faint)}
-  .st-route-step h3{font-size:clamp(18px,2vw,22px);margin-bottom:8px}
-  .st-route-step p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:13px}
-  .st-route-links{display:flex;gap:6px 14px;flex-wrap:wrap}
-  .st-route-links a{font-size:12.5px}
-
-  /* Спокойный каталог оставшихся сценариев + один блок решения. */
-  .st-support-grid{
-    display:grid;grid-template-columns:minmax(0,1.08fr) minmax(330px,.72fr);
-    gap:clamp(20px,3.5vw,38px);align-items:start;
-  }
-  .st-shortcuts{overflow:hidden}
-  .st-shortcut{
-    display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;
-    min-height:78px;padding:13px 18px;border-bottom:1px solid var(--hairline);
-    transition:background .15s,color .15s;
-  }
-  .st-shortcut:last-child{border-bottom:0}
-  .st-shortcut:hover{background:var(--mark)}
-  .st-shortcut-no{font:10px/1 var(--mono);letter-spacing:.12em;color:var(--wax)}
-  .st-shortcut b{display:block;font-size:14.5px;font-weight:500;line-height:1.35}
-  .st-shortcut small{display:block;margin-top:3px;font-size:12.5px;color:var(--ink-soft);line-height:1.4}
-  .st-shortcut-go{font:20px/1 var(--serif);color:var(--wax);transition:transform .15s}
-  .st-shortcut:hover .st-shortcut-go{transform:translateX(3px)}
-  .st-before{padding:clamp(22px,3vw,28px)}
-  .st-before .caps{display:block;margin-bottom:10px}
-  .st-before h3{font-size:clamp(21px,2.3vw,27px);margin-bottom:15px}
-  .st-before-list{list-style:none;border-top:1px solid var(--hairline);margin-bottom:20px}
-  .st-before-list li{
-    position:relative;padding:11px 0 11px 22px;border-bottom:1px solid var(--hairline);
-    font-size:13px;color:var(--ink-soft);line-height:1.5;
-  }
-  .st-before-list li::before{content:"✓";position:absolute;left:0;color:var(--verify);font-weight:600}
-  .st-before-actions{display:grid;gap:9px}
-  .st-before-actions .btn{width:100%}
-  .st-before-note{text-align:center;margin-top:10px;font-size:11.5px;color:var(--ink-faint)}
-  .st-map{
-    margin-top:clamp(20px,3vw,28px);padding:15px 18px;border:1px dashed var(--hairline-strong);
-    border-radius:3px;display:flex;gap:14px;align-items:center;background:var(--sheet);
-  }
-  .st-map-mark{font:20px/1 var(--serif);color:var(--wax)}
-  .st-map p{font-size:13px;color:var(--ink-soft);flex:1;line-height:1.55;margin:0}
-  .st-map .btn{min-height:42px;padding:10px 16px;font-size:13px}
-
-  @media(max-width:900px){
-    .st-hero-grid,.st-support-grid{grid-template-columns:1fr}
-    .st-hero-grid{gap:34px}
-    .st-picker{max-width:680px}
-    .st-section-head{grid-template-columns:1fr;gap:10px}
-    .st-section-head p{max-width:56ch}
-  }
-  @media(max-width:680px){
-    main.start .st-hero{padding-top:92px}
-    main.start .st-hero h1{max-width:13ch;margin-top:10px;font-size:clamp(34px,10.5vw,44px)}
-    main.start .st-hero .lead{font-size:15px;line-height:1.56}
-    .st-actions{display:grid;grid-template-columns:1fr 1fr;margin-top:21px}
-    .st-actions .btn{padding:12px 13px;font-size:13.5px;white-space:normal;text-align:center}
-    .st-assurance{display:grid;grid-template-columns:repeat(3,1fr);margin-top:20px}
-    .st-assurance li{display:block;padding:0 8px 0 0;white-space:normal;font-size:11.5px;line-height:1.4}
-    .st-assurance li+li{padding-left:10px}
-    .st-assurance span{display:block;margin-bottom:5px}
-    .st-picker{padding:18px 16px}
-    .st-picker-head{margin-bottom:8px}
-    .st-picker-head h2{font-size:21px}
-    .st-picker-head p{font-size:12.5px}
-    .st-intent summary{grid-template-columns:26px 1fr auto;gap:8px;min-height:63px;padding:9px 2px}
-    .st-intent summary b{font-size:14px}
-    .st-pick-body{padding:0 20px 15px 34px}
-    .st-pick-actions .btn{width:100%}
-    .st-route{grid-template-columns:1fr;gap:0}
-    .st-route-step{padding:2px 0 24px 30px;border-top:0;border-left:1px solid var(--hairline-strong)}
-    .st-route-step:last-child{padding-bottom:0;border-left-color:transparent}
-    .st-route-step::before{top:3px;left:-5px}
-    .st-route-no{margin-bottom:7px}
-    .st-route-step p{margin-bottom:9px}
-    .st-shortcut{grid-template-columns:28px minmax(0,1fr) auto;gap:9px;min-height:72px;padding:12px 14px}
-    .st-map{align-items:flex-start;flex-wrap:wrap;padding:14px}
-    .st-map p{min-width:calc(100% - 42px)}
-    .st-map .btn{width:100%}
-  }
-  @media(max-width:360px){
-    .st-actions{grid-template-columns:1fr}
-    .st-assurance li{font-size:11px}
-  }
-</style>
+<title>Описать задачу — Академический Салон</title>
+<meta name="description" content="Пять коротких вопросов о работе, нужном результате, сроке и способе связи." />
+<meta name="robots" content="noindex,follow" />
 <link rel="canonical" href="https://akademsalon.ru/start.html" />
-<link rel="icon" href="/favicon.ico" sizes="32x32" />
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
-<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
-<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-<meta name="theme-color" content="#F6F1E7" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="С чего начать — выберите свой короткий маршрут" />
-<meta property="og:description" content="Цена, срочный дедлайн, доработка готового текста или проверка мастерской — один экран, чтобы быстро выбрать следующий шаг." />
+<meta property="og:title" content="Описать задачу — Академический Салон" />
+<meta property="og:description" content="Пять коротких вопросов о работе, нужном результате, сроке и способе связи." />
 <meta property="og:url" content="https://akademsalon.ru/start.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="С чего начать — Академический Салон" />
-<meta name="twitter:description" content="Выберите свою ситуацию и получите короткий следующий шаг без лишнего чтения." />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#F6F1E7" />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release13" media="screen and (max-width: 880px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260725release13" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 </head>
-<body>
-
-<main class="start">
-  <div class="wrap">
-
-    <!-- КОРОТКИЙ ВХОД + ВЫБОР СИТУАЦИИ -->
-    <section class="st-hero reveal" data-chapter="С чего начать">
-      <div class="st-hero-grid">
-        <div class="st-intro">
-          <span class="caps">Путеводитель · один понятный шаг</span>
-          <h1 class="h-display">Начните с того, что нужно сейчас</h1>
-          <p class="lead">Не обязательно разбираться во всём сайте. Выберите свою ситуацию — покажем короткий маршрут без звонка, оплаты и обязательств.</p>
-
-          <div class="st-actions">
-            <a class="btn btn-wax" href="configurator.html">Узнать цену и срок <span class="ar">→</span></a>
-            <a class="btn btn-line" href="https://t.me/academicsaloon" target="_blank" rel="noopener" data-contact>Задать вопрос</a>
-          </div>
-
-          <ul class="st-assurance" aria-label="Что будет на старте">
-            <li><span>01</span> около минуты</li>
-            <li><span>02</span> без оплаты</li>
-            <li><span>03</span> без звонка</li>
-          </ul>
-        </div>
-
-        <aside class="st-picker sheet stacked" aria-labelledby="stPickerTitle">
-          <div class="st-picker-head">
-            <div>
-              <h2 id="stPickerTitle">Что у вас сейчас?</h2>
-              <p>Откройте подходящую строку — внутри только нужные действия.</p>
-            </div>
-            <span class="st-picker-mark" aria-hidden="true">¶</span>
-          </div>
-
-          <details class="st-intent" name="start-intent" open>
-            <summary>
-              <span class="st-pick-no">01</span>
-              <span><b>Нужны цена и срок</b><small>Хочу быстро понять порядок цифр</small></span>
-            </summary>
-            <div class="st-pick-body">
-              <p>Ответьте на четыре вопроса — получите предварительную вилку сразу на экране.</p>
-              <div class="st-pick-actions">
-                <a class="btn btn-wax" href="configurator.html">Рассчитать за минуту <span class="ar">→</span></a>
-                <a class="link" href="tariffs.html">Сначала посмотреть цены</a>
-              </div>
-            </div>
-          </details>
-
-          <details class="st-intent" name="start-intent">
-            <summary>
-              <span class="st-pick-no">02</span>
-              <span><b>Поджимает дедлайн</b><small>Нужно понять, реально ли успеть</small></span>
-            </summary>
-            <div class="st-pick-body">
-              <p>Укажите срок в заявке — сразу честно скажем, берёмся ли и какой график реалистичен.</p>
-              <div class="st-pick-actions">
-                <a class="btn btn-wax" href="configurator.html">Оценить срочную работу <span class="ar">→</span></a>
-                <a class="link" href="https://t.me/academicsaloon" target="_blank" rel="noopener" data-contact>Спросить человека</a>
-              </div>
-            </div>
-          </details>
-
-          <details class="st-intent" name="start-intent">
-            <summary>
-              <span class="st-pick-no">03</span>
-              <span><b>Работа уже есть</b><small>Нужна проверка, правки или защита</small></span>
-            </summary>
-            <div class="st-pick-body">
-              <p>Можно заказать только нужную часть — переписывать или оплачивать всю работу не придётся.</p>
-              <div class="st-pick-actions">
-                <a class="link" href="configurator.html?service=rv">Разобрать готовую</a>
-                <a class="link" href="configurator.html?service=nm">Пройти нормоконтроль</a>
-                <a class="link" href="configurator.html?service=dp">Подготовить защиту</a>
-              </div>
-            </div>
-          </details>
-
-          <details class="st-intent" name="start-intent">
-            <summary>
-              <span class="st-pick-no">04</span>
-              <span><b>Сначала хочу проверить вас</b><small>Условия, отзывы и вопрос без имени</small></span>
-            </summary>
-            <div class="st-pick-body">
-              <p>Начните с документов и живых историй — связываться с нами для проверки не нужно.</p>
-              <div class="st-pick-actions">
-                <a class="link" href="guarantees.html">Гарантии</a>
-                <a class="link" href="reviews.html">Отзывы</a>
-                <a class="link" href="priyomnaya.html">Спросить анонимно</a>
-              </div>
-            </div>
-          </details>
-        </aside>
-      </div>
-    </section>
-
-    <!-- КАК ВСЁ ПРОИСХОДИТ -->
-    <section class="chapter reveal" id="marshrut" data-chapter="Как всё устроено">
-      <div class="ch-rule"><span class="ch-no">§ 01 · От оценки до старта</span></div>
-      <div class="st-section-head">
-        <h2>Три шага — без прыжка в неизвестность</h2>
-        <p>На каждом этапе вы сначала видите результат и условия, а уже потом решаете, идти ли дальше.</p>
-      </div>
-
-      <ol class="st-route" aria-label="Как начинается работа">
-        <li class="st-route-step">
-          <span class="st-route-no">01 · ОРИЕНТИР</span>
-          <h3>Получаете вилку</h3>
-          <p>Четыре ответа дают предварительную цену и срок. Контакты для расчёта не нужны.</p>
-          <div class="st-route-links">
-            <a class="link" href="tariffs.html">Открытые цены</a>
-          </div>
-        </li>
-        <li class="st-route-step">
-          <span class="st-route-no">02 · ПЛАН</span>
-          <h3>Согласуем детали</h3>
-          <p>Мастер смотрит задание, фиксирует объём, точную сумму, график и уровень сопровождения.</p>
-          <div class="st-route-links">
-            <a class="link" href="vedenie.html">Уровни ведения</a>
-          </div>
-        </li>
-        <li class="st-route-step">
-          <span class="st-route-no">03 · РЕШЕНИЕ</span>
-          <h3>Вы решаете</h3>
-          <p>Оплата только по согласованному плану и частями. Статусы, файлы и переписка остаются в кабинете.</p>
-          <div class="st-route-links">
-            <a class="link" href="oplata.html">Как проходит оплата</a>
-            <a class="link" href="dashboard.html">Кабинет</a>
-          </div>
-        </li>
-      </ol>
-    </section>
-
-    <!-- ДОПОЛНИТЕЛЬНЫЕ КОРОТКИЕ МАРШРУТЫ -->
-    <section class="chapter reveal" id="situacii" data-chapter="Другие маршруты">
-      <div class="ch-rule"><span class="ch-no">§ 02 · Если задача точечная</span></div>
-      <div class="st-section-head">
-        <h2>Можно начать не с большой заявки</h2>
-        <p>Разбор плана, одна доработка или подготовка к защите — самостоятельные услуги, а не обязательные дополнения.</p>
-      </div>
-
-      <div class="st-support-grid">
-        <nav class="st-shortcuts sheet" aria-label="Короткие маршруты">
-          <a class="st-shortcut" href="plan.html">
-            <span class="st-shortcut-no">01</span>
-            <span><b>Разобрать тему и план</b><small>Понять структуру, срок и реальный объём</small></span>
-            <span class="st-shortcut-go" aria-hidden="true">→</span>
-          </a>
-          <a class="st-shortcut" href="configurator.html?service=rv">
-            <span class="st-shortcut-no">02</span>
-            <span><b>Доработать готовый текст</b><small>Проверка, замечания и точечные правки</small></span>
-            <span class="st-shortcut-go" aria-hidden="true">→</span>
-          </a>
-          <a class="st-shortcut" href="configurator.html?service=dp">
-            <span class="st-shortcut-no">03</span>
-            <span><b>Подготовиться к защите</b><small>Речь, презентация и ответы на вопросы</small></span>
-            <span class="st-shortcut-go" aria-hidden="true">→</span>
-          </a>
-          <a class="st-shortcut" href="gift.html">
-            <span class="st-shortcut-no">04</span>
-            <span><b>Подарить помощь</b><small>Сертификат на любую услугу, действует год</small></span>
-            <span class="st-shortcut-go" aria-hidden="true">→</span>
-          </a>
-        </nav>
-
-        <aside class="st-before sheet stacked">
-          <span class="caps">До отправки заявки</span>
-          <h3>Важно знать заранее</h3>
-          <ul class="st-before-list">
-            <li>Всю сумму вперёд не берём</li>
-            <li>Цена фиксируется до старта</li>
-            <li>На заявку можно ответить «нет»</li>
-          </ul>
-          <div class="st-before-actions">
-            <a class="btn btn-wax" href="configurator.html">Получить предварительную смету <span class="ar">→</span></a>
-            <a class="btn btn-line" href="https://t.me/academicsaloon" target="_blank" rel="noopener" data-contact>Обсудить с мастером</a>
-          </div>
-          <p class="st-before-note">Обычно отвечаем за 15–30 минут в рабочее время</p>
-        </aside>
-      </div>
-
-      <div class="st-map">
-        <span class="st-map-mark" aria-hidden="true">⌕</span>
-        <p><b>Нужно что-то конкретное?</b> В путеводителе есть поиск по услугам, гайдам и документам.</p>
-        <a class="btn btn-line" href="knowledge.html" data-toc-open>Открыть поиск по сайту</a>
-      </div>
-    </section>
-
-  </div>
+<body class="p15-operations p15-system">
+<main class="p15-operations system-page" id="main">
+  <section class="system-card">
+    <div class="system-card__code">01—05</div>
+    <p class="eyebrow">Новая заявка</p>
+    <h1>Открываем форму.</h1>
+    <p>Вы перейдёте к пяти коротким вопросам. Выбранный шаг сохраняется в этом браузере.</p>
+    <div class="system-card__actions"><a class="button button--primary" href="configurator.html">Продолжить <span aria-hidden="true">→</span></a><a class="button button--text" href="/">На главную</a></div>
+  </section>
 </main>
+<script>location.replace("configurator.html"+location.search+location.hash);</script>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Как начать работу с Академическим Салоном","description":"Три прозрачных шага от предварительной оценки до решения о старте","step":[{"@type":"HowToStep","position":1,"name":"Получите предварительную цену и срок","url":"https://akademsalon.ru/configurator.html"},{"@type":"HowToStep","position":2,"name":"Согласуйте точный план и условия","url":"https://akademsalon.ru/vedenie.html"},{"@type":"HowToStep","position":3,"name":"Примите решение и выберите порядок оплаты","url":"https://akademsalon.ru/oplata.html"}]}</script>
-<script src="assets/js/app.js?v=20260723q"></script>
-<script src="assets/js/extras.js?v=20260723i"></script>
-<script>
-(function(){
-  'use strict';
-  /* Оставляем открытую только одну ситуацию и в браузерах без details[name]. */
-  var intents = document.querySelectorAll('.st-intent');
-  intents.forEach(function(intent){
-    intent.addEventListener('toggle', function(){
-      if (!intent.open) return;
-      intents.forEach(function(other){
-        if (other !== intent) other.open = false;
-      });
-    });
-  });
-})();
-</script>
+<script src="assets/js/app.js?v=20260725release13"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260725release13"></script>
+<script src="assets/js/extras.js?v=20260725release13"></script>
+<script src="assets/js/polish15-operations.js?v=20260725release13"></script>
 </body>
 </html>

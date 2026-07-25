@@ -6,7 +6,15 @@
 (function () {
   'use strict';
   var KEY = 'salon_cart_v1';
-  var VERSION = 1;
+  /* VERSION 2 (25.07.2026): визуальный редизайн убрал из конфигуратора все три
+     точки входа в корзину (.mq-bar / .lq-dochead / .conf-aside .sheet), поэтому
+     корзину, собранную до редизайна, клиент не может ни открыть, ни очистить.
+     При этом submit() в configurator.html подменяет ею type/topic/term/details
+     уже заполненной заявки. Подъём версии отбрасывает такие корзины при чтении. */
+  var VERSION = 2;
+  /* Срок годности черновика корзины. Невидимый клиенту черновик не должен
+     переписывать заказ спустя недели — раньше срока не было вовсе. */
+  var MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000;
   var api = null, S = null, box = null, tab = null, dock = null, body = null, foot = null;
   var data = { version: VERSION, items: [], checkout: { useBonus: false, bonusAmount: 0 }, updatedAt: 0 };
   var member = null, removed = null, undoTimer = null, lastFocus = null, pendingAddon = null;
@@ -33,6 +41,10 @@
   function read() {
     var raw = S && S.store ? S.store.get(KEY, null) : null;
     if (!raw || raw.version !== VERSION || !Array.isArray(raw.items)) return;
+    if (raw.updatedAt && (Date.now() - raw.updatedAt) > MAX_AGE_MS) {
+      try { if (S && S.store) S.store.set(KEY, null); } catch (e) {}
+      return;
+    }
     data = raw;
     data.checkout = data.checkout || { useBonus:false, bonusAmount:0 };
     data.items = data.items.filter(function (x) { return x && x.label && x.type; }).slice(0, 30);
@@ -161,11 +173,11 @@
     ];
   }
   function contourLabel(x) {
-    if (!x || x.serviceId !== 'author') return 'Контур А · академическое сопровождение';
+    if (!x || x.serviceId !== 'author') return 'Академическое сопровождение';
     var model = String(x.answers && x.answers.author_model || '');
-    if (model.indexOf('Б1') >= 0) return 'Контур Б1 · автор — мастерская';
-    if (model.indexOf('Б2') >= 0) return 'Контур Б2 · иной согласованный автор';
-    return 'Контур Б · вариант автора нужно уточнить';
+    if (model.indexOf('Б1') >= 0) return 'Авторская работа · мастерская';
+    if (model.indexOf('Б2') >= 0) return 'Авторская работа · согласованный автор';
+    return 'Авторская работа · вариант автора нужно уточнить';
   }
   function positionDetails(x) {
     var rows = [];
@@ -173,7 +185,7 @@
       value = String(value || '').trim();
       if (value) rows.push('<div><dt>' + esc(label) + '</dt><dd>' + esc(value) + '</dd></div>');
     }
-    push('Контур', contourLabel(x));
+    push('Формат работы', contourLabel(x));
     if (x.parentId) {
       var parent = workById(x.parentId);
       push('Связана с позицией', parent && parent.label);
@@ -710,7 +722,13 @@
     if (submit) {
       submit.setAttribute('data-cart-submit', '1');
     }
-    document.querySelectorAll('[data-cart-open]').forEach(function (el) { el.addEventListener('click', open); });
+    /* Делегирование, а не разовая привязка: кнопка [data-cart-open] нового
+       визарда рендерится позже, чем отрабатывает build(), и при подписке
+       через querySelectorAll обработчик ей не доставался — клик молчал.
+       Сделано так же, как для [data-cart-add] ниже. */
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('[data-cart-open]')) open();
+    });
     box.addEventListener('click', click);
     box.addEventListener('input', input);
     box.addEventListener('change', change);

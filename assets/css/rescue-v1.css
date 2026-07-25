@@ -1,0 +1,331 @@
+/* ============================================================
+   RESCUE V1 — ясная публичная воронка поверх фирменной системы.
+   Только компоновка и подача: палитра, шрифты и базовые механики
+   остаются частью исходного «Академического Салона».
+   ============================================================ */
+
+/* ---------- Главная: смысл считывается до взаимодействия с книгой ---------- */
+.home .pr-copy{
+  width:min(47vw,590px);
+}
+.home .pr-h{
+  max-width:14ch;
+  text-wrap:balance;
+}
+.home .pr-lead{
+  max-width:48ch;
+  line-height:1.58;
+}
+.pr-scope{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  list-style:none;
+  max-width:570px;
+  margin:20px 0 0;
+  padding:0;
+  border-top:1px solid var(--hairline-strong);
+  border-bottom:1px solid var(--hairline);
+  animation:pr-fade .9s ease .78s both;
+}
+.pr-scope li{
+  min-width:0;
+  padding:11px 13px 12px 0;
+}
+.pr-scope li+li{
+  padding-left:13px;
+  border-left:1px solid var(--hairline);
+}
+.pr-scope b,
+.pr-scope span{
+  display:block;
+}
+.pr-scope b{
+  margin-bottom:3px;
+  font:600 9.5px/1.2 var(--mono);
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+.pr-scope span{
+  font-size:11.5px;
+  line-height:1.35;
+  color:var(--ink-soft);
+}
+.home .pr-cta{
+  margin-top:22px;
+}
+.home .pr-note{
+  margin-top:18px;
+}
+.home .service-routes{
+  padding-block:clamp(54px,7vw,88px);
+}
+.home .service-routes__head h2{
+  max-width:11ch;
+}
+.home .route-card{
+  min-height:340px;
+}
+.route-bureau-link{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  margin-top:14px;
+  padding:15px 18px;
+  border:1px dashed var(--hairline-strong);
+  border-radius:3px;
+  color:var(--ink-soft);
+  font-size:12.5px;
+  line-height:1.5;
+  transition:background .16s ease,border-color .16s ease,color .16s ease;
+}
+.route-bureau-link b{
+  color:var(--ink);
+  font-weight:600;
+}
+.route-bureau-link>span:last-child{
+  flex:0 0 auto;
+  color:var(--wax);
+  font:500 11px/1.2 var(--mono);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.route-bureau-link:hover,
+.route-bureau-link:focus-visible{
+  color:var(--ink);
+  border-color:var(--ink);
+  background:var(--mark);
+}
+.home .pr-toc{
+  padding-top:clamp(54px,7vh,82px);
+}
+.home .pr-toc .blank-chapter{
+  margin-top:clamp(34px,5vh,52px);
+}
+
+/* ---------- «С чего начать»: без скрытых секций и пустых экранов ---------- */
+main.start{
+  min-height:0;
+  padding-bottom:0;
+}
+main.start .st-hero{
+  padding-bottom:0;
+}
+main.start .st-hero-grid{
+  align-items:center;
+}
+main.start .st-intro{
+  padding-top:0;
+}
+main.start .st-hero h1{
+  max-width:13ch;
+  text-wrap:balance;
+}
+main.start .st-picker{
+  scroll-margin-top:88px;
+  border-top:3px double var(--ink);
+}
+main.start .st-intent[open]{
+  background:linear-gradient(90deg,var(--mark),transparent 82%);
+}
+main.start .st-intent[open] summary{
+  padding-left:8px;
+  padding-right:8px;
+}
+main.start .st-pick-body{
+  padding-right:24px;
+}
+main.start .chapter{
+  min-height:0;
+  padding-top:clamp(68px,8vw,96px);
+  opacity:1;
+  transform:none;
+}
+main.start #situacii{
+  padding-bottom:0;
+}
+main.start .st-route-step h3{
+  text-wrap:balance;
+}
+main.start .st-before{
+  border-top:3px double var(--ink);
+}
+main.start .st-before-note{
+  line-height:1.5;
+}
+
+/* ---------- Прейскурант: пакеты читаются как результаты, а не уровни ---------- */
+main.tariffs .tar-hero-copy h1{
+  max-width:14ch;
+  text-wrap:balance;
+}
+main.tariffs .reveal{
+  opacity:1;
+  transform:none;
+}
+main.tariffs .catalog-head h2,
+main.tariffs #tiers>h2,
+main.tariffs .final-cta h2{
+  text-wrap:balance;
+}
+main.tariffs .tier .t-head{
+  align-items:flex-start;
+}
+main.tariffs .tier .t-head h3{
+  max-width:11ch;
+  text-wrap:balance;
+}
+main.tariffs .tier .t-k{
+  flex:0 0 auto;
+  padding:4px 7px;
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  font-size:12px;
+  color:var(--ink-soft);
+}
+main.tariffs .tier .t-sub{
+  min-height:3.15em;
+  max-width:30ch;
+  line-height:1.48;
+}
+main.tariffs .tier.feat{
+  box-shadow:0 18px 46px -34px color-mix(in srgb,var(--wax) 74%,#000);
+}
+main.tariffs .cc-cta{
+  font-weight:500;
+}
+
+@media(max-width:1120px){
+  html[data-pr-flat] .home .pr-copy,
+  html:not(.has-js) .home .pr-copy{
+    width:auto;
+    max-width:680px;
+  }
+  html[data-pr-flat] .home .pr-h,
+  html:not(.has-js) .home .pr-h{
+    max-width:11.5ch;
+  }
+  html[data-pr-flat] .home .pr-scope,
+  html:not(.has-js) .home .pr-scope{
+    max-width:none;
+  }
+}
+
+@media(max-width:880px){
+  .home .route-card{
+    min-height:0;
+  }
+  .route-bureau-link{
+    align-items:flex-start;
+  }
+  main.start .st-hero-grid{
+    align-items:start;
+  }
+}
+
+@media(max-width:680px){
+  .home .pr-scene{
+    overflow:clip!important;
+  }
+  html[data-pr-flat] .home .pr-kicker,
+  html:not(.has-js) .home .pr-kicker{
+    white-space:normal;
+    overflow-wrap:anywhere;
+  }
+  .home .pr-row .name{
+    overflow-wrap:anywhere;
+  }
+  html[data-pr-flat] .home .pr-h .ln,
+  html:not(.has-js) .home .pr-h .ln{
+    padding-left:0;
+    font-style:normal;
+  }
+  html[data-pr-flat] .home .pr-h .ln:nth-child(2),
+  html:not(.has-js) .home .pr-h .ln:nth-child(2){
+    padding-left:14px;
+    font-style:italic;
+  }
+  html[data-pr-flat] .home .pr-h .ln:nth-child(3),
+  html:not(.has-js) .home .pr-h .ln:nth-child(3){
+    padding-left:0;
+  }
+  .home .pr-lead{
+    max-width:none;
+  }
+  .pr-scope{
+    grid-template-columns:1fr;
+    margin-top:17px;
+  }
+  .pr-scope li{
+    display:grid;
+    grid-template-columns:112px 1fr;
+    gap:10px;
+    padding:9px 0;
+  }
+  .pr-scope li+li{
+    padding-left:0;
+    border-left:0;
+    border-top:1px solid var(--hairline);
+  }
+  .pr-scope b{
+    margin:0;
+  }
+  html[data-pr-flat] .home .pr-cta,
+  html:not(.has-js) .home .pr-cta{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+  html[data-pr-flat] .home .pr-cta .pr-toclink,
+  html:not(.has-js) .home .pr-cta .pr-toclink{
+    display:block;
+    width:max-content;
+    min-height:38px;
+    padding-top:9px;
+  }
+  .route-bureau-link{
+    display:block;
+    padding:14px 15px;
+  }
+  .route-bureau-link>span:last-child{
+    display:block;
+    margin-top:9px;
+  }
+  main.start{
+    padding-bottom:0;
+  }
+  main.start .st-hero h1{
+    max-width:14ch;
+    font-size:clamp(34px,9.8vw,43px);
+  }
+  main.start .st-actions{
+    grid-template-columns:1fr;
+  }
+  main.start .st-assurance{
+    gap:0;
+  }
+  main.start .st-assurance li{
+    padding-right:8px;
+  }
+  main.start .chapter{
+    padding-top:64px;
+  }
+  main.start .st-picker{
+    scroll-margin-top:70px;
+  }
+  main.start .st-pick-body{
+    padding-right:14px;
+  }
+  main.tariffs .tar-hero-copy h1{
+    max-width:15ch;
+  }
+  main.tariffs .tier .t-sub{
+    min-height:0;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .pr-scope{
+    animation:none;
+  }
+}

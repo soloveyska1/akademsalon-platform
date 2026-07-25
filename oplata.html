@@ -3,609 +3,67 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Как проходит оплата: этапы, чеки и возврат | Академический Салон</title>
-<meta name="description" content="Понятная механика оплаты: что фиксируется до первого платежа, как распределяются суммы по позициям, чем подтверждается платёж и как рассчитывается возврат." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260723a" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260723i" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260723f" />
-<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
-<style>
-  /* ============================================================
-     ОПЛАТА — компактная «кассовая книга».
-     Один интерактивный план, единый путь денег и ответы по ситуации.
-     ============================================================ */
-  .pay-page{padding-bottom:clamp(72px,10vw,120px)}
-  .pay-page .chapter{padding-top:clamp(62px,8vw,96px)}
-  .pay-hero{padding:calc(64px + clamp(34px,6vh,66px)) 0 0}
-  .pay-hero-grid{
-    display:grid;grid-template-columns:minmax(0,1fr) minmax(390px,.88fr);
-    gap:clamp(34px,6vw,76px);align-items:start
-  }
-  .pay-intro{padding-top:8px}
-  .pay-hero h1{max-width:12ch;margin:14px 0 18px}
-  .pay-hero .lead{max-width:48ch}
-  .pay-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
-  .pay-assurance{
-    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-    list-style:none;margin:clamp(24px,4vw,34px) 0 0;padding:0;border-top:1px solid var(--hairline)
-  }
-  .pay-assurance li{display:grid;grid-template-columns:25px minmax(0,1fr);gap:9px;padding:13px 14px 11px 0}
-  .pay-assurance li:nth-child(even){padding-left:14px;border-left:1px solid var(--hairline)}
-  .pay-assurance li:nth-child(n+3){border-top:1px solid var(--hairline)}
-  .pay-assurance .pa-no{font:10.5px/1.5 var(--mono);color:var(--wax);letter-spacing:.08em}
-  .pay-assurance b{display:block;font-size:13px;font-weight:600}
-  .pay-assurance small{display:block;margin-top:2px;font-size:11.5px;line-height:1.4;color:var(--ink-faint)}
-
-  /* интерактивная квитанция */
-  .pay-receipt{
-    position:relative;padding:clamp(20px,2.8vw,28px);background:var(--sheet);
-    border:1px solid var(--hairline-strong);border-radius:4px;
-    box-shadow:0 2px 0 var(--shadow),0 20px 50px rgba(107,94,64,.12)
-  }
-  .pay-receipt::before{
-    content:"";position:absolute;inset:6px -6px -6px 6px;z-index:-1;
-    border:1px solid var(--hairline);border-radius:4px;background:var(--paper)
-  }
-  .pr-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding-bottom:13px;border-bottom:1px solid var(--hairline)}
-  .pr-kicker{display:block;font:10px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
-  .pr-title{display:block;margin-top:3px;font:500 18px/1.2 var(--serif)}
-  .pr-mark{font:22px/1 var(--serif);color:var(--wax)}
-  .pr-total{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:18px 0 10px}
-  .pr-total label{font-size:12px;color:var(--ink-soft)}
-  .pr-sum{font:600 clamp(27px,3.4vw,36px)/1 var(--mono);letter-spacing:-.04em;white-space:nowrap}
-  .pr-range{width:100%;height:44px;margin:-6px 0;accent-color:var(--wax);cursor:pointer}
-  .pr-range::-webkit-slider-thumb{min-width:24px;min-height:24px}
-  .pr-scale{display:flex;justify-content:space-between;margin-top:-3px;font:9.5px/1 var(--mono);color:var(--ink-faint)}
-  .pr-schemes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:17px}
-  .pr-scheme{
-    min-height:50px;padding:8px 6px;border:1px solid var(--hairline);border-radius:3px;
-    background:transparent;color:var(--ink-soft);font:600 13px/1.15 var(--mono);cursor:pointer
-  }
-  .pr-scheme small{display:block;margin-top:4px;font:10px/1.15 var(--sans);font-weight:400;color:var(--ink-faint)}
-  .pr-scheme[aria-pressed="true"]{border-color:var(--wax);background:var(--wax-soft);color:var(--wax)}
-  .pr-scheme:focus-visible{outline:2px solid var(--wax);outline-offset:2px}
-  .pr-plan{list-style:none;margin:17px 0 0;padding:0;border-top:1px solid var(--hairline)}
-  .pr-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--hairline)}
-  .pr-row[hidden]{display:none}
-  .pr-no{font:10px/1 var(--mono);color:var(--wax)}
-  .pr-copy b{display:block;font-size:12.5px;font-weight:600}
-  .pr-copy small{display:block;margin-top:2px;font-size:10.5px;line-height:1.3;color:var(--ink-faint)}
-  .pr-money{font:600 12.5px/1 var(--mono);white-space:nowrap}
-  .pr-note{margin:12px 0 0;font-size:11.5px;line-height:1.45;color:var(--ink-soft)}
-
-  /* навигация по ответам */
-  .pay-jump{
-    position:sticky;top:64px;z-index:18;display:flex;gap:4px;margin:clamp(28px,5vw,46px) 0 0;
-    padding:5px;border:1px solid var(--hairline);border-radius:4px;background:color-mix(in srgb,var(--paper) 94%,transparent);
-    box-shadow:0 8px 24px rgba(36,31,24,.05);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)
-  }
-  .pay-jump a{
-    flex:1;min-width:0;padding:9px 10px;border-radius:2px;color:var(--ink-soft);
-    font:10.5px/1.25 var(--mono);letter-spacing:.04em;text-align:center;text-decoration:none
-  }
-  .pay-jump a:hover,.pay-jump a[aria-current="location"]{background:var(--sheet);color:var(--wax)}
-
-  /* единый путь заказа */
-  .pay-section-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,.55fr);gap:30px;align-items:end;margin-bottom:clamp(22px,3.2vw,32px)}
-  .pay-section-head h2{max-width:18ch;margin:0}
-  .pay-section-head p{margin:0;font-size:14px;line-height:1.62;color:var(--ink-soft)}
-  .money-flow{border-top:1px solid var(--hairline-strong)}
-  .money-flow details{border-bottom:1px solid var(--hairline-strong)}
-  .money-flow summary{
-    display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:14px;align-items:center;
-    min-height:68px;padding:10px 4px;list-style:none;cursor:pointer
-  }
-  .money-flow summary::-webkit-details-marker{display:none}
-  .mf-no{font:11px/1 var(--mono);letter-spacing:.08em;color:var(--wax)}
-  .mf-title b{display:block;font:500 clamp(16px,1.7vw,19px)/1.25 var(--serif)}
-  .mf-title small{display:block;margin-top:3px;font-size:11.5px;color:var(--ink-faint)}
-  .mf-state{display:flex;align-items:center;gap:9px;font:10.5px/1.2 var(--mono);color:var(--ink-faint);white-space:nowrap}
-  .mf-state::after{content:"+";display:grid;place-items:center;width:24px;height:24px;border:1px solid var(--hairline);border-radius:50%;font:16px/1 var(--sans);transition:transform .2s,color .2s}
-  .money-flow details[open] .mf-state::after{transform:rotate(45deg);color:var(--wax)}
-  .mf-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.72fr);gap:24px;padding:0 4px 20px 60px}
-  .mf-body p{margin:0;font-size:14px;line-height:1.62;color:var(--ink-soft);max-width:62ch}
-  .mf-ledger{align-self:start;padding-left:14px;border-left:2px solid var(--wax)}
-  .mf-ledger span{display:block;font:9.5px/1.3 var(--mono);letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint)}
-  .mf-ledger b{display:block;margin-top:4px;font-size:12.5px;line-height:1.4;font-weight:600}
-
-  /* способы и доказательства */
-  .pay-method-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-  .pay-method{padding:clamp(18px,2.5vw,25px)}
-  .pm-top{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px}
-  .pm-no{font:10px/1 var(--mono);color:var(--wax)}
-  .pay-method h3{margin:0;font:500 clamp(18px,2vw,22px)/1.2 var(--serif)}
-  .pay-method p{margin:0;font-size:13.5px;line-height:1.62;color:var(--ink-soft)}
-  .pm-facts{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:16px;border-top:1px solid var(--hairline)}
-  .pm-facts span{padding:10px 10px 0 0;font-size:11px;line-height:1.35;color:var(--ink-faint)}
-  .pm-facts span+span{padding-left:10px;border-left:1px solid var(--hairline)}
-  .pm-facts b{display:block;margin-top:2px;color:var(--ink);font-weight:600}
-  .pay-evidence{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:12px;border:1px solid var(--hairline);background:var(--sheet)}
-  .pay-evidence a{display:grid;gap:5px;min-height:104px;padding:16px;color:var(--ink);text-decoration:none}
-  .pay-evidence a+a{border-left:1px solid var(--hairline)}
-  .pay-evidence a:hover{background:var(--mark)}
-  .pe-no{font:9.5px/1 var(--mono);letter-spacing:.09em;color:var(--wax)}
-  .pay-evidence b{font-size:13px;font-weight:600}
-  .pay-evidence small{font-size:11px;line-height:1.35;color:var(--ink-faint)}
-  .pay-legal-note{margin:13px 0 0;max-width:76ch;font-size:11.5px;line-height:1.55;color:var(--ink-soft)}
-  .pay-anchor-alias{display:block;position:relative;top:-116px;visibility:hidden}
-
-  /* граница старой сметы */
-  .price-boundary{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--hairline-strong);background:var(--sheet)}
-  .pb-col{padding:clamp(20px,3vw,30px)}
-  .pb-col+.pb-col{border-left:1px solid var(--hairline-strong)}
-  .pb-kicker{font:9.5px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--wax)}
-  .pb-col h3{margin:7px 0 15px;font:500 clamp(19px,2.1vw,24px)/1.2 var(--serif)}
-  .pb-list{list-style:none;margin:0;padding:0}
-  .pb-list li{position:relative;padding:8px 0 8px 23px;border-top:1px solid var(--hairline);font-size:13px;line-height:1.45;color:var(--ink-soft)}
-  .pb-list li::before{position:absolute;left:1px;top:9px;font:12px/1 var(--mono);color:var(--wax)}
-  .pb-in .pb-list li::before{content:"✓"}
-  .pb-new .pb-list li::before{content:"+"}
-  .pb-note{margin:14px 0 0;font-size:11.5px;line-height:1.5;color:var(--ink-faint)}
-
-  /* ответы по ситуации */
-  .money-cases{display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(22px,4vw,54px);border-top:1px solid var(--hairline-strong)}
-  .money-cases details{border-bottom:1px solid var(--hairline-strong)}
-  .money-cases summary{position:relative;min-height:66px;padding:14px 34px 14px 0;list-style:none;cursor:pointer}
-  .money-cases summary::-webkit-details-marker{display:none}
-  .money-cases summary b{display:block;font-size:14px;font-weight:600}
-  .money-cases summary small{display:block;margin-top:3px;font-size:11.5px;line-height:1.35;color:var(--ink-faint)}
-  .money-cases summary::after{content:"+";position:absolute;right:2px;top:22px;font:18px/1 var(--sans);color:var(--wax);transition:transform .2s}
-  .money-cases details[open] summary::after{transform:rotate(45deg)}
-  .mc-body{padding:0 34px 17px 0}
-  .mc-body p{margin:0;font-size:13px;line-height:1.58;color:var(--ink-soft)}
-  .mc-body p+p{margin-top:8px}
-  .mc-link{display:inline-block;margin-top:9px;font-size:12px}
-
-  .pay-bottom{
-    display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center;
-    margin-top:clamp(64px,9vw,104px);padding:clamp(24px,4vw,38px);
-    border:1px solid var(--wax);background:var(--wax-soft)
-  }
-  .pay-bottom .caps{display:block;margin-bottom:7px}
-  .pay-bottom h2{margin:0;max-width:21ch}
-  .pay-bottom p{margin:10px 0 0;max-width:58ch;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
-  .pay-bottom-actions{display:grid;gap:8px;min-width:240px}
-  .pay-bottom-actions .btn{justify-content:center}
-
-  @media(max-width:980px){
-    .pay-hero-grid{grid-template-columns:1fr;gap:30px}
-    .pay-intro{padding-top:0}
-    .pay-receipt{max-width:680px}
-    .pay-section-head{grid-template-columns:1fr;gap:10px}
-    .pay-section-head h2{max-width:22ch}
-    .pay-evidence{grid-template-columns:1fr 1fr}
-    .pay-evidence a:nth-child(3){border-left:0;border-top:1px solid var(--hairline)}
-    .pay-evidence a:nth-child(4){border-top:1px solid var(--hairline)}
-    .pay-bottom{grid-template-columns:1fr}
-    .pay-bottom-actions{grid-template-columns:1fr 1fr;min-width:0}
-  }
-  @media(max-width:720px){
-    .pay-page .chapter{padding-top:52px}
-    .pay-hero{padding-top:calc(58px + 30px)}
-    .pay-hero h1{max-width:11ch}
-    .pay-actions{display:grid;grid-template-columns:1fr 1fr}
-    .pay-actions .btn{width:100%;padding-inline:12px;justify-content:center}
-    .pay-assurance{grid-template-columns:1fr 1fr}
-    .pay-assurance li{grid-template-columns:22px minmax(0,1fr);padding-right:10px}
-    .pay-assurance li:nth-child(even){padding-left:10px}
-    .pay-assurance small{font-size:10.5px}
-    .pay-receipt{padding:18px 16px}
-    .pr-schemes{gap:4px}
-    .pr-scheme{font-size:11.5px;padding-inline:3px}
-    .pr-scheme small{font-size:9px}
-    .pay-jump{
-      top:58px;overflow-x:auto;margin-left:calc(var(--mobile-gutter) * -1);margin-right:calc(var(--mobile-gutter) * -1);
-      padding-left:var(--mobile-gutter);padding-right:var(--mobile-gutter);border-left:0;border-right:0;border-radius:0;scrollbar-width:none
-    }
-    .pay-jump::-webkit-scrollbar{display:none}
-    .pay-jump a{flex:0 0 auto;padding-inline:12px}
-    .money-flow summary{grid-template-columns:34px minmax(0,1fr) auto;gap:9px;min-height:64px}
-    .mf-title b{font-family:var(--sans);font-size:14px;font-weight:600}
-    .mf-title small{font-size:10.5px}
-    .mf-state{font-size:0;gap:0}
-    .mf-body{grid-template-columns:1fr;gap:13px;padding:0 0 18px 43px}
-    .mf-body p{font-size:13px}
-    .pay-method-grid,.price-boundary,.money-cases{grid-template-columns:1fr}
-    .pb-col+.pb-col{border-left:0;border-top:1px solid var(--hairline-strong)}
-    .pay-evidence a{min-height:96px;padding:14px}
-    .pay-bottom-actions{grid-template-columns:1fr}
-  }
-  @media(max-width:370px){
-    .pay-actions{grid-template-columns:1fr}
-    .pay-assurance{grid-template-columns:1fr}
-    .pay-assurance li:nth-child(even){padding-left:0;border-left:0}
-    .pay-assurance li:nth-child(n+2){border-top:1px solid var(--hairline)}
-    .pr-row{grid-template-columns:24px minmax(0,1fr);gap:8px}
-    .pr-money{grid-column:2;margin-top:2px}
-    .pay-evidence{grid-template-columns:1fr}
-    .pay-evidence a+a,.pay-evidence a:nth-child(3){border-left:0;border-top:1px solid var(--hairline)}
-  }
-</style>
+<title>Как проходит оплата — Академический Салон</title>
+<meta name="description" content="Сумма, назначение платежа и результат этапа фиксируются до оплаты. Чек и статус операции доступны в кабинете." />
+<meta name="robots" content="index,follow,max-image-preview:large" />
 <link rel="canonical" href="https://akademsalon.ru/oplata.html" />
-<link rel="icon" href="/favicon.ico" sizes="32x32" />
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
-<link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
-<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-<meta name="theme-color" content="#F6F1E7" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Как устроены деньги — по этапам и без сюрпризов" />
-<meta property="og:description" content="До первого платежа — точная цена и график. Дальше — контрольные точки из спецификации, чек на каждый платёж и понятные правила возврата." />
+<meta property="og:title" content="Как проходит оплата — Академический Салон" />
+<meta property="og:description" content="Сумма, назначение платежа и результат этапа фиксируются до оплаты. Чек и статус операции доступны в кабинете." />
 <meta property="og:url" content="https://akademsalon.ru/oplata.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Оплата по этапам — Академический Салон" />
-<meta name="twitter:description" content="Цена и график до старта, понятные контрольные точки, чек на каждый платёж и правила возврата." />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover.png" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<meta name="theme-color" content="#F6F1E7" />
+<link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release13" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260724seo2" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release13" media="screen and (max-width: 880px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260725release13" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 </head>
-<body>
-
-<main class="pay-page" id="main">
-  <div class="wrap">
-
-    <section class="pay-hero reveal" data-chapter="Как проходит оплата">
-      <div class="pay-hero-grid">
-        <div class="pay-intro">
-          <span class="caps">Кассовая книга · всё по этапам</span>
-          <h1 class="h-display">Деньги — без сюрпризов</h1>
-          <p class="lead">До первого платежа письменно фиксируем четыре вещи: что делаем, когда сдаём, сколько стоит весь заказ и какими частями он оплачивается. Дальше у каждого рубля есть понятный момент, документ и результат.</p>
-          <div class="pay-actions">
-            <a class="btn btn-wax" href="configurator.html">Получить точную смету <span class="ar">→</span></a>
-            <a class="btn btn-line" href="#shemy">Разложить сумму</a>
-          </div>
-          <ul class="pay-assurance" aria-label="Главные правила оплаты">
-            <li><span class="pa-no">01</span><span><b>Итог известен заранее</b><small>Согласуем до оплаты</small></span></li>
-            <li><span class="pa-no">02</span><span><b>График записан</b><small>Суммы и этапы в деле</small></span></li>
-            <li><span class="pa-no">03</span><span><b>Чек на каждый платёж</b><small>Онлайн или переводом</small></span></li>
-            <li><span class="pa-no">04</span><span><b>Неоказанное возвращается</b><small>По правилам оферты</small></span></li>
-          </ul>
-        </div>
-
-        <aside class="pay-receipt" id="shemy" aria-labelledby="payCalcTitle">
-          <div class="pr-head">
-            <span><span class="pr-kicker">Интерактивный пример</span><span class="pr-title" id="payCalcTitle">Предварительный план платежей</span></span>
-            <span class="pr-mark" aria-hidden="true">₽</span>
-          </div>
-          <div class="pr-total">
-            <label for="payAmount">Стоимость заказа</label>
-            <output class="pr-sum" id="payAmountValue" for="payAmount" aria-live="polite">60 000 ₽</output>
-          </div>
-          <input class="pr-range" type="range" id="payAmount" min="2500" max="400000" step="500" value="60000" aria-label="Примерная стоимость заказа" aria-valuetext="60 000 рублей" />
-          <div class="pr-scale" aria-hidden="true"><span>2 500 ₽</span><span>400 000 ₽</span></div>
-          <div class="pr-schemes" role="group" aria-label="Пример схемы оплаты">
-            <button class="pr-scheme" type="button" data-scheme="50" aria-pressed="false">50 / 50<small>два платежа</small></button>
-            <button class="pr-scheme" type="button" data-scheme="304030" aria-pressed="true">30 / 40 / 30<small>три платежа</small></button>
-            <button class="pr-scheme" type="button" data-scheme="100" aria-pressed="false">100%<small>одним платежом</small></button>
-          </div>
-          <ol class="pr-plan" id="payPlan" aria-live="polite">
-            <li class="pr-row" data-plan-row="0"><span class="pr-no">01</span><span class="pr-copy"><b>Старт</b><small>задание, срок и смета согласованы</small></span><span class="pr-money" data-plan-money>18 000 ₽</span></li>
-            <li class="pr-row" data-plan-row="1"><span class="pr-no">02</span><span class="pr-copy"><b>Середина</b><small>контрольная точка из графика достигнута</small></span><span class="pr-money" data-plan-money>24 000 ₽</span></li>
-            <li class="pr-row" data-plan-row="2"><span class="pr-no">03</span><span class="pr-copy"><b>Финал</b><small>этап готов, согласованный отчёт предоставлен</small></span><span class="pr-money" data-plan-money>18 000 ₽</span></li>
-          </ol>
-          <p class="pr-note">Это пример разбивки, а не счёт. Точный график фиксируется в персональном предложении или спецификации вашего заказа.</p>
-        </aside>
-      </div>
+<body class="p15-operations">
+<main class="p15-operations standard-page" id="main" tabindex="-1">
+  <div class="page-shell">
+    <header class="page-head">
+  <div class="page-head__copy">
+    <p class="eyebrow">Оплата</p>
+    <h1>Оплачивайте<br>согласованные этапы.</h1>
+    <p class="page-head__lead">Сумма и назначение платежа совпадают со спецификацией. Чек появляется в кабинете после подтверждения операции.</p>
+    <div class="page-head__action"><button class="button button--secondary" type="button" data-open-payment>Открыть пример оплаты</button></div>
+  </div>
+</header>
+    <div class="payment-flow">
+      <article><span>01</span><div><h2>Согласование</h2><p>Редактор присылает спецификацию. Вы проверяете состав, срок и стоимость.</p></div></article>
+      <article><span>02</span><div><h2>Ссылка на оплату</h2><p>В кабинете появляется платёж только за согласованный этап.</p></div></article>
+      <article><span>03</span><div><h2>Подтверждение</h2><p>После успешной операции статус меняется автоматически, чек сохраняется в деле.</p></div></article>
+      <article><span>04</span><div><h2>Начало этапа</h2><p>В истории фиксируется дата старта и ближайший результат.</p></div></article>
+    </div>
+    <section class="payment-demo">
+      <div><p class="eyebrow">Пример платежа</p><h2>Этап 2 · Редактура главы</h2><p>Дело DEMO-2417 · срок результата 28 июля</p></div>
+      <strong>14 500 ₽</strong>
+      <button class="button button--primary" type="button" data-open-payment>Открыть оплату</button>
     </section>
-
-    <nav class="pay-jump" aria-label="Быстрые ответы">
-      <a href="#zaruchku">Путь денег</a>
-      <a href="#kassa">Как платить</a>
-      <a href="#granitsy">Цена и правки</a>
-      <a href="#strahi">Пауза и возврат</a>
-    </nav>
-
-    <section class="chapter reveal" id="zaruchku" data-chapter="§ 01 · Путь денег">
-      <div class="ch-rule"><span class="ch-no">§ 01 · Один заказ — пять состояний</span></div>
-      <div class="pay-section-head">
-        <h2>Что происходит от сметы до финала</h2>
-        <p>Путь один и в кабинете, и в Telegram. Канал меняется — условия, суммы и история дела остаются теми же.</p>
-      </div>
-
-      <div class="money-flow">
-        <details name="money-flow" data-detail-group="flow" open>
-          <summary>
-            <span class="mf-no">01</span>
-            <span class="mf-title"><b>Всё согласовали</b><small>До первого рубля</small></span>
-            <span class="mf-state">решение за вами</span>
-          </summary>
-          <div class="mf-body">
-            <p>Вы видите неизменяемую Спецификацию: каждую позицию, её результат, срок, твёрдую цену, критерии и распределение платежей. До оплаты предложение не создаёт обязанности заключить договор.</p>
-            <div class="mf-ledger"><span>На руках</span><b>Редакция · хэш · позиции · цена · срок · этапы</b></div>
-          </div>
-        </details>
-        <details name="money-flow" data-detail-group="flow">
-          <summary>
-            <span class="mf-no">02</span>
-            <span class="mf-title"><b>Оплатили старт</b><small>Работа запускается</small></span>
-            <span class="mf-state">первый платёж</span>
-          </summary>
-          <div class="mf-body">
-            <p>Первый платёж означает принятие условий и бронирует время мастера. Срок начинает идти, когда поступила оплата и получены необходимые исходные данные.</p>
-            <div class="mf-ledger"><span>С деньгами</span><b>Чек НПД на поступившую сумму</b></div>
-          </div>
-        </details>
-        <details name="money-flow" data-detail-group="flow">
-          <summary>
-            <span class="mf-no">03</span>
-            <span class="mf-title"><b>Этап готов</b><small>Перед следующим платежом</small></span>
-            <span class="mf-state">без списания</span>
-          </summary>
-          <div class="mf-body">
-            <p>До оплаты этапа мастер может показать защищённый предпросмотр; точная контрольная точка и позиции закреплены в графике. Предпросмотр подтверждает показ, но сам по себе не означает приёмку или полное оказание.</p>
-            <div class="mf-ledger"><span>Вы видите</span><b>Статус и контрольную точку этапа</b></div>
-          </div>
-        </details>
-        <details name="money-flow" data-detail-group="flow">
-          <summary>
-            <span class="mf-no">04</span>
-            <span class="mf-title"><b>Закрыли этап</b><small>Только сумма из графика</small></span>
-            <span class="mf-state">платёж этапа</span>
-          </summary>
-          <div class="mf-body">
-            <p>Вы оплачиваете ровно тот этап, который указан в плане. После подтверждения платежа получаете соответствующую часть материалов без водяных знаков.</p>
-            <div class="mf-ledger"><span>Никаких автосписаний</span><b>Каждый платёж подтверждаете сами</b></div>
-          </div>
-        </details>
-        <details name="money-flow" data-detail-group="flow">
-          <summary>
-            <span class="mf-no">05</span>
-            <span class="mf-title"><b>Получили подтверждение и историю</b><small>Документы связаны с заказом</small></span>
-            <span class="mf-state">всё в деле</span>
-          </summary>
-          <div class="mf-body">
-            <p>Способ подтверждения платежа и выдачи чека определяется применимым налоговым режимом и показывается в заказе. Условия, сообщения, файлы и статусы остаются связанными с делом заказа.</p>
-            <div class="mf-ledger"><span>Подтверждение</span><b>Платёжный документ · история · переданные материалы</b></div>
-          </div>
-        </details>
-      </div>
+    <section class="payment-safety">
+      <header class="section-head"><div><p class="eyebrow">Важные условия</p><h2>До и после платежа</h2></div></header>
+      <div><article><h3>Чек</h3><p>Формируется применимой системой расчётов и хранится в кабинете.</p></article><article><h3>Возврат</h3><p>До начала этапа — полностью. После начала учитывается фактически выполненная часть.</p></article><article><h3>Новый объём</h3><p>Дополнительные задачи оформляются новой версией спецификации и не запускаются автоматически.</p></article></div>
     </section>
-
-    <section class="chapter reveal" id="kassa" data-chapter="§ 02 · Платёж и документы">
-      <div class="ch-rule"><span class="ch-no">§ 02 · Как платить и что остаётся на руках</span></div>
-      <div class="pay-section-head">
-        <h2>Доступные способы показываются в самом заказе</h2>
-        <p>До перехода к оплате вы видите сумму, получателя и способ подтверждения. Не используйте реквизиты из неофициальных сообщений.</p>
-      </div>
-
-      <div class="pay-method-grid">
-        <article class="pay-method sheet">
-          <div class="pm-top"><h3>Онлайн</h3><span class="pm-no">01</span></div>
-          <p>Если онлайн-оплата доступна, заказ до перехода показывает платёжного провайдера, получателя, сумму и ссылку на его документы. Данные карты вводятся только на странице выбранного провайдера и не должны передаваться мастеру в переписке.</p>
-          <div class="pm-facts"><span>Провайдер<b>указан до перехода</b></span><span>Подтверждение<b>по статусу и документу</b></span></div>
-        </article>
-        <article class="pay-method sheet">
-          <div class="pm-top"><h3>Перевод</h3><span class="pm-no">02</span></div>
-          <p>Реквизиты появляются после согласования цены и должны совпадать с получателем из спецификации или официального дела. Мастер сверяет поступление и направляет предусмотренный законом платёжный документ.</p>
-          <div class="pm-facts"><span>Подтверждение<b>после сверки</b></span><span>Чек<b>на каждый платёж</b></span></div>
-        </article>
-      </div>
-
-      <div class="pay-evidence" aria-label="Документы и подтверждения">
-        <a href="specifikaciya.html"><span class="pe-no">01 · УСЛОВИЯ</span><b>Спецификация</b><small>Каждая позиция, срок, цена, критерии и этапы</small></a>
-        <a href="oferta.html#p5"><span class="pe-no">02 · ДОГОВОР</span><b>Публичная оферта</b><small>Порядок оплаты закреплён письменно</small></a>
-        <a href="requisites.html"><span class="pe-no">03 · ПЛАТЁЖ</span><b>Чек НПД</b><small>Исполнитель и реквизиты открыты</small></a>
-        <a href="dashboard.html"><span class="pe-no">04 · ИСТОРИЯ</span><b>Дело заказа</b><small>Суммы, статусы, сообщения и файлы</small></a>
-      </div>
-      <p class="pay-legal-note">Актуальный налоговый статус Исполнителя проверяется по ИНН на дату оплаты. При применении НПД чек формируется в порядке Федерального закона № 422-ФЗ; если статус или платёжная схема изменятся, применимый документ должен быть показан до оплаты. <a class="link" href="https://npd.nalog.ru/check-status/" target="_blank" rel="noopener nofollow">Проверить статус в ФНС →</a></p>
-    </section>
-
-    <section class="chapter reveal" id="granitsy" data-chapter="§ 03 · Цена и правки">
-      <div class="ch-rule"><span class="ch-no">§ 03 · Зафиксированная цена — где проходит граница</span></div>
-      <div class="pay-section-head">
-        <h2>Старую смету не увеличиваем задним числом</h2>
-        <p>Разница простая: исправляем несоответствие согласованному заданию или отдельно оцениваем новое задание.</p>
-      </div>
-
-      <div class="price-boundary">
-        <article class="pb-col pb-in">
-          <span class="pb-kicker">Уже входит в стоимость</span>
-          <h3>Довести согласованное</h3>
-          <ul class="pb-list">
-            <li>Исправить несоответствие первоначальному заданию</li>
-            <li>Повторно доработать своевременные замечания</li>
-            <li>Учесть замечания руководителя в сервисном окне</li>
-            <li>Повторить согласованные проверки после правок</li>
-          </ul>
-          <p class="pb-note">Замечания лучше направить в течение 7 календарных дней для быстрой проверки. Этот организационный срок не ограничивает права по недостаткам, установленные законом.</p>
-        </article>
-        <article class="pb-col pb-new">
-          <span class="pb-kicker">Потребует нового расчёта</span>
-          <h3>Добавить новый объём</h3>
-          <ul class="pb-list">
-            <li>Сменить тему или исходные требования</li>
-            <li>Применить новую редакцию методички</li>
-            <li>Увеличить объём или добавить разделы</li>
-            <li>Выполнить пожелания за пределами задания</li>
-          </ul>
-          <p class="pb-note">Это отдельная услуга, а не внезапная доплата. Сначала согласуем новый объём и цену — затем вы решаете, продолжать ли.</p>
-        </article>
-      </div>
-    </section>
-
-    <span class="pay-anchor-alias" id="menshe" aria-hidden="true"></span>
-    <section class="chapter reveal" id="strahi" data-chapter="§ 04 · Если планы изменились">
-      <div class="ch-rule"><span class="ch-no">§ 04 · Ситуации без мелкого шрифта</span></div>
-      <div class="pay-section-head">
-        <h2>Что будет, если что-то пошло не по плану</h2>
-        <p>Откройте свою ситуацию. Здесь короткий ответ; точные формулировки всегда остаются в оферте.</p>
-      </div>
-
-      <div class="money-cases">
-        <details class="faq-item" name="money-cases" data-detail-group="cases">
-          <summary><b>Не успеваю оплатить этап</b><small>Пауза, 7 и 30 дней</small></summary>
-          <div class="mc-body">
-            <p>Без оплаты очередного этапа исполнение зависимой части приостанавливается, а срок сдвигается на период задержки. После длительной задержки Стороны согласуют новый график или применят законные последствия неисполнения; Исполнитель не получает безусловного права удержать цену непереданного результата.</p>
-            <a class="link mc-link" href="oferta.html#p5">Оферта · пункт 5.5 →</a>
-          </div>
-        </details>
-        <details class="faq-item" name="money-cases" data-detail-group="cases">
-          <summary><b>Нужна пауза или нет исходных данных</b><small>Как сохранить работу и пересобрать срок</small></summary>
-          <div class="mc-body">
-            <p>Сообщите об этом в деле. Время ожидания сдвигает срок зависимой позиции. Новый график становится обязательным после согласования, а не назначается задним числом.</p>
-            <a class="link mc-link" href="oferta.html#p4">Оферта · пункт 4.5 →</a>
-          </div>
-        </details>
-        <details class="faq-item" name="money-cases" data-detail-group="cases">
-          <summary><b>Хочу отказаться и вернуть остаток</b><small>До начала — полностью, после — за неоказанное</small></summary>
-          <div class="mc-body">
-            <p>До начала позиции возвращается вся её оплата. После начала вычитаются подтверждённые фактические расходы конкретной позиции и согласованная цена реально переданного самостоятельного результата. Исполнитель даёт построчный расчёт; неоспариваемая сумма возвращается в течение 10 календарных дней.</p>
-            <a class="link mc-link" href="oferta.html#p10">Оферта · раздел 10 →</a>
-          </div>
-        </details>
-        <details class="faq-item" name="money-cases" data-detail-group="cases">
-          <summary><b>Может ли цена внезапно вырасти?</b><small>Нет — если не изменилось задание</small></summary>
-          <div class="mc-body">
-            <p>Согласованная стоимость окончательна для зафиксированного задания. Новый расчёт появляется только при его изменении или расширении — и согласуется отдельно до оплаты.</p>
-            <a class="link mc-link" href="oferta.html#p5">Оферта · пункт 5.4 →</a>
-          </div>
-        </details>
-        <details class="faq-item" name="money-cases" data-detail-group="cases">
-          <summary><b>Можно оплатить с карты близкого?</b><small>Да — заранее свяжем платёж и дело</small></summary>
-          <div class="mc-body">
-            <p>Да. Сообщите мастеру, кто оплачивает и для какого дела. Оферта допускает передачу доступа человеку, в интересах которого оформлен заказ; его действия в деле считаются действиями заказчика.</p>
-            <a class="link mc-link" href="oferta.html#p4">Оферта · пункт 4.6 →</a>
-          </div>
-        </details>
-        <details class="faq-item" name="money-cases" data-detail-group="cases">
-          <summary><b>Не согласен с расчётом</b><small>Куда написать и сколько ждать</small></summary>
-          <div class="mc-body">
-            <p>Напишите в деле, на support@akademsalon.ru, в Telegram или ВК. Ответ на письменную претензию — до 10 рабочих дней. Досудебная претензия необязательна и не ограничивает право обратиться в суд.</p>
-            <a class="link mc-link" href="oferta.html#p15">Оферта · раздел 15 →</a>
-          </div>
-        </details>
-        <details class="faq-item" name="money-cases" data-detail-group="cases">
-          <summary><b>Оплатил, а статус не изменился</b><small>Не платите повторно — проверьте дело</small></summary>
-          <div class="mc-body">
-            <p>При переводе нажмите «Я оплатил(а)» в деле и приложите подтверждение. Если онлайн-платёж прошёл, а статус не обновился, не повторяйте оплату: напишите мастеру и укажите номер заказа.</p>
-            <a class="link mc-link" href="dashboard.html">Открыть кабинет →</a>
-          </div>
-        </details>
-        <details class="faq-item" name="money-cases" data-detail-group="cases">
-          <summary><b>Сейчас нет всей суммы</b><small>Оплачивается текущий этап, не весь заказ</small></summary>
-          <div class="mc-body">
-            <p>Поэтапный график не является банковским кредитом и не содержит процентов. До первого платежа можно обсудить подходящую разбивку; согласованный вариант будет записан в предложении или спецификации.</p>
-            <a class="link mc-link" href="#shemy">Посмотреть пример разбивки →</a>
-          </div>
-        </details>
-      </div>
-    </section>
-
-    <section class="pay-bottom reveal" data-chapter="Точная смета">
-      <div>
-        <span class="caps">Решение остаётся за вами</span>
-        <h2>Сначала точная смета. Потом — решение.</h2>
-        <p>Расчёт бесплатен. Мастер проверит задание, зафиксирует итоговую цену и покажет график платежей до первого рубля.</p>
-      </div>
-      <div class="pay-bottom-actions">
-        <a class="btn btn-wax btn-lg" href="configurator.html">Получить смету <span class="ar">→</span></a>
-        <a class="btn btn-line" href="https://t.me/academicsaloon" data-contact data-msg-lead="Расскажите, что именно в оплате вызывает вопрос. Разберём схему, документы или возврат без обязательств.">Задать вопрос</a>
-      </div>
-    </section>
-
   </div>
 </main>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Как проходит оплата заказа в Академическом Салоне","description":"До первого платежа фиксируются все позиции, результаты, сроки, твёрдые цены и распределение этапов в неизменяемой Спецификации.","step":[{"@type":"HowToStep","position":1,"name":"Проверить Спецификацию","text":"До оплаты заказчик получает номер и редакцию, все позиции, цены, сроки, критерии, график и хэш снимка."},{"@type":"HowToStep","position":2,"name":"Оплатить старт","text":"Платёж означает принятие конкретной редакции и запускает позиции после получения необходимых входных данных."},{"@type":"HowToStep","position":3,"name":"Проверить результат этапа","text":"Передача и предпросмотр фиксируются; просмотр сам по себе не означает приёмку или отказ от прав по недостаткам."},{"@type":"HowToStep","position":4,"name":"Оплатить следующий этап","text":"Каждая сумма заранее распределена по позициям и результатам; на денежное поступление формируется чек НПД."}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Не успеваю оплатить этап","acceptedAnswer":{"@type":"Answer","text":"Исполнение зависимой части приостанавливается, срок сдвигается на период задержки; новый график согласуется Сторонами."}},{"@type":"Question","name":"Хочу отказаться и вернуть остаток","acceptedAnswer":{"@type":"Answer","text":"Возврат рассчитывается построчно: подтверждённые фактические расходы конкретной позиции и цена реально переданного самостоятельного результата. Предпросмотр не означает полной приёмки."}},{"@type":"Question","name":"Может ли цена вырасти?","acceptedAnswer":{"@type":"Answer","text":"Твёрдая цена принятой позиции не меняется. Изменение предмета, результата, цены или срока оформляется новой редакцией и подтверждается до выполнения."}},{"@type":"Question","name":"Можно оплатить с карты близкого?","acceptedAnswer":{"@type":"Answer","text":"Да. Заказчик и плательщик фиксируются раздельно; оплата третьим лицом не передаёт ему автоматически все права и доступ к делу."}}]}</script>
-<script src="assets/js/app.js?v=20260723q"></script>
-<script src="assets/js/extras.js?v=20260723i"></script>
-<script>
-(function(){
-  'use strict';
-  var amount = document.getElementById('payAmount');
-  var amountValue = document.getElementById('payAmountValue');
-  var schemeButtons = Array.prototype.slice.call(document.querySelectorAll('[data-scheme]'));
-  var rows = Array.prototype.slice.call(document.querySelectorAll('[data-plan-row]'));
-  var currentScheme = '304030';
-  var plans = {
-    '50': [
-      { share: .5, title: 'Старт', note: 'задание, срок и смета согласованы' },
-      { share: .5, title: 'Финал', note: 'этап готов, согласованный отчёт предоставлен' }
-    ],
-    '304030': [
-      { share: .3, title: 'Старт', note: 'задание, срок и смета согласованы' },
-      { share: .4, title: 'Середина', note: 'контрольная точка из графика достигнута' },
-      { share: .3, title: 'Финал', note: 'этап готов, согласованный отчёт предоставлен' }
-    ],
-    '100': [
-      { share: 1, title: 'Один платёж', note: 'после согласования задания, срока и сметы' }
-    ]
-  };
-  function money(value){ return Math.round(value).toLocaleString('ru-RU') + ' ₽'; }
-  function drawPlan(){
-    if(!amount || !amountValue) return;
-    var total = parseInt(amount.value, 10) || 0;
-    var plan = plans[currentScheme] || plans['304030'];
-    amountValue.textContent = money(total);
-    amount.setAttribute('aria-valuetext', total.toLocaleString('ru-RU') + ' рублей');
-    rows.forEach(function(row, index){
-      var stage = plan[index];
-      row.hidden = !stage;
-      if(!stage) return;
-      row.querySelector('.pr-copy b').textContent = stage.title;
-      row.querySelector('.pr-copy small').textContent = stage.note;
-      row.querySelector('[data-plan-money]').textContent = money(total * stage.share);
-    });
-  }
-  if(amount) amount.addEventListener('input', drawPlan);
-  schemeButtons.forEach(function(button){
-    button.addEventListener('click', function(){
-      currentScheme = button.getAttribute('data-scheme') || '304030';
-      schemeButtons.forEach(function(item){
-        item.setAttribute('aria-pressed', String(item === button));
-      });
-      drawPlan();
-    });
-  });
-  drawPlan();
-
-  /* В старых браузерах сохраняем правило «открыт один ответ», не ломая
-     нативный details и видимый контент без JavaScript. */
-  document.querySelectorAll('details[data-detail-group]').forEach(function(detail){
-    detail.addEventListener('toggle', function(){
-      if(!detail.open) return;
-      var group = detail.getAttribute('data-detail-group');
-      document.querySelectorAll('details[data-detail-group="' + group + '"]').forEach(function(other){
-        if(other !== detail) other.open = false;
-      });
-    });
-  });
-
-  var jumpLinks = Array.prototype.slice.call(document.querySelectorAll('.pay-jump a[href^="#"]'));
-  if('IntersectionObserver' in window && jumpLinks.length){
-    var sections = jumpLinks.map(function(link){ return document.querySelector(link.getAttribute('href')); }).filter(Boolean);
-    var activeId = '';
-    var observer = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting) activeId = entry.target.id;
-      });
-      jumpLinks.forEach(function(link){
-        if(link.getAttribute('href') === '#' + activeId) link.setAttribute('aria-current', 'location');
-        else link.removeAttribute('aria-current');
-      });
-    }, { rootMargin: '-24% 0px -66% 0px', threshold: 0 });
-    sections.forEach(function(section){ observer.observe(section); });
-  }
-
-  /* Возвращаем клавиатурный фокус на кнопку помощи после закрытия
-     динамической приёмной — глобальный виджет удаляет окно из DOM. */
-  function restoreHelpFocus(){
-    window.setTimeout(function(){
-      var helpTrigger = document.querySelector('.mn-link.is-help, button.mn-link');
-      if(helpTrigger && document.body.contains(helpTrigger)) helpTrigger.focus({ preventScroll: true });
-    }, 0);
-  }
-  document.addEventListener('keydown', function(event){
-    if(event.key === 'Escape' && document.querySelector('.contact-sheet.open[role="dialog"]')) restoreHelpFocus();
-  }, true);
-  document.addEventListener('click', function(event){
-    if(event.target.closest && event.target.closest('[data-cs-close]')) restoreHelpFocus();
-  }, true);
-})();
-</script>
+<dialog class="p15-payment-dialog" data-payment-dialog>
+  <div class="p15-payment-dialog__inner"><p class="eyebrow">Пример оплаты</p><h2>Платёж появляется только в вашем деле.</h2><p>На рабочем экране здесь будут номер дела, назначение, точная сумма и ссылка кассы. Пример не запускает списание.</p><div class="p15-payment-dialog__facts"><span><small>Этап</small><strong>Редактура главы</strong></span><span><small>Сумма</small><strong>14 500 ₽</strong></span></div><div class="p15-payment-dialog__actions"><a class="button button--primary" href="dashboard.html">Открыть кабинет <span aria-hidden="true">→</span></a><button class="button button--text" type="button" data-close-payment>Закрыть</button></div></div>
+</dialog>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Как проходит оплата","step":[{"@type":"HowToStep","position":1,"name":"Согласовать спецификацию"},{"@type":"HowToStep","position":2,"name":"Открыть ссылку на оплату"},{"@type":"HowToStep","position":3,"name":"Дождаться подтверждения"},{"@type":"HowToStep","position":4,"name":"Начать согласованный этап"}]}</script>
+<script src="assets/js/app.js?v=20260725release13"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260725release13"></script>
+<script src="assets/js/extras.js?v=20260725release13"></script>
+<script src="assets/js/polish15-operations.js?v=20260725release13"></script>
 </body>
 </html>

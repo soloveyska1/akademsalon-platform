@@ -1371,6 +1371,18 @@
   }
 }
 
+@media screen and (max-width:380px) and (max-height:620px){
+  /* На коротких телефонах не отдаём главный CTA под нижнюю навигацию. */
+  .home .pr-scope{display:none!important}
+  .home .pr-lead{margin-top:14px;padding-top:12px}
+  .home .pr-cta{margin-top:14px!important}
+  .rv-hero{padding-top:calc(var(--mobile-header-h) + 18px)!important}
+  .rv-hero .h-display{font-size:44px!important;line-height:.98!important}
+  .rv-hero .rv-lead{font-size:14.5px!important;line-height:1.45!important}
+  .rv-cover-actions{margin-top:16px!important}
+  .rv-cover-note{display:none!important}
+}
+
 @media screen and (max-width:880px) and (max-height:700px){
   .contact-sheet .cs-card{max-height:94svh}
   .sdlg-card,.tour-card,.dossier-dialog,.mledger{max-height:94svh}
@@ -1384,4 +1396,695 @@
     padding-top:9px;
     padding-bottom:9px;
   }
+}
+
+/* ============================================================
+   PRODUCTION MOBILE CHROME · ФИНАЛЬНЫЙ СЛОЙ
+   mobile.css подключается после chrome.css, поэтому геометрия
+   фирменной шапки и пяти пунктов дока закреплена здесь повторно.
+   ============================================================ */
+@media screen and (max-width:880px){
+  :root{
+    --mobile-header-h:calc(58px + env(safe-area-inset-top));
+    --mobile-dock-h:calc(70px + env(safe-area-inset-bottom));
+    --mobile-bottom-clear:calc(var(--mobile-dock-h) + 14px);
+  }
+
+  html{
+    scroll-padding-top:calc(var(--mobile-header-h) + 12px);
+    scroll-padding-bottom:var(--mobile-bottom-clear);
+  }
+  body{padding-bottom:var(--mobile-dock-h)}
+  body.no-mcta{padding-bottom:0}
+
+  .site-header{
+    padding-top:env(safe-area-inset-top);
+    background:color-mix(in srgb,var(--paper) 96%,transparent);
+    -webkit-backdrop-filter:blur(18px) saturate(1.08);
+    backdrop-filter:blur(18px) saturate(1.08);
+  }
+  :root[data-theme="dark"] .site-header{
+    background:color-mix(in srgb,var(--paper) 97%,transparent);
+    border-bottom-color:color-mix(in srgb,var(--hairline) 86%,transparent);
+  }
+  .site-header .wrap.nav{
+    padding-left:max(var(--mobile-gutter),env(safe-area-inset-left));
+    padding-right:max(var(--mobile-gutter),env(safe-area-inset-right));
+  }
+  .site-header .nav,
+  .site-header.scrolled .nav{
+    height:58px;
+    gap:8px;
+  }
+  .site-header .brand{
+    display:inline-flex;
+    min-width:0;
+    min-height:44px;
+    flex:1 1 auto;
+    align-items:center;
+    gap:8px;
+    overflow:hidden;
+  }
+  .site-header .brand .b-mark{
+    display:block;
+    width:34px;
+    height:34px;
+    flex:0 0 34px;
+    border-radius:50%;
+    box-shadow:0 6px 17px color-mix(in srgb,var(--wax-deep) 20%,transparent);
+  }
+  .site-header .brand .b-lockup{
+    display:flex;
+    min-width:0;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:center;
+    overflow:hidden;
+    line-height:1;
+  }
+  .site-header .brand .b-lockup strong{
+    overflow:hidden;
+    max-width:100%;
+    color:var(--ink);
+    font:500 15px/1.12 var(--serif);
+    letter-spacing:-.018em;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .site-header .brand .b-lockup small{
+    overflow:hidden;
+    max-width:100%;
+    margin-top:4px;
+    color:var(--ink-faint);
+    font:600 7.5px/1.1 var(--mono);
+    letter-spacing:.105em;
+    text-overflow:ellipsis;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .site-header .brand .b-short{display:none}
+  .nav-cab,.menu-toggle{
+    width:44px;
+    min-width:44px;
+    min-height:44px;
+    padding:0;
+  }
+
+  .mobile-cta.mnav{
+    display:grid;
+    min-height:var(--mobile-dock-h);
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    align-items:stretch;
+    gap:2px;
+    padding:6px max(8px,env(safe-area-inset-right))
+      max(5px,env(safe-area-inset-bottom))
+      max(8px,env(safe-area-inset-left));
+    background:color-mix(in srgb,var(--paper) 96%,transparent);
+    border-top:1px solid color-mix(in srgb,var(--ink) 14%,transparent);
+    box-shadow:0 -12px 34px -26px color-mix(in srgb,var(--ink) 52%,transparent);
+    -webkit-backdrop-filter:blur(18px) saturate(1.1);
+    backdrop-filter:blur(18px) saturate(1.1);
+  }
+  :root[data-theme="dark"] .mobile-cta.mnav{
+    background:color-mix(in srgb,var(--paper) 97%,transparent);
+    border-top-color:color-mix(in srgb,var(--ink) 18%,transparent);
+    box-shadow:0 -12px 36px -25px rgba(0,0,0,.78);
+  }
+  .mnav .mn-i{
+    position:relative;
+    display:flex;
+    min-width:0;
+    min-height:54px;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    padding:5px 2px 4px;
+    border-radius:4px;
+    color:var(--ink-faint);
+    font-size:10px;
+    font-weight:520;
+    letter-spacing:0;
+  }
+  .mnav .mn-i::before{
+    position:absolute;
+    top:-7px;
+    left:50%;
+    width:24px;
+    height:2px;
+    border-radius:2px;
+    background:var(--wax);
+    content:"";
+    opacity:0;
+    transform:translateX(-50%);
+  }
+  .mnav .mn-i[aria-current="page"]{color:var(--ink)}
+  .mnav .mn-i[aria-current="page"]::before{opacity:1}
+  .mnav .mn-i[aria-current="page"]::after{display:none}
+  .mnav .mn-i .mn-ic{
+    display:inline-flex;
+    width:22px;
+    height:22px;
+    flex:0 0 22px;
+    align-items:center;
+    justify-content:center;
+    margin:0;
+    color:currentColor;
+    background:none;
+    border:0;
+    border-radius:0;
+    box-shadow:none;
+    font:500 16px/1 var(--serif);
+  }
+  .mnav .mn-i .mn-ic svg{width:18px;height:18px}
+  .mnav .mn-l{
+    display:block;
+    overflow:hidden;
+    width:100%;
+    text-align:center;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .mnav .mn-calc{
+    z-index:1;
+    color:var(--wax);
+  }
+  .mnav .mn-calc .mn-ic{
+    position:relative;
+    width:48px;
+    height:48px;
+    flex-basis:48px;
+    margin-top:-20px;
+    color:#FFFEF9;
+    background:var(--wax);
+    border:2px solid var(--paper);
+    border-radius:50%;
+    box-shadow:0 8px 22px color-mix(in srgb,var(--wax-deep) 30%,transparent),
+      inset 0 0 0 3px rgba(255,255,255,.08);
+  }
+  .mnav .mn-calc .mn-ic svg{width:20px;height:20px}
+  .mnav .mn-calc:active{background:none}
+  .mnav .mn-calc:active .mn-ic{
+    transform:translateY(1px) scale(.97);
+    box-shadow:0 5px 14px color-mix(in srgb,var(--wax-deep) 28%,transparent),
+      inset 0 0 0 3px rgba(255,255,255,.08);
+  }
+  .mnav .mn-calc[aria-current="page"]::before{display:none}
+  .mnav .mn-badge{
+    top:1px;
+    right:calc(50% - 24px);
+    border-color:var(--paper);
+  }
+  .site-footer{padding-bottom:calc(var(--mobile-dock-h) + 14px)}
+  body.no-mcta .site-footer{padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+
+  .site-header .brand:focus-visible{outline:none}
+  .site-header .brand:focus-visible .b-mark,
+  .mnav .mn-i:focus-visible{
+    outline:2px solid var(--wax);
+    outline-offset:3px;
+  }
+}
+
+@media screen and (max-width:480px){
+  .site-header .brand .b-full{display:none!important}
+  .site-header .brand .b-short{display:block!important}
+  .site-header .brand .b-lockup strong{font-size:14px}
+}
+
+@media screen and (max-width:350px){
+  .site-header .brand .b-lockup small{display:none}
+  .mnav .mn-i{font-size:9px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .site-header .brand .b-mark,
+  .mnav .mn-i,
+  .mnav .mn-i::before,
+  .mnav .mn-calc .mn-ic{
+    transition:none!important;
+  }
+  .site-header .brand:hover .b-mark{transform:none}
+}
+
+/* Production footer follows the same compact editorial grid as the
+   approved mobile concept. This final layer also owns safe-area space. */
+@media screen and (max-width:880px){
+  .site-footer{
+    margin-top:56px;
+    padding:0 0 calc(var(--mobile-dock-h) + 18px);
+    color:#D4CCBD;
+    background:#1D1C18;
+    box-shadow:none;
+  }
+  :root[data-theme="dark"] .site-footer{color:#D4CCBD;background:#151512}
+  body.no-mcta .site-footer{
+    padding-bottom:calc(18px + env(safe-area-inset-bottom));
+  }
+  .site-footer::before,
+  .site-footer::after{display:none;content:none}
+  .site-footer>.pf-footer{
+    padding-left:max(var(--mobile-gutter),env(safe-area-inset-left));
+    padding-right:max(var(--mobile-gutter),env(safe-area-inset-right));
+  }
+  .pf-footer__main{
+    grid-template-columns:1fr 1fr;
+    gap:32px 24px;
+    padding:42px 0 36px;
+  }
+  .pf-footer__brand{grid-column:1/-1}
+  .pf-footer__brand .brand{margin-bottom:18px}
+  .pf-footer__brand h2{font-size:21px}
+  .pf-footer__actions>a,
+  .pf-footer__actions>button{min-height:44px}
+  .site-footer .pf-footer__channels a{
+    min-height:44px;
+    font-size:10.5px;
+  }
+  .site-footer .pf-footer__nav>a{
+    display:flex;
+    min-height:44px;
+    align-items:center;
+  }
+  .pf-footer__nav:last-child{
+    grid-column:1/-1;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:9px 16px;
+  }
+  .pf-footer__nav:last-child>strong{grid-column:1/-1}
+  .pf-footer__legal>summary{min-height:52px}
+  .pf-footer__legal-body{
+    grid-template-columns:1fr;
+    padding-bottom:24px;
+  }
+  .site-footer .pf-footer__legal-body nav a,
+  .pf-footer__legal-body nav button{
+    display:inline-flex;
+    min-height:44px;
+    align-items:center;
+  }
+  .site-footer .pf-footer__fns{min-height:44px}
+  .pf-footer__bottom{
+    grid-template-columns:1fr;
+    gap:12px;
+    padding:17px 0 8px;
+  }
+  .pf-footer__bottom>span:nth-child(2){display:none}
+  .pf-footer__settings{justify-content:flex-start}
+
+  .toc-appearance{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin:0 0 14px;
+  }
+  .toc-appearance .toc-theme-row{
+    min-width:0;
+    padding:5px 5px 5px 10px;
+  }
+  .toc-appearance .toc-theme-row .ttr-lbl{font-size:11px}
+  .toc-appearance .theme-toggle,
+  .toc-appearance .calm-toggle{
+    width:38px;
+    height:38px;
+    min-height:38px;
+  }
+}
+
+@media screen and (max-width:560px){
+  .pf-footer__nav:last-child{grid-template-columns:1fr 1fr}
+  .pf-footer__legal>summary{grid-template-columns:1fr 24px}
+  .pf-footer__legal>summary small{display:none}
+  .pf-footer__settings{
+    display:grid;
+    grid-template-columns:1fr 44px;
+    gap:6px 10px;
+    width:100%;
+  }
+  .pf-footer__settings>span[data-calm-label]{margin-left:0}
+  .pf-footer__settings .theme-toggle,
+  .pf-footer__settings .calm-toggle{
+    width:44px;
+    height:44px;
+  }
+  .pf-footer__settings .fc-top{
+    grid-column:1/-1;
+    width:fit-content;
+    min-height:44px;
+    margin:2px 0 0;
+  }
+}
+
+/* Мобильный footer финального концепта. */
+@media screen and (max-width:880px){
+  .site-footer,
+  :root[data-theme="dark"] .site-footer,
+  body.no-mcta .site-footer{
+    margin-top:0;
+    padding:0;
+    color:#D4CCBD;
+    background:#1D1C18;
+  }
+  .site-footer__main{
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    padding:32px max(18px,env(safe-area-inset-left)) 24px;
+  }
+  .site-footer__brand{grid-column:1/-1}
+  .site-footer__bottom{
+    flex-wrap:wrap;
+    justify-content:flex-start;
+    /* Клиренс дока уже даёт body (padding-bottom:70px) — прежний
+       calc(--mobile-dock-h + 24 + safe) добавлял его второй раз
+       и оставлял под подвалом 94px чистой пустоты. */
+    padding:20px max(18px,env(safe-area-inset-left)) calc(24px + env(safe-area-inset-bottom));
+  }
+}
+@media screen and (max-width:620px){
+  .site-footer__main{
+    grid-template-columns:1fr;
+    padding-inline:max(16px,env(safe-area-inset-left));
+  }
+  .site-footer nav,
+  .site-footer__brand{grid-column:auto}
+  /* Колонку «О сервисе» не прячем: там лежат оферта, конфиденциальность
+     и документы — на мобильном они оказывались недоступны вовсе. */
+  .site-footer__bottom{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:8px;
+    padding-inline:max(16px,env(safe-area-inset-left));
+  }
+}
+
+/* Верхняя app-панель финального мобильного концепта. */
+@media screen and (max-width:880px){
+  :root{--mobile-appbar-h:62px}
+  .site-header{display:none!important}
+  .mobile-appbar{
+    position:fixed;
+    z-index:100;
+    inset:0 0 auto;
+    display:grid;
+    height:calc(var(--mobile-appbar-h) + env(safe-area-inset-top));
+    grid-template-columns:44px minmax(0,1fr) 44px 44px 44px;
+    gap:4px;
+    align-items:end;
+    padding:env(safe-area-inset-top) max(10px,env(safe-area-inset-right)) 7px max(10px,env(safe-area-inset-left));
+    background:rgba(243,238,228,.94);
+    border-bottom:1px solid var(--hairline);
+    -webkit-backdrop-filter:blur(18px) saturate(1.1);
+    backdrop-filter:blur(18px) saturate(1.1);
+  }
+  :root[data-theme="dark"] .mobile-appbar{background:rgba(23,23,20,.94)}
+  .mobile-appbar__back,
+  .mobile-appbar__help,
+  .mobile-appbar__theme,
+  .mobile-appbar__menu{
+    display:grid;
+    width:44px;
+    height:44px;
+    min-height:44px;
+    place-items:center;
+    padding:0;
+    color:var(--ink);
+    background:transparent;
+    border:0;
+    border-radius:50%;
+    font-size:19px;
+  }
+  .mobile-appbar__back{
+    pointer-events:none;
+    opacity:0;
+  }
+  .mobile-appbar__back.is-visible{
+    pointer-events:auto;
+    opacity:1;
+  }
+  .mobile-appbar__brand{
+    display:flex;
+    min-width:0;
+    align-items:center;
+    gap:8px;
+    color:var(--ink);
+    text-decoration:none;
+  }
+  .mobile-appbar__brand img{
+    width:34px;
+    height:34px;
+    flex:0 0 34px;
+    border-radius:50%;
+  }
+  .mobile-appbar__brand>span{
+    display:grid;
+    min-width:0;
+    gap:1px;
+  }
+  .mobile-appbar__brand strong{
+    overflow:hidden;
+    color:var(--ink);
+    font:520 14px/1.2 var(--serif);
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .mobile-appbar__brand small{
+    overflow:hidden;
+    color:var(--ink-faint);
+    font:550 9px/1.2 var(--mono);
+    letter-spacing:.05em;
+    text-overflow:ellipsis;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .mobile-appbar__help{
+    color:var(--wax);
+    background:var(--wax-soft);
+    font:550 15px/1 var(--serif);
+  }
+  .mobile-appbar__theme{
+    color:var(--ink);
+    background:transparent;
+    border:1px solid var(--hairline);
+    font:500 15px/1 var(--serif);
+  }
+  .mobile-appbar__menu{position:relative}
+  .mobile-appbar__menu i,
+  .mobile-appbar__menu i::before,
+  .mobile-appbar__menu i::after{
+    display:block;
+    width:17px;
+    height:1px;
+    background:var(--ink);
+    content:"";
+  }
+  .mobile-appbar__menu i::before{transform:translateY(-5px)}
+  .mobile-appbar__menu i::after{transform:translateY(4px)}
+  body:not(.is-task-route):not(.is-admin-route)>main{
+    padding-top:calc(var(--mobile-appbar-h) + env(safe-area-inset-top));
+  }
+}
+@media screen and (max-width:400px){
+  .mobile-appbar{
+    grid-template-columns:40px minmax(0,1fr) 40px 40px 40px;
+    gap:2px;
+    padding-inline:max(6px,env(safe-area-inset-left));
+  }
+  .mobile-appbar__back,
+  .mobile-appbar__help,
+  .mobile-appbar__theme,
+  .mobile-appbar__menu{
+    width:40px;
+    height:40px;
+    min-height:40px;
+  }
+  .mobile-appbar__brand{gap:6px}
+  .mobile-appbar__brand img{width:28px;height:28px;flex-basis:28px}
+}
+@media screen and (max-width:350px){
+  .mobile-appbar{grid-template-columns:40px minmax(0,1fr) 40px 40px}
+  .mobile-appbar__help{display:none}
+}
+
+/* Нижний dock финального мобильного концепта. */
+@media screen and (max-width:880px){
+  .mobile-dock.mobile-cta{
+    position:fixed;
+    z-index:95;
+    inset:auto 0 0;
+    display:grid;
+    min-height:calc(var(--mobile-dock-h) + env(safe-area-inset-bottom));
+    grid-template-columns:repeat(5,1fr);
+    align-items:start;
+    padding:8px max(8px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(8px,env(safe-area-inset-left));
+    background:rgba(255,253,248,.96);
+    border-top:1px solid var(--hairline);
+    box-shadow:0 -12px 34px rgba(47,37,22,.08);
+    -webkit-backdrop-filter:blur(18px) saturate(1.12);
+    backdrop-filter:blur(18px) saturate(1.12);
+  }
+  :root[data-theme="dark"] .mobile-dock.mobile-cta{
+    background:rgba(36,34,29,.96);
+  }
+  .mobile-dock.mobile-cta>a{
+    position:relative;
+    display:grid;
+    min-width:0;
+    min-height:54px;
+    place-items:center;
+    align-content:center;
+    gap:5px;
+    padding:0;
+    color:var(--ink-faint);
+    background:transparent;
+    border:0;
+    border-radius:0;
+    text-decoration:none;
+  }
+  .mobile-dock.mobile-cta>a::before{
+    position:absolute;
+    top:-9px;
+    left:50%;
+    display:block;
+    width:24px;
+    height:2px;
+    background:var(--wax);
+    content:"";
+    opacity:0;
+    transform:translateX(-50%);
+  }
+  .mobile-dock.mobile-cta>a.is-current{color:var(--ink)}
+  .mobile-dock.mobile-cta>a.is-current::before{opacity:1}
+  .mobile-dock.mobile-cta small{
+    display:block;
+    overflow:hidden;
+    max-width:100%;
+    color:inherit;
+    font-size:10px;
+    font-weight:520;
+    text-align:center;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  /* Через .mn-i — иначе старое .mnav .mn-i .mn-ic (0-3-0) перебивало это
+     правило и рисовало иконки в боксе 22×22 inline-flex, тогда как их
+     ::before/::after посчитаны под 20×20 block: вся геометрия ехала. */
+  .mobile-dock .mn-i .dock-icon{
+    position:relative;
+    display:block;
+    width:20px;
+    height:20px;
+    color:currentColor;
+    background:transparent;
+  }
+  .mobile-dock .dock-icon--home::before{
+    position:absolute;
+    inset:6px 3px 2px;
+    border:1.5px solid currentColor;
+    border-top:0;
+    border-radius:2px;
+    content:"";
+  }
+  .mobile-dock .dock-icon--home::after{
+    position:absolute;
+    top:3px;
+    left:5px;
+    width:10px;
+    height:10px;
+    border-top:1.5px solid currentColor;
+    border-left:1.5px solid currentColor;
+    content:"";
+    transform:rotate(45deg);
+  }
+  .mobile-dock .dock-icon--services::before,
+  .mobile-dock .dock-icon--services::after{
+    position:absolute;
+    left:3px;
+    width:14px;
+    height:5px;
+    border:1.5px solid currentColor;
+    border-radius:1px;
+    content:"";
+  }
+  .mobile-dock .dock-icon--services::before{top:3px}
+  .mobile-dock .dock-icon--services::after{bottom:3px}
+  .mobile-dock .dock-icon--library::before{
+    position:absolute;
+    inset:2px 4px 2px 2px;
+    border:1.5px solid currentColor;
+    border-radius:1px 3px 3px 1px;
+    content:"";
+  }
+  .mobile-dock .dock-icon--library::after{
+    position:absolute;
+    top:3px;
+    bottom:3px;
+    left:7px;
+    width:1px;
+    background:currentColor;
+    content:"";
+  }
+  .mobile-dock .dock-icon--profile::before{
+    position:absolute;
+    top:2px;
+    left:7px;
+    width:7px;
+    height:7px;
+    border:1.5px solid currentColor;
+    border-radius:50%;
+    content:"";
+  }
+  .mobile-dock .dock-icon--profile::after{
+    position:absolute;
+    right:3px;
+    bottom:2px;
+    left:3px;
+    height:8px;
+    border:1.5px solid currentColor;
+    border-radius:9px 9px 3px 3px;
+    content:"";
+  }
+  /* Правило 8: пока висит выбор о данных, нижний слой один — баннер.
+     Док возвращается сразу после ответа. */
+  :root.has-consent-bar .mobile-dock{
+    transform:translateY(100%);
+    pointer-events:none;
+    visibility:hidden;
+  }
+  .mobile-dock.mobile-cta>.mobile-dock__primary{
+    margin-top:-23px;
+    /* Печать намеренно выступает над баром — ссылка не должна её срезать.
+       Старый слой (.mnav .mn-calc) ставил overflow:hidden, из-за чего
+       круг «АС» показывался половиной. */
+    overflow:visible;
+    color:var(--wax);
+  }
+  .mobile-dock.mobile-cta>.mobile-dock__primary::before{display:none}
+  .mobile-dock .mn-ic.mobile-dock__seal{
+    display:grid;
+    /* Подъём задаёт ТОЛЬКО ссылка (-23px выше). Старое правило
+       .mnav .mn-calc .mn-ic давало ещё -20px, и подъёмы складывались в 43px. */
+    margin-top:0;
+    width:52px;
+    height:52px;
+    place-items:center;
+    color:#FFF9F0;
+    background:var(--wax);
+    border:1px solid color-mix(in srgb,var(--wax) 76%,#fff);
+    border-radius:50%;
+    box-shadow:0 8px 22px rgba(131,43,27,.26),inset 0 0 0 4px rgba(255,255,255,.08);
+    font:550 13px/1 var(--serif);
+  }
+  .mobile-dock .mobile-dock__primary small{
+    color:var(--wax);
+    font-weight:600;
+  }
+  .mobile-dock .mn-badge{
+    position:absolute;
+    top:1px;
+    right:calc(50% - 22px);
+  }
+}
+@media screen and (max-width:390px){
+  .mobile-dock.mobile-cta small{font-size:9px}
+  .mobile-dock .mn-ic.mobile-dock__seal{width:48px;height:48px}
 }
