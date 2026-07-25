@@ -513,7 +513,7 @@ body.polish15-library .library-tools a b{
   font:400 18px/1 var(--serif);
 }
 
-@media(max-width:880px){
+@media(max-width:920px){
   body.polish15-library{
     --gutter:max(18px,env(safe-area-inset-left));
     --section:72px;

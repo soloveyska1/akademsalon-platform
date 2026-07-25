@@ -367,7 +367,7 @@ section[id],main[id],[id].chapter{scroll-margin-top:76px}
 .rev-teaser .rt-shot{display:block;border:1px solid var(--hairline);border-radius:var(--r);background:var(--sheet);overflow:hidden;max-height:300px;transition:border-color .15s,box-shadow .15s}
 .rev-teaser .rt-shot:hover{border-color:var(--hairline-strong);box-shadow:4px 4px 0 rgba(34,32,27,.06)}
 .rev-teaser .rt-shot img{width:100%;height:auto;display:block}
-@media(max-width:880px){.rev-teaser{grid-template-columns:1fr 1fr}.rev-teaser .rt-shot:nth-child(3){display:none}}
+@media(max-width:920px){.rev-teaser{grid-template-columns:1fr 1fr}.rev-teaser .rt-shot:nth-child(3){display:none}}
 
 /* ---------- Правовые документы ---------- */
 .doc-wrap{padding-top:calc(56px + clamp(28px,5vw,56px));padding-bottom:var(--block)}
@@ -398,7 +398,7 @@ section[id],main[id],[id].chapter{scroll-margin-top:76px}
 .doc-back{margin-top:40px;padding-top:20px;border-top:1px solid var(--hairline)}
 
 /* ---------- Responsive ---------- */
-@media(max-width:880px){
+@media(max-width:920px){
   .split{grid-template-columns:1fr}
   .grid-2,.grid-3{grid-template-columns:1fr}
   .paysteps{grid-template-columns:1fr;gap:18px}

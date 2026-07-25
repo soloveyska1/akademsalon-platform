@@ -7,10 +7,10 @@
 <title>Кабинет мастера — Академический Салон</title>
 <meta name="robots" content="noindex,nofollow,noarchive" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260725release15" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release15" />
-<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release15" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260725release15" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260725release16" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release16" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release16" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260725release16" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -59,6 +59,13 @@
   .ag-user b{color:var(--ink)}
   .ag-linkbtn{background:none;border:0;padding:0;cursor:pointer;font:inherit;color:inherit;text-decoration:underline;text-decoration-color:var(--hairline-strong);text-underline-offset:3px}
   .ag-linkbtn:hover{text-decoration-color:currentColor}
+
+  /* Значки-SVG вместо знаков, которых нет в наших шрифтах (см. icoSvg
+     в admin.js). Рисуем currentColor — значит, тема их красит сама. */
+  .ag-ico{display:inline-block;vertical-align:-.18em;flex:none}
+  .ag-linkbtn .ag-ico{vertical-align:-.22em}
+  .ag-ico--star{vertical-align:-.16em}
+  .ag-ico--star.dim{color:var(--hairline-strong)}
 
   /* -------- навигация-регистр -------- */
   .ag-nav{position:sticky;top:0;z-index:40;display:flex;gap:2px;overflow-x:auto;
@@ -529,7 +536,9 @@
   .ag-ck-box{width:16px;height:16px;flex:0 0 16px;border:1.5px solid var(--hairline-strong);border-radius:4px;
     display:inline-flex;align-items:center;justify-content:center;font-size:11px;line-height:1;color:#fff}
   .ag-ck-box.on{background:var(--wax,#B23B22);border-color:var(--wax,#B23B22)}
-  .ag-ck-box.on::after{content:"✓"}
+  /* галочку рисуем углом рамки: ✓ U+2713 нет ни в одном нашем шрифте */
+  .ag-ck-box.on::after{content:"";width:4px;height:8px;margin-bottom:2px;
+    border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(43deg)}
   .ag-bulkbar{position:sticky;bottom:10px;z-index:30;display:flex;gap:8px;align-items:center;flex-wrap:wrap;
     border:1px solid var(--ink);border-radius:12px;background:var(--sheet,#FDFBF5);padding:9px 13px;
     box-shadow:0 8px 28px rgba(24,21,15,.18);margin-top:10px;font-size:13px}
@@ -687,8 +696,11 @@
     border-radius:999px;padding:4px 7px}
   .ag-est-kicker{display:block;margin-top:3px;font-size:11.5px;color:var(--ink-soft)}
   .ag-est-search{position:relative}
-  .ag-est-search::before{content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-52%);
-    font:20px/1 var(--serif);color:var(--ink-faint);pointer-events:none}
+  /* лупа: ⌕ U+2315 нет в шрифтах, поэтому маска по SVG — цвет остаётся токенным */
+  .ag-est-search::before{content:"";position:absolute;left:12px;top:50%;transform:translateY(-52%);
+    width:15px;height:15px;background:var(--ink-faint);pointer-events:none;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.6'/%3E%3Cpath d='M15.5 15.5 20 20'/%3E%3C/svg%3E") center/contain no-repeat;
+    mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.6'/%3E%3Cpath d='M15.5 15.5 20 20'/%3E%3C/svg%3E") center/contain no-repeat}
   .ag-est-search input{width:100%;min-height:39px;padding:9px 34px 9px 36px;border:1px solid var(--hairline-strong);
     border-radius:999px;background:var(--paper);color:var(--ink);font:13px var(--sans)}
   .ag-est-search input:focus{outline:2px solid var(--stamp);outline-offset:1px;border-color:transparent}
@@ -724,7 +736,8 @@
     border-radius:50%;font:600 9px/1 var(--mono);letter-spacing:.04em;color:var(--ink-soft);
     background:var(--paper)}
   .ag-est-item.is-added .ag-est-mark{border-color:var(--verify);background:var(--verify);color:#fff}
-  .ag-est-item.is-added .ag-est-mark::before{content:"✓";font-size:13px}
+  .ag-est-item.is-added .ag-est-mark::before{content:"";width:5px;height:10px;margin-bottom:3px;
+    border:solid currentColor;border-width:0 2.2px 2.2px 0;transform:rotate(43deg)}
   .ag-est-item.is-added .ag-est-mark span{display:none}
   .ag-est-nm{display:block;font-size:12.8px;font-weight:500;line-height:1.25}
   .ag-est-sub{display:block;margin-top:2px;font-size:10.5px;line-height:1.25;color:var(--ink-soft);
@@ -802,8 +815,8 @@
   }
 </style>
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release15" media="screen and (max-width: 880px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-admin.css?v=20260725release15" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release16" media="screen and (max-width:920px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-admin.css?v=20260725release16" />
 </head>
 <body class="is-admin-route">
 
@@ -813,9 +826,9 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260725release15"></script>
-<script defer src="assets/js/polish15-chrome.js?v=20260725release15"></script>
-<script src="assets/js/extras.js?v=20260725release15"></script>
-<script src="assets/js/admin.js?v=20260725release15&amp;ui=polish15b"></script>
+<script src="assets/js/app.js?v=20260725release16"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260725release16"></script>
+<script src="assets/js/extras.js?v=20260725release16"></script>
+<script src="assets/js/admin.js?v=20260725release16&amp;ui=polish15b"></script>
 </body>
 </html>

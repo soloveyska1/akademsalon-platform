@@ -129,7 +129,7 @@ h3{font-size:clamp(19px,2vw,23px);font-weight:500}
 .cover-stage{position:relative;min-height:640px;display:flex;align-items:center;overflow:clip;padding:96px 0 48px}
 /* запас скролла и sticky-сцена — только при включённой хореографии;
    media-гейт дублирует JS: даже если класс залип, узкий экран статичен */
-@media(min-width:881px){
+@media(min-width:921px){
   .enhanced .cover-track{height:178vh;height:178svh}
   .enhanced .cover-stage{position:sticky;top:0;height:100vh;height:100svh;padding:0}
 }
@@ -280,7 +280,7 @@ h3{font-size:clamp(19px,2vw,23px);font-weight:500}
 }
 
 /* мобильная версия книги */
-@media(max-width:880px){
+@media(max-width:920px){
   .cover-track{height:auto}
   .cover-stage{position:static;height:auto;min-height:0;padding:96px 0 0;overflow:visible}
   .cover-grid{grid-template-columns:1fr;gap:40px;padding-top:0}
@@ -317,7 +317,7 @@ h3{font-size:clamp(19px,2vw,23px);font-weight:500}
 .page-l{padding-right:clamp(24px,3.4vw,48px)}
 .page-r{padding-left:clamp(24px,3.4vw,48px)}
 .page .pg-caps{display:block;margin-bottom:var(--s2)}
-@media(max-width:880px){
+@media(max-width:920px){
   .pages{grid-template-columns:1fr}
   .pages::before{display:none}
   .page{padding:28px 22px}
@@ -471,7 +471,7 @@ a.dotrow:hover .dr-start{color:var(--ink-soft)}
 /* направление в тексте честное на любом экране: на десктопе гранки СЛЕВА,
    на мобиле колонки складываются и гранки оказываются СВЕРХУ */
 .dir-mob{display:none}
-@media(max-width:880px){
+@media(max-width:920px){
   .ws-grid{grid-template-columns:1fr}
   .proof-stack{max-width:420px}
   .pf-bar{max-width:420px}
@@ -598,7 +598,7 @@ a.dotrow:hover .dr-start{color:var(--ink-soft)}
    ============================================================ */
 .proc-track{position:relative}
 .proc-stage{padding:0}
-@media(min-width:881px){
+@media(min-width:921px){
   .enhanced .proc-track{height:280vh;height:280svh}
   .enhanced .proc-stage{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;overflow:clip}
 }
@@ -680,7 +680,7 @@ body:not(.enhanced) .proc-sheet{position:relative;inset:auto;border-bottom:1px s
 body:not(.enhanced) .proc-sheet:last-child{border-bottom:0}
 body:not(.enhanced) .proc-sheet .sh-folio{display:none}
 body:not(.enhanced) .proc-sheet .sh-ghost{font-size:140px;right:6px}
-@media(min-width:881px){
+@media(min-width:921px){
   body:not(.enhanced) .proc-grid{align-items:start}
   body:not(.enhanced) .proc-left{position:sticky;top:84px}
   body:not(.enhanced) .pay-strip{margin-top:var(--s2)}
@@ -695,7 +695,7 @@ body:not(.enhanced) .proc-sheet .sh-ghost{font-size:140px;right:6px}
     top:50%;transform:translateY(-52%);
   }
 }
-@media(max-width:880px){
+@media(max-width:920px){
   .proc-grid{grid-template-columns:1fr}
   .proc-grid::before{display:none}
   .proc-left{border-bottom:1px solid var(--hairline)}
@@ -727,7 +727,7 @@ body:not(.enhanced) .proc-sheet .sh-ghost{font-size:140px;right:6px}
 }
 
 .trust-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(28px,5vw,64px);align-items:start}
-@media(max-width:880px){.trust-grid{grid-template-columns:1fr}}
+@media(max-width:920px){.trust-grid{grid-template-columns:1fr}}
 
 .stamp{
   display:inline-block;border:2px solid currentColor;border-radius:3px;
@@ -790,7 +790,7 @@ body:not(.enhanced) .proc-sheet .sh-ghost{font-size:140px;right:6px}
   content:"";position:absolute;bottom:-8px;left:0;width:100%;height:8px;
   background:#8C2D18;clip-path:polygon(0 0,100% 0,50% 100%);
 }
-@media(max-width:880px){.lasse{display:none}}
+@media(max-width:920px){.lasse{display:none}}
 
 /* ============================================================
    REVEAL + ДЕГРАДАЦИЯ
@@ -1171,7 +1171,7 @@ html:not(.has-js) .plus-tabs,html:not(.has-js) .plus-per,html:not(.has-js) .plus
 .route-card .sh-have li{font-size:clamp(15px,1.5vw,17px);padding:6px 0 6px 20px}
 .route-card .sh-pay{margin-top:14px}
 .rc-seal{position:absolute;right:14px;bottom:44px;transform:rotate(-7deg)}
-@media(max-width:880px){
+@media(max-width:920px){
   .route-grid{grid-template-columns:1fr}
   .route-line{flex-wrap:wrap;gap:14px 0}
   .rl-seg{flex:1 1 40%}

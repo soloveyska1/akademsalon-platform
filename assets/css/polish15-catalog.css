@@ -1323,7 +1323,7 @@
   }
 }
 
-@media (max-width: 880px) {
+@media (max-width:920px) {
   .p15-catalog,
   .p15-service {
     --gutter-p15: clamp(18px, 5.5vw, 28px);

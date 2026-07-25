@@ -867,7 +867,7 @@
   }
 }
 
-@media (max-width: 880px) {
+@media (max-width:920px) {
   .is-account-route .account-page {
     min-height: 100dvh;
     padding-top: calc(var(--mobile-appbar-h, 62px) + env(safe-area-inset-top));
@@ -2316,7 +2316,7 @@
   }
 }
 
-@media (max-width: 880px) {
+@media (max-width:920px) {
   .is-account-route .account-section {
     margin-top: 34px;
   }
@@ -3608,7 +3608,7 @@
 }
 
 /* ---------- ≤880: одна колонка, служебные подписи с полом 12px ---------- */
-@media (max-width: 880px) {
+@media (max-width:920px) {
   .is-account-route .account-case-production :is(.case-sec, .case-fold) {
     padding: 20px 17px;
   }
@@ -3829,7 +3829,7 @@
 .is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p95 { width: 95%; }
 .is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p100 { width: 100%; }
 
-@media (max-width: 880px) {
+@media (max-width:920px) {
   .is-account-route .account-case-production .case-progress-meta {
     font-size: 12px;
   }
@@ -3942,7 +3942,7 @@
   align-items: center;
 }
 
-@media (max-width: 880px) {
+@media (max-width:920px) {
   .is-account-route .plus-intro {
     align-items: stretch;
   }
@@ -4174,7 +4174,7 @@
 }
 
 /* ---------- ≤880: одна колонка; служебные подписи с полом 12px ---------- */
-@media (max-width: 880px) {
+@media (max-width:920px) {
   .is-account-route .account-case-production .case-layout {
     grid-template-columns: minmax(0, 1fr);
     gap: 0;

@@ -38,11 +38,13 @@ test('общая навигация повторяет финальный кон
     [...navBlock[0].matchAll(/href: '([^']+)',\s+label: '([^']+)'/g)].map((m) => [m[1], m[2]]),
     NAV_EXPECTED,
     'порядок пунктов шапки должен совпадать с эталоном');
-  /* Разделы «Выгод» обязаны остаться достижимыми из подвала. */
-  for (const href of ['referral.html', 'plus.html', 'deposit.html', 'gift.html']) {
+  /* Эталонный компактный подвал хранит Салон+ и депозит; клуб доступен
+     из пятого пункта шапки, сертификат — из общего меню и поиска. */
+  for (const href of ['plus.html', 'deposit.html']) {
     assert.match(app, new RegExp(`<a href="${href.replace('.', '\\.')}">`),
       `${href} должен остаться в подвале`);
   }
+  assert.match(app, /\['gift\.html', 'Подарочный сертификат'/);
   for (const [href, label] of [
     ['/', 'Главная'],
     ['services.html', 'Услуги'],

@@ -373,23 +373,8 @@
     }
   }
 
-  /* Сворачиваемые доказательства: в разметке стоят раскрытыми, чтобы без JS
-     и на десктопе ничего не пряталось. На телефоне закрываем — карта проверки
-     стоила 788px прокрутки, а теперь открывается одним касанием. */
-  function collapseOnPhone() {
-    if (!window.matchMedia || !window.matchMedia('(max-width:880px)').matches) return;
-    var list = document.querySelectorAll('details.document-reveal[open]');
-    for (var i = 0; i < list.length; i++) {
-      if (!list[i].dataset.p15Touched) {
-        list[i].open = false;
-        list[i].dataset.p15Touched = '1';
-      }
-    }
-  }
-
   function boot() {
     build();
-    collapseOnPhone();
   }
 
   if (document.readyState === 'loading') {

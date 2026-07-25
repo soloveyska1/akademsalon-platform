@@ -21,7 +21,7 @@
   --ease-press:cubic-bezier(.18,.88,.28,1.16);
   --ease-exit:cubic-bezier(.4,0,1,1);
 }
-@media(max-width:880px),(hover:none) and (pointer:coarse){
+@media(max-width:920px),(hover:none) and (pointer:coarse){
   :root{--motion-ui:180ms;--motion-sheet:230ms;--motion-stamp:280ms;--motion-page:220ms}
 }
 html[data-motion="lite"]{--motion-sheet:220ms;--motion-stamp:260ms;--motion-page:200ms}
@@ -36,7 +36,7 @@ html[data-motion="lite"]{--motion-sheet:220ms;--motion-stamp:260ms;--motion-page
 ::view-transition-old(mobile-dock),::view-transition-new(mobile-dock){animation:none;mix-blend-mode:normal}
 @keyframes vt-out{to{opacity:.88;transform:translateX(-6px)}}
 @keyframes vt-in{from{opacity:.58;transform:translateX(7px);clip-path:inset(0 0 0 2.5%)}to{opacity:1;transform:none;clip-path:inset(0)}}
-@media(max-width:880px),(hover:none) and (pointer:coarse){
+@media(max-width:920px),(hover:none) and (pointer:coarse){
   @keyframes vt-out{to{opacity:.9;transform:none}}
   @keyframes vt-in{from{opacity:.72;transform:translateY(2px)}to{opacity:1;transform:none}}
 }
@@ -199,7 +199,7 @@ body.toc-lock{overflow:hidden}
 
 /* ============================================================
    КОЛОФОН v6 «Развёрнутая полоса» — последняя страница издания.
-   Десктоп ≥881px: реестр раскрыт пятью наборными колонками,
+   Десктоп ≥921px: реестр раскрыт пятью наборными колонками,
    гербовая плита выходных данных на виду (app.js ставит open
    на details[data-cf-fold] по matchMedia). Телефон: рубрики
    складываются в строки-заголовки со счётчиками.
@@ -307,7 +307,7 @@ body.toc-lock{overflow:hidden}
 .cf-r-ar{display:inline-block;font-family:var(--serif);font-style:normal;color:#A79F87;
   transform:rotate(90deg);transition:transform .2s ease}
 .cf-r-row[open] .cf-r-ar{transform:rotate(-90deg)}
-@media(min-width:881px){
+@media(min-width:921px){
   /* наборная касса: рубрики всегда раскрыты колонками (open ставит app.js) */
   .cf-reestr{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
     gap:0 clamp(18px,2.6vw,34px);padding:clamp(20px,3vw,28px) 0 clamp(14px,2.2vw,22px)}
@@ -318,7 +318,7 @@ body.toc-lock{overflow:hidden}
     background:linear-gradient(90deg,rgba(185,138,47,.5),rgba(185,138,47,0))}
   .cf-reestr .cf-r-set a{display:block;padding:6px 0;margin:0;font-size:14px;white-space:normal}
 }
-@media(max-width:880px){
+@media(max-width:920px){
   /* рубрики-складки: подвал не съедает полстраницы телефона */
   .cf-reestr .cf-r-row{border-bottom:1px solid #3A362B}
   .cf-r-row>summary.cf-r-k{display:flex;align-items:center;gap:10px;cursor:pointer;
@@ -332,7 +332,7 @@ body.toc-lock{overflow:hidden}
 .cf6-impfold>summary.cf-r-k{display:flex;align-items:center;gap:10px;cursor:pointer;
   padding:15px 2px;margin:0;font-size:11px}
 .cf6-impfold .cf-r-set{padding:0 0 16px}
-@media(min-width:881px){
+@media(min-width:921px){
   .cf6-impfold{border-top:0}
   /* summary.cf-r-k (0,2,1) сильнее .cf6-impfold>summary — прячем той же силой */
   .cf6-impfold>summary.cf-r-k{display:none}
@@ -420,8 +420,8 @@ body.toc-lock{overflow:hidden}
 /* ---------- фокус на тёмном: сургуч #B23B22 даёт ~2.3:1, нужна светлая кость ---------- */
 .site-footer :focus-visible{outline:2px solid #F0EADB;outline-offset:3px;border-radius:1px}
 
-/* ============================ 880px ============================ */
-@media(max-width:880px){
+/* ============================ 920px ============================ */
+@media(max-width:920px){
   .cf6-head{grid-template-columns:1fr;gap:20px}
   .cf6-desk{border-left:0;padding-left:0;border-top:1px solid #3A362B;padding-top:14px}
   .cf6-motto{max-width:30ch}
@@ -479,7 +479,7 @@ body.toc-lock{overflow:hidden}
    Расширяет общий print-блок ниже по файлу: background:none нужен и
    потомкам, иначе плита выходных данных и плашка ФНС лягут чёрными
    прямоугольниками. padding-bottom с !important — потому что
-   @media(max-width:880px) без квалификатора screen матчится и на A4
+   @media(max-width:920px) без квалификатора screen матчится и на A4
    (~794px при 96dpi), а его padding-bottom:100px стоит ПОЗЖЕ по файлу. */
 @media print{
   .site-footer,.site-footer *{
@@ -799,7 +799,7 @@ main[tabindex="-1"]:focus{outline:none}
   70%,100%{box-shadow:0 0 0 7px rgba(61,107,80,0)}
 }
 @media(prefers-reduced-motion:reduce){.tg-pill .tp-dot{animation:none}}
-@media(max-width:880px){.tg-pill{display:none}}
+@media(max-width:920px){.tg-pill{display:none}}
 
 .mobile-cta{
   view-transition-name:mobile-dock;
@@ -810,7 +810,7 @@ main[tabindex="-1"]:focus{outline:none}
   border-top:1px solid var(--hairline);gap:10px;
 }
 .mobile-cta .btn{flex:1;min-height:50px;font-size:15px;padding:10px 12px}
-@media(max-width:880px){
+@media(max-width:920px){
   .mobile-cta{display:flex}
   body{padding-bottom:84px}
   .site-footer{padding-bottom:100px}
@@ -820,7 +820,7 @@ main[tabindex="-1"]:focus{outline:none}
    Главная · Цены · [Рассчитать — сургучная печать] · Кабинет (бейдж) · Связь.
    Печать выступает над кромкой панели, как сургуч над краем конверта. */
 .mnav{padding:5px max(8px,env(safe-area-inset-right)) max(7px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
-@media(max-width:880px){.mnav{display:grid;grid-template-columns:repeat(5,1fr);gap:2px}}
+@media(max-width:920px){.mnav{display:grid;grid-template-columns:repeat(5,1fr);gap:2px}}
 .mnav .mn-i{
   position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
   gap:3px;padding:6px 2px 6px;min-height:54px;border-radius:var(--r);border:0;background:none;
@@ -1101,7 +1101,7 @@ main[tabindex="-1"]:focus{outline:none}
 .contact-sheet .cs-foot b{color:var(--ink-soft);font-weight:600}
 
 /* Ширину, поля и верхний радиус мобильной шторки задаёт mobile.css
-   (@media max-width:880px, там же !important) — он грузится последним
+   (@media max-width:920px, там же !important) — он грузится последним
    и остаётся единственным хозяином её геометрии. Здесь только то,
    чего он не трогает. */
 @media(max-width:559px){
@@ -1203,7 +1203,7 @@ html[data-motion="off"] .seal.press,html[data-motion="off"] .paysteps{opacity:1!
 @media(hover:hover) and (pointer:fine){
   .btn:not(:disabled):active{transform:translateY(1px) scale(.99)}
 }
-@media(max-width:880px),(hover:none) and (pointer:coarse){
+@media(max-width:920px),(hover:none) and (pointer:coarse){
   /* На телефоне нет фонового «театра»: движение только в ответ на tap. */
   .pr-light,.b-sway,.cf-cn,.tg-pill .tp-dot,.plus-card .pc-seal{animation:none!important}
   .btn:not(:disabled):active,.mn-i:active{transform:translateY(1px) scale(.99);transition-duration:var(--motion-tap)}
@@ -1227,7 +1227,7 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
   --tap:48px;
   --dock-floor:calc(70px + env(safe-area-inset-bottom));
 }
-@media(max-width:880px){
+@media(max-width:920px){
   html{scroll-padding-top:72px;scroll-padding-bottom:var(--dock-floor)}
   body{padding-bottom:var(--dock-floor)}
   .wrap{padding-left:var(--mobile-gutter);padding-right:var(--mobile-gutter)}
@@ -1373,7 +1373,7 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
   .conf-mcta .mq-bar{grid-template-columns:46px minmax(0,1fr) minmax(86px,.72fr)}
 }
 
-@media(max-height:700px) and (max-width:880px){
+@media(max-height:700px) and (max-width:920px){
   .contact-sheet .cs-card{max-height:94svh}
   .cs-lead{margin-bottom:9px}
   .cs-opt{min-height:58px}
@@ -1402,7 +1402,7 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
 .cf7-brand .brand .b-lockup strong{color:var(--ink)}
 .cf7-brand .brand .b-lockup small{color:var(--ink-faint)}
 
-@media(max-width:880px){
+@media(max-width:920px){
   :root{
     --chrome-header-h:calc(58px + env(safe-area-inset-top));
     --chrome-dock-h:calc(70px + env(safe-area-inset-bottom));
@@ -1751,7 +1751,7 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
   letter-spacing:.05em;
   text-transform:uppercase;
 }
-@media(min-width:881px){
+@media(min-width:921px){
   /* Правая плавающая приёмная остаётся доступной поверх страницы.
      Резерв сужается вместе с ростом viewport и не перекрывает controls. */
   .pf-footer__bottom{
@@ -1836,7 +1836,7 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
   .pf-footer__bottom{grid-template-columns:1fr auto}
   .pf-footer__bottom>span:nth-child(2){display:none}
 }
-@media(min-width:881px) and (max-width:1100px){
+@media(min-width:921px) and (max-width:1100px){
   .pf-footer__settings>span{display:none}
 }
 @media(max-width:760px){
@@ -1997,12 +1997,11 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
   text-transform:uppercase;
 }
 .site-footer__bottom .theme-toggle{
-  display:inline-flex;
+  display:inline-block;
   width:auto;
   height:auto;
-  min-height:24px;
-  align-items:center;
-  padding:0;
+  min-height:0;
+  padding:2px 6px 3px;
   color:#B9B0A1;
   background:transparent;
   border:0;
@@ -2013,7 +2012,7 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
 }
 .site-footer__bottom .theme-toggle:hover{color:#F5EFE2;background:transparent}
 
-@media(max-width:880px){
+@media(max-width:920px){
   .site-footer__main{
     grid-template-columns:1fr 1fr;
     padding:44px max(18px,env(safe-area-inset-left)) 38px;

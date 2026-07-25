@@ -7,7 +7,7 @@
 <title>Мастерская обложек — Академический Салон</title>
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
-<link rel="stylesheet" href="assets/css/styles.css?v=20260725release15">
+<link rel="stylesheet" href="assets/css/styles.css?v=20260725release16">
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <style>
   :root{
@@ -40,16 +40,18 @@
   .stage{background:var(--paper-2);border:1px solid var(--hairline);border-radius:2px;padding:16px}
   canvas{width:100%;height:auto;display:block;box-shadow:0 10px 30px rgba(60,50,30,.14)}
   .foot{margin-top:12px;font-size:13px;color:var(--ink-soft)}
+  /* значок-SVG вместо ⌕ U+2315: этого знака нет ни в одном нашем шрифте */
+  .ag-ico{display:inline-block;vertical-align:-.18em;flex:none}
 </style>
-<link rel="stylesheet" href="assets/css/polish15-admin.css?v=20260725release15">
-<link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260725release15">
+<link rel="stylesheet" href="assets/css/polish15-admin.css?v=20260725release16">
+<link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260725release16">
 </head>
 <body class="is-admin-route p15-admin-covers">
 <div class="admin-page">
   <header class="admin-mobile-appbar">
     <a class="admin-mobile-appbar__back" href="admin.html" aria-label="Вернуться в редакционный кабинет">←</a>
     <span class="admin-mobile-appbar__brand"><img src="bimi/logo.svg" alt=""><span><strong>Обложки</strong><small>Управление</small></span></span>
-    <button type="button" class="admin-mobile-appbar__search" data-admin-tab-link="orders" aria-label="Открыть поиск по делам">⌕</button>
+    <button type="button" class="admin-mobile-appbar__search" data-admin-tab-link="orders" aria-label="Открыть поиск по делам"><svg class="ag-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.6" stroke="currentColor" stroke-width="1.9"/><path d="M15.5 15.5 20 20" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
     <button type="button" class="theme-toggle" data-admin-theme aria-label="Сменить тему">◐</button>
     <button type="button" class="admin-mobile-appbar__menu" data-admin-mobile-menu aria-expanded="false" aria-label="Открыть разделы"><i></i></button>
   </header>
@@ -60,7 +62,7 @@
         <span><strong>Академический Салон</strong><small>Редакционный кабинет</small></span>
       </a>
       <nav aria-label="Разделы администрирования">
-        <a class="ag-tab" href="admin.html" data-admin-tab-link="summary"><i>⌂</i><span>Рабочий стол</span></a>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="summary"><i>С</i><span>Рабочий стол</span></a>
         <a class="ag-tab" href="admin.html" data-admin-tab-link="visits"><i>V</i><span>Посещения</span></a>
         <a class="ag-tab" href="admin.html" data-admin-tab-link="orders"><i>Д</i><span>Дела</span></a>
         <a class="ag-tab" href="admin.html" data-admin-tab-link="clients"><i>К</i><span>Клиенты</span></a>
@@ -69,7 +71,7 @@
         <a class="ag-tab" href="admin.html" data-admin-tab-link="gifts"><i>П</i><span>Сертификаты</span></a>
         <a class="ag-tab" href="admin.html" data-admin-tab-link="leads"><i>Л</i><span>Обращения</span></a>
         <a class="ag-tab" href="admin.html" data-admin-tab-link="broadcast"><i>Р</i><span>Рассылки</span></a>
-        <a class="ag-tab" href="admin.html" data-admin-tab-link="settings"><i>⚙</i><span>Настройки</span></a>
+        <a class="ag-tab" href="admin.html" data-admin-tab-link="settings"><i>Н</i><span>Настройки</span></a>
         <a class="ag-tab" href="knowledge.html"><i>М</i><span>Материалы</span></a>
         <a class="ag-tab is-current" href="admin-covers.html" aria-current="page"><i>И</i><span>Обложки</span></a>
       </nav>
@@ -490,7 +492,7 @@
   function revealCurrentAdminSection() {
     var nav = document.querySelector('.admin-sidebar nav');
     var current = nav && nav.querySelector('[aria-current="page"]');
-    if (!nav || !current || window.innerWidth > 880) return;
+    if (!nav || !current || window.innerWidth > 920) return;
     nav.scrollLeft = Math.max(0, current.offsetLeft + current.offsetWidth - nav.clientWidth + 16);
   }
   window.addEventListener('resize', revealCurrentAdminSection);

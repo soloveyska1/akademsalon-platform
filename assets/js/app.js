@@ -19,13 +19,13 @@
     var link = document.createElement('link');
     var source = document.currentScript && document.currentScript.src;
     link.rel = 'stylesheet';
-    link.media = 'screen and (max-width: 880px)';
+    link.media = 'screen and (max-width:920px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260725release15', source).href
-        : 'assets/css/mobile.css?v=20260725release15';
+      link.href = source ? new URL('../css/mobile.css?v=20260725release16', source).href
+        : 'assets/css/mobile.css?v=20260725release16';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260725release15';
+      link.href = 'assets/css/mobile.css?v=20260725release16';
     }
     document.head.appendChild(link);
   })();
@@ -157,36 +157,12 @@
   window.SalonMaxLogo = maxLogoSVG;
 
   /* ---------------- значки пульта шапки ----------------
-     Рисуем сами, а не берём из шрифта. Причина проверяемая:
-     в assets/fonts/fonts.css ни одно из трёх семейств не объявляет
-     ⌕ (U+2315) и ◐ (U+25D0) в unicode-range — их подставлял
-     системный шрифт. То есть знак был не наш по рисунку и мог
-     вообще не найтись (на Android — пустой прямоугольник).
-     currentColor держит их в теме, focusable="false" убирает
-     из таб-порядка в IE/Edge-легаси. */
+     Эти два знака повторяют утверждённый style-lab/full буквально. */
   function icoSearch() {
-    return '<svg class="ha-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" ' +
-      'aria-hidden="true" focusable="false">' +
-      '<circle cx="10.5" cy="10.5" r="6.6" stroke="currentColor" stroke-width="1.7"/>' +
-      '<path d="M15.5 15.5 20 20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>' +
-      '</svg>';
+    return '<span class="ha-ico" aria-hidden="true">⌕</span>';
   }
-  /* Тема: солнце и месяц в одном значке. Показываем ЦЕЛЬ переключения
-     (в светлой теме — месяц), переключает видимость CSS по aria-pressed,
-     который уже ставит Salon.theme.apply. Сменный знак понятнее
-     половинки круга: он говорит, что произойдёт по нажатию. */
   function icoTheme() {
-    return '<svg class="ha-ico ha-ico--theme" width="19" height="19" viewBox="0 0 24 24" fill="none" ' +
-      'aria-hidden="true" focusable="false">' +
-      '<g class="ha-moon">' +
-        '<path d="M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8a8.6 8.6 0 1 0 10.8 10.8z" ' +
-          'stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>' +
-      '</g>' +
-      '<g class="ha-sun">' +
-        '<circle cx="12" cy="12" r="4.4" stroke="currentColor" stroke-width="1.7"/>' +
-        '<path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6" ' +
-          'stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>' +
-      '</g></svg>';
+    return '<span class="ha-ico ha-ico--theme" data-theme-glyph aria-hidden="true">◐</span>';
   }
   window.SalonIco = { search: icoSearch, theme: icoTheme };
   /* короткие коды типов для deep-link в бота (?start=web_dp_h_u_t) */
@@ -523,6 +499,9 @@
       docEl.querySelectorAll('[data-theme-action]').forEach(function (l) {
         l.textContent = mode === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему';
       });
+      docEl.querySelectorAll('[data-theme-glyph]').forEach(function (g) {
+        g.textContent = mode === 'dark' ? '☀' : '◐';
+      });
       if (persist) { try { localStorage.setItem('salon_theme', mode); } catch (e) {} }
     }
     /* чернильная заливка от точки (x, y) */
@@ -651,7 +630,7 @@
       docEl.style.setProperty('--hdr-h', (hdr ? Math.round(hdr.getBoundingClientRect().height) : 64) + 'px');
 
       /* на телефоне рельсы делят одну кромку: правый встаёт НАД левым */
-      narrow = !!(window.matchMedia && window.matchMedia('(max-width:880px)').matches);
+      narrow = !!(window.matchMedia && window.matchMedia('(max-width:920px)').matches);
       lh = 0;
       if (narrow && lrail && lrail.children.length) {
         r = lrail.getBoundingClientRect();
@@ -2023,12 +2002,8 @@
         '<strong>Библиотека</strong>' +
         '<a href="knowledge.html">Библиотека</a>' +
         '<a href="tools.html">Инструменты</a>' +
-        /* «Клуб и бонусы» с сертификатами потеряли ссылку из шапки —
-           подвал остаётся вторым постоянным входом, помимо меню. */
-        '<a href="referral.html">Клуб и бонусы</a>' +
         '<a href="plus.html">Абонемент «Салон+»</a>' +
         '<a href="deposit.html">Депозит мастерской</a>' +
-        '<a href="gift.html">Подарочный сертификат</a>' +
         '<a href="reviews.html">Отзывы</a>' +
         '<a href="priyomnaya.html">Приёмная</a>' +
       '</nav>' +
@@ -2406,7 +2381,7 @@
   /* ---------------- Мгновенная навигация: prefetch / prerender ---------------- */
   (function () {
     try {
-      var mobile = window.matchMedia && window.matchMedia('(max-width:880px), (pointer:coarse)').matches;
+      var mobile = window.matchMedia && window.matchMedia('(max-width:920px), (pointer:coarse)').matches;
       var save = navigator.connection && navigator.connection.saveData;
       if (!mobile && !save && HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')) {
         var sr = document.createElement('script'); sr.type = 'speculationrules';
@@ -2476,10 +2451,28 @@
       return fetch(API_BASE + path, { method: method, headers: h, body: body !== undefined ? JSON.stringify(body) : undefined })
         .then(function (r) {
           if (r.status === 401) {
-            if (impToken()) {
+            var wasImpersonated = !!impToken();
+            if (wasImpersonated) {
               /* протухла «тихая» сессия мастера — чистим только её */
               try { sessionStorage.removeItem('salon_imp_token'); sessionStorage.removeItem('salon_imp'); } catch (e) {}
             } else { Salon.api.setToken(null); Salon.api.setUser(null); }
+            /* Долгий поллинг админки/кабинета мог получить 401 уже после
+               первого успешного входа. Одной очистки токена мало: экран
+               оставался замороженным на старых данных. Сообщаем активному
+               приложению, чтобы оно немедленно вернуло честный экран входа. */
+            if (t) {
+              try {
+                document.dispatchEvent(new CustomEvent('salon:auth-lost', {
+                  detail: { path: path, impersonated: wasImpersonated }
+                }));
+              } catch (e) {
+                var authLost = document.createEvent('CustomEvent');
+                authLost.initCustomEvent('salon:auth-lost', false, false, {
+                  path:path, impersonated:wasImpersonated
+                });
+                document.dispatchEvent(authLost);
+              }
+            }
           }
           if (method === 'GET' && !_retried && (r.status === 502 || r.status === 503 || r.status === 504)) return again();
           return r.json().catch(function () { return { ok: false, error: 'bad_json' }; });

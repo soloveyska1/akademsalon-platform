@@ -956,7 +956,7 @@ html.service-plan .configurator-task .split{display:block}
 .configurator-task .cart-total-main b{color:var(--wax);font-size:28px}
 
 /* Mobile app edition */
-@media(max-width:880px){
+@media(max-width:920px){
   .configurator-task{
     padding:0 0 calc(82px + env(safe-area-inset-bottom))!important;
     background:var(--paper);
@@ -1259,7 +1259,7 @@ html.service-plan .configurator-task .split{display:block}
   .configurator-task .mq-more{display:none}
 }
 
-@media(min-width:881px){
+@media(min-width:921px){
   .configurator-task .conf-mcta{display:none!important}
 }
 
@@ -1697,6 +1697,10 @@ html.service-plan .configurator-task .tx-wizard-sidebar .wprog{display:grid!impo
   cursor:pointer;
 }
 .configurator-task .concept-cart-link{margin-top:16px}
+/* cart.js раньше добавлял запасную мобильную кнопку прямо в body, потому
+   что старой .mq-bar в финальном фасаде уже нет. Доступ к смете теперь
+   находится в видимой сводке, поэтому orphan-кнопка не перекрывает task bar. */
+.configurator-task>.cart-tab{display:none!important}
 
 .configurator-task .concept-service-questions{
   padding:18px;

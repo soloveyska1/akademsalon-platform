@@ -120,7 +120,7 @@
   text-underline-offset:3px
 }
 .cf7-data:hover{color:var(--wax);text-decoration-color:var(--wax)}
-@media(max-width:880px){
+@media(max-width:920px){
   .cookiebar{left:10px;right:10px;width:auto;bottom:84px}
 }
 @media(max-width:480px){
@@ -204,7 +204,7 @@
 .helpfab .hf-t b{font-family:var(--serif);font-size:15.5px;font-weight:500;line-height:1.15;white-space:nowrap}
 .helpfab .hf-t small{grid-column:1/-1;font-size:10.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .helpfab:hover .hf-t b{color:var(--wax)}
-@media(max-width:880px){.helpfab{left:10px;bottom:86px}}
+@media(max-width:920px){.helpfab{left:10px;bottom:86px}}
 @media print{.helpfab,.cookiebar,.tour-veil,.tour-card{display:none!important}}
 
 /* ---------------- Диалог (подтверждения, формы причин) ---------------- */
@@ -289,7 +289,7 @@
 }
 @keyframes sb-rule{to{transform:scaleX(1)}}
 @keyframes sb-fade{to{opacity:0;transform:rotate(-5deg) scale(.99) translateY(-4px)}}
-@media(max-width:880px),(hover:none) and (pointer:coarse){
+@media(max-width:920px),(hover:none) and (pointer:coarse){
   .stamp-burst .sb-rule{left:5vw;right:5vw}
   .stamp-burst .sb-seal{font-size:18px;padding:12px 18px;max-width:88vw;text-align:center}
 }
@@ -480,7 +480,7 @@ html[data-motion="off"] .stamp-burst{display:none!important}
 /* Нижний док монтируется JavaScript в конце документа. Его фактическая
    высота на телефоне — 59px; резервируем кромку до первого кадра, чтобы
    consent-rail не сдвигался вверх после DOMContentLoaded. */
-@media(max-width:880px){:root{--floor:59px}}
+@media(max-width:920px){:root{--floor:59px}}
 
 .mrail,.lrail{
   position:fixed;z-index:96;
@@ -750,7 +750,7 @@ html[data-motion="off"] .stamp-burst{display:none!important}
 .tg-pill .tp-copy small{font-size:10.5px;font-weight:400;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tg-pill .tp-arr{font:18px/1 var(--serif);color:var(--wax);transition:transform .15s}
 .tg-pill.is-context:hover .tp-arr{transform:translateX(2px)}
-@media(max-width:880px){
+@media(max-width:920px){
   .mnav .mn-link.is-help{color:var(--wax)}
   .mnav .mn-link.is-help .mn-ic{position:relative}
   .mnav .mn-link.is-help .mn-ic::after{
@@ -782,7 +782,7 @@ html[data-motion="off"] .stamp-burst{display:none!important}
 /* ============================================================
    БРЕЙКПОИНТЫ
    ============================================================ */
-@media(max-width:880px){
+@media(max-width:920px){
   /* рельсы делят одну кромку: правый встаёт НАД левым на измеренную
      высоту, поэтому полосы не могут пересечься */
   .lrail{left:12px;right:12px;width:auto;align-items:stretch;

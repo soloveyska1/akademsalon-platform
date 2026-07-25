@@ -23,8 +23,8 @@
      любому устройству; честно уважаем только prefers-reduced-motion. */
   var animate = !reduceMotion;
 
-  /* Десктопная ширина. 881px не пересекается с CSS-мобайлом (max-width:880px). */
-  var wideMQ = window.matchMedia('(min-width: 881px)');
+  /* Десктопная ширина начинается после общего mobile breakpoint 920px. */
+  var wideMQ = window.matchMedia('(min-width:921px)');
   function enhanced() { return document.body.classList.contains('enhanced'); }
 
   /* сбросы инлайновых стилей хореографии — вызываются при выходе из десктопа */

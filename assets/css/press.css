@@ -617,7 +617,7 @@ html[data-pr-flat] .story-chip, html:not(.has-js) .story-chip{animation:none;opa
   clip-path:polygon(0 0,100% 0,100% 100%,50% 86%,0 100%);
 }
 
-@media (max-width:880px){
+@media (max-width:920px){
   .pr-h{font-size:37px}
   .pr-lead{font-size:15px}
   .pr-row .tease{display:none}
@@ -664,7 +664,7 @@ html[data-pr-flat] .story-chip, html:not(.has-js) .story-chip{animation:none;opa
 
 /* «Спокойный» широкий экран (reduce-motion на десктопе): не мобильная
    колонка, а полноценный разворот — формуляр и чек рядом, без 3D. */
-@media (min-width:881px){
+@media (min-width:921px){
   html[data-pr-flat] .pr-copy,
   html:not(.has-js) .pr-copy{max-width:720px;text-align:center}
   html[data-pr-flat] .pr-cta,
@@ -707,7 +707,7 @@ html[data-pr-static] .pr-track[data-static-open] .pr-bshadow{transform:scale(1.1
    МОБИЛЬНАЯ ПРЕСС-ФОРМА — «КАРМАННЫЙ ФОРМУЛЯР»
    ============================================================ */
 .pr-qprog,.pr-qnav{display:none}
-@media(max-width:880px),(hover:none) and (pointer:coarse){
+@media(max-width:920px),(hover:none) and (pointer:coarse){
   #smeta,.pr-first{scroll-margin-top:72px}
   html[data-pr-flat] .pr-scene,
   html:not(.has-js) .pr-scene{padding:76px 0 28px}

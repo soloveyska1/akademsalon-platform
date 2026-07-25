@@ -721,7 +721,7 @@
        над сметой и перекрывала текущий шаг. Здесь помощь не должна
        прерывать заполнение: пользователь уже находится в главном потоке. */
     if (here === 'configurator.html' &&
-        window.matchMedia && window.matchMedia('(max-width:880px)').matches) return;
+        window.matchMedia && window.matchMedia('(max-width:920px)').matches) return;
     var shown = false, dismissed = false;
     try { dismissed = sessionStorage.getItem('salon_help_off') === '1'; } catch (e) {}
     if (dismissed) return;
@@ -750,7 +750,7 @@
       return false;
     }
     function useExistingContact(tx) {
-      var mobile = window.matchMedia && window.matchMedia('(max-width:880px)').matches;
+      var mobile = window.matchMedia && window.matchMedia('(max-width:920px)').matches;
       var target, label;
       if (mobile) {
         /* В обычном мобильном доке уже есть «Мастер». Подсвечиваем его и

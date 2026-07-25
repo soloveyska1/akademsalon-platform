@@ -42,8 +42,26 @@ test('account authentication and live order mechanics remain bound', () => {
   });
 });
 
+test('critical production actions survive background refreshes and expired sessions', () => {
+  for (const field of [
+    'publication_consent', 'publication_categories',
+    'publication_consent_doc', 'publication_consent_at',
+  ]) {
+    assert.match(cabinetJs, new RegExp(`body\\.${field}\\s*=`),
+      `review action must send ${field}`);
+  }
+  assert.match(cabinetJs, /var fixDraft = \(document\.getElementById\('fixText'\)/);
+  assert.match(cabinetJs, /if \(nextFixForm && fixOpen\) nextFixForm\.hidden = false/);
+  assert.match(cabinetJs, /action === 'bonus_apply' \|\| action === 'gift_apply'/);
+  assert.match(appJs, /salon:auth-lost/);
+  assert.match(appJs, /var wasImpersonated = !!impToken\(\)/);
+  assert.match(appJs, /if \(t\) \{\s*try \{\s*document\.dispatchEvent\(new CustomEvent\('salon:auth-lost'/);
+  assert.match(cabinetJs, /addEventListener\('salon:auth-lost'/);
+  assert.match(adminJs, /addEventListener\('salon:auth-lost'/);
+});
+
 test('account mobile edition is bounded and motion-safe', () => {
-  assert.match(accountCss, /@media \(max-width: 880px\)/);
+  assert.match(accountCss, /@media \(max-width:920px\)/);
   assert.match(accountCss, /@media \(max-width: 480px\)/);
   assert.match(accountCss, /padding-top: calc\(var\(--mobile-appbar-h, 62px\) \+ env\(safe-area-inset-top\)\)/);
   assert.match(accountCss, /overflow-x: auto/);
@@ -85,9 +103,25 @@ test('admin API actions and operational hooks remain present', () => {
   ].forEach((hook) => assert.ok(adminJs.includes(hook), `missing admin hook: ${hook}`));
 });
 
+test('new handoff keeps staged billing actions reachable', () => {
+  const start = adminJs.indexOf('function partsBlock(o)');
+  const end = adminJs.indexOf('function feedBlock(o)', start);
+  assert.ok(start > 0 && end > start, 'partsBlock source not found');
+  const partsBlock = adminJs.slice(start, end);
+  const earlyReturn = partsBlock.indexOf("if ('work check fix'.indexOf(o.status) >= 0)");
+  const finalReturn = partsBlock.indexOf('var canDeliver');
+  assert.ok(earlyReturn > 0 && finalReturn > earlyReturn, 'handoff branches not found');
+  const handoffBranch = partsBlock.slice(earlyReturn, finalReturn);
+  assert.match(handoffBranch, /stageBillingAction\(o, total\)/);
+  assert.match(handoffBranch, /billingAction \+ action/);
+  for (const hook of ['agFinalReady', 'agPartReady', 'data-remind-pay']) {
+    assert.match(adminJs, new RegExp(hook), `missing staged billing hook: ${hook}`);
+  }
+});
+
 test('admin workspace supports light, dark and compact mobile layouts', () => {
   assert.match(adminCss, /:root\[data-theme="dark"\] \.is-admin-route/);
-  assert.match(adminCss, /@media \(max-width: 880px\)/);
+  assert.match(adminCss, /@media \(max-width:920px\)/);
   assert.match(adminCss, /@media \(max-width: 560px\)/);
   assert.match(adminCss, /overflow-x: auto/);
   assert.match(adminCss, /env\(safe-area-inset-bottom\)/);

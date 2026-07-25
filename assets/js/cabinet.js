@@ -2644,9 +2644,16 @@ function initCabinet() {
        кошелька/бонусов и переключатели архива молчали при st.detail=null */
     if (!st.detail) { renderTab(); return; }
     var draft = (document.getElementById('chatText') || {}).value || '';
+    var fixDraft = (document.getElementById('fixText') || {}).value || '';
+    var fixForm = document.getElementById('fixForm');
+    var fixOpen = !!(fixForm && !fixForm.hidden);
     renderTab();
     var ta = document.getElementById('chatText');
     if (ta && draft) ta.value = draft;
+    var fixTa = document.getElementById('fixText');
+    var nextFixForm = document.getElementById('fixForm');
+    if (fixTa && fixDraft) fixTa.value = fixDraft;
+    if (nextFixForm && fixOpen) nextFixForm.hidden = false;
   }
 
   function scheduleFilesSeen(order) {
@@ -2696,9 +2703,16 @@ function initCabinet() {
       st.detail = r.order;
       if (changed || !silent) {
         var draft = (document.getElementById('chatText') || {}).value || '';
+        var fixDraft = (document.getElementById('fixText') || {}).value || '';
+        var fixForm = document.getElementById('fixForm');
+        var fixOpen = !!(fixForm && !fixForm.hidden);
         renderTab();
         var ta = document.getElementById('chatText');
         if (ta && draft) ta.value = draft;
+        var fixTa = document.getElementById('fixText');
+        var nextFixForm = document.getElementById('fixForm');
+        if (fixTa && fixDraft) fixTa.value = fixDraft;
+        if (nextFixForm && fixOpen) nextFixForm.hidden = false;
         var feed = document.getElementById('chatFeed');
         if (feed) feed.scrollTop = feed.scrollHeight;
         scheduleFilesSeen(r.order);
@@ -2761,6 +2775,12 @@ function initCabinet() {
   }
 
   function doAction(action, extra) {
+    var claimedPayment = st.detail && (st.detail.claimed ||
+      (st.detail.payments || []).some(function (p) { return p.status === 'claimed'; }));
+    if (claimedPayment && (action === 'bonus_apply' || action === 'gift_apply')) {
+      toast('Оплата уже отмечена и ждёт сверки — бонусы и сертификат пока менять нельзя');
+      return;
+    }
     if (st.busy) return;
     st.busy = true;
     var body = { action: action };
@@ -2771,6 +2791,14 @@ function initCabinet() {
     if (extra && extra.rating != null) body.rating = extra.rating;
     if (extra && extra.text != null) body.text = extra.text;
     if (extra && extra.author != null) body.author = extra.author;
+    if (extra && extra.publication_consent != null)
+      body.publication_consent = extra.publication_consent === true;
+    if (extra && extra.publication_categories != null)
+      body.publication_categories = extra.publication_categories;
+    if (extra && extra.publication_consent_doc != null)
+      body.publication_consent_doc = extra.publication_consent_doc;
+    if (extra && extra.publication_consent_at != null)
+      body.publication_consent_at = extra.publication_consent_at;
     if ((action === 'accept_work' || action === 'request_fixes') &&
         st.detail && st.detail.handoff_artifact_id) {
       body.artifact_id = st.detail.handoff_artifact_id;
@@ -3573,6 +3601,14 @@ function initCabinet() {
 
   document.addEventListener('visibilitychange', function () {
     if (!document.hidden && st.currentId) loadDetail(true);
+  });
+
+  document.addEventListener('salon:auth-lost', function () {
+    st.detail = null;
+    st.orders = [];
+    st.currentId = null;
+    st.caseOpen = false;
+    loadList();
   });
 
   /* ---------------- старт ---------------- */

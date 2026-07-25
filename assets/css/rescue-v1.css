@@ -212,7 +212,7 @@ main.tariffs .cc-cta{
   }
 }
 
-@media(max-width:880px){
+@media(max-width:920px){
   .home .route-card{
     min-height:0;
   }

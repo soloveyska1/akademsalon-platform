@@ -18,7 +18,7 @@ function initGodEye() {
     done: ['✅', 'Результат принят'], cancel: ['🚫', 'Закрыт']
   };
   var PLAN_LBL = { 1: 'Одним платежом · целиком', 2: '2 части · 50/50', 3: '3 части · 30/40/30' };
-  var PL_ST = { paid: ['оплачен ✓', 'pl-paid'], claimed: ['клиент отметил — сверьте!', 'pl-claimed'],
+  var PL_ST = { paid: ['оплачен', 'pl-paid'], claimed: ['клиент отметил — сверьте!', 'pl-claimed'],
                 due: ['созрел к оплате', 'pl-due'], later: ['после готовности следующей части', 'pl-later'] };
 
   /* серверные коды — по-русски: хроника и события не должны быть «тьмой» */
@@ -65,7 +65,7 @@ function initGodEye() {
     return d;
   }
   var METHOD_LBL = { manual: 'перевод', yookassa: 'ЮKassa', robokassa: 'Robokassa' };
-  var LEAD_ST = { new: '🆕 новый', seen: 'просмотрен', done: '✓ обработан' };
+  var LEAD_ST = { new: 'новый', seen: 'просмотрен', done: 'обработан' };
 
   var st = {
     offnew: false, offlink: null,   /* сборка заявки под ссылку */
@@ -150,7 +150,7 @@ function initGodEye() {
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(
-          function () { toast(okMsg || 'Скопировано ✓'); },
+          function () { toast(okMsg || 'Скопировано'); },
           function () { toast('Браузер не дал доступ к буферу'); });
         return;
       }
@@ -163,9 +163,58 @@ function initGodEye() {
     return S.confirm ? S.confirm(opts)
       : Promise.resolve({ ok: window.confirm(opts.title || 'Подтвердить?'), value: '' });
   }
+  /* ---------------- значки ----------------
+     Рисуем знаки сами, а не берём из шрифта. Причина проверяемая:
+     в assets/fonts/fonts.css ни одно из трёх семейств (Golos Text,
+     JetBrains Mono, Literata) не объявляет в unicode-range знаки
+     ✓ U+2713, ⌕ U+2315, ✉ U+2709, ⧉ U+29C9, ★ U+2605 — их подставлял
+     системный шрифт: рисунок чужой, а на Android возможен пустой
+     прямоугольник. currentColor держит значок в теме панели,
+     focusable="false" убирает его из таб-порядка. */
+  function icoSvg(body, cls, size) {
+    return '<svg class="ag-ico' + (cls ? ' ' + cls : '') + '" width="' + (size || 16) +
+      '" height="' + (size || 16) + '" viewBox="0 0 24 24" fill="none" ' +
+      'aria-hidden="true" focusable="false">' + body + '</svg>';
+  }
+  function icoCheck(size) {
+    return icoSvg('<path d="M5 12.5 9.7 17.2 19 6.9" stroke="currentColor" stroke-width="2.2" ' +
+      'stroke-linecap="round" stroke-linejoin="round"/>', 'ag-ico--check', size);
+  }
+  function icoMail(size) {
+    return icoSvg('<rect x="2.9" y="5.2" width="18.2" height="13.6" rx="2.1" stroke="currentColor" stroke-width="1.7"/>' +
+      '<path d="m3.6 6.6 8.4 6 8.4-6" stroke="currentColor" stroke-width="1.7" ' +
+      'stroke-linecap="round" stroke-linejoin="round"/>', 'ag-ico--mail', size);
+  }
+  function icoPhone(size) {
+    return icoSvg('<path d="M8.1 4.3 9.8 8 8 9.9c-.4.4-.5 1-.2 1.5a12 12 0 0 0 4.8 4.8c.5.3 1.1.2 1.5-.2l1.9-1.8 3.7 1.7c.5.2.8.8.7 1.4l-.5 2.2c-.1.6-.7 1-1.3.9C11.6 19.6 4.4 12.4 3.6 5.4c-.1-.6.3-1.2.9-1.3l2.2-.5c.6-.1 1.2.2 1.4.7z" ' +
+      'stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>', 'ag-ico--phone', size);
+  }
+  function icoCopy(size) {
+    return icoSvg('<rect x="8.6" y="8.6" width="11.6" height="11.6" rx="2.1" stroke="currentColor" stroke-width="1.7"/>' +
+      '<path d="M15.8 5.3H5.9a2.1 2.1 0 0 0-2.1 2.1v9.9" stroke="currentColor" stroke-width="1.7" ' +
+      'stroke-linecap="round"/>', 'ag-ico--copy', size);
+  }
+  function icoCross(size) {
+    return icoSvg('<path d="m6.4 6.4 11.2 11.2M17.6 6.4 6.4 17.6" stroke="currentColor" ' +
+      'stroke-width="2.1" stroke-linecap="round"/>', 'ag-ico--cross', size);
+  }
+  function icoSearch(size) {
+    return icoSvg('<circle cx="10.5" cy="10.5" r="6.6" stroke="currentColor" stroke-width="1.9"/>' +
+      '<path d="M15.5 15.5 20 20" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>',
+      'ag-ico--search', size);
+  }
+  /* звезда: залитая — за оценку, контурная — за остаток. Раньше пустую
+     отличал только класс .dim, который покрашен лишь внутри .ag-rv —
+     в карточке дела (строка «Отзыв») все пять выглядели одинаково. */
+  function icoStar(on) {
+    var d = 'm12 3.6 2.6 5.3 5.8.85-4.2 4.1 1 5.8-5.2-2.73-5.2 2.73 1-5.8-4.2-4.1 5.8-.85z';
+    return icoSvg('<path d="' + d + '" fill="' + (on ? 'currentColor' : 'none') + '" ' +
+      'stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
+      'ag-ico--star' + (on ? ' is-on' : ' dim'), 15);
+  }
   function starRow(n) {
     var out = '';
-    for (var i = 1; i <= 5; i++) out += i <= n ? '★' : '<span class="dim">★</span>';
+    for (var i = 1; i <= 5; i++) out += icoStar(i <= n);
     return out;
   }
   function mediaPath(orderId, msgId) {
@@ -260,6 +309,14 @@ function initGodEye() {
       }
     });
   }
+
+  document.addEventListener('salon:auth-lost', function () {
+    st.busy = false;
+    st.card = null;
+    releaseAdminObjectUrls();
+    if (st.timer) { clearInterval(st.timer); st.timer = null; }
+    gate();
+  });
 
   /* мгновенные обновления: long-poll шины событий — карточки и списки
      подтягиваются в момент действия клиента, без ожидания поллинга */
@@ -693,14 +750,14 @@ function initGodEye() {
     if (v.user && v.user.name) {
       who = '👤 ' + esc(v.user.name) + (v.user.username ? ' @' + esc(v.user.username) : '');
     } else if (v.contact) {
-      who = '☎ ' + esc(v.contact);
+      who = icoPhone(13) + ' ' + esc(v.contact);
     } else {
       who = 'аноним · ' + esc(v.vid);
     }
     var known = !!(v.user || v.contact);
     var stepCls = v.order_id ? 'v-step done' : 'v-step';
     var stepTxt = v.order_id
-      ? '✓ заявка №' + v.order_id
+      ? 'заявка №' + v.order_id
       : (v.step ? '⚑ ' + esc(v.step) : '');
     var path = v.entry === v.page
       ? pageName(v.entry)
@@ -775,7 +832,7 @@ function initGodEye() {
     if (an) an.innerHTML = tplAnalytics(visitStats(st.visits || []));
     var o = st.vopts;
     if (flt) flt.innerHTML =
-      (st.vgeo ? '<button type="button" class="ag-chip on" data-vgeo="' + esc(st.vgeo) + '" title="Показать все города">✕ ' + esc(anCut(st.vgeo, 20)) + '</button>' : '') +
+      (st.vgeo ? '<button type="button" class="ag-chip on" data-vgeo="' + esc(st.vgeo) + '" title="Показать все города">× ' + esc(anCut(st.vgeo, 20)) + '</button>' : '') +
       [[24, 'Сутки'], [72, '3 дня'], [168, 'Неделя'], [720, '30 дней']]
       .map(function (h) {
         return '<button type="button" class="ag-chip' + (o.hours === h[0] ? ' on' : '') + '" data-vh="' + h[0] + '">' + h[1] + '</button>';
@@ -849,7 +906,7 @@ function initGodEye() {
         '<button type="button" class="admin-mobile-appbar__back" data-admin-mobile-back aria-label="Вернуться назад">←</button>' +
         '<span class="admin-mobile-appbar__brand"><img src="bimi/logo.svg" alt="">' +
           '<span><strong>Редакционный кабинет</strong><small>Управление</small></span></span>' +
-        '<button type="button" class="admin-mobile-appbar__search" data-admin-mobile-search aria-label="Найти дело">⌕</button>' +
+        '<button type="button" class="admin-mobile-appbar__search" data-admin-mobile-search aria-label="Найти дело">' + icoSearch(18) + '</button>' +
         adminThemeButton() +
         '<button type="button" class="admin-mobile-appbar__menu" data-admin-mobile-menu aria-expanded="false" aria-label="Открыть разделы"><i></i></button>' +
       '</header>' +
@@ -900,7 +957,7 @@ function initGodEye() {
     var b = navBadges();
     var online = (st.ov && st.ov.visits && st.ov.visits.online) || 0;
     var tabs = [
-      ['summary', 'Рабочий стол', '⌂', 0],
+      ['summary', 'Рабочий стол', 'С', 0],
       ['visits', 'Посещения', 'V', online],
       ['orders', 'Дела', 'Д', b.orders],
       ['clients', 'Клиенты', 'К', 0],
@@ -909,7 +966,7 @@ function initGodEye() {
       ['gifts', 'Сертификаты', 'П', b.gifts],
       ['leads', 'Обращения', 'Л', b.leads],
       ['broadcast', 'Рассылки', 'Р', 0],
-      ['settings', 'Настройки', '⚙', 0],
+      ['settings', 'Настройки', 'Н', 0],
       ['content', 'Материалы', 'М', 0]
     ];
     box.innerHTML = tabs.map(function (t) {
@@ -1005,7 +1062,7 @@ function initGodEye() {
       box.innerHTML =
         '<div class="ag-filters">' +
           '<input class="ag-search" id="agCQ" type="search" placeholder="Поиск: имя или @ник" value="' + esc(st.cq) + '">' +
-          '<button type="button" class="ag-chip" id="agCQClear" title="Сбросить"' + (st.cq ? '' : ' hidden') + '>✕ сброс</button>' +
+          '<button type="button" class="ag-chip" id="agCQClear" title="Сбросить"' + (st.cq ? '' : ' hidden') + '>× сброс</button>' +
           '<select class="ag-sort" id="agCSort" title="Порядок">' +
             '<option value="recent"' + (st.csort === 'recent' ? ' selected' : '') + '>по последнему визиту</option>' +
             '<option value="ltv"' + (st.csort === 'ltv' ? ' selected' : '') + '>по сумме оплат</option>' +
@@ -1084,7 +1141,7 @@ function initGodEye() {
     });
     var controls = '<div class="ag-filters" style="margin:12px 0">' +
       '<input class="ag-search" id="agGfQ" type="search" placeholder="Поиск: код, имя, почта" value="' + esc(st.gq) + '">' +
-      (st.gq || st.gfilter ? '<button type="button" class="ag-chip on" id="agGfClear" title="Сбросить">✕ фильтр</button>' : '') +
+      (st.gq || st.gfilter ? '<button type="button" class="ag-chip on" id="agGfClear" title="Сбросить">× фильтр</button>' : '') +
       '<select class="ag-sort" id="agGfState" title="Состояние">' +
         [['', 'все состояния'], ['active', 'действительные'], ['pending', 'на оформлении'],
          ['claimed', 'на сверке оплаты'], ['redeemed', 'погашенные'], ['expired', 'истёкшие'], ['blocked', 'заблокированные']]
@@ -1135,13 +1192,13 @@ function initGodEye() {
     }
     if (g.status === 'pending') {
       acts.push('<button type="button" class="btn btn-wax" data-gift-act="confirm" data-gift-id="' + g.id + '">✅ Оплата получена — выпустить</button>');
-      acts.push('<button type="button" class="btn btn-line" data-gift-act="cancel" data-gift-id="' + g.id + '">✖ Отменить оформление</button>');
+      acts.push('<button type="button" class="btn btn-line" data-gift-act="cancel" data-gift-id="' + g.id + '">Отменить оформление</button>');
     }
     if (g.status === 'active' || g.status === 'expired') {
       acts.push('<button type="button" class="btn btn-line" data-gift-act="extend" data-gift-id="' + g.id + '">🕐 Продлить +90 дн</button>');
       acts.push('<button type="button" class="btn btn-line" data-gift-act="adjust" data-gift-id="' + g.id + '">± Корректировать остаток</button>');
       if (g.recip_contact || g.buyer_contact)
-        acts.push('<button type="button" class="btn btn-line" data-gift-act="resend" data-gift-id="' + g.id + '">✉️ Переслать письма</button>');
+        acts.push('<button type="button" class="btn btn-line" data-gift-act="resend" data-gift-id="' + g.id + '">' + icoMail(15) + ' Переслать письма</button>');
       acts.push('<button type="button" class="btn btn-line" data-gift-act="block" data-gift-id="' + g.id + '">🚫 Заблокировать</button>');
     }
     if (g.status === 'blocked') {
@@ -1444,7 +1501,7 @@ function initGodEye() {
       ctaGo = '@reviews';
       cta = 'Открыть отзывы →';
     } else {
-      queue = '<div class="pw-queue calm"><span class="pw-qic" aria-hidden="true">✓</span>' +
+      queue = '<div class="pw-queue calm"><span class="pw-qic" aria-hidden="true">' + icoCheck(16) + '</span>' +
         '<span class="pw-qbody"><small>Очередь</small><b>Срочных действий нет</b>' +
         '<span>Можно спокойно заняться активными делами</span></span></div>';
     }
@@ -1483,7 +1540,7 @@ function initGodEye() {
         attention + ' ' + anPl(attention, 'задача требует', 'задачи требуют', 'задач требуют') +
         ' решения</strong><p>Сроки, новые вопросы и модерация собраны в одной очереди.</p></div>' +
         '<button type="button" data-go="attention">Открыть очередь <span>→</span></button></section>'
-      : '<section class="admin-alert admin-alert--calm"><span>✓</span><div><strong>Срочных решений нет</strong>' +
+      : '<section class="admin-alert admin-alert--calm"><span>' + icoCheck(17) + '</span><div><strong>Срочных решений нет</strong>' +
         '<p>Новые события появятся здесь автоматически.</p></div><button type="button" data-go="active">Активные дела <span>→</span></button></section>';
     var queueHtml = queue.length
       ? queue.slice(0, 4).map(function (r) {
@@ -1561,7 +1618,7 @@ function initGodEye() {
       '<section class="admin-content-toolbar" aria-label="Фильтры материалов">' +
         '<label><span class="sr-only">Поиск публикаций</span>' +
           '<input id="agContentQ" type="search" autocomplete="off" placeholder="Название или тема" value="' +
-          esc(st.contentQ) + '"><i aria-hidden="true">⌕</i></label>' +
+          esc(st.contentQ) + '"><i aria-hidden="true">' + icoSearch(15) + '</i></label>' +
         '<div class="admin-content-tabs" role="group" aria-label="Темы публикаций">' +
           topics.map(function (item) {
             var on = st.contentTopic === item[0];
@@ -1620,7 +1677,7 @@ function initGodEye() {
           '<span class="petit" style="display:block;opacity:.7">' + (s.via ? 'оформлена: ' + esc(s.via) + ' · ' : '') + dt(s.created_at) + '</span></span>' +
           '<span class="aa-go" style="white-space:nowrap">' +
           '<button type="button" class="ag-linkbtn" data-sub-ok="' + s.id + '">✅ оплата получена</button><br>' +
-          '<button type="button" class="ag-linkbtn" data-sub-no="' + s.id + '">✖ закрыть</button></span></div>';
+          '<button type="button" class="ag-linkbtn" data-sub-no="' + s.id + '">закрыть</button></span></div>';
       }).join('');
     }
     return '<p class="caps" style="margin:18px 0 8px">⭐ Подписки — оплата отдельно от заказов</p>' +
@@ -1675,17 +1732,17 @@ function initGodEye() {
       return '<button type="button" class="ag-chip' + (st.filter === c[0] ? ' on' : '') + '" data-f="' + c[0] + '">' + c[1] + '</button>';
     }).join('') + '</div><div class="admin-filter-tools">' +
       '<input class="ag-search" id="agQ" type="search" placeholder="Поиск: №, тема, ник… (Enter)" value="' + esc(st.q) + '">' +
-      (st.q ? '<button type="button" class="ag-chip" id="agQClear" title="Сбросить поиск">✕ «' + esc(st.q.length > 16 ? st.q.slice(0, 15) + '…' : st.q) + '»</button>' : '') +
+      (st.q ? '<button type="button" class="ag-chip" id="agQClear" title="Сбросить поиск">× «' + esc(st.q.length > 16 ? st.q.slice(0, 15) + '…' : st.q) + '»</button>' : '') +
       '<select class="ag-sort" id="agSort" title="Порядок списка">' +
         '<option value="fresh"' + (st.sort === 'fresh' ? ' selected' : '') + '>сначала новые</option>' +
         '<option value="updated"' + (st.sort === 'updated' ? ' selected' : '') + '>по последнему движению</option>' +
         '<option value="deadline"' + (st.sort === 'deadline' ? ' selected' : '') + '>по сроку сдачи</option>' +
       '</select>' +
       '<button type="button" class="ag-chip' + (st.bulk ? ' on' : '') + '" id="agBulkToggle" ' +
-      'title="Выделить несколько заказов и разом закрепить, скрыть, покрасить или убрать в корзину">☑ Выбрать</button></div>';
+      'title="Выделить несколько заказов и разом закрепить, скрыть, покрасить или убрать в корзину">Выбрать</button></div>';
   }
 
-  /* панель массовых действий — живёт под списком, пока включён режим ☑ */
+  /* панель массовых действий — живёт под списком, пока включён режим выбора */
   function bulkBar() {
     if (!st.bulk) return '';
     var n = st.bulk.size;
@@ -1704,7 +1761,7 @@ function initGodEye() {
           : '<button type="button" class="btn btn-line" data-bulk="hide">🗄 Скрыть</button>' +
             '<button type="button" class="btn btn-wax" data-bulk="trash">🗑 В корзину</button>')
       : '') +
-      '<button type="button" class="ag-linkbtn" data-bulk="off" style="margin-left:auto">✕ готово</button>' +
+      '<button type="button" class="ag-linkbtn" data-bulk="off" style="margin-left:auto">× готово</button>' +
       '</div>';
   }
 
@@ -2048,7 +2105,7 @@ function initGodEye() {
     return head + linkRow + claimRow + btn + form + '</div>';
   }
 
-  var OFF_ST = { live: 'ждёт оплату', paid: 'оплачена ✓', replaced: 'заменена',
+  var OFF_ST = { live: 'ждёт оплату', paid: 'оплачена', replaced: 'заменена',
                  canceled: 'отозвана' };
 
   /* «Название | значение» ↔ JSON: мастеру проще править текстом */
@@ -2391,7 +2448,7 @@ function initGodEye() {
     box.innerHTML = '<span>Смета по строкам: <b>' + money(sum) + ' ₽</b></span>' +
       '<span>Цена дела: <b>' + money(price) + ' ₽</b></span>' +
       (sum ? '<span class="' + (sum === price ? 'ok' : 'diff') + '">' +
-        (sum === price ? '✓ сходится' : 'не сходится — проверьте распределение перед публикацией')
+        (sum === price ? 'сходится' : 'не сходится — проверьте распределение перед публикацией')
         + '</span>' : '<span>добавьте первую позицию из каталога</span>');
   }
 
@@ -2544,7 +2601,7 @@ function initGodEye() {
       var m = PL_ST[p.state] || ['', ''];
       var act = '';
       if (p.state === 'claimed' || p.state === 'due')
-        act = '<button type="button" class="btn btn-ink" data-pay-kind="' + p.kind + '" data-pay-amount="' + p.amount + '">Получена ✓</button>';
+        act = '<button type="button" class="btn btn-ink" data-pay-kind="' + p.kind + '" data-pay-amount="' + p.amount + '">Получена</button>';
       if (p.state === 'due' && !remindShown) {
         /* напоминание уходит по ближайшему созревшему этапу — кнопка у него */
         remindShown = true;
@@ -2574,6 +2631,25 @@ function initGodEye() {
       '</div>';
   }
 
+  /* Счёт за готовый этап обязан оставаться достижимым и в новом handoff.
+     Раньше work/check/fix возвращали handoff-блок раньше старой панели,
+     поэтому кнопки part_ready/final_ready существовали в коде, но никогда
+     не попадали в DOM. */
+  function stageBillingAction(o, total) {
+    if ('work fix'.indexOf(o.status) < 0) return '';
+    var unpaid = (o.plan || []).some(function (p) { return p.state !== 'paid'; });
+    if (!unpaid) return '';
+    var finalStage = total <= 1 || (o.stage || 1) >= total;
+    var announced = (o.part_ready || 0) >= (o.stage || 1);
+    if (finalStage && !o.final_ready)
+      return '<button type="button" class="btn btn-wax" id="agFinalReady">🏁 Финальный результат подготовлен — счёт на остаток</button>';
+    if (!finalStage && !announced)
+      return '<button type="button" class="btn btn-wax" id="agPartReady">📣 Результат части ' + o.stage + ' подготовлен — счёт клиенту</button>';
+    if (o.due_now && o.due_now.amount > 0)
+      return '<button type="button" class="btn btn-wax" data-remind-pay="1">🔔 Напомнить об оплате (' + money(o.due_now.amount) + ' ₽)</button>';
+    return '';
+  }
+
   function partsBlock(o) {
     var total = o.stages_total || 1;
     if ('work check fix done'.indexOf(o.status) < 0 && !(total > 1 && o.price)) return '';
@@ -2582,6 +2658,7 @@ function initGodEye() {
       var title = 'Передача результата клиенту';
       var state = '';
       var action = '';
+      var billingAction = stageBillingAction(o, total);
       if (!o.handoff_artifact_id || hp === 'fix_requested') {
         state = o.status === 'fix'
           ? 'Клиент прислал замечания. Загрузите исправленный полный документ — новый счёт не создаётся.'
@@ -2604,7 +2681,7 @@ function initGodEye() {
       return '<div class="ag-sec"><span class="caps">' + title +
         '<span class="sub">версия ' + (o.handoff_version || 0) + '</span></span>' +
         '<p class="ag-note"><b>' + esc(state) + '</b></p>' +
-        (action ? '<div class="ag-actrow">' + action + '</div>' : '') +
+        (billingAction || action ? '<div class="ag-actrow">' + billingAction + action + '</div>' : '') +
         '<p class="ag-note">Можно выбрать сразу основной результат, отредактированные слайды и доклад клиента. Для каждого файла создаётся отдельная защищённая копия; чистый пакет уйдёт автоматически только после принятия и оплаты.</p>' +
         ((o.handoff_files || []).length ? '<p class="ag-note"><b>Пакет:</b> ' +
           o.handoff_files.map(esc).join(' · ') + '</p>' : '') +
@@ -2614,7 +2691,7 @@ function initGodEye() {
     if (total > 1) {
       for (var n = 1; n <= total; n++) {
         var cls = '', tag = 'впереди';
-        if (o.status === 'done' || n <= (o.parts_done || 0)) { cls = 'past'; tag = 'принята ✓'; }
+        if (o.status === 'done' || n <= (o.parts_done || 0)) { cls = 'past'; tag = 'принята'; }
         else if (n === o.stage) {
           cls = 'now';
           tag = o.status === 'check' ? 'у клиента' : o.status === 'fix' ? 'правки'
@@ -2624,22 +2701,12 @@ function initGodEye() {
       }
     }
     var canDeliver = 'work fix check'.indexOf(o.status) >= 0;
-    var finalStage = total <= 1 || (o.stage || 1) >= total;
-    var unpaid = (o.plan || []).some(function (p) { return p.state !== 'paid'; });
     var announced = (o.part_ready || 0) >= (o.stage || 1);
     /* долг текущей части: в work передача заблокирована сервером, пока не оплачено
        (в fix/check повторная передача той же части свободна — клиент её видел) */
     var debt = debtForPart(o, o.stage || 1);
     var held = o.status === 'work' && debt.amount > 0;
-    var finBtn = '';
-    if ('work fix'.indexOf(o.status) >= 0 && unpaid) {
-      if (finalStage && !o.final_ready)
-        finBtn = '<button type="button" class="btn btn-wax" id="agFinalReady">🏁 Финальный результат подготовлен — счёт на остаток</button>';
-      else if (!finalStage && !announced)
-        finBtn = '<button type="button" class="btn btn-wax" id="agPartReady">📣 Результат части ' + o.stage + ' подготовлен — счёт клиенту</button>';
-      else if (o.due_now && o.due_now.amount > 0)
-        finBtn = '<button type="button" class="btn btn-wax" data-remind-pay="1">🔔 Напомнить об оплате (' + money(o.due_now.amount) + ' ₽)</button>';
-    }
+    var finBtn = stageBillingAction(o, total);
     var deliverWord = o.final_ready ? 'финал'
       : (total > 1 ? (announced ? 'Передать часть ' + o.stage : 'результат части ' + o.stage) : 'результат');
     return '<div class="ag-sec"><span class="caps">Передача и приёмка результата' +
@@ -3105,7 +3172,7 @@ function initGodEye() {
         ' · <button type="button" class="ag-linkbtn" data-open-order="' + r.order_id + '">дело №' + r.order_id + '</button></p>' +
         '<div class="ag-actrow" style="margin-top:10px">' +
         (r.status !== 'approved' ? '<button type="button" class="btn btn-ink" data-rv="' + r.id + '" data-ok="1">✅ Опубликовать</button>' : '') +
-        (r.status !== 'approved' && !r.publication_consent ? '<span class="rv-meta">⚠ Нет отметки об отдельном согласии на публикацию</span>' : '') +
+        (r.status !== 'approved' && !r.publication_consent ? '<span class="rv-meta">⚠️ Нет отметки об отдельном согласии на публикацию</span>' : '') +
         (r.status !== 'rejected' ? '<button type="button" class="btn btn-line" data-rv="' + r.id + '" data-ok="0">🚫 ' + (r.status === 'approved' ? 'Снять с сайта' : 'Отклонить') + '</button>' : '') +
         '</div></div>';
     }
@@ -3149,7 +3216,7 @@ function initGodEye() {
     var btns = [];
     if (pendingQ && !q.quiet) {
       btns.push('<button type="button" class="btn btn-ink" data-qa-act="publish" data-qa-id="' + q.id + '">📮 Опубликовать с ответом</button>');
-      if (!q.publish_consent) btns.push('<span class="petit">⚠ Нет отметки об отдельном разрешении на публикацию</span>');
+      if (!q.publish_consent) btns.push('<span class="petit">⚠️ Нет отметки об отдельном разрешении на публикацию</span>');
     }
     if (pendingQ && q.email) btns.push('<button type="button" class="btn btn-line" data-qa-act="answer_quiet" data-qa-id="' + q.id + '">🤫 Ответить письмом' + (q.quiet ? '' : ' (без публикации)') + '</button>');
     if (pendingQ && q.quiet && !q.email) btns.push('<span class="petit">Тихий вопрос без почты — ответить некуда; можно отклонить.</span>');
@@ -3207,14 +3274,14 @@ function initGodEye() {
     if (!s) return '<span class="mono">—</span>';
     var e = esc(s);
     if (/^\+?\d[\d\s()\-]{6,}$/.test(s))
-      return '<a class="ag-linkbtn" href="tel:' + esc(s.replace(/[^\d+]/g, '')) + '">☎ ' + e + '</a>';
+      return '<a class="ag-linkbtn" href="tel:' + esc(s.replace(/[^\d+]/g, '')) + '">' + icoPhone(14) + ' ' + e + '</a>';
     if (s.indexOf('@') > 0 && s.indexOf('.') > s.indexOf('@') && !/\s/.test(s))
-      return '<a class="ag-linkbtn" href="mailto:' + e + '">✉ ' + e + '</a>';
+      return '<a class="ag-linkbtn" href="mailto:' + e + '">' + icoMail(14) + ' ' + e + '</a>';
     if (/^@/.test(s) || /t\.me\//.test(s)) {
       var tg = s.replace(/^@/, '').replace(/^(https?:\/\/)?t\.me\//, '');
       return '<a class="ag-linkbtn" href="https://t.me/' + esc(tg) + '" target="_blank" rel="noopener">✈️ ' + e + '</a>';
     }
-    return '<button type="button" class="ag-linkbtn" data-copy="' + e + '" title="скопировать">' + e + ' ⧉</button>';
+    return '<button type="button" class="ag-linkbtn" data-copy="' + e + '" title="скопировать">' + e + ' ' + icoCopy(14) + '</button>';
   }
   function tplLeads() {
     return '<p class="petit" style="margin-bottom:10px">Обращения с сайта без оформленного заказа — эти люди уже проявили интерес, свяжитесь по контакту.</p>' +
@@ -3401,7 +3468,7 @@ function initGodEye() {
     if (r.claimed) {
       confirmDlg({
         title: 'Клиент отметил оплату — сверьте поступление',
-        text: whatTxt + ' Отметка клиента ждёт вашей сверки: проверьте деньги и нажмите «Получена ✓» в плане оплат — тогда файл можно передавать. Передать без сверки — на ваш риск.',
+        text: whatTxt + ' Отметка клиента ждёт вашей сверки: проверьте деньги и нажмите «Получена» в плане оплат — тогда файл можно передавать. Передать без сверки — на ваш риск.',
         okLabel: '⚠️ Передать без сверки', noLabel: 'Не передавать', danger: true
       }).then(function (res) { if (res.ok) retry(); });
       return;
@@ -3453,8 +3520,8 @@ function initGodEye() {
           if (note) note.textContent = '✅ Пакет из ' + (r.file_count || files.length) + ' файлов подготовлен. Клиент его ещё не видел — откройте все проверочные копии в рабочей ветке и подтвердите отправку.';
           toast('Пакет готов к вашей проверке');
         } else {
-          if (note) note.textContent = deliver ? 'Передано ✓ — клиент получил кнопки приёмки' : 'Файл у клиента ✓';
-          toast(deliver ? '📦 Передача результата зафиксирована' : (r.delivered_tg ? 'Файл доставлен в Telegram ✓' : 'Файл в деле — клиент увидит в кабинете'));
+          if (note) note.textContent = deliver ? 'Передано — клиент получил кнопки приёмки' : 'Файл у клиента';
+          toast(deliver ? 'Передача результата зафиксирована' : (r.delivered_tg ? 'Файл доставлен в Telegram' : 'Файл в деле — клиент увидит в кабинете'));
         }
         if (r.order) { st.card = r.order; drawCard(); }
       })
@@ -3541,7 +3608,7 @@ function initGodEye() {
         .then(function (r) {
           /* не отпустили — вернуть кнопку, иначе публикация недоступна до перезагрузки */
           if (!r.ok) pb.disabled = false;
-          afterOrder(r, r.ok ? 'Защищённая версия отправлена клиенту ✓' : '');
+          afterOrder(r, r.ok ? 'Защищённая версия отправлена клиенту' : '');
         })
         .catch(function () { pb.disabled = false; toast('Сеть прервалась — попробуйте ещё раз'); });
       return;
@@ -3679,18 +3746,18 @@ function initGodEye() {
       return;
     }
     var gcopy = t.closest('[data-gift-copy]');
-    if (gcopy) { copyText(gcopy.getAttribute('data-gift-copy'), 'Код скопирован ✓'); return; }
+    if (gcopy) { copyText(gcopy.getAttribute('data-gift-copy'), 'Код скопирован'); return; }
     var glink = t.closest('[data-gift-copy-link]');
     if (glink) {
       var lc = glink.getAttribute('data-gift-copy-link');
-      copyText('https://akademsalon.ru/gift.html?code=' + encodeURIComponent(lc), 'Ссылка на активацию скопирована ✓');
+      copyText('https://akademsalon.ru/gift.html?code=' + encodeURIComponent(lc), 'Ссылка на активацию скопирована');
       return;
     }
     var gfl = t.closest('[data-gift-filter]');
     if (gfl) { st.gfilter = gfl.getAttribute('data-gift-filter'); st.gq = ''; drawBody(); return; }
     if (t.closest('#agGfClear')) { st.gq = ''; st.gfilter = ''; drawBody(); return; }
     var cpy = t.closest('[data-copy]');
-    if (cpy) { copyText(cpy.getAttribute('data-copy'), 'Скопировано ✓'); return; }
+    if (cpy) { copyText(cpy.getAttribute('data-copy'), 'Скопировано'); return; }
 
     /* --- визиты: диапазон, тумблеры, раскрытие сессии --- */
     var vh = t.closest('[data-vh]');
@@ -3857,7 +3924,7 @@ function initGodEye() {
     if (row) {
       var rid = parseInt(row.getAttribute('data-id'), 10);
       if (st.bulk) {
-        /* режим ☑: клик по строке (и по галке) — выбор, а не открытие */
+        /* режим выбора: клик по строке (и по галке) — выбор, а не открытие */
         if (st.bulk.has(rid)) st.bulk.delete(rid); else st.bulk.add(rid);
         drawList();
         return;
@@ -3961,7 +4028,7 @@ function initGodEye() {
            'Там весь план с датами, что входит и цена — заполнять ничего не надо, только ' +
            'посмотреть. Если всё верно, внизу кнопка оплаты.\n' + oc.url)
         : oc.url;
-      try { navigator.clipboard.writeText(payload); toast('Скопировано ✓'); }
+      try { navigator.clipboard.writeText(payload); toast('Скопировано'); }
       catch (e) { toast('Скопируйте вручную из поля'); }
       return;
     }
@@ -3969,7 +4036,7 @@ function initGodEye() {
     if (t.closest('#agClaimCopy')) {
       var cu = (st.card && st.card.claim_url) || (document.getElementById('agClaimUrl') || {}).value || '';
       if (!cu) return;
-      try { navigator.clipboard.writeText(cu); toast('Ссылка клиента в буфере ✓ — продублируйте её в переписку'); }
+      try { navigator.clipboard.writeText(cu); toast('Ссылка клиента в буфере — продублируйте её в переписку'); }
       catch (e) { toast('Скопируйте вручную из поля'); }
       return;
     }
@@ -3982,7 +4049,7 @@ function initGodEye() {
         'Чтобы получать сообщения, статусы и готовые файлы прямо в Telegram, откройте бота по персональной ссылке:\n' +
         (co.bot_claim_url || '') +
         (co.claim_url ? '\n\nРезервный доступ к делу на сайте:\n' + co.claim_url : '');
-      try { navigator.clipboard.writeText(routeText); toast('Сообщение для клиента скопировано ✓'); }
+      try { navigator.clipboard.writeText(routeText); toast('Сообщение для клиента скопировано'); }
       catch (e) { toast('Не скопировалось — откройте ссылки вручную'); }
       return;
     }
@@ -3992,7 +4059,7 @@ function initGodEye() {
       sb.disabled = true;
       api('/admin/orders/' + st.sel + '/sync_tg', {}).then(function (r) {
         sb.disabled = false;
-        if (r && r.ok) toast('Актуальная карточка отправлена клиенту в Telegram ✓');
+        if (r && r.ok) toast('Актуальная карточка отправлена клиенту в Telegram');
         else toast(r && r.error === 'telegram_not_linked'
           ? 'Клиент ещё не запускал бота — скопируйте ему приглашение'
           : 'Telegram недоступен; кабинет сайта продолжает работать');
@@ -4095,7 +4162,7 @@ function initGodEye() {
             var OFF_ERR = {
               order_has_owner: 'У дела уже есть владелец — ссылку выписать нельзя',
               already_paid: 'По делу уже была оплата — условия зафиксированы, пересборка недоступна',
-              claimed_pending: 'Клиент отметил перевод — сперва подтвердите оплату («Получена ✓») или снимите отметку в TG-алерте',
+              claimed_pending: 'Клиент отметил перевод — сперва подтвердите оплату («Получена») или снимите отметку в TG-алерте',
               bad_price: 'Цена не распознана — проверьте цифру в блоке «Цена и план оплаты»'
             };
             toast(OFF_ERR[r && r.error] || 'Не получилось' + (r && r.error ? ' (' + r.error + ')' : ''));
@@ -4103,7 +4170,7 @@ function initGodEye() {
           }
           st.offnew = false;
           try { navigator.clipboard.writeText(r.url); } catch (e) {}
-          toast('Заявка собрана · ссылка в буфере ✓');
+          toast('Заявка собрана · ссылка в буфере');
           afterOrder(r, null);
         });
       });
@@ -4162,7 +4229,7 @@ function initGodEye() {
       }).then(function (res) {
         if (!res.ok) return;
         api('/admin/orders/' + st.sel + '/confirm_payment', { kind: kind, amount: amount })
-          .then(function (r) { afterOrder(r, 'Оплата подтверждена ✓'); if (r.ok && S.stamp) S.stamp('Оплачено'); });
+          .then(function (r) { afterOrder(r, 'Оплата подтверждена'); if (r.ok && S.stamp) S.stamp('Оплачено'); });
       });
       return;
     }
@@ -4284,7 +4351,7 @@ function initGodEye() {
       api('/admin/orders/' + st.sel + '/remind_pay', {})
         .then(function (r) {
           if (!r.ok) {
-            toast({ claimed: 'Клиент отметил оплату — сверьте и подтвердите «Получена ✓»',
+            toast({ claimed: 'Клиент отметил оплату — сверьте и подтвердите «Получена»',
                     nothing_due: 'Платить нечего — созревших неоплаченных этапов нет',
                     paused: 'Дело на паузе — сначала снимите паузу',
                     busy: 'Секунду…' }[r.error] || 'Не получилось');
@@ -4326,7 +4393,7 @@ function initGodEye() {
       if (!txt) return;
       api('/admin/orders/' + st.sel + '/message', { text: txt })
         .then(function (r) {
-          if (r.ok) { toast(r.delivered_tg ? 'Доставлено в Telegram ✓' : 'Сохранено — клиент увидит в кабинете'); st.card = r.order; st.feedStick = true; drawCard(); }
+          if (r.ok) { toast(r.delivered_tg ? 'Доставлено в Telegram' : 'Сохранено — клиент увидит в кабинете'); st.card = r.order; st.feedStick = true; drawCard(); }
           else toast('Не отправилось');
         });
       return;
@@ -4338,7 +4405,7 @@ function initGodEye() {
     }
     if (t.closest('#agReqSave')) {
       api('/admin/requisites', { text: (document.getElementById('agReq') || {}).value || '' })
-        .then(function (r) { toast(r.ok ? 'Реквизиты сохранены ✓' : 'Не получилось'); });
+        .then(function (r) { toast(r.ok ? 'Реквизиты сохранены' : 'Не получилось'); });
       return;
     }
     if (t.closest('#agSlotsSave')) {
@@ -4346,7 +4413,7 @@ function initGodEye() {
       api('/admin/slots', { quota: qv }).then(function (r) {
         if (!r.ok) { toast('Не получилось'); return; }
         slotsApply(r);
-        toast(r.quota ? 'Квота ' + r.quota + ' мест — плашка на сайте живёт ✓' : 'Набор месяца скрыт');
+        toast(r.quota ? 'Квота ' + r.quota + ' мест — плашка на сайте живёт' : 'Набор месяца скрыт');
       });
       return;
     }
@@ -4358,7 +4425,7 @@ function initGodEye() {
         if (!r.ok) { toast('Не получилось'); return; }
         slotsApply(r);
         toast(sd > 0
-          ? (r.quota ? 'Бронь отмечена — на сайте стало на место меньше ✓' : 'Бронь отмечена. Квота 0 — плашка скрыта!')
+          ? (r.quota ? 'Бронь отмечена — на сайте стало на место меньше' : 'Бронь отмечена. Квота 0 — плашка скрыта!')
           : 'Бронь снята — место снова свободно');
       });
       return;
@@ -4488,7 +4555,7 @@ function initGodEye() {
       }).then(function (res) {
         if (!res.ok) return;
         api('/admin/clients/' + st.csel + '/ban', { banned: on })
-          .then(function (r) { if (r.ok) { toast(on ? 'Заблокирован ⛔️' : 'Разблокирован ✓'); loadClient(st.csel); loadTab(); } });
+          .then(function (r) { if (r.ok) { toast(on ? 'Заблокирован' : 'Разблокирован'); loadClient(st.csel); loadTab(); } });
       });
       return;
     }
@@ -4537,7 +4604,7 @@ function initGodEye() {
     if (e.target && e.target.id === 'agPrice') offSumRender();
     if (e.target && e.target.id === 'agCQ') {
       st.cq = e.target.value; drawClientList();
-      var cc = document.getElementById('agCQClear'); if (cc) cc.hidden = !st.cq;   /* держим ✕ в такт вводу */
+      var cc = document.getElementById('agCQClear'); if (cc) cc.hidden = !st.cq;   /* держим × в такт вводу */
       return;
     }
     if (e.target && e.target.id === 'agContentQ') {
@@ -4575,7 +4642,7 @@ function initGodEye() {
       if (r.ok && r.token) {
         S.api.setToken(r.token);
         if (S.api.setUser) S.api.setUser(r.user || null);
-        toast('Вы вошли как мастер ✓');
+        toast('Вы вошли как мастер');
       } else {
         toast(r.error === 'bad_key'
           ? 'Ссылка входа устарела — запросите новую: /panel в боте'
@@ -5232,7 +5299,7 @@ function initGodEye() {
     h += '<div class="wz-pv"><span class="caps">Что входит</span><ul>';
     for (i = 0; i < inc.length; i++)
       h += '<li class="' + (inc[i]['in'] ? 'yes' : 'no') + '">' +
-        (inc[i]['in'] ? '✓ ' : '✗ ') + esc(inc[i].t) + '</li>';
+        (inc[i]['in'] ? icoCheck(13) : icoCross(13)) + ' ' + esc(inc[i].t) + '</li>';
     h += '</ul></div>';
     h += '<div class="wz-pv"><span class="caps">Смета</span><ul>';
     for (i = 0; i < led.length; i++)
@@ -5397,7 +5464,7 @@ function initGodEye() {
       var ti = document.getElementById('wzTopic');
       if (ti && !ti.value) { try { ti.focus(); } catch (e) {} }
     } else {
-      head.textContent = 'Заявка собрана ✓';
+      head.textContent = 'Заявка собрана';
       body.innerHTML = wzDoneHtml();
       foot.innerHTML =
         '<button type="button" class="btn btn-line" id="wzCopy">Скопировать ссылку</button>' +
@@ -5467,7 +5534,7 @@ function initGodEye() {
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(
-          function () { wzSay(okMsg || 'Скопировано ✓'); },
+          function () { wzSay(okMsg || 'Скопировано'); },
           function () { wzSay('Браузер не дал доступ к буферу — выделите текст в поле', 1); });
         ok = true;
       }
@@ -5557,7 +5624,7 @@ function initGodEye() {
         wz.res = r2;
         wz.step = 3;
         wzDraw();
-        wzCopy(r2.url, 'Ссылка в буфере ✓');
+        wzCopy(r2.url, 'Ссылка в буфере');
         if (S.stamp) S.stamp('Готово');
         refreshSilent();
       });
@@ -5574,7 +5641,7 @@ function initGodEye() {
       '<div class="wz-ov" id="wzOv" hidden><div class="wz-sheet" role="dialog" ' +
       'aria-modal="true" aria-labelledby="wzH"><div class="wz-head">' +
       '<h2 id="wzH">Что собираем?</h2>' +
-      '<button type="button" class="wz-x" id="wzClose" aria-label="Закрыть">✕</button></div>' +
+      '<button type="button" class="wz-x" id="wzClose" aria-label="Закрыть">×</button></div>' +
       '<div class="wz-body" id="wzBody"></div><div class="wz-foot" id="wzFoot"></div>' +
       '</div></div>';
     while (box.firstChild) document.body.appendChild(box.firstChild);
@@ -5634,7 +5701,7 @@ function initGodEye() {
         wzCopy(nm + ', собрал заявку по вашей работе. Там весь план с датами, ' +
           'что входит и цена — заполнять ничего не надо, только посмотреть. ' +
           'Если всё верно, внизу кнопка оплаты.\n' + ((wz.res || {}).url || ''),
-          'Текст для мессенджера в буфере ✓');
+          'Текст для мессенджера в буфере');
         return;
       }
       if (t.closest('#wzGoCard')) {

@@ -1354,7 +1354,7 @@
   }
 }
 
-@media (max-width: 880px) {
+@media (max-width:920px) {
   .is-admin-route .admin-mobile-appbar {
     position: sticky;
     z-index: 70;

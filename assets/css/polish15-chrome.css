@@ -16,6 +16,85 @@
    которых в проде нет, объявлены локально на .overlay.
    ============================================================ */
 
+body.concept-shell{
+  --canvas:#F3EEE4;
+  --canvas-deep:#E9E1D3;
+  --paper:#FAF6EE;
+  --paper-2:#E9E1D3;
+  --sheet:#FFFDF8;
+  --sheet-rgb:255,253,248;
+  --ink:#1D1C18;
+  --ink-soft:#68635A;
+  --ink-faint:#8B8375;
+  --text:#38352F;
+  --muted:#68635A;
+  --quiet:#8B8375;
+  --faint:#AAA08F;
+  --hairline:#D8CEBD;
+  --hairline-strong:#B8AA94;
+  --line:#D8CEBD;
+  --line-soft:rgba(102,91,72,.12);
+  --line-strong:#B8AA94;
+  --wax:#A63F29;
+  --wax-deep:#792B1D;
+  --wax-soft:#F2DDD5;
+  --wax-cta:#A63F29;
+  --verify:#3C644C;
+  --verify-soft:#DFE9E1;
+  --green:#3C644C;
+  --green-soft:#DFE9E1;
+  --stamp:#405777;
+  color:var(--text);
+  background:
+    linear-gradient(90deg,transparent calc(50% - .5px),rgba(70,61,46,.025) 50%,transparent calc(50% + .5px)),
+    var(--canvas);
+  font:400 16px/1.58 var(--sans);
+}
+body.concept-shell::before{
+  opacity:1;
+  background:
+    radial-gradient(circle at 8% 8%,rgba(255,255,255,.42),transparent 24%),
+    radial-gradient(circle at 92% 16%,rgba(180,148,88,.1),transparent 24%),
+    repeating-linear-gradient(0deg,rgba(67,59,45,.013) 0 1px,transparent 1px 4px);
+}
+:root[data-theme="dark"] body.concept-shell{
+  --canvas:#171714;
+  --canvas-deep:#11110F;
+  --paper:#1E1D19;
+  --paper-2:#11110F;
+  --sheet:#24221D;
+  --sheet-rgb:36,34,29;
+  --ink:#F2ECDF;
+  --ink-soft:#AAA293;
+  --ink-faint:#8B8478;
+  --text:#D0C8BA;
+  --muted:#AAA293;
+  --quiet:#8B8478;
+  --faint:#6D675E;
+  --hairline:#3C3932;
+  --hairline-strong:#565148;
+  --line:#3C3932;
+  --line-soft:rgba(242,236,223,.09);
+  --line-strong:#565148;
+  --wax:#C65B41;
+  --wax-deep:#A4432D;
+  --wax-soft:#42251F;
+  --wax-cta:#A4432D;
+  --verify:#7FAA8B;
+  --verify-soft:#23362A;
+  --green:#7FAA8B;
+  --green-soft:#23362A;
+  --stamp:#8AA0C2;
+}
+:root[data-theme="dark"] body.concept-shell::before{opacity:.38}
+
+@media(max-width:920px){
+  body.concept-shell{
+    background:var(--canvas);
+    font-size:15px;
+  }
+}
+
 
 /* ============================================================
    0. ЛОКАЛЬНЫЕ ПЕРЕМЕННЫЕ ОВЕРЛЕЯ
@@ -595,10 +674,10 @@
 
 /* ============================================================
    5. МОБИЛЬНАЯ РЕДАКЦИЯ
-   Брейкпоинт 880px — общий для проекта (mobile.css/chrome.css).
+   Брейкпоинт 920px совпадает с утверждённым полноэкранным концептом.
    Проверочные ширины: 430px и 1440px.
    ============================================================ */
-@media screen and (max-width:880px){
+@media screen and (max-width:920px){
   .overlay__panel{
     width:100%;
     border-left:0;
@@ -934,7 +1013,7 @@ body .cookiebar .cb-foot > span{
   white-space:nowrap;
 }
 
-@media screen and (max-width:880px){
+@media screen and (max-width:920px){
   body .cookiebar{
     right:12px;
     bottom:calc(12px + env(safe-area-inset-bottom));
@@ -1022,12 +1101,7 @@ body .guide-toast{
 }
 
 /* ============================================================
-   ШАПКА: одна мера для всех органов управления
-
-   Было три разные меры рядом: «Найти» 100×38 с рамкой, тема 38×38
-   без рамки, счётчик событий 44×44 без рамки, бейджи на штемпельной
-   сини. Ниже всё сведено к одному языку и явно прописано для тёмной
-   темы — она нигде не наследовалась.
+   ШАПКА: буквальная геометрия утверждённого style-lab/full.
 
    Специфичность с `body`, потому что chrome.css грузится позже.
    ============================================================ */
@@ -1036,26 +1110,30 @@ body .site-header .header-action,
 body .site-header .header-theme-toggle,
 body .site-header .nav-marks,
 body .site-header .nav-cab{
-  min-height:44px;
+  min-height:38px;
   color:var(--ink-soft);
   background:transparent;
-  border:1px solid var(--hairline);
-  border-radius:999px;
+  border:1px solid transparent;
+  border-radius:7px;
   transition:color 170ms ease,border-color 170ms ease,background-color 170ms ease;
 }
+body .site-header .header-action,
+body .site-header .nav-marks,
+body .site-header .nav-cab{ border:0; }
 /* Круглые — те, у кого только значок. */
 body .site-header .header-theme-toggle,
 body .site-header .nav-marks,
 body .site-header .header-menu-button{
-  width:44px;
-  min-width:44px;
-  height:44px;
+  width:38px;
+  min-width:38px;
+  height:38px;
   padding:0;
+  border-radius:50%;
 }
 /* Пилюли — те, у кого есть подпись. */
 body .site-header .header-action--search,
 body .site-header .nav-cab{
-  padding-inline:14px;
+  padding-inline:10px;
 }
 /* Ниже 1280 у «Найти» остаётся только лупа (chrome.css) —
    значит и мера у неё круглая, как у темы и «Меню». Подпись
@@ -1064,8 +1142,8 @@ body .site-header .nav-cab{
    лупа поедет в пилюле шириной 121px. */
 @media(max-width:1280px){
   body .site-header .header-action--search{
-    width:44px;
-    min-width:44px;
+    width:38px;
+    min-width:38px;
     justify-content:center;
     padding-inline:0;
   }
@@ -1076,12 +1154,15 @@ body .site-header .header-theme-toggle:hover,
 body .site-header .nav-marks:hover,
 body .site-header .nav-cab:hover{
   color:var(--ink);
-  background:var(--sheet);
-  border-color:var(--hairline-strong);
+  background:color-mix(in srgb,var(--sheet) 68%,transparent);
+  border-color:transparent;
+}
+body .site-header .header-theme-toggle:hover{
+  background:var(--paper);
+  border-color:var(--hairline);
 }
 body .site-header .nav-cab[aria-current="page"]{
   color:var(--wax);
-  border-color:var(--wax);
 }
 
 /* Клавиша-подсказка: была темнее самой шапки в тёмной теме. */
@@ -1089,8 +1170,8 @@ body .site-header .header-action kbd{
   color:var(--ink-soft);
   background:var(--sheet);
   border:1px solid var(--hairline);
-  border-radius:5px;
-  font-size:11px;
+  border-radius:4px;
+  font-size:10px;
 }
 
 /* Бейджи — на фирменном сургуче, кольцо по фону шапки. */
@@ -1102,56 +1183,48 @@ body .site-header .nav-marks .nm-n{
   font-size:10px;
 }
 
-/* Точка статуса у кабинета. Раньше это был третий сигнал на одном
-   органе управления: точка + цифра + слово. Что значит точка, не
-   говорило ничего — а §3 запрещает обозначать состояние одним цветом.
-   Смысл теперь несут слово «Кабинет» и словесное имя бейджа
-   (Salon.cabBadge), поэтому точку из строки убираем. Сам хук
-   .header-action__dot остаётся: на него ссылается эталонная разметка
-   и он ещё пригодится там, где рядом появится подпись. */
-body .site-header .header-action__dot{
-  display:none;
-}
+/* Эталонная зелёная точка остаётся рядом со словом «Кабинет»;
+   доступное имя кнопки при этом задаётся текстом и aria-label. */
+body .site-header .header-action__dot{ display:block; }
 
-/* ---- Значки пульта: свои, не из шрифта ----
-   ⌕ (U+2315) и ◐ (U+25D0) не объявлены в unicode-range ни у Golos,
-   ни у JetBrains Mono, ни у Literata (assets/fonts/fonts.css) — их
-   рисовал системный шрифт, а на части Android они не находились
-   вовсе. Теперь это inline-SVG на currentColor: рисунок наш,
-   тема наследуется, подставить нечего. */
+/* ---- Значки пульта из утверждённого style-lab/full ---- */
 body .ha-ico{
   display:block;
   flex:0 0 auto;
-  /* svg — inline-элемент: без этого он тянет за собой пробел базовой
-     линии и сбивает вертикальный центр круглых кнопок. */
   vertical-align:middle;
   pointer-events:none;
 }
-/* Кнопка темы показывает ЦЕЛЬ переключения, а не текущее состояние:
-   в светлой теме — месяц («включить тёмную»), в тёмной — солнце.
-   Состояние приходит из aria-pressed, который ставит Salon.theme.apply,
-   так что JS про значок ничего не знает. */
-body .ha-ico--theme .ha-sun{ display:none; }
-body .theme-toggle[aria-pressed="true"] .ha-ico--theme .ha-moon{ display:none; }
-body .theme-toggle[aria-pressed="true"] .ha-ico--theme .ha-sun{ display:inline; }
 
 /* ---- Знак мастерской ---- */
 body .site-header .brand__mark{
-  width:44px;
-  height:44px;
+  width:39px;
+  height:39px;
   border-radius:50%;
-  /* Оттиск: знак «прижимается» к бумаге один раз при появлении.
-     Сам знак не перерисовывается — §2 стандарта соблюдён. */
-  animation:brand-press 520ms cubic-bezier(.22,1,.36,1) both;
+  animation:none;
 }
-body .site-header .brand:hover .brand__mark{
-  transform:rotate(-4deg);
-  transition:transform 170ms cubic-bezier(.22,1,.36,1);
+
+body .site-header .primary-nav{ gap:26px; }
+body .site-header .primary-nav a{
+  display:block;
+  min-height:0;
+  padding-block:10px;
 }
-@keyframes brand-press{
-  from{opacity:0;transform:scale(.86) rotate(-8deg)}
-  60%{opacity:1;transform:scale(1.03) rotate(1.5deg)}
-  to{opacity:1;transform:none}
+body .site-header .primary-nav a::after{ bottom:5px; }
+body .site-header .site-header__actions .button{
+  min-height:40px;
+  gap:12px;
+  background:#b84931;
+  border-color:#b84931;
+}
+body .site-header .site-header__actions .button:hover{
+  background:#a83e29;
+  border-color:#a83e29;
+}
+body .site-header .site-header__actions .button span{
+  font-family:var(--serif);
+  font-size:18px;
+  font-weight:inherit;
+  line-height:1.2;
 }
 
 /* ---- Лента событий «Пометки на полях» ---- */
@@ -1185,9 +1258,9 @@ body .mledger .ml-row.is-new .ml-pin{
    базовой линии. В колофоне и мобильном аппбаре свои меры. */
 body .site-header .brand__mark{
   display:block;
-  flex:0 0 44px;
-  width:44px;
-  height:44px;
+  flex:0 0 39px;
+  width:39px;
+  height:39px;
 }
 body .mobile-appbar__brand .brand__mark{
   flex:0 0 34px;

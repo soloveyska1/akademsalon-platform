@@ -4,7 +4,7 @@
    страниц к одной устойчивой геометрии телефона.
    ============================================================ */
 
-@media screen and (max-width:880px){
+@media screen and (max-width:920px){
   :root{
     --mobile-gutter:clamp(16px,4.7vw,20px);
     --mobile-header-h:calc(58px + env(safe-area-inset-top));
@@ -1334,7 +1334,7 @@
   .rv-cover-note{display:none!important}
 }
 
-@media screen and (max-width:880px) and (max-height:700px){
+@media screen and (max-width:920px) and (max-height:700px){
   .contact-sheet .cs-card{max-height:94svh}
   .sdlg-card,.tour-card,.dossier-dialog,.mledger{max-height:94svh}
   .home .pr-h{font-size:35px}
@@ -1354,10 +1354,10 @@
    mobile.css подключается после chrome.css, поэтому геометрия
    фирменной шапки и пяти пунктов дока закреплена здесь повторно.
    ============================================================ */
-@media screen and (max-width:880px){
+@media screen and (max-width:920px){
   :root{
     --mobile-header-h:calc(58px + env(safe-area-inset-top));
-    --mobile-dock-h:calc(70px + env(safe-area-inset-bottom));
+    --mobile-dock-h:calc(74px + env(safe-area-inset-bottom));
     --mobile-bottom-clear:calc(var(--mobile-dock-h) + 14px);
   }
 
@@ -1365,8 +1365,9 @@
     scroll-padding-top:calc(var(--mobile-header-h) + 12px);
     scroll-padding-bottom:var(--mobile-bottom-clear);
   }
-  body{padding-bottom:var(--mobile-dock-h)}
-  body.no-mcta{padding-bottom:0}
+  body{padding-bottom:calc(var(--mobile-dock-h) + 16px)}
+  body.no-mcta,
+  body.is-admin-route{padding-bottom:0}
 
   /* Колонтитул рабочего стола здесь не участвует: он скрыт
      целиком, всё делает .mobile-appbar ниже по файлу. */
@@ -1498,7 +1499,7 @@
 
 /* Production footer follows the same compact editorial grid as the
    approved mobile concept. This final layer also owns safe-area space. */
-@media screen and (max-width:880px){
+@media screen and (max-width:920px){
   .site-footer{
     margin-top:56px;
     padding:0 0 calc(var(--mobile-dock-h) + 18px);
@@ -1605,7 +1606,7 @@
 }
 
 /* Мобильный footer финального концепта. */
-@media screen and (max-width:880px){
+@media screen and (max-width:920px){
   .site-footer,
   :root[data-theme="dark"] .site-footer,
   body.no-mcta .site-footer{
@@ -1616,8 +1617,8 @@
   }
   .site-footer__main{
     grid-template-columns:1fr 1fr;
-    gap:24px;
-    padding:32px max(18px,env(safe-area-inset-left)) 24px;
+    gap:clamp(34px,5vw,72px);
+    padding:44px max(18px,env(safe-area-inset-left)) 38px;
   }
   .site-footer__brand{grid-column:1/-1}
   .site-footer__bottom{
@@ -1628,6 +1629,11 @@
        и оставлял под подвалом 94px чистой пустоты. */
     padding:20px max(18px,env(safe-area-inset-left)) calc(24px + env(safe-area-inset-bottom));
   }
+  .site-footer__bottom .theme-toggle{
+    display:flex;
+    min-height:44px;
+    align-items:center;
+  }
 }
 @media screen and (max-width:620px){
   .site-footer__main{
@@ -1636,8 +1642,7 @@
   }
   .site-footer nav,
   .site-footer__brand{grid-column:auto}
-  /* Колонку «О сервисе» не прячем: там лежат оферта, конфиденциальность
-     и документы — на мобильном они оказывались недоступны вовсе. */
+  .site-footer nav:nth-of-type(2){display:none}
   .site-footer__bottom{
     align-items:flex-start;
     flex-direction:column;
@@ -1647,7 +1652,7 @@
 }
 
 /* Верхняя app-панель финального мобильного концепта. */
-@media screen and (max-width:880px){
+@media screen and (max-width:920px){
   :root{--mobile-appbar-h:62px}
   .site-header{display:none!important}
   .mobile-appbar{
@@ -1757,6 +1762,11 @@
     padding-top:calc(var(--mobile-appbar-h) + env(safe-area-inset-top));
   }
 }
+/* В полном концепте на планшетной ступени высоту lockup задаёт сам знак
+   34px; пол 44px включается только на телефонной ступени <=620px. */
+@media screen and (min-width:621px) and (max-width:920px){
+  .mobile-appbar__brand{min-height:0}
+}
 /* Кнопки аппбара остаются 44px и на узком экране: эталон здесь
    тоже не мельчит (style.css §max-width:400px), а размер цели
    меньше 44px нарушает DESIGN-STANDARDS. Место отыгрываем
@@ -1776,7 +1786,7 @@
 }
 
 /* Нижний dock финального мобильного концепта. */
-@media screen and (max-width:880px){
+@media screen and (max-width:920px){
   .mobile-dock.mobile-cta{
     position:fixed;
     z-index:95;

@@ -4,25 +4,19 @@
  * но держит сложную редакционную композицию в отдельном слое.
  */
 .polish15-home{
-  --canvas:var(--paper);
-  --canvas-deep:var(--paper-2);
-  --text:var(--ink);
-  --muted:var(--ink-soft);
-  --quiet:var(--ink-faint);
-  --line:var(--hairline);
   --line-strong:var(--hairline-strong);
   --line-soft:color-mix(in srgb,var(--hairline) 62%,transparent);
   --night:#1d1c18;
   /* тушь на ночном листе: собственная пара к --night, потому что --ink
      переворачивается вместе с темой, а ночная плита остаётся ночной */
-  --night-ink:#efe9de;
+  --night-ink:#fffaf3;
   /* тушь на сургучной заливке — то же значение, что у .button--primary ниже.
      --night-ink на ней даёт всего 3,76 в тёмной теме (норма AA 4,5),
      это же — 6,0 в светлой и 4,8 в тёмной */
   --on-wax:#fffaf3;
   --green:var(--verify);
   --green-soft:var(--verify-soft);
-  --sheet-rgb:255,254,249;
+  --sheet-rgb:255,253,248;
   --page:1320px;
   --gutter:clamp(24px,4.25vw,72px);
   --section:clamp(72px,7.5vw,112px);
@@ -31,14 +25,12 @@
   --shadow-paper:0 30px 90px rgba(54,45,31,.12),0 6px 20px rgba(54,45,31,.05);
   --ease-out:cubic-bezier(.22,1,.36,1);
   min-height:100vh;
-  padding-top:64px;
   overflow:clip;
 }
 
 :root[data-theme="dark"] .polish15-home{
-  --sheet-rgb:31,27,21;
-  --night:#0f0e0c;
-  --night-ink:#e6e0d4;
+  --sheet-rgb:36,34,29;
+  --night-ink:#fffaf3;
   --shadow-paper:0 32px 90px rgba(0,0,0,.32),0 6px 18px rgba(0,0,0,.18);
 }
 
@@ -47,7 +39,7 @@
 .polish15-home h3{
   color:var(--ink);
   font-family:var(--serif);
-  font-weight:430;
+  font-weight:470;
   line-height:1.08;
   letter-spacing:-.035em;
   text-wrap:balance;
@@ -501,6 +493,9 @@
   color:color-mix(in srgb,var(--night-ink) 58%,var(--night));
 }
 
+.polish15-home .situation-section{
+  padding-top:clamp(72px,8vw,112px);
+}
 .polish15-home .situation-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -705,7 +700,7 @@
   display:flex;
   min-height:400px;
   flex-direction:column;
-  padding:22px;
+  padding:0;
   background:color-mix(in srgb,var(--sheet) 68%,transparent);
   border:1px solid var(--line);
   border-radius:var(--r-sheet);
@@ -713,9 +708,11 @@
 }
 .polish15-home .service-card__link{
   display:flex;
-  min-height:100%;
+  min-height:inherit;
   flex:1;
   flex-direction:column;
+  padding:22px;
+  border-radius:inherit;
 }
 .polish15-home .service-card:hover{
   z-index:2;
@@ -877,11 +874,9 @@
   background:var(--paper-2);
   border-block:1px solid var(--line);
 }
-/* Сворачивание карты проверки — только на телефоне; на десктопе она
-   всегда раскрыта, поэтому переключатель не показываем. */
-@media (min-width:881px){
-  .polish15-home .document-reveal > summary{ display:none; }
-}
+/* В эталоне карта проверки всегда раскрыта и не имеет дополнительного
+   мобильного переключателя. */
+.polish15-home .document-reveal > summary{ display:none; }
 .polish15-home .testimonial-section__grid{
   display:grid;
   grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);
@@ -890,6 +885,9 @@
 }
 .polish15-home .testimonial-section__quote{
   position:relative;
+  display:grid;
+  align-content:center;
+  gap:14px;
   padding-left:54px;
 }
 .polish15-home .testimonial-section__quote::before{
@@ -901,14 +899,12 @@
   font:400 72px/1 var(--serif);
 }
 .polish15-home .testimonial-section__quote h2{
-  margin-top:12px;
-  font-size:clamp(34px,4vw,52px);
+  max-width:18ch;
+  font-size:clamp(32px,4vw,52px);
 }
 .polish15-home .testimonial-section__quote > p:last-child{
-  max-width:650px;
-  margin-top:16px;
+  max-width:58ch;
   color:var(--muted);
-  font-size:14px;
 }
 .polish15-home .testimonial-section__result{
   display:grid;
@@ -1015,23 +1011,6 @@
   font-size:11px;
 }
 
-@media(prefers-reduced-motion:no-preference){
-  .polish15-home .home-hero__copy{
-    animation:polish15-rise .56s var(--ease-out) both;
-  }
-  .polish15-home .editorial-case{
-    animation:polish15-sheet .68s .08s var(--ease-out) both;
-  }
-  @keyframes polish15-rise{
-    from{opacity:.25;transform:translateY(12px)}
-    to{opacity:1;transform:none}
-  }
-  @keyframes polish15-sheet{
-    from{opacity:.25;transform:translateY(16px) rotate(.8deg)}
-    to{opacity:1;transform:rotate(.35deg)}
-  }
-}
-
 @media(max-width:1100px){
   .polish15-home .home-hero__grid{
     grid-template-columns:minmax(0,1fr) minmax(390px,.82fr);
@@ -1044,17 +1023,18 @@
 
 @media(max-width:920px){
   .polish15-home{
-    --gutter:max(20px,env(safe-area-inset-left));
-    --section:clamp(62px,10vw,84px);
-    padding-top:60px;
+    --gutter:max(18px,env(safe-area-inset-left));
+    --section:64px;
   }
   .polish15-home .section-head{
     grid-template-columns:1fr;
-    gap:18px;
-    margin-bottom:28px;
+    gap:14px;
+    margin-bottom:26px;
   }
+  .polish15-home .section-head h2{ font-size:36px; }
   .polish15-home .section-head > p{ font-size:14px; }
   .polish15-home .section-head__action{ width:max-content; }
+  .polish15-home .tag{ min-height:28px; }
   .polish15-home .home-hero{
     padding-top:38px;
   }
@@ -1080,6 +1060,8 @@
     transform:none;
   }
   .polish15-home .editorial-case:hover{ transform:none; }
+  .polish15-home .editorial-case__paper{ padding:24px; }
+  .polish15-home .document-line{ font-size:18px; }
   .polish15-home .home-hero__ticker{
     width:100%;
     min-width:0;
@@ -1095,63 +1077,42 @@
     flex:0 0 auto;
     scroll-snap-align:start;
   }
-  /* Лист возврата обслуживает и телефон — отдельной точки на доке больше нет.
-     Печать и текст в две колонки, кнопка отдельной строкой на всю ширину. */
   .polish15-home .resume-card{
-    /* эталон на узком отдаёт плиту в край (width:100%, margin-inline:0) и
-       держит воздух собственным padding — жёлоб .section-shell тут не нужен.
-       Боковое значение через max(): в ландшафте на вырезанных экранах текст
-       иначе уходит под скругление корпуса */
-    width:100%;
     grid-template-columns:48px minmax(0,1fr);
     gap:14px;
-    margin:18px 0 0;
-    padding:18px max(18px,env(safe-area-inset-left)) 18px max(18px,env(safe-area-inset-right));
+    margin:18px var(--gutter) 0;
+    padding:18px;
   }
   .polish15-home .resume-card__seal{
     width:48px;
     height:48px;
   }
   .polish15-home .resume-card .button{
-    min-height:52px;
     grid-column:1/-1;
     width:100%;
   }
-  /* Ряд ситуаций — лентой, а не стопкой: четыре карточки по 165px давали
-     660px вертикали. Приём тот же, что у карточек услуг ниже, и он разрешён
-     стандартом §5 для осмысленных рядов. Край следующей карточки виден
-     (82vw), поэтому жест понятен без подсказки. */
   .polish15-home .situation-grid{
-    display:flex;
-    width:calc(100% + var(--gutter));
-    gap:12px;
-    overflow-x:auto;
-    overscroll-behavior-x:contain;
-    padding-right:var(--gutter);
-    scroll-padding-left:var(--gutter);
-    scroll-snap-type:x mandatory;
-    scrollbar-width:none;
+    grid-template-columns:1fr;
   }
-  .polish15-home .situation-grid::-webkit-scrollbar{ display:none; }
   .polish15-home .situation-card,
   .polish15-home .situation-card:nth-child(odd){
-    width:min(78vw,340px);
-    min-width:min(78vw,340px);
     grid-template-columns:30px minmax(0,1fr) 26px;
     min-height:122px;
-    padding:20px 16px;
+    padding:20px 4px;
     border-right:0;
-    scroll-snap-align:start;
   }
   .polish15-home .situation-card:hover{ padding-left:8px; }
   .polish15-home .situation-card__result{
     grid-column:2;
     margin-top:6px;
   }
+  .polish15-home .situation-card__result small{ font-size:9px; }
   .polish15-home .situation-card__arrow{
     grid-column:3;
     grid-row:1;
   }
+  .polish15-home .situation-card h3{ font-size:22px; }
+  .polish15-home .situation-card p{ font-size:13px; }
   .polish15-home .evidence-section__grid{
     grid-template-columns:1fr;
     gap:42px;
@@ -1172,92 +1133,30 @@
   .polish15-home .service-card{
     width:min(82vw,370px);
     min-width:min(82vw,370px);
-    /* Карточка растёт по содержимому: жёсткие 350px держали пустоту у тех,
-       где описание короче. Нижний предел оставлен ради ровного ряда. */
-    min-height:290px;
+    min-height:350px;
     scroll-snap-align:start;
   }
-  /* Порядок работы — лентой. Четыре шага стопкой стоили 672px вертикали,
-     а горизонтальный ряд ещё и честнее передаёт последовательность:
-     Материалы → Смета → Редактура → Приёмка читаются как шкала времени. */
   .polish15-home .process-grid{
-    display:flex;
-    width:calc(100% + var(--gutter));
-    gap:12px;
-    overflow-x:auto;
-    overscroll-behavior-x:contain;
-    padding-right:var(--gutter);
-    scroll-padding-left:var(--gutter);
-    scroll-snap-type:x mandatory;
-    scrollbar-width:none;
+    grid-template-columns:1fr;
   }
-  .polish15-home .process-grid::-webkit-scrollbar{ display:none; }
   .polish15-home .process-grid li,
   .polish15-home .process-grid li + li{
-    width:min(70vw,300px);
-    min-width:min(70vw,300px);
     min-height:auto;
-    padding:22px 16px 22px 0;
+    padding:22px 0;
     border-top:0;
     border-left:0;
-    border-bottom:0;
-    scroll-snap-align:start;
+    border-bottom:1px solid var(--line);
   }
-  .polish15-home .process-grid h3{ margin-top:10px; }
-  /* 15px — норма основного текста на мобильном (§4). Было 13px, ниже порога. */
-  .polish15-home .process-grid p{ font-size:15px; }
+  .polish15-home .process-grid li:nth-child(4){
+    border-top:1px solid var(--line);
+  }
+  .polish15-home .process-grid h3{ margin-top:22px; }
+  .polish15-home .process-grid p{ font-size:13px; }
   .polish15-home .home-library,
   .polish15-home .testimonial-section__grid,
   .polish15-home .calm-cta{
     grid-template-columns:1fr;
-    gap:22px;
-  }
-  /* Карта редакторской проверки на телефоне сворачивается: 788px прокрутки
-     заменяются одним касанием. Функция сохраняется целиком — это тот же
-     документ, просто по требованию. На десктопе раскрыта всегда. */
-  .polish15-home .document-reveal > summary{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    min-height:52px;
-    padding:14px 16px;
-    border:1px solid var(--line-strong);
-    border-radius:4px;
-    background:var(--sheet);
-    color:var(--ink);
-    font:600 15px/1.3 var(--sans);
-    cursor:pointer;
-    list-style:none;
-  }
-  .polish15-home .document-reveal > summary::-webkit-details-marker{ display:none; }
-  .polish15-home .document-reveal > summary::after{
-    content:"+";
-    color:var(--wax);
-    font:400 20px/1 var(--sans);
-  }
-  .polish15-home .document-reveal[open] > summary::after{ content:"−"; }
-  .polish15-home .document-reveal[open] > summary{ margin-bottom:18px; }
-  /* Три материала библиотеки лентой: стопкой они стоили 343px вертикали. */
-  .polish15-home .home-library__articles{
-    display:flex;
-    width:calc(100% + var(--gutter));
-    gap:12px;
-    overflow-x:auto;
-    overscroll-behavior-x:contain;
-    padding-right:var(--gutter);
-    scroll-padding-left:var(--gutter);
-    scroll-snap-type:x mandatory;
-    scrollbar-width:none;
-    border-top:0;
-  }
-  .polish15-home .home-library__articles::-webkit-scrollbar{ display:none; }
-  .polish15-home .home-library__articles a{
-    width:min(74vw,320px);
-    min-width:min(74vw,320px);
-    border-top:1px solid var(--line-strong);
-    border-bottom:0;
-    scroll-snap-align:start;
+    gap:34px;
   }
   .polish15-home .testimonial-section__quote{ padding-left:40px; }
   .polish15-home .home-tools__grid{ grid-template-columns:1fr; }
@@ -1271,25 +1170,33 @@
   .polish15-home .calm-cta > div:last-child{ flex-wrap:wrap; }
 }
 
+@media(max-width:620px){
+  .polish15-home{ --section:54px; }
+  .polish15-home .line-link{ min-height:44px; }
+  .polish15-home .home-hero h1{
+    font-size:clamp(40px,9.5vw,46px);
+  }
+  .polish15-home .evidence-section,
+  .polish15-home .process-section,
+  .polish15-home .calm-cta,
+  .polish15-home ~ .site-footer{
+    display:none;
+  }
+  .polish15-home .home-library__articles a:nth-child(n + 3){
+    display:none;
+  }
+  .polish15-home .testimonial-section__grid{ gap:28px; }
+  .polish15-home .testimonial-section__quote{ padding-left:0; }
+}
+
 @media(max-width:560px){
   .polish15-home{
     --gutter:max(16px,env(safe-area-inset-left));
-    /* 48px — значение с контрольной шкалы отступов (§5: 8/12/16/24/32/48/64).
-       Прежние 58px в шкалу не входили и стоили по 20px на каждой из семи секций. */
-    --section:48px;
-    padding-top:48px;
   }
-  .polish15-home .section-head h2{ font-size:34px; }
   /* 11px — нижняя граница служебного текста; 10px были ниже собственного порога. */
   .polish15-home .eyebrow{ font-size:11px; }
   .polish15-home .home-hero__grid{
     padding-inline:max(16px,env(safe-area-inset-left));
-  }
-  .polish15-home .home-hero h1{
-    /* Норма мобильного H1 по DESIGN-STANDARDS §4 — 36–46px; в эталоне на 430px
-       выходит 41px. Прежние clamp(39px,11.8vw,50px) упирались в потолок 50px
-       и съедали треть экрана. Теперь: 36px на узких, 41px на 430, 44px потолок. */
-    font-size:clamp(36px,9.6vw,44px);
   }
   .polish15-home .home-hero__lead{ font-size:15px; }
   .polish15-home .home-hero__actions{
