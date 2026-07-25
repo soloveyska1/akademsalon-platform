@@ -1747,15 +1747,17 @@
   }
   .site-footer__main{
     grid-template-columns:1fr 1fr;
-    gap:34px;
-    padding:44px max(18px,env(safe-area-inset-left)) 38px;
+    gap:24px;
+    padding:32px max(18px,env(safe-area-inset-left)) 24px;
   }
   .site-footer__brand{grid-column:1/-1}
-  .site-footer nav:last-child{display:none}
   .site-footer__bottom{
     flex-wrap:wrap;
     justify-content:flex-start;
-    padding:20px max(18px,env(safe-area-inset-left)) calc(var(--mobile-dock-h) + 24px + env(safe-area-inset-bottom));
+    /* Клиренс дока уже даёт body (padding-bottom:70px) — прежний
+       calc(--mobile-dock-h + 24 + safe) добавлял его второй раз
+       и оставлял под подвалом 94px чистой пустоты. */
+    padding:20px max(18px,env(safe-area-inset-left)) calc(24px + env(safe-area-inset-bottom));
   }
 }
 @media screen and (max-width:620px){
@@ -1765,7 +1767,8 @@
   }
   .site-footer nav,
   .site-footer__brand{grid-column:auto}
-  .site-footer nav:nth-of-type(2){display:none}
+  /* Колонку «О сервисе» не прячем: там лежат оферта, конфиденциальность
+     и документы — на мобильном они оказывались недоступны вовсе. */
   .site-footer__bottom{
     align-items:flex-start;
     flex-direction:column;
@@ -1962,7 +1965,10 @@
     text-overflow:ellipsis;
     white-space:nowrap;
   }
-  .mobile-dock .dock-icon{
+  /* Через .mn-i — иначе старое .mnav .mn-i .mn-ic (0-3-0) перебивало это
+     правило и рисовало иконки в боксе 22×22 inline-flex, тогда как их
+     ::before/::after посчитаны под 20×20 block: вся геометрия ехала. */
+  .mobile-dock .mn-i .dock-icon{
     position:relative;
     display:block;
     width:20px;
@@ -2037,13 +2043,27 @@
     border-radius:9px 9px 3px 3px;
     content:"";
   }
+  /* Правило 8: пока висит выбор о данных, нижний слой один — баннер.
+     Док возвращается сразу после ответа. */
+  :root.has-consent-bar .mobile-dock{
+    transform:translateY(100%);
+    pointer-events:none;
+    visibility:hidden;
+  }
   .mobile-dock.mobile-cta>.mobile-dock__primary{
     margin-top:-23px;
+    /* Печать намеренно выступает над баром — ссылка не должна её срезать.
+       Старый слой (.mnav .mn-calc) ставил overflow:hidden, из-за чего
+       круг «АС» показывался половиной. */
+    overflow:visible;
     color:var(--wax);
   }
   .mobile-dock.mobile-cta>.mobile-dock__primary::before{display:none}
   .mobile-dock .mn-ic.mobile-dock__seal{
     display:grid;
+    /* Подъём задаёт ТОЛЬКО ссылка (-23px выше). Старое правило
+       .mnav .mn-calc .mn-ic давало ещё -20px, и подъёмы складывались в 43px. */
+    margin-top:0;
     width:52px;
     height:52px;
     place-items:center;

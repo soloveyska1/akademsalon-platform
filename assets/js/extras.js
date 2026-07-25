@@ -209,6 +209,7 @@
       if (!bar) return;
       var old = bar;
       bar = null;
+      document.documentElement.classList.remove('has-consent-bar');
       old.classList.remove('in');
       setTimeout(function () { if (old.parentNode) old.remove(); }, reduceMotion ? 0 : 360);
     }
@@ -248,6 +249,10 @@
           '<span>Без рекламных трекеров</span>' +
         '</div>';
       document.body.appendChild(bar);
+      /* Правило 8 системы: одновременно виден только один нижний системный
+         слой. Пока висит выбор о данных, док прячем — иначе на телефоне
+         шапка + баннер + док съедали 353px из 932, то есть 38% экрана. */
+      document.documentElement.classList.add('has-consent-bar');
       if (S.railAdopt) S.railAdopt();
       setTimeout(function () { if (bar) bar.classList.add('in'); }, reduceMotion ? 0 : 650);
       bar.querySelector('[data-cb-allow]').addEventListener('click', function () {

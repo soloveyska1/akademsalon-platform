@@ -17,9 +17,13 @@
   --hairline-strong:#C2B89F;  /* линейки с акцентом, отточия */
 
   /* акценты */
-  --wax:#B23B22;              /* сургуч: CTA, цена, активное. Квота ≤2 на вьюпорт */
-  --wax-deep:#8C2D18;
-  --wax-soft:rgba(178,59,34,.08);
+  --wax:#A63F29;              /* сургуч: CTA, цена, активное. Квота ≤2 на вьюпорт */
+  --wax-deep:#792B1D;
+  --wax-soft:rgba(166,63,41,.08);
+  /* Заливка кнопок отдельно от акцентного сургуча: на тёмной теме светлый
+     текст на #C65B41 давал контраст 4,18 при норме AA 4,5. Здесь, в светлой,
+     значение совпадает с --wax — расхождение появляется только в тёмной. */
+  --wax-cta:#A63F29;
   --verify:#3D6B50;           /* грифельная зелень: проверено, успех */
   --verify-soft:rgba(61,107,80,.10);
   --mark:#EFE5CC;             /* кремовый маркер: подсветка строк */
@@ -120,7 +124,7 @@ em.pen{font-style:italic;font-family:var(--serif);color:inherit}
 .btn[hidden]{display:none!important}
 .btn-ink{background:var(--ink);color:var(--paper)}
 .btn-ink:hover{background:#33302a}
-.btn-wax{background:var(--wax);color:#FFFEF9}
+.btn-wax{background:var(--wax-cta,var(--wax));color:#FFFEF9}
 .btn-wax:hover{background:var(--wax-deep)}
 .btn-ink:active,.btn-wax:active{box-shadow:inset 0 2px 3px rgba(0,0,0,.35)}
 .btn-line{background:transparent;border-color:var(--hairline-strong);color:var(--ink)}
@@ -339,9 +343,12 @@ section[id],main[id],[id].chapter{scroll-margin-top:76px}
   --ink-faint:#847E6E;
   --hairline:#34302A;
   --hairline-strong:#4C483E;
-  --wax:#E06B4C;             /* сургуч ярче для контраста на тёмном */
-  --wax-deep:#C8563A;
-  --wax-soft:rgba(224,107,76,.14);
+  --wax:#C65B41;             /* сургуч ярче для контраста на тёмном */
+  --wax-deep:#A4432D;
+  --wax-soft:rgba(198,91,65,.14);
+  /* Для заливки кнопок сургуч чуть глубже: #FFFEF9 на #B8503A даёт 4,83
+     против 4,18 на основном. Акценты, рамки и цифры остаются на --wax. */
+  --wax-cta:#B8503A;
   --verify:#74BA90;
   --verify-soft:rgba(116,186,144,.14);
   --mark:#2C2A1D;

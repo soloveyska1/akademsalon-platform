@@ -347,7 +347,7 @@ html[data-motion="off"] .stamp-burst{display:none!important}
 .fl-tag{display:inline-block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
   border:1px solid var(--hairline-strong);border-radius:999px;padding:1px 7px;margin-left:4px;
   color:var(--ink-soft);vertical-align:1px;white-space:nowrap}
-.fl-tag.fl-new{background:var(--wax);border-color:var(--wax);color:#FFFEF9;font-weight:600}
+.fl-tag.fl-new{background:var(--wax-cta,var(--wax));border-color:var(--wax);color:#FFFEF9;font-weight:600}
 .ot-unread.ot-file{background:var(--stamp,#3A4E7A)}
 .fin-band{border-color:var(--wax);background:var(--wax-soft,rgba(168,64,47,.06));color:var(--ink)}
 .fin-band .pb-ic{filter:none}
@@ -388,7 +388,7 @@ html[data-motion="off"] .stamp-burst{display:none!important}
   color:var(--ink-soft);white-space:nowrap;vertical-align:1px;
 }
 .dl-chip.warn{color:var(--wax);border-color:var(--wax)}
-.dl-chip.late{color:#FFFEF9;background:var(--wax);border-color:var(--wax)}
+.dl-chip.late{color:#FFFEF9;background:var(--wax-cta,var(--wax));border-color:var(--wax)}
 
 /* ---------- Платёжный лист: реквизиты, которые видно ---------- */
 .payslip{
@@ -451,7 +451,7 @@ html[data-motion="off"] .stamp-burst{display:none!important}
 }
 .inv-sheet .inv-seal{
   position:absolute;right:16px;bottom:-13px;width:40px;height:40px;border-radius:50%;
-  background:var(--wax);color:#FFFEF9;display:flex;align-items:center;justify-content:center;
+  background:var(--wax-cta,var(--wax));color:#FFFEF9;display:flex;align-items:center;justify-content:center;
   font-family:var(--serif);font-size:13px;letter-spacing:.06em;transform:rotate(-7deg);
   box-shadow:0 4px 10px rgba(24,21,15,.28);
 }
@@ -757,7 +757,7 @@ html[data-motion="off"] .stamp-burst{display:none!important}
   .mnav .mn-link.is-help .mn-ic::after{
     content:"?";position:absolute;top:-7px;right:-9px;width:15px;height:15px;
     display:grid;place-items:center;border:2px solid var(--paper);border-radius:50%;
-    background:var(--wax);color:#fff;font:8px/1 var(--mono);
+    background:var(--wax-cta,var(--wax));color:#fff;font:8px/1 var(--mono);
   }
 }
 

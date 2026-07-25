@@ -44,5 +44,5 @@ test('pulse is responsive, keyboard-visible and motion-safe', () => {
   assert.match(adminHtml, /\.pw-metric:focus-visible/);
   assert.match(adminHtml, /\.pw-queue:focus-visible/);
   assert.match(adminHtml, /@media\(prefers-reduced-motion:reduce\)/);
-  assert.match(adminHtml, /assets\/js\/admin\.js\?v=20260725release1/);
+  assert.match(adminHtml, /assets\/js\/admin\.js\?v=20260725release13/);
 });

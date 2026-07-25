@@ -88,8 +88,7 @@
 .polish15-home .button:hover > span{ transform:translateX(3px); }
 .polish15-home .button--primary{
   color:#fffaf3;
-  background:var(--wax);
-  border-color:var(--wax);
+  background:var(--wax-cta,var(--wax));  border-color:var(--wax);
   box-shadow:0 10px 24px color-mix(in srgb,var(--wax) 20%,transparent);
 }
 .polish15-home .button--primary:hover{
@@ -819,6 +818,11 @@
   background:var(--paper-2);
   border-block:1px solid var(--line);
 }
+/* Сворачивание карты проверки — только на телефоне; на десктопе она
+   всегда раскрыта, поэтому переключатель не показываем. */
+@media (min-width:881px){
+  .polish15-home .document-reveal > summary{ display:none; }
+}
 .polish15-home .testimonial-section__grid{
   display:grid;
   grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);
@@ -1032,13 +1036,31 @@
     flex:0 0 auto;
     scroll-snap-align:start;
   }
-  .polish15-home .situation-grid{ grid-template-columns:1fr; }
+  /* Ряд ситуаций — лентой, а не стопкой: четыре карточки по 165px давали
+     660px вертикали. Приём тот же, что у карточек услуг ниже, и он разрешён
+     стандартом §5 для осмысленных рядов. Край следующей карточки виден
+     (82vw), поэтому жест понятен без подсказки. */
+  .polish15-home .situation-grid{
+    display:flex;
+    width:calc(100% + var(--gutter));
+    gap:12px;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    padding-right:var(--gutter);
+    scroll-padding-left:var(--gutter);
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+  }
+  .polish15-home .situation-grid::-webkit-scrollbar{ display:none; }
   .polish15-home .situation-card,
   .polish15-home .situation-card:nth-child(odd){
+    width:min(78vw,340px);
+    min-width:min(78vw,340px);
     grid-template-columns:30px minmax(0,1fr) 26px;
     min-height:122px;
-    padding:20px 4px;
+    padding:20px 16px;
     border-right:0;
+    scroll-snap-align:start;
   }
   .polish15-home .situation-card:hover{ padding-left:8px; }
   .polish15-home .situation-card__result{
@@ -1069,25 +1091,92 @@
   .polish15-home .service-card{
     width:min(82vw,370px);
     min-width:min(82vw,370px);
-    min-height:350px;
+    /* Карточка растёт по содержимому: жёсткие 350px держали пустоту у тех,
+       где описание короче. Нижний предел оставлен ради ровного ряда. */
+    min-height:290px;
     scroll-snap-align:start;
   }
-  .polish15-home .process-grid{ grid-template-columns:1fr; }
+  /* Порядок работы — лентой. Четыре шага стопкой стоили 672px вертикали,
+     а горизонтальный ряд ещё и честнее передаёт последовательность:
+     Материалы → Смета → Редактура → Приёмка читаются как шкала времени. */
+  .polish15-home .process-grid{
+    display:flex;
+    width:calc(100% + var(--gutter));
+    gap:12px;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    padding-right:var(--gutter);
+    scroll-padding-left:var(--gutter);
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+  }
+  .polish15-home .process-grid::-webkit-scrollbar{ display:none; }
   .polish15-home .process-grid li,
   .polish15-home .process-grid li + li{
+    width:min(70vw,300px);
+    min-width:min(70vw,300px);
     min-height:auto;
-    padding:22px 0;
+    padding:22px 16px 22px 0;
     border-top:0;
     border-left:0;
-    border-bottom:1px solid var(--line);
+    border-bottom:0;
+    scroll-snap-align:start;
   }
-  .polish15-home .process-grid h3{ margin-top:22px; }
-  .polish15-home .process-grid p{ font-size:13px; }
+  .polish15-home .process-grid h3{ margin-top:10px; }
+  /* 15px — норма основного текста на мобильном (§4). Было 13px, ниже порога. */
+  .polish15-home .process-grid p{ font-size:15px; }
   .polish15-home .home-library,
   .polish15-home .testimonial-section__grid,
   .polish15-home .calm-cta{
     grid-template-columns:1fr;
-    gap:34px;
+    gap:22px;
+  }
+  /* Карта редакторской проверки на телефоне сворачивается: 788px прокрутки
+     заменяются одним касанием. Функция сохраняется целиком — это тот же
+     документ, просто по требованию. На десктопе раскрыта всегда. */
+  .polish15-home .document-reveal > summary{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    min-height:52px;
+    padding:14px 16px;
+    border:1px solid var(--line-strong);
+    border-radius:4px;
+    background:var(--sheet);
+    color:var(--ink);
+    font:600 15px/1.3 var(--sans);
+    cursor:pointer;
+    list-style:none;
+  }
+  .polish15-home .document-reveal > summary::-webkit-details-marker{ display:none; }
+  .polish15-home .document-reveal > summary::after{
+    content:"+";
+    color:var(--wax);
+    font:400 20px/1 var(--sans);
+  }
+  .polish15-home .document-reveal[open] > summary::after{ content:"−"; }
+  .polish15-home .document-reveal[open] > summary{ margin-bottom:18px; }
+  /* Три материала библиотеки лентой: стопкой они стоили 343px вертикали. */
+  .polish15-home .home-library__articles{
+    display:flex;
+    width:calc(100% + var(--gutter));
+    gap:12px;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    padding-right:var(--gutter);
+    scroll-padding-left:var(--gutter);
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    border-top:0;
+  }
+  .polish15-home .home-library__articles::-webkit-scrollbar{ display:none; }
+  .polish15-home .home-library__articles a{
+    width:min(74vw,320px);
+    min-width:min(74vw,320px);
+    border-top:1px solid var(--line-strong);
+    border-bottom:0;
+    scroll-snap-align:start;
   }
   .polish15-home .testimonial-section__quote{ padding-left:40px; }
   .polish15-home .home-tools__grid{ grid-template-columns:1fr; }
@@ -1104,16 +1193,22 @@
 @media(max-width:560px){
   .polish15-home{
     --gutter:max(16px,env(safe-area-inset-left));
-    --section:58px;
-    padding-top:58px;
+    /* 48px — значение с контрольной шкалы отступов (§5: 8/12/16/24/32/48/64).
+       Прежние 58px в шкалу не входили и стоили по 20px на каждой из семи секций. */
+    --section:48px;
+    padding-top:48px;
   }
   .polish15-home .section-head h2{ font-size:34px; }
-  .polish15-home .eyebrow{ font-size:10px; }
+  /* 11px — нижняя граница служебного текста; 10px были ниже собственного порога. */
+  .polish15-home .eyebrow{ font-size:11px; }
   .polish15-home .home-hero__grid{
     padding-inline:max(16px,env(safe-area-inset-left));
   }
   .polish15-home .home-hero h1{
-    font-size:clamp(39px,11.8vw,50px);
+    /* Норма мобильного H1 по DESIGN-STANDARDS §4 — 36–46px; в эталоне на 430px
+       выходит 41px. Прежние clamp(39px,11.8vw,50px) упирались в потолок 50px
+       и съедали треть экрана. Теперь: 36px на узких, 41px на 430, 44px потолок. */
+    font-size:clamp(36px,9.6vw,44px);
   }
   .polish15-home .home-hero__lead{ font-size:15px; }
   .polish15-home .home-hero__actions{

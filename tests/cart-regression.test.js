@@ -9,6 +9,10 @@ const root = path.resolve(__dirname, '..');
 const cartSource = fs.readFileSync(path.join(root, 'assets/js/cart.js'), 'utf8');
 const configuratorSource = fs.readFileSync(path.join(root, 'configurator.html'), 'utf8');
 
+// Версию и срок годности берём из самого cart.js, чтобы тест не разъезжался с кодом.
+const CART_VERSION = Number(cartSource.match(/var VERSION = (\d+);/)[1]);
+const CART_MAX_AGE_MS = Function(`return ${cartSource.match(/var MAX_AGE_MS = ([^;]+);/)[1]}`)();
+
 function makeHarness() {
   const saved = new Map();
   const store = {
@@ -60,12 +64,12 @@ function makeHarness() {
   return { api: window.__SalonCartTest, store, saved, S, toasts, window };
 }
 
-function blank(items = []) {
+function blank(items = [], updatedAt = Date.now()) {
   return {
-    version: 1,
+    version: CART_VERSION,
     items,
     checkout: { useBonus: false, bonusAmount: 0 },
-    updatedAt: 0
+    updatedAt
   };
 }
 
@@ -211,4 +215,44 @@ test('комплексный submit строится только из SalonCart
     configuratorSource,
     /payload\.deadline = cartItems\.length === 1 \? \(cartFirst\.deadline \|\| ''\) : '';/
   );
+});
+
+/* Регрессия 25.07.2026 — «невидимая корзина подменяла заявку».
+   Редизайн убрал из конфигуратора все точки входа в корзину, а submit()
+   в configurator.html перезаписывает корзиной type/topic/term/details уже
+   заполненной заявки. Клиент не мог ни открыть, ни очистить такой черновик.
+   Обе проверки ниже стерегут, что незримый черновик не доживёт до отправки. */
+
+test('корзина, собранная до редизайна (прошлая версия), при чтении отбрасывается', () => {
+  const h = makeHarness();
+  const stale = blank([work('w1', 'Диплом')]);
+  stale.version = CART_VERSION - 1;
+  h.store.set('salon_cart_v1', stale);
+
+  h.api.reset(blank(), { S: h.S });
+  h.api.read();
+
+  assert.equal(h.api.state().items.length, 0, 'старая корзина не должна восстанавливаться');
+});
+
+test('просроченный черновик корзины отбрасывается и стирается из хранилища', () => {
+  const h = makeHarness();
+  const old = Date.now() - CART_MAX_AGE_MS - 60_000;
+  h.store.set('salon_cart_v1', blank([work('w1', 'Диплом')], old));
+
+  h.api.reset(blank(), { S: h.S });
+  h.api.read();
+
+  assert.equal(h.api.state().items.length, 0, 'просроченная корзина не должна восстанавливаться');
+  assert.equal(h.store.get('salon_cart_v1', null), null, 'просроченная корзина должна быть стёрта');
+});
+
+test('свежая корзина текущей версии по-прежнему восстанавливается', () => {
+  const h = makeHarness();
+  h.store.set('salon_cart_v1', blank([work('w1', 'Диплом')], Date.now()));
+
+  h.api.reset(blank(), { S: h.S });
+  h.api.read();
+
+  assert.equal(h.api.state().items.length, 1);
 });

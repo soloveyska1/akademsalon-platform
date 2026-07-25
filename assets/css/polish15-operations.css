@@ -11,8 +11,8 @@ body.p15-operations {
   --op-quiet: #979083;
   --op-line: #d9cebc;
   --op-line-strong: #c3b59f;
-  --op-wax: #bd452d;
-  --op-wax-deep: #9d3522;
+  --op-wax: #a63f29;
+  --op-wax-deep: #792b1d;
   --op-wax-soft: #f2ddd5;
   --op-green: #476c56;
   --op-green-soft: #e2ece4;
@@ -895,24 +895,9 @@ body.p15-system.p15-standalone .system-page {
 .p15-operations .story-shell .button--text { color: #aaa296; }
 
 /* Consent system — same sheet language as the approved concept. */
-body.p15-operations .cookiebar {
-  right: clamp(14px, 2vw, 28px);
-  bottom: clamp(14px, 2vw, 28px);
-  left: auto;
-  width: min(430px, calc(100vw - 28px));
-  padding: 22px;
-  color: var(--op-text);
-  background: color-mix(in srgb, var(--op-sheet) 96%, transparent);
-  border: 1px solid var(--op-line);
-  border-radius: 8px;
-  box-shadow: 0 24px 70px rgba(44, 35, 23, .18);
-  backdrop-filter: blur(18px);
-}
-body.p15-operations .cookiebar h2 { color: var(--op-ink); font-size: 22px; }
-body.p15-operations .cookiebar > p { color: var(--op-muted); }
-body.p15-operations .cookiebar .btn-wax { color: #fffaf3; background: var(--op-wax); border-color: var(--op-wax); }
-body.p15-operations .cookiebar .btn-line,
-body.p15-operations .cookiebar .cb-more { color: var(--op-ink); background: transparent; border-color: var(--op-line); }
+/* Частная версия плашки согласия удалена: она действовала только на 16
+   страницах из 92, из-за чего клиент видел две разные плашки и та прыгала
+   с левого края на правый. Общая версия теперь одна — в polish15-chrome.css. */
 body.p15-operations .cookieprefs .cp-card {
   color: var(--op-text);
   background: var(--op-sheet);
@@ -1022,7 +1007,9 @@ body.p15-operations .cookieprefs .cp-card {
   .p15-operations .tool-guidance { gap: 26px; padding: 28px 20px; }
   .p15-operations .tool-guidance__grid { grid-template-columns: 1fr; }
   .p15-operations .tool-guidance__grid > section + section { border-top: 1px solid var(--op-line); border-left: 0; }
-  body.p15-operations .cookiebar { right: 10px; bottom: 86px; width: calc(100vw - 20px); }
+  /* Мобильная посадка плашки согласия тоже переехала в общий слой.
+     Прежний bottom:86px обходил док — теперь док на время выбора прячется,
+     и плашка садится у нижнего края, как на остальных 76 страницах. */
 }
 
 @media (prefers-reduced-motion: reduce) {

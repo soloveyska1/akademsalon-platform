@@ -1,0 +1,1170 @@
+/* ============================================================
+   АКАДЕМИЧЕСКИЙ САЛОН — ХРОМ «Оттиск-15»: два диалога
+   Перенос из эталона style-lab/full/style.css на токены сайта.
+
+   ЧТО ЗДЕСЬ: общий механизм модального оверлея (<dialog>),
+   диалог навигации («Все разделы») и диалог поиска по сайту.
+
+   ЧТО ЗАМЕНЯЕТ: старое полноэкранное «Оглавление» — блок .toc
+   из assets/css/chrome.css (строки ~261–338 и мобильные хвосты).
+   Пока файл никуда не подключён; старый .toc продолжает работать
+   до момента переключения разметки.
+
+   Подключать ПОСЛЕ styles.css и chrome.css: здесь используются
+   их токены (--paper/--sheet/--ink/--hairline/--wax/--mark)
+   и motion-язык (--ease-paper/--ease-exit). Все значения,
+   которых в проде нет, объявлены локально на .overlay.
+   ============================================================ */
+
+
+/* ============================================================
+   0. ЛОКАЛЬНЫЕ ПЕРЕМЕННЫЕ ОВЕРЛЕЯ
+   В :root ничего не добавляем — область видимости только
+   внутри диалогов, чтобы файл нельзя было «зацепить» случайно.
+   ============================================================ */
+.overlay{
+  /* Тайминги по DESIGN-SYSTEM → Motion:
+     смена состояния 160–180мс, шторка 240–320мс. */
+  --ov-state:170ms;
+  --ov-sheet:280ms;
+  --ov-ease:var(--ease-paper,cubic-bezier(.22,1,.36,1));
+  --ov-ease-exit:var(--ease-exit,cubic-bezier(.4,0,1,1));
+
+  /* Тень «стопкой бумаги»: в тёмной теме её не видно,
+     поэтому у панелей есть ещё и волосяная рамка. */
+  --ov-shadow:-30px 0 90px rgba(34,32,27,.18);
+  --ov-shadow-float:0 24px 64px rgba(34,32,27,.20);
+
+  /* Текст на сургуче. Токена нет: в проде это литерал #FFFEF9
+     (styles.css → .btn-wax). var(--sheet) сюда нельзя —
+     в тёмной теме он тёмный и контраст ломается. */
+  --ov-on-wax:#FFFEF9;
+}
+:root[data-theme="dark"] .overlay{
+  --ov-shadow:-30px 0 90px rgba(0,0,0,.55);
+  --ov-shadow-float:0 24px 64px rgba(0,0,0,.55);
+}
+
+
+/* ============================================================
+   1. ОБЩИЙ МЕХАНИЗМ ОВЕРЛЕЯ
+   ============================================================ */
+
+/* Замок прокрутки фона. В эталоне это body.has-dialog;
+   polish15-chrome.js вешает класс на <html>. Если правило
+   заведётся где-то ещё — эти три строки можно снять. */
+:root.has-p15-dialog,
+:root.has-p15-dialog body{
+  overflow:hidden;
+}
+
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index:240;              /* как .contact-sheet: работает и без showModal() */
+  width:100%;
+  max-width:none;
+  height:100%;
+  max-height:none;
+  margin:0;                 /* у <dialog> в UA-стилях margin:auto */
+  padding:0;
+  color:var(--ink);
+  background:transparent;
+  border:0;
+  overscroll-behavior:contain;
+}
+
+/* Шторка. Токена-скрима в проекте нет — берём значения
+   из .contact-sheet .cs-backdrop (chrome.css).
+   Цвет задан литералом дважды, а не переменной: наследование
+   custom properties в ::backdrop появилось только в свежих
+   движках, а шторка должна работать везде. */
+.overlay::backdrop{
+  background:rgba(20,18,14,.5);
+  -webkit-backdrop-filter:blur(6px);
+  backdrop-filter:blur(6px);
+  animation:ov-backdrop-in 280ms ease both;
+}
+:root[data-theme="dark"] .overlay::backdrop{
+  background:rgba(0,0,0,.62);
+}
+
+@keyframes ov-backdrop-in{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+/* Панель: выезжает справа, как ящик картотеки. */
+.overlay__panel{
+  position:absolute;
+  inset:0 0 0 auto;
+  width:min(100%,940px);
+  height:100%;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:clamp(26px,3.6vw,48px);
+  background:var(--paper);
+  border-left:1px solid var(--hairline);
+  box-shadow:var(--ov-shadow);
+  animation:ov-panel-in var(--ov-sheet) var(--ov-ease) both;
+}
+
+@keyframes ov-panel-in{
+  from{opacity:.6;transform:translateX(40px)}
+  to{opacity:1;transform:none}
+}
+
+.overlay__header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:clamp(18px,3vw,30px);
+  padding-bottom:22px;
+  border-bottom:1px solid var(--hairline);
+}
+.overlay__header h2{
+  margin-top:6px;
+  font-family:var(--serif);
+  font-size:clamp(28px,3.6vw,44px);
+  font-weight:400;
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--ink);
+}
+/* Надзаголовок диалога — в проекте класса .eyebrow нет,
+   поэтому объявляем его строго внутри шапки оверлея
+   и по мерке .toc-kicker. */
+.overlay__header .eyebrow{
+  display:block;
+  margin-bottom:6px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+}
+.overlay__header p{
+  margin-top:8px;
+  font-size:14px;
+  color:var(--ink-soft);
+}
+
+/* Крестик. В эталоне это .icon-button--close — держим оба имени,
+   чтобы разметку можно было завести любой. Мерки от .toc-close.
+   Селектор не привязан к шапке: в диалоге поиска крестик живёт
+   в .search-head. */
+.overlay__close,
+.overlay .icon-button--close{
+  display:grid;
+  place-items:center;
+  flex:0 0 46px;
+  width:46px;
+  height:46px;
+  padding:0;
+  color:var(--ink-soft);
+  background:var(--sheet);
+  border:1px solid var(--hairline-strong);
+  border-radius:50%;
+  font:400 24px/1 var(--serif);
+  cursor:pointer;
+  transition:color var(--ov-state) ease,border-color var(--ov-state) ease,transform var(--ov-state) var(--ov-ease);
+}
+.overlay__close:hover,
+.overlay .icon-button--close:hover{
+  color:var(--wax);
+  border-color:var(--wax);
+  transform:rotate(8deg);
+}
+
+.overlay__footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  padding-top:22px;
+  border-top:1px solid var(--hairline);
+}
+
+
+/* ============================================================
+   2. ДИАЛОГ НАВИГАЦИИ — .overlay--menu
+   ============================================================ */
+.overlay--menu .overlay__panel{
+  background:var(--paper);
+}
+
+.menu-layout{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:clamp(30px,4vw,50px);
+  padding-block:34px;
+}
+
+.menu-layout__primary{
+  border-top:1px solid var(--hairline-strong);
+}
+
+/* Строка раздела. Работает и на голом <a>, и на <a class="menu-link">. */
+.menu-layout__primary :is(a,.menu-link),
+.menu-link{
+  display:grid;
+  grid-template-columns:32px 1fr auto;
+  grid-template-rows:auto auto;
+  gap:3px 15px;
+  align-items:center;
+  min-height:88px;
+  padding:14px 4px;
+  color:var(--ink);
+  border-bottom:1px solid var(--hairline);
+  transition:padding var(--ov-state) var(--ov-ease),background-color var(--ov-state) ease;
+}
+.menu-layout__primary :is(a,.menu-link):hover,
+.menu-link:hover{
+  padding-inline:12px;
+  background:var(--sheet);
+}
+/* Порядковый номер раздела */
+.menu-layout__primary :is(a,.menu-link) > span,
+.menu-link > span{
+  grid-row:1 / 3;
+  color:var(--wax);
+  font:500 11px/1 var(--mono);
+  letter-spacing:.1em;
+  font-variant-numeric:tabular-nums;
+}
+.menu-layout__primary :is(a,.menu-link) strong,
+.menu-link strong{
+  color:var(--ink);
+  font:400 25px/1.2 var(--serif);
+  letter-spacing:-.015em;
+}
+.menu-layout__primary :is(a,.menu-link) small,
+.menu-link small{
+  grid-column:2;
+  color:var(--ink-soft);
+  font-size:12.5px;
+  line-height:1.4;
+}
+.menu-layout__primary :is(a,.menu-link)[aria-current="page"] strong,
+.menu-link[aria-current="page"] strong{
+  color:var(--wax);
+}
+
+.menu-layout__secondary{
+  display:grid;
+  align-content:start;
+  gap:28px;
+}
+.menu-layout__secondary section{
+  display:grid;
+  gap:4px;
+}
+.menu-layout__secondary h3{
+  margin-bottom:4px;
+  color:var(--ink-faint);
+  font:500 10.5px/1.2 var(--mono);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.menu-layout__secondary a{
+  display:flex;
+  align-items:center;
+  min-height:36px;
+  color:var(--ink-soft);
+  font-size:13.5px;
+  transition:color var(--ov-state) ease;
+}
+.menu-layout__secondary a:hover{
+  color:var(--wax);
+}
+
+/* Выбор темы */
+.theme-choice{
+  display:flex;
+  min-width:min(100%,390px);
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+.theme-choice > span{
+  display:grid;
+  gap:2px;
+}
+.theme-choice strong{
+  color:var(--ink);
+  font-size:15px;
+  font-weight:500;
+}
+.theme-choice small{
+  color:var(--ink-soft);
+  font-size:12.5px;
+  line-height:1.4;
+}
+.theme-choice > div{
+  display:flex;
+  flex:0 0 auto;
+  padding:3px;
+  background:var(--paper-2);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+}
+.theme-choice button{
+  min-height:44px;           /* цель касания по DESIGN-SYSTEM → Mobile */
+  padding:8px 16px;
+  color:var(--ink-soft);
+  background:transparent;
+  border:0;
+  border-radius:999px;
+  font-family:var(--sans);
+  font-size:13.5px;
+  font-weight:500;
+  cursor:pointer;
+  transition:color var(--ov-state) ease,background-color var(--ov-state) ease;
+}
+.theme-choice button:hover{
+  color:var(--ink);
+}
+/* Активная тема: чернильная плашка. Работает в обеих темах —
+   в тёмной --ink светлый, --sheet тёмный, инверсия сохраняется. */
+.theme-choice button.is-current,
+.theme-choice button[aria-pressed="true"]{
+  color:var(--sheet);
+  background:var(--ink);
+}
+
+
+/* ============================================================
+   3. ДИАЛОГ ПОИСКА — .overlay--search
+   ============================================================ */
+.overlay--search .overlay__panel{
+  display:flex;
+  flex-direction:column;
+  inset:50% auto auto 50%;
+  width:min(calc(100% - 32px),760px);
+  height:auto;
+  max-height:80vh;
+  max-height:min(80dvh,720px);
+  padding:0;
+  overflow:hidden;
+  background:var(--sheet);
+  border:1px solid var(--hairline);
+  border-radius:6px;
+  box-shadow:var(--ov-shadow-float);
+  transform:translate(-50%,-50%);
+  animation:ov-search-in 240ms var(--ov-ease) both;
+}
+
+@keyframes ov-search-in{
+  from{opacity:0;transform:translate(-50%,calc(-50% + 14px)) scale(.98)}
+  to{opacity:1;transform:translate(-50%,-50%) scale(1)}
+}
+
+.search-head{
+  display:grid;
+  flex:0 0 auto;
+  grid-template-columns:38px minmax(0,1fr) 46px;
+  gap:12px;
+  align-items:center;
+  padding:14px 16px;
+  border-bottom:1px solid var(--hairline);
+}
+.search-head > img{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+}
+/* .search-field — имя поля из ТЗ; в эталоне это просто input */
+.search-head input,
+.search-head .search-field{
+  width:100%;
+  height:52px;
+  color:var(--ink);
+  background:transparent;
+  border:0;
+  outline:0;
+  font:400 20px/1.2 var(--serif);
+}
+.search-head input::placeholder,
+.search-head .search-field::placeholder{
+  color:var(--ink-faint);
+}
+/* Родная крестовина iOS/Chrome в поле type=search мешает макету */
+.search-head input::-webkit-search-decoration,
+.search-head input::-webkit-search-cancel-button{
+  -webkit-appearance:none;
+  appearance:none;
+}
+.search-head .overlay__close,
+.search-head .icon-button--close{
+  justify-self:end;
+}
+
+/* Подсказки: полоса «бумаги» на листе поиска */
+:is(.search-suggest,.search-suggestions){
+  display:flex;
+  flex:0 0 auto;
+  flex-wrap:wrap;
+  gap:7px;
+  align-items:center;
+  padding:11px 16px;
+  background:var(--paper);
+  border-bottom:1px solid var(--hairline);
+}
+:is(.search-suggest,.search-suggestions) > span{
+  color:var(--ink-faint);
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+:is(.search-suggest,.search-suggestions) button{
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
+  padding:8px 14px;
+  color:var(--ink-soft);
+  background:var(--sheet);
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  font-family:var(--sans);
+  font-size:13px;
+  cursor:pointer;
+  transition:color var(--ov-state) ease,border-color var(--ov-state) ease,background-color var(--ov-state) ease;
+}
+:is(.search-suggest,.search-suggestions) button:hover{
+  color:var(--ink);
+  background:var(--mark);
+  border-color:var(--hairline-strong);
+}
+
+/* Результаты */
+.search-results{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:8px;
+}
+.search-results > :is(button,.search-result){
+  display:grid;
+  width:100%;
+  grid-template-columns:96px minmax(0,1fr) 22px;
+  gap:13px;
+  align-items:center;
+  min-height:64px;
+  padding:10px;
+  color:var(--ink);
+  background:transparent;
+  border:0;
+  border-radius:var(--r);
+  font-family:var(--sans);
+  text-align:left;
+  cursor:pointer;
+  transition:background-color var(--ov-state) ease;
+}
+/* Каретка списка: .is-current вешает polish15-chrome.js,
+   .is-selected — имя из эталона, aria-selected — с клавиатуры. */
+.search-results > :is(button,.search-result):hover,
+.search-results > :is(button,.search-result).is-current,
+.search-results > :is(button,.search-result).is-selected,
+.search-results > :is(button,.search-result)[aria-selected="true"]{
+  background:var(--mark);
+}
+.search-results > :is(button,.search-result) > span:nth-child(2){
+  display:grid;
+  gap:3px;
+}
+.search-results strong{
+  color:var(--ink);
+  font-size:16px;
+  font-weight:500;
+}
+.search-results small{
+  color:var(--ink-soft);
+  font-size:12.5px;
+  line-height:1.4;
+}
+/* Стрелка-указка в конце строки */
+.search-results b{
+  color:var(--hairline-strong);
+  font:400 20px/1 var(--serif);
+  text-align:right;
+}
+/* Подсветка совпадения */
+.search-results mark{
+  color:inherit;
+  background:var(--mark);
+  box-shadow:0 1px 0 var(--hairline-strong);
+}
+
+/* Пусто */
+.search-empty{
+  display:grid;
+  place-items:center;
+  padding:44px 20px;
+  text-align:center;
+}
+.search-empty strong{
+  color:var(--ink);
+  font:400 25px/1.2 var(--serif);
+}
+.search-empty p{
+  max-width:44ch;
+  margin-top:8px;
+  color:var(--ink-soft);
+  font-size:14.5px;
+  line-height:1.55;
+}
+.search-empty button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  margin-top:16px;
+  padding:13px 24px;
+  color:var(--ov-on-wax);
+  background:var(--wax);
+  border:0;
+  border-radius:var(--r);
+  font-family:var(--sans);
+  font-size:15px;
+  font-weight:500;
+  cursor:pointer;
+  transition:background-color var(--ov-state) ease;
+}
+.search-empty button:hover{
+  background:var(--wax-deep);
+}
+
+/* Подвал с клавишами */
+.search-footer{
+  display:flex;
+  flex:0 0 auto;
+  flex-wrap:wrap;
+  gap:16px;
+  padding:10px 16px;
+  color:var(--ink-soft);
+  background:var(--paper);
+  border-top:1px solid var(--hairline);
+  font-size:12px;
+}
+.search-footer span{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.search-footer kbd{
+  display:grid;
+  min-width:22px;
+  height:22px;
+  place-items:center;
+  padding:0 5px;
+  color:var(--ink-soft);
+  background:var(--sheet);
+  border:1px solid var(--hairline);
+  border-bottom-color:var(--hairline-strong);
+  border-radius:3px;
+  font:500 11px/1 var(--mono);
+}
+
+
+/* ============================================================
+   4. ЗАКРЫТИЕ — .is-closing вешает JS перед dialog.close()
+   Тайминги «смена состояния»: 160–180мс.
+   ============================================================ */
+.overlay.is-closing::backdrop{
+  animation:ov-backdrop-out 170ms ease both;
+}
+.overlay.is-closing .overlay__panel{
+  animation:ov-panel-out 170ms var(--ov-ease-exit) both;
+}
+.overlay--search.is-closing .overlay__panel{
+  animation:ov-search-out 170ms var(--ov-ease-exit) both;
+}
+
+@keyframes ov-backdrop-out{
+  to{opacity:0}
+}
+@keyframes ov-panel-out{
+  to{opacity:0;transform:translateX(28px)}
+}
+@keyframes ov-search-out{
+  to{opacity:0;transform:translate(-50%,calc(-50% + 9px)) scale(.985)}
+}
+
+
+/* ============================================================
+   5. МОБИЛЬНАЯ РЕДАКЦИЯ
+   Брейкпоинт 880px — общий для проекта (mobile.css/chrome.css).
+   Проверочные ширины: 430px и 1440px.
+   ============================================================ */
+@media screen and (max-width:880px){
+  .overlay__panel{
+    width:100%;
+    border-left:0;
+  }
+
+  /* Меню на телефоне: шапка → выбор темы и CTA → список разделов.
+     Порядок меняется, а не просто число колонок (DESIGN-SYSTEM → Mobile). */
+  .overlay--menu .overlay__panel{
+    display:grid;
+    grid-template-rows:auto auto 1fr;
+    align-content:start;
+    padding:calc(20px + env(safe-area-inset-top))
+            max(var(--mobile-gutter,18px),env(safe-area-inset-right))
+            calc(22px + env(safe-area-inset-bottom))
+            max(var(--mobile-gutter,18px),env(safe-area-inset-left));
+  }
+  .overlay--menu .overlay__header{
+    position:sticky;
+    z-index:5;
+    top:0;
+    grid-row:1;
+    padding-bottom:14px;
+    background:color-mix(in srgb,var(--paper) 94%,transparent);
+    -webkit-backdrop-filter:blur(14px);
+    backdrop-filter:blur(14px);
+  }
+  /* Меню открывают, чтобы перейти в раздел, — значит разделы идут первыми,
+     а тема и главная кнопка остаются в конце, как на десктопе. */
+  .overlay--menu .menu-layout{
+    grid-row:2;
+  }
+  .overlay--menu .overlay__footer{
+    grid-row:3;
+    padding-block:16px;
+    border-top:1px solid var(--hairline);
+  }
+
+  .overlay__header h2{
+    font-size:26px;
+  }
+  .overlay__header p{
+    display:none;
+  }
+  .overlay__close,
+  .overlay .icon-button--close{
+    flex-basis:44px;
+    width:44px;
+    height:44px;
+  }
+
+  .menu-layout{
+    grid-template-columns:1fr;
+    gap:26px;
+    padding-block:20px;
+  }
+  .menu-layout__primary :is(a,.menu-link),
+  .menu-link{
+    min-height:72px;
+  }
+  .menu-layout__primary :is(a,.menu-link) strong,
+  .menu-link strong{
+    font-size:22px;
+  }
+  .menu-layout__primary :is(a,.menu-link) small,
+  .menu-link small{
+    font-size:12px;
+  }
+
+  .menu-layout__secondary{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:22px;
+  }
+  .menu-layout__secondary a{
+    min-height:44px;
+    font-size:13px;
+  }
+
+  .overlay__footer{
+    align-items:stretch;
+    flex-direction:column;
+    gap:14px;
+  }
+  .theme-choice{
+    width:100%;
+    align-items:stretch;
+    flex-direction:column;
+    gap:10px;
+  }
+  .theme-choice > div{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+  }
+  .theme-choice button{
+    min-height:48px;
+  }
+  /* Основное действие подвала — 52–56px по DESIGN-SYSTEM */
+  .overlay__footer .btn{
+    width:100%;
+    min-height:52px;
+  }
+
+  /* Поиск: лист во весь экран, но с полями и safe area */
+  .overlay--search .overlay__panel{
+    inset:auto auto 0 50%;
+    width:calc(100% - 16px);
+    max-height:calc(100dvh - 16px);
+    margin-bottom:max(8px,env(safe-area-inset-bottom));
+    border-radius:6px;
+    transform:translateX(-50%);
+    animation-name:ov-search-in-mobile;
+  }
+  .overlay--search.is-closing .overlay__panel{
+    animation-name:ov-search-out-mobile;
+  }
+  @keyframes ov-search-in-mobile{
+    from{opacity:0;transform:translate(-50%,14px)}
+    to{opacity:1;transform:translateX(-50%)}
+  }
+  @keyframes ov-search-out-mobile{
+    to{opacity:0;transform:translate(-50%,9px)}
+  }
+
+  .search-head{
+    grid-template-columns:32px minmax(0,1fr) 44px;
+    gap:10px;
+    padding:12px;
+  }
+  .search-head > img{
+    width:32px;
+    height:32px;
+  }
+  .search-head input,
+  .search-head .search-field{
+    height:48px;
+    font-size:17px;      /* < 16px iOS зумит поле при фокусе */
+  }
+  :is(.search-suggest,.search-suggestions){
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+  }
+  :is(.search-suggest,.search-suggestions)::-webkit-scrollbar{
+    display:none;
+  }
+  :is(.search-suggest,.search-suggestions) button{
+    flex:0 0 auto;
+  }
+  .search-results > :is(button,.search-result){
+    grid-template-columns:82px minmax(0,1fr) 18px;
+    min-height:72px;
+  }
+}
+
+/* Узкий телефон: 430px и уже */
+@media screen and (max-width:480px){
+  .menu-layout__secondary{
+    grid-template-columns:1fr;
+  }
+  /* Раздел работы прячем: заголовок строки и так его называет */
+  .search-results > :is(button,.search-result){
+    grid-template-columns:minmax(0,1fr) 18px;
+  }
+  .search-results > :is(button,.search-result) > .tag,
+  .search-results > :is(button,.search-result) > .search-result__tag{
+    display:none;
+  }
+  .search-footer{
+    display:none;
+  }
+}
+
+
+/* ============================================================
+   6. REDUCED MOTION
+   Селекторы повторены один-в-один и стоят ниже по файлу,
+   поэтому выигрывают по порядку без !important (правило 9).
+   ============================================================ */
+@media (prefers-reduced-motion:reduce){
+  .overlay::backdrop,
+  .overlay.is-closing::backdrop{
+    animation:none;
+  }
+  .overlay__panel,
+  .overlay--search .overlay__panel,
+  .overlay.is-closing .overlay__panel,
+  .overlay--search.is-closing .overlay__panel{
+    animation:none;
+  }
+  .overlay__close,
+  .overlay .icon-button--close,
+  .overlay__close:hover,
+  .overlay .icon-button--close:hover{
+    transition:none;
+    transform:none;
+  }
+  .menu-layout__primary :is(a,.menu-link),
+  .menu-link,
+  .menu-layout__secondary a,
+  .theme-choice button,
+  :is(.search-suggest,.search-suggestions) button,
+  .search-results > :is(button,.search-result),
+  .search-empty button{
+    transition:none;
+  }
+  /* Сдвиг строки меню на ховере — тоже движение */
+  .menu-layout__primary :is(a,.menu-link):hover,
+  .menu-link:hover{
+    padding-inline:4px;
+  }
+}
+
+
+/* ============================================================
+   7. ПЕЧАТЬ
+   ============================================================ */
+@media print{
+  .overlay{
+    display:none;
+  }
+}
+
+/* ============================================================
+   ПЛАШКА СОГЛАСИЯ И СИСТЕМНЫЕ УВЕДОМЛЕНИЯ — единый слой polish15
+
+   Заменяет две расходившиеся версии: старую из assets/css/extras.css
+   (сургучная рамка слева, оттиск «¶», кикер 9px, выезд у левого края)
+   и частную body.p15-operations, действовавшую лишь на 16 страницах.
+   Теперь плашка одна и одинаковая на всех страницах.
+   ============================================================ */
+
+body .cookiebar{
+  right:clamp(14px,2vw,28px);
+  bottom:clamp(14px,2vw,28px);
+  left:auto;
+  width:min(420px,calc(100vw - 28px));
+  padding:22px;
+  color:var(--ink);
+  /* Ни градиента, ни сургучной полосы слева: в новом языке таких меток нет. */
+  background:var(--sheet);
+  border:1px solid var(--hairline);
+  border-left:1px solid var(--hairline);
+  border-radius:8px;
+  box-shadow:0 24px 70px rgba(44,35,23,.18);
+}
+:root[data-theme="dark"] body .cookiebar{
+  background:var(--sheet);
+  border-color:var(--hairline-strong);
+  box-shadow:0 26px 70px rgba(0,0,0,.44);
+}
+/* Круглый оттиск «¶» — приём прежнего «Оттиска», в макете его нет. */
+body .cookiebar .cb-mark{ display:none; }
+body .cookiebar .cb-head{
+  display:block;
+  margin-bottom:10px;
+}
+body .cookiebar .cb-kicker{
+  display:block;
+  margin-bottom:6px;
+  color:var(--ink-faint);
+  /* 11px — нижняя граница служебного текста (§4). Было 9px. */
+  font:600 11px/1.35 var(--mono);
+  letter-spacing:.12em;
+}
+body .cookiebar h2{
+  margin:0;
+  color:var(--ink);
+  font:430 21px/1.15 var(--serif);
+  letter-spacing:-.02em;
+}
+body .cookiebar > p{
+  margin:0 0 16px;
+  color:var(--ink-soft);
+  font-size:14px;
+  line-height:1.55;
+}
+body .cookiebar .cb-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+body .cookiebar .cb-actions .btn{
+  width:100%;
+  /* Цель касания по §7 — не меньше 44px. */
+  min-height:46px;
+  padding:10px 12px;
+  border-radius:7px;
+  font-size:13.5px;
+  line-height:1.25;
+}
+body .cookiebar .cb-actions .btn-ink,
+body .cookiebar .cb-actions .btn-wax{
+  color:#FFFEF9;
+  /* --wax-cta, а не --wax: на тёмной теме светлый текст на основном сургуче
+     давал 4,18 при норме AA 4,5. Акценты и рамки живут на --wax. */
+  background:var(--wax-cta,var(--wax));
+  border:1px solid var(--wax-cta,var(--wax));
+}
+body .cookiebar .cb-actions .btn-line{
+  color:var(--ink);
+  background:transparent;
+  border:1px solid var(--hairline-strong);
+}
+body .cookiebar .cb-foot{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:14px;
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--hairline);
+}
+body .cookiebar .cb-more{
+  padding:0 0 2px;
+  color:var(--ink-soft);
+  border:0;
+  border-bottom:1px solid var(--hairline-strong);
+  background:none;
+  font:400 12px/1.3 var(--sans);
+  cursor:pointer;
+}
+body .cookiebar .cb-more:hover{ color:var(--wax); border-color:var(--wax); }
+body .cookiebar .cb-foot > span{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-left:auto;
+  color:var(--ink-faint);
+  /* 11px вместо 8px — тот же порог служебного текста. */
+  font:500 11px/1.2 var(--mono);
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+@media screen and (max-width:880px){
+  body .cookiebar{
+    right:12px;
+    bottom:calc(12px + env(safe-area-inset-bottom));
+    left:12px;
+    width:auto;
+    padding:18px;
+  }
+  body .cookiebar .cb-actions .btn{ min-height:52px; }
+  body .cookiebar .cb-foot > span{ margin-left:0; }
+}
+
+/* ============================================================
+   УВЕДОМЛЕНИЯ «ПОМЕТКА НА ПОЛЯХ»
+
+   Всё на токенах, поэтому карточка светлая в светлой теме и тёмная
+   в тёмной — как остальной интерфейс. Раньше здесь были жёсткие
+   тёмные литералы: на светлой странице карточка читалась чужой.
+
+   Снято от прежнего «Оттиска»: наклон листа ±0.35°, сургучная печать
+   под углом и рамка 3px слева.
+
+   НЕ ТРОГАЕМ анимацию отточия .mn-lead: на её animationend висит
+   автозакрытие, это таймер, а не украшение.
+   ============================================================ */
+
+body .mnote{
+  color:var(--ink);
+  background:var(--sheet);
+  border:1px solid var(--hairline-strong);
+  --tilt:0deg;
+  border-radius:8px;
+  box-shadow:0 18px 44px rgba(34,32,27,.18);
+}
+:root[data-theme="dark"] body .mnote{
+  box-shadow:0 20px 48px rgba(0,0,0,.42);
+}
+body .mnote:nth-of-type(2n){ --tilt:0deg; }
+
+/* Полоса состояния слева — на токенах палитры. */
+body .mnote.is-wax{ border-left:3px solid var(--wax); }
+body .mnote.is-verify{ border-left:3px solid var(--verify); }
+body .mnote.is-stamp{ border-left:3px solid var(--hairline-strong); }
+
+body .mnote .mn-ic{ color:var(--ink-faint); }
+body .mnote .mn-msg{ color:var(--ink); font-size:14px; }
+body .mnote .mn-t{ color:var(--ink); }
+body .mnote .mn-sub{ color:var(--ink-soft); }
+body .mnote .mn-cap{ color:var(--ink-faint); }
+
+/* Сургучная печать под углом — приём старого языка. Оставляем плоский знак. */
+body .mnote .mn-seal{
+  flex:0 0 30px;
+  height:30px;
+  color:var(--wax);
+  background:var(--wax-soft);
+  border:1px solid transparent;
+  border-radius:50%;
+  font-size:15px;
+  transform:none;
+}
+body .mnote.is-verify .mn-seal{ color:var(--verify); background:var(--verify-soft); }
+
+body .mnote .mn-lead i{
+  background-image:radial-gradient(circle,var(--hairline-strong) 1px,transparent 1.4px);
+}
+
+body .mnote .mn-do{ color:var(--wax); text-decoration-color:var(--hairline-strong); }
+body .mnote .mn-do:hover{ color:var(--wax-deep); text-decoration-color:var(--wax); }
+body .mnote .mn-x{ color:var(--ink-soft); }
+body .mnote .mn-x:hover{ color:var(--ink); background:var(--mark); }
+body .mnote .mn-later{ color:var(--ink-soft); }
+
+/* Тосты читалки и базы знаний были жёстко тёмными — сводим к тем же токенам. */
+body .reading-toast,
+body .guide-toast{
+  color:var(--ink);
+  background:var(--sheet);
+  border:1px solid var(--hairline-strong);
+  border-radius:8px;
+  box-shadow:0 18px 44px rgba(34,32,27,.18);
+}
+:root[data-theme="dark"] body .reading-toast,
+:root[data-theme="dark"] body .guide-toast{
+  box-shadow:0 20px 48px rgba(0,0,0,.42);
+}
+
+/* ============================================================
+   ШАПКА: одна мера для всех органов управления
+
+   Было три разные меры рядом: «Найти» 100×38 с рамкой, тема 38×38
+   без рамки, счётчик событий 44×44 без рамки, бейджи на штемпельной
+   сини. Ниже всё сведено к одному языку и явно прописано для тёмной
+   темы — она нигде не наследовалась.
+
+   Специфичность с `body`, потому что chrome.css грузится позже.
+   ============================================================ */
+
+body .site-header .header-action,
+body .site-header .header-theme-toggle,
+body .site-header .nav-marks,
+body .site-header .nav-cab{
+  min-height:44px;
+  color:var(--ink-soft);
+  background:transparent;
+  border:1px solid var(--hairline);
+  border-radius:999px;
+  transition:color 170ms ease,border-color 170ms ease,background-color 170ms ease;
+}
+/* Круглые — те, у кого только значок. */
+body .site-header .header-theme-toggle,
+body .site-header .nav-marks,
+body .site-header .header-menu-button{
+  width:44px;
+  min-width:44px;
+  height:44px;
+  padding:0;
+}
+/* Пилюли — те, у кого есть подпись. */
+body .site-header .header-action--search,
+body .site-header .nav-cab{
+  padding-inline:14px;
+}
+
+body .site-header .header-action:hover,
+body .site-header .header-theme-toggle:hover,
+body .site-header .nav-marks:hover,
+body .site-header .nav-cab:hover{
+  color:var(--ink);
+  background:var(--sheet);
+  border-color:var(--hairline-strong);
+}
+body .site-header .nav-cab[aria-current="page"]{
+  color:var(--wax);
+  border-color:var(--wax);
+}
+
+/* Клавиша-подсказка: была темнее самой шапки в тёмной теме. */
+body .site-header .header-action kbd{
+  color:var(--ink-soft);
+  background:var(--sheet);
+  border:1px solid var(--hairline);
+  border-radius:5px;
+  font-size:11px;
+}
+
+/* Бейджи — на фирменном сургуче, кольцо по фону шапки. */
+body .site-header .nc-badge,
+body .site-header .nav-marks .nm-n{
+  background:var(--wax);
+  color:#FFFEF9;
+  border:2px solid var(--paper);
+  font-size:10px;
+}
+
+/* Точка статуса у кабинета: §3 запрещает обозначать состояние одним
+   цветом — рядом всегда стоит слово «Кабинет», поэтому точка декоративна
+   и приглушена, а не спорит с бейджем. */
+body .site-header .header-action__dot{
+  width:6px;
+  height:6px;
+  background:var(--verify);
+}
+
+/* ---- Знак мастерской ---- */
+body .site-header .brand__mark{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  /* Оттиск: знак «прижимается» к бумаге один раз при появлении.
+     Сам знак не перерисовывается — §2 стандарта соблюдён. */
+  animation:brand-press 520ms cubic-bezier(.22,1,.36,1) both;
+}
+body .site-header .brand:hover .brand__mark{
+  transform:rotate(-4deg);
+  transition:transform 170ms cubic-bezier(.22,1,.36,1);
+}
+@keyframes brand-press{
+  from{opacity:0;transform:scale(.86) rotate(-8deg)}
+  60%{opacity:1;transform:scale(1.03) rotate(1.5deg)}
+  to{opacity:1;transform:none}
+}
+
+/* ---- Лента событий «Пометки на полях» ---- */
+body .mledger{
+  background:var(--sheet);
+  border:1px solid var(--hairline-strong);
+  border-radius:8px;
+  box-shadow:0 24px 64px rgba(0,0,0,.28);
+}
+body .mledger .ml-head{ background:var(--sheet); }
+body .mledger .ml-kicker{ font-size:11px; }
+body .mledger .ml-meta{ font-size:11px; }
+body .mledger .ml-what{ font-size:14px; }
+/* Непрочитанное — на сургуче, а не на штемпельной сини вне палитры. */
+body .mledger .ml-row.is-new .ml-go{
+  background:color-mix(in srgb,var(--wax) 8%,var(--sheet));
+}
+body .mledger .ml-row.is-new .ml-pin{
+  background:var(--wax);
+  border-color:var(--wax);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--wax) 14%,transparent);
+}
+
+@media (prefers-reduced-motion:reduce){
+  body .site-header .brand__mark{ animation:none; }
+  body .site-header .brand:hover .brand__mark{ transform:none; }
+}
+
+/* Встроенный знак: раньше это был <img>, теперь <svg> — задаём меры
+   явно, чтобы он не считал размер от viewBox, и убираем схлопывание
+   базовой линии. В колофоне и мобильном аппбаре свои меры. */
+body .site-header .brand__mark{
+  display:block;
+  flex:0 0 44px;
+  width:44px;
+  height:44px;
+}
+body .mobile-appbar__brand .brand__mark{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+}
+body .site-footer__brand .brand__mark{
+  flex:0 0 43px;
+  width:43px;
+  height:43px;
+}
+
+/* Колофон тёмный в обеих темах (chrome.css:2025), поэтому буквы знака
+   там всегда светлые — иначе в тёмной теме тёмное на тёмном сливается. */
+body .site-footer__brand .brand__mark path{
+  fill:#F6F1E7;
+}
