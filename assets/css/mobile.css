@@ -35,41 +35,10 @@
   main,.chapter,.sheet,.stacked{min-width:0;max-width:100%}
   section[id],[id].chapter{scroll-margin-top:calc(var(--mobile-header-h) + 12px)}
 
-  /* Один режим колонтитула на всём диапазоне мобильного дока. */
-  .site-header{
-    padding-top:env(safe-area-inset-top);
-    background:var(--paper);
-  }
-  .site-header .wrap.nav{
-    padding-left:max(var(--mobile-gutter),env(safe-area-inset-left));
-    padding-right:max(var(--mobile-gutter),env(safe-area-inset-right));
-  }
-  .site-header .nav,
-  .site-header.scrolled .nav{height:58px;gap:8px}
-  .site-header .nav-links{display:none!important}
-  .site-header .nav-cta>.btn{display:none!important}
-  .site-header .brand{
-    flex:1 1 auto;
-    min-width:0;
-    min-height:44px;
-    gap:8px;
-    overflow:hidden;
-  }
-  .site-header .brand .b-name{
-    min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  .site-header .nav-cta{flex:0 0 auto;margin-left:0}
-  .nav-cab,.menu-toggle{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:44px;
-    min-width:44px;
-    min-height:44px;
-    padding:0;
-  }
+  /* Настольный колонтитул на телефоне не показывается вовсе —
+     ниже по файлу стоит .site-header{display:none!important},
+     а его работу выполняет .mobile-appbar. Прежние правила
+     «сжатой шапки» удалены: они не срабатывали ни разу. */
 
   input,textarea,select,
   .sdlg input,.sdlg textarea,.nf-form input,.nf-form textarea{
@@ -143,22 +112,11 @@
     transform:none;
     box-shadow:none;
   }
-  .mnav .mn-calc.has-draft .mn-ic::after{
-    content:"";
-    position:absolute;
-    right:calc(50% - 25px);
-    top:-1px;
-    width:10px;
-    height:10px;
-    border:2px solid var(--paper);
-    border-radius:50%;
-    background:#E9C972;
-    box-sizing:border-box;
-  }
   .site-footer{padding-bottom:calc(var(--mobile-dock-h) + 14px)}
 
-  /* Черновик на телефоне живёт в центральной кнопке дока. */
-  .resume-bar{display:none!important}
+  /* Черновик на телефоне живёт в листе .resume-card на главной (в потоке,
+     сразу под первым экраном). Золотая точка на центральном пункте дока
+     и плавающая полоса .resume-bar сняты вместе с ним. */
 
   /* После выбора типа не повторяем вводный экран на каждом шаге. */
   body.conf-step-later main .chapter.conf-chapter{
@@ -1307,12 +1265,6 @@
   .cookiebar .cb-foot{margin-top:7px;padding-top:7px}
 }
 
-@media screen and (max-width:480px){
-  .site-header .brand .b-full{display:none!important}
-  .site-header .brand .b-short{display:inline!important}
-  .site-header .brand .b-name{font-size:14px}
-}
-
 @media screen and (max-width:420px){
   .mnav .mn-i{font-size:10px;letter-spacing:0}
   .conf-mcta .mq-bar{
@@ -1348,7 +1300,6 @@
 }
 
 @media screen and (max-width:340px){
-  .site-header .brand{max-width:148px}
   .mnav .mn-i{font-size:9.5px}
   .home .pr-note{
     margin-top:9px!important;
@@ -1417,79 +1368,8 @@
   body{padding-bottom:var(--mobile-dock-h)}
   body.no-mcta{padding-bottom:0}
 
-  .site-header{
-    padding-top:env(safe-area-inset-top);
-    background:color-mix(in srgb,var(--paper) 96%,transparent);
-    -webkit-backdrop-filter:blur(18px) saturate(1.08);
-    backdrop-filter:blur(18px) saturate(1.08);
-  }
-  :root[data-theme="dark"] .site-header{
-    background:color-mix(in srgb,var(--paper) 97%,transparent);
-    border-bottom-color:color-mix(in srgb,var(--hairline) 86%,transparent);
-  }
-  .site-header .wrap.nav{
-    padding-left:max(var(--mobile-gutter),env(safe-area-inset-left));
-    padding-right:max(var(--mobile-gutter),env(safe-area-inset-right));
-  }
-  .site-header .nav,
-  .site-header.scrolled .nav{
-    height:58px;
-    gap:8px;
-  }
-  .site-header .brand{
-    display:inline-flex;
-    min-width:0;
-    min-height:44px;
-    flex:1 1 auto;
-    align-items:center;
-    gap:8px;
-    overflow:hidden;
-  }
-  .site-header .brand .b-mark{
-    display:block;
-    width:34px;
-    height:34px;
-    flex:0 0 34px;
-    border-radius:50%;
-    box-shadow:0 6px 17px color-mix(in srgb,var(--wax-deep) 20%,transparent);
-  }
-  .site-header .brand .b-lockup{
-    display:flex;
-    min-width:0;
-    flex-direction:column;
-    align-items:flex-start;
-    justify-content:center;
-    overflow:hidden;
-    line-height:1;
-  }
-  .site-header .brand .b-lockup strong{
-    overflow:hidden;
-    max-width:100%;
-    color:var(--ink);
-    font:500 15px/1.12 var(--serif);
-    letter-spacing:-.018em;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-  }
-  .site-header .brand .b-lockup small{
-    overflow:hidden;
-    max-width:100%;
-    margin-top:4px;
-    color:var(--ink-faint);
-    font:600 7.5px/1.1 var(--mono);
-    letter-spacing:.105em;
-    text-overflow:ellipsis;
-    text-transform:uppercase;
-    white-space:nowrap;
-  }
-  .site-header .brand .b-short{display:none}
-  .nav-cab,.menu-toggle{
-    width:44px;
-    min-width:44px;
-    min-height:44px;
-    padding:0;
-  }
-
+  /* Колонтитул рабочего стола здесь не участвует: он скрыт
+     целиком, всё делает .mobile-appbar ниже по файлу. */
   .mobile-cta.mnav{
     display:grid;
     min-height:var(--mobile-dock-h);
@@ -1598,33 +1478,22 @@
   .site-footer{padding-bottom:calc(var(--mobile-dock-h) + 14px)}
   body.no-mcta .site-footer{padding-bottom:calc(14px + env(safe-area-inset-bottom))}
 
-  .site-header .brand:focus-visible{outline:none}
-  .site-header .brand:focus-visible .b-mark,
   .mnav .mn-i:focus-visible{
     outline:2px solid var(--wax);
     outline-offset:3px;
   }
 }
 
-@media screen and (max-width:480px){
-  .site-header .brand .b-full{display:none!important}
-  .site-header .brand .b-short{display:block!important}
-  .site-header .brand .b-lockup strong{font-size:14px}
-}
-
 @media screen and (max-width:350px){
-  .site-header .brand .b-lockup small{display:none}
   .mnav .mn-i{font-size:9px}
 }
 
 @media(prefers-reduced-motion:reduce){
-  .site-header .brand .b-mark,
   .mnav .mn-i,
   .mnav .mn-i::before,
   .mnav .mn-calc .mn-ic{
     transition:none!important;
   }
-  .site-header .brand:hover .b-mark{transform:none}
 }
 
 /* Production footer follows the same compact editorial grid as the
@@ -1883,25 +1752,21 @@
     padding-top:calc(var(--mobile-appbar-h) + env(safe-area-inset-top));
   }
 }
+/* Кнопки аппбара остаются 44px и на узком экране: эталон здесь
+   тоже не мельчит (style.css §max-width:400px), а размер цели
+   меньше 44px нарушает DESIGN-STANDARDS. Место отыгрываем
+   зазором, отступом и знаком, а не кнопками. */
 @media screen and (max-width:400px){
   .mobile-appbar{
-    grid-template-columns:40px minmax(0,1fr) 40px 40px 40px;
+    grid-template-columns:44px minmax(0,1fr) 44px 44px 44px;
     gap:2px;
     padding-inline:max(6px,env(safe-area-inset-left));
-  }
-  .mobile-appbar__back,
-  .mobile-appbar__help,
-  .mobile-appbar__theme,
-  .mobile-appbar__menu{
-    width:40px;
-    height:40px;
-    min-height:40px;
   }
   .mobile-appbar__brand{gap:6px}
   .mobile-appbar__brand img{width:28px;height:28px;flex-basis:28px}
 }
 @media screen and (max-width:350px){
-  .mobile-appbar{grid-template-columns:40px minmax(0,1fr) 40px 40px}
+  .mobile-appbar{grid-template-columns:44px minmax(0,1fr) 44px 44px}
   .mobile-appbar__help{display:none}
 }
 

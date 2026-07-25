@@ -23,100 +23,14 @@
      Все id/data-хуки cabinet.js сохранены. Анимации — короткие
      CSS-переходы; reduce-motion и data-calm гасят всё.
      ============================================================ */
-  .cab{max-width:none}
-  /* фикс-шапку сайта отрабатываем сами: прежний гигантский padding главы срезан */
-  .cab-page{padding-top:var(--hdr-h,64px)}
-  .cab-page .chapter{padding-top:clamp(26px,4vw,46px)}
-  .cab-page .ch-rule{margin-bottom:14px}
-  .cab-h{font-size:clamp(22px,2.6vw,30px);font-weight:380;margin-bottom:clamp(14px,2vw,22px)}
-
-  /* ── каркас: стойка | полоса ── */
-  .cab2{display:grid;grid-template-columns:250px minmax(0,1fr);
-    gap:clamp(20px,3vw,36px);align-items:start}
-  .cbar{position:sticky;top:calc(var(--hdr-h,64px) + 16px);
-    display:flex;flex-direction:column;gap:12px;min-width:0}
-  .cbody{min-width:0}
-
-  /* заголовок полосы: раздел + мета на одной линейке */
-  .cbh{display:flex;align-items:baseline;gap:8px 14px;flex-wrap:wrap;
-    padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid var(--hairline)}
-  .cbh-t{font-family:var(--serif);font-weight:420;font-size:clamp(20px,2.4vw,26px);letter-spacing:-.01em}
-  .cbh-m{margin-left:auto;font-size:11px;letter-spacing:.08em;color:var(--ink-faint);font-variant-numeric:tabular-nums}
-
-  /* ── профиль: карточка с печатью-инициалом ── */
-  .cbar-card{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-    background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:4px;
-    padding:13px 14px;box-shadow:0 1px 0 var(--hairline),0 14px 30px -24px rgba(34,32,27,.5)}
-  .cbav{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;
-    font-family:var(--serif);font-size:19px;line-height:1;color:var(--wax);
-    background:var(--sheet);border:1.5px solid var(--wax);
-    box-shadow:inset 0 0 0 3px var(--sheet),inset 0 0 0 4px var(--hairline-strong)}
-  .cbav.guest{color:var(--ink-faint);border-color:var(--hairline-strong)}
-  .cbav.imp{color:var(--stamp);border-color:var(--stamp)}
-  .cbp-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-  .cbp-name{font-size:14.5px;font-weight:600;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .cbp-sub{font-size:11.5px;color:var(--ink-faint);line-height:1.45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .cbp-sub b{color:var(--verify);font-weight:600}
-  .cbp-out{flex:0 0 auto}
-  .cbp-in{flex:1 1 100%;min-height:44px;font-size:13.5px;padding:10px 12px}
-
-  /* ── разделы: вертикальная картотека ── */
-  .cbar-nav{display:flex;flex-direction:column;gap:2px;
-    background:var(--sheet);border:1px solid var(--hairline);border-radius:4px;padding:6px}
-  .cnav-i{position:relative;display:flex;align-items:center;gap:11px;
-    min-height:44px;padding:9px 11px;border:0;border-radius:3px;background:none;
-    font:inherit;font-size:14px;font-weight:500;color:var(--ink-soft);cursor:pointer;
-    text-align:left;transition:background .14s ease,color .14s ease}
-  .cnav-i:hover{background:var(--mark);color:var(--ink)}
-  .cnav-i .ci-ic{display:inline-flex;width:20px;height:20px;flex:0 0 auto;color:var(--ink-faint);transition:color .14s}
-  .cnav-i:hover .ci-ic{color:var(--ink)}
-  .cnav-i.on{background:var(--paper-2);color:var(--ink);font-weight:600;
-    box-shadow:inset 3px 0 0 var(--wax)}
-  .cnav-i.on .ci-ic{color:var(--wax)}
-  .cnav-i .cn-b{margin-left:auto;background:var(--wax);color:#FFFEF9;
-    font-family:var(--mono);font-size:10px;line-height:1;border-radius:999px;padding:4px 7px}
-
-  /* мини-кошелёк: две формулярные строки с отточием */
-  .cbar-mini{display:flex;flex-direction:column;gap:0;
-    background:var(--sheet);border:1px solid var(--hairline);border-radius:4px;padding:4px 12px}
-  .cbm-row{display:flex;align-items:baseline;gap:8px;width:100%;
-    padding:10px 0;border:0;background:none;font:inherit;font-size:12.5px;
-    color:var(--ink-soft);cursor:pointer;text-align:left}
-  .cbm-row + .cbm-row{border-top:1px solid var(--hairline)}
-  .cbm-row b{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink);
-    font-variant-numeric:tabular-nums;white-space:nowrap}
-  .cbm-row:hover b{color:var(--wax)}
-  .cbm-dots{flex:1 1 12px;min-width:12px;height:.85em;align-self:baseline;
-    background-image:radial-gradient(circle,var(--hairline-strong) 1px,transparent 1.4px);
-    background-size:9px 3px;background-repeat:repeat-x;background-position:0 100%}
-  .cbar-foot .btn{width:100%;min-height:42px;font-size:13px;padding:9px 12px}
-
+  /* Каркас v3 «Личный зал» (.cab/.cab2/.cbar*/.cbh*/.cbp*/.cnav*/.cbm*)
+     снят 2026-07-25: разметку несут .account-shell/.account-nav/.account-main
+     из polish15-account.css, эмитентов у прежних классов не осталось. */
   /* режим мастера — жёлтый пунктирный вымпел над каркасом */
   .imp-band{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
     border:1px dashed var(--wax);background:var(--wax-soft);border-radius:4px;
     padding:9px 13px;margin-bottom:14px;font-size:13px;color:var(--ink)}
   .imp-band .linkbtn{margin-left:auto}
-
-  /* ── нижний док кабинета (телефон): пять разделов, как в приложении ── */
-  .cabdock{position:fixed;left:0;right:0;bottom:0;z-index:95;display:none;
-    grid-template-columns:repeat(5,1fr);gap:2px;
-    padding:5px max(8px,env(safe-area-inset-right)) max(7px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));
-    background:color-mix(in srgb, var(--paper) 93%, transparent);
-    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
-    border-top:1px solid var(--hairline)}
-  .cd-i{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-    gap:3px;padding:7px 2px 6px;min-height:52px;border:0;border-radius:var(--r);background:none;
-    font:inherit;font-size:10px;letter-spacing:.04em;font-weight:500;color:var(--ink-soft);
-    cursor:pointer;transition:color .15s,background .15s;-webkit-tap-highlight-color:transparent}
-  .cd-i:active{background:var(--mark)}
-  .cd-i .cd-ic{display:inline-flex;width:20px;height:20px;color:currentColor}
-  .cd-i.on{color:var(--wax)}
-  .cd-i.on::after{content:"";position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
-    width:14px;height:2px;border-radius:2px;background:var(--wax)}
-  .cd-i .cn-b{position:absolute;top:2px;right:calc(50% - 22px);
-    background:var(--wax);color:#FFFEF9;font-family:var(--mono);font-size:9.5px;font-weight:600;
-    min-width:16px;height:16px;border-radius:999px;padding:0 4px;
-    display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--paper)}
 
   /* ── скелет первой загрузки: формуляр собирается ── */
   .cab-skel{display:grid;gap:14px}
@@ -130,178 +44,18 @@
   .cab-skel .sk2{height:180px}
   .cab-skel .sk3{height:120px}
 
-  /* строка личности (легаси-хук: экран входа и старые вставки) */
-  .cab-id{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:14px;font-size:13.5px;color:var(--ink-soft)}
-  .cab-id .ci-dot{width:7px;height:7px;border-radius:50%;background:var(--verify);flex:0 0 auto;align-self:center}
-  .cab-id .ci-dot.guest{background:var(--hairline-strong)}
-  .cab-id b{color:var(--ink);font-weight:500}
-  .cab-id .ci-act{margin-left:auto}
   .linkbtn{background:none;border:0;padding:0 0 1px;font:inherit;font-size:13px;color:var(--ink-soft);border-bottom:1px solid var(--hairline-strong);cursor:pointer;white-space:nowrap}
   .linkbtn:hover{color:var(--ink)}
   .linkbtn.wax{color:var(--wax);border-color:var(--wax)}
   .linkbtn.wax:hover{color:var(--wax-deep)}
 
-  /* ── «СЕЙЧАС ВАЖНО»: одно главное действие по всем делам ── */
-  .now-card{position:relative;background:var(--sheet);border:1px solid var(--hairline-strong);
-    border-left:4px solid var(--wax);border-radius:4px;
-    padding:clamp(15px,2.4vw,21px) clamp(16px,3vw,26px);margin:0 0 16px;
-    box-shadow:0 1px 0 var(--hairline),0 18px 38px -26px rgba(34,32,27,.5)}
-  .now-card .nc-cap{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
-  .now-card .nc-cap .caps{color:var(--wax);font-size:10.5px}
-  .now-card .nc-no{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em}
-  .now-card .nc-msg{font-family:var(--serif);font-size:clamp(17.5px,2.4vw,22px);font-weight:420;line-height:1.38;margin:8px 0 3px;text-wrap:balance}
-  .now-card .nc-msg b{font-weight:600;white-space:nowrap}
-  .now-card .nc-sub{font-size:13px;color:var(--ink-soft);line-height:1.55}
-  .now-card .nc-act{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:13px}
-  .now-card .nc-act .btn{box-shadow:0 2px 0 var(--wax-deep,#6E2312),0 12px 24px -12px rgba(178,59,34,.45)}
-  .now-card .nc-act .btn:active{transform:translateY(2px);box-shadow:0 0 0 var(--wax-deep,#6E2312),inset 0 2px 4px rgba(0,0,0,.2)}
 
-  /* ── обзорные плитки: журнал состояния ── */
-  .ovg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 16px}
-  @media(min-width:1120px){.ovg{grid-template-columns:repeat(4,minmax(0,1fr))}}
-  .ov-card{position:relative;display:flex;flex-direction:column;gap:7px;text-align:left;
-    background:var(--sheet);border:1px solid var(--hairline);border-radius:4px;
-    padding:14px 15px 13px;font:inherit;cursor:pointer;
-    transition:border-color .15s ease,transform .15s ease,box-shadow .15s ease}
-  .ov-card::before{content:"";position:absolute;top:0;left:14px;right:14px;height:2px;
-    background:linear-gradient(90deg,#B98A2F,#E9C972 55%,transparent);opacity:0;transition:opacity .18s}
-  .ov-card:hover{border-color:var(--ink-soft);transform:translateY(-2px);
-    box-shadow:0 16px 32px -24px rgba(34,32,27,.55)}
-  .ov-card:hover::before{opacity:.9}
-  .ov-ico{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:3px;
-    color:var(--wax);background:var(--paper-2);border:1px solid var(--hairline);
-    box-shadow:inset 0 1px 2px rgba(34,32,27,.1)}
-  .ov-ico svg{width:17px;height:17px}
-  .ov-t{font-family:var(--serif);font-weight:600;font-size:16.5px}
-  .ov-line{font-size:12px;line-height:1.5;color:var(--ink-soft);min-height:2.6em}
-  .ov-line b{font-family:var(--mono);font-weight:600;font-variant-numeric:tabular-nums}
-  .ov-warn{color:var(--wax)}
-  .ov-cta{font-size:12px;font-weight:600;color:var(--wax);margin-top:auto}
-  .ov-cta .ar{font-family:var(--serif);display:inline-block;transition:transform .15s}
-  .ov-card:hover .ov-cta .ar{transform:translateX(3px)}
-
-  /* ── полка дел: каждое дело — корешок тома, активный приподнят ── */
-  .shelf{display:flex;gap:10px;overflow-x:auto;padding:8px 2px 14px;margin:0 -2px;
-    scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
-  .shelf::-webkit-scrollbar{display:none}
-  .spine{position:relative;flex:0 0 auto;scroll-snap-align:start;width:min(210px,58vw);text-align:left;
-    background:var(--sheet);border:1px solid var(--hairline);border-top:3px solid var(--hairline-strong);
-    border-radius:2px 2px 0 0;padding:10px 13px 11px;cursor:pointer;font:inherit;color:var(--ink-soft);
-    transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .spine:hover{transform:translateY(-2px);box-shadow:0 10px 20px -14px rgba(34,32,27,.5)}
-  .spine.on{color:var(--ink);border-color:var(--hairline-strong);border-top-color:var(--wax);
-    transform:translateY(-3px);box-shadow:0 14px 26px -16px rgba(34,32,27,.55)}
-  .spine.st-act:not(.on){border-top-color:var(--wax);opacity:.94}
-  .spine .sp-no{display:flex;justify-content:space-between;align-items:center;gap:8px;
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink-faint)}
-  .spine .sp-dot{font-family:var(--mono);font-size:10px;color:#FFFEF9;background:var(--wax);border-radius:9px;padding:1px 6px}
-  .spine .sp-name{display:block;font-size:13.5px;font-weight:500;margin:3px 0 1px;color:inherit;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .spine .sp-st{display:block;font-size:11.5px;color:var(--ink-faint)}
-  .spine.st-act .sp-st{color:var(--wax)}
-  .spine.sp-ghost{background:transparent;border-style:dashed;border-top-width:1px;box-shadow:none;align-self:stretch}
-  .spine.sp-ghost:hover{transform:none;background:var(--mark)}
-  .spine.sp-arch{opacity:.8}
-  .shelf-base{border-top:3px double var(--hairline-strong);margin:-14px 0 clamp(16px,3vw,24px)}
-
-  /* шапка формуляра */
-  .ord-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px 14px;flex-wrap:wrap;margin-bottom:14px}
-  .ord-no{font-size:13px;letter-spacing:.1em;color:var(--ink-soft)}
-  .ord-stamp{
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
-    border:1.5px solid currentColor;border-radius:3px;padding:5px 10px;
-    transform:rotate(-1.2deg);color:var(--ink-soft);white-space:nowrap;
-  }
-  .ord-stamp.s-act{color:var(--wax)}
-  .ord-stamp.s-done{color:var(--verify)}
-  .ord-stamp.s-mute{color:var(--ink-faint)}
-  .ord-type{font-size:clamp(22px,3vw,30px);font-weight:400;margin-bottom:6px}
-  .ord-topic{font-family:var(--serif);font-style:italic;font-size:15.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:6px}
-  .ord-price-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px 12px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:3px double var(--ink)}
-  .ord-price{font-size:clamp(18px,2.4vw,22px);letter-spacing:-.02em;white-space:nowrap}
-  .ord-price-note{margin-top:8px}
-  .ord-composition{margin:18px 0 4px;border:1px solid var(--hairline-strong);
-    border-radius:var(--r);background:var(--paper-2);overflow:hidden}
-  .oc-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
-    padding:10px 13px;border-bottom:1px solid var(--hairline);color:var(--ink-faint);
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.06em}
-  .oc-list{display:grid}
-  .oci-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;
-    align-items:start;padding:10px 13px;border-bottom:1px solid var(--hairline)}
-  .oci-row:last-child{border-bottom:0}
-  .oci-row.child{padding-left:28px;background:color-mix(in srgb,var(--wax) 4%,transparent)}
-  .oci-no{font:10.5px/1.5 var(--mono);color:var(--ink-faint)}
-  .oci-row.child .oci-no{color:var(--wax)}
-  .oci-main{min-width:0}
-  .oci-main b{display:block;font-size:13.5px;font-weight:560;line-height:1.35}
-  .oci-main small{display:block;margin-top:2px;color:var(--ink-soft);font-size:11.5px;line-height:1.45}
-  .oci-price{font:11.5px/1.45 var(--mono);color:var(--ink-soft);white-space:nowrap}
-
-  /* разделы дела: волосяная линия + caps-заголовок */
-  .fs-sec{margin-top:clamp(24px,4vw,34px);padding-top:clamp(16px,2.6vw,22px);border-top:1px solid var(--hairline)}
-  .fs-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
-  .fs-head .fs-meta{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-faint)}
-
-  /* этапы — таймлайн с номерами-печатями */
-  .stg{position:relative}
-  .stg::before{content:"";position:absolute;left:15px;top:22px;bottom:22px;width:1px;background:var(--hairline-strong)}
-  .stg-row{display:flex;gap:14px;padding:9px 0;align-items:flex-start;color:var(--ink-soft)}
-  .stg-row .sn{
-    position:relative;z-index:1;flex:0 0 31px;height:31px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-family:var(--mono);font-size:11px;background:var(--sheet);
-    border:1px solid var(--hairline-strong);color:var(--ink-faint);
-  }
-  .stg-row.past .sn{color:var(--verify);border-color:var(--verify)}
-  .stg-row.now{color:var(--ink)}
-  .stg-row.now .sn{color:#FFFEF9;background:var(--wax);border-color:var(--wax)}
-  .stg-row .sb{flex:1;min-width:0;padding-top:4px}
-  .stg-row .sb b{display:block;font-size:15px;font-weight:500;line-height:1.35}
-  .stg-row .sb small{display:block;font-size:13px;color:var(--ink-soft);line-height:1.55;margin-top:2px}
-  .stg-row .st-tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap;padding-top:9px}
-  .stg-row.past .st-tag{color:var(--verify)}
-  .stg-row.now .st-tag{color:var(--wax)}
-
-  /* вкладыш с реквизитами / служебные вставки */
-  .req-slip{border:1px solid var(--hairline-strong);border-left:3px solid var(--wax);border-radius:var(--r);padding:14px 16px;background:var(--paper-2);margin-bottom:12px}
-  .req-slip .caps{display:block;margin-bottom:6px}
-  .req-pre{white-space:pre-wrap;word-break:break-word;font-size:13.5px;margin:6px 0 0;line-height:1.6}
-  .pay-email{display:grid;gap:6px;margin:12px 0 2px;padding:13px 14px;
-    border:1px solid var(--hairline);border-radius:var(--r);background:var(--paper-2)}
-  .pay-email input{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--hairline-strong);
-    border-radius:var(--r);background:var(--sheet);color:var(--ink);font:inherit;font-size:16px}
-  .pay-email input:focus{outline:2px solid color-mix(in srgb,var(--wax) 34%,transparent);
-    outline-offset:1px;border-color:var(--wax)}
-  .pay-history .linkbtn{display:inline-block;margin-left:5px}
-
-  .act-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-  .act-row .btn{flex:1 1 auto}
-  .fix-form{margin-top:12px}
-  .fix-form textarea,.chat-form textarea{
-    width:100%;font:inherit;font-size:14.5px;padding:10px 12px;color:inherit;resize:vertical;
-    border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;
-  }
-
-  /* файлы — опись вложений */
-  .file-line{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--hairline)}
-  .file-line:last-child{border-bottom:0}
-  .file-line .fl-ic{flex:0 0 auto;color:var(--ink-faint);align-self:center}
-  .file-line .fl-name{flex:1;min-width:0;overflow-wrap:anywhere;font-size:14.5px}
-  .file-line .fl-meta{font-family:var(--mono);font-size:11px;color:var(--ink-faint);white-space:nowrap}
-  .file-line .link{white-space:nowrap;font-size:13.5px}
-  .btn-upload{cursor:pointer}
-
-  /* переписка — почтовая лента дела, без рамок-пузырей */
-  .chat-feed{display:flex;flex-direction:column;gap:14px;max-height:440px;overflow-y:auto;padding:2px 2px 6px}
-  .chat-m{max-width:92%;padding-left:14px;border-left:2px solid var(--hairline-strong)}
-  .chat-m.me{align-self:flex-end;border-left:0;border-right:2px solid var(--wax);padding-left:0;padding-right:14px;text-align:right}
-  .chat-who{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px}
-  .chat-m.me .chat-who{color:var(--wax)}
-  .chat-txt{font-size:14.5px;line-height:1.6;color:var(--ink);white-space:pre-wrap}
-  .chat-at{display:block;font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);margin-top:3px}
-  .chat-sys{text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-faint)}
-  .chat-form{display:flex;gap:10px;margin-top:14px;align-items:flex-end}
-  .chat-form textarea{flex:1}
+  /* Раскрытие дела переехало на язык эталона: .case-file / .case-sec /
+     .case-fold / .case-timeline / .case-spec / .file-row / .message* /
+     .case-ledger / .case-state живут в assets/css/polish15-account.css
+     (2026-07-25). Прежние .ord-*/.oc-*/.oci-*/.fs-head/.stg*/.req-slip/
+     .pay-email/.pay-history/.act-row/.fix-form/.file-line/.fl-*/.chat-*
+     удалены — их больше никто не отдаёт из cabinet.js. */
 
   /* вход */
   .cab-login{max-width:980px;margin:0 auto}
@@ -390,61 +144,12 @@
   #cabRoot .fs-sec[id],#cabRoot .fs-fold[id],#subPaySheet,#plusCard,#plusSheet,
   #bonusLedger,#depLedger,#depCard{scroll-margin-top:78px}
 
-  /* ── полоса «клуба» — читательский билет: перфорация слева ── */
-  .club-strip{position:relative;display:flex;align-items:baseline;gap:8px 10px;flex-wrap:wrap;
-    border:1px solid var(--hairline-strong);border-radius:var(--r);background:var(--sheet);
-    padding:11px 15px 11px 24px;margin-bottom:16px;font-size:13.5px;color:var(--ink-soft)}
-  .club-strip::before{content:"";position:absolute;left:11px;top:7px;bottom:7px;width:0;
-    border-left:1px dashed var(--hairline-strong)}
-  .club-strip b{color:var(--ink)}
-  .club-strip .cs-dot{color:var(--ink-faint)}
-  .club-strip .cs-warn{color:var(--wax)}
-  .club-strip .cs-more{margin-left:auto}
 
-  /* ── абонементы «Салон+» — билеты читального зала ── */
-  .seg{display:inline-flex;border:1px solid var(--hairline-strong);border-radius:999px;overflow:hidden;vertical-align:middle}
-  .seg button{font:inherit;font-size:12.5px;line-height:1;padding:9px 15px;background:transparent;border:0;color:var(--ink-soft);cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
-  .seg button.on{background:var(--ink);color:var(--paper)}
-  .tickets{display:grid;grid-template-columns:repeat(auto-fit,minmax(212px,1fr));gap:14px;margin-top:14px}
-  .ticket{position:relative;display:flex;flex-direction:column;gap:7px;
-    background:var(--sheet);border:1px solid var(--hairline-strong);border-radius:3px;
-    padding:16px 15px 15px 24px;overflow:hidden;
-    transition:transform .18s ease,box-shadow .18s ease}
-  .ticket::before{content:"";position:absolute;left:11px;top:8px;bottom:8px;width:0;
-    border-left:1px dashed var(--hairline-strong)}
-  .ticket:hover{transform:translateY(-3px);box-shadow:0 16px 28px -18px rgba(34,32,27,.5)}
-  .ticket .tk-name{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--ink);padding-right:20px}
-  .ticket .tk-star{position:absolute;top:11px;right:12px;font-size:14px;line-height:1;opacity:.85}
-  .ticket .tk-tag{font-size:12.5px;color:var(--ink-soft);line-height:1.5;min-height:38px}
-  .ticket .tk-price{font-family:var(--serif);font-size:clamp(21px,2.6vw,25px);line-height:1.1;letter-spacing:-.01em;margin-top:2px}
-  .ticket .tk-price small{display:block;font-family:var(--sans);font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em;margin-top:3px}
-  .ticket .tk-feats{list-style:none;margin:5px 0 3px;padding:0;display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--ink-soft);line-height:1.45}
-  .ticket .tk-feats li{padding-left:13px;position:relative}
-  .ticket .tk-feats li::before{content:"·";position:absolute;left:2px;color:var(--wax);font-weight:700}
-  .ticket .tk-cta{margin-top:auto;padding-top:8px}
-  .ticket .tk-cta .btn{width:100%}
-  .ticket.rec{border-color:var(--wax);box-shadow:0 1px 0 var(--hairline)}
-  /* «выгодный выбор» — закладка-ляссе, свисающая с верхней кромки билета:
-     прежняя диагональная лента резалась overflow'ом на полуслове и
-     наезжала на подзаголовок (правка 2026-07-22) */
-  .ticket.rec .rec-tape{position:absolute;top:0;right:14px;
-    background:var(--wax);color:#FFFEF9;font-family:var(--mono);font-size:9px;
-    letter-spacing:.14em;text-transform:uppercase;padding:5px 9px 4px;
-    border-radius:0 0 3px 3px;box-shadow:0 2px 0 var(--wax-deep,#8C2D18);
-    pointer-events:none;white-space:nowrap}
-  .ticket.rec .tk-name{padding-right:118px}
-  @media (prefers-reduced-motion:no-preference){
-    .ticket .tk-star{animation:tkStar 3.6s ease-in-out infinite}
-    @keyframes tkStar{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(8deg)}}
-  }
-
-  /* купон-апселл в деле: пунктир отрывного талона, не кричит */
-  .upsell{display:flex;gap:12px;align-items:flex-start;border:1px dashed var(--hairline-strong);
-    border-radius:var(--r);background:var(--paper-2);padding:12px 14px;margin-top:12px;
-    font-size:13.5px;color:var(--ink-soft);line-height:1.55}
-  .upsell .up-star{font-size:17px;line-height:1.3}
-  .upsell b{color:var(--ink)}
-  .upsell .linkbtn{margin-left:2px}
+  /* Витрина абонементов, конструктор и купон-апселл переехали на язык
+     эталона: .plus-plan-card / .period-switch / .builder-option /
+     .account-notice живут в assets/css/polish15-account.css (2026-07-25).
+     Прежние .seg/.ticket*/.tk-*/.upsell/.ctor* удалены — их больше никто
+     не отдаёт из cabinet.js. */
 
   /* свёрнутые способы входа (почта, ссылка доступа) */
   .cab-alt{border:1px solid var(--hairline);border-radius:var(--r);padding:0 14px;margin:8px 0}
@@ -458,86 +163,10 @@
   .pl-h{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--hairline)}
   .pl-h .pl-tag{font-size:12.5px;color:var(--ink-soft)}
 
-  /* складные секции формуляра */
-  .fs-fold{border-top:1px solid var(--hairline);margin-top:clamp(18px,2.6vw,26px)}
-  .fs-fold summary{display:flex;align-items:center;gap:10px;list-style:none;cursor:pointer;
-    padding:12px 0 10px;user-select:none;-webkit-tap-highlight-color:transparent}
-  .fs-fold summary::-webkit-details-marker{display:none}
-  .fs-fold summary .fs-meta{margin-left:auto;font-size:12px;color:var(--ink-faint);text-align:right}
-  .fs-fold .ff-ar{color:var(--ink-faint);font-size:11px;transition:transform .15s;flex:0 0 auto}
-  .fs-fold[open] .ff-ar{transform:rotate(180deg)}
-  .fs-fold summary:hover .caps{color:var(--ink)}
-  .fs-fold .ff-body{padding:2px 0 6px}
-  .fs-fold .ff-body .fs-sec{border-top:0;margin-top:8px;padding-top:0}
-
-  /* талон-строка «Салон+» в деле */
-  .up-line{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.55}
-  .up-line b{color:var(--ink)}
-
-  /* билет-тариф v2: герой-выгода, ключевая строка, состав за раскрытием */
-  .tk-hero{display:block;margin:10px 0 0;font:700 27px/1.05 var(--serif);color:var(--wax)}
-  .tk-hero small{display:block;font:400 12px/1.5 var(--sans);color:var(--ink-soft);margin-top:3px}
-  .tk-key{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;line-height:1.55}
-  .tk-more{margin-top:8px;font-size:12.5px}
-  .tk-more summary{cursor:pointer;color:var(--ink-faint);list-style:none;user-select:none}
-  .tk-more summary::-webkit-details-marker{display:none}
-  .tk-more summary::before{content:"▸";display:inline-block;margin-right:6px;transition:transform .15s}
-  .tk-more[open] summary::before{transform:rotate(90deg)}
-  .tk-more ul{margin:8px 0 0;padding-left:16px;display:grid;gap:5px;color:var(--ink-soft);line-height:1.5}
-
-  /* конструктор-механика: плитки-опции + живой билет с итогом */
-  .ctor{display:grid;grid-template-columns:1.35fr 1fr;gap:14px;margin-top:10px;align-items:start}
-  .ctor-opts{display:grid;gap:8px}
-  .ctor-opt{position:relative;display:grid;grid-template-columns:1fr auto;gap:2px 10px;text-align:left;
-    padding:11px 13px;border:1px solid var(--hairline-strong);border-radius:var(--r);
-    background:transparent;cursor:pointer;font:inherit;color:inherit;transition:border-color .12s,background .12s}
-  .ctor-opt .co-name{font-weight:600;font-size:13.5px}
-  .ctor-opt .co-hint{grid-column:1;font-size:12px;color:var(--ink-faint);line-height:1.45}
-  .ctor-opt .co-price{grid-column:2;grid-row:1/span 2;align-self:center;font-family:var(--mono);font-size:13px;white-space:nowrap}
-  .ctor-opt .co-tick{position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;
-    background:var(--wax);color:var(--sheet);font-size:11px;line-height:20px;text-align:center;
-    opacity:0;transform:scale(.5);transition:all .15s}
-  .ctor-opt.on{border-color:var(--wax);background:var(--wax-soft)}
-  .ctor-opt.on .co-tick{opacity:1;transform:none}
-  .ctor-ticket{border:1px solid var(--hairline-strong);border-left:4px solid var(--wax);
-    border-radius:var(--r);padding:14px;background:var(--sheet);position:sticky;top:10px}
-  .ct-comp{margin:10px 0;padding:0;list-style:none;display:grid;gap:5px;font-size:12.5px;color:var(--ink-soft);line-height:1.45}
-  .ct-comp li{display:flex;justify-content:space-between;gap:10px}
-  .ct-comp li small{color:var(--ink-faint)}
-  .ct-idle{color:var(--ink-faint)}
-  .ct-per{margin:6px 0 8px}
-  .ct-total{font:700 26px/1 var(--serif);margin:6px 0 2px}
-  .ct-note{margin:4px 0 8px}
-  @media(max-width:720px){.ctor{grid-template-columns:1fr}.ctor-ticket{position:static}}
-
-  /* чипы-навигация по делу (телефон) */
+  /* чипы-навигация по делу (телефон): рамка ленты остаётся здесь,
+     вид пилюль .oj задаёт polish15-account.css */
   .ord-jump{display:none;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0 2px;padding-bottom:2px;scrollbar-width:none}
   .ord-jump::-webkit-scrollbar{display:none}
-  .ord-jump .oj{flex:0 0 auto;font:inherit;font-size:12.5px;line-height:1;padding:10px 14px;border:1px solid var(--hairline-strong);border-radius:999px;background:var(--paper-2);color:var(--ink-soft);cursor:pointer;white-space:nowrap}
-  .ord-jump .oj.hot{border-color:var(--wax);color:var(--wax);font-weight:600}
-  .ord-jump .oj:active{background:var(--mark)}
-
-  /* добровольная благодарность после завершённого дела */
-  .thanks-card{position:relative;overflow:hidden;border:1px solid var(--hairline-strong);
-    border-left:4px solid #B98A2F;border-radius:4px;background:var(--sheet);
-    padding:clamp(16px,2.5vw,22px);box-shadow:0 14px 32px -28px rgba(34,32,27,.55)}
-  .thanks-card::after{content:"¶";position:absolute;right:14px;top:-15px;
-    font-family:var(--serif);font-size:82px;line-height:1;color:#B98A2F;opacity:.07;pointer-events:none}
-  .thanks-card .th-title{font-family:var(--serif);font-size:clamp(19px,2.5vw,24px);
-    font-weight:450;line-height:1.3;margin:5px 0 7px;max-width:26ch}
-  .thanks-card .th-copy{font-size:13.5px;line-height:1.55;color:var(--ink-soft);max-width:58ch}
-  .th-amounts{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 10px}
-  .th-chip{min-height:40px;padding:8px 13px;border:1px solid var(--hairline-strong);
-    border-radius:999px;background:transparent;color:var(--ink);font:600 13px var(--mono);cursor:pointer}
-  .th-chip:hover{border-color:var(--wax);color:var(--wax)}
-  .th-chip.on,.th-chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
-  .th-own{width:142px;min-height:42px;padding:9px 11px;border:1px solid var(--hairline-strong);
-    border-radius:var(--r);background:transparent;color:var(--ink);font:16px var(--mono)}
-  .th-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
-  .th-fine{font-size:11.5px;line-height:1.5;color:var(--ink-faint);margin-top:10px}
-  .th-paid{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:7px 10px;
-    border:1px solid color-mix(in srgb,var(--verify) 38%,var(--hairline));border-radius:999px;
-    color:var(--verify);font-size:12px;font-weight:600}
 
   /* ── адаптив каркаса ── */
   @media(max-width:880px){
@@ -582,32 +211,11 @@
     .cbar-card .cbp-name{white-space:normal;overflow:visible;text-overflow:clip}
     .cab-id{row-gap:4px}
     .cab-id .ci-dot{display:none}
-    .act-row{flex-direction:column}
-    .act-row .btn{width:100%}
-    .oci-row{grid-template-columns:22px minmax(0,1fr);padding:10px 11px}
-    .oci-row.child{padding-left:20px}
-    .oci-price{grid-column:2;margin-top:2px}
-    .chat-m{max-width:100%}
-    .stg-row .st-tag{display:none}
     .sheet-pad{padding:16px 14px}
-    .fs-sec{margin-top:22px;padding-top:14px}
-    .chat-feed{max-height:56vh}
-    .chat-form{flex-direction:column;align-items:stretch}
-    .chat-form .btn{width:100%}
     .cbn-card{padding:14px}
-    .payslip .ps-head{padding:12px 14px 8px}
-    .payslip .ps-body{padding:4px 14px 8px}
-    .tickets{grid-template-columns:1fr}
-    .ticket .tk-tag{min-height:0}
-    .club-strip{padding-left:22px}
-    .seg{width:100%}
-    .seg button{flex:1}
+
     .ovg{grid-template-columns:1fr 1fr;gap:10px}
     .ov-line{min-height:0}
-    .thanks-card{padding:16px 14px}
-    .th-actions{align-items:stretch}
-    .th-own{width:100%}
-    .th-actions .btn{width:100%}
     .cab-login{margin:0 -6px}
     .cab-login-story{padding:22px 18px 20px}
     .cab-login-story h2{font-size:29px}

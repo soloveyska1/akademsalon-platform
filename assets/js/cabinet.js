@@ -51,7 +51,7 @@ function initCabinet() {
     if (!notiSupported()) return;
     try {
       Notification.requestPermission().then(function (p) {
-        toast(p === 'granted' ? 'Уведомления включены — догонят вас в любой вкладке 🔔'
+        toast(p === 'granted' ? 'Уведомления включены — догонят вас в любой вкладке'
                               : 'Хорошо, без уведомлений — всё останется здесь, в кабинете');
         renderCurrent();
       });
@@ -119,9 +119,9 @@ function initCabinet() {
   function deadlineChip(o) {
     var n = daysLeft(o);
     if (n === null) return '';
-    if (n < 0) return '<span class="dl-chip late">⏰ срок вышел — обсудите с мастером</span>';
-    if (n === 0) return '<span class="dl-chip warn">⏰ срок результата сегодня</span>';
-    return '<span class="dl-chip' + (n <= 3 ? ' warn' : '') + '">⏳ до срока результата ' + n + ' ' +
+    if (n < 0) return '<span class="dl-chip late">срок вышел — обсудите с мастером</span>';
+    if (n === 0) return '<span class="dl-chip warn">срок результата сегодня</span>';
+    return '<span class="dl-chip' + (n <= 3 ? ' warn' : '') + '">до срока результата ' + n + ' ' +
       plural(n, 'день', 'дня', 'дней') + '</span>';
   }
   function tokenFor(id) {
@@ -218,7 +218,7 @@ function initCabinet() {
   function giftRestStrip(o) {
     if (!o || !o.gift_code || o.status !== 'done') return '';
     if (S.store.get('salon_grst_' + o.id)) return '';
-    return '<div class="due-box" id="giftRest" data-oid="' + o.id + '" data-code="' + esc(o.gift_code) + '" hidden></div>';
+    return '<div class="account-notice" id="giftRest" data-oid="' + o.id + '" data-code="' + esc(o.gift_code) + '" hidden></div>';
   }
   function giftRestFill() {
     var box = document.getElementById('giftRest');
@@ -227,12 +227,13 @@ function initCabinet() {
     function show(bal) {
       if (!(bal > 0)) { box.remove(); return; }
       box.innerHTML =
-        '<div class="dr"><span>💳 Остаток на сертификате ' + esc(code) + '</span><b>' + money(bal) + ' ₽</b></div>' +
-        '<p class="petit" style="margin:6px 0 8px">Он не сгорел: можно оплатить редактуру ваших слайдов и доклада, репетицию самостоятельных ответов, нормоконтроль или новую консультационную позицию.</p>' +
-        '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
-        '<a class="btn btn-line" href="configurator.html?service=df&gift=' + encodeURIComponent(code) + '">🎤 Редактура выступления</a>' +
-        '<a class="btn btn-line" href="configurator.html?gift=' + encodeURIComponent(code) + '">📝 Новая заявка с кодом</a>' +
-        '<button type="button" class="linkbtn" id="giftRestHide">не напоминать</button></div>';
+        '<span class="account-notice__mark" aria-hidden="true">₽</span>' +
+        '<div><strong>Остаток на сертификате <span class="account-code">' + esc(code) + '</span> — ' + money(bal) + ' ₽</strong>' +
+        '<p>Он не сгорел: остатком оплачивается редактура слайдов и доклада, репетиция самостоятельных ответов, нормоконтроль или новая консультационная позиция.</p>' +
+        '<span class="gift-actions">' +
+        '<a class="line-link" href="configurator.html?service=df&gift=' + encodeURIComponent(code) + '">Редактура выступления <span aria-hidden="true">→</span></a>' +
+        '<a class="line-link" href="configurator.html?gift=' + encodeURIComponent(code) + '">Новая заявка с кодом <span aria-hidden="true">→</span></a>' +
+        '<button type="button" class="line-link" id="giftRestHide">Не напоминать</button></span></div>';
       box.hidden = false;
       var h = box.querySelector('#giftRestHide');
       if (h) h.addEventListener('click', function () {
@@ -252,9 +253,13 @@ function initCabinet() {
     var p = st.me && st.me.promo_hint;
     if (!p || !p.code) return '';
     if (S.store.get('salon_ph_' + p.code)) return '';
-    return '<div class="club-strip reveal" id="promoHint"><span class="cs-item">🏷 Промокод <b>' + esc(p.code) + '</b> ждёт: ' + esc(p.label || 'скидка') + '</span>' +
-      '<span class="cs-dot">·</span><a class="linkbtn wax cs-more" href="configurator.html?promo=' + encodeURIComponent(p.code) + '">применить к новой заявке</a>' +
-      '<button type="button" class="linkbtn cs-more" id="promoHintHide" style="margin-left:8px">скрыть</button></div>';
+    return '<div class="account-notice reveal" id="promoHint">' +
+      '<span class="account-notice__mark" aria-hidden="true">%</span>' +
+      '<div><strong>Промокод <span class="account-code">' + esc(p.code) + '</span> не использован</strong>' +
+      '<p>' + esc(p.label || 'скидка') + ' · применяется к новой заявке</p></div>' +
+      '<span class="account-notice__acts">' +
+      '<a class="line-link" href="configurator.html?promo=' + encodeURIComponent(p.code) + '">Применить <span aria-hidden="true">→</span></a>' +
+      '<button type="button" class="line-link" id="promoHintHide">Скрыть</button></span></div>';
   }
   function toast(msg) { if (S.toast) S.toast(msg); }
 
@@ -307,7 +312,7 @@ function initCabinet() {
       : '';
     var mainAction = f.email_login
       ? '<button type="button" class="btn btn-wax btn-block cab-login-main" id="cabEmailTgl" aria-expanded="false" aria-controls="cabEmailWrap">' +
-        '<span aria-hidden="true">✉</span> Продолжить по почте <span class="ar">→</span></button>'
+        'Продолжить по почте <span class="ar">→</span></button>'
       : '<button type="button" class="btn btn-wax btn-block cab-login-main" id="cabTg">Продолжить с Telegram <span class="ar">→</span></button>';
     return '<main class="cab-login reveal">' +
       '<section class="cab-login-card" aria-labelledby="cabLoginTitle">' +
@@ -400,7 +405,7 @@ function initCabinet() {
       S.api.setUser(r.user || null);
       var gt = S.api.guestTokens();
       var fin = function () {
-        toast('Вы вошли' + (r.user && r.user.name ? ', ' + r.user.name : '') + ' ✓');
+        toast('Вы вошли' + (r.user && r.user.name ? ', ' + r.user.name : ''));
         loadList();
       };
       if (gt.length) S.api.post('/orders/claim', { tokens: gt }).then(fin, fin);
@@ -431,7 +436,7 @@ function initCabinet() {
       if (!r.ok) { toast('Не получилось связаться с картотекой — попробуйте ещё раз'); return; }
       if (!(r.orders || []).length) { toast('По этому коду дело не нашлось — проверьте ссылку'); return; }
       S.api.addGuestToken(tok);
-      toast('Дело открыто на этом устройстве ✓');
+      toast('Дело открыто на этом устройстве');
       loadList();
     });
   }
@@ -439,24 +444,31 @@ function initCabinet() {
   function tplEmpty() {
     /* порядок по значимости: сначала дело (здесь — приглашение его завести),
        клубные карточки — после; личность живёт в стойке каркаса */
-    return '<div class="sheet sheet-pad stacked reveal" style="text-align:center">' +
-      '<p class="caps">Картотека пуста</p>' +
-      '<h2 class="ord-type">Заказов пока нет</h2>' +
-      '<p class="petit" style="margin-bottom:16px">Соберите смету в конфигураторе — заявка попадёт к мастеру мгновенно, а статус появится прямо здесь.</p>' +
-      '<div class="act-row" style="justify-content:center">' +
+    return '<div class="case-state case-state--empty reveal">' +
+      '<header><span>EMPTY</span><i aria-hidden="true"></i></header>' +
+      '<div class="case-state__body">' +
+      '<span class="case-state__mark" aria-hidden="true">+</span>' +
+      '<h2>Заказов пока нет</h2>' +
+      '<p>Соберите смету в конфигураторе — заявка попадёт к мастеру мгновенно, а статус появится прямо здесь.</p>' +
+      '</div>' +
+      '<footer class="case-acts">' +
       '<a class="btn btn-wax" href="configurator.html">Рассчитать работу <span class="ar">→</span></a>' +
-      '<a class="btn btn-line" href="configurator.html?service=pl">Начать с разбора плана · 3 000 ₽</a></div>' +
+      '<a class="btn btn-line" href="configurator.html?service=pl">Начать с разбора плана · 3 000 ₽</a></footer>' +
       '</div>' + clubBlock();
   }
 
   /* -------- секция-раскрывашка: второстепенное свёрнуто, но под рукой -------- */
   function fold(id, summary, meta, inner, open) {
     if (!inner) return '';
-    return '<details class="fs-fold" id="' + id + '"' + (open ? ' open' : '') + '>' +
-      '<summary><span class="caps">' + summary + '</span>' +
-      (meta ? '<span class="fs-meta">' + meta + '</span>' : '') +
-      '<span class="ff-ar" aria-hidden="true">▾</span></summary>' +
-      '<div class="ff-body">' + inner + '</div></details>';
+    /* раскрытие — словом, как служебные кнопки в шапках разделов эталона:
+       глиф-шеврона в этом языке нет, состояние читается текстом */
+    return '<details class="fs-fold case-fold" id="' + id + '"' + (open ? ' open' : '') + '>' +
+      '<summary><h3>' + summary + '</h3>' +
+      (meta ? '<span class="case-sec__note">' + meta + '</span>' : '') +
+      '<span class="case-fold__toggle">' +
+      '<span class="case-fold__shut">развернуть</span>' +
+      '<span class="case-fold__open">свернуть</span></span></summary>' +
+      '<div class="ff-body case-fold__body">' + inner + '</div></details>';
   }
 
   /* незакрытая оплата подписки не прячется никогда: тонкая лента сверху,
@@ -464,23 +476,34 @@ function initCabinet() {
   function subPendingBand() {
     var p = st.me && st.me.sub_pending;
     if (!p) return '';
-    return '<div class="pause-band fin-band reveal"><span class="pb-ic">⭐</span><span class="pb-txt">' +
-      'Подписка «' + esc(p.label) + '» ждёт оплаты — <b>' + money(p.price) + ' ₽</b>. ' +
-      '<button type="button" class="linkbtn" data-jump="plusCard">К оплате подписки ↓</button></span></div>';
+    return '<div class="account-notice account-notice--wax reveal">' +
+      '<span class="account-notice__mark" aria-hidden="true">АС+</span>' +
+      '<div><strong>Абонемент «' + esc(p.label) + '» ждёт оплаты — ' + money(p.price) + ' ₽</strong>' +
+      '<p>Один платёж целиком, без этапов и автосписаний.</p></div>' +
+      '<span class="account-notice__acts">' +
+      '<button type="button" class="line-link" data-jump="plusCard">К оплате абонемента</button></span></div>';
   }
 
   function tplError() {
-    return '<div class="sheet sheet-pad stacked reveal" style="text-align:center">' +
-      '<p class="petit">Не получилось связаться с картотекой. Проверьте интернет и попробуйте ещё раз.</p>' +
-      '<button type="button" class="btn btn-line" id="cabRetry" style="margin-top:10px">Повторить</button>' +
+    /* Состояние называем кодом и словами, не цветом (DESIGN-STANDARDS §3). */
+    return '<div class="case-state case-state--error reveal">' +
+      '<header><span>503</span><i aria-hidden="true"></i></header>' +
+      '<div class="case-state__body">' +
+      '<span class="case-state__mark" aria-hidden="true">×</span>' +
+      '<h2>Картотека не отвечает</h2>' +
+      '<p>Проверьте соединение и попробуйте ещё раз. Ваши дела и платежи в порядке — ' +
+      'это сбой связи с сервером, а не с заказом. Повторная оплата не требуется.</p>' +
+      '</div>' +
+      '<footer class="case-acts">' +
+      '<button type="button" class="btn btn-line" id="cabRetry">Повторить</button></footer>' +
       '</div>';
   }
 
   function notiRow() {
     /* однострочное приглашение включить уведомления устройства */
     if (!notiSupported() || Notification.permission !== 'default') return '';
-    return '<p class="petit reveal" style="margin:2px 0 10px">' +
-      '<button type="button" class="linkbtn wax" id="cabNotiBtn">🔔 Включить уведомления на устройстве</button>' +
+    return '<p class="account-note account-note--row reveal">' +
+      '<button type="button" class="line-link" id="cabNotiBtn">Включить уведомления на устройстве</button>' +
       ' — статусы, файлы и сообщения догонят вас, даже если вкладка в фоне.</p>';
   }
 
@@ -496,11 +519,11 @@ function initCabinet() {
     [['vk', 'VK ID'], ['mailru', 'Mail ID'], ['max', 'MAX']].forEach(function (p) {
       if (!f[p[0] + '_login']) return;
       bits.push(linked.indexOf(p[0]) >= 0
-        ? '<span style="color:var(--verify,#3D6B50)">' + p[1] + ' ✓</span>'
+        ? '<span class="account-linked">' + p[1] + ' — привязан</span>'
         : '<button type="button" class="linkbtn" data-oauth-link="' + p[0] + '">привязать ' + p[1] + '</button>');
     });
     if (!bits.length) return '';
-    return '<p class="petit reveal" style="margin:2px 0 10px">Входы: Telegram/почта · ' +
+    return '<p class="account-note account-note--row reveal">Входы: Telegram/почта · ' +
       bits.join(' · ') + '</p>';
   }
 
@@ -585,8 +608,12 @@ function initCabinet() {
     if (!st.me) {
       /* гость: подписки привязаны к аккаунту — тонкий тизер со входом */
       if (!S.api.token()) {
-        return '<div class="club-strip reveal"><span>⭐ Абонемент «Салон+» — скидка на каждый заказ, приоритет и куратор сессии</span>' +
-          '<button type="button" class="linkbtn wax cs-more" id="cabTg2">войти и подключить</button></div>';
+        return '<div class="account-notice reveal">' +
+          '<span class="account-notice__mark" aria-hidden="true">АС+</span>' +
+          '<div><strong>Абонемент «Салон+»</strong>' +
+          '<p>Скидка на каждый заказ, приоритет в согласованном графике и куратор сессии.</p></div>' +
+          '<span class="account-notice__acts">' +
+          '<button type="button" class="line-link" id="cabTg2">Войти и подключить</button></span></div>';
       }
       return '';
     }
@@ -597,18 +624,22 @@ function initCabinet() {
     }
     var b = st.me.bonus || {};
     var sub = st.me.sub;
-    var bits = ['<span class="cs-item">💎 <b>' + money(b.balance || 0) + '</b> бонусов</span>'];
-    var exp = (b.expiring || [])[0];
-    if (exp) bits.push('<span class="cs-item cs-warn">⏳ ' + exp.amount + ' сгорят ' + dt(exp.at).slice(0, 5) + '</span>');
     var depB = (st.me.deposit || {}).balance || 0;
-    if (depB) bits.push('<span class="cs-item">💼 <b>' + money(depB) + ' ₽</b> на депозите</span>');
-    bits.push(sub
-      ? '<span class="cs-item">' + esc(sub.emoji || '⭐') + ' Салон+ до <b>' + esc(sub.expires_ru) + '</b></span>'
-      : '<span class="cs-item">⭐ Салон+ <span class="petit">от 449 ₽</span></span>');
+    /* Счёт одной строкой: сумма — в заголовке, оговорки — под ним.
+       Состояние называем словом, а не цветом (DESIGN-STANDARDS §3). */
+    var head = money(b.balance || 0) + ' бонусов';
+    if (depB) head += ' · ' + money(depB) + ' ₽ на депозите';
+    var notes = [];
+    var exp = (b.expiring || [])[0];
+    if (exp) notes.push('Сгорают ' + exp.amount + ' — ' + dt(exp.at).slice(0, 5));
+    notes.push(sub ? 'Салон+ действует до ' + esc(sub.expires_ru) : 'Салон+ — от 449 ₽ в месяц');
     return promoHintStrip() +
-      '<div class="club-strip reveal">' + bits.join('<span class="cs-dot">·</span>') +
-      '<button type="button" class="linkbtn cs-more" id="clubToggle">' +
-      (st.clubOpen ? 'свернуть' : (sub ? 'подробнее и куратор' : 'бонусы и подписка')) + '</button></div>' +
+      '<div class="account-notice reveal">' +
+      '<span class="account-notice__mark" aria-hidden="true">₽</span>' +
+      '<div><strong>' + head + '</strong><p>' + notes.join(' · ') + '</p></div>' +
+      '<span class="account-notice__acts">' +
+      '<button type="button" class="line-link" id="clubToggle">' +
+      (st.clubOpen ? 'Свернуть' : (sub ? 'Подробнее и куратор' : 'Бонусы и подписка')) + '</button></span></div>' +
       (st.clubOpen ? bonusCard() + depCard() + subCard() : '');
   }
 
@@ -616,35 +647,47 @@ function initCabinet() {
   function bonusCard() {
     if (!st.me || !st.me.bonus) return '';
     var b = st.me.bonus;
-    var exp = (b.expiring || []).map(function (e) {
-      return e.amount + ' — до ' + dt(e.at).slice(0, 5);
-    }).join(' · ');
+    var expiring = (b.expiring || []);
+    var facts = expiring.length
+      ? '<div class="bonus-list bonus-list--expiring">' + expiring.map(function (e) {
+          return '<span><b>' + e.amount + '</b><small>сгорают ' + dt(e.at).slice(0, 5) + ' — списываются первыми</small></span>';
+        }).join('') + '</div>'
+      : '<div class="bonus-list">' +
+        '<span><b>1 : 1</b><small>один бонус равен одному рублю скидки</small></span>' +
+        '<span><b>20 %</b><small>максимум списания с одного заказа</small></span>' +
+        '<span><b>180</b><small>дней действует начисление за пополнение депозита</small></span>' +
+        '</div>';
     var led = '';
     if (st.ledgerOpen) {
-      led = '<div class="cbn-ledger" id="bonusLedger">' +
-        (st.ledger === null ? '<p class="petit" style="padding:8px 0">Листаем журнал…</p>'
+      led = '<div class="account-ledger" id="bonusLedger">' +
+        (st.ledger === null ? '<p class="account-ledger__empty">Листаем журнал…</p>'
           : (st.ledger.length ? st.ledger.map(function (r) {
               var plus = r.delta > 0;
               if (!r.delta) plus = null;
-              return '<div class="bl-row">' +
-                '<span class="bl-delta ' + (plus === null ? '' : plus ? 'plus' : 'minus') + '">' +
+              return '<div class="account-ledger__row">' +
+                '<span class="account-ledger__delta ' + (plus === null ? '' : plus ? 'is-plus' : 'is-minus') + '">' +
                   (plus === null ? '·' : (plus ? '+' : '') + r.delta) + '</span>' +
-                '<span class="bl-what">' + esc(r.label || '') + (r.note ? ' · ' + esc(r.note) : '') +
-                  (r.expires_at && r.delta > 0 ? ' <span class="bl-when">до ' + dt(r.expires_at).slice(0, 5) + '</span>' : '') + '</span>' +
-                '<span class="bl-when">' + dt(r.at) + '</span></div>';
-            }).join('') : '<p class="petit" style="padding:8px 0">Движений пока нет — бонусы появятся после первого заказа.</p>')) +
+                '<span class="account-ledger__what">' + esc(r.label || '') + (r.note ? ' · ' + esc(r.note) : '') +
+                  (r.expires_at && r.delta > 0 ? ' <i class="account-ledger__at">до ' + dt(r.expires_at).slice(0, 5) + '</i>' : '') + '</span>' +
+                '<span class="account-ledger__at">' + dt(r.at) + '</span></div>';
+            }).join('') : '<p class="account-ledger__empty">Движений пока нет — бонусы появятся после первого заказа.</p>')) +
         '</div>';
     }
-    return '<div class="cbn-card reveal">' +
-      '<div><span class="bc-cap">Бонусный счёт</span>' +
-      '<span class="bc-num">' + money(b.balance) + '</span></div>' +
-      '<div class="bc-side">' +
-        (exp ? '<p class="bc-exp">⏳ Сгорание: ' + esc(exp) + '</p>'
-             : '<p class="bc-exp">1 бонус = 1 ₽ скидки · списание до 20% заказа</p>') +
-        '<div class="bc-act"><button type="button" class="btn btn-line" id="bonusLogBtn">' +
-          (st.ledgerOpen ? 'Скрыть журнал' : 'Журнал начислений') + '</button>' +
-        '<button type="button" class="btn btn-line" id="bonusRefBtn">Пригласить друга</button></div>' +
-      '</div>' + led + '</div>';
+    return '<section class="account-section reveal">' +
+      '<header><div><p class="eyebrow">Бонусный счёт</p>' +
+      '<h2>Бонусы — единицы скидки, не деньги.</h2></div>' +
+      '<a class="line-link" href="loyalty.html">Правила программы <span aria-hidden="true">→</span></a></header>' +
+      '<div class="account-panel">' +
+      '<header><span>Баланс счёта</span><small>АС · BON</small></header>' +
+      '<strong class="account-panel__figure">' + money(b.balance) + ' бонусов</strong>' +
+      '<p>Списание применяется один раз к одному заказу и только до первой оплаты. ' +
+      'Стоимость абонемента бонусами не оплачивается.</p>' +
+      facts +
+      '<div class="account-panel__acts">' +
+      '<button type="button" class="button button--secondary" id="bonusLogBtn">' +
+      (st.ledgerOpen ? 'Скрыть журнал' : 'Журнал начислений') + '</button>' +
+      '<button type="button" class="button button--secondary" id="bonusRefBtn">Пригласить друга</button></div>' +
+      '</div>' + led + '</section>';
   }
 
   /* -------- депозит мастерской: кошелёк-аванс с бонусом за пополнение ------
@@ -655,83 +698,106 @@ function initCabinet() {
     if (!d) return '';
     var led = '';
     if (st.depLedgerOpen) {
-      led = '<div class="cbn-ledger" id="depLedger">' +
-        (st.depLedger === null ? '<p class="petit" style="padding:8px 0">Листаем журнал…</p>'
+      led = '<div class="account-ledger" id="depLedger">' +
+        (st.depLedger === null ? '<p class="account-ledger__empty">Листаем журнал…</p>'
           : (st.depLedger.length ? st.depLedger.map(function (r) {
               var plus = r.delta > 0;
-              return '<div class="bl-row">' +
-                '<span class="bl-delta ' + (plus ? 'plus' : 'minus') + '">' +
+              return '<div class="account-ledger__row">' +
+                '<span class="account-ledger__delta ' + (plus ? 'is-plus' : 'is-minus') + '">' +
                   (plus ? '+' : '−') + money(Math.abs(r.delta)) + '</span>' +
-                '<span class="bl-what">' + esc(r.note || r.kind) +
+                '<span class="account-ledger__what">' + esc(r.note || r.kind) +
                   (r.order_id ? ' · заказ №' + r.order_id : '') + '</span>' +
-                '<span class="bl-when">' + dt(r.at) + '</span></div>';
-            }).join('') : '<p class="petit" style="padding:8px 0">Движений пока нет — кошелёк ждёт первого пополнения.</p>')) +
+                '<span class="account-ledger__at">' + dt(r.at) + '</span></div>';
+            }).join('') : '<p class="account-ledger__empty">Движений пока нет — счёт ждёт первого пополнения.</p>')) +
         '</div>';
     }
     var tops = (d.can_topup !== false)
-      ? '<div class="bc-act">' + [20000, 30000, 45000, 60000].map(function (a) {
+      ? '<div class="deposit-tiers" aria-label="Ступени бонусного начисления">' + [20000, 30000, 45000, 60000].map(function (a) {
           var pct = 0;
           (d.rates || []).forEach(function (rr) { if (a >= rr.from) pct = rr.pct; });
-          return '<button type="button" class="btn btn-line" data-dep-topup="' + a + '">+' +
-            money(a) + ' <small>· бонус +' + pct + '%</small></button>';
+          return '<button type="button" data-dep-topup="' + a + '">' +
+            '<span class="deposit-tiers__sum">' + money(a) + ' ₽</span>' +
+            '<b>+' + pct + ' %</b><small>бонусами</small></button>';
         }).join('') + '</div>'
-      : '<p class="bc-exp">Потолок кошелька достигнут — сначала потратьте часть на этапы.</p>';
-    return '<div class="cbn-card reveal" id="depCard">' +
-      '<div><span class="bc-cap">💼 Депозит мастерской</span>' +
-      '<span class="bc-num">' + money(d.balance) + '</span></div>' +
-      '<div class="bc-side">' +
-      '<p class="bc-exp">Пополнили кошелёк — бонусы сверху: от +8% за 20 000 ₽ до +15% за 60 000 ₽. ' +
-      'Кошельком оплачиваются этапы заказов в один клик; официальный чек и подтверждение относятся к пополнению.</p>' +
+      : '<div class="account-notice account-notice--wax">' +
+        '<span class="account-notice__mark" aria-hidden="true">≤</span>' +
+        '<div><strong>Потолок счёта достигнут</strong>' +
+        '<p>Пополнение откроется снова, когда часть остатка уйдёт на согласованные этапы.</p></div></div>';
+    var bon = st.me && st.me.bonus;
+    return '<section class="account-section reveal" id="depCard">' +
+      '<header><div><p class="eyebrow">Депозит мастерской</p>' +
+      '<h2>Аванс в счёт согласованных этапов.</h2></div>' +
+      '<a class="line-link" href="deposit.html">Условия депозита <span aria-hidden="true">→</span></a></header>' +
+      '<div class="deposit-calculator">' +
+      '<div class="deposit-calculator__controls">' +
+      '<p class="eyebrow">Пополнение</p><h3>Выберите сумму аванса.</h3>' +
+      '<p>Ставка начисления зависит от суммы пополнения. Из денежного остатка этап оплачивается целиком; ' +
+      'официальный чек относится к пополнению, а не к списанию.</p>' +
       tops +
-      '<div class="bc-act"><button type="button" class="btn btn-line" id="depLogBtn">' +
-        (st.depLedgerOpen ? 'Скрыть журнал' : 'Журнал кошелька') + '</button></div>' +
-      '</div>' + led + '</div>';
+      '<div class="account-panel__acts"><button type="button" class="button button--secondary" id="depLogBtn">' +
+      (st.depLedgerOpen ? 'Скрыть журнал' : 'Журнал счёта') + '</button></div>' +
+      '</div>' +
+      '<aside class="deposit-ledger-card">' +
+      '<header><span>Счёт мастерской</span><small>АС · DEP</small></header>' +
+      '<div><small>Денежный остаток</small><strong>' + money(d.balance) + ' ₽</strong>' +
+      '<p>аванс для оплаты согласованных этапов</p></div>' +
+      (bon ? '<div><small>Бонусный счёт</small><strong>+' + money(bon.balance || 0) + '</strong>' +
+        '<p>начисление за пополнения, срок действия 180 дней</p></div>' : '') +
+      '<footer><span>Деньги и бонусы</span>' +
+      '<b>учитываются раздельно и не складываются в одну денежную сумму</b></footer>' +
+      '</aside></div>' + led + '</section>';
   }
 
   /* -------- подписка «Салон+»: карточка, витрина, конструктор, куратор --------
      У подписки СВОЙ платёжный порядок (не заказ): один перевод, без этапов,
      без бонусов; «я оплатил» → сверка мастером → активация. */
   function subPendingCard(p) {
-    var head = '<div class="cbn-card reveal" id="plusCard">' +
-      '<div><span class="bc-cap">' + esc(p.emoji || '⭐') + ' Подписка ' + esc(p.label) + '</span>' +
-      '<span class="bc-num" style="font-size:20px">ждёт оплаты</span></div>' +
-      '<div class="bc-side"><p class="bc-exp">' + esc(p.period_label) + ' · один перевод ' + money(p.price) + ' ₽. ' +
-      'Бонусы и скидки к подписке не применяются.</p>' +
-      '<div class="bc-act"><button type="button" class="btn btn-line" id="plusToggle">' +
-      (st.plusOpen ? 'Свернуть планы' : 'Выбрать другой план') + '</button></div></div></div>';
-    var body;
+    var controls, receiptNote, receiptAct;
     if (p.claimed) {
-      body = '<div class="sheet sheet-pad stacked reveal" id="subPaySheet">' +
-        '<p class="caps">Оплата подписки</p>' +
-        '<div class="req-slip"><span class="caps">Отметка «оплатил» у мастера</span>' +
-        '<p class="petit" style="margin:8px 0 0">Сверяем поступление <b>' + money(p.price) + ' ₽</b> за «' + esc(p.label) + '» — ' +
-        'как подтвердим, подписка включится сама и придёт уведомление.</p></div>' +
-        '<div class="act-row">' +
-        '<button type="button" class="btn btn-line" data-sub-unpaid="' + p.id + '">↩️ Я ещё не оплатил — снять отметку</button>' +
-        '</div></div>';
+      controls = '<p class="eyebrow">Сверка платежа</p><h3>Отметка «оплатил» у мастера.</h3>' +
+        '<p>Сверяем поступление ' + money(p.price) + ' ₽ за «' + esc(p.label) + '». ' +
+        'Как подтвердим — абонемент включится сам и придёт уведомление.</p>' +
+        '<div class="account-panel__acts">' +
+        '<button type="button" class="button button--secondary" data-sub-unpaid="' + p.id + '">Я ещё не оплатил — снять отметку</button>' +
+        '</div>';
+      receiptNote = '<div class="deposit-receipt__note"><strong>На сверке</strong>' +
+        '<p>Платёж отмечен вами и ждёт подтверждения мастером. Повторно переводить сумму не нужно.</p></div>';
+      receiptAct = '';
     } else {
       var slip = p.requisites
-        ? '<div class="payslip">' +
-          '<div class="ps-head"><span class="caps">Платёж за подписку</span>' +
-          '<span class="ps-due">' + money(p.price) + ' ₽</span></div>' +
-          '<div class="ps-body">' + reqRows(p.requisites) + '</div>' +
-          '<div class="ps-steps"><span><b>1</b> переведите сумму</span><span class="ps-ar">→</span>' +
-          '<span><b>2</b> отметьте «Я оплатил(а)»</span><span class="ps-ar">→</span>' +
-          '<span><b>3</b> сверим — подписка включится сама</span></div></div>'
-        : '<p class="petit" style="margin-bottom:4px">Реквизиты появятся здесь в течение пары минут — либо оформите в Telegram: <a class="link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a>.</p>';
-      body = '<div class="sheet sheet-pad stacked reveal" id="subPaySheet">' +
-        '<p class="caps">Оплата подписки</p>' +
-        '<p class="petit" style="margin-bottom:10px">' + esc(p.label) + ' · ' + esc(p.period_label) +
-        '. Это не заказ: один платёж без этапов и планов оплат, автосписаний нет.</p>' +
-        slip +
-        '<div class="act-row">' +
-        (p.pay_online ? '<button type="button" class="btn btn-wax" data-sub-pay="' + p.id + '">💳 Оплатить картой онлайн</button>' : '') +
-        '<button type="button" class="btn ' + (p.pay_online ? 'btn-line' : 'btn-wax') + '" data-sub-paid="' + p.id + '">Я оплатил(а) подписку</button>' +
-        '<button type="button" class="btn btn-line" data-sub-cancel="' + p.id + '">Отменить оформление</button></div>' +
-        '<p class="petit" style="margin-top:8px">Оплата подписки — деньгами целиком, бонусы к ней не применяются (<a class="link" href="loyalty.html" target="_blank" rel="noopener">правила, §5</a>).</p>' +
-        '</div>';
+        ? '<div class="pay-requisites">' + reqRows(p.requisites) + '</div>' +
+          '<div class="account-steps"><span><b>01</b>переведите сумму по реквизитам</span>' +
+          '<span><b>02</b>отметьте «Я оплатил(а)»</span>' +
+          '<span><b>03</b>сверим — абонемент включится сам</span></div>'
+        : '<p>Реквизиты появятся здесь в течение пары минут — либо оформите в Telegram: ' +
+          '<a class="line-link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a></p>';
+      controls = '<p class="eyebrow">Реквизиты для перевода</p><h3>Один платёж целиком.</h3>' +
+        '<p>' + esc(p.label) + ' · ' + esc(p.period_label) +
+        '. Это не заказ: без этапов и планов оплат, автосписаний нет.</p>' + slip +
+        '<div class="account-panel__acts">' +
+        (p.pay_online ? '<button type="button" class="button button--secondary" data-sub-paid="' + p.id + '">Я оплатил(а) абонемент</button>'
+                      : '') +
+        '<button type="button" class="button button--secondary" data-sub-cancel="' + p.id + '">Отменить оформление</button></div>';
+      receiptNote = '<div class="deposit-receipt__note"><strong>Важно</strong>' +
+        '<p>Абонемент оплачивается деньгами целиком: бонусы и скидки к нему не применяются ' +
+        '(<a class="line-link" href="loyalty.html" target="_blank" rel="noopener">правила, §5</a>).</p></div>';
+      receiptAct = p.pay_online
+        ? '<button type="button" class="button button--primary" data-sub-pay="' + p.id + '">Оплатить картой онлайн</button>'
+        : '<button type="button" class="button button--primary" data-sub-paid="' + p.id + '">Я оплатил(а) абонемент</button>';
     }
-    return head + body;
+    return '<section class="account-section reveal" id="plusCard">' +
+      '<header><div><p class="eyebrow">Абонемент «Салон+»</p>' +
+      '<h2>Оформление ждёт оплаты.</h2></div>' +
+      '<button type="button" class="line-link" id="plusToggle">' +
+      (st.plusOpen ? 'Свернуть планы' : 'Выбрать другой план') + '</button></header>' +
+      '<div class="deposit-calculator reveal" id="subPaySheet">' +
+      '<div class="deposit-calculator__controls">' + controls + '</div>' +
+      '<aside class="deposit-receipt">' +
+      '<header><span>Платёж за абонемент</span><small>АС · PLUS</small></header>' +
+      '<dl><div><dt>План</dt><dd>' + esc(p.label) + '</dd></div>' +
+      '<div><dt>Срок действия</dt><dd>' + esc(p.period_label) + '</dd></div>' +
+      '<div><dt>К оплате деньгами</dt><dd>' + money(p.price) + ' ₽</dd></div></dl>' +
+      receiptNote + receiptAct + '</aside></div></section>';
   }
 
   function subCard() {
@@ -739,35 +805,68 @@ function initCabinet() {
     var pend = st.me && st.me.sub_pending;
     if (pend) return subPendingCard(pend) + (st.plusOpen ? plusSection() : '');
     var sub = st.me && st.me.sub;
-    var head;
+    var head, pass, facts, copy;
+    var passHead = '<header><img src="bimi/logo.svg" alt="" width="32" height="32">' +
+      '<span>Академический Салон</span><small>Серия С+</small></header>' +
+      '<div><span class="membership-pass__seal">АС+</span></div>';
     if (sub) {
-      head = '<div class="cbn-card reveal" id="plusCard">' +
-        '<div><span class="bc-cap">' + esc(sub.emoji || '⭐') + ' Подписка ' + esc(sub.label) + '</span>' +
-        '<span class="bc-num" style="font-size:20px">до ' + esc(sub.expires_ru) + '</span></div>' +
-        '<div class="bc-side"><p class="bc-exp">' +
-        (sub.discount_pct ? '−' + sub.discount_pct + '% на заказы (до ' + money(sub.discount_cap) + ' ₽ с заказа) — применяется сама. ' : '') +
-        'Все опции — ниже, в развороте.</p>' +
-        '<p class="bc-exp" style="margin-top:6px">🔁 Автопродление ' +
-        (sub.auto_renew ? '<b>включено</b>: при истечении сами пришлём счёт — деньги спишутся только вашими руками'
-                        : '<b>выключено</b>: закончится — просто напомним') +
-        ' · <button type="button" class="linkbtn" data-sub-ar="' + sub.id + '" data-ar-on="' + (sub.auto_renew ? 0 : 1) + '">' +
-        (sub.auto_renew ? 'выключить' : 'включить') + '</button></p>' +
-        '<div class="bc-act"><button type="button" class="btn btn-line" id="plusToggle">' +
-        (st.plusOpen ? 'Свернуть' : 'Опции · продлить · куратор') + '</button></div></div></div>';
+      facts = '<div class="commerce-facts" aria-label="Условия плана">' +
+        '<span><b>до ' + esc(sub.expires_ru) + '</b><small>срок действия плана</small></span>' +
+        (sub.discount_pct
+          ? '<span><b>−' + sub.discount_pct + ' %</b><small>на подходящий заказ, до ' + money(sub.discount_cap) + ' ₽ выгоды</small></span>'
+          : '<span><b>Приоритет</b><small>в согласованном графике мастерской</small></span>') +
+        '<span><b>' + (sub.auto_renew ? 'Счёт вручную' : 'Без продления') + '</b>' +
+        '<small>автосписаний нет ни в одном режиме</small></span></div>';
+      copy = '<p>Скидка применяется сама, когда мастер называет цену. Состав плана и куратор сессии — ниже, ' +
+        'в развороте абонемента.</p>' + facts +
+        '<p class="account-note">Автопродление <b>' + (sub.auto_renew ? 'включено' : 'выключено') + '</b>: ' +
+        (sub.auto_renew ? 'при истечении срока пришлём счёт — деньги спишутся только вашими руками'
+                        : 'срок закончится, и мы просто напомним') +
+        ' · <button type="button" class="line-link" data-sub-ar="' + sub.id + '" data-ar-on="' + (sub.auto_renew ? 0 : 1) + '">' +
+        (sub.auto_renew ? 'выключить' : 'включить') + '</button></p>';
+      pass = '<aside class="membership-pass" aria-label="Ваш абонемент">' + passHead +
+        '<div class="membership-pass__body"><p>Абонемент мастерской</p><h2>' + esc(sub.label) + '</h2>' +
+        '<span>действует до ' + esc(sub.expires_ru) + '</span></div>' +
+        '<dl><div><dt>Продление</dt><dd>' + (sub.auto_renew ? 'счёт вручную, без списания' : 'только вручную') + '</dd></div>' +
+        '<div><dt>Скидка</dt><dd>' + (sub.discount_pct ? '−' + sub.discount_pct + ' % к подходящему заказу' : 'по составу плана') + '</dd></div>' +
+        '<div><dt>Бонусы</dt><dd>учитываются отдельно</dd></div></dl>' +
+        '<footer><span>Абонемент активен</span><b>АС / PLUS</b></footer></aside>';
+      head = '<section class="account-section reveal" id="plusCard">' +
+        '<header><div><p class="eyebrow">Абонемент «Салон+»</p>' +
+        '<h2>План активен.</h2></div>' +
+        '<button type="button" class="line-link" id="plusToggle">' +
+        (st.plusOpen ? 'Свернуть разворот' : 'Опции · продлить · куратор') + '</button></header>' +
+        '<div class="plus-intro"><div class="plus-intro__copy">' + copy + '</div>' + pass + '</div></section>';
     } else {
-      head = '<div class="cbn-card reveal" id="plusCard">' +
-        '<div><span class="bc-cap">⭐ Салон+</span>' +
-        '<span class="bc-num" style="font-size:20px">от 449 ₽</span></div>' +
-        '<div class="bc-side"><p class="bc-exp">Скидка на каждый заказ, приоритет, куратор сессии и отдельная редактура материалов клиента к выступлению. Без автосписаний.</p>' +
-        '<div class="bc-act"><button type="button" class="btn ' + (st.plusOpen ? 'btn-line' : 'btn-wax') + '" id="plusToggle">' +
-        (st.plusOpen ? 'Свернуть' : 'Выбрать план') + '</button></div></div></div>';
+      facts = '<div class="commerce-facts" aria-label="Основные условия">' +
+        '<span><b>30 или 150 дней</b><small>у двух основных планов</small></span>' +
+        '<span><b>Один платёж</b><small>без автоматического списания</small></span>' +
+        '<span><b>До 24 часов</b><small>на активацию после оплаты</small></span></div>';
+      pass = '<aside class="membership-pass" aria-label="Образец абонемента">' + passHead +
+        '<div class="membership-pass__body"><p>Абонемент мастерской</p><h2>Салон+</h2>' +
+        '<span>срок и состав фиксируются до оплаты</span></div>' +
+        '<dl><div><dt>Продление</dt><dd>только вручную</dd></div>' +
+        '<div><dt>Скидка</dt><dd>применяется к подходящему заказу</dd></div>' +
+        '<div><dt>Бонусы</dt><dd>учитываются отдельно</dd></div></dl>' +
+        '<footer><span>Образец</span><b>активируется после оплаты</b></footer></aside>';
+      head = '<section class="account-section reveal" id="plusCard">' +
+        '<header><div><p class="eyebrow">Абонемент «Салон+»</p>' +
+        '<h2>Абонемент пока не активен.</h2></div>' +
+        '<a class="line-link" href="plus.html">Условия абонемента <span aria-hidden="true">→</span></a></header>' +
+        '<div class="plus-intro"><div class="plus-intro__copy">' +
+        '<p>Абонемент даёт скидку на подходящие услуги, приоритет в графике, куратора сессии и отдельную ' +
+        'редактуру материалов к выступлению. Он оплачивается отдельно и не продлевается автоматически.</p>' +
+        facts +
+        '<button type="button" class="button ' + (st.plusOpen ? 'button--secondary' : 'button--primary') + '" id="plusToggle">' +
+        (st.plusOpen ? 'Свернуть планы' : 'Выбрать план') + '</button>' +
+        '</div>' + pass + '</div></section>';
     }
     return head + (st.plusOpen ? plusSection() : '');
   }
 
-  function planCardHtml(p) {
-    /* билет: имя → ГЛАВНАЯ выгода крупно (скидка) → цена → ключевое одной
-       строкой → полный состав за раскрытием → один CTA. Без простыней */
+  function planCardHtml(p, i) {
+    /* карточка плана эталона: индекс и назначение → имя → цена серифом →
+       состав волосяными строками (доля/индекс — моно) → один CTA */
     var pl = st.plans;
     var featObjs = (p.features || []).map(function (fid) {
       return (pl.features || []).filter(function (x) { return x.id === fid; })[0];
@@ -776,9 +875,9 @@ function initCabinet() {
       .sort(function (a, b) { return pl.discounts[b.id].pct - pl.discounts[a.id].pct; })[0];
     var disc = discF ? pl.discounts[discF.id] : null;
     var others = featObjs.filter(function (f) { return !discF || f.id !== discF.id; });
-    var keyLine = others.slice(0, 3).map(function (f) { return esc(f.label); }).join(' · ');
-    var moreList = featObjs.map(function (f) {
-      return '<li><b>' + esc(f.label) + '</b>' + (f.hint ? ' — ' + esc(f.hint) : '') + '</li>';
+    var featRows = others.map(function (f, n) {
+      return '<li><b>' + (n + 1 < 10 ? '0' : '') + (n + 1) + '</b><span>' + esc(f.label) +
+        (f.hint ? ' — ' + esc(f.hint) : '') + '</span></li>';
     }).join('');
     var rec = /pro/.test(p.id || '');
     var per = st.showPeriod;
@@ -799,18 +898,22 @@ function initCabinet() {
       buy = p.id + ':month';
       buyLabel = 'Оформить на месяц';
     }
-    return '<div class="ticket' + (rec ? ' rec' : '') + '">' +
-      (rec ? '<span class="rec-tape">выгодный выбор</span>' : '<span class="tk-star" aria-hidden="true">' + (p.once ? '🎓' : '⭐') + '</span>') +
-      '<span class="tk-name">' + esc(p.label) + '</span>' +
-      '<span class="tk-tag">' + esc(p.tagline || '') + '</span>' +
-      (disc ? '<span class="tk-hero">−' + disc.pct + '%<small>на каждый заказ · до ' +
-        money(disc.cap) + ' ₽ выгоды с заказа</small></span>' : '') +
-      '<span class="tk-price">' + price + '<small>' + priceNote + '</small></span>' +
-      (keyLine ? '<p class="tk-key">' + keyLine + (others.length > 3 ? ' · и ещё ' + (others.length - 3) : '') + '</p>' : '') +
-      (moreList ? '<details class="tk-more"><summary>что входит — полностью</summary><ul>' + moreList + '</ul></details>' : '') +
-      '<span class="tk-cta"><button type="button" class="btn ' + (rec ? 'btn-wax' : 'btn-line') +
-      '" data-sub-buy="' + buy + '">' + buyLabel + '</button></span>' +
-      '</div>';
+    var no = (i || 0) + 1;
+    return '<article class="plus-plan-card' + (rec ? ' plus-plan-card--featured' : '') + '">' +
+      '<header><span>' + (no < 10 ? '0' : '') + no + '</span>' +
+      '<p>' + esc(p.tagline || (p.once ? 'Разовый формат' : 'План абонемента')) + '</p>' +
+      (rec ? '<em>Выбор мастерской</em>' : '') + '</header>' +
+      '<h3>' + esc(p.label) + '</h3>' +
+      '<div class="plus-plan-card__price"><strong>' + price + '</strong><small>' + priceNote + '</small></div>' +
+      '<p>' + (p.once ? 'Фиксированный срок для плотного графика сдач без последующего продления.'
+                     : 'Скидка применяется сама, когда мастер называет цену заказа.') + '</p>' +
+      '<ul>' +
+      (disc ? '<li><b>−' + disc.pct + ' %</b><span>скидка на каждый заказ, но не более ' +
+        money(disc.cap) + ' ₽ выгоды с одного заказа</span></li>' : '') +
+      featRows + '</ul>' +
+      '<button type="button" class="button ' + (rec ? 'button--primary' : 'button--secondary') +
+      '" data-sub-buy="' + buy + '">' + buyLabel + '</button>' +
+      '</article>';
   }
 
   function ctorHtml() {
@@ -827,42 +930,50 @@ function initCabinet() {
     }
     var opts = (pl.features || []).map(function (f) {
       var on = st.ctorFeats.indexOf(f.id) >= 0;
-      return '<button type="button" class="ctor-opt' + (on ? ' on' : '') + '" data-ctor-f="' + esc(f.id) +
+      return '<button type="button" class="builder-option' + (on ? ' is-selected' : '') + '" data-ctor-f="' + esc(f.id) +
         '" aria-pressed="' + on + '">' +
-        '<span class="co-name">' + esc(f.label) + '</span>' +
-        '<span class="co-price">+' + money(f.price) + ' ₽</span>' +
-        (f.hint ? '<span class="co-hint">' + esc(f.hint) + '</span>' : '') +
-        '<span class="co-tick" aria-hidden="true">✓</span></button>';
+        '<span class="builder-option__name">' + esc(f.label) + '</span>' +
+        '<b>+' + money(f.price) + ' ₽</b>' +
+        (f.hint ? '<small>' + esc(f.hint) + '</small>' : '') +
+        '<i aria-hidden="true">✓</i></button>';
     }).join('');
     var chosen = (pl.features || []).filter(function (f) { return st.ctorFeats.indexOf(f.id) >= 0; });
-    var comp = '<ul class="ct-comp"><li>База абонемента <b>' + money(pl.base_price) + ' ₽</b></li>' +
+    var comp = '<div><dt>База абонемента</dt><dd>' + money(pl.base_price) + ' ₽</dd></div>' +
       (chosen.length
         ? chosen.map(function (f) {
             var idle = discIds.indexOf(f.id) >= 0 && f.id !== bestId;
-            return '<li' + (idle ? ' class="ct-idle"' : '') + '>' + esc(f.label) +
-              (idle ? ' <small>не суммируется со скидкой выше</small>' : ' <b>+' + money(f.price) + ' ₽</b>') + '</li>';
+            return '<div><dt>' + esc(f.label) + (idle ? ' — не суммируется со скидкой выше' : '') + '</dt>' +
+              '<dd>' + (idle ? '—' : '+' + money(f.price) + ' ₽') + '</dd></div>';
           }).join('')
-        : '<li class="ct-idle">…выберите опции слева</li>') + '</ul>';
+        : '<div><dt>Опции пока не выбраны</dt><dd>—</dd></div>');
     var saveNote = '';
     if (best) {
       var save = Math.min(Math.round(20000 * best.pct / 100), best.cap);
-      saveNote = '<p class="petit ct-note">Курсовая за 20 000 ₽ с таким набором — уже <b>−' + money(save) + ' ₽</b>.</p>';
+      saveNote = ' Курсовая за 20 000 ₽ с таким набором — уже −' + money(save) + ' ₽.';
     }
-    var perSeg = '<span class="seg ct-per" role="tablist" aria-label="Срок">' +
-      '<button type="button" data-ctor-period="month" class="' + (st.ctorPeriod === 'month' ? 'on' : '') + '">Месяц</button>' +
-      '<button type="button" data-ctor-period="sem" class="' + (st.ctorPeriod === 'sem' ? 'on' : '') + '">Семестр · 150 дней</button></span>';
-    return '<div class="fs-sec" id="ctorBox"><div class="fs-head"><span class="caps">Соберите свой Салон+</span>' +
-      '<span class="fs-meta">база ' + money(pl.base_price) + ' ₽/мес + опции по вкусу</span></div>' +
-      '<div class="ctor">' +
-      '<div class="ctor-opts">' + opts + '</div>' +
-      '<aside class="ctor-ticket"><span class="caps">Ваш абонемент</span>' +
-      comp + perSeg +
-      '<div class="ct-total" id="ctorTotal">' + (chosen.length ? money(ctorTotal()) + ' ₽' : '—') + '</div>' +
-      '<p class="petit ct-note">' + (st.ctorPeriod === 'sem' ? 'одной оплатой за 150 дней' : 'за 30 дней') + ' · без автосписаний</p>' +
-      saveNote +
-      '<button type="button" class="btn btn-wax btn-block" id="ctorBuy"' + (chosen.length ? '' : ' disabled') + '>Оформить</button>' +
-      '<p class="petit ct-note">Из скидочных опций действует одна — самая большая. Готовые планы выгоднее того же набора на 10–15%.</p>' +
-      '</aside></div></div>';
+    var perSeg = '<div class="period-switch" role="group" aria-label="Срок абонемента">' +
+      '<button type="button" data-ctor-period="month" class="' + (st.ctorPeriod === 'month' ? 'is-current' : '') +
+      '" aria-pressed="' + (st.ctorPeriod === 'month') + '">30 дней</button>' +
+      '<button type="button" data-ctor-period="sem" class="' + (st.ctorPeriod === 'sem' ? 'is-current' : '') +
+      '" aria-pressed="' + (st.ctorPeriod === 'sem') + '">150 дней</button></div>';
+    return '<section class="account-section" id="ctorBox">' +
+      '<header><div><p class="eyebrow">Свой набор</p>' +
+      '<h2>Соберите абонемент из опций.</h2></div>' + perSeg + '</header>' +
+      '<div class="deposit-calculator">' +
+      '<div class="deposit-calculator__controls">' +
+      '<p class="eyebrow">Опции</p><h3>База ' + money(pl.base_price) + ' ₽ и всё, что нужно сверху.</h3>' +
+      '<p>Из скидочных опций действует одна — самая большая. Готовые планы выгоднее того же набора на 10–15 %.' +
+      saveNote + '</p>' +
+      '<div class="builder-options">' + opts + '</div></div>' +
+      '<aside class="deposit-receipt">' +
+      '<header><span>Ваш абонемент</span><small>АС · CTOR</small></header>' +
+      '<dl>' + comp +
+      '<div><dt>Итого ' + (st.ctorPeriod === 'sem' ? 'за 150 дней одной оплатой' : 'за 30 дней') + '</dt>' +
+      '<dd id="ctorTotal">' + (chosen.length ? money(ctorTotal()) + ' ₽' : '—') + '</dd></div></dl>' +
+      '<div class="deposit-receipt__note"><strong>Без автосписаний</strong>' +
+      '<p>Оплата разовая: срок закончится, и продление нужно будет подтвердить отдельно.</p></div>' +
+      '<button type="button" class="button button--primary" id="ctorBuy"' + (chosen.length ? '' : ' disabled') + '>Оформить</button>' +
+      '</aside></div></section>';
   }
 
   function bestCtorDisc() {
@@ -900,49 +1011,61 @@ function initCabinet() {
     var canMore = (sub && (sub.features || []).indexOf('curator') >= 0) ? ms.length < 50 : ms.length < 1;
     var rows = ms.map(function (m) {
       var d = m.due || '';
-      return '<div class="dr"><span>📅 ' + d.slice(8, 10) + '.' + d.slice(5, 7) + ' · ' + esc(m.title) + '</span>' +
-        '<b><button type="button" class="linkbtn" data-ms-del="' + m.id + '">убрать</button></b></div>';
+      return '<div class="account-ledger__row">' +
+        '<span class="account-ledger__delta">' + d.slice(8, 10) + '.' + d.slice(5, 7) + '</span>' +
+        '<span class="account-ledger__what">' + esc(m.title) + '</span>' +
+        '<button type="button" class="line-link" data-ms-del="' + m.id + '">Убрать</button></div>';
     }).join('');
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Куратор сессии</span>' +
-      '<span class="fs-meta">напомним за 7 · 3 · 1 день</span></div>' +
-      '<p class="petit" style="margin-bottom:8px">Внесите свои сдачи и экзамены — мы напомним заранее и подстрахуем, если станет жарко.' +
-      (canMore || ms.length ? '' : ' Без подписки доступна одна запись, с «Салон+» — весь график.') + '</p>' +
-      (rows ? '<div class="due-box">' + rows + '</div>' : '') +
+    return '<section class="account-section">' +
+      '<header><div><p class="eyebrow">Куратор сессии</p>' +
+      '<h2>График сдач с напоминаниями.</h2></div>' +
+      '<span class="account-count">' + ms.length + '</span></header>' +
+      '<div class="account-panel">' +
+      '<header><span>Ваши сдачи и экзамены</span><small>АС · CUR</small></header>' +
+      '<p>Внесите даты — мы напомним заранее, за 7, 3 и 1 день, и подстрахуем, если станет жарко.' +
+      (canMore || ms.length ? '' : ' Без абонемента доступна одна запись, с «Салон+» — весь график.') + '</p>' +
+      (rows ? '<div class="account-ledger">' + rows + '</div>' : '') +
       (canMore
-        ? '<div class="act-row" style="margin-top:8px">' +
-          '<input type="text" id="msTitle" maxlength="120" aria-label="Название сдачи или экзамена" placeholder="Что сдаёте — например, «Курсовая по ТГП»" style="flex:2;min-width:0;font:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
-          '<input type="date" id="msDate" aria-label="Дата сдачи или экзамена" style="font:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
-          '<button type="button" class="btn btn-line" id="msAdd">Добавить</button></div>'
-        : '<p class="petit" style="margin-top:6px">Лимит записей достигнут — с подпиской «Салон+» график безлимитный.</p>') +
-      '</div>';
+        ? '<div class="account-form-row">' +
+          '<input class="account-input" type="text" id="msTitle" maxlength="120" aria-label="Название сдачи или экзамена" placeholder="Что сдаёте — например, «Курсовая по ТГП»">' +
+          '<input class="account-input account-input--short" type="date" id="msDate" aria-label="Дата сдачи или экзамена">' +
+          '<button type="button" class="button button--secondary" id="msAdd">Добавить</button></div>'
+        : '<p class="account-note">Лимит записей достигнут — с абонементом «Салон+» график безлимитный.</p>') +
+      '</div></section>';
   }
 
   function plusSection() {
     if (!st.plans) {
       loadPlans();
-      return '<div class="sheet sheet-pad stacked reveal"><p class="petit">Листаем планы…</p></div>';
+      return '<div class="account-loading reveal" role="status">Листаем планы…</div>';
     }
     var cards = (st.plans.plans || []).map(planCardHtml).join('');
     var hasPeriods = (st.plans.plans || []).some(function (p) { return !p.once; });
     var seg = hasPeriods
-      ? '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px">' +
-        '<span class="seg" role="tablist" aria-label="Срок абонемента">' +
-        '<button type="button" data-seg-period="month" class="' + (st.showPeriod === 'month' ? 'on' : '') + '">Месяц</button>' +
-        '<button type="button" data-seg-period="sem" class="' + (st.showPeriod === 'sem' ? 'on' : '') + '">Семестр · выгоднее</button></span>' +
-        '<span class="petit">семестр = 150 дней одной оплатой — дешевле помесячного в разы</span></div>'
+      ? '<div class="period-switch" role="group" aria-label="Срок абонемента">' +
+        '<button type="button" data-seg-period="month" class="' + (st.showPeriod === 'month' ? 'is-current' : '') +
+        '" aria-pressed="' + (st.showPeriod === 'month') + '">30 дней</button>' +
+        '<button type="button" data-seg-period="sem" class="' + (st.showPeriod === 'sem' ? 'is-current' : '') +
+        '" aria-pressed="' + (st.showPeriod === 'sem') + '">150 дней</button></div>'
       : '';
-    /* конструктор и куратор — за раскрытием: витрина = три билета, не простыня */
+    /* конструктор и куратор — отдельными разворотами под витриной планов */
     var ms = (st.me && st.me.milestones) || [];
-    var ctorBlock = st.ctorOpen ? ctorHtml() :
-      '<p class="petit" style="margin-top:14px"><button type="button" class="linkbtn" id="ctorShow">🛠 Собрать свой абонемент из опций…</button> — если готовые не подходят.</p>';
-    var curBlock = st.curOpen ? curatorHtml() :
-      '<p class="petit" style="margin-top:8px"><button type="button" class="linkbtn" id="curShow">📅 Куратор сессии' + (ms.length ? ' · записей: ' + ms.length : '') + '…</button> — график сдач с напоминаниями за 7·3·1 день.</p>';
-    return '<div class="sheet sheet-pad stacked reveal" id="plusSheet">' +
-      '<p class="caps">Абонемент «Салон+»</p>' +
-      '<p class="petit" style="margin:6px 0 0">Один платёж, автосписаний нет. Скидка применяется сама, когда мастер называет цену, — и суммируется с бонусами (вместе до 25% заказа).</p>' +
-      seg + '<div class="tickets">' + cards + '</div>' + ctorBlock + curBlock +
-      '<p class="petit" style="margin-top:12px">Оформить можно и в Telegram: <a class="link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a></p>' +
+    var ctorBlock = st.ctorOpen ? ctorHtml() : '';
+    var curBlock = st.curOpen ? curatorHtml() : '';
+    var extras = (st.ctorOpen && st.curOpen) ? '' :
+      '<div class="plus-extras">' +
+      (st.ctorOpen ? '' : '<button type="button" class="line-link" id="ctorShow">Собрать свой набор из опций <span aria-hidden="true">→</span></button>') +
+      (st.curOpen ? '' : '<button type="button" class="line-link" id="curShow">Куратор сессии' +
+        (ms.length ? ' · записей: ' + ms.length : '') + ' <span aria-hidden="true">→</span></button>') +
       '</div>';
+    return '<section class="account-section reveal" id="plusSheet">' +
+      '<header><div><p class="eyebrow">Готовые планы</p>' +
+      '<h2>Состав и ограничения видны сразу.</h2></div>' + seg + '</header>' +
+      '<div class="plus-plan-grid">' + cards + '</div>' +
+      '<p class="commerce-caption">Абонемент активируется не позднее 24 часов после подтверждения оплаты. ' +
+      'Скидка абонемента и бонусы учитываются раздельно; вместе они не превышают 25 % стоимости заказа. ' +
+      'Оформить можно и в Telegram: <a class="line-link" href="https://t.me/academic_saloon_bot?start=plus" target="_blank" rel="noopener">@academic_saloon_bot → /plus</a></p>' +
+      extras + '</section>' + ctorBlock + curBlock;
   }
 
   function rerenderHome() { renderTab(); }
@@ -1046,7 +1169,7 @@ function initCabinet() {
       meSnap = snap;
       st.me = r;
       if (hadPending && !r.sub_pending && r.sub) {
-        toast('Подписка «' + (r.sub.label || 'Салон+') + '» активна — скидка уже работает 🎉');
+        toast('Подписка «' + (r.sub.label || 'Салон+') + '» активна — скидка уже работает');
         if (S.stamp) S.stamp('Салон+ активна');
         if (document.hidden) systemNote('⭐', 'Подписка ' + (r.sub.label || '') + ' активирована');
       }
@@ -1092,13 +1215,14 @@ function initCabinet() {
   function tabBtn(o) {
     var on = o.id === st.currentId;
     var badge = (o.unread || 0) + (o.files_new || 0);
-    return '<button type="button" role="tab" class="spine' + (on ? ' on' : '') +
-      (needsAction(o) ? ' st-act' : '') + (isArch(o) ? ' sp-arch' : '') +
-      '" data-ord="' + o.id + '" aria-selected="' + on + '">' +
-      '<span class="sp-no">' + esc(o.no) + (o.pinned ? ' 📌' : '') +
-      (badge ? '<span class="sp-dot" title="Новое в деле">' + badge + '</span>' : '') + '</span>' +
-      '<span class="sp-name">' + esc(shortWork(o)) + '</span>' +
-      '<span class="sp-st">' + esc(shortStatus(o)) + '</span>' +
+    return '<button type="button" role="tab" class="order-card order-card--compact' +
+      (on ? ' is-current' : '') + '" data-ord="' + o.id + '" aria-selected="' + on + '">' +
+      '<div class="order-card__top">' +
+      '<span class="tag tag--status tag--' + esc(o.status || 'new') + '">' + esc(shortStatus(o)) + '</span>' +
+      '<span>' + esc(o.no) + '</span></div>' +
+      '<h3>' + esc(shortWork(o)) + '</h3>' +
+      '<footer><span>' + (badge ? 'новое в деле · ' + badge : (o.pinned ? 'закреплено' : 'открыть дело')) +
+      '</span><b aria-hidden="true">→</b></footer>' +
       '</button>';
   }
 
@@ -1107,30 +1231,58 @@ function initCabinet() {
     if (act.length + arch.length < 2 && !rem.length) return '';
     var row = act.map(tabBtn).join('');
     if (arch.length || rem.length) {
-      row += '<button type="button" class="spine sp-ghost' + (st.archOpen ? ' on' : '') + '" data-arch-toggle aria-expanded="' + !!st.archOpen + '">' +
-        '<span class="sp-no">🗂 архив</span>' +
-        '<span class="sp-name">Завершённые · ' + arch.length + '</span>' +
-        '<span class="sp-st">' + (st.archOpen ? 'свернуть' : 'показать') + '</span></button>';
+      row += '<button type="button" class="order-card order-card--compact order-card--ghost' +
+        (st.archOpen ? ' is-current' : '') + '" data-arch-toggle aria-expanded="' + !!st.archOpen + '">' +
+        '<div class="order-card__top"><span class="tag">Архив</span><span>№ —</span></div>' +
+        '<h3>Завершённые · ' + arch.length + '</h3>' +
+        '<footer><span>' + (st.archOpen ? 'свернуть' : 'показать') + '</span><b aria-hidden="true">→</b></footer></button>';
     }
     var archRow = '';
     if (st.archOpen && (arch.length || rem.length)) {
-      archRow = '<div class="shelf reveal">' + arch.map(tabBtn).join('') +
+      archRow = '<div class="order-list reveal">' + arch.map(tabBtn).join('') +
         (rem.length ? (st.remOpen
-          ? rem.map(tabBtn).join('') + '<button type="button" class="spine sp-ghost" data-rem-toggle><span class="sp-no">···</span><span class="sp-name">спрятать убранные</span><span class="sp-st">&nbsp;</span></button>'
-          : '<button type="button" class="spine sp-ghost" data-rem-toggle><span class="sp-no">···</span><span class="sp-name">убранные · ' + rem.length + '</span><span class="sp-st">показать</span></button>') : '') +
+          ? rem.map(tabBtn).join('') + '<button type="button" class="order-card order-card--compact order-card--ghost" data-rem-toggle><div class="order-card__top"><span class="tag">Убранные</span><span>№ —</span></div><h3>Спрятать убранные</h3><footer><span>свернуть</span><b aria-hidden="true">→</b></footer></button>'
+          : '<button type="button" class="order-card order-card--compact order-card--ghost" data-rem-toggle><div class="order-card__top"><span class="tag">Убранные</span><span>№ —</span></div><h3>Убранные · ' + rem.length + '</h3><footer><span>показать</span><b aria-hidden="true">→</b></footer></button>') : '') +
         '</div>';
     }
-    return '<div class="shelf reveal" role="tablist" aria-label="Ваши заказы">' + row + '</div>' +
-      (archRow || '') + '<div class="shelf-base" aria-hidden="true"></div>';
+    return '<div class="order-list reveal" role="tablist" aria-label="Ваши заказы">' + row + '</div>' +
+      (archRow || '');
   }
   function shortWork(o) {
     var w = o.work_label || '';
     return w.length > 24 ? w.slice(0, 23) + '…' : w;
   }
   function shortStatus(o) {
-    if (o.paused && o.status !== 'done' && o.status !== 'cancel') return '⏸ на паузе';
+    if (o.paused && o.status !== 'done' && o.status !== 'cancel') return 'на паузе';
     return { new: 'на оценке', priced: 'ждёт решения', prepay: 'ждёт оплату', work: 'исполнение',
              check: 'результат на проверке', fix: 'корректировка', done: 'результат принят', cancel: 'закрыт' }[o.status] || '';
+  }
+
+  /* -------- шкалы эталона: готовность этапов и закрытая часть денег --------
+     Ширина задаётся классом кратно 5 %, а не style="width:…": инлайновых
+     стилей в раскрытии дела не бывает. Цифра — честная (этап N из M). */
+  function pctBucket(n) {
+    return 'p' + Math.round(Math.max(0, Math.min(100, n)) / 5) * 5;
+  }
+  function caseProgress(o) {
+    if (!o.steps || !o.steps.length || o.step < 1) return '';
+    var pct = o.status === 'done'
+      ? 100
+      : Math.max(5, Math.min(95, Math.round((o.step - 0.35) / o.steps.length * 100)));
+    return '<div class="case-progress-meta"><span>Пройдено этапов</span>' +
+      '<strong>' + o.step + ' из ' + o.steps.length + '</strong></div>' +
+      '<div class="case-progress" role="img" aria-label="Пройдено этапов: ' +
+      o.step + ' из ' + o.steps.length + '"><i class="' + pctBucket(pct) + '"></i></div>';
+  }
+  function payScale(o) {
+    var total = o.due_total || o.price || 0;
+    var paid = (o.payments || []).filter(function (p) { return p.status === 'paid'; })
+      .reduce(function (s, p) { return s + (p.amount || 0); }, 0);
+    if (!total || !paid) return '';
+    var pct = Math.max(3, Math.min(100, Math.round(paid / total * 100)));
+    return '<strong class="case-paid">Оплачено ' + money(paid) + ' ₽ из ' + money(total) + ' ₽</strong>' +
+      '<div class="case-paid-scale" role="img" aria-label="Оплачено ' + pct +
+      ' процентов"><i class="' + pctBucket(pct) + '"></i></div>';
   }
 
   /* ход дела свёрнут, когда у клиента есть действие поважнее (оплата/решение) —
@@ -1145,7 +1297,9 @@ function initCabinet() {
 
   function stageRows(o) {
     if (o.step < 0) {
-      return '<div class="fs-sec"><p class="petit" style="margin:0">Заявка закрыта' +
+      return '<div class="fs-sec case-sec">' +
+        '<header><h3>Ход дела</h3><span class="case-sec__note">заявка закрыта</span></header>' +
+        '<p class="case-sec__lead">Заявка закрыта' +
         (o.cancel_reason ? ' (причина: ' + esc(o.cancel_reason) + ')' : '') +
         '. Передумали? Нажмите «Возобновить заказ» ниже — мастер вернётся к вашей заявке, ' +
         'условия можно обсудить заново.</p></div>';
@@ -1163,19 +1317,18 @@ function initCabinet() {
        честное «счёт готовится» (бывает при ручной смене статуса без цены) */
     if (o.status === 'prepay' && !(o.due_now && o.due_now.amount) && !o.claimed)
       NOW.prepay = 'Мастер готовит счёт — оплата появится здесь, мы уведомим';
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Этапы</span>' +
-      '<span class="fs-meta">этап ' + o.step + ' из ' + o.steps.length + '</span></div>' +
-      '<div class="stg">' +
+    return '<ol class="case-timeline__list">' +
       o.steps.map(function (name, i) {
         var n = i + 1;
-        var cls = n < o.step ? ' past' : n === o.step ? ' now' : '';
-        var sn = n < o.step ? '✓' : '0' + n;
-        var tag = n < o.step ? 'пройден' : n === o.step ? 'сейчас' : '';
-        var now = n === o.step ? '<small>' + esc(NOW[o.status] || o.status_label) + '</small>' : '';
-        return '<div class="stg-row' + cls + '"><span class="sn">' + sn + '</span>' +
-          '<span class="sb"><b>' + esc(name) + '</b>' + now + '</span>' +
-          (tag ? '<span class="st-tag">' + tag + '</span>' : '') + '</div>';
-      }).join('') + '</div></div>' + partsRows(o);
+        var cls = n < o.step ? ' is-past' : n === o.step ? ' is-current' : '';
+        /* только цифры: ✓ нет ни в одном подмножестве (fonts.css), а
+           состояние и без него читается подписью и рамкой медальона */
+        var sn = n < 10 ? '0' + n : String(n);
+        var tag = n < o.step ? 'пройден' : n === o.step ? 'сейчас' : 'впереди';
+        var now = n === o.step ? '<p>' + esc(NOW[o.status] || o.status_label) + '</p>' : '';
+        return '<li class="' + cls + '"><span class="case-timeline__mark">' + sn + '</span>' +
+          '<div><small>' + tag + '</small><h4>' + esc(name) + '</h4>' + now + '</div></li>';
+      }).join('') + '</ol>' + partsRows(o);
   }
 
   /* -------- передача по частям: где мы в 2 или 3 выдачах -------- */
@@ -1192,19 +1345,21 @@ function initCabinet() {
             : o.status === 'fix' ? 'в правках'
             : (o.part_ready === n ? 'результат подготовлен — ждёт оплату этапа' : 'исполнение');
       } else { state = ''; tag = 'впереди'; }
-      rows += '<div class="stg-row ' + state + '"><span class="sn">' + (state === 'past' ? '✓' : '§' + n) + '</span>' +
-        '<span class="sb"><b>Часть ' + n + ' из ' + total + '</b>' +
-        (n === o.stage && o.status === 'check' ? '<small>Сверьте результат с критериями: принять или запросить корректировку — кнопки ниже</small>' : '') +
-        '</span><span class="st-tag">' + tag + '</span></div>';
+      rows += '<li class="' + (state === 'past' ? 'is-past' : state === 'now' ? 'is-current' : '') + '">' +
+        '<span class="case-timeline__mark">§' + n + '</span>' +
+        '<div><small>' + tag + '</small><h4>Часть ' + n + ' из ' + total + '</h4>' +
+        (n === o.stage && o.status === 'check' ? '<p>Сверьте результат с критериями: принять или запросить корректировку — кнопки ниже</p>' : '') +
+        '</div></li>';
     }
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Передача и приёмка по частям</span>' +
-      '<span class="fs-meta">условия проверки — отдельно для каждой позиции</span></div>' +
-      '<div class="stg">' + rows + '</div></div>';
+    return '<section class="case-subsec">' +
+      '<header><h4>Передача и приёмка по частям</h4>' +
+      '<span class="case-sec__note">условия проверки — отдельно для каждой позиции</span></header>' +
+      '<ol class="case-timeline__list">' + rows + '</ol></section>';
   }
 
   function specLink(o) {
     if (!o.price) return '';
-    return '<p class="petit" style="margin-top:8px">📄 <a class="link" href="#" ' +
+    return '<p class="case-note"><a class="link" href="#" ' +
       'data-protected-asset="' + apiPath(o.id, '/contract') + '" data-order-id="' + o.id + '" data-open="1">' +
       'Спецификация заказа (PDF)</a> — один документ со всеми позициями: у каждой отдельно указаны результат, исходник, включения и исключения, критерии приёмки, срок, цена, платежи и порядок корректировок. Действует вместе с <a class="link" href="oferta.html">офертой</a>, ' +
       'подписывать ничего не нужно. <a class="link" href="specifikaciya.html" target="_blank" rel="noopener">Что это такое — простыми словами →</a></p>' + pamyatkaLink(o);
@@ -1213,36 +1368,40 @@ function initCabinet() {
   /* персональная памятка «что дальше» — появляется с передачей финала */
   function pamyatkaLink(o) {
     if (!o.pamyatka) return '';
-    return '<p class="petit" style="margin-top:2px">📘 <a class="link" href="#" ' +
+    return '<p class="case-note"><a class="link" href="#" ' +
       'data-protected-asset="' + apiPath(o.id, '/pamyatka') + '" data-order-id="' + o.id + '" data-open="1">' +
       'Памятка «что дальше» (PDF)</a> — порядок первичной проверки, фиксация замечаний по критериям и самостоятельная подготовка клиента к использованию результата.</p>';
   }
 
   function priceBlock(o) {
     if (o.price) {
-      var out = '<div class="ord-price-row"><span class="caps">Цена мастера</span>' +
-        '<span class="mono ord-price">' + money(o.price) + ' ₽</span></div>' + specLink(o);
-      if (o.bonus_spent || o.sub_discount || o.promo_discount || o.gift_amount) {
-        out += '<div class="due-box">' +
-          '<div class="dr"><span>Цена заказа</span><b>' + money(o.price) + ' ₽</b></div>' +
-          (o.sub_discount ? '<div class="dr"><span>⭐ Скидка «Салон+»</span><b class="minus">−' + money(o.sub_discount) + '</b></div>' : '') +
-          (o.promo_discount ? '<div class="dr"><span>🎟 Промокод' + (o.promo_code ? ' ' + esc(o.promo_code) : '') + '</span><b class="minus">−' + money(o.promo_discount) + '</b></div>' : '') +
-          (o.bonus_spent ? '<div class="dr"><span>Оплачено бонусами</span><b class="minus">−' + money(o.bonus_spent) + '</b></div>' : '') +
-          (o.gift_amount ? '<div class="dr"><span>🎁 Сертификат' + (o.gift_code ? ' ' + esc(o.gift_code) : '') + '</span><b class="minus">−' + money(o.gift_amount) + '</b></div>' : '') +
-          '<div class="dr total"><span>К оплате деньгами</span><b>' + money(o.due_total) + ' ₽</b></div>' +
+      var discounted = o.bonus_spent || o.sub_discount || o.promo_discount || o.gift_amount;
+      var out = '<div class="fs-sec case-sec case-money">' +
+        '<header><div><p class="eyebrow">Цена мастера</p><h3>Расчёт по делу</h3></div>' +
+        '<strong class="case-sum">' + money(discounted ? o.due_total : o.price) + ' ₽</strong></header>' +
+        specLink(o);
+      if (discounted) {
+        out += '<dl class="case-ledger">' +
+          '<div><dt>Цена заказа</dt><dd>' + money(o.price) + ' ₽</dd></div>' +
+          (o.sub_discount ? '<div><dt>Скидка «Салон+»</dt><dd class="is-minus">−' + money(o.sub_discount) + ' ₽</dd></div>' : '') +
+          (o.promo_discount ? '<div><dt>Промокод' + (o.promo_code ? ' ' + esc(o.promo_code) : '') + '</dt><dd class="is-minus">−' + money(o.promo_discount) + ' ₽</dd></div>' : '') +
+          (o.bonus_spent ? '<div><dt>Оплачено бонусами</dt><dd class="is-minus">−' + money(o.bonus_spent) + ' ₽</dd></div>' : '') +
+          (o.gift_amount ? '<div><dt>Сертификат' + (o.gift_code ? ' ' + esc(o.gift_code) : '') + '</dt><dd class="is-minus">−' + money(o.gift_amount) + ' ₽</dd></div>' : '') +
+          '<div class="is-total"><dt>К оплате деньгами</dt><dd>' + money(o.due_total) + ' ₽</dd></div>' +
+          '</dl>' +
           (o.bonus_spent && (o.status === 'priced' || o.status === 'prepay')
-            ? '<div class="dr"><span></span><b><button type="button" class="linkbtn" data-act="bonus_cancel">↩ вернуть бонусы на счёт</button></b></div>' : '') +
+            ? '<p class="case-note"><button type="button" class="line-link" data-act="bonus_cancel">Вернуть бонусы на счёт <span aria-hidden="true">←</span></button></p>' : '') +
           (o.gift_amount && (o.status === 'priced' || o.status === 'prepay') && !(o.payments || []).some(function (p) { return p.status === 'paid'; })
-            ? '<div class="dr"><span></span><b><button type="button" class="linkbtn" data-act="gift_remove">↩ открепить сертификат</button></b></div>' : '') +
-          '</div>';
+            ? '<p class="case-note"><button type="button" class="line-link" data-act="gift_remove">Открепить сертификат <span aria-hidden="true">←</span></button></p>' : '');
       }
-      return out + planTable(o) + bonusSpendFold(o) + giftFold(o) + subUpsell(o);
+      return out + planTable(o) + '</div>' + bonusSpendFold(o) + giftFold(o) + subUpsell(o);
     }
     if (o.quote_low) {
-      return '<div class="ord-price-row"><span class="caps">Вилка сметы</span>' +
-        '<span class="mono ord-price">' + money(o.quote_low) + ' – ' + money(o.quote_high) + ' ₽</span></div>' +
-        '<p class="petit ord-price-note">Точную цену мастер назовёт после разбора заявки — уведомим прямо здесь' +
-        (S.api.token() ? ' и в Telegram' : '') + '.</p>' + giftFold(o);
+      return '<div class="fs-sec case-sec case-money">' +
+        '<header><div><p class="eyebrow">Вилка сметы</p><h3>Предварительная оценка</h3></div>' +
+        '<strong class="case-sum">' + money(o.quote_low) + ' – ' + money(o.quote_high) + ' ₽</strong></header>' +
+        '<p class="case-sec__lead">Точную цену мастер назовёт после разбора заявки — уведомим прямо здесь' +
+        (S.api.token() ? ' и в Telegram' : '') + '.</p></div>' + giftFold(o);
     }
     return giftFold(o);
   }
@@ -1312,11 +1471,14 @@ function initCabinet() {
       if (item.topic) fact(facts, 'Тема', item.topic);
       var label = item.position_label || item.label || item.t || '';
       var pos = item.position || item.id || '•';
-      return '<div class="oci-row' + (child ? ' child' : '') + '">' +
-        '<span class="oci-no">' + (child ? '↳' : esc(String(pos).padStart(2, '0'))) + '</span>' +
-        '<span class="oci-main"><b>' + esc(label) + '</b>' +
-        (facts.length ? '<details><summary>Условия позиции</summary><small>' + facts.join('<br>') + '</small></details>' : '') + '</span>' +
-        '<span class="oci-price">' + itemQuote(item) + '</span></div>';
+      return '<div class="case-spec__row' + (child ? ' is-child' : '') + '">' +
+        '<span class="case-spec__no">' + (child ? '—' : esc(String(pos).padStart(2, '0'))) + '</span>' +
+        '<span class="case-spec__main"><b>' + esc(label) + '</b>' +
+        (facts.length ? '<details class="case-spec__terms"><summary>' +
+          '<span class="case-spec__shut">условия позиции</span>' +
+          '<span class="case-spec__open">свернуть условия</span></summary>' +
+          '<small>' + facts.join('<br>') + '</small></details>' : '') + '</span>' +
+        '<span class="case-spec__price">' + itemQuote(item) + '</span></div>';
     }
     var linked = {};
     var html = '';
@@ -1334,11 +1496,12 @@ function initCabinet() {
         return item.kind !== 'work' && !linked[item.id];
       }).forEach(function (service) { html += row(service, false); });
     }
-    return '<section class="ord-composition" aria-label="Спецификация заказа">' +
-      '<div class="oc-head"><span class="caps">Спецификация заказа · один документ</span><span>' +
-      items.length + ' ' + plural(items.length, 'позиция', 'позиции', 'позиций') +
-      '</span></div><p class="petit">Каждая позиция имеет собственные результат, критерии, срок, цену и акт приёмки.</p>' +
-      '<div class="oc-list">' + html + '</div></section>';
+    return '<section class="fs-sec case-sec case-spec" aria-label="Спецификация заказа">' +
+      '<header><div><p class="eyebrow">Один документ</p><h3>Спецификация заказа</h3></div>' +
+      '<span class="case-sec__note">' + items.length + ' ' +
+      plural(items.length, 'позиция', 'позиции', 'позиций') + '</span></header>' +
+      '<p class="case-sec__lead">Каждая позиция имеет собственные результат, критерии, срок, цену и акт приёмки.</p>' +
+      '<div class="case-spec__list">' + html + '</div></section>';
   }
 
   /* -------- подарочный сертификат в деле: привязать код / показать привязку.
@@ -1349,42 +1512,41 @@ function initCabinet() {
     var paidAlready = (o.payments || []).some(function (p) { return p.status === 'paid'; });
     if (o.gift_code && !o.gift_amount) {
       /* код привязан, цены ещё нет — покажем строку ожидания */
-      return fold('secGift', '🎁 Сертификат', esc(o.gift_code),
-        '<p class="petit" style="margin:0">Код <b class="mono">' + esc(o.gift_code) + '</b> привязан — ' +
+      return fold('secGift', 'Сертификат', esc(o.gift_code),
+        '<p class="account-note">Код <span class="account-code">' + esc(o.gift_code) + '</span> привязан — ' +
         'сумма зачтётся, когда мастер назовёт цену.' +
-        (paidAlready ? '' : ' <button type="button" class="linkbtn" data-act="gift_remove">Открепить</button>') +
+        (paidAlready ? '' : ' <button type="button" class="line-link" data-act="gift_remove">Открепить</button>') +
         '</p>', false);
     }
     if (o.gift_code || paidAlready) return '';
-    var inner = '<div class="due-box" id="gattBox" style="margin-top:0">' +
-      '<p class="petit" style="margin:0 0 8px">Есть подарочный сертификат? Привяжите код — сумма спишется с итога' +
+    var inner = '<div class="account-panel" id="gattBox">' +
+      '<p class="account-note">Есть подарочный сертификат? Привяжите код — сумма спишется с итога' +
       (o.price ? ' сразу' : ', когда мастер назовёт цену') + '. Остаток сохранится на коде.</p>' +
-      '<div class="cbn-row"><input type="text" id="gattCode" maxlength="24" autocomplete="off" aria-label="Код подарочного сертификата" placeholder="AS-XXXX-XXXX-XXXX" ' +
-      'style="flex:1;min-width:0;background:transparent;border:1px solid var(--hairline-strong);border-radius:6px;padding:9px 10px;color:var(--ink);font:inherit;font-size:16px">' +
-      '<button type="button" class="btn btn-line" id="gattApply">Применить</button></div></div>';
-    return fold('secGift', '🎁 Сертификат', 'применить код к делу', inner, false);
+      '<div class="account-form-row"><input class="account-input account-input--code" type="text" id="gattCode" maxlength="24" autocomplete="off" aria-label="Код подарочного сертификата" placeholder="AS-XXXX-XXXX-XXXX">' +
+      '<button type="button" class="button button--secondary" id="gattApply">Применить</button></div></div>';
+    return fold('secGift', 'Сертификат', 'применить код к делу', inner, false);
   }
 
   /* -------- план оплат: этапы 50/50 или 30/40/30, статус каждого -------- */
   var PLAN_ST = {
-    paid: ['оплачен ✓', 's-done'], claimed: ['на сверке у мастера', 's-act'],
+    paid: ['оплачен', 's-done'], claimed: ['на сверке у мастера', 's-act'],
     due: ['к оплате сейчас', 's-due'], later: ['после готовности следующей части', '']
   };
   function planTable(o) {
     var plan = o.plan || [];
     if (plan.length < 2) {
       if (o.prepay && (o.status === 'priced' || o.status === 'prepay') && !o.bonus_spent)
-        return '<p class="petit ord-price-note">Первый платёж — ' + money(o.prepay_due || o.prepay) + ' ₽, остальное по плану после передачи результата этапа.</p>';
+        return '<p class="case-note">Первый платёж — ' + money(o.prepay_due || o.prepay) + ' ₽, остальное по плану после передачи результата этапа.</p>';
       return '';
     }
-    return '<div class="due-box plan-box">' +
-      '<div class="dr caps" style="font-size:11px"><span>План оплаты — по этапам</span><b></b></div>' +
+    return '<p class="case-sub">План оплаты — по этапам</p>' +
+      '<dl class="case-ledger case-ledger--plan">' +
       plan.map(function (p) {
         var m = PLAN_ST[p.state] || ['', ''];
-        return '<div class="dr"><span>' + p.n + '. ' + esc(p.label) +
-          ' <span class="petit pl-st ' + m[1] + '">' + m[0] + '</span></span>' +
-          '<b>' + money(p.amount) + ' ₽</b></div>';
-      }).join('') + '</div>';
+        return '<div><dt><i>' + p.n + '</i>' + esc(p.label) +
+          (m[0] ? '<small class="' + m[1] + '">' + m[0] + '</small>' : '') + '</dt>' +
+          '<dd>' + money(p.amount) + ' ₽</dd></div>';
+      }).join('') + '</dl>';
   }
 
   /* -------- списание бонусов: один раз на заказ, до первой оплаты.
@@ -1393,7 +1555,7 @@ function initCabinet() {
     var inner = bonusSpendBlock(o);
     if (!inner) return '';
     var limit = Math.min((o.bonus && o.bonus.balance) || 0, o.bonus_cap || 0);
-    return fold('secBonus', '💎 Списать бонусы', 'до −' + money(limit) + ' ₽ с этого заказа', inner, false);
+    return fold('secBonus', 'Списать бонусы', 'до −' + money(limit) + ' ₽ с этого заказа', inner, false);
   }
 
   function bonusSpendBlock(o) {
@@ -1403,12 +1565,15 @@ function initCabinet() {
     if ((o.bonus_spent || 0) > 0) return ''; /* уже применены — есть «вернуть бонусы» */
     var limit = Math.min(o.bonus.balance || 0, o.bonus_cap || 0);
     if (limit <= 0) return '';
-    return '<div class="due-box" id="bspendBox">' +
-      '<div class="cbn-row"><span>💎 Списать бонусы <span class="petit">(на счету ' + money(o.bonus.balance) + ', к этому заказу — до ' + money(limit) + ')</span></span>' +
-      '<b class="num" id="bspendVal">' + money(limit) + '</b></div>' +
-      '<input type="range" class="cbn-slider" id="bspendRange" min="0" max="' + limit + '" step="50" value="' + limit + '">' +
-      '<div class="cbn-row"><span class="petit">Списание — один раз, до оплаты; деньгами останется <b id="bspendDue">' + money((o.due_total || o.price) - limit) + ' ₽</b></span>' +
-      '<button type="button" class="btn btn-line" id="bspendApply">Применить</button></div>' +
+    return '<div class="account-panel" id="bspendBox">' +
+      '<header><span>Списать бонусы</span>' +
+      '<b class="account-slider__val" id="bspendVal">' + money(limit) + '</b></header>' +
+      '<p class="account-note">На счету ' + money(o.bonus.balance) + ' — к этому заказу можно применить до ' + money(limit) + '.</p>' +
+      '<input type="range" class="account-slider" id="bspendRange" min="0" max="' + limit + '" step="50" value="' + limit + '" aria-label="Сколько бонусов списать">' +
+      '<p class="account-note">Списание — один раз, до оплаты. Деньгами останется ' +
+      '<b id="bspendDue">' + money((o.due_total || o.price) - limit) + ' ₽</b>.</p>' +
+      '<div class="case-acts">' +
+      '<button type="button" class="button button--secondary" id="bspendApply">Применить</button></div>' +
       '</div>';
   }
 
@@ -1424,8 +1589,12 @@ function initCabinet() {
     if ((o.payments || []).some(function (p) { return p.status === 'paid'; })) return '';
     var save = Math.min(Math.round(o.price * 0.10), 3000);
     /* один тихий талон-строка: без карточек и простыней в середине дела */
-    return '<p class="up-line reveal">⭐ С абонементом «Салон+» этот заказ — до <b>−' + money(save) +
-      ' ₽</b>, от 449 ₽/мес. <button type="button" class="linkbtn wax" data-open-plus>Подключить →</button></p>';
+    return '<div class="account-notice reveal">' +
+      '<span class="account-notice__mark" aria-hidden="true">АС+</span>' +
+      '<div><strong>С абонементом «Салон+» этот заказ — до −' + money(save) + ' ₽</strong>' +
+      '<p>Скидка применяется к уже названной цене, от 449 ₽ за 30 дней.</p></div>' +
+      '<span class="account-notice__acts">' +
+      '<button type="button" class="line-link" data-open-plus>Подключить <span aria-hidden="true">→</span></button></span></div>';
   }
 
   function payHistory(o) {
@@ -1433,20 +1602,21 @@ function initCabinet() {
     if (!paid.length) return '';
     var lbl = {};
     (o.plan || []).forEach(function (p) { lbl[p.kind] = p.label; });
-    return '<div class="pay-history" style="margin-top:10px"><p class="petit" style="margin:0 0 6px">Оплачено:</p>' +
+    return '<p class="case-sub">Оплачено</p>' +
+      '<dl class="case-ledger case-ledger--paid">' +
       paid.map(function (p) {
       var what = lbl[p.kind] || (p.kind === 'prepay' ? 'предоплата' : 'остаток');
       var confirmation = p.confirmation_url
-        ? ' <a class="linkbtn wax" href="#" data-protected-asset="' +
+        ? '<a class="line-link" href="#" data-protected-asset="' +
           apiPath(o.id, '/payments/' + p.id + '/confirmation.pdf') +
           '" data-order-id="' + o.id + '" data-filename="podtverzhdenie-oplaty-' +
-          o.id + '-' + p.id + '.pdf">Скачать подтверждение</a>'
+          o.id + '-' + p.id + '.pdf">Подтверждение <span aria-hidden="true">→</span></a>'
         : '';
-      return '<p class="petit" style="margin:4px 0">' + money(p.amount) + ' ₽ — ' +
-        esc(what.toLowerCase()) + ', ' + dt(p.at) + '.' + confirmation + '</p>';
-    }).join('') +
-      '<p class="petit" style="margin:7px 0 0">Официальный чек НПД формирует Robokassa ' +
-      'и отправляет на e-mail, указанный при оплате. Подтверждение выше не заменяет налоговый чек.</p></div>';
+      return '<div><dt>' + esc(what.toLowerCase()) + '<small>' + dt(p.at) + '</small>' +
+        confirmation + '</dt><dd>' + money(p.amount) + ' ₽</dd></div>';
+    }).join('') + '</dl>' +
+      '<p class="case-note">Официальный чек НПД формирует Robokassa ' +
+      'и отправляет на e-mail, указанный при оплате. Подтверждение выше не заменяет налоговый чек.</p>';
   }
 
   /* -------- реквизиты: платёжный лист с крупной суммой и копированием --------
@@ -1469,21 +1639,17 @@ function initCabinet() {
       return '<div class="ps-row' + (isCard ? ' ps-card' : '') + '">' +
         '<span class="ps-val' + (isCard ? ' mono' : '') + '">' + esc(shown) + '</span>' +
         (copyVal ? '<button type="button" class="ps-copy" data-copy="' + esc(copyVal) +
-          '" title="Скопировать">⧉ копировать</button>' : '') +
+          '" title="Скопировать">копировать</button>' : '') +
         '</div>';
     }).join('');
   }
-  function paySlip(o, due, label) {
-    return '<div class="payslip">' +
-      '<div class="ps-head"><span class="caps">' +
-      (label ? esc(label) + ' · реквизиты' : 'Реквизиты для перевода') + '</span>' +
-      (due ? '<span class="ps-due">' + money(due) + ' ₽</span>' : '') + '</div>' +
-      '<div class="ps-body">' + reqRows(o.requisites) + '</div>' +
-      '<div class="ps-steps">' +
-        '<span><b>1</b> переведите сумму</span><span class="ps-ar">→</span>' +
-        '<span><b>2</b> нажмите «Я оплатил(а)»</span><span class="ps-ar">→</span>' +
-        '<span><b>3</b> приложите подтверждение — сверка быстрее</span></div>' +
-      '</div>';
+  function paySlip(o, due) {
+    return '<p class="case-sub">Реквизиты для перевода</p>' +
+      '<div class="pay-requisites">' + reqRows(o.requisites) + '</div>' +
+      '<div class="account-steps">' +
+        '<span><b>1</b><span>переведите ' + (due ? money(due) + ' ₽' : 'сумму') + '</span></span>' +
+        '<span><b>2</b><span>нажмите «Я оплатил(а)»</span></span>' +
+        '<span><b>3</b><span>приложите подтверждение — сверка быстрее</span></span></div>';
   }
 
   function payBlock(o) {
@@ -1491,36 +1657,41 @@ function initCabinet() {
        во время работы над частью клиента не дёргаем кнопками оплаты */
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
     var wantPay = due > 0;
-    if (!wantPay && !o.claimed) return payHistory(o) ? '<div class="fs-sec" id="secPay"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '';
-    var head = '<div class="fs-sec" id="secPay"><div class="fs-head"><span class="caps">Оплата</span>' +
-      (o.due_now ? '<span class="fs-meta">' + esc(o.due_now.label) + ' · ' + money(due) + ' ₽</span>' : '') + '</div>';
+    if (!wantPay && !o.claimed) return payHistory(o) ? '<div class="fs-sec case-sec case-pay" id="secPay">' +
+      '<header><div><p class="eyebrow">Оплата</p><h3>История платежей</h3></div></header>' +
+      payScale(o) + payHistory(o) + '</div>' : '';
+    var head = '<div class="fs-sec case-sec case-pay" id="secPay">' +
+      '<header><div><p class="eyebrow">Оплата</p><h3>' +
+      esc((o.due_now && o.due_now.label) || 'Платёж по делу') + '</h3></div>' +
+      (due ? '<strong class="case-sum">' + money(due) + ' ₽</strong>' : '') + '</header>' + payScale(o);
     if (o.claimed) {
       return head +
-        '<div class="req-slip"><span class="caps">Отметка «оплатил» у мастера</span>' +
-        '<p class="petit" style="margin:8px 0 0">Мастер сверяет поступление — как подтвердит, заказ двинется дальше и придёт уведомление. ' +
-        'Подтверждение перевода ускорит сверку.</p></div>' +
-        '<div class="act-row">' +
-        '<label class="btn btn-line btn-upload">📎 Приложить подтверждение перевода<input type="file" id="cabReceipt" hidden accept="image/*,.pdf"></label>' +
-        '<button type="button" class="btn btn-line" data-act="paid_undo">↩️ Я ещё не оплатил — снять отметку</button>' +
+        '<div class="account-notice"><span class="account-notice__mark" aria-hidden="true">₽</span>' +
+        '<div><strong>Отметка «оплатил» у мастера</strong>' +
+        '<p>Мастер сверяет поступление — как подтвердит, заказ двинется дальше и придёт уведомление. ' +
+        'Подтверждение перевода ускорит сверку.</p></div></div>' +
+        '<div class="case-acts">' +
+        '<label class="btn btn-line case-upload">Приложить подтверждение перевода<input type="file" id="cabReceipt" hidden accept="image/*,.pdf"></label>' +
+        '<button type="button" class="btn btn-line" data-act="paid_undo">Я ещё не оплатил — снять отметку</button>' +
         '<button type="button" class="btn btn-line" data-chat-focus>Вопрос по оплате</button></div>' +
         payHistory(o) + '</div>';
     }
     var req = o.requisites
-      ? paySlip(o, due, o.due_now && o.due_now.label)
-      : (o.pay_online ? '' : '<p class="petit">Реквизиты пришлём в чат ниже (и в Telegram) в течение пары минут.</p>');
+      ? paySlip(o, due)
+      : (o.pay_online ? '' : '<p class="case-sec__lead">Реквизиты пришлём в чат ниже (и в Telegram) в течение пары минут.</p>');
     var depBal = (st.me && st.me.deposit && st.me.deposit.balance) || 0;
     var depDue = (o.due_now && o.due_now.amount) || 0;
     var depBtn = depBal >= depDue && depDue > 0;
     var receiptEmail = esc(o.receipt_email || '');
     var receiptField = o.pay_online
-      ? '<label class="pay-email"><span class="petit">E-mail для официального чека НПД</span>' +
-        '<input type="email" id="payReceiptEmail" autocomplete="email" inputmode="email" ' +
+      ? '<label class="case-field"><span class="case-field__label">E-mail для официального чека НПД</span>' +
+        '<input class="account-input" type="email" id="payReceiptEmail" autocomplete="email" inputmode="email" ' +
         'placeholder="name@example.ru" value="' + receiptEmail + '" required>' +
-        '<span class="petit">Передадим только Robokassa для чека и уведомления об оплате.</span></label>'
+        '<span class="case-field__hint">Передадим только Robokassa для чека и уведомления об оплате.</span></label>'
       : '';
-    var payBtns = '<div class="act-row">' +
-      (depBtn ? '<button type="button" class="btn btn-wax" data-act-pay-dep>💼 С депозита — ' + money(depDue) + ' ₽</button>' : '') +
-      (o.pay_online ? '<button type="button" class="btn ' + (depBtn ? 'btn-line' : 'btn-wax') + '" data-act-pay>💳 Оплатить картой онлайн</button>' : '') +
+    var payBtns = '<div class="case-acts">' +
+      (depBtn ? '<button type="button" class="btn btn-wax" data-act-pay-dep>С депозита — ' + money(depDue) + ' ₽</button>' : '') +
+      (o.pay_online ? '<button type="button" class="btn ' + (depBtn ? 'btn-line' : 'btn-wax') + '" data-act-pay>Оплатить картой онлайн</button>' : '') +
       '<button type="button" class="btn ' + (o.pay_online || depBtn ? 'btn-line' : 'btn-wax') + '" data-act="paid">Я оплатил(а) переводом</button>' +
       '<button type="button" class="btn btn-line" data-chat-focus>Вопрос по оплате</button></div>';
     return head + req + receiptField + payBtns + payHistory(o) + '</div>';
@@ -1535,7 +1706,7 @@ function initCabinet() {
     if (o.actions.indexOf('accept_price') >= 0) {
       if (byParts) {
         b.push('<button type="button" class="btn btn-wax" data-act="accept_price">Принять цену — начать с ' + money(plan0[0].amount) + ' ₽</button>');
-        partsNote = '<p class="petit" style="margin:0 0 10px">Полная стоимость — <b>' +
+        partsNote = '<p class="case-sec__lead">Полная стоимость — <b>' +
           money(o.due_total || o.price) + ' ₽</b>, но платить её сразу не нужно: сейчас — только ' +
           '<b>первая часть ' + money(plan0[0].amount) + ' ₽</b>. Каждый следующий платёж — после ' +
           'того, как результат соответствующей части будет подготовлен (план — выше, рядом с ценой).</p>';
@@ -1551,18 +1722,22 @@ function initCabinet() {
       b.push('<button type="button" class="btn btn-line" data-act-fix>Нужна корректировка' + (total > 1 ? ' по части ' + (o.stage || 1) : '') + '</button>');
     }
     if (o.actions.indexOf('resume') >= 0) {
-      b.push('<button type="button" class="btn btn-wax" data-act="resume">🔄 Возобновить заказ</button>');
+      b.push('<button type="button" class="btn btn-wax" data-act="resume">Возобновить заказ</button>');
     }
     var pay = ((o.due_now && o.due_now.amount > 0) || o.claimed ||
                (o.payments || []).some(function (p) { return p.status === 'paid'; }))
       ? payBlock(o) : '';
-    if (!b.length) return pay || (payHistory(o) ? '<div class="fs-sec" id="secPay"><div class="fs-head"><span class="caps">Оплата</span></div>' + payHistory(o) + '</div>' : '');
-    return '<div class="fs-sec" id="secDecide"><div class="fs-head"><span class="caps">Решение по заказу</span>' +
-      (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="fs-meta">проверка и итерации — по условиям позиции</span>' : '') +
-      '</div>' + partsNote + '<div class="act-row" style="margin-top:0">' + b.join('') + '</div>' +
-      '<div class="fix-form" id="fixForm" hidden>' +
-        '<textarea id="fixText" rows="3" maxlength="2000" aria-label="Что нужно скорректировать" placeholder="Укажите критерий позиции и конкретное расхождение результата"></textarea>' +
-        '<div class="act-row"><button type="button" class="btn btn-wax" data-act-fix-send>Запросить корректировку</button>' +
+    if (!b.length) return pay || (payHistory(o) ? '<div class="fs-sec case-sec case-pay" id="secPay">' +
+      '<header><div><p class="eyebrow">Оплата</p><h3>История платежей</h3></div></header>' +
+      payScale(o) + payHistory(o) + '</div>' : '');
+    return '<div class="fs-sec case-sec" id="secDecide">' +
+      '<header><div><p class="eyebrow">Решение по заказу</p><h3>Слово за вами</h3></div>' +
+      (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="case-sec__note">проверка и итерации — по условиям позиции</span>' : '') +
+      '</header>' + partsNote + '<div class="case-acts">' + b.join('') + '</div>' +
+      '<div class="case-fix" id="fixForm" hidden>' +
+        '<label class="case-field"><span class="case-field__label">Что нужно скорректировать</span>' +
+        '<textarea id="fixText" rows="3" maxlength="2000" placeholder="Укажите критерий позиции и конкретное расхождение результата"></textarea></label>' +
+        '<div class="case-acts"><button type="button" class="btn btn-wax" data-act-fix-send>Запросить корректировку</button>' +
         '<button type="button" class="btn btn-line" data-act-fix-cancel>Передумал(а)</button></div>' +
       '</div></div>' + pay;
   }
@@ -1572,14 +1747,19 @@ function initCabinet() {
     if (!o.final_ready || 'work fix'.indexOf(o.status) < 0) return '';
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
     if (due > 0) {
-      return '<div class="pause-band fin-band"><span class="pb-ic">🏁</span><span class="pb-txt">' +
-        '<b>Финальный пакет результата подготовлен.</b> Он передаётся после закрытия остатка — ' +
-        '<b>' + money(due) + ' ₽</b>. Как только мастер подтвердит поступление, файлы придут сразу. ' +
-        '<button type="button" class="linkbtn" data-jump="secPay">Перейти к оплате ↓</button></span></div>';
+      return '<div class="account-notice account-notice--wax">' +
+        '<span class="account-notice__mark" aria-hidden="true">₽</span>' +
+        '<div><strong>Финальный пакет результата подготовлен</strong>' +
+        '<p>Он передаётся после закрытия остатка — ' + money(due) + ' ₽. ' +
+        'Как только мастер подтвердит поступление, файлы придут сразу.</p></div>' +
+        '<span class="account-notice__acts">' +
+        '<button type="button" class="line-link" data-jump="secPay">Перейти к оплате <span aria-hidden="true">→</span></button></span></div>';
     }
-    return '<div class="pause-band fin-band"><span class="pb-ic">🏁</span><span class="pb-txt">' +
+    return '<div class="account-notice">' +
+      '<span class="account-notice__mark" aria-hidden="true">¶</span>' +
+      '<div><strong>Финальная часть на передаче</strong><p>' +
       (o.claimed ? 'Ваша отметка об оплате на сверке у мастера — после подтверждения он передаст финальную часть.'
-                 : 'Оплата закрыта — мастер передаёт финальную часть.') + '</span></div>';
+                 : 'Оплата закрыта — мастер передаёт финальную часть.') + '</p></div></div>';
   }
 
   function partBand(o) {
@@ -1587,15 +1767,20 @@ function initCabinet() {
     if (!o.part_ready || o.final_ready || 'work fix'.indexOf(o.status) < 0) return '';
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
     if (due > 0) {
-      return '<div class="pause-band fin-band"><span class="pb-ic">📘</span><span class="pb-txt">' +
-        '<b>Результат части ' + o.part_ready + ' подготовлен.</b> Он передаётся после оплаты этапа — ' +
-        '<b>' + money(due) + ' ₽</b>' + (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ')' : '') +
-        '. После подтверждения файл придёт сразу. ' +
-        '<button type="button" class="linkbtn" data-jump="secPay">Перейти к оплате ↓</button></span></div>';
+      return '<div class="account-notice account-notice--wax">' +
+        '<span class="account-notice__mark" aria-hidden="true">₽</span>' +
+        '<div><strong>Результат части ' + o.part_ready + ' подготовлен</strong>' +
+        '<p>Он передаётся после оплаты этапа — ' + money(due) + ' ₽' +
+        (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ')' : '') +
+        '. После подтверждения файл придёт сразу.</p></div>' +
+        '<span class="account-notice__acts">' +
+        '<button type="button" class="line-link" data-jump="secPay">Перейти к оплате <span aria-hidden="true">→</span></button></span></div>';
     }
-    return '<div class="pause-band fin-band"><span class="pb-ic">📘</span><span class="pb-txt">' +
-      (o.claimed ? 'Результат части ' + o.part_ready + ' подготовлен; ваша отметка об оплате на сверке — после подтверждения мастер передаст файл.'
-                 : 'Результат части ' + o.part_ready + ' подготовлен, этап оплачен — мастер передаёт файл.') + '</span></div>';
+    return '<div class="account-notice">' +
+      '<span class="account-notice__mark" aria-hidden="true">§</span>' +
+      '<div><strong>Результат части ' + o.part_ready + ' подготовлен</strong><p>' +
+      (o.claimed ? 'Ваша отметка об оплате на сверке — после подтверждения мастер передаст файл.'
+                 : 'Этап оплачен — мастер передаёт файл.') + '</p></div></div>';
   }
 
   /* -------- часть уже у клиента, а этап не оплачен: честная лента -------- */
@@ -1603,11 +1788,13 @@ function initCabinet() {
     if ('check fix'.indexOf(o.status) < 0 || o.final_ready || o.part_ready) return '';
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
     if (due <= 0) return '';
-    return '<div class="pause-band fin-band"><span class="pb-ic">💳</span><span class="pb-txt">' +
-      'По плану оплат за эту часть — <b>' + money(due) + ' ₽</b>' +
-      (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ')' : '') +
-      '. Мастерская передала результат, доверившись вам — закройте этап, и исполнение продолжится без пауз. ' +
-      '<button type="button" class="linkbtn" data-jump="secPay">Перейти к оплате ↓</button></span></div>';
+    return '<div class="account-notice account-notice--wax">' +
+      '<span class="account-notice__mark" aria-hidden="true">₽</span>' +
+      '<div><strong>По плану оплат за эту часть — ' + money(due) + ' ₽' +
+      (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ')' : '') + '</strong>' +
+      '<p>Мастерская передала результат, доверившись вам — закройте этап, и исполнение продолжится без пауз.</p></div>' +
+      '<span class="account-notice__acts">' +
+      '<button type="button" class="line-link" data-jump="secPay">Перейти к оплате <span aria-hidden="true">→</span></button></span></div>';
   }
 
   /* -------- пауза: заметная лента под шапкой дела -------- */
@@ -1616,40 +1803,43 @@ function initCabinet() {
     var by = o.paused_by === 'admin'
       ? 'Мастер приостановил дело — вопросы можно задать в переписке ниже.'
       : 'Вы поставили дело на паузу: исполнение и напоминания подождут вашего сигнала.';
-    return '<div class="pause-band"><span class="pb-ic">⏸</span><span class="pb-txt">' + by +
+    return '<div class="account-notice">' +
+      '<span class="account-notice__mark" aria-hidden="true">II</span>' +
+      '<div><strong>Дело на паузе</strong><p>' + by + '</p></div>' +
       (o.actions.indexOf('unpause') >= 0
-        ? ' <button type="button" class="linkbtn" data-act="unpause">Снять с паузы</button>' : '') +
-      '</span></div>';
+        ? '<span class="account-notice__acts">' +
+          '<button type="button" class="line-link" data-act="unpause">Снять с паузы <span aria-hidden="true">→</span></button></span>' : '') +
+      '</div>';
   }
 
   /* -------- управление делом: пауза, отзыв заявки, закрытие в работе -------- */
   function manageBlock(o) {
     var items = [];
     if (o.actions.indexOf('unpause') >= 0)
-      items.push('<button type="button" class="btn btn-line" data-act="unpause">▶️ Снять с паузы</button>');
+      items.push('<button type="button" class="btn btn-line" data-act="unpause">Снять с паузы</button>');
     else if (o.actions.indexOf('pause') >= 0)
-      items.push('<button type="button" class="btn btn-line" data-act-pause>⏸ Поставить на паузу</button>');
+      items.push('<button type="button" class="btn btn-line" data-act-pause>Поставить на паузу</button>');
     if (o.status === 'new' && o.actions.indexOf('decline') >= 0)
       items.push('<button type="button" class="btn btn-line" data-act="decline">Отозвать заявку</button>');
     if (o.actions.indexOf('cancel_request') >= 0)
       items.push('<button type="button" class="btn btn-line" data-act-cancelreq>Закрыть дело…</button>');
     if (!items.length) return '';
-    return fold('secManage', '⚙️ Управление делом', 'пауза — не отмена: всё сохраняется',
-      '<div class="act-row" style="margin-top:0">' + items.join('') + '</div>', false);
+    return fold('secManage', 'Управление делом', 'пауза — не отмена: всё сохраняется',
+      '<div class="case-acts">' + items.join('') + '</div>', false);
   }
 
   /* -------- после завершения: отдельная подготовка к выступлению -------- */
   function defenseBlock(o) {
     if (o.status !== 'done' || /^svc_/.test(o.work_type || '')) return '';
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Нужна подготовка к выступлению?</span>' +
-      '<span class="fs-meta">по вашим материалам</span></div>' +
-      '<p class="petit" style="margin-bottom:12px">Можно отдельно заказать редактуру вашего доклада и слайдов, а также репетицию самостоятельных ответов. Бонусы с этого заказа можно применить.</p>' +
-      '<div class="act-row" style="margin-top:0">' +
-      '<a class="btn btn-wax" href="configurator.html?service=dp&order=' + o.id + '">🎁 Пакет подготовки к выступлению · от 9 500 ₽</a>' +
-      '<a class="btn btn-line" href="configurator.html?service=df&order=' + o.id + '">🎤 Редактура доклада и слайдов · от 6 000 ₽</a>' +
-      '<a class="btn btn-line" href="configurator.html?service=nm&order=' + o.id + '">📏 Нормоконтроль · от 5 000 ₽</a>' +
+    return '<div class="fs-sec case-sec">' +
+      '<header><div><p class="eyebrow">По вашим материалам</p><h3>Нужна подготовка к выступлению?</h3></div></header>' +
+      '<p class="case-sec__lead">Можно отдельно заказать редактуру вашего доклада и слайдов, а также репетицию самостоятельных ответов. Бонусы с этого заказа можно применить.</p>' +
+      '<div class="case-acts">' +
+      '<a class="btn btn-wax" href="configurator.html?service=dp&order=' + o.id + '">Пакет подготовки к выступлению · от 9 500 ₽</a>' +
+      '<a class="btn btn-line" href="configurator.html?service=df&order=' + o.id + '">Редактура доклада и слайдов · от 6 000 ₽</a>' +
+      '<a class="btn btn-line" href="configurator.html?service=nm&order=' + o.id + '">Нормоконтроль · от 5 000 ₽</a>' +
       '</div>' +
-      '<p class="petit" style="margin-top:10px">Пакет выгоднее на 1 500 ₽, чем услуги по отдельности (11 000 ₽).</p></div>';
+      '<p class="case-note">Пакет выгоднее на 1 500 ₽, чем услуги по отдельности (11 000 ₽).</p></div>';
   }
 
   /* -------- отзыв: просто для тех, кто не любит писать -------- */
@@ -1658,16 +1848,17 @@ function initCabinet() {
     var r = o.review;
     if (r) {
       var stMap = { pending: 'на модерации у мастера', approved: 'опубликован на сайте — спасибо!', rejected: 'сохранён, на сайт не попал' };
-      return '<div class="fs-sec"><div class="fs-head"><span class="caps">Ваш отзыв</span>' +
-        '<span class="fs-meta">' + (stMap[r.status] || '') + '</span></div>' +
+      return '<div class="fs-sec case-sec case-review">' +
+        '<header><div><p class="eyebrow">Ваш отзыв</p><h3>Спасибо за оценку</h3></div>' +
+        '<span class="case-sec__note">' + (stMap[r.status] || '') + '</span></header>' +
         '<p class="rv-stars-static">' + '★'.repeat(r.rating) + '<span class="dim">' + '★'.repeat(5 - r.rating) + '</span></p>' +
-        (r.text ? '<p class="petit" style="font-style:italic">«' + esc(r.text) + '»</p>' : '') +
-        '<div class="act-row"><button type="button" class="btn btn-line" data-review-edit>Изменить отзыв</button></div>' +
+        (r.text ? '<blockquote class="case-quote">«' + esc(r.text) + '»</blockquote>' : '') +
+        '<div class="case-acts"><button type="button" class="btn btn-line" data-review-edit>Изменить отзыв</button></div>' +
         '<div id="reviewForm" hidden>' + reviewFormInner(r) + '</div></div>';
     }
-    return '<div class="fs-sec"><div class="fs-head"><span class="caps">Как вам результат и сервис?</span>' +
-      '<span class="fs-meta">займёт полминуты</span></div>' +
-      '<p class="petit" style="margin-bottom:10px">Оценка и пара слов помогают другим студентам решиться — а нам делают день. Публикуется после модерации, можно анонимно.</p>' +
+    return '<div class="fs-sec case-sec case-review">' +
+      '<header><div><p class="eyebrow">Займёт полминуты</p><h3>Как вам результат и сервис?</h3></div></header>' +
+      '<p class="case-sec__lead">Оценка и пара слов помогают другим студентам решиться — а нам делают день. Публикуется после модерации, можно анонимно.</p>' +
       '<div id="reviewForm">' + reviewFormInner(null) + '</div></div>';
   }
   function reviewFormInner(r) {
@@ -1676,19 +1867,22 @@ function initCabinet() {
     for (var n = 1; n <= 5; n++)
       stars += '<button type="button" class="rv-star' + (n <= cur ? ' on' : '') + '" data-star="' + n + '" aria-label="' + n + ' из 5">★</button>';
     return '<div class="rv-stars" id="rvStars" data-val="' + cur + '">' + stars + '</div>' +
-      '<textarea id="rvText" rows="3" maxlength="2000" aria-label="Текст отзыва" placeholder="Пара слов — по желанию: что было полезно и удобно">' + (r && r.text ? esc(r.text) : '') + '</textarea>' +
-      '<div class="act-row" style="margin-top:10px">' +
-      '<input type="text" id="rvAuthor" maxlength="60" aria-label="Подпись к отзыву, необязательно" placeholder="Подпись (например, «Мария, ВКР») — можно пусто" style="flex:2;min-width:0;font:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--hairline-strong);border-radius:var(--r);background:transparent;color:inherit">' +
+      '<label class="case-field"><span class="case-field__label">Текст отзыва — по желанию</span>' +
+      '<textarea id="rvText" rows="3" maxlength="2000" placeholder="Пара слов: что было полезно и удобно">' + (r && r.text ? esc(r.text) : '') + '</textarea></label>' +
+      '<div class="case-acts">' +
+      '<input class="account-input" type="text" id="rvAuthor" maxlength="60" aria-label="Подпись к отзыву, необязательно" placeholder="Подпись (например, «Мария, ВКР») — можно пусто">' +
       '<button type="button" class="btn btn-wax" data-review-send>' + (r ? 'Обновить отзыв' : 'Отправить отзыв') + '</button></div>' +
-      '<label class="petit" style="display:flex;gap:8px;align-items:flex-start;margin-top:10px"><input type="checkbox" id="rvConsentText">' +
+      '<div class="case-consents">' +
+      '<label class="case-consent"><input type="checkbox" id="rvConsentText">' +
       '<span>Отдельно разрешаю опубликовать оценку и текст на akademsalon.ru. Условия — <a href="consent-publication.html" target="_blank">согласие на распространение</a>.</span></label>' +
-      '<label class="petit" style="display:flex;gap:8px;align-items:flex-start;margin-top:8px"><input type="checkbox" id="rvConsentAuthor">' +
+      '<label class="case-consent"><input type="checkbox" id="rvConsentAuthor">' +
       '<span>Также разрешаю опубликовать введённую подпись. Без отметки отзыв будет анонимным.</span></label>' +
-      '<label class="petit" style="display:flex;gap:8px;align-items:flex-start;margin-top:8px"><input type="checkbox" id="rvConsentShot">' +
+      '<label class="case-consent"><input type="checkbox" id="rvConsentShot">' +
       '<span>Также разрешаю публикацию приложенного скриншота после удаления данных третьих лиц.</span></label>' +
-      '<div class="act-row" style="margin-top:8px">' +
-      '<label class="btn btn-line btn-upload">📎 Приложить скрин (оценка, переписка)<input type="file" id="cabReviewShot" hidden accept="image/*,.pdf"></label></div>' +
-      '<p class="petit up-note" id="rvNote" hidden></p>';
+      '</div>' +
+      '<div class="case-acts">' +
+      '<label class="btn btn-line case-upload">Приложить скрин (оценка, переписка)<input type="file" id="cabReviewShot" hidden accept="image/*,.pdf"></label></div>' +
+      '<p class="case-note up-note" id="rvNote" hidden></p>';
   }
 
   /* -------- благодарность: только после завершённого дела -------- */
@@ -1696,52 +1890,57 @@ function initCabinet() {
     if (!o.engagement_ready) return '';
     var tips = o.tips || {};
     if (tips.total > 0) {
-      return '<div class="fs-sec"><div class="thanks-card th-complete" id="thanksCard" data-tip="500">' +
-        '<span class="caps">После финальной точки</span>' +
-        '<h3 class="th-title">Спасибо за поддержку мастерской 💛</h3>' +
-        '<p class="th-copy">Вы уже оставили ' + money(tips.total) + ' ₽ на развитие проекта. Это правда помогает.</p>' +
-        '<button type="button" class="linkbtn" data-tip-more>Поддержать ещё раз</button>' +
-      '</div></div>';
+      return '<div class="fs-sec case-sec thanks-card th-complete" id="thanksCard" data-tip="500">' +
+        '<header><div><p class="eyebrow">После финальной точки</p>' +
+        '<h3>Спасибо за поддержку мастерской</h3></div>' +
+        '<span class="case-support__mark" aria-hidden="true">¶</span></header>' +
+        '<p class="case-sec__lead">Вы уже оставили ' + money(tips.total) + ' ₽ на развитие проекта. Это правда помогает.</p>' +
+        '<p class="case-note"><button type="button" class="line-link" data-tip-more>Поддержать ещё раз <span aria-hidden="true">→</span></button></p>' +
+      '</div>';
     }
-    var paid = '';
-    return '<div class="fs-sec"><div class="thanks-card" id="thanksCard" data-tip="500">' +
-      '<span class="caps">После финальной точки</span>' +
-      '<h3 class="th-title">Оставить благодарность мастерской</h3>' +
-      '<p class="th-copy">Если результат и сопровождение помогли, можно поддержать развитие проекта. Только по желанию — на заказ, корректировки и отношение это никак не влияет.</p>' +
-      paid +
-      '<div class="th-amounts" role="group" aria-label="Сумма благодарности">' +
-        '<button type="button" class="th-chip" data-tip-preset="300" aria-pressed="false">300 ₽</button>' +
-        '<button type="button" class="th-chip on" data-tip-preset="500" aria-pressed="true">500 ₽</button>' +
-        '<button type="button" class="th-chip" data-tip-preset="1000" aria-pressed="false">1 000 ₽</button>' +
-        '<button type="button" class="th-chip" data-tip-preset="2000" aria-pressed="false">2 000 ₽</button>' +
+    return '<div class="fs-sec case-sec thanks-card" id="thanksCard" data-tip="500">' +
+      '<header><div><p class="eyebrow">После финальной точки</p>' +
+      '<h3>Оставить благодарность мастерской</h3></div></header>' +
+      '<p class="case-sec__lead">Если результат и сопровождение помогли, можно поддержать развитие проекта. Только по желанию — на заказ, корректировки и отношение это никак не влияет.</p>' +
+      '<div class="case-chips" role="group" aria-label="Сумма благодарности">' +
+        '<button type="button" class="case-chip" data-tip-preset="300" aria-pressed="false">300 ₽</button>' +
+        '<button type="button" class="case-chip on" data-tip-preset="500" aria-pressed="true">500 ₽</button>' +
+        '<button type="button" class="case-chip" data-tip-preset="1000" aria-pressed="false">1 000 ₽</button>' +
+        '<button type="button" class="case-chip" data-tip-preset="2000" aria-pressed="false">2 000 ₽</button>' +
       '</div>' +
-      '<div class="th-actions"><input class="th-own" id="tipOwn" type="number" inputmode="numeric" min="100" max="30000" step="50" placeholder="Своя сумма" aria-label="Своя сумма благодарности в рублях">' +
+      '<div class="case-acts"><input class="account-input account-input--short" id="tipOwn" type="number" inputmode="numeric" min="100" max="30000" step="50" placeholder="Своя сумма" aria-label="Своя сумма благодарности в рублях">' +
         '<button type="button" class="btn btn-wax" data-tip-pay>Поблагодарить <span class="ar">→</span></button></div>' +
-      '<p class="th-fine">100–30 000 ₽ · оплата картой или через СБП на защищённой странице Robokassa · электронный чек придёт от платёжного сервиса.</p>' +
-    '</div></div>';
+      '<p class="case-note">100–30 000 ₽ · оплата картой или через СБП на защищённой странице Robokassa · электронный чек придёт от платёжного сервиса.</p>' +
+    '</div>';
   }
 
-  var CLIP_SVG = '<svg class="fl-ic" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 12.7 13 19.9a5 5 0 0 1-7.1-7.1l7.9-7.8a3.35 3.35 0 0 1 4.7 4.7l-7.8 7.9a1.68 1.68 0 0 1-2.4-2.4l7.2-7.2"/></svg>';
+  /* расширение файла в мономарке — как в эталонной строке документа */
+  function fileExt(name) {
+    var m = String(name || '').match(/\.([A-Za-zА-Яа-я0-9]{1,4})$/);
+    return m ? m[1].toUpperCase() : 'ФАЙЛ';
+  }
   function filesBlock(o) {
     var rows = (o.files || []).map(function (f) {
-      var who = f.from === 'master' ? 'от мастерской' : 'ваш файл';
-      var tags = '';
-      if (f.new) tags += ' <span class="fl-tag fl-new">новый</span>';
-      if (f.part && (o.stages_total || 1) > 1) tags += ' <span class="fl-tag">часть ' + f.part + '</span>';
-      if (f.label) tags += ' <span class="fl-tag">' + esc(f.label) + '</span>';
-      return '<div class="file-line">' + CLIP_SVG +
-        '<span class="fl-name">' + esc(f.name) + tags + '</span>' +
-        '<span class="fl-meta">' + who + ' · ' + dt(f.at) + '</span>' +
-        '<a class="link" href="#" data-protected-asset="' + apiPath(o.id, '/file/' + f.id) +
-        '" data-order-id="' + o.id + '" data-filename="' + esc(f.name) + '">скачать</a></div>';
+      var bits = [f.from === 'master' ? 'от мастерской' : 'ваш файл', dt(f.at)];
+      if (f.part && (o.stages_total || 1) > 1) bits.push('часть ' + f.part);
+      if (f.label) bits.push(esc(f.label));
+      return '<a class="file-row" href="#" data-protected-asset="' + apiPath(o.id, '/file/' + f.id) +
+        '" data-order-id="' + o.id + '" data-filename="' + esc(f.name) + '">' +
+        '<i aria-hidden="true">' + fileExt(f.name) + '</i>' +
+        '<span><strong>' + esc(f.name) + '</strong><small>' + bits.join(' · ') +
+        (f.new ? ' <b class="file-row__new">новый</b>' : '') + '</small></span>' +
+        '<b aria-hidden="true">—</b></a>';
     }).join('');
     var n = (o.files || []).length;
-    var meta = n ? (n + (o.files_new ? ' · есть новые' : '')) : 'приложить методичку или задание';
+    var meta = n
+      ? (n + ' ' + plural(n, 'файл', 'файла', 'файлов') + (o.files_new ? ' · есть новые' : ''))
+      : 'приложить методичку или задание';
     var open = n > 0 || o.status === 'new';
-    return fold('secFiles', '📎 Файлы', meta,
-      (rows || '<p class="petit">Пока пусто. Приложите методичку или задание — мастеру будет проще оценить работу точно.</p>') +
-      '<div class="act-row"><label class="btn btn-line btn-upload">Приложить файл<input type="file" id="cabUpload" hidden></label></div>' +
-      '<p class="petit up-note" id="upNote" hidden></p>', open);
+    return fold('secFiles', 'Файлы', meta,
+      (rows ? '<div class="case-files">' + rows + '</div>'
+            : '<p class="case-sec__lead">Пока пусто. Приложите методичку или задание — мастеру будет проще оценить работу точно.</p>') +
+      '<div class="case-acts"><label class="btn btn-line case-upload">Приложить файл<input type="file" id="cabUpload" hidden></label></div>' +
+      '<p class="case-note up-note" id="upNote" hidden></p>', open);
   }
 
   function mediaHtml(o, m) {
@@ -1749,12 +1948,12 @@ function initCabinet() {
     var path = apiPath(o.id, '/msgmedia/' + m.id);
     var attrs = ' data-protected-media="' + path + '" data-order-id="' + o.id + '"';
     if (m.kind === 'voice' || m.kind === 'audio')
-      return '<audio controls preload="none"' + attrs + ' style="max-width:100%;height:36px"></audio>';
+      return '<audio class="message__audio" controls preload="none"' + attrs + '></audio>';
     if (m.kind === 'photo')
-      return '<a href="#" target="_blank" rel="noopener" data-protected-media-open aria-disabled="true"><img' +
-        attrs + ' alt="фото из переписки" loading="lazy" style="max-width:min(260px,100%);border-radius:6px;display:block"></a>';
+      return '<a class="message__shot" href="#" target="_blank" rel="noopener" data-protected-media-open aria-disabled="true"><img' +
+        attrs + ' alt="фото из переписки" loading="lazy"></a>';
     if (m.kind === 'video' || m.kind === 'video_note')
-      return '<video controls preload="none"' + attrs + ' style="max-width:min(280px,100%);border-radius:6px"></video>';
+      return '<video class="message__video" controls preload="none"' + attrs + '></video>';
     return '';
   }
 
@@ -1767,22 +1966,24 @@ function initCabinet() {
     });
     items.sort(function (a, b) { return a.at < b.at ? -1 : a.at > b.at ? 1 : 0; });
     var feed = items.map(function (i) {
-      if (i.sys) return '<div class="chat-sys petit">' + esc(i.text) + ' · ' + dt(i.at) + '</div>';
-      var body = i.text ? esc(i.text) : '';
+      if (i.sys) return '<p class="message-sys">' + esc(i.text) + ' · ' + dt(i.at) + '</p>';
+      var body = i.text ? '<p>' + esc(i.text) + '</p>' : '';
       var media = (i.media && i.kind !== 'document') ? mediaHtml(o, i) : '';
-      if (media) body = (body ? body + '<br>' : '') + media;
-      else if (!body && i.kind && i.kind !== 'text') body = '\u2758 вложение: ' + (i.file ? esc(i.file) : 'см. раздел «Файлы» или Telegram');
-      else if (i.file) body += '<br>\u2758 ' + esc(i.file);
-      return '<div class="chat-m' + (i.me ? ' me' : '') + '">' +
-        '<span class="chat-who caps">' + (i.me ? 'Вы' : 'Мастерская') + '</span>' +
-        '<span class="chat-txt">' + body + '</span>' +
-        '<span class="chat-at petit">' + dt(i.at) + '</span></div>';
+      if (media) body = body + media;
+      else if (!body && i.kind && i.kind !== 'text') body = '<p>Вложение: ' + (i.file ? esc(i.file) : 'см. раздел «Файлы» или Telegram') + '</p>';
+      else if (i.file) body += '<p>' + esc(i.file) + '</p>';
+      return '<article class="message ' + (i.me ? 'message--client' : 'message--editor') + '">' +
+        '<span aria-hidden="true">' + (i.me ? 'ВЫ' : 'МС') + '</span>' +
+        '<div><strong>' + (i.me ? 'Вы' : 'Мастерская') + '</strong>' + body +
+        '<small>' + dt(i.at) + '</small></div></article>';
     }).join('');
     var hasMsgs = (o.messages || []).length > 0;
     var meta = o.unread ? ('новых: ' + o.unread) : (S.api.token() ? 'синхронно с Telegram' : 'мастер видит сразу');
-    return fold('secChat', '💬 Переписка по заказу', meta,
-      '<div class="chat-feed" id="chatFeed">' + (feed || '<p class="petit" style="text-align:center">Пока тихо. Напишите первым — мастер ответит прямо здесь.</p>') + '</div>' +
-      '<div class="chat-form"><textarea id="chatText" rows="2" maxlength="3000" aria-label="Сообщение мастеру" placeholder="Сообщение мастеру…"></textarea>' +
+    return fold('secChat', 'Переписка по заказу', meta,
+      '<div class="message-list" id="chatFeed">' +
+      (feed || '<p class="message-sys">Пока тихо. Напишите первым — мастер ответит прямо здесь.</p>') + '</div>' +
+      '<div class="message-form"><label><span class="case-field__label">Сообщение мастеру</span>' +
+      '<textarea id="chatText" rows="2" maxlength="3000" placeholder="Сообщение мастеру…"></textarea></label>' +
       '<button type="button" class="btn btn-wax" id="chatSend">Отправить</button></div>',
       hasMsgs || !!o.unread);
   }
@@ -1795,10 +1996,10 @@ function initCabinet() {
     var t = tokenFor(o.id);
     if (!t) return ''; /* заказы аккаунта открываются входом через Telegram */
     return fold(uid ? 'secAccess-' + o.id : 'secAccess',
-      '🔑 Доступ к делу' + (uid ? ' ' + esc(o.no) : ''), 'ссылка для других устройств',
-      '<p class="petit" style="margin-bottom:10px">Дело открывается на любом устройстве по секретной ссылке — сохраните её себе (заметки, «Избранное»). ' +
+      'Доступ к делу' + (uid ? ' ' + esc(o.no) : ''), 'ссылка для других устройств',
+      '<p class="case-sec__lead">Дело открывается на любом устройстве по секретной ссылке — сохраните её себе (заметки, «Избранное»). ' +
       'Не пересылайте посторонним: у кого ссылка, тот видит дело. По желанию привяжите Telegram — статусы придут и в бота.</p>' +
-      '<div class="act-row" style="margin-top:0">' +
+      '<div class="case-acts">' +
       '<button type="button" class="btn btn-line" data-access-copy="' + esc(t) + '">Скопировать ссылку доступа</button>' +
       '<a class="btn btn-line" href="https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(t) + '" target="_blank" rel="noopener">Привязать Telegram</a>' +
       '</div>', false);
@@ -1812,11 +2013,11 @@ function initCabinet() {
     var chips = [];
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
     if (due > 0 || o.claimed)
-      chips.push(['secPay', '💳 Оплата' + (due > 0 ? ' · ' + money(due) + ' ₽' : ''), true]);
-    if (o.actions.indexOf('accept_work') >= 0) chips.push(['secDecide', '✅ Решение', true]);
-    chips.push(['secFiles', '📎 Файлы' + ((o.files || []).length ? ' · ' + o.files.length : ''), false]);
-    chips.push(['secChat', '💬 Переписка' + (o.unread ? ' · ' + o.unread : ''), !!o.unread]);
-    if (o.status !== 'done' && o.status !== 'cancel') chips.push(['secManage', '⚙️ Управление', false]);
+      chips.push(['secPay', 'Оплата' + (due > 0 ? ' · ' + money(due) + ' ₽' : ''), true]);
+    if (o.actions.indexOf('accept_work') >= 0) chips.push(['secDecide', 'Решение', true]);
+    chips.push(['secFiles', 'Файлы' + ((o.files || []).length ? ' · ' + o.files.length : ''), false]);
+    chips.push(['secChat', 'Переписка' + (o.unread ? ' · ' + o.unread : ''), !!o.unread]);
+    if (o.status !== 'done' && o.status !== 'cancel') chips.push(['secManage', 'Управление', false]);
     return '<div class="ord-jump" role="navigation" aria-label="Разделы дела">' +
       chips.map(function (c) {
         return '<button type="button" class="oj' + (c[2] ? ' hot' : '') + '" data-jump="' + c[0] + '">' + c[1] + '</button>';
@@ -1942,6 +2143,37 @@ function initCabinet() {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
 
+  /* ---------------- Черновик заявки из этого браузера ----------------
+     Незавершённая смета лежит в localStorage (salon_draft) и до отправки
+     сервер о ней не знает. Показываем её ОБЫЧНОЙ карточкой дела: черновик
+     стоит рядом с настоящими делами, а не отдельной плавающей плашкой.
+     Условия допуска те же, что на витрине (extras.js → .resume-card):
+     непустой savedAt (посадочные пишут 0 нарочно), две недели памяти,
+     живой калькулятор и известный тип работы. */
+  function draftSection() {
+    var d = S.store.get('salon_draft', null);
+    if (!d || !d.savedAt || !d.state || !window.SalonCalc) return '';
+    if (Date.now() - d.savedAt > 14 * 24 * 3600 * 1000) return '';
+    var t = window.SalonCalc.types.filter(function (x) { return x.id === d.state.type; })[0];
+    if (!t) return '';
+    var step = Math.max(1, Math.min(4, (d.idx || 0) + 1));
+    var saved = new Date(d.savedAt).toLocaleString('ru-RU',
+      { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    return '<section class="account-orders account-drafts">' +
+      '<header><div><p class="eyebrow">Сохранено в этом браузере</p>' +
+      '<h2>Черновики заявок</h2></div></header>' +
+      '<div class="order-list">' +
+      '<a class="order-card" href="configurator.html?step=' + step + '">' +
+      '<div class="order-card__top"><span class="tag tag--status tag--new">Черновик</span>' +
+      '<span>без номера</span></div>' +
+      '<h3>' + esc(t.label.split(' (')[0]) + '</h3>' +
+      '<div class="order-card__stage">' +
+      '<span><small>Состояние</small><strong>Заполнен шаг ' + step + ' из 4 · ' + esc(saved) + '</strong></span>' +
+      '<span><small>Следующий шаг</small><strong>Оценка редактора</strong></span></div>' +
+      '<footer><span>Продолжить заявку</span><b aria-hidden="true">→</b></footer></a>' +
+      '</div></section>';
+  }
+
   function homeTab() {
     var me = st.me || {};
     var dep = me.deposit || {}, bon = me.bonus || {};
@@ -1970,6 +2202,7 @@ function initCabinet() {
       plural(unread, 'новое событие', 'новых события', 'новых событий') + '</p></article>' +
       '<article><span>Бонусный счёт</span><strong>' + money(bon.balance || 0) + ' бонусов</strong><p>условия видны до списания</p></article>' +
       '</section>' +
+      draftSection() +
       '<section class="account-orders"><header><h2>Ваши дела</h2>' +
       '<button class="line-link" type="button" data-tab="orders">Открыть все <span aria-hidden="true">→</span></button></header>' +
       (orderCards ? '<div class="order-list">' + orderCards + '</div>' :
@@ -1994,32 +2227,38 @@ function initCabinet() {
   }
 
   function loginNudge(what) {
-    return '<div class="sheet sheet-pad stacked reveal">' +
-      '<p class="caps" style="margin-bottom:8px">' + what + '</p>' +
-      '<p class="lead" style="margin-bottom:14px">Кошелёк, бонусы и подписка привязаны к аккаунту. Войдите — всё появится здесь.</p>' +
-      '<button type="button" class="btn btn-wax" id="cabTg">Войти через Telegram</button></div>';
+    return '<section class="account-section reveal">' +
+      '<header><div><p class="eyebrow">' + what + '</p>' +
+      '<h2>Кошелёк, бонусы и подписка — после входа</h2></div></header>' +
+      '<p class="case-sec__lead">Всё это привязано к аккаунту. Войдите — данные появятся здесь.</p>' +
+      '<div class="case-acts"><button type="button" class="btn btn-wax" id="cabTg">Войти через Telegram</button></div></section>';
   }
 
   function paymentDocumentsCard() {
     if (!st.me) return '';
     var docs = st.me.payment_confirmations || [];
     if (!docs.length) return '';
-    return '<div class="sheet sheet-pad stacked reveal">' +
-      '<p class="caps" style="margin-bottom:10px">Документы об оплате</p>' +
-      '<div class="pay-history">' + docs.map(function (d) {
-        var ref = d.scope === 'order' ? ' · заказ №' + d.reference : '';
+    return '<section class="account-section reveal">' +
+      '<header><div><p class="eyebrow">Документы</p>' +
+      '<h2>Подтверждения оплаты.</h2></div>' +
+      '<span class="account-count">' + docs.length + '</span></header>' +
+      '<div class="account-doc-list">' + docs.map(function (d) {
+        var ref = d.scope === 'order' ? 'заказ № ' + d.reference : 'абонемент и счета';
         var filename = 'podtverzhdenie-oplaty-' + (d.scope || 'payment') +
           '-' + d.reference + '-' + d.id + '.pdf';
-        return '<p class="petit" style="margin:7px 0">' +
-          '<b>' + esc(d.label || 'Оплата') + '</b>' + ref + ' · ' +
-          money(d.amount || 0) + ' ₽ · ' + dt(d.at) +
-          ' <a class="linkbtn wax" href="#" data-protected-asset="' +
+        return '<div class="account-doc-list__row">' +
+          '<span class="account-doc-list__mark" aria-hidden="true">PDF</span>' +
+          '<span><strong>' + esc(d.label || 'Оплата') + '</strong>' +
+          '<small>' + ref + '</small></span>' +
+          '<b>' + money(d.amount || 0) + ' ₽</b>' +
+          '<i class="account-doc-list__at">' + dt(d.at) + '</i>' +
+          '<a class="line-link" href="#" data-protected-asset="' +
           esc(d.url || '') + '" data-filename="' + esc(filename) +
-          '">Скачать PDF</a></p>';
+          '">Скачать</a></div>';
       }).join('') + '</div>' +
-      '<p class="petit" style="margin-top:10px">PDF подтверждает платёж мастерской ' +
+      '<p class="account-note">PDF подтверждает платёж мастерской ' +
       'и хранится в кабинете. Это не налоговый чек НПД: официальный чек ' +
-      'Robokassa отправляет отдельно на e-mail, указанный при оплате.</p></div>';
+      'Robokassa отправляет отдельно на e-mail, указанный при оплате.</p></section>';
   }
 
   function walletTab() {
@@ -2044,36 +2283,37 @@ function initCabinet() {
       st.orders.forEach(function (o) { access += accessBlock(o, true); });
     }
     return notiRow() + linksRow() + access + paymentDocumentsCard() +
-      '<div class="sheet sheet-pad stacked reveal">' +
-      '<p class="caps" style="margin-bottom:10px">Связь и полезное</p>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">' +
+      '<section class="account-section reveal">' +
+      '<header><div><p class="eyebrow">Связь и полезное</p>' +
+      '<h2>Куда написать и что почитать</h2></div></header>' +
+      '<div class="case-acts">' +
       '<button type="button" class="btn btn-wax" data-contact="1">Написать мастеру</button>' +
       '<a class="btn btn-line" href="priyomnaya.html">Открытая приёмная</a></div>' +
-      '<p class="petit" style="line-height:2">' +
+      '<p class="account-note account-note--links">' +
       '<a class="link" href="start.html">С чего начать</a> · ' +
       '<a class="link" href="guarantees.html">Гарантии и устав</a> · ' +
       '<a class="link" href="oplata.html">Как проходит оплата</a> · ' +
       '<a class="link" href="loyalty.html">Правила бонусов и депозита</a> · ' +
       '<a class="link" href="oferta.html">Оферта</a> · ' +
       '<a class="link" href="privacy.html">Политика данных</a></p>' +
-      '<p class="petit" style="margin-top:10px">Telegram-бот дублирует статусы и умеет всё то же: ' +
+      '<p class="account-note">Telegram-бот дублирует статусы и умеет всё то же: ' +
       '<a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">@academic_saloon_bot</a></p>' +
-      '</div>';
+      '</section>';
   }
 
   function settingsTab() {
     var user = S.api.token() && S.api.user();
-    return '<div class="sheet sheet-pad stacked reveal">' +
-      '<p class="caps" style="margin-bottom:10px">Настройки кабинета</p>' +
-      '<p class="lead">' + (user && user.name ? esc(user.name) : 'Гостевой доступ') + '</p>' +
-      '<p class="petit" style="margin-top:8px">Тему оформления можно изменить в верхней панели. ' +
+    return '<section class="account-section reveal">' +
+      '<header><div><p class="eyebrow">Настройки кабинета</p>' +
+      '<h2>' + (user && user.name ? esc(user.name) : 'Гостевой доступ') + '</h2></div></header>' +
+      '<p class="account-note">Тему оформления можно изменить в верхней панели. ' +
       'Настройки аналитики доступны в разделе конфиденциальности.</p>' +
-      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">' +
+      '<div class="case-acts">' +
       '<a class="btn btn-line" href="privacy.html">Настройки данных</a>' +
       (S.api.token()
         ? '<button type="button" class="btn btn-line" id="cabLogout">Выйти из кабинета</button>'
         : '<button type="button" class="btn btn-wax" id="cabTg">Войти через Telegram</button>') +
-      '</div></div>';
+      '</div></section>';
   }
 
   function documentTab() {
@@ -2163,29 +2403,37 @@ function initCabinet() {
     /* порядок по значимости: решение и оплата — сразу после шапки; ход дела,
        файлы и переписка — следом; сервисное (управление, доступ) — свёрнуто
        в конце; клуб (бонусы и подписка) — всегда ПОСЛЕ дела */
-    return '<article class="sheet sheet-pad stacked reveal form-sheet" aria-label="Дело заказа ' + esc(o.no) + '">' +
-      '<div class="ord-top"><span class="mono ord-no">Дело ' + esc(o.no) + '</span>' +
-      '<span class="ord-flags">' +
-      '<button type="button" class="ord-pin' + (o.pinned ? ' on' : '') + '" data-act-pin title="' + pinTitle + '" aria-label="' + pinTitle + '" aria-pressed="' + !!o.pinned + '">📌</button>' +
-      (o.paused ? '<span class="ord-stamp s-pause">⏸ пауза</span>' : '') +
-      '<span class="ord-stamp ' + (STAMP_TONE[o.status] || '') + '">' + esc(o.status_label) + '</span></span></div>' +
-      '<h2 class="ord-type">' + esc(o.work_label || '') + '</h2>' +
-      (o.topic ? '<p class="ord-topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
-      '<p class="petit">' + meta.join(' · ') + ' ' + deadlineChip(o) + '</p>' +
+    return '<article class="case-file reveal" aria-label="Дело заказа ' + esc(o.no) + '">' +
+      '<header class="case-file__head"><div class="case-file__title">' +
+      '<p class="eyebrow case-file__no">Дело ' + esc(o.no) + '</p>' +
+      '<h2>' + esc(o.work_label || '') + '</h2>' +
+      (o.topic ? '<p class="case-file__topic">Тема: «' + esc(o.topic) + '»</p>' : '') +
+      '<p class="case-file__meta">' + meta.join(' · ') + ' ' + deadlineChip(o) + '</p></div>' +
+      '<div class="case-file__status">' +
+      (o.paused ? '<span class="tag">пауза</span>' : '') +
+      '<span class="tag tag--status tag--' + esc(o.status || '') + '">' + esc(o.status_label) + '</span>' +
+      '<button type="button" class="quiet-button' + (o.pinned ? ' is-on' : '') + '" data-act-pin title="' + pinTitle + '" aria-label="' + pinTitle + '" aria-pressed="' + !!o.pinned + '">' +
+      (o.pinned ? 'закреплено' : 'закрепить') + '</button>' +
+      '</div></header>' +
+      caseProgress(o) +
       orderItemsBlock(o) +
       jumpChips(o) +
       pauseBand(o) + finalBand(o) + partBand(o) + dueBand(o) +
       priceBlock(o) + giftRestStrip(o) + actionsBlock(o) +
       stageFold(o) + reviewBlock(o) + thanksBlock(o) + defenseBlock(o) +
       filesBlock(o) + chatBlock(o) + manageBlock(o) + accessBlock(o) +
-      (isArch(o) ? '<p class="petit" style="margin-top:clamp(20px,3vw,28px);padding-top:14px;border-top:1px solid var(--hairline)">' +
-        'Дело ' + (o.status === 'done' ? 'завершено' : 'закрыто') + '. ' +
+      (isArch(o) ? '<footer class="case-file__foot">' +
+        '<p>Дело ' + (o.status === 'done' ? 'завершено' : 'закрыто') + '. ' +
         (o.archived
-          ? 'Оно убрано в архив и не показывается в списке. <button type="button" class="linkbtn" data-act="unarchive">Вернуть в список</button>'
-          : '<button type="button" class="linkbtn" data-act="archive">Убрать в архив</button> — дело исчезнет из списка; вернуть можно в любой момент («Архив → убранные»).') +
-        '</p>' : '') +
+          ? 'Оно убрано в архив и не показывается в списке.'
+          : 'Дело можно убрать в архив: оно исчезнет из списка, вернуть можно в любой момент («Архив → убранные»).') +
+        '</p>' +
+        (o.archived
+          ? '<button type="button" class="line-link" data-act="unarchive">Вернуть в список <span aria-hidden="true">→</span></button>'
+          : '<button type="button" class="line-link" data-act="archive">Убрать в архив <span aria-hidden="true">→</span></button>') +
+        '</footer>' : '') +
       '</article>' +
-      '<p class="petit cab-foot-sync">Всё по заказу живёт в этом кабинете. Привязан Telegram? Дублируем статусы и в бота: ' +
+      '<p class="cab-foot-sync">Всё по заказу живёт в этом кабинете. Привязан Telegram? Дублируем статусы и в бота: ' +
       '<a class="link" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">@academic_saloon_bot</a></p>';
   }
 
@@ -3093,11 +3341,13 @@ function initCabinet() {
       var done = t.closest('.thanks-card');
       if (done) {
         done.classList.remove('th-complete');
-        done.innerHTML = '<span class="caps">Добровольная поддержка</span>' +
-          '<p class="th-copy">Спасибо ещё раз. Выберите сумму — это по-прежнему только по желанию.</p>' +
-          '<div class="th-amounts"><button type="button" class="th-chip on" data-tip-preset="500" aria-pressed="true">500 ₽</button>' +
-          '<button type="button" class="th-chip" data-tip-preset="1000" aria-pressed="false">1 000 ₽</button></div>' +
-          '<div class="th-actions"><input class="th-own" id="tipOwn" type="number" inputmode="numeric" min="100" max="30000" step="50" placeholder="Своя сумма">' +
+        done.innerHTML = '<header><div><p class="eyebrow">Добровольная поддержка</p>' +
+          '<h3>Ещё раз — по желанию</h3></div></header>' +
+          '<p class="case-sec__lead">Спасибо ещё раз. Выберите сумму — это по-прежнему только по желанию.</p>' +
+          '<div class="case-chips" role="group" aria-label="Сумма благодарности">' +
+          '<button type="button" class="case-chip on" data-tip-preset="500" aria-pressed="true">500 ₽</button>' +
+          '<button type="button" class="case-chip" data-tip-preset="1000" aria-pressed="false">1 000 ₽</button></div>' +
+          '<div class="case-acts"><input class="account-input account-input--short" id="tipOwn" type="number" inputmode="numeric" min="100" max="30000" step="50" placeholder="Своя сумма" aria-label="Своя сумма благодарности в рублях">' +
           '<button type="button" class="btn btn-wax" data-tip-pay>Поблагодарить <span class="ar">→</span></button></div>';
       }
       return;

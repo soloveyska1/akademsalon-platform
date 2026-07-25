@@ -8,7 +8,6 @@
 /* ---------------- Настройки данных · consent v2 ---------------- */
 .cookiebar{
   position:fixed;left:clamp(14px,2.5vw,28px);bottom:clamp(14px,2.5vw,26px);z-index:210;
-  bottom:max(clamp(14px,2.5vw,26px), calc(var(--resume-clear, 0px) + 12px));
   width:min(94vw,420px);overflow:hidden;
   background:
     linear-gradient(115deg,color-mix(in srgb,var(--wax-soft) 48%,transparent),transparent 44%),
@@ -122,7 +121,7 @@
 }
 .cf7-data:hover{color:var(--wax);text-decoration-color:var(--wax)}
 @media(max-width:880px){
-  .cookiebar{left:10px;right:10px;width:auto;bottom:84px;bottom:max(84px, calc(var(--resume-clear, 0px) + 12px))}
+  .cookiebar{left:10px;right:10px;width:auto;bottom:84px}
 }
 @media(max-width:480px){
   .cookiebar{padding:15px 14px 13px}
@@ -181,7 +180,6 @@
 /* ---------------- Закладка живого мастера ---------------- */
 .helpfab{
   position:fixed;left:clamp(18px,2.5vw,34px);bottom:26px;z-index:94;
-  bottom:max(26px, calc(var(--resume-clear, 0px) + 12px));
   display:flex;align-items:stretch;text-align:left;
   background:var(--sheet);color:var(--ink);border:1px solid var(--hairline-strong);
   border-radius:5px;padding:7px 7px 7px 10px;min-height:62px;max-width:min(88vw,334px);
@@ -206,7 +204,7 @@
 .helpfab .hf-t b{font-family:var(--serif);font-size:15.5px;font-weight:500;line-height:1.15;white-space:nowrap}
 .helpfab .hf-t small{grid-column:1/-1;font-size:10.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .helpfab:hover .hf-t b{color:var(--wax)}
-@media(max-width:880px){.helpfab{left:10px;bottom:86px;bottom:max(86px, calc(var(--resume-clear, 0px) + 12px))}}
+@media(max-width:880px){.helpfab{left:10px;bottom:86px}}
 @media print{.helpfab,.cookiebar,.tour-veil,.tour-card{display:none!important}}
 
 /* ---------------- Диалог (подтверждения, формы причин) ---------------- */
@@ -475,8 +473,9 @@ html[data-motion="off"] .stamp-burst{display:none!important}
    двух рельсов и стоят в нормальном потоке flex-колонки.
    ============================================================ */
 
-/* --floor — ЕДИНСТВЕННЫЙ нижний якорь. Заменяет --resume-clear
-   у всех шести прежних потребителей. Ставит JS (Salon.floor). */
+/* --floor — ЕДИНСТВЕННЫЙ нижний якорь. Заменил прежнюю --resume-clear
+   у всех шести потребителей (та снята вместе с плавающей закладкой
+   возврата сметы). Ставит JS (Salon.floor). */
 :root{ --floor:0px; --hdr-h:64px; --lrail-h:0px; }
 /* Нижний док монтируется JavaScript в конце документа. Его фактическая
    высота на телефоне — 59px; резервируем кромку до первого кадра, чтобы

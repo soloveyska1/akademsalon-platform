@@ -102,7 +102,18 @@
         </div>
       </section>
 
-
+      <!-- Черновик сметы, сохранённый в этом браузере. Разметка ждёт скрытой:
+           шаг, тип работы и адрес возврата подставляет extras.js, он же снимает
+           hidden. Без черновика (или с savedAt = 0 у посадочных) секции нет. -->
+      <section class="resume-card section-shell section-shell--tight" data-resume-card hidden>
+        <div class="resume-card__seal" aria-hidden="true">АС</div>
+        <div>
+          <p class="eyebrow">Черновик сохранён</p>
+          <h2>Вы остановились на шаге <span data-resume-step>1</span></h2>
+          <p><span data-resume-type>Тип работы</span> · данные хранятся только в этом браузере.</p>
+        </div>
+        <a class="button button--primary" href="/configurator.html" data-resume-link>Продолжить <span aria-hidden="true">→</span></a>
+      </section>
 
       <section class="situation-section section-shell">
 

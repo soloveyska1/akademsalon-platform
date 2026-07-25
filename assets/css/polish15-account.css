@@ -1063,3 +1063,2856 @@
     animation-iteration-count: 1 !important;
   }
 }
+
+/* =====================================================================
+   КЛУБ И КОШЕЛЁК — рецепты эталона, перенесённые в кабинет.
+   Компоненты скопированы из assets/css/polish15-supporting.css
+   (там же они обслуживают plus.html и deposit.html) и перевешены со
+   scope `body.polish15-supporting X` на `.is-account-route X`, чтобы
+   не тащить в кабинет чужой `*`-reset и вторую систему `.button`.
+   Перенесены: .commerce-facts, .membership-pass(+__seal), .period-switch,
+   .plus-plan-card(+__price,--featured), .commerce-caption,
+   .deposit-calculator(+__controls), .deposit-tiers, .deposit-ledger-card,
+   .deposit-receipt(+__note), .bonus-list. Остальное (.account-section,
+   .account-notice, .account-panel, .account-ledger, .account-doc-list,
+   .builder-option) собрано из той же грамматики: плоские листы, волосяные
+   линейки, деньги — серифом, доли и даты — моно.
+   ===================================================================== */
+
+.is-account-route {
+  /* Ночные поверхности одинаковы в обеих темах — ровно как --night и
+     соседние значения в polish15-supporting.css (plus.html, deposit.html).
+     В тёмной теме --night темнее --sheet, поэтому чек и «выбор мастерской»
+     остаются отдельным листом, а не сливаются с бумагой. */
+  --night: #1d1c18;
+  --night-deep: #23221e;
+  --night-line: #454139;
+  --night-ink: #fffaf3;
+  --night-text: #d9d3c8;
+  --night-quiet: #969084;
+  --night-wax: #e29a84;
+}
+
+/* ---------- рама раздела ---------- */
+.is-account-route .account-section {
+  margin-top: 44px;
+}
+
+/* scrollToEl() опирается только на scroll-margin: цели прокрутки (#ctorBox,
+   #plusCard, #plusSheet, #depCard, #subPaySheet, оба журнала) не должны
+   нырять под фикс-шапку. В dashboard.html правило перечисляет id поимённо и
+   уже не матчит #ctorBox — он больше не .fs-sec; закрываем здесь по классу.
+   78px — тот же порог, что в dashboard.html: --hdr-h на этой странице бывает
+   равен 0px (на телефоне вместо шапки живёт фикс-панель), поэтому одного
+   calc() по токену недостаточно. */
+.is-account-route .account-section[id],
+.is-account-route .account-ledger[id],
+.is-account-route .deposit-calculator[id] {
+  scroll-margin-top: max(78px, calc(var(--header-h) + 12px));
+}
+
+.is-account-route .account-main__body > .account-section:first-child,
+.is-account-route .account-main__body > .account-notice:first-child {
+  margin-top: 34px;
+}
+
+.is-account-route .account-section > header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+/* только безклассовая обёртка заголовка: .period-switch — тоже прямой div-ребёнок */
+.is-account-route .account-section > header > div:not([class]) {
+  display: grid;
+  gap: 7px;
+}
+
+.is-account-route .account-section > header .eyebrow {
+  color: var(--wax);
+  font: 550 9px/1.2 var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.is-account-route .account-section h2 {
+  max-width: 22ch;
+  color: var(--ink);
+  font-size: 27px;
+}
+
+.is-account-route .account-section h3 {
+  color: var(--ink);
+  font-size: 22px;
+}
+
+/* ---------- однострочная выноска: промокод, сверка, апселл ---------- */
+.is-account-route .account-notice {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 6px 14px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 14px 17px;
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.is-account-route .account-notice[hidden] {
+  display: none;
+}
+
+.is-account-route .account-notice__mark {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: var(--wax);
+  background: var(--wax-soft);
+  border-radius: 50%;
+  font: 600 10px/1 var(--mono);
+}
+
+.is-account-route .account-notice > div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.is-account-route .account-notice strong {
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 560;
+}
+
+.is-account-route .account-notice p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.is-account-route .account-notice__acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  align-items: center;
+}
+
+.is-account-route .account-notice--wax {
+  border-color: var(--line-strong);
+  box-shadow: inset 3px 0 0 var(--wax);
+}
+
+.is-account-route .account-code {
+  color: var(--ink);
+  font: 600 11px/1.3 var(--mono);
+  letter-spacing: .04em;
+}
+
+/* ---------- бумажный лист внутри раздела ---------- */
+.is-account-route .account-panel {
+  display: grid;
+  align-content: start;
+  gap: 13px;
+  padding: clamp(20px, 2.4vw, 30px);
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.is-account-route .account-panel > header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-panel > header span {
+  color: var(--ink);
+  font: 500 17px/1.2 var(--serif);
+}
+
+.is-account-route .account-panel > header small,
+.is-account-route .account-panel .eyebrow {
+  color: var(--quiet);
+  font: 600 9px/1.4 var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.is-account-route .account-panel__figure {
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font: 500 clamp(30px, 3vw, 42px)/1 var(--serif);
+}
+
+.is-account-route .account-panel > p {
+  max-width: 62ch;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.is-account-route .account-panel__acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* ---------- журнал операций ---------- */
+.is-account-route .account-ledger {
+  display: grid;
+  max-height: 320px;
+  margin-top: 14px;
+  overflow-y: auto;
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.is-account-route .account-ledger__row {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr) auto;
+  gap: 6px 14px;
+  align-items: baseline;
+  padding: 12px 17px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-ledger__row:last-child {
+  border-bottom: 0;
+}
+
+.is-account-route .account-ledger__delta {
+  color: var(--muted);
+  font: 600 11px/1.4 var(--mono);
+  text-align: right;
+}
+
+.is-account-route .account-ledger__delta.is-plus {
+  color: var(--green);
+}
+
+.is-account-route .account-ledger__delta.is-minus {
+  color: var(--wax);
+}
+
+.is-account-route .account-ledger__what {
+  min-width: 0;
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.is-account-route .account-ledger__at {
+  color: var(--quiet);
+  font: 550 9px/1.4 var(--mono);
+  white-space: nowrap;
+}
+
+.is-account-route .account-ledger__empty {
+  padding: 18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ---------- строки документов об оплате ---------- */
+.is-account-route .account-doc-list {
+  display: grid;
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.is-account-route .account-doc-list__row {
+  display: grid;
+  min-height: 62px;
+  grid-template-columns: 38px minmax(0, 1fr) auto auto auto;
+  gap: 6px 16px;
+  align-items: center;
+  padding: 13px 17px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-doc-list__row:last-child {
+  border-bottom: 0;
+}
+
+.is-account-route .account-doc-list__mark {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: var(--quiet);
+  background: var(--canvas-deep);
+  border-radius: 50%;
+  font: 600 8px/1 var(--mono);
+  letter-spacing: .04em;
+}
+
+.is-account-route .account-doc-list__row > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.is-account-route .account-doc-list__row strong {
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 560;
+}
+
+.is-account-route .account-doc-list__row small {
+  color: var(--quiet);
+  font-size: 10px;
+}
+
+.is-account-route .account-doc-list__at {
+  color: var(--quiet);
+  font: 550 9px/1.4 var(--mono);
+  font-style: normal;
+  white-space: nowrap;
+}
+
+.is-account-route .account-doc-list__row > b {
+  color: var(--ink);
+  font: 500 17px/1 var(--serif);
+  white-space: nowrap;
+}
+
+.is-account-route .account-note {
+  max-width: 78ch;
+  margin-top: 14px;
+  color: var(--quiet);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.is-account-route .account-note b {
+  color: var(--ink);
+}
+
+/* ---------- поля ввода и шаги ---------- */
+.is-account-route .account-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.is-account-route .account-input {
+  min-height: 44px;
+  flex: 2 1 200px;
+  min-width: 0;
+  padding: 11px 13px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font: inherit;
+  font-size: 13px;
+}
+
+.is-account-route .account-input--short {
+  flex: 0 1 165px;
+}
+
+.is-account-route .account-input--code {
+  font: 600 13px/1.3 var(--mono);
+  letter-spacing: .08em;
+}
+
+.is-account-route .account-steps {
+  display: grid;
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.is-account-route .account-steps > span {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+  padding: 11px 0;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.is-account-route .account-steps b {
+  color: var(--wax);
+  font: 650 10px/1.45 var(--mono);
+}
+
+/* ---------- реквизиты перевода (строки отдаёт reqRows) ---------- */
+.is-account-route .pay-requisites {
+  display: grid;
+  margin-top: 14px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.is-account-route .pay-requisites .ps-row {
+  display: flex;
+  min-height: 48px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 15px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .pay-requisites .ps-row:last-child {
+  border-bottom: 0;
+}
+
+.is-account-route .pay-requisites .ps-val {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.is-account-route .pay-requisites .ps-card .ps-val {
+  font: 600 14px/1.3 var(--mono);
+  letter-spacing: .06em;
+}
+
+.is-account-route .pay-requisites .ps-copy {
+  min-height: 32px;
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.is-account-route .pay-requisites .ps-copy:hover {
+  color: var(--wax);
+  border-color: var(--wax);
+}
+
+/* ---------- эталон: тройка условий ---------- */
+.is-account-route .commerce-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 22px;
+  border-block: 1px solid var(--line);
+}
+
+.is-account-route .commerce-facts > span {
+  display: grid;
+  min-height: 80px;
+  gap: 4px;
+  align-content: center;
+  padding: 14px 16px;
+}
+
+.is-account-route .commerce-facts > span + span {
+  border-left: 1px solid var(--line);
+}
+
+.is-account-route .commerce-facts b {
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font: 500 17px/1.2 var(--serif);
+}
+
+.is-account-route .commerce-facts small {
+  color: var(--quiet);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+/* ---------- эталон: образец абонемента ---------- */
+.is-account-route .plus-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.06fr) minmax(280px, .94fr);
+  gap: clamp(24px, 3.4vw, 46px);
+  align-items: start;
+}
+
+.is-account-route .plus-intro__copy > p:not(.eyebrow) {
+  max-width: 62ch;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.is-account-route .plus-intro__copy > .button,
+.is-account-route .plus-intro__copy > .account-panel__acts {
+  margin-top: 22px;
+}
+
+.is-account-route .membership-pass {
+  position: relative;
+  display: grid;
+  align-content: space-between;
+  gap: 20px;
+  padding: clamp(22px, 2.6vw, 32px);
+  color: var(--text);
+  background: var(--sheet);
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+}
+
+.is-account-route .membership-pass::before {
+  position: absolute;
+  inset: 9px;
+  border: 1px solid var(--line);
+  content: "";
+  pointer-events: none;
+}
+
+.is-account-route .membership-pass > * {
+  position: relative;
+  z-index: 1;
+}
+
+.is-account-route .membership-pass > header {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  gap: 11px;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .membership-pass > header img {
+  width: 32px;
+  height: 32px;
+}
+
+.is-account-route .membership-pass > header span {
+  overflow: hidden;
+  color: var(--ink);
+  font: 550 12px/1.2 var(--serif);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.is-account-route .membership-pass > header small,
+.is-account-route .membership-pass > footer,
+.is-account-route .membership-pass dt {
+  color: var(--quiet);
+  font: 600 9px/1.3 var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.is-account-route .membership-pass__seal {
+  display: grid;
+  width: 76px;
+  height: 76px;
+  place-items: center;
+  color: #fffaf3;
+  background: var(--wax);
+  border: 1px solid var(--wax-deep);
+  border-radius: 50%;
+  font: 500 20px/1 var(--serif);
+}
+
+.is-account-route .membership-pass__body {
+  display: grid;
+  gap: 6px;
+}
+
+.is-account-route .membership-pass__body p,
+.is-account-route .membership-pass__body > span {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.is-account-route .membership-pass h2 {
+  max-width: none;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: clamp(30px, 3.2vw, 42px);
+}
+
+.is-account-route .membership-pass dl {
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+
+.is-account-route .membership-pass dl > div {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr);
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .membership-pass dd {
+  color: var(--text);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.is-account-route .membership-pass > footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+/* ---------- эталон: переключатель срока ---------- */
+.is-account-route .period-switch {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  padding: 4px;
+  background: var(--canvas-deep);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.is-account-route .period-switch button {
+  min-height: 40px;
+  padding: 8px 15px;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.is-account-route .period-switch button.is-current {
+  color: var(--ink);
+  background: var(--sheet);
+}
+
+/* ---------- эталон: планы абонемента ---------- */
+.is-account-route .plus-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.is-account-route .plus-plan-card {
+  display: flex;
+  min-width: 0;
+  min-height: 460px;
+  flex-direction: column;
+  padding: clamp(20px, 2vw, 28px);
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  transition: border-color .2s ease, transform .24s cubic-bezier(.22, 1, .36, 1);
+}
+
+.is-account-route .plus-plan-card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-3px);
+}
+
+.is-account-route .plus-plan-card > header {
+  display: flex;
+  min-height: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.is-account-route .plus-plan-card > header > * {
+  font: 600 9px/1.3 var(--mono);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.is-account-route .plus-plan-card > header > span,
+.is-account-route .plus-plan-card li b {
+  color: var(--wax);
+}
+
+.is-account-route .plus-plan-card > header > p {
+  color: var(--quiet);
+}
+
+.is-account-route .plus-plan-card > header > em {
+  margin-left: auto;
+  padding: 5px 7px;
+  color: var(--wax);
+  background: var(--wax-soft);
+  font-style: normal;
+}
+
+.is-account-route .plus-plan-card h3 {
+  max-width: 14ch;
+  margin-top: 26px;
+  color: var(--ink);
+  font-size: clamp(25px, 2.4vw, 34px);
+  line-height: 1.04;
+}
+
+.is-account-route .plus-plan-card__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-top: 20px;
+}
+
+.is-account-route .plus-plan-card__price strong {
+  color: var(--ink);
+  font: 500 clamp(28px, 2.6vw, 38px)/1 var(--serif);
+}
+
+.is-account-route .plus-plan-card__price small {
+  color: var(--quiet);
+  font-size: 10px;
+}
+
+.is-account-route .plus-plan-card > p {
+  margin-top: 13px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.is-account-route .plus-plan-card ul {
+  display: grid;
+  margin-top: 22px;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.is-account-route .plus-plan-card li {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .plus-plan-card li b {
+  font: 650 10px/1.45 var(--mono);
+}
+
+.is-account-route .plus-plan-card li span {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.is-account-route .plus-plan-card > .button {
+  width: 100%;
+  margin-top: auto;
+}
+
+.is-account-route .plus-plan-card--featured {
+  color: var(--night-text);
+  background: var(--night);
+  border-color: var(--night-line);
+}
+
+.is-account-route .plus-plan-card--featured h3,
+.is-account-route .plus-plan-card--featured .plus-plan-card__price strong {
+  color: var(--night-ink);
+}
+
+.is-account-route .plus-plan-card--featured > header > p,
+.is-account-route .plus-plan-card--featured > p,
+.is-account-route .plus-plan-card--featured li span,
+.is-account-route .plus-plan-card--featured .plus-plan-card__price small {
+  color: var(--night-quiet);
+}
+
+.is-account-route .plus-plan-card--featured > header > span,
+.is-account-route .plus-plan-card--featured li b {
+  color: var(--night-wax);
+}
+
+.is-account-route .plus-plan-card--featured > header > em {
+  color: var(--night-wax);
+  background: var(--night-deep);
+}
+
+.is-account-route .plus-plan-card--featured ul,
+.is-account-route .plus-plan-card--featured li {
+  border-color: var(--night-line);
+}
+
+.is-account-route .plus-plan-card--featured .button--primary {
+  color: var(--night-ink);
+  background: var(--wax);
+}
+
+.is-account-route .commerce-caption {
+  max-width: 78ch;
+  margin-top: 16px;
+  color: var(--quiet);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.is-account-route .plus-extras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- эталон: расчёт (бумага слева, чек справа) ---------- */
+.is-account-route .deposit-calculator {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(290px, .88fr);
+  gap: 12px;
+}
+
+.is-account-route .deposit-calculator__controls {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: clamp(20px, 2.4vw, 30px);
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.is-account-route .deposit-calculator__controls > p:not(.eyebrow) {
+  max-width: 62ch;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.is-account-route .deposit-calculator__controls .eyebrow {
+  color: var(--wax);
+  font: 550 9px/1.2 var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+/* ---------- эталон: ступени пополнения ---------- */
+.is-account-route .deposit-tiers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.is-account-route .deposit-tiers > * {
+  display: grid;
+  min-height: 78px;
+  gap: 4px;
+  align-content: center;
+  padding: 10px;
+  color: var(--quiet);
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font: inherit;
+  text-align: left;
+  transition: border-color .18s ease, background-color .18s ease;
+}
+
+.is-account-route .deposit-tiers .deposit-tiers__sum {
+  color: var(--ink);
+  font: 500 16px/1.05 var(--serif);
+}
+
+.is-account-route .deposit-tiers b {
+  color: var(--ink);
+  font: 600 12px/1 var(--mono);
+}
+
+.is-account-route .deposit-tiers small {
+  color: var(--quiet);
+  font-size: 9px;
+}
+
+.is-account-route .deposit-tiers > *:hover {
+  background: var(--wax-soft);
+  border-color: var(--line-strong);
+}
+
+.is-account-route .deposit-tiers > *:hover b,
+.is-account-route .deposit-tiers > .is-current b {
+  color: var(--wax);
+}
+
+.is-account-route .deposit-tiers > .is-current {
+  background: var(--wax-soft);
+  border-color: color-mix(in srgb, var(--wax) 48%, var(--line));
+}
+
+/* ---------- эталон: ночная карточка счёта ---------- */
+.is-account-route .deposit-ledger-card {
+  display: grid;
+  min-height: 300px;
+  align-content: start;
+  padding: clamp(20px, 2.4vw, 30px);
+  color: var(--night-text);
+  background: var(--night);
+  border: 1px solid var(--night-line);
+  border-radius: 4px;
+}
+
+.is-account-route .deposit-ledger-card > header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--night-line);
+}
+
+.is-account-route .deposit-ledger-card > header span {
+  color: var(--night-ink);
+  font: 500 16px/1.2 var(--serif);
+}
+
+.is-account-route .deposit-ledger-card > header small,
+.is-account-route .deposit-ledger-card > div small,
+.is-account-route .deposit-ledger-card > footer {
+  color: var(--night-quiet);
+  font: 600 9px/1.4 var(--mono);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.is-account-route .deposit-ledger-card > div {
+  display: grid;
+  gap: 6px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--night-line);
+}
+
+.is-account-route .deposit-ledger-card > div strong {
+  overflow-wrap: anywhere;
+  color: var(--night-ink);
+  font: 500 clamp(28px, 2.8vw, 40px)/1 var(--serif);
+}
+
+.is-account-route .deposit-ledger-card > div:nth-of-type(2) strong {
+  color: var(--night-wax);
+}
+
+.is-account-route .deposit-ledger-card > div p {
+  color: var(--night-quiet);
+  font-size: 11px;
+  line-height: 1.5;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.is-account-route .deposit-ledger-card > footer {
+  display: grid;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.is-account-route .deposit-ledger-card > footer b {
+  color: var(--night-text);
+  font: 500 11px/1.45 var(--sans);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* ---------- эталон: ночной чек ---------- */
+.is-account-route .deposit-receipt {
+  display: flex;
+  min-height: 300px;
+  flex-direction: column;
+  padding: clamp(20px, 2.4vw, 30px);
+  color: var(--night-text);
+  background: var(--night);
+  border: 1px solid var(--night-line);
+  border-radius: 4px;
+}
+
+.is-account-route .deposit-receipt > header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--night-line);
+}
+
+.is-account-route .deposit-receipt > header span {
+  color: var(--night-ink);
+  font: 500 17px/1.2 var(--serif);
+}
+
+.is-account-route .deposit-receipt > header small,
+.is-account-route .deposit-receipt > small {
+  color: var(--night-quiet);
+  font: 550 9px/1.35 var(--mono);
+}
+
+.is-account-route .deposit-receipt dl {
+  display: grid;
+  margin-top: 20px;
+}
+
+.is-account-route .deposit-receipt dl > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 18px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--night-line);
+}
+
+.is-account-route .deposit-receipt dt {
+  min-width: 0;
+  color: var(--night-quiet);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.is-account-route .deposit-receipt dd {
+  color: var(--night-ink);
+  font: 500 18px/1.2 var(--serif);
+  text-align: right;
+}
+
+.is-account-route .deposit-receipt dl > div:last-child dd {
+  color: var(--night-wax);
+}
+
+.is-account-route .deposit-receipt__note {
+  display: grid;
+  gap: 7px;
+  margin-top: 20px;
+  padding: 16px;
+  background: var(--night-deep);
+  border-left: 2px solid var(--night-wax);
+}
+
+.is-account-route .deposit-receipt__note strong {
+  color: var(--night-wax);
+  font: 600 9px/1.4 var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.is-account-route .deposit-receipt__note p {
+  color: var(--night-text);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.is-account-route .deposit-receipt > .button {
+  width: 100%;
+  margin-top: auto;
+}
+
+.is-account-route .deposit-receipt > .button--secondary {
+  color: var(--night-ink);
+  background: transparent;
+  border-color: var(--night-line);
+}
+
+.is-account-route .deposit-receipt .account-panel__acts {
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.is-account-route .deposit-receipt > small {
+  margin-top: 9px;
+  text-align: center;
+}
+
+.is-account-route .deposit-receipt .line-link {
+  color: var(--night-quiet);
+  border-bottom-color: var(--night-line);
+}
+
+/* ---------- эталон: ступенчатый список бонусов ---------- */
+.is-account-route .bonus-list {
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+
+.is-account-route .bonus-list > span {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .bonus-list b {
+  color: var(--green);
+  font: 600 11px/1.3 var(--mono);
+}
+
+.is-account-route .bonus-list small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.is-account-route .bonus-list--expiring b {
+  color: var(--wax);
+}
+
+/* ---------- конструктор абонемента: плитки-опции ---------- */
+.is-account-route .builder-options {
+  display: grid;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.is-account-route .builder-option {
+  display: grid;
+  min-height: 56px;
+  grid-template-columns: minmax(0, 1fr) auto 18px;
+  gap: 3px 12px;
+  align-items: center;
+  padding: 12px 14px;
+  color: var(--text);
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font: inherit;
+  text-align: left;
+  transition: border-color .16s ease, background-color .16s ease;
+}
+
+.is-account-route .builder-option__name {
+  grid-column: 1;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 560;
+}
+
+.is-account-route .builder-option b {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  align-self: center;
+  color: var(--ink);
+  font: 500 16px/1 var(--serif);
+  white-space: nowrap;
+}
+
+.is-account-route .builder-option small {
+  grid-row: 2;
+  grid-column: 1;
+  color: var(--quiet);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.is-account-route .builder-option i {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  grid-row: 1 / span 2;
+  grid-column: 3;
+  place-items: center;
+  align-self: center;
+  color: #fffaf3;
+  background: var(--wax);
+  border-radius: 50%;
+  font: 600 9px/1 var(--mono);
+  font-style: normal;
+  opacity: 0;
+  transition: opacity .16s ease;
+}
+
+.is-account-route .builder-option:hover {
+  border-color: var(--line-strong);
+}
+
+.is-account-route .builder-option.is-selected {
+  background: var(--wax-soft);
+  border-color: color-mix(in srgb, var(--wax) 48%, var(--line));
+}
+
+.is-account-route .builder-option.is-selected b {
+  color: var(--wax);
+}
+
+.is-account-route .builder-option.is-selected i {
+  opacity: 1;
+}
+
+/* ---------- сертификат, бонусы и апселл внутри дела ---------- */
+.is-account-route .account-case-production .account-notice,
+.is-account-route .account-case-production .account-ledger {
+  margin-top: 16px;
+}
+
+.is-account-route .account-case-production .due-box .dr {
+  padding: 7px 0;
+  font-size: 12px;
+}
+
+.is-account-route .account-case-production .due-box .dr b {
+  color: var(--ink);
+  font: 500 15px/1.2 var(--serif);
+}
+
+.is-account-route .account-case-production .cbn-row {
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 12px;
+}
+
+.is-account-route .account-case-production .cbn-row > b {
+  color: var(--ink);
+  font: 500 16px/1.1 var(--serif);
+  white-space: nowrap;
+}
+
+.is-account-route .account-case-production .cbn-row > .button {
+  margin-left: auto;
+}
+
+/* .due-box уже лежит внутри листа раскрывашки — второй рамки не нужно */
+.is-account-route .account-case-production .fs-fold .ff-body > .due-box {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.is-account-route .gift-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+@media (max-width: 1080px) {
+  .is-account-route .plus-plan-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .is-account-route .plus-intro,
+  .is-account-route .deposit-calculator {
+    grid-template-columns: 1fr;
+  }
+
+  .is-account-route .membership-pass {
+    max-width: 460px;
+  }
+}
+
+@media (max-width: 880px) {
+  .is-account-route .account-section {
+    margin-top: 34px;
+  }
+
+  .is-account-route .account-section > header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .is-account-route .account-notice {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+
+  .is-account-route .account-notice__acts {
+    grid-column: 2;
+  }
+
+  .is-account-route .commerce-facts,
+  .is-account-route .deposit-tiers,
+  .is-account-route .plus-plan-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .is-account-route .commerce-facts > span + span {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .is-account-route .deposit-tiers > * {
+    min-height: 56px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 4px 12px;
+  }
+
+  .is-account-route .deposit-tiers small {
+    grid-column: 1;
+  }
+
+  .is-account-route .plus-plan-card {
+    min-height: 0;
+  }
+
+  .is-account-route .account-ledger__row {
+    grid-template-columns: 74px minmax(0, 1fr);
+  }
+
+  .is-account-route .account-ledger__at {
+    grid-column: 2;
+  }
+
+  .is-account-route .account-doc-list__row {
+    grid-template-columns: 38px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .is-account-route .account-doc-list__row > b,
+  .is-account-route .account-doc-list__row > i,
+  .is-account-route .account-doc-list__row > .line-link {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .is-account-route .account-notice strong,
+  .is-account-route .account-notice p,
+  .is-account-route .account-panel > p,
+  .is-account-route .account-ledger__what,
+  .is-account-route .account-doc-list__row strong,
+  .is-account-route .account-doc-list__row small,
+  .is-account-route .account-note,
+  .is-account-route .account-steps > span,
+  .is-account-route .commerce-facts small,
+  .is-account-route .membership-pass__body p,
+  .is-account-route .membership-pass__body > span,
+  .is-account-route .membership-pass dd,
+  .is-account-route .plus-plan-card > p,
+  .is-account-route .plus-plan-card li span,
+  .is-account-route .plus-plan-card__price small,
+  .is-account-route .commerce-caption,
+  .is-account-route .deposit-calculator__controls > p:not(.eyebrow),
+  .is-account-route .deposit-tiers small,
+  .is-account-route .deposit-ledger-card > div p,
+  .is-account-route .deposit-receipt dt,
+  .is-account-route .deposit-receipt__note p,
+  .is-account-route .bonus-list small,
+  .is-account-route .builder-option small,
+  .is-account-route .pay-requisites .ps-val {
+    font-size: 12px;
+  }
+
+  /* пол читаемости 12px: всё, по чему принимают решение (суммы, доли,
+     даты, коды, действия). Служебные штампы моно — по размерам эталона. */
+  .is-account-route .account-code,
+  .is-account-route .account-ledger__delta,
+  .is-account-route .account-ledger__at,
+  .is-account-route .account-doc-list__at,
+  .is-account-route .plus-plan-card li b,
+  .is-account-route .deposit-tiers b,
+  .is-account-route .period-switch button,
+  .is-account-route .account-section .button,
+  .is-account-route .account-notice .button,
+  .is-account-route .account-section .line-link,
+  .is-account-route .account-notice .line-link,
+  .is-account-route .pay-requisites .ps-copy,
+  .is-account-route .deposit-ledger-card > footer b,
+  .is-account-route .account-steps b {
+    font-size: 12px;
+  }
+
+  .is-account-route .account-doc-list__mark,
+  .is-account-route .account-notice__mark {
+    font-size: 10px;
+  }
+
+  /* ссылка-строка на телефоне становится нормальной областью касания */
+  .is-account-route .account-section .line-link,
+  .is-account-route .account-notice .line-link {
+    min-height: 44px;
+    padding: 11px 0;
+  }
+
+  .is-account-route .account-ledger__row .line-link,
+  .is-account-route .account-doc-list__row .line-link {
+    justify-self: start;
+  }
+
+  .is-account-route .plus-plan-card > .button,
+  .is-account-route .deposit-receipt > .button,
+  .is-account-route .plus-intro__copy > .button {
+    min-height: 52px;
+    width: 100%;
+  }
+
+  .is-account-route .account-input,
+  .is-account-route .account-input--short {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .is-account-route .account-panel,
+  .is-account-route .deposit-calculator__controls,
+  .is-account-route .deposit-ledger-card,
+  .is-account-route .deposit-receipt,
+  .is-account-route .membership-pass,
+  .is-account-route .plus-plan-card {
+    padding: 17px;
+  }
+
+  .is-account-route .account-notice {
+    padding: 15px;
+  }
+
+  .is-account-route .account-ledger__row,
+  .is-account-route .account-doc-list__row {
+    padding: 12px 15px;
+  }
+
+  .is-account-route .membership-pass dl > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .is-account-route .period-switch {
+    width: 100%;
+  }
+
+  .is-account-route .period-switch button {
+    flex: 1 1 0;
+  }
+}
+
+/* =====================================================================
+   РАСКРЫТИЕ ДЕЛА — визуальный язык эталона style-lab/full (caseView).
+   Порт 1:1 по виду при сохранённой ИА, 2026-07-25.
+
+   Решение владельца: дело остаётся ВНУТРИ вкладки «Дела» как <details>;
+   отдельного маршрута с боковыми листами не появляется. Переносится
+   только язык: один плоский лист на раздел (без радиуса и тени), три
+   идиомы строк (медальон · документ · условие), линейка ровно на
+   границах, воск — пять носителей, градиент — только шкала готовности.
+
+   Разметку отдаёт cabinet.js. Крючки (id secPay/secStages/… и
+   data-атрибуты) живут на .fs-sec/.fs-fold, поэтому классы парные:
+   fs-* — крючок, case-* — вид. Блок идёт ПОСЛЕ моста :is(…) выше в
+   файле и при равной специфичности перекрывает его порядком.
+
+   Повторно используется вокабуляр «Клуба и Кошелька»: .account-notice,
+   .account-steps, .pay-requisites, .account-input, .order-card,
+   .order-list, .tag, .line-link, .account-section.
+   ===================================================================== */
+
+/* ---------- надзаголовок раздела (глобального .eyebrow в проде нет) ---------- */
+.is-account-route .account-case-production .eyebrow,
+.is-account-route .case-state .eyebrow {
+  color: var(--wax);
+  font: 550 9px/1.2 var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+/* ---------- шапка дела: одна линейка под ней, и больше нигде ---------- */
+.is-account-route .account-case-production .case-file {
+  display: block;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.is-account-route .account-case-production .case-file__head {
+  display: flex;
+  gap: 18px 30px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-file__title {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+}
+
+.is-account-route .account-case-production .case-file__no {
+  letter-spacing: .1em;
+}
+
+.is-account-route .account-case-production .case-file__head h2 {
+  max-width: 30ch;
+  color: var(--ink);
+  font-size: clamp(32px, 4vw, 50px);
+  font-weight: 470;
+  letter-spacing: -.04em;
+  line-height: 1.04;
+}
+
+.is-account-route .account-case-production .case-file__topic {
+  max-width: 60ch;
+  color: var(--muted);
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.is-account-route .account-case-production .case-file__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 10px;
+  align-items: center;
+  color: var(--quiet);
+  font-size: 10px;
+}
+
+.is-account-route .account-case-production .case-file__status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+}
+
+/* тихая кнопка эталона: закрепление — словом, а не булавкой */
+.is-account-route .account-case-production .quiet-button {
+  min-height: 36px;
+  padding: 8px 11px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font: 550 9px/1 var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color .15s ease, border-color .15s ease;
+}
+
+.is-account-route .account-case-production .quiet-button:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+/* состояние читается словом («закрепить» → «закреплено»), не цветом */
+.is-account-route .account-case-production .quiet-button.is-on {
+  color: var(--ink);
+  background: var(--canvas-deep);
+  border-color: var(--line-strong);
+}
+
+.is-account-route .account-case-production .dl-chip {
+  padding: 3px 9px;
+  color: var(--muted);
+  border-color: var(--line);
+  font: 550 9px/1.45 var(--mono);
+  letter-spacing: .05em;
+  vertical-align: baseline;
+}
+
+.is-account-route .account-case-production .dl-chip.warn,
+.is-account-route .account-case-production .dl-chip.late {
+  color: var(--wax);
+  background: transparent;
+  border-color: var(--wax);
+}
+
+/* ---------- лист раздела: плоский, без радиуса и тени ---------- */
+.is-account-route .account-case-production :is(.case-sec, .case-fold) {
+  display: block;
+  margin-top: 18px;
+  padding: 24px 26px;
+  color: var(--text);
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.is-account-route .account-case-production .account-notice {
+  margin-top: 18px;
+}
+
+/* шапка раздела и summary раскрывашки — одна и та же полоса с линейкой */
+.is-account-route .account-case-production .case-sec > header,
+.is-account-route .account-case-production .case-fold > summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-fold > summary {
+  align-items: center;
+  list-style: none;
+  cursor: pointer;
+}
+
+.is-account-route .account-case-production .case-fold > summary::-webkit-details-marker {
+  display: none;
+}
+
+.is-account-route .account-case-production .case-sec > header > div {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.is-account-route .account-case-production .case-sec h3,
+.is-account-route .account-case-production .case-fold > summary h3 {
+  max-width: 44ch;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+}
+
+/* служебная приписка справа: моно, тихо — как «4 файла» в эталоне */
+.is-account-route .account-case-production .case-sec__note {
+  margin-left: auto;
+  color: var(--quiet);
+  font: 550 9px/1.4 var(--mono);
+  letter-spacing: .05em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+/* раскрытие — словом, не глифом: в этом языке шевронов нет вовсе */
+.is-account-route .account-case-production .case-fold__toggle {
+  margin-left: auto;
+  color: var(--quiet);
+  font: 550 9px/1.4 var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* приписка уже отжала пустоту вправо — второй auto-отступ её бы «отцентровал» */
+.is-account-route .account-case-production .case-sec__note + .case-fold__toggle {
+  margin-left: 0;
+}
+
+.is-account-route .account-case-production .case-fold__open,
+.is-account-route .account-case-production .case-fold[open] .case-fold__shut {
+  display: none;
+}
+
+.is-account-route .account-case-production .case-fold[open] .case-fold__open {
+  display: inline;
+}
+
+.is-account-route .account-case-production .case-fold > summary:hover .case-fold__toggle,
+.is-account-route .account-case-production .case-fold > summary:hover h3 {
+  color: var(--ink);
+}
+
+.is-account-route .account-case-production .case-fold__body {
+  padding-top: 2px;
+}
+
+/* внутри раскрывашки лист уже есть — второй рамки не бывает */
+.is-account-route .account-case-production .case-fold__body :is(.case-sec, .case-fold) {
+  margin-top: 18px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+/* подраздел: собственная шапка с линейкой, но без второго листа */
+.is-account-route .account-case-production .case-subsec {
+  margin-top: 24px;
+}
+
+.is-account-route .account-case-production .case-subsec > header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-subsec > header h4 {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+/* ---------- проза внутри раздела ---------- */
+.is-account-route .account-case-production .case-sec__lead {
+  max-width: 74ch;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.is-account-route .account-case-production .case-sec__lead b {
+  color: var(--ink);
+  font-weight: 560;
+}
+
+.is-account-route .account-case-production .case-note {
+  max-width: 74ch;
+  margin-top: 12px;
+  color: var(--quiet);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.is-account-route .account-case-production .case-note .link,
+.is-account-route .account-case-production .case-sec__lead .link {
+  color: var(--wax);
+}
+
+.is-account-route .account-case-production .case-sub {
+  margin-top: 20px;
+  color: var(--quiet);
+  font: 550 9px/1.3 var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.is-account-route .account-case-production .case-quote {
+  max-width: 70ch;
+  margin-top: 14px;
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ---------- деньги: одна серифная строка, без моноцифр ---------- */
+.is-account-route .account-case-production .case-sum {
+  color: var(--ink);
+  font: 500 clamp(22px, 2.6vw, 28px)/1.1 var(--serif);
+  letter-spacing: -.02em;
+  white-space: nowrap;
+}
+
+/* ---------- журнал строк: линейка снизу, никаких заливок ---------- */
+.is-account-route .account-case-production .case-ledger {
+  display: grid;
+  margin-top: 18px;
+}
+
+.is-account-route .account-case-production .case-ledger > div {
+  display: flex;
+  gap: 12px 18px;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-ledger dt {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 4px 8px;
+  align-items: baseline;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.is-account-route .account-case-production .case-ledger dt i {
+  color: var(--quiet);
+  font: 600 9px/1.5 var(--mono);
+  font-style: normal;
+}
+
+.is-account-route .account-case-production .case-ledger dt small {
+  color: var(--quiet);
+  font: 550 9px/1.5 var(--mono);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.is-account-route .account-case-production .case-ledger dt small.s-due {
+  color: var(--wax);
+}
+
+.is-account-route .account-case-production .case-ledger dd {
+  color: var(--ink);
+  font: 500 15px/1.2 var(--serif);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.is-account-route .account-case-production .case-ledger dd.is-minus {
+  color: var(--muted);
+}
+
+.is-account-route .account-case-production .case-ledger .is-total dt {
+  color: var(--ink);
+  font-weight: 560;
+}
+
+.is-account-route .account-case-production .case-ledger .is-total dd {
+  font-size: 18px;
+}
+
+.is-account-route .account-case-production .case-ledger .line-link {
+  font-size: 9px;
+}
+
+/* ---------- спецификация: моногнездо номера, серифная цена ---------- */
+.is-account-route .account-case-production .case-spec__list {
+  display: grid;
+  margin-top: 18px;
+}
+
+.is-account-route .account-case-production .case-spec__row {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 6px 14px;
+  align-items: baseline;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-spec__row.is-child {
+  padding-left: 30px;
+}
+
+.is-account-route .account-case-production .case-spec__no {
+  color: var(--quiet);
+  font: 600 9px/1.6 var(--mono);
+  letter-spacing: .04em;
+}
+
+.is-account-route .account-case-production .case-spec__row.is-child .case-spec__no {
+  color: var(--faint);
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.is-account-route .account-case-production .case-spec__main {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.is-account-route .account-case-production .case-spec__main b {
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 560;
+  line-height: 1.4;
+}
+
+.is-account-route .account-case-production .case-spec__terms > summary {
+  width: max-content;
+  color: var(--quiet);
+  font: 550 9px/1.4 var(--mono);
+  letter-spacing: .06em;
+  list-style: none;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.is-account-route .account-case-production .case-spec__terms > summary::-webkit-details-marker {
+  display: none;
+}
+
+.is-account-route .account-case-production .case-spec__terms > summary:hover {
+  color: var(--wax);
+}
+
+.is-account-route .account-case-production .case-spec__open,
+.is-account-route .account-case-production .case-spec__terms[open] .case-spec__shut {
+  display: none;
+}
+
+.is-account-route .account-case-production .case-spec__terms[open] .case-spec__open {
+  display: inline;
+}
+
+.is-account-route .account-case-production .case-spec__terms small {
+  display: block;
+  max-width: 78ch;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.is-account-route .account-case-production .case-spec__terms small b {
+  color: var(--ink);
+  font-size: inherit;
+  font-weight: 560;
+}
+
+.is-account-route .account-case-production .case-spec__price {
+  color: var(--ink);
+  font: 500 14px/1.3 var(--serif);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ---------- ход дела: 35-пиксельное гнездо медальона ---------- */
+.is-account-route .account-case-production .case-timeline__list {
+  margin-top: 4px;
+  padding: 0;
+  list-style: none;
+}
+
+.is-account-route .account-case-production .case-timeline__list > li {
+  display: grid;
+  grid-template-columns: 35px minmax(0, 1fr);
+  gap: 14px;
+  padding: 18px 0 18px 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-timeline__mark {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  color: var(--quiet);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font: 550 9px/1 var(--mono);
+  letter-spacing: .02em;
+}
+
+.is-account-route .account-case-production .case-timeline__list > li.is-past .case-timeline__mark {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+/* единственная заливка воском в ходе дела — текущий медальон */
+.is-account-route .account-case-production .case-timeline__list > li.is-current .case-timeline__mark {
+  color: #fffaf3;
+  background: var(--wax);
+  border-color: var(--wax);
+}
+
+.is-account-route .account-case-production .case-timeline__list > li > div {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.is-account-route .account-case-production .case-timeline__list small {
+  color: var(--quiet);
+  font: 550 9px/1.3 var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.is-account-route .account-case-production .case-timeline__list > li.is-current small {
+  color: var(--wax);
+}
+
+/* эталон снимает с названий событий серифность: это UI, а не заголовки */
+.is-account-route .account-case-production .case-timeline__list h4 {
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 560;
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.is-account-route .account-case-production .case-timeline__list p {
+  max-width: 72ch;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* ---------- документы: мономарка расширения, серифное тире ---------- */
+.is-account-route .account-case-production .case-files {
+  display: grid;
+  margin-top: 4px;
+}
+
+.is-account-route .account-case-production .file-row {
+  display: flex;
+  width: 100%;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  text-decoration: none;
+}
+
+.is-account-route .account-case-production .file-row i {
+  display: grid;
+  width: 30px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--wax);
+  background: var(--wax-soft);
+  border-radius: 3px;
+  font: 600 8px/1 var(--mono);
+  font-style: normal;
+  letter-spacing: .04em;
+}
+
+.is-account-route .account-case-production .file-row > span {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 3px;
+}
+
+.is-account-route .account-case-production .file-row strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 560;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.is-account-route .account-case-production .file-row small {
+  color: var(--quiet);
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+/* «новый» — слово плюс восковой оттенок той же марки: не цветом одним */
+.is-account-route .account-case-production .file-row__new {
+  color: var(--wax);
+  font: 550 9px/1.5 var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.is-account-route .account-case-production .file-row > b {
+  flex: 0 0 auto;
+  color: var(--line-strong);
+  font: 400 17px/1 var(--serif);
+}
+
+.is-account-route .account-case-production .file-row:hover strong {
+  color: var(--wax);
+}
+
+/* ---------- переписка: список пузырей эталона ---------- */
+.is-account-route .account-case-production .message-list {
+  display: grid;
+  gap: 14px;
+  max-height: 430px;
+  overflow-y: auto;
+  padding-block: 20px;
+}
+
+.is-account-route .account-case-production .message {
+  display: flex;
+  max-width: 82%;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+/* --ink инвертируется по теме, поэтому текст берём из --sheet: контраст
+   держится и в светлой, и в ночной (эталонного --night в проде нет) */
+.is-account-route .account-case-production .message > span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--sheet);
+  background: var(--ink);
+  border-radius: 50%;
+  font: 550 8px/1 var(--mono);
+  letter-spacing: .04em;
+}
+
+.is-account-route .account-case-production .message > div {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+  padding: 12px 14px;
+  background: var(--paper);
+  border-radius: 12px 12px 12px 3px;
+}
+
+.is-account-route .account-case-production .message strong {
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 560;
+}
+
+.is-account-route .account-case-production .message p {
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.52;
+  white-space: pre-wrap;
+}
+
+.is-account-route .account-case-production .message small {
+  color: var(--quiet);
+  font: 550 9px/1.3 var(--mono);
+}
+
+.is-account-route .account-case-production .message--client {
+  justify-self: end;
+}
+
+.is-account-route .account-case-production .message--client > span {
+  color: #fffaf3;
+  background: var(--wax);
+}
+
+/* форма пузыря плюс восковая заливка — авторство читается без цвета */
+.is-account-route .account-case-production .message--client > div {
+  background: var(--wax-soft);
+  border-radius: 12px 12px 3px 12px;
+}
+
+.is-account-route .account-case-production .message-sys {
+  color: var(--quiet);
+  font: 550 9px/1.6 var(--mono);
+  letter-spacing: .05em;
+  text-align: center;
+}
+
+.is-account-route .account-case-production .message__audio {
+  width: min(280px, 100%);
+  height: 36px;
+}
+
+.is-account-route .account-case-production .message__shot {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+}
+
+.is-account-route .account-case-production .message__shot img {
+  display: block;
+  max-width: min(260px, 100%);
+  border-radius: 4px;
+}
+
+.is-account-route .account-case-production .message__video {
+  max-width: min(280px, 100%);
+  border-radius: 4px;
+}
+
+.is-account-route .account-case-production .message-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: end;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .message-form > label {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.is-account-route .account-case-production .message-form textarea {
+  width: 100%;
+  min-height: 48px;
+  max-height: 140px;
+  padding: 12px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font: inherit;
+  font-size: 12px;
+  outline: 0;
+  resize: vertical;
+}
+
+.is-account-route .account-case-production .message-form textarea:focus {
+  border-color: var(--wax);
+}
+
+/* ---------- поля, согласия, кнопки ---------- */
+.is-account-route .account-case-production .case-field {
+  display: grid;
+  gap: 5px;
+  margin-top: 16px;
+}
+
+.is-account-route .account-case-production .case-field__label {
+  color: var(--quiet);
+  font: 550 9px/1.3 var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.is-account-route .account-case-production .case-field__hint {
+  color: var(--quiet);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.is-account-route .account-case-production .case-field textarea {
+  width: 100%;
+  padding: 12px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font: inherit;
+  font-size: 12px;
+  outline: 0;
+  resize: vertical;
+}
+
+.is-account-route .account-case-production .case-field textarea:focus,
+.is-account-route .account-case-production .account-input:focus {
+  border-color: var(--wax);
+}
+
+.is-account-route .account-case-production .case-fix {
+  margin-top: 4px;
+}
+
+.is-account-route .account-case-production .case-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.is-account-route .account-case-production .case-acts .btn {
+  flex: 0 1 auto;
+  min-height: 44px;
+  padding: 11px 17px;
+  font-size: 11px;
+  font-weight: 560;
+}
+
+.is-account-route .account-case-production .case-upload {
+  cursor: pointer;
+}
+
+.is-account-route .account-case-production .case-consents {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-consent {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.55;
+  cursor: pointer;
+}
+
+.is-account-route .account-case-production .case-consent input {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  accent-color: var(--wax);
+}
+
+.is-account-route .account-case-production .case-consent a {
+  color: var(--wax);
+}
+
+/* ---------- благодарность: суммы плитками, без пилюль ---------- */
+.is-account-route .account-case-production .case-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.is-account-route .account-case-production .case-chip {
+  min-height: 40px;
+  padding: 10px 14px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: color .15s ease, border-color .15s ease;
+}
+
+.is-account-route .account-case-production .case-chip:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.is-account-route .account-case-production .case-chip.on,
+.is-account-route .account-case-production .case-chip[aria-pressed="true"] {
+  color: var(--sheet);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+/* марка поддержки — как .case-support__mark эталона */
+.is-account-route .account-case-production .case-support__mark {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--wax);
+  background: var(--wax-soft);
+  border-radius: 50%;
+  font: 500 17px/1 var(--serif);
+}
+
+/* ---------- отзыв ---------- */
+.is-account-route .account-case-production .rv-stars {
+  display: flex;
+  gap: 2px;
+  margin-top: 18px;
+}
+
+.is-account-route .account-case-production .rv-star {
+  padding: 3px 4px;
+  color: var(--line-strong);
+  background: transparent;
+  border: 0;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color .12s ease;
+}
+
+.is-account-route .account-case-production .rv-star:hover {
+  transform: none;
+}
+
+.is-account-route .account-case-production .rv-star.on {
+  color: var(--wax);
+}
+
+.is-account-route .account-case-production .rv-stars-static {
+  margin-top: 18px;
+  color: var(--wax);
+  font-size: 20px;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.is-account-route .account-case-production .rv-stars-static .dim {
+  color: var(--line-strong);
+}
+
+/* ID-специфичность extras.css (#reviewForm textarea) — бьём точнее */
+.is-account-route .account-case-production #reviewForm textarea {
+  width: 100%;
+  padding: 12px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font: inherit;
+  font-size: 12px;
+  resize: vertical;
+}
+
+.is-account-route .account-case-production #reviewForm .account-input {
+  flex: 2 1 220px;
+}
+
+.is-account-route .account-case-production .up-note {
+  margin-top: 10px;
+}
+
+/* ---------- завершённое дело: подвал листа ---------- */
+.is-account-route .account-case-production .case-file__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 26px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-file__foot p {
+  max-width: 68ch;
+  color: var(--quiet);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+/* ---------- корешки дел: те же карточки, что в «Делах» ---------- */
+.is-account-route .order-card--ghost {
+  background: transparent;
+  border-style: dashed;
+}
+
+.is-account-route .order-card--ghost:hover {
+  background: var(--sheet);
+  border-style: solid;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ---------- пусто / загрузка / ошибка: код + слова, не только цвет ---------- */
+.is-account-route .case-state {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  margin-top: 18px;
+  background: var(--sheet);
+  border: 1px solid var(--line);
+}
+
+.is-account-route .case-state {
+  --state-accent: var(--blue);
+}
+
+.is-account-route .case-state--empty {
+  --state-accent: var(--green);
+}
+
+.is-account-route .case-state--error {
+  --state-accent: var(--wax);
+}
+
+.is-account-route .case-state > header {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .case-state > header span {
+  color: var(--state-accent);
+  font: 650 10px/1 var(--mono);
+  letter-spacing: .08em;
+}
+
+.is-account-route .case-state > header i {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  background: var(--state-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--state-accent) 13%, transparent);
+}
+
+.is-account-route .case-state__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 30px 20px;
+}
+
+.is-account-route .case-state__mark {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  place-items: center;
+  margin-bottom: 22px;
+  color: var(--state-accent);
+  background: color-mix(in srgb, var(--state-accent) 9%, var(--paper));
+  border: 1px solid color-mix(in srgb, var(--state-accent) 28%, var(--line));
+  border-radius: 50%;
+  font: 500 22px/1 var(--serif);
+}
+
+.is-account-route .case-state__body h2 {
+  max-width: 22ch;
+  color: var(--ink);
+  font-size: clamp(24px, 2.6vw, 30px);
+  font-weight: 470;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+}
+
+.is-account-route .case-state__body p {
+  max-width: 56ch;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.is-account-route .case-state > footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+  padding: 16px 20px;
+  border-top: 1px solid var(--line);
+}
+
+.is-account-route .case-state > footer .btn {
+  min-height: 44px;
+  padding: 11px 17px;
+  font-size: 11px;
+  font-weight: 560;
+}
+
+/* скелет первой загрузки и экран ошибки — тот же спокойный лист */
+.is-account-route .account-main__body > .cab-skel {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 26px;
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 0;
+}
+
+.is-account-route .account-main__body > .cab-skel .sk {
+  height: 12px;
+  background: linear-gradient(90deg, var(--line-soft), var(--paper), var(--line-soft));
+  border-radius: 0;
+}
+
+/* ---------- ≤1080: цифры и суммы ещё умещаются в строку ---------- */
+@media (max-width: 1080px) {
+  .is-account-route .account-case-production .case-file__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .is-account-route .account-case-production .case-sum {
+    font-size: 24px;
+  }
+}
+
+/* ---------- ≤880: одна колонка, служебные подписи с полом 12px ---------- */
+@media (max-width: 880px) {
+  .is-account-route .account-case-production :is(.case-sec, .case-fold) {
+    padding: 20px 17px;
+  }
+
+  .is-account-route .account-case-production .case-sec > header,
+  .is-account-route .account-case-production .case-sec > header > div {
+    min-width: 0;
+  }
+
+  .is-account-route .account-case-production .case-spec__row {
+    grid-template-columns: 24px minmax(0, 1fr);
+  }
+
+  .is-account-route .account-case-production .case-spec__row.is-child {
+    padding-left: 20px;
+  }
+
+  .is-account-route .account-case-production .case-spec__price {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .is-account-route .account-case-production .case-timeline__list > li {
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 12px;
+    padding-left: 0;
+  }
+
+  .is-account-route .account-case-production .message {
+    max-width: 92%;
+  }
+
+  .is-account-route .account-case-production .message-form {
+    grid-template-columns: 1fr;
+  }
+
+  .is-account-route .account-case-production .message-list {
+    max-height: 56vh;
+  }
+
+  /* мобильный пол служебных подписей — 12px по стандартам кабинета */
+  .is-account-route .account-case-production .case-sec__note,
+  .is-account-route .account-case-production .case-fold__toggle,
+  .is-account-route .account-case-production .case-file__meta,
+  .is-account-route .account-case-production .case-note,
+  .is-account-route .account-case-production .case-sub,
+  .is-account-route .account-case-production .case-field__label,
+  .is-account-route .account-case-production .case-field__hint,
+  .is-account-route .account-case-production .case-timeline__list small,
+  .is-account-route .account-case-production .case-timeline__list p,
+  .is-account-route .account-case-production .case-spec__no,
+  .is-account-route .account-case-production .case-spec__terms > summary,
+  .is-account-route .account-case-production .case-spec__terms small,
+  .is-account-route .account-case-production .case-ledger dt small,
+  .is-account-route .account-case-production .case-ledger dt i,
+  .is-account-route .account-case-production .case-ledger .line-link,
+  .is-account-route .account-case-production .file-row small,
+  .is-account-route .account-case-production .file-row__new,
+  .is-account-route .account-case-production .message small,
+  .is-account-route .account-case-production .message-sys,
+  .is-account-route .account-case-production .case-file__foot p,
+  .is-account-route .account-case-production .dl-chip,
+  .is-account-route .account-case-production .quiet-button,
+  .is-account-route .case-state__body p,
+  .is-account-route .case-state > header span {
+    font-size: 12px;
+  }
+
+  .is-account-route .account-case-production .case-timeline__list h4,
+  .is-account-route .account-case-production .case-spec__main b,
+  .is-account-route .account-case-production .file-row strong,
+  .is-account-route .account-case-production .message strong,
+  .is-account-route .account-case-production .message p,
+  .is-account-route .account-case-production .message-form textarea,
+  .is-account-route .account-case-production .case-field textarea,
+  .is-account-route .account-case-production #reviewForm textarea,
+  .is-account-route .account-case-production .case-consent {
+    font-size: 13px;
+  }
+
+  .is-account-route .account-case-production .case-spec__no,
+  .is-account-route .account-case-production .case-ledger dt i {
+    line-height: 1.35;
+  }
+}
+
+/* ---------- ≤620: кнопки в столбик, аватары уходят ---------- */
+@media (max-width: 620px) {
+  .is-account-route .account-case-production .case-acts,
+  .is-account-route .case-state > footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .is-account-route .account-case-production .case-acts .btn,
+  .is-account-route .case-state > footer .btn,
+  .is-account-route .account-case-production .case-acts .account-input {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .is-account-route .account-case-production .case-sec > header,
+  .is-account-route .account-case-production .case-subsec > header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .is-account-route .account-case-production .case-sec__note {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .is-account-route .account-case-production .case-fold > summary {
+    flex-wrap: wrap;
+  }
+
+  /* форма пузыря и восковая заливка остаются — авторство не теряется */
+  .is-account-route .account-case-production .message > span {
+    display: none;
+  }
+
+  .is-account-route .account-case-production .case-file__foot {
+    flex-direction: column;
+  }
+
+  .is-account-route .account-case-production .case-ledger > div,
+  .is-account-route .account-case-production .file-row {
+    gap: 10px;
+  }
+}
+
+/* ---------- ≤390: заголовок дела не выламывается ---------- */
+@media (max-width: 390px) {
+  .is-account-route .account-case-production .case-file__head h2 {
+    font-size: 30px;
+  }
+
+  .is-account-route .account-case-production .case-sum {
+    font-size: 21px;
+  }
+
+  .is-account-route .account-case-production .file-row i {
+    width: 26px;
+    height: 30px;
+  }
+}
+
+/* ---------- шкалы: единственный градиент кабинета и денежная полоса ----------
+   Ширина задаётся классом (p0…p100) — в раскрытии дела нет style="width:…". */
+.is-account-route .account-case-production .case-progress-meta {
+  display: flex;
+  gap: 8px 16px;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 22px;
+  color: var(--quiet);
+  font-size: 11px;
+}
+
+.is-account-route .account-case-production .case-progress-meta strong {
+  color: var(--wax);
+  font: 500 clamp(18px, 2vw, 22px)/1 var(--serif);
+  white-space: nowrap;
+}
+
+.is-account-route .account-case-production .case-progress {
+  height: 4px;
+  margin-top: 8px;
+  overflow: hidden;
+  background: var(--canvas-deep);
+}
+
+.is-account-route .account-case-production .case-progress i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--wax), #c98e50);
+}
+
+.is-account-route .account-case-production .case-paid {
+  display: block;
+  margin-top: 18px;
+  color: var(--ink);
+  font: 500 clamp(18px, 2.2vw, 22px)/1.25 var(--serif);
+}
+
+.is-account-route .account-case-production .case-paid-scale {
+  height: 3px;
+  margin-top: 12px;
+  overflow: hidden;
+  background: var(--canvas-deep);
+}
+
+.is-account-route .account-case-production .case-paid-scale i {
+  display: block;
+  height: 100%;
+  background: var(--wax);
+}
+
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p0 { width: 0%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p5 { width: 5%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p10 { width: 10%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p15 { width: 15%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p20 { width: 20%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p25 { width: 25%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p30 { width: 30%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p35 { width: 35%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p40 { width: 40%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p45 { width: 45%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p50 { width: 50%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p55 { width: 55%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p60 { width: 60%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p65 { width: 65%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p70 { width: 70%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p75 { width: 75%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p80 { width: 80%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p85 { width: 85%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p90 { width: 90%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p95 { width: 95%; }
+.is-account-route .account-case-production :is(.case-progress, .case-paid-scale) i.p100 { width: 100%; }
+
+@media (max-width: 880px) {
+  .is-account-route .account-case-production .case-progress-meta {
+    font-size: 12px;
+  }
+}
+
+/* ============================================================
+   ДОБОРКА КАБИНЕТА — экраны вне блока дела (2026-07-25).
+   tplError / helpTab / settingsTab оставались последними на
+   прошлой карточке `.sheet.sheet-pad.stacked` с инлайн-стилями.
+   Ряд действий и абзац-приписка уже описаны для дела, но под
+   `.account-case-production`; повторяем их на уровне маршрута,
+   чтобы во всём кабинете была одна идиома, а не три.
+   ============================================================ */
+.is-account-route .case-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.is-account-route .case-acts .btn {
+  flex: 0 1 auto;
+  min-height: 44px;
+  padding: 11px 17px;
+  font-size: 11px;
+  font-weight: 560;
+}
+
+/* опись ссылок: строки разрежены, чтобы разделители «·» читались */
+.is-account-route .account-note--links {
+  max-width: none;
+  line-height: 2;
+}
+
+.is-account-route .account-note .link {
+  color: var(--wax);
+}
+
+@media (max-width: 480px) {
+  .is-account-route .case-acts .btn {
+    flex: 1 1 100%;
+  }
+}
+
+/* ползунок списания бонусов: был .cbn-slider из прошлого поколения
+   (accent-color на сургуче, без подписи значения) */
+.is-account-route .account-slider {
+  width: 100%;
+  margin: 2px 0;
+  accent-color: var(--wax);
+}
+
+.is-account-route .account-slider__val {
+  color: var(--ink);
+  font: 500 17px/1.2 var(--serif);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* приписка-строка над списком (уведомления, связанные входы):
+   раньше несла инлайновый margin, а «привязан» — инлайновый цвет */
+.is-account-route .account-note--row {
+  margin: 2px 0 12px;
+}
+
+.is-account-route .account-linked {
+  color: var(--green);
+  font-weight: 560;
+}
+
+/* ============================================================
+   ЧЕРНОВИКИ ЗАЯВОК (2026-07-25).
+   Незавершённая смета из localStorage (salon_draft) показана
+   ОБЫЧНОЙ карточкой дела — так же, как в утверждённом эталоне
+   style-lab/full: черновик стоит рядом с настоящими делами и не
+   выделяется ни рамкой, ни фоном. Что он ещё не дело, говорят
+   слова: ярлык «Черновик» и «без номера» вместо номера.
+   Своих компонентов у раздела поэтому нет — только приписка
+   .account-drafts к .account-orders. Единственное правило —
+   то же, что в эталоне; margin-bottom схлопывается с 48px
+   у следующей секции, зазор до «Ваших дел» равен её 48px.
+   ============================================================ */
+.is-account-route .account-drafts {
+  margin-bottom: 24px;
+}

@@ -856,9 +856,6 @@ html[data-pr-static] .pr-track[data-static-open] .pr-bshadow{transform:scale(1.1
 }
 .pr-opening .pr-book-trigger-label,
 .pr-closing .pr-book-trigger-label{opacity:0}
-.pr-opening .resume-bar,
-.pr-open .resume-bar,
-.pr-closing .resume-bar,
 .pr-opening .mrail,
 .pr-open .mrail,
 .pr-closing .mrail{

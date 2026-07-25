@@ -598,22 +598,19 @@
     if (!visitT0) { visitT0 = Date.now(); sset('salon_t0', String(visitT0)); }
 
     /* ---------------- единый нижний якорь --floor ----------------
-       ОДНА переменная вместо шести формул max(база, --resume-clear+12).
-       Считается как ЗАНЯТАЯ КРОМКА, а не как сумма высот: .resume-bar
-       стоит ПОВЕРХ .mobile-cta (её bottom = высоте панели), поэтому
-       сложение давало лишние ~76px. */
+       ОДНА переменная для всех жильцов нижней кромки: «Связаться»,
+       «Нужна помощь?», куки-плашка. Считается как ЗАНЯТАЯ КРОМКА.
+       Единственный плавающий постоялец внизу — мобильный док
+       (.mobile-cta): закладка возврата сметы стала листом в потоке
+       (extras.js → .resume-card), кромку больше не делит и переменную
+       --resume-clear не публикует. */
     function measure() {
-      var f = 0, r, cs, nav, bar, hdr, narrow, lh, vv, keyboard;
+      var f = 0, r, cs, nav, hdr, narrow, lh, vv, keyboard;
       vv = window.visualViewport;
       keyboard = !!(vv && window.innerHeight - vv.height > 140);
       docEl.classList.toggle('keyboard-open', keyboard);
       nav = document.querySelector('.mobile-cta');
       if (nav) { cs = getComputedStyle(nav); if (cs.display !== 'none') f = Math.round(nav.getBoundingClientRect().height); }
-      bar = document.querySelector('.resume-bar');
-      if (bar && bar.parentNode) {
-        r = bar.getBoundingClientRect();
-        f = Math.max(f, Math.round(window.innerHeight - r.top));
-      }
       docEl.style.setProperty('--floor', (f > 0 ? f : 0) + 'px');
 
       hdr = document.querySelector('.site-header');
@@ -1814,7 +1811,12 @@
     header.innerHTML = '<div class="site-header__inner">' + brandHTML() +
       '<nav class="primary-nav nav-links" aria-label="Основная навигация">' + navLinks + '</nav>' +
       '<div class="site-header__actions nav-cta">' +
-        '<button class="header-action header-action--search" type="button" data-open-search>' +
+        /* aria-label обязателен: ниже 1240 подпись «Найти» и клавиша «/»
+           прячутся, а видимый ⌕ помечен aria-hidden — без имени кнопка
+           осталась бы безымянной для скринридера. Имя начинается со
+           слова «Найти», поэтому WCAG 2.5.3 (label in name) соблюдён. */
+        '<button class="header-action header-action--search" type="button" data-open-search' +
+          ' aria-label="Найти по сайту">' +
           '<span aria-hidden="true">⌕</span><span>Найти</span><kbd>/</kbd></button>' +
         '<button class="header-theme-toggle theme-toggle" type="button" aria-label="Сменить тему оформления">' +
           '<span aria-hidden="true">◐</span><span class="visually-hidden" data-theme-action>Включить тёмную тему</span></button>' +

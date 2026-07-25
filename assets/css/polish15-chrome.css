@@ -1057,6 +1057,17 @@ body .site-header .header-action--search,
 body .site-header .nav-cab{
   padding-inline:14px;
 }
+/* Ниже 1240 у «Найти» остаётся только значок ⌕ (chrome.css) —
+   значит и мера у неё круглая, как у темы и «Меню». Подпись
+   кнопке даёт aria-label, поэтому безымянного кружка не выходит. */
+@media(max-width:1240px){
+  body .site-header .header-action--search{
+    width:44px;
+    min-width:44px;
+    justify-content:center;
+    padding-inline:0;
+  }
+}
 
 body .site-header .header-action:hover,
 body .site-header .header-theme-toggle:hover,
