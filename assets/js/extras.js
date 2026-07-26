@@ -1161,7 +1161,7 @@
         details: q, name: '', contact: c, website: '', deadline: '',
         consent: box.querySelector('#glOk').checked,
         privacy_notice_ack: box.querySelector('#glOk').checked,
-        consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.0',
+        consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.1',
         page: here
       }).then(function (r) {
         S.btnLoading(btn, false);

@@ -105,6 +105,11 @@
   }
 
   var pricedRoutes = {
+    'Реферат или эссе с нуля': { href: 'configurator.html', type: 'self', tier: 'vip' },
+    'Курсовая теория с нуля': { href: 'configurator.html', type: 'course', tier: 'vip' },
+    'Курсовая с исследованием с нуля': { href: 'configurator.html', type: 'course_emp', tier: 'vip' },
+    'ВКР или диплом с нуля': { href: 'configurator.html', type: 'diplom', tier: 'vip' },
+    'Магистерская с нуля': { href: 'configurator.html', type: 'master', tier: 'vip' },
     'Разбор темы и плана': { href: 'configurator.html?service=pl' },
     'Разбор замечаний руководителя': { href: 'configurator.html?service=rv' },
     'Курсовая работа': { href: 'configurator.html', type: 'course', tier: 'turn' },

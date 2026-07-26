@@ -55,7 +55,11 @@ test('authenticated customer can continue without retyping an already connected 
     html,
     /var authed = !!\(window\.Salon && Salon\.api && Salon\.api\.token && Salon\.api\.token\(\)\);/
   );
-  assert.match(html, /return !!\(\(authed \|\| state\.contact\.trim\(\)\) && state\.consent\);/);
+  assert.match(
+    html,
+    /return !!\(\(authed \|\| state\.contact\.trim\(\)\) && state\.consent &&\s*\(state\.result !== 'support' \|\| state\.authorParticipation\)\);/
+  );
+  assert.match(html, /data-concept-authorship/);
 });
 
 test('universal contact field serializes obvious email, phone and messenger formats correctly', () => {
@@ -102,7 +106,7 @@ test('home begins directly after the in-flow desktop header and mobile appbar of
 });
 
 test('production chrome switches to the approved mobile edition at 920px', () => {
-  assert.match(indexHtml, /mobile\.css\?v=20260726release25" media="screen and \(max-width:920px\)"/);
+  assert.match(indexHtml, /mobile\.css\?v=20260726release28" media="screen and \(max-width:920px\)"/);
   assert.match(mobileCss, /@media screen and \(max-width:920px\)/);
   assert.match(appJs, /link\.media = 'screen and \(max-width:920px\)'/);
   assert.match(appJs, /matchMedia\('\(max-width:920px\)'\)/);

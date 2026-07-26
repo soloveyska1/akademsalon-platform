@@ -1868,6 +1868,16 @@ html[data-theme="dark"] .configurator-task .materials-step input[type="date"]{co
   text-decoration-color:var(--hairline-strong);
   text-underline-offset:2px;
 }
+.configurator-task .contact-step .consent-check--authorship{
+  padding:14px;
+  color:var(--ink);
+  background:color-mix(in srgb,var(--verify-soft) 72%,var(--sheet));
+  border:1px solid color-mix(in srgb,var(--verify) 34%,var(--hairline));
+  border-radius:7px;
+}
+.configurator-task .contact-step .consent-check--authorship strong{
+  color:var(--verify);
+}
 
 .configurator-task .wizard-summary{
   position:sticky;

@@ -491,7 +491,7 @@
         consent: true,
         privacy_notice_ack: true,
         recipient_data_authority: !!(deliveryByEmail && recipientAuthority.checked),
-        consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.0 · gift form 2.0',
+        consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.1 · gift form 2.0',
         website: website.value
       }).then(function (response) {
         setButtonBusy(submit, false);

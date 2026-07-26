@@ -25,10 +25,19 @@ function canonicalPrices() {
 }
 
 const pages = {
-  'diplomnaya-rabota.html': { type: 'diplom', visible: ['3 000', '24 000', '40 000'] },
-  'magisterskaya-dissertaciya.html': { type: 'master', visible: ['5 000', '36 000', '60 000'] },
+  'diplomnaya-rabota.html': {
+    type: 'diplom', canonical: ['3 000', '24 000', '40 000'], promoted: '40 000',
+    faq: ['Можно прийти вообще без текста?', 'Правда можно получить черновик за один день?', 'Как передаются правки?', 'Что происходит, если срок меняется?']
+  },
+  'magisterskaya-dissertaciya.html': {
+    type: 'master', canonical: ['5 000', '36 000', '60 000'], promoted: '60 000',
+    faq: ['Можно прийти вообще без текста?', 'Правда можно получить черновик за один день?', 'Как передаются правки?', 'Что происходит, если срок меняется?']
+  },
   'kandidatskaya-dissertaciya.html': { type: 'kandidat', visible: ['7 500', '60 000', '200 000'] },
-  'kursovaya-rabota.html': { type: 'course', visible: ['2 500', '9 000', '14 000'] },
+  'kursovaya-rabota.html': {
+    type: 'course', canonical: ['2 500', '9 000', '14 000'], promoted: '14 000', schemaHigh: 20000,
+    faq: ['Можно прийти вообще без текста?', 'Правда можно получить черновик за один день?', 'Как передаются правки?', 'Что происходит, если срок меняется?']
+  },
   'otchet-po-praktike.html': { type: 'practice', visible: ['2 500', '8 000', '14 000'] }
 };
 
@@ -50,14 +59,16 @@ test('primary landing pages show the canonical entry price and preserve schema b
   for (const [file, config] of Object.entries(pages)) {
     const html = read(file);
     const expected = prices[config.type];
-    assert.deepEqual(config.visible.map(money), expected, `${file}: fixture must match SalonCalc`);
-    const entry = config.visible[0].replace(' ', '[ \\\\u00a0]');
+    const canonical = config.canonical || config.visible;
+    assert.deepEqual(canonical.map(money), expected, `${file}: fixture must match SalonCalc`);
+    const promoted = config.promoted || canonical[0];
+    const entry = promoted.replace(' ', '[ \\\\u00a0]');
     assert.match(html, new RegExp(`от ${entry}[ \\\\u00a0]₽`), `${file}: canonical entry price is not visible`);
     assert.match(html, new RegExp(`"lowPrice":${expected[0]}\\b`), `${file}: wrong AggregateOffer.lowPrice`);
-    assert.match(html, new RegExp(`"highPrice":${expected[2]}\\b`), `${file}: wrong AggregateOffer.highPrice`);
+    assert.match(html, new RegExp(`"highPrice":${config.schemaHigh || expected[2]}\\b`), `${file}: wrong AggregateOffer.highPrice`);
     const faq = jsonLd(html).find((node) => node['@type'] === 'FAQPage');
     assert.ok(faq, `${file}: visible FAQ has matching schema`);
-    assert.deepEqual(faq.mainEntity.map((entry) => entry.name), finalFaq, `${file}: final FAQ schema`);
+    assert.deepEqual(faq.mainEntity.map((entry) => entry.name), config.faq || finalFaq, `${file}: final FAQ schema`);
   }
 });
 

@@ -4,14 +4,14 @@
   <meta name="referrer" content="no-referrer">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Конструктор услуг: аудит, редактура и консультации — Академический Салон</title>
-<meta name="description" content="Соберите заказ из одной или нескольких позиций. Для каждой видны результат, ориентир цены и детали; точные условия фиксируются в спецификации до оплаты." />
+<title>Рассчитать проект с нуля или редакторскую помощь — Академический Салон</title>
+<meta name="description" content="Выберите курсовую, ВКР или магистерскую, точку старта и результат. Проект можно начать с одной темы; состав, срок и цена видны до отправки заявки." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260726release25" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release25" />
-<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release25" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260726release25" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260726release25" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260726release28" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release28" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release28" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260726release28" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260726release28" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -23,19 +23,19 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Рассчитать помощь с курсовой или ВКР | Академический Салон" />
-<meta property="og:description" content="Выберите работу и нужный результат: диагностику, редакторский аудит или сопровождение. Предварительная цена появится сразу." />
+<meta property="og:title" content="Рассчитать проект с нуля | Академический Салон" />
+<meta property="og:description" content="Можно прийти только с темой. Выберите работу и получите понятный состав и ценовой ориентир." />
 <meta property="og:url" content="https://akademsalon.ru/configurator.html" />
 <meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Рассчитать помощь с курсовой или ВКР — Академический Салон" />
-<meta name="twitter:description" content="Четыре коротких шага: задача, направление, результат и заявка." />
+<meta name="twitter:title" content="Рассчитать курсовую или ВКР с нуля" />
+<meta name="twitter:description" content="Шесть коротких шагов: работа, точка старта, результат, материалы и заявка." />
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release25" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260726release25" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release28" media="screen and (max-width:920px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260726release28" />
 </head>
 <body class="configurator-task">
 
@@ -285,10 +285,10 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260726release25"></script>
-<script defer src="assets/js/polish15-chrome.js?v=20260726release25"></script>
-<script src="assets/js/extras.js?v=20260726release25"></script>
-<script src="assets/js/cart.js?v=20260726release25"></script>
+<script src="assets/js/app.js?v=20260726release28"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260726release28"></script>
+<script src="assets/js/extras.js?v=20260726release28"></script>
+<script src="assets/js/cart.js?v=20260726release28"></script>
 <script>
 function initConf() {
   'use strict';
@@ -1868,7 +1868,7 @@ function initConf() {
       gift: giftCode || undefined,
       consent: !!($('fConsent') && $('fConsent').checked),
       privacy_notice_ack: !!($('fConsent') && $('fConsent').checked),
-      consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.0',
+      consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.1',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
       ref: (S.refCode && S.refCode()) || undefined,
       client_request_id: requestId()
@@ -2388,9 +2388,9 @@ if (document.prerendering) {
       key:'workType', kicker:'Шаг 1', title:'С какой работой нужна помощь?',
       lead:'Выберите тип — покажем подходящие форматы и не будем задавать лишних вопросов.',
       options:[
-        ['diplom','ВКР или диплом','Маршрут, проверка разделов, редактура и защита.'],
-        ['course','Курсовая работа','От разбора задания до редакторской проверки.'],
-        ['master','Магистерская','Методология, данные и редактура вашего текста.'],
+        ['diplom','ВКР или диплом','С нуля, с черновиком или перед защитой.'],
+        ['course','Курсовая работа','Теория или исследование: с нуля, с черновиком или правками.'],
+        ['master','Магистерская','С нуля: методология, данные, рабочий текст и защита.'],
         ['rinc','Научная статья','Логика, источники и редактура рукописи.'],
         ['practice','Отчёт по практике','Структура и оформление реальных результатов.'],
         ['self','Другое','Реферат, эссе или задача, которой нет в списке.']
@@ -2400,7 +2400,7 @@ if (document.prerendering) {
       key:'situation', kicker:'Шаг 2', title:'Что уже есть?',
       lead:'Выберите ближайшую ситуацию — так редактор увидит реальную точку старта.',
       options:[
-        ['topic','Только тема или задание','Нужно разобрать требования и определить первый шаг.'],
+        ['topic','Только тема — начинаем с нуля','Разберём задание и соберём проект от структуры до рабочего черновика.'],
         ['draft','Есть мой черновик','Нужна оценка текста и понятный список задач.'],
         ['comments','Получены замечания','Нужно разобрать комментарии и проверить правки.'],
         ['defense','Скоро сдача или защита','Нужна проверка готовности и приоритетов.']
@@ -2414,7 +2414,7 @@ if (document.prerendering) {
         ['editing','Отредактировать мой черновик','Согласованные правки и комментарии в документе.'],
         ['formatting','Проверить оформление по методичке','Сверка требований и исправление оформления.'],
         ['defense','Подготовиться к защите','Редактура вашей речи и слайдов, репетиция ответов.'],
-        ['support','Сопровождать по этапам','Проверка ваших версий, консультации и контроль маршрута.'],
+        ['support','Собрать проект с нуля','План, источники, полный рабочий черновик, оформление и защита.'],
         ['recommendation','Нужна рекомендация','Редактор предложит первый формат после просмотра материалов.']
       ]
     },
@@ -2485,6 +2485,7 @@ if (document.prerendering) {
       'Оформление':'formatting',
       'Защита':'defense',
       'Сопровождение':'support',
+      'Проект с нуля':'support',
       'Нужна рекомендация':'recommendation',
       base:'diagnostic',
       turn:'editing',
@@ -2508,7 +2509,8 @@ if (document.prerendering) {
       result:normalizeResult(value.result || (draft.state && draft.state.tier)),
       deadlineDate:/^\d{4}-\d{2}-\d{2}$/.test(value.deadlineDate || '') ? value.deadlineDate : '',
       deadlineFlexible:!!value.deadlineFlexible || value.deadline === 'Срок обсуждается',
-      entryPrefilled:!!value.entryPrefilled
+      entryPrefilled:!!value.entryPrefilled,
+      authorParticipation:!!value.authorParticipation
     };
   }
   function saveSelections() {
@@ -2523,7 +2525,8 @@ if (document.prerendering) {
       result:state.result,
       deadlineDate:state.deadlineDate,
       deadlineFlexible:state.deadlineFlexible,
-      entryPrefilled:state.entryPrefilled
+      entryPrefilled:state.entryPrefilled,
+      authorParticipation:state.authorParticipation
     };
     var draft = storeGet('salon_draft', {}) || {};
     draft.concept = concept;
@@ -2551,6 +2554,7 @@ if (document.prerendering) {
     deadlineDate:savedMatchesMode ? saved.deadlineDate : '',
     deadlineFlexible:savedMatchesMode ? saved.deadlineFlexible : false,
     entryPrefilled:savedMatchesMode ? saved.entryPrefilled : false,
+    authorParticipation:savedMatchesMode ? saved.authorParticipation : false,
     topic:'',
     name:'',
     contact:'',
@@ -2578,6 +2582,7 @@ if (document.prerendering) {
     state.deadlineDate = '';
     state.deadlineFlexible = false;
     state.entryPrefilled = false;
+    state.authorParticipation = false;
     saveSelections();
     try {
       routeParams.delete('situation');
@@ -2634,7 +2639,7 @@ if (document.prerendering) {
     if (deadline) deadline.value = state.deadlineFlexible ? 'Согласовать с редактором' : state.deadlineDate;
     if (details) {
       var situation = {
-        topic:'Только тема или задание',
+        topic:'Только тема — начинаем с нуля',
         draft:'Есть мой черновик',
         comments:'Получены замечания',
         defense:'Скоро сдача или защита'
@@ -2642,6 +2647,9 @@ if (document.prerendering) {
       var context = [
         situation ? 'Ситуация: ' + situation + '.' : '',
         state.result ? 'Первый результат: ' + resultLabel(state.result) + '.' : '',
+        state.result === 'support' && state.authorParticipation
+          ? 'Авторский контур: клиент подтвердил участие в исследовательских решениях, проверке данных и содержательной доработке рабочего черновика.'
+          : '',
         service ? 'Выбрана услуга: ' + service.label + '.' : '',
         state.comment
       ].filter(Boolean).join('\n');
@@ -2689,7 +2697,7 @@ if (document.prerendering) {
   }
   function situationLabel(value) {
     return {
-      topic:'Только тема или задание',
+      topic:'Только тема — начинаем с нуля',
       draft:'Есть мой черновик',
       comments:'Получены замечания',
       defense:'Скоро сдача или защита'
@@ -2701,7 +2709,7 @@ if (document.prerendering) {
       editing:'Редактура вашего текста',
       formatting:'Оформление по методичке',
       defense:'Подготовка к защите',
-      support:'Поэтапное сопровождение автора',
+      support:'Исследовательский проект с нуля',
       recommendation:'Рекомендация редактора'
     }[value] || 'Не указано';
   }
@@ -2798,12 +2806,12 @@ if (document.prerendering) {
         client:'Ваш текст, черновик речи, презентация и регламент защиты.'
       },
       support:{
-        title:'Поэтапное сопровождение автора',
-        description:'Редактор поможет выстроить маршрут, будет проверять ваши версии и фиксировать следующий этап.',
-        first:'Карта этапов и первая редакторская проверка',
-        duration:'по согласованному календарю',
-        editor:'Проверяет версии, консультирует, редактирует и контролирует согласованный маршрут.',
-        client:'Самостоятельная содержательная работа, данные и версии по календарю.'
+        title:'Исследовательский проект с нуля',
+        description:'Можно прийти без текста: мастерская соберёт структуру, источники, анализ и полный рабочий черновик для вашей содержательной проверки и доработки.',
+        first:'Первый полный рабочий черновик',
+        duration:'по календарю · экспресс от 24 часов',
+        editor:'Соберёт структуру, источники, рабочий текст, расчёты или анализ и оформление по спецификации.',
+        client:'Утвердить исследовательские решения, проверить факты и данные, содержательно доработать и принять финальную авторскую версию.'
       }
     };
     return items[effective] || items.diagnostic;
@@ -2826,7 +2834,7 @@ if (document.prerendering) {
             '<div><span>Что сделает редактор</span><p>' + safeText(rec.editor) + '</p></div>' +
             '<div><span>Что потребуется от вас</span><p>' + safeText(rec.client) + '</p></div>' +
           '</div>' +
-          '<p class="recommendation-note"><strong>Работа остаётся вашей.</strong> Мы консультируем, проверяем и редактируем предоставленные материалы; содержательную часть учебной или аттестационной работы вместо автора не выполняем.</p>' +
+          '<p class="recommendation-note"><strong>С нуля — не значит без вашего участия.</strong> Мы можем начать с пустого файла и подготовить полный рабочий черновик. Вы утверждаете содержательные решения, проверяете данные и отвечаете за финальную авторскую версию и её использование.</p>' +
         '</section>' +
         '<aside class="wizard-summary">' +
           '<p class="eyebrow">Ваш выбор</p>' +
@@ -2939,6 +2947,12 @@ if (document.prerendering) {
             '<input type="checkbox" data-concept-consent ' + (state.consent ? 'checked' : '') + '>' +
             '<span><strong>Уведомление прочитано.</strong> Я ознакомился с обработкой данных и файлов, необходимых для оценки заявки. Аналитика, рассылки и программа лояльности подключаются отдельным выбором. <a href="consent-request.html" target="_blank" rel="noopener">Как обрабатываются данные</a></span>' +
           '</label>' +
+          (state.result === 'support'
+            ? '<label class="consent-check consent-check--authorship">' +
+                '<input type="checkbox" data-concept-authorship ' + (state.authorParticipation ? 'checked' : '') + '>' +
+                '<span><strong>Подтверждаю авторский контур.</strong> Я буду принимать исследовательские решения, проверю факты и данные и содержательно доработаю рабочий черновик перед использованием.</span>' +
+              '</label>'
+            : '') +
         '</div>' +
         '<aside class="wizard-summary">' +
           '<p class="eyebrow">Предварительно</p>' +
@@ -2988,7 +3002,8 @@ if (document.prerendering) {
       return !!((state.deadlineDate || state.deadlineFlexible) && serviceQuestionsComplete());
     }
     var authed = !!(window.Salon && Salon.api && Salon.api.token && Salon.api.token());
-    return !!((authed || state.contact.trim()) && state.consent);
+    return !!((authed || state.contact.trim()) && state.consent &&
+      (state.result !== 'support' || state.authorParticipation));
   }
 
   function render() {
@@ -3005,7 +3020,7 @@ if (document.prerendering) {
             '<span><strong>' + safeText(option[1]) + '</strong><small>' + safeText(option[2]) + '</small></span>' +
           '</button>';
         }).join('') + '</div>' +
-        '<p class="concept-scope-note">Работаем с вашими материалами: консультируем, проверяем и редактируем. Содержательные решения остаются за автором.</p>';
+        '<p class="concept-scope-note">Можно начать с одной темы. В проекте с нуля мастерская готовит рабочий черновик, а содержательные решения и финальная авторская версия остаются за вами.</p>';
     } else if (step.key === 'recommendation') {
       cards = recommendationMarkup();
     } else if (step.key === 'materials') {
@@ -3083,8 +3098,10 @@ if (document.prerendering) {
   }
 
   function choose(value) {
-    state[steps[state.step].key] = value;
-    if (steps[state.step].key === 'result') state.entryPrefilled = false;
+    var key = steps[state.step].key;
+    if (key === 'result' && value !== state.result) state.authorParticipation = false;
+    state[key] = value;
+    if (key === 'result') state.entryPrefilled = false;
     saveSelections();
     syncLegacy();
     syncStoredCurrent();
@@ -3116,6 +3133,7 @@ if (document.prerendering) {
     state.deadlineDate = '';
     state.deadlineFlexible = false;
     state.entryPrefilled = false;
+    state.authorParticipation = false;
     state.topic = '';
     state.comment = '';
     saveSelections();
@@ -3186,6 +3204,15 @@ if (document.prerendering) {
     var consent = host.querySelector('[data-concept-consent]');
     if (consent) consent.addEventListener('change',function () {
       state.consent = consent.checked;
+      syncLegacy();
+      updateChrome();
+      var footerNext = host.querySelector('[data-concept-next]');
+      if (footerNext) footerNext.disabled = !canContinue();
+    });
+    var authorship = host.querySelector('[data-concept-authorship]');
+    if (authorship) authorship.addEventListener('change',function () {
+      state.authorParticipation = authorship.checked;
+      saveSelections();
       syncLegacy();
       updateChrome();
       var footerNext = host.querySelector('[data-concept-next]');

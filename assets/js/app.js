@@ -35,17 +35,17 @@
     link.media = 'screen and (max-width:920px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260726release25', source).href
-        : 'assets/css/mobile.css?v=20260726release25';
+      link.href = source ? new URL('../css/mobile.css?v=20260726release28', source).href
+        : 'assets/css/mobile.css?v=20260726release28';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260726release25';
+      link.href = 'assets/css/mobile.css?v=20260726release28';
     }
     document.head.appendChild(link);
   })();
 
   /* ---------------- Калькулятор (единая логика) ----------------
-     Цена задаётся не за «готовую работу», а за конкретный результат:
-     диагностику, редакторский аудит или поэтапное сопровождение. Уровни
+     Цена задаётся за конкретный результат: диагностику, редакторский
+     этап или исследовательский проект с нуля. Уровни
      хранят явные суммы — диагностика больше не считается искусственным
      коэффициентом от полной программы сопровождения. */
   var SalonCalc = {
@@ -76,7 +76,7 @@
     tiers: [
       { id: 'base', label: 'Диагностика',          priceKey: 'diagnostic', note: 'Аудит и карта следующих шагов' },
       { id: 'turn', label: 'Редакторский аудит',   priceKey: 'editing',    note: 'Правки в вашем тексте и комментарии' },
-      { id: 'vip',  label: 'Сопровождение',        priceKey: 'support',    note: 'Проверка этапов, консультации и подготовка к защите' }
+      { id: 'vip',  label: 'Проект с нуля',        priceKey: 'support',    note: 'От темы до полного рабочего черновика и защиты' }
     ],
     round500: function (n) { return Math.round(n / 500) * 500; },
     fmt: function (n) { return n.toLocaleString('ru-RU'); },
@@ -1941,6 +1941,7 @@
     mobileHeader.querySelector('.mobile-appbar__brand small').textContent = mobileHeaderMeta.kicker;
     header.insertAdjacentElement('afterend', mobileHeader);
     if (here !== 'index.html') mobileHeader.querySelector('.mobile-appbar__back').classList.add('is-visible');
+    else mobileHeader.classList.add('mobile-appbar--root');
     if (Salon.theme) Salon.theme.apply(Salon.theme.current(), false); /* синк состояния кнопки темы */
   }
 
@@ -2059,7 +2060,7 @@
     return '<div class="site-footer__main">' +
       '<div class="site-footer__brand">' +
         brandMarkSVG() +
-        '<div><strong>Академический Салон</strong><p>Редакторская работа, консультации и сопровождение академических проектов.</p></div>' +
+        '<div><strong>Академический Салон</strong><p>Исследовательские проекты с нуля, редактура и подготовка к защите.</p></div>' +
       '</div>' +
       '<nav aria-label="Услуги">' +
         '<strong>Помощь</strong>' +

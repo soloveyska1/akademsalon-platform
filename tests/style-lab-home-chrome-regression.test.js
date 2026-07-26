@@ -105,7 +105,8 @@ test('tablet and phone appbar lockups retain their approved heights', () => {
   );
   assert.match(homeCss, /\.polish15-home \.situation-grid\{\s*grid-template-columns:1fr;/);
   assert.match(homeCss, /\.polish15-home \.service-card__link\{[\s\S]*?padding:22px;/);
-  assert.match(homeCss, /\.polish15-home \.document-line\{ font-size:18px; \}/);
+  assert.match(homeCss, /\.polish15-home \.project-ledger\{[\s\S]*?width:min\(100%,620px\);/);
+  assert.match(homeCss, /\.polish15-home \.project-ledger__paper\{ padding:24px; \}/);
   assert.doesNotMatch(polishChromeJs, /collapseOnPhone|document-reveal\[open\]/);
   assert.match(
     homeCss,
