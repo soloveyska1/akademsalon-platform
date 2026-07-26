@@ -7,11 +7,11 @@
 <title>Рассчитать проект с нуля или редакторскую помощь — Академический Салон</title>
 <meta name="description" content="Выберите курсовую, ВКР или магистерскую, точку старта и результат. Проект можно начать с одной темы; состав, срок и цена видны до отправки заявки." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260726release28" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release28" />
-<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release28" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260726release28" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260726release28" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260726release29" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release29" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release29" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260726release29" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260726release29" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -34,8 +34,8 @@
 <meta name="twitter:description" content="Шесть коротких шагов: работа, точка старта, результат, материалы и заявка." />
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release28" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260726release28" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release29" media="screen and (max-width:920px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260726release29" />
 </head>
 <body class="configurator-task">
 
@@ -285,10 +285,10 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260726release28"></script>
-<script defer src="assets/js/polish15-chrome.js?v=20260726release28"></script>
-<script src="assets/js/extras.js?v=20260726release28"></script>
-<script src="assets/js/cart.js?v=20260726release28"></script>
+<script src="assets/js/app.js?v=20260726release29"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260726release29"></script>
+<script src="assets/js/extras.js?v=20260726release29"></script>
+<script src="assets/js/cart.js?v=20260726release29"></script>
 <script>
 function initConf() {
   'use strict';
@@ -568,6 +568,19 @@ function initConf() {
   if (svcDraft && svcDraft.service === svc.id && svcDraft.answers) {
     Object.keys(svcDraft.answers).forEach(function (k) { svcAnswers[k] = svcDraft.answers[k]; });
   }
+  /* «Вопрос №0» передаёт только выбранный сценарий и тему через sessionStorage:
+     текст не попадает в URL, Referer или аналитику и удаляется после чтения. */
+  if (svc && svc.id === 'commission0') {
+    try {
+      var commissionHandoff = JSON.parse(sessionStorage.getItem('salon_commission_zero_handoff_v1') || 'null');
+      if (commissionHandoff && Date.now() - Number(commissionHandoff.savedAt || 0) < 7200000) {
+        if ({ course:1, diplom:1, master:1 }[commissionHandoff.work]) svcAnswers.work = commissionHandoff.work;
+        if ({ topic:1, draft:1, ai:1, comments:1 }[commissionHandoff.source]) svcAnswers.source = commissionHandoff.source;
+        if (topicIn && commissionHandoff.topic) topicIn.value = String(commissionHandoff.topic).slice(0,240);
+      }
+      sessionStorage.removeItem('salon_commission_zero_handoff_v1');
+    } catch (e) {}
+  }
   if (isPlanService) {
     try {
       var workFromPage = new URLSearchParams(location.search).get('work');
@@ -673,6 +686,14 @@ function initConf() {
         var on = $('svcOfferNote');
         on.hidden = false;
         on.innerHTML = 'Выберите сопровождение в течение 14 дней — <b>зачтём всю сумму диагностики</b>. Магистерские и кандидатские — 5 000 ₽.';
+      } else if (svc.id === 'commission0') {
+        $('svcOfferList').innerHTML =
+          '<li><span><b>Независимое оппонирование</b><small>Специалист не участвует в подготовке проверяемой версии</small></span></li>' +
+          '<li><span><b>Живая сессия</b><small>Персональные вопросы без подсказок во время ответа</small></span></li>' +
+          '<li><span><b>Протокол №0</b><small>Риски, основания, следующие шаги и повторная проверка</small></span></li>';
+        var commissionNote = $('svcOfferNote');
+        commissionNote.hidden = false;
+        commissionNote.innerHTML = 'Частная редакторская предзащита. <b>Не является комиссией вуза, допуском или гарантией оценки.</b>';
       } else {
         $('svcOfferList').innerHTML = '';
       }
@@ -1868,7 +1889,7 @@ function initConf() {
       gift: giftCode || undefined,
       consent: !!($('fConsent') && $('fConsent').checked),
       privacy_notice_ack: !!($('fConsent') && $('fConsent').checked),
-      consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.1',
+      consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.2',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
       ref: (S.refCode && S.refCode()) || undefined,
       client_request_id: requestId()
@@ -2563,7 +2584,7 @@ if (document.prerendering) {
   };
   if (service) {
     state.result = serviceCode === 'nm' ? 'formatting'
-      : serviceCode === 'df' || serviceCode === 'dp' ? 'defense'
+      : serviceCode === 'df' || serviceCode === 'dp' || serviceCode === 'k0' ? 'defense'
       : serviceCode === 'rv' ? 'diagnostic' : 'editing';
     var restoredTopic = document.getElementById('fTopic');
     var restoredDeadline = document.getElementById('fDeadline');
@@ -2763,6 +2784,16 @@ if (document.prerendering) {
         : state.situation === 'defense' ? 'defense' : 'diagnostic';
     }
     if (service) {
+      if (service.id === 'commission0') {
+        return {
+          title:'Комиссия №0',
+          description:'Независимый от подготовки проверяемой версии Оппонент проведёт живую редакторскую предзащиту. Итог — Протокол №0 без балла готовности и без имитации решения вуза.',
+          first:'Живая сессия и Протокол №0',
+          duration:'по согласованной дате',
+          editor:'Проверит версию материалов, подготовит персональные вопросы, проведёт сессию и зафиксирует каждый критический риск с основанием.',
+          client:'Лично ответить на вопросы, подтвердить исследовательские решения и передать обезличенные требования, источники и данные.'
+        };
+      }
       return {
         title:service.label,
         description:service.desc,

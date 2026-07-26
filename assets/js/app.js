@@ -35,10 +35,10 @@
     link.media = 'screen and (max-width:920px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260726release28', source).href
-        : 'assets/css/mobile.css?v=20260726release28';
+      link.href = source ? new URL('../css/mobile.css?v=20260726release29', source).href
+        : 'assets/css/mobile.css?v=20260726release29';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260726release28';
+      link.href = 'assets/css/mobile.css?v=20260726release29';
     }
     document.head.appendChild(link);
   })();
@@ -60,7 +60,7 @@
       { id: 'vak',        label: 'Научная статья ВАК',               base: 18000,  prices: { diagnostic: 3000, editing: 12000, support: 18000 } },
       { id: 'scopus',     label: 'Статья Scopus / Web of Science',   base: 35000,  prices: { diagnostic: 5000, editing: 22000, support: 35000 } },
       { id: 'rinc',       label: 'Научная статья РИНЦ',              base: 9000,   prices: { diagnostic: 2500, editing: 7000,  support: 9000 } },
-      { id: 'self',       label: 'Реферат или эссе',                 base: 2500,   prices: { diagnostic: 1500, editing: 2500,  support: 2500 } }
+      { id: 'self',       label: 'Реферат или эссе',                 base: 2500,   prices: { diagnostic: 2500, editing: 2500,  support: 2500 } }
     ],
     disciplines: [
       { id: 'hum',  label: 'Гуманитарные / экономика',                 k: 1.0 },
@@ -266,6 +266,30 @@
         { id:'when', label:'Когда защита?', short:'Защита', type:'text', req:true, ph:'Дата или «через 2 недели»' },
         { id:'len', label:'Регламент доклада', short:'Регламент', type:'chips',
           opts:['5 минут','7 минут','10 минут','Не знаю'] }
+      ] },
+    { id:'commission0', label:'Комиссия №0', from:9900, unit:'', code:'k0', fixed:true,
+      desc:'Частная редакторская предзащита: независимый от подготовки проверяемой версии Оппонент проводит живую сессию, а мастерская выдаёт Протокол №0 и повторно проверяет согласованные критические исправления.',
+      priceFor:function(a){
+        return a.work === 'master' ? 29900 : a.work === 'diplom' ? 19900 : 9900;
+      },
+      ask:[
+        { id:'work', label:'Что проходит Комиссию №0?', short:'Работа', type:'chips', req:true,
+          opts:[
+            { value:'course', label:'Курсовая · 9 900 ₽' },
+            { value:'diplom', label:'ВКР / диплом · 19 900 ₽' },
+            { value:'master', label:'Магистерская · 29 900 ₽' }
+          ] },
+        { id:'source', label:'Что уже есть?', short:'Точка старта', type:'chips', req:true,
+          opts:[
+            { value:'topic', label:'Пока только тема' },
+            { value:'draft', label:'Мой черновик' },
+            { value:'ai', label:'Черновик после ИИ' },
+            { value:'comments', label:'Версия с замечаниями' }
+          ] },
+        { id:'when', label:'Когда официальная сдача или защита?', short:'Дата защиты', type:'text', req:true,
+          ph:'Например: «20 июня» или «через три недели»' },
+        { id:'focus', label:'Что вызывает наибольшее сомнение?', short:'Фокус проверки', type:'textarea',
+          ph:'Источники, данные, метод, выводы, ответы на вопросы — можно написать своими словами.' }
       ] },
     { id:'defensepack', label:'Пакет «К защите»: оформление + выступление', from:9500, unit:'', code:'dp',
       desc:'Нормоконтроль вашего текста, помощь со слайдами и тезисами, затем репетиция защиты. По отдельности — 11 000 ₽.',
@@ -1490,6 +1514,7 @@
   var GROUPS = [
     { t: 'Заказ', items: [
       ['configurator.html', 'Рассчитать заказ', 'смета за минуту'],
+      ['komissiya-0.html', 'Комиссия №0', 'частная предзащита · независимый Оппонент'],
       ['tariffs.html', 'Цены и каталог услуг', 'результаты и ориентиры'],
       ['vedenie.html', 'Форматы сопровождения', 'Диагностика · Редактура · Сопровождение'],
       ['oplata.html', 'Как проходит оплата', '50/50 · 30/40/30 · чеки'],
@@ -1527,6 +1552,7 @@
     ['prolog.html', 'Как устроена мастерская', 'процесс этапы приёмная спецификация редактура приёмка'],
     ['start.html', 'С чего начать — короткий маршрут', 'новичок карта маршрут впервые гид путеводитель цена срок'],
     ['services.html', 'Все услуги', 'каталог задачи редактура консультация сопровождение'],
+    ['komissiya-0.html', 'Комиссия №0', 'частная предзащита оппонент протокол вопрос защита ии черновик'],
     ['tools.html', 'Бесплатные инструменты', 'проверка текст тема источники самостоятельная работа'],
     ['deposit.html', 'Депозит мастерской', 'аванс пополнение баланс бонус возврат'],
     ['configurator.html', 'Рассчитать заказ · конфигуратор', 'смета цена калькулятор заявка заказать'],
@@ -1650,6 +1676,7 @@
     var fixed = {
       'services.html': ['Услуги', 'Основное'],
       'tariffs.html': ['Цены', 'Основное'],
+      'komissiya-0.html': ['Комиссия №0', 'Предзащита'],
       'knowledge.html': ['Библиотека', 'Материалы'],
       'tools.html': ['Инструменты', 'Материалы'],
       'dashboard.html': ['Личный кабинет', 'Кабинет'],
@@ -2065,6 +2092,7 @@
       '<nav aria-label="Услуги">' +
         '<strong>Помощь</strong>' +
         '<a href="services.html">Все услуги</a>' +
+        '<a href="komissiya-0.html">Комиссия №0</a>' +
         '<a href="tariffs.html">Цены</a>' +
         '<a href="configurator.html">Описать задачу</a>' +
         '<a href="guarantees.html">Гарантии</a>' +

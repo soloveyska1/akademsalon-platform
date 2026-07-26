@@ -110,6 +110,9 @@
     'Курсовая с исследованием с нуля': { href: 'configurator.html', type: 'course_emp', tier: 'vip' },
     'ВКР или диплом с нуля': { href: 'configurator.html', type: 'diplom', tier: 'vip' },
     'Магистерская с нуля': { href: 'configurator.html', type: 'master', tier: 'vip' },
+    'Комиссия №0 · курсовая': { href: 'configurator.html?service=k0', commissionWork: 'course' },
+    'Комиссия №0 · ВКР': { href: 'configurator.html?service=k0', commissionWork: 'diplom' },
+    'Комиссия №0 · магистерская': { href: 'configurator.html?service=k0', commissionWork: 'master' },
     'Разбор темы и плана': { href: 'configurator.html?service=pl' },
     'Разбор замечаний руководителя': { href: 'configurator.html?service=rv' },
     'Курсовая работа': { href: 'configurator.html', type: 'course', tier: 'turn' },
@@ -145,6 +148,13 @@
         var key = button.getAttribute('data-start-priced');
         var route = pricedRoutes[key] || { href: 'configurator.html' };
         if (route.type) storeDraft(route.type, route.tier);
+        if (route.commissionWork) {
+          try {
+            sessionStorage.setItem('salon_commission_zero_handoff_v1', JSON.stringify({
+              version:1, work:route.commissionWork, source:'draft', topic:'', savedAt:Date.now()
+            }));
+          } catch (e) {}
+        }
         window.location.href = route.href;
       });
     });

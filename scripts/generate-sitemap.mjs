@@ -39,6 +39,7 @@ const pages = readdirSync(root)
 
 const preferred = [
   'https://akademsalon.ru/',
+  'https://akademsalon.ru/komissiya-0.html',
   'https://akademsalon.ru/configurator.html',
   'https://akademsalon.ru/tariffs.html',
   'https://akademsalon.ru/start.html',

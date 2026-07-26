@@ -106,7 +106,7 @@ test('home begins directly after the in-flow desktop header and mobile appbar of
 });
 
 test('production chrome switches to the approved mobile edition at 920px', () => {
-  assert.match(indexHtml, /mobile\.css\?v=20260726release28" media="screen and \(max-width:920px\)"/);
+  assert.match(indexHtml, /mobile\.css\?v=20260726release29" media="screen and \(max-width:920px\)"/);
   assert.match(mobileCss, /@media screen and \(max-width:920px\)/);
   assert.match(appJs, /link\.media = 'screen and \(max-width:920px\)'/);
   assert.match(appJs, /matchMedia\('\(max-width:920px\)'\)/);
