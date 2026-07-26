@@ -7,11 +7,11 @@
 <title>Конструктор услуг: аудит, редактура и консультации — Академический Салон</title>
 <meta name="description" content="Соберите заказ из одной или нескольких позиций. Для каждой видны результат, ориентир цены и детали; точные условия фиксируются в спецификации до оплаты." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260726release19" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release19" />
-<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release19" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260726release19" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260726release19" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260726release20" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release20" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release20" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260726release20" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260726release20" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -34,8 +34,8 @@
 <meta name="twitter:description" content="Четыре коротких шага: задача, направление, результат и заявка." />
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release19" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260726release19" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release20" media="screen and (max-width:920px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260726release20" />
 </head>
 <body class="configurator-task">
 
@@ -282,10 +282,10 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260726release19"></script>
-<script defer src="assets/js/polish15-chrome.js?v=20260726release19"></script>
-<script src="assets/js/extras.js?v=20260726release19"></script>
-<script src="assets/js/cart.js?v=20260726release19"></script>
+<script src="assets/js/app.js?v=20260726release20"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260726release20"></script>
+<script src="assets/js/extras.js?v=20260726release20"></script>
+<script src="assets/js/cart.js?v=20260726release20"></script>
 <script>
 function initConf() {
   'use strict';
@@ -1768,6 +1768,14 @@ function initConf() {
   function submit() {
     if (submitting) return;
     var authed = !!(S.api && S.api.token());
+    var activeCart = !isPlanService && window.SalonCart;
+    if (activeCart && activeCart.hasCheckoutIntent && activeCart.hasCheckoutIntent() &&
+        activeCart.hasItems && !activeCart.hasItems()) {
+      if (!activeCart.materializeCurrent || !activeCart.materializeCurrent({ silent:true })) return;
+    }
+    if (activeCart && activeCart.hasItems && activeCart.hasItems() && activeCart.syncCurrent) {
+      activeCart.syncCurrent({ quiet:true });
+    }
     var cartHasItems = !!(!isPlanService && window.SalonCart && window.SalonCart.hasItems());
     if (cartHasItems && window.SalonCart.validate && !window.SalonCart.validate()) return;
     if (!cartHasItems && !cartCurrentValid()) return;
@@ -2195,6 +2203,9 @@ function initConf() {
   /* --- комплексная корзина: сохраняет разные работы локально, а на сервер
      отправляет одно дело type=custom. Админка уже раскладывает его по строкам. --- */
   function cartCurrentItem() {
+    var sourceId = window.SalonConceptWizard && window.SalonConceptWizard.currentKey
+      ? window.SalonConceptWizard.currentKey()
+      : '';
     if (svc) {
       var answers = {};
       var answerLines = [];
@@ -2215,7 +2226,7 @@ function initConf() {
         allowQty:/час|страниц|единиц/i.test(svc.unit || ''), answers:answers, answerLines:answerLines,
         needs:needs,
         topic:topicIn ? topicIn.value.trim() : '', deadline:deadlineIn ? deadlineIn.value.trim() : '',
-        requirements:detailsIn ? detailsIn.value.trim() : '', note:''
+        requirements:detailsIn ? detailsIn.value.trim() : '', note:'', sourceId:sourceId
       };
     }
     var t = find(C.types, state.type);
@@ -2224,7 +2235,7 @@ function initConf() {
       kind:'work', type:state.type, label:t.label, disc:state.disc, term:state.term, tier:state.tier,
       low:q.low, high:q.high, fixed:false,
       topic:topicIn ? topicIn.value.trim() : '', deadline:deadlineIn ? deadlineIn.value.trim() : '',
-      requirements:detailsIn ? detailsIn.value.trim() : '', note:''
+      requirements:detailsIn ? detailsIn.value.trim() : '', note:'', sourceId:sourceId
     };
   }
   function cartCurrentValid() {
@@ -2394,6 +2405,7 @@ if (document.prerendering) {
     try {
       localStorage.setItem(STORE_KEY, JSON.stringify({
         step:state.step,
+        draftId:state.draftId,
         situation:state.situation,
         workType:state.workType,
         result:state.result,
@@ -2402,9 +2414,15 @@ if (document.prerendering) {
     } catch (e) {}
   }
 
+  function newDraftId() {
+    try { return crypto.randomUUID(); }
+    catch (e) { return 'draft_' + Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+  }
+
   var saved = readSaved();
   var state = {
     step:Math.max(0,Math.min(4,Number(saved.step) || 0)),
+    draftId:saved.draftId || newDraftId(),
     situation:saved.situation || '',
     workType:saved.workType || '',
     result:saved.result || '',
@@ -2527,6 +2545,12 @@ if (document.prerendering) {
     if (consent) consent.checked = !!state.consent;
   }
 
+  function syncStoredCurrent() {
+    if (window.SalonCart && window.SalonCart.syncCurrent) {
+      window.SalonCart.syncCurrent({ quiet:true });
+    }
+  }
+
   function fileNames() {
     var input = document.getElementById('fFiles');
     if (!input || !input.files) return [];
@@ -2627,7 +2651,8 @@ if (document.prerendering) {
 
   function canContinue() {
     if (state.step < 4) return !!currentSelection();
-    return !!(state.contact.trim() && state.consent);
+    var authed = !!(window.Salon && Salon.api && Salon.api.token && Salon.api.token());
+    return !!((authed || state.contact.trim()) && state.consent);
   }
 
   function render() {
@@ -2712,6 +2737,7 @@ if (document.prerendering) {
     state[steps[state.step].key] = value;
     saveSelections();
     syncLegacy();
+    syncStoredCurrent();
     render();
   }
 
@@ -2733,6 +2759,7 @@ if (document.prerendering) {
       return;
     }
     state.step = 0;
+    state.draftId = newDraftId();
     state.situation = '';
     state.workType = '';
     state.result = '';
@@ -2752,6 +2779,7 @@ if (document.prerendering) {
 
   function submit() {
     syncLegacy();
+    syncStoredCurrent();
     var submitButton = document.getElementById('btnSubmit');
     if (submitButton) submitButton.click();
   }
@@ -2776,6 +2804,7 @@ if (document.prerendering) {
       field.addEventListener('input',function () {
         state[field.getAttribute('data-concept-field')] = field.value;
         syncLegacy();
+        syncStoredCurrent();
         updateChrome();
         var footerNext = host.querySelector('[data-concept-next]');
         if (footerNext) footerNext.disabled = !canContinue();
@@ -2863,7 +2892,10 @@ if (document.prerendering) {
     }).observe(done,{attributes:true,attributeFilter:['hidden']});
   }
 
-  window.SalonConceptWizard = { startAnother:startAnother };
+  window.SalonConceptWizard = {
+    startAnother:startAnother,
+    currentKey:function () { return state.draftId; }
+  };
   render();
 })();
 </script>

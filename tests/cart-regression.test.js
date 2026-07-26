@@ -31,6 +31,18 @@ function makeHarness() {
     __SALON_CART_TEST__: true,
     SalonServices: [
       {
+        id: 'plan', code: 'pl', label: 'Разбор задачи и плана',
+        from: 3000, fixed: true,
+        priceFor(answers) {
+          return answers.work === 'master' || answers.work === 'candidate' ? 5000 : 3000;
+        },
+        ask: [
+          { id: 'work', label: 'Для какой работы?', short: 'Работа', type: 'chips', req: true,
+            opts: [{ value: 'course', label: 'Курсовая' }, { value: 'master', label: 'Магистерская' }] },
+          { id: 'req', label: 'Требования кафедры', short: 'Требования', type: 'textarea' }
+        ]
+      },
+      {
         id: 'defense', code: 'df', label: 'Презентация и речь к защите',
         from: 6000, ask: [
           { id: 'when', label: 'Когда защита?', short: 'Защита', req: true, ph: '20 июля' }
@@ -136,6 +148,52 @@ test('одна текущая позиция сразу даёт ориенти�
   assert.equal(totals.due, 30000);
 });
 
+test('materializeCurrent сохраняет единственную позицию и bonus intent в одном payload', () => {
+  const h = makeHarness();
+  const state = blank();
+  const current = Object.assign(work('draft', 'Диплом'), { sourceId: 'draft-1' });
+  h.api.reset(state, {
+    S: h.S,
+    member: { bonus: { balance: 9000 } },
+    api: { getCurrent: () => ({ ...current }), validateCurrent: () => true }
+  });
+
+  assert.equal(h.api.checkoutBenefits().bonusCap, 6000, 'лимит должен считаться от current preview');
+  h.api.setBonusChoice('1000', true);
+  assert.equal(h.api.state().checkout.useBonus, true);
+  assert.equal(h.api.state().checkout.bonusAmount, 1000);
+  assert.equal(h.api.materializeCurrent({ silent: true }), true);
+  const payload = h.api.payload();
+  assert.equal(payload.items.length, 1);
+  assert.deepEqual(
+    { use_bonus: payload.benefits_intent.use_bonus, bonus_amount: payload.benefits_intent.bonus_amount },
+    { use_bonus: true, bonus_amount: 1000 }
+  );
+});
+
+test('редактирование current с тем же sourceId обновляет строку без дубля', () => {
+  const h = makeHarness();
+  let current = Object.assign(work('draft', 'Диплом'), {
+    sourceId: 'draft-1', deadline: '1–2 недели', requirements: 'Первый комментарий'
+  });
+  h.api.reset(blank(), {
+    S: h.S,
+    api: { getCurrent: () => ({ ...current }), validateCurrent: () => true }
+  });
+
+  assert.equal(h.api.materializeCurrent({ silent: true }), true);
+  const stableId = h.api.state().items[0].id;
+  current = { ...current, deadline: '3–5 дней', requirements: 'Исправленный комментарий' };
+  assert.equal(h.api.syncCurrent({ quiet: true }), true);
+  assert.equal(h.api.materializeCurrent({ silent: true }), true);
+
+  const rows = h.api.state().items;
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].id, stableId);
+  assert.equal(rows[0].deadline, '3–5 дней');
+  assert.equal(rows[0].requirements, 'Исправленный комментарий');
+});
+
 test('валидация перед отправкой блокирует старую незаполненную допуслугу', () => {
   const h = makeHarness();
   h.api.reset(blank([
@@ -219,6 +277,76 @@ test('самостоятельная услуга добавляется без 
   assert.equal(h.api.payload().items[0].parent_client_id, '');
 });
 
+test('plan priceFor и optional answers одинаково работают при добавлении и редактировании standalone', () => {
+  const h = makeHarness();
+  h.api.reset(blank(), { S: h.S });
+
+  h.api.beginStandalone('plan');
+  assert.equal(h.api.pending().standalone, true, 'анкета с optional полями не должна автодобавляться');
+  h.api.setPendingAnswer('work', 'master');
+  h.api.setPendingAnswer('req', 'Три главы');
+  assert.equal(h.api.savePendingAddon(), true);
+
+  let service = h.api.state().items[0];
+  assert.equal(service.low, 5000);
+  assert.equal(service.high, 5000);
+  assert.equal(service.answers.req, 'Три главы');
+
+  h.api.beginAddon('plan', service.id);
+  assert.equal(h.api.pending().standalone, true);
+  h.api.setPendingAnswer('work', 'course');
+  h.api.setPendingAnswer('req', 'Две главы');
+  assert.equal(h.api.savePendingAddon(), true);
+
+  service = h.api.state().items[0];
+  assert.equal(service.low, 3000);
+  assert.equal(service.answers.req, 'Две главы');
+  assert.equal(h.api.state().items.length, 1);
+});
+
+test('benefit badge считает только реально совместимые выгоды, explicit zero не заменяется максимумом', () => {
+  const h = makeHarness();
+  const state = blank([work('w1', 'Диплом')]);
+  state.checkout = { useBonus: true, bonusAmount: 0 };
+  h.api.reset(state, {
+    S: h.S,
+    member: {
+      sub: { label: 'Салон+', discount_pct: 10, discount_cap: 7000 },
+      bonus: { balance: 9000 }
+    },
+    api: {
+      getDeals: () => ({
+        promoCode: 'SAVE20',
+        promoDeal: { pct: 20, cap: 5000, min_price: 5000 },
+        giftCode: 'AS-TEST', giftBal: 2000
+      })
+    }
+  });
+
+  let totals = h.api.benefitsFor();
+  assert.equal(totals.discount, 5000, 'promo и subscription должны конкурировать, а не складываться');
+  assert.equal(totals.bonus, 0, 'явно выбранный ноль не должен превращаться в максимум');
+  assert.equal(h.api.appliedBenefitCount(totals), 2, 'одна скидка + сертификат');
+
+  state.checkout.bonusAmount = 1000;
+  h.api.reset(state, {
+    S: h.S,
+    member: {
+      sub: { label: 'Салон+', discount_pct: 10, discount_cap: 7000 },
+      bonus: { balance: 9000 }
+    },
+    api: {
+      getDeals: () => ({
+        promoCode: 'SAVE20',
+        promoDeal: { pct: 20, cap: 5000, min_price: 5000 },
+        giftCode: 'AS-TEST', giftBal: 2000
+      })
+    }
+  });
+  totals = h.api.benefitsFor();
+  assert.equal(h.api.appliedBenefitCount(totals), 3, 'скидка + бонус + сертификат');
+});
+
 test('storage round-trip сохраняет состав, ответы и parentId без сетевых вызовов', () => {
   const h = makeHarness();
   const original = blank([
@@ -299,4 +427,19 @@ test('свежая корзина текущей версии по-прежне�
   h.api.read();
 
   assert.equal(h.api.state().items.length, 1);
+});
+
+test('смета не прячет тему и сворачивает необязательные способы выгоды', () => {
+  assert.match(
+    cartSource,
+    /class="theme-toggle cart-theme" aria-label="Сменить тему оформления"/
+  );
+  assert.match(
+    cartSource,
+    /<details class="cart-tools"' \+ \(shouldOpen \? ' open' : ''\)/
+  );
+  assert.match(cartSource, /class="cart-tools-toggle"/);
+  assert.match(cartSource, /class="cart-tools-body"/);
+  assert.match(cartSource, /if \(jump\.tagName === 'DETAILS'\) jump\.open = true/);
+  assert.doesNotMatch(cartSource, /<section class="cart-tools"/);
 });

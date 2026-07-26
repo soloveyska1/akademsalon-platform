@@ -73,6 +73,10 @@
     var svc = serviceById(serviceId);
     return svc && Array.isArray(svc.ask) ? svc.ask.filter(function (q) { return !!q.req; }) : [];
   }
+  function serviceQuestions(serviceId) {
+    var svc = serviceById(serviceId);
+    return svc && Array.isArray(svc.ask) ? svc.ask : [];
+  }
   function answerFor(item, q) {
     return String(item && item.answers && item.answers[q.id] || '').trim();
   }
@@ -145,7 +149,11 @@
       Math.floor(q.low * .20 / 50) * 50,
       Math.floor((q.low * .25 - discount) / 50) * 50
     ));
-    var bonus = data.checkout.useBonus ? Math.min(data.checkout.bonusAmount || bonusCap, bonusCap) : 0;
+    var requestedBonus = Number(data.checkout.bonusAmount);
+    if (!isFinite(requestedBonus)) requestedBonus = bonusCap;
+    var bonus = data.checkout.useBonus
+      ? Math.min(Math.max(0, requestedBonus), bonusCap)
+      : 0;
     var afterDiscount = Math.max(0, q.low - discount - bonus);
     var gift = d.giftCode ? Math.min(d.giftBal || 0, afterDiscount) : 0;
     var promoHigh = d.promoCode && d.promoDeal ? dealAmount(q.high, d.promoDeal) : 0;
@@ -160,6 +168,23 @@
       bonus:bonus, gift:gift, due:Math.max(0, afterDiscount - gift),
       dueHigh:Math.max(0, afterDiscountHigh - giftHigh)
     };
+  }
+  function checkoutBenefits() {
+    var q = quote();
+    if (!q.low && !q.high) {
+      var preview = currentPreview();
+      if (preview) q = preview.quote;
+    }
+    return benefits(q);
+  }
+  function setBonusChoice(value, quiet) {
+    var cap = checkoutBenefits().bonusCap;
+    data.checkout.useBonus = true;
+    data.checkout.bonusAmount = value === 'max'
+      ? cap
+      : Math.min(Math.max(0, parseInt(value, 10) || 0), cap);
+    if (quiet) persistQuietly();
+    else write();
   }
   function meta(x) {
     if (x.kind === 'service') {
@@ -231,8 +256,24 @@
       String(a.deadline || '') === String(b.deadline || '') &&
       String(a.requirements || '') === String(b.requirements || '');
   }
+  function sameSource(a, b) {
+    return !!(a && b && a.sourceId && b.sourceId && String(a.sourceId) === String(b.sourceId));
+  }
+  function sameWorkSelection(a, b) {
+    return !!(a && b && a.kind === 'work' && b.kind === 'work' &&
+      a.type === b.type && a.disc === b.disc && a.term === b.term && a.tier === b.tier);
+  }
+  function currentMatch(item) {
+    var exact = null, sourced = null, legacy = [];
+    data.items.forEach(function (x) {
+      if (!exact && equivalent(x, item)) exact = x;
+      if (!sourced && sameSource(x, item)) sourced = x;
+      if (sameWorkSelection(x, item) && (!x.sourceId || !item.sourceId)) legacy.push(x);
+    });
+    return sourced || exact || (legacy.length === 1 ? legacy[0] : null);
+  }
   function contains(item) {
-    return data.items.some(function (x) { return equivalent(x, item); });
+    return !!currentMatch(item);
   }
   function add(item, opts) {
     if (!item || !item.type) return false;
@@ -264,12 +305,58 @@
     if (!item || contains(item)) return false;
     return add(item, { silent:true });
   }
-  function addCurrent() {
-    if (!api || !api.getCurrent) return;
+  function updateCurrentItem(existing, current) {
+    var keep = {
+      id:existing.id, qty:existing.qty || 1, note:existing.note || '',
+      addedAt:existing.addedAt, parentId:existing.parentId || '',
+      isAddon:!!existing.isAddon
+    };
+    Object.keys(existing).forEach(function (key) { delete existing[key]; });
+    Object.keys(current).forEach(function (key) { existing[key] = current[key]; });
+    existing.id = keep.id;
+    existing.qty = keep.qty;
+    existing.note = keep.note;
+    existing.addedAt = keep.addedAt;
+    if (keep.parentId) existing.parentId = keep.parentId;
+    if (keep.isAddon) existing.isAddon = true;
+    syncNeeds(existing);
+    return existing;
+  }
+  function persistQuietly() {
+    data.updatedAt = Date.now();
+    if (S && S.store) S.store.set(KEY, data);
+  }
+  function syncCurrent(opts) {
+    opts = opts || {};
+    if (!api || !api.getCurrent) return false;
     var current = api.getCurrent();
-    if (contains(current)) { open(); return true; }
+    if (!current || !current.type) return false;
+    var existing = currentMatch(current);
+    if (!existing) return false;
+    updateCurrentItem(existing, current);
+    if (opts.quiet) persistQuietly();
+    else write();
+    return true;
+  }
+  function materializeCurrent(opts) {
+    opts = opts || {};
+    if (!api || !api.getCurrent) return false;
+    var current = api.getCurrent();
+    if (!current || !current.type) return false;
     if (api.validateCurrent && api.validateCurrent() === false) return false;
-    return add(current);
+    var existing = currentMatch(current);
+    if (existing) {
+      updateCurrentItem(existing, current);
+      if (opts.quiet) persistQuietly();
+      else write();
+      if (!opts.silent && S && S.toast) S.toast('Позиция в смете обновлена ✓');
+      if (!opts.silent) setTimeout(open, 90);
+      return true;
+    }
+    return add(current, { silent:!!opts.silent });
+  }
+  function addCurrent() {
+    return materializeCurrent({ silent:false });
   }
   function remove(id) {
     var at = -1;
@@ -313,6 +400,14 @@
       author:'svc_author_order'
     }[id] || 'custom';
   }
+  function servicePrice(svc, answers) {
+    var value = svc && svc.from || 0;
+    if (svc && typeof svc.priceFor === 'function') {
+      try { value = svc.priceFor(answers || {}); } catch (e) {}
+    }
+    value = Math.max(0, Number(value) || 0);
+    return value;
+  }
   function addonItem(svc, parentId, answers, existing) {
     answers = answers || {};
     var answerLines = [];
@@ -324,7 +419,8 @@
     item.kind = 'service'; item.type = serviceType(svc.id); item.serviceId = svc.id;
     item.serviceCode = svc.code; item.label = svc.label;
     item.serviceMeta = parentId ? 'связанная позиция' : 'самостоятельная услуга';
-    item.low = svc.from; item.high = svc.fixed ? svc.from : (svc.to || svc.from);
+    var price = servicePrice(svc, answers);
+    item.low = price; item.high = svc.fixed ? price : Math.max(price, svc.to || price);
     item.fixed = !!svc.fixed; item.allowQty = false; item.answers = answers;
     item.answerLines = answerLines; item.topic = item.topic || ''; item.deadline = item.deadline || '';
     item.requirements = item.requirements || ''; item.note = item.note || '';
@@ -339,8 +435,8 @@
       return;
     }
     servicePicker = false;
-    var required = requiredQuestions(svc.id);
-    if (!required.length) {
+    var questions = serviceQuestions(svc.id);
+    if (!questions.length) {
       add(addonItem(svc, '', {}));
       return;
     }
@@ -382,8 +478,8 @@
       return;
     }
     var parentId = editing && workById(editing.parentId) ? editing.parentId : available[0].id;
-    var required = requiredQuestions(svc.id);
-    if (works.length === 1 && !required.length && !editing) {
+    var questions = serviceQuestions(svc.id);
+    if (works.length === 1 && !questions.length && !editing) {
       add(addonItem(svc, parentId, {}));
       return;
     }
@@ -426,13 +522,7 @@
       });
       if (!editing) return false;
       if (pendingAddon.standalone) {
-        editing.answers = pendingAddon.answers;
-        editing.answerLines = [];
-        (svc.ask || []).forEach(function (q) {
-          var answer = String(pendingAddon.answers[q.id] || '').trim();
-          if (answer) editing.answerLines.push((q.short || q.label) + ': ' + answer);
-        });
-        syncNeeds(editing);
+        addonItem(svc, '', pendingAddon.answers, editing);
       } else {
         addonItem(svc, parent.id, pendingAddon.answers, editing);
       }
@@ -488,7 +578,7 @@
         '<button type="button" data-cart-qty="1" aria-label="Увеличить количество «' + esc(x.label) + '»"' +
         ((x.qty || 1) >= 10 ? ' disabled' : '') + '>+</button></div>' :
         '<span class="cart-one">1 позиция</span>') +
-      (x.kind === 'service' && x.isAddon
+      (x.kind === 'service'
         ? '<button type="button" class="cart-complete' + (x.needs ? ' needs' : '') +
           '" data-cart-edit-addon="' + esc(x.id) + '">' +
           (x.needs ? 'Дополнить сведения' : 'Изменить сведения') + '</button>' : '') +
@@ -548,9 +638,22 @@
   function benefitToolsHtml(b) {
     var promoOn = !!b.deal.promoCode;
     var giftOn = !!b.deal.giftCode;
-    var out = '<section class="cart-tools" id="cartBenefits" aria-labelledby="cartToolsTitle">' +
-      '<div class="cart-section-head"><span class="cart-section-no">02</span><div><h3 id="cartToolsTitle">Выгода</h3>' +
-      '<p>Промокод, сертификат и бонусы применяются здесь</p></div></div>';
+    var bonusOn = !!(data.checkout.useBonus && b.bonus);
+    var benefitCount = appliedBenefitCount(b);
+    /* Автоматический Салон+ уже отражён в итогах и не должен сам раскрывать
+       всю форму промокода/сертификата. Открываем её только после выбора
+       клиента или когда нужно показать ответ проверки кода. */
+    var shouldOpen = promoOn || giftOn || bonusOn || !!benefitMessage.promo || !!benefitMessage.gift;
+    var benefitStatus = benefitCount
+      ? benefitCount + ' ' + (benefitCount === 1 ? 'выгода учтена' : 'выгоды учтены')
+      : 'по желанию';
+    var out = '<details class="cart-tools"' + (shouldOpen ? ' open' : '') +
+      ' id="cartBenefits"><summary class="cart-tools-toggle"><span class="cart-section-no">02</span>' +
+      '<span class="cart-tools-toggle__copy"><b>Скидки и бонусы</b>' +
+      '<small>Промокод, сертификат и баланс — если они есть</small></span>' +
+      '<span class="cart-tools-toggle__status">' + benefitStatus + '</span>' +
+      '<span class="cart-tools-toggle__chevron" aria-hidden="true">+</span></summary>' +
+      '<div class="cart-tools-body">';
     out += '<div class="cart-tool' + (promoOn ? ' applied' : '') + '"><div class="cart-tool-copy">' +
       '<b>Промокод</b><small>' + (promoOn ? esc(b.deal.promoCode) + ' · ' +
         esc(b.deal.promoLabel || 'применён') : 'Скидка на предварительный ориентир') + '</small></div>' +
@@ -591,7 +694,12 @@
         esc(b.sub.label || 'Салон+') + '</b><small>Применяется автоматически, если это выгоднее промокода</small></div>' +
         '<span class="cart-tool-value">−' + money(b.subSave) + ' ₽</span></div>';
     }
-    return out + '</section>';
+    return out + '</div></details>';
+  }
+  function appliedBenefitCount(b) {
+    return (b && b.discount ? 1 : 0) +
+      (b && b.gift ? 1 : 0) +
+      (b && b.bonus ? 1 : 0);
   }
   function addonsHtml() {
     var works = data.items.filter(function (x) { return x.kind === 'work'; });
@@ -639,11 +747,32 @@
       return '<option value="' + esc(x.id) + '"' +
         (x.id === pendingAddon.parentId ? ' selected' : '') + '>' + esc(x.label) + '</option>';
     }).join('');
-    var questions = requiredQuestions(svc.id).map(function (q) {
+    var questions = serviceQuestions(svc.id).map(function (q) {
       var value = String(pendingAddon.answers[q.id] || '');
-      return '<label class="cart-addon-field"><span>' + esc(q.label) + ' <b>обязательно</b></span>' +
-        '<input type="text" maxlength="160" data-cart-addon-answer="' + esc(q.id) +
-        '" value="' + esc(value) + '" placeholder="' + esc(q.ph || 'Уточните для мастера') + '"></label>';
+      var required = q.req ? ' required' : '';
+      var requirement = q.req ? '<b>обязательно</b>' : '<small>необязательно</small>';
+      var control = '';
+      if (q.type === 'chips' && Array.isArray(q.opts)) {
+        var optionRows = q.opts.map(function (opt) {
+          var optionValue = typeof opt === 'object' ? opt.value : opt;
+          var optionLabel = typeof opt === 'object' ? opt.label : opt;
+          return '<option value="' + esc(optionValue) + '"' +
+            (String(optionValue) === value ? ' selected' : '') + '>' + esc(optionLabel) + '</option>';
+        }).join('');
+        control = '<select data-cart-addon-answer="' + esc(q.id) + '"' + required + '>' +
+          '<option value="">' + (q.req ? 'Выберите вариант' : 'Не выбрано') + '</option>' +
+          optionRows + '</select>';
+      } else if (q.type === 'textarea') {
+        control = '<textarea rows="3" maxlength="600" data-cart-addon-answer="' + esc(q.id) +
+          '" placeholder="' + esc(q.ph || 'Уточните для мастера') + '"' + required + '>' +
+          esc(value) + '</textarea>';
+      } else {
+        control = '<input type="text" maxlength="160" data-cart-addon-answer="' + esc(q.id) +
+          '" value="' + esc(value) + '" placeholder="' + esc(q.ph || 'Уточните для мастера') + '"' +
+          required + '>';
+      }
+      return '<label class="cart-addon-field"><span>' + esc(q.label) + ' ' + requirement + '</span>' +
+        control + '</label>';
     }).join('');
     return '<section class="cart-addon-compose" id="cartAddonCompose" aria-labelledby="cartAddonTitle">' +
       '<div class="cart-section-head compact"><span class="cart-section-no">+</span><div><h3 id="cartAddonTitle">' +
@@ -798,7 +927,11 @@
       '<span class="cart-handle" aria-hidden="true"></span>' +
       '<header class="cart-head"><div><span class="cart-folio">Смета заказа</span><h2 id="cartTitle">Состав и ориентир</h2>' +
       '<p id="cartIntro">Можно отправить одну позицию или собрать несколько результатов в одной спецификации</p></div>' +
-      '<button type="button" class="cart-close" data-cart-close aria-label="Закрыть">×</button></header>' +
+      '<div class="cart-head-actions"><button type="button" class="theme-toggle cart-theme" aria-label="Сменить тему оформления">' +
+      '<span aria-hidden="true" class="ico-theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" focusable="false">' +
+      '<circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7"/>' +
+      '<path d="M12 3.6a8.4 8.4 0 0 0 0 16.8z" fill="currentColor"/></svg></span></button>' +
+      '<button type="button" class="cart-close" data-cart-close aria-label="Закрыть">×</button></div></header>' +
       '<div class="cart-body"></div><footer class="cart-foot"></footer></aside>';
     document.body.appendChild(box);
     body = box.querySelector('.cart-body');
@@ -845,7 +978,7 @@
     if (t.closest('[data-cart-close]')) { close(); return; }
     if (t.closest('[data-cart-add-current]')) { addCurrent(); return; }
     if (t.closest('[data-cart-current-checkout]')) {
-      if (api && api.validateCurrent && api.validateCurrent() === false) return;
+      if (!materializeCurrent({ silent:true })) return;
       close(); if (api && api.checkout) api.checkout(); return;
     }
     if (t.closest('[data-cart-remove]')) { remove(t.closest('[data-cart-remove]').getAttribute('data-cart-remove')); return; }
@@ -888,10 +1021,13 @@
     }
     if (t.closest('[data-cart-jump]')) {
       var jump = box.querySelector('#' + t.closest('[data-cart-jump]').getAttribute('data-cart-jump'));
-      if (jump && jump.scrollIntoView) jump.scrollIntoView({
-        block:'start',
-        behavior:S && S.reduceMotion ? 'auto' : 'smooth'
-      });
+      if (jump && jump.scrollIntoView) {
+        if (jump.tagName === 'DETAILS') jump.open = true;
+        jump.scrollIntoView({
+          block:'start',
+          behavior:S && S.reduceMotion ? 'auto' : 'smooth'
+        });
+      }
       return;
     }
     if (t.closest('[data-cart-promo-apply]')) {
@@ -926,10 +1062,7 @@
     }
     if (t.closest('[data-cart-bonus]')) {
       var raw = t.closest('[data-cart-bonus]').getAttribute('data-cart-bonus');
-      var cap = benefits().bonusCap;
-      data.checkout.useBonus = true;
-      data.checkout.bonusAmount = raw === 'max' ? cap : Math.min(parseInt(raw, 10) || 0, cap);
-      write(); return;
+      setBonusChoice(raw); return;
     }
     if (t.closest('[data-cart-clear]')) {
       var go = function () { clear(); };
@@ -947,7 +1080,8 @@
     if (t.hasAttribute('data-cart-note')) { setNote(t.getAttribute('data-cart-note'), t.value); return; }
     if (t.id === 'cartBonus') {
       data.checkout.useBonus = !!t.checked;
-      var b = benefits(); data.checkout.bonusAmount = b.bonusCap; write(); return;
+      data.checkout.bonusAmount = data.checkout.useBonus ? checkoutBenefits().bonusCap : 0;
+      write(); return;
     }
     if (t.id === 'cartBonusRange') {
       data.checkout.bonusAmount = parseInt(t.value, 10) || 0;
@@ -957,6 +1091,10 @@
     }
   }
   function change(e) {
+    if (pendingAddon && e.target && e.target.hasAttribute('data-cart-addon-answer')) {
+      pendingAddon.answers[e.target.getAttribute('data-cart-addon-answer')] = e.target.value;
+      return;
+    }
     if (pendingAddon && e.target && e.target.hasAttribute('data-cart-addon-parent')) {
       pendingAddon.parentId = e.target.value;
       return;
@@ -977,7 +1115,7 @@
     }
     if (e.key !== 'Tab') return;
     var f = Array.prototype.slice.call(box.querySelectorAll(
-      'button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled])'
+      'button:not([disabled]),a[href],summary,input:not([disabled]),select:not([disabled]),textarea:not([disabled])'
     ))
       .filter(function (x) { return x.offsetParent !== null; });
     if (!f.length) return;
@@ -1130,9 +1268,11 @@
     init:init, open:open, add:add, clear:clear, count:count, lineCount:lineCount, hasItems:function(){ return !!data.items.length; },
     items:function(){ return data.items.slice(); }, first:first, quote:quote, benefits:benefits,
     summary:summary, payload:payload, snapshot:snapshot, contains:contains, ensure:ensure,
+    syncCurrent:syncCurrent, materializeCurrent:materializeCurrent,
     currentItem:function(){ return api && api.getCurrent ? api.getCurrent() : null; },
     setVisible:setVisible, refresh:notify, positionLabel:positionLabel, validate:validate,
-    bonusIntent:function(){ return data.checkout.useBonus ? benefits().bonus : 0; }
+    bonusIntent:function(){ return data.checkout.useBonus ? benefits().bonus : 0; },
+    hasCheckoutIntent:function(){ return !!data.checkout.useBonus; }
   };
   /* Изолированный Node-harness включает этот адаптер флагом до загрузки файла.
      В обычном браузере дополнительного публичного API нет. */
@@ -1144,14 +1284,17 @@
         data.checkout = data.checkout || { useBonus:false, bonusAmount:0 };
         S = opts.S || S;
         api = opts.api || {};
+        member = opts.member === undefined ? null : opts.member;
         box = tab = dock = body = foot = null;
         pendingAddon = null; servicePicker = false;
         data.items.forEach(syncNeeds);
       },
       state:function() { return JSON.parse(JSON.stringify(data)); },
       read:read, write:write, payload:payload, validate:validate,
-      addCurrent:addCurrent, equivalent:equivalent, addonItem:addonItem,
-      currentPreview:currentPreview, benefitsFor:benefits,
+      addCurrent:addCurrent, syncCurrent:syncCurrent, materializeCurrent:materializeCurrent,
+      equivalent:equivalent, addonItem:addonItem,
+      currentPreview:currentPreview, benefitsFor:benefits, checkoutBenefits:checkoutBenefits,
+      setBonusChoice:setBonusChoice, appliedBenefitCount:appliedBenefitCount,
       beginAddon:beginAddon, beginStandalone:beginStandalone, savePendingAddon:savePendingAddon,
       pending:function() { return pendingAddon ? JSON.parse(JSON.stringify(pendingAddon)) : null; },
       setPendingParent:function(id) { if (pendingAddon) pendingAddon.parentId = id; },

@@ -1774,6 +1774,18 @@ html.service-plan .configurator-task .tx-wizard-sidebar .wprog{display:grid!impo
 .configurator-task .concept-success dd{margin:4px 0 0;color:var(--ink);font-size:12px}
 .configurator-task .concept-success__actions{display:flex;gap:8px;margin-top:24px}
 
+/* Canonical tablet step between the desktop rail and the mobile edition:
+   preserve a readable contact form beside the 280px summary at 1024px. */
+@media(min-width:921px) and (max-width:1040px){
+  .configurator-task .concept-wizard-host{
+    padding-right:48px;
+    padding-left:48px;
+  }
+  .configurator-task .decision-grid--compact{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
 @media(max-width:920px){
   .configurator-task{padding-bottom:calc(106px + env(safe-area-inset-bottom))!important}
   .tx-wizard{display:block}
@@ -1904,6 +1916,14 @@ html.service-plan .configurator-task .tx-wizard-sidebar .wprog{display:grid!impo
   .configurator-task .concept-success{padding:26px 20px}
   .configurator-task .concept-success dl{grid-template-columns:1fr}
   .configurator-task .concept-success__actions{align-items:stretch;flex-direction:column}
+}
+
+@media(max-width:390px){
+  .concept-task-bar>div{display:none}
+  .concept-task-bar>.btn{
+    width:auto;
+    flex:1 1 auto;
+  }
 }
 
 @media(prefers-reduced-motion:reduce){

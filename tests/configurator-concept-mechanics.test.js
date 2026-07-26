@@ -30,12 +30,28 @@ test('approved wizard facade exposes the live quote and first cart action', () =
 
 test('multi-position flow returns to the visible concept wizard and keeps cart totals authoritative', () => {
   assert.match(html, /window\.SalonConceptWizard\.startAnother\(kind\)/);
-  assert.match(html, /window\.SalonConceptWizard = \{ startAnother:startAnother \}/);
+  assert.match(html, /window\.SalonConceptWizard = \{[\s\S]*?startAnother:startAnother,[\s\S]*?currentKey:function/);
   assert.match(html, /quote = cartHasItems && window\.SalonCart\.quote/);
   assert.match(html, /window\.SalonCart\.contains\(window\.SalonCart\.currentItem\(\)\)/);
   assert.match(html, /Текущий выбор пока не входит в состав/);
   assert.match(html, /document\.addEventListener\('salon:cart'/);
   assert.match(html, /if \(state\.step === 4\) render\(\)/);
+});
+
+test('concept draft updates the saved cart row in place and current-only benefits are materialized', () => {
+  assert.match(html, /draftId:saved\.draftId \|\| newDraftId\(\)/);
+  assert.match(html, /sourceId:sourceId/);
+  assert.match(html, /window\.SalonCart\.syncCurrent\(\{ quiet:true \}\)/);
+  assert.match(html, /activeCart\.hasCheckoutIntent\(\)/);
+  assert.match(html, /activeCart\.materializeCurrent\(\{ silent:true \}\)/);
+});
+
+test('authenticated customer can continue without retyping an already connected contact', () => {
+  assert.match(
+    html,
+    /var authed = !!\(window\.Salon && Salon\.api && Salon\.api\.token && Salon\.api\.token\(\)\);/
+  );
+  assert.match(html, /return !!\(\(authed \|\| state\.contact\.trim\(\)\) && state\.consent\);/);
 });
 
 test('universal contact field serializes obvious email, phone and messenger formats correctly', () => {
@@ -50,6 +66,29 @@ test('mobile cart access cannot be covered by the contextual task bar', () => {
   assert.match(css, /\.configurator-task>\.cart-tab\{display:none!important\}/);
   assert.match(css, /\.configurator-task \.cart-drawer\{\s*display:block;/);
   assert.match(css, /overflow-y:auto;/);
+  assert.match(
+    css,
+    /@media\(max-width:390px\)\{\s*\.concept-task-bar>div\{display:none\}/
+  );
+  assert.match(
+    css,
+    /\.concept-task-bar>\.btn\{\s*width:auto;\s*flex:1 1 auto;/
+  );
+});
+
+test('1024px keeps the canonical two-column choices and readable contact width', () => {
+  assert.match(
+    css,
+    /@media\(min-width:921px\) and \(max-width:1040px\)\{/
+  );
+  assert.match(
+    css,
+    /\.configurator-task \.concept-wizard-host\{\s*padding-right:48px;\s*padding-left:48px;/
+  );
+  assert.match(
+    css,
+    /\.configurator-task \.decision-grid--compact\{\s*grid-template-columns:repeat\(2,minmax\(0,1fr\)\);/
+  );
 });
 
 test('home begins directly after the in-flow desktop header and mobile appbar offset', () => {
@@ -59,7 +98,7 @@ test('home begins directly after the in-flow desktop header and mobile appbar of
 });
 
 test('production chrome switches to the approved mobile edition at 920px', () => {
-  assert.match(indexHtml, /mobile\.css\?v=20260726release19" media="screen and \(max-width:920px\)"/);
+  assert.match(indexHtml, /mobile\.css\?v=20260726release20" media="screen and \(max-width:920px\)"/);
   assert.match(mobileCss, /@media screen and \(max-width:920px\)/);
   assert.match(appJs, /link\.media = 'screen and \(max-width:920px\)'/);
   assert.match(appJs, /matchMedia\('\(max-width:920px\)'\)/);

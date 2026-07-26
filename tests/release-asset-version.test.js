@@ -4,8 +4,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
-const releaseKey = '20260726release19';
+const releaseKey = '20260726release20';
 const changedAssets = new Set([
+  'assets/css/cart.css',
   'assets/css/chrome.css',
   'assets/css/polish15-chrome.css',
   'assets/css/styles.css',
@@ -54,5 +55,5 @@ test('every changed public asset uses the release cache key', () => {
   assert.ok(references > 100, `expected broad cache coverage, found ${references} references`);
 
   const app = fs.readFileSync(path.join(root, 'assets/js/app.js'), 'utf8');
-  assert.doesNotMatch(app, /mobile\.css\?v=(?!20260726release19)/);
+  assert.doesNotMatch(app, /mobile\.css\?v=(?!20260726release20)/);
 });
