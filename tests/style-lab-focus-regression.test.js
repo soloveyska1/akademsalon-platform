@@ -7,6 +7,7 @@ const root = path.join(__dirname, '..');
 const css = fs.readFileSync(path.join(root, 'style-lab/full/style.css'), 'utf8');
 const app = fs.readFileSync(path.join(root, 'style-lab/full/app.js'), 'utf8');
 const productionCss = fs.readFileSync(path.join(root, 'assets/css/chrome.css'), 'utf8');
+const productionAdminCss = fs.readFileSync(path.join(root, 'assets/css/polish15-admin.css'), 'utf8');
 const productionApp = fs.readFileSync(path.join(root, 'assets/js/app.js'), 'utf8');
 
 test('skip link is revealed only by keyboard navigation', () => {
@@ -55,5 +56,13 @@ test('production chrome uses the same keyboard-only focus contract', () => {
   assert.match(
     productionCss,
     /html\[data-input-modality="keyboard"\] \.site-header \.brand:focus-visible \.brand__mark\{/,
+  );
+  assert.match(
+    productionAdminCss,
+    /\.is-admin-route \.admin-sidebar__brand:focus-visible\s*\{\s*outline:\s*none;\s*box-shadow:\s*none;/,
+  );
+  assert.match(
+    productionAdminCss,
+    /html\[data-input-modality="keyboard"\] \.is-admin-route \.admin-sidebar__brand:focus-visible img\s*\{/,
   );
 });

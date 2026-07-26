@@ -1483,6 +1483,25 @@
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--ad-wax) 14%, transparent);
 }
 
+/* Бренд — исключение из общего прямоугольного фокуса админки.
+   Для Tab оставляем локальный круг на печати и подчёркивание названия. */
+.is-admin-route .admin-sidebar__brand:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus-visible img {
+  outline: 2px solid var(--ad-wax);
+  outline-offset: 3px;
+}
+
+html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus-visible strong {
+  text-decoration: underline;
+  text-decoration-color: var(--ad-wax);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
 .is-admin-route :is(.btn-wax, .button--primary) {
   transition: transform .18s ease, background-color .18s ease, border-color .18s ease;
 }
