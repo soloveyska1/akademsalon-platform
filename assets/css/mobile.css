@@ -1937,12 +1937,33 @@
   :root.has-consent-bar .lrail{
     bottom:max(8px,env(safe-area-inset-bottom));
   }
+  :root.has-consent-bar body .lrail .cookiebar{
+    padding:14px 16px;
+  }
+  :root.has-consent-bar .lrail .cookiebar .cb-head{
+    margin-bottom:8px;
+  }
   /* Решение о данных должно читаться целиком: двухстрочный clamp обрывал
      фразу до объяснения, что отказ не мешает оформлению заявки. */
   :root.has-consent-bar .lrail .cookiebar>p{
     display:block;
     overflow:visible;
     -webkit-line-clamp:unset;
+    margin-bottom:12px;
+    font-size:13.5px;
+    line-height:1.48;
+  }
+  :root.has-consent-bar .lrail .cookiebar .cb-actions{
+    gap:8px;
+  }
+  :root.has-consent-bar .lrail .cookiebar .cb-actions .btn{
+    min-height:50px;
+    padding:8px 10px;
+  }
+  :root.has-consent-bar .lrail .cookiebar .cb-foot{
+    gap:8px 10px;
+    margin-top:10px;
+    padding-top:9px;
   }
   .mobile-dock.mobile-cta>.mobile-dock__primary{
     margin-top:-23px;

@@ -121,6 +121,10 @@ test('mobile consent replaces the dock without keeping its empty floor', () => {
   );
   assert.match(
     mobileCss,
-    /:root\.has-consent-bar \.lrail \.cookiebar>p\{[\s\S]*?display:block;[\s\S]*?-webkit-line-clamp:unset;/,
+    /:root\.has-consent-bar \.lrail \.cookiebar>p\{[\s\S]*?display:block;[\s\S]*?-webkit-line-clamp:unset;[\s\S]*?font-size:13\.5px;/,
+  );
+  assert.match(
+    mobileCss,
+    /:root\.has-consent-bar \.lrail \.cookiebar \.cb-actions \.btn\{\s*min-height:50px;/,
   );
 });
