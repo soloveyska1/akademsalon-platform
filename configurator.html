@@ -7,11 +7,11 @@
 <title>Конструктор услуг: аудит, редактура и консультации — Академический Салон</title>
 <meta name="description" content="Соберите заказ из одной или нескольких позиций. Для каждой видны результат, ориентир цены и детали; точные условия фиксируются в спецификации до оплаты." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260725release16" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260725release16" />
-<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260725release16" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260725release16" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260724b" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260726release17" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release17" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release17" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260726release17" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260726release17" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -34,8 +34,8 @@
 <meta name="twitter:description" content="Четыре коротких шага: задача, направление, результат и заявка." />
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="assets/css/mobile.css?v=20260725release16" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260725release16" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release17" media="screen and (max-width:920px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260726release17" />
 </head>
 <body class="configurator-task">
 
@@ -282,10 +282,10 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260725release16"></script>
-<script defer src="assets/js/polish15-chrome.js?v=20260725release16"></script>
-<script src="assets/js/extras.js?v=20260725release16"></script>
-<script src="assets/js/cart.js?v=20260725release16"></script>
+<script src="assets/js/app.js?v=20260726release17"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260726release17"></script>
+<script src="assets/js/extras.js?v=20260726release17"></script>
+<script src="assets/js/cart.js?v=20260726release17"></script>
 <script>
 function initConf() {
   'use strict';
@@ -1230,11 +1230,27 @@ function initConf() {
     });
   })();
   var CT_TAG = { tg: 'Telegram', vk: 'ВК', wa: 'WhatsApp', ph: 'Телефон', em: 'Почта' };
+  function contactKind(value) {
+    var v = String(value || '').trim();
+    var low = v.toLowerCase();
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return 'em';
+    if (/(?:^|\/\/)(?:www\.)?vk\.com\/|(?:^|\/\/)vk\.me\//i.test(v)) return 'vk';
+    if (/(?:^|\/\/)(?:www\.)?(?:wa\.me|whatsapp\.com)\//i.test(v)) return 'wa';
+    if (/^(?:@[\w.]{3,}|https?:\/\/(?:www\.)?t\.me\/[\w.]{3,})$/i.test(v)) return 'tg';
+    var digits = v.replace(/\D/g, '');
+    if (digits.length >= 10 && /^[+\d][\d\s().-]+$/.test(v)) {
+      return ctKind === 'wa' ? 'wa' : 'ph';
+    }
+    return CT_TAG[ctKind] ? ctKind : 'tg';
+  }
   function contactValue() {
     var v = $('fContact') ? $('fContact').value.trim() : '';
     if (!v) return '';
-    /* канал — в заявку: мастер сразу видит, где искать лида */
-    return CT_TAG[ctKind] ? CT_TAG[ctKind] + ': ' + v : v;
+    /* В новой форме одно универсальное поле. Явные форматы распознаём
+       перед сериализацией, чтобы email/телефон не получали ложную метку
+       Telegram; для неоднозначной строки сохраняем выбранный канал. */
+    var kind = contactKind(v);
+    return CT_TAG[kind] ? CT_TAG[kind] + ': ' + v : v;
   }
 
   /* --- контакт-блок: Telegram-вход или контакт вручную --- */
@@ -2255,6 +2271,10 @@ function initConf() {
       another:function (kind) {
         kind = kind === 'service' ? 'service' : 'work';
         if (svc) { location.href = 'configurator.html?compose=' + kind; return; }
+        if (window.SalonConceptWizard && window.SalonConceptWizard.startAnother) {
+          window.SalonConceptWizard.startAnother(kind);
+          return;
+        }
         if (topicIn) topicIn.value = '';
         if (deadlineIn) deadlineIn.value = '';
         if (detailsIn) detailsIn.value = '';
@@ -2518,8 +2538,14 @@ if (document.prerendering) {
     var authed = document.getElementById('ctAuthed');
     var loggedIn = authed && !authed.hidden;
     var quote = null;
+    var cartHasItems = !!(window.SalonCart && window.SalonCart.hasItems && window.SalonCart.hasItems());
+    var currentIncluded = true;
     try {
-      quote = window.SalonConfiguratorPreview ? window.SalonConfiguratorPreview() : null;
+      quote = cartHasItems && window.SalonCart.quote
+        ? window.SalonCart.quote()
+        : (window.SalonConfiguratorPreview ? window.SalonConfiguratorPreview() : null);
+      currentIncluded = !cartHasItems || !window.SalonCart.contains || !window.SalonCart.currentItem ||
+        window.SalonCart.contains(window.SalonCart.currentItem());
     } catch (e) {}
     function money(value) {
       return Math.max(0,Math.round(Number(value) || 0)).toLocaleString('ru-RU') + ' ₽';
@@ -2530,7 +2556,17 @@ if (document.prerendering) {
         ? money(quote.low)
         : 'от ' + money(quote.low) + (quote.high && quote.high > quote.low ? ' до ' + money(quote.high) : '');
     }
-    var cartHasItems = !!(window.SalonCart && window.SalonCart.hasItems && window.SalonCart.hasItems());
+    var cartCount = cartHasItems && window.SalonCart.lineCount ? window.SalonCart.lineCount() : 0;
+    var summaryTitle = cartHasItems
+      ? 'Смета заказа · ' + cartCount + ' ' + (cartCount === 1 ? 'позиция' : (cartCount < 5 ? 'позиции' : 'позиций'))
+      : (state.workType || 'Задача не выбрана');
+    var summaryRows = cartHasItems
+      ? '<div><dt>Состав</dt><dd>' + safeText(window.SalonCart.items().map(function (item) { return item.label; }).join(' · ')) + '</dd></div>' +
+        '<div><dt>Позиций</dt><dd>' + cartCount + '</dd></div>' +
+        '<div><dt>Статус</dt><dd>предварительная спецификация</dd></div>'
+      : '<div><dt>Ситуация</dt><dd>' + safeText({topic:'Есть тема или задание',draft:'Есть черновик',comments:'Получены замечания',defense:'Скоро сдача'}[state.situation] || '—') + '</dd></div>' +
+        '<div><dt>Первый результат</dt><dd>' + safeText(state.result || '—') + '</dd></div>' +
+        '<div><dt>Срок</dt><dd>' + safeText(state.deadline || '—') + '</dd></div>';
     return (
       '<div class="contact-step">' +
         '<div class="contact-step__form">' +
@@ -2557,17 +2593,18 @@ if (document.prerendering) {
         '</div>' +
         '<aside class="wizard-summary">' +
           '<p class="eyebrow">Предварительно</p>' +
-          '<h2>' + safeText(state.workType || 'Задача не выбрана') + '</h2>' +
+          '<h2>' + safeText(summaryTitle) + '</h2>' +
           '<dl>' +
-            '<div><dt>Ситуация</dt><dd>' + safeText({topic:'Есть тема или задание',draft:'Есть черновик',comments:'Получены замечания',defense:'Скоро сдача'}[state.situation] || '—') + '</dd></div>' +
-            '<div><dt>Первый результат</dt><dd>' + safeText(state.result || '—') + '</dd></div>' +
-            '<div><dt>Срок</dt><dd>' + safeText(state.deadline || '—') + '</dd></div>' +
+            summaryRows +
             '<div><dt>Ориентир стоимости</dt><dd>' + safeText(priceText) + '</dd></div>' +
           '</dl>' +
           '<p>Точную стоимость редактор зафиксирует после просмотра материалов.</p>' +
-          (cartHasItems
-            ? '<button class="line-link concept-cart-link" type="button" data-cart-open>Открыть состав сметы <span aria-hidden="true">→</span></button>'
-            : '<button class="line-link concept-cart-link" type="button" data-cart-add>Добавить позицию в смету <span aria-hidden="true">→</span></button>') +
+          (!currentIncluded
+            ? '<div class="wizard-summary__notice">Текущий выбор пока не входит в состав. Откройте смету и добавьте его отдельной строкой, если он нужен в заказе.</div>'
+            : '') +
+          '<button class="line-link concept-cart-link" type="button" data-cart-open>' +
+            (cartHasItems ? 'Открыть состав сметы' : 'Открыть смету заказа') +
+            ' <span aria-hidden="true">→</span></button>' +
         '</aside>' +
       '</div>'
     );
@@ -2690,6 +2727,29 @@ if (document.prerendering) {
     }
   }
 
+  function startAnother(kind) {
+    if (kind === 'service') {
+      if (window.SalonCart && window.SalonCart.open) window.SalonCart.open();
+      return;
+    }
+    state.step = 0;
+    state.situation = '';
+    state.workType = '';
+    state.result = '';
+    state.deadline = '';
+    state.comment = '';
+    saveSelections();
+    syncLegacy();
+    render();
+    try { window.scrollTo({top:0,behavior:window.Salon && Salon.reduceMotion ? 'auto' : 'smooth'}); }
+    catch (e) { window.scrollTo(0,0); }
+    var title = host.querySelector('h1');
+    if (title) {
+      title.setAttribute('tabindex','-1');
+      title.focus({preventScroll:true});
+    }
+  }
+
   function submit() {
     syncLegacy();
     var submitButton = document.getElementById('btnSubmit');
@@ -2766,6 +2826,12 @@ if (document.prerendering) {
 
   var filesInput = document.getElementById('fFiles');
   if (filesInput) filesInput.addEventListener('change',function () { setTimeout(render,0); });
+  /* Смета живёт в отдельном runtime и может меняться, пока пятый шаг уже
+     отрисован. Перерисовываем только итоговый экран: число позиций, состав
+     и ориентир за его пределами всегда должны совпадать с drawer/payload. */
+  document.addEventListener('salon:cart',function () {
+    if (state.step === 4) render();
+  });
   var authed = document.getElementById('ctAuthed');
   if (authed && window.MutationObserver) {
     new MutationObserver(function () {
@@ -2797,6 +2863,7 @@ if (document.prerendering) {
     }).observe(done,{attributes:true,attributeFilter:['hidden']});
   }
 
+  window.SalonConceptWizard = { startAnother:startAnother };
   render();
 })();
 </script>

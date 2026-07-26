@@ -230,27 +230,28 @@
   display: flex;
   align-items: end;
   justify-content: space-between;
-  gap: 28px;
+  gap: 30px;
 }
 
 .is-account-route .account-main__head .eyebrow {
-  color: var(--wax);
-  font: 550 9px/1.2 var(--mono);
+  color: var(--muted);
+  font: 600 11px/1.35 var(--mono);
   letter-spacing: .12em;
   text-transform: uppercase;
 }
 
 .is-account-route .account-main__head h1 {
-  margin-top: 8px;
+  margin-top: 9px;
   color: var(--ink);
-  font-size: clamp(36px, 4.3vw, 58px);
+  font-size: clamp(38px, 4.6vw, 58px);
   font-weight: 470;
-  letter-spacing: -.04em;
+  line-height: 1.08;
+  letter-spacing: -.035em;
+  text-wrap: balance;
 }
 
 .is-account-route .account-main__head p:not(.eyebrow) {
-  max-width: 560px;
-  margin-top: 10px;
+  margin-top: 8px;
   color: var(--muted);
   font-size: 12px;
 }
@@ -273,10 +274,21 @@
 .is-account-route .button--primary {
   color: #fffaf3;
   background: var(--wax);
+  border-color: var(--wax);
+  box-shadow: 0 10px 24px rgba(146, 54, 35, .17);
 }
 
 .is-account-route .button--primary:hover {
   background: var(--wax-deep);
+  border-color: var(--wax-deep);
+  box-shadow: 0 14px 30px rgba(113, 39, 25, .24);
+}
+
+.is-account-route .account-main__head > .button {
+  min-height: 48px;
+  gap: 12px;
+  padding: 12px 19px;
+  font-size: 14px;
 }
 
 .is-account-route .button--secondary {
@@ -298,7 +310,7 @@
 .is-account-route .account-summary {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 34px;
+  margin-top: 38px;
   background: var(--sheet);
   border: 1px solid var(--line);
 }
@@ -306,8 +318,10 @@
 .is-account-route .account-summary article {
   display: grid;
   min-width: 0;
-  gap: 6px;
-  padding: 20px;
+  min-height: 112px;
+  align-content: center;
+  gap: 3px;
+  padding: 20px 24px;
 }
 
 .is-account-route .account-summary article + article {
@@ -320,9 +334,8 @@
 }
 
 .is-account-route .account-summary article > strong {
-  overflow-wrap: anywhere;
   color: var(--ink);
-  font: 500 clamp(22px, 2.2vw, 30px)/1.1 var(--serif);
+  font: 500 30px/1.1 var(--serif);
 }
 
 .is-account-route .account-summary article > p {
@@ -538,9 +551,18 @@
   margin-top: 48px;
 }
 
+.is-account-route .account-benefits > header {
+  align-items: end;
+}
+
 .is-account-route .account-benefits > header > div {
   display: grid;
   gap: 7px;
+}
+
+.is-account-route .account-benefits h2 {
+  margin-top: 7px;
+  font-size: 29px;
 }
 
 .is-account-route .account-benefits > div {
@@ -551,22 +573,23 @@
 
 .is-account-route .account-benefit-card {
   display: grid;
-  min-height: 148px;
+  min-height: 168px;
   grid-template-columns: 42px minmax(0, 1fr) auto;
-  gap: 13px;
-  align-items: center;
-  padding: 17px;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
   color: var(--text);
   background: var(--sheet);
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: 0;
   font: inherit;
   text-align: left;
-  transition: transform .18s ease, border-color .18s ease;
+  transition: transform .2s cubic-bezier(.22, 1, .36, 1), border-color .18s ease, box-shadow .2s ease;
 }
 
 .is-account-route .account-benefit-card:hover {
   border-color: var(--line-strong);
+  box-shadow: 0 14px 32px rgba(42, 34, 23, .07);
   transform: translateY(-2px);
 }
 
@@ -584,23 +607,23 @@
 .is-account-route .account-benefit-card > div {
   display: grid;
   min-width: 0;
-  gap: 3px;
+  gap: 4px;
 }
 
 .is-account-route .account-benefit-card small {
   color: var(--quiet);
-  font-size: 8px;
+  font-size: 11px;
 }
 
 .is-account-route .account-benefit-card strong {
-  overflow-wrap: anywhere;
   color: var(--ink);
-  font: 500 19px/1.2 var(--serif);
+  font: 500 25px/1.15 var(--serif);
 }
 
 .is-account-route .account-benefit-card p {
   color: var(--muted);
-  font-size: 9px;
+  font-size: 11px;
+  line-height: 1.48;
 }
 
 .is-account-route .account-benefit-card > b {
@@ -609,9 +632,9 @@
 }
 
 .is-account-route .account-benefit-card--plus {
-  color: #d4cdc0;
-  background: #22211d;
-  border-color: #34322c;
+  color: #d9d3c8;
+  background: var(--night);
+  border-color: var(--night);
 }
 
 .is-account-route .account-benefit-card--plus strong {
@@ -620,7 +643,11 @@
 
 .is-account-route .account-benefit-card--plus small,
 .is-account-route .account-benefit-card--plus p {
-  color: #8e887d;
+  color: #aaa296;
+}
+
+.is-account-route .account-benefit-card--plus > b {
+  color: #777064;
 }
 
 .is-account-route .account-quick {
@@ -856,9 +883,18 @@
   text-align: center;
 }
 
-@media (max-width: 1080px) {
-  .is-account-route .order-list,
+@media (max-width: 1100px) {
   .is-account-route .account-benefits > div {
+    grid-template-columns: 1fr;
+  }
+
+  .is-account-route .account-benefit-card {
+    min-height: 124px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .is-account-route .order-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -966,9 +1002,23 @@
   }
 
   .is-account-route .order-list,
-  .is-account-route .account-benefits > div,
   .is-account-route .account-quick {
     grid-template-columns: 1fr;
+  }
+
+  .is-account-route .account-benefits > div {
+    gap: 8px;
+  }
+
+  .is-account-route .account-benefit-card {
+    min-height: 140px;
+    grid-template-columns: 38px minmax(0, 1fr) auto;
+    padding: 17px;
+  }
+
+  .is-account-route .account-benefit-card__mark {
+    width: 38px;
+    height: 38px;
   }
 
   .is-account-route .order-card {
@@ -1037,11 +1087,6 @@
   .is-account-route .order-card {
     min-height: 260px;
     padding: 17px;
-  }
-
-  .is-account-route .account-benefit-card {
-    min-height: 132px;
-    padding: 15px;
   }
 
   .is-account-route .account-case-production :is(.ord-composition, .due-box, .pause-band, .fin-band, .part-band, .fs-fold, .fs-sec) {

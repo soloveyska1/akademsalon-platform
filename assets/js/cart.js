@@ -18,6 +18,7 @@
   var api = null, S = null, box = null, tab = null, dock = null, body = null, foot = null;
   var data = { version: VERSION, items: [], checkout: { useBonus: false, bonusAmount: 0 }, updatedAt: 0 };
   var member = null, removed = null, undoTimer = null, lastFocus = null, pendingAddon = null;
+  var servicePicker = false;
   var visible = true, focusRestore = null;
   var benefitMessage = { promo:'', gift:'' };
 
@@ -113,6 +114,14 @@
       var q = itemQuote(x); a.low += q.low; a.high += q.high; return a;
     }, { low:0, high:0 });
   }
+  function currentPreview() {
+    if (!api || !api.getCurrent) return null;
+    var item = api.getCurrent();
+    if (!item || !item.type || contains(item)) return null;
+    var q = itemQuote(item);
+    if (!q.low && !q.high) return null;
+    return { item:item, quote:q };
+  }
   function dealAmount(base, deal) {
     if (!deal || !base) return 0;
     var d = deal.amount ? deal.amount : Math.round(base * (deal.pct || 0) / 100);
@@ -120,8 +129,8 @@
     if (deal.min_price && base < deal.min_price) return 0;
     return Math.max(0, Math.min(d, base));
   }
-  function benefits() {
-    var q = quote(), d = api && api.getDeals ? api.getDeals() : {};
+  function benefits(quoteOverride) {
+    var q = quoteOverride || quote(), d = api && api.getDeals ? api.getDeals() : {};
     var sub = member && member.sub;
     var promo = d.promoCode && d.promoDeal ? dealAmount(q.low, d.promoDeal) : 0;
     var subSave = sub && sub.discount_pct
@@ -294,7 +303,7 @@
   }
   function clear() {
     data.items = []; data.checkout = { useBonus:false, bonusAmount:0 }; removed = null;
-    pendingAddon = null;
+    pendingAddon = null; servicePicker = false;
     write();
   }
   function serviceType(id) {
@@ -319,8 +328,30 @@
     item.fixed = !!svc.fixed; item.allowQty = false; item.answers = answers;
     item.answerLines = answerLines; item.topic = item.topic || ''; item.deadline = item.deadline || '';
     item.requirements = item.requirements || ''; item.note = item.note || '';
-    item.parentId = parentId || ''; item.isAddon = true;
+    item.parentId = parentId || ''; item.isAddon = !!parentId;
     return syncNeeds(item);
+  }
+  function beginStandalone(id) {
+    var svc = serviceById(id);
+    if (!svc) return;
+    if (addonExists(svc.id, '')) {
+      if (S && S.toast) S.toast('Эта самостоятельная услуга уже есть в смете');
+      return;
+    }
+    servicePicker = false;
+    var required = requiredQuestions(svc.id);
+    if (!required.length) {
+      add(addonItem(svc, '', {}));
+      return;
+    }
+    pendingAddon = {
+      serviceId:svc.id, parentId:'', answers:{}, editId:'', standalone:true
+    };
+    render();
+    setTimeout(function () {
+      var target = box && box.querySelector('[data-cart-addon-answer], [data-cart-addon-confirm]');
+      if (target && target.focus) target.focus();
+    }, 20);
   }
   function beginAddon(id, editId) {
     var svc = serviceById(id);
@@ -409,7 +440,7 @@
       write();
       return true;
     }
-    var item = addonItem(svc, parent.id, pendingAddon.answers);
+    var item = addonItem(svc, pendingAddon.standalone ? '' : parent.id, pendingAddon.answers);
     pendingAddon = null;
     return add(item);
   }
@@ -463,6 +494,25 @@
           (x.needs ? 'Дополнить сведения' : 'Изменить сведения') + '</button>' : '') +
       '<button type="button" class="cart-remove" data-cart-remove="' + esc(x.id) +
       '" aria-label="Убрать «' + esc(x.label) + '» из состава">Убрать</button></div></article>';
+  }
+  function previewItemHtml(preview) {
+    var x = preview.item, q = preview.quote, m = meta(x);
+    var details = positionDetails(x);
+    m.unshift(contourLabel(x));
+    syncNeeds(x);
+    return '<section class="cart-preview-item" aria-labelledby="cartPreviewTitle">' +
+      '<div class="cart-preview-item__flag">Текущий выбор · ещё не добавлен</div>' +
+      '<div class="cart-preview-item__head"><div><span class="cart-preview-item__no">01</span>' +
+      '<h3 id="cartPreviewTitle">' + esc(x.label) + '</h3></div>' +
+      '<div class="cart-preview-item__price"><span>Ориентир</span><b>' +
+      (x.fixed ? '' : 'от ') + money(q.low) + (q.high > q.low ? '–' + money(q.high) : '') + ' ₽</b></div></div>' +
+      '<p class="cart-preview-item__meta">' + m.map(esc).join(' · ') + '</p>' +
+      (details.length ? '<details class="cart-preview-item__details"><summary>Проверить состав и сведения · ' +
+        details.length + '</summary><dl class="cart-item-facts">' + details.join('') + '</dl></details>' : '') +
+      (x.needs ? '<p class="cart-preview-item__notice">Перед отправкой потребуется дополнить обязательные сведения.</p>' : '') +
+      '<div class="cart-preview-item__actions"><button type="button" class="btn btn-line" data-cart-add-current>' +
+      'Добавить в состав</button><button type="button" class="btn btn-wax" data-cart-current-checkout>' +
+      'Продолжить с этой позицией →</button></div></section>';
   }
   function benefitHtml(b) {
     var out = '';
@@ -560,6 +610,24 @@
       '<div><h3>Связать позиции</h3><p>Услуга войдёт в тот же заказ, но сохранит свою цену и результат</p></div></div>' +
       '<div class="cart-addon-list">' + rows.join('') + '</div></section>';
   }
+  function standaloneServicesHtml() {
+    if (!servicePicker) return '';
+    var rows = [];
+    (window.SalonServices || []).forEach(function (svc) {
+      if (!svc || !svc.id || !svc.label) return;
+      var exists = addonExists(svc.id, '');
+      rows.push('<button type="button" data-cart-standalone="' + esc(svc.id) + '"' +
+        (exists ? ' disabled' : '') + '><span>' + (exists ? '✓' : '+') + ' ' +
+        esc(svc.label) + '</span><b>' + (exists ? 'в смете' : 'от ' + money(svc.from) + ' ₽') +
+        '</b></button>');
+    });
+    return '<section class="cart-services" id="cartServices" aria-labelledby="cartServicesTitle">' +
+      '<div class="cart-section-head compact"><span class="cart-section-no">+</span><div>' +
+      '<h3 id="cartServicesTitle">Самостоятельная услуга</h3>' +
+      '<p>Добавится отдельной строкой со своим результатом и ориентиром</p></div>' +
+      '<button type="button" class="cart-services-close" data-cart-service-close aria-label="Закрыть выбор услуг">×</button></div>' +
+      '<div class="cart-addon-list">' + rows.join('') + '</div></section>';
+  }
   function addonComposerHtml() {
     if (!pendingAddon) return '';
     var svc = serviceById(pendingAddon.serviceId);
@@ -579,13 +647,15 @@
     }).join('');
     return '<section class="cart-addon-compose" id="cartAddonCompose" aria-labelledby="cartAddonTitle">' +
       '<div class="cart-section-head compact"><span class="cart-section-no">+</span><div><h3 id="cartAddonTitle">' +
-      (pendingAddon.editId ? 'Дополнить сведения' : 'Куда добавить услугу?') + '</h3><p>' +
+      (pendingAddon.editId ? 'Дополнить сведения' :
+        (pendingAddon.standalone ? 'Добавить самостоятельную услугу' : 'Куда добавить услугу?')) + '</h3><p>' +
       esc(svc.label) + '</p></div></div>' +
       (pendingAddon.standalone ? '' :
         '<label class="cart-addon-field"><span>Основная позиция</span><select data-cart-addon-parent>' + options + '</select></label>') +
       questions + '<div class="cart-addon-compose-actions"><button type="button" class="btn btn-line" data-cart-addon-cancel>Отмена</button>' +
       '<button type="button" class="btn btn-wax" data-cart-addon-confirm>' +
-      (pendingAddon.editId ? 'Сохранить' : 'Связать позиции') + '</button></div></section>';
+      (pendingAddon.editId ? 'Сохранить' :
+        (pendingAddon.standalone ? 'Добавить в смету' : 'Связать позиции')) + '</button></div></section>';
   }
   function totalsHtml(b) {
     var discountLabel = b.discountKind === 'promo' ? 'Промокод' : (b.discountKind === 'sub' ? 'Салон+' : 'Скидки');
@@ -602,29 +672,32 @@
         money(b.due) + (b.dueHigh > b.due ? '–' + money(b.dueHigh) : '') + ' ₽</b></div>' : '') +
       '<p class="cart-total-note">Это предварительный расчёт. Мастер проверит материалы и зафиксирует точную сумму до оплаты.</p></div>';
   }
-  function entryHtml(n, compact) {
-    var q = quote();
+  function entryHtml(n, compact, quoteOverride) {
+    var q = quoteOverride || quote();
     return '<span class="cart-entry-icon" aria-hidden="true">¶</span>' +
       '<span class="cart-entry-copy"><b>Ваша смета</b>' +
       '<small>' + (n ? positionLabel(n) + ' · от ' + money(q.low) + ' ₽' :
-        (compact ? 'можно объединить' : 'все позиции — в одной спецификации')) + '</small>' +
+        (q.low ? 'ориентир от ' + money(q.low) + ' ₽' :
+          (compact ? 'можно объединить' : 'все позиции — в одной спецификации'))) + '</small>' +
       '</span><span class="cart-tab-count" role="status" aria-live="polite">' + n + '</span>';
   }
-  function syncEntry(el, n, compact) {
+  function syncEntry(el, n, compact, quoteOverride) {
     if (!el) return;
     el.classList.toggle('is-empty', !n);
     el.hidden = !visible;
-    el.innerHTML = entryHtml(n, compact);
+    el.innerHTML = entryHtml(n, compact, quoteOverride);
     el.setAttribute('aria-label', n ? 'Открыть смету, ' + positionLabel(n) :
       'Открыть пустую смету и добавить позиции заказа');
     el.setAttribute('aria-expanded', box && box.classList.contains('open') ? 'true' : 'false');
   }
   function render() {
     if (!box || !body || !foot) return;
-    var n = lineCount(), b = benefits();
-    syncEntry(tab, n, true);
-    syncEntry(dock, n, false);
-    var current = api && api.getCurrent ? api.getCurrent() : null;
+    var n = lineCount(), preview = n ? null : currentPreview();
+    var effectiveQuote = n ? quote() : (preview ? preview.quote : { low:0, high:0 });
+    var b = benefits(effectiveQuote);
+    syncEntry(tab, n, true, effectiveQuote);
+    syncEntry(dock, n, false, effectiveQuote);
+    var current = preview ? preview.item : (api && api.getCurrent ? api.getCurrent() : null);
     var currentSaved = current && contains(current);
     document.querySelectorAll('[data-cart-add]').forEach(function (el) {
       el.classList.toggle('saved', !!currentSaved);
@@ -640,14 +713,24 @@
       ((b.discount || b.bonus || b.gift) ? 'done' : '') + '" data-cart-jump="cartBenefits"><b>02</b> Выгода</button><i></i>' +
       '<button type="button" data-cart-checkout' + (n ? '' : ' disabled') + '><b>03</b> Отправка</button></nav>';
     if (!n) {
-      body.innerHTML = guide + '<div class="cart-empty" id="cartItems"><div class="cart-empty-mark">¶</div>' +
-        '<h3>Один заказ может состоять из нескольких позиций</h3>' +
-        '<p>У каждой останутся своё наименование, результат, срок и цена. Перед оплатой мастер пришлёт их в одной спецификации.</p>' +
-        '<div class="cart-empty-actions"><button type="button" class="btn btn-wax" data-cart-another="work">Выбрать контекст</button>' +
-        '<button type="button" class="btn btn-line" data-cart-another="service">Выбрать услугу</button></div></div>' +
-        benefitToolsHtml(b) +
+      body.innerHTML = guide + (preview
+        ? '<div id="cartItems">' + previewItemHtml(preview) + '</div>' +
+          '<section class="cart-single-help"><span>+</span><div><h3>Нужно несколько результатов?</h3>' +
+          '<p>Добавьте текущую позицию в состав, затем выберите ещё работу или отдельную услугу. У каждой строки сохранятся собственные цена, срок и результат.</p></div></section>'
+        : '<div class="cart-empty" id="cartItems"><div class="cart-empty-mark">¶</div>' +
+          '<h3>Один заказ может состоять из нескольких позиций</h3>' +
+          '<p>У каждой останутся своё наименование, результат, срок и цена. Перед оплатой мастер пришлёт их в одной спецификации.</p>' +
+          '<div class="cart-empty-actions"><button type="button" class="btn btn-wax" data-cart-another="work">Выбрать контекст</button>' +
+          '<button type="button" class="btn btn-line" data-cart-another="service">Выбрать услугу</button></div></div>') +
+        standaloneServicesHtml() + addonComposerHtml() +
         (removed ? '<div class="cart-undo"><span>Позиция убрана</span><button type="button" data-cart-undo>Вернуть</button></div>' : '');
-      foot.innerHTML = '<p class="cart-empty-foot">Добавьте первую позицию — ориентир появится сразу. Сейчас платить ничего не нужно.</p>';
+      foot.innerHTML = '<div class="cart-summary-head"><span>Итог</span><strong>' +
+        (preview ? '1 текущая позиция' : 'Состав пока пуст') + '</strong></div>' +
+        (preview ? totalsHtml(b) + benefitToolsHtml(b) +
+          '<div class="cart-actions cart-actions--single"><button type="button" class="btn btn-wax" data-cart-current-checkout>' +
+          'Продолжить · контакты →</button><button type="button" class="btn btn-line" data-cart-add-current>' +
+          'Добавить и расширить смету</button></div>'
+          : '<p class="cart-empty-foot">Выберите первую позицию — ориентир появится сразу. Сейчас платить ничего не нужно.</p>');
       return;
     }
     var works = data.items.filter(function (x) { return x.kind !== 'service'; });
@@ -665,12 +748,20 @@
     if (unattached.length) groups += '<h4>Самостоятельные услуги</h4><div class="cart-list service-list">' +
       unattached.map(function (x) { return lineItem(x, data.items.indexOf(x)); }).join('') + '</div>';
     groups += '</section>';
-    body.innerHTML = guide + groups + addonComposerHtml() + addonsHtml() +
+    var pendingCurrent = currentPreview();
+    var pendingCurrentHtml = pendingCurrent
+      ? '<section class="cart-current-draft"><div><span>Текущий выбор ещё не в составе</span><strong>' +
+        esc(pendingCurrent.item.label) + '</strong><small>Ориентир: от ' + money(pendingCurrent.quote.low) +
+        (pendingCurrent.quote.high > pendingCurrent.quote.low ? '–' + money(pendingCurrent.quote.high) : '') +
+        ' ₽</small></div><button type="button" class="btn btn-line" data-cart-add-current>Добавить в смету</button></section>'
+      : '';
+    body.innerHTML = guide + pendingCurrentHtml + groups + standaloneServicesHtml() +
+      addonComposerHtml() + addonsHtml() +
       (removed ? '<div class="cart-undo"><span>Позиция убрана</span><button type="button" data-cart-undo>Вернуть</button></div>' : '') +
-      benefitToolsHtml(b) +
       '<button type="button" class="cart-clear" data-cart-clear>Очистить состав</button>' +
       '<p class="cart-legal">До отправки состав хранится только на этом устройстве.</p>';
-    foot.innerHTML = totalsHtml(b) +
+    foot.innerHTML = '<div class="cart-summary-head"><span>Итог заказа</span><strong>' + positionLabel(n) + '</strong></div>' +
+      totalsHtml(b) + benefitToolsHtml(b) +
       '<div class="cart-actions"><div class="cart-add-more"><button type="button" data-cart-another="work">+ Контекст</button>' +
       '<button type="button" data-cart-another="service">+ Услуга</button></div>' +
       '<button type="button" class="btn btn-wax" data-cart-checkout>Продолжить · контакты →</button></div>';
@@ -705,8 +796,8 @@
     box.innerHTML = '<button type="button" class="cart-back" data-cart-close tabindex="-1" aria-label="Закрыть смету"></button>' +
       '<aside class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-describedby="cartIntro">' +
       '<span class="cart-handle" aria-hidden="true"></span>' +
-      '<header class="cart-head"><div><span class="cart-folio">Конструктор сметы</span><h2 id="cartTitle">Ваша смета</h2>' +
-      '<p id="cartIntro">Каждая позиция — отдельной строкой будущей спецификации</p></div>' +
+      '<header class="cart-head"><div><span class="cart-folio">Смета заказа</span><h2 id="cartTitle">Состав и ориентир</h2>' +
+      '<p id="cartIntro">Можно отправить одну позицию или собрать несколько результатов в одной спецификации</p></div>' +
       '<button type="button" class="cart-close" data-cart-close aria-label="Закрыть">×</button></header>' +
       '<div class="cart-body"></div><footer class="cart-foot"></footer></aside>';
     document.body.appendChild(box);
@@ -752,10 +843,19 @@
   function click(e) {
     var t = e.target, item = t.closest('.cart-item'), id = item && item.getAttribute('data-cart-id');
     if (t.closest('[data-cart-close]')) { close(); return; }
+    if (t.closest('[data-cart-add-current]')) { addCurrent(); return; }
+    if (t.closest('[data-cart-current-checkout]')) {
+      if (api && api.validateCurrent && api.validateCurrent() === false) return;
+      close(); if (api && api.checkout) api.checkout(); return;
+    }
     if (t.closest('[data-cart-remove]')) { remove(t.closest('[data-cart-remove]').getAttribute('data-cart-remove')); return; }
     if (t.closest('[data-cart-undo]')) { undo(); return; }
     if (t.closest('[data-cart-qty]') && id) { setQty(id, parseInt(t.closest('[data-cart-qty]').getAttribute('data-cart-qty'), 10)); return; }
     if (t.closest('[data-cart-addon]')) { beginAddon(t.closest('[data-cart-addon]').getAttribute('data-cart-addon')); return; }
+    if (t.closest('[data-cart-standalone]')) {
+      beginStandalone(t.closest('[data-cart-standalone]').getAttribute('data-cart-standalone'));
+      return;
+    }
     if (t.closest('[data-cart-edit-addon]')) {
       var editId = t.closest('[data-cart-edit-addon]').getAttribute('data-cart-edit-addon');
       var editItem = null;
@@ -764,9 +864,22 @@
       return;
     }
     if (t.closest('[data-cart-addon-cancel]')) { pendingAddon = null; render(); return; }
+    if (t.closest('[data-cart-service-close]')) { servicePicker = false; render(); return; }
     if (t.closest('[data-cart-addon-confirm]')) { savePendingAddon(); return; }
     if (t.closest('[data-cart-another]')) {
       var kind = t.closest('[data-cart-another]').getAttribute('data-cart-another') || 'work';
+      if (kind === 'service') {
+        servicePicker = true; pendingAddon = null; render();
+        setTimeout(function () {
+          var picker = box && box.querySelector('#cartServices');
+          if (picker && picker.scrollIntoView) picker.scrollIntoView({
+            block:'start', behavior:S && S.reduceMotion ? 'auto' : 'smooth'
+          });
+          var firstService = picker && picker.querySelector('[data-cart-standalone]:not([disabled])');
+          if (firstService && firstService.focus) firstService.focus({ preventScroll:true });
+        }, 20);
+        return;
+      }
       close(); if (api && api.another) api.another(kind); return;
     }
     if (t.closest('[data-cart-checkout]')) {
@@ -1017,6 +1130,7 @@
     init:init, open:open, add:add, clear:clear, count:count, lineCount:lineCount, hasItems:function(){ return !!data.items.length; },
     items:function(){ return data.items.slice(); }, first:first, quote:quote, benefits:benefits,
     summary:summary, payload:payload, snapshot:snapshot, contains:contains, ensure:ensure,
+    currentItem:function(){ return api && api.getCurrent ? api.getCurrent() : null; },
     setVisible:setVisible, refresh:notify, positionLabel:positionLabel, validate:validate,
     bonusIntent:function(){ return data.checkout.useBonus ? benefits().bonus : 0; }
   };
@@ -1031,13 +1145,14 @@
         S = opts.S || S;
         api = opts.api || {};
         box = tab = dock = body = foot = null;
-        pendingAddon = null;
+        pendingAddon = null; servicePicker = false;
         data.items.forEach(syncNeeds);
       },
       state:function() { return JSON.parse(JSON.stringify(data)); },
       read:read, write:write, payload:payload, validate:validate,
       addCurrent:addCurrent, equivalent:equivalent, addonItem:addonItem,
-      beginAddon:beginAddon, savePendingAddon:savePendingAddon,
+      currentPreview:currentPreview, benefitsFor:benefits,
+      beginAddon:beginAddon, beginStandalone:beginStandalone, savePendingAddon:savePendingAddon,
       pending:function() { return pendingAddon ? JSON.parse(JSON.stringify(pendingAddon)) : null; },
       setPendingParent:function(id) { if (pendingAddon) pendingAddon.parentId = id; },
       setPendingAnswer:function(id, value) { if (pendingAddon) pendingAddon.answers[id] = value; }

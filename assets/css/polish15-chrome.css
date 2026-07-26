@@ -37,8 +37,16 @@ body.concept-shell{
   --line-strong:#B8AA94;
   --wax:#A63F29;
   --wax-deep:#792B1D;
+  --wax-bright:#BF5138;
   --wax-soft:#F2DDD5;
   --wax-cta:#A63F29;
+  --logo-ring:rgba(255,253,248,.9);
+  --logo-ring-edge:rgba(121,43,29,.22);
+  --logo-shadow-rest:0 7px 18px rgba(78,43,29,.16),0 2px 5px rgba(78,43,29,.08);
+  --logo-shadow-hover:0 10px 24px rgba(121,43,29,.22),0 3px 7px rgba(78,43,29,.1);
+  --logo-filter:saturate(1.02) contrast(1.015);
+  --logo-filter-pulse:saturate(1.045) contrast(1.02) brightness(1.01);
+  --logo-filter-hover:saturate(1.1) contrast(1.03) brightness(1.025);
   --verify:#3C644C;
   --verify-soft:#DFE9E1;
   --green:#3C644C;
@@ -78,8 +86,16 @@ body.concept-shell::before{
   --line-strong:#565148;
   --wax:#C65B41;
   --wax-deep:#A4432D;
+  --wax-bright:#DC7459;
   --wax-soft:#42251F;
   --wax-cta:#A4432D;
+  --logo-ring:rgba(36,34,29,.9);
+  --logo-ring-edge:rgba(220,116,89,.32);
+  --logo-shadow-rest:0 8px 22px rgba(0,0,0,.38),0 0 13px rgba(198,91,65,.1);
+  --logo-shadow-hover:0 11px 28px rgba(0,0,0,.46),0 0 17px rgba(220,116,89,.17);
+  --logo-filter:saturate(1.06) contrast(1.025) brightness(1.025);
+  --logo-filter-pulse:saturate(1.09) contrast(1.03) brightness(1.04);
+  --logo-filter-hover:saturate(1.14) contrast(1.035) brightness(1.06);
   --verify:#7FAA8B;
   --verify-soft:#23362A;
   --green:#7FAA8B;
@@ -1196,11 +1212,67 @@ body .ha-ico{
 }
 
 /* ---- Знак мастерской ---- */
+body .site-header .brand__mark,
+body .mobile-appbar__brand .brand__mark,
+body .site-footer__brand .brand__mark,
+body .search-head > img{
+  /* Встроенный SVG получает ту же палитру, что и bimi/logo.svg.
+     Темы меняют только окружение знака, но не сам фирменный оттиск. */
+  --wax-deep:#8C2D18;
+  --wax-cta:#B23B22;
+  --wax-bright:#C65B41;
+  --paper:#F6F1E7;
+  display:block;
+  border-radius:50%;
+  background:#F6F1E7;
+  box-shadow:
+    0 0 0 2px var(--logo-ring),
+    0 0 0 3px var(--logo-ring-edge),
+    var(--logo-shadow-rest);
+  filter:var(--logo-filter);
+  transform:translateZ(0) scale(1);
+  transform-origin:center;
+  animation:salon-logo-breathe 8.4s ease-in-out infinite;
+  transition:
+    transform 220ms cubic-bezier(.22,1,.36,1),
+    filter 220ms ease,
+    box-shadow 220ms ease;
+}
+
 body .site-header .brand__mark{
   width:39px;
   height:39px;
-  border-radius:50%;
+}
+
+@keyframes salon-logo-breathe{
+  0%,100%{
+    transform:translateZ(0) scale(1);
+    filter:var(--logo-filter);
+  }
+  50%{
+    transform:translateZ(0) scale(1.008);
+    filter:var(--logo-filter-pulse);
+  }
+}
+
+@media (hover:hover){
+  body .site-header .brand:hover .brand__mark,
+  body .mobile-appbar__brand:hover .brand__mark{
+    animation:none;
+    box-shadow:
+      0 0 0 2px var(--logo-ring),
+      0 0 0 3px var(--logo-ring-edge),
+      var(--logo-shadow-hover);
+    filter:var(--logo-filter-hover);
+    transform:translateY(-1px) scale(1.045) rotate(-.6deg);
+  }
+}
+
+body .site-header .brand:active .brand__mark,
+body .mobile-appbar__brand:active .brand__mark{
   animation:none;
+  filter:var(--logo-filter-hover);
+  transform:scale(.975);
 }
 
 body .site-header .primary-nav{ gap:26px; }
@@ -1248,11 +1320,6 @@ body .mledger .ml-row.is-new .ml-pin{
   box-shadow:0 0 0 3px color-mix(in srgb,var(--wax) 14%,transparent);
 }
 
-@media (prefers-reduced-motion:reduce){
-  body .site-header .brand__mark{ animation:none; }
-  body .site-header .brand:hover .brand__mark{ transform:none; }
-}
-
 /* Встроенный знак: раньше это был <img>, теперь <svg> — задаём меры
    явно, чтобы он не считал размер от viewBox, и убираем схлопывание
    базовой линии. В колофоне и мобильном аппбаре свои меры. */
@@ -1277,4 +1344,42 @@ body .site-footer__brand .brand__mark{
    там всегда светлые — иначе в тёмной теме тёмное на тёмном сливается. */
 body .site-footer__brand .brand__mark path{
   fill:#F6F1E7;
+}
+
+@media (prefers-reduced-motion:reduce){
+  body .site-header .brand__mark,
+  body .mobile-appbar__brand .brand__mark,
+  body .site-footer__brand .brand__mark,
+  body .search-head > img,
+  body .site-header .brand:hover .brand__mark,
+  body .site-header .brand:active .brand__mark,
+  body .mobile-appbar__brand:hover .brand__mark,
+  body .mobile-appbar__brand:active .brand__mark{
+    animation:none;
+    transition:none;
+    filter:var(--logo-filter);
+    transform:none;
+  }
+}
+
+:root[data-motion="off"] body .site-header .brand__mark,
+:root[data-motion="off"] body .mobile-appbar__brand .brand__mark,
+:root[data-motion="off"] body .site-footer__brand .brand__mark,
+:root[data-motion="off"] body .search-head > img,
+:root[data-calm] body .site-header .brand__mark,
+:root[data-calm] body .mobile-appbar__brand .brand__mark,
+:root[data-calm] body .site-footer__brand .brand__mark,
+:root[data-calm] body .search-head > img,
+:root[data-motion="off"] body .site-header .brand:hover .brand__mark,
+:root[data-motion="off"] body .site-header .brand:active .brand__mark,
+:root[data-motion="off"] body .mobile-appbar__brand:hover .brand__mark,
+:root[data-motion="off"] body .mobile-appbar__brand:active .brand__mark,
+:root[data-calm] body .site-header .brand:hover .brand__mark,
+:root[data-calm] body .site-header .brand:active .brand__mark,
+:root[data-calm] body .mobile-appbar__brand:hover .brand__mark,
+:root[data-calm] body .mobile-appbar__brand:active .brand__mark{
+  animation:none;
+  transition:none;
+  filter:var(--logo-filter);
+  transform:none;
 }

@@ -62,7 +62,23 @@ html.vt-theme *,html.vt-theme *::before,html.vt-theme *::after{transition:none!i
 
 /* ---------- Скип-линк ---------- */
 .skip-link{position:fixed;top:-72px;left:14px;z-index:300;padding:12px 18px;border-radius:0 0 var(--r) var(--r);background:var(--ink);color:var(--paper);font-weight:500;font-size:14px;transition:top .2s}
-.skip-link:focus{top:0}
+html[data-input-modality="keyboard"] .skip-link:focus{top:0}
+
+/* Логотип — интерактивная ссылка, но не выделяемый фрагмент документа:
+   двойной клик и системный tap highlight не должны выглядеть как поломка. */
+.site-header .brand,
+.mobile-appbar__brand,
+.admin-sidebar__brand{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.site-header .brand img,
+.mobile-appbar__brand img,
+.admin-sidebar__brand img{
+  pointer-events:none;
+  -webkit-user-drag:none;
+}
 
 /* ============================================================
    КОЛОНТИТУЛ (шапка) — ОДНО МЕСТО ПРАВКИ
@@ -2163,12 +2179,12 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
 }
 /* Фокус у знака остаётся заметным, но не обводит всё название
    рамкой в половину шапки: кольцо на марке + подчёркивание имени. */
-.site-header .brand:focus-visible{outline:none}
-.site-header .brand:focus-visible .brand__mark{
+html[data-input-modality="keyboard"] .site-header .brand:focus-visible{outline:none}
+html[data-input-modality="keyboard"] .site-header .brand:focus-visible .brand__mark{
   outline:2px solid var(--wax);
   outline-offset:3px;
 }
-.site-header .brand:focus-visible .brand__name strong{
+html[data-input-modality="keyboard"] .site-header .brand:focus-visible .brand__name strong{
   text-decoration:underline;
   text-decoration-color:var(--wax);
   text-decoration-thickness:1px;

@@ -20,6 +20,19 @@ const toastRegion = document.querySelector("[data-toast-region]");
 const liveRegion = document.querySelector("[data-live-region]");
 const taskBar = document.querySelector("[data-task-bar]");
 const searchItems = getSearchItems();
+const skipLink = document.querySelector(".skip-link");
+
+/* Keep the accessibility shortcut keyboard-only. Some browsers restore focus
+   to the first link after a hash-route update; without modality tracking that
+   makes the hidden shortcut cover the brand after an ordinary pointer click. */
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Tab") document.documentElement.dataset.inputModality = "keyboard";
+}, { capture: true });
+
+window.addEventListener("pointerdown", () => {
+  delete document.documentElement.dataset.inputModality;
+  if (document.activeElement === skipLink) skipLink.blur();
+}, { capture: true });
 
 const defaultState = {
   wizard: {

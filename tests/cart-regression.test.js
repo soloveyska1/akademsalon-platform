@@ -111,6 +111,31 @@ test('addCurrent обязательно вызывает validateCurrent и не
   assert.equal(h.api.state().items.length, 0);
 });
 
+test('одна текущая позиция сразу даёт ориентир в смете без скрытого сохранения', () => {
+  const h = makeHarness();
+  h.api.reset(blank(), {
+    S: h.S,
+    api: {
+      getCurrent() {
+        return work('draft', 'Диплом');
+      }
+    }
+  });
+
+  const preview = h.api.currentPreview();
+  assert.equal(preview.item.label, 'Диплом');
+  assert.deepEqual(
+    { low: preview.quote.low, high: preview.quote.high },
+    { low: 30000, high: 40000 },
+  );
+  assert.equal(h.api.state().items.length, 0, 'предпросмотр не должен тайно добавлять позицию');
+
+  const totals = h.api.benefitsFor(preview.quote);
+  assert.equal(totals.quote.low, 30000);
+  assert.equal(totals.quote.high, 40000);
+  assert.equal(totals.due, 30000);
+});
+
 test('валидация перед отправкой блокирует старую незаполненную допуслугу', () => {
   const h = makeHarness();
   h.api.reset(blank([
@@ -173,6 +198,25 @@ test('при нескольких работах выбор parent создаё�
     Array.from(services, (item) => item.parentId).sort(),
     ['w1', 'w2']
   );
+});
+
+test('самостоятельная услуга добавляется без фиктивной основной работы', () => {
+  const h = makeHarness();
+  h.api.reset(blank(), { S: h.S });
+
+  h.api.beginStandalone('defense');
+  assert.equal(h.api.pending().standalone, true);
+  assert.equal(h.api.pending().parentId, '');
+  h.api.setPendingAnswer('when', '20 июля');
+  assert.equal(h.api.savePendingAddon(), true);
+
+  const service = h.api.state().items[0];
+  assert.equal(service.kind, 'service');
+  assert.equal(service.parentId, '');
+  assert.equal(service.isAddon, false);
+  assert.equal(service.serviceMeta, 'самостоятельная услуга');
+  assert.equal(service.answers.when, '20 июля');
+  assert.equal(h.api.payload().items[0].parent_client_id, '');
 });
 
 test('storage round-trip сохраняет состав, ответы и parentId без сетевых вызовов', () => {

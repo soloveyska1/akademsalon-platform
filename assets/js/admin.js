@@ -157,6 +157,41 @@ function initGodEye() {
     } catch (e) {}
     toast('Не удалось скопировать — выделите вручную');
   }
+  function csvCell(value) {
+    var s = String(value == null ? '' : value);
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  function exportClientsCsv() {
+    if (!st.clients.length) {
+      toast('В картотеке пока нет данных для экспорта');
+      return;
+    }
+    var rows = [['Имя', 'Telegram', 'Дел', 'Оплачено, ₽', 'Бонусы', 'Последний визит', 'Заблокирован']];
+    st.clients.forEach(function (client) {
+      rows.push([
+        client.name || '',
+        client.username ? '@' + client.username : '',
+        client.orders || 0,
+        client.paid_sum || 0,
+        client.balance || 0,
+        dt(client.last_seen),
+        client.banned ? 'да' : 'нет'
+      ]);
+    });
+    var csv = '\uFEFF' + rows.map(function (row) {
+      return row.map(csvCell).join(';');
+    }).join('\r\n');
+    var url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'clients-' + new Date().toISOString().slice(0, 10) + '.csv';
+    link.hidden = true;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    toast('Картотека экспортирована');
+  }
   function stMeta(s) { return ST_META[s] || ['·', s]; }
   function stamp(s) { return '<span class="ag-stamp st-' + s + '">' + stMeta(s)[1] + '</span>'; }
   function confirmDlg(opts) {
@@ -985,17 +1020,27 @@ function initGodEye() {
     var box = document.getElementById('agHead');
     if (!box) return;
     var u = S.api.user() || {};
+    var orderByStatus = (st.ov && st.ov.by_status) || {};
+    var activeOrders = ['new', 'priced', 'prepay', 'work', 'check', 'fix'].reduce(function (sum, key) {
+      return sum + (orderByStatus[key] || 0);
+    }, 0);
+    var attentionOrders = (orderByStatus.new || 0) + (orderByStatus.fix || 0) +
+      ((st.ov && st.ov.claimed) || 0);
+    var ordersLead = activeOrders
+      ? activeOrders + ' ' + anPl(activeOrders, 'активное дело', 'активных дела', 'активных дел') +
+        ' · ' + attentionOrders + ' требуют решения'
+      : 'Сроки, оплаты и переписка';
     var label = {
       summary: ['Редакционный кабинет', 'Рабочий стол', 'Сводка на сегодня'],
       visits: ['Аналитика', 'Посещения', 'Живые визиты и источники переходов'],
-      orders: ['Операционная работа', 'Дела', 'Сроки, оплаты и переписка'],
-      clients: ['Отношения с клиентами', 'Клиенты', 'История дел и начислений'],
+      orders: ['Операционная работа', 'Дела', ordersLead],
+      clients: ['Отношения с клиентами', 'Клиенты', 'История дел и обращений'],
       reviews: ['Репутация', 'Отзывы', 'Публикация и модерация'],
       qa: ['Открытая приёмная', 'Вопросы', 'Редакторские ответы посетителям'],
       gifts: ['Подарочная программа', 'Сертификаты', 'Выпуск, оплата и остатки'],
       leads: ['Обращения с сайта', 'Лиды', 'Новые задачи и контакты'],
       broadcast: ['Коммуникации', 'Рассылки', 'Сегменты и история отправок'],
-      settings: ['Система', 'Настройки', 'Доступность сервисов и расписание'],
+      settings: ['Настройки сервиса', 'Настройки', 'Доступность, расчёты и рабочие подключения'],
       content: ['Редакционная система', 'Публикации сайта', '25 опубликованных материалов']
     }[st.tab] || ['Редакционный кабинет', 'Рабочий стол', ''];
     var initials = String(u.name || 'СМ').trim().split(/\s+/).map(function (p) {
@@ -1016,9 +1061,20 @@ function initGodEye() {
     }[st.tab] || 'Редакционный кабинет';
     var mobileBrand = root.querySelector('.admin-mobile-appbar__brand strong');
     if (mobileBrand) mobileBrand.textContent = mobileTitle;
-    var headAction = st.tab === 'content'
-      ? '<a class="header-action" href="knowledge.html" target="_blank" rel="noopener">Открыть библиотеку</a>'
-      : '<button type="button" class="header-action wz-open" id="wzOpen">Создать</button>';
+    var headAction = '';
+    if (st.tab === 'content') {
+      headAction = '<a class="header-action" href="knowledge.html" target="_blank" rel="noopener">Открыть библиотеку</a>';
+    } else if (st.tab === 'orders') {
+      /* Тот же рабочий мастер создания, но с точным названием действия
+         текущего раздела: универсальное «Создать» здесь теряло контекст. */
+      headAction = '<button type="button" class="header-action wz-open" id="wzOpen">Создать дело</button>';
+    } else if (st.tab === 'clients') {
+      /* Это не декоративная кнопка: выгрузка строится из уже загруженной
+         серверной картотеки и выполняется локально, без новых API-вызовов. */
+      headAction = '<button type="button" class="header-action" id="agClientsExport">Экспорт</button>';
+    } else if (st.tab !== 'settings') {
+      headAction = '<button type="button" class="header-action wz-open" id="wzOpen">Создать</button>';
+    }
     box.innerHTML = '<div><p class="eyebrow">' + label[0] + '</p><h1>' + label[1] + '</h1>' +
       '<p>' + label[2] + '</p></div><div>' +
       headAction +
@@ -1046,10 +1102,12 @@ function initGodEye() {
     if (st.tab === 'orders') {
       box.innerHTML =
         '<div class="ag-filters" id="agFilters"></div>' +
-        '<section class="admin-order-register" aria-label="Реестр дел">' +
-          '<div class="admin-order-register__head"><span>Дело</span><span>Клиент и задача</span>' +
+        '<section class="admin-table-wrap admin-order-register" aria-label="Реестр дел">' +
+          '<div class="admin-order-register__head" style="grid-template-columns:34px 92px minmax(120px,.65fr) minmax(220px,1.35fr) 140px 120px 100px 18px">' +
+            '<span aria-hidden="true"></span><span>Дело</span><span>Клиент</span><span>Задача</span>' +
             '<span>Статус</span><span>Ближайший срок</span><span>Сумма</span><span></span></div>' +
-          '<div class="ag-list" id="agList"></div>' +
+          '<div class="ag-list" id="agList" aria-label="Дела"></div>' +
+          '<footer class="admin-order-register__footer" id="agListFooter" aria-live="polite"></footer>' +
         '</section><div id="agBulkWrap"></div>' +
         '<button type="button" class="admin-order-backdrop" id="agCardBackdrop" aria-label="Закрыть карточку дела" hidden></button>' +
         '<aside class="ag-card admin-order-drawer" id="agCard" aria-label="Карточка дела" aria-hidden="true"></aside>';
@@ -1060,21 +1118,24 @@ function initGodEye() {
     }
     if (st.tab === 'clients') {
       box.innerHTML =
-        '<div class="ag-filters">' +
-          '<input class="ag-search" id="agCQ" type="search" placeholder="Поиск: имя или @ник" value="' + esc(st.cq) + '">' +
-          '<button type="button" class="ag-chip" id="agCQClear" title="Сбросить"' + (st.cq ? '' : ' hidden') + '>× сброс</button>' +
-          '<select class="ag-sort" id="agCSort" title="Порядок">' +
-            '<option value="recent"' + (st.csort === 'recent' ? ' selected' : '') + '>по последнему визиту</option>' +
-            '<option value="ltv"' + (st.csort === 'ltv' ? ' selected' : '') + '>по сумме оплат</option>' +
-            '<option value="orders"' + (st.csort === 'orders' ? ' selected' : '') + '>по числу заказов</option>' +
-            '<option value="bonus"' + (st.csort === 'bonus' ? ' selected' : '') + '>по бонусам</option>' +
-            '<option value="name"' + (st.csort === 'name' ? ' selected' : '') + '>по имени</option>' +
-          '</select>' +
-        '</div>' +
-        '<div class="ag-split">' +
-          '<div class="ag-list" id="agCList"></div>' +
-          '<div class="ag-card" id="agCCard"><div class="ag-empty">Выберите клиента слева</div></div>' +
-        '</div>';
+        '<section class="client-directory ag-split" aria-label="Клиентская картотека">' +
+          '<div class="client-directory__list">' +
+            '<div class="ag-filters client-directory__toolbar">' +
+              '<input class="ag-search" id="agCQ" type="search" aria-label="Поиск по клиентам" placeholder="Поиск по клиентам" value="' + esc(st.cq) + '">' +
+              '<button type="button" class="ag-chip" id="agCQClear" title="Сбросить"' + (st.cq ? '' : ' hidden') + '>× сброс</button>' +
+              '<select class="ag-sort" id="agCSort" title="Порядок" aria-label="Порядок клиентов">' +
+                '<option value="recent"' + (st.csort === 'recent' ? ' selected' : '') + '>по последнему визиту</option>' +
+                '<option value="ltv"' + (st.csort === 'ltv' ? ' selected' : '') + '>по сумме оплат</option>' +
+                '<option value="orders"' + (st.csort === 'orders' ? ' selected' : '') + '>по числу заказов</option>' +
+                '<option value="bonus"' + (st.csort === 'bonus' ? ' selected' : '') + '>по бонусам</option>' +
+                '<option value="name"' + (st.csort === 'name' ? ' selected' : '') + '>по имени</option>' +
+              '</select>' +
+            '</div>' +
+            '<div class="ag-list" id="agCList"></div>' +
+          '</div>' +
+          '<div class="client-profile ag-card" id="agCCard">' +
+            '<div class="ag-empty"><strong>Карточка клиента</strong><br>Выберите клиента в картотеке</div></div>' +
+        '</section>';
       drawClientList();
       if (st.ccard) drawClientCard();
       return;
@@ -1571,7 +1632,8 @@ function initGodEye() {
             '</small></div><time>' + dt(e.at) + '</time></button>';
         }).join('')
       : '<div class="admin-inbox-empty">Новых событий пока нет.</div>';
-    return alertCopy +
+    return '<section class="admin-workbench" aria-label="Рабочий стол мастерской">' +
+      alertCopy +
       '<section class="admin-metrics">' +
         '<article data-go="active"><span>Активные дела</span><strong>' + active + '</strong><small>' +
           (by.new || 0) + ' новых</small></article>' +
@@ -1598,7 +1660,7 @@ function initGodEye() {
         '<section class="admin-panel admin-inbox"><header><div><h2>Последние события</h2><span>' +
           (ov.events || []).length + ' в сводке</span></div><button type="button" data-go="@visits">Посещения</button></header>' +
           '<div>' + inboxHtml + '</div></section>' +
-      '</div>';
+      '</div></section>';
   }
 
   function tplContent() {
@@ -1725,21 +1787,63 @@ function initGodEye() {
   function drawFilters() {
     var box = document.getElementById('agFilters');
     if (!box) return;
-    var chips = [['attention', '❗ Требуют действий'], ['active', 'Активные'], ['', 'Все']]
-      .concat(Object.keys(ST_META).map(function (k) { return [k, stMeta(k)[0] + ' ' + stMeta(k)[1]]; }))
-      .concat([['archive', '🗄 Архив'], ['trash', '🗑 Корзина']]);
-    box.innerHTML = '<div class="admin-filter-scroll">' + chips.map(function (c) {
-      return '<button type="button" class="ag-chip' + (st.filter === c[0] ? ' on' : '') + '" data-f="' + c[0] + '">' + c[1] + '</button>';
-    }).join('') + '</div><div class="admin-filter-tools">' +
-      '<input class="ag-search" id="agQ" type="search" placeholder="Поиск: №, тема, ник… (Enter)" value="' + esc(st.q) + '">' +
-      (st.q ? '<button type="button" class="ag-chip" id="agQClear" title="Сбросить поиск">× «' + esc(st.q.length > 16 ? st.q.slice(0, 15) + '…' : st.q) + '»</button>' : '') +
-      '<select class="ag-sort" id="agSort" title="Порядок списка">' +
-        '<option value="fresh"' + (st.sort === 'fresh' ? ' selected' : '') + '>сначала новые</option>' +
-        '<option value="updated"' + (st.sort === 'updated' ? ' selected' : '') + '>по последнему движению</option>' +
-        '<option value="deadline"' + (st.sort === 'deadline' ? ' selected' : '') + '>по сроку сдачи</option>' +
-      '</select>' +
-      '<button type="button" class="ag-chip' + (st.bulk ? ' on' : '') + '" id="agBulkToggle" ' +
-      'title="Выделить несколько заказов и разом закрепить, скрыть, покрасить или убрать в корзину">Выбрать</button></div>';
+    var primary = [
+      ['', 'Все'],
+      ['new', 'Новые'],
+      ['attention', 'Требуется решение'],
+      ['work', 'В работе'],
+      ['done', 'Завершённые']
+    ];
+    var secondary = [['active', 'Активные']]
+      .concat(Object.keys(ST_META).filter(function (key) {
+        return ['new', 'work', 'done'].indexOf(key) < 0;
+      }).map(function (key) {
+        return [key, stMeta(key)[1]];
+      }))
+      .concat([['archive', 'Архив'], ['trash', 'Корзина']]);
+    var secondaryLabel = '';
+    secondary.some(function (item) {
+      if (item[0] !== st.filter) return false;
+      secondaryLabel = item[1];
+      return true;
+    });
+    function filterButton(item) {
+      var on = st.filter === item[0];
+      return '<button type="button" class="ag-chip' + (on ? ' on is-active' : '') +
+        '" data-f="' + item[0] + '" aria-pressed="' + (on ? 'true' : 'false') + '">' +
+        item[1] + '</button>';
+    }
+    box.innerHTML =
+      '<div class="admin-filter-tools admin-order-search">' +
+        '<input class="ag-search" id="agQ" type="search" aria-label="Поиск дел" ' +
+          'placeholder="Номер, клиент или услуга" value="' + esc(st.q) + '">' +
+        (st.q ? '<button type="button" class="ag-chip" id="agQClear" title="Сбросить поиск" ' +
+          'aria-label="Сбросить поиск">×</button>' : '') +
+      '</div>' +
+      '<div class="admin-filter-scroll" aria-label="Основные фильтры">' +
+        primary.map(filterButton).join('') +
+      '</div>' +
+      '<details class="admin-order-filters-more"' + (secondaryLabel || st.bulk ? ' open' : '') + '>' +
+        '<summary class="quiet-button">Фильтры' +
+          (secondaryLabel ? ' · ' + esc(secondaryLabel) : '') +
+        '</summary>' +
+        '<div class="admin-order-filter-menu">' +
+          '<div class="admin-order-filter-menu__statuses" aria-label="Дополнительные статусы">' +
+            secondary.map(filterButton).join('') +
+          '</div>' +
+          '<label class="admin-order-filter-menu__sort"><span>Порядок</span>' +
+            '<select class="ag-sort" id="agSort" title="Порядок списка">' +
+              '<option value="fresh"' + (st.sort === 'fresh' ? ' selected' : '') + '>Сначала новые</option>' +
+              '<option value="updated"' + (st.sort === 'updated' ? ' selected' : '') + '>По последнему движению</option>' +
+              '<option value="deadline"' + (st.sort === 'deadline' ? ' selected' : '') + '>По ближайшему сроку</option>' +
+            '</select>' +
+          '</label>' +
+          '<button type="button" class="ag-chip' + (st.bulk ? ' on' : '') + '" id="agBulkToggle" ' +
+            'title="Выделить несколько дел для массового действия">' +
+            (st.bulk ? 'Завершить выбор' : 'Выбрать несколько') +
+          '</button>' +
+        '</div>' +
+      '</details>';
   }
 
   /* панель массовых действий — живёт под списком, пока включён режим выбора */
@@ -1784,12 +1888,38 @@ function initGodEye() {
   function drawList() {
     var box = document.getElementById('agList');
     if (!box) return;
-    if (!st.orders.length) { box.innerHTML = '<div class="ag-empty">Здесь пусто 🕊</div>'; return; }
+    var footer = document.getElementById('agListFooter');
+    var register = box.closest('.admin-order-register');
+    if (!st.orders.length) {
+      if (register) register.classList.add('admin-order-register--empty');
+      box.innerHTML = '<div class="ag-empty admin-order-empty"><strong>' +
+        (st.q || st.filter ? 'По выбранным условиям дел нет.' : 'Дел пока нет.') +
+        '</strong><span>' +
+        (st.q || st.filter
+          ? 'Измените поиск или вернитесь к полному списку.'
+          : 'Новое дело появится здесь после первой заявки или ручного создания.') +
+        '</span>' +
+        (st.q || st.filter
+          ? '<button type="button" class="btn btn-line" id="agOrdersReset">Показать все дела</button>'
+          : '') +
+        '</div>';
+      if (footer) footer.innerHTML = '<span>0 дел</span><small>Список актуален</small>';
+      var emptyBulk = document.getElementById('agBulkWrap');
+      if (emptyBulk) emptyBulk.innerHTML = bulkBar();
+      return;
+    }
     var arr = sortedOrders();
     var shown = arr.slice(0, st.listLimit);
+    if (register) {
+      register.classList.remove('admin-order-register--empty');
+      register.classList.toggle('admin-order-register--low-data', arr.length < 3);
+    }
     box.innerHTML = shown.map(function (o) {
-      var m = stMeta(o.status);
-      var who = o.client.guest ? ('👤 ' + o.client.name) : (o.client.name + (o.client.username ? ' @' + o.client.username : ''));
+      var client = o.client || {};
+      var who = client.name || 'клиент';
+      var whoMeta = client.guest
+        ? 'Гостевая заявка'
+        : (client.username ? '@' + client.username : 'Профиль клиента');
       var pills = '';
       if (o.paused) pills += '<span class="ag-pill">⏸ пауза</span>';
       if (o.claimed) pills += '<span class="ag-pill due">сверка</span>';
@@ -1806,8 +1936,9 @@ function initGodEye() {
         }
       }
       /* цветной корешок мастера — поверх маркера выбранности */
-      var clrStyle = o.color && CLR[o.color]
-        ? ' style="border-left-color:' + CLR[o.color] + ';border-left-width:4px"' : '';
+      var rowStyle = 'grid-template-columns:34px 92px minmax(120px,.65fr) minmax(220px,1.35fr) 140px 120px 100px 18px';
+      if (o.color && CLR[o.color])
+        rowStyle += ';border-left-color:' + CLR[o.color] + ';border-left-width:4px';
       /* галка — рисованная (не <input>): вложенный в <button> input невалиден,
          а выбор всё равно делает клик по всей строке (см. обработчик .ag-row) */
       var ck = st.bulk
@@ -1816,23 +1947,35 @@ function initGodEye() {
       var deadlineLabel = o.deadline_text || (o.deadline_date ? dmLabel(o.deadline_date) : '—');
       return '<button type="button" class="ag-row' + (o.id === st.sel ? ' sel' : '') +
         (o.pinned ? ' pin' : '') + '" data-id="' + o.id + '"' +
-        (st.bulk ? ' aria-pressed="' + (st.bulk.has(o.id) ? 'true' : 'false') + '"' : '') + clrStyle + '>' +
-        '<span class="admin-order-id">' + ck +
+        (st.bulk ? ' aria-pressed="' + (st.bulk.has(o.id) ? 'true' : 'false') + '"' : '') +
+        ' aria-label="' + (st.bulk ? 'Выбрать' : 'Открыть') + ' дело №' + o.id + '" style="' + rowStyle + '">' +
+        '<span class="admin-order-select">' + ck + '</span>' +
+        '<span class="admin-order-id">' +
           (o.pinned ? '<span class="r-pin" title="закреплён">📌</span>' : '') +
           '<span class="r-no">№' + o.id + '</span></span>' +
+        '<span class="admin-order-client" style="display:grid;min-width:0;gap:3px"><strong>' + esc(who) + '</strong><small>' +
+          esc(whoMeta) + '</small></span>' +
         '<span class="r-main"><span class="r-t">' + esc(o.work_label || 'Заявка') + '</span>' +
-          '<span class="r-s">' + esc(who) + ' · ' + dt(o.created_at) + dl +
+          '<span class="r-s">' + dt(o.created_at) + dl +
           (o.cancel_reason ? ' · ' + esc(String(o.cancel_reason).slice(0, 30)) : '') + '</span></span>' +
-        '<span class="admin-order-state">' + stamp(o.status) + (pills ? '<small>' + pills + '</small>' : '') + '</span>' +
+        '<span class="admin-order-state"><span class="status-stamp st-' + esc(o.status) + '">' +
+          esc(stMeta(o.status)[1]) + '</span>' + (pills ? '<small>' + pills + '</small>' : '') + '</span>' +
         '<span class="admin-order-deadline">' + esc(deadlineLabel) + '</span>' +
         '<span class="r-price">' + (o.price ? money(o.price) + ' ₽' : (o.quote_low ? 'от ' + money(o.quote_low) + ' ₽' : '—')) + '</span>' +
         '<span class="admin-order-go" aria-hidden="true">→</span>' +
         '</button>';
-    }).join('') +
-    (arr.length > st.listLimit
-      ? '<button type="button" class="ag-row ag-more" id="agMore">Показать ещё ' +
-        Math.min(40, arr.length - st.listLimit) + ' из ' + (arr.length - st.listLimit) + '</button>'
-      : '');
+    }).join('');
+    if (footer) {
+      footer.innerHTML =
+        '<span>' + shown.length + ' ' + anPl(shown.length, 'дело', 'дела', 'дел') +
+          (shown.length < arr.length ? ' из ' + arr.length : '') + '</span>' +
+        (arr.length > st.listLimit
+          ? '<button type="button" class="ag-linkbtn" id="agMore">Показать ещё ' +
+              Math.min(40, arr.length - st.listLimit) + '</button>'
+          : '<small>' + (arr.length < 3
+            ? 'Показаны все доступные дела по текущему фильтру.'
+            : 'Все доступные дела показаны.') + '</small>');
+    }
     var bb = document.getElementById('agBulkWrap');
     if (bb) bb.innerHTML = bulkBar();
   }
@@ -3065,6 +3208,12 @@ function initGodEye() {
   }
 
   /* ---------------- КЛИЕНТЫ ---------------- */
+  function clientInitials(name) {
+    return String(name || 'Клиент').trim().split(/\s+/).map(function (part) {
+      return part.charAt(0);
+    }).join('').slice(0, 2).toUpperCase() || 'К';
+  }
+
   function drawClientList() {
     var box = document.getElementById('agCList');
     if (!box) return;
@@ -3086,11 +3235,16 @@ function initGodEye() {
     });
     if (!arr.length) { box.innerHTML = '<div class="ag-empty">Никто не найден по «' + esc(st.cq) + '».</div>'; return; }
     box.innerHTML = arr.map(function (c) {
-      return '<button type="button" class="ag-row' + (c.id === st.csel ? ' sel' : '') + '" data-cid="' + c.id + '">' +
-        '<span class="r-main"><span class="r-t">' + (c.banned ? '⛔️ ' : '') + esc(c.name || 'клиент') +
-        (c.username ? ' <span class="petit">@' + esc(c.username) + '</span>' : '') + '</span>' +
-        '<span class="r-s">заказов: ' + c.orders + ' · оплачено: ' + money(c.paid_sum) + ' ₽ · был ' + dt(c.last_seen) + '</span></span>' +
-        '<span class="r-price">💎 ' + money(c.balance) + '</span>' +
+      var selected = c.id === st.csel;
+      return '<button type="button" class="ag-row client-directory__row' +
+        (selected ? ' sel is-current' : '') + '" data-cid="' + c.id +
+        '" aria-pressed="' + (selected ? 'true' : 'false') + '">' +
+        '<span class="client-directory__avatar">' + clientInitials(c.name) + '</span>' +
+        '<span class="r-main"><strong class="r-t">' + (c.banned ? '⛔️ ' : '') + esc(c.name || 'клиент') +
+        (c.username ? ' <span class="petit">@' + esc(c.username) + '</span>' : '') + '</strong>' +
+        '<small class="r-s">' + (c.orders || 0) + ' ' +
+          anPl(c.orders || 0, 'дело', 'дела', 'дел') + ' · был ' + dt(c.last_seen) + '</small></span>' +
+        '<span class="r-side"><span class="r-price">💎 ' + money(c.balance) + '</span><b aria-hidden="true">→</b></span>' +
         '</button>';
     }).join('');
   }
@@ -3109,53 +3263,94 @@ function initGodEye() {
       : orders.reduce(function (s, o) { return s + (/^(done|work|check|fix)$/.test(o.status) ? (o.price || 0) : 0); }, 0);
     var activeN = orders.filter(function (o) { return 'new priced prepay work check fix'.indexOf(o.status) >= 0; }).length;
     var doneN = orders.filter(function (o) { return o.status === 'done'; }).length;
-    var avg = doneN ? Math.round(paidSum / doneN) : 0;
+    var activeOrder = orders.filter(function (o) {
+      return 'new priced prepay work check fix'.indexOf(o.status) >= 0;
+    })[0] || null;
+    var telegram = c.username
+      ? '<a href="https://t.me/' + esc(c.username) + '" target="_blank" rel="noopener">@' + esc(c.username) + '</a>'
+      : (c.id > 0 ? '<a href="tg://user?id=' + c.id + '">Профиль привязан</a>' : 'Не привязан');
+    var caseDeadline = activeOrder
+      ? (activeOrder.deadline_text
+        ? esc(activeOrder.deadline_text)
+        : (activeOrder.deadline_date
+          ? 'Ближайший срок ' + esc(dmLabel(activeOrder.deadline_date))
+          : 'Срок не указан'))
+      : '';
+    var activeCase = activeOrder
+      ? '<section class="client-profile__case"><header><h3>Активное дело</h3>' +
+          '<button type="button" class="ag-linkbtn" data-open-order="' + activeOrder.id + '">Открыть дело</button></header>' +
+          '<div class="client-case">' +
+            '<span class="client-case__status"><span class="status-stamp st-' + esc(activeOrder.status) + '">' +
+              esc(stMeta(activeOrder.status)[1]) + '</span></span>' +
+            '<strong class="client-case__id">№' + activeOrder.id + '</strong>' +
+            '<span class="client-case__task">' + esc(activeOrder.work_label || 'Заявка') + '</span>' +
+            '<small class="client-case__deadline">' + caseDeadline + '</small>' +
+          '</div></section>'
+      : '<section class="client-profile__case"><header><h3>Активное дело</h3></header>' +
+          '<div class="client-case client-case--empty"><strong>Активных дел нет</strong>' +
+            '<small>Завершённые и закрытые дела доступны ниже.</small></div></section>';
     box.innerHTML =
-      '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
-      '<h2 style="margin:0">' + (c.banned ? '⛔️ ' : '') + esc(c.name || 'клиент') +
-      (c.username ? ' <span class="petit">@' + esc(c.username) + '</span>' : '') + '</h2>' +
-      '<span class="mono petit">id ' + c.id + '</span></div>' +
-      '<p class="ag-meta">с нами с ' + dt(c.since) + ' · был ' + dt(c.last_seen) +
-      (c.welcome_at ? ' · велком-бонус получен' : '') + '</p>' +
-      (c.username ? '<div class="ag-clinks"><a href="https://t.me/' + esc(c.username) + '" target="_blank" rel="noopener">Telegram @' + esc(c.username) + '</a></div>'
-        : (c.id > 0 ? '<div class="ag-clinks"><a href="tg://user?id=' + c.id + '">Профиль Telegram</a></div>' : '')) +
-      (c.referrer ? '<p class="ag-meta">🤝 пришёл по приглашению: ' + esc(c.referrer.name || c.referrer.id) + '</p>' : '') +
-      (refs.length ? '<p class="ag-meta">🤝 привёл: ' + refs.map(function (r) { return esc(r.name || r.id); }).join(', ') + '</p>' : '') +
-
-      '<div class="cl-stats">' +
-        '<span><b>' + money(paidSum) + ' ₽</b><i>оплачено всего</i></span>' +
-        '<span><b>' + orders.length + '</b><i>заказов</i></span>' +
-        '<span><b>' + activeN + '</b><i>в работе</i></span>' +
-        (avg ? '<span><b>' + money(avg) + ' ₽</b><i>средний чек</i></span>' : '') +
+      '<header class="client-profile__header"><span class="client-profile__avatar">' +
+        clientInitials(c.name) + '</span><div><p class="eyebrow">Карточка клиента</p>' +
+        '<h2>' + (c.banned ? '⛔️ ' : '') + esc(c.name || 'клиент') + '</h2>' +
+        '<span>С нами с ' + dt(c.since) + (c.welcome_at ? ' · приветственный бонус получен' : '') +
+        '</span></div>' +
+        '<details class="client-profile__menu"><summary class="quiet-button" aria-label="Действия с клиентом">•••</summary>' +
+          '<div><button type="button" class="ag-linkbtn" data-imp-client="' + c.id + '">Открыть кабинет</button>' +
+          (c.username
+            ? '<a class="ag-linkbtn" href="https://t.me/' + esc(c.username) +
+              '" target="_blank" rel="noopener">Открыть Telegram</a>'
+            : '') + '</div>' +
+        '</details></header>' +
+      '<div class="client-profile__contacts">' +
+        '<span><small>Telegram</small><strong>' + telegram + '</strong></span>' +
+        '<span><small>Последний визит</small><strong>' + (dt(c.last_seen) || 'Нет данных') + '</strong></span>' +
+        '<span><small>Оплачено всего</small><strong>' + money(paidSum) + ' ₽</strong></span>' +
       '</div>' +
 
-      '<div class="ag-sec"><span class="caps">Бонусный счёт · ' + money(bonus.balance || 0) + '</span>' +
+      activeCase +
+
+      '<div class="cl-stats">' +
+        '<span><b>' + orders.length + '</b><i>' + anPl(orders.length, 'дело', 'дела', 'дел') + '</i></span>' +
+        '<span><b>' + activeN + '</b><i>в работе</i></span>' +
+        '<span><b>' + doneN + '</b><i>завершено</i></span>' +
+      '</div>' +
+
+      (c.referrer ? '<p class="ag-meta">По приглашению: ' + esc(c.referrer.name || 'клиент') + '</p>' : '') +
+      (refs.length ? '<p class="ag-meta">Приглашённые клиенты: ' + refs.map(function (r) {
+        return esc(r.name || 'клиент');
+      }).join(', ') + '</p>' : '') +
+
+      '<section class="ag-sec client-profile__bonus" id="clBonusPanel"><header><h3>Бонусный счёт</h3>' +
+      '<span class="sub">' + money(bonus.balance || 0) + ' бонусов</span></header>' +
       (bonus.expiring.length ? '<p class="petit">⏳ сгорает: ' + bonus.expiring.map(function (e) { return e.amount + ' — ' + dt(e.at).slice(0, 5); }).join(', ') + '</p>' : '') +
       '<div class="ag-actrow"><input type="number" id="agBDelta" placeholder="± сумма">' +
-      '<input type="text" id="agBNote" placeholder="комментарий (клиент увидит)" style="flex:1;min-width:150px">' +
+      '<input type="text" id="agBNote" placeholder="Комментарий (клиент увидит)">' +
       '<button type="button" class="btn btn-line" id="agBApply">Провести</button></div>' +
       '<p class="ag-note">Плюс — начислить (срок 90 дней), минус — списать. Начисление придёт клиенту уведомлением.</p>' +
-      '<div class="ag-ev" style="margin-top:10px;max-height:200px;overflow-y:auto">' +
+      '<div class="ag-ev client-profile__ledger">' +
       ledger.map(function (r) {
         var sign = r.delta > 0 ? '+' : '';
         return dt(r.at) + ' · <b>' + sign + r.delta + '</b> · ' + esc(r.label) + (r.note ? ' — ' + esc(r.note) : '');
-      }).join('<br>') + '</div></div>' +
+      }).join('<br>') + '</div></section>' +
 
-      '<div class="ag-sec"><span class="caps">Заказы (' + orders.length + ')</span>' +
+      '<section class="ag-sec client-profile__orders" id="clOrdersPanel"><header><h3>Дела клиента</h3>' +
+      '<span class="sub">' + orders.length + '</span></header>' +
       (orders.length ? orders.map(function (o) {
         var m = stMeta(o.status);
         return '<div class="ag-file"><span class="fname">' + m[0] + ' №' + o.id + ' · ' + esc(o.work_label || '') +
           (o.price ? ' · ' + money(o.price) + ' ₽' : '') + '</span>' +
           '<button type="button" class="ag-linkbtn" data-open-order="' + o.id + '">открыть</button></div>';
-      }).join('') : '<p class="ag-note">Заказов нет.</p>') + '</div>' +
+      }).join('') : '<p class="ag-note">Дел пока нет.</p>') + '</section>' +
 
-      '<div class="ag-sec"><span class="caps">Доступ</span><div class="ag-actrow">' +
+      '<section class="ag-sec client-profile__access" id="clAccessPanel"><header><h3>Доступ и безопасность</h3></header>' +
+      '<div class="ag-actrow">' +
       '<button type="button" class="btn btn-line" data-imp-client="' + c.id + '">👁 Открыть кабинет клиента</button>' +
       '<button type="button" class="btn ' + (c.banned ? 'btn-line' : 'btn-wax') + '" id="agBan" data-on="' + (c.banned ? '0' : '1') + '">' +
       (c.banned ? 'Снять блокировку' : '⛔️ Заблокировать клиента') + '</button></div>' +
       '<p class="ag-note">«Открыть кабинет» — тихий вход на правах клиента в новой вкладке: посмотреть его глазами, ' +
       'поправить, помочь. Клиент ничего не заметит — визиты и метки «прочитано» не трогаются.<br>' +
-      'Блокировка закрывает приём новых заявок с сайта от этого аккаунта.</p></div>';
+      'Блокировка закрывает приём новых заявок с сайта от этого аккаунта.</p></section>';
   }
 
   /* ---------------- ОТЗЫВЫ ---------------- */
@@ -3297,23 +3492,51 @@ function initGodEye() {
   }
 
   /* ---------------- НАСТРОЙКИ ---------------- */
+  function settingsPanel(title, note, body, extraClass) {
+    return '<section class="ag-sec admin-panel admin-settings-panel' +
+      (extraClass ? ' ' + extraClass : '') + '">' +
+      '<header><div><h2>' + title + '</h2><span>' + note + '</span></div></header>' +
+      '<div class="admin-settings-panel__body">' + body + '</div></section>';
+  }
+
+  function settingsSummary(ov) {
+    var maintenance = ov.maintenance || {};
+    var siteOn = !maintenance.site;
+    var botOn = !maintenance.bot;
+    var payLabel = ov.pay_online ? 'Онлайн' : (ov.requisites ? 'Переводы' : 'Не настроена');
+    var payNote = ov.pay_online ? 'карта и СБП доступны' :
+      (ov.requisites ? 'ручная сверка платежей' : 'нужны реквизиты');
+    var mailLabel = ov.mail_on ? 'Работает' : (ov.mail_configured ? 'Ошибка' : 'Не настроена');
+    var mailNote = ov.mail_on ? 'письма и вход по коду' :
+      (ov.mail_configured ? esc(ov.mail_error || 'SMTP недоступен') : 'SMTP не подключён');
+    return '<section class="admin-metrics admin-settings-summary" aria-label="Состояние сервисов">' +
+      '<article><span>Публичный сайт</span><strong>' + (siteOn ? 'Работает' : 'Закрыт') +
+        '</strong><small>' + (siteOn ? 'страницы и формы доступны' : 'включён режим техработ') + '</small></article>' +
+      '<article><span>Telegram-бот</span><strong>' + (botOn ? 'Работает' : 'Закрыт') +
+        '</strong><small>' + (botOn ? 'клиентские команды доступны' : 'включён короткий антракт') + '</small></article>' +
+      '<article><span>Оплата</span><strong>' + payLabel + '</strong><small>' + payNote + '</small></article>' +
+      '<article><span>Почта</span><strong>' + mailLabel + '</strong><small>' + mailNote + '</small></article>' +
+      '</section>';
+  }
+
   function maintSec(ov) {
     var m = ov.maintenance || {};
     function row(key, on, title, note) {
-      return '<div class="ag-actrow" style="align-items:center;gap:10px">' +
-        '<button type="button" class="btn ' + (on ? 'btn-wax' : 'btn-line') + '" data-maint="' + key + '" data-on="' + (on ? 1 : 0) + '">' +
-        (on ? '⏸ ' + title + ': ЗАКРЫТО — открыть' : '▶ ' + title + ': работает — закрыть') + '</button>' +
-        '<span class="petit">' + note + '</span></div>';
+      return '<div class="admin-settings-service-row">' +
+        '<span><strong>' + title + '</strong><small>' + note + '</small></span>' +
+        '<span class="status-stamp ' + (on ? 'st-cancel' : 'st-done') + '">' +
+          (on ? 'Закрыт' : 'Работает') + '</span>' +
+        '<button type="button" class="btn ' + (on ? 'btn-wax' : 'btn-line') +
+          '" data-maint="' + key + '" data-on="' + (on ? 1 : 0) + '">' +
+          (on ? 'Открыть' : 'Закрыть на техработы') + '</button>' +
+      '</div>';
     }
-    return '<div class="ag-sec" style="border-top:0;margin-top:0;padding-top:0"><span class="caps">Техработы</span>' +
-      ((m.site || m.bot) ? '<p class="petit" style="color:var(--wax)"><b>Внимание: занавес опущен.</b> Не забудьте открыть, когда закончите.</p>' : '') +
-      row('site', m.site, 'Сайт',
-          'Гости видят вывеску «Идут переплётные работы» (страница сама вернёт их, когда откроемся). ' +
-          'Заявки, кабинет, эта админка и бот продолжают работать.') +
-      row('bot', m.bot, 'Бот',
-          'Клиентам в Telegram бот вежливо отвечает про короткий антракт. Вы (мастер) видите бота как обычно.') +
-      '</div>' +
-      slotsSec(ov);
+    var body =
+      ((m.site || m.bot) ? '<p class="admin-settings-warning"><b>Один из сервисов закрыт.</b> Откройте его после завершения работ.</p>' : '') +
+      row('site', m.site, 'Публичный сайт', 'Страницы и формы для посетителей') +
+      row('bot', m.bot, 'Telegram-бот', 'Клиентские команды и уведомления');
+    return settingsPanel('Режимы сервиса', 'Изменения требуют подтверждения', body,
+      'admin-settings-panel--service');
   }
 
   /* ответ /admin/slots -> обновить локальное состояние и перерисовать настройки */
@@ -3335,103 +3558,120 @@ function initGodEye() {
         ? 'Сайт показывает: <b>свободно ' + free + ' из ' + s.quota + '</b> — обложка, прейскурант, смета.'
         : 'Сайт показывает: <b>мест нет</b> — идёт запись на следующий месяц.')
       : 'Квота 0 — плашки набора на сайте скрыты.';
-    return '<div class="ag-sec"><span class="caps">Набор месяца — квота и брони</span>' +
-      '<p class="petit" style="margin:2px 0 10px">' + stateLine + '</p>' +
-      '<div class="ag-actrow" style="align-items:center;gap:10px;flex-wrap:wrap">' +
-      '<label class="petit" style="display:inline-flex;align-items:center;gap:8px">квота ' +
-      '<input type="number" id="agSlots" min="0" max="500" value="' + (s.quota || 0) + '" style="width:84px"></label>' +
+    var body =
+      '<p class="petit admin-settings-slots-state">' + stateLine + '</p>' +
+      '<div class="ag-actrow admin-settings-slots-controls">' +
+      '<label class="petit"><span>Квота</span>' +
+      '<input type="number" id="agSlots" min="0" max="500" value="' + (s.quota || 0) + '"></label>' +
       '<button type="button" class="btn btn-line" id="agSlotsSave">Сохранить квоту</button>' +
       '<span class="petit">занято: <b>' + (s.taken || 0) + '</b> = картотека ' + (s.auto || 0) +
       ' + брони ' + (s.extra || 0) + '</span></div>' +
-      '<div class="ag-actrow" style="align-items:center;gap:10px;margin-top:8px">' +
-      '<button type="button" class="btn btn-wax" data-slot-extra="1">➕ Место забронировано</button>' +
-      '<button type="button" class="btn btn-line" data-slot-extra="-1"' + (s.extra ? '' : ' disabled') + '>➖ Снять бронь</button>' +
+      '<div class="ag-actrow admin-settings-slots-actions">' +
+      '<button type="button" class="btn btn-wax" data-slot-extra="1">Место забронировано</button>' +
+      '<button type="button" class="btn btn-line" data-slot-extra="-1"' + (s.extra ? '' : ' disabled') + '>Снять бронь</button>' +
       '</div>' +
-      '<p class="ag-note">Заявки картотеки месяца считаются сами (без отмен, услуг, подписок и ваших тестов). ' +
-      '«Бронь» — реальная договорённость мимо картотеки: личка, ВК, постоянный клиент. Отметили — ' +
-      'счётчик на сайте сразу уменьшил свободные места; оформили заявку — снимите бронь, чтобы место ' +
-      'не посчиталось дважды. Быстро из Telegram: команда <b>/slots</b> в боте. ' +
-      'Рисовать цифры не надо: живой счётчик убедительнее и не подставляет бренд.</p></div>';
+      '<details class="admin-settings-disclosure admin-settings-disclosure--note">' +
+        '<summary>Как считается доступность</summary>' +
+        '<p class="ag-note">Заявки картотеки месяца считаются автоматически. Ручная бронь — это ' +
+        'реальная договорённость вне картотеки; после оформления заявки снимите её, чтобы место не ' +
+        'посчиталось дважды. То же действие доступно командой <b>/slots</b> в Telegram.</p>' +
+      '</details>';
+    return settingsPanel('Запись и доступность', 'Квота и ручные брони', body,
+      'admin-settings-panel--slots');
+  }
+
+  function settingsDisclosure(title, note, body, extraClass) {
+    return '<details class="admin-settings-disclosure' + (extraClass ? ' ' + extraClass : '') + '">' +
+      '<summary><span><strong>' + title + '</strong><small>' + note + '</small></span>' +
+        '<span class="admin-settings-disclosure__action">Подробнее</span></summary>' +
+      '<div class="admin-settings-disclosure__body">' + body + '</div></details>';
   }
 
   function drawSettings(box) {
     var ov = st.ov || {};
+    var payStatus = ov.pay_online
+      ? 'Онлайн-касса работает; карта и СБП доступны.'
+      : (ov.requisites
+        ? 'Доступна ручная оплата переводом.'
+        : 'Сначала добавьте реквизиты для ручной оплаты.');
+    var payDetails = ov.pay_online
+      ? '<p class="petit">Платёжные статусы обновляются автоматически. Ручная оплата остаётся резервным способом.</p>'
+      : '<p class="petit">Для подключения Robokassa проверьте в кабинете магазина Робочеки СМЗ, ' +
+        'Result URL <span class="mono">https://akademsalon.ru/api/pay/robokassa</span> (POST), ' +
+        'Success/Fail URL <span class="mono">https://akademsalon.ru/dashboard.html</span> (GET) и MD5. ' +
+        'Боевые ROBOKASSA_LOGIN, ROBOKASSA_PASS1 и ROBOKASSA_PASS2 хранятся в защищённой конфигурации. ' +
+        'После её изменения перезапустите сервис <span class="mono">salon-bot-v2</span>.</p>';
+    var mailStatus = ov.mail_on
+      ? 'Транзакционные письма и вход по коду работают.'
+      : (ov.mail_configured ? 'SMTP настроен, но сейчас недоступен.' : 'SMTP пока не настроен.');
+    var mailDetails = ov.mail_on
+      ? '<p class="petit">Рабочий адрес: support@akademsalon.ru. Для доменов Mail.ru проверьте ' +
+        'регистрацию akademsalon.ru в postmaster.mail.ru и журнал возвратов.</p>'
+      : (ov.mail_configured
+        ? '<p class="petit">Последняя ошибка: <b>' + esc(ov.mail_error || 'SMTP недоступен') + '</b>. ' +
+          'Проверьте состояние ящика, SMTP-порты 465/587 и защищённые SMTP-параметры. После изменения ' +
+          'конфигурации перезапустите сервис <span class="mono">salon-bot-v2</span>.</p>'
+        : '<p class="petit">Добавьте SMTP_HOST, SMTP_USER и SMTP_PASS в защищённую конфигурацию. ' +
+          'До подключения письма и вход по коду скрыты автоматически.</p>');
+    var oauth = ov.oauth || {};
+    var oauthStatus = 'ВКонтакте: ' + (oauth.vk ? 'подключён' : 'выключен') +
+      ' · Mail.ru: ' + (oauth.mailru ? 'подключён' : 'выключен');
+    var oauthDetails =
+      '<p class="petit"><b>ВКонтакте.</b> Redirect URL: ' +
+        '<span class="mono">https://akademsalon.ru/api/auth/vk/callback</span>; идентификатор ' +
+        'приложения хранится как VK_CLIENT_ID.</p>' +
+      '<p class="petit"><b>Mail.ru.</b> Redirect URL: ' +
+        '<span class="mono">https://akademsalon.ru/api/auth/mailru/callback</span>; ID и секрет ' +
+        'хранятся как MAILRU_CLIENT_ID и MAILRU_CLIENT_SECRET. После изменения защищённой ' +
+        'конфигурации перезапустите сервис <span class="mono">salon-bot-v2</span>.</p>';
+    var groupStatus = ov.group_forum
+      ? 'Темы включены; каждое дело получает отдельную ветку.'
+      : (ov.group_chat_id ? 'Группа подключена, темы пока выключены.' : 'Рабочая группа не подключена.');
+    var groupDetails = ov.group_forum
+      ? '<p class="petit">Файлы, чеки и отзывы по делу направляются в его тему. Справка доступна командой /help.</p>'
+      : '<p class="petit">Включите для группы режим тем «Список», затем выполните команду /threads. ' +
+        (ov.group_chat_id ? 'Текущий идентификатор группы: <span class="mono">' +
+          esc(String(ov.group_chat_id)) + '</span>. ' : '') +
+        'Пока темы выключены, события идут в общую ленту с метками дел.</p>';
+    var recoveryBody =
+      '<div class="admin-settings-status-list">' +
+        settingsDisclosure('Онлайн-оплата', payStatus, payDetails, 'admin-settings-panel--payments') +
+        settingsDisclosure('Почта', mailStatus, mailDetails, 'admin-settings-panel--mail') +
+        settingsDisclosure('Вход через ВК и Mail.ru', oauthStatus, oauthDetails, 'admin-settings-panel--oauth') +
+        settingsDisclosure('Рабочая группа заказов', groupStatus, groupDetails, 'admin-settings-panel--group') +
+      '</div>';
     box.innerHTML =
-      '<div class="ag-card" style="max-width:680px;max-height:none">' +
-      maintSec(ov) +
-      '<div class="ag-sec"><span class="caps">Реквизиты для переводов</span>' +
-      '<div class="ag-actrow"><textarea id="agReq" rows="3" placeholder="Сбер: 0000 0000 0000 0000 (Имя О.)&#10;СБП: +7 900 000-00-00">' + esc(ov.requisites || '') + '</textarea>' +
-      '<button type="button" class="btn btn-line" id="agReqSave">Сохранить</button></div>' +
-      '<p class="ag-note">Эти реквизиты видят клиенты при оплате переводом — в боте и в кабинете.</p></div>' +
-
-      '<div class="ag-sec"><span class="caps">Оплата этапами</span>' +
-      '<p class="petit">Небольшие работы — 2 части (50/50), крупные (диплом, магистерская, Scopus…) — 3 части (30/40/30), как обещает сайт. План ставится автоматически при назначении цены; в карточке заказа его можно поменять, пока этапы не пошли.</p></div>' +
-
-      '<div class="ag-sec"><span class="caps">Инструменты мастерской</span>' +
-      '<p class="petit">🖼 <a class="ag-linkbtn" href="admin-covers.html" target="_blank" rel="noopener" style="text-decoration:underline">Мастерская обложек</a> — ' +
-      'картинки для постов в фирменном стиле: рубрика внизу, ваш заголовок по центру, скачивание PNG. ' +
-      'Пустые заготовки девяти рубрик лежат в папке репозитория «Макеты постов».<br>' +
-      '📕 <a class="ag-linkbtn" href="' + S.api.base + '/pamyatka/welcome" target="_blank" rel="noopener" style="text-decoration:underline">Памятка новичка (PDF)</a> — ' +
-      'та самая, что бот дарит вместе с 300 бонусами; персональные памятки к выдаче уходят сами при передаче финала.</p></div>' +
-
-      '<div class="ag-sec"><span class="caps">Онлайн-оплата картой</span>' +
-      '<p class="petit">' + (ov.pay_online
-        ? '✅ Онлайн-касса подключена — клиенты могут платить картой/СБП, статусы двигаются сами.'
-        : 'Магазин Robokassa активирован — осталось три шага. ' +
-          '<b>1) Робочеки СМЗ:</b> в ЛК Robokassa → Фискализация → «Робочеки СМЗ» → «Перейти с текущего» → «Отправить заявку», ' +
-          'затем в приложении «Мой налог» одобрите запрос «Партнёр предлагает подключиться» и проверьте, что сервис стал активен. ' +
-          '<b>2) Технические настройки магазина</b> (ЛК → Мои магазины → Настройки): Result URL ' +
-          '<span class="mono">https://akademsalon.ru/api/pay/robokassa</span> (метод POST), ' +
-          'Success URL и Fail URL — <span class="mono">https://akademsalon.ru/dashboard.html</span> (метод GET), ' +
-          'алгоритм расчёта хеша — <b>MD5</b>. ' +
-          '<b>3) Ключи:</b> там же возьмите «Идентификатор магазина» и боевые «Пароль #1» / «Пароль #2» ' +
-          'и добавьте в <span class="mono">/root/salon_bot/.env</span> строки ROBOKASSA_LOGIN, ROBOKASSA_PASS1, ROBOKASSA_PASS2, ' +
-          'затем перезапустите бота (systemctl restart salon-bot-v2) — кнопки «Оплатить картой» включатся сами. ' +
-          'Состав корзины (номенклатуру) сайт уже передаёт — чеки НПД сформируются корректно. ' +
-          'До этого работает оплата переводом с подтверждением в одну кнопку.') + '</p></div>' +
-
-      '<div class="ag-sec"><span class="caps">Почта</span>' +
-      '<p class="petit">' + (ov.mail_on
-        ? '✅ Почта работает (support@akademsalon.ru): письма о заказе уходят, вход по коду включён. ' +
-          '<b>Нюанс mail.ru:</b> адреса @mail.ru / @bk.ru / @inbox.ru их спам-фильтр может отбивать (550), ' +
-          'пока домен не зарегистрирован в <b>postmaster.mail.ru</b> — зайдите туда с любого аккаунта mail.ru, ' +
-          'добавьте домен akademsalon.ru и подтвердите права (DNS уже настроен). Отлупы копятся во «Входящих» ящика support@.'
-        : (ov.mail_configured
-          ? '⚠️ Почта настроена (support@akademsalon.ru), но письма сейчас не уходят: <b>' +
-            esc(ov.mail_error || 'SMTP недоступен') + '</b>. ' +
-            (/авторизац/i.test(ov.mail_error || '')
-              ? 'Как починить: в панели <span class="mono">timeweb.cloud</span> → Почта → ящик support@ проверьте, не заблокирован ли он, ' +
-                'и задайте новый пароль. Новый пароль впишите в <span class="mono">/root/salon_bot/.env</span> (строка SMTP_PASS) ' +
-                'и перезапустите бота: <span class="mono">systemctl restart salon-bot-v2</span>. ' +
-                'Пока логин не проходит, вход по коду на сайте спрятан автоматически.'
-              : 'Похоже, хостер держит исходящий SMTP-порт закрытым. Напишите в поддержку Timeweb из панели: ' +
-                '«Прошу открыть исходящие SMTP-порты 465 и 587 на VPS 217.18.63.210 — ' +
-                'нужна отправка транзакционных писем моего домена akademsalon.ru». После разблокировки всё включится само, без перезапусков.')
-          : 'SMTP не настроен — письма клиентам не уходят. Добавьте SMTP_HOST/USER/PASS в /root/salon_bot/.env.')) + '</p></div>' +
-
-      '<div class="ag-sec"><span class="caps">Вход через ВК и Mail.ru</span>' +
-      '<p class="petit">' +
-        ((ov.oauth && ov.oauth.vk) ? '✅ <b>ВКонтакте</b> подключён — кнопка на экране входа видна. '
-          : '<b>ВКонтакте:</b> выключен. Как включить: <span class="mono">id.vk.com</span> → «VK ID для бизнеса» → ' +
-            'создать приложение (тип «Web»), Redirect URL: <span class="mono">https://akademsalon.ru/api/auth/vk/callback</span>, ' +
-            'включить доступ «E-mail». Полученный ID приложения впишите в <span class="mono">/root/salon_bot/.env</span> ' +
-            'строкой VK_CLIENT_ID и перезапустите бота — кнопка появится сама. ') +
-        ((ov.oauth && ov.oauth.mailru) ? '✅ <b>Mail.ru</b> подключён.'
-          : '<b>Mail.ru:</b> выключен. Как включить: <span class="mono">o2.mail.ru/app/</span> → создать приложение, ' +
-            'Redirect URL: <span class="mono">https://akademsalon.ru/api/auth/mailru/callback</span>, scope «userinfo». ' +
-            'ID и секрет — в .env строками MAILRU_CLIENT_ID и MAILRU_CLIENT_SECRET, затем ' +
-            '<span class="mono">systemctl restart salon-bot-v2</span>.') +
-        ' Механика уже на сервере: вход считает людей одним аккаунтом по почте (ВК/Mail.ru/код на почту не плодят дубли), ' +
-        'а вошедший клиент может привязать сервисы в кабинете — строка «Входы».' +
-      '</p></div>' +
-
-      '<div class="ag-sec"><span class="caps">Рабочая группа заказов</span>' +
-      '<p class="petit">' + (ov.group_forum
-        ? '✅ Темы включены: каждый заказ — отдельная ветка. Всё по заказу (файлы клиента, чеки, отзывы) падает в его тему.'
-        : 'Группа подключена (id <span class="mono">' + esc(String(ov.group_chat_id || '')) + '</span>), но «Темы» не включены. ' +
-          'Профиль группы → «Изменить» → «Темы» → вид <b>«Список»</b>, затем команда /threads в группе. ' +
-          'Пока тем нет, заказы идут в общую ленту с метками #заказ.') + '</p>' +
-      '<p class="ag-note">Шпаргалка по работе в группе — команда /help внутри группы.</p></div>' +
+      settingsSummary(ov) +
+      '<div class="admin-settings-workspace" aria-label="Настройки сервиса">' +
+        '<div class="admin-dashboard-grid admin-settings-primary">' +
+          maintSec(ov) +
+          slotsSec(ov) +
+        '</div>' +
+        '<div class="admin-dashboard-grid admin-settings-finance">' +
+          settingsPanel('Реквизиты для переводов', 'Показываются при ручной оплате',
+            '<div class="ag-actrow"><textarea id="agReq" rows="3" ' +
+              'placeholder="СБП или банковские реквизиты">' + esc(ov.requisites || '') + '</textarea>' +
+              '<button type="button" class="btn btn-line" id="agReqSave">Сохранить</button></div>' +
+            '<p class="ag-note">Эти реквизиты видят клиенты при оплате переводом — в боте и кабинете.</p>',
+            'admin-settings-panel--requisites') +
+          settingsPanel('Оплата этапами', 'Рабочая политика расчётов',
+            '<p class="petit">Небольшие работы делятся на 2 части (50/50), крупные — на 3 части ' +
+            '(30/40/30). План назначается вместе с ценой и остаётся редактируемым в карточке дела, ' +
+            'пока этапы не начались.</p>',
+            'admin-settings-panel--stages') +
+        '</div>' +
+        '<div class="admin-dashboard-grid admin-settings-secondary">' +
+          settingsPanel('Подключения и восстановление', 'Статусы и инструкции раскрываются по запросу',
+            recoveryBody, 'admin-settings-panel--recovery') +
+          settingsPanel('Инструменты мастерской', 'Обложки и памятки',
+            '<div class="admin-settings-tools">' +
+              '<a class="ag-linkbtn" href="admin-covers.html" target="_blank" rel="noopener">' +
+                '<strong>Мастерская обложек</strong><small>Фирменные PNG для публикаций</small></a>' +
+              '<a class="ag-linkbtn" href="' + S.api.base + '/pamyatka/welcome" target="_blank" rel="noopener">' +
+                '<strong>Памятка новичка (PDF)</strong><small>Актуальная клиентская версия</small></a>' +
+            '</div>',
+            'admin-settings-panel--tools') +
+        '</div>' +
       '</div>';
   }
 
@@ -3935,6 +4175,15 @@ function initGodEye() {
     var crow = t.closest('.ag-row[data-cid]');
     if (crow) { loadClient(parseInt(crow.getAttribute('data-cid'), 10)); return; }
 
+    if (t.closest('#agClientsExport')) { exportClientsCsv(); return; }
+    if (t.closest('#agOrdersReset')) {
+      st.filter = '';
+      st.q = '';
+      st.sort = 'fresh';
+      st.listLimit = 40;
+      loadTab();
+      return;
+    }
     var chip = t.closest('.ag-chip[data-f]');
     if (chip) { st.filter = chip.getAttribute('data-f'); st.listLimit = 40; loadTab(); return; }
     if (t.closest('#agMore')) { st.listLimit += 40; drawList(); return; }

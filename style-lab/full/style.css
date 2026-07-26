@@ -98,6 +98,13 @@
     --wax-deep: #792b1d;
     --wax-bright: #bf5138;
     --wax-soft: #f2ddd5;
+    --logo-ring: rgba(255, 253, 248, .9);
+    --logo-ring-edge: rgba(121, 43, 29, .22);
+    --logo-shadow-rest: 0 7px 18px rgba(78, 43, 29, .16), 0 2px 5px rgba(78, 43, 29, .08);
+    --logo-shadow-hover: 0 10px 24px rgba(121, 43, 29, .22), 0 3px 7px rgba(78, 43, 29, .1);
+    --logo-filter: saturate(1.02) contrast(1.015);
+    --logo-filter-pulse: saturate(1.045) contrast(1.02) brightness(1.01);
+    --logo-filter-hover: saturate(1.1) contrast(1.03) brightness(1.025);
     --danger: #a63f29;
     --green: #3c644c;
     --green-soft: #dfe9e1;
@@ -144,6 +151,13 @@
     --wax-deep: #a4432d;
     --wax-bright: #dc7459;
     --wax-soft: #42251f;
+    --logo-ring: rgba(36, 34, 29, .9);
+    --logo-ring-edge: rgba(220, 116, 89, .32);
+    --logo-shadow-rest: 0 8px 22px rgba(0, 0, 0, .38), 0 0 13px rgba(198, 91, 65, .1);
+    --logo-shadow-hover: 0 11px 28px rgba(0, 0, 0, .46), 0 0 17px rgba(220, 116, 89, .17);
+    --logo-filter: saturate(1.06) contrast(1.025) brightness(1.025);
+    --logo-filter-pulse: saturate(1.09) contrast(1.03) brightness(1.04);
+    --logo-filter-hover: saturate(1.14) contrast(1.035) brightness(1.06);
     --danger: #ec7d68;
     --green: #7faa8b;
     --green-soft: #23362a;
@@ -273,8 +287,25 @@
     transition: transform .18s ease;
   }
 
-  .skip-link:focus {
+  /* The skip target is a keyboard aid. Pointer focus (and browser focus
+     restoration after a hash-route render) must never pin it over the brand. */
+  html[data-input-modality="keyboard"] .skip-link:focus {
     transform: none;
+  }
+
+  .brand,
+  .mobile-appbar__brand,
+  .admin-sidebar__brand {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .brand img,
+  .mobile-appbar__brand img,
+  .admin-sidebar__brand img {
+    pointer-events: none;
+    -webkit-user-drag: none;
   }
 
   .concept-ribbon {
@@ -12570,6 +12601,151 @@
       width: 22px;
       height: 22px;
     }
+  }
+}
+
+/* The mark keeps the canonical BIMI artwork; only its optical surround is
+   theme-aware. The same tokens and states are mirrored in production. */
+@layer components {
+  .brand__mark,
+  .mobile-appbar__brand img,
+  .site-footer__brand img,
+  .wizard-sidebar__brand img,
+  .admin-sidebar__brand img,
+  .search-head > img {
+    --wax-deep: #8c2d18;
+    --wax-cta: #b23b22;
+    --wax-bright: #c65b41;
+    --paper: #f6f1e7;
+    display: block;
+    border-radius: 50%;
+    background: #f6f1e7;
+    box-shadow:
+      0 0 0 2px var(--logo-ring),
+      0 0 0 3px var(--logo-ring-edge),
+      var(--logo-shadow-rest);
+    filter: var(--logo-filter);
+    transform: translateZ(0) scale(1);
+    transform-origin: center;
+    animation: salon-logo-breathe 8.4s ease-in-out infinite;
+    transition:
+      transform 220ms cubic-bezier(.22, 1, .36, 1),
+      filter 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  @keyframes salon-logo-breathe {
+    0%,
+    100% {
+      transform: translateZ(0) scale(1);
+      filter: var(--logo-filter);
+    }
+    50% {
+      transform: translateZ(0) scale(1.008);
+      filter: var(--logo-filter-pulse);
+    }
+  }
+
+  @media (hover: hover) {
+    .brand:hover .brand__mark,
+    .mobile-appbar__brand:hover img,
+    .wizard-sidebar__brand:hover img,
+    .admin-sidebar__brand:hover img {
+      animation: none;
+      box-shadow:
+        0 0 0 2px var(--logo-ring),
+        0 0 0 3px var(--logo-ring-edge),
+        var(--logo-shadow-hover);
+      filter: var(--logo-filter-hover);
+      transform: translateY(-1px) scale(1.045) rotate(-.6deg);
+    }
+  }
+
+  .brand:active .brand__mark,
+  .mobile-appbar__brand:active img,
+  .wizard-sidebar__brand:active img,
+  .admin-sidebar__brand:active img {
+    animation: none;
+    filter: var(--logo-filter-hover);
+    transform: scale(.975);
+  }
+
+  html[data-input-modality="keyboard"] .brand:focus-visible {
+    outline: none;
+  }
+
+  html[data-input-modality="keyboard"] .brand:focus-visible .brand__mark {
+    outline: 2px solid var(--wax);
+    outline-offset: 4px;
+  }
+
+  html[data-input-modality="keyboard"] .brand:focus-visible .brand__name strong {
+    text-decoration: underline;
+    text-decoration-color: var(--wax);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand__mark,
+    .mobile-appbar__brand img,
+    .site-footer__brand img,
+    .wizard-sidebar__brand img,
+    .admin-sidebar__brand img,
+    .search-head > img,
+    .brand:hover .brand__mark,
+    .brand:active .brand__mark,
+    .mobile-appbar__brand:hover img,
+    .mobile-appbar__brand:active img,
+    .wizard-sidebar__brand:hover img,
+    .wizard-sidebar__brand:active img,
+    .admin-sidebar__brand:hover img,
+    .admin-sidebar__brand:active img {
+      animation: none;
+      transition: none;
+      filter: var(--logo-filter);
+      transform: none;
+    }
+  }
+
+  :root[data-motion="off"] .brand__mark,
+  :root[data-motion="off"] .mobile-appbar__brand img,
+  :root[data-motion="off"] .site-footer__brand img,
+  :root[data-motion="off"] .wizard-sidebar__brand img,
+  :root[data-motion="off"] .admin-sidebar__brand img,
+  :root[data-motion="off"] .search-head > img,
+  :root[data-calm] .brand__mark,
+  :root[data-calm] .mobile-appbar__brand img,
+  :root[data-calm] .site-footer__brand img,
+  :root[data-calm] .wizard-sidebar__brand img,
+  :root[data-calm] .admin-sidebar__brand img,
+  :root[data-calm] .search-head > img {
+    animation: none;
+    transition: none;
+    filter: var(--logo-filter);
+    transform: none;
+  }
+
+  :root[data-motion="off"] .brand:hover .brand__mark,
+  :root[data-motion="off"] .brand:active .brand__mark,
+  :root[data-motion="off"] .mobile-appbar__brand:hover img,
+  :root[data-motion="off"] .mobile-appbar__brand:active img,
+  :root[data-motion="off"] .wizard-sidebar__brand:hover img,
+  :root[data-motion="off"] .wizard-sidebar__brand:active img,
+  :root[data-motion="off"] .admin-sidebar__brand:hover img,
+  :root[data-motion="off"] .admin-sidebar__brand:active img,
+  :root[data-calm] .brand:hover .brand__mark,
+  :root[data-calm] .brand:active .brand__mark,
+  :root[data-calm] .mobile-appbar__brand:hover img,
+  :root[data-calm] .mobile-appbar__brand:active img,
+  :root[data-calm] .wizard-sidebar__brand:hover img,
+  :root[data-calm] .wizard-sidebar__brand:active img,
+  :root[data-calm] .admin-sidebar__brand:hover img,
+  :root[data-calm] .admin-sidebar__brand:active img {
+    animation: none;
+    transition: none;
+    filter: var(--logo-filter);
+    transform: none;
   }
 }
 

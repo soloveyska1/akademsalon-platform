@@ -24,12 +24,32 @@ test('homepage situation deep links enter the matching second wizard step', () =
 test('approved wizard facade exposes the live quote and first cart action', () => {
   assert.match(html, /window\.SalonConfiguratorPreview = function/);
   assert.match(html, /<dt>Ориентир стоимости<\/dt><dd>' \+ safeText\(priceText\)/);
-  assert.match(html, /data-cart-add>Добавить позицию в смету/);
-  assert.match(html, /data-cart-open>Открыть состав сметы/);
+  assert.match(html, /cartHasItems \? 'Открыть состав сметы' : 'Открыть смету заказа'/);
+  assert.match(html, /class="line-link concept-cart-link" type="button" data-cart-open/);
+});
+
+test('multi-position flow returns to the visible concept wizard and keeps cart totals authoritative', () => {
+  assert.match(html, /window\.SalonConceptWizard\.startAnother\(kind\)/);
+  assert.match(html, /window\.SalonConceptWizard = \{ startAnother:startAnother \}/);
+  assert.match(html, /quote = cartHasItems && window\.SalonCart\.quote/);
+  assert.match(html, /window\.SalonCart\.contains\(window\.SalonCart\.currentItem\(\)\)/);
+  assert.match(html, /Текущий выбор пока не входит в состав/);
+  assert.match(html, /document\.addEventListener\('salon:cart'/);
+  assert.match(html, /if \(state\.step === 4\) render\(\)/);
+});
+
+test('universal contact field serializes obvious email, phone and messenger formats correctly', () => {
+  assert.match(html, /function contactKind\(value\)/);
+  assert.match(html, /\^\[\^\\s@\]\+@\[\^\\s@\]\+\\\.\[\^\\s@\]\{2,\}\$/);
+  assert.match(html, /digits\.length >= 10/);
+  assert.match(html, /var kind = contactKind\(v\)/);
+  assert.match(html, /return CT_TAG\[kind\] \? CT_TAG\[kind\] \+ ': ' \+ v : v/);
 });
 
 test('mobile cart access cannot be covered by the contextual task bar', () => {
   assert.match(css, /\.configurator-task>\.cart-tab\{display:none!important\}/);
+  assert.match(css, /\.configurator-task \.cart-drawer\{\s*display:block;/);
+  assert.match(css, /overflow-y:auto;/);
 });
 
 test('home begins directly after the in-flow desktop header and mobile appbar offset', () => {
@@ -39,7 +59,7 @@ test('home begins directly after the in-flow desktop header and mobile appbar of
 });
 
 test('production chrome switches to the approved mobile edition at 920px', () => {
-  assert.match(indexHtml, /mobile\.css\?v=20260725release16" media="screen and \(max-width:920px\)"/);
+  assert.match(indexHtml, /mobile\.css\?v=20260726release17" media="screen and \(max-width:920px\)"/);
   assert.match(mobileCss, /@media screen and \(max-width:920px\)/);
   assert.match(appJs, /link\.media = 'screen and \(max-width:920px\)'/);
   assert.match(appJs, /matchMedia\('\(max-width:920px\)'\)/);

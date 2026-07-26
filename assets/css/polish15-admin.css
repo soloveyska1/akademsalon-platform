@@ -2,23 +2,26 @@
    All operational IDs and API-bound controls are retained. */
 
 .is-admin-route {
-  --ad-bg: #f3eee4;
-  --ad-side: #ebe4d7;
-  --ad-card: #fffdf8;
-  --ad-card-2: #f8f2e8;
+  --ad-bg: #eee9df;
+  --ad-side: #f7f2e9;
+  --ad-card: #fcf9f3;
+  --ad-card-2: #f4eee4;
+  --ad-input: #fffdf8;
   --ad-line: #d8cebd;
   --ad-line-2: #b8aa94;
-  --ad-ink: #1d1c18;
-  --ad-text: #38352f;
-  --ad-muted: #756e63;
-  --ad-faint: #968d7f;
-  --ad-hover: #e4dbcc;
-  --ad-wax: #a63f29;
+  --ad-ink: #28251f;
+  --ad-text: #514b42;
+  --ad-muted: #69635a;
+  --ad-faint: #81796e;
+  --ad-hover: #e9e1d5;
+  --ad-wax: #a5412c;
   --ad-wax-soft: #f2ddd5;
-  --ad-green: #3c644c;
-  --ad-green-soft: #dfe9e1;
+  --ad-green: #315a3e;
+  --ad-green-soft: #e1eee4;
   --ad-blue: #405777;
   --ad-blue-soft: #e0e6ee;
+  --ad-seal-ring: #fffdf8;
+  --ad-seal-shadow: 0 6px 18px rgba(54, 45, 31, .14);
   --paper: var(--ad-bg);
   --paper-2: var(--ad-side);
   --sheet: var(--ad-card);
@@ -43,6 +46,7 @@
   --ad-side: #1e1d19;
   --ad-card: #1f1e1a;
   --ad-card-2: #24221d;
+  --ad-input: #181713;
   --ad-line: #34322c;
   --ad-line-2: #454139;
   --ad-ink: #fffaf3;
@@ -56,6 +60,8 @@
   --ad-green-soft: #26372a;
   --ad-blue: #829bc2;
   --ad-blue-soft: #252e3c;
+  --ad-seal-ring: #24221d;
+  --ad-seal-shadow: 0 8px 22px rgba(0, 0, 0, .38);
 }
 
 .is-admin-route .site-header,
@@ -116,6 +122,8 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--ad-seal-ring), var(--ad-seal-shadow);
+  transition: transform .22s ease, box-shadow .22s ease;
 }
 
 .is-admin-route .admin-sidebar__brand span {
@@ -146,7 +154,7 @@
 .is-admin-route .admin-sidebar__section .ag-tab {
   display: grid;
   width: 100%;
-  min-height: 40px;
+  min-height: 44px;
   grid-template-columns: 28px 1fr auto;
   gap: 8px;
   align-items: center;
@@ -156,7 +164,7 @@
   border: 0;
   border-radius: 5px;
   font: inherit;
-  font-size: 10px;
+  font-size: 12px;
   text-align: left;
   transition: color .18s ease, background-color .18s ease;
 }
@@ -507,7 +515,7 @@
   min-height: 42px;
   padding: 9px 38px 9px 12px;
   color: var(--ad-ink);
-  background: var(--ad-bg);
+  background: var(--ad-input);
   border: 1px solid var(--ad-line);
   border-radius: 5px;
   outline: 0;
@@ -1023,6 +1031,25 @@
   border-bottom: 0;
 }
 
+.is-admin-route .admin-order-register__footer {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  color: var(--ad-muted);
+  border-top: 1px solid var(--ad-line);
+}
+
+.is-admin-route .admin-order-register__footer > :is(span, small) {
+  min-width: 0;
+}
+
+.is-admin-route .admin-order-register__footer > small {
+  text-align: right;
+}
+
 .is-admin-route .admin-order-register .ag-row:hover,
 .is-admin-route .admin-order-register .ag-row.sel {
   background: var(--ad-hover);
@@ -1075,6 +1102,21 @@
   margin: 0;
 }
 
+.is-admin-route .admin-order-state .status-stamp {
+  display: inline-flex;
+  max-width: 100%;
+  min-height: 28px;
+  align-items: center;
+  padding: 3px 8px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font: 550 9px/1.2 var(--sans) !important;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: none;
+}
+
 .is-admin-route .admin-order-state > small {
   display: flex;
   gap: 4px;
@@ -1098,6 +1140,7 @@
   background: rgba(10, 10, 8, .58);
   border: 0;
   backdrop-filter: blur(2px);
+  animation: admin-backdrop-in .22s ease both;
 }
 
 .is-admin-route .admin-order-drawer {
@@ -1118,7 +1161,7 @@
   border-radius: 0;
   box-shadow: -24px 0 70px rgba(0, 0, 0, .24);
   transform: translateX(104%);
-  transition: transform .25s cubic-bezier(.22, 1, .36, 1);
+  transition: transform .34s cubic-bezier(.2, .75, .2, 1);
 }
 
 .is-admin-route .admin-order-drawer.is-open {
@@ -1209,10 +1252,69 @@
   flex: 1 1 280px;
 }
 
+.is-admin-route .admin-order-filters-more {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.is-admin-route .admin-order-filters-more > summary {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  padding: 9px 12px;
+  color: var(--ad-muted);
+  background: transparent;
+  border: 1px solid var(--ad-line);
+  border-radius: 999px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.is-admin-route .admin-order-filters-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.is-admin-route .admin-order-filters-more > summary::after {
+  margin-left: 7px;
+  content: "⌄";
+  transition: transform .16s ease;
+}
+
+.is-admin-route .admin-order-filters-more[open] > summary::after {
+  transform: rotate(180deg);
+}
+
+.is-admin-route .admin-order-filter-menu {
+  position: absolute;
+  z-index: 8;
+  top: calc(100% + 7px);
+  right: 0;
+  display: grid;
+  width: min(460px, calc(100vw - 40px));
+  gap: 12px;
+  padding: 14px;
+  background: var(--ad-card);
+  border: 1px solid var(--ad-line);
+  box-shadow: 0 12px 30px rgba(54, 45, 31, .14);
+}
+
+.is-admin-route .admin-order-filter-menu__statuses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.is-admin-route .admin-order-filter-menu__sort {
+  display: grid;
+  grid-template-columns: auto minmax(180px, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+
 .is-admin-route :is(.ag-search, .ag-sort, .ag-filters input, .ag-filters select) {
   min-height: 40px;
   color: var(--ad-ink);
-  background: var(--ad-bg);
+  background: var(--ad-input);
   border: 1px solid var(--ad-line);
   border-radius: 6px;
 }
@@ -1279,7 +1381,7 @@
 
 .is-admin-route :is(input, textarea, select) {
   color: var(--ad-ink);
-  background: var(--ad-bg);
+  background: var(--ad-input);
   border-color: var(--ad-line);
   border-radius: 6px;
 }
@@ -1333,11 +1435,639 @@
 .is-admin-route .ag-login .admin-login-brand img {
   width: 42px;
   height: 42px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--ad-seal-ring), var(--ad-seal-shadow);
 }
 
 .is-admin-route .ag-login h1 {
   color: var(--ad-ink);
   font-size: 34px !important;
+}
+
+/* Reference-parity floor for operational screens.
+   The style-lab source intentionally keeps all working copy at 12px or above. */
+.is-admin-route .admin-sidebar nav {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.is-admin-route .admin-sidebar__brand small,
+.is-admin-route .admin-sidebar__section > span,
+.is-admin-route .admin-sidebar footer a,
+.is-admin-route .admin-sidebar footer > span,
+.is-admin-route .admin-sidebar nav .ag-tab b {
+  font-size: 10px;
+}
+
+.is-admin-route .admin-main :is(p, small, span, td, th, button, label, input, textarea, select, dt, dd, a),
+.is-admin-route .admin-main small i,
+.is-admin-route .admin-main .admin-profile,
+.is-admin-route .admin-table td > strong {
+  font-size: 12px !important;
+  line-height: 1.45;
+}
+
+.is-admin-route .admin-alert strong,
+.is-admin-route .admin-panel :is(button strong, .admin-queue-empty strong),
+.is-admin-route .content-list h2,
+.is-admin-route .admin-order-register :is(.admin-order-id, .r-t, .r-s, .admin-order-deadline, .r-price) {
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.is-admin-route :is(button, a, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--ad-wax);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ad-wax) 14%, transparent);
+}
+
+.is-admin-route :is(.btn-wax, .button--primary) {
+  transition: transform .18s ease, background-color .18s ease, border-color .18s ease;
+}
+
+.is-admin-route :is(.btn-wax, .button--primary):hover {
+  transform: translateY(-2px);
+}
+
+.is-admin-route :is(.btn-wax, .button--primary):active {
+  transform: scale(.985);
+}
+
+.is-admin-route .admin-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.is-admin-route .admin-table {
+  width: 100%;
+  min-width: 930px;
+  border-collapse: collapse;
+}
+
+.is-admin-route .admin-table th {
+  height: 44px;
+  min-width: 112px;
+}
+
+.is-admin-route .admin-table td {
+  height: 62px;
+}
+
+.is-admin-route .admin-order-register__head {
+  min-height: 44px;
+}
+
+.is-admin-route .admin-order-register .ag-row {
+  min-height: 62px;
+}
+
+/* The live Settings markup is retained; only its shell is arranged like the
+   two-column reference workspace. */
+.is-admin-route #agBody > .admin-settings-workspace {
+  display: grid;
+  width: 100%;
+  max-width: none !important;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.is-admin-route #agBody > .admin-settings-workspace > .admin-dashboard-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 0;
+}
+
+.is-admin-route #agBody > .admin-settings-workspace > .admin-dashboard-grid > .ag-sec,
+.is-admin-route #agBody > .ag-card[style*="max-width:680px"] > .ag-sec {
+  min-width: 0;
+  margin: 0 !important;
+  padding: 18px !important;
+  background: var(--ad-card);
+  border: 1px solid var(--ad-line) !important;
+}
+
+.is-admin-route #agBody > .admin-settings-workspace > .admin-dashboard-grid > .ag-sec :is(input, textarea, select),
+.is-admin-route #agBody > .ag-card[style*="max-width:680px"] > .ag-sec :is(input, textarea, select) {
+  min-height: 44px;
+}
+
+.is-admin-route .admin-settings-service-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(160px, auto);
+  gap: 12px;
+  align-items: center;
+  padding-block: 12px;
+}
+
+.is-admin-route .admin-settings-service-row + .admin-settings-service-row {
+  border-top: 1px solid var(--ad-line);
+}
+
+.is-admin-route .admin-settings-service-row > span:first-child {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.is-admin-route .admin-settings-service-row > span:first-child small {
+  color: var(--ad-muted);
+}
+
+.is-admin-route .admin-settings-service-row > .status-stamp {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 9px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font: 550 9px/1.2 var(--sans);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.is-admin-route .admin-settings-disclosure {
+  border-top: 1px solid var(--ad-line);
+}
+
+.is-admin-route .admin-settings-disclosure > summary {
+  display: grid;
+  min-height: 48px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding-block: 10px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.is-admin-route .admin-settings-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+.is-admin-route .admin-settings-disclosure > summary > span:first-child {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.is-admin-route .admin-settings-disclosure > summary small,
+.is-admin-route .admin-settings-disclosure__action {
+  color: var(--ad-muted);
+}
+
+.is-admin-route .admin-settings-disclosure__body {
+  padding: 2px 0 12px;
+}
+
+.is-admin-route .admin-settings-tools {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.is-admin-route .admin-settings-tools > a {
+  display: grid;
+  min-height: 68px;
+  align-content: center;
+  gap: 3px;
+  padding: 12px;
+  text-decoration: none;
+  border: 1px solid var(--ad-line);
+}
+
+.is-admin-route .admin-settings-tools small {
+  color: var(--ad-muted);
+}
+
+/* Live client directory: canonical split and profile rhythm on the production
+   payload. Legacy IDs and action hooks remain untouched. */
+.is-admin-route .client-directory {
+  display: grid;
+  min-height: 680px;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 0;
+  align-items: stretch;
+  margin-top: 18px;
+  background: var(--ad-card);
+  border: 1px solid var(--ad-line);
+}
+
+.is-admin-route .client-directory__list {
+  min-width: 0;
+  padding: 14px;
+  border-right: 1px solid var(--ad-line);
+}
+
+.is-admin-route .client-directory__toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 0;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+}
+
+.is-admin-route .client-directory__toolbar .ag-search {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border-radius: 5px;
+}
+
+.is-admin-route .client-directory__toolbar .ag-sort {
+  width: 100%;
+  grid-column: 1 / -1;
+  min-height: 44px;
+  border-radius: 5px;
+}
+
+.is-admin-route .client-directory #agCList {
+  max-height: none;
+  overflow: auto;
+  background: transparent;
+  border: 0;
+}
+
+.is-admin-route .client-directory #agCList .ag-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 62px;
+  padding: 9px;
+  border-bottom: 1px solid var(--ad-line);
+  border-left: 3px solid transparent;
+  border-radius: 0;
+}
+
+.is-admin-route .client-directory #agCList .ag-row.is-current {
+  background: var(--ad-hover);
+  border-left-color: var(--ad-wax);
+  border-radius: 5px;
+}
+
+.is-admin-route .client-directory__avatar {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  place-items: center;
+  color: #fff8f1;
+  background: var(--ad-wax);
+  border-radius: 50%;
+  font: 550 10px/1 var(--mono);
+}
+
+.is-admin-route .client-directory__row .r-main {
+  display: grid;
+  gap: 2px;
+}
+
+.is-admin-route .client-directory__row .r-t {
+  color: var(--ad-ink);
+  font-weight: 550;
+}
+
+.is-admin-route .client-directory__row .r-side {
+  display: grid;
+  grid-template-columns: auto 14px;
+  gap: 8px;
+  align-items: center;
+}
+
+.is-admin-route .client-directory__row .r-side b {
+  color: var(--ad-faint);
+  font-weight: 400;
+}
+
+.is-admin-route .client-profile {
+  max-height: none !important;
+  padding: 28px;
+  overflow: visible !important;
+  background: var(--ad-card);
+  border: 0 !important;
+  border-left: 1px solid var(--ad-line) !important;
+  scroll-margin-top: calc(126px + env(safe-area-inset-top));
+}
+
+.is-admin-route .client-profile > header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 22px !important;
+  border-bottom: 1px solid var(--ad-line);
+}
+
+.is-admin-route .client-profile__avatar {
+  display: grid;
+  width: 54px !important;
+  height: 54px !important;
+  flex-basis: 54px !important;
+  place-items: center;
+  color: #fff8f1;
+  background: var(--ad-wax) !important;
+  border: 1px solid var(--ad-wax) !important;
+  border-radius: 50%;
+  font: 550 10px/1 var(--mono);
+}
+
+.is-admin-route .client-profile > header > div {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 3px;
+}
+
+.is-admin-route .client-profile > header > .mono {
+  margin-left: auto;
+  color: var(--ad-muted);
+}
+
+.is-admin-route .client-profile__menu {
+  position: relative;
+  margin-left: auto;
+}
+
+.is-admin-route .client-profile__menu > summary {
+  display: grid;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  color: var(--ad-muted);
+  background: transparent;
+  border: 1px solid var(--ad-line);
+  border-radius: 6px;
+  list-style: none;
+  font: 550 11px/1 var(--sans);
+  cursor: pointer;
+}
+
+.is-admin-route .client-profile__menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.is-admin-route .client-profile__menu > div {
+  position: absolute;
+  z-index: 4;
+  top: calc(100% + 6px);
+  right: 0;
+  display: grid;
+  width: max-content;
+  min-width: 180px;
+  padding: 6px;
+  background: var(--ad-card);
+  border: 1px solid var(--ad-line);
+  box-shadow: 0 12px 30px rgba(54, 45, 31, .14);
+}
+
+.is-admin-route .client-profile__menu > div :is(a, button) {
+  justify-content: start;
+  min-height: 40px;
+  padding-inline: 10px;
+  text-align: left;
+}
+
+.is-admin-route .client-profile h2 {
+  margin: 0;
+  color: var(--ad-ink);
+  font-size: 25px;
+}
+
+.is-admin-route .client-profile__contacts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  margin-top: 18px;
+  border: 1px solid var(--ad-line);
+}
+
+.is-admin-route .client-profile__contacts > span {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+  padding: 13px;
+}
+
+.is-admin-route .client-profile__contacts > span + span {
+  border-left: 1px solid var(--ad-line);
+}
+
+.is-admin-route .client-profile__contacts small {
+  color: var(--ad-muted);
+}
+
+.is-admin-route .client-profile__contacts strong,
+.is-admin-route .client-profile__contacts a {
+  overflow-wrap: anywhere;
+  color: var(--ad-ink);
+  font-weight: 550;
+  text-decoration: none;
+}
+
+.is-admin-route .client-profile .cl-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+
+.is-admin-route .client-profile .cl-stats span {
+  display: grid;
+  min-width: 0;
+  min-height: 58px;
+  align-content: center;
+  gap: 3px;
+  padding: 10px 12px;
+  background: var(--ad-card);
+  border-color: var(--ad-line);
+}
+
+.is-admin-route .client-profile > section {
+  margin-top: 22px;
+}
+
+.is-admin-route .client-profile > section > header {
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 0;
+  padding-bottom: 9px;
+  color: var(--ad-ink);
+  border-bottom: 1px solid var(--ad-line);
+}
+
+.is-admin-route .client-profile > section > header :is(h3, .sub) {
+  margin: 0;
+}
+
+.is-admin-route .client-profile > section > header h3 {
+  color: var(--ad-ink);
+  font: 550 12px/1.45 var(--sans);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.is-admin-route .client-profile > section > header .sub {
+  color: var(--ad-muted);
+  font: 400 11px/1.45 var(--sans);
+  letter-spacing: .02em;
+  text-transform: none;
+}
+
+.is-admin-route .client-profile .client-case {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 6px;
+  align-items: start;
+  margin-top: 12px;
+  padding: 13px;
+  background: var(--ad-card-2) !important;
+  border: 1px solid var(--ad-line) !important;
+}
+
+.is-admin-route .client-profile .client-case :is(.ag-stamp, .status-stamp, .client-case__status) {
+  width: max-content;
+  max-width: 100%;
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.is-admin-route .client-profile .client-case .status-stamp {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 3px 10px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font: 550 9.5px/1.2 var(--sans) !important;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: none;
+}
+
+.is-admin-route .client-profile .client-case :is(strong, small, .client-case__id, .client-case__task, .client-case__deadline) {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.is-admin-route .client-profile .client-case__id {
+  grid-column: 1;
+}
+
+.is-admin-route .client-profile .client-case__task {
+  grid-column: 2;
+  min-width: 0;
+  font-weight: 550;
+}
+
+.is-admin-route .client-profile .client-case__deadline {
+  grid-column: 1 / -1;
+  color: var(--ad-muted);
+}
+
+.is-admin-route .client-profile .client-case--empty {
+  grid-template-columns: 1fr;
+}
+
+.is-admin-route .client-profile__bonus .ag-actrow {
+  display: grid;
+  grid-template-columns: minmax(110px, .35fr) minmax(220px, 1fr) auto;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.is-admin-route .client-profile__bonus .ag-actrow :is(input, textarea) {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.is-admin-route .client-profile__bonus .ag-actrow .btn,
+.is-admin-route .client-profile__access .btn {
+  min-height: 44px;
+}
+
+.is-admin-route .client-profile__orders .ag-file {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+}
+
+.is-admin-route .client-profile__access .ag-actrow {
+  align-items: stretch;
+}
+
+/* Cover workshop geometry mirrors the source design while preserving the
+   production canvas renderer and export mechanics. */
+.is-admin-route.p15-admin-covers .cover-controls {
+  padding: 20px;
+}
+
+.is-admin-route.p15-admin-covers .cover-layout-options {
+  display: flex;
+  flex-wrap: wrap;
+  grid-template-columns: none;
+  gap: 6px;
+}
+
+.is-admin-route.p15-admin-covers .cover-layout-options button {
+  min-height: 44px;
+  flex: 1 1 84px;
+  padding: 8px 9px;
+}
+
+.is-admin-route.p15-admin-covers .cover-canvas-wrap {
+  padding: 16px;
+}
+
+.is-admin-route.p15-admin-covers .cover-canvas-wrap > header,
+.is-admin-route.p15-admin-covers .cover-canvas-wrap > footer {
+  min-height: 44px;
+  padding: 0;
+  background: inherit;
+}
+
+.is-admin-route.p15-admin-covers .cover-canvas-wrap > header {
+  padding-bottom: 12px;
+}
+
+.is-admin-route.p15-admin-covers .cover-canvas-wrap > footer {
+  padding-top: 12px;
+}
+
+.is-admin-route.p15-admin-covers .cover-canvas-viewport {
+  min-width: 0;
+  min-height: 0;
+  padding: 26px 0;
+  background: transparent;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable both-edges;
+}
+
+.is-admin-route.p15-admin-covers .cover-canvas-viewport canvas {
+  width: min(100%, calc(820px * var(--cover-zoom, 1)));
+}
+
+.is-admin-route.p15-admin-covers .cover-zoom button {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+}
+
+@keyframes admin-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @media (max-width: 1100px) {
@@ -1406,10 +2136,11 @@
   }
 
   .is-admin-route .admin-mobile-appbar__brand img {
-    width: 34px;
-    height: 34px;
-    flex: 0 0 34px;
+    width: 31px;
+    height: 31px;
+    flex: 0 0 31px;
     border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--ad-seal-ring), var(--ad-seal-shadow);
   }
 
   .is-admin-route .admin-mobile-appbar__brand > span {
@@ -1518,7 +2249,7 @@
 
   .is-admin-route .admin-sidebar nav .ag-tab {
     width: auto;
-    min-height: 40px;
+    min-height: 44px;
     grid-template-columns: 26px auto auto;
     flex: 0 0 auto;
     scroll-snap-align: start;
@@ -1631,52 +2362,108 @@
     min-width: 0;
   }
 
+  .is-admin-route .admin-order-filters-more {
+    width: 100%;
+  }
+
+  .is-admin-route .admin-order-filters-more > summary {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .is-admin-route .admin-order-filter-menu {
+    position: static;
+    width: 100%;
+    margin-top: 9px;
+    box-shadow: none;
+  }
+
   .is-admin-route .ag-split {
     grid-template-columns: 1fr;
+  }
+
+  .is-admin-route .client-directory {
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+
+  .is-admin-route .client-directory__list {
+    border-right: 0;
+    border-bottom: 1px solid var(--ad-line);
+  }
+
+  .is-admin-route .client-profile {
+    border-top: 1px solid var(--ad-line) !important;
+    border-left: 0 !important;
   }
 
   .is-admin-route .ag-card:not(.admin-order-drawer) {
     min-width: 0;
   }
 
-  .is-admin-route .admin-order-register__head {
-    display: none;
+  .is-admin-route #agBody > .ag-card[style*="max-width:680px"] {
+    grid-template-columns: 1fr;
+  }
+
+  .is-admin-route #agBody > .admin-settings-workspace > .admin-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .is-admin-route .admin-content-tabs button,
+  .is-admin-route .admin-content-cover-link,
+  .is-admin-route .content-list article > div:last-child a,
+  .is-admin-route :is(.ag-search, .ag-sort, .ag-filters input, .ag-filters select, .ag-chip) {
+    min-height: 44px;
+  }
+
+  .is-admin-route .content-list article > div:last-child a {
+    width: 44px;
+  }
+
+  .is-admin-route .admin-order-register {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-gutter: stable;
+  }
+
+  .is-admin-route .admin-order-register__head,
+  .is-admin-route .admin-order-register .ag-list {
+    display: grid;
+    width: 930px;
+    min-width: 930px;
   }
 
   .is-admin-route .admin-order-register .ag-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "id state"
-      "main main"
-      "deadline price";
-    gap: 8px 12px;
-    min-height: 132px;
-    padding: 14px;
+    grid-template-columns: 110px minmax(240px, 1fr) 140px 120px 100px 18px;
+    grid-template-areas: none;
+    gap: 12px;
+    min-height: 62px;
+    padding: 9px 14px;
   }
 
   .is-admin-route .admin-order-id {
-    grid-area: id;
+    grid-area: auto;
   }
 
   .is-admin-route .admin-order-register .r-main {
-    grid-area: main;
+    grid-area: auto;
   }
 
   .is-admin-route .admin-order-state {
-    grid-area: state;
-    justify-items: end;
+    grid-area: auto;
+    justify-items: start;
   }
 
   .is-admin-route .admin-order-deadline {
-    grid-area: deadline;
+    grid-area: auto;
   }
 
   .is-admin-route .admin-order-register .r-price {
-    grid-area: price;
+    grid-area: auto;
   }
 
   .is-admin-route .admin-order-go {
-    display: none;
+    display: block;
   }
 
   .is-admin-route .admin-order-drawer {
@@ -1686,6 +2473,31 @@
 }
 
 @media (max-width: 560px) {
+  .is-admin-route .admin-order-filter-menu__sort {
+    grid-template-columns: 1fr;
+  }
+
+  .is-admin-route .admin-order-register__footer {
+    align-items: flex-start;
+  }
+
+  .is-admin-route .admin-order-register__footer > small {
+    max-width: 60%;
+  }
+
+  .is-admin-route .admin-settings-service-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .is-admin-route .admin-settings-service-row > button {
+    width: 100%;
+    grid-column: 1 / -1;
+  }
+
+  .is-admin-route .admin-settings-tools {
+    grid-template-columns: 1fr;
+  }
+
   .is-admin-route .admin-head .ag-live {
     display: none;
   }
@@ -1762,11 +2574,36 @@
   .is-admin-route .content-list article > div:last-child {
     grid-column: 2;
   }
+
+  .is-admin-route .client-profile {
+    padding: 18px;
+  }
+
+  .is-admin-route .client-profile__contacts {
+    grid-template-columns: 1fr !important;
+  }
+
+  .is-admin-route .client-profile__contacts > span {
+    border-left: 0 !important;
+  }
+
+  .is-admin-route .client-profile__contacts > span + span {
+    border-top: 1px solid var(--ad-line);
+  }
+
+  .is-admin-route .client-profile__bonus .ag-actrow {
+    grid-template-columns: 1fr;
+  }
+
+  .is-admin-route .client-profile__bonus .ag-actrow .btn,
+  .is-admin-route .client-profile__access .btn {
+    width: 100%;
+  }
 }
 
 @media (max-width: 400px) {
   .is-admin-route .admin-mobile-appbar {
-    grid-template-columns: 40px minmax(0, 1fr) 40px 40px 40px;
+    grid-template-columns: 44px minmax(0, 1fr) 44px 44px 44px;
     gap: 2px;
     padding-inline: max(6px, env(safe-area-inset-left));
   }
@@ -1775,9 +2612,9 @@
   .is-admin-route .admin-mobile-appbar__search,
   .is-admin-route .admin-mobile-appbar > .theme-toggle,
   .is-admin-route .admin-mobile-appbar__menu {
-    width: 40px;
-    height: 40px;
-    min-height: 40px;
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
   }
 
   .is-admin-route .admin-mobile-appbar__brand {

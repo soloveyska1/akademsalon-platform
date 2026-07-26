@@ -11,6 +11,19 @@
   docEl.classList.add('has-js');
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* Показываем служебную ссылку «К содержанию» только человеку, который
+     действительно идёт по странице клавишей Tab. Восстановление фокуса
+     браузером после перехода и обычный клик больше не раскрывают её поверх
+     логотипа. Этот же признак делает фокус бренда строго клавиатурным. */
+  window.addEventListener('keydown', function (event) {
+    if (event.key === 'Tab') docEl.setAttribute('data-input-modality', 'keyboard');
+  }, true);
+  window.addEventListener('pointerdown', function () {
+    docEl.removeAttribute('data-input-modality');
+    var skip = document.querySelector('.skip-link');
+    if (skip && document.activeElement === skip) skip.blur();
+  }, true);
+
   /* Финальный мобильный слой грузится после всех страничных <style>.
      Так одна геометрия телефона побеждает поздние локальные правила
      главной, каталога, кабинета и конфигуратора. */
@@ -22,10 +35,10 @@
     link.media = 'screen and (max-width:920px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260725release16', source).href
-        : 'assets/css/mobile.css?v=20260725release16';
+      link.href = source ? new URL('../css/mobile.css?v=20260726release17', source).href
+        : 'assets/css/mobile.css?v=20260726release17';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260725release16';
+      link.href = 'assets/css/mobile.css?v=20260726release17';
     }
     document.head.appendChild(link);
   })();
