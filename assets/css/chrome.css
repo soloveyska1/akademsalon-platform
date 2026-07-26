@@ -2177,9 +2177,10 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
   text-transform:uppercase;
   white-space:nowrap;
 }
-/* Фокус у знака остаётся заметным, но не обводит всё название
-   рамкой в половину шапки: кольцо на марке + подчёркивание имени. */
-html[data-input-modality="keyboard"] .site-header .brand:focus-visible{outline:none}
+/* Никогда не обводим весь логотип прямоугольником: браузер может считать
+   программно восстановленный фокус ``focus-visible`` даже после указателя.
+   Для клавиатуры ниже остаются кольцо на марке и подчёркивание имени. */
+.site-header .brand:focus-visible{outline:none;box-shadow:none}
 html[data-input-modality="keyboard"] .site-header .brand:focus-visible .brand__mark{
   outline:2px solid var(--wax);
   outline-offset:3px;

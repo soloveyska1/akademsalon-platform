@@ -12670,8 +12670,9 @@
     transform: scale(.975);
   }
 
-  html[data-input-modality="keyboard"] .brand:focus-visible {
+  .brand:focus-visible {
     outline: none;
+    box-shadow: none;
   }
 
   html[data-input-modality="keyboard"] .brand:focus-visible .brand__mark {

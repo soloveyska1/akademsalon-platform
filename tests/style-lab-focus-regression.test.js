@@ -44,4 +44,16 @@ test('production chrome uses the same keyboard-only focus contract', () => {
     productionApp,
     /window\.addEventListener\('pointerdown'[\s\S]*?removeAttribute\('data-input-modality'\)/,
   );
+  assert.match(
+    productionCss,
+    /\.site-header \.brand:focus-visible\{outline:none;box-shadow:none\}/,
+  );
+  assert.match(
+    css,
+    /\.brand:focus-visible\s*\{\s*outline:\s*none;\s*box-shadow:\s*none;/,
+  );
+  assert.match(
+    productionCss,
+    /html\[data-input-modality="keyboard"\] \.site-header \.brand:focus-visible \.brand__mark\{/,
+  );
 });
