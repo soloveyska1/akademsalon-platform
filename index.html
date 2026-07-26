@@ -11,14 +11,86 @@
 <link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release21" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260726release21" />
 <link rel="stylesheet" href="assets/css/polish15-home.css?v=20260726release21" />
-<script>(function(){try{document.documentElement.classList.add("has-js");var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/css/home-intro.css?v=20260726release21" />
+<meta name="theme-color" content="#F6F1E7" />
+<script>
+(function () {
+  var root = document.documentElement;
+  var theme = null;
+  var calm = false;
+  var reduced = false;
+  var replay = false;
+  var skip = false;
+  var storageReady = true;
+  root.classList.add('has-js');
+
+  try { theme = localStorage.getItem('salon_theme'); } catch (error) {}
+  if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    theme = 'dark';
+  }
+  if (theme === 'dark') {
+    root.setAttribute('data-theme', 'dark');
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#171714');
+  }
+
+  try {
+    calm = !!localStorage.getItem('salon_calm');
+    if (calm) root.setAttribute('data-calm', '');
+  } catch (error) {}
+  reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  try {
+    var params = new URLSearchParams(location.search);
+    replay = params.get('intro') === 'replay';
+    skip = params.get('intro') === 'skip';
+  } catch (error) {}
+
+  var navigation = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+  var directNavigation = !navigation || navigation.type === 'navigate';
+  var internalReferrer = false;
+  try {
+    internalReferrer = !!document.referrer && new URL(document.referrer).origin === location.origin;
+  } catch (error) {}
+
+  var motionAllowed = !calm && !reduced &&
+    !(navigator.connection && navigator.connection.saveData);
+  var entryAllowed = replay || (directNavigation && !internalReferrer && !location.hash);
+
+  try {
+    var seenThisSession = sessionStorage.getItem('salon_home_intro_v2') === '1';
+    var seenThisVersion = localStorage.getItem('salon_home_intro_v2') === '1';
+    if (!replay && (seenThisSession || seenThisVersion)) skip = true;
+  } catch (error) {
+    storageReady = false;
+  }
+
+  var shouldPlay = !skip && storageReady && motionAllowed && entryAllowed &&
+    document.visibilityState !== 'hidden';
+
+  if (shouldPlay) {
+    try {
+      sessionStorage.setItem('salon_home_intro_v2', '1');
+      localStorage.setItem('salon_home_intro_v2', '1');
+    } catch (error) {
+      shouldPlay = false;
+    }
+  }
+
+  if (shouldPlay) {
+    root.classList.add('salon-intro-pending');
+    window.__salonIntroFailsafe = window.setTimeout(function () {
+      if (typeof window.__salonIntroFinish === 'function') window.__salonIntroFinish(true);
+      else root.classList.remove('salon-intro-pending', 'salon-intro-running', 'salon-intro-leaving');
+    }, 5400);
+  }
+}());
+</script>
 <link rel="canonical" href="https://akademsalon.ru/" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
 
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-<meta name="theme-color" content="#F6F1E7" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
@@ -36,6 +108,30 @@
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260726release21" media="screen and (max-width:920px)" data-mobile-edition="1" />
 </head>
 <body>
+
+<div class="salon-intro" data-salon-intro>
+  <div class="salon-intro__sheet" aria-hidden="true">
+    <div class="salon-intro__panel salon-intro__panel--left"></div>
+    <div class="salon-intro__panel salon-intro__panel--right"></div>
+    <div class="salon-intro__frame"></div>
+    <div class="salon-intro__folio salon-intro__folio--top">Академический Салон · 2020</div>
+    <div class="salon-intro__composition">
+      <div class="salon-intro__logo">
+        <span><img src="assets/img/logo-mark.svg" alt="" width="128" height="128"></span>
+      </div>
+      <p class="salon-intro__kicker">Редакторская мастерская · с 2020 года</p>
+      <p class="salon-intro__title"><span>Академический</span> <span>Салон</span></p>
+      <span class="salon-intro__rule"><i></i></span>
+      <p class="salon-intro__promise">Работаем, пока ты отдыхаешь — с гарантией.</p>
+    </div>
+    <div class="salon-intro__folio salon-intro__folio--bottom">
+      <span>Аудит</span><i></i><span>Редактура</span><i></i><span>Консультации</span>
+    </div>
+  </div>
+  <button class="salon-intro__skip" type="button" data-intro-skip>
+    <span>Пропустить</span><i aria-hidden="true">↗</i>
+  </button>
+</div>
 
 <a class="skip-link" href="#main">К содержанию</a>
 
@@ -395,5 +491,6 @@
 <script src="assets/js/app.js?v=20260726release21"></script>
 <script defer src="assets/js/polish15-chrome.js?v=20260726release21"></script>
 <script src="assets/js/extras.js?v=20260726release21"></script>
+<script src="assets/js/home-intro.js?v=20260726release21"></script>
 </body>
 </html>

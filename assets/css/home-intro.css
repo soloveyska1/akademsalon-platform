@@ -1,0 +1,524 @@
+/* ============================================================
+   Главная / вступление «Фирменный титул».
+   Логотип, спокойная выдержка и плоское раскрытие двух створок.
+   Без JavaScript слой скрыт, поэтому страница всегда fail-open.
+   ============================================================ */
+
+.salon-intro{
+  display:none;
+}
+
+html.salon-intro-pending{
+  overflow:hidden;
+  overscroll-behavior:none;
+}
+
+html.salon-intro-pending .salon-intro{
+  --intro-canvas:#F3EEE4;
+  --intro-canvas-deep:#E9E1D3;
+  --intro-ink:#1D1C18;
+  --intro-muted:#68635A;
+  --intro-quiet:#8B8375;
+  --intro-line:#B8AA94;
+  --intro-line-soft:rgba(102,91,72,.15);
+  --intro-wax:#A63F29;
+  --intro-glow:rgba(166,63,41,.16);
+  --intro-light:rgba(255,255,255,.46);
+  --intro-ease:cubic-bezier(.22,1,.36,1);
+  position:fixed;
+  inset:0;
+  z-index:1200;
+  display:block;
+  min-width:320px;
+  min-height:100dvh;
+  color:var(--intro-ink);
+  font-family:var(--sans);
+  isolation:isolate;
+  overflow:hidden;
+  overscroll-behavior:contain;
+  view-transition-name:none;
+}
+
+:root[data-theme="dark"].salon-intro-pending .salon-intro{
+  --intro-canvas:#171714;
+  --intro-canvas-deep:#11110F;
+  --intro-ink:#F2ECDF;
+  --intro-muted:#AAA293;
+  --intro-quiet:#8B8478;
+  --intro-line:#565148;
+  --intro-line-soft:rgba(242,236,223,.09);
+  --intro-wax:#C65B41;
+  --intro-glow:rgba(198,91,65,.20);
+  --intro-light:rgba(255,255,255,.028);
+}
+
+.salon-intro__sheet{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+}
+
+.salon-intro__panel{
+  position:absolute;
+  z-index:0;
+  top:0;
+  bottom:0;
+  width:50.05%;
+  background-color:var(--intro-canvas);
+  background-image:
+    radial-gradient(circle at 50% 30%,var(--intro-light),transparent 34%),
+    repeating-linear-gradient(0deg,var(--intro-line-soft) 0 1px,transparent 1px 6px);
+  will-change:transform;
+}
+
+.salon-intro__panel--left{
+  left:0;
+  background-position:left top;
+  border-right:1px solid var(--intro-line-soft);
+}
+
+.salon-intro__panel--right{
+  right:0;
+  background-position:right top;
+}
+
+.salon-intro__frame{
+  position:absolute;
+  z-index:1;
+  inset:clamp(16px,2.15vw,32px);
+  border:1px solid var(--intro-line-soft);
+  opacity:0;
+  pointer-events:none;
+}
+
+.salon-intro__composition{
+  position:relative;
+  z-index:2;
+  display:flex;
+  width:min(100% - 48px,980px);
+  min-height:100dvh;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  margin-inline:auto;
+  padding:clamp(90px,11vh,128px) 24px;
+  text-align:center;
+}
+
+.salon-intro__logo{
+  position:relative;
+  display:grid;
+  width:148px;
+  height:148px;
+  place-items:center;
+  margin-bottom:clamp(24px,3.2vh,34px);
+  opacity:0;
+  transform:translateY(10px) scale(.9);
+}
+
+.salon-intro__logo::before,
+.salon-intro__logo::after{
+  position:absolute;
+  border-radius:50%;
+  content:"";
+  pointer-events:none;
+}
+
+.salon-intro__logo::before{
+  inset:0;
+  border:1px solid color-mix(in srgb,var(--intro-wax) 44%,transparent);
+  opacity:0;
+  transform:scale(.74);
+}
+
+.salon-intro__logo::after{
+  inset:20px;
+  background:var(--intro-glow);
+  filter:blur(24px);
+  opacity:0;
+}
+
+.salon-intro__logo > span{
+  position:relative;
+  z-index:1;
+  display:block;
+  width:112px;
+  height:112px;
+  border-radius:50%;
+  filter:drop-shadow(0 16px 28px rgba(76,38,27,.18));
+}
+
+:root[data-theme="dark"] .salon-intro__logo > span{
+  filter:drop-shadow(0 18px 34px rgba(0,0,0,.46));
+}
+
+.salon-intro__logo img{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+.salon-intro__kicker{
+  margin-bottom:15px;
+  color:var(--intro-muted);
+  font:600 10px/1.4 var(--mono);
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  opacity:0;
+  transform:translateY(8px);
+}
+
+.salon-intro__title{
+  color:var(--intro-ink);
+  font-family:var(--serif);
+  font-size:clamp(48px,5.6vw,76px);
+  font-weight:390;
+  line-height:1.02;
+  letter-spacing:-.052em;
+  text-wrap:balance;
+}
+
+.salon-intro__title span{
+  display:inline-block;
+  opacity:0;
+  transform:translateY(16px);
+}
+
+.salon-intro__rule{
+  position:relative;
+  display:block;
+  width:min(190px,44vw);
+  height:1px;
+  margin:clamp(24px,3.4vh,34px) auto clamp(20px,2.8vh,28px);
+  background:var(--intro-line);
+  transform:scaleX(0);
+}
+
+.salon-intro__rule i{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:6px;
+  height:6px;
+  background:var(--intro-wax);
+  border-radius:50%;
+  box-shadow:0 0 0 5px var(--intro-canvas);
+  transform:translate(-50%,-50%) scale(0);
+}
+
+.salon-intro__promise{
+  max-width:34ch;
+  color:var(--intro-ink);
+  font:italic 400 clamp(18px,1.65vw,22px)/1.5 var(--serif);
+  letter-spacing:-.018em;
+  text-wrap:balance;
+  opacity:0;
+  transform:translateY(10px);
+}
+
+.salon-intro__folio{
+  position:absolute;
+  z-index:3;
+  color:var(--intro-quiet);
+  font:600 9px/1.35 var(--mono);
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  opacity:0;
+}
+
+.salon-intro__folio--top{
+  top:max(clamp(30px,4.25vw,64px),calc(env(safe-area-inset-top) + 20px));
+  left:max(clamp(26px,4.25vw,72px),calc(env(safe-area-inset-left) + 18px));
+}
+
+.salon-intro__folio--bottom{
+  right:clamp(26px,4.25vw,72px);
+  bottom:max(clamp(30px,4.25vw,64px),calc(env(safe-area-inset-bottom) + 20px));
+  left:clamp(26px,4.25vw,72px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+}
+
+.salon-intro__folio--bottom i{
+  width:3px;
+  height:3px;
+  background:var(--intro-wax);
+  border-radius:50%;
+}
+
+.salon-intro__skip{
+  position:absolute;
+  z-index:4;
+  top:max(clamp(20px,3.25vw,44px),calc(env(safe-area-inset-top) + 10px));
+  right:max(clamp(20px,3.25vw,48px),calc(env(safe-area-inset-right) + 14px));
+  display:inline-flex;
+  min-width:44px;
+  min-height:44px;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:0 4px 0 14px;
+  color:var(--intro-muted);
+  background:transparent;
+  border:0;
+  border-bottom:1px solid transparent;
+  border-radius:0;
+  cursor:pointer;
+  font:550 10px/1 var(--mono);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  opacity:0;
+  transition:color 160ms ease,border-color 160ms ease,opacity 180ms ease;
+}
+
+.salon-intro__skip i{
+  display:grid;
+  width:30px;
+  height:30px;
+  place-items:center;
+  border:1px solid var(--intro-line);
+  border-radius:50%;
+  font:400 13px/1 var(--sans);
+  transition:transform 180ms var(--intro-ease),border-color 160ms ease;
+}
+
+.salon-intro__skip:hover{
+  color:var(--intro-ink);
+  border-bottom-color:var(--intro-line);
+}
+
+.salon-intro__skip:hover i{
+  border-color:var(--intro-ink);
+  transform:translate(2px,-2px);
+}
+
+.salon-intro__skip:focus-visible{
+  outline:2px solid var(--intro-ink);
+  outline-offset:4px;
+}
+
+html.salon-intro-running .salon-intro__frame{
+  animation:intro-fade-in 520ms ease 80ms both;
+}
+
+html.salon-intro-running .salon-intro__logo{
+  animation:intro-logo-in 760ms var(--intro-ease) 180ms both;
+}
+
+html.salon-intro-running .salon-intro__logo::before{
+  animation:intro-ring-in 900ms var(--intro-ease) 360ms both;
+}
+
+html.salon-intro-running .salon-intro__logo::after{
+  animation:intro-glow-in 900ms ease 420ms both;
+}
+
+html.salon-intro-running .salon-intro__kicker{
+  animation:intro-copy-in 520ms var(--intro-ease) 720ms both;
+}
+
+html.salon-intro-running .salon-intro__title span:first-child{
+  animation:intro-copy-in 680ms var(--intro-ease) 900ms both;
+}
+
+html.salon-intro-running .salon-intro__title span:last-child{
+  animation:intro-copy-in 680ms var(--intro-ease) 1020ms both;
+}
+
+html.salon-intro-running .salon-intro__rule{
+  animation:intro-rule-in 560ms var(--intro-ease) 1280ms both;
+}
+
+html.salon-intro-running .salon-intro__rule i{
+  animation:intro-dot-in 360ms var(--intro-ease) 1630ms both;
+}
+
+html.salon-intro-running .salon-intro__promise{
+  animation:intro-copy-in 680ms var(--intro-ease) 1540ms both;
+}
+
+html.salon-intro-running .salon-intro__folio{
+  animation:intro-fade-in 460ms ease 260ms both;
+}
+
+html.salon-intro-running .salon-intro__skip{
+  opacity:1;
+  transition-delay:220ms;
+}
+
+html.salon-intro-leaving .salon-intro__composition > *,
+html.salon-intro-leaving .salon-intro__folio,
+html.salon-intro-leaving .salon-intro__frame{
+  opacity:0;
+  animation:none!important;
+  transition:opacity 300ms ease;
+}
+
+html.salon-intro-leaving .salon-intro__skip{
+  opacity:0;
+  pointer-events:none;
+  transition-delay:0ms;
+}
+
+html.salon-intro-leaving .salon-intro__panel--left{
+  transform:translateX(-101%);
+  transition:transform 920ms var(--intro-ease) 160ms;
+}
+
+html.salon-intro-leaving .salon-intro__panel--right{
+  transform:translateX(101%);
+  transition:transform 920ms var(--intro-ease) 160ms;
+}
+
+@keyframes intro-fade-in{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+@keyframes intro-logo-in{
+  from{opacity:0;transform:translateY(10px) scale(.9)}
+  to{opacity:1;transform:none}
+}
+
+@keyframes intro-ring-in{
+  from{opacity:0;transform:scale(.74)}
+  to{opacity:1;transform:scale(1)}
+}
+
+@keyframes intro-glow-in{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+@keyframes intro-copy-in{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+
+@keyframes intro-rule-in{
+  from{transform:scaleX(0)}
+  to{transform:scaleX(1)}
+}
+
+@keyframes intro-dot-in{
+  from{transform:translate(-50%,-50%) scale(0)}
+  to{transform:translate(-50%,-50%) scale(1)}
+}
+
+@media(max-width:920px){
+  .salon-intro__composition{
+    width:min(100% - 32px,620px);
+    padding:clamp(92px,13vh,122px) 16px;
+  }
+
+  .salon-intro__logo{
+    width:118px;
+    height:118px;
+    margin-bottom:24px;
+  }
+
+  .salon-intro__logo > span{
+    width:88px;
+    height:88px;
+  }
+
+  .salon-intro__logo::after{
+    inset:16px;
+    filter:blur(20px);
+  }
+
+  .salon-intro__kicker{
+    max-width:28ch;
+    margin-bottom:13px;
+    font-size:8.5px;
+    line-height:1.55;
+  }
+
+  .salon-intro__title{
+    font-size:clamp(39px,11.7vw,56px);
+    line-height:1;
+  }
+
+  .salon-intro__title span{
+    display:block;
+  }
+
+  .salon-intro__rule{
+    margin-block:24px 20px;
+  }
+
+  .salon-intro__promise{
+    max-width:28ch;
+    font-size:clamp(17px,4.8vw,20px);
+    line-height:1.52;
+  }
+
+  .salon-intro__folio--bottom{
+    gap:9px;
+    font-size:7.5px;
+    letter-spacing:.1em;
+  }
+}
+
+@media(max-width:420px){
+  .salon-intro__folio--top{
+    max-width:15ch;
+  }
+
+  .salon-intro__skip span{
+    font-size:0;
+  }
+
+  .salon-intro__skip span::after{
+    font-size:9px;
+    content:"Пропустить";
+  }
+}
+
+@media(max-height:680px){
+  .salon-intro__composition{
+    padding-block:76px 64px;
+  }
+
+  .salon-intro__logo{
+    width:104px;
+    height:104px;
+    margin-bottom:15px;
+  }
+
+  .salon-intro__logo > span{
+    width:78px;
+    height:78px;
+  }
+
+  .salon-intro__kicker{
+    margin-bottom:9px;
+  }
+
+  .salon-intro__title{
+    font-size:clamp(36px,8vh,52px);
+  }
+
+  .salon-intro__rule{
+    margin-block:18px 15px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  html.salon-intro-pending .salon-intro{
+    display:none!important;
+  }
+}
+
+html[data-calm].salon-intro-pending .salon-intro,
+html[data-motion="off"].salon-intro-pending .salon-intro{
+  display:none!important;
+}
+
+@media print{
+  .salon-intro{
+    display:none!important;
+  }
+}
