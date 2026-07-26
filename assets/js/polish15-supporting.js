@@ -353,6 +353,19 @@
     var paymentStatus = byId('giftPaymentStatus');
     var paymentFinal = byId('giftPaymentFinal');
     var params = new URLSearchParams(location.search);
+    var fragmentParams = new URLSearchParams(
+      location.hash && location.hash.length > 1 ? location.hash.slice(1) : ''
+    );
+    ['code', 'buy', 't'].forEach(function (key) {
+      if (!params.has(key) && fragmentParams.has(key)) {
+        params.set(key, fragmentParams.get(key));
+      }
+    });
+    if (fragmentParams.has('code') || fragmentParams.has('buy') || fragmentParams.has('t')
+        || new URLSearchParams(location.search).has('t')
+        || new URLSearchParams(location.search).has('buy')) {
+      try { history.replaceState(null, '', location.pathname); } catch (e) {}
+    }
 
     function selectedDelivery() {
       var checked = document.querySelector('input[name="giftDelivery"]:checked');
@@ -491,7 +504,7 @@
         consent: true,
         privacy_notice_ack: true,
         recipient_data_authority: !!(deliveryByEmail && recipientAuthority.checked),
-        consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.2 · gift form 2.0',
+        consent_doc: 'consent-request 1.0 · privacy 3.1 · oferta 3.2 · gift form 2.0',
         website: website.value
       }).then(function (response) {
         setButtonBusy(submit, false);
@@ -510,7 +523,10 @@
         }
         state.gift = response.gift;
         state.token = response.buy_token;
-        if (Salon.store) Salon.store.set('salon_gift_buy', { id: response.gift.id, t: response.buy_token });
+        if (Salon.secretStore) {
+          Salon.secretStore.set('salon_gift_buy', { id: response.gift.id, t: response.buy_token });
+          if (Salon.store) Salon.store.del('salon_gift_buy');
+        }
         showNote('Сертификат оформлен. Осталось выбрать способ оплаты.', 'ok');
         drawPayment();
         payment.scrollIntoView({ behavior: Salon.reduceMotion ? 'auto' : 'smooth', block: 'center' });
@@ -518,11 +534,15 @@
     });
 
     function giftPath(path) {
-      return '/gift/' + state.gift.id + path + '?t=' + encodeURIComponent(state.token || '');
+      return '/gift/' + state.gift.id + path;
+    }
+
+    function giftHeaders() {
+      return state.token ? { 'X-Gift-Token': state.token } : {};
     }
 
     function paymentAction(path) {
-      Salon.api.post(giftPath(path)).then(function (response) {
+      Salon.api.post(giftPath(path), {}, giftHeaders()).then(function (response) {
         if (!(response && response.ok)) {
           paymentStatus.textContent = 'Не удалось обновить оформление. Обновите страницу и попробуйте ещё раз.';
           return;
@@ -544,7 +564,7 @@
       if (pay) {
         pay.addEventListener('click', function () {
           setButtonBusy(pay, true, 'Открываем кассу…');
-          Salon.api.post(giftPath('/pay')).then(function (response) {
+          Salon.api.post(giftPath('/pay'), {}, giftHeaders()).then(function (response) {
             setButtonBusy(pay, false);
             if (response && response.ok && response.online && response.url) {
               location.href = response.url;
@@ -608,6 +628,7 @@
         bindPaymentActions();
       } else if (gift.state === 'canceled') {
         paymentStatus.textContent = 'Оформление отменено. Деньги не списаны.';
+        if (Salon.secretStore) Salon.secretStore.del('salon_gift_buy');
         if (Salon.store) Salon.store.del('salon_gift_buy');
       } else {
         paymentStatus.textContent = 'Оплата подтверждена. Сертификат выпущен, код и PDF отправлены на почту.';
@@ -615,9 +636,10 @@
         paymentFinal.innerHTML =
           '<div class="gift-code">' + escapeHTML(gift.code || '') + '</div>' +
           '<div class="gift-payment-actions">' +
-          '<a class="button button--primary" href="gift.html?code=' + encodeURIComponent(gift.code || '') + '">Открыть сертификат</a>' +
+          '<a class="button button--primary" href="gift.html#code=' + encodeURIComponent(gift.code || '') + '">Открыть сертификат</a>' +
           '<a class="button button--secondary" target="_blank" rel="noopener" href="' +
           Salon.api.base + '/gift/pdf?code=' + encodeURIComponent(gift.code || '') + '">Скачать PDF</a></div>';
+        if (Salon.secretStore) Salon.secretStore.del('salon_gift_buy');
         if (Salon.store) Salon.store.del('salon_gift_buy');
       }
     }
@@ -663,16 +685,25 @@
 
     var buyId = parseInt(params.get('buy') || '0', 10);
     var buyToken = params.get('t') || '';
-    if (!buyId && Salon.store) {
-      var saved = Salon.store.get('salon_gift_buy', null);
+    if (!buyId && (Salon.secretStore || Salon.store)) {
+      var saved = Salon.secretStore
+        ? Salon.secretStore.get('salon_gift_buy', null)
+        : null;
+      /* Однократная миграция старого оформления из постоянного хранилища. */
+      if (!saved && Salon.store) {
+        saved = Salon.store.get('salon_gift_buy', null);
+        if (saved && Salon.secretStore) Salon.secretStore.set('salon_gift_buy', saved);
+        Salon.store.del('salon_gift_buy');
+      }
       if (saved && saved.id) {
         buyId = saved.id;
         buyToken = saved.t;
       }
     }
     if (buyId && buyToken) {
-      Salon.api.get('/gift/state?id=' + buyId + '&t=' + encodeURIComponent(buyToken)).then(function (response) {
+      Salon.api.get('/gift/state?id=' + buyId, { 'X-Gift-Token': buyToken }).then(function (response) {
         if (!(response && response.ok && response.gift) || response.gift.state === 'canceled') {
+          if (Salon.secretStore) Salon.secretStore.del('salon_gift_buy');
           if (Salon.store) Salon.store.del('salon_gift_buy');
           return;
         }
@@ -685,7 +716,7 @@
 
     function pollPayment() {
       if (state.gift && state.token && state.gift.state === 'pending') {
-        Salon.api.get('/gift/state?id=' + state.gift.id + '&t=' + encodeURIComponent(state.token)).then(function (response) {
+        Salon.api.get('/gift/state?id=' + state.gift.id, giftHeaders()).then(function (response) {
           if (!(response && response.ok && response.gift)) return;
           var previous = state.gift.state + '|' + state.gift.claimed;
           state.gift = response.gift;

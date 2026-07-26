@@ -51,7 +51,7 @@ test('приёмная сохраняет рабочий API и Telegram-мар�
 
 test('книга благодарностей содержит весь исходный архив и доступный просмотр', () => {
   const source = pages['reviews.html'];
-  const images = [...source.matchAll(/<img src="(assets\/img\/reviews\/review-[^"]+\.webp)"/g)]
+  const images = [...source.matchAll(/data-full="(assets\/img\/reviews\/review-[^"]+\.webp)"/g)]
     .map((match) => match[1]);
   assert.equal(images.length, 48);
   assert.equal(new Set(images).size, 48);

@@ -7,10 +7,10 @@
 <meta name="robots" content="noindex,nofollow" />
 <meta name="referrer" content="no-referrer" />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260726release29" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release29" />
-<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release29" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260726release29" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260726release32" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release32" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release32" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260726release32" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
@@ -18,8 +18,8 @@
 <meta name="theme-color" content="#F6F1E7" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release29" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260726release29" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release32" media="screen and (max-width:920px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260726release32" />
 </head>
 <body class="p15-operations p15-application">
 
@@ -131,9 +131,9 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260726release29"></script>
-<script defer src="assets/js/polish15-chrome.js?v=20260726release29"></script>
-<script src="assets/js/extras.js?v=20260726release29"></script>
+<script src="assets/js/app.js?v=20260726release32"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260726release32"></script>
+<script src="assets/js/extras.js?v=20260726release32"></script>
 <script>
 /* Собранная заявка: смотрит, соглашается, платит. ES5-стиль проекта. */
 (function () {
@@ -182,37 +182,22 @@
   /* --- код заявки: только из фрагмента --------------------------------
      Фрагмент не уходит ни в access-лог nginx, ни в Referer при переходе
      на Robokassa (и в маячок визитов он тоже не попадает — Salon.visit
-     берёт только pathname+search). Хэш НЕ вычищаем: перезагрузка, «назад»
+     берёт только pathname). Хэш НЕ вычищаем: перезагрузка, «назад»
      и история браузера остаются запасной копией ссылки. */
   var h = location.hash || '';
   var m = h.match(/[#&]k=([A-Za-z0-9_-]+)/);
-  /* Запасной вход через ?k= — фрагмент теряется слишком легко: превью-карточка
-     мессенджера, ручной набор адреса, редиректор, «поделиться» из браузера.
-     Приняв код из строки запроса, ТУТ ЖЕ переписываем адрес на #k=, чтобы
-     он не ушёл в Referer при переходе на оплату и не осел в истории. */
-  var fromQuery = false;
-  if (!m) {
-    m = (location.search || '').match(/[?&]k=([A-Za-z0-9_-]+)/);
-    if (m) fromQuery = true;
-  }
-  state.preview = /[#&]preview=1/.test(h) || /[?&]preview=1/.test(location.search || '');
+  state.preview = /[#&?]preview=1/.test(h);
   var saved = null;
-  try { saved = S.store.get('salon_zayavka', null); } catch (e) { saved = null; }
+  try { saved = S.secretStore.get('salon_zayavka', null); } catch (e) { saved = null; }
   if (m) {
     state.code = m[1];
-    if (fromQuery && window.history && history.replaceState) {
-      try {
-        history.replaceState(null, '',
-          location.pathname + '#k=' + state.code + (state.preview ? '&preview=1' : ''));
-      } catch (e) {}
-    }
   } else if (saved && saved.c) {
     state.code = saved.c;
   }
   if (saved && saved.c === state.code && saved.n) state.nonce = saved.n;
 
   function remember() {
-    try { S.store.set('salon_zayavka', { c: state.code, n: state.nonce }); } catch (e) {}
+    try { S.secretStore.set('salon_zayavka', { c: state.code, n: state.nonce }); } catch (e) {}
   }
 
   function show(id) {
@@ -634,14 +619,14 @@
       $('zkDnCash').hidden = true;
     }
 
-    if (!d.access_token && state.nonce && !doneRetry) {
-      /* Ключа нет, но nonce у нас ЕСТЬ — значит платили именно с этого браузера,
-         а данные пришли из публичной ручки, которая токен не отдаёт по замыслу.
+    if (!d.claim_url && !d.access_token && state.nonce && !doneRetry) {
+      /* Ссылки нет, но nonce у нас ЕСТЬ — значит платили именно с этого браузера,
+         а данные пришли из публичной ручки, которая доступ не отдаёт по замыслу.
          Прежде чем пугать человека «вы в другом браузере», спрашиваем /state. */
       doneRetry = true;
       S.api.get('/offer/' + encodeURIComponent(state.code) + '/state?n=' +
                 encodeURIComponent(state.nonce)).then(function (r) {
-        if (r && r.ok && r.offer && r.offer.access_token) {
+        if (r && r.ok && r.offer && (r.offer.claim_url || r.offer.access_token)) {
           state.data = r.offer;
           drawDone(r.offer);
         } else {
@@ -650,17 +635,21 @@
       }, function () { drawDoneLocked(); });
       return;
     }
-    if (!d.access_token) { drawDoneLocked(); return; }
+    if (!d.claim_url && !d.access_token) { drawDoneLocked(); return; }
 
     var link = d.claim_url || S.claimLink(d.access_token);
-    try { S.api.addGuestToken(d.access_token); } catch (e) {}
+    if (d.access_token) {
+      try { S.api.addGuestToken(d.access_token); } catch (e) {}
+    }
     $('zkOpenCase').hidden = false;
     $('zkKeep').hidden = false;
     $('zkOpenCase').href = link;
-    /* Настоящая привязка к боту — deep-link claim_<token>: после одного нажатия
-       оживают все TG-уведомления клиенту (handlers/client.py). */
-    $('zkTgShare').href = 'https://t.me/academic_saloon_bot?start=claim_' +
-      encodeURIComponent(d.access_token);
+    /* Ключ дела остаётся во фрагменте сайта. В кабинете пользователь входит
+       через одноразовый auth-код, после чего сайт привязывает гостевое дело:
+       capability-токен никогда не передаётся Telegram. */
+    $('zkTgShare').href = link;
+    $('zkTgShare').removeAttribute('target');
+    $('zkTgShare').textContent = 'Одноразово привязать Telegram';
     /* Ссылка обязана быть ВИДНА текстом: это единственный ключ от дела,
        а буфер обмена может быть запрещён политикой браузера. */
     if ($('zkLinkBox')) {

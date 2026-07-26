@@ -322,6 +322,14 @@
     }, true);
 
     document.addEventListener('keydown', function (e) {
+      /* Закрываем сами, а не полагаемся только на нативный cancel:
+         так Escape одинаково работает в WebKit, во встроенных браузерах
+         и когда фокус находится в поле с role="combobox". */
+      if ((e.key === 'Escape' || e.keyCode === 27) && anyOpen()) {
+        e.preventDefault();
+        closeAll();
+        return;
+      }
       if (searchDlg.open) {
         if (e.key === 'ArrowDown') { e.preventDefault(); moveCursor(1); return; }
         if (e.key === 'ArrowUp') { e.preventDefault(); moveCursor(-1); return; }
@@ -352,7 +360,19 @@
     /* Подменяем старое оглавление: обработчики .menu-toggle в app.js
        зовут Salon.toc.open() и теперь открывают диалог «Навигация». */
     S.toc = {
-      open: function () { openDialog(menuDlg, document.querySelector('.menu-toggle')); },
+      open: function (trigger) {
+        var activeTrigger = trigger;
+        if (!activeTrigger && document.activeElement && document.activeElement.closest) {
+          activeTrigger = document.activeElement.closest('.menu-toggle');
+        }
+        if (!activeTrigger) {
+          var triggers = document.querySelectorAll('.menu-toggle');
+          for (var i = 0; i < triggers.length; i++) {
+            if (triggers[i].getClientRects().length) { activeTrigger = triggers[i]; break; }
+          }
+        }
+        openDialog(menuDlg, activeTrigger);
+      },
       close: function () { closeAll(); },
       isOpen: function () { return !!(menuDlg && menuDlg.open); }
     };

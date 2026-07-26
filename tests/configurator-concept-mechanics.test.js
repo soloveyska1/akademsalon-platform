@@ -13,13 +13,22 @@ const mobileCss = read('assets/css/mobile.css');
 const appJs = read('assets/js/app.js');
 const indexHtml = read('index.html');
 
-test('homepage situation deep links preserve the situation and start with the work type', () => {
+test('context links preserve safe route codes and skip only resolved decisions', () => {
   assert.match(html, /situationCode = routeParams\.get\('situation'\)/);
-  assert.match(html, /\['topic','draft','comments','defense'\]\.indexOf\(situationCode\) >= 0/);
-  assert.match(html, /state\.step = 0;\s*state\.draftId = newDraftId\(\);\s*state\.situation = situationCode/);
+  assert.match(html, /workCode = routeParams\.get\('work'\)/);
+  assert.match(html, /resultCode = routeParams\.get\('result'\)/);
+  assert.match(html, /disciplineCode = routeParams\.get\('discipline'\)/);
+  assert.match(html, /var routedSituation = \['topic','draft','comments','defense'\]\.indexOf\(situationCode\) >= 0/);
+  assert.match(html, /state\.step = routedWork && routedDiscipline && routedSituation && routedResult \? 3/);
+  assert.match(html, /state\.situation = routedSituation;\s*state\.workType = routedWork;\s*state\.discipline = routedDiscipline;\s*state\.result = routedResult/);
   assert.match(html, /title:'С какой работой нужна помощь\?'/);
-  assert.match(html, /routeParams\.delete\('situation'\)/);
+  for (const key of ['situation', 'work', 'discipline', 'result', 'route']) {
+    assert.match(html, new RegExp(`routeParams\\.delete\\('${key}'\\)`));
+  }
   assert.match(html, /history\.replaceState\(history\.state/);
+  assert.match(html, /if \(key === 'workType'\) return !!\(state\.workType && state\.discipline\)/);
+  assert.match(html, /offer_id:caseOfferId\(\)/);
+  assert.match(html, /payload\.case_context = caseContext/);
 });
 
 test('approved wizard facade exposes the live quote and first cart action', () => {
@@ -29,6 +38,49 @@ test('approved wizard facade exposes the live quote and first cart action', () =
   assert.match(html, /До контактов уже видны состав, границы работы и ориентир стоимости/);
   assert.match(html, /cartHasItems \? 'Открыть состав сметы' : 'Открыть смету заказа'/);
   assert.match(html, /class="line-link concept-cart-link" type="button" data-cart-open/);
+  assert.match(html, /function materialsMarkup\(\) \{\s*var rec = recommendationFor\(\);\s*var pricing = quoteInfo\(\)/);
+});
+
+test('every canonical work subtype stays visible and preserves its exact selection', () => {
+  for (const work of [
+    'course', 'course_emp', 'diplom', 'master', 'chapter', 'kandidat',
+    'vak', 'scopus', 'rinc', 'practice', 'self',
+  ]) {
+    assert.match(html, new RegExp(`\\['${work}','`), work);
+  }
+  assert.match(html, /specialistOptions:\[/);
+  assert.match(html, /Специализированные форматы/);
+  assert.match(html, /selected === option\[0\]/);
+});
+
+test('topic-only routes cannot bypass prerequisites for file-dependent results', () => {
+  assert.match(html, /function resultNeedsExistingMaterial\(value\)/);
+  for (const result of ['editing', 'formatting', 'defense', 'ai_editing']) {
+    assert.match(html, new RegExp(`resultNeedsExistingMaterial[\\s\\S]*?'${result}'`));
+  }
+  assert.match(html, /routedSituation === 'topic' && resultNeedsExistingMaterial\(routedResult\)/);
+  assert.match(html, /disabled aria-disabled="true"/);
+  assert.match(html, /Для редактуры, оформления, работы после ИИ и подготовки к защите нужен готовый файл/);
+  assert.match(html, /if \(!service && state\.situation === 'topic' && resultNeedsExistingMaterial\(state\.result\)\)/);
+});
+
+test('candidate diagnostic and specialist services use canonical offers and prices', () => {
+  assert.match(html, /result === 'diagnostic' && state\.workType === 'kandidat'\) return 'work_base'/);
+  assert.match(html, /diagnostic:'base'/);
+  assert.match(html, /offer === 'svc_tutor' \? 3000/);
+  assert.match(html, /offer === 'svc_ai' \? 2500/);
+  assert.match(html, /service\.id === 'tutor' \? 'tutoring'/);
+  assert.match(html, /service\.id === 'ai' \? 'ai_editing'/);
+});
+
+test('privacy-safe route telemetry is versioned and never includes free text fields', () => {
+  assert.match(html, /var RULES_EVENT_VERSION = 'r1'/);
+  assert.match(html, /Salon\.visit\.event\(name,\{\s*cta:caseOfferId\(\),\s*variant:variant/);
+  for (const event of ['case_step_view', 'case_recommend_view', 'case_route_change', 'case_submit_ready']) {
+    assert.match(html, new RegExp(`trackConcept\\('${event}'`));
+  }
+  const telemetry = html.slice(html.indexOf('function conceptVariant'), html.indexOf('function isFullWorkOffer'));
+  assert.doesNotMatch(telemetry, /state\.(?:topic|comment|contact|name)/);
 });
 
 test('multi-position flow returns to the visible concept wizard and keeps cart totals authoritative', () => {
@@ -106,7 +158,7 @@ test('home begins directly after the in-flow desktop header and mobile appbar of
 });
 
 test('production chrome switches to the approved mobile edition at 920px', () => {
-  assert.match(indexHtml, /mobile\.css\?v=20260726release29" media="screen and \(max-width:920px\)"/);
+  assert.match(indexHtml, /home-release\.min\.css\?v=20260726release32" data-mobile-edition="1"/);
   assert.match(mobileCss, /@media screen and \(max-width:920px\)/);
   assert.match(appJs, /link\.media = 'screen and \(max-width:920px\)'/);
   assert.match(appJs, /matchMedia\('\(max-width:920px\)'\)/);

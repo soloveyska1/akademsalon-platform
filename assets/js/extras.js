@@ -135,8 +135,8 @@
     var site = links.site || 'https://akademsalon.ru/';
     var letter = 'Привет! Советую «Академический Салон» — мастерская, где помогают ' +
       'разобрать учебную задачу, проверить и отредактировать свой текст, пройти нормоконтроль и подготовиться к защите.\n\n' +
-      'По моей ссылке тебе начислят 200 бонусов на первую услугу (1 бонус = 1 ₽):\n' + site;
-    var shareText = 'Дарю 200 бонусов на первую консультацию или редактуру в «Академическом Салоне».';
+      'Если после знакомства ты оформишь и полностью оплатишь первый заказ, мне начислят 200 бонусов за рекомендацию. Для тебя цена от ссылки не меняется:\n' + site;
+    var shareText = 'Советую «Академический Салон»: личная рекомендация без скрытой скидки и массовой рассылки.';
     var enc = encodeURIComponent;
     var shares = [
       { cls: 'tg', label: 'Telegram', href: 'https://t.me/share/url?url=' + enc(site) + '&text=' + enc(shareText) },
@@ -160,8 +160,8 @@
           '<span class="inv-seal" aria-hidden="true">АС</span>' +
         '</div>' +
         '<div class="inv-gain">' +
-          '<span class="ig-chip">Другу — <b>200 бонусов</b> на первую услугу</span>' +
-          '<span class="ig-chip">Вам — <b>5%</b> с каждой его оплаты</span>' +
+          '<span class="ig-chip">Вам — <b>200 бонусов</b> после первого оплаченного заказа друга</span>' +
+          '<span class="ig-chip">Другу — <b>обычная цена</b>, без скрытой наценки</span>' +
         '</div>' +
         '<div class="inv-row">' +
           shares.map(function (s) {
@@ -236,12 +236,10 @@
           '<span class="cb-kicker">Приватность · выбор за вами</span>' +
           '<h2 id="cb-title">Настройки данных</h2>' +
         '</div>' +
-        '<p>Обязательное хранилище сохраняет корзину, настройки и безопасный вход. ' +
-          'С вашего согласия включим собственную аналитику и Яндекс.Метрику. ' +
-          'Отказ не повлияет на сайт и оформление заказа.</p>' +
+        '<p>Разрешить обезличенную аналитику? Отказ не мешает сайту и заказу; черновик остаётся на вашем устройстве.</p>' +
         '<div class="cb-actions">' +
-          '<button type="button" class="btn btn-ink" data-cb-allow>Разрешить аналитику</button>' +
-          '<button type="button" class="btn btn-line" data-cb-reject>Только необходимые</button>' +
+          '<button type="button" class="btn btn-line" data-cb-allow>Разрешить</button>' +
+          '<button type="button" class="btn btn-line" data-cb-reject>Только необходимое</button>' +
         '</div>' +
         '<div class="cb-foot">' +
           '<button type="button" class="cb-more" data-cb-settings>Настроить</button>' +
@@ -1026,7 +1024,7 @@
         if (document.hidden && !noti) return;
         if (!S.lead()) return;                           /* опрашивает только вкладка-лидер */
         var t = S.api.token(), g = S.api.guestTokens();
-        if (!t && !g.length) return;
+        if (!S.api.identified()) return;
         S.api.get('/orders', g.length ? { 'X-Order-Tokens': g.join(',') } : {}).then(function (r) {
           if (!r || !r.ok || !r.orders) return;
           var prev = S.store.get('salon_watch', null);
@@ -1089,21 +1087,46 @@
     var el = document.createElement('div');
     el.className = 'nudge';
     var siteLink = S.claimLink ? S.claimLink(token) : '';
-    var tgLink = 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(token);
     el.innerHTML =
       '<h4>Сохраните доступ к делу</h4>' +
       '<p>Заказ привязан к этому браузеру. Скопируйте секретную ссылку доступа — по ней дело ' +
-      'откроется на любом устройстве, мессенджеры не нужны. А если привяжете Telegram, статусы ' +
-      'придут и в бота, новым гостям там — 300 бонусов. И то и другое необязательно: заказ уже принят.</p>' +
+      'откроется на другом устройстве, мессенджеры не нужны. Не пересылайте её посторонним. ' +
+      'Привязка через Telegram одноразовая: после подтверждения прежний ключ отзывается. ' +
+      'Это необязательно — заказ уже принят.</p>' +
       '<div class="n-row">' +
         '<button type="button" class="btn btn-wax" data-n-copy>Скопировать ссылку доступа</button>' +
-        '<a class="btn btn-line" target="_blank" rel="noopener" href="' + tgLink + '">Привязать Telegram</a>' +
+        '<button type="button" class="btn btn-line" data-n-login>Привязать Telegram одноразово</button>' +
         '<button type="button" class="n-later">Позже</button>' +
       '</div>';
     el.querySelector('[data-n-copy]').addEventListener('click', function () {
       if (S.copy) S.copy(siteLink).then(function (ok) {
         if (S.toast) S.toast(ok ? 'Ссылка доступа скопирована — сохраните её себе' : 'Ссылка: ' + siteLink);
       });
+    });
+    el.querySelector('[data-n-login]').addEventListener('click', function () {
+      var button = this;
+      button.disabled = true;
+      button.textContent = 'Открываем одноразовый вход…';
+      S.tgLogin(
+        function () {
+          button.disabled = false;
+          button.textContent = 'Telegram привязан ✓';
+          if (S.toast) S.toast('Вход подтверждён — дело привязано без передачи секретной ссылки Telegram');
+        },
+        function () {
+          button.disabled = false;
+          button.textContent = 'Повторить безопасный вход';
+          if (S.toast) S.toast('Вход не подтвердился — секретная ссылка осталась только на сайте');
+        },
+        function (link, opened) {
+          if (!opened) {
+            button.textContent = 'Переходим в Telegram…';
+            location.href = link;
+          } else {
+            button.textContent = 'Ждём подтверждение в боте…';
+          }
+        }
+      );
     });
     el.querySelector('.n-later').addEventListener('click', function () {
       el.style.opacity = '0';
@@ -1161,7 +1184,7 @@
         details: q, name: '', contact: c, website: '', deadline: '',
         consent: box.querySelector('#glOk').checked,
         privacy_notice_ack: box.querySelector('#glOk').checked,
-        consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.2',
+        consent_doc: 'consent-request 1.0 · privacy 3.1 · oferta 3.2',
         page: here
       }).then(function (r) {
         S.btnLoading(btn, false);
@@ -1212,8 +1235,20 @@
        так же, как в эталоне (updateStartLabels: «Описать» → «Продолжить»).
        Работает на всех страницах с доком, а не только там, где есть лист
        возврата, поэтому стоит до проверки наличия карточки. */
+    function hasContextRoute(link) {
+      if (!link) return false;
+      try {
+        var params = new URL(link.getAttribute('href') || '', location.href).searchParams;
+        var route = params.get('route') || '';
+        var service = params.get('service') || '';
+        return route === 'page' || route === 'case1' ||
+          ['pl','ai','rv','tu','nm','df','k0','dp','au'].indexOf(service) >= 0;
+      } catch (e) {
+        return false;
+      }
+    }
     var dockCalc = document.querySelector('.mnav .mn-calc');
-    if (dockCalc && here !== 'configurator.html') {
+    if (dockCalc && here !== 'configurator.html' && !hasContextRoute(dockCalc)) {
       dockCalc.href = 'configurator.html?step=' + resumeStep;
       dockCalc.setAttribute('aria-label', 'Продолжить смету: ' + typeLabel + ', шаг ' + resumeStep);
       var dockLabel = dockCalc.querySelector('.mn-l');

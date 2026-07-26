@@ -46,17 +46,20 @@ test('Commission Zero is a real configurator service with exact work-based price
   assert.match(app, /Протокол №0/);
   assert.match(configurator, /service\.id === 'commission0'/);
   assert.match(configurator, /Живая сессия и Протокол №0/);
-  assert.match(configurator, /serviceCode === 'df' \|\| serviceCode === 'dp' \|\| serviceCode === 'k0' \? 'defense'/);
+  assert.match(configurator, /service\.id === 'defense' \|\| service\.id === 'defensepack' \|\| service\.id === 'commission0' \? 'defense'/);
+  assert.doesNotMatch(app, /value:'topic', label:'Пока только тема'/);
+  assert.match(read('assets/js/commission-zero.js'), /state\.source === 'topic'[\s\S]*service=pl/);
 });
 
-test('flagship is discoverable without replacing the clear zero-start offer', () => {
+test('flagship is discoverable as the final gate of the research case', () => {
   const home = read('index.html');
   const services = read('services.html');
   const tariffs = read('tariffs.html');
   const app = read('assets/js/app.js');
 
-  assert.match(home, /Курсовые и ВКР[\s\S]*с нуля — до защиты/);
-  assert.match(home, /Работаем, пока ты отдыхаешь/);
+  assert.match(home, /Одно дело\.[\s\S]*От темы до защиты\./);
+  assert.match(home, /Финальный рубеж дела · Комиссия №0/);
+  assert.match(home, /Настоящая комиссия[\s\S]*не должна быть первой/);
   assert.match(home, /commission0-feature/);
   assert.match(home, /configurator\.html\?service=k0/);
   assert.match(services, /catalog-commission[\s\S]*Комиссия №0/);

@@ -1500,8 +1500,8 @@ async function main() {
                 localStorage.removeItem('salon_cart_v1');
                 const now = new Date();
                 localStorage.setItem('salon_consent', JSON.stringify({
-                  v: 2,
-                  document: 'analytics-consent-2.0',
+                  v: 3,
+                  document: 'analytics-consent-2.2',
                   necessary: true,
                   analytics: false,
                   action: 'reject',

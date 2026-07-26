@@ -207,7 +207,11 @@
     ];
   }
   function contourLabel(x) {
-    if (!x || x.serviceId !== 'author') return 'Академическое сопровождение';
+    if (!x || x.serviceId !== 'author') {
+      return x && (x.academicSubmode === 'A2' || (x.kind === 'work' && x.tier === 'vip'))
+        ? 'А2 · совместный исследовательский проект с нуля'
+        : 'А1 · редакторская и консультационная помощь';
+    }
     var model = String(x.answers && x.answers.author_model || '');
     if (model.indexOf('Б1') >= 0) return 'Авторская работа · мастерская';
     if (model.indexOf('Б2') >= 0) return 'Авторская работа · согласованный автор';
@@ -397,7 +401,7 @@
     return {
       plan:'svc_plan', ai:'svc_ai', review:'svc_review', tutor:'svc_tutor',
       norm:'svc_norm', defense:'svc_defense', defensepack:'svc_defense_pack',
-      author:'svc_author_order'
+      commission0:'commission_zero', author:'svc_author_order'
     }[id] || 'custom';
   }
   function servicePrice(svc, answers) {
@@ -1155,15 +1159,21 @@
         var legalType = x.kind === 'service' ? 'consultation' : 'methodological_material';
         var answerMap = x.answers && typeof x.answers === 'object' ? x.answers : {};
         var authorModel = String(answerMap.author_model || '');
+        var academicSubmode = x.serviceId === 'author'
+          ? null
+          : (x.academicSubmode === 'A2' || (x.kind === 'work' && x.tier === 'vip') ? 'A2' : 'A1');
         var contour = x.serviceId === 'author'
-          ? (authorModel.indexOf('Б1') >= 0 ? 'B1_personal_author_order'
-            : authorModel.indexOf('Б2') >= 0 ? 'B2_third_party_author_order'
-            : 'B_pending_variant')
-          : 'A_academic_support';
+          ? (authorModel.indexOf('Б1') >= 0 ? 'B1'
+            : authorModel.indexOf('Б2') >= 0 ? 'B2'
+            : 'B_PENDING')
+          : 'A';
         var permittedPurpose = x.serviceId === 'author'
           ? String(answerMap.purpose || '').slice(0, 500)
-          : 'Самостоятельная работа Заказчика; консультация, аудит, редактура предоставленного материала или подготовка к выступлению без выполнения аттестации вместо Заказчика.';
+          : academicSubmode === 'A2'
+            ? 'Совместная исследовательская разработка от темы или задания до рабочего черновика при обязательном содержательном участии Заказчика; финальная авторская версия формируется Заказчиком.'
+            : 'Самостоятельная работа Заказчика; консультация, аудит, редактура предоставленного материала или подготовка к выступлению без выполнения аттестации вместо Заказчика.';
         if (x.serviceId === 'author') legalType = 'author_order_non_attestation';
+        if (academicSubmode === 'A2') legalType = 'joint_research_development';
         if (/edit|red|corr/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'editing';
         if (/format|norm|gost/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'formatting';
         if (/tutor|consult|razbor/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'consultation';
@@ -1173,7 +1183,9 @@
           position: i + 1,
           selected_by_customer: true,
           contract_contour: contour,
-          contract_contour_pending: contour === 'B_pending_variant',
+          contract_contour_pending: contour === 'B_PENDING',
+          academic_submode: academicSubmode,
+          academic_submode_pending: false,
           permitted_purpose: permittedPurpose,
           kind: x.kind === 'service' ? 'service' : 'work',
           legal_service_type: legalType,
@@ -1201,13 +1213,33 @@
           scope: {
             topic: String(x.topic || '').slice(0, 400),
             customer_requirements: String(x.requirements || '').slice(0, 1500),
+            required_inputs: x.serviceId === 'ai'
+              ? ['исходный текст после ИИ', 'исходный prompt', 'сведения об источниках']
+              : [],
             included_pending: true,
             excluded_pending: true
           },
           customer_inputs: {
-            description: String(x.topic || x.requirements || '').slice(0, 1500),
-            version_pending: true
+            description: x.serviceId === 'ai'
+              ? ('Исходный текст приложен: ' + (x.sourceMaterialProvided ? 'да' : 'нет') +
+                '. Исходный prompt: ' + String(answerMap.prompt || '') +
+                '. Источники: ' + String(answerMap.sources || '')).slice(0, 1500)
+              : String(x.topic || x.requirements || '').slice(0, 1500),
+            version_pending: true,
+            source_material_required: x.serviceId === 'ai',
+            source_material_provided: x.serviceId === 'ai' ? !!x.sourceMaterialProvided : null,
+            original_prompt: x.serviceId === 'ai' ? String(answerMap.prompt || '').slice(0, 1500) : '',
+            sources_disclosure: x.serviceId === 'ai' ? String(answerMap.sources || '').slice(0, 1500) : ''
           },
+          author_participation: academicSubmode === 'A2' ? {
+            required: true,
+            confirmed: !!x.authorParticipation,
+            checkpoints: [
+              'утверждение проблемы, цели, метода и содержательных решений',
+              'проверка фактов, источников и исходных данных',
+              'содержательная доработка рабочего черновика и формирование финальной авторской версии'
+            ]
+          } : null,
           deliverables_pending: true,
           acceptance_criteria_pending: true,
           corrections_pending: true,
@@ -1215,7 +1247,9 @@
           intellectual_rights_profile_pending: x.serviceId === 'author' && !answerMap.rights,
           actual_author_profile: x.serviceId === 'author'
             ? { model:authorModel, author_name:String(answerMap.author_name || ''), confirmation_pending:!answerMap.author_name }
-            : { model:'customer_substantive_basis', author_name:'Заказчик', confirmation_pending:false },
+            : academicSubmode === 'A2'
+              ? { model:'customer_final_author', author_name:'Заказчик', confirmation_pending:!x.authorParticipation }
+              : { model:'customer_substantive_basis', author_name:'Заказчик', confirmation_pending:false },
           actual_author_profile_pending: x.serviceId === 'author' && !answerMap.author_name,
           third_party_performers: [],
           third_party_performers_pending: contour === 'B2_third_party_author_order',
@@ -1230,7 +1264,8 @@
         'deliverables', 'contractor_due_at', 'dependencies', 'acceptance_criteria',
         'unit_price_minor', 'line_price_minor', 'discount_allocations',
         'payment_stage_allocations', 'cancellation_effect', 'contract_contour',
-        'permitted_purpose', 'intellectual_rights_profile', 'actual_author_profile'
+        'academic_submode', 'permitted_purpose', 'intellectual_rights_profile',
+        'actual_author_profile', 'author_participation'
       ],
       benefits_intent: { use_bonus:!!data.checkout.useBonus, bonus_amount:benefits().bonus || 0 },
       quote_preview: { low:q.low, high:q.high }

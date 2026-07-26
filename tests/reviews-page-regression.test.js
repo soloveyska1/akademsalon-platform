@@ -10,7 +10,7 @@ const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const behavior = fs.readFileSync(path.join(root, 'assets/js/polish15-supporting.js'), 'utf8');
 
 test('весь архив присутствует, но точный счётчик нигде не показывается', () => {
-  const images = [...reviews.matchAll(/<img src="(assets\/img\/reviews\/review-[^"]+\.webp)"/g)]
+  const images = [...reviews.matchAll(/data-full="(assets\/img\/reviews\/review-[^"]+\.webp)"/g)]
     .map((match) => match[1]);
   assert.equal(images.length, 48);
   assert.equal(new Set(images).size, images.length);

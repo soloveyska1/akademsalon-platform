@@ -25,10 +25,10 @@ body.concept-shell{
   --sheet-rgb:255,253,248;
   --ink:#1D1C18;
   --ink-soft:#68635A;
-  --ink-faint:#8B8375;
+  --ink-faint:#68635A;
   --text:#38352F;
   --muted:#68635A;
-  --quiet:#8B8375;
+  --quiet:#68635A;
   --faint:#AAA08F;
   --hairline:#D8CEBD;
   --hairline-strong:#B8AA94;
@@ -74,10 +74,10 @@ body.concept-shell::before{
   --sheet-rgb:36,34,29;
   --ink:#F2ECDF;
   --ink-soft:#AAA293;
-  --ink-faint:#8B8478;
+  --ink-faint:#9B9487;
   --text:#D0C8BA;
   --muted:#AAA293;
-  --quiet:#8B8478;
+  --quiet:#9B9487;
   --faint:#6D675E;
   --hairline:#3C3932;
   --hairline-strong:#565148;
@@ -1027,6 +1027,47 @@ body .cookiebar .cb-foot > span{
   letter-spacing:.04em;
   text-transform:uppercase;
   white-space:nowrap;
+}
+
+@media screen and (min-width:921px){
+  :root.has-consent-bar .lrail{
+    right:auto;
+    bottom:clamp(14px,2vw,24px);
+    left:50%;
+    width:min(1120px,calc(100vw - 48px));
+    align-items:stretch;
+    transform:translateX(-50%);
+  }
+  :root.has-consent-bar body .lrail .cookiebar{
+    display:grid;
+    width:100%;
+    max-width:none;
+    grid-template-columns:minmax(170px,.6fr) minmax(300px,1.45fr) minmax(280px,.9fr);
+    grid-template-areas:
+      "head copy actions"
+      "foot foot foot";
+    column-gap:24px;
+    row-gap:8px;
+    align-items:center;
+    padding:14px 16px 12px;
+  }
+  :root.has-consent-bar body .lrail .cookiebar .cb-head{
+    grid-area:head;
+    margin:0;
+  }
+  :root.has-consent-bar body .lrail .cookiebar .cb-kicker{display:none}
+  :root.has-consent-bar body .lrail .cookiebar>p{
+    grid-area:copy;
+    margin:0;
+  }
+  :root.has-consent-bar body .lrail .cookiebar .cb-actions{grid-area:actions}
+  :root.has-consent-bar body .lrail .cookiebar .cb-foot{
+    grid-area:foot;
+    margin:0;
+    padding-top:0;
+    border-top:0;
+  }
+  :root.has-consent-bar body .lrail .cookiebar .cb-foot>span{display:none}
 }
 
 @media screen and (max-width:920px){

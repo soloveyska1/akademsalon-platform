@@ -40,7 +40,7 @@ test('стоимость и результат не подменяются ус�
 test('мобильный док совпадает с финальным пятираздельным концептом', () => {
   assert.match(app, /mnItem\('\/', 'Главная'/);
   assert.match(app, /mnItem\('services\.html', 'Услуги'/);
-  assert.match(app, /mnItem\('configurator\.html', 'Описать', 'mobile-dock__seal'/);
+  assert.match(app, /mnItem\(mobileRouteHref, mobileRouteLabel, 'mobile-dock__seal'/);
   assert.match(app, /mnItem\('knowledge\.html', 'Библиотека'/);
   assert.match(app, /mnItem\('dashboard\.html', 'Кабинет'/);
   assert.doesNotMatch(app, /var planLanding = here === 'plan\.html'/);
@@ -64,5 +64,5 @@ test('метаданные и sitemap обновлены для новой ст�
   assert.ok(title.length <= 80, `title too long: ${title.length}`);
   assert.ok(description.length <= 160, `description too long: ${description.length}`);
   assert.match(plan, /<meta name="theme-color" content="#F6F1E7"/);
-  assert.match(sitemap, /<loc>https:\/\/akademsalon\.ru\/plan\.html<\/loc><lastmod>2026-07-25<\/lastmod>/);
+  assert.match(sitemap, /<loc>https:\/\/akademsalon\.ru\/plan\.html<\/loc><lastmod>2026-07-26<\/lastmod>/);
 });

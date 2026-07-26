@@ -8,7 +8,7 @@ body.p15-operations {
   --op-ink: #201f1b;
   --op-text: #57534c;
   --op-muted: #777168;
-  --op-quiet: #979083;
+  --op-quiet: #68635a;
   --op-line: #d9cebc;
   --op-line-strong: #c3b59f;
   --op-wax: #a63f29;
@@ -37,10 +37,11 @@ body.p15-operations {
   --op-ink: #f2ecdf;
   --op-text: #d0c8ba;
   --op-muted: #aaa293;
-  --op-quiet: #8b8478;
+  --op-quiet: #aaa293;
   --op-line: #3c3932;
   --op-line-strong: #565148;
-  --op-wax: #c65b41;
+  /* Cream CTA copy remains AA on the dark canvas (5.18:1). */
+  --op-wax: #b14a35;
   --op-wax-deep: #a4432d;
   --op-wax-soft: #42251f;
   --op-green: #7faa8b;
@@ -582,11 +583,13 @@ body.p15-tool-workspace .site-header { display: none !important; }
 .p15-operations .format-cards article {
   position: relative;
   display: grid;
+  min-width: 0;
   min-height: 475px;
   align-content: start;
   padding: clamp(28px, 3.2vw, 42px);
   background: var(--op-sheet);
   border: 1px solid var(--op-line);
+  overflow-wrap: anywhere;
 }
 .p15-operations .format-cards article:nth-child(2) {
   color: #c9c1b4;
@@ -595,7 +598,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
 }
 .p15-operations .format-cards article:nth-child(2) h2 { color: #fffaf3; }
 .p15-operations .format-cards article:nth-child(2) p,
-.p15-operations .format-cards article:nth-child(2) dt { color: #8f887c; }
+.p15-operations .format-cards article:nth-child(2) dt { color: #9a9387; }
 .p15-operations .format-cards article:nth-child(2) dd { color: #e8e0d4; }
 .p15-operations .format-cards__code {
   position: absolute;
@@ -606,6 +609,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
 }
 .p15-operations .format-cards h2 { margin-top: 20px; font-size: clamp(34px, 3.6vw, 48px); }
 .p15-operations .format-cards article > p:not(.eyebrow) { margin-top: 16px; color: var(--op-muted); font-size: 12px; }
+.p15-operations .format-cards article:nth-child(2) > p:not(.eyebrow) { color: #9a9387; }
 .p15-operations .format-cards dl { margin-top: 40px; border-top: 1px solid var(--op-line); }
 .p15-operations .format-cards dl > div { display: grid; gap: 6px; padding: 13px 0; border-bottom: 1px solid var(--op-line); }
 .p15-operations .format-cards dt { color: var(--op-quiet); font: 550 8px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
@@ -745,9 +749,9 @@ body.p15-application #p15ZayavkaMain {
   color: #aaa296;
   background: #1d1c18;
 }
-.p15-operations .payment-demo .eyebrow { color: #8f887c; }
+.p15-operations .payment-demo .eyebrow { color: #9a9387; }
 .p15-operations .payment-demo h2 { margin-top: 7px; color: #fffaf3; font-size: 27px; }
-.p15-operations .payment-demo p:not(.eyebrow) { margin-top: 3px; color: #8f887c; font-size: 9px; }
+.p15-operations .payment-demo p:not(.eyebrow) { margin-top: 3px; color: #9a9387; font-size: 9px; }
 .p15-operations .payment-demo > strong { color: #fffaf3; font: 500 32px/1 var(--serif); white-space: nowrap; }
 .p15-operations .payment-safety { padding-block: var(--op-section); }
 .p15-operations .payment-safety > div:last-child { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--op-line); }
@@ -885,11 +889,11 @@ body.p15-system.p15-standalone .system-page {
   padding: 30px 0;
   border-bottom: 1px solid #454139;
 }
-.p15-operations .story-steps li > span { align-self: start; color: #c8674f; font: 600 10px/1.4 var(--mono); }
+.p15-operations .story-steps li > span { align-self: start; color: #dc7459; font: 600 10px/1.4 var(--mono); }
 .p15-operations .story-steps h2 { margin-top: 7px; color: #fffaf3; font-size: clamp(30px, 3.4vw, 45px); }
 .p15-operations .story-steps li > div > p:not(.eyebrow) { max-width: 600px; margin-top: 10px; color: #aaa296; font-size: 12px; }
 .p15-operations .story-steps aside { display: grid; gap: 8px; padding: 22px; background: #292720; border: 1px solid #444039; }
-.p15-operations .story-steps aside b { color: #8f887c; font: 550 8px/1.2 var(--mono); letter-spacing: .07em; text-transform: uppercase; }
+.p15-operations .story-steps aside b { color: #9a9387; font: 550 8px/1.2 var(--mono); letter-spacing: .07em; text-transform: uppercase; }
 .p15-operations .story-steps aside strong { color: #e8e0d4; font: 500 17px/1.3 var(--serif); }
 .p15-operations .story-shell > footer { display: flex; align-items: center; gap: 10px; padding-top: 48px; }
 .p15-operations .story-shell .button--text { color: #aaa296; }
@@ -929,6 +933,7 @@ body.p15-operations .cookieprefs .cp-card {
   .p15-operations .source-checker,
   .p15-operations .format-cards,
   .p15-operations .application-layout { grid-template-columns: 1fr; }
+  .p15-operations .format-cards { grid-template-columns: minmax(0, 1fr); }
   .p15-operations .tools-privacy { grid-template-columns: 52px minmax(0, 1fr); }
   .p15-operations .tools-privacy > p,
   .p15-operations .tools-privacy > .line-link { grid-column: 1 / -1; }
@@ -996,7 +1001,7 @@ body.p15-operations .cookieprefs .cp-card {
   .p15-operations .system-card__facts { grid-template-columns: 1fr; }
   .p15-operations .system-card__facts > span + span { border-top: 1px solid var(--op-line); border-left: 0; }
   .p15-operations .story-shell { padding-top: 38px; }
-  .p15-operations .story-shell > header h1 { font-size: clamp(44px, 13vw, 62px); }
+  .p15-operations .story-shell > header h1 { font-size: clamp(40px, 12.5vw, 60px); }
   .p15-operations .story-steps { margin-top: 48px; }
   .p15-operations .story-steps li { grid-template-columns: 1fr; gap: 14px; padding: 28px 0; }
   .p15-operations .story-steps aside { grid-column: auto; }
@@ -1010,6 +1015,13 @@ body.p15-operations .cookieprefs .cp-card {
   /* Мобильная посадка плашки согласия тоже переехала в общий слой.
      Прежний bottom:86px обходил док — теперь док на время выбора прячется,
      и плашка садится у нижнего края, как на остальных 76 страницах. */
+}
+
+@media (max-width:360px) {
+  .p15-operations .story-shell > header h1 {
+    font-size: clamp(30px, 9.5vw, 34px);
+    overflow-wrap: anywhere;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

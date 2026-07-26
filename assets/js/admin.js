@@ -327,10 +327,11 @@ function initGodEye() {
     adminObjectUrls = [];
   }
   function adminProtectedFetch(path) {
+    var h = S.api.headers ? S.api.headers('GET') : {};
     return fetch(S.api.base + path, {
       method: 'GET',
-      headers: { Authorization: 'Bearer ' + (S.api.token() || '') },
-      credentials: 'same-origin',
+      headers: h,
+      credentials: 'include',
       cache: 'no-store'
     });
   }
@@ -2158,9 +2159,9 @@ function initGodEye() {
         '.</b> Сообщения, статусы и файлы можно отправлять прямо в бот; кабинет сайта остаётся синхронной резервной копией.</p>' +
         '<div class="ag-actrow">' +
         '<button type="button" class="btn btn-wax" id="agTgSync">📨 Отправить актуальную карточку в Telegram</button>' +
-        (o.bot_claim_url ? '<button type="button" class="btn btn-line" id="agRouteCopy">Скопировать сообщение клиенту</button>' : '') +
+        (o.claim_url ? '<button type="button" class="btn btn-line" id="agRouteCopy">Скопировать безопасную инструкцию</button>' : '') +
         (o.claim_url ? '<a class="btn btn-line" href="' + esc(o.claim_url) + '" target="_blank" rel="noopener">Открыть его кабинет</a>' : '') +
-        '</div><p class="ag-note">Повторная ссылка в бот безопасна: она откроет уже существующий заказ, а не создаст новый.</p></div>';
+        '</div><p class="ag-note">Для привязки Telegram клиент входит из кабинета через одноразовый код; ключ дела в мессенджер не передаётся.</p></div>';
     }
     var linkRow = '';
     if (off && off.status !== 'canceled') {
@@ -2195,7 +2196,7 @@ function initGodEye() {
       claimRow = '<div class="ag-actrow" style="margin-bottom:8px">' +
         '<input type="text" class="ag-inp" id="agClaimUrl" readonly style="flex:1;min-width:220px" value="' + esc(o.claim_url) + '">' +
         '<button type="button" class="btn btn-line" id="agClaimCopy">🔑 Ссылка клиента на дело</button>' +
-        (o.bot_claim_url ? '<button type="button" class="btn btn-line" id="agRouteCopy">🤖 Приглашение в бота</button>' : '') +
+        '<button type="button" class="btn btn-line" id="agRouteCopy">Инструкция для безопасной привязки</button>' +
         '</div>' +
         '<p class="ag-note">Это единственный ключ клиента от дела («потеряли ссылку — восстановим за минуту» — это сюда). Отдавайте только в ту переписку, где договаривались.</p>';
     }
@@ -2222,10 +2223,15 @@ function initGodEye() {
       '<fieldset class="ag-card" style="display:grid;gap:8px;margin:4px 0;padding:14px"><legend class="caps">Поля каждой строки спецификации</legend>' +
         '<p class="ag-hint">Один заказ — один документ. Эти значения попадут в каждую строку сметы; результат и цена сохраняются отдельно для каждой позиции.</p>' +
         '<select id="agOffContour" class="ag-inp" aria-label="Тип договора">' +
-          '<option value="A"' + (sd.contract_contour === 'A' ? ' selected' : '') + '>A · академическая консультация и редактура исходника клиента</option>' +
+          '<option value="A"' + (sd.contract_contour === 'A' ? ' selected' : '') + '>A · академическая мастерская</option>' +
           '<option value="B1"' + (sd.contract_contour === 'B1' ? ' selected' : '') + '>B1 · авторский материал вне аттестации, лицензия</option>' +
           '<option value="B2"' + (sd.contract_contour === 'B2' ? ' selected' : '') + '>B2 · авторский материал вне аттестации, отчуждение права</option>' +
         '</select>' +
+        '<select id="agOffAcademicSubmode" class="ag-inp" aria-label="Подрежим академической мастерской">' +
+          '<option value="A1"' + (sd.academic_submode === 'A1' ? ' selected' : '') + '>A1 · редакторская и консультационная помощь по материалу клиента</option>' +
+          '<option value="A2"' + (sd.academic_submode === 'A2' ? ' selected' : '') + '>A2 · совместная исследовательская разработка с нуля</option>' +
+        '</select>' +
+        '<p class="ag-hint">Подрежим A1/A2 обязателен для контура A. Для B1/B2 действуют поля фактического автора и прав.</p>' +
         '<textarea id="agOffPurpose" rows="2" maxlength="1000" class="ag-inp" placeholder="Разрешённая цель использования">' + esc(sd.permitted_purpose) + '</textarea>' +
         '<textarea id="agOffDeliverable" rows="2" maxlength="1000" class="ag-inp" placeholder="Результат / передаваемый артефакт">' + esc(sd.deliverable) + '</textarea>' +
         '<div class="ag-actrow"><input id="agOffInput" maxlength="500" class="ag-inp" placeholder="Исходник клиента" value="' + esc(sd.input_description) + '">' +
@@ -2234,13 +2240,19 @@ function initGodEye() {
         '<textarea id="agOffExclusions" rows="2" maxlength="1000" class="ag-inp" placeholder="Не включено — по одной границе с новой строки">' + esc(sd.exclusions_text) + '</textarea>' +
         '<textarea id="agOffAcceptance" rows="2" maxlength="1200" class="ag-inp" placeholder="Критерии приёмки — проверяемые признаки результата">' + esc(sd.acceptance_text) + '</textarea>' +
         '<textarea id="agOffDependencies" rows="2" maxlength="1000" class="ag-inp" placeholder="Зависимости срока — исходники, согласования, внешние данные">' + esc(sd.dependencies_text) + '</textarea>' +
+        '<textarea id="agOffAuthorParticipation" rows="3" maxlength="1500" class="ag-inp" placeholder="Для A2: контрольные точки участия Заказчика — по одной с новой строки">' + esc(sd.author_participation_text) + '</textarea>' +
+        '<label class="ag-hint" style="display:flex;align-items:flex-start;gap:8px"><input id="agOffAuthorConfirmed" type="checkbox"' + (sd.author_participation_confirmed ? ' checked' : '') + '>Заказчик явно подтвердил обязательное содержательное участие в режиме A2</label>' +
+        '<textarea id="agOffAuthorDecisions" rows="3" maxlength="1500" class="ag-inp" placeholder="Для A2: уже согласованные решения и реальные данные Заказчика — по одному пункту с новой строки">' + esc(sd.author_decisions_text) + '</textarea>' +
         '<div class="ag-actrow"><input id="agOffDiscount" type="number" min="0" step="100" class="ag-inp" placeholder="Скидка на строку, ₽" value="' + (sd.discount_amount || '') + '">' +
           '<input id="agOffPaymentAllocation" maxlength="500" class="ag-inp" placeholder="Распределение платежа по строке" value="' + esc(sd.payment_allocation_text) + '"></div>' +
         '<div class="ag-actrow"><input id="agOffCorrectionDays" type="number" min="0" max="365" class="ag-inp" placeholder="Окно первичной проверки, дней" value="' + sd.correction_days + '">' +
           '<input id="agOffIterations" type="number" min="0" max="20" class="ag-inp" placeholder="Добровольных итераций" value="' + sd.iterations + '"></div>' +
         '<div class="ag-actrow"><input id="agOffActualAuthor" maxlength="300" class="ag-inp" placeholder="Фактический автор исходника / результата" value="' + esc(sd.actual_author) + '">' +
           '<input id="agOffRightsMode" maxlength="500" class="ag-inp" placeholder="Режим прав" value="' + esc(sd.rights_mode) + '"></div>' +
-        '<textarea id="agOffPerformers" rows="2" maxlength="1000" class="ag-inp" placeholder="Третьи лица / соисполнители и их роль">' + esc(sd.performers_text) + '</textarea>' +
+        '<input id="agOffRightsEvidence" maxlength="500" class="ag-inp" placeholder="Основание прав: номер/дата документа или эта редакция Спецификации" value="' + esc(sd.rights_evidence) + '">' +
+        '<textarea id="agOffPerformers" rows="3" maxlength="2000" class="ag-inp" placeholder="Для B2, одна строка на человека: ФИО | author/coauthor/technical | creative/technical | ссылка на письменное согласие">' + esc(sd.performers_text) + '</textarea>' +
+        '<label class="ag-hint" style="display:flex;align-items:flex-start;gap:8px"><input id="agOffRightsConfirmed" type="checkbox"' + (sd.rights_confirmed ? ' checked' : '') + '>Я проверил(а) личность автора, письменное основание прав и согласия всех творческих исполнителей. Время и роль подтверждения зафиксирует сервер.</label>' +
+        '<p class="ag-hint">B1: автором должен быть Семёнов Семён Юрьевич; цепочка лицензии строится из этой Спецификации. B2: укажите ФИО каждого автора и отдельную ссылку на его письменное согласие/передачу прав.</p>' +
       '</fieldset>' +
       '<div class="ag-chips"><span class="caps">Что входит — добавить одним кликом</span>' +
         OFF_INCLS.map(function (t) { return offChip('incl', t); }).join('') + '</div>' +
@@ -2344,6 +2356,144 @@ function initGodEye() {
     if (Array.isArray(v)) return v.filter(Boolean).map(String);
     return String(v || '').split(/\n|;/).map(function (x) { return x.trim(); }).filter(Boolean);
   }
+  var SPEC_EXECUTOR_NAME = 'Семёнов Семён Юрьевич';
+  var RIGHTS_SCHEMA_VERSION = 1;
+  var RIGHTS_MODE_B1 = 'simple_license';
+  var RIGHTS_MODE_B2 = 'exclusive_right_alienation';
+  function rightsProfilesText(value) {
+    if (!Array.isArray(value)) return '';
+    return value.map(function (profile) {
+      if (!profile || !profile.name) return '';
+      return [
+        profile.name,
+        profile.role_code || 'technical',
+        profile.creative === true ? 'creative' : 'technical',
+        profile.consent_ref || ''
+      ].join(' | ');
+    }).filter(Boolean).join('\n');
+  }
+  function rightsProfilesFromText(value, confirmed) {
+    return String(value || '').split('\n').map(function (line) {
+      var parts = line.split('|').map(function (part) { return part.trim(); });
+      var name = parts[0] || '';
+      var role = String(parts[1] || '').toLowerCase();
+      var contribution = String(parts[2] || '').toLowerCase();
+      var consentRef = parts.slice(3).join(' | ').trim();
+      if (!name || ['author', 'coauthor', 'technical'].indexOf(role) < 0) return null;
+      var creative = contribution === 'creative';
+      return {
+        name: name,
+        role_code: role,
+        creative: creative,
+        consent_confirmed: creative && confirmed === true && !!consentRef,
+        consent_ref: consentRef
+      };
+    }).filter(Boolean);
+  }
+  function structuredRights(contour, actualAuthor, evidenceRef, profiles, confirmed) {
+    if (contour !== 'B1' && contour !== 'B2') {
+      return {
+        schema_version: 0, mode_code: '', basis: {}, author_profile: {},
+        performer_profiles: [], chain: [], confirmation: { confirmed: false }
+      };
+    }
+    var b1 = contour === 'B1';
+    var modeCode = b1 ? RIGHTS_MODE_B1 : RIGHTS_MODE_B2;
+    var author = String(actualAuthor || '').trim();
+    var evidence = String(evidenceRef || '').trim();
+    var performerProfiles = Array.isArray(profiles) ? profiles : [];
+    var chain = [];
+    if (b1 && author && evidence) {
+      chain.push({
+        from_role: 'author',
+        from_name: author,
+        to_role: 'customer',
+        mode_code: modeCode,
+        basis_ref: evidence,
+        status_code: 'documented'
+      });
+    }
+    if (!b1) {
+      performerProfiles.forEach(function (profile) {
+        if (profile.creative === true && profile.name && profile.consent_ref) {
+          chain.push({
+            from_role: 'author',
+            from_name: profile.name,
+            to_role: 'contractor',
+            mode_code: modeCode,
+            basis_ref: profile.consent_ref,
+            status_code: 'documented'
+          });
+        }
+      });
+      if (evidence) {
+        chain.push({
+          from_role: 'contractor',
+          from_name: SPEC_EXECUTOR_NAME,
+          to_role: 'customer',
+          mode_code: modeCode,
+          basis_ref: evidence,
+          status_code: 'documented'
+        });
+      }
+    }
+    return {
+      schema_version: RIGHTS_SCHEMA_VERSION,
+      mode_code: modeCode,
+      basis: {
+        code: b1 ? 'contractor_is_author' : 'third_party_written_assignment',
+        evidence_ref: evidence,
+        effective_on_code: b1
+          ? 'full_payment_and_delivery'
+          : 'incoming_right_effective_and_full_payment_and_delivery'
+      },
+      author_profile: {
+        name: author,
+        party_role: b1 ? 'contractor' : 'third_party',
+        confirmed: confirmed === true
+      },
+      performer_profiles: performerProfiles,
+      chain: chain,
+      // Only the boolean crosses the trust boundary. The backend discards
+      // browser actor/time and stamps the authenticated role and server time.
+      confirmation: { confirmed: confirmed === true }
+    };
+  }
+  function rightsLineReady(line) {
+    var contour = line && line.contract_contour;
+    if (contour !== 'B1' && contour !== 'B2') return true;
+    var b1 = contour === 'B1';
+    var expectedMode = b1 ? RIGHTS_MODE_B1 : RIGHTS_MODE_B2;
+    var author = line.actual_author_profile || {};
+    var basis = line.rights_basis || {};
+    var confirmation = line.rights_confirmation || {};
+    var profiles = Array.isArray(line.performer_profiles)
+      ? line.performer_profiles : [];
+    if (line.rights_schema_version !== RIGHTS_SCHEMA_VERSION ||
+        line.rights_mode_code !== expectedMode ||
+        !String(basis.evidence_ref || '').trim() ||
+        confirmation.confirmed !== true ||
+        author.confirmed !== true ||
+        !String(author.name || '').trim()) return false;
+    if (b1) {
+      return author.party_role === 'contractor' &&
+        String(author.name).trim() === SPEC_EXECUTOR_NAME;
+    }
+    if (author.party_role !== 'third_party' ||
+        String(author.name).trim() === SPEC_EXECUTOR_NAME) return false;
+    var creative = profiles.filter(function (profile) {
+      return profile && profile.creative === true;
+    });
+    if (!creative.length || !creative.some(function (profile) {
+      return ['author', 'coauthor'].indexOf(profile.role_code) >= 0 &&
+        String(profile.name || '').trim().toLowerCase() ===
+          String(author.name || '').trim().toLowerCase();
+    })) return false;
+    return creative.every(function (profile) {
+      return profile.consent_confirmed === true &&
+        !!String(profile.consent_ref || '').trim();
+    });
+  }
   function specInputValue(id, fallback) {
     var el = document.getElementById(id);
     return el ? String(el.value || '').trim() : String(fallback || '').trim();
@@ -2355,9 +2505,21 @@ function initGodEye() {
     var x = lines[0] || {};
     var inp = x.input || {};
     var contour = x.contract_contour || raw.contract_contour || 'A';
+    var academicSubmode = contour === 'A'
+      ? (x.academic_submode || raw.academic_submode || 'A1')
+      : '';
+    if (academicSubmode !== 'A2') academicSubmode = contour === 'A' ? 'A1' : '';
+    var authorParticipation = x.author_participation || raw.author_participation || {};
+    var rightsBasis = x.rights_basis && typeof x.rights_basis === 'object'
+      ? x.rights_basis : {};
+    var rightsConfirmation = x.rights_confirmation &&
+      typeof x.rights_confirmation === 'object' ? x.rights_confirmation : {};
+    var performerProfiles = Array.isArray(x.performer_profiles)
+      ? x.performer_profiles : [];
     var isA = contour === 'A';
     return {
       contract_contour: contour,
+      academic_submode: academicSubmode,
       permitted_purpose: x.permitted_purpose || raw.permitted_purpose ||
         (isA ? 'Консультация, проверка и редактура самостоятельного материала клиента; не для подмены автора аттестационной работы.'
              : 'Использование авторского материала вне учебной или научной аттестации в согласованных каналах.'),
@@ -2373,29 +2535,61 @@ function initGodEye() {
         ['передан согласованный артефакт', 'результат соответствует операциям и границам строки']).join('\n'),
       dependencies_text: (x.dependencies ||
         ['срок начинается после получения полного комплекта исходников']).join('\n'),
+      author_participation_text: (authorParticipation.checkpoints || (academicSubmode === 'A2'
+        ? [
+          'утверждение проблемы, цели, метода и содержательных решений',
+          'проверка фактов, источников и исходных данных',
+          'содержательная доработка рабочего черновика и формирование финальной авторской версии'
+        ]
+        : [])).join('\n'),
+      author_participation_confirmed: authorParticipation.confirmed === true,
+      author_decisions_text: (authorParticipation.customer_decisions_and_data || []).join('\n'),
       discount_amount: (x.discount && x.discount.amount) || x.discount_amount || 0,
       payment_allocation_text: Array.isArray(x.payment_allocation)
         ? x.payment_allocation.join('\n') : (x.payment_allocation || 'по плану оплаты заказа'),
       correction_days: (x.correction_window && x.correction_window.days != null)
         ? x.correction_window.days : (x.correction_window_days != null ? x.correction_window_days : 7),
       iterations: x.iterations != null ? x.iterations : 1,
-      actual_author: x.actual_author || (isA ? 'Клиент — автор исходного материала' : 'Исполнитель или указанный в строке привлечённый автор'),
+      actual_author: x.actual_author ||
+        (x.actual_author_profile && x.actual_author_profile.name) || (isA
+        ? (academicSubmode === 'A2'
+          ? 'Заказчик — автор финальной версии; мастерская готовит промежуточный рабочий черновик'
+          : 'Клиент — автор исходного материала')
+        : (contour === 'B1' ? SPEC_EXECUTOR_NAME : '')),
       rights_mode: x.rights_mode || (contour === 'B2'
         ? 'Отчуждение исключительного права после полной оплаты'
         : contour === 'B1' ? 'Лицензия в пределах согласованных способов использования'
         : 'Права на исходник клиента сохраняются у клиента; исполнитель отвечает за свои редакторские материалы'),
-      performers_text: Array.isArray(x.third_party_performers)
-        ? x.third_party_performers.join('\n') : (x.third_party_performers || 'не привлекаются без согласования роли')
+      rights_evidence: rightsBasis.evidence_ref ||
+        (contour === 'B1' ? 'эта редакция Спецификации' : ''),
+      rights_confirmed: rightsConfirmation.confirmed === true,
+      performers_text: rightsProfilesText(performerProfiles)
     };
   }
   function specificationDefaultsFromForm(raw) {
     var seed = specificationSeed(raw);
     var contour = specInputValue('agOffContour', seed.contract_contour) || 'A';
+    var academicSubmode = contour === 'A'
+      ? specInputValue('agOffAcademicSubmode', seed.academic_submode || 'A1')
+      : '';
+    if (academicSubmode !== 'A2') academicSubmode = contour === 'A' ? 'A1' : '';
     var actual = specInputValue('agOffActualAuthor', seed.actual_author);
-    if (!actual) actual = contour === 'A' ? 'Клиент — автор исходного материала'
-      : 'Исполнитель или указанный в строке привлечённый автор';
+    if (!actual) actual = contour === 'A'
+      ? (academicSubmode === 'A2'
+        ? 'Заказчик — автор финальной версии; мастерская готовит промежуточный рабочий черновик'
+        : 'Клиент — автор исходного материала')
+      : (contour === 'B1' ? SPEC_EXECUTOR_NAME : '');
+    var authorConfirmedEl = document.getElementById('agOffAuthorConfirmed');
+    var rightsConfirmedEl = document.getElementById('agOffRightsConfirmed');
+    var rightsConfirmed = rightsConfirmedEl
+      ? rightsConfirmedEl.checked : seed.rights_confirmed;
+    var performerProfiles = rightsProfilesFromText(
+      specInputValue('agOffPerformers', seed.performers_text),
+      rightsConfirmed
+    );
     return {
       contract_contour: contour,
+      academic_submode: academicSubmode,
       permitted_purpose: specInputValue('agOffPurpose', seed.permitted_purpose),
       deliverable: specInputValue('agOffDeliverable', seed.deliverable),
       input_description: specInputValue('agOffInput', seed.input_description),
@@ -2404,13 +2598,22 @@ function initGodEye() {
       exclusions: specList(specInputValue('agOffExclusions', seed.exclusions_text)),
       acceptance_criteria: specList(specInputValue('agOffAcceptance', seed.acceptance_text)),
       dependencies: specList(specInputValue('agOffDependencies', seed.dependencies_text)),
+      author_participation: specList(specInputValue('agOffAuthorParticipation', seed.author_participation_text)),
+      author_participation_confirmed: authorConfirmedEl
+        ? authorConfirmedEl.checked : seed.author_participation_confirmed,
+      author_decisions: specList(specInputValue('agOffAuthorDecisions', seed.author_decisions_text)),
       discount_amount: parseInt(specInputValue('agOffDiscount', seed.discount_amount), 10) || 0,
       payment_allocation: specList(specInputValue('agOffPaymentAllocation', seed.payment_allocation_text)),
       correction_days: Math.max(0, parseInt(specInputValue('agOffCorrectionDays', seed.correction_days), 10) || 0),
       iterations: Math.max(0, parseInt(specInputValue('agOffIterations', seed.iterations), 10) || 0),
       actual_author: actual,
       rights_mode: specInputValue('agOffRightsMode', seed.rights_mode),
-      third_party_performers: specList(specInputValue('agOffPerformers', seed.performers_text))
+      rights_evidence: specInputValue('agOffRightsEvidence', seed.rights_evidence),
+      rights_confirmed: rightsConfirmed,
+      performer_profiles: performerProfiles,
+      third_party_performers: performerProfiles.map(function (profile) {
+        return profile.name;
+      })
     };
   }
   function buildSpecificationLines(ledger, cfg) {
@@ -2433,18 +2636,81 @@ function initGodEye() {
           : (cfg.correction_days == null ? 7 : cfg.correction_days));
       var iterations = r.iterations != null ? r.iterations
         : (cfg.iterations == null ? 1 : cfg.iterations);
+      var hasCfg = Object.prototype.hasOwnProperty;
+      var lineContour = hasCfg.call(cfg, 'contract_contour')
+        ? cfg.contract_contour : (r.contract_contour || 'A');
+      var lineAcademicSubmode = lineContour === 'A'
+        ? (hasCfg.call(cfg, 'academic_submode')
+          ? (cfg.academic_submode || 'A1') : (r.academic_submode || 'A1'))
+        : '';
+      if (lineAcademicSubmode !== 'A2') lineAcademicSubmode = lineContour === 'A' ? 'A1' : '';
+      var lineServiceId = String(
+        r.service_id || r.serviceId || r.catalog_id || r.type || cfg.service_id || ''
+      );
+      var isAiLine = /^(?:ai|svc_ai)$/i.test(lineServiceId);
+      if (isAiLine) lineServiceId = 'ai';
+      var customerInputs = r.customer_inputs &&
+        typeof r.customer_inputs === 'object' ? r.customer_inputs : {};
+      var legacyInput = r.input && typeof r.input === 'object' ? r.input : {};
+      var authorCheckpoints = specList(
+        (r.author_participation && r.author_participation.checkpoints) ||
+        r.author_participation || cfg.author_participation
+      );
+      var authorParticipation = r.author_participation &&
+        typeof r.author_participation === 'object' ? r.author_participation : {};
+      var authorConfirmed = authorParticipation.confirmed === true ||
+        cfg.author_participation_confirmed === true;
+      var authorDecisions = specList(
+        authorParticipation.customer_decisions_and_data || cfg.author_decisions
+      );
+      var lineActualAuthor = hasCfg.call(cfg, 'actual_author')
+        ? cfg.actual_author : (r.actual_author || '');
+      var existingBasis = r.rights_basis && typeof r.rights_basis === 'object'
+        ? r.rights_basis : {};
+      var lineEvidence = hasCfg.call(cfg, 'rights_evidence')
+        ? cfg.rights_evidence : (existingBasis.evidence_ref || '');
+      var lineProfiles = Array.isArray(cfg.performer_profiles)
+        ? cfg.performer_profiles
+        : (Array.isArray(r.performer_profiles) ? r.performer_profiles : []);
+      var existingConfirmation = r.rights_confirmation &&
+        typeof r.rights_confirmation === 'object' ? r.rights_confirmation : {};
+      var lineRightsConfirmed = hasCfg.call(cfg, 'rights_confirmed')
+        ? cfg.rights_confirmed === true : existingConfirmation.confirmed === true;
+      var rights = structuredRights(
+        lineContour,
+        lineActualAuthor,
+        lineEvidence,
+        lineProfiles,
+        lineRightsConfirmed
+      );
       return {
         id: r.id || ('line-' + String(i + 1).padStart(2, '0')),
         position: r.position || i + 1,
-        contract_contour: r.contract_contour || cfg.contract_contour || 'A',
+        service_id: lineServiceId,
+        contract_contour: lineContour,
+        academic_submode: lineAcademicSubmode,
         permitted_purpose: r.permitted_purpose || cfg.permitted_purpose || '',
         result: result,
         deliverable: result,
         input: {
-          description: (r.input && r.input.description) || r.input_description || cfg.input_description || '',
-          version: (r.input && r.input.version) || r.input_version || cfg.input_version || 'версия на дату передачи'
+          description: legacyInput.description || customerInputs.description ||
+            r.input_description || cfg.input_description || '',
+          version: legacyInput.version || customerInputs.version ||
+            r.input_version || cfg.input_version || 'версия на дату передачи',
+          source_material_required: isAiLine,
+          source_material_provided: isAiLine
+            ? customerInputs.source_material_provided === true ||
+              legacyInput.source_material_provided === true
+            : null,
+          original_prompt: isAiLine
+            ? String(customerInputs.original_prompt || legacyInput.original_prompt || '')
+            : '',
+          sources_disclosure: isAiLine
+            ? String(customerInputs.sources_disclosure || legacyInput.sources_disclosure || '')
+            : ''
         },
-        input_version: (r.input && r.input.version) || r.input_version || cfg.input_version || 'версия на дату передачи',
+        input_version: legacyInput.version || customerInputs.version ||
+          r.input_version || cfg.input_version || 'версия на дату передачи',
         inclusions: inclusions,
         exclusions: exclusions,
         acceptance_criteria: criteria,
@@ -2455,6 +2721,14 @@ function initGodEye() {
         deadline_text: r.deadline_text || cfg.deadline_text || '',
         deadline_date: r.deadline_date || cfg.deadline_date || '',
         dependencies: dependencies,
+        author_participation: lineAcademicSubmode === 'A2' ? {
+          required: true,
+          confirmed: authorConfirmed,
+          checkpoints: authorCheckpoints,
+          customer_decisions_and_data: authorDecisions,
+          confirmation_version: 'specification-2.2',
+          status: 'фиксируется по контрольным точкам в деле заказа'
+        } : null,
         price: { amount: amount, currency: 'RUB' },
         price_amount: amount,
         discount: { amount: Number((r.discount && r.discount.amount) || r.discount_amount || cfg.discount_amount || 0), currency: 'RUB' },
@@ -2467,9 +2741,19 @@ function initGodEye() {
         },
         correction_window_days: correctionDays,
         iterations: iterations,
-        actual_author: r.actual_author || cfg.actual_author || '',
-        rights_mode: r.rights_mode || cfg.rights_mode || '',
-        third_party_performers: specList(r.third_party_performers || cfg.third_party_performers),
+        actual_author: lineActualAuthor,
+        actual_author_profile: rights.author_profile,
+        rights_mode: hasCfg.call(cfg, 'rights_mode')
+          ? cfg.rights_mode : (r.rights_mode || ''),
+        rights_schema_version: rights.schema_version,
+        rights_mode_code: rights.mode_code,
+        rights_basis: rights.basis,
+        performer_profiles: rights.performer_profiles,
+        rights_chain: rights.chain,
+        rights_confirmation: rights.confirmation,
+        third_party_performers: rights.performer_profiles.map(function (profile) {
+          return profile.name;
+        }),
         acceptance: {
           status: (r.acceptance && r.acceptance.status) || r.acceptance_status || 'pending',
           act: (r.acceptance && r.acceptance.act) || 'фиксируется отдельно по результату этой позиции'
@@ -2640,6 +2924,18 @@ function initGodEye() {
     if (value.indexOf('A') === 0 || value.indexOf('А') === 0) return 'A';
     return serviceId === 'author' || serviceId === 'svc_author_order' ? 'B_PENDING' : 'A';
   }
+  function specificationAcademicSubmode(row, contour, serviceId) {
+    if (contour !== 'A') return '';
+    row = row || {};
+    var value = String(row.academic_submode || row.academicSubmode || '').toUpperCase();
+    if (value === 'A2' || value === 'А2') return 'A2';
+    var routeResult = String(row.result_code || row.resultCode ||
+      (row.case_context && row.case_context.result) || '').toLowerCase();
+    var tier = String(row.tier || '').toLowerCase();
+    var type = String(row.type || serviceId || '').toLowerCase();
+    if (routeResult === 'support' || tier === 'vip' || type === 'work_vip') return 'A2';
+    return 'A1';
+  }
   function specificationAllocation(total, rows) {
     var weights = rows.map(function (row) {
       return Math.max(1, parseInt(row.final_price || row.price_rub || row.quote_low ||
@@ -2661,7 +2957,7 @@ function initGodEye() {
       rows = [{
         id:'order-' + o.id, label:o.work_label || 'Индивидуальная услуга',
         topic:o.topic || '', deadline_text:o.deadline_text || '',
-        requirements:o.details || '', contract_contour:'A'
+        requirements:o.details || '', contract_contour:'A', academic_submode:'A1'
       }];
     }
     var amounts = specificationAllocation(total, rows);
@@ -2671,19 +2967,28 @@ function initGodEye() {
       var answers = row.answers && typeof row.answers === 'object' ? row.answers : {};
       var authorProfile = row.actual_author_profile && typeof row.actual_author_profile === 'object'
         ? row.actual_author_profile : {};
+      var rightsProvenance = row.rights_provenance &&
+        typeof row.rights_provenance === 'object' ? row.rights_provenance : {};
       var scope = row.scope && typeof row.scope === 'object' ? row.scope : {};
       var inputs = row.customer_inputs && typeof row.customer_inputs === 'object'
         ? row.customer_inputs : {};
       var serviceId = String(row.service_id || row.serviceId || row.catalog_id || row.type || '');
       var contour = specificationContour(row.contract_contour || answers.author_model, serviceId);
+      var academicSubmode = specificationAcademicSubmode(row, contour, serviceId);
+      var isA2 = academicSubmode === 'A2';
+      var isAiEditing = /^(?:ai|svc_ai)$/i.test(serviceId);
       var title = String(row.title || row.label || o.work_label || ('Позиция ' + (index + 1)));
       var topic = String(row.topic || scope.topic || o.topic || '');
       var requirements = String(row.requirements || scope.customer_requirements || o.details || '');
-      var actualAuthor = String(row.actual_author || authorProfile.author_name || '');
+      var actualAuthor = String(
+        row.actual_author || authorProfile.name || authorProfile.author_name || ''
+      );
       if (!actualAuthor) {
         actualAuthor = contour === 'A'
-          ? 'Заказчик — автор содержательной основы; мастерская оказывает согласованную консультационную или редакторскую услугу'
-          : (contour === 'B1' ? 'Семёнов Семён Юрьевич — фактический автор результата' : '');
+          ? (isA2
+            ? 'Заказчик — автор финальной версии; мастерская готовит промежуточный рабочий черновик'
+            : 'Заказчик — автор содержательной основы; мастерская оказывает согласованную консультационную или редакторскую услугу')
+          : (contour === 'B1' ? SPEC_EXECUTOR_NAME : '');
       }
       var rights = String(row.rights_mode || row.intellectual_rights_profile || answers.rights || '');
       if (!rights && contour === 'A') {
@@ -2692,21 +2997,36 @@ function initGodEye() {
       var result = String(row.deliverable || row.result || row.plain_description || '');
       if (!result) {
         if (contour !== 'A') result = 'Авторский материал «' + title + '» в согласованном формате';
+        else if (isA2) result = 'Промежуточный полный рабочий черновик и исследовательские материалы для содержательной проверки и доработки Заказчиком';
+        else if (isAiEditing) result = 'Файл с видимыми правками и комментариями к фактам, источникам и логическим разрывам';
         else if (/norm|format|gost/i.test(serviceId)) result = 'Оформленная версия исходника с видимыми изменениями и листом проверки';
         else if (/review|razbor/i.test(serviceId)) result = 'Письменное экспертное заключение и карта замечаний по исходнику';
         else result = 'Письменный разбор, редакторские комментарии и согласованные изменения в материале Заказчика';
       }
       var included = row.inclusions || row.included || scope.included;
-      if (!Array.isArray(included) || !included.length) included = [
-        'проверка исходника и требований, переданных по этой позиции',
-        'операции, прямо названные в теме, требованиях и переписке дела',
-        'передача согласованного результата в проверяемом формате'
-      ];
+      if (!Array.isArray(included) || !included.length) included = isA2
+        ? [
+          'исследовательская карта, структура, источники и рабочий черновик по согласованным этапам',
+          'контрольные точки для решений и проверки данных Заказчиком',
+          'передача промежуточного результата в проверяемом формате'
+        ]
+        : isAiEditing
+          ? [
+            'сверка текста с исходным prompt',
+            'проверка внутренней логики, фактических утверждений и связи с переданными источниками',
+            'видимые редакторские правки и комментарии к неподтверждённым местам'
+          ]
+          : [
+            'проверка исходника и требований, переданных по этой позиции',
+            'операции, прямо названные в теме, требованиях и переписке дела',
+            'передача согласованного результата в проверяемом формате'
+          ];
       var excluded = row.exclusions || row.excluded || scope.excluded;
       if (!Array.isArray(excluded) || !excluded.length) excluded = contour === 'A'
         ? [
           'выполнение и сдача аттестационной работы вместо Заказчика',
-          'гарантия оценки, допуска, процента оригинальности или решения комиссии'
+          'гарантия оценки, допуска, процента оригинальности или решения комиссии',
+          isAiEditing ? 'обход детекторов или подтверждение факта, для которого не передан проверяемый источник' : ''
         ]
         : [
           'использование результата в учебной или научной аттестации',
@@ -2718,19 +3038,34 @@ function initGodEye() {
         'выполнены операции, перечисленные во включённом составе позиции',
         'тема, объём и формат соответствуют зафиксированным условиям'
       ];
-      var performers = row.third_party_performers;
-      if (!Array.isArray(performers)) performers = [];
-      if (contour === 'B2' && !performers.length && actualAuthor) {
-        performers = [actualAuthor + ' — фактический автор результата'];
-      }
+      var performerProfiles = Array.isArray(row.performer_profiles)
+        ? row.performer_profiles
+        : (Array.isArray(rightsProvenance.performer_profiles)
+          ? rightsProvenance.performer_profiles : []);
+      var performers = performerProfiles.map(function (profile) {
+        return profile && profile.name;
+      }).filter(Boolean);
+      excluded = excluded.filter(Boolean);
+      var rightsBasis = row.rights_basis && typeof row.rights_basis === 'object'
+        ? row.rights_basis : (rightsProvenance.basis || {});
+      var rightsChain = Array.isArray(row.rights_chain)
+        ? row.rights_chain
+        : (Array.isArray(rightsProvenance.chain) ? rightsProvenance.chain : []);
+      var rightsConfirmation = row.rights_confirmation &&
+        typeof row.rights_confirmation === 'object'
+        ? row.rights_confirmation : (rightsProvenance.confirmation || {});
       return {
         line_id:String(row.line_id || row.requested_line_id || row.client_id || row.id ||
           ('LN-' + String(index + 1).padStart(3, '0'))),
         parent_line_id:row.parent_line_id || row.parent_client_id || null,
         position:index + 1,
+        service_id:isAiEditing ? 'ai' : serviceId,
         contract_contour:contour,
+        academic_submode:academicSubmode,
         legal_service_type:row.legal_service_type ||
-          (contour === 'A' ? 'academic_support' : 'author_order_non_attestation'),
+          (contour === 'A'
+            ? (isA2 ? 'joint_research_development' : 'academic_support')
+            : 'author_order_non_attestation'),
         title:title,
         label:title,
         t:title,
@@ -2743,24 +3078,53 @@ function initGodEye() {
           ('1 позиция = один результат «' + title + '» с указанным составом'),
         permitted_purpose:row.permitted_purpose || answers.purpose ||
           (contour === 'A'
-            ? 'Самостоятельная работа Заказчика с консультационной, редакторской или учебно-методической помощью мастерской'
+            ? (isA2
+              ? 'Совместная исследовательская разработка с обязательным содержательным участием Заказчика; финальная авторская версия формируется Заказчиком'
+              : 'Самостоятельная работа Заказчика с консультационной, редакторской или учебно-методической помощью мастерской')
             : 'Использование авторского материала только для прямо согласованной цели вне учебной и научной аттестации'),
         topic:topic,
         scope:{ topic:topic, included:included, excluded:excluded },
         inclusions:included,
         exclusions:excluded,
         customer_inputs:{
-          description:inputs.description || topic || requirements ||
-            'Исходные материалы и требования, переданные в деле заказа',
-          version:inputs.version || 'версия, зафиксированная в деле до начала позиции'
+          description:inputs.description || (isAiEditing
+            ? ('Исходный текст; исходный prompt: ' + String(answers.prompt || '') +
+              '; сведения об источниках: ' + String(answers.sources || ''))
+            : topic || requirements || 'Исходные материалы и требования, переданные в деле заказа'),
+          version:inputs.version || 'версия, зафиксированная в деле до начала позиции',
+          source_material_required:isAiEditing,
+          source_material_provided:isAiEditing
+            ? inputs.source_material_provided === true : null,
+          original_prompt:isAiEditing ? String(inputs.original_prompt || answers.prompt || '') : '',
+          sources_disclosure:isAiEditing ? String(inputs.sources_disclosure || answers.sources || '') : ''
         },
+        author_participation:isA2 ? (row.author_participation || {
+          required:true,
+          confirmed:false,
+          checkpoints:[
+            'утверждение проблемы, цели, метода и содержательных решений',
+            'проверка фактов, источников и исходных данных',
+            'содержательная доработка рабочего черновика и формирование финальной авторской версии'
+          ]
+        }) : null,
         acceptance_criteria:criteria,
         deadline_text:row.deadline_text || row.deadline || o.deadline_text || '',
         deadline_date:row.deadline_date || o.deadline_date || '',
         correction_window:{ days:7, scope:'устранение подтверждённых несоответствий этой позиции' },
         iterations:1,
         actual_author:actualAuthor,
+        actual_author_profile:authorProfile,
         rights_mode:rights,
+        rights_schema_version:Number(
+          row.rights_schema_version || rightsProvenance.schema_version || 0
+        ),
+        rights_mode_code:String(
+          row.rights_mode_code || rightsProvenance.mode_code || ''
+        ),
+        rights_basis:rightsBasis,
+        performer_profiles:performerProfiles,
+        rights_chain:rightsChain,
+        rights_confirmation:rightsConfirmation,
         third_party_performers:performers,
         price_amount:amounts[index],
         final_price:amounts[index],
@@ -3088,6 +3452,7 @@ function initGodEye() {
       var discount = item.discount && item.discount.amount != null
         ? item.discount.amount : item.discount_amount;
       fact(facts, 'Тип договора', item.contract_contour);
+      fact(facts, 'Подрежим академической мастерской', item.academic_submode);
       fact(facts, 'Разрешённая цель', item.permitted_purpose);
       fact(facts, 'Результат', item.deliverable || item.result);
       fact(facts, 'Исходник', input.description || item.input_description);
@@ -3110,6 +3475,15 @@ function initGodEye() {
       fact(facts, 'Фактический автор', item.actual_author);
       fact(facts, 'Режим прав', item.rights_mode);
       fact(facts, 'Третьи лица', item.third_party_performers);
+      if (item.author_participation) {
+        fact(facts, 'Участие Заказчика обязательно',
+          item.author_participation.required ? 'да' : 'нет');
+        fact(facts, 'Контрольные точки участия Заказчика',
+          item.author_participation.checkpoints);
+      }
+      var customerInputs = item.customer_inputs || {};
+      fact(facts, 'Исходный prompt', customerInputs.original_prompt);
+      fact(facts, 'Сведения об источниках', customerInputs.sources_disclosure);
       if (item.acceptance) {
         fact(facts, 'Приёмка позиции',
           [item.acceptance.status, item.acceptance.act].filter(Boolean).join(' · '));
@@ -3924,7 +4298,8 @@ function initGodEye() {
     if (force) q += '&force=1';
     fetch(S.api.base + '/admin/orders/' + st.sel + '/upload?' + q, {
       method: 'POST', body: fd,
-      headers: { 'Authorization': 'Bearer ' + S.api.token() }
+      headers: S.api.headers ? S.api.headers('POST') : {},
+      credentials: 'include'
     }).then(function (resp) { return resp.json(); })
       .then(function (r) {
         if (!r.ok && r.error === 'stage_unpaid') {
@@ -4035,8 +4410,8 @@ function initGodEye() {
         function (link, opened) { if (!opened) b.insertAdjacentHTML('afterend', '<p class="petit"><a class="link" href="' + link + '" target="_blank">Открыть бота</a></p>'); });
       return;
     }
-    if (t.closest('#agCancel')) { S.store.del('salon_auth_pending'); gate(); return; }
-    if (t.closest('#agLogout')) { S.api.logout(); gate(); return; }
+    if (t.closest('#agCancel')) { S.secretStore.del('salon_auth_pending'); gate(); return; }
+    if (t.closest('#agLogout')) { S.api.logout().then(gate); return; }
     if (t.closest('#agRetry')) { gate(); return; }
     if (t.closest('#agTabRetry')) { loadTab(true); return; }
     if (t.closest('#agPulseRetry')) { doRefresh(); return; }
@@ -4529,9 +4904,9 @@ function initGodEye() {
       var nm = (co.client && co.client.name) || 'Здравствуйте';
       var routeText = nm + ', ваш заказ ' + (co.no || ('№' + co.id)) +
         ' «' + (co.work_label || 'работа') + '» уже в системе.\n' +
-        'Чтобы получать сообщения, статусы и готовые файлы прямо в Telegram, откройте бота по персональной ссылке:\n' +
-        (co.bot_claim_url || '') +
-        (co.claim_url ? '\n\nРезервный доступ к делу на сайте:\n' + co.claim_url : '');
+        'Откройте секретную ссылку на кабинет сайта:\n' + (co.claim_url || '') +
+        '\n\nЕсли нужны уведомления в Telegram, в кабинете нажмите «Привязать Telegram безопасно» ' +
+        'и подтвердите одноразовый вход в боте. Сам ключ дела в Telegram не передаётся.';
       try { navigator.clipboard.writeText(routeText); toast('Сообщение для клиента скопировано'); }
       catch (e) { toast('Не скопировалось — откройте ссылки вручную'); }
       return;
@@ -4593,8 +4968,10 @@ function initGodEye() {
       var existingSpecLines = (st.card && st.card.offer && (
         st.card.offer.specification_lines ||
         (st.card.offer.specification && st.card.offer.specification.lines))) || [];
+      var sourceSpecLines = existingSpecLines.length
+        ? existingSpecLines : ((st.card && st.card.items) || []);
       offerLedger = offerLedger.map(function (line, i) {
-        var old = existingSpecLines[i] || {};
+        var old = sourceSpecLines[i] || {};
         var merged = {};
         Object.keys(old).forEach(function (key) { merged[key] = old[key]; });
         merged.t = line.t;
@@ -4604,9 +4981,25 @@ function initGodEye() {
         return merged;
       });
       var specCfg = specificationDefaultsFromForm(st.card && st.card.offer);
+      specCfg.service_id = (st.card && st.card.work_type) || '';
       specCfg.deadline_text = (st.card && st.card.deadline_text) || '';
       specCfg.deadline_date = (st.card && st.card.deadline_date) || '';
       var offerSpecLines = buildSpecificationLines(offerLedger, specCfg);
+      var incompleteA2 = offerSpecLines.some(function (line) {
+        if (line.contract_contour !== 'A' || line.academic_submode !== 'A2') return false;
+        var participation = line.author_participation || {};
+        return participation.confirmed !== true ||
+          !Array.isArray(participation.customer_decisions_and_data) ||
+          !participation.customer_decisions_and_data.length;
+      });
+      if (incompleteA2) {
+        toast('Для A2 отметьте подтверждение участия и перечислите согласованные решения или реальные данные Заказчика');
+        return;
+      }
+      if (offerSpecLines.some(function (line) { return !rightsLineReady(line); })) {
+        toast('Для B1/B2 подтвердите автора и основание прав; для B2 укажите каждого творческого автора и ссылку на его письменное согласие');
+        return;
+      }
       var prepay = parseInt((document.getElementById('agPrepay') || {}).value, 10);
       var stages = parseInt((document.getElementById('agPlanSel') || {}).value, 10);
       var was = st.card && st.card.offer;
@@ -4666,6 +5059,10 @@ function initGodEye() {
       var stages = parseInt((document.getElementById('agPlanSel') || {}).value, 10);
       if (!price || price <= 0) { toast('Введите цену'); return; }
       var priceSpecLines = specificationLinesForPrice(st.card || {}, price);
+      if (priceSpecLines.some(function (line) { return !rightsLineReady(line); })) {
+        toast('Для B1/B2 сначала заполните доказательства прав в форме персональной заявки');
+        return;
+      }
       api('/admin/orders/' + st.sel + '/price', {
         price:price, prepay:prepay || undefined, stages:stages || undefined,
         specification_lines:priceSpecLines,
@@ -5042,6 +5439,27 @@ function initGodEye() {
 
   root.addEventListener('change', function (e) {
     if (e.target && e.target.id === 'agOffAsAdd') return;
+    if (e.target && e.target.id === 'agOffContour') {
+      var contour = e.target.value;
+      var author = document.getElementById('agOffActualAuthor');
+      var rightsMode = document.getElementById('agOffRightsMode');
+      var evidence = document.getElementById('agOffRightsEvidence');
+      var profiles = document.getElementById('agOffPerformers');
+      var confirmation = document.getElementById('agOffRightsConfirmed');
+      if (contour === 'B1') {
+        if (author) author.value = SPEC_EXECUTOR_NAME;
+        if (rightsMode) rightsMode.value = 'Лицензия в пределах согласованных способов использования';
+        if (evidence && !evidence.value.trim()) evidence.value = 'эта редакция Спецификации';
+        if (profiles) profiles.value = '';
+        if (confirmation) confirmation.checked = false;
+      } else if (contour === 'B2') {
+        if (author && author.value.trim() === SPEC_EXECUTOR_NAME) author.value = '';
+        if (rightsMode) rightsMode.value = 'Отчуждение исключительного права после полной оплаты';
+        if (evidence && evidence.value.trim() === 'эта редакция Спецификации') evidence.value = '';
+        if (confirmation) confirmation.checked = false;
+      }
+      return;
+    }
     if (e.target && e.target.id === 'agBSeg') { bcastRefresh(); return; }
     if (e.target && e.target.id === 'agSort') { st.sort = e.target.value; drawList(); return; }
     if (e.target && e.target.id === 'agCSort') { st.csort = e.target.value; drawClientList(); return; }
@@ -5118,8 +5536,9 @@ function initGodEye() {
     }
     history.replaceState(null, '', location.pathname);
     S.api.post('/admin/login', { key: mch[1] }).then(function (r) {
-      if (r.ok && r.token) {
-        S.api.setToken(r.token);
+      if (r.ok && (r.session || r.token)) {
+        if (r.token) S.api.setToken(r.token);
+        if (r.session && S.api.setSessionHint) S.api.setSessionHint(true);
         if (S.api.setUser) S.api.setUser(r.user || null);
         toast('Вы вошли как мастер');
       } else {
@@ -5255,7 +5674,10 @@ function initGodEye() {
     }
   });
 
-  tryLinkLogin(gate);
+  Promise.resolve(S.api.ready).then(
+    function () { tryLinkLogin(gate); },
+    function () { tryLinkLogin(gate); }
+  );
 
   /* ==========================================================================
      ПОЛКА ЗАГОТОВОК — заявка в три нажатия и одну строку.
@@ -5697,6 +6119,7 @@ function initGodEye() {
       : 'Отредактированный материал клиента, карта замечаний и согласованные консультационные материалы';
     return buildSpecificationLines(wzLedger(), {
       contract_contour: 'A',
+      academic_submode: 'A1',
       permitted_purpose: 'Консультация, проверка и редактура самостоятельного материала клиента; клиент использует рекомендации при самостоятельной подготовке.',
       deliverable: result,
       input_description: wz.files ? 'Полный комплект исходников, данных и требований клиента' : 'Исходник и требования, переданные клиентом к началу исполнения',
@@ -6163,6 +6586,7 @@ function initGodEye() {
           lines: specLines
         },
         contract_contour: 'A',
+        academic_submode: 'A1',
         permitted_purpose: 'Консультация, проверка и редактура самостоятельного материала клиента; клиент использует рекомендации при самостоятельной подготовке.',
         deadline_text: dlText, deadline_date: iso, ttl_days: wz.ttl
       }).then(function (r2) {

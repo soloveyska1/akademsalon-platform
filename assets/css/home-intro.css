@@ -18,7 +18,7 @@ html.salon-intro-pending .salon-intro{
   --intro-canvas-deep:#E9E1D3;
   --intro-ink:#1D1C18;
   --intro-muted:#68635A;
-  --intro-quiet:#8B8375;
+  --intro-quiet:#68635A;
   --intro-line:#B8AA94;
   --intro-line-soft:rgba(102,91,72,.15);
   --intro-wax:#A63F29;
@@ -46,7 +46,7 @@ html.salon-intro-pending .salon-intro{
   --intro-canvas-deep:#11110F;
   --intro-ink:#F2ECDF;
   --intro-muted:#AAA293;
-  --intro-quiet:#8B8478;
+  --intro-quiet:#9B9487;
   --intro-line:#565148;
   --intro-line-soft:rgba(242,236,223,.09);
   --intro-wax:#C65B41;
@@ -316,15 +316,15 @@ html.salon-intro-pending .salon-intro{
 }
 
 html.salon-intro-running .salon-intro__frame{
-  animation:intro-fade-in 420ms ease 60ms both;
+  animation:intro-fade-in 220ms ease 20ms both;
 }
 
 html.salon-intro-running .salon-intro__logo{
-  animation:intro-logo-in 620ms var(--intro-ease) 120ms both;
+  animation:intro-logo-in 300ms var(--intro-ease) 35ms both;
 }
 
 html.salon-intro-running .salon-intro__logo::before{
-  animation:intro-ring-in 700ms var(--intro-ease) 240ms both;
+  animation:intro-ring-in 340ms var(--intro-ease) 70ms both;
 }
 
 html.salon-intro-running .salon-intro__logo::after{
@@ -332,36 +332,36 @@ html.salon-intro-running .salon-intro__logo::after{
 }
 
 html.salon-intro-running .salon-intro__kicker{
-  animation:intro-copy-in 420ms var(--intro-ease) 500ms both;
+  animation:intro-copy-in 230ms var(--intro-ease) 110ms both;
 }
 
 html.salon-intro-running .salon-intro__title span:first-child{
-  animation:intro-copy-in 560ms var(--intro-ease) 650ms both;
+  animation:intro-copy-in 280ms var(--intro-ease) 145ms both;
 }
 
 html.salon-intro-running .salon-intro__title span:last-child{
-  animation:intro-copy-in 560ms var(--intro-ease) 730ms both;
+  animation:intro-copy-in 280ms var(--intro-ease) 180ms both;
 }
 
 html.salon-intro-running .salon-intro__rule{
-  animation:intro-rule-in 420ms var(--intro-ease) 900ms both;
+  animation:intro-rule-in 240ms var(--intro-ease) 220ms both;
 }
 
 html.salon-intro-running .salon-intro__rule i{
-  animation:intro-dot-in 280ms var(--intro-ease) 1180ms both;
+  animation:intro-dot-in 180ms var(--intro-ease) 300ms both;
 }
 
 html.salon-intro-running .salon-intro__promise{
-  animation:intro-copy-in 520ms var(--intro-ease) 1100ms both;
+  animation:intro-copy-in 260ms var(--intro-ease) 270ms both;
 }
 
 html.salon-intro-running .salon-intro__folio{
-  animation:intro-fade-in 360ms ease 180ms both;
+  animation:intro-fade-in 220ms ease 70ms both;
 }
 
 html.salon-intro-running .salon-intro__skip{
   opacity:1;
-  transition-delay:220ms;
+  transition-delay:80ms;
 }
 
 html.salon-intro-leaving .salon-intro__composition > *,
@@ -369,7 +369,7 @@ html.salon-intro-leaving .salon-intro__folio,
 html.salon-intro-leaving .salon-intro__frame{
   opacity:0;
   animation:none!important;
-  transition:opacity 300ms ease;
+  transition:opacity 140ms ease;
 }
 
 html.salon-intro-leaving .salon-intro__skip{
@@ -380,12 +380,12 @@ html.salon-intro-leaving .salon-intro__skip{
 
 html.salon-intro-leaving .salon-intro__panel--left{
   transform:translateX(-101%);
-  transition:transform 760ms var(--intro-ease) 100ms;
+  transition:transform 320ms var(--intro-ease) 20ms;
 }
 
 html.salon-intro-leaving .salon-intro__panel--right{
   transform:translateX(101%);
-  transition:transform 760ms var(--intro-ease) 100ms;
+  transition:transform 320ms var(--intro-ease) 20ms;
 }
 
 @keyframes intro-fade-in{

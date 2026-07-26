@@ -115,8 +115,11 @@ Cart/request payload — отдельный сохраняемый контра�
 - `currency: "RUB"`;
 - `specification_required_before_payment: true`;
 - у каждой позиции `price_status: "estimate_only"`;
-- обычная помощь получает `contract_contour: "A_academic_support"`;
-- авторский заказ получает `B1_personal_author_order`, `B2_third_party_author_order` или промежуточный `B_pending_variant`;
+- обычная помощь получает `contract_contour: "A"` и обязательный
+  `academic_submode: "A1" | "A2"`; A2 используется только для совместной
+  исследовательской разработки с нуля и требует зафиксированного участия Заказчика;
+- авторский заказ получает `contract_contour: "B1" | "B2"` либо промежуточный
+  `B_PENDING` до выбора варианта; промежуточная строка не может стать оплачиваемой спецификацией;
 - `kind`, `legal_service_type`, `service_id`, `type`, `label`, `qty`, `unit`, `disc`, `term`, `tier`, `topic`, `deadline`, `requirements`, `note`, `answers`, `scope`, `schedule`, `customer_inputs`, `deliverables`, acceptance/corrections, IP/actual-author/third-party-performer profiles и quote preview не должны теряться при redesign;
 - до оплаты сервер должен заполнить/подтвердить `server_line_id`, unit definition, included/excluded scope, customer inputs, deliverables, contractor due date, dependencies, acceptance criteria, unit/line prices, discount and payment-stage allocations, cancellation effect, contract contour, permitted purpose, IP and actual-author profile.
 

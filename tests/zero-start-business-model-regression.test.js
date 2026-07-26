@@ -6,20 +6,19 @@ const path = require('node:path');
 const root = path.join(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('home states the from-zero offer, real entry prices and qualified express mode', () => {
+test('home keeps the from-zero route without turning the first screen into a price catalog', () => {
   const home = read('index.html');
 
-  assert.match(home, /Курсовые и ВКР<br>с нуля — до защиты\./);
-  for (const price of ['2 500', '14 000', '20 000', '40 000', '60 000']) {
-    assert.match(home, new RegExp(`от ${price} ₽`));
-  }
-  assert.match(home, /черновик от 24 часов/);
-  assert.match(home, /Экспресс-срок подтверждаем после проверки задания, объёма и исходных данных/);
+  assert.match(home, /Одно дело\.<br>От темы до защиты\./);
+  assert.match(home, /Проект с нуля/);
+  assert.match(home, /configurator\.html\?situation=topic&result=support/);
+  assert.match(home, /ориентир цены и самостоятельную альтернативу/i);
+  assert.doesNotMatch(home, /class="project-ledger"/);
   assert.doesNotMatch(home, /любая работа (?:за|за один) день/i);
 });
 
-test('the preserved brand promise remains byte-for-byte visible', () => {
-  assert.match(read('index.html'), /Работаем, пока ты отдыхаешь/);
+test('the brand promise now matches the research-case model', () => {
+  assert.match(read('index.html'), /Одно дело исследования[\s\S]*от темы до защиты/);
 });
 
 test('calculator and configurator expose the project from zero as the full-price format', () => {
@@ -31,7 +30,7 @@ test('calculator and configurator expose the project from zero as the full-price
   assert.match(configurator, /Собрать проект с нуля/);
   assert.match(configurator, /Первый полный рабочий черновик/);
   assert.match(configurator, /data-concept-authorship/);
-  assert.match(configurator, /Авторский контур: клиент подтвердил участие/);
+  assert.match(configurator, /Участие клиента подтверждено/);
 });
 
 test('tariff catalog exposes all five promised entry prices and routes them to the full project tier', () => {

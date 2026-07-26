@@ -49,7 +49,7 @@
       return;
     }
     root.classList.add('salon-intro-leaving');
-    timers.push(window.setTimeout(function () { finish(false); }, 940));
+    timers.push(window.setTimeout(function () { finish(false); }, 400));
   }
 
   function onKeydown(event) {
@@ -132,5 +132,5 @@
     });
   });
 
-  timers.push(window.setTimeout(function () { leave(false); }, 2500));
+  timers.push(window.setTimeout(function () { leave(false); }, 720));
 }());

@@ -105,7 +105,7 @@ test('critical production actions survive background refreshes and expired sessi
   assert.match(cabinetJs, /action === 'bonus_apply' \|\| action === 'gift_apply'/);
   assert.match(appJs, /salon:auth-lost/);
   assert.match(appJs, /var wasImpersonated = !!impToken\(\)/);
-  assert.match(appJs, /if \(t\) \{\s*try \{\s*document\.dispatchEvent\(new CustomEvent\('salon:auth-lost'/);
+  assert.match(appJs, /if \(logicalToken\) \{\s*try \{\s*document\.dispatchEvent\(new CustomEvent\('salon:auth-lost'/);
   assert.match(cabinetJs, /addEventListener\('salon:auth-lost'/);
   assert.match(adminJs, /addEventListener\('salon:auth-lost'/);
 });

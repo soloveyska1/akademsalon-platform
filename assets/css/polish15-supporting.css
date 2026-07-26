@@ -13,7 +13,7 @@ body.polish15-supporting{
   --ink:#1d1c18;
   --text:#38352f;
   --muted:#68635a;
-  --quiet:#8b8375;
+  --quiet:#68635a;
   --line:#d8cebd;
   --line-soft:rgba(102,91,72,.12);
   --line-strong:#b8aa94;
@@ -43,7 +43,7 @@ body.polish15-supporting{
   --ink:#f2ecdf;
   --text:#d0c8ba;
   --muted:#aaa293;
-  --quiet:#8b8478;
+  --quiet:#aaa293;
   --line:#3c3932;
   --line-soft:rgba(242,236,223,.09);
   --line-strong:#565148;
@@ -531,13 +531,19 @@ body.polish15-supporting .team-grid{
 
 body.polish15-supporting .team-grid article{
   display:grid;
-  grid-template-columns:76px 1fr;
+  min-width:0;
+  grid-template-columns:76px minmax(0,1fr);
   gap:20px;
   align-items:start;
   min-height:230px;
   padding:26px;
   background:var(--sheet);
   border:1px solid var(--line);
+}
+
+body.polish15-supporting .team-grid article>*{
+  min-width:0;
+  overflow-wrap:anywhere;
 }
 
 body.polish15-supporting .team-avatar{
@@ -656,6 +662,7 @@ body.polish15-supporting .guarantee-example__flow{
 
 body.polish15-supporting .guarantee-example__flow>span{
   display:grid;
+  min-width:0;
   min-height:96px;
   flex:1;
   align-content:center;
@@ -664,6 +671,7 @@ body.polish15-supporting .guarantee-example__flow>span{
   background:#292720;
   border:1px solid #444039;
   font-size:10px;
+  overflow-wrap:anywhere;
 }
 
 body.polish15-supporting .guarantee-example__flow b{
@@ -760,7 +768,7 @@ body.polish15-supporting .review-shot-card figcaption{
 }
 
 body.polish15-supporting .review-shot-card figcaption span{
-  color:var(--quiet);
+  color:var(--muted);
   font:550 10px/1.2 var(--mono);
   letter-spacing:.06em;
 }
@@ -1048,6 +1056,12 @@ body.polish15-supporting .club-hero{
   padding-block:var(--section);
 }
 
+body.polish15-supporting .club-hero>*,
+body.polish15-supporting .club-hero>div>*,
+body.polish15-supporting .club-grid>*{
+  min-width:0;
+}
+
 body.polish15-supporting .club-hero h1{
   margin-top:12px;
   font-size:clamp(58px,7vw,92px);
@@ -1098,7 +1112,7 @@ body.polish15-supporting .club-hero aside div{
 }
 
 body.polish15-supporting .club-hero aside small{
-  color:#918a7e;
+  color:#9a9387;
   font:550 8px/1.2 var(--mono);
   letter-spacing:.07em;
   text-transform:uppercase;
@@ -1118,11 +1132,17 @@ body.polish15-supporting .club-grid{
 
 body.polish15-supporting .club-card{
   display:grid;
+  min-width:0;
   min-height:340px;
   align-content:start;
   padding:28px;
   background:var(--sheet);
   border:1px solid var(--line);
+}
+
+body.polish15-supporting .club-card,
+body.polish15-supporting .club-card *{
+  overflow-wrap:anywhere;
 }
 
 body.polish15-supporting .club-card h2{
@@ -2443,6 +2463,25 @@ body.polish15-supporting .visually-hidden{
     gap:42px;
   }
 
+  body.polish15-supporting .team-grid{
+    grid-template-columns:minmax(0,1fr);
+  }
+
+  body.polish15-supporting .guarantee-example{
+    grid-template-columns:minmax(0,1fr);
+    gap:28px;
+  }
+
+  body.polish15-supporting .guarantee-example__flow{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  body.polish15-supporting .guarantee-example__flow>i{
+    align-self:center;
+    transform:rotate(90deg);
+  }
+
   body.polish15-supporting .benefit-nav{
     position:sticky;
     z-index:18;
@@ -2552,6 +2591,7 @@ body.polish15-supporting .visually-hidden{
   }
 
   body.polish15-supporting .about-manifesto{
+    grid-template-columns:minmax(0,1fr);
     gap:34px;
   }
 
@@ -2565,7 +2605,8 @@ body.polish15-supporting .visually-hidden{
   }
 
   body.polish15-supporting .about-manifesto>div:last-child h2{
-    font-size:39px;
+    font-size:clamp(34px,10.8vw,39px);
+    overflow-wrap:anywhere;
   }
 
   body.polish15-supporting .about-principles>div:last-child,
@@ -2602,7 +2643,7 @@ body.polish15-supporting .visually-hidden{
 
   body.polish15-supporting .team-grid article{
     min-height:190px;
-    grid-template-columns:58px 1fr;
+    grid-template-columns:58px minmax(0,1fr);
     gap:15px;
     padding:20px;
   }
@@ -2714,12 +2755,13 @@ body.polish15-supporting .visually-hidden{
 
   body.polish15-supporting .club-hero{
     min-height:auto;
-    grid-template-columns:1fr;
+    grid-template-columns:minmax(0,1fr);
     gap:34px;
   }
 
   body.polish15-supporting .club-hero h1{
-    font-size:clamp(44px,12vw,52px);
+    font-size:clamp(36px,11.5vw,52px);
+    overflow-wrap:anywhere;
   }
 
   body.polish15-supporting .club-hero>div>div{
@@ -2729,10 +2771,12 @@ body.polish15-supporting .visually-hidden{
 
   body.polish15-supporting .club-hero>div>div .button{
     width:100%;
+    max-width:100%;
+    white-space:normal;
   }
 
   body.polish15-supporting .club-hero aside{
-    grid-template-columns:72px 1fr;
+    grid-template-columns:72px minmax(0,1fr);
     padding:22px;
     transform:none;
   }
@@ -2747,7 +2791,7 @@ body.polish15-supporting .visually-hidden{
   }
 
   body.polish15-supporting .club-grid{
-    grid-template-columns:1fr;
+    grid-template-columns:minmax(0,1fr);
   }
 
   body.polish15-supporting .club-card{

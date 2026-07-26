@@ -32,7 +32,7 @@ test('deposit page has complete indexable metadata', () => {
   assert.match(page, /<link rel="canonical" href="https:\/\/akademsalon\.ru\/deposit\.html"/);
   assert.match(page, /name="robots" content="index,follow,max-image-preview:large"/);
   assert.match(page, /property="og:url" content="https:\/\/akademsalon\.ru\/deposit\.html"/);
-  assert.match(page, /property="og:image" content="https:\/\/akademsalon\.ru\/assets\/img\/og-cover-v2\.png"/);
+  assert.match(page, /property="og:image" content="https:\/\/akademsalon\.ru\/assets\/img\/og-cover-v3\.png"/);
   assert.equal((page.match(/<h1\b/gi) || []).length, 1, 'exactly one H1');
   assert.match(page, /assets\/js\/app\.js\?v=/);
   assert.match(page, /assets\/css\/mobile\.css\?v=/);

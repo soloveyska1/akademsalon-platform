@@ -7,11 +7,11 @@
 <title>Рассчитать проект с нуля или редакторскую помощь — Академический Салон</title>
 <meta name="description" content="Выберите курсовую, ВКР или магистерскую, точку старта и результат. Проект можно начать с одной темы; состав, срок и цена видны до отправки заявки." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260726release29" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release29" />
-<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release29" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260726release29" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260726release29" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260726release32" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release32" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release32" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260726release32" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260726release32" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -26,16 +26,16 @@
 <meta property="og:title" content="Рассчитать проект с нуля | Академический Салон" />
 <meta property="og:description" content="Можно прийти только с темой. Выберите работу и получите понятный состав и ценовой ориентир." />
 <meta property="og:url" content="https://akademsalon.ru/configurator.html" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v3.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Рассчитать курсовую или ВКР с нуля" />
 <meta name="twitter:description" content="Шесть коротких шагов: работа, точка старта, результат, материалы и заявка." />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v2.png" />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v3.png" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release29" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260726release29" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release32" media="screen and (max-width:920px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260726release32" />
 </head>
 <body class="configurator-task">
 
@@ -285,10 +285,10 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260726release29"></script>
-<script defer src="assets/js/polish15-chrome.js?v=20260726release29"></script>
-<script src="assets/js/extras.js?v=20260726release29"></script>
-<script src="assets/js/cart.js?v=20260726release29"></script>
+<script src="assets/js/app.js?v=20260726release32"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260726release32"></script>
+<script src="assets/js/extras.js?v=20260726release32"></script>
+<script src="assets/js/cart.js?v=20260726release32"></script>
 <script>
 function initConf() {
   'use strict';
@@ -333,7 +333,7 @@ function initConf() {
   } catch (e) {}
   var svcSrvId = svc ? ({ plan: 'svc_plan', ai: 'svc_ai', review: 'svc_review', tutor: 'svc_tutor',
                           norm: 'svc_norm', defense: 'svc_defense', defensepack: 'svc_defense_pack',
-                          author: 'svc_author_order' }[svc.id] || 'custom') : '';
+                          commission0: 'commission_zero', author: 'svc_author_order' }[svc.id] || 'custom') : '';
   var isPlanService = !!(svc && svc.id === 'plan');
   var SERVICE_DRAFT_KEY = 'salon_service_draft_v1';
 
@@ -564,7 +564,13 @@ function initConf() {
 
   /* --- анкета услуги: свои вопросы под каждую особенную позицию --- */
   var svcAnswers = {};
-  var svcDraft = isPlanService ? S.store.get(SERVICE_DRAFT_KEY, null) : null;
+  var incomingCaseRoute = false;
+  try {
+    var incomingRouteValue = new URLSearchParams(location.search).get('route') || '';
+    incomingCaseRoute = incomingRouteValue === 'page' || incomingRouteValue === 'case1';
+  } catch (e) {}
+  var svcDraft = isPlanService && !incomingCaseRoute
+    ? S.store.get(SERVICE_DRAFT_KEY, null) : null;
   if (svcDraft && svcDraft.service === svc.id && svcDraft.answers) {
     Object.keys(svcDraft.answers).forEach(function (k) { svcAnswers[k] = svcDraft.answers[k]; });
   }
@@ -575,7 +581,7 @@ function initConf() {
       var commissionHandoff = JSON.parse(sessionStorage.getItem('salon_commission_zero_handoff_v1') || 'null');
       if (commissionHandoff && Date.now() - Number(commissionHandoff.savedAt || 0) < 7200000) {
         if ({ course:1, diplom:1, master:1 }[commissionHandoff.work]) svcAnswers.work = commissionHandoff.work;
-        if ({ topic:1, draft:1, ai:1, comments:1 }[commissionHandoff.source]) svcAnswers.source = commissionHandoff.source;
+        if ({ draft:1, ai:1, comments:1 }[commissionHandoff.source]) svcAnswers.source = commissionHandoff.source;
         if (topicIn && commissionHandoff.topic) topicIn.value = String(commissionHandoff.topic).slice(0,240);
       }
       sessionStorage.removeItem('salon_commission_zero_handoff_v1');
@@ -586,6 +592,38 @@ function initConf() {
       var workFromPage = new URLSearchParams(location.search).get('work');
       if ({ course:1, diplom:1, master:1, candidate:1, practice:1, other:1 }[workFromPage]) {
         svcAnswers.work = workFromPage;
+      }
+    } catch (e) {}
+  }
+  /* Контекстный маршрут передаёт только категориальные коды. Подставляем их
+     в анкету отдельной услуги, чтобы клиент не повторял уже сделанный выбор. */
+  if (svc) {
+    try {
+      var contextParams = new URLSearchParams(location.search);
+      var contextWork = contextParams.get('work') || '';
+      var contextDisc = contextParams.get('discipline') || '';
+      if (svc.id === 'plan') {
+        var planWorkMap = {
+          course:'course', course_emp:'course', diplom:'diplom', master:'master',
+          kandidat:'candidate', practice:'practice', chapter:'other', vak:'other',
+          scopus:'other', rinc:'other', self:'other'
+        };
+        var planDiscMap = {
+          hum:'Гуманитарные / экономика',
+          law:'Юриспруденция / педагогика',
+          tech:'Технические / IT',
+          med:'Медицина / финансы'
+        };
+        if (planWorkMap[contextWork]) svcAnswers.work = planWorkMap[contextWork];
+        if (planDiscMap[contextDisc]) svcAnswers.disc = planDiscMap[contextDisc];
+      }
+      if (svc.id === 'review') {
+        var reviewWorkMap = {
+          course:'Курсовая', course_emp:'Курсовая', diplom:'Диплом / ВКР',
+          master:'Магистерская', kandidat:'Другое', chapter:'Другое',
+          vak:'Другое', scopus:'Другое', rinc:'Другое', practice:'Другое', self:'Другое'
+        };
+        if (reviewWorkMap[contextWork]) svcAnswers.work = reviewWorkMap[contextWork];
       }
     } catch (e) {}
   }
@@ -810,14 +848,12 @@ function initConf() {
   function uploadOne(a) {
     if (!attOrder) return Promise.resolve();
     a.st = 'up'; doneAttRender();
-    var url = S.api.base + '/orders/' + attOrder.id + '/upload' +
-      (attOrder.token ? '?token=' + encodeURIComponent(attOrder.token) : '');
-    var h = {};
-    var sess = S.api.token();
-    if (sess && !attOrder.token) h['Authorization'] = 'Bearer ' + sess;
+    var url = S.api.base + '/orders/' + attOrder.id + '/upload';
+    var h = S.api.headers ? S.api.headers('POST') : {};
+    if (attOrder.token) h['X-Order-Token'] = attOrder.token;
     var fd = new FormData();
     fd.append('file', a.f, a.f.name);
-    return fetch(url, { method: 'POST', body: fd, headers: h })
+    return fetch(url, { method: 'POST', body: fd, headers: h, credentials: 'include' })
       .then(function (resp) {
         if (!resp.ok) throw new Error('http_' + resp.status);
         return resp.json();
@@ -1639,155 +1675,12 @@ function initConf() {
     }
   } catch (e) {}
 
-  /* --- код возврата: гость собрал заявку, но уходит — выписываем персональный
-     одноразовый код (сервер: −5% до 1 000 ₽, работы от 5 000 ₽, 3 дня, серия
-     «exit» повторно одному клиенту не применяется). Код запоминаем в браузере
-     и тихо подставляем в купон при следующем визите. --- */
+  /* Удержание не зависит от попытки уйти: никаких скрытых скидок и
+     автоподстановки купона. Старый локальный grant удаляем при обновлении. */
   var EXIT_KEY = 'salon_exit_grant';
-  function exitGrantDrop(reason) {
-    /* сохранённый код умер (использован/истёк/серия уже была) — забываем */
-    if (reason === 'used_up' || reason === 'expired' || reason === 'not_found' ||
-        reason === 'inactive' || reason === 'already_used') S.store.del(EXIT_KEY);
-  }
+  function exitGrantDrop() { S.store.del(EXIT_KEY); }
   var doneShown = false;
-  (function () {
-    if (svc) return; /* только калькулятор полных работ */
-    var grant = S.store.get(EXIT_KEY, null);
-    var offered = false;
-    var startedAt = Date.now();
-    var hiddenAt = 0;
-
-    /* выданный ранее код — тихо возвращаем в купон (протухший сложится сам) */
-    if (grant && grant.code && !urlPromo && promoIn && !promoIn.value) {
-      offered = true;
-      promoIn.value = grant.code;
-      promoCheck(true);
-    }
-
-    function fmtDay(iso) {
-      var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
-      return m ? m[3] + '.' + m[2] : '';
-    }
-    function eligible() {
-      return !offered && !doneShown && !promoCode && !(S.api && S.api.token()) &&
-        (idx >= 3 || (topicIn && topicIn.value.trim()) ||
-         (detailsIn && detailsIn.value.trim()) || attQueue.length ||
-         ($('fContact') && $('fContact').value.trim()));
-    }
-    function showExitDlg(g) {
-      var el = document.createElement('div');
-      el.className = 'sdlg exit-dlg';
-      el.setAttribute('role', 'dialog');
-      el.setAttribute('aria-modal', 'true');
-      el.setAttribute('aria-label', 'Код возврата к заявке');
-      /* галочки U+2713 и «копии» U+29C9 в подмножествах нет ни у одной
-         гарнитуры (fonts.css) — рисуем оба знака контуром, а не глифом */
-      var icoCopy = '<svg class="xc-ico xc-ico-copy" viewBox="0 0 16 16" width="14" height="14"' +
-        ' fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"' +
-        ' stroke-linejoin="round" aria-hidden="true" focusable="false">' +
-        '<rect x="5.9" y="5.9" width="8.35" height="8.35" rx="1.6"/>' +
-        '<path d="M10.9 3.95V3.3a1.55 1.55 0 0 0-1.55-1.55H3.3A1.55 1.55 0 0 0 1.75 3.3v6.05A1.55 1.55 0 0 0 3.3 10.9h.65"/>' +
-        '</svg>';
-      var icoDone = '<svg class="xc-ico xc-ico-done" viewBox="0 0 16 16" width="14" height="14"' +
-        ' fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"' +
-        ' stroke-linejoin="round" aria-hidden="true" focusable="false">' +
-        '<path d="M2.7 8.6l3.55 3.55L13.3 5.1"/></svg>';
-      el.innerHTML =
-        '<div class="sdlg-back" data-x></div>' +
-        '<div class="sdlg-card">' +
-          '<p class="eyebrow">Салон · код возврата</p>' +
-          '<h3>Смета подождёт вас</h3>' +
-          '<p>Ответы сохранены в этом браузере, а это — ваш персональный код: ' +
-          'отправьте заявку' + (g.until ? ' до ' + fmtDay(g.until) : ' в течение трёх дней') +
-          ', и мастер вычтет скидку из счёта. Мы уже вписали его в купон заявки.</p>' +
-          '<div class="exit-code">' +
-            '<span class="xc-lbl">Персональный код</span>' +
-            '<div class="xc-row">' +
-              '<code class="xc-code"></code>' +
-              '<button type="button" class="btn btn-line xc-copy">' + icoCopy + icoDone +
-                '<span class="xc-copy-t" aria-live="polite">Скопировать</span></button>' +
-            '</div>' +
-          '</div>' +
-          '<ul class="exit-terms"></ul>' +
-          '<div class="sdlg-row"><button type="button" class="btn btn-wax" data-ok>Вернуться к заявке</button></div>' +
-        '</div>';
-      el.querySelector('.xc-code').textContent = g.code;
-      /* условия купона — та же формулировка, но строками реестра, не прозой:
-         серверный label приходит склеенным через « · », поэтому режем по нему */
-      var terms = el.querySelector('.exit-terms');
-      ((g.label || '−5% (до 1 000 ₽) · для работ от 5 000 ₽') +
-       ' · одноразовый · не суммируется со скидкой «Салон+»')
-        .split(' · ').forEach(function (t) {
-          if (!t) return;
-          var li = document.createElement('li');
-          li.textContent = t;
-          terms.appendChild(li);
-        });
-      document.body.appendChild(el);
-      requestAnimationFrame(function () {
-        el.classList.add('open');
-        /* фокус только после .open: до него карточка ещё visibility:hidden,
-           и focus() молча не срабатывал — фокус оставался на <body> */
-        var first = el.querySelector('[data-ok]');
-        if (first) first.focus();
-      });
-      var cpTimer = 0;
-      function close(toForm) {
-        el.classList.remove('open');
-        clearTimeout(cpTimer);
-        setTimeout(function () { el.remove(); }, 240);
-        document.removeEventListener('keydown', onKey);
-        if (toForm) go(3, true);
-      }
-      function onKey(e) { if (e.key === 'Escape') close(false); }
-      document.addEventListener('keydown', onKey);
-      el.querySelector('[data-ok]').addEventListener('click', function () { close(true); });
-      el.querySelector('.sdlg-back').addEventListener('click', function () { close(false); });
-      var cp = el.querySelector('.xc-copy'), cpT = el.querySelector('.xc-copy-t');
-      cp.addEventListener('click', function () {
-        S.copy(g.code).then(function (ok) {
-          /* подпись возвращаем сами: код рядом остаётся на месте и выделяется
-             целиком одним щелчком (user-select:all), если буфер недоступен */
-          cp.classList.toggle('is-copied', ok);
-          cpT.textContent = ok ? 'Скопировано' : 'Выделите код';
-          clearTimeout(cpTimer);
-          cpTimer = setTimeout(function () {
-            cp.classList.remove('is-copied');
-            cpT.textContent = 'Скопировать';
-          }, 2400);
-        });
-      });
-    }
-    function offer() {
-      if (!eligible()) return;
-      offered = true; /* одна попытка за визит — даже если сервер откажет */
-      S.api.post('/promo/exit', { page: 'configurator.html' }).then(function (r) {
-        if (!r || !r.ok || !r.code) return; /* лимит/рубильник — молчим */
-        var g = { code: r.code, label: r.label || '', until: r.until || '' };
-        S.store.set(EXIT_KEY, g);
-        if (promoIn) { promoIn.value = g.code; promoCheck(true); }
-        showExitDlg(g);
-        if (S.metrika) S.metrika.goal('exit_code');
-        if (S.visit) S.visit.mark('уходил — выдан код ' + g.code);
-      });
-    }
-
-    /* десктоп: курсор ушёл вверх за пределы страницы — классический exit-intent */
-    document.addEventListener('mouseout', function (e) {
-      if (e.relatedTarget || e.clientY > 0) return;
-      if (Date.now() - startedAt < 7000) return; /* не пугаем сразу на входе */
-      offer();
-    });
-    /* мобильные: ушёл из вкладки надолго и вернулся — встречаем кодом */
-    document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'hidden') { hiddenAt = Date.now(); return; }
-      if (hiddenAt && Date.now() - hiddenAt > 40000) offer();
-    });
-    /* вернулся позже со старым черновиком — тоже повод удержать */
-    if (draft && draft.savedAt && Date.now() - draft.savedAt > 30 * 60 * 1000) {
-      setTimeout(offer, 1500);
-    }
-  })();
+  S.store.del(EXIT_KEY);
 
   var submitting = false;
   var submittedCartCount = 0;
@@ -1889,11 +1782,40 @@ function initConf() {
       gift: giftCode || undefined,
       consent: !!($('fConsent') && $('fConsent').checked),
       privacy_notice_ack: !!($('fConsent') && $('fConsent').checked),
-      consent_doc: 'consent-request 1.0 · privacy 3.0 · oferta 3.2',
+      consent_doc: 'consent-request 1.0 · privacy 3.1 · oferta 3.2',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
       ref: (S.refCode && S.refCode()) || undefined,
       client_request_id: requestId()
     };
+    var caseContext = window.SalonConceptWizard && window.SalonConceptWizard.context
+      ? window.SalonConceptWizard.context() : null;
+    if (caseContext) {
+      payload.case_context = caseContext;
+      if (caseContext.contract_contour) payload.contract_contour = caseContext.contract_contour;
+      if (caseContext.academic_submode) payload.academic_submode = caseContext.academic_submode;
+      if (caseContext.academic_submode === 'A2') {
+        payload.author_participation = {
+          required:true,
+          confirmed:!!caseContext.author_participation,
+          checkpoints:[
+            'утверждение проблемы, цели, метода и содержательных решений',
+            'проверка фактов, источников и исходных данных',
+            'содержательная доработка рабочего черновика и формирование финальной авторской версии'
+          ]
+        };
+      }
+      /* Отдельный первый результат остаётся отдельной услугой и в заявке:
+         не превращаем нормоконтроль/защиту/диагностику в полный проект. */
+      if (!svc && /^svc_(?:plan|review|norm|defense|ai|tutor)$/.test(caseContext.offer_id || '')) {
+        cartHasItems = false;
+        payload.type = caseContext.offer_id;
+        payload.disc = caseContext.discipline || state.disc;
+        payload.term = 'free';
+        payload.tier = 'base';
+        payload.plan = caseContext.offer_id === 'svc_plan';
+        payload.page = 'configurator.html?offer=' + encodeURIComponent(caseContext.offer_id);
+      }
+    }
     submittedCartCount = 0;
     submittedCartSnapshot = null;
     if (cartHasItems) {
@@ -1951,11 +1873,11 @@ function initConf() {
     return new Promise(function (resolve) {
       var ctl = window.AbortController ? new AbortController() : null;
       var to = setTimeout(function () { if (ctl) ctl.abort(); }, timeoutMs);
-      var h = { 'Content-Type': 'application/json' };
-      var t = S.api.token();
-      if (t) h['Authorization'] = 'Bearer ' + t;
+      var h = S.api.headers ? S.api.headers('POST') : {};
+      h['Content-Type'] = 'application/json';
       fetch(S.api.base + '/orders', {
         method: 'POST', headers: h, body: JSON.stringify(payload),
+        credentials: 'include',
         signal: ctl ? ctl.signal : undefined
       }).then(function (res) {
         clearTimeout(to);
@@ -1968,6 +1890,7 @@ function initConf() {
   function onSubmitOk(r) {
     pendingRequestId = '';
     if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
+    if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
     if (isPlanService) S.store.del(SERVICE_DRAFT_KEY);
     else if (!svc) S.store.del('salon_draft');
     renderDoneReceipt(submittedCartSnapshot);
@@ -1982,12 +1905,17 @@ function initConf() {
     doneAttRender();
     if (attQueue.length) uploadQueued();
     var bl = $('doneBot');
-    var claim = r.token
-      ? 'https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(r.token)
-      : 'https://t.me/academic_saloon_bot';
-    if (bl) bl.href = claim; /* гостю — привязка уведомлений Telegram в один тап */
+    var claim = r.claim_url || (r.token
+      ? 'dashboard.html#claim=' + encodeURIComponent(r.token)
+      : 'dashboard.html');
+    if (bl) {
+      bl.href = claim;
+      bl.removeAttribute('target');
+      bl.textContent = 'Одноразово привязать Telegram';
+    }
     var cabLink = $('doneCab');
-    if (cabLink && r.token) cabLink.href = 'dashboard.html#claim=' + encodeURIComponent(r.token);
+    if (cabLink && r.claim_url) cabLink.href = r.claim_url;
+    else if (cabLink && r.token) cabLink.href = 'dashboard.html#claim=' + encodeURIComponent(r.token);
     showDone(String(r.id));
     if (submittedCartCount > 1) {
       var doneHCart = $('doneH');
@@ -2255,6 +2183,12 @@ function initConf() {
     var sourceId = window.SalonConceptWizard && window.SalonConceptWizard.currentKey
       ? window.SalonConceptWizard.currentKey()
       : '';
+    var caseContext = window.SalonConceptWizard && window.SalonConceptWizard.context
+      ? window.SalonConceptWizard.context()
+      : null;
+    var sourceFiles = window.SalonAttachments && window.SalonAttachments.snapshot
+      ? window.SalonAttachments.snapshot()
+      : [];
     if (svc) {
       var answers = {};
       var answerLines = [];
@@ -2275,20 +2209,41 @@ function initConf() {
         allowQty:/час|страниц|единиц/i.test(svc.unit || ''), answers:answers, answerLines:answerLines,
         needs:needs,
         topic:topicIn ? topicIn.value.trim() : '', deadline:deadlineIn ? deadlineIn.value.trim() : '',
-        requirements:detailsIn ? detailsIn.value.trim() : '', note:'', sourceId:sourceId
+        requirements:detailsIn ? detailsIn.value.trim() : '', note:'', sourceId:sourceId,
+        contractContour:svc.id === 'author' ? '' : 'A',
+        academicSubmode:svc.id === 'author' ? '' : 'A1',
+        authorParticipation:false,
+        sourceMaterialProvided:svc.id === 'ai' ? sourceFiles.length > 0 : false
       };
     }
     var t = find(C.types, state.type);
     var q = C.quote(state.type, state.disc, state.term, state.tier);
+    var academicSubmode = caseContext && caseContext.academic_submode === 'A2'
+      ? 'A2'
+      : (state.tier === 'vip' ? 'A2' : 'A1');
     return {
       kind:'work', type:state.type, label:t.label, disc:state.disc, term:state.term, tier:state.tier,
       low:q.low, high:q.high, fixed:false,
       topic:topicIn ? topicIn.value.trim() : '', deadline:deadlineIn ? deadlineIn.value.trim() : '',
-      requirements:detailsIn ? detailsIn.value.trim() : '', note:'', sourceId:sourceId
+      requirements:detailsIn ? detailsIn.value.trim() : '', note:'', sourceId:sourceId,
+      contractContour:'A',
+      academicSubmode:academicSubmode,
+      authorParticipation:academicSubmode === 'A2' && !!(caseContext && caseContext.author_participation)
     };
   }
   function cartCurrentValid() {
     if (!svc || !svc.ask || !svc.ask.length) return true;
+    if (svc.id === 'ai' && (!window.SalonAttachments ||
+        !window.SalonAttachments.snapshot ||
+        !window.SalonAttachments.snapshot().length)) {
+      S.toast('Приложите исходный текст после ИИ — без него проверка фактов, источников и логики невозможна.', { type:'error' });
+      var sourceButton = document.querySelector('[data-concept-files]');
+      if (sourceButton) {
+        if (sourceButton.scrollIntoView) sourceButton.scrollIntoView({ block:'center', behavior:S.reduceMotion ? 'auto' : 'smooth' });
+        if (sourceButton.focus) sourceButton.focus({ preventScroll:true });
+      }
+      return false;
+    }
     var missing = null;
     svc.ask.some(function (q) {
       var answer = q.type === 'chips'
@@ -2388,14 +2343,25 @@ if (document.prerendering) {
   if (!host) return;
 
   var STORE_KEY = 'salon_concept_request_v1';
-  var STORE_VERSION = 2;
+  var STORE_VERSION = 3;
+  var RULES_VERSION = 'case-2026-07-26.1';
+  var RULES_EVENT_VERSION = 'r1';
+  var conceptEventSeen = {};
   var routeParams = null;
   var serviceCode = '';
   var situationCode = '';
+  var workCode = '';
+  var resultCode = '';
+  var disciplineCode = '';
+  var routeOrigin = '';
   try {
     routeParams = new URLSearchParams(location.search);
     serviceCode = routeParams.get('service') || '';
     situationCode = routeParams.get('situation') || '';
+    workCode = routeParams.get('work') || '';
+    resultCode = routeParams.get('result') || '';
+    disciplineCode = routeParams.get('discipline') || '';
+    routeOrigin = routeParams.get('route') || '';
   } catch (e) {}
   var service = null;
   if (serviceCode && window.SalonServices) {
@@ -2412,9 +2378,16 @@ if (document.prerendering) {
         ['diplom','ВКР или диплом','С нуля, с черновиком или перед защитой.'],
         ['course','Курсовая работа','Теория или исследование: с нуля, с черновиком или правками.'],
         ['master','Магистерская','С нуля: методология, данные, рабочий текст и защита.'],
-        ['rinc','Научная статья','Логика, источники и редактура рукописи.'],
+        ['rinc','Научная статья РИНЦ / сборник','Логика, источники и редактура рукописи.'],
         ['practice','Отчёт по практике','Структура и оформление реальных результатов.'],
         ['self','Другое','Реферат, эссе или задача, которой нет в списке.']
+      ],
+      specialistOptions:[
+        ['course_emp','Курсовая с исследованием','Опрос, расчёты, эксперимент или анализ данных.'],
+        ['chapter','Глава исследования','Самостоятельная глава вашей текущей работы.'],
+        ['kandidat','Диссертационное исследование','Диагностика или сопровождение исследовательского проекта.'],
+        ['vak','Научная статья ВАК','Рукопись с требованиями профильного издания.'],
+        ['scopus','Статья Scopus / Web of Science','Международный формат и требования выбранного журнала.']
       ]
     },
     {
@@ -2437,6 +2410,10 @@ if (document.prerendering) {
         ['defense','Подготовиться к защите','Редактура вашей речи и слайдов, репетиция ответов.'],
         ['support','Собрать проект с нуля','План, источники, полный рабочий черновик, оформление и защита.'],
         ['recommendation','Нужна рекомендация','Редактор предложит первый формат после просмотра материалов.']
+      ],
+      specialistOptions:[
+        ['tutoring','Разобрать тему на консультации','Индивидуальная встреча или серия занятий с экспертом.'],
+        ['ai_editing','Отредактировать мой текст после ИИ','Логика, стиль и проверка фактической основы вашего материала.']
       ]
     },
     {
@@ -2499,6 +2476,10 @@ if (document.prerendering) {
     value = map[value] || value || '';
     return ['course','course_emp','diplom','master','chapter','kandidat','vak','scopus','rinc','practice','self'].indexOf(value) >= 0 ? value : '';
   }
+  function normalizeDiscipline(value) {
+    value = String(value || '');
+    return ['hum','law','tech','med'].indexOf(value) >= 0 ? value : '';
+  }
   function normalizeResult(value) {
     var map = {
       'Диагностика':'diagnostic',
@@ -2508,12 +2489,14 @@ if (document.prerendering) {
       'Сопровождение':'support',
       'Проект с нуля':'support',
       'Нужна рекомендация':'recommendation',
+      'Консультация':'tutoring',
+      'Редактура после ИИ':'ai_editing',
       base:'diagnostic',
       turn:'editing',
       vip:'support'
     };
     value = map[value] || value || '';
-    return ['diagnostic','editing','formatting','defense','support','recommendation'].indexOf(value) >= 0 ? value : '';
+    return ['diagnostic','editing','formatting','defense','support','recommendation','tutoring','ai_editing','author_order'].indexOf(value) >= 0 ? value : '';
   }
   function readSaved() {
     var draft = storeGet('salon_draft', {}) || {};
@@ -2527,11 +2510,15 @@ if (document.prerendering) {
       draftId:value.draftId || '',
       situation:['topic','draft','comments','defense'].indexOf(value.situation) >= 0 ? value.situation : '',
       workType:normalizeWorkType(value.workType || (draft.state && draft.state.type)),
+      discipline:normalizeDiscipline(value.discipline || (draft.state && draft.state.disc)),
       result:normalizeResult(value.result || (draft.state && draft.state.tier)),
       deadlineDate:/^\d{4}-\d{2}-\d{2}$/.test(value.deadlineDate || '') ? value.deadlineDate : '',
       deadlineFlexible:!!value.deadlineFlexible || value.deadline === 'Срок обсуждается',
       entryPrefilled:!!value.entryPrefilled,
-      authorParticipation:!!value.authorParticipation
+      authorParticipation:!!value.authorParticipation,
+      routeConfirmation:value.routeConfirmation === 'confirmed'
+        ? 'confirmed'
+        : (value.entryPrefilled ? 'inferred' : 'unconfirmed')
     };
   }
   function saveSelections() {
@@ -2543,11 +2530,13 @@ if (document.prerendering) {
       draftId:state.draftId,
       situation:state.situation,
       workType:state.workType,
+      discipline:state.discipline,
       result:state.result,
       deadlineDate:state.deadlineDate,
       deadlineFlexible:state.deadlineFlexible,
       entryPrefilled:state.entryPrefilled,
-      authorParticipation:state.authorParticipation
+      authorParticipation:state.authorParticipation,
+      routeConfirmation:state.routeConfirmation
     };
     var draft = storeGet('salon_draft', {}) || {};
     draft.concept = concept;
@@ -2565,17 +2554,33 @@ if (document.prerendering) {
   var savedMatchesMode = service
     ? saved.mode === 'service' && saved.serviceCode === (service.code || service.id || serviceCode)
     : saved.mode !== 'service';
+  var routedSituation = ['topic','draft','comments','defense'].indexOf(situationCode) >= 0
+    ? situationCode : '';
+  var routedWork = normalizeWorkType(workCode);
+  var routedDiscipline = normalizeDiscipline(disciplineCode);
+  var routedResult = normalizeResult(resultCode);
+  function resultNeedsExistingMaterial(value) {
+    return ['editing','formatting','defense','ai_editing'].indexOf(value) >= 0;
+  }
+  if (!service && routedSituation === 'topic' && resultNeedsExistingMaterial(routedResult)) {
+    /* Ссылка не может протащить несовместимый результат мимо видимого
+       вопроса. Для редактуры, оформления и защиты нужен готовый материал. */
+    routedResult = '';
+  }
+  var hasRoutedContext = !!(routedSituation || routedWork || routedDiscipline || routedResult);
   var state = {
     step:savedMatchesMode && saved.version >= STORE_VERSION
       ? Math.max(0,Math.min(steps.length - 1,Number(saved.step) || 0)) : 0,
     draftId:savedMatchesMode && saved.draftId ? saved.draftId : newDraftId(),
     situation:savedMatchesMode ? saved.situation : '',
     workType:savedMatchesMode ? saved.workType : '',
+    discipline:savedMatchesMode ? saved.discipline : '',
     result:savedMatchesMode ? saved.result : '',
     deadlineDate:savedMatchesMode ? saved.deadlineDate : '',
     deadlineFlexible:savedMatchesMode ? saved.deadlineFlexible : false,
     entryPrefilled:savedMatchesMode ? saved.entryPrefilled : false,
     authorParticipation:savedMatchesMode ? saved.authorParticipation : false,
+    routeConfirmation:savedMatchesMode ? saved.routeConfirmation : (service ? 'inferred' : 'unconfirmed'),
     topic:'',
     name:'',
     contact:'',
@@ -2583,30 +2588,64 @@ if (document.prerendering) {
     consent:false
   };
   if (service) {
-    state.result = serviceCode === 'nm' ? 'formatting'
-      : serviceCode === 'df' || serviceCode === 'dp' || serviceCode === 'k0' ? 'defense'
-      : serviceCode === 'rv' ? 'diagnostic' : 'editing';
+    state.result = service.id === 'norm' ? 'formatting'
+      : service.id === 'defense' || service.id === 'defensepack' || service.id === 'commission0' ? 'defense'
+      : service.id === 'review' || service.id === 'plan' ? 'diagnostic'
+      : service.id === 'tutor' ? 'tutoring'
+      : service.id === 'ai' ? 'ai_editing'
+      : service.id === 'author' ? 'author_order' : 'editing';
+    if (hasRoutedContext) {
+      state.step = 0;
+      state.draftId = newDraftId();
+      state.situation = routedSituation;
+      state.workType = routedWork;
+      state.discipline = routedDiscipline;
+      state.entryPrefilled = true;
+      state.authorParticipation = false;
+      state.routeConfirmation = 'inferred';
+      saveSelections();
+    }
     var restoredTopic = document.getElementById('fTopic');
     var restoredDeadline = document.getElementById('fDeadline');
-    if (restoredTopic && restoredTopic.value) state.topic = restoredTopic.value;
-    if (restoredDeadline && /^\d{4}-\d{2}-\d{2}$/.test(restoredDeadline.value)) {
+    if (!hasRoutedContext && restoredTopic && restoredTopic.value) state.topic = restoredTopic.value;
+    if (!hasRoutedContext && restoredDeadline && /^\d{4}-\d{2}-\d{2}$/.test(restoredDeadline.value)) {
       state.deadlineDate = restoredDeadline.value;
     }
-  } else if (['topic','draft','comments','defense'].indexOf(situationCode) >= 0) {
-    /* Ситуация из входной CTA начинает новую задачу. Тип ещё неизвестен,
-       поэтому после перестановки экранов первым остаётся честный выбор работы. */
-    state.step = 0;
+  } else {
+    if (!hasRoutedContext) {
+      /* Обычный вход продолжает безопасный локальный черновик. */
+    } else {
+    /* Контекстная CTA открывает новую задачу. Передаём только коды,
+       никогда исходную фразу, контакт или содержимое материалов. */
+    state.step = routedWork && routedDiscipline && routedSituation && routedResult ? 3
+      : routedWork && routedDiscipline && routedSituation ? 2
+      : routedWork && routedDiscipline ? 1 : 0;
     state.draftId = newDraftId();
-    state.situation = situationCode;
-    state.workType = '';
-    state.result = '';
+    state.situation = routedSituation;
+    state.workType = routedWork;
+    state.discipline = routedDiscipline;
+    state.result = routedResult;
     state.deadlineDate = '';
     state.deadlineFlexible = false;
-    state.entryPrefilled = false;
+    state.entryPrefilled = !!routedResult;
     state.authorParticipation = false;
+    state.routeConfirmation = 'inferred';
     saveSelections();
+    }
+    if (state.situation === 'topic' && resultNeedsExistingMaterial(state.result)) {
+      state.result = '';
+      state.entryPrefilled = false;
+      state.step = Math.min(state.step,2);
+      saveSelections();
+    }
+  }
+  if (hasRoutedContext) {
     try {
       routeParams.delete('situation');
+      routeParams.delete('work');
+      routeParams.delete('discipline');
+      routeParams.delete('result');
+      routeParams.delete('route');
       var cleanQuery = routeParams.toString();
       history.replaceState(history.state, '', location.pathname +
         (cleanQuery ? '?' + cleanQuery : '') + location.hash);
@@ -2635,17 +2674,75 @@ if (document.prerendering) {
     if (!selected) control.click();
   }
 
+  function effectiveResult() {
+    if (state.result !== 'recommendation') return state.result;
+    return state.situation === 'defense' ? 'defense' : 'diagnostic';
+  }
+  function caseOfferId() {
+    if (service) {
+      return {
+        plan:'svc_plan', ai:'svc_ai', review:'svc_review', tutor:'svc_tutor',
+        norm:'svc_norm', defense:'svc_defense', defensepack:'svc_defense_pack',
+        commission0:'commission_zero', author:'svc_author_order'
+      }[service.id] || ('svc_' + String(service.id || serviceCode || 'custom'));
+    }
+    var result = effectiveResult();
+    if (result === 'diagnostic' && state.workType === 'kandidat') return 'work_base';
+    if (result === 'diagnostic') return state.situation === 'topic' ? 'svc_plan' : 'svc_review';
+    if (result === 'formatting') return 'svc_norm';
+    if (result === 'defense') return 'svc_defense';
+    if (result === 'tutoring') return 'svc_tutor';
+    if (result === 'ai_editing') return 'svc_ai';
+    if (result === 'editing') return 'work_turn';
+    if (result === 'support') return 'work_vip';
+    return 'work_base';
+  }
+  function academicSubmode() {
+    if (service && service.id === 'author') return null;
+    return !service && effectiveResult() === 'support' ? 'A2' : 'A1';
+  }
+  function conceptVariant(extra) {
+    return [
+      RULES_EVENT_VERSION,
+      extra || '',
+      state.workType || 'work',
+      state.situation || 'situation',
+      effectiveResult() || 'result'
+    ].join('_').replace(/[^a-z0-9_-]/g,'').slice(0,32);
+  }
+  function trackConcept(name,extra,once) {
+    try {
+      if (!window.Salon || !Salon.visit || typeof Salon.visit.event !== 'function') return;
+      var variant = conceptVariant(extra);
+      var key = name + ':' + variant;
+      if (once && conceptEventSeen[key]) return;
+      conceptEventSeen[key] = true;
+      Salon.visit.event(name,{
+        cta:caseOfferId(),
+        variant:variant
+      });
+    } catch (e) {}
+  }
+  function confirmVisibleRoute(reason) {
+    if (state.routeConfirmation === 'confirmed') return;
+    state.routeConfirmation = 'confirmed';
+    saveSelections();
+    trackConcept('case_route_confirm',reason || 'visible_summary',true);
+  }
+  function isFullWorkOffer() {
+    var offer = caseOfferId();
+    return offer === 'work_turn' || offer === 'work_vip' || offer === 'work_base';
+  }
+
   function syncLegacy() {
     var tierMap = {
       diagnostic:'base',
       editing:'turn',
-      formatting:'turn',
-      defense:'vip',
-      support:'vip',
-      recommendation:'base'
+      support:'vip'
     };
     if (!service && state.workType) legacyClick('#typeGroup [data-id="' + state.workType + '"]');
-    if (!service && tierMap[state.result]) legacyClick('#tierGroup [data-id="' + tierMap[state.result] + '"]');
+    if (!service && state.discipline) legacyClick('#discGroup [data-id="' + state.discipline + '"]');
+    if (!service && tierMap[effectiveResult()]) legacyClick('#tierGroup [data-id="' + tierMap[effectiveResult()] + '"]');
     if (!service) legacyClick('#segTerm [data-id="' + deadlineBucket() + '"]');
 
     var name = document.getElementById('fName');
@@ -2667,10 +2764,13 @@ if (document.prerendering) {
       }[state.situation] || '';
       var context = [
         situation ? 'Ситуация: ' + situation + '.' : '',
+        state.discipline ? 'Направление: ' + disciplineLabel(state.discipline) + '.' : '',
         state.result ? 'Первый результат: ' + resultLabel(state.result) + '.' : '',
+        'Код предложения: ' + caseOfferId() + '.',
         state.result === 'support' && state.authorParticipation
-          ? 'Авторский контур: клиент подтвердил участие в исследовательских решениях, проверке данных и содержательной доработке рабочего черновика.'
+          ? 'Участие клиента подтверждено: исследовательские решения, проверка данных и содержательная доработка рабочего черновика остаются за клиентом.'
           : '',
+        academicSubmode() ? 'Договорный режим: А / подрежим ' + academicSubmode() + '.' : '',
         service ? 'Выбрана услуга: ' + service.label + '.' : '',
         state.comment
       ].filter(Boolean).join('\n');
@@ -2680,6 +2780,7 @@ if (document.prerendering) {
   }
 
   function syncStoredCurrent() {
+    if (!service && !isFullWorkOffer()) return;
     if (window.SalonCart && window.SalonCart.syncCurrent) {
       window.SalonCart.syncCurrent({ quiet:true });
     }
@@ -2711,10 +2812,18 @@ if (document.prerendering) {
       kandidat:'Диссертационное исследование',
       vak:'Научная статья ВАК',
       scopus:'Статья Scopus / Web of Science',
-      rinc:'Научная статья',
+      rinc:'Научная статья РИНЦ / сборник',
       practice:'Отчёт по практике',
       self:'Другая работа'
     }[value] || 'Работа не выбрана';
+  }
+  function disciplineLabel(value) {
+    return {
+      hum:'Гуманитарные науки и экономика',
+      law:'Право, педагогика и психология',
+      tech:'Технические науки и IT',
+      med:'Медицина и финансы'
+    }[value] || 'Направление не выбрано';
   }
   function situationLabel(value) {
     return {
@@ -2731,7 +2840,10 @@ if (document.prerendering) {
       formatting:'Оформление по методичке',
       defense:'Подготовка к защите',
       support:'Исследовательский проект с нуля',
-      recommendation:'Рекомендация редактора'
+      recommendation:'Рекомендация редактора',
+      tutoring:'Консультация с экспертом',
+      ai_editing:'Редактура вашего текста после ИИ',
+      author_order:'Авторский заказ вне аттестации'
     }[value] || 'Не указано';
   }
   function deadlineBucket() {
@@ -2754,8 +2866,27 @@ if (document.prerendering) {
   }
   function quoteInfo() {
     var quote = null;
-    var cartHasItems = !!(window.SalonCart && window.SalonCart.hasItems && window.SalonCart.hasItems());
+    var standaloneOffer = !service && !isFullWorkOffer();
+    var cartHasItems = !!(!standaloneOffer && window.SalonCart &&
+      window.SalonCart.hasItems && window.SalonCart.hasItems());
     var currentIncluded = true;
+    if (standaloneOffer) {
+      var offer = caseOfferId();
+      var amount = offer === 'svc_plan'
+        ? ((state.workType === 'master' || state.workType === 'kandidat') ? 5000 : 3000)
+        : offer === 'svc_review' ? 2500
+        : offer === 'svc_norm' ? 5000
+        : offer === 'svc_defense' ? 6000
+        : offer === 'svc_tutor' ? 3000
+        : offer === 'svc_ai' ? 2500 : 0;
+      return {
+        quote:{ low:amount, high:amount, fixed:offer === 'svc_plan' },
+        cartHasItems:false,
+        currentIncluded:true,
+        priceText:(offer === 'svc_plan' ? '' : 'от ') + money(amount),
+        cartCount:0
+      };
+    }
     try {
       quote = cartHasItems && window.SalonCart.quote
         ? window.SalonCart.quote()
@@ -2778,11 +2909,7 @@ if (document.prerendering) {
     };
   }
   function recommendationFor() {
-    var effective = state.result;
-    if (effective === 'recommendation') {
-      effective = state.situation === 'topic' ? 'support'
-        : state.situation === 'defense' ? 'defense' : 'diagnostic';
-    }
+    var effective = effectiveResult();
     if (service) {
       if (service.id === 'commission0') {
         return {
@@ -2792,6 +2919,16 @@ if (document.prerendering) {
           duration:'по согласованной дате',
           editor:'Проверит версию материалов, подготовит персональные вопросы, проведёт сессию и зафиксирует каждый критический риск с основанием.',
           client:'Лично ответить на вопросы, подтвердить исследовательские решения и передать обезличенные требования, источники и данные.'
+        };
+      }
+      if (service.id === 'ai') {
+        return {
+          title:'Проверка и редактура текста после ИИ',
+          description:'Проверим логику, фактические утверждения и связь с переданными источниками, затем внесём видимые редакторские правки. Обход детекторов и обещание процента не входят.',
+          first:'Файл с видимыми правками и комментариями к фактам, источникам и логическим разрывам',
+          duration:'после получения исходного текста, prompt и сведений об источниках',
+          editor:'Сверит текст с исходным запросом, проверит внутреннюю логику и отметит факты и ссылки, которым не хватает подтверждения.',
+          client:'Передать исходный текст, исходный prompt и список источников либо честно указать, что источники неизвестны.'
         };
       }
       return {
@@ -2805,9 +2942,9 @@ if (document.prerendering) {
     }
     var items = {
       diagnostic:{
-        title:state.situation === 'topic' ? 'Стартовая диагностика' : 'Диагностика черновика',
+        title:state.situation === 'topic' ? 'Разбор темы и плана' : 'Диагностика черновика',
         description:'Редактор разберёт требования и материал, отметит риски и соберёт последовательный план действий.',
-        first:'Письменная карта замечаний и приоритетов',
+        first:state.situation === 'topic' ? 'Письменная карта темы, структуры и первого шага' : 'Письменная карта замечаний и приоритетов',
         duration:'обычно 1–2 рабочих дня',
         editor:'Проверит структуру, логику, требования и объяснит, что исправлять сначала.',
         client:'Задание, методичка и ваш черновик, если он уже есть.'
@@ -2836,16 +2973,85 @@ if (document.prerendering) {
         editor:'Проверит связность выступления, слайды и проведёт репетицию.',
         client:'Ваш текст, черновик речи, презентация и регламент защиты.'
       },
+      tutoring:{
+        title:'Консультация с экспертом',
+        description:'На встрече разберём именно тот участок, где вы застряли, и зафиксируем понятные следующие действия.',
+        first:'Индивидуальный разбор и план самостоятельной работы',
+        duration:'от одного часа',
+        editor:'Объяснит метод, структуру или требования на примере вашей задачи и ответит на вопросы.',
+        client:'Формулировка задачи, вопросы и материалы, на которых нужен разбор.'
+      },
+      ai_editing:{
+        title:'Редактура вашего текста после ИИ',
+        description:'Проверим логику, стиль и фактическую основу предоставленного текста без обещаний обойти детекторы.',
+        first:'Отредактированный фрагмент с комментариями к спорным местам',
+        duration:'срок зависит от объёма',
+        editor:'Уберёт машинальные обороты, проверит связность и отметит факты или выводы, требующие вашей проверки.',
+        client:'Ваш текст, источники и подтверждение того, какие содержательные решения принадлежат вам.'
+      },
       support:{
         title:'Исследовательский проект с нуля',
         description:'Можно прийти без текста: мастерская соберёт структуру, источники, анализ и полный рабочий черновик для вашей содержательной проверки и доработки.',
         first:'Первый полный рабочий черновик',
-        duration:'по календарю · экспресс от 24 часов',
+        duration:'календарь — после проверки задания и данных',
         editor:'Соберёт структуру, источники, рабочий текст, расчёты или анализ и оформление по спецификации.',
         client:'Утвердить исследовательские решения, проверить факты и данные, содержательно доработать и принять финальную авторскую версию.'
       }
     };
     return items[effective] || items.diagnostic;
+  }
+  function recommendationReason() {
+    var result = effectiveResult();
+    if (result === 'formatting') {
+      return 'Вы выбрали проверку оформления: отдельный нормоконтроль решает эту задачу без оплаты полного сопровождения.';
+    }
+    if (result === 'defense') {
+      return 'До сдачи или защиты важнее проверить уже готовую версию, речь и слайды, чем добавлять новый объём текста.';
+    }
+    if (result === 'tutoring') {
+      return 'Вам нужен разбор, а не новый документ: консультация сохраняет контроль над работой у вас.';
+    }
+    if (result === 'ai_editing') {
+      return 'Текст уже существует, поэтому первым шагом будет редакторская проверка логики и фактической основы, а не обещание «обойти» проверку.';
+    }
+    if (state.situation === 'topic') {
+      return 'Пока есть только тема: сначала дешевле проверить её рамки и план, а большой проект обсуждать уже на проверяемом основании.';
+    }
+    if (result === 'editing') {
+      return 'У вас уже есть авторский черновик, поэтому первый полезный результат — правки в нём, а не новая работа с нуля.';
+    }
+    if (result === 'support') {
+      return 'Вы выбрали полный рабочий цикл и отдельно подтверждаете своё участие в исследовательских решениях и финальной версии.';
+    }
+    return 'Есть материал для проверки: письменная диагностика сначала отделит критические риски от необязательных улучшений.';
+  }
+  function recommendationChange() {
+    var result = effectiveResult();
+    if (result === 'diagnostic') return 'Изменится, если после просмотра окажется, что нужен только нормоконтроль или уже можно переходить к редактуре.';
+    if (result === 'editing') return 'Изменится, если черновик пока не готов к редактуре или задача ограничивается оформлением.';
+    if (result === 'formatting') return 'Изменится, только если в файле есть содержательные разрывы, которые нельзя исправлять как оформление.';
+    if (result === 'defense') return 'Изменится, если нет готового текста, на котором можно строить выступление.';
+    if (result === 'tutoring') return 'Изменится, если вместо объяснения нужен отдельный проверяемый документ или письменная диагностика.';
+    if (result === 'ai_editing') return 'Изменится, если исходный материал требует не редактуры, а полной проверки фактов или нового авторского исследования.';
+    return 'Состав изменится только после проверки материалов и вашего явного согласования.';
+  }
+  function disciplineMarkup() {
+    var options = [
+      ['hum','Гуманитарные · экономика'],
+      ['law','Право · педагогика · психология'],
+      ['tech','Технические науки · IT'],
+      ['med','Медицина · финансы']
+    ];
+    return '<fieldset class="discipline-choice">' +
+      '<legend><strong>Направление работы</strong><small>Оно влияет на профиль редактора и ориентир стоимости.</small></legend>' +
+      '<div role="radiogroup" aria-label="Направление работы">' +
+        options.map(function (option) {
+          var active = state.discipline === option[0];
+          return '<button type="button" data-concept-discipline="' + option[0] + '" aria-pressed="' + active + '" class="' + (active ? 'is-selected' : '') + '">' +
+            '<i aria-hidden="true"></i><span>' + safeText(option[1]) + '</span></button>';
+        }).join('') +
+      '</div>' +
+    '</fieldset>';
   }
   function recommendationMarkup() {
     var rec = recommendationFor();
@@ -2857,6 +3063,7 @@ if (document.prerendering) {
           '<h2>' + safeText(rec.title) + '</h2>' +
           '<p class="recommendation-card__lead">' + safeText(rec.description) + '</p>' +
           '<dl class="recommendation-facts">' +
+            '<div><dt>Почему этот шаг</dt><dd>' + safeText(recommendationReason()) + '</dd></div>' +
             '<div><dt>Первый результат</dt><dd>' + safeText(rec.first) + '</dd></div>' +
             '<div><dt>Обычно</dt><dd>' + safeText(rec.duration) + '</dd></div>' +
             '<div><dt>Ориентир</dt><dd>' + safeText(pricing.priceText) + '</dd></div>' +
@@ -2865,12 +3072,20 @@ if (document.prerendering) {
             '<div><span>Что сделает редактор</span><p>' + safeText(rec.editor) + '</p></div>' +
             '<div><span>Что потребуется от вас</span><p>' + safeText(rec.client) + '</p></div>' +
           '</div>' +
-          '<p class="recommendation-note"><strong>С нуля — не значит без вашего участия.</strong> Мы можем начать с пустого файла и подготовить полный рабочий черновик. Вы утверждаете содержательные решения, проверяете данные и отвечаете за финальную авторскую версию и её использование.</p>' +
+          '<div class="recommendation-rationale"><p><strong>Когда рекомендация изменится.</strong> ' + safeText(recommendationChange()) + '</p>' +
+          '<p><strong>Можно самостоятельно.</strong> Начните с <a href="knowledge.html">редакторских протоколов</a>; заявка нужна только если хотите письменную проверку или работу редактора.</p></div>' +
+          (state.routeConfirmation === 'inferred'
+            ? '<p class="recommendation-note" role="note"><strong>Маршрут предложен по контексту входа.</strong> Проверьте работу, ситуацию и первый результат справа. Кнопка ниже подтвердит именно этот видимый выбор; до нажатия он считается предположением, а не вашим ответом.</p>'
+            : '') +
+          (effectiveResult() === 'support'
+            ? '<p class="recommendation-note"><strong>С нуля — не значит без вашего участия.</strong> Мы можем начать с пустого файла и подготовить полный рабочий черновик. Вы утверждаете содержательные решения, проверяете данные и отвечаете за финальную авторскую версию и её использование.</p>'
+            : '') +
         '</section>' +
         '<aside class="wizard-summary">' +
           '<p class="eyebrow">Ваш выбор</p>' +
           '<h2>' + safeText(typeLabel(state.workType)) + '</h2>' +
-          '<dl><div><dt>Что уже есть</dt><dd>' + safeText(situationLabel(state.situation)) + '</dd></div>' +
+          '<dl><div><dt>Направление</dt><dd>' + safeText(disciplineLabel(state.discipline)) + '</dd></div>' +
+          '<div><dt>Что уже есть</dt><dd>' + safeText(situationLabel(state.situation)) + '</dd></div>' +
           '<div><dt>Приоритет</dt><dd>' + safeText(resultLabel(state.result)) + '</dd></div>' +
           '<div><dt>Стоимость</dt><dd>' + safeText(pricing.priceText) + '</dd></div></dl>' +
           '<button class="line-link" type="button" data-concept-edit>Изменить выбор <span aria-hidden="true">←</span></button>' +
@@ -2913,6 +3128,7 @@ if (document.prerendering) {
   }
   function materialsMarkup() {
     var rec = recommendationFor();
+    var pricing = quoteInfo();
     var files = fileNames();
     var dateText = state.deadlineFlexible ? 'Согласовать с редактором'
       : (formatDate(state.deadlineDate) || 'Не указана');
@@ -2930,13 +3146,16 @@ if (document.prerendering) {
               '<label class="deadline-flex"><input type="checkbox" data-concept-deadline-flex ' + (state.deadlineFlexible ? 'checked' : '') + '><span>Дата пока неизвестна — согласовать с редактором</span></label>' +
             '</div>' +
             filesMarkup() +
-            '<p class="materials-hint">Файлы необязательны, но тема, методичка или черновик сделают оценку заметно точнее.</p>' +
+            (service && service.id === 'ai'
+              ? '<p class="materials-hint" role="note"><strong>Для проверки после ИИ нужен исходный текст.</strong> Приложите хотя бы один файл; исходный prompt и сведения об источниках заполните выше.</p>'
+              : '<p class="materials-hint">Файлы необязательны, но тема, методичка или черновик сделают оценку заметно точнее.</p>') +
           '</section>' +
         '</div>' +
         '<aside class="wizard-summary">' +
           '<p class="eyebrow">Предварительно</p>' +
           '<h2>' + safeText(rec.title) + '</h2>' +
           '<dl><div><dt>Первый результат</dt><dd>' + safeText(rec.first) + '</dd></div>' +
+          '<div><dt>Ориентир стоимости</dt><dd>' + safeText(pricing.priceText) + '</dd></div>' +
           '<div><dt>Дата</dt><dd>' + safeText(dateText) + '</dd></div>' +
           '<div><dt>Материалы</dt><dd>' + fileCountText(files.length) + '</dd></div></dl>' +
           '<p>Точный состав, срок и стоимость редактор подтвердит до оплаты.</p>' +
@@ -2981,7 +3200,7 @@ if (document.prerendering) {
           (state.result === 'support'
             ? '<label class="consent-check consent-check--authorship">' +
                 '<input type="checkbox" data-concept-authorship ' + (state.authorParticipation ? 'checked' : '') + '>' +
-                '<span><strong>Подтверждаю авторский контур.</strong> Я буду принимать исследовательские решения, проверю факты и данные и содержательно доработаю рабочий черновик перед использованием.</span>' +
+                '<span><strong>Подтверждаю своё участие.</strong> Я приму исследовательские решения, проверю факты и данные и содержательно доработаю рабочий черновик перед использованием.</span>' +
               '</label>'
             : '') +
         '</div>' +
@@ -3007,14 +3226,18 @@ if (document.prerendering) {
   function nextLabel() {
     var key = steps[state.step].key;
     if (key === 'contact') return 'Отправить на оценку';
-    if (key === 'recommendation') return 'Уточнить срок и материалы';
-    if (key === 'materials') return 'Перейти к контактам';
+    if (key === 'recommendation') return state.routeConfirmation === 'inferred'
+      ? 'Подтвердить маршрут и продолжить'
+      : 'Уточнить срок и материалы';
+    if (key === 'materials') return service && state.routeConfirmation === 'inferred'
+      ? 'Подтвердить услугу и продолжить'
+      : 'Перейти к контактам';
     return 'Продолжить';
   }
   function footerMarkup() {
     return (
       '<footer class="wizard-main__footer">' +
-        '<div class="wizard-save"><i aria-hidden="true"></i><span><strong>Маршрут сохраняется на этом устройстве</strong><small>Контакт, текст и файлы в черновик фасада не записываются</small></span></div>' +
+        '<div class="wizard-save"><i aria-hidden="true"></i><span><strong>Черновик сохраняется на этом устройстве</strong><small>Поля могут восстановиться; файлы хранятся только до отправки или закрытия вкладки</small></span></div>' +
         '<div>' +
           (state.step > 0 ? '<button class="button button--secondary" type="button" data-concept-back>Назад</button>' : '') +
           '<button class="button button--primary" type="button" data-concept-next ' + (!canContinue() ? 'disabled' : '') + '>' +
@@ -3027,30 +3250,64 @@ if (document.prerendering) {
 
   function canContinue() {
     var key = steps[state.step].key;
-    if (key === 'workType' || key === 'situation' || key === 'result') return !!currentSelection();
-    if (key === 'recommendation') return !!(state.workType && state.situation && state.result);
+    if (key === 'workType') return !!(state.workType && state.discipline);
+    if (key === 'situation') return !!currentSelection();
+    if (key === 'result') {
+      return !!currentSelection() &&
+        !(state.situation === 'topic' && resultNeedsExistingMaterial(state.result));
+    }
+    if (key === 'recommendation') {
+      return !!(state.workType && state.situation && state.result) &&
+        !(state.situation === 'topic' && resultNeedsExistingMaterial(state.result));
+    }
     if (key === 'materials') {
-      return !!((state.deadlineDate || state.deadlineFlexible) && serviceQuestionsComplete());
+      var requiredSourceReady = !(service && service.id === 'ai') || fileNames().length > 0;
+      return !!((state.deadlineDate || state.deadlineFlexible) &&
+        serviceQuestionsComplete() && requiredSourceReady);
     }
     var authed = !!(window.Salon && Salon.api && Salon.api.token && Salon.api.token());
     return !!((authed || state.contact.trim()) && state.consent &&
       (state.result !== 'support' || state.authorParticipation));
   }
 
+  function choiceGroupMarkup(step,options,label,suffix) {
+    if (!options || !options.length) return '';
+    var selected = currentSelection();
+    var headingId = 'conceptChoice' + safeText(step.key) + safeText(suffix);
+    return '<section class="decision-group"' + (label ? ' aria-labelledby="' + headingId + '"' : '') + '>' +
+      (label ? '<h2 id="' + headingId + '">' + safeText(label) + '</h2>' : '') +
+      '<div class="decision-grid ' + (options.length > 4 ? 'decision-grid--compact' : '') + '" data-concept-options>' +
+        options.map(function (option) {
+          var active = selected === option[0];
+          var disabled = step.key === 'result' && state.situation === 'topic' &&
+            resultNeedsExistingMaterial(option[0]);
+          return '<button class="decision-card ' + (active ? 'is-selected' : '') + '" type="button" data-concept-choice="' + safeText(option[0]) + '" aria-pressed="' + active + '" ' +
+            (disabled ? 'disabled aria-disabled="true"' : '') + '>' +
+            '<span class="decision-card__radio" aria-hidden="true"><i></i></span>' +
+            '<span><strong>' + safeText(option[1]) + '</strong><small>' + safeText(option[2]) +
+              (disabled ? ' Нужен готовый файл.' : '') + '</small></span>' +
+          '</button>';
+        }).join('') +
+      '</div>' +
+    '</section>';
+  }
+
   function render() {
     returnLegacyAsk();
+    syncLegacy();
     var step = steps[state.step];
     var selected = currentSelection();
     var cards = '';
     if (step.options.length) {
-      cards = '<div class="decision-grid ' + (step.options.length > 4 ? 'decision-grid--compact' : '') + '" data-concept-options>' +
-        step.options.map(function (option) {
-          var active = selected === option[0];
-          return '<button class="decision-card ' + (active ? 'is-selected' : '') + '" type="button" data-concept-choice="' + safeText(option[0]) + '" aria-pressed="' + active + '">' +
-            '<span class="decision-card__radio" aria-hidden="true"><i></i></span>' +
-            '<span><strong>' + safeText(option[1]) + '</strong><small>' + safeText(option[2]) + '</small></span>' +
-          '</button>';
-        }).join('') + '</div>' +
+      var hasSpecialists = !!(step.specialistOptions && step.specialistOptions.length);
+      cards = '<div class="decision-groups">' +
+        choiceGroupMarkup(step,step.options,hasSpecialists ? 'Основные форматы' : '','Primary') +
+        choiceGroupMarkup(step,step.specialistOptions,step.key === 'workType' ? 'Специализированные форматы' : 'Отдельные форматы помощи','Special') +
+        '</div>' +
+        (step.key === 'workType' ? disciplineMarkup() : '') +
+        (step.key === 'result' && state.situation === 'topic'
+          ? '<p class="concept-prerequisite-note" role="note"><strong>Сейчас есть только тема.</strong> Для редактуры, оформления, работы после ИИ и подготовки к защите нужен готовый файл. Вернитесь к предыдущему шагу и выберите «Есть мой черновик» или начните с диагностики, консультации либо проекта с нуля.</p>'
+          : '') +
         '<p class="concept-scope-note">Можно начать с одной темы. В проекте с нуля мастерская готовит рабочий черновик, а содержательные решения и финальная авторская версия остаются за вами.</p>';
     } else if (step.key === 'recommendation') {
       cards = recommendationMarkup();
@@ -3081,7 +3338,15 @@ if (document.prerendering) {
 
     updateChrome();
     bindRendered();
-    syncLegacy();
+    if (state.routeConfirmation === 'inferred') {
+      trackConcept('case_route_inferred',
+        ['case1','page'].indexOf(routeOrigin) >= 0 ? routeOrigin : (service ? 'service' : 'route'),
+        true);
+    }
+    trackConcept('case_step_view','s' + state.step,true);
+    if (step.key === 'recommendation') {
+      trackConcept('case_recommend_view','shown',true);
+    }
   }
 
   function updateChrome() {
@@ -3130,12 +3395,34 @@ if (document.prerendering) {
 
   function choose(value) {
     var key = steps[state.step].key;
+    if (key === 'result' && state.situation === 'topic' && resultNeedsExistingMaterial(value)) {
+      if (window.Salon && Salon.toast) {
+        Salon.toast('Для этого результата нужен готовый файл. Выберите черновик на предыдущем шаге.');
+      }
+      return;
+    }
     if (key === 'result' && value !== state.result) state.authorParticipation = false;
     state[key] = value;
+    if (key === 'situation' && value === 'topic' && resultNeedsExistingMaterial(state.result)) {
+      state.result = '';
+      state.entryPrefilled = false;
+    }
     if (key === 'result') state.entryPrefilled = false;
     saveSelections();
     syncLegacy();
     syncStoredCurrent();
+    trackConcept('case_route_change',key + '_' + value,false);
+    if (key === 'result' && (value === 'tutoring' || value === 'ai_editing')) {
+      var specialistParams = new URLSearchParams();
+      specialistParams.set('service',value === 'tutoring' ? 'tu' : 'ai');
+      if (state.workType) specialistParams.set('work',state.workType);
+      if (state.discipline) specialistParams.set('discipline',state.discipline);
+      if (state.situation) specialistParams.set('situation',state.situation);
+      specialistParams.set('result',value);
+      specialistParams.set('route','direct');
+      location.href = 'configurator.html?' + specialistParams.toString();
+      return;
+    }
     render();
   }
 
@@ -3160,11 +3447,13 @@ if (document.prerendering) {
     state.draftId = newDraftId();
     state.situation = '';
     state.workType = '';
+    state.discipline = '';
     state.result = '';
     state.deadlineDate = '';
     state.deadlineFlexible = false;
     state.entryPrefilled = false;
     state.authorParticipation = false;
+    state.routeConfirmation = 'unconfirmed';
     state.topic = '';
     state.comment = '';
     saveSelections();
@@ -3180,6 +3469,14 @@ if (document.prerendering) {
   }
 
   function submit() {
+    if (!service && state.situation === 'topic' && resultNeedsExistingMaterial(state.result)) {
+      go(2);
+      if (window.Salon && Salon.toast) {
+        Salon.toast('Для выбранного результата нужен готовый файл.');
+      }
+      return;
+    }
+    trackConcept('case_submit_ready','contact',true);
     syncLegacy();
     syncStoredCurrent();
     var submitButton = document.getElementById('btnSubmit');
@@ -3192,8 +3489,20 @@ if (document.prerendering) {
       submit();
       return;
     }
+    if (steps[state.step].key === 'recommendation' ||
+        (service && steps[state.step].key === 'materials')) {
+      confirmVisibleRoute(service ? 'service_details' : 'recommendation');
+    }
     /* Посадочная с выбранным data-tier уже определила результат. После
        ситуации показываем рекомендацию, не заставляя повторять выбор. */
+    if (!service && steps[state.step].key === 'workType' && state.situation && state.result && state.entryPrefilled) {
+      go(3);
+      return;
+    }
+    if (!service && steps[state.step].key === 'workType' && state.situation) {
+      go(2);
+      return;
+    }
     if (!service && steps[state.step].key === 'situation' && state.entryPrefilled && state.result) {
       go(3);
       return;
@@ -3204,6 +3513,19 @@ if (document.prerendering) {
   function bindRendered() {
     host.querySelectorAll('[data-concept-choice]').forEach(function (button) {
       button.addEventListener('click',function () { choose(button.getAttribute('data-concept-choice') || ''); });
+    });
+    host.querySelectorAll('[data-concept-discipline]').forEach(function (button) {
+      button.addEventListener('click',function () {
+        state.discipline = normalizeDiscipline(button.getAttribute('data-concept-discipline'));
+        saveSelections();
+        syncLegacy();
+        syncStoredCurrent();
+        if (!service && state.situation && state.result && state.entryPrefilled) {
+          go(3);
+          return;
+        }
+        render();
+      });
     });
     host.querySelectorAll('[data-concept-back]').forEach(function (button) {
       button.addEventListener('click',function () { go(state.step - 1); });
@@ -3338,7 +3660,25 @@ if (document.prerendering) {
 
   window.SalonConceptWizard = {
     startAnother:startAnother,
-    currentKey:function () { return state.draftId; }
+    currentKey:function () { return state.draftId; },
+    context:function () {
+      return {
+        rules_version:RULES_VERSION,
+        draft_id:state.draftId,
+        origin:['case1','page'].indexOf(routeOrigin) >= 0 ? routeOrigin : (service ? 'service' : 'direct'),
+        work:state.workType || null,
+        discipline:state.discipline || null,
+        situation:state.situation || null,
+        result:effectiveResult() || null,
+        offer_id:caseOfferId(),
+        contract_contour:service && service.id === 'author' ? null : 'A',
+        academic_submode:academicSubmode(),
+        recommendation_changed:!state.entryPrefilled,
+        author_participation:!!state.authorParticipation,
+        route_status:state.routeConfirmation,
+        user_confirmed:state.routeConfirmation === 'confirmed'
+      };
+    }
   };
   render();
 })();

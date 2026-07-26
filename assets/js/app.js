@@ -35,10 +35,10 @@
     link.media = 'screen and (max-width:920px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260726release29', source).href
-        : 'assets/css/mobile.css?v=20260726release29';
+      link.href = source ? new URL('../css/mobile.css?v=20260726release32', source).href
+        : 'assets/css/mobile.css?v=20260726release32';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260726release29';
+      link.href = 'assets/css/mobile.css?v=20260726release32';
     }
     document.head.appendChild(link);
   })();
@@ -110,6 +110,10 @@
     var here_ = (location.pathname.split('/').pop() || 'index.html');
     if (here_ !== 'index.html' && here_ !== 'tariffs.html') return;
     if (!Salon.api) return;
+    if (!document.getElementById('slotSeal') &&
+        !document.getElementById('qSlots') &&
+        !document.getElementById('coverSlots') &&
+        !document.getElementById('nextSlots')) return;
     Salon.api.get('/slots').then(function (r) {
       if (!r || !r.ok || !r.on || !r.quota) return;
       var free = Math.max(0, r.quota - r.taken);
@@ -230,13 +234,15 @@
         { id:'req', label:'Требования кафедры', short:'Требования', type:'textarea',
           ph:'Объём, число глав, пожелания научного руководителя — всё, что уже известно.' }
       ] },
-    { id:'ai',    label:'Литературная редактура текста',      from:2500, unit:'',       code:'ai',
-      desc:'Исправим канцелярит, повторы, машинальные обороты и нарушения логики. Содержательная основа и авторство текста остаются вашими.',
+    { id:'ai',    label:'Проверка и редактура текста после ИИ', from:2500, unit:'',       code:'ai',
+      desc:'Проверим логику, фактические утверждения и связь с доступными источниками, затем внесём видимые редакторские правки. Для оценки нужны исходный текст, исходный запрос к ИИ и сведения об источниках; без обещаний обойти детекторы.',
       ask:[
-        { id:'vol', label:'Объём текста', short:'Объём', type:'chips',
+        { id:'vol', label:'Объём текста', short:'Объём', type:'chips', req:true,
           opts:['До 20 страниц','20–60 страниц','Больше 60'] },
-        { id:'svc', label:'Каким сервисом проверяют?', short:'Сервис проверки', type:'text',
-          ph:'Антиплагиат.ВУЗ, Текст.ру…' }
+        { id:'prompt', label:'Какой исходный запрос был дан ИИ?', short:'Исходный prompt', type:'textarea', req:true,
+          ph:'Вставьте исходный запрос без персональных данных. Он нужен, чтобы увидеть, где ответ мог уйти от задачи.' },
+        { id:'sources', label:'Какие источники использованы или заявлены в тексте?', short:'Источники', type:'textarea', req:true,
+          ph:'Ссылки, список литературы или честно: «источники не указаны / неизвестны».' }
       ] },
     { id:'review',label:'Экспертная диагностика черновика',  from:2500, unit:'',       code:'rv',
       desc:'Проверим структуру и доказательность вашего черновика, составим карту замечаний и разберём вероятные вопросы.',
@@ -281,7 +287,6 @@
           ] },
         { id:'source', label:'Что уже есть?', short:'Точка старта', type:'chips', req:true,
           opts:[
-            { value:'topic', label:'Пока только тема' },
             { value:'draft', label:'Мой черновик' },
             { value:'ai', label:'Черновик после ИИ' },
             { value:'comments', label:'Версия с замечаниями' }
@@ -331,6 +336,25 @@
     set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
     del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
   };
+  /* Секреты доступа не должны переживать закрытие вкладки. Настройки,
+     корзина и несекретные черновики остаются в Salon.store (localStorage),
+     а bearer/capability-токены и незавершённый вход — только здесь. */
+  Salon.secretStore = {
+    get: function (k, fb) { try { var v = sessionStorage.getItem(k); return v == null ? fb : JSON.parse(v); } catch (e) { return fb; } },
+    set: function (k, v) { try { sessionStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
+    del: function (k) { try { sessionStorage.removeItem(k); } catch (e) {} }
+  };
+  function secretValue(key, fallback) {
+    var value = Salon.secretStore.get(key, null);
+    if (value == null) {
+      /* Однократная миграция прежней версии: переносим секрет из
+         localStorage в текущую вкладку и сразу удаляем постоянную копию. */
+      value = Salon.store.get(key, null);
+      if (value != null) Salon.secretStore.set(key, value);
+    }
+    Salon.store.del(key);
+    return value == null ? fallback : value;
+  }
   /* Посадочные уже знают тип, направление и формат помощи. Передаём этот
      контекст единому конфигуратору по фактическим data-* атрибутам ссылки,
      чтобы человек не повторял выбор, а видимый фасад и legacy-калькулятор
@@ -382,7 +406,7 @@
      Через 12 месяцев и при новой версии текст согласия показывается заново. */
   Salon.consent = (function () {
     var KEY = 'salon_consent';
-    var VERSION = 2;
+    var VERSION = 3;
     var TTL = 365 * 24 * 60 * 60 * 1000;
     function read() {
       var c = Salon.store.get(KEY, null);
@@ -407,7 +431,7 @@
       var now = new Date();
       var c = {
         v: VERSION,
-        document: 'analytics-consent-2.1',
+        document: 'analytics-consent-2.2',
         necessary: true,
         analytics: analytics === true,
         action: analytics === true ? 'allow' : 'reject',
@@ -712,17 +736,16 @@
        (extras.js → .resume-card), кромку больше не делит и переменную
        --resume-clear не публикует. */
     function measure() {
-      var f = 0, r, cs, nav, hdr, narrow, lh, vv, keyboard;
+      var f = 0, r, cs, nav, hdr, hh, narrow, lh, vv, keyboard;
       vv = window.visualViewport;
       keyboard = !!(vv && window.innerHeight - vv.height > 140);
-      docEl.classList.toggle('keyboard-open', keyboard);
       nav = document.querySelector('.mobile-cta');
-      if (nav) { cs = getComputedStyle(nav); if (cs.display !== 'none') f = Math.round(nav.getBoundingClientRect().height); }
-      docEl.style.setProperty('--floor', (f > 0 ? f : 0) + 'px');
-
+      if (nav && !keyboard) {
+        cs = getComputedStyle(nav);
+        if (cs.display !== 'none') f = Math.round(nav.getBoundingClientRect().height);
+      }
       hdr = document.querySelector('.site-header');
-      docEl.style.setProperty('--hdr-h', (hdr ? Math.round(hdr.getBoundingClientRect().height) : 64) + 'px');
-
+      hh = hdr ? Math.round(hdr.getBoundingClientRect().height) : 64;
       /* на телефоне рельсы делят одну кромку: правый встаёт НАД левым */
       narrow = !!(window.matchMedia && window.matchMedia('(max-width:920px)').matches);
       lh = 0;
@@ -730,17 +753,32 @@
         r = lrail.getBoundingClientRect();
         if (r.height > 0) lh = Math.round(r.height) + 10;
       }
+      /* Все чтения геометрии идут до записей: иначе каждая переменная
+         принуждала браузер заново пересчитывать layout первого экрана. */
+      docEl.classList.toggle('keyboard-open', keyboard);
+      docEl.style.setProperty('--floor', (f > 0 ? f : 0) + 'px');
+      docEl.style.setProperty('--hdr-h', hh + 'px');
       docEl.style.setProperty('--lrail-h', lh + 'px');
     }
-    S.floor = measure;
-    window.addEventListener('resize', measure, { passive: true });
-    window.addEventListener('orientationchange', function () { setTimeout(measure, 250); });
+    var measureFrame = 0;
+    function scheduleMeasure() {
+      if (measureFrame) return;
+      measureFrame = (window.requestAnimationFrame || function (callback) {
+        return setTimeout(callback, 16);
+      })(function () {
+        measureFrame = 0;
+        measure();
+      });
+    }
+    S.floor = scheduleMeasure;
+    window.addEventListener('resize', scheduleMeasure, { passive: true });
+    window.addEventListener('orientationchange', function () { setTimeout(scheduleMeasure, 250); });
     if (window.visualViewport && window.visualViewport.addEventListener) {
-      window.visualViewport.addEventListener('resize', measure);
-      window.visualViewport.addEventListener('scroll', measure);
+      window.visualViewport.addEventListener('resize', scheduleMeasure);
+      window.visualViewport.addEventListener('scroll', scheduleMeasure);
     }
     if ('ResizeObserver' in window) {
-      var floorRO = new ResizeObserver(measure);
+      var floorRO = new ResizeObserver(scheduleMeasure);
       setTimeout(function () {
         var n = document.querySelector('.mobile-cta'), h = document.querySelector('.site-header');
         if (n) floorRO.observe(n); if (h) floorRO.observe(h);
@@ -770,12 +808,12 @@
       place();
       adopt();
       if (window.MutationObserver) {
-        var mo = new MutationObserver(function () { measure(); });
+        var mo = new MutationObserver(scheduleMeasure);
         mo.observe(rail, { childList: true });
         mo.observe(lrail, { childList: true });
       }
-      measure();
-      setTimeout(measure, 400);   /* шрифты доехали — высоты поменялись */
+      scheduleMeasure();
+      setTimeout(scheduleMeasure, 400);   /* шрифты доехали — высоты поменялись */
       return rail;
     }
 
@@ -806,7 +844,7 @@
         if (cb && cb.parentNode === lrail) lrail.insertBefore(hf, cb);
         else lrail.appendChild(hf);
       }
-      measure();
+      scheduleMeasure();
     }
     /* Внешние виджеты (в первую очередь consent) могут появиться раньше
        DOMContentLoaded. Создаём рельсы синхронно до первой отрисовки,
@@ -1189,7 +1227,7 @@
       }
       announce(o);
       swipe(el);
-      measure();
+      scheduleMeasure();
       return el;
     }
 
@@ -1211,7 +1249,7 @@
       el.style.maxHeight = '0px';
       setTimeout(function () {
         if (el.parentNode) el.parentNode.removeChild(el);
-        measure();
+        scheduleMeasure();
         kick();
       }, rmNow() ? 200 : 340);
     }
@@ -1365,7 +1403,7 @@
       replayUnread();
       adopt();
       setTimeout(adopt, 1200);   /* куки-плашка и закладка помощи приходят позже */
-      measure();
+      scheduleMeasure();
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else setTimeout(init, 0);
@@ -1470,45 +1508,50 @@
   (function () {
     var main = document.querySelector('main') || document.querySelector('section');
     if (main && !main.id) main.id = 'main';
-    if (main && !document.querySelector('.skip-link')) {
-      var skip = document.createElement('a');
+    var skip = document.querySelector('.skip-link');
+    if (main && !skip) {
+      skip = document.createElement('a');
       skip.className = 'skip-link'; skip.href = '#' + main.id; skip.textContent = 'К содержанию';
       document.body.insertBefore(skip, document.body.firstChild);
     }
+    if (skip && skip.parentNode === document.body && document.body.firstChild !== skip) {
+      document.body.insertBefore(skip, document.body.firstChild);
+    }
   })();
+  function insertChromeAfterSkip(node) {
+    var skip = document.querySelector('.skip-link');
+    if (skip && skip.parentNode === document.body) {
+      if (document.body.firstChild !== skip) document.body.insertBefore(skip, document.body.firstChild);
+      document.body.insertBefore(node, skip.nextSibling);
+      return;
+    }
+    document.body.insertBefore(node, document.body.firstChild);
+  }
 
   /* ---------------- Колонтитул (шапка) ----------------
      ОДНА шапка на всех страницах, включая главную: те же ссылки,
      тот же порядок — читатель никогда не теряется. */
   var here = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
   document.body.classList.add('concept-shell');
-  /* Порядок = путь клиента (DESIGN-STANDARDS §10): выбрал формат → проверил
-     цену → снял сомнения → читает материалы. «Библиотека» правее, потому что
-     она вне пути покупки. Пункт «Выгоды» убран из шапки: клуб, бонусы и
-     сертификаты интересны ПОСЛЕ первого заказа, им место в меню и подвале. */
-  /* Порядок и состав — как в эталоне style-lab/full/index.html:38–44.
-     «Выгоды» вернулись в шапку по решению владельца от 25.07.2026:
-     это, по сути, УТП мастерской, и держать его только в подвале
-     значит прятать главный довод. */
+  /* Верхний уровень отвечает только на четыре вопроса первого обращения.
+     Лояльность и способы расчёта остаются в меню и кабинете после ценности. */
   var NAV = [
     { href: 'services.html',  label: 'Услуги' },
     { href: 'tariffs.html',   label: 'Цены' },
     { href: 'knowledge.html', label: 'Библиотека' },
-    { href: 'about.html',     label: 'О мастерской' },
-    { href: 'referral.html',  label: 'Выгоды' }
+    { href: 'prolog.html',     label: 'Как работаем' }
   ];
-  /* Короткий маршрут новичка: не заставляем читать сайт по кругу.
-     Три решения ведут от ориентира по цене к заявке. */
+  /* Один и тот же объект проходит от ориентации к живому делу. */
   var ROUTE = [
-    { href: 'tariffs.html',      label: 'Свериться с ценой', note: '1 мин' },
-    { href: 'guarantees.html',   label: 'Проверить условия', note: 'по делу' },
-    { href: 'configurator.html', label: 'Получить смету', note: 'без звонка' }
+    { href: '/#caseHeroTitle',    label: 'Показать ситуацию', note: 'без контакта' },
+    { href: 'configurator.html',  label: 'Проверить маршрут', note: 'с основанием' },
+    { href: 'dashboard.html',     label: 'Продолжить дело', note: 'версии и следующий шаг' }
   ];
   var QUICK = [
-    { href: 'configurator.html', no: '01', label: 'Собрать позиции заказа', note: 'Смета за минуту · без телефона', main: true },
-    { href: 'start.html', no: '02', label: 'Выбрать, с чего начать', note: 'Короткий маршрут по вашей ситуации' },
-    { href: 'knowledge.html', no: '03', label: 'Найти полезный разбор', note: 'ГОСТ, структура, защита' },
-    { href: 'dashboard.html', no: '04', label: 'Вернуться к своему делу', note: 'Статус, файлы и переписка' }
+    { href: '/#caseHeroTitle', no: '01', label: 'Открыть дело исследования', note: 'Один следующий шаг · без телефона', main: true },
+    { href: 'tools.html', no: '02', label: 'Проверить самостоятельно', note: 'Тема, текст, источники и требования' },
+    { href: 'knowledge.html', no: '03', label: 'Найти инструкцию к этапу', note: 'От темы до защиты' },
+    { href: 'dashboard.html', no: '04', label: 'Продолжить своё дело', note: 'Статус, версии и переписка' }
   ];
   /* Путеводитель: разделы сгруппированы по смыслу, у каждого — подсказка */
   var GROUPS = [
@@ -1727,6 +1770,188 @@
     return { title: title, kicker: kicker };
   }
 
+  /* Контекст страницы становится частью одного «Дела исследования».
+     В URL уходят только коды маршрута — без текста, контактов и файлов. */
+  function caseRoute(work, situation, result) {
+    var allowedWork = ['diplom','master','chapter','kandidat','course','course_emp',
+      'practice','vak','scopus','rinc','self'];
+    var allowedSituation = ['topic','draft','comments','defense'];
+    var allowedResult = ['diagnostic','editing','formatting','defense','support',
+      'recommendation','tutoring','ai_editing'];
+    work = allowedWork.indexOf(work) >= 0 ? work : '';
+    situation = allowedSituation.indexOf(situation) >= 0 ? situation : '';
+    result = allowedResult.indexOf(result) >= 0 ? result : '';
+    var params = new URLSearchParams();
+    if (work) params.set('work', work);
+    if (situation) params.set('situation', situation);
+    if (result) params.set('result', result);
+    var service = result === 'tutoring' ? 'tu'
+      : result === 'ai_editing' ? 'ai'
+      : result === 'formatting' ? 'nm'
+      : result === 'defense' ? 'df'
+      : result === 'diagnostic' && situation === 'topic' ? 'pl'
+      : result === 'diagnostic' && work === 'kandidat' ? ''
+      : result === 'diagnostic' ? 'rv' : '';
+    if (service) params.set('service', service);
+    params.set('route', 'page');
+    return 'configurator.html?' + params.toString();
+  }
+  function guideWorkType(slug) {
+    if (/scopus|web-of-science/.test(slug)) return 'scopus';
+    if (/(?:^|-)vak(?:-|$)/.test(slug)) return 'vak';
+    if (/(?:^|-)rinc(?:-|$)/.test(slug)) return 'rinc';
+    /* «Практическая часть курсовой» содержит praktik, поэтому курс проверяем первым. */
+    if (/kursov/.test(slug)) return 'course';
+    if (/praktik/.test(slug)) return 'practice';
+    if (/(?:^|-)statya(?:-|$)/.test(slug)) return 'rinc';
+    return 'diplom';
+  }
+  function guideRouteProfile(slug) {
+    var defense = /(zashchit|rech|prezent|vopros|doklad)/.test(slug);
+    var formatting = /(normocontrol|gost|oform|spisok-literatury|titulnyj-list|prilozheniya)/.test(slug);
+    var review = /(istochnik|ssylk|antiplagiat|proverk|plagiat)/.test(slug);
+    return {
+      work:guideWorkType(slug),
+      defense:defense,
+      formatting:formatting,
+      review:review,
+      stage:defense ? 4 : formatting || review ? 3 : 1,
+      situation:defense ? 'defense' : formatting || review ? 'draft' : 'topic',
+      result:defense ? 'defense' : formatting ? 'formatting' : 'diagnostic'
+    };
+  }
+  function selfRouteFor(work, situation, result) {
+    if (result === 'formatting') return 'guide-normocontrol.html';
+    if (result === 'defense') return 'guide-rech-na-zashchitu.html';
+    if (work === 'practice') return 'guide-otchet-po-praktike.html';
+    if (work === 'rinc' || work === 'vak' || work === 'scopus') return 'guide-rinc-statya.html';
+    if (work === 'course' || work === 'course_emp') return 'guide-vvedenie-kursovoy.html';
+    if (work === 'self') return 'knowledge.html';
+    if (situation === 'comments') return 'dosie-nauchruka.html';
+    if (situation === 'draft') return 'check.html';
+    return 'guide-obekt-predmet-cel-zadachi.html';
+  }
+  function pageCaseContext() {
+    var slug = here.replace(/\.html$/, '');
+    var dedicatedServiceRoutes = {
+      'redaktura-posle-ii':['ai',3,'Проверить факты, логику и источники','check.html','Сначала проверить текст самостоятельно'],
+      'avtorskiy-zakaz':['au',2,'Уточнить цель и режим прав','knowledge.html','Сначала уточнить формат самостоятельно']
+    };
+    var dedicated = dedicatedServiceRoutes[slug];
+    if (dedicated) {
+      return {
+        stage:dedicated[1],
+        title:dedicated[2],
+        copy:'Страница уже уточнила специальный формат. В анкете услуги останутся только состав, исходные материалы и обязательные условия до контакта.',
+        self:dedicated[3],
+        selfLabel:dedicated[4],
+        action:'configurator.html?service=' + dedicated[0],
+        actionLabel:'Открыть этот маршрут'
+      };
+    }
+    var serviceRoutes = {
+      'kursovaya-rabota':['course','topic','support',2,'Курсовая как рабочий проект'],
+      'diplomnaya-rabota':['diplom','topic','support',2,'ВКР как рабочий проект'],
+      'magisterskaya-dissertaciya':['master','topic','support',2,'Магистерская как рабочий проект'],
+      'nauchnaya-statya':['','draft','editing',3,'Рукопись к редакторской проверке'],
+      'otchet-po-praktike':['practice','topic','support',2,'Отчёт на реальных материалах практики'],
+      'dorabotka-otcheta-po-praktike':['practice','comments','editing',3,'Доработка отчёта по замечаниям'],
+      'kandidatskaya-dissertaciya':['kandidat','draft','diagnostic',3,'Диагностика диссертационного исследования'],
+      'referat':['self','topic','support',2,'Реферат или эссе как рабочий проект'],
+      'plan':['','topic','diagnostic',1,'Разобрать тему и план'],
+      'razbor-zamechaniy-nauchruka':['','comments','diagnostic',3,'Перевести замечания в карту правок'],
+      'normokontrol-vkr':['diplom','draft','formatting',3,'Сверить стабильную версию с методичкой']
+    };
+    var service = serviceRoutes[slug];
+    if (service) {
+      return {
+        stage:service[3],
+        title:service[4],
+        copy:'Страница уже уточнила формат. Подтвердите точку старта — маршрут сохранит её и покажет состав, цену и основание рекомендации до контакта.',
+        self:selfRouteFor(service[0],service[1],service[2]),
+        selfLabel:'Сначала проверить самостоятельно',
+        action:caseRoute(service[0],service[1],service[2]),
+        actionLabel:'Открыть этот маршрут'
+      };
+    }
+    if (slug === 'komissiya-0') {
+      return {
+        stage:4,
+        title:'Проверить готовую версию до настоящей комиссии',
+        copy:'Комиссия №0 уместна только для версии, которую уже можно оппонировать. Если содержание ещё меняется, маршрут сначала покажет более ранний шаг.',
+        self:'guide-rech-na-zashchitu.html',
+        selfLabel:'Сверить речь по чек-листу',
+        action:'configurator.html?service=k0',
+        actionLabel:'Открыть Комиссию №0'
+      };
+    }
+    if (slug === 'check' || slug === 'proverka-istochnikov-vkr' ||
+        slug === 'dosie-nauchruka' || slug === 'audit-temy-vkr') {
+      var toolStage = slug === 'audit-temy-vkr' ? 1 : 3;
+      var toolSituation = slug === 'audit-temy-vkr' ? 'topic'
+        : slug === 'dosie-nauchruka' ? 'comments' : 'draft';
+      return {
+        stage:toolStage,
+        title:'Перенести результат проверки в следующий шаг',
+        copy:'Инструмент остаётся самостоятельным. Если нужна помощь редактора, в маршрут уйдёт только категория задачи — не введённый текст и не названия файлов.',
+        self:'tools.html',
+        selfLabel:'Другие бесплатные проверки',
+        action:caseRoute('',toolSituation,'diagnostic'),
+        actionLabel:'Показать следующий шаг'
+      };
+    }
+    if (/^guide-/.test(slug)) {
+      var guide = guideRouteProfile(slug);
+      var guideSelf = guide.review ? 'tools.html'
+        : selfRouteFor(guide.work,guide.situation,guide.result);
+      var guideSelfLoop = guideSelf.replace(/\.html$/, '') === slug;
+      if (guideSelfLoop) {
+        guideSelf = guide.work === 'course' ? 'guide-obekt-predmet-cel-zadachi.html'
+          : guide.defense ? 'guide-prezentaciya-k-zashchite.html'
+          : 'tools.html';
+      }
+      return {
+        stage:guide.stage,
+        title:guide.defense ? 'Превратить подготовку в проверяемую репетицию'
+          : guide.formatting ? 'Сверить оформление с требованиями'
+          : guide.review ? 'Проверить материал по этому критерию'
+          : 'Закрепить вывод и выбрать первый результат',
+        copy:'Материал отвечает на один вопрос. Маршрут связывает этот вывод с подходящим инструментом или редакторским этапом — без повторного поиска по сайту.',
+        self:guideSelf,
+        selfLabel:guideSelfLoop ? 'Открыть следующий бесплатный инструмент'
+          : guide.defense ? 'Открыть чек-лист защиты'
+          : guide.formatting ? 'Сверить оформление самостоятельно'
+          : guide.review ? 'Проверить самостоятельно' : 'Открыть самостоятельный протокол',
+        action:caseRoute(guide.work,guide.situation,guide.result),
+        actionLabel:'Показать следующий шаг'
+      };
+    }
+    if (here === 'services.html' || here === 'tariffs.html') {
+      return {
+        stage:1,
+        title:'Не выбирать услугу вслепую',
+        copy:'Каталог нужен для проверки состава и цены. Основной вход — ваша ситуация: система предложит один первый результат и объяснит, почему он подходит.',
+        self:'tools.html',
+        selfLabel:'Начать самостоятельно',
+        action:'configurator.html',
+        actionLabel:'Собрать маршрут'
+      };
+    }
+    if (here === 'knowledge.html' || here === 'tools.html') {
+      return {
+        stage:1,
+        title:'Найти материал для текущего шага',
+        copy:'Можно продолжить самостоятельно. Если понадобится редактор, общий маршрут отдельно уточнит точку старта и предложит следующий шаг.',
+        self:here === 'knowledge.html' ? 'tools.html' : 'knowledge.html',
+        selfLabel:here === 'knowledge.html' ? 'Открыть инструменты' : 'Открыть библиотеку',
+        action:'configurator.html',
+        actionLabel:'Уточнить следующий шаг'
+      };
+    }
+    return null;
+  }
+  var currentCaseContext = pageCaseContext();
+
   /* Путеводитель строится от намерения, а не от структуры сайта:
      четыре быстрых входа, поиск, три шага новичка и тихий полный индекс. */
   function mountTOC() {
@@ -1788,13 +2013,13 @@
     var tocScrollY = 0;
     var tocTrigger = null;
     var tocFocusTimer = 0;
-    function setToc(open) {
+    function setToc(open, trigger) {
       if (open === toc.classList.contains('open')) return;
       if (open) {
         tocScrollY = window.scrollY || window.pageYOffset || 0;
-        tocTrigger = document.activeElement && document.activeElement.closest
+        tocTrigger = trigger || (document.activeElement && document.activeElement.closest
           ? document.activeElement.closest('.menu-toggle')
-          : null;
+          : null);
         document.body.style.top = '-' + tocScrollY + 'px';
       }
       toc.classList.toggle('open', open);
@@ -1828,7 +2053,7 @@
         }, 32);
       }
     }
-    Salon.toc = { open: function () { setToc(true); }, close: function () { setToc(false); }, isOpen: function () { return toc.classList.contains('open'); } };
+    Salon.toc = { open: function (trigger) { setToc(true, trigger); }, close: function () { setToc(false); }, isOpen: function () { return toc.classList.contains('open'); } };
     /* страховочная петля Tab для браузеров без inert */
     toc.addEventListener('keydown', function (e) {
       if (e.key !== 'Tab') return;
@@ -1922,7 +2147,9 @@
       var cur = n.href === here ? ' aria-current="page"' : '';
       return '<a href="' + n.href + '"' + cur + '>' + n.label + '</a>';
     }).join('');
-    var calcHref = 'configurator.html';
+    var calcHref = currentCaseContext ? currentCaseContext.action : 'configurator.html';
+    var calcLabel = here === 'index.html' ? 'Собрать маршрут'
+      : currentCaseContext ? 'Следующий шаг' : 'Описать задачу';
     header.innerHTML = '<div class="site-header__inner">' + brandHTML() +
       '<nav class="primary-nav nav-links" aria-label="Основная навигация">' + navLinks + '</nav>' +
       '<div class="site-header__actions nav-cta">' +
@@ -1949,17 +2176,17 @@
           ' aria-label="Личный кабинет" title="Личный кабинет">' +
           '<span class="header-action__dot" aria-hidden="true"></span><span class="nc-txt">Кабинет</span>' +
           '<span class="nc-badge" aria-hidden="true" hidden></span></a>' +
-        '<a class="button button--primary button--compact btn btn-wax" href="' + calcHref + '">Описать задачу <span aria-hidden="true">→</span></a>' +
+        '<a class="button button--primary button--compact btn btn-wax" href="' + calcHref + '">' + calcLabel + ' <span aria-hidden="true">→</span></a>' +
         '<button class="icon-button header-menu-button menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><i aria-hidden="true"></i></button>' +
       '</div></div>';
-    document.body.insertBefore(header, document.body.firstChild);
+    insertChromeAfterSkip(header);
 
     var mobileHeader = document.createElement('header');
     mobileHeader.className = 'mobile-appbar';
     var mobileHeaderMeta = mobileMeta();
     mobileHeader.innerHTML =
       '<button class="mobile-appbar__back" type="button" data-go-back aria-label="Вернуться назад"><span aria-hidden="true">←</span></button>' +
-      '<a class="mobile-appbar__brand" href="/" aria-label="Академический Салон — главная">' +
+      '<a class="mobile-appbar__brand" href="/" title="На главную">' +
         brandMarkSVG() + '<span><strong></strong><small></small></span></a>' +
       '<button class="mobile-appbar__help" type="button" data-open-search aria-label="Найти раздел или материал">' + icoSearch() + '</button>' +
       '<button class="mobile-appbar__theme theme-toggle" type="button" aria-label="Сменить тему оформления">' + icoTheme() + '<span class="visually-hidden" data-theme-action>Включить тёмную тему</span></button>' +
@@ -2016,13 +2243,13 @@
       var t = e.target.closest && e.target.closest('.menu-toggle');
       if (!t || !Salon.toc) return;
       e.preventDefault();
-      Salon.toc.isOpen() ? Salon.toc.close() : Salon.toc.open();
+      Salon.toc.isOpen() ? Salon.toc.close() : Salon.toc.open(t);
     });
     document.addEventListener('click', function (e) {
       var search = e.target.closest && e.target.closest('[data-open-search]');
       if (!search || !Salon.toc) return;
       e.preventDefault();
-      Salon.toc.open();
+      Salon.toc.open(search);
       window.setTimeout(function () {
         var field = document.getElementById('tocQ');
         if (field) field.focus();
@@ -2042,9 +2269,13 @@
      тихо продолжается: ссылка ведёт на нужный шаг конфигуратора. */
   (function continueOrder() {
     var draft = Salon.store.get('salon_draft', null);
-    if (!draft || !draft.state || here === 'configurator.html' || here === 'index.html') return;
+    var hasDraft = !!(draft && (draft.state || draft.concept));
+    if (!hasDraft || here === 'configurator.html' || here === 'index.html') return;
     var main = document.querySelector('.nav-cta a.btn-wax');
-    if (main) main.href = 'configurator.html?step=' + ((draft.idx || 0) + 1);
+    if (main) {
+      main.href = 'configurator.html';
+      main.innerHTML = 'Продолжить дело <span aria-hidden="true">→</span>';
+    }
   })();
 
   /* ---------------- Индикатор раздела в колонтитуле ---------------- */
@@ -2087,14 +2318,14 @@
     return '<div class="site-footer__main">' +
       '<div class="site-footer__brand">' +
         brandMarkSVG() +
-        '<div><strong>Академический Салон</strong><p>Исследовательские проекты с нуля, редактура и подготовка к защите.</p></div>' +
+        '<div><strong>Академический Салон</strong><p>Одно дело исследования: от вашей ситуации до проверяемого следующего шага.</p></div>' +
       '</div>' +
       '<nav aria-label="Услуги">' +
         '<strong>Помощь</strong>' +
         '<a href="services.html">Все услуги</a>' +
         '<a href="komissiya-0.html">Комиссия №0</a>' +
         '<a href="tariffs.html">Цены</a>' +
-        '<a href="configurator.html">Описать задачу</a>' +
+        '<a href="configurator.html">Открыть дело</a>' +
         '<a href="guarantees.html">Гарантии</a>' +
       '</nav>' +
       '<nav aria-label="Полезные разделы">' +
@@ -2109,6 +2340,7 @@
       '<nav aria-label="Информация">' +
         '<strong>О сервисе</strong>' +
         '<a href="about.html">О мастерской</a>' +
+        '<a href="prolog.html">Как устроено дело</a>' +
         '<a href="academic-integrity.html">Границы помощи</a>' +
         '<a href="privacy.html">Конфиденциальность</a>' +
         '<a href="terms.html">Документы</a>' +
@@ -2134,8 +2366,50 @@
     var g = e.target.closest && e.target.closest('[data-toc-open]');
     if (!g || !Salon.toc) return;
     e.preventDefault();
-    Salon.toc.open();
+    Salon.toc.open(g);
   });
+
+  /* Сквозной мост связывает материал или услугу с одной стадией дела.
+     Он не появляется на юридических, системных и рабочих экранах. */
+  if (!CHROME_OFF && currentCaseContext && !document.querySelector('.case-bridge')) {
+    var stageNames = ['Разобрать','Подготовить','Проверить','Представить'];
+    var stageRow = stageNames.map(function (label,index) {
+      var active = index + 1 === currentCaseContext.stage;
+      return '<span class="' + (active ? 'is-current' : '') + '"' +
+        (active ? ' aria-current="step"' : '') + '><i>' + (index + 1) +
+        '</i><b>' + label + '</b></span>';
+    }).join('');
+    var caseBridge = document.createElement('section');
+    caseBridge.className = 'case-bridge';
+    caseBridge.setAttribute('aria-labelledby','caseBridgeTitle');
+    caseBridge.innerHTML =
+      '<div class="case-bridge__inner">' +
+        '<nav class="case-bridge__stages" aria-label="Стадии дела">' + stageRow + '</nav>' +
+        '<div class="case-bridge__copy">' +
+          '<p>Дело исследования · стадия ' + currentCaseContext.stage + ' из 4</p>' +
+          '<h2 id="caseBridgeTitle">' + currentCaseContext.title + '</h2>' +
+          '<span>' + currentCaseContext.copy + '</span>' +
+        '</div>' +
+        '<div class="case-bridge__actions">' +
+          '<a class="case-bridge__self" href="' + currentCaseContext.self +
+            '" data-case-bridge-action="self">' + currentCaseContext.selfLabel + ' <span aria-hidden="true">↗</span></a>' +
+          '<a class="button button--primary" href="' + currentCaseContext.action +
+            '" data-case-bridge-action="route">' + currentCaseContext.actionLabel + ' <span aria-hidden="true">→</span></a>' +
+          '<small>Предварительный контекст можно изменить в маршруте.</small>' +
+        '</div>' +
+      '</div>';
+    var bridgeMain = document.querySelector('main');
+    if (bridgeMain && bridgeMain.parentNode) bridgeMain.insertAdjacentElement('afterend',caseBridge);
+    caseBridge.addEventListener('click',function (event) {
+      var action = event.target.closest && event.target.closest('[data-case-bridge-action]');
+      if (!action || !Salon.visit || typeof Salon.visit.event !== 'function') return;
+      Salon.visit.event('case_bridge_open', {
+        cta:'page_context',
+        variant:(action.getAttribute('data-case-bridge-action') || 'route') + '_stage_' + currentCaseContext.stage
+      });
+    });
+  }
+
   if (!CHROME_OFF && !document.querySelector('.site-footer')) {
     var footer = document.createElement('footer');
     footer.className = 'site-footer';
@@ -2196,10 +2470,14 @@
         '<small class="mn-l">' + label + '</small>' +
         (cls === ' mn-cab' ? '<span class="mn-badge" hidden></span>' : '') + '</a>';
     }
+    var mobileRouteHref = currentCaseContext ? currentCaseContext.action : 'configurator.html';
+    var mobileRouteLabel = currentCaseContext
+      ? ['Разбор','Работа','Проверка','Защита'][Math.max(0,Math.min(3,currentCaseContext.stage - 1))]
+      : 'Маршрут';
     mnav.innerHTML =
       mnItem('/', 'Главная', 'dock-icon dock-icon--home') +
       mnItem('services.html', 'Услуги', 'dock-icon dock-icon--services') +
-      mnItem('configurator.html', 'Описать', 'mobile-dock__seal', ' mn-calc mobile-dock__primary') +
+      mnItem(mobileRouteHref, mobileRouteLabel, 'mobile-dock__seal', ' mn-calc mobile-dock__primary') +
       mnItem('knowledge.html', 'Библиотека', 'dock-icon dock-icon--library') +
       mnItem('dashboard.html', 'Кабинет', 'dock-icon dock-icon--profile', ' mn-cab');
     document.body.appendChild(mnav);
@@ -2241,7 +2519,7 @@
       try {
         if (!document.referrer) return '';
         var u = new URL(document.referrer);
-        return u.origin + u.pathname;
+        return u.origin;
       } catch (e) { return ''; }
     }
     function forgetBrowserData() {
@@ -2502,8 +2780,9 @@
 
   /* ---------------- Кабинет: клиент API (общая база с ботом) ----------------
      Сайт и Telegram-бот работают с одним сервером: заказы, статусы и переписка
-     синхронны. Сессия — токен в localStorage (вход через Telegram);
-     у гостевых заказов — токены доступа по каждому заказу. */
+     синхронны. Обычная сессия и гостевой доступ живут в HttpOnly cookies;
+     sessionStorage остаётся только для короткой миграции старых ссылок и
+     изолированного режима «посмотреть глазами клиента». */
   var API_BASE = (location.hostname === 'akademsalon.ru')
     ? '/api' : 'https://akademsalon.ru/api';
   /* «Тихий» вход мастера в кабинет клиента: токен живёт ТОЛЬКО в этой вкладке
@@ -2511,18 +2790,70 @@
   function impToken() {
     try { return sessionStorage.getItem('salon_imp_token') || null; } catch (e) { return null; }
   }
+  function cookieValue(name) {
+    try {
+      var prefix = encodeURIComponent(name) + '=';
+      var parts = String(document.cookie || '').split(';');
+      for (var i = 0; i < parts.length; i++) {
+        var item = parts[i].trim();
+        if (item.indexOf(prefix) === 0) return decodeURIComponent(item.slice(prefix.length));
+      }
+    } catch (e) {}
+    return '';
+  }
+  function sessionHint() {
+    return Salon.secretStore.get('salon_cookie_session', false) === true;
+  }
+  function guestHint() {
+    return Salon.secretStore.get('salon_guest_session', false) === true;
+  }
+  function setSessionHint(value) {
+    value ? Salon.secretStore.set('salon_cookie_session', true)
+      : Salon.secretStore.del('salon_cookie_session');
+  }
+  function setGuestHint(value) {
+    value ? Salon.secretStore.set('salon_guest_session', true)
+      : Salon.secretStore.del('salon_guest_session');
+  }
   Salon.api = {
     base: API_BASE,
-    token: function () { return impToken() || Salon.store.get('salon_session', null); },
-    setToken: function (t) { t ? Salon.store.set('salon_session', t) : Salon.store.del('salon_session'); },
-    user: function () { return Salon.store.get('salon_user', null); },
-    setUser: function (u) { u ? Salon.store.set('salon_user', u) : Salon.store.del('salon_user'); },
-    guestTokens: function () { var v = Salon.store.get('salon_tokens', []); return Array.isArray(v) ? v : []; },
+    /* token() остаётся логическим признаком входа для старых UI-веток.
+       Реальный cookie session никогда не доступен JavaScript. */
+    token: function () {
+      return impToken() || secretValue('salon_session', null)
+        || (sessionHint() ? '__cookie__' : null);
+    },
+    bearer: function () { return impToken() || secretValue('salon_session', null); },
+    cookieSession: sessionHint,
+    guestSession: guestHint,
+    setSessionHint: setSessionHint,
+    setGuestHint: setGuestHint,
+    setToken: function (t) {
+      Salon.store.del('salon_session');
+      t ? Salon.secretStore.set('salon_session', t) : Salon.secretStore.del('salon_session');
+    },
+    user: function () { return secretValue('salon_user', null); },
+    setUser: function (u) {
+      Salon.store.del('salon_user');
+      u ? Salon.secretStore.set('salon_user', u) : Salon.secretStore.del('salon_user');
+    },
+    guestTokens: function () {
+      var v = secretValue('salon_tokens', []);
+      return Array.isArray(v) ? v.filter(function (token) {
+        return typeof token === 'string' && /^[A-Za-z0-9_-]{16,128}$/.test(token);
+      }).slice(-30) : [];
+    },
     addGuestToken: function (t) {
       var v = Salon.api.guestTokens();
-      if (t && v.indexOf(t) < 0) { v.push(t); Salon.store.set('salon_tokens', v.slice(-30)); }
+      if (t && /^[A-Za-z0-9_-]{16,128}$/.test(t) && v.indexOf(t) < 0) {
+        v.push(t);
+        Salon.secretStore.set('salon_tokens', v.slice(-30));
+        Salon.store.del('salon_tokens');
+      }
     },
-    identified: function () { return !!(Salon.api.token() || Salon.api.guestTokens().length); },
+    identified: function () {
+      return !!(Salon.api.token() || guestHint() || Salon.api.guestTokens().length);
+    },
     outsideScopeMessage: function (response) {
       if (!response || response.error !== 'request_outside_scope') return '';
       var intro = response.message ||
@@ -2532,14 +2863,23 @@
         : [];
       return intro + (routes.length ? ' Подойдут: ' + routes.join('; ') + '.' : '');
     },
-    req: function (method, path, body, _retried, extraHeaders) {
-      var h = {};
-      if (body !== undefined) h['Content-Type'] = 'application/json';
-      var t = Salon.api.token();
-      if (t) h['Authorization'] = 'Bearer ' + t;
+    headers: function (method, extraHeaders) {
+      var h = { 'X-Session-Mode': 'cookie' };
+      var t = Salon.api.bearer();
+      if (t) h.Authorization = 'Bearer ' + t;
+      if (!t && /^(POST|PUT|PATCH|DELETE)$/i.test(method || 'GET')) {
+        var csrf = cookieValue('__Host-salon_csrf');
+        if (csrf) h['X-CSRF-Token'] = csrf;
+      }
       Object.keys(extraHeaders || {}).forEach(function (key) {
         if (extraHeaders[key] != null && extraHeaders[key] !== '') h[key] = extraHeaders[key];
       });
+      return h;
+    },
+    req: function (method, path, body, _retried, extraHeaders) {
+      var h = Salon.api.headers(method, extraHeaders);
+      if (body !== undefined) h['Content-Type'] = 'application/json';
+      var logicalToken = Salon.api.token();
       /* GET безопасно повторить один раз: короткое окно рестарта сервера
          (деплой) отдаёт 502/обрыв на пару секунд — не теряем посетителя */
       function again() {
@@ -2547,19 +2887,28 @@
           setTimeout(function () { res(Salon.api.req(method, path, body, true, extraHeaders)); }, 1800);
         });
       }
-      return fetch(API_BASE + path, { method: method, headers: h, body: body !== undefined ? JSON.stringify(body) : undefined })
+      return fetch(API_BASE + path, {
+        method: method,
+        headers: h,
+        credentials: 'include',
+        body: body !== undefined ? JSON.stringify(body) : undefined
+      })
         .then(function (r) {
           if (r.status === 401) {
             var wasImpersonated = !!impToken();
             if (wasImpersonated) {
               /* протухла «тихая» сессия мастера — чистим только её */
               try { sessionStorage.removeItem('salon_imp_token'); sessionStorage.removeItem('salon_imp'); } catch (e) {}
-            } else { Salon.api.setToken(null); Salon.api.setUser(null); }
+            } else {
+              Salon.api.setToken(null);
+              Salon.api.setUser(null);
+              setSessionHint(false);
+            }
             /* Долгий поллинг админки/кабинета мог получить 401 уже после
                первого успешного входа. Одной очистки токена мало: экран
                оставался замороженным на старых данных. Сообщаем активному
                приложению, чтобы оно немедленно вернуло честный экран входа. */
-            if (t) {
+            if (logicalToken) {
               try {
                 document.dispatchEvent(new CustomEvent('salon:auth-lost', {
                   detail: { path: path, impersonated: wasImpersonated }
@@ -2574,7 +2923,17 @@
             }
           }
           if (method === 'GET' && !_retried && (r.status === 502 || r.status === 503 || r.status === 504)) return again();
-          return r.json().catch(function () { return { ok: false, error: 'bad_json' }; });
+          return r.json().catch(function () { return { ok: false, error: 'bad_json' }; })
+            .then(function (data) {
+              if (data && (data.session === true || data.authenticated === true)) {
+                setSessionHint(true);
+              }
+              if (data && data.authenticated === false && !Salon.api.bearer()) {
+                setSessionHint(false);
+              }
+              if (data && data.guest_session === true) setGuestHint(true);
+              return data;
+            });
         })
         .catch(function () {
           if (method === 'GET' && !_retried) return again();
@@ -2583,11 +2942,49 @@
     },
     get: function (p, h) { return Salon.api.req('GET', p, undefined, false, h); },
     post: function (p, b, h) { return Salon.api.req('POST', p, b || {}, false, h); },
-    logout: function () { Salon.api.setToken(null); Salon.api.setUser(null); }
+    logout: function () {
+      var finish = function () {
+        Salon.api.setToken(null);
+        Salon.api.setUser(null);
+        setSessionHint(false);
+      };
+      return Salon.api.post('/auth/logout', {}).then(finish, finish);
+    }
   };
 
-  /* Ссылка доступа к делу: открывает заказ на любом устройстве без входа.
-     Токен — тот же, что в salon_tokens; кабинет ловит #claim= при загрузке. */
+  /* Старые вкладки получают мягкий one-time upgrade: JS-readable Bearer
+     обменивается на HttpOnly cookie и сразу отзывается на сервере. */
+  Salon.api.migration = (function migrateLegacySession() {
+    var legacy = Salon.api.bearer();
+    if (!legacy || impToken()) return Promise.resolve(null);
+    return Salon.api.post('/auth/migrate', {}).then(function (r) {
+      if (!r || !r.ok || !r.session) return;
+      Salon.api.setToken(null);
+      setSessionHint(true);
+      return r;
+    });
+  })();
+
+  /* Свежая вкладка видит HttpOnly cookie только через безопасный status API. */
+  Salon.api.ready = Salon.api.migration.then(function () {
+    return Salon.api.get('/auth/session');
+  }).then(function (r) {
+    if (r && r.ok) {
+      setSessionHint(r.authenticated === true);
+      setGuestHint(r.guest_session === true);
+      if (r.user) Salon.api.setUser(r.user);
+    }
+    try {
+      document.dispatchEvent(new CustomEvent('salon:session-ready', { detail: r || {} }));
+    } catch (e) {}
+    if (Salon.cabBadge) Salon.cabBadge();
+    return r;
+  });
+
+  /* Ссылка доступа к делу: переносит гостевой доступ на другое устройство.
+     Фрагмент не попадает в HTTP-запрос, Referer и обычный access-log.
+     Последующая привязка дела к аккаунту — одноразовая операция: сервер
+     отзывает предъявленный ключ и выдаёт уже связанный доступ. */
   Salon.claimLink = function (token) {
     return 'https://akademsalon.ru/dashboard.html#claim=' + encodeURIComponent(token || '');
   };
@@ -2600,41 +2997,74 @@
      рекламных меток и путь входа; произвольный query, контакты и содержимое
      формы сюда никогда не попадают. */
   Salon.attribution = (function () {
-    var KEY = 'salon_attr_v1';
-    var PARAMS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','yclid','gclid'];
+    var KEY = 'salon_attr_v2';
+    var OLD_KEY = 'salon_attr_v1';
+    var PARAMS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
     function allowed() { return Salon.consent && Salon.consent.allowed(); }
-    function clean(v) {
-      return String(v || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 80);
+    function code(v) {
+      var raw = String(v == null ? '' : v).trim();
+      if (!raw || raw.length > 32) return '';
+      /* Не «очищаем» контакт до похожего на код: любое подозрительное
+         значение отбрасывается целиком, чтобы его части не стали PII-меткой. */
+      if (/[@/\\:?#%]|(?:^|\.)www\.|[\u0000-\u001f\u007f\s]/i.test(raw)) return '';
+      if ((raw.match(/\d/g) || []).length >= 7) return '';
+      if (/^[a-f0-9]{16,}$/i.test(raw) ||
+          (/^[A-Za-z0-9_-]{20,}$/.test(raw) && /[A-Za-z]/.test(raw) && /\d/.test(raw))) return '';
+      raw = raw.toLowerCase();
+      return /^[a-z][a-z0-9_-]{0,31}$/.test(raw) ? raw : '';
     }
     function campaign() {
       try {
-        var src = new URLSearchParams(location.search), out = new URLSearchParams();
+        var src = new URLSearchParams(location.search), out = {};
         PARAMS.forEach(function (key) {
-          var value = clean(src.get(key));
-          if (value) out.set(key, value);
+          var value = code(src.get(key));
+          if (value) out[key] = value;
         });
-        return out.toString();
-      } catch (e) { return ''; }
+        return out;
+      } catch (e) { return {}; }
     }
-    function externalRef() {
+    function referrerCode() {
       try {
         if (!document.referrer) return '';
         var u = new URL(document.referrer);
-        return u.origin === location.origin ? '' : u.origin + u.pathname;
+        if (u.origin === location.origin) return '';
+        var host = u.hostname.toLowerCase().replace(/^www\./, '');
+        if (/(^|\.)yandex\./.test(host)) return 'yandex';
+        if (/(^|\.)google\./.test(host)) return 'google';
+        if (/(^|\.)bing\.com$/.test(host)) return 'bing';
+        if (/(^|\.)vk\.(?:com|ru)$/.test(host)) return 'vk';
+        if (/(^|\.)t\.me$|(^|\.)telegram\./.test(host)) return 'telegram';
+        if (/(^|\.)mail\.ru$/.test(host)) return 'mailru';
+        return 'external';
       } catch (e) { return ''; }
+    }
+    function entryPath() {
+      var path = String(location.pathname || '/').toLowerCase();
+      return /^\/(?:[a-z0-9-]{1,80}\.html)?$/.test(path) ? path : '/other';
+    }
+    function hasCampaign(c) { return Object.keys(c || {}).length > 0; }
+    function compact(c, ref) {
+      var parts = [];
+      PARAMS.forEach(function (key) {
+        if (c && c[key]) parts.push(key + '=' + c[key]);
+      });
+      if (!parts.length && ref) parts.push('ref=' + ref);
+      return parts.join('&');
     }
     function capture() {
       if (!allowed()) return null;
-      var c = campaign(), ref = externalRef(), source = c ? '?' + c : ref;
+      var c = campaign(), ref = referrerCode();
+      var source = hasCampaign(c) ? { kind:'utm', values:c } :
+        (ref ? { kind:'referrer', code:ref } : null);
       var saved = Salon.store.get(KEY, null) || {};
       if (!saved.first && source) {
         saved.first = source;
-        saved.entry = location.pathname.slice(0, 120);
+        saved.entry = entryPath();
         saved.firstAt = Date.now();
       }
       if (source) {
         saved.last = source;
-        saved.lastEntry = location.pathname.slice(0, 120);
+        saved.lastEntry = entryPath();
         saved.lastAt = Date.now();
       }
       if (source || saved.first) Salon.store.set(KEY, saved);
@@ -2644,28 +3074,34 @@
       if (!allowed()) return '';
       var c = campaign();
       capture();
-      return c ? '?' + c : externalRef();
+      return compact(c, hasCampaign(c) ? '' : referrerCode());
     }
     function decoratePage(base) {
-      base = String(base || '').slice(0, 120);
+      base = String(base || '');
+      if (!/^[a-z0-9./?=_-]{1,120}$/i.test(base) || /(?:token|claim|session|oauth|imp)=/i.test(base)) {
+        base = 'site';
+      }
       if (!allowed()) return base;
       var saved = capture() || {};
       var bits = [];
-      if (saved.entry) bits.push('entry=' + clean(saved.entry));
-      try {
-        var first = new URLSearchParams(String(saved.first || '').replace(/^\?/, ''));
-        ['utm_source','utm_medium','utm_campaign'].forEach(function (key) {
-          var value = clean(first.get(key));
-          if (value) bits.push(key + '=' + value);
-        });
-      } catch (e) {}
+      if (saved.entry) bits.push('entry=' + saved.entry);
+      var first = saved.first && saved.first.kind === 'utm' ? saved.first.values : {};
+      ['utm_source','utm_medium','utm_campaign'].forEach(function (key) {
+        var value = code(first && first[key]);
+        if (value) bits.push(key + '=' + value);
+      });
+      if (!bits.length && saved.first && saved.first.kind === 'referrer') {
+        var ref = code(saved.first.code);
+        if (ref) bits.push('ref=' + ref);
+      }
       return (base + (bits.length ? ' | ' + bits.join('&') : '')).slice(0, 200);
     }
+    Salon.store.del(OLD_KEY);
     if (allowed()) capture();
     document.addEventListener('salon:consent', function (e) {
       if (e.detail && e.detail.analytics === true) capture();
     });
-    return { ref: ref, capture: capture, decoratePage: decoratePage };
+    return { ref: ref, capture: capture, decoratePage: decoratePage, code: code };
   })();
 
   /* ---------------- Собственная аналитика визитов ----------------
@@ -2781,9 +3217,19 @@
      будит владельца в Telegram. Не больше трёх меток за сессию, без повторов. */
   (function blackBox() {
     var sent = {}, n = 0;
+    function errorCode(msg) {
+      msg = String(msg || '').toLowerCase();
+      if (/typeerror/.test(msg)) return 'type_error';
+      if (/referenceerror/.test(msg)) return 'reference_error';
+      if (/syntaxerror/.test(msg)) return 'syntax_error';
+      if (/securityerror/.test(msg)) return 'security_error';
+      if (/network|failed to fetch|load failed/.test(msg)) return 'network_error';
+      return 'runtime_error';
+    }
     function report(msg, src) {
       if (n >= 3) return;
-      msg = String(msg || '').slice(0, 80);
+      msg = errorCode(msg);
+      src = String(src || '').split('?')[0].replace(/[^a-z0-9_.:-]/gi, '').slice(0, 48);
       if (!msg || sent[msg]) return;
       sent[msg] = 1; n++;
       try { Salon.visit.mark('js: ' + msg + (src ? ' @ ' + src : '')); } catch (e) {}
@@ -2821,26 +3267,31 @@
   };
 
   /* Вход через Telegram: код → t.me/бот?start=auth_<код> → поллинг → сессия.
-     Код живёт в localStorage: страница может перезагрузиться или уйти в Telegram
+     Код живёт в sessionStorage: страница может перезагрузиться или уйти в Telegram
      (мобильные!) — при возврате поллинг продолжится сам (Salon.resumeTgLogin).
      onOpen(link, opened) — сразу после window.open; onDone(user) — после входа. */
   Salon.tgLogin = function (onDone, onFail, onOpen) {
     Salon.api.post('/auth/start').then(function (r) {
       if (!r.ok || !r.link) { if (onFail) onFail(r); return; }
-      Salon.store.set('salon_auth_pending', { code: r.code, link: r.link, ts: Date.now() });
+      Salon.secretStore.set('salon_auth_pending', {
+        code: r.code,
+        pollState: r.poll_state || '',
+        link: r.link,
+        ts: Date.now()
+      });
       var win = window.open(r.link, '_blank', 'noopener');
       if (onOpen) onOpen(r.link, !!win);
       Salon.resumeTgLogin(onDone, onFail);
     });
   };
 
-  /* Возобновить ожидание входа (по коду из localStorage). Возвращает pending-объект
+  /* Возобновить ожидание входа (по коду из sessionStorage). Возвращает pending-объект
      или null, если ожидания нет/протухло. Идемпотентно: вторая петля не запустится. */
   Salon.resumeTgLogin = function (onDone, onFail) {
     var TTL = 14 * 60 * 1000;
-    var p = Salon.store.get('salon_auth_pending', null);
+    var p = Salon.secretStore.get('salon_auth_pending', null);
     if (!p || !p.code || (Date.now() - (p.ts || 0)) > TTL) {
-      if (p) Salon.store.del('salon_auth_pending');
+      if (p) Salon.secretStore.del('salon_auth_pending');
       return null;
     }
     if (Salon.__authLoop) return p;
@@ -2848,17 +3299,21 @@
     var iv = setInterval(tick, 2000);
     function stop() { clearInterval(iv); Salon.__authLoop = false; }
     function tick() {
-      var cur = Salon.store.get('salon_auth_pending', null);
+      var cur = Salon.secretStore.get('salon_auth_pending', null);
       if (!cur || (Date.now() - (cur.ts || 0)) > TTL) {
-        stop(); Salon.store.del('salon_auth_pending');
+        stop(); Salon.secretStore.del('salon_auth_pending');
         if (onFail) onFail({ error: 'timeout' });
         return;
       }
-      Salon.api.get('/auth/poll?code=' + encodeURIComponent(cur.code)).then(function (pr) {
-        if (pr.ok && pr.pending === false && pr.token) {
+      var poll = cur.pollState
+        ? Salon.api.post('/auth/poll', {}, { 'X-Auth-Poll': cur.pollState })
+        : Salon.api.get('/auth/poll?code=' + encodeURIComponent(cur.code));
+      poll.then(function (pr) {
+        if (pr.ok && pr.pending === false && (pr.session || pr.token)) {
           stop();
-          Salon.store.del('salon_auth_pending');
-          Salon.api.setToken(pr.token);
+          Salon.secretStore.del('salon_auth_pending');
+          if (pr.token) Salon.api.setToken(pr.token);
+          if (pr.session) setSessionHint(true);
           Salon.api.setUser(pr.user || null);
           var gt = Salon.api.guestTokens();
           var fin = function () { if (onDone) onDone(pr.user); };

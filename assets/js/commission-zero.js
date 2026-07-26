@@ -90,12 +90,38 @@
   }
 
   function updatePrice() {
-    if (price) price.textContent = works[state.work].price;
+    if (price) {
+      price.textContent = state.source === 'topic'
+        ? (state.work === 'master' ? '5 000 ₽' : '3 000 ₽')
+        : works[state.work].price;
+    }
     var foot = root.querySelector('.q0-sheet__foot span');
-    if (foot) foot.textContent = 'Комиссия №0 для ' + works[state.work].label;
+    if (foot) {
+      foot.textContent = state.source === 'topic'
+        ? 'Сначала — письменный разбор темы и плана'
+        : 'Комиссия №0 для ' + works[state.work].label;
+    }
+  }
+
+  function updateRoute() {
+    if (!route) return;
+    if (state.source === 'topic') {
+      route.href = 'configurator.html?service=pl&work=' + encodeURIComponent(state.work) +
+        '&situation=topic&result=diagnostic&route=page';
+      route.innerHTML = 'Сначала разобрать тему и план <span aria-hidden="true">→</span>';
+      route.setAttribute('aria-label', 'Открыть разбор темы и плана: Комиссия №0 пока преждевременна');
+      return;
+    }
+    route.href = 'configurator.html?service=k0';
+    route.innerHTML = 'Передать готовую версию Оппоненту <span aria-hidden="true">→</span>';
+    route.removeAttribute('aria-label');
   }
 
   function handoff() {
+    if (state.source === 'topic') {
+      try { sessionStorage.removeItem('salon_commission_zero_handoff_v1'); } catch (e) {}
+      return false;
+    }
     try {
       sessionStorage.setItem('salon_commission_zero_handoff_v1', JSON.stringify({
         version: 1,
@@ -105,6 +131,7 @@
         savedAt: Date.now()
       }));
     } catch (e) {}
+    return true;
   }
 
   root.addEventListener('click', function (event) {
@@ -113,12 +140,15 @@
       state.work = work.getAttribute('data-q0-work');
       paintButtons('[data-q0-work]', 'data-q0-work', state.work);
       updatePrice();
+      updateRoute();
       return;
     }
     var source = event.target.closest && event.target.closest('[data-q0-source]');
     if (source) {
       state.source = source.getAttribute('data-q0-source');
       paintButtons('[data-q0-source]', 'data-q0-source', state.source);
+      updatePrice();
+      updateRoute();
       return;
     }
     var order = event.target.closest && event.target.closest('[data-q0-route]');
@@ -170,4 +200,5 @@
   });
 
   updatePrice();
+  updateRoute();
 })();

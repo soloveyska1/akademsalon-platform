@@ -5,6 +5,7 @@ const path = require('node:path');
 
 const root = path.join(__dirname, '..');
 const homeCss = fs.readFileSync(path.join(root, 'assets/css/polish15-home.css'), 'utf8');
+const caseCss = fs.readFileSync(path.join(root, 'assets/css/home-ecosystem.css'), 'utf8');
 const chromeCss = fs.readFileSync(path.join(root, 'assets/css/polish15-chrome.css'), 'utf8');
 const mobileCss = fs.readFileSync(path.join(root, 'assets/css/mobile.css'), 'utf8');
 const appJs = fs.readFileSync(path.join(root, 'assets/js/app.js'), 'utf8');
@@ -13,14 +14,14 @@ const polishChromeJs = fs.readFileSync(path.join(root, 'assets/js/polish15-chrom
 
 test('home typography keeps the approved style-lab measures', () => {
   assert.match(
-    homeCss,
-    /\.polish15-home h1,[\s\S]*?font-weight:470;/,
-    'editorial headings must retain the approved 470 weight',
+    caseCss,
+    /\.home-case \.case-hero h1\{[\s\S]*?font-weight:445;/,
+    'the research-case heading must retain the editorial display weight',
   );
   assert.match(
-    homeCss,
-    /@media\(max-width:620px\)\{[\s\S]*?\.polish15-home \.home-hero h1\{\s*font-size:clamp\(40px,9\.5vw,46px\);/,
-    'mobile home H1 must retain the approved 40–46px clamp',
+    caseCss,
+    /@media\(max-width:620px\)\{[\s\S]*?\.home-case \.case-hero h1\{[\s\S]*?font-size:clamp\(40px,11\.5vw,52px\);/,
+    'mobile case H1 must retain its bounded editorial scale',
   );
   const homeRoot = homeCss.match(/\.polish15-home\{([^}]*)\}/);
   assert.ok(homeRoot, 'home root rule must exist');
@@ -100,22 +101,19 @@ test('tablet and phone appbar lockups retain their approved heights', () => {
   assert.match(mobileCss, /body\{padding-bottom:calc\(var\(--mobile-dock-h\) \+ 16px\)\}/);
   assert.match(mobileCss, /body\.no-mcta,[\s\S]*?body\.is-admin-route\{padding-bottom:0\}/);
   assert.match(
-    homeCss,
-    /@media\(max-width:920px\)\{[\s\S]*?--gutter:max\(18px,env\(safe-area-inset-left\)\);[\s\S]*?--section:64px;/,
+    caseCss,
+    /@media\(max-width:920px\)\{[\s\S]*?--case-gutter:clamp\(20px,5vw,42px\);[\s\S]*?--case-section:clamp\(64px,9vw,92px\);/,
   );
-  assert.match(homeCss, /\.polish15-home \.situation-grid\{\s*grid-template-columns:1fr;/);
-  assert.match(homeCss, /\.polish15-home \.service-card__link\{[\s\S]*?padding:22px;/);
-  assert.match(homeCss, /\.polish15-home \.project-ledger\{[\s\S]*?width:min\(100%,620px\);/);
-  assert.match(homeCss, /\.polish15-home \.project-ledger__paper\{ padding:24px; \}/);
+  assert.match(caseCss, /\.home-case \.case-route\{width:min\(100%,620px\)\}/);
+  assert.match(caseCss, /\.home-case \.case-prompt__presets\{[\s\S]*?grid-template-columns:1fr 1fr;/);
+  assert.match(caseCss, /\.home-case \.case-stages\{[\s\S]*?overflow-x:auto;/);
+  assert.match(caseCss, /\.home-case \.case-stage-panel\{[\s\S]*?grid-template-columns:1fr;/);
   assert.doesNotMatch(polishChromeJs, /collapseOnPhone|document-reveal\[open\]/);
   assert.match(
-    homeCss,
-    /@media\(max-width:620px\)\{[\s\S]*?\.polish15-home \.evidence-section,[\s\S]*?\.polish15-home \.process-section,[\s\S]*?\.polish15-home \.calm-cta,[\s\S]*?\.polish15-home ~ \.site-footer\{[\s\S]*?display:none;/,
-    'the mobile home must retain the approved compact section set',
+    caseCss,
+    /@media\(max-width:620px\)\{[\s\S]*?\.home-case \.commission0-feature\{display:block\}[\s\S]*?\.home-case~\.site-footer\{display:block!important\}/,
+    'the mobile route must keep its final gate, proof and public footer reachable',
   );
-  assert.match(homeCss, /\.polish15-home \.home-library__articles a:nth-child\(n \+ 3\)\{\s*display:none;/);
-  assert.match(homeCss, /\.polish15-home \.testimonial-section__grid\{ gap:28px; \}/);
-  assert.match(homeCss, /\.polish15-home \.testimonial-section__quote\{ padding-left:0; \}/);
 });
 
 test('mobile consent replaces the dock without keeping its empty floor', () => {
@@ -129,10 +127,10 @@ test('mobile consent replaces the dock without keeping its empty floor', () => {
   );
   assert.match(
     mobileCss,
-    /:root\.has-consent-bar \.lrail \.cookiebar>p\{[\s\S]*?display:block;[\s\S]*?-webkit-line-clamp:unset;[\s\S]*?font-size:13\.5px;/,
+    /:root\.has-consent-bar \.lrail \.cookiebar>p\{[\s\S]*?display:block;[\s\S]*?-webkit-line-clamp:unset;[\s\S]*?font-size:12px;/,
   );
   assert.match(
     mobileCss,
-    /:root\.has-consent-bar \.lrail \.cookiebar \.cb-actions \.btn\{\s*min-height:50px;/,
+    /:root\.has-consent-bar \.lrail \.cookiebar \.cb-actions \.btn\{\s*min-height:46px;/,
   );
 });

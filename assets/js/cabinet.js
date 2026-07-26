@@ -1,7 +1,7 @@
 /* ============================================================
    ЛИЧНЫЙ КАБИНЕТ — заказы живут на сайте; Telegram-бот — зеркало
    для тех, кто его привязал. Доступ: токены заказов этого
-   устройства (salon_tokens), ссылка доступа #claim=<токен>
+   текущей вкладки (salon_tokens), ссылка доступа #claim=<токен>
    с другого устройства или вход через Telegram (Salon.tgLogin).
    Обновления мгновенные: long-poll /api/events (+ редкий страховочный
    поллинг). В фоновой вкладке события продолжают приходить — при
@@ -12,6 +12,7 @@ function initCabinet() {
   var S = window.Salon;
   var root = document.getElementById('cabRoot');
   if (!S || !S.api || !root) return;
+  var startupAccess = Promise.resolve();
 
   var st = {
     orders: [],       // список из /orders
@@ -167,13 +168,12 @@ function initCabinet() {
     protectedObjectUrls = [];
   }
   function protectedFetch(orderId, path) {
-    var h = orderHeaders(orderId);
-    var sess = S.api.token();
-    if (sess) h.Authorization = 'Bearer ' + sess;
+    var h = S.api.headers ? S.api.headers('GET', orderHeaders(orderId))
+      : orderHeaders(orderId);
     return fetch(S.api.base + path, {
       method: 'GET',
       headers: h,
-      credentials: 'same-origin',
+      credentials: 'include',
       cache: 'no-store'
     });
   }
@@ -416,8 +416,9 @@ function initCabinet() {
     st.busy = true;
     S.api.post('/auth/email/verify', { email: st.emailTo, code: code }).then(function (r) {
       st.busy = false;
-      if (!r.ok || !r.token) { toast(EMAIL_ERR[r.error] || 'Не получилось — попробуйте ещё раз'); return; }
-      S.api.setToken(r.token);
+      if (!r.ok || (!r.session && !r.token)) { toast(EMAIL_ERR[r.error] || 'Не получилось — попробуйте ещё раз'); return; }
+      if (r.token) S.api.setToken(r.token);
+      if (r.session && S.api.setSessionHint) S.api.setSessionHint(true);
       S.api.setUser(r.user || null);
       var gt = S.api.guestTokens();
       var fin = function () {
@@ -448,6 +449,15 @@ function initCabinet() {
     var m = s.match(/(?:claim|token)=([A-Za-z0-9_-]+)/);
     var tok = m ? m[1] : (/^[A-Za-z0-9_-]{16,}$/.test(s) ? s : '');
     if (!tok) { toast('Не похоже на ссылку доступа — скопируйте её целиком'); return; }
+    if (/^cx1_/.test(tok)) {
+      S.api.post('/orders/access/exchange', {}, { 'X-Claim-Exchange': tok }).then(function (r) {
+        if (!r || !r.ok) { toast('Ссылка уже использована или истекла — попросите новую'); return; }
+        if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
+        toast('Дело открыто на этом устройстве');
+        loadList();
+      });
+      return;
+    }
     S.api.get('/orders', ordersHeaders([tok])).then(function (r) {
       if (!r.ok) { toast('Не получилось связаться с картотекой — попробуйте ещё раз'); return; }
       if (!(r.orders || []).length) { toast('По этому коду дело не нашлось — проверьте ссылку'); return; }
@@ -2291,18 +2301,18 @@ function initCabinet() {
 
   /* -------- доступ к делу: секретная ссылка для других устройств --------
      uid=true — режим «Помощи», где блок рендерится ПО КАЖДОМУ делу:
-     id уникальные (иначе дубли secAccess), токен зашит в кнопку —
-     копироваться обязан токен ЭТОГО дела, а не текущего открытого */
+     id уникальные (иначе дубли secAccess); в DOM лежит номер дела,
+     а capability-токен читается из памяти только по явному действию */
   function accessBlock(o, uid) {
     var t = tokenFor(o.id);
     if (!t) return ''; /* заказы аккаунта открываются входом через Telegram */
     return fold(uid ? 'secAccess-' + o.id : 'secAccess',
       'Доступ к делу' + (uid ? ' ' + esc(o.no) : ''), 'ссылка для других устройств',
-      '<p class="case-sec__lead">Дело открывается на любом устройстве по секретной ссылке — сохраните её себе (заметки, «Избранное»). ' +
-      'Не пересылайте посторонним: у кого ссылка, тот видит дело. По желанию привяжите Telegram — статусы придут и в бота.</p>' +
+      '<p class="case-sec__lead">Секретная ссылка переносит гостевой доступ на другое устройство — сохраните её себе (заметки, «Избранное»). ' +
+      'Не пересылайте посторонним: до привязки аккаунта у кого ссылка, тот видит дело. Привязка через Telegram одноразовая: после подтверждения прежний ключ отзывается сервером.</p>' +
       '<div class="case-acts">' +
-      '<button type="button" class="btn btn-line" data-access-copy="' + esc(t) + '">Скопировать ссылку доступа</button>' +
-      '<a class="btn btn-line" href="https://t.me/academic_saloon_bot?start=claim_' + encodeURIComponent(t) + '" target="_blank" rel="noopener">Привязать Telegram</a>' +
+      '<button type="button" class="btn btn-line" data-access-copy data-order-id="' + o.id + '">Скопировать ссылку доступа</button>' +
+      '<button type="button" class="btn btn-line" data-secure-tg-link>Привязать Telegram одноразово</button>' +
       '</div>', false);
   }
 
@@ -3067,7 +3077,7 @@ function initCabinet() {
 
   function loadList(keepCurrent) {
     var t = S.api.token(), g = S.api.guestTokens();
-    if (!t && !g.length) {
+    if (!S.api.identified()) {
       /* если вход уже запущен (в т.ч. до перезагрузки страницы) — продолжаем ловить */
       var pending = S.resumeTgLogin(
         function (u) { toast('Вы вошли' + (u && u.name ? ', ' + u.name : '') + '.'); loadList(); },
@@ -3228,7 +3238,7 @@ function initCabinet() {
 
   function refreshListSilent() {
     var t = S.api.token(), g = S.api.guestTokens();
-    if (!t && !g.length) return;
+    if (!S.api.identified()) return;
     S.api.get('/orders', ordersHeaders(g)).then(function (r) {
       if (!r.ok) return;
       var mini = function (o) { return [o.id, o.status, o.unread, o.files_new, o.pinned, o.archived].join(':'); };
@@ -3505,10 +3515,9 @@ function initCabinet() {
     fd.append('file', f, f.name);
     var url = S.api.base + '/orders/' + st.currentId + '/upload' +
       (kind ? '?kind=' + encodeURIComponent(kind) : '');
-    var h = orderHeaders(st.currentId);
-    var sess = S.api.token();
-    if (sess) h.Authorization = 'Bearer ' + sess;
-    fetch(url, { method: 'POST', body: fd, headers: h })
+    var h = S.api.headers ? S.api.headers('POST', orderHeaders(st.currentId))
+      : orderHeaders(st.currentId);
+    fetch(url, { method: 'POST', body: fd, headers: h, credentials: 'include' })
       .then(function (resp) {
         if (resp.status === 413) throw new Error('too_big');
         if (!resp.ok) throw new Error('http_' + resp.status);
@@ -3714,11 +3723,15 @@ function initCabinet() {
     if (t.closest('#cabClaimBtn')) { claimByCode((document.getElementById('cabClaimIn') || {}).value); return; }
     var acp = t.closest('[data-access-copy]');
     if (acp) {
-      /* токен берём из самой кнопки: в «Помощи» блоки идут по каждому делу */
-      var atok = acp.getAttribute('data-access-copy') || tokenFor(st.currentId);
+      var accessOrderId = parseInt(acp.getAttribute('data-order-id'), 10) || st.currentId;
+      var atok = tokenFor(accessOrderId);
       if (atok && S.copy) S.copy(S.claimLink ? S.claimLink(atok) : atok).then(function (okc) {
         toast(okc ? 'Ссылка доступа скопирована — сохраните её себе' : 'Не удалось скопировать — выделите ссылку вручную');
       });
+      return;
+    }
+    if (t.closest('[data-secure-tg-link]')) {
+      doTgLogin(t.closest('[data-secure-tg-link]'));
       return;
     }
     if (t.closest('#cabNotiBtn')) { notiAsk(); return; }
@@ -3818,11 +3831,11 @@ function initCabinet() {
       });
       return;
     }
-    if (t.closest('#cabTgCancel')) { S.store.del('salon_auth_pending'); render(tplLogin(null)); return; }
+    if (t.closest('#cabTgCancel')) { S.secretStore.del('salon_auth_pending'); render(tplLogin(null)); return; }
     var oaBtn = t.closest('[data-oauth]');
     if (oaBtn) {
-      /* серверный OAuth: уходим к провайдеру, вернёмся с #oauth=токен */
-      window.location.href = S.api.base + '/auth/' + oaBtn.getAttribute('data-oauth') + '/start';
+      /* Сервер вернёт HttpOnly session cookie; секрет не попадает во фрагмент. */
+      window.location.href = S.api.base + '/auth/' + oaBtn.getAttribute('data-oauth') + '/start?mode=cookie';
       return;
     }
     var oaLink = t.closest('[data-oauth-link]');
@@ -3850,7 +3863,10 @@ function initCabinet() {
       }
       return;
     }
-    if (t.closest('#cabLogout')) { S.api.logout(); st.detail = null; loadList(); return; }
+    if (t.closest('#cabLogout')) {
+      S.api.logout().then(function () { st.detail = null; loadList(); });
+      return;
+    }
     var arBtn = t.closest('[data-sub-ar]');
     if (arBtn) {
       var arId = parseInt(arBtn.getAttribute('data-sub-ar'), 10);
@@ -4230,14 +4246,33 @@ function initCabinet() {
     if (TAB_HASHES.indexOf(h) >= 0 && (h !== st.tab || st.caseOpen)) { st.caseOpen = false; setTab(h, true); }
     else if (/^order-\d+/.test(h)) applyHash(h, true);
   });
-  /* ссылка доступа с другого устройства: #claim=<токен> (или ?claim=) */
+  /* Ссылка доступа с другого устройства: только #claim=<токен>.
+     Query-вариант намеренно не принимается: он попадает в access-log.
+     Если затем пользователь привязывает дело к аккаунту, сервер принимает
+     claim один раз и отзывает предъявленный гостевой ключ. */
   try {
-    var claimTok = (location.hash.match(/claim=([A-Za-z0-9_-]+)/) ||
-                    location.search.match(/claim=([A-Za-z0-9_-]+)/) || [])[1];
+    var claimTok = (location.hash.match(/claim=([A-Za-z0-9_-]+)/) || [])[1];
     if (claimTok) {
-      S.api.addGuestToken(claimTok);
       history.replaceState(null, '', location.pathname);
-      toast('Дело добавлено на это устройство');
+      if (/^cx1_/.test(claimTok)) {
+        startupAccess = S.api.post(
+          '/orders/access/exchange',
+          {},
+          { 'X-Claim-Exchange': claimTok }
+        ).then(function (r) {
+          if (!r || !r.ok) {
+            toast('Ссылка уже использована или истекла — попросите новую');
+            return r;
+          }
+          if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
+          toast('Дело добавлено на это устройство');
+          return r;
+        });
+      } else {
+        /* Migration grace for old raw fragment links. */
+        S.api.addGuestToken(claimTok);
+        toast('Дело добавлено на это устройство');
+      }
     }
   } catch (e) {}
   /* возврат из ВК/Mail.ru: сервер кладёт токен сессии во фрагмент адреса —
@@ -4246,11 +4281,17 @@ function initCabinet() {
     var oauthTok = (location.hash.match(/oauth=([A-Za-z0-9_-]+)/) || [])[1];
     var oauthErr = (location.hash.match(/oauth_err=([a-z_]+)/) || [])[1];
     if (oauthTok) {
-      S.api.setToken(oauthTok);
       history.replaceState(null, '', location.pathname);
-      var gtOa = S.api.guestTokens();
-      if (gtOa.length) S.api.post('/orders/claim', { tokens: gtOa });
-      toast('Вы вошли');
+      if (oauthTok === 'ok' || oauthTok === 'linked') {
+        if (S.api.setSessionHint) S.api.setSessionHint(true);
+        toast(oauthTok === 'linked' ? 'Профиль привязан' : 'Вы вошли');
+      } else {
+        /* Migration grace for provider callbacks opened before this release. */
+        S.api.setToken(oauthTok);
+        var gtOa = S.api.guestTokens();
+        if (gtOa.length) S.api.post('/orders/claim', { tokens: gtOa });
+        toast('Вы вошли');
+      }
     } else if (oauthErr) {
       history.replaceState(null, '', location.pathname);
       toast({
@@ -4303,8 +4344,10 @@ function initCabinet() {
       startPolling();
     });
   } else {
-    loadList();
-    startPolling();
+    Promise.all([S.api.ready || Promise.resolve(), startupAccess]).then(
+      function () { loadList(); startPolling(); },
+      function () { loadList(); startPolling(); }
+    );
   }
 
   /* гостям с заказом — раз за сессию напоминаем сохранить доступ к делу */

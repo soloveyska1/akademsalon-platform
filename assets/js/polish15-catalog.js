@@ -105,21 +105,21 @@
   }
 
   var pricedRoutes = {
-    'Реферат или эссе с нуля': { href: 'configurator.html', type: 'self', tier: 'vip' },
-    'Курсовая теория с нуля': { href: 'configurator.html', type: 'course', tier: 'vip' },
-    'Курсовая с исследованием с нуля': { href: 'configurator.html', type: 'course_emp', tier: 'vip' },
-    'ВКР или диплом с нуля': { href: 'configurator.html', type: 'diplom', tier: 'vip' },
-    'Магистерская с нуля': { href: 'configurator.html', type: 'master', tier: 'vip' },
+    'Реферат или эссе с нуля': { href: 'configurator.html?work=self&situation=topic&result=support&route=price', type: 'self', tier: 'vip' },
+    'Курсовая теория с нуля': { href: 'configurator.html?work=course&situation=topic&result=support&route=price', type: 'course', tier: 'vip' },
+    'Курсовая с исследованием с нуля': { href: 'configurator.html?work=course_emp&situation=topic&result=support&route=price', type: 'course_emp', tier: 'vip' },
+    'ВКР или диплом с нуля': { href: 'configurator.html?work=diplom&situation=topic&result=support&route=price', type: 'diplom', tier: 'vip' },
+    'Магистерская с нуля': { href: 'configurator.html?work=master&situation=topic&result=support&route=price', type: 'master', tier: 'vip' },
     'Комиссия №0 · курсовая': { href: 'configurator.html?service=k0', commissionWork: 'course' },
     'Комиссия №0 · ВКР': { href: 'configurator.html?service=k0', commissionWork: 'diplom' },
     'Комиссия №0 · магистерская': { href: 'configurator.html?service=k0', commissionWork: 'master' },
     'Разбор темы и плана': { href: 'configurator.html?service=pl' },
     'Разбор замечаний руководителя': { href: 'configurator.html?service=rv' },
-    'Курсовая работа': { href: 'configurator.html', type: 'course', tier: 'turn' },
-    'ВКР или дипломная': { href: 'configurator.html', type: 'diplom', tier: 'turn' },
+    'Редактура вашей курсовой': { href: 'configurator.html?work=course&situation=draft&result=editing&route=price', type: 'course', tier: 'turn' },
+    'Аудит и редактура вашей ВКР': { href: 'configurator.html?work=diplom&situation=draft&result=editing&route=price', type: 'diplom', tier: 'turn' },
     'Нормоконтроль': { href: 'configurator.html?service=nm' },
     'Проверка речи и презентации': { href: 'configurator.html?service=df' },
-    'Научная статья РИНЦ': { href: 'configurator.html', type: 'rinc', tier: 'turn' },
+    'Научная статья РИНЦ': { href: 'configurator.html?work=rinc&situation=draft&result=editing&route=price', type: 'rinc', tier: 'turn' },
     'Методическая сессия': { href: 'configurator.html?service=tu' }
   };
 

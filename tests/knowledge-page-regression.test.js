@@ -103,7 +103,7 @@ test('каждый гайд подключает финальный читате
     assert.doesNotMatch(html, /assets\/(?:css|js)\/knowledge\.(?:css|js)/, `${file}: no legacy runtime`);
     const article = jsonLd(html).find((item) => item['@type'] === 'Article');
     assert.ok(article, `${file}: Article`);
-    assert.equal(article.image, 'https://akademsalon.ru/assets/img/og-cover-v2.png', `${file}: image`);
+    assert.equal(article.image, 'https://akademsalon.ru/assets/img/og-cover-v3.png', `${file}: image`);
     assert.equal(article.author.url, 'https://akademsalon.ru/about.html', `${file}: author`);
     assert.equal(article.publisher.url, 'https://akademsalon.ru/', `${file}: publisher`);
     assert.equal(article.url, `https://akademsalon.ru/${file}`, `${file}: url`);
@@ -143,7 +143,8 @@ test('спецификация совпадает с отдельным утве
   assert.match(html, /body class="polish15-specification specification-page"/);
   assert.match(html, /data-specification-view="exact"/);
   assert.match(html, /data-specification-id="AS-SPEC-02"/);
-  assert.match(html, /data-specification-version="1\.0"/);
+  assert.match(html, /data-specification-version="1\.1"/);
+  assert.match(html, /<footer><span>Версия 1\.1<\/span>/);
   assert.equal((html.match(/data-specification-download/g) || []).length, 2);
   assert.equal((html.match(/class="spec-page-head"/g) || []).length, 1);
   assert.equal((html.match(/class="spec-paper"/g) || []).length, 1);
