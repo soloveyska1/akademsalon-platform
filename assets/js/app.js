@@ -296,6 +296,52 @@
     set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
     del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
   };
+  /* Посадочные уже знают тип, направление и формат помощи. Передаём этот
+     контекст единому конфигуратору по фактическим data-* атрибутам ссылки,
+     чтобы человек не повторял выбор, а видимый фасад и legacy-калькулятор
+     начинали с одного и того же черновика. Обработчик document выполняется
+     после старых inline-handler'ов ссылок и исправляет их прежние hardcode. */
+  document.addEventListener('click', function (event) {
+    var link = event.target && event.target.closest
+      ? event.target.closest('a[href*="configurator"][data-type]')
+      : null;
+    if (!link) return;
+    var type = link.getAttribute('data-type') || '';
+    var allowedTypes = ['diplom','master','chapter','kandidat','course','course_emp','practice','vak','scopus','rinc','self'];
+    if (allowedTypes.indexOf(type) < 0) return;
+    var disc = link.getAttribute('data-disc') || 'hum';
+    if (['hum','law','tech','med'].indexOf(disc) < 0) disc = 'hum';
+    var term = link.getAttribute('data-term') || 'free';
+    if (['free','mid','urgent'].indexOf(term) < 0) term = 'free';
+    var tier = link.getAttribute('data-tier') || 'base';
+    if (['base','turn','vip'].indexOf(tier) < 0) tier = 'base';
+    var situation = '';
+    try {
+      situation = new URL(link.href, location.href).searchParams.get('situation') || '';
+    } catch (e) {}
+    if (['topic','draft','comments','defense'].indexOf(situation) < 0) situation = '';
+    var result = { base:'diagnostic', turn:'editing', vip:'support' }[tier];
+    var draftId = '';
+    try { draftId = crypto.randomUUID(); }
+    catch (e) { draftId = 'draft_' + Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+    var draft = Salon.store.get('salon_draft', {}) || {};
+    draft.state = { type:type, disc:disc, term:term, tier:tier };
+    draft.idx = 0;
+    draft.plan = false;
+    draft.savedAt = Date.now();
+    draft.concept = {
+      version:2,
+      step:situation ? 2 : 1,
+      draftId:draftId,
+      workType:type,
+      situation:situation,
+      result:result,
+      deadlineDate:'',
+      deadlineFlexible:false,
+      entryPrefilled:true
+    };
+    Salon.store.set('salon_draft', draft);
+  });
   /* Отдельное согласие на необязательную аналитику. Старый v1 намеренно
      не мигрируем: его кнопка «Хорошо» не фиксировала предметный выбор.
      Через 12 месяцев и при новой версии текст согласия показывается заново. */

@@ -40,7 +40,8 @@ test('черновик услуги изолирован от черновика
 });
 
 test('формуляр показывает раздел 01 и не маскирует сетевой сбой под успех', () => {
-  assert.match(configurator, /data-tx-step="0">[\s\S]*?<span>01<\/span><strong>Ситуация<\/strong>/);
+  assert.match(configurator, /data-tx-step="0">[\s\S]*?<span>01<\/span><strong>Работа<\/strong>/);
+  assert.match(configurator, /var serviceSteps = \[[\s\S]*?key:'materials'[\s\S]*?key:'contact'/);
   assert.match(configurator, /id="conceptWizard"/);
   assert.doesNotMatch(configurator, /class="plan-form-head"/);
   assert.match(configurator, /if \(isPlanService && !failed\)/);

@@ -57,8 +57,8 @@
   var entryAllowed = replay || (directNavigation && !internalReferrer && !location.hash);
 
   try {
-    var seenThisSession = sessionStorage.getItem('salon_home_intro_v2') === '1';
-    var seenThisVersion = localStorage.getItem('salon_home_intro_v2') === '1';
+    var seenThisSession = sessionStorage.getItem('salon_home_intro_v3') === '1';
+    var seenThisVersion = localStorage.getItem('salon_home_intro_v3') === '1';
     if (!replay && (seenThisSession || seenThisVersion)) skip = true;
   } catch (error) {
     storageReady = false;
@@ -69,8 +69,8 @@
 
   if (shouldPlay) {
     try {
-      sessionStorage.setItem('salon_home_intro_v2', '1');
-      localStorage.setItem('salon_home_intro_v2', '1');
+      sessionStorage.setItem('salon_home_intro_v3', '1');
+      localStorage.setItem('salon_home_intro_v3', '1');
     } catch (error) {
       shouldPlay = false;
     }
@@ -122,7 +122,7 @@
       <p class="salon-intro__kicker">Редакторская мастерская · с 2020 года</p>
       <p class="salon-intro__title"><span>Академический</span> <span>Салон</span></p>
       <span class="salon-intro__rule"><i></i></span>
-      <p class="salon-intro__promise">Работаем, пока ты отдыхаешь — с гарантией.</p>
+      <p class="salon-intro__promise"><span class="salon-intro__promise-main">Работаем, пока ты отдыхаешь</span><span class="salon-intro__promise-proof"> — с гарантией.</span></p>
     </div>
     <div class="salon-intro__folio salon-intro__folio--bottom">
       <span>Аудит</span><i></i><span>Редактура</span><i></i><span>Консультации</span>
@@ -144,13 +144,13 @@
         <div class="home-hero__grid">
           <div class="home-hero__copy">
             <p class="eyebrow">Редакторская мастерская · с 2020 года</p>
-            <h1>Аудит, редактура<br>и консультации по академическим текстам.</h1>
+            <h1>Редакторское сопровождение<br>курсовых и ВКР.</h1>
             <p class="home-hero__lead">
-              Работаем с вашим материалом. Показываем, что требует внимания, объясняем правки
-              и заранее фиксируем результат услуги.
+              Разбираем задание, проверяем и редактируем ваш черновик, оформляем по методичке
+              и готовим вас к защите. Результат, срок и цена известны до оплаты.
             </p>
             <div class="home-hero__actions">
-              <a class="button button--primary button--large" href="/configurator.html">Описать задачу <span aria-hidden="true">→</span></a>
+              <a class="button button--primary button--large" href="/configurator.html">Подобрать формат помощи <span aria-hidden="true">→</span></a>
               <a class="button button--text" href="/tariffs.html">Посмотреть цены</a>
             </div>
             <dl class="home-hero__facts">

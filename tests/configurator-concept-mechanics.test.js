@@ -13,17 +13,20 @@ const mobileCss = read('assets/css/mobile.css');
 const appJs = read('assets/js/app.js');
 const indexHtml = read('index.html');
 
-test('homepage situation deep links enter the matching second wizard step', () => {
+test('homepage situation deep links preserve the situation and start with the work type', () => {
   assert.match(html, /situationCode = routeParams\.get\('situation'\)/);
   assert.match(html, /\['topic','draft','comments','defense'\]\.indexOf\(situationCode\) >= 0/);
-  assert.match(html, /state\.situation = situationCode;\s*state\.step = 1;\s*saveSelections\(\)/);
+  assert.match(html, /state\.step = 0;\s*state\.draftId = newDraftId\(\);\s*state\.situation = situationCode/);
+  assert.match(html, /title:'С какой работой нужна помощь\?'/);
   assert.match(html, /routeParams\.delete\('situation'\)/);
   assert.match(html, /history\.replaceState\(history\.state/);
 });
 
 test('approved wizard facade exposes the live quote and first cart action', () => {
   assert.match(html, /window\.SalonConfiguratorPreview = function/);
-  assert.match(html, /<dt>Ориентир стоимости<\/dt><dd>' \+ safeText\(priceText\)/);
+  assert.match(html, /<dt>Ориентир стоимости<\/dt><dd>' \+ safeText\(pricing\.priceText\)/);
+  assert.match(html, /function recommendationMarkup\(\)/);
+  assert.match(html, /До контактов уже видны состав, границы работы и ориентир стоимости/);
   assert.match(html, /cartHasItems \? 'Открыть состав сметы' : 'Открыть смету заказа'/);
   assert.match(html, /class="line-link concept-cart-link" type="button" data-cart-open/);
 });
@@ -35,11 +38,12 @@ test('multi-position flow returns to the visible concept wizard and keeps cart t
   assert.match(html, /window\.SalonCart\.contains\(window\.SalonCart\.currentItem\(\)\)/);
   assert.match(html, /Текущий выбор пока не входит в состав/);
   assert.match(html, /document\.addEventListener\('salon:cart'/);
-  assert.match(html, /if \(state\.step === 4\) render\(\)/);
+  assert.match(html, /key === 'recommendation' \|\| key === 'materials' \|\| key === 'contact'/);
 });
 
 test('concept draft updates the saved cart row in place and current-only benefits are materialized', () => {
-  assert.match(html, /draftId:saved\.draftId \|\| newDraftId\(\)/);
+  assert.match(html, /draftId:savedMatchesMode && saved\.draftId \? saved\.draftId : newDraftId\(\)/);
+  assert.match(html, /draft\.concept = concept/);
   assert.match(html, /sourceId:sourceId/);
   assert.match(html, /window\.SalonCart\.syncCurrent\(\{ quiet:true \}\)/);
   assert.match(html, /activeCart\.hasCheckoutIntent\(\)/);

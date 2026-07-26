@@ -45,25 +45,28 @@
       <img src="bimi/logo.svg" alt="" width="42" height="42" />
       <span><strong>Академический Салон</strong><small>Новая заявка</small></span>
     </a>
-    <div class="wprog" id="conceptProgress" role="progressbar" aria-label="Прогресс заявки" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1">
+    <div class="wprog" id="conceptProgress" role="progressbar" aria-label="Прогресс заявки" aria-valuemin="1" aria-valuemax="6" aria-valuenow="1">
       <div class="wp-track"><span class="wp-fill" id="conceptProgressFill"></span></div>
-      <span class="wp-lbl" id="conceptProgressLabel" aria-live="polite">Шаг 1 из 5</span>
+      <span class="wp-lbl" id="conceptProgressLabel" aria-live="polite">Шаг 1 из 6</span>
     </div>
     <ol class="tx-wizard-steps">
       <li class="tx-step is-current" data-tx-step="0">
-        <button type="button" data-concept-jump="0" aria-current="step"><span>01</span><strong>Ситуация</strong></button>
+        <button type="button" data-concept-jump="0" aria-current="step"><span>01</span><strong>Работа</strong></button>
       </li>
       <li class="tx-step" data-tx-step="1">
-        <button type="button" data-concept-jump="1" disabled><span>02</span><strong>Тип работы</strong></button>
+        <button type="button" data-concept-jump="1" disabled><span>02</span><strong>Что уже есть</strong></button>
       </li>
       <li class="tx-step" data-tx-step="2">
-        <button type="button" data-concept-jump="2" disabled><span>03</span><strong>Результат</strong></button>
+        <button type="button" data-concept-jump="2" disabled><span>03</span><strong>Помощь</strong></button>
       </li>
       <li class="tx-step" data-tx-step="3">
-        <button type="button" data-concept-jump="3" disabled><span>04</span><strong>Срок</strong></button>
+        <button type="button" data-concept-jump="3" disabled><span>04</span><strong>Рекомендация</strong></button>
       </li>
       <li class="tx-step" data-tx-step="4">
-        <button type="button" data-concept-jump="4" disabled><span>05</span><strong>Контакты</strong></button>
+        <button type="button" data-concept-jump="4" disabled><span>05</span><strong>Материалы</strong></button>
+      </li>
+      <li class="tx-step" data-tx-step="5">
+        <button type="button" data-concept-jump="5" disabled><span>06</span><strong>Контакты</strong></button>
       </li>
     </ol>
     <div class="tx-wizard-help">
@@ -259,7 +262,7 @@
 
 <div class="concept-task-bar" id="conceptTaskBar">
   <button type="button" class="concept-task-back" data-concept-back hidden>Назад</button>
-  <div><span data-concept-task-kicker>Шаг 1 из 5</span><strong data-concept-task-title>Ситуация</strong></div>
+  <div><span data-concept-task-kicker>Шаг 1 из 6</span><strong data-concept-task-title>Работа</strong></div>
   <button type="button" class="btn btn-wax" data-concept-next disabled>Продолжить <span aria-hidden="true">→</span></button>
 </div>
 
@@ -708,6 +711,11 @@ function initConf() {
         '<span class="ai-size">' + attSize(a.f.size) + '</span>' +
         '<button type="button" class="ai-x" data-att-x="' + i + '" aria-label="Убрать файл ' + esc(a.f.name) + '">×</button></div>';
     }).join('');
+    try {
+      document.dispatchEvent(new CustomEvent('salon:attachments', {
+        detail: { count: attQueue.length }
+      }));
+    } catch (e) {}
   }
   function attPush(files) {
     var added = 0, dup = 0, big = 0, over = false;
@@ -744,6 +752,24 @@ function initConf() {
       if (e.dataTransfer && e.dataTransfer.files) attPush(e.dataTransfer.files);
     });
   }
+  /* Видимый фасад не читает очищенный input[type=file]: очередь живёт здесь,
+     рядом с загрузкой. Узкий read-only bridge сохраняет единственный источник
+     вложений и не дублирует upload-механику. */
+  window.SalonAttachments = {
+    snapshot: function () {
+      return attQueue.map(function (a) {
+        return { name: a.f.name, size: a.f.size, status: a.st };
+      });
+    },
+    open: function () { if (attAdd) attAdd.click(); },
+    remove: function (index) {
+      index = Number(index);
+      if (!isFinite(index) || index < 0 || index >= attQueue.length) return false;
+      attQueue.splice(index, 1);
+      attRender();
+      return true;
+    }
+  };
 
   /* статусы файлов на экране успеха + последовательная загрузка */
   function doneAttRender() {
@@ -820,6 +846,7 @@ function initConf() {
       return;
     }
     /* калькулятор сопровождения хранит собственный независимый черновик */
+    var previousDraft = S.store.get('salon_draft', {}) || {};
     S.store.set('salon_draft', {
       state: { type: state.type, disc: state.disc, term: state.term, tier: state.tier },
       idx: idx,
@@ -832,6 +859,7 @@ function initConf() {
         contact: $('fContact') ? $('fContact').value : '',
         ct: ctKind
       },
+      concept: previousDraft.concept || null,
       savedAt: Date.now()
     });
   }
@@ -2339,79 +2367,169 @@ if (document.prerendering) {
   if (!host) return;
 
   var STORE_KEY = 'salon_concept_request_v1';
-  var steps = [
+  var STORE_VERSION = 2;
+  var routeParams = null;
+  var serviceCode = '';
+  var situationCode = '';
+  try {
+    routeParams = new URLSearchParams(location.search);
+    serviceCode = routeParams.get('service') || '';
+    situationCode = routeParams.get('situation') || '';
+  } catch (e) {}
+  var service = null;
+  if (serviceCode && window.SalonServices) {
+    window.SalonServices.forEach(function (item) {
+      if (!service && (item.code === serviceCode || item.id === serviceCode)) service = item;
+    });
+  }
+
+  var routeSteps = [
     {
-      key:'situation', kicker:'Шаг 1', title:'Что происходит с работой сейчас?',
-      lead:'Выберите ближайшую ситуацию. Это поможет не показывать лишние вопросы.',
+      key:'workType', kicker:'Шаг 1', title:'С какой работой нужна помощь?',
+      lead:'Выберите тип — покажем подходящие форматы и не будем задавать лишних вопросов.',
       options:[
-        ['topic','Есть тема или задание','Нужно проверить направление и собрать план.'],
-        ['draft','Есть черновик','Нужна оценка текста и список задач.'],
-        ['comments','Получены замечания','Нужно понять, что именно исправить.'],
+        ['diplom','ВКР или диплом','Маршрут, проверка разделов, редактура и защита.'],
+        ['course','Курсовая работа','От разбора задания до редакторской проверки.'],
+        ['master','Магистерская','Методология, данные и редактура вашего текста.'],
+        ['rinc','Научная статья','Логика, источники и редактура рукописи.'],
+        ['practice','Отчёт по практике','Структура и оформление реальных результатов.'],
+        ['self','Другое','Реферат, эссе или задача, которой нет в списке.']
+      ]
+    },
+    {
+      key:'situation', kicker:'Шаг 2', title:'Что уже есть?',
+      lead:'Выберите ближайшую ситуацию — так редактор увидит реальную точку старта.',
+      options:[
+        ['topic','Только тема или задание','Нужно разобрать требования и определить первый шаг.'],
+        ['draft','Есть мой черновик','Нужна оценка текста и понятный список задач.'],
+        ['comments','Получены замечания','Нужно разобрать комментарии и проверить правки.'],
         ['defense','Скоро сдача или защита','Нужна проверка готовности и приоритетов.']
       ]
     },
     {
-      key:'workType', kicker:'Шаг 2', title:'Какая это работа?',
-      lead:'Если подходящего варианта нет, выберите «Другое» и уточните в комментарии.',
+      key:'result', kicker:'Шаг 3', title:'Какая помощь нужна сейчас?',
+      lead:'Выберите первый самостоятельный результат. После выбора сразу покажем формат, состав и ориентир стоимости.',
       options:[
-        ['Курсовая работа','Курсовая работа','Ваш черновик целиком или отдельная глава.'],
-        ['ВКР или дипломная','ВКР или дипломная','Бакалавриат или специалитет.'],
-        ['Магистерская','Магистерская','Исследование, данные и апробация.'],
-        ['Научная статья','Научная статья','РИНЦ, ВАК или сборник.'],
-        ['Отчёт по практике','Отчёт по практике','Отчёт, дневник и приложения.'],
-        ['Другое','Другое','Опишите задачу на последнем шаге.']
+        ['diagnostic','Понять, что исправлять','Письменная диагностика и порядок действий.'],
+        ['editing','Отредактировать мой черновик','Согласованные правки и комментарии в документе.'],
+        ['formatting','Проверить оформление по методичке','Сверка требований и исправление оформления.'],
+        ['defense','Подготовиться к защите','Редактура вашей речи и слайдов, репетиция ответов.'],
+        ['support','Сопровождать по этапам','Проверка ваших версий, консультации и контроль маршрута.'],
+        ['recommendation','Нужна рекомендация','Редактор предложит первый формат после просмотра материалов.']
       ]
     },
     {
-      key:'result', kicker:'Шаг 3', title:'Какой результат нужен в первую очередь?',
-      lead:'Можно выбрать один вариант. Остальные задачи редактор предложит только после просмотра материалов.',
-      options:[
-        ['Диагностика','Понять, что исправлять','Письменный разбор и порядок действий.'],
-        ['Редактура','Доработать текст','Правки и комментарии в документе.'],
-        ['Оформление','Пройти нормоконтроль','Сверка с методичкой и исправления.'],
-        ['Защита','Подготовиться к защите','Проверить речь и слайды, провести репетицию.'],
-        ['Нужна рекомендация','Редактор поможет выбрать формат','Решение после первичной оценки.']
-      ]
+      key:'recommendation', kicker:'Шаг 4', title:'Вот что мы предлагаем',
+      lead:'Рекомендация собрана из ваших ответов. До контактов уже видны состав, границы работы и ориентир стоимости.',
+      options:[]
     },
     {
-      key:'deadline', kicker:'Шаг 4', title:'Когда нужен первый результат?',
-      lead:'Укажите реальный срок. Если редакция не сможет его соблюсти, вы узнаете об этом до оплаты.',
-      options:[
-        ['1–2 дня','В течение двух дней','Подходит только для отдельных задач.'],
-        ['3–5 дней','В течение рабочей недели','Обычно достаточно для диагностики и небольшого этапа.'],
-        ['1–2 недели','В течение двух недель','Подходит для редакторской работы по главам.'],
-        ['Срок обсуждается','Срок можно согласовать','Редактор предложит реалистичный график.']
-      ]
+      key:'materials', kicker:'Шаг 5', title:'Когда нужен результат и что уже можно показать?',
+      lead:'Реальная дата и материалы делают оценку точнее. Файлы можно не прикладывать, если их пока нет.',
+      options:[]
     },
     {
-      key:'contact', kicker:'Шаг 5', title:'Куда отправить предварительную оценку задачи?',
+      key:'contact', kicker:'Шаг 6', title:'Проверьте задачу и выберите способ ответа',
       lead:'Контакт нужен только для ответа по этой заявке. Рассылки включаются отдельным согласием.',
       options:[]
     }
   ];
+  var serviceSteps = [
+    {
+      key:'materials', kicker:'Шаг 1', title:service ? service.label : 'Детали услуги',
+      lead:service ? service.desc : 'Опишите задачу и приложите материалы для точной оценки.',
+      options:[]
+    },
+    {
+      key:'contact', kicker:'Шаг 2', title:'Проверьте задачу и выберите способ ответа',
+      lead:'Контакт нужен только для ответа по этой заявке. Рассылки включаются отдельным согласием.',
+      options:[]
+    }
+  ];
+  var steps = service ? serviceSteps : routeSteps;
 
   function safeText(value) {
     return String(value == null ? '' : value).replace(/[&<>"']/g,function (char) {
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char];
     });
   }
-  function readSaved() {
+  function storeGet(key, fallback) {
+    if (window.Salon && Salon.store) return Salon.store.get(key, fallback);
     try {
-      var value = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
-      return value && typeof value === 'object' ? value : {};
-    } catch (e) { return {}; }
+      var raw = localStorage.getItem(key);
+      return raw == null ? fallback : JSON.parse(raw);
+    } catch (e) { return fallback; }
+  }
+  function storeSet(key, value) {
+    if (window.Salon && Salon.store) return Salon.store.set(key, value);
+    try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+    catch (e) { return false; }
+  }
+  function normalizeWorkType(value) {
+    var map = {
+      'Курсовая работа':'course',
+      'ВКР или дипломная':'diplom',
+      'Магистерская':'master',
+      'Научная статья':'rinc',
+      'Отчёт по практике':'practice',
+      'Другое':'self',
+      course_emp:'course_emp'
+    };
+    value = map[value] || value || '';
+    return ['course','course_emp','diplom','master','chapter','kandidat','vak','scopus','rinc','practice','self'].indexOf(value) >= 0 ? value : '';
+  }
+  function normalizeResult(value) {
+    var map = {
+      'Диагностика':'diagnostic',
+      'Редактура':'editing',
+      'Оформление':'formatting',
+      'Защита':'defense',
+      'Сопровождение':'support',
+      'Нужна рекомендация':'recommendation',
+      base:'diagnostic',
+      turn:'editing',
+      vip:'support'
+    };
+    value = map[value] || value || '';
+    return ['diagnostic','editing','formatting','defense','support','recommendation'].indexOf(value) >= 0 ? value : '';
+  }
+  function readSaved() {
+    var draft = storeGet('salon_draft', {}) || {};
+    var value = draft.concept || storeGet(STORE_KEY, {}) || {};
+    if (!value || typeof value !== 'object') return {};
+    return {
+      version:Number(value.version) || 1,
+      mode:value.mode || 'route',
+      serviceCode:value.serviceCode || '',
+      step:Number(value.step) || 0,
+      draftId:value.draftId || '',
+      situation:['topic','draft','comments','defense'].indexOf(value.situation) >= 0 ? value.situation : '',
+      workType:normalizeWorkType(value.workType || (draft.state && draft.state.type)),
+      result:normalizeResult(value.result || (draft.state && draft.state.tier)),
+      deadlineDate:/^\d{4}-\d{2}-\d{2}$/.test(value.deadlineDate || '') ? value.deadlineDate : '',
+      deadlineFlexible:!!value.deadlineFlexible || value.deadline === 'Срок обсуждается',
+      entryPrefilled:!!value.entryPrefilled
+    };
   }
   function saveSelections() {
-    try {
-      localStorage.setItem(STORE_KEY, JSON.stringify({
-        step:state.step,
-        draftId:state.draftId,
-        situation:state.situation,
-        workType:state.workType,
-        result:state.result,
-        deadline:state.deadline
-      }));
-    } catch (e) {}
+    var concept = {
+      version:STORE_VERSION,
+      mode:service ? 'service' : 'route',
+      serviceCode:service ? (service.code || service.id || serviceCode) : '',
+      step:state.step,
+      draftId:state.draftId,
+      situation:state.situation,
+      workType:state.workType,
+      result:state.result,
+      deadlineDate:state.deadlineDate,
+      deadlineFlexible:state.deadlineFlexible,
+      entryPrefilled:state.entryPrefilled
+    };
+    var draft = storeGet('salon_draft', {}) || {};
+    draft.concept = concept;
+    storeSet('salon_draft', draft);
+    /* Один релиз сохраняем совместимость с уже выпущенным фасадом v1. */
+    storeSet(STORE_KEY, concept);
   }
 
   function newDraftId() {
@@ -2420,48 +2538,47 @@ if (document.prerendering) {
   }
 
   var saved = readSaved();
+  var savedMatchesMode = service
+    ? saved.mode === 'service' && saved.serviceCode === (service.code || service.id || serviceCode)
+    : saved.mode !== 'service';
   var state = {
-    step:Math.max(0,Math.min(4,Number(saved.step) || 0)),
-    draftId:saved.draftId || newDraftId(),
-    situation:saved.situation || '',
-    workType:saved.workType || '',
-    result:saved.result || '',
-    deadline:saved.deadline || '',
+    step:savedMatchesMode && saved.version >= STORE_VERSION
+      ? Math.max(0,Math.min(steps.length - 1,Number(saved.step) || 0)) : 0,
+    draftId:savedMatchesMode && saved.draftId ? saved.draftId : newDraftId(),
+    situation:savedMatchesMode ? saved.situation : '',
+    workType:savedMatchesMode ? saved.workType : '',
+    result:savedMatchesMode ? saved.result : '',
+    deadlineDate:savedMatchesMode ? saved.deadlineDate : '',
+    deadlineFlexible:savedMatchesMode ? saved.deadlineFlexible : false,
+    entryPrefilled:savedMatchesMode ? saved.entryPrefilled : false,
+    topic:'',
     name:'',
     contact:'',
     comment:'',
     consent:false
   };
-
-  var serviceCode = '', situationCode = '';
-  try {
-    var routeParams = new URLSearchParams(location.search);
-    serviceCode = routeParams.get('service') || '';
-    situationCode = routeParams.get('situation') || '';
-  } catch (e) {}
-  if (serviceCode) {
-    var serviceLabels = {
-      pl:'Разбор задачи и плана', ai:'Литературная редактура',
-      rv:'Экспертная диагностика', nm:'Нормоконтроль',
-      df:'Подготовка к защите', dp:'Оформление и защита',
-      tu:'Консультация'
-    };
-    state.step = 4;
-    state.situation = 'topic';
-    state.workType = serviceLabels[serviceCode] || 'Другое';
-    state.result = serviceCode === 'nm' ? 'Оформление' : serviceCode === 'df' || serviceCode === 'dp' ? 'Защита' : serviceCode === 'rv' ? 'Диагностика' : 'Редактура';
-    state.deadline = 'Срок обсуждается';
-    state.comment = serviceLabels[serviceCode] ? 'Выбрана услуга: ' + serviceLabels[serviceCode] + '.' : '';
+  if (service) {
+    state.result = serviceCode === 'nm' ? 'formatting'
+      : serviceCode === 'df' || serviceCode === 'dp' ? 'defense'
+      : serviceCode === 'rv' ? 'diagnostic' : 'editing';
+    var restoredTopic = document.getElementById('fTopic');
+    var restoredDeadline = document.getElementById('fDeadline');
+    if (restoredTopic && restoredTopic.value) state.topic = restoredTopic.value;
+    if (restoredDeadline && /^\d{4}-\d{2}-\d{2}$/.test(restoredDeadline.value)) {
+      state.deadlineDate = restoredDeadline.value;
+    }
   } else if (['topic','draft','comments','defense'].indexOf(situationCode) >= 0) {
-    /* В утверждённом концепте выбор ситуации с главной сразу открывает
-       второй шаг, сохраняя выбранную карточку как завершённый первый. */
+    /* Ситуация из входной CTA начинает новую задачу. Тип ещё неизвестен,
+       поэтому после перестановки экранов первым остаётся честный выбор работы. */
+    state.step = 0;
+    state.draftId = newDraftId();
     state.situation = situationCode;
-    state.step = 1;
+    state.workType = '';
+    state.result = '';
+    state.deadlineDate = '';
+    state.deadlineFlexible = false;
+    state.entryPrefilled = false;
     saveSelections();
-    /* Параметр нужен только как команда входа. Убираем его из текущей
-       записи истории, чтобы обычная перезагрузка продолжала сохранённый
-       шаг, а не возвращала человека ко второму экрану. Остальные метки
-       запроса (например, атрибуцию) сохраняем. */
     try {
       routeParams.delete('situation');
       var cleanQuery = routeParams.toString();
@@ -2493,30 +2610,17 @@ if (document.prerendering) {
   }
 
   function syncLegacy() {
-    var typeMap = {
-      'Курсовая работа':'course_emp',
-      'ВКР или дипломная':'diplom',
-      'Магистерская':'master',
-      'Научная статья':'rinc',
-      'Отчёт по практике':'practice',
-      'Другое':'self'
-    };
     var tierMap = {
-      'Диагностика':'base',
-      'Редактура':'turn',
-      'Оформление':'turn',
-      'Защита':'vip',
-      'Нужна рекомендация':'base'
+      diagnostic:'base',
+      editing:'turn',
+      formatting:'turn',
+      defense:'vip',
+      support:'vip',
+      recommendation:'base'
     };
-    var termMap = {
-      '1–2 дня':'urgent',
-      '3–5 дней':'urgent',
-      '1–2 недели':'mid',
-      'Срок обсуждается':'free'
-    };
-    if (typeMap[state.workType]) legacyClick('#typeGroup [data-id="' + typeMap[state.workType] + '"]');
-    if (tierMap[state.result]) legacyClick('#tierGroup [data-id="' + tierMap[state.result] + '"]');
-    if (termMap[state.deadline]) legacyClick('#segTerm [data-id="' + termMap[state.deadline] + '"]');
+    if (!service && state.workType) legacyClick('#typeGroup [data-id="' + state.workType + '"]');
+    if (!service && tierMap[state.result]) legacyClick('#tierGroup [data-id="' + tierMap[state.result] + '"]');
+    if (!service) legacyClick('#segTerm [data-id="' + deadlineBucket() + '"]');
 
     var name = document.getElementById('fName');
     var contact = document.getElementById('fContact');
@@ -2526,18 +2630,19 @@ if (document.prerendering) {
     var consent = document.getElementById('fConsent');
     if (name) name.value = state.name;
     if (contact) contact.value = state.contact;
-    if (topic) topic.value = state.workType === 'Другое' ? '' : state.workType;
-    if (deadline) deadline.value = state.deadline;
+    if (topic) topic.value = state.topic;
+    if (deadline) deadline.value = state.deadlineFlexible ? 'Согласовать с редактором' : state.deadlineDate;
     if (details) {
       var situation = {
-        topic:'Есть тема или задание',
-        draft:'Есть черновик',
+        topic:'Только тема или задание',
+        draft:'Есть мой черновик',
         comments:'Получены замечания',
         defense:'Скоро сдача или защита'
       }[state.situation] || '';
       var context = [
         situation ? 'Ситуация: ' + situation + '.' : '',
-        state.result ? 'Первый результат: ' + state.result + '.' : '',
+        state.result ? 'Первый результат: ' + resultLabel(state.result) + '.' : '',
+        service ? 'Выбрана услуга: ' + service.label + '.' : '',
         state.comment
       ].filter(Boolean).join('\n');
       details.value = context.slice(0,1200);
@@ -2552,15 +2657,73 @@ if (document.prerendering) {
   }
 
   function fileNames() {
-    var input = document.getElementById('fFiles');
-    if (!input || !input.files) return [];
-    return Array.prototype.map.call(input.files,function (file) { return file.name; });
+    if (window.SalonAttachments && window.SalonAttachments.snapshot) {
+      return window.SalonAttachments.snapshot().map(function (file) { return file.name; });
+    }
+    return [];
+  }
+  function fileCountText(count) {
+    count = Math.max(0,Number(count) || 0);
+    var mod10 = count % 10;
+    var mod100 = count % 100;
+    var word = mod10 === 1 && mod100 !== 11 ? 'файл'
+      : mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? 'файла'
+      : 'файлов';
+    return count + ' ' + word;
   }
 
-  function contactMarkup() {
-    var files = fileNames();
-    var authed = document.getElementById('ctAuthed');
-    var loggedIn = authed && !authed.hidden;
+  function typeLabel(value) {
+    return {
+      course:'Курсовая работа',
+      course_emp:'Курсовая с исследованием',
+      diplom:'ВКР или диплом',
+      master:'Магистерская',
+      chapter:'Глава исследования',
+      kandidat:'Диссертационное исследование',
+      vak:'Научная статья ВАК',
+      scopus:'Статья Scopus / Web of Science',
+      rinc:'Научная статья',
+      practice:'Отчёт по практике',
+      self:'Другая работа'
+    }[value] || 'Работа не выбрана';
+  }
+  function situationLabel(value) {
+    return {
+      topic:'Только тема или задание',
+      draft:'Есть мой черновик',
+      comments:'Получены замечания',
+      defense:'Скоро сдача или защита'
+    }[value] || 'Не указано';
+  }
+  function resultLabel(value) {
+    return {
+      diagnostic:'Диагностика',
+      editing:'Редактура вашего текста',
+      formatting:'Оформление по методичке',
+      defense:'Подготовка к защите',
+      support:'Поэтапное сопровождение автора',
+      recommendation:'Рекомендация редактора'
+    }[value] || 'Не указано';
+  }
+  function deadlineBucket() {
+    if (state.deadlineFlexible || !state.deadlineDate) return 'free';
+    var target = new Date(state.deadlineDate + 'T12:00:00');
+    var today = new Date();
+    today.setHours(12,0,0,0);
+    var days = Math.ceil((target.getTime() - today.getTime()) / 86400000);
+    return days <= 14 ? 'urgent' : days <= 30 ? 'mid' : 'free';
+  }
+  function formatDate(value) {
+    if (!value) return '';
+    try {
+      return new Intl.DateTimeFormat('ru-RU', { day:'numeric', month:'long', year:'numeric' })
+        .format(new Date(value + 'T12:00:00'));
+    } catch (e) { return value; }
+  }
+  function money(value) {
+    return Math.max(0,Math.round(Number(value) || 0)).toLocaleString('ru-RU') + ' ₽';
+  }
+  function quoteInfo() {
     var quote = null;
     var cartHasItems = !!(window.SalonCart && window.SalonCart.hasItems && window.SalonCart.hasItems());
     var currentIncluded = true;
@@ -2571,28 +2734,199 @@ if (document.prerendering) {
       currentIncluded = !cartHasItems || !window.SalonCart.contains || !window.SalonCart.currentItem ||
         window.SalonCart.contains(window.SalonCart.currentItem());
     } catch (e) {}
-    function money(value) {
-      return Math.max(0,Math.round(Number(value) || 0)).toLocaleString('ru-RU') + ' ₽';
-    }
     var priceText = 'после просмотра материалов';
     if (quote && quote.low) {
       priceText = quote.fixed
         ? money(quote.low)
         : 'от ' + money(quote.low) + (quote.high && quote.high > quote.low ? ' до ' + money(quote.high) : '');
     }
-    var cartCount = cartHasItems && window.SalonCart.lineCount ? window.SalonCart.lineCount() : 0;
+    return {
+      quote:quote,
+      cartHasItems:cartHasItems,
+      currentIncluded:currentIncluded,
+      priceText:priceText,
+      cartCount:cartHasItems && window.SalonCart.lineCount ? window.SalonCart.lineCount() : 0
+    };
+  }
+  function recommendationFor() {
+    var effective = state.result;
+    if (effective === 'recommendation') {
+      effective = state.situation === 'topic' ? 'support'
+        : state.situation === 'defense' ? 'defense' : 'diagnostic';
+    }
+    if (service) {
+      return {
+        title:service.label,
+        description:service.desc,
+        first:'Проверка материалов и точная спецификация услуги',
+        duration:'после просмотра задачи',
+        editor:'Выполнит только действия, перечисленные в согласованной спецификации.',
+        client:'Материалы, требования и содержательные решения автора.'
+      };
+    }
+    var items = {
+      diagnostic:{
+        title:state.situation === 'topic' ? 'Стартовая диагностика' : 'Диагностика черновика',
+        description:'Редактор разберёт требования и материал, отметит риски и соберёт последовательный план действий.',
+        first:'Письменная карта замечаний и приоритетов',
+        duration:'обычно 1–2 рабочих дня',
+        editor:'Проверит структуру, логику, требования и объяснит, что исправлять сначала.',
+        client:'Задание, методичка и ваш черновик, если он уже есть.'
+      },
+      editing:{
+        title:'Редактура вашего текста',
+        description:'Согласованные правки будут внесены в предоставленный документ с понятными комментариями редактора.',
+        first:'Отредактированный фрагмент или первый этап',
+        duration:'срок зависит от объёма',
+        editor:'Исправит язык, логику изложения и отмеченные в спецификации фрагменты.',
+        client:'Ваш черновик, требования и подтверждение содержательных решений.'
+      },
+      formatting:{
+        title:'Оформление по методичке',
+        description:'Редактор сверит предоставленный файл с требованиями и подготовит его к нормоконтролю.',
+        first:'Проверенный и оформленный документ',
+        duration:'обычно 1–3 рабочих дня',
+        editor:'Проверит поля, стили, ссылки, список литературы, титул и приложения.',
+        client:'Файл работы и актуальная методичка кафедры.'
+      },
+      defense:{
+        title:'Подготовка к защите',
+        description:'Проверим и отредактируем вашу речь и слайды, затем отрепетируем ответы на вероятные вопросы.',
+        first:'Правки речи и презентации, сценарий репетиции',
+        duration:'по дате вашей защиты',
+        editor:'Проверит связность выступления, слайды и проведёт репетицию.',
+        client:'Ваш текст, черновик речи, презентация и регламент защиты.'
+      },
+      support:{
+        title:'Поэтапное сопровождение автора',
+        description:'Редактор поможет выстроить маршрут, будет проверять ваши версии и фиксировать следующий этап.',
+        first:'Карта этапов и первая редакторская проверка',
+        duration:'по согласованному календарю',
+        editor:'Проверяет версии, консультирует, редактирует и контролирует согласованный маршрут.',
+        client:'Самостоятельная содержательная работа, данные и версии по календарю.'
+      }
+    };
+    return items[effective] || items.diagnostic;
+  }
+  function recommendationMarkup() {
+    var rec = recommendationFor();
+    var pricing = quoteInfo();
+    return (
+      '<div class="recommendation-card">' +
+        '<section class="recommendation-card__main">' +
+          '<p class="eyebrow">Вам подходит</p>' +
+          '<h2>' + safeText(rec.title) + '</h2>' +
+          '<p class="recommendation-card__lead">' + safeText(rec.description) + '</p>' +
+          '<dl class="recommendation-facts">' +
+            '<div><dt>Первый результат</dt><dd>' + safeText(rec.first) + '</dd></div>' +
+            '<div><dt>Обычно</dt><dd>' + safeText(rec.duration) + '</dd></div>' +
+            '<div><dt>Ориентир</dt><dd>' + safeText(pricing.priceText) + '</dd></div>' +
+          '</dl>' +
+          '<div class="recommendation-scope">' +
+            '<div><span>Что сделает редактор</span><p>' + safeText(rec.editor) + '</p></div>' +
+            '<div><span>Что потребуется от вас</span><p>' + safeText(rec.client) + '</p></div>' +
+          '</div>' +
+          '<p class="recommendation-note"><strong>Работа остаётся вашей.</strong> Мы консультируем, проверяем и редактируем предоставленные материалы; содержательную часть учебной или аттестационной работы вместо автора не выполняем.</p>' +
+        '</section>' +
+        '<aside class="wizard-summary">' +
+          '<p class="eyebrow">Ваш выбор</p>' +
+          '<h2>' + safeText(typeLabel(state.workType)) + '</h2>' +
+          '<dl><div><dt>Что уже есть</dt><dd>' + safeText(situationLabel(state.situation)) + '</dd></div>' +
+          '<div><dt>Приоритет</dt><dd>' + safeText(resultLabel(state.result)) + '</dd></div>' +
+          '<div><dt>Стоимость</dt><dd>' + safeText(pricing.priceText) + '</dd></div></dl>' +
+          '<button class="line-link" type="button" data-concept-edit>Изменить выбор <span aria-hidden="true">←</span></button>' +
+        '</aside>' +
+      '</div>'
+    );
+  }
+  function minDate() {
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = String(now.getMonth() + 1).padStart(2,'0');
+    var d = String(now.getDate()).padStart(2,'0');
+    return y + '-' + m + '-' + d;
+  }
+  function filesMarkup() {
+    var files = fileNames();
+    return (
+      '<button class="file-drop" type="button" data-concept-files>' +
+        '<span class="file-drop__icon" aria-hidden="true">+</span>' +
+        '<span><strong>Добавить материалы</strong><small>Word, PDF, изображения · до 5 файлов по 20 МБ</small></span>' +
+      '</button>' +
+      '<div class="file-list" data-concept-file-list>' +
+        files.map(function (file,index) {
+          return '<span><i aria-hidden="true">DOC</i>' + safeText(file) +
+            '<button type="button" data-concept-remove-file="' + index + '" aria-label="Удалить ' + safeText(file) + '">×</button></span>';
+        }).join('') +
+      '</div>'
+    );
+  }
+  function serviceQuestionsComplete() {
+    if (!service || !service.ask || !service.ask.length) return true;
+    return service.ask.every(function (question) {
+      if (!question.req) return true;
+      if (question.type === 'chips') {
+        return !!document.querySelector('#svcAsk [data-ask="' + question.id + '"].on');
+      }
+      var input = document.getElementById('ask_' + question.id);
+      return !!(input && input.value.trim());
+    });
+  }
+  function materialsMarkup() {
+    var rec = recommendationFor();
+    var files = fileNames();
+    var dateText = state.deadlineFlexible ? 'Согласовать с редактором'
+      : (formatDate(state.deadlineDate) || 'Не указана');
+    return (
+      '<div class="materials-step">' +
+        '<div class="materials-step__main">' +
+          '<section class="materials-card">' +
+            (service && legacyAsk && legacyAsk.children.length
+              ? '<section class="concept-service-questions"><p class="eyebrow">Детали услуги</p><div data-concept-service-ask></div></section>'
+              : '') +
+            '<label class="field"><span>Тема или формулировка задания · если уже есть</span><input type="text" data-concept-field="topic" value="' + safeText(state.topic) + '" placeholder="Вставьте тему или коротко опишите задачу"></label>' +
+            '<label class="field"><span>Требования, замечания или важный контекст</span><textarea rows="5" data-concept-field="comment" placeholder="Методичка, пожелания руководителя, что уже пробовали">' + safeText(state.comment) + '</textarea></label>' +
+            '<div class="deadline-field">' +
+              '<label class="field"><span>Когда нужен первый результат?</span><input type="date" min="' + minDate() + '" data-concept-field="deadlineDate" value="' + safeText(state.deadlineDate) + '" ' + (state.deadlineFlexible ? 'disabled' : '') + '></label>' +
+              '<label class="deadline-flex"><input type="checkbox" data-concept-deadline-flex ' + (state.deadlineFlexible ? 'checked' : '') + '><span>Дата пока неизвестна — согласовать с редактором</span></label>' +
+            '</div>' +
+            filesMarkup() +
+            '<p class="materials-hint">Файлы необязательны, но тема, методичка или черновик сделают оценку заметно точнее.</p>' +
+          '</section>' +
+        '</div>' +
+        '<aside class="wizard-summary">' +
+          '<p class="eyebrow">Предварительно</p>' +
+          '<h2>' + safeText(rec.title) + '</h2>' +
+          '<dl><div><dt>Первый результат</dt><dd>' + safeText(rec.first) + '</dd></div>' +
+          '<div><dt>Дата</dt><dd>' + safeText(dateText) + '</dd></div>' +
+          '<div><dt>Материалы</dt><dd>' + fileCountText(files.length) + '</dd></div></dl>' +
+          '<p>Точный состав, срок и стоимость редактор подтвердит до оплаты.</p>' +
+        '</aside>' +
+      '</div>'
+    );
+  }
+
+  function contactMarkup() {
+    var files = fileNames();
+    var authed = document.getElementById('ctAuthed');
+    var loggedIn = authed && !authed.hidden;
+    var pricing = quoteInfo();
+    var cartHasItems = pricing.cartHasItems;
+    var currentIncluded = pricing.currentIncluded;
+    var cartCount = pricing.cartCount;
     var summaryTitle = cartHasItems
       ? 'Смета заказа · ' + cartCount + ' ' + (cartCount === 1 ? 'позиция' : (cartCount < 5 ? 'позиции' : 'позиций'))
-      : (state.workType || 'Задача не выбрана');
+      : (service ? service.label : recommendationFor().title);
     var summaryRows = cartHasItems
       ? '<div><dt>Состав</dt><dd>' + safeText(window.SalonCart.items().map(function (item) { return item.label; }).join(' · ')) + '</dd></div>' +
         '<div><dt>Позиций</dt><dd>' + cartCount + '</dd></div>' +
         '<div><dt>Статус</dt><dd>предварительная спецификация</dd></div>'
-      : '<div><dt>Ситуация</dt><dd>' + safeText({topic:'Есть тема или задание',draft:'Есть черновик',comments:'Получены замечания',defense:'Скоро сдача'}[state.situation] || '—') + '</dd></div>' +
-        '<div><dt>Первый результат</dt><dd>' + safeText(state.result || '—') + '</dd></div>' +
-        '<div><dt>Срок</dt><dd>' + safeText(state.deadline || '—') + '</dd></div>';
+      : (service ? '' : '<div><dt>Работа</dt><dd>' + safeText(typeLabel(state.workType)) + '</dd></div>') +
+        '<div><dt>Первый результат</dt><dd>' + safeText(service ? service.label : resultLabel(state.result)) + '</dd></div>' +
+        '<div><dt>Срок</dt><dd>' + safeText(state.deadlineFlexible ? 'Согласовать' : (formatDate(state.deadlineDate) || '—')) + '</dd></div>' +
+        '<div><dt>Материалы</dt><dd>' + fileCountText(files.length) + '</dd></div>';
     return (
-      '<div class="contact-step">' +
+      '<div class="contact-step review-step">' +
         '<div class="contact-step__form">' +
           '<div class="concept-telegram-row">' +
             (loggedIn
@@ -2601,28 +2935,19 @@ if (document.prerendering) {
           '</div>' +
           '<label class="field"><span>Имя</span><input type="text" data-concept-field="name" value="' + safeText(state.name) + '" placeholder="Как к вам обращаться"></label>' +
           '<label class="field"><span>Telegram, телефон или почта</span><input type="text" data-concept-field="contact" value="' + safeText(state.contact) + '" placeholder="Имя пользователя, +7… или name@example.ru"></label>' +
-          '<label class="field field--wide"><span>Что важно учесть</span><textarea rows="5" data-concept-field="comment" placeholder="Можно перечислить замечания, требования или вопросы">' + safeText(state.comment) + '</textarea></label>' +
-          '<button class="file-drop" type="button" data-concept-files>' +
-            '<span class="file-drop__icon" aria-hidden="true">+</span>' +
-            '<span><strong>Добавить материалы</strong><small>Word, PDF, изображения · до 5 файлов по 20 МБ</small></span>' +
-          '</button>' +
-          '<div class="file-list" data-concept-file-list>' +
-            files.map(function (file,index) { return '<span><i aria-hidden="true">DOC</i>' + safeText(file) + '<button type="button" data-concept-remove-file="' + index + '" aria-label="Удалить ' + safeText(file) + '">×</button></span>'; }).join('') +
-          '</div>' +
           '<label class="consent-check">' +
             '<input type="checkbox" data-concept-consent ' + (state.consent ? 'checked' : '') + '>' +
             '<span><strong>Уведомление прочитано.</strong> Я ознакомился с обработкой данных и файлов, необходимых для оценки заявки. Аналитика, рассылки и программа лояльности подключаются отдельным выбором. <a href="consent-request.html" target="_blank" rel="noopener">Как обрабатываются данные</a></span>' +
           '</label>' +
-          (serviceCode && legacyAsk && legacyAsk.children.length ? '<section class="concept-service-questions"><p class="eyebrow">Детали услуги</p><div data-concept-service-ask></div></section>' : '') +
         '</div>' +
         '<aside class="wizard-summary">' +
           '<p class="eyebrow">Предварительно</p>' +
           '<h2>' + safeText(summaryTitle) + '</h2>' +
           '<dl>' +
             summaryRows +
-            '<div><dt>Ориентир стоимости</dt><dd>' + safeText(priceText) + '</dd></div>' +
+            '<div><dt>Ориентир стоимости</dt><dd>' + safeText(pricing.priceText) + '</dd></div>' +
           '</dl>' +
-          '<p>Точную стоимость редактор зафиксирует после просмотра материалов.</p>' +
+          '<p>Отправка бесплатна. Точную стоимость редактор зафиксирует после просмотра материалов — до оплаты.</p>' +
           (!currentIncluded
             ? '<div class="wizard-summary__notice">Текущий выбор пока не входит в состав. Откройте смету и добавьте его отдельной строкой, если он нужен в заказе.</div>'
             : '') +
@@ -2634,15 +2959,21 @@ if (document.prerendering) {
     );
   }
 
+  function nextLabel() {
+    var key = steps[state.step].key;
+    if (key === 'contact') return 'Отправить на оценку';
+    if (key === 'recommendation') return 'Уточнить срок и материалы';
+    if (key === 'materials') return 'Перейти к контактам';
+    return 'Продолжить';
+  }
   function footerMarkup() {
-    var final = state.step === 4;
     return (
       '<footer class="wizard-main__footer">' +
-        '<div class="wizard-save"><i aria-hidden="true"></i><span><strong>Выбранный шаг сохраняется</strong><small>Контакты и текст не сохраняются при перезагрузке или закрытии вкладки</small></span></div>' +
+        '<div class="wizard-save"><i aria-hidden="true"></i><span><strong>Маршрут сохраняется на этом устройстве</strong><small>Контакт, текст и файлы в черновик фасада не записываются</small></span></div>' +
         '<div>' +
           (state.step > 0 ? '<button class="button button--secondary" type="button" data-concept-back>Назад</button>' : '') +
           '<button class="button button--primary" type="button" data-concept-next ' + (!canContinue() ? 'disabled' : '') + '>' +
-            (final ? 'Подготовить заявку' : 'Продолжить') + ' <span aria-hidden="true">→</span>' +
+            nextLabel() + ' <span aria-hidden="true">→</span>' +
           '</button>' +
         '</div>' +
       '</footer>'
@@ -2650,7 +2981,12 @@ if (document.prerendering) {
   }
 
   function canContinue() {
-    if (state.step < 4) return !!currentSelection();
+    var key = steps[state.step].key;
+    if (key === 'workType' || key === 'situation' || key === 'result') return !!currentSelection();
+    if (key === 'recommendation') return !!(state.workType && state.situation && state.result);
+    if (key === 'materials') {
+      return !!((state.deadlineDate || state.deadlineFlexible) && serviceQuestionsComplete());
+    }
     var authed = !!(window.Salon && Salon.api && Salon.api.token && Salon.api.token());
     return !!((authed || state.contact.trim()) && state.consent);
   }
@@ -2660,15 +2996,20 @@ if (document.prerendering) {
     var step = steps[state.step];
     var selected = currentSelection();
     var cards = '';
-    if (state.step < 4) {
+    if (step.options.length) {
       cards = '<div class="decision-grid ' + (step.options.length > 4 ? 'decision-grid--compact' : '') + '" data-concept-options>' +
         step.options.map(function (option) {
           var active = selected === option[0];
           return '<button class="decision-card ' + (active ? 'is-selected' : '') + '" type="button" data-concept-choice="' + safeText(option[0]) + '" aria-pressed="' + active + '">' +
             '<span class="decision-card__radio" aria-hidden="true"><i></i></span>' +
-            '<span><strong>' + option[1] + '</strong><small>' + option[2] + '</small></span>' +
+            '<span><strong>' + safeText(option[1]) + '</strong><small>' + safeText(option[2]) + '</small></span>' +
           '</button>';
-        }).join('') + '</div>';
+        }).join('') + '</div>' +
+        '<p class="concept-scope-note">Работаем с вашими материалами: консультируем, проверяем и редактируем. Содержательные решения остаются за автором.</p>';
+    } else if (step.key === 'recommendation') {
+      cards = recommendationMarkup();
+    } else if (step.key === 'materials') {
+      cards = materialsMarkup();
     } else {
       cards = contactMarkup();
     }
@@ -2684,7 +3025,7 @@ if (document.prerendering) {
       cards +
       footerMarkup();
 
-    if (serviceCode && state.step === 4 && legacyAsk && legacyAsk.children.length) {
+    if (service && step.key === 'materials' && legacyAsk && legacyAsk.children.length) {
       var slot = host.querySelector('[data-concept-service-ask]');
       if (slot) {
         legacyAsk.hidden = false;
@@ -2698,15 +3039,22 @@ if (document.prerendering) {
   }
 
   function updateChrome() {
+    var count = steps.length;
     var progress = document.getElementById('conceptProgress');
     var fill = document.getElementById('conceptProgressFill');
     var label = document.getElementById('conceptProgressLabel');
+    if (progress) progress.style.display = '';
+    if (progress) progress.setAttribute('aria-valuemax',String(count));
     if (progress) progress.setAttribute('aria-valuenow',String(state.step + 1));
-    if (fill) fill.style.width = ((state.step + 1) * 20) + '%';
-    if (label) label.textContent = 'Шаг ' + (state.step + 1) + ' из 5';
+    if (fill) fill.style.width = ((state.step + 1) * 100 / count) + '%';
+    if (label) label.textContent = 'Шаг ' + (state.step + 1) + ' из ' + count;
+    var routeTitles = ['Работа','Что уже есть','Помощь','Рекомендация','Материалы','Контакты'];
+    var serviceTitles = ['Детали и материалы','Контакты'];
     document.querySelectorAll('[data-tx-step]').forEach(function (item,index) {
       var button = item.querySelector('button');
       var marker = button && button.querySelector('span');
+      var title = button && button.querySelector('strong');
+      item.hidden = index >= count;
       item.classList.toggle('is-current',index === state.step);
       item.classList.toggle('is-done',index < state.step);
       if (button) {
@@ -2715,26 +3063,28 @@ if (document.prerendering) {
         else button.removeAttribute('aria-current');
       }
       if (marker) marker.textContent = String(index + 1).padStart(2,'0');
+      if (title && index < count) title.textContent = (service ? serviceTitles : routeTitles)[index];
     });
 
     document.querySelectorAll('[data-conf-step]').forEach(function (node) {
-      node.textContent = 'Шаг ' + (state.step + 1) + ' / 5';
+      node.textContent = 'Шаг ' + (state.step + 1) + ' / ' + count;
     });
     var taskKicker = document.querySelector('[data-concept-task-kicker]');
     var taskTitle = document.querySelector('[data-concept-task-title]');
-    if (taskKicker) taskKicker.textContent = 'Шаг ' + (state.step + 1) + ' из 5';
-    if (taskTitle) taskTitle.textContent = ['Ситуация','Тип работы','Результат','Срок','Контакты'][state.step];
+    if (taskKicker) taskKicker.textContent = 'Шаг ' + (state.step + 1) + ' из ' + count;
+    if (taskTitle) taskTitle.textContent = (service ? serviceTitles : routeTitles)[state.step];
     document.querySelectorAll('#conceptTaskBar [data-concept-back]').forEach(function (button) {
       button.hidden = state.step === 0;
     });
     document.querySelectorAll('#conceptTaskBar [data-concept-next]').forEach(function (button) {
       button.disabled = !canContinue();
-      button.innerHTML = (state.step === 4 ? 'Подготовить заявку' : 'Продолжить') + ' <span aria-hidden="true">→</span>';
+      button.innerHTML = nextLabel() + ' <span aria-hidden="true">→</span>';
     });
   }
 
   function choose(value) {
     state[steps[state.step].key] = value;
+    if (steps[state.step].key === 'result') state.entryPrefilled = false;
     saveSelections();
     syncLegacy();
     syncStoredCurrent();
@@ -2742,7 +3092,7 @@ if (document.prerendering) {
   }
 
   function go(next) {
-    state.step = Math.max(0,Math.min(4,next));
+    state.step = Math.max(0,Math.min(steps.length - 1,next));
     saveSelections();
     render();
     try { window.scrollTo({top:0,behavior:window.Salon && Salon.reduceMotion ? 'auto' : 'smooth'}); } catch (e) { window.scrollTo(0,0); }
@@ -2763,7 +3113,10 @@ if (document.prerendering) {
     state.situation = '';
     state.workType = '';
     state.result = '';
-    state.deadline = '';
+    state.deadlineDate = '';
+    state.deadlineFlexible = false;
+    state.entryPrefilled = false;
+    state.topic = '';
     state.comment = '';
     saveSelections();
     syncLegacy();
@@ -2786,8 +3139,17 @@ if (document.prerendering) {
 
   function next() {
     if (!canContinue()) return;
-    if (state.step === 4) submit();
-    else go(state.step + 1);
+    if (steps[state.step].key === 'contact') {
+      submit();
+      return;
+    }
+    /* Посадочная с выбранным data-tier уже определила результат. После
+       ситуации показываем рекомендацию, не заставляя повторять выбор. */
+    if (!service && steps[state.step].key === 'situation' && state.entryPrefilled && state.result) {
+      go(3);
+      return;
+    }
+    go(state.step + 1);
   }
 
   function bindRendered() {
@@ -2802,13 +3164,24 @@ if (document.prerendering) {
     });
     host.querySelectorAll('[data-concept-field]').forEach(function (field) {
       field.addEventListener('input',function () {
-        state[field.getAttribute('data-concept-field')] = field.value;
+        var key = field.getAttribute('data-concept-field');
+        state[key] = field.value;
+        if (key === 'deadlineDate' && field.value) state.deadlineFlexible = false;
+        if (key === 'deadlineDate') saveSelections();
         syncLegacy();
         syncStoredCurrent();
         updateChrome();
         var footerNext = host.querySelector('[data-concept-next]');
         if (footerNext) footerNext.disabled = !canContinue();
       });
+    });
+    var deadlineFlex = host.querySelector('[data-concept-deadline-flex]');
+    if (deadlineFlex) deadlineFlex.addEventListener('change',function () {
+      state.deadlineFlexible = deadlineFlex.checked;
+      if (state.deadlineFlexible) state.deadlineDate = '';
+      saveSelections();
+      syncLegacy();
+      render();
     });
     var consent = host.querySelector('[data-concept-consent]');
     if (consent) consent.addEventListener('change',function () {
@@ -2820,19 +3193,18 @@ if (document.prerendering) {
     });
     var fileButton = host.querySelector('[data-concept-files]');
     if (fileButton) fileButton.addEventListener('click',function () {
-      var add = document.getElementById('attAdd');
-      if (add) add.click();
+      if (window.SalonAttachments && window.SalonAttachments.open) window.SalonAttachments.open();
     });
     host.querySelectorAll('[data-concept-remove-file]').forEach(function (button) {
       button.addEventListener('click',function () {
         var index = Number(button.getAttribute('data-concept-remove-file'));
-        var remove = document.querySelectorAll('#attList .ai-x')[index];
-        if (remove) {
-          remove.click();
-          setTimeout(render,0);
+        if (window.SalonAttachments && window.SalonAttachments.remove) {
+          window.SalonAttachments.remove(index);
         }
       });
     });
+    var edit = host.querySelector('[data-concept-edit]');
+    if (edit) edit.addEventListener('click',function () { go(2); });
     var telegram = host.querySelector('[data-concept-telegram]');
     if (telegram) telegram.addEventListener('click',function () {
       var source = document.getElementById('tgLoginBtn');
@@ -2853,18 +3225,32 @@ if (document.prerendering) {
     button.addEventListener('click',next);
   });
 
-  var filesInput = document.getElementById('fFiles');
-  if (filesInput) filesInput.addEventListener('change',function () { setTimeout(render,0); });
-  /* Смета живёт в отдельном runtime и может меняться, пока пятый шаг уже
+  document.addEventListener('salon:attachments',function () {
+    var key = steps[state.step] && steps[state.step].key;
+    if (key === 'materials' || key === 'contact') setTimeout(render,0);
+  });
+  if (legacyAsk) {
+    ['click','input'].forEach(function (eventName) {
+      legacyAsk.addEventListener(eventName,function () {
+        setTimeout(function () {
+          updateChrome();
+          var footerNext = host.querySelector('[data-concept-next]');
+          if (footerNext) footerNext.disabled = !canContinue();
+        },0);
+      });
+    });
+  }
+  /* Смета живёт в отдельном runtime и может меняться, пока итоговый экран уже
      отрисован. Перерисовываем только итоговый экран: число позиций, состав
      и ориентир за его пределами всегда должны совпадать с drawer/payload. */
   document.addEventListener('salon:cart',function () {
-    if (state.step === 4) render();
+    var key = steps[state.step] && steps[state.step].key;
+    if (key === 'recommendation' || key === 'materials' || key === 'contact') render();
   });
   var authed = document.getElementById('ctAuthed');
   if (authed && window.MutationObserver) {
     new MutationObserver(function () {
-      if (state.step === 4) render();
+      if (steps[state.step] && steps[state.step].key === 'contact') render();
     }).observe(authed,{attributes:true,attributeFilter:['hidden']});
   }
   var done = document.getElementById('confDone');

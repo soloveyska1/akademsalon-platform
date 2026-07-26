@@ -24,6 +24,8 @@ html.salon-intro-pending .salon-intro{
   --intro-wax:#A63F29;
   --intro-glow:rgba(166,63,41,.16);
   --intro-light:rgba(255,255,255,.46);
+  --intro-bloom:rgba(255,255,255,.58);
+  --intro-edge-wash:rgba(119,94,61,.022);
   --intro-ease:cubic-bezier(.22,1,.36,1);
   position:fixed;
   inset:0;
@@ -50,6 +52,8 @@ html.salon-intro-pending .salon-intro{
   --intro-wax:#C65B41;
   --intro-glow:rgba(198,91,65,.20);
   --intro-light:rgba(255,255,255,.028);
+  --intro-bloom:rgba(255,255,255,.032);
+  --intro-edge-wash:rgba(0,0,0,.18);
 }
 
 .salon-intro__sheet{
@@ -66,8 +70,8 @@ html.salon-intro-pending .salon-intro{
   width:50.05%;
   background-color:var(--intro-canvas);
   background-image:
-    radial-gradient(circle at 50% 30%,var(--intro-light),transparent 34%),
-    repeating-linear-gradient(0deg,var(--intro-line-soft) 0 1px,transparent 1px 6px);
+    radial-gradient(circle at 50% 44%,var(--intro-bloom),transparent 58%),
+    linear-gradient(90deg,var(--intro-edge-wash),transparent 32%,transparent 68%,var(--intro-edge-wash));
   will-change:transform;
 }
 
@@ -85,7 +89,7 @@ html.salon-intro-pending .salon-intro{
 .salon-intro__frame{
   position:absolute;
   z-index:1;
-  inset:clamp(16px,2.15vw,32px);
+  inset:clamp(18px,2vw,28px);
   border:1px solid var(--intro-line-soft);
   opacity:0;
   pointer-events:none;
@@ -95,7 +99,7 @@ html.salon-intro-pending .salon-intro{
   position:relative;
   z-index:2;
   display:flex;
-  width:min(100% - 48px,980px);
+  width:min(100% - 64px,1120px);
   min-height:100dvh;
   align-items:center;
   justify-content:center;
@@ -108,10 +112,10 @@ html.salon-intro-pending .salon-intro{
 .salon-intro__logo{
   position:relative;
   display:grid;
-  width:148px;
-  height:148px;
+  width:116px;
+  height:116px;
   place-items:center;
-  margin-bottom:clamp(24px,3.2vh,34px);
+  margin-bottom:clamp(28px,3.7vh,36px);
   opacity:0;
   transform:translateY(10px) scale(.9);
 }
@@ -132,24 +136,21 @@ html.salon-intro-pending .salon-intro{
 }
 
 .salon-intro__logo::after{
-  inset:20px;
-  background:var(--intro-glow);
-  filter:blur(24px);
-  opacity:0;
+  display:none;
 }
 
 .salon-intro__logo > span{
   position:relative;
   z-index:1;
   display:block;
-  width:112px;
-  height:112px;
+  width:88px;
+  height:88px;
   border-radius:50%;
-  filter:drop-shadow(0 16px 28px rgba(76,38,27,.18));
+  filter:drop-shadow(0 11px 22px rgba(76,38,27,.14));
 }
 
 :root[data-theme="dark"] .salon-intro__logo > span{
-  filter:drop-shadow(0 18px 34px rgba(0,0,0,.46));
+  filter:drop-shadow(0 14px 26px rgba(0,0,0,.42));
 }
 
 .salon-intro__logo img{
@@ -159,10 +160,10 @@ html.salon-intro-pending .salon-intro{
 }
 
 .salon-intro__kicker{
-  margin-bottom:15px;
+  margin-bottom:20px;
   color:var(--intro-muted);
-  font:600 10px/1.4 var(--mono);
-  letter-spacing:.16em;
+  font:600 9px/1.4 var(--mono);
+  letter-spacing:.24em;
   text-transform:uppercase;
   opacity:0;
   transform:translateY(8px);
@@ -171,10 +172,10 @@ html.salon-intro-pending .salon-intro{
 .salon-intro__title{
   color:var(--intro-ink);
   font-family:var(--serif);
-  font-size:clamp(48px,5.6vw,76px);
-  font-weight:390;
-  line-height:1.02;
-  letter-spacing:-.052em;
+  font-size:clamp(64px,6.7vw,94px);
+  font-weight:360;
+  line-height:.96;
+  letter-spacing:-.057em;
   text-wrap:balance;
 }
 
@@ -187,10 +188,10 @@ html.salon-intro-pending .salon-intro{
 .salon-intro__rule{
   position:relative;
   display:block;
-  width:min(190px,44vw);
+  width:min(92px,28vw);
   height:1px;
-  margin:clamp(24px,3.4vh,34px) auto clamp(20px,2.8vh,28px);
-  background:var(--intro-line);
+  margin:clamp(28px,3.8vh,36px) auto clamp(24px,3.1vh,30px);
+  background:color-mix(in srgb,var(--intro-line) 72%,transparent);
   transform:scaleX(0);
 }
 
@@ -198,22 +199,37 @@ html.salon-intro-pending .salon-intro{
   position:absolute;
   top:50%;
   left:50%;
-  width:6px;
-  height:6px;
+  width:5px;
+  height:5px;
   background:var(--intro-wax);
   border-radius:50%;
-  box-shadow:0 0 0 5px var(--intro-canvas);
+  box-shadow:0 0 0 6px var(--intro-canvas);
   transform:translate(-50%,-50%) scale(0);
 }
 
 .salon-intro__promise{
-  max-width:34ch;
+  max-width:none;
   color:var(--intro-ink);
-  font:italic 400 clamp(18px,1.65vw,22px)/1.5 var(--serif);
+  font-style:normal;
+  line-height:1.3;
   letter-spacing:-.018em;
   text-wrap:balance;
   opacity:0;
   transform:translateY(10px);
+}
+
+.salon-intro__promise-main{
+  display:block;
+  font:400 clamp(23px,1.9vw,27px)/1.25 var(--serif);
+}
+
+.salon-intro__promise-proof{
+  display:block;
+  margin-top:13px;
+  color:var(--intro-wax);
+  font:600 9px/1.2 var(--mono);
+  letter-spacing:.2em;
+  text-transform:uppercase;
 }
 
 .salon-intro__folio{
@@ -221,7 +237,7 @@ html.salon-intro-pending .salon-intro{
   z-index:3;
   color:var(--intro-quiet);
   font:600 9px/1.35 var(--mono);
-  letter-spacing:.15em;
+  letter-spacing:.19em;
   text-transform:uppercase;
   opacity:0;
 }
@@ -233,7 +249,7 @@ html.salon-intro-pending .salon-intro{
 
 .salon-intro__folio--bottom{
   right:clamp(26px,4.25vw,72px);
-  bottom:max(clamp(30px,4.25vw,64px),calc(env(safe-area-inset-bottom) + 20px));
+  bottom:max(clamp(34px,3.35vw,48px),calc(env(safe-area-inset-bottom) + 20px));
   left:clamp(26px,4.25vw,72px);
   display:flex;
   align-items:center;
@@ -300,47 +316,47 @@ html.salon-intro-pending .salon-intro{
 }
 
 html.salon-intro-running .salon-intro__frame{
-  animation:intro-fade-in 520ms ease 80ms both;
+  animation:intro-fade-in 420ms ease 60ms both;
 }
 
 html.salon-intro-running .salon-intro__logo{
-  animation:intro-logo-in 760ms var(--intro-ease) 180ms both;
+  animation:intro-logo-in 620ms var(--intro-ease) 120ms both;
 }
 
 html.salon-intro-running .salon-intro__logo::before{
-  animation:intro-ring-in 900ms var(--intro-ease) 360ms both;
+  animation:intro-ring-in 700ms var(--intro-ease) 240ms both;
 }
 
 html.salon-intro-running .salon-intro__logo::after{
-  animation:intro-glow-in 900ms ease 420ms both;
+  animation:none;
 }
 
 html.salon-intro-running .salon-intro__kicker{
-  animation:intro-copy-in 520ms var(--intro-ease) 720ms both;
+  animation:intro-copy-in 420ms var(--intro-ease) 500ms both;
 }
 
 html.salon-intro-running .salon-intro__title span:first-child{
-  animation:intro-copy-in 680ms var(--intro-ease) 900ms both;
+  animation:intro-copy-in 560ms var(--intro-ease) 650ms both;
 }
 
 html.salon-intro-running .salon-intro__title span:last-child{
-  animation:intro-copy-in 680ms var(--intro-ease) 1020ms both;
+  animation:intro-copy-in 560ms var(--intro-ease) 730ms both;
 }
 
 html.salon-intro-running .salon-intro__rule{
-  animation:intro-rule-in 560ms var(--intro-ease) 1280ms both;
+  animation:intro-rule-in 420ms var(--intro-ease) 900ms both;
 }
 
 html.salon-intro-running .salon-intro__rule i{
-  animation:intro-dot-in 360ms var(--intro-ease) 1630ms both;
+  animation:intro-dot-in 280ms var(--intro-ease) 1180ms both;
 }
 
 html.salon-intro-running .salon-intro__promise{
-  animation:intro-copy-in 680ms var(--intro-ease) 1540ms both;
+  animation:intro-copy-in 520ms var(--intro-ease) 1100ms both;
 }
 
 html.salon-intro-running .salon-intro__folio{
-  animation:intro-fade-in 460ms ease 260ms both;
+  animation:intro-fade-in 360ms ease 180ms both;
 }
 
 html.salon-intro-running .salon-intro__skip{
@@ -364,12 +380,12 @@ html.salon-intro-leaving .salon-intro__skip{
 
 html.salon-intro-leaving .salon-intro__panel--left{
   transform:translateX(-101%);
-  transition:transform 920ms var(--intro-ease) 160ms;
+  transition:transform 760ms var(--intro-ease) 100ms;
 }
 
 html.salon-intro-leaving .salon-intro__panel--right{
   transform:translateX(101%);
-  transition:transform 920ms var(--intro-ease) 160ms;
+  transition:transform 760ms var(--intro-ease) 100ms;
 }
 
 @keyframes intro-fade-in{
@@ -414,31 +430,26 @@ html.salon-intro-leaving .salon-intro__panel--right{
   }
 
   .salon-intro__logo{
-    width:118px;
-    height:118px;
-    margin-bottom:24px;
+    width:96px;
+    height:96px;
+    margin-bottom:26px;
   }
 
   .salon-intro__logo > span{
-    width:88px;
-    height:88px;
-  }
-
-  .salon-intro__logo::after{
-    inset:16px;
-    filter:blur(20px);
+    width:72px;
+    height:72px;
   }
 
   .salon-intro__kicker{
     max-width:28ch;
-    margin-bottom:13px;
-    font-size:8.5px;
+    margin-bottom:16px;
+    font-size:8px;
     line-height:1.55;
   }
 
   .salon-intro__title{
-    font-size:clamp(39px,11.7vw,56px);
-    line-height:1;
+    font-size:clamp(42px,12.5vw,60px);
+    line-height:.97;
   }
 
   .salon-intro__title span{
@@ -446,13 +457,22 @@ html.salon-intro-leaving .salon-intro__panel--right{
   }
 
   .salon-intro__rule{
-    margin-block:24px 20px;
+    margin-block:27px 23px;
   }
 
   .salon-intro__promise{
-    max-width:28ch;
-    font-size:clamp(17px,4.8vw,20px);
-    line-height:1.52;
+    max-width:31ch;
+  }
+
+  .salon-intro__promise-main{
+    font-size:clamp(20px,5.8vw,24px);
+    line-height:1.32;
+  }
+
+  .salon-intro__promise-proof{
+    margin-top:12px;
+    font-size:8px;
+    letter-spacing:.17em;
   }
 
   .salon-intro__folio--bottom{
@@ -483,14 +503,14 @@ html.salon-intro-leaving .salon-intro__panel--right{
   }
 
   .salon-intro__logo{
-    width:104px;
-    height:104px;
-    margin-bottom:15px;
+    width:84px;
+    height:84px;
+    margin-bottom:17px;
   }
 
   .salon-intro__logo > span{
-    width:78px;
-    height:78px;
+    width:64px;
+    height:64px;
   }
 
   .salon-intro__kicker{
@@ -498,11 +518,11 @@ html.salon-intro-leaving .salon-intro__panel--right{
   }
 
   .salon-intro__title{
-    font-size:clamp(36px,8vh,52px);
+    font-size:clamp(38px,8.5vh,56px);
   }
 
   .salon-intro__rule{
-    margin-block:18px 15px;
+    margin-block:20px 17px;
   }
 }
 
