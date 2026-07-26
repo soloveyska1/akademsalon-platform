@@ -4622,6 +4622,7 @@
 
 .is-account-route .account-comfort-list {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0;
 }
 
@@ -4670,11 +4671,24 @@
 
 .is-account-route .account-quick > header {
   display: grid;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto;
   gap: 3px;
+  align-content: initial;
+  padding: 0 0 12px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
 }
 
 .is-account-route .account-quick > div {
   display: grid;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: none;
+  gap: 0;
+  padding: 0;
+  border: 0;
 }
 
 .is-account-route .account-quick > div > button {
