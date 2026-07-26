@@ -148,7 +148,7 @@
 .is-account-route .account-nav__person small {
   overflow: hidden;
   color: var(--quiet);
-  font-size: 9px;
+  font-size: 11px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -191,7 +191,7 @@
   color: var(--quiet);
   background: var(--canvas-deep);
   border-radius: 999px;
-  font: 550 8px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   text-align: center;
 }
 
@@ -213,7 +213,7 @@
   color: var(--quiet);
   background: transparent;
   border: 0;
-  font-size: 10px;
+  font-size: 12px;
   text-align: left;
 }
 
@@ -304,7 +304,7 @@
   background: transparent;
   border: 0;
   border-bottom: 1px solid var(--line-strong);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .is-account-route .account-summary {
@@ -330,7 +330,7 @@
 
 .is-account-route .account-summary article > span {
   color: var(--quiet);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .is-account-route .account-summary article > strong {
@@ -340,7 +340,7 @@
 
 .is-account-route .account-summary article > p {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .is-account-route .status-dot {
@@ -384,7 +384,7 @@
   color: var(--quiet);
   background: var(--canvas-deep);
   border-radius: 999px;
-  font: 550 9px/1 var(--mono);
+  font: 550 11px/1 var(--mono);
 }
 
 .is-account-route .order-list {
@@ -441,7 +441,7 @@
   background: var(--canvas);
   border: 1px solid var(--line);
   border-radius: 999px;
-  font: 550 8px/1 var(--mono);
+  font: 550 11px/1 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -468,9 +468,133 @@
   border-color: transparent;
 }
 
+/* «Ближайшие даты» на обзоре: сроки дел и собственные отметки клиента
+   одним списком. Раньше отметки лежали на три уровня вглубь — в свёрнутом
+   кураторе внутри витрины «Салон+». */
+.is-account-route .account-dates > header {
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-dates > header h2 {
+  margin-top: 3px;
+  font-size: 19px;
+}
+
+.is-account-route .account-dates__row {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 2px 10px;
+  align-items: baseline;
+  padding: 10px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line-soft);
+  background: none;
+  font: inherit;
+  text-align: left;
+}
+
+.is-account-route button.account-dates__row {
+  cursor: pointer;
+}
+
+.is-account-route button.account-dates__row:hover .account-dates__what,
+.is-account-route button.account-dates__row:focus-visible .account-dates__what {
+  color: var(--wax);
+}
+
+.is-account-route .account-dates__when {
+  color: var(--ink);
+  font: 600 12px/1.4 var(--mono);
+}
+
+.is-account-route .account-dates__what {
+  min-width: 0;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.45;
+  transition: color .16s ease;
+}
+
+.is-account-route .account-dates__own {
+  grid-column: 2;
+  color: var(--quiet);
+  font: 550 11px/1.3 var(--mono);
+}
+
+.is-account-route .account-dates__foot {
+  margin-top: 12px;
+}
+
+/* группа файлов одного дела на вкладке «Документы»: шапка-строка,
+   а не полноразмерный заголовок раздела — иначе три дела подряд
+   отталкивают сами файлы за пределы экрана */
+.is-account-route .account-docgroup {
+  margin-top: 26px;
+}
+
+.is-account-route .account-docgroup > header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-docgroup > header strong {
+  min-width: 0;
+  flex: 1 1 auto;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 560;
+}
+
+.is-account-route .account-docgroup__no {
+  color: var(--wax);
+  font: 600 11px/1.2 var(--mono);
+  letter-spacing: .04em;
+}
+
+/* закрытое дело тоже называется словом и видом, а не отсутствием стиля */
+.is-account-route .tag--cancel {
+  color: var(--quiet);
+  background: var(--canvas-deep);
+  border-color: transparent;
+}
+
+/* вложение не догрузилось. Без этого правила сломанное фото или запись
+   выглядели ровно как ещё-грузящиеся — человек ждал впустую. */
+.is-account-route .is-unavailable {
+  position: relative;
+  min-height: 64px;
+  background: repeating-linear-gradient(135deg,
+    var(--canvas-deep) 0 9px, var(--paper) 9px 18px);
+  border: 1px dashed var(--line-strong);
+  border-radius: 4px;
+  filter: grayscale(1);
+  opacity: .75;
+}
+
+.is-account-route .is-unavailable::after {
+  position: absolute;
+  z-index: 1;
+  right: 8px;
+  bottom: 8px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background: var(--sheet);
+  color: var(--muted);
+  font: 550 11px/1.2 var(--mono);
+  content: "вложение недоступно";
+}
+
 .is-account-route .order-card__top > span:last-child {
   color: var(--quiet);
-  font: 550 9px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
 }
 
 .is-account-route .order-card h3 {
@@ -506,14 +630,14 @@
 
 .is-account-route .order-card__stage small {
   color: var(--quiet);
-  font: 550 8px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
 
 .is-account-route .order-card__stage strong {
   color: var(--ink);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .is-account-route .order-card footer {
@@ -525,7 +649,7 @@
   padding-top: 15px;
   color: var(--muted);
   border-top: 1px solid var(--line);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .is-account-route .order-card footer b {
@@ -601,7 +725,7 @@
   color: var(--wax);
   background: var(--wax-soft);
   border-radius: 50%;
-  font: 600 10px/1 var(--mono);
+  font: 600 12px/1 var(--mono);
 }
 
 .is-account-route .account-benefit-card > div {
@@ -681,7 +805,7 @@
   color: var(--wax);
   background: var(--wax-soft);
   border-radius: 50%;
-  font: 600 9px/1 var(--mono);
+  font: 600 11px/1 var(--mono);
 }
 
 .is-account-route .account-quick strong {
@@ -691,7 +815,7 @@
 
 .is-account-route .account-quick small {
   color: var(--quiet);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 /* Live payment/club/help blocks keep their contracts, but use the same paper UI. */
@@ -786,13 +910,76 @@
   background: var(--sheet);
   border: 1px solid var(--line);
   border-radius: 999px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .is-account-route .account-case-production .oj.hot {
   color: var(--wax);
   background: var(--wax-soft);
   border-color: transparent;
+}
+
+/* ---------- разделы внутри дела ----------
+   Лента перестала быть якорями и стала переключателем: открыт один раздел,
+   остальные в один тап. Активный — «ночной» пилюлей, как .filter-tabs:
+   --night/--night-ink одинаковы в обеих темах, состояние читается и на
+   светлой бумаге, и на тёмной. */
+.is-account-route .account-case-production .case-secnav {
+  position: sticky;
+  z-index: 6;
+  top: var(--workspace-top, 0px);
+  gap: 6px;
+  margin: 0 0 4px;
+  padding: 12px 0 11px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-secnav .oj {
+  min-height: 40px;
+  padding: 9px 14px;
+  font-size: 12.5px;
+  font-weight: 520;
+  transition: color .16s ease, background-color .16s ease, border-color .16s ease;
+}
+
+.is-account-route .account-case-production .case-secnav .oj:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.is-account-route .account-case-production .case-secnav .oj.is-on {
+  color: var(--night-ink);
+  background: var(--night);
+  border-color: var(--night);
+}
+
+/* на тёмной бумаге «ночная» пилюля почти сливается с фоном (--night #1d1c18
+   против --paper #1e1d19): состояние держит светлый текст, но кромку надо
+   вернуть, иначе активный раздел не отличить от соседних */
+:root[data-theme="dark"] .is-account-route .account-case-production .case-secnav .oj.is-on {
+  background: var(--night-deep);
+  border-color: var(--night-line);
+}
+
+/* раздел, в котором вас ждут, помечен сургучом — но только пока он закрыт */
+.is-account-route .account-case-production .case-secnav .oj.hot {
+  color: var(--wax);
+  background: var(--wax-soft);
+  border-color: transparent;
+}
+
+/* ленты внимания над разделами: их видно из любого раздела дела */
+.is-account-route .account-case-production .case-bands:empty {
+  display: none;
+}
+
+.is-account-route .account-case-production .case-bands > * {
+  margin-top: 16px;
+}
+
+.is-account-route .account-case-production .case-body > :first-child {
+  margin-top: 18px;
 }
 
 .is-account-route .account-case-production :is(.ord-composition, .due-box, .pause-band, .fin-band, .part-band, .fs-fold, .fs-sec) {
@@ -1066,8 +1253,12 @@
     font-size: clamp(32px, 10vw, 40px);
   }
 
+  /* «Новая заявка» — не главное действие внутри кабинета: во всю ширину
+     сургучом она перебивала то, ради чего человек сюда зашёл. Оставляем
+     заметной, но подчинённой заголовку раздела. */
   .is-account-route .account-main__head .button {
-    width: 100%;
+    width: auto;
+    align-self: flex-start;
   }
 
   .is-account-route .account-summary {
@@ -1177,7 +1368,7 @@
 
 .is-account-route .account-section > header .eyebrow {
   color: var(--wax);
-  font: 550 9px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   letter-spacing: .12em;
   text-transform: uppercase;
 }
@@ -1218,7 +1409,7 @@
   color: var(--wax);
   background: var(--wax-soft);
   border-radius: 50%;
-  font: 600 10px/1 var(--mono);
+  font: 600 12px/1 var(--mono);
 }
 
 .is-account-route .account-notice > div {
@@ -1285,7 +1476,7 @@
 .is-account-route .account-panel > header small,
 .is-account-route .account-panel .eyebrow {
   color: var(--quiet);
-  font: 600 9px/1.4 var(--mono);
+  font: 600 11px/1.4 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -1348,6 +1539,42 @@
   color: var(--wax);
 }
 
+/* строка-переход «дело → сумма к оплате» в сводке «Платежей».
+   Своя раскладка: у журнала первая колонка — величина движения, здесь
+   первым идёт само дело, а сумма прижата вправо как в смете. */
+.is-account-route .account-ledger__row--act {
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  padding: 13px 17px;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: background var(--motion-fast, 150ms) ease;
+}
+
+.is-account-route .account-ledger__row--act:hover,
+.is-account-route .account-ledger__row--act:focus-visible {
+  background: var(--canvas-deep);
+}
+
+.is-account-route .account-ledger__row--act .account-ledger__what b {
+  font-weight: 600;
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+
+.is-account-route .account-ledger__what i {
+  font-style: normal;
+}
+
+.is-account-route .account-ledger__delta.is-due {
+  color: var(--wax);
+  font-size: 13px;
+}
+
 .is-account-route .account-ledger__what {
   min-width: 0;
   color: var(--text);
@@ -1357,7 +1584,7 @@
 
 .is-account-route .account-ledger__at {
   color: var(--quiet);
-  font: 550 9px/1.4 var(--mono);
+  font: 550 11px/1.4 var(--mono);
   white-space: nowrap;
 }
 
@@ -1397,7 +1624,7 @@
   color: var(--quiet);
   background: var(--canvas-deep);
   border-radius: 50%;
-  font: 600 8px/1 var(--mono);
+  font: 600 11px/1 var(--mono);
   letter-spacing: .04em;
 }
 
@@ -1416,12 +1643,12 @@
 
 .is-account-route .account-doc-list__row small {
   color: var(--quiet);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .is-account-route .account-doc-list__at {
   color: var(--quiet);
-  font: 550 9px/1.4 var(--mono);
+  font: 550 11px/1.4 var(--mono);
   font-style: normal;
   white-space: nowrap;
 }
@@ -1495,7 +1722,7 @@
 
 .is-account-route .account-steps b {
   color: var(--wax);
-  font: 650 10px/1.45 var(--mono);
+  font: 650 12px/1.45 var(--mono);
 }
 
 /* ---------- реквизиты перевода (строки отдаёт reqRows) ---------- */
@@ -1543,7 +1770,7 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   font: inherit;
-  font-size: 10px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
@@ -1580,7 +1807,7 @@
 
 .is-account-route .commerce-facts small {
   color: var(--quiet);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.4;
 }
 
@@ -1655,7 +1882,7 @@
 .is-account-route .membership-pass > footer,
 .is-account-route .membership-pass dt {
   color: var(--quiet);
-  font: 600 9px/1.3 var(--mono);
+  font: 600 11px/1.3 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -1778,7 +2005,7 @@
 }
 
 .is-account-route .plus-plan-card > header > * {
-  font: 600 9px/1.3 var(--mono);
+  font: 600 11px/1.3 var(--mono);
   letter-spacing: .05em;
   text-transform: uppercase;
 }
@@ -1823,7 +2050,7 @@
 
 .is-account-route .plus-plan-card__price small {
   color: var(--quiet);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .is-account-route .plus-plan-card > p {
@@ -1849,7 +2076,7 @@
 }
 
 .is-account-route .plus-plan-card li b {
-  font: 650 10px/1.45 var(--mono);
+  font: 650 12px/1.45 var(--mono);
 }
 
 .is-account-route .plus-plan-card li span {
@@ -1944,7 +2171,7 @@
 
 .is-account-route .deposit-calculator__controls .eyebrow {
   color: var(--wax);
-  font: 550 9px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   letter-spacing: .12em;
   text-transform: uppercase;
 }
@@ -1984,7 +2211,7 @@
 
 .is-account-route .deposit-tiers small {
   color: var(--quiet);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .is-account-route .deposit-tiers > *:hover {
@@ -2032,7 +2259,7 @@
 .is-account-route .deposit-ledger-card > div small,
 .is-account-route .deposit-ledger-card > footer {
   color: var(--night-quiet);
-  font: 600 9px/1.4 var(--mono);
+  font: 600 11px/1.4 var(--mono);
   letter-spacing: .05em;
   text-transform: uppercase;
 }
@@ -2105,7 +2332,7 @@
 .is-account-route .deposit-receipt > header small,
 .is-account-route .deposit-receipt > small {
   color: var(--night-quiet);
-  font: 550 9px/1.35 var(--mono);
+  font: 550 11px/1.35 var(--mono);
 }
 
 .is-account-route .deposit-receipt dl {
@@ -2151,7 +2378,7 @@
 
 .is-account-route .deposit-receipt__note strong {
   color: var(--night-wax);
-  font: 600 9px/1.4 var(--mono);
+  font: 600 11px/1.4 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -2261,7 +2488,7 @@
   grid-row: 2;
   grid-column: 1;
   color: var(--quiet);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.45;
 }
 
@@ -2276,7 +2503,7 @@
   color: #fffaf3;
   background: var(--wax);
   border-radius: 50%;
-  font: 600 9px/1 var(--mono);
+  font: 600 11px/1 var(--mono);
   font-style: normal;
   opacity: 0;
   transition: opacity .16s ease;
@@ -2558,7 +2785,7 @@
 .is-account-route .account-case-production .eyebrow,
 .is-account-route .case-state .eyebrow {
   color: var(--wax);
-  font: 550 9px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   letter-spacing: .12em;
   text-transform: uppercase;
 }
@@ -2615,7 +2842,7 @@
   gap: 7px 10px;
   align-items: center;
   color: var(--quiet);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .is-account-route .account-case-production .case-file__status {
@@ -2633,7 +2860,7 @@
   background: transparent;
   border: 1px solid var(--line);
   border-radius: 7px;
-  font: 550 9px/1 var(--mono);
+  font: 550 11px/1 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
   cursor: pointer;
@@ -2656,7 +2883,7 @@
   padding: 3px 9px;
   color: var(--muted);
   border-color: var(--line);
-  font: 550 9px/1.45 var(--mono);
+  font: 550 11px/1.45 var(--mono);
   letter-spacing: .05em;
   vertical-align: baseline;
 }
@@ -2728,7 +2955,7 @@
 .is-account-route .account-case-production .case-sec__note {
   margin-left: auto;
   color: var(--quiet);
-  font: 550 9px/1.4 var(--mono);
+  font: 550 11px/1.4 var(--mono);
   letter-spacing: .05em;
   text-align: right;
   text-transform: uppercase;
@@ -2738,7 +2965,7 @@
 .is-account-route .account-case-production .case-fold__toggle {
   margin-left: auto;
   color: var(--quiet);
-  font: 550 9px/1.4 var(--mono);
+  font: 550 11px/1.4 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -2816,7 +3043,7 @@
   max-width: 74ch;
   margin-top: 12px;
   color: var(--quiet);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -2828,7 +3055,7 @@
 .is-account-route .account-case-production .case-sub {
   margin-top: 20px;
   color: var(--quiet);
-  font: 550 9px/1.3 var(--mono);
+  font: 550 11px/1.3 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -2879,13 +3106,13 @@
 
 .is-account-route .account-case-production .case-ledger dt i {
   color: var(--quiet);
-  font: 600 9px/1.5 var(--mono);
+  font: 600 11px/1.5 var(--mono);
   font-style: normal;
 }
 
 .is-account-route .account-case-production .case-ledger dt small {
   color: var(--quiet);
-  font: 550 9px/1.5 var(--mono);
+  font: 550 11px/1.5 var(--mono);
   letter-spacing: .05em;
   text-transform: uppercase;
 }
@@ -2915,7 +3142,7 @@
 }
 
 .is-account-route .account-case-production .case-ledger .line-link {
-  font-size: 9px;
+  font-size: 11px;
 }
 
 /* ---------- спецификация: моногнездо номера, серифная цена ---------- */
@@ -2939,7 +3166,7 @@
 
 .is-account-route .account-case-production .case-spec__no {
   color: var(--quiet);
-  font: 600 9px/1.6 var(--mono);
+  font: 600 11px/1.6 var(--mono);
   letter-spacing: .04em;
 }
 
@@ -2966,7 +3193,7 @@
 .is-account-route .account-case-production .case-spec__terms > summary {
   width: max-content;
   color: var(--quiet);
-  font: 550 9px/1.4 var(--mono);
+  font: 550 11px/1.4 var(--mono);
   letter-spacing: .06em;
   list-style: none;
   text-transform: uppercase;
@@ -3036,7 +3263,7 @@
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 50%;
-  font: 550 9px/1 var(--mono);
+  font: 550 11px/1 var(--mono);
   letter-spacing: .02em;
 }
 
@@ -3060,7 +3287,7 @@
 
 .is-account-route .account-case-production .case-timeline__list small {
   color: var(--quiet);
-  font: 550 9px/1.3 var(--mono);
+  font: 550 11px/1.3 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -3087,12 +3314,12 @@
 }
 
 /* ---------- документы: мономарка расширения, серифное тире ---------- */
-.is-account-route .account-case-production .case-files {
+.is-account-route .case-files {
   display: grid;
   margin-top: 4px;
 }
 
-.is-account-route .account-case-production .file-row {
+.is-account-route .file-row {
   display: flex;
   width: 100%;
   gap: 12px;
@@ -3106,7 +3333,7 @@
   text-decoration: none;
 }
 
-.is-account-route .account-case-production .file-row i {
+.is-account-route .file-row i {
   display: grid;
   width: 30px;
   height: 34px;
@@ -3115,19 +3342,19 @@
   color: var(--wax);
   background: var(--wax-soft);
   border-radius: 3px;
-  font: 600 8px/1 var(--mono);
+  font: 600 11px/1 var(--mono);
   font-style: normal;
   letter-spacing: .04em;
 }
 
-.is-account-route .account-case-production .file-row > span {
+.is-account-route .file-row > span {
   display: grid;
   min-width: 0;
   flex: 1;
   gap: 3px;
 }
 
-.is-account-route .account-case-production .file-row strong {
+.is-account-route .file-row strong {
   overflow: hidden;
   color: var(--ink);
   font-size: 12px;
@@ -3136,27 +3363,27 @@
   white-space: nowrap;
 }
 
-.is-account-route .account-case-production .file-row small {
+.is-account-route .file-row small {
   color: var(--quiet);
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.5;
 }
 
 /* «новый» — слово плюс восковой оттенок той же марки: не цветом одним */
-.is-account-route .account-case-production .file-row__new {
+.is-account-route .file-row__new {
   color: var(--wax);
-  font: 550 9px/1.5 var(--mono);
+  font: 550 11px/1.5 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
 
-.is-account-route .account-case-production .file-row > b {
+.is-account-route .file-row > b {
   flex: 0 0 auto;
   color: var(--line-strong);
   font: 400 17px/1 var(--serif);
 }
 
-.is-account-route .account-case-production .file-row:hover strong {
+.is-account-route .file-row:hover strong {
   color: var(--wax);
 }
 
@@ -3187,7 +3414,7 @@
   color: var(--sheet);
   background: var(--ink);
   border-radius: 50%;
-  font: 550 8px/1 var(--mono);
+  font: 550 11px/1 var(--mono);
   letter-spacing: .04em;
 }
 
@@ -3216,7 +3443,7 @@
 
 .is-account-route .account-case-production .message small {
   color: var(--quiet);
-  font: 550 9px/1.3 var(--mono);
+  font: 550 11px/1.3 var(--mono);
 }
 
 .is-account-route .account-case-production .message--client {
@@ -3236,7 +3463,7 @@
 
 .is-account-route .account-case-production .message-sys {
   color: var(--quiet);
-  font: 550 9px/1.6 var(--mono);
+  font: 550 11px/1.6 var(--mono);
   letter-spacing: .05em;
   text-align: center;
 }
@@ -3306,14 +3533,14 @@
 
 .is-account-route .account-case-production .case-field__label {
   color: var(--quiet);
-  font: 550 9px/1.3 var(--mono);
+  font: 550 11px/1.3 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
 
 .is-account-route .account-case-production .case-field__hint {
   color: var(--quiet);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -3507,7 +3734,7 @@
 .is-account-route .account-case-production .case-file__foot p {
   max-width: 68ch;
   color: var(--quiet);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -3557,7 +3784,7 @@
 
 .is-account-route .case-state > header span {
   color: var(--state-accent);
-  font: 650 10px/1 var(--mono);
+  font: 650 12px/1 var(--mono);
   letter-spacing: .08em;
 }
 
@@ -3654,6 +3881,47 @@
 
 /* ---------- ≤880: одна колонка, служебные подписи с полом 12px ---------- */
 @media (max-width:920px) {
+  /* Шапка дела занимала 309 px до первого блока — треть экрана телефона
+     уходила на титул. Сжимаем: заголовок мельче, тема одной строкой,
+     номер и статус — в одну линию. Ничего не убираем, только уплотняем. */
+  .is-account-route .account-case-production .case-file__head {
+    gap: 8px;
+  }
+
+  .is-account-route .account-case-production .case-file__head h2 {
+    font-size: 25px;
+    line-height: 1.14;
+  }
+
+  .is-account-route .account-case-production .case-file__topic {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .is-account-route .account-case-production .case-file__status {
+    margin-top: 2px;
+  }
+
+  /* лента разделов дела — основной способ ходить по делу с телефона:
+     обязательные 44 px касания и прокрутка с подсказкой края */
+  .is-account-route .account-case-production .case-secnav {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .is-account-route .account-case-production .case-secnav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .is-account-route .account-case-production .case-secnav .oj {
+    min-height: 44px;
+    flex: 0 0 auto;
+  }
+
   .is-account-route .account-case-production :is(.case-sec, .case-fold) {
     padding: 20px 17px;
   }
@@ -3710,8 +3978,8 @@
   .is-account-route .account-case-production .case-ledger dt small,
   .is-account-route .account-case-production .case-ledger dt i,
   .is-account-route .account-case-production .case-ledger .line-link,
-  .is-account-route .account-case-production .file-row small,
-  .is-account-route .account-case-production .file-row__new,
+  .is-account-route .file-row small,
+  .is-account-route .file-row__new,
   .is-account-route .account-case-production .message small,
   .is-account-route .account-case-production .message-sys,
   .is-account-route .account-case-production .case-file__foot p,
@@ -3724,7 +3992,7 @@
 
   .is-account-route .account-case-production .case-timeline__list h4,
   .is-account-route .account-case-production .case-spec__main b,
-  .is-account-route .account-case-production .file-row strong,
+  .is-account-route .file-row strong,
   .is-account-route .account-case-production .message strong,
   .is-account-route .account-case-production .message p,
   .is-account-route .account-case-production .message-form textarea,
@@ -3780,7 +4048,7 @@
   }
 
   .is-account-route .account-case-production .case-ledger > div,
-  .is-account-route .account-case-production .file-row {
+  .is-account-route .file-row {
     gap: 10px;
   }
 }
@@ -3795,7 +4063,7 @@
     font-size: 21px;
   }
 
-  .is-account-route .account-case-production .file-row i {
+  .is-account-route .file-row i {
     width: 26px;
     height: 30px;
   }
@@ -4036,7 +4304,7 @@
 .is-account-route .account-orders--all > .account-note--row {
   margin: 14px 0 0;
   color: var(--quiet);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 /* дело теперь ЗАНИМАЕТ рабочую полосу, а не приписывается под списком:
@@ -4059,7 +4327,7 @@
   background: transparent;
   border: 0;
   font: inherit;
-  font-size: 10px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -4121,7 +4389,7 @@
 
 .is-account-route .account-case-production .case-overview__count small {
   color: var(--quiet);
-  font: 550 8px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   letter-spacing: .05em;
   text-transform: uppercase;
 }
@@ -4132,6 +4400,56 @@
   margin-top: 20px;
   padding-top: 18px;
   border-top: 1px solid var(--line);
+}
+
+/* «Чей сейчас ход» — первое, что должно читаться в деле. Состояние
+   называем словом, а не цветом (стандарт §3): сургучная полоса лишь
+   усиливает уже написанное «Сейчас ваш ход». */
+.is-account-route .account-case-production .case-turn {
+  display: grid;
+  gap: 5px;
+  margin-top: 15px;
+  padding: 12px 14px;
+  border-radius: 4px;
+  background: var(--canvas-deep);
+  box-shadow: inset 3px 0 0 var(--line-strong);
+}
+
+.is-account-route .account-case-production .case-turn--yours {
+  background: var(--wax-soft);
+  box-shadow: inset 3px 0 0 var(--wax);
+}
+
+.is-account-route .account-case-production .case-turn__who {
+  color: var(--ink);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.is-account-route .account-case-production .case-turn--yours .case-turn__who {
+  color: var(--wax-deep);
+}
+
+.is-account-route .account-case-production .case-turn__what {
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+/* закрытая часть суммы — строкой в том же листе «Текущего этапа».
+   Раньше это был отдельный лист правой стойки, повторявший блок оплаты. */
+.is-account-route .account-case-production .case-overview__paid {
+  margin-top: 17px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.is-account-route .account-case-production .case-overview__paid .case-paid {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 560;
 }
 
 .is-account-route .account-case-production .case-overview__facts > span {
@@ -4148,7 +4466,7 @@
 
 .is-account-route .account-case-production .case-overview__facts small {
   color: var(--quiet);
-  font: 550 8px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   letter-spacing: .05em;
   text-transform: uppercase;
 }
@@ -4156,7 +4474,7 @@
 .is-account-route .account-case-production .case-overview__facts strong {
   overflow-wrap: anywhere;
   color: var(--ink);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 560;
 }
 
@@ -4192,7 +4510,7 @@
 .is-account-route .account-case-production .case-support p {
   margin-top: 6px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -4204,6 +4522,11 @@
 
 .is-account-route .account-case-production .case-support .line-link {
   margin-inline: auto;
+}
+
+/* пилюля раздела не переносится: «Документы · 1» в две строки ломало ленту */
+.is-account-route .account-case-production .case-secnav .oj {
+  white-space: nowrap;
 }
 
 /* ---------- ≤1080: стойка дела сужается, справки ещё в строку ---------- */
@@ -4390,14 +4713,18 @@
 .is-account-route .account-nav__label {
   padding: 0 10px 7px;
   color: var(--quiet);
-  font: 600 9px/1.25 var(--mono);
+  font: 600 11px/1.25 var(--mono);
   letter-spacing: .09em;
   text-transform: uppercase;
 }
 
+/* 44 px — обязательная область касания (стандарт §7). Правило стоит вне
+   медиазапроса и позже по файлу, поэтому оно же задаёт пол мобильному:
+   прежние 40 px здесь молча перебивали мобильные 38 px выше и делали
+   все девять разделов кабинета непопадаемыми пальцем. */
 .is-account-route .account-nav nav button {
-  min-height: 40px;
-  padding: 8px 10px;
+  min-height: 44px;
+  padding: 9px 10px;
   font-size: 12px;
 }
 
@@ -4408,7 +4735,7 @@
 .is-account-route .account-nav nav b {
   max-width: 88px;
   overflow: hidden;
-  font-size: 9px;
+  font-size: 11px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -4430,7 +4757,7 @@
 .is-account-route .account-nav__wallet span,
 .is-account-route .account-nav__wallet small {
   color: var(--quiet);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .is-account-route .account-nav__wallet strong {
@@ -4454,7 +4781,7 @@
 
 .is-account-route .account-nav__assurance p {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -4720,7 +5047,7 @@
   color: var(--wax);
   background: var(--wax-soft);
   border-radius: 50%;
-  font: 600 8px/1 var(--mono);
+  font: 600 11px/1 var(--mono);
 }
 
 .is-account-route .account-quick strong {

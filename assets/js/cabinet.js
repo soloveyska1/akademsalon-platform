@@ -29,6 +29,7 @@ function initCabinet() {
     tab: 'home',  // активный раздел: home|orders|wallet|club|help
     filter: 'all',    // отбор реестра дел: all|active|done (чипы эталона)
     caseOpen: false,  // открыто ли дело отдельным экраном (как маршрут эталона)
+    caseSec: 'work',  // раздел внутри дела: work|money|files|chat|terms
     clubOpen: false,  // развёрнуты ли карточки бонусов/подписки (полоса «клуба»)
     plusOpen: false,  // развёрнута ли витрина «Салон+»
     ctorOpen: false,  // развёрнут ли конструктор подписки внутри витрины
@@ -341,7 +342,7 @@ function initCabinet() {
             '<li><span>02</span>Файлы и история всегда под рукой</li>' +
             '<li><span>03</span>Без паролей и лишней регистрации</li>' +
           '</ul>' +
-          '<p class="cab-story-note"><span aria-hidden="true">◇</span> Доступ защищён одноразовым кодом или подтверждением у выбранного сервиса.</p>' +
+          '<p class="cab-story-note"><span aria-hidden="true">¶</span> Доступ защищён одноразовым кодом или подтверждением у выбранного сервиса.</p>' +
         '</div>' +
         '<div class="cab-login-auth">' +
           '<div class="cab-auth-head"><p class="caps">Вход в кабинет</p>' +
@@ -473,8 +474,16 @@ function initCabinet() {
   }
 
   /* -------- секция-раскрывашка: второстепенное свёрнуто, но под рукой -------- */
-  function fold(id, summary, meta, inner, open) {
+  /* plain=true — блок и есть содержимое своего раздела дела: сворачивать
+     нечего, лишняя строка «свернуть» только мешает. Отдаём обычный лист. */
+  function fold(id, summary, meta, inner, open, plain) {
     if (!inner) return '';
+    if (plain) {
+      return '<section class="fs-sec case-sec" id="' + id + '">' +
+        '<header><div><h3>' + summary + '</h3></div>' +
+        (meta ? '<span class="case-sec__note">' + meta + '</span>' : '') +
+        '</header>' + inner + '</section>';
+    }
     /* раскрытие — словом, как служебные кнопки в шапках разделов эталона:
        глиф-шеврона в этом языке нет, состояние читается текстом */
     return '<details class="fs-fold case-fold" id="' + id + '"' + (open ? ' open' : '') + '>' +
@@ -1344,11 +1353,26 @@ function initCabinet() {
                ['Ближайший срок', o.deadline_text || 'уточняется']];
       foot = fresh ? 'Есть новые файлы' : 'Открыть материалы дела';
     } else {
-      facts = [['Сейчас', shortStatus(o) || o.status_label || 'в работе'],
+      /* Статус уже назван меткой в шапке карточки — повторять его строкой
+         «Сейчас» было тавтологией. Вместо неё — деньги: единственное, чего
+         карточка не показывала, а спрашивают о нём чаще всего. */
+      var due = dueOf(o);
+      facts = [[due ? 'К оплате' : 'Стоимость',
+                 due ? money(due) + ' ₽'
+                   : o.price ? money(o.due_total || o.price) + ' ₽' : 'по оценке мастера'],
                ['Ближайший срок', o.deadline_text || 'уточняется']];
-      foot = needsAction(o) ? 'Требуется ваше решение'
-        : (unread || fresh) ? 'Есть новое событие'
-        : o.pinned ? 'Закреплено первым' : 'Открыть дело';
+      /* подвал называет само действие, а не факт его наличия: три карточки
+         с одинаковым «Требуется ваше решение» ничего не сообщали */
+      foot = due ? 'Оплатить ' + money(due) + ' ₽'
+        : o.status === 'priced' ? 'Посмотреть цену и решить'
+        : o.status === 'check' ? 'Проверить результат'
+        : o.status === 'fix' ? 'Идёт корректировка'
+        : o.paused ? 'Снять с паузы'
+        : fresh ? 'Новые файлы от мастерской'
+        : unread ? 'Ответить мастеру'
+        : o.status === 'new' ? 'Мастер оценивает заявку'
+        : isArch(o) ? 'Открыть завершённое дело'
+        : 'Открыть дело';
     }
     var pct = orderPct(o);
     /* без .is-current: дело больше не раскрывается под списком, подсвечивать
@@ -1487,6 +1511,13 @@ function initCabinet() {
       cancel: 'Дело закрыто'
     }[o.status] || 'Уточняется';
     if (o.paused && o.status !== 'done' && o.status !== 'cancel') next = 'Снять дело с паузы';
+    /* Чей сейчас ход — главный вопрос, с которым сюда заходят. Раньше на него
+       отвечала только строка «Следующее действие», из которой не читалось,
+       ждут ли чего-то от человека или работа идёт своим ходом. */
+    var yours = o.paused
+      ? false
+      : ('priced prepay check'.indexOf(o.status) >= 0) ||
+        !!(o.due_now && o.due_now.amount > 0);
     var facts = [
       ['Результат', o.deadline_text || 'срок уточняется'],
       [total > 1 ? 'Часть' : 'Позиций в деле',
@@ -1494,35 +1525,42 @@ function initCabinet() {
           : String((o.specification_lines || o.items || []).length || 1)],
       ['Следующее действие', next]
     ];
+    /* что именно от вас нужно — из состояния дела, а не из названия
+       следующего этапа: иначе «ваш ход» соседствует с «работой мастерской» */
+    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
+    var ask;
+    if (due > 0) {
+      ask = 'Оплатить ' + (o.due_now.label ? o.due_now.label.toLowerCase() : 'текущий этап') +
+        ' — ' + money(due) + ' ₽. Раздел «Оплата»: карта или перевод по реквизитам.';
+    } else if (o.status === 'priced') {
+      ask = 'Посмотреть расчёт и принять цену — или обсудить её с мастером в переписке.';
+    } else if (o.status === 'prepay') {
+      ask = 'Оплатить первый этап, чтобы мастер приступил к работе.';
+    } else if (o.status === 'check') {
+      ask = 'Проверить результат: принять его или запросить корректировку с указанием, что не так.';
+    } else {
+      ask = 'Решение по делу ждёт вас ниже.';
+    }
+    var turn = '<p class="case-turn' + (yours ? ' case-turn--yours' : '') + '">' +
+      '<span class="case-turn__who">' +
+      (o.paused ? 'Дело на паузе'
+        : yours ? 'Сейчас ваш ход' : 'Сейчас работает мастерская') + '</span>' +
+      '<span class="case-turn__what">' +
+      (o.paused ? 'Пока дело на паузе, мастер к нему не возвращается. Снять паузу можно в разделе «Условия».'
+        : yours ? ask
+        : esc(next) + '. От вас сейчас ничего не требуется — напишем, когда будет результат.') +
+      '</span></p>';
+    /* закрытая часть денег переехала сюда из отдельного листа правой стойки:
+       та же шкала повторяла блок оплаты целиком и стоила ещё один экран */
+    var paid = payScale(o);
     return '<div class="fs-sec case-sec case-overview">' +
       '<header><div><p class="eyebrow">Текущий этап</p><h3>' + esc(stepName) + '</h3></div>' +
       '<strong class="case-overview__count"><small>Этапы</small>' + o.step + ' из ' + steps.length +
-      '</strong></header>' + caseProgress(o) +
+      '</strong></header>' + turn + caseProgress(o) +
       '<div class="case-overview__facts">' + facts.map(function (f) {
         return '<span><small>' + f[0] + '</small><strong>' + esc(f[1]) + '</strong></span>';
-      }).join('') + '</div></div>';
-  }
-
-  /* -------- правая колонка эталона: деньги короткой сводкой --------
-     .case-payment из caseView: закрытая часть суммы, шкала и переход
-     к самому платежу. Сама оплата (реквизиты, кнопки, история) живёт
-     в главной колонке — сводка её не дублирует, а доводит до неё. */
-  function caseAsidePay(o) {
-    var scale = payScale(o);
-    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
-    if (!scale && !due && !o.claimed) return '';
-    var note = due > 0
-      ? 'К оплате сейчас — ' + money(due) + ' ₽' +
-        (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ').' : '.')
-      : o.claimed ? 'Ваша отметка об оплате на сверке у мастера.'
-      : isArch(o) ? 'Расчёты по делу закрыты.'
-      : 'Следующий платёж появится по готовности этапа.';
-    return '<section class="fs-sec case-sec case-payment">' +
-      '<header><h3>Расчёты по делу</h3><span class="case-sec__note">' +
-      (due > 0 ? 'ждёт вас' : o.claimed ? 'на сверке' : 'по плану') + '</span></header>' +
-      (scale || '') + '<p class="case-note">' + note + '</p>' +
-      '<div class="case-acts"><button type="button" class="btn btn-line" data-jump="secPay">' +
-      (due > 0 ? 'Перейти к оплате' : 'История платежей') + '</button></div></section>';
+      }).join('') + '</div>' +
+      (paid ? '<div class="case-overview__paid">' + paid + '</div>' : '') + '</div>';
   }
 
   /* -------- правая колонка эталона: .case-support -------- */
@@ -1950,7 +1988,10 @@ function initCabinet() {
     return head + req + receiptField + payBtns + payHistory(o) + '</div>';
   }
 
-  function actionsBlock(o) {
+  /* part='decide' — только решения по делу, part='pay' — только платёж.
+     Раздел «Дело» спрашивает решение, раздел «Оплата» принимает деньги;
+     без этого разделения блок оплаты выводился в обоих сразу. */
+  function actionsBlock(o, part) {
     var b = [];
     var total = o.stages_total || 1;
     var plan0 = o.plan || [];
@@ -1977,12 +2018,16 @@ function initCabinet() {
     if (o.actions.indexOf('resume') >= 0) {
       b.push('<button type="button" class="btn btn-wax" data-act="resume">Возобновить заказ</button>');
     }
-    var pay = ((o.due_now && o.due_now.amount > 0) || o.claimed ||
-               (o.payments || []).some(function (p) { return p.status === 'paid'; }))
+    var wantPay = part !== 'decide';
+    var pay = (wantPay && ((o.due_now && o.due_now.amount > 0) || o.claimed ||
+               (o.payments || []).some(function (p) { return p.status === 'paid'; })))
       ? payBlock(o) : '';
-    if (!b.length) return pay || (payHistory(o) ? '<div class="fs-sec case-sec case-pay" id="secPay">' +
-      '<header><div><p class="eyebrow">Оплата</p><h3>История платежей</h3></div></header>' +
-      payHistory(o) + '</div>' : '');
+    if (!b.length || part === 'pay') {
+      return pay || (wantPay && payHistory(o)
+        ? '<div class="fs-sec case-sec case-pay" id="secPay">' +
+          '<header><div><p class="eyebrow">Оплата</p><h3>История платежей</h3></div></header>' +
+          payHistory(o) + '</div>' : '');
+    }
     return '<div class="fs-sec case-sec" id="secDecide">' +
       '<header><div><p class="eyebrow">Решение по заказу</p><h3>Слово за вами</h3></div>' +
       (total > 1 && 'check fix'.indexOf(o.status) >= 0 ? '<span class="case-sec__note">проверка и итерации — по условиям позиции</span>' : '') +
@@ -2172,7 +2217,8 @@ function initCabinet() {
     var m = String(name || '').match(/\.([A-Za-zА-Яа-я0-9]{1,4})$/);
     return m ? m[1].toUpperCase() : 'ФАЙЛ';
   }
-  function filesBlock(o) {
+  /* own=true — раздел «Документы» дела: свёртка не нужна, он и так открыт */
+  function filesBlock(o, own) {
     var rows = (o.files || []).map(function (f) {
       var bits = [f.from === 'master' ? 'от мастерской' : 'ваш файл', dt(f.at)];
       if (f.part && (o.stages_total || 1) > 1) bits.push('часть ' + f.part);
@@ -2195,7 +2241,7 @@ function initCabinet() {
       '<div class="case-acts"><label class="btn btn-line case-upload">Приложить файл<input type="file" id="cabUpload" hidden></label></div>' +
       '<p class="case-note up-note" id="upNote" hidden></p>' +
       '<p class="case-note"><button type="button" class="line-link" data-tab="documents">' +
-      'Все документы кабинета <span aria-hidden="true">→</span></button></p>', open);
+      'Все документы кабинета <span aria-hidden="true">→</span></button></p>', own || open, own);
   }
 
   function mediaHtml(o, m) {
@@ -2212,7 +2258,7 @@ function initCabinet() {
     return '';
   }
 
-  function chatBlock(o) {
+  function chatBlock(o, own) {
     var items = [];
     (o.history || []).forEach(function (h) { items.push({ at: h.at, sys: true, text: h.text }); });
     (o.messages || []).forEach(function (m) {
@@ -2240,7 +2286,7 @@ function initCabinet() {
       '<div class="message-form"><label><span class="case-field__label">Сообщение мастеру</span>' +
       '<textarea id="chatText" rows="2" maxlength="3000" placeholder="Сообщение мастеру…"></textarea></label>' +
       '<button type="button" class="btn btn-wax" id="chatSend">Отправить</button></div>',
-      hasMsgs || !!o.unread);
+      own || !!o.unread || !hasMsgs, own);
   }
 
   /* -------- доступ к делу: секретная ссылка для других устройств --------
@@ -2264,19 +2310,114 @@ function initCabinet() {
                      done: 's-done', cancel: 's-mute' };
 
   /* чипы-навигация по делу (мобайл): довести до раздела без листания */
-  function jumpChips(o) {
-    var chips = [];
+  /* ---------------- разделы внутри дела ----------------
+     Дело перестало быть одной лентой. Раньше всё — этап, смета, оплата,
+     файлы, переписка, спецификация, служебное — лежало подряд: на телефоне
+     это 5 600 px, около восьми прокруток, и нужное приходилось искать.
+     Теперь пять разделов, как в ACC-03 стандарта: открыт один, остальные
+     в один тап. Ленты внимания и шапка остаются над разделами всегда. */
+  var CASE_SECS = ['work', 'money', 'files', 'chat', 'terms'];
+
+  function caseSecOf(o) {
+    var s = st.caseSec;
+    if (CASE_SECS.indexOf(s) < 0) s = 'work';
+    return s;
+  }
+
+  /* какой раздел открыть, когда дело открывают заново */
+  function defaultCaseSec(o) {
+    if (!o) return 'work';
     var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
-    if (due > 0 || o.claimed)
-      chips.push(['secPay', 'Оплата' + (due > 0 ? ' · ' + money(due) + ' ₽' : ''), true]);
-    if (o.actions.indexOf('accept_work') >= 0) chips.push(['secDecide', 'Решение', true]);
-    chips.push(['secFiles', 'Документы' + ((o.files || []).length ? ' · ' + o.files.length : ''), false]);
-    chips.push(['secChat', 'Переписка' + (o.unread ? ' · ' + o.unread : ''), !!o.unread]);
-    if (manageBlock(o)) chips.push(['secManage', 'Управление', false]);
-    return '<div class="ord-jump" role="navigation" aria-label="Разделы дела">' +
-      chips.map(function (c) {
-        return '<button type="button" class="oj' + (c[2] ? ' hot' : '') + '" data-jump="' + c[0] + '">' + c[1] + '</button>';
+    if (due > 0 || o.status === 'prepay') return 'money';
+    if (o.files_new) return 'files';
+    if (o.unread) return 'chat';
+    return 'work';
+  }
+
+  function orderById(id) {
+    return st.orders.filter(function (o) { return o.id === id; })[0] || null;
+  }
+
+  /* раздел, с которого открывается дело: тот, где сейчас дело за клиентом */
+  function openingSec(id, hint) {
+    if (hint && JUMP_SEC[hint]) return JUMP_SEC[hint];
+    return defaultCaseSec(orderById(id));
+  }
+
+  function jumpChips(o) {
+    var cur = caseSecOf(o);
+    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
+    var files = (o.files || []).length;
+    var tabs = [
+      ['work', 'Дело', o.actions.indexOf('accept_work') >= 0 || o.actions.indexOf('accept_price') >= 0],
+      ['money', 'Оплата' + (due > 0 ? ' · ' + money(due) + ' ₽' : ''), due > 0 || !!o.claimed],
+      ['files', 'Документы' + (files ? ' · ' + files : ''), !!o.files_new],
+      ['chat', 'Переписка' + (o.unread ? ' · ' + o.unread : ''), !!o.unread],
+      ['terms', 'Условия', false]
+    ];
+    return '<div class="ord-jump case-secnav" role="tablist" aria-label="Разделы дела">' +
+      tabs.map(function (c) {
+        var on = cur === c[0];
+        return '<button type="button" role="tab" class="oj' + (on ? ' is-on' : '') +
+          (c[2] && !on ? ' hot' : '') + '" data-case-sec="' + c[0] + '"' +
+          ' aria-selected="' + on + '" tabindex="' + (on ? '0' : '-1') + '">' + c[1] + '</button>';
       }).join('') + '</div>';
+  }
+
+  /* старые якоря дела → раздел, в котором они теперь живут */
+  var JUMP_SEC = {
+    secPay: 'money', secDecide: 'work', secStages: 'work',
+    secFiles: 'files', secChat: 'chat', secManage: 'terms', secAccess: 'terms'
+  };
+
+  function setCaseSec(sec, scrollTo) {
+    if (CASE_SECS.indexOf(sec) < 0) sec = 'work';
+    st.caseSec = sec;
+    try { history.replaceState(null, '', caseHash()); } catch (e) {}
+    renderTab();
+    var main = root.querySelector('.account-main');
+    if (main) main.scrollTop = 0;
+    var nav = root.querySelector('.case-secnav .oj.is-on');
+    if (nav) { try { nav.focus({ preventScroll: true }); } catch (e) {} }
+    if (scrollTo) setTimeout(function () { scrollToEl(scrollTo); }, 40);
+  }
+
+  /* содержимое раздела дела */
+  function caseSecHtml(o, sec) {
+    if (sec === 'money') {
+      /* расчёт уже показан рядом с «Принять цену» — второй раз не повторяем */
+      var money = actionsBlock(o, 'pay') + giftRestStrip(o) +
+        (decideFirst(o) ? '' : priceBlock(o));
+      if (money) return money;
+      /* пустой раздел показывать нельзя: говорим, что происходит и чего ждать */
+      return '<div class="case-state case-state--empty">' +
+        '<header><span>по плану</span><i aria-hidden="true"></i></header>' +
+        '<div class="case-state__body">' +
+        '<span class="case-state__mark" aria-hidden="true">₽</span>' +
+        '<h2>Платить пока нечего</h2>' +
+        '<p>' + (o.status === 'new'
+          ? 'Мастер разбирает заявку и назовёт цену — она появится здесь и в разделе «Дело».'
+          : 'Счёт появится здесь, когда мастер подготовит результат этапа. Заранее платить не нужно.') +
+        '</p></div></div>';
+    }
+    if (sec === 'files') return filesBlock(o, true);
+    if (sec === 'chat') return chatBlock(o, true);
+    if (sec === 'terms') {
+      return orderItemsBlock(o) + stageFold(o) + manageBlock(o) + accessBlock(o) +
+        reviewBlock(o) + thanksBlock(o) + defenseBlock(o) + caseSupport(o);
+    }
+    /* «Дело» — что происходит и что от вас ждут. Пока цена только названа,
+       расчёт обязан стоять здесь же: нельзя просить принять сумму, не
+       показав, из чего она сложилась. */
+    return caseOverview(o) +
+      (decideFirst(o)
+        ? priceBlock(o) + giftRestStrip(o) + actionsBlock(o, 'decide')
+        : actionsBlock(o, 'decide')) +
+      stageFold(o) + caseSupport(o);
+  }
+
+  function caseSecBody(o) {
+    return caseSecHtml(o, caseSecOf(o));
   }
 
 
@@ -2301,6 +2442,9 @@ function initCabinet() {
     var documentCount = st.orders.reduce(function (sum, order) {
       return sum + ((order.files && order.files.length) || order.files_count || 0);
     }, 0);
+    /* счётчик у «Платежей» — это деньги, которых от человека ждут прямо
+       сейчас: единственная цифра в стойке, ради которой туда заходят */
+    var dueAll = visibleOrders().reduce(function (sum, o) { return sum + dueOf(o); }, 0);
     var groups = [
       ['Работа', [
         ['home', 'Обзор', ''],
@@ -2309,9 +2453,10 @@ function initCabinet() {
         ['documents', 'Документы', documentCount ? String(documentCount) : '']
       ]],
       ['Счета и привилегии', [
-        ['wallet', 'Платежи', ''],
-        ['deposit', 'Депозит', deposit ? money(deposit) + ' ₽' : ''],
-        ['club', 'Клуб Салона', bonus ? money(bonus) : (badge.club || '')]
+        ['wallet', 'Платежи', dueAll ? money(dueAll) + ' ₽' : ''],
+        ['deposit', 'Депозит и бонусы', deposit ? money(deposit) + ' ₽'
+          : (bonus ? money(bonus) : '')],
+        ['club', 'Клуб Салона', badge.club || '']
       ]],
       ['Сервис', [
         ['help', 'Помощь', ''],
@@ -2371,7 +2516,7 @@ function initCabinet() {
   /* мини-кошелёк стойки: бонусы и депозит формулярными строками */
   function sideMini() {
     if (!st.me) {
-      return '<div class="account-nav__assurance"><span aria-hidden="true">◇</span>' +
+      return '<div class="account-nav__assurance"><span aria-hidden="true">¶</span>' +
         '<p><strong>Доступ защищён.</strong> Дела этого устройства видны только по секретной ссылке.</p></div>';
     }
     var deposit = (st.me.deposit && st.me.deposit.balance) || 0;
@@ -2397,12 +2542,13 @@ function initCabinet() {
       orders: ['Работа мастерской', 'Ваши дела.', 'Сроки, файлы, сообщения и оплата по каждому заказу.'],
       messages: ['Личный кабинет', 'Сообщения.', 'Новые вопросы редактора и переписка собраны по делам.'],
       documents: ['Личный кабинет', 'Документы.', 'Файлы, спецификации, акты и подтверждения оплаты.'],
-      wallet: ['Платежи и документы', 'Счета и привилегии.', 'Депозит, бонусы и подтверждения операций ведутся раздельно.'],
-      deposit: ['Платежи и документы', 'Депозит мастерской.', 'Пополнения и использование средств отражаются отдельно от бонусов.'],
+      wallet: ['Платежи и документы', 'Платежи.', 'Что ждёт оплаты по вашим делам и подтверждения прошедших операций.'],
+      deposit: ['Платежи и документы', 'Депозит и бонусы.', 'Денежный аванс и бонусные единицы скидки ведутся раздельно.'],
       club: ['Клуб Салона', 'Абонементы и сопровождение.', 'Состав, срок и стоимость видны до каждого отдельного платежа.'],
       help: ['Связь с мастерской', 'Помощь по вашему делу.', 'Выберите удобный способ связи или восстановите доступ к заказу.'],
       settings: ['Личный кабинет', 'Настройки.', 'Тема интерфейса, данные аккаунта и выход из кабинета.']
-    }[st.tab];
+    };
+    copy = copy[st.tab] || copy.home;
     return '<header class="account-main__head"><div><p class="eyebrow">' + copy[0] + '</p>' +
       '<h1>' + copy[1] + '</h1><p>' + copy[2] + '</p></div>' +
       '<a class="button button--primary" href="configurator.html">Новая заявка <span aria-hidden="true">→</span></a></header>';
@@ -2413,7 +2559,9 @@ function initCabinet() {
     st.caseOpen = false; /* раздел стойки всегда открывает свой список, не дело */
     if (tab === 'club') st.plusOpen = true;
     if (!silentHash) {
-      try { history.replaceState(null, '', '#' + tab); } catch (e) { location.hash = tab; }
+      /* pushState, а не replaceState: иначе «Назад» на телефоне уводит
+         с сайта вместо возврата к предыдущему разделу кабинета */
+      try { history.pushState(null, '', '#' + tab); } catch (e) { location.hash = tab; }
     }
     renderTab();
     var main = root.querySelector('.account-main');
@@ -2455,6 +2603,40 @@ function initCabinet() {
       '<span><small>Следующий шаг</small><strong>Оценка редактора</strong></span></div>' +
       '<footer><span>Продолжить заявку</span><b aria-hidden="true">→</b></footer></a>' +
       '</div></section>';
+  }
+
+  /* -------- «Ближайшие даты»: сроки дел и собственные отметки клиента ------
+     Даты сдач лежали только внутри «Клуба Салона» → витрины «Салон+» →
+     свёрнутого куратора, то есть на три уровня вглубь. При этом ради них
+     в кабинет и заходят. Сроки самих дел рядом — из одного источника. */
+  function datesCard() {
+    var rows = [];
+    activeOrders().forEach(function (o) {
+      if (!o.deadline_text) return;
+      rows.push({ sort: o.deadline_date || '', when: o.deadline_text,
+        what: esc(o.no || ('№ ' + o.id)) + ' · ' + esc(shortWork(o)), id: o.id });
+    });
+    ((st.me && st.me.milestones) || []).forEach(function (m) {
+      var d = m.due || '';
+      rows.push({ sort: d,
+        when: d ? d.slice(8, 10) + '.' + d.slice(5, 7) : 'без даты',
+        what: esc(m.title), own: true });
+    });
+    if (!rows.length) return '';
+    rows.sort(function (a, b) { return a.sort < b.sort ? -1 : a.sort > b.sort ? 1 : 0; });
+    return '<section class="account-dates" data-comfort-card>' +
+      '<header><p class="eyebrow">Календарь</p><h2>Ближайшие даты</h2></header>' +
+      '<div>' + rows.slice(0, 6).map(function (r) {
+        var body = '<span class="account-dates__when">' + esc(r.when) + '</span>' +
+          '<span class="account-dates__what">' + r.what + '</span>' +
+          (r.own ? '<span class="account-dates__own">ваша отметка</span>' : '');
+        return r.own
+          ? '<div class="account-dates__row">' + body + '</div>'
+          : '<button type="button" class="account-dates__row" data-now-open="' + r.id + '">' +
+            body + '</button>';
+      }).join('') + '</div>' +
+      '<p class="account-dates__foot"><button type="button" class="line-link" data-tab="club">' +
+      'Свои отметки и напоминания <span aria-hidden="true">→</span></button></p></section>';
   }
 
   function homeTab() {
@@ -2501,10 +2683,8 @@ function initCabinet() {
         '<section class="account-orders"><header><h2>Ваши дела</h2></header>' +
         '<div class="account-empty"><p>Здесь появятся сроки, файлы и сообщения мастера.</p>' +
         '<a class="button button--primary" href="configurator.html">Описать задачу</a></div></section>') +
-      '</div><aside class="account-command-grid__aside">' + wallet + shortcuts +
-      '<section class="account-comfort-note"><span aria-hidden="true">◇</span><div>' +
-      '<strong>Всё синхронизировано</strong><p>Статусы, платежи и новые файлы обновляются без перезагрузки.</p>' +
-      '</div></section></aside></div>';
+      '</div><aside class="account-command-grid__aside">' + datesCard() + wallet + shortcuts +
+      '</aside></div>';
   }
 
   function loginNudge(what) {
@@ -2542,9 +2722,64 @@ function initCabinet() {
       'Robokassa отправляет отдельно на почту, указанную при оплате.</p></section>';
   }
 
+  /* сумма, которую дело ждёт от клиента прямо сейчас. В списке /orders
+     нет payments/plan — считаем только по полям, которые там точно есть,
+     и ничего не выдумываем про уже оплаченное. */
+  function dueOf(o) {
+    if (o.due_now && o.due_now.amount) return o.due_now.amount;
+    if (o.status === 'prepay') return o.prepay_due || o.prepay || 0;
+    return 0;
+  }
+
+  /* -------- «Платежи»: деньги по всем делам одной сводкой --------
+     До этой правки пункты меню «Платежи» и «Депозит» открывали ОДИН и тот же
+     экран (обе ветки renderTab звали walletTab) — два названия, одно
+     содержимое, и ни в одном не было ответа на главный денежный вопрос:
+     сколько всего ждут от меня сейчас и по каким делам. */
+  function payLedgerCard() {
+    var rows = [], total = 0;
+    visibleOrders().forEach(function (o) {
+      var due = dueOf(o);
+      if (!due) return;
+      total += due;
+      rows.push('<button type="button" class="account-ledger__row account-ledger__row--act" ' +
+        'data-now-open="' + o.id + '" data-now-jump="secPay">' +
+        '<span class="account-ledger__what"><b>' + esc(o.no || ('№ ' + o.id)) + '</b> · ' +
+        esc(shortWork(o)) +
+        ((o.stages_total || 1) > 1 ? ' <i class="account-ledger__at">этап ' + (o.stage || 1) +
+          ' из ' + o.stages_total + '</i>' : '') + '</span>' +
+        '<span class="account-ledger__delta is-due">' + money(due) + ' ₽</span></button>');
+    });
+    var head = total
+      ? money(total) + ' ₽'
+      : 'Сейчас платить нечего';
+    var note = total
+      ? 'Оплата идёт по каждому делу отдельно: этап закрывается целиком. ' +
+        'Откройте дело — там реквизиты, оплата картой и подтверждение.'
+      : 'Следующий счёт появится здесь, когда мастер подготовит результат этапа. ' +
+        'Заранее платить не нужно.';
+    return '<section class="account-section reveal">' +
+      '<header><div><p class="eyebrow">Платежи</p>' +
+      '<h2>Что ждёт оплаты.</h2></div>' +
+      '<button type="button" class="line-link" data-tab="orders">Все дела ' +
+      '<span aria-hidden="true">→</span></button></header>' +
+      '<div class="account-panel">' +
+      '<header><span>К оплате сейчас</span><small>АС · СЧЁТ</small></header>' +
+      '<strong class="account-panel__figure">' + head + '</strong>' +
+      '<p>' + note + '</p>' +
+      (rows.length ? '<div class="account-ledger">' + rows.join('') + '</div>' : '') +
+      '</div></section>';
+  }
+
   function walletTab() {
-    if (!st.me) return loginNudge('Кошелёк — после входа');
-    return promoHintStrip() + bonusCard() + depCard() + paymentDocumentsCard();
+    if (!S.api.identified()) return loginNudge('Платежи — после входа');
+    return promoHintStrip() + payLedgerCard() + paymentDocumentsCard();
+  }
+
+  /* «Депозит и бонусы» — свой экран, а не копия «Платежей» */
+  function depositTab() {
+    if (!st.me) return loginNudge('Счета мастерской — после входа');
+    return depCard() + bonusCard();
   }
 
   function clubTab() {
@@ -2563,7 +2798,9 @@ function initCabinet() {
     if (!st.me) {
       st.orders.forEach(function (o) { access += accessBlock(o, true); });
     }
-    return notiRow() + linksRow() + access + paymentDocumentsCard() +
+    /* подтверждения оплаты живут в «Документах» и «Платежах» — третий
+       и четвёртый показ того же списка «Помощи» не помогал */
+    return notiRow() + linksRow() + access +
       '<section class="account-section reveal">' +
       '<header><div><p class="eyebrow">Связь и полезное</p>' +
       '<h2>Куда написать и что почитать.</h2></div></header>' +
@@ -2597,14 +2834,87 @@ function initCabinet() {
       '</div></section>';
   }
 
-  function documentTab() {
-    if (!st.orders.length) return tplEmpty();
-    return paymentDocumentsCard() + ordersRegister('documents');
+  /* -------- «Документы»: сами файлы, а не ещё одна копия реестра дел -------
+     Вкладка носила бейдж с числом файлов, но показывала карточки дел —
+     ни одного файла в ней не было. Сервер отдаёт files в списке не всегда,
+     поэтому: есть files — показываем строки файлов, нет — честную строку
+     дела со счётчиком и переходом сразу в раздел «Документы» этого дела. */
+  function docsByOrder() {
+    var out = [];
+    visibleOrders().forEach(function (o) {
+      var files = (o.files || []).slice();
+      var count = files.length || o.files_count || 0;
+      if (!count) return;
+      files.sort(function (a, b) { return a.at < b.at ? 1 : a.at > b.at ? -1 : 0; });
+      out.push({ order: o, files: files, count: count });
+    });
+    return out;
   }
 
+  function documentTab() {
+    if (!st.orders.length) return tplEmpty();
+    var groups = docsByOrder();
+    if (!groups.length) {
+      return paymentDocumentsCard() +
+        '<section class="account-section reveal"><header><div><p class="eyebrow">Документы</p>' +
+        '<h2>Файлов пока нет.</h2></div></header>' +
+        '<div class="account-empty"><p>Здесь появятся результаты этапов, отчёты проверок и ваши ' +
+        'приложенные материалы. Методичку или задание можно приложить прямо в деле.</p>' +
+        '<button type="button" class="button button--secondary" data-tab="orders">К делам</button>' +
+        '</div></section>';
+    }
+    var body = groups.map(function (g) {
+      var o = g.order;
+      var rows = g.files.length
+        ? g.files.map(function (f) {
+            var bits = [f.from === 'master' ? 'от мастерской' : 'ваш файл', dt(f.at)];
+            if (f.label) bits.push(esc(f.label));
+            return '<a class="file-row" href="#" data-protected-asset="' +
+              apiPath(o.id, '/file/' + f.id) + '" data-order-id="' + o.id +
+              '" data-filename="' + esc(f.name) + '">' +
+              '<i aria-hidden="true">' + fileExt(f.name) + '</i>' +
+              '<span><strong>' + esc(f.name) + '</strong><small>' + bits.join(' · ') +
+              '</small></span>' + (f.new ? '<b class="file-row__new">новый</b>' : '') + '</a>';
+          }).join('')
+        : '<p class="case-sec__lead">' + g.count + ' ' +
+          plural(g.count, 'файл', 'файла', 'файлов') + ' по этому делу. ' +
+          'Откройте дело — файлы в разделе «Документы».</p>';
+      /* компактная шапка группы: три полноразмерных заголовка раздела
+         подряд отталкивали сами файлы вниз на целый экран */
+      return '<section class="account-docgroup reveal">' +
+        '<header><span class="account-docgroup__no">' + esc(o.no || ('№ ' + o.id)) + '</span>' +
+        '<strong>' + esc(o.work_label || 'Дело') + '</strong>' +
+        '<button type="button" class="line-link" data-now-open="' + o.id +
+        '" data-now-jump="secFiles">Открыть дело <span aria-hidden="true">→</span></button></header>' +
+        '<div class="case-files">' + rows + '</div></section>';
+    }).join('');
+    return paymentDocumentsCard() + body;
+  }
+
+  /* -------- «Сообщения»: переписки, а не копия реестра -------- */
   function messagesTab() {
     if (!st.orders.length) return tplEmpty();
-    return nowCard() + ordersRegister('messages');
+    var rows = visibleOrders().map(function (o) {
+      var msgs = (o.messages || []).slice();
+      var last = msgs.length ? msgs[msgs.length - 1] : null;
+      var preview = last
+        ? (last.from === 'client' ? 'Вы: ' : 'Мастерская: ') +
+          esc(String(last.text || 'вложение').slice(0, 110))
+        : (o.unread ? 'Есть непрочитанное' : 'Переписки по делу пока нет');
+      return '<button type="button" class="account-ledger__row account-ledger__row--act" ' +
+        'data-now-open="' + o.id + '" data-now-jump="secChat">' +
+        '<span class="account-ledger__what"><b>' + esc(o.no || ('№ ' + o.id)) + '</b> · ' +
+        esc(shortWork(o)) + '<i class="account-ledger__at">' + preview + '</i></span>' +
+        (o.unread ? '<span class="account-ledger__delta is-due">новых: ' + o.unread + '</span>'
+                  : '<span class="account-ledger__delta">' + (last ? dt(last.at) : '') + '</span>') +
+        '</button>';
+    }).join('');
+    return nowCard() +
+      '<section class="account-section reveal">' +
+      '<header><div><p class="eyebrow">Переписка</p><h2>Разговоры по делам.</h2></div>' +
+      '<button type="button" class="line-link" data-tab="orders">Все дела ' +
+      '<span aria-hidden="true">→</span></button></header>' +
+      '<div class="account-ledger">' + rows + '</div></section>';
   }
 
   function ordersTab() {
@@ -2631,21 +2941,50 @@ function initCabinet() {
       '</article>';
   }
 
+  /* Раздел не собрался — показываем состояние, а не тишину.
+     Раньше исключение в любом шаблоне гасило весь renderTab до render():
+     экран молча оставался на ПРЕДЫДУЩЕЙ вкладке, адрес уже показывал новую.
+     Человек жал «Помощь» и не понимал, почему ничего не происходит. */
+  function safeBlock(name, fn) {
+    try { return fn(); }
+    catch (e) {
+      try { if (window.console && console.error) console.error('cabinet:' + name, e); } catch (e2) {}
+      return '<div class="case-state case-state--error">' +
+        '<header><span>сбой</span><i aria-hidden="true"></i></header>' +
+        '<div class="case-state__body">' +
+        '<span class="case-state__mark" aria-hidden="true">×</span>' +
+        '<h2>Раздел не собрался</h2>' +
+        '<p>Ваши дела, файлы и платежи в порядке — не открылся только этот экран. ' +
+        'Обновите страницу или откройте другой раздел.</p>' +
+        '</div>' +
+        '<footer class="case-acts">' +
+        '<button type="button" class="btn btn-line" id="cabRetry">Обновить</button></footer>' +
+        '</div>';
+    }
+  }
+
   function renderTab() {
-    var inner;
-    if (st.tab === 'orders') inner = ordersTab();
-    else if (st.tab === 'messages') inner = messagesTab();
-    else if (st.tab === 'documents') inner = documentTab();
-    else if (st.tab === 'wallet') inner = walletTab();
-    else if (st.tab === 'deposit') inner = walletTab();
-    else if (st.tab === 'club') inner = clubTab();
-    else if (st.tab === 'help') inner = helpTab();
-    else if (st.tab === 'settings') inner = settingsTab();
-    else inner = homeTab();
+    var inner = safeBlock(st.tab || 'home', function () {
+      if (st.tab === 'orders') return ordersTab();
+      if (st.tab === 'messages') return messagesTab();
+      if (st.tab === 'documents') return documentTab();
+      if (st.tab === 'wallet') return walletTab();
+      if (st.tab === 'deposit') return depositTab();
+      if (st.tab === 'club') return clubTab();
+      if (st.tab === 'help') return helpTab();
+      if (st.tab === 'settings') return settingsTab();
+      return homeTab();
+    });
     var body = caseVisible()
       ? '<section class="account-case-production">' +
-        ((st.detail && st.detail.id === st.currentId) ? tplDetail() : caseLoading()) + '</section>'
-      : tabHead() + '<div class="account-main__body">' + inner + '</div>';
+        safeBlock('case', function () {
+          return (st.detail && st.detail.id === st.currentId) ? tplDetail() : caseLoading();
+        }) + '</section>'
+      /* незакрытая оплата абонемента не прячется ни в одном разделе —
+         функция была написана ровно для этого, но её никто не звал, и
+         напоминание жило только во вкладке «Клуб Салона» */
+      : tabHead() + '<div class="account-main__body">' +
+        (st.tab === 'club' ? '' : subPendingBand()) + inner + '</div>';
     render(impBanner() + '<div class="account-shell">' +
       '<aside class="account-nav">' + profileCard() + navSide() + sideMini() + '</aside>' +
       '<main class="account-main" id="accountWorkspace" tabindex="-1">' + body + '</main>' +
@@ -2660,6 +2999,11 @@ function initCabinet() {
       renderTab._floorSynced = true;
       try { window.dispatchEvent(new Event('resize')); } catch (e) {}
     }
+  }
+
+  /* цена ещё не принята — расчёт обязан стоять выше кнопки «Принять» */
+  function decideFirst(o) {
+    return 'new priced'.indexOf(o.status) >= 0;
   }
 
   function tplDetail() {
@@ -2686,18 +3030,14 @@ function initCabinet() {
       '<button type="button" class="quiet-button' + (o.pinned ? ' is-on' : '') + '" data-act-pin title="' + pinTitle + '" aria-label="' + pinTitle + '" aria-pressed="' + !!o.pinned + '">' +
       (o.pinned ? 'закреплено' : 'закрепить') + '</button>' +
       '</div></header>' +
-      jumpChips(o) +
-      '<div class="case-layout">' +
-      '<div class="case-main">' +
+      /* ленты внимания живут НАД разделами: что от вас ждут прямо сейчас,
+         видно из любого раздела дела, а не только из того, где лежит кнопка */
+      '<div class="case-bands">' +
       pauseBand(o) + finalBand(o) + partBand(o) + dueBand(o) +
-      caseOverview(o) + orderItemsBlock(o) +
-      priceBlock(o) + giftRestStrip(o) + actionsBlock(o) +
-      stageFold(o) + reviewBlock(o) + thanksBlock(o) + defenseBlock(o) +
-      chatBlock(o) +
       '</div>' +
-      '<aside class="case-aside">' +
-      filesBlock(o) + caseAsidePay(o) + manageBlock(o) + accessBlock(o) + caseSupport(o) +
-      '</aside>' +
+      jumpChips(o) +
+      '<div class="case-body" id="caseSecBody" role="tabpanel" aria-label="Раздел дела">' +
+      caseSecBody(o) +
       '</div>' +
       (isArch(o) ? '<footer class="case-file__foot">' +
         '<p>Дело ' + (o.status === 'done' ? 'завершено' : 'закрыто') + '. ' +
@@ -2771,7 +3111,10 @@ function initCabinet() {
       if (!visible.length) st.remOpen = true;
       var pool = visible.length ? visible : st.orders;
       var current = pool.some(function (o) { return o.id === st.currentId; });
-      if (!keepCurrent || !current) st.currentId = pickDefaultId();
+      /* дело выбрано адресом (#order-231) — список не имеет права его сменить */
+      if ((!keepCurrent && !st.caseOpen) || !current) {
+        if (!(st.caseOpen && current)) st.currentId = pickDefaultId();
+      }
       if (!st.currentId) { renderTab(); return; }
       /* выбранное дело лежит среди убранных — покажем их в реестре */
       var cur = st.orders.filter(function (o) { return o.id === st.currentId; })[0];
@@ -3263,7 +3606,6 @@ function initCabinet() {
     var sw = t.closest('button[data-ord]');
     if (sw) {
       if (st.tab !== 'messages' && st.tab !== 'documents' && st.tab !== 'home') st.tab = 'orders';
-      try { history.replaceState(null, '', '#' + st.tab); } catch (e) {}
       var newId = parseInt(sw.getAttribute('data-ord'), 10);
       var sameCase = st.currentId === newId && !!st.detail;
       var currentMain = root.querySelector('.account-main');
@@ -3272,8 +3614,12 @@ function initCabinet() {
       st.currentId = newId;
       st.caseOpen = true;
       st.pendingCaseFocus = true;
-      st.pendingJump = st.tab === 'messages' ? 'secChat' :
+      var ordHint = st.tab === 'messages' ? 'secChat' :
         st.tab === 'documents' ? 'secFiles' : null;
+      st.pendingJump = null; /* раздел открывается сам — доезжать некуда */
+      if (!sameCase) st.caseSec = openingSec(newId, ordHint);
+      else if (ordHint) st.caseSec = JUMP_SEC[ordHint];
+      try { history.pushState(null, '', caseHash()); } catch (e) {}
       /* экран дела открываем сразу: уже загруженное дело показываем целиком,
          новое — с честной строкой ожидания, пока идёт /orders/<id> */
       renderTab();
@@ -3294,6 +3640,7 @@ function initCabinet() {
     if (t.closest('[data-case-back]')) {
       var returnId = st.currentId;
       st.caseOpen = false;
+      try { history.pushState(null, '', '#' + st.tab); } catch (e) {}
       renderTab();
       requestAnimationFrame(function () {
         var listMain = root.querySelector('.account-main');
@@ -3318,14 +3665,15 @@ function initCabinet() {
     var nowBtn = t.closest('[data-now-open]');
     if (nowBtn) {
       if (st.tab !== 'messages' && st.tab !== 'documents' && st.tab !== 'home') st.tab = 'orders';
-      try { history.replaceState(null, '', '#' + st.tab); } catch (e) {}
       var nid = parseInt(nowBtn.getAttribute('data-now-open'), 10);
       var njump = nowBtn.getAttribute('data-now-jump') || '';
       var wasOpen = st.currentId === nid && st.detail && st.caseOpen;
       st.currentId = nid;
       st.caseOpen = true;
-      if (wasOpen) { if (njump) scrollToEl(njump); return; }
-      st.pendingJump = njump || null;
+      if (wasOpen) { setCaseSec(openingSec(nid, njump)); return; }
+      st.caseSec = openingSec(nid, njump);
+      st.pendingJump = null;
+      try { history.pushState(null, '', caseHash()); } catch (e) {}
       st.pendingCaseFocus = true;
       if (st.detail && st.detail.id === nid) {
         renderTab();
@@ -3374,6 +3722,10 @@ function initCabinet() {
       return;
     }
     if (t.closest('#cabNotiBtn')) { notiAsk(); return; }
+    /* переключение раздела внутри дела */
+    var secBtn = t.closest('[data-case-sec]');
+    if (secBtn) { setCaseSec(secBtn.getAttribute('data-case-sec')); return; }
+
     var jmp = t.closest('[data-jump]');
     if (jmp) {
       var jTo = jmp.getAttribute('data-jump');
@@ -3381,7 +3733,11 @@ function initCabinet() {
         setTab('club');
         setTimeout(function () { scrollToEl(jTo); }, 60);
         return;
-      } scrollToEl(jmp.getAttribute('data-jump')); return; }
+      }
+      /* прежние переходы по якорям ведут в свой раздел дела: сами якоря
+         больше не лежат на одной ленте, их надо сначала открыть */
+      if (st.caseOpen && JUMP_SEC[jTo]) { setCaseSec(JUMP_SEC[jTo], jTo); return; }
+      scrollToEl(jTo); return; }
     if (t.closest('#clubToggle')) {
       st.clubOpen = !st.clubOpen;
       rerenderHome();
@@ -3738,7 +4094,7 @@ function initCabinet() {
       }
       return;
     }
-    if (t.closest('[data-act-fix]')) { var ff = document.getElementById('fixForm'); if (ff) { ff.hidden = false; document.getElementById('fixText').focus(); } return; }
+    if (t.closest('[data-act-fix]')) { var ff = document.getElementById('fixForm'); if (ff) { ff.hidden = false; var fixTa0 = document.getElementById('fixText'); if (fixTa0) fixTa0.focus(); } return; }
     if (t.closest('[data-act-fix-cancel]')) { var f2 = document.getElementById('fixForm'); if (f2) f2.hidden = true; return; }
     if (t.closest('[data-act-fix-send]')) {
       var txt = (document.getElementById('fixText') || {}).value || '';
@@ -3821,11 +4177,58 @@ function initCabinet() {
       if (h0 === 'club') st.plusOpen = true;
       if (h0 === 'deposit') hashDepositScroll = true;
     }
+    /* прямая ссылка на дело: #order-231 или #order-231-money — открывается
+       именно оно и именно тот раздел, а не общий список */
+    else {
+      var m0 = h0.match(/^order-(\d+)(?:-([a-z]+))?$/);
+      if (m0) {
+        st.tab = 'orders';
+        st.currentId = parseInt(m0[1], 10);
+        st.caseOpen = true;
+        if (m0[2]) st.caseSec = m0[2];
+      }
+    }
     if (/[?&](paid|thanks)=/.test(location.search)) st.tab = 'orders';
   } catch (e) {}
+  /* Адрес — источник правды для «Назад»/«Вперёд» и для пересланной ссылки.
+     Формат: #orders, #order-231, #order-231-money. Раньше у дела своего
+     адреса не было вовсе: F5 или присланная ссылка всегда открывали список,
+     а «Назад» на телефоне уводил с сайта (везде стоял replaceState). */
+  var TAB_HASHES = ['home', 'orders', 'messages', 'documents', 'wallet',
+                    'deposit', 'club', 'help', 'settings'];
+
+  function caseHash() {
+    return '#order-' + st.currentId + (st.caseSec && st.caseSec !== 'work' ? '-' + st.caseSec : '');
+  }
+
+  function applyHash(h, viaHistory) {
+    h = (h || '').replace('#', '');
+    var m = h.match(/^order-(\d+)(?:-([a-z]+))?$/);
+    if (m) {
+      var id = parseInt(m[1], 10);
+      st.caseSec = (m[2] && CASE_SECS.indexOf(m[2]) >= 0) ? m[2] : 'work';
+      st.caseOpen = true;
+      if (st.currentId !== id) { st.currentId = id; renderTab(); loadDetail(); }
+      else renderTab();
+      return true;
+    }
+    if (TAB_HASHES.indexOf(h) >= 0) {
+      /* тот же раздел, но дело было открыто — «Назад» обязан вернуть к списку */
+      if (h === st.tab && !st.caseOpen) return true;
+      st.caseOpen = false;
+      setTab(h, true);
+      return true;
+    }
+    if (viaHistory && st.caseOpen) { st.caseOpen = false; renderTab(); return true; }
+    return false;
+  }
+
+  window.addEventListener('popstate', function () { applyHash(location.hash, true); });
   window.addEventListener('hashchange', function () {
     var h = (location.hash || '').replace('#', '');
-    if (['home', 'orders', 'messages', 'documents', 'wallet', 'deposit', 'club', 'help', 'settings'].indexOf(h) >= 0 && h !== st.tab) setTab(h, true);
+    if (h === 'plus') { setTab('club'); setTimeout(function () { scrollToEl('plusCard'); }, 60); return; }
+    if (TAB_HASHES.indexOf(h) >= 0 && (h !== st.tab || st.caseOpen)) { st.caseOpen = false; setTab(h, true); }
+    else if (/^order-\d+/.test(h)) applyHash(h, true);
   });
   /* ссылка доступа с другого устройства: #claim=<токен> (или ?claim=) */
   try {
@@ -3863,6 +4266,7 @@ function initCabinet() {
     if (paidId) {
       st.currentId = parseInt(paidId, 10) || null;
       st.caseOpen = true;
+      st.caseSec = 'money';
       toast('Проверяем оплату — статус обновится в течение минуты');
       history.replaceState(null, '', location.pathname);
     }
@@ -3873,6 +4277,7 @@ function initCabinet() {
     if (thanksId) {
       st.currentId = parseInt(thanksId, 10) || null;
       st.caseOpen = true;
+      st.caseSec = 'terms';
       toast('Спасибо за поддержку мастерской. Платёж уже подтверждается');
       history.replaceState(null, '', location.pathname);
     }

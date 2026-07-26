@@ -12,7 +12,7 @@
   --ad-ink: #28251f;
   --ad-text: #514b42;
   --ad-muted: #69635a;
-  --ad-faint: #81796e;
+  --ad-faint: #6b6459;
   --ad-hover: #e9e1d5;
   --ad-wax: #a5412c;
   --ad-wax-soft: #f2ddd5;
@@ -52,10 +52,10 @@
   --ad-ink: #fffaf3;
   --ad-text: #cfc8bb;
   --ad-muted: #918b80;
-  --ad-faint: #6f695f;
+  --ad-faint: #968f83;
   --ad-hover: #2a2822;
-  --ad-wax: #bc5740;
-  --ad-wax-soft: #49271f;
+  --ad-wax: #b6503a;
+  --ad-wax-soft: #40211a;
   --ad-green: #80a98a;
   --ad-green-soft: #26372a;
   --ad-blue: #829bc2;
@@ -139,7 +139,7 @@
 
 .is-admin-route .admin-sidebar__brand small {
   color: var(--ad-muted);
-  font: 550 7px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   letter-spacing: .07em;
   text-transform: uppercase;
 }
@@ -191,7 +191,7 @@
   background: var(--ad-card-2);
   border: 1px solid var(--ad-line);
   border-radius: 5px;
-  font: normal 550 8px/1 var(--mono);
+  font: normal 550 11px/1 var(--mono);
 }
 
 .is-admin-route .admin-sidebar nav .ag-tab.is-current i {
@@ -206,7 +206,7 @@
   color: var(--ad-wax);
   background: var(--ad-wax-soft);
   border-radius: 999px;
-  font: 550 7px/1 var(--mono);
+  font: 550 11px/1 var(--mono);
   text-align: center;
 }
 
@@ -221,7 +221,7 @@
 .is-admin-route .admin-sidebar__section > span {
   margin: 0 9px 7px;
   color: var(--ad-faint);
-  font: 550 7px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   letter-spacing: .08em;
   text-transform: uppercase;
 }
@@ -236,14 +236,16 @@
 
 .is-admin-route .admin-sidebar footer a {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  min-height: 40px;
   color: var(--ad-muted);
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .is-admin-route .admin-sidebar footer > span {
   color: var(--ad-faint);
-  font: 550 7px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -257,7 +259,7 @@
   color: var(--ad-muted);
   border: 1px solid var(--ad-line);
   border-radius: 5px;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .is-admin-route .admin-theme-row .theme-toggle {
@@ -265,11 +267,12 @@
 }
 
 .is-admin-route .admin-logout {
+  min-height: 40px;
   padding: 4px 0;
   color: var(--ad-muted);
   background: transparent;
   border: 0;
-  font-size: 9px;
+  font-size: 12px;
   text-align: left;
 }
 
@@ -289,7 +292,7 @@
 
 .is-admin-route .admin-head .eyebrow {
   color: var(--ad-faint);
-  font: 550 8px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   letter-spacing: .12em;
   text-transform: uppercase;
 }
@@ -304,7 +307,7 @@
 .is-admin-route .admin-head p:not(.eyebrow) {
   margin-top: 5px;
   color: var(--ad-muted);
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .is-admin-route .admin-head > div:last-child {
@@ -321,7 +324,7 @@
   background: transparent;
   border: 1px solid var(--ad-line-2);
   border-radius: 6px;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .is-admin-route .admin-head .ag-live {
@@ -346,7 +349,7 @@
   color: #fffaf3;
   background: var(--ad-wax);
   border-radius: 50%;
-  font: 550 10px/1 var(--serif);
+  font: 550 13px/1 var(--serif);
 }
 
 .is-admin-route .admin-alert {
@@ -375,7 +378,7 @@
   color: #fffaf3;
   background: var(--ad-wax);
   border-radius: 50%;
-  font: 600 9px/1 var(--mono);
+  font: 600 12px/1 var(--mono);
 }
 
 .is-admin-route .admin-alert--calm > span {
@@ -389,19 +392,20 @@
 
 .is-admin-route .admin-alert strong {
   color: var(--ad-ink);
-  font-size: 10px;
+  font-size: 13px;
 }
 
 .is-admin-route .admin-alert p {
   color: var(--ad-muted);
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .is-admin-route .admin-alert > button {
+  min-height: 40px;
   color: var(--ad-wax);
   background: transparent;
   border: 0;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .is-admin-route .admin-alert--calm > button {
@@ -438,7 +442,7 @@
 
 .is-admin-route .admin-metrics article > span {
   color: var(--ad-muted);
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .is-admin-route .admin-metrics article > strong {
@@ -449,7 +453,7 @@
 
 .is-admin-route .admin-metrics article > small {
   color: var(--ad-faint);
-  font-size: 7px;
+  font-size: 11px;
 }
 
 .is-admin-route .admin-metrics i {
@@ -487,7 +491,7 @@
 .is-admin-route .content-overview article > span,
 .is-admin-route .content-overview article > small {
   color: var(--ad-muted);
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .is-admin-route .content-overview article > strong {
@@ -520,7 +524,7 @@
   border-radius: 5px;
   outline: 0;
   font: inherit;
-  font-size: 10px;
+  font-size: 13px;
 }
 
 .is-admin-route .admin-content-toolbar > label i {
@@ -553,7 +557,7 @@
   border: 1px solid var(--ad-line);
   border-radius: 5px;
   font: inherit;
-  font-size: 9px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
@@ -593,7 +597,7 @@
 
 .is-admin-route .content-list__index {
   color: var(--ad-wax);
-  font: 550 8px/1 var(--mono);
+  font: 550 12px/1 var(--mono);
 }
 
 .is-admin-route .content-list article > div:nth-child(2) {
@@ -612,7 +616,7 @@
   background: var(--ad-card-2);
   border: 1px solid var(--ad-line);
   border-radius: 999px;
-  font-size: 7px;
+  font-size: 11px;
   line-height: 1.1;
 }
 
@@ -624,7 +628,7 @@
 .is-admin-route .content-list h2 {
   color: var(--ad-ink);
   font-family: var(--sans);
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 550;
   letter-spacing: 0;
 }
@@ -632,7 +636,7 @@
 .is-admin-route .content-list p {
   overflow: hidden;
   color: var(--ad-muted);
-  font-size: 7px;
+  font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -645,7 +649,7 @@
 
 .is-admin-route .content-list article > div:nth-child(3) small {
   color: var(--ad-muted);
-  font-size: 7px;
+  font-size: 11px;
 }
 
 .is-admin-route .content-list article > div:last-child {
@@ -661,14 +665,14 @@
   background: var(--ad-card-2);
   border: 1px solid var(--ad-line);
   border-radius: 4px;
-  font-size: 11px;
+  font-size: 14px;
   text-decoration: none;
 }
 
 .is-admin-route .admin-content-empty {
   padding: 48px 20px;
   color: var(--ad-muted);
-  font-size: 11px;
+  font-size: 13px;
   text-align: center;
 }
 
@@ -703,7 +707,7 @@
 
 .is-admin-route .admin-panel header span {
   color: var(--ad-faint);
-  font-size: 7px;
+  font-size: 11px;
 }
 
 .is-admin-route .admin-panel header button,
@@ -713,7 +717,7 @@
   color: var(--ad-muted);
   background: transparent;
   border: 0;
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .is-admin-route .admin-queue > div {
@@ -740,7 +744,7 @@
 
 .is-admin-route .admin-queue button > span {
   color: var(--ad-muted);
-  font: 550 8px/1 var(--mono);
+  font: 550 11px/1 var(--mono);
 }
 
 .is-admin-route .admin-status {
@@ -779,7 +783,7 @@
 .is-admin-route .admin-queue button strong {
   overflow: hidden;
   color: var(--ad-ink);
-  font-size: 9px;
+  font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -787,7 +791,7 @@
 .is-admin-route .admin-queue button small {
   overflow: hidden;
   color: var(--ad-muted);
-  font-size: 7px;
+  font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -805,7 +809,7 @@
   justify-content: center;
   gap: 10px;
   color: var(--ad-muted);
-  font-size: 10px;
+  font-size: 13px;
   text-align: center;
 }
 
@@ -848,7 +852,7 @@
   position: absolute;
   bottom: -20px;
   color: var(--ad-faint);
-  font-size: 7px;
+  font-size: 11px;
 }
 
 .is-admin-route .load-chart b {
@@ -857,7 +861,7 @@
   overflow: hidden;
   max-width: 100%;
   color: var(--ad-muted);
-  font: 550 6px/1 var(--mono);
+  font: 550 12px/1 var(--mono);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -867,7 +871,7 @@
   width: 100%;
   place-items: center;
   color: var(--ad-muted);
-  font-size: 9px;
+  font-size: 13px;
   text-align: center;
 }
 
@@ -878,7 +882,7 @@
   padding-top: 12px;
   color: var(--ad-faint);
   border-top: 1px solid var(--ad-line);
-  font-size: 7px;
+  font-size: 11px;
 }
 
 .is-admin-route .admin-load > footer span {
@@ -901,7 +905,7 @@
 .is-admin-route .admin-quality > div span {
   margin-top: 5px;
   color: var(--ad-muted);
-  font-size: 7px;
+  font-size: 12px;
 }
 
 .is-admin-route .admin-quality dl {
@@ -923,12 +927,12 @@
 
 .is-admin-route .admin-quality dt {
   color: var(--ad-faint);
-  font-size: 6px;
+  font-size: 11px;
 }
 
 .is-admin-route .admin-quality dd {
   color: var(--ad-ink);
-  font-size: 9px;
+  font-size: 13px;
 }
 
 .is-admin-route .admin-inbox > div {
@@ -956,7 +960,7 @@
   color: var(--ad-ink);
   background: var(--ad-hover);
   border-radius: 50%;
-  font: 550 7px/1 var(--mono);
+  font: 550 11px/1 var(--mono);
 }
 
 .is-admin-route .admin-inbox button > div {
@@ -974,27 +978,38 @@
 
 .is-admin-route .admin-inbox strong {
   color: var(--ad-ink);
-  font-size: 8px;
+  font-size: 13px;
 }
 
 .is-admin-route .admin-inbox small,
 .is-admin-route .admin-inbox time {
   color: var(--ad-muted);
-  font-size: 7px;
+  font-size: 12px;
 }
 
 /* Live order register: concept table with a functional detail sheet. */
+/* Реестр дел — главный рабочий экран.
+   Строка и шапка отдают ВОСЕМЬ ячеек (отбор, №, клиент, задача, статус,
+   срок, сумма, стрелка), а сетка описывала шесть: лишние две сваливались
+   во вторую строку и наезжали на имя клиента. Плюс контейнер стоял на
+   overflow:hidden — при нехватке ширины «Сумма» и стрелка обрезались
+   насмерть, без возможности прокрутить. Теперь колонок восемь, у полосы
+   есть минимальная ширина и горизонтальная прокрутка с подсказкой края
+   (стандарт §7). */
 .is-admin-route .admin-order-register {
   margin-top: 10px;
-  overflow: hidden;
   background: var(--ad-card);
   border: 1px solid var(--ad-line);
+  /* прокрутка обеих осей, липкие шапка и подвал — в слое ADMIN COMFORT
+     ниже: держим одну запись, иначе overflow расходится сам с собой */
 }
 
 .is-admin-route .admin-order-register__head,
 .is-admin-route .admin-order-register .ag-row {
   display: grid;
-  grid-template-columns: 110px minmax(240px, 1fr) 140px 120px 100px 18px;
+  min-width: 940px;
+  grid-template-columns:
+    22px 62px minmax(132px, .85fr) minmax(210px, 1.45fr) 154px 116px 96px 16px;
   gap: 12px;
   align-items: center;
 }
@@ -1004,7 +1019,7 @@
   padding: 8px 14px;
   color: var(--ad-faint);
   border-bottom: 1px solid var(--ad-line);
-  font: 550 7px/1.2 var(--mono);
+  font: 550 11px/1.2 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -1055,6 +1070,49 @@
   background: var(--ad-hover);
 }
 
+/* номер дела остаётся на месте при горизонтальной прокрутке — иначе,
+   уехав вправо, невозможно понять, чья это строка (стандарт §7) */
+.is-admin-route .admin-order-register .ag-row {
+  background: var(--ad-card);
+}
+
+.is-admin-route .admin-order-register .ag-row > .admin-order-select,
+.is-admin-route .admin-order-register .ag-row > .admin-order-id,
+.is-admin-route .admin-order-register__head > span:nth-child(-n+2) {
+  position: sticky;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  /* на всю высоту строки: иначе уезжающий текст колонки «Клиент»
+     виден над и под закреплённой ячейкой */
+  align-self: stretch;
+  /* закрываем зазор сетки, иначе под ним видно уезжающий текст */
+  margin-right: -12px;
+  padding-right: 12px;
+  background: inherit;
+}
+
+.is-admin-route .admin-order-register .ag-row > .admin-order-select,
+.is-admin-route .admin-order-register__head > span:nth-child(1) {
+  left: 0;
+}
+
+.is-admin-route .admin-order-register .ag-row > .admin-order-id,
+.is-admin-route .admin-order-register__head > span:nth-child(2) {
+  /* 22px колонки выбора + 12px зазора */
+  left: 34px;
+  border-right: 1px solid var(--ad-line);
+}
+
+.is-admin-route .admin-order-register__head {
+  background: var(--ad-card);
+}
+
+/* Подсказку жеста даёт сам край недомотанного столбца (стандарт §7
+   допускает оба приёма). Затенение через ::after здесь нельзя: строка —
+   grid-контейнер, псевдоэлемент стал бы девятой ячейкой и снова разложил
+   бы колонки. */
+
 .is-admin-route .admin-order-register .ag-row.sel {
   box-shadow: inset 3px 0 0 var(--ad-wax);
 }
@@ -1064,7 +1122,7 @@
   align-items: center;
   gap: 6px;
   color: var(--ad-ink);
-  font: 550 9px/1.2 var(--mono);
+  font: 550 12px/1.2 var(--mono);
 }
 
 .is-admin-route .admin-order-register .r-main {
@@ -1082,14 +1140,16 @@
 
 .is-admin-route .admin-order-register .r-t {
   color: var(--ad-ink);
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 560;
 }
 
 .is-admin-route .admin-order-register .r-s,
 .is-admin-route .admin-order-deadline {
+  overflow: hidden;
   color: var(--ad-muted);
-  font-size: 8px;
+  font-size: 12px;
+  text-overflow: ellipsis;
 }
 
 .is-admin-route .admin-order-state {
@@ -1110,10 +1170,10 @@
   padding: 3px 8px;
   border: 1px solid currentColor;
   border-radius: 999px;
-  font: 550 9px/1.2 var(--sans) !important;
+  font: 550 11px/1.25 var(--sans) !important;
   letter-spacing: .04em;
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: normal;
   transform: none;
 }
 
@@ -1124,7 +1184,7 @@
 
 .is-admin-route .admin-order-register .r-price {
   color: var(--ad-ink);
-  font: 550 9px/1.2 var(--mono);
+  font: 550 12px/1.2 var(--mono);
   text-align: right;
 }
 
@@ -1191,12 +1251,12 @@
 
 .is-admin-route .admin-order-drawer__bar span {
   color: var(--ad-muted);
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .is-admin-route .admin-order-drawer__bar strong {
   color: var(--ad-ink);
-  font: 550 10px/1 var(--mono);
+  font: 550 13px/1 var(--mono);
 }
 
 .is-admin-route .admin-order-drawer__bar button {
@@ -1455,10 +1515,13 @@
 
 .is-admin-route .admin-sidebar__brand small,
 .is-admin-route .admin-sidebar__section > span,
-.is-admin-route .admin-sidebar footer a,
 .is-admin-route .admin-sidebar footer > span,
 .is-admin-route .admin-sidebar nav .ag-tab b {
-  font-size: 10px;
+  font-size: 11px;
+}
+
+.is-admin-route .admin-sidebar footer a {
+  font-size: 12px;
 }
 
 .is-admin-route .admin-main :is(p, small, span, td, th, button, label, input, textarea, select, dt, dd, a),
@@ -1605,7 +1668,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   padding: 4px 9px;
   border: 1px solid currentColor;
   border-radius: 999px;
-  font: 550 9px/1.2 var(--sans);
+  font: 550 11px/1.25 var(--sans);
   letter-spacing: .05em;
   text-transform: uppercase;
 }
@@ -1742,7 +1805,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   color: #fff8f1;
   background: var(--ad-wax);
   border-radius: 50%;
-  font: 550 10px/1 var(--mono);
+  font: 550 12px/1 var(--mono);
 }
 
 .is-admin-route .client-directory__row .r-main {
@@ -1795,7 +1858,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   background: var(--ad-wax) !important;
   border: 1px solid var(--ad-wax) !important;
   border-radius: 50%;
-  font: 550 10px/1 var(--mono);
+  font: 550 14px/1 var(--mono);
 }
 
 .is-admin-route .client-profile > header > div {
@@ -1827,7 +1890,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   border: 1px solid var(--ad-line);
   border-radius: 6px;
   list-style: none;
-  font: 550 11px/1 var(--sans);
+  font: 550 14px/1 var(--sans);
   cursor: pointer;
 }
 
@@ -1939,7 +2002,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
 
 .is-admin-route .client-profile > section > header .sub {
   color: var(--ad-muted);
-  font: 400 11px/1.45 var(--sans);
+  font: 400 12px/1.45 var(--sans);
   letter-spacing: .02em;
   text-transform: none;
 }
@@ -1969,10 +2032,10 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   padding: 3px 10px;
   border: 1px solid currentColor;
   border-radius: 999px;
-  font: 550 9.5px/1.2 var(--sans) !important;
+  font: 550 11px/1.25 var(--sans) !important;
   letter-spacing: .08em;
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: normal;
   transform: none;
 }
 
@@ -2179,7 +2242,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   .is-admin-route .admin-mobile-appbar__brand small {
     overflow: hidden;
     color: var(--ad-faint);
-    font: 550 9px/1.2 var(--mono);
+    font: 550 11px/1.2 var(--mono);
     letter-spacing: .05em;
     text-overflow: ellipsis;
     text-transform: uppercase;
@@ -2297,7 +2360,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
 
   .is-admin-route .content-list h2,
   .is-admin-route .content-list p {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .is-admin-route .admin-head {
@@ -2310,10 +2373,6 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
 
   .is-admin-route .admin-head p:not(.eyebrow) {
     font-size: 12px;
-  }
-
-  .is-admin-route .admin-head .header-action {
-    display: none;
   }
 
   .is-admin-route .admin-alert {
@@ -2333,7 +2392,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
 
   .is-admin-route .admin-metrics article > span,
   .is-admin-route .admin-metrics article > small {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .is-admin-route .admin-panel h2 {
@@ -2348,7 +2407,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   .is-admin-route .admin-inbox strong,
   .is-admin-route .admin-inbox small,
   .is-admin-route .admin-inbox time {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .is-admin-route .ag-filters {
@@ -2452,10 +2511,11 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
     min-width: 930px;
   }
 
+  /* сетку колонок здесь НЕ переопределяем: строка отдаёт восемь ячеек,
+     а этот блок описывал шесть — лишние сваливались во вторую строку.
+     Единственная запись grid-template-columns — в блоке реестра выше. */
   .is-admin-route .admin-order-register .ag-row {
-    grid-template-columns: 110px minmax(240px, 1fr) 140px 120px 100px 18px;
     grid-template-areas: none;
-    gap: 12px;
     min-height: 62px;
     padding: 9px 14px;
   }
@@ -2662,16 +2722,47 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
    ADMIN COMFORT — viewport workspace, action center and split drawer.
    ===================================================================== */
 .is-admin-route {
-  --ad-faint: #6f685e;
   --ad-wax-cta: #963722;
   --ad-on-wax: #fffaf3;
+  /* сургуч для текста отделён от сургуча для заливок: на тёмной основе
+     плотный #b6503a даёт 3.6:1 и не годится под цифры сметы */
+  --ad-wax-ink: var(--ad-wax);
 }
 
 :root[data-theme="dark"] .is-admin-route {
   --ad-wax-cta: #9f3e2a;
   --ad-on-wax: #fffaf3;
   --ad-muted: #aaa397;
-  --ad-faint: #918a7e;
+  --ad-wax-ink: #d5795b;
+}
+
+/* тексты и знаки, набранные сургучом, — на отдельной краске (AA 4.5:1) */
+.is-admin-route :is(
+  .admin-alert > button,
+  .admin-metrics .warn,
+  .content-list__index,
+  .admin-sidebar nav .ag-tab b,
+  .admin-mobile-appbar__search,
+  .ag-est-price,
+  .ag-est-add,
+  .ag-est-count,
+  .wz-card .wz-pr,
+  .ag-offsum .diff,
+  .pl-claimed,
+  .r-due-hot,
+  .st-fix,
+  .ag-evs .ag-ev b.neg,
+  .an-reco b,
+  .v-step,
+  .ag-rv .rv-st,
+  .ag-ci.child .ag-ci-no
+) {
+  color: var(--ad-wax-ink);
+}
+
+.is-admin-route :is(.ag-tpl:hover, .ag-est-rm:hover) {
+  color: var(--ad-wax-ink);
+  border-color: var(--ad-wax-ink);
 }
 
 .is-admin-route.admin-workspace-ready {
@@ -2728,7 +2819,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
 .is-admin-route .admin-nav-group__label {
   padding: 0 9px 6px;
   color: var(--ad-faint);
-  font: 600 9px/1.2 var(--mono);
+  font: 600 11px/1.2 var(--mono);
   letter-spacing: .08em;
   text-transform: uppercase;
 }
@@ -2769,7 +2860,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   background: var(--ad-card-2);
   border: 1px solid var(--ad-line);
   border-radius: 4px;
-  font: 550 9px/1 var(--mono);
+  font: 550 11px/1 var(--mono);
 }
 
 .is-admin-route .admin-sidebar footer {
@@ -2934,12 +3025,17 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   display: flex;
   max-height: calc(100dvh - 206px);
   flex-direction: column;
-  overflow: hidden;
+  /* обе оси на одном скроллпорте: иначе колонки «Сумма» и стрелка
+     обрезались насмерть в окне, где строке не хватало ширины.
+     Сетка колонок и min-width — выше, в блоке реестра. */
+  overflow: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable;
 }
 
-.is-admin-route .admin-order-register__head,
-.is-admin-route .admin-order-register .ag-row {
-  grid-template-columns: 34px 82px minmax(120px, .7fr) minmax(200px, 1.3fr) 132px 112px 96px 18px;
+.is-admin-route .admin-order-register .ag-list,
+.is-admin-route .admin-order-register__footer {
+  min-width: 940px;
 }
 
 .is-admin-route .admin-order-register__head {
@@ -2950,10 +3046,27 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   background: var(--ad-card);
 }
 
+.is-admin-route .admin-order-register__footer {
+  position: sticky;
+  z-index: 3;
+  bottom: 0;
+  flex: 0 0 auto;
+  background: var(--ad-card);
+}
+
 .is-admin-route .admin-order-register .ag-list {
   min-height: 0;
-  overflow: hidden auto;
-  scrollbar-gutter: stable;
+  overflow: visible;
+}
+
+/* штамп статуса переносится по словам — колонка не расползается */
+.is-admin-route .admin-order-state {
+  gap: 3px;
+}
+
+.is-admin-route .admin-order-state .status-stamp {
+  min-height: 26px;
+  padding: 3px 8px;
 }
 
 .is-admin-route .admin-order-register .ag-row {
@@ -3063,16 +3176,153 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   outline: none;
 }
 
-@media (max-width: 1180px) and (min-width: 721px) {
-  .is-admin-route .admin-order-register {
-    overflow-x: auto;
-  }
+.is-admin-route .admin-order-drawer__primary > .ag-sec:first-child,
+.is-admin-route .admin-order-drawer__rail > .ag-sec:first-child {
+  margin-top: 0;
+  padding-top: 16px;
+  border-top: 0;
+}
 
-  .is-admin-route .admin-order-register__head,
-  .is-admin-route .admin-order-register .ag-list {
-    width: 980px;
-    min-width: 980px;
-  }
+/* метка свежести в центре действий */
+.is-admin-route .admin-alert__stamp {
+  display: block;
+  margin-top: 4px;
+  color: var(--ad-faint);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+
+/* складка «без защиты»: обычная передача файла — осознанное действие */
+.is-admin-route .ag-plainbox {
+  margin-top: 12px;
+  background: var(--ad-card-2);
+  border: 1px dashed var(--ad-line-2);
+  border-radius: 6px;
+}
+
+.is-admin-route .ag-plainbox > summary {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 10px 14px;
+  color: var(--ad-ink);
+  list-style: none;
+  cursor: pointer;
+}
+
+.is-admin-route .ag-plainbox > summary::-webkit-details-marker {
+  display: none;
+}
+
+.is-admin-route .ag-plainbox > summary::before {
+  margin-right: 8px;
+  color: var(--ad-faint);
+  content: "+";
+  font-family: var(--mono);
+}
+
+.is-admin-route .ag-plainbox[open] > summary::before {
+  content: "—";
+}
+
+.is-admin-route .ag-plainbox[open] > summary {
+  border-bottom: 1px solid var(--ad-line);
+}
+
+.is-admin-route .ag-plainbox > :not(summary) {
+  padding-inline: 14px;
+}
+
+.is-admin-route .ag-plainbox > :last-child {
+  padding-bottom: 14px;
+}
+
+/* ИЕРАРХИЯ ПОВЕРХ 12px-ПОЛА.
+   Пол `.admin-main :is(p, small, span…) { font-size: 12px !important }`
+   держит нижнюю границу читаемости, но заодно схлопывает заголовочные
+   строки до служебных. Возвращаем разницу: название работы крупнее
+   подписей, служебные метки — ровно по нижней границе стандарта. */
+.is-admin-route .admin-order-register .r-main .r-t {
+  font-size: 14px !important;
+}
+
+.is-admin-route .admin-order-register .admin-order-client strong,
+.is-admin-route .admin-alert > div > strong,
+.is-admin-route .admin-queue button > div > strong,
+.is-admin-route .admin-inbox > div > button strong,
+.is-admin-route .content-list h2,
+.is-admin-route .admin-quality dd,
+.is-admin-route .ag-lead__who {
+  font-size: 13px !important;
+}
+
+.is-admin-route .admin-order-register__head > span,
+.is-admin-route .admin-head .eyebrow,
+.is-admin-route .admin-nav-group__label,
+.is-admin-route .admin-alert__stamp,
+.is-admin-route .admin-panel > header span,
+.is-admin-route .admin-metrics :is(article, button) > small,
+.is-admin-route .content-list .tag,
+.is-admin-route .admin-quality dt,
+.is-admin-route .load-chart small,
+.is-admin-route .ag-lead__meta {
+  font-size: 11px !important;
+}
+
+.is-admin-route .ag-plainbox > summary {
+  font-size: 13px;
+}
+
+/* обращения с сайта: строка контакта и отметка «обработан» */
+.is-admin-route .ag-leads {
+  display: grid;
+  gap: 8px;
+}
+
+.is-admin-route .ag-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px 16px;
+  align-items: center;
+  padding: 13px 15px;
+  background: var(--ad-card);
+  border: 1px solid var(--ad-line);
+  border-left: 3px solid var(--ad-line-2);
+  border-radius: 5px;
+}
+
+.is-admin-route .ag-lead.is-open {
+  border-left-color: var(--ad-wax);
+}
+
+.is-admin-route .ag-lead.is-done {
+  background: var(--ad-card-2);
+}
+
+.is-admin-route .ag-lead__main {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.is-admin-route .ag-lead__who {
+  color: var(--ad-ink);
+  font-size: 13px;
+}
+
+.is-admin-route .ag-lead__msg {
+  color: var(--ad-text);
+  overflow-wrap: anywhere;
+}
+
+.is-admin-route .ag-lead__meta {
+  color: var(--ad-muted);
+}
+
+.is-admin-route .ag-lead__act {
+  min-height: 44px;
+  white-space: nowrap;
 }
 
 @media (max-width:920px) {
@@ -3197,6 +3447,69 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
     border-top: 1px solid var(--ad-line);
     border-left: 0;
   }
+
+  /* «Создать дело» — единственный живой вход в мастер заявки.
+     Раньше на телефоне его прятали, а запасные точки входа не рисуются. */
+  .is-admin-route .admin-head,
+  .is-admin-route .admin-head__tools {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .is-admin-route .admin-head .header-action {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    color: var(--ad-on-wax);
+    background: var(--ad-wax-cta);
+    border-color: var(--ad-wax-cta);
+    border-radius: 6px;
+    text-decoration: none;
+  }
+
+  /* Выход, сайт и кабинет клиента живут в подвале боковой колонки.
+     На телефоне колонка сворачивается в ленту — показываем подвал
+     в раскрытом меню, иначе выйти из панели нечем. */
+  .is-admin-route.admin-nav-expanded .admin-sidebar footer {
+    display: grid;
+    gap: 8px;
+    margin-top: 18px;
+    padding-top: 16px;
+  }
+
+  .is-admin-route.admin-nav-expanded .admin-sidebar footer a {
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--ad-line);
+    border-radius: 6px;
+  }
+
+  .is-admin-route.admin-nav-expanded .admin-theme-row {
+    min-height: 44px;
+    padding: 5px 11px;
+  }
+
+  .is-admin-route.admin-nav-expanded .admin-logout {
+    min-height: 44px;
+    padding: 10px 12px;
+    color: var(--ad-ink);
+    border: 1px solid var(--ad-line-2);
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  /* один размер полосы на все части реестра: шапка, строки, список
+     и подвал. Иначе подвал уже строк и «уезжает» при прокрутке. */
+  .is-admin-route .admin-order-register__head,
+  .is-admin-route .admin-order-register .ag-list,
+  .is-admin-route .admin-order-register .ag-row,
+  .is-admin-route .admin-order-register__footer {
+    width: auto;
+    min-width: 940px;
+  }
 }
 
 @media (max-width: 720px) {
@@ -3204,11 +3517,30 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
     max-height: none;
     overflow: visible;
     background: transparent;
+    background-image: none;
     border: 0;
+  }
+
+  .is-admin-route .admin-order-register .ag-row > .admin-order-select,
+  .is-admin-route .admin-order-register .ag-row > .admin-order-id {
+    position: static;
+    margin-right: 0;
+    padding-right: 0;
+    background: transparent;
+    border-right: 0;
   }
 
   .is-admin-route .admin-order-register__head {
     display: none;
+  }
+
+  /* карточный режим: подвал не липнет к экрану и не тянет ширину таблицы */
+  .is-admin-route .admin-order-register__footer {
+    position: static;
+    min-width: 0;
+    margin-top: 8px;
+    border: 1px solid var(--ad-line);
+    border-radius: 5px;
   }
 
   .is-admin-route .admin-order-register .ag-list {

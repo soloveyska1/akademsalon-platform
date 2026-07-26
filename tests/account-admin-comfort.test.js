@@ -61,6 +61,8 @@ test('admin mobile editions use list-detail clients and order cards', () => {
   assert.match(adminCss, /\.is-admin-route\.admin-client-selected \.client-directory__list/);
   assert.match(adminCss, /grid-template-areas:[\s\S]*?"select id state"[\s\S]*?"deadline deadline go"/);
   assert.match(adminCss, /admin-order-register \.ag-list\s*\{[\s\S]*?max-height: none;/);
-  assert.match(adminHtml, /ui=comfort26/);
-  assert.match(dashboardHtml, /ui=comfort26/);
+  /* суффикс слоя двигается вместе с релизом — проверяем, что он ЕСТЬ,
+     а не конкретный номер: иначе каждый бамп кеша роняет тест */
+  assert.match(adminHtml, /ui=comfort\d+/);
+  assert.match(dashboardHtml, /ui=comfort\d+/);
 });

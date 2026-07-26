@@ -25,9 +25,59 @@ test('account production page uses the final concept shell', () => {
   assert.match(cabinetJs, /class="account-summary"/);
   assert.match(cabinetJs, /class="order-list"/);
   assert.match(cabinetJs, /class="account-benefits"/);
-  for (const label of ['Дела', 'Сообщения', 'Документы', 'Платежи', 'Клуб Салона', 'Депозит']) {
+  /* «Депозит» переименован в «Депозит и бонусы» 2026-07-26: прежде пункты
+     «Платежи» и «Депозит» вели в один и тот же экран (обе ветки renderTab
+     звали walletTab), теперь у каждого своё содержимое. */
+  for (const label of ['Дела', 'Сообщения', 'Документы', 'Платежи', 'Клуб Салона', 'Депозит и бонусы']) {
     assert.match(cabinetJs, new RegExp(`'${label.replace(/[+]/g, '\\$&')}'`));
   }
+});
+
+test('разделы кабинета не показывают один и тот же экран', () => {
+  /* регресс на баг 2026-07-26: renderTab отдавал walletTab() и на wallet,
+     и на deposit — два пункта меню, одно содержимое */
+  assert.match(cabinetJs, /st\.tab === 'deposit'\) return depositTab\(\)/);
+  assert.match(cabinetJs, /function depositTab\(\)/);
+  assert.match(cabinetJs, /function payLedgerCard\(\)/);
+});
+
+test('дело разложено по разделам, а не одной лентой', () => {
+  /* «Бесконечный скролл» внутри дела: 5 646 px на 430×932. Дело разбито
+     на разделы work|money|files|chat|terms, открыт один. */
+  assert.match(cabinetJs, /var CASE_SECS = \['work', 'money', 'files', 'chat', 'terms'\]/);
+  assert.match(cabinetJs, /function caseSecHtml\(o, sec\)/);
+  assert.match(cabinetJs, /data-case-sec="/);
+  assert.match(cabinetJs, /function setCaseSec\(/);
+  /* старые якоря дела продолжают работать — ведут в свой раздел */
+  assert.match(cabinetJs, /JUMP_SEC\[jTo\]/);
+  assert.match(accountCss, /\.case-secnav/);
+});
+
+test('падение шаблона раздела не оставляет пустой экран', () => {
+  /* до правки исключение внутри любого tab-шаблона гасило renderTab
+     целиком: экран молча оставался на ПРЕДЫДУЩЕЙ вкладке */
+  assert.match(cabinetJs, /function safeBlock\(name, fn\)/);
+  assert.match(cabinetJs, /Раздел не собрался/);
+});
+
+test('служебный текст кабинета не мельче 11px на десктопе', () => {
+  /* DESIGN-STANDARDS §4: служебный текст 11–12px, и мелкий шрифт не
+     применяется для сведений, нужных для решения. До правки в файле было
+     110 объявлений мельче 11.5px вне медиазапросов. */
+  const lines = accountCss.split('\n');
+  let depth = 0;
+  let inMedia = false;
+  const guilty = [];
+  lines.forEach((line, i) => {
+    if (/^\s*@media/.test(line)) inMedia = true;
+    if (!inMedia) {
+      const m = /font(?:-size)?\s*:[^;]*?(\d+(?:\.\d+)?)px/.exec(line);
+      if (m && Number(m[1]) < 11) guilty.push(`${i + 1}: ${line.trim()}`);
+    }
+    depth += (line.split('{').length - 1) - (line.split('}').length - 1);
+    if (inMedia && depth <= 0) inMedia = false;
+  });
+  assert.deepStrictEqual(guilty, [], `шрифт мельче 11px вне медиазапросов:\n${guilty.join('\n')}`);
 });
 
 test('account authentication and live order mechanics remain bound', () => {
@@ -103,17 +153,31 @@ test('admin API actions and operational hooks remain present', () => {
   ].forEach((hook) => assert.ok(adminJs.includes(hook), `missing admin hook: ${hook}`));
 });
 
-test('new handoff keeps staged billing actions reachable', () => {
+/* Раньше здесь проверялась сама сломанная форма: ранний return для
+   work/check/fix и недостижимый хвост с `var canDeliver`. Из-за него
+   мастер не мог передать обычный файл ниоткуда, кроме скрепки в
+   переписке, — а она грузит оригинал без защиты и без предупреждения.
+   Блоки слиты в один; проверяем достижимость всех путей передачи. */
+test('handoff keeps staged billing and every delivery path reachable', () => {
   const start = adminJs.indexOf('function partsBlock(o)');
   const end = adminJs.indexOf('function feedBlock(o)', start);
   assert.ok(start > 0 && end > start, 'partsBlock source not found');
   const partsBlock = adminJs.slice(start, end);
-  const earlyReturn = partsBlock.indexOf("if ('work check fix'.indexOf(o.status) >= 0)");
-  const finalReturn = partsBlock.indexOf('var canDeliver');
-  assert.ok(earlyReturn > 0 && finalReturn > earlyReturn, 'handoff branches not found');
-  const handoffBranch = partsBlock.slice(earlyReturn, finalReturn);
-  assert.match(handoffBranch, /stageBillingAction\(o, total\)/);
-  assert.match(handoffBranch, /billingAction \+ action/);
+
+  assert.doesNotMatch(partsBlock, /var canDeliver/, 'мёртвая ветка передачи вернулась');
+  assert.match(partsBlock, /stageBillingAction\(o, total\)/);
+  assert.match(partsBlock, /billingAction \+ action/);
+
+  for (const hook of ['agPreviewFile', 'agDeliverFile', 'agPlainFile', 'agDeliverMark']) {
+    assert.ok(partsBlock.includes(hook), `missing delivery hook in partsBlock: ${hook}`);
+  }
+  // защищённый пакет выводится ровно один раз за отрисовку: два <input>
+  // с одним id ломают загрузку
+  assert.equal((partsBlock.match(/id="agPreviewFile"/g) || []).length, 2,
+    'agPreviewFile должен эмититься по одному в каждой из двух фаз пакета');
+  assert.match(partsBlock, /id="agHandoffPlain"/);
+  assert.match(partsBlock, /без защиты/);
+
   for (const hook of ['agFinalReady', 'agPartReady', 'data-remind-pay']) {
     assert.match(adminJs, new RegExp(hook), `missing staged billing hook: ${hook}`);
   }
