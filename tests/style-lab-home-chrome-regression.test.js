@@ -109,3 +109,18 @@ test('tablet and phone appbar lockups retain their approved heights', () => {
   assert.match(homeCss, /\.polish15-home \.testimonial-section__grid\{ gap:28px; \}/);
   assert.match(homeCss, /\.polish15-home \.testimonial-section__quote\{ padding-left:0; \}/);
 });
+
+test('mobile consent replaces the dock without keeping its empty floor', () => {
+  assert.match(
+    mobileCss,
+    /:root\.has-consent-bar \.mobile-dock\{[\s\S]*?visibility:hidden;/,
+  );
+  assert.match(
+    mobileCss,
+    /:root\.has-consent-bar \.lrail\{\s*bottom:max\(8px,env\(safe-area-inset-bottom\)\);/,
+  );
+  assert.match(
+    mobileCss,
+    /:root\.has-consent-bar \.lrail \.cookiebar>p\{[\s\S]*?display:block;[\s\S]*?-webkit-line-clamp:unset;/,
+  );
+});

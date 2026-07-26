@@ -1930,6 +1930,20 @@
     pointer-events:none;
     visibility:hidden;
   }
+  /* Скрытый док больше не резервирует свои 59px под consent-rail.
+     В iOS Safari visual viewport уже поднимает fixed-слой над плавающей
+     адресной строкой; повторный подъём через --floor ставил карточку прямо
+     поверх вторичной кнопки hero. */
+  :root.has-consent-bar .lrail{
+    bottom:max(8px,env(safe-area-inset-bottom));
+  }
+  /* Решение о данных должно читаться целиком: двухстрочный clamp обрывал
+     фразу до объяснения, что отказ не мешает оформлению заявки. */
+  :root.has-consent-bar .lrail .cookiebar>p{
+    display:block;
+    overflow:visible;
+    -webkit-line-clamp:unset;
+  }
   .mobile-dock.mobile-cta>.mobile-dock__primary{
     margin-top:-23px;
     /* Печать намеренно выступает над баром — ссылка не должна её срезать.
