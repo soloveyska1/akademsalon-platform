@@ -802,11 +802,23 @@ html[data-theme="dark"] .configurator-task .cart-shell .cart-head{
   .configurator-task .cart-shell .cart-tools-body{
     height:100%;max-height:100%;min-height:0;overflow:auto;overscroll-behavior:contain
   }
+  .configurator-task .cart-shell .cart-foot:has(.cart-tools[open]) .cart-summary-head{
+    padding-bottom:8px
+  }
   .configurator-task .cart-shell .cart-foot:has(.cart-tools[open]) .cart-totals{
-    margin-top:12px;padding:13px 16px
+    margin-top:8px;padding:8px 14px
   }
   .configurator-task .cart-shell .cart-foot:has(.cart-tools[open]) .cart-total-note{display:none}
-  .configurator-task .cart-shell .cart-foot:has(.cart-tools[open]) .cart-actions{padding-top:12px}
+  .configurator-task .cart-shell .cart-foot:has(.cart-tools[open]) .cart-total-main{padding-bottom:6px}
+  .configurator-task .cart-shell .cart-foot:has(.cart-tools[open]) .cart-total-row{padding-block:3px}
+  .configurator-task .cart-shell .cart-foot:has(.cart-tools[open]) .cart-total-after{
+    margin-top:4px;padding-top:7px
+  }
+  .configurator-task .cart-shell .cart-foot:has(.cart-tools[open]) .cart-tools{margin-top:12px}
+  .configurator-task .cart-shell .cart-foot:has(.cart-tools[open]) .cart-tools-toggle{
+    min-height:58px;padding-block:8px
+  }
+  .configurator-task .cart-shell .cart-foot:has(.cart-tools[open]) .cart-actions{padding-top:6px}
 }
 @media(min-width:921px) and (max-width:1120px){
   .configurator-task .cart-shell .cart-drawer{
