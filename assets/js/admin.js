@@ -75,7 +75,7 @@ function initGodEye() {
     reviews: [], leads: [],
     qa: null, qaTags: null, qaDrafts: {},   /* «Открытая приёмная»: очередь, лента, несохранённые наброски */
     desk: null, calDay: null, /* «Сегодня на столе»: активные дела + календарь сдач */
-    subs: null,               /* /admin/subs: оформления подписки (свой контур) */
+    subs: null, subsLoading: false, subsFailed: false,
     gifts: null, gsel: null, gnew: false, gq: '', gfilter: '', giftBusy: false,  /* сертификаты: список, раскрытая карточка, форма, поиск/фильтр */
     ov: null, ovAt: 0, ovFailed: false, timer: null, busy: false,
     visits: null, vstats: null,                    /* «Глаз бога»: лента заходов */
@@ -84,8 +84,10 @@ function initGodEye() {
     vopen: {},                                     /* раскрытые строки визитов */
     vtimer: null,
     bulk: null,                                    /* Set(id) — режим массовых действий */
-    contentQ: '', contentTopic: 'all'
+    contentQ: '', contentTopic: 'all',
+    tabRequestEpoch: 0, cardRequestSeq: 0, clientRequestSeq: 0
   };
+  var pendingAdminFocus = false;
   var VALID_TABS = { summary: 1, visits: 1, orders: 1, clients: 1, reviews: 1,
     qa: 1, gifts: 1, leads: 1, broadcast: 1, settings: 1, content: 1 };
   var CONTENT_GUIDES = [
@@ -316,13 +318,23 @@ function initGodEye() {
 
   function gate() {
     if (!S.api.token()) {
+      document.body.classList.remove('admin-workspace-ready', 'admin-nav-expanded',
+        'admin-drawer-open', 'admin-client-selected');
       var pending = S.resumeTgLogin(function () { gate(); }, function () { render(tplLogin(null)); });
       render(tplLogin(pending));
       return;
     }
     S.api.get('/admin/overview').then(function (r) {
-      if (r.error === 'forbidden') { render(tplLogin(null, true)); return; }
-      if (!r.ok) { render('<div class="ag-empty">Сервер недоступен. <button class="btn btn-line" id="agRetry">Повторить</button></div>'); return; }
+      if (r.error === 'forbidden') {
+        document.body.classList.remove('admin-workspace-ready');
+        render(tplLogin(null, true));
+        return;
+      }
+      if (!r.ok) {
+        document.body.classList.remove('admin-workspace-ready');
+        render('<div class="ag-empty">Сервер недоступен. <button class="btn btn-line" id="agRetry">Повторить</button></div>');
+        return;
+      }
       st.ov = r;
       st.ovAt = Date.now();
       st.ovFailed = false;
@@ -371,8 +383,22 @@ function initGodEye() {
   }
 
   function loadSubs() {
+    if (st.subsLoading) return;
+    st.subsLoading = true;
+    st.subsFailed = false;
     S.api.get('/admin/subs').then(function (r) {
-      if (r.ok) { st.subs = r; if (st.tab === 'summary') drawBody(); }
+      st.subsLoading = false;
+      if (r && r.ok) {
+        st.subs = r;
+        st.subsFailed = false;
+      } else {
+        st.subsFailed = true;
+      }
+      if (st.tab === 'summary') drawBody();
+    }).catch(function () {
+      st.subsLoading = false;
+      st.subsFailed = true;
+      if (st.tab === 'summary') drawBody();
     });
   }
 
@@ -410,7 +436,7 @@ function initGodEye() {
     if (st.tab === 'qa') loadQA();
     if (st.tab === 'orders') {
       S.api.get('/admin/orders?' + listQuery()).then(function (r) {
-        if (r.ok) { st.orders = r.orders; drawList(); }
+        if (r.ok && st.tab === 'orders') { st.orders = r.orders; drawList(); }
       });
       if (st.sel) loadCard(st.sel, true);
     }
@@ -424,6 +450,11 @@ function initGodEye() {
     return parts.join('&');
   }
   function loadTab(openFirst) {
+    var requestedTab = st.tab;
+    var requestEpoch = ++st.tabRequestEpoch;
+    function tabRequestCurrent() {
+      return requestEpoch === st.tabRequestEpoch && st.tab === requestedTab;
+    }
     /* лента визитов сама себя освежает — таймер живёт, пока открыта вкладка */
     if (st.vtimer) { clearInterval(st.vtimer); st.vtimer = null; }
     if (st.tab === 'visits') {
@@ -439,6 +470,7 @@ function initGodEye() {
     tabLoading();
     if (st.tab === 'orders') {
       S.api.get('/admin/orders?' + listQuery()).then(function (r) {
+        if (!tabRequestCurrent()) return;
         if (!r.ok) return tabFail();
         st.orders = r.orders;
         /* открываем ту строку, что визуально сверху (закреплённые всплывают) */
@@ -448,6 +480,7 @@ function initGodEye() {
       });
     } else if (st.tab === 'clients') {
       S.api.get('/admin/clients').then(function (r) {
+        if (!tabRequestCurrent()) return;
         if (!r.ok) return tabFail();
         st.clients = r.clients;
         drawBody();
@@ -455,6 +488,7 @@ function initGodEye() {
       });
     } else if (st.tab === 'reviews') {
       S.api.get('/admin/reviews').then(function (r) {
+        if (!tabRequestCurrent()) return;
         if (!r.ok) return tabFail();
         st.reviews = r.reviews;
         drawBody();
@@ -465,6 +499,7 @@ function initGodEye() {
       loadGifts();
     } else if (st.tab === 'leads') {
       S.api.get('/admin/leads').then(function (r) {
+        if (!tabRequestCurrent()) return;
         if (!r.ok) return tabFail();
         st.leads = r.leads;
         drawBody();
@@ -889,7 +924,9 @@ function initGodEye() {
 
   function loadCard(id, silent) {
     st.sel = id;
+    var requestSeq = ++st.cardRequestSeq;
     S.api.get('/admin/orders/' + id).then(function (r) {
+      if (requestSeq !== st.cardRequestSeq || st.tab !== 'orders' || st.sel !== id) return;
       if (!r.ok) return;
       var was = st.card;
       var same = false;
@@ -910,16 +947,34 @@ function initGodEye() {
   }
   function loadClient(id) {
     st.csel = id;
+    var requestSeq = ++st.clientRequestSeq;
+    document.body.classList.add('admin-client-selected');
     drawClientList();   /* подсветить выбранную строку сразу */
+    var profile = document.getElementById('agCCard');
+    if (profile) profile.innerHTML = '<div class="ag-empty" role="status">Открываем карточку клиента…</div>';
     S.api.get('/admin/clients/' + id).then(function (r) {
-      if (!r.ok) return;
+      if (requestSeq !== st.clientRequestSeq || st.tab !== 'clients' || st.csel !== id) return;
+      if (!r.ok) {
+        st.csel = null;
+        st.ccard = null;
+        document.body.classList.remove('admin-client-selected');
+        drawClientList();
+        toast('Карточка клиента не загрузилась — попробуйте ещё раз');
+        return;
+      }
       st.ccard = r.client;
       drawClientCard();
-      /* на телефоне карточка ниже всего списка — подтянем её в вид */
-      if (window.innerWidth <= 960) {
-        var cc = document.getElementById('agCCard');
-        if (cc) { try { cc.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }
+      var back = document.querySelector('[data-client-back]');
+      if (back) {
+        try { back.focus({ preventScroll: true }); } catch (e) {}
       }
+    }).catch(function () {
+      if (requestSeq !== st.clientRequestSeq || st.tab !== 'clients' || st.csel !== id) return;
+      st.csel = null;
+      st.ccard = null;
+      document.body.classList.remove('admin-client-selected');
+      drawClientList();
+      toast('Сеть прервалась — карточка клиента не открылась');
     });
   }
 
@@ -937,21 +992,23 @@ function initGodEye() {
 
   function renderShell() {
     var u = S.api.user() || {};
-    render('<header class="admin-mobile-appbar">' +
+    document.body.classList.add('admin-workspace-ready');
+    render('<a class="workspace-skip-link" href="#agBody">К рабочей области</a>' +
+      '<header class="admin-mobile-appbar">' +
         '<button type="button" class="admin-mobile-appbar__back" data-admin-mobile-back aria-label="Вернуться назад">←</button>' +
         '<span class="admin-mobile-appbar__brand"><img src="bimi/logo.svg" alt="">' +
           '<span><strong>Редакционный кабинет</strong><small>Управление</small></span></span>' +
         '<button type="button" class="admin-mobile-appbar__search" data-admin-mobile-search aria-label="Найти дело">' + icoSearch(18) + '</button>' +
         adminThemeButton() +
-        '<button type="button" class="admin-mobile-appbar__menu" data-admin-mobile-menu aria-expanded="false" aria-label="Открыть разделы"><i></i></button>' +
+        '<button type="button" class="admin-mobile-appbar__menu" data-admin-mobile-menu aria-controls="agNav" aria-expanded="false" aria-label="Открыть разделы"><i></i></button>' +
       '</header>' +
       '<div class="admin-shell">' +
       '<aside class="admin-sidebar">' +
         '<a class="admin-sidebar__brand" href="/"><img src="bimi/logo.svg" alt="">' +
           '<span><strong>Академический Салон</strong><small>Редакционный кабинет</small></span></a>' +
         '<nav id="agNav" aria-label="Разделы администрирования"></nav>' +
-        '<div class="admin-sidebar__section"><span>Сервис</span>' +
-          '<button type="button" class="ag-tab" data-tab="visits"><i>↗</i><span>Отчёты и визиты</span></button></div>' +
+        '<button type="button" class="admin-sidebar__search" data-admin-global-search>' +
+          icoSearch(15) + '<span>Найти дело</span><kbd>⌘ K</kbd></button>' +
         '<footer><a href="/">Открыть сайт <span>↗</span></a>' +
           '<a href="dashboard.html">Кабинет клиента <span>↗</span></a>' +
           '<div class="admin-theme-row">' + adminThemeButton() +
@@ -991,28 +1048,38 @@ function initGodEye() {
     if (!box) return;
     var b = navBadges();
     var online = (st.ov && st.ov.visits && st.ov.visits.online) || 0;
-    var tabs = [
-      ['summary', 'Рабочий стол', 'С', 0],
-      ['visits', 'Посещения', 'V', online],
-      ['orders', 'Дела', 'Д', b.orders],
-      ['clients', 'Клиенты', 'К', 0],
-      ['reviews', 'Отзывы', 'О', b.reviews],
-      ['qa', 'Приёмная', '?', b.qa],
-      ['gifts', 'Сертификаты', 'П', b.gifts],
-      ['leads', 'Обращения', 'Л', b.leads],
-      ['broadcast', 'Рассылки', 'Р', 0],
-      ['settings', 'Настройки', 'Н', 0],
-      ['content', 'Материалы', 'М', 0]
+    var groups = [
+      ['Работа', [
+        ['summary', 'Рабочий стол', 'С', 0],
+        ['orders', 'Дела', 'Д', b.orders],
+        ['clients', 'Клиенты', 'К', 0]
+      ]],
+      ['Коммуникации', [
+        ['qa', 'Приёмная', '?', b.qa],
+        ['reviews', 'Отзывы', 'О', b.reviews],
+        ['leads', 'Обращения', 'Л', b.leads],
+        ['broadcast', 'Рассылки', 'Р', 0]
+      ]],
+      ['Бизнес и система', [
+        ['gifts', 'Сертификаты', 'П', b.gifts],
+        ['visits', 'Посещения', 'V', online],
+        ['content', 'Материалы', 'М', 0],
+        ['settings', 'Настройки', 'Н', 0]
+      ]]
     ];
-    box.innerHTML = tabs.map(function (t) {
-      var on = st.tab === t[0];
-      return '<button type="button" role="tab" aria-selected="' + (on ? 'true' : 'false') +
-        '" class="ag-tab' + (on ? ' is-current on' : '') + '" data-tab="' + t[0] + '">' +
-        '<i>' + t[2] + '</i><span>' + t[1] + '</span>' +
-        (t[3] ? '<b>' + t[3] + '</b>' : '') + '</button>';
-    }).join('') +
-      '<a class="ag-tab admin-nav-link" href="admin-covers.html">' +
-        '<i>И</i><span>Обложки</span></a>';
+    box.innerHTML = groups.map(function (group) {
+      return '<section class="admin-nav-group"><span class="admin-nav-group__label">' +
+        group[0] + '</span>' + group[1].map(function (t) {
+          var on = st.tab === t[0];
+          return '<button type="button" aria-current="' + (on ? 'page' : 'false') +
+            '" class="ag-tab' + (on ? ' is-current on' : '') + '" data-tab="' + t[0] + '">' +
+            '<i>' + t[2] + '</i><span>' + t[1] + '</span>' +
+            (t[3] ? '<b>' + t[3] + '</b>' : '') + '</button>';
+        }).join('') + (group[0] === 'Бизнес и система'
+          ? '<a class="ag-tab admin-nav-link" href="admin-covers.html">' +
+            '<i>И</i><span>Обложки</span></a>'
+          : '') + '</section>';
+    }).join('');
     drawHead();
   }
 
@@ -1041,7 +1108,7 @@ function initGodEye() {
       leads: ['Обращения с сайта', 'Лиды', 'Новые задачи и контакты'],
       broadcast: ['Коммуникации', 'Рассылки', 'Сегменты и история отправок'],
       settings: ['Настройки сервиса', 'Настройки', 'Доступность, расчёты и рабочие подключения'],
-      content: ['Редакционная система', 'Публикации сайта', '25 опубликованных материалов']
+      content: ['Редакционная система', 'Публикации сайта', CONTENT_GUIDES.length + ' материалов в рабочем каталоге']
     }[st.tab] || ['Редакционный кабинет', 'Рабочий стол', ''];
     var initials = String(u.name || 'СМ').trim().split(/\s+/).map(function (p) {
       return p.charAt(0);
@@ -1076,7 +1143,9 @@ function initGodEye() {
       headAction = '<button type="button" class="header-action wz-open" id="wzOpen">Создать</button>';
     }
     box.innerHTML = '<div><p class="eyebrow">' + label[0] + '</p><h1>' + label[1] + '</h1>' +
-      '<p>' + label[2] + '</p></div><div>' +
+      '<p>' + label[2] + '</p></div><div class="admin-head__tools">' +
+      '<button type="button" class="admin-global-search" data-admin-global-search>' +
+        icoSearch(15) + '<span>Найти дело</span><kbd>⌘ K</kbd></button>' +
       headAction +
       '<button type="button" class="ag-live quiet" id="agLive" title="Открыть посещения">' +
         '<span class="ld"></span><span><b id="agLiveN">0</b> онлайн</span></button>' +
@@ -1087,6 +1156,9 @@ function initGodEye() {
   function drawBody() {
     var box = document.getElementById('agBody');
     if (!box) return;
+    document.body.classList.remove('admin-drawer-open');
+    setAdminDrawerBackground(false);
+    if (st.tab !== 'clients') document.body.classList.remove('admin-client-selected');
     releaseAdminObjectUrls();
     if (st.tab === 'summary') {
       box.innerHTML = tplSummary();
@@ -1103,14 +1175,15 @@ function initGodEye() {
       box.innerHTML =
         '<div class="ag-filters" id="agFilters"></div>' +
         '<section class="admin-table-wrap admin-order-register" aria-label="Реестр дел">' +
-          '<div class="admin-order-register__head" style="grid-template-columns:34px 92px minmax(120px,.65fr) minmax(220px,1.35fr) 140px 120px 100px 18px">' +
+          '<div class="admin-order-register__head">' +
             '<span aria-hidden="true"></span><span>Дело</span><span>Клиент</span><span>Задача</span>' +
             '<span>Статус</span><span>Ближайший срок</span><span>Сумма</span><span></span></div>' +
           '<div class="ag-list" id="agList" aria-label="Дела"></div>' +
           '<footer class="admin-order-register__footer" id="agListFooter" aria-live="polite"></footer>' +
         '</section><div id="agBulkWrap"></div>' +
-        '<button type="button" class="admin-order-backdrop" id="agCardBackdrop" aria-label="Закрыть карточку дела" hidden></button>' +
-        '<aside class="ag-card admin-order-drawer" id="agCard" aria-label="Карточка дела" aria-hidden="true"></aside>';
+        '<button type="button" class="admin-order-backdrop" id="agCardBackdrop" tabindex="-1" aria-label="Закрыть карточку дела" hidden></button>' +
+        '<aside class="ag-card admin-order-drawer" id="agCard" role="dialog" aria-modal="true" ' +
+          'aria-labelledby="agCardTitle" aria-hidden="true" tabindex="-1"></aside>';
       drawFilters();
       drawList();
       if (st.card) drawCard();
@@ -1226,7 +1299,7 @@ function initGodEye() {
         '<div class="ag-empty" style="padding:12px">Загружаем журнал…</div></div></div>';
     }).join('');
     var empty = (st.gq || st.gfilter)
-      ? '<div class="ag-empty">Ничего не найдено по фильтру. <button type="button" class="ag-linkbtn" id="agGfClear">сбросить</button></div>'
+      ? '<div class="ag-empty">Ничего не найдено по фильтру. <button type="button" class="ag-linkbtn" data-gift-clear>сбросить</button></div>'
       : '<div class="ag-empty">Сертификатов пока нет — выпустите первый или дождитесь покупки с сайта (страница /gift.html).</div>';
     return tiles + newBtn + form + controls +
       '<div class="ag-gifts">' + (rows || empty) + '</div>';
@@ -1545,8 +1618,8 @@ function initGodEye() {
         '<span class="pw-qic" aria-hidden="true">' + r.ic + '</span><span class="pw-qbody"><small>Первым делом</small>' +
         '<b>№' + o.id + ' · ' + esc(o.work_label || 'Заявка') + '</b>' +
         '<span>' + esc(r.why) + '</span></span><span class="pw-qgo" aria-hidden="true">→</span></button>';
-      ctaGo = 'attention';
-      cta = 'Открыть очередь →';
+      ctaGo = 'active';
+      cta = 'Все активные дела →';
     } else if (qa) {
       queue = '<button type="button" class="pw-queue" data-go="@qa">' +
         '<span class="pw-qic" aria-hidden="true">📮</span><span class="pw-qbody"><small>Первым делом</small>' +
@@ -1589,18 +1662,30 @@ function initGodEye() {
     var queue = st.desk === null ? [] : deskRows();
     var qa = +((ov.qa && ov.qa.pending) || 0);
     var reviews = +(ov.reviews_pending || 0);
-    var attention = queue.length + qa + reviews;
+    var subsPending = +(ov.subs_pending || 0);
+    var attention = queue.length + qa + reviews + subsPending;
     var dueToday = (st.desk || []).filter(function (o) { return dlLeft(o) === 0; }).length;
     var waiting = (by.priced || 0) + (by.prepay || 0) + (by.check || 0);
     var events = (ov.events || []).slice(0, 2);
     var weeks = (ov.weeks || []).slice(-7);
     var maxWeek = Math.max.apply(null, weeks.map(function (x) { return x.revenue || 0; }).concat([1]));
     var quality = ov.quality || {};
-    var alertCopy = attention
+    var alertAction = queue.length
+      ? ' data-open-order="' + queue[0].o.id + '">Открыть первое дело'
+      : qa
+        ? ' data-go="@qa">Открыть приёмную'
+        : reviews
+          ? ' data-go="@reviews">Открыть отзывы'
+          : ' data-summary-jump="agSubs">Открыть подписки';
+    var alertCopy = st.ovFailed
+      ? '<section class="admin-alert admin-alert--stale"><span>!</span><div><strong>Связь со сводкой прервалась</strong>' +
+        '<p>Показываем последние полученные данные. Рабочие действия доступны.</p></div>' +
+        '<button type="button" id="agPulseRetry">Обновить сейчас <span>→</span></button></section>'
+      : attention
       ? '<section class="admin-alert"><span>' + attention + '</span><div><strong>' +
         attention + ' ' + anPl(attention, 'задача требует', 'задачи требуют', 'задач требуют') +
-        ' решения</strong><p>Сроки, новые вопросы и модерация собраны в одной очереди.</p></div>' +
-        '<button type="button" data-go="attention">Открыть очередь <span>→</span></button></section>'
+        ' решения</strong><p>Сроки, оплаты, вопросы и модерация собраны в одном центре действий.</p></div>' +
+        '<button type="button"' + alertAction + ' <span>→</span></button></section>'
       : '<section class="admin-alert admin-alert--calm"><span>' + icoCheck(17) + '</span><div><strong>Срочных решений нет</strong>' +
         '<p>Новые события появятся здесь автоматически.</p></div><button type="button" data-go="active">Активные дела <span>→</span></button></section>';
     var queueHtml = queue.length
@@ -1634,13 +1719,14 @@ function initGodEye() {
       : '<div class="admin-inbox-empty">Новых событий пока нет.</div>';
     return '<section class="admin-workbench" aria-label="Рабочий стол мастерской">' +
       alertCopy +
+      tplSubs(ov) +
       '<section class="admin-metrics">' +
-        '<article data-go="active"><span>Активные дела</span><strong>' + active + '</strong><small>' +
-          (by.new || 0) + ' новых</small></article>' +
-        '<article data-go="attention"><span>На согласовании</span><strong>' + waiting + '</strong><small>' +
-          (ov.claimed || 0) + ' оплат на сверке</small></article>' +
-        '<article data-go="active"><span>Срок сегодня</span><strong>' + dueToday + '</strong><small>' +
-          (dueToday ? '<i class="warn">проверьте очередь</i>' : 'рисков не отмечено') + '</small></article>' +
+        '<button type="button" data-go="active"><span>Активные дела</span><strong>' + active + '</strong><small>' +
+          (by.new || 0) + ' новых</small></button>' +
+        '<button type="button" data-go="active"><span>Ожидают клиента</span><strong>' + waiting + '</strong><small>' +
+          (ov.claimed || 0) + ' оплат на сверке</small></button>' +
+        '<button type="button" data-go="active"><span>Срок сегодня</span><strong>' + dueToday + '</strong><small>' +
+          (dueToday ? '<i class="warn">проверьте очередь</i>' : 'рисков не отмечено') + '</small></button>' +
         '<article><span>Поступления за месяц</span><strong>' +
           money((ov.month && ov.month.revenue) || 0) + ' ₽</strong><small>подтверждённые операции</small></article>' +
       '</section>' +
@@ -1672,8 +1758,10 @@ function initGodEye() {
       ['defense', 'Защита']
     ];
     return '<section class="content-overview" aria-label="Состояние библиотеки">' +
-        '<article><span>Опубликовано</span><strong>25</strong><small>доступны читателям</small></article>' +
-        '<article><span>Разделы</span><strong>8</strong><small>от темы до защиты</small></article>' +
+        '<article><span>В рабочем каталоге</span><strong>' + CONTENT_GUIDES.length +
+          '</strong><small>доступны из кабинета</small></article>' +
+        '<article><span>Тематические группы</span><strong>' + (topics.length - 1) +
+          '</strong><small>от темы до защиты</small></article>' +
         '<article><span>Правовые документы</span><strong>12</strong><small>с отдельной навигацией</small></article>' +
         '<article><span>Обложки</span><strong>2</strong><small>формата выгрузки</small></article>' +
       '</section>' +
@@ -1725,7 +1813,12 @@ function initGodEye() {
     var pend = (sd && sd.pending) || [];
     if (!pend.length && !(ov.subs_pending > 0)) return '';
     var rows;
-    if (!sd) {
+    if (st.subsFailed) {
+      rows = '<div class="aa-row" style="cursor:default"><span>!</span>' +
+        '<span class="aa-what"><b>Не удалось открыть оформления</b><br>' +
+        '<span class="petit">Данные сводки сохранены — повторите загрузку списка.</span></span>' +
+        '<span class="aa-go"><button type="button" class="ag-linkbtn" id="agSubsRetry">Повторить</button></span></div>';
+    } else if (!sd || st.subsLoading) {
       rows = '<div class="aa-row" style="cursor:default"><span>⏳</span>' +
         '<span class="aa-what">Листаем оформления…</span></div>';
     } else {
@@ -1742,8 +1835,9 @@ function initGodEye() {
           '<button type="button" class="ag-linkbtn" data-sub-no="' + s.id + '">закрыть</button></span></div>';
       }).join('');
     }
-    return '<p class="caps" style="margin:18px 0 8px">⭐ Подписки — оплата отдельно от заказов</p>' +
-      '<div class="ag-attn">' + rows + '</div>';
+    return '<section class="admin-subscriptions" id="agSubs" aria-label="Подписки на сверке">' +
+      '<p class="caps">Салон+ · оплата отдельно от заказов</p>' +
+      '<div class="ag-attn">' + rows + '</div></section>';
   }
 
   /* мини-лента заходов на «Пульсе»: топ-города одной строкой + последние 6 */
@@ -1844,6 +1938,47 @@ function initGodEye() {
           '</button>' +
         '</div>' +
       '</details>';
+    if (pendingAdminFocus) {
+      pendingAdminFocus = false;
+      var search = document.getElementById('agQ');
+      if (search) {
+        try { search.focus(); search.select(); } catch (e) {}
+      }
+    }
+  }
+
+  function focusAdminSearch() {
+    document.body.classList.remove('admin-nav-expanded');
+    setAdminNavBackground(false);
+    var menuButton = root.querySelector('[data-admin-mobile-menu]');
+    if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
+    var hadDrawer = !!document.querySelector('.admin-order-drawer.is-open');
+    st.sel = null;
+    st.card = null;
+    st.cardRequestSeq++;
+    document.body.classList.remove('admin-drawer-open');
+    setAdminDrawerBackground(false);
+    pendingAdminFocus = true;
+    if (st.tab !== 'orders') {
+      goTab('orders');
+      return;
+    }
+    if (hadDrawer) {
+      drawBody();
+      return;
+    }
+    var search = document.getElementById('agQ');
+    if (search) {
+      pendingAdminFocus = false;
+      try { search.focus(); search.select(); } catch (e) {}
+    } else {
+      loadTab();
+    }
+  }
+
+  function setAdminNavBackground(makeInert) {
+    var main = document.querySelector('.admin-main');
+    if (main) main.inert = !!makeInert;
   }
 
   /* панель массовых действий — живёт под списком, пока включён режим выбора */
@@ -1936,9 +2071,9 @@ function initGodEye() {
         }
       }
       /* цветной корешок мастера — поверх маркера выбранности */
-      var rowStyle = 'grid-template-columns:34px 92px minmax(120px,.65fr) minmax(220px,1.35fr) 140px 120px 100px 18px';
+      var rowStyle = '';
       if (o.color && CLR[o.color])
-        rowStyle += ';border-left-color:' + CLR[o.color] + ';border-left-width:4px';
+        rowStyle = '--admin-order-mark:' + CLR[o.color];
       /* галка — рисованная (не <input>): вложенный в <button> input невалиден,
          а выбор всё равно делает клик по всей строке (см. обработчик .ag-row) */
       var ck = st.bulk
@@ -1948,7 +2083,8 @@ function initGodEye() {
       return '<button type="button" class="ag-row' + (o.id === st.sel ? ' sel' : '') +
         (o.pinned ? ' pin' : '') + '" data-id="' + o.id + '"' +
         (st.bulk ? ' aria-pressed="' + (st.bulk.has(o.id) ? 'true' : 'false') + '"' : '') +
-        ' aria-label="' + (st.bulk ? 'Выбрать' : 'Открыть') + ' дело №' + o.id + '" style="' + rowStyle + '">' +
+        ' aria-label="' + (st.bulk ? 'Выбрать' : 'Открыть') + ' дело №' + o.id + '"' +
+        (rowStyle ? ' style="' + rowStyle + '"' : '') + '>' +
         '<span class="admin-order-select">' + ck + '</span>' +
         '<span class="admin-order-id">' +
           (o.pinned ? '<span class="r-pin" title="закреплён">📌</span>' : '') +
@@ -3150,12 +3286,90 @@ function initGodEye() {
       '</div></div>';
   }
 
+  function captureAdminCardUi(scope) {
+    var snap = { fields: {}, details: [], focus: '', selection: null, primary: 0, rail: 0 };
+    if (!scope) return snap;
+    scope.querySelectorAll('input[id], textarea[id], select[id]').forEach(function (el) {
+      if (el.type === 'file') return;
+      snap.fields[el.id] = {
+        value: el.value,
+        checked: !!el.checked,
+        kind: (el.type === 'checkbox' || el.type === 'radio') ? 'checked' : 'value'
+      };
+    });
+    scope.querySelectorAll('details[id][open]').forEach(function (el) { snap.details.push(el.id); });
+    var active = document.activeElement;
+    if (active && scope.contains(active) && active.id) {
+      snap.focus = active.id;
+      if (typeof active.selectionStart === 'number') snap.selection = active.selectionStart;
+    }
+    var primary = scope.querySelector('.admin-order-drawer__primary');
+    var rail = scope.querySelector('.admin-order-drawer__rail');
+    if (primary) snap.primary = primary.scrollTop;
+    if (rail) snap.rail = rail.scrollTop;
+    return snap;
+  }
+
+  function restoreAdminCardUi(scope, snap) {
+    if (!scope || !snap) return;
+    Object.keys(snap.fields || {}).forEach(function (id) {
+      var el = document.getElementById(id), saved = snap.fields[id];
+      if (!el || el.type === 'file') return;
+      if (saved.kind === 'checked') el.checked = saved.checked;
+      else el.value = saved.value;
+    });
+    (snap.details || []).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && el.tagName === 'DETAILS') el.open = true;
+    });
+    var primary = scope.querySelector('.admin-order-drawer__primary');
+    var rail = scope.querySelector('.admin-order-drawer__rail');
+    if (primary) primary.scrollTop = snap.primary || 0;
+    if (rail) rail.scrollTop = snap.rail || 0;
+    if (snap.focus) {
+      var focus = document.getElementById(snap.focus);
+      if (focus) {
+        try {
+          focus.focus({ preventScroll: true });
+          if (snap.selection !== null && focus.setSelectionRange)
+            focus.setSelectionRange(snap.selection, snap.selection);
+        } catch (e) {}
+      }
+    }
+  }
+
+  function setAdminDrawerBackground(makeInert) {
+    ['.admin-sidebar', '.admin-head'].forEach(function (selector) {
+      var el = document.querySelector(selector);
+      if (el) el.inert = !!makeInert;
+    });
+    var body = document.getElementById('agBody');
+    if (body) {
+      Array.prototype.forEach.call(body.children, function (el) {
+        if (el.id !== 'agCard' && el.id !== 'agCardBackdrop') el.inert = !!makeInert;
+      });
+    }
+    var shade = document.getElementById('agCardBackdrop');
+    if (shade) shade.tabIndex = -1;
+  }
+
   function drawCard() {
     var box = document.getElementById('agCard');
     var o = st.card;
     if (!box || !o) return;
+    var preserved = box.getAttribute('data-order-id') === String(o.id)
+      ? captureAdminCardUi(box) : null;
     box.classList.add('is-open');
     box.setAttribute('aria-hidden', 'false');
+    box.setAttribute('data-order-id', String(o.id));
+    document.body.classList.add('admin-drawer-open');
+    setAdminDrawerBackground(true);
+    ['agFilters', 'agBulkWrap'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.inert = true;
+    });
+    var register = document.querySelector('.admin-order-register');
+    if (register) register.inert = true;
     var backdrop = document.getElementById('agCardBackdrop');
     if (backdrop) backdrop.hidden = false;
     releaseAdminObjectUrls();
@@ -3166,8 +3380,9 @@ function initGodEye() {
     var sameOrder = st._feedOrder === o.id;
     var hint = nextHint(o);
     box.innerHTML =
-      '<div class="admin-order-drawer__bar"><div><span>Карточка дела</span><strong>№' + o.id +
+      '<div class="admin-order-drawer__bar"><div><span id="agCardTitle">Карточка дела</span><strong>№' + o.id +
       '</strong></div><button type="button" id="agCardClose" aria-label="Закрыть карточку дела">×</button></div>' +
+      '<div class="admin-order-drawer__intro">' +
       '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
       '<span class="mono petit">Дело №' + o.id + ' · ' + esc(o.source || '') + ' · создано ' + dt(o.created_at) +
       (o.archived_admin ? ' · 🗄 в архиве' : '') + (o.deleted ? ' · 🗑 в корзине' : '') + '</span>' +
@@ -3176,24 +3391,19 @@ function initGodEye() {
       '<h2>' + (o.pinned ? '📌 ' : '') + esc(o.work_label || '') + '</h2>' +
       quickRow(o) +
       (o.topic ? '<p class="ag-topic">«' + esc(o.topic) + '»</p>' : '') +
-      clientLine(o) +
-      (hint ? '<div class="ag-next ' + hint[0] + '">' + hint[1] + '</div>' : '') +
-      orderItemsBlock(o) +
-      moneyBlock(o) +
-      planBlock(o) +
-      offerBlock(o) +
-      partsBlock(o) +
-      feedBlock(o) +
-      filesBlock(o) +
-      manageBlock(o) +
-      intelBlock(o) +
+      (hint ? '<div class="ag-next ' + hint[0] + '">' + hint[1] + '</div>' : '') + '</div>' +
+      '<div class="admin-order-drawer__workspace">' +
+      '<div class="admin-order-drawer__primary">' +
+        orderItemsBlock(o) + planBlock(o) + offerBlock(o) + partsBlock(o) + feedBlock(o) +
+      '</div><aside class="admin-order-drawer__rail" aria-label="Сводка и управление">' +
+      clientLine(o) + moneyBlock(o) + filesBlock(o) + manageBlock(o) + intelBlock(o) +
       '<div class="ag-sec"><span class="caps">Заметка (видна только вам)</span>' +
       '<div class="ag-actrow"><textarea id="agNote" rows="2">' + esc(o.admin_note || '') + '</textarea>' +
       '<button type="button" class="btn btn-line" id="agNoteSave">Сохранить</button></div></div>' +
       '<div class="ag-sec"><span class="caps">Хроника дела</span><div class="ag-ev">' +
       (o.events || []).map(function (e) {
         return dt(e.at) + ' · ' + esc(evLabel(e.kind)) + (e.data ? ' — ' + esc(evData(e).slice(0, 70)) : '');
-      }).join('<br>') + '</div></div>';
+      }).join('<br>') + '</div></div></aside></div>';
     hydrateAdminMedia(box);
     if (st.offnew) setTimeout(function () {
       offSumRender(); offRowsRender(); offCatalogState(); offCatalogFilter();
@@ -3202,6 +3412,14 @@ function initGodEye() {
     if (feedBox) {
       if (st.feedStick || !sameOrder) feedBox.scrollTop = feedBox.scrollHeight;
       else if (prevTop != null) feedBox.scrollTop = prevTop;
+    }
+    restoreAdminCardUi(box, preserved);
+    if (!preserved) {
+      setTimeout(function () {
+        if (box.classList.contains('is-open')) {
+          try { box.focus({ preventScroll: true }); } catch (e) {}
+        }
+      }, 0);
     }
     st.feedStick = false;
     st._feedOrder = o.id;
@@ -3290,6 +3508,7 @@ function initGodEye() {
           '<div class="client-case client-case--empty"><strong>Активных дел нет</strong>' +
             '<small>Завершённые и закрытые дела доступны ниже.</small></div></section>';
     box.innerHTML =
+      '<button type="button" class="client-profile__back" data-client-back>← К картотеке</button>' +
       '<header class="client-profile__header"><span class="client-profile__avatar">' +
         clientInitials(c.name) + '</span><div><p class="eyebrow">Карточка клиента</p>' +
         '<h2>' + (c.banned ? '⛔️ ' : '') + esc(c.name || 'клиент') + '</h2>' +
@@ -3775,20 +3994,21 @@ function initGodEye() {
       else location.href = '/';
       return;
     }
-    if (t.closest('[data-admin-mobile-search]')) {
-      document.body.classList.remove('admin-nav-expanded');
-      var menuButton = root.querySelector('[data-admin-mobile-menu]');
-      if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
-      if (st.tab !== 'orders') goTab('orders');
-      window.setTimeout(function () {
-        var search = document.querySelector('#agSearch, .admin-filter-tools input[type="search"], .ag-search input');
-        if (search) search.focus();
-      }, 80);
+    if (t.closest('[data-admin-mobile-search], [data-admin-global-search]')) {
+      focusAdminSearch();
       return;
     }
     if (t.closest('[data-admin-mobile-menu]')) {
       var navOpen = document.body.classList.toggle('admin-nav-expanded');
-      t.closest('[data-admin-mobile-menu]').setAttribute('aria-expanded', String(navOpen));
+      var navButton = t.closest('[data-admin-mobile-menu]');
+      navButton.setAttribute('aria-expanded', String(navOpen));
+      setAdminNavBackground(navOpen);
+      if (navOpen) {
+        setTimeout(function () {
+          var current = document.querySelector('#agNav .ag-tab.is-current');
+          if (current) current.focus();
+        }, 0);
+      }
       return;
     }
     var protectedDownload = t.closest('[data-admin-download]');
@@ -3865,7 +4085,9 @@ function initGodEye() {
     if (t.closest('#agRetry')) { gate(); return; }
     if (t.closest('#agTabRetry')) { loadTab(true); return; }
     if (t.closest('#agPulseRetry')) { doRefresh(); return; }
+    if (t.closest('#agSubsRetry')) { loadSubs(); return; }
     if (t.closest('#agCardClose') || t.closest('#agCardBackdrop')) {
+      var closedOrderId = st.sel;
       st.sel = null;
       st.card = null;
       var drawer = document.getElementById('agCard');
@@ -3873,10 +4095,25 @@ function initGodEye() {
       if (drawer) {
         drawer.classList.remove('is-open');
         drawer.setAttribute('aria-hidden', 'true');
+        drawer.removeAttribute('data-order-id');
         drawer.innerHTML = '';
       }
       if (shade) shade.hidden = true;
+      document.body.classList.remove('admin-drawer-open');
+      setAdminDrawerBackground(false);
+      ['agFilters', 'agBulkWrap'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.inert = false;
+      });
+      var register = document.querySelector('.admin-order-register');
+      if (register) register.inert = false;
       drawList();
+      if (closedOrderId) {
+        var returnRow = document.querySelector('.ag-row[data-id="' + closedOrderId + '"]');
+        if (returnRow) {
+          try { returnRow.focus({ preventScroll: true }); } catch (err) {}
+        }
+      }
       return;
     }
 
@@ -3891,6 +4128,7 @@ function initGodEye() {
     var tab = t.closest('.ag-tab, .ag-more-pop [data-tab]');
     if (tab) {
       document.body.classList.remove('admin-nav-expanded');
+      setAdminNavBackground(false);
       var mobileMenu = root.querySelector('[data-admin-mobile-menu]');
       if (mobileMenu) mobileMenu.setAttribute('aria-expanded', 'false');
       var nextTab = tab.getAttribute('data-tab');
@@ -3901,6 +4139,13 @@ function initGodEye() {
     if (t.closest('#agLive')) { goTab('visits'); return; }
     var tabGo = t.closest('[data-tab-go]');
     if (tabGo) { goTab(tabGo.getAttribute('data-tab-go')); return; }
+
+    var summaryJump = t.closest('[data-summary-jump]');
+    if (summaryJump) {
+      var target = document.getElementById(summaryJump.getAttribute('data-summary-jump'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
 
     var go = t.closest('[data-go]');
     if (go) {
@@ -3995,7 +4240,7 @@ function initGodEye() {
     }
     var gfl = t.closest('[data-gift-filter]');
     if (gfl) { st.gfilter = gfl.getAttribute('data-gift-filter'); st.gq = ''; drawBody(); return; }
-    if (t.closest('#agGfClear')) { st.gq = ''; st.gfilter = ''; drawBody(); return; }
+    if (t.closest('#agGfClear, [data-gift-clear]')) { st.gq = ''; st.gfilter = ''; drawBody(); return; }
     var cpy = t.closest('[data-copy]');
     if (cpy) { copyText(cpy.getAttribute('data-copy'), 'Скопировано'); return; }
 
@@ -4151,11 +4396,27 @@ function initGodEye() {
     if (ic) {
       /* «тихий» вход в кабинет клиента: новая вкладка, сессия только там */
       var icid = parseInt(ic.getAttribute('data-imp-client'), 10);
+      var impWindow = null;
+      try {
+        impWindow = window.open('about:blank', '_blank');
+        if (impWindow) impWindow.opener = null;
+      } catch (e) {}
       ic.disabled = true;
       api('/admin/clients/' + icid + '/impersonate', {}).then(function (r) {
         ic.disabled = false;
-        if (r.ok && r.url) window.open(r.url, '_blank');
-        else toast('Не вышло открыть кабинет: ' + (r.error || 'ошибка'), 'error');
+        if (r.ok && r.url) {
+          if (impWindow) impWindow.location.replace(r.url);
+          else {
+            var fallbackWindow = window.open(r.url, '_blank', 'noopener');
+            if (!fallbackWindow) {
+              copyText(r.url, 'Ссылка входа скопирована');
+              toast('Браузер заблокировал вкладку — ссылка входа скопирована');
+            }
+          }
+        } else {
+          if (impWindow) impWindow.close();
+          toast('Не вышло открыть кабинет: ' + (r.error || 'ошибка'), 'error');
+        }
       });
       return;
     }
@@ -4174,6 +4435,20 @@ function initGodEye() {
     }
     var crow = t.closest('.ag-row[data-cid]');
     if (crow) { loadClient(parseInt(crow.getAttribute('data-cid'), 10)); return; }
+
+    if (t.closest('[data-client-back]')) {
+      var returnClientId = st.csel;
+      st.csel = null;
+      st.ccard = null;
+      st.clientRequestSeq++;
+      document.body.classList.remove('admin-client-selected');
+      drawBody();
+      var returnClient = document.querySelector('.ag-row[data-cid="' + returnClientId + '"]');
+      if (returnClient) {
+        try { returnClient.focus({ preventScroll: true }); } catch (err) {}
+      }
+      return;
+    }
 
     if (t.closest('#agClientsExport')) { exportClientsCsv(); return; }
     if (t.closest('#agOrdersReset')) {
@@ -4902,9 +5177,88 @@ function initGodEye() {
   }
 
   root.addEventListener('keydown', function (e) {
+    if ((e.metaKey || e.ctrlKey) && String(e.key).toLowerCase() === 'k') {
+      e.preventDefault();
+      focusAdminSearch();
+      return;
+    }
+    if (e.key === 'Tab') {
+      var openDrawer = document.querySelector('.admin-order-drawer.is-open');
+      if (openDrawer) {
+        var drawerFocus = Array.prototype.filter.call(
+          openDrawer.querySelectorAll(
+            'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), ' +
+            'select:not([disabled]), details > summary, [tabindex]:not([tabindex="-1"])'
+          ),
+          function (el) {
+            return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+          }
+        );
+        if (!drawerFocus.length) {
+          e.preventDefault();
+          openDrawer.focus();
+          return;
+        }
+        var firstDrawerFocus = drawerFocus[0];
+        var lastDrawerFocus = drawerFocus[drawerFocus.length - 1];
+        if (!openDrawer.contains(document.activeElement) || document.activeElement === openDrawer) {
+          e.preventDefault();
+          (e.shiftKey ? lastDrawerFocus : firstDrawerFocus).focus();
+          return;
+        }
+        if (e.shiftKey && document.activeElement === firstDrawerFocus) {
+          e.preventDefault();
+          lastDrawerFocus.focus();
+          return;
+        }
+        if (!e.shiftKey && document.activeElement === lastDrawerFocus) {
+          e.preventDefault();
+          firstDrawerFocus.focus();
+          return;
+        }
+      }
+      if (document.body.classList.contains('admin-nav-expanded')) {
+        var openNav = document.getElementById('agNav');
+        var navFocus = openNav ? Array.prototype.filter.call(
+          openNav.querySelectorAll('a[href], button:not([disabled])'),
+          function (el) {
+            return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+          }
+        ) : [];
+        if (navFocus.length) {
+          var firstNavFocus = navFocus[0];
+          var lastNavFocus = navFocus[navFocus.length - 1];
+          if (!openNav.contains(document.activeElement)) {
+            e.preventDefault();
+            (e.shiftKey ? lastNavFocus : firstNavFocus).focus();
+            return;
+          }
+          if (e.shiftKey && document.activeElement === firstNavFocus) {
+            e.preventDefault();
+            lastNavFocus.focus();
+            return;
+          }
+          if (!e.shiftKey && document.activeElement === lastNavFocus) {
+            e.preventDefault();
+            firstNavFocus.focus();
+            return;
+          }
+        }
+      }
+    }
     if (e.key === 'Escape') {
       var closeCard = document.getElementById('agCardClose');
       if (closeCard) { closeCard.click(); return; }
+      if (document.body.classList.contains('admin-nav-expanded')) {
+        document.body.classList.remove('admin-nav-expanded');
+        setAdminNavBackground(false);
+        var navToggle = root.querySelector('[data-admin-mobile-menu]');
+        if (navToggle) {
+          navToggle.setAttribute('aria-expanded', 'false');
+          navToggle.focus();
+        }
+        return;
+      }
     }
     if (e.target && e.target.id === 'agQ' && e.key === 'Enter') {
       st.q = e.target.value.trim();
@@ -4928,7 +5282,8 @@ function initGodEye() {
     var onTab = e.target && e.target.closest && e.target.closest('.ag-tab');
     if (onTab && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
       e.preventDefault();
-      var order = ['summary', 'visits', 'orders', 'clients', 'reviews', 'qa', 'gifts', 'leads', 'broadcast', 'settings'];
+      var order = ['summary', 'orders', 'clients', 'qa', 'reviews', 'leads', 'broadcast',
+        'gifts', 'visits', 'content', 'settings'];
       var i = order.indexOf(st.tab);
       if (i < 0) i = 0;
       i = (i + (e.key === 'ArrowRight' ? 1 : order.length - 1)) % order.length;

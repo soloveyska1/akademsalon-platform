@@ -2657,3 +2657,642 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
     animation-iteration-count: 1 !important;
   }
 }
+
+/* =====================================================================
+   ADMIN COMFORT — viewport workspace, action center and split drawer.
+   ===================================================================== */
+.is-admin-route {
+  --ad-faint: #6f685e;
+  --ad-wax-cta: #963722;
+  --ad-on-wax: #fffaf3;
+}
+
+:root[data-theme="dark"] .is-admin-route {
+  --ad-wax-cta: #9f3e2a;
+  --ad-on-wax: #fffaf3;
+  --ad-muted: #aaa397;
+  --ad-faint: #918a7e;
+}
+
+.is-admin-route.admin-workspace-ready {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.is-admin-route .workspace-skip-link {
+  position: fixed;
+  z-index: 500;
+  top: 8px;
+  left: 50%;
+  padding: 10px 14px;
+  color: var(--ad-on-wax);
+  background: var(--ad-wax-cta);
+  border-radius: 5px;
+  transform: translate(-50%, -160%);
+  transition: transform .16s ease;
+}
+
+.is-admin-route .workspace-skip-link:focus {
+  transform: translate(-50%, 0);
+}
+
+.is-admin-route .admin-shell {
+  height: 100dvh;
+  min-height: 0;
+  grid-template-columns: 232px minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.is-admin-route .admin-sidebar {
+  height: 100%;
+  padding: 19px 14px 15px;
+}
+
+.is-admin-route .admin-sidebar__brand {
+  padding: 0 7px 18px;
+}
+
+.is-admin-route .admin-sidebar nav {
+  display: grid;
+  align-content: start;
+  gap: 17px;
+  margin-top: 16px;
+  padding-right: 3px;
+}
+
+.is-admin-route .admin-nav-group {
+  display: grid;
+  gap: 3px;
+}
+
+.is-admin-route .admin-nav-group__label {
+  padding: 0 9px 6px;
+  color: var(--ad-faint);
+  font: 600 9px/1.2 var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.is-admin-route .admin-sidebar nav .ag-tab {
+  min-height: 40px;
+}
+
+.is-admin-route .admin-sidebar nav .ag-tab.is-current {
+  box-shadow: inset 2px 0 0 var(--ad-wax);
+}
+
+.is-admin-route .admin-sidebar__search {
+  display: grid;
+  width: 100%;
+  min-height: 42px;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  gap: 7px;
+  align-items: center;
+  margin-top: 12px;
+  padding: 8px 10px;
+  color: var(--ad-muted);
+  background: var(--ad-card);
+  border: 1px solid var(--ad-line);
+  border-radius: 5px;
+  font: inherit;
+  text-align: left;
+}
+
+.is-admin-route .admin-sidebar__search:hover {
+  color: var(--ad-ink);
+  border-color: var(--ad-line-2);
+}
+
+.is-admin-route :is(.admin-sidebar__search, .admin-global-search) kbd {
+  padding: 3px 5px;
+  color: var(--ad-faint);
+  background: var(--ad-card-2);
+  border: 1px solid var(--ad-line);
+  border-radius: 4px;
+  font: 550 9px/1 var(--mono);
+}
+
+.is-admin-route .admin-sidebar footer {
+  margin-top: 10px;
+}
+
+.is-admin-route .admin-main {
+  display: flex;
+  height: 100dvh;
+  min-height: 0;
+  flex-direction: column;
+  padding: 20px clamp(22px, 3vw, 46px) 0;
+  overflow: hidden;
+}
+
+.is-admin-route .admin-head {
+  flex: 0 0 auto;
+  padding-bottom: 16px;
+}
+
+.is-admin-route .admin-head h1 {
+  margin-top: 4px;
+  font-size: clamp(30px, 3.1vw, 40px);
+}
+
+.is-admin-route .admin-head p:not(.eyebrow) {
+  font-size: 12px;
+}
+
+.is-admin-route .admin-head__tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.is-admin-route .admin-global-search {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  color: var(--ad-muted);
+  background: var(--ad-card);
+  border: 1px solid var(--ad-line);
+  border-radius: 6px;
+  font: inherit;
+}
+
+.is-admin-route .admin-global-search:hover {
+  color: var(--ad-ink);
+  border-color: var(--ad-line-2);
+}
+
+.is-admin-route #agBody {
+  min-height: 0;
+  flex: 1 1 auto;
+  padding: 0 3px 36px 0;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.is-admin-route .admin-alert {
+  margin-top: 14px;
+  padding: 11px 14px;
+}
+
+.is-admin-route .admin-alert--stale {
+  background: var(--ad-card-2);
+  border-color: var(--ad-line-2);
+}
+
+.is-admin-route .admin-alert--stale > span {
+  background: var(--ad-blue);
+}
+
+.is-admin-route .admin-subscriptions {
+  display: grid;
+  gap: 7px;
+  margin-top: 10px;
+  scroll-margin-top: 12px;
+}
+
+.is-admin-route .admin-subscriptions > .caps {
+  margin: 0;
+  color: var(--ad-muted);
+}
+
+.is-admin-route .admin-subscriptions .ag-attn {
+  margin: 0;
+}
+
+.is-admin-route .admin-metrics {
+  margin-top: 10px;
+}
+
+.is-admin-route .admin-metrics :is(article, button) {
+  display: grid;
+  min-width: 0;
+  min-height: 88px;
+  align-content: center;
+  gap: 4px;
+  padding: 14px 16px;
+  color: var(--ad-text);
+  background: var(--ad-card);
+  border: 1px solid var(--ad-line);
+  border-radius: 0;
+  font: inherit;
+  text-align: left;
+  transition: border-color .18s ease, transform .18s ease;
+}
+
+.is-admin-route .admin-metrics button:hover {
+  border-color: var(--ad-line-2);
+  transform: translateY(-1px);
+}
+
+.is-admin-route .admin-metrics :is(article, button) > span {
+  color: var(--ad-muted);
+}
+
+.is-admin-route .admin-metrics :is(article, button) > strong {
+  overflow-wrap: anywhere;
+  color: var(--ad-ink);
+  font: 500 23px/1.1 var(--serif);
+}
+
+.is-admin-route .admin-metrics :is(article, button) > small {
+  color: var(--ad-faint);
+}
+
+.is-admin-route .admin-dashboard-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 10px;
+}
+
+.is-admin-route .admin-panel {
+  min-height: 230px;
+  padding: 14px 16px;
+}
+
+.is-admin-route .admin-panel > header {
+  padding-bottom: 10px;
+}
+
+.is-admin-route .admin-queue > div {
+  max-height: none;
+  overflow: visible;
+}
+
+.is-admin-route .admin-inbox > div {
+  max-height: 218px;
+  overflow: hidden auto;
+}
+
+.is-admin-route .load-chart b,
+.is-admin-route .admin-inbox time {
+  font-size: 12px;
+}
+
+.is-admin-route .admin-order-register {
+  display: flex;
+  max-height: calc(100dvh - 206px);
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.is-admin-route .admin-order-register__head,
+.is-admin-route .admin-order-register .ag-row {
+  grid-template-columns: 34px 82px minmax(120px, .7fr) minmax(200px, 1.3fr) 132px 112px 96px 18px;
+}
+
+.is-admin-route .admin-order-register__head {
+  position: sticky;
+  z-index: 3;
+  top: 0;
+  flex: 0 0 auto;
+  background: var(--ad-card);
+}
+
+.is-admin-route .admin-order-register .ag-list {
+  min-height: 0;
+  overflow: hidden auto;
+  scrollbar-gutter: stable;
+}
+
+.is-admin-route .admin-order-register .ag-row {
+  border-left-color: var(--admin-order-mark, transparent);
+  border-left-width: 3px;
+}
+
+.is-admin-route .client-directory {
+  height: calc(100dvh - 128px);
+  min-height: 0;
+  margin-top: 14px;
+  overflow: hidden;
+}
+
+.is-admin-route .client-directory__list,
+.is-admin-route .client-profile {
+  min-height: 0;
+  overflow: hidden auto;
+  scrollbar-gutter: stable;
+}
+
+.is-admin-route .client-directory__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.is-admin-route .client-directory #agCList {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: hidden auto;
+}
+
+.is-admin-route .client-profile__back {
+  display: none;
+}
+
+.is-admin-route.admin-drawer-open {
+  overflow: hidden;
+}
+
+.is-admin-route .admin-order-drawer {
+  display: flex;
+  width: min(1080px, 96vw);
+  padding: 0;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.is-admin-route .admin-order-drawer__bar {
+  position: relative;
+  top: auto;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 13px 20px;
+}
+
+.is-admin-route .admin-order-drawer__intro {
+  display: grid;
+  flex: 0 0 auto;
+  gap: 9px;
+  padding: 16px 20px 14px;
+  background: var(--ad-card);
+  border-bottom: 1px solid var(--ad-line);
+}
+
+.is-admin-route .admin-order-drawer__intro > h2 {
+  margin: 0;
+  font-size: clamp(24px, 3vw, 34px);
+}
+
+.is-admin-route .admin-order-drawer__intro .ag-quick {
+  margin: 0;
+}
+
+.is-admin-route .admin-order-drawer__workspace {
+  display: grid;
+  min-height: 0;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, .7fr);
+  overflow: hidden;
+}
+
+.is-admin-route .admin-order-drawer__primary,
+.is-admin-route .admin-order-drawer__rail {
+  min-width: 0;
+  min-height: 0;
+  padding: 0 20px 36px;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.is-admin-route .admin-order-drawer__rail {
+  background: var(--ad-card-2);
+  border-left: 1px solid var(--ad-line);
+}
+
+.is-admin-route .admin-order-drawer__workspace .ag-sec {
+  margin-top: 14px;
+}
+
+.is-admin-route .admin-order-drawer__workspace .ag-feed {
+  max-height: 250px;
+}
+
+.is-admin-route .admin-order-drawer:focus {
+  outline: none;
+}
+
+@media (max-width: 1180px) and (min-width: 721px) {
+  .is-admin-route .admin-order-register {
+    overflow-x: auto;
+  }
+
+  .is-admin-route .admin-order-register__head,
+  .is-admin-route .admin-order-register .ag-list {
+    width: 980px;
+    min-width: 980px;
+  }
+}
+
+@media (max-width:920px) {
+  .is-admin-route {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .is-admin-route.admin-nav-expanded,
+  .is-admin-route.admin-drawer-open {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .is-admin-route .admin-shell {
+    height: auto;
+    min-height: calc(100dvh - 62px);
+    overflow: visible;
+  }
+
+  .is-admin-route .admin-sidebar nav {
+    display: flex;
+  }
+
+  .is-admin-route .admin-nav-group {
+    display: contents;
+  }
+
+  .is-admin-route .admin-nav-group__label,
+  .is-admin-route .admin-sidebar__search {
+    display: none;
+  }
+
+  .is-admin-route.admin-nav-expanded .admin-sidebar nav {
+    align-content: start;
+  }
+
+  .is-admin-route.admin-nav-expanded .admin-nav-group {
+    display: contents;
+  }
+
+  .is-admin-route .admin-main {
+    height: auto;
+    min-height: calc(100dvh - 116px);
+    padding: 18px 16px max(38px, env(safe-area-inset-bottom));
+    overflow: visible;
+  }
+
+  .is-admin-route #agBody {
+    overflow: visible;
+  }
+
+  .is-admin-route .admin-global-search {
+    display: none;
+  }
+
+  .is-admin-route .admin-dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .is-admin-route .admin-panel {
+    min-height: 0;
+  }
+
+  .is-admin-route .client-directory {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .is-admin-route .client-directory__list {
+    overflow: visible;
+  }
+
+  .is-admin-route .client-directory #agCList {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .is-admin-route .client-profile {
+    display: none;
+    overflow: visible;
+  }
+
+  .is-admin-route.admin-client-selected .client-directory__list {
+    display: none;
+  }
+
+  .is-admin-route.admin-client-selected .client-profile {
+    display: block;
+  }
+
+  .is-admin-route .client-profile__back {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0;
+    color: var(--ad-muted);
+    background: transparent;
+    border: 0;
+    font: inherit;
+  }
+
+  .is-admin-route .admin-order-drawer {
+    width: 100%;
+  }
+
+  .is-admin-route .admin-order-drawer__workspace {
+    display: block;
+    overflow: hidden auto;
+  }
+
+  .is-admin-route .admin-order-drawer__primary,
+  .is-admin-route .admin-order-drawer__rail {
+    padding-inline: 16px;
+    overflow: visible;
+  }
+
+  .is-admin-route .admin-order-drawer__rail {
+    border-top: 1px solid var(--ad-line);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .is-admin-route .admin-order-register {
+    max-height: none;
+    overflow: visible;
+    background: transparent;
+    border: 0;
+  }
+
+  .is-admin-route .admin-order-register__head {
+    display: none;
+  }
+
+  .is-admin-route .admin-order-register .ag-list {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    max-height: none;
+    gap: 8px;
+    overflow: visible;
+  }
+
+  .is-admin-route .admin-order-register .ag-row {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    min-height: 142px;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "select id state"
+      "client client price"
+      "main main main"
+      "deadline deadline go";
+    gap: 7px 10px;
+    align-items: center;
+    padding: 12px;
+    background: var(--ad-card);
+    border: 1px solid var(--ad-line);
+    border-left: 3px solid var(--admin-order-mark, var(--ad-line-2));
+    border-radius: 5px;
+  }
+
+  .is-admin-route .admin-order-select {
+    grid-area: select;
+  }
+
+  .is-admin-route .admin-order-id {
+    grid-area: id;
+  }
+
+  .is-admin-route .admin-order-client {
+    grid-area: client;
+  }
+
+  .is-admin-route .admin-order-register .r-main {
+    grid-area: main;
+    padding-top: 7px;
+    border-top: 1px solid var(--ad-line);
+  }
+
+  .is-admin-route .admin-order-state {
+    grid-area: state;
+    justify-items: end;
+  }
+
+  .is-admin-route .admin-order-deadline {
+    grid-area: deadline;
+  }
+
+  .is-admin-route .admin-order-register .r-price {
+    grid-area: price;
+  }
+
+  .is-admin-route .admin-order-go {
+    display: block;
+    grid-area: go;
+  }
+}
+
+@media (max-width: 560px) {
+  .is-admin-route .admin-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .is-admin-route .admin-metrics :is(article, button) {
+    min-height: 96px;
+    padding: 12px;
+  }
+
+  .is-admin-route .admin-order-drawer__intro {
+    padding-inline: 16px;
+  }
+
+  .is-admin-route .admin-order-drawer__intro .ag-quick {
+    max-height: 92px;
+    overflow: hidden auto;
+  }
+}

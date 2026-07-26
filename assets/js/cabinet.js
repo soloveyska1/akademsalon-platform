@@ -38,6 +38,11 @@ function initCabinet() {
     ctorPeriod: 'month',
     showPeriod: 'sem',  // витрина билетов: показываемый срок (семестр выгоднее)
     pendingJump: null,  // раздел, к которому доехать после смены дела (герой)
+    listScroll: 0,      // позиция реестра до открытия дела
+    listWindowScroll: 0,
+    detailRequestSeq: 0,
+    chatStick: false,
+    pendingCaseFocus: false,
     timer: null,
     busy: false
   };
@@ -45,6 +50,14 @@ function initCabinet() {
   var seenTimer = null;   // отложенная отметка «файлы посмотрены»
   var baseTitle = document.title;
   var hiddenNews = 0;     // сколько событий пришло, пока вкладка в фоне
+  var skipLink = document.querySelector('.workspace-skip-link');
+  if (skipLink) {
+    skipLink.addEventListener('click', function (e) {
+      var workspace = document.getElementById('accountWorkspace') || root;
+      e.preventDefault();
+      try { workspace.focus({ preventScroll: true }); } catch (err) { workspace.focus(); }
+    });
+  }
 
   /* ---------- системные уведомления устройства (по разрешению) ---------- */
   function notiSupported() { return 'Notification' in window; }
@@ -316,7 +329,7 @@ function initCabinet() {
       ? '<button type="button" class="btn btn-wax btn-block cab-login-main" id="cabEmailTgl" aria-expanded="false" aria-controls="cabEmailWrap">' +
         'Продолжить по почте <span class="ar">→</span></button>'
       : '<button type="button" class="btn btn-wax btn-block cab-login-main" id="cabTg">Продолжить с Telegram <span class="ar">→</span></button>';
-    return '<main class="cab-login reveal">' +
+    return '<main class="cab-login reveal" id="accountWorkspace" tabindex="-1">' +
       '<section class="cab-login-card" aria-labelledby="cabLoginTitle">' +
         '<div class="cab-login-story">' +
           '<div class="cab-login-seal" aria-hidden="true"><span>АС</span></div>' +
@@ -1071,7 +1084,89 @@ function initCabinet() {
       extras + '</section>' + ctorBlock + curBlock;
   }
 
-  function rerenderHome() { renderTab(); }
+  function captureAccountUi() {
+    var snap = {
+      fields: {}, details: {}, visibility: {}, focus: '', focusStart: null,
+      scroll: 0, windowScroll: window.scrollY || 0, navScroll: 0,
+      chatSeen: false, chatAtEnd: true, chatScroll: 0
+    };
+    var main = root.querySelector('.account-main');
+    if (main) snap.scroll = main.scrollTop;
+    var nav = root.querySelector('.account-nav nav');
+    if (nav) snap.navScroll = nav.scrollLeft;
+    root.querySelectorAll('details[id]').forEach(function (el) {
+      snap.details[el.id] = !!el.open;
+    });
+    ['reviewForm', 'fixForm'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) snap.visibility[id] = !!el.hidden;
+    });
+    var chat = document.getElementById('chatFeed');
+    if (chat) {
+      snap.chatSeen = true;
+      snap.chatScroll = chat.scrollTop;
+      snap.chatAtEnd = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 24;
+    }
+    root.querySelectorAll('input[id], textarea[id], select[id]').forEach(function (el) {
+      if (el.type === 'file') return;
+      snap.fields[el.id] = {
+        value: el.value,
+        checked: !!el.checked,
+        kind: (el.type === 'checkbox' || el.type === 'radio') ? 'checked' : 'value'
+      };
+    });
+    var active = document.activeElement;
+    if (active && root.contains(active) && active.id) {
+      snap.focus = active.id;
+      if (typeof active.selectionStart === 'number') snap.focusStart = active.selectionStart;
+    }
+    return snap;
+  }
+  function restoreAccountUi(snap) {
+    if (!snap) return;
+    Object.keys(snap.fields || {}).forEach(function (id) {
+      var el = document.getElementById(id), saved = snap.fields[id];
+      if (!el || el.type === 'file') return;
+      if (saved.kind === 'checked') el.checked = saved.checked;
+      else el.value = saved.value;
+    });
+    Object.keys(snap.details || {}).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && el.tagName === 'DETAILS') el.open = !!snap.details[id];
+    });
+    Object.keys(snap.visibility || {}).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.hidden = !!snap.visibility[id];
+    });
+    var main = root.querySelector('.account-main');
+    if (main) main.scrollTop = snap.scroll || 0;
+    var nav = root.querySelector('.account-nav nav');
+    if (nav) nav.scrollLeft = snap.navScroll || 0;
+    var chat = document.getElementById('chatFeed');
+    if (chat) {
+      if (st.chatStick || !snap.chatSeen || snap.chatAtEnd) chat.scrollTop = chat.scrollHeight;
+      else chat.scrollTop = snap.chatScroll || 0;
+      st.chatStick = false;
+    }
+    if (window.scrollY !== (snap.windowScroll || 0)) {
+      window.scrollTo({ top: snap.windowScroll || 0, behavior: 'auto' });
+    }
+    if (snap.focus) {
+      var focus = document.getElementById(snap.focus);
+      if (focus) {
+        try {
+          focus.focus({ preventScroll: true });
+          if (snap.focusStart !== null && focus.setSelectionRange)
+            focus.setSelectionRange(snap.focusStart, snap.focusStart);
+        } catch (e) {}
+      }
+    }
+  }
+  function rerenderHome() {
+    var snap = captureAccountUi();
+    renderTab();
+    restoreAccountUi(snap);
+  }
 
   function loadPlans() {
     S.api.get('/plans').then(function (r) {
@@ -1290,10 +1385,17 @@ function initCabinet() {
   }
 
   /* реестр: заголовок с отбором, сетка карточек, тихая приписка о скрытых пулах */
-  function ordersRegister(mode) {
+  function ordersRegister(mode, compact) {
     var title = mode === 'messages' ? 'Сообщения по делам'
       : mode === 'documents' ? 'Документы по делам' : 'Ваши дела';
     var list = filteredOrders();
+    var totalBeforeLimit = list.length;
+    if (compact) {
+      list = activeOrders();
+      if (!list.length) list = archOrders().slice(0, 1);
+      totalBeforeLimit = list.length;
+      list = list.slice(0, 3);
+    }
     if (mode === 'messages') {
       list = list.slice().sort(function (a, b) {
         return ((b.unread || 0) + (b.files_new || 0)) - ((a.unread || 0) + (a.files_new || 0));
@@ -1312,12 +1414,18 @@ function initCabinet() {
     var empty = mode === 'messages' ? 'В этом отборе переписок нет — смените отбор дел выше.'
       : mode === 'documents' ? 'В этом отборе материалов нет — смените отбор дел выше.'
       : 'В этом отборе дел нет — смените отбор выше.';
-    return '<section class="account-orders account-orders--all reveal">' +
-      '<header><h2>' + title + '</h2>' + registerFilters() + '</header>' +
+    return '<section class="account-orders account-orders--all' +
+      (compact ? ' account-orders--home' : '') + ' reveal">' +
+      '<header><div><p class="eyebrow">' + (compact ? 'Работа мастерской' : 'Картотека') +
+      '</p><h2>' + title + '</h2></div>' +
+      (compact
+        ? '<button type="button" class="line-link" data-tab="orders">Открыть картотеку' +
+          (totalBeforeLimit > list.length ? ' · ' + totalBeforeLimit : '') + ' <span aria-hidden="true">→</span></button>'
+        : registerFilters()) + '</header>' +
       (list.length
         ? '<div class="order-list">' + list.map(function (o) { return orderCard(o, mode); }).join('') + '</div>'
         : '<div class="account-empty"><p>' + empty + '</p></div>') +
-      (notes.length ? '<p class="account-note account-note--row">' + notes.join(' · ') + '</p>' : '') +
+      (!compact && notes.length ? '<p class="account-note account-note--row">' + notes.join(' · ') + '</p>' : '') +
       '</section>';
   }
   function shortWork(o) {
@@ -2193,20 +2301,32 @@ function initCabinet() {
     var documentCount = st.orders.reduce(function (sum, order) {
       return sum + ((order.files && order.files.length) || order.files_count || 0);
     }, 0);
-    var items = [
-      ['home', 'Дела', String(st.orders.length || '')],
-      ['messages', 'Сообщения', badge.orders || ''],
-      ['documents', 'Документы', documentCount ? String(documentCount) : ''],
-      ['wallet', 'Платежи', ''],
-      ['club', 'Клуб Салона', bonus ? money(bonus) : (badge.club || '')],
-      ['deposit', 'Депозит', deposit ? money(deposit) + ' ₽' : '']
+    var groups = [
+      ['Работа', [
+        ['home', 'Обзор', ''],
+        ['orders', 'Дела', String(st.orders.length || '')],
+        ['messages', 'Сообщения', badge.orders || ''],
+        ['documents', 'Документы', documentCount ? String(documentCount) : '']
+      ]],
+      ['Счета и привилегии', [
+        ['wallet', 'Платежи', ''],
+        ['deposit', 'Депозит', deposit ? money(deposit) + ' ₽' : ''],
+        ['club', 'Клуб Салона', bonus ? money(bonus) : (badge.club || '')]
+      ]],
+      ['Сервис', [
+        ['help', 'Помощь', ''],
+        ['settings', 'Настройки', '']
+      ]]
     ];
-    return '<nav aria-label="Разделы кабинета">' + items.map(function (item) {
-      return '<button type="button" class="' + (st.tab === item[0] ? 'is-current' : '') +
-        '" data-tab="' + item[0] + '" aria-current="' + (st.tab === item[0] ? 'page' : 'false') + '">' +
-        '<span>' + item[1] + '</span>' + (item[2] ? '<b' +
-        (item[0] === 'orders' && badge.orders ? ' class="badge-wax"' : '') + '>' + item[2] + '</b>' : '') +
-        '</button>';
+    return '<nav aria-label="Разделы кабинета">' + groups.map(function (group) {
+      return '<section class="account-nav__group"><span class="account-nav__label">' +
+        group[0] + '</span>' + group[1].map(function (item) {
+          return '<button type="button" class="' + (st.tab === item[0] ? 'is-current' : '') +
+            '" data-tab="' + item[0] + '" aria-current="' + (st.tab === item[0] ? 'page' : 'false') + '">' +
+            '<span>' + item[1] + '</span>' + (item[2] ? '<b' +
+            (item[0] === 'messages' && badge.orders ? ' class="badge-wax"' : '') + '>' + item[2] + '</b>' : '') +
+            '</button>';
+        }).join('') + '</section>';
     }).join('') + '</nav>';
   }
   function dockTabs() {
@@ -2250,7 +2370,15 @@ function initCabinet() {
 
   /* мини-кошелёк стойки: бонусы и депозит формулярными строками */
   function sideMini() {
-    return '';
+    if (!st.me) {
+      return '<div class="account-nav__assurance"><span aria-hidden="true">◇</span>' +
+        '<p><strong>Доступ защищён.</strong> Дела этого устройства видны только по секретной ссылке.</p></div>';
+    }
+    var deposit = (st.me.deposit && st.me.deposit.balance) || 0;
+    var bonus = (st.me.bonus && st.me.bonus.balance) || 0;
+    return '<button type="button" class="account-nav__wallet" data-tab="wallet">' +
+      '<span>Ваши средства</span><strong>' + money(deposit) + ' ₽</strong>' +
+      '<small>' + money(bonus) + ' бонусов · открыть счёт →</small></button>';
   }
   function sideFoot() {
     return '<div class="account-nav__bottom">' +
@@ -2288,7 +2416,13 @@ function initCabinet() {
       try { history.replaceState(null, '', '#' + tab); } catch (e) { location.hash = tab; }
     }
     renderTab();
+    var main = root.querySelector('.account-main');
+    if (main) {
+      main.scrollTop = 0;
+      try { main.focus({ preventScroll: true }); } catch (e) {}
+    }
     window.scrollTo({ top: 0, behavior: 'auto' });
+    if (tab === 'deposit') scrollToEl('depCard');
   }
 
   /* ---------------- Черновик заявки из этого браузера ----------------
@@ -2298,7 +2432,7 @@ function initCabinet() {
      Условия допуска те же, что на витрине (extras.js → .resume-card):
      непустой savedAt (посадочные пишут 0 нарочно), две недели памяти,
      живой калькулятор и известный тип работы. */
-  function draftSection() {
+  function draftSection(compact) {
     var d = S.store.get('salon_draft', null);
     if (!d || !d.savedAt || !d.state || !window.SalonCalc) return '';
     if (Date.now() - d.savedAt > 14 * 24 * 3600 * 1000) return '';
@@ -2307,7 +2441,8 @@ function initCabinet() {
     var step = Math.max(1, Math.min(4, (d.idx || 0) + 1));
     var saved = new Date(d.savedAt).toLocaleString('ru-RU',
       { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-    return '<section class="account-orders account-drafts">' +
+    return '<section class="account-orders account-drafts' +
+      (compact ? ' account-orders--home account-drafts--home' : '') + '">' +
       '<header><div><p class="eyebrow">Сохранено в этом браузере</p>' +
       '<h2>Черновики заявок</h2></div></header>' +
       '<div class="order-list">' +
@@ -2326,38 +2461,50 @@ function initCabinet() {
     var me = st.me || {};
     var dep = me.deposit || {}, bon = me.bonus || {};
     var act = activeOrders().length;
-    var unread = 0;
-    st.orders.forEach(function (o) { unread += (o.unread || 0) + (o.files_new || 0); });
+    var unread = 0, attention = 0;
+    st.orders.forEach(function (o) {
+      unread += (o.unread || 0) + (o.files_new || 0);
+      if (needsAction(o)) attention++;
+    });
+    attention += unread;
     var sub = me.sub;
+    var wallet = '<section class="account-benefits" data-comfort-card>' +
+      '<header><div><p class="eyebrow">Счета и привилегии</p><h2>Ваш баланс</h2></div>' +
+      '<button type="button" class="line-link" data-tab="wallet">Все операции</button></header>' +
+      '<div class="account-comfort-list">' +
+      '<button type="button" data-tab="deposit"><span>Депозит</span><strong>' +
+      money(dep.balance || 0) + ' ₽</strong><small>для согласованных этапов</small><b>→</b></button>' +
+      '<button type="button" data-tab="wallet"><span>Бонусы</span><strong>' +
+      money(bon.balance || 0) + '</strong><small>условия видны до списания</small><b>→</b></button>' +
+      '<button type="button" data-tab="club"><span>Салон+</span><strong>' +
+      (sub ? 'активен' : 'не активен') + '</strong><small>' +
+      (sub ? 'до ' + esc(sub.expires_ru || '') : 'планы от 449 ₽') + '</small><b>→</b></button>' +
+      '</div></section>';
+    var shortcuts = '<section class="account-quick" data-comfort-card>' +
+      '<header><p class="eyebrow">Под рукой</p><h2>Быстрые действия</h2></header>' +
+      '<div><button type="button" data-tab="messages"><span>¶</span><strong>Сообщения</strong>' +
+      '<small>' + (unread ? unread + ' новых событий' : 'переписка по делам') + '</small></button>' +
+      '<button type="button" data-tab="documents"><span>PDF</span><strong>Документы</strong>' +
+      '<small>файлы, акты и спецификации</small></button>' +
+      '<button type="button" data-contact="1"><span>?</span><strong>Связаться</strong>' +
+      '<small>мастер ответит по вашему делу</small></button></div></section>';
     return '<section class="account-summary">' +
       '<article><span class="status-dot"><i></i> сейчас</span><strong>' + act + '</strong><p>' +
       plural(act, 'дело в работе', 'дела в работе', 'дел в работе') + '</p></article>' +
-      '<article><span>Требуется внимание</span><strong>' + unread + '</strong><p>' +
-      plural(unread, 'новое событие', 'новых события', 'новых событий') + '</p></article>' +
+      '<article><span>Требуется внимание</span><strong>' + attention + '</strong><p>' +
+      plural(attention, 'действие или событие', 'действия или события', 'действий или событий') + '</p></article>' +
       '<article><span>Бонусный счёт</span><strong>' + money(bon.balance || 0) + ' бонусов</strong><p>условия видны до списания</p></article>' +
       '</section>' +
-      nowCard() + draftSection() +
-      (st.orders.length ? ordersRegister('') :
+      '<div class="account-command-grid"><div class="account-command-grid__main">' +
+      nowCard() + draftSection(true) +
+      (st.orders.length ? ordersRegister('', true) :
         '<section class="account-orders"><header><h2>Ваши дела</h2></header>' +
         '<div class="account-empty"><p>Здесь появятся сроки, файлы и сообщения мастера.</p>' +
         '<a class="button button--primary" href="configurator.html">Описать задачу</a></div></section>') +
-      '<section class="account-benefits"><header><div><p class="eyebrow">Счета и привилегии</p>' +
-      '<h2>Разные механизмы — отдельный учёт.</h2></div><a class="line-link" href="loyalty.html">Правила программы</a></header><div>' +
-      '<button class="account-benefit-card account-benefit-card--deposit" type="button" data-tab="wallet">' +
-      '<span class="account-benefit-card__mark">₽</span><div><small>Депозит мастерской</small><strong>' +
-      money(dep.balance || 0) + ' ₽</strong><p>денежный остаток для согласованных этапов</p></div><b>→</b></button>' +
-      '<button class="account-benefit-card" type="button" data-tab="wallet"><span class="account-benefit-card__mark">Б</span>' +
-      '<div><small>Бонусный счёт</small><strong>' + money(bon.balance || 0) + ' бонусов</strong>' +
-      '<p>срок и условия списания видны до операции</p></div><b>→</b></button>' +
-      '<button class="account-benefit-card account-benefit-card--plus" type="button" data-tab="club">' +
-      '<span class="account-benefit-card__mark">АС+</span><div><small>Абонемент</small><strong>' +
-      (sub ? 'Активен до ' + esc(sub.expires_ru || '') : 'Не активен') + '</strong>' +
-      '<p>состав, срок и цена доступны до оплаты</p></div><b>→</b></button></div></section>' +
-      '<section class="account-quick"><button type="button" data-tab="documents"><span>¶</span>' +
-      '<strong>Документы по делам</strong>' +
-      '<small>Спецификации, акты и файлы</small></button><button type="button" data-tab="help"><span>?</span>' +
-      '<strong>Задать вопрос</strong><small>Ответ придёт в кабинет и Telegram</small></button>' +
-      '<button type="button" data-tab="club"><span>АС</span><strong>Клуб Салона</strong><small>Бонусы и абонементы</small></button></section>';
+      '</div><aside class="account-command-grid__aside">' + wallet + shortcuts +
+      '<section class="account-comfort-note"><span aria-hidden="true">◇</span><div>' +
+      '<strong>Всё синхронизировано</strong><p>Статусы, платежи и новые файлы обновляются без перезагрузки.</p>' +
+      '</div></section></aside></div>';
   }
 
   function loginNudge(what) {
@@ -2476,7 +2623,7 @@ function initCabinet() {
   function caseLoading() {
     return '<article class="case-file reveal">' +
       '<header class="case-file__head"><div class="case-file__title">' +
-      '<button type="button" class="back-link" data-case-back>' +
+      '<button type="button" class="back-link" id="accountCaseBack" data-case-back>' +
       '<span aria-hidden="true">←</span> Все дела</button>' +
       '<p class="eyebrow case-file__no">Дело № ' + st.currentId + '</p>' +
       '<h2>Открываем дело…</h2></div></header>' +
@@ -2500,9 +2647,13 @@ function initCabinet() {
         ((st.detail && st.detail.id === st.currentId) ? tplDetail() : caseLoading()) + '</section>'
       : tabHead() + '<div class="account-main__body">' + inner + '</div>';
     render(impBanner() + '<div class="account-shell">' +
-      '<aside class="account-nav">' + profileCard() + navSide() + sideMini() + sideFoot() + '</aside>' +
-      '<main class="account-main">' + body + '</main>' +
+      '<aside class="account-nav">' + profileCard() + navSide() + sideMini() + '</aside>' +
+      '<main class="account-main" id="accountWorkspace" tabindex="-1">' + body + '</main>' +
       '</div>' + dockTabs());
+    if (hashDepositScroll && st.tab === 'deposit') {
+      hashDepositScroll = false;
+      requestAnimationFrame(function () { scrollToEl('depCard'); });
+    }
     /* док появился ПОСЛЕ замеров app.js: будим measure() — иначе --floor=0
        и угловые пилюли («Связаться», куки) налезают на док до первого resize */
     if (!renderTab._floorSynced) {
@@ -2523,7 +2674,7 @@ function initCabinet() {
        документы, сводка оплаты, служебное (управление, доступ) и помощь. */
     return '<article class="case-file reveal" aria-label="Дело заказа ' + esc(o.no) + '">' +
       '<header class="case-file__head"><div class="case-file__title">' +
-      '<button type="button" class="back-link" data-case-back>' +
+      '<button type="button" class="back-link" id="accountCaseBack" data-case-back>' +
       '<span aria-hidden="true">←</span> Все дела</button>' +
       '<p class="eyebrow case-file__no">Дело ' + esc(o.no) + '</p>' +
       '<h2>' + esc(o.work_label || '') + '</h2>' +
@@ -2642,7 +2793,8 @@ function initCabinet() {
   function renderCurrent() {
     /* без открытого дела — обычный ре-рендер вкладки: иначе журналы
        кошелька/бонусов и переключатели архива молчали при st.detail=null */
-    if (!st.detail) { renderTab(); return; }
+    var uiSnap = captureAccountUi();
+    if (!st.detail) { renderTab(); restoreAccountUi(uiSnap); return; }
     var draft = (document.getElementById('chatText') || {}).value || '';
     var fixDraft = (document.getElementById('fixText') || {}).value || '';
     var fixForm = document.getElementById('fixForm');
@@ -2654,6 +2806,7 @@ function initCabinet() {
     var nextFixForm = document.getElementById('fixForm');
     if (fixTa && fixDraft) fixTa.value = fixDraft;
     if (nextFixForm && fixOpen) nextFixForm.hidden = false;
+    restoreAccountUi(uiSnap);
   }
 
   function scheduleFilesSeen(order) {
@@ -2674,7 +2827,9 @@ function initCabinet() {
 
   function loadDetail(silent) {
     var id = st.currentId;
+    var requestSeq = ++st.detailRequestSeq;
     S.api.get(apiPath(id), orderHeaders(id)).then(function (r) {
+      if (requestSeq !== st.detailRequestSeq || id !== st.currentId) return;
       if (!r.ok) { if (!silent) render(tplError()); return; }
       var was = st.detail;
       /* полное сравнение: платежи/план/готовность части меняются без
@@ -2702,6 +2857,7 @@ function initCabinet() {
       }
       st.detail = r.order;
       if (changed || !silent) {
+        var uiSnap = captureAccountUi();
         var draft = (document.getElementById('chatText') || {}).value || '';
         var fixDraft = (document.getElementById('fixText') || {}).value || '';
         var fixForm = document.getElementById('fixForm');
@@ -2713,8 +2869,14 @@ function initCabinet() {
         var nextFixForm = document.getElementById('fixForm');
         if (fixTa && fixDraft) fixTa.value = fixDraft;
         if (nextFixForm && fixOpen) nextFixForm.hidden = false;
-        var feed = document.getElementById('chatFeed');
-        if (feed) feed.scrollTop = feed.scrollHeight;
+        restoreAccountUi(uiSnap);
+        if (st.pendingCaseFocus) {
+          st.pendingCaseFocus = false;
+          var caseBack = document.getElementById('accountCaseBack');
+          if (caseBack) {
+            try { caseBack.focus({ preventScroll: true }); } catch (e) {}
+          }
+        }
         scheduleFilesSeen(r.order);
         if (st.pendingJump) { scrollToEl(st.pendingJump); st.pendingJump = null; }
       }
@@ -2836,7 +2998,7 @@ function initCabinet() {
           return;
         }
         st.detail = r.order;
-        renderTab();
+        renderCurrent();
         if (action === 'accept_work' && S.stamp) {
           var ai = r.accept || {};
           S.stamp(ai.final ? 'Принято' : 'Часть ' + (ai.part || '') + ' принята');
@@ -2985,6 +3147,7 @@ function initCabinet() {
         st.busy = false;
         if (!r.ok) { toast(r.error === 'rate_limit' ? 'Слишком часто — подождите минуту' : 'Не отправилось, попробуйте ещё раз'); return; }
         ta.value = '';
+        st.chatStick = true;
         loadDetail();
       });
   }
@@ -3103,20 +3266,44 @@ function initCabinet() {
       try { history.replaceState(null, '', '#' + st.tab); } catch (e) {}
       var newId = parseInt(sw.getAttribute('data-ord'), 10);
       var sameCase = st.currentId === newId && !!st.detail;
+      var currentMain = root.querySelector('.account-main');
+      st.listScroll = currentMain ? currentMain.scrollTop : 0;
+      st.listWindowScroll = window.scrollY || 0;
       st.currentId = newId;
       st.caseOpen = true;
+      st.pendingCaseFocus = true;
+      st.pendingJump = st.tab === 'messages' ? 'secChat' :
+        st.tab === 'documents' ? 'secFiles' : null;
       /* экран дела открываем сразу: уже загруженное дело показываем целиком,
          новое — с честной строкой ожидания, пока идёт /orders/<id> */
       renderTab();
+      var openBack = document.getElementById('accountCaseBack');
+      if (openBack) {
+        st.pendingCaseFocus = false;
+        try { openBack.focus({ preventScroll: true }); } catch (err) {}
+      }
+      if (sameCase && st.pendingJump) {
+        scrollToEl(st.pendingJump);
+        st.pendingJump = null;
+      }
       loadDetail(sameCase);
       window.scrollTo({ top: 0, behavior: 'auto' });
       return;
     }
     /* возврат к реестру — ссылка «Все дела» в шапке дела (маршрут эталона) */
     if (t.closest('[data-case-back]')) {
+      var returnId = st.currentId;
       st.caseOpen = false;
       renderTab();
-      window.scrollTo({ top: 0, behavior: 'auto' });
+      requestAnimationFrame(function () {
+        var listMain = root.querySelector('.account-main');
+        if (listMain) listMain.scrollTop = st.listScroll || 0;
+        window.scrollTo({ top: st.listWindowScroll || 0, behavior: 'auto' });
+        var returnCard = root.querySelector('button[data-ord="' + returnId + '"]');
+        if (returnCard) {
+          try { returnCard.focus({ preventScroll: true }); } catch (err) {}
+        }
+      });
       return;
     }
     var filterBtn = t.closest('[data-order-filter]');
@@ -3139,7 +3326,15 @@ function initCabinet() {
       st.caseOpen = true;
       if (wasOpen) { if (njump) scrollToEl(njump); return; }
       st.pendingJump = njump || null;
-      if (st.detail && st.detail.id === nid) renderTab();
+      st.pendingCaseFocus = true;
+      if (st.detail && st.detail.id === nid) {
+        renderTab();
+        var nowBack = document.getElementById('accountCaseBack');
+        if (nowBack) {
+          st.pendingCaseFocus = false;
+          try { nowBack.focus({ preventScroll: true }); } catch (err) {}
+        }
+      }
       loadDetail();
       return;
     }
@@ -3615,6 +3810,7 @@ function initCabinet() {
   /* dashboard.html#plus — сразу раскрыть витрину «Салон+» (ссылки с referral)
      и довести взгляд до неё (на телефоне карточка ниже первого экрана) */
   var hashPlusScroll = false;
+  var hashDepositScroll = false;
   try {
     var h0 = (location.hash || '').replace('#', '');
     if (h0.indexOf('plus') >= 0) {
@@ -3623,6 +3819,7 @@ function initCabinet() {
     else if (['home', 'orders', 'messages', 'documents', 'wallet', 'deposit', 'club', 'help', 'settings'].indexOf(h0) >= 0) {
       st.tab = h0;
       if (h0 === 'club') st.plusOpen = true;
+      if (h0 === 'deposit') hashDepositScroll = true;
     }
     if (/[?&](paid|thanks)=/.test(location.search)) st.tab = 'orders';
   } catch (e) {}
