@@ -41,8 +41,15 @@ test('desktop chrome keeps the approved control geometry', () => {
 
 test('chrome icons and theme transition remain identical to style-lab', () => {
   assert.match(appJs, /aria-hidden="true">⌕<\/span>/);
-  assert.match(appJs, /data-theme-glyph aria-hidden="true">◐<\/span>/);
-  assert.match(appJs, /g\.textContent = mode === 'dark' \? '☀' : '◐'/);
+  assert.match(appJs, /data-theme-glyph data-theme-icon="dark"/);
+  assert.match(appJs, /class="ha-theme-night"/);
+  assert.match(appJs, /class="ha-theme-sun"/);
+  assert.match(appJs, /g\.setAttribute\('data-theme-icon', mode === 'dark' \? 'light' : 'dark'\)/);
+  assert.doesNotMatch(appJs, /☀|🌞/);
+  assert.match(
+    chromeCss,
+    /\.ha-ico--theme\[data-theme-icon="dark"\] \.ha-theme-sun,[\s\S]*?opacity:0;/,
+  );
 });
 
 test('production shell keeps the approved light and dark palette', () => {

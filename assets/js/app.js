@@ -35,10 +35,10 @@
     link.media = 'screen and (max-width:920px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260726release24', source).href
-        : 'assets/css/mobile.css?v=20260726release24';
+      link.href = source ? new URL('../css/mobile.css?v=20260726release25', source).href
+        : 'assets/css/mobile.css?v=20260726release25';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260726release24';
+      link.href = 'assets/css/mobile.css?v=20260726release25';
     }
     document.head.appendChild(link);
   })();
@@ -170,12 +170,23 @@
   window.SalonMaxLogo = maxLogoSVG;
 
   /* ---------------- значки пульта шапки ----------------
-     Эти два знака повторяют утверждённый style-lab/full буквально. */
+     Собственные векторные знаки не зависят от системного набора emoji:
+     на любой платформе оптика, толщина штриха и цвет остаются фирменными. */
   function icoSearch() {
     return '<span class="ha-ico" aria-hidden="true">⌕</span>';
   }
   function icoTheme() {
-    return '<span class="ha-ico ha-ico--theme" data-theme-glyph aria-hidden="true">◐</span>';
+    return '<span class="ha-ico ha-ico--theme" data-theme-glyph data-theme-icon="dark" aria-hidden="true">' +
+      '<svg viewBox="0 0 24 24" fill="none" focusable="false">' +
+        '<g class="ha-theme-night">' +
+          '<circle cx="12" cy="12" r="7.25" stroke="currentColor" stroke-width="1.5"/>' +
+          '<path d="M12 4.75a7.25 7.25 0 0 0 0 14.5z" fill="currentColor"/>' +
+        '</g>' +
+        '<g class="ha-theme-sun">' +
+          '<circle cx="12" cy="12" r="3.45" fill="currentColor"/>' +
+          '<path d="M12 2.75v2.1M12 19.15v2.1M2.75 12h2.1M19.15 12h2.1M5.46 5.46l1.49 1.49M17.05 17.05l1.49 1.49M18.54 5.46l-1.49 1.49M6.95 17.05l-1.49 1.49" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>' +
+        '</g>' +
+      '</svg></span>';
   }
   window.SalonIco = { search: icoSearch, theme: icoTheme };
   /* короткие коды типов для deep-link в бота (?start=web_dp_h_u_t) */
@@ -559,7 +570,7 @@
         l.textContent = mode === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему';
       });
       docEl.querySelectorAll('[data-theme-glyph]').forEach(function (g) {
-        g.textContent = mode === 'dark' ? '☀' : '◐';
+        g.setAttribute('data-theme-icon', mode === 'dark' ? 'light' : 'dark');
       });
       if (persist) { try { localStorage.setItem('salon_theme', mode); } catch (e) {} }
     }

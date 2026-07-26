@@ -1210,6 +1210,31 @@ body .ha-ico{
   vertical-align:middle;
   pointer-events:none;
 }
+body .ha-ico--theme svg{
+  display:block;
+  width:18px;
+  height:18px;
+  overflow:visible;
+}
+body .ha-ico--theme .ha-theme-night,
+body .ha-ico--theme .ha-theme-sun{
+  transform-origin:12px 12px;
+  transition:opacity 160ms ease,transform 200ms cubic-bezier(.22,1,.36,1);
+}
+body .ha-ico--theme[data-theme-icon="dark"] .ha-theme-sun,
+body .ha-ico--theme[data-theme-icon="light"] .ha-theme-night{
+  opacity:0;
+  transform:scale(.72) rotate(-12deg);
+}
+body .ha-ico--theme[data-theme-icon="dark"] .ha-theme-night,
+body .ha-ico--theme[data-theme-icon="light"] .ha-theme-sun{
+  opacity:1;
+  transform:none;
+}
+@media(prefers-reduced-motion:reduce){
+  body .ha-ico--theme .ha-theme-night,
+  body .ha-ico--theme .ha-theme-sun{transition:none}
+}
 
 /* ---- Знак мастерской ---- */
 body .site-header .brand__mark,
