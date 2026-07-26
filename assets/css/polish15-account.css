@@ -4620,7 +4620,7 @@
   font-size: 20px;
 }
 
-.is-account-route .account-comfort-list {
+.is-account-route .account-benefits > .account-comfort-list {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 0;
