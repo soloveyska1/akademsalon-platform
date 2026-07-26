@@ -59,6 +59,26 @@ test('consent choice stays compact, equal and non-blocking', () => {
   assert.match(mobile, /grid-template-columns:1fr 1fr/);
 });
 
+test('saved-draft card resets the legacy night palette in both themes', () => {
+  const ecosystem = read('assets/css/home-ecosystem.css');
+  assert.match(
+    ecosystem,
+    /\.home-case \.resume-card\{[\s\S]*?background:var\(--case-sheet\);[\s\S]*?color:var\(--ink\);/,
+  );
+  assert.match(
+    ecosystem,
+    /\.home-case \.resume-card__seal\{[\s\S]*?background:transparent;[\s\S]*?box-shadow:none;[\s\S]*?color:var\(--wax\);/,
+  );
+  assert.match(
+    ecosystem,
+    /\.home-case \.resume-card h2\{[\s\S]*?color:var\(--ink\);/,
+  );
+  assert.match(
+    ecosystem,
+    /\.home-case \.resume-card \.eyebrow\{\s*color:var\(--ink-soft\);/,
+  );
+});
+
 test('home release build pins its compiler and complete ordered source set', () => {
   const build = read('scripts/build-home-release.mjs');
   assert.match(build, /const esbuildVersion = '0\.28\.1'/);
@@ -85,8 +105,8 @@ test('home release build pins its compiler and complete ordered source set', () 
 
 test('home loads only the reproducible release bundles', () => {
   const home = read('index.html');
-  assert.match(home, /assets\/css\/home-release\.min\.css\?v=20260726release32" data-mobile-edition="1"/);
-  assert.match(home, /assets\/js\/home-release\.min\.js\?v=20260726release32/);
+  assert.match(home, /assets\/css\/home-release\.min\.css\?v=20260726release33" data-mobile-edition="1"/);
+  assert.match(home, /assets\/js\/home-release\.min\.js\?v=20260726release33/);
   assert.doesNotMatch(home, /assets\/css\/(?:styles|chrome|polish15-chrome|extras|polish15-home|commission-zero|home-intro|home-ecosystem|mobile)\.css/);
   assert.doesNotMatch(home, /assets\/js\/(?:app|polish15-chrome|extras|home-intro|home-ecosystem)\.js/);
 });

@@ -511,6 +511,7 @@
   padding-bottom:22px;
   border:1px solid var(--case-line-strong);
   background:var(--case-sheet);
+  color:var(--ink);
 }
 
 .home-case .resume-card[hidden]{
@@ -524,13 +525,20 @@
   place-items:center;
   border:1px solid var(--wax);
   border-radius:50%;
+  background:transparent;
+  box-shadow:none;
   color:var(--wax);
   font:500 14px/1 var(--serif);
 }
 
 .home-case .resume-card h2{
   margin:2px 0 1px;
+  color:var(--ink);
   font-size:22px;
+}
+
+.home-case .resume-card .eyebrow{
+  color:var(--ink-soft);
 }
 
 .home-case .resume-card p:not(.eyebrow){
