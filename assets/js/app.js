@@ -22,10 +22,10 @@
     link.media = 'screen and (max-width:920px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260725release16', source).href
-        : 'assets/css/mobile.css?v=20260725release16';
+      link.href = source ? new URL('../css/mobile.css?v=20260725release17', source).href
+        : 'assets/css/mobile.css?v=20260725release17';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260725release16';
+      link.href = 'assets/css/mobile.css?v=20260725release17';
     }
     document.head.appendChild(link);
   })();
@@ -2502,7 +2502,22 @@
      формы сюда никогда не попадают. */
   Salon.attribution = (function () {
     var KEY = 'salon_attr_v1';
-    var PARAMS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','yclid','gclid'];
+    var PARAMS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term',
+                  'yclid','gclid','ymclid','fbclid','erid'];
+    /* Короткая метка ?s= для собственных каналов. Telegram и VK открывают
+       ссылки во встроенном браузере и срезают Referer, поэтому переход из
+       бота неотличим от прямого захода: в срезе 15–24 июля 80,9% сессий
+       осели в direct_or_unknown. Полный набор utm_* руками в сообщение бота
+       не вставишь, а ?s=tg — вставишь.
+       Список закрытый: произвольный ?s= с улицы не должен сочинять источник. */
+    var CHANNELS = {
+      tg:   { utm_source: 'telegram', utm_medium: 'bot' },
+      tgch: { utm_source: 'telegram', utm_medium: 'channel' },
+      vk:   { utm_source: 'vk',       utm_medium: 'social' },
+      feed: { utm_source: 'feed',     utm_medium: 'rss' },
+      ref:  { utm_source: 'referral', utm_medium: 'word_of_mouth' },
+      qr:   { utm_source: 'qr',       utm_medium: 'offline' }
+    };
     function allowed() { return Salon.consent && Salon.consent.allowed(); }
     function clean(v) {
       return String(v || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 80);
@@ -2514,6 +2529,13 @@
           var value = clean(src.get(key));
           if (value) out.set(key, value);
         });
+        var short = CHANNELS[clean(src.get('s')).toLowerCase()];
+        if (short) {
+          /* явные utm_* в той же ссылке главнее: метка — сокращение, не замена */
+          Object.keys(short).forEach(function (key) {
+            if (!out.get(key)) out.set(key, short[key]);
+          });
+        }
         return out.toString();
       } catch (e) { return ''; }
     }
