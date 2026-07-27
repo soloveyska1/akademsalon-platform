@@ -38,6 +38,8 @@
 - `assets/js/doi-checker.js`, `assets/js/topic-audit.js` — приватные браузерные инструменты без отправки пользовательского текста на сервер
 - `scripts/generate-spec-v2.py` — канонический генератор заполненных PDF-образцов Спецификации
 - `scripts/generate-sitemap.mjs`, `scripts/generate-feed.mjs` — детерминированные генераторы sitemap и Atom-ленты
+- `scripts/ping-indexnow.mjs` — подача изменённых адресов в IndexNow (Яндекс, Bing); без `--submit` только предпросмотр
+- `docs/ATTRIBUTION-LINKS.md` — метка канала `?s=` для собственных ссылок и порядок подачи адресов в поиск
 - `content/legal/` — схема Спецификации, матрица персональных данных и эксплуатационные legal-checklists
 - `assets/img/` — favicon, OG-обложки и apple-touch-icon
 - `robots.txt`, `sitemap.xml`, `feed.xml` — сигналы обнаружения и обновления контента
