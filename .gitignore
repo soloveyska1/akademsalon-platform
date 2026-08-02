@@ -24,3 +24,4 @@ content/telegram/shelf/
 content/telegram/visuals/
 content/telegram/carousel/
 content/telegram/__pycache__/
+dist/

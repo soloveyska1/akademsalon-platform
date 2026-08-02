@@ -22,6 +22,12 @@
     inerted.forEach(function (node) {
       node.removeAttribute('inert');
       node.removeAttribute('data-intro-inert');
+      if (node.hasAttribute('data-intro-had-aria-hidden')) {
+        node.setAttribute('aria-hidden',node.getAttribute('data-intro-had-aria-hidden'));
+        node.removeAttribute('data-intro-had-aria-hidden');
+      } else {
+        node.removeAttribute('aria-hidden');
+      }
     });
     inerted = [];
   }
@@ -34,7 +40,7 @@
     root.classList.remove('salon-intro-pending', 'salon-intro-running', 'salon-intro-leaving');
     if (intro && intro.parentNode) intro.parentNode.removeChild(intro);
 
-    if (!immediate && focusMainAfterFinish) {
+    if (focusMainAfterFinish) {
       var main = document.getElementById('main');
       if (main && typeof main.focus === 'function') main.focus({ preventScroll:true });
     }
@@ -49,12 +55,13 @@
       return;
     }
     root.classList.add('salon-intro-leaving');
-    timers.push(window.setTimeout(function () { finish(false); }, 400));
+    timers.push(window.setTimeout(function () { finish(false); }, 420));
   }
 
   function onKeydown(event) {
     if (event.key === 'Escape') {
       event.preventDefault();
+      focusMainAfterFinish = true;
       leave(true);
     }
   }
@@ -110,6 +117,10 @@
 
   Array.prototype.forEach.call(document.body.children, function (node) {
     if (node === intro || node.tagName === 'SCRIPT' || node.hasAttribute('inert')) return;
+    if (node.hasAttribute('aria-hidden')) {
+      node.setAttribute('data-intro-had-aria-hidden',node.getAttribute('aria-hidden'));
+    }
+    node.setAttribute('aria-hidden','true');
     node.setAttribute('inert', '');
     node.setAttribute('data-intro-inert', '1');
     inerted.push(node);
@@ -128,9 +139,12 @@
   state = 'running';
   window.requestAnimationFrame(function () {
     window.requestAnimationFrame(function () {
-      if (state === 'running') root.classList.add('salon-intro-running');
+      if (state === 'running') {
+        root.classList.add('salon-intro-running');
+        if (intro) intro.focus({ preventScroll:true });
+      }
     });
   });
 
-  timers.push(window.setTimeout(function () { leave(false); }, 720));
+  timers.push(window.setTimeout(function () { leave(false); }, 2050));
 }());

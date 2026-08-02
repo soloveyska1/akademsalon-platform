@@ -318,7 +318,7 @@
     all('[data-start-format]').forEach(function (button) {
       button.addEventListener('click', function () {
         var value = button.getAttribute('data-start-format') || '';
-        var tier = value === 'Диагностика' ? 'base' : value === 'Сопровождение' ? 'vip' : 'turn';
+        var tier = value === 'Письменный разбор' || value === 'Диагностика' ? 'base' : value === 'Сопровождение' ? 'vip' : 'turn';
         try {
           localStorage.setItem('salon_preferred_format', value);
         } catch (error) {}

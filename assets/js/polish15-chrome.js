@@ -39,6 +39,17 @@
   /* ---------- разметка ---------- */
 
   function menuMarkup() {
+    var situations = [
+      ['topic', '01', 'Пока есть только тема', 'Проверить масштаб темы и собрать логику глав'],
+      ['draft', '02', 'Черновик уже есть', 'Найти провалы в логике и объяснить правки'],
+      ['comments', '03', 'Пришли замечания', 'Понять, что критично и с чего начать'],
+      ['defense', '04', 'До защиты мало времени', 'Сверить речь, презентацию и вопросы комиссии']
+    ].map(function (it) {
+      return '<a href="configurator.html?situation=' + it[0] + '&route=menu">' +
+        '<span>' + it[1] + '</span><strong>' + esc(it[2]) + '</strong>' +
+        '<small>' + esc(it[3]) + '</small><i aria-hidden="true">→</i></a>';
+    }).join('');
+
     var primary = PRIMARY.map(function (it, i) {
       return '<a href="' + esc(it[0]) + '">' +
         '<span>' + (i < 9 ? '0' : '') + (i + 1) + '</span>' +
@@ -75,9 +86,13 @@
     return '<div class="overlay__panel">' +
       '<header class="overlay__header">' +
         '<div><span class="eyebrow">Навигация</span><h2 id="p15MenuTitle">Все разделы</h2></div>' +
-        '<button class="icon-button icon-button--close" type="button" data-close-dialog aria-label="Закрыть меню">×</button>' +
+        '<button class="icon-button icon-button--close" type="button" data-close-dialog aria-label="Закрыть меню"><i aria-hidden="true"></i></button>' +
       '</header>' +
       '<div class="menu-layout">' +
+        '<section class="menu-layout__situations" aria-labelledby="p15MenuSituations">' +
+          '<div><span class="eyebrow">Быстрый выбор</span><h3 id="p15MenuSituations">Что у вас уже есть?</h3></div>' +
+          '<nav aria-label="Выбрать исходную ситуацию">' + situations + '</nav>' +
+        '</section>' +
         '<div class="menu-layout__primary">' + primary + '</div>' +
         '<div class="menu-layout__secondary">' + groups + marks + docs + '</div>' +
       '</div>' +
@@ -92,7 +107,7 @@
         /* Оба набора классов, как у кнопки в шапке (app.js): «button--primary»
            из макета и «btn btn-wax» из продового слоя — иначе кнопка теряет
            и оформление, и размер цели касания 52px. */
-        '<a class="button button--primary btn btn-wax" href="configurator.html">Описать задачу <span aria-hidden="true">→</span></a>' +
+        '<a class="button button--primary btn btn-wax" href="configurator.html">Подобрать помощь <span aria-hidden="true">→</span></a>' +
       '</footer>' +
     '</div>';
   }
@@ -101,22 +116,37 @@
     return '<div class="overlay__panel overlay__panel--search">' +
       '<h2 class="visually-hidden" id="p15SearchTitle">Поиск по сайту</h2>' +
       '<header class="search-head">' +
-        '<img src="assets/img/logo-mark.svg" alt="" width="34" height="34">' +
-        '<div>' +
+        '<div class="search-brand" aria-hidden="true">' +
+          '<span class="search-brand__mark"><img src="assets/img/logo-mark.svg" alt="" width="40" height="40"></span>' +
+          '<span><small>Академический Салон</small><strong>Поиск по мастерской</strong></span>' +
+        '</div>' +
+        '<button class="icon-button icon-button--close search-close" type="button" data-close-dialog aria-label="Закрыть поиск"><i aria-hidden="true"></i></button>' +
+        '<div class="search-field-shell">' +
+          '<span class="search-field-shell__index" aria-hidden="true">⌕</span>' +
+          '<div>' +
           '<label class="visually-hidden" for="p15SearchField">Поиск по сайту</label>' +
           '<input id="p15SearchField" type="search" role="combobox" autocomplete="off" ' +
             'aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" ' +
-            'aria-controls="p15SearchResults" placeholder="Услуга, статья или раздел">' +
+            'aria-controls="p15SearchResults" placeholder="Что вы хотите найти?">' +
+          '</div>' +
+          '<kbd aria-hidden="true">/</kbd>' +
         '</div>' +
-        '<button class="icon-button icon-button--close" type="button" data-close-dialog aria-label="Закрыть поиск">×</button>' +
       '</header>' +
-      '<div class="search-suggestions"><span>Попробуйте:</span>' +
-        '<button type="button" data-search-query="замечания руководителя">замечания руководителя</button>' +
-        '<button type="button" data-search-query="нормоконтроль">нормоконтроль</button>' +
-        '<button type="button" data-search-query="цены">цены</button>' +
+      '<div class="search-suggestions"><span>Часто ищут</span><div>' +
+        '<button type="button" data-search-query="замечания руководителя">Замечания руководителя</button>' +
+        '<button type="button" data-search-query="нормоконтроль">Нормоконтроль</button>' +
+        '<button type="button" data-search-query="цены">Цены и состав</button>' +
+      '</div></div>' +
+      '<div class="search-stage">' +
+        '<div class="search-zero-state" data-search-zero>' +
+          '<span>01</span><div><strong>Начните с задачи своими словами.</strong>' +
+          '<small>Найдём подходящую услугу, статью, правило или раздел сайта.</small></div>' +
+        '</div>' +
+        '<p class="search-results-meta" data-search-results-meta aria-live="polite"></p>' +
+        '<div class="search-results" id="p15SearchResults" role="listbox" aria-live="polite" aria-label="Результаты поиска"></div>' +
       '</div>' +
-      '<div class="search-results" id="p15SearchResults" role="listbox" aria-live="polite" aria-label="Результаты поиска"></div>' +
       '<footer class="search-footer">' +
+        '<small>Клавиатура</small>' +
         '<span><kbd>↑</kbd><kbd>↓</kbd> выбрать</span>' +
         '<span><kbd>Enter</kbd> открыть</span>' +
         '<span><kbd>Esc</kbd> закрыть</span>' +
@@ -156,19 +186,36 @@
   }
 
   function renderResults(q) {
+    q = String(q || '').trim();
     results = search(q);
     cursor = results.length ? 0 : -1;
+    var zero = searchDlg && searchDlg.querySelector('[data-search-zero]');
+    var meta = searchDlg && searchDlg.querySelector('[data-search-results-meta]');
+    if (zero) zero.hidden = !!q;
     if (!q) {
       resultsBox.innerHTML = '';
+      if (meta) {
+        meta.textContent = '';
+        meta.hidden = true;
+      }
       searchField.setAttribute('aria-expanded', 'false');
       return;
     }
     if (!results.length) {
-      resultsBox.innerHTML = '<p class="search-empty">Ничего не нашлось. ' +
-        'Напишите мастеру — подскажем, где смотреть: ' +
-        '<a href="priyomnaya.html">открытая приёмная</a>.</p>';
+      if (meta) {
+        meta.textContent = 'По запросу ничего не найдено';
+        meta.hidden = false;
+      }
+      resultsBox.innerHTML = '<div class="search-empty"><span>Ничего не найдено</span>' +
+        '<strong>Попробуйте сформулировать короче.</strong>' +
+        '<p>Или напишите мастеру — подскажем, где искать.</p>' +
+        '<a href="priyomnaya.html">Открыть приёмную <i aria-hidden="true">→</i></a></div>';
       searchField.setAttribute('aria-expanded', 'false');
       return;
+    }
+    if (meta) {
+      meta.textContent = 'Найдено: ' + results.length;
+      meta.hidden = false;
     }
     resultsBox.innerHTML = results.map(function (r, i) {
       return '<a class="search-result" role="option" id="p15Res' + i + '"' +
@@ -210,6 +257,7 @@
   function openDialog(dlg, trigger) {
     if (!dlg || dlg.open) return;
     closeAll(true);
+    if (dlg === menuDlg) syncThemeChoice();
     lastTrigger = trigger || document.activeElement || null;
     try { dlg.showModal(); } catch (e) { dlg.setAttribute('open', ''); }
     docEl.classList.add('has-p15-dialog');
@@ -393,8 +441,85 @@
     }
   }
 
+  window.addEventListener('salon:theme-change', syncThemeChoice);
+
+  function initHeaderDropdowns() {
+    var triggers = [].slice.call(document.querySelectorAll('[data-header-menu-trigger]'));
+    if (!triggers.length) return;
+
+    function closeMenus(returnFocus) {
+      var active = null;
+      triggers.forEach(function (trigger) {
+        var menu = document.getElementById(trigger.getAttribute('aria-controls') || '');
+        if (trigger.getAttribute('aria-expanded') === 'true') active = trigger;
+        trigger.setAttribute('aria-expanded','false');
+        if (menu) {
+          menu.setAttribute('aria-hidden','true');
+          menu.classList.remove('is-open');
+        }
+      });
+      document.documentElement.classList.remove('header-menu-open');
+      if (returnFocus && active) active.focus({ preventScroll:true });
+    }
+
+    function openMenu(trigger,focusFirst) {
+      var menu = document.getElementById(trigger.getAttribute('aria-controls') || '');
+      if (!menu) return;
+      var alreadyOpen = trigger.getAttribute('aria-expanded') === 'true';
+      closeMenus(false);
+      if (alreadyOpen) return;
+      trigger.setAttribute('aria-expanded','true');
+      menu.setAttribute('aria-hidden','false');
+      menu.classList.add('is-open');
+      document.documentElement.classList.add('header-menu-open');
+      if (focusFirst) {
+        var first = menu.querySelector('a[href]');
+        if (first) first.focus({ preventScroll:true });
+      }
+    }
+
+    triggers.forEach(function (trigger) {
+      trigger.addEventListener('click',function (event) {
+        event.preventDefault();
+        openMenu(trigger,false);
+      });
+      trigger.addEventListener('keydown',function (event) {
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          openMenu(trigger,true);
+        }
+      });
+    });
+
+    document.addEventListener('click',function (event) {
+      if (!event.target.closest('.header-nav-group')) closeMenus(false);
+    });
+    document.addEventListener('focusin',function (event) {
+      if (document.documentElement.classList.contains('header-menu-open') &&
+          !event.target.closest('.header-nav-group')) closeMenus(false);
+    });
+    document.addEventListener('keydown',function (event) {
+      if (event.key === 'Escape' && document.documentElement.classList.contains('header-menu-open')) {
+        event.preventDefault();
+        closeMenus(true);
+      }
+    });
+    window.addEventListener('resize',function () {
+      if (window.innerWidth <= 1120) closeMenus(false);
+    },{ passive:true });
+    var scrollStart = window.scrollY;
+    window.addEventListener('scroll',function () {
+      document.documentElement.classList.toggle('header-scrolled',window.scrollY > 20);
+      if (document.documentElement.classList.contains('header-menu-open') &&
+          Math.abs(window.scrollY - scrollStart) > 18) closeMenus(false);
+      if (!document.documentElement.classList.contains('header-menu-open')) scrollStart = window.scrollY;
+    },{ passive:true });
+    document.documentElement.classList.toggle('header-scrolled',window.scrollY > 20);
+  }
+
   function boot() {
     build();
+    initHeaderDropdowns();
   }
 
   if (document.readyState === 'loading') {

@@ -24,7 +24,7 @@ test('account production page uses the final concept shell', () => {
   assert.match(cabinetJs, /class="account-main"/);
   assert.match(cabinetJs, /class="account-summary"/);
   assert.match(cabinetJs, /class="order-list"/);
-  assert.match(cabinetJs, /class="account-benefits"/);
+  assert.match(cabinetJs, /class="account-home-tools reveal"/);
   /* «Депозит» переименован в «Депозит и бонусы» 2026-07-26: прежде пункты
      «Платежи» и «Депозит» вели в один и тот же экран (обе ветки renderTab
      звали walletTab), теперь у каждого своё содержимое. */
@@ -90,6 +90,22 @@ test('account authentication and live order mechanics remain bound', () => {
   ['home', 'orders', 'wallet', 'club', 'help'].forEach((tab) => {
     assert.ok(cabinetJs.includes(`['${tab}'`) || cabinetJs.includes(`'${tab}',`), `missing account tab: ${tab}`);
   });
+});
+
+test('Telegram is a primary login independent from email and unfinished OAuth providers', () => {
+  assert.match(
+    cabinetJs,
+    /var mainAction = '<button[^']+id="cabTg">' \+\s*'<span[^']+cab-login-main__telegram[^']+>' \+\s*'Войти через Telegram/,
+  );
+  assert.match(cabinetJs, /if \(f\.email_login\) \{\s*provBtns\.push\('<button[^']+id="cabEmailTgl"/);
+  assert.doesNotMatch(
+    cabinetJs,
+    /if \(f\.email_login\) \{\s*provBtns\.push\('<button[^']+id="cabTg"/,
+    'Telegram must never depend on the SMTP feature flag',
+  );
+  assert.match(cabinetJs, /if \(f\.vk_login\) \{/);
+  assert.doesNotMatch(cabinetJs, /Пилот|пилот|Pilot|pilot/);
+  assert.match(dashboardHtml, /telegram-primary/);
 });
 
 test('critical production actions survive background refreshes and expired sessions', () => {

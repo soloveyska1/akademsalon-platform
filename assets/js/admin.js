@@ -1641,7 +1641,7 @@ function initGodEye() {
         ? '<div class="admin-queue-empty" aria-busy="true"><i class="admin-status admin-status--work"></i>' +
           '<span><strong>Собираем очередь</strong><small>Читаем активные дела</small></span></div>'
         : '<div class="admin-queue-empty"><i class="admin-status admin-status--done"></i>' +
-          '<span><strong>Очередь спокойна</strong><small>Срочных действий нет</small></span></div>';
+          '<span><strong>Срочных действий нет</strong><small>Очередь разобрана</small></span></div>';
     var weekHtml = weeks.length
       ? weeks.map(function (x, index) {
           var value = x.revenue || 0;
@@ -2768,7 +2768,7 @@ function initGodEye() {
   }
 
   /* ── конструктор v3: каталог работ/услуг и состав — строки в один клик.
-     Заявка спокойно несёт НЕСКОЛЬКО работ и услуг разом: каждая — строка
+     Заявка может нести НЕСКОЛЬКО работ и услуг разом: каждая — строка
      сметы; «включено» и «можно довложить» — строки листа состава. ── */
   var OFF_CATS = [
     ['all', 'Все'], ['work', 'Академическая помощь'], ['edit', 'Редактура'],
@@ -3966,7 +3966,7 @@ function initGodEye() {
       '<label class="petit" for="qaQ-' + q.id + '">Вопрос (публикуемая формулировка — чистите деанон и резкие формулировки)' + (draft.q != null ? ' · <span style="color:var(--wax)">черновик не сохранён</span>' : '') + '</label>' +
       '<textarea id="qaQ-' + q.id + '" class="ag-inp" rows="3" maxlength="600">' + esc(draft.q != null ? draft.q : q.question) + '</textarea>' +
       '<label class="petit" for="qaA-' + q.id + '">Ответ мастера' + (draft.a != null ? ' · <span style="color:var(--wax)">черновик не сохранён</span>' : '') + '</label>' +
-      '<textarea id="qaA-' + q.id + '" class="ag-inp" rows="' + (pendingQ ? 6 : 4) + '" maxlength="3000" placeholder="Спокойно, по делу, с тихим мостиком к услуге, где уместно">' + esc(draft.a != null ? draft.a : (q.answer || '')) + '</textarea>' +
+      '<textarea id="qaA-' + q.id + '" class="ag-inp" rows="' + (pendingQ ? 6 : 4) + '" maxlength="3000" placeholder="По делу, ясно, с уместным переходом к услуге">' + esc(draft.a != null ? draft.a : (q.answer || '')) + '</textarea>' +
       qaTagSelect(q.id, q.tag) + '</div>' +
       '<div class="ag-actrow" style="margin-top:10px;flex-wrap:wrap">' + btns.join('') + '</div>' +
       '<p style="margin-top:6px">' + techno + '</p></div>';
@@ -4949,7 +4949,7 @@ function initGodEye() {
     if (t.closest('#agOffCancel')) {
       confirmDlg({
         title: 'Отозвать ссылку?',
-        text: 'Клиент увидит спокойное «заявка отозвана» и предложение написать вам. ' +
+        text: 'Клиент увидит понятное «заявка отозвана» и предложение написать вам. ' +
               'Дело и цена останутся на месте.',
         okLabel: 'Отозвать', noLabel: 'Отмена', danger: true
       }).then(function (res) {
@@ -6179,7 +6179,7 @@ function initGodEye() {
           'Стартуем со стартового платежа.';
     else if (wz.tone === 'warm')
       s = 'Здравствуйте! Ниже — всё, о чём договорились, в одном месте: ' + head +
-          '.' + lvl + F.toLowerCase() + ' передадим ' + fin + '. Посмотрите спокойно ' +
+          '.' + lvl + F.toLowerCase() + ' передадим ' + fin + '. Проверьте ' +
           'календарь и смету. Вопросы можно задать до оплаты — заполнять ничего не надо.';
     else
       s = 'Собрал заявку по нашему разговору: ' + head + '.' + lvl +

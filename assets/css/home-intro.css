@@ -14,8 +14,8 @@ html.salon-intro-pending{
 }
 
 html.salon-intro-pending .salon-intro{
-  --intro-canvas:#F3EEE4;
-  --intro-canvas-deep:#E9E1D3;
+  --intro-canvas:#E9DDCC;
+  --intro-canvas-deep:#DDCDB6;
   --intro-ink:#1D1C18;
   --intro-muted:#68635A;
   --intro-quiet:#68635A;
@@ -23,9 +23,9 @@ html.salon-intro-pending .salon-intro{
   --intro-line-soft:rgba(102,91,72,.15);
   --intro-wax:#A63F29;
   --intro-glow:rgba(166,63,41,.16);
-  --intro-light:rgba(255,255,255,.46);
-  --intro-bloom:rgba(255,255,255,.58);
-  --intro-edge-wash:rgba(119,94,61,.022);
+  --intro-light:rgba(255,255,255,.34);
+  --intro-bloom:rgba(255,252,244,.48);
+  --intro-edge-wash:rgba(119,94,61,.045);
   --intro-ease:cubic-bezier(.22,1,.36,1);
   position:fixed;
   inset:0;
@@ -541,4 +541,153 @@ html[data-motion="off"].salon-intro-pending .salon-intro{
   .salon-intro{
     display:none!important;
   }
+}
+
+/* Release 82: короткая редакционная сцена, где обещание важнее декора. */
+html.salon-intro-pending .salon-intro{
+  --intro-canvas:#EEE3D4;
+  --intro-canvas-deep:#DFCEB8;
+  --intro-ink:#1B1A17;
+  --intro-muted:#6A6358;
+  --intro-line:#AA9982;
+  --intro-wax:#AD432D;
+}
+
+:root[data-theme="dark"].salon-intro-pending .salon-intro{
+  --intro-canvas:#15130F;
+  --intro-canvas-deep:#0E0D0B;
+  --intro-ink:#F3EBDD;
+  --intro-muted:#B0A697;
+  --intro-quiet:#9E9588;
+  --intro-line:#575047;
+  --intro-line-soft:rgba(242,235,221,.1);
+  --intro-wax:#D06449;
+  --intro-glow:rgba(208,100,73,.2);
+}
+
+.salon-intro__panel{
+  background-image:
+    radial-gradient(circle at 50% 45%,var(--intro-bloom),transparent 51%),
+    repeating-linear-gradient(0deg,transparent 0 3px,rgba(87,67,43,.018) 3px 4px),
+    linear-gradient(90deg,var(--intro-edge-wash),transparent 28%,transparent 72%,var(--intro-edge-wash));
+}
+
+:root[data-theme="dark"] .salon-intro__panel{
+  background-image:
+    radial-gradient(circle at 50% 44%,rgba(208,100,73,.055),transparent 42%),
+    repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.009) 3px 4px),
+    linear-gradient(90deg,rgba(0,0,0,.2),transparent 30%,transparent 70%,rgba(0,0,0,.2));
+}
+
+.salon-intro__frame{
+  inset:clamp(14px,1.6vw,24px);
+  border-color:color-mix(in srgb,var(--intro-line) 34%,transparent);
+}
+
+.salon-intro__composition{
+  width:min(100% - 56px,1040px);
+  padding-block:clamp(84px,10vh,116px);
+}
+
+.salon-intro__logo{
+  width:104px;
+  height:104px;
+  margin-bottom:clamp(23px,3vh,30px);
+}
+
+.salon-intro__logo>span{
+  width:78px;
+  height:78px;
+}
+
+.salon-intro__kicker{
+  margin-bottom:16px;
+  color:var(--intro-muted);
+}
+
+.salon-intro__title{
+  font-size:clamp(48px,5vw,72px);
+  font-weight:360;
+  letter-spacing:-.055em;
+}
+
+.salon-intro__rule{
+  width:min(112px,30vw);
+  margin-block:clamp(25px,3.2vh,31px) clamp(22px,2.8vh,28px);
+}
+
+.salon-intro__promise{max-width:900px}
+
+.salon-intro__promise-main{
+  font:380 clamp(30px,3.45vw,50px)/1.08 var(--serif);
+  letter-spacing:-.045em;
+}
+
+.salon-intro__promise-proof{
+  margin-top:10px;
+  color:var(--intro-wax);
+  font:italic 520 clamp(23px,2.35vw,34px)/1.12 var(--serif);
+  letter-spacing:-.035em;
+  text-transform:none;
+}
+
+.salon-intro__skip{
+  color:var(--intro-muted);
+  letter-spacing:.12em;
+}
+
+.salon-intro__skip i{
+  border-color:color-mix(in srgb,var(--intro-line) 72%,transparent);
+}
+
+.salon-intro:focus{outline:none}
+
+.salon-intro__skip span{font-size:9px}
+.salon-intro__skip span::after{content:none}
+
+html.salon-intro-leaving .salon-intro__panel--left,
+html.salon-intro-leaving .salon-intro__panel--right{
+  transition-duration:340ms;
+}
+
+@media(max-width:920px){
+  .salon-intro__composition{
+    width:min(100% - 28px,620px);
+    padding:90px 14px 82px;
+  }
+  .salon-intro__logo{
+    width:88px;
+    height:88px;
+    margin-bottom:20px;
+  }
+  .salon-intro__logo>span{
+    width:66px;
+    height:66px;
+  }
+  .salon-intro__title{
+    font-size:clamp(38px,11.7vw,54px);
+    line-height:.98;
+  }
+  .salon-intro__rule{margin-block:23px 20px}
+  .salon-intro__promise{max-width:14.5em}
+  .salon-intro__promise-main{
+    font-size:clamp(27px,8vw,36px);
+    line-height:1.1;
+  }
+  .salon-intro__promise-proof{
+    margin-top:8px;
+    font-size:clamp(22px,6.7vw,29px);
+  }
+  .salon-intro__folio--bottom{
+    right:20px;
+    left:20px;
+  }
+}
+
+@media(max-height:680px){
+  .salon-intro__logo{margin-bottom:12px}
+  .salon-intro__kicker{margin-bottom:7px}
+  .salon-intro__rule{margin-block:14px 13px}
+  .salon-intro__promise-main{font-size:clamp(24px,6.8vh,34px)}
+  .salon-intro__promise-proof{font-size:clamp(20px,5.5vh,27px)}
 }

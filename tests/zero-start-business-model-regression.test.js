@@ -9,26 +9,27 @@ const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 test('home keeps the from-zero route without turning the first screen into a price catalog', () => {
   const home = read('index.html');
 
-  assert.match(home, /Одно дело\.<br>От темы до защиты\./);
-  assert.match(home, /Проект с нуля/);
-  assert.match(home, /configurator\.html\?situation=topic&result=support/);
-  assert.match(home, /ориентир цены и самостоятельную альтернативу/i);
+  assert.match(home, /<h1 id="caseHeroTitle"><span>Не нужно разбираться<\/span><em>во всём сразу\.<\/em><\/h1>/);
+  assert.match(home, /Нужна помощь не только с планом\?[\s\S]*Посмотреть, как будем работать дальше/);
+  assert.match(home, /configurator\.html\?route=home-zero&amp;situation=topic&amp;result=diagnostic/);
+  assert.match(home, /До оплаты<\/dt><dd>результат, срок и цена/);
   assert.doesNotMatch(home, /class="project-ledger"/);
   assert.doesNotMatch(home, /любая работа (?:за|за один) день/i);
 });
 
 test('the brand promise now matches the research-case model', () => {
-  assert.match(read('index.html'), /Одно дело исследования[\s\S]*от темы до защиты/);
+  assert.match(read('index.html'), /Работаем, пока ты отдыхаешь[\s\S]*— с гарантией\./);
 });
 
-test('calculator and configurator expose the project from zero as the full-price format', () => {
+test('calculator and configurator expose supported work without weakening authorship', () => {
   const app = read('assets/js/app.js');
   const configurator = read('configurator.html');
 
-  assert.match(app, /\{ id: 'vip',\s+label: 'Проект с нуля',\s+priceKey: 'support'/);
+  assert.match(app, /\{ id: 'vip',\s+label: 'Сопровождение по этапам',\s+priceKey: 'support'/);
+  assert.match(app, /содержательным участием автора/);
   assert.match(configurator, /Только тема — начинаем с нуля/);
-  assert.match(configurator, /Собрать проект с нуля/);
-  assert.match(configurator, /Первый полный рабочий черновик/);
+  assert.match(configurator, /support:'Сопровождение исследования по этапам'/);
+  assert.match(configurator, /Это совместная работа/);
   assert.match(configurator, /data-concept-authorship/);
   assert.match(configurator, /Участие клиента подтверждено/);
 });

@@ -1116,3 +1116,56 @@ body.reading-page::before{
     text-decoration:none!important;
   }
 }
+
+/* ==========================================================================
+   Врезка по ходу статьи.
+   До этого единственный переход к заявке стоял одним блоком в конце гайда —
+   на 97% глубины, куда доскроллено около 2% читателей. Врезка не перебивает
+   чтение: это маргиналия, а не баннер.
+   ========================================================================== */
+.read-cta{
+  margin:34px 0;
+  padding:14px 0 14px 18px;
+  border-left:2px solid var(--wax);
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:4px 10px;
+}
+.read-cta p{
+  margin:0;
+  font-size:15px;
+  line-height:1.5;
+  color:var(--ink);
+}
+.read-cta a{
+  font-size:15px;
+  font-weight:600;
+  color:var(--wax);
+  text-decoration:none;
+  border-bottom:1px solid color-mix(in srgb,var(--wax) 42%,transparent);
+  white-space:nowrap;
+  transition:border-color .18s ease,color .18s ease;
+}
+.read-cta a:hover{
+  color:var(--wax-deep,var(--wax));
+  border-bottom-color:currentColor;
+}
+.read-cta a:focus-visible{
+  outline:2px solid var(--wax);
+  outline-offset:3px;
+  border-radius:2px;
+}
+@media (max-width:640px){
+  .read-cta{
+    margin:28px 0;
+    padding:12px 0 12px 14px;
+    gap:6px;
+  }
+  .read-cta p,
+  .read-cta a{ font-size:14.5px; }
+  .read-cta a{ white-space:normal; }
+}
+@media (prefers-reduced-motion:reduce){
+  .read-cta a{ transition:none; }
+}

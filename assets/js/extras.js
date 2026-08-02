@@ -211,16 +211,44 @@
       bar = null;
       document.documentElement.classList.remove('has-consent-bar');
       old.classList.remove('in');
-      setTimeout(function () { if (old.parentNode) old.remove(); }, reduceMotion ? 0 : 360);
+      setTimeout(function () {
+        if (old.parentNode) old.remove();
+      }, reduceMotion ? 0 : 360);
+    }
+
+    function showChoiceSaved(analytics) {
+      if (!bar) return false;
+      var kicker = bar.querySelector('.cb-kicker');
+      var title = bar.querySelector('#cb-title');
+      var copy = bar.querySelector(':scope>p');
+      var actions = bar.querySelector('.cb-actions');
+      var foot = bar.querySelector('.cb-foot');
+      bar.classList.add('is-confirmed');
+      bar.setAttribute('aria-live', 'polite');
+      if (kicker) kicker.textContent = 'Настройки данных';
+      if (title) title.textContent = 'Настройки приватности сохранены';
+      if (copy) {
+        copy.textContent = analytics
+          ? 'Обезличенная аналитика включена. Решение можно изменить в настройках данных.'
+          : 'Используем только данные, необходимые для работы сайта.';
+      }
+      if (actions) {
+        actions.innerHTML =
+          '<span class="cb-confirmation" role="status"><span aria-hidden="true">✓</span> Готово</span>';
+      }
+      if (foot) foot.hidden = true;
+      return true;
     }
 
     function choose(analytics, source) {
       S.consent.save(analytics === true, source || 'banner');
-      closeBar();
+      var confirmedInBar = showChoiceSaved(analytics);
       closePrefs();
-      if (S.toast) {
-        S.toast(analytics ? 'Аналитика разрешена — выбор можно изменить внизу страницы'
-                          : 'Сохранены только необходимые данные');
+      if (confirmedInBar) {
+        setTimeout(closeBar, reduceMotion ? 500 : 1400);
+      } else if (S.toast) {
+        S.toast(analytics ? 'Аналитика включена. Изменить выбор можно в настройках данных.'
+                          : 'Сохраняем только необходимые данные.');
       }
     }
 
@@ -233,18 +261,18 @@
       bar.innerHTML =
         '<div class="cb-head">' +
           '<span class="cb-mark" aria-hidden="true">¶</span>' +
-          '<span class="cb-kicker">Приватность · выбор за вами</span>' +
-          '<h2 id="cb-title">Настройки данных</h2>' +
+          '<span class="cb-kicker">Данные и приватность</span>' +
+          '<h2 id="cb-title">Вы решаете, что сохранять</h2>' +
         '</div>' +
-        '<p>Разрешить обезличенную аналитику? Отказ не мешает сайту и заказу; черновик остаётся на вашем устройстве.</p>' +
+        '<p>Для работы сайта нужны технические данные. Обезличенную аналитику включим только с вашего разрешения.</p>' +
         '<div class="cb-actions">' +
-          '<button type="button" class="btn btn-line" data-cb-allow>Разрешить</button>' +
+          '<button type="button" class="btn btn-wax" data-cb-allow>Разрешить аналитику</button>' +
           '<button type="button" class="btn btn-line" data-cb-reject>Только необходимое</button>' +
         '</div>' +
         '<div class="cb-foot">' +
-          '<button type="button" class="cb-more" data-cb-settings>Настроить</button>' +
+          '<button type="button" class="cb-more" data-cb-settings>Настроить подробно</button>' +
           '<a class="cb-more" href="privacy.html#cookies">Политика и сроки</a>' +
-          '<span>Без рекламных трекеров</span>' +
+          '<span>Рекламных трекеров нет</span>' +
         '</div>';
       document.body.appendChild(bar);
       /* Правило 8 системы: одновременно виден только один нижний системный
@@ -268,26 +296,25 @@
       return '<div class="cp-back" data-cp-close></div>' +
         '<section class="cp-card" aria-labelledby="cp-title">' +
           '<button type="button" class="cp-x" data-cp-close aria-label="Закрыть настройки">×</button>' +
-          '<p class="cp-kicker">Академический Салон · данные</p>' +
-          '<h2 id="cp-title">Ваш выбор</h2>' +
-          '<p class="cp-lead">Необязательные данные выключены, пока вы сами их не разрешите. ' +
-            'Выбор можно изменить в любой момент.</p>' +
+          '<p class="cp-kicker">Настройки данных</p>' +
+          '<h2 id="cp-title">Что можно разрешить</h2>' +
+          '<p class="cp-lead">Необходимые функции работают всегда. Аналитику включаем только по вашему выбору — его можно изменить позже.</p>' +
           '<div class="cp-list">' +
             '<div class="cp-item is-required">' +
-              '<span class="cp-no">01</span><span class="cp-copy"><b>Необходимые</b>' +
+              '<span class="cp-no">01</span><span class="cp-copy"><b>Для работы сайта</b>' +
                 '<small>Корзина и черновик, тема сайта, защита форм, безопасный вход и запись этого выбора.</small></span>' +
               '<span class="cp-lock" aria-label="Всегда включены">Всегда</span>' +
             '</div>' +
             '<label class="cp-item" for="cp-analytics">' +
-              '<span class="cp-no">02</span><span class="cp-copy"><b>Аналитика</b>' +
+              '<span class="cp-no">02</span><span class="cp-copy"><b>Обезличенная аналитика</b>' +
                 '<small>Собственная статистика и Яндекс.Метрика: страницы без секретных параметров, источник, устройство, клики и технические ошибки. Вебвизор и ecommerce отключены.</small></span>' +
               '<span class="cp-switch"><input id="cp-analytics" type="checkbox"' + (checked ? ' checked' : '') + '>' +
                 '<span aria-hidden="true"></span></span>' +
             '</label>' +
           '</div>' +
-          '<p class="cp-none"><span aria-hidden="true">✓</span> Рекламные cookies и рекламные трекеры не используются.</p>' +
+          '<p class="cp-none"><span aria-hidden="true">✓</span> Рекламные cookies и трекеры не используем.</p>' +
           '<details class="cp-legal">' +
-            '<summary>Что означает согласие</summary>' +
+            '<summary>Какие данные входят в аналитику</summary>' +
             '<p>Разрешая аналитику, вы даёте Семёнову Семёну Юрьевичу, ИНН 212885750445, ' +
               'отдельное согласие на автоматизированную обработку данных о посещении akademsalon.ru ' +
               'для анализа посещаемости, поиска ошибок и улучшения сайта: случайного ID браузера, ' +
@@ -298,7 +325,7 @@
               '<a href="privacy.html#cookies">Полный состав и сроки</a>.</p>' +
           '</details>' +
           '<div class="cp-actions">' +
-            '<button type="button" class="btn btn-ink" data-cp-save>Сохранить выбор</button>' +
+            '<button type="button" class="btn btn-ink" data-cp-save>Сохранить настройки</button>' +
             '<button type="button" class="btn btn-line" data-cp-all>Разрешить аналитику</button>' +
           '</div>' +
         '</section>';
@@ -660,20 +687,6 @@
     /* 2026-07-22, главная «Пресс»: автозапуск выключен — первый визит
        встречает тишина сцены. Тур остаётся по кнопке в путеводителе/подвале. */
     return;
-    if (here !== 'index.html' || QUIET_PAGES[here]) return;
-    if (S.store.get('salon_tour_done', null)) return;
-    if (S.api && S.api.identified && S.api.identified()) return; /* уже свой человек */
-    function later() {
-      setTimeout(function () {
-        if (!document.hidden && !tour.active() &&
-            !document.documentElement.classList.contains('has-prelude')) tour.start();
-      }, 1800);
-    }
-    if (document.documentElement.classList.contains('has-prelude')) {
-      document.addEventListener('salon:prelude-closed', later, { once: true });
-    } else {
-      later();
-    }
   })();
 
   /* пункт «Как всё устроено?» в меню и подвале — тур можно пересмотреть */
@@ -1211,25 +1224,30 @@
      ушёл, вернулся на витрину — напоминаем одной карточкой. Возврат брошенной
      заявки без email и промокодов: просто дверь туда, где остановился.
 
-     Плавающая полоса .resume-bar заменена ЛИСТОМ В ПОТОКЕ: разметка живёт
-     в странице (index.html, сразу под первым экраном), JS только подставляет
-     шаг, тип и адрес и снимает hidden. Отсюда три следствия:
-       — нижняя кромка (--floor) больше не делится с закладкой возврата;
-       — «крестик» и sessionStorage salon_resume_hidden не нужны: лист ничего
-         не перекрывает, закрывать нечего — гость просто прокручивает мимо;
-       — телефон обслуживается тем же листом, поэтому золотая точка на
-         центральном пункте дока (.mn-calc.has-draft) снята.
-     Гость без черновика не видит ничего: секция остаётся hidden. */
+     Карточка использует нижний системный слот только при следующем визите,
+     когда решение о данных уже сохранено. Она не появляется как следствие
+     клика в плашке приватности и не подменяет подтверждение выбора. */
   (function resumeCard() {
     var card = document.querySelector('[data-resume-card]');
     var d = S.store.get('salon_draft', null);
-    if (!d || !d.savedAt || !d.state || !window.SalonCalc) return;
+    var concept = d && d.concept && typeof d.concept === 'object' ? d.concept : null;
+    if (!d || !d.savedAt || (!d.state && !concept) || !window.SalonCalc) return;
     if (Date.now() - d.savedAt > 14 * 24 * 3600 * 1000) return; /* двухнедельная память */
     var C = window.SalonCalc;
-    var t = C.types.filter(function (x) { return x.id === d.state.type; })[0];
-    if (!t) return;
-    var resumeStep = Math.max(1, Math.min(4, (d.idx || 0) + 1));
-    var typeLabel = t.label.split(' (')[0];
+    var savedType = concept && concept.workType ? concept.workType : (d.state && d.state.type);
+    var t = C.types.filter(function (x) { return x.id === savedType; })[0];
+    var situationLabels = {
+      topic:'Тема или задание',
+      draft:'Черновик уже есть',
+      comments:'Замечания руководителя',
+      defense:'Подготовка к защите'
+    };
+    if (!t && !(concept && situationLabels[concept.situation])) return;
+    var rawStep = concept ? Number(concept.step) || 0 : Number(d.idx) || 0;
+    var resumeStep = concept
+      ? Math.max(1, Math.min(3, rawStep + 1))
+      : Math.max(1, Math.min(4, rawStep + 1));
+    var typeLabel = t ? t.label.split(' (')[0] : situationLabels[concept.situation];
 
     /* Док: центральный пункт зовёт продолжить, а не начинать заново —
        так же, как в эталоне (updateStartLabels: «Описать» → «Продолжить»).
@@ -1250,12 +1268,17 @@
     var dockCalc = document.querySelector('.mnav .mn-calc');
     if (dockCalc && here !== 'configurator.html' && !hasContextRoute(dockCalc)) {
       dockCalc.href = 'configurator.html?step=' + resumeStep;
+      dockCalc.setAttribute('data-resume-draft','true');
       dockCalc.setAttribute('aria-label', 'Продолжить смету: ' + typeLabel + ', шаг ' + resumeStep);
       var dockLabel = dockCalc.querySelector('.mn-l');
       if (dockLabel) dockLabel.textContent = 'Продолжить';
     }
 
     if (!card) return;
+    /* Если решение о данных принимается на этом экране, не показываем
+       сохранённый черновик вслед за кликом. Он появится при следующем
+       возвращении, когда согласие уже будет прочитано из хранилища. */
+    if (!S.consent.read()) return;
     var stepSlot = card.querySelector('[data-resume-step]');
     var typeSlot = card.querySelector('[data-resume-type]');
     var link = card.querySelector('[data-resume-link]');
@@ -1266,6 +1289,53 @@
       link.setAttribute('aria-label', 'Продолжить смету: ' + typeLabel + ', шаг ' + resumeStep);
     }
     card.hidden = false;
+
+    function typeSavedMessage() {
+      var slot = card.querySelector('[data-resume-typed]');
+      if (!slot || slot.dataset.resumeTypedDone === 'true') return;
+      slot.dataset.resumeTypedDone = 'true';
+      var finalText = 'Ваш прогресс бережно сохранён';
+      /* В первом экране каталога статус должен читаться сразу: печатающийся
+         текст там выглядит как обрезанный, пока анимация не закончилась. */
+      if (reduceMotion || card.hasAttribute('data-resume-inline')) {
+        slot.textContent = finalText;
+        return;
+      }
+
+      slot.textContent = finalText;
+    }
+
+    function mountInSystemRail() {
+      var inlineContext = card.hasAttribute('data-resume-inline') ||
+        (card.closest && card.closest('.home-case'));
+      if (inlineContext) {
+        card.classList.add('is-rail-resume','is-home-inline-resume');
+        card.removeAttribute('aria-hidden');
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            card.classList.add('is-visible');
+            typeSavedMessage();
+          });
+        });
+        return;
+      }
+      if (S.railAdopt) S.railAdopt();
+      var rail = document.getElementById('lrail');
+      if (!rail) return;
+      if (card.parentNode !== rail) rail.appendChild(card);
+      card.classList.add('is-rail-resume');
+      card.removeAttribute('aria-hidden');
+      document.documentElement.classList.add('has-resume-rail');
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          card.classList.add('is-visible');
+          typeSavedMessage();
+          if (S.floor) S.floor();
+        });
+      });
+    }
+
+    mountInSystemRail();
     if (S.visit) S.visit.mark('показана закладка возврата сметы');
   })();
 

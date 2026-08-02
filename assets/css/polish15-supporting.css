@@ -3034,3 +3034,22 @@ body.polish15-supporting .visually-hidden{
     animation-iteration-count:1!important;
   }
 }
+
+/* Врезка у заголовка отзывов без счётчика.
+   Раньше здесь стояла крупная цифра общего числа сообщений — она читалась
+   как заявление о масштабе и работала против доверия. Акцент смещён на то,
+   что проверяемо: сообщения публикуются как есть. */
+body.polish15-supporting .review-rating--quiet{
+  gap:7px;
+}
+body.polish15-supporting .review-rating--quiet span{
+  color:var(--ink);
+  font:470 clamp(19px,2.2vw,24px)/1.22 var(--serif);
+  font-size:clamp(19px,2.2vw,24px);
+}
+body.polish15-supporting .review-rating--quiet small{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+  max-width:26ch;
+}

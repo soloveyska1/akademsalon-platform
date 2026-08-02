@@ -42,10 +42,10 @@ test('Commission Zero is a real configurator service with exact work-based price
 
   assert.match(app, /id:'commission0'[\s\S]*code:'k0'[\s\S]*fixed:true/);
   assert.match(app, /a\.work === 'master' \? 29900 : a\.work === 'diplom' \? 19900 : 9900/);
-  assert.match(app, /независимый от подготовки проверяемой версии Оппонент/i);
+  assert.match(app, /Репетиция защиты с независимым редактором:[\s\S]*Оппонент/i);
   assert.match(app, /Протокол №0/);
   assert.match(configurator, /service\.id === 'commission0'/);
-  assert.match(configurator, /Живая сессия и Протокол №0/);
+  assert.match(configurator, /Живая сессия и протокол репетиции/);
   assert.match(configurator, /service\.id === 'defense' \|\| service\.id === 'defensepack' \|\| service\.id === 'commission0' \? 'defense'/);
   assert.doesNotMatch(app, /value:'topic', label:'Пока только тема'/);
   assert.match(read('assets/js/commission-zero.js'), /state\.source === 'topic'[\s\S]*service=pl/);
@@ -57,11 +57,10 @@ test('flagship is discoverable as the final gate of the research case', () => {
   const tariffs = read('tariffs.html');
   const app = read('assets/js/app.js');
 
-  assert.match(home, /Одно дело\.[\s\S]*От темы до защиты\./);
-  assert.match(home, /Финальный рубеж дела · Комиссия №0/);
-  assert.match(home, /Настоящая комиссия[\s\S]*не должна быть первой/);
-  assert.match(home, /commission0-feature/);
-  assert.match(home, /configurator\.html\?service=k0/);
+  assert.match(home, /<h1 id="caseHeroTitle"><span>Не нужно разбираться<\/span><em>во всём сразу\.<\/em><\/h1>/);
+  assert.match(home, /Готова вся версия\?[\s\S]*Посмотреть репетицию «Комиссия №0»/);
+  assert.match(home, /href="\/komissiya-0\.html"/);
+  assert.doesNotMatch(home, /commission0-feature--inline/);
   assert.match(services, /catalog-commission[\s\S]*Комиссия №0/);
   assert.match(tariffs, /Комиссия №0 · курсовая/);
   assert.match(tariffs, /Комиссия №0 · ВКР/);
@@ -80,7 +79,7 @@ test('public documents define Commission Zero as A1 and preserve the non-officia
   assert.match(offer, /не участвовавший в создании или редактуре проверяемой версии/);
   assert.match(offer, /аудио- или видеозапись сессии по умолчанию не ведётся/i);
   assert.match(terms, /Редакция 2\.2/);
-  assert.match(terms, /частная редакторская предзащита/);
+  assert.match(terms, /учебная репетиция защиты с независимым редактором/);
   assert.match(integrity, /Комиссия №0 в режиме А1/);
   assert.match(integrity, /Модельные данные не выдаются за результаты фактического исследования/i);
   assert.match(ops, /не является доказательством допустимости фактического[\s\S]*А2/);

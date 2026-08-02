@@ -1,0 +1,7 @@
+{
+  "name": "akademsalon-static-preview",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-sites-static.mjs"
+  }
+}

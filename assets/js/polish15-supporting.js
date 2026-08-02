@@ -282,6 +282,14 @@
         open(buttonIndex, button);
       });
     });
+    if (window.location.hash === '#review-happy') {
+      var happyIndex = buttons.findIndex(function (button) {
+        return button.getAttribute('data-review-proof') === '14';
+      });
+      if (happyIndex >= 0) {
+        window.setTimeout(function () { open(happyIndex, buttons[happyIndex]); }, 80);
+      }
+    }
     closeButton.addEventListener('click', close);
     lightbox.querySelector('[data-review-prev]').addEventListener('click', function () {
       render(index - 1);

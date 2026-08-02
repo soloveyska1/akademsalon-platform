@@ -2,12 +2,20 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Дело исследования: от темы до защиты | Академический Салон</title>
-<meta name="description" content="Покажите, что уже есть: тема, черновик, замечания или срок защиты. Получите один обоснованный следующий шаг, ориентир цены и самостоятельную альтернативу — без регистрации." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
-<link rel="stylesheet" href="assets/css/home-release.min.css?v=20260726release33" data-mobile-edition="1" />
-<meta name="theme-color" content="#F6F1E7" />
+<meta id="viewportMeta" name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<script>
+(() => {
+  if (new URLSearchParams(window.location.search).get('desktop-preview') === '1') {
+    document.getElementById('viewportMeta').setAttribute('content', 'width=1440');
+    document.documentElement.dataset.desktopPreview = 'true';
+  }
+})();
+</script>
+<title>Курсовые, ВКР и исследования: с нуля и на доработку | Академический Салон</title>
+<meta name="description" content="Курсовые, ВКР, магистерские, статьи и отчёты — с нуля, на доработку и срочно. До оплаты фиксируем результат, срок и цену." />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260802release97" />
+<link rel="stylesheet" href="assets/css/home-release.min.css?v=20260802release97" data-mobile-edition="1" />
+<meta name="theme-color" content="#EFE5D6" />
 <script>
 (function () {
   var root = document.documentElement;
@@ -16,6 +24,7 @@
   var reduced = false;
   var replay = false;
   var skip = false;
+  var previewAlways = false; /* показываем новому посетителю один раз; повтор — ?intro=replay */
   var storageReady = true;
   root.classList.add('has-js');
 
@@ -25,7 +34,7 @@
   }
   if (theme === 'dark') {
     root.setAttribute('data-theme', 'dark');
-    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#171714');
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#15110e');
   }
 
   try {
@@ -52,22 +61,22 @@
   var entryAllowed = replay || (directNavigation && !internalReferrer && !location.hash);
 
   try {
-    var seenThisSession = sessionStorage.getItem('salon_home_intro_v4') === '1';
-    var seenThisVersion = localStorage.getItem('salon_home_intro_v4') === '1';
-    if (!replay && (seenThisSession || seenThisVersion)) skip = true;
+    var seenThisSession = sessionStorage.getItem('salon_home_intro_v6') === '1';
+    var seenThisVersion = localStorage.getItem('salon_home_intro_v6') === '1';
+    if (!previewAlways && !replay && (seenThisSession || seenThisVersion)) skip = true;
   } catch (error) {
     storageReady = false;
   }
 
-  /* Фирменный титул больше не задерживает первый полезный экран.
-     Он доступен только как явный replay для бренд-демонстрации. */
-  var shouldPlay = replay && !skip && storageReady && motionAllowed && entryAllowed &&
+  /* Фирменный титул встречает нового посетителя один раз. Повторный показ
+     доступен через ?intro=replay; режим без анимаций и экономия трафика важнее. */
+  var shouldPlay = !skip && storageReady && motionAllowed && (previewAlways || entryAllowed) &&
     document.visibilityState !== 'hidden';
 
   if (shouldPlay) {
     try {
-      sessionStorage.setItem('salon_home_intro_v4', '1');
-      localStorage.setItem('salon_home_intro_v4', '1');
+      sessionStorage.setItem('salon_home_intro_v6', '1');
+      localStorage.setItem('salon_home_intro_v6', '1');
     } catch (error) {
       shouldPlay = false;
     }
@@ -78,7 +87,7 @@
     window.__salonIntroFailsafe = window.setTimeout(function () {
       if (typeof window.__salonIntroFinish === 'function') window.__salonIntroFinish(true);
       else root.classList.remove('salon-intro-pending', 'salon-intro-running', 'salon-intro-leaving');
-    }, 2000);
+    }, 3200);
   }
 }());
 </script>
@@ -91,21 +100,23 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Дело исследования — Академический Салон" />
-<meta property="og:description" content="Один обоснованный следующий шаг от вашей ситуации — с ориентиром цены и самостоятельной альтернативой до контакта." />
+<meta property="og:title" content="Курсовые, ВКР и исследования — Академический Салон" />
+<meta property="og:description" content="С нуля, на доработку и срочно. До оплаты фиксируем результат, срок и цену; согласованный этап доводим до конца." />
 <meta property="og:url" content="https://akademsalon.ru/" />
-<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v3.png" />
+<meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v4.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Академический Салон — редакторская мастерская от темы до защиты" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Дело исследования — от темы до защиты" />
-<meta name="twitter:description" content="Покажите, что уже есть. Получите следующий шаг, его основание и самостоятельный вариант до контакта." />
-<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v3.png" />
+<meta name="twitter:title" content="Курсовые, ВКР и исследования — Академический Салон" />
+<meta name="twitter:description" content="С нуля, на доработку и срочно. До оплаты фиксируем результат, срок и цену; согласованный этап доводим до конца." />
+<meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v4.png" />
+<meta name="twitter:image:alt" content="Академический Салон — редакторская мастерская от темы до защиты" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
 </head>
-<body>
+<body class="home-flow-page">
 
-<div class="salon-intro" data-salon-intro>
+<div class="salon-intro" data-salon-intro role="dialog" aria-modal="true" tabindex="-1" aria-label="Вступление «Академического Салона»">
   <div class="salon-intro__sheet" aria-hidden="true">
     <div class="salon-intro__panel salon-intro__panel--left"></div>
     <div class="salon-intro__panel salon-intro__panel--right"></div>
@@ -118,13 +129,13 @@
       <p class="salon-intro__kicker">Редакторская мастерская · с 2020 года</p>
       <p class="salon-intro__title"><span>Академический</span> <span>Салон</span></p>
       <span class="salon-intro__rule"><i></i></span>
-      <p class="salon-intro__promise"><span class="salon-intro__promise-main">Одно дело исследования</span><span class="salon-intro__promise-proof"> — от темы до защиты.</span></p>
+      <p class="salon-intro__promise"><span class="salon-intro__promise-main">Работаем, пока ты отдыхаешь</span><span class="salon-intro__promise-proof">— с гарантией.</span></p>
     </div>
     <div class="salon-intro__folio salon-intro__folio--bottom">
-      <span>Аудит</span><i></i><span>Редактура</span><i></i><span>Консультации</span>
+      <span>Состав заранее</span><i></i><span>Срок заранее</span><i></i><span>Цена заранее</span>
     </div>
   </div>
-  <button class="salon-intro__skip" type="button" data-intro-skip>
+  <button class="salon-intro__skip" type="button" data-intro-skip aria-label="Пропустить вступление">
     <span>Пропустить</span><i aria-hidden="true">↗</i>
   </button>
 </div>
@@ -133,236 +144,663 @@
 
 <!-- Шапка единая для всех страниц — монтирует app.js -->
 
-<main id="main" tabindex="-1" class="home polish15-home home-case">
+<main id="main" tabindex="-1" class="home polish15-home home-case home-guided">
   <div class="home-view">
-    <section class="case-hero" aria-labelledby="caseHeroTitle">
-      <div class="case-hero__inner">
-        <div class="case-hero__copy">
-          <p class="eyebrow">Курсовые · ВКР · статьи · от темы до защиты</p>
-          <h1 id="caseHeroTitle">Одно дело.<br>От темы до защиты.</h1>
-          <p class="case-hero__lead">Приходите с темой, черновиком или замечаниями. Сайт покажет один следующий шаг, объяснит его и оставит самостоятельный путь. Контакт не требуется.</p>
+    <section class="guided-desk" data-guided-desk aria-labelledby="guidedDeskTitle">
+      <header class="guided-desk__topline">
+        <div><span>Академический Салон · с 2020 года</span><strong>Академическая мастерская</strong></div>
+        <p><span aria-hidden="true">●</span> выберите задачу</p>
+      </header>
 
-          <form class="case-prompt" data-case-form>
-            <label for="casePrompt"><span>Одной фразой: что происходит?</span><small>Не нужно знать название услуги</small></label>
-            <div class="case-prompt__field">
-              <textarea id="casePrompt" rows="2" maxlength="280" placeholder="Например: ВКР, есть замечания руководителя, защита через две недели" data-case-input></textarea>
-              <button class="button button--primary" type="submit">Показать шаг <span aria-hidden="true">→</span></button>
+      <div class="guided-desk__layout">
+        <header class="guided-desk__intro">
+          <p class="guided-desk__kicker">Курсовые · ВКР · магистерские · статьи · отчёты</p>
+          <h1 id="guidedDeskTitle">Курсовая, диплом или статья — <em>подключимся на любом этапе.</em></h1>
+          <p class="guided-desk__lead">Покажите, что уже есть: задание, черновик или замечания. До оплаты письменно зафиксируем результат, срок и цену.</p>
+        </header>
+
+        <section class="guided-desk__studio" id="deskStart" aria-labelledby="guidedDeskQuestion">
+          <div class="guided-desk__studio-head">
+            <span>Выберите ближайший вариант</span>
+            <strong aria-hidden="true">Одно решение за раз</strong>
+          </div>
+          <fieldset class="guided-desk__picker">
+            <legend id="guidedDeskQuestion">Что сейчас важнее?</legend>
+            <label>
+              <input type="radio" name="desk-situation" value="text" data-desk-situation aria-label="Начать: есть задание или тема">
+              <span><i>01</i><strong>Начать</strong><small>есть задание или тема</small></span>
+            </label>
+            <label>
+              <input type="radio" name="desk-situation" value="comments" data-desk-situation aria-label="Доработать: есть черновик или замечания">
+              <span><i>02</i><strong>Доработать</strong><small>есть текст или замечания</small></span>
+            </label>
+            <label>
+              <input type="radio" name="desk-situation" value="defense" data-desk-situation aria-label="Успеть к сроку: главное — точная дата">
+              <span><i>03</i><strong>Успеть к сроку</strong><small>главное — точная дата</small></span>
+            </label>
+          </fieldset>
+          <noscript>
+            <nav class="guided-desk__noscript" aria-label="Выберите свою ситуацию">
+              <a href="/configurator.html?route=home-zero&amp;situation=topic&amp;result=diagnostic">Начать с нуля</a>
+              <a href="/configurator.html?route=home-edit&amp;situation=comments&amp;result=diagnostic">Разобрать файл или замечания</a>
+              <a href="/configurator.html?route=home-urgent">Обсудить срочный срок</a>
+            </nav>
+          </noscript>
+          <p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-desk-announcement></p>
+
+          <div class="guided-desk__prompt" data-desk-prompt>
+            <p>Выберите ближайший вариант — покажем, что прислать и какой будет первый результат.</p>
+            <small>Продолжать необязательно. Состав, срок и цену увидите до оплаты.</small>
+          </div>
+
+          <section class="guided-desk__dossier" data-desk-dossier aria-labelledby="guidedDeskResultTitle" hidden>
+            <span class="guided-desk__folio" aria-hidden="true" data-desk-number>01</span>
+            <div class="guided-desk__dossier-head">
+              <p data-desk-kicker>Есть задание или тема</p>
+              <h2 id="guidedDeskResultTitle" data-desk-title>Начнём с задания</h2>
+              <span data-desk-copy>Посмотрим требования, уточним тему и предложим первый конкретный результат.</span>
             </div>
-            <div class="case-prompt__presets" aria-label="Быстрый выбор ситуации">
-              <button type="button" data-case-preset="ВКР, пока есть только тема">Только тема</button>
-              <button type="button" data-case-preset="Курсовая, уже есть мой черновик">Есть черновик</button>
-              <button type="button" data-case-preset="ВКР, получены замечания руководителя">Есть замечания</button>
-              <button type="button" data-case-preset="Диплом готов, скоро защита">Скоро защита</button>
+            <dl class="guided-desk__meta">
+              <div><dt>Пришлите</dt><dd data-desk-need>задание или описание задачи</dd></div>
+              <div><dt>Получите</dt><dd data-desk-result>понятный план первого этапа</dd></div>
+              <div><dt data-desk-price-label>Цена</dt><dd data-desk-price>до оплаты, после просмотра задания</dd></div>
+            </dl>
+            <div class="guided-desk__actions guided-desk__actions--dossier">
+              <a class="guided-desk__button guided-desk__button--primary" href="/configurator.html?route=home-zero&amp;situation=topic&amp;result=diagnostic" data-desk-primary><span data-desk-primary-label>Начать с задания</span><span aria-hidden="true">→</span></a>
+              <a class="guided-desk__button guided-desk__button--secondary" href="/services.html" data-desk-free aria-label="Посмотреть все услуги и цены">Другой случай</a>
+              <p class="guided-desk__action-note" data-desk-action-note>Сначала увидите состав, срок и цену. Продолжать необязательно.</p>
             </div>
-            <p class="case-prompt__privacy"><span aria-hidden="true">◌</span> Фраза разбирается только в вашем браузере: мы её не отправляем и не сохраняем.</p>
-          </form>
+            <details class="guided-desk__artifact" data-desk-artifact>
+              <summary><span data-desk-artifact-summary>Что входит в первый этап?</span><i aria-hidden="true">＋</i></summary>
+              <div>
+                <p><span data-desk-artifact-label>Пример этапа</span><strong data-desk-artifact-title>От задания к понятному результату</strong></p>
+                <ol>
+                  <li><span>01</span><b data-desk-artifact-one>Уточняем задачу</b><i data-desk-artifact-one-note>тема, требования и срок</i></li>
+                  <li><span>02</span><b data-desk-artifact-two>Собираем структуру</b><i data-desk-artifact-two-note>логика и состав этапа</i></li>
+                  <li><span>03</span><b data-desk-artifact-three>Готовим материал</b><i data-desk-artifact-three-note>по зафиксированному результату</i></li>
+                </ol>
+              </div>
+            </details>
+          </section>
+        </section>
+      </div>
+
+      <ul class="guided-desk__trust" aria-label="Коротко о мастерской">
+        <li><span>01</span><strong>Отзывы — исходные сообщения</strong><small>личные данные клиентов скрыты</small></li>
+        <li><span>02</span><strong>До оплаты — письменно</strong><small>результат, срок и цена</small></li>
+        <li><span>03</span><strong>Вы остаётесь автором</strong><small>данные, выводы и финальные решения — ваши</small></li>
+      </ul>
+    </section>
+
+    <section class="case-hero" aria-labelledby="caseHeroTitle" hidden>
+      <div class="case-hero__inner">
+        <div class="case-hero__primary">
+          <div class="case-hero__folio-card" aria-hidden="true">
+            <span>Дело</span>
+            <strong>01</strong>
+            <span>Исследование</span>
+          </div>
+          <div class="case-hero__copy">
+            <p class="case-hero__accolade">Редакторская мастерская · с 2020 года</p>
+            <h1 id="caseHeroTitle"><span>Не нужно разбираться</span><em>во всём сразу.</em></h1>
+            <p class="case-hero__lead">Покажите, что уже есть. Мы предложим один понятный следующий шаг — без сложного выбора и обязательств.</p>
+          </div>
+
+          <div class="hero-act">
+            <div class="hero-act__actions" aria-label="С чего начать">
+              <a class="hero-act__cta" href="configurator.html">Подобрать следующий шаг <span aria-hidden="true">→</span></a>
+              <a class="hero-act__cta hero-act__cta--secondary" href="services.html">Услуги и цены</a>
+            </div>
+            <dl class="hero-act__facts">
+              <div><dt>Первый разбор</dt><dd>от 2 500 ₽</dd></div>
+              <div><dt>До оплаты</dt><dd>результат, срок и цена</dd></div>
+            </dl>
+            <p class="hero-act__note">Подойдёт тема, черновик, замечания или просто описание ситуации. Вы остаётесь автором работы.</p>
+          </div>
+          <form hidden data-case-form aria-hidden="true"><textarea id="casePrompt" data-case-input></textarea></form>
         </div>
 
-        <aside class="case-route" aria-labelledby="caseRouteTitle" aria-live="polite">
+        <aside class="guided-passport" aria-label="Как начинается работа">
+          <div class="guided-passport__number" aria-hidden="true">01</div>
+          <div class="guided-passport__stamp" aria-hidden="true">Оттиск</div>
+          <p class="guided-passport__kicker">Первый этап</p>
+          <h2>Сначала — ясность.</h2>
+          <p>Посмотрим материалы, назовём разумный первый результат и объясним, что действительно стоит делать сейчас.</p>
+          <dl>
+            <div><dt>Вы показываете</dt><dd>то, что уже есть</dd></div>
+            <div><dt>Мы возвращаем</dt><dd>один понятный маршрут</dd></div>
+            <div><dt>Вы решаете</dt><dd>продолжать или нет</dd></div>
+          </dl>
+        </aside>
+
+        <aside class="case-scope-deck" id="caseStart" data-case-scope-deck data-scope-index="01" aria-labelledby="caseScopeDeckTitle" hidden aria-hidden="true">
+          <header class="case-scope-deck__head">
+            <span>Навигация по делу</span>
+            <strong id="caseScopeDeckTitle">Где сейчас ваша работа?</strong>
+          </header>
+          <ol class="case-scope-index">
+            <li>
+              <button type="button" data-case-hero-choice data-scope-index="01" data-case-preset="ВКР, пока есть только тема" aria-pressed="false">
+                <span class="case-scope-choice__icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32"><path d="M8 5.5h12l4 4v17H8z"/><path d="M20 5.5v4h4M12 14h8M12 19h6M12 23h4"/></svg>
+                </span>
+                <span class="case-scope-choice__copy"><small>01 · В начале</small><strong>Тема пока не сложилась</strong><em>Проверить формулировку и собрать рабочий план</em></span>
+                <span class="case-scope-choice__arrow" aria-hidden="true">→</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-case-hero-choice data-scope-index="02" data-case-preset="Курсовая, уже есть мой черновик" aria-pressed="false">
+                <span class="case-scope-choice__icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32"><path d="M7 4.5h14l4 4v19H7z"/><path d="M21 4.5v4h4M11 14h8M11 19h6M20.5 23.5l6-6 2 2-6 6-3 .9z"/></svg>
+                </span>
+                <span class="case-scope-choice__copy"><small>02 · В работе</small><strong>Черновик уже есть</strong><em>Найти слабые места и объяснить правки</em></span>
+                <span class="case-scope-choice__arrow" aria-hidden="true">→</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-case-hero-choice data-scope-index="03" data-case-preset="ВКР, получены замечания руководителя" aria-pressed="false">
+                <span class="case-scope-choice__icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32"><path d="M6 5h17v22H6zM10 11h9M10 16h7M10 21h8"/><path d="M23 11h4v10h-4M25 11V8M25 21v3"/></svg>
+                </span>
+                <span class="case-scope-choice__copy"><small>03 · На проверке</small><strong>Пришли замечания</strong><em>Разложить их по смыслу и срочности</em></span>
+                <span class="case-scope-choice__arrow" aria-hidden="true">→</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-case-hero-choice data-scope-index="04" data-case-preset="Диплом готов, скоро защита" aria-pressed="false">
+                <span class="case-scope-choice__icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32"><path d="M5 6h22v15H5zM9 26h14M16 21v5"/><path d="M10 16l4-4 3 2 5-5M22 9v5h-5"/></svg>
+                </span>
+                <span class="case-scope-choice__copy"><small>04 · Финал</small><strong>Защита уже близко</strong><em>Сверить речь, презентацию и возможные вопросы</em></span>
+                <span class="case-scope-choice__arrow" aria-hidden="true">→</span>
+              </button>
+            </li>
+          </ol>
+          <footer class="case-scope-deck__foot">
+            <span>Ситуация сложнее?</span>
+            <button class="case-scope-trigger" type="button" data-case-scope-open aria-controls="caseScopeDrawer" aria-expanded="false">
+              <span class="case-scope-trigger__kicker">Описать точнее</span>
+              <span class="case-scope-trigger__action">Написать мастеру своими словами <i aria-hidden="true">→</i></span>
+            </button>
+          </footer>
+        </aside>
+
+        <aside class="case-route" aria-labelledby="caseRouteTitle" aria-live="polite" hidden>
           <header class="case-route__head">
-            <div><span>Дело исследования</span><strong id="caseRouteTitle">Первый маршрут</strong></div>
-            <span class="case-route__status" data-route-confidence>Без регистрации</span>
+            <div><span>По вашей ситуации</span><strong id="caseRouteTitle">С чего разумно начать</strong></div>
+            <div class="case-route__head-actions">
+              <span class="case-route__status" data-route-confidence hidden></span>
+              <button type="button" data-case-scope-reopen aria-controls="caseScopeDrawer" aria-expanded="false">Отредактировать</button>
+            </div>
           </header>
           <ol class="case-route__steps">
-            <li><span>01 · Сейчас</span><strong data-route-state>Уточняем точку старта</strong></li>
-            <li class="is-next"><span>02 · Следующий шаг</span><strong data-route-result>Собрать карту ситуации</strong></li>
+            <li><span>Что уже есть</span><strong data-route-state>Скажите, что уже есть</strong></li>
+            <li class="is-next"><span>Первый результат</span><strong data-route-result>Покажем первый полезный результат</strong></li>
           </ol>
           <dl class="case-route__reason">
-            <div><dt>Почему</dt><dd data-route-why>Так мы не предложим лишний этап до того, как поймём, что уже готово.</dd></div>
-            <div><dt>Нужно от вас</dt><dd data-route-need>Тип работы и её текущее состояние</dd></div>
-            <div><dt>Ориентир</dt><dd data-route-price>виден до передачи контакта</dd></div>
-            <div><dt>Изменит маршрут</dt><dd data-route-change>Ваш ответ о том, что уже есть</dd></div>
+            <div><dt>Почему этот шаг</dt><dd data-route-why>Чтобы не предлагать помощь, которая вам не нужна.</dd></div>
+            <div><dt>Что понадобится</dt><dd data-route-need>Вид работы и то, что уже готово</dd></div>
+            <div><dt>Ориентир стоимости</dt><dd data-route-price>покажем до контакта</dd></div>
           </dl>
+          <details class="case-route__details">
+            <summary><span><small>Уточнение</small><strong>Что может изменить срок или цену?</strong></span><i aria-hidden="true"></i></summary>
+            <p data-route-change>Срок, объём и состояние материалов</p>
+          </details>
           <div class="case-route__confirm" data-route-confirm hidden></div>
           <div class="case-route__actions">
-            <a class="button button--primary button--large" href="/configurator.html" data-route-open>Открыть дело <span aria-hidden="true">→</span></a>
-            <a class="case-route__free" href="/knowledge.html" data-route-free><span>Самостоятельно</span><strong>Начать с библиотеки</strong><i aria-hidden="true">↗</i></a>
+            <a class="button button--primary button--large" href="/configurator.html" data-route-open>Посмотреть состав и стоимость <span aria-hidden="true">→</span></a>
+            <a class="case-route__free" href="/knowledge.html" data-route-free><span>Можно начать без оплаты</span><strong>Открыть самостоятельную проверку</strong><i aria-hidden="true">↗</i></a>
           </div>
-          <p class="case-route__human">Не узнали ситуацию? <a href="/priyomnaya.html">Спросите мастера без заказа</a>.</p>
+          <p class="case-route__human">Ситуация не помещается в четыре варианта? <a href="/priyomnaya.html">Напишите мастеру своими словами <span aria-hidden="true">→</span></a></p>
         </aside>
       </div>
-      <div class="case-trust" aria-label="Правила работы">
-        <p><span>01</span><strong>До оплаты</strong><small>состав, срок, цена и приёмка</small></p>
-        <p><span>02</span><strong>В одном деле</strong><small>требования, версии и решения</small></p>
-        <p><span>03</span><strong>Без чёрного ящика</strong><small>основание каждой рекомендации</small></p>
-        <p><span>04</span><strong>Можно самому</strong><small>инструменты остаются бесплатными</small></p>
-      </div>
     </section>
 
-    <section class="resume-card section-shell section-shell--tight" data-resume-card hidden>
-      <div class="resume-card__seal" aria-hidden="true">АС</div>
-      <div>
-        <p class="eyebrow">Ваше дело сохранено</p>
-        <h2>Продолжить с шага <span data-resume-step>1</span></h2>
-        <p><span data-resume-type>Тип работы</span> · безопасный черновик хранится только в этом браузере.</p>
-      </div>
-      <a class="button button--primary" href="/configurator.html" data-resume-link>Продолжить <span aria-hidden="true">→</span></a>
-    </section>
-
-    <section class="case-ecosystem section-shell" aria-labelledby="ecosystemTitle">
-      <header class="case-section-head">
-        <div>
-          <p class="eyebrow">Вся мастерская · один маршрут</p>
-          <h2 id="ecosystemTitle">Нужное появляется тогда,<br>когда оно действительно нужно.</h2>
-        </div>
-        <p>Инструмент, материал и помощь редактора связаны с одной стадией дела. Вы не ходите по кругу и не выбираете из десятков похожих услуг.</p>
+    <section class="guided-situations guided-shell" aria-labelledby="guidedSituationsTitle" hidden>
+      <header class="guided-section-head">
+        <p>Ближайшая ситуация</p>
+        <h2 id="guidedSituationsTitle">Где сейчас ваша работа?</h2>
+        <span>Выберите ближайший вариант. Точный формат уточним уже внутри пути.</span>
       </header>
-
-      <div class="case-stages" role="tablist" aria-label="Стадии дела">
-        <button type="button" role="tab" id="stageTab1" aria-controls="stagePanel1" aria-selected="true" data-case-stage="1"><span>01</span><strong>Ориентация</strong><small>тема и план</small></button>
-        <button type="button" role="tab" id="stageTab2" aria-controls="stagePanel2" aria-selected="false" data-case-stage="2"><span>02</span><strong>Рабочая версия</strong><small>текст и данные</small></button>
-        <button type="button" role="tab" id="stageTab3" aria-controls="stagePanel3" aria-selected="false" data-case-stage="3"><span>03</span><strong>Проверка</strong><small>замечания и форма</small></button>
-        <button type="button" role="tab" id="stageTab4" aria-controls="stagePanel4" aria-selected="false" data-case-stage="4"><span>04</span><strong>Защита</strong><small>аргументы и ответы</small></button>
-      </div>
-
-      <div class="case-stage-panels">
-        <section class="case-stage-panel is-active" id="stagePanel1" role="tabpanel" aria-labelledby="stageTab1" data-stage-panel="1">
-          <div class="case-stage-panel__intro">
-            <span class="case-stage-panel__number">01</span>
-            <div><p class="eyebrow">Ориентация</p><h3>Понять, что именно исследовать.</h3><p>Проверяем масштаб темы, исследовательское действие и связь будущих глав до большого объёма работы.</p></div>
-          </div>
-          <div class="case-stage-panel__routes">
-            <a href="/audit-temy-vkr.html"><small>Бесплатно · 7 минут</small><strong>Паспорт темы ВКР</strong><span>Проверить формулировку самому →</span></a>
-            <a href="/plan.html"><small>С редактором · от 3 000 ₽</small><strong>Разбор темы и плана</strong><span>Получить письменную карту →</span></a>
-            <a href="/guide-temy-vkr.html"><small>Материал</small><strong>Как выбрать тему</strong><span>Прочитать без заявки →</span></a>
-          </div>
-        </section>
-
-        <section class="case-stage-panel" id="stagePanel2" role="tabpanel" aria-labelledby="stageTab2" data-stage-panel="2">
-          <div class="case-stage-panel__intro">
-            <span class="case-stage-panel__number">02</span>
-            <div><p class="eyebrow">Рабочая версия</p><h3>Собрать проверяемый черновик.</h3><p>Фиксируем требования, источники, реальные данные и решения автора. Каждая версия остаётся в том же деле.</p></div>
-          </div>
-          <div class="case-stage-panel__routes">
-            <a href="/guide-obekt-predmet-cel-zadachi.html"><small>Бесплатно · методология</small><strong>Цель, объект и задачи</strong><span>Сверить логику самому →</span></a>
-            <a href="/configurator.html?situation=topic&result=support"><small>С редактором · цена заранее</small><strong>Проект с нуля</strong><span>Собрать подходящий формат →</span></a>
-            <a href="/services.html"><small>Курсовая · ВКР · статья · практика</small><strong>Все форматы проектов</strong><span>Посмотреть состав →</span></a>
-          </div>
-        </section>
-
-        <section class="case-stage-panel" id="stagePanel3" role="tabpanel" aria-labelledby="stageTab3" data-stage-panel="3">
-          <div class="case-stage-panel__intro">
-            <span class="case-stage-panel__number">03</span>
-            <div><p class="eyebrow">Проверка</p><h3>Превратить замечания в порядок действий.</h3><p>Сначала содержание и источники, затем оформление. Так срочная косметика не маскирует важную проблему.</p></div>
-          </div>
-          <div class="case-stage-panel__routes">
-            <a href="/tools.html"><small>Бесплатно · без загрузки файла</small><strong>Инструменты самопроверки</strong><span>Текст, тема, DOI и требования →</span></a>
-            <a href="/razbor-zamechaniy-nauchruka.html"><small>С редактором · от 2 500 ₽</small><strong>Карта замечаний</strong><span>Расставить приоритеты →</span></a>
-            <a href="/normokontrol-vkr.html"><small>После стабилизации текста</small><strong>Нормоконтроль</strong><span>Сверить с методичкой →</span></a>
-          </div>
-          <details class="case-stage-panel__more"><summary>Ещё на этой стадии</summary><p><a href="/redaktura-posle-ii.html">Редактура после ИИ</a> · <a href="/proverka-istochnikov-vkr.html">проверка источников</a> · <a href="/dorabotka-otcheta-po-praktike.html">доработка отчёта</a></p></details>
-        </section>
-
-        <section class="case-stage-panel" id="stagePanel4" role="tabpanel" aria-labelledby="stageTab4" data-stage-panel="4">
-          <div class="case-stage-panel__intro">
-            <span class="case-stage-panel__number">04</span>
-            <div><p class="eyebrow">Защита</p><h3>Проверить аргументацию до комиссии.</h3><p>Готовим речь и слайды, затем независимый Оппонент ищет вопросы, на которых может остановиться защита.</p></div>
-          </div>
-          <div class="case-stage-panel__routes">
-            <a href="/guide-rech-na-zashchitu.html"><small>Бесплатно · чек-лист</small><strong>Речь к защите</strong><span>Подготовить самостоятельно →</span></a>
-            <a href="/komissiya-0.html"><small>Независимая предзащита</small><strong>Комиссия №0</strong><span>Проверить готовую версию →</span></a>
-            <a href="/configurator.html?work=diplom&situation=defense&result=defense"><small>Речь · слайды · репетиция</small><strong>Маршрут к защите</strong><span>Получить состав →</span></a>
-          </div>
-        </section>
+      <div class="guided-situations__grid">
+        <a href="/configurator.html">
+          <span>01</span>
+          <strong>Есть тема или черновик</strong>
+          <small>Понять, с чего начать или что улучшить первым.</small>
+          <i aria-hidden="true">→</i>
+        </a>
+        <a href="/razbor-zamechaniy-nauchruka.html">
+          <span>02</span>
+          <strong>Пришли замечания</strong>
+          <small>Разложить комментарии по смыслу и приоритету.</small>
+          <i aria-hidden="true">→</i>
+        </a>
+        <a href="/configurator.html?work=diplom&amp;situation=defense&amp;result=defense">
+          <span>03</span>
+          <strong>Защита уже близко</strong>
+          <small>Сверить речь, презентацию и вопросы комиссии.</small>
+          <i aria-hidden="true">→</i>
+        </a>
       </div>
     </section>
 
-    <section class="case-dossier" aria-labelledby="dossierTitle">
-      <div class="section-shell case-dossier__grid">
-        <div class="case-dossier__copy">
-          <p class="eyebrow">Один раз объяснили задачу</p>
-          <h2 id="dossierTitle">Контекст не теряется<br>между услугами.</h2>
-          <p>Тема, требования, версии и решения живут в одном деле. После каждого этапа остаётся один актуальный следующий шаг — без повторного брифа.</p>
-          <div class="case-dossier__links">
-            <a class="button button--secondary" href="/prolog.html">Как устроено дело <span aria-hidden="true">→</span></a>
-            <a class="line-link" href="/specifikaciya.html">Пример спецификации <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-        <div class="case-file" aria-label="Пример карты дела">
-          <header><span>Дело исследования · АС—024</span><b>Следующий шаг</b></header>
-          <div class="case-file__current"><small>Сейчас</small><strong>Замечания к главе 2 получены</strong><span>Версия 03 · требования закреплены</span></div>
-          <ol>
-            <li class="is-done"><span>01</span><div><strong>Требования</strong><small>методичка и замечания собраны</small></div><i>готово</i></li>
-            <li class="is-current"><span>02</span><div><strong>Карта правок</strong><small>сначала выводы, затем оформление</small></div><i>сейчас</i></li>
-            <li><span>03</span><div><strong>Редактура</strong><small>состав зависит от карты</small></div><i>позже</i></li>
-            <li><span>04</span><div><strong>Предзащита</strong><small>только для стабильной версии</small></div><i>условие</i></li>
-          </ol>
-          <footer><span>Основание решения сохранено</span><strong>Автор видит каждое изменение</strong></footer>
-        </div>
-      </div>
-    </section>
-
-    <section class="case-continuity section-shell" aria-labelledby="continuityTitle">
-      <header class="case-section-head">
-        <div><p class="eyebrow">После первого этапа</p><h2 id="continuityTitle">Не начинать отношения<br>с нуля ещё раз.</h2></div>
-        <p>Эти механики не вмешиваются в выбор услуги. Они становятся полезны, когда уже понятен ваш реальный сценарий: несколько этапов, семестр задач, подарок или личная рекомендация.</p>
+    <section class="guided-results guided-shell" aria-labelledby="guidedResultsTitle" hidden>
+      <header class="guided-section-head">
+        <p>Первый результат</p>
+        <h2 id="guidedResultsTitle">Не «всё и сразу», а то, что поможет сейчас.</h2>
+        <span>Каждый этап заканчивается конкретным материалом, который остаётся у вас.</span>
       </header>
-      <nav class="case-continuity__grid" aria-label="Сервис после первого заказа">
-        <a href="/deposit.html"><span>Несколько этапов</span><strong>Депозит мастерской</strong><small>Авансовый счёт с возвращаемым денежным остатком →</small></a>
-        <a href="/plus.html"><span>Несколько задач</span><strong>Салон+</strong><small>Планы на 30 или 150 дней без автопродления →</small></a>
-        <a href="/gift.html"><span>Для другого человека</span><strong>Подарить время редактора</strong><small>Получатель сам выбирает консультацию или работу →</small></a>
-        <a href="/referral.html"><span>Личная рекомендация</span><strong>Бонусы и приглашения</strong><small>Открытые условия без скрытой скидки «за уход» →</small></a>
-      </nav>
-    </section>
-
-    <section class="commission0-feature" aria-labelledby="homeCommission0Title">
-      <div class="commission0-feature__inner">
-        <div class="commission0-feature__mark" aria-hidden="true"><span>№</span>0</div>
-        <div class="commission0-feature__copy">
-          <p class="eyebrow">Финальный рубеж дела · Комиссия №0</p>
-          <h2 id="homeCommission0Title">Настоящая комиссия<br>не должна быть первой.</h2>
-          <p>Независимый Оппонент проверяет не красоту документа, а места, где аргументу не хватает источника, данным — происхождения, а автору — ответа.</p>
-          <div class="commission0-feature__actions">
-            <a class="button button--primary" href="/configurator.html?service=k0">Проверить готовую версию <span aria-hidden="true">→</span></a>
-            <a class="line-link" href="/komissiya-0.html">Как это устроено <span aria-hidden="true">↗</span></a>
-          </div>
-          <p class="commission0-feature__legal">Частная редакторская предзащита. Не является комиссией вуза, официальным допуском или гарантией оценки.</p>
-        </div>
-        <div class="commission0-feature__protocol" aria-label="Что проверяет Комиссия №0">
-          <p><span>Аргументация</span><strong>выдерживает уточняющий вопрос</strong></p>
-          <p><span>Источники</span><strong>доступны и связаны с выводами</strong></p>
-          <p><span>Данные</span><strong>можно проверить и объяснить</strong></p>
-          <p><span>Ответы</span><strong>отрепетированы без подсказок</strong></p>
-        </div>
+      <div class="guided-results__papers">
+        <article>
+          <span>Тема</span>
+          <strong>Формулировка и рабочий план</strong>
+          <p>Проверим логику темы и соберём структуру до большого черновика.</p>
+          <small>Ориентир · от 3 000 ₽</small>
+        </article>
+        <article>
+          <span>Текст</span>
+          <strong>Правки с объяснениями</strong>
+          <p>Сохраним сильные части и покажем, что мешает логике и чтению.</p>
+          <small>Цена · после просмотра</small>
+        </article>
+        <article>
+          <span>Замечания</span>
+          <strong>Порядок исправлений</strong>
+          <p>Отделим важные изменения по смыслу от оформления и мелочей.</p>
+          <small>Ориентир · от 2 500 ₽</small>
+        </article>
+      </div>
+      <div class="guided-actions">
+        <a class="guided-button guided-button--primary" href="/services.html">Посмотреть все форматы <span aria-hidden="true">→</span></a>
+        <a class="guided-button guided-button--quiet" href="/knowledge.html">Попробовать самостоятельно</a>
       </div>
     </section>
 
-    <section class="case-proof section-shell" aria-labelledby="proofTitle">
-      <div class="case-proof__copy">
-        <p class="eyebrow">Проверяйте нас так же, как мы проверяем работу</p>
-        <h2 id="proofTitle">Доверие — это то,<br>что можно открыть.</h2>
-        <p>Показываем границы обещаний, реквизиты, исходные отзывы и способ приёмки результата. Не прячем их за формой заявки.</p>
-        <div class="case-proof__facts">
-          <a href="/reviews.html"><strong>48</strong><span>опубликованных сообщений</span></a>
-          <a href="/guarantees.html"><strong>7</strong><span>статей редакционного устава</span></a>
-          <a href="/requisites.html"><strong>1</strong><span>открытый ответственный исполнитель</span></a>
+    <section class="guided-proof guided-shell" aria-labelledby="guidedProofTitle">
+      <div class="guided-proof__copy">
+        <p class="guided-kicker">Отзывы и условия</p>
+        <h2 id="guidedProofTitle">Проверить можно до обращения.</h2>
+        <p>Отзывы показываем исходными сообщениями. Результат, срок и цену фиксируем до оплаты.</p>
+        <div class="guided-actions">
+          <a class="guided-button guided-button--primary" href="/reviews.html">Посмотреть исходные отзывы <span aria-hidden="true">→</span></a>
+          <a class="guided-button guided-button--quiet" href="/prolog.html">Как устроена помощь</a>
         </div>
       </div>
-      <figure class="case-proof__review">
-        <img src="/assets/img/reviews/review-04.webp" alt="Фрагмент опубликованного сообщения клиента" width="591" height="816" loading="lazy" data-review-home="04">
-        <figcaption>Исходный текст; личные сведения публикуются только по отдельному согласию. <a href="/reviews.html">Открыть книгу благодарностей →</a></figcaption>
+      <figure>
+        <a href="/reviews.html#review-happy" aria-label="Открыть исходное сообщение клиента после защиты на 98 баллов">
+          <img src="/assets/img/reviews/review-14.webp" alt="Сообщение клиента после защиты на 98 баллов" width="720" height="402" loading="lazy">
+        </a>
+        <figcaption>Сообщение клиента после защиты. 98 баллов — его результат, а не обещание.</figcaption>
       </figure>
     </section>
 
-    <section class="case-final section-shell">
+    <section class="guided-process" aria-labelledby="guidedProcessTitle">
+      <div class="guided-shell guided-process__inner">
+        <header class="guided-section-head">
+          <p>Как это работает</p>
+          <h2 id="guidedProcessTitle">Три шага до решения.</h2>
+        </header>
+        <ol>
+          <li><span>01</span><div><strong>Покажите, что уже есть.</strong><p>Тему, задание, файл или замечания.</p></div></li>
+          <li><span>02</span><div><strong>Получите понятный расчёт.</strong><p>Что сделаем, к какому сроку и за какую сумму.</p></div></li>
+          <li><span>03</span><div><strong>Решите, продолжать ли.</strong><p>Отправка материалов ни к чему не обязывает.</p></div></li>
+        </ol>
+        <a class="guided-line-link" href="/prolog.html">Подробнее о работе по этапам <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="guided-faq guided-shell" aria-labelledby="guidedFaqTitle">
+      <header class="guided-section-head">
+        <p>Частые вопросы</p>
+        <h2 id="guidedFaqTitle">Что обычно спрашивают.</h2>
+      </header>
+      <div class="guided-faq__list">
+        <details>
+          <summary>С какими работами можно обратиться?<i aria-hidden="true"></i></summary>
+          <p>Курсовые, ВКР, магистерские, статьи, отчёты, отдельные главы, рефераты и эссе. Кандидатские — консультации и редактура.</p>
+        </details>
+        <details>
+          <summary>Можно прийти только с заданием?<i aria-hidden="true"></i></summary>
+          <p>Да. По заданию соберём план и предложим этапы до готовой версии.</p>
+        </details>
+        <details>
+          <summary>Берёте срочные задачи?<i aria-hidden="true"></i></summary>
+          <p>Скажем после просмотра файла и даты. Если весь объём не помещается в срок, предложим самый важный этап.</p>
+        </details>
+        <details>
+          <summary>Какие правки входят в цену?<i aria-hidden="true"></i></summary>
+          <p>Бесплатно исправим то, что не соответствует задаче из расчёта. Новые требования и дополнительный объём оценим отдельно.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="guided-final guided-shell" aria-labelledby="guidedFinalTitle">
       <div>
-        <p class="eyebrow">Начните без выбора услуги</p>
-        <h2>Покажите ситуацию.<br>Следующий шаг соберём мы.</h2>
-        <p>До контакта вы увидите рекомендацию, её основание, ориентир цены и самостоятельную альтернативу.</p>
+        <p class="guided-kicker">Заявка</p>
+        <h2 id="guidedFinalTitle">Покажите, что уже есть.</h2>
+        <p>Задания, файла или пары предложений достаточно, чтобы назвать следующий шаг, срок и цену.</p>
+      </div>
+      <div class="guided-actions">
+        <a class="guided-button guided-button--primary" href="/configurator.html">Разобрать мою ситуацию <span aria-hidden="true">→</span></a>
+        <a class="guided-button guided-button--quiet" href="/priyomnaya.html">Написать мастеру</a>
+      </div>
+    </section>
+
+    <section class="case-confidence-shell section-shell" aria-label="Почему мастерской можно доверять" hidden>
+      <ul class="case-confidence" aria-label="Почему можно начать с короткого описания">
+        <li><a class="case-confidence__cell" href="/about.html"><strong>Редакторская мастерская с 2020 года</strong><span>Кто читает и комментирует ваши материалы <i aria-hidden="true">↗</i></span></a></li>
+        <li><a class="case-confidence__cell" href="/reviews.html"><strong>Отзывы — исходными сообщениями</strong><span>С чем приходили и что получили <i aria-hidden="true">↗</i></span></a></li>
+        <li><a class="case-confidence__cell" href="/guarantees.html"><strong>Границы помощи открыты</strong><span>Что делаем, чего не делаем и как храним файлы <i aria-hidden="true">↗</i></span></a></li>
+        <li><a class="case-confidence__cell" href="/specifikaciya.html"><strong>Результат, срок и цена — до оплаты</strong><span>Что будет готово и когда <i aria-hidden="true">↗</i></span></a></li>
+      </ul>
+    </section>
+
+    <section class="case-ecosystem section-shell" id="homeResult" aria-labelledby="ecosystemTitle" data-home-chapter="result" hidden>
+      <header class="case-section-head">
+        <div>
+          <p class="eyebrow">Первый результат</p>
+          <h2 id="ecosystemTitle">Что будет готово после первого этапа.</h2>
+        </div>
+        <p>Сначала покажем конкретный результат. Затем вы решите: обратиться к редактору или попробовать бесплатный инструмент.</p>
+      </header>
+
+      <section class="resume-card section-shell section-shell--tight" data-resume-card aria-label="Ваш прогресс бережно сохранён. Продолжить сохранённую работу" hidden>
+        <span class="resume-card__folio" aria-hidden="true"></span>
+        <div class="resume-card__copy">
+          <span class="resume-card__kicker">Можно вернуться</span>
+          <p class="resume-card__message"><strong class="resume-card__typed" data-resume-typed aria-hidden="true">Ваш прогресс бережно сохранён</strong><span class="resume-card__detail"><span data-resume-type>Тип работы</span> · шаг <span data-resume-step>1</span></span></p>
+        </div>
+        <a class="resume-card__action" href="/configurator.html" data-resume-link><span class="resume-card__action-label">Продолжить</span> <span aria-hidden="true">→</span></a>
+      </section>
+
+      <div class="case-results">
+        <div class="case-result-context" aria-live="polite">
+          <span><i data-case-result-number>01</i> Пример результата</span>
+          <strong data-case-result-state>Есть только тема или задание</strong>
+          <button type="button" data-case-result-edit aria-controls="caseScopeDrawer" aria-expanded="false">
+            Выбрать другую ситуацию <i aria-hidden="true">→</i>
+          </button>
+        </div>
+
+        <div class="case-stage-panels">
+        <section class="case-stage-panel is-active" id="stagePanel1" role="region" aria-labelledby="stagePanelTitle1" data-stage-panel="1">
+          <div class="case-stage-panel__intro">
+            <span class="case-stage-panel__number">01</span>
+            <div>
+              <p class="eyebrow">Если пока есть только тема</p>
+              <h3 id="stagePanelTitle1">Тема для согласования и готовый план.</h3>
+              <p>Проверим формулировку по требованиям и выстроим логику глав, прежде чем вы начнёте большой черновик.</p>
+              <div class="case-stage-panel__artifact case-stage-panel__artifact--plan" aria-label="Пример фрагмента плана">
+                <header><span>Фрагмент результата</span><b>План</b></header>
+                <ol>
+                  <li><span>01</span><div><strong>Теоретическая основа</strong><small>какие понятия и подходы понадобятся</small></div></li>
+                  <li><span>02</span><div><strong>Анализ материала</strong><small>что и по каким критериям исследовать</small></div></li>
+                  <li><span>03</span><div><strong>Выводы и рекомендации</strong><small>как связать результат с задачами работы</small></div></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="case-stage-panel__routes">
+            <dl class="case-stage-panel__facts"><div><dt>Для старта</dt><dd>тема или задание</dd></div><div><dt>Ориентир</dt><dd>от 3 000 ₽</dd></div></dl>
+            <a href="/plan.html"><small>С редактором · от 3 000 ₽</small><strong>Разобрать тему и составить план</strong><span>Посмотреть состав этого этапа →</span></a>
+            <a href="/audit-temy-vkr.html"><small>Бесплатный инструмент · 7 минут</small><strong>Проверить тему самостоятельно</strong><span>Открыть проверку →</span></a>
+            <p class="case-stage-panel__continuation">Нужна помощь не только с планом? <a href="/configurator.html?situation=topic&amp;result=support">Посмотреть, как будем работать дальше →</a></p>
+          </div>
+        </section>
+
+        <section class="case-stage-panel" id="stagePanel2" role="region" aria-labelledby="stagePanelTitle2" data-stage-panel="2">
+          <div class="case-stage-panel__intro">
+            <span class="case-stage-panel__number">02</span>
+            <div>
+              <p class="eyebrow">Если уже есть свой текст</p>
+              <h3 id="stagePanelTitle2">Разбор текста и версия с правками.</h3>
+              <p>Покажем, что мешает логике и чтению, согласуем объём правок и сохраним сильные части вашего текста.</p>
+              <div class="case-stage-panel__artifact case-stage-panel__artifact--edit" aria-label="Пример правки текста с пояснением">
+                <header><span>Фрагмент результата</span><b>До / после</b></header>
+                <div class="case-stage-panel__revision"><span>Было</span><p>В настоящее время данная проблема является достаточно актуальной.</p></div>
+                <div class="case-stage-panel__revision is-after"><span>Стало</span><p>Проблема особенно важна сейчас.</p><small>Убрали вводную конструкцию и повтор смысла.</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="case-stage-panel__routes">
+            <dl class="case-stage-panel__facts"><div><dt>Для старта</dt><dd>ваш текст и требования</dd></div><div><dt>Ориентир</dt><dd>после просмотра текста</dd></div></dl>
+            <a href="/configurator.html?situation=draft&amp;result=editing"><small>С редактором · после просмотра текста</small><strong>Разобрать и отредактировать текст</strong><span>Посмотреть состав этого этапа →</span></a>
+            <a href="/check.html"><small>Бесплатный инструмент</small><strong>Проверить текст самостоятельно</strong><span>Открыть проверку →</span></a>
+          </div>
+        </section>
+
+        <section class="case-stage-panel" id="stagePanel3" role="region" aria-labelledby="stagePanelTitle3" data-stage-panel="3">
+          <div class="case-stage-panel__intro">
+            <span class="case-stage-panel__number">03</span>
+            <div>
+              <p class="eyebrow">Если пришли замечания</p>
+              <h3 id="stagePanelTitle3">Разбор замечаний и порядок исправлений.</h3>
+              <p>Объясним комментарии руководителя и отделим правки по содержанию от правок по оформлению.</p>
+              <div class="case-stage-panel__artifact case-stage-panel__artifact--comments" aria-label="Пример порядка исправлений">
+                <header><span>Фрагмент результата</span><b>Приоритеты</b></header>
+                <ol>
+                  <li><span>Сначала</span><div><strong>Уточнить цель и задачи</strong><small>меняет логику всей работы</small></div></li>
+                  <li><span>Затем</span><div><strong>Перестроить вторую главу</strong><small>зависит от обновлённых задач</small></div></li>
+                  <li><span>После</span><div><strong>Исправить оформление</strong><small>не влияет на содержание</small></div></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="case-stage-panel__routes">
+            <dl class="case-stage-panel__facts"><div><dt>Для старта</dt><dd>замечания и текущая версия</dd></div><div><dt>Ориентир</dt><dd>от 2 500 ₽</dd></div></dl>
+            <a href="/razbor-zamechaniy-nauchruka.html"><small>С редактором · от 2 500 ₽</small><strong>Разобрать замечания с редактором</strong><span>Посмотреть состав этого этапа →</span></a>
+            <a href="/dosie-nauchruka.html"><small>Бесплатный инструмент</small><strong>Разобрать замечания самостоятельно</strong><span>Открыть проверку →</span></a>
+          </div>
+        </section>
+
+        <section class="case-stage-panel" id="stagePanel4" role="region" aria-labelledby="stagePanelTitle4" data-stage-panel="4">
+          <div class="case-stage-panel__intro">
+            <span class="case-stage-panel__number">04</span>
+            <div>
+              <p class="eyebrow">Если защита уже близко</p>
+              <h3 id="stagePanelTitle4">Речь, презентация и репетиция защиты.</h3>
+              <p>Сверим выступление с работой и заранее разберём места, о которых может спросить комиссия.</p>
+              <div class="case-stage-panel__artifact case-stage-panel__artifact--speech" aria-label="Пример структуры выступления">
+                <header><span>Фрагмент результата</span><b>7 минут</b></header>
+                <ol>
+                  <li><span>0:00</span><div><strong>Проблема и цель</strong><small>зачем проводилось исследование</small></div></li>
+                  <li><span>1:30</span><div><strong>Метод и материал</strong><small>как получены результаты</small></div></li>
+                  <li><span>4:00</span><div><strong>Главные выводы</strong><small>что важно услышать комиссии</small></div></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="case-stage-panel__routes">
+            <dl class="case-stage-panel__facts"><div><dt>Для старта</dt><dd>работа, дата и регламент</dd></div><div><dt>Ориентир</dt><dd>от 6 000 ₽</dd></div></dl>
+            <a href="/configurator.html?work=diplom&amp;situation=defense&amp;result=defense"><small>С редактором · от 6 000 ₽</small><strong>Подготовиться к защите</strong><span>Посмотреть состав этого этапа →</span></a>
+            <a href="/guide-rech-na-zashchitu.html"><small>Бесплатный чек-лист</small><strong>Проверить речь самостоятельно</strong><span>Открыть материал →</span></a>
+            <p class="case-stage-panel__continuation">Готова вся версия? <a href="/komissiya-0.html">Посмотреть репетицию «Комиссия №0» →</a></p>
+          </div>
+        </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-dossier" id="homeProcess" aria-labelledby="dossierTitle" data-home-chapter="process" data-story-reveal hidden>
+      <div class="section-shell case-dossier__grid">
+        <div class="case-dossier__copy">
+          <p class="eyebrow">Как будем работать</p>
+          <h2 id="dossierTitle">О задаче не придётся рассказывать заново.</h2>
+          <p>Тему, требования, замечания и версии не придётся искать по разным перепискам. Соберём их вместе и будем отмечать, что уже сделано.</p>
+          <ol class="case-process" role="tablist" aria-label="Этапы работы">
+            <li><button type="button" id="caseProcessTab1" role="tab" aria-selected="true" aria-controls="caseProcessPreview" tabindex="0" data-case-process-step="1"><span>01</span><div><strong>Посмотрим материалы</strong><small>тему, текст, замечания, методичку и нужную дату</small></div></button><div class="case-process__mobile-note" data-case-process-mobile-note aria-hidden="true"><small data-case-process-mobile-kicker>01 · Материалы</small><strong data-case-process-mobile-title>Тема, методичка и замечания руководителя</strong><span data-case-process-mobile-copy>Запишем, с какой версией текста и какими требованиями работаем.</span></div></li>
+            <li><button type="button" id="caseProcessTab2" role="tab" aria-selected="false" aria-controls="caseProcessPreview" tabindex="-1" data-case-process-step="2"><span>02</span><div><strong>Согласуем результат, срок и цену</strong><small>до оплаты напишем, что сделаем и что вы получите</small></div></button></li>
+            <li><button type="button" id="caseProcessTab3" role="tab" aria-selected="false" aria-controls="caseProcessPreview" tabindex="-1" data-case-process-step="3"><span>03</span><div><strong>Покажем правки и объясним главное</strong><small>к каждому важному изменению добавим комментарий</small></div></button></li>
+            <li><button type="button" id="caseProcessTab4" role="tab" aria-selected="false" aria-controls="caseProcessPreview" tabindex="-1" data-case-process-step="4"><span>04</span><div><strong>Сверим результат вместе</strong><small>пройдём по согласованному списку; продолжение — только по вашему решению</small></div></button></li>
+          </ol>
+          <div class="case-dossier__links">
+            <a class="line-link" href="/prolog.html">Подробнее о работе с редактором <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="case-file" aria-label="Пример письменной договорённости по этапу">
+          <header><span>Что согласуем письменно</span><b>до оплаты</b></header>
+          <div class="case-file__current" id="caseProcessPreview" role="tabpanel" aria-labelledby="caseProcessTab1" aria-live="polite">
+            <small data-case-file-kicker>01 · Материалы</small>
+            <strong data-case-file-title>Тема, методичка и замечания руководителя</strong>
+            <span data-case-file-copy>Запишем, с какой версией текста и какими требованиями работаем.</span>
+          </div>
+          <div class="case-file__control">
+            <p><span aria-hidden="true">↳</span> Можно остановиться после одного разбора или этапа. Продолжение — только если вы его выберете.</p>
+            <p><small>Ваше авторство</small>Вы принимаете содержательные решения. Мы не придумываем данные и источники.</p>
+          </div>
+          <footer>
+            <a href="/specifikaciya.html">Что записываем до оплаты <span aria-hidden="true">→</span></a>
+            <a href="/academic-integrity.html">Подробнее о правилах помощи <span aria-hidden="true">↗</span></a>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-proof section-shell" id="homeProof" aria-labelledby="proofTitle" data-home-chapter="proof" data-story-reveal hidden>
+      <div class="case-proof__copy">
+        <p class="eyebrow">До обращения</p>
+        <h2 id="proofTitle">Посмотрите, кому доверяете работу.</h2>
+        <p>Отзывы клиентов, правила работы и сведения о мастерской собраны здесь — всё можно проверить до обращения.</p>
+        <div class="case-proof__facts">
+          <a href="/reviews.html"><span>01</span><strong>Отзывы клиентов</strong><small>исходные сообщения публикуем с разрешения авторов</small><i aria-hidden="true">↗</i></a>
+          <a href="/guarantees.html"><span>02</span><strong>Правила мастерской</strong><small>за что отвечаем и как рассматриваем вопросы</small><i aria-hidden="true">↗</i></a>
+          <a href="/about.html"><span>03</span><strong>Кто работает с материалами</strong><small>о мастерской, редакции и ответственном издателе</small><i aria-hidden="true">↗</i></a>
+        </div>
+      </div>
+      <figure class="case-proof__review">
+        <span class="case-proof__clip" aria-hidden="true"></span>
+        <a href="/reviews.html#review-happy" aria-label="Открыть исходное сообщение клиента в книге благодарностей">
+          <img src="/assets/img/reviews/review-14.webp" alt="Сообщение клиента после защиты на 98 баллов" width="720" height="402" loading="lazy" data-review-home="14">
+        </a>
+        <figcaption><span>Клиент написал после защиты на 98 баллов. Сообщение опубликовано с разрешения; личные данные скрыты.</span> <a href="/reviews.html">Посмотреть все отзывы <span aria-hidden="true">→</span></a></figcaption>
+      </figure>
+    </section>
+
+    <section class="case-faq section-shell" id="homeQuestions" aria-labelledby="faqTitle" data-home-chapter="questions" hidden>
+      <header class="case-section-head">
+        <div><p class="eyebrow">Перед началом</p><h2 id="faqTitle">Что ещё важно знать.</h2></div>
+        <p>О материалах, новых замечаниях и ваших данных.</p>
+      </header>
+      <div class="case-faq__grid">
+        <details class="faq-item">
+          <summary>Что прислать, чтобы узнать стоимость?</summary>
+          <p>Тему, черновик, замечания, методичку и нужную дату. Если материалов пока нет, опишите ситуацию своими словами.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Что делать, если появились новые замечания?</summary>
+          <p>Пришлите их редактору. Сначала покажем, меняют ли они состав работы, срок или стоимость. Продолжим только после вашего согласия.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Что делать, если результат нужно уточнить?</summary>
+          <p>Напишите редактору, какой пункт вызывает вопрос. Сверим результат с тем, что согласовали до начала, и исправим недочёты по правилам мастерской.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Что происходит с файлами и личными данными?</summary>
+          <p>Файлы используем только для вашей задачи. Без отдельного согласия не публикуем ни материалы, ни личные данные. Настройки и сроки хранения указаны в разделе «Данные и приватность».</p>
+        </details>
+      </div>
+      <p class="case-faq__human">Не нашли свой вопрос? <a href="/priyomnaya.html">Напишите мастеру <span aria-hidden="true">→</span></a></p>
+    </section>
+
+    <section class="case-final section-shell" data-story-reveal hidden>
+      <div>
+        <p class="eyebrow">Начните не с заявки, а с того, что уже есть</p>
+        <h2>Покажите, где работа остановилась.</h2>
+        <p>Тема, черновик, замечание или один вопрос — этого достаточно, чтобы предложить первый понятный шаг.</p>
       </div>
       <div class="case-final__actions">
-        <a class="button button--primary button--large" href="/configurator.html">Открыть дело <span aria-hidden="true">→</span></a>
-        <a class="button button--text" href="/priyomnaya.html">Сначала спросить мастера</a>
+        <a class="button button--primary button--large" href="/configurator.html">Уточнить задачу и стоимость <span aria-hidden="true">→</span></a>
+        <a class="button button--text" href="/priyomnaya.html">Написать мастеру своими словами <span aria-hidden="true">→</span></a>
       </div>
     </section>
   </div>
 </main>
 
+<div class="case-scope-backdrop" data-case-scope-backdrop aria-hidden="true"></div>
+<aside class="case-scope-drawer" id="caseScopeDrawer" data-case-scope-drawer role="dialog" aria-modal="true" aria-labelledby="caseScopeDrawerTitle" aria-describedby="caseScopeDrawerNote" aria-hidden="true" inert>
+  <header class="case-scope-drawer__head">
+    <div>
+      <p class="eyebrow">С чего начнём</p>
+      <h2 id="caseScopeDrawerTitle">Что у вас уже есть?</h2>
+    </div>
+    <button type="button" class="case-scope-drawer__close" data-case-scope-close aria-label="Закрыть быстрый старт">
+      <span class="case-scope-drawer__close-label">Закрыть</span>
+      <span class="case-scope-drawer__close-mark" aria-hidden="true"><i></i></span>
+    </button>
+  </header>
+
+  <p class="case-scope-drawer__lead">Не нужно формулировать идеальный запрос — выберите ближайшую ситуацию.</p>
+
+  <ol class="case-scope-drawer__list">
+    <li>
+      <button type="button" data-case-preset="ВКР, пока есть только тема" data-case-drawer-choice="true">
+        <span>01</span><div><strong>Пока есть только тема</strong><small>Проверим, не слишком ли она широкая, и соберём рабочую логику глав</small></div><i aria-hidden="true">→</i>
+      </button>
+    </li>
+    <li>
+      <button type="button" data-case-preset="Курсовая, уже есть мой черновик" data-case-drawer-choice="true">
+        <span>02</span><div><strong>Черновик уже есть</strong><small>Сохраним сильное, найдём провалы в логике и объясним содержательные правки</small></div><i aria-hidden="true">→</i>
+      </button>
+    </li>
+    <li>
+      <button type="button" data-case-preset="ВКР, получены замечания руководителя" data-case-drawer-choice="true">
+        <span>03</span><div><strong>Пришли замечания</strong><small>Переведём комментарии в понятный порядок: что критично и с чего начать</small></div><i aria-hidden="true">→</i>
+      </button>
+    </li>
+    <li>
+      <button type="button" data-case-preset="Диплом готов, скоро защита" data-case-drawer-choice="true">
+        <span>04</span><div><strong>До защиты мало времени</strong><small>Сверим речь с работой, соберём презентацию и спокойно разберём вопросы комиссии</small></div><i aria-hidden="true">→</i>
+      </button>
+    </li>
+  </ol>
+
+  <footer class="case-scope-drawer__foot" id="caseScopeDrawerNote">
+    <p><span>Вы — автор работы</span>Помогаем разобраться, выстроить и отредактировать ваш материал. Не придумываем данные и источники, не подменяем ваше участие.</p>
+    <a href="/academic-integrity.html">Как устроена допустимая помощь <span aria-hidden="true">↗</span></a>
+  </footer>
+</aside>
+
 <!-- Колофон (тёмный финал) единый для всех страниц — монтирует app.js -->
 
 <!-- Мобильная навигация: единая нижняя панель, монтирует app.js -->
 
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["Organization","ProfessionalService"],"@id":"https://akademsalon.ru/#org","name":"Академический Салон","legalName":"Семёнов Семён Юрьевич","description":"Исследовательская мастерская: диагностика, совместные проекты, редактура, оформление и подготовка к защите с зафиксированными решениями и участием клиента.","url":"https://akademsalon.ru/","logo":"https://akademsalon.ru/assets/img/mail-avatar-512.png","image":"https://akademsalon.ru/assets/img/og-cover-v3.png","foundingDate":"2020","taxID":"212885750445","areaServed":{"@type":"Country","name":"Россия"},"knowsLanguage":"ru","priceRange":"от 2 500 ₽","contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://t.me/academicsaloon","availableLanguage":"ru"},"sameAs":["https://vk.com/academicsaloon","https://t.me/akademsalon","https://t.me/academicsaloon","https://max.ru/join/dP7MynBoq0tumYpQIc5e5UYtt_F9ZGElLsRetoIHZPs","https://t.me/academic_saloon_bot"]},{"@type":"WebSite","@id":"https://akademsalon.ru/#website","url":"https://akademsalon.ru/","name":"Академический Салон","inLanguage":"ru","publisher":{"@id":"https://akademsalon.ru/#org"}},{"@type":"WebPage","@id":"https://akademsalon.ru/#webpage","url":"https://akademsalon.ru/","name":"Дело исследования: от темы до защиты","isPartOf":{"@id":"https://akademsalon.ru/#website"},"about":{"@id":"https://akademsalon.ru/#org"},"inLanguage":"ru"}]}</script>
-<script src="assets/js/home-release.min.js?v=20260726release33"></script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":["Organization","ProfessionalService"],
+      "@id":"https://akademsalon.ru/#org",
+      "name":"Академический Салон",
+      "legalName":"Семёнов Семён Юрьевич",
+      "description":"Редакторская мастерская для учебных и исследовательских работ: разбор, редактура и сопровождение с содержательным участием автора.",
+      "url":"https://akademsalon.ru/",
+      "logo":"https://akademsalon.ru/assets/img/mail-avatar-512.png",
+      "image":"https://akademsalon.ru/assets/img/og-cover-v4.png",
+      "foundingDate":"2020",
+      "taxID":"212885750445",
+      "areaServed":{"@type":"Country","name":"Россия"},
+      "knowsLanguage":"ru",
+      "priceRange":"от 2 500 ₽",
+      "contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://t.me/academicsaloon","availableLanguage":"ru"},
+      "sameAs":["https://vk.com/academicsaloon","https://t.me/academicsaloon"]
+    },
+    {"@type":"WebSite","@id":"https://akademsalon.ru/#website","url":"https://akademsalon.ru/","name":"Академический Салон","inLanguage":"ru","publisher":{"@id":"https://akademsalon.ru/#org"}},
+    {"@type":"WebPage","@id":"https://akademsalon.ru/#webpage","url":"https://akademsalon.ru/","name":"Курсовые, ВКР и исследования: с нуля и на доработку","description":"Курсовые, ВКР, магистерские, статьи и отчёты — с нуля, на доработку и срочно. До оплаты фиксируем результат, срок и цену.","isPartOf":{"@id":"https://akademsalon.ru/#website"},"about":{"@id":"https://akademsalon.ru/#org"},"inLanguage":"ru"},
+    {
+      "@type":"FAQPage",
+      "@id":"https://akademsalon.ru/#faq",
+      "isPartOf":{"@id":"https://akademsalon.ru/#webpage"},
+      "mainEntity":[
+        {"@type":"Question","name":"С какими работами можно обратиться?","acceptedAnswer":{"@type":"Answer","text":"С курсовыми, ВКР и дипломами, магистерскими исследованиями, статьями, отчётами по практике, рефератами, эссе, отдельными главами, оформлением и подготовкой к защите. Кандидатские исследования берём в консультационный и редакторский формат."}},
+        {"@type":"Question","name":"Можно начать совсем с нуля?","acceptedAnswer":{"@type":"Answer","text":"Да. Можно прийти только с заданием или требованиями кафедры. Начнём с темы, источников, метода и плана, затем будем двигаться по согласованным этапам. Факты, данные, ключевые выводы и финальная версия требуют вашего участия."}},
+        {"@type":"Question","name":"Берёте срочные задачи?","acceptedAnswer":{"@type":"Answer","text":"Да, если объём реалистичен. Пришлите материалы и точную дату: до оплаты скажем, что успеем подготовить. Если весь объём невозможен, предложим самый важный этап или честно откажемся."}},
+        {"@type":"Question","name":"Что значит «доведём до конца»?","acceptedAnswer":{"@type":"Answer","text":"Доводим до конца результат, который зафиксировали до оплаты, и без доплаты исправляем наши несоответствия. Новые требования, тема или дополнительный объём согласуются отдельно. Оценку и решение комиссии не обещаем."}}
+      ]
+    }
+  ]
+}
+</script>
+<script src="assets/js/home-release.min.js?v=20260802release97"></script>
 </body>
 </html>

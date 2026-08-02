@@ -167,7 +167,7 @@
       }
       if (live) live.textContent = 'Итого: от ' + q.lowFmt + ' ₽';
 
-      /* Первый шаг — самостоятельный диагностический результат, а не
+      /* Первый шаг — самостоятельный письменный результат, а не
          искусственно уменьшенный аванс от большой неопределённой услуги. */
       var slotsEl = document.getElementById('qSlots');
       if (slotsEl && window.SalonSlots && window.SalonSlots.enabled) {
@@ -177,9 +177,9 @@
       var startEl = document.getElementById('qStart');
       var startNote = document.getElementById('qStartNote');
       if (startEl) {
-        startEl.textContent = 'Диагностика';
+        startEl.textContent = 'Письменный разбор';
         if (startNote) startNote.textContent =
-          'разбор материалов и карта следующих действий — отдельный результат';
+          'изучение материалов и понятный порядок действий — отдельный результат';
       }
 
       if (!first && animate) {
@@ -279,7 +279,7 @@
 
     if (!animate) return;
 
-    /* enhanced: карта шага поднимается на стол. Шаг квантуется с гистерезисом
+    /* enhanced: лист шага поднимается на стол. Шаг квантуется с гистерезисом
        ±8% — граница не дребезжит; рельса платежей заливается по прогрессу,
        накопитель «у вас на руках» пересказывает пройденное. */
     var HAND = [

@@ -183,7 +183,7 @@ function makeClassifierHarness({ mobile = true, preset = 'Есть чернов�
   };
 }
 
-test('home opens one explainable research case before asking for contact', () => {
+test('home opens one calm guided entry before asking for contact', () => {
   for (const marker of [
     'data-case-form',
     'data-case-input',
@@ -192,15 +192,40 @@ test('home opens one explainable research case before asking for contact', () =>
     'data-route-need',
     'data-route-change',
     'data-route-free',
-    'Контакт не требуется',
-    'мы её не отправляем и не сохраняем',
   ]) {
     assert.ok(home.includes(marker), `home must expose ${marker}`);
   }
-  assert.match(home, /Одно дело\.<br>От темы до защиты\./);
-  assert.match(home, /Самостоятельно/);
-  assert.match(home, /Не узнали ситуацию\?[\s\S]*?Спросите мастера без заказа/);
-  assert.doesNotMatch(home, /Работаем, пока ты отдыхаешь|Рассчитать проект/);
+  assert.match(home, /<h1 id="caseHeroTitle"><span>Не нужно разбираться<\/span><em>во всём сразу\.<\/em><\/h1>/);
+  assert.match(home, /Покажите, что уже есть\. Мы предложим один понятный следующий шаг/);
+  const hero = home.slice(home.indexOf('<section class="case-hero"'), home.indexOf('<section class="guided-situations'));
+  assert.equal((hero.match(/class="hero-act__cta/g) || []).length, 2);
+  assert.match(home, /самостоятельн/i);
+  assert.match(home, /class="guided-final guided-shell"[\s\S]*?Написать мастеру/);
+  assert.doesNotMatch(home, /Не нужно выбирать услугу|Фраза остаётся в браузере/);
+  assert.doesNotMatch(home, /Рассчитать проект/);
+  assert.match(home, /Работаем, пока ты отдыхаешь[\s\S]*— с гарантией\./);
+  assert.match(home, /Посмотреть исходные отзывы/);
+});
+
+test('quick situations open as an accessible functional side drawer', () => {
+  for (const marker of [
+    'data-case-scope-open',
+    'data-case-scope-drawer',
+    'data-case-scope-backdrop',
+    'data-case-scope-close',
+    'data-case-drawer-choice="true"',
+    'data-case-scope-reopen',
+    'aria-modal="true"',
+  ]) {
+    assert.ok(home.includes(marker), `home must expose drawer marker ${marker}`);
+  }
+  assert.match(homeJs, /case-scope-drawer-open/);
+  assert.match(homeJs, /event\.key === 'Escape'/);
+  assert.match(homeJs, /scopeDrawer\.setAttribute\('inert',''\)/);
+  assert.match(homeJs, /closeScopeDrawer\(false\);[\s\S]*?revealRoute\(\)/);
+  assert.match(homeCss, /\.case-scope-drawer\{[\s\S]*?transform:translateX/);
+  assert.match(homeCss, /:root\.case-scope-drawer-open \.case-scope-drawer\{/);
+  assert.match(homeCss, /@media\(max-width:620px\)\{[\s\S]*?\.case-scope-drawer\{/);
 });
 
 test('local classifier is explainable, reversible and never serializes the raw phrase', () => {
@@ -212,7 +237,7 @@ test('local classifier is explainable, reversible and never serializes the raw p
   assert.match(homeJs, /Такой запрос не принимается/);
   assert.match(homeJs, /situations\.length > 1/);
   assert.match(homeJs, /works\.length > 1/);
-  assert.match(homeJs, /Одной фразы пока недостаточно для честной рекомендации/);
+  assert.match(homeJs, /По этой фразе пока нельзя точно выбрать первый шаг и назвать цену/);
   assert.match(homeJs, /params\.set\('work',work\)/);
   assert.match(homeJs, /params\.set\('situation',situation\)/);
   assert.match(homeJs, /params\.set\('result',result\)/);
@@ -275,16 +300,16 @@ test('conflicting requested results require an explicit first priority', () => {
   assert.equal(editFirst.slots.confidence.textContent, 'Нужно выбрать приоритет');
   assert.deepEqual(
     editFirst.slots.confirm.children.map((button) => button.textContent),
-    ['Сначала редактура', 'Сначала оформление'],
+    ['Сначала отредактировать текст', 'Сначала привести к требованиям'],
   );
-  editFirst.choose('Сначала редактура');
+  editFirst.choose('Сначала отредактировать текст');
   let route = new URL(editFirst.slots.open.href, 'https://example.test/');
   assert.equal(route.searchParams.get('result'), 'editing');
   assert.equal(route.searchParams.get('service'), null);
 
   const formatFirst = makeClassifierHarness();
   formatFirst.submit(phrase);
-  formatFirst.choose('Сначала оформление');
+  formatFirst.choose('Сначала привести к требованиям');
   route = new URL(formatFirst.slots.open.href, 'https://example.test/');
   assert.equal(route.searchParams.get('result'), 'formatting');
   assert.equal(route.searchParams.get('service'), 'nm');
@@ -294,7 +319,7 @@ test('clear tutoring and post-AI editing contexts use formal safe route codes', 
   const tutoring = makeClassifierHarness();
   tutoring.submit('У меня только тема ВКР, нужна консультация по методологии с редактором');
   let route = new URL(tutoring.slots.open.href, 'https://example.test/');
-  assert.equal(tutoring.slots.result.textContent, 'Консультация с редактором');
+  assert.equal(tutoring.slots.result.textContent, 'Разбор вопроса с редактором');
   assert.equal(route.searchParams.get('result'), 'tutoring');
   assert.equal(route.searchParams.get('service'), 'tu');
 
@@ -334,9 +359,12 @@ test('chapter is recognized as the eleventh canonical work type', () => {
   assert.match(harness.slots.state.textContent, /глава исследования/);
 });
 
-test('submit and presets focus and reveal the route only on mobile', () => {
+test('submit and presets focus the route on mobile and reveal it in every viewport', () => {
   const mobile = makeClassifierHarness();
+  assert.equal(mobile.route.getAttribute('aria-hidden'), 'true');
   mobile.submit('Есть черновик ВКР, нужна редактура');
+  assert.equal(mobile.route.getAttribute('data-route-visible'), 'true');
+  assert.equal(mobile.route.getAttribute('aria-hidden'), 'false');
   assert.equal(mobile.document.activeElement, mobile.route);
   assert.equal(mobile.route.getAttribute('tabindex'), '-1');
   assert.equal(mobile.route.scrollCalls.at(-1).behavior, 'smooth');
@@ -350,7 +378,8 @@ test('submit and presets focus and reveal the route only on mobile', () => {
   const desktop = makeClassifierHarness({ mobile: false });
   desktop.submit('Есть черновик ВКР, нужна редактура');
   assert.equal(desktop.route.focusCalls.length, 0);
-  assert.equal(desktop.route.scrollCalls.length, 0);
+  assert.equal(desktop.route.scrollCalls.length, 1);
+  assert.equal(desktop.route.scrollCalls.at(-1).block, 'center');
   assert.match(homeCss, /@media\(max-width:920px\)[\s\S]*?\.home-case \.case-route\{[\s\S]*?scroll-margin-top:8px/);
   assert.match(homeCss, /\.home-case \.case-route:focus\{[\s\S]*?outline:none/);
 });
@@ -363,7 +392,7 @@ test('safe route codes prefill the configurator and are removed from its address
   assert.match(configurator, /routeParams\.delete\('route'\)/);
   assert.match(
     configurator,
-    /routedWork && routedDiscipline && routedSituation && routedResult \? 3[\s\S]*?routedWork && routedDiscipline && routedSituation \? 2/,
+    /state\.step = routedWork && routedSituation \? 1 : 0/,
   );
   assert.match(configurator, /Участие клиента подтверждено/);
   assert.doesNotMatch(configurator, /Подтверждаю авторский контур/);

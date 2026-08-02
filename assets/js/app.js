@@ -35,10 +35,10 @@
     link.media = 'screen and (max-width:920px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260726release33', source).href
-        : 'assets/css/mobile.css?v=20260726release33';
+      link.href = source ? new URL('../css/mobile.css?v=20260802release97', source).href
+        : 'assets/css/mobile.css?v=20260802release97';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260726release33';
+      link.href = 'assets/css/mobile.css?v=20260802release97';
     }
     document.head.appendChild(link);
   })();
@@ -74,9 +74,9 @@
       { id: 'urgent', label: 'Срочно (до 14 дней)',    k: 1.45 }
     ],
     tiers: [
-      { id: 'base', label: 'Диагностика',          priceKey: 'diagnostic', note: 'Аудит и карта следующих шагов' },
+      { id: 'base', label: 'Письменный разбор',     priceKey: 'diagnostic', note: 'Изучение материала и понятный порядок действий' },
       { id: 'turn', label: 'Редакторский аудит',   priceKey: 'editing',    note: 'Правки в вашем тексте и комментарии' },
-      { id: 'vip',  label: 'Проект с нуля',        priceKey: 'support',    note: 'От темы до полного рабочего черновика и защиты' }
+      { id: 'vip',  label: 'Сопровождение по этапам', priceKey: 'support',  note: 'От темы до защиты — с решениями и содержательным участием автора' }
     ],
     round500: function (n) { return Math.round(n / 500) * 500; },
     fmt: function (n) { return n.toLocaleString('ru-RU'); },
@@ -177,7 +177,7 @@
      Собственные векторные знаки не зависят от системного набора emoji:
      на любой платформе оптика, толщина штриха и цвет остаются фирменными. */
   function icoSearch() {
-    return '<span class="ha-ico" aria-hidden="true">⌕</span>';
+    return '<span class="ha-ico ha-ico--search" aria-hidden="true"><i></i></span>';
   }
   function icoTheme() {
     return '<span class="ha-ico ha-ico--theme" data-theme-glyph data-theme-icon="dark" aria-hidden="true">' +
@@ -244,8 +244,8 @@
         { id:'sources', label:'Какие источники использованы или заявлены в тексте?', short:'Источники', type:'textarea', req:true,
           ph:'Ссылки, список литературы или честно: «источники не указаны / неизвестны».' }
       ] },
-    { id:'review',label:'Экспертная диагностика черновика',  from:2500, unit:'',       code:'rv',
-      desc:'Проверим структуру и доказательность вашего черновика, составим карту замечаний и разберём вероятные вопросы.',
+    { id:'review',label:'Полный разбор черновика',  from:2500, unit:'',       code:'rv',
+      desc:'Проверим структуру и доказательность вашего черновика, объясним каждое замечание и расставим исправления по приоритету.',
       ask:[
         { id:'work', label:'Что за работа?', short:'Работа', type:'chips',
           opts:['Курсовая','Диплом / ВКР','Магистерская','Другое'] },
@@ -274,7 +274,7 @@
           opts:['5 минут','7 минут','10 минут','Не знаю'] }
       ] },
     { id:'commission0', label:'Комиссия №0', from:9900, unit:'', code:'k0', fixed:true,
-      desc:'Частная редакторская предзащита: независимый от подготовки проверяемой версии Оппонент проводит живую сессию, а мастерская выдаёт Протокол №0 и повторно проверяет согласованные критические исправления.',
+      desc:'Репетиция защиты с независимым редактором: Оппонент проводит живую сессию, а мастерская выдаёт Протокол №0 и повторно проверяет согласованные критические исправления.',
       priceFor:function(a){
         return a.work === 'master' ? 29900 : a.work === 'diplom' ? 19900 : 9900;
       },
@@ -554,12 +554,12 @@
         '<g class="tt-stars" fill="currentColor"><circle cx="5.4" cy="6.4" r=".9"/><circle cx="8.1" cy="3.7" r=".6"/><circle cx="4" cy="10.4" r=".55"/></g>' +
       '</svg></button>';
   };
-  /* ---------------- «Спокойный режим»: движение — по желанию ----------------
+  /* ---------------- Режим без анимаций: движение — по желанию ----------------
      Тумблер в шапке и путеводителе: html[data-calm] глушит анимации всего
      сайта (chrome.css), а контраст слегка поднят. localStorage salon_calm. */
   Salon.calmToggleHTML = function () {
     return '<button class="calm-toggle" type="button" aria-pressed="false" ' +
-      'aria-label="Спокойный режим: без анимаций" title="Спокойный режим: без анимаций">' +
+      'aria-label="Режим без анимаций" title="Режим без анимаций">' +
       '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
       'stroke-width="1.6" stroke-linecap="round" aria-hidden="true">' +
       '<path class="ct-wave" d="M3 12c2.2-3.4 4.3-3.4 6.5 0s4.3 3.4 6.5 0 3.4-2.7 5-1"/>' +
@@ -572,14 +572,14 @@
       else docEl.removeAttribute('data-calm');
       docEl.querySelectorAll('.calm-toggle').forEach(function (b) {
         b.setAttribute('aria-pressed', String(!!mode));
-        b.title = mode ? 'Спокойный режим включён · вернуть движение'
-                       : 'Спокойный режим: без анимаций';
+        b.title = mode ? 'Анимации выключены · вернуть движение'
+                       : 'Режим без анимаций';
         var w = b.querySelector('.ct-wave'), f = b.querySelector('.ct-flat');
         if (w) w.style.display = mode ? 'none' : '';
         if (f) f.style.display = mode ? '' : 'none';
       });
       docEl.querySelectorAll('[data-calm-label]').forEach(function (l) {
-        l.textContent = mode ? 'Спокойный режим — включён' : 'Спокойный режим';
+        l.textContent = mode ? 'Анимации выключены' : 'Режим без анимаций';
       });
       if (persist) { try { localStorage.setItem('salon_calm', mode ? '1' : ''); } catch (e) {} }
       if (Salon.motion) Salon.motion.refresh();
@@ -592,7 +592,7 @@
       var next = !on();
       apply(next, true);
       if (Salon.toast) Salon.toast(next
-        ? 'Спокойный режим: без анимаций и мерцания'
+        ? 'Анимации и мерцание выключены'
         : 'Движение возвращено');
     });
     try { if (localStorage.getItem('salon_calm')) apply(true, false); } catch (e) {}
@@ -600,7 +600,11 @@
   })();
 
   Salon.theme = (function () {
-    var THEME_BG = { light: '#F6F1E7', dark: '#14120E' };
+    var themePage = (location.pathname.split('/').pop() || 'index.html');
+    var THEME_BG = {
+      light: '#E9DDCC',
+      dark: themePage === 'index.html' ? '#15110E' : '#14120E'
+    };
     var vtBusy = false;
     function current() { return docEl.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
     function apply(mode, persist) {
@@ -621,6 +625,9 @@
         g.setAttribute('data-theme-icon', mode === 'dark' ? 'light' : 'dark');
       });
       if (persist) { try { localStorage.setItem('salon_theme', mode); } catch (e) {} }
+      try {
+        window.dispatchEvent(new CustomEvent('salon:theme-change', { detail: { theme: mode } }));
+      } catch (e) {}
     }
     /* чернильная заливка от точки (x, y) */
     function switchFrom(mode, x, y) {
@@ -730,11 +737,9 @@
 
     /* ---------------- единый нижний якорь --floor ----------------
        ОДНА переменная для всех жильцов нижней кромки: «Связаться»,
-       «Нужна помощь?», куки-плашка. Считается как ЗАНЯТАЯ КРОМКА.
-       Единственный плавающий постоялец внизу — мобильный док
-       (.mobile-cta): закладка возврата сметы стала листом в потоке
-       (extras.js → .resume-card), кромку больше не делит и переменную
-       --resume-clear не публикует. */
+       «Нужна помощь?», куки-плашка и сменяющая её карточка прогресса.
+       Считается как ЗАНЯТАЯ КРОМКА; одновременно левый rail показывает
+       только один системный слой. */
     function measure() {
       var f = 0, r, cs, nav, hdr, hh, narrow, lh, vv, keyboard;
       vv = window.visualViewport;
@@ -1155,7 +1160,7 @@
         el.querySelector('.mn-later').addEventListener('click', function () { close(el, true); });
       } else {
         el.innerHTML =
-          '<span class="mn-ic" aria-hidden="true">§</span>' +
+          '<span class="mn-ic" aria-hidden="true">✓</span>' +
           '<span class="mn-msg"></span>' +
           '<span class="mn-lead" aria-hidden="true"><i></i></span>' +
           '<button type="button" class="mn-x" aria-label="Закрыть">×</button>';
@@ -1508,7 +1513,7 @@
   (function () {
     var main = document.querySelector('main') || document.querySelector('section');
     if (main && !main.id) main.id = 'main';
-    var skip = document.querySelector('.skip-link');
+    var skip = document.querySelector('.skip-link, .workspace-skip-link');
     if (main && !skip) {
       skip = document.createElement('a');
       skip.className = 'skip-link'; skip.href = '#' + main.id; skip.textContent = 'К содержанию';
@@ -1519,7 +1524,7 @@
     }
   })();
   function insertChromeAfterSkip(node) {
-    var skip = document.querySelector('.skip-link');
+    var skip = document.querySelector('.skip-link, .workspace-skip-link');
     if (skip && skip.parentNode === document.body) {
       if (document.body.firstChild !== skip) document.body.insertBefore(skip, document.body.firstChild);
       document.body.insertBefore(node, skip.nextSibling);
@@ -1544,7 +1549,7 @@
   /* Один и тот же объект проходит от ориентации к живому делу. */
   var ROUTE = [
     { href: '/#caseHeroTitle',    label: 'Показать ситуацию', note: 'без контакта' },
-    { href: 'configurator.html',  label: 'Проверить маршрут', note: 'с основанием' },
+    { href: 'configurator.html',  label: 'Получить рекомендацию', note: 'с основанием' },
     { href: 'dashboard.html',     label: 'Продолжить дело', note: 'версии и следующий шаг' }
   ];
   var QUICK = [
@@ -1556,13 +1561,13 @@
   /* Путеводитель: разделы сгруппированы по смыслу, у каждого — подсказка */
   var GROUPS = [
     { t: 'Заказ', items: [
-      ['configurator.html', 'Рассчитать заказ', 'смета за минуту'],
-      ['komissiya-0.html', 'Комиссия №0', 'частная предзащита · независимый Оппонент'],
+      ['configurator.html', 'Подобрать помощь', 'состав и ориентир за минуту'],
+      ['komissiya-0.html', 'Комиссия №0', 'репетиция защиты · независимый Оппонент'],
       ['tariffs.html', 'Цены и каталог услуг', 'результаты и ориентиры'],
-      ['vedenie.html', 'Форматы сопровождения', 'Диагностика · Редактура · Сопровождение'],
+      ['vedenie.html', 'Форматы сопровождения', 'Письменный разбор · Редактура · Сопровождение'],
       ['oplata.html', 'Как проходит оплата', '50/50 · 30/40/30 · чеки'],
       ['plan.html', 'Разбор плана', '3 000 ₽, зачтётся в оплату'],
-      ['razbor-zamechaniy-nauchruka.html', 'Разбор замечаний научрука', 'карта правок · от 2 500 ₽'],
+      ['razbor-zamechaniy-nauchruka.html', 'Разбор замечаний научрука', 'порядок исправлений · от 2 500 ₽'],
       ['normokontrol-vkr.html', 'Нормоконтроль по методичке', 'оформление · от 5 000 ₽'],
       ['gift.html', 'Подарочный сертификат', 'помощь в подарок']
     ]},
@@ -1598,7 +1603,7 @@
     ['komissiya-0.html', 'Комиссия №0', 'частная предзащита оппонент протокол вопрос защита ии черновик'],
     ['tools.html', 'Бесплатные инструменты', 'проверка текст тема источники самостоятельная работа'],
     ['deposit.html', 'Депозит мастерской', 'аванс пополнение баланс бонус возврат'],
-    ['configurator.html', 'Рассчитать заказ · конфигуратор', 'смета цена калькулятор заявка заказать'],
+    ['configurator.html', 'Подобрать помощь', 'смета цена калькулятор заявка заказать'],
     ['tariffs.html', 'Цены и каталог услуг', 'прайс стоимость сколько стоит картотека формуляр'],
     ['vedenie.html', 'Форматы сопровождения', 'диагностика редактура сопровождение тариф'],
     ['oplata.html', 'Как проходит оплата', 'деньги оплатить рассрочка предоплата этапы чек касса возврат'],
@@ -1704,11 +1709,11 @@
 
 
   function brandHTML() {
-    return '<a class="brand" href="/">' +
+    return '<a class="brand brand--wordmark" href="/" aria-label="Академический Салон — редакторская мастерская. На главную">' +
       brandMarkSVG() +
       '<span class="b-lockup brand__name"><strong class="b-full">Академический Салон</strong>' +
       '<strong class="b-short">Академсалон</strong>' +
-      '<small>Редакторская мастерская</small></span>' +
+      '<small class="brand__motto"><span class="brand__motto-default">Редакторская мастерская</span></small></span>' +
       '<span class="visually-hidden"> — на главную</span></a>';
   }
 
@@ -1719,12 +1724,12 @@
     var fixed = {
       'services.html': ['Услуги', 'Основное'],
       'tariffs.html': ['Цены', 'Основное'],
-      'komissiya-0.html': ['Комиссия №0', 'Предзащита'],
+      'komissiya-0.html': ['Комиссия №0', 'Репетиция защиты'],
       'knowledge.html': ['Библиотека', 'Материалы'],
       'tools.html': ['Инструменты', 'Материалы'],
       'dashboard.html': ['Личный кабинет', 'Кабинет'],
       'start.html': ['Новая заявка', 'Заказ'],
-      'configurator.html': ['Новая заявка', 'Заказ'],
+      'configurator.html': ['Подбор помощи', 'Мастерская'],
       'zayavka.html': ['Заявка', 'Заказ'],
       'specifikaciya.html': ['Спецификация', 'Заказ'],
       'oplata.html': ['Как проходит оплата', 'Заказ'],
@@ -1768,6 +1773,50 @@
     else if (disciplines.indexOf(slug) !== -1) kicker = 'Услуги по направлениям';
     else if (services.indexOf(slug) !== -1) kicker = 'Услуги';
     return { title: title, kicker: kicker };
+  }
+
+  function headerNavigationHTML() {
+    return '<nav class="primary-nav header-navigation" aria-label="Основная навигация">' +
+      '<div class="header-nav-group">' +
+        '<button class="header-nav-trigger" type="button" aria-expanded="false" aria-controls="headerHelpMenu" data-header-menu-trigger>' +
+          '<span>С чем помочь</span><i aria-hidden="true"></i></button>' +
+        '<div class="header-nav-popover header-nav-popover--help" id="headerHelpMenu" data-header-menu aria-hidden="true">' +
+          '<div class="header-nav-popover__intro"><span>С чего начнём</span><strong>Где остановилась работа?</strong><small>Не нужен идеальный запрос — выберите ближайшую ситуацию.</small></div>' +
+          '<div class="header-nav-popover__grid">' +
+            '<a href="/configurator.html?situation=topic&amp;route=header"><span>01</span><strong>Пока есть только тема</strong><small>Проверить масштаб темы и собрать логику глав</small></a>' +
+            '<a href="/configurator.html?situation=draft&amp;route=header"><span>02</span><strong>Черновик уже есть</strong><small>Найти провалы в логике и объяснить правки</small></a>' +
+            '<a href="/configurator.html?situation=comments&amp;route=header"><span>03</span><strong>Пришли замечания</strong><small>Понять, что критично и с чего начать</small></a>' +
+            '<a href="/configurator.html?situation=defense&amp;route=header"><span>04</span><strong>До защиты мало времени</strong><small>Сверить речь, презентацию и вопросы комиссии</small></a>' +
+          '</div>' +
+          '<div class="header-nav-popover__aside" aria-label="Дополнительные разделы">' +
+            '<a href="/services.html">Все форматы помощи <span aria-hidden="true">→</span></a>' +
+            '<a href="/tariffs.html">Цены и условия <span aria-hidden="true">→</span></a>' +
+            '<a href="/prolog.html">Как проходит работа <span aria-hidden="true">→</span></a>' +
+            '<a href="/guarantees.html">Границы помощи <span aria-hidden="true">→</span></a>' +
+          '</div>' +
+          '<a class="header-nav-popover__foot" href="/tools.html"><span>Хотите сначала разобраться сами?</span><strong>Бесплатные гайды и инструменты</strong><i aria-hidden="true">↗</i></a>' +
+        '</div>' +
+      '</div>' +
+      '<a class="header-nav-direct" href="/tariffs.html">Цены</a>' +
+      '<a class="header-nav-direct header-nav-direct--reviews" href="/reviews.html">Отзывы</a>' +
+      '<div class="header-nav-group">' +
+        '<button class="header-nav-trigger" type="button" aria-expanded="false" aria-controls="headerUsefulMenu" data-header-menu-trigger>' +
+          '<span>Полезное</span><i aria-hidden="true"></i></button>' +
+        '<div class="header-nav-popover header-nav-popover--useful" id="headerUsefulMenu" data-header-menu aria-hidden="true">' +
+          '<div class="header-nav-popover__intro"><span>Гайды и инструменты</span><strong>Проверить самостоятельно</strong><small>Тема, текст, источники и подготовка к защите.</small></div>' +
+          '<div class="header-nav-popover__grid">' +
+            '<a href="/audit-temy-vkr.html"><span>01</span><strong>Проверить тему</strong><small>Формулировка, цель, объект и задачи</small></a>' +
+            '<a href="/check.html"><span>02</span><strong>Проверить текст</strong><small>Ясность, стиль и сложные фрагменты</small></a>' +
+            '<a href="/proverka-istochnikov-vkr.html"><span>03</span><strong>Проверить источники</strong><small>DOI, ссылки и происхождение материалов</small></a>' +
+            '<a href="/guide-rech-na-zashchitu.html"><span>04</span><strong>Подготовиться к защите</strong><small>Речь, презентация и вопросы комиссии</small></a>' +
+          '</div>' +
+          '<div class="header-nav-popover__aside">' +
+            '<a href="/tools.html">Все инструменты <span aria-hidden="true">→</span></a>' +
+            '<a href="/knowledge.html">Все статьи <span aria-hidden="true">→</span></a>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</nav>';
   }
 
   /* Контекст страницы становится частью одного «Дела исследования».
@@ -1856,10 +1905,10 @@
       'nauchnaya-statya':['','draft','editing',3,'Рукопись к редакторской проверке'],
       'otchet-po-praktike':['practice','topic','support',2,'Отчёт на реальных материалах практики'],
       'dorabotka-otcheta-po-praktike':['practice','comments','editing',3,'Доработка отчёта по замечаниям'],
-      'kandidatskaya-dissertaciya':['kandidat','draft','diagnostic',3,'Диагностика диссертационного исследования'],
+      'kandidatskaya-dissertaciya':['kandidat','draft','diagnostic',3,'Письменный разбор диссертационного исследования'],
       'referat':['self','topic','support',2,'Реферат или эссе как рабочий проект'],
       'plan':['','topic','diagnostic',1,'Разобрать тему и план'],
-      'razbor-zamechaniy-nauchruka':['','comments','diagnostic',3,'Перевести замечания в карту правок'],
+      'razbor-zamechaniy-nauchruka':['','comments','diagnostic',3,'Разобрать замечания и определить порядок исправлений'],
       'normokontrol-vkr':['diplom','draft','formatting',3,'Сверить стабильную версию с методичкой']
     };
     var service = serviceRoutes[slug];
@@ -1934,7 +1983,7 @@
         self:'tools.html',
         selfLabel:'Начать самостоятельно',
         action:'configurator.html',
-        actionLabel:'Собрать маршрут'
+        actionLabel:'Подобрать помощь'
       };
     }
     if (here === 'knowledge.html' || here === 'tools.html') {
@@ -1989,11 +2038,11 @@
         '<kbd>⌘ K</kbd><div class="toc-sr" id="tocSR" hidden></div></div>' +
       '<div class="toc-appearance" data-toc-home role="group" aria-label="Оформление сайта">' +
         '<div class="toc-theme-row"><span class="ttr-lbl" data-theme-label>Светлая тема</span>' + Salon.themeToggleHTML() + '</div>' +
-        '<div class="toc-theme-row"><span class="ttr-lbl" data-calm-label>Спокойный режим</span>' + Salon.calmToggleHTML() + '</div>' +
+        '<div class="toc-theme-row"><span class="ttr-lbl" data-calm-label>Режим без анимаций</span>' + Salon.calmToggleHTML() + '</div>' +
       '</div>' +
       '<nav class="toc-choices" aria-label="Быстрый выбор" data-toc-home>' + quickRows + '</nav>' +
       '<section class="toc-route" id="tocRoute" data-toc-home><div class="tr-head"><span class="toc-grp-t">Впервые здесь</span>' +
-        '<a href="start.html">Подробная карта →</a></div><nav class="tr-steps" aria-label="Маршрут новичка">' + routeRow + '</nav></section>' +
+        '<a href="start.html">Все шаги →</a></div><nav class="tr-steps" aria-label="Маршрут новичка">' + routeRow + '</nav></section>' +
       '<details class="toc-directory" data-toc-home><summary><span><b>Весь Салон</b><small>Услуги, гарантии, материалы и документы</small></span><i aria-hidden="true">+</i></summary>' +
         '<div class="toc-grid"><nav class="toc-primary" aria-label="Разделы сайта">' + rows + '</nav>' +
           '<div class="toc-side"><div><span class="toc-grp-t">Документы</span><nav class="toc-docs" aria-label="Правовые документы">' + docRows + '</nav></div>' +
@@ -2142,16 +2191,31 @@
   var CHROME_OFF = here === 'admin.html' || here === 'admin-mock.html';
   if (!CHROME_OFF && !document.querySelector('.site-header')) {
     var header = document.createElement('header');
-    header.className = 'site-header';
-    var navLinks = NAV.map(function (n) {
-      var cur = n.href === here ? ' aria-current="page"' : '';
-      return '<a href="' + n.href + '"' + cur + '>' + n.label + '</a>';
-    }).join('');
+    var accountChrome = document.body.classList.contains('is-account-route');
+    header.className = 'site-header' + (accountChrome ? ' site-header--account' : '');
     var calcHref = currentCaseContext ? currentCaseContext.action : 'configurator.html';
-    var calcLabel = here === 'index.html' ? 'Собрать маршрут'
-      : currentCaseContext ? 'Следующий шаг' : 'Описать задачу';
+    var calcLabel = 'Подобрать помощь';
+    var homeStartCTA = false;
+    var savedConcept = null;
+    try {
+      var savedDraft = JSON.parse(localStorage.getItem('salon_draft') || '{}');
+      savedConcept = savedDraft && savedDraft.concept;
+    } catch (e) {}
+    var hasSavedConcept = !!(savedConcept &&
+      (savedConcept.situation || savedConcept.workType || savedConcept.result ||
+       savedConcept.deadlineDate || savedConcept.topic || savedConcept.comment));
+    if (hasSavedConcept) {
+      calcHref = 'configurator.html';
+      calcLabel = 'Продолжить подбор';
+    } else if (here === 'index.html' && !currentCaseContext) {
+      calcHref = '#deskStart';
+      calcLabel = 'Подобрать помощь';
+      homeStartCTA = true;
+    }
     header.innerHTML = '<div class="site-header__inner">' + brandHTML() +
-      '<nav class="primary-nav nav-links" aria-label="Основная навигация">' + navLinks + '</nav>' +
+      (accountChrome
+        ? '<a class="header-account-exit" href="/">\u041d\u0430 \u0441\u0430\u0439\u0442 <span aria-hidden="true">\u2197</span></a>'
+        : headerNavigationHTML()) +
       '<div class="site-header__actions nav-cta">' +
         /* aria-label обязателен: ниже 1240 подпись «Найти» и клавиша «/»
            прячутся, остаётся только значок, помеченный aria-hidden —
@@ -2159,26 +2223,51 @@
            Имя начинается со слова «Найти», поэтому WCAG 2.5.3
            (label in name) соблюдён. title — для мыши: под лупой без
            подписи всё равно должно быть видно, что это поиск. */
-        '<button class="header-action header-action--search" type="button" data-open-search' +
-          ' aria-label="Найти по сайту" title="Найти по сайту">' +
-          icoSearch() + '<span class="ha-txt">Найти</span><kbd>/</kbd></button>' +
         /* title ставит Salon.theme.apply — там же, где aria-pressed,
            по которому CSS выбирает солнце или месяц. */
-        '<button class="header-theme-toggle theme-toggle" type="button" aria-label="Сменить тему оформления">' +
-          icoTheme() + '<span class="visually-hidden" data-theme-action>Включить тёмную тему</span></button>' +
+        '<button class="header-action header-action--search" type="button" data-open-search' +
+          ' aria-label="Найти по сайту" title="Найти по сайту">' +
+          icoSearch() + '<span class="visually-hidden">Найти</span></button>' +
         /* «Кабинет» — всегда со словом: по значку человек не поймёт, что
            это личный кабинет (решение владельца от 25.07.2026). Число
            событий само по себе тоже ничего не говорит, поэтому что оно
            значит, пишет Salon.cabBadge в aria-label и title. Точка
            статуса осталась хуком для сторонних правил, но роли
            «индикатор одним цветом» у неё больше нет (§3). */
-        '<a class="header-action nav-cab" href="dashboard.html"' + (here === 'dashboard.html' ? ' aria-current="page"' : '') +
-          ' aria-label="Личный кабинет" title="Личный кабинет">' +
-          '<span class="header-action__dot" aria-hidden="true"></span><span class="nc-txt">Кабинет</span>' +
-          '<span class="nc-badge" aria-hidden="true" hidden></span></a>' +
-        '<a class="button button--primary button--compact btn btn-wax" href="' + calcHref + '">' + calcLabel + ' <span aria-hidden="true">→</span></a>' +
-        '<button class="icon-button header-menu-button menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><i aria-hidden="true"></i></button>' +
+        (accountChrome ? '' :
+          '<a class="header-action nav-cab" href="dashboard.html"' + (here === 'dashboard.html' ? ' aria-current="page"' : '') +
+            ' aria-label="Войти в личный кабинет" title="Войти в личный кабинет">' +
+            '<span class="header-cabinet-icon" aria-hidden="true"><i></i></span><span class="nc-txt">Войти</span>' +
+            '<span class="nc-badge" aria-hidden="true" hidden></span></a>') +
+        Salon.themeToggleHTML() +
+        (accountChrome ? '' : '<a class="button button--primary button--compact btn btn-wax" href="' + calcHref + '"' + (homeStartCTA ? ' data-home-start' : '') + '>' + calcLabel + ' <span aria-hidden="true">→</span></a>') +
+        '<button class="icon-button header-menu-button menu-toggle" type="button" aria-expanded="false" aria-controls="p15MenuDialog" aria-label="Открыть меню"><i aria-hidden="true"></i></button>' +
       '</div></div>';
+    var headerTheme = header.querySelector('.theme-toggle');
+    if (headerTheme) headerTheme.classList.add('header-theme-toggle');
+    Array.prototype.forEach.call(header.querySelectorAll('.header-nav-direct[href]'), function (link) {
+      var target = (link.getAttribute('href') || '').replace(/^\//, '');
+      if (target === here) link.setAttribute('aria-current', 'page');
+    });
+    var helpPages = {
+      'services.html':1, 'configurator.html':1, 'start.html':1, 'vedenie.html':1,
+      'komissiya-0.html':1, 'plan.html':1, 'razbor-zamechaniy-nauchruka.html':1,
+      'normokontrol-vkr.html':1, 'redaktura-posle-ii.html':1, 'avtorskiy-zakaz.html':1,
+      'diplomnaya-rabota.html':1, 'dorabotka-otcheta-po-praktike.html':1,
+      'kandidatskaya-dissertaciya.html':1, 'kursovaya-rabota.html':1,
+      'magisterskaya-dissertaciya.html':1, 'nauchnaya-statya.html':1,
+      'otchet-po-praktike.html':1, 'referat.html':1
+    };
+    var usefulPage = here === 'knowledge.html' || here === 'tools.html' ||
+      here === 'check.html' || here === 'audit-temy-vkr.html' ||
+      here === 'proverka-istochnikov-vkr.html' || here === 'dosie-nauchruka.html' ||
+      /^guide-/.test(here);
+    var currentMenu = helpPages[here] || /^(kursovaya|diplomnaya)-po-/.test(here)
+      ? 'headerHelpMenu' : (usefulPage ? 'headerUsefulMenu' : '');
+    if (currentMenu) {
+      var currentTrigger = header.querySelector('[data-header-menu-trigger][aria-controls="' + currentMenu + '"]');
+      if (currentTrigger) currentTrigger.setAttribute('aria-current', 'true');
+    }
     insertChromeAfterSkip(header);
 
     var mobileHeader = document.createElement('header');
@@ -2189,8 +2278,7 @@
       '<a class="mobile-appbar__brand" href="/" title="На главную">' +
         brandMarkSVG() + '<span><strong></strong><small></small></span></a>' +
       '<button class="mobile-appbar__help" type="button" data-open-search aria-label="Найти раздел или материал">' + icoSearch() + '</button>' +
-      '<button class="mobile-appbar__theme theme-toggle" type="button" aria-label="Сменить тему оформления">' + icoTheme() + '<span class="visually-hidden" data-theme-action>Включить тёмную тему</span></button>' +
-      '<button class="mobile-appbar__menu menu-toggle" type="button" aria-expanded="false" aria-controls="toc" aria-label="Открыть меню"><i aria-hidden="true"></i></button>';
+      '<button class="mobile-appbar__menu menu-toggle" type="button" aria-expanded="false" aria-controls="p15MenuDialog" aria-label="Открыть меню"><span>Меню</span><i aria-hidden="true"></i></button>';
     mobileHeader.querySelector('.mobile-appbar__brand strong').textContent = mobileHeaderMeta.title;
     mobileHeader.querySelector('.mobile-appbar__brand small').textContent = mobileHeaderMeta.kicker;
     header.insertAdjacentElement('afterend', mobileHeader);
@@ -2210,6 +2298,25 @@
     if (d10 >= 2 && d10 <= 4 && (d100 < 12 || d100 > 14)) return few;
     return many;
   }
+  Salon.updateAccountEntry = function (session) {
+    var authenticated = !!(session && session.authenticated === true);
+    var guest = !authenticated && !!(session && session.guest_session === true);
+    if (!guest && !authenticated && Salon.api && Salon.api.guestTokens) {
+      guest = Salon.api.guestTokens().length > 0;
+    }
+    var visible = authenticated ? 'Кабинет' : (guest ? 'Моё дело' : 'Войти');
+    var accessible = authenticated ? 'Личный кабинет' : (guest ? 'Открыть моё дело' : 'Войти в личный кабинет');
+    Array.prototype.forEach.call(document.querySelectorAll('.nav-cab'), function (entry) {
+      var label = entry.querySelector('.nc-txt');
+      var badge = entry.querySelector('.nc-badge');
+      if (label) label.textContent = visible;
+      if (badge && !authenticated && !guest) { badge.hidden = true; badge.textContent = ''; }
+      entry.setAttribute('aria-label', accessible);
+      entry.setAttribute('title', accessible);
+      entry.setAttribute('data-account-label', accessible);
+      entry.setAttribute('data-auth-state', authenticated ? 'authenticated' : (guest ? 'guest' : 'anonymous'));
+    });
+  };
   Salon.cabBadge = function () {
     var slots = [].slice.call(document.querySelectorAll('.nav-cab .nc-badge, .mn-cab .mn-badge'));
     if (!slots.length || !Salon.api || !Salon.api.identified || !Salon.api.identified()) return;
@@ -2230,8 +2337,9 @@
            Видимое слово «Кабинет» входит в имя — WCAG 2.5.3 соблюдён. */
         var host = slot.closest ? slot.closest('.nav-cab, .mn-cab') : null;
         if (!host || !say) return;
-        host.setAttribute('aria-label', 'Личный кабинет, ' + say);
-        host.setAttribute('title', 'Личный кабинет · ' + say);
+        var base = host.getAttribute('data-account-label') || 'Личный кабинет';
+        host.setAttribute('aria-label', base + ', ' + say);
+        host.setAttribute('title', base + ' · ' + say);
       });
     });
   };
@@ -2274,7 +2382,7 @@
     var main = document.querySelector('.nav-cta a.btn-wax');
     if (main) {
       main.href = 'configurator.html';
-      main.innerHTML = 'Продолжить дело <span aria-hidden="true">→</span>';
+      main.innerHTML = 'Продолжить подбор <span aria-hidden="true">→</span>';
     }
   })();
 
@@ -2318,40 +2426,51 @@
     return '<div class="site-footer__main">' +
       '<div class="site-footer__brand">' +
         brandMarkSVG() +
-        '<div><strong>Академический Салон</strong><p>Одно дело исследования: от вашей ситуации до проверяемого следующего шага.</p></div>' +
+        '<div><strong>Академический Салон</strong><p>От темы до защиты — один проверяемый шаг за раз.</p>' +
+          '<div class="site-footer__brand-actions">' +
+            '<a href="configurator.html">Открыть дело <span aria-hidden="true">→</span></a>' +
+            '<a href="dashboard.html">Войти в кабинет</a>' +
+          '</div></div>' +
       '</div>' +
-      '<nav aria-label="Услуги">' +
-        '<strong>Помощь</strong>' +
-        '<a href="services.html">Все услуги</a>' +
-        '<a href="komissiya-0.html">Комиссия №0</a>' +
-        '<a href="tariffs.html">Цены</a>' +
-        '<a href="configurator.html">Открыть дело</a>' +
-        '<a href="guarantees.html">Гарантии</a>' +
-      '</nav>' +
-      '<nav aria-label="Полезные разделы">' +
-        '<strong>Библиотека</strong>' +
-        '<a href="knowledge.html">Библиотека</a>' +
-        '<a href="tools.html">Инструменты</a>' +
-        '<a href="plus.html">Абонемент «Салон+»</a>' +
-        '<a href="deposit.html">Депозит мастерской</a>' +
-        '<a href="reviews.html">Отзывы</a>' +
-        '<a href="priyomnaya.html">Приёмная</a>' +
-      '</nav>' +
-      '<nav aria-label="Информация">' +
-        '<strong>О сервисе</strong>' +
-        '<a href="about.html">О мастерской</a>' +
-        '<a href="prolog.html">Как устроено дело</a>' +
-        '<a href="academic-integrity.html">Границы помощи</a>' +
-        '<a href="privacy.html">Конфиденциальность</a>' +
-        '<a href="terms.html">Документы</a>' +
-      '</nav>' +
+      '<details class="site-footer__group" open data-footer-group>' +
+        '<summary><span>Начать</span><i aria-hidden="true"></i></summary>' +
+        '<nav class="site-footer__links" aria-label="Начать работу">' +
+          '<a href="services.html">Все услуги</a>' +
+          '<a href="tariffs.html">Цены и условия</a>' +
+          '<a href="komissiya-0.html">Комиссия №0</a>' +
+          '<a href="configurator.html">Собрать заявку</a>' +
+        '</nav>' +
+      '</details>' +
+      '<details class="site-footer__group" open data-footer-group>' +
+        '<summary><span>Самостоятельно</span><i aria-hidden="true"></i></summary>' +
+        '<nav class="site-footer__links" aria-label="Полезные материалы">' +
+          '<a href="knowledge.html">Статьи и разборы</a>' +
+          '<a href="tools.html">Инструменты</a>' +
+          '<a href="plus.html">Абонемент «Салон+»</a>' +
+          '<a href="deposit.html">Депозит мастерской</a>' +
+        '</nav>' +
+      '</details>' +
+      '<details class="site-footer__group" open data-footer-group>' +
+        '<summary><span>О мастерской</span><i aria-hidden="true"></i></summary>' +
+        '<nav class="site-footer__links" aria-label="О мастерской">' +
+          '<a href="about.html">О мастерской</a>' +
+          '<a href="prolog.html">Как проходит работа</a>' +
+          '<a href="guarantees.html">Гарантии</a>' +
+          '<a href="academic-integrity.html">Границы помощи</a>' +
+          '<a href="reviews.html">Отзывы</a>' +
+          '<a href="priyomnaya.html">Приёмная</a>' +
+        '</nav>' +
+      '</details>' +
     '</div>' +
     '<div class="site-footer__bottom">' +
-      '<span>© 2020–2026 Академический Салон</span>' +
-      '<span>Состав, срок и стоимость фиксируются до оплаты</span>' +
-      '<button class="theme-toggle" type="button"><span data-theme-action>' +
-        (Salon.theme && Salon.theme.current() === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему') +
-      '</span></button>' +
+      '<span class="site-footer__copyright">© 2020–2026 Академический Салон</span>' +
+      '<span class="site-footer__promise">Состав, срок и стоимость фиксируются до оплаты</span>' +
+      '<nav class="site-footer__legal" aria-label="Документы">' +
+        '<a href="privacy.html">Конфиденциальность</a>' +
+        '<a href="terms.html">Документы</a>' +
+        '<a href="oferta.html">Оферта</a>' +
+      '</nav>' +
+      Salon.themeToggleHTML() +
     '</div>';
   };
   /* «Наверх» в колофоне: мягкий скролл вместо прыжка по якорю */
@@ -2416,6 +2535,31 @@
     footer.setAttribute('aria-label', 'Приёмная и документы');
     footer.innerHTML = Salon.footerHTML();
     document.body.appendChild(footer);
+    /* На широком экране все ссылки видны сразу. На телефоне те же группы
+       становятся компактным аккордеоном; без JS атрибут open оставляет
+       навигацию доступной, поэтому футер остаётся fail-open. */
+    (function () {
+      var groups = Array.prototype.slice.call(footer.querySelectorAll('[data-footer-group]'));
+      if (!groups.length || !window.matchMedia) return;
+      var compact = window.matchMedia('(max-width: 920px)');
+      function syncGroups(event) {
+        groups.forEach(function (group) {
+          if (event.matches) group.removeAttribute('open');
+          else group.setAttribute('open', '');
+        });
+      }
+      syncGroups(compact);
+      groups.forEach(function (group) {
+        group.addEventListener('toggle', function () {
+          if (!compact.matches || !group.open) return;
+          groups.forEach(function (other) {
+            if (other !== group) other.removeAttribute('open');
+          });
+        });
+      });
+      if (compact.addEventListener) compact.addEventListener('change', syncGroups);
+      else if (compact.addListener) compact.addListener(syncGroups);
+    })();
     /* мостик открывает диалог — сообщаем это вспомогательным технологиям
        только когда путеводитель реально смонтирован */
     var bridge = footer.querySelector('[data-toc-open]');
@@ -2471,16 +2615,28 @@
         (cls === ' mn-cab' ? '<span class="mn-badge" hidden></span>' : '') + '</a>';
     }
     var mobileRouteHref = currentCaseContext ? currentCaseContext.action : 'configurator.html';
-    var mobileRouteLabel = currentCaseContext
-      ? ['Разбор','Работа','Проверка','Защита'][Math.max(0,Math.min(3,currentCaseContext.stage - 1))]
-      : 'Маршрут';
-    mnav.innerHTML =
-      mnItem('/', 'Главная', 'dock-icon dock-icon--home') +
-      mnItem('services.html', 'Услуги', 'dock-icon dock-icon--services') +
-      mnItem(mobileRouteHref, mobileRouteLabel, 'mobile-dock__seal', ' mn-calc mobile-dock__primary') +
-      mnItem('knowledge.html', 'Библиотека', 'dock-icon dock-icon--library') +
-      mnItem('dashboard.html', 'Кабинет', 'dock-icon dock-icon--profile', ' mn-cab');
+    var mobileRouteLabel = hasSavedConcept
+      ? 'Черновик'
+      : 'Рассчитать';
+    if (here === 'index.html') {
+      mnav.classList.add('mobile-dock--home');
+      mnav.innerHTML =
+        mnItem('/', 'Главная', 'dock-icon dock-icon--home') +
+        mnItem(mobileRouteHref, mobileRouteLabel, 'mobile-dock__seal', ' mn-calc mobile-dock__primary') +
+        mnItem('dashboard.html', 'Кабинет', 'dock-icon dock-icon--profile', ' mn-cab');
+    } else {
+      mnav.innerHTML =
+        mnItem('/', 'Главная', 'dock-icon dock-icon--home') +
+        mnItem('services.html', 'Услуги', 'dock-icon dock-icon--services') +
+        mnItem(mobileRouteHref, mobileRouteLabel, 'mobile-dock__seal', ' mn-calc mobile-dock__primary') +
+        mnItem('knowledge.html', 'Библиотека', 'dock-icon dock-icon--library') +
+        mnItem('dashboard.html', 'Кабинет', 'dock-icon dock-icon--profile', ' mn-cab');
+    }
     document.body.appendChild(mnav);
+    if (hasSavedConcept) {
+      var savedDockLink = mnav.querySelector('.mn-calc');
+      if (savedDockLink) savedDockLink.setAttribute('data-resume-draft','true');
+    }
   }
   /* Внизу колофона зарезервированы 96px под нижнюю панель. Панель бывает
      двух видов: смонтированная выше и своя, прописанная прямо в разметке
@@ -2785,6 +2941,14 @@
      изолированного режима «посмотреть глазами клиента». */
   var API_BASE = (location.hostname === 'akademsalon.ru')
     ? '/api' : 'https://akademsalon.ru/api';
+  var CABINET_DEMO_PREVIEW = false;
+  try {
+    var demoName = new URLSearchParams(location.search).get('demo');
+    CABINET_DEMO_PREVIEW = (location.pathname.split('/').pop() === 'dashboard.html') &&
+      (location.hostname === 'localhost' || location.hostname === '127.0.0.1' ||
+       /\.saymoon\.chatgpt\.site$/.test(location.hostname)) &&
+      (demoName === 'alexey' || demoName === 'alexey-vk' || demoName === 'entry');
+  } catch (e) {}
   /* «Тихий» вход мастера в кабинет клиента: токен живёт ТОЛЬКО в этой вкладке
      (sessionStorage), чтобы не выбить основную сессию мастера в админке. */
   function impToken() {
@@ -2810,13 +2974,20 @@
   function setSessionHint(value) {
     value ? Salon.secretStore.set('salon_cookie_session', true)
       : Salon.secretStore.del('salon_cookie_session');
+    if (Salon.updateAccountEntry) {
+      Salon.updateAccountEntry({ authenticated:!!value, guest_session:guestHint() });
+    }
   }
   function setGuestHint(value) {
     value ? Salon.secretStore.set('salon_guest_session', true)
       : Salon.secretStore.del('salon_guest_session');
+    if (Salon.updateAccountEntry) {
+      Salon.updateAccountEntry({ authenticated:sessionHint(), guest_session:!!value });
+    }
   }
   Salon.api = {
     base: API_BASE,
+    demoPreview: CABINET_DEMO_PREVIEW,
     /* token() остаётся логическим признаком входа для старых UI-веток.
        Реальный cookie session никогда не доступен JavaScript. */
     token: function () {
@@ -2887,11 +3058,23 @@
           setTimeout(function () { res(Salon.api.req(method, path, body, true, extraHeaders)); }, 1800);
         });
       }
+      /* Ограничиваем только безопасные чтения: зависший GET можно повторить,
+         а отправку заявки нельзя прерывать в неясном состоянии. */
+      var fetchController = method === 'GET' && typeof AbortController === 'function'
+        ? new AbortController()
+        : null;
+      var fetchTimer = fetchController ? setTimeout(function () { fetchController.abort(); }, 10000) : 0;
+      function clearFetchTimer() {
+        if (!fetchTimer) return;
+        clearTimeout(fetchTimer);
+        fetchTimer = 0;
+      }
       return fetch(API_BASE + path, {
         method: method,
         headers: h,
         credentials: 'include',
-        body: body !== undefined ? JSON.stringify(body) : undefined
+        body: body !== undefined ? JSON.stringify(body) : undefined,
+        signal: fetchController ? fetchController.signal : undefined
       })
         .then(function (r) {
           if (r.status === 401) {
@@ -2922,9 +3105,18 @@
               }
             }
           }
-          if (method === 'GET' && !_retried && (r.status === 502 || r.status === 503 || r.status === 504)) return again();
-          return r.json().catch(function () { return { ok: false, error: 'bad_json' }; })
+          if (method === 'GET' && !_retried && (r.status === 502 || r.status === 503 || r.status === 504)) {
+            clearFetchTimer();
+            return again();
+          }
+          return r.json().catch(function (error) {
+            /* Abort после получения заголовков прерывает и зависшее тело.
+               Пробрасываем его во внешний catch, чтобы безопасный GET повторился. */
+            if (fetchController && fetchController.signal.aborted) throw error;
+            return { ok: false, error: 'bad_json' };
+          })
             .then(function (data) {
+              clearFetchTimer();
               if (data && (data.session === true || data.authenticated === true)) {
                 setSessionHint(true);
               }
@@ -2936,6 +3128,7 @@
             });
         })
         .catch(function () {
+          clearFetchTimer();
           if (method === 'GET' && !_retried) return again();
           return { ok: false, error: 'network' };
         });
@@ -2954,7 +3147,7 @@
 
   /* Старые вкладки получают мягкий one-time upgrade: JS-readable Bearer
      обменивается на HttpOnly cookie и сразу отзывается на сервере. */
-  Salon.api.migration = (function migrateLegacySession() {
+  Salon.api.migration = CABINET_DEMO_PREVIEW ? Promise.resolve(null) : (function migrateLegacySession() {
     var legacy = Salon.api.bearer();
     if (!legacy || impToken()) return Promise.resolve(null);
     return Salon.api.post('/auth/migrate', {}).then(function (r) {
@@ -2966,7 +3159,9 @@
   })();
 
   /* Свежая вкладка видит HttpOnly cookie только через безопасный status API. */
-  Salon.api.ready = Salon.api.migration.then(function () {
+  Salon.api.ready = CABINET_DEMO_PREVIEW ? Promise.resolve({
+    ok: true, authenticated: false, guest_session: false, demo: true
+  }) : Salon.api.migration.then(function () {
     return Salon.api.get('/auth/session');
   }).then(function (r) {
     if (r && r.ok) {
@@ -2974,6 +3169,7 @@
       setGuestHint(r.guest_session === true);
       if (r.user) Salon.api.setUser(r.user);
     }
+    if (Salon.updateAccountEntry) Salon.updateAccountEntry(r || {});
     try {
       document.dispatchEvent(new CustomEvent('salon:session-ready', { detail: r || {} }));
     } catch (e) {}

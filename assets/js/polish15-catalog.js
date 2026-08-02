@@ -19,7 +19,7 @@
   }
 
   function currentLimit() {
-    return window.matchMedia('(max-width: 620px)').matches ? 5 : 8;
+    return window.matchMedia('(max-width: 620px)').matches ? 4 : 6;
   }
 
   function setupServiceCatalog() {

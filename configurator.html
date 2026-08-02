@@ -4,14 +4,14 @@
   <meta name="referrer" content="no-referrer">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Рассчитать проект с нуля или редакторскую помощь — Академический Салон</title>
-<meta name="description" content="Выберите курсовую, ВКР или магистерскую, точку старта и результат. Проект можно начать с одной темы; состав, срок и цена видны до отправки заявки." />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260726release33" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release33" />
-<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release33" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260726release33" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260726release33" />
+<title>Подобрать помощь и узнать стоимость — Академический Салон</title>
+<meta name="description" content="Покажите, что у вас уже есть. Мастерская предложит первый полезный этап, объяснит состав и покажет ориентир стоимости до контакта." />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260802release97" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260802release97" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260802release97" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260802release97" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260802release97&amp;journey=1" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260802release97" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -23,56 +23,48 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="Рассчитать проект с нуля | Академический Салон" />
-<meta property="og:description" content="Можно прийти только с темой. Выберите работу и получите понятный состав и ценовой ориентир." />
+<meta property="og:title" content="Подобрать помощь и узнать стоимость | Академический Салон" />
+  <meta property="og:description" content="Три понятных этапа: ситуация, срок и материалы, контакт для ответа." />
 <meta property="og:url" content="https://akademsalon.ru/configurator.html" />
 <meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v3.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Рассчитать курсовую или ВКР с нуля" />
-<meta name="twitter:description" content="Шесть коротких шагов: работа, точка старта, результат, материалы и заявка." />
+<meta name="twitter:title" content="Подобрать помощь для курсовой, ВКР или статьи" />
+<meta name="twitter:description" content="Покажем подходящий первый этап, состав и ориентир стоимости до контакта." />
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v3.png" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release33" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260726release33" />
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260802release97&amp;journey=1" media="screen and (max-width:920px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260802release97&amp;journey=4" />
+<link rel="stylesheet" href="assets/css/configurator-journey.css?v=20260802release97" />
 </head>
 <body class="configurator-task">
 
 <main class="tx-wizard" id="main">
-  <aside class="tx-wizard-sidebar" aria-label="Этапы заявки">
+  <aside class="tx-wizard-sidebar" aria-label="Этапы подбора помощи">
     <a class="tx-wizard-brand" href="/" aria-label="Академический Салон — на главную">
       <img src="bimi/logo.svg" alt="" width="42" height="42" />
-      <span><strong>Академический Салон</strong><small>Новая заявка</small></span>
+      <span><strong>Академический Салон</strong><small>Подбор помощи</small></span>
     </a>
-    <div class="wprog" id="conceptProgress" role="progressbar" aria-label="Прогресс заявки" aria-valuemin="1" aria-valuemax="6" aria-valuenow="1">
+    <div class="wprog" id="conceptProgress" role="progressbar" aria-label="Прогресс подбора" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1">
       <div class="wp-track"><span class="wp-fill" id="conceptProgressFill"></span></div>
-      <span class="wp-lbl" id="conceptProgressLabel" aria-live="polite">Шаг 1 из 6</span>
+      <span class="wp-lbl" id="conceptProgressLabel" aria-live="polite">Шаг 1 из 3</span>
     </div>
     <ol class="tx-wizard-steps">
       <li class="tx-step is-current" data-tx-step="0">
-        <button type="button" data-concept-jump="0" aria-current="step"><span>01</span><strong>Работа</strong></button>
+        <button type="button" data-concept-jump="0" aria-current="step"><span>01</span><strong>Что уже есть</strong></button>
       </li>
       <li class="tx-step" data-tx-step="1">
-        <button type="button" data-concept-jump="1" disabled><span>02</span><strong>Что уже есть</strong></button>
+        <button type="button" data-concept-jump="1" disabled><span>02</span><strong>Срок и материалы</strong></button>
       </li>
       <li class="tx-step" data-tx-step="2">
-        <button type="button" data-concept-jump="2" disabled><span>03</span><strong>Помощь</strong></button>
-      </li>
-      <li class="tx-step" data-tx-step="3">
-        <button type="button" data-concept-jump="3" disabled><span>04</span><strong>Рекомендация</strong></button>
-      </li>
-      <li class="tx-step" data-tx-step="4">
-        <button type="button" data-concept-jump="4" disabled><span>05</span><strong>Материалы</strong></button>
-      </li>
-      <li class="tx-step" data-tx-step="5">
-        <button type="button" data-concept-jump="5" disabled><span>06</span><strong>Контакты</strong></button>
+        <button type="button" data-concept-jump="2" disabled><span>03</span><strong>Проверка и отправка</strong></button>
       </li>
     </ol>
     <div class="tx-wizard-help">
-      <span>Нужна помощь?</span>
-      <p>Можно сразу описать задачу редактору — без расчёта и лишних полей.</p>
-      <button type="button" data-contact data-msg-lead="Опишите задачу в свободной форме — мастер подскажет следующий шаг.">Открыть приёмную <span aria-hidden="true">→</span></button>
+      <span>Хотите начать с разговора?</span>
+      <p>Опишите задачу своими словами. Мастер подскажет, какой вариант выбрать.</p>
+      <button type="button" data-contact data-msg-lead="Опишите задачу своими словами — мастер подскажет, с чего начать.">Написать мастеру <span aria-hidden="true">→</span></button>
     </div>
   </aside>
   <div class="wrap conf-wrap">
@@ -80,7 +72,7 @@
       <a class="tx-mobile-back" href="/" aria-label="Закрыть заявку">←</a>
       <a class="tx-mobile-brand" href="/">
         <img src="bimi/logo.svg" alt="" width="34" height="34" />
-        <span><strong>Новая заявка</strong><small data-conf-step>Шаг 1 / 4</small></span>
+        <span><strong>Подбор помощи</strong><small data-conf-step>Шаг 1 / 3</small></span>
       </a>
       <button class="theme-toggle tx-theme" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема">
         <span aria-hidden="true" class="ico-theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7"/><path d="M12 3.6a8.4 8.4 0 0 0 0 16.8z" fill="currentColor"/></svg></span>
@@ -90,9 +82,9 @@
       <button class="theme-toggle tx-theme" type="button" aria-label="Сменить тему оформления" title="Светлая / тёмная тема">
         <span aria-hidden="true" class="ico-theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7"/><path d="M12 3.6a8.4 8.4 0 0 0 0 16.8z" fill="currentColor"/></svg></span>
       </button>
-      <a class="tx-close" href="/" aria-label="Закрыть заявку">×</a>
+      <a class="tx-close" href="/" aria-label="Сохранить и закрыть подбор">×</a>
     </div>
-    <section class="wizard-main concept-wizard-host" id="conceptWizard" aria-live="polite"></section>
+    <section class="wizard-main concept-wizard-host" id="conceptWizard"></section>
     <div class="mechanics-registry" id="order" hidden aria-hidden="true">
       <div id="confBody">
         <header class="conf-head">
@@ -179,7 +171,7 @@
             </section>
             <section class="final-section final-files">
               <header class="final-section-head"><span class="final-section-no"></span><span><b></b><small></small></span></header>
-              <input type="file" id="fFiles" multiple />
+              <input type="file" id="fFiles" multiple accept=".doc,.docx,.pdf,.rtf,.odt,.txt,.jpg,.jpeg,.png,.webp,.heic,image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" />
               <button type="button" id="attAdd"><span>Добавить файл</span></button>
               <div id="attList" hidden></div>
             </section>
@@ -242,7 +234,7 @@
           <div class="done-hero"><p class="caps"></p><h2 id="doneH" tabindex="-1"></h2><p class="done-lead"></p><span id="doneNo"></span></div>
           <ol class="done-steps"><li><span></span><span><b></b><small></small></span></li><li><span></span><span><b></b><small></small></span></li><li><span></span><span><b></b><small></small></span></li></ol>
           <section class="done-receipt" id="doneReceipt" hidden><span id="doneReceiptTotal"></span><div id="doneReceiptList"></div></section>
-          <div id="doneFiles" hidden><div id="doneAttList"></div></div>
+          <div id="doneFiles" hidden><p class="caps">Материалы к заявке</p><p class="petit">Не закрывайте страницу, пока файлы загружаются. Если связь прервётся, здесь появится кнопка повтора.</p><div id="doneAttList"></div></div>
           <div class="done-access"><a id="doneCab" href="dashboard.html"></a><a id="doneBot" href="https://t.me/academic_saloon_bot"></a></div>
           <p class="done-note"></p>
           <details class="done-plus"><div id="doneExtraBody"></div></details>
@@ -262,8 +254,9 @@
 
 <div class="concept-task-bar" id="conceptTaskBar">
   <button type="button" class="concept-task-back" data-concept-back hidden>Назад</button>
-  <div><span data-concept-task-kicker>Шаг 1 из 6</span><strong data-concept-task-title>Работа</strong></div>
-  <button type="button" class="btn btn-wax" data-concept-next disabled>Продолжить <span aria-hidden="true">→</span></button>
+  <div><span data-concept-task-kicker>Шаг 1 из 3</span><strong data-concept-task-title>Что уже есть</strong></div>
+  <button type="button" class="btn btn-wax" data-concept-next disabled>Показать первый шаг <span aria-hidden="true">→</span></button>
+  <small class="concept-task-reason" data-concept-task-reason hidden></small>
 </div>
 
 <!-- вуаль отправки: заявка уходит «письмом» — с честными стадиями ожидания -->
@@ -280,15 +273,15 @@
     </div>
     <p class="caps" id="svCap">Отправляем мастеру</p>
     <h3 class="sv-h" id="svMsg">Запечатываем смету…</h3>
-    <p class="petit sv-sub" id="svSub">Обычно это пара секунд.</p>
+    <p class="petit sv-sub" id="svSub">Это может занять до минуты. Не закрывайте страницу.</p>
     <span class="sv-dots" aria-hidden="true"><i></i><i></i><i></i></span>
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260726release33"></script>
-<script defer src="assets/js/polish15-chrome.js?v=20260726release33"></script>
-<script src="assets/js/extras.js?v=20260726release33"></script>
-<script src="assets/js/cart.js?v=20260726release33"></script>
+<script src="assets/js/app.js?v=20260802release97"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260802release97"></script>
+<script src="assets/js/extras.js?v=20260802release97&amp;journey=1"></script>
+<script src="assets/js/cart.js?v=20260802release97"></script>
 <script>
 function initConf() {
   'use strict';
@@ -472,12 +465,12 @@ function initConf() {
       if (h1) h1.textContent = isPlanService ? 'Сначала — ясная структура' : svc.label;
       var sub = head.querySelector('.petit:not(.plan-note)');
       if (sub) sub.textContent = isPlanService
-        ? 'Пришлите тему и, если есть, методичку. Мастер составит главы и параграфы, календарь работы и зафиксирует её полную стоимость.'
+        ? 'Пришлите тему и, если есть, методичку. Редактор предложит структуру, составит календарь и рассчитает стоимость следующих этапов.'
         : svc.desc + ' Оценка бесплатна: мастер уточнит детали и назовёт точную цену — решение останется за вами.';
     }
     var wsT = $('ws4t');
     if (wsT) wsT.textContent = isPlanService ? 'Формуляр разбора' : 'Детали задачи';
-    var wp = document.querySelector('.wprog');
+    var wp = document.querySelector('#order .wprog');
     if (wp) wp.style.display = 'none'; /* hidden перебивается display:flex из CSS */
     if (detailsIn) detailsIn.placeholder = isPlanService
       ? 'Требования кафедры, пожелания научного руководителя, число глав'
@@ -516,10 +509,10 @@ function initConf() {
       var fileText = $('attAdd') && $('attAdd').querySelector('span');
       if (fileText) fileText.textContent = 'Прикрепить методичку или комментарии научрука';
       var submitNote = document.querySelector('.wsubmit-note');
-      if (submitNote) submitNote.innerHTML = 'Сейчас ничего не списываем. Обычно отвечаем за 15–30 минут в рабочее время.';
+      if (submitNote) submitNote.innerHTML = 'Стоимость разбора — 3 000 ₽. Отправка заявки не списывает деньги; оплату предложим после подтверждения состава и срока.';
       if (btnSubmit) {
-        btnSubmit.setAttribute('data-cart-submit-label','Отправить заявку на разбор · 3 000 ₽');
-        btnSubmit.textContent = 'Отправить заявку на разбор · 3 000 ₽';
+        btnSubmit.setAttribute('data-cart-submit-label','Запросить разбор · 3 000 ₽');
+        btnSubmit.textContent = 'Запросить разбор · 3 000 ₽';
       }
     }
     /* смета «от» без множителей — и в колонке, и в мобильной панели */
@@ -649,7 +642,7 @@ function initConf() {
     var op = $('svcOfferPrice');
     if (op) op.textContent = v;
     if (isPlanService && btnSubmit) {
-      var submitLabel = 'Отправить заявку на разбор · ' + v;
+      var submitLabel = 'Запросить разбор · ' + v;
       btnSubmit.setAttribute('data-cart-submit-label',submitLabel);
       btnSubmit.textContent = submitLabel;
     }
@@ -723,7 +716,7 @@ function initConf() {
           '<li><span><b>Понятная рекомендация</b><small>Какой следующий формат нужен и сколько он стоит</small></span></li>';
         var on = $('svcOfferNote');
         on.hidden = false;
-        on.innerHTML = 'Выберите сопровождение в течение 14 дней — <b>зачтём всю сумму диагностики</b>. Магистерские и кандидатские — 5 000 ₽.';
+        on.innerHTML = 'Выберите сопровождение в течение 14 дней — <b>зачтём всю сумму письменного разбора</b>. Магистерские и кандидатские — 5 000 ₽.';
       } else if (svc.id === 'commission0') {
         $('svcOfferList').innerHTML =
           '<li><span><b>Независимое оппонирование</b><small>Специалист не участвует в подготовке проверяемой версии</small></span></li>' +
@@ -731,7 +724,7 @@ function initConf() {
           '<li><span><b>Протокол №0</b><small>Риски, основания, следующие шаги и повторная проверка</small></span></li>';
         var commissionNote = $('svcOfferNote');
         commissionNote.hidden = false;
-        commissionNote.innerHTML = 'Частная редакторская предзащита. <b>Не является комиссией вуза, допуском или гарантией оценки.</b>';
+        commissionNote.innerHTML = '<a href="/komissiya-0.html">Репетиция защиты с независимым редактором</a>. <b>Не является комиссией вуза, допуском или гарантией оценки.</b>';
       } else {
         $('svcOfferList').innerHTML = '';
       }
@@ -739,7 +732,7 @@ function initConf() {
     if (svc.fixed) {
       put('high', 'цена фиксированная — доплат по ходу не будет');
       put('pay', svc.id === 'plan'
-        ? 'Один платёж после подтверждения мастером. При переходе в сопровождение сумма диагностики зачитывается в его стоимость.'
+        ? 'Один платёж после подтверждения мастером. При переходе в сопровождение сумма письменного разбора зачитывается в его стоимость.'
         : 'Оплата одним платежом после подтверждения мастером.');
       svcPricePaint();
     }
@@ -749,6 +742,8 @@ function initConf() {
      Ради этого заявка с сайта и существует: методичка и ТЗ попадают мастеру
      вместе с формой, а не досылаются потом в переписке. --- */
   var ATT_MAX = 5, ATT_SIZE = 20 * 1024 * 1024;
+  var ATT_ALLOWED_EXT = /\.(?:docx?|pdf|rtf|odt|txt|jpe?g|png|webp|heic)$/i;
+  var ATT_ALLOWED_MIME = /^(?:application\/(?:pdf|msword|rtf|vnd\.openxmlformats-officedocument\.wordprocessingml\.document|vnd\.oasis\.opendocument\.text)|text\/plain|image\/(?:jpeg|png|webp|heic))$/i;
   var attQueue = []; /* {f: File, st: 'wait'|'up'|'ok'|'err'} */
   var attAdd = $('attAdd'), attInput = $('fFiles'), attList = $('attList');
   var attOrder = null; /* {id, token} — появляется после создания заказа */
@@ -776,18 +771,32 @@ function initConf() {
       }));
     } catch (e) {}
   }
+  function attAllowed(file) {
+    return !!(file && (ATT_ALLOWED_EXT.test(file.name || '') || ATT_ALLOWED_MIME.test(file.type || '')));
+  }
+  function attClientId(file) {
+    var source = [file.name || '',file.size || 0,file.lastModified || 0,file.type || ''].join('|');
+    var hash = 2166136261;
+    for (var i = 0; i < source.length; i++) {
+      hash ^= source.charCodeAt(i);
+      hash = Math.imul(hash,16777619);
+    }
+    return 'file_' + (hash >>> 0).toString(36);
+  }
   function attPush(files) {
-    var added = 0, dup = 0, big = 0, over = false;
+    var added = 0, dup = 0, big = 0, bad = 0, over = false;
     Array.prototype.slice.call(files || []).forEach(function (f) {
       if (!f || !f.size) return;
       if (attQueue.length >= ATT_MAX) { over = true; return; }
       if (f.size > ATT_SIZE) { big++; return; }
+      if (!attAllowed(f)) { bad++; return; }
       var same = attQueue.some(function (a) { return a.f.name === f.name && a.f.size === f.size; });
       if (same) { dup++; return; }
-      attQueue.push({ f: f, st: 'wait' });
+      attQueue.push({ f: f, st: 'wait', clientId: attClientId(f) });
       added++;
     });
-    if (big) S.toast('Файл больше 20 МБ — пришлите его ссылкой (диск) в чате кабинета или через Telegram-бота');
+    if (bad) S.toast('Подойдут Word, PDF, TXT или изображения JPG, PNG, WEBP и HEIC');
+    else if (big) S.toast('Файл больше 20 МБ — пришлите его ссылкой (диск) в чате кабинета или через Telegram-бота');
     else if (over) S.toast('Не больше 5 файлов — остальные добавите в кабинете');
     else if (!added && dup) S.toast('Эти файлы уже прикреплены');
     attRender();
@@ -817,7 +826,7 @@ function initConf() {
   window.SalonAttachments = {
     snapshot: function () {
       return attQueue.map(function (a) {
-        return { name: a.f.name, size: a.f.size, status: a.st };
+        return { name: a.f.name, size: a.f.size, type: a.f.type || '', status: a.st, clientFileId:a.clientId };
       });
     },
     open: function () { if (attAdd) attAdd.click(); },
@@ -844,6 +853,11 @@ function initConf() {
       return '<div class="att-item"><span class="ai-name">' + esc(a.f.name) + '</span>' +
         '<span class="ai-size">' + attSize(a.f.size) + '</span>' + st + '</div>';
     }).join('');
+    try {
+      document.dispatchEvent(new CustomEvent('salon:attachment-status', {
+        detail:{ files:window.SalonAttachments ? window.SalonAttachments.snapshot() : [] }
+      }));
+    } catch (e) {}
   }
   function uploadOne(a) {
     if (!attOrder) return Promise.resolve();
@@ -853,6 +867,7 @@ function initConf() {
     if (attOrder.token) h['X-Order-Token'] = attOrder.token;
     var fd = new FormData();
     fd.append('file', a.f, a.f.name);
+    fd.append('client_file_id', a.clientId || attClientId(a.f));
     return fetch(url, { method: 'POST', body: fd, headers: h, credentials: 'include' })
       .then(function (resp) {
         if (!resp.ok) throw new Error('http_' + resp.status);
@@ -869,12 +884,21 @@ function initConf() {
     });
     return chain;
   }
+  window.addEventListener('beforeunload', function (event) {
+    if (!attOrder || !attQueue.some(function (item) { return item.st === 'wait' || item.st === 'up'; })) return;
+    event.preventDefault();
+    event.returnValue = '';
+  });
   (function () {
     var list = $('doneAttList');
     if (list) list.addEventListener('click', function (e) {
       var b = e.target.closest('[data-att-retry]');
       if (!b) return;
-      uploadOne(attQueue[parseInt(b.getAttribute('data-att-retry'), 10)]);
+      uploadOne(attQueue[parseInt(b.getAttribute('data-att-retry'), 10)]).then(function () {
+        if (attQueue.length && attQueue.every(function (item) { return item.st === 'ok'; })) {
+          clearSubmittedDrafts();
+        }
+      });
     });
   })();
 
@@ -974,8 +998,8 @@ function initConf() {
       : 'Свободный срок уже выбран — наценки за срочность нет.');
     var qTierBase = C.quote(state.type, state.disc, state.term, 'base');
     put('chTier', state.tier !== 'base'
-      ? 'Формат «Диагностика» вместо «' + v.label + '» — минус ~' + C.fmt(q.low - qTierBase.low) + ' ₽ (редактуру можно добавить отдельной строкой).'
-      : 'Формат «Диагностика» уже выбран — без наценки за редактуру.');
+      ? 'Формат «Письменный разбор» вместо «' + v.label + '» — минус ~' + C.fmt(q.low - qTierBase.low) + ' ₽ (редактуру можно добавить отдельной строкой).'
+      : 'Формат «Письменный разбор» уже выбран — без наценки за редактуру.');
     put('chPlan', (state.type === 'master' || state.type === 'kandidat') ? '5 000 ₽' : '3 000 ₽');
     if (profileEl && window.SalonExperts) profileEl.textContent = (window.SalonExperts[state.disc] || {}).desc || '';
     renderDeal();
@@ -1172,7 +1196,7 @@ function initConf() {
     wpFill.style.width = ((idx + 1) * 25) + '%';
     var progress = wpLbl.closest('[role="progressbar"]');
     if (progress) progress.setAttribute('aria-valuenow', String(idx + 1));
-    document.querySelectorAll('[data-conf-step]').forEach(function (el) {
+    document.querySelectorAll('#order [data-conf-step]').forEach(function (el) {
       el.textContent = svc ? 'Один лист' : 'Шаг ' + (idx + 1) + ' / 4';
     });
     if (S.visit) S.visit.mark('шаг ' + (idx + 1) + ' из 4');
@@ -1193,7 +1217,10 @@ function initConf() {
       if (mqMore) mqMore.textContent = 'Смета';
     }
     saveDraft();
-    if (focus) {
+    /* Реестр скрыт под визардом: фокус в display:none-узел не встаёт (уводит
+       фокус на body), а getBoundingClientRect даёт нули — страница дёргалась
+       вверх на 76px без всякой причины. Наводимся только когда реестр видим. */
+    if (focus && !$('order').hidden) {
       var t = steps[idx].querySelector('.ws-title');
       if (t) t.focus({ preventScroll: true });
       var r = wiz.getBoundingClientRect();
@@ -1349,37 +1376,64 @@ function initConf() {
       $('ctName').textContent = (u.name || 'гость') + (u.username ? ' (@' + u.username + ')' : '');
   }
   var tgBtn = $('tgLoginBtn');
-  function tgHint(link, opened) {
+  var activeTgBtn = tgBtn;
+  var pendingTgLogin = null;
+  function tgButtonState(label, disabled) {
+    [tgBtn, activeTgBtn].forEach(function (button, index, all) {
+      if (!button || all.indexOf(button) !== index) return;
+      button.disabled = !!disabled;
+      button.textContent = label;
+    });
+  }
+  function tgHint(link, opened, anchor) {
     var old = document.getElementById('tgOpenHint');
     if (old) old.remove();
-    tgBtn.insertAdjacentHTML('afterend',
+    anchor = anchor || activeTgBtn || tgBtn;
+    if (!anchor) return;
+    anchor.insertAdjacentHTML('afterend',
       '<p class="petit" id="tgOpenHint" style="margin:-4px 0 12px">' +
       (opened ? 'Окно Telegram открыто — нажмите в боте <b>Start</b>. ' : 'Telegram не открылся сам — ') +
       '<a class="link" href="' + link + '" target="_blank" rel="noopener">открыть бота</a>' +
       ' · страница поймает вход сама.</p>');
   }
   function tgDone(u) {
+    pendingTgLogin = null;
     var h = document.getElementById('tgOpenHint');
     if (h) h.remove();
     contactUI();
     S.toast('Вы вошли' + (u && u.name ? ', ' + u.name : ''));
   }
-  if (tgBtn) tgBtn.addEventListener('click', function () {
-    tgBtn.disabled = true; tgBtn.textContent = 'Открываем Telegram…';
+  function beginTgLogin(trigger) {
+    activeTgBtn = trigger || tgBtn;
+    tgButtonState('Открываем Telegram…', true);
     S.tgLogin(tgDone, function () {
-      tgBtn.disabled = false; tgBtn.textContent = 'Продолжить через Telegram';
+      pendingTgLogin = null;
+      tgButtonState('Войти через Telegram', false);
       S.toast('Вход не подтвердился — попробуйте ещё раз');
     }, function (link, opened) {
-      tgBtn.textContent = 'Подтвердите вход в боте…';
-      tgHint(link, opened);
+      pendingTgLogin = { link:link, opened:opened };
+      tgButtonState('Подтвердите вход в боте…', true);
+      tgHint(link, opened, activeTgBtn);
     });
-  });
+  }
+  if (tgBtn) tgBtn.addEventListener('click', function () { beginTgLogin(tgBtn); });
   contactUI();
   /* вход мог быть начат раньше (в т.ч. до перезагрузки) — доловим */
   if (S.resumeTgLogin && !S.api.token()) {
-    var pend = S.resumeTgLogin(tgDone, function () { contactUI(); });
-    if (pend && tgBtn) { tgBtn.disabled = true; tgBtn.textContent = 'Подтвердите вход в боте…'; tgHint(pend.link || 'https://t.me/academic_saloon_bot', true); }
+    var pend = S.resumeTgLogin(tgDone, function () { pendingTgLogin = null; contactUI(); });
+    if (pend && tgBtn) {
+      pendingTgLogin = pend;
+      tgButtonState('Подтвердите вход в боте…', true);
+      tgHint(pend.link || 'https://t.me/academic_saloon_bot', true, tgBtn);
+    }
   }
+  /* Новый видимый визард живёт в отдельном IIFE. Передаём ему только узкий
+     мост к Telegram-входу, не открывая внутреннее состояние легаси-формы. */
+  window.SalonTelegramLogin = {
+    pending:function () { return pendingTgLogin; },
+    start:beginTgLogin,
+    hint:tgHint
+  };
 
   /* --- отправка: заявка уходит в общую с ботом картотеку --- */
   /* --- промокод: купон в бланке; ?promo=КОД — из рекламы и писем --- */
@@ -1683,14 +1737,22 @@ function initConf() {
   S.store.del(EXIT_KEY);
 
   var submitting = false;
+  var acceptedOrderId = '';
   var submittedCartCount = 0;
   var submittedCartSnapshot = null;
+  var PENDING_REQUEST_KEY = 'salon_pending_request_v1';
   var pendingRequestId = '';
+  try { pendingRequestId = sessionStorage.getItem(PENDING_REQUEST_KEY) || ''; } catch (e) {}
   function requestId() {
     if (pendingRequestId) return pendingRequestId;
     try { pendingRequestId = crypto.randomUUID(); }
     catch (e) { pendingRequestId = 'web_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
+    try { sessionStorage.setItem(PENDING_REQUEST_KEY,pendingRequestId); } catch (e) {}
     return pendingRequestId;
+  }
+  function clearRequestId() {
+    pendingRequestId = '';
+    try { sessionStorage.removeItem(PENDING_REQUEST_KEY); } catch (e) {}
   }
   function renderDoneReceipt(snap) {
     var receipt = $('doneReceipt'), list = $('doneReceiptList'), total = $('doneReceiptTotal');
@@ -1708,7 +1770,7 @@ function initConf() {
     }).join('');
   }
   function submit() {
-    if (submitting) return;
+    if (submitting || acceptedOrderId) return;
     var authed = !!(S.api && S.api.token());
     var activeCart = !isPlanService && window.SalonCart;
     if (activeCart && activeCart.hasCheckoutIntent && activeCart.hasCheckoutIntent() &&
@@ -1787,6 +1849,17 @@ function initConf() {
       ref: (S.refCode && S.refCode()) || undefined,
       client_request_id: requestId()
     };
+    if (attQueue.length) {
+      payload.attachments = attQueue.map(function (item) {
+        return {
+          client_file_id:item.clientId || attClientId(item.f),
+          name:item.f.name,
+          size:item.f.size,
+          type:item.f.type || 'application/octet-stream',
+          status:'pending'
+        };
+      });
+    }
     var caseContext = window.SalonConceptWizard && window.SalonConceptWizard.context
       ? window.SalonConceptWizard.context() : null;
     if (caseContext) {
@@ -1800,7 +1873,7 @@ function initConf() {
           checkpoints:[
             'утверждение проблемы, цели, метода и содержательных решений',
             'проверка фактов, источников и исходных данных',
-            'содержательная доработка рабочего черновика и формирование финальной авторской версии'
+            'подготовка, содержательная проверка и утверждение клиентом финальной версии'
           ]
         };
       }
@@ -1848,7 +1921,7 @@ function initConf() {
     /* Попытка 1 — до 25с; обрыв/5xx — тихий повтор тем же client_request_id.
        Серверная идемпотентность вернёт уже созданную заявку без дубля. */
     submitFetch(payload, 25000).then(function (a1) {
-      if (a1.r && a1.r.ok && a1.r.id) { unlock(); onSubmitOk(a1.r); return; }
+      if (isSubmitSuccess(a1)) { unlock(); onSubmitOk(a1.r); return; }
       if (a1.r && a1.r.ok === false && a1.st < 500 && a1.st > 0) { unlock(); onSubmitErr(a1.r); return; }
       if (a1.st === 0 || [500, 502, 503, 504].indexOf(a1.st) >= 0) {
         veilStage('Первая попытка не прошла — пробуем ещё…',
@@ -1856,7 +1929,7 @@ function initConf() {
         setTimeout(function () {
           submitFetch(payload, 12000).then(function (a2) {
             unlock();
-            if (a2.r && a2.r.ok && a2.r.id) { onSubmitOk(a2.r); return; }
+            if (isSubmitSuccess(a2)) { onSubmitOk(a2.r); return; }
             if (a2.r && a2.r.ok === false && a2.st < 500 && a2.st > 0) { onSubmitErr(a2.r); return; }
             fallbackPanel();
           });
@@ -1868,31 +1941,71 @@ function initConf() {
     });
   }
 
-  /* fetch с секундомером: отдаёт {st: httpStatus|0, r: json|null} и никогда не кидает */
+  function isSubmitSuccess(attempt) {
+    if (!attempt || attempt.st < 200 || attempt.st >= 300 || !attempt.r ||
+        attempt.r.ok !== true) return false;
+    var id = attempt.r.id;
+    return (typeof id === 'number' && isFinite(id) && id > 0) ||
+      (typeof id === 'string' && id.trim().length > 0);
+  }
+
+  /* POST не прерываем: сервер мог уже принять заявку. Секундомер лишь отдаёт
+     управление честному запасному ходу, а стабильный client_request_id
+     защищает повтор от дубля. */
   function submitFetch(payload, timeoutMs) {
     return new Promise(function (resolve) {
-      var ctl = window.AbortController ? new AbortController() : null;
-      var to = setTimeout(function () { if (ctl) ctl.abort(); }, timeoutMs);
+      var settled = false;
+      var to = setTimeout(function () {
+        if (settled) return;
+        settled = true;
+        resolve({ st: 0, r: null, timedOut: true });
+      }, timeoutMs);
+      function settle(result) {
+        if (settled) return;
+        settled = true;
+        clearTimeout(to);
+        resolve(result);
+      }
       var h = S.api.headers ? S.api.headers('POST') : {};
       h['Content-Type'] = 'application/json';
       fetch(S.api.base + '/orders', {
         method: 'POST', headers: h, body: JSON.stringify(payload),
-        credentials: 'include',
-        signal: ctl ? ctl.signal : undefined
+        credentials: 'include'
       }).then(function (res) {
-        clearTimeout(to);
-        res.json().then(function (j) { resolve({ st: res.status, r: j }); },
-                        function () { resolve({ st: res.status, r: null }); });
-      }, function () { clearTimeout(to); resolve({ st: 0, r: null }); });
+        res.json().then(function (j) { settle({ st: res.status, r: j }); },
+                        function () { settle({ st: res.status, r: null }); });
+      }, function () { settle({ st: 0, r: null }); });
     });
   }
 
-  function onSubmitOk(r) {
-    pendingRequestId = '';
-    if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
-    if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
+  function clearSubmittedDrafts() {
     if (isPlanService) S.store.del(SERVICE_DRAFT_KEY);
     else if (!svc) S.store.del('salon_draft');
+    if (svc) {
+      /* Подтверждённая service-заявка не должна всплывать как незавершённая.
+         Убираем только concept service-сессии и сохраняем несвязанные данные. */
+      var sentDraft = S.store.get('salon_draft', {}) || {};
+      if (sentDraft.concept && sentDraft.concept.mode === 'service') {
+        delete sentDraft.concept;
+        delete sentDraft.savedAt;
+        delete sentDraft.idx;
+        if (Object.keys(sentDraft).length) S.store.set('salon_draft',sentDraft);
+        else S.store.del('salon_draft');
+      }
+    }
+    /* дубль черновика визарда пережидал отправку и всплывал на следующем
+       заходе уже отправленной заявкой — стираем вместе с основным */
+    try { S.store.del('salon_concept_request_v1'); } catch (e) {}
+  }
+  function onSubmitOk(r) {
+    acceptedOrderId = String(r.id);
+    clearRequestId();
+    if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
+    if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
+    /* Текстовый черновик держим до подтверждённой загрузки всех вложений.
+       Иначе заказ уже создан, а единственная копия материалов остаётся только
+       в памяти вкладки и исчезает после незаметного upload 503. */
+    if (!attQueue.length) clearSubmittedDrafts();
     renderDoneReceipt(submittedCartSnapshot);
     if (submittedCartCount && window.SalonCart) {
       window.SalonCart.clear();
@@ -1903,7 +2016,12 @@ function initConf() {
     /* файлы — следом за заявкой, статусы на экране успеха */
     attOrder = { id: r.id, token: r.token || '' };
     doneAttRender();
-    if (attQueue.length) uploadQueued();
+    if (attQueue.length) {
+      uploadQueued().then(function () {
+        var delivered = attQueue.every(function (item) { return item.st === 'ok'; });
+        if (delivered) clearSubmittedDrafts();
+      });
+    }
     var bl = $('doneBot');
     var claim = r.claim_url || (r.token
       ? 'dashboard.html#claim=' + encodeURIComponent(r.token)
@@ -1971,7 +2089,7 @@ function initConf() {
 
   /* сервер жив и ответил ошибкой — говорим словами, форма остаётся */
   function onSubmitErr(r) {
-    pendingRequestId = '';
+    clearRequestId();
     if (S.visit && S.visit.event) S.visit.event('submit_fail', { cta: 'server_rejected' });
     var e = (r && r.error) || '';
     var scopeMessage = S.api && S.api.outsideScopeMessage
@@ -2001,13 +2119,13 @@ function initConf() {
   function veilShow() {
     var v = $('sendVeil');
     if (!v) return;
-    veilStage('Запечатываем смету…', 'Обычно это пара секунд.');
+    veilStage('Запечатываем смету…', 'Это может занять до минуты. Не закрывайте страницу.');
     v.hidden = false;
     veilTimers.forEach(clearTimeout);
     veilTimers = [
-      setTimeout(function () { veilStage('Отправляем изо всех сил…', 'Не уходите — мы держим вашу заявку в руках.'); }, 4000),
-      setTimeout(function () { veilStage('Сервер сегодня задумчив — не сдаёмся.', 'Заявка не потеряется: если не выйдет, дадим запасной ход на 10 секунд.'); }, 11000),
-      setTimeout(function () { veilStage('Ещё чуть-чуть…', 'Проверяем последний путь до мастера.'); }, 20000)
+      setTimeout(function () { veilStage('Передаём данные', 'Проверяем соединение. Не закрывайте страницу.'); }, 4000),
+      setTimeout(function () { veilStage('Ответ задерживается', 'Продолжаем отправку. Заявка не потеряется.'); }, 11000),
+      setTimeout(function () { veilStage('Ждём подтверждение', 'Если ответа не будет, покажем резервный способ отправки.'); }, 20000)
     ];
   }
   function veilHide() {
@@ -2043,7 +2161,7 @@ function initConf() {
       fb.className = 'fb-box';
       fb.id = 'fbBox';
       fb.innerHTML =
-        '<p class="caps">Запасной ход · 10 секунд</p>' +
+        '<p class="caps">Запасной ход</p>' +
         '<p class="petit" style="margin:6px 0 0">Смета готова — осталось донести её до мастера удобным путём:</p>' +
         '<div class="fb-sheet"><pre id="fbText"></pre></div>' +
         '<button type="button" class="btn btn-wax btn-block" id="fbCopy">📋 Скопировать смету</button>' +
@@ -2101,6 +2219,11 @@ function initConf() {
     $('confBody').hidden = true;
     if (mcta) mcta.hidden = true;
     var done = $('confDone');
+    /* Признак исхода выставляем ДО снятия hidden: наблюдатель визарда
+       срабатывает на этот атрибут и должен знать, успех перед ним или
+       запасной ход. Иначе поверх сбоя рисуется «Задача получена», а
+       заявка на сервер так и не ушла. */
+    done.setAttribute('data-submit-state', failed ? 'failed' : 'ok');
     done.hidden = false;
     { /* сброс следов прежнего «не отправилось»: успех после ретрая обязан быть чистым */
       var sheet0 = done.querySelector('.done-sheet');
@@ -2312,7 +2435,11 @@ function initConf() {
           if (fields) fields.hidden = false;
           document.body.classList.add('svc-checkout');
         }
-        go(3, true);
+        /* видимый интерфейс переводит визард; реестру достаточно тихо
+           встать на свой последний шаг, без фокуса и прокрутки */
+        go(3, false);
+        var wiz = window.SalonConceptWizard;
+        if (wiz && typeof wiz.goToContact === 'function') wiz.goToContact();
         setTimeout(function () {
           var target = (S.api && S.api.token()) ? $('btnSubmit') : $('fContact');
           if (target && target.focus) target.focus({ preventScroll:true });
@@ -2341,9 +2468,13 @@ if (document.prerendering) {
 
   var host = document.getElementById('conceptWizard');
   if (!host) return;
+  var autosaveState = 'idle';
+  var autosaveTimer = null;
+  var fieldAutosaveTimer = null;
+  var terminalSuccess = false;
 
   var STORE_KEY = 'salon_concept_request_v1';
-  var STORE_VERSION = 3;
+  var STORE_VERSION = 5;
   var RULES_VERSION = 'case-2026-07-26.1';
   var RULES_EVENT_VERSION = 'r1';
   var conceptEventSeen = {};
@@ -2372,75 +2503,54 @@ if (document.prerendering) {
 
   var routeSteps = [
     {
-      key:'workType', kicker:'Шаг 1', title:'С какой работой нужна помощь?',
-      lead:'Выберите тип — покажем подходящие форматы и не будем задавать лишних вопросов.',
+      key:'situation', displayStep:1, title:'Что у вас уже есть?',
+      lead:'Выберите ситуацию и вид работы. Сразу покажем первый результат и ориентир цены.',
       options:[
-        ['diplom','ВКР или диплом','С нуля, с черновиком или перед защитой.'],
-        ['course','Курсовая работа','Теория или исследование: с нуля, с черновиком или правками.'],
-        ['master','Магистерская','С нуля: методология, данные, рабочий текст и защита.'],
-        ['rinc','Научная статья РИНЦ / сборник','Логика, источники и редактура рукописи.'],
-        ['practice','Отчёт по практике','Структура и оформление реальных результатов.'],
-        ['self','Другое','Реферат, эссе или задача, которой нет в списке.']
+        ['topic','Только тема или задание','Начнём с формулировки и понятного плана.'],
+        ['draft','Свой черновик','Сначала разберём готовое и расставим правки.'],
+        ['comments','Замечания руководителя','Покажем, что исправить сначала и почему.'],
+        ['defense','Готовая версия, скоро защита','Проверим текст, речь, слайды и ответы.']
       ],
-      specialistOptions:[
-        ['course_emp','Курсовая с исследованием','Опрос, расчёты, эксперимент или анализ данных.'],
-        ['chapter','Глава исследования','Самостоятельная глава вашей текущей работы.'],
-        ['kandidat','Диссертационное исследование','Диагностика или сопровождение исследовательского проекта.'],
-        ['vak','Научная статья ВАК','Рукопись с требованиями профильного издания.'],
-        ['scopus','Статья Scopus / Web of Science','Международный формат и требования выбранного журнала.']
+      workOptions:[
+        ['diplom','ВКР или диплом'],
+        ['course','Курсовая'],
+        ['rinc','Научная статья'],
+        ['practice','Отчёт по практике'],
+        ['master','Магистерская'],
+        ['self','Другая работа']
       ]
     },
     {
-      key:'situation', kicker:'Шаг 2', title:'Что уже есть?',
-      lead:'Выберите ближайшую ситуацию — так редактор увидит реальную точку старта.',
-      options:[
-        ['topic','Только тема — начинаем с нуля','Разберём задание и соберём проект от структуры до рабочего черновика.'],
-        ['draft','Есть мой черновик','Нужна оценка текста и понятный список задач.'],
-        ['comments','Получены замечания','Нужно разобрать комментарии и проверить правки.'],
-        ['defense','Скоро сдача или защита','Нужна проверка готовности и приоритетов.']
-      ]
-    },
-    {
-      key:'result', kicker:'Шаг 3', title:'Какая помощь нужна сейчас?',
-      lead:'Выберите первый самостоятельный результат. После выбора сразу покажем формат, состав и ориентир стоимости.',
-      options:[
-        ['diagnostic','Понять, что исправлять','Письменная диагностика и порядок действий.'],
-        ['editing','Отредактировать мой черновик','Согласованные правки и комментарии в документе.'],
-        ['formatting','Проверить оформление по методичке','Сверка требований и исправление оформления.'],
-        ['defense','Подготовиться к защите','Редактура вашей речи и слайдов, репетиция ответов.'],
-        ['support','Собрать проект с нуля','План, источники, полный рабочий черновик, оформление и защита.'],
-        ['recommendation','Нужна рекомендация','Редактор предложит первый формат после просмотра материалов.']
-      ],
-      specialistOptions:[
-        ['tutoring','Разобрать тему на консультации','Индивидуальная встреча или серия занятий с экспертом.'],
-        ['ai_editing','Отредактировать мой текст после ИИ','Логика, стиль и проверка фактической основы вашего материала.']
-      ]
-    },
-    {
-      key:'recommendation', kicker:'Шаг 4', title:'Вот что мы предлагаем',
-      lead:'Рекомендация собрана из ваших ответов. До контактов уже видны состав, границы работы и ориентир стоимости.',
+      key:'materials', displayStep:2, title:'Срок и материалы',
+      lead:'Нужна только дата первого результата. Тему, пояснения и файлы можно добавить при желании.',
       options:[]
     },
     {
-      key:'materials', kicker:'Шаг 5', title:'Когда нужен результат и что уже можно показать?',
-      lead:'Реальная дата и материалы делают оценку точнее. Файлы можно не прикладывать, если их пока нет.',
-      options:[]
-    },
-    {
-      key:'contact', kicker:'Шаг 6', title:'Проверьте задачу и выберите способ ответа',
-      lead:'Контакт нужен только для ответа по этой заявке. Рассылки включаются отдельным согласием.',
+      key:'contact', displayStep:3, title:'Контакт для ответа',
+      lead:'Проверьте выбор и оставьте один контакт. За отправку заявки платить не нужно. Работа начнётся только после согласования условий.',
       options:[]
     }
   ];
+  if (routeOrigin === 'home-urgent') {
+    routeSteps[0].lead = 'Выберите, что уже есть. Затем укажете дату — мы проверим, что успеем.';
+  }
+  if (routeOrigin === 'home-zero') {
+    routeSteps[0].title = 'Что нужно подготовить?';
+    routeSteps[0].lead = 'Вы выбрали работу с нуля. Теперь укажите её вид.';
+  }
+  if (routeOrigin === 'home-edit') {
+    routeSteps[0].title = 'Что нужно доработать?';
+    routeSteps[0].lead = 'Вы выбрали доработку. Теперь укажите вид работы.';
+  }
   var serviceSteps = [
     {
-      key:'materials', kicker:'Шаг 1', title:service ? service.label : 'Детали услуги',
-      lead:service ? service.desc : 'Опишите задачу и приложите материалы для точной оценки.',
+      key:'materials', displayStep:1, title:service ? service.label : 'Что нужно сделать?',
+      lead:service ? service.desc : 'Опишите задачу, дату и приложите материалы, которые помогут редактору оценить работу.',
       options:[]
     },
     {
-      key:'contact', kicker:'Шаг 2', title:'Проверьте задачу и выберите способ ответа',
-      lead:'Контакт нужен только для ответа по этой заявке. Рассылки включаются отдельным согласием.',
+      key:'contact', displayStep:2, title:'Контакт для ответа',
+      lead:'Проверьте описание и оставьте один контакт. За отправку заявки платить не нужно. Работа начнётся только после согласования условий.',
       options:[]
     }
   ];
@@ -2482,7 +2592,7 @@ if (document.prerendering) {
   }
   function normalizeResult(value) {
     var map = {
-      'Диагностика':'diagnostic',
+      'Письменный разбор':'diagnostic',
       'Редактура':'editing',
       'Оформление':'formatting',
       'Защита':'defense',
@@ -2514,6 +2624,9 @@ if (document.prerendering) {
       result:normalizeResult(value.result || (draft.state && draft.state.tier)),
       deadlineDate:/^\d{4}-\d{2}-\d{2}$/.test(value.deadlineDate || '') ? value.deadlineDate : '',
       deadlineFlexible:!!value.deadlineFlexible || value.deadline === 'Срок обсуждается',
+      topic:typeof value.topic === 'string' ? value.topic.slice(0,4000) : '',
+      comment:typeof value.comment === 'string' ? value.comment.slice(0,8000) : '',
+      contactMethod:['telegram','email','phone'].indexOf(value.contactMethod) >= 0 ? value.contactMethod : 'telegram',
       entryPrefilled:!!value.entryPrefilled,
       authorParticipation:!!value.authorParticipation,
       routeConfirmation:value.routeConfirmation === 'confirmed'
@@ -2521,7 +2634,39 @@ if (document.prerendering) {
         : (value.entryPrefilled ? 'inferred' : 'unconfirmed')
     };
   }
-  function saveSelections() {
+  function paintAutosaveState() {
+    var node = host.querySelector('[data-autosave-state]');
+    var label = host.querySelector('[data-autosave-label]');
+    if (!node || !label) return;
+    node.setAttribute('data-autosave-state', autosaveState);
+    label.textContent = autosaveState === 'saved'
+      ? 'Сохранено на этом устройстве'
+      : autosaveState === 'error'
+        ? 'Не удалось сохранить в этом браузере'
+        : 'Черновик сохранится автоматически';
+  }
+  function announceAutosave(ok) {
+    autosaveState = ok ? 'saved' : 'error';
+    paintAutosaveState();
+    if (autosaveTimer) clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(function () {
+      autosaveState = 'idle';
+      paintAutosaveState();
+    }, 2800);
+  }
+  function autosaveMarkup() {
+    var label = autosaveState === 'saved'
+      ? 'Сохранено на этом устройстве'
+      : autosaveState === 'error'
+        ? 'Не удалось сохранить в этом браузере'
+        : 'Черновик сохранится автоматически';
+    return '<p class="wizard-autosave" data-autosave-state="' + autosaveState + '" role="status" aria-live="polite">' +
+      '<span class="wizard-autosave__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 3.5h8l3 3v14h-11z"/><path d="M14.5 3.5v4h4M9.5 12.5l2 2 4-4"/></svg></span>' +
+      '<span data-autosave-label>' + label + '</span>' +
+      '<small>Контакты и файлы не сохраняются</small></p>';
+  }
+  function saveSelections(announce) {
+    var savedAt = Date.now();
     var concept = {
       version:STORE_VERSION,
       mode:service ? 'service' : 'route',
@@ -2534,15 +2679,23 @@ if (document.prerendering) {
       result:state.result,
       deadlineDate:state.deadlineDate,
       deadlineFlexible:state.deadlineFlexible,
+      topic:String(state.topic || '').slice(0,4000),
+      comment:String(state.comment || '').slice(0,8000),
+      contactMethod:state.contactMethod,
       entryPrefilled:state.entryPrefilled,
       authorParticipation:state.authorParticipation,
-      routeConfirmation:state.routeConfirmation
+      routeConfirmation:state.routeConfirmation,
+      updatedAt:savedAt
     };
     var draft = storeGet('salon_draft', {}) || {};
     draft.concept = concept;
-    storeSet('salon_draft', draft);
+    draft.savedAt = savedAt;
+    draft.idx = state.step;
+    var stored = storeSet('salon_draft', draft);
     /* Один релиз сохраняем совместимость с уже выпущенным фасадом v1. */
-    storeSet(STORE_KEY, concept);
+    var compatible = storeSet(STORE_KEY, concept);
+    if (announce) announceAutosave(stored && compatible);
+    return stored && compatible;
   }
 
   function newDraftId() {
@@ -2567,7 +2720,12 @@ if (document.prerendering) {
        вопроса. Для редактуры, оформления и защиты нужен готовый материал. */
     routedResult = '';
   }
-  var hasRoutedContext = !!(routedSituation || routedWork || routedDiscipline || routedResult);
+  var hasHomeRouteContext = ['home-zero','home-edit','home-urgent'].indexOf(routeOrigin) >= 0;
+  var hasRoutedContext = !!(routedSituation || routedWork || routedDiscipline || routedResult || hasHomeRouteContext);
+  var savedHasProgress = !!(savedMatchesMode &&
+    (saved.situation || saved.workType || saved.result || saved.deadlineDate ||
+     saved.deadlineFlexible || saved.topic || saved.comment));
+  var pendingRouteConflict = !!(!service && hasRoutedContext && savedHasProgress);
   var state = {
     step:savedMatchesMode && saved.version >= STORE_VERSION
       ? Math.max(0,Math.min(steps.length - 1,Number(saved.step) || 0)) : 0,
@@ -2578,15 +2736,23 @@ if (document.prerendering) {
     result:savedMatchesMode ? saved.result : '',
     deadlineDate:savedMatchesMode ? saved.deadlineDate : '',
     deadlineFlexible:savedMatchesMode ? saved.deadlineFlexible : false,
+    contactMethod:savedMatchesMode ? (saved.contactMethod || 'telegram') : 'telegram',
     entryPrefilled:savedMatchesMode ? saved.entryPrefilled : false,
     authorParticipation:savedMatchesMode ? saved.authorParticipation : false,
     routeConfirmation:savedMatchesMode ? saved.routeConfirmation : (service ? 'inferred' : 'unconfirmed'),
-    topic:'',
+    topic:savedMatchesMode ? saved.topic : '',
     name:'',
     contact:'',
-    comment:'',
+    contactByMethod:{},
+    comment:savedMatchesMode ? saved.comment : '',
     consent:false
   };
+  if (!service && savedMatchesMode && saved.version < STORE_VERSION && state.situation) {
+    state.result = state.situation === 'defense' ? 'defense'
+      : state.situation === 'draft' ? 'editing'
+      : 'diagnostic';
+    state.routeConfirmation = 'unconfirmed';
+  }
   if (service) {
     state.result = service.id === 'norm' ? 'formatting'
       : service.id === 'defense' || service.id === 'defensepack' || service.id === 'commission0' ? 'defense'
@@ -2612,30 +2778,29 @@ if (document.prerendering) {
       state.deadlineDate = restoredDeadline.value;
     }
   } else {
-    if (!hasRoutedContext) {
+    if (!hasRoutedContext || pendingRouteConflict) {
       /* Обычный вход продолжает безопасный локальный черновик. */
     } else {
     /* Контекстная CTA открывает новую задачу. Передаём только коды,
        никогда исходную фразу, контакт или содержимое материалов. */
-    state.step = routedWork && routedDiscipline && routedSituation && routedResult ? 3
-      : routedWork && routedDiscipline && routedSituation ? 2
-      : routedWork && routedDiscipline ? 1 : 0;
+    state.step = routedWork && routedSituation ? 1 : 0;
     state.draftId = newDraftId();
     state.situation = routedSituation;
     state.workType = routedWork;
     state.discipline = routedDiscipline;
-    state.result = routedResult;
+    state.result = routedResult || (routedSituation === 'defense' ? 'defense'
+      : routedSituation === 'draft' ? 'editing' : routedSituation ? 'diagnostic' : '');
     state.deadlineDate = '';
     state.deadlineFlexible = false;
     state.entryPrefilled = !!routedResult;
     state.authorParticipation = false;
     state.routeConfirmation = 'inferred';
-    saveSelections();
+    saveSelections(true);
     }
-    if (state.situation === 'topic' && resultNeedsExistingMaterial(state.result)) {
+    if (!pendingRouteConflict && state.situation === 'topic' && resultNeedsExistingMaterial(state.result)) {
       state.result = '';
       state.entryPrefilled = false;
-      state.step = Math.min(state.step,2);
+      state.step = 0;
       saveSelections();
     }
   }
@@ -2650,6 +2815,35 @@ if (document.prerendering) {
       history.replaceState(history.state, '', location.pathname +
         (cleanQuery ? '?' + cleanQuery : '') + location.hash);
     } catch (e) {}
+  }
+  var showAllSituations = false;
+
+  function applyPendingRoute() {
+    pendingRouteConflict = false;
+    state.step = routedWork && routedSituation ? 1 : 0;
+    state.draftId = newDraftId();
+    state.situation = routedSituation;
+    state.workType = routedWork;
+    state.discipline = routedDiscipline;
+    state.result = routedResult || (routedSituation === 'defense' ? 'defense'
+      : routedSituation === 'draft' ? 'editing' : routedSituation ? 'diagnostic' : '');
+    state.deadlineDate = '';
+    state.deadlineFlexible = false;
+    state.topic = '';
+    state.comment = '';
+    state.entryPrefilled = !!routedResult;
+    state.authorParticipation = false;
+    state.routeConfirmation = 'inferred';
+    saveSelections(true);
+    render();
+  }
+
+  function continueSavedRoute() {
+    pendingRouteConflict = false;
+    routeOrigin = '';
+    routeSteps[0].title = 'Что у вас уже есть?';
+    routeSteps[0].lead = 'Выберите ситуацию и вид работы. Сразу покажем первый результат и ориентир цены.';
+    render();
   }
 
   var legacyAsk = document.getElementById('svcAsk');
@@ -2726,7 +2920,7 @@ if (document.prerendering) {
   function confirmVisibleRoute(reason) {
     if (state.routeConfirmation === 'confirmed') return;
     state.routeConfirmation = 'confirmed';
-    saveSelections();
+    saveSelections(true);
     trackConcept('case_route_confirm',reason || 'visible_summary',true);
   }
   function isFullWorkOffer() {
@@ -2740,7 +2934,7 @@ if (document.prerendering) {
       editing:'turn',
       support:'vip'
     };
-    if (!service && state.workType) legacyClick('#typeGroup [data-id="' + state.workType + '"]');
+    if (!service && state.workType && state.workType !== 'self') legacyClick('#typeGroup [data-id="' + state.workType + '"]');
     if (!service && state.discipline) legacyClick('#discGroup [data-id="' + state.discipline + '"]');
     if (!service && tierMap[effectiveResult()]) legacyClick('#tierGroup [data-id="' + tierMap[effectiveResult()] + '"]');
     if (!service) legacyClick('#segTerm [data-id="' + deadlineBucket() + '"]');
@@ -2828,18 +3022,18 @@ if (document.prerendering) {
   function situationLabel(value) {
     return {
       topic:'Только тема — начинаем с нуля',
-      draft:'Есть мой черновик',
-      comments:'Получены замечания',
-      defense:'Скоро сдача или защита'
+      draft:'Свой черновик',
+      comments:'Замечания руководителя',
+      defense:'Готовая версия, скоро защита'
     }[value] || 'Не указано';
   }
   function resultLabel(value) {
     return {
-      diagnostic:'Диагностика',
+      diagnostic:'Письменный разбор',
       editing:'Редактура вашего текста',
       formatting:'Оформление по методичке',
       defense:'Подготовка к защите',
-      support:'Исследовательский проект с нуля',
+      support:'Сопровождение исследования по этапам',
       recommendation:'Рекомендация редактора',
       tutoring:'Консультация с экспертом',
       ai_editing:'Редактура вашего текста после ИИ',
@@ -2864,8 +3058,51 @@ if (document.prerendering) {
   function money(value) {
     return Math.max(0,Math.round(Number(value) || 0)).toLocaleString('ru-RU') + ' ₽';
   }
+  function visibleServiceAnswers() {
+    var answers = {};
+    (service && service.ask || []).forEach(function (question) {
+      if (question.type === 'chips') {
+        var selected = document.querySelector('#svcAsk [data-ask="' + question.id + '"].on');
+        answers[question.id] = selected ? selected.getAttribute('data-val') || '' : '';
+      } else {
+        var field = document.getElementById('ask_' + question.id);
+        answers[question.id] = field ? field.value.trim() : '';
+      }
+    });
+    return answers;
+  }
+  function summaryExcerpt(value,max) {
+    value = String(value || '').replace(/\s+/g,' ').trim();
+    max = max || 150;
+    return value.length > max ? value.slice(0,max - 1) + '…' : value;
+  }
+  function serviceSummaryRows() {
+    if (!service || !service.ask || !service.ask.length) return '';
+    return service.ask.map(function (question) {
+      var value = '';
+      if (question.type === 'chips') {
+        var selected = document.querySelector('#svcAsk [data-ask="' + question.id + '"].on');
+        value = selected ? selected.textContent.trim() : '';
+      } else {
+        var field = document.getElementById('ask_' + question.id);
+        value = field ? field.value.trim() : '';
+      }
+      if (!value) return '';
+      return '<div><dt>' + safeText(question.short || question.label || 'Деталь') +
+        '</dt><dd>' + safeText(summaryExcerpt(value,120)) + '</dd></div>';
+    }).join('');
+  }
   function quoteInfo() {
     var quote = null;
+    if (!service && state.workType === 'self') {
+      return {
+        quote:null,
+        cartHasItems:false,
+        currentIncluded:true,
+        priceText:'после уточнения вида и объёма работы',
+        cartCount:0
+      };
+    }
     var standaloneOffer = !service && !isFullWorkOffer();
     var cartHasItems = !!(!standaloneOffer && window.SalonCart &&
       window.SalonCart.hasItems && window.SalonCart.hasItems());
@@ -2884,6 +3121,20 @@ if (document.prerendering) {
         cartHasItems:false,
         currentIncluded:true,
         priceText:(offer === 'svc_plan' ? '' : 'от ') + money(amount),
+        cartCount:0
+      };
+    }
+    /* Отдельная услуга никогда не должна наследовать смету полного проекта.
+       Иначе «Разбор плана · 3 000 ₽» превращался здесь в 27 500–38 500 ₽. */
+    if (service) {
+      var serviceAmount = service.priceFor
+        ? service.priceFor(visibleServiceAnswers())
+        : Number(service.from) || 0;
+      return {
+        quote:{ low:serviceAmount, high:serviceAmount, fixed:!!service.fixed },
+        cartHasItems:false,
+        currentIncluded:true,
+        priceText:(service.fixed ? '' : 'от ') + money(serviceAmount),
         cartCount:0
       };
     }
@@ -2908,14 +3159,18 @@ if (document.prerendering) {
       cartCount:cartHasItems && window.SalonCart.lineCount ? window.SalonCart.lineCount() : 0
     };
   }
+  function refreshVisibleSummaryPrice() {
+    var node = host.querySelector('[data-summary-price]');
+    if (node) node.textContent = quoteInfo().priceText;
+  }
   function recommendationFor() {
     var effective = effectiveResult();
     if (service) {
       if (service.id === 'commission0') {
         return {
-          title:'Комиссия №0',
-          description:'Независимый от подготовки проверяемой версии Оппонент проведёт живую редакторскую предзащиту. Итог — Протокол №0 без балла готовности и без имитации решения вуза.',
-          first:'Живая сессия и Протокол №0',
+          title:'Репетиция защиты · Комиссия №0',
+          description:'Независимый редактор проведёт репетицию защиты. Итог — протокол с замечаниями и рисками. Это не комиссия вуза и не прогноз оценки.',
+          first:'Живая сессия и протокол репетиции',
           duration:'по согласованной дате',
           editor:'Проверит версию материалов, подготовит персональные вопросы, проведёт сессию и зафиксирует каждый критический риск с основанием.',
           client:'Лично ответить на вопросы, подтвердить исследовательские решения и передать обезличенные требования, источники и данные.'
@@ -2924,11 +3179,11 @@ if (document.prerendering) {
       if (service.id === 'ai') {
         return {
           title:'Проверка и редактура текста после ИИ',
-          description:'Проверим логику, фактические утверждения и связь с переданными источниками, затем внесём видимые редакторские правки. Обход детекторов и обещание процента не входят.',
+          description:'Проверим логику, факты и связь с указанными источниками, затем внесём видимые редакторские правки. Не подгоняем текст под детекторы и не обещаем заранее процент оригинальности.',
           first:'Файл с видимыми правками и комментариями к фактам, источникам и логическим разрывам',
-          duration:'после получения исходного текста, prompt и сведений об источниках',
+          duration:'назовём после получения текста, исходного запроса к ИИ и сведений об источниках',
           editor:'Сверит текст с исходным запросом, проверит внутреннюю логику и отметит факты и ссылки, которым не хватает подтверждения.',
-          client:'Передать исходный текст, исходный prompt и список источников либо честно указать, что источники неизвестны.'
+          client:'Передать текст, исходный запрос к ИИ и список источников; если список не сохранился — сообщить об этом.'
         };
       }
       return {
@@ -2942,9 +3197,19 @@ if (document.prerendering) {
     }
     var items = {
       diagnostic:{
-        title:state.situation === 'topic' ? 'Разбор темы и плана' : 'Диагностика черновика',
-        description:'Редактор разберёт требования и материал, отметит риски и соберёт последовательный план действий.',
-        first:state.situation === 'topic' ? 'Письменная карта темы, структуры и первого шага' : 'Письменная карта замечаний и приоритетов',
+        title:state.situation === 'topic'
+          ? 'Разбор темы и плана'
+          : state.situation === 'comments'
+            ? 'Разбор замечаний'
+            : 'Разбор черновика',
+        description:state.situation === 'comments'
+          ? 'Сначала разберём файл и замечания, отделим обязательные исправления от пожеланий и оценим объём и порядок редактуры.'
+          : 'Редактор разберёт требования и материал, отметит риски и соберёт последовательный план действий.',
+        first:state.situation === 'topic'
+          ? 'Понятный план темы, структуры и первого шага'
+          : state.situation === 'comments'
+            ? 'Список обязательных правок и оценка объёма редактуры'
+            : 'Разбор черновика с порядком исправлений',
         duration:'обычно 1–2 рабочих дня',
         editor:'Проверит структуру, логику, требования и объяснит, что исправлять сначала.',
         client:'Задание, методичка и ваш черновик, если он уже есть.'
@@ -2960,7 +3225,7 @@ if (document.prerendering) {
       formatting:{
         title:'Оформление по методичке',
         description:'Редактор сверит предоставленный файл с требованиями и подготовит его к нормоконтролю.',
-        first:'Проверенный и оформленный документ',
+        first:'Документ, оформленный по переданной методичке, и список оставшихся вопросов',
         duration:'обычно 1–3 рабочих дня',
         editor:'Проверит поля, стили, ссылки, список литературы, титул и приложения.',
         client:'Файл работы и актуальная методичка кафедры.'
@@ -2983,19 +3248,19 @@ if (document.prerendering) {
       },
       ai_editing:{
         title:'Редактура вашего текста после ИИ',
-        description:'Проверим логику, стиль и фактическую основу предоставленного текста без обещаний обойти детекторы.',
+        description:'Проверим логику, стиль, факты и ссылки на источники. Не подгоняем текст под детекторы.',
         first:'Отредактированный фрагмент с комментариями к спорным местам',
         duration:'срок зависит от объёма',
-        editor:'Уберёт машинальные обороты, проверит связность и отметит факты или выводы, требующие вашей проверки.',
+        editor:'Исправит шаблонные и неестественные обороты, проверит связность и отметит факты, которые нужно подтвердить.',
         client:'Ваш текст, источники и подтверждение того, какие содержательные решения принадлежат вам.'
       },
       support:{
-        title:'Исследовательский проект с нуля',
-        description:'Можно прийти без текста: мастерская соберёт структуру, источники, анализ и полный рабочий черновик для вашей содержательной проверки и доработки.',
-        first:'Первый полный рабочий черновик',
+        title:'Сопровождение исследования по этапам',
+        description:'Можно прийти без текста. Поможем уточнить задачу, выстроить структуру, подобрать и проверить источники, выбрать метод анализа и отредактировать подготовленные вами материалы. Исследовательские решения и финальный текст остаются за вами.',
+        first:'План исследования и задачи на первый этап',
         duration:'календарь — после проверки задания и данных',
-        editor:'Соберёт структуру, источники, рабочий текст, расчёты или анализ и оформление по спецификации.',
-        client:'Утвердить исследовательские решения, проверить факты и данные, содержательно доработать и принять финальную авторскую версию.'
+        editor:'Поможет со структурой, методикой, источниками и редактурой на каждом согласованном этапе.',
+        client:'Передать данные, принять исследовательские решения и подготовить или утвердить финальный текст.'
       }
     };
     return items[effective] || items.diagnostic;
@@ -3014,16 +3279,16 @@ if (document.prerendering) {
     if (result === 'ai_editing') {
       return 'Текст уже существует, поэтому первым шагом будет редакторская проверка логики и фактической основы, а не обещание «обойти» проверку.';
     }
+    if (result === 'support') {
+      return 'Вы выбрали сопровождение по этапам и отдельно подтверждаете своё участие в исследовательских решениях и финальной версии.';
+    }
     if (state.situation === 'topic') {
-      return 'Пока есть только тема: сначала дешевле проверить её рамки и план, а большой проект обсуждать уже на проверяемом основании.';
+      return 'Пока есть только тема: сначала уточним её границы и соберём план. После этого станет ясно, нужно ли полное сопровождение.';
     }
     if (result === 'editing') {
       return 'У вас уже есть авторский черновик, поэтому первый полезный результат — правки в нём, а не новая работа с нуля.';
     }
-    if (result === 'support') {
-      return 'Вы выбрали полный рабочий цикл и отдельно подтверждаете своё участие в исследовательских решениях и финальной версии.';
-    }
-    return 'Есть материал для проверки: письменная диагностика сначала отделит критические риски от необязательных улучшений.';
+    return 'Есть материал для проверки: письменный разбор сначала отделит важные проблемы от необязательных улучшений.';
   }
   function recommendationChange() {
     var result = effectiveResult();
@@ -3031,7 +3296,7 @@ if (document.prerendering) {
     if (result === 'editing') return 'Изменится, если черновик пока не готов к редактуре или задача ограничивается оформлением.';
     if (result === 'formatting') return 'Изменится, только если в файле есть содержательные разрывы, которые нельзя исправлять как оформление.';
     if (result === 'defense') return 'Изменится, если нет готового текста, на котором можно строить выступление.';
-    if (result === 'tutoring') return 'Изменится, если вместо объяснения нужен отдельный проверяемый документ или письменная диагностика.';
+    if (result === 'tutoring') return 'Изменится, если вместо объяснения нужен отдельный проверяемый документ или письменный разбор.';
     if (result === 'ai_editing') return 'Изменится, если исходный материал требует не редактуры, а полной проверки фактов или нового авторского исследования.';
     return 'Состав изменится только после проверки материалов и вашего явного согласования.';
   }
@@ -3044,7 +3309,7 @@ if (document.prerendering) {
     ];
     return '<fieldset class="discipline-choice">' +
       '<legend><strong>Направление работы</strong><small>Оно влияет на профиль редактора и ориентир стоимости.</small></legend>' +
-      '<div role="radiogroup" aria-label="Направление работы">' +
+      '<div role="group" aria-label="Направление работы">' +
         options.map(function (option) {
           var active = state.discipline === option[0];
           return '<button type="button" data-concept-discipline="' + option[0] + '" aria-pressed="' + active + '" class="' + (active ? 'is-selected' : '') + '">' +
@@ -3056,41 +3321,84 @@ if (document.prerendering) {
   function recommendationMarkup() {
     var rec = recommendationFor();
     var pricing = quoteInfo();
+    var trustParts = [];
+    if (state.routeConfirmation === 'inferred') {
+      trustParts.push('<strong>Выбор перенесён с предыдущей страницы.</strong> Его можно изменить.');
+    }
+    if (effectiveResult() === 'support') {
+      trustParts.push('<strong>Это совместная работа.</strong> Редактор помогает со структурой, методикой, источниками и редактурой ваших материалов. Исследовательские решения и финальный текст остаются за вами.');
+    }
     return (
       '<div class="recommendation-card">' +
         '<section class="recommendation-card__main">' +
-          '<p class="eyebrow">Вам подходит</p>' +
+          '<p class="eyebrow">Рекомендуем как первый этап</p>' +
           '<h2>' + safeText(rec.title) + '</h2>' +
           '<p class="recommendation-card__lead">' + safeText(rec.description) + '</p>' +
           '<dl class="recommendation-facts">' +
-            '<div><dt>Почему этот шаг</dt><dd>' + safeText(recommendationReason()) + '</dd></div>' +
-            '<div><dt>Первый результат</dt><dd>' + safeText(rec.first) + '</dd></div>' +
-            '<div><dt>Обычно</dt><dd>' + safeText(rec.duration) + '</dd></div>' +
-            '<div><dt>Ориентир</dt><dd>' + safeText(pricing.priceText) + '</dd></div>' +
+            '<div><dt>На выходе</dt><dd>' + safeText(rec.first) + '</dd></div>' +
+            '<div><dt>Ориентировочный срок</dt><dd>' + safeText(rec.duration) + '</dd></div>' +
+            '<div><dt>Ориентир стоимости</dt><dd>' + safeText(pricing.priceText) + '</dd></div>' +
           '</dl>' +
-          '<div class="recommendation-scope">' +
-            '<div><span>Что сделает редактор</span><p>' + safeText(rec.editor) + '</p></div>' +
-            '<div><span>Что потребуется от вас</span><p>' + safeText(rec.client) + '</p></div>' +
-          '</div>' +
-          '<div class="recommendation-rationale"><p><strong>Когда рекомендация изменится.</strong> ' + safeText(recommendationChange()) + '</p>' +
-          '<p><strong>Можно самостоятельно.</strong> Начните с <a href="knowledge.html">редакторских протоколов</a>; заявка нужна только если хотите письменную проверку или работу редактора.</p></div>' +
-          (state.routeConfirmation === 'inferred'
-            ? '<p class="recommendation-note" role="note"><strong>Маршрут предложен по контексту входа.</strong> Проверьте работу, ситуацию и первый результат справа. Кнопка ниже подтвердит именно этот видимый выбор; до нажатия он считается предположением, а не вашим ответом.</p>'
-            : '') +
-          (effectiveResult() === 'support'
-            ? '<p class="recommendation-note"><strong>С нуля — не значит без вашего участия.</strong> Мы можем начать с пустого файла и подготовить полный рабочий черновик. Вы утверждаете содержательные решения, проверяете данные и отвечаете за финальную авторскую версию и её использование.</p>'
-            : '') +
+          '<details class="recommendation-more">' +
+            '<summary>Почему этот вариант и что входит <span aria-hidden="true">+</span></summary>' +
+            '<div class="recommendation-more__body">' +
+              '<p class="recommendation-reason"><strong>Почему этот этап.</strong> ' + safeText(recommendationReason()) + '</p>' +
+              '<div class="recommendation-scope">' +
+                '<div><span>Что сделает редактор</span><p>' + safeText(rec.editor) + '</p></div>' +
+                '<div><span>Что потребуется от вас</span><p>' + safeText(rec.client) + '</p></div>' +
+              '</div>' +
+              '<div class="recommendation-rationale"><p><strong>Что может изменить рекомендацию?</strong> ' + safeText(recommendationChange()) + '</p>' +
+              '<p><strong>Можно начать самостоятельно.</strong> В <a href="knowledge.html">библиотеке мастерской</a> есть бесплатные инструкции и проверки для каждого этапа.</p></div>' +
+            '</div>' +
+          '</details>' +
+          (trustParts.length ? '<p class="recommendation-note" role="note">' + trustParts.join(' ') + '</p>' : '') +
         '</section>' +
-        '<aside class="wizard-summary">' +
+        '<aside class="wizard-summary wizard-summary--selection">' +
           '<p class="eyebrow">Ваш выбор</p>' +
           '<h2>' + safeText(typeLabel(state.workType)) + '</h2>' +
-          '<dl><div><dt>Направление</dt><dd>' + safeText(disciplineLabel(state.discipline)) + '</dd></div>' +
-          '<div><dt>Что уже есть</dt><dd>' + safeText(situationLabel(state.situation)) + '</dd></div>' +
-          '<div><dt>Приоритет</dt><dd>' + safeText(resultLabel(state.result)) + '</dd></div>' +
-          '<div><dt>Стоимость</dt><dd>' + safeText(pricing.priceText) + '</dd></div></dl>' +
-          '<button class="line-link" type="button" data-concept-edit>Изменить выбор <span aria-hidden="true">←</span></button>' +
+          '<p class="wizard-summary__selection">' + safeText(situationLabel(state.situation)) + '</p>' +
+          '<button class="line-link" type="button" data-concept-edit>Изменить исходную ситуацию <span aria-hidden="true">←</span></button>' +
         '</aside>' +
       '</div>'
+    );
+  }
+  function liveRecommendationMarkup() {
+    if (!(state.situation && state.workType)) {
+      var waitingCopy = 'После выбора покажем первый результат, ориентировочный срок и стоимость. Контакт пока не нужен.';
+      return (
+        '<aside class="live-quote live-quote--waiting" aria-live="polite">' +
+          '<div class="live-quote__folio" aria-hidden="true">01</div>' +
+          '<p class="eyebrow">Первый этап</p>' +
+          '<h2>Выберите два пункта.</h2>' +
+          '<p>' + waitingCopy + '</p>' +
+          '<dl>' +
+            '<div><dt>Первый результат</dt><dd>покажем сразу</dd></div>' +
+            '<div><dt>Ориентир цены</dt><dd>до контакта</dd></div>' +
+            '<div><dt>Продолжение</dt><dd>только по вашему решению</dd></div>' +
+          '</dl>' +
+        '</aside>'
+      );
+    }
+    var rec = recommendationFor();
+    var pricing = quoteInfo();
+    return (
+      '<aside class="live-quote live-quote--ready" aria-live="polite">' +
+        '<div class="live-quote__folio" aria-hidden="true">01</div>' +
+        '<p class="eyebrow">С чего предлагаем начать</p>' +
+        '<h2>' + safeText(rec.title) + '</h2>' +
+        '<p>' + safeText(rec.description) + '</p>' +
+        '<dl>' +
+          '<div><dt>На выходе</dt><dd>' + safeText(rec.first) + '</dd></div>' +
+          '<div><dt>Ориентир срока</dt><dd>' + safeText(rec.duration) + '</dd></div>' +
+          '<div><dt>Ориентир цены</dt><dd class="live-quote__price">' + safeText(pricing.priceText) + '</dd></div>' +
+        '</dl>' +
+        '<details class="live-quote__more">' +
+          '<summary>Почему именно этот этап <span aria-hidden="true">+</span></summary>' +
+          '<div><p>' + safeText(recommendationReason()) + '</p>' +
+          '<p><strong>Что потребуется от вас.</strong> ' + safeText(rec.client) + '</p></div>' +
+        '</details>' +
+        '<small>Проверьте результат, срок и ориентир цены. Точные условия письменно подтвердим до оплаты.</small>' +
+      '</aside>'
     );
   }
   function minDate() {
@@ -3102,10 +3410,11 @@ if (document.prerendering) {
   }
   function filesMarkup() {
     var files = fileNames();
+    var required = sourceFileRequired();
     return (
       '<button class="file-drop" type="button" data-concept-files>' +
         '<span class="file-drop__icon" aria-hidden="true">+</span>' +
-        '<span><strong>Добавить материалы</strong><small>Word, PDF, изображения · до 5 файлов по 20 МБ</small></span>' +
+        '<span><strong>' + (required ? 'Приложить файл для разбора' : 'Добавить материалы') + '</strong><small>Word, PDF, изображения · до 5 файлов по 20 МБ</small></span>' +
       '</button>' +
       '<div class="file-list" data-concept-file-list>' +
         files.map(function (file,index) {
@@ -3126,12 +3435,30 @@ if (document.prerendering) {
       return !!(input && input.value.trim());
     });
   }
+  function sourceFileRequired() {
+    if (service && service.id === 'ai') return true;
+    return !!(!service && ['draft','comments'].indexOf(state.situation) >= 0 &&
+      ['diagnostic','editing'].indexOf(effectiveResult()) >= 0);
+  }
   function materialsMarkup() {
     var rec = recommendationFor();
     var pricing = quoteInfo();
     var files = fileNames();
     var dateText = state.deadlineFlexible ? 'Согласовать с редактором'
       : (formatDate(state.deadlineDate) || 'Не указана');
+    var detailsBody =
+      '<label class="field"><span>Тема или задача · необязательно</span><input type="text" data-concept-field="topic" value="' + safeText(state.topic) + '" placeholder="Вставьте тему или коротко опишите задачу"></label>' +
+      '<details class="materials-more"' + (state.comment ? ' open' : '') + '>' +
+        '<summary>Добавить требования или комментарий <span aria-hidden="true">+</span></summary>' +
+        '<label class="field"><span>Требования и комментарии</span><textarea rows="3" data-concept-field="comment" placeholder="Методичка, замечания руководителя и что уже сделано">' + safeText(state.comment) + '</textarea></label>' +
+      '</details>' +
+      filesMarkup() +
+      (service && service.id === 'ai'
+        ? '<p class="materials-hint" role="note"><strong>Для проверки после ИИ нужен исходный текст.</strong> Приложите хотя бы один файл; исходный запрос к ИИ и сведения об источниках заполните выше.</p>'
+        : sourceFileRequired()
+          ? '<p class="materials-hint" role="note"><strong>Для точного разбора нужен файл с текстом или замечаниями.</strong> Если файла пока нет, <a href="/priyomnaya.html">опишите задачу редактору</a> — подскажем, с чего начать без расчёта наугад.</p>'
+          : '<p class="materials-hint">Файлы необязательны. Не прикладывайте документы с подписями и лишними персональными данными.</p>');
+    var detailsRequired = sourceFileRequired() || (service && service.id === 'ai');
     return (
       '<div class="materials-step">' +
         '<div class="materials-step__main">' +
@@ -3139,23 +3466,24 @@ if (document.prerendering) {
             (service && legacyAsk && legacyAsk.children.length
               ? '<section class="concept-service-questions"><p class="eyebrow">Детали услуги</p><div data-concept-service-ask></div></section>'
               : '') +
-            '<label class="field"><span>Тема или формулировка задания · если уже есть</span><input type="text" data-concept-field="topic" value="' + safeText(state.topic) + '" placeholder="Вставьте тему или коротко опишите задачу"></label>' +
-            '<label class="field"><span>Требования, замечания или важный контекст</span><textarea rows="5" data-concept-field="comment" placeholder="Методичка, пожелания руководителя, что уже пробовали">' + safeText(state.comment) + '</textarea></label>' +
             '<div class="deadline-field">' +
-              '<label class="field"><span>Когда нужен первый результат?</span><input type="date" min="' + minDate() + '" data-concept-field="deadlineDate" value="' + safeText(state.deadlineDate) + '" ' + (state.deadlineFlexible ? 'disabled' : '') + '></label>' +
-              '<label class="deadline-flex"><input type="checkbox" data-concept-deadline-flex ' + (state.deadlineFlexible ? 'checked' : '') + '><span>Дата пока неизвестна — согласовать с редактором</span></label>' +
+              '<label class="field"><span>Срок первого результата</span><input type="date" min="' + minDate() + '" data-concept-field="deadlineDate" value="' + safeText(state.deadlineDate) + '" ' + (state.deadlineFlexible ? 'disabled' : '') + '></label>' +
+              '<label class="deadline-flex"><input type="checkbox" data-concept-deadline-flex ' + (state.deadlineFlexible ? 'checked' : '') + '><span>Срок можно уточнить позже</span></label>' +
+              (!(state.deadlineDate || state.deadlineFlexible) ? '<p class="field-inline-reason">Укажите дату или отметьте, что срок можно согласовать с редактором.</p>' : '') +
             '</div>' +
-            filesMarkup() +
-            (service && service.id === 'ai'
-              ? '<p class="materials-hint" role="note"><strong>Для проверки после ИИ нужен исходный текст.</strong> Приложите хотя бы один файл; исходный prompt и сведения об источниках заполните выше.</p>'
-              : '<p class="materials-hint">Файлы необязательны, но тема, методичка или черновик сделают оценку заметно точнее.</p>') +
+            (detailsRequired
+              ? '<div class="materials-required">' + detailsBody + '</div>'
+              : '<details class="materials-optional"' + ((state.topic || state.comment || files.length) ? ' open' : '') + '>' +
+                  '<summary>Добавить тему, пояснения или файлы <span>необязательно</span><i aria-hidden="true">+</i></summary>' +
+                  '<div>' + detailsBody + '</div>' +
+                '</details>') +
           '</section>' +
         '</div>' +
         '<aside class="wizard-summary">' +
-          '<p class="eyebrow">Предварительно</p>' +
+          '<p class="eyebrow">Предварительный итог</p>' +
           '<h2>' + safeText(rec.title) + '</h2>' +
           '<dl><div><dt>Первый результат</dt><dd>' + safeText(rec.first) + '</dd></div>' +
-          '<div><dt>Ориентир стоимости</dt><dd>' + safeText(pricing.priceText) + '</dd></div>' +
+          '<div><dt>Ориентир стоимости</dt><dd data-summary-price>' + safeText(pricing.priceText) + '</dd></div>' +
           '<div><dt>Дата</dt><dd>' + safeText(dateText) + '</dd></div>' +
           '<div><dt>Материалы</dt><dd>' + fileCountText(files.length) + '</dd></div></dl>' +
           '<p>Точный состав, срок и стоимость редактор подтвердит до оплаты.</p>' +
@@ -3173,50 +3501,82 @@ if (document.prerendering) {
     var currentIncluded = pricing.currentIncluded;
     var cartCount = pricing.cartCount;
     var summaryTitle = cartHasItems
-      ? 'Смета заказа · ' + cartCount + ' ' + (cartCount === 1 ? 'позиция' : (cartCount < 5 ? 'позиции' : 'позиций'))
+      ? 'Предварительный расчёт · ' + cartCount + ' ' + (cartCount === 1 ? 'позиция' : (cartCount < 5 ? 'позиции' : 'позиций'))
       : (service ? service.label : recommendationFor().title);
     var summaryRows = cartHasItems
       ? '<div><dt>Состав</dt><dd>' + safeText(window.SalonCart.items().map(function (item) { return item.label; }).join(' · ')) + '</dd></div>' +
         '<div><dt>Позиций</dt><dd>' + cartCount + '</dd></div>' +
-        '<div><dt>Статус</dt><dd>предварительная спецификация</dd></div>'
-      : (service ? '' : '<div><dt>Работа</dt><dd>' + safeText(typeLabel(state.workType)) + '</dd></div>') +
-        '<div><dt>Первый результат</dt><dd>' + safeText(service ? service.label : resultLabel(state.result)) + '</dd></div>' +
-        '<div><dt>Срок</dt><dd>' + safeText(state.deadlineFlexible ? 'Согласовать' : (formatDate(state.deadlineDate) || '—')) + '</dd></div>' +
-        '<div><dt>Материалы</dt><dd>' + fileCountText(files.length) + '</dd></div>';
+        '<div><dt>Статус</dt><dd>ждёт подтверждения редактора</dd></div>'
+      : '<div><dt>' + (service ? 'Услуга' : 'Работа') + '</dt><dd>' +
+          safeText(service ? service.label : typeLabel(state.workType)) + '</dd></div>' +
+        serviceSummaryRows() +
+        (state.topic ? '<div><dt>Тема</dt><dd>' + safeText(summaryExcerpt(state.topic,150)) + '</dd></div>' : '') +
+        (state.comment ? '<div><dt>Требования</dt><dd>' + safeText(summaryExcerpt(state.comment,170)) + '</dd></div>' : '') +
+        '<div><dt>Срок и материалы</dt><dd>' +
+          safeText(state.deadlineFlexible ? 'Согласовать' : (formatDate(state.deadlineDate) || '—')) +
+          ' · ' + fileCountText(files.length) + '</dd></div>';
+    var channel = state.contactMethod || 'telegram';
+    var telegramBridge = window.SalonTelegramLogin;
+    var pendingLogin = telegramBridge && telegramBridge.pending ? telegramBridge.pending() : null;
+    var contactField = channel === 'email'
+      ? { label:'Электронная почта', type:'email', placeholder:'name@example.ru', autocomplete:'email', inputmode:'email' }
+      : channel === 'phone'
+        ? { label:'Телефон', type:'tel', placeholder:'+7 900 000-00-00', autocomplete:'tel', inputmode:'tel' }
+        : { label:'Ник в Telegram', type:'text', placeholder:'@username', autocomplete:'off', inputmode:'text' };
     return (
       '<div class="contact-step review-step">' +
         '<div class="contact-step__form">' +
-          '<div class="concept-telegram-row">' +
-            (loggedIn
-              ? '<span class="concept-auth-ok"><i></i>Telegram подключён — заявка появится в кабинете и боте.</span>'
-              : '<button class="button button--secondary" type="button" data-concept-telegram>Продолжить через Telegram</button><span>или оставьте удобный контакт</span>') +
-          '</div>' +
-          '<label class="field"><span>Имя</span><input type="text" data-concept-field="name" value="' + safeText(state.name) + '" placeholder="Как к вам обращаться"></label>' +
-          '<label class="field"><span>Telegram, телефон или почта</span><input type="text" data-concept-field="contact" value="' + safeText(state.contact) + '" placeholder="Имя пользователя, +7… или name@example.ru"></label>' +
+          (loggedIn
+            ? '<div class="concept-telegram-row concept-telegram-row--login"><span class="concept-auth-ok"><i></i><b>Telegram подключён</b><small>Ответ и статусы появятся в кабинете и боте.</small></span></div>'
+            : '<div class="concept-contact-intro">' +
+                '<strong>Куда прислать ответ?</strong><span>Оставьте один контакт. Ответим в выбранном канале после просмотра материалов.</span>' +
+              '</div>' +
+              '<div class="concept-contact-methods" role="group" aria-label="Способ ответа">' +
+                ['telegram','email','phone'].map(function (method) {
+                  var labels = {telegram:'Telegram',email:'Почта',phone:'Телефон'};
+                  return '<button type="button" data-contact-method="' + method + '" aria-pressed="' + (channel === method) + '" class="' + (channel === method ? 'is-selected' : '') + '">' + labels[method] + '</button>';
+                }).join('') +
+              '</div>' +
+              '<details class="contact-more"' + (state.name ? ' open' : '') + '><summary>Добавить имя <span aria-hidden="true">+</span></summary>' +
+                '<label class="field"><span>Как к вам обращаться?</span><input type="text" autocomplete="name" data-concept-field="name" value="' + safeText(state.name) + '" placeholder="Имя"></label>' +
+              '</details>' +
+              '<label class="field field--contact' + (contactFormatIssue() ? ' field--invalid' : '') + '"><span>' + contactField.label + '</span><input type="' + contactField.type + '" autocomplete="' + contactField.autocomplete + '" inputmode="' + contactField.inputmode + '" data-concept-field="contact" value="' + safeText(state.contact) + '" placeholder="' + contactField.placeholder + '"' +
+                (contactFormatIssue() ? ' aria-invalid="true" aria-describedby="conceptContactHint"' : '') + '></label>' +
+              (contactFormatIssue()
+                ? '<p class="field-hint field-hint--invalid" id="conceptContactHint">' + safeText(contactFormatIssue()) + '</p>'
+                : '') +
+              '<div class="concept-contact-or"><span>Статусы и кабинет</span></div>' +
+              '<div class="concept-telegram-row concept-telegram-row--login">' +
+                '<button class="button button--secondary" type="button" data-concept-telegram>' +
+                  (pendingLogin ? 'Подтвердить подключение' : 'Подключить Telegram для статусов') +
+                  ' <span aria-hidden="true">↗</span></button>' +
+                '<span><b>Необязательно</b><small>После подтверждения заявка появится в кабинете и боте. Пароль не нужен.</small></span>' +
+              '</div>') +
           '<label class="consent-check">' +
             '<input type="checkbox" data-concept-consent ' + (state.consent ? 'checked' : '') + '>' +
-            '<span><strong>Уведомление прочитано.</strong> Я ознакомился с обработкой данных и файлов, необходимых для оценки заявки. Аналитика, рассылки и программа лояльности подключаются отдельным выбором. <a href="consent-request.html" target="_blank" rel="noopener">Как обрабатываются данные</a></span>' +
+            '<span><strong>Разрешаю обработать контакт и файлы для рассмотрения заявки, связи по ней и подготовки предложения.</strong> Без рассылок и необязательной аналитики. <a href="consent-request.html" target="_blank" rel="noopener">Как обрабатываем данные</a></span>' +
           '</label>' +
           (state.result === 'support'
             ? '<label class="consent-check consent-check--authorship">' +
                 '<input type="checkbox" data-concept-authorship ' + (state.authorParticipation ? 'checked' : '') + '>' +
-                '<span><strong>Подтверждаю своё участие.</strong> Я приму исследовательские решения, проверю факты и данные и содержательно доработаю рабочий черновик перед использованием.</span>' +
+                '<span><strong>Подтверждаю своё участие.</strong> Проверю факты и данные, приму исследовательские решения и подготовлю финальную версию.</span>' +
               '</label>'
             : '') +
         '</div>' +
-        '<aside class="wizard-summary">' +
-          '<p class="eyebrow">Предварительно</p>' +
+        '<aside class="wizard-summary wizard-summary--handoff">' +
+          '<p class="eyebrow">Предварительный итог</p>' +
           '<h2>' + safeText(summaryTitle) + '</h2>' +
           '<dl>' +
             summaryRows +
-            '<div><dt>Ориентир стоимости</dt><dd>' + safeText(pricing.priceText) + '</dd></div>' +
+            '<div><dt>Ориентир стоимости</dt><dd data-summary-price>' + safeText(pricing.priceText) + '</dd></div>' +
           '</dl>' +
-          '<p>Отправка бесплатна. Точную стоимость редактор зафиксирует после просмотра материалов — до оплаты.</p>' +
+          '<p>За отправку заявки платить не нужно. В рабочее время обычно отвечаем за 15–30 минут. Работа начнётся только после согласования состава, срока и цены.</p>' +
           (!currentIncluded
             ? '<div class="wizard-summary__notice">Текущий выбор пока не входит в состав. Откройте смету и добавьте его отдельной строкой, если он нужен в заказе.</div>'
             : '') +
+          '<button class="line-link" type="button" data-concept-edit>Изменить данные заявки <span aria-hidden="true">←</span></button>' +
           '<button class="line-link concept-cart-link" type="button" data-cart-open>' +
-            (cartHasItems ? 'Открыть состав сметы' : 'Открыть смету заказа') +
+            (cartHasItems ? 'Проверить состав' : 'Проверить расчёт') +
             ' <span aria-hidden="true">→</span></button>' +
         '</aside>' +
       '</div>'
@@ -3225,24 +3585,24 @@ if (document.prerendering) {
 
   function nextLabel() {
     var key = steps[state.step].key;
-    if (key === 'contact') return 'Отправить на оценку';
-    if (key === 'recommendation') return state.routeConfirmation === 'inferred'
-      ? 'Подтвердить маршрут и продолжить'
-      : 'Уточнить срок и материалы';
-    if (key === 'materials') return service && state.routeConfirmation === 'inferred'
-      ? 'Подтвердить услугу и продолжить'
-      : 'Перейти к контактам';
+    if (key === 'contact') return 'Отправить заявку';
+    if (key === 'materials') return 'К проверке';
+    if (key === 'situation') return 'Указать срок';
     return 'Продолжить';
   }
   function footerMarkup() {
+    var reason = blockReason();
     return (
       '<footer class="wizard-main__footer">' +
-        '<div class="wizard-save"><i aria-hidden="true"></i><span><strong>Черновик сохраняется на этом устройстве</strong><small>Поля могут восстановиться; файлы хранятся только до отправки или закрытия вкладки</small></span></div>' +
         '<div>' +
           (state.step > 0 ? '<button class="button button--secondary" type="button" data-concept-back>Назад</button>' : '') +
-          '<button class="button button--primary" type="button" data-concept-next ' + (!canContinue() ? 'disabled' : '') + '>' +
+          '<button class="button button--primary" type="button" data-concept-next ' +
+            (reason ? 'disabled aria-describedby="conceptNextReason"' : '') + '>' +
             nextLabel() + ' <span aria-hidden="true">→</span>' +
           '</button>' +
+          (reason
+            ? '<p class="wizard-next-reason" id="conceptNextReason" data-concept-reason>' + safeText(reason) + '</p>'
+            : '') +
         '</div>' +
       '</footer>'
     );
@@ -3250,24 +3610,127 @@ if (document.prerendering) {
 
   function canContinue() {
     var key = steps[state.step].key;
-    if (key === 'workType') return !!(state.workType && state.discipline);
-    if (key === 'situation') return !!currentSelection();
-    if (key === 'result') {
-      return !!currentSelection() &&
-        !(state.situation === 'topic' && resultNeedsExistingMaterial(state.result));
-    }
-    if (key === 'recommendation') {
-      return !!(state.workType && state.situation && state.result) &&
-        !(state.situation === 'topic' && resultNeedsExistingMaterial(state.result));
-    }
+    if (key === 'situation') return !!(state.situation && state.workType);
     if (key === 'materials') {
-      var requiredSourceReady = !(service && service.id === 'ai') || fileNames().length > 0;
+      var requiredSourceReady = !sourceFileRequired() || fileNames().length > 0;
       return !!((state.deadlineDate || state.deadlineFlexible) &&
         serviceQuestionsComplete() && requiredSourceReady);
     }
     var authed = !!(window.Salon && Salon.api && Salon.api.token && Salon.api.token());
     return !!((authed || state.contact.trim()) && state.consent &&
-      (state.result !== 'support' || state.authorParticipation));
+      (state.result !== 'support' || state.authorParticipation)) &&
+      !contactFormatIssue();
+  }
+
+  // Почему кнопка неактивна. Раньше она просто молчала: человек выбирал
+  // ситуацию, видел ориентир цены и упирался в серую кнопку, не зная,
+  // что ниже появился второй вопрос. Пустая строка — кнопка активна.
+  function blockReason() {
+    if (canContinue()) return '';
+    var key = steps[state.step].key;
+    if (key === 'situation') {
+      if (!state.situation) return 'Выберите, что у вас уже есть';
+      if (!state.workType) return 'Выберите вид работы';
+    }
+    if (key === 'materials') {
+      if (!(state.deadlineDate || state.deadlineFlexible)) return 'Укажите срок или отметьте, что он гибкий';
+      if (sourceFileRequired() && !fileNames().length) return 'Приложите файл или опишите задачу редактору, если файла пока нет';
+      if (!serviceQuestionsComplete()) return 'Ответьте на вопросы выше';
+    }
+    if (key === 'contact') {
+      var authed = !!(window.Salon && Salon.api && Salon.api.token && Salon.api.token());
+      if (!(authed || state.contact.trim())) return 'Оставьте контакт, чтобы мы ответили';
+      var format = contactFormatIssue();
+      if (format) return format;
+      if (!state.consent) return 'Нужно согласие на обработку данных';
+      if (state.result === 'support' && !state.authorParticipation) return 'Подтвердите участие автора';
+    }
+    return 'Заполните поля выше';
+  }
+
+  // Формат контакта раньше проверялся только в момент отправки: кнопка была
+  // активна, запрос отбивался, всплывал тост, а aria-invalid вешался на скрытое
+  // легаси-поле #fContact. Человек проходил все четыре шага и упирался в стену
+  // без единой заметной пометки. Проверяем формат заранее, теми же правилами.
+  function contactFormatIssue() {
+    if (steps[state.step].key !== 'contact') return '';
+    var authed = !!(window.Salon && Salon.api && Salon.api.token && Salon.api.token());
+    if (authed) return '';
+    var value = String(state.contact || '').trim();
+    if (!value) return '';
+    var checker = window.Salon && Salon.valid && Salon.valid.contact;
+    if (typeof checker !== 'function' || checker(value)) return '';
+    if (/^\+?\d[\d\s()-]*$/.test(value)) return 'В телефоне должно быть 11 цифр — проверьте номер';
+    if (value.indexOf('@') === 0) return 'Проверьте Telegram-ник — например, @username';
+    if (value.indexOf('@') > 0) return 'Проверьте адрес почты — похоже, есть опечатка';
+    return 'Нужен @ник, телефон, почта или ссылка на профиль';
+  }
+
+  // Второй вопрос появляется только после выбора ситуации и на мобильном
+  // оказывается ровно за краем экрана. Подводим к нему сами.
+  function revealPendingChoice() {
+    if (steps[state.step].key !== 'situation' || !state.situation || state.workType) return;
+    var node = host.querySelector('.concept-work-choice');
+    if (!node || typeof node.getBoundingClientRect !== 'function') return;
+    var box = node.getBoundingClientRect();
+    var viewport = window.innerHeight || document.documentElement.clientHeight || 0;
+    var bar = document.getElementById('conceptTaskBar');
+    var barBox = bar && !bar.hidden ? bar.getBoundingClientRect() : null;
+    var reason = bar ? bar.querySelector('[data-concept-task-reason]:not([hidden])') : null;
+    var reasonBox = reason ? reason.getBoundingClientRect() : null;
+    var visibleBottom = barBox && barBox.height ? Math.min(viewport,barBox.top) : viewport;
+    if (reasonBox && reasonBox.height) visibleBottom = Math.min(visibleBottom,reasonBox.top);
+    if (box.top >= 0 && box.bottom <= visibleBottom - 12) return;
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    try {
+      node.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+    } catch (err) {
+      node.scrollIntoView(false);
+    }
+  }
+
+  // После выбора вида работы расчёт уже готов, но на телефоне и планшете он
+  // может целиком оказаться за нижней панелью. Подводим к самому расчёту, чтобы
+  // результат, срок и цена были прочитаны до кнопки продолжения.
+  function revealReadyQuote() {
+    if (steps[state.step].key !== 'situation' || !state.situation || !state.workType) return;
+    window.requestAnimationFrame(function () {
+      var node = host.querySelector('.live-quote--ready');
+      if (!node || typeof node.getBoundingClientRect !== 'function') return;
+      var box = node.getBoundingClientRect();
+      var viewport = window.visualViewport ? window.visualViewport.height
+        : (window.innerHeight || document.documentElement.clientHeight || 0);
+      var bar = document.getElementById('conceptTaskBar');
+      var barBox = bar && !bar.hidden ? bar.getBoundingClientRect() : null;
+      var visibleBottom = barBox && barBox.height ? Math.min(viewport,barBox.top) : viewport;
+      var priceRow = node.querySelector('dl>div:nth-child(3)');
+      var priceBox = priceRow ? priceRow.getBoundingClientRect() : box;
+      if (box.top >= 0 && priceBox.bottom <= visibleBottom - 16) return;
+      var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var delta = Math.max(0,priceBox.bottom - (visibleBottom - 16));
+      try { window.scrollBy({ top:delta, behavior:calm ? 'auto' : 'smooth' }); }
+      catch (err) { window.scrollBy(0,delta); }
+    });
+  }
+
+  function decisionIconMarkup(value) {
+    var paths = {
+      topic:'<path d="M8 5.5h12l4 4v17H8z"/><path d="M20 5.5v4h4M12 14h8M12 19h6M12 23h4"/>',
+      draft:'<path d="M7 4.5h14l4 4v19H7z"/><path d="M21 4.5v4h4M11 14h8M11 19h6M20.5 23.5l6-6 2 2-6 6-3 .9z"/>',
+      comments:'<path d="M6 5h17v22H6zM10 11h9M10 16h7M10 21h8"/><path d="M23 11h4v10h-4M25 11V8M25 21v3"/>',
+      defense:'<path d="M5 6h22v15H5zM9 26h14M16 21v5"/><path d="M10 16l4-4 3 2 5-5M22 9v5h-5"/>'
+    };
+    if (!paths[value]) return '';
+    return '<span class="decision-card__icon" aria-hidden="true"><svg viewBox="0 0 32 32">' +
+      paths[value] + '</svg></span>';
+  }
+  function decisionKicker(value) {
+    return {
+      topic:'01 · В начале',
+      draft:'02 · В работе',
+      comments:'03 · На проверке',
+      defense:'04 · Финал'
+    }[value] || '';
   }
 
   function choiceGroupMarkup(step,options,label,suffix) {
@@ -3281,24 +3744,143 @@ if (document.prerendering) {
           var active = selected === option[0];
           var disabled = step.key === 'result' && state.situation === 'topic' &&
             resultNeedsExistingMaterial(option[0]);
+          var icon = decisionIconMarkup(option[0]);
+          var kicker = decisionKicker(option[0]);
+          var handoffLabel = '';
+          if (active && state.entryPrefilled && step.key === 'situation') {
+            if (routeOrigin === 'page') handoffLabel = 'Вы выбрали на странице услуг';
+            if (routeOrigin === 'service') handoffLabel = 'Вы выбрали на странице услуги';
+          }
           return '<button class="decision-card ' + (active ? 'is-selected' : '') + '" type="button" data-concept-choice="' + safeText(option[0]) + '" aria-pressed="' + active + '" ' +
             (disabled ? 'disabled aria-disabled="true"' : '') + '>' +
-            '<span class="decision-card__radio" aria-hidden="true"><i></i></span>' +
-            '<span><strong>' + safeText(option[1]) + '</strong><small>' + safeText(option[2]) +
+            icon +
+            '<span class="decision-card__copy">' +
+              (kicker ? '<em class="decision-card__kicker">' + kicker + '</em>' : '') +
+              (handoffLabel ? '<span class="decision-card__origin">' + handoffLabel + '</span>' : '') +
+              '<strong>' + safeText(option[1]) + '</strong><small>' + safeText(option[2]) +
               (disabled ? ' Нужен готовый файл.' : '') + '</small></span>' +
+            '<span class="decision-card__radio" aria-hidden="true"><i></i></span>' +
           '</button>';
         }).join('') +
       '</div>' +
     '</section>';
   }
 
+  function workChoiceMarkup(step) {
+    /* Раньше блок появлялся только после выбора ситуации. Дорисовка внутри уже
+       показанного экрана дезориентирует (GDS: секция «внезапно вырастает»), а на
+       мобильном новый блок оказывается под сгибом, где внимание вдвое ниже.
+       Показываем оба вопроса сразу — человек видит полный объём шага. */
+    if (!step.workOptions || !step.workOptions.length) return '';
+    return '<section class="concept-work-choice" aria-labelledby="conceptWorkTitle">' +
+      '<div class="concept-work-choice__head"><span>Один вопрос</span><h2 id="conceptWorkTitle">Выберите вид работы</h2></div>' +
+      (!state.workType ? '<p class="field-inline-reason">Выберите один вариант — после этого сразу покажем результат, срок и ориентир стоимости.</p>' : '') +
+      '<div class="concept-work-choice__rows" role="group" aria-label="Вид работы">' +
+        step.workOptions.map(function (option) {
+          var active = state.workType === option[0];
+          return '<button type="button" data-concept-work="' + safeText(option[0]) + '" aria-pressed="' + active + '" class="' + (active ? 'is-selected' : '') + '">' +
+            '<span>' + safeText(option[1]) + '</span><i aria-hidden="true"></i></button>';
+        }).join('') +
+      '</div>' +
+      '<button class="line-link concept-freeform" type="button" data-contact data-msg-lead="Опишите задачу редактору — он подскажет, с чего начать.">Не нашли свой вариант? Спросить редактора <span aria-hidden="true">→</span></button>' +
+    '</section>';
+  }
+
+  function homePrefillMarkup() {
+    var labels = {
+      topic:'Работа с нуля',
+      draft:'Доработка черновика',
+      comments:'Работа с замечаниями',
+      defense:'Подготовка к защите'
+    };
+    return '<section class="concept-home-prefill" aria-label="Выбранная ситуация">' +
+      '<span><small>Вы выбрали</small><strong>' + safeText(labels[state.situation] || 'Текущая задача') + '</strong></span>' +
+      '<button type="button" data-change-home-situation>Изменить</button>' +
+    '</section>';
+  }
+
+  function savedDraftSummary() {
+    var parts = [];
+    if (saved.situation) parts.push(situationLabel(saved.situation));
+    if (saved.workType) parts.push(typeLabel(saved.workType));
+    if (saved.deadlineDate) parts.push(formatDate(saved.deadlineDate));
+    else if (saved.deadlineFlexible) parts.push('срок уточняется');
+    return parts.length ? parts.join(' · ') : 'Ваши ответы останутся на месте.';
+  }
+
+  function incomingRouteSummary() {
+    if (routeOrigin === 'home-zero') return 'Работа с нуля';
+    if (routeOrigin === 'home-edit') return 'Разбор файла или замечаний';
+    if (routeOrigin === 'home-urgent') return 'Срочная задача с точной датой';
+    var parts = [];
+    if (routedSituation) parts.push(situationLabel(routedSituation));
+    if (routedWork) parts.push(typeLabel(routedWork));
+    return parts.length ? parts.join(' · ') : 'Новая задача';
+  }
+
+  function currentStepLead(step) {
+    if (step && step.key === 'materials' && sourceFileRequired()) {
+      return 'Укажите дату первого результата и приложите файл для разбора. Тему и пояснение можно добавить при желании.';
+    }
+    return step ? step.lead : '';
+  }
+
+  function renderDraftConflict() {
+    host.setAttribute('data-concept-stage','draft-choice');
+    host.innerHTML =
+      '<header class="wizard-main__head wizard-main__head--draft-choice">' +
+        '<div><p class="eyebrow">Сохранённая заявка</p><h1>Продолжить с того же места?</h1>' +
+        '<p>На этом устройстве есть незаконченная заявка. Мы не станем её заменять без вашего выбора.</p></div>' +
+        '<div class="wizard-main__actions"><a class="wizard-close" href="/" aria-label="Вернуться на главную"><span>На главную</span><i aria-hidden="true">×</i></a></div>' +
+      '</header>' +
+      '<section class="concept-draft-choice" aria-label="Выбор заявки">' +
+        '<button type="button" class="concept-draft-choice__primary" data-continue-saved>' +
+          '<small>Сохранённый черновик</small><strong>Продолжить заявку</strong><span>' + safeText(savedDraftSummary()) + '</span>' +
+        '</button>' +
+        '<button type="button" class="concept-draft-choice__secondary" data-start-routed>' +
+          '<small>Новая задача</small><strong>Начать заново</strong><span>' + safeText(incomingRouteSummary()) + '. Сохранённый черновик будет заменён.</span>' +
+        '</button>' +
+      '</section>';
+    var progress = document.getElementById('conceptProgress');
+    if (progress) progress.style.display = 'none';
+    var taskBar = document.getElementById('conceptTaskBar');
+    if (taskBar) taskBar.hidden = true;
+    var continueButton = host.querySelector('[data-continue-saved]');
+    var startButton = host.querySelector('[data-start-routed]');
+    if (continueButton) continueButton.addEventListener('click',continueSavedRoute);
+    if (startButton) startButton.addEventListener('click',applyPendingRoute);
+  }
+
   function render() {
     returnLegacyAsk();
+    if (pendingRouteConflict) {
+      renderDraftConflict();
+      return;
+    }
     syncLegacy();
     var step = steps[state.step];
+    var compactHomeEntry = step.key === 'situation' && !showAllSituations &&
+      !!state.entryPrefilled && !!state.situation;
+    if (compactHomeEntry && routeOrigin !== 'home-zero' && routeOrigin !== 'home-edit') {
+      step = Object.assign({},step,{
+        title:'Что нужно подготовить?',
+        lead:'Ситуация уже выбрана. Осталось указать вид работы.'
+      });
+    }
+    host.setAttribute('data-concept-stage',step.key);
+    var taskBar = document.getElementById('conceptTaskBar');
+    if (taskBar) taskBar.hidden = false;
     var selected = currentSelection();
     var cards = '';
-    if (step.options.length) {
+    if (step.key === 'situation') {
+      cards = '<div class="decision-workbench">' +
+        '<div class="decision-groups decision-groups--situation">' +
+          (compactHomeEntry ? homePrefillMarkup() : choiceGroupMarkup(step,step.options,'','Situation')) +
+          workChoiceMarkup(step) +
+        '</div>' +
+        liveRecommendationMarkup() +
+      '</div>';
+    } else if (step.options.length) {
       var hasSpecialists = !!(step.specialistOptions && step.specialistOptions.length);
       cards = '<div class="decision-groups">' +
         choiceGroupMarkup(step,step.options,hasSpecialists ? 'Основные форматы' : '','Primary') +
@@ -3306,11 +3888,9 @@ if (document.prerendering) {
         '</div>' +
         (step.key === 'workType' ? disciplineMarkup() : '') +
         (step.key === 'result' && state.situation === 'topic'
-          ? '<p class="concept-prerequisite-note" role="note"><strong>Сейчас есть только тема.</strong> Для редактуры, оформления, работы после ИИ и подготовки к защите нужен готовый файл. Вернитесь к предыдущему шагу и выберите «Есть мой черновик» или начните с диагностики, консультации либо проекта с нуля.</p>'
+          ? '<p class="concept-prerequisite-note" role="note"><strong>Сейчас есть только тема.</strong> Для редактуры, оформления, работы после ИИ и подготовки к защите нужен готовый файл. Вернитесь к предыдущему шагу и выберите «Есть мой черновик» или начните с письменного разбора, консультации либо проекта с нуля.</p>'
           : '') +
-        '<p class="concept-scope-note">Можно начать с одной темы. В проекте с нуля мастерская готовит рабочий черновик, а содержательные решения и финальная авторская версия остаются за вами.</p>';
-    } else if (step.key === 'recommendation') {
-      cards = recommendationMarkup();
+        '<p class="concept-scope-note">При сопровождении редактор помогает на согласованных этапах, а исследовательские решения и финальный текст остаются за вами.</p>';
     } else if (step.key === 'materials') {
       cards = materialsMarkup();
     } else {
@@ -3318,11 +3898,11 @@ if (document.prerendering) {
     }
 
     host.innerHTML =
-      '<header class="wizard-main__head">' +
-        '<div><p class="eyebrow">' + step.kicker + '</p><h1>' + step.title + '</h1><p>' + step.lead + '</p></div>' +
+      '<header class="wizard-main__head wizard-main__head--' + safeText(step.key) + '">' +
+        '<div><p class="eyebrow">' + stepEyebrow(state.step) + '</p><h1>' + step.title + '</h1><p>' + currentStepLead(step) + '</p>' + autosaveMarkup() + '</div>' +
         '<div class="wizard-main__actions">' +
           '<button class="theme-toggle wizard-theme" type="button" aria-label="Сменить тему оформления"><span aria-hidden="true" class="ico-theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7"/><path d="M12 3.6a8.4 8.4 0 0 0 0 16.8z" fill="currentColor"/></svg></span></button>' +
-          '<a class="wizard-close" href="/" aria-label="Закрыть заявку">×</a>' +
+          '<a class="wizard-close" href="/" aria-label="Закрыть подбор"><span>Закрыть</span><i aria-hidden="true">×</i></a>' +
         '</div>' +
       '</header>' +
       cards +
@@ -3349,18 +3929,40 @@ if (document.prerendering) {
     }
   }
 
+  /* Индикатор показывает только три реальных действия. Рекомендация больше не
+     отдельный экран: она возникает рядом с выбором и остаётся частью досье. */
+  function displayTotal() {
+    var total = 0;
+    steps.forEach(function (item) { if (item.displayStep) total += 1; });
+    return total || steps.length;
+  }
+  function progressNumber(index) {
+    for (var i = index; i >= 0; i -= 1) {
+      if (steps[i] && steps[i].displayStep) return steps[i].displayStep;
+    }
+    return 1;
+  }
+  function stepEyebrow(index) {
+    var item = steps[index];
+    if (!item) return '';
+    if (item.displayStep) return 'Шаг ' + item.displayStep + ' из ' + displayTotal();
+    return item.kicker || '';
+  }
+
   function updateChrome() {
     var count = steps.length;
+    var shown = displayTotal();
+    var shownNow = progressNumber(state.step);
     var progress = document.getElementById('conceptProgress');
     var fill = document.getElementById('conceptProgressFill');
     var label = document.getElementById('conceptProgressLabel');
     if (progress) progress.style.display = '';
-    if (progress) progress.setAttribute('aria-valuemax',String(count));
-    if (progress) progress.setAttribute('aria-valuenow',String(state.step + 1));
-    if (fill) fill.style.width = ((state.step + 1) * 100 / count) + '%';
-    if (label) label.textContent = 'Шаг ' + (state.step + 1) + ' из ' + count;
-    var routeTitles = ['Работа','Что уже есть','Помощь','Рекомендация','Материалы','Контакты'];
-    var serviceTitles = ['Детали и материалы','Контакты'];
+    if (progress) progress.setAttribute('aria-valuemax',String(shown));
+    if (progress) progress.setAttribute('aria-valuenow',String(shownNow));
+    if (fill) fill.style.width = (shownNow * 100 / shown) + '%';
+    if (label) label.textContent = stepEyebrow(state.step);
+    var routeTitles = ['Что уже есть','Срок и материалы','Проверка и отправка'];
+    var serviceTitles = ['Задача и материалы','Проверка и отправка'];
     document.querySelectorAll('[data-tx-step]').forEach(function (item,index) {
       var button = item.querySelector('button');
       var marker = button && button.querySelector('span');
@@ -3373,23 +3975,33 @@ if (document.prerendering) {
         if (index === state.step) button.setAttribute('aria-current','step');
         else button.removeAttribute('aria-current');
       }
-      if (marker) marker.textContent = String(index + 1).padStart(2,'0');
+      var shownIndex = steps[index] && steps[index].displayStep;
+      if (marker) marker.textContent = shownIndex ? String(shownIndex).padStart(2,'0') : '·';
       if (title && index < count) title.textContent = (service ? serviceTitles : routeTitles)[index];
     });
 
-    document.querySelectorAll('[data-conf-step]').forEach(function (node) {
-      node.textContent = 'Шаг ' + (state.step + 1) + ' / ' + count;
+    /* только своя шапка: узел с тем же атрибутом есть и в реестре легаси */
+    document.querySelectorAll('.tx-mobile-head [data-conf-step]').forEach(function (node) {
+      node.textContent = 'Шаг ' + shownNow + ' / ' + shown;
     });
     var taskKicker = document.querySelector('[data-concept-task-kicker]');
     var taskTitle = document.querySelector('[data-concept-task-title]');
-    if (taskKicker) taskKicker.textContent = 'Шаг ' + (state.step + 1) + ' из ' + count;
+    if (taskKicker) taskKicker.textContent = stepEyebrow(state.step);
     if (taskTitle) taskTitle.textContent = (service ? serviceTitles : routeTitles)[state.step];
     document.querySelectorAll('#conceptTaskBar [data-concept-back]').forEach(function (button) {
       button.hidden = state.step === 0;
     });
+    var barReason = blockReason();
     document.querySelectorAll('#conceptTaskBar [data-concept-next]').forEach(function (button) {
-      button.disabled = !canContinue();
+      button.disabled = !!barReason;
       button.innerHTML = nextLabel() + ' <span aria-hidden="true">→</span>';
+      if (barReason) button.setAttribute('aria-describedby','conceptTaskReason');
+      else button.removeAttribute('aria-describedby');
+    });
+    document.querySelectorAll('[data-concept-task-reason]').forEach(function (node) {
+      node.id = 'conceptTaskReason';
+      node.textContent = barReason;
+      node.hidden = !barReason;
     });
   }
 
@@ -3403,12 +4015,19 @@ if (document.prerendering) {
     }
     if (key === 'result' && value !== state.result) state.authorParticipation = false;
     state[key] = value;
+    if (key === 'situation') {
+      state.result = value === 'defense' ? 'defense'
+        : value === 'draft' ? 'editing'
+        : 'diagnostic';
+      state.entryPrefilled = false;
+      state.routeConfirmation = 'unconfirmed';
+    }
     if (key === 'situation' && value === 'topic' && resultNeedsExistingMaterial(state.result)) {
       state.result = '';
       state.entryPrefilled = false;
     }
     if (key === 'result') state.entryPrefilled = false;
-    saveSelections();
+    saveSelections(true);
     syncLegacy();
     syncStoredCurrent();
     trackConcept('case_route_change',key + '_' + value,false);
@@ -3424,12 +4043,21 @@ if (document.prerendering) {
       return;
     }
     render();
+    revealPendingChoice();
   }
 
-  function go(next) {
+  function go(next,fromHistory) {
+    if (terminalSuccess) return;
+    var previous = state.step;
     state.step = Math.max(0,Math.min(steps.length - 1,next));
     saveSelections();
     render();
+    /* Шаги не попадали в историю браузера: «Назад» — а на телефоне это ещё и
+       свайп от края — уводил со страницы целиком посреди заполнения.
+       Каждый переход становится записью, возврат отрабатывает popstate. */
+    if (!fromHistory && state.step !== previous) {
+      try { history.pushState({ conceptStep: state.step },'',location.href); } catch (e) {}
+    }
     try { window.scrollTo({top:0,behavior:window.Salon && Salon.reduceMotion ? 'auto' : 'smooth'}); } catch (e) { window.scrollTo(0,0); }
     var title = host.querySelector('h1');
     if (title) {
@@ -3469,8 +4097,9 @@ if (document.prerendering) {
   }
 
   function submit() {
+    if (terminalSuccess) return;
     if (!service && state.situation === 'topic' && resultNeedsExistingMaterial(state.result)) {
-      go(2);
+      go(0);
       if (window.Salon && Salon.toast) {
         Salon.toast('Для выбранного результата нужен готовый файл.');
       }
@@ -3484,40 +4113,45 @@ if (document.prerendering) {
   }
 
   function next() {
+    if (terminalSuccess) return;
     if (!canContinue()) return;
     if (steps[state.step].key === 'contact') {
       submit();
       return;
     }
-    if (steps[state.step].key === 'recommendation' ||
+    if (steps[state.step].key === 'situation' ||
         (service && steps[state.step].key === 'materials')) {
-      confirmVisibleRoute(service ? 'service_details' : 'recommendation');
-    }
-    /* Посадочная с выбранным data-tier уже определила результат. После
-       ситуации показываем рекомендацию, не заставляя повторять выбор. */
-    if (!service && steps[state.step].key === 'workType' && state.situation && state.result && state.entryPrefilled) {
-      go(3);
-      return;
-    }
-    if (!service && steps[state.step].key === 'workType' && state.situation) {
-      go(2);
-      return;
-    }
-    if (!service && steps[state.step].key === 'situation' && state.entryPrefilled && state.result) {
-      go(3);
-      return;
+      confirmVisibleRoute(service ? 'service_details' : 'live_quote');
     }
     go(state.step + 1);
   }
 
   function bindRendered() {
+    var changeHomeSituation = host.querySelector('[data-change-home-situation]');
+    if (changeHomeSituation) changeHomeSituation.addEventListener('click',function () {
+      showAllSituations = true;
+      routeSteps[0].title = 'Что у вас уже есть?';
+      routeSteps[0].lead = 'Выберите ситуацию и вид работы.';
+      render();
+    });
     host.querySelectorAll('[data-concept-choice]').forEach(function (button) {
       button.addEventListener('click',function () { choose(button.getAttribute('data-concept-choice') || ''); });
+    });
+    host.querySelectorAll('[data-concept-work]').forEach(function (button) {
+      button.addEventListener('click',function () {
+        state.workType = normalizeWorkType(button.getAttribute('data-concept-work'));
+        saveSelections(true);
+        syncLegacy();
+        syncStoredCurrent();
+        trackConcept('case_route_change','work_' + state.workType,false);
+        render();
+        revealReadyQuote();
+      });
     });
     host.querySelectorAll('[data-concept-discipline]').forEach(function (button) {
       button.addEventListener('click',function () {
         state.discipline = normalizeDiscipline(button.getAttribute('data-concept-discipline'));
-        saveSelections();
+        saveSelections(true);
         syncLegacy();
         syncStoredCurrent();
         if (!service && state.situation && state.result && state.entryPrefilled) {
@@ -3537,20 +4171,32 @@ if (document.prerendering) {
       field.addEventListener('input',function () {
         var key = field.getAttribute('data-concept-field');
         state[key] = field.value;
+        if (key === 'contact') state.contactByMethod[state.contactMethod || 'telegram'] = field.value;
         if (key === 'deadlineDate' && field.value) state.deadlineFlexible = false;
-        if (key === 'deadlineDate') saveSelections();
+        if (key === 'deadlineDate') saveSelections(true);
+        if (key === 'topic' || key === 'comment') {
+          if (fieldAutosaveTimer) clearTimeout(fieldAutosaveTimer);
+          fieldAutosaveTimer = setTimeout(function () { saveSelections(true); },450);
+        }
         syncLegacy();
         syncStoredCurrent();
         updateChrome();
         var footerNext = host.querySelector('[data-concept-next]');
         if (footerNext) footerNext.disabled = !canContinue();
       });
+      field.addEventListener('keydown',function (event) {
+        var key = field.getAttribute('data-concept-field');
+        if (key !== 'contact' || event.key !== 'Enter' || event.shiftKey || event.isComposing) return;
+        event.preventDefault();
+        updateChrome();
+        if (canContinue()) next();
+      });
     });
     var deadlineFlex = host.querySelector('[data-concept-deadline-flex]');
     if (deadlineFlex) deadlineFlex.addEventListener('change',function () {
       state.deadlineFlexible = deadlineFlex.checked;
       if (state.deadlineFlexible) state.deadlineDate = '';
-      saveSelections();
+      saveSelections(true);
       syncLegacy();
       render();
     });
@@ -3565,7 +4211,7 @@ if (document.prerendering) {
     var authorship = host.querySelector('[data-concept-authorship]');
     if (authorship) authorship.addEventListener('change',function () {
       state.authorParticipation = authorship.checked;
-      saveSelections();
+      saveSelections(true);
       syncLegacy();
       updateChrome();
       var footerNext = host.querySelector('[data-concept-next]');
@@ -3584,11 +4230,27 @@ if (document.prerendering) {
       });
     });
     var edit = host.querySelector('[data-concept-edit]');
-    if (edit) edit.addEventListener('click',function () { go(2); });
+    if (edit) edit.addEventListener('click',function () { go(0); });
+    host.querySelectorAll('[data-contact-method]').forEach(function (button) {
+      button.addEventListener('click',function () {
+        var previous = state.contactMethod || 'telegram';
+        state.contactByMethod[previous] = state.contact;
+        state.contactMethod = button.getAttribute('data-contact-method') || 'telegram';
+        state.contact = state.contactByMethod[state.contactMethod] || '';
+        saveSelections(true);
+        render();
+      });
+    });
     var telegram = host.querySelector('[data-concept-telegram]');
     if (telegram) telegram.addEventListener('click',function () {
-      var source = document.getElementById('tgLoginBtn');
-      if (source) source.click();
+      var telegramBridge = window.SalonTelegramLogin;
+      var pendingLogin = telegramBridge && telegramBridge.pending ? telegramBridge.pending() : null;
+      if (pendingLogin && pendingLogin.link) {
+        window.open(pendingLogin.link, '_blank', 'noopener');
+        if (telegramBridge.hint) telegramBridge.hint(pendingLogin.link, true, telegram);
+        return;
+      }
+      if (telegramBridge && telegramBridge.start) telegramBridge.start(telegram);
     });
   }
 
@@ -3605,6 +4267,19 @@ if (document.prerendering) {
     button.addEventListener('click',next);
   });
 
+  /* Базовая запись истории для текущего шага: без неё первый «Назад» ушёл бы
+     со страницы, а не на предыдущий шаг. Дальше записи добавляет go(). */
+  try { history.replaceState({ conceptStep: state.step },'',location.href); } catch (e) {}
+  window.addEventListener('popstate',function (event) {
+    if (terminalSuccess) {
+      location.replace('/');
+      return;
+    }
+    var target = event.state && event.state.conceptStep;
+    if (typeof target !== 'number' || target === state.step) return;
+    go(target,true);
+  });
+
   document.addEventListener('salon:attachments',function () {
     var key = steps[state.step] && steps[state.step].key;
     if (key === 'materials' || key === 'contact') setTimeout(render,0);
@@ -3614,6 +4289,7 @@ if (document.prerendering) {
       legacyAsk.addEventListener(eventName,function () {
         setTimeout(function () {
           updateChrome();
+          refreshVisibleSummaryPrice();
           var footerNext = host.querySelector('[data-concept-next]');
           if (footerNext) footerNext.disabled = !canContinue();
         },0);
@@ -3633,33 +4309,133 @@ if (document.prerendering) {
       if (steps[state.step] && steps[state.step].key === 'contact') render();
     }).observe(authed,{attributes:true,attributeFilter:['hidden']});
   }
+  /* Честный экран несостоявшейся отправки. Разметку запасного хода строит
+     легаси (#fbBox: текст сметы, копирование, двери в мессенджеры, повтор),
+     но кладёт её в скрытый контейнер. Переносим живой узел вместе с его
+     обработчиками, а не дублируем — иначе кнопки окажутся мёртвыми. */
+  function renderSubmitFallback(number) {
+    host.innerHTML =
+      '<div class="concept-success concept-success--failed">' +
+        '<div class="concept-success__mark" aria-hidden="true">!</div>' +
+        '<p class="eyebrow">Отправка не подтвердилась</p>' +
+        '<h1 tabindex="-1">Заявка пока не ушла.</h1>' +
+        '<p>Связь с сервером прервалась — мы не получили подтверждения. Ничего не потеряно: расчёт собран, черновик сохранён. Передайте его одним из способов ниже или попробуйте отправить ещё раз.</p>' +
+        (number ? '<dl><div><dt>Номер черновика</dt><dd>' + safeText(number) + '</dd></div></dl>' : '') +
+        '<div data-fallback-slot></div>' +
+      '</div>';
+    var slot = host.querySelector('[data-fallback-slot]');
+    var box = document.getElementById('fbBox');
+    if (slot && box) slot.appendChild(box);
+    var bar = document.getElementById('conceptTaskBar');
+    if (bar) bar.hidden = true;
+    var title = host.querySelector('h1');
+    if (title) title.focus({ preventScroll: true });
+  }
+
+  function renderSuccessActions() {
+    if (!terminalSuccess) return;
+    var actionsSlot = host.querySelector('[data-success-actions]');
+    if (!actionsSlot) return;
+    var files = window.SalonAttachments && window.SalonAttachments.snapshot
+      ? window.SalonAttachments.snapshot() : [];
+    var pending = files.some(function (file) { return file.status === 'wait' || file.status === 'up'; });
+    var failed = files.some(function (file) { return file.status === 'err'; });
+    actionsSlot.innerHTML = '';
+    if (pending) {
+      var waiting = document.createElement('button');
+      waiting.type = 'button';
+      waiting.className = 'button button--primary';
+      waiting.disabled = true;
+      waiting.textContent = 'Материалы загружаются…';
+      actionsSlot.appendChild(waiting);
+      return;
+    }
+    var claimCab = document.getElementById('doneCab');
+    if (!claimCab) return;
+    var link = document.createElement('a');
+    link.className = 'button button--primary';
+    link.href = claimCab.getAttribute('href') || 'dashboard.html';
+    link.textContent = failed ? 'Открыть дело и приложить файлы там' : 'Открыть своё дело';
+    actionsSlot.appendChild(link);
+    if (failed) {
+      var note = document.createElement('p');
+      note.className = 'concept-success__action-note';
+      note.textContent = 'Один или несколько файлов не загрузились. Сначала нажмите «повторить» выше либо приложите их в деле.';
+      actionsSlot.appendChild(note);
+    }
+  }
+  document.addEventListener('salon:attachment-status',renderSuccessActions);
+
   var done = document.getElementById('confDone');
   if (done && window.MutationObserver) {
     new MutationObserver(function () {
-      if (done.hidden) return;
+      if (done.hidden) {
+        /* «Попробовать ещё раз» из запасного хода прячет #confDone и заново
+           шлёт заявку — возвращаем человеку форму, а не оставляем экран сбоя */
+        if (host.querySelector('.concept-success--failed')) {
+          var taskBar = document.getElementById('conceptTaskBar');
+          if (taskBar) taskBar.hidden = false;
+          render();
+        }
+        return;
+      }
       returnLegacyAsk();
       var number = (document.getElementById('doneNo') || {}).textContent || '';
+      /* Запасной ход легаси показывает тот же #confDone, что и успех. Раньше
+         визард рисовал поверх «Задача получена» — человек уходил уверенный,
+         что заявка принята, хотя она не ушла, а честный экран со сметой и
+         кнопкой повтора оставался в скрытом контейнере. */
+      if (done.getAttribute('data-submit-state') === 'failed') {
+        renderSubmitFallback(number);
+        return;
+      }
+      terminalSuccess = true;
+      try { history.replaceState({ conceptStep:state.step, conceptTerminal:true },'',location.href); } catch (e) {}
       host.innerHTML =
         '<div class="concept-success">' +
           '<div class="concept-success__mark">¶</div>' +
-          '<p class="eyebrow">Заявка доставлена мастеру</p>' +
-          '<h1>Материалы приняты к разбору.</h1>' +
-          '<p>Сейчас ничего оплачивать не нужно. Редактор проверит задачу и пришлёт состав, срок и точную стоимость.</p>' +
-          '<dl><div><dt>Заявка</dt><dd>' + safeText(number || 'создана') + '</dd></div><div><dt>Следующий шаг</dt><dd>предварительная оценка</dd></div></dl>' +
-          '<div class="concept-success__actions"><a class="button button--primary" href="dashboard.html">Открыть кабинет <span aria-hidden="true">→</span></a><a class="button button--secondary" href="https://t.me/academic_saloon_bot" target="_blank" rel="noopener">Получать статусы в Telegram</a></div>' +
+          '<p class="eyebrow">Готово</p>' +
+          '<h1 tabindex="-1">Заявка отправлена.</h1>' +
+          '<p>Платная работа ещё не началась. Редактор посмотрит материалы и пришлёт состав, срок и точную цену; вы решите, продолжать ли.</p>' +
+          '<dl><div><dt>Заявка</dt><dd>' + safeText(number || 'создана') + '</dd></div><div><dt>Следующий шаг</dt><dd>редактор изучит материалы</dd></div></dl>' +
+          '<div data-success-files></div>' +
+          '<div class="concept-success__actions" data-success-actions></div>' +
         '</div>';
+      /* Статусы вложений — живой узел с уже привязанной кнопкой повтора.
+         Не копируем innerHTML: иначе upload 503 снова станет невидимым. */
+      var filesSlot = host.querySelector('[data-success-files]');
+      var liveFiles = document.getElementById('doneFiles');
+      if (filesSlot && liveFiles) filesSlot.appendChild(liveFiles);
+      /* Переход в дело остаётся заблокирован, пока браузер передаёт файлы.
+         Иначе собственная primary-кнопка могла отменить fetch. */
+      renderSuccessActions();
+      var successTitle = host.querySelector('h1');
+      if (successTitle) successTitle.focus({preventScroll:true});
       document.getElementById('conceptTaskBar').hidden = true;
       document.querySelectorAll('[data-tx-step]').forEach(function (item, i) {
         item.classList.remove('is-current');
         item.classList.add('is-done');
         var marker = item.querySelector('button>span');
-        if (marker) marker.textContent = String(i + 1).padStart(2, '0');
+        if (marker) {
+          var completedStep = steps[i] && steps[i].displayStep;
+          marker.textContent = completedStep ? String(completedStep).padStart(2, '0') : '·';
+        }
       });
     }).observe(done,{attributes:true,attributeFilter:['hidden']});
   }
 
   window.SalonConceptWizard = {
     startAnother:startAnother,
+    /* Из шторки сметы кнопка «Продолжить · контакты» вела только скрытый
+       реестр на его четвёртый шаг — видимый визард оставался на месте,
+       и человек упирался в тупик. Даём корзине способ перевести именно его. */
+    goToContact:function () {
+      var target = -1;
+      steps.forEach(function (item, index) { if (item.key === 'contact') target = index; });
+      if (target < 0 || target === state.step) return false;
+      go(target);
+      return true;
+    },
     currentKey:function () { return state.draftId; },
     context:function () {
       return {
@@ -3681,6 +4457,9 @@ if (document.prerendering) {
     }
   };
   render();
+  if (window.matchMedia && window.matchMedia('(max-width:340px) and (max-height:620px)').matches) {
+    setTimeout(revealPendingChoice,0);
+  }
 })();
 </script>
 </body>

@@ -86,10 +86,17 @@
     if (source.nodeType === Node.TEXT_NODE) return document.createTextNode(source.textContent || '');
     if (source.nodeType !== Node.ELEMENT_NODE) return null;
 
-    if (source.tagName === 'ASIDE' && source.querySelector('a[href*="configurator.html"],[data-contact]')) {
-      return null;
+    // Врезка по ходу текста, помеченная явно, — часть материала, а не дубль
+    // боковой панели: та появляется лишь на ~76% глубины, куда доскроллены единицы.
+    var inlineCta = source.nodeType === Node.ELEMENT_NODE &&
+      source.hasAttribute && source.hasAttribute('data-inline-cta');
+
+    if (!inlineCta) {
+      if (source.tagName === 'ASIDE' && source.querySelector('a[href*="configurator.html"],[data-contact]')) {
+        return null;
+      }
+      if (source.tagName === 'P' && source.querySelector('a[href*="configurator.html"]')) return null;
     }
-    if (source.tagName === 'P' && source.querySelector('a[href*="configurator.html"]')) return null;
 
     var allowed = [
       'H2','H3','H4','P','UL','OL','LI','DL','DT','DD','TABLE','THEAD','TBODY',
@@ -110,7 +117,7 @@
     ['colspan','rowspan','scope'].forEach(function (name) {
       if (source.hasAttribute(name)) element.setAttribute(name, source.getAttribute(name));
     });
-    ['doc-note','link','num'].forEach(function (name) {
+    ['doc-note','link','num','read-cta'].forEach(function (name) {
       if (source.classList.contains(name)) element.classList.add(name);
     });
 

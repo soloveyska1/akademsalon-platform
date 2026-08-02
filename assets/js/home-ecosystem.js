@@ -1,4 +1,4 @@
-/* Главная «Дело исследования»: локальный объяснимый маршрут и карта стадий. */
+/* Главная «Дело исследования»: локальный объяснимый маршрут и последовательность стадий. */
 (function () {
   'use strict';
 
@@ -38,35 +38,284 @@
     self:'другая работа'
   };
   var resultLabels = {
-    diagnostic:'Письменная карта замечаний',
-    editing:'Редактура вашего черновика',
+    diagnostic:'Полный разбор материала',
+    editing:'Редактура вашего текста',
     ai_editing:'Редактура текста после ИИ',
-    formatting:'Проверка по методичке',
+    formatting:'Оформление по методичке',
     defense:'Подготовка к защите',
-    support:'Маршрут проекта с нуля',
-    tutoring:'Консультация с редактором'
+    support:'Помощь от темы до рабочей версии',
+    tutoring:'Разбор вопроса с редактором'
   };
   var resultChoiceLabels = {
-    diagnostic:'Сначала диагностика',
-    editing:'Сначала редактура',
-    ai_editing:'Сначала редактура после ИИ',
-    formatting:'Сначала оформление',
-    defense:'Сначала подготовка к защите',
-    support:'Сначала маршрут проекта',
-    tutoring:'Сначала консультация'
+    diagnostic:'Сначала разобрать материал',
+    editing:'Сначала отредактировать текст',
+    ai_editing:'Сначала проверить текст после ИИ',
+    formatting:'Сначала привести к требованиям',
+    defense:'Сначала подготовиться к защите',
+    support:'Сначала начать работу над текстом',
+    tutoring:'Сначала разобрать вопрос'
   };
   var freeRoutes = {
-    topic:['/audit-temy-vkr.html','Проверить тему самостоятельно','topic'],
-    draft:['/check.html','Проверить признаки академического текста','draft'],
-    comments:['/dosie-nauchruka.html','Собрать требования руководителя','comments'],
+    topic:['/audit-temy-vkr.html','Проверить тему','topic'],
+    draft:['/check.html','Проверить текст','draft'],
+    comments:['/dosie-nauchruka.html','Разобрать замечания','comments'],
     defense:['/guide-rech-na-zashchitu.html','Проверить речь по чек-листу','defense'],
-    formatting:['/guide-normocontrol.html','Сверить оформление самостоятельно','formatting'],
-    ai_editing:['/guide-antiplagiat-ai.html','Проверить текст после ИИ самостоятельно','ai_editing'],
+    formatting:['/guide-normocontrol.html','Сверить оформление','formatting'],
+    ai_editing:['/guide-antiplagiat-ai.html','Проверить текст после ИИ','ai_editing'],
     tutoring:['/knowledge.html','Выбрать материал для разбора','tutoring']
   };
   var prompted = false;
   var routeCard = document.querySelector('.case-route');
+  var heroLayout = document.querySelector('.case-hero__inner');
+  var scopeDeck = document.querySelector('[data-case-scope-deck]');
+  var scopeDrawer = document.querySelector('[data-case-scope-drawer]');
+  var scopeOpen = document.querySelector('[data-case-scope-open]');
+  var scopeAlternative = document.querySelector('[data-case-scope-alternative]');
+  var scopeReopen = document.querySelector('[data-case-scope-reopen]');
+  var resultEdit = document.querySelector('[data-case-result-edit]');
+  var scopeClose = document.querySelector('[data-case-scope-close]');
+  var scopeBackdrop = document.querySelector('[data-case-scope-backdrop]');
+  var scopeReturnTarget = scopeOpen;
+  var resultEditScrollY = 0;
+  var promptToggle = document.querySelector('[data-case-prompt-toggle]');
+  var promptBody = document.querySelector('[data-case-prompt-body]');
+  var homeStart = document.querySelector('[data-home-start]');
+  var scopeFrame = document.querySelector('[data-case-scope-frame]');
+  var scopeTitle = document.querySelector('[data-case-scope-title]');
+  var scopeCopy = document.querySelector('[data-case-scope-copy]');
+  var scopeNumber = document.querySelector('[data-case-scope-number]');
+  var scopeProgress = [].slice.call(document.querySelectorAll('.case-scope-trigger__progress i'));
+  var scopeSlides = [].slice.call(document.querySelectorAll('[data-case-drawer-choice="true"]')).map(function (button) {
+    return {
+      number:(button.querySelector(':scope > span') || {}).textContent || '',
+      title:(button.querySelector('strong') || {}).textContent || '',
+      copy:(button.querySelector('small') || {}).textContent || ''
+    };
+  });
+  var scopeSlideIndex = 0;
+  var scopeTimer = 0;
+  var scopeTouchTimer = 0;
+  var scopePaused = false;
+  var scopeInView = true;
+  var routeWritingTimer = 0;
+  var routeWritingFlip = false;
   var activeFreeCode = 'knowledge';
+
+  if (routeCard) routeCard.setAttribute('aria-hidden','true');
+
+  function setPromptExpanded(expanded,focusField) {
+    if (!promptToggle || !promptBody) return;
+    form.setAttribute('data-prompt-expanded',String(expanded));
+    document.documentElement.classList.toggle('home-prompt-open',expanded);
+    promptToggle.setAttribute('aria-expanded',String(expanded));
+    promptBody.setAttribute('aria-hidden',String(!expanded));
+    if (expanded) {
+      promptBody.removeAttribute('inert');
+      if (focusField) input.focus({ preventScroll:true });
+    } else {
+      promptBody.setAttribute('inert','');
+    }
+  }
+
+  if (promptToggle && promptBody) {
+    setPromptExpanded(false,false);
+    promptToggle.addEventListener('click',function () {
+      var expanded = promptToggle.getAttribute('aria-expanded') === 'true';
+      setPromptExpanded(!expanded,!expanded);
+    });
+    form.addEventListener('keydown',function (event) {
+      if (event.key === 'Escape' && promptToggle.getAttribute('aria-expanded') === 'true' && !input.value.trim()) {
+        event.preventDefault();
+        setPromptExpanded(false,false);
+        promptToggle.focus({ preventScroll:true });
+      }
+    });
+  }
+
+  function scopeMotionAllowed() {
+    return !(document.hidden ||
+      document.documentElement.hasAttribute('data-calm') ||
+      document.documentElement.getAttribute('data-motion') === 'off' ||
+      (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches));
+  }
+
+  function paintScopeSlide(index,animate) {
+    if (!scopeSlides.length || !scopeTitle || !scopeCopy || !scopeNumber) return;
+    scopeSlideIndex = (index + scopeSlides.length) % scopeSlides.length;
+    var slide = scopeSlides[scopeSlideIndex];
+    var commit = function () {
+      if (slide.number === '04') {
+        scopeTitle.setAttribute('aria-label','До защиты мало времени');
+        scopeTitle.innerHTML =
+          '<span class="case-scope-trigger__easter" aria-hidden="true">' +
+          '<s>Зима</s><em>Защита</em></span>' +
+          '<span aria-hidden="true">уже<br>близко</span>';
+      } else {
+        scopeTitle.removeAttribute('aria-label');
+        scopeTitle.textContent = slide.title;
+      }
+      scopeCopy.textContent = slide.copy;
+      scopeNumber.textContent = slide.number;
+      scopeProgress.forEach(function (item,itemIndex) {
+        item.classList.toggle('is-active',itemIndex === scopeSlideIndex);
+      });
+      if (scopeFrame) scopeFrame.classList.remove('is-changing');
+    };
+    if (animate && scopeFrame) {
+      scopeFrame.classList.add('is-changing');
+      window.setTimeout(commit,170);
+    } else {
+      commit();
+    }
+  }
+
+  function stopScopeRotation() {
+    if (scopeTimer) window.clearTimeout(scopeTimer);
+    scopeTimer = 0;
+  }
+
+  function scheduleScopeRotation() {
+    stopScopeRotation();
+    if (!scopeOpen || !scopeOpen.hasAttribute('data-case-scope-rotate') || scopePaused || !scopeInView || !scopeMotionAllowed() || scopeSlides.length < 2) return;
+    scopeTimer = window.setTimeout(function () {
+      paintScopeSlide(scopeSlideIndex + 1,true);
+      scheduleScopeRotation();
+    },4800);
+  }
+
+  if (scopeOpen && scopeOpen.hasAttribute('data-case-scope-rotate') && scopeSlides.length) {
+    paintScopeSlide(0,false);
+    scopeOpen.addEventListener('pointerenter',function () {
+      scopePaused = true;
+      stopScopeRotation();
+    });
+    scopeOpen.addEventListener('pointerleave',function () {
+      scopePaused = false;
+      scheduleScopeRotation();
+    });
+    scopeOpen.addEventListener('focus',function () {
+      scopePaused = true;
+      stopScopeRotation();
+    });
+    scopeOpen.addEventListener('blur',function () {
+      scopePaused = false;
+      scheduleScopeRotation();
+    });
+    scopeOpen.addEventListener('pointerdown',function () {
+      scopePaused = true;
+      stopScopeRotation();
+      if (scopeTouchTimer) window.clearTimeout(scopeTouchTimer);
+      scopeTouchTimer = window.setTimeout(function () {
+        scopePaused = false;
+        scheduleScopeRotation();
+      },9000);
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        scopeInView = Boolean(entries[0] && entries[0].intersectionRatio >= .6);
+        scheduleScopeRotation();
+      },{ threshold:[0,.6,1] }).observe(scopeOpen);
+    }
+    document.addEventListener('visibilitychange',scheduleScopeRotation);
+    scheduleScopeRotation();
+  }
+
+  function setScopeDrawer(open,restoreFocus) {
+    if (!scopeDrawer || !scopeOpen || !scopeBackdrop) return;
+    document.documentElement.classList.toggle('case-scope-drawer-open',open);
+    scopeOpen.setAttribute('aria-expanded',String(open));
+    if (scopeAlternative) scopeAlternative.setAttribute('aria-expanded',String(open));
+    if (scopeReopen) scopeReopen.setAttribute('aria-expanded',String(open));
+    if (resultEdit) resultEdit.setAttribute('aria-expanded',String(open));
+    scopeDrawer.setAttribute('aria-hidden',String(!open));
+    scopeBackdrop.setAttribute('aria-hidden',String(!open));
+    if (open) {
+      stopScopeRotation();
+      scopeDrawer.removeAttribute('inert');
+      if (scopeClose) scopeClose.focus({ preventScroll:true });
+    } else {
+      scopeDrawer.setAttribute('inert','');
+      if (restoreFocus && scopeReturnTarget) scopeReturnTarget.focus({ preventScroll:true });
+      scheduleScopeRotation();
+    }
+  }
+
+  function closeScopeDrawer(restoreFocus) {
+    setScopeDrawer(false,restoreFocus !== false);
+  }
+
+  if (scopeDrawer && scopeOpen && scopeClose && scopeBackdrop) {
+    scopeOpen.addEventListener('click',function () {
+      scopeReturnTarget = scopeOpen;
+      setScopeDrawer(true,false);
+    });
+    if (scopeAlternative) {
+      scopeAlternative.addEventListener('click',function () {
+        scopeReturnTarget = scopeAlternative;
+        setScopeDrawer(true,false);
+      });
+    }
+    if (scopeReopen) {
+      scopeReopen.addEventListener('click',function () {
+        scopeReturnTarget = scopeReopen;
+        setScopeDrawer(true,false);
+      });
+    }
+    if (resultEdit) {
+      resultEdit.addEventListener('click',function () {
+        scopeReturnTarget = resultEdit;
+        resultEditScrollY = window.scrollY || window.pageYOffset || 0;
+        setScopeDrawer(true,false);
+      });
+    }
+    scopeClose.addEventListener('click',function () {
+      closeScopeDrawer(true);
+    });
+    scopeBackdrop.addEventListener('click',function () {
+      closeScopeDrawer(true);
+    });
+    document.addEventListener('keydown',function (event) {
+      if (event.key === 'Escape' && document.documentElement.classList.contains('case-scope-drawer-open')) {
+        event.preventDefault();
+        closeScopeDrawer(true);
+      }
+    });
+    scopeDrawer.addEventListener('keydown',function (event) {
+      if (event.key !== 'Tab') return;
+      var focusable = scopeDrawer.querySelectorAll('button:not([disabled]),a[href]');
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+  }
+
+  if (homeStart) {
+    homeStart.addEventListener('click',function (event) {
+      /* Новая главная ведёт к видимому живому досье обычным якорем. Старый
+         обработчик нужен только прежнему текстовому сценарию. */
+      if (homeStart.getAttribute('href') === '#deskStart') return;
+      event.preventDefault();
+      setPromptExpanded(true,false);
+      try {
+        form.scrollIntoView({
+          behavior:scopeMotionAllowed() ? 'smooth' : 'auto',
+          block:'center'
+        });
+      } catch (e) {
+        form.scrollIntoView();
+      }
+      window.setTimeout(function () {
+        input.focus({ preventScroll:true });
+      },scopeMotionAllowed() ? 420 : 0);
+    });
+  }
 
   function track(name, variant) {
     try {
@@ -386,9 +635,30 @@
   }
 
   function setStatus(text,tone) {
-    slots.confidence.textContent = text;
+    var visible = tone === 'uncertain' || tone === 'blocked';
+    slots.confidence.hidden = !visible;
+    slots.confidence.textContent = visible ? text : '';
     slots.confidence.classList.toggle('is-uncertain',tone === 'uncertain');
     slots.confidence.classList.toggle('is-blocked',tone === 'blocked');
+  }
+
+  function animateRouteCard() {
+    if (!routeCard || !routeCard.classList ||
+        typeof routeCard.classList.add !== 'function' ||
+        typeof routeCard.classList.remove !== 'function' ||
+        typeof window.setTimeout !== 'function') return;
+    if ((window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ||
+        document.documentElement.hasAttribute('data-calm')) return;
+    routeCard.classList.remove('is-writing-a','is-writing-b');
+    routeWritingFlip = !routeWritingFlip;
+    routeCard.classList.add(routeWritingFlip ? 'is-writing-a' : 'is-writing-b');
+    if (routeWritingTimer && typeof window.clearTimeout === 'function') {
+      window.clearTimeout(routeWritingTimer);
+    }
+    routeWritingTimer = window.setTimeout(function () {
+      routeCard.classList.remove('is-writing-a','is-writing-b');
+      routeWritingTimer = 0;
+    },1450);
   }
 
   function openLabel(text) {
@@ -408,8 +678,12 @@
     var workName = workLabels[work] || '';
 
     slots.state.textContent = workName ? current + ' · ' + workName : current;
-    slots.result.textContent = situation === 'topic' && result === 'diagnostic'
-      ? 'Письменная карта темы и плана'
+    slots.result.textContent = result === 'diagnostic'
+      ? situation === 'topic'
+        ? 'Полный разбор темы и плана'
+        : situation === 'comments'
+          ? 'Полный разбор замечаний'
+          : 'Полный разбор черновика'
       : resultLabels[result] || 'Первый полезный результат';
 
     if (result === 'support') {
@@ -429,19 +703,19 @@
       slots.need.textContent = 'Черновик, задание и замечания, если они есть';
       slots.change.textContent = 'Если задача только в оформлении, нужен нормоконтроль';
     } else if (result === 'formatting') {
-      slots.why.textContent = reason || 'Вы упомянули оформление: этот этап уместен после стабилизации содержания и по актуальной методичке.';
+      slots.why.textContent = reason || 'Сначала сверим готовый текст с актуальной методичкой и покажем все несоответствия.';
       slots.need.textContent = 'Стабильная версия и методичка кафедры';
       slots.change.textContent = 'Новые содержательные замечания вернут дело к проверке';
     } else if (result === 'defense') {
-      slots.why.textContent = reason || 'Вы упомянули близкую защиту: сначала проверяем выполнимость и риски готовой версии.';
+      slots.why.textContent = reason || 'Сначала проверим готовность текста, сроки и риски перед защитой.';
       slots.need.textContent = 'Текущая версия, дата защиты и регламент выступления';
       slots.change.textContent = 'Критические замечания к содержанию';
     } else {
       slots.why.textContent = reason || (situation === 'topic'
-        ? 'На старте сначала проверяем масштаб темы и логику плана — полный проект пока предлагать рано.'
+        ? 'Проверим масштаб темы и логику плана. После этого будет понятно, какой объём помощи действительно нужен.'
         : situation === 'comments'
-          ? 'Вы упомянули замечания: сначала переводим их в приоритетную карту, а не продаём правки вслепую.'
-          : 'Черновик уже есть: диагностика покажет, какой объём помощи действительно нужен.');
+          ? 'Разберём каждое замечание, определим, что исправить в первую очередь, и покажем объём работы.'
+          : 'Разберём черновик: что уже работает, что требует исправления и в каком порядке это лучше делать.');
       slots.need.textContent = situation === 'topic'
         ? 'Тема или задание; методичка пригодится, но начать можно без неё'
         : situation === 'comments'
@@ -454,27 +728,29 @@
 
     slots.price.textContent = quote(work,result,situation);
     slots.open.href = routeUrl(work,situation,result);
-    openLabel('Открыть предварительный маршрут');
+    openLabel('Узнать состав помощи и стоимость');
     var free = freeRoutes[result] || freeRoutes[situation] || freeRoutes.draft;
     setLink(slots.free,free[0],free[1],free[2]);
-    setStatus('Предварительно подходит','clear');
+    setStatus('','clear');
     setConfirm([]);
     track('case_route_ready',[situation,work || 'no_work',result].join('_'));
+    animateRouteCard();
   }
 
   function showUncertain(message,question,items,variant) {
     slots.state.textContent = message;
     slots.result.textContent = question;
-    slots.why.textContent = 'Одной фразы пока недостаточно для честной рекомендации. Мы не будем угадывать услугу или цену.';
-    slots.need.textContent = 'Один ответ ниже — без контакта и без передачи исходной фразы';
-    slots.price.textContent = 'появится после подтверждения точки старта';
+    slots.why.textContent = 'По этой фразе пока нельзя точно выбрать первый шаг и назвать цену. Уточним только главное.';
+    slots.need.textContent = 'Один ответ ниже — контакт пока не нужен';
+    slots.price.textContent = 'появится после одного уточнения';
     slots.change.textContent = 'Ваш выбор текущего состояния';
     slots.open.href = '/configurator.html';
     openLabel('Уточнить за два шага');
-    setLink(slots.free,'/knowledge.html','Выбрать материал самостоятельно','knowledge');
+    setLink(slots.free,'/knowledge.html','Выбрать подходящий материал','knowledge');
     setStatus('Нужно уточнить','uncertain');
     setConfirm(items);
     track('case_route_uncertain',variant || 'unknown');
+    animateRouteCard();
   }
 
   function showResultConflict(works,situations,results,deadlineOnly) {
@@ -500,6 +776,7 @@
       };
     }));
     track('case_route_uncertain','multiple_results');
+    animateRouteCard();
   }
 
   function showBlocked() {
@@ -515,6 +792,7 @@
     setStatus('Такой запрос не принимается','blocked');
     setConfirm([]);
     track('case_route_blocked','integrity');
+    animateRouteCard();
   }
 
   function resolveRoute(works,situations,explicitResult,deadlineOnly) {
@@ -528,10 +806,10 @@
     if (!situations.length || deadlineOnly) {
       var prefix = works.length ? 'Определена работа: ' + workLabels[works[0]] : 'Ситуация пока не определена';
       showUncertain(prefix,'Что уже есть сейчас?',[
-        { label:'Только тема', situation:'topic', work:works[0] || '', result:explicitResult },
-        { label:'Есть черновик', situation:'draft', work:works[0] || '', result:explicitResult },
-        { label:'Есть замечания', situation:'comments', work:works[0] || '', result:explicitResult },
-        { label:'Скоро защита', situation:'defense', work:works[0] || '', result:explicitResult }
+        { label:'Пока есть только тема', situation:'topic', work:works[0] || '', result:explicitResult },
+        { label:'Черновик уже есть', situation:'draft', work:works[0] || '', result:explicitResult },
+        { label:'Пришли замечания', situation:'comments', work:works[0] || '', result:explicitResult },
+        { label:'До защиты мало времени', situation:'defense', work:works[0] || '', result:explicitResult }
       ],works.length ? 'work_only' : 'no_state');
       return;
     }
@@ -557,10 +835,10 @@
     var text = normalize(raw);
     if (!text || text.length < 9 || /^(?:помогите|нужна помощь|все плохо|срочно)$/u.test(text)) {
       showUncertain('Пока нет точки старта','Что у вас уже есть?',[
-        { label:'Только тема', situation:'topic' },
-        { label:'Есть черновик', situation:'draft' },
-        { label:'Есть замечания', situation:'comments' },
-        { label:'Скоро защита', situation:'defense' }
+        { label:'Пока есть только тема', situation:'topic' },
+        { label:'Черновик уже есть', situation:'draft' },
+        { label:'Пришли замечания', situation:'comments' },
+        { label:'До защиты мало времени', situation:'defense' }
       ],'too_short');
       return;
     }
@@ -572,6 +850,7 @@
     var works = findWorks(text);
     var situations = findSituations(text);
     var results = findResults(text);
+    if (situations.length === 1) syncResultStage(situations[0]);
     var deadlineOnly = situations.length === 0 && matches(text,[/(?:завтра|послезавтра|через\s+\d+|срочно|дедлайн)/]);
 
     if (works.length > 1) {
@@ -586,17 +865,22 @@
   }
 
   function revealRoute() {
-    if (!routeCard || !window.matchMedia('(max-width:920px)').matches) return;
-    routeCard.setAttribute('tabindex','-1');
-    try {
-      routeCard.focus({ preventScroll:true });
-    } catch (e) {
-      routeCard.focus();
+    if (!routeCard) return;
+    routeCard.setAttribute('data-route-visible','true');
+    routeCard.setAttribute('aria-hidden','false');
+    if (heroLayout) heroLayout.setAttribute('data-route-visible','true');
+    if (window.matchMedia('(max-width:920px)').matches) {
+      routeCard.setAttribute('tabindex','-1');
+      try {
+        routeCard.focus({ preventScroll:true });
+      } catch (e) {
+        routeCard.focus();
+      }
     }
     try {
       routeCard.scrollIntoView({
         behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-        block:'start'
+        block:window.matchMedia('(max-width:920px)').matches ? 'start' : 'center'
       });
     } catch (e) {
       routeCard.scrollIntoView();
@@ -617,12 +901,39 @@
 
   document.querySelectorAll('[data-case-preset]').forEach(function (button) {
     button.addEventListener('click',function () {
+      var presetValue = button.getAttribute('data-case-preset') || '';
+      var fromDrawer = button.getAttribute('data-case-drawer-choice') === 'true';
+      var updateResultInPlace = fromDrawer && scopeReturnTarget === resultEdit;
       document.querySelectorAll('[data-case-preset]').forEach(function (item) {
-        item.setAttribute('aria-pressed',String(item === button));
+        item.setAttribute('aria-pressed',String(item.getAttribute('data-case-preset') === presetValue));
       });
-      input.value = button.getAttribute('data-case-preset') || '';
+      document.querySelectorAll('[data-case-hero-choice]').forEach(function (item) {
+        var selected = item === button || item.getAttribute('data-case-preset') === presetValue;
+        if (selected) item.setAttribute('aria-current','step');
+        else item.removeAttribute('aria-current');
+      });
+      if (scopeDeck) scopeDeck.setAttribute('data-scope-index',button.getAttribute('data-scope-index') || '01');
+      input.value = presetValue;
+      if (!updateResultInPlace) setPromptExpanded(true,false);
       classify(input.value);
+      closeScopeDrawer(false);
+      if (updateResultInPlace) {
+        window.requestAnimationFrame(function () {
+          window.scrollTo(0,resultEditScrollY);
+          var activeTitle = document.querySelector('.case-stage-panel.is-active h3');
+          if (activeTitle) {
+            activeTitle.setAttribute('tabindex','-1');
+            activeTitle.focus({ preventScroll:true });
+          }
+        });
+        track('case_result_situation_changed',presetValue);
+        return;
+      }
       revealRoute();
+      if (fromDrawer && routeCard && !window.matchMedia('(max-width:920px)').matches) {
+        routeCard.setAttribute('tabindex','-1');
+        routeCard.focus({ preventScroll:true });
+      }
     });
   });
 
@@ -639,8 +950,21 @@
 
   var stageButtons = [].slice.call(document.querySelectorAll('[data-case-stage]'));
   var stagePanels = [].slice.call(document.querySelectorAll('[data-stage-panel]'));
+  var resultState = document.querySelector('[data-case-result-state]');
+  var resultNumber = document.querySelector('[data-case-result-number]');
+  var resultStates = [
+    'Пока есть только тема или задание',
+    'Черновик уже есть',
+    'Пришли замечания руководителя',
+    'До защиты мало времени'
+  ];
+  function syncResultStage(situation) {
+    var stageBySituation = { topic:0, draft:1, comments:2, defense:3 };
+    if (!Object.prototype.hasOwnProperty.call(stageBySituation,situation)) return;
+    activateStage(stageBySituation[situation],false);
+  }
   function activateStage(index,focus) {
-    index = Math.max(0,Math.min(stageButtons.length - 1,index));
+    index = Math.max(0,Math.min(stagePanels.length - 1,index));
     stageButtons.forEach(function (button,buttonIndex) {
       var selected = buttonIndex === index;
       button.setAttribute('aria-selected',String(selected));
@@ -651,8 +975,10 @@
       panel.classList.toggle('is-active',selected);
       panel.setAttribute('aria-hidden',String(!selected));
     });
-    if (focus) stageButtons[index].focus({ preventScroll:true });
-    if (focus) {
+    if (resultState) resultState.textContent = resultStates[index] || resultStates[0];
+    if (resultNumber) resultNumber.textContent = index < 9 ? '0' + (index + 1) : String(index + 1);
+    if (focus && stageButtons[index]) stageButtons[index].focus({ preventScroll:true });
+    if (focus && stageButtons[index]) {
       try {
         stageButtons[index].scrollIntoView({
           behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
@@ -676,5 +1002,114 @@
       activateStage(next,true);
     });
   });
-  if (stageButtons.length) activateStage(0,false);
+  if (stagePanels.length) activateStage(0,false);
+
+  var processSteps = [].slice.call(document.querySelectorAll('[data-case-process-step]'));
+  var fileSteps = [].slice.call(document.querySelectorAll('[data-case-file-step]'));
+  var fileKicker = document.querySelector('[data-case-file-kicker]');
+  var fileTitle = document.querySelector('[data-case-file-title]');
+  var fileCopy = document.querySelector('[data-case-file-copy]');
+  var fileCurrent = document.querySelector('.case-file__current');
+  var mobileProcessNote = document.querySelector('[data-case-process-mobile-note]');
+  var mobileProcessKicker = document.querySelector('[data-case-process-mobile-kicker]');
+  var mobileProcessTitle = document.querySelector('[data-case-process-mobile-title]');
+  var mobileProcessCopy = document.querySelector('[data-case-process-mobile-copy]');
+  var committedProcessStep = '1';
+  var noteSwapTimer = 0;
+  var processNotes = {
+    '1':['01 · Материалы','Тема, методичка и замечания руководителя','Запишем, с какой версией текста и какими требованиями работаем.'],
+    '2':['02 · Результат','Разбор замечаний и порядок правок','Укажем, какой файл или встреча будут готовы по итогу.'],
+    '3':['03 · Во время работы','Правки — в отдельной версии с комментариями','Сохраним ваш исходный текст и объясним важные изменения.'],
+    '4':['04 · Проверка','Сверим готовую работу по согласованному списку','Если не выполнен согласованный пункт, исправим его до завершения. Продолжение оформляется отдельно.']
+  };
+  function linkProcessStep(step) {
+    processSteps.forEach(function (button) {
+      var selected = button.getAttribute('data-case-process-step') === step;
+      button.classList.toggle('is-linked',selected);
+      button.setAttribute('aria-selected',String(selected));
+      button.tabIndex = selected ? 0 : -1;
+    });
+    fileSteps.forEach(function (row) {
+      row.classList.toggle('is-current',row.getAttribute('data-case-file-step') === step);
+    });
+    var note = processNotes[step] || processNotes['1'];
+    var writeNote = function () {
+      if (fileKicker) fileKicker.textContent = note[0];
+      if (fileTitle) fileTitle.textContent = note[1];
+      if (fileCopy) fileCopy.textContent = note[2];
+      if (mobileProcessKicker) mobileProcessKicker.textContent = note[0];
+      if (mobileProcessTitle) mobileProcessTitle.textContent = note[1];
+      if (mobileProcessCopy) mobileProcessCopy.textContent = note[2];
+    };
+    var selectedButton = processSteps.filter(function (button) {
+      return button.getAttribute('data-case-process-step') === step;
+    })[0];
+    if (fileCurrent && selectedButton) {
+      fileCurrent.setAttribute('aria-labelledby',selectedButton.id);
+    }
+    if (mobileProcessNote && selectedButton && selectedButton.parentNode) {
+      selectedButton.parentNode.appendChild(mobileProcessNote);
+    }
+    var reduceMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.clearTimeout(noteSwapTimer);
+    if (!fileCurrent || reduceMotion || !fileTitle || fileTitle.textContent === note[1]) {
+      writeNote();
+      return;
+    }
+    fileCurrent.classList.add('is-changing');
+    noteSwapTimer = window.setTimeout(function () {
+      writeNote();
+      fileCurrent.classList.remove('is-changing');
+    },90);
+  }
+  processSteps.forEach(function (button,index) {
+    var step = button.getAttribute('data-case-process-step') || '1';
+    button.addEventListener('click',function () {
+      committedProcessStep = step;
+      linkProcessStep(step);
+    });
+    button.addEventListener('keydown',function (event) {
+      var next = index;
+      if (event.key === 'ArrowDown') next = (index + 1) % processSteps.length;
+      else if (event.key === 'ArrowUp') next = (index - 1 + processSteps.length) % processSteps.length;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = processSteps.length - 1;
+      else return;
+      event.preventDefault();
+      committedProcessStep = processSteps[next].getAttribute('data-case-process-step') || '1';
+      linkProcessStep(committedProcessStep);
+      processSteps[next].focus({ preventScroll:true });
+    });
+  });
+  if (processSteps.length) linkProcessStep('1');
+
+  function keepOneOpen(selector) {
+    var items = [].slice.call(document.querySelectorAll(selector));
+    items.forEach(function (item) {
+      item.addEventListener('toggle',function () {
+        if (!item.open) return;
+        items.forEach(function (other) {
+          if (other !== item) other.open = false;
+        });
+      });
+    });
+  }
+  keepOneOpen('.case-faq .faq-item');
+  keepOneOpen('.case-file__notes .case-terms__note');
+
+  var storyReveals = [].slice.call(document.querySelectorAll('[data-story-reveal]'));
+  if ('IntersectionObserver' in window &&
+      !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    var storyObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-in');
+        storyObserver.unobserve(entry.target);
+      });
+    },{ threshold:0.18 });
+    storyReveals.forEach(function (node) { storyObserver.observe(node); });
+  } else {
+    storyReveals.forEach(function (node) { node.classList.add('is-in'); });
+  }
 }());

@@ -41,7 +41,8 @@ test('desktop chrome keeps the approved control geometry', () => {
 });
 
 test('chrome icons and theme transition remain identical to style-lab', () => {
-  assert.match(appJs, /aria-hidden="true">⌕<\/span>/);
+  assert.match(appJs, /class="ha-ico ha-ico--search" aria-hidden="true"><i><\/i><\/span>/);
+  assert.match(chromeCss, /\.ha-ico--search::before\{[\s\S]*?border:1\.45px solid currentColor;/);
   assert.match(appJs, /data-theme-glyph data-theme-icon="dark"/);
   assert.match(appJs, /class="ha-theme-night"/);
   assert.match(appJs, /class="ha-theme-sun"/);
@@ -55,9 +56,9 @@ test('chrome icons and theme transition remain identical to style-lab', () => {
 
 test('production shell keeps the approved light and dark palette', () => {
   for (const token of [
-    '--canvas:#F3EEE4',
-    '--paper:#FAF6EE',
-    '--sheet:#FFFDF8',
+    '--canvas:#E9DDCC',
+    '--paper:#E9DDCC',
+    '--sheet:#FFF9F0',
     '--ink:#1D1C18',
     '--text:#38352F',
     '--hairline:#D8CEBD',

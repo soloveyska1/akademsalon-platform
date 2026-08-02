@@ -114,9 +114,8 @@
   }
   .site-footer{padding-bottom:calc(var(--mobile-dock-h) + 14px)}
 
-  /* Черновик на телефоне живёт в листе .resume-card на главной (в потоке,
-     сразу под первым экраном). Золотая точка на центральном пункте дока
-     и плавающая полоса .resume-bar сняты вместе с ним. */
+  /* Черновик на телефоне возвращается через общий нижний системный rail.
+     Он сменяет приватность и на время показа сам занимает место дока. */
 
   /* После выбора типа не повторяем вводный экран на каждом шаге. */
   body.conf-step-later main .chapter.conf-chapter{
@@ -1322,6 +1321,23 @@
   }
 }
 
+/* RELEASE 97 · геометрия mobile appbar */
+@media screen and (min-width:621px) and (max-width:920px){
+  body .mobile-appbar__brand{
+    min-height:44px;
+  }
+}
+
+@media screen and (max-width:350px){
+  body .mobile-appbar{
+    grid-template-columns:44px minmax(0,1fr) 44px;
+  }
+
+  body .mobile-appbar--root{
+    grid-template-columns:minmax(0,1fr) 44px;
+  }
+}
+
 @media screen and (max-width:380px) and (max-height:620px){
   /* На коротких телефонах не отдаём главный CTA под нижнюю навигацию. */
   .home .pr-scope{display:none!important}
@@ -1810,6 +1826,59 @@
   }
 }
 
+/* Пульт шапки на телефоне: один размер и одна толщина линии у значков. */
+@media screen and (max-width:920px){
+  .mobile-appbar{
+    border-bottom-color:color-mix(in srgb,var(--hairline-strong) 68%,transparent);
+    box-shadow:0 12px 34px -28px color-mix(in srgb,var(--ink) 42%,transparent);
+  }
+
+  .mobile-appbar__help,
+  .mobile-appbar__theme,
+  .mobile-appbar__menu,
+  .mobile-appbar__back{
+    border:1px solid color-mix(in srgb,var(--hairline-strong) 72%,transparent);
+    color:var(--ink-soft);
+    background:color-mix(in srgb,var(--sheet) 62%,transparent);
+  }
+
+  .mobile-appbar__help{
+    color:var(--wax);
+    background:var(--wax-soft);
+  }
+
+  .mobile-appbar .ha-ico--search{
+    position:relative;
+    display:block;
+    width:18px;
+    height:18px;
+  }
+
+  .mobile-appbar .ha-ico--search::before{
+    position:absolute;
+    top:2px;
+    left:2px;
+    width:9px;
+    height:9px;
+    border:1.45px solid currentColor;
+    border-radius:50%;
+    content:"";
+  }
+
+  .mobile-appbar .ha-ico--search::after{
+    position:absolute;
+    right:2px;
+    bottom:3px;
+    width:6px;
+    height:1.45px;
+    border-radius:2px;
+    background:currentColor;
+    content:"";
+    transform:rotate(45deg);
+    transform-origin:right center;
+  }
+}
+
 /* Нижний dock финального мобильного концепта. */
 @media screen and (max-width:920px){
   .mobile-dock.mobile-cta{
@@ -1834,10 +1903,12 @@
     backdrop-filter:blur(18px) saturate(1.12);
   }
   :root[data-theme="dark"] .mobile-dock.mobile-cta{
-    --dock-muted:#958E82;
-    --dock-active:#E07A62;
-    --dock-seal:#A63F29;
-    background:rgba(36,34,29,.96);
+    --dock-muted:#A9A093;
+    --dock-active:#FF7657;
+    --dock-seal:#B9432D;
+    border-top-color:rgba(255,118,87,.24);
+    background:rgba(12,11,10,.96);
+    box-shadow:0 -14px 36px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.035);
   }
   .mobile-dock.mobile-cta>a{
     position:relative;
@@ -1873,7 +1944,7 @@
     overflow:hidden;
     max-width:100%;
     color:inherit;
-    font-size:10px;
+    font-size:11px;
     font-weight:520;
     text-align:center;
     text-overflow:ellipsis;
@@ -1885,8 +1956,8 @@
   .mobile-dock .mn-i .dock-icon{
     position:relative;
     display:block;
-    width:20px;
-    height:20px;
+    width:22px;
+    height:22px;
     color:currentColor;
     background:transparent;
   }
@@ -2040,6 +2111,1244 @@
   }
 }
 @media screen and (max-width:390px){
-  .mobile-dock.mobile-cta small{font-size:9px}
+  .mobile-dock.mobile-cta small{font-size:10.5px}
   .mobile-dock .mn-ic.mobile-dock__seal{width:48px;height:48px}
+}
+
+/* ------------------------------------------------------------
+   Светлая сцена, настройки данных и системное подтверждение.
+   Этот файл подключён последним: здесь собрана итоговая геометрия
+   одинаковая для главной и остальных страниц.
+   ------------------------------------------------------------ */
+@media screen and (max-width:920px){
+  .mobile-appbar{
+    background:color-mix(in srgb,var(--paper) 94%,transparent);
+  }
+}
+
+@media screen and (min-width:921px){
+  :root.has-consent-bar .lrail{
+    bottom:14px;
+    width:min(1030px,calc(100vw - 40px));
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar{
+    display:grid;
+    grid-template-columns:minmax(190px,.66fr) minmax(310px,1.24fr) minmax(340px,1fr);
+    grid-template-areas:
+      "head copy actions"
+      "head foot actions";
+    column-gap:22px;
+    row-gap:6px;
+    align-items:center;
+    padding:12px 13px;
+    border-color:color-mix(in srgb,var(--hairline-strong) 78%,transparent);
+    background:color-mix(in srgb,var(--sheet) 94%,var(--paper));
+    box-shadow:0 14px 42px color-mix(in srgb,var(--ink) 12%,transparent);
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar .cb-head{
+    grid-area:head;
+    margin:0;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar .cb-kicker{
+    display:block;
+    margin-bottom:3px;
+    color:var(--wax);
+    font-size:9px;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar h2{
+    font-size:18px;
+    line-height:1.12;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar>p{
+    grid-area:copy;
+    margin:0;
+    font-size:12.5px;
+    line-height:1.42;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar .cb-actions{
+    grid-area:actions;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar .cb-actions .btn{
+    min-height:44px;
+    padding:8px 11px;
+    font-size:12px;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar .cb-foot{
+    grid-area:foot;
+    display:flex;
+    gap:13px;
+    margin:0;
+    padding:0;
+    border:0;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar .cb-more{
+    font-size:11px;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar .cb-foot>span{
+    display:inline-flex;
+    margin-left:auto;
+    font-size:9px;
+  }
+}
+
+@media screen and (max-width:920px){
+  :root.has-consent-bar .lrail{
+    right:10px;
+    bottom:max(10px,env(safe-area-inset-bottom));
+    left:10px;
+    width:auto;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar{
+    display:grid;
+    max-height:none;
+    padding:11px 12px 10px;
+    overflow:visible;
+    border-radius:10px;
+    background:color-mix(in srgb,var(--sheet) 96%,var(--paper));
+    box-shadow:0 14px 44px color-mix(in srgb,var(--ink) 16%,transparent);
+  }
+
+  :root.has-consent-bar .lrail .cookiebar .cb-head{
+    display:block;
+    margin-bottom:4px;
+  }
+
+  :root.has-consent-bar .lrail .cookiebar .cb-kicker{
+    display:none;
+  }
+
+  :root.has-consent-bar .lrail .cookiebar h2{
+    font-size:17px;
+    line-height:1.15;
+  }
+
+  :root.has-consent-bar .lrail .cookiebar>p{
+    display:block;
+    margin-bottom:7px;
+    overflow:visible;
+    font-size:11.5px;
+    line-height:1.36;
+  }
+
+  :root.has-consent-bar .lrail .cookiebar .cb-actions{
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+  }
+
+  :root.has-consent-bar .lrail .cookiebar .cb-actions .btn{
+    min-height:44px;
+    padding:7px 8px;
+    font-size:11.5px;
+  }
+
+  :root.has-consent-bar .lrail .cookiebar .cb-foot{
+    gap:8px 10px;
+    margin-top:6px;
+    padding-top:5px;
+  }
+
+  :root.has-consent-bar .lrail .cookiebar .cb-more{
+    display:inline-flex;
+    min-height:44px;
+    align-items:center;
+    font-size:10.5px;
+  }
+}
+
+body .cookieprefs .cp-card{
+  width:min(100%,590px);
+  border-top-width:1px;
+  border-radius:10px;
+  background:color-mix(in srgb,var(--sheet) 96%,var(--paper));
+}
+
+body .cookieprefs .cp-card::before{
+  position:absolute;
+  top:0;
+  right:58px;
+  left:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--wax),color-mix(in srgb,var(--wax) 12%,transparent));
+  content:"";
+}
+
+body .cookieprefs .cp-x{
+  top:10px;
+  right:10px;
+  width:38px;
+  height:38px;
+  border:1px solid var(--hairline);
+  font-size:20px;
+}
+
+body .cookieprefs .cp-card h2{
+  font-size:30px;
+}
+
+body .cookieprefs .cp-item{
+  padding-block:13px;
+}
+
+body .cookieprefs .cp-none{
+  padding:9px 11px;
+  border:1px solid var(--hairline);
+  border-radius:7px;
+  background:color-mix(in srgb,var(--paper) 60%,transparent);
+}
+
+/* purgecss start ignore */
+/* Подтверждение выбора: маленькая завершённая строка в правом нижнем
+   углу. Знак — галочка, крестик остаётся отдельной доступной целью. */
+body .mrail{
+  right:clamp(16px,2vw,28px);
+  width:min(390px,calc(100vw - 24px));
+}
+
+body .mnote--echo{
+  display:grid;
+  min-height:54px;
+  grid-template-columns:30px minmax(0,1fr) 38px;
+  align-items:center;
+  gap:9px;
+  padding:7px 7px 7px 10px;
+  border:1px solid color-mix(in srgb,var(--hairline-strong) 82%,transparent);
+  border-left-width:1px;
+  border-radius:9px;
+  background:color-mix(in srgb,var(--sheet) 96%,var(--paper));
+  box-shadow:0 14px 38px color-mix(in srgb,var(--ink) 15%,transparent);
+}
+
+body .mnote--echo .mn-ic{
+  display:grid;
+  width:28px;
+  height:28px;
+  place-items:center;
+  border:1px solid color-mix(in srgb,var(--wax) 42%,var(--hairline));
+  border-radius:50%;
+  color:var(--wax);
+  background:var(--wax-soft);
+  font:650 13px/1 var(--sans);
+}
+
+body .mnote--echo.is-verify .mn-ic{
+  color:var(--wax);
+}
+
+body .mnote--echo .mn-msg{
+  padding:5px 0;
+  color:var(--ink);
+  font-size:12.5px;
+  line-height:1.38;
+}
+
+body .mnote--echo .mn-lead{
+  position:absolute;
+  right:8px;
+  bottom:3px;
+  left:47px;
+  height:1px;
+  opacity:.55;
+}
+
+body .mnote--echo .mn-x{
+  width:38px;
+  height:38px;
+  min-width:38px;
+  flex-basis:38px;
+  font-size:17px;
+}
+
+@media screen and (max-width:620px){
+  body .mrail{
+    right:10px;
+    left:10px;
+    width:auto;
+  }
+
+  body .cookieprefs .cp-card h2{
+    font-size:26px;
+  }
+
+  body .cookieprefs .cp-actions{
+    grid-template-columns:1fr;
+  }
+}
+
+/* ------------------------------------------------------------
+   Финальная связка первого экрана и нижнего системного слота.
+   ------------------------------------------------------------ */
+
+/* Фирменная типографическая связка первого экрана:
+   редакционный маркер, ясное обещание и тёплый акцент без плашек. */
+.home-case .case-hero__copy{
+  position:relative;
+}
+
+.home-case .case-hero__accolade{
+  display:grid;
+  margin:0 0 24px;
+  grid-template-columns:38px minmax(0,1fr);
+  align-items:center;
+  gap:12px;
+  color:var(--ink-soft);
+  font:500 11px/1.35 var(--sans);
+  letter-spacing:0;
+  text-transform:none;
+  white-space:normal;
+}
+
+.home-case .case-hero__accolade::before{
+  width:38px;
+  height:1px;
+  background:linear-gradient(90deg,var(--wax) 0 76%,color-mix(in srgb,var(--wax) 12%,transparent) 76%);
+  content:"";
+}
+
+.home-case .case-hero__accolade-line{
+  display:flex;
+  min-width:0;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:5px 8px;
+}
+
+.home-case .case-hero__accolade-name{
+  color:var(--ink);
+  font:650 8.5px/1.3 var(--mono);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.home-case .case-hero__accolade-separator{
+  color:var(--wax);
+}
+
+.home-case .case-hero__accolade-promise{
+  color:var(--ink-soft);
+}
+
+.home-case .case-hero__accolade a{
+  position:relative;
+  display:inline-block;
+  padding-inline:2px;
+  color:var(--wax);
+  font:italic 570 17px/1 var(--serif);
+  letter-spacing:-.025em;
+  text-decoration:none;
+  text-transform:none;
+  transition:color .2s ease,transform .24s cubic-bezier(.22,1,.36,1);
+}
+
+.home-case .case-hero__accolade a::after{
+  position:absolute;
+  right:0;
+  bottom:-4px;
+  left:0;
+  height:2px;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--wax) 18%,transparent),var(--wax) 18% 88%,transparent);
+  content:"";
+  opacity:.72;
+  transform:scaleX(.62);
+  transform-origin:left;
+  animation:case-happy-underline 4.8s cubic-bezier(.22,1,.36,1) infinite;
+}
+
+.home-case .case-hero__accolade a:hover{
+  color:var(--wax-deep);
+  transform:translateY(-1px);
+}
+
+.home-case .case-hero h1,
+html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-hero h1{
+  letter-spacing:-.052em;
+  line-height:1.02;
+}
+
+.home-case .case-hero__lead,
+html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-hero__lead{
+  margin-top:24px;
+  line-height:1.62;
+}
+
+/* Форма — компактная редакторская карточка, не панель из «пилюль».
+   Этот блок намеренно финальный: он сводит прежние каскадные варианты
+   к одной геометрии для открытого и закрытого состояния. */
+.home-case .case-prompt,
+html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-prompt{
+  max-width:720px;
+  overflow:hidden;
+  border:1px solid var(--case-line-strong);
+  border-radius:3px;
+  background:var(--case-sheet);
+  box-shadow:4px 4px 0 var(--paper-2),4px 4px 0 1px var(--case-line);
+}
+
+.home-case .case-prompt:focus-within{
+  border-color:var(--case-line-strong);
+  box-shadow:4px 4px 0 var(--paper-2),4px 4px 0 1px var(--case-line);
+}
+
+.home-case .case-prompt__toggle{
+  display:grid;
+  min-height:68px;
+  padding:11px 15px 11px 17px;
+  grid-template-columns:30px minmax(0,1fr) 34px;
+  align-items:center;
+  gap:13px;
+}
+
+.home-case .case-prompt__folio{
+  color:var(--wax);
+  font:650 9px/1 var(--mono);
+  letter-spacing:.12em;
+}
+
+.home-case .case-prompt__toggle>span{
+  display:grid;
+  min-width:0;
+  gap:5px;
+}
+
+.home-case .case-prompt__toggle small{
+  color:var(--ink-faint);
+  font:650 8px/1.15 var(--mono);
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.home-case .case-prompt__toggle strong{
+  min-width:0;
+  overflow:hidden;
+  color:var(--ink);
+  font:650 16px/1.15 var(--sans);
+  letter-spacing:-.018em;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.home-case .case-prompt__toggle i{
+  width:34px;
+  height:34px;
+  flex-basis:34px;
+  border:0;
+  border-left:1px solid var(--case-line-strong);
+  border-radius:0;
+  background:transparent!important;
+}
+
+.home-case .case-prompt__toggle i::before,
+.home-case .case-prompt__toggle i::after{
+  left:calc(50% + 3px);
+  width:9px;
+}
+
+.home-case .case-prompt__body{
+  padding:11px 15px 13px;
+}
+
+.home-case .case-prompt__body>label{
+  position:absolute!important;
+  width:1px;
+  height:1px;
+  margin:-1px;
+  padding:0;
+  overflow:hidden;
+  border:0;
+  clip:rect(0 0 0 0);
+  clip-path:inset(50%);
+  white-space:nowrap;
+}
+
+.home-case .case-prompt__field{
+  display:grid;
+  overflow:hidden;
+  grid-template-columns:minmax(0,1fr) 224px;
+  border:1px solid var(--case-line-strong);
+  border-radius:2px;
+  background:var(--paper);
+  transition:border-color .18s ease,box-shadow .18s ease;
+}
+
+.home-case .case-prompt__field:focus-within{
+  border-color:var(--wax);
+  box-shadow:inset 0 -2px 0 var(--wax);
+}
+
+.home-case .case-prompt textarea{
+  min-height:52px;
+  height:52px;
+  padding:12px 14px;
+  border:0!important;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none!important;
+  font-size:13px;
+  line-height:1.35;
+}
+
+.home-case .case-prompt__field .button{
+  min-width:224px;
+  max-width:224px;
+  min-height:52px;
+  padding-inline:15px;
+  border:0;
+  border-left:1px solid color-mix(in srgb,var(--sheet) 38%,transparent);
+  border-radius:0;
+  font-size:12px;
+  line-height:1.2;
+  white-space:nowrap;
+}
+
+.home-case .case-prompt__presets{
+  display:flex;
+  align-items:center;
+  gap:0;
+  margin-top:7px;
+}
+
+.home-case .case-prompt__presets button{
+  position:relative;
+  width:auto;
+  min-width:0;
+  min-height:34px;
+  padding:7px 13px;
+  overflow:visible;
+  border:0!important;
+  border-radius:0;
+  color:var(--ink-soft);
+  background:transparent!important;
+  font-size:10.5px;
+  text-overflow:clip;
+  white-space:nowrap;
+}
+
+.home-case .case-prompt__presets button+button::before{
+  position:absolute;
+  top:50%;
+  left:0;
+  width:2px;
+  height:2px;
+  border-radius:50%;
+  background:var(--hairline-strong);
+  content:"";
+  transform:translate(-1px,-50%);
+}
+
+.home-case .case-prompt__presets button::after{
+  position:absolute;
+  right:13px;
+  bottom:4px;
+  left:13px;
+  height:1px;
+  background:var(--wax);
+  content:"";
+  opacity:0;
+  transform:scaleX(.35);
+  transition:opacity .16s ease,transform .22s ease;
+}
+
+.home-case .case-prompt__presets button:hover,
+.home-case .case-prompt__presets button[aria-pressed="true"]{
+  color:var(--wax);
+  background:transparent!important;
+}
+
+.home-case .case-prompt__presets button:hover::after,
+.home-case .case-prompt__presets button[aria-pressed="true"]::after{
+  opacity:1;
+  transform:scaleX(1);
+}
+
+@media screen and (max-width:620px){
+  .home-case .case-prompt__toggle{
+    min-height:64px;
+    padding:10px 11px 10px 13px;
+    grid-template-columns:24px minmax(0,1fr) 30px;
+    gap:10px;
+  }
+
+  .home-case .case-prompt__toggle>span{
+    display:grid;
+    gap:4px;
+  }
+
+  .home-case .case-prompt__toggle strong{
+    font-size:15px;
+  }
+
+  .home-case .case-prompt__toggle i{
+    width:30px;
+    height:30px;
+    flex-basis:30px;
+  }
+
+  .home-case .case-prompt__body{
+    padding:10px 11px 12px;
+  }
+
+  .home-case .case-prompt__field{
+    grid-template-columns:1fr;
+  }
+
+  .home-case .case-prompt textarea{
+    min-height:62px;
+    height:62px;
+    font-size:14px;
+  }
+
+  .home-case .case-prompt__field .button{
+    width:100%;
+    min-width:0;
+    max-width:none;
+    min-height:46px;
+    border-top:1px solid color-mix(in srgb,var(--sheet) 38%,transparent);
+    border-left:0;
+  }
+
+  .home-case .case-prompt__presets{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0 12px;
+  }
+
+  .home-case .case-prompt__presets button{
+    min-height:38px;
+    padding:8px 3px 6px;
+    border-bottom:1px solid var(--case-line)!important;
+    text-align:left;
+  }
+
+  .home-case .case-prompt__presets button+button::before{
+    display:none;
+  }
+
+  .home-case .case-prompt__presets button::after{
+    right:3px;
+    bottom:-1px;
+    left:3px;
+  }
+}
+
+body .resume-card.is-consent-waiting{
+  display:none!important;
+}
+
+/* Сохранённый прогресс занимает ровно тот же rail, что и приватность.
+   Поэтому два нижних сообщения физически не могут спорить друг с другом. */
+body .resume-card.is-rail-resume{
+  position:relative;
+  isolation:isolate;
+  display:grid;
+  width:min(820px,100%);
+  max-width:820px;
+  min-height:72px;
+  margin-inline:auto;
+  padding:10px 10px 10px 18px;
+  overflow:visible;
+  grid-template-columns:8px minmax(0,1fr) 158px;
+  align-items:center;
+  gap:14px;
+  opacity:0;
+  border:1px solid var(--hairline-strong);
+  border-radius:3px;
+  background:
+    linear-gradient(96deg,color-mix(in srgb,var(--wax) 3.5%,var(--sheet)),var(--sheet) 42%),
+    var(--sheet);
+  box-shadow:4px 4px 0 var(--paper-2),4px 4px 0 1px var(--hairline);
+  transform:translateY(10px);
+  transition:opacity .32s ease,transform .42s cubic-bezier(.22,1,.36,1);
+}
+
+body .resume-card.is-rail-resume::before{
+  position:absolute;
+  top:-1px;
+  left:18px;
+  width:86px;
+  height:2px;
+  background:linear-gradient(90deg,var(--wax),color-mix(in srgb,var(--wax) 8%,transparent));
+  content:"";
+}
+
+body .resume-card.is-rail-resume.is-visible{
+  opacity:1;
+  transform:none;
+}
+
+body .resume-card.is-rail-resume::after{
+  display:none;
+}
+
+body .resume-card__folio{
+  position:relative;
+  width:7px;
+  height:34px;
+  border-left:1px solid var(--wax);
+}
+
+body .resume-card__folio::after{
+  position:absolute;
+  top:0;
+  left:-3px;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--wax);
+  content:"";
+}
+
+body .resume-card__copy{
+  display:grid;
+  min-width:0;
+  gap:6px;
+}
+
+body .resume-card__kicker{
+  color:var(--ink-faint);
+  font:650 8px/1 var(--mono);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+body .resume-card.is-rail-resume .resume-card__message{
+  display:flex;
+  min-width:0;
+  align-items:baseline;
+  gap:10px;
+  margin:0;
+  overflow:hidden;
+  color:var(--ink-soft);
+  font-size:10.5px;
+  line-height:1.25;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+body .resume-card.is-rail-resume .resume-card__message strong{
+  color:var(--ink);
+  font:650 15px/1.18 var(--sans);
+  letter-spacing:-.02em;
+}
+
+body .resume-card__detail{
+  color:var(--ink-soft);
+  font:500 10.5px/1.2 var(--sans);
+  opacity:1;
+  transition:opacity .32s ease;
+}
+
+body .resume-card__action{
+  display:inline-flex!important;
+  min-height:44px;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  padding:10px 16px;
+  border:1px solid var(--wax)!important;
+  border-radius:2px;
+  color:#fffaf3!important;
+  background:var(--wax)!important;
+  box-shadow:none!important;
+  font-size:11.5px;
+  font-weight:650;
+  letter-spacing:.005em;
+  line-height:1.2;
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+body .resume-card__action:hover,
+body .resume-card__action:focus-visible{
+  border-color:var(--wax-deep)!important;
+  background:var(--wax-deep)!important;
+}
+
+body .resume-card__typed{
+  display:inline;
+}
+
+body .resume-card__typed.is-typing::after{
+  display:inline-block;
+  width:1px;
+  height:.9em;
+  margin-left:3px;
+  background:var(--wax);
+  content:"";
+  vertical-align:-.08em;
+  animation:resume-typing-caret .72s steps(1,end) infinite;
+}
+
+body .resume-card.is-typing-copy .resume-card__detail{
+  opacity:0;
+}
+
+@keyframes resume-typing-caret{
+  0%,46%{opacity:1}
+  47%,100%{opacity:0}
+}
+
+@media screen and (min-width:921px){
+  :root.has-resume-rail .lrail{
+    right:auto;
+    bottom:14px;
+    left:50%;
+    width:min(1030px,calc(100vw - 40px));
+    align-items:center;
+    transform:translateX(-50%);
+  }
+}
+
+@media screen and (max-width:920px){
+  :root.has-resume-rail .mobile-dock{
+    pointer-events:none;
+    visibility:hidden;
+    transform:translateY(100%);
+  }
+
+  :root.has-resume-rail .lrail{
+    right:10px;
+    bottom:max(10px,env(safe-area-inset-bottom));
+    left:10px;
+    width:auto;
+    transform:none;
+  }
+
+  body .resume-card.is-rail-resume{
+    width:100%;
+    max-width:none;
+    min-height:0;
+    padding:9px 8px 9px 11px;
+    grid-template-columns:7px minmax(0,1fr) 44px;
+    gap:8px;
+    border-radius:3px;
+  }
+
+  body .resume-card__folio{
+    width:6px;
+    height:30px;
+  }
+
+  body .resume-card.is-rail-resume .resume-card__message{
+    display:grid;
+    gap:2px;
+    font-size:9px;
+    white-space:normal;
+  }
+
+  body .resume-card.is-rail-resume .resume-card__message strong{
+    font-size:12.5px;
+  }
+
+  body .resume-card__kicker{
+    display:none;
+  }
+
+  body .resume-card__detail{
+    font-size:9px;
+  }
+
+  body .resume-card__action{
+    width:44px;
+    min-height:44px;
+    padding:0;
+    font-size:15px;
+  }
+
+  body .resume-card__action-label{
+    position:absolute!important;
+    width:1px;
+    height:1px;
+    margin:-1px;
+    padding:0;
+    overflow:hidden;
+    border:0;
+    clip:rect(0 0 0 0);
+    clip-path:inset(50%);
+    white-space:nowrap;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  body .resume-card.is-rail-resume{
+    transition:none;
+  }
+
+  body .resume-card__typed.is-typing::after{
+    animation:none;
+  }
+}
+
+@media(max-width:920px){
+  /* Пока человек выбирает настройки приватности, у экрана может быть только
+     одна нижняя панель. Иначе док заявки физически перекрывает обе кнопки. */
+  :root.has-consent-bar .concept-task-bar{
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(calc(100% + 24px));
+  }
+
+  body .lrail .cookiebar.is-confirmed{
+    display:grid;
+    width:min(100%,520px);
+    align-self:flex-end;
+    padding:10px 11px;
+    grid-template-columns:minmax(0,1fr) 42px;
+    grid-template-areas:
+      "head actions"
+      "copy actions";
+    column-gap:10px;
+    row-gap:3px;
+    border-radius:2px;
+    box-shadow:3px 3px 0 var(--paper-2),3px 3px 0 1px var(--hairline);
+  }
+
+  body .lrail .cookiebar.is-confirmed .cb-head{
+    grid-area:head;
+    margin:0;
+  }
+
+  body .lrail .cookiebar.is-confirmed h2{
+    font-size:16px;
+  }
+
+  body .lrail .cookiebar.is-confirmed>p{
+    grid-area:copy;
+    margin:0;
+    font-size:11px;
+    line-height:1.32;
+  }
+
+  body .lrail .cookiebar.is-confirmed .cb-actions{
+    display:block;
+    grid-area:actions;
+  }
+
+  body .lrail .cookiebar.is-confirmed .cb-confirmation{
+    width:42px;
+    min-height:42px;
+    padding:0;
+    border:0;
+    font-size:0;
+  }
+
+  body .lrail .cookiebar.is-confirmed .cb-confirmation>span{
+    width:26px;
+    height:26px;
+    font-size:14px;
+  }
+}
+
+/* Свёрнутый ввод не должен оставлять под собой половину пустого экрана.
+   При раскрытии правило перестаёт действовать: увеличенная форма сохраняет
+   уже выверенный минимальный отступ до следующего раздела. */
+@media screen and (min-width:921px){
+  html.has-js .home-case .case-hero__inner{
+    transition:min-height .38s cubic-bezier(.22,1,.36,1),padding-bottom .3s ease;
+  }
+
+  html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]):has(.case-prompt[data-prompt-expanded="false"]){
+    min-height:410px;
+    padding-bottom:18px;
+  }
+
+  html.has-js .home-case .case-hero:has(.case-prompt[data-prompt-expanded="false"]) + .case-ecosystem{
+    padding-top:64px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  html.has-js .home-case .case-hero__inner{
+    transition:none;
+  }
+}
+/* purgecss end ignore */
+
+/* Мобильное продолжение стеклянной шапки. Цвет не задан отдельной
+   плашкой: аппбар размывает именно ту секцию, над которой находится. */
+@media screen and (max-width:920px){
+  body .mobile-appbar,
+  body .mobile-appbar--root{
+    border-bottom-color:color-mix(in srgb,var(--hairline-strong) 58%,transparent);
+    background:color-mix(in srgb,var(--paper) 46%,transparent)!important;
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb,#fff 30%,transparent),
+      0 14px 36px -32px color-mix(in srgb,var(--ink) 48%,transparent);
+    -webkit-backdrop-filter:blur(20px) saturate(1.28);
+    backdrop-filter:blur(20px) saturate(1.28);
+  }
+
+  @supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+    body .mobile-appbar,
+    body .mobile-appbar--root{
+      background:color-mix(in srgb,var(--paper) 14%,transparent)!important;
+    }
+  }
+
+  body .mobile-appbar__help,
+  body .mobile-appbar__menu,
+  body .mobile-appbar__back{
+    border-radius:10px;
+  }
+
+  body .mobile-appbar__help:hover,
+  body .mobile-appbar__menu:hover,
+  body .mobile-appbar__back:hover{
+    background:color-mix(in srgb,var(--sheet) 36%,transparent);
+  }
+}
+
+/* ==========================================================================
+   RELEASE 82 · мобильная шапка и компактный footer-аккордеон
+   ========================================================================== */
+@media screen and (max-width:920px){
+  body .mobile-appbar,
+  body .mobile-appbar--root{
+    grid-template-columns:44px minmax(0,1fr) 44px 44px;
+    gap:2px;
+    padding-right:max(10px,env(safe-area-inset-right));
+    padding-left:max(10px,env(safe-area-inset-left));
+  }
+
+  body .mobile-appbar--root{
+    grid-template-columns:minmax(0,1fr) 44px 44px;
+  }
+
+  body .mobile-appbar__help,
+  body .mobile-appbar__menu,
+  body .mobile-appbar__back{
+    width:44px;
+    min-width:44px;
+    min-height:44px;
+  }
+
+  body .mobile-appbar__menu{
+    justify-content:center;
+    gap:0;
+  }
+
+  body .mobile-appbar__menu>span{
+    position:absolute!important;
+    width:1px;
+    height:1px;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+    clip-path:inset(50%);
+    white-space:nowrap;
+  }
+
+  body .mobile-appbar__menu::after{display:none}
+  body .mobile-appbar__menu i,
+  body .mobile-appbar__menu i::before,
+  body .mobile-appbar__menu i::after{width:18px}
+
+  :root[data-theme="dark"] body .mobile-appbar,
+  :root[data-theme="dark"] body .mobile-appbar--root{
+    background:color-mix(in srgb,var(--paper) 14%,transparent)!important;
+  }
+
+  body .site-footer__main{
+    display:block;
+    padding:32px max(18px,env(safe-area-inset-left)) 14px;
+  }
+
+  body .site-footer__brand{
+    display:grid;
+    grid-template-columns:42px minmax(0,1fr);
+    gap:13px;
+    margin-bottom:20px;
+  }
+
+  body .site-footer__brand .brand__mark{
+    width:42px;
+    height:42px;
+    flex-basis:42px;
+  }
+
+  body .site-footer__brand strong{font-size:16px}
+  body .site-footer__brand p{
+    max-width:30ch;
+    margin-top:5px;
+    font-size:12px;
+  }
+
+  body .site-footer__brand-actions{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    margin-top:4px;
+  }
+
+  body .site-footer__brand-actions a{
+    min-height:44px;
+    justify-content:center;
+    padding:8px 10px;
+    border:1px solid #4a443b;
+    border-radius:3px;
+    font-size:11.5px;
+    text-align:center;
+  }
+
+  body .site-footer__brand-actions a:first-child{
+    color:#fff8ef;
+    border-color:var(--wax);
+    background:var(--wax);
+  }
+
+  body .site-footer__group{
+    display:block!important;
+    border-top:1px solid #36332d;
+  }
+
+  body .site-footer__group:last-child{border-bottom:1px solid #36332d}
+
+  body .site-footer__group>summary{
+    display:flex;
+    min-height:48px;
+    align-items:center;
+    color:#f0e9dc;
+    cursor:pointer;
+    font:520 14px/1.2 var(--serif);
+  }
+
+  body .site-footer__group>summary i{
+    position:relative;
+    display:block;
+    width:16px;
+    height:16px;
+  }
+
+  body .site-footer__group>summary i::before,
+  body .site-footer__group>summary i::after{
+    position:absolute;
+    top:7px;
+    left:3px;
+    width:10px;
+    height:1px;
+    background:#bdb3a4;
+    content:"";
+    transition:transform .18s ease;
+  }
+
+  body .site-footer__group>summary i::after{transform:rotate(90deg)}
+  body .site-footer__group[open]>summary i::after{transform:rotate(0)}
+
+  body .site-footer__links{
+    display:grid!important;
+    padding:0 0 8px;
+  }
+
+  body .site-footer__group:not([open])>.site-footer__links{display:none!important}
+
+  body .site-footer__links a,
+  body.home-flow-page .site-footer__links a{
+    display:flex;
+    min-height:44px;
+    align-items:center;
+    color:#b4ab9d;
+    font-size:12.5px;
+  }
+
+  body .site-footer__bottom{
+    display:grid;
+    min-height:0;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:8px 14px;
+    align-items:center;
+    padding:16px max(18px,env(safe-area-inset-left)) 18px;
+    font-size:10.5px;
+    line-height:1.45;
+    letter-spacing:.02em;
+    text-transform:none;
+  }
+
+  body .site-footer__copyright,
+  body .site-footer__promise{
+    grid-column:1/-1;
+  }
+
+  body .site-footer__promise{color:#c8beae}
+
+  body .site-footer__legal{
+    display:flex;
+    min-width:0;
+    flex-wrap:wrap;
+    gap:0 14px;
+  }
+
+  body .site-footer__legal a{
+    display:inline-flex;
+    min-height:44px;
+    align-items:center;
+  }
+
+  body .site-footer__bottom .theme-toggle{
+    display:inline-flex;
+    width:44px;
+    min-width:44px;
+    min-height:44px;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    color:#d2c8b9;
+    border:1px solid #403b34;
+    border-radius:50%;
+  }
+}
+
+@media screen and (max-width:360px){
+  body .site-footer__brand-actions{grid-template-columns:1fr}
+  body .site-footer__bottom{grid-template-columns:1fr}
+  body .site-footer__bottom .theme-toggle{justify-content:flex-start}
+}
+
+/* RELEASE 82 · плашка приватности не перекрывает форму и футер.
+   Высоту рельса измеряет app.js; запас используется лишь пока открыт выбор. */
+@media screen and (max-width:920px){
+  :root.has-consent-bar body,
+  :root.has-consent-bar body.home-flow-page{
+    padding-bottom:calc(var(--lrail-h,220px) + 22px + env(safe-area-inset-bottom))!important;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar{
+    background:var(--sheet);
+    border-color:var(--hairline-strong);
+    box-shadow:0 18px 50px rgba(30,22,16,.24);
+  }
+
+  :root[data-theme="dark"].has-consent-bar body .lrail .cookiebar{
+    background:#1d1914;
+    border-color:#4b4338;
+    box-shadow:0 22px 58px rgba(0,0,0,.58);
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar .cb-actions .btn-wax{
+    color:var(--ink);
+    background:color-mix(in srgb,var(--sheet) 76%,var(--wax) 24%);
+    border-color:color-mix(in srgb,var(--hairline-strong) 70%,var(--wax));
+  }
+}
+
+/* RELEASE 97 · финальная геометрия mobile appbar */
+@media screen and (min-width:621px) and (max-width:920px){
+  body .mobile-appbar__brand{min-height:44px}
+}
+
+@media screen and (max-width:350px){
+  body .mobile-appbar{grid-template-columns:44px minmax(0,1fr) 44px}
+  body .mobile-appbar--root{grid-template-columns:minmax(0,1fr) 44px}
 }

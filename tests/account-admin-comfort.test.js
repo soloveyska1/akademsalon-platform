@@ -16,13 +16,14 @@ const adminCss = read('assets/css/polish15-admin.css');
 test('account home is a compact command centre with a dedicated full register', () => {
   assert.match(cabinetJs, /function ordersRegister\(mode, compact\)/);
   assert.match(cabinetJs, /ordersRegister\('', true\)/);
-  assert.match(cabinetJs, /class="account-command-grid"/);
+  assert.match(cabinetJs, /class="account-home-focus/);
+  assert.match(cabinetJs, /class="account-home-tools reveal"/);
   assert.match(cabinetJs, /class="account-nav__group"/);
   assert.match(cabinetJs, /\['help', 'Помощь'/);
   assert.match(cabinetJs, /\['settings', 'Настройки'/);
   assert.match(cabinetJs, /needsAction\(o\)/);
   assert.match(accountCss, /\.account-orders--home \.order-list/);
-  assert.match(accountCss, /\.account-command-grid__aside/);
+  assert.match(accountCss, /\.account-home-focus__agenda/);
   assert.match(dashboardHtml, /class="workspace-skip-link"/);
 });
 

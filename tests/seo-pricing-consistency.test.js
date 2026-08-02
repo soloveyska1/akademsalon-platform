@@ -51,7 +51,7 @@ test('canonical pricing source contains every primary service type', () => {
 test('primary landing pages show the canonical entry price and preserve schema bounds', () => {
   const prices = canonicalPrices();
   const finalFaq = [
-    'Можно сначала заказать только диагностику?',
+    'Можно сначала заказать только письменный разбор?',
     'Вы работаете без методички?',
     'Как передаются правки?',
     'Что происходит, если срок меняется?'
@@ -83,13 +83,13 @@ test('article and short-text CTAs open the advertised editing tier', () => {
 test('format comparison preserves the final three choices and truthful entry price', () => {
   const html = read('vedenie.html');
   const operations = read('assets/js/polish15-operations.js');
-  for (const format of ['Диагностика', 'Редакторский этап', 'Сопровождение']) {
+  for (const format of ['Письменный разбор', 'Редакторский этап', 'Сопровождение']) {
     assert.match(html, new RegExp(`data-start-format="${format}"`));
   }
   assert.match(html, /от 2 500 ₽/);
   assert.match(html, /по объёму задачи/);
   assert.match(html, /поэтапная смета/);
-  assert.match(operations, /value === 'Диагностика' \? 'base'/);
+  assert.match(operations, /value === 'Письменный разбор' \|\| value === 'Диагностика' \? 'base'/);
   assert.match(operations, /value === 'Сопровождение' \? 'vip' : 'turn'/);
   assert.match(operations, /configurator\.html\?tier=/);
   assert.doesNotMatch(html, /fallbackPrices\s*=\s*\{/);

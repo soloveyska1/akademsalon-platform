@@ -33,10 +33,22 @@
 .cookiebar>p{font-size:13px;line-height:1.52;color:var(--ink-soft);margin:0 0 13px}
 .cb-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .cb-actions .btn{width:100%;min-height:42px;padding:8px 10px;font-size:12.5px;line-height:1.25}
+.cb-confirmation{
+  grid-column:1/-1;display:flex;min-height:42px;align-items:center;justify-content:center;gap:8px;
+  color:var(--ink);border:1px solid color-mix(in srgb,var(--wax) 40%,var(--hairline));
+  background:color-mix(in srgb,var(--wax-soft) 52%,var(--sheet));
+  font:600 12px/1.2 var(--sans);letter-spacing:.04em
+}
+.cb-confirmation>span{
+  display:grid;width:20px;height:20px;place-items:center;border-radius:50%;
+  color:var(--sheet);background:var(--wax);font-size:12px
+}
+.cookiebar.is-confirmed{pointer-events:none}
 .cb-foot{
   display:grid;grid-template-columns:max-content max-content minmax(0,1fr);align-items:center;
   column-gap:15px;margin-top:11px;padding-top:10px;border-top:1px solid var(--hairline)
 }
+.cb-foot[hidden]{display:none!important}
 .cookiebar .cb-more{
   appearance:none;background:none;border:0;border-bottom:1px solid var(--hairline-strong);
   position:relative;justify-self:start;padding:0 0 2px;cursor:pointer;
@@ -206,6 +218,54 @@
 .helpfab:hover .hf-t b{color:var(--wax)}
 @media(max-width:920px){.helpfab{left:10px;bottom:86px}}
 @media print{.helpfab,.cookiebar,.tour-veil,.tour-card{display:none!important}}
+
+/* После выбора большая форма согласия превращается в короткую квитанцию.
+   Она остаётся в месте действия, но больше не перекрывает весь низ страницы. */
+@media(min-width:921px){
+  :root.has-consent-bar body .lrail .cookiebar.is-confirmed{
+    width:min(720px,calc(100vw - 48px));
+    max-width:720px;
+    align-self:flex-end;
+    padding:12px 14px;
+    grid-template-columns:minmax(180px,.72fr) minmax(260px,1fr) 112px;
+    grid-template-areas:"head copy actions";
+    column-gap:16px;
+    border-radius:2px;
+    box-shadow:4px 4px 0 var(--paper-2),4px 4px 0 1px var(--hairline);
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar.is-confirmed .cb-head{
+    grid-area:head;
+    margin:0;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar.is-confirmed .cb-kicker{
+    display:block;
+    margin-bottom:3px;
+    color:var(--wax);
+    font-size:8px;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar.is-confirmed h2{
+    font-size:18px;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar.is-confirmed>p{
+    grid-area:copy;
+    margin:0;
+    font-size:12px;
+    line-height:1.38;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar.is-confirmed .cb-actions{
+    grid-area:actions;
+    display:block;
+  }
+
+  :root.has-consent-bar body .lrail .cookiebar.is-confirmed .cb-confirmation{
+    min-height:42px;
+  }
+}
 
 /* ---------------- Диалог (подтверждения, формы причин) ---------------- */
 .sdlg{position:fixed;inset:0;z-index:270;display:flex;align-items:center;justify-content:center;padding:16px;

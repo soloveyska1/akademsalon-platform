@@ -15,6 +15,9 @@ const cssSources = [
   'assets/css/home-intro.css',
   'assets/css/home-ecosystem.css',
   'assets/css/mobile.css',
+  'assets/css/home-story.css',
+  'assets/css/home-guided.css',
+  'assets/css/home-guided-flow.css',
 ];
 const jsSources = [
   'assets/js/app.js',
@@ -22,6 +25,7 @@ const jsSources = [
   'assets/js/extras.js',
   'assets/js/home-intro.js',
   'assets/js/home-ecosystem.js',
+  'assets/js/home-guided-flow.js',
 ];
 const esbuildVersion = '0.28.1';
 const purgeCssVersion = '7.0.2';

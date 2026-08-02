@@ -2112,13 +2112,15 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
   padding:0;
   border:0;
   border-bottom:1px solid transparent;
-  background:rgba(243,238,228,.76);
+  /* Не отдельная полоса поверх страницы, а матовое стекло: оттенок берёт
+     от текущего листа под собой, но навигация остаётся читаемой. */
+  background:color-mix(in srgb,var(--sheet) 18%,transparent);
   box-shadow:none;
   transition:background-color .2s ease,border-color .2s ease,box-shadow .2s ease;
   -webkit-backdrop-filter:blur(18px) saturate(1.1);
   backdrop-filter:blur(18px) saturate(1.1);
 }
-:root[data-theme="dark"] .site-header{background:rgba(23,23,20,.82)}
+:root[data-theme="dark"] .site-header{background:rgba(17,15,12,.24)}
 .site-header::after{content:none!important;display:none!important}
 .site-header::before{
   position:absolute;
@@ -2130,9 +2132,12 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
 }
 .site-header.scrolled,
 .site-header.is-scrolled{
+  background:color-mix(in srgb,var(--sheet) 68%,transparent);
   border-bottom-color:color-mix(in srgb,var(--header-line) 60%,transparent);
   box-shadow:0 12px 38px rgba(42,34,23,.06);
 }
+:root[data-theme="dark"] .site-header.scrolled,
+:root[data-theme="dark"] .site-header.is-scrolled{background:rgba(17,15,12,.72)}
 .site-header__inner{
   display:flex;
   width:min(100%,calc(1320px + clamp(24px,4.25vw,72px) * 2));
@@ -2170,12 +2175,42 @@ html[data-motion="off"] .motion-loader i{animation:none!important;opacity:.65!im
 }
 .site-header .brand__name .b-short{display:none}
 .site-header .brand__name small{
+  position:relative;
+  display:block;
+  min-width:184px;
+  min-height:13px;
   margin-top:3px;
   color:var(--header-quiet);
   font:600 9px/1.2 var(--mono);
   letter-spacing:.12em;
   text-transform:uppercase;
   white-space:nowrap;
+}
+.site-header .brand__motto-default,
+.site-header .brand__motto-hover{
+  position:absolute;
+  top:0;
+  left:0;
+  display:block;
+  white-space:nowrap;
+  transition:clip-path .32s cubic-bezier(.65,0,.35,1),opacity .24s ease;
+}
+.site-header .brand__motto-hover{
+  color:var(--story-red,#a63f29);
+  font:italic 520 12px/1.05 var(--serif);
+  letter-spacing:-.025em;
+  opacity:0;
+  clip-path:inset(0 100% 0 0);
+}
+.site-header .brand:hover .brand__motto-default,
+.site-header .brand:focus-visible .brand__motto-default{
+  opacity:0;
+  clip-path:inset(0 0 0 100%);
+}
+.site-header .brand:hover .brand__motto-hover,
+.site-header .brand:focus-visible .brand__motto-hover{
+  opacity:1;
+  clip-path:inset(0 0 0 0);
 }
 /* Никогда не обводим весь логотип прямоугольником: браузер может считать
    программно восстановленный фокус ``focus-visible`` даже после указателя.
@@ -2302,7 +2337,8 @@ html[data-input-modality="keyboard"] .site-header .brand:focus-visible .brand__n
   line-height:1;
 }
 .site-header .nav-cab .nc-badge[hidden]{display:none}
-.site-header .header-theme-toggle{
+.site-header .header-theme-toggle,
+.site-header .theme-toggle{
   display:grid;
   width:38px;
   height:38px;
@@ -2316,7 +2352,8 @@ html[data-input-modality="keyboard"] .site-header .brand:focus-visible .brand__n
   border-radius:50%;
   font:500 17px/1 var(--serif);
 }
-.site-header .header-theme-toggle:hover{
+.site-header .header-theme-toggle:hover,
+.site-header .theme-toggle:hover{
   color:var(--ink);
   background:var(--paper);
   border-color:var(--header-line);

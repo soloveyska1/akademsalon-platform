@@ -3,113 +3,263 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>О мастерской, редакции и авторах | Академический Салон</title>
-<meta name="description" content="Кто отвечает за Академический Салон, как устроены редакционная работа, проверка материалов, исправления и границы допустимой академической помощи." />
+<title>О редакции и экспертном подходе | Академический Салон</title>
+<meta name="description" content="Как редакция Академического Салона соединяет предметную экспертизу, методологию, работу с данными и научную редактуру." />
 <link rel="canonical" href="https://akademsalon.ru/about.html" />
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260724seo2" />
-<link rel="stylesheet" href="assets/css/styles.css?v=20260726release33" />
-<link rel="stylesheet" href="assets/css/chrome.css?v=20260726release33" />
-<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260726release33" />
-<link rel="stylesheet" href="assets/css/polish15-supporting.css?v=20260726release33" />
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=20260802release97" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20260802release97" />
+<link rel="stylesheet" href="assets/css/chrome.css?v=20260802release97" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260802release97" />
+<link rel="stylesheet" href="assets/css/polish15-supporting.css?v=20260802release97" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="icon" type="image/png" sizes="120x120" href="assets/img/favicon-120.png" />
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-<meta name="theme-color" content="#F6F1E7" />
+<meta name="theme-color" content="#F4EDE2" />
 <meta name="robots" content="index,follow" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Академический Салон" />
 <meta property="og:locale" content="ru_RU" />
-<meta property="og:title" content="О мастерской, редакции и авторах" />
-<meta property="og:description" content="Кто отвечает за материалы, как принимаются редакционные решения и исправляются ошибки." />
+<meta property="og:title" content="О редакции и экспертном подходе — Академический Салон" />
+<meta property="og:description" content="Предметная экспертиза, методология, данные и редактура — единый стандарт работы со сложными исследованиями." />
 <meta property="og:url" content="https://akademsalon.ru/about.html" />
 <meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v3.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="О мастерской и редакции" />
-<meta name="twitter:description" content="Ответственный издатель, редакционный процесс, источники и исправления." />
+<meta name="twitter:title" content="О редакции Академического Салона" />
+<meta name="twitter:description" content="Как мы собираем экспертизу вокруг исследовательской задачи и проверяем логику работы." />
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v3.png" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
-<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
-<link rel="stylesheet" href="assets/css/mobile.css?v=20260726release33" media="screen and (max-width:920px)" data-mobile-edition="1" />
+<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark"){document.documentElement.setAttribute("data-theme","dark");document.querySelector('meta[name="theme-color"]').setAttribute("content","#050505");}}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/css/mobile.css?v=20260802release97" media="screen and (max-width:920px)" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/about-rebuild.css?v=20260802release97" />
 </head>
-<body class="polish15-supporting about-route">
-<main id="main" class="about-page">
-  <div class="page-shell">
-    <header class="page-head">
-      <div class="page-head__copy">
-        <p class="eyebrow">О мастерской</p>
-        <h1>Кто отвечает за работу и материалы.</h1>
-        <p class="page-head__lead">Мы работаем с материалом автора: проверяем структуру и оформление, разбираем замечания, редактируем текст и помогаем подготовиться к защите.</p>
-      </div>
-    </header>
+<body class="polish15-supporting about-route about-rebuild-route">
+<a class="skip-link" href="#main">К содержанию</a>
 
-    <section class="about-manifesto">
-      <div class="about-manifesto__mark">
-        <img src="bimi/logo.svg" width="160" height="160" alt="" />
-        <span aria-hidden="true">АС</span>
-      </div>
-      <div>
-        <p class="eyebrow">Наш подход</p>
-        <h2>Автор принимает содержательные решения. Редактор отвечает за согласованные правки и комментарии.</h2>
-        <p>Мы разделяем методическую консультацию, редактуру и авторскую работу. Для учебных и аттестационных материалов принимаем только задачи, при которых автор понимает и принимает итоговый текст.</p>
-      </div>
-    </section>
+<!-- Единая шапка монтируется app.js. -->
 
-    <section class="about-principles">
-      <header class="section-head">
-        <div>
-          <p class="eyebrow">Принципы</p>
-          <h2>Как принимаются решения</h2>
+<main id="main" tabindex="-1" class="about-rebuild">
+  <section class="ar-hero" aria-labelledby="aboutTitle">
+    <div class="ar-shell ar-hero__grid">
+      <div class="ar-hero__copy">
+        <p class="ar-kicker">Редакция Академического Салона</p>
+        <h1 id="aboutTitle">Сложные исследования требуют <em>нескольких видов экспертизы.</em></h1>
+        <p class="ar-hero__lead">Мы соединяем предметное понимание, исследовательскую методологию, работу с данными и научную редактуру. Так текст становится не просто аккуратным, а внутренне согласованным.</p>
+        <div class="ar-actions">
+          <a class="ar-anchor" href="#approach">Посмотреть редакторский подход <span aria-hidden="true">↓</span></a>
+          <a class="ar-text-link" href="#practice">Перейти к примерам <span aria-hidden="true">→</span></a>
         </div>
-      </header>
-      <div>
-        <article><span>01</span><h3>Сначала требования</h3><p>Методичка, задание и комментарии руководителя важнее общего шаблона.</p></article>
-        <article><span>02</span><h3>Правки видны в документе</h3><p>Существенные решения дополнительно остаются в истории дела.</p></article>
-        <article><span>03</span><h3>Разделяем работу автора и редактора</h3><p>Редактор отмечает, что может сделать сам, а где нужны данные или решение автора.</p></article>
-        <article><span>04</span><h3>Смета составляется по задачам</h3><p>В расчёт входят только согласованные результаты.</p></article>
       </div>
-    </section>
 
-    <section class="team-section">
-      <header class="section-head">
-        <div>
-          <p class="eyebrow">Ответственность</p>
-          <h2>Издатель и исполнитель</h2>
+      <aside class="ar-desk" aria-label="Редакционный контур">
+        <header><span>Редакционный контур</span><b>04 компетенции</b></header>
+        <div class="ar-desk__core">
+          <span class="ar-desk__seal" aria-hidden="true">АС</span>
+          <strong>Одна исследовательская задача</strong>
+          <small>собираем вокруг неё нужную экспертизу</small>
         </div>
-        <p>Реквизиты исполнителя опубликованы на сайте. Если в задаче участвует предметный специалист, его роль и результат указываются в спецификации.</p>
+        <ol>
+          <li><span>01</span><strong>Предметная область</strong></li>
+          <li><span>02</span><strong>Методология</strong></li>
+          <li><span>03</span><strong>Данные и источники</strong></li>
+          <li><span>04</span><strong>Научная редактура</strong></li>
+        </ol>
+        <footer>Мастерская работает с исследовательскими материалами с 2020 года.</footer>
+      </aside>
+    </div>
+  </section>
+
+  <section class="ar-approach" id="approach" aria-labelledby="approachTitle">
+    <div class="ar-shell">
+      <header class="ar-section-head">
+        <div>
+          <p class="ar-kicker">Редакторский взгляд</p>
+          <h2 id="approachTitle">Работа держится на связях, а не на объёме.</h2>
+        </div>
+        <p>Мы начинаем не с формулировок. Сначала проверяем, отвечает ли вся конструкция исследования на поставленный вопрос.</p>
       </header>
-      <div class="team-grid">
+
+      <div class="ar-logic">
+        <ol class="ar-logic__chain" aria-label="Логика исследования">
+          <li><span>01</span><strong>Вопрос</strong><small>что именно нужно выяснить</small></li>
+          <li><span>02</span><strong>Метод</strong><small>как получить обоснованный ответ</small></li>
+          <li><span>03</span><strong>Материал</strong><small>какие данные и источники допустимы</small></li>
+          <li><span>04</span><strong>Вывод</strong><small>что действительно следует из результата</small></li>
+          <li><span>05</span><strong>Защита</strong><small>как объяснить логику своими словами</small></li>
+        </ol>
+        <aside>
+          <p class="ar-kicker">Что проверяем</p>
+          <ul>
+            <li><span>↳</span> цель согласована с задачами;</li>
+            <li><span>↳</span> метод отвечает исследовательскому вопросу;</li>
+            <li><span>↳</span> выводы опираются на приведённые данные;</li>
+            <li><span>↳</span> терминология и аргументация последовательны.</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="ar-expertise" aria-labelledby="expertiseTitle">
+    <div class="ar-shell">
+      <header class="ar-section-head">
+        <div>
+          <p class="ar-kicker">Состав экспертизы</p>
+          <h2 id="expertiseTitle">Компетенции собираются вокруг задачи.</h2>
+        </div>
+        <p>В разных работах меняется предмет, но редакционный стандарт остаётся единым.</p>
+      </header>
+
+      <div class="ar-expertise__grid">
         <article>
-          <span class="team-avatar">СС</span>
-          <div><p class="eyebrow">Ответственный издатель</p><h3>Семёнов Семён Юрьевич</h3><p>Отвечает за условия сервиса, публикацию материалов, исправления и работу с обращениями.</p></div>
+          <span>01</span>
+          <h3>Предметный контекст</h3>
+          <p>Проверяем термины, логику области и то, насколько аргументы соответствуют теме.</p>
         </article>
         <article>
-          <span class="team-avatar">НПД</span>
-          <div><p class="eyebrow">Статус исполнителя</p><h3>Плательщик налога на профессиональный доход</h3><p>ИНН 212885750445 · Казань. Статус можно проверить через официальный сервис ФНС.</p></div>
+          <span>02</span>
+          <h3>Методология</h3>
+          <p>Сопоставляем вопрос, гипотезу, метод, выборку или материал исследования.</p>
         </article>
         <article>
-          <span class="team-avatar">АС</span>
-          <div><p class="eyebrow">Порядок работы</p><h3>Роли фиксируются в спецификации</h3><p>Если к работе привлекается другой специалист, его роль и результат указываются в спецификации.</p></div>
+          <span>03</span>
+          <h3>Данные и источники</h3>
+          <p>Отделяем проверяемое основание от предположения, лишнего расчёта или устаревшей нормы.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Научная редактура</h3>
+          <p>Собираем ясный текст, в котором структура, доказательства и выводы не противоречат друг другу.</p>
         </article>
       </div>
-    </section>
+      <p class="ar-expertise__note">Если задаче нужна узкая предметная проверка, её роль и границы определяются отдельно — ответственность за итог не растворяется между участниками.</p>
+    </div>
+  </section>
 
-    <section class="about-history">
-      <div><p class="eyebrow">Редакционный стандарт</p><h2>Как создаются и проверяются материалы.</h2></div>
-      <ol>
-        <li><span>01</span><p>Определяем практический вопрос, на который должен ответить материал.</p></li>
-        <li><span>02</span><p>Отделяем общее правило от требований конкретного вуза или издания.</p></li>
-        <li><span>03</span><p>Значимые факты сверяем по первичным источникам.</p></li>
-        <li><span>04</span><p>При фактической ошибке обновляем материал и дату проверки.</p></li>
+  <section class="ar-works" id="practice" aria-labelledby="worksTitle">
+    <div class="ar-shell">
+      <header class="ar-section-head">
+        <div>
+          <p class="ar-kicker">Из практики мастерской</p>
+          <h2 id="worksTitle">Три темы. Один способ собирать исследование.</h2>
+        </div>
+        <p>Фрагменты реконструированы специально для сайта. Названия организаций, участники и исходные значения скрыты.</p>
+      </header>
+
+      <div class="ar-work-grid">
+        <article class="ar-work ar-work--wide">
+          <header>
+            <span>01</span>
+            <div>
+              <p>Психология · эмпирическое исследование</p>
+              <h3>Особенности сотрудников розничной торговли</h3>
+            </div>
+          </header>
+          <div class="ar-work__body">
+            <div class="ar-work__brief">
+              <div><small>Исследовательская задача</small><p>Сопоставить две группы и проверить связи между психологическими показателями.</p></div>
+              <div><small>Редакторский фокус</small><p>Связать каждую гипотезу с методом проверки, а статистический результат — с конкретным выводом.</p></div>
+            </div>
+            <div class="ar-work__route" aria-label="Логика психологического исследования">
+              <span>две группы</span><i>×</i><span>пять методик</span><i>→</i><span>сравнение и связи</span><i>→</i><strong>выводы по гипотезам</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="ar-work">
+          <header>
+            <span>02</span>
+            <div>
+              <p>Право · аналитическая работа</p>
+              <h3>Таможенное регулирование позиции 8711</h3>
+            </div>
+          </header>
+          <div class="ar-work__body">
+            <div class="ar-work__brief">
+              <div><small>Редакторский фокус</small><p>Построить аргументацию от классификации товара к требованиям, контролю и предложениям.</p></div>
+            </div>
+            <ol class="ar-work__steps">
+              <li><span>01</span>Классификация</li>
+              <li><span>02</span>Платежи и требования</li>
+              <li><span>03</span>Операции и контроль</li>
+              <li><span>04</span>Проблемы и предложения</li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="ar-work">
+          <header>
+            <span>03</span>
+            <div>
+              <p>Психология · прикладная программа</p>
+              <h3>Школьная тревожность и адаптация подростков</h3>
+            </div>
+          </header>
+          <div class="ar-work__body">
+            <div class="ar-work__brief">
+              <div><small>Редакторский фокус</small><p>Показать, как практическая программа вытекает из диагностики, а не добавляется формально.</p></div>
+            </div>
+            <div class="ar-program-route">
+              <span><b>01</b>Диагностика</span>
+              <i>→</i>
+              <span><b>02</b>Анализ</span>
+              <i>→</i>
+              <strong><b>03</b>Программа занятий</strong>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="ar-editorial" id="editorial" aria-labelledby="editorialTitle">
+    <div class="ar-shell ar-editorial__grid">
+      <div>
+        <p class="ar-kicker">Открытая редакция</p>
+        <h2 id="editorialTitle">Экспертный подход виден и в материалах библиотеки.</h2>
+        <p>Публичные руководства — это открытая часть редакционной работы. В них мы отделяем общее правило от требований конкретного вуза или издания и указываем дату проверки.</p>
+        <a class="ar-text-link" href="/knowledge.html">Открыть библиотеку <span aria-hidden="true">→</span></a>
+      </div>
+      <ol class="ar-editorial__ledger">
+        <li><span>01</span><div><strong>Основание</strong><p>Значимые утверждения сверяем с первичными и официальными источниками.</p></div></li>
+        <li><span>02</span><div><strong>Контекст</strong><p>Не выдаём локальное требование за универсальное правило.</p></div></li>
+        <li><span>03</span><div><strong>Оговорки</strong><p>Отмечаем границы применимости метода, нормы или рекомендации.</p></div></li>
+        <li><span>04</span><div><strong>Обновление</strong><p>Исправляем обнаруженные неточности и обновляем дату проверки материала.</p></div></li>
       </ol>
-    </section>
-  </div>
+    </div>
+  </section>
+
+  <aside class="ar-verify" aria-label="Проверить мастерскую">
+    <div class="ar-shell ar-verify__inner">
+      <span>Проверить мастерскую</span>
+      <nav>
+        <a href="/reviews.html">Отзывы <i aria-hidden="true">↗</i></a>
+        <a href="/requisites.html">Реквизиты <i aria-hidden="true">↗</i></a>
+        <a href="/academic-integrity.html">Границы помощи <i aria-hidden="true">↗</i></a>
+      </nav>
+    </div>
+  </aside>
+
+  <section class="ar-final" aria-labelledby="aboutFinalTitle">
+    <div class="ar-shell ar-final__inner">
+      <div>
+        <p class="ar-kicker">Начать разговор</p>
+        <h2 id="aboutFinalTitle">Опишите задачу — определим, какая экспертиза ей нужна.</h2>
+      </div>
+      <div class="ar-actions">
+        <a class="button button--primary" href="/priyomnaya.html" data-cta-id="about_question_editorial">Задать вопрос редакции <span aria-hidden="true">→</span></a>
+        <a class="ar-text-link" href="/configurator.html">Описать задачу <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
 </main>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"AboutPage","@id":"https://akademsalon.ru/about.html#page","url":"https://akademsalon.ru/about.html","name":"О мастерской, редакции и авторах","description":"Кто отвечает за материалы и услуги Академического Салона, как устроены редакционная проверка и исправления.","dateModified":"2026-07-25","inLanguage":"ru","mainEntity":{"@id":"https://akademsalon.ru/#org"},"isPartOf":{"@id":"https://akademsalon.ru/#website"}},{"@type":"Organization","@id":"https://akademsalon.ru/#org","name":"Академический Салон","legalName":"Семёнов Семён Юрьевич","url":"https://akademsalon.ru/","foundingDate":"2020","taxID":"212885750445","logo":"https://akademsalon.ru/bimi/logo.svg","employee":{"@id":"https://akademsalon.ru/about.html#publisher"}},{"@type":"Person","@id":"https://akademsalon.ru/about.html#publisher","name":"Семёнов Семён Юрьевич","jobTitle":"Ответственный издатель","worksFor":{"@id":"https://akademsalon.ru/#org"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"О мастерской","item":"https://akademsalon.ru/about.html"}]}]}</script>
-<script src="assets/js/app.js?v=20260726release33"></script>
-<script defer src="assets/js/polish15-chrome.js?v=20260726release33"></script>
+<!-- Колофон и мобильная навигация монтируются app.js. -->
+
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"AboutPage","@id":"https://akademsalon.ru/about.html#page","url":"https://akademsalon.ru/about.html","name":"О редакции и экспертном подходе","description":"Как редакция Академического Салона соединяет предметную экспертизу, методологию, работу с данными и научную редактуру.","dateModified":"2026-07-27","inLanguage":"ru","mainEntity":{"@id":"https://akademsalon.ru/about.html#editorial"},"isPartOf":{"@id":"https://akademsalon.ru/#website"}},{"@type":"Organization","@id":"https://akademsalon.ru/#org","name":"Академический Салон","url":"https://akademsalon.ru/","foundingDate":"2020","logo":"https://akademsalon.ru/bimi/logo.svg","department":{"@id":"https://akademsalon.ru/about.html#editorial"}},{"@type":"Organization","@id":"https://akademsalon.ru/about.html#editorial","name":"Редакция Академического Салона","url":"https://akademsalon.ru/about.html#editorial","description":"Редакция исследовательских и методических материалов Академического Салона.","parentOrganization":{"@id":"https://akademsalon.ru/#org"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"О редакции","item":"https://akademsalon.ru/about.html"}]}]}</script>
+<script src="assets/js/app.js?v=20260802release97"></script>
+<script defer src="assets/js/polish15-chrome.js?v=20260802release97"></script>
 </body>
 </html>

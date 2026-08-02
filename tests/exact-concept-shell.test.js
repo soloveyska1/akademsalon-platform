@@ -53,7 +53,7 @@ test('общая навигация повторяет финальный кон
 test('мобильная шапка показывает название текущего раздела, как в концепте', () => {
   assert.match(app, /function mobileMeta\(\)/);
   assert.match(app, /'knowledge\.html': \['Библиотека', 'Материалы'\]/);
-  assert.match(app, /'configurator\.html': \['Новая заявка', 'Заказ'\]/);
+  assert.match(app, /'configurator\.html': \['Подбор помощи', 'Мастерская'\]/);
   assert.match(app, /mobileHeaderMeta\.title/);
   assert.match(app, /mobileHeaderMeta\.kicker/);
 });
@@ -70,7 +70,7 @@ test('главная и библиотека не возвращают блок�
 test('каталоги используют те же desktop и mobile лимиты, что финальное превью', () => {
   assert.match(knowledgeJs, /max-width: 620px/);
   assert.match(knowledgeJs, /\? 8 : 12/);
-  assert.match(read('assets/js/polish15-catalog.js'), /\? 5 : 8/);
+  assert.match(read('assets/js/polish15-catalog.js'), /\? 4 : 6/);
 });
 
 test('админка заменена новым рабочим столом, а не публичным или старым визуальным каркасом', () => {
