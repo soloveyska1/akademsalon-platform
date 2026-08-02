@@ -672,36 +672,58 @@ function initCabinet() {
   /* -------- «Сейчас важно»: одно главное действие по всем делам --------
      Кабинет сам ранжирует: оплата → решение по цене → приёмка → новое.
      Одна карточка, один сургучный CTA — никакого шума. */
+  /* now-action-contract:start */
+  function nowActionFor(o) {
+    if (!o || o.paused) return null;
+    if (o.status === 'prepay' ||
+        ((o.part_ready || o.final_ready) && (o.status === 'work' || o.status === 'fix'))) {
+      return { kind: 'payment', score: 5, jump: 'secPay', icon: 'wallet' };
+    }
+    if (o.status === 'priced') {
+      return { kind: 'price', score: 4, jump: 'secDecide', icon: 'wallet' };
+    }
+    if (o.status === 'check') {
+      return { kind: 'review', score: 3, jump: 'secDecide', icon: 'documents' };
+    }
+    if (Number(o.files_new) > 0) {
+      return { kind: 'files', score: 2, jump: 'secFiles', icon: 'documents' };
+    }
+    if (Number(o.unread) > 0) {
+      return { kind: 'message', score: 1, jump: 'secChat', icon: 'messages' };
+    }
+    return null;
+  }
+
+  function resolveNowAction(list, getDaysLeft) {
+    var best = null;
+    (list || []).forEach(function (o, index) {
+      var action = nowActionFor(o);
+      if (!action) return;
+      var rawDays = typeof getDaysLeft === 'function' ? getDaysLeft(o) : null;
+      var days = typeof rawDays === 'number' && isFinite(rawDays) ? rawDays : null;
+      if (!best || action.score > best.action.score ||
+          (action.score === best.action.score && days !== null &&
+           (best.days === null || days < best.days))) {
+        best = { order: o, action: action, days: days, index: index };
+      }
+    });
+    return best;
+  }
+  /* now-action-contract:end */
+
   function nowCard() {
     var list = activeOrders();
     if (!list.length) return '';
-    var best = null, score = 0, bestRank = 0, bestDays = Infinity;
-    list.forEach(function (o) {
-      var s = 0;
-      if (o.paused) s = 0;
-      else if (o.status === 'prepay' ||
-               ((o.part_ready || o.final_ready) && (o.status === 'work' || o.status === 'fix'))) s = 5;
-      else if (o.status === 'priced') s = 4;
-      else if (o.status === 'check') s = 3;
-      else if (o.files_new) s = 2;
-      else if (o.unread) s = 1;
-      var left = daysLeft(o);
-      var urgency = left == null ? 0 : left <= 2 ? 2 : left <= 7 ? 1.5 : left <= 14 ? .5 : 0;
-      var rank = s + urgency;
-      if (rank > bestRank || (rank === bestRank && left != null && left < bestDays)) {
-        score = s;
-        best = o;
-        bestRank = rank;
-        bestDays = left == null ? Infinity : left;
-      }
-    });
-    if (!best) return '';
-    var o = best;
+    var resolved = resolveNowAction(list, daysLeft);
+    if (!resolved) return '';
+    var o = resolved.order;
+    var action = resolved.action;
+    var score = action.score;
     var det = (st.detail && st.detail.id === o.id) ? st.detail : null;
     var due = det && det.due_now && det.due_now.amount ? det.due_now.amount : 0;
     if (!due && o.status === 'prepay') due = o.prepay_due || 0;
     var msg, sub, cta, jump;
-    if (score === 5) {
+    if (action.kind === 'payment') {
       var what = (o.final_ready && o.status !== 'prepay') ? 'Финальный пакет результата подготовлен'
         : (o.part_ready && o.status !== 'prepay') ? 'Результат части ' + o.part_ready + ' подготовлен'
         : 'Спецификация согласована';
@@ -709,8 +731,8 @@ function initCabinet() {
       sub = o.status === 'prepay'
         ? 'Мастер приступит сразу после первого платежа. Реквизиты и оплата картой — в один клик.'
         : 'Файл придёт после подтверждения оплаты этапа. Проверка и корректировки — по условиям соответствующей позиции.';
-      cta = 'Перейти к оплате'; jump = 'secPay';
-    } else if (score === 4) {
+      cta = 'Перейти к оплате'; jump = action.jump;
+    } else if (action.kind === 'price') {
       msg = 'Мастер назвал цену: <b>' + money(o.price) + ' ₽</b> — решение за вами.';
       var discountNote = o.due_total && o.price && o.due_total < o.price
         ? 'С учётом вашей скидки к оплате <b>' + money(o.due_total) + ' ₽</b>. '
@@ -718,26 +740,26 @@ function initCabinet() {
       sub = discountNote + ((o.stages_total || 1) > 1
         ? 'Платить всё сразу не нужно: старт — только первая часть, остальное по готовности. Бонусы тоже можно применить.'
         : 'Можно применить бонусы, обсудить детали в переписке или принять предложение.');
-      cta = 'Посмотреть предложение'; jump = 'secDecide';
-    } else if (score === 3) {
+      cta = 'Посмотреть предложение'; jump = action.jump;
+    } else if (action.kind === 'review') {
       var partW = (o.stages_total || 1) > 1 ? 'Результат части ' + (o.stage || 1) + ' из ' + o.stages_total : 'Результат';
       msg = partW + ' на вашей проверке.';
       sub = 'Сверьте результат с критериями позиции: примите его или запросите обоснованную корректировку.';
-      cta = 'Проверить и решить'; jump = 'secDecide';
-    } else if (score === 2) {
+      cta = 'Проверить и решить'; jump = action.jump;
+    } else if (action.kind === 'files') {
       msg = 'Новые файлы от мастерской в деле ' + esc(o.no) + '.';
       sub = 'Они уже в разделе «Документы» — и в Telegram, если он привязан.';
-      cta = 'Открыть документы'; jump = 'secFiles';
-    } else {
+      cta = 'Открыть документы'; jump = action.jump;
+    } else if (action.kind === 'message') {
       msg = 'Новое сообщение мастера по делу ' + esc(o.no) + '.';
       sub = 'Ответить можно прямо в переписке дела.';
-      cta = 'Открыть переписку'; jump = 'secChat';
-    }
+      cta = 'Открыть переписку'; jump = action.jump;
+    } else return '';
     /* лента внимания в языке эталона: тот же .account-notice, что у пауз
        и придержанных файлов внутри дела — своих компонентов не заводим */
     return '<div class="account-notice account-notice--wax account-priority reveal" data-account-priority="' + score + '">' +
       '<span class="account-notice__mark" aria-hidden="true">' +
-        accountIcon(score >= 4 ? 'wallet' : score === 1 ? 'messages' : 'documents') + '</span>' +
+        accountIcon(action.icon) + '</span>' +
       '<div><p class="account-priority__kicker">Сейчас важно · дело ' + esc(o.no) + '</p>' +
       '<strong>' + msg + '</strong><p>' + esc(shortWork(o)) + '. ' + sub + '</p></div>' +
       '<span class="account-notice__acts">' +
@@ -2892,7 +2914,7 @@ function initCabinet() {
         'data-account-priority="0"><span class="account-notice__mark" aria-hidden="true">' + accountIcon('spark') + '</span>' +
         '<div><p class="account-priority__kicker">Сейчас спокойно</p>' +
         '<strong>От вас ничего срочного не требуется.</strong>' +
-        '<p>Мастерская продолжает работу. Новое решение, файл или счёт появятся здесь первыми.</p></div>' +
+        '<p>Изменение статуса, новый файл или счёт появятся здесь первыми.</p></div>' +
         '<span class="account-notice__acts"><button type="button" class="line-link" data-tab="orders">' +
         'Посмотреть дела <span aria-hidden="true">→</span></button></span></section>';
     }
