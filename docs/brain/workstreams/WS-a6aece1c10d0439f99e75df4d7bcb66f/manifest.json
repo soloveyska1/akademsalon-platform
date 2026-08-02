@@ -1,0 +1,131 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-a6aece1c10d0439f99e75df4d7bcb66f",
+  "slug": "out-001-submit-safety",
+  "status": "active",
+  "branch": "codex/out-001-submit-safety",
+  "base_sha": "d5eb76cec58fcf7a79dd59096ae1a097a47d5a99",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-001"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/js/app.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/extras.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/home-release.min.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/catalog.json",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/contracts/ORDER-SUBMIT.json",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1003.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/OUT-001-SUBMIT-SAFETY.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-a6aece1c10d0439f99e75df4d7bcb66f/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-admin-polish15.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/configurator-submit-outcome.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/legacy-visual-cleanup.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/order-submit-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/production-smoke.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/release95-production-hardening.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "docs/brain/DECISIONS.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1002.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/ROADMAP.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "api-route:POST:/orders"
+    },
+    {
+      "access": "write",
+      "key": "contract:CON-ORDER-SUBMIT-001"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:home-release"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:order-contract"
+    },
+    {
+      "access": "read",
+      "key": "journey:OUT-001"
+    },
+    {
+      "access": "read",
+      "key": "production:bot-routing"
+    },
+    {
+      "access": "read",
+      "key": "production:cleanup"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
