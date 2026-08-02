@@ -117,3 +117,14 @@ command, version assertions and representative browser coverage. Runtime plus
 generated bundles stay in one implementation commit; if parity/browser/full
 regression is red, revert that commit as a unit. Documentation/test commits are
 independent and external state remains untouched.
+
+## Verified result
+
+- Failing-first: `c8fd314`, five red contract groups.
+- Implementation: `7e6f33a6088888ccf49dbbd81cb2a8f68c9cecc2`.
+- Proof: `E-1006`; focused 78/78, full repository 472/472, Brain 39/39,
+  reproducible home build, hard conflicts 0 and exact local browser matrix.
+- Scope stayed inside the shared contract: no redesign, production mutation,
+  OAuth, deploy or client-data access.
+- Next product slice: `OUT-005` on `services.html`; `OUT-001` remains externally
+  gated by marker/lookup/cleanup and authoritative downstream evidence.

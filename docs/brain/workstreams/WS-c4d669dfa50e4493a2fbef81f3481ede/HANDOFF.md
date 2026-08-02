@@ -1,28 +1,53 @@
 # Workstream handoff
 
 - Branch: `codex/out-003-shared-shell-contract`
-- Outcomes: `OUT-003`
-- Base: `65adc47cf31ffaa3ba9a797204d938ef866f0e14`, exact terminal
-  `origin/codex/full-reference-production` after OUT-004.
-- Goal: define one machine-readable and executable state contract for the shared
-  shell before changing header, appbar, footer, auth, theme, menu, search or
-  consent runtime.
-- Acceptance: inventory explicit route families/exceptions; cover
-  360/390/768/1024/1440, light/dark/reduced motion, anonymous/guest/authenticated,
-  menu/search/footer/consent, one intended primary CTA, ≥44 px targets, no
-  overflow/layout jump, overlay inertness and exact focus/history return.
-- Proof: failing-first `tests/shared-shell-contract.test.js`, existing shell/home
-  source and bundle-parity suites, browser matrix with G9 metadata, full product
-  regression, Brain 39/39/validate and fresh conflict scan; durable evidence
-  belongs in `E-1006`.
-- Changed: bootstrap declaration only. Runtime/CSS/HTML are read-only in revision
-  1; root is the only write-owner.
-- Unverified: current canonical has source guards but no current-HEAD runtime
-  matrix across the complete shell state space. No P0/P1 is assumed.
-- Risks/rollback: broad shared-runtime edits have maximum blast radius. Stop if a
-  runtime change lacks failing reproduction, consumer inventory, home bundle
-  parity or cache bump, or requires live OAuth/production state. Bootstrap
-  rollback is an exact commit revert; no external mutation is authorized.
-- Next: commit exactly manifest plus this handoff, run strict conflicts, then
-  perform read-only inventory and write the execution contract before any test
-  or runtime change.
+- Outcome: `OUT-003`
+- Base: `65adc47cf31ffaa3ba9a797204d938ef866f0e14`
+- Implementation: `7e6f33a6088888ccf49dbbd81cb2a8f68c9cecc2`
+- Write owner: `codex-root`; three reviewers remained read-only.
+
+## Changed
+
+- Added an executable route/state shell contract and failing-first proof.
+- Restored early saved-theme bootstrap on five routes.
+- Added the persistent consent settings path and missing ordinary-route runtime;
+  consent preferences now inert and restore all background siblings plus exact
+  opener focus.
+- Removed the duplicate public shortcut owner from admin.
+- Migrated normal-text dark CTA/badges to the existing accessible wax token.
+- Rebuilt the home CSS/JS bundles and moved every managed consumer to atomic key
+  `20260803out003shell1`.
+- Updated `UXD-0003`, roadmap/current handoff, plan and `E-1006`.
+
+## Verified
+
+- Failing-first `c8fd314`: 2/7 pass, 5/7 fail.
+- Final focused family 78/78; full repository 472/472; JS syntax pass.
+- Home rebuild byte-stable; `git diff --check` pass.
+- Brain unit suite 39/39; strict validation green.
+- Browser spine exact at 360/390/768/1024/1440; overflow 0, mobile footer 44 px,
+  AA contrast, preserved dark theme, single menu/search dialogs with exact focus
+  return, fully inert consent background and empty final console log.
+- Conflict scan hard=0; one dormant-ref overlap warning accepted by the
+  integration owner. Fresh fetch and re-scan are required before integration.
+
+## Not verified / boundary
+
+- No live OAuth/auth mutation, production submit, downstream delivery, deploy,
+  customer data or deletion.
+- Reduced motion and guest/auth shell states are source-contract proof rather
+  than live-auth browser evidence.
+- OUT-001 still needs authoritative backend/bot contract plus safe
+  marker/lookup/cleanup.
+
+## Rollback
+
+Revert implementation commit
+`7e6f33a6088888ccf49dbbd81cb2a8f68c9cecc2` as one unit; it contains runtime,
+generated bundles, consumers and matching tests. No external rollback exists.
+
+## One next step
+
+Finish the submitted→integrated manifest lifecycle on freshly fetched canonical,
+then start `OUT-005` from that exact terminal SHA with read-only services choice,
+context-handoff, SEO and mobile baseline proof.

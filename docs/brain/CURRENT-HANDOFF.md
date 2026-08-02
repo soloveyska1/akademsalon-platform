@@ -2,74 +2,74 @@
 
 ## Canonical product state
 
-- Latest bounded result: `OUT-004`, implementation
-  `4bb148af0abed033bd113249cda82fe45b60205b` on base
-  `4c43a42dfc67878d116a79feb528ca3bca4c4309`.
+- Latest bounded result: `OUT-003`, implementation
+  `7e6f33a6088888ccf49dbbd81cb2a8f68c9cecc2` on base
+  `65adc47cf31ffaa3ba9a797204d938ef866f0e14`.
 - Exact submission/integration truth lives in
-  `workstreams/WS-cf01d4d63ca2421e93288e3518298bfa/manifest.json`. A new branch
-  is allowed only when its status is `integrated`, `result_sha` is in freshly
-  fetched `origin/codex/full-reference-production`, and the worktree is clean.
+  `workstreams/WS-c4d669dfa50e4493a2fbef81f3481ede/manifest.json`. Until its
+  terminal revision is in freshly fetched `origin/codex/full-reference-production`,
+  this paragraph describes a verified task result, not remote integration.
 - Production release remains `release98-c30dbd4924b5`; no deploy, production
   submit/payment, OAuth mutation, client-data access or deletion occurred.
 
 ## What is now proved
 
-- `OUT-002`: the cabinet home shows at most one truthful next client action with
-  strict class precedence and no invented calm/paused action (`E-1004`).
-- `OUT-004`: one fail-closed case context now drives summary/detail payment,
-  priority, overview, bands, destination, ledger and live refresh. Unknown data
-  cannot ask for payment; claimed/paused/terminal states block online, deposit
-  and transfer-mark mutations before API calls (`E-1005`).
-- OUT-004 proof: 2,304-state matrix; focused 36/36; repository 465/465; Brain
-  39/39; 390×844 light/dark runtime scenarios with one 44 px action, no overflow,
-  exact return focus, AA contrast and zero top-level console errors.
-- Main/home, current header/footer, cabinet and local frontend submit have no
-  reproduced P0/P1. This is not a production-visual or downstream-delivery claim.
+- `OUT-002` and `OUT-004`: cabinet priority and active-case payment/context are
+  fail-closed, locally verified and integrated (`E-1004`, `E-1005`).
+- `OUT-003`: all 92 root documents resolve to an explicit shell family; saved
+  theme, menu/search focus return, consent modal/background, persistent settings,
+  admin shortcut ownership, dark CTA/badge contrast and direct/home cache parity
+  are frozen by an executable contract (`E-1006`).
+- OUT-003 proof: focused 78/78; repository 472/472; Brain 39/39; exact local
+  360/390/768/1024/1440 spine with no overflow, 44 px mobile footer action, AA
+  contrast, inert consent background and empty final console log.
+- Main/home, shared header/appbar/footer and integrated cabinet slices have no
+  reproduced P0/P1. This is not a production visual, live-auth or downstream
+  delivery claim.
 
 ## Project Brain and council
 
-- Tracked Markdown under `docs/brain/` remains the sole durable truth; SQLite
-  and `.brain/council/` are ignored projections/reports. Chat is not current
-  truth.
+- Tracked Markdown under `docs/brain/` is durable truth. SQLite and
+  `.brain/council/` are ignored projections/reports; chat is not current truth.
 - Workstream manifests reserve exact/semantic scope, freeze `result_sha`, and
   require fresh fetch plus ancestry-gated integration. Brain unit suite is
-  39/39 and corpus validation is green.
-- Doctor and live probe from the OUT-004 worktree returned Kimi, Sonnet, GLM,
-  Opus and Fable READY. Kimi/GLM use portable remote credentials, Claude models
-  use the global subscription session; local LLM is disabled and no background
-  council service runs.
-- Daily Kimi/Sonnet/GLM and one Opus review were used. Fable stayed
-  connectivity-only because no systemic deadlock existed. Reproducible findings
-  became tests; model-only claims did not close gates.
+  39/39 and strict corpus validation is green.
+- Worktree doctor/probe returned Kimi, Sonnet, GLM, Opus and Fable `READY`;
+  `local_llm: DISABLED`, `background_services: NONE`. Daily independent review
+  used Kimi+Sonnet+GLM and one Opus contract review. Fable stayed probe-only
+  because there was no systemic deadlock.
+- Three read-only Codex agents independently audited topology, UX/mobile/dark and
+  QA/accessibility/reliability; root was the sole write-owner.
 
 ## Remaining limits
 
-- `OUT-001` downstream frontend → API → bot/operator → cabinet exactly-once proof
-  remains the largest functional gap. Repository evidence lacks authoritative
-  backend/bot code, idempotency/TTL/outbox contract and safe marker/lookup/cleanup;
-  do not substitute a production mutation or UI-only success.
-- Backend atomic case revision/schema remains unknown. OUT-004 deliberately
-  fails closed rather than guessing it.
-- `UXD-0003` is still planned: shared shell has broad runtime reach but no one
-  machine-readable state matrix. No shell P0/P1 is currently reproduced.
+- `OUT-001` frontend → API → bot/operator → cabinet exactly-once proof is still
+  the largest functional gap. Authoritative backend/bot source plus safe
+  marker/lookup/cleanup are absent; do not substitute a production mutation or
+  UI-only success.
+- Backend atomic case revision/schema remains unknown; the frontend continues to
+  fail closed rather than guess it.
+- Reduced-motion and auth-state shell invariants are deterministic source
+  contracts. OUT-003 did not emulate reduced motion or perform live OAuth.
 
-## Why the next outcome is OUT-003
+## Why the next outcome is OUT-005
 
-Three independent read-only agents compared `OUT-001`, `OUT-003` and `OUT-005`.
-Two selected `OUT-003`; one preferred `OUT-005`. The integration-owner decision
-is `OUT-003` because it is already NOW, has the largest local cross-page blast
-radius and can be proved without external mutation. `OUT-001` is externally
-gated; `OUT-005` has green route/SEO guards and no measured urgency.
+The common shell, main/home and cabinet have no open reproduced P0/P1 in their
+verified local gates. `OUT-001` cannot advance safely without external contract
+and cleanup capabilities. `services.html` is therefore the highest-centrality
+local product surface still carrying avoidable choice: it sits between the
+user's situation and the configurator, while physical SEO landing URLs must
+remain intact.
 
-This is not a header/footer redesign. The first slice is contract-and-proof only:
-route family × 360/390/768/1024/1440 × anonymous/guest/authenticated ×
-light/dark/reduced-motion × menu/search/footer/consent. Preserve explicit home,
-account, admin and transactional-route exceptions. Change runtime only after a
-reproducible failure.
+`OUT-005` should simplify the services hub into a situation-led route with one
+explicit next step and one truthful context handoff. It must preserve every
+physical SEO URL, canonical, schema, sitemap and price contract and must not
+redesign the now-verified global shell.
 
 ## One exact next step
 
-After terminal OUT-004 integration is visible in freshly fetched canonical,
-create `codex/out-003-shared-shell-contract` from that exact SHA, initialize a
-new Brain workstream, declare contract/evidence/test scope first, and build the
-executable shared-shell matrix before any UI change.
+After the OUT-003 submitted and integrated manifest revisions are present in a
+freshly fetched canonical ref, create `codex/out-005-services-choice` from that
+exact SHA, initialize an OUT-005 Brain workstream and run a read-only baseline
+of choice count, route context, SEO invariants and mobile comprehension before
+changing `services.html`.

@@ -21,24 +21,6 @@ workstream manifest, а не из чата или model report.
 - Gate: backend/bot source или безопасные marker, lookup и cleanup пока
   отсутствуют. Никакой реальной клиентской мутации без них.
 
-### OUT-003 — Единая оболочка не ломает геометрию и контекст
-
-- Почему следующий: header/appbar/footer/auth/theme/consent имеют максимальный
-  радиус, полностью проверяемы локально и пока не сведены в один executable
-  state contract. Подтверждённого shell P0/P1 нет, поэтому это proof-first, не
-  редизайн.
-- Результат: единые состояния входа, навигации, темы, overlays, footer и CTA без
-  скачков, дублей, потери focus/history или визуальных конфликтов.
-- Связи: `SUR-003`, `SUR-006`, `UXD-0003` и все journeys.
-- Метрика: P0/P1=0 в route/state/viewport matrix; touch targets ≥44 px; один
-  intended primary CTA; корректный auth/overlay return.
-- Proof: machine-readable contract + executable browser matrix for route family,
-  360/390/768/1024/1440, auth states, light/dark/reduced motion, menu/search/
-  footer/consent and explicit route exceptions.
-- Kill/stop: runtime не менять без failing reproduction; live OAuth/production
-  session не имитировать; shared code требует полного consumer inventory,
-  bundle parity и cache key.
-
 ## VERIFIED
 
 ### OUT-002 — Следующий шаг по делу находится за 10 секунд
@@ -55,6 +37,15 @@ workstream manifest, а не из чата или model report.
 - Proof: `E-1005`, implementation
   `4bb148af0abed033bd113249cda82fe45b60205b`; exact terminal state is in
   `WS-cf01d4d63ca2421e93288e3518298bfa` manifest.
+
+### OUT-003 — Единая оболочка не ломает геометрию и контекст
+
+- Результат: route/state contract согласует theme, menu/search, consent,
+  footer/settings, admin exception, focus return, dark contrast, direct/home
+  delivery и один atomic cache wave без редизайна утверждённых экранов.
+- Proof: `E-1006`, implementation
+  `7e6f33a6088888ccf49dbbd81cb2a8f68c9cecc2`; full regression 472/472 and
+  exact 360/390/768/1024/1440 local browser spine are green.
 
 ## NEXT
 
