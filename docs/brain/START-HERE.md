@@ -52,6 +52,7 @@
 
 ```bash
 ./bin/brain context --task "следующая цель"
+./bin/council --doctor --providers kimi,sonnet,glm,opus,fable --allow-fable
 ```
 
 После этого выберите один outcome, зафиксируйте acceptance criteria и proof plan.
