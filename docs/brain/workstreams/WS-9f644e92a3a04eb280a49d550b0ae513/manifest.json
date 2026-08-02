@@ -1,0 +1,259 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-9f644e92a3a04eb280a49d550b0ae513",
+  "slug": "out-005-services-choice",
+  "status": "active",
+  "branch": "codex/out-005-services-choice",
+  "base_sha": "96156040130c874519d1cd4f6335173a774d7847",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-005"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/polish15-catalog.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/polish15-catalog.js",
+        "match": "exact"
+      },
+      {
+        "path": "avtorskiy-zakaz.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1007.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/OUT-005-SERVICES-CHOICE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/ROADMAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/UX-DEBT.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-9f644e92a3a04eb280a49d550b0ae513/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "dorabotka-otcheta-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kandidatskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-informatike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-menedzhmentu.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-pedagogike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "magisterskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "nauchnaya-statya.html",
+        "match": "exact"
+      },
+      {
+        "path": "normokontrol-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "plan.html",
+        "match": "exact"
+      },
+      {
+        "path": "razbor-zamechaniy-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "redaktura-posle-ii.html",
+        "match": "exact"
+      },
+      {
+        "path": "referat.html",
+        "match": "exact"
+      },
+      {
+        "path": "services.html",
+        "match": "exact"
+      },
+      {
+        "path": "tariffs.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/catalog-polish15-regression.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/compact-client-journey.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/release-asset-version.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/release-readiness-regression.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/representative-route-css-parity.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/research-case-ecosystem.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/services-choice-contract.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/js/app.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/DECISIONS.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1006.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/PRODUCT-MAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "robots.txt",
+        "match": "exact"
+      },
+      {
+        "path": "sitemap.xml",
+        "match": "exact"
+      },
+      {
+        "path": "tests/context-route-regression.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/exact-concept-shell.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/seo-pricing-consistency.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/service-detail-journey.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/site-invariants.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/zero-start-business-model-regression.test.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:services-choice"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:catalog-assets"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:services-situation"
+    },
+    {
+      "access": "read",
+      "key": "contract:shared-shell-state"
+    },
+    {
+      "access": "read",
+      "key": "journey:configurator-context"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
