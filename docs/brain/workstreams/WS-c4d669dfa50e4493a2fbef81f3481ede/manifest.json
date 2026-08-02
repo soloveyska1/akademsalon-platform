@@ -405,6 +405,10 @@
         "match": "exact"
       },
       {
+        "path": "tests/release-asset-version.test.js",
+        "match": "exact"
+      },
+      {
         "path": "tests/shared-shell-contract.test.js",
         "match": "exact"
       },
@@ -463,10 +467,6 @@
         "match": "exact"
       },
       {
-        "path": "tests/release-asset-version.test.js",
-        "match": "exact"
-      },
-      {
         "path": "tests/site-invariants.test.js",
         "match": "exact"
       },
@@ -502,6 +502,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 3,
-  "base_manifest_hash": "21c7eaa1fe3acc1c4ecc2980ed76f85ba801319ab4e0bd8d10c28454e629e89f"
+  "manifest_revision": 4,
+  "base_manifest_hash": "6ef48c6c35138cb77ebefd430f7327cd5d25f55d73bf1eb8beb416f217395bf5"
 }
