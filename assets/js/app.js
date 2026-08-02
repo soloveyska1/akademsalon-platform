@@ -2934,6 +2934,360 @@
     } catch (e) {}
   })();
 
+  /* order-contract:start */
+  function createOrderContract(env) {
+    var flights = {};
+    var producers = {
+      configurator: {
+        endpoint: '/orders',
+        storageKey: 'salon_pending_request_v2',
+        legacyStorageKey: 'salon_pending_request_v1',
+        access: 'case_unverified',
+        intentScope: 'payload_sha256'
+      },
+      guide_microlead: {
+        endpoint: '/orders',
+        storageKey: 'salon_pending_guide_request_v2',
+        legacyStorageKey: 'salon_pending_guide_request_v1',
+        access: 'unresolved',
+        intentScope: 'page+payload_sha256'
+      }
+    };
+
+    if (Object.freeze) {
+      Object.keys(producers).forEach(function (id) { Object.freeze(producers[id]); });
+      Object.freeze(producers);
+    }
+
+    function producer(id) {
+      return Object.prototype.hasOwnProperty.call(producers, id) ? producers[id] : null;
+    }
+
+    function scopeFor(spec, intentScope) {
+      if (spec.intentScope !== 'page+payload_sha256') return 'configurator';
+      var scope = String(intentScope || '');
+      return /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/.test(scope) ? scope : '';
+    }
+
+    function storageKey(spec, scope) {
+      return spec.intentScope === 'page+payload_sha256'
+        ? spec.storageKey + ':' + scope
+        : spec.storageKey;
+    }
+
+    function legacyKeys(spec, scope) {
+      var keys = [spec.legacyStorageKey, spec.legacyStorageKey + ':intent_sha256'];
+      if (spec.intentScope === 'page+payload_sha256') {
+        keys.push(spec.legacyStorageKey + ':' + scope);
+        keys.push(spec.legacyStorageKey + ':' + scope + ':intent_sha256');
+      }
+      return keys;
+    }
+
+    function validRequestId(value) {
+      return typeof value === 'string' && /^[A-Za-z0-9_-]{8,128}$/.test(value);
+    }
+
+    function validFingerprint(value) {
+      return typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
+    }
+
+    function read(key) {
+      try {
+        if (!env.storage) return { error: 'storage_unavailable' };
+        return { value: env.storage.getItem(key) };
+      } catch (e) {
+        return { error: 'storage_unavailable' };
+      }
+    }
+
+    function validState(state, producerId, scope) {
+      if (!state || typeof state !== 'object' || Array.isArray(state)) return false;
+      var keys = Object.keys(state).sort().join(',');
+      return keys === 'id,intent_sha256,producer,scope,v' &&
+        state.v === 2 && state.producer === producerId && state.scope === scope &&
+        validRequestId(state.id) && validFingerprint(state.intent_sha256);
+    }
+
+    function loadState(producerId, spec, scope) {
+      var key = storageKey(spec, scope);
+      var current = read(key);
+      if (current.error) return current;
+      if (current.value !== null) {
+        var parsed;
+        try { parsed = JSON.parse(current.value); }
+        catch (e) { return { error: 'request_state_corrupt' }; }
+        return validState(parsed, producerId, scope)
+          ? { state: parsed, key: key }
+          : { error: 'request_state_corrupt' };
+      }
+      var oldKeys = legacyKeys(spec, scope);
+      for (var i = 0; i < oldKeys.length; i++) {
+        var legacy = read(oldKeys[i]);
+        if (legacy.error) return legacy;
+        if (legacy.value !== null) return { error: 'legacy_request_pending' };
+      }
+      return { state: null, key: key };
+    }
+
+    function saveState(key, state) {
+      var encoded = JSON.stringify(state);
+      try {
+        if (!env.storage) return false;
+        env.storage.setItem(key, encoded);
+        return env.storage.getItem(key) === encoded;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function validOrderId(id) {
+      return (typeof id === 'number' && Number.isSafeInteger(id) && id > 0) ||
+        (typeof id === 'string' && /^[1-9][0-9]*$/.test(id) &&
+          Number.isSafeInteger(Number(id)) && String(Number(id)) === id);
+    }
+
+    function isConfirmed(attempt) {
+      return !!(attempt && attempt.st >= 200 && attempt.st < 300 && attempt.r &&
+        attempt.r.ok === true && validOrderId(attempt.r.id));
+    }
+
+    function classify(attempt) {
+      if (attempt && attempt.contractError === 'intent_changed') return 'conflict';
+      if (attempt && attempt.contractError) return 'local_blocked';
+      if (isConfirmed(attempt)) return 'confirmed';
+      if (attempt && attempt.st === 409) return 'conflict';
+      if (attempt && attempt.st >= 200 && attempt.st < 300 && attempt.r &&
+          attempt.r.ok === false) return 'definitive_rejection';
+      if (attempt && attempt.st >= 400 && attempt.st < 500 &&
+          attempt.st !== 408 && attempt.st !== 425 && attempt.st !== 429) return 'definitive_rejection';
+      return 'ambiguous';
+    }
+
+    function canonical(value) {
+      if (value === null || typeof value !== 'object') return JSON.stringify(value);
+      if (Array.isArray(value)) {
+        return '[' + value.map(canonical).join(',') + ']';
+      }
+      return '{' + Object.keys(value).sort().map(function (key) {
+        return JSON.stringify(key) + ':' + canonical(value[key]);
+      }).join(',') + '}';
+    }
+
+    function preparePayload(payload) {
+      if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+        return { error: 'payload_unserializable' };
+      }
+      if (Object.prototype.hasOwnProperty.call(payload, 'client_request_id')) {
+        return { error: 'producer_request_id_forbidden' };
+      }
+      var encoded;
+      var body;
+      try {
+        encoded = JSON.stringify(payload);
+        body = JSON.parse(encoded);
+      } catch (e) {
+        return { error: 'payload_unserializable' };
+      }
+      if (!body || typeof body !== 'object' || Array.isArray(body)) {
+        return { error: 'payload_unserializable' };
+      }
+      return { body: body, material: canonical(body) };
+    }
+
+    function localResult(producerId, error, id) {
+      return {
+        st: 0, r: null, producer: producerId,
+        clientRequestId: id || '', contractError: error
+      };
+    }
+
+    function resolveState(producerId, spec, scope, body) {
+      if (typeof env.fingerprint !== 'function') {
+        return Promise.resolve({ error: 'intent_fingerprint_unavailable' });
+      }
+      var calculated;
+      try { calculated = env.fingerprint(body); }
+      catch (e) { return Promise.resolve({ error: 'intent_fingerprint_unavailable' }); }
+      return Promise.resolve(calculated).then(function (fingerprint) {
+        fingerprint = String(fingerprint || '').toLowerCase();
+        if (!validFingerprint(fingerprint)) {
+          return { error: 'intent_fingerprint_unavailable' };
+        }
+        var loaded = loadState(producerId, spec, scope);
+        if (loaded.error) return loaded;
+        if (loaded.state) {
+          return loaded.state.intent_sha256 === fingerprint
+            ? { state: loaded.state, key: loaded.key }
+            : { error: 'intent_changed', state: loaded.state };
+        }
+        var id = '';
+        try { id = String(env.makeId ? env.makeId() : ''); } catch (e) {}
+        if (!validRequestId(id)) return { error: 'request_id_unavailable' };
+        var state = {
+          v: 2,
+          producer: producerId,
+          scope: scope,
+          id: id,
+          intent_sha256: fingerprint
+        };
+        if (!saveState(loaded.key, state)) return { error: 'storage_unavailable' };
+        return { state: state, key: loaded.key };
+      }, function () {
+        return { error: 'intent_fingerprint_unavailable' };
+      });
+    }
+
+    function requestId(producerId, intentScope) {
+      var spec = producer(producerId);
+      if (!spec) return '';
+      var scope = scopeFor(spec, intentScope);
+      if (!scope) return '';
+      var loaded = loadState(producerId, spec, scope);
+      return loaded.state ? loaded.state.id : '';
+    }
+
+    function clear(producerId, intentScope, expectedId) {
+      var spec = producer(producerId);
+      if (!spec) return false;
+      var scope = scopeFor(spec, intentScope);
+      if (!scope) return false;
+      var loaded = loadState(producerId, spec, scope);
+      if (!loaded.state || !expectedId || loaded.state.id !== expectedId) return false;
+      try {
+        env.storage.removeItem(loaded.key);
+        return env.storage.getItem(loaded.key) === null;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function transport(producerId, spec, state, body) {
+      var headers = {};
+      var suppliedHeaders;
+      try { suppliedHeaders = env.headers ? env.headers('POST') : {}; }
+      catch (e) { return Promise.resolve(localResult(producerId, 'headers_unavailable', state.id)); }
+      Object.keys(suppliedHeaders || {}).forEach(function (key) { headers[key] = suppliedHeaders[key]; });
+      headers['Content-Type'] = 'application/json';
+      var statusContext = null;
+      try {
+        if (typeof env.statusContext === 'function') statusContext = env.statusContext();
+      } catch (e) {
+        return Promise.resolve(localResult(producerId, 'auth_context_unavailable', state.id));
+      }
+      var wireBody = {};
+      Object.keys(body).forEach(function (key) { wireBody[key] = body[key]; });
+      wireBody.client_request_id = state.id;
+      var request;
+      try {
+        if (typeof env.fetch !== 'function') throw new Error('fetch unavailable');
+        request = env.fetch(env.base + spec.endpoint, {
+          method: 'POST',
+          headers: headers,
+          credentials: 'include',
+          body: JSON.stringify(wireBody)
+        });
+      } catch (e) {
+        return Promise.resolve({
+          st: 0, r: null, producer: producerId, clientRequestId: state.id,
+          networkError: true
+        });
+      }
+      return Promise.resolve(request).then(function (response) {
+        try {
+          if (typeof env.onStatus === 'function') {
+            env.onStatus(response.status, spec.endpoint, producerId, statusContext);
+          }
+        } catch (e) {}
+        var json;
+        try { json = response.json(); }
+        catch (e) {
+          return { st: response.status, r: null, badJson: true };
+        }
+        return Promise.resolve(json).then(function (data) {
+          return { st: response.status, r: data };
+        }, function () {
+          return { st: response.status, r: null, badJson: true };
+        });
+      }, function () {
+        return { st: 0, r: null, networkError: true };
+      }).then(function (result) {
+        result.producer = producerId;
+        result.clientRequestId = state.id;
+        return result;
+      });
+    }
+
+    function softTimeout(promise, timeoutMs, flight, producerId) {
+      if (!(timeoutMs > 0) || typeof env.setTimeout !== 'function') return promise;
+      return new Promise(function (resolve) {
+        var settled = false;
+        var timer = env.setTimeout(function () {
+          if (settled) return;
+          settled = true;
+          resolve({
+            st: 0, r: null, producer: producerId,
+            clientRequestId: flight.clientRequestId || '', timedOut: true
+          });
+        }, timeoutMs);
+        promise.then(function (result) {
+          if (settled) return;
+          settled = true;
+          if (timer && env.clearTimeout) env.clearTimeout(timer);
+          resolve(result);
+        });
+      });
+    }
+
+    /* POST не abort-им: soft timeout возвращает управление UI, но сервер мог
+       уже принять запись. Пока исходный POST жив, повтор присоединяется к нему
+       и физически не создаёт второй сетевой запрос. */
+    function submit(producerId, payload, timeoutMs, intentScope) {
+      var spec = producer(producerId);
+      if (!spec) return Promise.resolve(localResult(producerId, 'unknown_producer'));
+      var scope = scopeFor(spec, intentScope);
+      if (!scope) return Promise.resolve(localResult(producerId, 'invalid_scope'));
+      var prepared = preparePayload(payload);
+      if (prepared.error) return Promise.resolve(localResult(producerId, prepared.error));
+      var key = storageKey(spec, scope);
+      var active = flights[key];
+      if (active) {
+        if (active.material !== prepared.material) {
+          return Promise.resolve(localResult(producerId, 'intent_changed', active.clientRequestId));
+        }
+        return softTimeout(active.promise, timeoutMs, active, producerId);
+      }
+      var flight = { material: prepared.material, clientRequestId: '', promise: null };
+      flights[key] = flight;
+      var operation = resolveState(producerId, spec, scope, prepared.body).then(function (resolved) {
+        if (resolved.error) {
+          return localResult(producerId, resolved.error, resolved.state && resolved.state.id);
+        }
+        flight.clientRequestId = resolved.state.id;
+        return transport(producerId, spec, resolved.state, prepared.body);
+      });
+      flight.promise = operation.then(function (result) {
+        if (flights[key] === flight) delete flights[key];
+        return result;
+      }, function () {
+        if (flights[key] === flight) delete flights[key];
+        return localResult(producerId, 'contract_internal_error', flight.clientRequestId);
+      });
+      return softTimeout(flight.promise, timeoutMs, flight, producerId);
+    }
+
+    return {
+      producers: producers,
+      requestId: requestId,
+      clear: clear,
+      validOrderId: validOrderId,
+      isConfirmed: isConfirmed,
+      classify: classify,
+      submit: submit
+    };
+  }
+  /* order-contract:end */
+
   /* ---------------- Кабинет: клиент API (общая база с ботом) ----------------
      Сайт и Telegram-бот работают с одним сервером: заказы, статусы и переписка
      синхронны. Обычная сессия и гостевой доступ живут в HttpOnly cookies;
@@ -2971,7 +3325,10 @@
   function guestHint() {
     return Salon.secretStore.get('salon_guest_session', false) === true;
   }
+  var authGeneration = 0;
   function setSessionHint(value) {
+    var previous = sessionHint();
+    if (previous !== !!value) authGeneration += 1;
     value ? Salon.secretStore.set('salon_cookie_session', true)
       : Salon.secretStore.del('salon_cookie_session');
     if (Salon.updateAccountEntry) {
@@ -2983,6 +3340,53 @@
       : Salon.secretStore.del('salon_guest_session');
     if (Salon.updateAccountEntry) {
       Salon.updateAccountEntry({ authenticated:sessionHint(), guest_session:!!value });
+    }
+  }
+  function captureAuthContext() {
+    return {
+      generation: authGeneration,
+      logicalToken: Salon.api && Salon.api.token ? Salon.api.token() : null,
+      impersonationToken: impToken() || null,
+      csrfToken: cookieValue('__Host-salon_csrf') || null
+    };
+  }
+  /* auth-status-contract:start */
+  function sameAuthContext(requestAuthContext, currentAuthContext) {
+    return !!(requestAuthContext && currentAuthContext &&
+      requestAuthContext.generation === currentAuthContext.generation &&
+      requestAuthContext.logicalToken === currentAuthContext.logicalToken &&
+      requestAuthContext.impersonationToken === currentAuthContext.impersonationToken &&
+      requestAuthContext.csrfToken === currentAuthContext.csrfToken);
+  }
+  /* auth-status-contract:end */
+  function handleApiResponseStatus(status, path, requestAuthContext) {
+    if (status !== 401) return;
+    var currentAuthContext = captureAuthContext();
+    if (requestAuthContext && !sameAuthContext(requestAuthContext, currentAuthContext)) return;
+    var hadLogicalToken = !!((requestAuthContext || currentAuthContext).logicalToken);
+    var wasImpersonated = !!currentAuthContext.impersonationToken;
+    if (wasImpersonated) {
+      /* протухла «тихая» сессия мастера — чистим только её */
+      try { sessionStorage.removeItem('salon_imp_token'); sessionStorage.removeItem('salon_imp'); } catch (e) {}
+    } else {
+      Salon.api.setToken(null);
+      Salon.api.setUser(null);
+      setSessionHint(false);
+    }
+    /* Любой transport, включая non-aborting order submit, обязан одинаково
+       возвращать UI из протухшего auth hint к честному состоянию входа. */
+    if (hadLogicalToken) {
+      try {
+        document.dispatchEvent(new CustomEvent('salon:auth-lost', {
+          detail: { path: path, impersonated: wasImpersonated }
+        }));
+      } catch (e) {
+        var authLost = document.createEvent('CustomEvent');
+        authLost.initCustomEvent('salon:auth-lost', false, false, {
+          path:path, impersonated:wasImpersonated
+        });
+        document.dispatchEvent(authLost);
+      }
     }
   }
   Salon.api = {
@@ -2999,7 +3403,11 @@
     guestSession: guestHint,
     setSessionHint: setSessionHint,
     setGuestHint: setGuestHint,
+    handleStatus: handleApiResponseStatus,
+    authSnapshot: captureAuthContext,
     setToken: function (t) {
+      var previous = secretValue('salon_session', null);
+      if ((previous || null) !== (t || null)) authGeneration += 1;
       Salon.store.del('salon_session');
       t ? Salon.secretStore.set('salon_session', t) : Salon.secretStore.del('salon_session');
     },
@@ -3050,7 +3458,7 @@
     req: function (method, path, body, _retried, extraHeaders) {
       var h = Salon.api.headers(method, extraHeaders);
       if (body !== undefined) h['Content-Type'] = 'application/json';
-      var logicalToken = Salon.api.token();
+      var requestAuthContext = Salon.api.authSnapshot();
       /* GET безопасно повторить один раз: короткое окно рестарта сервера
          (деплой) отдаёт 502/обрыв на пару секунд — не теряем посетителя */
       function again() {
@@ -3077,34 +3485,7 @@
         signal: fetchController ? fetchController.signal : undefined
       })
         .then(function (r) {
-          if (r.status === 401) {
-            var wasImpersonated = !!impToken();
-            if (wasImpersonated) {
-              /* протухла «тихая» сессия мастера — чистим только её */
-              try { sessionStorage.removeItem('salon_imp_token'); sessionStorage.removeItem('salon_imp'); } catch (e) {}
-            } else {
-              Salon.api.setToken(null);
-              Salon.api.setUser(null);
-              setSessionHint(false);
-            }
-            /* Долгий поллинг админки/кабинета мог получить 401 уже после
-               первого успешного входа. Одной очистки токена мало: экран
-               оставался замороженным на старых данных. Сообщаем активному
-               приложению, чтобы оно немедленно вернуло честный экран входа. */
-            if (logicalToken) {
-              try {
-                document.dispatchEvent(new CustomEvent('salon:auth-lost', {
-                  detail: { path: path, impersonated: wasImpersonated }
-                }));
-              } catch (e) {
-                var authLost = document.createEvent('CustomEvent');
-                authLost.initCustomEvent('salon:auth-lost', false, false, {
-                  path:path, impersonated:wasImpersonated
-                });
-                document.dispatchEvent(authLost);
-              }
-            }
-          }
+          Salon.api.handleStatus(r.status, path, requestAuthContext);
           if (method === 'GET' && !_retried && (r.status === 502 || r.status === 503 || r.status === 504)) {
             clearFetchTimer();
             return again();
@@ -3144,6 +3525,57 @@
       return Salon.api.post('/auth/logout', {}).then(finish, finish);
     }
   };
+
+  function canonicalOrderIntent(value) {
+    if (value === null || typeof value !== 'object') return JSON.stringify(value);
+    if (Array.isArray(value)) {
+      return '[' + value.map(canonicalOrderIntent).join(',') + ']';
+    }
+    return '{' + Object.keys(value).sort().map(function (key) {
+      return JSON.stringify(key) + ':' + canonicalOrderIntent(value[key]);
+    }).join(',') + '}';
+  }
+
+  function orderIntentFingerprint(payload) {
+    if (!window.crypto || !window.crypto.subtle || !window.TextEncoder) {
+      return Promise.reject(new Error('secure fingerprint unavailable'));
+    }
+    var bytes = new window.TextEncoder().encode(canonicalOrderIntent(payload));
+    return window.crypto.subtle.digest('SHA-256', bytes).then(function (digest) {
+      return Array.prototype.map.call(new Uint8Array(digest), function (byte) {
+        return byte.toString(16).padStart(2, '0');
+      }).join('');
+    });
+  }
+
+  Salon.orderContract = createOrderContract({
+    storage: (function () { try { return window.sessionStorage; } catch (e) { return null; } })(),
+    makeId: function () {
+      try {
+        if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+          return window.crypto.randomUUID();
+        }
+        if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
+          var bytes = new Uint8Array(16);
+          window.crypto.getRandomValues(bytes);
+          return 'web_' + Array.prototype.map.call(bytes, function (byte) {
+            return byte.toString(16).padStart(2, '0');
+          }).join('');
+        }
+      } catch (e) {}
+      return '';
+    },
+    fetch: function (url, options) { return window.fetch(url, options); },
+    base: Salon.api.base,
+    headers: function (method) { return Salon.api.headers(method); },
+    fingerprint: orderIntentFingerprint,
+    statusContext: function () { return Salon.api.authSnapshot(); },
+    onStatus: function (status, path, producer, requestAuthContext) {
+      Salon.api.handleStatus(status, path, requestAuthContext);
+    },
+    setTimeout: window.setTimeout.bind(window),
+    clearTimeout: window.clearTimeout.bind(window)
+  });
 
   /* Старые вкладки получают мягкий one-time upgrade: JS-readable Bearer
      обменивается на HttpOnly cookie и сразу отзывается на сервере. */

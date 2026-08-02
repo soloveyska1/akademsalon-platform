@@ -1175,7 +1175,10 @@
         '<span>Даю отдельное <a class="link" href="consent-request.html" target="_blank">согласие на обработку персональных данных</a> для ответа. Условия хранения — в <a class="link" href="privacy.html" target="_blank">политике ПДн</a>. Без рекламной рассылки.</span></label>' +
       '<p class="petit" style="margin-top:8px;color:var(--ink-faint)">Вопрос бесплатный и ни к чему не обязывает — попадёт мастеру вместе с названием статьи.</p>';
     host.appendChild(box);
+    var guideSubmitting = false;
+    var guideIntent = '';
     box.querySelector('#glGo').addEventListener('click', function () {
+      if (guideSubmitting) return;
       var q = box.querySelector('#glQ').value.trim();
       var c = box.querySelector('#glC').value.trim();
       if (q.length < 5) { S.toast('Напишите вопрос — хотя бы пару слов'); return; }
@@ -1188,10 +1191,17 @@
         box.querySelector('#glOk').focus();
         return;
       }
+      var intent = q + '\n' + c;
+      if (guideIntent && guideIntent !== intent) {
+        S.toast('Предыдущая отправка ещё не подтверждена. Верните исходный вопрос для безопасного повтора или напишите мастеру напрямую.');
+        return;
+      }
+      guideIntent = intent;
       var btn = box.querySelector('#glGo');
+      guideSubmitting = true;
       S.btnLoading(btn, true, 'Отправляем…');
       var h1 = document.querySelector('h1');
-      S.api.post('/orders', {
+      var payload = {
         type: 'svc_tutor', disc: 'hum', term: 'free', tier: 'base',
         topic: 'Вопрос с гайда: ' + (h1 ? h1.textContent.trim().slice(0, 120) : here),
         details: q, name: '', contact: c, website: '', deadline: '',
@@ -1199,21 +1209,47 @@
         privacy_notice_ack: box.querySelector('#glOk').checked,
         consent_doc: 'consent-request 1.0 · privacy 3.1 · oferta 3.2',
         page: here
-      }).then(function (r) {
+      };
+      S.orderContract.submit('guide_microlead', payload, 25000, here).then(function (attempt) {
+        guideSubmitting = false;
         S.btnLoading(btn, false);
-        if (r && r.ok) {
+        var outcome = S.orderContract.classify(attempt);
+        var r = attempt && attempt.r;
+        if (outcome === 'confirmed') {
+          S.orderContract.clear('guide_microlead', here, attempt.clientRequestId);
+          guideIntent = '';
+          if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
           box.innerHTML = '<p class="caps" style="margin-bottom:8px">Вопрос у мастера ✓</p>' +
             '<p class="lead" style="margin:0">Ответим' + (c ? ' — ' + c.replace(/</g, '&lt;') : '') +
             '. Обычно это 15–30 минут днём; ночью — чуть дольше, но тоже отвечаем.</p>';
           if (S.metrika) S.metrika.goal('guide_lead');
           if (S.visit) S.visit.mark('вопрос с гайда');
         } else {
+          if (outcome === 'definitive_rejection') {
+            S.orderContract.clear('guide_microlead', here, attempt.clientRequestId);
+            guideIntent = '';
+          }
+          if (outcome === 'local_blocked' && !attempt.clientRequestId) {
+            /* До durable v2 identity сеть не вызывается. Не выдаём локальный
+               fail-closed за «неподтверждённую отправку» при следующей правке. */
+            guideIntent = '';
+          }
           var scopeMessage = S.api && S.api.outsideScopeMessage
             ? S.api.outsideScopeMessage(r)
             : '';
-          S.toast(scopeMessage ||
-            'Не отправилось — сеть шалит. Продублируйте вопрос боту: t.me/academic_saloon_bot');
+          var conflictMessage = outcome === 'conflict'
+            ? 'Не удалось безопасно подтвердить повтор. Не отправляйте новый вопрос — напишите мастеру напрямую.'
+            : '';
+          var rejectedMessage = r && r.error === 'contact_required'
+            ? 'Сессия входа истекла. Оставьте контакт — куда прислать ответ.'
+            : '';
+          var localSafetyMessage = attempt && attempt.contractError
+            ? 'Браузер не смог безопасно сохранить номер попытки. Ничего не отправлено; откройте новую вкладку или напишите мастеру напрямую.'
+            : '';
+          S.toast(scopeMessage || conflictMessage || rejectedMessage || localSafetyMessage ||
+            'Пока не подтвердилось. Повторите отправку — номер попытки сохранён для проверки повтора.');
           if (scopeMessage) box.querySelector('#glQ').focus();
+          else if (rejectedMessage) box.querySelector('#glC').focus();
         }
       });
     });

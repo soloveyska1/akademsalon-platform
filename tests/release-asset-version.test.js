@@ -5,6 +5,7 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const releaseKey = '20260802release98';
+const submitRuntimeKey = '20260802out001submit1';
 const changedAssets = new Set([
   'assets/css/cart.css',
   'assets/css/chrome.css',
@@ -52,7 +53,10 @@ test('every changed public asset uses the release cache key', () => {
       if (!changedAssets.has(assetPath)) continue;
       references += 1;
       const query = new URLSearchParams(url.split('?')[1] || '');
-      assert.equal(query.get('v'), releaseKey, `${file}: ${assetPath}`);
+      const expectedKey = assetPath === 'assets/js/app.js' || assetPath === 'assets/js/extras.js'
+        ? submitRuntimeKey
+        : releaseKey;
+      assert.equal(query.get('v'), expectedKey, `${file}: ${assetPath}`);
     }
   }
 

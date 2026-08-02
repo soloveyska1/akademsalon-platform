@@ -138,7 +138,7 @@ test('home loads only the reproducible release bundles', () => {
   // Версии бандлов не фиксируем числом: за бампом следит release-asset-version.test.js.
   // Смысл этой проверки — что главная грузит ТОЛЬКО собранные бандлы (см. doesNotMatch ниже).
   assert.match(home, /assets\/css\/home-release\.min\.css\?v=\d+release\d+" data-mobile-edition="1"/);
-  assert.match(home, /assets\/js\/home-release\.min\.js\?v=\d+release\d+/);
+  assert.match(home, /assets\/js\/home-release\.min\.js\?v=20260802out001submit1/);
   assert.doesNotMatch(home, /assets\/css\/(?:styles|chrome|polish15-chrome|extras|polish15-home|commission-zero|home-intro|home-ecosystem|mobile)\.css/);
   assert.doesNotMatch(home, /assets\/js\/(?:app|polish15-chrome|extras|home-intro|home-ecosystem)\.js/);
 });

@@ -31,7 +31,7 @@ test('configurator keeps the approved facade as its only visual page', () => {
   }
 
   assert.match(html, /SalonCart\.init\(/);
-  assert.match(html, /fetch\(S\.api\.base \+ '\/orders'/);
+  assert.match(html, /S\.orderContract\.submit\('configurator', payload, timeoutMs\)/);
   assert.match(html, /\/orders\/' \+ attOrder\.id \+ '\/upload'/);
   assert.match(html, /S\.api\.post\('\/promo\/check'/);
   assert.match(html, /S\.api\.get\('\/gift\/check\?code='/);

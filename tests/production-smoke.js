@@ -1,136 +1,154 @@
-/* Боевая проверка живого контура. Запуск вручную:  node tests/production-smoke.js
-   В общий прогон `node tests/*.test.js` НЕ входит — здесь настоящая сеть.
+/* Read-only проверка живого контура. Запуск вручную:
+     node tests/production-smoke.js
 
-   Все запросы безопасны: ни один не создаёт заказ, платёж или сертификат.
-   Единственный POST — заявка с пустым контактом: сервер отвергает её раньше,
-   чем что-либо записывает. Если он вдруг ответит ok:true, скрипт это отметит.
+   В общий прогон `node tests/*.test.js` не входит: здесь настоящая сеть.
+   Guard ниже механически запрещает POST/PUT/PATCH/DELETE. Проверка заявки
+   остаётся отдельным контуром до появления серверного preflight, уникального
+   test marker, доказуемого lookup и проверки cleanup-кардинальности. */
+const fs = require('node:fs');
+const path = require('node:path');
 
-   Зачем: сервер и Telegram-бот в этот репозиторий не входят, а выкладка идёт
-   отдельно. Если статика здесь разойдётся с выложенной, приём заявок может
-   встать целиком — по одному лишь коду это не видно. Сверка строки согласия
-   с боевым configurator.html отвечает на вопрос «безопасно ли выкладывать». */
-const SITE = process.env.SALON_SITE || 'https://akademsalon.ru';
-const BASE = process.env.SALON_API || SITE + '/api';
-const TIMEOUT = 30000;
+const DEFAULT_SITE = process.env.SALON_SITE || 'https://akademsalon.ru';
+const DEFAULT_BASE = process.env.SALON_API || DEFAULT_SITE + '/api';
+const DEFAULT_TIMEOUT = 30000;
 
-/* строку согласия читаем прямо из конфигуратора — так проба ловит рассинхрон
-   сама, без правки этого файла. Сервер сверяет её и отвергает чужую версию. */
-const REPO_CONSENT = (function () {
-  const fs = require('node:fs');
-  const path = require('node:path');
+const REPO_CONSENT = (function readRepoConsent() {
   const src = fs.readFileSync(path.join(__dirname, '..', 'configurator.html'), 'utf8');
-  const m = /consent_doc:\s*'([^']+)'/.exec(src);
-  if (!m) throw new Error('в configurator.html не найдено поле consent_doc');
-  return m[1];
+  const match = /consent_doc:\s*'([^']+)'/.exec(src);
+  if (!match) throw new Error('в configurator.html не найдено поле consent_doc');
+  return match[1];
 })();
 
-let pass = 0, fail = 0, warn = 0;
-const ok = (m) => { pass++; console.log('  ✓ ' + m); };
-const bad = (m) => { fail++; console.log('  ✗ ' + m); };
-const note = (m) => { warn++; console.log('  ! ' + m); };
-
-async function call(path, opts, _retried) {
-  const ctl = new AbortController();
-  const t = setTimeout(() => ctl.abort(), (opts && opts.timeout) || TIMEOUT);
-  try {
-    const res = await fetch(BASE + path, Object.assign({ signal: ctl.signal }, opts));
-    let body = null;
-    try { body = await res.json(); } catch (e) { /* не JSON — оставляем null */ }
-    return { status: res.status, body };
-  } catch (e) {
-    /* обрыв или таймаут — один тихий повтор: иначе разовая сетевая помеха
-       показывается как отказ сервера и скрипту перестают верить. GET
-       повторять безопасно; POST — только пробы, они ничего не создают. */
-    if (!_retried) {
-      await new Promise((r) => setTimeout(r, 1500));
-      return call(path, opts, true);
-    }
-    return { status: 0, body: null, err: String(e.message || e) };
-  } finally { clearTimeout(t); }
+function readOnlyMethod(options) {
+  return String(options && options.method || 'GET').toUpperCase();
 }
 
-/* обычный GET за текстом страницы — без разбора JSON */
-async function fetchText(url) {
-  const ctl = new AbortController();
-  const t = setTimeout(() => ctl.abort(), TIMEOUT);
-  try {
-    const res = await fetch(url, { signal: ctl.signal });
-    return res.ok ? await res.text() : null;
-  } catch (e) {
-    return null;
-  } finally { clearTimeout(t); }
+function assertReadOnly(options) {
+  const method = readOnlyMethod(options);
+  if (method !== 'GET' && method !== 'HEAD') {
+    throw new Error('production smoke refuses unsafe method: ' + method);
+  }
+  return method;
+}
+
+function createSmoke(options = {}) {
+  const site = options.site || DEFAULT_SITE;
+  const base = options.base || DEFAULT_BASE;
+  const timeout = options.timeout || DEFAULT_TIMEOUT;
+  const transport = options.fetch || globalThis.fetch;
+  const out = options.log || console.log;
+  const pause = options.pause || ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
+  let pass = 0;
+  let fail = 0;
+
+  const ok = (message) => { pass++; out('  ✓ ' + message); };
+  const bad = (message) => { fail++; out('  ✗ ' + message); };
+
+  async function request(url, requestOptions) {
+    const clean = Object.assign({}, requestOptions || {});
+    const requestTimeout = clean.timeout || timeout;
+    delete clean.timeout;
+    assertReadOnly(clean);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), requestTimeout);
+    clean.signal = controller.signal;
+    try {
+      return await transport(url, clean);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  async function call(apiPath, requestOptions, retried) {
+    assertReadOnly(requestOptions);
+    try {
+      const response = await request(base + apiPath, requestOptions);
+      let body = null;
+      try { body = await response.json(); } catch (error) { /* non-JSON remains null */ }
+      return { status: response.status, body };
+    } catch (error) {
+      if (!retried) {
+        await pause(1500);
+        return call(apiPath, requestOptions, true);
+      }
+      return { status: 0, body: null, err: String(error.message || error) };
+    }
+  }
+
+  async function fetchText(url) {
+    try {
+      const response = await request(url);
+      return response.ok ? await response.text() : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async function run() {
+    out('Боевая read-only проверка: ' + base + '\n');
+
+    out('Публичные справочники');
+    for (const [apiPath, field] of [
+      ['/features', 'pay_online'], ['/plans', 'base_price'], ['/gift/config', 'presets'],
+      ['/slots', 'quota'], ['/channel', 'posts'], ['/qa', 'items'], ['/reviews', 'reviews'],
+    ]) {
+      const result = await call(apiPath);
+      if (result.status === 200 && result.body && result.body.ok && result.body[field] !== undefined) {
+        ok(apiPath);
+      } else {
+        bad(apiPath + ' → HTTP ' + result.status + ' ' + JSON.stringify(result.body).slice(0, 90));
+      }
+    }
+
+    out('\nЗакрытые контуры отвечают отказом без авторизации');
+    for (const [apiPath, expected] of [
+      ['/me', 401], ['/bonus', 401], ['/deposit', 401],
+      ['/admin/overview', 403], ['/admin/orders?status=active', 403],
+    ]) {
+      const result = await call(apiPath);
+      if (result.status === expected) ok(apiPath + ' → ' + expected);
+      else bad(apiPath + ' → HTTP ' + result.status + ', ожидался ' + expected);
+    }
+
+    out('\nШина событий (long-poll кабинета и админки)');
+    const started = Date.now();
+    const events = await call('/events?since=0', { timeout: 40000 });
+    const seconds = Math.round((Date.now() - started) / 1000);
+    if (events.status === 200 && events.body && events.body.ok && typeof events.body.v === 'number') {
+      ok('/events отвечает за ~' + seconds + 'с, версия v=' + events.body.v);
+    } else {
+      bad('/events → HTTP ' + events.status + ' за ' + seconds + 'с');
+    }
+
+    out('\nВерсия согласия: репозиторий и выложенный сайт');
+    const liveConfigurator = await fetchText(site + '/configurator.html');
+    const liveMatch = liveConfigurator && /consent_doc:\s*'([^']+)'/.exec(liveConfigurator);
+    if (!liveMatch) {
+      bad('не удалось прочитать consent_doc с боевого configurator.html');
+    } else if (liveMatch[1] !== REPO_CONSENT) {
+      bad('строка согласия разошлась: репозиторий=' + REPO_CONSENT + ', сайт=' + liveMatch[1]);
+    } else {
+      ok('строка согласия совпадает: ' + REPO_CONSENT);
+    }
+
+    out('\n' + '─'.repeat(60));
+    out('успешно: ' + pass + ' · провалено: ' + fail);
+    return { pass, fail, methods: ['GET', 'HEAD'] };
+  }
+
+  return { run, call, fetchText };
 }
 
 async function main() {
-  console.log('Боевая проверка: ' + BASE + '\n');
-
-  console.log('Публичные справочники');
-  for (const [path, field] of [
-    ['/features', 'pay_online'], ['/plans', 'base_price'], ['/gift/config', 'presets'],
-    ['/slots', 'quota'], ['/channel', 'posts'], ['/qa', 'items'], ['/reviews', 'reviews']
-  ]) {
-    const r = await call(path);
-    if (r.status === 200 && r.body && r.body.ok && r.body[field] !== undefined) ok(path);
-    else bad(path + ' → HTTP ' + r.status + ' ' + JSON.stringify(r.body).slice(0, 90));
-  }
-
-  console.log('\nЗакрытые контуры отвечают отказом без авторизации');
-  for (const [path, want] of [['/me', 401], ['/bonus', 401], ['/deposit', 401],
-                              ['/admin/overview', 403], ['/admin/orders?status=active', 403]]) {
-    const r = await call(path);
-    if (r.status === want) ok(path + ' → ' + want);
-    else bad(path + ' → HTTP ' + r.status + ', ожидался ' + want + ' (закрытый контур открыт?)');
-  }
-
-  console.log('\nШина событий (long-poll кабинета и админки)');
-  const started = Date.now();
-  const ev = await call('/events?since=0', { timeout: 40000 });
-  const secs = Math.round((Date.now() - started) / 1000);
-  if (ev.status === 200 && ev.body && ev.body.ok && typeof ev.body.v === 'number') {
-    ok('/events отвечает за ~' + secs + 'с, версия v=' + ev.body.v);
-  } else bad('/events → HTTP ' + ev.status + ' за ' + secs + 'с — кабинет не узнает о новых файлах');
-
-  console.log('\nВерсия согласия: совпадает ли репозиторий с выложенным сайтом');
-  /* Сверяем строку согласия с той, что отдаёт боевой configurator.html.
-     Именно её сервер принимает сегодня, поэтому сравнение отвечает на вопрос
-     «безопасно ли выкладывать» без единого POST — заказы не создаются. */
-  const liveConf = await fetchText(SITE + '/configurator.html');
-  const liveMatch = liveConf && /consent_doc:\s*'([^']+)'/.exec(liveConf);
-  if (!liveMatch) {
-    bad('не удалось прочитать consent_doc с боевого configurator.html — проверьте вручную');
-  } else if (liveMatch[1] !== REPO_CONSENT) {
-    bad('строка согласия разошлась с выложенным сайтом:\n' +
-        '      репозиторий: ' + REPO_CONSENT + '\n' +
-        '      на сайте:    ' + liveMatch[1] + '\n' +
-        '      Выкладка остановит приём ВСЕХ заявок: каждый POST /orders → HTTP 409.');
-  } else {
-    ok('строка согласия совпадает: ' + REPO_CONSENT);
-  }
-
-  console.log('\nКонтур заявки отвечает и не принимает пустой контакт');
-  const probe = await call('/orders', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      type: 'course', disc: 'hum', term: 'free', tier: 'base',
-      topic: 'smoke probe', name: '', contact: '', website: '', deadline: '', details: '',
-      consent: true, privacy_notice_ack: true, consent_doc: REPO_CONSENT,
-      page: 'configurator.html', client_request_id: 'smoke-contact-probe'
-    })
-  });
-  const err = probe.body && probe.body.error;
-  if (err === 'contact_required') {
-    ok('POST /orders живой, заявка без контакта отклонена (заказ не создан)');
-  } else if (probe.body && probe.body.ok) {
-    note('проба неожиданно СОЗДАЛА заказ №' + probe.body.id + ' — его надо удалить вручную');
-  } else if (err) {
-    ok('POST /orders живой, отклонил пробу (' + err + ', заказ не создан)');
-  } else {
-    bad('непонятный ответ POST /orders: HTTP ' + probe.status + ' ' + JSON.stringify(probe.body).slice(0, 90));
-  }
-
-  console.log('\n' + '─'.repeat(60));
-  console.log('успешно: ' + pass + ' · провалено: ' + fail + (warn ? ' · внимание: ' + warn : ''));
-  process.exit(fail ? 1 : 0);
+  const result = await createSmoke().run();
+  process.exitCode = result.fail ? 1 : 0;
 }
 
-main().catch((e) => { console.error('сорвалось: ' + e.message); process.exit(1); });
+if (require.main === module) {
+  main().catch((error) => {
+    console.error('сорвалось: ' + error.message);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = { REPO_CONSENT, assertReadOnly, createSmoke };

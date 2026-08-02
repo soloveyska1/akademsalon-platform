@@ -139,10 +139,7 @@ test('success requires both a 2xx status and a valid confirmed order id', () => 
     legacy.indexOf('function isSubmitSuccess'),
     legacy.indexOf('function submitFetch'),
   );
-  assert.match(success, /attempt\.st < 200 \|\| attempt\.st >= 300/);
-  assert.match(success, /attempt\.r\.ok !== true/);
-  assert.match(success, /typeof id === 'number'/);
-  assert.match(success, /typeof id === 'string'/);
+  assert.match(success, /return S\.orderContract\.isConfirmed\(attempt\)/);
   assert.equal(
     (legacy.match(/if \(isSubmitSuccess\(a[12]\)\)/g) || []).length,
     2,
@@ -152,11 +149,10 @@ test('success requires both a 2xx status and a valid confirmed order id', () => 
 });
 
 test('ambiguous retries keep one request id across reload until a definitive result', () => {
-  assert.match(legacy, /var PENDING_REQUEST_KEY = 'salon_pending_request_v1'/);
-  assert.match(legacy, /sessionStorage\.getItem\(PENDING_REQUEST_KEY\)/);
-  assert.match(legacy, /sessionStorage\.setItem\(PENDING_REQUEST_KEY,pendingRequestId\)/);
-  assert.match(legacy, /function clearRequestId\(\)/);
-  assert.equal((legacy.match(/clearRequestId\(\);/g) || []).length, 2);
+  assert.match(legacy, /S\.orderContract\.submit\('configurator', payload, timeoutMs\)/);
+  assert.match(legacy, /attempt && attempt\.clientRequestId/);
+  assert.match(legacy, /classify\(attempt\) === 'definitive_rejection'/);
+  assert.doesNotMatch(legacy, /function onSubmitErr[\s\S]{0,120}?clearRequestId\(\);/);
 });
 
 test('service success removes its stale resume concept without deleting unrelated cart data', () => {
@@ -167,7 +163,7 @@ test('service success removes its stale resume concept without deleting unrelate
   assert.match(cleanup, /sentDraft\.concept\.mode === 'service'/);
   assert.match(cleanup, /delete sentDraft\.concept/);
   assert.match(cleanup, /S\.store\.set\('salon_draft',sentDraft\)/);
-  assert.match(legacy, /function onSubmitOk\(r\)[\s\S]{0,500}?clearSubmittedDrafts\(\)/);
+  assert.match(legacy, /function onSubmitOk\(r, attempt\)[\s\S]{0,500}?clearSubmittedDrafts\(\)/);
 });
 
 test('fallback copy does not promise an impossible ten-second recovery', () => {

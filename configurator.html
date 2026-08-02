@@ -278,9 +278,9 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260802release98"></script>
+<script src="assets/js/app.js?v=20260802out001submit1"></script>
 <script defer src="assets/js/polish15-chrome.js?v=20260802release98"></script>
-<script src="assets/js/extras.js?v=20260802release98&amp;journey=1"></script>
+<script src="assets/js/extras.js?v=20260802out001submit1&amp;journey=1"></script>
 <script src="assets/js/cart.js?v=20260802release98"></script>
 <script>
 function initConf() {
@@ -1740,19 +1740,10 @@ function initConf() {
   var acceptedOrderId = '';
   var submittedCartCount = 0;
   var submittedCartSnapshot = null;
-  var PENDING_REQUEST_KEY = 'salon_pending_request_v1';
-  var pendingRequestId = '';
-  try { pendingRequestId = sessionStorage.getItem(PENDING_REQUEST_KEY) || ''; } catch (e) {}
-  function requestId() {
-    if (pendingRequestId) return pendingRequestId;
-    try { pendingRequestId = crypto.randomUUID(); }
-    catch (e) { pendingRequestId = 'web_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
-    try { sessionStorage.setItem(PENDING_REQUEST_KEY,pendingRequestId); } catch (e) {}
-    return pendingRequestId;
-  }
-  function clearRequestId() {
-    pendingRequestId = '';
-    try { sessionStorage.removeItem(PENDING_REQUEST_KEY); } catch (e) {}
+  function clearRequestId(attempt) {
+    return S.orderContract.clear(
+      'configurator', undefined, attempt && attempt.clientRequestId
+    );
   }
   function renderDoneReceipt(snap) {
     var receipt = $('doneReceipt'), list = $('doneReceiptList'), total = $('doneReceiptTotal');
@@ -1846,8 +1837,7 @@ function initConf() {
       privacy_notice_ack: !!($('fConsent') && $('fConsent').checked),
       consent_doc: 'consent-request 1.0 · privacy 3.1 · oferta 3.2',
       page: svc ? 'configurator.html?service=' + (svc.code || svc.id) : 'configurator.html',
-      ref: (S.refCode && S.refCode()) || undefined,
-      client_request_id: requestId()
+      ref: (S.refCode && S.refCode()) || undefined
     };
     if (attQueue.length) {
       payload.attachments = attQueue.map(function (item) {
@@ -1919,18 +1909,26 @@ function initConf() {
       S.btnLoading(btnSubmit, false); if (mNext) S.btnLoading(mNext, false);
     }
     /* Попытка 1 — до 25с; обрыв/5xx — тихий повтор тем же client_request_id.
-       Серверная идемпотентность вернёт уже созданную заявку без дубля. */
+       Frontend сохраняет идентичность попытки; server dedupe проверяется отдельно. */
     submitFetch(payload, 25000).then(function (a1) {
-      if (isSubmitSuccess(a1)) { unlock(); onSubmitOk(a1.r); return; }
-      if (a1.r && a1.r.ok === false && a1.st < 500 && a1.st > 0) { unlock(); onSubmitErr(a1.r); return; }
+      if (isSubmitSuccess(a1)) { unlock(); onSubmitOk(a1.r, a1); return; }
+      var outcome1 = S.orderContract.classify(a1);
+      if (outcome1 === 'definitive_rejection' || outcome1 === 'local_blocked') {
+        unlock(); onSubmitErr(a1.r, a1); return;
+      }
+      if (outcome1 === 'conflict') { unlock(); onSubmitConflict(a1); return; }
       if (a1.st === 0 || [500, 502, 503, 504].indexOf(a1.st) >= 0) {
         veilStage('Первая попытка не прошла — пробуем ещё…',
                   'Такое бывает на секунду-другую. Держим вашу смету крепко.');
         setTimeout(function () {
           submitFetch(payload, 12000).then(function (a2) {
             unlock();
-            if (isSubmitSuccess(a2)) { onSubmitOk(a2.r); return; }
-            if (a2.r && a2.r.ok === false && a2.st < 500 && a2.st > 0) { onSubmitErr(a2.r); return; }
+            if (isSubmitSuccess(a2)) { onSubmitOk(a2.r, a2); return; }
+            var outcome2 = S.orderContract.classify(a2);
+            if (outcome2 === 'definitive_rejection' || outcome2 === 'local_blocked') {
+              onSubmitErr(a2.r, a2); return;
+            }
+            if (outcome2 === 'conflict') { onSubmitConflict(a2); return; }
             fallbackPanel();
           });
         }, 2500);
@@ -1942,40 +1940,14 @@ function initConf() {
   }
 
   function isSubmitSuccess(attempt) {
-    if (!attempt || attempt.st < 200 || attempt.st >= 300 || !attempt.r ||
-        attempt.r.ok !== true) return false;
-    var id = attempt.r.id;
-    return (typeof id === 'number' && isFinite(id) && id > 0) ||
-      (typeof id === 'string' && id.trim().length > 0);
+    return S.orderContract.isConfirmed(attempt);
   }
 
   /* POST не прерываем: сервер мог уже принять заявку. Секундомер лишь отдаёт
      управление честному запасному ходу, а стабильный client_request_id
-     защищает повтор от дубля. */
+     позволяет серверу распознать повтор; dedupe доказывается отдельно. */
   function submitFetch(payload, timeoutMs) {
-    return new Promise(function (resolve) {
-      var settled = false;
-      var to = setTimeout(function () {
-        if (settled) return;
-        settled = true;
-        resolve({ st: 0, r: null, timedOut: true });
-      }, timeoutMs);
-      function settle(result) {
-        if (settled) return;
-        settled = true;
-        clearTimeout(to);
-        resolve(result);
-      }
-      var h = S.api.headers ? S.api.headers('POST') : {};
-      h['Content-Type'] = 'application/json';
-      fetch(S.api.base + '/orders', {
-        method: 'POST', headers: h, body: JSON.stringify(payload),
-        credentials: 'include'
-      }).then(function (res) {
-        res.json().then(function (j) { settle({ st: res.status, r: j }); },
-                        function () { settle({ st: res.status, r: null }); });
-      }, function () { settle({ st: 0, r: null }); });
-    });
+    return S.orderContract.submit('configurator', payload, timeoutMs);
   }
 
   function clearSubmittedDrafts() {
@@ -1997,9 +1969,9 @@ function initConf() {
        заходе уже отправленной заявкой — стираем вместе с основным */
     try { S.store.del('salon_concept_request_v1'); } catch (e) {}
   }
-  function onSubmitOk(r) {
+  function onSubmitOk(r, attempt) {
     acceptedOrderId = String(r.id);
-    clearRequestId();
+    clearRequestId(attempt);
     if (r.token && S.api.addGuestToken) S.api.addGuestToken(r.token);
     if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
     /* Текстовый черновик держим до подтверждённой загрузки всех вложений.
@@ -2088,9 +2060,16 @@ function initConf() {
   }
 
   /* сервер жив и ответил ошибкой — говорим словами, форма остаётся */
-  function onSubmitErr(r) {
-    clearRequestId();
+  function onSubmitErr(r, attempt) {
+    if (S.orderContract.classify(attempt) === 'definitive_rejection') {
+      clearRequestId(attempt);
+    }
     if (S.visit && S.visit.event) S.visit.event('submit_fail', { cta: 'server_rejected' });
+    if (attempt && attempt.contractError) {
+      S.toast('Браузер не смог безопасно сохранить номер этой попытки. Ничего не отправлено; черновик сохранён. Откройте новую вкладку или напишите мастеру напрямую.');
+      if (detailsIn) detailsIn.focus();
+      return;
+    }
     var e = (r && r.error) || '';
     var scopeMessage = S.api && S.api.outsideScopeMessage
       ? S.api.outsideScopeMessage(r)
@@ -2107,6 +2086,15 @@ function initConf() {
     if (e === 'contact_required') { S.toast('Оставьте контакт или войдите через Telegram'); return; }
     if (e === 'forbidden') { S.toast('Доступ ограничен — напишите нам напрямую, разберёмся'); return; }
     S.toast('Сервер не принял заявку (' + (e || 'ошибка') + ') — попробуйте ещё раз');
+  }
+
+  function onSubmitConflict(attempt) {
+    if (S.visit && S.visit.event) S.visit.event('submit_fail', { cta: 'request_conflict' });
+    var changedLocally = attempt && attempt.contractError === 'intent_changed';
+    S.toast(changedLocally
+      ? 'Заявка изменилась после неподтверждённой отправки. Новые данные не отправлены; верните прежний вариант или напишите мастеру напрямую.'
+      : 'Сервер не подтвердил безопасный повтор. Номер попытки сохранён — изменять заявку и отправлять её заново пока не нужно.');
+    if (detailsIn) detailsIn.focus();
   }
 
   /* --- вуаль отправки: живые стадии, чтобы человек не ушёл в тишину --- */

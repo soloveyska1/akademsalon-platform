@@ -120,8 +120,12 @@ test('critical production actions survive background refreshes and expired sessi
   assert.match(cabinetJs, /if \(nextFixForm && fixOpen\) nextFixForm\.hidden = false/);
   assert.match(cabinetJs, /action === 'bonus_apply' \|\| action === 'gift_apply'/);
   assert.match(appJs, /salon:auth-lost/);
-  assert.match(appJs, /var wasImpersonated = !!impToken\(\)/);
-  assert.match(appJs, /if \(logicalToken\) \{\s*try \{\s*document\.dispatchEvent\(new CustomEvent\('salon:auth-lost'/);
+  assert.match(appJs, /var wasImpersonated = !!currentAuthContext\.impersonationToken/);
+  assert.match(appJs, /function handleApiResponseStatus\(status, path, requestAuthContext\)/);
+  assert.match(appJs, /Salon\.api\.handleStatus\(r\.status, path, requestAuthContext\)/);
+  assert.match(appJs, /statusContext: function \(\) \{ return Salon\.api\.authSnapshot\(\); \}/);
+  assert.match(appJs, /Salon\.api\.handleStatus\(status, path, requestAuthContext\)/);
+  assert.match(appJs, /if \(hadLogicalToken\) \{\s*try \{\s*document\.dispatchEvent\(new CustomEvent\('salon:auth-lost'/);
   assert.match(cabinetJs, /addEventListener\('salon:auth-lost'/);
   assert.match(adminJs, /addEventListener\('salon:auth-lost'/);
 });

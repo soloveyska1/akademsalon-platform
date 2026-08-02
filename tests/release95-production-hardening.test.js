@@ -40,13 +40,15 @@ test('shared API gives retryable GET reads a bounded body-aware timeout', () => 
 });
 
 test('order submission timeout never aborts an ambiguous POST mutation', () => {
-  const submitFetch = configurator.slice(
-    configurator.indexOf('function submitFetch'),
-    configurator.indexOf('function clearSubmittedDrafts'),
+  const orderContract = app.slice(
+    app.indexOf('/* order-contract:start */'),
+    app.indexOf('/* order-contract:end */'),
   );
-  assert.doesNotMatch(submitFetch, /AbortController|\.abort\(|\bsignal\s*:/);
-  assert.match(submitFetch, /resolve\(\{ st: 0, r: null, timedOut: true \}\)/);
-  assert.match(submitFetch, /method: 'POST'/);
+  assert.doesNotMatch(orderContract, /AbortController|\.abort\(|\bsignal\s*:/);
+  assert.match(orderContract, /timedOut: true/);
+  assert.match(orderContract, /return softTimeout\(active\.promise/);
+  assert.match(orderContract, /method: 'POST'/);
+  assert.match(configurator, /S\.orderContract\.submit\('configurator', payload, timeoutMs\)/);
 });
 
 test('contact step supports Enter without bypassing validation', () => {
