@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-5e85f7fbf53849a2a6e741cf4532ece7",
   "slug": "brain-15-mvp",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/brain-v2-out-001",
   "base_sha": "da0a05e83b0cf98d931820aa1468160e2ac66df0",
   "result_sha": "4f71b54a0a96c24a540a5ce834c0a8945627be1b",
@@ -114,6 +114,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 3,
-  "base_manifest_hash": "7af87b3afd022896b897e2bd6c878c903627f302b26014d9532ef154306a79e3"
+  "manifest_revision": 4,
+  "base_manifest_hash": "a52551bd3d46f8ff148abf8e1dec6b04b6356fa9ebd303701530e67ad5a6ed39"
 }
