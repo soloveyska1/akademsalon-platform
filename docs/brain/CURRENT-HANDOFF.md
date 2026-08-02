@@ -2,74 +2,79 @@
 
 ## Canonical product state
 
-- Latest bounded result: `OUT-003`, implementation
-  `7e6f33a6088888ccf49dbbd81cb2a8f68c9cecc2` on base
-  `65adc47cf31ffaa3ba9a797204d938ef866f0e14`.
-- Exact submission/integration truth lives in
-  `workstreams/WS-c4d669dfa50e4493a2fbef81f3481ede/manifest.json`. Until its
-  terminal revision is in freshly fetched `origin/codex/full-reference-production`,
-  this paragraph describes a verified task result, not remote integration.
+- Latest integrated bounded result: `OUT-003`; terminal canonical commit
+  `96156040130c874519d1cd4f6335173a774d7847`, implementation
+  `7e6f33a6088888ccf49dbbd81cb2a8f68c9cecc2`, proof `E-1006`.
+- `OUT-002` and `OUT-004` cabinet slices are also verified and integrated
+  (`E-1004`, `E-1005`). Main/home and the shared shell have no reproduced open
+  P0/P1 in their bounded local gates.
 - Production release remains `release98-c30dbd4924b5`; no deploy, production
   submit/payment, OAuth mutation, client-data access or deletion occurred.
 
-## What is now proved
+## Active workstream
 
-- `OUT-002` and `OUT-004`: cabinet priority and active-case payment/context are
-  fail-closed, locally verified and integrated (`E-1004`, `E-1005`).
-- `OUT-003`: all 92 root documents resolve to an explicit shell family; saved
-  theme, menu/search focus return, consent modal/background, persistent settings,
-  admin shortcut ownership, dark CTA/badge contrast and direct/home cache parity
-  are frozen by an executable contract (`E-1006`).
-- OUT-003 proof: focused 78/78; repository 472/472; Brain 39/39; exact local
-  360/390/768/1024/1440 spine with no overflow, 44 px mobile footer action, AA
-  contrast, inert consent background and empty final console log.
-- Main/home, shared header/appbar/footer and integrated cabinet slices have no
-  reproduced P0/P1. This is not a production visual, live-auth or downstream
-  delivery claim.
+- Outcome: `OUT-005` on `codex/out-005-services-choice`, base exact canonical
+  `96156040130c874519d1cd4f6335173a774d7847`.
+- Workstream: `WS-9f644e92a3a04eb280a49d550b0ae513`, active manifest revision 2;
+  root is sole write-owner.
+- Bootstrap commits: `c7e1017` declaration, `f01b642` honest configurator/
+  Brain scope expansion. Product implementation has not started.
+- Plan: `plans/OUT-005-SERVICES-CHOICE.md`; audited baseline: `E-1007`.
 
-## Project Brain and council
+## Reproduced truth for the active outcome
 
-- Tracked Markdown under `docs/brain/` is durable truth. SQLite and
-  `.brain/council/` are ignored projections/reports; chat is not current truth.
-- Workstream manifests reserve exact/semantic scope, freeze `result_sha`, and
-  require fresh fetch plus ancestry-gated integration. Brain unit suite is
-  39/39 and strict corpus validation is green.
-- Worktree doctor/probe returned Kimi, Sonnet, GLM, Opus and Fable `READY`;
-  `local_llm: DISABLED`, `background_services: NONE`. Daily independent review
-  used Kimi+Sonnet+GLM and one Opus contract review. Fable stayed probe-only
-  because there was no systemic deadlock.
-- Three read-only Codex agents independently audited topology, UX/mobile/dark and
-  QA/accessibility/reliability; root was the sole write-owner.
+- Protected inventory: 12 hub cards, 9 discipline links, 22 physical detail
+  pages, ItemList 13 and 24 shared catalogue-asset consumers. Canonical/schema/
+  sitemap/price baselines are green; focused 87/87 and full 472/472 pass.
+- P1 choice/state: saved 390×844 shows resume plus four situation routes and a
+  second dock continuation. The page has no selected-one→one-continuation state.
+- P1 focus/history: after “Начать заново” focus falls to `BODY`; the incoming
+  route is removed before conflict resolution, and reload loses the new choice.
+- P1 dark contrast: hub primary 2.712:1, saved action 2.692:1, detail primary
+  4.065:1; all are normal text below the 4.5:1 gate.
+- P1 intent: storage-only detail CTAs can combine fresh legacy state with stale
+  higher-precedence concept; several visible promises, `pageCaseContext()`
+  routes and advertised tiers disagree.
+- P2: discipline search can claim empty despite matching physical links; mobile
+  stage labels are 7 px and compact copy can describe two remaining choices when
+  one remains.
+
+## Contract decision
+
+Keep the four situation IA and physical catalogue. Fresh state becomes four
+selectable controls plus one continuation; saved state makes resume the sole
+primary and reveals new selection only after a secondary action. Exact
+allowlisted result mapping equals the configurator's existing derivation and
+was validated by a local compact-route prototype; no offer or price is invented.
+
+Do not guess detail intent/price truth. Build a deterministic matrix across page
+copy, explicit route, `pageCaseContext()` and canonical price; if app.js requires
+correction, revise manifest/cache scope before touching it.
+
+## Agents and council
+
+- Three fresh read-only Codex reviewers covered architecture/SEO, UX mobile/dark
+  and QA/accessibility/reliability. Their reproducible findings are in `E-1007`;
+  no reviewer changed files.
+- Council doctor: Kimi, Sonnet, GLM, Opus, Fable `READY`; local LLM disabled,
+  background services none. Daily Kimi+Sonnet+GLM and one Opus contract review
+  ran. Fable stayed probe-only because no systemic deadlock existed.
+- Model claims without current repository evidence were discarded. The explicit
+  result-route disagreement was resolved by code plus browser experiment, not a
+  vote.
 
 ## Remaining limits
 
-- `OUT-001` frontend → API → bot/operator → cabinet exactly-once proof is still
-  the largest functional gap. Authoritative backend/bot source plus safe
-  marker/lookup/cleanup are absent; do not substitute a production mutation or
-  UI-only success.
-- Backend atomic case revision/schema remains unknown; the frontend continues to
-  fail closed rather than guess it.
-- Reduced-motion and auth-state shell invariants are deterministic source
-  contracts. OUT-003 did not emulate reduced motion or perform live OAuth.
-
-## Why the next outcome is OUT-005
-
-The common shell, main/home and cabinet have no open reproduced P0/P1 in their
-verified local gates. `OUT-001` cannot advance safely without external contract
-and cleanup capabilities. `services.html` is therefore the highest-centrality
-local product surface still carrying avoidable choice: it sits between the
-user's situation and the configurator, while physical SEO landing URLs must
-remain intact.
-
-`OUT-005` should simplify the services hub into a situation-led route with one
-explicit next step and one truthful context handoff. It must preserve every
-physical SEO URL, canonical, schema, sitemap and price contract and must not
-redesign the now-verified global shell.
+- `OUT-001` frontend→API→bot/operator→cabinet exactly-once proof still lacks
+  authoritative backend/bot source and safe marker/lookup/cleanup.
+- Reduced motion has source proof only in this OUT-005 baseline; no live OAuth,
+  production visual or downstream delivery claim is made.
+- Strict conflict has hard=0 and one explicitly accepted old/dormant-ref warning;
+  fresh fetch/scan remains mandatory before integration.
 
 ## One exact next step
 
-After the OUT-003 submitted and integrated manifest revisions are present in a
-freshly fetched canonical ref, create `codex/out-005-services-choice` from that
-exact SHA, initialize an OUT-005 Brain workstream and run a read-only baseline
-of choice count, route context, SEO invariants and mobile comprehension before
-changing `services.html`.
+Add `tests/services-choice-contract.test.js` as failing-first evidence for the
+choice/saved-state, conflict focus/history, contrast, explicit intent, physical
+inventory, discipline search and 24-consumer cache groups. Record each red group
+before changing runtime or presentation.

@@ -21,6 +21,25 @@ workstream manifest, а не из чата или model report.
 - Gate: backend/bot source или безопасные marker, lookup и cleanup пока
   отсутствуют. Никакой реальной клиентской мутации без них.
 
+### OUT-005 — Выбор услуги сохраняет намерение и ведёт к одному шагу
+
+- Почему сейчас: common shell, main/home и cabinet локально verified, а
+  `services.html` остаётся центральным переходом между ситуацией клиента,
+  физическим каталогом и configurator. Аудит воспроизвёл контраст, saved-draft
+  focus/history и intent/price gaps, которых не видят текущие 472 теста.
+- Результат: четыре ситуации остаются понятной первой развилкой, но выбор даёт
+  один explicit continuation; сохранённый черновик не конкурирует с новой
+  задачей и не мутирует до решения; detail CTA несёт проверяемый URL-context.
+- Связи: `DEC-0002`, `DEC-0003`, `G6`, `G9`, `UXD-0005`, `UXD-0006`.
+- Метрика: P0/P1=0; dark normal-text CTA ≥4.5:1; focus и route survive
+  continue/replace/reload/history; 12 hub cards, 9 discipline URLs, 22 detail
+  pages, ItemList/canonical/schema/sitemap/prices остаются физическими и точными.
+- Proof: `E-1007`, failing-first `tests/services-choice-contract.test.js`,
+  saved-route state matrix, exact mobile/desktop light/dark browser scenarios,
+  full regression and atomic 24-consumer catalog cache wave.
+- Stop: не угадывать product/price truth при расхождении page copy,
+  `pageCaseContext` и canonical pricing; не трогать verified global shell.
+
 ## VERIFIED
 
 ### OUT-002 — Следующий шаг по делу находится за 10 секунд
@@ -49,9 +68,6 @@ workstream manifest, а не из чата или model report.
 
 ## NEXT
 
-- `OUT-005` — сократить выбор на `services.html` и вести от ситуации к одному
-  релевантному контекстному сценарию, не удаляя physical SEO URLs, canonical,
-  schema, sitemap или ценовые контракты.
 - `OUT-006` — измерять понимание первого шага и время до него без чувствительных
   данных; использовать как evidence до preference-led каталожных изменений.
 
