@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-cf01d4d63ca2421e93288e3518298bfa",
   "slug": "out-004-case-context-truth",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-004-case-context-truth",
   "base_sha": "4c43a42dfc67878d116a79feb528ca3bca4c4309",
   "result_sha": "3cf7363bdb2d3fcbbb8d690ddc35a4e4371b4df1",
@@ -106,6 +106,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 4,
-  "base_manifest_hash": "575af2a93d27927484f99b35722c71f082924c7672ec9a1dd73593c713f8f17f"
+  "manifest_revision": 5,
+  "base_manifest_hash": "27e30ca68c5c39a323c508ea2098339a3de68711a4a65d1fa6c9aca8616efd3e"
 }
