@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-cf01d4d63ca2421e93288e3518298bfa",
+  "slug": "out-004-case-context-truth",
+  "status": "active",
+  "branch": "codex/out-004-case-context-truth",
+  "base_sha": "4c43a42dfc67878d116a79feb528ca3bca4c4309",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-004"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/js/cabinet.js",
+        "match": "exact"
+      },
+      {
+        "path": "dashboard.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1005.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/OUT-004-CASE-CONTEXT.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/UX-DEBT.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-cf01d4d63ca2421e93288e3518298bfa/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-case-context.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/js/cabinet-demo.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1004.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/PRODUCT-MAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-case-comfort.test.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "brain-record:UXD-0004"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:cabinet/case-context"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:account/case-context"
+    },
+    {
+      "access": "read",
+      "key": "journey:JRN-004"
+    },
+    {
+      "access": "read",
+      "key": "journey:JRN-005"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
