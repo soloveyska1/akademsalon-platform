@@ -118,8 +118,11 @@ merge conflict.
 `brain conflicts` не делает fetch и не обещает знания об unfetched/unpushed
 работе. Он читает manifests и фактические diffs доступных локальных refs,
 проверяет active/detached worktrees и сообщает `decision`, `blocking`, counts и
-точный `NEXT`. HARD нельзя подавить; warnings разрешает только осознанный
-`--allow-warnings` непосредственно перед интеграцией.
+точный `NEXT`. Непересекающиеся dormant/environment observations идут как INFO и
+не блокируют bootstrap. HARD нельзя подавить; warnings (реальный dormant overlap,
+невалидный/неизвестный active state) разрешает только осознанный integration owner
+на bootstrap либо непосредственно перед интеграцией. Перед обоими scan нужен
+свежий `git fetch origin`, потому что Brain намеренно не делает сеть.
 
 `record_schema_version: 1` в `catalog.json` означает additive-only Markdown
 contract: существующие ID и обязательные поля не меняются молча. Новый record-kind

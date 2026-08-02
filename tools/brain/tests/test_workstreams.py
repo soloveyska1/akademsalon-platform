@@ -52,6 +52,9 @@ class WorkstreamTests(unittest.TestCase):
             git(root, "add", str(path.relative_to(root)))
             git(root, "commit", "-m", "submit workstream")
             git(root, "branch", "-f", "main", "HEAD")
+            git(root, "switch", "-c", "codex/fake-integration", "main")
+            with self.assertRaisesRegex(BrainFailure, "MANIFEST_BRANCH"):
+                project.set_workstream_status("integrated", path)
             git(root, "switch", "main")
             project.set_workstream_status("integrated", path)
             integrated = json.loads(path.read_text(encoding="utf-8"))
@@ -114,6 +117,12 @@ class WorkstreamTests(unittest.TestCase):
             self.assertIsNone(migrated["result_sha"])
             self.assertEqual(migrated["manifest_revision"], 2)
             self.assertEqual(migrated["base_manifest_hash"], legacy_digest)
+            migrated_handoff = legacy_path.with_name("HANDOFF.md")
+            self.assertTrue(migrated_handoff.exists())
+            self.assertIn(
+                {"path": str(migrated_handoff.relative_to(root)), "match": "exact"},
+                migrated["scope"]["write"],
+            )
 
     def test_duplicate_live_manifest_branch_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:

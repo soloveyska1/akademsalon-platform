@@ -24,6 +24,8 @@
 - Schema v2 lifecycle: generated `active` manifest, frozen `submitted.result_sha`,
   ancestry-gated `integrated`, revision/hash chain и legacy-v1 normalization без
   права unfrozen legacy status освобождать scope.
+- `workstream migrate` не принимает внешний SHA: он атомарно переводит legacy-v1
+  в active v2, создаёт branch-local handoff и объявляет только его exact scope.
 - `workstream init` создаёт и автоматически объявляет branch-local `HANDOFF.md`;
   он целиком входит в context текущей ветки. Singleton `CURRENT-HANDOFF` теперь
   последовательно сводит integration owner, поэтому параллельные ветки не обязаны
@@ -31,7 +33,8 @@
 - `conflicts` входит в обязательный bootstrap, сам находит manifest текущей ветки
   и возвращает non-zero на warnings по умолчанию. Он читает manifests из локальных
   refs, сверяет их с actual diff, видит active/detached worktrees и выдаёт
-  decision/blocking/counts/NEXT в text и JSON.
+  decision/blocking/counts/NEXT в text и JSON. Disjoint historical/environment
+  наблюдения — INFO; реальный dormant overlap — warning; ambiguous/active/dirty — hard.
 - `record_schema_version: 1` — additive-only; definition вне canonical owner-файла
   блокируется, breaking schema требует миграционного теста и отдельного решения.
 - Security: strict UTF-8/JSON, duplicate/nonfinite rejection, symlink/privacy/path
@@ -40,7 +43,7 @@
 
 ## Проверено
 
-- Brain tests: 36/36.
+- Brain tests: 39/39.
 - Product regression: 430/430.
 - Strict corpus validation, atomic refresh, doctor, map и byte-identical context.
 - `.brain`/SQLite modes: 0700/0600; failed size gate preserves previous DB.
@@ -50,7 +53,9 @@
   утверждение «model integrations недоступны» остаётся историей, но superseded;
   канонический текущий факт — portable integrations работают из этого worktree.
 - Daily review: Kimi+Sonnet+GLM; одна Opus contract-fork проверка. Fable после
-  connectivity probe не расходовался.
+  connectivity probe не расходовался. Итог Opus: текущей Markdown+manifest
+  архитектуры и последовательного integration owner достаточно; remote lease/
+  merge queue требует факта повторяющихся сбоев сериализации canonical.
 - Полная детерминированная запись: `docs/brain/evidence/E-1001.md`.
 
 ## Не проверено и пределы

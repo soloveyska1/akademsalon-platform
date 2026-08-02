@@ -7,9 +7,11 @@
 - Acceptance: deterministic context; self-created scoped manifest; frozen result
   lifecycle; actual ref/worktree conflict evidence; explicit terminalization.
 - Changed: Brain schema v2 with safe legacy-v1 migration, workstream CLI,
-  per-workstream handoff, ref-manifest discovery and compact conflict decisions.
+  per-workstream handoff, ref-manifest discovery and compact hard/warning/info
+  conflict decisions.
 - Proof: `brain:test`, `brain:validate`, full product tests, council connectivity
-  and independent agent review; exact final results belong in `E-1001`.
+  and independent agent review; 39/39 Brain and 430/430 product tests are recorded
+  in `E-1001`.
 - Unverified: remote canonical integration and post-push SHA verification.
 - Risks/rollback: no force-push; explicit refspec only; revert commits in reverse
   order; never delete `.brain` because council state shares that ignored root.

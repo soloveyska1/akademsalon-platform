@@ -131,10 +131,10 @@ class ConflictTests(unittest.TestCase):
             root = create_project(Path(tmp))
             project = BrainProject(root)
             base = git(root, "rev-parse", "HEAD")
-            git(root, "switch", "-c", "codex/disjoint")
-            write(root / "disjoint.txt", "parallel but outside declared scope\n")
-            git(root, "add", "disjoint.txt")
-            git(root, "commit", "-m", "disjoint")
+            git(root, "switch", "-c", "codex/dormant-overlap")
+            write(root / "tools/brain/brain.py", "parallel dormant overlap\n")
+            git(root, "add", "tools/brain/brain.py")
+            git(root, "commit", "-m", "dormant overlap")
             git(root, "switch", "main")
             data = manifest(base)
             data["branch"] = "main"
@@ -170,6 +170,67 @@ class ConflictTests(unittest.TestCase):
             self.assertEqual(code, 0)
             self.assertEqual(payload["exit_code"], 0)
             self.assertEqual(payload["decision"], "PROCEED_LOCAL_SNAPSHOT")
+
+    def test_disjoint_dormant_ref_is_info_and_does_not_block_bootstrap(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = create_project(Path(tmp))
+            project = BrainProject(root)
+            base = git(root, "rev-parse", "HEAD")
+            git(root, "switch", "-c", "codex/disjoint")
+            write(root / "disjoint.txt", "parallel but outside declared scope\n")
+            git(root, "add", "disjoint.txt")
+            git(root, "commit", "-m", "disjoint")
+            git(root, "switch", "main")
+            current = manifest(base)
+            current["branch"] = "main"
+            current_path = (
+                root / "docs/brain/workstreams" / current["workstream_id"] / "manifest.json"
+            )
+            write(current_path, json.dumps(current, ensure_ascii=False))
+            report = project.conflict_report(current_path, strict=True)
+            self.assertFalse(report["warnings"])
+            self.assertTrue(any(item["code"] == "SEMANTICS_UNKNOWN" for item in report["info"]))
+            self.assertEqual(report["decision"], "PROCEED_LOCAL_SNAPSHOT")
+            self.assertEqual(report["exit_code"], 0)
+
+    def test_canonical_advance_changes_digest_and_blocks_declared_scope_drift(self):
+        for overlaps in (False, True):
+            with self.subTest(overlaps=overlaps), tempfile.TemporaryDirectory() as tmp, tempfile.TemporaryDirectory() as worktree_tmp:
+                root = create_project(Path(tmp))
+                base = git(root, "rev-parse", "HEAD")
+                git(root, "switch", "-c", "codex/current")
+                project = BrainProject(root)
+                current = manifest(base)
+                current["branch"] = "codex/current"
+                current_path = (
+                    root
+                    / "docs/brain/workstreams"
+                    / current["workstream_id"]
+                    / "manifest.json"
+                )
+                write(current_path, json.dumps(current, ensure_ascii=False))
+                before = project.conflict_report(current_path, strict=True)
+                canonical_root = Path(worktree_tmp) / "canonical"
+                git(root, "worktree", "add", str(canonical_root), "main")
+                changed_path = (
+                    canonical_root / "tools/brain/brain.py"
+                    if overlaps
+                    else canonical_root / "disjoint.txt"
+                )
+                write(changed_path, "canonical advance\n")
+                git(canonical_root, "add", ".")
+                git(canonical_root, "commit", "-m", "advance canonical")
+                after = project.conflict_report(current_path, strict=True)
+                self.assertNotEqual(before["snapshot_digest"], after["snapshot_digest"])
+                if overlaps:
+                    self.assertTrue(
+                        any(item["code"] == "BASE_SCOPE_DRIFT" for item in after["hard"])
+                    )
+                else:
+                    self.assertFalse(after["hard"])
+                    self.assertTrue(
+                        any(item["code"] == "BASE_BEHIND" for item in after["warnings"])
+                    )
 
     def test_dormant_ref_overlap_warns_but_checked_out_worktree_is_hard(self):
         with tempfile.TemporaryDirectory() as tmp, tempfile.TemporaryDirectory() as worktree_tmp:
@@ -242,6 +303,37 @@ class ConflictTests(unittest.TestCase):
             self.assertTrue(
                 any(item["code"] == "FOREIGN_SCOPE_ESCAPE" for item in report["hard"])
             )
+
+    def test_ambiguous_foreign_manifest_is_hard_even_when_dormant(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = create_project(Path(tmp))
+            project = BrainProject(root)
+            base = git(root, "rev-parse", "HEAD")
+            git(root, "switch", "-c", "codex/ambiguous")
+            for workstream_id in (
+                "WS-fedcba9876543210fedcba9876543210",
+                "WS-11111111111111111111111111111111",
+            ):
+                foreign = manifest(base, workstream_id)
+                foreign["branch"] = "codex/ambiguous"
+                foreign_path = (
+                    root / "docs/brain/workstreams" / workstream_id / "manifest.json"
+                )
+                write(foreign_path, json.dumps(foreign, ensure_ascii=False))
+            git(root, "add", ".")
+            git(root, "commit", "-m", "ambiguous foreign declarations")
+            git(root, "switch", "main")
+            current = manifest(base)
+            current["branch"] = "main"
+            current_path = (
+                root / "docs/brain/workstreams" / current["workstream_id"] / "manifest.json"
+            )
+            write(current_path, json.dumps(current, ensure_ascii=False))
+            report = project.conflict_report(current_path, strict=False)
+            self.assertTrue(
+                any(item["code"] == "FOREIGN_MANIFEST_INVALID" for item in report["hard"])
+            )
+            self.assertEqual(report["exit_code"], 1)
 
     def test_inherited_submitted_result_releases_scope_but_active_does_not(self):
         for status in ("active", "paused", "submitted"):

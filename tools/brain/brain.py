@@ -1105,7 +1105,14 @@ class BrainProject:
         policy = self._policy()
         canonical_sha = self.git("rev-parse", "--verify", policy["canonical_ref"]).stdout.strip()
         head_sha = self.git("rev-parse", "HEAD").stdout.strip()
-        canonical_checkout = manifest_path is not None and head_sha == canonical_sha
+        canonical_branch = policy["canonical_ref"].removeprefix("refs/heads/")
+        if canonical_branch.startswith("origin/"):
+            canonical_branch = canonical_branch.removeprefix("origin/")
+        canonical_checkout = (
+            manifest_path is not None
+            and branch == canonical_branch
+            and head_sha == canonical_sha
+        )
         if branch != data["branch"] and not (target == "integrated" and canonical_checkout):
             raise BrainFailure("MANIFEST_BRANCH", f"current={branch} manifest={data['branch']}")
         previous_digest = self.manifest_digest(data)
@@ -1140,13 +1147,31 @@ class BrainProject:
         branch = self.git("branch", "--show-current").stdout.strip()
         if branch != data["branch"]:
             raise BrainFailure("MANIFEST_BRANCH", f"current={branch} manifest={data['branch']}")
-        migrated = dict(raw)
+        migrated = json.loads(json.dumps(raw, ensure_ascii=False))
         migrated["schema_version"] = 2
         migrated["status"] = "active" if data["status"] == "submitted" else data["status"]
         migrated["result_sha"] = None
         migrated["manifest_revision"] = data["manifest_revision"] + 1
         migrated["base_manifest_hash"] = self.manifest_digest(raw)
-        self._write_manifest(path, migrated, create=False)
+        handoff_path = path.with_name("HANDOFF.md")
+        handoff_relative = self._relative(handoff_path)
+        write_scopes = migrated["scope"]["write"]
+        if not any(self._git_path_overlaps_scope(handoff_relative, item) for item in write_scopes):
+            write_scopes.append({"path": handoff_relative, "match": "exact"})
+            write_scopes.sort(key=lambda item: (item["path"].casefold(), item["match"]))
+        created_handoff = False
+        try:
+            if not handoff_path.exists():
+                self._write_new_text(
+                    handoff_path,
+                    self._workstream_handoff(data["outcome_ids"], branch),
+                )
+                created_handoff = True
+            self._write_manifest(path, migrated, create=False)
+        except BrainFailure:
+            if created_handoff:
+                handoff_path.unlink(missing_ok=True)
+            raise
         return path
 
     def validate(self, strict: bool = False) -> Snapshot:
@@ -1623,7 +1648,7 @@ class BrainProject:
         )
 
     @staticmethod
-    def _compact_warnings(items: list[dict[str, str]]) -> list[dict[str, str]]:
+    def _compact_findings(items: list[dict[str, str]]) -> list[dict[str, str]]:
         aggregate_codes = {"HISTORY_UNRELATED", "SEMANTICS_UNKNOWN", "UNMANAGED_REF_OVERLAP"}
         grouped: dict[str, list[dict[str, str]]] = {}
         output: list[dict[str, str]] = []
@@ -1666,6 +1691,7 @@ class BrainProject:
         base_sha = current["base_sha"]
         hard: list[dict[str, str]] = []
         warnings: list[dict[str, str]] = []
+        info: list[dict[str, str]] = []
         inspected: list[str] = []
         self_manifest_relative = (
             f"docs/brain/workstreams/{current['workstream_id']}/manifest.json"
@@ -1779,14 +1805,25 @@ class BrainProject:
                 continue
             merge_result = self.git("merge-base", canonical_sha, oid, check=False)
             if merge_result.returncode:
-                warnings.append({"code": "HISTORY_UNRELATED", "subject": name})
+                target = (
+                    hard
+                    if is_active_worktree or name in live_manifests_by_branch
+                    else info
+                )
+                target.append(
+                    {
+                        "code": "ACTIVE_HISTORY_UNRELATED"
+                        if target is hard
+                        else "HISTORY_UNRELATED",
+                        "subject": name,
+                    }
+                )
                 continue
             merge_base = merge_result.stdout.strip()
             changed = self._changed_paths(merge_base, oid)
             branch_manifest, manifest_errors = self._changed_branch_manifest(name, oid, changed)
             if manifest_errors:
-                target = hard if is_active_worktree else warnings
-                target.append(
+                hard.append(
                     {
                         "code": "FOREIGN_MANIFEST_INVALID",
                         "subject": f"{name}: {','.join(manifest_errors[:3])}",
@@ -1955,7 +1992,7 @@ class BrainProject:
                     compare_manifests(current, foreign_manifest, policy["semantic_namespaces"])
                 )
             elif changed and not overlapping:
-                warnings.append({"code": "SEMANTICS_UNKNOWN", "subject": name})
+                info.append({"code": "SEMANTICS_UNKNOWN", "subject": name})
         for other in manifests:
             if other["workstream_id"] == current["workstream_id"]:
                 continue
@@ -2011,7 +2048,9 @@ class BrainProject:
             inspected.append(f"detached:{item['worktree']}@{oid[:12]}")
             merge_result = self.git("merge-base", canonical_sha, oid, check=False)
             if merge_result.returncode:
-                warnings.append({"code": "HISTORY_UNRELATED", "subject": item["worktree"]})
+                hard.append(
+                    {"code": "ACTIVE_HISTORY_UNRELATED", "subject": item["worktree"]}
+                )
                 continue
             changed = self._changed_paths(merge_result.stdout.strip(), oid)
             overlapping = [path for path in changed if self._path_overlaps_manifest(path, current)]
@@ -2023,7 +2062,7 @@ class BrainProject:
                     }
                 )
             elif oid != head_sha:
-                warnings.append({"code": "DETACHED_WORKTREE_PRESENT", "subject": item["worktree"]})
+                info.append({"code": "DETACHED_WORKTREE_PRESENT", "subject": item["worktree"]})
         roots = [item["worktree"] for item in worktree_snapshot if item.get("worktree")]
         for raw_root in roots:
             other_root = Path(raw_root)
@@ -2045,7 +2084,7 @@ class BrainProject:
                     }
                 )
             if dirty_paths and not overlapping:
-                warnings.append({"code": "FOREIGN_DIRTY_DISJOINT", "subject": raw_root})
+                info.append({"code": "FOREIGN_DIRTY_DISJOINT", "subject": raw_root})
         after_refs = self.git("show-ref", "--head").stdout
         if before_refs != after_refs:
             raise BrainFailure("SNAPSHOT_MOVED", "refs changed during conflict scan")
@@ -2057,14 +2096,26 @@ class BrainProject:
             {key: sanitize_display(value) for key, value in item.items()}
             for item in warnings
         ]
+        info = [
+            {key: sanitize_display(value) for key, value in item.items()}
+            for item in info
+        ]
         inspected = sorted(set(sanitize_display(item) for item in inspected))
         hard = sorted(hard, key=lambda item: (item["code"], item.get("subject", ""), item.get("left", "")))
         warnings = sorted(
-            self._compact_warnings(warnings),
+            self._compact_findings(warnings),
+            key=lambda item: (item["code"], item.get("subject", "")),
+        )
+        info = sorted(
+            self._compact_findings(info),
             key=lambda item: (item["code"], item.get("subject", "")),
         )
         status = "CONFLICT" if hard else (
-            "CLEAR_LOCAL_SNAPSHOT_WITH_WARNINGS" if warnings else "CLEAR_LOCAL_SNAPSHOT"
+            "CLEAR_LOCAL_SNAPSHOT_WITH_WARNINGS"
+            if warnings
+            else "CLEAR_LOCAL_SNAPSHOT_WITH_INFO"
+            if info
+            else "CLEAR_LOCAL_SNAPSHOT"
         )
         blocking = [
             {"severity": "hard", **item} for item in hard
@@ -2079,6 +2130,7 @@ class BrainProject:
                     "manifest": current,
                     "hard": hard,
                     "warnings": warnings,
+                    "info": info,
                     "inspected": inspected,
                 },
                 sort_keys=True,
@@ -2092,9 +2144,11 @@ class BrainProject:
             "manifest_id": current["workstream_id"],
             "hard": hard,
             "warnings": warnings,
+            "info": info,
             "counts": {
                 "hard": len(hard),
                 "warnings": len(warnings),
+                "info": len(info),
                 "blocking": len(blocking),
                 "inspected": len(inspected),
             },
@@ -2210,6 +2264,7 @@ def _print_conflicts(report: dict[str, Any]) -> None:
         "counts: "
         f"hard={report['counts']['hard']} "
         f"warnings={report['counts']['warnings']} "
+        f"info={report['counts']['info']} "
         f"blocking={report['counts']['blocking']} "
         f"inspected={report['counts']['inspected']}"
     )
@@ -2222,6 +2277,8 @@ def _print_conflicts(report: dict[str, Any]) -> None:
         print(f"HARD {item['code']}: {subject}")
     for item in report["warnings"]:
         print(f"WARN {item['code']}: {item.get('subject', '')}")
+    for item in report["info"]:
+        print(f"INFO {item['code']}: {item.get('subject', '')}")
     print(f"snapshot: {report['snapshot_digest']}")
     for limit in report["limits"]:
         print(f"LIMIT: {limit}")
@@ -2419,9 +2476,9 @@ def main(argv: Sequence[str] | None = None, project: BrainProject | None = None)
                 path = project.migrate_workstream(
                     Path(args.manifest) if args.manifest else None,
                 )
-                print(f"UPDATED {project._relative(path)} schema=v2 status=active")
+                print(f"UPDATED {project._relative(path)} schema=v2")
                 print(
-                    "NEXT: review scope, commit only this migration revision, "
+                    "NEXT: review scope, commit the exact manifest and handoff migration, "
                     "then continue implementation before submitting a fresh result SHA"
                 )
         elif args.command == "processes":

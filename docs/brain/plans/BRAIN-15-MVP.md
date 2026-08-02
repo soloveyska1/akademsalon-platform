@@ -7,10 +7,13 @@
 - Independent review: schema/context, conflict safety, QA/security
 - Git-origin integration: явно разрешена пользователем; production/OAuth/deploy/data mutations запрещены
 
-Daily council Kimi+Sonnet+GLM привёл к strict-by-default bootstrap и явной
-record-schema policy. Один Opus review выбрал вариант A и нашёл policy/comparator
-fail-open; mismatch устранён policy-driven сравнением и отдельным regression test.
-Model observations не являются hard-gate evidence.
+Daily council Kimi+Sonnet+GLM привёл к обязательному fresh fetch,
+strict-by-default bootstrap, hard-failure для ambiguous foreign manifests и явной
+record-schema policy. Один Opus review подтвердил вариант A: tracked Markdown,
+local ref manifests и последовательный integration owner достаточны до появления
+повторяемых сбоев сериализации canonical. Ранее найденный policy/comparator
+fail-open устранён policy-driven сравнением и regression test. Model observations
+не являются hard-gate evidence.
 
 ## Решение и граница MVP
 
@@ -68,7 +71,8 @@ allowlisted proof IDs. Brain не исполняет значения manifest.
   пределы проверки; отсутствие manifest/semantic scope не выдаётся за global safe.
 - CLI `conflicts` обнаруживает manifest текущей ветки и трактует warnings как
   non-zero по умолчанию; `--allow-warnings` является явным решением integration
-  owner. Text/JSON согласованно содержат decision, blocking, counts и exit code.
+  owner. Disjoint dormant/environment observations имеют отдельный non-blocking
+  INFO уровень. Text/JSON согласованно содержат decision, blocking, counts и exit code.
 - `workstream init` проходит только на clean HEAD, равном canonical ref, и сам
   создаёт schema-v2 manifest, UUID/base/default proof IDs и handoff. Canonical
   branch запрещена для init. `submitted` фиксирует implementation HEAD;
