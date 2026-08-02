@@ -1,0 +1,83 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-e08156212817409b803adf1d40e4ef2e",
+  "slug": "out-002-cabinet-priority-truth",
+  "status": "active",
+  "branch": "codex/out-002-cabinet-priority-truth",
+  "base_sha": "1426b4e602cffda2a291c43076a089ffd13cd857",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-002"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/js/cabinet.js",
+        "match": "exact"
+      },
+      {
+        "path": "dashboard.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1004.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/OUT-002-CABINET-PRIORITY.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-e08156212817409b803adf1d40e4ef2e/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-home-overview.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "docs/brain/evidence/E-1002.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/PRODUCT-MAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/UX-DEBT.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "shared-runtime:cabinet/priority"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:account/priority"
+    },
+    {
+      "access": "read",
+      "key": "journey:JRN-004"
+    },
+    {
+      "access": "read",
+      "key": "journey:JRN-005"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
