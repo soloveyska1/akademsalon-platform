@@ -2,49 +2,118 @@
   "schema_version": 2,
   "workstream_id": "WS-5e85f7fbf53849a2a6e741cf4532ece7",
   "slug": "brain-15-mvp",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/brain-v2-out-001",
   "base_sha": "da0a05e83b0cf98d931820aa1468160e2ac66df0",
-  "result_sha": null,
+  "result_sha": "4f71b54a0a96c24a540a5ce834c0a8945627be1b",
   "outcome_ids": [
     "OUT-001"
   ],
   "write_owner": "codex-root",
   "scope": {
     "write": [
-      {"path": "AGENTS.md", "match": "exact"},
-      {"path": "docs/brain/CURRENT-HANDOFF.md", "match": "exact"},
-      {"path": "docs/brain/DECISIONS.md", "match": "exact"},
-      {"path": "docs/brain/START-HERE.md", "match": "exact"},
-      {"path": "docs/brain/catalog.json", "match": "exact"},
-      {"path": "docs/brain/evidence/E-1001.md", "match": "exact"},
-      {"path": "docs/brain/plans/BRAIN-15-MVP.md", "match": "exact"},
-      {"path": "docs/brain/workstreams/WS-5e85f7fbf53849a2a6e741cf4532ece7/HANDOFF.md", "match": "exact"},
-      {"path": "docs/brain/workstream-policy.json", "match": "exact"},
-      {"path": "tools/brain/brain.py", "match": "exact"},
-      {"path": "tools/brain/tests", "match": "tree"}
+      {
+        "path": "AGENTS.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/DECISIONS.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/catalog.json",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1001.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/BRAIN-15-MVP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-5e85f7fbf53849a2a6e741cf4532ece7/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstream-policy.json",
+        "match": "exact"
+      },
+      {
+        "path": "tools/brain/brain.py",
+        "match": "exact"
+      },
+      {
+        "path": "tools/brain/tests",
+        "match": "tree"
+      }
     ],
     "read": [
-      {"path": "docs/brain/MODEL-COUNCIL.md", "match": "exact"},
-      {"path": "docs/brain/PRODUCT-MAP.md", "match": "exact"},
-      {"path": "docs/brain/QUALITY-GATES.md", "match": "exact"},
-      {"path": "docs/brain/ROADMAP.md", "match": "exact"}
+      {
+        "path": "docs/brain/MODEL-COUNCIL.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/PRODUCT-MAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/ROADMAP.md",
+        "match": "exact"
+      }
     ]
   },
   "semantic_scope": [
-    {"access": "write", "key": "brain-command:conflicts"},
-    {"access": "write", "key": "brain-command:context"},
-    {"access": "write", "key": "brain-command:map"},
-    {"access": "write", "key": "brain-command:workstream"},
-    {"access": "write", "key": "brain-command:validate"},
-    {"access": "write", "key": "brain-index:v2"},
-    {"access": "write", "key": "brain-record:DEC-0007"},
-    {"access": "read", "key": "journey:OUT-001"}
+    {
+      "access": "write",
+      "key": "brain-command:conflicts"
+    },
+    {
+      "access": "write",
+      "key": "brain-command:context"
+    },
+    {
+      "access": "write",
+      "key": "brain-command:map"
+    },
+    {
+      "access": "write",
+      "key": "brain-command:workstream"
+    },
+    {
+      "access": "write",
+      "key": "brain-command:validate"
+    },
+    {
+      "access": "write",
+      "key": "brain-index:v2"
+    },
+    {
+      "access": "write",
+      "key": "brain-record:DEC-0007"
+    },
+    {
+      "access": "read",
+      "key": "journey:OUT-001"
+    }
   ],
   "proof_command_ids": [
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "38ca37dd7f9ddc2d1115f9a61225abf4c0ed89accb6811c42b6634964353d180"
+  "manifest_revision": 3,
+  "base_manifest_hash": "7af87b3afd022896b897e2bd6c878c903627f302b26014d9532ef154306a79e3"
 }
