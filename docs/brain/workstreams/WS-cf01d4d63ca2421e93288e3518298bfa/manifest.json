@@ -17,6 +17,10 @@
         "match": "exact"
       },
       {
+        "path": "assets/css/polish15-account.css",
+        "match": "exact"
+      },
+      {
         "path": "dashboard.html",
         "match": "exact"
       },
@@ -38,6 +42,10 @@
       },
       {
         "path": "tests/account-case-context.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-home-overview.test.js",
         "match": "exact"
       }
     ],
@@ -90,6 +98,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "03da97101e63de4dc93da5c51caf8755f32a173b9b1b2b951bb52305a1da464b"
 }
