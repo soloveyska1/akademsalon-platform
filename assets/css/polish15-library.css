@@ -131,7 +131,7 @@ body.polish15-library .filter-tabs{
 }
 
 body.polish15-library .filter-tabs button{
-  min-height:40px;
+  min-height:44px;
   padding:9px 14px;
   color:var(--muted);
   background:transparent;

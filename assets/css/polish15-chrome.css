@@ -3099,7 +3099,7 @@ body .site-footer__group{
 
 body .site-footer__group>summary{
   display:flex;
-  min-height:32px;
+  min-height:44px;
   align-items:flex-start;
   justify-content:space-between;
   color:#f5efe2;
@@ -3119,7 +3119,7 @@ body .site-footer__links{
 
 body .site-footer__links a{
   display:flex;
-  min-height:32px;
+  min-height:44px;
   align-items:center;
   color:#aaa193;
   font-size:12.5px;
@@ -3155,7 +3155,8 @@ body .site-footer__legal a{
 body .site-footer__legal a:hover{color:#f5efe2}
 
 body .site-footer__bottom .theme-toggle{
-  min-height:34px;
+  min-width:44px;
+  min-height:44px;
   padding-inline:0;
   color:#c4baaa;
   font-size:10px;

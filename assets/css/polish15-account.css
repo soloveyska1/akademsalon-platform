@@ -7252,6 +7252,9 @@
 }
 
 .is-account-route .account-document-note > summary {
+  display:flex;
+  min-height:44px;
+  align-items:center;
   color: var(--quiet);
   font: 550 11px/1.4 var(--mono);
   list-style: none;

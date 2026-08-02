@@ -314,6 +314,15 @@
   .ar-editorial__grid{gap:55px}
 }
 
+@media(max-width:900px){
+  .ar-editorial__grid{
+    grid-template-columns:minmax(0,1fr);
+    gap:42px;
+  }
+  .ar-work-grid{grid-template-columns:minmax(0,1fr)}
+  .ar-work--wide{grid-column:auto}
+}
+
 @media(max-width:760px){
   .ar-shell{width:calc(100% - 32px)}
   .ar-section-head{grid-template-columns:1fr;gap:18px;margin-bottom:31px}

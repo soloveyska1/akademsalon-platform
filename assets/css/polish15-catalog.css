@@ -250,7 +250,7 @@
 .p15-service .line-link {
   position: relative;
   display: inline-flex;
-  min-height: 38px;
+  min-height: 44px;
   align-items: center;
   gap: 10px;
   padding-block: 7px;
@@ -389,7 +389,7 @@
 }
 
 .p15-catalog .filter-tabs button {
-  min-height: 40px;
+  min-height: 44px;
   padding: 9px 14px;
   color: var(--muted-p15);
   background: transparent;
@@ -414,7 +414,7 @@
 
 .p15-catalog .catalog-search input {
   width: 100%;
-  height: 42px;
+  height: 44px;
   padding: 10px 38px 10px 13px;
   color: var(--ink-p15);
   background: var(--sheet-p15);
@@ -1115,7 +1115,7 @@
 .p15-catalog .price-row > button {
   display: inline-grid;
   width: auto;
-  height: 38px;
+  height: 44px;
   place-items: center;
   padding-inline: 13px;
   color: var(--ink-p15);
@@ -1370,8 +1370,22 @@
   .p15-service .price-composition,
   .p15-service .service-example,
   .p15-catalog .estimate-example {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 42px;
+  }
+
+  .p15-service .service-hero__copy,
+  .p15-service .service-facts {
+    min-width: 0;
+  }
+
+  .p15-service .service-hero__copy {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .p15-service .service-hero h1 {
+    overflow-wrap: anywhere;
+    hyphens: auto;
   }
 
   .p15-service .service-hero {

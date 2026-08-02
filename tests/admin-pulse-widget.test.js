@@ -52,5 +52,5 @@ test('workbench is responsive, keyboard-visible and motion-safe', () => {
   assert.match(adminCss, /@media \(max-width: 1100px\)[\s\S]*?\.admin-metrics \{[\s\S]*?repeat\(2, minmax\(0, 1fr\)\)/);
   assert.match(adminCss, /:is\(button, a, input, textarea, select, \[tabindex\]\):focus-visible/);
   assert.match(adminCss, /@media \(prefers-reduced-motion: reduce\)/);
-  assert.match(adminHtml, /assets\/js\/admin\.js\?v=20260802release97/);
+  assert.match(adminHtml, /assets\/js\/admin\.js\?v=20260802release98/);
 });

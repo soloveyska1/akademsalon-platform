@@ -59,6 +59,7 @@
   position:relative;
   z-index:1;
   display:flex;
+  min-height:44px;
   align-items:center;
   gap:11px;
   width:max-content;
@@ -195,8 +196,11 @@
 }
 .tx-wizard-help p{max-width:25ch;color:var(--tx-sidebar-muted);font-size:11px;line-height:1.5}
 .tx-wizard-help button{
+  display:inline-flex;
   width:max-content;
-  padding:0 0 3px;
+  min-height:44px;
+  align-items:center;
+  padding:8px 0;
   border:0;
   border-bottom:1px solid #4f4b42;
   color:#e8e0d4;
@@ -2058,9 +2062,10 @@ html[data-theme="dark"] .configurator-task .materials-step input[type="date"]{co
 }
 .configurator-task .line-link{
   display:inline-flex;
+  min-height:44px;
   align-items:center;
   gap:7px;
-  padding:0 0 3px;
+  padding:8px 0 7px;
   border:0;
   border-bottom:1px solid var(--hairline-strong);
   color:var(--ink);
@@ -2830,7 +2835,10 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
 .configurator-task .concept-work-choice__rows button:hover,
 .configurator-task .concept-work-choice__rows button.is-selected{color:var(--ink);background:color-mix(in srgb,var(--wax-soft) 46%,transparent)}
 .configurator-task .concept-work-choice__rows button.is-selected i{background:var(--wax)}
-.configurator-task .concept-freeform{margin-top:16px}
+.configurator-task .concept-freeform{
+  min-height:44px;
+  margin-top:16px;
+}
 
 .configurator-task .wizard-main__footer{
   position:sticky;
