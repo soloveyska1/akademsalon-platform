@@ -79,7 +79,9 @@ allowlisted proof IDs. Brain не исполняет значения manifest.
   создают ложный конфликт, но dirty overlap terminal worktree остаётся hard.
 - Legacy schema v1 читается без падения старых refs, но unfrozen submitted/
   integrated никогда не освобождает scope. Изменять lifecycle можно только после
-  явной миграции в v2; повторный active manifest одной branch запрещён.
+  `workstream migrate`: команда не принимает SHA, хеширует прежнюю revision и
+  переоткрывает legacy submitted как active. Повторный live manifest одной branch
+  запрещён.
 - `integrated` доказывает result ancestry и отсутствие non-manifest drift после
   frozen result; `abandoned` игнорируется только как dormant ref. Explicit current
   manifest обязан принадлежать checkout-ветке и не может быть terminal.

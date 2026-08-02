@@ -6,7 +6,7 @@
   locally coordinated parallel branches without a second durable truth store.
 - Acceptance: deterministic context; self-created scoped manifest; frozen result
   lifecycle; actual ref/worktree conflict evidence; explicit terminalization.
-- Changed: Brain schema v2 with legacy-v1 normalization, workstream CLI,
+- Changed: Brain schema v2 with safe legacy-v1 migration, workstream CLI,
   per-workstream handoff, ref-manifest discovery and compact conflict decisions.
 - Proof: `brain:test`, `brain:validate`, full product tests, council connectivity
   and independent agent review; exact final results belong in `E-1001`.

@@ -106,6 +106,14 @@ class WorkstreamTests(unittest.TestCase):
             git(root, "commit", "-m", "legacy manifest")
             with self.assertRaisesRegex(BrainFailure, "MANIFEST_MIGRATION_REQUIRED"):
                 project.set_workstream_status("active", legacy_path)
+            legacy_digest = project.manifest_digest(legacy)
+            project.migrate_workstream(legacy_path)
+            migrated = json.loads(legacy_path.read_text(encoding="utf-8"))
+            self.assertEqual(migrated["schema_version"], 2)
+            self.assertEqual(migrated["status"], "active")
+            self.assertIsNone(migrated["result_sha"])
+            self.assertEqual(migrated["manifest_revision"], 2)
+            self.assertEqual(migrated["base_manifest_hash"], legacy_digest)
 
     def test_duplicate_live_manifest_branch_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:

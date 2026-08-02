@@ -1125,6 +1125,30 @@ class BrainProject:
         self._write_manifest(path, data, create=False)
         return path
 
+    def migrate_workstream(self, manifest_path: Path | None = None) -> Path:
+        path = manifest_path or self.branch_manifest_path(include_terminal=True)
+        if not path.is_absolute():
+            path = self.root / path
+        raw = self.strict_json(path)
+        data = self.validate_manifest(raw, path)
+        if data["schema_version"] != 1:
+            raise BrainFailure("MANIFEST_MIGRATION_NOT_NEEDED", data["workstream_id"])
+        if data["status"] in {"integrated", "abandoned"}:
+            raise BrainFailure("MANIFEST_MIGRATION_TERMINAL", data["status"])
+        if self._status_paths():
+            raise BrainFailure("WORKSTREAM_DIRTY", "migration requires a clean committed worktree")
+        branch = self.git("branch", "--show-current").stdout.strip()
+        if branch != data["branch"]:
+            raise BrainFailure("MANIFEST_BRANCH", f"current={branch} manifest={data['branch']}")
+        migrated = dict(raw)
+        migrated["schema_version"] = 2
+        migrated["status"] = "active" if data["status"] == "submitted" else data["status"]
+        migrated["result_sha"] = None
+        migrated["manifest_revision"] = data["manifest_revision"] + 1
+        migrated["base_manifest_hash"] = self.manifest_digest(raw)
+        self._write_manifest(path, migrated, create=False)
+        return path
+
     def validate(self, strict: bool = False) -> Snapshot:
         cfg = self.catalog()
         self._policy(cfg)
@@ -2260,6 +2284,11 @@ def main(argv: Sequence[str] | None = None, project: BrainProject | None = None)
     workstream_status = workstream_sub.add_parser("status")
     workstream_status.add_argument("--manifest")
     workstream_status.add_argument("--json", action="store_true")
+    workstream_migrate = workstream_sub.add_parser(
+        "migrate",
+        help="reopen a legacy v1 live manifest as safe v2 without accepting a result SHA",
+    )
+    workstream_migrate.add_argument("--manifest")
     workstream_set_status = workstream_sub.add_parser("set-status")
     workstream_set_status.add_argument(
         "status",
@@ -2386,6 +2415,15 @@ def main(argv: Sequence[str] | None = None, project: BrainProject | None = None)
                     )
                 else:
                     print("NEXT: commit this revision, then run brain conflicts --strict")
+            elif args.workstream_command == "migrate":
+                path = project.migrate_workstream(
+                    Path(args.manifest) if args.manifest else None,
+                )
+                print(f"UPDATED {project._relative(path)} schema=v2 status=active")
+                print(
+                    "NEXT: review scope, commit only this migration revision, "
+                    "then continue implementation before submitting a fresh result SHA"
+                )
         elif args.command == "processes":
             project.process_report()
         elif args.command == "report":

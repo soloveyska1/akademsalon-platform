@@ -99,6 +99,11 @@ revision и ещё раз fast-forward интегрирует только эт�
 `./bin/brain workstream status` показывает полный path/semantic/proof scope;
 status/hash вручную не меняют.
 
+Старый live manifest schema v1 переводится только командой
+`./bin/brain workstream migrate`: она не принимает внешний SHA, вычисляет hash
+предыдущей revision и безопасно переоткрывает legacy `submitted` как `active`.
+Свежий `result_sha` появится лишь после нового проверенного implementation commit.
+
 Canonical proof-ID registry не исполняется из manifest:
 
 - `brain:test` → `python3 -m unittest discover -s tools/brain/tests -p 'test_*.py' -v`;
