@@ -1,44 +1,74 @@
 # Current handoff
 
-## Цель новой задачи
+## Цель и frozen state
 
-Создать доказуемый сквозной путь `OUT-001`: заявка один раз проходит frontend →
-API → обработку → кабинет, сохраняя контекст авторизации и показывая честный статус.
+- Цель: сделать детали проекта воспроизводимой картой для новой сессии и
+  безопаснее развести параллельные task-ветки, не создавая второй источник истины.
+- Product anchor: `OUT-001`; product outcome не расширялся.
+- Base: `da0a05e83b0cf98d931820aa1468160e2ac66df0` из
+  `origin/codex/full-reference-production`.
+- Branch: `codex/brain-v2-out-001`.
+- Head: commit, содержащий этот handoff; точный SHA брать из Git/`brain doctor`,
+  а не копировать из чата.
+- Production release остаётся `release98-c30dbd4924b5`; production mutations,
+  OAuth, deploy и удаление данных не выполнялись.
 
-## Frozen state
+## Что изменено
 
-- Production release: `release98-c30dbd4924b5`
-- Verified source: `c30dbd4924b55bd92bfe096014231bbbaaa99a9b`
-- Branch: `codex/full-reference-production`
-- Production: <https://akademsalon.ru/?v=release98>
-- Preview: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=release98>
-- Full regression: 430/430.
-- Production safe smoke: путь доведён до активной кнопки отправки; реальный submit не выполнялся.
+- `DEC-0007`: tracked Markdown — sole durable truth; SQLite v2 — ignored derived
+  projection atomic records и explicit generic ID-links.
+- `brain validate/map/context/conflicts`: strict schema, provenance, whole-record
+  context с omission ledger, policy-driven semantic overlap и local snapshot limits.
+- Workstream manifest: base SHA, one write-owner, exact/tree path scopes,
+  controlled semantic scopes и allowlisted proof IDs без executable strings.
+- `conflicts` входит в обязательный bootstrap, сам находит manifest текущей ветки
+  и возвращает non-zero на warnings по умолчанию.
+- `record_schema_version: 1` — additive-only; definition вне canonical owner-файла
+  блокируется, breaking schema требует миграционного теста и отдельного решения.
+- Security: strict UTF-8/JSON, duplicate/nonfinite rejection, symlink/privacy/path
+  guards, structured Git argv, read-only optional-lock policy, atomic index replace.
+- План и дальнейшие слои: `docs/brain/plans/BRAIN-15-MVP.md`.
 
-## Подтверждённо работает
+## Проверено
 
-- Основные production-маршруты загружают release98.
-- Конфигуратор обновляет дату и состояния валидации вживую.
-- Авторизованный Telegram-контекст распознаётся; согласие корректно включает submit.
-- API health возвращает `ok`; production симлинк и rollback проверены.
-- Контрольные desktop/mobile/light/dark проверки не выявили P0/P1.
+- Brain tests: 23/23.
+- Product regression: 430/430.
+- Strict corpus validation, atomic refresh, doctor, map и byte-identical context.
+- `.brain`/SQLite modes: 0700/0600; failed size gate preserves previous DB.
+- Реальный scan: old `codex/out-001-contract-plan` hard-conflicts по singleton
+  paths; integration должна быть последовательной.
+- Council doctor и live probe: Kimi/Sonnet/GLM/Opus/Fable READY. Историческое
+  утверждение «model integrations недоступны» остаётся историей, но superseded;
+  канонический текущий факт — portable integrations работают из этого worktree.
+- Daily review: Kimi+Sonnet+GLM; одна Opus contract-fork проверка. Fable после
+  connectivity probe не расходовался.
+- Полная детерминированная запись: `docs/brain/evidence/E-1001.md`.
 
-## Не проверено полностью
+## Не проверено и пределы
 
-- Создание маркированной тестовой заявки во всех production-системах.
-- Появление этого же дела в кабинете и канале оператора/бота.
-- Полный recovery при сетевом сбое между API, уведомлением и обновлением кабинета.
+- Нет global guarantee для unfetched/unpushed/undeclared work, remote lease или
+  merge queue. `CLEAR_LOCAL_SNAPSHOT*` означает только точный локальный snapshot.
+- Typed `depends_on/proves/closes` не введены; generic co-occurrence не является
+  доказательством или причинной связью.
+- Production E2E `OUT-001` всё ещё не создавался: downstream bot/operator/cabinet,
+  idempotency и cleanup требуют отдельного безопасного proof plan.
+- Council reports — observations, не hard-gate evidence; `.brain/council` ignored.
 
-## Безопасность
+## Решения, риски и rollback
 
-- Не отправлять немаркированную production-заявку.
-- Не сохранять OAuth-коды, токены, контакты и клиентские данные в файлы/evidence.
-- Сначала определить test marker, способ удаления и ожидаемые серверные записи.
-- Пользовательские dirty-файлы из исходного checkout не трогать.
+- Вариант A (одна Markdown truth + derived generic graph) выбран вместо второго
+  tracked graph: нынешний corpus мал, а singleton docs уже являются merge-hotspot.
+- Невалидный manifest намеренно блокирует validation/context/doctor на всём tree;
+  это широкий, но видимый fail-closed blast radius.
+- Rollback: `git revert` Brain change-set. Не удалять `.brain` целиком, потому что
+  `.brain/council` принадлежит отдельной подсистеме; пересоздаётся только
+  `index.sqlite` через `./bin/brain refresh`.
 
-## Первый точный шаг
+## Один точный следующий шаг
 
-Картировать фактический submit-контракт и все downstream consumers read-only:
-endpoint, payload, idempotency key, success condition, bot/operator delivery и
-cabinet refresh. После этого предложить безопасный E2E test plan без реальной
-клиентской путаницы.
+На свежем `origin/codex/full-reference-production` сначала последовательно
+интегрировать Brain 1.5 change-set и пройти `brain validate`, `brain conflicts`,
+Brain tests и 430 product tests; затем replay двух commits
+`codex/out-001-contract-plan`, вручную разрешив singleton docs. Только после этого
+вернуться к безопасному marker/cleanup E2E-плану `OUT-001`; production submit без
+этого плана запрещён.

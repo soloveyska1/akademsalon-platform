@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "canonical_ref": "origin/codex/full-reference-production",
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "semantic_namespaces": {
+    "api-route": "route",
+    "brain-command": "exact",
+    "brain-index": "prefix",
+    "brain-record": "exact",
+    "contract": "exact",
+    "decision": "exact",
+    "journey": "exact",
+    "production": "exact",
+    "release-cache": "exact",
+    "shared-runtime": "prefix",
+    "ui-state": "prefix"
+  }
+}

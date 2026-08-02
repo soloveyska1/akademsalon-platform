@@ -4,7 +4,9 @@
   "scripts": {
     "build": "node scripts/build-sites-static.mjs",
     "brain:status": "python3 tools/brain/brain.py doctor",
-    "brain:check": "python3 tools/brain/brain.py doctor",
+    "brain:check": "python3 tools/brain/brain.py validate --strict",
+    "brain:validate": "python3 tools/brain/brain.py validate --strict",
+    "brain:test": "python3 -m unittest discover -s tools/brain/tests -p 'test_*.py' -v",
     "brain:refresh": "python3 tools/brain/brain.py refresh",
     "brain:report": "python3 tools/brain/brain.py report",
     "council:doctor": "python3 tools/model-council/council.py --doctor --providers kimi,sonnet,glm,opus,fable --allow-fable",

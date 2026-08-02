@@ -8,7 +8,8 @@
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=release98>
 - Production release: `release98-c30dbd4924b5`
 - Проверенный исходный commit: `c30dbd4924b55bd92bfe096014231bbbaaa99a9b`
-- Рабочая ветка: `codex/full-reference-production`
+- Каноническая integration-ветка: `origin/codex/full-reference-production`
+- Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
 - Rollback: `release97-da0c1c1636c6`
 - Последний gate: 430/430 тестов; 60 локальных комбинаций и 9 production smoke-сценариев без подтверждённых P0/P1.
 
@@ -46,14 +47,25 @@
 - [QUALITY-GATES.md](QUALITY-GATES.md) — условия GO/NO-GO.
 - [MODEL-COUNCIL.md](MODEL-COUNCIL.md) — роли моделей и бюджет вызовов.
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
+- [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
+- [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
 - [releases/REL-0098.md](releases/REL-0098.md) — доказательная запись текущего релиза.
 
 ## Старт новой сессии
 
 ```bash
 ./bin/brain context --task "следующая цель"
+./bin/brain validate --strict
+./bin/brain conflicts --strict  # после создания manifest текущей task-ветки
 ./bin/council --doctor --providers kimi,sonnet,glm,opus,fable --allow-fable
 ```
 
 После этого выберите один outcome, зафиксируйте acceptance criteria и proof plan.
 Не начинайте новый редизайн уже утверждённого экрана без воспроизводимой проблемы.
+
+`record_schema_version: 1` в `catalog.json` означает additive-only Markdown
+contract: существующие ID и обязательные поля не меняются молча. Новый record-kind
+или breaking field требует новой версии, миграционного теста на весь corpus и
+отдельного `DEC-*`. Любой невалидный active manifest намеренно блокирует
+`validate/context/doctor` для всего tree: это fail-closed blast radius, а не
+локальное предупреждение.
