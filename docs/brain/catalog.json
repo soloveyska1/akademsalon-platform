@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "source_of_truth": "docs/brain",
+  "derived_state": ".brain",
+  "context_budget_bytes": 16384,
+  "index_allowlist": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "README.md",
+    "docs/brain/**/*.md",
+    "docs/PRODUCT-*.md",
+    "docs/HOME-*.md",
+    "docs/AUDIT-*.md"
+  ],
+  "aliases": {
+    "кабинет": ["dashboard", "дело", "workspace"],
+    "заявка": ["configurator", "submit", "application"],
+    "шапка": ["header", "chrome", "навигация"],
+    "тёмная": ["dark", "theme", "тема"],
+    "мобильная": ["mobile", "390", "360", "touch"]
+  },
+  "limits": {
+    "database_mb": 25,
+    "report_mb": 5,
+    "tracked_brain_mb": 2,
+    "warn_process_rss_mb": 250,
+    "warn_process_cpu_percent": 25
+  }
+}

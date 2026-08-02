@@ -2,6 +2,10 @@
   "name": "akademsalon-static-preview",
   "private": true,
   "scripts": {
-    "build": "node scripts/build-sites-static.mjs"
+    "build": "node scripts/build-sites-static.mjs",
+    "brain:status": "python3 tools/brain/brain.py doctor",
+    "brain:check": "python3 tools/brain/brain.py doctor",
+    "brain:refresh": "python3 tools/brain/brain.py refresh",
+    "brain:report": "python3 tools/brain/brain.py report"
   }
 }
