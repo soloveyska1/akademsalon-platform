@@ -423,6 +423,10 @@
     ],
     "read": [
       {
+        "path": "assets/css/extras.css",
+        "match": "exact"
+      },
+      {
         "path": "assets/css/styles.css",
         "match": "exact"
       },
@@ -498,6 +502,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "4af750e9d114ffeca4263bc7ac399680042684426b825b0862c72b66c98a86c1"
+  "manifest_revision": 3,
+  "base_manifest_hash": "21c7eaa1fe3acc1c4ecc2980ed76f85ba801319ab4e0bd8d10c28454e629e89f"
 }
