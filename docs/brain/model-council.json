@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "local_llm": false,
+  "background_services": false,
+  "default_daily": ["kimi", "sonnet", "glm"],
+  "milestone": ["kimi", "sonnet", "opus"],
+  "deadlock_only": ["fable"],
+  "credentials": {
+    "kimi": "macOS Keychain: akademsalon-tokenrouter-api",
+    "glm": "macOS Keychain: akademsalon-zai-api",
+    "sonnet_opus_fable": "Claude Code subscription login"
+  },
+  "output": ".brain/council",
+  "execution": "sequential"
+}

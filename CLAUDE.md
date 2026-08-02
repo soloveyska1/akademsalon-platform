@@ -4,6 +4,7 @@
 
 ```bash
 ./bin/brain context --task "краткая цель"
+./bin/council --doctor --providers kimi,sonnet,glm,opus,fable --allow-fable
 ```
 
 Project brain находится в `docs/brain/`. Он является долговечной памятью проекта;

@@ -24,3 +24,29 @@
 
 Дорогую модель нельзя вызывать повторно без нового diff, прототипа или данных.
 Никакая модель не запускается локально и не остаётся фоновым процессом.
+
+## Портативный запуск из любого worktree
+
+Секреты не хранятся в Git: Kimi и GLM читают их из macOS Keychain, Claude — из
+глобальной subscription-сессии Claude Code. Все провайдеры запускаются
+последовательно, результаты сохраняются только в игнорируемой `.brain/council/`.
+
+```bash
+# Проверка конфигурации без расхода inference
+./bin/council --doctor --providers kimi,sonnet,glm,opus,fable --allow-fable
+
+# Короткая реальная проверка всех маршрутов
+./bin/council --probe --providers kimi,sonnet,glm,opus,fable --allow-fable
+
+# Ежедневный совет
+./bin/council --providers kimi,sonnet,glm --focus "активное дело: mobile/dark и следующий шаг"
+
+# Важная арт-дирекция
+./bin/council --providers kimi,sonnet,opus --image /absolute/path/screen.png --focus "композиция и путь"
+
+# Fable — только системная развилка
+./bin/council --providers fable --allow-fable --focus "неразрешённый архитектурный конфликт"
+```
+
+Если `--doctor` зелёный, но `--probe` падает, это временная ошибка провайдера, а
+не отсутствие интеграции. Отчёт не подменяется выводом другого участника.
