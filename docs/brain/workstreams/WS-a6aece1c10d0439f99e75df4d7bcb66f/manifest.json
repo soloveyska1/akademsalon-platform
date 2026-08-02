@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-a6aece1c10d0439f99e75df4d7bcb66f",
   "slug": "out-001-submit-safety",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-001-submit-safety",
   "base_sha": "d5eb76cec58fcf7a79dd59096ae1a097a47d5a99",
   "result_sha": "318ab746643aadeea1bb9e4a19f07c7cf076aeff",
@@ -486,6 +486,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "1c75a82cf10f9432fe2b78cc586c4e2290f7a4bafb63dff8ce05ac78beb3e2a4"
+  "manifest_revision": 3,
+  "base_manifest_hash": "7cafc30951bc9d3d0782b9b8382e09d7c97b921a4e0b31cc02387b869a4ccde9"
 }
