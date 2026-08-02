@@ -1,0 +1,107 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-c4d669dfa50e4493a2fbef81f3481ede",
+  "slug": "out-003-shared-shell-contract",
+  "status": "active",
+  "branch": "codex/out-003-shared-shell-contract",
+  "base_sha": "65adc47cf31ffaa3ba9a797204d938ef866f0e14",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-003"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/E-1006.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/OUT-003-SHARED-SHELL-CONTRACT.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/UX-DEBT.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-c4d669dfa50e4493a2fbef81f3481ede/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/shared-shell-contract.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/css/home-release.min.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/polish15-chrome.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/styles.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/app.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/home-release.min.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/polish15-chrome.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1002.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/PRODUCT-MAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/exact-concept-shell.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/style-lab-home-chrome-regression.test.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "brain-record:UXD-0003"
+    },
+    {
+      "access": "write",
+      "key": "contract:shared-shell-state"
+    },
+    {
+      "access": "read",
+      "key": "shared-runtime:public-shell"
+    },
+    {
+      "access": "read",
+      "key": "ui-state:auth-theme-consent"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
