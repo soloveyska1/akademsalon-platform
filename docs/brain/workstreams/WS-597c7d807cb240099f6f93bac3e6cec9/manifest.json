@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-597c7d807cb240099f6f93bac3e6cec9",
+  "slug": "out-001-next-slice-selection",
+  "status": "active",
+  "branch": "codex/out-001-next-slice-selection",
+  "base_sha": "e2a01e9bc01ea04810655b6ab72604899cb37074",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-001"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/E-1002.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-597c7d807cb240099f6f93bac3e6cec9/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "docs/brain/PRODUCT-MAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/ROADMAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/SURFACES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/UX-DEBT.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "read",
+      "key": "journey:OUT-001"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
