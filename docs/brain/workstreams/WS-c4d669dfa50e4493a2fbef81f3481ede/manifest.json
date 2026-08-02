@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-c4d669dfa50e4493a2fbef81f3481ede",
   "slug": "out-003-shared-shell-contract",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-003-shared-shell-contract",
   "base_sha": "65adc47cf31ffaa3ba9a797204d938ef866f0e14",
   "result_sha": "dd9f82a4077b9ee25f80cda50050790773a39ba3",
@@ -530,6 +530,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 6,
-  "base_manifest_hash": "35297b2ebe4becde0d6ed4df62aa584988a838b4a67dd9a35a9da35192934a23"
+  "manifest_revision": 7,
+  "base_manifest_hash": "a57a2ceb8cbf462af83fd75675536d9d3082cef824de876c3d2e25598ca25f74"
 }
