@@ -37,6 +37,14 @@
         "match": "exact"
       },
       {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/ROADMAP.md",
+        "match": "exact"
+      },
+      {
         "path": "docs/brain/workstreams/WS-cf01d4d63ca2421e93288e3518298bfa/HANDOFF.md",
         "match": "exact"
       },
@@ -98,6 +106,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "03da97101e63de4dc93da5c51caf8755f32a173b9b1b2b951bb52305a1da464b"
+  "manifest_revision": 3,
+  "base_manifest_hash": "a14dc3a46236d708ae0666791b9c40c4d38bbba34e2b21ae6259519d023cc7a1"
 }
