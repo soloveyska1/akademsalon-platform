@@ -13,6 +13,7 @@ Roadmap хранит пользовательские результаты, а �
 - Метрика: 100% контрольных сценариев создают ровно одно дело; ложный success и дубли — 0.
 - Proof: staging или согласованный production test marker, network evidence, server record, кабинет, уведомление, повторный submit.
 - Kill/stop: никакой реальной клиентской мутации без маркировки и способа очистки; секреты не фиксируются.
+- Текущий срез: сначала единый contract для обоих public producer-ов `POST /orders` (configurator и guide/knowledge microlead), затем server preflight и staging E2E; production остаётся `NO-GO` до закрытия `UXD-0001` и `UXD-0004`.
 
 ### OUT-002 — Следующий шаг по делу находится за 10 секунд
 
