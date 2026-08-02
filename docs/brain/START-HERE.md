@@ -56,12 +56,65 @@
 ```bash
 ./bin/brain context --task "следующая цель"
 ./bin/brain validate --strict
-./bin/brain conflicts --strict  # после создания manifest текущей task-ветки
 ./bin/council --doctor --providers kimi,sonnet,glm,opus,fable --allow-fable
 ```
 
 После этого выберите один outcome, зафиксируйте acceptance criteria и proof plan.
 Не начинайте новый редизайн уже утверждённого экрана без воспроизводимой проблемы.
+
+## Новая параллельная ветка без ручного manifest
+
+Сначала обновите локальное знание remote и создайте ветку от точного canonical:
+
+```bash
+git fetch origin
+git switch -c codex/out-002-active-case origin/codex/full-reference-production
+./bin/brain workstream init \
+  --outcome OUT-002 \
+  --slug out-002-active-case \
+  --write-exact assets/js/cabinet.js \
+  --semantic-write ui-state:cabinet-active-case
+```
+
+Флаги `--write-exact`, `--write-tree`, `--read-exact`, `--read-tree` и semantic
+scope можно повторять. Команда сама фиксирует branch, exact canonical SHA,
+безопасный UUID и allowlisted proof IDs; она откажется работать на dirty или
+stacked branch. Она также создаёт branch-local `HANDOFF.md` и сама включает его в
+write scope. Заполните его, добавьте в Git ровно два напечатанных файла,
+закоммитьте declaration и выполните `./bin/brain conflicts --strict`.
+
+После реализации и детерминированных gates на чистом worktree:
+
+```bash
+./bin/brain workstream set-status submitted
+```
+
+Снова добавьте только exact manifest path и закоммитьте submission revision.
+
+`submitted` замораживает implementation HEAD в `result_sha`. После включения
+этого SHA и submission commit в свежий canonical ref integration owner либо
+возвращается на исходную task-ветку, либо на exact canonical checkout передаёт
+`--manifest`. Затем он переводит workstream в `integrated`, коммитит terminal
+revision и ещё раз fast-forward интегрирует только этот closure commit.
+`./bin/brain workstream status` показывает полный path/semantic/proof scope;
+status/hash вручную не меняют.
+
+Canonical proof-ID registry не исполняется из manifest:
+
+- `brain:test` → `python3 -m unittest discover -s tools/brain/tests -p 'test_*.py' -v`;
+- `brain:validate` → `./bin/brain validate --strict`.
+
+В параллельной ветке обновляйте собственный `workstreams/<WS>/HANDOFF.md`.
+`CURRENT-HANDOFF.md`, `DECISIONS.md` и другие singleton-реестры изменяет только
+ветка, явно зарезервировавшая их; иначе durable итог последовательно переносит
+integration owner. Так обязательная память не превращается в гарантированный
+merge conflict.
+
+`brain conflicts` не делает fetch и не обещает знания об unfetched/unpushed
+работе. Он читает manifests и фактические diffs доступных локальных refs,
+проверяет active/detached worktrees и сообщает `decision`, `blocking`, counts и
+точный `NEXT`. HARD нельзя подавить; warnings разрешает только осознанный
+`--allow-warnings` непосредственно перед интеграцией.
 
 `record_schema_version: 1` в `catalog.json` означает additive-only Markdown
 contract: существующие ID и обязательные поля не меняются молча. Новый record-kind

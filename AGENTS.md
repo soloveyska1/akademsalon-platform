@@ -9,17 +9,33 @@
 1. Получите компактный контекст через `./bin/brain context --task "<цель>"`.
 2. Зафиксируйте ветку, HEAD и пользовательские изменения через `./bin/brain doctor`.
 3. Проверьте доступность модельного совета через `./bin/council --doctor --providers kimi,sonnet,glm,opus,fable --allow-fable`.
-4. Для активной параллельной ветки создайте workstream manifest до содержательных
-   правок и выполните `./bin/brain conflicts --strict`; warnings блокируют по
-   умолчанию, `--allow-warnings` требует осознанного решения integration owner.
+4. Новую task-ветку создавайте только от точного canonical HEAD. До содержательных
+   правок выполните `./bin/brain workstream init ...`, проверьте scope, закоммитьте
+   manifest и запустите `./bin/brain conflicts --strict`. Ручное копирование чужого
+   manifest запрещено; warnings блокируют по умолчанию, `--allow-warnings` требует
+   осознанного решения integration owner.
 5. Выберите один outcome из `docs/brain/ROADMAP.md`; не расширяйте scope молча.
 6. Сформулируйте критерии готовности и способ доказательства до правок.
 7. Сверьте защищённые решения, карту продукта и открытый UX-долг.
 8. Для значимого дизайна или пути клиента получите минимум два независимых review.
 9. Один агент является write-owner; остальные дают наблюдения и проверки.
 10. Решайте разногласия прототипом, браузерным сценарием или тестом, а не голосованием моделей.
-11. В том же change-set обновляйте решение, UX-долг, evidence и handoff.
+11. В параллельной ветке ведите созданный Brain-ом `workstreams/<WS>/HANDOFF.md`
+    и уникальные evidence-файлы. Singleton-реестры и `CURRENT-HANDOFF.md` меняйте
+    только при заявленном scope; иначе их последовательно обновляет integration owner.
 12. `done` разрешён только после проверки; `fixed-unverified` не считается завершением.
+
+## Жизненный цикл workstream
+
+- `active`/`paused` резервируют заявленные path и semantic scopes.
+- После чистого проверенного implementation commit выполните
+  `./bin/brain workstream set-status submitted` и отдельно закоммитьте revision:
+  команда замораживает точный `result_sha`.
+- Только после того, как `result_sha` является предком свежего canonical ref,
+  integration owner выполняет `./bin/brain workstream set-status integrated` и
+  коммитит terminal revision. Не меняйте status/hash вручную.
+- `integrated` и `abandoned` не резервируют scope; dirty overlap их worktree всё
+  равно остаётся hard conflict.
 
 ## Ограничения
 
@@ -39,6 +55,7 @@ healthcheck, smoke ключевого пути и проверенный rollbac
 
 ## Завершение сессии
 
-Обновите `docs/brain/CURRENT-HANDOFF.md`: цель, base/head, что изменено, что и чем
+Обновите handoff текущего workstream: цель, base/head, что изменено, что и чем
 проверено, что не проверено, новые решения/долг и один точный следующий шаг.
+Integration owner затем сводит durable итог в `docs/brain/CURRENT-HANDOFF.md`.
 Чат не является единственным хранилищем проектной памяти.

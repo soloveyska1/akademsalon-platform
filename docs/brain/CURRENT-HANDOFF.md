@@ -21,8 +21,17 @@
   context с omission ledger, policy-driven semantic overlap и local snapshot limits.
 - Workstream manifest: base SHA, one write-owner, exact/tree path scopes,
   controlled semantic scopes и allowlisted proof IDs без executable strings.
+- Schema v2 lifecycle: generated `active` manifest, frozen `submitted.result_sha`,
+  ancestry-gated `integrated`, revision/hash chain и legacy-v1 normalization без
+  права unfrozen legacy status освобождать scope.
+- `workstream init` создаёт и автоматически объявляет branch-local `HANDOFF.md`;
+  он целиком входит в context текущей ветки. Singleton `CURRENT-HANDOFF` теперь
+  последовательно сводит integration owner, поэтому параллельные ветки не обязаны
+  конфликтовать на одном файле.
 - `conflicts` входит в обязательный bootstrap, сам находит manifest текущей ветки
-  и возвращает non-zero на warnings по умолчанию.
+  и возвращает non-zero на warnings по умолчанию. Он читает manifests из локальных
+  refs, сверяет их с actual diff, видит active/detached worktrees и выдаёт
+  decision/blocking/counts/NEXT в text и JSON.
 - `record_schema_version: 1` — additive-only; definition вне canonical owner-файла
   блокируется, breaking schema требует миграционного теста и отдельного решения.
 - Security: strict UTF-8/JSON, duplicate/nonfinite rejection, symlink/privacy/path
@@ -31,12 +40,12 @@
 
 ## Проверено
 
-- Brain tests: 23/23.
+- Brain tests: 36/36.
 - Product regression: 430/430.
 - Strict corpus validation, atomic refresh, doctor, map и byte-identical context.
 - `.brain`/SQLite modes: 0700/0600; failed size gate preserves previous DB.
-- Реальный scan: old `codex/out-001-contract-plan` hard-conflicts по singleton
-  paths; integration должна быть последовательной.
+- Независимые агенты воспроизвели три fail-open случая lifecycle; terminal/result
+  ancestry, post-result drift и current-manifest ownership закрыты regression tests.
 - Council doctor и live probe: Kimi/Sonnet/GLM/Opus/Fable READY. Историческое
   утверждение «model integrations недоступны» остаётся историей, но superseded;
   канонический текущий факт — portable integrations работают из этого worktree.
@@ -58,17 +67,17 @@
 
 - Вариант A (одна Markdown truth + derived generic graph) выбран вместо второго
   tracked graph: нынешний corpus мал, а singleton docs уже являются merge-hotspot.
-- Невалидный manifest намеренно блокирует validation/context/doctor на всём tree;
-  это широкий, но видимый fail-closed blast radius.
+- Невалидный current-tree manifest намеренно блокирует validation/context/doctor
+  на всём tree; legacy v1 foreign refs нормализуются, но не получают права
+  освобождать scope. Это широкий, но видимый fail-closed blast radius.
 - Rollback: `git revert` Brain change-set. Не удалять `.brain` целиком, потому что
   `.brain/council` принадлежит отдельной подсистеме; пересоздаётся только
   `index.sqlite` через `./bin/brain refresh`.
 
 ## Один точный следующий шаг
 
-На свежем `origin/codex/full-reference-production` сначала последовательно
-интегрировать Brain 1.5 change-set и пройти `brain validate`, `brain conflicts`,
-Brain tests и 430 product tests; затем replay двух commits
-`codex/out-001-contract-plan`, вручную разрешив singleton docs. Только после этого
-вернуться к безопасному marker/cleanup E2E-плану `OUT-001`; production submit без
-этого плана запрещён.
+Закоммитить integration candidate с active revision 2, повторить deterministic
+gates и независимый council review, затем `set-status submitted`, explicit
+fast-forward push feature/canonical, `set-status integrated` и terminal closure
+push. Только от обновлённого canonical создавать следующую product-ветку и
+возвращаться к безопасному marker/cleanup E2E-плану `OUT-001`.

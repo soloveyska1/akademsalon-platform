@@ -148,12 +148,13 @@ def create_project(root: Path) -> Path:
 
 def manifest(base_sha: str, workstream_id: str = "WS-0123456789abcdef0123456789abcdef") -> dict:
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "workstream_id": workstream_id,
         "slug": "brain-test",
         "status": "active",
         "branch": "codex/brain-test",
         "base_sha": base_sha,
+        "result_sha": None,
         "outcome_ids": ["OUT-001"],
         "write_owner": "codex/root",
         "scope": {

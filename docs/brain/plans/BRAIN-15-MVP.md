@@ -1,11 +1,11 @@
 # BRAIN-15-MVP — Markdown-authoritative graph и локальная безопасность веток
 
-- Статус: implemented-local, deterministic gates green; awaiting integration
+- Статус: integration candidate; final gates and canonical fast-forward pending
 - Base: `da0a05e83b0cf98d931820aa1468160e2ac66df0`
 - Product anchor: `OUT-001`; это operational workstream, не второй product outcome
 - Write-owner: Codex root
 - Independent review: schema/context, conflict safety, QA/security
-- Remote/production mutations: запрещены
+- Git-origin integration: явно разрешена пользователем; production/OAuth/deploy/data mutations запрещены
 
 Daily council Kimi+Sonnet+GLM привёл к strict-by-default bootstrap и явной
 record-schema policy. Один Opus review выбрал вариант A и нашёл policy/comparator
@@ -33,9 +33,15 @@ allowlisted proof IDs. Brain не исполняет значения manifest.
 4. Atomic `brain context --task ... [--id OUT-001]`: никаких byte slices;
    полный included/omitted ledger; mandatory record overflow fail closed.
 5. Read-only `brain conflicts --manifest ...`: no fetch/write/index; path,
-   semantic, base, scope drift и unmanaged worktree evidence.
+   semantic, base, scope drift, manifests из локальных branch refs и active/
+   detached worktree evidence.
 6. Symlink/path/privacy/strict-JSON/atomic-index hardening.
-7. Python stdlib golden tests и package scripts.
+7. Python stdlib golden tests без package-script hotspot.
+8. `brain workstream init/status/set-status`: exact-canonical bootstrap,
+   атомарная запись, controlled transitions и frozen `result_sha`.
+9. Branch-local `workstreams/<WS>/HANDOFF.md`, автоматически объявленный в
+   manifest и обязательный для context текущей ветки; canonical handoff остаётся
+   зоной последовательной интеграции, а не общим merge-hotspot каждой ветки.
 
 Не в scope: remote leases, auto-renew, merge queue, force-push protection,
 автоматический merge/rebase, production writes, local LLM, daemon, inferred
@@ -55,11 +61,28 @@ allowlisted proof IDs. Brain не исполняет значения manifest.
   имеет mode 0700, DB/temp — 0600; `.brain` symlink запрещён.
 - `conflicts` ловит write/write, write/read, exact/tree, case/NFC aliases,
   exclusive semantic claims, stale/diverged base, scope escape и foreign dirty
-  overlap. Read/read и полностью disjoint scope проходят.
+  overlap. Он сверяет declaration с фактическим diff локального branch ref,
+  обнаруживает foreign scope escape и не пропускает active/detached worktree.
+  Read/read и полностью disjoint scope проходят.
 - Вывод conflicts называется только `CLEAR_LOCAL_SNAPSHOT*`, перечисляет SHA и
   пределы проверки; отсутствие manifest/semantic scope не выдаётся за global safe.
 - CLI `conflicts` обнаруживает manifest текущей ветки и трактует warnings как
-  non-zero по умолчанию; `--allow-warnings` является явным решением integration owner.
+  non-zero по умолчанию; `--allow-warnings` является явным решением integration
+  owner. Text/JSON согласованно содержат decision, blocking, counts и exit code.
+- `workstream init` проходит только на clean HEAD, равном canonical ref, и сам
+  создаёт schema-v2 manifest, UUID/base/default proof IDs и handoff. Canonical
+  branch запрещена для init. `submitted` фиксирует implementation HEAD;
+  `integrated` разрешён только если frozen result и submission revision уже
+  являются предками canonical.
+- Унаследованный `submitted` освобождает scope только по exact frozen result SHA;
+  `active/paused` продолжают резервировать scope. Terminal dormant refs не
+  создают ложный конфликт, но dirty overlap terminal worktree остаётся hard.
+- Legacy schema v1 читается без падения старых refs, но unfrozen submitted/
+  integrated никогда не освобождает scope. Изменять lifecycle можно только после
+  явной миграции в v2; повторный active manifest одной branch запрещён.
+- `integrated` доказывает result ancestry и отсутствие non-manifest drift после
+  frozen result; `abandoned` игнорируется только как dormant ref. Explicit current
+  manifest обязан принадлежать checkout-ветке и не может быть terminal.
 - Ни одна команда MVP не делает network, checkout, stash, reset, prune,
   update-ref, push и не исполняет proof strings.
 - `python3 -m unittest discover -s tools/brain/tests -p 'test_*.py' -v`, полный
@@ -75,6 +98,9 @@ allowlisted proof IDs. Brain не исполняет значения manifest.
 - conflicts меняет refs/worktree/`.brain` или вызывает сеть;
 - неудачная сборка уничтожает предыдущий индекс;
 - для одного ID появляется два authoritative источника.
+- terminal/submitted manifest скрывает commit после frozen result;
+- две live manifest revision заявляют одну branch;
+- параллельная ветка использует singleton handoff без объявленного scope.
 
 Один битый active `manifest.json` намеренно останавливает global
 `validate/context/doctor` на содержащем его tree. Это fail-closed trade-off с
@@ -94,18 +120,20 @@ Brain-owned `index.sqlite` через проверенный atomic replace.
 
 ## Integration note
 
-Локальный `codex/out-001-contract-plan` уже меняет Brain singleton docs и потому
-является реальным path conflict. Brain 1.5 не объявляет ветки независимыми:
-integration owner должен последовательно replay/cherry-pick change-sets на свежий
-canonical и повторить validate/conflicts/tests на resulting tree.
+Dormant `codex/out-001-contract-plan` меняет Brain singleton docs и поэтому
+видим как aggregated warning, а не как активная блокировка. Если его снова
+checkout-нуть или объявить active manifest, тот же overlap станет hard. Brain 1.5
+не обещает глобальной независимости: integration owner обязан fetch-нуть refs,
+проверить exact snapshot и последовательно интегрировать пересекающиеся scopes.
 
 ## Следующие слои после доказанного MVP
 
 Это roadmap системы памяти, а не уже реализованные гарантии:
 
-1. **Brain 1.6 · branch cockpit.** Единый read-only отчёт по active manifests:
-   владелец, base/head, declared scope, dirty drift, hard conflicts, proof state и
-   точная очередь интеграции. Он по-прежнему не обещает знание unfetched work.
+1. **Brain 1.6 · branch cockpit.** Поверх уже доступных decision/counts/NEXT —
+   единый read-only отчёт по всем active manifests: владелец, base/head, declared
+   scope, dirty drift, proof state и точная очередь интеграции. Он по-прежнему не
+   обещает знание unfetched work.
 2. **Brain 1.7 · handoff freshness.** Машинная проверка, что current handoff
    ссылается на точный commit/tree, перечисляет unverified и один next step;
    устаревший handoff видимо маркируется, а не молча попадает в context.

@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from helpers import create_project
+from helpers import create_project, git, write
 from tools.brain.brain import BrainFailure, BrainProject
 
 
@@ -41,6 +41,24 @@ class ContextTests(unittest.TestCase):
             self.assertIn("JRN-001", mapped)
             self.assertIn("UXD-0001", mapped)
             self.assertNotIn("closes", mapped.lower())
+
+    def test_active_workstream_handoff_is_mandatory_context(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = create_project(Path(tmp))
+            git(root, "switch", "-c", "codex/context-handoff")
+            project = BrainProject(root)
+            manifest_path = project.init_workstream(
+                outcomes=["OUT-001"],
+                write_exact=["tools/brain/brain.py"],
+            )
+            write(
+                manifest_path.with_name("HANDOFF.md"),
+                "# Workstream handoff\n\n- Next: reproduce exact API contract.\n",
+            )
+            output = project.context("OUT-001", explicit_ids=["OUT-001"])
+            self.assertIn("Active workstream handoff (complete)", output)
+            self.assertIn("reproduce exact API contract", output)
+            self.assertIn("WORKSTREAM-HANDOFF", output)
 
 
 if __name__ == "__main__":

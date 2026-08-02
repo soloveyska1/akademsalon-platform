@@ -1,10 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream_id": "WS-5e85f7fbf53849a2a6e741cf4532ece7",
   "slug": "brain-15-mvp",
-  "status": "submitted",
+  "status": "active",
   "branch": "codex/brain-v2-out-001",
   "base_sha": "da0a05e83b0cf98d931820aa1468160e2ac66df0",
+  "result_sha": null,
   "outcome_ids": [
     "OUT-001"
   ],
@@ -18,8 +19,8 @@
       {"path": "docs/brain/catalog.json", "match": "exact"},
       {"path": "docs/brain/evidence/E-1001.md", "match": "exact"},
       {"path": "docs/brain/plans/BRAIN-15-MVP.md", "match": "exact"},
+      {"path": "docs/brain/workstreams/WS-5e85f7fbf53849a2a6e741cf4532ece7/HANDOFF.md", "match": "exact"},
       {"path": "docs/brain/workstream-policy.json", "match": "exact"},
-      {"path": "package.json", "match": "exact"},
       {"path": "tools/brain/brain.py", "match": "exact"},
       {"path": "tools/brain/tests", "match": "tree"}
     ],
@@ -34,6 +35,7 @@
     {"access": "write", "key": "brain-command:conflicts"},
     {"access": "write", "key": "brain-command:context"},
     {"access": "write", "key": "brain-command:map"},
+    {"access": "write", "key": "brain-command:workstream"},
     {"access": "write", "key": "brain-command:validate"},
     {"access": "write", "key": "brain-index:v2"},
     {"access": "write", "key": "brain-record:DEC-0007"},
@@ -43,6 +45,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "38ca37dd7f9ddc2d1115f9a61225abf4c0ed89accb6811c42b6634964353d180"
 }

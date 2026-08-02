@@ -19,6 +19,7 @@ import subprocess
 import sys
 import tempfile
 import unicodedata
+import uuid
 from typing import Any, Iterable, Sequence
 
 
@@ -53,7 +54,7 @@ PRIVACY_PATTERNS = (
     ("OAUTH_CODE", re.compile(r"[?&]code=[A-Za-z0-9._~-]{16,}")),
 )
 
-MANIFEST_FIELDS = {
+MANIFEST_FIELDS_V1 = {
     "schema_version",
     "workstream_id",
     "slug",
@@ -68,7 +69,15 @@ MANIFEST_FIELDS = {
     "manifest_revision",
     "base_manifest_hash",
 }
+MANIFEST_FIELDS_V2 = MANIFEST_FIELDS_V1 | {"result_sha"}
 MANIFEST_STATUSES = {"active", "paused", "submitted", "integrated", "abandoned"}
+MANIFEST_TRANSITIONS = {
+    "active": {"paused", "submitted", "abandoned"},
+    "paused": {"active", "submitted", "abandoned"},
+    "submitted": {"active", "integrated", "abandoned"},
+    "integrated": set(),
+    "abandoned": set(),
+}
 
 
 def sanitize_display(value: object, limit: int = 500) -> str:
@@ -377,6 +386,16 @@ class BrainProject:
 
     def strict_json(self, path: Path, max_bytes: int = 128 * 1024) -> dict[str, Any]:
         text = self.secure_read_text(path, max_bytes=max_bytes)
+        return self.strict_json_text(text, self._relative(path), max_bytes=max_bytes)
+
+    def strict_json_text(
+        self,
+        text: str,
+        subject: str,
+        max_bytes: int = 128 * 1024,
+    ) -> dict[str, Any]:
+        if len(text.encode("utf-8")) > max_bytes:
+            raise BrainFailure("FILE_SIZE", subject)
         try:
             value = json.loads(
                 text,
@@ -386,9 +405,9 @@ class BrainProject:
         except BrainFailure:
             raise
         except (json.JSONDecodeError, TypeError, ValueError) as error:
-            raise BrainFailure("JSON_INVALID", self._relative(path)) from error
+            raise BrainFailure("JSON_INVALID", subject) from error
         if not isinstance(value, dict):
-            raise BrainFailure("JSON_OBJECT", self._relative(path))
+            raise BrainFailure("JSON_OBJECT", subject)
         _json_depth(value)
         return value
 
@@ -724,12 +743,23 @@ class BrainProject:
             raise BrainFailure("SEMANTIC_KEY", "invalid brain command")
 
     def validate_manifest(self, data: dict[str, Any], path: Path) -> dict[str, Any]:
-        unknown = sorted(set(data) - MANIFEST_FIELDS)
-        missing = sorted(MANIFEST_FIELDS - set(data))
+        schema_version = data.get("schema_version")
+        expected_fields = (
+            MANIFEST_FIELDS_V1
+            if schema_version == 1
+            else MANIFEST_FIELDS_V2
+            if schema_version == 2
+            else set()
+        )
+        unknown = sorted(set(data) - expected_fields)
+        missing = sorted(expected_fields - set(data))
         if unknown or missing:
             raise BrainFailure("MANIFEST_FIELD", ",".join(unknown or missing))
-        if data.get("schema_version") != 1 or not WORKSTREAM_RE.fullmatch(str(data.get("workstream_id", ""))):
+        if schema_version not in {1, 2} or not WORKSTREAM_RE.fullmatch(str(data.get("workstream_id", ""))):
             raise BrainFailure("MANIFEST_SCHEMA", sanitize_display(path))
+        data = dict(data)
+        if schema_version == 1:
+            data["result_sha"] = None
         if data.get("status") not in MANIFEST_STATUSES:
             raise BrainFailure("MANIFEST_STATUS", data.get("workstream_id", ""))
         if not re.fullmatch(r"[a-z0-9][a-z0-9-]{1,63}", str(data.get("slug", ""))):
@@ -747,6 +777,12 @@ class BrainProject:
             raise BrainFailure("MANIFEST_OWNER", data.get("workstream_id", ""))
         if not SHA_RE.fullmatch(str(data.get("base_sha", ""))):
             raise BrainFailure("MANIFEST_BASE", data.get("workstream_id", ""))
+        result_sha = data.get("result_sha")
+        if schema_version == 2 and data.get("status") in {"submitted", "integrated"}:
+            if not SHA_RE.fullmatch(str(result_sha or "")):
+                raise BrainFailure("MANIFEST_RESULT", data.get("workstream_id", ""))
+        elif result_sha is not None:
+            raise BrainFailure("MANIFEST_RESULT", "non-submitted workstream must use null")
         if not isinstance(data.get("manifest_revision"), int) or data["manifest_revision"] < 1:
             raise BrainFailure("MANIFEST_REVISION", data.get("workstream_id", ""))
         if data["manifest_revision"] == 1 and data.get("base_manifest_hash") is not None:
@@ -823,19 +859,26 @@ class BrainProject:
             raise BrainFailure("SYMLINK_PATH", "docs/brain/workstreams")
         manifests: list[dict[str, Any]] = []
         identities: dict[str, str] = {}
+        live_branches: dict[str, str] = {}
         for path in sorted(directory.glob("*/manifest.json")):
             data = self.validate_manifest(self.strict_json(path), path)
-            digest = hashlib.sha256(
-                json.dumps(data, sort_keys=True, separators=(",", ":")).encode("utf-8")
-            ).hexdigest()
+            digest = self.manifest_digest(data)
             previous = identities.get(data["workstream_id"])
             if previous and previous != digest:
                 raise BrainFailure("WORKSTREAM_ID_REUSE", data["workstream_id"])
             identities[data["workstream_id"]] = digest
+            if data["status"] not in {"integrated", "abandoned"}:
+                previous_branch = live_branches.get(data["branch"])
+                if previous_branch and previous_branch != data["workstream_id"]:
+                    raise BrainFailure("WORKSTREAM_BRANCH_REUSE", data["branch"])
+                live_branches[data["branch"]] = data["workstream_id"]
             manifests.append(data)
         return tuple(manifests)
 
     def active_manifest_path(self) -> Path:
+        return self.branch_manifest_path(include_terminal=False)
+
+    def branch_manifest_path(self, include_terminal: bool = False) -> Path:
         branch = self.git("branch", "--show-current").stdout.strip()
         directory = self.brain / "workstreams"
         if directory.exists() and directory.is_symlink():
@@ -844,11 +887,243 @@ class BrainProject:
         paths = sorted(directory.glob("*/manifest.json")) if directory.exists() else []
         for path in paths:
             data = self.validate_manifest(self.strict_json(path), path)
-            if data["branch"] == branch and data["status"] not in {"integrated", "abandoned"}:
+            if data["branch"] != branch:
+                continue
+            if include_terminal or data["status"] not in {"integrated", "abandoned"}:
                 candidates.append(path)
         if len(candidates) != 1:
             raise BrainFailure("WORKSTREAM_DISCOVERY", f"branch={branch} candidates={len(candidates)}")
         return candidates[0]
+
+    @staticmethod
+    def manifest_digest(data: dict[str, Any]) -> str:
+        encoded = json.dumps(
+            data,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        return hashlib.sha256(encoded).hexdigest()
+
+    def _write_manifest(self, path: Path, data: dict[str, Any], *, create: bool) -> None:
+        self.validate_manifest(data, path)
+        directory = path.parent
+        workstreams = self.brain / "workstreams"
+        if workstreams.is_symlink():
+            raise BrainFailure("SYMLINK_PATH", "docs/brain/workstreams")
+        workstreams.mkdir(mode=0o755, exist_ok=True)
+        if create:
+            try:
+                directory.mkdir(mode=0o755)
+            except FileExistsError as error:
+                raise BrainFailure("WORKSTREAM_EXISTS", directory.name) from error
+        elif directory.is_symlink():
+            raise BrainFailure("SYMLINK_PATH", self._relative(directory))
+        body = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+        descriptor, temp_name = tempfile.mkstemp(prefix="manifest-", suffix=".json", dir=directory)
+        temp = Path(temp_name)
+        try:
+            os.fchmod(descriptor, 0o600)
+            encoded = body.encode("utf-8")
+            written = 0
+            while written < len(encoded):
+                count = os.write(descriptor, encoded[written:])
+                if count <= 0:
+                    raise BrainFailure("MANIFEST_WRITE", self._relative(path))
+                written += count
+            os.fsync(descriptor)
+            os.close(descriptor)
+            descriptor = -1
+            if create:
+                try:
+                    os.link(temp, path)
+                except FileExistsError as error:
+                    raise BrainFailure("WORKSTREAM_EXISTS", directory.name) from error
+                temp.unlink()
+            else:
+                os.replace(temp, path)
+            os.chmod(path, 0o644)
+            directory_descriptor = os.open(directory, os.O_RDONLY)
+            try:
+                os.fsync(directory_descriptor)
+            finally:
+                os.close(directory_descriptor)
+        except BrainFailure:
+            raise
+        except OSError as error:
+            raise BrainFailure("MANIFEST_WRITE", self._relative(path)) from error
+        finally:
+            if descriptor >= 0:
+                os.close(descriptor)
+            if temp.exists():
+                temp.unlink()
+
+    @staticmethod
+    def _scope_items(exact: Sequence[str], tree: Sequence[str]) -> list[dict[str, str]]:
+        items = {
+            (normalize_repo_path(path).casefold(), match): {
+                "path": normalize_repo_path(path),
+                "match": match,
+            }
+            for match, paths in (("exact", exact), ("tree", tree))
+            for path in paths
+        }
+        return sorted(items.values(), key=lambda item: (item["path"].casefold(), item["match"]))
+
+    def _write_new_text(self, path: Path, body: str) -> None:
+        descriptor = -1
+        try:
+            descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            encoded = body.encode("utf-8")
+            written = 0
+            while written < len(encoded):
+                count = os.write(descriptor, encoded[written:])
+                if count <= 0:
+                    raise BrainFailure("WORKSTREAM_WRITE", self._relative(path))
+                written += count
+            os.fsync(descriptor)
+            os.close(descriptor)
+            descriptor = -1
+            os.chmod(path, 0o644)
+            directory_descriptor = os.open(path.parent, os.O_RDONLY)
+            try:
+                os.fsync(directory_descriptor)
+            finally:
+                os.close(directory_descriptor)
+        except OSError as error:
+            raise BrainFailure("WORKSTREAM_WRITE", self._relative(path)) from error
+        finally:
+            if descriptor >= 0:
+                os.close(descriptor)
+
+    @staticmethod
+    def _workstream_handoff(outcomes: Sequence[str], branch: str) -> str:
+        outcome_text = ", ".join(sorted(set(outcomes)))
+        return (
+            "# Workstream handoff\n\n"
+            f"- Branch: `{branch}`\n"
+            f"- Outcomes: `{outcome_text}`\n"
+            "- Goal: define before implementation.\n"
+            "- Acceptance: define reproducible success conditions.\n"
+            "- Proof: list deterministic commands/evidence IDs.\n"
+            "- Changed: none yet.\n"
+            "- Unverified: implementation not started.\n"
+            "- Risks/rollback: define before mutation.\n"
+            "- Next: review and commit the manifest plus this handoff.\n"
+        )
+
+    def init_workstream(
+        self,
+        *,
+        outcomes: Sequence[str],
+        slug: str | None = None,
+        owner: str = "codex-root",
+        write_exact: Sequence[str] = (),
+        write_tree: Sequence[str] = (),
+        read_exact: Sequence[str] = (),
+        read_tree: Sequence[str] = (),
+        semantic_write: Sequence[str] = (),
+        semantic_read: Sequence[str] = (),
+        proof_ids: Sequence[str] = (),
+    ) -> Path:
+        if self._status_paths():
+            raise BrainFailure("WORKSTREAM_DIRTY", "init requires a clean worktree")
+        branch = self.git("branch", "--show-current").stdout.strip()
+        if not branch:
+            raise BrainFailure("MANIFEST_BRANCH", "detached HEAD")
+        policy = self._policy()
+        canonical_branch = policy["canonical_ref"].removeprefix("refs/heads/")
+        if canonical_branch.startswith("origin/"):
+            canonical_branch = canonical_branch.removeprefix("origin/")
+        if branch == canonical_branch:
+            raise BrainFailure("WORKSTREAM_CANONICAL_BRANCH", branch)
+        canonical_sha = self.git("rev-parse", "--verify", policy["canonical_ref"]).stdout.strip()
+        head_sha = self.git("rev-parse", "HEAD").stdout.strip()
+        if head_sha != canonical_sha:
+            raise BrainFailure("WORKSTREAM_BASE_DIRTY", f"HEAD={head_sha[:12]} canonical={canonical_sha[:12]}")
+        snapshot = self.validate(strict=True)
+        for outcome in outcomes:
+            record = snapshot.records.get(outcome)
+            if record is None or record.kind != "outcome":
+                raise BrainFailure("MANIFEST_OUTCOME", sanitize_display(outcome))
+        candidate_slug = slug or branch.rsplit("/", 1)[-1]
+        candidate_slug = re.sub(r"[^a-z0-9-]+", "-", candidate_slug.casefold()).strip("-")
+        if len(candidate_slug) < 2:
+            raise BrainFailure("MANIFEST_SLUG", candidate_slug)
+        workstream_id = f"WS-{uuid.uuid4().hex}"
+        handoff_relative = f"docs/brain/workstreams/{workstream_id}/HANDOFF.md"
+        policy_proofs = list(policy["proof_command_ids"])
+        data: dict[str, Any] = {
+            "schema_version": 2,
+            "workstream_id": workstream_id,
+            "slug": candidate_slug,
+            "status": "active",
+            "branch": branch,
+            "base_sha": canonical_sha,
+            "result_sha": None,
+            "outcome_ids": sorted(set(outcomes)),
+            "write_owner": owner,
+            "scope": {
+                "write": self._scope_items([*write_exact, handoff_relative], write_tree),
+                "read": self._scope_items(read_exact, read_tree),
+            },
+            "semantic_scope": [
+                *({"access": "write", "key": key} for key in sorted(set(semantic_write))),
+                *({"access": "read", "key": key} for key in sorted(set(semantic_read))),
+            ],
+            "proof_command_ids": list(proof_ids) if proof_ids else policy_proofs,
+            "manifest_revision": 1,
+            "base_manifest_hash": None,
+        }
+        path = self.brain / "workstreams" / workstream_id / "manifest.json"
+        self._write_manifest(path, data, create=True)
+        handoff_path = path.with_name("HANDOFF.md")
+        try:
+            self._write_new_text(handoff_path, self._workstream_handoff(outcomes, branch))
+        except BrainFailure:
+            path.unlink(missing_ok=True)
+            try:
+                path.parent.rmdir()
+            except OSError:
+                pass
+            raise
+        return path
+
+    def set_workstream_status(self, target: str, manifest_path: Path | None = None) -> Path:
+        path = manifest_path or self.branch_manifest_path(include_terminal=True)
+        if not path.is_absolute():
+            path = self.root / path
+        data = self.validate_manifest(self.strict_json(path), path)
+        if data["schema_version"] != 2:
+            raise BrainFailure("MANIFEST_MIGRATION_REQUIRED", data["workstream_id"])
+        current_status = data["status"]
+        if target not in MANIFEST_TRANSITIONS.get(current_status, set()):
+            raise BrainFailure("WORKSTREAM_TRANSITION", f"{current_status}->{target}")
+        if self._status_paths():
+            raise BrainFailure("WORKSTREAM_DIRTY", "status change requires a clean committed worktree")
+        branch = self.git("branch", "--show-current").stdout.strip()
+        policy = self._policy()
+        canonical_sha = self.git("rev-parse", "--verify", policy["canonical_ref"]).stdout.strip()
+        head_sha = self.git("rev-parse", "HEAD").stdout.strip()
+        canonical_checkout = manifest_path is not None and head_sha == canonical_sha
+        if branch != data["branch"] and not (target == "integrated" and canonical_checkout):
+            raise BrainFailure("MANIFEST_BRANCH", f"current={branch} manifest={data['branch']}")
+        previous_digest = self.manifest_digest(data)
+        if target == "submitted":
+            data["result_sha"] = head_sha
+        elif target == "integrated":
+            result_sha = data["result_sha"]
+            if self.git("merge-base", "--is-ancestor", result_sha, canonical_sha, check=False).returncode:
+                raise BrainFailure("WORKSTREAM_NOT_IN_CANONICAL", result_sha[:12])
+            if self.git("merge-base", "--is-ancestor", head_sha, canonical_sha, check=False).returncode:
+                raise BrainFailure("WORKSTREAM_REVISION_NOT_IN_CANONICAL", head_sha[:12])
+        elif target in {"active", "paused", "abandoned"}:
+            data["result_sha"] = None
+        data["status"] = target
+        data["manifest_revision"] += 1
+        data["base_manifest_hash"] = previous_digest
+        self._write_manifest(path, data, create=False)
+        return path
 
     def validate(self, strict: bool = False) -> Snapshot:
         cfg = self.catalog()
@@ -1041,6 +1316,70 @@ class BrainProject:
             index += 1
         return sorted(set(paths))
 
+    def _worktree_snapshot(self) -> list[dict[str, str]]:
+        raw = self.git("worktree", "list", "--porcelain", "-z", text=False).stdout
+        entries: list[dict[str, str]] = []
+        current: dict[str, str] = {}
+        for token in [*raw.split(b"\0"), b""]:
+            if not token:
+                if current:
+                    entries.append(current)
+                    current = {}
+                continue
+            try:
+                line = token.decode("utf-8", errors="strict")
+            except UnicodeDecodeError as error:
+                raise BrainFailure("GIT_PATH_UTF8", "git worktree path is not UTF-8") from error
+            key, _separator, value = line.partition(" ")
+            if key in {"worktree", "HEAD", "branch"}:
+                current[key] = value
+        return entries
+
+    def _manifest_from_ref(self, oid: str, path: str) -> dict[str, Any]:
+        if not SHA_RE.fullmatch(oid):
+            raise BrainFailure("GIT_OBJECT", "invalid ref object")
+        if not re.fullmatch(
+            r"docs/brain/workstreams/WS-[0-9a-f]{32}/manifest\.json",
+            path,
+        ):
+            raise BrainFailure("WORKSTREAM_DIRECTORY", sanitize_display(path))
+        result = self.git("cat-file", "blob", f"{oid}:{path}", text=False)
+        try:
+            body = result.stdout.decode("utf-8", errors="strict")
+        except UnicodeDecodeError as error:
+            raise BrainFailure("INVALID_UTF8", path) from error
+        data = self.strict_json_text(body, f"{oid[:12]}:{path}")
+        return self.validate_manifest(data, Path(path))
+
+    def _changed_branch_manifest(
+        self,
+        branch: str,
+        oid: str,
+        changed: Sequence[str],
+    ) -> tuple[dict[str, Any] | None, list[str]]:
+        candidates: list[dict[str, Any]] = []
+        errors: list[str] = []
+        for path in changed:
+            if not re.fullmatch(
+                r"docs/brain/workstreams/WS-[0-9a-f]{32}/manifest\.json",
+                path,
+            ):
+                continue
+            exists = self.git("cat-file", "-e", f"{oid}:{path}", check=False)
+            if exists.returncode:
+                continue
+            try:
+                data = self._manifest_from_ref(oid, path)
+            except BrainFailure as error:
+                errors.append(f"{path}:{error.code}")
+                continue
+            if data["branch"] == branch:
+                candidates.append(data)
+        if len(candidates) > 1:
+            errors.append(f"branch={branch}:candidates={len(candidates)}")
+            return None, errors
+        return (candidates[0] if candidates else None), errors
+
     @staticmethod
     def _section(body: str, title: str) -> str:
         lines = body.splitlines()
@@ -1173,6 +1512,27 @@ class BrainProject:
                     (1, distance, record_id),
                 )
             )
+        branch_manifests = [
+            item
+            for item in snapshot.manifests
+            if item["branch"] == branch and item["status"] not in {"integrated", "abandoned"}
+        ]
+        if len(branch_manifests) == 1:
+            workstream_handoff_path = (
+                f"docs/brain/workstreams/{branch_manifests[0]['workstream_id']}/HANDOFF.md"
+            )
+            workstream_handoff = snapshot.docs.get(workstream_handoff_path, "")
+            if workstream_handoff:
+                chunks.append(
+                    ContextChunk(
+                        "WORKSTREAM-HANDOFF",
+                        "## Active workstream handoff (complete)\n\n"
+                        + workstream_handoff.rstrip()
+                        + "\n",
+                        True,
+                        (0, 3, "WORKSTREAM-HANDOFF"),
+                    )
+                )
         handoff = snapshot.docs.get("docs/brain/CURRENT-HANDOFF.md", "")
         if handoff:
             chunks.append(
@@ -1238,6 +1598,29 @@ class BrainProject:
             for scope in manifest["scope"].get(mode, [])
         )
 
+    @staticmethod
+    def _compact_warnings(items: list[dict[str, str]]) -> list[dict[str, str]]:
+        aggregate_codes = {"HISTORY_UNRELATED", "SEMANTICS_UNKNOWN", "UNMANAGED_REF_OVERLAP"}
+        grouped: dict[str, list[dict[str, str]]] = {}
+        output: list[dict[str, str]] = []
+        for item in items:
+            if item["code"] in aggregate_codes:
+                grouped.setdefault(item["code"], []).append(item)
+            else:
+                output.append(item)
+        for code, members in grouped.items():
+            if len(members) == 1:
+                output.append(members[0])
+                continue
+            subjects = "; ".join(member.get("subject", "") for member in members[:8])
+            output.append(
+                {
+                    "code": code,
+                    "subject": sanitize_display(f"{len(members)} refs: {subjects}"),
+                }
+            )
+        return output
+
     def conflict_report(self, manifest_path: Path, strict: bool = False) -> dict[str, Any]:
         before_refs = self.git("show-ref", "--head").stdout
         manifest_path = Path(manifest_path)
@@ -1248,10 +1631,56 @@ class BrainProject:
         canonical_ref = policy["canonical_ref"]
         canonical_sha = self.git("rev-parse", "--verify", canonical_ref).stdout.strip()
         head_sha = self.git("rev-parse", "HEAD").stdout.strip()
+        current_branch = self.git("branch", "--show-current").stdout.strip()
+        if not current_branch or current["branch"] != current_branch:
+            raise BrainFailure(
+                "CURRENT_MANIFEST_BRANCH",
+                f"current={current_branch or 'detached'} manifest={current['branch']}",
+            )
+        if current["status"] in {"integrated", "abandoned"}:
+            raise BrainFailure("CURRENT_MANIFEST_TERMINAL", current["status"])
         base_sha = current["base_sha"]
         hard: list[dict[str, str]] = []
         warnings: list[dict[str, str]] = []
         inspected: list[str] = []
+        self_manifest_relative = (
+            f"docs/brain/workstreams/{current['workstream_id']}/manifest.json"
+        )
+        if current["status"] == "submitted":
+            result_sha = current.get("result_sha")
+            result_valid = bool(result_sha) and self.git(
+                "cat-file",
+                "-e",
+                f"{result_sha}^{{commit}}",
+                check=False,
+            ).returncode == 0
+            result_in_head = result_valid and self.git(
+                "merge-base",
+                "--is-ancestor",
+                result_sha,
+                head_sha,
+                check=False,
+            ).returncode == 0
+            if not result_in_head:
+                hard.append(
+                    {
+                        "code": "CURRENT_SUBMITTED_RESULT_INVALID",
+                        "subject": str(result_sha or "legacy-v1-unfrozen"),
+                    }
+                )
+            else:
+                post_result = [
+                    path
+                    for path in self._changed_paths(result_sha, head_sha)
+                    if path != self_manifest_relative
+                ]
+                if post_result:
+                    hard.append(
+                        {
+                            "code": "CURRENT_SUBMITTED_RESULT_DRIFT",
+                            "subject": ",".join(post_result[:8]),
+                        }
+                    )
         if self.git("cat-file", "-e", f"{base_sha}^{{commit}}", check=False).returncode:
             hard.append({"code": "BASE_MISSING", "subject": base_sha})
         else:
@@ -1271,20 +1700,41 @@ class BrainProject:
                     }
                 )
             committed = self._changed_paths(base_sha, head_sha)
-            self_prefix = f"docs/brain/workstreams/{current['workstream_id']}/"
             escapes = [
                 path for path in committed
-                if not path.startswith(self_prefix) and not self._path_overlaps_manifest(path, current, include_read=False)
+                if path != self_manifest_relative
+                and not self._path_overlaps_manifest(path, current, include_read=False)
             ]
             for path in escapes:
                 hard.append({"code": "SCOPE_ESCAPE", "subject": path})
-        current_branch = self.git("branch", "--show-current").stdout.strip()
-        self_prefix = f"docs/brain/workstreams/{current['workstream_id']}/"
         for path in self._status_paths():
-            if path.startswith(self_prefix):
+            if path == self_manifest_relative:
                 continue
             if not self._path_overlaps_manifest(path, current, include_read=False):
                 hard.append({"code": "DIRTY_SCOPE_ESCAPE", "subject": path})
+        worktree_snapshot = self._worktree_snapshot()
+        worktree_branches = {
+            item.get("branch", "").removeprefix("refs/heads/")
+            for item in worktree_snapshot
+            if item.get("branch")
+        }
+        manifests = self._manifests()
+        live_manifests_by_branch = {
+            item["branch"]: item
+            for item in manifests
+            if item["workstream_id"] != current["workstream_id"]
+            and item["status"] not in {"integrated", "abandoned"}
+        }
+        terminal_manifests_by_branch = {
+            item["branch"]: item
+            for item in manifests
+            if item["workstream_id"] != current["workstream_id"]
+            and item["status"] in {"integrated", "abandoned"}
+        }
+        processed_manifest_branches: set[str] = set()
+        canonical_branch = canonical_ref.removeprefix("refs/heads/")
+        if canonical_branch.startswith("origin/"):
+            canonical_branch = canonical_branch.removeprefix("origin/")
         refs = self.git(
             "for-each-ref", "--format=%(refname:short)\t%(objectname)", "refs/heads"
         ).stdout.splitlines()
@@ -1292,22 +1742,265 @@ class BrainProject:
             if not line or "\t" not in line:
                 continue
             name, oid = line.split("\t", 1)
-            if name in {current_branch, canonical_ref.removeprefix("refs/heads/")} or oid == head_sha:
+            if name in {current_branch, canonical_branch}:
                 continue
             inspected.append(f"ref:{name}@{oid[:12]}")
+            is_active_worktree = name in worktree_branches
+            if (
+                not is_active_worktree
+                and name not in live_manifests_by_branch
+                and name not in terminal_manifests_by_branch
+                and self.git("merge-base", "--is-ancestor", oid, head_sha, check=False).returncode == 0
+            ):
+                continue
             merge_result = self.git("merge-base", canonical_sha, oid, check=False)
             if merge_result.returncode:
                 warnings.append({"code": "HISTORY_UNRELATED", "subject": name})
                 continue
             merge_base = merge_result.stdout.strip()
             changed = self._changed_paths(merge_base, oid)
+            branch_manifest, manifest_errors = self._changed_branch_manifest(name, oid, changed)
+            if manifest_errors:
+                target = hard if is_active_worktree else warnings
+                target.append(
+                    {
+                        "code": "FOREIGN_MANIFEST_INVALID",
+                        "subject": f"{name}: {','.join(manifest_errors[:3])}",
+                    }
+                )
+            foreign_manifest = branch_manifest or live_manifests_by_branch.get(name)
+            terminal_manifest = (
+                branch_manifest
+                if branch_manifest and branch_manifest["status"] in {"integrated", "abandoned"}
+                else terminal_manifests_by_branch.get(name)
+                if branch_manifest is None
+                else None
+            )
+            if terminal_manifest:
+                processed_manifest_branches.add(name)
+                if is_active_worktree:
+                    warnings.append(
+                        {
+                            "code": "TERMINAL_WORKTREE_PRESENT",
+                            "subject": f"{name}:{terminal_manifest['status']}",
+                        }
+                    )
+                if terminal_manifest["status"] == "abandoned":
+                    if not is_active_worktree:
+                        continue
+                    foreign_manifest = None
+                else:
+                    result_sha = terminal_manifest.get("result_sha")
+                    result_exists = bool(result_sha) and self.git(
+                        "cat-file",
+                        "-e",
+                        f"{result_sha}^{{commit}}",
+                        check=False,
+                    ).returncode == 0
+                    result_on_branch = result_exists and self.git(
+                        "merge-base",
+                        "--is-ancestor",
+                        result_sha,
+                        oid,
+                        check=False,
+                    ).returncode == 0
+                    result_in_canonical = result_exists and self.git(
+                        "merge-base",
+                        "--is-ancestor",
+                        result_sha,
+                        canonical_sha,
+                        check=False,
+                    ).returncode == 0
+                    manifest_relative = (
+                        f"docs/brain/workstreams/{terminal_manifest['workstream_id']}/manifest.json"
+                    )
+                    post_result = (
+                        [
+                            path
+                            for path in self._changed_paths(result_sha, oid)
+                            if path != manifest_relative
+                        ]
+                        if result_on_branch
+                        else []
+                    )
+                    if not result_on_branch or not result_in_canonical:
+                        hard.append(
+                            {
+                                "code": "TERMINAL_RESULT_INVALID",
+                                "subject": f"{name}:{str(result_sha or 'legacy-v1-unfrozen')[:12]}",
+                            }
+                        )
+                    if post_result:
+                        hard.append(
+                            {
+                                "code": "TERMINAL_RESULT_DRIFT",
+                                "subject": f"{name}: {','.join(post_result[:4])}",
+                            }
+                        )
+                    if result_on_branch and result_in_canonical and not post_result:
+                        continue
+            if foreign_manifest:
+                processed_manifest_branches.add(name)
+                if foreign_manifest["status"] == "submitted":
+                    result_sha = foreign_manifest.get("result_sha")
+                    result_exists = bool(result_sha) and self.git(
+                        "cat-file",
+                        "-e",
+                        f"{result_sha}^{{commit}}",
+                        check=False,
+                    ).returncode == 0
+                    result_on_branch = result_exists and self.git(
+                        "merge-base",
+                        "--is-ancestor",
+                        result_sha,
+                        oid,
+                        check=False,
+                    ).returncode == 0
+                    if not result_on_branch:
+                        hard.append(
+                            {
+                                "code": "SUBMITTED_RESULT_INVALID",
+                                "subject": f"{name}:{str(result_sha or 'legacy-v1-unfrozen')[:12]}",
+                            }
+                        )
+                    else:
+                        foreign_manifest_relative = (
+                            f"docs/brain/workstreams/{foreign_manifest['workstream_id']}/manifest.json"
+                        )
+                        post_result = [
+                            path
+                            for path in self._changed_paths(result_sha, oid)
+                            if path != foreign_manifest_relative
+                        ]
+                        if post_result:
+                            hard.append(
+                                {
+                                    "code": "SUBMITTED_RESULT_DRIFT",
+                                    "subject": f"{name}: {','.join(post_result[:4])}",
+                                }
+                            )
+                        elif self.git(
+                            "merge-base",
+                            "--is-ancestor",
+                            result_sha,
+                            head_sha,
+                            check=False,
+                        ).returncode == 0:
+                            continue
             overlapping = [path for path in changed if self._path_overlaps_manifest(path, current)]
-            for path in overlapping:
-                hard.append({"code": "UNMANAGED_PATH_OVERLAP", "subject": f"{name}:{path}"})
-            if changed and not overlapping:
+            if overlapping:
+                is_managed = foreign_manifest is not None
+                target = hard if is_active_worktree or is_managed else warnings
+                code = (
+                    "ACTIVE_WORKTREE_PATH_OVERLAP"
+                    if is_active_worktree
+                    else "MANAGED_ACTUAL_PATH_OVERLAP"
+                    if is_managed
+                    else "UNMANAGED_REF_OVERLAP"
+                )
+                preview = ",".join(overlapping[:4])
+                target.append(
+                    {
+                        "code": code,
+                        "subject": f"{name}: {len(overlapping)} path(s): {preview}",
+                    }
+                )
+            if foreign_manifest:
+                foreign_manifest_relative = (
+                    f"docs/brain/workstreams/{foreign_manifest['workstream_id']}/manifest.json"
+                )
+                foreign_escapes = [
+                    path
+                    for path in changed
+                    if path != foreign_manifest_relative
+                    and not self._path_overlaps_manifest(
+                        path,
+                        foreign_manifest,
+                        include_read=False,
+                    )
+                ]
+                if foreign_escapes:
+                    preview = ",".join(foreign_escapes[:4])
+                    hard.append(
+                        {
+                            "code": "FOREIGN_SCOPE_ESCAPE",
+                            "subject": f"{name}: {len(foreign_escapes)} path(s): {preview}",
+                        }
+                    )
+                hard.extend(
+                    compare_manifests(current, foreign_manifest, policy["semantic_namespaces"])
+                )
+            elif changed and not overlapping:
                 warnings.append({"code": "SEMANTICS_UNKNOWN", "subject": name})
-        worktrees = self.git("worktree", "list", "--porcelain").stdout.splitlines()
-        roots = [line[9:] for line in worktrees if line.startswith("worktree ")]
+        for other in manifests:
+            if other["workstream_id"] == current["workstream_id"]:
+                continue
+            if other["status"] in {"integrated", "abandoned"}:
+                if other["status"] == "integrated" and other["branch"] not in processed_manifest_branches:
+                    result_sha = other.get("result_sha")
+                    if not result_sha or self.git(
+                        "merge-base",
+                        "--is-ancestor",
+                        result_sha,
+                        canonical_sha,
+                        check=False,
+                    ).returncode:
+                        hard.append(
+                            {
+                                "code": "TERMINAL_RESULT_INVALID",
+                                "subject": f"{other['branch']}:{str(result_sha or 'legacy-v1-unfrozen')[:12]}",
+                            }
+                        )
+                continue
+            if other["branch"] in processed_manifest_branches:
+                continue
+            if other["status"] == "submitted":
+                result_sha = other.get("result_sha")
+                if result_sha and self.git(
+                    "merge-base",
+                    "--is-ancestor",
+                    result_sha,
+                    head_sha,
+                    check=False,
+                ).returncode == 0:
+                    continue
+                if not result_sha:
+                    hard.append(
+                        {
+                            "code": "SUBMITTED_RESULT_INVALID",
+                            "subject": f"{other['branch']}:legacy-v1-unfrozen",
+                        }
+                    )
+            warnings.append({"code": "MANIFEST_BRANCH_MISSING", "subject": other["branch"]})
+            hard.extend(compare_manifests(current, other, policy["semantic_namespaces"]))
+        for item in worktree_snapshot:
+            if item.get("branch") or not item.get("HEAD") or not item.get("worktree"):
+                continue
+            other_root = Path(item["worktree"])
+            try:
+                is_current_root = os.path.samefile(other_root, self.root)
+            except OSError:
+                is_current_root = other_root.resolve() == self.root.resolve()
+            if is_current_root:
+                continue
+            oid = item["HEAD"]
+            inspected.append(f"detached:{item['worktree']}@{oid[:12]}")
+            merge_result = self.git("merge-base", canonical_sha, oid, check=False)
+            if merge_result.returncode:
+                warnings.append({"code": "HISTORY_UNRELATED", "subject": item["worktree"]})
+                continue
+            changed = self._changed_paths(merge_result.stdout.strip(), oid)
+            overlapping = [path for path in changed if self._path_overlaps_manifest(path, current)]
+            if overlapping:
+                hard.append(
+                    {
+                        "code": "ACTIVE_DETACHED_PATH_OVERLAP",
+                        "subject": f"{item['worktree']}: {','.join(overlapping[:4])}",
+                    }
+                )
+            elif oid != head_sha:
+                warnings.append({"code": "DETACHED_WORKTREE_PRESENT", "subject": item["worktree"]})
+        roots = [item["worktree"] for item in worktree_snapshot if item.get("worktree")]
         for raw_root in roots:
             other_root = Path(raw_root)
             try:
@@ -1319,16 +2012,16 @@ class BrainProject:
             inspected.append(f"worktree:{raw_root}")
             dirty_paths = self._status_paths(other_root)
             overlapping = [path for path in dirty_paths if self._path_overlaps_manifest(path, current)]
-            for path in overlapping:
-                hard.append({"code": "UNMANAGED_DIRTY_OVERLAP", "subject": f"{raw_root}:{path}"})
+            if overlapping:
+                preview = ",".join(overlapping[:4])
+                hard.append(
+                    {
+                        "code": "UNMANAGED_DIRTY_OVERLAP",
+                        "subject": f"{raw_root}: {len(overlapping)} path(s): {preview}",
+                    }
+                )
             if dirty_paths and not overlapping:
                 warnings.append({"code": "FOREIGN_DIRTY_DISJOINT", "subject": raw_root})
-        for other in self._manifests():
-            if other["workstream_id"] == current["workstream_id"]:
-                continue
-            if other["status"] in {"integrated", "abandoned"}:
-                continue
-            hard.extend(compare_manifests(current, other, policy["semantic_namespaces"]))
         after_refs = self.git("show-ref", "--head").stdout
         if before_refs != after_refs:
             raise BrainFailure("SNAPSHOT_MOVED", "refs changed during conflict scan")
@@ -1340,11 +2033,19 @@ class BrainProject:
             {key: sanitize_display(value) for key, value in item.items()}
             for item in warnings
         ]
-        inspected = [sanitize_display(item) for item in inspected]
+        inspected = sorted(set(sanitize_display(item) for item in inspected))
         hard = sorted(hard, key=lambda item: (item["code"], item.get("subject", ""), item.get("left", "")))
-        warnings = sorted(warnings, key=lambda item: (item["code"], item.get("subject", "")))
+        warnings = sorted(
+            self._compact_warnings(warnings),
+            key=lambda item: (item["code"], item.get("subject", "")),
+        )
         status = "CONFLICT" if hard else (
             "CLEAR_LOCAL_SNAPSHOT_WITH_WARNINGS" if warnings else "CLEAR_LOCAL_SNAPSHOT"
+        )
+        blocking = [
+            {"severity": "hard", **item} for item in hard
+        ] + (
+            [{"severity": "warning", **item} for item in warnings] if strict else []
         )
         snapshot_digest = hashlib.sha256(
             json.dumps(
@@ -1354,7 +2055,7 @@ class BrainProject:
                     "manifest": current,
                     "hard": hard,
                     "warnings": warnings,
-                    "inspected": sorted(inspected),
+                    "inspected": inspected,
                 },
                 sort_keys=True,
                 separators=(",", ":"),
@@ -1367,14 +2068,23 @@ class BrainProject:
             "manifest_id": current["workstream_id"],
             "hard": hard,
             "warnings": warnings,
-            "inspected": sorted(inspected),
+            "counts": {
+                "hard": len(hard),
+                "warnings": len(warnings),
+                "blocking": len(blocking),
+                "inspected": len(inspected),
+            },
+            "blocking": blocking,
+            "decision": "BLOCKED" if blocking else "PROCEED_LOCAL_SNAPSHOT",
+            "warning_policy": "block" if strict else "allow-explicit",
+            "inspected": inspected,
             "snapshot_digest": snapshot_digest,
             "limits": [
                 "no fetch or remote lease",
                 "unfetched, unpushed and undeclared semantic work is unknown",
                 "re-run on exact SHAs before integration",
             ],
-            "exit_code": 1 if hard or (strict and warnings) else 0,
+            "exit_code": 1 if blocking else 0,
         }
 
     def doctor(self) -> int:
@@ -1471,6 +2181,15 @@ class BrainProject:
 
 def _print_conflicts(report: dict[str, Any]) -> None:
     print(report["status"])
+    print(f"decision: {report['decision']}")
+    print(
+        "counts: "
+        f"hard={report['counts']['hard']} "
+        f"warnings={report['counts']['warnings']} "
+        f"blocking={report['counts']['blocking']} "
+        f"inspected={report['counts']['inspected']}"
+    )
+    print(f"warning-policy: {report['warning_policy']}")
     print(f"canonical: {report['canonical_sha']}")
     print(f"head: {report['head_sha']}")
     print(f"manifest: {report['manifest_id']}")
@@ -1482,6 +2201,15 @@ def _print_conflicts(report: dict[str, Any]) -> None:
     print(f"snapshot: {report['snapshot_digest']}")
     for limit in report["limits"]:
         print(f"LIMIT: {limit}")
+    if report["hard"]:
+        print("NEXT: resolve every HARD item, then re-run on the exact integration SHAs.")
+    elif report["warnings"] and report["exit_code"]:
+        print(
+            "NEXT: review every warning; only the integration owner may rerun "
+            "with --allow-warnings."
+        )
+    else:
+        print("NEXT: re-run this local snapshot immediately before integration.")
 
 
 def main(argv: Sequence[str] | None = None, project: BrainProject | None = None) -> int:
@@ -1513,6 +2241,31 @@ def main(argv: Sequence[str] | None = None, project: BrainProject | None = None)
         help="return zero for warnings; never suppresses hard conflicts",
     )
     conflicts_parser.add_argument("--json", action="store_true")
+    workstream_parser = sub.add_parser(
+        "workstream",
+        help="create, inspect and transition a branch-scoped workstream",
+    )
+    workstream_sub = workstream_parser.add_subparsers(dest="workstream_command", required=True)
+    workstream_init = workstream_sub.add_parser("init")
+    workstream_init.add_argument("--outcome", action="append", required=True, help="existing OUT-NNN; repeatable")
+    workstream_init.add_argument("--slug", help="lowercase workstream label; defaults to branch suffix")
+    workstream_init.add_argument("--owner", default="codex-root", help="single write-owner identity")
+    workstream_init.add_argument("--write-exact", action="append", default=[], help="exact repository path to modify; repeatable")
+    workstream_init.add_argument("--write-tree", action="append", default=[], help="repository subtree to modify; repeatable")
+    workstream_init.add_argument("--read-exact", action="append", default=[], help="exact dependency path; repeatable")
+    workstream_init.add_argument("--read-tree", action="append", default=[], help="dependency subtree; repeatable")
+    workstream_init.add_argument("--semantic-write", action="append", default=[], help="namespaced semantic resource to modify")
+    workstream_init.add_argument("--semantic-read", action="append", default=[], help="namespaced semantic dependency")
+    workstream_init.add_argument("--proof-id", action="append", default=[], help="allowlisted proof ID; defaults to policy")
+    workstream_status = workstream_sub.add_parser("status")
+    workstream_status.add_argument("--manifest")
+    workstream_status.add_argument("--json", action="store_true")
+    workstream_set_status = workstream_sub.add_parser("set-status")
+    workstream_set_status.add_argument(
+        "status",
+        choices=sorted(MANIFEST_STATUSES),
+    )
+    workstream_set_status.add_argument("--manifest")
     sub.add_parser("processes")
     sub.add_parser("report")
     args = parser.parse_args(argv)
@@ -1557,10 +2310,82 @@ def main(argv: Sequence[str] | None = None, project: BrainProject | None = None)
                 strict=args.strict or not args.allow_warnings,
             )
             if args.json:
-                print(json.dumps({key: value for key, value in report.items() if key != "exit_code"}, ensure_ascii=False, sort_keys=True))
+                print(json.dumps(report, ensure_ascii=False, sort_keys=True))
             else:
                 _print_conflicts(report)
             return report["exit_code"]
+        elif args.command == "workstream":
+            if args.workstream_command == "init":
+                path = project.init_workstream(
+                    outcomes=args.outcome,
+                    slug=args.slug,
+                    owner=args.owner,
+                    write_exact=args.write_exact,
+                    write_tree=args.write_tree,
+                    read_exact=args.read_exact,
+                    read_tree=args.read_tree,
+                    semantic_write=args.semantic_write,
+                    semantic_read=args.semantic_read,
+                    proof_ids=args.proof_id,
+                )
+                print(f"CREATED {project._relative(path)}")
+                print(f"CREATED {project._relative(path.with_name('HANDOFF.md'))}")
+                print(
+                    "NEXT: run workstream status, complete the handoff, commit exactly "
+                    "these two files, then run brain conflicts --strict"
+                )
+            elif args.workstream_command == "status":
+                path = (
+                    Path(args.manifest)
+                    if args.manifest
+                    else project.branch_manifest_path(include_terminal=True)
+                )
+                if not path.is_absolute():
+                    path = project.root / path
+                data = project.validate_manifest(project.strict_json(path), path)
+                payload = {"path": project._relative(path), **data}
+                if args.json:
+                    print(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+                else:
+                    for key in (
+                        "path",
+                        "workstream_id",
+                        "status",
+                        "branch",
+                        "base_sha",
+                        "result_sha",
+                        "manifest_revision",
+                        "write_owner",
+                        "outcome_ids",
+                        "proof_command_ids",
+                    ):
+                        value = payload[key]
+                        print(f"{key}: {value}")
+                    for access in ("write", "read"):
+                        print(f"scope.{access}:")
+                        for item in data["scope"][access]:
+                            print(f"  - {item['match']}:{item['path']}")
+                    print("semantic_scope:")
+                    for item in data["semantic_scope"]:
+                        print(f"  - {item['access']}:{item['key']}")
+            elif args.workstream_command == "set-status":
+                path = project.set_workstream_status(
+                    args.status,
+                    Path(args.manifest) if args.manifest else None,
+                )
+                print(f"UPDATED {project._relative(path)} status={args.status}")
+                if args.status in {"integrated", "abandoned"}:
+                    print(
+                        "NEXT: validate and commit this terminal revision; plain conflicts "
+                        "will no longer auto-discover it"
+                    )
+                elif args.status == "submitted":
+                    print(
+                        "NEXT: commit only this manifest revision; integrate its frozen "
+                        "result SHA before marking integrated"
+                    )
+                else:
+                    print("NEXT: commit this revision, then run brain conflicts --strict")
         elif args.command == "processes":
             project.process_report()
         elif args.command == "report":
@@ -1568,6 +2393,15 @@ def main(argv: Sequence[str] | None = None, project: BrainProject | None = None)
         return 0
     except BrainFailure as error:
         print(f"ERROR {error.code}: {error.detail}", file=sys.stderr)
+        remediation = {
+            "WORKSTREAM_DIRTY": "commit or recoverably separate current changes, then retry",
+            "WORKSTREAM_BASE_DIRTY": "create a fresh branch from the exact canonical ref",
+            "WORKSTREAM_CANONICAL_BRANCH": "create a codex task branch from canonical first",
+            "WORKSTREAM_DISCOVERY": "pass the exact manifest path or initialize this task branch",
+            "MANIFEST_MIGRATION_REQUIRED": "migrate legacy v1 to v2 before changing lifecycle status",
+        }.get(error.code)
+        if remediation:
+            print(f"NEXT: {remediation}", file=sys.stderr)
         return error.exit_code
 
 
