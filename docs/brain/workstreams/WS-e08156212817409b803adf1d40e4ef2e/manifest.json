@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-e08156212817409b803adf1d40e4ef2e",
   "slug": "out-002-cabinet-priority-truth",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-002-cabinet-priority-truth",
   "base_sha": "1426b4e602cffda2a291c43076a089ffd13cd857",
   "result_sha": "f68b698d76881036e0528fe02622a526fa535da0",
@@ -82,6 +82,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "c7e5518949feda72ddf762767c44ba44ff73d23e17583fc7567ed34febedba07"
+  "manifest_revision": 3,
+  "base_manifest_hash": "d03f9a01e66f2723e9ae53c9367db5ba237940bf24a217df73361bb3de831ca6"
 }
