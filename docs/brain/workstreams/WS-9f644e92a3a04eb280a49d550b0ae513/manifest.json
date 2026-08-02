@@ -25,6 +25,10 @@
         "match": "exact"
       },
       {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
         "path": "diplomnaya-po-ekonomike.html",
         "match": "exact"
       },
@@ -54,6 +58,10 @@
       },
       {
         "path": "docs/brain/ROADMAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
         "match": "exact"
       },
       {
@@ -175,10 +183,6 @@
         "match": "exact"
       },
       {
-        "path": "configurator.html",
-        "match": "exact"
-      },
-      {
         "path": "docs/brain/DECISIONS.md",
         "match": "exact"
       },
@@ -239,6 +243,10 @@
     },
     {
       "access": "write",
+      "key": "ui-state:configurator-route-conflict"
+    },
+    {
+      "access": "write",
       "key": "ui-state:services-situation"
     },
     {
@@ -254,6 +262,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "8b84ab3a1a9a14f5ae300ed230a7d49383910b9523a0a44927ce52f73cafb79c"
 }
