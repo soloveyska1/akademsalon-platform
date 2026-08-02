@@ -281,9 +281,8 @@ test('home begins directly after the in-flow desktop header and mobile appbar of
 });
 
 test('production chrome switches to the approved mobile edition at 920px', () => {
-  // Версию бандла не фиксируем числом: за бампом следит release-asset-version.test.js,
-  // а жёсткое значение здесь падало после каждой пересборки главной.
-  assert.match(indexHtml, /home-release\.min\.css\?v=\d+release\d+" data-mobile-edition="1"/);
+  // OUT-003 moves the shared shell and the generated home bundle in one cache wave.
+  assert.match(indexHtml, /home-release\.min\.css\?v=20260803out003shell1" data-mobile-edition="1"/);
   assert.match(mobileCss, /@media screen and \(max-width:920px\)/);
   assert.match(appJs, /link\.media = 'screen and \(max-width:920px\)'/);
   assert.match(appJs, /matchMedia\('\(max-width:920px\)'\)/);

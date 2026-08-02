@@ -1391,7 +1391,7 @@ body .site-header .header-action kbd{
 /* Бейджи — на фирменном сургуче, кольцо по фону шапки. */
 body .site-header .nc-badge,
 body .site-header .nav-marks .nm-n{
-  background:var(--wax);
+  background:var(--wax-cta,var(--wax));
   color:#FFFEF9;
   border:2px solid var(--paper);
   font-size:10px;

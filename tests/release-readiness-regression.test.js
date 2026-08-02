@@ -135,10 +135,10 @@ test('home release build pins its compiler and complete ordered source set', () 
 
 test('home loads only the reproducible release bundles', () => {
   const home = read('index.html');
-  // Версии бандлов не фиксируем числом: за бампом следит release-asset-version.test.js.
-  // Смысл этой проверки — что главная грузит ТОЛЬКО собранные бандлы (см. doesNotMatch ниже).
-  assert.match(home, /assets\/css\/home-release\.min\.css\?v=\d+release\d+" data-mobile-edition="1"/);
-  assert.match(home, /assets\/js\/home-release\.min\.js\?v=20260802out001submit1/);
+  // OUT-003 moves both generated bundles in the same shared-shell cache wave.
+  // This check also proves that home loads only the generated bundles.
+  assert.match(home, /assets\/css\/home-release\.min\.css\?v=20260803out003shell1" data-mobile-edition="1"/);
+  assert.match(home, /assets\/js\/home-release\.min\.js\?v=20260803out003shell1/);
   assert.doesNotMatch(home, /assets\/css\/(?:styles|chrome|polish15-chrome|extras|polish15-home|commission-zero|home-intro|home-ecosystem|mobile)\.css/);
   assert.doesNotMatch(home, /assets\/js\/(?:app|polish15-chrome|extras|home-intro|home-ecosystem)\.js/);
 });

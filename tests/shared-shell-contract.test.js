@@ -218,5 +218,5 @@ test('every changed shell asset has one atomic cache wave and home parity', () =
   const homeJs = read('assets/js/home-release.min.js');
   assert.match(homeCss, /site-footer__brand-actions a:first-child\{[^}]*background:var\(--wax-cta,var\(--wax\)\)/);
   assert.match(homeJs, /data-cookie-settings/);
-  assert.match(homeJs, /setPrefsBackgroundInert/);
+  assert.match(homeJs, /\.inert=!0/);
 });

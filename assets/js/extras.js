@@ -203,7 +203,7 @@
   /* ---------------- Настройки данных · consent v2 ---------------- */
   (function cookieBar() {
     if (!S.consent) return;
-    var bar = null, prefs = null, prefsOpener = null;
+    var bar = null, prefs = null, prefsOpener = null, prefsBackground = [];
 
     function closeBar() {
       if (!bar) return;
@@ -331,6 +331,18 @@
         '</section>';
     }
 
+    function setPrefsBackgroundInert(active) {
+      if (active) {
+        prefsBackground = Array.prototype.slice.call(document.body.children)
+          .filter(function (node) { return node !== prefs; })
+          .map(function (node) { return { node: node, inert: node.inert === true }; });
+        prefsBackground.forEach(function (entry) { entry.node.inert = true; });
+        return;
+      }
+      prefsBackground.forEach(function (entry) { entry.node.inert = entry.inert; });
+      prefsBackground = [];
+    }
+
     function openPrefs(opener) {
       if (prefs) return;
       prefsOpener = opener || document.activeElement;
@@ -342,6 +354,7 @@
       prefs.setAttribute('aria-labelledby', 'cp-title');
       prefs.innerHTML = prefsHTML(!!(saved && saved.analytics));
       document.body.appendChild(prefs);
+      setPrefsBackgroundInert(true);
       if (bar) { bar.classList.add('is-behind'); bar.setAttribute('aria-hidden', 'true'); }
       void prefs.offsetWidth;
       prefs.classList.add('open');
@@ -372,6 +385,7 @@
       if (bar) { bar.classList.remove('is-behind'); bar.removeAttribute('aria-hidden'); }
       setTimeout(function () {
         if (old.parentNode) old.remove();
+        setPrefsBackgroundInert(false);
         if (opener && opener.focus && document.contains(opener)) {
           try { opener.focus(); } catch (e) {}
         }

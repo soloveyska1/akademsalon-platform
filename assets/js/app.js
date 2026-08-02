@@ -35,10 +35,10 @@
     link.media = 'screen and (max-width:920px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260802release98', source).href
-        : 'assets/css/mobile.css?v=20260802release98';
+      link.href = source ? new URL('../css/mobile.css?v=20260803out003shell1', source).href
+        : 'assets/css/mobile.css?v=20260803out003shell1';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260802release98';
+      link.href = 'assets/css/mobile.css?v=20260803out003shell1';
     }
     document.head.appendChild(link);
   })();
@@ -2467,6 +2467,7 @@
       '<span class="site-footer__promise">Состав, срок и стоимость фиксируются до оплаты</span>' +
       '<nav class="site-footer__legal" aria-label="Документы">' +
         '<a href="privacy.html">Конфиденциальность</a>' +
+        '<a href="privacy.html#cookies" data-cookie-settings>Настройки данных</a>' +
         '<a href="terms.html">Документы</a>' +
         '<a href="oferta.html">Оферта</a>' +
       '</nav>' +

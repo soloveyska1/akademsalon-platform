@@ -400,7 +400,7 @@ test('every shared order-runtime consumer uses the same release cache key', () =
     const refs = [...source.matchAll(/assets\/js\/(?:app|extras|home-release\.min)\.js\?v=([^&"']+)/g)];
     for (const ref of refs) {
       consumers++;
-      assert.equal(ref[1], '20260802out001submit1', `${file}: stale shared runtime cache key`);
+      assert.equal(ref[1], '20260803out003shell1', `${file}: stale shared runtime cache key`);
     }
   }
   assert.ok(consumers >= 170, 'shared runtime consumer inventory unexpectedly shrank');

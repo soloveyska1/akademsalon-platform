@@ -3205,8 +3205,8 @@ body .resume-card.is-typing-copy .resume-card__detail{
 
   body .site-footer__brand-actions a:first-child{
     color:#fff8ef;
-    border-color:var(--wax);
-    background:var(--wax);
+    border-color:var(--wax-cta,var(--wax));
+    background:var(--wax-cta,var(--wax));
   }
 
   body .site-footer__group{

@@ -5,7 +5,7 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const releaseKey = '20260802release98';
-const submitRuntimeKey = '20260802out001submit1';
+const shellRuntimeKey = '20260803out003shell1';
 const changedAssets = new Set([
   'assets/css/cart.css',
   'assets/css/chrome.css',
@@ -19,6 +19,7 @@ const changedAssets = new Set([
   'assets/css/polish15-configurator.css',
   'assets/css/polish15-home.css',
   'assets/css/home-intro.css',
+  'assets/css/home-release.min.css',
   'assets/css/polish15-library.css',
   'assets/css/polish15-operations.css',
   'assets/css/polish15-reading.css',
@@ -31,12 +32,22 @@ const changedAssets = new Set([
   'assets/js/cart.js',
   'assets/js/extras.js',
   'assets/js/home-intro.js',
+  'assets/js/home-release.min.js',
   'assets/js/knowledge.js',
   'assets/js/polish15-catalog.js',
   'assets/js/commission-zero.js',
   'assets/js/polish15-operations.js',
   'assets/js/polish15-reading.js',
   'assets/js/polish15-supporting.js',
+]);
+const shellAssets = new Set([
+  'assets/css/chrome.css',
+  'assets/css/home-release.min.css',
+  'assets/css/mobile.css',
+  'assets/css/polish15-chrome.css',
+  'assets/js/app.js',
+  'assets/js/extras.js',
+  'assets/js/home-release.min.js',
 ]);
 
 test('every changed public asset uses the release cache key', () => {
@@ -53,8 +64,8 @@ test('every changed public asset uses the release cache key', () => {
       if (!changedAssets.has(assetPath)) continue;
       references += 1;
       const query = new URLSearchParams(url.split('?')[1] || '');
-      const expectedKey = assetPath === 'assets/js/app.js' || assetPath === 'assets/js/extras.js'
-        ? submitRuntimeKey
+      const expectedKey = shellAssets.has(assetPath)
+        ? shellRuntimeKey
         : releaseKey;
       assert.equal(query.get('v'), expectedKey, `${file}: ${assetPath}`);
     }
@@ -63,5 +74,5 @@ test('every changed public asset uses the release cache key', () => {
   assert.ok(references > 100, `expected broad cache coverage, found ${references} references`);
 
   const app = fs.readFileSync(path.join(root, 'assets/js/app.js'), 'utf8');
-  assert.doesNotMatch(app, /mobile\.css\?v=(?!20260802release98)/);
+  assert.doesNotMatch(app, /mobile\.css\?v=(?!20260803out003shell1)/);
 });
