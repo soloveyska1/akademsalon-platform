@@ -1,7 +1,8 @@
 # Current handoff
 
 - Objective: подготовить доказуемый `OUT-001` без production-мутации
-- Base/head: `0350ae4a0e95961ddd8f4d77fdc5a4c1a83bb9a4`
+- Base/audited head: `0350ae4a0e95961ddd8f4d77fdc5a4c1a83bb9a4` →
+  `18992a2ddf06` (canonical council tooling imported from upstream `da0a05e`)
 - Working branch: `codex/out-001-contract-plan`
 - Outcome IDs: `OUT-001`, затем `OUT-002`
 - Evidence/plan: `E-0001`, `plans/OUT-001-EXECUTION.md`
@@ -13,6 +14,10 @@
 - `DEC-0007` закрепляет единый contract для каждого public `POST /orders`.
 - `UXD-0004` фиксирует P1-разрыв guide microlead с canonical submit contract.
 - Roadmap уточняет текущий срез внутри `OUT-001`.
+- Первый documentation change-set сохранён отдельным commit `5b3e7a6`; затем
+  канонический model-council cherry-picked отдельным commit `18992a2`.
+- E-0001 дополнен superseding council evidence и уточнением contract/UX-развилки;
+  код приложения, UI и production не менялись.
 
 ## Проверено и чем
 
@@ -28,6 +33,15 @@
 - UX-review воспроизвёл существующий `UXD-0002` на 390×844; на 768/1280/1440
   action был в viewport, dark-контраст критических элементов прошёл. Это не
   расширяет текущий scope и не разрешает редизайн.
+- `./bin/council --doctor --providers kimi,sonnet,glm,opus,fable --allow-fable`:
+  exit 0; все пять `READY`; `local_llm: DISABLED`;
+  `background_services: NONE`.
+- `./bin/council --probe --providers kimi,sonnet,glm,opus,fable --allow-fable`:
+  exit 0; `READY kimi`, `READY sonnet`, `READY glm`, `READY opus`,
+  `READY fable` именно из этого worktree.
+- Daily OUT-001 council: Kimi/Sonnet/GLM `READY`; отдельная Opus contract/UX
+  проверка `READY`; Fable после probe не использовался. Raw artifacts находятся
+  только в ignored `.brain/council/` и не входят в Git.
 
 ## Не проверено
 
@@ -38,6 +52,9 @@
   order/access/uploads/operator/bot artifacts.
 - Fresh-tab cookie auth UI, malformed ID/access response, timeout overlap и
   upload replay в runtime browser tests.
+- Есть ли у order отдельный lead/qualified discriminator и фильтруют ли по нему
+  operator queue, `/slots`, cabinet и analytics; без этого нельзя закрыть
+  развилку `/orders` против `/leads` для guide microlead.
 - Production submit намеренно не выполнялся; `tests/production-smoke.js` не
   запускался, потому что содержит `POST /orders` и допускает создание order.
 
@@ -47,6 +64,10 @@
   idempotency/success/access contract.
 - `UXD-0004` P1: guide microlead обходит этот contract; внешний E2E и новый
   release остаются `NO-GO` до исправления и проверки.
+- Council не меняет решение голосованием: общая часть `DEC-0007`
+  (idempotency + честный success) подтверждена как ближайший безопасный срез;
+  access-часть для microlead остаётся условной до server evidence. Не выдавать
+  microlead номер/ссылку на дело только ради формального выравнивания contract.
 - `UXD-0002` остаётся P2 и формирует следующий срез `OUT-002` после `OUT-001`.
 
 ## User-owned changes
@@ -57,6 +78,7 @@
 
 ## Один следующий шаг
 
-Получить read-only server-side доказательство schema/idempotency/outbox/cleanup
-`POST /orders`, затем добавить локальный failing contract test для обоих текущих
-producer-ов — без production submit.
+Добавить локальный failing-first contract test для обоих producer-ов на
+стабильный request ID и строгий success, не меняя access UX; параллельно указать
+точный read-only источник server evidence и проверить lead/qualified
+discriminator, idempotency/outbox/cleanup — без production submit.
