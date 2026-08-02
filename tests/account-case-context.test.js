@@ -57,7 +57,10 @@ function withDueState(base, dueState) {
 
 function withClaimedState(base, claimedState) {
   const value = Object.assign({}, base);
-  if (claimedState === 'absent') delete value.claimed;
+  if (claimedState === 'absent') {
+    delete value.claimed;
+    delete value.payments;
+  }
   else value.claimed = claimedState;
   return value;
 }
@@ -129,7 +132,7 @@ test('literal action matrix never invents payment or masks a proven due', () => 
           combinations += 1;
         }))))))));
 
-  assert.equal(combinations, 4608);
+  assert.equal(combinations, 2304);
 });
 
 test('priority card uses one summary snapshot and keeps a stable focus target', () => {
@@ -166,6 +169,69 @@ test('claimed, transfer and pause bands never expose a second payment action', (
   assert.equal(api.partBand(Object.assign({}, paused, { final_ready: false, part_ready: 1 })), '');
   assert.equal(api.dueBand(Object.assign({}, paused, { final_ready: false })), '');
   assert.match(api.pauseBand(paused), /Снять с паузы/);
+  const manage = between('function manageBlock(o)', '/* -------- после завершения');
+  assert.doesNotMatch(manage, /data-act="unpause"/);
+});
+
+test('payment workspace follows checking, due, paused and unknown phases literally', () => {
+  const api = contractApi({
+    st: { me: { deposit: { balance: 0 } } },
+    esc: String,
+    money: String,
+    payHistory: () => '',
+    paySlip: () => '<div>requisites</div>',
+    payWorkspace: (main, history, state) => `<div data-pay-state="${state}">${main}${history}</div>`,
+  });
+  vm.runInNewContext(between('function payBlock(o)', "/* part='decide'"), api);
+
+  const due = api.payBlock(order({ due_now: { amount: 500 }, pay_online: true }));
+  assert.match(due, /data-pay-state="due"/);
+  assert.match(due, /data-act-pay/);
+
+  const checking = api.payBlock(order({ due_now: { amount: 500 }, claimed: true, pay_online: true }));
+  assert.match(checking, /data-pay-state="checking"/);
+  assert.doesNotMatch(checking, /data-act-pay(?:-|>)/);
+
+  assert.equal(api.payBlock(order({ due_now: { amount: 500 }, paused: true, pay_online: true })), '');
+  assert.equal(api.payBlock(withClaimedState(order({ due_now: { amount: 500 }, pay_online: true }), 'absent')), '');
+});
+
+test('payment handlers recheck the current case context before any API mutation', async () => {
+  let posts = 0;
+  let toasts = 0;
+  const api = contractApi({
+    st: { detail: null, currentId: 71, busy: false },
+    toast: () => { toasts += 1; },
+    orderHeaders: () => ({}),
+    S: { api: { post: () => {
+      posts += 1;
+      return Promise.resolve({ ok: false, error: 'nothing_due' });
+    } } },
+  });
+  vm.runInNewContext(between('function doAction(action, extra)', 'function payOnline()'), api);
+
+  api.st.detail = order({ due_now: { amount: 500 }, claimed: false });
+  assert.equal(api.paymentActionAllowed(), true);
+  [
+    order({ due_now: { amount: 500 }, claimed: true }),
+    order({ due_now: { amount: 500 }, claimed: false, paused: true }),
+    withClaimedState(order({ due_now: { amount: 500 } }), 'absent'),
+    order({ status: 'done', due_now: { amount: 500 }, claimed: false }),
+  ].forEach((blocked) => {
+    api.st.detail = blocked;
+    api.doAction('paid');
+  });
+  assert.equal(posts, 0);
+  assert.equal(toasts, 4);
+
+  api.st.detail = order({ due_now: { amount: 500 }, claimed: false });
+  api.doAction('paid');
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(posts, 1);
+
+  assert.match(between('function doAction(action, extra)', 'function payOnline()'), /action === 'paid' && !paymentActionAllowed\(\)/);
+  assert.match(between('function payOnline()', 'function tipOnline(amount)'), /!paymentActionAllowed\(\)/);
+  assert.match(between('function payDeposit()', 'function sendMessage()'), /!paymentActionAllowed\(\)/);
 });
 
 test('overview and opening destination agree with the resolved action owner', () => {
@@ -207,7 +273,7 @@ test('shared consumers call the context resolver instead of reclassifying money'
   ].forEach((source) => assert.match(source, /caseContextFor\(o\)/));
 });
 
-test('list signature covers every context-only field and refreshes home', () => {
+test('list signature covers every context-only field and refreshes home', async () => {
   const api = contractApi();
   const base = order();
   const signature = api.caseContextSignature(base);
@@ -225,15 +291,52 @@ test('list signature covers every context-only field and refreshes home', () => 
   assert.match(refresh, /st\.orders\.map\(caseContextSignature\)/);
   assert.match(refresh, /!== before\) renderCurrent\(\)/);
   assert.doesNotMatch(refresh, /&& st\.detail/);
+
+  let renders = 0;
+  const changed = order({ claimed: true });
+  const live = contractApi({
+    st: { orders: [base], detail: null },
+    S: { api: {
+      token: () => 'test',
+      guestTokens: () => ({}),
+      identified: () => true,
+      get: () => Promise.resolve({ ok: true, orders: [changed] }),
+    } },
+    ordersHeaders: () => ({}),
+    renderCurrent: () => { renders += 1; },
+  });
+  vm.runInNewContext(refresh, live);
+  live.refreshListSilent();
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(renders, 1);
+  live.refreshListSilent();
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(renders, 1);
+});
+
+test('case return restores the exact priority trigger after a live-safe rerender', () => {
+  const clickSource = between("root.addEventListener('click'", '/* живой пересчёт');
+  assert.match(clickSource, /var wasCaseOpen = sameDetail && st\.caseOpen/);
+  assert.match(clickSource, /if \(!wasCaseOpen\) st\.caseSec = openingSec\(newId, ordHint\)/);
+  assert.match(clickSource, /caseReturnFocus = \{ kind: 'now', id: nid, jump: njump \}/);
+  assert.match(clickSource, /returnFocus && returnFocus\.kind === 'now'/);
+  assert.match(clickSource, /el\.getAttribute\('data-now-jump'\) === returnFocus\.jump/);
 });
 
 test('dark priority CTA reaches WCAG AA and changed assets are cache-busted', () => {
   const darkBlocks = [...accountCss.matchAll(/:root\[data-theme="dark"\] \.is-account-route\s*\{([\s\S]*?)\}/g)];
   assert.ok(darkBlocks.length > 0);
-  const colors = darkBlocks.flatMap((match) => [...match[1].matchAll(/--wax-cta:\s*(#[0-9a-f]{6})/gi)]
+  const backgrounds = darkBlocks.flatMap((match) => [...match[1].matchAll(/--wax-cta:\s*(#[0-9a-f]{6})/gi)]
     .map((color) => color[1]));
-  assert.ok(colors.length > 0);
-  assert.ok(contrast('#fffaf3', colors.at(-1)) >= 4.5, `dark CTA contrast is ${contrast('#fffaf3', colors.at(-1)).toFixed(2)}:1`);
-  assert.match(dashboard, /priority=truth1/);
-  assert.match(dashboard, /context=truth1/);
+  const foregrounds = [...accountCss.matchAll(/--text-on-wax:\s*(#[0-9a-f]{6})/gi)]
+    .map((color) => color[1]);
+  assert.ok(backgrounds.length > 0);
+  assert.ok(foregrounds.length > 0);
+  backgrounds.forEach((background) => foregrounds.forEach((foreground) => {
+    const ratio = contrast(foreground, background);
+    assert.ok(ratio >= 4.5, `${foreground} on ${background} is only ${ratio.toFixed(2)}:1`);
+  }));
+  assert.match(accountCss, /\.account-priority \.line-link\s*\{[\s\S]*?color:\s*var\(--text-on-wax\);[\s\S]*?background:\s*var\(--wax-cta\);/);
+  assert.match(dashboard, /polish15-account\.css\?[^"']*context=truth1/);
+  assert.match(dashboard, /cabinet\.js\?[^"']*context=truth1/);
 });

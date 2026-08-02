@@ -19,6 +19,8 @@ function cabinetOrder(id, overrides) {
     unread: 0,
     files_new: 0,
     paused: false,
+    due_now: { amount: 0, label: '' },
+    claimed: false,
     price: 1000,
     stages_total: 1,
   }, overrides || {});
@@ -81,7 +83,7 @@ test('quiet and paused cases never invent a priority action from a deadline', ()
 
 test('action class is strict and deadline only breaks ties inside one class', () => {
   const actions = [
-    { id: 1, status: 'prepay', priority: 5, jump: 'secPay' },
+    { id: 1, status: 'prepay', due_now: { amount: 500, label: 'Первый этап' }, priority: 5, jump: 'secPay' },
     { id: 2, status: 'priced', priority: 4, jump: 'secDecide' },
     { id: 3, status: 'check', priority: 3, jump: 'secDecide' },
     { id: 4, files_new: 1, priority: 2, jump: 'secFiles' },

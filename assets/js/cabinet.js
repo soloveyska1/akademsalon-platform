@@ -42,6 +42,7 @@ function initCabinet() {
     pendingJump: null,  // раздел, к которому доехать после смены дела (герой)
     listScroll: 0,      // позиция реестра до открытия дела
     listWindowScroll: 0,
+    caseReturnFocus: null, // точный источник открытия для доступного возврата
     detailRequestSeq: 0,
     chatStick: false,
     pendingCaseFocus: false,
@@ -673,25 +674,82 @@ function initCabinet() {
      Кабинет сам ранжирует: оплата → решение по цене → приёмка → новое.
      Одна карточка, один сургучный CTA — никакого шума. */
   /* now-action-contract:start */
+  function hasContextField(o, key) {
+    return !!o && Object.prototype.hasOwnProperty.call(o, key);
+  }
+
+  function paymentContextFor(o) {
+    if (!o) return { phase: 'unknown', due: 0, dueKnown: false, claimed: false, claimedKnown: false };
+    var dueKnown = !!(o.due_now && hasContextField(o.due_now, 'amount'));
+    var rawDue = dueKnown ? Number(o.due_now.amount) : 0;
+    if (!dueKnown && o.status === 'prepay' && (hasContextField(o, 'prepay_due') || hasContextField(o, 'prepay'))) {
+      dueKnown = true;
+      rawDue = Number(hasContextField(o, 'prepay_due') ? o.prepay_due : o.prepay);
+    }
+    var due = isFinite(rawDue) && rawDue > 0 ? rawDue : 0;
+    var paymentsKnown = Array.isArray(o.payments);
+    var claimedKnown = hasContextField(o, 'claimed') || paymentsKnown;
+    var claimed = o.claimed === true || (paymentsKnown && o.payments.some(function (p) {
+      return p && (p.status === 'claimed' || p.state === 'claimed');
+    }));
+    var ready = !!(o.part_ready || o.final_ready);
+    var phase = claimed ? 'checking'
+      : (!dueKnown || !claimedKnown) ? 'unknown'
+      : due > 0 ? 'due'
+      : o.status === 'prepay' ? 'preparing'
+      : ready ? 'transfer'
+      : 'none';
+    return {
+      phase: phase,
+      due: due,
+      dueKnown: dueKnown,
+      claimed: claimed,
+      claimedKnown: claimedKnown
+    };
+  }
+
+  function caseContextFor(o) {
+    var payment = paymentContextFor(o);
+    var paused = !!(o && o.paused);
+    var terminal = !!(o && (o.status === 'done' || o.status === 'cancel'));
+    var action = null;
+    if (o && !paused && !terminal) {
+      if (payment.phase === 'due') {
+        action = { kind: 'payment', score: 5, jump: 'secPay', icon: 'wallet' };
+      } else if (o.status === 'priced') {
+        action = { kind: 'price', score: 4, jump: 'secDecide', icon: 'wallet' };
+      } else if (o.status === 'check') {
+        action = { kind: 'review', score: 3, jump: 'secDecide', icon: 'documents' };
+      } else if (Number(o.files_new) > 0) {
+        action = { kind: 'files', score: 2, jump: 'secFiles', icon: 'documents' };
+      } else if (Number(o.unread) > 0) {
+        action = { kind: 'message', score: 1, jump: 'secChat', icon: 'messages' };
+      }
+    }
+    var destination = 'work';
+    if (paused) {
+      destination = (o.actions || []).indexOf('unpause') >= 0 ? 'terms' : 'chat';
+    } else if (action) {
+      destination = action.jump === 'secPay' ? 'money'
+        : action.jump === 'secFiles' ? 'files'
+        : action.jump === 'secChat' ? 'chat' : 'work';
+    } else if (payment.phase === 'checking') {
+      destination = 'money';
+    }
+    return {
+      payment: payment.phase,
+      due: payment.due,
+      dueKnown: payment.dueKnown,
+      claimed: payment.claimed,
+      claimedKnown: payment.claimedKnown,
+      owner: paused ? 'paused' : action ? 'client' : 'master',
+      action: action,
+      destination: destination
+    };
+  }
+
   function nowActionFor(o) {
-    if (!o || o.paused) return null;
-    if (o.status === 'prepay' ||
-        ((o.part_ready || o.final_ready) && (o.status === 'work' || o.status === 'fix'))) {
-      return { kind: 'payment', score: 5, jump: 'secPay', icon: 'wallet' };
-    }
-    if (o.status === 'priced') {
-      return { kind: 'price', score: 4, jump: 'secDecide', icon: 'wallet' };
-    }
-    if (o.status === 'check') {
-      return { kind: 'review', score: 3, jump: 'secDecide', icon: 'documents' };
-    }
-    if (Number(o.files_new) > 0) {
-      return { kind: 'files', score: 2, jump: 'secFiles', icon: 'documents' };
-    }
-    if (Number(o.unread) > 0) {
-      return { kind: 'message', score: 1, jump: 'secChat', icon: 'messages' };
-    }
-    return null;
+    return caseContextFor(o).action;
   }
 
   function resolveNowAction(list, getDaysLeft) {
@@ -709,6 +767,23 @@ function initCabinet() {
     });
     return best;
   }
+
+  function caseContextSignature(o) {
+    var due = o && o.due_now;
+    var claimed = hasContextField(o, 'claimed') ? String(!!o.claimed) : '?';
+    var dueAmount = due && hasContextField(due, 'amount') ? String(due.amount) : '?';
+    var payments = Array.isArray(o && o.payments) ? o.payments.map(function (p) {
+      return [p && p.id, p && (p.status || p.state), p && p.amount];
+    }) : '?';
+    return JSON.stringify([
+      o && o.id, o && (o.context_version || o.updated_at || ''), o && o.status,
+      !!(o && o.paused), o && o.paused_by, claimed, dueAmount,
+      due && due.label, hasContextField(o, 'prepay_due') ? o.prepay_due : '?',
+      hasContextField(o, 'prepay') ? o.prepay : '?', o && o.part_ready,
+      !!(o && o.final_ready), o && o.files_new, o && o.unread, o && o.pinned,
+      o && o.archived, (o && o.actions || []).slice(), payments
+    ]);
+  }
   /* now-action-contract:end */
 
   function nowCard() {
@@ -719,9 +794,7 @@ function initCabinet() {
     var o = resolved.order;
     var action = resolved.action;
     var score = action.score;
-    var det = (st.detail && st.detail.id === o.id) ? st.detail : null;
-    var due = det && det.due_now && det.due_now.amount ? det.due_now.amount : 0;
-    if (!due && o.status === 'prepay') due = o.prepay_due || 0;
+    var due = caseContextFor(o).due;
     var msg, sub, cta, jump;
     if (action.kind === 'payment') {
       var what = (o.final_ready && o.status !== 'prepay') ? 'Финальный пакет результата подготовлен'
@@ -763,7 +836,7 @@ function initCabinet() {
       '<div><p class="account-priority__kicker">Сейчас важно · дело ' + esc(o.no) + '</p>' +
       '<strong>' + msg + '</strong><p>' + esc(shortWork(o)) + '. ' + sub + '</p></div>' +
       '<span class="account-notice__acts">' +
-      '<button type="button" class="line-link" data-now-open="' + o.id +
+      '<button type="button" class="line-link" id="accountPriorityAction-' + o.id + '" data-now-open="' + o.id +
       '" data-now-jump="' + jump + '">' + cta + ' <span aria-hidden="true">→</span></button></span></div>';
   }
 
@@ -1267,6 +1340,7 @@ function initCabinet() {
   function captureAccountUi() {
     var snap = {
       fields: {}, details: {}, visibility: {}, focus: '', focusStart: null,
+      focusKey: '', focusValue: '', focusIndex: 0,
       scroll: 0, windowScroll: window.scrollY || 0, navScroll: 0,
       chatSeen: false, chatAtEnd: true, chatScroll: 0
     };
@@ -1296,8 +1370,20 @@ function initCabinet() {
       };
     });
     var active = document.activeElement;
-    if (active && root.contains(active) && active.id) {
-      snap.focus = active.id;
+    if (active && root.contains(active)) {
+      if (active.id) snap.focus = active.id;
+      else {
+        ['data-now-open', 'data-ord', 'data-case-sec', 'data-tab', 'data-act'].some(function (key) {
+          if (!active.hasAttribute(key)) return false;
+          snap.focusKey = key;
+          snap.focusValue = active.getAttribute(key);
+          var matches = Array.prototype.filter.call(root.querySelectorAll('[' + key + ']'), function (el) {
+            return el.getAttribute(key) === snap.focusValue;
+          });
+          snap.focusIndex = Math.max(0, matches.indexOf(active));
+          return true;
+        });
+      }
       if (typeof active.selectionStart === 'number') snap.focusStart = active.selectionStart;
     }
     return snap;
@@ -1331,8 +1417,14 @@ function initCabinet() {
     if (window.scrollY !== (snap.windowScroll || 0)) {
       window.scrollTo({ top: snap.windowScroll || 0, behavior: 'auto' });
     }
-    if (snap.focus) {
-      var focus = document.getElementById(snap.focus);
+    if (snap.focus || snap.focusKey) {
+      var focus = snap.focus ? document.getElementById(snap.focus) : null;
+      if (!focus && snap.focusKey) {
+        var matches = Array.prototype.filter.call(root.querySelectorAll('[' + snap.focusKey + ']'), function (el) {
+          return el.getAttribute(snap.focusKey) === snap.focusValue;
+        });
+        focus = matches[Math.min(snap.focusIndex || 0, Math.max(0, matches.length - 1))] || null;
+      }
       if (focus) {
         try {
           focus.focus({ preventScroll: true });
@@ -1485,9 +1577,8 @@ function initCabinet() {
 
   function needsAction(o) {
     /* дело ждёт решения клиента: оплата, цена или приёмка */
-    if (o.paused) return false;
-    return o.status === 'prepay' || o.status === 'priced' || o.status === 'check' ||
-      (!!(o.part_ready || o.final_ready) && (o.status === 'work' || o.status === 'fix'));
+    var action = caseContextFor(o).action;
+    return !!action && ['payment', 'price', 'review'].indexOf(action.kind) >= 0;
   }
 
   /* ---------------- Реестр дел: ОДНА карточка на весь кабинет ----------------
@@ -1534,11 +1625,12 @@ function initCabinet() {
                ['Ближайший срок', o.deadline_text || 'уточняется']];
       /* подвал называет само действие, а не факт его наличия: три карточки
          с одинаковым «Требуется ваше решение» ничего не сообщали */
+      var orderContext = caseContextFor(o);
       foot = due ? 'Оплатить ' + money(due) + ' ₽'
-        : o.status === 'priced' ? 'Ждёт вашего решения'
+        : o.paused ? (orderContext.destination === 'terms' ? 'Снять с паузы' : 'Написать мастеру')
+        : orderContext.action && orderContext.action.kind === 'price' ? 'Ждёт вашего решения'
         : o.status === 'check' ? 'Проверить результат'
         : o.status === 'fix' ? 'Идёт корректировка'
-        : o.paused ? 'Снять с паузы'
         : fresh ? 'Новые файлы от мастерской'
         : unread ? 'Ответить мастеру'
         : o.status === 'new' ? 'Мастер оценивает заявку'
@@ -1694,6 +1786,8 @@ function initCabinet() {
   function caseOverview(o) {
     var steps = o.steps || [];
     if (o.step < 0 || !steps.length) return '';
+    var context = caseContextFor(o);
+    var action = context.action;
     var stepName = steps[Math.max(0, Math.min(steps.length - 1, o.step - 1))] || '';
     var total = o.stages_total || 1;
     var next = {
@@ -1706,14 +1800,25 @@ function initCabinet() {
       done: 'Дело завершено',
       cancel: 'Дело закрыто'
     }[o.status] || 'Уточняется';
-    if (o.paused && o.status !== 'done' && o.status !== 'cancel') next = 'Снять дело с паузы';
+    if (o.paused && o.status !== 'done' && o.status !== 'cancel') {
+      next = context.destination === 'terms' ? 'Снять дело с паузы' : 'Связаться с мастером';
+    } else if (action && action.kind === 'payment') {
+      next = 'Оплата текущего этапа';
+    } else if (action && action.kind === 'files') {
+      next = 'Посмотреть новые документы';
+    } else if (action && action.kind === 'message') {
+      next = 'Ответить мастеру';
+    } else if (context.payment === 'checking') {
+      next = 'Сверка оплаты мастером';
+    } else if (context.payment === 'preparing') {
+      next = 'Подготовка счёта мастером';
+    } else if (context.payment === 'transfer') {
+      next = 'Передача результата мастером';
+    }
     /* Чей сейчас ход — главный вопрос, с которым сюда заходят. Раньше на него
        отвечала только строка «Следующее действие», из которой не читалось,
        ждут ли чего-то от человека или работа идёт своим ходом. */
-    var yours = o.paused
-      ? false
-      : ('priced prepay check'.indexOf(o.status) >= 0) ||
-        !!(o.due_now && o.due_now.amount > 0);
+    var yours = context.owner === 'client';
     var facts = [
       ['Результат', o.deadline_text || 'срок уточняется'],
       [total > 1 ? 'Часть' : 'Позиций в деле',
@@ -1723,28 +1828,38 @@ function initCabinet() {
     ];
     /* что именно от вас нужно — из состояния дела, а не из названия
        следующего этапа: иначе «ваш ход» соседствует с «работой мастерской» */
-    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
     var ask;
-    if (due > 0) {
-      ask = 'Оплатить ' + (o.due_now.label ? o.due_now.label.toLowerCase() : 'текущий этап') +
-        ' — ' + money(due) + ' ₽. Раздел «Оплата»: карта или перевод по реквизитам.';
-    } else if (o.status === 'priced') {
+    if (action && action.kind === 'payment') {
+      ask = 'Оплатить ' + (o.due_now && o.due_now.label ? o.due_now.label.toLowerCase() : 'текущий этап') +
+        ' — ' + money(context.due) + ' ₽. Раздел «Оплата»: карта или перевод по реквизитам.';
+    } else if (action && action.kind === 'price') {
       ask = 'Посмотреть расчёт и принять цену — или обсудить её с мастером в переписке.';
-    } else if (o.status === 'prepay') {
-      ask = 'Оплатить первый этап, чтобы мастер приступил к работе.';
-    } else if (o.status === 'check') {
+    } else if (action && action.kind === 'review') {
       ask = 'Проверить результат: принять его или запросить корректировку с указанием, что не так.';
+    } else if (action && action.kind === 'files') {
+      ask = 'Посмотреть новые документы от мастерской.';
+    } else if (action && action.kind === 'message') {
+      ask = 'Прочитать новое сообщение и при необходимости ответить мастеру.';
     } else {
       ask = 'Решение по делу ждёт вас ниже.';
     }
+    var waiting = context.payment === 'checking'
+      ? 'Мастер сверяет вашу отметку об оплате. Повторно платить не нужно — напишем после подтверждения.'
+      : context.payment === 'preparing'
+        ? 'Мастер готовит счёт. От вас сейчас ничего не требуется — уведомим, когда сумма появится.'
+        : context.payment === 'transfer'
+          ? 'Оплата этапа закрыта, мастер передаёт подготовленный результат.'
+          : esc(next) + '. От вас сейчас ничего не требуется — напишем, когда будет результат.';
     var turn = '<p class="case-turn' + (yours ? ' case-turn--yours' : '') + '">' +
       '<span class="case-turn__who">' +
       (o.paused ? 'Дело на паузе'
         : yours ? 'Сейчас ваш ход' : 'Сейчас работает мастерская') + '</span>' +
       '<span class="case-turn__what">' +
-      (o.paused ? 'Пока дело на паузе, мастер к нему не возвращается. Снять паузу можно в разделе «Условия».'
+      (o.paused ? (context.destination === 'terms'
+          ? 'Пока дело на паузе, мастер к нему не возвращается. Снять паузу можно в разделе «Условия».'
+          : 'Мастер приостановил дело. Уточнить причину и следующий шаг можно в переписке.')
         : yours ? ask
-        : esc(next) + '. От вас сейчас ничего не требуется — напишем, когда будет результат.') +
+        : waiting) +
       '</span></p>';
     /* закрытая часть денег переехала сюда из отдельного листа правой стойки:
        та же шкала повторяла блок оплаты целиком и стоила ещё один экран */
@@ -1801,8 +1916,15 @@ function initCabinet() {
     };
     /* не обещаем реквизиты, которых нет: без созревшего платежа и отметки —
        честное «счёт готовится» (бывает при ручной смене статуса без цены) */
-    if (o.status === 'prepay' && !(o.due_now && o.due_now.amount) && !o.claimed)
+    var stageContext = caseContextFor(o);
+    if (stageContext.action && stageContext.action.kind === 'payment')
+      NOW[o.status] = 'Ожидаем оплату подтверждённой суммы — реквизиты и кнопки в разделе «Оплата»';
+    else if (o.status === 'prepay' && stageContext.payment === 'preparing')
       NOW.prepay = 'Мастер готовит счёт — оплата появится здесь, мы уведомим';
+    else if (stageContext.payment === 'checking' && (!stageContext.action || stageContext.action.kind !== 'review'))
+      NOW[o.status] = 'Мастер сверяет вашу отметку об оплате — повторно платить не нужно';
+    else if (stageContext.payment === 'transfer')
+      NOW[o.status] = 'Оплата закрыта — мастер передаёт подготовленный результат';
     return '<ol class="case-timeline__list">' +
       o.steps.map(function (name, i) {
         var n = i + 1;
@@ -1827,9 +1949,17 @@ function initCabinet() {
       if (o.status === 'done' || n <= (o.parts_done || 0)) { state = 'past'; tag = 'принята'; }
       else if (n === o.stage) {
         state = 'now';
-        tag = o.status === 'check' ? 'на вашей проверке'
+        var partContext = caseContextFor(o);
+        tag = partContext.action && partContext.action.kind === 'payment'
+            ? 'результат подготовлен — ждёт оплату этапа'
+            : o.status === 'check' ? 'на вашей проверке'
             : o.status === 'fix' ? 'в правках'
-            : (o.part_ready === n ? 'результат подготовлен — ждёт оплату этапа' : 'исполнение');
+            : (o.part_ready === n
+              ? partContext.payment === 'due' ? 'результат подготовлен — ждёт оплату этапа'
+                : partContext.payment === 'checking' ? 'отметка об оплате на сверке'
+                : partContext.payment === 'transfer' ? 'результат готовится к передаче'
+                : 'статус оплаты уточняется'
+              : 'исполнение');
       } else { state = ''; tag = 'впереди'; }
       rows += '<li class="' + (state === 'past' ? 'is-past' : state === 'now' ? 'is-current' : '') + '">' +
         '<span class="case-timeline__mark">§' + n + '</span>' +
@@ -2148,10 +2278,14 @@ function initCabinet() {
   function payBlock(o) {
     /* блок оплаты: только когда реально есть что платить (или отметка на сверке) —
        во время работы над частью клиента не дёргаем кнопками оплаты */
-    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
-    var wantPay = due > 0;
+    var context = caseContextFor(o);
+    var due = context.due;
+    var wantPay = context.payment === 'due';
     var history = payHistory(o);
-    if (!wantPay && !o.claimed) return history ? '<div class="fs-sec case-sec case-pay case-pay--settled" id="secPay">' +
+    if (context.owner === 'paused') return '';
+    if (!wantPay && context.payment !== 'checking' &&
+        context.payment !== 'none' && context.payment !== 'transfer') return '';
+    if (!wantPay && context.payment !== 'checking') return history ? '<div class="fs-sec case-sec case-pay case-pay--settled" id="secPay">' +
       '<header><div><p class="eyebrow">Оплата</p><h3>По делу всё спокойно</h3></div>' +
       '<span class="case-pay__state"><i aria-hidden="true">✓</i> к оплате сейчас: 0 ₽</span></header>' +
       payWorkspace('<div class="case-pay__settled"><span aria-hidden="true">₽</span>' +
@@ -2161,7 +2295,7 @@ function initCabinet() {
       '<header><div><p class="eyebrow">Оплата</p><h3>' +
       esc((o.due_now && o.due_now.label) || 'Платёж по делу') + '</h3></div>' +
       (due ? '<strong class="case-sum">' + money(due) + ' ₽</strong>' : '') + '</header>';
-    if (o.claimed) {
+    if (context.payment === 'checking') {
       var claimedMain =
         '<div class="account-notice"><span class="account-notice__mark" aria-hidden="true">₽</span>' +
         '<div><strong>Отметка «оплатил» у мастера</strong>' +
@@ -2178,7 +2312,7 @@ function initCabinet() {
       ? paySlip(o, due)
       : (o.pay_online ? '' : '<p class="case-sec__lead">Реквизиты пришлём в чат ниже (и в Telegram) в течение пары минут.</p>');
     var depBal = (st.me && st.me.deposit && st.me.deposit.balance) || 0;
-    var depDue = (o.due_now && o.due_now.amount) || 0;
+    var depDue = context.due;
     var depBtn = depBal >= depDue && depDue > 0;
     var receiptEmail = esc(o.receipt_email || '');
     var receiptField = o.pay_online
@@ -2227,7 +2361,8 @@ function initCabinet() {
       b.push('<button type="button" class="btn btn-wax" data-act="resume">Возобновить заказ</button>');
     }
     var wantPay = part !== 'decide';
-    var pay = (wantPay && ((o.due_now && o.due_now.amount > 0) || o.claimed ||
+    var paymentContext = caseContextFor(o);
+    var pay = (wantPay && ((paymentContext.payment === 'due' || paymentContext.payment === 'checking') ||
                (o.payments || []).some(function (p) { return p.status === 'paid'; })))
       ? payBlock(o) : '';
     if (!b.length || part === 'pay') {
@@ -2251,12 +2386,20 @@ function initCabinet() {
   /* -------- часть/финал готовы и придержаны до оплаты: заметные ленты -------- */
   function finalBand(o) {
     if (!o.final_ready || 'work fix'.indexOf(o.status) < 0) return '';
-    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
-    if (due > 0) {
+    var context = caseContextFor(o);
+    if (context.owner === 'paused') return '';
+    if (context.payment === 'checking') {
+      return '<div class="account-notice">' +
+        '<span class="account-notice__mark" aria-hidden="true">¶</span>' +
+        '<div><strong>Финальная часть на передаче</strong><p>' +
+        'Ваша отметка об оплате на сверке у мастера — после подтверждения он передаст финальную часть.' +
+        '</p></div></div>';
+    }
+    if (context.payment === 'due') {
       return '<div class="account-notice account-notice--wax">' +
         '<span class="account-notice__mark" aria-hidden="true">₽</span>' +
         '<div><strong>Финальный пакет результата подготовлен</strong>' +
-        '<p>Он передаётся после закрытия остатка — ' + money(due) + ' ₽. ' +
+        '<p>Он передаётся после закрытия остатка — ' + money(context.due) + ' ₽. ' +
         'Как только мастер подтвердит поступление, файлы придут сразу.</p></div>' +
         '<span class="account-notice__acts">' +
         '<button type="button" class="line-link" data-jump="secPay">Перейти к оплате <span aria-hidden="true">→</span></button></span></div>';
@@ -2264,19 +2407,28 @@ function initCabinet() {
     return '<div class="account-notice">' +
       '<span class="account-notice__mark" aria-hidden="true">¶</span>' +
       '<div><strong>Финальная часть на передаче</strong><p>' +
-      (o.claimed ? 'Ваша отметка об оплате на сверке у мастера — после подтверждения он передаст финальную часть.'
-                 : 'Оплата закрыта — мастер передаёт финальную часть.') + '</p></div></div>';
+      (context.payment === 'transfer' || context.payment === 'none'
+        ? 'Оплата закрыта — мастер передаёт финальную часть.'
+        : 'Мастер уточняет состояние оплаты — повторный платёж пока не требуется.') + '</p></div></div>';
   }
 
   function partBand(o) {
     /* промежуточный результат подготовлен: «сначала оплата этапа — потом файл» */
     if (!o.part_ready || o.final_ready || 'work fix'.indexOf(o.status) < 0) return '';
-    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
-    if (due > 0) {
+    var context = caseContextFor(o);
+    if (context.owner === 'paused') return '';
+    if (context.payment === 'checking') {
+      return '<div class="account-notice">' +
+        '<span class="account-notice__mark" aria-hidden="true">§</span>' +
+        '<div><strong>Результат части ' + o.part_ready + ' подготовлен</strong><p>' +
+        'Ваша отметка об оплате на сверке — после подтверждения мастер передаст файл.' +
+        '</p></div></div>';
+    }
+    if (context.payment === 'due') {
       return '<div class="account-notice account-notice--wax">' +
         '<span class="account-notice__mark" aria-hidden="true">₽</span>' +
         '<div><strong>Результат части ' + o.part_ready + ' подготовлен</strong>' +
-        '<p>Он передаётся после оплаты этапа — ' + money(due) + ' ₽' +
+        '<p>Он передаётся после оплаты этапа — ' + money(context.due) + ' ₽' +
         (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ')' : '') +
         '. После подтверждения файл придёт сразу.</p></div>' +
         '<span class="account-notice__acts">' +
@@ -2285,18 +2437,19 @@ function initCabinet() {
     return '<div class="account-notice">' +
       '<span class="account-notice__mark" aria-hidden="true">§</span>' +
       '<div><strong>Результат части ' + o.part_ready + ' подготовлен</strong><p>' +
-      (o.claimed ? 'Ваша отметка об оплате на сверке — после подтверждения мастер передаст файл.'
-                 : 'Этап оплачен — мастер передаёт файл.') + '</p></div></div>';
+      (context.payment === 'transfer' || context.payment === 'none'
+        ? 'Этап оплачен — мастер передаёт файл.'
+        : 'Мастер уточняет состояние оплаты — повторный платёж пока не требуется.') + '</p></div></div>';
   }
 
   /* -------- часть уже у клиента, а этап не оплачен: честная лента -------- */
   function dueBand(o) {
     if ('check fix'.indexOf(o.status) < 0 || o.final_ready || o.part_ready) return '';
-    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
-    if (due <= 0) return '';
+    var context = caseContextFor(o);
+    if (context.owner === 'paused' || context.payment !== 'due') return '';
     return '<div class="account-notice account-notice--wax">' +
       '<span class="account-notice__mark" aria-hidden="true">₽</span>' +
-      '<div><strong>По плану оплат за эту часть — ' + money(due) + ' ₽' +
+      '<div><strong>По плану оплат за эту часть — ' + money(context.due) + ' ₽' +
       (o.due_now && o.due_now.label ? ' (' + esc(o.due_now.label.toLowerCase()) + ')' : '') + '</strong>' +
       '<p>Мастерская передала результат, доверившись вам — закройте этап, и исполнение продолжится без пауз.</p></div>' +
       '<span class="account-notice__acts">' +
@@ -2312,7 +2465,7 @@ function initCabinet() {
     return '<div class="account-notice">' +
       '<span class="account-notice__mark" aria-hidden="true">П</span>' +
       '<div><strong>Дело на паузе</strong><p>' + by + '</p></div>' +
-      (o.actions.indexOf('unpause') >= 0
+      ((o.actions || []).indexOf('unpause') >= 0
         ? '<span class="account-notice__acts">' +
           '<button type="button" class="line-link" data-act="unpause">Снять с паузы <span aria-hidden="true">→</span></button></span>' : '') +
       '</div>';
@@ -2321,9 +2474,8 @@ function initCabinet() {
   /* -------- управление делом: пауза, отзыв заявки, закрытие в работе -------- */
   function manageBlock(o) {
     var items = [];
-    if (o.actions.indexOf('unpause') >= 0)
-      items.push('<button type="button" class="btn btn-line" data-act="unpause">Снять с паузы</button>');
-    else if (o.actions.indexOf('pause') >= 0)
+    /* Снятие паузы уже остаётся единственным верхним CTA в pauseBand(). */
+    if (o.actions.indexOf('unpause') < 0 && o.actions.indexOf('pause') >= 0)
       items.push('<button type="button" class="btn btn-line" data-act-pause>Поставить на паузу</button>');
     if (o.status === 'new' && o.actions.indexOf('decline') >= 0)
       items.push('<button type="button" class="btn btn-line" data-act="decline">Отозвать заявку</button>');
@@ -2535,11 +2687,7 @@ function initCabinet() {
   /* какой раздел открыть, когда дело открывают заново */
   function defaultCaseSec(o) {
     if (!o) return 'work';
-    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
-    if (due > 0 || o.status === 'prepay') return 'money';
-    if (o.files_new) return 'files';
-    if (o.unread) return 'chat';
-    return 'work';
+    return caseContextFor(o).destination;
   }
 
   function orderById(id) {
@@ -2554,11 +2702,13 @@ function initCabinet() {
 
   function jumpChips(o) {
     var cur = caseSecOf(o);
-    var due = o.due_now && o.due_now.amount ? o.due_now.amount : 0;
+    var context = caseContextFor(o);
+    var due = context.payment === 'due' ? context.due : 0;
     var files = (o.files || []).length;
     var tabs = [
-      ['work', 'Дело', o.actions.indexOf('accept_work') >= 0 || o.actions.indexOf('accept_price') >= 0],
-      ['money', 'Оплата' + (due > 0 ? ' · ' + money(due) + ' ₽' : ''), due > 0 || !!o.claimed],
+      ['work', 'Дело', (o.actions || []).indexOf('accept_work') >= 0 || (o.actions || []).indexOf('accept_price') >= 0],
+      ['money', 'Оплата' + (due > 0 ? ' · ' + money(due) + ' ₽' : ''),
+        context.owner !== 'paused' && context.payment === 'due'],
       ['files', 'Документы' + (files ? ' · ' + files : ''), !!o.files_new],
       ['chat', 'Переписка' + (o.unread ? ' · ' + o.unread : ''), !!o.unread],
       ['terms', 'Условия', false]
@@ -2593,6 +2743,16 @@ function initCabinet() {
   /* содержимое раздела дела */
   function caseSecHtml(o, sec) {
     if (sec === 'money') {
+      var context = caseContextFor(o);
+      if (context.owner === 'paused') {
+        var pauseCopy = context.destination === 'terms'
+          ? 'Сначала снимите дело с паузы в разделе «Условия». До этого новый платёж не требуется.'
+          : 'Мастер приостановил дело. Уточните следующий шаг в переписке; повторный платёж пока не требуется.';
+        return '<div class="case-state case-state--empty">' +
+          '<header><span>пауза</span><i aria-hidden="true"></i></header>' +
+          '<div class="case-state__body"><span class="case-state__mark" aria-hidden="true">П</span>' +
+          '<h2>Оплата приостановлена вместе с делом</h2><p>' + pauseCopy + '</p></div></div>';
+      }
       /* расчёт уже показан рядом с «Принять цену» — второй раз не повторяем */
       var money = actionsBlock(o, 'pay') + giftRestStrip(o) +
         (decideFirst(o) ? '' : priceBlock(o));
@@ -2603,7 +2763,11 @@ function initCabinet() {
         '<div class="case-state__body">' +
         '<span class="case-state__mark" aria-hidden="true">₽</span>' +
         '<h2>Платить пока нечего</h2>' +
-        '<p>' + (o.status === 'new'
+        '<p>' + (context.payment === 'preparing'
+          ? 'Мастер готовит счёт. Сумма и способы оплаты появятся здесь после его подготовки.'
+          : context.payment === 'unknown'
+            ? 'Уточняем состояние оплаты у мастерской. Пока нет подтверждённой суммы, повторный платёж не требуется.'
+            : o.status === 'new'
           ? 'Мастер разбирает заявку и назовёт цену — она появится здесь и в разделе «Дело».'
           : 'Счёт появится здесь, когда мастер подготовит результат этапа. Заранее платить не нужно.') +
         '</p></div></div>';
@@ -2991,9 +3155,8 @@ function initCabinet() {
      нет payments/plan — считаем только по полям, которые там точно есть,
      и ничего не выдумываем про уже оплаченное. */
   function dueOf(o) {
-    if (o.due_now && o.due_now.amount) return o.due_now.amount;
-    if (o.status === 'prepay') return o.prepay_due || o.prepay || 0;
-    return 0;
+    var context = caseContextFor(o);
+    return context.owner !== 'paused' && context.payment === 'due' ? context.due : 0;
   }
 
   /* -------- «Платежи»: деньги по всем делам одной сводкой --------
@@ -3667,10 +3830,9 @@ function initCabinet() {
     if (!S.api.identified()) return;
     S.api.get('/orders', ordersHeaders(g)).then(function (r) {
       if (!r.ok) return;
-      var mini = function (o) { return [o.id, o.status, o.unread, o.files_new, o.pinned, o.archived].join(':'); };
-      var before = st.orders.map(mini).join('|');
+      var before = st.orders.map(caseContextSignature).join('|');
       st.orders = r.orders || [];
-      if (st.orders.map(mini).join('|') !== before && st.detail) renderCurrent();
+      if (st.orders.map(caseContextSignature).join('|') !== before) renderCurrent();
     });
   }
 
@@ -3718,8 +3880,8 @@ function initCabinet() {
   }
 
   function doAction(action, extra) {
-    var claimedPayment = st.detail && (st.detail.claimed ||
-      (st.detail.payments || []).some(function (p) { return p.status === 'claimed'; }));
+    if (action === 'paid' && !paymentActionAllowed()) return;
+    var claimedPayment = st.detail && caseContextFor(st.detail).payment === 'checking';
     if (claimedPayment && (action === 'bonus_apply' || action === 'gift_apply')) {
       toast('Оплата уже отмечена и ждёт сверки — бонусы и сертификат пока менять нельзя');
       return;
@@ -3819,8 +3981,18 @@ function initCabinet() {
       });
   }
 
+  function paymentActionAllowed() {
+    var context = st.detail && caseContextFor(st.detail);
+    if (context && String(st.detail.id) === String(st.currentId) &&
+        context.payment === 'due' && context.action && context.action.kind === 'payment') return true;
+    toast(context && context.payment === 'checking'
+      ? 'Оплата уже отмечена и ждёт сверки'
+      : 'Сейчас по этому делу платить не требуется');
+    return false;
+  }
+
   function payOnline() {
-    if (st.busy) return;
+    if (!paymentActionAllowed() || st.busy) return;
     var emailEl = document.getElementById('payReceiptEmail');
     var email = emailEl ? String(emailEl.value || '').trim().toLowerCase() : '';
     if (emailEl && (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))) {
@@ -3902,7 +4074,7 @@ function initCabinet() {
   }
 
   function payDeposit() {
-    if (st.busy) return;
+    if (!paymentActionAllowed() || st.busy) return;
     st.busy = true;
     S.api.post('/orders/' + st.currentId + '/pay-deposit', {}, orderHeaders(st.currentId))
       .then(function (r) {
@@ -4045,17 +4217,19 @@ function initCabinet() {
     if (sw) {
       if (st.tab !== 'messages' && st.tab !== 'documents' && st.tab !== 'home') st.tab = 'orders';
       var newId = parseInt(sw.getAttribute('data-ord'), 10);
-      var sameCase = st.currentId === newId && !!st.detail;
+      var sameDetail = st.currentId === newId && !!st.detail;
+      var wasCaseOpen = sameDetail && st.caseOpen;
       var currentMain = root.querySelector('.account-main');
       st.listScroll = currentMain ? currentMain.scrollTop : 0;
       st.listWindowScroll = window.scrollY || 0;
       st.currentId = newId;
+      st.caseReturnFocus = { kind: 'order', id: newId };
       st.caseOpen = true;
       st.pendingCaseFocus = true;
       var ordHint = st.tab === 'messages' ? 'secChat' :
         st.tab === 'documents' ? 'secFiles' : null;
       st.pendingJump = null; /* раздел открывается сам — доезжать некуда */
-      if (!sameCase) st.caseSec = openingSec(newId, ordHint);
+      if (!wasCaseOpen) st.caseSec = openingSec(newId, ordHint);
       else if (ordHint) st.caseSec = JUMP_SEC[ordHint];
       try { history.pushState(caseHistoryState(), '', caseHash()); } catch (e) {}
       /* экран дела открываем сразу: уже загруженное дело показываем целиком,
@@ -4066,17 +4240,18 @@ function initCabinet() {
         st.pendingCaseFocus = false;
         try { openBack.focus({ preventScroll: true }); } catch (err) {}
       }
-      if (sameCase && st.pendingJump) {
+      if (sameDetail && st.pendingJump) {
         scrollToEl(st.pendingJump);
         st.pendingJump = null;
       }
-      loadDetail(sameCase);
+      loadDetail(sameDetail);
       window.scrollTo({ top: 0, behavior: 'auto' });
       return;
     }
     /* возврат к реестру — ссылка «Все дела» в шапке дела (маршрут эталона) */
     if (t.closest('[data-case-back]')) {
       var returnId = st.currentId;
+      var returnFocus = st.caseReturnFocus;
       st.caseOpen = false;
       try { history.pushState({ accountTab: st.tab }, '', '#' + st.tab); } catch (e) {}
       renderTab();
@@ -4084,10 +4259,19 @@ function initCabinet() {
         var listMain = root.querySelector('.account-main');
         if (listMain) listMain.scrollTop = st.listScroll || 0;
         window.scrollTo({ top: st.listWindowScroll || 0, behavior: 'auto' });
-        var returnCard = root.querySelector('button[data-ord="' + returnId + '"], [data-now-open="' + returnId + '"]');
+        var returnCard = returnFocus && returnFocus.kind === 'now'
+          ? Array.prototype.filter.call(root.querySelectorAll('[data-now-open]'), function (el) {
+            return el.getAttribute('data-now-open') === String(returnFocus.id) &&
+              el.getAttribute('data-now-jump') === returnFocus.jump;
+          })[0]
+          : root.querySelector('button[data-ord="' + returnId + '"]');
+        if (!returnCard) returnCard = root.querySelector(
+          'button[data-ord="' + returnId + '"], [data-now-open="' + returnId + '"]'
+        );
         if (returnCard) {
           try { returnCard.focus({ preventScroll: true }); } catch (err) {}
         }
+        st.caseReturnFocus = null;
       });
       return;
     }
@@ -4107,6 +4291,7 @@ function initCabinet() {
       var njump = nowBtn.getAttribute('data-now-jump') || '';
       var wasOpen = st.currentId === nid && st.detail && st.caseOpen;
       st.currentId = nid;
+      st.caseReturnFocus = { kind: 'now', id: nid, jump: njump };
       st.caseOpen = true;
       if (wasOpen) { setCaseSec(openingSec(nid, njump)); return; }
       st.caseSec = openingSec(nid, njump);
