@@ -21,6 +21,10 @@
         "match": "exact"
       },
       {
+        "path": "docs/brain/UX-DEBT.md",
+        "match": "exact"
+      },
+      {
         "path": "docs/brain/evidence/E-1004.md",
         "match": "exact"
       },
@@ -49,10 +53,6 @@
       {
         "path": "docs/brain/QUALITY-GATES.md",
         "match": "exact"
-      },
-      {
-        "path": "docs/brain/UX-DEBT.md",
-        "match": "exact"
       }
     ]
   },
@@ -64,6 +64,10 @@
     {
       "access": "write",
       "key": "ui-state:account/priority"
+    },
+    {
+      "access": "write",
+      "key": "brain-record:UXD-0004"
     },
     {
       "access": "read",
