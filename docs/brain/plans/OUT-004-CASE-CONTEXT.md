@@ -71,3 +71,14 @@ Unknown summary может временно не показать настоящ
 призыв без доказательства. Отдельная API-схема/revision остаётся долговечным
 контрактным долгом. Rollback — exact revert implementation commit; schema,
 production data и deployment не затрагиваются.
+
+## Результат
+
+План исполнен bounded-изменением без редизайна. Implementation commit:
+`4bb148af0abed033bd113249cda82fe45b60205b`. Финальные детерминированные
+ворота: 2,304 состояния контракта, focused 36/36, repository 465/465, Brain
+39/39 и 390×844 light/dark runtime proof. Независимый council принял один
+resolver как достаточную архитектуру; воспроизведённые challenger-находки
+закрыты pre-mutation guard для всех трёх платёжных путей, CSS cache key и
+контрастным тестом по фактическим токенам. Точный lifecycle результата хранится
+в manifest workstream, а полный proof — в `E-1005`.

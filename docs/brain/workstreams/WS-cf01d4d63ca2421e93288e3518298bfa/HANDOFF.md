@@ -1,31 +1,52 @@
 # Workstream handoff
 
 - Branch: `codex/out-004-case-context-truth`
-- Outcomes: `OUT-004`
-- Goal: prove and, only if reachable, remove the context contradiction where the
-  cabinet priority can demand payment while the opened payment/final/part state
-  says zero due or payment claimed; messages, files and money must agree on the
-  same active case and never mask the real next client action.
-- Acceptance: define one summary/detail action contract for `prepay`, ready part,
-  ready final, `due_now`, `claimed`, files and unread; reproduce reachability from
-  checked-in fixtures/runtime before changing behavior; priority, case bands and
-  destination agree; unavailable evidence fails closed without redesign.
-- Proof: failing-first pure matrix plus literal renderer checks, account/case/full
-  tests, one local synthetic desktop/mobile light/dark walkthrough, Brain gates,
-  exact consumer/cache check, fresh conflict scan and independent reviews.
-- Changed: declaration only; implementation has not started. Three independent
-  read-only audits reproduced cross-surface contradictions, a stale live-list
-  fingerprint, a false prepay test invariant and dark CTA contrast of 4.19:1.
-  Scope revision 2 adds only the existing overview test and account CSS token
-  required to close those gates; root remains the sole write-owner.
-- Unverified: production reachability and exact `/orders` schema remain unknown;
-  the implementation must therefore use only explicit positive due/claimed
-  evidence and fail closed for absent amounts. No production account, API
-  mutation, payment action, OAuth or deploy is allowed.
-- Risks/rollback: an inferred guard could hide a real bill, while leaving the
-  contradiction could permanently mask price/review/files/message. Stop if the
-  server lifecycle cannot be derived from repository evidence. Any future code
-  rollback is an exact commit revert; no schema or production data is in scope.
-- Next: commit scope revision 2, rerun conflict analysis, record the audited
-  contract and then prove the current contradictions with a failing-first literal
-  matrix before any runtime change.
+- Outcome: `OUT-004`
+- Base: `4c43a42dfc67878d116a79feb528ca3bca4c4309`
+- Implementation: `4bb148af0abed033bd113249cda82fe45b60205b`
+- Lifecycle truth: read `status` and `result_sha` from this workstream's
+  `manifest.json`; it supersedes prose about submission/integration.
+
+## Result
+
+One fail-closed `caseContextFor()` now owns active-case payment phase, action,
+destination and pause/terminal precedence. Priority, overview, bands, payment,
+ledger and live refresh no longer independently infer money state. Unknown
+summary data never invents payment; explicit positive due cannot be masked;
+claimed, paused and terminal states suppress all three payment mutations.
+
+The approved cabinet composition was preserved. Mobile navigation, exact Back
+focus, drafts/scroll and one-action hierarchy remain intact. The dark CTA and
+both changed assets have deterministic AA/cache protection.
+
+## Verification
+
+- failing-first baseline: commit `486af14895d667dc82a2e77948adea2d15415b5f`;
+- literal state matrix: 2,304 combinations;
+- focused account/case/comfort: 36/36;
+- full repository: 465/465;
+- Brain: 39/39 and corpus validation green;
+- browser: 390×844 light/dark due, checking, transfer and paused scenarios;
+  one 44 px action, no horizontal overflow, exact return focus, no top-level
+  console errors;
+- council doctor/probe: Kimi/Sonnet/GLM/Opus/Fable READY; daily challengers and
+  one Opus review produced bounded fixes recorded in `E-1005`.
+
+No production account, API/payment, OAuth, deploy, client data or deletion was
+used. Temporary browser fixture/server were removed/stopped.
+
+## Limits and rollback
+
+The authoritative backend summary/detail revision schema and production
+frequency remain unknown. This frontend therefore fails closed and does not
+claim the downstream server contract. Rollback is exact revert of
+`4bb148af0abed033bd113249cda82fe45b60205b`; no schema/data rollback exists.
+
+## Next after terminal integration
+
+Create the next workstream only when this manifest is `integrated` and its
+`result_sha` is an ancestor of freshly fetched canonical. Selected outcome:
+`OUT-003`, first bounded slice = machine-readable and executable shared-shell
+state contract for header/appbar/footer/auth/theme/consent. Current UI is the
+baseline; runtime changes require a reproduced failure. `OUT-001` remains
+externally gated by safe marker/cleanup, and `OUT-005` follows the shell proof.
