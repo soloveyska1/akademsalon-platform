@@ -206,24 +206,40 @@
       label(C.tiers, x.tier)
     ];
   }
+  /* Клиенту — человеческим языком. Коды «А1»/«А2» это наши договорные
+     подрежимы: они нужны в оферте и в работе мастера, а в составе заказа
+     читаются как шифр и ровно этим делают смету непонятной. */
   function contourLabel(x) {
     if (!x || x.serviceId !== 'author') {
       return x && (x.academicSubmode === 'A2' || (x.kind === 'work' && x.tier === 'vip'))
-        ? 'А2 · совместный исследовательский проект с нуля'
-        : 'А1 · редакторская и консультационная помощь';
+        ? 'Совместный исследовательский проект с нуля'
+        : 'Редакторская и консультационная помощь';
     }
     var model = String(x.answers && x.answers.author_model || '');
     if (model.indexOf('Б1') >= 0) return 'Авторская работа · мастерская';
     if (model.indexOf('Б2') >= 0) return 'Авторская работа · согласованный автор';
     return 'Авторская работа · вариант автора нужно уточнить';
   }
+  /* Поле «Требования» служит двум адресатам сразу: туда конфигуратор
+     дописывает машинный контекст для мастера («Код предложения: work_base»,
+     «Договорный режим: А / подрежим A1»). Мастеру это нужно, клиенту в его
+     же смете — нет: он видит шифры и перестаёт понимать, за что платит.
+     Показываем ему только то, что он написал сам и что сказано по-русски. */
+  var MACHINE_LINE = /^\s*(Код предложения|Договорный режим)\s*:/i;
+  function humanRequirements(value) {
+    return String(value || '')
+      .split('\n')
+      .filter(function (line) { return line.trim() && !MACHINE_LINE.test(line); })
+      .join('\n')
+      .trim();
+  }
+
   function positionDetails(x) {
     var rows = [];
     function push(label, value) {
       value = String(value || '').trim();
       if (value) rows.push('<div><dt>' + esc(label) + '</dt><dd>' + esc(value) + '</dd></div>');
     }
-    push('Формат работы', contourLabel(x));
     if (x.parentId) {
       var parent = workById(x.parentId);
       push('Связана с позицией', parent && parent.label);
@@ -237,12 +253,12 @@
     } else {
       push('Тема', x.topic);
       push('Срок клиента', x.deadline);
-      push('Требования', x.requirements);
+      push('Требования', humanRequirements(x.requirements));
     }
     if (x.kind === 'service') {
       push('Тема', x.topic);
       push('Срок клиента', x.deadline);
-      push('Требования', x.requirements);
+      push('Требования', humanRequirements(x.requirements));
     }
     return rows;
   }
@@ -569,7 +585,7 @@
       '<div class="cart-price"><b>' + (x.fixed ? '' : 'от ') + money(q.low) + ' ₽</b>' +
       '<small>' + (q.high > q.low ? 'до ' + money(q.high) + ' ₽' : (x.fixed ? 'фиксированная ставка' : 'точнее после проверки')) + '</small></div></div>' +
       '<details class="cart-item-extra"' + ((x.note || x.serviceId === 'author') ? ' open' : '') +
-      '><summary>Состав и сведения позиции' + (details.length ? ' · ' + details.length : '') + '</summary>' +
+      '><summary>Подробности' + (details.length ? ' · ' + details.length : '') + '</summary>' +
       (details.length ? '<dl class="cart-item-facts">' + details.join('') + '</dl>' : '') +
       '<label class="sr-only" for="cartNote_' + esc(x.id) + '">Тема или уточнение для «' + esc(x.label) + '»</label>' +
       '<input id="cartNote_' + esc(x.id) + '" class="cart-note" data-cart-note="' + esc(x.id) +
@@ -823,12 +839,33 @@
       'Открыть пустую смету и добавить позиции заказа');
     el.setAttribute('aria-expanded', box && box.classList.contains('open') ? 'true' : 'false');
   }
+  /* Полоса состава в листе заявки. Появляется, только когда в смете уже есть
+     позиции: до этого о самой возможности сообщает приглашение выше, а пустая
+     полоса была бы шумом. Она же — единственный живой вход в состав: прежние
+     три точки входа вырезал редизайн, а .cart-tab скрыт правилом display:none
+     безусловно, поэтому на него больше не опираемся. */
+  function syncComposeBar(n, q) {
+    var bar = document.querySelector('[data-compose-bar]');
+    var gate = document.getElementById('composeGate');
+    if (bar) {
+      bar.hidden = !visible || !n;
+      var c = bar.querySelector('[data-compose-count]');
+      var sum = bar.querySelector('[data-compose-sum]');
+      if (c) c.textContent = positionLabel(n);
+      if (sum) sum.textContent = q && q.low ? 'ориентир от ' + money(q.low) + ' ₽' : '';
+    }
+    /* Приглашение и полоса не спорят за место: пока состава нет — зовём
+       добавить, как только появился — показываем, что именно набрано. */
+    if (gate && !gate.hasAttribute('data-gate-locked')) gate.hidden = !visible || !!n;
+  }
+
   function render() {
     if (!box || !body || !foot) return;
     var n = lineCount(), preview = n ? null : currentPreview();
     var effectiveQuote = n ? quote() : (preview ? preview.quote : { low:0, high:0 });
     var b = benefits(effectiveQuote);
     syncEntry(tab, n, true, effectiveQuote);
+    syncComposeBar(n, effectiveQuote);
     syncEntry(dock, n, false, effectiveQuote);
     var current = preview ? preview.item : (api && api.getCurrent ? api.getCurrent() : null);
     var currentSaved = current && contains(current);
@@ -871,7 +908,7 @@
     var unattached = services.filter(function (x) { return !workById(x.parentId); });
     var groups = '<section class="cart-group" id="cartItems"><div class="cart-section-head"><span class="cart-section-no">01</span>' +
       '<div><h3>Позиции сметы</h3><p>' + positionLabel(n) + ' · можно изменить до отправки</p></div></div>';
-    if (works.length) groups += '<h4>Основные и связанные позиции</h4><div class="cart-work-groups">' +
+    if (works.length) groups += '<h4>Что входит в заказ</h4><div class="cart-work-groups">' +
       works.map(function (work) {
         var children = services.filter(function (x) { return x.parentId === work.id; });
         return '<div class="cart-work-group">' + lineItem(work, data.items.indexOf(work)) +

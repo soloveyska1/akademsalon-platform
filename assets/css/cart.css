@@ -882,3 +882,53 @@ html[data-theme="dark"] .configurator-task .cart-shell .cart-head{
   .configurator-task .cart-shell .cart-guide i{min-width:8px}
   .configurator-task .cart-shell .cart-add-more{grid-template-columns:1fr}
 }
+
+/* ============================================================
+   ВХОД В СОСТАВ ЗАКАЗА
+   Прежние три точки входа вырезал редизайн (.mq-bar, .lq-dochead,
+   .conf-aside .sheet), а .cart-tab выше в этом файле скрыт правилом
+   display:none безусловно — оно рассчитывало на более специфичное
+   правило внутри исчезнувшей мобильной панели. В итоге добавить вторую
+   позицию было физически нечем, хотя весь механизм корзины работал.
+   Здесь — живая замена: приглашение, пока состава нет, и полоса
+   состава, когда он появился. Одновременно виден ровно один из двух.
+   ============================================================ */
+.compose-gate{
+  display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;justify-content:space-between;
+  margin-top:18px;padding:16px 18px;
+  border:1px solid var(--hairline-strong);border-left:3px solid var(--wax);border-radius:var(--r);
+  background:color-mix(in srgb,var(--wax-soft) 45%,transparent)
+}
+.compose-gate__copy{display:grid;gap:3px;min-width:220px;flex:1 1 260px}
+.compose-gate__copy strong{font:500 15px/1.25 var(--serif);color:var(--ink)}
+.compose-gate__copy small{font-size:12px;line-height:1.45;color:var(--ink-soft)}
+.compose-gate__add{
+  min-height:44px;padding:0 18px;white-space:nowrap;
+  color:#fffaf3;background:var(--wax);border:1px solid var(--wax);border-radius:999px;
+  font:550 13px/1 var(--sans);cursor:pointer;transition:background-color .16s ease
+}
+.compose-gate__add:hover{background:var(--wax-deep);border-color:var(--wax-deep)}
+
+.compose-bar{
+  display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;
+  margin-top:18px;padding:12px 16px;
+  border:1px solid var(--hairline-strong);border-radius:var(--r);background:var(--sheet)
+}
+.compose-bar[hidden]{display:none}
+.compose-bar__what{flex:1 1 200px;display:grid;gap:2px;font-size:13px;color:var(--ink)}
+.compose-bar__what b{font-weight:600}
+.compose-bar__what small{font-size:11px;color:var(--ink-faint)}
+.compose-bar__open,.compose-bar__add{
+  min-height:40px;padding:0 15px;white-space:nowrap;border-radius:999px;
+  font:550 12.5px/1 var(--sans);cursor:pointer;
+  color:var(--ink);background:transparent;border:1px solid var(--hairline-strong);
+  transition:color .16s ease,background-color .16s ease,border-color .16s ease
+}
+.compose-bar__open:hover,.compose-bar__add:hover{
+  color:#fffaf3;background:var(--wax);border-color:var(--wax)
+}
+
+@media (max-width:620px){
+  .compose-gate,.compose-bar{padding:14px}
+  .compose-gate__add,.compose-bar__open,.compose-bar__add{width:100%}
+}

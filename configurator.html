@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260803out003shell1" />
 <link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260803out003shell1&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1&amp;fix=20260803fix009visual" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260802release98&amp;journey=1&amp;fix=20260803fix009visual" />
-<link rel="stylesheet" href="assets/css/cart.css?v=20260802release98" />
+<link rel="stylesheet" href="assets/css/cart.css?v=20260802release98&amp;cart=20260803cart1" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -284,7 +284,7 @@
 <script src="assets/js/app.js?v=20260803fix008lockout&amp;privacy=20260803out006privacy1"></script>
 <script defer src="assets/js/polish15-chrome.js?v=20260802release98&amp;search=20260803out007search1"></script>
 <script src="assets/js/extras.js?v=20260803fix008lockout&amp;journey=1"></script>
-<script src="assets/js/cart.js?v=20260802release98"></script>
+<script src="assets/js/cart.js?v=20260802release98&amp;cart=20260803cart1"></script>
 <script>
 function initConf() {
   'use strict';
@@ -458,7 +458,9 @@ function initConf() {
     var checkoutFields = $('checkoutFields');
     if (isPlanService) {
       document.body.classList.add('svc-plan', 'svc-checkout');
-      if (composeGate) composeGate.hidden = true;
+      /* Замок говорит корзине не трогать приглашение: у этой услуги
+         состав из нескольких позиций не собирается. */
+      if (composeGate) { composeGate.setAttribute('data-gate-locked', '1'); composeGate.hidden = true; }
       if (checkoutFields) checkoutFields.hidden = false;
     } else {
       if (composeGate) composeGate.hidden = false;
@@ -2449,7 +2451,7 @@ function initConf() {
         document.body.classList.add('cart-checkout');
         if (svc) {
           var gate = $('composeGate'), fields = $('checkoutFields');
-          if (gate) gate.hidden = true;
+          if (gate) { gate.setAttribute('data-gate-locked', '1'); gate.hidden = true; }
           if (fields) fields.hidden = false;
           document.body.classList.add('svc-checkout');
         }
@@ -3640,10 +3642,17 @@ if (document.prerendering) {
           (!currentIncluded
             ? '<div class="wizard-summary__notice">Текущий выбор пока не входит в состав. Откройте смету и добавьте его отдельной строкой, если он нужен в заказе.</div>'
             : '') +
+          /* Здесь человек узнаёт, что позиций может быть несколько. Раньше
+             на этом месте стояла одна ссылка «Проверить расчёт» — она
+             читается как «посмотреть итог», а не как «можно добавить ещё»,
+             и кнопки добавления в живом интерфейсе не было вовсе. */
+          '<div class="compose-bar" data-compose-bar>' +
+            '<span class="compose-bar__what">В смете <b data-compose-count>' +
+              (cartHasItems ? '' : 'только эта работа') + '</b><small data-compose-sum></small></span>' +
+            '<button type="button" class="compose-bar__open" data-cart-open>Состав</button>' +
+            '<button type="button" class="compose-bar__add" data-compose-another>Добавить ещё работу</button>' +
+          '</div>' +
           '<button class="line-link" type="button" data-concept-edit>Изменить данные заявки <span aria-hidden="true">←</span></button>' +
-          '<button class="line-link concept-cart-link" type="button" data-cart-open>' +
-            (cartHasItems ? 'Проверить состав' : 'Проверить расчёт') +
-            ' <span aria-hidden="true">→</span></button>' +
         '</aside>' +
       '</div>'
     );
@@ -4335,6 +4344,19 @@ if (document.prerendering) {
     });
     var edit = host.querySelector('[data-concept-edit]');
     if (edit) edit.addEventListener('click',function () { go(0); });
+    /* «Добавить ещё работу»: текущая настройка становится позицией сметы,
+       и визард встаёт на первый шаг для следующей. Обе половины уже были в
+       коде — materializeCurrent и startAnother, — их просто нечем было
+       вызвать из видимого интерфейса. */
+    var another = host.querySelector('[data-compose-another]');
+    if (another) another.addEventListener('click',function () {
+      var cart = window.SalonCart;
+      if (cart && cart.materializeCurrent && !cart.materializeCurrent({ silent:false })) return;
+      startAnother();
+    });
+    /* Полоса пересобирается вместе с шагом визарда — просим корзину
+       заново вписать в неё состав и ориентир. */
+    if (window.SalonCart && window.SalonCart.refresh) window.SalonCart.refresh();
     host.querySelectorAll('[data-contact-method]').forEach(function (button) {
       button.addEventListener('click',function () {
         var previous = state.contactMethod || 'telegram';
