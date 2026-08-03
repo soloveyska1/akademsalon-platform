@@ -1190,7 +1190,6 @@
       '<p class="petit" style="margin-top:8px;color:var(--ink-faint)">Вопрос бесплатный и ни к чему не обязывает — попадёт мастеру вместе с названием статьи.</p>';
     host.appendChild(box);
     var guideSubmitting = false;
-    var guideIntent = '';
     box.querySelector('#glGo').addEventListener('click', function () {
       if (guideSubmitting) return;
       var q = box.querySelector('#glQ').value.trim();
@@ -1205,12 +1204,11 @@
         box.querySelector('#glOk').focus();
         return;
       }
-      var intent = q + '\n' + c;
-      if (guideIntent && guideIntent !== intent) {
-        S.toast('Предыдущая отправка ещё не подтверждена. Верните исходный вопрос для безопасного повтора или напишите мастеру напрямую.');
-        return;
-      }
-      guideIntent = intent;
+      /* Вопрос переписали после неподтверждённой отправки — отправляем как есть.
+         Раньше здесь стоял запрет с советом «верните исходный вопрос», но
+         вернуть его человек уже не мог, и форма запиралась до перезагрузки.
+         Ротацией номера попытки занимается orderContract: тот же текст —
+         тот же номер (сервер узнает повтор), другой текст — новый номер. */
       var btn = box.querySelector('#glGo');
       guideSubmitting = true;
       S.btnLoading(btn, true, 'Отправляем…');
@@ -1231,7 +1229,6 @@
         var r = attempt && attempt.r;
         if (outcome === 'confirmed') {
           S.orderContract.clear('guide_microlead', here, attempt.clientRequestId);
-          guideIntent = '';
           if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
           box.innerHTML = '<p class="caps" style="margin-bottom:8px">Вопрос у мастера ✓</p>' +
             '<p class="lead" style="margin:0">Ответим' + (c ? ' — ' + c.replace(/</g, '&lt;') : '') +
@@ -1241,18 +1238,18 @@
         } else {
           if (outcome === 'definitive_rejection') {
             S.orderContract.clear('guide_microlead', here, attempt.clientRequestId);
-            guideIntent = '';
-          }
-          if (outcome === 'local_blocked' && !attempt.clientRequestId) {
-            /* До durable v2 identity сеть не вызывается. Не выдаём локальный
-               fail-closed за «неподтверждённую отправку» при следующей правке. */
-            guideIntent = '';
           }
           var scopeMessage = S.api && S.api.outsideScopeMessage
             ? S.api.outsideScopeMessage(r)
             : '';
-          var conflictMessage = outcome === 'conflict'
-            ? 'Не удалось безопасно подтвердить повтор. Не отправляйте новый вопрос — напишите мастеру напрямую.'
+          /* Редакции документов на странице и на сервере разошлись — виновата
+             устаревшая вкладка, а не человек: ему нужна перезагрузка. */
+          var staleDocMessage = r && (r.error === 'consent_version_mismatch' ||
+                                      r.error === 'consent_contract_mismatch')
+            ? 'Условия успели обновиться. Обновите страницу и отправьте вопрос ещё раз.'
+            : '';
+          var conflictMessage = !staleDocMessage && outcome === 'conflict'
+            ? 'Прошлая отправка ещё идёт. Подождите пару секунд и нажмите «Отправить вопрос» ещё раз.'
             : '';
           var rejectedMessage = r && r.error === 'contact_required'
             ? 'Сессия входа истекла. Оставьте контакт — куда прислать ответ.'
@@ -1260,7 +1257,8 @@
           var localSafetyMessage = attempt && attempt.contractError
             ? 'Браузер не смог безопасно сохранить номер попытки. Ничего не отправлено; откройте новую вкладку или напишите мастеру напрямую.'
             : '';
-          S.toast(scopeMessage || conflictMessage || rejectedMessage || localSafetyMessage ||
+          S.toast(scopeMessage || staleDocMessage || conflictMessage || rejectedMessage ||
+            localSafetyMessage ||
             'Пока не подтвердилось. Повторите отправку — номер попытки сохранён для проверки повтора.');
           if (scopeMessage) box.querySelector('#glQ').focus();
           else if (rejectedMessage) box.querySelector('#glC').focus();
