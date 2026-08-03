@@ -33,7 +33,7 @@
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v3.png" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260803out003shell1" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-catalog.css?v=20260803out005services1&amp;search=20260803out007search1" />
+<link rel="stylesheet" href="assets/css/polish15-catalog.css?v=20260803out005services1&amp;search=20260803out007search1&amp;price=20260803price1" />
 <link rel="stylesheet" href="assets/css/commission-zero.css?v=20260802release98" />
 </head>
 <body data-p15-page>
@@ -43,12 +43,28 @@
       <header class="page-head">
         <div class="page-head__copy">
           <p class="eyebrow">Цены</p>
-          <h1>Цена относится к результату, а не к тревоге.</h1>
-          <p class="page-head__lead">Ниже — открытые ориентиры полного проекта и отдельных этапов. Маршрут сначала определит нужный результат, затем покажет его цену до контакта.</p>
-          <div class="page-head__action"><a class="button button--primary" href="configurator.html">Собрать маршрут <span aria-hidden="true">→</span></a></div>
+          <h1>Видно, из чего складывается цена — и что из неё можно убрать.</h1>
+          <p class="page-head__lead">Смета собирается по строкам: за каждой стоит отдельный результат, и принять её можно частями. Что вы способны сделать сами — редактор скажет прямо и в расчёт не поставит.</p>
+          <div class="page-head__action"><a class="button button--primary" href="configurator.html">Собрать смету <span aria-hidden="true">→</span></a></div>
         </div>
-        <div class="page-head__side"><div class="price-principle"><span>Правило расчёта</span><strong>Каждая строка сметы описывает отдельный результат</strong><p>Каждую позицию можно принять отдельно.</p></div></div>
+        <div class="page-head__side"><div class="price-principle"><span>Правило расчёта</span><strong>Строка сметы — один результат</strong><p>Ненужную строку вычёркиваете до оплаты.</p></div></div>
       </header>
+
+      <!-- Пример сметы поднят под заголовок намеренно. Дальше идут числа,
+           которые выше рынка, и читать их надо через это: смета разборная,
+           лишнее вычёркивается, а часть работы вам честно отдадут делать
+           самим. Внизу страницы, где этот лист лежал раньше, он объяснял
+           цены уже тому, кто до него дошёл. -->
+      <section class="estimate-example estimate-example--lead">
+        <div class="estimate-example__copy"><p class="eyebrow">Так это выглядит</p><h2>Строку, которую вы потянете сами, мы вычёркиваем.</h2><p>Редактор помечает такую работу в комментарии и не ставит её в расчёт. Пример настоящей предварительной сметы.</p></div>
+        <div class="estimate-paper">
+          <header><span>Предварительная смета</span><b>№ 24-071</b></header>
+          <div class="estimate-paper__line"><span><b>01</b>Разбор замечаний</span><strong>2 500 ₽</strong></div>
+          <div class="estimate-paper__line"><span><b>02</b>Редактура выводов второй главы</span><strong>4 500 ₽</strong></div>
+          <div class="estimate-paper__line estimate-paper__line--muted"><span><b>—</b>Оформление таблиц</span><em>можно исправить самостоятельно</em></div>
+          <footer><span>Итого</span><strong>7 000 ₽</strong></footer>
+        </div>
+      </section>
 
       <section class="catalog-commission" aria-labelledby="tariffsCommission0">
         <div class="catalog-commission__copy">
@@ -67,120 +83,139 @@
 
       <section class="price-table-section">
         <div class="price-table-head">
-          <div><p class="eyebrow">Полный каталог</p><h2>Проект с нуля или один этап</h2></div>
+          <div><p class="eyebrow">Каталог</p><h2>Что именно вам нужно</h2></div>
           <label class="catalog-search"><span class="sr-only">Фильтр цен</span><input type="search" data-price-search placeholder="Найти в таблице"><i aria-hidden="true" class="ico-search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.6" stroke="currentColor" stroke-width="1.7"/><path d="M15.5 15.5 20 20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></i></label>
         </div>
         <div class="price-table" data-price-table>
+        <section class="price-group" data-price-group id="pg-start">
+          <button class="price-group__head" type="button" data-group-toggle aria-expanded="false" aria-controls="pg-start-body">
+            <span class="price-group__no" aria-hidden="true">I</span>
+            <span class="price-group__name"><strong>Сделаем с нуля</strong><small>Проект целиком: от темы до готового рабочего черновика</small></span>
+            <span class="price-group__meta">5 позиций · 2 500 – 60 000 ₽</span>
+            <span class="price-group__chev" aria-hidden="true"></span>
+          </button>
+          <div class="price-group__body" id="pg-start-body" hidden>
           <div class="price-row" data-price-row data-search="Проект с нуля Реферат эссе полный рабочий черновик">
-            <span class="tag tag--wax">С нуля</span>
-            <div><strong>Реферат или эссе</strong><small>План, источники и полный рабочий черновик</small></div>
-            <span><small>от</small><strong>2 500 ₽</strong></span>
-            <span>от 24 часов</span>
+            <span class="price-row__no" aria-hidden="true">01</span>
+            <div><strong>Реферат или эссе</strong><small>План, источники и полный рабочий черновик · от 24 часов</small></div>
+            <span class="price-row__sum"><small>от</small><strong>2 500 ₽</strong></span>
             <button type="button" data-start-priced="Реферат или эссе с нуля" aria-label="Рассчитать: реферат или эссе с нуля">Рассчитать</button>
-          </div><div class="price-row" data-price-row data-search="Проект с нуля Курсовая теоретическая теория полный рабочий черновик">
-            <span class="tag tag--wax">С нуля</span>
-            <div><strong>Курсовая · теория</strong><small>От темы до полного рабочего черновика</small></div>
-            <span><small>от</small><strong>14 000 ₽</strong></span>
-            <span>от 24 часов</span>
-            <button type="button" data-start-priced="Курсовая теория с нуля" aria-label="Рассчитать: теоретическая курсовая с нуля">Рассчитать</button>
-          </div><div class="price-row" data-price-row data-search="Проект с нуля Курсовая с исследованием эмпирическая расчеты анализ">
-            <span class="tag tag--wax">С нуля</span>
-            <div><strong>Курсовая · исследование</strong><small>Методика, реальные данные, анализ и рабочий текст</small></div>
-            <span><small>от</small><strong>20 000 ₽</strong></span>
-            <span>после проверки данных</span>
-            <button type="button" data-start-priced="Курсовая с исследованием с нуля" aria-label="Рассчитать: курсовая с исследованием с нуля">Рассчитать</button>
-          </div><div class="price-row" data-price-row data-search="Проект с нуля ВКР дипломная полный рабочий черновик">
-            <span class="tag tag--wax">С нуля</span>
-            <div><strong>ВКР / диплом</strong><small>Исследовательский проект и материалы к защите</small></div>
-            <span><small>от</small><strong>40 000 ₽</strong></span>
-            <span>от 24 часов</span>
-            <button type="button" data-start-priced="ВКР или диплом с нуля" aria-label="Рассчитать: ВКР или диплом с нуля">Рассчитать</button>
-          </div><div class="price-row" data-price-row data-search="Проект с нуля Магистерская диссертация исследование полный рабочий черновик">
-            <span class="tag tag--wax">С нуля</span>
-            <div><strong>Магистерское исследование</strong><small>Методология, анализ, рабочий текст и защита</small></div>
-            <span><small>от</small><strong>60 000 ₽</strong></span>
-            <span>после проверки задания</span>
-            <button type="button" data-start-priced="Магистерская с нуля" aria-label="Рассчитать: магистерская с нуля">Рассчитать</button>
-          </div><div class="price-row" data-price-row data-search="Комиссия №0 Курсовая репетиция защиты независимый редактор оппонент протокол">
-            <span class="tag tag--wax">Комиссия №0</span>
-            <div><strong>Курсовая</strong><small>Живая сессия, независимый Оппонент и Протокол №0</small></div>
-            <span><small>фиксировано</small><strong>9 900 ₽</strong></span>
-            <span>по записи</span>
-            <button type="button" data-start-priced="Комиссия №0 · курсовая" aria-label="Записаться на Комиссию №0 для курсовой">Записаться</button>
-          </div><div class="price-row" data-price-row data-search="Комиссия №0 ВКР диплом репетиция защиты независимый редактор оппонент протокол">
-            <span class="tag tag--wax">Комиссия №0</span>
-            <div><strong>ВКР / диплом</strong><small>Живая сессия, независимый Оппонент и Протокол №0</small></div>
-            <span><small>фиксировано</small><strong>19 900 ₽</strong></span>
-            <span>по записи</span>
-            <button type="button" data-start-priced="Комиссия №0 · ВКР" aria-label="Записаться на Комиссию №0 для ВКР">Записаться</button>
-          </div><div class="price-row" data-price-row data-search="Комиссия №0 Магистерская репетиция защиты независимый редактор оппонент протокол">
-            <span class="tag tag--wax">Комиссия №0</span>
-            <div><strong>Магистерская</strong><small>Живая сессия, независимый Оппонент и Протокол №0</small></div>
-            <span><small>фиксировано</small><strong>29 900 ₽</strong></span>
-            <span>по записи</span>
-            <button type="button" data-start-priced="Комиссия №0 · магистерская" aria-label="Записаться на Комиссию №0 для магистерской">Записаться</button>
-          </div><div class="price-row" data-price-row data-search="Письменный разбор темы и плана понятные рекомендации">
-            <span class="tag">Письменный разбор</span>
-            <div><strong>Разбор темы и плана</strong><small>Письменные рекомендации</small></div>
-            <span><small>от</small><strong>3 000 ₽</strong></span>
-            <span>1–2 дня</span>
-            <button type="button" data-start-priced="Разбор темы и плана" aria-label="Уточнить стоимость: Разбор темы и плана">Уточнить</button>
-          </div><div class="price-row" data-price-row data-search="Письменный разбор замечаний руководителя порядок исправлений">
-            <span class="tag">Письменный разбор</span>
-            <div><strong>Разбор замечаний руководителя</strong><small>Порядок исправлений по приоритету</small></div>
-            <span><small>от</small><strong>2 500 ₽</strong></span>
-            <span>после просмотра</span>
-            <button type="button" data-start-priced="Разбор замечаний руководителя" aria-label="Уточнить стоимость: Разбор замечаний руководителя">Уточнить</button>
-          </div><div class="price-row" data-price-row data-search="Редактура Курсовая работа Правки и комментарии в Word">
-            <span class="tag">Редактура</span>
-            <div><strong>Редактура вашей курсовой</strong><small>Правки и комментарии в Word</small></div>
-            <span><small>от</small><strong>9 000 ₽</strong></span>
-            <span>после просмотра</span>
-            <button type="button" data-start-priced="Редактура вашей курсовой" aria-label="Уточнить стоимость: редактура вашей курсовой">Уточнить</button>
-          </div><div class="price-row" data-price-row data-search="Редактура ВКР или дипломная Поэтапная редактура рукописи">
-            <span class="tag">Редактура</span>
-            <div><strong>Аудит и редактура вашей ВКР</strong><small>Поэтапная редактура рукописи</small></div>
-            <span><small>от</small><strong>24 000 ₽</strong></span>
-            <span>после просмотра</span>
-            <button type="button" data-start-priced="Аудит и редактура вашей ВКР" aria-label="Уточнить стоимость: аудит и редактура вашей ВКР">Уточнить</button>
-          </div><div class="price-row" data-price-row data-search="Оформление Нормоконтроль Проверка по методичке">
-            <span class="tag">Оформление</span>
-            <div><strong>Нормоконтроль</strong><small>Проверка по методичке</small></div>
-            <span><small>от</small><strong>5 000 ₽</strong></span>
-            <span>после просмотра</span>
-            <button type="button" data-start-priced="Нормоконтроль" aria-label="Уточнить стоимость: Нормоконтроль">Уточнить</button>
-          </div><div class="price-row" data-price-row data-search="Защита Проверка речи и презентации Правки и репетиция">
-            <span class="tag">Подготовка к защите</span>
-            <div><strong>Проверка речи и презентации</strong><small>Правки и репетиция</small></div>
-            <span><small>от</small><strong>6 000 ₽</strong></span>
-            <span>после просмотра</span>
-            <button type="button" data-start-priced="Проверка речи и презентации" aria-label="Уточнить стоимость: Проверка речи и презентации">Уточнить</button>
-          </div><div class="price-row" data-price-row data-search="Публикация Научная статья РИНЦ Редактура и требования издания">
-            <span class="tag">Публикация</span>
-            <div><strong>Научная статья РИНЦ</strong><small>Редактура и требования издания</small></div>
-            <span><small>от</small><strong>7 000 ₽</strong></span>
-            <span>после просмотра</span>
-            <button type="button" data-start-priced="Научная статья РИНЦ" aria-label="Уточнить стоимость: Научная статья РИНЦ">Уточнить</button>
-          </div><div class="price-row" data-price-row data-search="Консультация Методическая сессия 60 минут и письменное резюме">
-            <span class="tag">Консультация</span>
-            <div><strong>Методическая сессия</strong><small>60 минут и письменное резюме</small></div>
-            <span><small>от</small><strong>3 000 ₽</strong></span>
-            <span>по записи</span>
-            <button type="button" data-start-priced="Методическая сессия" aria-label="Уточнить стоимость: Методическая сессия">Уточнить</button>
           </div>
+          <div class="price-row" data-price-row data-search="Проект с нуля Курсовая теоретическая теория полный рабочий черновик">
+            <span class="price-row__no" aria-hidden="true">02</span>
+            <div><strong>Курсовая · теория</strong><small>От темы до полного рабочего черновика · от 24 часов</small></div>
+            <span class="price-row__sum"><small>от</small><strong>14 000 ₽</strong></span>
+            <button type="button" data-start-priced="Курсовая · теория" aria-label="Рассчитать: курсовая по теории с нуля">Рассчитать</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Проект с нуля Курсовая с исследованием эмпирическая расчеты анализ">
+            <span class="price-row__no" aria-hidden="true">03</span>
+            <div><strong>Курсовая · исследование</strong><small>Методика, реальные данные, анализ и рабочий текст</small></div>
+            <span class="price-row__sum"><small>от</small><strong>20 000 ₽</strong></span>
+            <button type="button" data-start-priced="Курсовая · исследование" aria-label="Рассчитать: курсовая с исследованием">Рассчитать</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Проект с нуля ВКР дипломная полный рабочий черновик">
+            <span class="price-row__no" aria-hidden="true">04</span>
+            <div><strong>ВКР / диплом</strong><small>Исследовательский проект и материалы к защите · от 24 часов</small></div>
+            <span class="price-row__sum"><small>от</small><strong>40 000 ₽</strong></span>
+            <button type="button" data-start-priced="ВКР / диплом с нуля" aria-label="Рассчитать: ВКР или диплом с нуля">Рассчитать</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Проект с нуля Магистерская диссертация исследование полный рабочий черновик">
+            <span class="price-row__no" aria-hidden="true">05</span>
+            <div><strong>Магистерское исследование</strong><small>Методология, анализ, рабочий текст и защита</small></div>
+            <span class="price-row__sum"><small>от</small><strong>60 000 ₽</strong></span>
+            <button type="button" data-start-priced="Магистерское исследование" aria-label="Рассчитать: магистерское исследование">Рассчитать</button>
+          </div>
+          </div>
+        </section>
+        <section class="price-group" data-price-group id="pg-help">
+          <button class="price-group__head" type="button" data-group-toggle aria-expanded="false" aria-controls="pg-help-body">
+            <span class="price-group__no" aria-hidden="true">II</span>
+            <span class="price-group__name"><strong>Поможем с тем, что уже есть</strong><small>Разбор, редактура, оформление, защита и публикация</small></span>
+            <span class="price-group__meta">8 позиций · 2 500 – 24 000 ₽</span>
+            <span class="price-group__chev" aria-hidden="true"></span>
+          </button>
+          <div class="price-group__body" id="pg-help-body" hidden>
+          <div class="price-row" data-price-row data-search="Письменный разбор темы и плана понятные рекомендации">
+            <span class="price-row__no" aria-hidden="true">01</span>
+            <div><strong>Разбор темы и плана</strong><small>Письменные рекомендации · 1–2 дня</small></div>
+            <span class="price-row__sum"><small>от</small><strong>3 000 ₽</strong></span>
+            <button type="button" data-start-priced="Разбор темы и плана" aria-label="Рассчитать: разбор темы и плана">Рассчитать</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Письменный разбор замечаний руководителя порядок исправлений">
+            <span class="price-row__no" aria-hidden="true">02</span>
+            <div><strong>Разбор замечаний руководителя</strong><small>Порядок исправлений по приоритету</small></div>
+            <span class="price-row__sum"><small>от</small><strong>2 500 ₽</strong></span>
+            <button type="button" data-start-priced="Разбор замечаний руководителя" aria-label="Рассчитать: разбор замечаний руководителя">Рассчитать</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Редактура Курсовая работа Правки и комментарии в Word">
+            <span class="price-row__no" aria-hidden="true">03</span>
+            <div><strong>Редактура вашей курсовой</strong><small>Правки и комментарии в Word</small></div>
+            <span class="price-row__sum"><small>от</small><strong>9 000 ₽</strong></span>
+            <button type="button" data-start-priced="Редактура вашей курсовой" aria-label="Рассчитать: редактура вашей курсовой">Рассчитать</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Редактура ВКР или дипломная Поэтапная редактура рукописи">
+            <span class="price-row__no" aria-hidden="true">04</span>
+            <div><strong>Аудит и редактура вашей ВКР</strong><small>Поэтапная редактура рукописи</small></div>
+            <span class="price-row__sum"><small>от</small><strong>24 000 ₽</strong></span>
+            <button type="button" data-start-priced="Аудит и редактура вашей ВКР" aria-label="Рассчитать: аудит и редактура вашей ВКР">Рассчитать</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Оформление Нормоконтроль Проверка по методичке">
+            <span class="price-row__no" aria-hidden="true">05</span>
+            <div><strong>Нормоконтроль</strong><small>Проверка по методичке</small></div>
+            <span class="price-row__sum"><small>от</small><strong>5 000 ₽</strong></span>
+            <button type="button" data-start-priced="Нормоконтроль" aria-label="Рассчитать: нормоконтроль">Рассчитать</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Защита Проверка речи и презентации Правки и репетиция">
+            <span class="price-row__no" aria-hidden="true">06</span>
+            <div><strong>Проверка речи и презентации</strong><small>Правки и репетиция</small></div>
+            <span class="price-row__sum"><small>от</small><strong>6 000 ₽</strong></span>
+            <button type="button" data-start-priced="Проверка речи и презентации" aria-label="Рассчитать: проверка речи и презентации">Рассчитать</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Публикация Научная статья РИНЦ Редактура и требования издания">
+            <span class="price-row__no" aria-hidden="true">07</span>
+            <div><strong>Научная статья РИНЦ</strong><small>Редактура и требования издания</small></div>
+            <span class="price-row__sum"><small>от</small><strong>7 000 ₽</strong></span>
+            <button type="button" data-start-priced="Научная статья РИНЦ" aria-label="Рассчитать: научная статья РИНЦ">Рассчитать</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Консультация Методическая сессия 60 минут и письменное резюме">
+            <span class="price-row__no" aria-hidden="true">08</span>
+            <div><strong>Методическая сессия</strong><small>60 минут и письменное резюме</small></div>
+            <span class="price-row__sum"><small>от</small><strong>3 000 ₽</strong></span>
+            <button type="button" data-start-priced="Методическая сессия" aria-label="Рассчитать: методическая сессия">Рассчитать</button>
+          </div>
+          </div>
+        </section>
+        <section class="price-group" data-price-group id="pg-k0">
+          <button class="price-group__head" type="button" data-group-toggle aria-expanded="false" aria-controls="pg-k0-body">
+            <span class="price-group__no" aria-hidden="true">III</span>
+            <span class="price-group__name"><strong>Комиссия №0</strong><small>Живая репетиция защиты с независимым Оппонентом</small></span>
+            <span class="price-group__meta">3 позиции · фиксированная цена</span>
+            <span class="price-group__chev" aria-hidden="true"></span>
+          </button>
+          <div class="price-group__body" id="pg-k0-body" hidden>
+          <div class="price-row" data-price-row data-search="Комиссия №0 Курсовая репетиция защиты независимый редактор оппонент протокол">
+            <span class="price-row__no" aria-hidden="true">01</span>
+            <div><strong>Курсовая</strong><small>Живая сессия, независимый Оппонент и Протокол №0</small></div>
+            <span class="price-row__sum"><small>фикс.</small><strong>9 900 ₽</strong></span>
+            <button type="button" data-start-priced="Комиссия №0 · курсовая" aria-label="Записаться на Комиссию №0 для курсовой">Записаться</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Комиссия №0 ВКР диплом репетиция защиты независимый редактор оппонент протокол">
+            <span class="price-row__no" aria-hidden="true">02</span>
+            <div><strong>ВКР / диплом</strong><small>Живая сессия, независимый Оппонент и Протокол №0</small></div>
+            <span class="price-row__sum"><small>фикс.</small><strong>19 900 ₽</strong></span>
+            <button type="button" data-start-priced="Комиссия №0 · ВКР" aria-label="Записаться на Комиссию №0 для ВКР">Записаться</button>
+          </div>
+          <div class="price-row" data-price-row data-search="Комиссия №0 Магистерская репетиция защиты независимый редактор оппонент протокол">
+            <span class="price-row__no" aria-hidden="true">03</span>
+            <div><strong>Магистерская</strong><small>Живая сессия, независимый Оппонент и Протокол №0</small></div>
+            <span class="price-row__sum"><small>фикс.</small><strong>29 900 ₽</strong></span>
+            <button type="button" data-start-priced="Комиссия №0 · магистерская" aria-label="Записаться на Комиссию №0 для магистерской">Записаться</button>
+          </div>
+          </div>
+        </section>
         </div>
+        <p class="price-table__note">Где срок не указан — называем его после того, как посмотрим материалы. Раньше этого дат не обещаем.</p>
         <div class="catalog-empty" data-price-empty role="status" hidden><strong>Ничего не найдено</strong><p>Попробуйте более короткий запрос.</p></div>
-      </section>
-
-      <section class="estimate-example">
-        <div class="estimate-example__copy"><p class="eyebrow">Пример сметы</p><h2>Что можно исключить из сметы.</h2><p>Если часть задачи можно выполнить самостоятельно, редактор обозначит это в комментарии и не включит работу в расчёт.</p></div>
-        <div class="estimate-paper">
-          <header><span>Предварительная смета</span><b>№ 24-071</b></header>
-          <div class="estimate-paper__line"><span><b>01</b>Разбор замечаний</span><strong>2 500 ₽</strong></div>
-          <div class="estimate-paper__line"><span><b>02</b>Редактура выводов второй главы</span><strong>4 500 ₽</strong></div>
-          <div class="estimate-paper__line estimate-paper__line--muted"><span><b>—</b>Оформление таблиц</span><em>можно исправить самостоятельно</em></div>
-          <footer><span>Итого</span><strong>7 000 ₽</strong></footer>
-        </div>
       </section>
 
       <section class="payment-terms">
@@ -208,6 +243,6 @@
 <script src="assets/js/app.js?v=20260803fix008lockout&amp;privacy=20260803out006privacy1"></script>
 <script defer src="assets/js/polish15-chrome.js?v=20260802release98&amp;search=20260803out007search1"></script>
 <script src="assets/js/extras.js?v=20260803fix008lockout"></script>
-<script src="assets/js/polish15-catalog.js?v=20260803out005services1&amp;search=20260803out007search1"></script>
+<script src="assets/js/polish15-catalog.js?v=20260803out005services1&amp;search=20260803out007search1&amp;price=20260803price1"></script>
 </body>
 </html>

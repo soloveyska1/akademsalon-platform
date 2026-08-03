@@ -1082,14 +1082,110 @@
   border-top: 1px solid var(--line-strong-p15);
 }
 
-.p15-catalog .price-row {
+/* ── Каталог как три двери ──────────────────────────────────────────────
+   Раньше 16 разнородных позиций лежали одним плоским списком: восемь
+   категорий-ярлыков не выполняли никакой навигационной работы, и посетитель
+   был обязан прочитать всё, чтобы найти свой случай. Теперь позиции собраны
+   по НАМЕРЕНИЮ («сделать с нуля» / «помочь с тем, что есть» / «Комиссия
+   №0»), и вилка цен видна прямо в заголовке двери — цифры не спрятаны, под
+   раскрытие уходит только детализация. */
+.p15-catalog .price-group + .price-group {
+  margin-top: 10px;
+}
+
+.p15-catalog .price-group__head {
   display: grid;
-  grid-template-columns: 115px minmax(260px, 1.3fr) minmax(130px, .55fr) minmax(110px, .45fr) 92px;
+  grid-template-columns: 52px minmax(200px, 1.5fr) minmax(150px, auto) 26px;
   gap: 18px;
   align-items: center;
-  min-height: 82px;
-  padding-block: 14px;
+  width: 100%;
+  padding: 20px 4px;
+  text-align: left;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong-p15);
+  cursor: pointer;
+}
+
+.p15-catalog .price-group__no {
+  font: 400 15px/1 var(--serif);
+  color: var(--wax-p15);
+  letter-spacing: .06em;
+}
+
+.p15-catalog .price-group__name {
+  display: grid;
+  gap: 4px;
+}
+
+.p15-catalog .price-group__name strong {
+  color: var(--ink-p15);
+  font: 400 clamp(19px, 1.8vw, 24px)/1.15 var(--serif);
+}
+
+.p15-catalog .price-group__name small,
+.p15-catalog .price-group__meta {
+  color: var(--quiet-p15);
+  font-size: 11px;
+}
+
+.p15-catalog .price-group__meta {
+  justify-self: end;
+  white-space: nowrap;
+}
+
+/* Шеврон рисуем рамкой, а не глифом: ✓ ▶ ◐ и прочие символы не кроются
+   подмножествами наших шрифтов и уезжают в системный фолбэк. */
+.p15-catalog .price-group__chev {
+  justify-self: end;
+  width: 9px;
+  height: 9px;
+  border-right: 1.5px solid var(--quiet-p15);
+  border-bottom: 1.5px solid var(--quiet-p15);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .2s ease, border-color .2s ease;
+}
+
+.p15-catalog .price-group__head:hover .price-group__chev {
+  border-color: var(--wax-p15);
+}
+
+.p15-catalog .price-group__head[aria-expanded="true"] .price-group__chev {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.p15-catalog .price-table__note {
+  margin-top: 18px;
+  color: var(--quiet-p15);
+  font-size: 11px;
+}
+
+.p15-catalog .price-row {
+  display: grid;
+  /* Колонки было пять. Ярлык категории повторял название группы, а колонка
+     срока в девяти строках из шестнадцати сообщала «скажем после просмотра» —
+     то есть занимала ширину и внимание, ничего не сообщая. Осталось четыре:
+     номер, что это, сколько, действие. Реальные сроки ушли в подпись, а
+     честное «раньше дат не обещаем» сказано под таблицей один раз. */
+  grid-template-columns: 52px minmax(240px, 1fr) 150px 108px;
+  gap: 18px;
+  align-items: center;
+  min-height: 74px;
+  padding: 12px 4px;
   border-bottom: 1px solid var(--line-p15);
+}
+
+/* Сумму прижимаем к правому краю своей колонки: тогда все числа стоят в одну
+   линию у самой кнопки, и вилку видно вертикальным взглядом, не перечитывая
+   строки целиком. */
+.p15-catalog .price-row__sum {
+  justify-content: flex-end;
+}
+
+.p15-catalog .price-row__no {
+  font: 400 12px/1 var(--mono);
+  color: var(--quiet-p15);
 }
 
 .p15-catalog .price-row > div {
@@ -1097,20 +1193,21 @@
   gap: 3px;
 }
 
+/* Адресуемся классами, а не nth-child: колонок стало четыре вместо пяти, и
+   прежний nth-child(4) целился бы уже в кнопку. */
 .p15-catalog .price-row > div strong,
-.p15-catalog .price-row > span:nth-child(3) strong {
+.p15-catalog .price-row__sum strong {
   color: var(--ink-p15);
   font-size: 13px;
 }
 
 .p15-catalog .price-row > div small,
-.p15-catalog .price-row > span:nth-child(3) small,
-.p15-catalog .price-row > span:nth-child(4) {
+.p15-catalog .price-row__sum small {
   color: var(--quiet-p15);
   font-size: 10px;
 }
 
-.p15-catalog .price-row > span:nth-child(3) {
+.p15-catalog .price-row__sum {
   display: flex;
   align-items: baseline;
   gap: 5px;
@@ -1525,38 +1622,69 @@
     font-size: 13px;
   }
 
+  /* Телефон: две колонки вместо четырёх. Название занимает всю ширину,
+     под ним цена и кнопка в одну линию. Порядковый номер прячем — на узком
+     экране он отрывался от названия и занимал отдельную строку впустую. */
   .p15-catalog .price-row {
     grid-template-columns: 1fr auto;
-    gap: 8px 16px;
-    min-height: 98px;
+    gap: 10px 16px;
+    min-height: 88px;
     padding: 14px 0;
   }
 
-  .p15-catalog .price-row .tag {
-    grid-column: 1 / -1;
+  .p15-catalog .price-row__no {
+    display: none;
   }
 
   .p15-catalog .price-row > div {
-    grid-column: 1;
+    grid-column: 1 / -1;
+    grid-row: 1;
   }
 
-  .p15-catalog .price-row > span:nth-child(3) {
-    grid-column: 2;
+  .p15-catalog .price-row__sum {
+    grid-column: 1;
     grid-row: 2;
-  }
-
-  .p15-catalog .price-row > span:nth-child(4) {
-    grid-column: 1;
-    font-size: 12px;
+    justify-content: flex-start;
   }
 
   .p15-catalog .price-row > button {
     grid-column: 2;
-    grid-row: 3;
+    grid-row: 2;
+  }
+
+  /* Заголовок двери на телефоне: имя во всю ширину, под ним вилка цен,
+     шеврон справа. Десктопные 52+200+150+26 = 428px в 390px не влезали и
+     вылезали за экран на 130px. */
+  .p15-catalog .price-group__head {
+    grid-template-columns: 1fr 26px;
+    gap: 6px 14px;
+    padding: 18px 0;
+  }
+
+  .p15-catalog .price-group__no {
+    display: none;
+  }
+
+  .p15-catalog .price-group__name {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .p15-catalog .price-group__meta {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+    white-space: normal;
+  }
+
+  .p15-catalog .price-group__chev {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
   }
 
   .p15-catalog .price-row > div strong,
-  .p15-catalog .price-row > span:nth-child(3) strong {
+  .p15-catalog .price-row__sum strong {
     font-size: 14px;
   }
 

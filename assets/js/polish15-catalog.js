@@ -182,12 +182,47 @@
     var rows = Array.prototype.slice.call(root.querySelectorAll('[data-price-row]'));
     var empty = root.querySelector('[data-price-empty]');
 
+    var groups = Array.prototype.slice.call(root.querySelectorAll('[data-price-group]'));
+
+    function setOpen(group, open) {
+      var head = group.querySelector('[data-group-toggle]');
+      var body = group.querySelector('.price-group__body');
+      if (!head || !body) return;
+      head.setAttribute('aria-expanded', open ? 'true' : 'false');
+      body.hidden = !open;
+    }
+
+    /* Дверь открывается по клику; состояние живёт только на странице —
+       запоминать его негде и незачем. */
+    groups.forEach(function (group) {
+      var head = group.querySelector('[data-group-toggle]');
+      if (!head) return;
+      head.addEventListener('click', function () {
+        setOpen(group, head.getAttribute('aria-expanded') !== 'true');
+      });
+    });
+
     function paint() {
       var query = search ? search.value : '';
       var visible = 0;
       rows.forEach(function (row) {
         row.hidden = !matches(row.getAttribute('data-search') || row.textContent, query);
         if (!row.hidden) visible += 1;
+      });
+      /* Поиск сам открывает дверь, за которой нашлось: иначе человек печатает
+         «нормоконтроль», строка отфильтровывается — и остаётся невидимой
+         внутри закрытой группы, то есть поиск выглядит сломанным. Группа без
+         совпадений на время поиска убирается целиком, чтобы пустых дверей на
+         экране не оставалось. */
+      var searching = !!(query && query.trim());
+      groups.forEach(function (group) {
+        var found = group.querySelectorAll('[data-price-row]:not([hidden])').length;
+        if (!searching) {
+          group.hidden = false;
+          return;
+        }
+        group.hidden = found === 0;
+        if (found) setOpen(group, true);
       });
       if (empty) empty.hidden = visible !== 0;
     }
