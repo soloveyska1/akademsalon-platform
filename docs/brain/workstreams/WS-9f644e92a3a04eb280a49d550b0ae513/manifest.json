@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-9f644e92a3a04eb280a49d550b0ae513",
   "slug": "out-005-services-choice",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-005-services-choice",
   "base_sha": "96156040130c874519d1cd4f6335173a774d7847",
   "result_sha": "db93a45a385521600fbe1a5121334c413ebdbfa4",
@@ -554,6 +554,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 8,
-  "base_manifest_hash": "3b933a9fe49417fdc41c4e7c05598aa169e007b7ea14285efe16a04fb5d6838f"
+  "manifest_revision": 9,
+  "base_manifest_hash": "b9b0edc37263e26fa989ea90b8cfeae48972c06b02f4f68fc5139de5c82f8ee0"
 }
