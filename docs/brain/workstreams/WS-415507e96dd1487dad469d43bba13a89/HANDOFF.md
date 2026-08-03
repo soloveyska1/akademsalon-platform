@@ -50,3 +50,14 @@
 - Next: finish council advice, submit and freeze the exact result SHA, fetch and
   integrate into fresh canonical, then open a separate release103
   `production:deploy` workstream and execute smoke plus rollback/forward proof.
+
+## Lifecycle correction
+
+After the release102 receipt advanced canonical, an attempted merge of fresh
+canonical into this still-active task branch was rejected by Brain with
+`MANIFEST_BASE_STALE` and five `SCOPE_ESCAPE` findings for the receipt's
+singleton documents. No remote product integration or production mutation
+occurred. This branch is intentionally abandoned rather than rewriting history
+or weakening the hard gate. The verified product/evidence commits remain exact
+replay sources for a fresh v3 workstream initialized from the new canonical;
+v3 must redeclare its own scope before replay and rerun every gate.
