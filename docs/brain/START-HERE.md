@@ -7,11 +7,11 @@
 - Production: <https://akademsalon.ru/?v=release99>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=release98>
 - Production release: `release99-96156040130c`
-- Проверенный исходный commit: `96156040130c874519d1cd4f6335173a774d7847`
+- Проверенный canonical result: `db93a45a385521600fbe1a5121334c413ebdbfa4`
 - Каноническая integration-ветка: `origin/codex/full-reference-production`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
 - Rollback: `release98-c30dbd4924b5`
-- Последний canonical source gate: 472/472 теста и 39/39 Brain. Release99:
+- Последний canonical source gate: 482/482 теста и 39/39 Brain. Release99:
   read-only production smoke 14/14, mobile/desktop browser smoke без overflow и
   console errors, реальный rollback на release98 и возврат на release99 проверены.
   Точная запись: [releases/REL-0099.md](releases/REL-0099.md).
@@ -27,12 +27,10 @@
 ## NOW
 
 1. `OUT-001` — доказать полный путь заявки: отправка → получение → новое дело → первый статус.
-2. `OUT-005` — согласовать выбор на `services.html`, контекст configurator и
-   сохранённый черновик без потери физических SEO-маршрутов и ценовой правды.
-   Task-branch implementation `b2bd17b` локально verified (482/482, Brain
-   39/39, independent P0/P1/P2=0), но ещё не submitted/integrated и не production.
+2. Подготовить отдельный release gate для integrated `OUT-005`; production пока
+   остаётся release99 и не содержит canonical result `db93a45`.
 
-`OUT-002`, `OUT-003` и `OUT-004` verified; точные implementation/evidence SHA
+`OUT-002`, `OUT-003`, `OUT-004` и `OUT-005` verified; точные implementation/evidence SHA
 находятся в `ROADMAP.md` и `CURRENT-HANDOFF.md`.
 
 Подробности: [ROADMAP.md](ROADMAP.md). Карта: [PRODUCT-MAP.md](PRODUCT-MAP.md).

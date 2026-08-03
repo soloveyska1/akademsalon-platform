@@ -21,30 +21,20 @@ workstream manifest, а не из чата или model report.
 - Gate: backend/bot source или безопасные marker, lookup и cleanup пока
   отсутствуют. Никакой реальной клиентской мутации без них.
 
+## VERIFIED
+
 ### OUT-005 — Выбор услуги сохраняет намерение и ведёт к одному шагу
 
-- Почему сейчас: common shell, main/home и cabinet локально verified, а
-  `services.html` остаётся центральным переходом между ситуацией клиента,
-  физическим каталогом и configurator. Аудит воспроизвёл контраст, saved-draft
-  focus/history и intent/price gaps, которых не видят текущие 472 теста.
-- Результат: четыре ситуации остаются понятной первой развилкой, но выбор даёт
-  один explicit continuation; сохранённый черновик не конкурирует с новой
-  задачей и не мутирует до решения; detail CTA несёт проверяемый URL-context.
-- Связи: `DEC-0002`, `DEC-0003`, `G6`, `G9`, `UXD-0005`, `UXD-0006`.
-- Метрика: P0/P1=0; dark normal-text CTA ≥4.5:1; focus и route survive
-  continue/replace/reload/history; 12 hub cards, 9 discipline URLs, 22 detail
-  pages, ItemList/canonical/schema/sitemap/prices остаются физическими и точными.
-- Proof: `E-1007`, failing-first `tests/services-choice-contract.test.js`,
-  saved-route state matrix, exact mobile/desktop light/dark browser scenarios,
-  full regression and atomic 24-consumer catalog cache wave.
-- State: task-branch implementation head
-  `b2bd17b0538d88bbd68f041f4e3f0437052c2533` is locally verified with
-  P0/P1/P2=0, focused 73/73, full 482/482 and Brain 39/39. It remains in NOW and
-  `fixed-unverified` until the workstream is submitted and terminally integrated.
-- Stop: не угадывать product/price truth при расхождении page copy,
-  `pageCaseContext` и canonical pricing; не трогать verified global shell.
-
-## VERIFIED
+- Результат: четыре ситуации дают один explicit continuation; saved progress
+  владеет единственным primary до явного нового выбора; continue/replace не
+  смешивают intent. Все 22 detail CTA несут allowlisted URL-context, девять
+  discipline routes сохраняют физическую цену, а backend получает прежний
+  transport vocabulary только на границе сериализации.
+- Proof: `E-1007`; failing-first 1/8→10/10 contract, independent P0/P1/P2=0,
+  focused 73/73, full 482/482, Brain 39/39 and exact browser/runtime matrix.
+- Implementation/result:
+  `db93a45a385521600fbe1a5121334c413ebdbfa4`; terminal manifest revision 9 is
+  `WS-9f644e92a3a04eb280a49d550b0ae513`.
 
 ### OUT-002 — Следующий шаг по делу находится за 10 секунд
 
