@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-63128478355b483d97dacd4423add367",
   "slug": "out-001-authoritative-contract-v2",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-001-authoritative-contract-v2",
   "base_sha": "90089a84438283af3899e99a5aa703960881964d",
   "result_sha": "3a3ca5acc74a74ac93c5ad103789671cce06b548",
@@ -62,6 +62,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "a89f6e04d494a9b3b957424ac45b0d764ba62c5104144637a7983c67197d3f8a"
+  "manifest_revision": 3,
+  "base_manifest_hash": "7401a1319563ae49c43676b11a0f33eb02c9f9f1f96b786a204f3ec0a1b42f5c"
 }
