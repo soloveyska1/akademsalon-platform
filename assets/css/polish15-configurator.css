@@ -916,7 +916,11 @@ html.service-plan .configurator-task .split{display:block}
 /* Cart drawer: same product language, existing cart API and controls untouched. */
 .configurator-task .cart-back{background:rgba(18,17,14,.58);backdrop-filter:blur(4px)}
 .configurator-task .cart-drawer{
-  width:min(1180px,calc(100vw - 48px));
+  /* Было min(1180px, 100vw-48px) — почти во весь экран ради списка позиций.
+     Шторка перекрывала конфигуратор целиком и читалась как отдельная
+     страница, а не как боковой состав заказа. Базовое правило в cart.css
+     всегда предполагало 540px; здесь чуть шире под двухколоночные строки. */
+  width:min(620px,calc(100vw - 48px));
   border-left:1px solid var(--hairline);
   border-radius:0;
   background:var(--paper);
@@ -937,11 +941,6 @@ html.service-plan .configurator-task .split{display:block}
   background:var(--paper);
 }
 .configurator-task .cart-body{padding:24px 28px 36px 34px}
-.configurator-task .cart-guide{
-  border-radius:0;
-  background:transparent;
-}
-.configurator-task .cart-guide button b{background:var(--sheet)}
 .configurator-task .cart-section-head h3{font-size:20px}
 .configurator-task .cart-item{
   padding:15px 14px 13px 46px;

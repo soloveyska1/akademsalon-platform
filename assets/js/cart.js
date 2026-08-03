@@ -878,12 +878,11 @@
     document.querySelectorAll('[data-cart-submit]').forEach(function (el) {
       el.textContent = el.getAttribute('data-cart-submit-label') || 'Отправить заявку мастеру';
     });
-    var guide = '<nav class="cart-guide" aria-label="Этапы оформления">' +
-      '<button type="button" class="done" data-cart-jump="cartItems"><b>01</b> Состав</button><i></i><button type="button" class="' +
-      ((b.discount || b.bonus || b.gift) ? 'done' : '') + '" data-cart-jump="cartBenefits"><b>02</b> Выгода</button><i></i>' +
-      '<button type="button" data-cart-checkout' + (n ? '' : ' disabled') + '><b>03</b> Отправка</button></nav>';
+    /* Мини-визард «01 Состав · 02 Выгода · 03 Отправка» убран: визард внутри
+       визарда. «Отправка» дублировала кнопку подвала, а два «перехода» просто
+       прокручивали панель, которая и так помещается почти целиком. */
     if (!n) {
-      body.innerHTML = guide + (preview
+      body.innerHTML = (preview
         ? '<div id="cartItems">' + previewItemHtml(preview) + '</div>' +
           '<section class="cart-single-help"><span>+</span><div><h3>Нужно несколько результатов?</h3>' +
           '<p>Добавьте текущую позицию в состав, затем выберите ещё работу или отдельную услугу. У каждой строки сохранятся собственные цена, срок и результат.</p></div></section>'
@@ -925,7 +924,7 @@
         (pendingCurrent.quote.high > pendingCurrent.quote.low ? '–' + money(pendingCurrent.quote.high) : '') +
         ' ₽</small></div><button type="button" class="btn btn-line" data-cart-add-current>Добавить в смету</button></section>'
       : '';
-    body.innerHTML = guide + pendingCurrentHtml + groups + standaloneServicesHtml() +
+    body.innerHTML = pendingCurrentHtml + groups + standaloneServicesHtml() +
       addonComposerHtml() + addonsHtml() +
       (removed ? '<div class="cart-undo"><span>Позиция убрана</span><button type="button" data-cart-undo>Вернуть</button></div>' : '') +
       '<button type="button" class="cart-clear" data-cart-clear>Очистить состав</button>' +
@@ -1059,17 +1058,6 @@
     if (t.closest('[data-cart-checkout]')) {
       if (!validate()) return;
       close(); if (api && api.checkout) api.checkout(); return;
-    }
-    if (t.closest('[data-cart-jump]')) {
-      var jump = box.querySelector('#' + t.closest('[data-cart-jump]').getAttribute('data-cart-jump'));
-      if (jump && jump.scrollIntoView) {
-        if (jump.tagName === 'DETAILS') jump.open = true;
-        jump.scrollIntoView({
-          block:'start',
-          behavior:S && S.reduceMotion ? 'auto' : 'smooth'
-        });
-      }
-      return;
     }
     if (t.closest('[data-cart-promo-apply]')) {
       var promoInput = box.querySelector('#cartPromoInput');

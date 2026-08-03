@@ -205,23 +205,12 @@ html[data-motion="off"] .cart-tab,html[data-motion="off"] .cart-dock,html[data-m
 .compose-gate h3{margin:7px 0 6px;font:520 21px/1.2 var(--serif)}
 .compose-gate p{margin:0 0 15px;color:var(--ink-soft);font-size:13px;line-height:1.5}
 
-.cart-drawer{width:min(96vw,610px)}
+.cart-drawer{width:min(96vw,620px)}
 .cart-head{padding:21px 24px 16px}
 .cart-head h2{font-size:32px}
 .cart-head p{font-size:13px}
 .cart-body{padding:14px 20px 22px}
 .cart-foot{padding:0 20px max(16px,env(safe-area-inset-bottom))}
-.cart-guide{display:flex;align-items:center;gap:8px;margin:0 0 16px;padding:10px 12px;border:1px solid var(--hairline);
-  border-radius:4px;background:var(--sheet);font:9px/1 var(--mono);letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint)}
-.cart-guide button{display:flex;align-items:center;gap:5px;padding:0;border:0;background:transparent;color:inherit;
-  font:inherit;letter-spacing:inherit;text-transform:inherit;white-space:nowrap;cursor:pointer}
-.cart-guide button:disabled{cursor:default;opacity:.48}
-.cart-guide button:focus-visible{outline:2px solid var(--stamp);outline-offset:3px}
-.cart-guide button b{display:grid;place-items:center;width:22px;height:22px;border:1px solid var(--hairline);border-radius:50%;
-  font-size:8px;color:var(--ink-faint)}
-.cart-guide button.done{color:var(--ink)}
-.cart-guide button.done b{border-color:var(--wax);color:var(--wax)}
-.cart-guide i{height:1px;flex:1;background:var(--hairline)}
 
 .cart-section-head{display:flex;align-items:flex-start;gap:10px;margin:0 0 11px}
 .cart-section-head.compact{margin-bottom:9px}
@@ -344,9 +333,6 @@ html[data-motion="off"] .cart-tab,html[data-motion="off"] .cart-dock,html[data-m
   .cart-add-more{order:2}
   .cart-code{grid-template-columns:1fr}
   .cart-empty-actions{grid-template-columns:1fr}
-  .cart-guide{gap:5px;padding:9px 8px}
-  .cart-guide button{font-size:8px}
-  .cart-guide button b{width:20px;height:20px}
   .cart-child-list{padding-left:7px}
   .cart-addon-compose-actions{grid-template-columns:1fr}
 }
@@ -367,7 +353,7 @@ body.cart-checkout #giftBox{display:none}
 @media(min-width:921px){
   .cart-drawer{
     display:grid;
-    width:min(1180px,calc(100vw - 48px));
+    width:min(620px,calc(100vw - 48px));
     grid-template-columns:minmax(0,1fr) 374px;
     grid-template-rows:auto minmax(0,1fr);
     background:var(--paper);
@@ -400,7 +386,6 @@ body.cart-checkout #giftBox{display:none}
     border-left:1px solid var(--hairline);
     box-shadow:none;
   }
-  .cart-guide{margin-bottom:22px}
   .cart-actions{margin-top:auto;padding-top:18px}
 }
 
@@ -628,20 +613,6 @@ body.cart-checkout #giftBox{display:none}
 .configurator-task .cart-shell .cart-body{
   min-width:0;background:color-mix(in srgb,var(--paper) 96%,var(--wax-soft))
 }
-.configurator-task .cart-shell .cart-guide{
-  gap:12px;margin:0 0 24px;padding:0 0 15px;color:var(--ink-faint);
-  background:transparent;border:0;border-bottom:1px solid var(--hairline)
-}
-.configurator-task .cart-shell .cart-guide button{gap:7px;min-width:0}
-.configurator-task .cart-shell .cart-guide button b{
-  width:25px;height:25px;flex:0 0 25px;color:var(--ink-faint);
-  background:var(--paper);border-color:var(--hairline-strong)
-}
-.configurator-task .cart-shell .cart-guide button.done{color:var(--ink)}
-.configurator-task .cart-shell .cart-guide button.done b{color:#fff9f1;background:var(--wax);border-color:var(--wax)}
-.configurator-task .cart-shell .cart-guide i{
-  background:linear-gradient(90deg,color-mix(in srgb,var(--wax) 42%,var(--hairline)),var(--hairline))
-}
 .configurator-task .cart-shell .cart-current-draft{
   gap:18px;margin-bottom:22px;padding:17px 18px;
   background:linear-gradient(105deg,color-mix(in srgb,var(--wax-soft) 92%,var(--sheet)),var(--sheet));
@@ -784,17 +755,27 @@ html[data-theme="dark"] .configurator-task .cart-shell .cart-head{
 }
 
 @media(min-width:921px){
+  /* Ящик был двухколоночным на 1240px — состав слева, итог справа, — и
+     занимал 86% экрана: шторка читалась как отдельная страница, а не как
+     боковой состав заказа. Складываем в одну колонку и сужаем: итог просто
+     идёт под составом, как на телефоне. Ширину держим согласованной с
+     базовым правилом в начале файла. */
   .configurator-task .cart-shell .cart-drawer{
-    display:grid;width:min(1240px,calc(100vw - 32px));
-    grid-template-columns:minmax(0,1fr) minmax(380px,420px);grid-template-rows:auto minmax(0,1fr)
+    display:flex;flex-direction:column;width:min(620px,calc(100vw - 32px))
   }
-  .configurator-task .cart-shell .cart-head{grid-column:1/-1;min-height:142px;padding:29px 38px 26px}
-  .configurator-task .cart-shell .cart-body{grid-column:1;grid-row:2;padding:26px 30px 42px 38px}
+  .configurator-task .cart-shell .cart-head{min-height:0;padding:20px 26px 16px}
+  /* Шапка занимала 221px из 1000, подвал ещё 459 — составу, ради которого
+     шторку и открывают, оставалось 32% высоты. Заголовок здесь не витрина:
+     сбавляем кегль и прижимаем подпись. */
+  .configurator-task .cart-shell .cart-head h2{font-size:26px;line-height:1.1}
+  .configurator-task .cart-shell .cart-head #cartIntro{margin-top:6px;font-size:12px;line-height:1.4}
+  .configurator-task .cart-shell .cart-body{padding:18px 26px 26px}
   .configurator-task .cart-shell .cart-foot{
-    grid-column:2;grid-row:2;display:grid;min-height:0;
-    grid-template-rows:auto auto minmax(0,1fr) auto;
-    padding:28px 30px 30px;overflow:hidden
+    display:block;min-height:0;padding:16px 26px 20px;overflow:visible
   }
+  .configurator-task .cart-shell .cart-foot .cart-totals{padding:12px 16px}
+  .configurator-task .cart-shell .cart-foot .cart-total-note{margin-top:6px;font-size:11px}
+  .configurator-task .cart-shell .cart-foot .cart-actions{gap:8px;padding-top:10px}
   .configurator-task .cart-shell .cart-tools{min-height:0;overflow:hidden}
   .configurator-task .cart-shell .cart-tools[open]{
     display:grid;min-height:0;grid-template-rows:auto minmax(0,1fr)
@@ -821,12 +802,12 @@ html[data-theme="dark"] .configurator-task .cart-shell .cart-head{
   .configurator-task .cart-shell .cart-foot:has(.cart-tools[open]) .cart-actions{padding-top:6px}
 }
 @media(min-width:921px) and (max-width:1120px){
-  .configurator-task .cart-shell .cart-drawer{
-    width:calc(100vw - 20px);grid-template-columns:minmax(0,1fr) 352px
-  }
-  .configurator-task .cart-shell .cart-head{min-height:128px;padding:25px 28px 22px}
-  .configurator-task .cart-shell .cart-body{padding:22px 22px 34px 28px}
-  .configurator-task .cart-shell .cart-foot{padding:24px 22px 26px}
+  /* На узком десктопе шторка занимала почти всё окно (100vw − 20px) ради
+     второй колонки. Колонки больше нет — ширина та же, что и на широком. */
+  .configurator-task .cart-shell .cart-drawer{width:min(620px,calc(100vw - 24px))}
+  .configurator-task .cart-shell .cart-head{min-height:0;padding:22px 24px 18px}
+  .configurator-task .cart-shell .cart-body{padding:20px 24px 30px}
+  .configurator-task .cart-shell .cart-foot{padding:20px 24px 24px}
   .configurator-task .cart-shell .cart-addon-list{grid-template-columns:1fr}
 }
 @media(max-width:920px){
@@ -849,9 +830,6 @@ html[data-theme="dark"] .configurator-task .cart-shell .cart-head{
   .configurator-task .cart-shell .cart-actions{margin-top:20px}
 }
 @media(max-width:620px){
-  .configurator-task .cart-shell .cart-guide{gap:7px}
-  .configurator-task .cart-shell .cart-guide button{font-size:8px;letter-spacing:.07em}
-  .configurator-task .cart-shell .cart-guide button b{width:23px;height:23px;flex-basis:23px}
   .configurator-task .cart-shell .cart-item-top{grid-template-columns:1fr}
   .configurator-task .cart-shell .cart-price{
     display:flex;align-items:baseline;gap:8px;padding-top:10px;text-align:left;border-top:1px solid var(--hairline)
@@ -878,8 +856,6 @@ html[data-theme="dark"] .configurator-task .cart-shell .cart-head{
 }
 @media(max-width:380px){
   .configurator-task .cart-shell .cart-head h2{font-size:24px}
-  .configurator-task .cart-shell .cart-guide button{max-width:78px;white-space:normal}
-  .configurator-task .cart-shell .cart-guide i{min-width:8px}
   .configurator-task .cart-shell .cart-add-more{grid-template-columns:1fr}
 }
 
