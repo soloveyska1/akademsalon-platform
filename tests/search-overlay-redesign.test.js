@@ -5,8 +5,8 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const js = fs.readFileSync(path.join(root, 'assets/js/polish15-chrome.js'), 'utf8');
-const story = fs.readFileSync(path.join(root, 'assets/css/home-story.css'), 'utf8');
-const searchLayer = story.slice(story.lastIndexOf('SEARCH ·'));
+const shared = fs.readFileSync(path.join(root, 'assets/css/polish15-chrome.css'), 'utf8');
+const searchLayer = shared.slice(shared.lastIndexOf('SHARED SEARCH ·'));
 
 test('search dialog has a branded header and an intentional empty state', () => {
   assert.match(js, /class="search-brand"/);

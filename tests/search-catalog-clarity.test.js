@@ -98,29 +98,44 @@ test('gate 3: aliases and ranking are deterministic for the frozen query matrix'
   assert.deepEqual(Array.from(index.search('несуществующий абракадабра')), []);
 });
 
-test('gate 2: every shared consumer and the home bundle use one cache wave', () => {
+test('gate 2: every shared CSS consumer and the home CSS bundle use one cache wave', () => {
   const files = fs.readdirSync(root).filter((file) => file.endsWith('.html'));
   let cssConsumers = 0;
-  let jsConsumers = 0;
   for (const file of files) {
     const html = read(file);
     if (/polish15-chrome\.css\?/.test(html)) cssConsumers += 1;
-    if (/polish15-chrome\.js\?/.test(html)) jsConsumers += 1;
-    for (const match of html.matchAll(/polish15-chrome\.(?:css|js)\?([^"']+)/g)) {
+    for (const match of html.matchAll(/polish15-chrome\.css\?([^"']+)/g)) {
       const params = new URLSearchParams(match[1].replaceAll('&amp;', '&'));
       assert.equal(params.get('search'), releaseWave, `${file}: stale shared-search cache key`);
     }
   }
   assert.equal(cssConsumers, 89, 'unexpected shared-search CSS consumer inventory');
+
+  const home = read('index.html');
+  const match = home.match(/home-release\.min\.css\?([^"']+)/);
+  assert.ok(match, 'home CSS bundle is missing');
+  const params = new URLSearchParams(match[1].replaceAll('&amp;', '&'));
+  assert.equal(params.get('search'), releaseWave, 'home CSS bundle lacks the search cache wave');
+});
+
+test('gate 3: every shared JS consumer and the home JS bundle use one cache wave', () => {
+  const files = fs.readdirSync(root).filter((file) => file.endsWith('.html'));
+  let jsConsumers = 0;
+  for (const file of files) {
+    const html = read(file);
+    if (/polish15-chrome\.js\?/.test(html)) jsConsumers += 1;
+    for (const match of html.matchAll(/polish15-chrome\.js\?([^"']+)/g)) {
+      const params = new URLSearchParams(match[1].replaceAll('&amp;', '&'));
+      assert.equal(params.get('search'), releaseWave, `${file}: stale shared-search JS cache key`);
+    }
+  }
   assert.equal(jsConsumers, 88, 'unexpected shared-search JS consumer inventory');
 
   const home = read('index.html');
-  for (const asset of ['css', 'js']) {
-    const match = home.match(new RegExp(`home-release\\.min\\.${asset}\\?([^"']+)`));
-    assert.ok(match, `home ${asset} bundle is missing`);
-    const params = new URLSearchParams(match[1].replaceAll('&amp;', '&'));
-    assert.equal(params.get('search'), releaseWave, `home ${asset} bundle lacks the search cache wave`);
-  }
+  const match = home.match(/home-release\.min\.js\?([^"']+)/);
+  assert.ok(match, 'home JS bundle is missing');
+  const params = new URLSearchParams(match[1].replaceAll('&amp;', '&'));
+  assert.equal(params.get('search'), releaseWave, 'home JS bundle lacks the search cache wave');
 });
 
 test('protected catalogue inventory remains physically unchanged', () => {
