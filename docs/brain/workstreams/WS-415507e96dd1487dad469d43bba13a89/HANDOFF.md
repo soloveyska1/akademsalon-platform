@@ -15,21 +15,38 @@
   search triggers from 921 through 1240 px. Release101 has the same release97
   hide rules, so rollback does not repair it; OUT-007 nevertheless requires
   continuous reachability and G5/G6 classify it P1.
-- Implementation boundary: replay failure-first commit `cc6d5fe` and product
-  commit `b6fdd56`; one late route-qualified CSS rescue, one deterministic home
-  CSS rebuild and one CSS-only cache marker across the exact declared consumers.
-  Update only the two existing URL assertions that encode that home CSS URL.
-- Proof: focused contracts 16/16; full deterministic suite 501/501; identical
+- Implementation result: exact product HEAD
+  `e97a66afa6765dc8e414e52de34c64faf425819f`; one late global shared-CSS
+  rescue for both header variants at 920–1240 px, one deterministic home CSS rebuild and one CSS-only
+  cache marker across 89 direct shared-CSS consumers plus the home bundle URL.
+  The 920 px lower bound closes the fractional seam while the existing mobile
+  parent hide preserves exactly one trigger at the boundary.
+- Proof: focused contracts 56/56; full deterministic suite 501/501; identical
   consecutive builds; generated JS and all search/catalog JS remain
   byte-identical; local WebKit 42/42 on index/services/dashboard ×
   920/921/1024/1120/1121/1240/1241 × light/dark with one named 44×44 trigger,
   hit-test, no overlap/overflow, click/focus/query/Escape return and clean
   console/page errors/unsafe requests; independent P0/P1/P2 review.
+- Cross-engine closure: Chromium 24/24 on index/services/dashboard ×
+  920/921/1240/1241 × light/dark with a forced vertical scrollbar and the same
+  one-trigger/interaction/error assertions. The existing shared-shell contract
+  proves every public chrome consumer also loads its dialog runtime and mobile
+  shell; the release103 header test now freezes the mobile-parent 920 px seam.
 - Stop conditions: any undeclared path, semantic drift, multiple/zero triggers,
   layout overlap, generated JS change, protected inventory change or P0/P1.
 - Rollback: revert the narrow result and CSS cache wave. Production deployment
   belongs to a separate `production:deploy` workstream with immutable release103
   and executed release102 rollback/forward proof.
-- Current state: corrected declaration only; no product file changed here yet.
-- Next: commit declaration, run conflicts, replay the two bounded commits, update
-  the two declared readiness assertions and rerun every deterministic gate.
+- Independent review: three read-only Codex reviewers approve exact `e97a66a`
+  with P0=0/P1=0. Kimi/Sonnet/GLM all approve; Opus independently inspected the
+  cascade, selected the narrow rescue for release and deferred legacy-rule
+  consolidation to a post-release workstream. Their documentation/contract P2
+  findings are closed by the current evidence and seam assertion. Fable is not
+  repeated absent a systemic deadlock.
+- Durable evidence: `docs/brain/evidence/E-1010.md` contains the exact hashes,
+  failure-first lineage, 42/42 browser matrix and production rollback boundary.
+- Current state: product verified and documentation current; no P0/P1 remains.
+  Production is still `release102-e2f76c3d71c8`.
+- Next: finish council advice, submit and freeze the exact result SHA, fetch and
+  integrate into fresh canonical, then open a separate release103
+  `production:deploy` workstream and execute smoke plus rollback/forward proof.
