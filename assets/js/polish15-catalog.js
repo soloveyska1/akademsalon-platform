@@ -175,6 +175,104 @@
     'Методическая сессия': { href: 'configurator.html?service=tu' }
   };
 
+  /* ── Подбор цены на первом экране ───────────────────────────────────────
+     Матрица собрана СТРОГО из позиций каталога: сочинять цену для сочетания,
+     которого в прайсе нет, нельзя — это коммерческое обещание. Чего нет,
+     то честно уходит в «посчитаем индивидуально». */
+  var PICK = {
+    'ref.zero':    ['от','2 500 ₽','План, источники и рабочий черновик · от 24 часов','Реферат или эссе с нуля'],
+    'ref.razbor':  ['от','2 500 ₽','Замечания руководителя, тема, план и порядок правок','Разбор замечаний руководителя'],
+    'ref.norm':    ['от','5 000 ₽','Проверка по методичке','Нормоконтроль'],
+    'kurs.zero':   ['от','14 000 ₽','От темы до рабочего черновика · от 24 часов. С исследованием — от 20 000 ₽','Курсовая теория с нуля'],
+    'kurs.edit':   ['от','9 000 ₽','Правки и комментарии в Word','Редактура вашей курсовой'],
+    'kurs.razbor': ['от','2 500 ₽','Замечания руководителя, тема, план и порядок правок','Разбор замечаний руководителя'],
+    'kurs.norm':   ['от','5 000 ₽','Проверка по методичке','Нормоконтроль'],
+    'kurs.zashita':['от','6 000 ₽','Правки речи и презентации, репетиция','Проверка речи и презентации'],
+    'kurs.k0':     ['','9 900 ₽','Живая сессия, Оппонент и Протокол №0 · по записи','Комиссия №0 · курсовая'],
+    'vkr.zero':    ['от','40 000 ₽','Исследовательский проект и материалы к защите · от 24 часов','ВКР или диплом с нуля'],
+    'vkr.edit':    ['от','24 000 ₽','Поэтапная редактура рукописи','Аудит и редактура вашей ВКР'],
+    'vkr.razbor':  ['от','2 500 ₽','Замечания руководителя, тема, план и порядок правок','Разбор замечаний руководителя'],
+    'vkr.norm':    ['от','5 000 ₽','Проверка по методичке','Нормоконтроль'],
+    'vkr.zashita': ['от','6 000 ₽','Правки речи и презентации, репетиция','Проверка речи и презентации'],
+    'vkr.k0':      ['','19 900 ₽','Живая сессия, Оппонент и Протокол №0 · по записи','Комиссия №0 · ВКР'],
+    'mag.zero':    ['от','60 000 ₽','Методология, анализ, рабочий текст и защита','Магистерская с нуля'],
+    'mag.razbor':  ['от','2 500 ₽','Замечания руководителя, тема, план и порядок правок','Разбор замечаний руководителя'],
+    'mag.norm':    ['от','5 000 ₽','Проверка по методичке','Нормоконтроль'],
+    'mag.zashita': ['от','6 000 ₽','Правки речи и презентации, репетиция','Проверка речи и презентации'],
+    'mag.k0':      ['','29 900 ₽','Живая сессия, Оппонент и Протокол №0 · по записи','Комиссия №0 · магистерская'],
+    'art.zero':    ['от','7 000 ₽','Редактура и требования издания','Научная статья РИНЦ'],
+    'art.edit':    ['от','7 000 ₽','Редактура и требования издания','Научная статья РИНЦ'],
+    'art.razbor':  ['от','2 500 ₽','Замечания руководителя, тема, план и порядок правок','Разбор замечаний руководителя']
+  };
+  var WORK_NAME = { ref:'Реферат или эссе', kurs:'Курсовая', vkr:'ВКР / диплом', mag:'Магистерская', art:'Научная статья' };
+  var TASK_NAME = { zero:'написать с нуля', edit:'отредактировать', razbor:'разобрать и объяснить',
+                    norm:'оформить по методичке', zashita:'подготовить к защите', k0:'Комиссия №0' };
+
+  function setupPricePick() {
+    var root = document.querySelector('[data-pricepick]');
+    if (!root) return;
+    var card = document.querySelector('[data-price-card]');
+    var work = 'kurs', task = 'zero';
+
+    function press(sel, attr, value) {
+      Array.prototype.forEach.call(root.querySelectorAll('[' + attr + ']'), function (b) {
+        var on = b.getAttribute(attr) === value;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+
+    function paintCard() {
+      var hit = PICK[work + '.' + task];
+      var what = WORK_NAME[work] + ' — ' + TASK_NAME[task];
+      card.querySelector('[data-card-what]').textContent = what;
+      var go = card.querySelector('[data-card-go]');
+      if (hit) {
+        card.querySelector('[data-card-pref]').textContent = hit[0];
+        card.querySelector('[data-card-sum]').textContent = hit[1];
+        card.querySelector('[data-card-note]').textContent = hit[2];
+        card.setAttribute('data-state', 'priced');
+        go.textContent = 'Рассчитать точно';
+        go.setAttribute('data-start-priced', hit[3]);
+      } else {
+        /* Сочетания нет в прайсе — не выдумываем число. */
+        card.querySelector('[data-card-pref]').textContent = '';
+        card.querySelector('[data-card-sum]').textContent = 'Посчитаем индивидуально';
+        card.querySelector('[data-card-note]').textContent =
+          'Такого сочетания нет в прайсе. Пришлите материалы — редактор назовёт цену и срок до оплаты.';
+        card.setAttribute('data-state', 'custom');
+        go.textContent = 'Прислать материалы';
+        go.removeAttribute('data-start-priced');
+      }
+      var arrow = document.createElement('span');
+      arrow.setAttribute('aria-hidden', 'true');
+      arrow.textContent = ' →';
+      go.appendChild(arrow);
+    }
+
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-pick-work],[data-pick-task]') : null;
+      if (!b) return;
+      if (b.hasAttribute('data-pick-work')) { work = b.getAttribute('data-pick-work'); press(root, 'data-pick-work', work); }
+      else { task = b.getAttribute('data-pick-task'); press(root, 'data-pick-task', task); }
+      paintCard();
+    });
+
+    card.querySelector('[data-card-go]').addEventListener('click', function (e) {
+      var key = e.currentTarget.getAttribute('data-start-priced');
+      var route = (key && pricedRoutes[key]) || { href: 'configurator.html' };
+      if (route.commissionWork) {
+        try {
+          sessionStorage.setItem('salon_commission_zero_handoff_v1', JSON.stringify({
+            version:1, work:route.commissionWork, source:'draft', topic:'', savedAt:Date.now()
+          }));
+        } catch (err) {}
+      }
+      window.location.href = route.href;
+    });
+
+    paintCard();
+  }
+
   function setupPriceTable() {
     var root = document.querySelector('[data-p15-tariffs]');
     if (!root) return;
@@ -249,5 +347,6 @@
 
   setupServicesChoice();
   setupServiceCatalog();
+  setupPricePick();
   setupPriceTable();
 })();
