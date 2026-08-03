@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-961132dd5cc34711b4b56ba5bca92aaf",
   "slug": "release101-out006-privacy",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/release101-out006-privacy",
   "base_sha": "b9837a34c4e39e0adfb725dcf5f76f4e96f1e30e",
-  "result_sha": null,
+  "result_sha": "6d0baa08aa1ead34a4ed3ec744263dacbb08fa5e",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -58,6 +58,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "29edc372acb98869f4470dcf01518f4bc9600390b9421e3eb0ef06c212f326b5"
 }
