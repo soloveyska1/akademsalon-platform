@@ -1086,9 +1086,12 @@
    Владелец: «клиенты даже не долистают». Значит ответ обязан быть до любой
    прокрутки: два ряда выбора слева, одна крупная цифра справа. Каталог из
    шестнадцати строк уехал вниз под свёртку — он для тех, кто хочет всё. */
+/* Заголовок и выбор — один смысловой узел, а между ними стояло 126px
+   пустоты: 62px собственного отступа шапки плюс 44px отступа секции.
+   На такой странице это читается как незаконченность, а не как воздух. */
 .p15-catalog .page-head--pick {
   display: block;
-  padding-bottom: 0;
+  padding-bottom: 8px;
 }
 
 .p15-catalog .page-head--pick h1 {
@@ -1100,7 +1103,7 @@
   grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
   gap: clamp(28px, 4vw, 64px);
   align-items: start;
-  padding-block: clamp(26px, 3.4vw, 44px);
+  padding-block: 4px clamp(26px, 3.4vw, 44px);
 }
 
 .p15-catalog .pickrow + .pickrow {
@@ -1272,6 +1275,28 @@
   transform: translateY(2px) rotate(-135deg);
 }
 
+/* Строка полного списка — СВОЯ сетка на три колонки. Общее правило
+   .price-row рассчитано на четыре (первой шла колонка номера), а здесь
+   номеров нет: название попадало в 52-пиксельную колонку, рвалось на десяток
+   строк и раздувало строку до 200px вместо семидесяти, а цена растягивалась
+   на всю освободившуюся ширину. Весь список занимал 2471px — почти три
+   экрана на шестнадцать позиций. */
+/* Только с планшета вверх. Ниже 921px действует общее мобильное правило,
+   которое складывает строку в две колонки; это трёхколоночное — специфичнее
+   и без ограничения перебивало его, снова разваливая строку на телефоне. */
+@media (min-width: 921px) {
+  .p15-catalog .fulllist .price-row {
+    grid-template-columns: minmax(0, 1fr) 130px 108px;
+    min-height: 62px;
+    padding: 10px 4px;
+  }
+}
+
+.p15-catalog .fulllist .price-row > div small {
+  display: block;
+  margin-top: 2px;
+}
+
 @media (max-width: 920px) {
   /* На телефоне ответ обязан попадать в первый экран так же, как на
      десктопе. Замер до сжатия: заголовок 230 + выбор 410 + карточка 297 =
@@ -1304,6 +1329,17 @@
      решается, увидит человек цену без прокрутки или нет. */
   .p15-catalog .pricecard__act .line-link {
     display: none;
+  }
+
+  /* Полный список на телефоне — справочник: название и цена. Подпись
+     разворачивала строку до 129px (шестнадцать таких — 2297px прокрутки),
+     а подробности по выбранному сочетанию и так стоят в карточке наверху. */
+  .p15-catalog .fulllist .price-row > div small {
+    display: none;
+  }
+
+  .p15-catalog .fulllist .price-row {
+    min-height: 64px;
   }
 
   .p15-catalog .pricecard__fine {
@@ -1348,85 +1384,11 @@
   }
 }
 
-/* ── Каталог как три двери ──────────────────────────────────────────────
-   Раньше 16 разнородных позиций лежали одним плоским списком: восемь
-   категорий-ярлыков не выполняли никакой навигационной работы, и посетитель
-   был обязан прочитать всё, чтобы найти свой случай. Теперь позиции собраны
-   по НАМЕРЕНИЮ («сделать с нуля» / «помочь с тем, что есть» / «Комиссия
-   №0»), и вилка цен видна прямо в заголовке двери — цифры не спрятаны, под
-   раскрытие уходит только детализация. */
-.p15-catalog .price-group + .price-group {
-  margin-top: 10px;
-}
-
-.p15-catalog .price-group__head {
-  display: grid;
-  grid-template-columns: 52px minmax(200px, 1.5fr) minmax(150px, auto) 26px;
-  gap: 18px;
-  align-items: center;
-  width: 100%;
-  padding: 20px 4px;
-  text-align: left;
-  color: inherit;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--line-strong-p15);
-  cursor: pointer;
-}
-
-.p15-catalog .price-group__no {
-  font: 400 15px/1 var(--serif);
-  color: var(--wax-p15);
-  letter-spacing: .06em;
-}
-
-.p15-catalog .price-group__name {
-  display: grid;
-  gap: 4px;
-}
-
-.p15-catalog .price-group__name strong {
-  color: var(--ink-p15);
-  font: 400 clamp(19px, 1.8vw, 24px)/1.15 var(--serif);
-}
-
-.p15-catalog .price-group__name small,
-.p15-catalog .price-group__meta {
-  color: var(--quiet-p15);
-  font-size: 11px;
-}
-
-.p15-catalog .price-group__meta {
-  justify-self: end;
-  white-space: nowrap;
-}
-
-/* Шеврон рисуем рамкой, а не глифом: ✓ ▶ ◐ и прочие символы не кроются
-   подмножествами наших шрифтов и уезжают в системный фолбэк. */
-.p15-catalog .price-group__chev {
-  justify-self: end;
-  width: 9px;
-  height: 9px;
-  border-right: 1.5px solid var(--quiet-p15);
-  border-bottom: 1.5px solid var(--quiet-p15);
-  transform: translateY(-2px) rotate(45deg);
-  transition: transform .2s ease, border-color .2s ease;
-}
-
-.p15-catalog .price-group__head:hover .price-group__chev {
-  border-color: var(--wax-p15);
-}
-
-.p15-catalog .price-group__head[aria-expanded="true"] .price-group__chev {
-  transform: translateY(2px) rotate(-135deg);
-}
-
-.p15-catalog .price-table__note {
-  margin-top: 18px;
-  color: var(--quiet-p15);
-  font-size: 11px;
-}
-
+/* Строка прайса. Колонок было пять: ярлык категории повторял название
+   раздела, а колонка срока в девяти строках из шестнадцати сообщала «после
+   просмотра» — занимала ширину, ничего не сообщая. Осталось четыре: номер,
+   что это, сколько, действие. Полный список ниже переопределяет её на три —
+   там номера не нужны. */
 .p15-catalog .price-row {
   display: grid;
   /* Колонки было пять. Ярлык категории повторял название группы, а колонка
@@ -1593,8 +1555,16 @@
   letter-spacing: -.04em;
 }
 
+/* Общий ритм секций (--section-p15, по 108px сверху и снизу) рассчитан на
+   крупные редакционные развороты. Здесь три служебные фразы про оплату:
+   216px воздуха вокруг 273px содержания читались как пустота, а заголовок в
+   53px спорил по весу с ценой на первом экране. Соразмерно содержанию. */
 .p15-catalog .payment-terms {
-  padding-block: var(--section-p15);
+  padding-block: clamp(36px, 4.4vw, 56px);
+}
+
+.p15-catalog .payment-terms h2 {
+  font-size: clamp(24px, 2.6vw, 32px);
 }
 
 .p15-catalog .term-grid {
@@ -1603,13 +1573,15 @@
   border-top: 1px solid var(--line-strong-p15);
 }
 
+/* Было min-height 220px и отступ 45px под номером — редакционная воздушность,
+   рассчитанная на длинный текст. Здесь три коротких фразы, и блок раздувался
+   до 622px пустотой. Ужато до содержания. */
 .p15-catalog .term-grid article {
-  min-height: 220px;
-  padding: 24px 28px 30px 0;
+  padding: 20px 24px 22px 0;
 }
 
 .p15-catalog .term-grid article + article {
-  padding-left: 28px;
+  padding-left: 24px;
   border-left: 1px solid var(--line-p15);
 }
 
@@ -1619,8 +1591,8 @@
 }
 
 .p15-catalog .term-grid h3 {
-  margin-top: 45px;
-  font-size: 24px;
+  margin-top: 10px;
+  font-size: 19px;
 }
 
 .p15-catalog .term-grid p {
@@ -1918,37 +1890,6 @@
     grid-row: 2;
   }
 
-  /* Заголовок двери на телефоне: имя во всю ширину, под ним вилка цен,
-     шеврон справа. Десктопные 52+200+150+26 = 428px в 390px не влезали и
-     вылезали за экран на 130px. */
-  .p15-catalog .price-group__head {
-    grid-template-columns: 1fr 26px;
-    gap: 6px 14px;
-    padding: 18px 0;
-  }
-
-  .p15-catalog .price-group__no {
-    display: none;
-  }
-
-  .p15-catalog .price-group__name {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .p15-catalog .price-group__meta {
-    grid-column: 1;
-    grid-row: 2;
-    justify-self: start;
-    white-space: normal;
-  }
-
-  .p15-catalog .price-group__chev {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    align-self: center;
-  }
-
   .p15-catalog .price-row > div strong,
   .p15-catalog .price-row__sum strong {
     font-size: 14px;
@@ -1968,6 +1909,19 @@
     padding: 22px 0;
     border-left: 0;
     border-bottom: 1px solid var(--line-p15);
+  }
+
+  /* Кладём ниже десктопных правил намеренно: при равной специфичности
+     побеждает то, что стоит позже по файлу, и ранняя мобильная версия этих
+     же правил проигрывала десктопной, стоящей после неё. */
+  .p15-catalog .term-grid article {
+    padding: 14px 0 16px;
+  }
+
+  .p15-catalog .term-grid article + article {
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid var(--line-p15);
   }
 
   .p15-catalog .term-grid h3 {
