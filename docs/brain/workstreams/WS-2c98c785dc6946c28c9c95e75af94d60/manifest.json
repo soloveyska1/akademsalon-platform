@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-2c98c785dc6946c28c9c95e75af94d60",
+  "slug": "release103-production",
+  "status": "active",
+  "branch": "codex/release103-production",
+  "base_sha": "74b6e0937277ddf0afcd433da9a22f973c7a7d26",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-007"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0103.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-2c98c785dc6946c28c9c95e75af94d60/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "docs/brain/evidence/E-1010.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0102.md",
+        "match": "exact"
+      },
+      {
+        "path": "README.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/production-smoke.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
