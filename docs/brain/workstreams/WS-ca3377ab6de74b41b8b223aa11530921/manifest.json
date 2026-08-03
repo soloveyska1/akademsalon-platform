@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-ca3377ab6de74b41b8b223aa11530921",
   "slug": "release100-out005",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/release100-out005",
   "base_sha": "1c275bffde9368d52433a137bca11666b7d1230c",
-  "result_sha": null,
+  "result_sha": "98f5727515a5d3a906d3d54048c64561cc58ebdd",
   "outcome_ids": [
     "OUT-005"
   ],
@@ -58,6 +58,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "0c3ba0eb3e323082f3a3c549a29017a4c08e3d429f25bea98732a1118276ea1e"
 }
