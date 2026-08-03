@@ -15,9 +15,11 @@ Keep the four proven situation choices, but turn the interaction into
 the sole primary; starting a new choice is explicit and does not mutate or erase
 state before confirmation. The physical catalogue remains an HTML reference.
 
-This is not a redesign of the verified global shell, not removal/JS-rendering of
-SEO pages, not a new wizard and not a price change. `OUT-001` downstream proof
-is out of scope.
+An evidence-backed redesign of the services choice and saved-state hierarchy is
+authorized if the one-action contract cannot be made clear by a smaller layout
+change. This is not a redesign of the verified global shell, not removal or
+JS-rendering of SEO pages, not a new wizard and not a price change. `OUT-001`
+downstream proof is out of scope.
 
 ## Acceptance contract
 

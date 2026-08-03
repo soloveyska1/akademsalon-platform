@@ -49,6 +49,12 @@ a global redesign.
   39/39 Brain, 339-file tree identity, 14/14 read-only production smoke,
   mobile/desktop browser smoke and an executed rollback/forward proof. No
   application file in this OUT-005 workstream changed for that deployment.
+- Added the failing-first OUT-005 contract at task HEAD `f3b80ed`: seven defect
+  groups are independently RED, while the exact 12/9/22/ItemList-13 inventory
+  control is green. No product implementation has changed yet.
+- User authorization now permits an evidence-backed redesign of the services
+  choice/saved-state hierarchy; the verified global shell stays outside that
+  permission unless a new reproducible problem expands scope.
 
 ## Stop and rollback
 
@@ -61,5 +67,6 @@ atomic switch to `release98-c30dbd4924b5`; the active release is release99.
 
 ## One next step
 
-Commit the audited plan/Brain correction, then add the failing-first
-`tests/services-choice-contract.test.js` red groups before any implementation.
+Commit the 1/8-pass, 7/8-fail RED baseline, then implement the fresh/saved
+services choice without mutating stored intent and without changing catalogue
+inventory, schema, sitemap or prices.
