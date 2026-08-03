@@ -59,7 +59,7 @@ test('gate 1: catalogue and mobile search geometry reserve header and dock space
   assertPattern(correctedSearchLayer, /@media\(prefers-reduced-motion:reduce\)[\s\S]*?\.overlay--search \.search-close:hover,[\s\S]*?transform:\s*none/, 'search close motion is not disabled for reduced-motion users');
   assertPattern(homeReleaseCss, /grid-template-columns:minmax\(0,1fr\) 34px/, 'generated home bundle does not contain the corrected mobile result row');
   assertPattern(homeReleaseCss, /-webkit-mask-image:linear-gradient/, 'generated home bundle lacks the chip overflow affordance');
-  assertPattern(homeReleaseCss, /@media\(min-width:921px\)\s*and\s*\(max-width:1240px\)\{body \.site-header:not\(\.site-header--account\) \.header-action--search,body \.site-header--account \.header-action--search\{display:inline-flex\}\}/, 'generated home bundle lacks the continuous desktop trigger range');
+  assertPattern(homeReleaseCss, /@media\(min-width:920px\)\s*and\s*\(max-width:1240px\)\{body \.site-header:not\(\.site-header--account\) \.header-action--search,body \.site-header--account \.header-action--search\{display:inline-flex\}\}/, 'generated home bundle lacks the continuous desktop trigger range');
 });
 
 test('gate 2: the corrected editorial search layer has one shared owner', () => {

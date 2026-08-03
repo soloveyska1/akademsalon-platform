@@ -3385,7 +3385,7 @@ body .site-header--account .header-menu-button{display:grid}
 /* OUT-007 · непрерывная достижимость поиска между mobile и desktop.
    Поздний route-qualified слой перекрывает только legacy display:none;
    существующая финальная мера сохраняет icon-only control 44×44px. */
-@media (min-width:921px) and (max-width:1240px){
+@media (min-width:920px) and (max-width:1240px){
   body .site-header:not(.site-header--account) .header-action--search,
   body .site-header--account .header-action--search{
     display:inline-flex;
