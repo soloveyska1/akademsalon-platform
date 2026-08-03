@@ -4,20 +4,18 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release102>
+- Production: <https://akademsalon.ru/?v=release103>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=release98>
-- Production release: `release102-e2f76c3d71c8`
-- Production source: `e2f76c3d71c82169f52e3c94874424e150cc54d3`
+- Production release: `release103-74b6e0937277`
+- Production source: `74b6e0937277ddf0afcd433da9a22f973c7a7d26`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Каноническая integration-ветка: `origin/codex/full-reference-production`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Rollback: `release101-b9837a34c4e`
-- Release102 опубликован: GET/HEAD-only smoke 14/14 с двух точек и реальный
-  rollback/forward проверены. Финальный browser audit нашёл P1 — pointer-поиск
-  недоступен при 921–1240 px, поэтому release102 не имеет G10 GO. Точная запись:
-  [releases/REL-0102.md](releases/REL-0102.md). Проверенный release103-кандидат
-  `e97a66a` закрывает gap с 501/501 и 42/42; его ещё нужно интегрировать и
-  отдельно доказать в production.
+- Rollback: `release102-e2f76c3d71c8`
+- Release103 имеет G10 GO: product 501/501, Brain 39/39, external/VPS smoke
+  14/14 до и после выполненного rollback, production WebKit 48/48 до и 48/48
+  после forward restore. Точная запись:
+  [releases/REL-0103.md](releases/REL-0103.md).
 
 ## Главная цель продукта
 
@@ -29,9 +27,9 @@
 
 ## NOW
 
-1. Интегрировать release103-кандидат `e97a66a` и провести отдельный G10 rollout:
-   exact hashes, 14/14 с двух точек, production browser и выполненный
-   release102 rollback/forward.
+1. Получить пользовательскую визуальную обратную связь по production release103;
+   параллельно вернуть OUT-001 в read-only authoritative backend/bot audit для
+   marker/lookup/cleanup без production submit.
 2. Продолжение `OUT-006` — не включать новые milestones до authoritative server
    contract; затем провести preregistered synthetic comprehension test.
 3. `OUT-001` — не выполнять production submit, пока не появятся безопасные
@@ -62,7 +60,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0102.md](releases/REL-0102.md) — доказательная запись текущего релиза и post-publish P1.
+- [releases/REL-0103.md](releases/REL-0103.md) — доказательная запись текущего GO-релиза.
 
 ## Старт новой сессии
 

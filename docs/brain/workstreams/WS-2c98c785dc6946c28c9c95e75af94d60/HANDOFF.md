@@ -31,7 +31,25 @@
 - Boundaries: no submit, OAuth, payment, upload, analytics-consent, client data,
   deletion, local LLM, Docker, watcher or persistent service. The inactive
   release102 sidecar staging tree remains untouched.
-- Changed: declaration only; production remains release102.
-- Next: commit manifest/handoff, pass strict conflicts, rebuild and verify the
-  exact artifact, then perform preflight, backup, inactive stage, atomic switch,
-  two-vantage/browser proof and executed rollback/forward.
+- Published: `current` and `dist` resolve to immutable
+  `release103-74b6e0937277`; exact live tree is 339 files / 24,025,620 bytes.
+- Backup:
+  `pre-release103-74b6e0937277-20260803T081311Z.tar.gz`, 19,244,048 bytes,
+  SHA-256
+  `09bfa1a9f850bd26bc18d38b25f30f94d2f1f07cd3b9cd8c117fee6a86eb06f6`.
+- Verified: external en0 and VPS smoke 14/14 before switch and before/after the
+  successful rollback drill; live WebKit 48/48 before rollback and 48/48 after
+  forward restore; exact CSS/HTML discriminators, cache marker, modes and owner.
+- Harness recovery: two earlier attempts auto-rolled back release102 on a
+  benign pipefail and then an owned SOCKS port-lifecycle stop. Both were fixed
+  without override; the final complete run passed and disarmed rollback only at
+  `RELEASE103_GO`.
+- Current state: G10 GO, P0=0/P1=0. No submit/OAuth/payment/consent/client-data
+  mutation occurred. Exact receipt is `docs/brain/releases/REL-0103.md`.
+- Independent audit: live source hashes and GET-only 14/14 semantics; counts,
+  bytes, modes, ownership, extras and backup integrity; and the exact release102
+  target plus rollback/forward contract were re-derived by three separate
+  read-only reviews. All returned P0=0/P1=0. The sole generated `/var/tmp`
+  manifest residue was verified and then removed by its exact path.
+- Next: validate/commit this receipt, submit and integrate the deploy
+  workstream, then collect user feedback.
