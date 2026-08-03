@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-8ec90795d1154911a13a8cdf56eafded",
   "slug": "incident-consent-hotfix",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/incident-consent-hotfix",
   "base_sha": "1d9d681fcf037d998a81102be82a7f8fb039c952",
-  "result_sha": null,
+  "result_sha": "6bd678cef90d584ff056df2ed78d4a3ac660f1cc",
   "outcome_ids": [
     "OUT-001"
   ],
@@ -86,6 +86,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "ed048052334aa7d552da5ef236b7b05e1bc47084e61584a9fb7d72a7430933fb"
 }
