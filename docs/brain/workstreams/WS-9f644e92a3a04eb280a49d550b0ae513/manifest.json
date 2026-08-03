@@ -57,6 +57,10 @@
         "match": "exact"
       },
       {
+        "path": "docs/brain/releases/REL-0099.md",
+        "match": "exact"
+      },
+      {
         "path": "docs/brain/ROADMAP.md",
         "match": "exact"
       },
@@ -239,6 +243,10 @@
     },
     {
       "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "write",
       "key": "release-cache:catalog-assets"
     },
     {
@@ -262,6 +270,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "8b84ab3a1a9a14f5ae300ed230a7d49383910b9523a0a44927ce52f73cafb79c"
+  "manifest_revision": 3,
+  "base_manifest_hash": "684eac3775401732bd4bccd24d0d3eac8c2ae8cbe8dce51b11a0e9c9db7b55fb"
 }
