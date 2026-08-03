@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-ca3377ab6de74b41b8b223aa11530921",
   "slug": "release100-out005",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/release100-out005",
   "base_sha": "1c275bffde9368d52433a137bca11666b7d1230c",
   "result_sha": "98f5727515a5d3a906d3d54048c64561cc58ebdd",
@@ -58,6 +58,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "0c3ba0eb3e323082f3a3c549a29017a4c08e3d429f25bea98732a1118276ea1e"
+  "manifest_revision": 3,
+  "base_manifest_hash": "a62f82d382c697534b3bf30fab8805f4a67c1c0ff0815150f21a387f9a7817f8"
 }
