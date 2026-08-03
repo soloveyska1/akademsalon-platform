@@ -1,0 +1,111 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-1d99b0fdd56041e9b830b5ca4cd8b5ef",
+  "slug": "out-005-search-catalog-discovery",
+  "status": "active",
+  "branch": "codex/out-005-search-catalog-discovery",
+  "base_sha": "746551711335c39c49f57f4351fed78e8d613974",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-005"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1009.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/OUT-007-SEARCH-CATALOG-CLARITY.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/ROADMAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/UX-DEBT.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-1d99b0fdd56041e9b830b5ca4cd8b5ef/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/css/home-story.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/polish15-catalog.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/polish15-chrome.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/polish15-catalog.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/polish15-chrome.js",
+        "match": "exact"
+      },
+      {
+        "path": "dashboard.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/DECISIONS.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1007.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/MODEL-COUNCIL.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/PRODUCT-MAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0101.md",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "services.html",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "decision:search-catalog-clarity"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
