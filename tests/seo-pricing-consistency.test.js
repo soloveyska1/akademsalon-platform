@@ -77,7 +77,7 @@ test('article and short-text CTAs open the advertised editing tier', () => {
   assert.match(article, /tier:'turn'/);
   assert.doesNotMatch(article, /"name":"Диагностика статьи/);
   assert.doesNotMatch(article, /Указан тариф «Диагностика»/);
-  assert.match(read('referat.html'), /tier:'turn'/);
+  assert.match(read('referat.html'), /configurator\.html\?work=self&amp;situation=draft&amp;result=editing&amp;route=service/);
 });
 
 test('format comparison preserves the final three choices and truthful entry price', () => {

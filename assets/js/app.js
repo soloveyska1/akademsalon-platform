@@ -64,7 +64,10 @@
     ],
     disciplines: [
       { id: 'hum',  label: 'Гуманитарные / экономика',                 k: 1.0 },
-      { id: 'law',  label: 'Юриспруденция / педагогика / психология',  k: 1.15 },
+      { id: 'law',  label: 'Право / педагогика / психология',          k: 1.15 },
+      { id: 'jurisprudence', label: 'Юриспруденция',                    k: 1.0 },
+      { id: 'pedagogy',      label: 'Педагогика',                       k: 1.0 },
+      { id: 'psychology',    label: 'Психология',                       k: 1.21 },
       { id: 'tech', label: 'Технические / IT / программирование',      k: 1.3 },
       { id: 'med',  label: 'Медицина / финансы с расчётами',           k: 1.4 }
     ],
@@ -78,6 +81,9 @@
       { id: 'turn', label: 'Редакторский аудит',   priceKey: 'editing',    note: 'Правки в вашем тексте и комментарии' },
       { id: 'vip',  label: 'Сопровождение по этапам', priceKey: 'support',  note: 'От темы до защиты — с решениями и содержательным участием автора' }
     ],
+    transportDiscipline: function (value) {
+      return { jurisprudence:'law', pedagogy:'law', psychology:'law' }[value] || value;
+    },
     round500: function (n) { return Math.round(n / 500) * 500; },
     fmt: function (n) { return n.toLocaleString('ru-RU'); },
     quote: function (baseId, discId, termId, tierId) {
@@ -198,7 +204,9 @@
     diplom:'dp', master:'ms', chapter:'ch', kandidat:'kd', course:'cr',
     course_emp:'ce', practice:'pr', vak:'vk', scopus:'sc', rinc:'rc', self:'sf'
   };
-  var DISC_CODE = { hum:'h', law:'l', tech:'t', med:'m' };
+  var DISC_CODE = {
+    hum:'h', law:'l', jurisprudence:'l', pedagogy:'l', psychology:'l', tech:'t', med:'m'
+  };
   var TERM_CODE = { free:'f', mid:'m', urgent:'u' };
   var TIER_CODE = { base:'b', turn:'t', vip:'v' };
   /* Собирает ссылку на бота с предзаполненной сметой (без личных данных). */
@@ -369,7 +377,7 @@
     var allowedTypes = ['diplom','master','chapter','kandidat','course','course_emp','practice','vak','scopus','rinc','self'];
     if (allowedTypes.indexOf(type) < 0) return;
     var disc = link.getAttribute('data-disc') || 'hum';
-    if (['hum','law','tech','med'].indexOf(disc) < 0) disc = 'hum';
+    if (['hum','law','jurisprudence','pedagogy','psychology','tech','med'].indexOf(disc) < 0) disc = 'hum';
     var term = link.getAttribute('data-term') || 'free';
     if (['free','mid','urgent'].indexOf(term) < 0) term = 'free';
     var tier = link.getAttribute('data-tier') || 'base';

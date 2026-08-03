@@ -36,6 +36,7 @@
     var status = document.querySelector('[data-service-choice-status]');
     var resume = document.querySelector('[data-resume-card]');
     var reveal = document.querySelector('[data-new-choice-toggle]');
+    var next = document.querySelector('.catalog-route-next');
 
     function mobileDock() {
       return document.querySelector('.mnav .mn-calc');
@@ -54,6 +55,7 @@
     function revealFreshChoice() {
       if (resume) resume.hidden = true;
       root.hidden = false;
+      if (next) next.hidden = false;
       if (reveal) reveal.setAttribute('aria-expanded', 'true');
       setDock('#servicesChoice', 'Выбрать ситуацию');
       var first = choices[0];
@@ -90,7 +92,10 @@
     });
 
     if (reveal) reveal.addEventListener('click', revealFreshChoice);
-    root.hidden = !!(resume && !resume.hidden);
+    var hasSavedResume = !!(resume && !resume.hidden);
+    root.hidden = hasSavedResume;
+    if (next) next.hidden = hasSavedResume;
+    if (!hasSavedResume) setDock('#servicesChoice', 'Выбрать ситуацию');
   }
 
   function setupServiceCatalog() {

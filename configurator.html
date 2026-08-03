@@ -141,6 +141,9 @@
             <div id="discGroup" role="radiogroup">
               <button type="button" class="optrow" role="radio" data-id="hum" aria-checked="true"></button>
               <button type="button" class="optrow" role="radio" data-id="law" aria-checked="false"></button>
+              <button type="button" class="optrow" role="radio" data-id="jurisprudence" aria-checked="false"></button>
+              <button type="button" class="optrow" role="radio" data-id="pedagogy" aria-checked="false"></button>
+              <button type="button" class="optrow" role="radio" data-id="psychology" aria-checked="false"></button>
               <button type="button" class="optrow" role="radio" data-id="tech" aria-checked="false"></button>
               <button type="button" class="optrow" role="radio" data-id="med" aria-checked="false"></button>
             </div>
@@ -303,7 +306,10 @@ function initConf() {
 
   var BIG = ['diplom', 'master', 'chapter', 'scopus'];
   var TERM_SHORT = { free: 'от 30 дней', mid: '14–30 дней', urgent: 'до 14 дней' };
-  var DISC_SHORT = { hum: 'гуманитарные', law: 'право, педагогика', tech: 'технические, IT', med: 'медицина, финансы' };
+  var DISC_SHORT = {
+    hum:'гуманитарные', law:'право, педагогика, психология', jurisprudence:'юриспруденция',
+    pedagogy:'педагогика', psychology:'психология', tech:'технические, IT', med:'медицина, финансы'
+  };
 
   var state = { type: 'diplom', disc: 'hum', term: 'free', tier: 'base' };
   var idx = 0;
@@ -604,6 +610,9 @@ function initConf() {
         var planDiscMap = {
           hum:'Гуманитарные / экономика',
           law:'Юриспруденция / педагогика',
+          jurisprudence:'Юриспруденция',
+          pedagogy:'Педагогика',
+          psychology:'Психология',
           tech:'Технические / IT',
           med:'Медицина / финансы'
         };
@@ -1683,7 +1692,8 @@ function initConf() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)) { qmMsg('Похоже, в адресе опечатка — проверьте', false); return; }
     S.btnLoading($('qmSend'), true, '…');
     S.api.post('/quote/email', { email: em, promo: promoCode || undefined, state: {
-      type: state.type, disc: state.disc, term: state.term, tier: state.tier,
+      type: state.type, disc: C.transportDiscipline(state.disc), client_disc: state.disc,
+      term: state.term, tier: state.tier,
       topic: topicIn ? topicIn.value.trim() : '',
       deadline: deadlineIn ? deadlineIn.value.trim() : '',
       plan: plan
@@ -1713,7 +1723,8 @@ function initConf() {
           state.type = q.type;
           typeConfirmed = true;
         }
-        if (has(C.disciplines, q.disc)) state.disc = q.disc;
+        var resumedDisc = has(C.disciplines, q.client_disc) ? q.client_disc : q.disc;
+        if (has(C.disciplines, resumedDisc)) state.disc = resumedDisc;
         if (has(C.terms, q.term)) state.term = q.term;
         if (has(C.tiers, q.tier)) state.tier = q.tier;
         if (topicIn && q.topic) topicIn.value = q.topic;
@@ -1826,7 +1837,7 @@ function initConf() {
     if (mNext) S.btnLoading(mNext, true, 'Отправляем…');
     veilShow();
     var payload = {
-      type: svc ? svcSrvId : state.type, disc: state.disc, term: state.term, tier: state.tier,
+      type: svc ? svcSrvId : state.type, disc: C.transportDiscipline(state.disc), term: state.term, tier: state.tier,
       topic: topicIn.value.trim(), plan: plan, name: name, contact: contactValue(), website: '',
       deadline: deadlineIn ? deadlineIn.value.trim() : '',
       details: (askText ? 'Анкета услуги:\n' + askText + '\n\n' : '') +
@@ -1887,7 +1898,8 @@ function initConf() {
       submittedCartCount = cartItems.length;
       submittedCartSnapshot = window.SalonCart.snapshot();
       payload.type = cartItems.length > 1 ? 'custom' : cartFirst.type;
-      payload.disc = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.disc : 'hum';
+      payload.disc = cartItems.length === 1 && cartFirst.kind === 'work'
+        ? C.transportDiscipline(cartFirst.disc) : 'hum';
       payload.term = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.term : 'free';
       payload.tier = cartItems.length === 1 && cartFirst.kind === 'work' ? cartFirst.tier : 'base';
       payload.topic = cartItems.length > 1
@@ -1899,6 +1911,11 @@ function initConf() {
       payload.details = window.SalonCart.summary();
       payload.page = 'configurator.html#cart';
       payload.cart = window.SalonCart.payload();
+      if (payload.cart && Array.isArray(payload.cart.items)) {
+        payload.cart.items.forEach(function (item) {
+          if (item && item.kind === 'work') item.disc = C.transportDiscipline(item.disc);
+        });
+      }
     }
     if (S.attribution && S.attribution.decoratePage) {
       payload.page = S.attribution.decoratePage(payload.page);
@@ -2576,7 +2593,7 @@ if (document.prerendering) {
   }
   function normalizeDiscipline(value) {
     value = String(value || '');
-    return ['hum','law','tech','med'].indexOf(value) >= 0 ? value : '';
+    return ['hum','law','jurisprudence','pedagogy','psychology','tech','med'].indexOf(value) >= 0 ? value : '';
   }
   function normalizeResult(value) {
     var map = {
@@ -2713,7 +2730,7 @@ if (document.prerendering) {
   var savedHasProgress = !!(savedMatchesMode &&
     (saved.situation || saved.workType || saved.result || saved.deadlineDate ||
      saved.deadlineFlexible || saved.topic || saved.comment));
-  var pendingRouteConflict = !!(!service && hasRoutedContext && savedHasProgress);
+  var pendingRouteConflict = !!(hasRoutedContext && savedHasProgress);
   var state = {
     step:savedMatchesMode && saved.version >= STORE_VERSION
       ? Math.max(0,Math.min(steps.length - 1,Number(saved.step) || 0)) : 0,
@@ -2748,12 +2765,16 @@ if (document.prerendering) {
       : service.id === 'tutor' ? 'tutoring'
       : service.id === 'ai' ? 'ai_editing'
       : service.id === 'author' ? 'author_order' : 'editing';
-    if (hasRoutedContext) {
+    if (hasRoutedContext && !pendingRouteConflict) {
       state.step = 0;
       state.draftId = newDraftId();
       state.situation = routedSituation;
       state.workType = routedWork;
       state.discipline = routedDiscipline;
+      state.deadlineDate = '';
+      state.deadlineFlexible = false;
+      state.topic = '';
+      state.comment = '';
       state.entryPrefilled = true;
       state.authorParticipation = false;
       state.routeConfirmation = 'inferred';
@@ -2819,7 +2840,7 @@ if (document.prerendering) {
 
   function applyPendingRoute() {
     pendingRouteConflict = false;
-    state.step = routedWork && routedSituation ? 1 : 0;
+    state.step = service ? 0 : (routedWork && routedSituation ? 1 : 0);
     state.draftId = newDraftId();
     state.situation = routedSituation;
     state.workType = routedWork;
@@ -3018,6 +3039,9 @@ if (document.prerendering) {
     return {
       hum:'Гуманитарные науки и экономика',
       law:'Право, педагогика и психология',
+      jurisprudence:'Юриспруденция',
+      pedagogy:'Педагогика',
+      psychology:'Психология',
       tech:'Технические науки и IT',
       med:'Медицина и финансы'
     }[value] || 'Направление не выбрано';
@@ -3306,7 +3330,10 @@ if (document.prerendering) {
   function disciplineMarkup() {
     var options = [
       ['hum','Гуманитарные · экономика'],
-      ['law','Право · педагогика · психология'],
+      ['law','Право · педагогика · психология (общий ориентир)'],
+      ['jurisprudence','Юриспруденция'],
+      ['pedagogy','Педагогика'],
+      ['psychology','Психология'],
       ['tech','Технические науки · IT'],
       ['med','Медицина · финансы']
     ];
@@ -4486,7 +4513,7 @@ if (document.prerendering) {
         draft_id:state.draftId,
         origin:['case1','page'].indexOf(routeOrigin) >= 0 ? routeOrigin : (service ? 'service' : 'direct'),
         work:state.workType || null,
-        discipline:state.discipline || null,
+        discipline:window.SalonCalc.transportDiscipline(state.discipline) || null,
         situation:state.situation || null,
         result:effectiveResult() || null,
         offer_id:caseOfferId(),

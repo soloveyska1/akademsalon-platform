@@ -1790,12 +1790,19 @@
   line-height:1.55;
 }
 .p15-catalog .page-head__side{
+  display:grid;
+  align-content:start;
+  gap:14px;
   min-width:0;
   padding:12px 0 12px clamp(30px,4vw,58px);
 }
+/* На hub выбор ситуации сам владеет главным действием. Глобальный CTA шапки
+   иначе обходит обязательный выбор и удваивает primary в fresh/saved state. */
+body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
+
 .p15-catalog .catalog-route-index{
   display:grid;
-  min-height:100%;
+  min-height:0;
   border:1px solid var(--line-p15);
   border-top:4px solid var(--wax-p15);
   background:
@@ -2670,7 +2677,7 @@
   }
   .p15-catalog .catalog-route-index__icon{width:32px;height:32px}
   .p15-catalog .catalog-route-index a>span:nth-child(2){gap:3px}
-  .p15-catalog .catalog-route-index small{font-size:7px}
+  .p15-catalog .catalog-route-index small{font-size:9px}
   .p15-catalog .catalog-route-index strong{font-size:14px;line-height:1.15}
   .p15-catalog .catalog-route-index em,
   .p15-catalog .catalog-route-index a>i{display:none}
@@ -2727,6 +2734,11 @@
 }
 
 @media(max-width:920px){
+  .p15-catalog .catalog-route-continue,
+  body .p15-catalog .catalog-resume .resume-card__action{
+    display:none!important;
+  }
+  .p15-catalog .catalog-route-index small{font-size:9px}
   .p15-catalog .catalog-route-choice,
   .p15-catalog .catalog-route-choice:hover,
   .p15-catalog .catalog-route-choice:focus-visible{
