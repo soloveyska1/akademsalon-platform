@@ -34,6 +34,15 @@
   deployment is prohibited in this product workstream and belongs to a fresh
   `production:deploy` workstream with immutable release, automatic rollback,
   two-vantage smoke and executed release102 rollback/forward.
-- Changed: declaration only; no product replay yet.
-- Next: commit exactly manifest plus handoff, run strict conflicts, then replay
-  the three bounded commits and reconstruct verified durable evidence.
+- Replayed result: exact product/test/cache HEAD
+  `4089437482bb2c580a8ad42345b4b51fff86b129`; byte-equivalent to the
+  independently reviewed v2 content. Source/build hashes and every consumer
+  count match E-1010.
+- Cross-engine closure: WebKit 42/42 and Chromium 24/24 cover the breakpoint,
+  both themes and the complete search interaction. The full shared-shell
+  contract proves every public consumer also loads its search runtime; the
+  release103 header test freezes the mobile-parent 920 px seam.
+- Current state: product and deterministic proof are green; no P0/P1 remains.
+  Production is still `release102-e2f76c3d71c8`.
+- Next: commit evidence/contract closure, rerun all gates on v3, submit and
+  integrate exact result, then open the separate release103 deploy workstream.

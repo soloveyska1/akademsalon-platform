@@ -57,6 +57,7 @@ test('header actions share one control geometry and account mode removes duplica
 
 test('desktop search trigger has no reachability gap after the mobile breakpoint', () => {
   const chrome = read('assets/css/polish15-chrome.css');
+  const mobile = read('assets/css/mobile.css');
   const finalMeasure = chrome.lastIndexOf('финальная мера шапки');
   const sharedSearch = chrome.indexOf('SHARED SEARCH · редакционная командная палитра', finalMeasure);
   const finalHeader = chrome.slice(finalMeasure, sharedSearch);
@@ -67,6 +68,11 @@ test('desktop search trigger has no reachability gap after the mobile breakpoint
     'the 921–1240 search rescue must follow every final hide rule',
   );
   assert.match(finalHeader, /\.header-action,[\s\S]*?width:44px;[\s\S]*?height:44px;/);
+  assert.match(
+    mobile,
+    /@media screen and \(max-width:920px\)[\s\S]*?\.site-header\{display:none!important\}/,
+    'the desktop parent must remain hidden through 920px while the rescue begins at 920px',
+  );
 });
 
 test('shared menu uses the same CTA vocabulary and drawn close mark as the header', () => {
