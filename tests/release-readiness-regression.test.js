@@ -137,9 +137,9 @@ test('home loads only the reproducible release bundles', () => {
   const home = read('index.html');
   // OUT-003 moves both generated bundles in the same shared-shell cache wave.
   // OUT-005 rebuilds only JS after the route-context source changes.
-  // OUT-007 adds a bounded search-only cache dimension to both bundles.
+  // OUT-007 keeps its shared search wave; release103 adds a CSS-only trigger marker.
   // This check also proves that home loads only the generated bundles.
-  assert.match(home, /assets\/css\/home-release\.min\.css\?v=20260803out003shell1&amp;search=20260803out007search1" data-mobile-edition="1"/);
+  assert.match(home, /assets\/css\/home-release\.min\.css\?v=20260803out003shell1&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1" data-mobile-edition="1"/);
   assert.match(home, /assets\/js\/home-release\.min\.js\?v=20260803out005services1/);
   assert.doesNotMatch(home, /assets\/css\/(?:styles|chrome|polish15-chrome|extras|polish15-home|commission-zero|home-intro|home-ecosystem|mobile)\.css/);
   assert.doesNotMatch(home, /assets\/js\/(?:app|polish15-chrome|extras|home-intro|home-ecosystem)\.js/);

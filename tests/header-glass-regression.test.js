@@ -61,7 +61,7 @@ test('desktop search trigger has no reachability gap after the mobile breakpoint
   const sharedSearch = chrome.indexOf('SHARED SEARCH · редакционная командная палитра', finalMeasure);
   const finalHeader = chrome.slice(finalMeasure, sharedSearch);
 
-  assert.match(finalHeader, /@media\s*\(min-width:921px\) and \(max-width:1240px\)\s*\{[\s\S]*?body \.site-header:not\(\.site-header--account\) \.header-action--search,[\s\S]*?body \.site-header--account \.header-action--search\s*\{[\s\S]*?display:inline-flex;/);
+  assert.match(finalHeader, /@media\s*\(min-width:920px\) and \(max-width:1240px\)\s*\{[\s\S]*?body \.site-header:not\(\.site-header--account\) \.header-action--search,[\s\S]*?body \.site-header--account \.header-action--search\s*\{[\s\S]*?display:inline-flex;/);
   assert.ok(
     finalHeader.lastIndexOf('display:inline-flex') > finalHeader.lastIndexOf('header-action--search{display:none}'),
     'the 921–1240 search rescue must follow every final hide rule',

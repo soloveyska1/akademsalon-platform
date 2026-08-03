@@ -282,8 +282,8 @@ test('home begins directly after the in-flow desktop header and mobile appbar of
 
 test('production chrome switches to the approved mobile edition at 920px', () => {
   // OUT-003 moves the shared shell and the generated home bundle in one cache wave.
-  // OUT-007 adds a bounded search-only cache dimension without replacing that base wave.
-  assert.match(indexHtml, /home-release\.min\.css\?v=20260803out003shell1&amp;search=20260803out007search1" data-mobile-edition="1"/);
+  // OUT-007 keeps its shared search wave; release103 adds a CSS-only trigger marker.
+  assert.match(indexHtml, /home-release\.min\.css\?v=20260803out003shell1&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1" data-mobile-edition="1"/);
   assert.match(mobileCss, /@media screen and \(max-width:920px\)/);
   assert.match(appJs, /link\.media = 'screen and \(max-width:920px\)'/);
   assert.match(appJs, /matchMedia\('\(max-width:920px\)'\)/);
