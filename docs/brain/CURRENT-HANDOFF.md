@@ -2,10 +2,10 @@
 
 ## Canonical and production truth
 
-- Canonical integration ref is exact
-  `746551711335c39c49f57f4351fed78e8d613974`. It contains integrated OUT-006
-  frontend privacy result `1011060c9b2f30b55809ab9bb253ae64cf811925` and
-  terminal workstream `WS-9e49bd5ae79b479a82005aa32b1fd7fa`.
+- Canonical integration ref before OUT-007 is exact
+  `e91d69a8a1687a8df1e4c4e5fb9904e0439b3e20`. Verified OUT-007 implementation
+  candidate is `35f5503cda84f06572e36ee7c605dc31a116b9cc` on
+  `codex/out-007-search-catalog-clarity`; integration and G10 rollout are next.
 - Production is `release101-b9837a34c4e`, exact canonical source `b9837a3`.
   `REL-0101` proves staged/live hashes, two-vantage 14/14 read-only smoke,
   isolated browser behavior and executed release100 rollback/forward restore.
@@ -33,29 +33,26 @@
   `2e7a955072d6ae595dbd7d5c5341e20f6e33427e5c226f2ac9dd99ad45cc7be8`
   and forward restore returned the release101 hash.
 
-## Reproduced user feedback: next product slice
+## Verified OUT-007 candidate
 
-Three independent read-only reviewers audited search, catalogue and reliability.
-The released privacy change itself is GO. Search/catalogue findings are separate
-and must not be patched on the release branch.
+Three independent read-only reviewers audited search visuals, catalogue UX and
+QA/reliability. Their initial BLOCK findings (hidden empty state, incomplete
+composite aliases and stale catalogue cache keys) were reproduced and fixed;
+all three final verdicts are APPROVE with P0=0/P1=0.
 
-- Global search markup is shared, but its complete redesigned CSS lives mainly
-  in the home-only layer. Services and cabinet therefore render a narrow,
-  wrapped overlay on desktop/mobile; home mobile also reintroduces a broken
-  three-column result row. The services local search overlaps the fixed dock by
-  44 px at 360×800 and 8.7 px at 390×844. Dialog semantics, Escape, arrows and
-  focus return are green.
-- Catalogue toolbar uses `top:0` under the fixed 70 px header, so its search can
-  be visually and hit-test obscured. Query `экономика` finds two discipline
-  pages but leaves unrelated Commission content before them; `дипломная` returns
-  no result despite ВКР/diploma routes. A visible count exists in at least one
-  positive state, but is not yet a stable visible/`aria-live` contract across
-  target queries. Cards are dense and four competing IA models obscure the
-  first useful route.
-- Existing OUT-005 contracts remain protected: 12 hub cards, 9 disciplines,
-  22 detail URLs, exact routes/prices/schema, canonical/no-JS behavior, one
-  primary, AA contrast and 44 px targets. Redesign is authorized only inside
-  those contracts or through an explicit new decision backed by a failing test.
+- Search presentation is now shared across home, services and cabinet; the
+  catalogue clears fixed header/dock, 390 px result/chip geometry is readable,
+  controls are at least 44 px and all touched 89/88/24/24 consumers share one
+  OUT-007 cache dimension.
+- One global text input owns navigation; services-local controls are facets.
+  Bounded canonicalization composes diploma/supervisor/discipline forms and
+  explicit tiers keep bare work types ahead of detail routes while composite
+  work+discipline queries resolve to the exact discipline page.
+- Blank, positive and no-match states are exclusive. One atomic polite status
+  owns result announcements, zero recovery is outside listbox, keyboard/focus
+  are intact and `salon_draft` stays byte-identical.
+- Full regression is 500/500; protected 12 hub cards, 9 disciplines, 22 detail
+  URLs and ItemList 13 remain exact. Details and hashes are durable in `E-1009`.
 
 ## Remaining limits
 
@@ -68,9 +65,9 @@ and must not be patched on the release branch.
   server/external smoke and rollback-forward are green; no watcher, local LLM,
   browser or temporary server remains.
 
-## Selected next slice and independent council
+## Independent council and design boundary
 
-`OUT-007` is the next bounded implementation slice. Council doctor and the
+`OUT-007` was the selected bounded implementation slice. Council doctor and the
 daily Kimi/Sonnet/GLM run were green; all three independently rejected mixing
 catalogue IA redesign into the first bugfix. Opus found that home 390 is not yet
 a safe style source and selected a three-commit risk order. One systemic Fable
@@ -80,9 +77,7 @@ source and frozen gates are durable in `E-1009`.
 
 ## One exact next step
 
-From fresh canonical, create `codex/out-007-search-catalog-clarity` with one
-write-owner. First commit only geometry/reachability; second only moves the
-already-fixed search presentation into shared chrome; third adds query-side
-aliases, deterministic ranking, stable visible/`aria-live` count and zero state.
-Do not redesign catalogue IA until all three gates are green and the post-fix
-15-second/two-wrong-turn comprehension criterion still fails.
+Integrate exact OUT-007 result after fresh fetch/conflict/Brain gates, then ship
+it through a separate production release with healthcheck, read-only smoke and
+verified rollback/restore. Do not redesign catalogue IA until a post-fix user
+measurement crosses the 15-second/two-wrong-turn threshold.

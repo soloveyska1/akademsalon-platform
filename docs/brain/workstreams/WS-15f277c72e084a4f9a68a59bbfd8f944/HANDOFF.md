@@ -16,12 +16,21 @@
   reproducible home bundle, `git diff --check`, Brain 39/39 + strict validation,
   exact browser matrix and two independent final reviews. Production remains a
   separate G10 release with healthcheck, smoke and rollback.
-- Changed: none yet.
-- Unverified: implementation not started.
+- Changed: failing-first `e463291`; geometry `9fe0eb2`; mechanically shared
+  search presentation `da34b00`; deterministic/composable search, exclusive
+  ARIA states, services facet-only controls and complete cache wave `35f5503`.
+- Verified: 500/500 full regression; 108/108 protected focused suite; JS syntax;
+  two byte-identical home builds (CSS `def1bcfd…02ab`, JS `bf2ac4ee…a8c2`);
+  exact 12-state WebKit and independent Chromium browser matrices; 12/9/22/13
+  inventory and byte-identical saved draft; three independent final APPROVE
+  reviews with P0=0/P1=0; `git diff --check` clean.
+- Unverified: production G10 healthcheck/smoke/rollback; no production mutation
+  is part of this implementation workstream.
 - Risks/rollback: shared chrome touches every template and long-lived asset
   caches; a home-only source can leak generic selectors into cabinet/service
   pages. Stop on protected-contract drift, 360 body overflow, focus/no-JS
   regression, property-value mutation in the pure-move commit or cache mismatch.
   Keep geometry, shared move and findability in separate revertable commits.
-- Next: commit this Brain-generated declaration, run strict conflict detection,
-  then create the failing-first gate before product edits.
+- Next: commit this handoff/evidence, run fresh fetch plus strict conflict and
+  Brain validation, submit/integrate the exact result, then open a separate G10
+  release workstream for production smoke and rollback.
