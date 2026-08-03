@@ -1,0 +1,439 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-415507e96dd1487dad469d43bba13a89",
+  "slug": "release103-search-trigger-v2",
+  "status": "active",
+  "branch": "codex/release103-search-trigger-v2",
+  "base_sha": "e2f76c3d71c82169f52e3c94874424e150cc54d3",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-007"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "404.html",
+        "match": "exact"
+      },
+      {
+        "path": "50x.html",
+        "match": "exact"
+      },
+      {
+        "path": "about.html",
+        "match": "exact"
+      },
+      {
+        "path": "academic-integrity.html",
+        "match": "exact"
+      },
+      {
+        "path": "admin.html",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/home-release.min.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/polish15-chrome.css",
+        "match": "exact"
+      },
+      {
+        "path": "audit-temy-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "avtorskiy-zakaz.html",
+        "match": "exact"
+      },
+      {
+        "path": "check.html",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-analytics.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-marketing.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-publication.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-request.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent.html",
+        "match": "exact"
+      },
+      {
+        "path": "dashboard.html",
+        "match": "exact"
+      },
+      {
+        "path": "deposit.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1010.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-415507e96dd1487dad469d43bba13a89/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "dorabotka-otcheta-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "dosie-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "expertise.html",
+        "match": "exact"
+      },
+      {
+        "path": "gift.html",
+        "match": "exact"
+      },
+      {
+        "path": "guarantees.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-antiplagiat-ai.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-apellyaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-dnevnik-praktiki.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-harakteristika-s-praktiki.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-kursovaya-za-nedelyu.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-normocontrol.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-obekt-predmet-cel-zadachi.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-otzyv-rukovoditelya-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prakticheskaya-chast-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prezentaciya-k-zashchite.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prilozheniya-po-gost.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-recenziya-na-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-rech-na-zashchitu.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-rinc-statya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-skolko-stoit-diplomnaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-skolko-stoit-kursovaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-spisok-literatury.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-temy-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-titulnyj-list.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-vkr-struktura.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-vvedenie-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zaklyuchenie-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zaklyuchenie-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zashchita-diploma.html",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "kandidatskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "knowledge.html",
+        "match": "exact"
+      },
+      {
+        "path": "komissiya-0.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-informatike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-menedzhmentu.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-pedagogike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "loyalty.html",
+        "match": "exact"
+      },
+      {
+        "path": "magisterskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "maintenance.html",
+        "match": "exact"
+      },
+      {
+        "path": "nauchnaya-statya.html",
+        "match": "exact"
+      },
+      {
+        "path": "normokontrol-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "oferta.html",
+        "match": "exact"
+      },
+      {
+        "path": "oplata.html",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "plan.html",
+        "match": "exact"
+      },
+      {
+        "path": "plus.html",
+        "match": "exact"
+      },
+      {
+        "path": "privacy.html",
+        "match": "exact"
+      },
+      {
+        "path": "priyomnaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "prolog.html",
+        "match": "exact"
+      },
+      {
+        "path": "proverka-istochnikov-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "razbor-zamechaniy-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "redaktura-posle-ii.html",
+        "match": "exact"
+      },
+      {
+        "path": "referat.html",
+        "match": "exact"
+      },
+      {
+        "path": "referral.html",
+        "match": "exact"
+      },
+      {
+        "path": "refunds.html",
+        "match": "exact"
+      },
+      {
+        "path": "requisites.html",
+        "match": "exact"
+      },
+      {
+        "path": "reviews.html",
+        "match": "exact"
+      },
+      {
+        "path": "services.html",
+        "match": "exact"
+      },
+      {
+        "path": "specifikaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "start.html",
+        "match": "exact"
+      },
+      {
+        "path": "tariffs.html",
+        "match": "exact"
+      },
+      {
+        "path": "terms.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/configurator-concept-mechanics.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/header-glass-regression.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/release-readiness-regression.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/search-catalog-clarity.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tools.html",
+        "match": "exact"
+      },
+      {
+        "path": "vedenie.html",
+        "match": "exact"
+      },
+      {
+        "path": "zayavka.html",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/js/app.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/build-home-release.mjs",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "release-cache:search-trigger-css"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:search-trigger-visibility"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
