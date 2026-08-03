@@ -4,19 +4,19 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release100>
+- Production: <https://akademsalon.ru/?v=release101>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=release98>
-- Production release: `release100-1c275bffde93`
-- Production source: `1c275bffde9368d52433a137bca11666b7d1230c`
-- Проверенный canonical result: `db93a45a385521600fbe1a5121334c413ebdbfa4`
+- Production release: `release101-b9837a34c4e`
+- Production source: `b9837a34c4e39e0adfb725dcf5f76f4e96f1e30e`
+- Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Каноническая integration-ветка: `origin/codex/full-reference-production`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Rollback: `release99-96156040130c`
-- Последний canonical source gate: 482/482 теста и 39/39 Brain. Release100:
-  read-only production smoke 14/14 с двух точек, independent mobile/desktop
-  browser smoke P0=0/P1=0 без overflow и console errors, реальный rollback на
-  release99 и возврат на release100 проверены. Точная запись:
-  [releases/REL-0100.md](releases/REL-0100.md).
+- Rollback: `release100-1c275bffde93`
+- Последний canonical source gate: 492/492 теста и 39/39 Brain. Release101:
+  GET/HEAD-only production smoke 14/14 с двух точек, isolated browser smoke без
+  overflow, console errors и no-consent visit, реальный rollback на release100
+  и возврат на release101 проверены. Точная запись:
+  [releases/REL-0101.md](releases/REL-0101.md).
 
 ## Главная цель продукта
 
@@ -28,10 +28,10 @@
 
 ## NOW
 
-1. Получить пользовательскую обратную связь по production release100 и
-   зафиксировать только воспроизводимые проблемы.
-2. `OUT-006` — измерить понимание первого шага и время до него без чувствительных
-   данных; это следующий безопасный продуктовый срез.
+1. Получить пользовательскую обратную связь по production release101; поиск и
+   каталог уже имеют воспроизведённые P1 и требуют отдельного scoped workstream.
+2. Продолжение `OUT-006` — не включать новые milestones до authoritative server
+   contract; затем провести preregistered synthetic comprehension test.
 3. `OUT-001` — не выполнять production submit, пока не появятся безопасные
    marker/lookup/cleanup и authoritative backend/bot evidence.
 
@@ -60,7 +60,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0100.md](releases/REL-0100.md) — доказательная запись текущего релиза.
+- [releases/REL-0101.md](releases/REL-0101.md) — доказательная запись текущего релиза.
 
 ## Старт новой сессии
 
