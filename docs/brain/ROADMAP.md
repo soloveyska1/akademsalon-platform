@@ -39,6 +39,28 @@ workstream manifest, а не из чата или model report.
   событий по-прежнему запрещён до authoritative server contract, после чего
   нужен preregistered synthetic task test.
 
+### OUT-007 — Поиск и каталог приводят к нужной услуге без перегруза
+
+- Почему важно: в release101 общий search sheet фактически лишён полного
+  визуального слоя на services и cabinet, а каталожные controls перекрываются
+  fixed header/dock. Это загрязняет оценку каталожной IA и делает релевантные
+  маршруты труднодоступными на mobile.
+- Результат: один глобальный текстовый поиск одинаково читаем на всех
+  поверхностях; локальные controls каталога остаются только фасетами; запросы
+  находят существующие услуги в предсказуемом порядке без изменения защищённой
+  таксономии и handoff-контрактов OUT-005.
+- Связи: `SUR-001`, `SUR-002`, `SUR-003`, `OUT-003`, `OUT-005`, `UXD-0008`,
+  `UXD-0009`, `UXD-0010`, `E-1009`.
+- Метрика: P0/P1=0; на 360/390/768/1024/1440 light/dark нет occlusion,
+  clipping или body overflow; controls ≥44 px; `экономика`, `дипломная`,
+  `научрук` и zero-state проходят frozen findability matrix на fresh/saved.
+- Proof: `E-1009`, three atomic failing-first gates, computed-style/template
+  matrix, keyboard/VoiceOver and full regression, then production smoke and
+  verified rollback.
+- Gate: сначала geometry/reachability, затем чистый shared-layer move, затем
+  aliases/ranking/live count. Редизайн default catalogue IA не входит в эти
+  commits и открывается только по preregistered post-fix usability failure.
+
 ## VERIFIED
 
 ### OUT-005 — Выбор услуги сохраняет намерение и ведёт к одному шагу
@@ -82,6 +104,9 @@ workstream manifest, а не из чата или model report.
 
 - После preregistered OUT-006 evidence либо закрыть срез без визуальных изменений,
   либо открыть bounded `guided-desk` prototype по зафиксированному порогу.
+- После зелёных OUT-007 gates повторно измерить catalogue comprehension. Если
+  остаётся именно «не понимаю, с чего начать», прототипировать одну ведущую ось
+  `тип работы`, а ситуацию/этап/дисциплину оставить вторичными фасетами.
 
 ## LATER
 

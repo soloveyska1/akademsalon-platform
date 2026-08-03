@@ -3,7 +3,7 @@
 ## Canonical and production truth
 
 - Canonical integration ref is exact
-  `b9837a34c4e39e0adfb725dcf5f76f4e96f1e30e`. It contains integrated OUT-006
+  `746551711335c39c49f57f4351fed78e8d613974`. It contains integrated OUT-006
   frontend privacy result `1011060c9b2f30b55809ab9bb253ae64cf811925` and
   terminal workstream `WS-9e49bd5ae79b479a82005aa32b1fd7fa`.
 - Production is `release101-b9837a34c4e`, exact canonical source `b9837a3`.
@@ -48,9 +48,10 @@ and must not be patched on the release branch.
 - Catalogue toolbar uses `top:0` under the fixed 70 px header, so its search can
   be visually and hit-test obscured. Query `экономика` finds two discipline
   pages but leaves unrelated Commission content before them; `дипломная` returns
-  no result despite ВКР/diploma routes. There is no positive result count/live
-  announcement. Cards are dense and four competing IA models obscure the first
-  useful route.
+  no result despite ВКР/diploma routes. A visible count exists in at least one
+  positive state, but is not yet a stable visible/`aria-live` contract across
+  target queries. Cards are dense and four competing IA models obscure the
+  first useful route.
 - Existing OUT-005 contracts remain protected: 12 hub cards, 9 disciplines,
   22 detail URLs, exact routes/prices/schema, canonical/no-JS behavior, one
   primary, AA contrast and 44 px targets. Redesign is authorized only inside
@@ -67,11 +68,21 @@ and must not be patched on the release branch.
   server/external smoke and rollback-forward are green; no watcher, local LLM,
   browser or temporary server remains.
 
+## Selected next slice and independent council
+
+`OUT-007` is the next bounded implementation slice. Council doctor and the
+daily Kimi/Sonnet/GLM run were green; all three independently rejected mixing
+catalogue IA redesign into the first bugfix. Opus found that home 390 is not yet
+a safe style source and selected a three-commit risk order. One systemic Fable
+review approved that boundary and required template-wide cascade/cache proof.
+Ignored `.brain/council` reports remain hypotheses; exact reproduced geometry,
+source and frozen gates are durable in `E-1009`.
+
 ## One exact next step
 
-From fresh canonical, create a scoped search/catalogue clarity workstream. Run
-the daily Kimi+Sonnet+GLM review on the reproduced evidence, one Opus review on
-the key unified-search/IA fork, and use Fable once only if the four-model IA
-conflict remains systemic. Fix shared search presentation and dock/header
-occlusion first, then simplify catalogue findability while preserving every
-OUT-005 route, price, schema and handoff contract.
+From fresh canonical, create `codex/out-007-search-catalog-clarity` with one
+write-owner. First commit only geometry/reachability; second only moves the
+already-fixed search presentation into shared chrome; third adds query-side
+aliases, deterministic ranking, stable visible/`aria-live` count and zero state.
+Do not redesign catalogue IA until all three gates are green and the post-fix
+15-second/two-wrong-turn comprehension criterion still fails.
