@@ -323,17 +323,63 @@ test('case return restores the exact priority trigger after a live-safe rerender
   assert.match(clickSource, /el\.getAttribute\('data-now-jump'\) === returnFocus\.jump/);
 });
 
-test('one-time claim keeps the exact returned case and malformed identity fails open', () => {
+test('one-time claim keeps the exact returned case and malformed identity fails open', async () => {
   const source = between(
     '/* claim-continuity-contract:start */',
     '/* claim-continuity-contract:end */',
   ) + '/* claim-continuity-contract:end */';
-  const api = { st: { currentId: null, caseOpen: false } };
+  let releaseReady;
+  let posts = 0;
+  const ready = new Promise((resolve) => { releaseReady = resolve; });
+  const api = {
+    st: {
+      currentId: null,
+      caseOpen: false,
+      pendingCaseFocus: false,
+      claimTargetId: null,
+      claimGeneration: 0,
+      tab: 'wallet',
+    },
+    S: { api: {
+      ready,
+      post: () => {
+        posts += 1;
+        return Promise.resolve({ ok: true, order_id: 202 });
+      },
+    } },
+  };
   vm.runInNewContext(source, api);
+  const select = (response) => {
+    const generation = api.beginClaimExchange();
+    return api.selectClaimedOrder(response, generation);
+  };
 
-  assert.equal(api.selectClaimedOrder({ ok: true, order_id: 202 }), 202);
+  assert.equal(select({ ok: true, order_id: 202 }), 202);
   assert.equal(api.st.currentId, 202);
   assert.equal(api.st.caseOpen, true);
+  assert.equal(api.st.tab, 'orders');
+  assert.equal(api.st.pendingCaseFocus, true);
+  assert.equal(api.st.claimGeneration, 1);
+  assert.equal(api.reconcileClaimedOrder([{ id: 101 }, { id: 202 }], 101), 202);
+  assert.equal(api.st.currentId, 202);
+
+  select({ ok: true, order_id: 202 });
+  assert.equal(api.st.claimGeneration, 2);
+  assert.equal(api.reconcileClaimedOrder([{ id: 101 }], 101), 101);
+  assert.equal(api.st.currentId, 101);
+  assert.equal(api.st.caseOpen, false);
+  assert.equal(api.st.pendingCaseFocus, false);
+
+  select({ ok: true, order_id: 202 });
+  assert.equal(api.st.claimGeneration, 3);
+  assert.equal(api.reconcileClaimedOrder([{ id: 101 }, { id: 202, archived: true }], 101), 202);
+  assert.equal(api.st.currentId, 202);
+
+  select({ ok: true, order_id: 202 });
+  assert.equal(api.reconcileClaimedOrder([], null), null);
+  assert.equal(api.st.currentId, null);
+  assert.equal(api.st.caseOpen, false);
+  assert.equal(api.st.pendingCaseFocus, false);
 
   [
     null,
@@ -348,23 +394,68 @@ test('one-time claim keeps the exact returned case and malformed identity fails 
   ].forEach((response) => {
     api.st.currentId = 101;
     api.st.caseOpen = false;
-    assert.equal(api.selectClaimedOrder(response), null);
+    api.st.pendingCaseFocus = false;
+    api.st.claimTargetId = null;
+    assert.equal(select(response), null);
     assert.equal(api.st.currentId, 101);
     assert.equal(api.st.caseOpen, false);
+    assert.equal(api.st.pendingCaseFocus, false);
+    assert.equal(api.st.claimTargetId, null);
   });
 
-  assert.equal(api.selectClaimedOrder({ ok: true, order_id: '202' }), 202);
+  assert.equal(select({ ok: true, order_id: '202' }), 202);
   assert.equal(api.st.currentId, 202);
   assert.equal(api.st.caseOpen, true);
 
+  const staleGeneration = api.st.claimGeneration;
+  const stalePendingClaim = api.st.claimTargetId;
+  const olderExchange = api.beginClaimExchange();
+  const newerExchange = api.beginClaimExchange();
+  assert.equal(api.selectClaimedOrder({ ok: true, order_id: 303 }, newerExchange), 303);
+  assert.equal(api.selectClaimedOrder({ ok: true, order_id: 202 }, olderExchange), null);
+  assert.equal(api.st.currentId, 303, 'last user intent wins even when its response arrives first');
+  assert.equal(api.acceptsListResolution(staleGeneration, stalePendingClaim, 202), false);
+  assert.equal(api.acceptsListResolution(api.st.claimGeneration, api.st.claimTargetId, null), false);
+  assert.equal(api.acceptsListResolution(api.st.claimGeneration, api.st.claimTargetId, 303), true);
+
+  let startupTicket = null;
+  const exchange = api.afterApiReady(function () {
+    startupTicket = api.beginClaimExchange();
+    return api.S.api.post('/orders/access/exchange', {}, { 'X-Claim-Exchange': 'cx1_test' });
+  });
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(posts, 0, 'startup exchange must wait for auth discovery');
+  api.st.claimGeneration += 1; // auth-lost while discovery is still settling
+  releaseReady();
+  const startupResponse = await exchange;
+  assert.equal(startupResponse.order_id, 202);
+  assert.equal(posts, 1);
+  assert.equal(startupTicket, api.st.claimGeneration, 'ticket is reserved next to the POST');
+  assert.equal(api.selectClaimedOrder(startupResponse, startupTicket), 202);
+
   const manualClaim = between('function claimByCode(raw)', 'function tplEmpty()');
-  assert.match(manualClaim, /var claimedId = selectClaimedOrder\(r\)/);
-  assert.match(manualClaim, /loadList\(!!claimedId\)/);
+  assert.match(manualClaim, /var claimGeneration = beginClaimExchange\(\)/);
+  assert.match(manualClaim, /if \(!claimExchangeCurrent\(claimGeneration\)\) return/);
+  assert.match(manualClaim, /var claimedId = selectClaimedOrder\(r, claimGeneration\)/);
+  assert.match(manualClaim, /loadList\(!!claimedId, claimedId\)/);
 
   const startupClaim = between('/* Ссылка доступа с другого устройства:', '/* возврат из ВК/Mail.ru:');
-  assert.match(startupClaim, /startupClaimId = selectClaimedOrder\(r\)/);
+  assert.match(startupClaim, /startupAccess = afterApiReady\(function \(\) \{/);
+  assert.match(startupClaim, /'X-Claim-Exchange': claimTok/);
+  assert.match(startupClaim, /var startupClaimGeneration = null/);
+  assert.match(startupClaim, /afterApiReady\(function \(\) \{[\s\S]*?startupClaimGeneration = beginClaimExchange\(\);[\s\S]*?S\.api\.post/);
+  assert.match(startupClaim, /if \(!claimExchangeCurrent\(startupClaimGeneration\)\) return r/);
+  assert.match(startupClaim, /startupClaimId = selectClaimedOrder\(r, startupClaimGeneration\)/);
   const startupLoad = between("var impKey = null;", '/* гостям с заказом');
-  assert.match(startupLoad, /loadList\(!!startupClaimId\)/);
+  assert.match(startupLoad, /loadList\(!!startupClaimId, startupClaimId\)/);
+  const listLoad = between('function loadList(keepCurrent, claimLoadId)', '/* снапшот для «живых уведомлений»');
+  assert.match(listLoad, /acceptsListResolution\(listClaimGeneration, pendingClaimAtStart, claimLoadId\)/);
+  assert.match(listLoad, /reconcileClaimedOrder\(st\.orders, defaultId\)/);
+  assert.match(listLoad, /st\.orders\.some\(function \(o\) \{ return o\.id === st\.currentId; \}\)/);
+  const authLost = between("document.addEventListener('salon:auth-lost'", '/* ---------------- старт');
+  assert.match(authLost, /st\.claimTargetId = null/);
+  assert.match(authLost, /st\.claimGeneration \+= 1/);
+  assert.match(dashboard, /cabinet\.js\?[^"']*claim=exact1/);
 });
 
 test('dark priority CTA reaches WCAG AA and changed assets are cache-busted', () => {

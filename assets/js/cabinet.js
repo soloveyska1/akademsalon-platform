@@ -13,6 +13,7 @@ function initCabinet() {
   var root = document.getElementById('cabRoot');
   if (!S || !S.api || !root) return;
   var startupAccess = Promise.resolve();
+  var startupClaimId = null;
 
   var st = {
     orders: [],       // список из /orders
@@ -46,6 +47,9 @@ function initCabinet() {
     detailRequestSeq: 0,
     chatStick: false,
     pendingCaseFocus: false,
+    claimTargetId: null,
+    claimGeneration: 0,
+    claimPendingToken: null,
     timer: null,
     busy: false,
     oauthNotice: null
@@ -467,6 +471,84 @@ function initCabinet() {
     if (inp) { inp.value = st.emailTo || ''; inp.focus(); }
   }
 
+  /* claim-continuity-contract:start */
+  function exactClaimOrderId(response) {
+    if (!response || response.ok !== true) return null;
+    var raw = response.order_id;
+    if (typeof raw === 'string') {
+      if (!/^[1-9]\d*$/.test(raw)) return null;
+      raw = Number(raw);
+    }
+    if (typeof raw !== 'number' || !Number.isSafeInteger(raw) || raw < 1) return null;
+    return raw;
+  }
+
+  function beginClaimExchange() {
+    st.claimGeneration += 1;
+    st.claimTargetId = null;
+    st.pendingCaseFocus = false;
+    return st.claimGeneration;
+  }
+
+  function beginManualClaim(token) {
+    if (st.claimPendingToken === token) return null;
+    st.claimPendingToken = token;
+    return beginClaimExchange();
+  }
+
+  function finishManualClaim(token) {
+    if (st.claimPendingToken === token) st.claimPendingToken = null;
+  }
+
+  function claimExchangeCurrent(generation) {
+    return generation === st.claimGeneration;
+  }
+
+  function selectClaimedOrder(response, generation) {
+    if (!claimExchangeCurrent(generation)) return null;
+    var claimedId = exactClaimOrderId(response);
+    if (!claimedId) return null;
+    st.currentId = claimedId;
+    st.claimTargetId = claimedId;
+    st.tab = 'orders';
+    st.caseOpen = true;
+    st.pendingCaseFocus = true;
+    return claimedId;
+  }
+
+  function reconcileClaimedOrder(orders, fallbackId) {
+    var claimedId = st.claimTargetId;
+    if (!claimedId) return null;
+    st.claimTargetId = null;
+    var present = Array.isArray(orders) && orders.some(function (order) {
+      return order && order.id === claimedId;
+    });
+    if (present) return claimedId;
+    st.currentId = fallbackId || null;
+    st.caseOpen = false;
+    st.pendingCaseFocus = false;
+    return st.currentId;
+  }
+
+  function cancelClaimedOrder(claimedId) {
+    if (!claimedId || st.claimTargetId !== claimedId) return false;
+    st.claimTargetId = null;
+    st.caseOpen = false;
+    st.pendingCaseFocus = false;
+    return true;
+  }
+
+  function afterApiReady(callback) {
+    return (S.api.ready || Promise.resolve()).then(callback);
+  }
+
+  function acceptsListResolution(generation, pendingClaimId, claimLoadId) {
+    if (generation !== st.claimGeneration) return false;
+    if (!pendingClaimId) return true;
+    return claimLoadId === pendingClaimId && st.claimTargetId === claimLoadId;
+  }
+  /* claim-continuity-contract:end */
+
   /* открыть дело по ссылке доступа / коду (токен заказа) */
   function claimByCode(raw) {
     var s = String(raw == null ? '' : raw).trim();
@@ -474,11 +556,16 @@ function initCabinet() {
     var tok = m ? m[1] : (/^[A-Za-z0-9_-]{16,}$/.test(s) ? s : '');
     if (!tok) { toast('Не похоже на ссылку доступа — скопируйте её целиком'); return; }
     if (/^cx1_/.test(tok)) {
+      var claimGeneration = beginManualClaim(tok);
+      if (!claimGeneration) { toast('Уже открываем эту ссылку — дождитесь ответа'); return; }
       S.api.post('/orders/access/exchange', {}, { 'X-Claim-Exchange': tok }).then(function (r) {
+        finishManualClaim(tok);
+        if (!claimExchangeCurrent(claimGeneration)) return;
         if (!r || !r.ok) { toast('Ссылка уже использована или истекла — попросите новую'); return; }
+        var claimedId = selectClaimedOrder(r, claimGeneration);
         if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
         toast('Дело открыто на этом устройстве');
-        loadList();
+        loadList(!!claimedId, claimedId);
       });
       return;
     }
@@ -3649,9 +3736,12 @@ function initCabinet() {
     });
   }
 
-  function loadList(keepCurrent) {
+  function loadList(keepCurrent, claimLoadId) {
+    var listClaimGeneration = st.claimGeneration;
+    var pendingClaimAtStart = st.claimTargetId;
     var t = S.api.token(), g = S.api.guestTokens();
     if (!S.api.identified()) {
+      cancelClaimedOrder(claimLoadId);
       /* если вход уже запущен (в т.ч. до перезагрузки страницы) — продолжаем ловить */
       var pending = S.resumeTgLogin(
         function (u) { toast('Вы вошли' + (u && u.name ? ', ' + u.name : '') + '.'); loadList(); },
@@ -3701,18 +3791,27 @@ function initCabinet() {
        с аккаунтом сайта, оплативший заявку по ссылке, не видел это дело
        и не мог оплатить вторую часть */
     S.api.get('/orders', ordersHeaders(g)).then(function (r) {
-      if (!r.ok) { render(tplError()); return; }
+      if (!acceptsListResolution(listClaimGeneration, pendingClaimAtStart, claimLoadId)) return;
+      if (!r.ok) {
+        if (pendingClaimAtStart && claimLoadId === pendingClaimAtStart &&
+            st.claimTargetId === claimLoadId) {
+          cancelClaimedOrder(claimLoadId);
+        }
+        render(tplError());
+        return;
+      }
       st.orders = r.orders || [];
       watchSync();
+      var defaultId = pickDefaultId();
+      var claimSelection = reconcileClaimedOrder(st.orders, defaultId);
       if (!st.orders.length) { renderTab(); return; }
       var visible = visibleOrders();
       /* все дела убраны в архив — иначе реестр выглядел бы пустым */
       if (!visible.length) st.remOpen = true;
-      var pool = visible.length ? visible : st.orders;
-      var current = pool.some(function (o) { return o.id === st.currentId; });
+      var current = st.orders.some(function (o) { return o.id === st.currentId; });
       /* дело выбрано адресом (#order-231) — список не имеет права его сменить */
-      if ((!keepCurrent && !st.caseOpen) || !current) {
-        if (!(st.caseOpen && current)) st.currentId = pickDefaultId();
+      if (claimSelection === null && ((!keepCurrent && !st.caseOpen) || !current)) {
+        if (!(st.caseOpen && current)) st.currentId = defaultId;
       }
       if (!st.currentId) { renderTab(); return; }
       /* выбранное дело лежит среди убранных — покажем их в реестре */
@@ -4840,6 +4939,10 @@ function initCabinet() {
     st.orders = [];
     st.currentId = null;
     st.caseOpen = false;
+    st.pendingCaseFocus = false;
+    st.claimTargetId = null;
+    st.claimPendingToken = null;
+    st.claimGeneration += 1;
     loadList();
   });
 
@@ -4943,16 +5046,22 @@ function initCabinet() {
     if (claimTok) {
       history.replaceState(null, '', location.pathname);
       if (/^cx1_/.test(claimTok)) {
-        startupAccess = S.api.post(
-          '/orders/access/exchange',
-          {},
-          { 'X-Claim-Exchange': claimTok }
-        ).then(function (r) {
+        var startupClaimGeneration = null;
+        startupAccess = afterApiReady(function () {
+          startupClaimGeneration = beginClaimExchange();
+          return S.api.post(
+            '/orders/access/exchange',
+            {},
+            { 'X-Claim-Exchange': claimTok }
+          );
+        }).then(function (r) {
+          if (!claimExchangeCurrent(startupClaimGeneration)) return r;
           if (!r || !r.ok) {
             toast('Ссылка уже использована или истекла — попросите новую');
             return r;
           }
           if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
+          startupClaimId = selectClaimedOrder(r, startupClaimGeneration);
           toast('Дело добавлено на это устройство');
           return r;
         });
@@ -5054,7 +5163,7 @@ function initCabinet() {
     });
   } else {
     Promise.all([S.api.ready || Promise.resolve(), startupAccess]).then(
-      function () { loadList(); startPolling(); },
+      function () { loadList(!!startupClaimId, startupClaimId); startPolling(); },
       function () { loadList(); startPolling(); }
     );
   }
