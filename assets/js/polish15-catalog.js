@@ -104,7 +104,6 @@
     var cards = Array.prototype.slice.call(root.querySelectorAll('[data-service-card]'));
     var disciplineCards = Array.prototype.slice.call(root.querySelectorAll('[data-discipline-card]'));
     var tabs = Array.prototype.slice.call(root.querySelectorAll('[data-service-filter]'));
-    var search = root.querySelector('[data-service-search]');
     var more = root.querySelector('[data-catalog-more]');
     var empty = root.querySelector('[data-service-empty]');
     var filter = 'all';
@@ -115,23 +114,20 @@
     }
 
     function paint() {
-      var query = search ? search.value : '';
       var pool = cards.filter(function (card) {
-        return phaseMatches(card) && matches(card.getAttribute('data-search') || card.textContent, query);
+        return phaseMatches(card);
       });
       var disciplineMatches = false;
       disciplineCards.forEach(function (card) {
-        var visible = !query || matches(card.getAttribute('data-search') || card.textContent, query);
-        card.hidden = !visible;
-        if (query && visible) disciplineMatches = true;
+        card.hidden = false;
       });
-      var limit = filter === 'all' && !query && !expanded ? currentLimit() : pool.length;
+      var limit = filter === 'all' && !expanded ? currentLimit() : pool.length;
       cards.forEach(function (card) {
         card.hidden = pool.indexOf(card) === -1 || pool.indexOf(card) >= limit;
       });
       if (more) {
         var rest = Math.max(0, pool.length - limit);
-        more.hidden = expanded || filter !== 'all' || !!query || rest === 0;
+        more.hidden = expanded || filter !== 'all' || rest === 0;
         more.textContent = rest ? 'Показать остальные — ' + rest : 'Показать остальные';
       }
       if (empty) empty.hidden = pool.length !== 0 || disciplineMatches;
@@ -150,7 +146,6 @@
         paint();
       });
     });
-    if (search) search.addEventListener('input', paint);
     if (more) more.addEventListener('click', function () {
       expanded = true;
       paint();

@@ -142,8 +142,14 @@
           '<span>01</span><div><strong>Начните с задачи своими словами.</strong>' +
           '<small>Найдём подходящую услугу, статью, правило или раздел сайта.</small></div>' +
         '</div>' +
-        '<p class="search-results-meta" data-search-results-meta aria-live="polite"></p>' +
-        '<div class="search-results" id="p15SearchResults" role="listbox" aria-live="polite" aria-label="Результаты поиска"></div>' +
+        '<p class="search-results-meta" data-search-results-meta role="status" aria-live="polite" aria-atomic="true"></p>' +
+        '<div class="search-empty" data-search-empty hidden>' +
+          '<span>Ничего не найдено</span>' +
+          '<strong>Попробуйте сформулировать короче.</strong>' +
+          '<p>Или напишите мастеру — подскажем, где искать.</p>' +
+          '<a href="priyomnaya.html">Открыть приёмную <i aria-hidden="true">→</i></a>' +
+        '</div>' +
+        '<div class="search-results" id="p15SearchResults" role="listbox" aria-label="Результаты поиска" hidden></div>' +
       '</div>' +
       '<footer class="search-footer">' +
         '<small>Клавиатура</small>' +
@@ -167,33 +173,106 @@
     return function (href) { return map[href] || 'Раздел'; };
   })();
 
+  var SEARCH_QUERY_ALIASES = Object.freeze([
+    ['выпускная квалификационная работа', 'вкр'],
+    ['выпускная квалификационная', 'вкр'],
+    ['дипломная работа', 'вкр'],
+    ['научного руководителя', 'научрук'],
+    ['научный руководитель', 'научрук'],
+    ['научный рук', 'научрук'],
+    ['науч рук', 'научрук'],
+    ['курсовая работа', 'курсовая'],
+    ['дипломная', 'вкр'],
+    ['диплом', 'вкр'],
+    ['экономике', 'экономика'],
+    ['психологии', 'психология'],
+    ['юриспруденции', 'юриспруденция'],
+    ['педагогике', 'педагогика'],
+    ['информатике', 'информатика'],
+    ['менеджменту', 'менеджмент']
+  ]);
+
+  function normalizeSearchText(value) {
+    var text = String(value == null ? '' : value);
+    if (text.normalize) text = text.normalize('NFKC');
+    return text
+      .toLocaleLowerCase('ru')
+      .replace(/ё/g, 'е')
+      .replace(/[^a-zа-я0-9]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function canonicalSearchText(value) {
+    var query = normalizeSearchText(value);
+    var padded = ' ' + query + ' ';
+    for (var i = 0; i < SEARCH_QUERY_ALIASES.length; i++) {
+      padded = padded.split(' ' + SEARCH_QUERY_ALIASES[i][0] + ' ').join(' ' + SEARCH_QUERY_ALIASES[i][1] + ' ');
+    }
+    return normalizeSearchText(padded).split(' ').filter(function (token, index, tokens) {
+      return index === 0 || token !== tokens[index - 1];
+    }).join(' ');
+  }
+
+  function allTokensIn(tokens, text) {
+    return tokens.every(function (token) { return text.indexOf(token) !== -1; });
+  }
+
+  function resultTier(href, query) {
+    var discipline = /^(?:kursovaya|diplomnaya)-po-/.test(href);
+    var workType = /^(?:kursovaya-rabota|diplomnaya-rabota|magisterskaya-dissertaciya|kandidatskaya-dissertaciya|nauchnaya-statya|otchet-po-praktike|referat|avtorskiy-zakaz)\.html/.test(href);
+    var bareWorkType = query === 'вкр' || query === 'курсовая';
+    if (bareWorkType && workType) return 0;
+    if (discipline) return bareWorkType ? 1 : 0;
+    if (workType) return 1;
+    if (/^(?:plan|razbor-|normokontrol-|proverka-|audit-|redaktura-|dorabotka-|dosie-)/.test(href)) return 2;
+    return 3;
+  }
+
   function search(q) {
-    q = String(q || '').trim().toLowerCase();
+    q = canonicalSearchText(q);
     if (!q) return [];
+    var tokens = q.split(' ');
     var rows = data.SEARCH || [];
     var hit = [];
     for (var i = 0; i < rows.length; i++) {
       var href = rows[i][0], label = rows[i][1], tags = rows[i][2] || '';
-      var hay = (label + ' ' + tags).toLowerCase();
-      var at = hay.indexOf(q);
-      if (at < 0) continue;
-      /* совпадение в начале подписи весомее, чем в хвосте синонимов */
-      hit.push({ href: href, label: label, tags: tags, rank: label.toLowerCase().indexOf(q) === 0 ? 0 : (at === 0 ? 1 : 2) });
-      if (hit.length > 60) break;
+      var normalizedLabel = canonicalSearchText(label);
+      var hay = canonicalSearchText(label + ' ' + tags);
+      var phrase = ' ' + normalizedLabel + ' ';
+      var rank = normalizedLabel === q ? 0
+        : (normalizedLabel.indexOf(q) === 0 || phrase.indexOf(' ' + q + ' ') !== -1 ? 1
+          : (allTokensIn(tokens, normalizedLabel) ? 2
+            : (allTokensIn(tokens, hay) ? 3 : -1)));
+      if (rank < 0) continue;
+      hit.push({ href: href, label: label, tags: tags, tier: resultTier(href, q), rank: rank, sourceIndex: i });
     }
-    hit.sort(function (a, b) { return a.rank - b.rank; });
-    return hit.slice(0, 12);
+    hit.sort(function (a, b) { return a.tier - b.tier || a.rank - b.rank || a.sourceIndex - b.sourceIndex; });
+    var seen = Object.create(null);
+    var unique = [];
+    for (var j = 0; j < hit.length && unique.length < 12; j++) {
+      if (seen[hit[j].href]) continue;
+      seen[hit[j].href] = true;
+      unique.push(hit[j]);
+    }
+    return unique;
   }
+
+  S.searchIndex = Object.freeze({ search: search, normalize: normalizeSearchText, canonicalize: canonicalSearchText });
 
   function renderResults(q) {
     q = String(q || '').trim();
     results = search(q);
     cursor = results.length ? 0 : -1;
     var zero = searchDlg && searchDlg.querySelector('[data-search-zero]');
+    var empty = searchDlg && searchDlg.querySelector('[data-search-empty]');
     var meta = searchDlg && searchDlg.querySelector('[data-search-results-meta]');
     if (zero) zero.hidden = !!q;
+    searchField.removeAttribute('aria-activedescendant');
     if (!q) {
       resultsBox.innerHTML = '';
+      resultsBox.hidden = true;
+      if (empty) empty.hidden = true;
       if (meta) {
         meta.textContent = '';
         meta.hidden = true;
@@ -202,17 +281,18 @@
       return;
     }
     if (!results.length) {
+      resultsBox.innerHTML = '';
+      resultsBox.hidden = true;
+      if (empty) empty.hidden = false;
       if (meta) {
-        meta.textContent = 'По запросу ничего не найдено';
+        meta.textContent = 'Найдено: 0';
         meta.hidden = false;
       }
-      resultsBox.innerHTML = '<div class="search-empty"><span>Ничего не найдено</span>' +
-        '<strong>Попробуйте сформулировать короче.</strong>' +
-        '<p>Или напишите мастеру — подскажем, где искать.</p>' +
-        '<a href="priyomnaya.html">Открыть приёмную <i aria-hidden="true">→</i></a></div>';
       searchField.setAttribute('aria-expanded', 'false');
       return;
     }
+    resultsBox.hidden = false;
+    if (empty) empty.hidden = true;
     if (meta) {
       meta.textContent = 'Найдено: ' + results.length;
       meta.hidden = false;

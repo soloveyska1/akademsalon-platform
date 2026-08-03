@@ -3708,6 +3708,8 @@ body .site-header--account .header-menu-button{display:grid}
   text-align:left;
 }
 
+.overlay--search .search-empty[hidden]{display:none}
+
 .overlay--search .search-empty>span{
   color:var(--search-accent);
   font:650 8px/1 var(--mono);
@@ -3726,7 +3728,7 @@ body .site-header--account .header-menu-button{display:grid}
 
 .overlay--search .search-empty a{
   display:inline-flex;
-  min-height:38px;
+  min-height:44px;
   margin-top:5px;
   align-items:center;
   gap:9px;

@@ -84,18 +84,51 @@ test('gate 3: aliases and ranking are deterministic for the frozen query matrix'
     ['komissiya-0.html', 'Комиссия №0', 'защита оппонент протокол'],
     ['kursovaya-po-ekonomike.html', 'Курсовая по экономике', 'экономика дисциплина'],
     ['diplomnaya-po-ekonomike.html', 'Диплом по экономике', 'экономика вкр дисциплина'],
+    ['normokontrol-vkr.html', 'Нормоконтроль ВКР и курсовой', 'вкр гост оформление'],
+    ['audit-temy-vkr.html', 'Бесплатная проверка темы ВКР', 'вкр тема аудит'],
     ['diplomnaya-rabota.html', 'Дипломная / ВКР — услуга', 'диплом вкр выпускная'],
     ['razbor-zamechaniy-nauchruka.html', 'Разбор замечаний научного руководителя', 'научрук замечания'],
+    ['kursovaya-po-ekonomike.html', 'Экономика для курсовой', 'дубликат маршрута'],
   ]);
 
   assert.deepEqual(
     Array.from(index.search('экономика'), (row) => row.href),
     ['kursovaya-po-ekonomike.html', 'diplomnaya-po-ekonomike.html'],
   );
-  assert.equal(index.search('дипломная')[0].href, 'diplomnaya-rabota.html');
-  assert.equal(index.search('выпускная квалификационная')[0].href, 'diplomnaya-rabota.html');
+  for (const query of ['диплом', 'дипломная', 'дипломная работа', 'ВКР', 'выпускная квалификационная']) {
+    assert.equal(index.search(query)[0].href, 'diplomnaya-rabota.html', `${query}: work type must rank first`);
+  }
+  for (const query of ['дипломная по экономике', 'выпускная квалификационная по экономике']) {
+    assert.equal(index.search(query)[0].href, 'diplomnaya-po-ekonomike.html', `${query}: composite alias must preserve discipline`);
+  }
   assert.equal(index.search('научрук')[0].href, 'razbor-zamechaniy-nauchruka.html');
+  assert.equal(index.search('научный руководитель')[0].href, 'razbor-zamechaniy-nauchruka.html');
+  assert.equal(index.search('НАУЧ-РУК')[0].href, 'razbor-zamechaniy-nauchruka.html');
+  assert.equal(index.search('ДИПЛОМНАЯ / ВКР')[0].href, 'diplomnaya-rabota.html');
+  assert.deepEqual(
+    Array.from(index.search('КУРСОВАЯ, экономика!'), (row) => row.href),
+    ['kursovaya-po-ekonomike.html'],
+  );
+  assert.equal(index.normalize(' Ёлка / ВКР—тест '), 'елка вкр тест');
+  assert.equal(index.canonicalize(' Дипломная работа по экономике '), 'вкр по экономика');
   assert.deepEqual(Array.from(index.search('несуществующий абракадабра')), []);
+
+  const lateExact = bootSearchIndex([
+    ...Array.from({ length: 14 }, (_, i) => [`tag-${i}.html`, `Материал ${i}`, 'альфа']),
+    ['exact.html', 'Альфа', 'точное совпадение'],
+  ]);
+  assert.equal(lateExact.search('альфа')[0].href, 'exact.html', 'ranking must finish before the 12-result limit');
+});
+
+test('gate 3: zero results are outside the listbox and status has one live owner', () => {
+  assert.equal((chromeJs.match(/aria-live="polite"/g) || []).length, 1);
+  assert.match(chromeJs, /data-search-results-meta role="status" aria-live="polite" aria-atomic="true"/);
+  assert.match(chromeJs, /data-search-empty hidden/);
+  assert.match(chromeCss, /\.overlay--search \.search-empty\[hidden\]\s*\{display:none\}/);
+  assert.match(chromeJs, /id="p15SearchResults" role="listbox" aria-label="Результаты поиска" hidden/);
+  assert.doesNotMatch(chromeJs, /role="listbox"[^>]*aria-live/);
+  assert.match(chromeJs, /resultsBox\.hidden = true/);
+  assert.match(chromeJs, /searchField\.removeAttribute\('aria-activedescendant'\)/);
 });
 
 test('gate 2: every shared CSS consumer and the home CSS bundle use one cache wave', () => {
@@ -136,6 +169,18 @@ test('gate 3: every shared JS consumer and the home JS bundle use one cache wave
   assert.ok(match, 'home JS bundle is missing');
   const params = new URLSearchParams(match[1].replaceAll('&amp;', '&'));
   assert.equal(params.get('search'), releaseWave, 'home JS bundle lacks the search cache wave');
+
+  const catalogConsumers = files.filter((file) => /polish15-catalog\.(?:css|js)\?/.test(read(file)));
+  assert.equal(catalogConsumers.length, 24, 'unexpected catalog consumer inventory');
+  for (const file of catalogConsumers) {
+    const html = read(file);
+    for (const asset of ['css', 'js']) {
+      const assetMatch = html.match(new RegExp(`polish15-catalog\\.${asset}\\?([^"']+)`));
+      assert.ok(assetMatch, `${file}: missing catalog ${asset}`);
+      const assetParams = new URLSearchParams(assetMatch[1].replaceAll('&amp;', '&'));
+      assert.equal(assetParams.get('search'), releaseWave, `${file}: stale catalog ${asset} cache key`);
+    }
+  }
 });
 
 test('protected catalogue inventory remains physically unchanged', () => {

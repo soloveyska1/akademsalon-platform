@@ -85,10 +85,12 @@ test('service hub links only to real physical service pages', () => {
   }
 });
 
-test('catalog behavior preserves search, routing and legacy-widget isolation', () => {
+test('catalog behavior preserves global search ownership, routing and legacy-widget isolation', () => {
   const catalog = read('assets/js/polish15-catalog.js');
+  const chrome = read('assets/js/polish15-chrome.js');
   const extras = read('assets/js/extras.js');
-  assert.match(catalog, /data-service-search/);
+  assert.doesNotMatch(catalog, /data-service-search/);
+  assert.match(chrome, /SEARCH_QUERY_ALIASES/);
   assert.match(catalog, /data-discipline-card/);
   assert.match(catalog, /data-price-search/);
   assert.match(catalog, /setupServicesChoice/);
