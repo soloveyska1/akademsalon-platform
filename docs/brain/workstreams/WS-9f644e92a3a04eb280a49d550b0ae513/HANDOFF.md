@@ -3,8 +3,7 @@
 - Branch: `codex/out-005-services-choice`
 - Outcome: `OUT-005`
 - Base: `96156040130c874519d1cd4f6335173a774d7847`
-- Workstream: `WS-9f644e92a3a04eb280a49d550b0ae513`, integrated revision 9.
-- Frozen result: `db93a45a385521600fbe1a5121334c413ebdbfa4`.
+- Workstream: `WS-9f644e92a3a04eb280a49d550b0ae513`, active revision 7.
 - Implementation head: `b2bd17b0538d88bbd68f041f4e3f0437052c2533`.
 - Write owner: `codex-root`; three independent reviewers were read-only.
 - Plan: `docs/brain/plans/OUT-005-SERVICES-CHOICE.md`.
@@ -52,12 +51,12 @@ truth is deterministic across the physical catalogue and configurator.
 - Home runtime SHA-256:
   `3ca97d23193586c8fa3a8ac7b7714f6dc2dcfd4cdb36ee6bcabe00437891168e`.
 
-## Integration and external boundary
+## Not verified / external boundary
 
 - No production deploy, submit, OAuth, client-data access or deletion occurred.
   Production remains release99 exact canonical `9615604`.
-- Brain submitted→integrated lifecycle is complete: exact result `db93a45` is an
-  ancestor of fresh canonical and terminal revision 9 is commit `581e759`.
+- This task-branch result is not integrated until the Brain submitted→integrated
+  lifecycle proves its exact `result_sha` in fresh canonical history.
 - `OUT-001` downstream API→bot/operator→cabinet proof still lacks authoritative
   backend/bot source and safe marker/lookup/cleanup.
 - Brain process inspection still sees older foreign Playwright groups and Codex
@@ -74,6 +73,6 @@ exercised switch to `release98-c30dbd4924b5`.
 
 ## One next step
 
-Create a separate release workstream from fresh canonical. Do not claim OUT-005
-in production until publish, health, read-only smoke and rollback/forward are
-recorded in a new release evidence file.
+Commit this durable evidence, rerun strict gates on the clean result, then set
+the workstream to `submitted` so Brain freezes the exact `result_sha`. Do not
+deploy OUT-005 before canonical integration and release gates.
