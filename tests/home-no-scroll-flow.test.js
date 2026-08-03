@@ -47,7 +47,7 @@ test('editorial desk keeps normal scrolling, mobile flow and a persistent live c
   assert.match(build, /'assets\/css\/home-guided-flow\.css'/);
   assert.match(build, /'assets\/js\/home-guided-flow\.js'/);
   assert.match(home, /home-release\.min\.css\?v=20260803out003shell1/);
-  assert.match(home, /home-release\.min\.js\?v=20260803out003shell1/);
+  assert.match(home, /home-release\.min\.js\?v=20260803out005services1/);
 });
 
 test('fresh visit waits for an explicit choice and restores only a real saved choice', () => {

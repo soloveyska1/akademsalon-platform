@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260803out003shell1" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260802release98&amp;journey=1" />
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260803out003shell1&amp;journey=1" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-catalog.css?v=20260802release98&amp;journey=4" />
+<link rel="stylesheet" href="assets/css/polish15-catalog.css?v=20260803out005services1&amp;journey=4" />
 <link rel="stylesheet" href="assets/css/commission-zero.css?v=20260802release98" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 </head>
@@ -41,29 +41,43 @@
               <span class="resume-card__kicker">Сохранённый подбор</span>
               <p class="resume-card__message"><strong data-resume-type>Тип работы</strong><span class="resume-card__detail">Шаг <span data-resume-step>1</span> из 3</span></p>
             </div>
-            <a class="resume-card__action" href="/configurator.html" data-resume-link><span class="resume-card__action-label">Продолжить</span> <span aria-hidden="true">→</span></a>
+            <div class="catalog-resume__actions">
+              <a class="resume-card__action" href="/configurator.html" data-resume-link><span class="resume-card__action-label">Продолжить</span> <span aria-hidden="true">→</span></a>
+              <button class="resume-card__new" type="button" data-new-choice-toggle aria-expanded="false">Начать новый подбор</button>
+            </div>
           </section>
         </div>
         <div class="page-head__side">
-          <nav class="catalog-route-index" aria-label="Выбрать ситуацию">
-            <a href="configurator.html?situation=topic&amp;route=page">
+          <nav class="catalog-route-index" id="servicesChoice" aria-label="Выбрать ситуацию" data-services-choice hidden>
+            <button class="catalog-route-choice" type="button" data-service-situation="topic" data-result="diagnostic" data-route="page">
               <span class="catalog-route-index__icon" aria-hidden="true"><svg width="27" height="27" viewBox="0 0 32 32" fill="none"><path d="M8 5.5h12l4 4v17H8z"/><path d="M20 5.5v4h4M12 14h8M12 19h6M12 23h4"/></svg></span>
               <span><small>01 · В начале</small><strong>Есть только тема</strong><em>Проверить формулировку и собрать план</em></span><i aria-hidden="true">→</i>
-            </a>
-            <a href="configurator.html?situation=draft&amp;route=page">
+            </button>
+            <button class="catalog-route-choice" type="button" data-service-situation="draft" data-result="editing" data-route="page">
               <span class="catalog-route-index__icon" aria-hidden="true"><svg width="27" height="27" viewBox="0 0 32 32" fill="none"><path d="M7 4.5h14l4 4v19H7z"/><path d="M21 4.5v4h4M11 14h8M11 19h6M20.5 23.5l6-6 2 2-6 6-3 .9z"/></svg></span>
               <span><small>02 · В работе</small><strong>Черновик уже есть</strong><em>Найти слабые места и объяснить правки</em></span><i aria-hidden="true">→</i>
-            </a>
-            <a href="configurator.html?situation=comments&amp;route=page">
+            </button>
+            <button class="catalog-route-choice" type="button" data-service-situation="comments" data-result="diagnostic" data-route="page">
               <span class="catalog-route-index__icon" aria-hidden="true"><svg width="27" height="27" viewBox="0 0 32 32" fill="none"><path d="M6 5h17v22H6zM10 11h9M10 16h7M10 21h8"/><path d="M23 11h4v10h-4M25 11V8M25 21v3M25 13v4M25 20h.01"/></svg></span>
               <span><small>03 · После проверки</small><strong>Пришли замечания</strong><em>Разложить их по смыслу и срочности</em></span><i aria-hidden="true">→</i>
-            </a>
-            <a href="configurator.html?situation=defense&amp;route=page">
+            </button>
+            <button class="catalog-route-choice" type="button" data-service-situation="defense" data-result="defense" data-route="page">
               <span class="catalog-route-index__icon" aria-hidden="true"><svg width="27" height="27" viewBox="0 0 32 32" fill="none"><path d="M5 6h22v15H5zM9 26h14M16 21v5"/><path d="M10 16l4-4 3 2 5-5M22 9v5h-5"/></svg></span>
               <span><small>04 · Финал</small><strong>Защита уже близко</strong><em>Сверить речь, слайды и вопросы</em></span><i aria-hidden="true">→</i>
-            </a>
+            </button>
           </nav>
-          <p class="catalog-route-hint">Цена видна до контакта.</p>
+          <div class="catalog-route-next" aria-live="polite">
+            <p class="catalog-route-hint" data-service-choice-status>Выберите одну ситуацию. Цена будет видна до контакта.</p>
+            <a class="button button--primary catalog-route-continue" href="configurator.html" data-service-continue hidden>Показать первый шаг <span aria-hidden="true">→</span></a>
+          </div>
+          <noscript>
+            <div class="catalog-route-fallback" aria-label="Выбрать ситуацию без JavaScript">
+              <a href="configurator.html?situation=topic&amp;result=diagnostic&amp;route=page">Есть только тема</a>
+              <a href="configurator.html?situation=draft&amp;result=editing&amp;route=page">Черновик уже есть</a>
+              <a href="configurator.html?situation=comments&amp;result=diagnostic&amp;route=page">Пришли замечания</a>
+              <a href="configurator.html?situation=defense&amp;result=defense&amp;route=page">Защита уже близко</a>
+            </div>
+          </noscript>
         </div>
       </header>
 
@@ -319,47 +333,47 @@
     <p>Для разных дисциплин различаются требования к источникам, данным и аргументации.</p>
   </header>
         <div class="discipline-grid">
-          <a href="kursovaya-po-ekonomike.html">
+          <a href="kursovaya-po-ekonomike.html" data-discipline-card data-search="курсовая экономика расчёты данные таблицы экономическая аргументация">
             <span class="discipline-grid__code">КР</span>
             <h3>экономике</h3>
             <p>Расчёты, данные, таблицы и экономическая аргументация.</p>
             <footer><strong>от 9 000 ₽</strong><span aria-hidden="true">→</span></footer>
-          </a><a href="kursovaya-po-psihologii.html">
+          </a><a href="kursovaya-po-psihologii.html" data-discipline-card data-search="курсовая психология исследование методики выборка интерпретация">
             <span class="discipline-grid__code">КР</span>
             <h3>психологии</h3>
             <p>Дизайн исследования, методики, выборка и интерпретация.</p>
             <footer><strong>от 11 000 ₽</strong><span aria-hidden="true">→</span></footer>
-          </a><a href="kursovaya-po-yurisprudencii.html">
+          </a><a href="kursovaya-po-yurisprudencii.html" data-discipline-card data-search="курсовая юриспруденция право нпа судебная практика сноски">
             <span class="discipline-grid__code">КР</span>
             <h3>юриспруденции</h3>
             <p>НПА, судебная практика, сноски и правовая аргументация.</p>
             <footer><strong>от 9 000 ₽</strong><span aria-hidden="true">→</span></footer>
-          </a><a href="kursovaya-po-pedagogike.html">
+          </a><a href="kursovaya-po-pedagogike.html" data-discipline-card data-search="курсовая педагогика методы база исследование эксперимент">
             <span class="discipline-grid__code">КР</span>
             <h3>педагогике</h3>
             <p>Методы, база исследования и педагогический эксперимент.</p>
             <footer><strong>от 9 000 ₽</strong><span aria-hidden="true">→</span></footer>
-          </a><a href="kursovaya-po-menedzhmentu.html">
+          </a><a href="kursovaya-po-menedzhmentu.html" data-discipline-card data-search="курсовая менеджмент аналитика показатели предложения">
             <span class="discipline-grid__code">КР</span>
             <h3>менеджменту</h3>
             <p>Аналитическая часть, показатели и практические предложения.</p>
             <footer><strong>от 9 000 ₽</strong><span aria-hidden="true">→</span></footer>
-          </a><a href="kursovaya-po-informatike.html">
+          </a><a href="kursovaya-po-informatike.html" data-discipline-card data-search="курсовая информатика код алгоритмы тесты диаграммы">
             <span class="discipline-grid__code">КР</span>
             <h3>информатике</h3>
             <p>Код, алгоритмы, тесты, диаграммы и пояснительная записка.</p>
             <footer><strong>от 11 500 ₽</strong><span aria-hidden="true">→</span></footer>
-          </a><a href="diplomnaya-po-ekonomike.html">
+          </a><a href="diplomnaya-po-ekonomike.html" data-discipline-card data-search="вкр диплом экономика финансовые модели исходные данные выводы">
             <span class="discipline-grid__code">ВКР</span>
             <h3>экономике</h3>
             <p>Финансовые модели, исходные данные и выводы.</p>
             <footer><strong>от 24 000 ₽</strong><span aria-hidden="true">→</span></footer>
-          </a><a href="diplomnaya-po-psihologii.html">
+          </a><a href="diplomnaya-po-psihologii.html" data-discipline-card data-search="вкр диплом психология методология статистика интерпретация ограничения">
             <span class="discipline-grid__code">ВКР</span>
             <h3>психологии</h3>
             <p>Методология, статистика, интерпретация и ограничения.</p>
             <footer><strong>от 29 000 ₽</strong><span aria-hidden="true">→</span></footer>
-          </a><a href="diplomnaya-po-yurisprudencii.html">
+          </a><a href="diplomnaya-po-yurisprudencii.html" data-discipline-card data-search="вкр диплом юриспруденция законодательство практика авторы выводы">
             <span class="discipline-grid__code">ВКР</span>
             <h3>юриспруденции</h3>
             <p>Законодательство, практика, позиции авторов и выводы.</p>
@@ -378,9 +392,9 @@
 </main>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Услуги Академического Салона","itemListElement":[{"@type":"ListItem","position":1,"url":"https://akademsalon.ru/kursovaya-rabota.html","name":"Курсовая с нуля"},{"@type":"ListItem","position":2,"url":"https://akademsalon.ru/diplomnaya-rabota.html","name":"ВКР с нуля"},{"@type":"ListItem","position":3,"url":"https://akademsalon.ru/magisterskaya-dissertaciya.html","name":"Магистерское исследование с нуля"},{"@type":"ListItem","position":4,"url":"https://akademsalon.ru/kandidatskaya-dissertaciya.html","name":"Консультация и редактура диссертации"},{"@type":"ListItem","position":5,"url":"https://akademsalon.ru/nauchnaya-statya.html","name":"Научная редактура статьи"},{"@type":"ListItem","position":6,"url":"https://akademsalon.ru/otchet-po-praktike.html","name":"Редактура отчёта по практике"},{"@type":"ListItem","position":7,"url":"https://akademsalon.ru/referat.html","name":"Реферат или эссе с нуля"},{"@type":"ListItem","position":8,"url":"https://akademsalon.ru/normokontrol-vkr.html","name":"Нормоконтроль"},{"@type":"ListItem","position":9,"url":"https://akademsalon.ru/plan.html","name":"Разбор темы и плана"},{"@type":"ListItem","position":10,"url":"https://akademsalon.ru/razbor-zamechaniy-nauchruka.html","name":"Разбор замечаний руководителя"},{"@type":"ListItem","position":11,"url":"https://akademsalon.ru/redaktura-posle-ii.html","name":"Редактура текста после ИИ"},{"@type":"ListItem","position":12,"url":"https://akademsalon.ru/avtorskiy-zakaz.html","name":"Авторский текст вне аттестации"},{"@type":"ListItem","position":13,"url":"https://akademsalon.ru/komissiya-0.html","name":"Комиссия №0"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Услуги"}]}</script>
-<script src="assets/js/app.js?v=20260803out003shell1"></script>
+<script src="assets/js/app.js?v=20260803out005services1"></script>
 <script defer src="assets/js/polish15-chrome.js?v=20260802release98"></script>
 <script src="assets/js/extras.js?v=20260803out003shell1&amp;journey=1"></script>
-<script src="assets/js/polish15-catalog.js?v=20260802release98&amp;compact=1"></script>
+<script src="assets/js/polish15-catalog.js?v=20260803out005services1&amp;compact=1"></script>
 </body>
 </html>

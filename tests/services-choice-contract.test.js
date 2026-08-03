@@ -38,7 +38,7 @@ const expectedSituationRoutes = {
   comments: 'diagnostic',
   defense: 'defense'
 };
-const allowedRouteKeys = new Set(['work', 'situation', 'result', 'route', 'service']);
+const allowedRouteKeys = new Set(['work', 'discipline', 'situation', 'result', 'route', 'service']);
 const allowedSituations = new Set(Object.keys(expectedSituationRoutes));
 const allowedResults = new Set(['diagnostic', 'support', 'editing', 'formatting', 'ai_editing', 'defense']);
 const allowedOrigins = new Set(['page', 'service', 'price']);
@@ -156,7 +156,7 @@ test('catalog-owned normal-text actions use AA color tokens in both themes', () 
     );
   });
   assert.match(css, /\.p15-catalog \.button--primary,[\s\S]*?color:\s*var\(--catalog-action-text-p15\);[\s\S]*?background:\s*var\(--catalog-action-bg-p15\)/);
-  assert.match(css, /\.catalog-resume \.resume-card__action\{[\s\S]*?color:\s*var\(--catalog-action-text-p15\);[\s\S]*?background:\s*var\(--catalog-action-bg-p15\)/);
+  assert.match(css, /\.catalog-resume \.resume-card__action\{[\s\S]*?color:\s*var\(--catalog-action-text-p15\)!important;[\s\S]*?background:\s*var\(--catalog-action-bg-p15\)!important/);
 });
 
 test('catalog search includes discipline links before declaring an empty result', () => {
@@ -194,14 +194,23 @@ test('detail configurator actions carry one explicit allowlisted URL intent with
 
     const url = new URL(routes[0], 'https://akademsalon.ru/');
     assert.ok([...url.searchParams.keys()].every((key) => allowedRouteKeys.has(key)), `${file}: unsupported route key`);
-    assert.ok(url.searchParams.has('service') || url.searchParams.has('work'), `${file}: route has no allowlisted service/work intent`);
+    assert.ok(
+      url.searchParams.has('service') ||
+        (url.searchParams.has('situation') && url.searchParams.has('result')),
+      `${file}: route has no allowlisted service or situation/result intent`
+    );
     if (url.searchParams.has('situation')) assert.ok(allowedSituations.has(url.searchParams.get('situation')), `${file}: bad situation`);
     if (url.searchParams.has('result')) assert.ok(allowedResults.has(url.searchParams.get('result')), `${file}: bad result`);
     if (url.searchParams.has('route')) assert.ok(allowedOrigins.has(url.searchParams.get('route')), `${file}: bad route origin`);
   }
 
   const catalog = read('assets/js/polish15-catalog.js');
+  const app = read('assets/js/app.js');
   assert.doesNotMatch(catalog, /Salon\.store\.set\(['"]salon_draft/, 'catalog navigation must not mutate a saved draft before conflict resolution');
+  assert.match(app, /'otchet-po-praktike':\['practice','draft','editing',3/);
+  assert.match(app, /'dorabotka-otcheta-po-praktike':\['practice','comments','diagnostic',3/);
+  assert.match(app, /'kandidatskaya-dissertaciya':\['kandidat','draft','diagnostic',3/);
+  assert.match(app, /'referat':\['self','draft','editing',3/);
 });
 
 test('all 24 catalog consumers use one OUT-005 cache key', () => {

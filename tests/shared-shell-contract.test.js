@@ -60,6 +60,7 @@ const adminFoundation = ['admin.html'];
 const standaloneRoutes = ['admin-covers.html', 'oplaceno.html'];
 const directPublicRoutes = publicRoutes.filter((file) => file !== 'index.html');
 const shellReleaseKey = '20260803out003shell1';
+const out005ReleaseKey = '20260803out005services1';
 
 function assetUrl(html, asset) {
   const match = html.match(new RegExp(`(?:href|src)="(${asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[^\"]*)"`));
@@ -194,7 +195,7 @@ test('auth, footer and overlay source invariants remain explicit', () => {
   assert.match(chrome, /showModal\(\)/);
 });
 
-test('every changed shell asset has one atomic cache wave and home parity', () => {
+test('shared shell and OUT-005 runtime changes keep atomic cache waves and home parity', () => {
   const changedDirectAssets = [
     'assets/css/chrome.css',
     'assets/css/mobile.css',
@@ -207,13 +208,14 @@ test('every changed shell asset has one atomic cache wave and home parity', () =
     for (const asset of changedDirectAssets) {
       const url = assetUrl(html, asset);
       if (!url) continue;
-      assert.equal(queryVersion(url), shellReleaseKey, `${file}: ${asset}`);
+      const expected = asset === 'assets/js/app.js' ? out005ReleaseKey : shellReleaseKey;
+      assert.equal(queryVersion(url), expected, `${file}: ${asset}`);
     }
   }
 
   const home = read('index.html');
   assert.equal(queryVersion(assetUrl(home, 'assets/css/home-release.min.css')), shellReleaseKey);
-  assert.equal(queryVersion(assetUrl(home, 'assets/js/home-release.min.js')), shellReleaseKey);
+  assert.equal(queryVersion(assetUrl(home, 'assets/js/home-release.min.js')), out005ReleaseKey);
   const homeCss = read('assets/css/home-release.min.css');
   const homeJs = read('assets/js/home-release.min.js');
   assert.match(homeCss, /site-footer__brand-actions a:first-child\{[^}]*background:var\(--wax-cta,var\(--wax\)\)/);

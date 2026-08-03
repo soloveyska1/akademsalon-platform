@@ -6,6 +6,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const releaseKey = '20260802release98';
 const shellRuntimeKey = '20260803out003shell1';
+const out005RuntimeKey = '20260803out005services1';
 const changedAssets = new Set([
   'assets/css/cart.css',
   'assets/css/chrome.css',
@@ -45,9 +46,13 @@ const shellAssets = new Set([
   'assets/css/home-release.min.css',
   'assets/css/mobile.css',
   'assets/css/polish15-chrome.css',
-  'assets/js/app.js',
   'assets/js/extras.js',
+]);
+const out005Assets = new Set([
+  'assets/css/polish15-catalog.css',
+  'assets/js/app.js',
   'assets/js/home-release.min.js',
+  'assets/js/polish15-catalog.js',
 ]);
 
 test('every changed public asset uses the release cache key', () => {
@@ -64,9 +69,11 @@ test('every changed public asset uses the release cache key', () => {
       if (!changedAssets.has(assetPath)) continue;
       references += 1;
       const query = new URLSearchParams(url.split('?')[1] || '');
-      const expectedKey = shellAssets.has(assetPath)
-        ? shellRuntimeKey
-        : releaseKey;
+      const expectedKey = out005Assets.has(assetPath)
+        ? out005RuntimeKey
+        : shellAssets.has(assetPath)
+          ? shellRuntimeKey
+          : releaseKey;
       assert.equal(query.get('v'), expectedKey, `${file}: ${assetPath}`);
     }
   }

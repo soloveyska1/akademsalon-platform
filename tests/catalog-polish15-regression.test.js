@@ -89,8 +89,10 @@ test('catalog behavior preserves search, routing and legacy-widget isolation', (
   const catalog = read('assets/js/polish15-catalog.js');
   const extras = read('assets/js/extras.js');
   assert.match(catalog, /data-service-search/);
+  assert.match(catalog, /data-discipline-card/);
   assert.match(catalog, /data-price-search/);
-  assert.match(catalog, /storeDraft/);
+  assert.match(catalog, /setupServicesChoice/);
+  assert.doesNotMatch(catalog, /Salon\.store\.set\(['"]salon_draft/);
   assert.match(catalog, /configurator\.html\?service=pl/);
   assert.match(extras, /document\.querySelector\('\.p15-service,\.p15-catalog'\)/);
 });

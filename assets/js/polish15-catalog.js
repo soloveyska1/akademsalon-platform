@@ -22,10 +22,82 @@
     return window.matchMedia('(max-width: 620px)').matches ? 4 : 6;
   }
 
+  function setupServicesChoice() {
+    var root = document.querySelector('[data-services-choice]');
+    if (!root) return;
+    var routes = Object.freeze({
+      topic: 'diagnostic',
+      draft: 'editing',
+      comments: 'diagnostic',
+      defense: 'defense'
+    });
+    var choices = Array.prototype.slice.call(root.querySelectorAll('[data-service-situation]'));
+    var continuation = document.querySelector('[data-service-continue]');
+    var status = document.querySelector('[data-service-choice-status]');
+    var resume = document.querySelector('[data-resume-card]');
+    var reveal = document.querySelector('[data-new-choice-toggle]');
+
+    function mobileDock() {
+      return document.querySelector('.mnav .mn-calc');
+    }
+
+    function setDock(href, label) {
+      var dock = mobileDock();
+      if (!dock) return;
+      dock.href = href;
+      dock.removeAttribute('data-resume-draft');
+      dock.setAttribute('aria-label', label);
+      var text = dock.querySelector('.mn-l');
+      if (text) text.textContent = label;
+    }
+
+    function revealFreshChoice() {
+      if (resume) resume.hidden = true;
+      root.hidden = false;
+      if (reveal) reveal.setAttribute('aria-expanded', 'true');
+      setDock('#servicesChoice', 'Выбрать ситуацию');
+      var first = choices[0];
+      if (first) first.focus({ preventScroll: true });
+    }
+
+    choices.forEach(function (choice) {
+      choice.setAttribute('aria-pressed', 'false');
+      choice.addEventListener('click', function () {
+        var situation = choice.getAttribute('data-service-situation') || '';
+        var result = choice.getAttribute('data-result') || '';
+        var route = choice.getAttribute('data-route') || '';
+        if (!Object.prototype.hasOwnProperty.call(routes, situation) || routes[situation] !== result || route !== 'page') return;
+        choices.forEach(function (item) {
+          var selected = item === choice;
+          item.classList.toggle('is-selected', selected);
+          item.setAttribute('aria-pressed', String(selected));
+        });
+        var params = new URLSearchParams();
+        params.set('situation', situation);
+        params.set('result', result);
+        params.set('route', 'page');
+        var href = 'configurator.html?' + params.toString();
+        if (continuation) {
+          continuation.href = href;
+          continuation.hidden = false;
+        }
+        if (status) {
+          var title = choice.querySelector('strong');
+          status.textContent = 'Выбрано: ' + (title ? title.textContent : 'ситуация') + '. Теперь можно посмотреть первый шаг и цену.';
+        }
+        setDock(href, 'Продолжить');
+      });
+    });
+
+    if (reveal) reveal.addEventListener('click', revealFreshChoice);
+    root.hidden = !!(resume && !resume.hidden);
+  }
+
   function setupServiceCatalog() {
     var root = document.querySelector('[data-p15-services]');
     if (!root) return;
     var cards = Array.prototype.slice.call(root.querySelectorAll('[data-service-card]'));
+    var disciplineCards = Array.prototype.slice.call(root.querySelectorAll('[data-discipline-card]'));
     var tabs = Array.prototype.slice.call(root.querySelectorAll('[data-service-filter]'));
     var search = root.querySelector('[data-service-search]');
     var more = root.querySelector('[data-catalog-more]');
@@ -42,6 +114,12 @@
       var pool = cards.filter(function (card) {
         return phaseMatches(card) && matches(card.getAttribute('data-search') || card.textContent, query);
       });
+      var disciplineMatches = false;
+      disciplineCards.forEach(function (card) {
+        var visible = !query || matches(card.getAttribute('data-search') || card.textContent, query);
+        card.hidden = !visible;
+        if (query && visible) disciplineMatches = true;
+      });
       var limit = filter === 'all' && !query && !expanded ? currentLimit() : pool.length;
       cards.forEach(function (card) {
         card.hidden = pool.indexOf(card) === -1 || pool.indexOf(card) >= limit;
@@ -51,7 +129,7 @@
         more.hidden = expanded || filter !== 'all' || !!query || rest === 0;
         more.textContent = rest ? 'Показать остальные — ' + rest : 'Показать остальные';
       }
-      if (empty) empty.hidden = pool.length !== 0;
+      if (empty) empty.hidden = pool.length !== 0 || disciplineMatches;
     }
 
     tabs.forEach(function (tab) {
@@ -76,32 +154,6 @@
     });
     window.addEventListener('resize', paint, { passive: true });
     paint();
-  }
-
-  function storeDraft(type, tier, discipline) {
-    if (!type || !(window.Salon && Salon.store)) return;
-    var draft = Salon.store.get('salon_draft', {}) || {};
-    draft.state = Object.assign({}, draft.state || {}, {
-      type: type,
-      disc: discipline || draft.state && draft.state.disc || 'hum',
-      term: draft.state && draft.state.term || 'free',
-      tier: tier || draft.state && draft.state.tier || 'turn'
-    });
-    draft.idx = 0;
-    draft.savedAt = Date.now();
-    Salon.store.set('salon_draft', draft);
-  }
-
-  function setupServicePrefills() {
-    document.querySelectorAll('.p15-service a[data-type]').forEach(function (link) {
-      link.addEventListener('click', function () {
-        storeDraft(
-          link.getAttribute('data-type'),
-          link.getAttribute('data-tier') || 'turn',
-          link.getAttribute('data-disc') || ''
-        );
-      });
-    });
   }
 
   var pricedRoutes = {
@@ -147,7 +199,6 @@
       button.addEventListener('click', function () {
         var key = button.getAttribute('data-start-priced');
         var route = pricedRoutes[key] || { href: 'configurator.html' };
-        if (route.type) storeDraft(route.type, route.tier);
         if (route.commissionWork) {
           try {
             sessionStorage.setItem('salon_commission_zero_handoff_v1', JSON.stringify({
@@ -161,7 +212,7 @@
     paint();
   }
 
+  setupServicesChoice();
   setupServiceCatalog();
-  setupServicePrefills();
   setupPriceTable();
 })();

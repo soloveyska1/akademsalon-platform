@@ -1903,10 +1903,10 @@
       'diplomnaya-rabota':['diplom','topic','support',2,'ВКР как рабочий проект'],
       'magisterskaya-dissertaciya':['master','topic','support',2,'Магистерская как рабочий проект'],
       'nauchnaya-statya':['','draft','editing',3,'Рукопись к редакторской проверке'],
-      'otchet-po-praktike':['practice','topic','support',2,'Отчёт на реальных материалах практики'],
-      'dorabotka-otcheta-po-praktike':['practice','comments','editing',3,'Доработка отчёта по замечаниям'],
+      'otchet-po-praktike':['practice','draft','editing',3,'Редактура отчёта на реальных материалах практики'],
+      'dorabotka-otcheta-po-praktike':['practice','comments','diagnostic',3,'Письменный разбор замечаний к отчёту'],
       'kandidatskaya-dissertaciya':['kandidat','draft','diagnostic',3,'Письменный разбор диссертационного исследования'],
-      'referat':['self','topic','support',2,'Реферат или эссе как рабочий проект'],
+      'referat':['self','draft','editing',3,'Редактура реферата, эссе или контрольной'],
       'plan':['','topic','diagnostic',1,'Разобрать тему и план'],
       'razbor-zamechaniy-nauchruka':['','comments','diagnostic',3,'Разобрать замечания и определить порядок исправлений'],
       'normokontrol-vkr':['diplom','draft','formatting',3,'Сверить стабильную версию с методичкой']

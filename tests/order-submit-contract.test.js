@@ -390,17 +390,18 @@ test('generated home runtime remains in parity with the canonical helper', () =>
   assert.doesNotMatch(bundleContract, /Math\.random/);
 });
 
-test('every shared order-runtime consumer uses the same release cache key', () => {
+test('every shared order-runtime consumer uses its current atomic cache wave', () => {
   const files = childProcess.execFileSync('git', ['ls-files', '*.html'], {
     cwd: root, encoding: 'utf8',
   }).trim().split('\n').filter(Boolean);
   let consumers = 0;
   for (const file of files) {
     const source = fs.readFileSync(path.join(root, file), 'utf8');
-    const refs = [...source.matchAll(/assets\/js\/(?:app|extras|home-release\.min)\.js\?v=([^&"']+)/g)];
+    const refs = [...source.matchAll(/assets\/js\/(app|extras|home-release\.min)\.js\?v=([^&"']+)/g)];
     for (const ref of refs) {
       consumers++;
-      assert.equal(ref[1], '20260803out003shell1', `${file}: stale shared runtime cache key`);
+      const expected = ref[1] === 'extras' ? '20260803out003shell1' : '20260803out005services1';
+      assert.equal(ref[2], expected, `${file}: stale ${ref[1]} runtime cache key`);
     }
   }
   assert.ok(consumers >= 170, 'shared runtime consumer inventory unexpectedly shrank');
