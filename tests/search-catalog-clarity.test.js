@@ -14,6 +14,7 @@ const catalogJs = read('assets/js/polish15-catalog.js');
 const services = read('services.html');
 const homeReleaseCss = read('assets/css/home-release.min.css');
 const releaseWave = '20260803out007search1';
+const triggerWave = '20260803out007trigger1';
 
 function assertPattern(source, pattern, message) {
   assert.ok(pattern.test(source), message);
@@ -58,6 +59,7 @@ test('gate 1: catalogue and mobile search geometry reserve header and dock space
   assertPattern(correctedSearchLayer, /@media\(prefers-reduced-motion:reduce\)[\s\S]*?\.overlay--search \.search-close:hover,[\s\S]*?transform:\s*none/, 'search close motion is not disabled for reduced-motion users');
   assertPattern(homeReleaseCss, /grid-template-columns:minmax\(0,1fr\) 34px/, 'generated home bundle does not contain the corrected mobile result row');
   assertPattern(homeReleaseCss, /-webkit-mask-image:linear-gradient/, 'generated home bundle lacks the chip overflow affordance');
+  assertPattern(homeReleaseCss, /@media\(min-width:921px\) and \(max-width:1240px\)\{body \.site-header:not\(\.site-header--account\) \.header-action--search,body \.site-header--account \.header-action--search\{display:inline-flex\}\}/, 'generated home bundle lacks the continuous desktop trigger range');
 });
 
 test('gate 2: the corrected editorial search layer has one shared owner', () => {
@@ -140,6 +142,7 @@ test('gate 2: every shared CSS consumer and the home CSS bundle use one cache wa
     for (const match of html.matchAll(/polish15-chrome\.css\?([^"']+)/g)) {
       const params = new URLSearchParams(match[1].replaceAll('&amp;', '&'));
       assert.equal(params.get('search'), releaseWave, `${file}: stale shared-search cache key`);
+      assert.equal(params.get('trigger'), triggerWave, `${file}: stale search-trigger cache key`);
     }
   }
   assert.equal(cssConsumers, 89, 'unexpected shared-search CSS consumer inventory');
@@ -149,6 +152,7 @@ test('gate 2: every shared CSS consumer and the home CSS bundle use one cache wa
   assert.ok(match, 'home CSS bundle is missing');
   const params = new URLSearchParams(match[1].replaceAll('&amp;', '&'));
   assert.equal(params.get('search'), releaseWave, 'home CSS bundle lacks the search cache wave');
+  assert.equal(params.get('trigger'), triggerWave, 'home CSS bundle lacks the search-trigger cache wave');
 });
 
 test('gate 3: every shared JS consumer and the home JS bundle use one cache wave', () => {

@@ -55,6 +55,20 @@ test('header actions share one control geometry and account mode removes duplica
   assert.doesNotMatch(app, /main\.innerHTML = 'Продолжить дело/);
 });
 
+test('desktop search trigger has no reachability gap after the mobile breakpoint', () => {
+  const chrome = read('assets/css/polish15-chrome.css');
+  const finalMeasure = chrome.lastIndexOf('финальная мера шапки');
+  const sharedSearch = chrome.indexOf('SHARED SEARCH · редакционная командная палитра', finalMeasure);
+  const finalHeader = chrome.slice(finalMeasure, sharedSearch);
+
+  assert.match(finalHeader, /@media\s*\(min-width:921px\) and \(max-width:1240px\)\s*\{[\s\S]*?body \.site-header:not\(\.site-header--account\) \.header-action--search,[\s\S]*?body \.site-header--account \.header-action--search\s*\{[\s\S]*?display:inline-flex;/);
+  assert.ok(
+    finalHeader.lastIndexOf('display:inline-flex') > finalHeader.lastIndexOf('header-action--search{display:none}'),
+    'the 921–1240 search rescue must follow every final hide rule',
+  );
+  assert.match(finalHeader, /\.header-action,[\s\S]*?width:44px;[\s\S]*?height:44px;/);
+});
+
 test('shared menu uses the same CTA vocabulary and drawn close mark as the header', () => {
   const chromeJs = read('assets/js/polish15-chrome.js');
   assert.match(chromeJs, /href="configurator\.html">Подобрать помощь/);
