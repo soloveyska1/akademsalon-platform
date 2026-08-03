@@ -3,70 +3,76 @@
 - Branch: `codex/out-005-services-choice`
 - Outcome: `OUT-005`
 - Base: `96156040130c874519d1cd4f6335173a774d7847`
-- Workstream: `WS-9f644e92a3a04eb280a49d550b0ae513`, active revision 3.
-- Write owner: `codex-root`; three fresh reviewers are read-only.
+- Workstream: `WS-9f644e92a3a04eb280a49d550b0ae513`, active revision 7.
+- Implementation head: `b2bd17b0538d88bbd68f041f4e3f0437052c2533`.
+- Write owner: `codex-root`; three independent reviewers were read-only.
 - Plan: `docs/brain/plans/OUT-005-SERVICES-CHOICE.md`.
 - Evidence: `E-1007`.
 
-## Goal and acceptance
+## Goal and result
 
-Keep the four situation IA but provide one selected state and one explicit
-continuation. A saved draft owns the sole primary until the user explicitly
-opens a new selector. Preserve focus/history and never mutate stored intent
-before replace. Detail CTA uses explicit allowlisted URL state and agrees with
-copy/price truth. All physical SEO catalogue assets remain intact.
-
-## Baseline
-
-- 12 hub cards, 9 discipline links, 22 detail pages, ItemList 13 and 24
-  catalogue CSS/JS consumers verified.
-- Focused 87/87 and repository 472/472 pass; current tests miss the findings.
-- Browser: exact current services overflow 0 at contract viewports; 44 px
-  filter/search and 108–161 px situation targets; console clean.
-- P1: 5+ competing page-head/dock actions with saved state; focus drops to BODY
-  after replace; reload loses unresolved incoming route; dark page CTA contrast
-  2.692–4.065; storage-only intent can combine stale concept and fresh state.
-- P2: false discipline-search empty result, 7 px mobile stage labels and stale
-  compact copy.
-
-## Independent review
-
-Kimi/Sonnet/GLM daily review and one Opus fork review completed. Sonnet/Opus
-findings were reproduced; Kimi refused without file context and GLM described a
-non-current page, so neither content verdict is evidence. Fable stayed
-connectivity-only. Three Codex reviewers independently recommend OUT-005 without
-a global redesign.
+The four situation choices remain the first IA, now as “select one → one
+explicit continuation”. Saved progress owns the sole primary until the user
+explicitly starts a new choice. Incoming intent is never written over the saved
+draft before continue/replace. Detail CTA routes are explicit and price/copy
+truth is deterministic across the physical catalogue and configurator.
 
 ## Changed
 
-- Created/committed the workstream manifest and this handoff (`c7e1017`).
-- Revision 2 adds exact configurator and stale Brain entry-point scope
-  (`f01b642`).
-- Durable plan/evidence and Brain routing updates are prepared; no product code
-  has changed.
-- A separately authorized release operation published exact canonical
-  `96156040130c` as `release99-96156040130c`. `REL-0099` records 472/472,
-  39/39 Brain, 339-file tree identity, 14/14 read-only production smoke,
-  mobile/desktop browser smoke and an executed rollback/forward proof. No
-  application file in this OUT-005 workstream changed for that deployment.
-- Added the failing-first OUT-005 contract at task HEAD `f3b80ed`: seven defect
-  groups are independently RED, while the exact 12/9/22/ItemList-13 inventory
-  control is green. No product implementation has changed yet.
-- User authorization now permits an evidence-backed redesign of the services
-  choice/saved-state hierarchy; the verified global shell stays outside that
-  permission unless a new reproducible problem expands scope.
+- `services.html` plus `polish15-catalog.js/css`: one fresh/saved/selected
+  primary per viewport, local desktop-header suppression, mobile dock state,
+  readable 9 px stage floor, discipline-aware search and AA action colors.
+- `configurator.html`: deferred service/work route conflict, focus/history,
+  clean replace, precise discipline profiles and exact client/local-cart versus
+  legacy API transport boundary.
+- Twenty-two service/detail routes no longer use the stale pre-navigation
+  `data-type` mutator. Referat and practice-rework copy/routes were reconciled.
+- `app.js` and rebuilt home runtime carry the exact route/price profiles and
+  compatible bot/API mapping. All shared consumers use one atomic cache wave.
+- Contract coverage grew from the committed 1/8 failing-first baseline to
+  focused 73/73 and full 482/482 green.
+
+## Verified
+
+- Independent inventory review: P0=0, P1=0; exact 12 hub cards, 9 discipline
+  links, 22 detail pages, ItemList 13, explicit routes, copy/price and cache
+  invariants pass.
+- Independent UX review: fresh/saved mobile and 1024 desktop have one primary;
+  overflow 0; selected continuation hit-test passes; 768 px label is 9 px;
+  dark/focus and hidden legacy controls pass.
+- Independent final runtime QA: P0=0, P1=0, P2=0. Course draft preservation,
+  practice continue/replace, all nine discipline prices, psychology local cart
+  11,000–15,500 ₽, `/orders` top/nested transport `law`, and quote-email exact
+  client-profile round-trip pass.
+- `node --test tests/*.test.js`: 482/482, no fail/skip/todo.
+- `node --check assets/js/app.js`, `node --check assets/js/polish15-catalog.js`,
+  `git diff --check`: pass.
+- Brain: 39/39; strict validation `records=51 links=63 manifests=7`.
+- Home runtime SHA-256:
+  `3ca97d23193586c8fa3a8ac7b7714f6dc2dcfd4cdb36ee6bcabe00437891168e`.
+
+## Not verified / external boundary
+
+- No production deploy, submit, OAuth, client-data access or deletion occurred.
+  Production remains release99 exact canonical `9615604`.
+- This task-branch result is not integrated until the Brain submitted→integrated
+  lifecycle proves its exact `result_sha` in fresh canonical history.
+- `OUT-001` downstream API→bot/operator→cabinet proof still lacks authoritative
+  backend/bot source and safe marker/lookup/cleanup.
+- Brain process inspection still sees older foreign Playwright groups and Codex
+  kernels; reviewer-owned sessions/servers were stopped, foreign processes were
+  not killed.
 
 ## Stop and rollback
 
-Stop on any physical URL/canonical/schema/sitemap/price drift, raw/unsupported
-route state, focus/history loss, stale draft mutation, contrast <4.5, target
-<44 px, overflow >1 px, console error, cache divergence, production request,
-hard conflict or unresolved product truth. OUT-005 documentation/bootstrap
-rollback is an exact commit revert. Production rollback is the already exercised
-atomic switch to `release98-c30dbd4924b5`; the active release is release99.
+Stop on physical URL/schema/sitemap/price drift, unsupported route state,
+focus/history loss, contrast <4.5, target <44 px, cache divergence, hard
+conflict or any production mutation. Roll back OUT-005 by reverting the exact
+implementation commits in reverse order; release99 rollback remains the already
+exercised switch to `release98-c30dbd4924b5`.
 
 ## One next step
 
-Commit the 1/8-pass, 7/8-fail RED baseline, then implement the fresh/saved
-services choice without mutating stored intent and without changing catalogue
-inventory, schema, sitemap or prices.
+Commit this durable evidence, rerun strict gates on the clean result, then set
+the workstream to `submitted` so Brain freezes the exact `result_sha`. Do not
+deploy OUT-005 before canonical integration and release gates.

@@ -1,88 +1,56 @@
 # Current handoff
 
-## Canonical product state
+## Canonical and production truth
 
-- Latest integrated bounded result: `OUT-003`; terminal canonical commit
-  `96156040130c874519d1cd4f6335173a774d7847`, implementation
-  `7e6f33a6088888ccf49dbbd81cb2a8f68c9cecc2`, proof `E-1006`.
-- `OUT-002` and `OUT-004` cabinet slices are also verified and integrated
-  (`E-1004`, `E-1005`). Main/home and the shared shell have no reproduced open
-  P0/P1 in their bounded local gates.
-- Production is `release99-96156040130c`, exact canonical source
-  `96156040130c874519d1cd4f6335173a774d7847`; evidence is `REL-0099`.
-  Health, 14/14 GET/HEAD smoke, mobile/desktop browser smoke and an executed
-  rollback to `release98-c30dbd4924b5` plus forward restore are green. No
-  production submit/payment, OAuth mutation, client-data access or deletion
-  occurred.
+- Canonical integration ref remains `origin/codex/full-reference-production` at
+  `96156040130c874519d1cd4f6335173a774d7847` after a fresh fetch.
+- Production remains `release99-96156040130c`; `REL-0099` proves health,
+  14/14 read-only smoke, mobile/desktop smoke and executed rollback/forward.
+- `OUT-002`, `OUT-003` and `OUT-004` are verified and integrated. No OUT-005
+  application code has been deployed yet.
 
-## Active workstream
+## Active verified task result
 
 - Outcome: `OUT-005` on `codex/out-005-services-choice`, base exact canonical
   `96156040130c874519d1cd4f6335173a774d7847`.
-- Workstream: `WS-9f644e92a3a04eb280a49d550b0ae513`, active manifest revision 2;
-  root is sole write-owner.
-- Bootstrap commits: `c7e1017` declaration, `f01b642` honest configurator/
-  Brain scope expansion. Product implementation has not started.
-- Plan: `plans/OUT-005-SERVICES-CHOICE.md`; audited baseline: `E-1007`.
+- Workstream `WS-9f644e92a3a04eb280a49d550b0ae513` is active revision 7;
+  root is sole write-owner. Implementation head is
+  `b2bd17b0538d88bbd68f041f4e3f0437052c2533`.
+- Plan: `plans/OUT-005-SERVICES-CHOICE.md`; evidence: `E-1007`.
+- The old statement “product implementation has not started” is superseded by
+  the verified task-branch result below; it remains historical in `E-1007`.
 
-## Reproduced truth for the active outcome
+## What is now proved
 
-- Protected inventory: 12 hub cards, 9 discipline links, 22 physical detail
-  pages, ItemList 13 and 24 shared catalogue-asset consumers. Canonical/schema/
-  sitemap/price baselines are green; focused 87/87 and full 472/472 pass.
-- P1 choice/state: saved 390×844 shows resume plus four situation routes and a
-  second dock continuation. The page has no selected-one→one-continuation state.
-- P1 focus/history: after “Начать заново” focus falls to `BODY`; the incoming
-  route is removed before conflict resolution, and reload loses the new choice.
-- P1 dark contrast: hub primary 2.712:1, saved action 2.692:1, detail primary
-  4.065:1; all are normal text below the 4.5:1 gate.
-- P1 intent: storage-only detail CTAs can combine fresh legacy state with stale
-  higher-precedence concept; several visible promises, `pageCaseContext()`
-  routes and advertised tiers disagree.
-- P2: discipline search can claim empty despite matching physical links; mobile
-  stage labels are 7 px and compact copy can describe two remaining choices when
-  one remains.
-
-## Contract decision
-
-Keep the four situation IA and physical catalogue. Fresh state becomes four
-selectable controls plus one continuation; saved state makes resume the sole
-primary and reveals new selection only after a secondary action. Exact
-allowlisted result mapping equals the configurator's existing derivation and
-was validated by a local compact-route prototype; no offer or price is invented.
-
-Do not guess detail intent/price truth. Build a deterministic matrix across page
-copy, explicit route, `pageCaseContext()` and canonical price; if app.js requires
-correction, revise manifest/cache scope before touching it.
-
-## Agents and council
-
-- Three fresh read-only Codex reviewers covered architecture/SEO, UX mobile/dark
-  and QA/accessibility/reliability. Their reproducible findings are in `E-1007`;
-  no reviewer changed files.
-- Council doctor: Kimi, Sonnet, GLM, Opus, Fable `READY`; local LLM disabled,
-  background services none. Daily Kimi+Sonnet+GLM and one Opus contract review
-  ran. Fable stayed probe-only because no systemic deadlock existed.
-- Model claims without current repository evidence were discarded. The explicit
-  result-route disagreement was resolved by code plus browser experiment, not a
-  vote.
+- Fresh, selected and saved services states have one contextual primary on
+  desktop and mobile. Saved progress is not overwritten before explicit
+  continue/replace; route parameters and focus survive until resolution.
+- The physical catalogue remains 12 hub cards, 9 discipline links, 22 detail
+  pages and ItemList 13. All detail handoffs are explicit allowlisted URLs;
+  search includes discipline routes; referat/practice copy and route truth agree.
+- Nine discipline pages reproduce their displayed entry prices in the routed
+  configurator. Exact client profiles stay local; API, cart serialization,
+  quote email and bot keep the established `law` transport code.
+- Catalogue primary text contrast is 6.010:1 light and 5.914:1 dark. All 24
+  catalogue consumers and the shared runtime/home rebuild use atomic cache waves.
+- Three independent reviewers returned final P0=0, P1=0; final QA also returned
+  P2=0. Focused 73/73, full repository 482/482, Brain 39/39, JS syntax,
+  `git diff --check` and strict Brain validation are green.
 
 ## Remaining limits
 
-- `OUT-001` frontend→API→bot/operator→cabinet exactly-once proof still lacks
-  authoritative backend/bot source and safe marker/lookup/cleanup.
-- Reduced motion has source proof only in this OUT-005 baseline. The release99
-  production visual claim is bounded to shared-shell mobile/desktop smoke; no
-  live OAuth or downstream delivery claim is made.
-- The release runner saw intermittent new SSH/HTTPS handshake timeouts before a
-  green final pass. `REL-0099` records the recovered attempts and final hashes;
-  recurrence is an operations/network observation to monitor.
-- Strict conflict has hard=0 and one explicitly accepted old/dormant-ref warning;
-  fresh fetch/scan remains mandatory before integration.
+- The workstream is not yet submitted or integrated; OUT-005 is therefore
+  `fixed-unverified` in the canonical lifecycle and remains in Roadmap NOW.
+- `OUT-001` still needs authoritative backend/bot evidence and safe production
+  marker/lookup/cleanup before any real end-to-end mutation.
+- Strict conflict scan has hard=0 and one known unmanaged dormant-ref warning.
+  Integration owner must explicitly review/allow it again after fresh fetch and
+  on exact clean SHAs immediately before integration.
+- Reviewer-owned browser/server processes were stopped. Older foreign Playwright
+  groups remain visible and were intentionally not killed.
 
 ## One exact next step
 
-Add `tests/services-choice-contract.test.js` as failing-first evidence for the
-choice/saved-state, conflict focus/history, contrast, explicit intent, physical
-inventory, discipline search and 24-consumer cache groups. Record each red group
-before changing runtime or presentation.
+Commit the durable OUT-005 evidence, rerun clean deterministic and conflict
+gates, then use `brain workstream set-status submitted` to freeze the exact
+result. Canonical integration and a new production release are separate gates.

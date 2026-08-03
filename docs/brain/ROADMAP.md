@@ -37,6 +37,10 @@ workstream manifest, а не из чата или model report.
 - Proof: `E-1007`, failing-first `tests/services-choice-contract.test.js`,
   saved-route state matrix, exact mobile/desktop light/dark browser scenarios,
   full regression and atomic 24-consumer catalog cache wave.
+- State: task-branch implementation head
+  `b2bd17b0538d88bbd68f041f4e3f0437052c2533` is locally verified with
+  P0/P1/P2=0, focused 73/73, full 482/482 and Brain 39/39. It remains in NOW and
+  `fixed-unverified` until the workstream is submitted and terminally integrated.
 - Stop: не угадывать product/price truth при расхождении page copy,
   `pageCaseContext` и canonical pricing; не трогать verified global shell.
 

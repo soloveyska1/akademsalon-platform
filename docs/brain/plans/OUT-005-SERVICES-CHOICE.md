@@ -100,3 +100,18 @@ saved configurator state. Keep Brain/test, hub/runtime, configurator, contrast/
 cache and detail-intent changes as reviewable commits. Product implementation
 is rolled back by reverting those commits in reverse order. There is no
 external rollback because no production mutation is authorized.
+
+## Executed evidence-backed amendments
+
+- The one-action contract required a bounded services-page layout change: the
+  global desktop header primary is hidden only on `body.page-services`, because
+  runtime QA proved it bypassed the mandatory choice and duplicated saved
+  resume. No global chrome behavior or other route changed.
+- Physical price truth required three exact client-side discipline profiles.
+  They are not new backend codes: local quote/cart state keeps the exact profile,
+  while API, bot and quote-email serialization maps it to the existing `law`
+  transport value. This preserves both displayed price and server compatibility.
+- A service route with saved progress is now a real conflict, not an automatic
+  overwrite. Replace clears old topic/comment/deadline; continue leaves the old
+  draft untouched. This extends the planned conflict fix to the reproduced
+  practice-review path without widening the wizard.

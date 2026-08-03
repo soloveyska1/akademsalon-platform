@@ -29,6 +29,8 @@
 1. `OUT-001` — доказать полный путь заявки: отправка → получение → новое дело → первый статус.
 2. `OUT-005` — согласовать выбор на `services.html`, контекст configurator и
    сохранённый черновик без потери физических SEO-маршрутов и ценовой правды.
+   Task-branch implementation `b2bd17b` локально verified (482/482, Brain
+   39/39, independent P0/P1/P2=0), но ещё не submitted/integrated и не production.
 
 `OUT-002`, `OUT-003` и `OUT-004` verified; точные implementation/evidence SHA
 находятся в `ROADMAP.md` и `CURRENT-HANDOFF.md`.
