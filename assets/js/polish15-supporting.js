@@ -182,7 +182,6 @@
         pseudonym: name.value.trim(),
         email: emailText,
         quiet: !!quiet.checked,
-        vid: Salon.store ? Salon.store.get('salon_vid', '') : '',
         website: website.value
       }).then(function (response) {
         setButtonBusy(submit, false);

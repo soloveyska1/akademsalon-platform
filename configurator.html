@@ -281,7 +281,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=20260803out005services1"></script>
+<script src="assets/js/app.js?v=20260803out005services1&amp;privacy=20260803out006privacy1"></script>
 <script defer src="assets/js/polish15-chrome.js?v=20260802release98"></script>
 <script src="assets/js/extras.js?v=20260803out003shell1&amp;journey=1"></script>
 <script src="assets/js/cart.js?v=20260802release98"></script>
@@ -2919,14 +2919,35 @@ if (document.prerendering) {
     if (service && service.id === 'author') return null;
     return !service && effectiveResult() === 'support' ? 'A2' : 'A1';
   }
+  function conceptCode(value, fallback) {
+    return ({
+      course:'cr', course_emp:'ce', diplom:'dp', master:'ms', chapter:'ch',
+      vak:'vk', scopus:'sc', rinc:'rc', practice:'pr', kandidat:'kd', self:'sf', work:'w',
+      topic:'t', draft:'d', comments:'c', defense:'f', situation:'s',
+      diagnostic:'dg', editing:'ed', ai_editing:'ai', formatting:'fm',
+      support:'sp', tutoring:'tu', recommendation:'rcm', result:'r'
+    })[value] || fallback;
+  }
+  function conceptExtraCode(extra) {
+    var fixed = {
+      case1:'c1', page:'pg', service:'sv', route:'rt', shown:'sh',
+      visible_summary:'vs', service_details:'sd', live_quote:'lq', contact:'ct'
+    };
+    if (fixed[extra]) return fixed[extra];
+    if (/^s[0-4]$/.test(extra || '')) return extra;
+    var match = /^(situation|result|work)_(.+)$/.exec(extra || '');
+    if (!match) return 'na';
+    var prefix = { situation:'st', result:'rs', work:'wk' }[match[1]];
+    return prefix + '_' + conceptCode(match[2],'na');
+  }
   function conceptVariant(extra) {
     return [
       RULES_EVENT_VERSION,
-      extra || '',
-      state.workType || 'work',
-      state.situation || 'situation',
-      effectiveResult() || 'result'
-    ].join('_').replace(/[^a-z0-9_-]/g,'').slice(0,32);
+      conceptExtraCode(extra || ''),
+      conceptCode(state.workType || 'work','w'),
+      conceptCode(state.situation || 'situation','s'),
+      conceptCode(effectiveResult() || 'result','r')
+    ].join('_');
   }
   function trackConcept(name,extra,once) {
     try {

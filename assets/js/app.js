@@ -409,6 +409,173 @@
     };
     Salon.store.set('salon_draft', draft);
   });
+  /* Один fail-closed путь для внутренних и внешних analytics page labels.
+     Список намеренно exact: синтаксически красивый, но неизвестный Nginx 404
+     pathname всё равно может содержать имя или токен и обязан стать /other. */
+  var ANALYTICS_PAGE_LIST = '404.html 50x.html about.html academic-integrity.html admin-covers.html admin.html audit-temy-vkr.html avtorskiy-zakaz.html check.html configurator.html consent-analytics.html consent-marketing.html consent-publication.html consent-request.html consent.html dashboard.html deposit.html diplomnaya-po-ekonomike.html diplomnaya-po-psihologii.html diplomnaya-po-yurisprudencii.html diplomnaya-rabota.html dorabotka-otcheta-po-praktike.html dosie-nauchruka.html expertise.html gift.html guarantees.html guide-antiplagiat-ai.html guide-apellyaciya.html guide-dnevnik-praktiki.html guide-harakteristika-s-praktiki.html guide-kursovaya-za-nedelyu.html guide-normocontrol.html guide-obekt-predmet-cel-zadachi.html guide-otchet-po-praktike.html guide-otzyv-rukovoditelya-vkr.html guide-prakticheskaya-chast-kursovoy.html guide-prezentaciya-k-zashchite.html guide-prilozheniya-po-gost.html guide-recenziya-na-vkr.html guide-rech-na-zashchitu.html guide-rinc-statya.html guide-skolko-stoit-diplomnaya.html guide-skolko-stoit-kursovaya.html guide-spisok-literatury.html guide-temy-vkr.html guide-titulnyj-list.html guide-vkr-struktura.html guide-vvedenie-kursovoy.html guide-zaklyuchenie-kursovoy.html guide-zaklyuchenie-vkr.html guide-zashchita-diploma.html index.html kandidatskaya-dissertaciya.html knowledge.html komissiya-0.html kursovaya-po-ekonomike.html kursovaya-po-informatike.html kursovaya-po-menedzhmentu.html kursovaya-po-pedagogike.html kursovaya-po-psihologii.html kursovaya-po-yurisprudencii.html kursovaya-rabota.html loyalty.html magisterskaya-dissertaciya.html maintenance.html nauchnaya-statya.html normokontrol-vkr.html oferta.html oplaceno.html oplata.html otchet-po-praktike.html plan.html plus.html privacy.html priyomnaya.html prolog.html proverka-istochnikov-vkr.html razbor-zamechaniy-nauchruka.html redaktura-posle-ii.html referat.html referral.html refunds.html requisites.html reviews.html services.html specifikaciya.html start.html tariffs.html terms.html tools.html vedenie.html zayavka.html';
+  var ANALYTICS_PAGE_MAP = {};
+  ANALYTICS_PAGE_LIST.split(' ').forEach(function (name) { ANALYTICS_PAGE_MAP[name] = true; });
+  function analyticsPage(value) {
+    var path = String(value || '/');
+    if (path !== path.toLowerCase()) return '/other';
+    if (path === '/') return path;
+    var name = path.charAt(0) === '/' ? path.slice(1) : '';
+    return ANALYTICS_PAGE_MAP[name] === true ? path : '/other';
+  }
+
+  function analyticsPreview() {
+    try {
+      return new URLSearchParams(location.search).get('desktop-preview') === '1';
+    } catch (e) { return false; }
+  }
+
+  function analyticsMark(value) {
+    var step = String(value || '').toLowerCase();
+    if (step === 'cta: спросить мастера') return 'cta_contact';
+    if (step === 'cta: конфигуратор') return 'cta_configurator';
+    if (step.indexOf('услуга: ') === 0) return 'service_selected';
+    var configStep = /^шаг ([1-4]) из 4$/.exec(step);
+    if (configStep) return 'config_step_' + configStep[1];
+    if (step === 'запросил смету на почту') return 'quote_email_requested';
+    if (step === 'заявка: форма заполнена') return 'order_form_ready';
+    if (step === 'отправка не прошла — запасной ход') return 'order_fallback_shown';
+    if (step.indexOf('подсказка помощи: ') === 0) return 'help_hint_shown';
+    if (step.indexOf('закладка помощи: ') === 0) return 'help_bookmark_shown';
+    if (step === 'вопрос с гайда') return 'guide_question_opened';
+    if (step === 'показана закладка возврата сметы') return 'quote_return_shown';
+    if (step === 'видел мини-смету «ляссе»') return 'mini_quote_seen';
+    if (step === 'инструмент: проверка doi завершена') return 'doi_check_complete';
+    if (step.indexOf('js: ') === 0) return 'js_error';
+    return '';
+  }
+
+  var ANALYTICS_EVENT_MAP = {};
+  ('cta_click tg_open config_open step_view submit_attempt submit_fail first_input ' +
+    'case_bridge_open case_route_inferred case_step_view case_recommend_view ' +
+    'case_route_confirm case_route_change case_submit_ready case_route_ready ' +
+    'case_route_uncertain case_route_blocked case_prompt_start ' +
+    'case_result_situation_changed case_route_open case_free_route_open ' +
+    'case_ecosystem_stage home_desk_situation home_desk_artifact home_desk_continue')
+    .split(' ').forEach(function (name) { ANALYTICS_EVENT_MAP[name] = true; });
+  var ANALYTICS_VARIANT_TOKEN_MAP = {};
+  ('r1 na visible summary shown contact case1 page service route 1 2 3 4 s0 s1 s2 s3 s4 ' +
+    'topic draft comments defense situation work result course emp diplom master chapter ' +
+    'vak scopus rinc practice kandidat self no diagnostic editing ai formatting support ' +
+    'tutoring recommendation multiple states results works only state too short without ' +
+    'material manual unknown focus integrity clarify knowledge help open close free ' +
+    'configurator text details live quote inferred changed c1 pg sv rt sh vs sd lq ct ' +
+    'st rs wk cr ce dp ms ch vk sc rc pr kd sf nw w t d c f s dg ed fm df sp tu r rcm').split(' ')
+    .forEach(function (token) { ANALYTICS_VARIANT_TOKEN_MAP[token] = true; });
+  function analyticsExact(value, expression, max) {
+    var raw = String(value == null ? '' : value).trim().toLowerCase();
+    if (!raw || raw.length > max || !expression.test(raw)) return '';
+    return raw;
+  }
+  function analyticsCta(name, value) {
+    var raw = String(value == null ? '' : value).trim().toLowerCase();
+    if (name === 'tg_open') return analyticsExact(raw, /^telegram_(?:bot|human|channel)$/, 32);
+    if (name === 'cta_click') {
+      return analyticsExact(raw, /^(?:contact_sheet|configurator(?::(?:pl|ai|rv|tu|nm|df|k0|dp|au))?)$/, 32);
+    }
+    if (name === 'config_open' || name === 'submit_attempt' || name === 'first_input') {
+      return analyticsExact(raw, /^(?:calculator|service:(?:pl|ai|rv|tu|nm|df|k0|dp|au))$/, 32);
+    }
+    if (name === 'step_view') return analyticsExact(raw, /^step_[1-4]$/, 16);
+    if (name === 'submit_fail') {
+      return analyticsExact(raw, /^(?:server_rejected|request_conflict|network_fallback)$/, 24);
+    }
+    if (name === 'case_bridge_open') return analyticsExact(raw, /^page_context$/, 16);
+    if (name.indexOf('home_desk_') === 0) return analyticsExact(raw, /^home_editorial_desk$/, 24);
+    if (name === 'case_route_ready' || name === 'case_route_uncertain' ||
+        name === 'case_route_blocked' || name === 'case_prompt_start' ||
+        name === 'case_result_situation_changed' || name === 'case_route_open' ||
+        name === 'case_free_route_open' || name === 'case_ecosystem_stage') {
+      return analyticsExact(raw, /^research_case$/, 20);
+    }
+    return analyticsExact(raw,
+      /^(?:svc_(?:plan|ai|review|tutor|norm|defense|defense_pack|author_order)|commission_zero|work_(?:turn|vip|base))$/,
+      32);
+  }
+  function analyticsVariant(name, value) {
+    var raw = String(value == null ? '' : value).trim().toLowerCase();
+    if (!raw) return '';
+    if (name === 'case_bridge_open') {
+      return analyticsExact(raw, /^(?:self|route)_stage_[1-4]$/, 24);
+    }
+    if (name === 'home_desk_situation') return analyticsExact(raw, /^(?:text|comments|defense)$/, 16);
+    if (name === 'home_desk_artifact') return analyticsExact(raw, /^(?:open|close)$/, 8);
+    if (name === 'home_desk_continue') return analyticsExact(raw, /^(?:free|configurator)$/, 16);
+    if (name === 'case_result_situation_changed') {
+      if (raw.indexOf('r1_вкр, пока есть только тема') === 0) raw = 'r1_topic';
+      else if (raw.indexOf('r1_вкр, получены замечания') === 0) raw = 'r1_comments';
+      else if (raw.indexOf('r1_диплом готов, скоро защита') === 0) raw = 'r1_defense';
+      else if (raw.indexOf('r1_курсовая, уже есть мой') === 0) raw = 'r1_draft';
+    }
+    if (name === 'case_route_ready') {
+      var situations = { topic:'t', draft:'d', comments:'c', defense:'f' };
+      var works = {
+        course:'cr', course_emp:'ce', diplom:'dp', master:'ms', chapter:'ch',
+        vak:'vk', scopus:'sc', rinc:'rc', practice:'pr', kandidat:'kd', self:'sf', no_work:'nw'
+      };
+      var results = {
+        diagnostic:'dg', editing:'ed', ai_editing:'ai', formatting:'fm',
+        defense:'df', support:'sp', tutoring:'tu'
+      };
+      Object.keys(situations).some(function (situation) {
+        return Object.keys(works).some(function (work) {
+          return Object.keys(results).some(function (result) {
+            var legacy = ('r1_' + situation + '_' + work + '_' + result).slice(0, 32);
+            if (legacy !== raw) return false;
+            raw = 'r1_' + situations[situation] + '_' + works[work] + '_' + results[result];
+            return true;
+          });
+        });
+      });
+    }
+    raw = analyticsExact(raw, /^r1_[a-z0-9_-]{1,29}$/, 32);
+    if (!raw) return '';
+    var tokens = raw.split('_');
+    for (var i = 0; i < tokens.length; i++) {
+      if (!ANALYTICS_VARIANT_TOKEN_MAP[tokens[i]]) return '';
+    }
+    return raw;
+  }
+  function analyticsEvent(value, detail) {
+    var name = String(value || '').trim().toLowerCase();
+    if (ANALYTICS_EVENT_MAP[name] !== true) return null;
+    detail = detail || {};
+    var cta = analyticsCta(name, detail.cta);
+    if (!cta) return null;
+    var expectsVariant = name.indexOf('case_') === 0 || name.indexOf('home_desk_') === 0;
+    var variant = analyticsVariant(name, detail.variant);
+    if (expectsVariant && !variant) return null;
+    if (!expectsVariant && detail.variant != null) return null;
+    return { name: name, cta: cta, variant: variant };
+  }
+
+  function forgetAnalyticsVendorState() {
+    try {
+      Object.keys(localStorage).forEach(function (key) {
+        if (/^_ym/i.test(key)) localStorage.removeItem(key);
+      });
+      document.cookie.split(';').forEach(function (part) {
+        var name = part.split('=')[0].trim();
+        if (/^_ym/i.test(name)) {
+          document.cookie = name + '=; Max-Age=0; path=/; SameSite=Lax';
+          document.cookie = name + '=; Max-Age=0; path=/; domain=.' + location.hostname + '; SameSite=Lax';
+        }
+      });
+    } catch (e) {}
+  }
+
+  function purgeAnalyticsBrowserState() {
+    Salon.store.del('salon_vid');
+    Salon.store.del('salon_attr_v2');
+    forgetAnalyticsVendorState();
+    if (Salon.metrika && typeof Salon.metrika.stop === 'function') Salon.metrika.stop();
+  }
+  Salon.analyticsPrivacy = { page: analyticsPage, mark: analyticsMark, event: analyticsEvent };
+
   /* Отдельное согласие на необязательную аналитику. Старый v1 намеренно
      не мигрируем: его кнопка «Хорошо» не фиксировала предметный выбор.
      Через 12 месяцев и при новой версии текст согласия показывается заново. */
@@ -422,6 +589,9 @@
       if (!c || c.v !== VERSION || typeof c.analytics !== 'boolean' ||
           !c.at || !isFinite(exp) || exp <= Date.now()) {
         if (c) Salon.store.del(KEY);
+        if (c || Salon.store.get('salon_vid', null) || Salon.store.get('salon_attr_v2', null)) {
+          purgeAnalyticsBrowserState();
+        }
         return null;
       }
       return c;
@@ -448,7 +618,7 @@
         expiresAt: new Date(now.getTime() + TTL).toISOString()
       };
       Salon.store.set(KEY, c);
-      if (!c.analytics) Salon.store.del('salon_vid');
+      if (!c.analytics) purgeAnalyticsBrowserState();
       emit(c);
       return c;
     }
@@ -2662,7 +2832,8 @@
     var ID = 110565162;
     /* zayavka.html — страница оплаты по ссылке мастера: там человек принимает
        денежное решение, аналитике на ней делать нечего */
-    if (here === 'admin.html' || here === 'dashboard.html' || here === '404.html'
+    if (location.protocol !== 'https:' || location.hostname !== 'akademsalon.ru' || analyticsPreview()
+        || here === 'admin.html' || here === 'dashboard.html' || here === '404.html'
         || here === 'zayavka.html') return;
     function boot() {
       if (boot.done || !Salon.consent.allowed()) return;
@@ -2676,7 +2847,7 @@
       })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=' + ID, 'ym');
       window.ym(ID, 'init', {
         ssr: true, webvisor: false, clickmap: true,
-        referrer: safeReferrer(), url: location.origin + location.pathname,
+        referrer: safeReferrer(), url: location.origin + analyticsPage(location.pathname),
         accurateTrackBounce: true, trackLinks: true
       });
     }
@@ -2687,26 +2858,12 @@
         return u.origin;
       } catch (e) { return ''; }
     }
-    function forgetBrowserData() {
-      try {
-        Object.keys(localStorage).forEach(function (k) {
-          if (/^_ym/i.test(k)) localStorage.removeItem(k);
-        });
-        document.cookie.split(';').forEach(function (part) {
-          var name = part.split('=')[0].trim();
-          if (/^_ym/i.test(name)) {
-            document.cookie = name + '=; Max-Age=0; path=/; SameSite=Lax';
-            document.cookie = name + '=; Max-Age=0; path=/; domain=.' + location.hostname + '; SameSite=Lax';
-          }
-        });
-      } catch (e) {}
-    }
     function stop() {
       if (boot.done && window.ym) {
         try { window.ym(ID, 'destruct'); } catch (e) {}
       }
       boot.done = false;
-      forgetBrowserData();
+      forgetAnalyticsVendorState();
     }
     Salon.metrika = {
       id: ID,
@@ -3637,6 +3794,12 @@
     var KEY = 'salon_attr_v2';
     var OLD_KEY = 'salon_attr_v1';
     var PARAMS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+    var here = (location.pathname.split('/').pop() || 'index.html');
+    var imp = false;
+    try { imp = sessionStorage.getItem('salon_imp') === '1'; } catch (e) {}
+    var silentContour = here.indexOf('admin') === 0 || here === 'dashboard.html'
+      || here === 'zayavka.html' || imp || analyticsPreview();
+    var blockedUntilNavigation = !(Salon.consent && Salon.consent.allowed());
     function allowed() { return Salon.consent && Salon.consent.allowed(); }
     function code(v) {
       var raw = String(v == null ? '' : v).trim();
@@ -3675,10 +3838,7 @@
         return 'external';
       } catch (e) { return ''; }
     }
-    function entryPath() {
-      var path = String(location.pathname || '/').toLowerCase();
-      return /^\/(?:[a-z0-9-]{1,80}\.html)?$/.test(path) ? path : '/other';
-    }
+    function entryPath() { return analyticsPage(location.pathname); }
     function hasCampaign(c) { return Object.keys(c || {}).length > 0; }
     function compact(c, ref) {
       var parts = [];
@@ -3689,11 +3849,13 @@
       return parts.join('&');
     }
     function capture() {
-      if (!allowed()) return null;
+      if (silentContour || blockedUntilNavigation || !allowed()) return null;
       var c = campaign(), ref = referrerCode();
       var source = hasCampaign(c) ? { kind:'utm', values:c } :
         (ref ? { kind:'referrer', code:ref } : null);
       var saved = Salon.store.get(KEY, null) || {};
+      if (saved.entry) saved.entry = analyticsPage(saved.entry);
+      if (saved.lastEntry) saved.lastEntry = analyticsPage(saved.lastEntry);
       if (!saved.first && source) {
         saved.first = source;
         saved.entry = entryPath();
@@ -3708,7 +3870,7 @@
       return saved;
     }
     function ref() {
-      if (!allowed()) return '';
+      if (silentContour || blockedUntilNavigation || !allowed()) return '';
       var c = campaign();
       capture();
       return compact(c, hasCampaign(c) ? '' : referrerCode());
@@ -3718,7 +3880,7 @@
       if (!/^[a-z0-9./?=_-]{1,120}$/i.test(base) || /(?:token|claim|session|oauth|imp)=/i.test(base)) {
         base = 'site';
       }
-      if (!allowed()) return base;
+      if (silentContour || blockedUntilNavigation || !allowed()) return base;
       var saved = capture() || {};
       var bits = [];
       if (saved.entry) bits.push('entry=' + saved.entry);
@@ -3734,9 +3896,14 @@
       return (base + (bits.length ? ' | ' + bits.join('&') : '')).slice(0, 200);
     }
     Salon.store.del(OLD_KEY);
-    if (allowed()) capture();
+    if (!blockedUntilNavigation && allowed()) capture();
     document.addEventListener('salon:consent', function (e) {
-      if (e.detail && e.detail.analytics === true) capture();
+      if (e.detail && e.detail.analytics === true) {
+        if (!blockedUntilNavigation) capture();
+      } else {
+        blockedUntilNavigation = true;
+        Salon.store.del(KEY);
+      }
     });
     return { ref: ref, capture: capture, decoratePage: decoratePage, code: code };
   })();
@@ -3750,9 +3917,10 @@
        это не посетители (сервер дублирует этот гейт по флагу сессии) */
     var imp = false;
     try { imp = sessionStorage.getItem('salon_imp') === '1'; } catch (e) {}
-    if (here.indexOf('admin') === 0 || here === 'zayavka.html' || imp
+    if (here.indexOf('admin') === 0 || here === 'dashboard.html' || here === 'zayavka.html' || imp
+        || analyticsPreview()
         || location.protocol !== 'https:' || location.hostname !== 'akademsalon.ru') {
-      return { mark: function () {}, order: function () {} };
+      return { mark: function () {}, order: function () {}, event: function () {} };
     }
     function vid() {
       var v = Salon.store.get('salon_vid', null);
@@ -3767,23 +3935,30 @@
       return v;
     }
     function allowed() { return Salon.consent && Salon.consent.allowed(); }
-    function page() { return location.pathname.slice(0, 200); }
-    function send(extra, _retried) {
-      if (!allowed()) return;
+    function consentStamp() {
+      var c = Salon.consent && Salon.consent.read ? Salon.consent.read() : null;
+      return c && c.analytics === true ? String(c.at || '') : '';
+    }
+    function page() { return analyticsPage(location.pathname); }
+    function deliver(serialized, stamp) {
+      if (!allowed() || consentStamp() !== stamp) return;
+      try {
+        var h = { 'Content-Type': 'text/plain' };
+        /* Best-effort by design: без server idempotency contract повтор мог бы
+           создать дубль или пережить отзыв согласия. */
+        fetch(API_BASE + '/visit', {
+          method: 'POST', headers: h, credentials: 'omit', keepalive: true,
+          body: serialized
+        }).catch(function () {});
+      } catch (e) {}
+    }
+    function send(extra) {
+      var stamp = consentStamp();
+      if (!stamp) return;
       try {
         var body = { vid: vid(), page: page() };
         for (var k in extra) body[k] = extra[k];
-        var h = { 'Content-Type': 'text/plain' };
-        function again() {
-          /* окно рестарта сервера: один тихий повтор, пока вкладка жива */
-          if (_retried || document.visibilityState === 'hidden') return;
-          setTimeout(function () { send(extra, true); }, 2500);
-        }
-        fetch(API_BASE + '/visit', {
-          method: 'POST', headers: h, keepalive: true,
-          body: JSON.stringify(body)
-        }).then(function (r) { if (r.status >= 502) again(); })
-          .catch(again);
+        deliver(JSON.stringify(body), stamp);
       } catch (e) {}
     }
     function view() {
@@ -3803,19 +3978,19 @@
     });
     return {
       /* Конверсию считаем без номера дела и без токена доступа. */
-      mark: function (step) { send({ kind: 'mark', step: String(step || '').slice(0, 120) }); },
+      mark: function (step) {
+        var code = analyticsMark(step);
+        if (code) send({ kind: 'mark', step: code });
+      },
       order: function () { send({ kind: 'order', step: 'заявка отправлена' }); },
       event: function (name, detail) {
-        name = String(name || '').toLowerCase();
-        if (!/^[a-z][a-z0-9_]{2,31}$/.test(name)) return;
-        detail = detail || {};
-        var cta = String(detail.cta || '').toLowerCase().replace(/[^a-z0-9_:-]/g, '').slice(0, 64);
-        var variant = String(detail.variant || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 32);
+        var item = analyticsEvent(name, detail);
+        if (!item) return;
         send({
           kind: 'event',
-          event: name,
-          cta_id: cta || undefined,
-          variant: variant || undefined
+          event: item.name,
+          cta_id: item.cta,
+          variant: item.variant || undefined
         });
       }
     };
