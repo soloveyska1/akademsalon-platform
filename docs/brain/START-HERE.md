@@ -16,6 +16,11 @@
   14/14 до и после выполненного rollback, production WebKit 48/48 до и 48/48
   после forward restore. Точная запись:
   [releases/REL-0103.md](releases/REL-0103.md).
+- 3 августа после release103 исправлен production-wide отказ
+  заявок и подарочных форм: backend оставался на privacy/oferta
+  3.0/3.0 при опубликованных 3.1/3.2. Активные константы выровнены,
+  сервис active, VPS read-only smoke 14/14; реальная тестовая заявка
+  не создавалась. Точная запись: [evidence/E-1013.md](evidence/E-1013.md).
 
 ## Главная цель продукта
 
@@ -27,9 +32,10 @@
 
 ## NOW
 
-1. Получить пользовательскую визуальную обратную связь по production release103;
-   параллельно вернуть OUT-001 в read-only authoritative backend/bot audit для
-   marker/lookup/cleanup без production submit.
+1. Получить от пользователя повторный результат его реальной заявки
+   после исправления `E-1013`; агенты сами production submit не выполняют.
+   Затем отдельно закрыть stale-page copy/classification и версию 3.0 в
+   `consent-request.html`.
 2. Продолжение `OUT-006` — не включать новые milestones до authoritative server
    contract; затем провести preregistered synthetic comprehension test.
 3. `OUT-001` — не выполнять production submit, пока не появятся безопасные
