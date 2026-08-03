@@ -14,12 +14,18 @@
 - Proof: failing-first `tests/first-step-measurement-contract.test.js`, existing
   privacy/cache suites, full product and Brain regression, JS syntax and exact
   cache-key parity across all 89 direct `app.js` consumers; durable `E-1008`.
-- Changed: none yet.
-- Unverified: implementation not started.
+- Changed: selected the fresh home editorial desk as the exact OUT-006 surface;
+  recorded council, deterministic audit, reproduced analytics-isolation P1,
+  preregistered task thresholds and the contract-first sequence in `E-1008`,
+  the plan, ROADMAP and `UXD-0007`.
+- Unverified: product implementation and synthetic task testing have not started;
+  `/api/visit` backend storage/dedupe/readback/retention remains unavailable and
+  no production measurement is authorized.
 - Risks/rollback: the shared runtime has 89 direct consumers, so its cache wave
   is large but mechanical and must be atomic. Stop on any credential-bearing
   beacon, PII/high-cardinality path or field, send without opt-in, unknown server
   contract, new UI/focus/geometry, product mutation or hard scope conflict.
   Local rollback is a reverse commit revert; deployment is out of scope.
-- Next: commit this bootstrap, run strict conflict detection, then record the
-  council/audit findings and failure-first execution plan before product code.
+- Next: commit the durable baseline, add failing-first local contract tests for
+  beacon credentials/path/revoke behavior, then implement only the shared privacy
+  foundation before considering milestone events.

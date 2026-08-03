@@ -21,6 +21,23 @@ workstream manifest, а не из чата или model report.
 - Gate: backend/bot source или безопасные marker, lookup и cleanup пока
   отсутствуют. Никакой реальной клиентской мутации без них.
 
+### OUT-006 — Первый шаг понятен и измерим без чувствительных данных
+
+- Почему важно: после release100 нет нового воспроизводимого P0/P1 на главной,
+  shell, кабинете или каталоге, но существующие клики не доказывают понимание и
+  не дают надёжного времени до первого действия.
+- Результат: свежий путь `guided-desk` → досье → конфигуратор имеет
+  privacy-safe, preregistered measurement contract и отдельный синтетический
+  task test; редизайн открывается только по заранее заданному провалу.
+- Связи: `SUR-001`, `SUR-002`, `JRN-001`, `DEC-0002`, `DEC-0003`, `UXD-0007`,
+  `E-1008`.
+- Метрика: ≥80% участников за ≤90 секунд выбирают уместный шаг и объясняют
+  ожидаемый первый результат; telemetry остаётся proxy и не содержит PII.
+- Proof: `E-1008`, failing-first privacy/measurement contracts, authoritative
+  `/api/visit` dedupe/readback/retention evidence and 5–8 synthetic task tests.
+- Gate: сначала закрыть P1 privacy foundation; production rollout новых событий
+  запрещён до authoritative server contract.
+
 ## VERIFIED
 
 ### OUT-005 — Выбор услуги сохраняет намерение и ведёт к одному шагу
@@ -62,8 +79,8 @@ workstream manifest, а не из чата или model report.
 
 ## NEXT
 
-- `OUT-006` — измерять понимание первого шага и время до него без чувствительных
-  данных; использовать как evidence до preference-led каталожных изменений.
+- После preregistered OUT-006 evidence либо закрыть срез без визуальных изменений,
+  либо открыть bounded `guided-desk` prototype по зафиксированному порогу.
 
 ## LATER
 
