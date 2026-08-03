@@ -9,8 +9,8 @@
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260802release98" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260802release98" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260803out003shell1" />
-<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260803out003shell1&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1" />
-<link rel="stylesheet" href="assets/css/extras.css?v=20260802release98" />
+<link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260803out003shell1&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1&amp;fix=20260803fix009visual" />
+<link rel="stylesheet" href="assets/css/extras.css?v=20260802release98&amp;fix=20260803fix009visual" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -42,7 +42,7 @@
     border-color:rgba(128,152,206,.5);background:rgba(128,152,206,.12)}
   body{background:var(--paper,#F6F1E7)}
 
-  /* общий фокус-ринг для кастомных контролов панели (в тон extras.css) */
+  /* общий фокус-ринг для кастомных контролов панели (в тон extras.css?v=0&amp;fix=20260803fix009visual) */
   .ag-tab:focus-visible,.ag-chip:focus-visible,.ag-row:focus-visible,.ag-tile.click:focus-visible,
   .aa-row:focus-visible,.ag-vrow:focus-visible,
   .ag-qbtn:focus-visible,.ag-stbtn:focus-visible,.clr-dot:focus-visible,.ag-linkbtn:focus-visible,
@@ -421,7 +421,7 @@
 
   /* ================= Полка заготовок: заявка в три нажатия ================= */
   .wz-open{min-height:0;padding:8px 15px;font-size:13.5px;white-space:nowrap}
-  /* Оверлей: свой класс — .sdlg-card шириной 440px (extras.css:108) для
+  /* Оверлей: свой класс — .sdlg-card шириной 440px (extras.css?v=0&amp;fix=20260803fix009visual:108) для
      конструктора тесен. z-index 250: НИЖЕ .sdlg (270) и .stamp-burst (280),
      ВЫШЕ липкой шапки реестра (3). */
   .wz-ov{position:fixed;inset:0;z-index:250;background:rgba(24,21,15,.44);
@@ -429,7 +429,7 @@
     opacity:0;transition:opacity .18s;overflow-y:auto;overscroll-behavior:contain}
   .wz-ov.open{opacity:1}
   .wz-ov[hidden]{display:none}
-  /* Рельсы пометок живут на z-index 96/97 (extras.css:351,356) — под оверлеем.
+  /* Рельсы пометок живут на z-index 96/97 (extras.css?v=0&amp;fix=20260803fix009visual:351,356) — под оверлеем.
      Пока лист открыт, поднимаем их выше него, иначе КАЖДЫЙ тост немой.
      258 < 270: диалог подтверждения по-прежнему кроет всё. */
   html.wz-lock{overflow:hidden}

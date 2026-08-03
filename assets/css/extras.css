@@ -32,7 +32,17 @@
 .cookiebar h2{font:500 21px/1.15 var(--serif);color:var(--ink);margin:2px 0 0}
 .cookiebar>p{font-size:13px;line-height:1.52;color:var(--ink-soft);margin:0 0 13px}
 .cb-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.cb-actions .btn{width:100%;min-height:42px;padding:8px 10px;font-size:12.5px;line-height:1.25}
+/* Надпись переносим, а не режем. На десктопе у `.btn` стоит white-space:nowrap,
+   у `.btn-wax` — overflow:hidden ради блика, а здесь ещё и width:100%. Втроём
+   они превращали любое переполнение в обрезку с ОБЕИХ сторон: «Разрешить
+   аналитику» читалось как «азрешить аналитик». Запаса в раскладке было 11px на
+   19 символов — его съедает увеличенный шрифт (минимальный размер в настройках
+   браузера, системное укрупнение текста). Перенос делает отказ безобидным:
+   кнопка становится в две строки, min-height это допускает. */
+.cb-actions .btn{
+  width:100%;min-height:42px;padding:8px 10px;font-size:12.5px;line-height:1.25;
+  white-space:normal;text-wrap:balance
+}
 .cb-confirmation{
   grid-column:1/-1;display:flex;min-height:42px;align-items:center;justify-content:center;gap:8px;
   color:var(--ink);border:1px solid color-mix(in srgb,var(--wax) 40%,var(--hairline));
