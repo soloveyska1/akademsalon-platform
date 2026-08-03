@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-15f277c72e084a4f9a68a59bbfd8f944",
   "slug": "out-007-search-catalog-clarity",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-007-search-catalog-clarity",
   "base_sha": "e91d69a8a1687a8df1e4c4e5fb9904e0439b3e20",
-  "result_sha": null,
+  "result_sha": "1c9c7a382de13e9c2877221034269144eab702a5",
   "outcome_ids": [
     "OUT-007"
   ],
@@ -522,6 +522,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "45a22a919ae6b83952b99d37f9db40377d9088e44aab5abae0f4167b6c47f534"
 }
