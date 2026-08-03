@@ -1,5 +1,12 @@
 # Workstream handoff
 
+## Historical pre-publish checkpoint — superseded
+
+The following block records the exact state before network recovery. Its
+statements that release102 was not staged/live were true at that checkpoint and
+are superseded by the actual-result block below; they are retained rather than
+rewritten as if publication had already happened.
+
 - Branch: `codex/release102-out007-search-catalog`
 - Outcomes: `OUT-007`
 - Goal: publish the exact integrated OUT-007 result as a deterministic static
@@ -46,3 +53,30 @@
   14/14 baseline before switching. Then run two-vantage smoke, production
   browser matrix and executed release101 rollback/forward restore before
   creating `REL-0102`.
+
+## Actual result after network recovery
+
+- Published exact canonical `e2f76c3d71c82169f52e3c94874424e150cc54d3`
+  as immutable `release102-e2f76c3d71c8`; `current` and `dist` resolve there.
+- Live tree: 337 exact public payload files plus the two preserved server paths,
+  339 total; ownership/modes and isolated release inode were verified.
+- Backup:
+  `pre-release102-e2f76c3d71c8-20260803T062310Z.tar.gz`, 19,241,636 bytes,
+  SHA-256
+  `5eba3e7da2df9acdef692b6d7c3c6ef2ed72d90c979c9dfe52ba02111cc7c7ca`.
+- Checked-in read-only smoke passed 14/14 on the VPS and 14/14 externally.
+  Executed rollback to release101 and forward restore to release102 both passed
+  health and exact catalogue-JS hash discrimination.
+- Post-publish browser proof then reproduced a P1: home, services and dashboard
+  expose no visible pointer search trigger from 921 through 1240 px. Release101
+  has the same gap, so rollback is operationally valid but does not repair it.
+- Verdict: publication and rollback succeeded, but release102 is not a truthful
+  G10 GO/P1=0. `REL-0102` records the exception window; release103 candidate
+  `e97a66a` owns the bounded closure under `E-1010`.
+- No form submit, OAuth, payment, analytics-consent or client-data mutation was
+  used. The failed inactive staging tree with Apple `._` sidecars was preserved
+  rather than deleted without a cleanup plan.
+- Current state: durable receipt complete and ready for workstream submission.
+- Next: integrate this historical record, close the `production:deploy`
+  reservation, integrate release103 product result, then deploy release103 from
+  a fresh dedicated workstream with live smoke and executed rollback/forward.
