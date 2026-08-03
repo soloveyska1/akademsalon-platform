@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-1d99b0fdd56041e9b830b5ca4cd8b5ef",
   "slug": "out-005-search-catalog-discovery",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-005-search-catalog-discovery",
   "base_sha": "746551711335c39c49f57f4351fed78e8d613974",
-  "result_sha": null,
+  "result_sha": "85c6628f8894da0c4f0fdf783c5b3eb8f3b233e9",
   "outcome_ids": [
     "OUT-005"
   ],
@@ -106,6 +106,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "8b3557543c9fc6eb61a2643a53f74bd488971d2b8e52e09b92d01044830ecc2e"
 }
