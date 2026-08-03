@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-415507e96dd1487dad469d43bba13a89",
   "slug": "release103-search-trigger-v2",
-  "status": "active",
+  "status": "abandoned",
   "branch": "codex/release103-search-trigger-v2",
   "base_sha": "e2f76c3d71c82169f52e3c94874424e150cc54d3",
   "result_sha": null,
@@ -434,6 +434,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "4addf7566bd2ddcc45acfbac5f89702f9a13f8947b831173fdbe321bbac3c728"
 }
