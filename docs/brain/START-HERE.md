@@ -4,17 +4,19 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release99>
+- Production: <https://akademsalon.ru/?v=release100>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=release98>
-- Production release: `release99-96156040130c`
+- Production release: `release100-1c275bffde93`
+- Production source: `1c275bffde9368d52433a137bca11666b7d1230c`
 - Проверенный canonical result: `db93a45a385521600fbe1a5121334c413ebdbfa4`
 - Каноническая integration-ветка: `origin/codex/full-reference-production`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Rollback: `release98-c30dbd4924b5`
-- Последний canonical source gate: 482/482 теста и 39/39 Brain. Release99:
-  read-only production smoke 14/14, mobile/desktop browser smoke без overflow и
-  console errors, реальный rollback на release98 и возврат на release99 проверены.
-  Точная запись: [releases/REL-0099.md](releases/REL-0099.md).
+- Rollback: `release99-96156040130c`
+- Последний canonical source gate: 482/482 теста и 39/39 Brain. Release100:
+  read-only production smoke 14/14 с двух точек, independent mobile/desktop
+  browser smoke P0=0/P1=0 без overflow и console errors, реальный rollback на
+  release99 и возврат на release100 проверены. Точная запись:
+  [releases/REL-0100.md](releases/REL-0100.md).
 
 ## Главная цель продукта
 
@@ -26,9 +28,12 @@
 
 ## NOW
 
-1. `OUT-001` — доказать полный путь заявки: отправка → получение → новое дело → первый статус.
-2. Подготовить отдельный release gate для integrated `OUT-005`; production пока
-   остаётся release99 и не содержит canonical result `db93a45`.
+1. Получить пользовательскую обратную связь по production release100 и
+   зафиксировать только воспроизводимые проблемы.
+2. `OUT-006` — измерить понимание первого шага и время до него без чувствительных
+   данных; это следующий безопасный продуктовый срез.
+3. `OUT-001` — не выполнять production submit, пока не появятся безопасные
+   marker/lookup/cleanup и authoritative backend/bot evidence.
 
 `OUT-002`, `OUT-003`, `OUT-004` и `OUT-005` verified; точные implementation/evidence SHA
 находятся в `ROADMAP.md` и `CURRENT-HANDOFF.md`.
@@ -55,7 +60,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0098.md](releases/REL-0098.md) — доказательная запись текущего релиза.
+- [releases/REL-0100.md](releases/REL-0100.md) — доказательная запись текущего релиза.
 
 ## Старт новой сессии
 
@@ -66,7 +71,8 @@
 ```
 
 После этого выберите один outcome, зафиксируйте acceptance criteria и proof plan.
-Не начинайте новый редизайн уже утверждённого экрана без воспроизводимой проблемы.
+Редизайн допустим, когда воспроизводимая проблема или измерение показывает его
+необходимость; решение всё равно проходит независимые review и quality gates.
 
 ## Новая параллельная ветка без ручного manifest
 

@@ -5,10 +5,13 @@
 - Canonical integration ref contains exact OUT-005 result
   `db93a45a385521600fbe1a5121334c413ebdbfa4`; terminal manifest revision 9 is
   commit `581e759`.
-- Production remains `release99-96156040130c`; `REL-0099` proves health,
-  14/14 read-only smoke, mobile/desktop smoke and executed rollback/forward.
+- Production is `release100-1c275bffde93`, exact source
+  `1c275bffde9368d52433a137bca11666b7d1230c`; `REL-0100` proves health,
+  two-vantage 14/14 read-only smoke, independent mobile/desktop smoke and
+  executed rollback/forward to release99 and back.
 - `OUT-002`, `OUT-003`, `OUT-004` and `OUT-005` are verified and integrated.
-  No OUT-005 application code has been deployed yet.
+  OUT-005 is deployed and its exact production asset hashes match the staged
+  release.
 
 ## Latest integrated result
 
@@ -37,20 +40,30 @@
 - Three independent reviewers returned final P0=0, P1=0; final QA also returned
   P2=0. Focused 73/73, full repository 482/482, Brain 39/39, JS syntax,
   `git diff --check` and strict Brain validation are green.
+- Production browser verification covers fresh/selected/saved services at
+  390×844 and 1024×900 in light/dark modes: one contextual primary, no horizontal
+  overflow and zero console errors/warnings. Psychology preserves its route and
+  exact 11,000–15,500 ₽ quote.
+- Live `assets/js/app.js` SHA-256 is
+  `2e7a955072d6ae595dbd7d5c5341e20f6e33427e5c226f2ac9dd99ad45cc7be8`;
+  rollback release99 reproduced
+  `70ea63dd8fbf55ddb50eb5677aabb811f6ddf67b626c744f00917e564de0db0b`,
+  and forward restore returned the release100 hash.
 
 ## Remaining limits
 
-- Production is still release99, so the integrated OUT-005 source is not a live
-  production claim until a separate release record, smoke and rollback pass.
 - `OUT-001` still needs authoritative backend/bot evidence and safe production
   marker/lookup/cleanup before any real end-to-end mutation.
-- Exact pre-integration conflict scan had hard=0 and one explicitly reviewed
-  unmanaged dormant-ref warning; the result was fast-forward integrated.
-- Reviewer-owned browser/server processes were stopped. Older foreign Playwright
-  groups remain visible and were intentionally not killed.
+- The first release100 switch correctly failed closed on inactive-directory mode
+  700 and was rolled back. Corrected `www-data` ownership, 755/644 modes, exact
+  hashes, two-vantage smoke and the final rollback/forward are green. Intermittent
+  local SSH/HTTPS timeouts remain an operations observation.
+- Reviewer-owned browser/server processes were stopped; final process inspection
+  shows only Codex kernels and no project browser or watcher.
 
 ## One exact next step
 
-Create a bounded release workstream from fresh canonical, rerun source gates,
-publish OUT-005 as a new atomic production release, then prove health, read-only
-key-path smoke and executed rollback/forward before asking the user to review it.
+Ask the user to review <https://akademsalon.ru/?v=release100>; record any feedback
+as reproducible evidence. In parallel, bootstrap a bounded `OUT-006` workstream
+from fresh canonical to define privacy-safe first-step comprehension and
+time-to-action measurement before any further redesign.

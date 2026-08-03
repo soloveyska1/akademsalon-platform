@@ -13,11 +13,20 @@
   production smoke; live app/catalog hashes; read-only services/configurator
   browser check by an independent reviewer; executed rollback/forward evidence
   in `REL-0100`.
-- Changed: none yet.
-- Unverified: implementation not started.
+- Changed: published exact source `1c275bffde93` as
+  `release100-1c275bffde93`; recorded deterministic build, backup, live hashes,
+  read-only smoke, independent browser evidence and executed rollback/forward in
+  `REL-0100`; advanced `START-HERE` and `CURRENT-HANDOFF` to production truth.
+- Verified: 482/482 product, Brain 39/39, strict validation, 339-file public tree
+  digest, 14/14 smoke from two vantage points, exact live hashes, P0=0/P1=0
+  independent browser matrix, and atomic release99 rollback/release100 restore.
+- Unverified: no production submit or downstream application delivery was
+  attempted; `OUT-001` remains gated on marker/lookup/cleanup and authoritative
+  backend/bot evidence.
 - Risks/rollback: network interruption before switch must leave release99 live;
   mismatch after switch is an immediate rollback stop. Never use delete sync,
   broaden remote paths or touch data services. Rollback target is exact
   `release99-96156040130c`, already proven in `REL-0099`; both symlinks must
   resolve to the same release before and after every switch.
-- Next: review and commit the manifest plus this handoff.
+- Next: commit and integrate this release proof, ask the user to review release100,
+  then bootstrap bounded `OUT-006` measurement from fresh canonical.
