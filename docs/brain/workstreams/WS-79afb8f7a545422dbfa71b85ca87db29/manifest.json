@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-79afb8f7a545422dbfa71b85ca87db29",
+  "slug": "out-001-claim-continuity",
+  "status": "active",
+  "branch": "codex/out-001-claim-continuity",
+  "base_sha": "1d9d681fcf037d998a81102be82a7f8fb039c952",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-001"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/js/cabinet.js",
+        "match": "exact"
+      },
+      {
+        "path": "dashboard.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1012.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-79afb8f7a545422dbfa71b85ca87db29/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-case-context.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/js/app.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1011.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/OUT-001-AUTHORITATIVE-BACKEND.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/privacy-security-contracts.test.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:out-001-claim-continuity"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:assets/js/cabinet.js"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:cabinet-claim-continuity"
+    },
+    {
+      "access": "read",
+      "key": "api-route:POST:/orders/access/exchange"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
