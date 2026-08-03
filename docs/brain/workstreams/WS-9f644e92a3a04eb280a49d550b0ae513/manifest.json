@@ -453,6 +453,10 @@
         "match": "exact"
       },
       {
+        "path": "tests/seo-pricing-consistency.test.js",
+        "match": "exact"
+      },
+      {
         "path": "tests/services-choice-contract.test.js",
         "match": "exact"
       },
@@ -492,10 +496,6 @@
       },
       {
         "path": "tests/exact-concept-shell.test.js",
-        "match": "exact"
-      },
-      {
-        "path": "tests/seo-pricing-consistency.test.js",
         "match": "exact"
       },
       {
@@ -554,6 +554,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 6,
-  "base_manifest_hash": "a7258e8afe6ce50d6ac80b7e5c203bede6c1a1be833f943a46b02a5ebe3d4076"
+  "manifest_revision": 7,
+  "base_manifest_hash": "4b2aa125a638dd810f572273179f0de090f46c161ff0c7e9cdd86937140078bf"
 }
