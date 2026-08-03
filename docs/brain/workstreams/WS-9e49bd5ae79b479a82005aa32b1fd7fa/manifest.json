@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-9e49bd5ae79b479a82005aa32b1fd7fa",
   "slug": "out-006-first-step-measurement",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-006-first-step-measurement",
   "base_sha": "7dc6b9bbd20fcd6dad4f2a470b199b0021cdab4a",
-  "result_sha": null,
+  "result_sha": "783dcf8cb90f880d15bdc88cdf04525e895af65c",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -478,6 +478,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "2ff13cee484f932d41395807d4a473bd8258dcc27a3b9a849d68d504039c2d3d"
+  "manifest_revision": 3,
+  "base_manifest_hash": "16f1cdb22310f894a46cefe57f3cb5652a5361131134dc22d76092366dddb180"
 }
