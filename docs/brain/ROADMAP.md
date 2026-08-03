@@ -35,8 +35,9 @@ workstream manifest, а не из чата или model report.
   ожидаемый первый результат; telemetry остаётся proxy и не содержит PII.
 - Proof: `E-1008`, failing-first privacy/measurement contracts, authoritative
   `/api/visit` dedupe/readback/retention evidence and 5–8 synthetic task tests.
-- Gate: сначала закрыть P1 privacy foundation; production rollout новых событий
-  запрещён до authoritative server contract.
+- Gate: P1 privacy foundation закрыт в `1011060`; production rollout новых
+  событий по-прежнему запрещён до authoritative server contract, после чего
+  нужен preregistered synthetic task test.
 
 ## VERIFIED
 

@@ -37,8 +37,9 @@ Before adding any event or collecting a baseline:
   never an arbitrary pathname from a 404 URL; query and hash remain absent;
 - reject, revoke and expiry must remove `salon_vid`, `salon_attr_v2` and the
   analytics data already covered by the Metrika cleanup path;
-- retry must preserve one logical event identity before any milestone is used
-  for aggregation;
+- without an authoritative server idempotency contract the client is
+  deliberately best-effort and must not retry; any future retry must preserve
+  one logical event identity before a milestone is used for aggregation;
 - the send policy and request builder must have a local stub seam. Product tests
   must never need a production request.
 
@@ -97,7 +98,8 @@ failures independently:
 4. reject/revoke/expiry purge browser ID and attribution;
 5. regrant cannot resurrect pre-revoke first-touch data;
 6. exact payload allowlist excludes PII and high-cardinality values;
-7. retry/double click/BFCache/consent toggle keep one logical event identity;
+7. the existing beacon performs no retry; future retry/double click/BFCache
+   identity tests stay blocked until the server contract exists;
 8. active-time buckets exclude hidden time and respect exact boundaries;
 9. keyboard and pointer expose the same milestone semantics without changing
    focus, accessible names or the default action;
@@ -106,6 +108,10 @@ failures independently:
 Then run the focused privacy/home/cache suites, full product regression, JS
 syntax, `git diff --check`, Brain tests/strict validation and read-only browser
 smoke at 360/390/768/1024/1440 in light/dark and keyboard/reduced-motion states.
+
+The frontend privacy foundation completed in `1011060`; items 8–9 above belong
+to the still-blocked milestone implementation and synthetic comprehension test,
+not to this invisible hardening release.
 
 ## Stop conditions and rollback
 
