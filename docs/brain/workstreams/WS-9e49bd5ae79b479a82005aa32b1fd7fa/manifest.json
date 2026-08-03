@@ -33,11 +33,23 @@
         "match": "exact"
       },
       {
+        "path": "assets/css/home-release.min.css",
+        "match": "exact"
+      },
+      {
         "path": "assets/js/app.js",
         "match": "exact"
       },
       {
         "path": "assets/js/home-guided-flow.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/home-release.min.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/polish15-supporting.js",
         "match": "exact"
       },
       {
@@ -241,6 +253,10 @@
         "match": "exact"
       },
       {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
         "path": "kandidatskaya-dissertaciya.html",
         "match": "exact"
       },
@@ -433,6 +449,10 @@
       {
         "path": "README.md",
         "match": "exact"
+      },
+      {
+        "path": "scripts/build-home-release.mjs",
+        "match": "exact"
       }
     ]
   },
@@ -458,6 +478,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "2ff13cee484f932d41395807d4a473bd8258dcc27a3b9a849d68d504039c2d3d"
 }
