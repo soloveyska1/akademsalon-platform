@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-3e3d97769aa2481aaf5a8340b6d5cc52",
   "slug": "release103-search-trigger-v3",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/release103-search-trigger-v3",
   "base_sha": "cd035ac7f7739345fff7a11236ede679e8336ba0",
   "result_sha": "8ed1cd5c4f463fbf3a3010c9dd6fd5437d335b79",
@@ -434,6 +434,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "281211bb8ce4fe0a073bb6809a6e3653f9b17202a864f8bdfcd3acbaed583c98"
+  "manifest_revision": 3,
+  "base_manifest_hash": "c6b1567876e8fe9f619b4b631d9ab85146223a2da93d84c7d56de591fadc9699"
 }
