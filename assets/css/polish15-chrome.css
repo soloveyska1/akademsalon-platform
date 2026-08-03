@@ -2919,6 +2919,12 @@ body .site-header .header-nav-popover__foot{
 /* ==========================================================================
    RELEASE 82 · компактная редакционная шапка и колофон
    ========================================================================== */
+:root{--site-header-h:70px}
+
+@media(max-width:920px){
+  :root{--site-header-h:calc(var(--mobile-appbar-h,62px) + env(safe-area-inset-top))}
+}
+
 body .site-header{
   --header-label:#5f5a50;
   height:70px;

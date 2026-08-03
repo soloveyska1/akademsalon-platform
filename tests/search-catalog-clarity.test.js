@@ -12,6 +12,7 @@ const catalogCss = read('assets/css/polish15-catalog.css');
 const chromeJs = read('assets/js/polish15-chrome.js');
 const catalogJs = read('assets/js/polish15-catalog.js');
 const services = read('services.html');
+const homeReleaseCss = read('assets/css/home-release.min.css');
 const releaseWave = '20260803out007search1';
 
 function assertPattern(source, pattern, message) {
@@ -43,9 +44,10 @@ function bootSearchIndex(rows) {
 }
 
 test('gate 1: catalogue and mobile search geometry reserve header and dock space', () => {
-  assertPattern(catalogCss, /--catalog-header-offset:\s*72px/, 'desktop header offset is not explicit');
+  assertPattern(chromeCss, /--site-header-h:\s*70px/, 'shared desktop header height is not explicit');
+  assertPattern(chromeCss, /--site-header-h:\s*calc\(var\(--mobile-appbar-h,62px\) \+ env\(safe-area-inset-top\)\)/, 'shared mobile appbar height is not explicit');
+  assertPattern(catalogCss, /--catalog-header-offset:\s*var\(--site-header-h,70px\)/, 'catalogue does not consume the shared header height');
   assertPattern(catalogCss, /\.p15-catalog \.catalog-toolbar\s*\{[\s\S]*?top:\s*var\(--catalog-header-offset\)/, 'toolbar does not use the shared header offset');
-  assertPattern(catalogCss, /--catalog-header-offset:\s*var\(--mobile-header-h\)/, 'mobile appbar offset is not inherited');
   assertPattern(catalogCss, /body\.page-services \.p15-catalog\s*\{[\s\S]*?padding-bottom:\s*var\(--mobile-bottom-clear\)/, 'catalogue does not reserve dock-safe flow space');
   assertPattern(catalogCss, /\.p15-catalog \.catalog-toolbar\s*\{[\s\S]*?scroll-margin-bottom:\s*var\(--mobile-bottom-clear\)/, 'toolbar lacks dock-safe scroll margin');
 
@@ -53,10 +55,14 @@ test('gate 1: catalogue and mobile search geometry reserve header and dock space
   assertPattern(correctedSearchLayer, /@media\(max-width:480px\)[\s\S]*?\.overlay--search \.search-results>\.search-result\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,1fr\) 34px/, '390 result title is still constrained by the tag column');
   assertPattern(correctedSearchLayer, /\.overlay--search \.search-suggestions button\s*\{[\s\S]*?min-height:\s*44px/, 'suggestion chips are below the touch-target floor');
   assertPattern(correctedSearchLayer, /\.overlay--search \.search-suggestions>div\s*\{[\s\S]*?-webkit-mask-image:\s*linear-gradient/, 'horizontal suggestions have no overflow affordance');
+  assertPattern(correctedSearchLayer, /@media\(prefers-reduced-motion:reduce\)[\s\S]*?\.overlay--search \.search-close:hover,[\s\S]*?transform:\s*none/, 'search close motion is not disabled for reduced-motion users');
+  assertPattern(homeReleaseCss, /grid-template-columns:minmax\(0,1fr\) 34px/, 'generated home bundle does not contain the corrected mobile result row');
+  assertPattern(homeReleaseCss, /-webkit-mask-image:linear-gradient/, 'generated home bundle lacks the chip overflow affordance');
 });
 
 test('gate 2: the corrected editorial search layer has one shared owner', () => {
   assert.equal(/SEARCH · редакционная командная палитра/.test(homeStory), false, 'home still owns the shared search layer');
+  assert.equal(/:root\[data-theme="dark"\] \.overlay--search \.overlay__panel\s*\{[\s\S]*?background:#11100e/.test(homeStory), false, 'home keeps a stale post-move dark override');
   assert.match(chromeCss, /SHARED SEARCH · редакционная командная палитра/);
   assert.match(chromeCss, /\.overlay--search \.search-brand/);
   assert.match(chromeCss, /\.overlay--search \.search-field-shell/);
@@ -94,20 +100,27 @@ test('gate 3: aliases and ranking are deterministic for the frozen query matrix'
 
 test('gate 2: every shared consumer and the home bundle use one cache wave', () => {
   const files = fs.readdirSync(root).filter((file) => file.endsWith('.html'));
-  let sharedConsumers = 0;
+  let cssConsumers = 0;
+  let jsConsumers = 0;
   for (const file of files) {
     const html = read(file);
-    if (!/polish15-chrome\.(?:css|js)\?v=/.test(html)) continue;
-    sharedConsumers += 1;
-    for (const match of html.matchAll(/polish15-chrome\.(?:css|js)\?v=([^&"']+)/g)) {
-      assert.equal(match[1], releaseWave, `${file}: stale shared-search cache key`);
+    if (/polish15-chrome\.css\?/.test(html)) cssConsumers += 1;
+    if (/polish15-chrome\.js\?/.test(html)) jsConsumers += 1;
+    for (const match of html.matchAll(/polish15-chrome\.(?:css|js)\?([^"']+)/g)) {
+      const params = new URLSearchParams(match[1].replaceAll('&amp;', '&'));
+      assert.equal(params.get('search'), releaseWave, `${file}: stale shared-search cache key`);
     }
   }
-  assert.equal(sharedConsumers, 92, 'unexpected shared-search consumer inventory');
+  assert.equal(cssConsumers, 89, 'unexpected shared-search CSS consumer inventory');
+  assert.equal(jsConsumers, 88, 'unexpected shared-search JS consumer inventory');
 
   const home = read('index.html');
-  assert.match(home, new RegExp(`home-release\\.min\\.css\\?v=${releaseWave}`));
-  assert.match(home, new RegExp(`home-release\\.min\\.js\\?v=${releaseWave}`));
+  for (const asset of ['css', 'js']) {
+    const match = home.match(new RegExp(`home-release\\.min\\.${asset}\\?([^"']+)`));
+    assert.ok(match, `home ${asset} bundle is missing`);
+    const params = new URLSearchParams(match[1].replaceAll('&amp;', '&'));
+    assert.equal(params.get('search'), releaseWave, `home ${asset} bundle lacks the search cache wave`);
+  }
 });
 
 test('protected catalogue inventory remains physically unchanged', () => {

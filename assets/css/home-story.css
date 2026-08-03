@@ -5125,12 +5125,6 @@ body .resume-card.is-rail-resume .resume-card__message strong{
     #080706;
 }
 
-:root[data-theme="dark"] .overlay--search .overlay__panel{
-  border-color:rgba(255,118,87,.22);
-  background:#11100e;
-  box-shadow:0 32px 100px rgba(0,0,0,.72),0 0 0 1px rgba(255,255,255,.025);
-}
-
 :root[data-theme="dark"] .case-scope-backdrop{
   background:
     radial-gradient(circle at 76% 17%,rgba(240,90,60,.16),transparent 35%),
@@ -5181,7 +5175,8 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   background:linear-gradient(100deg,rgba(240,90,60,.12),transparent 78%);
 }
 
-/* ============================================================
+
++/* ============================================================
    SEARCH · редакционная командная палитра
    ============================================================ */
 .overlay--search{
@@ -5281,6 +5276,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 .overlay--search .search-head .icon-button--close{
   position:relative;
   display:grid;
+  box-sizing:border-box;
   width:44px;
   height:44px;
   min-width:44px;
@@ -5387,7 +5383,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 }
 
 .overlay--search .search-suggestions button{
-  min-height:36px;
+  min-height:44px;
   padding:7px 13px;
   border-color:color-mix(in srgb,var(--hairline-strong) 72%,transparent);
   border-radius:999px;
@@ -5615,8 +5611,11 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
   .overlay--search .search-suggestions>div{
     flex-wrap:nowrap;
+    padding-right:28px;
     overflow-x:auto;
     scrollbar-width:none;
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 26px),transparent 100%);
+    mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 26px),transparent 100%);
   }
 
   .overlay--search .search-suggestions>div::-webkit-scrollbar{display:none}
@@ -5629,6 +5628,18 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   .overlay--search .search-footer{display:none}
   .overlay--search .search-zero-state{grid-template-columns:25px minmax(0,1fr)}
   .overlay--search .search-zero-state strong{font-size:20px}
+  .overlay--search .search-results>.search-result{
+    grid-template-columns:minmax(0,1fr) 34px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .overlay--search .search-close,
+  .overlay--search .search-close:hover,
+  .overlay--search .search-close:focus-visible{
+    transition:none;
+    transform:none;
+  }
 }
 
 /* ============================================================
