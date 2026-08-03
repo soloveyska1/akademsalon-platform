@@ -4,16 +4,17 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release98>
+- Production: <https://akademsalon.ru/?v=release99>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=release98>
-- Production release: `release98-c30dbd4924b5`
-- Проверенный исходный commit: `c30dbd4924b55bd92bfe096014231bbbaaa99a9b`
+- Production release: `release99-96156040130c`
+- Проверенный исходный commit: `96156040130c874519d1cd4f6335173a774d7847`
 - Каноническая integration-ветка: `origin/codex/full-reference-production`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Rollback: `release97-da0c1c1636c6`
-- Последний canonical source gate: 472/472 теста; OUT-003 дополнительно прошёл
-  exact 360/390/768/1024/1440 local browser spine. Production evidence остаётся
-  привязанным к release98: 60 локальных комбинаций и 9 production smoke-сценариев.
+- Rollback: `release98-c30dbd4924b5`
+- Последний canonical source gate: 472/472 теста и 39/39 Brain. Release99:
+  read-only production smoke 14/14, mobile/desktop browser smoke без overflow и
+  console errors, реальный rollback на release98 и возврат на release99 проверены.
+  Точная запись: [releases/REL-0099.md](releases/REL-0099.md).
 
 ## Главная цель продукта
 

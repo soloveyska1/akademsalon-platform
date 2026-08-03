@@ -8,8 +8,12 @@
 - `OUT-002` and `OUT-004` cabinet slices are also verified and integrated
   (`E-1004`, `E-1005`). Main/home and the shared shell have no reproduced open
   P0/P1 in their bounded local gates.
-- Production release remains `release98-c30dbd4924b5`; no deploy, production
-  submit/payment, OAuth mutation, client-data access or deletion occurred.
+- Production is `release99-96156040130c`, exact canonical source
+  `96156040130c874519d1cd4f6335173a774d7847`; evidence is `REL-0099`.
+  Health, 14/14 GET/HEAD smoke, mobile/desktop browser smoke and an executed
+  rollback to `release98-c30dbd4924b5` plus forward restore are green. No
+  production submit/payment, OAuth mutation, client-data access or deletion
+  occurred.
 
 ## Active workstream
 
@@ -67,8 +71,12 @@ correction, revise manifest/cache scope before touching it.
 
 - `OUT-001` frontend→API→bot/operator→cabinet exactly-once proof still lacks
   authoritative backend/bot source and safe marker/lookup/cleanup.
-- Reduced motion has source proof only in this OUT-005 baseline; no live OAuth,
-  production visual or downstream delivery claim is made.
+- Reduced motion has source proof only in this OUT-005 baseline. The release99
+  production visual claim is bounded to shared-shell mobile/desktop smoke; no
+  live OAuth or downstream delivery claim is made.
+- The release runner saw intermittent new SSH/HTTPS handshake timeouts before a
+  green final pass. `REL-0099` records the recovered attempts and final hashes;
+  recurrence is an operations/network observation to monitor.
 - Strict conflict has hard=0 and one explicitly accepted old/dormant-ref warning;
   fresh fetch/scan remains mandatory before integration.
 
