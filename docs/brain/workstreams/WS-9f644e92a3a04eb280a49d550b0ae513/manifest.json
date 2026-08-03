@@ -425,6 +425,14 @@
         "match": "exact"
       },
       {
+        "path": "tests/home-no-scroll-flow.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/order-submit-contract.test.js",
+        "match": "exact"
+      },
+      {
         "path": "tests/compact-client-journey.test.js",
         "match": "exact"
       },
@@ -446,6 +454,10 @@
       },
       {
         "path": "tests/services-choice-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/shared-shell-contract.test.js",
         "match": "exact"
       }
     ],
@@ -542,6 +554,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 5,
-  "base_manifest_hash": "c609e7f4b45e5bbb8dceadb90b50e30448daca4ce78b5d3fc0dd7d0da9e96293"
+  "manifest_revision": 6,
+  "base_manifest_hash": "a7258e8afe6ce50d6ac80b7e5c203bede6c1a1be833f943a46b02a5ebe3d4076"
 }
