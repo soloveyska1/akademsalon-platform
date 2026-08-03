@@ -230,11 +230,18 @@ test('fingerprint follows JSON wire semantics and ignores object key order', asy
   assert.equal(calls.length, 2, 'same JSON intent may retry with the same durable identity');
   assert.equal(calls[0].client_request_id, calls[1].client_request_id);
 
+  /* Изменённое намерение больше не запирает форму, а РОТИРУЕТ номер попытки.
+     Отпечаток по-прежнему различает [] и [undefined] — просто наблюдаемый
+     результат другой: не отказ, а новая попытка с новым номером. */
   const changed = await contract.submit(
     'guide_microlead', { topic: 'same', nested: { a: 1, b: 2 }, values: [undefined] }, 0, 'guide-a.html',
   );
-  assert.equal(changed.contractError, 'intent_changed', '[] and [undefined] have different JSON wire values');
-  assert.equal(calls.length, 2);
+  assert.equal(changed.contractError, undefined, '[] and [undefined] are a new intent, not a lockout');
+  assert.equal(calls.length, 3, 'changed intent reaches the server');
+  assert.notEqual(
+    calls[2].client_request_id, calls[0].client_request_id,
+    'changed intent carries a fresh identity',
+  );
 });
 
 test('producer-supplied request identity and unserializable payload fail before fetch', async () => {
@@ -321,7 +328,7 @@ test('request state clears only by compare-and-swap with the exact terminal atte
   assert.equal(storage.entries().length, 0);
 });
 
-test('ambiguous failures retain identity across reload and changed intent stays offline', async () => {
+test('ambiguous failures retain identity across reload and changed intent rotates it', async () => {
   const storage = fakeStorage();
   const ids = [];
   const options = {
@@ -335,9 +342,23 @@ test('ambiguous failures retain identity across reload and changed intent stays 
   const reloaded = makeContract(options).contract;
   await reloaded.submit('configurator', { topic: 'same' }, 0);
   assert.equal(ids[0], ids[1]);
+  /* Прежний контракт держал форму запертой: правка после неподтверждённой
+     отправки не уходила вовсе, и человек читал «верните прежний вариант».
+     Вернуть его он обычно не мог, а состояние живёт в sessionStorage и
+     переживает перезагрузку — форма запиралась до закрытия вкладки.
+     Теперь правка уходит с новым номером; идемпотентность продолжает
+     работать там, где она и нужна, — на повторе ОДНОГО И ТОГО ЖЕ. */
   const changed = await reloaded.submit('configurator', { topic: 'changed' }, 0);
-  assert.equal(changed.contractError, 'intent_changed');
-  assert.equal(ids.length, 2);
+  assert.equal(changed.contractError, undefined);
+  assert.equal(ids.length, 3, 'edited intent is sent instead of being blocked');
+  /* Сравнивать ids[2] с ids[0] нельзя: поддельный генератор номеров в этом
+     тесте начинает счёт заново на каждом «перезапуске» и честно выдаёт ту же
+     строку. Проверяем по существу — повтор УЖЕ ИЗМЕНЁННОГО намерения обязан
+     переиспользовать номер: значит ротация записала его как текущий. */
+  const repeat = await reloaded.submit('configurator', { topic: 'changed' }, 0);
+  assert.equal(repeat.contractError, undefined);
+  assert.equal(ids.length, 4);
+  assert.equal(ids[3], ids[2], 'the rotated identity became the durable one');
 });
 
 test('order transport invokes the shared status hook before reading a 401 body', async () => {
@@ -375,7 +396,10 @@ test('producer UI clears identity only after confirmed or definitive terminal ou
   assert.doesNotMatch(configurator, /function onSubmitErr[\s\S]{0,120}?clearRequestId\(\);/);
   assert.match(extras, /outcome === 'definitive_rejection'/);
   assert.match(extras, /clear\('guide_microlead', here, attempt\.clientRequestId\)/);
-  assert.match(extras, /outcome === 'local_blocked' && !attempt\.clientRequestId[\s\S]{0,220}?guideIntent = ''/);
+  /* Локальный замок guideIntent убран целиком: он повторял ту же ошибку —
+     не давал отправить переписанный вопрос. Сбрасывать теперь нечего,
+     поэтому проверяем обратное: замка в коде нет. */
+  assert.doesNotMatch(extras, /guideIntent/);
 });
 
 test('generated home runtime remains in parity with the canonical helper', () => {
@@ -400,7 +424,7 @@ test('every shared order-runtime consumer uses its current atomic cache wave', (
     const refs = [...source.matchAll(/assets\/js\/(app|extras|home-release\.min)\.js\?v=([^&"']+)/g)];
     for (const ref of refs) {
       consumers++;
-      const expected = ref[1] === 'extras' ? '20260803out003shell1' : '20260803out005services1';
+      const expected = ref[1] === 'extras' ? '20260804shell112' : '20260804services112';
       assert.equal(ref[2], expected, `${file}: stale ${ref[1]} runtime cache key`);
     }
   }

@@ -38,8 +38,17 @@ test('approved wizard facade exposes the live quote and first cart action', () =
   assert.match(html, /Проверьте результат, срок и ориентир цены/);
   assert.match(html, /<details class="recommendation-more">/);
   assert.match(html, /Почему этот вариант и что входит/);
-  assert.match(html, /cartHasItems \? 'Проверить состав' : 'Проверить расчёт'/);
-  assert.match(html, /class="line-link concept-cart-link" type="button" data-cart-open/);
+  /* Раньше здесь стояла одна ссылка «Проверить расчёт» — она читается как
+     «посмотреть итог», а не как «можно добавить ещё работу», и кнопки
+     добавления в видимом интерфейсе не было вовсе: все три точки входа в
+     корзину вырезал прежний редизайн. Теперь на этом месте полоса состава,
+     и контракт проверяет именно её: сколько позиций набрано, вход в состав
+     и явное действие «добавить ещё». */
+  assert.match(html, /data-compose-bar/);
+  assert.match(html, /data-compose-count/);
+  assert.match(html, /class="compose-bar__open" data-cart-open/);
+  assert.match(html, /class="compose-bar__add" data-compose-another/);
+  assert.match(html, /cart\.materializeCurrent\(\{ silent:false \}\)\) return;\s*\n\s*startAnother\(\)/);
   assert.match(html, /function materialsMarkup\(\) \{\s*var rec = recommendationFor\(\);\s*var pricing = quoteInfo\(\)/);
 });
 
@@ -283,7 +292,7 @@ test('home begins directly after the in-flow desktop header and mobile appbar of
 test('production chrome switches to the approved mobile edition at 920px', () => {
   // OUT-003 moves the shared shell and the generated home bundle in one cache wave.
   // OUT-007 keeps its shared search wave; release103 adds a CSS-only trigger marker.
-  assert.match(indexHtml, /home-release\.min\.css\?v=20260803out003shell1&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1" data-mobile-edition="1"/);
+  assert.match(indexHtml, /home-release\.min\.css\?v=20260804shell112&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1" data-mobile-edition="1"/);
   assert.match(mobileCss, /@media screen and \(max-width:920px\)/);
   assert.match(appJs, /link\.media = 'screen and \(max-width:920px\)'/);
   assert.match(appJs, /matchMedia\('\(max-width:920px\)'\)/);

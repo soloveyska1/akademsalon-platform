@@ -59,8 +59,8 @@ const publicRoutes = Object.values(routeFamilies).flat().sort();
 const adminFoundation = ['admin.html'];
 const standaloneRoutes = ['admin-covers.html', 'oplaceno.html'];
 const directPublicRoutes = publicRoutes.filter((file) => file !== 'index.html');
-const shellReleaseKey = '20260803out003shell1';
-const out005ReleaseKey = '20260803out005services1';
+const shellReleaseKey = '20260804shell112';
+const out005ReleaseKey = '20260804services112';
 
 function assetUrl(html, asset) {
   const match = html.match(new RegExp(`(?:href|src)="(${asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[^\"]*)"`));

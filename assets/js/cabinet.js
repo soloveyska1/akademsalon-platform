@@ -477,8 +477,11 @@ function initCabinet() {
       S.api.post('/orders/access/exchange', {}, { 'X-Claim-Exchange': tok }).then(function (r) {
         if (!r || !r.ok) { toast('Ссылка уже использована или истекла — попросите новую'); return; }
         if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
+        var claimedId = selectClaimedOrder(r);
         toast('Дело открыто на этом устройстве');
-        loadList();
+        /* keepCurrent просим только когда знаем точный номер. Если дела не
+           окажется в списке, loadList сам мягко вернётся к делу по умолчанию. */
+        loadList(!!claimedId);
       });
       return;
     }
@@ -669,6 +672,39 @@ function initCabinet() {
 
   /* Строка личности v2 (userRow) заменена стойкой каркаса:
      profileCard()/impBanner() в renderTab; notiRow/linksRow живут в «Помощи». */
+
+  /* -------- Ссылка доступа открывает именно то дело --------
+     Обмен одноразовой ссылки возвращает точный order_id, но кабинет его
+     игнорировал: показывал тост и загружал список, а дальше открывалось
+     то дело, которое выберет обычная логика по умолчанию. У человека с
+     двумя делами ссылка на №202 открывала №101 — он видел чужой по смыслу
+     заказ и решал, что ссылка сломана.
+
+     Проверка нарочно придирчива и работает fail-open: на любой мусор в
+     ответе возвращаем null и НЕ трогаем текущий выбор. Промахнуться молча
+     в пользу неверного дела здесь хуже, чем не сработать вовсе. */
+  /* claim-continuity-contract:start */
+  function exactClaimOrderId(response) {
+    if (!response || response.ok !== true) return null;
+    var raw = response.order_id;
+    if (typeof raw === 'string') {
+      /* только каноническая запись: «0202» и «202x» не наши идентификаторы */
+      if (!/^[1-9][0-9]*$/.test(raw)) return null;
+      raw = Number(raw);
+    }
+    if (typeof raw !== 'number') return null;
+    if (!Number.isSafeInteger(raw) || raw < 1) return null;
+    return raw;
+  }
+
+  function selectClaimedOrder(response) {
+    var claimedId = exactClaimOrderId(response);
+    if (!claimedId) return null;
+    st.currentId = claimedId;
+    st.caseOpen = true;
+    return claimedId;
+  }
+  /* claim-continuity-contract:end */
 
   /* -------- «Сейчас важно»: одно главное действие по всем делам --------
      Кабинет сам ранжирует: оплата → решение по цене → приёмка → новое.
@@ -4934,6 +4970,8 @@ function initCabinet() {
     if (TAB_HASHES.indexOf(h) >= 0 && (h !== st.tab || st.caseOpen)) { st.caseOpen = false; setTab(h, true); }
     else if (/^order-\d+/.test(h)) applyHash(h, true);
   });
+  /* Точный номер дела из одноразовой ссылки — его же откроем после загрузки. */
+  var startupClaimId = null;
   /* Ссылка доступа с другого устройства: только #claim=<токен>.
      Query-вариант намеренно не принимается: он попадает в access-log.
      Если затем пользователь привязывает дело к аккаунту, сервер принимает
@@ -4953,6 +4991,7 @@ function initCabinet() {
             return r;
           }
           if (r.guest_session && S.api.setGuestHint) S.api.setGuestHint(true);
+          startupClaimId = selectClaimedOrder(r);
           toast('Дело добавлено на это устройство');
           return r;
         });
@@ -5054,8 +5093,8 @@ function initCabinet() {
     });
   } else {
     Promise.all([S.api.ready || Promise.resolve(), startupAccess]).then(
-      function () { loadList(); startPolling(); },
-      function () { loadList(); startPolling(); }
+      function () { loadList(!!startupClaimId); startPolling(); },
+      function () { loadList(!!startupClaimId); startPolling(); }
     );
   }
 

@@ -440,6 +440,11 @@ test('смета не прячет тему и сворачивает необя
   );
   assert.match(cartSource, /class="cart-tools-toggle"/);
   assert.match(cartSource, /class="cart-tools-body"/);
-  assert.match(cartSource, /if \(jump\.tagName === 'DETAILS'\) jump\.open = true/);
   assert.doesNotMatch(cartSource, /<section class="cart-tools"/);
+  /* Проверка на раскрытие <details> при переходе снята вместе с мини-визардом
+     «01 Состав · 02 Выгода · 03 Отправка»: он был визардом внутри визарда,
+     «Отправка» дублировала кнопку подвала, а переходы прокручивали панель,
+     которая помещается почти целиком. Убран по решению владельца.
+     Свёртка выгоды при этом осталась и проверяется выше. */
+  assert.doesNotMatch(cartSource, /data-cart-jump/);
 });

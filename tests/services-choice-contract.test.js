@@ -348,5 +348,5 @@ test('all 24 catalog consumers use one OUT-005 cache key', () => {
       versions.add(match[1]);
     }
   }
-  assert.deepEqual([...versions], ['20260803out005services1']);
+  assert.deepEqual([...versions], ['20260804services112']);
 });

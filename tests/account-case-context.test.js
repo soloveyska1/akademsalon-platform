@@ -323,6 +323,50 @@ test('case return restores the exact priority trigger after a live-safe rerender
   assert.match(clickSource, /el\.getAttribute\('data-now-jump'\) === returnFocus\.jump/);
 });
 
+test('one-time claim keeps the exact returned case and malformed identity fails open', () => {
+  const source = between(
+    '/* claim-continuity-contract:start */',
+    '/* claim-continuity-contract:end */',
+  ) + '/* claim-continuity-contract:end */';
+  const api = { st: { currentId: null, caseOpen: false } };
+  vm.runInNewContext(source, api);
+
+  assert.equal(api.selectClaimedOrder({ ok: true, order_id: 202 }), 202);
+  assert.equal(api.st.currentId, 202);
+  assert.equal(api.st.caseOpen, true);
+
+  [
+    null,
+    {},
+    { ok: false, order_id: 101 },
+    { ok: true, order_id: 0 },
+    { ok: true, order_id: -1 },
+    { ok: true, order_id: 4.2 },
+    { ok: true, order_id: '0202' },
+    { ok: true, order_id: '202x' },
+    { ok: true, order_id: Number.MAX_SAFE_INTEGER + 1 },
+  ].forEach((response) => {
+    api.st.currentId = 101;
+    api.st.caseOpen = false;
+    assert.equal(api.selectClaimedOrder(response), null);
+    assert.equal(api.st.currentId, 101);
+    assert.equal(api.st.caseOpen, false);
+  });
+
+  assert.equal(api.selectClaimedOrder({ ok: true, order_id: '202' }), 202);
+  assert.equal(api.st.currentId, 202);
+  assert.equal(api.st.caseOpen, true);
+
+  const manualClaim = between('function claimByCode(raw)', 'function tplEmpty()');
+  assert.match(manualClaim, /var claimedId = selectClaimedOrder\(r\)/);
+  assert.match(manualClaim, /loadList\(!!claimedId\)/);
+
+  const startupClaim = between('/* Ссылка доступа с другого устройства:', '/* возврат из ВК/Mail.ru:');
+  assert.match(startupClaim, /startupClaimId = selectClaimedOrder\(r\)/);
+  const startupLoad = between("var impKey = null;", '/* гостям с заказом');
+  assert.match(startupLoad, /loadList\(!!startupClaimId\)/);
+});
+
 test('dark priority CTA reaches WCAG AA and changed assets are cache-busted', () => {
   const darkBlocks = [...accountCss.matchAll(/:root\[data-theme="dark"\] \.is-account-route\s*\{([\s\S]*?)\}/g)];
   assert.ok(darkBlocks.length > 0);

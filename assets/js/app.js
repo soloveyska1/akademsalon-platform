@@ -35,10 +35,10 @@
     link.media = 'screen and (max-width:920px)';
     link.setAttribute('data-mobile-edition', '1');
     try {
-      link.href = source ? new URL('../css/mobile.css?v=20260803out003shell1', source).href
-        : 'assets/css/mobile.css?v=20260803out003shell1';
+      link.href = source ? new URL('../css/mobile.css?v=20260804shell112', source).href
+        : 'assets/css/mobile.css?v=20260804shell112';
     } catch (e) {
-      link.href = 'assets/css/mobile.css?v=20260803out003shell1';
+      link.href = 'assets/css/mobile.css?v=20260804shell112';
     }
     document.head.appendChild(link);
   })();
