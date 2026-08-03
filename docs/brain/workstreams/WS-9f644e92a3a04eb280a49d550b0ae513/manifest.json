@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-9f644e92a3a04eb280a49d550b0ae513",
   "slug": "out-005-services-choice",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-005-services-choice",
   "base_sha": "96156040130c874519d1cd4f6335173a774d7847",
-  "result_sha": null,
+  "result_sha": "db93a45a385521600fbe1a5121334c413ebdbfa4",
   "outcome_ids": [
     "OUT-005"
   ],
@@ -554,6 +554,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 7,
-  "base_manifest_hash": "4b2aa125a638dd810f572273179f0de090f46c161ff0c7e9cdd86937140078bf"
+  "manifest_revision": 8,
+  "base_manifest_hash": "3b933a9fe49417fdc41c4e7c05598aa169e007b7ea14285efe16a04fb5d6838f"
 }
