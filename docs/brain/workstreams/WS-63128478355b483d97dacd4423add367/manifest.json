@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-63128478355b483d97dacd4423add367",
+  "slug": "out-001-authoritative-contract-v2",
+  "status": "active",
+  "branch": "codex/out-001-authoritative-contract-v2",
+  "base_sha": "90089a84438283af3899e99a5aa703960881964d",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-001"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/E-1011.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/OUT-001-AUTHORITATIVE-BACKEND.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-63128478355b483d97dacd4423add367/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/js",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/E-1003.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/OUT-001-SUBMIT-SAFETY.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests",
+        "match": "tree"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:out-001-authoritative-backend"
+    },
+    {
+      "access": "read",
+      "key": "api-route:POST:/orders"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
