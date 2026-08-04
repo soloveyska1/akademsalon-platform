@@ -1,0 +1,1002 @@
+/* «Как работаем» — маршрут дела, показанный кадрами.
+
+   Слой одной страницы. Токены, кнопки, .eyebrow, .tag и .line-link
+   принадлежат polish15-operations.css; здесь только то, что нужно
+   этому маршруту. Прежняя версия страницы была тёмной плитой с
+   собственными цветами и не отвечала на вопрос «зачем я здесь»:
+   ни одного кадра, ни одного действия, ни одной опоры для решения.
+
+   Правило слоя: ни один цвет не пишется числом — только --op-*,
+   иначе тёмная тема снова разъедется. */
+
+body.prolog-route .story-page {
+  color: var(--op-text);
+  background: transparent;
+}
+
+body.prolog-route .prolog-shell {
+  width: min(100%, calc(var(--op-page) + var(--op-gutter) * 2));
+  margin-inline: auto;
+  padding: 0 var(--op-gutter) clamp(60px, 6vw, 96px);
+}
+
+body.prolog-route .prolog-shell .eyebrow { color: var(--op-muted); }
+
+/* Одноколоночные гриды обязаны иметь право сжиматься. Без minmax(0, 1fr)
+   колонка вырастает до max-content самого длинного заголовка, и на 320px
+   строка вылезает за край листа — грид-элемент по умолчанию не сжимается
+   меньше своего содержимого. */
+body.prolog-route .prolog-hero__copy,
+body.prolog-route .prolog-hero__facts,
+body.prolog-route .prolog-hero__facts > div,
+body.prolog-route .prolog-tour__head > div,
+body.prolog-route .prolog-rail,
+body.prolog-route .prolog-rail__list,
+body.prolog-route .prolog-stage,
+body.prolog-route .prolog-panel__copy,
+body.prolog-route .prolog-roles,
+body.prolog-route .prolog-scene,
+body.prolog-route .scene-sheet,
+body.prolog-route .scene-lines,
+body.prolog-route .scene-input,
+body.prolog-route .scene-rows,
+body.prolog-route .scene-note,
+body.prolog-route .scene-check,
+body.prolog-route .prolog-limits__intro,
+body.prolog-route .prolog-limits ul,
+body.prolog-route .prolog-faq__list,
+body.prolog-route .prolog-next__actions { grid-template-columns: minmax(0, 1fr); }
+
+/* Текстовая ссылка задана как width: max-content — на узком экране она
+   обязана переноситься, а не выталкивать строку за поле листа. */
+body.prolog-route .prolog-shell .line-link {
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+/* ── Титул ─────────────────────────────────────────────────────── */
+
+body.prolog-route .prolog-shell > header {
+  display: grid;
+  max-width: none;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, .72fr);
+  gap: clamp(30px, 4.5vw, 68px);
+  align-items: end;
+  padding-block: clamp(46px, 4.4vw, 66px) clamp(38px, 3.6vw, 54px);
+  border-bottom: 1px solid var(--op-line);
+}
+
+body.prolog-route .prolog-hero__copy { display: grid; gap: 15px; }
+
+body.prolog-route .prolog-shell > header h1 {
+  max-width: 15ch;
+  margin-top: 12px;
+  color: var(--op-ink);
+  font-size: clamp(44px, 4.8vw, 68px);
+  line-height: 1.01;
+}
+
+body.prolog-route .prolog-shell > header h1 em {
+  color: var(--op-wax);
+  font-style: normal;
+}
+
+body.prolog-route .prolog-hero__lead {
+  max-width: 62ch;
+  color: var(--op-muted);
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.55;
+}
+
+body.prolog-route .prolog-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  align-items: center;
+  margin-top: 9px;
+}
+
+/* Плита фактов: то, что клиент проверяет до денег. */
+body.prolog-route .prolog-hero__facts {
+  display: grid;
+  align-content: start;
+  gap: 0;
+  padding: 4px 22px;
+  background: var(--op-sheet);
+  border: 1px solid var(--op-line);
+}
+
+body.prolog-route .prolog-hero__facts > div {
+  display: grid;
+  gap: 5px;
+  padding-block: 17px;
+}
+
+body.prolog-route .prolog-hero__facts > div + div { border-top: 1px solid var(--op-line); }
+
+body.prolog-route .prolog-hero__facts dt {
+  color: var(--op-quiet);
+  font: 550 9px/1.2 var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+body.prolog-route .prolog-hero__facts dd {
+  margin: 0;
+  color: var(--op-ink);
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+/* ── Экскурсия ─────────────────────────────────────────────────── */
+
+body.prolog-route .prolog-tour { padding-top: var(--op-section); }
+
+body.prolog-route .prolog-tour__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
+  gap: 30px;
+  align-items: end;
+  margin-bottom: 30px;
+}
+
+body.prolog-route .prolog-tour__head > div { display: grid; gap: 11px; }
+body.prolog-route .prolog-tour__head h2 { font-size: clamp(32px, 3.7vw, 50px); }
+body.prolog-route .prolog-tour__head p:not(.eyebrow) { color: var(--op-muted); font-size: 15px; }
+
+body.prolog-route .prolog-tour__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 285px) minmax(0, 1fr);
+  background: var(--op-sheet);
+  border: 1px solid var(--op-line);
+}
+
+/* Рельс шагов */
+body.prolog-route .prolog-rail {
+  display: grid;
+  align-content: start;
+  min-width: 0;
+  border-right: 1px solid var(--op-line);
+}
+
+body.prolog-route .prolog-rail__list {
+  position: relative;
+  display: grid;
+  align-content: start;
+  min-width: 0;
+}
+
+body.prolog-route .prolog-rail__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 0 12px;
+  align-items: start;
+  padding: 19px 22px 21px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--op-line);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .2s ease;
+}
+
+body.prolog-route .prolog-rail__step:last-of-type { border-bottom: 0; }
+
+body.prolog-route .prolog-rail__num {
+  color: var(--op-quiet);
+  font: 600 10px/1.6 var(--mono);
+  letter-spacing: .06em;
+  transition: color .2s ease;
+}
+
+body.prolog-route .prolog-rail__step strong {
+  display: block;
+  color: var(--op-ink);
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 470;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+}
+
+body.prolog-route .prolog-rail__step small {
+  display: block;
+  margin-top: 4px;
+  color: var(--op-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+body.prolog-route .prolog-rail__step:hover { background: var(--op-paper); }
+
+body.prolog-route .prolog-rail__step[aria-selected="true"] { background: var(--op-paper); }
+body.prolog-route .prolog-rail__step[aria-selected="true"] .prolog-rail__num { color: var(--op-wax); }
+
+/* Сургучная метка активного шага + честная полоса времени. */
+body.prolog-route .prolog-rail__mark {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: 0;
+  width: 2px;
+  overflow: hidden;
+  background: var(--op-line-strong);
+  opacity: 0;
+}
+
+body.prolog-route .prolog-rail__step[aria-selected="true"] .prolog-rail__mark { opacity: 1; }
+
+body.prolog-route .prolog-rail__mark i {
+  display: block;
+  height: 100%;
+  background: var(--op-wax);
+  transform: scaleY(1);
+  transform-origin: top;
+}
+
+body.prolog-route .prolog-tour[data-play="on"] .prolog-rail__step[aria-selected="true"] .prolog-rail__mark i {
+  animation: prolog-timer var(--prolog-dur, 7200ms) linear forwards;
+}
+
+body.prolog-route .prolog-tour[data-play="paused"] .prolog-rail__step[aria-selected="true"] .prolog-rail__mark i {
+  animation: prolog-timer var(--prolog-dur, 7200ms) linear forwards;
+  animation-play-state: paused;
+}
+
+@keyframes prolog-timer { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+/* Пульт под рельсом */
+body.prolog-route .prolog-rail__deck {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  border-top: 1px solid var(--op-line);
+}
+
+body.prolog-route .prolog-rail__deck p {
+  color: var(--op-quiet);
+  font: 550 9px/1.3 var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+body.prolog-route .prolog-play {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  color: var(--op-ink);
+  background: var(--op-sheet);
+  border: 1px solid var(--op-line-strong);
+  border-radius: 999px;
+  font: 550 11px/1 var(--sans);
+  cursor: pointer;
+  transition: border-color .18s ease, color .18s ease;
+}
+
+body.prolog-route .prolog-play:hover { color: var(--op-wax); border-color: var(--op-wax); }
+body.prolog-route .prolog-play svg { flex: none; color: var(--op-wax); }
+
+/* Сцена */
+body.prolog-route .prolog-stage { display: grid; min-width: 0; }
+
+body.prolog-route .prolog-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+  gap: clamp(26px, 3vw, 46px);
+  align-items: start;
+  min-width: 0;
+  padding: clamp(26px, 3vw, 44px);
+}
+
+body.prolog-route .prolog-tour.is-live .prolog-panel { display: none; }
+body.prolog-route .prolog-tour.is-live .prolog-panel[data-active="true"] { display: grid; }
+
+body.prolog-route .prolog-panel__copy { display: grid; gap: 12px; min-width: 0; }
+body.prolog-route .prolog-panel__copy h3 {
+  max-width: 20ch;
+  font-size: clamp(27px, 2.5vw, 35px);
+}
+body.prolog-route .prolog-panel__copy > p:not(.eyebrow) {
+  max-width: 46ch;
+  color: var(--op-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+body.prolog-route .prolog-roles {
+  display: grid;
+  margin-top: 10px;
+  border-top: 1px solid var(--op-line);
+}
+
+body.prolog-route .prolog-roles > div {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 14px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--op-line);
+}
+
+body.prolog-route .prolog-roles dt {
+  color: var(--op-quiet);
+  font: 550 9px/1.6 var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+body.prolog-route .prolog-roles dd {
+  margin: 0;
+  color: var(--op-text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+body.prolog-route .prolog-roles dd b { color: var(--op-ink); font-weight: 600; }
+
+body.prolog-route .prolog-panel .line-link { margin-top: 6px; }
+
+/* ── Кадры ─────────────────────────────────────────────────────── */
+
+body.prolog-route .prolog-scene {
+  --scene-line: var(--op-line);
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+  min-height: 296px;
+  margin: 0;
+  /* Нижнее поле держит подпись кадра: содержимое на неё не наезжает. */
+  padding: 20px 20px 34px;
+  background: var(--op-paper);
+  border: 1px solid var(--op-line);
+  overflow: hidden;
+}
+
+body.prolog-route .prolog-scene::after {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  color: var(--op-quiet);
+  font: 550 8px/1 var(--mono);
+  letter-spacing: .14em;
+  content: attr(data-frame);
+  opacity: .75;
+}
+
+body.prolog-route .scene-sheet {
+  display: grid;
+  align-content: start;
+  gap: 11px;
+  padding: 16px 16px 18px;
+  background: var(--op-sheet);
+  border: 1px solid var(--scene-line);
+}
+
+body.prolog-route .scene-cap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--op-quiet);
+  font: 550 8px/1.2 var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+body.prolog-route .scene-cap i {
+  display: block;
+  width: 5px;
+  height: 5px;
+  background: var(--op-wax);
+  border-radius: 50%;
+  flex: none;
+}
+
+body.prolog-route .scene-cap > span { display: inline-flex; gap: 6px; align-items: center; }
+
+/* Серые «строки текста» вместо бессмысленной рыбы. */
+body.prolog-route .scene-lines { display: grid; gap: 7px; }
+body.prolog-route .scene-lines b {
+  display: block;
+  height: 5px;
+  background: var(--op-line);
+  border-radius: 2px;
+}
+body.prolog-route .scene-lines b:nth-child(2n) { width: 88%; }
+body.prolog-route .scene-lines b:nth-child(3n) { width: 72%; }
+
+/* Кадр 01 — набор ситуации */
+body.prolog-route .scene-input {
+  display: grid;
+  gap: 8px;
+  min-height: 86px;
+  padding: 12px 13px;
+  background: var(--op-sheet);
+  border: 1px solid var(--op-line-strong);
+}
+
+body.prolog-route .scene-input p {
+  color: var(--op-ink);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Покой каждого кадра — собранный, а не пустой: без JS и без анимации
+   клиент всё равно видит готовый лист, а не набор невидимых элементов. */
+body.prolog-route .scene-input p i {
+  display: inline;
+  font-style: normal;
+}
+
+body.prolog-route .scene-caret {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin-left: 1px;
+  background: var(--op-wax);
+  vertical-align: -.14em;
+}
+
+body.prolog-route .scene-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+body.prolog-route .scene-chips span {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  padding: 4px 10px;
+  color: var(--op-muted);
+  background: var(--op-sheet);
+  border: 1px solid var(--op-line);
+  border-radius: 999px;
+  font: 550 10px/1 var(--mono);
+}
+
+/* Кадр 02 — спецификация и цена */
+body.prolog-route .scene-rows { display: grid; }
+body.prolog-route .scene-rows > span {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  padding-block: 9px;
+  border-bottom: 1px dashed var(--op-line);
+  color: var(--op-text);
+  font-size: 12px;
+}
+body.prolog-route .scene-rows > span b { color: var(--op-ink); font: 550 11px/1.4 var(--mono); }
+body.prolog-route .scene-total {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: baseline;
+  padding-top: 11px;
+}
+body.prolog-route .scene-total span {
+  color: var(--op-quiet);
+  font: 550 9px/1.2 var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+body.prolog-route .scene-total strong {
+  color: var(--op-ink);
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 470;
+  letter-spacing: -.02em;
+}
+
+/* Штамп стоит под листом, а не поверх него: настоящая печать не
+   закрывает ту самую строку, ради которой клиент сюда смотрит. */
+body.prolog-route .scene-stamp {
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  justify-self: end;
+  margin-right: 6px;
+  padding: 9px 13px;
+  color: var(--op-wax);
+  border: 2px solid var(--op-wax);
+  border-radius: 3px;
+  transform: rotate(-6deg);
+}
+body.prolog-route .scene-stamp b {
+  font: 700 12px/1 var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+body.prolog-route .scene-stamp i {
+  font: 550 7px/1 var(--mono);
+  font-style: normal;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: .8;
+}
+
+/* Кадр 03 — редакторский стол */
+body.prolog-route .scene-edit { position: relative; }
+body.prolog-route .scene-edit svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+body.prolog-route .scene-edit svg path {
+  fill: none;
+  stroke: var(--op-wax);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: 0;
+}
+
+body.prolog-route .scene-note {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  background: var(--op-wax-soft);
+  border-left: 2px solid var(--op-wax);
+}
+body.prolog-route .scene-note b {
+  color: var(--op-quiet);
+  font: 550 8px/1.2 var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+body.prolog-route .scene-note p { color: var(--op-ink); font-size: 12px; line-height: 1.45; }
+
+/* Кадр 04 — живое дело */
+body.prolog-route .scene-case {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+body.prolog-route .scene-case h4 {
+  margin: 0;
+  color: var(--op-ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 470;
+  letter-spacing: -.02em;
+}
+body.prolog-route .scene-case small { color: var(--op-quiet); font: 550 9px/1.6 var(--mono); }
+
+body.prolog-route .scene-status {
+  position: relative;
+  display: inline-grid;
+  min-width: 106px;
+  min-height: 26px;
+  place-items: center;
+}
+body.prolog-route .scene-status > span {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font: 550 10px/1 var(--mono);
+  white-space: nowrap;
+}
+body.prolog-route .scene-status .is-work { color: var(--op-amber); background: var(--op-amber-soft); }
+body.prolog-route .scene-status .is-check { color: var(--op-green); background: var(--op-green-soft); opacity: 0; }
+
+body.prolog-route .scene-versions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+body.prolog-route .scene-versions span {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  padding: 4px 9px;
+  color: var(--op-quiet);
+  background: var(--op-sheet);
+  border: 1px solid var(--op-line);
+  font: 550 10px/1 var(--mono);
+}
+body.prolog-route .scene-versions span:last-child { color: var(--op-wax); border-color: var(--op-wax); }
+
+/* Кадр 05 — приёмка */
+body.prolog-route .scene-check { display: grid; gap: 9px; }
+body.prolog-route .scene-check > span {
+  display: grid;
+  grid-template-columns: 17px minmax(0, 1fr);
+  gap: 9px;
+  align-items: center;
+  color: var(--op-text);
+  font-size: 12px;
+}
+body.prolog-route .scene-check svg { width: 17px; height: 17px; overflow: visible; }
+body.prolog-route .scene-check svg circle { fill: none; stroke: var(--op-line-strong); stroke-width: 1.2; }
+body.prolog-route .scene-check svg path {
+  --len: 14;
+  fill: none;
+  stroke: var(--op-green);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 14;
+  stroke-dashoffset: 0;
+}
+
+body.prolog-route .scene-seal {
+  position: absolute;
+  right: 18px;
+  bottom: 24px;
+  display: grid;
+  width: 74px;
+  height: 74px;
+  place-items: center;
+  color: var(--op-sheet);
+  background: var(--op-wax);
+  border-radius: 50%;
+  font: 700 11px/1.1 var(--mono);
+  letter-spacing: .06em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(-8deg);
+}
+
+body.prolog-route .scene-seal::before {
+  position: absolute;
+  inset: 5px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  content: "";
+  opacity: .5;
+}
+
+/* Проигрывание кадра: анимации живут только у активной панели, а режим
+   both прячет элемент лишь на время своей задержки — в покое кадр целый. */
+@keyframes prolog-word { from { opacity: 0; } to { opacity: 1; } }
+@keyframes prolog-blink { 0%, 46% { opacity: 1; } 47%, 100% { opacity: 0; } }
+@keyframes prolog-rise { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: none; } }
+@keyframes prolog-pop { from { opacity: 0; transform: scale(.82); } to { opacity: 1; transform: none; } }
+@keyframes prolog-draw { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+@keyframes prolog-slide { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+@keyframes prolog-fade { from { opacity: 1; } to { opacity: 0; } }
+@keyframes prolog-press {
+  0% { opacity: 0; transform: rotate(-6deg) scale(1.75); }
+  55% { opacity: 1; transform: rotate(-6deg) scale(.93); }
+  100% { opacity: 1; transform: rotate(-6deg) scale(1); }
+}
+@keyframes prolog-seal {
+  0% { opacity: 0; transform: rotate(-8deg) scale(1.7); }
+  55% { opacity: 1; transform: rotate(-8deg) scale(.92); }
+  100% { opacity: 1; transform: rotate(-8deg) scale(1); }
+}
+
+body.prolog-route .prolog-panel[data-active="true"] .scene-input p i {
+  animation: prolog-word .01s linear both;
+  animation-delay: calc(240ms + var(--i) * 52ms);
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-caret {
+  animation: prolog-blink 1s steps(1, end) infinite;
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-chips span {
+  animation: prolog-pop .34s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: calc(1500ms + var(--i) * 130ms);
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-rows > span {
+  animation: prolog-rise .4s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: calc(220ms + var(--i) * 190ms);
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-total {
+  animation: prolog-rise .4s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: 1100ms;
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-stamp {
+  animation: prolog-press .5s cubic-bezier(.3, 1.4, .5, 1) both;
+  animation-delay: 1650ms;
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-edit svg path {
+  animation: prolog-draw .6s cubic-bezier(.6, 0, .4, 1) both;
+  animation-delay: calc(420ms + var(--i) * 480ms);
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-note {
+  animation: prolog-slide .42s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: calc(1750ms + var(--i) * 550ms);
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-status .is-work {
+  animation: prolog-fade .3s ease both;
+  animation-delay: 1250ms;
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-status .is-check {
+  animation: prolog-pop .36s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: 1380ms;
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-versions span {
+  animation: prolog-pop .3s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: calc(320ms + var(--i) * 340ms);
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-check svg path {
+  animation: prolog-draw .34s ease both;
+  animation-delay: calc(300ms + var(--i) * 320ms);
+}
+body.prolog-route .prolog-panel[data-active="true"] .scene-seal {
+  animation: prolog-seal .55s cubic-bezier(.3, 1.4, .5, 1) both;
+  animation-delay: 1620ms;
+}
+
+/* ── Что остаётся на руках ─────────────────────────────────────── */
+
+body.prolog-route .prolog-keeps { padding-top: var(--op-section); }
+
+body.prolog-route .prolog-keeps__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+body.prolog-route .prolog-keeps__grid article {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 208px;
+  padding: 24px 22px;
+  background: var(--op-sheet);
+  border: 1px solid var(--op-line);
+  transition: border-color .2s ease, transform .2s ease;
+}
+
+/* Ссылки карточек стоят на одной линии, даже если текста разное количество. */
+body.prolog-route .prolog-keeps__grid .line-link { margin-top: auto; padding-top: 6px; }
+
+body.prolog-route .prolog-keeps__grid article:hover {
+  border-color: var(--op-line-strong);
+  transform: translateY(-2px);
+}
+
+body.prolog-route .prolog-keeps__grid h3 {
+  margin-top: 4px;
+  font-size: 21px;
+}
+
+body.prolog-route .prolog-keeps__grid p {
+  color: var(--op-muted);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+body.prolog-route .prolog-keeps__grid span.eyebrow { color: var(--op-wax); }
+
+/* ── Границы ───────────────────────────────────────────────────── */
+
+body.prolog-route .prolog-limits {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0;
+  margin-top: var(--op-section);
+  background: var(--op-paper);
+  border: 1px solid var(--op-line);
+}
+
+body.prolog-route .prolog-limits > * { padding: clamp(24px, 2.6vw, 34px); }
+body.prolog-route .prolog-limits > * + * { border-left: 1px solid var(--op-line); }
+
+body.prolog-route .prolog-limits__intro { display: grid; align-content: start; gap: 12px; }
+body.prolog-route .prolog-limits__intro h2 { font-size: clamp(26px, 2.5vw, 34px); }
+body.prolog-route .prolog-limits__intro p { color: var(--op-muted); font-size: 13px; line-height: 1.55; }
+
+body.prolog-route .prolog-limits ul { display: grid; gap: 10px; margin-top: 14px; list-style: none; }
+body.prolog-route .prolog-limits li {
+  display: grid;
+  grid-template-columns: 15px minmax(0, 1fr);
+  gap: 10px;
+  color: var(--op-text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+body.prolog-route .prolog-limits li::before {
+  color: var(--op-green);
+  font: 600 12px/1.4 var(--mono);
+  content: "+";
+}
+body.prolog-route .prolog-limits__no li::before { color: var(--op-wax); content: "×"; }
+
+/* ── Вопросы ───────────────────────────────────────────────────── */
+
+body.prolog-route .prolog-faq { padding-top: var(--op-section); }
+body.prolog-route .prolog-faq__list { display: grid; margin-top: 26px; border-top: 1px solid var(--op-line); }
+
+body.prolog-route .prolog-faq details { border-bottom: 1px solid var(--op-line); }
+
+body.prolog-route .prolog-faq summary {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 62px;
+  padding-block: 15px;
+  color: var(--op-ink);
+  font-family: var(--serif);
+  font-size: clamp(18px, 1.7vw, 22px);
+  letter-spacing: -.02em;
+  list-style: none;
+  cursor: pointer;
+}
+
+body.prolog-route .prolog-faq summary::-webkit-details-marker { display: none; }
+
+body.prolog-route .prolog-faq summary > span {
+  flex: none;
+  color: var(--op-wax);
+  font: 400 20px/1 var(--mono);
+  transition: transform .2s ease;
+}
+
+body.prolog-route .prolog-faq details[open] summary > span { transform: rotate(45deg); }
+
+body.prolog-route .prolog-faq details > p {
+  max-width: 78ch;
+  padding-bottom: 20px;
+  color: var(--op-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── Следующий шаг ─────────────────────────────────────────────── */
+
+body.prolog-route .prolog-next {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(24px, 3vw, 48px);
+  align-items: center;
+  margin-top: var(--op-section);
+  padding: clamp(28px, 3.2vw, 44px);
+  background: var(--op-sheet);
+  border: 1px solid var(--op-line-strong);
+}
+
+body.prolog-route .prolog-next h2 { font-size: clamp(26px, 2.7vw, 37px); }
+body.prolog-route .prolog-next p {
+  max-width: 56ch;
+  margin-top: 10px;
+  color: var(--op-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+body.prolog-route .prolog-next__actions { display: grid; gap: 10px; justify-items: start; }
+
+/* ── Фокус ─────────────────────────────────────────────────────── */
+
+body.prolog-route .prolog-rail__step:focus-visible,
+body.prolog-route .prolog-play:focus-visible,
+body.prolog-route .prolog-faq summary:focus-visible {
+  outline: 2px solid var(--op-wax);
+  outline-offset: -3px;
+}
+
+/* ── Адаптив ───────────────────────────────────────────────────── */
+
+@media (max-width: 1180px) {
+  body.prolog-route .prolog-panel { grid-template-columns: minmax(0, 1fr); }
+  body.prolog-route .prolog-scene { min-height: 250px; }
+  body.prolog-route .prolog-keeps__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 920px) {
+  body.prolog-route .prolog-shell > header {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+    align-items: start;
+  }
+  body.prolog-route .prolog-shell > header h1 { max-width: none; font-size: clamp(38px, 8.4vw, 54px); }
+  body.prolog-route .prolog-hero__actions .button { width: 100%; }
+  body.prolog-route .prolog-hero__actions .button--text { width: auto; }
+
+  body.prolog-route .prolog-tour__head { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+
+  /* Рельс превращается в ряд вкладок с горизонтальным просмотром:
+     край следующего шага виден и подсказывает жест. */
+  body.prolog-route .prolog-tour__layout { grid-template-columns: minmax(0, 1fr); }
+  body.prolog-route .prolog-rail { border-right: 0; }
+  body.prolog-route .prolog-rail__list {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--op-line);
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+  body.prolog-route .prolog-rail__step {
+    flex: 0 0 auto;
+    width: 220px;
+    border-right: 1px solid var(--op-line);
+    border-bottom: 0;
+    scroll-snap-align: start;
+  }
+  body.prolog-route .prolog-rail__step:last-of-type { border-right: 0; }
+  body.prolog-route .prolog-rail__mark {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: 2px;
+  }
+  body.prolog-route .prolog-rail__mark i {
+    width: 100%;
+    height: 100%;
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  @keyframes prolog-timer { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  body.prolog-route .prolog-rail__deck { border-top: 0; border-bottom: 1px solid var(--op-line); }
+  /* На касании пульт получает полноценную область нажатия. */
+  body.prolog-route .prolog-play { min-height: 44px; }
+
+  body.prolog-route .prolog-limits { grid-template-columns: minmax(0, 1fr); }
+  body.prolog-route .prolog-limits > * + * { border-top: 1px solid var(--op-line); border-left: 0; }
+
+  body.prolog-route .prolog-next { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  body.prolog-route .prolog-next__actions { justify-items: stretch; }
+  body.prolog-route .prolog-next__actions .button { width: 100%; }
+}
+
+@media (max-width: 620px) {
+  body.prolog-route .prolog-shell { padding-inline: var(--op-gutter); }
+  body.prolog-route .prolog-shell > header { padding-block: 30px 28px; }
+  body.prolog-route .prolog-hero__facts { padding-inline: 18px; }
+  body.prolog-route .prolog-keeps__grid { grid-template-columns: minmax(0, 1fr); }
+  body.prolog-route .prolog-keeps__grid article { min-height: 0; }
+  body.prolog-route .prolog-rail__step { width: 190px; padding: 16px 18px 18px; }
+  body.prolog-route .prolog-panel { padding: 22px 18px 26px; }
+  body.prolog-route .prolog-scene { padding: 15px; }
+  body.prolog-route .prolog-roles > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  body.prolog-route .prolog-next { padding: 24px 20px 26px; }
+  body.prolog-route .scene-seal { width: 62px; height: 62px; font-size: 10px; }
+}
+
+/* Длинные русские слова не должны рвать сетку на самых узких экранах. */
+@media (max-width: 360px) {
+  body.prolog-route .prolog-shell > header h1 {
+    font-size: clamp(30px, 9.5vw, 34px);
+    overflow-wrap: anywhere;
+  }
+  body.prolog-route .prolog-panel__copy h3 { overflow-wrap: anywhere; }
+}
+
+/* ── Спокойный режим ───────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  body.prolog-route .prolog-keeps__grid article:hover { transform: none; }
+  body.prolog-route .prolog-rail__mark i,
+  body.prolog-route .prolog-tour[data-play="on"] .prolog-rail__step[aria-selected="true"] .prolog-rail__mark i,
+  body.prolog-route .prolog-tour[data-play="paused"] .prolog-rail__step[aria-selected="true"] .prolog-rail__mark i {
+    animation: none;
+    transform: none;
+  }
+  /* Кадр показывается собранным: без движения, но без потери смысла. */
+  body.prolog-route .prolog-panel .scene-input p i,
+  body.prolog-route .prolog-panel .scene-chips span,
+  body.prolog-route .prolog-panel .scene-rows > span,
+  body.prolog-route .prolog-panel .scene-total,
+  body.prolog-route .prolog-panel .scene-stamp,
+  body.prolog-route .prolog-panel .scene-note,
+  body.prolog-route .prolog-panel .scene-versions span,
+  body.prolog-route .prolog-panel .scene-seal,
+  body.prolog-route .prolog-panel .scene-status .is-check {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+  body.prolog-route .prolog-panel .scene-stamp { transform: rotate(-6deg); }
+  body.prolog-route .prolog-panel .scene-seal { transform: rotate(-8deg); }
+  body.prolog-route .prolog-panel .scene-status .is-work { animation: none !important; opacity: 0; }
+  body.prolog-route .prolog-panel .scene-edit svg path,
+  body.prolog-route .prolog-panel .scene-check svg path {
+    animation: none !important;
+    stroke-dashoffset: 0;
+  }
+  body.prolog-route .prolog-panel .scene-caret { animation: none !important; opacity: 0; }
+}
