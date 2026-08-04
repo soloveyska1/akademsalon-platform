@@ -41,17 +41,65 @@ from reportlab.platypus import (
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "output" / "pdf"
 PUBLIC = ROOT / "assets" / "docs"
-FONT_REGULAR = Path("/System/Library/Fonts/Supplemental/Arial.ttf")
-FONT_BOLD = Path("/System/Library/Fonts/Supplemental/Arial Bold.ttf")
 
-INK = colors.HexColor("#26221E")
-MUTE = colors.HexColor("#706A64")
-WAX = colors.HexColor("#8F302E")
-PAPER = colors.HexColor("#F5F1E9")
-HAIR = colors.HexColor("#D8D0C5")
-GREEN = colors.HexColor("#385A49")
+# Документ набирается двумя гарнитурами, как и сайт: засечной — смысл,
+# гротеском — служебные подписи и цифры в таблицах.
+#   Georgia   — текстовая антиква с полной кириллицей (1143 глифа), читается
+#               в документе на порядок спокойнее, чем прежний сплошной Arial.
+#   Arial     — только надзаголовки, ярлыки полей и колонки с числами.
+# Обе лежат в системе macOS, где документ и собирается. Знака ₽ нет НИ В ОДНОЙ
+# из них — поэтому суммы печатаются как «руб.» (см. rub/rub_plain).
+FONT_TEXT = Path("/System/Library/Fonts/Supplemental/Georgia.ttf")
+FONT_TEXT_BOLD = Path("/System/Library/Fonts/Supplemental/Georgia Bold.ttf")
+FONT_TEXT_ITALIC = Path("/System/Library/Fonts/Supplemental/Georgia Italic.ttf")
+FONT_UI = Path("/System/Library/Fonts/Supplemental/Arial.ttf")
+FONT_UI_BOLD = Path("/System/Library/Fonts/Supplemental/Arial Bold.ttf")
+FONT_REGULAR = FONT_UI
+FONT_BOLD = FONT_UI_BOLD
+
+# Палитра «Оттиска» — та же, что на сайте, а не приблизительная.
+INK = colors.HexColor("#1D1C18")
+MUTE = colors.HexColor("#68635A")
+QUIET = colors.HexColor("#8B8375")
+WAX = colors.HexColor("#A63F29")
+WAX_SOFT = colors.HexColor("#F6E7E0")
+PAPER = colors.HexColor("#F6F1E7")
+SHEET = colors.HexColor("#FFFDF8")
+HAIR = colors.HexColor("#D8CEBD")
+HAIR_SOFT = colors.HexColor("#E7DFD1")
+GREEN = colors.HexColor("#3C644C")
 WHITE = colors.white
 CONTENT_W = 174 * mm
+LABEL_W = 42 * mm
+
+# Клиенту — человеческим языком; те же формулировки, что в составе заказа
+# (assets/js/cart.js). Код контура остаётся в документе, но второй строкой:
+# он нужен договору, а не читателю.
+CONTOUR_HUMAN = {
+    ("A", "A1"): "Редакторская и консультационная помощь",
+    ("A", "A2"): "Совместный исследовательский проект с нуля",
+    ("B1", None): "Авторская работа · мастерская",
+    ("B2", None): "Авторская работа · согласованный автор",
+}
+CONTOUR_CODE = {
+    ("A", "A1"): "контур A, подрежим A1",
+    ("A", "A2"): "контур A, подрежим A2",
+    ("B1", None): "контур B1",
+    ("B2", None): "контур B2",
+}
+
+
+def contour_key(line: dict[str, Any]) -> tuple[str, str | None]:
+    contour = line["contract_contour"]
+    return (contour, line.get("academic_submode") if contour == "A" else None)
+
+
+def contour_human(line: dict[str, Any]) -> str:
+    return CONTOUR_HUMAN.get(contour_key(line), line["contour_label"])
+
+
+def contour_code(line: dict[str, Any]) -> str:
+    return CONTOUR_CODE.get(contour_key(line), line["contract_contour"])
 
 
 def rub(minor: int) -> str:
@@ -79,10 +127,31 @@ def canonical_hash(payload: dict[str, Any]) -> str:
 
 
 def register_fonts() -> None:
-    if not FONT_REGULAR.exists() or not FONT_BOLD.exists():
-        raise RuntimeError("Arial fonts required for Cyrillic PDF generation were not found")
-    pdfmetrics.registerFont(TTFont("Salon", str(FONT_REGULAR)))
-    pdfmetrics.registerFont(TTFont("Salon-Bold", str(FONT_BOLD)))
+    required = {
+        "SalonText": FONT_TEXT,
+        "SalonText-Bold": FONT_TEXT_BOLD,
+        "SalonText-Italic": FONT_TEXT_ITALIC,
+        "Salon": FONT_UI,
+        "Salon-Bold": FONT_UI_BOLD,
+    }
+    missing = [str(path) for path in required.values() if not path.exists()]
+    if missing:
+        raise RuntimeError(
+            "Шрифты для кириллического PDF не найдены: " + ", ".join(missing)
+        )
+    for name, path in required.items():
+        pdfmetrics.registerFont(TTFont(name, str(path)))
+    # <b>/<i> внутри Paragraph работают только при зарегистрированной семье.
+    pdfmetrics.registerFontFamily(
+        "SalonText",
+        normal="SalonText",
+        bold="SalonText-Bold",
+        italic="SalonText-Italic",
+        boldItalic="SalonText-Bold",
+    )
+    pdfmetrics.registerFontFamily(
+        "Salon", normal="Salon", bold="Salon-Bold", italic="Salon", boldItalic="Salon-Bold"
+    )
 
 
 def styles() -> dict[str, ParagraphStyle]:
@@ -91,18 +160,18 @@ def styles() -> dict[str, ParagraphStyle]:
         "body": ParagraphStyle(
             "Body",
             parent=base["BodyText"],
-            fontName="Salon",
-            fontSize=9.2,
-            leading=12.6,
+            fontName="SalonText",
+            fontSize=9.1,
+            leading=13.4,
             textColor=INK,
-            spaceAfter=4.4,
+            spaceAfter=4.6,
         ),
         "body_tight": ParagraphStyle(
             "BodyTight",
             parent=base["BodyText"],
-            fontName="Salon",
-            fontSize=8.7,
-            leading=11.7,
+            fontName="SalonText",
+            fontSize=8.6,
+            leading=12.4,
             textColor=INK,
             spaceAfter=3.5,
         ),
@@ -110,15 +179,15 @@ def styles() -> dict[str, ParagraphStyle]:
             "Small",
             parent=base["BodyText"],
             fontName="Salon",
-            fontSize=7.7,
-            leading=10.1,
+            fontSize=7.4,
+            leading=10.2,
             textColor=MUTE,
         ),
         "caps": ParagraphStyle(
             "Caps",
             parent=base["BodyText"],
             fontName="Salon-Bold",
-            fontSize=7.7,
+            fontSize=7,
             leading=9.5,
             textColor=WAX,
             spaceAfter=4,
@@ -126,60 +195,89 @@ def styles() -> dict[str, ParagraphStyle]:
         "title": ParagraphStyle(
             "Title",
             parent=base["Title"],
-            fontName="Salon-Bold",
-            fontSize=18.5,
-            leading=22,
+            fontName="SalonText-Bold",
+            fontSize=25,
+            leading=28,
             textColor=INK,
             alignment=TA_LEFT,
-            spaceAfter=4,
+            spaceAfter=5,
         ),
         "subtitle": ParagraphStyle(
             "Subtitle",
             parent=base["BodyText"],
-            fontName="Salon",
-            fontSize=9.1,
-            leading=12.3,
+            fontName="SalonText",
+            fontSize=9.4,
+            leading=13.4,
             textColor=MUTE,
-            spaceAfter=8,
+            spaceAfter=9,
         ),
         "h1": ParagraphStyle(
             "H1",
             parent=base["Heading2"],
-            fontName="Salon-Bold",
-            fontSize=12.3,
-            leading=15,
+            fontName="SalonText-Bold",
+            fontSize=13.4,
+            leading=16,
             textColor=INK,
-            spaceBefore=7,
+            spaceBefore=8,
             spaceAfter=6,
             keepWithNext=True,
         ),
         "h2": ParagraphStyle(
             "H2",
             parent=base["Heading3"],
-            fontName="Salon-Bold",
-            fontSize=10.1,
-            leading=12.8,
+            fontName="SalonText-Bold",
+            fontSize=11,
+            leading=13.6,
             textColor=INK,
             spaceBefore=3,
-            spaceAfter=4,
+            spaceAfter=5,
             keepWithNext=True,
+        ),
+        # Ярлык поля: гротеск в разрядку, чтобы левая колонка читалась как
+        # указатель, а не спорила со значением за внимание.
+        "field_label": ParagraphStyle(
+            "FieldLabel",
+            parent=base["BodyText"],
+            fontName="Salon-Bold",
+            fontSize=6.6,
+            leading=9.4,
+            textColor=QUIET,
+            spaceAfter=0,
+        ),
+        "field_value": ParagraphStyle(
+            "FieldValue",
+            parent=base["BodyText"],
+            fontName="SalonText",
+            fontSize=8.9,
+            leading=12.6,
+            textColor=INK,
+            spaceAfter=0,
+        ),
+        "lede": ParagraphStyle(
+            "Lede",
+            parent=base["BodyText"],
+            fontName="SalonText",
+            fontSize=9.6,
+            leading=13.8,
+            textColor=INK,
+            spaceAfter=0,
         ),
         "metric_label": ParagraphStyle(
             "MetricLabel",
             parent=base["BodyText"],
             fontName="Salon-Bold",
-            fontSize=7.1,
+            fontSize=6.6,
             leading=8.4,
-            textColor=MUTE,
+            textColor=QUIET,
             alignment=TA_LEFT,
             spaceAfter=3,
         ),
         "metric": ParagraphStyle(
             "Metric",
             parent=base["BodyText"],
-            fontName="Salon-Bold",
-            fontSize=11.2,
-            leading=13.3,
+            fontName="SalonText-Bold",
+            fontSize=12.4,
+            leading=14.6,
             textColor=INK,
             alignment=TA_LEFT,
         ),
@@ -219,23 +317,26 @@ def make_table(
 ) -> Table:
     cell = ParagraphStyle(
         f"Cell-{font_size}",
-        fontName="Salon",
+        fontName="SalonText",
         fontSize=font_size,
-        leading=font_size + 2.5,
+        leading=font_size + 3.2,
         textColor=INK,
     )
     head = ParagraphStyle(
         f"Head-{font_size}",
         parent=cell,
         fontName="Salon-Bold",
-        textColor=MUTE,
+        fontSize=font_size - 0.5,
+        textColor=QUIET,
     )
     wrapped: list[list[Any]] = []
     for row_index, row in enumerate(rows):
         wrapped.append(
             [
+                # список flowable-ов кладём в ячейку как есть: так строка
+                # состава несёт название позиции и вид помощи двумя строками
                 value
-                if isinstance(value, Paragraph)
+                if isinstance(value, (Paragraph, list))
                 else Paragraph(str(value), head if header and row_index == 0 else cell)
                 for value in row
             ]
@@ -255,12 +356,21 @@ def make_table(
         ("TEXTCOLOR", (0, 0), (-1, -1), INK),
     ]
     if grid:
-        commands.append(("GRID", (0, 0), (-1, -1), 0.4, HAIR))
+        # Горизонтальные линейки вместо полной сетки: клетка «бухгалтерия»
+        # мельчит документ, а строку и так ведёт глаз.
+        commands.extend(
+            [
+                ("LINEBELOW", (0, 0), (-1, -2), 0.4, HAIR_SOFT),
+                ("LINEBELOW", (0, -1), (-1, -1), 0.5, HAIR),
+                ("LINEABOVE", (0, 0), (-1, 0), 0.5, HAIR),
+            ]
+        )
     if header:
         commands.extend(
             [
                 ("BACKGROUND", (0, 0), (-1, 0), PAPER),
-                ("TEXTCOLOR", (0, 0), (-1, 0), MUTE),
+                ("TEXTCOLOR", (0, 0), (-1, 0), QUIET),
+                ("LINEBELOW", (0, 0), (-1, 0), 0.5, HAIR),
             ]
         )
     for index, align in enumerate(aligns or []):
@@ -307,56 +417,153 @@ def note_box(title: str, text: str, st: dict[str, ParagraphStyle]) -> Table:
     return result
 
 
+def field_table(
+    rows: list[tuple[str, str]],
+    st: dict[str, ParagraphStyle],
+    *,
+    width: float = CONTENT_W,
+    inset: float = 0,
+) -> Table:
+    """Поле слева, значение справа — вместо сплошной ленты «Ярлык: текст».
+
+    Прежде карточка позиции была пятнадцатью абзацами подряд одного кегля:
+    глазу не за что зацепиться и невозможно найти нужную строку. Две колонки
+    и линейки между строками дают ту самую «раскладку по полочкам».
+    """
+    body_w = width - inset
+    data = [
+        [
+            para(label.upper(), st["field_label"]),
+            para(sentence(value), st["field_value"]),
+        ]
+        for label, value in rows
+    ]
+    table = Table(
+        data,
+        colWidths=[LABEL_W, body_w - LABEL_W],
+        hAlign="LEFT",
+    )
+    commands: list[tuple] = [
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("LEFTPADDING", (0, 0), (0, -1), 0),
+        ("RIGHTPADDING", (0, 0), (0, -1), 7),
+        ("LEFTPADDING", (1, 0), (1, -1), 0),
+        ("RIGHTPADDING", (1, 0), (1, -1), 0),
+        ("TOPPADDING", (0, 0), (-1, -1), 5.5),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 5.5),
+        ("LINEBELOW", (0, 0), (-1, -2), 0.4, HAIR_SOFT),
+    ]
+    table.setStyle(TableStyle(commands))
+    return table
+
+
+def headline_strip(items: list[tuple[str, str]], st: dict[str, ParagraphStyle]) -> Table:
+    """Три вещи, ради которых документ открывают: что, когда и почём."""
+    width = CONTENT_W - 23
+    # Ширины неравные: «что получите» — самая длинная формулировка,
+    # цена всегда в одну строку.
+    weights = [0.46, 0.31, 0.23][: len(items)]
+    weights = [w / sum(weights) for w in weights]
+    table = Table(
+        [
+            [para(label.upper(), st["metric_label"]) for label, _ in items],
+            [para(value, st["field_value"]) for _, value in items],
+        ],
+        colWidths=[width * w for w in weights],
+        hAlign="LEFT",
+    )
+    table.setStyle(
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 9),
+                ("TOPPADDING", (0, 0), (-1, 0), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 2),
+                ("TOPPADDING", (0, 1), (-1, 1), 0),
+                ("BOTTOMPADDING", (0, 1), (-1, 1), 0),
+            ]
+        )
+    )
+    return table
+
+
+def card_shell(content: list[Any], *, accent: colors.Color, fill: colors.Color) -> Table:
+    result = Table([[content]], colWidths=[CONTENT_W])
+    result.setStyle(
+        TableStyle(
+            [
+                ("BOX", (0, 0), (-1, -1), 0.6, HAIR),
+                ("BACKGROUND", (0, 0), (-1, -1), fill),
+                ("LINEBEFORE", (0, 0), (0, -1), 2.4, accent),
+                ("LEFTPADDING", (0, 0), (-1, -1), 12),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 11),
+                ("TOPPADDING", (0, 0), (-1, -1), 9),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
+            ]
+        )
+    )
+    return result
+
+
+def sentence(text: str) -> str:
+    """Прежде эти строки шли хвостом после «Ярлык:», теперь — самостоятельные.
+
+    Значение в своей ячейке начинается с прописной; строку с разметкой
+    (`<b>…`) не трогаем, иначе поднимется угловая скобка, а не буква.
+    """
+    text = text.strip()
+    if not text or text.startswith("<"):
+        return text
+    return text[:1].upper() + text[1:]
+
+
 def position_card(line: dict[str, Any], st: dict[str, ParagraphStyle]) -> Table:
     rows = [
-        (
-            "Контур и разрешённая цель",
-            f"<b>{line['contour_label']}</b>. {line['permitted_purpose']}",
-        ),
-        ("Наименование в чеке", line["receipt_name"]),
-        ("Кто участвует", line["contractor_categories"]),
+        ("Вид помощи", f"<b>{contour_human(line)}</b>"),
+        ("Для чего разрешено", sentence(line["permitted_purpose"])),
         ("Что делаем", line["subject"]),
-        ("Результат", line["deliverable"]),
         ("Количество", f"{line['qty_label']}. {line['unit_definition']}"),
         ("Входит", line["included"]),
         ("Не входит", line["excluded"]),
-        ("Что нужно от Заказчика", line["inputs"]),
+        ("Что нужно от вас", line["inputs"]),
+        ("Кто участвует", line["contractor_categories"]),
+        ("Наименование в чеке", line["receipt_name"]),
     ]
     if line.get("academic_submode") == "A2":
         participation = line["author_participation"]
         rows.extend(
             [
-                ("Статус результата A2", participation["result_status"]),
+                ("Статус результата", participation["result_status"]),
                 (
-                    "Решения и данные Заказчика",
+                    "Ваши решения и данные",
                     participation["customer_decisions_and_data"],
                 ),
-                (
-                    "Контрольные точки участия",
-                    participation["checkpoints"],
-                ),
+                ("Контрольные точки вашего участия", participation["checkpoints"]),
             ]
         )
     content: list[Any] = [
-        para(f"Позиция {line['position']}. {line['title']}", st["h2"]),
-    ]
-    for label, value in rows:
-        content.append(para(f"<b>{label}:</b> {value}", st["body_tight"]))
-    result = Table([[content]], colWidths=[CONTENT_W])
-    result.setStyle(
-        TableStyle(
+        para(f"Позиция {line['position']}", st["caps"]),
+        para(line["title"], st["h2"]),
+        Spacer(1, 2.5 * mm),
+        headline_strip(
             [
-                ("BOX", (0, 0), (-1, -1), 0.65, HAIR),
-                ("BACKGROUND", (0, 0), (-1, -1), WHITE),
-                ("LINEBEFORE", (0, 0), (0, -1), 2.3, WAX),
-                ("LEFTPADDING", (0, 0), (-1, -1), 10),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 9),
-                ("TOPPADDING", (0, 0), (-1, -1), 5),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
-            ]
-        )
-    )
-    return result
+                ("Что получите", line["deliverable"]),
+                ("К сроку", line["due"].split(";")[0].strip()),
+                ("Цена позиции", rub(line["contract_minor"])),
+            ],
+            st,
+        ),
+        Spacer(1, 1 * mm),
+        HRFlowable(width="100%", thickness=0.4, color=HAIR, spaceBefore=3, spaceAfter=1),
+        field_table(rows, st, inset=23),
+        Spacer(1, 1.5 * mm),
+        para(
+            f"В договоре эта позиция обозначена как {contour_code(line)}.",
+            st["small"],
+        ),
+    ]
+    return card_shell(content, accent=WAX, fill=WHITE)
 
 
 def execution_card(line: dict[str, Any], st: dict[str, ParagraphStyle]) -> Table:
@@ -369,23 +576,11 @@ def execution_card(line: dict[str, Any], st: dict[str, ParagraphStyle]) -> Table
     ]
     if line["contract_contour"] == "A":
         rows.append(("Права на материалы", line["rights"]))
-    content: list[Any] = [para("Срок, проверка и связь позиций", st["h2"])]
-    for label, value in rows:
-        content.append(para(f"<b>{label}:</b> {value}", st["body_tight"]))
-    result = Table([[content]], colWidths=[CONTENT_W])
-    result.setStyle(
-        TableStyle(
-            [
-                ("BOX", (0, 0), (-1, -1), 0.65, HAIR),
-                ("BACKGROUND", (0, 0), (-1, -1), WHITE),
-                ("LEFTPADDING", (0, 0), (-1, -1), 10),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 9),
-                ("TOPPADDING", (0, 0), (-1, -1), 5),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
-            ]
-        )
-    )
-    return result
+    content: list[Any] = [
+        para("Срок, проверка и связь позиций", st["h2"]),
+        field_table(rows, st, inset=23),
+    ]
+    return card_shell(content, accent=HAIR, fill=WHITE)
 
 
 def author_rights_card(
@@ -439,25 +634,10 @@ def author_rights_card(
         ]
     )
     content: list[Any] = [
-        para("Автор и интеллектуальные права по этой позиции", st["h2"])
+        para("Автор и интеллектуальные права по этой позиции", st["h2"]),
+        field_table(rows, st, inset=23),
     ]
-    for label, value in rows:
-        content.append(para(f"<b>{label}:</b> {value}", st["body_tight"]))
-    result = Table([[content]], colWidths=[CONTENT_W])
-    result.setStyle(
-        TableStyle(
-            [
-                ("BOX", (0, 0), (-1, -1), 0.7, HAIR),
-                ("BACKGROUND", (0, 0), (-1, -1), PAPER),
-                ("LINEBEFORE", (0, 0), (0, -1), 2.3, GREEN),
-                ("LEFTPADDING", (0, 0), (-1, -1), 10),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 9),
-                ("TOPPADDING", (0, 0), (-1, -1), 5),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
-            ]
-        )
-    )
-    return result
+    return card_shell(content, accent=GREEN, fill=PAPER)
 
 
 class FooterCanvas(canvas.Canvas):
@@ -910,7 +1090,7 @@ CHANGE = {
     "previous_snapshot": CHANGE_BEFORE,
     "new_snapshot": CHANGE_AFTER,
     "changes": [
-        ["Контур и цель", "А: репетиция выступления по собственному материалу", "А: без изменения", "аттестационный результат за Заказчика не создаётся"],
+        ["Вид помощи и цель", "Редакторская и консультационная помощь: репетиция выступления по собственному материалу", "Вид помощи не меняется", "аттестационный результат за Заказчика не создаётся"],
         ["Количество", "1 встреча по 60 минут", "2 встречи по 60 минут", "увеличен объём позиции 4"],
         ["Результат", "1 репетиция и список вопросов", "2 репетиции, обновлённый хронометраж и список вопросов", "добавлен самостоятельный результат второй встречи"],
         ["Срок позиции 4", "16.08.2026", "18.08.2026", "перенос на 2 календарных дня"],
@@ -1159,19 +1339,32 @@ def summary_header(spec: dict[str, Any], st: dict[str, ParagraphStyle]) -> list[
         Spacer(1, 2 * mm),
         para("Состав и цена", st["h1"]),
     ]
+    # Прежде вторая колонка называлась «Контур» и содержала «A / A2» — шифр,
+    # который клиенту нигде не расшифрован. Теперь под названием позиции идёт
+    # человеческое название вида помощи, а код ушёл в карточку позиции.
     rows: list[list[Any]] = [
-        ["№", "Контур", "Позиция", "Количество", "Результат", "Срок", "Цена"]
+        ["№", "Позиция и вид помощи", "Количество", "Что получите", "Срок", "Цена"]
     ]
+    title_style = ParagraphStyle(
+        "CellTitle",
+        fontName="SalonText-Bold",
+        fontSize=7.4,
+        leading=9.6,
+        textColor=INK,
+    )
+    kind_style = ParagraphStyle(
+        "CellKind",
+        fontName="Salon",
+        fontSize=6.4,
+        leading=8.6,
+        textColor=QUIET,
+        spaceBefore=1.5,
+    )
     for line in spec["lines"]:
         rows.append(
             [
                 str(line["position"]),
-                (
-                    f"{line['contract_contour']} / {line['academic_submode']}"
-                    if line["contract_contour"] == "A"
-                    else line["contract_contour"]
-                ),
-                line["title"],
+                [para(line["title"], title_style), para(contour_human(line), kind_style)],
                 line["qty_label"],
                 line["deliverable"],
                 line["due"].split(";")[0],
@@ -1181,9 +1374,9 @@ def summary_header(spec: dict[str, Any], st: dict[str, ParagraphStyle]) -> list[
     story.append(
         make_table(
             rows,
-            [8 * mm, 17 * mm, 36 * mm, 24 * mm, 40 * mm, 25 * mm, 24 * mm],
+            [8 * mm, 47 * mm, 22 * mm, 42 * mm, 27 * mm, 28 * mm],
             font_size=6.9,
-            aligns=["CENTER", "CENTER", "LEFT", "CENTER", "LEFT", "LEFT", "RIGHT"],
+            aligns=["CENTER", "LEFT", "CENTER", "LEFT", "LEFT", "RIGHT"],
         )
     )
     if pricing["discount_minor"] or pricing["gift_credit_minor"] or pricing["deposit_credit_minor"]:
@@ -1529,10 +1722,12 @@ def specification_story(spec: dict[str, Any], st: dict[str, ParagraphStyle]) -> 
     )
     for index, line in enumerate(spec["lines"]):
         if index:
+            # Карточка сама открывается словами «Позиция N» и названием,
+            # поэтому лишний 25-пунктовый заголовок над ней только дублировал
+            # то, что читатель увидит строкой ниже.
             story.append(PageBreak())
-            story.append(
-                para(f"Позиция {line['position']} — подробные условия", st["title"])
-            )
+            story.append(para("Продолжение · подробно по позициям", st["caps"]))
+            story.append(Spacer(1, 2 * mm))
         story.append(KeepTogether([position_card(line, st)]))
         story.append(Spacer(1, 3 * mm))
         story.append(KeepTogether([execution_card(line, st)]))

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Что именно вы получите до оплаты — Академический Салон</title>
-<meta name="description" content="До оплаты вы увидите простое резюме помощи: результат каждого этапа, срок, цена, что потребуется от вас и что не входит." />
+<title>Спецификация заказа: что это и как её читать — Академический Салон</title>
+<meta name="description" content="Спецификация — список работ по вашему заказу: что сделаем, что вы получите на руки, к какому числу и за сколько. Разбираем построчно на образце: что означает каждое поле и что в нём проверить до оплаты." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260804release112" />
 <link rel="stylesheet" href="assets/css/styles.css?v=20260804release112&amp;wax=20260804wax1&amp;glass=20260804glass1" />
 <link rel="stylesheet" href="assets/css/chrome.css?v=20260804shell112&amp;wax=20260804wax1&amp;glass=20260804glass1" />
@@ -19,101 +19,238 @@
 <meta name="theme-color" content="#F6F1E7" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Академический Салон" />
-<meta property="og:title" content="Что именно вы получите до оплаты" />
-<meta property="og:description" content="Результат каждого этапа, срок, цена, входные материалы и границы помощи — в одном документе." />
+<meta property="og:title" content="Спецификация заказа: что это и как её читать" />
+<meta property="og:description" content="Что мы сделаем, что вы получите на руки, к какому числу и за сколько — построчно, на образце." />
 <meta property="og:url" content="https://akademsalon.ru/specifikaciya.html" />
 <meta property="og:image" content="https://akademsalon.ru/assets/img/og-cover-v3.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260804shell112&amp;wax=20260804wax1&amp;glass=20260804glass1" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-specification.css?v=20260804release112&amp;wax=20260804wax1&amp;sheen=20260804sheen1" />
+<link rel="stylesheet" href="assets/css/polish15-specification.css?v=20260804release112&amp;wax=20260804wax1&amp;sheen=20260804sheen1&amp;plain=20260804plain1" />
 </head>
 <body class="polish15-specification specification-page">
 <main class="standard-page specification-view" data-specification-view="exact" data-specification-id="AS-SPEC-02" data-specification-version="1.1">
   <div class="spec-page-shell">
     <header class="spec-page-head">
       <div class="spec-page-head__copy">
-        <p class="spec-eyebrow">Спецификация</p>
-        <h1>Что именно вы получите.</h1>
-        <p class="spec-page-head__lead">До оплаты фиксируем задачи, результат, срок, стоимость, порядок приёмки и договорный режим каждой позиции: A с обязательным подрежимом A1/A2 либо B1/B2. Документ доступен в личном кабинете.</p>
+        <p class="spec-eyebrow">Спецификация заказа</p>
+        <h1>Ваш список работ — до того, как платить.</h1>
+        <p class="spec-page-head__lead">По каждому пункту заказа в ней написано четыре вещи: <strong>что мы сделаем</strong>, <strong>что вы получите на руки</strong>, <strong>к какому числу</strong> и <strong>за сколько</strong>. Вы читаете, просите поправить, что не так, и только потом платите. Ниже — образец, разобранный по строчкам.</p>
         <div class="spec-page-head__action">
-          <a class="spec-button" href="assets/docs/specifikaciya-obrazec.pdf" target="_blank" rel="noopener noreferrer" data-specification-download>
-            Открыть пример спецификации <span aria-hidden="true">↗</span>
+          <a class="spec-button" href="assets/docs/specifikaciya-obrazec.pdf?v=20260804plain1" target="_blank" rel="noopener noreferrer" data-specification-download>
+            Открыть образец PDF <span aria-hidden="true">↗</span>
           </a>
         </div>
       </div>
       <div class="spec-page-head__side">
         <div class="document-badge">
-          <span>Образец</span>
-          <strong>AS-SPEC / 02</strong>
-          <small>Редакция от 26.07.2026</small>
+          <span>На этой странице</span>
+          <strong>Образец</strong>
+          <small>Дело DEMO-2417 · имена, даты и суммы вымышлены</small>
         </div>
       </div>
     </header>
 
+    <section class="spec-answers" aria-labelledby="spec-answers-title">
+      <h2 id="spec-answers-title" class="spec-section-title">Коротко, до подробностей</h2>
+      <ul class="spec-answers__grid">
+        <li>
+          <span class="spec-answers__q">Что это за документ</span>
+          <p class="spec-answers__a">Личная часть договора. Общие правила для всех — в <a href="oferta.html">оферте</a>, а всё про вашу работу — здесь: состав, результат, срок, цена.</p>
+        </li>
+        <li>
+          <span class="spec-answers__q">Когда вы её увидите</span>
+          <p class="spec-answers__a">После того как редактор разберёт задачу — <strong>до счёта, а не после</strong>. Документ остаётся в вашем <a href="dashboard.html">кабинете</a>.</p>
+        </li>
+        <li>
+          <span class="spec-answers__q">Сколько она стоит</span>
+          <p class="spec-answers__a">Отдельной платы за спецификацию нет. Вы платите за этап работы, а не за документ.</p>
+        </li>
+        <li>
+          <span class="spec-answers__q">Если вы не согласны</span>
+          <p class="spec-answers__a">Скажите, что поправить, — редактор пришлёт новую версию. Пока платежа не было, отказ ничего не стоит.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="spec-flow" aria-labelledby="spec-flow-title">
+      <h2 id="spec-flow-title" class="spec-section-title">Откуда она берётся</h2>
+      <ol class="spec-flow__list">
+        <li>
+          <span class="spec-flow__num">01</span>
+          <strong>Вы описываете задачу</strong>
+          <p>В <a href="configurator.html">подборе помощи</a> или прямо редактору. Контакты и файлы на этом шаге не обязательны.</p>
+        </li>
+        <li>
+          <span class="spec-flow__num">02</span>
+          <strong>Редактор собирает спецификацию</strong>
+          <p>Разбивает работу на отдельные позиции и ставит по каждой результат, срок и цену.</p>
+        </li>
+        <li>
+          <span class="spec-flow__num">03</span>
+          <strong>Вы читаете и правите</strong>
+          <p>Что-то не так — редактор переписывает и присылает новую версию. Столько раз, сколько нужно.</p>
+        </li>
+        <li>
+          <span class="spec-flow__num">04</span>
+          <strong>Подтверждаете и платите первый этап</strong>
+          <p>Счёт появляется в кабинете только на согласованный этап и на сумму из спецификации.</p>
+        </li>
+      </ol>
+    </section>
+
     <div class="spec-layout">
-      <article class="spec-paper" aria-label="Образец спецификации к делу DEMO-2417">
+      <article class="spec-paper" aria-label="Образец спецификации к делу DEMO-2417, разобранный по строчкам">
         <header>
           <img src="bimi/logo.svg" alt="" />
           <div>
-            <span>Академический Салон</span>
+            <span>Академический Салон · образец</span>
             <strong>Спецификация к делу DEMO-2417</strong>
           </div>
           <b>24.07.2026</b>
         </header>
         <section>
-          <h2>1. Редакторский аудит второй главы · A1</h2>
+          <h2>Позиция 1 из 1</h2>
+          <p class="spec-paper__hint">Если позиций несколько, каждая описана так же и отдельно: у неё свои результат, срок и цена. Серым набрано пояснение — в вашем документе его нет.</p>
           <dl>
             <div>
-              <dt>Договорный режим</dt>
-              <dd><strong>A / A1</strong> — редакторская помощь по исходному материалу Заказчика.</dd>
+              <dt>Что заказано</dt>
+              <dd>
+                <b>Редакторский аудит второй главы</b>
+                <em>Название должно быть понятно без нашего словаря. Если вы не можете пересказать эту строку своими словами — просите переписать.</em>
+              </dd>
             </div>
             <div>
-              <dt>Исходный материал</dt>
-              <dd>Глава 2, 38 страниц; таблица исходных данных; методичка кафедры.</dd>
+              <dt>Вид помощи</dt>
+              <dd>
+                <b>Редакторская и консультационная помощь</b>
+                <em>От вида зависит, кто считается автором результата и что вы получите на руки. Видов всего четыре — они разобраны сразу под образцом.</em>
+              </dd>
             </div>
             <div>
-              <dt>Работа редактора</dt>
-              <dd>Проверка связи методов, результатов и выводов; редактура формулировок; комментарии к недостающим данным.</dd>
+              <dt>Ваши материалы</dt>
+              <dd>
+                <b>Глава 2, 38 страниц; таблица исходных данных; методичка кафедры.</b>
+                <em>Перечислены файлы и их объём. По этой строке потом сверяют, тот ли объём работы получился, и с неё же считают срок.</em>
+              </dd>
             </div>
             <div>
-              <dt>Результат</dt>
-              <dd>Файл Word в режиме исправлений и список задач в PDF.</dd>
+              <dt>Что делает редактор</dt>
+              <dd>
+                <b>Проверяет связь методов, результатов и выводов; правит формулировки; отмечает, каких данных не хватает.</b>
+                <em>Здесь должны быть глаголы: проверяет, правит, отмечает. «Стандартный объём работ» — не описание, по нему нельзя ничего спросить.</em>
+              </dd>
+            </div>
+            <div>
+              <dt>Что вы получаете</dt>
+              <dd>
+                <b>Файл Word в режиме исправлений и список задач в PDF.</b>
+                <em>Формат файлов и состав передачи. «Готовая работа» результатом не считается: такое нельзя проверить и нельзя оспорить.</em>
+              </dd>
             </div>
             <div>
               <dt>Срок</dt>
-              <dd>До 28 июля, 18:00 по Москве.</dd>
+              <dd>
+                <b>28 июля 2026, 18:00 по Москве.</b>
+                <em>Дата и время, а не «примерно неделя». Если срок зависит от ваших материалов — это условие тоже написано прямо здесь.</em>
+              </dd>
             </div>
             <div>
-              <dt>Стоимость</dt>
-              <dd><strong>9 000 ₽</strong></dd>
+              <dt>Цена позиции</dt>
+              <dd>
+                <b>9 000 ₽</b>
+                <em>Точная сумма именно за эту строку. «От 9 000 ₽» в подтверждённой спецификации быть не может.</em>
+              </dd>
+            </div>
+            <div>
+              <dt>Приёмка</dt>
+              <dd>
+                <b>7 календарных дней с передачи на первичную проверку; замечания — одним списком.</b>
+                <em>Это рабочее окно, чтобы быстро свериться. Ваши права по закону оно не сокращает и не отменяет.</em>
+              </dd>
             </div>
           </dl>
-        </section>
-        <section>
-          <h2>2. Порядок приёмки</h2>
-          <p>Заказчик проверяет результат по пунктам спецификации и направляет замечания одним списком в течение трёх календарных дней.</p>
-        </section>
-        <section>
-          <h2>Если работа начинается с темы · A2</h2>
-          <p>В отдельной строке указываются <strong>A / A2</strong>, статус результата как рабочего черновика, решения и данные Заказчика и контрольные точки его участия: утверждение проблемы, цели и метода; проверка фактов, источников и данных; содержательная доработка и формирование финальной авторской версии.</p>
         </section>
         <footer><span>Версия 1.1</span><span>Страница 1 из 1</span></footer>
       </article>
 
       <aside class="spec-notes" aria-labelledby="spec-required-title">
-        <h2 id="spec-required-title">Шесть обязательных пунктов</h2>
+        <h2 id="spec-required-title">Что проверить перед оплатой</h2>
+        <p class="spec-notes__lead">Пять минут по этому списку — и вы точно знаете, за что платите.</p>
         <ul>
-          <li><span>00</span><div><strong>Режим позиции</strong><p>A1, A2, B1 или B2; режимы не смешиваются в одной строке.</p></div></li>
-          <li><span>01</span><div><strong>Исходные материалы</strong><p>Перечень файлов и версий.</p></div></li>
-          <li><span>02</span><div><strong>Действия редактора</strong><p>Что именно будет сделано.</p></div></li>
-          <li><span>03</span><div><strong>Проверяемый результат</strong><p>Формат и состав передачи.</p></div></li>
-          <li><span>04</span><div><strong>Срок</strong><p>Дата и время по Москве.</p></div></li>
-          <li><span>05</span><div><strong>Стоимость и приёмка</strong><p>Платёж и порядок замечаний.</p></div></li>
+          <li><span>01</span><div><strong>Все позиции на месте</strong><p>Ничего из того, о чём договаривались, не пропало и ничего лишнего не добавилось.</p></div></li>
+          <li><span>02</span><div><strong>Результат можно проверить</strong><p>Написан формат файла и его состав, а не «готовая работа».</p></div></li>
+          <li><span>03</span><div><strong>Срок — это дата</strong><p>Число и время. Если старт зависит от ваших файлов — условие видно в той же строке.</p></div></li>
+          <li><span>04</span><div><strong>Сумма совпадает</strong><p>Цена позиции и первый платёж — те же, что назвал редактор.</p></div></li>
+          <li><span>05</span><div><strong>Вид помощи тот самый</strong><p>Особенно если работа начинается с нуля: там результат — рабочий черновик, а не финальный текст.</p></div></li>
         </ul>
-        <a class="spec-button" href="assets/docs/specifikaciya-obrazec.pdf" target="_blank" rel="noopener noreferrer" data-specification-download>Открыть образец PDF</a>
+        <p class="spec-notes__foot">Нашли расхождение — не оплачивайте. Напишите редактору, он перевыпустит документ.</p>
+        <a class="spec-button" href="assets/docs/specifikaciya-obrazec.pdf?v=20260804plain1" target="_blank" rel="noopener noreferrer" data-specification-download>Открыть образец PDF <span aria-hidden="true">↗</span></a>
       </aside>
     </div>
+
+    <section class="spec-modes" aria-labelledby="spec-modes-title">
+      <h2 id="spec-modes-title" class="spec-section-title">Четыре вида помощи — и что каждый значит</h2>
+      <p class="spec-section-lead">В строке «Вид помощи» стоит одна из этих четырёх. Смешать два вида в одной позиции нельзя: у них по-разному решается, кто автор.</p>
+      <div class="spec-modes__grid">
+        <article class="spec-mode">
+          <h3>Редакторская и консультационная помощь</h3>
+          <p>У вас уже есть текст, черновик или тема. Мы объясняем, правим формулировки, проверяем оформление и источники, рецензируем, готовим к защите.</p>
+          <p class="spec-mode__author"><span>Автор — вы.</span> Права на ваш исходный текст остаются вашими: редактура их нам не передаёт.</p>
+          <p class="spec-mode__code">В договоре: режим A1</p>
+        </article>
+        <article class="spec-mode">
+          <h3>Совместный исследовательский проект с нуля</h3>
+          <p>Начинаем с темы или задания. Вы участвуете содержательно: утверждаете проблему, цель и метод, проверяете факты, источники и данные.</p>
+          <p class="spec-mode__author"><span>Результат — рабочий черновик.</span> Довести его до финальной авторской версии — ваш шаг, и это прямо записано в спецификации.</p>
+          <p class="spec-mode__code">В договоре: режим A2</p>
+        </article>
+        <article class="spec-mode">
+          <h3>Авторская работа · мастерская</h3>
+          <p>Произведение <strong>не для аттестации</strong> — статья на сайт, текст для проекта, иллюстрации. Его создаёт наш редактор как автор.</p>
+          <p class="spec-mode__author"><span>Права передаются вам</span> — по профилю, который указан в позиции.</p>
+          <p class="spec-mode__code">В договоре: режим B1</p>
+        </article>
+        <article class="spec-mode">
+          <h3>Авторская работа · согласованный автор</h3>
+          <p>То же самое, но произведение создаёт другой автор. Мы организуем работу и отвечаем за то, чтобы права дошли до вас по цепочке.</p>
+          <p class="spec-mode__author"><span>Автор назван в документе.</span> Кто именно работает — не тайна.</p>
+          <p class="spec-mode__code">В договоре: режим B2</p>
+        </article>
+      </div>
+      <p class="spec-modes__note">Коды A1, A2, B1 и B2 — это те же четыре строки, только на языке договора: так их называет <a href="oferta.html">оферта</a> и так они помечены в PDF. Ничего пятого не бывает.</p>
+    </section>
+
+    <section class="spec-never" aria-labelledby="spec-never-title">
+      <h2 id="spec-never-title" class="spec-section-title">Чего в спецификации не бывает</h2>
+      <p class="spec-section-lead">Эти формулировки запрещены нашими же правилами: под каждой можно спрятать что угодно, а проверить нельзя ничего. Увидели такую строку — документ не готов, просите переписать.</p>
+      <ul class="spec-never__list">
+        <li><span aria-hidden="true">×</span>«по договорённости»</li>
+        <li><span aria-hidden="true">×</span>«стандартный объём»</li>
+        <li><span aria-hidden="true">×</span>«правки без лимита»</li>
+        <li><span aria-hidden="true">×</span>«срок уточняется»</li>
+        <li><span aria-hidden="true">×</span>«цена от …»</li>
+      </ul>
+    </section>
+
+    <section class="spec-change" aria-labelledby="spec-change-title">
+      <h2 id="spec-change-title" class="spec-section-title">Если что-то нужно изменить</h2>
+      <div class="spec-change__grid">
+        <article>
+          <p class="spec-change__when">До того, как вы подтвердили</p>
+          <p>Просто скажите, что поправить. Редактор пришлёт новую версию целиком — старая не действует. Сколько раз это повторить, не ограничено.</p>
+        </article>
+        <article>
+          <p class="spec-change__when">После подтверждения</p>
+          <p>Изменение оформляется отдельным листом: причина, таблица «было / стало / на что влияет», новая цена и новый срок. К нему прикладывается полная новая редакция.</p>
+          <p><strong>Пока вы не подтвердили лист изменений, действует прежняя редакция.</strong> Молчание, открытый файл, продолжение переписки и работа по неизменённой части согласием не считаются.</p>
+        </article>
+        <article>
+          <p class="spec-change__when">Что остаётся у вас</p>
+          <p>Обе редакции хранятся в кабинете вместе с датами. Принятый документ задним числом не меняется — ни нами, ни автоматически.</p>
+        </article>
+      </div>
+    </section>
 
     <div class="next-step">
       <div class="next-step__copy">

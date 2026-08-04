@@ -86,6 +86,12 @@ body.polish15-specification::before{
   --green-soft:#23362a;
 }
 
+:root[data-theme="dark"] body.polish15-specification{
+  /* Лист образца в тёмной теме темнеет вместе со страницей, поэтому его
+     «бумажная» тень из светлой темы не читается — берём тёплую глубокую. */
+  --spec-paper-shadow:0 30px 90px rgba(0,0,0,.42),0 6px 20px rgba(0,0,0,.24);
+}
+
 :root[data-theme="dark"] body.polish15-specification::before{opacity:.38}
 
 .polish15-specification .specification-view{
@@ -200,7 +206,7 @@ body.polish15-specification::before{
 
 .polish15-specification .document-badge span,
 .polish15-specification .document-badge small{
-  color:var(--quiet);
+  color:var(--muted);
   font:550 8px/1.2 var(--mono);
   letter-spacing:.07em;
   text-transform:uppercase;
@@ -219,10 +225,24 @@ body.polish15-specification::before{
   padding-block:var(--spec-section);
 }
 
+/* Лист образца. Прежде он был уменьшенным факсимиле: поля 9px, значения
+   10px — «документ» узнавался по форме, но не читался. Теперь это главный
+   рабочий текст страницы, поэтому набран нормальным кеглем, а под каждым
+   значением идёт пояснение, что в этой строке проверять.
+   Краски взяты токенами: в тёмной теме лист темнеет вместе со страницей —
+   белая плита в пол-экрана была ровно тем, ради чего тёмную тему включают. */
 .polish15-specification .spec-paper{
-  color:#3a362f;
-  background:#fffdf7;
-  border:1px solid #d8cebc;
+  --sp-paper:var(--sheet);
+  --sp-rule:var(--line);
+  --sp-rule-soft:var(--line-soft);
+  --sp-label:var(--muted);
+  --sp-value:var(--ink);
+  /* Пояснение отделено курсивом и кеглем, а не бледностью: на --quiet
+     оно давало 4.29 в обеих темах — это обычный текст ниже нормы. */
+  --sp-hint:var(--muted);
+  color:var(--text);
+  background:var(--sp-paper);
+  border:1px solid var(--sp-rule);
   box-shadow:var(--spec-paper-shadow);
 }
 
@@ -232,7 +252,7 @@ body.polish15-specification::before{
   gap:13px;
   align-items:center;
   padding:24px 30px;
-  border-bottom:1px solid #d8cebc;
+  border-bottom:1px solid var(--sp-rule);
 }
 
 .polish15-specification .spec-paper>header img{
@@ -248,55 +268,83 @@ body.polish15-specification::before{
 .polish15-specification .spec-paper>header span,
 .polish15-specification .spec-paper>header b,
 .polish15-specification .spec-paper>footer{
-  color:#82796a;
-  font:550 8px/1.2 var(--mono);
+  color:var(--sp-label);
+  font:550 9px/1.3 var(--mono);
   letter-spacing:.07em;
   text-transform:uppercase;
 }
 
 .polish15-specification .spec-paper>header strong{
-  color:#2f2b25;
-  font:500 15px/1.2 var(--serif);
+  color:var(--sp-value);
+  font:500 17px/1.2 var(--serif);
 }
 
 .polish15-specification .spec-paper>section{
-  padding:28px 30px;
-  border-bottom:1px solid #e0d6c5;
+  padding:30px;
 }
 
 .polish15-specification .spec-paper h2{
-  color:#292620;
-  font-size:21px;
+  color:var(--sp-value);
+  font-size:23px;
+}
+
+.polish15-specification .spec-paper__hint{
+  max-width:56ch;
+  margin-top:9px;
+  color:var(--sp-hint);
+  font-size:13.5px;
+  line-height:1.5;
 }
 
 .polish15-specification .spec-paper dl{
-  margin-top:19px;
-  border-top:1px solid #ddd3c2;
+  margin-top:24px;
+  border-top:1px solid var(--sp-rule);
 }
 
 .polish15-specification .spec-paper dl>div{
   display:grid;
-  grid-template-columns:150px 1fr;
-  gap:18px;
-  padding:12px 0;
-  border-bottom:1px solid #e3dacb;
+  grid-template-columns:168px minmax(0,1fr);
+  gap:8px 24px;
+  padding:17px 0;
+  border-bottom:1px solid var(--sp-rule-soft);
 }
 
 .polish15-specification .spec-paper dt{
-  color:#837a6c;
-  font-size:9px;
+  color:var(--sp-label);
+  font:600 10px/1.5 var(--mono);
+  letter-spacing:.09em;
+  text-transform:uppercase;
 }
 
-.polish15-specification .spec-paper dd,
-.polish15-specification .spec-paper section>p{
-  color:#3f3a32;
-  font-size:10px;
+.polish15-specification .spec-paper dd{
+  display:grid;
+  gap:7px;
+  margin:0;
+}
+
+.polish15-specification .spec-paper dd b{
+  color:var(--sp-value);
+  font-size:16px;
+  font-weight:560;
+  line-height:1.45;
+}
+
+/* Пояснение — не часть документа: набрано тише и курсивом, и об этом
+   прямо сказано в подводке над таблицей. */
+.polish15-specification .spec-paper dd em{
+  max-width:62ch;
+  color:var(--sp-hint);
+  font-size:13.5px;
+  font-style:italic;
+  line-height:1.5;
 }
 
 .polish15-specification .spec-paper>footer{
   display:flex;
   justify-content:space-between;
+  gap:12px;
   padding:14px 30px;
+  border-top:1px solid var(--sp-rule);
 }
 
 .polish15-specification .spec-notes{
@@ -335,17 +383,272 @@ body.polish15-specification::before{
 
 .polish15-specification .spec-notes li strong{
   color:var(--ink);
-  font-size:11px;
+  font-size:15px;
+  line-height:1.35;
 }
 
 .polish15-specification .spec-notes li p{
-  color:var(--quiet);
-  font-size:9px;
+  color:var(--muted);
+  font-size:13.5px;
+  line-height:1.5;
 }
 
 .polish15-specification .spec-notes .spec-button{
   width:100%;
   margin-top:20px;
+}
+
+/* ============================================================
+   Разъясняющие секции. Страница обязана отвечать клиенту раньше,
+   чем показывает документ: что это, откуда берётся, что означают
+   пометки, чего в документе не бывает и как его изменить.
+   ============================================================ */
+
+.polish15-specification .spec-section-title{
+  font-size:clamp(28px,3vw,38px);
+}
+
+.polish15-specification .spec-section-lead{
+  max-width:74ch;
+  margin-top:13px;
+  color:var(--muted);
+  font-size:16.5px;
+  line-height:1.58;
+}
+
+.polish15-specification :is(.spec-answers,.spec-flow,.spec-modes,.spec-never,.spec-change){
+  padding-block:var(--spec-section);
+  border-bottom:1px solid var(--line);
+}
+
+.polish15-specification .spec-answers{padding-top:clamp(44px,4vw,64px)}
+.polish15-specification .spec-modes{padding-top:0;border-top:1px solid var(--line)}
+
+/* Четыре ответа: вопрос — ответ, без «узнайте подробнее». */
+.polish15-specification .spec-answers__grid{
+  display:grid;
+  gap:1px;
+  margin:26px 0 0;
+  padding:0;
+  list-style:none;
+  background:var(--line);
+  border:1px solid var(--line);
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.polish15-specification .spec-answers__grid>li{
+  display:grid;
+  align-content:start;
+  gap:10px;
+  padding:24px 22px 26px;
+  background:var(--paper);
+}
+
+.polish15-specification .spec-answers__q{
+  color:var(--wax-text,var(--wax));
+  font:600 10px/1.4 var(--mono);
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.polish15-specification .spec-answers__a{
+  color:var(--text);
+  font-size:15.5px;
+  line-height:1.55;
+}
+
+.polish15-specification :is(.spec-answers__a,.spec-modes__note,.spec-notes__foot) a{
+  color:var(--wax-text,var(--wax));
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.polish15-specification .spec-flow__list{
+  display:grid;
+  gap:0;
+  margin:26px 0 0;
+  padding:0;
+  list-style:none;
+  border-top:1px solid var(--line-strong);
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.polish15-specification .spec-flow__list>li{
+  display:grid;
+  align-content:start;
+  gap:8px;
+  padding:22px 24px 24px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.polish15-specification .spec-flow__num{
+  color:var(--wax-text,var(--wax));
+  font:600 10px/1.4 var(--mono);
+  letter-spacing:.1em;
+}
+
+.polish15-specification .spec-flow__list strong{
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:19px;
+  font-weight:470;
+  letter-spacing:-.02em;
+  line-height:1.2;
+}
+
+.polish15-specification .spec-flow__list p{
+  color:var(--muted);
+  font-size:14.5px;
+  line-height:1.55;
+}
+
+.polish15-specification .spec-flow__list a{
+  color:inherit;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+/* Четыре вида помощи. Главное в карточке — не название, а строка
+   «кто автор»: именно её клиент ищет и именно её раньше нигде не было. */
+.polish15-specification .spec-modes__grid{
+  display:grid;
+  gap:18px;
+  margin-top:30px;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.polish15-specification .spec-mode{
+  display:grid;
+  align-content:start;
+  gap:11px;
+  padding:26px 26px 22px;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-top:2px solid var(--wax);
+}
+
+.polish15-specification .spec-mode h3{
+  font-size:21px;
+}
+
+.polish15-specification .spec-mode p{
+  color:var(--text);
+  font-size:15px;
+  line-height:1.56;
+}
+
+.polish15-specification .spec-mode__author{
+  margin-top:2px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+
+.polish15-specification .spec-mode__author span{
+  color:var(--ink);
+  font-weight:600;
+}
+
+/* Селектор с тегом: соседнее `.spec-mode p` специфичнее одного класса
+   и иначе вернуло бы этой строке общий кегль. */
+.polish15-specification .spec-mode p.spec-mode__code{
+  color:var(--muted);
+  font:550 10px/1.4 var(--mono);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.polish15-specification .spec-modes__note{
+  max-width:78ch;
+  margin-top:22px;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.58;
+}
+
+/* Запрещённые формулировки — единственный блок страницы, который
+   говорит «нет». Набран как перечёркнутый список, чтобы читался за секунду. */
+.polish15-specification .spec-never__list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin:26px 0 0;
+  padding:0;
+  list-style:none;
+}
+
+.polish15-specification .spec-never__list>li{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 17px;
+  color:var(--ink);
+  background:var(--wax-soft);
+  border:1px solid var(--wax);
+  border-radius:999px;
+  font-size:15px;
+}
+
+.polish15-specification .spec-never__list>li>span{
+  color:var(--wax-text,var(--wax));
+  font:600 15px/1 var(--mono);
+}
+
+.polish15-specification .spec-change__grid{
+  display:grid;
+  gap:0;
+  margin-top:28px;
+  border-top:1px solid var(--line-strong);
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.polish15-specification .spec-change__grid>article{
+  display:grid;
+  align-content:start;
+  gap:11px;
+  padding:24px 28px 26px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.polish15-specification .spec-change__when{
+  color:var(--wax-text,var(--wax));
+  font:600 10px/1.4 var(--mono);
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.polish15-specification .spec-change__grid p{
+  color:var(--text);
+  font-size:15px;
+  line-height:1.56;
+}
+
+.polish15-specification .spec-change__grid strong{color:var(--ink)}
+
+.polish15-specification .spec-notes__lead{
+  margin-top:11px;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.55;
+}
+
+.polish15-specification .spec-notes__foot{
+  margin-top:16px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+}
+
+@media (max-width:1100px){
+  .polish15-specification .spec-answers__grid,
+  .polish15-specification .spec-flow__list{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .polish15-specification .spec-change__grid{
+    grid-template-columns:1fr;
+  }
+
+  .polish15-specification .spec-change__grid>article{padding-right:0}
 }
 
 @media (max-width:920px){
@@ -368,20 +671,26 @@ body.polish15-specification::before{
 
   .polish15-specification .spec-paper dl>div{
     grid-template-columns:1fr;
-    gap:5px;
+    gap:7px;
   }
 
-  .polish15-specification .spec-paper dd,
-  .polish15-specification .spec-paper section>p,
-  .polish15-specification .spec-notes li strong,
-  .polish15-specification .spec-notes li p{
-    font-size:12px;
+  .polish15-specification .spec-modes__grid{
+    grid-template-columns:1fr;
   }
 
   .polish15-specification .spec-notes{position:static}
 }
 
 @media (max-width:620px){
+  .polish15-specification .spec-answers__grid,
+  .polish15-specification .spec-flow__list{
+    grid-template-columns:1fr;
+  }
+
+  .polish15-specification .spec-flow__list>li{padding-right:0}
+
+  .polish15-specification .spec-never__list>li{width:100%}
+
   body.polish15-specification{--spec-section:54px}
 
   .polish15-specification .spec-page-shell{
@@ -436,7 +745,18 @@ body.polish15-specification::before{
   .polish15-specification>.mobile-cta,
   .polish15-specification>.site-footer,
   .polish15-specification .spec-page-head,
-  .polish15-specification .spec-notes{
+  .polish15-specification .spec-notes,
+  .polish15-specification .spec-answers,
+  .polish15-specification .spec-flow,
+  .polish15-specification .spec-modes,
+  .polish15-specification .spec-never,
+  .polish15-specification .spec-change{
+    display:none!important;
+  }
+
+  /* На печати остаётся сам бланк: пояснения к строкам — экранная подсказка. */
+  .polish15-specification .spec-paper dd em,
+  .polish15-specification .spec-paper__hint{
     display:none!important;
   }
 
