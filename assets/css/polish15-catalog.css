@@ -4,10 +4,10 @@
 
 .p15-catalog,
 .p15-service {
-  --canvas: #f3eee4;
-  --canvas-deep: #e9e1d3;
-  --paper-p15: #faf6ee;
-  --sheet-p15: #fffdf8;
+  --canvas: #E9DDCC;
+  --canvas-deep: #DDCDB6;
+  --paper-p15: #F4EBDE;
+  --sheet-p15: #FFF9F0;
   --sheet-rgb-p15: 255, 253, 248;
   --night-p15: #1d1c18;
   --on-night-p15: #fffaf3;

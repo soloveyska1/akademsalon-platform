@@ -2,10 +2,10 @@
    Runtime IDs and data attributes remain owned by cabinet.js. */
 
 .is-account-route {
-  --canvas: #f3eee4;
-  --canvas-deep: #e9e1d3;
-  --paper: #faf6ee;
-  --sheet: #fffdf8;
+  --canvas: #E9DDCC;
+  --canvas-deep: #DDCDB6;
+  --paper: #F4EBDE;
+  --sheet: #FFF9F0;
   --ink: #1d1c18;
   --ink-2: #292721;
   --text: #38352f;
