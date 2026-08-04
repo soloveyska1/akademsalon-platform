@@ -1277,6 +1277,31 @@
   line-height:1.5;
 }
 
+/* iPadOS и iOS: WebKit верстает поле даты от внутреннего блока значения
+   ::-webkit-date-and-time-value, а не от рамки поля. У блока своя ширина и
+   выключка по центру, и он не сжимается до padding-box, поэтому при width:100%
+   с горизонтальными полями значение и указатель уезжают за правый край.
+   Условие @supports (-webkit-touch-callout: none) истинно только на iOS/iPadOS,
+   так что десктопные движки правило не читают и их раскладка не меняется. */
+@supports (-webkit-touch-callout: none){
+  .configurator-task input[type="date"]{
+    -webkit-appearance:none;
+    appearance:none;
+    min-width:0;
+    max-width:100%;
+  }
+
+  .configurator-task input[type="date"]::-webkit-date-and-time-value{
+    margin:0;
+    min-width:0;
+    text-align:left;
+  }
+
+  .configurator-task input[type="date"]::-webkit-datetime-edit{
+    padding:0;
+  }
+}
+
 /* Обход набран внутри абзаца, поэтому подчёркивание должно переноситься вместе
    со словами: у .line-link оно нарисовано border-bottom и при переносе строки
    отрывалось отдельной чертой под следующей строкой. */
