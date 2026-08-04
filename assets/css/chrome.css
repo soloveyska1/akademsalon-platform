@@ -2774,22 +2774,66 @@ html[data-input-modality="keyboard"] .site-header .brand:focus-visible .brand__n
 
 .cs-alt2>summary:hover{color:var(--ink)}
 
-.cs-alt2__list{display:grid;gap:1px;background:var(--line);border-top:1px solid var(--line)}
+/* Список каналов — именно список, а не стопка плит. Прежде строки
+   лежали отдельными белыми блоками (приём «gap:1px по фону контейнера»),
+   текст упирался в край, а нажать было не за что: ни стрелки, ни
+   подсветки строки целиком. */
+.cs-alt2__list{
+  display:grid;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
 
 .cs-alt2__list>a{
   display:grid;
-  gap:3px;
-  padding:12px 2px 13px;
-  background:var(--sheet);
+  gap:3px 14px;
+  padding:13px 15px 14px;
+  border-bottom:1px solid var(--line);
   color:inherit;
   text-decoration:none;
+  grid-template-columns:minmax(0,1fr) 18px;
+  align-items:center;
+  transition:background-color .16s ease;
 }
 
-.cs-alt2__list>a b{color:var(--ink);font-size:14.5px;font-weight:600}
+.cs-alt2__list>a:last-child{border-bottom:0}
 
-.cs-alt2__list>a small{color:var(--muted);font-size:12.5px;line-height:1.45}
+.cs-alt2__list>a b{
+  grid-column:1;
+  color:var(--ink);
+  font-size:14.5px;
+  font-weight:600;
+}
 
-.cs-alt2__list>a:hover b{color:var(--wax-text,var(--wax))}
+.cs-alt2__list>a small{
+  grid-column:1;
+  color:var(--muted);
+  font-size:12.5px;
+  line-height:1.45;
+}
+
+.cs-alt2__list>a::after{
+  grid-column:2;
+  grid-row:1 / -1;
+  justify-self:end;
+  color:var(--quiet);
+  content:"→";
+  font-size:15px;
+  transition:transform .18s cubic-bezier(.22,1,.36,1),color .16s ease;
+}
+
+.cs-alt2__list>a:hover,
+.cs-alt2__list>a:focus-visible{background:var(--paper)}
+
+.cs-alt2__list>a:hover b,
+.cs-alt2__list>a:focus-visible b{color:var(--wax-text,var(--wax))}
+
+.cs-alt2__list>a:hover::after,
+.cs-alt2__list>a:focus-visible::after{
+  color:var(--wax-text,var(--wax));
+  transform:translateX(3px);
+}
 
 @media (max-width:520px){
   .cs-ask{padding:14px}
