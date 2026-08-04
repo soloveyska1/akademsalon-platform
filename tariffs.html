@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260804shell112&amp;wax=20260804wax1&amp;glass=20260804glass1" media="screen and (max-width:920px)" data-mobile-edition="1" />
 <link rel="stylesheet" href="assets/css/polish15-catalog.css?v=20260804services112&amp;search=20260803out007search1&amp;price=20260803price1&amp;disc=20260804disc2&amp;a11y=20260804a11y1&amp;lit=20260804lit1&amp;canvas=20260804canvas2&amp;live=20260804live1&amp;price2=20260804price2" />
 <link rel="stylesheet" href="assets/css/commission-zero.css?v=20260804release112&amp;disc=20260804disc1&amp;wax=20260804wax1&amp;canvas=20260804canvas2" />
+<link rel="stylesheet" href="assets/css/tariffs-press.css?v=20260805press1" />
 </head>
 <body data-p15-page>
 <main class="p15-catalog" id="main" tabindex="-1" data-p15-tariffs>
@@ -45,6 +46,7 @@
           <p class="eyebrow">Цены</p>
           <h1>Сколько будет стоить</h1>
           <p class="page-head__lead">Выберите два — увидите цену.</p>
+          <p class="page-head__colophon" aria-hidden="true"><span class="colophon-rule"></span><span class="colophon-text">прейскурант мастерской · 16 позиций · 2 500 – 60 000 ₽</span><span class="colophon-rule"></span></p>
         </div>
       </header>
 
@@ -83,8 +85,14 @@
         </div>
 
         <div class="pricecard" data-price-card aria-live="polite">
+          <svg class="pricecard__seal" data-press-seal viewBox="0 0 96 96" aria-hidden="true" focusable="false"><circle class="seal-edge" cx="48" cy="48" r="44"/><circle class="seal-dots" cx="48" cy="48" r="37"/><circle class="seal-pulse" cx="48" cy="48" r="44"/><text class="seal-mark" x="48" y="59">АС</text></svg>
           <p class="pricecard__what" data-card-what></p>
           <p class="pricecard__sum"><small data-card-pref></small><strong data-card-sum></strong></p>
+          <div class="pricescale" data-price-scale data-scale-state="priced" aria-hidden="true">
+            <span class="pricescale__cap">на шкале прайса</span>
+            <span class="pricescale__track"><i class="pricescale__marker" data-scale-marker></i></span>
+            <span class="pricescale__ends"><span>2 500 ₽</span><span>60 000 ₽</span></span>
+          </div>
           <p class="pricecard__note" data-card-note></p>
           <p class="pricecard__fine">Точную цену и срок назовём, когда посмотрим материалы. До этого платить не нужно.</p>
           <div class="pricecard__act">
@@ -99,6 +107,11 @@
           <p class="eyebrow">Флагманский формат</p>
           <strong>Комиссия №0 — живая репетиция защиты с независимым Оппонентом</strong>
           <p>Персональные вопросы, Протокол №0 и повторная проверка исправлений.</p>
+          <ul class="k0card__prices" aria-label="Фиксированные цены Комиссии №0">
+            <li><span>курсовая</span><strong>9 900 ₽</strong></li>
+            <li><span>ВКР</span><strong>19 900 ₽</strong></li>
+            <li><span>магистерская</span><strong>29 900 ₽</strong></li>
+          </ul>
         </div>
         <div class="k0card__act">
           <a class="button button--secondary" href="komissiya-0.html">Что входит <span aria-hidden="true">↗</span></a>
@@ -113,26 +126,43 @@
         <div class="fulllist__tools">
           <label class="pricesearch">
             <span class="sr-only">Поиск по прайсу</span>
+            <svg class="pricesearch__glass" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="9" cy="9" r="5.5"/><line x1="13.4" y1="13.4" x2="17.6" y2="17.6"/></svg>
             <input type="search" placeholder="Найти в прайсе — например, «нормоконтроль»" data-price-search />
           </label>
+          <p class="pricesearch__count" data-price-count aria-live="polite"></p>
         </div>
-        <div class="price-table">
+        <div class="price-table price-table--folio">
+          <section class="price-group" data-price-group>
+          <p class="price-group__head"><span>С нуля</span><em>полный проект под ключ</em><small>5</small></p>
           <div class="price-row" data-price-row><div><strong>Реферат или эссе</strong><small>План, источники и полный рабочий черновик · от 24 часов</small></div><span class="price-row__sum"><small>от</small><strong>2 500 ₽</strong></span><button type="button" data-start-priced="Реферат или эссе с нуля" aria-label="Рассчитать: Реферат или эссе">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>Курсовая · теория</strong><small>От темы до полного рабочего черновика · от 24 часов</small></div><span class="price-row__sum"><small>от</small><strong>14 000 ₽</strong></span><button type="button" data-start-priced="Курсовая теория с нуля" aria-label="Рассчитать: Курсовая · теория">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>Курсовая · исследование</strong><small>Методика, реальные данные, анализ и рабочий текст</small></div><span class="price-row__sum"><small>от</small><strong>20 000 ₽</strong></span><button type="button" data-start-priced="Курсовая с исследованием с нуля" aria-label="Рассчитать: Курсовая · исследование">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>ВКР / диплом</strong><small>Исследовательский проект и материалы к защите · от 24 часов</small></div><span class="price-row__sum"><small>от</small><strong>40 000 ₽</strong></span><button type="button" data-start-priced="ВКР или диплом с нуля" aria-label="Рассчитать: ВКР / диплом">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>Магистерское исследование</strong><small>Методология, анализ, рабочий текст и защита</small></div><span class="price-row__sum"><small>от</small><strong>60 000 ₽</strong></span><button type="button" data-start-priced="Магистерская с нуля" aria-label="Рассчитать: Магистерское исследование">Рассчитать</button></div>
+          </section>
+          <section class="price-group" data-price-group>
+          <p class="price-group__head"><span>Ваш текст</span><em>редактура написанного</em><small>3</small></p>
           <div class="price-row" data-price-row><div><strong>Редактура вашей курсовой</strong><small>Правки и комментарии в Word</small></div><span class="price-row__sum"><small>от</small><strong>9 000 ₽</strong></span><button type="button" data-start-priced="Редактура вашей курсовой" aria-label="Рассчитать: Редактура вашей курсовой">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>Аудит и редактура вашей ВКР</strong><small>Поэтапная редактура рукописи</small></div><span class="price-row__sum"><small>от</small><strong>24 000 ₽</strong></span><button type="button" data-start-priced="Аудит и редактура вашей ВКР" aria-label="Рассчитать: Аудит и редактура вашей ВКР">Рассчитать</button></div>
+          <div class="price-row" data-price-row><div><strong>Научная статья РИНЦ</strong><small>Редактура и требования издания</small></div><span class="price-row__sum"><small>от</small><strong>7 000 ₽</strong></span><button type="button" data-start-priced="Научная статья РИНЦ" aria-label="Рассчитать: Научная статья РИНЦ">Рассчитать</button></div>
+          </section>
+          <section class="price-group" data-price-group>
+          <p class="price-group__head"><span>Разбор и метод</span><em>когда нужен план действий</em><small>3</small></p>
           <div class="price-row" data-price-row><div><strong>Разбор замечаний руководителя</strong><small>Порядок исправлений по приоритету</small></div><span class="price-row__sum"><small>от</small><strong>2 500 ₽</strong></span><button type="button" data-start-priced="Разбор замечаний руководителя" aria-label="Рассчитать: Разбор замечаний руководителя">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>Разбор темы и плана</strong><small>Письменные рекомендации · 1–2 дня</small></div><span class="price-row__sum"><small>от</small><strong>3 000 ₽</strong></span><button type="button" data-start-priced="Разбор темы и плана" aria-label="Рассчитать: Разбор темы и плана">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>Методическая сессия</strong><small>60 минут и письменное резюме</small></div><span class="price-row__sum"><small>от</small><strong>3 000 ₽</strong></span><button type="button" data-start-priced="Методическая сессия" aria-label="Рассчитать: Методическая сессия">Рассчитать</button></div>
+          </section>
+          <section class="price-group" data-price-group>
+          <p class="price-group__head"><span>Оформление и защита</span><em>финальная прямая</em><small>2</small></p>
           <div class="price-row" data-price-row><div><strong>Нормоконтроль</strong><small>Проверка по методичке</small></div><span class="price-row__sum"><small>от</small><strong>5 000 ₽</strong></span><button type="button" data-start-priced="Нормоконтроль" aria-label="Рассчитать: Нормоконтроль">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>Проверка речи и презентации</strong><small>Правки и репетиция</small></div><span class="price-row__sum"><small>от</small><strong>6 000 ₽</strong></span><button type="button" data-start-priced="Проверка речи и презентации" aria-label="Рассчитать: Проверка речи и презентации">Рассчитать</button></div>
-          <div class="price-row" data-price-row><div><strong>Научная статья РИНЦ</strong><small>Редактура и требования издания</small></div><span class="price-row__sum"><small>от</small><strong>7 000 ₽</strong></span><button type="button" data-start-priced="Научная статья РИНЦ" aria-label="Рассчитать: Научная статья РИНЦ">Рассчитать</button></div>
+          </section>
+          <section class="price-group" data-price-group>
+          <p class="price-group__head"><span>Комиссия №0</span><em>фиксированная цена</em><small>3</small></p>
           <div class="price-row" data-price-row><div><strong>Комиссия №0 · курсовая</strong><small>Живая сессия, независимый Оппонент и Протокол №0</small></div><span class="price-row__sum"><small>фикс.</small><strong>9 900 ₽</strong></span><button type="button" data-start-priced="Комиссия №0 · курсовая" aria-label="Рассчитать: Комиссия №0 · курсовая">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>Комиссия №0 · ВКР</strong><small>Живая сессия, независимый Оппонент и Протокол №0</small></div><span class="price-row__sum"><small>фикс.</small><strong>19 900 ₽</strong></span><button type="button" data-start-priced="Комиссия №0 · ВКР" aria-label="Рассчитать: Комиссия №0 · ВКР">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>Комиссия №0 · магистерская</strong><small>Живая сессия, независимый Оппонент и Протокол №0</small></div><span class="price-row__sum"><small>фикс.</small><strong>29 900 ₽</strong></span><button type="button" data-start-priced="Комиссия №0 · магистерская" aria-label="Рассчитать: Комиссия №0 · магистерская">Рассчитать</button></div>
+          </section>
         </div>
         <p class="price-empty" data-price-empty hidden>Ничего не нашлось. Попробуйте другое слово или напишите редактору — посчитаем индивидуально.</p>
         <p class="price-table__note">Где срок не указан — называем его после того, как посмотрим материалы. Раньше этого дат не обещаем.</p>
@@ -143,10 +173,32 @@
     <div><p class="eyebrow">Оплата</p><h2>Как устроена оплата</h2></div>
 
   </header>
-        <div class="term-grid">
-          <article><span>01</span><h3>По этапам</h3><p>Большую работу делим на части. Следующий платёж — после принятия предыдущего результата.</p></article>
-          <article><span>02</span><h3>С чеком</h3><p>После платежа чек и статус доступны в личном кабинете.</p></article>
-          <article><span>03</span><h3>С правом отказаться</h3><p>До начала работы платёж возвращается полностью. После начала — за вычетом выполненной части.</p></article>
+        <div class="term-grid term-grid--press">
+          <article><figure class="pay-fig pay-fig--stages" aria-hidden="true"><svg viewBox="0 0 132 76" focusable="false">
+              <g class="pf-stage pf-stage--a"><rect class="pf-box" x="8" y="20" width="34" height="34" rx="2.5"/><line class="pf-leaf" x1="15" y1="29" x2="35" y2="29"/><line class="pf-leaf" x1="15" y1="36" x2="35" y2="36"/><path class="pf-tick" pathLength="1" d="M18 41l5 5 10-11"/></g>
+              <g class="pf-stage pf-stage--b"><rect class="pf-box" x="49" y="20" width="34" height="34" rx="2.5"/><line class="pf-leaf" x1="56" y1="29" x2="76" y2="29"/><line class="pf-leaf" x1="56" y1="36" x2="76" y2="36"/><path class="pf-tick" pathLength="1" d="M59 41l5 5 10-11"/></g>
+              <g class="pf-stage pf-stage--c"><rect class="pf-box" x="90" y="20" width="34" height="34" rx="2.5"/><line class="pf-leaf" x1="97" y1="29" x2="117" y2="29"/><line class="pf-leaf" x1="97" y1="36" x2="117" y2="36"/><path class="pf-tick" pathLength="1" d="M100 41l5 5 10-11"/></g>
+              <path class="pf-thread" pathLength="1" d="M8 64h116"/>
+            </svg></figure><span>01</span><h3>По этапам</h3><p>Большую работу делим на части. Следующий платёж — после принятия предыдущего результата.</p></article>
+          <article><figure class="pay-fig pay-fig--receipt" aria-hidden="true"><svg viewBox="0 0 132 76" focusable="false">
+              <defs><clipPath id="pfslot"><rect x="0" y="0" width="132" height="62"/></clipPath></defs>
+              <g clip-path="url(#pfslot)"><g class="pf-receipt">
+                <path class="pf-paper" d="M46 10h40v46l-5 4-5-4-5 4-5-4-5 4-5-4-5 4-5-4z"/>
+                <line class="pf-row pf-row--a" x1="53" y1="22" x2="79" y2="22"/>
+                <line class="pf-row pf-row--b" x1="53" y1="29" x2="79" y2="29"/>
+                <line class="pf-row pf-row--c" x1="53" y1="36" x2="71" y2="36"/>
+                <g class="pf-stamp"><circle cx="73" cy="46" r="6.5"/><path class="pf-stamptick" pathLength="1" d="M70 46l2.4 2.4 4-4.6"/></g>
+              </g></g>
+              <line class="pf-slot" x1="38" y1="62" x2="94" y2="62"/>
+            </svg></figure><span>02</span><h3>С чеком</h3><p>После платежа чек и статус доступны в личном кабинете.</p></article>
+          <article><figure class="pay-fig pay-fig--refund" aria-hidden="true"><svg viewBox="0 0 132 76" focusable="false">
+              <rect class="pf-wallet" x="8" y="34" width="22" height="18" rx="3"/>
+              <line class="pf-walletlip" x1="8" y1="40" x2="30" y2="40"/>
+              <path class="pf-fwd" pathLength="1" d="M34 50c24 4 56 4 82 1"/>
+              <path class="pf-back" pathLength="1" d="M116 42C96 22 56 20 36 37"/>
+              <path class="pf-backhead" pathLength="1" d="M43 32l-7 5 8 3"/>
+              <circle class="pf-coin" cx="33" cy="40" r="5"/>
+            </svg></figure><span>03</span><h3>С правом отказаться</h3><p>До начала работы платёж возвращается полностью. После начала — за вычетом выполненной части.</p></article>
         </div>
         <a class="line-link" href="oplata.html">Подробно об оплате и возврате <span aria-hidden="true">→</span></a>
       </section>
@@ -164,5 +216,6 @@
 <script defer src="assets/js/polish15-chrome.js?v=20260804release112&amp;search=20260803out007search1"></script>
 <script src="assets/js/extras.js?v=20260804shell112"></script>
 <script src="assets/js/polish15-catalog.js?v=20260804services112&amp;search=20260803out007search1&amp;price=20260803price1&amp;disc=20260804disc2&amp;live=20260804live1&amp;price2=20260804price2"></script>
+<script defer src="assets/js/tariffs-press.js?v=20260805press1"></script>
 </body>
 </html>
