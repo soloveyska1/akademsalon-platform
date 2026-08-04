@@ -327,6 +327,45 @@
   padding-bottom: 6px;
 }
 
+/* Сохранённый подбор занимает слот выбора ситуации. Раньше он стоял в левой
+   колонке под лидом, а правая при сохранённом подборе оставалась пустой на всю
+   высоту шапки: выбор и подсказка скрыты, заменить их нечем. */
+/* Колонка тянется во всю высоту шапки, а карточка ниже выбора ситуации —
+   без центрирования она висела бы у верхнего края над пустой полосой. */
+.p15-catalog .page-head__side:has(.catalog-resume:not([hidden])) {
+  display: grid;
+  align-content: center;
+}
+.p15-catalog .page-head__side .catalog-resume,
+.p15-catalog .page-head__side .catalog-resume.is-rail-resume.is-home-inline-resume {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  gap: 20px 14px;
+  padding: 26px 24px 24px;
+}
+.p15-catalog .page-head__side .catalog-resume .resume-card__message {
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+.p15-catalog .page-head__side .catalog-resume .resume-card__message strong {
+  font-size: 19px;
+}
+/* Действия во всю ширину карточки: в узкой колонке столбик кнопок у правого
+   края оставлял дыру между текстом и кнопками. */
+.p15-catalog .page-head__side .catalog-resume__actions {
+  min-width: 0;
+  grid-column: 1 / -1;
+  gap: 8px;
+}
+.p15-catalog .page-head__side .catalog-resume__actions .resume-card__action,
+.p15-catalog .page-head__side .catalog-resume__actions .resume-card__new {
+  width: 100%;
+  text-align: center;
+}
+
 .p15-catalog .page-head__note,
 .p15-catalog .price-principle {
   display: grid;
