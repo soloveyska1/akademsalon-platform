@@ -2624,6 +2624,25 @@ body .site-header{
   }
 }
 
+/* Шапка непрозрачна. Правила выше делали её стеклом: при поддержке
+   backdrop-filter в ней оставалось 14% собственной краски в светлой теме и 12%
+   в тёмной, всё остальное — размытая страница под ней. Поэтому шапка и
+   принимала цвет страницы: по замеру 47 страниц — пять разных фонов, включая
+   серый #d1cdc4, и нечитаемый девиз на девяти из них. Закреплённой палитры
+   (см. выше) мало: она задаёт --paper, но 14% от него всё равно оставляли
+   решение за страницей. Блюр снят намеренно — под сплошным фоном он ничего
+   не проявляет и только грузит композитор при скролле. */
+body .site-header,
+:root[data-theme="dark"] body .site-header,
+html.header-scrolled body .site-header,
+html.header-menu-open body .site-header,
+body .site-header.scrolled,
+body .site-header.is-scrolled{
+  background:var(--paper)!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+}
+
 body .site-header::before{
   position:absolute;
   z-index:-1;

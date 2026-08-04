@@ -6,14 +6,26 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('shared header uses the final liquid-glass surface', () => {
+/* Шапка больше НЕ стеклянная — решение владельца от 2026-08-04, отменяющее
+   прежний «liquid-glass». Причина замерена: при 14% собственной краски в
+   светлой теме и 12% в тёмной цвет шапки определяла страница под ней, и по
+   47 страницам она принимала ПЯТЬ разных фонов, включая серый #d1cdc4;
+   девиз «Редакторская мастерская» на девяти страницах падал до 3.26 при
+   норме AA 4.5. Стало: один тон в каждой теме (#e9ddcc и #1e1d19), альфа 1,
+   блюра нет, худший контраст 4.66. Прежние стеклянные правила оставлены в
+   листе как история решения — их перекрывает финальный непрозрачный слой,
+   поэтому тест проверяет именно его. */
+test('shared header stays opaque so its colour never depends on the page beneath', () => {
   const chrome = read('assets/css/polish15-chrome.css');
   const finalLayer = chrome.slice(chrome.lastIndexOf('HEADER GLASS'));
 
-  assert.match(finalLayer, /background:color-mix\(in srgb,var\(--paper\) 14%,transparent\)!important/);
-  assert.match(finalLayer, /backdrop-filter:blur\(22px\) saturate\(1\.32\)/);
+  assert.match(finalLayer, /background:var\(--paper\)!important/);
+  assert.match(finalLayer, /backdrop-filter:none!important/);
   assert.match(finalLayer, /html\.header-scrolled body \.site-header/);
-  assert.doesNotMatch(finalLayer, /background:var\(--paper\)!important/);
+  /* Палитра шапки закреплена локально: страничные слои переопределяют --paper
+     под свой лист (polish15-reading и соседи — на #faf6ee), и без этого даже
+     непрозрачная шапка красилась бы по-разному. */
+  assert.match(chrome, /body \.site-header,\s*\n\s*body \.mobile-appbar\{[\s\S]*?--paper:#E9DDCC/);
 });
 
 test('header popover stays opaque and readable above page content', () => {
