@@ -1687,6 +1687,10 @@ export function supportView(state) {
   `;
 }
 
+// УСТАРЕЛО 2026-08-04: боевой prolog.html переверстан в светлую экскурсию
+// с вкладками (assets/css/prolog-process.css, assets/js/prolog-process.js).
+// Этот демонстрационный вид показывает прежнюю тёмную плиту и эталоном
+// маршрута «Как работаем» больше не является.
 export function storyView() {
   return `
     <div class="story-page">
