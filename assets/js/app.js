@@ -1775,7 +1775,7 @@
      [href, подпись, теги-синонимы] — теги в нижнем регистре. */
   var SEARCH = [
     ['about.html', 'О мастерской, редакции и авторах', 'кто отвечает автор редактор издатель семенов редакционная политика'],
-    ['prolog.html', 'Как устроена мастерская', 'процесс этапы приёмная спецификация редактура приёмка'],
+    ['prolog.html', 'Как работаем', 'процесс порядок работы пять шагов этапы как устроена мастерская как проходит работа приёмная спецификация редактура приёмка'],
     ['start.html', 'С чего начать — короткий маршрут', 'новичок карта маршрут впервые гид путеводитель цена срок'],
     ['services.html', 'Все услуги', 'каталог задачи редактура консультация сопровождение'],
     ['komissiya-0.html', 'Комиссия №0', 'частная предзащита оппонент протокол вопрос защита ии черновик'],
@@ -1913,11 +1913,11 @@
       'oplata.html': ['Как проходит оплата', 'Заказ'],
       'oplaceno.html': ['Проверка оплаты', 'Заказ'],
       'vedenie.html': ['Форматы помощи', 'Основное'],
+      'prolog.html': ['Как работаем', 'Основное'],
       'about.html': ['О мастерской', 'Доверие'],
       'guarantees.html': ['Гарантии', 'Доверие'],
       'reviews.html': ['Отзывы', 'Доверие'],
       'priyomnaya.html': ['Приёмная', 'Доверие'],
-      'prolog.html': ['Как устроена мастерская', 'Доверие'],
       'referral.html': ['Клуб Салона', 'Выгоды'],
       'plus.html': ['Абонемент «Салон+»', 'Выгоды'],
       'deposit.html': ['Депозит мастерской', 'Выгоды'],
@@ -1969,7 +1969,7 @@
           '<div class="header-nav-popover__aside" aria-label="Дополнительные разделы">' +
             '<a href="/services.html">Все форматы помощи <span aria-hidden="true">→</span></a>' +
             '<a href="/tariffs.html">Цены и условия <span aria-hidden="true">→</span></a>' +
-            '<a href="/prolog.html">Как проходит работа <span aria-hidden="true">→</span></a>' +
+            '<a href="/prolog.html">Как работаем <span aria-hidden="true">→</span></a>' +
             '<a href="/guarantees.html">Границы помощи <span aria-hidden="true">→</span></a>' +
           '</div>' +
           '<a class="header-nav-popover__foot" href="/tools.html"><span>Хотите сначала разобраться сами?</span><strong>Бесплатные гайды и инструменты</strong><i aria-hidden="true">↗</i></a>' +
@@ -2632,7 +2632,7 @@
         '<summary><span>О мастерской</span><i aria-hidden="true"></i></summary>' +
         '<nav class="site-footer__links" aria-label="О мастерской">' +
           '<a href="about.html">О мастерской</a>' +
-          '<a href="prolog.html">Как проходит работа</a>' +
+          '<a href="prolog.html">Как работаем</a>' +
           '<a href="guarantees.html">Гарантии</a>' +
           '<a href="academic-integrity.html">Границы помощи</a>' +
           '<a href="reviews.html">Отзывы</a>' +
