@@ -1646,6 +1646,35 @@ body .site-footer__brand .brand__mark path{
 /* ============================================================
    SHARED HEADER · компактный редакционный пульт
    ============================================================ */
+/* Палитра шапки закреплена — по той же причине, что и у .overlay выше.
+   Шапка одна на все страницы, а страничные слои переопределяют --paper под
+   свой лист (polish15-reading, -supporting, -specification, -library — все на
+   #faf6ee вместо канонического #E9DDCC). Из-за этого шапка принимала ПЯТЬ
+   разных цветов по сайту, включая серый #d1cdc4, а девиз «Редакторская
+   мастерская» падал до 3.26 при норме 4.5 на девяти страницах. */
+body .site-header,
+body .mobile-appbar{
+  --paper:#E9DDCC;
+  --sheet:#FFF9F0;
+  --ink:#1D1C18;
+  --ink-soft:#645F57;
+  --ink-faint:#645F57;
+  --muted:#645F57;
+  --quiet:#645F57;
+  --hairline:#D8CEBD;
+}
+:root[data-theme="dark"] body .site-header,
+:root[data-theme="dark"] body .mobile-appbar{
+  --paper:#1E1D19;
+  --sheet:#24221D;
+  --ink:#F2ECDF;
+  --ink-soft:#AAA293;
+  --ink-faint:#9B9487;
+  --muted:#AAA293;
+  --quiet:#9B9487;
+  --hairline:#3C3932;
+}
+
 body .site-header{
   height:72px;
   overflow:visible;
