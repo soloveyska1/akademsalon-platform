@@ -2542,6 +2542,15 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
     radial-gradient(circle at 84% 4%,rgba(255,107,75,.1),transparent 27%),
     linear-gradient(180deg,#050505,#080605 45%,#020202);
 }
+/* Выбранный чип: у этой тёмной ветки каталога свой яркий --wax-p15 (#ff6b4b),
+   и светлый текст на нём давал 2.71 при норме 4.5. Тот же случай, что у --wax
+   в polish15-chrome.css: акцент годится как краска ТЕКСТА, но не как
+   ПОВЕРХНОСТЬ под светлой надписью. Берём глубокий сургуч (#a4432d) — cream
+   на нём 5.94. Светлая тема не тронута: там чип и так на 5.45. */
+:root[data-theme="dark"] .p15-catalog .pick-chip[aria-pressed="true"]{
+  background:var(--wax-deep-p15);
+  border-color:var(--wax-deep-p15);
+}
 :root[data-theme="dark"] .p15-catalog .catalog-route-index{
   border-color:rgba(246,239,229,.2);
   border-top-color:#ff6b4b;

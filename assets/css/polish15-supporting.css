@@ -683,12 +683,17 @@ body.polish15-supporting .guarantee-example__flow>span{
 }
 
 body.polish15-supporting .guarantee-example__flow b{
-  color:#c7644c;
+  /* было #c7644c — 3.81 на плашке #292720. Та же краска акцентного текста
+     на тёмном, что и --wax-text; литерал, потому что плашка тёмная в обеих
+     темах. Стало 5.14. */
+  color:#E07C61;
   font:600 9px/1 var(--mono);
 }
 
 body.polish15-supporting .guarantee-example__flow>i{
-  color:#7f786d;
+  /* было #7f786d — 3.91 на тёмной плите #1d1c18. #AAA293 — вторичная краска
+     тёмной темы проекта, для стрелки-разделителя это её роль. Стало 6.74. */
+  color:#AAA293;
   font:normal 400 18px/1 var(--serif);
 }
 

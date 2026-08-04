@@ -517,7 +517,11 @@ body.polish15-library .library-tools a{
 }
 
 body.polish15-library .library-tools a b{
-  color:#b95c45;
+  /* было #b95c45 — 3.80 на тёмной плите #1d1c18 при норме 4.5.
+     #E07C61 — та же краска акцентного текста на тёмном, что и --wax-text
+     в polish15-chrome.css; здесь литерал, потому что плита тёмная
+     в обеих темах и от темы не зависит. Стало 5.87. */
+  color:#E07C61;
   font:400 18px/1 var(--serif);
 }
 
