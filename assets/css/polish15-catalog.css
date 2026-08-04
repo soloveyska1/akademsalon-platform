@@ -3197,3 +3197,493 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
   .p15-catalog .catalog-route-choice>i{display:none}
   .p15-catalog .catalog-route-continue{width:100%;min-width:0}
 }
+
+/* ============================================================
+   КАТАЛОГ · ЖИВОЙ ПОДБОР, РИТМ И СРАВНЕНИЕ
+   Прежде страница была лентой из двенадцати одинаковых карточек:
+   все услуги выглядели равнозначными, выбор ситуации наверху ничего
+   не менял внизу, а что именно получит клиент, было видно только
+   после перехода. Здесь: иерархия (герой / средние / компактные),
+   миниатюра результата прямо в карточке, живая сводка по выбору
+   и полка сравнения до трёх услуг.
+   ============================================================ */
+
+.page-services .catalog-toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:14px 22px;
+}
+
+.page-services .catalog-live{
+  margin:0;
+  color:var(--muted);
+  font:500 13px/1.45 var(--sans);
+}
+
+.page-services .catalog-live b{
+  color:var(--ink);
+  font-weight:640;
+}
+
+.page-services .catalog-live em{
+  color:var(--wax-text,var(--wax));
+  font-style:normal;
+  font-weight:600;
+}
+
+/* ---------- ритм: герой, средние, компактные ---------- */
+
+.page-services .service-card-grid--catalog{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:16px;
+  align-items:stretch;
+}
+
+.page-services .service-card{
+  position:relative;
+  grid-column:span 2;
+  transition:
+    transform .28s cubic-bezier(.22,1,.36,1),
+    box-shadow .28s ease,
+    border-color .2s ease;
+}
+
+.page-services .service-card[data-rank="hero"]{grid-column:span 6}
+.page-services .service-card[data-rank="major"]{grid-column:span 3}
+.page-services .service-card[data-rank="minor"]{grid-column:span 2}
+
+.page-services .service-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 18px 40px -28px rgba(60,45,28,.55);
+}
+
+.page-services .service-card[data-rank="hero"] .service-card__link{
+  display:grid;
+  grid-template-columns:minmax(0,1.3fr) minmax(230px,.7fr);
+  gap:10px clamp(20px,3vw,44px);
+  /* Строки не растягиваем: иначе миниатюра, занимающая всю высоту,
+     раздувает карточку-героя на пол-экрана. */
+  align-content:start;
+  align-items:start;
+}
+
+.page-services .service-card[data-rank="hero"] .service-card__top{grid-column:1}
+.page-services .service-card[data-rank="hero"] .service-card__body{grid-column:1}
+.page-services .service-card[data-rank="hero"] .service-card__meta{grid-column:1}
+.page-services .service-card[data-rank="hero"] .service-card__actions{grid-column:1}
+
+.page-services .service-card[data-rank="hero"] h2{
+  font-size:clamp(28px,3vw,38px);
+  line-height:1.04;
+}
+
+.page-services .service-card[data-rank="hero"] .service-artifact{
+  grid-column:2;
+  grid-row:1 / span 4;
+  align-self:start;
+  min-height:0;
+  height:100%;
+  max-height:210px;
+  margin-top:0;
+}
+
+.page-services .service-card[data-rank="hero"] .service-card__body{margin-block:2px 4px}
+.page-services .service-card[data-rank="hero"] .service-card__meta{margin-top:6px}
+
+/* ---------- миниатюра результата ---------- */
+
+.page-services .service-artifact{
+  --art-line:color-mix(in srgb,var(--ink) 22%,transparent);
+  --art-fill:color-mix(in srgb,var(--ink) 9%,transparent);
+  position:relative;
+  display:block;
+  overflow:hidden;
+  min-height:78px;
+  margin-top:14px;
+  padding:12px 13px;
+  background:color-mix(in srgb,var(--canvas) 62%,transparent);
+  border:1px solid var(--line);
+  border-radius:5px;
+  pointer-events:none;
+}
+
+.page-services .service-artifact::after{
+  position:absolute;
+  right:9px;
+  bottom:7px;
+  color:var(--quiet);
+  font:600 7.5px/1 var(--mono);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  content:attr(data-caption);
+}
+
+.page-services .service-artifact i{
+  display:block;
+  height:4px;
+  margin-bottom:6px;
+  background:var(--art-line);
+  border-radius:2px;
+  transform-origin:left center;
+  transition:transform .45s cubic-bezier(.22,1,.36,1),background-color .3s ease;
+}
+
+.page-services .service-card:hover .service-artifact i{background:color-mix(in srgb,var(--wax) 42%,transparent)}
+.page-services .service-card:hover .service-artifact i:nth-child(2){transform:scaleX(1.08)}
+.page-services .service-card:hover .service-artifact i:nth-child(4){transform:scaleX(1.12)}
+
+/* план: строки со ступенчатым отступом */
+.page-services .service-artifact[data-kind="plan"] i:nth-child(2),
+.page-services .service-artifact[data-kind="plan"] i:nth-child(4){margin-left:14px}
+
+/* правки: короткие строки и метки на поле */
+.page-services .service-artifact[data-kind="marks"] i{margin-left:20px}
+.page-services .service-artifact[data-kind="marks"] i::before{
+  position:absolute;
+  left:12px;
+  width:9px;
+  height:4px;
+  background:color-mix(in srgb,var(--wax) 55%,transparent);
+  border-radius:2px;
+  content:"";
+}
+
+/* чек-лист: галочка перед строкой */
+.page-services .service-artifact[data-kind="checklist"] i{margin-left:16px}
+.page-services .service-artifact[data-kind="checklist"] i::before{
+  position:absolute;
+  left:12px;
+  width:6px;
+  height:6px;
+  margin-top:-1px;
+  border:1.4px solid color-mix(in srgb,var(--verify,var(--green)) 70%,transparent);
+  border-radius:1px;
+  content:"";
+}
+
+/* карта источников: точки и связь */
+.page-services .service-artifact[data-kind="research"] i{
+  width:auto;
+  height:6px;
+  border-radius:3px;
+}
+.page-services .service-artifact[data-kind="research"] i:nth-child(odd){margin-left:26px}
+.page-services .service-artifact[data-kind="research"] i::before{
+  position:absolute;
+  left:13px;
+  width:6px;
+  height:6px;
+  background:color-mix(in srgb,var(--wax) 50%,transparent);
+  border-radius:50%;
+  content:"";
+}
+
+/* рукопись: ровный набор */
+.page-services .service-artifact[data-kind="manuscript"] i{height:3px;margin-bottom:7px}
+
+.page-services .service-artifact i:nth-child(1){width:82%}
+.page-services .service-artifact i:nth-child(2){width:62%}
+.page-services .service-artifact i:nth-child(3){width:74%}
+.page-services .service-artifact i:nth-child(4){width:54%}
+.page-services .service-artifact i:nth-child(5){width:68%}
+
+/* ---------- кнопка сравнения ---------- */
+
+.page-services .service-compare{
+  position:absolute;
+  z-index:2;
+  right:12px;
+  bottom:12px;
+  display:inline-flex;
+  min-height:30px;
+  align-items:center;
+  gap:6px;
+  padding:5px 11px;
+  color:var(--muted);
+  background:var(--sheet-p15,var(--sheet));
+  border:1px solid var(--line);
+  border-radius:999px;
+  cursor:pointer;
+  font:600 10px/1 var(--mono);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  transition:color .18s ease,border-color .18s ease,background-color .18s ease;
+}
+
+.page-services .service-compare:hover{
+  color:var(--ink);
+  border-color:var(--line-strong);
+}
+
+.page-services .service-compare[aria-pressed="true"]{
+  color:var(--wax-text,var(--wax));
+  border-color:var(--wax);
+  background:var(--wax-soft);
+}
+
+.page-services .service-card__actions{padding-right:118px}
+
+/* ---------- полка сравнения ---------- */
+
+.compare-tray{
+  position:fixed;
+  z-index:60;
+  right:0;
+  bottom:0;
+  left:0;
+  padding:0 var(--spec-gutter,24px) max(14px,env(safe-area-inset-bottom));
+  pointer-events:none;
+}
+
+.compare-tray__inner{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:12px 18px;
+  width:min(100%,1080px);
+  margin-inline:auto;
+  padding:12px 16px;
+  background:var(--sheet-p15,var(--sheet));
+  border:1px solid var(--line-strong);
+  border-radius:12px;
+  box-shadow:0 22px 50px -26px rgba(48,36,22,.55);
+  pointer-events:auto;
+  animation:compare-rise .3s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes compare-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.compare-tray__count{
+  margin:0;
+  color:var(--quiet);
+  font:600 10px/1.3 var(--mono);
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.compare-tray__list{
+  display:flex;
+  flex:1 1 320px;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.compare-tray__list li{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:5px 6px 5px 12px;
+  color:var(--ink);
+  background:var(--canvas);
+  border:1px solid var(--line);
+  border-radius:999px;
+  font-size:12.5px;
+}
+
+.compare-tray__list button{
+  display:grid;
+  width:20px;
+  height:20px;
+  place-items:center;
+  color:var(--muted);
+  background:transparent;
+  border:0;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:15px;
+  line-height:1;
+}
+
+.compare-tray__list button:hover{color:var(--wax-text,var(--wax))}
+
+.compare-tray__acts{display:flex;align-items:center;gap:12px}
+
+.compare-tray__clear{
+  color:var(--muted);
+  background:transparent;
+  border:0;
+  cursor:pointer;
+  font:500 12.5px/1 var(--sans);
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+/* ---------- разворот сравнения ---------- */
+
+.compare-sheet{
+  position:fixed;
+  z-index:70;
+  inset:0;
+  display:grid;
+  padding:clamp(12px,4vw,44px);
+  background:color-mix(in srgb,var(--ink) 58%,transparent);
+  place-items:center;
+  animation:compare-fade .2s ease both;
+}
+
+@keyframes compare-fade{from{opacity:0}to{opacity:1}}
+
+.compare-sheet__panel{
+  display:grid;
+  width:min(100%,1080px);
+  max-height:min(88dvh,860px);
+  overflow:auto;
+  background:var(--sheet-p15,var(--sheet));
+  border:1px solid var(--line-strong);
+  border-radius:12px;
+  grid-template-rows:auto minmax(0,1fr);
+  animation:compare-rise .28s cubic-bezier(.22,1,.36,1) both;
+}
+
+.compare-sheet__head{
+  position:sticky;
+  top:0;
+  z-index:1;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  padding:22px 24px 16px;
+  background:var(--sheet-p15,var(--sheet));
+  border-bottom:1px solid var(--line);
+}
+
+.compare-sheet__head h2{margin-top:4px;font-size:26px}
+
+.compare-sheet__close{
+  display:grid;
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  place-items:center;
+  color:var(--muted);
+  background:transparent;
+  border:1px solid var(--line);
+  border-radius:50%;
+  cursor:pointer;
+  font-size:20px;
+  line-height:1;
+}
+
+.compare-sheet__close:hover{color:var(--ink);border-color:var(--line-strong)}
+
+.compare-sheet__body{padding:6px 24px 26px}
+
+.compare-grid{
+  display:grid;
+  gap:0;
+  min-width:0;
+}
+
+.compare-grid__row{
+  display:grid;
+  gap:0 18px;
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
+  grid-template-columns:var(--compare-cols);
+}
+
+.compare-grid__row:last-child{border-bottom:0}
+
+.compare-grid__row>span:first-child{
+  color:var(--quiet);
+  font:600 9.5px/1.5 var(--mono);
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.compare-grid__row>span{
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.5;
+}
+
+.compare-grid__row--head>span:not(:first-child){
+  color:var(--ink);
+  font:500 19px/1.15 var(--serif);
+  letter-spacing:-.02em;
+}
+
+.compare-grid__row--price>span:not(:first-child){
+  color:var(--ink);
+  font:600 17px/1.2 var(--sans);
+}
+
+@media (max-width:1080px){
+  .page-services .service-card-grid--catalog{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .page-services .service-card[data-rank="hero"]{grid-column:span 4}
+  .page-services .service-card[data-rank="major"]{grid-column:span 2}
+  .page-services .service-card[data-rank="minor"]{grid-column:span 2}
+  .page-services .service-card[data-rank="hero"] .service-card__link{grid-template-columns:1fr}
+  .page-services .service-card[data-rank="hero"] .service-artifact{grid-column:1;grid-row:auto}
+}
+
+@media (max-width:720px){
+  .page-services .service-card-grid--catalog{grid-template-columns:1fr}
+  .page-services .service-card,
+  .page-services .service-card[data-rank]{grid-column:span 1}
+  .page-services .service-card__actions{padding-right:0}
+  .page-services .service-compare{position:static;margin-top:12px}
+  .compare-tray__inner{gap:10px}
+  .compare-grid__row{grid-template-columns:1fr;gap:4px}
+  .compare-grid__row>span:first-child{margin-top:2px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .page-services .service-card,
+  .page-services .service-artifact i,
+  .compare-tray__inner,
+  .compare-sheet,
+  .compare-sheet__panel{
+    transition-duration:.01ms;
+    animation-duration:.01ms;
+  }
+}
+
+/* Компактные карточки не должны перевешивать героя: миниатюра у них
+   короче, у средних — промежуточная. Иначе иерархия читается наоборот. */
+.page-services .service-card[data-rank="minor"] .service-artifact{
+  min-height:54px;
+  margin-top:11px;
+  padding:9px 11px;
+}
+
+.page-services .service-card[data-rank="minor"] .service-artifact i:nth-child(n+4){display:none}
+
+.page-services .service-card[data-rank="major"] .service-artifact{
+  min-height:66px;
+  margin-top:12px;
+}
+
+.page-services .service-card[data-rank="major"] .service-artifact i:nth-child(5){display:none}
+
+/* Ранг должен пересиливать прежние правила ширины по nth-child: они
+   расставляли размеры по ПОРЯДКУ карточек, а порядок теперь меняется
+   вместе с фильтром. Селектор с тем же предком и атрибутом — сильнее. */
+.p15-catalog .service-card-grid--catalog .service-card[data-rank="hero"]{grid-column:span 6}
+.p15-catalog .service-card-grid--catalog .service-card[data-rank="major"]{grid-column:span 3}
+.p15-catalog .service-card-grid--catalog .service-card[data-rank="minor"]{grid-column:span 2}
+
+@media (max-width:1080px){
+  .p15-catalog .service-card-grid--catalog .service-card[data-rank="hero"]{grid-column:span 4}
+  .p15-catalog .service-card-grid--catalog .service-card[data-rank="major"]{grid-column:span 2}
+  .p15-catalog .service-card-grid--catalog .service-card[data-rank="minor"]{grid-column:span 2}
+}
+
+@media (max-width:720px){
+  .p15-catalog .service-card-grid--catalog .service-card[data-rank]{grid-column:span 1}
+}
+
+/* На узких экранах внизу уже стоит мобильный док — полка сравнения
+   должна вставать НАД ним, иначе перекрывает основную навигацию. */
+@media (max-width:920px){
+  .compare-tray{
+    padding-bottom:calc(94px + env(safe-area-inset-bottom));
+    padding-inline:12px;
+  }
+}

@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260804shell112&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1&amp;contrast=20260804contrast1&amp;wax=20260804wax1&amp;hdr=20260804hdr2&amp;sheen=20260804sheen2&amp;glass=20260804glass1" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260804release112&amp;journey=1&amp;wax=20260804wax1" />
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260804shell112&amp;journey=1&amp;wax=20260804wax1&amp;glass=20260804glass1" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-catalog.css?v=20260804services112&amp;journey=4&amp;search=20260803out007search1&amp;price=20260803price1&amp;disc=20260804disc2&amp;a11y=20260804a11y1&amp;lit=20260804lit1&amp;canvas=20260804canvas2" />
+<link rel="stylesheet" href="assets/css/polish15-catalog.css?v=20260804services112&amp;journey=4&amp;search=20260803out007search1&amp;price=20260803price1&amp;disc=20260804disc2&amp;a11y=20260804a11y1&amp;lit=20260804lit1&amp;canvas=20260804canvas2&amp;live=20260804live1" />
 <link rel="stylesheet" href="assets/css/commission-zero.css?v=20260804release112&amp;disc=20260804disc1&amp;wax=20260804wax1&amp;canvas=20260804canvas2" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 </head>
@@ -91,11 +91,13 @@
           <button type="button" data-service-filter="draft">Есть текст</button>
           <button type="button" data-service-filter="finish">Перед сдачей</button>
         </div>
+        <!-- Живая сводка: отвечает на выбор ситуации сразу, а не после перехода. -->
+        <p class="catalog-live" data-catalog-live aria-live="polite"></p>
       </div>
 
       <h2 class="sr-only" id="serviceCatalogTitle">Услуги по типу работы</h2>
       <div class="service-card-grid service-card-grid--catalog" data-service-grid aria-labelledby="serviceCatalogTitle">
-        <article class="service-card service-card--featured" data-service-card data-phase="start" data-search="Курсовая с нуля теория исследование рабочий черновик редактура">
+        <article class="service-card service-card--featured" data-artifact="plan" data-service-card data-phase="start" data-search="Курсовая с нуля теория исследование рабочий черновик редактура">
     <a class="service-card__link" href="kursovaya-rabota.html" aria-label="Открыть услугу: Курсовая с нуля">
       <div class="service-card__top">
         <span class="folio">01</span>
@@ -112,7 +114,7 @@
       </div>
       <div class="service-card__actions"><span class="line-link">Посмотреть состав <span aria-hidden="true">→</span></span></div>
     </a>
-  </article><article class="service-card service-card--featured" data-service-card data-phase="start" data-search="ВКР диплом с нуля рабочий черновик защита редактура">
+  </article><article class="service-card service-card--featured" data-artifact="plan" data-service-card data-phase="start" data-search="ВКР диплом с нуля рабочий черновик защита редактура">
     <a class="service-card__link" href="diplomnaya-rabota.html" aria-label="Открыть услугу: ВКР с нуля">
       <div class="service-card__top">
         <span class="folio">02</span>
@@ -129,7 +131,7 @@
       </div>
       <div class="service-card__actions"><span class="line-link">Посмотреть состав <span aria-hidden="true">→</span></span></div>
     </a>
-  </article><article class="service-card " data-service-card data-phase="start" data-search="Магистерская с нуля методология анализ рабочий черновик защита">
+  </article><article class="service-card " data-artifact="research" data-service-card data-phase="start" data-search="Магистерская с нуля методология анализ рабочий черновик защита">
     <a class="service-card__link" href="magisterskaya-dissertaciya.html" aria-label="Открыть услугу: Магистерское исследование с нуля">
       <div class="service-card__top">
         <span class="folio">03</span>
@@ -146,7 +148,7 @@
       </div>
       <div class="service-card__actions"><span class="line-link">Посмотреть состав <span aria-hidden="true">→</span></span></div>
     </a>
-  </article><article class="service-card " data-service-card data-phase="start" data-search="Консультация и редактура диссертации Консультации по структуре исследования, научная редактура и проверка публикационного аппарата. Для аспирантуры консультация или редакторский этап">
+  </article><article class="service-card " data-artifact="marks" data-service-card data-phase="start" data-search="Консультация и редактура диссертации Консультации по структуре исследования, научная редактура и проверка публикационного аппарата. Для аспирантуры консультация или редакторский этап">
     <a class="service-card__link" href="kandidatskaya-dissertaciya.html" aria-label="Открыть услугу: Консультация и редактура диссертации">
       <div class="service-card__top">
         <span class="folio">04</span>
@@ -163,7 +165,7 @@
       </div>
       <div class="service-card__actions"><span class="line-link">Посмотреть состав <span aria-hidden="true">→</span></span></div>
     </a>
-  </article><article class="service-card service-card--featured" data-service-card data-phase="draft" data-search="Научная редактура статьи Редактура статьи, проверка структуры, источников и требований выбранного издания. Для публикации РИНЦ, ВАК, сборник">
+  </article><article class="service-card service-card--featured" data-artifact="marks" data-service-card data-phase="draft" data-search="Научная редактура статьи Редактура статьи, проверка структуры, источников и требований выбранного издания. Для публикации РИНЦ, ВАК, сборник">
     <a class="service-card__link" href="nauchnaya-statya.html" aria-label="Открыть услугу: Научная редактура статьи">
       <div class="service-card__top">
         <span class="folio">05</span>
@@ -180,7 +182,7 @@
       </div>
       <div class="service-card__actions"><span class="line-link">Посмотреть состав <span aria-hidden="true">→</span></span></div>
     </a>
-  </article><article class="service-card " data-service-card data-phase="finish" data-search="Редактура отчёта по практике Проверка структуры отчёта, дневника, приложений и оформления. Для практики редактура полного комплекта">
+  </article><article class="service-card " data-artifact="checklist" data-service-card data-phase="finish" data-search="Редактура отчёта по практике Проверка структуры отчёта, дневника, приложений и оформления. Для практики редактура полного комплекта">
     <a class="service-card__link" href="otchet-po-praktike.html" aria-label="Открыть услугу: Редактура отчёта по практике">
       <div class="service-card__top">
         <span class="folio">06</span>
@@ -197,7 +199,7 @@
       </div>
       <div class="service-card__actions"><span class="line-link">Посмотреть состав <span aria-hidden="true">→</span></span></div>
     </a>
-  </article><article class="service-card " data-service-card data-phase="draft" data-search="Редактура реферата эссе контрольной план аргументация источники небольшая работа">
+  </article><article class="service-card " data-artifact="marks" data-service-card data-phase="draft" data-search="Редактура реферата эссе контрольной план аргументация источники небольшая работа">
     <a class="service-card__link" href="referat.html" aria-label="Открыть услугу: Редактура реферата или эссе">
       <div class="service-card__top">
         <span class="folio">07</span>
@@ -214,7 +216,7 @@
       </div>
       <div class="service-card__actions"><span class="line-link">Посмотреть состав <span aria-hidden="true">→</span></span></div>
     </a>
-  </article><article class="service-card service-card--featured" data-service-card data-phase="finish" data-search="Нормоконтроль Сверка документа с методичкой: поля, стили, таблицы, ссылки и список литературы. Перед сдачей проверка и оформление">
+  </article><article class="service-card service-card--featured" data-artifact="checklist" data-service-card data-phase="finish" data-search="Нормоконтроль Сверка документа с методичкой: поля, стили, таблицы, ссылки и список литературы. Перед сдачей проверка и оформление">
     <a class="service-card__link" href="normokontrol-vkr.html" aria-label="Открыть услугу: Нормоконтроль">
       <div class="service-card__top">
         <span class="folio">08</span>
@@ -231,7 +233,7 @@
       </div>
       <div class="service-card__actions"><span class="line-link">Посмотреть состав <span aria-hidden="true">→</span></span></div>
     </a>
-  </article><article class="service-card " data-service-card data-phase="start" data-search="Разбор темы и плана Проверка темы, объекта, предмета, цели, задач и структуры будущей работы. В начале работы письменный разбор">
+  </article><article class="service-card " data-artifact="plan" data-service-card data-phase="start" data-search="Разбор темы и плана Проверка темы, объекта, предмета, цели, задач и структуры будущей работы. В начале работы письменный разбор">
     <a class="service-card__link" href="plan.html" aria-label="Открыть услугу: Разбор темы и плана">
       <div class="service-card__top">
         <span class="folio">09</span>
@@ -248,7 +250,7 @@
       </div>
       <div class="service-card__actions"><span class="line-link">Посмотреть состав <span aria-hidden="true">→</span></span></div>
     </a>
-  </article><article class="service-card service-card--featured" data-service-card data-phase="draft" data-search="Разбор замечаний руководителя Переводим замечания в список задач: что исправить, в каком порядке и какой результат ожидать. После проверки порядок исправлений">
+  </article><article class="service-card service-card--featured" data-artifact="marks" data-service-card data-phase="draft" data-search="Разбор замечаний руководителя Переводим замечания в список задач: что исправить, в каком порядке и какой результат ожидать. После проверки порядок исправлений">
     <a class="service-card__link" href="razbor-zamechaniy-nauchruka.html" aria-label="Открыть услугу: Разбор замечаний руководителя">
       <div class="service-card__top">
         <span class="folio">10</span>
@@ -265,7 +267,7 @@
       </div>
       <div class="service-card__actions"><span class="line-link">Посмотреть состав <span aria-hidden="true">→</span></span></div>
     </a>
-  </article><article class="service-card " data-service-card data-phase="draft" data-search="Редактура текста после ИИ Проверяем факты, источники, логику и язык текста, подготовленного с помощью генеративных инструментов. Проверка рукописи проверка фактов и редактура">
+  </article><article class="service-card " data-artifact="marks" data-service-card data-phase="draft" data-search="Редактура текста после ИИ Проверяем факты, источники, логику и язык текста, подготовленного с помощью генеративных инструментов. Проверка рукописи проверка фактов и редактура">
     <a class="service-card__link" href="redaktura-posle-ii.html" aria-label="Открыть услугу: Редактура текста после ИИ">
       <div class="service-card__top">
         <span class="folio">11</span>
@@ -282,7 +284,7 @@
       </div>
       <div class="service-card__actions"><span class="line-link">Посмотреть состав <span aria-hidden="true">→</span></span></div>
     </a>
-  </article><article class="service-card " data-service-card data-phase="start draft" data-search="Авторский текст вне аттестации Статьи, аналитические записки, речи и деловые материалы по согласованному заданию. Для бизнеса и авторов авторская работа">
+  </article><article class="service-card " data-artifact="manuscript" data-service-card data-phase="start draft" data-search="Авторский текст вне аттестации Статьи, аналитические записки, речи и деловые материалы по согласованному заданию. Для бизнеса и авторов авторская работа">
     <a class="service-card__link" href="avtorskiy-zakaz.html" aria-label="Открыть услугу: Авторский текст вне аттестации">
       <div class="service-card__top">
         <span class="folio">12</span>
@@ -384,12 +386,35 @@
       </aside>
     </div>
   </div>
+
+  <!-- Полка сравнения: до трёх услуг рядом. Наполняется кнопками карточек,
+       разметка карточек при этом не меняется — их пиннят контракт-тесты. -->
+  <aside class="compare-tray" data-compare-tray hidden aria-label="Сравнение услуг">
+    <div class="compare-tray__inner">
+      <p class="compare-tray__count" data-compare-count></p>
+      <ul class="compare-tray__list" data-compare-list></ul>
+      <div class="compare-tray__acts">
+        <button class="btn btn-wax" type="button" data-compare-open>Сравнить</button>
+        <button class="compare-tray__clear" type="button" data-compare-clear>Очистить</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="compare-sheet" data-compare-sheet hidden role="dialog" aria-modal="true" aria-label="Сравнение услуг">
+    <div class="compare-sheet__panel">
+      <header class="compare-sheet__head">
+        <div><span class="eyebrow">Сравнение</span><h2>Чем отличаются</h2></div>
+        <button class="compare-sheet__close" type="button" data-compare-close aria-label="Закрыть сравнение">×</button>
+      </header>
+      <div class="compare-sheet__body" data-compare-body></div>
+    </div>
+  </div>
 </main>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Услуги Академического Салона","itemListElement":[{"@type":"ListItem","position":1,"url":"https://akademsalon.ru/kursovaya-rabota.html","name":"Курсовая с нуля"},{"@type":"ListItem","position":2,"url":"https://akademsalon.ru/diplomnaya-rabota.html","name":"ВКР с нуля"},{"@type":"ListItem","position":3,"url":"https://akademsalon.ru/magisterskaya-dissertaciya.html","name":"Магистерское исследование с нуля"},{"@type":"ListItem","position":4,"url":"https://akademsalon.ru/kandidatskaya-dissertaciya.html","name":"Консультация и редактура диссертации"},{"@type":"ListItem","position":5,"url":"https://akademsalon.ru/nauchnaya-statya.html","name":"Научная редактура статьи"},{"@type":"ListItem","position":6,"url":"https://akademsalon.ru/otchet-po-praktike.html","name":"Редактура отчёта по практике"},{"@type":"ListItem","position":7,"url":"https://akademsalon.ru/referat.html","name":"Редактура реферата или эссе"},{"@type":"ListItem","position":8,"url":"https://akademsalon.ru/normokontrol-vkr.html","name":"Нормоконтроль"},{"@type":"ListItem","position":9,"url":"https://akademsalon.ru/plan.html","name":"Разбор темы и плана"},{"@type":"ListItem","position":10,"url":"https://akademsalon.ru/razbor-zamechaniy-nauchruka.html","name":"Разбор замечаний руководителя"},{"@type":"ListItem","position":11,"url":"https://akademsalon.ru/redaktura-posle-ii.html","name":"Редактура текста после ИИ"},{"@type":"ListItem","position":12,"url":"https://akademsalon.ru/avtorskiy-zakaz.html","name":"Авторский текст вне аттестации"},{"@type":"ListItem","position":13,"url":"https://akademsalon.ru/komissiya-0.html","name":"Комиссия №0"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://akademsalon.ru/"},{"@type":"ListItem","position":2,"name":"Услуги"}]}</script>
 <script src="assets/js/app.js?v=20260804services112&amp;privacy=20260803out006privacy1&amp;naming=20260804naming1"></script>
 <script defer src="assets/js/polish15-chrome.js?v=20260804release112&amp;search=20260803out007search1"></script>
 <script src="assets/js/extras.js?v=20260804shell112&amp;journey=1"></script>
-<script src="assets/js/polish15-catalog.js?v=20260804services112&amp;compact=1&amp;search=20260803out007search1&amp;price=20260803price1&amp;disc=20260804disc2"></script>
+<script src="assets/js/polish15-catalog.js?v=20260804services112&amp;compact=1&amp;search=20260803out007search1&amp;price=20260803price1&amp;disc=20260804disc2&amp;live=20260804live1"></script>
 </body>
 </html>

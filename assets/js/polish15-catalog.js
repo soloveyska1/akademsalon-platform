@@ -93,6 +93,12 @@
           status.textContent = 'Выбрано: ' + (title ? title.textContent : 'ситуация') + '. Теперь можно посмотреть первый шаг и цену.';
         }
         setDock(href, 'Продолжить');
+        /* Выбор ситуации сразу перестраивает каталог ниже. Прежде он менял
+           только ссылку продолжения, и страница на действие не отвечала. */
+        var PHASE = { topic: 'start', draft: 'draft', comments: 'draft', defense: 'finish' };
+        if (PHASE[situation]) {
+          document.dispatchEvent(new CustomEvent('salon:catalog-phase', { detail: PHASE[situation] }));
+        }
       });
     });
 
@@ -119,6 +125,88 @@
       return filter === 'all' || (card.getAttribute('data-phase') || '').split(' ').indexOf(filter) !== -1;
     }
 
+    var live = root.querySelector('[data-catalog-live]');
+
+    /* Что клиент получит на руки — миниатюрой прямо в карточке.
+       Рисуется полосками через CSS: ни одной картинки, ни одного запроса. */
+    var ARTIFACT_CAPTION = {
+      plan: 'план и структура',
+      marks: 'правки и комментарии',
+      checklist: 'чек-лист сверки',
+      research: 'карта источников',
+      manuscript: 'готовая рукопись'
+    };
+
+    function decorate(card) {
+      if (card.querySelector('.service-artifact')) return;
+      var kind = card.getAttribute('data-artifact');
+      var body = card.querySelector('.service-card__body');
+      if (kind && body && ARTIFACT_CAPTION[kind]) {
+        var art = document.createElement('span');
+        art.className = 'service-artifact';
+        art.setAttribute('data-kind', kind);
+        art.setAttribute('data-caption', ARTIFACT_CAPTION[kind]);
+        art.setAttribute('aria-hidden', 'true');
+        for (var i = 0; i < 5; i++) art.appendChild(document.createElement('i'));
+        var link = card.querySelector('.service-card__link');
+        var meta = card.querySelector('.service-card__meta');
+        if (link && meta) link.insertBefore(art, meta);
+        else body.appendChild(art);
+      }
+      /* Кнопка сравнения — СНАРУЖИ ссылки: вложенный интерактив внутри <a>
+         недопустим, а разметку карточек держат контракт-тесты. */
+      var compare = document.createElement('button');
+      compare.type = 'button';
+      compare.className = 'service-compare';
+      compare.setAttribute('data-compare-toggle', '');
+      compare.setAttribute('aria-pressed', 'false');
+      compare.textContent = 'Сравнить';
+      card.appendChild(compare);
+    }
+
+    cards.forEach(decorate);
+
+    /* Ритм: первая подходящая услуга — герой, следующие две крупные,
+       остальные компактные. Раньше все двенадцать весили одинаково. */
+    function rank(pool) {
+      cards.forEach(function (card) { card.removeAttribute('data-rank'); });
+      pool.forEach(function (card, index) {
+        card.setAttribute('data-rank', index === 0 ? 'hero' : (index <= 2 ? 'major' : 'minor'));
+      });
+    }
+
+    function priceOf(card) {
+      var node = card.querySelector('.service-card__meta strong');
+      var digits = (node ? node.textContent : '').replace(/[^\d]/g, '');
+      return digits ? parseInt(digits, 10) : 0;
+    }
+
+    var FIRST_STEP = {
+      start: 'разбор темы и плана',
+      draft: 'разбор вашего черновика',
+      finish: 'сверка перед сдачей'
+    };
+
+    function summarize(pool) {
+      if (!live) return;
+      if (!pool.length) { live.textContent = ''; return; }
+      var prices = pool.map(priceOf).filter(function (value) { return value > 0; });
+      var parts = ['Подходит <b>' + pool.length + '</b> ' + plural(pool.length)];
+      if (prices.length) {
+        parts.push('от <b>' + Math.min.apply(null, prices).toLocaleString('ru-RU') + ' ₽</b>');
+      }
+      if (FIRST_STEP[filter]) parts.push('первый шаг — <em>' + FIRST_STEP[filter] + '</em>');
+      live.innerHTML = parts.join(' · ');
+    }
+
+    function plural(n) {
+      var last = n % 10, two = n % 100;
+      if (two > 10 && two < 20) return 'услуг';
+      if (last === 1) return 'услуга';
+      if (last >= 2 && last <= 4) return 'услуги';
+      return 'услуг';
+    }
+
     function paint() {
       var pool = cards.filter(function (card) {
         return phaseMatches(card);
@@ -128,9 +216,14 @@
         card.hidden = false;
       });
       var limit = filter === 'all' && !expanded ? currentLimit() : pool.length;
+      var shown = [];
       cards.forEach(function (card) {
-        card.hidden = pool.indexOf(card) === -1 || pool.indexOf(card) >= limit;
+        var visible = pool.indexOf(card) !== -1 && pool.indexOf(card) < limit;
+        card.hidden = !visible;
+        if (visible) shown.push(card);
       });
+      rank(shown);
+      summarize(pool);
       if (more) {
         var rest = Math.max(0, pool.length - limit);
         more.hidden = expanded || filter !== 'all' || rest === 0;
@@ -138,6 +231,18 @@
       }
       if (empty) empty.hidden = pool.length !== 0 || disciplineMatches;
     }
+
+    setupCompare(root, cards);
+
+    /* Ситуация наверху страницы теперь управляет каталогом: выбор сразу
+       перестраивает список, а не только уводит в конфигуратор. */
+    document.addEventListener('salon:catalog-phase', function (e) {
+      var phase = e && e.detail;
+      var tab = tabs.filter(function (item) {
+        return item.getAttribute('data-service-filter') === phase;
+      })[0];
+      if (tab) tab.click();
+    });
 
     tabs.forEach(function (tab) {
       tab.setAttribute('aria-pressed', String(tab.classList.contains('is-active')));
@@ -160,6 +265,173 @@
     });
     window.addEventListener('resize', paint, { passive: true });
     paint();
+  }
+
+  /* Сравнение до трёх услуг. Данные берутся из самой карточки, поэтому
+     таблица не может разойтись с каталогом: один источник правды. */
+  function setupCompare(root, cards) {
+    var tray = document.querySelector('[data-compare-tray]');
+    var sheet = document.querySelector('[data-compare-sheet]');
+    if (!tray || !sheet) return;
+    var list = tray.querySelector('[data-compare-list]');
+    var count = tray.querySelector('[data-compare-count]');
+    var body = sheet.querySelector('[data-compare-body]');
+    var LIMIT = 3;
+    var picked = [];
+    var lastFocus = null;
+
+    function read(card) {
+      var meta = Array.prototype.slice.call(card.querySelectorAll('.service-card__meta span'));
+      var rows = meta.map(function (span) {
+        var label = span.querySelector('small');
+        var value = span.querySelector('strong');
+        return {
+          label: label ? label.textContent.trim() : '',
+          value: value ? value.textContent.trim() : ''
+        };
+      });
+      return {
+        title: (card.querySelector('h2') || {}).textContent || 'Услуга',
+        eyebrow: (card.querySelector('.eyebrow') || {}).textContent || '',
+        about: (card.querySelector('.service-card__body p:last-of-type') || {}).textContent || '',
+        artifact: card.getAttribute('data-artifact') || '',
+        href: (card.querySelector('.service-card__link') || {}).getAttribute
+          ? card.querySelector('.service-card__link').getAttribute('href') : '',
+        rows: rows
+      };
+    }
+
+    var RESULT = {
+      plan: 'план и структура',
+      marks: 'правки и комментарии',
+      checklist: 'чек-лист сверки',
+      research: 'карта источников',
+      manuscript: 'готовая рукопись'
+    };
+    var AUTHOR = {
+      plan: 'вы — автор, мы объясняем и правим',
+      marks: 'вы — автор, мы объясняем и правим',
+      checklist: 'вы — автор, мы объясняем и правим',
+      research: 'вы — автор финальной версии',
+      manuscript: 'автор — наш редактор'
+    };
+
+    function paintTray() {
+      tray.hidden = picked.length === 0;
+      if (count) count.textContent = picked.length + ' из ' + LIMIT;
+      if (!list) return;
+      list.textContent = '';
+      picked.forEach(function (card) {
+        var item = document.createElement('li');
+        item.textContent = (card.querySelector('h2') || {}).textContent || '';
+        var drop = document.createElement('button');
+        drop.type = 'button';
+        drop.setAttribute('aria-label', 'Убрать из сравнения');
+        drop.textContent = '×';
+        drop.addEventListener('click', function () { toggle(card); });
+        item.appendChild(drop);
+        list.appendChild(item);
+      });
+      cards.forEach(function (card) {
+        var button = card.querySelector('[data-compare-toggle]');
+        if (!button) return;
+        var on = picked.indexOf(card) !== -1;
+        button.setAttribute('aria-pressed', String(on));
+        button.textContent = on ? 'В сравнении' : 'Сравнить';
+      });
+    }
+
+    function toggle(card) {
+      var at = picked.indexOf(card);
+      if (at !== -1) picked.splice(at, 1);
+      else if (picked.length < LIMIT) picked.push(card);
+      else return;
+      paintTray();
+    }
+
+    function row(label, values, extra) {
+      var line = document.createElement('div');
+      line.className = 'compare-grid__row' + (extra ? ' ' + extra : '');
+      var head = document.createElement('span');
+      head.textContent = label;
+      line.appendChild(head);
+      values.forEach(function (value) {
+        var cell = document.createElement('span');
+        cell.textContent = value || '—';
+        line.appendChild(cell);
+      });
+      return line;
+    }
+
+    function open() {
+      if (!picked.length || !body) return;
+      var data = picked.map(read);
+      body.textContent = '';
+      var grid = document.createElement('div');
+      grid.className = 'compare-grid';
+      grid.style.setProperty('--compare-cols',
+        '132px repeat(' + data.length + ',minmax(0,1fr))');
+      grid.appendChild(row('Услуга', data.map(function (x) { return x.title.trim(); }), 'compare-grid__row--head'));
+      grid.appendChild(row('Для чего', data.map(function (x) { return x.eyebrow.trim(); })));
+      grid.appendChild(row('Что делаем', data.map(function (x) { return x.about.trim(); })));
+      grid.appendChild(row('Что получите', data.map(function (x) { return RESULT[x.artifact] || '—'; })));
+      grid.appendChild(row('Кто автор результата', data.map(function (x) { return AUTHOR[x.artifact] || '—'; })));
+      var labels = {};
+      data.forEach(function (x) {
+        x.rows.forEach(function (r) { if (r.label) labels[r.label] = true; });
+      });
+      Object.keys(labels).forEach(function (label) {
+        grid.appendChild(row(label, data.map(function (x) {
+          var hit = x.rows.filter(function (r) { return r.label === label; })[0];
+          return hit ? hit.value : '';
+        }), label === 'Стоимость' ? 'compare-grid__row--price' : ''));
+      });
+      var links = document.createElement('div');
+      links.className = 'compare-grid__row';
+      links.style.gridTemplateColumns = 'var(--compare-cols)';
+      var spacer = document.createElement('span');
+      spacer.textContent = 'Подробно';
+      links.appendChild(spacer);
+      data.forEach(function (x) {
+        var cell = document.createElement('span');
+        var a = document.createElement('a');
+        a.className = 'line-link';
+        a.href = x.href;
+        a.textContent = 'Посмотреть состав →';
+        cell.appendChild(a);
+        links.appendChild(cell);
+      });
+      grid.appendChild(links);
+      body.appendChild(grid);
+      lastFocus = document.activeElement;
+      sheet.hidden = false;
+      var close = sheet.querySelector('[data-compare-close]');
+      if (close) close.focus({ preventScroll: true });
+    }
+
+    function close() {
+      sheet.hidden = true;
+      if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    }
+
+    root.addEventListener('click', function (e) {
+      var button = e.target.closest ? e.target.closest('[data-compare-toggle]') : null;
+      if (!button) return;
+      e.preventDefault();
+      var card = button.closest('[data-service-card]');
+      if (card) toggle(card);
+    });
+    var openButton = tray.querySelector('[data-compare-open]');
+    if (openButton) openButton.addEventListener('click', open);
+    var clearButton = tray.querySelector('[data-compare-clear]');
+    if (clearButton) clearButton.addEventListener('click', function () { picked = []; paintTray(); });
+    var closeButton = sheet.querySelector('[data-compare-close]');
+    if (closeButton) closeButton.addEventListener('click', close);
+    sheet.addEventListener('click', function (e) { if (e.target === sheet) close(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !sheet.hidden) close();
+    });
+    paintTray();
   }
 
   var pricedRoutes = {
