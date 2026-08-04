@@ -37,6 +37,10 @@
     var resume = document.querySelector('[data-resume-card]');
     var reveal = document.querySelector('[data-new-choice-toggle]');
     var next = document.querySelector('.catalog-route-next');
+    /* Лид описывает выбор ситуации, но при сохранённом подборе выбора на экране
+       нет — единственное действие «Продолжить». Обе редакции лежат в разметке. */
+    var lead = document.querySelector('.page-head__lead[data-lead-saved]');
+    var leadFresh = lead ? lead.textContent : '';
 
     function mobileDock() {
       return document.querySelector('.mnav .mn-calc');
@@ -56,6 +60,7 @@
       if (resume) resume.hidden = true;
       root.hidden = false;
       if (next) next.hidden = false;
+      if (lead && leadFresh) lead.textContent = leadFresh;
       if (reveal) reveal.setAttribute('aria-expanded', 'true');
       setDock('#servicesChoice', 'Выбрать ситуацию');
       var first = choices[0];
@@ -95,6 +100,7 @@
     var hasSavedResume = !!(resume && !resume.hidden);
     root.hidden = hasSavedResume;
     if (next) next.hidden = hasSavedResume;
+    if (lead && hasSavedResume) lead.textContent = lead.getAttribute('data-lead-saved') || leadFresh;
     if (!hasSavedResume) setDock('#servicesChoice', 'Выбрать ситуацию');
   }
 

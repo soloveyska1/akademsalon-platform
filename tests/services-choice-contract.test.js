@@ -166,6 +166,15 @@ test('saved progress owns the primary action and reveals a fresh selector second
   assert.match(catalog, /data-services-choice/);
   assert.match(catalog, /\.hidden\s*=\s*false/, 'secondary action must reveal rather than navigate or mutate');
   assert.match(catalog, /next\.hidden\s*=\s*hasSavedResume/, 'saved state must hide the orphan fresh-choice hint');
+  const lead = html.match(/<p class="page-head__lead"[^>]*>/);
+  assert.ok(lead, 'services hero needs a lead');
+  assert.match(lead[0], /\bdata-lead-saved="[^"]+"/, 'both lead editions must live in the document, not in the script');
+  assert.match(
+    catalog,
+    /if \(lead && hasSavedResume\) lead\.textContent = lead\.getAttribute\('data-lead-saved'\)/,
+    'saved state must not keep pointing at a selector that is hidden'
+  );
+  assert.match(catalog, /if \(lead && leadFresh\) lead\.textContent = leadFresh/, 'the fresh selector must restore its own lead');
   assert.match(
     css,
     /@media\(max-width:920px\)[\s\S]*?\.catalog-route-continue,\s*body \.p15-catalog \.catalog-resume \.resume-card__action\{\s*display:none!important/,
