@@ -1382,3 +1382,432 @@ body.p15-operations .cookieprefs .cp-card {
     radial-gradient(circle at 92% 16%,rgba(180,148,88,.10),transparent 24%),
     repeating-linear-gradient(0deg,rgba(242,236,223,.02) 0 1px,transparent 1px 4px);
 }
+
+/* ============================================================
+   ОПЛАТА · живая страница
+   Прежде здесь были четыре статичные плитки, один пример платежа и
+   три абзаца условий: страница рассказывала о процессе, но не отвечала
+   на единственный вопрос клиента — «сколько с меня спишут сейчас».
+   Добавлены раскладка платежей на его цифрах, кликабельные шаги,
+   которые меняют состояние примера, и шкала возврата.
+   ============================================================ */
+
+.p15-operations .pay-facts{
+  /* Шапка — двухколоночная сетка; полоска фактов должна идти во всю
+     ширину, иначе три ячейки зажимаются в узкую колонку и режут текст. */
+  grid-column:1 / -1;
+  display:grid;
+  gap:1px;
+  margin:8px 0 0;
+  padding:0;
+  list-style:none;
+  background:var(--op-line);
+  border:1px solid var(--op-line);
+  border-radius:8px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  overflow:hidden;
+}
+
+.p15-operations .pay-facts>li{
+  display:grid;
+  align-content:start;
+  gap:5px;
+  padding:16px 18px 18px;
+  background:var(--op-paper);
+}
+
+.p15-operations .pay-facts span{
+  color:var(--op-quiet);
+  font:600 9.5px/1.4 var(--mono);
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.p15-operations .pay-facts strong{
+  color:var(--op-ink);
+  font:500 19px/1.15 var(--serif);
+  letter-spacing:-.02em;
+}
+
+.p15-operations .pay-facts small{
+  color:var(--op-muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.p15-operations :is(.pay-split,.payment-flow-live,.pay-refund,.pay-how){
+  padding-block:clamp(44px,5vw,72px);
+  border-top:1px solid var(--op-line);
+}
+
+.p15-operations .pay-split__note{
+  max-width:56ch;
+  margin:0;
+  color:var(--op-muted);
+  font-size:14.5px;
+  line-height:1.55;
+}
+
+/* ---------- раскладка платежей ---------- */
+
+.p15-operations .pay-split__controls{
+  display:grid;
+  gap:22px 34px;
+  margin-top:26px;
+  grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);
+  align-items:start;
+}
+
+.p15-operations .pay-field{display:grid;gap:11px}
+
+.p15-operations .pay-field label,
+.p15-operations .pay-field__label{
+  color:var(--op-quiet);
+  font:600 9.5px/1.4 var(--mono);
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.p15-operations .pay-field__row{
+  display:grid;
+  gap:16px;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+}
+
+.p15-operations .pay-field__row input[type="range"]{
+  width:100%;
+  height:26px;
+  margin:0;
+  accent-color:var(--op-wax,#a63f29);
+  cursor:pointer;
+}
+
+.p15-operations .pay-field__row output{
+  min-width:118px;
+  color:var(--op-ink);
+  font:600 24px/1 var(--sans);
+  font-variant-numeric:tabular-nums;
+  text-align:right;
+  white-space:nowrap;
+}
+
+.p15-operations .pay-field__hint{
+  margin:0;
+  color:var(--op-muted);
+  font-size:13px;
+  line-height:1.5;
+}
+
+.p15-operations .pay-chips{display:flex;flex-wrap:wrap;gap:8px}
+
+.p15-operations .pay-chips button{
+  min-height:36px;
+  padding:7px 14px;
+  color:var(--op-muted);
+  background:transparent;
+  border:1px solid var(--op-line);
+  border-radius:999px;
+  cursor:pointer;
+  font:600 12.5px/1 var(--sans);
+  font-variant-numeric:tabular-nums;
+  transition:color .18s ease,border-color .18s ease,background-color .18s ease;
+}
+
+.p15-operations .pay-chips button:hover{color:var(--op-ink);border-color:var(--op-line-strong,var(--op-line))}
+
+.p15-operations .pay-chips button[aria-pressed="true"]{
+  color:var(--op-ink);
+  background:var(--op-paper);
+  border-color:var(--op-wax,#a63f29);
+}
+
+.p15-operations .pay-chips--stages button{min-width:52px}
+
+.p15-operations .pay-ladder{
+  display:grid;
+  gap:10px;
+  margin:26px 0 0;
+  padding:0;
+  list-style:none;
+}
+
+.p15-operations .pay-ladder li{
+  display:grid;
+  gap:4px 18px;
+  padding:15px 18px;
+  background:var(--op-paper);
+  border:1px solid var(--op-line);
+  border-left:3px solid var(--op-line);
+  border-radius:6px;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:baseline;
+  animation:pay-step-in .32s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes pay-step-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+.p15-operations .pay-ladder li[data-now="true"]{
+  border-left-color:var(--op-wax,#a63f29);
+  background:var(--op-sheet);
+}
+
+.p15-operations .pay-ladder b{
+  color:var(--op-ink);
+  font:500 17px/1.2 var(--serif);
+  letter-spacing:-.02em;
+}
+
+.p15-operations .pay-ladder em{
+  grid-column:1;
+  color:var(--op-muted);
+  font-size:13.5px;
+  font-style:normal;
+  line-height:1.45;
+}
+
+.p15-operations .pay-ladder .pay-ladder__sum{
+  grid-column:2;
+  grid-row:1;
+  color:var(--op-ink);
+  font:600 19px/1 var(--sans);
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+.p15-operations .pay-ladder .pay-ladder__bar{
+  grid-column:1 / -1;
+  height:4px;
+  margin-top:7px;
+  background:color-mix(in srgb,var(--op-wax,#a63f29) 22%,transparent);
+  border-radius:2px;
+  transform-origin:left center;
+  animation:pay-bar .5s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes pay-bar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+.p15-operations .pay-ladder li[data-now="true"] .pay-ladder__bar{
+  background:var(--op-wax,#a63f29);
+}
+
+.p15-operations .pay-split__total{
+  margin:18px 0 0;
+  color:var(--op-muted);
+  font-size:15px;
+  line-height:1.55;
+}
+
+.p15-operations .pay-split__total b{color:var(--op-ink);font-weight:640}
+
+/* ---------- шаги, меняющие пример ---------- */
+
+.p15-operations .payment-flow article{padding:0;border:0;background:transparent}
+
+.p15-operations .payment-flow button{
+  display:grid;
+  width:100%;
+  height:100%;
+  gap:9px;
+  padding:16px 18px 18px;
+  text-align:left;
+  color:inherit;
+  background:var(--op-paper);
+  border:1px solid var(--op-line);
+  border-top:2px solid var(--op-line);
+  border-radius:6px;
+  cursor:pointer;
+  transition:border-color .2s ease,background-color .2s ease,transform .22s cubic-bezier(.22,1,.36,1);
+}
+
+.p15-operations .payment-flow button:hover{transform:translateY(-2px)}
+
+.p15-operations .payment-flow button[aria-selected="true"]{
+  border-top-color:var(--op-wax,#a63f29);
+  background:var(--op-sheet);
+}
+
+.p15-operations .payment-flow button>span:first-child{
+  color:var(--op-wax-text,var(--op-wax,#a63f29));
+  font:600 10px/1 var(--mono);
+  letter-spacing:.1em;
+}
+
+.p15-operations .payment-flow__body{display:grid;gap:5px}
+
+.p15-operations .payment-flow__body b{
+  color:var(--op-ink);
+  font:500 18px/1.18 var(--serif);
+  letter-spacing:-.02em;
+}
+
+.p15-operations .payment-flow__body i{
+  color:var(--op-muted);
+  font-size:13.5px;
+  font-style:normal;
+  line-height:1.5;
+}
+
+.p15-operations .payment-demo__what{
+  max-width:52ch;
+  margin-top:12px;
+  color:var(--op-muted);
+  font-size:14.5px;
+  line-height:1.55;
+}
+
+.p15-operations .payment-demo__side{
+  display:grid;
+  gap:10px;
+  justify-items:end;
+  align-content:center;
+}
+
+.p15-operations .payment-demo__badge{
+  padding:5px 12px;
+  color:var(--op-muted);
+  background:var(--op-canvas);
+  border:1px solid var(--op-line);
+  border-radius:999px;
+  font:600 10px/1.4 var(--mono);
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  transition:color .2s ease,border-color .2s ease;
+}
+
+.p15-operations .payment-demo__badge[data-tone="paid"]{
+  color:var(--op-ink);
+  border-color:var(--verify,#3c644c);
+}
+
+.p15-operations .payment-demo__badge[data-tone="live"]{
+  color:var(--op-ink);
+  border-color:var(--op-wax,#a63f29);
+}
+
+/* ---------- шкала возврата ---------- */
+
+.p15-operations .pay-refund__scale{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0;
+  margin-top:24px;
+  border:1px solid var(--op-line);
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.p15-operations .pay-refund__scale button{
+  flex:1 1 auto;
+  min-height:46px;
+  padding:11px 18px;
+  color:var(--op-muted);
+  background:transparent;
+  border:0;
+  border-right:1px solid var(--op-line);
+  cursor:pointer;
+  font:600 13px/1.2 var(--sans);
+  transition:color .2s ease,background-color .2s ease;
+}
+
+.p15-operations .pay-refund__scale button:last-child{border-right:0}
+
+.p15-operations .pay-refund__scale button[aria-pressed="true"]{
+  color:var(--op-ink);
+  background:var(--op-paper);
+}
+
+.p15-operations .pay-refund__out{
+  margin-top:20px;
+  padding:20px 22px;
+  background:var(--op-paper);
+  border:1px solid var(--op-line);
+  border-left:3px solid var(--op-wax,#a63f29);
+  border-radius:6px;
+  animation:pay-step-in .28s cubic-bezier(.22,1,.36,1) both;
+}
+
+.p15-operations .pay-refund__headline{
+  margin:0;
+  color:var(--op-ink);
+  font:500 21px/1.2 var(--serif);
+  letter-spacing:-.02em;
+}
+
+.p15-operations .pay-refund__note{
+  max-width:64ch;
+  margin:9px 0 0;
+  color:var(--op-muted);
+  font-size:14.5px;
+  line-height:1.55;
+}
+
+/* ---------- чем и как ---------- */
+
+.p15-operations .pay-how__grid{
+  display:grid;
+  gap:16px;
+  margin-top:24px;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.p15-operations .pay-how__grid article{
+  padding:20px 22px;
+  background:var(--op-paper);
+  border:1px solid var(--op-line);
+  border-radius:6px;
+}
+
+.p15-operations .pay-how__grid h3{
+  margin:0 0 7px;
+  color:var(--op-ink);
+  font:500 18px/1.2 var(--serif);
+  letter-spacing:-.02em;
+}
+
+.p15-operations .pay-how__grid p{
+  margin:0;
+  color:var(--op-muted);
+  font-size:14.5px;
+  line-height:1.55;
+}
+
+@media (max-width:920px){
+  .p15-operations .pay-facts{grid-template-columns:1fr}
+  .p15-operations .pay-split__controls{grid-template-columns:1fr}
+  .p15-operations .pay-how__grid{grid-template-columns:1fr}
+  .p15-operations .payment-demo__side{justify-items:start;align-content:start}
+}
+
+@media (max-width:920px){
+  /* Пальцем по 36px не попасть: на узких экранах цель — не меньше 44px,
+     как и у остальных контролов сайта. */
+  .p15-operations .pay-chips button{min-height:44px;padding-inline:16px}
+  .p15-operations .pay-refund__scale button{min-height:52px}
+}
+
+@media (max-width:620px){
+  .p15-operations .pay-field__row{grid-template-columns:1fr}
+  .p15-operations .pay-field__row output{text-align:left}
+  .p15-operations .pay-refund__scale{
+    flex-direction:column;
+    border-radius:10px;
+  }
+  .p15-operations .pay-refund__scale button{
+    border-right:0;
+    border-bottom:1px solid var(--op-line);
+  }
+  .p15-operations .pay-refund__scale button:last-child{border-bottom:0}
+  .p15-operations .pay-ladder li{grid-template-columns:1fr}
+  .p15-operations .pay-ladder .pay-ladder__sum{grid-column:1;grid-row:auto}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .p15-operations .pay-ladder li,
+  .p15-operations .pay-ladder .pay-ladder__bar,
+  .p15-operations .pay-refund__out,
+  .p15-operations .payment-flow button{
+    animation-duration:.01ms;
+    transition-duration:.01ms;
+  }
+}

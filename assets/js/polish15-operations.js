@@ -386,12 +386,176 @@
     }
   }
 
+
+  /* Оплата: раскладка платежей, живые шаги и шкала возврата.
+     Всё считается на клиенте и ничего не отправляет: это прикидка,
+     точные суммы приходят в спецификации. */
+  function paymentPage() {
+    var split = one('[data-pay-split]');
+    if (split) paymentSplit(split);
+    var flow = one('[data-pay-flow]');
+    if (flow) paymentSteps(flow);
+    var refund = one('[data-pay-refund]');
+    if (refund) refundScale(refund);
+  }
+
+  function rub(value) {
+    return Math.round(value).toLocaleString('ru-RU').replace(/\u00A0/g, ' ') + ' \u20BD';
+  }
+
+  function paymentSplit(root) {
+    var range = one('[data-pay-sum]', root);
+    var out = one('[data-pay-sum-out]', root);
+    var ladder = one('[data-pay-ladder]', root);
+    var total = one('[data-pay-total]', root);
+    var presets = all('[data-pay-preset]', root);
+    var stageButtons = all('[data-pay-stages]', root);
+    if (!range || !ladder) return;
+    var stages = 3;
+
+    /* Доли не равные: первый этап меньше — так и работает мастерская,
+       чтобы начать можно было с небольшой суммы. */
+    var SHARES = {
+      2: [0.4, 0.6],
+      3: [0.3, 0.4, 0.3],
+      4: [0.25, 0.3, 0.25, 0.2]
+    };
+    var NAMES = ['План и структура', 'Основная часть', 'Сборка и оформление', 'Финальная проверка'];
+    var WHEN = ['сразу после согласования', 'когда принят первый этап',
+      'когда принят предыдущий этап', 'перед передачей результата'];
+
+    function draw() {
+      var sum = parseInt(range.value, 10) || 0;
+      if (out) out.textContent = rub(sum);
+      var shares = SHARES[stages] || SHARES[3];
+      var parts = shares.map(function (share) { return Math.round(sum * share / 100) * 100; });
+      var drift = sum - parts.reduce(function (a, b) { return a + b; }, 0);
+      parts[parts.length - 1] += drift;
+      ladder.textContent = '';
+      parts.forEach(function (amount, index) {
+        var li = document.createElement('li');
+        if (index === 0) li.setAttribute('data-now', 'true');
+        var name = document.createElement('b');
+        name.textContent = 'Этап ' + (index + 1) + ' · ' + (NAMES[index] || 'Этап работы');
+        var money = document.createElement('span');
+        money.className = 'pay-ladder__sum';
+        money.textContent = rub(amount);
+        var when = document.createElement('em');
+        when.textContent = index === 0 ? 'платите сейчас — ' + WHEN[0] : WHEN[index] || WHEN[2];
+        var bar = document.createElement('span');
+        bar.className = 'pay-ladder__bar';
+        bar.style.width = Math.max(8, Math.round(amount / sum * 100)) + '%';
+        li.appendChild(name);
+        li.appendChild(money);
+        li.appendChild(when);
+        li.appendChild(bar);
+        ladder.appendChild(li);
+      });
+      if (total) {
+        total.innerHTML = 'Сейчас с вас спишется <b>' + rub(parts[0]) +
+          '</b> — это ' + Math.round(parts[0] / sum * 100) + '% работы. ' +
+          'Остальные ' + rub(sum - parts[0]) + ' — по мере того, как вы принимаете этапы.';
+      }
+      presets.forEach(function (button) {
+        button.setAttribute('aria-pressed',
+          String(parseInt(button.getAttribute('data-pay-preset'), 10) === sum));
+      });
+    }
+
+    range.addEventListener('input', draw);
+    presets.forEach(function (button) {
+      button.setAttribute('aria-pressed', 'false');
+      button.addEventListener('click', function () {
+        range.value = button.getAttribute('data-pay-preset');
+        draw();
+      });
+    });
+    stageButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        stages = parseInt(button.getAttribute('data-pay-stages'), 10) || 3;
+        stageButtons.forEach(function (item) {
+          item.setAttribute('aria-pressed', String(item === button));
+        });
+        draw();
+      });
+    });
+    draw();
+  }
+
+  function paymentSteps(root) {
+    var steps = all('[data-pay-step]', root);
+    var state = one('[data-demo-state]', root);
+    var what = one('[data-demo-what]', root);
+    var badge = one('[data-demo-badge]', root);
+    if (!steps.length) return;
+    var SCENE = {
+      1: { state: 'Шаг 01 · согласование', badge: 'ожидает согласования', tone: '',
+        what: 'Счёта пока нет: сначала вы читаете спецификацию и говорите, что поправить.' },
+      2: { state: 'Шаг 02 · счёт выставлен', badge: 'ждёт оплаты', tone: 'live',
+        what: 'В деле появилась ссылка на оплату — ровно на этот этап и на сумму из спецификации.' },
+      3: { state: 'Шаг 03 · оплачено', badge: 'оплачено · чек в деле', tone: 'paid',
+        what: 'Статус сменился сам, чек сохранён в деле. Ничего пересылать и подтверждать не нужно.' },
+      4: { state: 'Шаг 04 · этап идёт', badge: 'в работе до 28 июля', tone: 'paid',
+        what: 'В истории дела зафиксированы дата старта и ближайший результат.' }
+    };
+    steps.forEach(function (button) {
+      button.addEventListener('click', function () {
+        var scene = SCENE[button.getAttribute('data-pay-step')] || SCENE[1];
+        steps.forEach(function (item) {
+          item.setAttribute('aria-selected', String(item === button));
+        });
+        if (state) state.textContent = scene.state;
+        if (what) what.textContent = scene.what;
+        if (badge) {
+          badge.textContent = scene.badge;
+          if (scene.tone) badge.setAttribute('data-tone', scene.tone);
+          else badge.removeAttribute('data-tone');
+        }
+      });
+    });
+  }
+
+  function refundScale(root) {
+    var buttons = all('[data-refund]', root);
+    var headline = one('[data-refund-headline]', root);
+    var note = one('[data-refund-note]', root);
+    if (!buttons.length) return;
+    /* Формулировки — из оферты. Никаких процентов: там их нет. */
+    var CASE = {
+      before: {
+        head: 'Возвращается весь платёж за этот этап.',
+        note: 'Пока этап не начат, работы по нему нет — возвращать нечего, кроме ваших денег. Остальные этапы вы и так не оплачивали.'
+      },
+      during: {
+        head: 'Возвращается неоказанная часть.',
+        note: 'Считается по фактически сделанной и переданной работе и документально подтверждённым расходам именно по этой позиции. Расчёт присылаем письменно, а не «на глаз».'
+      },
+      done: {
+        head: 'Принятый этап возврату не подлежит.',
+        note: 'Но если результат разошёлся с критериями из спецификации, это исправляется без доплаты. На первичную проверку у вас 7 календарных дней, и права по закону этот срок не ограничивает.'
+      }
+    };
+    function pick(button) {
+      var data = CASE[button.getAttribute('data-refund')] || CASE.before;
+      buttons.forEach(function (item) {
+        item.setAttribute('aria-pressed', String(item === button));
+      });
+      if (headline) headline.textContent = data.head;
+      if (note) note.textContent = data.note;
+    }
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () { pick(button); });
+    });
+    pick(buttons[0]);
+  }
+
   textCheck();
   topicAudit();
   sourceChecker();
   genericTool();
   formats();
   paymentDialog();
+  paymentPage();
   systemRetry();
   applicationDraft();
 })();

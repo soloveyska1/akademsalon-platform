@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260804shell112&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1&amp;contrast=20260804contrast1&amp;wax=20260804wax1&amp;hdr=20260804hdr2&amp;sheen=20260804sheen2&amp;glass=20260804glass1" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260804release112&amp;wax=20260804wax1" />
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260804shell112&amp;wax=20260804wax1&amp;glass=20260804glass1" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260804release112&amp;story=20260804story2&amp;sheen=20260804sheen1&amp;canvas=20260804canvas1" />
+<link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260804release112&amp;story=20260804story2&amp;sheen=20260804sheen1&amp;canvas=20260804canvas1&amp;pay=20260804pay1" />
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 </head>
 <body class="p15-operations">
@@ -35,25 +35,114 @@
     <header class="page-head">
   <div class="page-head__copy">
     <p class="eyebrow">Оплата</p>
-    <h1>Оплачивайте<br>согласованные этапы.</h1>
-    <p class="page-head__lead">Сумма и назначение платежа совпадают со спецификацией. Чек появляется в кабинете после подтверждения операции.</p>
+    <h1>Платите по частям —<br>за согласованные этапы.</h1>
+    <p class="page-head__lead">Всю сумму сразу вносить не нужно. Сначала редактор присылает спецификацию, вы её проверяете, и только потом появляется счёт — на один этап и на ту сумму, что в документе.</p>
     <div class="page-head__action"><button class="button button--secondary" type="button" data-open-payment>Открыть пример оплаты</button></div>
   </div>
+  <ul class="pay-facts">
+    <li><span>Сначала</span><strong>Спецификация</strong><small>состав, срок и цена — до счёта</small></li>
+    <li><span>Первый платёж</span><strong>Только этап 1</strong><small>остальное — по готовности</small></li>
+    <li><span>После оплаты</span><strong>Чек в кабинете</strong><small>и отметка о старте этапа</small></li>
+  </ul>
 </header>
-    <div class="payment-flow">
-      <article><span>01</span><div><h2>Согласование</h2><p>Редактор присылает спецификацию. Вы проверяете состав, срок и стоимость.</p></div></article>
-      <article><span>02</span><div><h2>Ссылка на оплату</h2><p>В кабинете появляется платёж только за согласованный этап.</p></div></article>
-      <article><span>03</span><div><h2>Подтверждение</h2><p>После успешной операции статус меняется автоматически, чек сохраняется в деле.</p></div></article>
-      <article><span>04</span><div><h2>Начало этапа</h2><p>В истории фиксируется дата старта и ближайший результат.</p></div></article>
-    </div>
-    <section class="payment-demo">
-      <div><p class="eyebrow">Пример платежа</p><h2>Этап 2 · Редактура главы</h2><p>Дело DEMO-2417 · срок результата 28 июля</p></div>
-      <strong>14 500 ₽</strong>
-      <button class="button button--primary" type="button" data-open-payment>Открыть оплату</button>
+
+    <!-- Раскладка платежей: главный вопрос клиента — «сколько с меня спишут
+         сейчас». Считается на его цифрах, а не описывается словами. -->
+    <section class="pay-split" data-pay-split aria-labelledby="paySplitTitle">
+      <header class="section-head">
+        <div><p class="eyebrow">Считаем вместе</p><h2 id="paySplitTitle">Сколько спишется сейчас</h2></div>
+        <p class="pay-split__note">Подставьте свою сумму и число этапов — покажем разбивку. Это прикидка: точные суммы редактор зафиксирует в спецификации.</p>
+      </header>
+
+      <div class="pay-split__controls">
+        <div class="pay-field">
+          <label for="paySum">Стоимость работы</label>
+          <div class="pay-field__row">
+            <input id="paySum" type="range" min="3000" max="120000" step="500" value="26000" data-pay-sum />
+            <output data-pay-sum-out>26 000 ₽</output>
+          </div>
+          <div class="pay-chips" role="group" aria-label="Частые суммы">
+            <button type="button" data-pay-preset="14000">14 000</button>
+            <button type="button" data-pay-preset="26000">26 000</button>
+            <button type="button" data-pay-preset="40000">40 000</button>
+            <button type="button" data-pay-preset="60000">60 000</button>
+          </div>
+        </div>
+        <div class="pay-field">
+          <span class="pay-field__label">Сколько этапов</span>
+          <div class="pay-chips pay-chips--stages" role="group" aria-label="Число этапов">
+            <button type="button" data-pay-stages="2">2</button>
+            <button type="button" data-pay-stages="3" aria-pressed="true">3</button>
+            <button type="button" data-pay-stages="4">4</button>
+          </div>
+          <p class="pay-field__hint">Этапы и их состав редактор подбирает под работу: обычно это план, основная часть и финальная сборка.</p>
+        </div>
+      </div>
+
+      <ol class="pay-ladder" data-pay-ladder></ol>
+
+      <p class="pay-split__total" data-pay-total></p>
     </section>
+
+    <!-- Четыре шага — кликабельные: шаг подсвечивает, что в этот момент
+         происходит с деньгами и с делом. Раньше это был статичный список. -->
+    <section class="payment-flow-live" data-pay-flow aria-labelledby="payFlowTitle">
+      <header class="section-head">
+        <div><p class="eyebrow">Как это идёт</p><h2 id="payFlowTitle">Четыре шага</h2></div>
+      </header>
+      <div class="payment-flow" role="tablist" aria-label="Шаги оплаты">
+        <article><button type="button" role="tab" data-pay-step="1" aria-selected="true"><span>01</span><span class="payment-flow__body"><b>Согласование</b><i>Редактор присылает спецификацию. Вы проверяете состав, срок и стоимость.</i></span></button></article>
+        <article><button type="button" role="tab" data-pay-step="2" aria-selected="false"><span>02</span><span class="payment-flow__body"><b>Ссылка на оплату</b><i>В кабинете появляется платёж только за согласованный этап.</i></span></button></article>
+        <article><button type="button" role="tab" data-pay-step="3" aria-selected="false"><span>03</span><span class="payment-flow__body"><b>Подтверждение</b><i>После успешной операции статус меняется сам, чек сохраняется в деле.</i></span></button></article>
+        <article><button type="button" role="tab" data-pay-step="4" aria-selected="false"><span>04</span><span class="payment-flow__body"><b>Начало этапа</b><i>В истории фиксируется дата старта и ближайший результат.</i></span></button></article>
+      </div>
+
+      <section class="payment-demo" data-pay-demo>
+        <div>
+          <p class="eyebrow" data-demo-state>Шаг 01 · согласование</p>
+          <h2>Этап 2 · Редактура главы</h2>
+          <p>Дело DEMO-2417 · срок результата 28 июля</p>
+          <p class="payment-demo__what" data-demo-what>Счёта пока нет: сначала вы читаете спецификацию и говорите, что поправить.</p>
+        </div>
+        <div class="payment-demo__side">
+          <strong>14 500 ₽</strong>
+          <span class="payment-demo__badge" data-demo-badge>ожидает согласования</span>
+          <button class="button button--primary" type="button" data-open-payment>Открыть оплату</button>
+        </div>
+      </section>
+    </section>
+
+    <!-- Что вернётся, если передумать. Формулировки взяты из оферты:
+         никаких процентов, которых там нет. -->
+    <section class="pay-refund" data-pay-refund aria-labelledby="payRefundTitle">
+      <header class="section-head">
+        <div><p class="eyebrow">Если передумали</p><h2 id="payRefundTitle">Что вернётся</h2></div>
+        <p class="pay-split__note">Отказаться можно в любой момент. Разница только в том, сколько работы уже сделано.</p>
+      </header>
+      <div class="pay-refund__scale" role="group" aria-label="Момент отказа">
+        <button type="button" data-refund="before" aria-pressed="true">Этап ещё не начат</button>
+        <button type="button" data-refund="during" aria-pressed="false">Этап в работе</button>
+        <button type="button" data-refund="done" aria-pressed="false">Этап принят</button>
+      </div>
+      <div class="pay-refund__out">
+        <p class="pay-refund__headline" data-refund-headline></p>
+        <p class="pay-refund__note" data-refund-note></p>
+      </div>
+    </section>
+
+    <section class="pay-how">
+      <header class="section-head"><div><p class="eyebrow">Чем и как</p><h2>Способ, чек и зачёты</h2></div></header>
+      <div class="pay-how__grid">
+        <article><h3>Чем платить</h3><p>Переводом или через платёжную страницу — способом, доступным на момент оплаты. Ссылка приходит в ваше дело в кабинете.</p></article>
+        <article><h3>Чек</h3><p>Исполнитель — плательщик налога на профессиональный доход. Чек формируется и передаётся в порядке 422-ФЗ и хранится в деле.</p></article>
+        <article><h3>Если платит другой человек</h3><p>Так можно. Права заказчика при этом остаются за вами, а возврат проводится с проверкой плательщика.</p></article>
+        <article><h3>Бонусы, сертификат, депозит</h3><p>Бонусы уменьшают цену как скидка. Сертификат и депозит — это зачёт ранее внесённого аванса, они уменьшают сумму к оплате.</p></article>
+      </div>
+    </section>
+
     <section class="payment-safety">
       <header class="section-head"><div><p class="eyebrow">Важные условия</p><h2>До и после платежа</h2></div></header>
-      <div><article><h3>Чек</h3><p>Формируется применимой системой расчётов и хранится в кабинете.</p></article><article><h3>Возврат</h3><p>До начала этапа — полностью. После начала учитывается фактически выполненная часть.</p></article><article><h3>Новый объём</h3><p>Дополнительные задачи оформляются новой версией спецификации и не запускаются автоматически.</p></article></div>
+      <div><article><h3>Новый объём</h3><p>Дополнительные задачи оформляются новой версией спецификации и сами по себе не запускаются.</p></article><article><h3>Недостатки</h3><p>Если результат разошёлся с критериями из спецификации, это исправляется без доплаты.</p></article><article><h3>Сроки проверки</h3><p>На первичную проверку результата есть 7 календарных дней. Ваши права по закону этот срок не сокращает.</p></article></div>
     </section>
 
     <div class="next-step">
@@ -74,6 +163,6 @@
 <script src="assets/js/app.js?v=20260804services112&amp;privacy=20260803out006privacy1&amp;naming=20260804naming1"></script>
 <script defer src="assets/js/polish15-chrome.js?v=20260804release112&amp;search=20260803out007search1"></script>
 <script src="assets/js/extras.js?v=20260804shell112"></script>
-<script src="assets/js/polish15-operations.js?v=20260804release112"></script>
+<script src="assets/js/polish15-operations.js?v=20260804release112&amp;pay=20260804pay1"></script>
 </body>
 </html>
