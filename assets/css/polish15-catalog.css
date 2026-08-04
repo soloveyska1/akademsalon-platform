@@ -902,7 +902,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #82796b;
+  /* было #82796b: 3.56 на подложке #f1e9db и 4.22 на карточке при норме 4.5 */
+  color: #6b6459;
   font: 550 9px/1.2 var(--mono);
   letter-spacing: .07em;
   text-transform: uppercase;
@@ -929,7 +930,8 @@
 }
 
 .p15-service .comment-example > div > span {
-  color: #82796b;
+  /* было #82796b: 3.56 на подложке #f1e9db и 4.22 на карточке при норме 4.5 */
+  color: #6b6459;
   font: 550 8px/1.2 var(--mono);
   letter-spacing: .07em;
   text-transform: uppercase;
@@ -1198,7 +1200,11 @@
 
 .p15-catalog .pricecard {
   padding: clamp(24px, 3vw, 36px);
-  background: #fffdf7;
+  /* Не литерал #fffdf7: сумма набирается токеном --ink-p15, а он в тёмной теме
+     становится кремовым. С жёстко светлой карточкой цена «14 000 ₽» выходила
+     кремовым по кремовому — контраст 1.12, то есть цены на странице просто
+     не было. Токен --sheet-p15 переключается вместе с темой. */
+  background: var(--sheet-p15);
   border: 1px solid var(--line-strong-p15);
   border-top: 3px solid var(--wax-p15);
 }

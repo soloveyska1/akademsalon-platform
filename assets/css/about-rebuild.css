@@ -38,6 +38,17 @@
   font:480 clamp(42px,4.55vw,67px)/.99 var(--serif);
   letter-spacing:-.035em;
 }
+/* Цвет заголовкам нужен явный. polish15-supporting.css красит ВСЕ h1–h4
+   в var(--ink) правилом body.polish15-supporting h1,h2,h3,h4 — прямое
+   правило всегда сильнее наследования, поэтому color на секции до заголовка
+   не доходил. В итоге h2 «Экспертный подход виден и в материалах библиотеки»
+   выходил почти чёрным (#1D1C18) на почти чёрной секции --ar-night (#1C1B18):
+   контраст 1.01, заголовка на экране просто не было. У .ar-final та же
+   причина давала 3.01 на красном — впритык к минимуму для крупного кегля.
+   Вес считать обязательно: у чужого правила (0,1,2) — body + класс + h2,
+   поэтому просто «.ar-editorial h2» (0,1,1) ему проигрывает. */
+.about-rebuild .ar-editorial h2{color:#f5ede2}
+.about-rebuild .ar-final h2{color:#fff}
 .ar-section-head>p,.ar-editorial__grid>div>p{
   margin:0;
   color:var(--ar-muted);
