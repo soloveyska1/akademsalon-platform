@@ -486,6 +486,22 @@
   var TASK_NAME = { zero:'написать с нуля', edit:'отредактировать', razbor:'разобрать и объяснить',
                     norm:'оформить по методичке', zashita:'подготовить к защите', k0:'Комиссия №0' };
 
+  var PICK_INCLUDES = {
+    zero: ['Разбор темы и рабочий план', 'Подбор и проверка источников',
+      'Рабочий текст по согласованной структуре', 'Оформление по методичке',
+      'Результат — рабочий черновик: финальную версию собираете вы'],
+    edit: ['Правки прямо в Word с включённым режимом исправлений',
+      'Комментарий к каждой существенной правке', 'Список задач по приоритету'],
+    razbor: ['Разбор замечаний руководителя по смыслу',
+      'Порядок исправлений: что сначала, что потом', 'Письменные рекомендации'],
+    norm: ['Сверка с методичкой кафедры', 'Поля, шрифты, интервалы и стили',
+      'Таблицы, рисунки и приложения', 'Ссылки и список литературы'],
+    zashita: ['Правка речи к защите', 'Разбор и правка слайдов',
+      'Вероятные вопросы комиссии', 'Репетиция выступления'],
+    k0: ['Живая сессия с независимым Оппонентом', 'Персональные вопросы по вашей работе',
+      'Протокол №0 с замечаниями', 'Повторная проверка исправлений']
+  };
+
   function setupPricePick() {
     var root = document.querySelector('[data-pricepick]');
     if (!root) return;
@@ -525,6 +541,54 @@
       arrow.setAttribute('aria-hidden', 'true');
       arrow.textContent = ' →';
       go.appendChild(arrow);
+      paintIncludes();
+      highlightRow(hit && hit[3]);
+    }
+
+    /* Левая колонка под чипами пустовала на пол-экрана. Теперь она
+       отвечает на вопрос «что я получу за эти деньги». */
+    var includes = document.querySelector('[data-pick-includes]');
+    function paintIncludes() {
+      if (!includes) return;
+      var items = PICK_INCLUDES[task];
+      var list = includes.querySelector('.pickwhat__list');
+      if (!items || !list) { includes.hidden = true; return; }
+      includes.hidden = false;
+      list.textContent = '';
+      items.forEach(function (text) {
+        var li = document.createElement('li');
+        li.textContent = text;
+        list.appendChild(li);
+      });
+    }
+
+    /* Прайс и подбор были двумя несвязанными половинами страницы.
+       Теперь выбор подсвечивает свою строку в общем списке. */
+    var priceRows = Array.prototype.slice.call(document.querySelectorAll('[data-price-row]'));
+    function words(value) {
+      return String(value || '').toLowerCase()
+        .replace(/[^0-9a-zа-яё]+/g, ' ').trim().split(' ').filter(Boolean);
+    }
+    function highlightRow(routeKey) {
+      /* Ключ маршрута и заголовок строки написаны по-разному
+         («Курсовая теория с нуля» против «Курсовая · теория»), поэтому
+         сравниваем по словам: строка подходит, если все её слова есть
+         в ключе. Не совпало — просто ничего не подсвечиваем. */
+      var keyWords = words(routeKey);
+      var target = null;
+      priceRows.forEach(function (row) {
+        var name = row.querySelector('strong');
+        var on = false;
+        if (keyWords.length && name) {
+          var rowWords = words(name.textContent);
+          on = rowWords.length > 0 && rowWords.every(function (word) {
+            return keyWords.indexOf(word) !== -1;
+          });
+        }
+        row.classList.toggle('is-picked', on);
+        if (on && !target) target = row;
+      });
+      return target;
     }
 
     root.addEventListener('click', function (e) {

@@ -33,7 +33,7 @@
 <meta name="twitter:image" content="https://akademsalon.ru/assets/img/og-cover-v3.png" />
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260804shell112&amp;wax=20260804wax1&amp;glass=20260804glass1" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-catalog.css?v=20260804services112&amp;search=20260803out007search1&amp;price=20260803price1&amp;disc=20260804disc2&amp;a11y=20260804a11y1&amp;lit=20260804lit1&amp;canvas=20260804canvas2&amp;live=20260804live1" />
+<link rel="stylesheet" href="assets/css/polish15-catalog.css?v=20260804services112&amp;search=20260803out007search1&amp;price=20260803price1&amp;disc=20260804disc2&amp;a11y=20260804a11y1&amp;lit=20260804lit1&amp;canvas=20260804canvas2&amp;live=20260804live1&amp;price2=20260804price2" />
 <link rel="stylesheet" href="assets/css/commission-zero.css?v=20260804release112&amp;disc=20260804disc1&amp;wax=20260804wax1&amp;canvas=20260804canvas2" />
 </head>
 <body data-p15-page>
@@ -75,6 +75,11 @@
             <button type="button" class="pick-chip" data-pick-task="k0" aria-pressed="false">Комиссия №0</button>
             </div>
           </div>
+          <div class="pickwhat" data-pick-includes hidden>
+            <p class="pickwhat__title">Что входит в эту цену</p>
+            <ul class="pickwhat__list"></ul>
+            <p class="pickwhat__hint">Точный состав редактор зафиксирует в <a href="specifikaciya.html">спецификации</a> — до оплаты.</p>
+          </div>
         </div>
 
         <div class="pricecard" data-price-card aria-live="polite">
@@ -89,16 +94,28 @@
         </div>
       </section>
 
-      <section class="k0strip">
-        <div><p class="eyebrow">Флагманский формат</p><strong>Комиссия №0 — живая репетиция защиты с независимым Оппонентом</strong><p>Персональные вопросы, Протокол №0 и повторная проверка исправлений.</p></div>
-        <a class="line-link" href="komissiya-0.html">Что входит <span aria-hidden="true">↗</span></a>
+      <section class="k0card">
+        <div class="k0card__copy">
+          <p class="eyebrow">Флагманский формат</p>
+          <strong>Комиссия №0 — живая репетиция защиты с независимым Оппонентом</strong>
+          <p>Персональные вопросы, Протокол №0 и повторная проверка исправлений.</p>
+        </div>
+        <div class="k0card__act">
+          <a class="button button--secondary" href="komissiya-0.html">Что входит <span aria-hidden="true">↗</span></a>
+        </div>
       </section>
 
-      <details class="fulllist" id="full">
+      <details class="fulllist" id="full" open>
         <summary class="fulllist__head">
           <span><strong>Все цены списком</strong><small>16 позиций · 2 500 – 60 000 ₽</small></span>
           <span class="fulllist__chev" aria-hidden="true"></span>
         </summary>
+        <div class="fulllist__tools">
+          <label class="pricesearch">
+            <span class="sr-only">Поиск по прайсу</span>
+            <input type="search" placeholder="Найти в прайсе — например, «нормоконтроль»" data-price-search />
+          </label>
+        </div>
         <div class="price-table">
           <div class="price-row" data-price-row><div><strong>Реферат или эссе</strong><small>План, источники и полный рабочий черновик · от 24 часов</small></div><span class="price-row__sum"><small>от</small><strong>2 500 ₽</strong></span><button type="button" data-start-priced="Реферат или эссе с нуля" aria-label="Рассчитать: Реферат или эссе">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>Курсовая · теория</strong><small>От темы до полного рабочего черновика · от 24 часов</small></div><span class="price-row__sum"><small>от</small><strong>14 000 ₽</strong></span><button type="button" data-start-priced="Курсовая теория с нуля" aria-label="Рассчитать: Курсовая · теория">Рассчитать</button></div>
@@ -117,6 +134,7 @@
           <div class="price-row" data-price-row><div><strong>Комиссия №0 · ВКР</strong><small>Живая сессия, независимый Оппонент и Протокол №0</small></div><span class="price-row__sum"><small>фикс.</small><strong>19 900 ₽</strong></span><button type="button" data-start-priced="Комиссия №0 · ВКР" aria-label="Рассчитать: Комиссия №0 · ВКР">Рассчитать</button></div>
           <div class="price-row" data-price-row><div><strong>Комиссия №0 · магистерская</strong><small>Живая сессия, независимый Оппонент и Протокол №0</small></div><span class="price-row__sum"><small>фикс.</small><strong>29 900 ₽</strong></span><button type="button" data-start-priced="Комиссия №0 · магистерская" aria-label="Рассчитать: Комиссия №0 · магистерская">Рассчитать</button></div>
         </div>
+        <p class="price-empty" data-price-empty hidden>Ничего не нашлось. Попробуйте другое слово или напишите редактору — посчитаем индивидуально.</p>
         <p class="price-table__note">Где срок не указан — называем его после того, как посмотрим материалы. Раньше этого дат не обещаем.</p>
       </details>
 
@@ -145,6 +163,6 @@
 <script src="assets/js/app.js?v=20260804services112&amp;privacy=20260803out006privacy1&amp;naming=20260804naming1"></script>
 <script defer src="assets/js/polish15-chrome.js?v=20260804release112&amp;search=20260803out007search1"></script>
 <script src="assets/js/extras.js?v=20260804shell112"></script>
-<script src="assets/js/polish15-catalog.js?v=20260804services112&amp;search=20260803out007search1&amp;price=20260803price1&amp;disc=20260804disc2&amp;live=20260804live1"></script>
+<script src="assets/js/polish15-catalog.js?v=20260804services112&amp;search=20260803out007search1&amp;price=20260803price1&amp;disc=20260804disc2&amp;live=20260804live1&amp;price2=20260804price2"></script>
 </body>
 </html>
