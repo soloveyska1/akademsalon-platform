@@ -15,6 +15,7 @@
   --ad-faint: #6b6459;
   --ad-hover: #e9e1d5;
   --ad-wax: #a5412c;
+  --ad-wax-text: #a5412c;
   --ad-wax-soft: #f2ddd5;
   --ad-green: #315a3e;
   --ad-green-soft: #e1eee4;
@@ -55,6 +56,11 @@
   --ad-faint: #968f83;
   --ad-hover: #2a2822;
   --ad-wax: #b6503a;
+  /* Сургучный как ЗАЛИВКА и как ТЕКСТ — разные требования. На тёмной
+     бумаге #b6503a даёт 3.3:1 и не проходит AA для мелкого текста;
+     заливку осветлять нельзя — по ней идёт белая подпись. Отдельный
+     токен только для текстовых сургучных подписей: 5.1:1 на --ad-card. */
+  --ad-wax-text: #d5745c;
   --ad-wax-soft: #40211a;
   --ad-green: #80a98a;
   --ad-green-soft: #26372a;
@@ -147,7 +153,41 @@
 .is-admin-route .admin-sidebar nav {
   display: grid;
   gap: 4px;
-  margin-top: 22px;
+}
+
+/* Обёртка со скроллом: единственная растяжимая часть сайдбара.
+   min-height:0 обязателен — без него flex-ребёнок не сжимается и
+   выталкивает подвал за нижнюю кромку окна. */
+.is-admin-route .admin-sidebar__scroll {
+  position: relative;
+  min-height: 0;
+  flex: 1 1 auto;
+  margin-top: 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ad-line) transparent;
+}
+
+.is-admin-route .admin-sidebar__scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.is-admin-route .admin-sidebar__scroll::-webkit-scrollbar-thumb {
+  background: var(--ad-line);
+  border-radius: 999px;
+}
+
+/* Затухание у кромки — признак, что список не кончился. Маска, а не
+   градиентная накладка: накладка перекрыла бы клики по нижнему пункту. */
+.is-admin-route .admin-sidebar__scroll.has-more {
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 34px), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 34px), transparent);
+}
+
+.is-admin-route .admin-sidebar__scroll.has-before.has-more {
+  mask-image: linear-gradient(to bottom, transparent, #000 20px, #000 calc(100% - 34px), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 20px, #000 calc(100% - 34px), transparent);
 }
 
 .is-admin-route .admin-sidebar nav .ag-tab,
@@ -181,23 +221,31 @@
   background: var(--ad-hover);
 }
 
+/* Знак раздела: контур в currentColor, без плашки. Плашка вокруг буквы
+   создавала двенадцать одинаковых прямоугольников — глаз цеплялся за
+   рамку, а не за рисунок. */
 .is-admin-route .admin-sidebar nav .ag-tab i,
 .is-admin-route .admin-sidebar__section .ag-tab i {
   display: grid;
   width: 25px;
   height: 25px;
   place-items: center;
-  color: var(--ad-muted);
-  background: var(--ad-card-2);
-  border: 1px solid var(--ad-line);
+  color: var(--ad-faint);
+  background: transparent;
+  border: 0;
   border-radius: 5px;
   font: normal 550 11px/1 var(--mono);
+  transition: color .18s ease;
+}
+
+.is-admin-route .admin-sidebar nav .ag-tab:hover i {
+  color: var(--ad-text);
 }
 
 .is-admin-route .admin-sidebar nav .ag-tab.is-current i {
-  color: #fff7ee;
-  background: var(--ad-wax);
-  border-color: var(--ad-wax);
+  color: var(--ad-wax);
+  background: transparent;
+  border-color: transparent;
 }
 
 .is-admin-route .admin-sidebar nav .ag-tab b {
@@ -1009,7 +1057,7 @@
   display: grid;
   min-width: 940px;
   grid-template-columns:
-    22px 62px minmax(132px, .85fr) minmax(210px, 1.45fr) 154px 116px 96px 16px;
+    22px 76px minmax(132px, .85fr) minmax(210px, 1.45fr) 156px 128px 96px 16px;
   gap: 12px;
   align-items: center;
 }
@@ -1120,9 +1168,31 @@
 .is-admin-route .admin-order-id {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   color: var(--ad-ink);
   font: 550 12px/1.2 var(--mono);
+}
+
+.is-admin-route .admin-order-client {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.is-admin-route .admin-order-client > :is(strong, small) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.is-admin-route .admin-order-client > strong {
+  color: var(--ad-ink);
+  font-size: 13px;
+  font-weight: 560;
+}
+
+.is-admin-route .admin-order-client > small {
+  color: var(--ad-muted);
 }
 
 .is-admin-route .admin-order-register .r-main {
@@ -1155,31 +1225,146 @@
 .is-admin-route .admin-order-state {
   display: grid;
   justify-items: start;
-  gap: 5px;
+  gap: 4px;
 }
 
 .is-admin-route .admin-order-state .ag-stamp {
   margin: 0;
 }
 
+/* Штамп реестра — ровно одна строка при любом статусе. Длинные названия
+   («Спецификация предложена», «Корректировка результата») подаются короткой
+   формой из ST_SHORT, полное остаётся в title. Раньше штамп переносился и
+   строка таблицы вырастала вдвое. */
 .is-admin-route .admin-order-state .status-stamp {
   display: inline-flex;
   max-width: 100%;
-  min-height: 28px;
+  min-height: 24px;
   align-items: center;
-  padding: 3px 8px;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  font: 550 11px/1.25 var(--sans) !important;
+  gap: 5px;
+  padding: 3px 9px 3px 7px;
+  border: 1px solid color-mix(in srgb, currentColor 58%, transparent);
+  border-radius: 3px;
+  /* 9% заливки на кремовой бумаге не читались: штамп выглядел пустой
+     рамкой, и семь статусов различались только цветом контура. */
+  background: color-mix(in srgb, currentColor 15%, var(--ad-card));
+  font: 550 11px/1 var(--mono) !important;
   letter-spacing: .04em;
   text-transform: uppercase;
-  white-space: normal;
+  white-space: nowrap;
   transform: none;
+}
+
+.is-admin-route .admin-order-state .status-stamp > span {
+  overflow: hidden;
+  font-size: inherit !important;
+  text-overflow: ellipsis;
+}
+
+.is-admin-route .admin-order-state .status-stamp .ag-ico {
+  flex: none;
+  opacity: .85;
+}
+
+/* Пунктир у «Корректировки» пробовали как второй канал различения, но в
+   печатной метафоре пунктирная рамка — это линия отреза, то есть брак
+   печати, а не состояние. Различают цвет и знак. */
+
+.is-admin-route .admin-order-state .status-stamp.st-cancel {
+  background: transparent;
+}
+
+/* что от мастера требуется прямо сейчас — под штампом, без пилюли */
+.is-admin-route .admin-order-state > .r-act {
+  color: var(--ad-wax-text);
+  font: 550 11px/1 var(--mono) !important;
+  letter-spacing: .05em;
+  text-transform: uppercase;
 }
 
 .is-admin-route .admin-order-state > small {
   display: flex;
   gap: 4px;
+}
+
+/* Требует решения — вертикальный корешок у левого края строки, а не
+   ещё одна пилюля в и без того плотной колонке статуса. */
+.is-admin-route .admin-order-register .ag-row.needs-act {
+  box-shadow: inset 3px 0 0 var(--admin-order-mark, var(--ad-wax));
+}
+
+.is-admin-route .admin-order-register .ag-row.sel.needs-act {
+  box-shadow: inset 3px 0 0 var(--ad-wax);
+}
+
+/* просрочка: тонированная бумага и сургучная дата — без «светофора» */
+.is-admin-route .admin-order-register .ag-row.is-overdue {
+  background: color-mix(in srgb, var(--ad-wax) 5%, var(--ad-card));
+}
+
+.is-admin-route .admin-order-register .ag-row.is-overdue .admin-order-deadline > small {
+  color: var(--ad-wax-text);
+  font-weight: 600;
+}
+
+.is-admin-route .admin-order-deadline {
+  display: grid;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.is-admin-route .admin-order-deadline > b {
+  color: var(--ad-ink);
+  font: 550 12px/1.2 var(--mono);
+}
+
+.is-admin-route .admin-order-deadline > small {
+  overflow: hidden;
+  color: var(--ad-muted);
+  font-size: 11px !important;
+  text-overflow: ellipsis;
+}
+
+/* дата создания — при номере дела мелким, а не в описании задачи */
+.is-admin-route .admin-order-id .r-born {
+  color: var(--ad-faint);
+  font: 500 10px/1 var(--mono) !important;
+}
+
+.is-admin-route .admin-order-id .r-pin {
+  display: inline-flex;
+  color: var(--ad-wax);
+}
+
+.is-admin-route .admin-order-register .r-t {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+}
+
+/* название услуги сжимается первым, метки частей никогда не обрезаются */
+.is-admin-route .admin-order-register .r-t > .r-name {
+  overflow: hidden;
+  min-width: 0;
+  flex: 0 1 auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.is-admin-route .admin-order-register .r-t > .r-marks {
+  display: inline-flex;
+  flex: none;
+  gap: 4px;
+}
+
+.is-admin-route .admin-order-register .r-marks .ag-pill {
+  padding: 1px 6px;
+  color: var(--ad-muted);
+  border-color: var(--ad-line-2);
+  font: 500 10px/1.5 var(--mono);
+  letter-spacing: .04em;
+  text-transform: none;
 }
 
 .is-admin-route .admin-order-register .r-price {
@@ -1810,12 +1995,27 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
 
 .is-admin-route .client-directory__row .r-main {
   display: grid;
+  min-width: 0;
   gap: 2px;
+}
+
+/* Имя и @ник резались посреди слова без многоточия: у .r-t не было
+   min-width:0, и flex-строка вылезала за колонку картотеки. */
+.is-admin-route .client-directory__row :is(.r-t, .r-s) {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .is-admin-route .client-directory__row .r-t {
   color: var(--ad-ink);
   font-weight: 550;
+}
+
+.is-admin-route .client-directory__row .r-t .petit {
+  color: var(--ad-faint);
+  font-weight: 400;
 }
 
 .is-admin-route .client-directory__row .r-side {
@@ -2836,10 +3036,11 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   display: grid;
   width: 100%;
   min-height: 42px;
+  flex: none;
   grid-template-columns: 22px minmax(0, 1fr) auto;
   gap: 7px;
   align-items: center;
-  margin-top: 12px;
+  margin-top: 16px;
   padding: 8px 10px;
   color: var(--ad-muted);
   background: var(--ad-card);
@@ -3133,12 +3334,122 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
 }
 
 .is-admin-route .admin-order-drawer__intro > h2 {
+  display: flex;
+  align-items: flex-start;
   margin: 0;
+  gap: 9px;
   font-size: clamp(24px, 3vw, 34px);
+}
+
+/* Знак «закреплено» держится первой строки заголовка: при переносе
+   названия на две строки центрирование уводило его вниз. */
+.is-admin-route .admin-order-drawer__intro > h2 .ag-ico--pin {
+  margin-top: .32em;
+  flex: none;
+  color: var(--ad-wax);
+}
+
+.is-admin-route .admin-order-drawer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .is-admin-route .admin-order-drawer__intro .ag-quick {
   margin: 0;
+}
+
+.is-admin-route .admin-order-drawer__intro .ag-topic {
+  margin: -3px 0 0;
+  color: var(--ad-muted);
+  font-size: 13px !important;
+}
+
+/* --------- «Следующий шаг»: полоса действия вместо абзаца ---------
+   Раньше это был абзац с кнопкой, врезанной в середину текста: кнопка
+   разрывала строку, а сам шаг читался как примечание. Теперь — одна
+   плашка: чем помечено, что происходит, что делать и чем. */
+.is-admin-route .ag-next {
+  display: grid;
+  align-items: start;
+  margin: 2px 0 0;
+  padding: 13px 16px;
+  gap: 4px 13px;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  background: var(--ad-card-2);
+  border: 1px solid var(--ad-line-2);
+  border-left: 3px solid var(--ad-wax);
+  border-radius: 5px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.is-admin-route .ag-next.calm {
+  border-left-color: var(--ad-line-2);
+  background: var(--ad-card);
+}
+
+.is-admin-route .ag-next__mark {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  color: var(--ad-wax);
+  border: 1px solid color-mix(in srgb, var(--ad-wax) 35%, transparent);
+  border-radius: 50%;
+}
+
+.is-admin-route .ag-next.calm .ag-next__mark {
+  color: var(--ad-muted);
+  border-color: var(--ad-line-2);
+}
+
+.is-admin-route .ag-next__kicker {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--ad-faint);
+  font: 550 10px/1 var(--mono) !important;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.is-admin-route .ag-next > div > strong {
+  display: block;
+  color: var(--ad-ink);
+  font: 560 15px/1.35 var(--serif);
+}
+
+.is-admin-route .ag-next > div > p {
+  margin: 5px 0 0;
+  color: var(--ad-text);
+  font-size: 12px !important;
+  line-height: 1.5;
+}
+
+.is-admin-route .ag-next__act {
+  align-self: center;
+}
+
+.is-admin-route .ag-next__act .btn {
+  min-height: 38px;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .is-admin-route .ag-next {
+    grid-template-columns: 26px minmax(0, 1fr);
+  }
+
+  .is-admin-route .ag-next__act {
+    grid-column: 2;
+    margin-top: 9px;
+  }
+
+  .is-admin-route .ag-next__act .btn {
+    width: 100%;
+  }
 }
 
 .is-admin-route .admin-order-drawer__workspace {
@@ -3595,7 +3906,12 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
     justify-items: end;
   }
 
+  /* На карточке срок и относительная подпись стоят в строку: колонка
+     из двух строк здесь только растит карточку. */
   .is-admin-route .admin-order-deadline {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
     grid-area: deadline;
   }
 
@@ -3603,9 +3919,12 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
     grid-area: price;
   }
 
+  /* Стрелка прижата к правому краю: посреди пустой строки она читалась
+     как отдельная кнопка, хотя нажимается вся карточка. */
   .is-admin-route .admin-order-go {
     display: block;
     grid-area: go;
+    justify-self: end;
   }
 }
 
@@ -3626,5 +3945,533 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   .is-admin-route .admin-order-drawer__intro .ag-quick {
     max-height: 92px;
     overflow: hidden auto;
+  }
+}
+
+/* =====================================================================
+   ЗНАКИ ПАНЕЛИ — общая посадка
+   Набор ICO в admin.js рисуется контуром в currentColor. Здесь только
+   правила посадки: как знак стоит в кнопке, в штампе и в строке-ключе.
+   Цветные эмодзи, которые тут были раньше, приходили системным шрифтом:
+   своя палитра, своя базовая линия и склейка с текстом без пробела.
+   ===================================================================== */
+
+.is-admin-route .ag-ico {
+  flex: none;
+  vertical-align: -.18em;
+}
+
+/* кнопки со знаком: знак и подпись — flex-строка с постоянным зазором */
+.is-admin-route :is(.btn, .ag-qbtn, .ag-stbtn, .ag-chip, .ag-tpl, .header-action):has(> .ag-ico) {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.is-admin-route :is(.btn, .ag-qbtn, .ag-stbtn):has(> .ag-ico) > .ag-ico {
+  vertical-align: baseline;
+  opacity: .8;
+}
+
+.is-admin-route .btn-upload:has(> .ag-ico) {
+  justify-content: center;
+}
+
+/* штамп статуса в карточке дела: знак слева от слова */
+.is-admin-route .ag-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.is-admin-route .ag-stamp > .ag-ico {
+  opacity: .85;
+}
+
+/* кнопки управления статусом: знак сразу подсказывает, куда переводим */
+.is-admin-route .ag-stbtn {
+  gap: 6px;
+}
+
+.is-admin-route .ag-stbtn.on > .ag-ico {
+  opacity: 1;
+}
+
+/* строка «дело клиента» в карточке клиента */
+.is-admin-route .client-order-row .fname {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.is-admin-route .client-order-row .fname > .ag-ico {
+  color: var(--ad-muted);
+}
+
+.is-admin-route .ag-file .fname > .ag-ico {
+  margin-right: 2px;
+  color: var(--ad-faint);
+}
+
+/* полка заготовок мастера заявок */
+.is-admin-route .wz-ico {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  color: var(--ad-wax);
+  border: 1px solid var(--ad-line-2);
+  border-radius: 5px;
+}
+
+/* Файлы дела: имя, метки и «скачать» в трёх колонках. Раньше строка была
+   inline-потоком — длинное имя рвалось посреди расширения, а метка «этап 2»
+   уезжала на свою строку и читалась как отдельный файл. */
+.is-admin-route .admin-order-drawer__rail .ag-file {
+  display: grid;
+  align-items: baseline;
+  gap: 2px 10px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 9px 0;
+}
+
+.is-admin-route .admin-order-drawer__rail .ag-file .fname {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 6px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.is-admin-route .admin-order-drawer__rail .ag-file .fmeta {
+  grid-column: 1;
+  color: var(--ad-faint);
+  white-space: normal;
+}
+
+.is-admin-route .admin-order-drawer__rail .ag-file .ag-linkbtn {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  align-self: center;
+  white-space: nowrap;
+}
+
+.is-admin-route .ag-file .fl-tag {
+  margin-left: 0;
+  flex: none;
+}
+
+/* «···» в шапке дела: архив и корзина живут здесь, а не в один клик
+   рядом с «Закрепить». */
+.is-admin-route .ag-more {
+  position: relative;
+}
+
+.is-admin-route .ag-more > summary {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 11px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.is-admin-route .ag-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.is-admin-route .ag-more[open] > summary {
+  color: var(--ad-ink);
+  background: var(--ad-hover);
+}
+
+.is-admin-route .ag-more__menu {
+  position: absolute;
+  z-index: 12;
+  top: calc(100% + 6px);
+  right: 0;
+  display: grid;
+  min-width: 208px;
+  gap: 4px;
+  padding: 7px;
+  background: var(--ad-card);
+  border: 1px solid var(--ad-line-2);
+  border-radius: 6px;
+  box-shadow: 0 12px 28px rgba(24, 21, 15, .16);
+}
+
+.is-admin-route .ag-more__menu .ag-qbtn {
+  justify-content: flex-start;
+  width: 100%;
+  border-color: transparent;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.is-admin-route .ag-more__menu .ag-qbtn:hover {
+  background: var(--ad-hover);
+}
+
+.is-admin-route :is(.ag-qbtn, .btn).is-danger {
+  color: var(--ad-wax-text);
+}
+
+.is-admin-route :is(.ag-qbtn, .btn).is-danger:hover {
+  color: var(--ad-wax-text);
+  background: var(--ad-wax-soft);
+}
+
+/* Выпадающие списки панели читались как ещё одно текстовое поле: та же
+   рамка, тот же фон, ни одного признака, что это выбор. Даём стрелку
+   и место под неё — знак рисуем маской, чтобы он красился токеном. */
+.is-admin-route :is(.ag-sort, .ag-filters select, .admin-order-filter-menu__sort select) {
+  appearance: none;
+  padding-right: 30px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23726b60' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9.5 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  background-size: 15px 15px;
+  cursor: pointer;
+}
+
+:root[data-theme="dark"] .is-admin-route :is(.ag-sort, .ag-filters select, .admin-order-filter-menu__sort select) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a49b8c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9.5 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+.is-admin-route :is(.ag-sort, .ag-filters select):hover {
+  border-color: var(--ad-line-2);
+}
+
+.is-admin-route .client-directory__row .r-price {
+  display: grid;
+  justify-items: end;
+  gap: 1px;
+  line-height: 1.15;
+  text-align: right;
+}
+
+.is-admin-route .client-directory__row .r-price > small {
+  color: var(--ad-faint);
+  font: 500 10px/1 var(--mono) !important;
+  letter-spacing: .04em;
+}
+
+/* Панель сертификатов: поиск и состояние — в одну строку, а не стопкой
+   из двух одинаковых полей во всю ширину. */
+.is-admin-route #agBody > .ag-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.is-admin-route #agBody > .ag-filters .ag-search {
+  min-width: 220px;
+  flex: 1 1 260px;
+}
+
+.is-admin-route #agBody > .ag-filters .ag-sort {
+  flex: 0 0 auto;
+  min-width: 190px;
+}
+
+.is-admin-route .client-directory__row .r-t {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.is-admin-route .cl-banned {
+  display: inline-flex;
+  flex: none;
+  color: var(--ad-wax);
+}
+
+.is-admin-route .cl-banned-stamp {
+  align-self: start;
+  margin-top: 4px;
+}
+
+/* Низкое окно (ноутбук с открытой панелью разработчика, 13" в докe):
+   сжимаем всё, что не список разделов, чтобы скроллить приходилось реже. */
+@media (min-width: 921px) and (max-height: 760px) {
+  .is-admin-route .admin-sidebar {
+    padding: 16px 14px 12px;
+  }
+
+  .is-admin-route .admin-sidebar__brand {
+    padding-bottom: 14px;
+  }
+
+  .is-admin-route .admin-sidebar__brand img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .is-admin-route .admin-sidebar__brand small {
+    display: none;
+  }
+
+  .is-admin-route .admin-sidebar__search {
+    min-height: 36px;
+    margin-top: 11px;
+  }
+
+  .is-admin-route .admin-sidebar nav .ag-tab {
+    min-height: 36px;
+    padding: 4px 9px;
+  }
+
+  .is-admin-route .admin-nav-group {
+    gap: 2px;
+  }
+
+  .is-admin-route .admin-nav-group__label {
+    padding-bottom: 2px;
+  }
+
+  .is-admin-route .admin-sidebar__section {
+    margin-top: 15px;
+    padding-top: 11px;
+  }
+
+  .is-admin-route .admin-sidebar footer {
+    gap: 5px;
+    padding-top: 11px;
+  }
+
+  .is-admin-route .admin-sidebar footer a {
+    min-height: 30px;
+  }
+
+  .is-admin-route .admin-theme-row {
+    min-height: 32px;
+  }
+}
+
+/* Совсем низкое окно: подвал сжимается до одной строки ссылок,
+   пункты остаются пальцедоступными. */
+@media (min-width: 921px) and (max-height: 620px) {
+  .is-admin-route .admin-sidebar footer {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .is-admin-route .admin-sidebar footer > span,
+  .is-admin-route .admin-theme-row span[data-theme-action] {
+    display: none;
+  }
+
+  .is-admin-route .admin-sidebar .admin-logout,
+  .is-admin-route .admin-theme-row {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Подвал сайдбара: две ссылки в строку, тема и выход — по строке.
+   До этого пять отдельных рядов съедали высоту у списка разделов. */
+.is-admin-route .admin-sidebar__links {
+  display: grid;
+  gap: 0 10px;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.is-admin-route .admin-sidebar__links a {
+  min-height: 32px;
+  justify-content: flex-start;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.is-admin-route .admin-sidebar__links a:last-child {
+  justify-content: flex-end;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.is-admin-route .admin-sidebar__links a span {
+  color: var(--ad-faint);
+}
+
+.is-admin-route .admin-theme-row {
+  min-height: 34px;
+  padding: 4px 7px;
+}
+
+.is-admin-route .admin-theme-row span[data-theme-action] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Сургучные подписи (опасные действия, «не сохранено», чёрный список)
+   берут текстовый вариант токена: на тёмной бумаге заливочный слишком тёмен. */
+.is-admin-route :is(b, span, small).is-danger {
+  color: var(--ad-wax-text);
+}
+
+/* Штамп «просрочен» и относительная подпись срока в светлой теме
+   остаются на заливочном сургуче — там он и есть текстовый. */
+.is-admin-route .r-due-hot {
+  color: var(--ad-wax-text);
+}
+
+/* Метка свежести сводки была на волосок ниже AA (4.48:1). */
+.is-admin-route .admin-alert__stamp {
+  color: var(--ad-muted);
+}
+
+/* График поступлений: колонка = сумма над своим столбиком, дорожка
+   столбика, подпись недели. Абсолютное позиционирование суммы у потолка
+   графика делало из подписей отдельную строку, не связанную с высотой. */
+.is-admin-route .load-chart {
+  align-items: stretch;
+  /* верхний отступ — место для подписи самого высокого столбика */
+  padding: 22px 4px 0;
+}
+
+.is-admin-route .load-chart > span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.is-admin-route .load-chart__track {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Сумма приклеена к вершине СВОЕГО столбика */
+.is-admin-route .load-chart i {
+  position: relative;
+}
+
+.is-admin-route .load-chart b {
+  position: absolute;
+  top: auto;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  color: var(--ad-muted);
+  transform: translateX(-50%);
+}
+
+.is-admin-route .load-chart small {
+  position: static;
+  bottom: auto;
+  flex: none;
+}
+
+.is-admin-route .load-chart > span:hover b {
+  color: var(--ad-ink);
+}
+
+.is-admin-route .load-chart > span:hover i {
+  filter: saturate(1.15);
+}
+
+.is-admin-route .aa-go--acts {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.is-admin-route .aa-go--acts .btn {
+  min-height: 34px;
+  padding: 7px 13px;
+}
+
+/* Строка оформления подписки: знак, суть, решения. */
+.is-admin-route .admin-subscriptions .aa-row {
+  gap: 12px;
+}
+
+.is-admin-route .admin-subscriptions .aa-row > span:first-child {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  place-items: center;
+  color: var(--ad-wax);
+  border: 1px solid color-mix(in srgb, var(--ad-wax) 32%, transparent);
+  border-radius: 50%;
+}
+
+/* Подпись столбика центрирована по нему и может быть шире колонки:
+   max-width:100% из старой раскладки резал «42 000» до «42…». */
+.is-admin-route .load-chart b {
+  overflow: visible;
+  max-width: none;
+  text-overflow: clip;
+}
+
+/* Цветные метки: кружок остаётся 16px, а нажимаемая область — 26px.
+   Раньше цель совпадала с рисунком и на касании почти не попадалась. */
+.is-admin-route .ag-pal {
+  gap: 2px;
+  padding: 3px 7px;
+}
+
+.is-admin-route .clr-dot {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent !important;
+}
+
+.is-admin-route .clr-dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--ad-line-2);
+  border-radius: 50%;
+  background: var(--clr-dot-ink, transparent);
+  transform: translate(-50%, -50%);
+  transition: transform .14s ease;
+}
+
+.is-admin-route .clr-dot:hover::before {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.is-admin-route .clr-dot.on::before {
+  box-shadow: 0 0 0 2px var(--ad-card), 0 0 0 3.5px var(--ad-ink);
+}
+
+.is-admin-route .clr-dot:hover {
+  transform: none;
+}
+
+/* На узком экране решения по подписке уходят под текст: в строку они
+   отжимали подпись «оформлена: …» до полутора слов. */
+@media (max-width: 620px) {
+  .is-admin-route .admin-subscriptions .aa-row {
+    flex-wrap: wrap;
+  }
+
+  .is-admin-route .aa-go--acts {
+    width: 100%;
+    margin-left: 38px;
+  }
+
+  .is-admin-route .aa-go--acts .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-height: 40px;
   }
 }

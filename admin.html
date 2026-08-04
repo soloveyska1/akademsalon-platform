@@ -153,9 +153,13 @@
   .ag-stamp{display:inline-block;border:1.6px solid currentColor;border-radius:6px;padding:3px 10px;
     font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
     transform:rotate(-1.6deg);font-family:var(--sans);white-space:nowrap}
+  /* «Исполнение» и «Результат принят» были одной и той же зелёной краской.
+     В реестре, где штамп красит и рамку, и заливку, активное дело
+     переставало отличаться от завершённого. Принятый результат — спокойный
+     финал чернилами, а не ещё один сигнал «идёт работа». */
   .st-new{color:var(--ag-act)} .st-priced,.st-prepay{color:#8A6D1C}
   .st-work{color:var(--ag-ok)} .st-check{color:#6B4B8A} .st-fix{color:var(--wax,#A8402F)}
-  .st-done{color:var(--ag-ok)} .st-cancel{color:var(--ink-faint)}
+  .st-done{color:var(--ink)} .st-cancel{color:var(--ink-faint)}
   .ag-meta{font-size:12.5px;color:var(--ink-soft);line-height:1.7}
   .ag-meta a{color:inherit}
   .ag-clinks{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
@@ -647,7 +651,7 @@
 </style>
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260804shell112&amp;wax=20260804wax1&amp;glass=20260804glass1" media="screen and (max-width:920px)" data-mobile-edition="1" />
-<link rel="stylesheet" href="assets/css/polish15-admin.css?v=20260804release112&amp;ui=comfort27" />
+<link rel="stylesheet" href="assets/css/polish15-admin.css?v=20260804release112&amp;ui=comfort28" />
 </head>
 <body class="is-admin-route">
 
@@ -659,6 +663,6 @@
 
 <script src="assets/js/app.js?v=20260804services112&amp;privacy=20260803out006privacy1&amp;naming=20260804naming1&amp;ask=20260804ask1"></script>
 <script src="assets/js/extras.js?v=20260804shell112"></script>
-<script src="assets/js/admin.js?v=20260804release112&amp;ui=comfort27"></script>
+<script src="assets/js/admin.js?v=20260804release112&amp;ui=comfort28"></script>
 </body>
 </html>

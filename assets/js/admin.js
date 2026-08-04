@@ -12,10 +12,13 @@ function initGodEye() {
   var root = document.getElementById('agRoot');
   if (!S || !S.api || !root) return;
 
+  /* [0] — имя знака из набора ICO, [1] — полное название статуса.
+     Раньше в [0] стоял цветной эмодзи: системный шрифт рисовал его чужой
+     краской и со своей базовой линией, мимо палитры и ритма «Оттиска». */
   var ST_META = {
-    new: ['🆕', 'Новая'], priced: ['💰', 'Спецификация предложена'], prepay: ['⏳', 'Ждёт первого платежа'],
-    work: ['🔨', 'Исполнение позиций'], check: ['📤', 'Результат на проверке'], fix: ['✏️', 'Корректировка результата'],
-    done: ['✅', 'Результат принят'], cancel: ['🚫', 'Закрыт']
+    new: ['stNew', 'Новая'], priced: ['stPriced', 'Спецификация предложена'], prepay: ['stPrepay', 'Ждёт первого платежа'],
+    work: ['stWork', 'Исполнение позиций'], check: ['stCheck', 'Результат на проверке'], fix: ['stFix', 'Корректировка результата'],
+    done: ['stDone', 'Результат принят'], cancel: ['stCancel', 'Закрыт']
   };
   var PLAN_LBL = { 1: 'Одним платежом · целиком', 2: '2 части · 50/50', 3: '3 части · 30/40/30' };
   var PL_ST = { paid: ['оплачен', 'pl-paid'], claimed: ['клиент отметил — сверьте!', 'pl-claimed'],
@@ -40,7 +43,7 @@ function initGodEye() {
     part_ready: 'результат этапа подготовлен — клиенту выставлен счёт',
     pay_reminder: 'напоминание клиенту об оплате',
     pay_silent: 'клиент молчит по счёту — нужен личный контакт',
-    delivered_unpaid: '⚠️ часть передана без оплаты этапа',
+    delivered_unpaid: 'часть передана без оплаты этапа',
     admin_ping_pay: 'алерт: счёт без движения',
     wait_checks: 'клиент продолжает первичную проверку результата',
     spec_sent: 'спецификация отправлена клиенту',
@@ -254,7 +257,28 @@ function initGodEye() {
     toast('Картотека экспортирована');
   }
   function stMeta(s) { return ST_META[s] || ['·', s]; }
-  function stamp(s) { return '<span class="ag-stamp st-' + s + '">' + stMeta(s)[1] + '</span>'; }
+  /* Короткая форма статуса — только для плотных мест (реестр, строка клиента).
+     Полное название остаётся в фильтрах, карточке и подсказке title: длинные
+     «Спецификация предложена» и «Корректировка результата» рвали штамп на две
+     строки, и высота строк реестра гуляла вдвое. */
+  var ST_SHORT = {
+    new: 'Новая', priced: 'Спецификация', prepay: 'Ждёт оплаты', work: 'Исполнение',
+    check: 'На проверке', fix: 'Корректировка', done: 'Принят', cancel: 'Закрыт'
+  };
+  var ST_ICON = {
+    new: 'stNew', priced: 'stPriced', prepay: 'stPrepay', work: 'stWork',
+    check: 'stCheck', fix: 'stFix', done: 'stDone', cancel: 'stCancel'
+  };
+  function stShort(s) { return ST_SHORT[s] || stMeta(s)[1]; }
+  function stamp(s) {
+    return '<span class="ag-stamp st-' + s + '">' + ico(ST_ICON[s], 13) +
+      '<span>' + stMeta(s)[1] + '</span></span>';
+  }
+  /* штамп для таблиц: короткое слово в одну строку, полное — в подсказке */
+  function stampShort(s) {
+    return '<span class="status-stamp st-' + esc(s) + '" title="' + esc(stMeta(s)[1]) + '">' +
+      ico(ST_ICON[s], 12) + '<span>' + esc(stShort(s)) + '</span></span>';
+  }
   function confirmDlg(opts) {
     return S.confirm ? S.confirm(opts)
       : Promise.resolve({ ok: window.confirm(opts.title || 'Подтвердить?'), value: '' });
@@ -313,6 +337,60 @@ function initGodEye() {
     for (var i = 1; i <= 5; i++) out += icoStar(i <= n);
     return out;
   }
+
+  /* ---------------- закрытый набор знаков панели ----------------
+     Правило (совет модели Kimi, принято write-owner-ом): значок ставится
+     там, где он делает работу, которую не делает слово, — маркер в плотном
+     списке или кнопка без подписи. Рядом с внятной подписью значок только
+     шумит: там его нет вовсе. Все знаки — один контур 24×24, stroke 1.6,
+     currentColor: тема красит их сама, а цветные эмодзи больше не тащат
+     в «Оттиск» чужую палитру и чужую базовую линию. */
+  var ICO = {
+    /* разделы */
+    desk: '<path d="M4 5.2h16v9.4H4z"/><path d="M9.4 19h5.2M12 14.6V19"/>',
+    cases: '<path d="M4.2 8.4h15.6v10.4H4.2z"/><path d="M9.2 8.4V6.1a1.2 1.2 0 0 1 1.2-1.2h3.2a1.2 1.2 0 0 1 1.2 1.2v2.3M4.2 12.6h15.6"/>',
+    clients: '<circle cx="9.4" cy="8.7" r="3.1"/><path d="M3.8 19.3c.5-3 2.8-4.6 5.6-4.6s5.1 1.6 5.6 4.6"/><path d="M16.4 6.2a3 3 0 0 1 0 5.6M18 14.9c2 .6 3.3 2.2 3.6 4.4"/>',
+    ask: '<path d="M4.4 5.6h15.2v10.2H12l-4.5 3.6v-3.6H4.4z"/><path d="M9.9 9.1a2.2 2.2 0 1 1 2.3 2.3M12.2 13.1v.1"/>',
+    reviews: '<path d="m12 4.4 2.3 4.7 5.2.75-3.75 3.65.9 5.15L12 16.2l-4.65 2.45.9-5.15L4.5 9.85l5.2-.75z"/>',
+    leads: '<path d="M3.6 12.4h4.1l1.5 2.6h5.6l1.5-2.6h4.1"/><path d="m3.6 12.4 2.8-6.3a1.4 1.4 0 0 1 1.3-.9h8.6a1.4 1.4 0 0 1 1.3.9l2.8 6.3v5a1.4 1.4 0 0 1-1.4 1.4H5a1.4 1.4 0 0 1-1.4-1.4z"/>',
+    broadcast: '<path d="M4.2 10.1v4.2M8 8.6 18.3 4.9v14.2L8 15.4z"/><path d="M4.2 10.1H8v5.3H4.2a1.5 1.5 0 0 1-1.5-1.5v-2.3a1.5 1.5 0 0 1 1.5-1.5zM8.9 16.6l1 3.1"/>',
+    gifts: '<path d="M4 10.4h16v8.9H4z"/><path d="M2.9 7h18.2v3.4H2.9zM12 7v12.3"/><path d="M12 7S9.4 7 8.3 6.2a1.9 1.9 0 0 1 2-3.1C11.4 3.7 12 7 12 7zM12 7s2.6 0 3.7-.8a1.9 1.9 0 0 0-2-3.1C12.6 3.7 12 7 12 7z"/>',
+    visits: '<path d="M2.9 12.5h4.3l2.1-5.4 3.1 10 2.3-6.1 1.4 1.5h5.1"/>',
+    content: '<path d="M4.1 5.3h6.3a1.6 1.6 0 0 1 1.6 1.6v11.8a1.6 1.6 0 0 0-1.6-1.6H4.1z"/><path d="M19.9 5.3h-6.3A1.6 1.6 0 0 0 12 6.9v11.8a1.6 1.6 0 0 1 1.6-1.6h6.3z"/>',
+    settings: '<circle cx="12" cy="12" r="2.9"/><path d="M12 3.4v2.2M12 18.4v2.2M20.6 12h-2.2M5.6 12H3.4M18.1 5.9l-1.6 1.6M7.5 16.5l-1.6 1.6M18.1 18.1l-1.6-1.6M7.5 7.5 5.9 5.9"/>',
+    covers: '<path d="M4 5.4h16v13.2H4z"/><circle cx="8.9" cy="10" r="1.5"/><path d="m4.6 17.4 4.9-4.6 3.3 3.1 2.9-2.6 3.7 3.4"/>',
+    /* статусы */
+    stNew: '<path d="M12 4.6v14.8M4.6 12h14.8"/>',
+    stPriced: '<path d="M6.2 4.4h8.1l4.5 4.5v10.7H6.2z"/><path d="M14 4.4v4.8h4.8M9.2 13.2h5.6M9.2 16.2h3.6"/>',
+    stPrepay: '<circle cx="12" cy="12" r="7.7"/><path d="M12 7.6V12l3 1.9"/>',
+    stWork: '<path d="M4.6 19.4 14 10l-1.3-1.3 2.4-2.4 1.3 1.3 1.9-1.9 1.9 1.9-1.9 1.9 1.3 1.3-2.4 2.4L15.9 12l-9.4 9.4z" transform="translate(0 -2)"/>',
+    stCheck: '<path d="M4.6 13.2v5.1a1.4 1.4 0 0 0 1.4 1.4h12a1.4 1.4 0 0 0 1.4-1.4v-5.1"/><path d="M12 15.1V4.6M8.1 8.5 12 4.6l3.9 3.9"/>',
+    stFix: '<path d="M4.6 19.4h4l10-10a2 2 0 0 0-2.8-2.8l-10 10z"/><path d="m14.2 7.6 2.8 2.8"/>',
+    stDone: '<path d="m5.2 12.6 4.5 4.5 9.1-9.6"/>',
+    stCancel: '<circle cx="12" cy="12" r="7.7"/><path d="m7.6 16.4 8.8-8.8"/>',
+    /* действия и метки */
+    pin: '<path d="M9.1 3.9h5.8l-.7 5.6 3 3.2H6.8l3-3.2z"/><path d="M12 12.7v7.4"/>',
+    archive: '<path d="M3.6 4.9h16.8v3.7H3.6zM5.2 8.6h13.6v10.5H5.2z"/><path d="M9.8 12.1h4.4"/>',
+    trash: '<path d="M4.9 6.7h14.2M9.5 6.7V4.9h5v1.8"/><path d="M6.6 6.7 7.5 19a1.3 1.3 0 0 0 1.3 1.2h6.4a1.3 1.3 0 0 0 1.3-1.2l.9-12.3"/><path d="M10.4 10.2v6M13.6 10.2v6"/>',
+    bell: '<path d="M6.6 10.4a5.4 5.4 0 1 1 10.8 0c0 3.4 1.3 4.7 1.3 4.7H5.3s1.3-1.3 1.3-4.7z"/><path d="M10.3 18.3a2 2 0 0 0 3.4 0"/>',
+    upload: '<path d="M4.6 14.6v3.4a1.4 1.4 0 0 0 1.4 1.4h12a1.4 1.4 0 0 0 1.4-1.4v-3.4"/><path d="M12 15.6V4.8M8.1 8.7 12 4.8l3.9 3.9"/>',
+    clip: '<path d="M17.6 11.1 11 17.7a3.6 3.6 0 0 1-5.1-5.1l7.4-7.4a2.4 2.4 0 0 1 3.4 3.4l-7.3 7.3a1.2 1.2 0 0 1-1.7-1.7l6.6-6.6"/>',
+    pause: '<path d="M9.3 5.6v12.8M14.7 5.6v12.8"/>',
+    play: '<path d="M7.9 5.2 18.4 12 7.9 18.8z"/>',
+    money: '<path d="M3.4 6.6h17.2v10.8H3.4z"/><circle cx="12" cy="12" r="2.5"/><path d="M6.6 9.9v.1M17.4 14v.1"/>',
+    hourglass: '<path d="M7.4 4.4h9.2M7.4 19.6h9.2"/><path d="M8.3 4.4c0 4 3.7 5.1 3.7 7.6s-3.7 3.6-3.7 7.6M15.7 4.4c0 4-3.7 5.1-3.7 7.6s3.7 3.6 3.7 7.6"/>',
+    flag: '<path d="M6 20.1V4.5M6 5.4h11.6l-2.2 3.6 2.2 3.6H6"/>',
+    link: '<path d="M10.4 13.6a3.4 3.4 0 0 0 5 .4l2.6-2.6a3.4 3.4 0 0 0-4.8-4.8l-1.5 1.5"/><path d="M13.6 10.4a3.4 3.4 0 0 0-5-.4L6 12.6a3.4 3.4 0 0 0 4.8 4.8l1.5-1.5"/>',
+    dots: '<circle cx="6.2" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="17.8" cy="12" r="1.2" fill="currentColor" stroke="none"/>'
+  };
+  /* один знак: имя из ICO → готовый svg. Размер по умолчанию — 16px. */
+  function ico(name, size, cls) {
+    var body = ICO[name];
+    if (!body) return '';
+    return icoSvg('<g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" ' +
+      'stroke-linejoin="round">' + body + '</g>', 'ag-ico--' + name + (cls ? ' ' + cls : ''), size);
+  }
+
   function mediaPath(orderId, msgId) {
     return '/orders/' + orderId + '/msgmedia/' + msgId;
   }
@@ -367,7 +445,7 @@ function initGodEye() {
       '<h1 style="font-size:26px;margin:6px 0 10px">Рабочий стол мастерской</h1>' +
       (denied ? '<p class="petit" style="color:var(--wax,#A8402F);margin-bottom:12px">Этот аккаунт Telegram не является мастером — доступа нет.</p>' : '') +
       (pending
-        ? '<p class="petit" style="margin-bottom:12px">⏳ Ждём подтверждение в Telegram — нажмите в боте <b>Start</b>.</p>' +
+        ? '<p class="petit" style="margin-bottom:12px">Ждём подтверждение в Telegram — нажмите в боте <b>Start</b>.</p>' +
           '<a class="btn btn-wax btn-block" href="' + (pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Открыть Telegram</a>' +
           '<button type="button" class="btn btn-line btn-block" id="agCancel" style="margin-top:10px">Отменить</button>'
         : '<button type="button" class="btn btn-wax btn-block" id="agTg">Войти через Telegram</button>') +
@@ -633,11 +711,11 @@ function initGodEye() {
   /* устройство и браузер — коротко, по user-agent */
   function devLabel(ua) {
     ua = String(ua || '');
-    var dev = /iPhone|iPad/.test(ua) ? '📱 iPhone'
-      : /Android.*Mobile/.test(ua) ? '📱 Android'
-      : /Android/.test(ua) ? '📱 планшет'
-      : /Mobile/.test(ua) ? '📱'
-      : '💻';
+    var dev = /iPhone|iPad/.test(ua) ? 'iPhone'
+      : /Android.*Mobile/.test(ua) ? 'Android'
+      : /Android/.test(ua) ? 'планшет'
+      : /Mobile/.test(ua) ? 'мобильный'
+      : '';
     var br = /YaBrowser/.test(ua) ? 'Яндекс.Браузер'
       : /Edg\//.test(ua) ? 'Edge'
       : /OPR\//.test(ua) ? 'Opera'
@@ -655,10 +733,9 @@ function initGodEye() {
     var q = /[?&]text=([^&]+)/.exec(s); /* запрос из поисковика — золото */
     var word = '';
     if (q) { try { word = decodeURIComponent(q[1].replace(/\+/g, ' ')); } catch (e) {} }
-    if (/utm_/.test(s) && !host) return '🎯 ' + s.replace(/^[?&]/, '').slice(0, 60);
+    if (/utm_/.test(s) && !host) return '' + s.replace(/^[?&]/, '').slice(0, 60);
     if (!host) return s.slice(0, 60);
-    var ic = /yandex|ya\.ru/.test(host) ? '🔎' : /google/.test(host) ? '🔎'
-      : /vk\.com|vk\.ru/.test(host) ? '💙' : /t\.me|telegram/.test(host) ? '✈️' : '🔗';
+    var ic = '';
     return ic + ' ' + host + (word ? ' · «' + word.slice(0, 48) + '»' : '');
   }
 
@@ -706,10 +783,10 @@ function initGodEye() {
     if (!ref) return { key: 'direct', label: 'прямые заходы' };
     var m = /https?:\/\/([^\/]+)/.exec(ref);
     var host = m ? m[1].replace(/^www\./, '') : '';
-    if (/yandex|ya\.ru|google/.test(host)) return { key: 'search', label: '🔎 Поиск' };
-    if (/vk\.com|vk\.ru/.test(host)) return { key: 'vk', label: '💙 ВКонтакте' };
-    if (/t\.me|telegram/.test(host)) return { key: 'tg', label: '✈️ Telegram' };
-    if (!host && /utm_/.test(ref)) return { key: 'utm', label: '🎯 Реклама (utm)' };
+    if (/yandex|ya\.ru|google/.test(host)) return { key: 'search', label: 'Поиск' };
+    if (/vk\.com|vk\.ru/.test(host)) return { key: 'vk', label: 'ВКонтакте' };
+    if (/t\.me|telegram/.test(host)) return { key: 'tg', label: 'Telegram' };
+    if (!host && /utm_/.test(ref)) return { key: 'utm', label: 'Реклама (utm)' };
     return { key: host || 'other', label: host || 'другой источник' };
   }
   function deviceOf(ua) { return /Mobile|iPhone|Android.*Mobile/.test(String(ua || '')) ? 'mob' : 'desk'; }
@@ -861,7 +938,7 @@ function initGodEye() {
     var breaks = '<div class="an-breaks">' +
       '<div class="an-block"><span class="caps">Источники</span>' + anBars(stats.sources, stats.uniq) + '</div>' +
       '<div class="an-block"><span class="caps">Устройства</span>' +
-        anBars([{ name: '📱 мобильные', uniq: stats.devices.mob }, { name: '💻 десктоп', uniq: stats.devices.desk }], stats.uniq) +
+        anBars([{ name: 'мобильные', uniq: stats.devices.mob }, { name: 'десктоп', uniq: stats.devices.desk }], stats.uniq) +
         (stats.bots ? '<p class="an-foot">+' + stats.bots + ' ' + anPl(stats.bots, 'заход робота', 'захода роботов', 'заходов роботов') + ' отфильтровано</p>' : '') +
       '</div></div>';
     var more = '<details class="an-more"' + (st.vanmore ? ' open' : '') + '><summary>ещё разрезы — входные страницы, новые и вернувшиеся</summary>' +
@@ -880,7 +957,7 @@ function initGodEye() {
     var online = minsAgo(v.at) < 3;
     var who;
     if (v.user && v.user.name) {
-      who = '👤 ' + esc(v.user.name) + (v.user.username ? ' @' + esc(v.user.username) : '');
+      who = '' + esc(v.user.name) + (v.user.username ? ' @' + esc(v.user.username) : '');
     } else if (v.contact) {
       who = icoPhone(13) + ' ' + esc(v.contact);
     } else {
@@ -890,7 +967,7 @@ function initGodEye() {
     var stepCls = v.order_id ? 'v-step done' : 'v-step';
     var stepTxt = v.order_id
       ? 'заявка №' + v.order_id
-      : (v.step ? '⚑ ' + esc(v.step) : '');
+      : (v.step ? ico('flag', 12) + ' ' + esc(v.step) : '');
     var path = v.entry === v.page
       ? pageName(v.entry)
       : pageName(v.entry) + ' → ' + pageName(v.page);
@@ -901,7 +978,7 @@ function initGodEye() {
         (online ? '<span class="v-on" title="на сайте прямо сейчас"></span>' : '') +
         '<span class="v-time">' + dt(v.at) + '</span>' +
         '<span class="v-geo">' + esc(v.geo || (v.bot ? 'робот' : 'откуда — выясняем…')) + '</span>' +
-        '<span class="v-dev">' + devLabel(v.ua) + (v.bot ? ' · 🤖 бот' : '') + '</span>' +
+        '<span class="v-dev">' + devLabel(v.ua) + (v.bot ? ' · бот' : '') + '</span>' +
         '<span class="v-who' + (known ? ' known' : '') + '">' + who + '</span>' +
       '</div>' +
       '<div class="v-sub">' +
@@ -970,7 +1047,7 @@ function initGodEye() {
         return '<button type="button" class="ag-chip' + (o.hours === h[0] ? ' on' : '') + '" data-vh="' + h[0] + '">' + h[1] + '</button>';
       }).join('') +
       '<button type="button" class="ag-chip' + (o.self ? ' on' : '') + '" data-vt="self">мои заходы</button>' +
-      '<button type="button" class="ag-chip' + (o.bots ? ' on' : '') + '" data-vt="bots">🤖 роботы</button>';
+      '<button type="button" class="ag-chip' + (o.bots ? ' on' : '') + '" data-vt="bots">роботы</button>';
     var rows = st.visits || [];
     if (st.vgeo) rows = rows.filter(function (v) { return cityOf(v) === st.vgeo; });
     var top = keepScroll ? list.scrollTop : 0;
@@ -1068,22 +1145,55 @@ function initGodEye() {
       '<aside class="admin-sidebar">' +
         '<a class="admin-sidebar__brand" href="/"><img src="bimi/logo.svg" alt="">' +
           '<span><strong>Академический Салон</strong><small>Редакционный кабинет</small></span></a>' +
-        '<nav id="agNav" aria-label="Разделы администрирования"></nav>' +
+        /* Поиск поднят НАД навигацией: раньше он стоял после неё и вместе с
+           подвалом съедал столько высоты, что на окне 720px список разделов
+           обрывался на «Отзывах» — пять разделов не существовало для глаза. */
         '<button type="button" class="admin-sidebar__search" data-admin-global-search>' +
           icoSearch(15) + '<span>Найти дело</span><kbd>⌘ K</kbd></button>' +
-        '<footer><a href="/">Открыть сайт <span>↗</span></a>' +
-          '<a href="dashboard.html">Кабинет клиента <span>↗</span></a>' +
+        '<div class="admin-sidebar__scroll">' +
+          '<nav id="agNav" aria-label="Разделы администрирования"></nav>' +
+        '</div>' +
+        /* Подвал сжат до двух строк. Раньше он занимал пять: две ссылки,
+           плашка темы с текстом в два ряда, выход и декоративная подпись
+           «Рабочая среда». Эти ~90px отбирались у списка разделов. */
+        '<footer><div class="admin-sidebar__links">' +
+            '<a href="/">Сайт <span>↗</span></a>' +
+            '<a href="dashboard.html">Кабинет клиента <span>↗</span></a>' +
+          '</div>' +
           '<div class="admin-theme-row">' + adminThemeButton() +
             '<span data-theme-action>' + (S.theme && S.theme.current && S.theme.current() === 'dark'
               ? 'Включить светлую тему' : 'Включить тёмную тему') + '</span></div>' +
-          '<button type="button" class="admin-logout" id="agLogout">Выйти · ' + esc(u.name || 'мастер') + '</button>' +
-          '<span>Рабочая среда</span></footer>' +
+          '<button type="button" class="admin-logout" id="agLogout" title="Выйти из кабинета мастера">Выйти · ' +
+            esc(u.name || 'мастер') + '</button></footer>' +
       '</aside>' +
       '<main class="admin-main"><header class="admin-head" id="agHead"></header>' +
         '<div id="agBody" tabindex="-1"></div></main></div>');
     drawNav();
     drawLive();
+    bindNavOverflow();
   }
+
+  /* Список разделов длиннее сайдбара на любом ноутбучном окне. Скролл там был
+     всегда, но невидимый: ни полосы, ни среза. Класс на обёртке включает
+     затухание у нижней кромки — оно и есть единственный честный признак,
+     что список продолжается. Снимаем его, когда доскроллили. */
+  function syncNavOverflow() {
+    var box = root.querySelector('.admin-sidebar__scroll');
+    if (!box) return;
+    var slack = box.scrollHeight - box.clientHeight;
+    box.classList.toggle('has-more', slack > 4 && box.scrollTop < slack - 4);
+    box.classList.toggle('has-before', slack > 4 && box.scrollTop > 4);
+  }
+  function bindNavOverflow() {
+    var box = root.querySelector('.admin-sidebar__scroll');
+    if (!box) return;
+    box.addEventListener('scroll', syncNavOverflow, { passive: true });
+    if (window.ResizeObserver) {
+      try { new ResizeObserver(syncNavOverflow).observe(box); } catch (e) {}
+    }
+    syncNavOverflow();
+  }
+  window.addEventListener('resize', function () { syncNavOverflow(); });
 
   function drawLive() {
     var v = (st.ov && st.ov.visits) || {};
@@ -1122,23 +1232,27 @@ function initGodEye() {
     if (!box) return;
     var b = navBadges();
     var online = (st.ov && st.ov.visits && st.ov.visits.online) || 0;
+    /* [id, подпись, знак из ICO, счётчик]. Раньше в третьей позиции стояла
+       кириллическая буква в рамке — «С Д К ? О Л Р П V М Н И». Периферийным
+       зрением такие плашки не различаются, а «V» рядом с кириллицей читалась
+       как опечатка: разделы теперь опознаются рисунком. */
     var groups = [
       ['Работа', [
-        ['summary', 'Рабочий стол', 'С', 0],
-        ['orders', 'Дела', 'Д', b.orders],
-        ['clients', 'Клиенты', 'К', 0]
+        ['summary', 'Рабочий стол', 'desk', 0],
+        ['orders', 'Дела', 'cases', b.orders],
+        ['clients', 'Клиенты', 'clients', 0]
       ]],
       ['Коммуникации', [
-        ['qa', 'Приёмная', '?', b.qa],
-        ['reviews', 'Отзывы', 'О', b.reviews],
-        ['leads', 'Обращения', 'Л', b.leads],
-        ['broadcast', 'Рассылки', 'Р', 0]
+        ['qa', 'Приёмная', 'ask', b.qa],
+        ['reviews', 'Отзывы', 'reviews', b.reviews],
+        ['leads', 'Обращения', 'leads', b.leads],
+        ['broadcast', 'Рассылки', 'broadcast', 0]
       ]],
       ['Бизнес и система', [
-        ['gifts', 'Сертификаты', 'П', b.gifts],
-        ['visits', 'Посещения', 'V', online],
-        ['content', 'Материалы', 'М', 0],
-        ['settings', 'Настройки', 'Н', 0]
+        ['gifts', 'Сертификаты', 'gifts', b.gifts],
+        ['visits', 'Посещения', 'visits', online],
+        ['content', 'Материалы', 'content', 0],
+        ['settings', 'Настройки', 'settings', 0]
       ]]
     ];
     box.innerHTML = groups.map(function (group) {
@@ -1147,13 +1261,14 @@ function initGodEye() {
           var on = st.tab === t[0];
           return '<button type="button" aria-current="' + (on ? 'page' : 'false') +
             '" class="ag-tab' + (on ? ' is-current on' : '') + '" data-tab="' + t[0] + '">' +
-            '<i>' + t[2] + '</i><span>' + t[1] + '</span>' +
+            '<i>' + ico(t[2], 17) + '</i><span>' + t[1] + '</span>' +
             (t[3] ? '<b>' + t[3] + '</b>' : '') + '</button>';
         }).join('') + (group[0] === 'Бизнес и система'
           ? '<a class="ag-tab admin-nav-link" href="admin-covers.html">' +
-            '<i>И</i><span>Обложки</span></a>'
+            '<i>' + ico('covers', 17) + '</i><span>Обложки</span></a>'
           : '') + '</section>';
     }).join('');
+    syncNavOverflow();
     drawHead();
   }
 
@@ -1213,8 +1328,12 @@ function initGodEye() {
       /* Это не декоративная кнопка: выгрузка строится из уже загруженной
          серверной картотеки и выполняется локально, без новых API-вызовов. */
       headAction = '<button type="button" class="header-action" id="agClientsExport">Экспорт</button>';
-    } else if (st.tab !== 'settings') {
-      headAction = '<button type="button" class="header-action wz-open" id="wzOpen">Создать</button>';
+    } else if (st.tab === 'broadcast' || st.tab === 'gifts' || st.tab === 'leads') {
+      /* Кнопка всегда открывает мастер создания ДЕЛА. Безымянное «Создать»
+         в «Отзывах» или «Посещениях» обещало создать отзыв или визит —
+         оставляем её только там, где заявка действительно рядом, и с
+         честным названием. */
+      headAction = '<button type="button" class="header-action wz-open" id="wzOpen">Создать дело</button>';
     }
     box.innerHTML = '<div><p class="eyebrow">' + label[0] + '</p><h1>' + label[1] + '</h1>' +
       '<p>' + label[2] + '</p></div><div class="admin-head__tools">' +
@@ -1305,11 +1424,16 @@ function initGodEye() {
       if (st.tab === 'gifts') drawBody();
     });
   }
+  /* «Погашен» приходит с сервера то как spent, то как redeemed — в выпадающем
+     списке состояний стоял второй вариант, а в словаре был только первый:
+     фильтр «погашенные» мог не найти ни одного кода, а сам код показывал
+     сырое английское слово. Держим обе формы как одно состояние. */
   var GIFT_ST = {
     pending: ['ожидает оплаты', 'act'], active: ['действителен', 'ok'],
-    spent: ['погашен', ''], expired: ['истёк', ''],
+    spent: ['погашен', ''], redeemed: ['погашен', ''], expired: ['истёк', ''],
     blocked: ['заблокирован', 'due'], canceled: ['отменён', '']
   };
+  var GIFT_ST_ALIAS = { spent: 'redeemed', redeemed: 'spent' };
   var GIFT_LEDGER_KIND = {
     issue: 'выпуск', hold: 'зачёт в заказ', release: 'возврат на код',
     adjust: 'корректировка', expire: 'сгорание'
@@ -1326,7 +1450,7 @@ function initGodEye() {
       '</div>';
     var newBtn = '<div style="margin:12px 0">' +
       '<button type="button" class="btn ' + (st.gnew ? 'btn-line' : 'btn-wax') + '" id="agGiftNew">' +
-      (st.gnew ? 'Свернуть форму' : '➕ Выпустить сертификат') + '</button></div>';
+      (st.gnew ? 'Свернуть форму' : 'Выпустить сертификат') + '</button></div>';
     var form = !st.gnew ? '' :
       '<div class="ag-card" style="max-width:560px;max-height:none;margin-bottom:14px">' +
         '<span class="caps">Ручной выпуск — комплимент или продажа вне сайта</span>' +
@@ -1342,7 +1466,12 @@ function initGodEye() {
     var gq = (st.gq || '').toLowerCase().trim();
     var list = (st.gifts.gifts || []).filter(function (g) {
       if (st.gfilter === 'claimed' && !(g.claimed && g.status === 'pending')) return false;
-      if (st.gfilter && st.gfilter !== 'claimed' && g.state !== st.gfilter && g.status !== st.gfilter) return false;
+      if (st.gfilter && st.gfilter !== 'claimed') {
+        var alias = GIFT_ST_ALIAS[st.gfilter];
+        var hit = g.state === st.gfilter || g.status === st.gfilter ||
+          (alias && (g.state === alias || g.status === alias));
+        if (!hit) return false;
+      }
       if (!gq) return true;
       return [g.code, g.recip_name, g.buyer_name, g.buyer_contact, g.recip_contact]
         .some(function (x) { return String(x || '').toLowerCase().indexOf(gq) >= 0; });
@@ -1395,19 +1524,19 @@ function initGodEye() {
       '</div>';
     var acts = [];
     if (g.code) {
-      acts.push('<button type="button" class="btn btn-line" data-gift-copy="' + esc(g.code) + '">📋 Скопировать код</button>');
-      acts.push('<button type="button" class="btn btn-line" data-gift-copy-link="' + esc(g.code) + '">🔗 Ссылка на активацию</button>');
+      acts.push('<button type="button" class="btn btn-line" data-gift-copy="' + esc(g.code) + '">Скопировать код</button>');
+      acts.push('<button type="button" class="btn btn-line" data-gift-copy-link="' + esc(g.code) + '">Ссылка на активацию</button>');
     }
     if (g.status === 'pending') {
-      acts.push('<button type="button" class="btn btn-wax" data-gift-act="confirm" data-gift-id="' + g.id + '">✅ Оплата получена — выпустить</button>');
+      acts.push('<button type="button" class="btn btn-wax" data-gift-act="confirm" data-gift-id="' + g.id + '">Оплата получена — выпустить</button>');
       acts.push('<button type="button" class="btn btn-line" data-gift-act="cancel" data-gift-id="' + g.id + '">Отменить оформление</button>');
     }
     if (g.status === 'active' || g.status === 'expired') {
-      acts.push('<button type="button" class="btn btn-line" data-gift-act="extend" data-gift-id="' + g.id + '">🕐 Продлить +90 дн</button>');
+      acts.push('<button type="button" class="btn btn-line" data-gift-act="extend" data-gift-id="' + g.id + '">Продлить +90 дн</button>');
       acts.push('<button type="button" class="btn btn-line" data-gift-act="adjust" data-gift-id="' + g.id + '">± Корректировать остаток</button>');
       if (g.recip_contact || g.buyer_contact)
         acts.push('<button type="button" class="btn btn-line" data-gift-act="resend" data-gift-id="' + g.id + '">' + icoMail(15) + ' Переслать письма</button>');
-      acts.push('<button type="button" class="btn btn-line" data-gift-act="block" data-gift-id="' + g.id + '">🚫 Заблокировать</button>');
+      acts.push('<button type="button" class="btn btn-line" data-gift-act="block" data-gift-id="' + g.id + '">Заблокировать</button>');
     }
     if (g.status === 'blocked') {
       acts.push('<button type="button" class="btn btn-wax" data-gift-act="unblock" data-gift-id="' + g.id + '">Разблокировать</button>');
@@ -1469,7 +1598,7 @@ function initGodEye() {
       '<div class="ag-sec" style="border-top:0;margin-top:0;padding-top:0">' +
       '<span class="caps">Рассылка клиентам в Telegram</span>' +
       '<p class="petit" style="margin:8px 0 12px">Сообщение уйдёт от имени бота всем выбранным клиентам. ' +
-      'В конец автоматически добавляется «🔕 Отписаться: /stopnews». Отписавшиеся, заблокировавшие бота ' +
+      'В конец автоматически добавляется «Отписаться: /stopnews». Отписавшиеся, заблокировавшие бота ' +
       'и заблокированные вами клиенты рассылку не получают.</p>' +
       '<div class="ag-actrow"><select id="agBSeg" class="ag-sort" style="border-radius:var(--r)">' +
         '<option value="all">Все клиенты</option>' +
@@ -1480,8 +1609,8 @@ function initGodEye() {
       'placeholder="Текст сообщения — обычным текстом, как пишете в Telegram.&#10;&#10;Например: «До конца месяца дарим +10% бонусами на любую летнюю работу…»"></textarea></div>' +
       '<p class="petit" id="agBCnt" style="margin:6px 0 0;text-align:right">0 / 4096</p>' +
       '<div class="ag-actrow" style="margin-top:10px">' +
-        '<button type="button" class="btn btn-line" id="agBTest">👀 Отправить себе — посмотреть</button>' +
-        '<button type="button" class="btn btn-wax" id="agBSend">📣 Запустить рассылку</button></div>' +
+        '<button type="button" class="btn btn-line" id="agBTest">Отправить себе — посмотреть</button>' +
+        '<button type="button" class="btn btn-wax" id="agBSend">Запустить рассылку</button></div>' +
       '<p class="ag-note" id="agBStatus"></p>' +
       '<p class="ag-note">Хорошая рассылка — редкая и полезная: акция, новая услуга, сезонное напоминание. ' +
       'Чаще раза в пару недель лучше не беспокоить.</p></div></div>';
@@ -1502,17 +1631,17 @@ function initGodEye() {
     if (!el || !stt) return;
     /* пока идёт рассылка — гасим кнопки, чтобы не запустить вторую поверх */
     var send = document.getElementById('agBSend'), test = document.getElementById('agBTest');
-    if (send) { send.disabled = !!stt.running; send.textContent = stt.running ? '⏳ Идёт рассылка' : '📣 Запустить рассылку'; }
+    if (send) { send.disabled = !!stt.running; send.textContent = stt.running ? 'Идёт рассылка' : 'Запустить рассылку'; }
     if (test) test.disabled = !!stt.running;
     if (stt.running) {
-      el.innerHTML = '⏳ Идёт рассылка: отправлено <b>' + stt.sent + '</b> из ' + stt.total +
+      el.innerHTML = 'Идёт рассылка: отправлено <b>' + stt.sent + '</b> из ' + stt.total +
         (stt.failed ? ' · недоставлено ' + stt.failed : '');
       setTimeout(function () {
         if (st.tab !== 'broadcast') return;
         S.api.get('/admin/broadcast/status').then(function (r) { if (r.ok) bcastStatus(r.state); });
       }, 2500);
     } else if (stt.finished_at) {
-      el.innerHTML = '✅ Последняя рассылка («' + esc(stt.segment) + '»): доставлено ' + stt.sent +
+      el.innerHTML = 'Последняя рассылка («' + esc(stt.segment) + '»): доставлено ' + stt.sent +
         (stt.failed ? ', недоставлено ' + stt.failed + ' (блокировки)' : '') + '.';
     } else {
       el.textContent = '';
@@ -1548,21 +1677,21 @@ function initGodEye() {
       var left = dlLeft(o), quiet = silentDays(o);
       var r = null;
       if (left !== null && left < 0) {
-        r = { sc: 100 + Math.min(-left, 30), ic: '🔥', why: 'срок вышел ' + (-left) + ' дн назад', cls: 'fire' };
+        r = { sc: 100 + Math.min(-left, 30), why: 'срок вышел ' + (-left) + ' дн назад', cls: 'fire' };
       } else if (left !== null && left <= 2 && 'work check fix prepay priced new'.indexOf(o.status) >= 0) {
-        r = { sc: 96 - left, ic: '⏳', why: left === 0 ? 'срок результата сегодня' : left === 1 ? 'срок результата завтра' : 'срок результата через 2 дня', cls: 'fire' };
+        r = { sc: 96 - left, why: left === 0 ? 'срок результата сегодня' : left === 1 ? 'срок результата завтра' : 'срок результата через 2 дня', cls: 'fire' };
       } else if (o.claimed) {
-        r = { sc: 85, ic: '💳', why: 'клиент отметил оплату — сверьте и подтвердите', cls: 'act' };
+        r = { sc: 85, why: 'клиент отметил оплату — сверьте и подтвердите', cls: 'act' };
       } else if (o.status === 'new') {
-        r = { sc: 80, ic: '🆕', why: 'новая заявка — посмотрите и назначьте цену', cls: 'act' };
+        r = { sc: 80, why: 'новая заявка — посмотрите и назначьте цену', cls: 'act' };
       } else if (o.status === 'fix') {
-        r = { sc: 75, ic: '✏️', why: 'клиент ждёт правки', cls: 'act' };
+        r = { sc: 75, why: 'клиент ждёт правки', cls: 'act' };
       } else if (o.status === 'priced' && quiet >= 2) {
-        r = { sc: 60, ic: '🤝', why: 'предложение висит ' + quiet + ' дн — напомните о себе', cls: '' };
+        r = { sc: 60, why: 'предложение висит ' + quiet + ' дн — напомните о себе', cls: '' };
       } else if (o.status === 'prepay' && quiet >= 2) {
-        r = { sc: 58, ic: '💤', why: 'счёт не оплачен ' + quiet + ' дн — стоит напомнить', cls: '' };
+        r = { sc: 58, why: 'счёт не оплачен ' + quiet + ' дн — стоит напомнить', cls: '' };
       } else if (o.status === 'check' && quiet >= 5) {
-        r = { sc: 50, ic: '👀', why: 'на проверке ' + quiet + ' дн — поторопите с приёмкой', cls: '' };
+        r = { sc: 50, why: 'на проверке ' + quiet + ' дн — поторопите с приёмкой', cls: '' };
       }
       if (!r) return;
       r.o = o;
@@ -1642,13 +1771,18 @@ function initGodEye() {
           '<span><strong>Собираем очередь</strong><small>Читаем активные дела</small></span></div>'
         : '<div class="admin-queue-empty"><i class="admin-status admin-status--done"></i>' +
           '<span><strong>Срочных действий нет</strong><small>Очередь разобрана</small></span></div>';
+    /* Сумма недели стоит над СВОИМ столбиком, а не в общей полосе у верхней
+       кромки графика: раньше все подписи были прижаты к потолку колонки и
+       читались как строка заголовков, оторванная от высоты столбиков. */
     var weekHtml = weeks.length
       ? weeks.map(function (x, index) {
           var value = x.revenue || 0;
           var height = value ? Math.max(10, Math.round(value / maxWeek * 100)) : 3;
-          return '<span><i style="height:' + height + '%"></i><small>' +
-            esc(dmLabel(x.start || String(index + 1))) + '</small><b>' +
-            (value ? money(value) : '0') + '</b></span>';
+          var when = esc(dmLabel(x.start || String(index + 1)));
+          return '<span title="Неделя с ' + when + ': ' + money(value) + ' ₽">' +
+            '<span class="load-chart__track"><i style="height:' + height + '%">' +
+              '<b>' + (value ? money(value) : '0') + '</b></i></span>' +
+            '<small>' + when + '</small></span>';
         }).join('')
       : '<div class="admin-chart-empty">Данные появятся после подтверждённых платежей.</div>';
     var inboxHtml = events.length
@@ -1762,20 +1896,23 @@ function initGodEye() {
         '<span class="petit">Данные сводки сохранены — повторите загрузку списка.</span></span>' +
         '<span class="aa-go"><button type="button" class="ag-linkbtn" id="agSubsRetry">Повторить</button></span></div>';
     } else if (!sd || st.subsLoading) {
-      rows = '<div class="aa-row" style="cursor:default"><span>⏳</span>' +
+      rows = '<div class="aa-row" style="cursor:default"><span>' + ico('hourglass', 15) + '</span>' +
         '<span class="aa-what">Листаем оформления…</span></div>';
     } else {
       rows = pend.map(function (s) {
         var u = s.user || {};
         var who = esc(u.name || 'клиент') +
           (u.username ? ' (@' + esc(u.username) + ')' : (u.email ? ' · ' + esc(u.email) : ''));
-        return '<div class="aa-row" style="cursor:default;align-items:flex-start"><span>' + (s.claimed ? '💳' : '⏳') + '</span>' +
+        return '<div class="aa-row" style="cursor:default;align-items:flex-start"><span>' + ico(s.claimed ? 'money' : 'hourglass', 15) + '</span>' +
           '<span class="aa-what"><b>' + esc(s.label) + '</b> · ' + esc(s.period_label) + ' · <b>' + money(s.price) + ' ₽</b> — ' + who +
           (s.claimed ? '<br><b>клиент отметил оплату — сверьте поступление</b>' : '<br>ждёт оплату клиента') +
           '<span class="petit" style="display:block;opacity:.7">' + (s.via ? 'оформлена: ' + esc(s.via) + ' · ' : '') + dt(s.created_at) + '</span></span>' +
-          '<span class="aa-go" style="white-space:nowrap">' +
-          '<button type="button" class="ag-linkbtn" data-sub-ok="' + s.id + '">✅ оплата получена</button><br>' +
-          '<button type="button" class="ag-linkbtn" data-sub-no="' + s.id + '">закрыть</button></span></div>';
+          /* Две подчёркнутые ссылки стопкой сливались в одну строку текста
+             и не читались как разные решения. Кнопки: подтвердить — главная,
+             закрыть оформление — вторая. */
+          '<span class="aa-go aa-go--acts">' +
+          '<button type="button" class="btn btn-wax" data-sub-ok="' + s.id + '">Оплата получена</button>' +
+          '<button type="button" class="btn btn-line" data-sub-no="' + s.id + '">Закрыть</button></span></div>';
       }).join('');
     }
     return '<section class="admin-subscriptions" id="agSubs" aria-label="Подписки на сверке">' +
@@ -1896,17 +2033,17 @@ function initGodEye() {
     var trash = st.filter === 'trash';
     return '<div class="ag-bulkbar" id="agBulkBar">' +
       '<b>' + (n ? 'выбрано: ' + n : 'отметьте заказы галочками') + '</b>' +
-      (n ? '<button type="button" class="btn btn-line" data-bulk="pin">📌 Закрепить</button>' +
+      (n ? '<button type="button" class="btn btn-line" data-bulk="pin">Закрепить</button>' +
         '<button type="button" class="btn btn-line" data-bulk="unpin">Открепить</button>' +
         '<span class="ag-pal">' + ['red', 'gold', 'green', 'blue', 'violet'].map(function (c) {
-          return '<button type="button" class="clr-dot" data-bulk-clr="' + c + '" title="' + CLR_NAME[c] + '" style="background:' + CLR[c] + '"></button>';
+          return '<button type="button" class="clr-dot" data-bulk-clr="' + c + '" title="' + CLR_NAME[c] + '" aria-label="Метка «' + CLR_NAME[c] + '»" style="--clr-dot-ink:' + CLR[c] + '"></button>';
         }).join('') +
-        '<button type="button" class="clr-dot" data-bulk-clr="" title="без цвета" style="background:transparent"></button></span>' +
+        '<button type="button" class="clr-dot" data-bulk-clr="" title="без цвета" aria-label="Снять цветную метку"></button></span>' +
         (trash
           ? '<button type="button" class="btn btn-wax" data-bulk="restore">↩ Восстановить</button>' +
-            '<button type="button" class="btn btn-line" data-bulk="purge" style="color:var(--wax,#A8402F)">🔥 Стереть навсегда</button>'
-          : '<button type="button" class="btn btn-line" data-bulk="hide">🗄 Скрыть</button>' +
-            '<button type="button" class="btn btn-wax" data-bulk="trash">🗑 В корзину</button>')
+            '<button type="button" class="btn btn-line" data-bulk="purge" style="color:var(--wax,#A8402F)">Стереть навсегда</button>'
+          : '<button type="button" class="btn btn-line" data-bulk="hide">Скрыть</button>' +
+            '<button type="button" class="btn btn-wax" data-bulk="trash">В корзину</button>')
       : '') +
       '<button type="button" class="ag-linkbtn" data-bulk="off" style="margin-left:auto">× готово</button>' +
       '</div>';
@@ -1922,7 +2059,7 @@ function initGodEye() {
         return da < db2 ? -1 : da > db2 ? 1 : 0;
       });
     }
-    /* закреплённые — всегда наверху во всех режимах (бейдж 📌 это обещает);
+    /* закреплённые — всегда наверху во всех режимах (знак кнопки это обещает);
        стабильная сортировка сохраняет порядок внутри групп */
     arr.sort(function (a, b) { return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0); });
     return arr; /* 'fresh' — порядок сервера: новые сверху */
@@ -1963,21 +2100,30 @@ function initGodEye() {
       var whoMeta = client.guest
         ? 'Гостевая заявка'
         : (client.username ? '@' + client.username : 'Профиль клиента');
-      var pills = '';
-      if (o.paused) pills += '<span class="ag-pill">⏸ пауза</span>';
-      if (o.claimed) pills += '<span class="ag-pill due">сверка</span>';
-      else if (o.status === 'new') pills += '<span class="ag-pill due">оценить</span>';
-      else if (o.status === 'fix') pills += '<span class="ag-pill act">правки</span>';
+      /* Пилюли ушли из колонки «Статус». Они там ломали строку: длинный штамп
+         переносился на две строки, под ним вставала вторая полка пилюль, и
+         высота строк реестра гуляла вдвое. Прогресс — не статус: части и
+         пауза теперь стоят при задаче, а требование решения — маркером слева. */
+      var marks = '';
+      if (o.paused) marks += '<span class="ag-pill">пауза</span>';
       if ((o.stages_total || 1) > 1 && 'work check fix done'.indexOf(o.status) >= 0)
-        pills += '<span class="ag-pill">ч.' + o.stage + '/' + o.stages_total + '</span>';
-      var dl = '';
+        marks += '<span class="ag-pill">ч.' + o.stage + '/' + o.stages_total + '</span>';
+      var needsAct = !!(o.claimed || o.status === 'new' || o.status === 'fix');
+      /* подпись под штампом — глагол «что сделать вам», а не повтор статуса */
+      var actWord = o.claimed ? 'сверить оплату'
+        : o.status === 'new' ? 'назначить цену' : 'внести правки';
+      /* Срок раньше стоял в двух колонках сразу: словами при задаче и датой
+         в «Ближайшем сроке». Оставили одну — дату с относительной подписью. */
+      var left = null;
       if (o.deadline_date && 'done cancel'.indexOf(o.status) < 0) {
-        var left = Math.ceil((new Date(o.deadline_date + 'T23:59:59') - new Date()) / 86400000);
-        if (!isNaN(left)) {
-          var word = left < 0 ? 'срок вышел' : left === 0 ? 'срок результата сегодня' : left + ' дн.';
-          dl = ' · <span class="' + (left <= 0 ? 'r-due-hot' : '') + '">⏳ ' + word + '</span>';
-        }
+        var days = Math.ceil((new Date(o.deadline_date + 'T23:59:59') - new Date()) / 86400000);
+        if (!isNaN(days)) left = days;
       }
+      var dueWord = left === null ? ''
+        : left < 0 ? 'просрочен на ' + (-left) + ' дн'
+        : left === 0 ? 'сегодня'
+        : left === 1 ? 'завтра'
+        : 'через ' + left + ' ' + anPl(left, 'день', 'дня', 'дней');
       /* цветной корешок мастера — поверх маркера выбранности */
       var rowStyle = '';
       if (o.color && CLR[o.color])
@@ -1989,22 +2135,27 @@ function initGodEye() {
         : '';
       var deadlineLabel = o.deadline_text || (o.deadline_date ? dmLabel(o.deadline_date) : '—');
       return '<button type="button" class="ag-row' + (o.id === st.sel ? ' sel' : '') +
-        (o.pinned ? ' pin' : '') + '" data-id="' + o.id + '"' +
+        (o.pinned ? ' pin' : '') + (needsAct ? ' needs-act' : '') +
+        (left !== null && left < 0 ? ' is-overdue' : '') + '" data-id="' + o.id + '"' +
         (st.bulk ? ' aria-pressed="' + (st.bulk.has(o.id) ? 'true' : 'false') + '"' : '') +
         ' aria-label="' + (st.bulk ? 'Выбрать' : 'Открыть') + ' дело №' + o.id + '"' +
         (rowStyle ? ' style="' + rowStyle + '"' : '') + '>' +
         '<span class="admin-order-select">' + ck + '</span>' +
         '<span class="admin-order-id">' +
-          (o.pinned ? '<span class="r-pin" title="закреплён">📌</span>' : '') +
-          '<span class="r-no">№' + o.id + '</span></span>' +
-        '<span class="admin-order-client" style="display:grid;min-width:0;gap:3px"><strong>' + esc(who) + '</strong><small>' +
+          (o.pinned ? '<span class="r-pin" title="закреплено">' + ico('pin', 12) + '</span>' : '') +
+          '<span class="r-no">№' + o.id + '</span>' +
+          '<small class="r-born" title="создано ' + esc(dt(o.created_at)) + '">' + esc(dt(o.created_at).split(',')[0]) + '</small></span>' +
+        '<span class="admin-order-client"><strong>' + esc(who) + '</strong><small>' +
           esc(whoMeta) + '</small></span>' +
-        '<span class="r-main"><span class="r-t">' + esc(o.work_label || 'Заявка') + '</span>' +
-          '<span class="r-s">' + dt(o.created_at) + dl +
-          (o.cancel_reason ? ' · ' + esc(String(o.cancel_reason).slice(0, 30)) : '') + '</span></span>' +
-        '<span class="admin-order-state"><span class="status-stamp st-' + esc(o.status) + '">' +
-          esc(stMeta(o.status)[1]) + '</span>' + (pills ? '<small>' + pills + '</small>' : '') + '</span>' +
-        '<span class="admin-order-deadline">' + esc(deadlineLabel) + '</span>' +
+        '<span class="r-main"><span class="r-t"><span class="r-name">' +
+          esc(o.work_label || 'Заявка') + '</span>' +
+          (marks ? '<span class="r-marks">' + marks + '</span>' : '') + '</span>' +
+          '<span class="r-s">' + esc(o.topic || (o.cancel_reason
+            ? 'закрыто: ' + String(o.cancel_reason).slice(0, 40) : 'тема не указана')) + '</span></span>' +
+        '<span class="admin-order-state">' + stampShort(o.status) +
+          (needsAct ? '<small class="r-act">' + esc(actWord) + '</small>' : '') + '</span>' +
+        '<span class="admin-order-deadline"><b>' + esc(deadlineLabel) + '</b>' +
+          (dueWord ? '<small>' + esc(dueWord) + '</small>' : '') + '</span>' +
         '<span class="r-price">' + (o.price ? money(o.price) + ' ₽' : (o.quote_low ? 'от ' + money(o.quote_low) + ' ₽' : '—')) + '</span>' +
         '<span class="admin-order-go" aria-hidden="true">→</span>' +
         '</button>';
@@ -2070,63 +2221,80 @@ function initGodEye() {
     return null;
   }
 
+  /* Следующий шаг по делу. Возвращает [tone, заголовок, пояснение, кнопка]:
+     заголовок — одной строкой, что происходит; пояснение — что делать;
+     кнопка (если есть) выносится отдельным элементом, а не врезается
+     в середину абзаца, как было раньше. */
   function nextHint(o) {
-    /* что мастеру сделать прямо сейчас — карточка сама подсказывает */
     var cr = pendingCancelReq(o);
     if (cr)
-      return ['due', '✋ <b>Клиент просит закрыть дело.</b>' + (cr.data ? ' Причина: «' + esc(cr.data) + '».' : '') +
-        ' Свяжитесь с ним, решите вопрос по выполненной части и оплате; закрыть можно кнопкой «Закрыть с причиной…» ниже.'];
+      return ['due', 'Клиент просит закрыть дело',
+        (cr.data ? 'Причина: «' + esc(cr.data) + '». ' : '') +
+        'Свяжитесь с ним, решите вопрос по выполненной части и оплате; закрыть можно кнопкой «Закрыть с причиной…» в управлении статусом.'];
     if (o.paused)
-      return ['', '⏸ <b>Дело на паузе' + (o.paused_by === 'admin' ? ' (поставили вы)' : ' (поставил клиент)') + '.</b> ' +
-        'Напоминания молчат. Снять паузу можно в «Управлении статусом» ниже.'];
+      return ['calm', 'Дело на паузе' + (o.paused_by === 'admin' ? ' — поставили вы' : ' — поставил клиент'),
+        'Напоминания молчат. Снять паузу можно в «Управлении статусом».'];
     var claimed = (o.payments || []).filter(function (p) { return p.status === 'claimed'; });
     if (claimed.length) {
       var cSum = claimed.reduce(function (s, p) { return s + (p.amount || 0); }, 0);
       var cWhat = claimed.length > 1
-        ? 'отметил оплату ' + claimed.length + ' этапов на ' + money(cSum) + ' ₽'
-        : 'отметил оплату ' + money(cSum) + ' ₽';
-      return ['due', '💳 <b>Клиент ' + cWhat + '.</b> Проверьте поступление и подтвердите в плане оплат ниже — статус и кэшбэк посчитаются сами.'];
+        ? 'Клиент отметил оплату ' + claimed.length + ' этапов на ' + money(cSum) + ' ₽'
+        : 'Клиент отметил оплату ' + money(cSum) + ' ₽';
+      return ['due', cWhat,
+        'Проверьте поступление и подтвердите в плане оплат — статус и кэшбэк посчитаются сами.'];
     }
     if (o.final_ready && 'work fix'.indexOf(o.status) >= 0) {
       if (o.due_now && o.due_now.amount > 0) {
         var fAge = invoiceAgeDays(o);
-        return [fAge >= 2 ? 'due' : '', '🏁 Финальный пакет результата подготовлен — клиент получил счёт на остаток ' +
-          money(o.due_now.amount) + ' ₽' +
-          (fAge >= 1 ? ' <b>ещё ' + fAge + ' дн. назад — не оплачен</b>' : '') +
-          '. Файл придержан. Поторопить: кнопка «🔔 Напомнить об оплате» ниже (авто-напоминания идут раз в день, до 3 раз).'];
+        return [fAge >= 2 ? 'due' : 'calm',
+          'Финальный пакет готов — ждём остаток ' + money(o.due_now.amount) + ' ₽' +
+            (fAge >= 1 ? ', счёт выставлен ' + fAge + ' дн. назад' : ''),
+          'Файл придержан до оплаты. Авто-напоминания идут раз в день, до 3 раз; поторопить можно кнопкой «Напомнить об оплате».'];
       }
-      return ['due', '🏁 <b>Остаток получен — передайте финальную часть.</b> Загрузите результат ниже, клиент получит кнопки приёмки.'];
+      return ['due', 'Остаток получен — передайте финальную часть',
+        'Загрузите результат в блоке передачи, клиент получит кнопки приёмки.'];
     }
     if (o.part_ready && 'work fix'.indexOf(o.status) >= 0) {
       if (o.due_now && o.due_now.amount > 0) {
         var pAge = invoiceAgeDays(o);
-        return [pAge >= 2 ? 'due' : '', '📘 Результат части ' + o.part_ready + ' подготовлен — клиент получил счёт ' +
-          money(o.due_now.amount) + ' ₽ (' + esc((o.due_now.label || 'этап').toLowerCase()) + ')' +
-          (pAge >= 1 ? ' <b>ещё ' + pAge + ' дн. назад — не оплачен</b>' : '') +
-          '. Файл придержан. Поторопить: кнопка «🔔 Напомнить об оплате» ниже (авто-напоминания идут раз в день, до 3 раз).'];
+        return [pAge >= 2 ? 'due' : 'calm',
+          'Часть ' + o.part_ready + ' готова — ждём ' + money(o.due_now.amount) + ' ₽ (' +
+            esc((o.due_now.label || 'этап').toLowerCase()) + ')' +
+            (pAge >= 1 ? ', счёт выставлен ' + pAge + ' дн. назад' : ''),
+          'Файл придержан до оплаты. Авто-напоминания идут раз в день, до 3 раз.'];
       }
-      return ['due', '📘 <b>Оплата за часть ' + o.part_ready + ' получена — передайте её результат.</b> Загрузите файл ниже, клиент получит кнопки приёмки.'];
+      return ['due', 'Оплата за часть ' + o.part_ready + ' получена — передайте результат',
+        'Загрузите файл в блоке передачи, клиент получит кнопки приёмки.'];
     }
     if (o.due_now && o.due_now.amount > 0 && 'check work'.indexOf(o.status) >= 0)
-      return ['due', '💳 <b>Созрел неоплаченный этап: ' + money(o.due_now.amount) + ' ₽ (' +
-        esc((o.due_now.label || 'этап').toLowerCase()) +
-        ').</b> Новые части не передавайте до оплаты — напомнить клиенту можно кнопкой «🔔 Напомнить об оплате» ниже.'];
+      return ['due', 'Созрел неоплаченный этап: ' + money(o.due_now.amount) + ' ₽ (' +
+        esc((o.due_now.label || 'этап').toLowerCase()) + ')',
+        'Новые части не передавайте до оплаты — напомнить клиенту можно кнопкой «Напомнить об оплате».'];
     if (o.status === 'new')
-      return ['due', '💰 <b>Новая заявка.</b> Изучите требования и отправьте предложение с ценой — клиент получит его в Telegram и в кабинете.'];
+      return ['due', 'Новая заявка — цена ещё не назначена',
+        'Изучите требования и отправьте предложение с ценой: клиент получит его в Telegram и в кабинете.'];
     if (o.status === 'fix')
-      return ['due', '✏️ <b>Клиент запросил корректировку' + ((o.stages_total || 1) > 1 ? ' по части ' + o.stage : '') + '.</b> Замечания — в переписке. Передайте обновлённую версию как результат — клиент снова получит кнопки приёмки.' +
-        (o.due_now && o.due_now.amount > 0 ? ' <b>Этап при этом не оплачен (' + money(o.due_now.amount) + ' ₽)</b> — исправления передавать можно, но напомните об оплате («🔔» ниже).' : '') +
-        ' <button type="button" class="btn btn-line" id="agFixAck" style="margin-top:8px">🛠 Взял в работу — сообщить клиенту</button>'];
+      return ['due', 'Клиент запросил корректировку' + ((o.stages_total || 1) > 1 ? ' по части ' + o.stage : ''),
+        'Замечания — в переписке. Передайте обновлённую версию как результат, клиент снова получит кнопки приёмки.' +
+        (o.due_now && o.due_now.amount > 0
+          ? ' Этап при этом не оплачен на ' + money(o.due_now.amount) + ' ₽ — исправления передавать можно, но напомните об оплате.'
+          : ''),
+        '<button type="button" class="btn btn-wax" id="agFixAck">Взял в работу — сообщить клиенту</button>'];
     if (o.status === 'priced')
-      return ['', '⏳ Предложение у клиента — ждём решения. Можно поменять цену или написать в переписке.'];
+      return ['calm', 'Предложение у клиента — ждём решения',
+        'Можно поменять цену или написать в переписке.'];
     if (o.status === 'prepay')
-      return ['', '⏳ Ждём предоплату. Если клиент оплатил и отметил — здесь появится кнопка подтверждения.'];
+      return ['calm', 'Ждём первый платёж',
+        'Если клиент оплатил и отметил это у себя — здесь появится кнопка подтверждения.'];
     if (o.status === 'work')
-      return ['', '🔨 Исполнение' + ((o.stages_total || 1) > 1 ? ': часть ' + o.stage + ' из ' + o.stages_total : '') + '. Подготовленный результат передайте файлом ниже.'];
+      return ['calm', 'Исполнение' + ((o.stages_total || 1) > 1 ? ': часть ' + o.stage + ' из ' + o.stages_total : ''),
+        'Подготовленный результат передайте файлом в блоке передачи и приёмки.'];
     if (o.status === 'check')
-      return ['', '📤 ' + ((o.stages_total || 1) > 1 ? 'Результат части ' + o.stage + ' из ' + o.stages_total : 'Результат') + ' на проверке у клиента — он примет его или запросит корректировку по критериям.'];
+      return ['calm', ((o.stages_total || 1) > 1 ? 'Результат части ' + o.stage + ' из ' + o.stages_total : 'Результат') + ' на проверке у клиента',
+        'Он примет его или запросит корректировку по критериям спецификации.'];
     if (o.status === 'cancel')
-      return ['', '🚫 Заявка закрыта' + (o.cancel_reason ? ': «' + esc(o.cancel_reason) + '»' : '') + '. Можно возобновить — клиент получит предложение заново.'];
+      return ['calm', 'Дело закрыто' + (o.cancel_reason ? ': «' + esc(o.cancel_reason) + '»' : ''),
+        'Можно возобновить — клиент получит предложение заново.'];
     return null;
   }
 
@@ -2135,11 +2303,11 @@ function initGodEye() {
       return '<a href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + esc(l[0]) + '</a>';
     }).join('');
     var who = o.client.guest
-      ? '👤 Гость: <b>' + esc(o.client.name) + '</b>' + (o.client.contact ? ' · <span class="mono">' + esc(o.client.contact) + '</span>' : '') +
+      ? 'Гость: <b>' + esc(o.client.name) + '</b>' + (o.client.contact ? ' · <span class="mono">' + esc(o.client.contact) + '</span>' : '') +
         '<br><span class="petit">Без Telegram: всё написанное здесь он видит в кабинете сайта' + (o.client.contact ? '; для живой связи — кнопки ниже' : '') + '.</span>'
-      : '👤 <b>' + esc(o.client.name) + '</b>' + (o.client.username ? ' · @' + esc(o.client.username) : '') +
+      : '<b>' + esc(o.client.name) + '</b>' + (o.client.username ? ' · @' + esc(o.client.username) : '') +
         ' · <button type="button" class="ag-linkbtn" data-open-client="' + o.client.id + '">карточка клиента</button>' +
-        ' · <button type="button" class="ag-linkbtn" data-imp-client="' + o.client.id + '">👁 его кабинет</button>';
+        ' · <button type="button" class="ag-linkbtn" data-imp-client="' + o.client.id + '">его кабинет</button>';
     return '<p class="ag-meta" style="margin-top:8px">' + who + '</p>' +
       (links ? '<div class="ag-clinks">' + links + '</div>' : '');
   }
@@ -2154,11 +2322,11 @@ function initGodEye() {
              ' раз' + (off.opened_at ? ' · последний раз ' + dt(off.opened_at) : '') +
              ' · ' + (OFF_ST[off.status] || off.status) + '</span>' : '') + '</span>';
     if (owned) {
-      return head + '<p class="ag-note"><b>✅ Telegram привязан' +
+      return head + '<p class="ag-note"><b>Telegram привязан' +
         (o.client && o.client.username ? ': @' + esc(o.client.username) : '') +
         '.</b> Сообщения, статусы и файлы можно отправлять прямо в бот; кабинет сайта остаётся синхронной резервной копией.</p>' +
         '<div class="ag-actrow">' +
-        '<button type="button" class="btn btn-wax" id="agTgSync">📨 Отправить актуальную карточку в Telegram</button>' +
+        '<button type="button" class="btn btn-wax" id="agTgSync">Отправить актуальную карточку в Telegram</button>' +
         (o.claim_url ? '<button type="button" class="btn btn-line" id="agRouteCopy">Скопировать безопасную инструкцию</button>' : '') +
         (o.claim_url ? '<a class="btn btn-line" href="' + esc(o.claim_url) + '" target="_blank" rel="noopener">Открыть его кабинет</a>' : '') +
         '</div><p class="ag-note">Для привязки Telegram клиент входит из кабинета через одноразовый код; ключ дела в мессенджер не передаётся.</p></div>';
@@ -2174,7 +2342,7 @@ function initGodEye() {
         (off.status === 'live' ? '<button type="button" class="btn btn-line" id="agOffCancel">Отозвать</button>' : '') +
         '</div>' +
         (off.status === 'paid'
-          ? '<p class="ag-note">✅ Оплачена' + (off.paid_at ? ' ' + dt(off.paid_at) : '') +
+          ? '<p class="ag-note">Оплачена' + (off.paid_at ? ' ' + dt(off.paid_at) : '') +
             ' — условия зафиксированы в акцепте, пересборка недоступна. Эта же ссылка теперь показывает клиенту «дело закреплено».</p>'
           : '<p class="ag-note">Действительна до ' + dt(off.expires_at) +
             '. Пересборка создаёт РЕДАКЦИЮ ' + (off.version + 1) + ' с новым кодом: старая ссылка ' +
@@ -2184,25 +2352,25 @@ function initGodEye() {
          сверив адрес с перепиской (в письмах — ключ доступа к делу) */
       if (off.notify_to && !off.mail_enabled) {
         linkRow += '<div class="ag-actrow" style="margin-bottom:8px">' +
-          '<span class="ag-note" style="margin:0">📮 Клиент оставил почту: <b class="mono">' + esc(off.notify_to) + '</b></span>' +
+          '<span class="ag-note" style="margin:0">Клиент оставил почту: <b class="mono">' + esc(off.notify_to) + '</b></span>' +
           '<button type="button" class="btn btn-line" id="agOffMailOn">Включить письма на этот адрес</button>' +
           '</div>';
       } else if (off.mail_enabled) {
-        linkRow += '<p class="ag-note">📮 Письма клиенту включены — счета, готовность частей и сообщения уходят на почту.</p>';
+        linkRow += '<p class="ag-note">Письма клиенту включены — счета, готовность частей и сообщения уходят на почту.</p>';
       }
     }
     var claimRow = '';
     if (o.claim_url) {
       claimRow = '<div class="ag-actrow" style="margin-bottom:8px">' +
         '<input type="text" class="ag-inp" id="agClaimUrl" readonly style="flex:1;min-width:220px" value="' + esc(o.claim_url) + '">' +
-        '<button type="button" class="btn btn-line" id="agClaimCopy">🔑 Ссылка клиента на дело</button>' +
+        '<button type="button" class="btn btn-line" id="agClaimCopy">Ссылка клиента на дело</button>' +
         '<button type="button" class="btn btn-line" id="agRouteCopy">Инструкция для безопасной привязки</button>' +
         '</div>' +
         '<p class="ag-note">Это единственный ключ клиента от дела («потеряли ссылку — восстановим за минуту» — это сюда). Отдавайте только в ту переписку, где договаривались.</p>';
     }
     var btn = '<div class="ag-actrow"><button type="button" class="btn ' +
       (st.offnew ? 'btn-line' : 'btn-wax') + '" id="agOffNew">' +
-      (st.offnew ? 'Свернуть форму' : (off ? '✎ Пересобрать заявку' : '🔗 Собрать заявку под ссылку')) +
+      (st.offnew ? 'Свернуть форму' : (off ? 'Пересобрать заявку' : 'Собрать заявку под ссылку')) +
       '</button></div>';
     if (off && off.status === 'paid') btn = '';   /* акцепт состоялся — пересборки нет */
     if (!st.offnew) return head + linkRow + claimRow + btn + '</div>';
@@ -3151,7 +3319,7 @@ function initGodEye() {
         /* напоминание уходит по ближайшему созревшему этапу — кнопка у него */
         remindShown = true;
         act += '<button type="button" class="btn btn-line" data-remind-pay="1" ' +
-          'title="Клиенту заново уйдёт счёт с реквизитами и кассой — в Telegram, на почту и в кабинет">🔔 Напомнить</button>';
+          'title="Клиенту заново уйдёт счёт с реквизитами и кассой — в Telegram, на почту и в кабинет">Напомнить</button>';
       }
       return '<div class="pl-row"><span class="pl-n">' + p.n + '</span>' +
         '<span class="pl-what">' + esc(p.label) + ' <span class="pl-st ' + m[1] + '">' + m[0] + '</span></span>' +
@@ -3159,7 +3327,7 @@ function initGodEye() {
     }).join('');
     var paid = (o.payments || []).filter(function (p) { return p.status === 'paid'; });
     return '<div class="ag-sec"><span class="caps">Цена и план оплаты' +
-      '<span class="sub">' + (o.sub_discount ? '⭐ скидка подписки: −' + money(o.sub_discount) + ' · ' : '') +
+      '<span class="sub">' + (o.sub_discount ? 'скидка подписки: −' + money(o.sub_discount) + ' · ' : '') +
       'бонусами списано: ' + money(o.bonus_spent || 0) + ' · деньгами всего: ' + money(o.due_total || o.price || 0) + ' ₽</span></span>' +
       '<div class="ag-actrow">' +
       '<input type="number" id="agPrice" placeholder="цена ₽" value="' + (o.price || '') + '">' +
@@ -3170,7 +3338,7 @@ function initGodEye() {
       '<p class="ag-note">Первый платёж можно не указывать — посчитается по плану (целиком, 50% или 30%). Перед отправкой сервер заморозит новую редакцию спецификации по ' +
       ((o.items && o.items.length) || 1) + ' поз.; клиент получит тот же PDF в Telegram и кабинете.</p>' +
       (plan.length ? '<div class="ag-plan">' + rows + '</div>' : '') +
-      (paid.length ? '<p class="ag-note">💰 Получено: ' + paid.map(function (p) {
+      (paid.length ? '<p class="ag-note">Получено: ' + paid.map(function (p) {
         return money(p.amount) + ' ₽ (' + dt(p.at) + ', ' + (METHOD_LBL[p.method] || esc(p.method)) + ')';
       }).join(' · ') + '</p>' : '') +
       '</div>';
@@ -3187,11 +3355,11 @@ function initGodEye() {
     var finalStage = total <= 1 || (o.stage || 1) >= total;
     var announced = (o.part_ready || 0) >= (o.stage || 1);
     if (finalStage && !o.final_ready)
-      return '<button type="button" class="btn btn-wax" id="agFinalReady">🏁 Финальный результат подготовлен — счёт на остаток</button>';
+      return '<button type="button" class="btn btn-wax" id="agFinalReady">Финальный результат подготовлен — счёт на остаток</button>';
     if (!finalStage && !announced)
-      return '<button type="button" class="btn btn-wax" id="agPartReady">📣 Результат части ' + o.stage + ' подготовлен — счёт клиенту</button>';
+      return '<button type="button" class="btn btn-wax" id="agPartReady">Результат части ' + o.stage + ' подготовлен — счёт клиенту</button>';
     if (o.due_now && o.due_now.amount > 0)
-      return '<button type="button" class="btn btn-wax" data-remind-pay="1">🔔 Напомнить об оплате (' + money(o.due_now.amount) + ' ₽)</button>';
+      return '<button type="button" class="btn btn-wax" data-remind-pay="1">Напомнить об оплате (' + money(o.due_now.amount) + ' ₽)</button>';
     return '';
   }
 
@@ -3231,9 +3399,9 @@ function initGodEye() {
       '<span class="sub">' +
       (total > 1 ? 'часть ' + o.stage + ' из ' + total + ' · принято ' + (o.parts_done || 0) : '') +
       (live ? (total > 1 ? ' · ' : '') + 'версия ' + (o.handoff_version || 0) : '') +
-      (o.final_ready ? ' · 🏁 финал придержан до оплаты'
+      (o.final_ready ? ' · финал придержан до оплаты'
         : (announced && 'work fix'.indexOf(o.status) >= 0
-          ? ' · 📣 счёт за часть ' + o.part_ready + ' выставлен, файл придержан' : '')) +
+          ? ' · счёт за часть ' + o.part_ready + ' выставлен, файл придержан' : '')) +
       '</span></span>';
     if (!live) return '<div class="ag-sec">' + head + partsCells(o, total) + '</div>';
 
@@ -3245,14 +3413,14 @@ function initGodEye() {
       state = o.status === 'fix'
         ? 'Клиент прислал замечания. Загрузите исправленный полный документ — новый счёт не создаётся.'
         : 'Загрузите полный документ один раз. Оригинал останется закрытым до принятия защищённой части и оплаты остатка.';
-      action = '<label class="btn btn-wax btn-upload">📄 ' +
+      action = '<label class="btn btn-wax btn-upload">' +
         (o.status === 'fix' ? 'Загрузить исправленную версию' : 'Загрузить пакет результата') +
         '<input type="file" id="agPreviewFile" multiple accept=".pdf,.doc,.docx,.odt,.rtf,.txt,.ppt,.pptx"></label>';
     } else if (hp === 'master_review') {
       state = 'Версия v' + (o.handoff_version || 1) + ' подготовлена: ' +
         ((o.handoff_files || []).length || 1) + ' файл(а). Откройте все защищённые копии перед отправкой.';
-      action = '<button type="button" class="btn btn-wax" id="agHandoffPublish">✅ Проверено — отправить клиенту</button>' +
-        '<label class="btn btn-line btn-upload">🔁 Заменить пакет<input type="file" id="agPreviewFile" multiple accept=".pdf,.docx,.doc,.odt,.rtf,.txt,.ppt,.pptx"></label>';
+      action = '<button type="button" class="btn btn-wax" id="agHandoffPublish">Проверено — отправить клиенту</button>' +
+        '<label class="btn btn-line btn-upload">Заменить пакет<input type="file" id="agPreviewFile" multiple accept=".pdf,.docx,.doc,.odt,.rtf,.txt,.ppt,.pptx"></label>';
     } else if (hp === 'preview_published') {
       state = 'Защищённая первая часть у клиента. Ждём: принять или запросить правки.';
     } else if (hp === 'accepted_wait_pay' || hp === 'releasing') {
@@ -3275,10 +3443,10 @@ function initGodEye() {
         ? '<b>Этап не оплачен на ' + money(debt.amount) + ' ₽ — сервер придержит файл, передача пойдёт только с отдельным подтверждением.</b>'
         : 'Если этап не оплачен, сервер придержит файл и спросит подтверждение.') + '</p>' +
       '<div class="ag-actrow">' +
-      '<label class="btn ' + (held ? 'btn-line' : 'btn-wax') + ' btn-upload">📦 Передать ' + deliverWord +
-        ' файлом' + (held ? ' · этап не оплачен ⚠️' : '') +
+      '<label class="btn ' + (held ? 'btn-line' : 'btn-wax') + ' btn-upload">Передать ' + deliverWord +
+        ' файлом' + (held ? ' · этап не оплачен' : '') +
         '<input type="file" id="agDeliverFile"></label>' +
-      '<label class="btn btn-line btn-upload">📎 Просто отправить файл' +
+      '<label class="btn btn-line btn-upload">Просто отправить файл' +
         '<input type="file" id="agPlainFile"></label>' +
       (o.status !== 'check'
         ? '<button type="button" class="btn btn-line" id="agDeliverMark">Файлы уже у клиента — зафиксировать передачу</button>'
@@ -3317,7 +3485,7 @@ function initGodEye() {
       else if (x.media && (x.kind === 'video' || x.kind === 'video_note'))
         body += (body ? '<br>' : '') + '<video controls preload="none" style="max-width:min(260px,100%)" data-admin-media="' + path + '"></video>';
       else if (!body || x.file_name)
-        body += (body ? '<br>' : '') + '📎 ' + esc(x.file_name || ('вложение (' + esc(x.kind || '') + ')'));
+        body += (body ? '<br>' : '') + ico('clip', 13) + ' ' + esc(x.file_name || ('вложение (' + esc(x.kind || '') + ')'));
       return '<div class="ag-m' + (me ? ' master' : '') + '"><span class="who">' + (me ? 'Мастерская' : 'Клиент') + ' · ' + dt(f.at) + '</span>' +
         '<div class="txt">' + body + '</div></div>';
     }).join('');
@@ -3329,18 +3497,19 @@ function initGodEye() {
       }).join('') + '</div>' +
       '<div class="ag-chatform">' +
       '<textarea id="agMsg" rows="2" placeholder="Сообщение клиенту… (Cmd/Ctrl+Enter)"></textarea>' +
-      '<label class="btn btn-line btn-upload" title="Файл клиенту">📎<input type="file" id="agChatFile"></label>' +
+      '<label class="btn btn-line btn-upload" title="Приложить файл к сообщению" aria-label="Приложить файл">' +
+        ico('clip', 16) + '<input type="file" id="agChatFile"></label>' +
       '<button type="button" class="btn btn-wax" id="agMsgSend">Отправить</button></div></div>';
   }
 
   /* быстрые заготовки ответов: клик — текст в поле, дальше правится руками */
   var TPL = [
-    ['👋 Взял в работу', 'Добрый день! Заявку получил, изучаю требования — вернусь с оценкой в ближайшее время.'],
-    ['❓ Уточнение', 'Добрый день! Чтобы оценить точно, уточните, пожалуйста: '],
-    ['📦 Результат на проверке', 'Результат передан — проверьте, пожалуйста, по критериям спецификации. Если всё в порядке, нажмите «Принять результат»; замечания по критериям отправьте кнопкой «Нужна корректировка».'],
-    ['✏️ Правки принял', 'Замечания получил, всё поправлю — пришлю обновлённую версию и напишу здесь.'],
-    ['💳 Про оплату', 'Напомню про оплату этапа — реквизиты в карточке заказа (кнопка «Оплатить»). Как поступит, сразу продолжаю.'],
-    ['🕊 Спасибо', 'Спасибо, что выбрали мастерскую! Если появятся вопросы по принятому результату или отдельной услуге подготовки к выступлению, пишите прямо сюда.']
+    ['Взял в работу', 'Добрый день! Заявку получил, изучаю требования — вернусь с оценкой в ближайшее время.'],
+    ['Уточнение', 'Добрый день! Чтобы оценить точно, уточните, пожалуйста: '],
+    ['Результат на проверке', 'Результат передан — проверьте, пожалуйста, по критериям спецификации. Если всё в порядке, нажмите «Принять результат»; замечания по критериям отправьте кнопкой «Нужна корректировка».'],
+    ['Правки принял', 'Замечания получил, всё поправлю — пришлю обновлённую версию и напишу здесь.'],
+    ['Про оплату', 'Напомню про оплату этапа — реквизиты в карточке заказа (кнопка «Оплатить»). Как поступит, сразу продолжаю.'],
+    ['Спасибо', 'Спасибо, что выбрали мастерскую! Если появятся вопросы по принятому результату или отдельной услуге подготовки к выступлению, пишите прямо сюда.']
   ];
 
   function filesBlock(o) {
@@ -3350,7 +3519,7 @@ function initGodEye() {
         var tags = '';
         if (f.part) tags += '<span class="fl-tag">часть ' + f.part + '</span>';
         if (f.label) tags += '<span class="fl-tag">' + esc(f.label) + '</span>';
-        return '<div class="ag-file"><span class="fname">📎 ' + esc(f.name) + tags + '</span>' +
+        return '<div class="ag-file"><span class="fname">' + ico('clip', 13) + esc(f.name) + tags + '</span>' +
           '<span class="fmeta">' + (f.from === 'master' ? 'от вас' : 'от клиента') + ' · ' + dt(f.at) + '</span>' +
           '<a class="ag-linkbtn" href="#" data-admin-download="' + filePath(o.id, f.id) +
           '" data-filename="' + esc(f.name) + '">скачать</a></div>';
@@ -3362,23 +3531,24 @@ function initGodEye() {
     return '<div class="ag-sec"><span class="caps">Управление статусом</span>' +
       '<div class="ag-actrow">' +
       Object.keys(ST_META).map(function (k) {
-        return '<button type="button" class="ag-stbtn' + (o.status === k ? ' on' : '') + '" data-st="' + k + '">' + stMeta(k)[0] + ' ' + stMeta(k)[1] + '</button>';
+        return '<button type="button" class="ag-stbtn' + (o.status === k ? ' on' : '') +
+          '" data-st="' + k + '">' + ico(stMeta(k)[0], 14) + '<span>' + stMeta(k)[1] + '</span></button>';
       }).join('') + '</div>' +
       '<p class="ag-note">Клиент получает уведомление о смене статуса — в Telegram, на почту и в кабинет.</p>' +
       '<div class="ag-actrow" style="margin-top:10px">' +
       (o.status === 'cancel'
-        ? '<button type="button" class="btn btn-line" id="agResume">🔄 Возобновить заказ</button>'
-        : '<button type="button" class="btn btn-line" id="agCancel2">🚫 Закрыть с причиной…</button>') +
+        ? '<button type="button" class="btn btn-line" id="agResume">Возобновить заказ</button>'
+        : '<button type="button" class="btn btn-line" id="agCancel2">Закрыть с причиной…</button>') +
       (activeSt
         ? (o.paused
-          ? '<button type="button" class="btn btn-line" id="agPause" data-on="0">▶️ Снять с паузы</button>'
-          : '<button type="button" class="btn btn-line" id="agPause" data-on="1">⏸ Поставить на паузу…</button>')
+          ? '<button type="button" class="btn btn-line" id="agPause" data-on="0">Снять с паузы</button>'
+          : '<button type="button" class="btn btn-line" id="agPause" data-on="1">Поставить на паузу…</button>')
         : '') +
       (o.archived_admin
-        ? '<button type="button" class="btn btn-line" id="agArch" data-on="0">📂 Вернуть из архива</button>'
-        : '<button type="button" class="btn btn-line" id="agArch" data-on="1">🗄 Убрать в архив</button>') +
+        ? '<button type="button" class="btn btn-line" id="agArch" data-on="0">Вернуть из архива</button>'
+        : '<button type="button" class="btn btn-line" id="agArch" data-on="1">Убрать в архив</button>') +
       '</div>' +
-      (o.paused ? '<p class="ag-note">⏸ Пауза: напоминания о сроках молчат, клиент видит отметку в кабинете. ' +
+      (o.paused ? '<p class="ag-note">Пауза: напоминания о сроках молчат, клиент видит отметку в кабинете. ' +
         (o.paused_by === 'admin' ? 'Паузу ставили вы — клиент снять её не может.' : 'Паузу ставил клиент — он может снять её сам.') + '</p>' : '') +
       '</div>';
   }
@@ -3386,21 +3556,21 @@ function initGodEye() {
   function intelBlock(o) {
     var ci = o.client_intel;
     var rows = [];
-    if (o.tier_label) rows.push(['⭐ Сопровождение', esc(o.tier_label)]);
-    if (o.quote_low) rows.push(['🧮 Сайт показал', money(o.quote_low) + ' – ' + money(o.quote_high) + ' ₽']);
-    if (o.deadline_text) rows.push(['📅 Срок клиента', esc(o.deadline_text)]);
-    if (o.details) rows.push(['📋 Требования', esc(o.details)]);
+    if (o.tier_label) rows.push(['Сопровождение', esc(o.tier_label)]);
+    if (o.quote_low) rows.push(['Сайт показал', money(o.quote_low) + ' – ' + money(o.quote_high) + ' ₽']);
+    if (o.deadline_text) rows.push(['Срок клиента', esc(o.deadline_text)]);
+    if (o.details) rows.push(['Требования', esc(o.details)]);
     if (ci) {
-      rows.push(['💎 Бонусы клиента', money(ci.bonus.balance) +
+      rows.push(['Бонусы клиента', money(ci.bonus.balance) +
         (ci.bonus.expiring.length ? ' (сгорит ' + ci.bonus.expiring.map(function (e) { return e.amount + ' — ' + dt(e.at).slice(0, 5); }).join(', ') + ')' : '')]);
-      rows.push(['🤝 Рефералы', ci.referrals + (ci.referrer ? ' · пришёл от ' + esc(ci.referrer.name || ci.referrer.id) : '')]);
-      rows.push(['📇 Клиент с', dt(ci.since) + (ci.welcome_at ? ' · велком получен' : '')]);
-      if (ci.banned) rows.push(['⛔️', '<b style="color:var(--wax)">В чёрном списке</b>']);
+      rows.push(['Рефералы', ci.referrals + (ci.referrer ? ' · пришёл от ' + esc(ci.referrer.name || ci.referrer.id) : '')]);
+      rows.push(['Клиент с', dt(ci.since) + (ci.welcome_at ? ' · велком получен' : '')]);
+      if (ci.banned) rows.push(['Доступ', '<b class="is-danger">В чёрном списке</b>']);
     }
-    if (o.consent_at) rows.push(['📋 Согласие ПДн', dt(o.consent_at) + ' · ' + esc(o.consent_doc || '')]);
-    if (o.page) rows.push(['🔗 Источник', esc(o.page)]);
-    if (o.cancel_reason) rows.push(['🚫 Причина отказа', '«' + esc(o.cancel_reason) + '»']);
-    if (o.review) rows.push(['⭐ Отзыв', starRow(o.review.rating) + ' · ' + ({ pending: 'на модерации — вкладка «Отзывы»', approved: 'опубликован', rejected: 'отклонён' }[o.review.status] || '')]);
+    if (o.consent_at) rows.push(['Согласие ПДн', dt(o.consent_at) + ' · ' + esc(o.consent_doc || '')]);
+    if (o.page) rows.push(['Источник', esc(o.page)]);
+    if (o.cancel_reason) rows.push(['Причина отказа', '«' + esc(o.cancel_reason) + '»']);
+    if (o.review) rows.push(['Отзыв', starRow(o.review.rating) + ' · ' + ({ pending: 'на модерации — вкладка «Отзывы»', approved: 'опубликован', rejected: 'отклонён' }[o.review.status] || '')]);
     if (!rows.length) return '';
     return '<div class="ag-intel">' + rows.map(function (r) {
       return '<div class="ai-row"><span class="ai-k">' + r[0] + '</span><span class="ai-v">' + r[1] + '</span></div>';
@@ -3531,23 +3701,31 @@ function initGodEye() {
   function quickRow(o) {
     var pal = ['red', 'gold', 'green', 'blue', 'violet'].map(function (c) {
       return '<button type="button" class="clr-dot' + (o.color === c ? ' on' : '') + '" data-card-clr="' + c + '" ' +
-        'title="метка «' + CLR_NAME[c] + '»" style="background:' + CLR[c] + '"></button>';
+        'title="метка «' + CLR_NAME[c] + '»" aria-label="Метка «' + CLR_NAME[c] + '»" style="--clr-dot-ink:' + CLR[c] + '"></button>';
     }).join('') +
-      '<button type="button" class="clr-dot' + (!o.color ? ' on' : '') + '" data-card-clr="" title="без метки" style="background:transparent"></button>';
+      '<button type="button" class="clr-dot' + (!o.color ? ' on' : '') + '" data-card-clr="" title="без метки" aria-label="Снять цветную метку"></button>';
+    /* Убрать в архив и в корзину — необратимые для рабочего стола действия.
+       В один клик рядом с «Закрепить» они опасны: карточка открывается
+       десятками раз за день, и промах стоит дела. Прячем под «···». */
+    var hidden = o.deleted
+      ? '<button type="button" class="ag-qbtn" data-card-flag="restore">↩ Вернуть из корзины</button>' +
+        '<button type="button" class="ag-qbtn is-danger" data-card-flag="purge" ' +
+          'title="Стереть дело навсегда — с хроникой, файлами и перепиской. Возврата нет">' +
+          ico('trash', 13) + '<span>Стереть навсегда</span></button>'
+      : '<button type="button" class="ag-qbtn' + (o.archived_admin ? ' on' : '') + '" data-card-flag="hide" ' +
+          'title="Скрыть с рабочего стола — заказ уедет в «Архив», клиент ничего не заметит">' +
+          ico('archive', 13) + '<span>' + (o.archived_admin ? 'В архиве' : 'Убрать в архив') + '</span></button>' +
+        '<button type="button" class="ag-qbtn is-danger" data-card-flag="trash" ' +
+          'title="Убрать в корзину: пропадёт из всех списков, кроме «Корзины». Данные не стираются">' +
+          ico('trash', 13) + '<span>В корзину</span></button>';
     return '<div class="ag-quick">' +
       '<button type="button" class="ag-qbtn' + (o.pinned ? ' on' : '') + '" data-card-flag="pin" ' +
-        'title="Закреплённые заказы всегда наверху списка">📌 ' + (o.pinned ? 'Закреплён' : 'Закрепить') + '</button>' +
+        'title="Закреплённые заказы всегда наверху списка">' + ico('pin', 13) +
+        '<span>' + (o.pinned ? 'Закреплён' : 'Закрепить') + '</span></button>' +
       '<span class="ag-pal" title="Цветная метка — для своих пометок: срочное, ждёт, VIP…">' + pal + '</span>' +
-      (o.deleted
-        ? '<button type="button" class="ag-qbtn" data-card-flag="restore">↩ Вернуть из корзины</button>' +
-          '<button type="button" class="ag-qbtn" data-card-flag="purge" ' +
-            'title="Стереть дело навсегда — с хроникой, файлами и перепиской. Возврата нет" ' +
-            'style="color:var(--wax,#A8402F)">🔥 Стереть навсегда</button>'
-        : '<button type="button" class="ag-qbtn' + (o.archived_admin ? ' on' : '') + '" data-card-flag="hide" ' +
-            'title="Скрыть с рабочего стола — заказ уедет в «Архив», клиент ничего не заметит">' +
-            (o.archived_admin ? '🗄 В архиве' : '🗄 Скрыть') + '</button>' +
-          '<button type="button" class="ag-qbtn" data-card-flag="trash" ' +
-            'title="Убрать в корзину: пропадёт из всех списков, кроме «Корзины». Данные не стираются">🗑 В корзину</button>') +
+      '<details class="ag-more"><summary class="ag-qbtn" aria-label="Ещё действия с делом" ' +
+        'title="Архив и корзина">' + ico('dots', 14) + '</summary>' +
+        '<div class="ag-more__menu">' + hidden + '</div></details>' +
       '</div>';
   }
 
@@ -3560,24 +3738,24 @@ function initGodEye() {
         ? '~' + money(o.quote_low) + (o.quote_high ? ' – ' + money(o.quote_high) : '') + ' ₽'
         : 'без вилки']);
       rows.push(['Цена', '<b>не назначена</b> — клиент ждёт оценку']);
-      if (o.promo_code) rows.push(['🎟 Промокод ' + esc(o.promo_code), 'привязан — скидка посчитается от цены']);
-      if (o.gift_code) rows.push(['🎁 Сертификат ' + esc(o.gift_code), 'привязан — зачтётся при цене']);
-      if (o.bonus_spent) rows.push(['💎 Бонусы', '−' + money(o.bonus_spent)]);
+      if (o.promo_code) rows.push(['Промокод ' + esc(o.promo_code), 'привязан — скидка посчитается от цены']);
+      if (o.gift_code) rows.push(['Сертификат ' + esc(o.gift_code), 'привязан — зачтётся при цене']);
+      if (o.bonus_spent) rows.push(['Бонусы', '−' + money(o.bonus_spent)]);
     } else {
       rows.push(['Цена', '<b>' + money(o.price) + ' ₽</b>']);
-      if (o.promo_discount) rows.push(['🎟 Промокод ' + esc(o.promo_code || ''), '−' + money(o.promo_discount) + ' ₽']);
-      else if (o.promo_code) rows.push(['🎟 Промокод ' + esc(o.promo_code), 'не применился (условия кода)']);
-      if (o.sub_discount) rows.push(['⭐ Абонемент', '−' + money(o.sub_discount) + ' ₽']);
-      if (o.bonus_spent) rows.push(['💎 Бонусы клиента', '−' + money(o.bonus_spent) + ' ₽']);
-      if (o.gift_amount) rows.push(['🎁 Сертификат ' + esc(o.gift_code || ''), '−' + money(o.gift_amount) + ' ₽ (зачёт)']);
-      else if (o.gift_code) rows.push(['🎁 Сертификат ' + esc(o.gift_code), 'привязан, зачтётся при пересчёте']);
+      if (o.promo_discount) rows.push(['Промокод ' + esc(o.promo_code || ''), '−' + money(o.promo_discount) + ' ₽']);
+      else if (o.promo_code) rows.push(['Промокод ' + esc(o.promo_code), 'не применился (условия кода)']);
+      if (o.sub_discount) rows.push(['Абонемент', '−' + money(o.sub_discount) + ' ₽']);
+      if (o.bonus_spent) rows.push(['Бонусы клиента', '−' + money(o.bonus_spent) + ' ₽']);
+      if (o.gift_amount) rows.push(['Сертификат ' + esc(o.gift_code || ''), '−' + money(o.gift_amount) + ' ₽ (зачёт)']);
+      else if (o.gift_code) rows.push(['Сертификат ' + esc(o.gift_code), 'привязан, зачтётся при пересчёте']);
       var paid = 0, claimed = 0;
       (o.plan || []).forEach(function (p) {
         if (p.state === 'paid') paid += p.amount || 0;
         else if (p.state === 'claimed') claimed += p.amount || 0;
       });
       var total = o.due_total || 0;
-      rows.push(['💵 Деньгами к оплате', '<b>' + money(total) + ' ₽</b>']);
+      rows.push(['Деньгами к оплате', '<b>' + money(total) + ' ₽</b>']);
       if (paid) rows.push(['Получено', money(paid) + ' ₽']);
       if (claimed) rows.push(['Отмечено клиентом (сверить)', money(claimed) + ' ₽']);
       rows.push(['Остаток', '<b>' + money(Math.max(0, total - paid)) + ' ₽</b>']);
@@ -3693,22 +3871,35 @@ function initGodEye() {
       '<div class="admin-order-drawer__bar"><div><span id="agCardTitle">Карточка дела</span><strong>№' + o.id +
       '</strong></div><button type="button" id="agCardClose" aria-label="Закрыть карточку дела">×</button></div>' +
       '<div class="admin-order-drawer__intro">' +
-      '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
+      '<div class="admin-order-drawer__meta">' +
       '<span class="mono petit">Дело №' + o.id + ' · ' + esc(o.source || '') + ' · создано ' + dt(o.created_at) +
-      (o.archived_admin ? ' · 🗄 в архиве' : '') + (o.deleted ? ' · 🗑 в корзине' : '') + '</span>' +
-      '<span>' + (o.paused ? '<span class="ag-stamp st-cancel" style="margin-right:6px">⏸ пауза</span>' : '') +
+      (o.archived_admin ? ' · в архиве' : '') + (o.deleted ? ' · в корзине' : '') + '</span>' +
+      '<span>' + (o.paused ? '<span class="ag-stamp st-cancel" style="margin-right:6px">' +
+        ico('pause', 13) + '<span>пауза</span></span>' : '') +
       stamp(o.status) + '</span></div>' +
-      '<h2>' + (o.pinned ? '📌 ' : '') + esc(o.work_label || '') + '</h2>' +
-      quickRow(o) +
+      /* заявка из бота может прийти без названия услуги — пустой <h2>
+         оставлял в шапке карточки дыру вместо заголовка */
+      '<h2>' + (o.pinned ? ico('pin', 17, 'h2-pin') + ' ' : '') +
+        esc(o.work_label || 'Заявка без названия услуги') + '</h2>' +
       (o.topic ? '<p class="ag-topic">«' + esc(o.topic) + '»</p>' : '') +
-      (hint ? '<div class="ag-next ' + hint[0] + '">' + hint[1] + '</div>' : '') + '</div>' +
+      quickRow(o) +
+      /* Следующий шаг — полоса действия, а не абзац со врезанной кнопкой:
+         это главная точка входа в карточку, её нельзя читать по диагонали. */
+      (hint ? '<section class="ag-next ' + hint[0] + '" aria-label="Следующий шаг">' +
+        '<span class="ag-next__mark">' + ico(hint[0] === 'due' ? 'flag' : 'hourglass', 15) + '</span>' +
+        '<div><span class="ag-next__kicker">Следующий шаг</span>' +
+        '<strong>' + hint[1] + '</strong>' +
+        (hint[2] ? '<p>' + hint[2] + '</p>' : '') + '</div>' +
+        (hint[3] ? '<div class="ag-next__act">' + hint[3] + '</div>' : '') +
+        '</section>' : '') + '</div>' +
       '<div class="admin-order-drawer__workspace">' +
       '<div class="admin-order-drawer__primary">' +
         /* порядок — по частоте работы: переписка, передача и счёт этапа,
            цена и план, сборка заявки, и только потом длинная спецификация */
         feedBlock(o) + partsBlock(o) + planBlock(o) + offerBlock(o) + orderItemsBlock(o) +
       '</div><aside class="admin-order-drawer__rail" aria-label="Сводка и управление">' +
-      clientLine(o) + moneyBlock(o) + filesBlock(o) + manageBlock(o) + intelBlock(o) +
+      /* деньги первыми: при полусотне открытий в день это главный вопрос */
+      moneyBlock(o) + clientLine(o) + filesBlock(o) + manageBlock(o) + intelBlock(o) +
       '<div class="ag-sec"><span class="caps">Заметка (видна только вам)</span>' +
       '<div class="ag-actrow"><textarea id="agNote" rows="2">' + esc(o.admin_note || '') + '</textarea>' +
       '<button type="button" class="btn btn-line" id="agNoteSave">Сохранить</button></div></div>' +
@@ -3770,11 +3961,19 @@ function initGodEye() {
         (selected ? ' sel is-current' : '') + '" data-cid="' + c.id +
         '" aria-pressed="' + (selected ? 'true' : 'false') + '">' +
         '<span class="client-directory__avatar">' + clientInitials(c.name) + '</span>' +
-        '<span class="r-main"><strong class="r-t">' + (c.banned ? '⛔️ ' : '') + esc(c.name || 'клиент') +
-        (c.username ? ' <span class="petit">@' + esc(c.username) + '</span>' : '') + '</strong>' +
-        '<small class="r-s">' + (c.orders || 0) + ' ' +
+        /* @ник переехал во вторую строку: в одной строке с именем он
+           обрезался посреди слова и колонка картотеки не давала прочесть
+           ни имя целиком, ни ник */
+        '<span class="r-main"><strong class="r-t">' +
+          (c.banned ? '<span class="cl-banned" title="В чёрном списке">' + ico('stCancel', 12) + '</span>' : '') +
+          esc(c.name || 'клиент') + '</strong>' +
+        '<small class="r-s">' + (c.username ? '@' + esc(c.username) + ' · ' : '') +
+          (c.orders || 0) + ' ' +
           anPl(c.orders || 0, 'дело', 'дела', 'дел') + ' · был ' + dt(c.last_seen) + '</small></span>' +
-        '<span class="r-side"><span class="r-price">💎 ' + money(c.balance) + '</span><b aria-hidden="true">→</b></span>' +
+        /* «бонусов» словом: раньше здесь стоял значок алмаза, и без него
+           колонка превращалась в число без единицы измерения */
+        '<span class="r-side"><span class="r-price" title="Бонусный счёт клиента">' +
+          money(c.balance) + '<small>бонусов</small></span><b aria-hidden="true">→</b></span>' +
         '</button>';
     }).join('');
   }
@@ -3823,7 +4022,9 @@ function initGodEye() {
       '<button type="button" class="client-profile__back" data-client-back>← К картотеке</button>' +
       '<header class="client-profile__header"><span class="client-profile__avatar">' +
         clientInitials(c.name) + '</span><div><p class="eyebrow">Карточка клиента</p>' +
-        '<h2>' + (c.banned ? '⛔️ ' : '') + esc(c.name || 'клиент') + '</h2>' +
+        '<h2>' + esc(c.name || 'клиент') + '</h2>' +
+        (c.banned ? '<span class="ag-stamp st-cancel cl-banned-stamp">' + ico('stCancel', 13) +
+          '<span>в чёрном списке</span></span>' : '') +
         '<span>С нами с ' + dt(c.since) + (c.welcome_at ? ' · приветственный бонус получен' : '') +
         '</span></div>' +
         '<details class="client-profile__menu"><summary class="quiet-button" aria-label="Действия с клиентом">•••</summary>' +
@@ -3854,7 +4055,7 @@ function initGodEye() {
 
       '<section class="ag-sec client-profile__bonus" id="clBonusPanel"><header><h3>Бонусный счёт</h3>' +
       '<span class="sub">' + money(bonus.balance || 0) + ' бонусов</span></header>' +
-      (bonus.expiring.length ? '<p class="petit">⏳ сгорает: ' + bonus.expiring.map(function (e) { return e.amount + ' — ' + dt(e.at).slice(0, 5); }).join(', ') + '</p>' : '') +
+      (bonus.expiring.length ? '<p class="petit">сгорает: ' + bonus.expiring.map(function (e) { return e.amount + ' — ' + dt(e.at).slice(0, 5); }).join(', ') + '</p>' : '') +
       '<div class="ag-actrow"><input type="number" id="agBDelta" placeholder="± сумма">' +
       '<input type="text" id="agBNote" placeholder="Комментарий (клиент увидит)">' +
       '<button type="button" class="btn btn-line" id="agBApply">Провести</button></div>' +
@@ -3868,17 +4069,18 @@ function initGodEye() {
       '<section class="ag-sec client-profile__orders" id="clOrdersPanel"><header><h3>Дела клиента</h3>' +
       '<span class="sub">' + orders.length + '</span></header>' +
       (orders.length ? orders.map(function (o) {
-        var m = stMeta(o.status);
-        return '<div class="ag-file"><span class="fname">' + m[0] + ' №' + o.id + ' · ' + esc(o.work_label || '') +
+        return '<div class="ag-file client-order-row"><span class="fname">' +
+          ico(stMeta(o.status)[0], 13, 'st-' + esc(o.status)) +
+          '<b>№' + o.id + '</b> · ' + esc(o.work_label || 'Заявка') +
           (o.price ? ' · ' + money(o.price) + ' ₽' : '') + '</span>' +
           '<button type="button" class="ag-linkbtn" data-open-order="' + o.id + '">открыть</button></div>';
       }).join('') : '<p class="ag-note">Дел пока нет.</p>') + '</section>' +
 
       '<section class="ag-sec client-profile__access" id="clAccessPanel"><header><h3>Доступ и безопасность</h3></header>' +
       '<div class="ag-actrow">' +
-      '<button type="button" class="btn btn-line" data-imp-client="' + c.id + '">👁 Открыть кабинет клиента</button>' +
+      '<button type="button" class="btn btn-line" data-imp-client="' + c.id + '">Открыть кабинет клиента</button>' +
       '<button type="button" class="btn ' + (c.banned ? 'btn-line' : 'btn-wax') + '" id="agBan" data-on="' + (c.banned ? '0' : '1') + '">' +
-      (c.banned ? 'Снять блокировку' : '⛔️ Заблокировать клиента') + '</button></div>' +
+      (c.banned ? 'Снять блокировку' : 'Заблокировать клиента') + '</button></div>' +
       '<p class="ag-note">«Открыть кабинет» — тихий вход на правах клиента в новой вкладке: посмотреть его глазами, ' +
       'поправить, помочь. Клиент ничего не заметит — визиты и метки «прочитано» не трогаются.<br>' +
       'Блокировка закрывает приём новых заявок с сайта от этого аккаунта.</p></section>';
@@ -3887,7 +4089,7 @@ function initGodEye() {
   /* ---------------- ОТЗЫВЫ ---------------- */
   function tplReviews() {
     if (!st.reviews.length) return '<div class="ag-empty">Отзывов пока нет. Они появляются, когда клиент завершённого заказа ставит оценку в боте или кабинете.</div>';
-    var stLbl = { pending: '⏳ ждёт решения', approved: '✅ на сайте', rejected: '🚫 отклонён' };
+    var stLbl = { pending: 'ждёт решения', approved: 'на сайте', rejected: 'отклонён' };
     function rvCard(r) {
       return '<div class="ag-rv ' + r.status + '" data-rv-st="' + r.status + '">' +
         '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
@@ -3897,9 +4099,9 @@ function initGodEye() {
         '<p class="rv-meta">' + esc(r.author || 'Без подписи') + ' · ' + esc(r.work_label || '') +
         ' · <button type="button" class="ag-linkbtn" data-open-order="' + r.order_id + '">дело №' + r.order_id + '</button></p>' +
         '<div class="ag-actrow" style="margin-top:10px">' +
-        (r.status !== 'approved' ? '<button type="button" class="btn btn-ink" data-rv="' + r.id + '" data-ok="1">✅ Опубликовать</button>' : '') +
-        (r.status !== 'approved' && !r.publication_consent ? '<span class="rv-meta">⚠️ Нет отметки об отдельном согласии на публикацию</span>' : '') +
-        (r.status !== 'rejected' ? '<button type="button" class="btn btn-line" data-rv="' + r.id + '" data-ok="0">🚫 ' + (r.status === 'approved' ? 'Снять с сайта' : 'Отклонить') + '</button>' : '') +
+        (r.status !== 'approved' ? '<button type="button" class="btn btn-ink" data-rv="' + r.id + '" data-ok="1">Опубликовать</button>' : '') +
+        (r.status !== 'approved' && !r.publication_consent ? '<span class="rv-meta">Нет отметки об отдельном согласии на публикацию</span>' : '') +
+        (r.status !== 'rejected' ? '<button type="button" class="btn btn-line" data-rv="' + r.id + '" data-ok="0">' + (r.status === 'approved' ? 'Снять с сайта' : 'Отклонить') + '</button>' : '') +
         '</div></div>';
     }
     var pend = st.reviews.filter(function (r) { return r.status === 'pending'; });
@@ -3914,8 +4116,8 @@ function initGodEye() {
 
   /* ---------------- «ОТКРЫТАЯ ПРИЁМНАЯ» ---------------- */
   var QA_ST = {
-    pending: '⏳ ждёт ответа', published: '📮 на сайте',
-    answered: '🤫 отвечен тихо', rejected: '🚫 отклонён'
+    pending: 'ждёт ответа', published: 'на сайте',
+    answered: 'отвечен тихо', rejected: 'отклонён'
   };
 
   function qaTagSelect(id, cur) {
@@ -3934,38 +4136,38 @@ function initGodEye() {
       ? '<details style="margin:8px 0"><summary class="petit" style="cursor:pointer">Исходник гостя (до чистки)</summary>' +
         '<blockquote style="font-style:italic;margin-top:6px">«' + esc(q.question_raw) + '»</blockquote></details>' : '';
     var who = esc(q.pseudonym || 'Аноним') +
-      (q.quiet ? ' · 🤫 тихий (без публикации)' : '') +
-      (q.email ? ' · 📧 почта оставлена' : ' · без почты') +
-      (q.source === 'archive' ? ' · 📜 архив' : '');
+      (q.quiet ? ' · тихий (без публикации)' : '') +
+      (q.email ? ' · почта оставлена' : ' · без почты') +
+      (q.source === 'archive' ? ' · архив' : '');
     var techno = '<span class="petit" style="opacity:.7">vid ' + esc((q.vid || '—').slice(0, 14)) +
-      ' · ip ' + esc(q.ip || '—') + (q.same ? ' · 🙋 таких же: ' + q.same : '') + '</span>';
+      ' · ip ' + esc(q.ip || '—') + (q.same ? ' · таких же: ' + q.same : '') + '</span>';
     var btns = [];
     if (pendingQ && !q.quiet) {
-      btns.push('<button type="button" class="btn btn-ink" data-qa-act="publish" data-qa-id="' + q.id + '">📮 Опубликовать с ответом</button>');
-      if (!q.publish_consent) btns.push('<span class="petit">⚠️ Нет отметки об отдельном разрешении на публикацию</span>');
+      btns.push('<button type="button" class="btn btn-ink" data-qa-act="publish" data-qa-id="' + q.id + '">Опубликовать с ответом</button>');
+      if (!q.publish_consent) btns.push('<span class="petit">Нет отметки об отдельном разрешении на публикацию</span>');
     }
-    if (pendingQ && q.email) btns.push('<button type="button" class="btn btn-line" data-qa-act="answer_quiet" data-qa-id="' + q.id + '">🤫 Ответить письмом' + (q.quiet ? '' : ' (без публикации)') + '</button>');
+    if (pendingQ && q.email) btns.push('<button type="button" class="btn btn-line" data-qa-act="answer_quiet" data-qa-id="' + q.id + '">Ответить письмом' + (q.quiet ? '' : ' (без публикации)') + '</button>');
     if (pendingQ && q.quiet && !q.email) btns.push('<span class="petit">Тихий вопрос без почты — ответить некуда; можно отклонить.</span>');
-    if (!pendingQ) btns.push('<button type="button" class="btn btn-line" data-qa-act="save" data-qa-id="' + q.id + '">💾 Сохранить правки</button>');
+    if (!pendingQ) btns.push('<button type="button" class="btn btn-line" data-qa-act="save" data-qa-id="' + q.id + '">Сохранить правки</button>');
     if (q.status === 'published') {
-      btns.push('<button type="button" class="btn btn-line" data-qa-act="' + (q.pinned ? 'unpin' : 'pin') + '" data-qa-id="' + q.id + '">' + (q.pinned ? '📌 Открепить' : '📌 Закрепить сверху') + '</button>');
-      btns.push('<button type="button" class="btn btn-line" data-qa-act="unpublish" data-qa-id="' + q.id + '">👁 Снять с сайта</button>');
+      btns.push('<button type="button" class="btn btn-line" data-qa-act="' + (q.pinned ? 'unpin' : 'pin') + '" data-qa-id="' + q.id + '">' + (q.pinned ? 'Открепить' : 'Закрепить сверху') + '</button>');
+      btns.push('<button type="button" class="btn btn-line" data-qa-act="unpublish" data-qa-id="' + q.id + '">Снять с сайта</button>');
     }
     if ((q.status === 'answered' || q.status === 'rejected') && !q.quiet) {
-      btns.push('<button type="button" class="btn btn-line" data-qa-act="publish" data-qa-id="' + q.id + '">📮 ' + (q.status === 'rejected' ? 'Вернуть и опубликовать' : 'Опубликовать') + '</button>');
+      btns.push('<button type="button" class="btn btn-line" data-qa-act="publish" data-qa-id="' + q.id + '">' + (q.status === 'rejected' ? 'Вернуть и опубликовать' : 'Опубликовать') + '</button>');
     }
-    if (pendingQ) btns.push('<button type="button" class="btn btn-line" data-qa-act="reject" data-qa-id="' + q.id + '">🚫 Отклонить</button>');
-    btns.push('<button type="button" class="btn btn-line" data-qa-act="ban" data-qa-id="' + q.id + '" style="color:var(--wax)">⛔ Бан автора</button>');
-    btns.push('<button type="button" class="btn btn-line" data-qa-act="delete" data-qa-id="' + q.id + '" style="color:var(--wax)">🗑 Удалить</button>');
+    if (pendingQ) btns.push('<button type="button" class="btn btn-line" data-qa-act="reject" data-qa-id="' + q.id + '">Отклонить</button>');
+    btns.push('<button type="button" class="btn btn-line is-danger" data-qa-act="ban" data-qa-id="' + q.id + '">Бан автора</button>');
+    btns.push('<button type="button" class="btn btn-line is-danger" data-qa-act="delete" data-qa-id="' + q.id + '">Удалить</button>');
     return '<div class="ag-rv ' + (pendingQ ? 'pending' : '') + '" id="qaRow-' + q.id + '">' +
       '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">' +
       '<b>Входящий ' + esc(q.num) + '</b>' +
-      '<span class="rv-meta">' + (QA_ST[q.status] || esc(q.status)) + (q.pinned ? ' · 📌' : '') + ' · ' + dt(q.created_at) + '</span></div>' +
+      '<span class="rv-meta">' + (QA_ST[q.status] || esc(q.status)) + (q.pinned ? ' · закреплён' : '') + ' · ' + dt(q.created_at) + '</span></div>' +
       '<p class="rv-meta" style="margin-top:4px">' + who + '</p>' + raw +
       '<div style="display:grid;gap:8px;margin-top:8px">' +
-      '<label class="petit" for="qaQ-' + q.id + '">Вопрос (публикуемая формулировка — чистите деанон и резкие формулировки)' + (draft.q != null ? ' · <span style="color:var(--wax)">черновик не сохранён</span>' : '') + '</label>' +
+      '<label class="petit" for="qaQ-' + q.id + '">Вопрос (публикуемая формулировка — чистите деанон и резкие формулировки)' + (draft.q != null ? ' · <span class="is-danger">черновик не сохранён</span>' : '') + '</label>' +
       '<textarea id="qaQ-' + q.id + '" class="ag-inp" rows="3" maxlength="600">' + esc(draft.q != null ? draft.q : q.question) + '</textarea>' +
-      '<label class="petit" for="qaA-' + q.id + '">Ответ мастера' + (draft.a != null ? ' · <span style="color:var(--wax)">черновик не сохранён</span>' : '') + '</label>' +
+      '<label class="petit" for="qaA-' + q.id + '">Ответ мастера' + (draft.a != null ? ' · <span class="is-danger">черновик не сохранён</span>' : '') + '</label>' +
       '<textarea id="qaA-' + q.id + '" class="ag-inp" rows="' + (pendingQ ? 6 : 4) + '" maxlength="3000" placeholder="По делу, ясно, с уместным переходом к услуге">' + esc(draft.a != null ? draft.a : (q.answer || '')) + '</textarea>' +
       qaTagSelect(q.id, q.tag) + '</div>' +
       '<div class="ag-actrow" style="margin-top:10px;flex-wrap:wrap">' + btns.join('') + '</div>' +
@@ -4005,7 +4207,7 @@ function initGodEye() {
       return '<a class="ag-linkbtn" href="mailto:' + e + '">' + icoMail(14) + ' ' + e + '</a>';
     if (/^@/.test(s) || /t\.me\//.test(s)) {
       var tg = s.replace(/^@/, '').replace(/^(https?:\/\/)?t\.me\//, '');
-      return '<a class="ag-linkbtn" href="https://t.me/' + esc(tg) + '" target="_blank" rel="noopener">✈️ ' + e + '</a>';
+      return '<a class="ag-linkbtn" href="https://t.me/' + esc(tg) + '" target="_blank" rel="noopener">' + e + '</a>';
     }
     return '<button type="button" class="ag-linkbtn" data-copy="' + e + '" title="скопировать">' + e + ' ' + icoCopy(14) + '</button>';
   }
@@ -4108,7 +4310,7 @@ function initGodEye() {
 
   /* «Набор месяца»: квота-политика + брони мастера (место занято договорённостью
      вне картотеки). Счётчик сайта = заявки картотеки (сами) + брони (руками).
-     Быстрые ➕/➖ сохраняют сразу — то же самое умеет /slots в боте. */
+     Быстрые / сохраняют сразу — то же самое умеет /slots в боте. */
   function slotsSec(ov) {
     var s = ov.slots || { quota: ov.slots_quota || 0, taken: ov.slots_taken || 0, auto: 0, extra: 0 };
     var free = Math.max(0, (s.quota || 0) - (s.taken || 0));
@@ -4268,7 +4470,7 @@ function initGodEye() {
       confirmDlg({
         title: 'Клиент отметил оплату — сверьте поступление',
         text: whatTxt + ' Отметка клиента ждёт вашей сверки: проверьте деньги и нажмите «Получена» в плане оплат — тогда файл можно передавать. Передать без сверки — на ваш риск.',
-        okLabel: '⚠️ Передать без сверки', noLabel: 'Не передавать', danger: true
+        okLabel: 'Передать без сверки', noLabel: 'Не передавать', danger: true
       }).then(function (res) { if (res.ok) retry(); });
       return;
     }
@@ -4277,7 +4479,7 @@ function initGodEye() {
       text: whatTxt + (deliver
         ? ' По правилу мастерской выставьте счёт («Результат части подготовлен / Финальный результат подготовлен» — файл придержится, клиент получит реквизиты и кассу) или покажите защищённый предпросмотр. Передать оригинал без оплаты — на ваш риск.'
         : ' Если это результат позиции — не отправляйте оригинал: выставьте счёт за этап или пошлите защищённый предпросмотр. Обычная передача без оплаты — на ваш риск.'),
-      okLabel: deliver ? '⚠️ Всё равно передать' : '⚠️ Отправить как есть',
+      okLabel: deliver ? 'Всё равно передать' : 'Отправить как есть',
       noLabel: 'Не отправлять', danger: true
     }).then(function (res) { if (res.ok) retry(); });
   }
@@ -4303,7 +4505,7 @@ function initGodEye() {
     }).then(function (resp) { return resp.json(); })
       .then(function (r) {
         if (!r.ok && r.error === 'stage_unpaid') {
-          if (note) note.textContent = '✋ Файл придержан: этап не оплачен (' + money(r.debt) + ' ₽).';
+          if (note) note.textContent = 'Файл придержан: этап не оплачен (' + money(r.debt) + ' ₽).';
           unpaidDialog(r, deliver, function () { sendAdminFiles(files, deliver, preview, true); });
           return;
         }
@@ -4315,7 +4517,7 @@ function initGodEye() {
           return;
         }
         if (preview) {
-          if (note) note.textContent = '✅ Пакет из ' + (r.file_count || files.length) + ' файлов подготовлен. Клиент его ещё не видел — откройте все проверочные копии в рабочей ветке и подтвердите отправку.';
+          if (note) note.textContent = 'Пакет из ' + (r.file_count || files.length) + ' файлов подготовлен. Клиент его ещё не видел — откройте все проверочные копии в рабочей ветке и подтвердите отправку.';
           toast('Пакет готов к вашей проверке');
         } else {
           if (note) note.textContent = deliver ? 'Передано — клиент получил кнопки приёмки' : 'Файл у клиента';
@@ -4699,7 +4901,7 @@ function initGodEye() {
         if (!res.ok) return;
         api('/admin/subs/' + sOkId + '/confirm', {}).then(function (r) {
           if (!r.ok) { toast(errSay(r.error)); return; }
-          toast('Подписка активирована — клиент уведомлён ⭐');
+          toast('Подписка активирована — клиент уведомлён');
           loadSubs(); refreshSilent();
         });
       });
@@ -4814,7 +5016,7 @@ function initGodEye() {
       var pOn = pauseBtn.getAttribute('data-on') === '1';
       if (!pOn) {
         api('/admin/orders/' + st.sel + '/pause', { on: false })
-          .then(function (r) { afterOrder(r, '▶️ Пауза снята — клиент уведомлён'); });
+          .then(function (r) { afterOrder(r, 'Пауза снята — клиент уведомлён'); });
         return;
       }
       confirmDlg({
@@ -4825,7 +5027,7 @@ function initGodEye() {
       }).then(function (res) {
         if (!res.ok) return;
         api('/admin/orders/' + st.sel + '/pause', { on: true, note: res.value })
-          .then(function (r) { afterOrder(r, '⏸ Дело на паузе — клиент уведомлён'); });
+          .then(function (r) { afterOrder(r, 'Дело на паузе — клиент уведомлён'); });
       });
       return;
     }
@@ -4939,7 +5141,7 @@ function initGodEye() {
             toast(errSay(r && r.error));
             return;
           }
-          toast('📮 Письма включены на ' + (r.contact || mto));
+          toast('Письма включены на ' + (r.contact || mto));
           loadCard(st.sel);
         });
       });
@@ -5073,7 +5275,7 @@ function initGodEye() {
           toast('Не удалось выпустить спецификацию' + detail);
           return;
         }
-        afterOrder(r, 'Предложение и спецификация ушли клиенту 💰');
+        afterOrder(r, 'Предложение и спецификация ушли клиенту');
       });
       return;
     }
@@ -5120,7 +5322,7 @@ function initGodEye() {
     if (t.closest('#agFixAck')) {
       api('/admin/orders/' + st.sel + '/fix_ack', {}).then(function (r) {
         if (r && !r.ok && r.error === 'already') { toast('Клиенту уже сообщали — после нового запроса правок кнопка оживёт'); return; }
-        afterOrder(r, r && r.ok ? '🛠 Клиенту сообщено: правки в работе' : null);
+        afterOrder(r, r && r.ok ? 'Клиенту сообщено: правки в работе' : null);
         if (r && !r.ok) toast(errSay(r.error));
       });
       return;
@@ -5134,7 +5336,7 @@ function initGodEye() {
       }).then(function (res) {
         if (!res.ok) return;
         api('/admin/orders/' + st.sel + '/final_ready', {})
-          .then(function (r) { afterOrder(r, r.ok ? '🏁 Счёт на остаток ушёл клиенту' : null); });
+          .then(function (r) { afterOrder(r, r.ok ? 'Счёт на остаток ушёл клиенту' : null); });
       });
       return;
     }
@@ -5150,7 +5352,7 @@ function initGodEye() {
         api('/admin/orders/' + st.sel + '/part_ready', {})
           .then(function (r) {
             if (r.ok && r.paid_already) { afterOrder(r, 'Этап уже оплачен — просто передайте часть файлом'); return; }
-            afterOrder(r, r.ok ? '📣 Счёт за часть ушёл клиенту — файл придержите' : null);
+            afterOrder(r, r.ok ? 'Счёт за часть ушёл клиенту — файл придержите' : null);
           });
       });
       return;
@@ -5180,7 +5382,7 @@ function initGodEye() {
         api('/admin/broadcast', { text: btxt2.trim(), segment: seg2 })
           .then(function (r) {
             if (!r.ok) { toast(r.error === 'busy' ? 'Предыдущая рассылка ещё идёт' : 'Не получилось'); return; }
-            toast('📣 Рассылка пошла — статус ниже');
+            toast('Рассылка пошла — статус ниже');
             bcastStatus({ running: true, sent: 0, total: r.total, failed: 0 });
           });
       });
@@ -5198,11 +5400,11 @@ function initGodEye() {
             if (!r.ok && r.error === 'stage_unpaid') {
               unpaidDialog(r, true, function () {
                 api('/admin/orders/' + st.sel + '/deliver', { force: true })
-                  .then(function (r2) { afterOrder(r2, '📦 Передача результата зафиксирована (без оплаты — в хронике)'); });
+                  .then(function (r2) { afterOrder(r2, 'Передача результата зафиксирована (без оплаты — в хронике)'); });
               });
               return;
             }
-            afterOrder(r, '📦 На проверке у клиента');
+            afterOrder(r, 'На проверке у клиента');
           });
       });
       return;
@@ -5220,7 +5422,7 @@ function initGodEye() {
           }
           var where = r.delivered_tg ? 'в Telegram' + (r.mailed ? ' и на почту' : '')
             : (r.mailed ? 'на почту' : 'в кабинет (там счёт и так виден)');
-          afterOrder(r, '🔔 Напоминание ' + money(r.due) + ' ₽ ушло ' + where);
+          afterOrder(r, 'Напоминание ' + money(r.due) + ' ₽ ушло ' + where);
         });
       return;
     }
@@ -5239,13 +5441,13 @@ function initGodEye() {
     }
     if (t.closest('#agResume')) {
       api('/admin/orders/' + st.sel + '/resume', {})
-        .then(function (r) { afterOrder(r, 'Заказ возобновлён — клиент получил предложение 🔄'); });
+        .then(function (r) { afterOrder(r, 'Заказ возобновлён — клиент получил предложение'); });
       return;
     }
     var arch = t.closest('#agArch');
     if (arch) {
       api('/admin/orders/' + st.sel + '/archive', { on: arch.getAttribute('data-on') === '1' })
-        .then(function (r) { afterOrder(r, arch.getAttribute('data-on') === '1' ? 'Убрано в архив 🗄' : 'Возвращено из архива'); });
+        .then(function (r) { afterOrder(r, arch.getAttribute('data-on') === '1' ? 'Убрано в архив' : 'Возвращено из архива'); });
       return;
     }
     if (t.closest('#agMsgSend')) {
@@ -5269,7 +5471,7 @@ function initGodEye() {
           if (!r.ok) { toast(errSay(r.error, 'Заметка не сохранилась.')); return; }
           if (st.card && st.card.id === noteOrder) st.card.admin_note = noteText;
           if (r.order) st.card = r.order;
-          toast('Заметка сохранена 📝');
+          toast('Заметка сохранена ');
         });
       return;
     }
@@ -5317,8 +5519,8 @@ function initGodEye() {
           if (!r.ok) { toast('Не получилось'); return; }
           st.ov = st.ov || {}; st.ov.maintenance = r.maintenance;
           toast(mtKey === 'site'
-            ? (r.maintenance.site ? 'Сайт закрыт на техработы ⏸' : 'Сайт снова открыт ✅')
-            : (r.maintenance.bot ? 'Бот на антракте ⏸' : 'Бот снова отвечает ✅'));
+            ? (r.maintenance.site ? 'Сайт закрыт на техработы' : 'Сайт снова открыт')
+            : (r.maintenance.bot ? 'Бот на антракте' : 'Бот снова отвечает'));
           if (st.tab === 'settings') drawBody();
         });
       };
@@ -5350,7 +5552,7 @@ function initGodEye() {
         }
       }
       var qaDone = {
-        publish: 'Опубликовано в приёмной 📮', answer_quiet: 'Ответ ушёл письмом 🤫',
+        publish: 'Опубликовано в приёмной', answer_quiet: 'Ответ ушёл письмом',
         save: 'Сохранено', reject: 'Отклонён', unpublish: 'Снят с сайта',
         pin: 'Закреплён сверху', unpin: 'Откреплён', delete: 'Удалён навсегда',
         ban: 'Автор заблокирован — его вопросы больше не попадут в очередь'
@@ -5393,7 +5595,7 @@ function initGodEye() {
         api('/admin/reviews/' + rv.getAttribute('data-rv') + '/moderate', { approve: ok })
           .then(function (r) {
             if (!r.ok) { toast('Не получилось'); return; }
-            toast(ok ? 'Опубликован на сайте ✅' : 'Не публикуется 🚫');
+            toast(ok ? 'Опубликован на сайте' : 'Снят с сайта');
             loadTab();
             S.api.get('/admin/overview').then(function (r2) { if (r2.ok) { st.ov = r2; drawNav(); } });
           });
@@ -5844,28 +6046,28 @@ function initGodEye() {
 
   /* полка: порядок — по частоте в базе */
   var WZ_SHELF = [
-    { id: 'dip_hum',  ico: '🎓', nm: 'ВКР · Диагностика',
+    { id: 'dip_hum',  ico: 'stPriced', nm: 'ВКР · Диагностика',
       sub: 'гуманитарные / экономика · аудит исходника',
       type: 'diplom', disc: 'hum', term: 'free', tier: 'base' },
-    { id: 'dip_law',  ico: '🎓', nm: 'ВКР · Диагностика',
+    { id: 'dip_law',  ico: 'stPriced', nm: 'ВКР · Диагностика',
       sub: 'юриспруденция / педагогика / психология · аудит исходника',
       type: 'diplom', disc: 'law', term: 'free', tier: 'base' },
-    { id: 'dip_urg',  ico: '🔥', nm: 'ВКР · срочная диагностика',
+    { id: 'dip_urg',  ico: 'hourglass', nm: 'ВКР · срочная диагностика',
       sub: 'юриспруденция · до 14 дней · Диагностика',
       type: 'diplom', disc: 'law', term: 'urgent', tier: 'base' },
-    { id: 'dip_turn', ico: '🎓', nm: 'ВКР · Редактура',
+    { id: 'dip_turn', ico: 'stFix', nm: 'ВКР · Редактура',
       sub: 'гуманитарные · видимые правки в исходнике',
       type: 'diplom', disc: 'hum', term: 'free', tier: 'turn' },
-    { id: 'dip_vip',  ico: '👑', nm: 'ВКР · Сопровождение',
+    { id: 'dip_vip',  ico: 'reviews', nm: 'ВКР · Сопровождение',
       sub: 'редактура, консультации и репетиция ответов',
       type: 'diplom', disc: 'hum', term: 'free', tier: 'vip' },
-    { id: 'crs',      ico: '📘', nm: 'Курсовая · Диагностика',
+    { id: 'crs',      ico: 'content', nm: 'Курсовая · Диагностика',
       sub: 'гуманитарные · аудит исходника',
       type: 'course', disc: 'hum', term: 'free', tier: 'base' },
-    { id: 'crs_emp',  ico: '📊', nm: 'Исследовательская часть · Диагностика',
+    { id: 'crs_emp',  ico: 'visits', nm: 'Исследовательская часть · Диагностика',
       sub: 'проверка методологии и данных клиента',
       type: 'course_emp', disc: 'law', term: 'free', tier: 'base' },
-    { id: 'mag',      ico: '🎓', nm: 'Магистерское исследование',
+    { id: 'mag',      ico: 'cases', nm: 'Магистерское исследование',
       sub: 'юриспруденция · Диагностика исходника',
       type: 'master', disc: 'law', term: 'free', tier: 'base' }
   ];
@@ -6208,13 +6410,13 @@ function initGodEye() {
       s = WZ_SHELF[i];
       q = wzQuote(s);
       h += '<button type="button" class="wz-card" data-wz-p="' + s.id + '">' +
-        '<span class="wz-ico">' + s.ico + '</span>' +
+        '<span class="wz-ico">' + ico(s.ico, 20) + '</span>' +
         '<span class="wz-nm">' + esc(s.nm) + '</span>' +
         '<span class="wz-sub">' + esc(s.sub) + '</span>' +
         '<span class="wz-pr">' + wzMoney(q.low) + ' ₽</span></button>';
     }
     h += '<button type="button" class="wz-card wz-own" data-wz-p="own">' +
-      '<span class="wz-ico">⚙️</span><span class="wz-nm">Своё сочетание</span>' +
+      '<span class="wz-ico">' + ico('settings', 20) + '</span><span class="wz-nm">Своё сочетание</span>' +
       '<span class="wz-sub">статья, практика, реферат, отдельные услуги</span></button>';
     return h + '</div><p class="ag-note">Заготовки собраны по истории мастерской. ' +
       'Не подошло — «Своё сочетание»: там все типы работ, услуги и коэффициенты.</p>';
