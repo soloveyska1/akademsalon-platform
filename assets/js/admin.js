@@ -1676,22 +1676,33 @@ function initGodEye() {
       if (o.paused) return;
       var left = dlLeft(o), quiet = silentDays(o);
       var r = null;
+      /* focus — блок карточки, из-за которого дело попало в очередь.
+         Очередь называет причину, значит знает и адрес: карточка встанет
+         на нужном месте, а не заставит искать его глазами заново. */
       if (left !== null && left < 0) {
-        r = { sc: 100 + Math.min(-left, 30), why: 'срок вышел ' + (-left) + ' дн назад', cls: 'fire' };
+        r = { sc: 100 + Math.min(-left, 30), why: 'срок вышел ' + (-left) + ' дн назад', cls: 'fire',
+              focus: 'handoff', act: 'Открыть передачу' };
       } else if (left !== null && left <= 2 && 'work check fix prepay priced new'.indexOf(o.status) >= 0) {
-        r = { sc: 96 - left, why: left === 0 ? 'срок результата сегодня' : left === 1 ? 'срок результата завтра' : 'срок результата через 2 дня', cls: 'fire' };
+        r = { sc: 96 - left, why: left === 0 ? 'срок результата сегодня' : left === 1 ? 'срок результата завтра' : 'срок результата через 2 дня', cls: 'fire',
+              focus: 'handoff', act: 'Открыть передачу' };
       } else if (o.claimed) {
-        r = { sc: 85, why: 'клиент отметил оплату — сверьте и подтвердите', cls: 'act' };
+        r = { sc: 85, why: 'клиент отметил оплату — сверьте и подтвердите', cls: 'act',
+              focus: 'plan', act: 'Открыть план оплат' };
       } else if (o.status === 'new') {
-        r = { sc: 80, why: 'новая заявка — посмотрите и назначьте цену', cls: 'act' };
+        r = { sc: 80, why: 'новая заявка — посмотрите и назначьте цену', cls: 'act',
+              focus: 'plan', act: 'Назначить цену' };
       } else if (o.status === 'fix') {
-        r = { sc: 75, why: 'клиент ждёт правки', cls: 'act' };
+        r = { sc: 75, why: 'клиент ждёт правки', cls: 'act',
+              focus: 'feed', act: 'Открыть переписку' };
       } else if (o.status === 'priced' && quiet >= 2) {
-        r = { sc: 60, why: 'предложение висит ' + quiet + ' дн — напомните о себе', cls: '' };
+        r = { sc: 60, why: 'предложение висит ' + quiet + ' дн — напомните о себе', cls: '',
+              focus: 'feed', act: 'Написать клиенту' };
       } else if (o.status === 'prepay' && quiet >= 2) {
-        r = { sc: 58, why: 'счёт не оплачен ' + quiet + ' дн — стоит напомнить', cls: '' };
+        r = { sc: 58, why: 'счёт не оплачен ' + quiet + ' дн — стоит напомнить', cls: '',
+              focus: 'plan', act: 'Открыть план оплат' };
       } else if (o.status === 'check' && quiet >= 5) {
-        r = { sc: 50, why: 'на проверке ' + quiet + ' дн — поторопите с приёмкой', cls: '' };
+        r = { sc: 50, why: 'на проверке ' + quiet + ' дн — поторопите с приёмкой', cls: '',
+              focus: 'feed', act: 'Написать клиенту' };
       }
       if (!r) return;
       r.o = o;
@@ -1761,10 +1772,12 @@ function initGodEye() {
       ? queue.slice(0, 4).map(function (r) {
           var o = r.o;
           var time = o.deadline_date ? dmLabel(o.deadline_date) : '—';
-          return '<button type="button" data-open-order="' + o.id + '"><span>' + esc(time) + '</span>' +
+          return '<button type="button" data-open-order="' + o.id + '" data-focus="' +
+            esc(r.focus || '') + '" title="' + esc(r.act || 'Открыть дело') + '"><span>' + esc(time) + '</span>' +
             '<i class="admin-status admin-status--' + (r.cls === 'fire' ? 'attention' : 'work') + '"></i>' +
             '<div><strong>' + esc(r.why) + '</strong><small>№' + o.id + ' · ' +
-            esc(o.work_label || 'Заявка') + '</small></div><b>→</b></button>';
+            esc(o.work_label || 'Заявка') + '</small></div>' +
+            '<b class="admin-queue__act">' + esc(r.act || 'Открыть') + ' →</b></button>';
         }).join('')
       : loading
         ? '<div class="admin-queue-empty" aria-busy="true"><i class="admin-status admin-status--work"></i>' +
@@ -3326,7 +3339,7 @@ function initGodEye() {
         '<span class="pl-sum">' + money(p.amount) + ' ₽</span>' + act + '</div>';
     }).join('');
     var paid = (o.payments || []).filter(function (p) { return p.status === 'paid'; });
-    return '<div class="ag-sec"><span class="caps">Цена и план оплаты' +
+    return '<div class="ag-sec" data-block="plan"><span class="caps">Цена и план оплаты' +
       '<span class="sub">' + (o.sub_discount ? 'скидка подписки: −' + money(o.sub_discount) + ' · ' : '') +
       'бонусами списано: ' + money(o.bonus_spent || 0) + ' · деньгами всего: ' + money(o.due_total || o.price || 0) + ' ₽</span></span>' +
       '<div class="ag-actrow">' +
@@ -3403,7 +3416,7 @@ function initGodEye() {
         : (announced && 'work fix'.indexOf(o.status) >= 0
           ? ' · счёт за часть ' + o.part_ready + ' выставлен, файл придержан' : '')) +
       '</span></span>';
-    if (!live) return '<div class="ag-sec">' + head + partsCells(o, total) + '</div>';
+    if (!live) return '<div class="ag-sec" data-block="handoff">' + head + partsCells(o, total) + '</div>';
 
     var hp = o.handoff_phase || '';
     var billingAction = stageBillingAction(o, total);
@@ -3455,7 +3468,7 @@ function initGodEye() {
       '<p class="ag-note">«Передать ' + esc(deliverWord) + ' файлом» ставит дело на проверку и даёт клиенту кнопки приёмки. ' +
       '«Просто отправить файл» кладёт документ в дело без приёмки. Обе отправки попадают в хронику.</p>' +
       '</details>';
-    return '<div class="ag-sec">' + head +
+    return '<div class="ag-sec" data-block="handoff">' + head +
       '<p class="ag-note"><b>' + esc(state) + '</b></p>' +
       partsCells(o, total) +
       (billingAction || action ? '<div class="ag-actrow">' + billingAction + action + '</div>' : '') +
@@ -3489,7 +3502,7 @@ function initGodEye() {
       return '<div class="ag-m' + (me ? ' master' : '') + '"><span class="who">' + (me ? 'Мастерская' : 'Клиент') + ' · ' + dt(f.at) + '</span>' +
         '<div class="txt">' + body + '</div></div>';
     }).join('');
-    return '<div class="ag-sec"><span class="caps">Переписка' +
+    return '<div class="ag-sec" data-block="feed"><span class="caps">Переписка' +
       '<span class="sub">клиент видит её в кабинете' + (o.tg_linked ? ' и в Telegram' : '') + '</span></span>' +
       '<div class="ag-feed" id="agFeed">' + (html || '<div class="ag-sys">пока пусто</div>') + '</div>' +
       '<div class="ag-tpls">' + TPL.map(function (t, i) {
@@ -3924,6 +3937,20 @@ function initGodEye() {
         }
       }, 0);
     }
+    /* Пришли из очереди с адресом блока — встаём на нём и подсвечиваем один
+       раз. Дальше карточка ведёт себя как обычно: адрес одноразовый. */
+    if (st.cardFocus) {
+      var want = st.cardFocus;
+      st.cardFocus = '';
+      setTimeout(function () {
+        var target = box.querySelector('[data-block="' + want + '"]');
+        if (!target) return;
+        try { target.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+        catch (e) { target.scrollIntoView(); }
+        target.classList.add('is-called');
+        setTimeout(function () { target.classList.remove('is-called'); }, 1800);
+      }, 60);
+    }
     st.feedStick = false;
     st._feedOrder = o.id;
   }
@@ -4042,44 +4069,75 @@ function initGodEye() {
 
       activeCase +
 
-      '<div class="cl-stats">' +
-        '<span><b>' + orders.length + '</b><i>' + anPl(orders.length, 'дело', 'дела', 'дел') + '</i></span>' +
-        '<span><b>' + activeN + '</b><i>в работе</i></span>' +
-        '<span><b>' + doneN + '</b><i>завершено</i></span>' +
-      '</div>' +
+      /* Три больших ящика под три однозначных числа занимали полосу во всю
+         ширину и весили больше, чем сами цифры. Одна строка-итог. */
+      '<p class="cl-tally"><b>' + orders.length + '</b> ' +
+        anPl(orders.length, 'дело', 'дела', 'дел') + ' всего · <b>' + activeN +
+        '</b> в работе · <b>' + doneN + '</b> ' +
+        anPl(doneN, 'завершено', 'завершено', 'завершено') + '</p>' +
 
       (c.referrer ? '<p class="ag-meta">По приглашению: ' + esc(c.referrer.name || 'клиент') + '</p>' : '') +
       (refs.length ? '<p class="ag-meta">Приглашённые клиенты: ' + refs.map(function (r) {
         return esc(r.name || 'клиент');
       }).join(', ') + '</p>' : '') +
 
+      /* Бонусный счёт переписан: остаток — крупной цифрой, сгорание —
+         отмеченной строкой, а не серым хвостом под заголовком, форма
+         проводки подписана (это операция с деньгами клиента, а не поиск),
+         журнал — таблицей со знаком, а не потоком моношрифта. */
       '<section class="ag-sec client-profile__bonus" id="clBonusPanel"><header><h3>Бонусный счёт</h3>' +
-      '<span class="sub">' + money(bonus.balance || 0) + ' бонусов</span></header>' +
-      (bonus.expiring.length ? '<p class="petit">сгорает: ' + bonus.expiring.map(function (e) { return e.amount + ' — ' + dt(e.at).slice(0, 5); }).join(', ') + '</p>' : '') +
-      '<div class="ag-actrow"><input type="number" id="agBDelta" placeholder="± сумма">' +
-      '<input type="text" id="agBNote" placeholder="Комментарий (клиент увидит)">' +
-      '<button type="button" class="btn btn-line" id="agBApply">Провести</button></div>' +
-      '<p class="ag-note">Плюс — начислить (срок 90 дней), минус — списать. Начисление придёт клиенту уведомлением.</p>' +
-      '<div class="ag-ev client-profile__ledger">' +
-      ledger.map(function (r) {
-        var sign = r.delta > 0 ? '+' : '';
-        return dt(r.at) + ' · <b>' + sign + r.delta + '</b> · ' + esc(r.label) + (r.note ? ' — ' + esc(r.note) : '');
-      }).join('<br>') + '</div></section>' +
+      '<span class="sub">' + (bonus.expiring.length ? 'срок у части баллов истекает' : 'начисления и списания') + '</span></header>' +
+      '<div class="cl-bonus__figure"><b>' + money(bonus.balance || 0) + '</b><i>' +
+        anPl(bonus.balance || 0, 'бонус', 'бонуса', 'бонусов') + ' на счёте</i></div>' +
+      (bonus.expiring.length
+        ? '<p class="cl-bonus__burn">' + ico('hourglass', 14) + '<span>Сгорает: ' +
+          bonus.expiring.map(function (e) { return '<b>' + money(e.amount) + '</b> — ' + dt(e.at).slice(0, 5); }).join(', ') +
+          '</span></p>'
+        : '') +
+      '<div class="cl-bonus__form">' +
+        '<label class="cl-bonus__field"><span>Сумма</span>' +
+          '<input type="number" id="agBDelta" placeholder="+500 или −500" inputmode="numeric"></label>' +
+        '<label class="cl-bonus__field cl-bonus__field--wide"><span>Комментарий — клиент его увидит</span>' +
+          '<input type="text" id="agBNote" placeholder="за что начисляем или списываем"></label>' +
+        '<button type="button" class="btn btn-wax" id="agBApply">Провести</button>' +
+      '</div>' +
+      '<p class="ag-note">Плюс — начислить, срок жизни 90 дней. Минус — списать. О начислении клиент получит уведомление.</p>' +
+      /* Журнал был потоком строк моношрифта, склеенных <br>: дата, знак и
+         основание сливались. Три колонки — когда, за что, сколько. */
+      (ledger.length
+        ? '<div class="cl-ledger client-profile__ledger">' +
+          ledger.map(function (r) {
+            var neg = (r.delta || 0) < 0;
+            return '<div class="cl-ledger__row">' +
+              '<time>' + dt(r.at) + '</time>' +
+              '<span>' + esc(r.label) + (r.note ? ' <i>— ' + esc(r.note) + '</i>' : '') + '</span>' +
+              '<b class="' + (neg ? 'neg' : 'pos') + '">' + (neg ? '−' : '+') +
+                money(Math.abs(r.delta || 0)) + '</b></div>';
+          }).join('') + '</div>'
+        : '<p class="ag-note">Движений по счёту пока не было.</p>') + '</section>' +
 
       '<section class="ag-sec client-profile__orders" id="clOrdersPanel"><header><h3>Дела клиента</h3>' +
       '<span class="sub">' + orders.length + '</span></header>' +
-      (orders.length ? orders.map(function (o) {
-        return '<div class="ag-file client-order-row"><span class="fname">' +
-          ico(stMeta(o.status)[0], 13, 'st-' + esc(o.status)) +
-          '<b>№' + o.id + '</b> · ' + esc(o.work_label || 'Заявка') +
-          (o.price ? ' · ' + money(o.price) + ' ₽' : '') + '</span>' +
-          '<button type="button" class="ag-linkbtn" data-open-order="' + o.id + '">открыть</button></div>';
-      }).join('') : '<p class="ag-note">Дел пока нет.</p>') + '</section>' +
+      /* Дела клиента ехали в разметке файловой строки: имя услуги, цена и
+         «открыть» стояли в одну линию без колонок и без статуса. */
+      (orders.length
+        ? '<div class="cl-orders">' + orders.map(function (o) {
+            return '<button type="button" class="cl-orders__row" data-open-order="' + o.id + '">' +
+              '<span class="cl-orders__id">№' + o.id + '</span>' +
+              '<span class="cl-orders__task">' + esc(o.work_label || 'Заявка') + '</span>' +
+              stampShort(o.status) +
+              '<span class="cl-orders__sum">' + (o.price ? money(o.price) + ' ₽' : '—') + '</span>' +
+              '<span class="cl-orders__go" aria-hidden="true">→</span></button>';
+          }).join('') + '</div>'
+        : '<p class="ag-note">Дел пока нет.</p>') + '</section>' +
 
       '<section class="ag-sec client-profile__access" id="clAccessPanel"><header><h3>Доступ и безопасность</h3></header>' +
       '<div class="ag-actrow">' +
       '<button type="button" class="btn btn-line" data-imp-client="' + c.id + '">Открыть кабинет клиента</button>' +
-      '<button type="button" class="btn ' + (c.banned ? 'btn-line' : 'btn-wax') + '" id="agBan" data-on="' + (c.banned ? '0' : '1') + '">' +
+      /* Блокировка — не главное действие карточки: сургучная заливка
+         звала нажать её первой. Обводка и сургучное слово. */
+      '<button type="button" class="btn btn-line' + (c.banned ? '' : ' is-danger') +
+      '" id="agBan" data-on="' + (c.banned ? '0' : '1') + '">' +
       (c.banned ? 'Снять блокировку' : 'Заблокировать клиента') + '</button></div>' +
       '<p class="ag-note">«Открыть кабинет» — тихий вход на правах клиента в новой вкладке: посмотреть его глазами, ' +
       'поправить, помочь. Клиент ничего не заметит — визиты и метки «прочитано» не трогаются.<br>' +
@@ -4925,7 +4983,15 @@ function initGodEye() {
       return;
     }
     var oo = t.closest('[data-open-order]');
-    if (oo) { st.tab = 'orders'; st.filter = ''; st.q = ''; st.sel = parseInt(oo.getAttribute('data-open-order'), 10); drawNav(); loadTab(); return; }
+    if (oo) {
+      st.tab = 'orders'; st.filter = ''; st.q = '';
+      st.sel = parseInt(oo.getAttribute('data-open-order'), 10);
+      /* Открыть карточку мало: мастер всё равно ищет глазами тот блок,
+         из-за которого дело попало в очередь. Очередь знает, какой это
+         блок, и говорит карточке, куда встать. */
+      st.cardFocus = oo.getAttribute('data-focus') || '';
+      drawNav(); loadTab(); return;
+    }
     var oc = t.closest('[data-open-client]');
     if (oc) { st.tab = 'clients'; st.csel = parseInt(oc.getAttribute('data-open-client'), 10); drawNav(); loadTab(); return; }
     var ic = t.closest('[data-imp-client]');

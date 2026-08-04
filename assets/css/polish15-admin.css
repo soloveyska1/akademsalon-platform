@@ -774,7 +774,9 @@
 
 .is-admin-route .admin-queue > div > button {
   display: grid;
-  grid-template-columns: 42px 9px minmax(0, 1fr) 18px;
+  /* последняя колонка была 18px под одну стрелку; теперь там имя действия,
+     и она отдаётся под содержимое, а сжимается описание */
+  grid-template-columns: 42px 9px minmax(0, 1fr) auto;
   gap: 9px;
   align-items: center;
   min-height: 58px;
@@ -4125,7 +4127,19 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
 
 /* Выпадающие списки панели читались как ещё одно текстовое поле: та же
    рамка, тот же фон, ни одного признака, что это выбор. Даём стрелку
-   и место под неё — знак рисуем маской, чтобы он красился токеном. */
+   и место под неё — знак рисуем маской, чтобы он красился токеном.
+
+   Заодно чиним старую поломку тёмной темы. styles.css задаёт стрелку
+   селекта тремя свойствами: background-image + background-repeat:no-repeat
+   + background-position. А `.ag-actrow select` в admin.html перебивает фон
+   ШОРТКАТОМ `background:`, который сбрасывает и repeat, и position. В
+   светлой теме шорткат сильнее — стрелки просто нет. В тёмной сильнее
+   `:root[data-theme="dark"] select` (0,2,1 против 0,1,1): он возвращает
+   КАРТИНКУ, но не её repeat — и шеврон 11×7 размножался сеткой по всей
+   ширине поля. На плане оплат это выглядело как штриховка поперёк
+   карточки. Поэтому правило ниже покрывает ВСЕ селекты панели, а не
+   только фильтры, и задаёт фон отдельными свойствами, а не шорткатом. */
+.is-admin-route select,
 .is-admin-route :is(.ag-sort, .ag-filters select, .admin-order-filter-menu__sort select) {
   appearance: none;
   padding-right: 30px;
@@ -4136,6 +4150,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
   cursor: pointer;
 }
 
+:root[data-theme="dark"] .is-admin-route select,
 :root[data-theme="dark"] .is-admin-route :is(.ag-sort, .ag-filters select, .admin-order-filter-menu__sort select) {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a49b8c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9.5 6 6 6-6'/%3E%3C/svg%3E");
 }
@@ -4473,5 +4488,299 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
     flex: 1 1 auto;
     justify-content: center;
     min-height: 40px;
+  }
+}
+
+/* Очередь рабочего стола: у строки теперь есть имя действия, а не только
+   стрелка — видно, куда именно она ведёт. */
+.is-admin-route .admin-queue button b.admin-queue__act {
+  color: var(--ad-muted);
+  font: 550 11px/1 var(--mono);
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+
+.is-admin-route .admin-queue button:hover b.admin-queue__act {
+  color: var(--ad-wax-text);
+}
+
+/* Блок, ради которого дело открыли из очереди: одна короткая подсветка. */
+.is-admin-route .ag-sec.is-called {
+  animation: agCalled 1.8s ease-out;
+  border-radius: 5px;
+}
+
+@keyframes agCalled {
+  0%, 55% { box-shadow: inset 0 0 0 2px var(--ad-wax); }
+  100% { box-shadow: inset 0 0 0 2px transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-admin-route .ag-sec.is-called {
+    animation: none;
+    box-shadow: inset 0 0 0 2px var(--ad-wax);
+  }
+}
+
+/* На узкой колонке рабочего стола имя действия прячется — остаётся строка
+   причины, ради которой дело в очереди. */
+@media (max-width: 1180px) {
+  .is-admin-route .admin-queue button b.admin-queue__act {
+    font-size: 0;
+  }
+
+  .is-admin-route .admin-queue button b.admin-queue__act::after {
+    content: "→";
+    font-size: 13px;
+  }
+}
+
+/* =====================================================================
+   КАРТОЧКА КЛИЕНТА — бонусный счёт, журнал, дела
+   Раздел оставался самым сырым в панели: остаток бонусов подписью у
+   заголовка, срок сгорания серым хвостом, форма проводки — три голых
+   поля подряд, журнал — поток моношрифта, дела — разметка файловой
+   строки. Здесь он собран как денежный раздел, а не как список.
+   ===================================================================== */
+
+/* итог по делам одной строкой вместо трёх ящиков под однозначные числа */
+.is-admin-route .cl-tally {
+  margin: 14px 0 0;
+  padding: 11px 14px;
+  color: var(--ad-text);
+  background: var(--ad-card-2);
+  border: 1px solid var(--ad-line);
+  border-radius: 5px;
+  font-size: 12px !important;
+}
+
+.is-admin-route .cl-tally b {
+  color: var(--ad-ink);
+  font: 550 14px/1 var(--mono);
+}
+
+/* остаток — цифрой, а не подписью у заголовка */
+.is-admin-route .cl-bonus__figure {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin: 4px 0 10px;
+}
+
+.is-admin-route .cl-bonus__figure b {
+  color: var(--ad-ink);
+  font: 500 30px/1 var(--serif);
+  letter-spacing: -.01em;
+}
+
+.is-admin-route .cl-bonus__figure i {
+  color: var(--ad-muted);
+  font-size: 12px;
+  font-style: normal;
+}
+
+/* сгорание — отмеченная строка: это срок, а не примечание */
+.is-admin-route .cl-bonus__burn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  /* по ширине содержимого: во всю строку это читалось как тревога,
+     хотя это срок, о котором надо знать, а не происшествие */
+  max-width: 100%;
+  margin: 0 0 14px;
+  padding: 8px 12px;
+  color: var(--ad-text);
+  /* тонировка от бумаги карточки, а не готовый --ad-wax-soft: в тёмной
+     теме он темнее листа, и сургучная цифра на нём падала до 4.47:1 */
+  background: color-mix(in srgb, var(--ad-wax) 10%, var(--ad-card));
+  border-left: 3px solid var(--ad-wax);
+  border-radius: 4px;
+  font-size: 12px !important;
+}
+
+.is-admin-route .cl-bonus__burn .ag-ico {
+  color: var(--ad-wax-text);
+}
+
+.is-admin-route .cl-bonus__burn b {
+  color: var(--ad-wax-text);
+  font-family: var(--mono);
+  font-weight: 600;
+}
+
+/* проводка — подписанная форма: это операция со счётом клиента */
+.is-admin-route .cl-bonus__form {
+  display: grid;
+  align-items: end;
+  gap: 10px;
+  grid-template-columns: minmax(120px, 160px) minmax(0, 1fr) auto;
+}
+
+.is-admin-route .cl-bonus__field {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.is-admin-route .cl-bonus__field > span {
+  color: var(--ad-muted);
+  font: 550 10px/1.2 var(--mono) !important;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.is-admin-route .cl-bonus__field input {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  color: var(--ad-ink);
+  background: var(--ad-input);
+  border: 1px solid var(--ad-line);
+  border-radius: 5px;
+  font: inherit;
+}
+
+.is-admin-route .cl-bonus__field input[type="number"] {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.is-admin-route .cl-bonus__form .btn {
+  min-height: 42px;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .is-admin-route .cl-bonus__form {
+    grid-template-columns: 1fr;
+  }
+
+  .is-admin-route .cl-bonus__form .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* журнал: когда · за что · сколько, знак цветом */
+.is-admin-route .cl-ledger {
+  margin-top: 12px;
+  border: 1px solid var(--ad-line);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.is-admin-route .cl-ledger__row {
+  display: grid;
+  align-items: baseline;
+  gap: 4px 12px;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+  padding: 9px 13px;
+  border-bottom: 1px solid var(--ad-line);
+}
+
+.is-admin-route .cl-ledger__row:last-child {
+  border-bottom: 0;
+}
+
+.is-admin-route .cl-ledger__row time {
+  color: var(--ad-faint);
+  font: 500 11px/1.4 var(--mono);
+  white-space: nowrap;
+}
+
+.is-admin-route .cl-ledger__row > span {
+  min-width: 0;
+  color: var(--ad-text);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.is-admin-route .cl-ledger__row > span i {
+  color: var(--ad-muted);
+  font-style: normal;
+}
+
+.is-admin-route .cl-ledger__row b {
+  font: 600 13px/1.2 var(--mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.is-admin-route .cl-ledger__row b.pos {
+  color: var(--ad-green);
+}
+
+.is-admin-route .cl-ledger__row b.neg {
+  color: var(--ad-wax-text);
+}
+
+/* дела клиента — строки со статусом и суммой, а не файловый список */
+.is-admin-route .cl-orders {
+  margin-top: 4px;
+  border: 1px solid var(--ad-line);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.is-admin-route .cl-orders__row {
+  display: grid;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  grid-template-columns: 62px minmax(0, 1fr) auto auto 14px;
+  min-height: 52px;
+  padding: 9px 13px;
+  color: var(--ad-text);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--ad-line);
+  font: inherit;
+  text-align: left;
+}
+
+.is-admin-route .cl-orders__row:last-child {
+  border-bottom: 0;
+}
+
+.is-admin-route .cl-orders__row:hover {
+  background: var(--ad-hover);
+}
+
+.is-admin-route .cl-orders__id {
+  color: var(--ad-ink);
+  font: 550 12px/1.2 var(--mono);
+}
+
+.is-admin-route .cl-orders__task {
+  overflow: hidden;
+  min-width: 0;
+  color: var(--ad-ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.is-admin-route .cl-orders__sum {
+  color: var(--ad-ink);
+  font: 550 12px/1.2 var(--mono);
+  white-space: nowrap;
+}
+
+.is-admin-route .cl-orders__go {
+  color: var(--ad-faint);
+  font-family: var(--serif);
+}
+
+@media (max-width: 620px) {
+  .is-admin-route .cl-orders__row {
+    grid-template-columns: 62px minmax(0, 1fr) auto;
+    row-gap: 6px;
+  }
+
+  .is-admin-route .cl-orders__row .status-stamp {
+    grid-column: 2 / -1;
+  }
+
+  .is-admin-route .cl-orders__go {
+    display: none;
   }
 }
