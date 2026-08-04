@@ -3392,10 +3392,14 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
     linear-gradient(150deg,#35130d,#1a0c08 68%,#0c0705);
   box-shadow:inset 4px 0 0 #ff6b4b,8px 8px 0 rgba(126,31,17,.62);
 }
+/* Плитка под значком ситуации: белые слои по тёплому чёрному давали
+   мёртвый нейтральный серый (#101010, насыщенность 0.00) — четыре
+   холодных квадрата посреди тёплой карточки. Кремовый той же силы
+   оставляет ту же светлоту, но держит тон «Оттиска». */
 :root[data-theme="dark"] .configurator-task .decision-card__icon{
-  border-color:rgba(255,255,255,.19);
+  border-color:rgba(255,238,208,.19);
   color:#ff856a;
-  background:rgba(255,255,255,.045);
+  background:rgba(255,238,208,.05);
 }
 :root[data-theme="dark"] .configurator-task .decision-card small{
   color:#c9bfae;

@@ -1184,7 +1184,7 @@ html[data-calm] .cf-cn{animation:none!important;opacity:1!important}
 .btn-wax,.mn-calc,[data-motion-press]{position:relative;overflow:hidden;isolation:isolate}
 .motion-ink-drop{
   position:absolute;z-index:3;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;
-  pointer-events:none;background:color-mix(in srgb,#fff 42%,transparent);
+  pointer-events:none;background:color-mix(in srgb,var(--sheen,#fff) 42%,transparent);
   transform:scale(0);opacity:.72;animation:motion-ink-drop 480ms var(--ease-ink) forwards;
 }
 @keyframes motion-ink-drop{70%{opacity:.16}to{transform:scale(13);opacity:0}}
