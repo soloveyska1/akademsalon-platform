@@ -47,7 +47,15 @@ body.polish15-supporting{
   --line:#3c3932;
   --line-soft:rgba(242,236,223,.09);
   --line-strong:#565148;
-  --wax:#c65b41;
+  --wax:#B44F37;
+  /* Акцентный ТЕКСТ на тёмном — отдельным токеном. Тем же --wax закрашен
+     ФОН под светлым текстом (кнопки, плашки, метки), поэтому осветлить сам
+     --wax нельзя: cream на нём и так 4.07, стало бы 3.2. А как краска текста
+     #C65B41 давал 4.00 на --paper при норме 4.5 — 1163 элемента на 88
+     страницах. #E07C61 даёт 5.80 на --paper, 5.47 на --sheet и 4.77 на
+     --wax-soft. Правила берут его через var(--wax-text,var(--wax)):
+     где токен не объявлен, всё остаётся как было — светлая тема не тронута. */
+  --wax-text:#E07C61;
   --wax-deep:#a4432d;
   --wax-soft:#42251f;
   --green:#7faa8b;
@@ -343,7 +351,7 @@ body.polish15-supporting .file-drop__icon{
   height:42px;
   flex:0 0 auto;
   place-items:center;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   background:var(--wax-soft);
   border-radius:50%;
   font-size:20px;
@@ -388,7 +396,7 @@ body.polish15-supporting .form-note{
 }
 
 body.polish15-supporting .form-note.is-error{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 
 body.polish15-supporting .form-note.is-ok{
@@ -420,7 +428,7 @@ body.polish15-supporting .accordion-list summary::-webkit-details-marker{
 }
 
 body.polish15-supporting .accordion-list summary span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:500 20px/1 var(--sans);
   transition:transform .18s ease;
 }
@@ -508,7 +516,7 @@ body.polish15-supporting .about-principles article+article{
 
 body.polish15-supporting .about-principles article>span,
 body.polish15-supporting .guarantee-ledger article>span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:600 10px/1 var(--mono);
 }
 
@@ -551,7 +559,7 @@ body.polish15-supporting .team-avatar{
   width:76px;
   height:76px;
   place-items:center;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   background:var(--wax-soft);
   border:1px solid color-mix(in srgb,var(--wax) 30%,transparent);
   border-radius:50%;
@@ -595,7 +603,7 @@ body.polish15-supporting .about-history li{
 }
 
 body.polish15-supporting .about-history li span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:600 9px/1.5 var(--mono);
 }
 
@@ -804,7 +812,7 @@ body.polish15-supporting .review-policy ul{
 }
 
 body.polish15-supporting .review-policy li::marker{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 
 body.polish15-supporting .review-lightbox{
@@ -951,7 +959,7 @@ body.polish15-supporting .support-info ol li{
 }
 
 body.polish15-supporting .support-info ol span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:600 8px/1.5 var(--mono);
 }
 
@@ -973,7 +981,7 @@ body.polish15-supporting .support-info summary{
 }
 
 body.polish15-supporting .support-info summary span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font-size:17px;
 }
 
@@ -1209,7 +1217,7 @@ body.polish15-supporting .bonus-list b{
 }
 
 body.polish15-supporting .bonus-list span:nth-child(2) b{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 
 body.polish15-supporting .bonus-list small{
@@ -1501,7 +1509,7 @@ body.polish15-supporting .plus-plan-card>header>*{
 
 body.polish15-supporting .plus-plan-card>header>span,
 body.polish15-supporting .plus-plan-card li b{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 
 body.polish15-supporting .plus-plan-card>header>p{
@@ -1907,7 +1915,7 @@ body.polish15-supporting .deposit-tiers span.is-current{
 }
 
 body.polish15-supporting .deposit-tiers span.is-current b{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 
 body.polish15-supporting .deposit-receipt{
@@ -2030,7 +2038,7 @@ body.polish15-supporting .deposit-principles article+article{
 }
 
 body.polish15-supporting .deposit-principles article>span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:650 10px/1 var(--mono);
 }
 

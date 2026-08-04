@@ -869,7 +869,7 @@ body.home-flow-page .brand__motto-default{
   }
 
   body.home-flow-page .site-header [data-home-start]:hover{
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
     background:var(--mark);
     border-color:var(--wax);
   }

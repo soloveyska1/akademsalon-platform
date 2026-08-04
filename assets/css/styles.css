@@ -89,7 +89,7 @@ h4{font-size:17px;font-weight:500}
 .caps{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;color:var(--ink-soft)}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.wax{color:var(--wax)}
+.wax{color:var(--wax-text,var(--wax))}
 .verify{color:var(--verify)}
 .muted{color:var(--ink-soft)}
 em.pen{font-style:italic;font-family:var(--serif);color:inherit}
@@ -141,7 +141,7 @@ em.pen{font-style:italic;font-family:var(--serif);color:inherit}
 
 /* текстовая ссылка с подчёркиванием-линейкой */
 .link{border-bottom:1px solid var(--hairline-strong);transition:border-color .15s,color .15s;padding-bottom:1px}
-.link:hover{color:var(--wax);border-color:var(--wax)}
+.link:hover{color:var(--wax-text,var(--wax));border-color:var(--wax)}
 
 /* ---------- Листы (карточки) ---------- */
 .sheet{background:var(--sheet);border:1px solid var(--hairline);border-radius:var(--r)}
@@ -167,7 +167,7 @@ em.pen{font-style:italic;font-family:var(--serif);color:inherit}
 .dotrow .dr-val{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.95em;white-space:nowrap}
 a.dotrow:hover,.dotrow.hl{background:var(--mark)}
 a.dotrow .dr-val{transition:color .12s}
-a.dotrow:hover .dr-val{color:var(--wax)}
+a.dotrow:hover .dr-val{color:var(--wax-text,var(--wax))}
 
 /* ---------- Смета (ledger) ---------- */
 .ledger{font-size:14.5px}
@@ -176,7 +176,7 @@ a.dotrow:hover .dr-val{color:var(--wax)}
 .ledger .lg-row .num{font-size:14px}
 .ledger .lg-total{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-top:14px;margin-top:2px;border-top:3px double var(--ink)}
 .ledger .lg-total b{font-weight:500}
-.price-xl{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:400;font-size:clamp(30px,4vw,44px);letter-spacing:-.03em;line-height:1;color:var(--wax);white-space:nowrap}
+.price-xl{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:400;font-size:clamp(30px,4vw,44px);letter-spacing:-.03em;line-height:1;color:var(--wax-text,var(--wax));white-space:nowrap}
 .price-xl small{font-size:.5em;letter-spacing:0;color:inherit}
 
 /* ---------- Шкала этапной оплаты ---------- */
@@ -207,12 +207,12 @@ a.dotrow:hover .dr-val{color:var(--wax)}
 .seal{display:block;mix-blend-mode:multiply;opacity:.92;transform:rotate(-8deg)}
 .has-js .seal.press{opacity:0;transform:rotate(-8deg) scale(1.15);transition:opacity .25s ease-out,transform .25s ease-out}
 .has-js .seal.press.in{opacity:.92;transform:rotate(-8deg) scale(1)}
-.seal--wax{color:var(--wax)}
+.seal--wax{color:var(--wax-text,var(--wax))}
 .seal--verify{color:var(--verify)}
 .seal--stamp{color:var(--stamp)}
 
 /* ---------- Сноски доверия ---------- */
-.fnmark{color:var(--wax);font-family:var(--serif)}
+.fnmark{color:var(--wax-text,var(--wax));font-family:var(--serif)}
 .footnotes{border-top:1px solid var(--hairline);padding-top:14px;margin-top:clamp(28px,5vw,48px);display:flex;flex-direction:column;gap:6px}
 .footnotes p{font-size:13px;color:var(--ink-soft);line-height:1.55}
 .footnotes .fnmark{margin-right:6px}
@@ -224,7 +224,7 @@ a.dotrow:hover .dr-val{color:var(--wax)}
   padding:5px 10px;border:1px solid currentColor;border-radius:var(--r);line-height:1.2;
 }
 .tag-verify{color:var(--verify);background:var(--verify-soft)}
-.tag-wax{color:var(--wax);background:var(--wax-soft)}
+.tag-wax{color:var(--wax-text,var(--wax));background:var(--wax-soft)}
 .tag-ink{color:var(--ink-soft);background:transparent}
 .tag-stamp{color:var(--stamp);background:rgba(58,78,122,.08)}
 
@@ -246,7 +246,7 @@ input:focus,select:focus,textarea:focus{
   box-shadow:inset 0 -2px 0 var(--wax);
 }
 input.invalid,textarea.invalid{border-color:var(--wax);box-shadow:inset 0 -2px 0 var(--wax)}
-.fhint{font-size:12.5px;color:var(--wax);margin-top:6px;display:none}
+.fhint{font-size:12.5px;color:var(--wax-text,var(--wax));margin-top:6px;display:none}
 .fhint.show{display:block}
 textarea{resize:vertical;min-height:120px;line-height:1.55}
 
@@ -287,10 +287,10 @@ textarea{resize:vertical;min-height:120px;line-height:1.55}
 .faq-item summary::-webkit-details-marker{display:none}
 .faq-item summary::after{
   content:"+";position:absolute;right:4px;top:50%;transform:translateY(-50%);
-  font-family:var(--serif);font-size:24px;font-weight:300;color:var(--wax);transition:transform .2s;
+  font-family:var(--serif);font-size:24px;font-weight:300;color:var(--wax-text,var(--wax));transition:transform .2s;
 }
 .faq-item[open] summary::after{transform:translateY(-50%) rotate(45deg)}
-.faq-item summary:hover{color:var(--wax)}
+.faq-item summary:hover{color:var(--wax-text,var(--wax))}
 .faq-item p{padding:0 36px 20px 0;color:var(--ink-soft);font-size:15px;line-height:1.65;max-width:68ch}
 
 /* ---------- Reveal ---------- */
@@ -343,7 +343,15 @@ section[id],main[id],[id].chapter{scroll-margin-top:76px}
   --ink-faint:#847E6E;
   --hairline:#34302A;
   --hairline-strong:#4C483E;
-  --wax:#C65B41;             /* сургуч ярче для контраста на тёмном */
+  --wax:#B44F37;
+  /* Акцентный ТЕКСТ на тёмном — отдельным токеном. Тем же --wax закрашен
+     ФОН под светлым текстом (кнопки, плашки, метки), поэтому осветлить сам
+     --wax нельзя: cream на нём и так 4.07, стало бы 3.2. А как краска текста
+     #C65B41 давал 4.00 на --paper при норме 4.5 — 1163 элемента на 88
+     страницах. #E07C61 даёт 5.80 на --paper, 5.47 на --sheet и 4.77 на
+     --wax-soft. Правила берут его через var(--wax-text,var(--wax)):
+     где токен не объявлен, всё остаётся как было — светлая тема не тронута. */
+  --wax-text:#E07C61;             /* сургуч ярче для контраста на тёмном */
   --wax-deep:#A4432D;
   --wax-soft:rgba(198,91,65,.14);
   /* Для заливки кнопок сургуч чуть глубже: #FFFEF9 на #B8503A даёт 4,83
@@ -373,7 +381,7 @@ section[id],main[id],[id].chapter{scroll-margin-top:76px}
 .doc-wrap{padding-top:calc(56px + clamp(28px,5vw,56px));padding-bottom:var(--block)}
 .doc-crumb{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:22px}
 .doc-crumb a{border-bottom:1px solid var(--hairline-strong);padding-bottom:1px}
-.doc-crumb a:hover{color:var(--wax);border-color:var(--wax)}
+.doc-crumb a:hover{color:var(--wax-text,var(--wax));border-color:var(--wax)}
 .doc{max-width:74ch}
 .doc h1{font-size:clamp(28px,4vw,40px);margin-bottom:10px;line-height:1.1}
 .doc .doc-subtitle{font-size:clamp(16px,1.6vw,18px);color:var(--ink-soft);margin-bottom:6px}
@@ -384,7 +392,7 @@ section[id],main[id],[id].chapter{scroll-margin-top:76px}
 .doc ul,.doc ol{margin:0 0 14px 22px}
 .doc li{margin-bottom:7px;line-height:1.62;padding-left:4px}
 .doc strong,.doc b{font-weight:600}
-.doc a{color:var(--wax);border-bottom:1px solid var(--wax-soft);transition:border-color .15s}
+.doc a{color:var(--wax-text,var(--wax));border-bottom:1px solid var(--wax-soft);transition:border-color .15s}
 .doc a:hover{border-color:var(--wax)}
 /* кнопки внутри статьи: правило «.doc a» перекрашивало текст кнопки в цвет её же фона */
 .doc a.btn,.doc a.btn:hover{border-bottom:0}

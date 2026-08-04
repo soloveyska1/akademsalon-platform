@@ -90,7 +90,15 @@ body.concept-shell::before{
   --line:#3C3932;
   --line-soft:rgba(242,236,223,.09);
   --line-strong:#565148;
-  --wax:#C65B41;
+  --wax:#B44F37;
+  /* Акцентный ТЕКСТ на тёмном — отдельным токеном. Тем же --wax закрашен
+     ФОН под светлым текстом (кнопки, плашки, метки), поэтому осветлить сам
+     --wax нельзя: cream на нём и так 4.07, стало бы 3.2. А как краска текста
+     #C65B41 давал 4.00 на --paper при норме 4.5 — 1163 элемента на 88
+     страницах. #E07C61 даёт 5.80 на --paper, 5.47 на --sheet и 4.77 на
+     --wax-soft. Правила берут его через var(--wax-text,var(--wax)):
+     где токен не объявлен, всё остаётся как было — светлая тема не тронута. */
+  --wax-text:#E07C61;
   --wax-deep:#A4432D;
   --wax-bright:#DC7459;
   --wax-soft:#42251F;
@@ -289,7 +297,7 @@ body.concept-shell::before{
 }
 .overlay__close:hover,
 .overlay .icon-button--close:hover{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   border-color:var(--wax);
   transform:rotate(8deg);
 }
@@ -358,7 +366,7 @@ body.concept-shell::before{
 .menu-layout__situations a:focus-visible{background:var(--sheet)}
 .menu-layout__situations a>span{
   grid-row:1/3;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:500 10px/1 var(--mono);
 }
 .menu-layout__situations a strong{font:500 16px/1.2 var(--serif)}
@@ -367,7 +375,7 @@ body.concept-shell::before{
   grid-column:3;
   grid-row:1/3;
   align-self:center;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:400 18px/1 var(--serif);
 }
 
@@ -398,7 +406,7 @@ body.concept-shell::before{
 .menu-layout__primary :is(a,.menu-link) > span,
 .menu-link > span{
   grid-row:1 / 3;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:500 11px/1 var(--mono);
   letter-spacing:.1em;
   font-variant-numeric:tabular-nums;
@@ -418,7 +426,7 @@ body.concept-shell::before{
 }
 .menu-layout__primary :is(a,.menu-link)[aria-current="page"] strong,
 .menu-link[aria-current="page"] strong{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 
 .menu-layout__secondary{
@@ -446,7 +454,7 @@ body.concept-shell::before{
   transition:color var(--ov-state) ease;
 }
 .menu-layout__secondary a:hover{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 
 /* Выбор темы */
@@ -1106,7 +1114,7 @@ body .cookiebar .cb-more{
   font:400 12px/1.3 var(--sans);
   cursor:pointer;
 }
-body .cookiebar .cb-more:hover{ color:var(--wax); border-color:var(--wax); }
+body .cookiebar .cb-more:hover{ color:var(--wax-text,var(--wax)); border-color:var(--wax); }
 body .cookiebar .cb-foot > span{
   display:inline-flex;
   align-items:center;
@@ -1215,7 +1223,7 @@ body .mnote .mn-cap{ color:var(--ink-faint); }
 body .mnote .mn-seal{
   flex:0 0 30px;
   height:30px;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   background:var(--wax-soft);
   border:1px solid transparent;
   border-radius:50%;
@@ -1228,7 +1236,7 @@ body .mnote .mn-lead i{
   background-image:radial-gradient(circle,var(--hairline-strong) 1px,transparent 1.4px);
 }
 
-body .mnote .mn-do{ color:var(--wax); text-decoration-color:var(--hairline-strong); }
+body .mnote .mn-do{ color:var(--wax-text,var(--wax)); text-decoration-color:var(--hairline-strong); }
 body .mnote .mn-do:hover{ color:var(--wax-deep); text-decoration-color:var(--wax); }
 body .mnote .mn-x{ color:var(--ink-soft); }
 body .mnote .mn-x:hover{ color:var(--ink); background:var(--mark); }
@@ -1358,7 +1366,7 @@ body .site-header--account .header-account-exit:focus-visible {
 }
 
 body .site-header--account .header-account-exit span {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font-size: 14px;
 }
 
@@ -1404,7 +1412,7 @@ body .site-header .header-theme-toggle:hover{
   border-color:var(--hairline);
 }
 body .site-header .nav-cab[aria-current="page"]{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 
 /* Клавиша-подсказка: была темнее самой шапки в тёмной теме. */
@@ -1749,7 +1757,7 @@ body .site-header .header-nav-popover__intro{
 body .site-header .header-nav-popover__intro>span{
   display:block;
   margin-bottom:13px;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:650 8.5px/1.2 var(--mono);
   letter-spacing:.13em;
   text-transform:uppercase;
@@ -1794,7 +1802,7 @@ body .site-header .header-nav-popover a::after{content:none}
 
 body .site-header .header-nav-popover__grid>a:hover,
 body .site-header .header-nav-popover__grid>a:focus-visible{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   background:var(--wax-soft);
   border-color:color-mix(in srgb,var(--wax) 24%,transparent);
   transform:translateX(2px);
@@ -2132,7 +2140,7 @@ body .site-header .brand--wordmark .brand__name small>span{
 body .site-header .brand--wordmark .brand__care{
   position:absolute;
   inset:0 auto auto 0;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   opacity:0;
   transform:translateY(100%);
 }
@@ -2325,7 +2333,7 @@ body .site-header .header-nav-popover__grid>a:focus-visible{
 body .site-header .header-nav-popover__grid>a>span{
   top:18px;
   left:17px;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font-size:8px;
 }
 
@@ -2362,7 +2370,7 @@ body .site-header .header-nav-popover__aside>a{
 body .site-header .header-nav-popover__aside>a:hover,
 body .site-header .header-nav-popover__aside>a:focus-visible{
   padding-left:6px;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 
 body .site-header .header-nav-popover__foot{
@@ -2384,7 +2392,7 @@ body .site-header .header-nav-popover__foot strong{
 }
 body .site-header .header-nav-popover__foot i{
   margin-left:auto;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:400 19px/1 var(--serif);
 }
 body .site-header .header-nav-popover__foot:hover strong{text-decoration:underline;text-decoration-color:var(--wax);text-underline-offset:4px}
@@ -2689,7 +2697,7 @@ body .site-header .brand--wordmark .brand__motto-default{
 }
 
 body .site-header .brand--wordmark .brand__motto-hover{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   opacity:0;
   transform:translateY(105%);
   clip-path:inset(0 100% 0 0);
@@ -3406,7 +3414,7 @@ body .site-header--account .header-account-exit:focus-visible{
 }
 
 body .site-header--account .header-account-exit span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font-size:14px;
 }
 

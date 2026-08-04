@@ -540,7 +540,7 @@
 .polish15-home .situation-card__number{
   align-self:start;
   padding-top:4px;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:600 10px/1.2 var(--mono);
 }
 .polish15-home .situation-card h3{ font-size:clamp(20px,2vw,27px); }
@@ -568,7 +568,7 @@
   transition:color .18s ease,transform .22s var(--ease-out);
 }
 .polish15-home .situation-card:hover .situation-card__arrow{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   transform:translateX(5px);
 }
 
@@ -814,7 +814,7 @@
   border-left:1px solid var(--line);
 }
 .polish15-home .process-grid li > span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:600 10px/1.2 var(--mono);
 }
 .polish15-home .process-grid h3{
@@ -859,7 +859,7 @@
   background:color-mix(in srgb,var(--sheet) 55%,transparent);
 }
 .polish15-home .home-library__articles a > span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:550 10px/1 var(--mono);
 }
 .polish15-home .home-library__articles div{
@@ -883,7 +883,7 @@
   transition:color .18s ease,transform .18s ease;
 }
 .polish15-home .home-library__articles a:hover b{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   transform:translateX(4px);
 }
 
@@ -911,7 +911,7 @@
   position:absolute;
   top:-18px;
   left:0;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   content:"“";
   font:400 72px/1 var(--serif);
 }
@@ -964,7 +964,7 @@
   transform:translateY(-3px);
 }
 .polish15-home .home-tools__grid span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:600 10px/1.4 var(--mono);
 }
 .polish15-home .home-tools__grid strong{
@@ -982,7 +982,7 @@
   transition:color .18s ease,transform .18s ease;
 }
 .polish15-home .home-tools__grid a:hover b{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   transform:translateX(4px);
 }
 
@@ -1020,7 +1020,7 @@
   color:var(--ink);
   font-weight:550;
 }
-.polish15-home .home-telegram-action a span{ color:var(--wax); }
+.polish15-home .home-telegram-action a span{ color:var(--wax-text,var(--wax)); }
 .polish15-home .home-telegram-action small{
   display:block;
   margin-top:6px;

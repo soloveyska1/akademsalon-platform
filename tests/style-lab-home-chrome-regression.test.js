@@ -72,7 +72,14 @@ test('production shell keeps the approved light and dark palette', () => {
     '--ink:#F2ECDF',
     '--text:#D0C8BA',
     '--hairline:#3C3932',
-    '--wax:#C65B41',
+    /* Сургуч тёмной темы разделён на два токена. --wax остался краской
+       ПОВЕРХНОСТИ и затемнён с #C65B41 до #B44F37: светлый текст на нём давал
+       4.07 при норме 4.5. Акцентный ТЕКСТ переехал на --wax-text — как краска
+       #C65B41 давал 4.00 на --paper, и это было 1163 элемента на 88 страницах.
+       Светлая тема не тронута: там --wax-text не объявлен и правила
+       var(--wax-text,var(--wax)) берут прежнее значение. */
+    '--wax:#B44F37',
+    '--wax-text:#E07C61',
   ]) {
     assert.ok(chromeCss.includes(token), `${token} must match the approved dark palette`);
   }

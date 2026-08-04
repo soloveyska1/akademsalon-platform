@@ -65,7 +65,15 @@ body.reading-page::before{
   --line:#3c3932;
   --hairline-strong:#565148;
   --line-strong:#565148;
-  --wax:#c65b41;
+  --wax:#B44F37;
+  /* Акцентный ТЕКСТ на тёмном — отдельным токеном. Тем же --wax закрашен
+     ФОН под светлым текстом (кнопки, плашки, метки), поэтому осветлить сам
+     --wax нельзя: cream на нём и так 4.07, стало бы 3.2. А как краска текста
+     #C65B41 давал 4.00 на --paper при норме 4.5 — 1163 элемента на 88
+     страницах. #E07C61 даёт 5.80 на --paper, 5.47 на --sheet и 4.77 на
+     --wax-soft. Правила берут его через var(--wax-text,var(--wax)):
+     где токен не объявлен, всё остаётся как было — светлая тема не тронута. */
+  --wax-text:#E07C61;
   --wax-deep:#a4432d;
   --wax-soft:#42251f;
   --verify:#7faa8b;
@@ -119,7 +127,7 @@ body.reading-page::before{
 }
 
 .reading-page .breadcrumbs a{transition:color .18s ease}
-.reading-page .breadcrumbs a:hover{color:var(--wax)}
+.reading-page .breadcrumbs a:hover{color:var(--wax-text,var(--wax))}
 
 .reading-page .reading-tag{
   display:inline-flex;
@@ -308,7 +316,7 @@ body.reading-page::before{
   border-left-color:var(--wax);
 }
 
-.article-toc button.is-current>span{color:var(--wax)}
+.article-toc button.is-current>span{color:var(--wax-text,var(--wax))}
 
 .article-toc>span{
   margin-top:18px;
@@ -336,7 +344,7 @@ body.reading-page::before{
 .article-content>.article-opening::first-letter{
   float:left;
   margin:.08em .12em 0 0;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:500 3.15em/.78 var(--serif);
 }
 
@@ -351,7 +359,7 @@ body.reading-page::before{
   display:block;
   margin-bottom:9px;
   content:attr(data-section-index);
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:650 10px/1 var(--mono);
   letter-spacing:.06em;
 }
@@ -378,7 +386,7 @@ body.reading-page::before{
   padding-left:22px;
 }
 
-.source-document li::marker{color:var(--wax)}
+.source-document li::marker{color:var(--wax-text,var(--wax))}
 
 .source-document blockquote,
 .source-document .doc-note{
@@ -451,7 +459,7 @@ body.reading-page::before{
 }
 
 .source-document a:not(.reading-button){
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   text-decoration:underline;
   text-decoration-color:color-mix(in srgb,var(--wax) 35%,transparent);
   text-underline-offset:3px;
@@ -568,7 +576,7 @@ body.reading-page::before{
 }
 
 .article-card__number{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:600 10px/1 var(--mono);
 }
 
@@ -607,7 +615,7 @@ body.reading-page::before{
 
 .article-card footer b{
   margin-left:5px;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:400 16px/1 var(--serif);
 }
 
@@ -733,7 +741,7 @@ body.reading-page::before{
   border-color:var(--wax);
 }
 
-.legal-toc button.is-current>span{color:var(--wax)}
+.legal-toc button.is-current>span{color:var(--wax-text,var(--wax))}
 .legal-source{margin-top:34px}
 
 .legal-source h2:first-child{margin-top:0}
@@ -1141,7 +1149,7 @@ body.reading-page::before{
 .read-cta a{
   font-size:15px;
   font-weight:600;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   text-decoration:none;
   border-bottom:1px solid color-mix(in srgb,var(--wax) 42%,transparent);
   white-space:nowrap;

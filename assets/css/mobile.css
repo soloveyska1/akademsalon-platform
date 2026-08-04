@@ -159,7 +159,7 @@
     box-shadow:inset 3px 0 0 var(--wax);
   }
   body.conf-step-later #discGroup .optrow[aria-checked="true"] .o-val{
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
   }
   body.conf-step-later .disc-profile{display:none}
 
@@ -201,7 +201,7 @@
   body.conf-step-final .conf-final-intro .caps{
     display:block;
     margin-bottom:5px;
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
     font-size:8.5px;
   }
   body.conf-step-final .conf-final-intro p{
@@ -234,7 +234,7 @@
     place-items:center;
     border:1px solid color-mix(in srgb,var(--wax) 62%,var(--hairline));
     border-radius:50%;
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
     font:9px/1 var(--mono);
   }
   body.conf-step-final .final-section-head b{
@@ -404,7 +404,7 @@
     place-items:center;
     border-radius:50%;
     background:var(--wax-soft);
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
     font:17px/1 var(--serif);
   }
   body.conf-step-final .final-more-toggle b{
@@ -424,7 +424,7 @@
     width:28px;
     height:28px;
     place-items:center;
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
     font:20px/1 var(--serif);
     transition:transform .18s ease;
   }
@@ -619,7 +619,7 @@
   .conf-mcta .lq-mobile-terms>summary::after{
     content:"+";
     flex:0 0 auto;
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
     font:20px/1 var(--serif);
     transition:transform .18s ease;
   }
@@ -720,7 +720,7 @@
     white-space:nowrap;
   }
   .conf-mcta .mq-more{
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
     font:10px/1.2 var(--sans);
     white-space:nowrap;
   }
@@ -953,7 +953,7 @@
   .home .pr-book-trigger-arrow{
     width:22px;
     height:22px;
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
     font-size:16px;
   }
   .home .pr-pg{min-height:0!important}
@@ -1094,7 +1094,7 @@
     flex-basis:44px;
     border-color:color-mix(in srgb,var(--wax) 34%,var(--hairline));
     background:var(--wax-soft);
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
   }
   .toc-search{flex:0 0 auto;margin-bottom:9px}
   .toc [data-toc-home][hidden]{display:none!important}
@@ -1170,7 +1170,7 @@
     min-height:44px;
     display:inline-flex;
     align-items:center;
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
   }
   .toc-route .tr-steps{display:none}
   .toc-directory{
@@ -1464,7 +1464,7 @@
   }
   .mnav .mn-calc{
     z-index:1;
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
   }
   .mnav .mn-calc .mn-ic{
     position:relative;
@@ -1752,7 +1752,7 @@
     white-space:nowrap;
   }
   .mobile-appbar__help{
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
     background:var(--wax-soft);
     font:550 15px/1 var(--serif);
   }
@@ -1843,7 +1843,7 @@
   }
 
   .mobile-appbar__help{
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
     background:var(--wax-soft);
   }
 
@@ -2155,7 +2155,7 @@
   :root.has-consent-bar body .lrail .cookiebar .cb-kicker{
     display:block;
     margin-bottom:3px;
-    color:var(--wax);
+    color:var(--wax-text,var(--wax));
     font-size:9px;
   }
 
@@ -2339,13 +2339,13 @@ body .mnote--echo .mn-ic{
   place-items:center;
   border:1px solid color-mix(in srgb,var(--wax) 42%,var(--hairline));
   border-radius:50%;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   background:var(--wax-soft);
   font:650 13px/1 var(--sans);
 }
 
 body .mnote--echo.is-verify .mn-ic{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 
 body .mnote--echo .mn-msg{
@@ -2434,7 +2434,7 @@ body .mnote--echo .mn-x{
 }
 
 .home-case .case-hero__accolade-separator{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 
 .home-case .case-hero__accolade-promise{
@@ -2445,7 +2445,7 @@ body .mnote--echo .mn-x{
   position:relative;
   display:inline-block;
   padding-inline:2px;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:italic 570 17px/1 var(--serif);
   letter-spacing:-.025em;
   text-decoration:none;
@@ -2512,7 +2512,7 @@ html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-
 }
 
 .home-case .case-prompt__folio{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:650 9px/1 var(--mono);
   letter-spacing:.12em;
 }
@@ -2663,7 +2663,7 @@ html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-
 
 .home-case .case-prompt__presets button:hover,
 .home-case .case-prompt__presets button[aria-pressed="true"]{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   background:transparent!important;
 }
 

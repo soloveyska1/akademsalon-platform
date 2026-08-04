@@ -46,6 +46,10 @@ body.p15-operations {
   --op-line-strong: #565148;
   /* Cream CTA copy remains AA on the dark canvas (5.18:1). */
   --op-wax: #b14a35;
+  /* Та же развилка, что у --wax в polish15-chrome.css: как краска ТЕКСТА
+     #b14a35 давал 2.95 на --op-sheet и 2.57 на --op-wax-soft. Поверхности
+     продолжают брать --op-wax. */
+  --op-wax-text:#E07C61;
   --op-wax-deep: #a4432d;
   --op-wax-soft: #42251f;
   --op-green: #7faa8b;
@@ -291,7 +295,7 @@ body.p15-operations::before {
   background: var(--op-sheet);
   border: 1px solid var(--op-line);
 }
-.p15-operations .tool-card__number { color: var(--op-wax); font: 600 10px/1 var(--mono); }
+.p15-operations .tool-card__number { color: var(--op-wax-text,var(--op-wax)); font: 600 10px/1 var(--mono); }
 .p15-operations .tool-card .tag { margin-top: 34px; }
 .p15-operations .tool-card h2 {
   max-width: 560px;
@@ -409,7 +413,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
   min-width: 72px;
   height: 72px;
   place-items: center;
-  color: var(--op-wax);
+  color: var(--op-wax-text,var(--op-wax));
   background: var(--op-wax-soft);
   border-radius: 50%;
   font: 500 21px/1 var(--serif);
@@ -516,7 +520,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
   background: var(--op-paper);
   border-left: 2px solid var(--op-wax);
 }
-.p15-operations .article-callout span { color: var(--op-wax); font: 600 8px/1.2 var(--mono); text-transform: uppercase; }
+.p15-operations .article-callout span { color: var(--op-wax-text,var(--op-wax)); font: 600 8px/1.2 var(--mono); text-transform: uppercase; }
 .p15-operations .article-callout p { margin-top: 7px; color: var(--op-text); font-size: 11px; }
 .p15-operations .topic-audit__result .line-link { margin-top: 18px; }
 
@@ -570,11 +574,11 @@ body.p15-tool-workspace .site-header { display: none !important; }
 .p15-operations .tool-guidance__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--op-line); }
 .p15-operations .tool-guidance__grid > section { display: grid; min-width: 0; align-content: start; gap: 8px; padding: 20px; }
 .p15-operations .tool-guidance__grid > section + section { border-left: 1px solid var(--op-line); }
-.p15-operations .tool-guidance__grid > section > span { color: var(--op-wax); font: 600 9px/1 var(--mono); }
+.p15-operations .tool-guidance__grid > section > span { color: var(--op-wax-text,var(--op-wax)); font: 600 9px/1 var(--mono); }
 .p15-operations .tool-guidance__faq details { padding: 13px 0; border-top: 1px solid var(--op-line); }
 .p15-operations .tool-guidance__faq summary { color: var(--op-ink); cursor: pointer; font: 500 14px/1.4 var(--serif); }
 .p15-operations .tool-guidance__faq details p { margin-top: 9px; }
-.p15-operations .tool-guidance a { color: var(--op-wax); text-decoration-color: color-mix(in srgb, var(--op-wax) 35%, transparent); text-underline-offset: 3px; }
+.p15-operations .tool-guidance a { color: var(--op-wax-text,var(--op-wax)); text-decoration-color: color-mix(in srgb, var(--op-wax) 35%, transparent); text-underline-offset: 3px; }
 
 .p15-operations .generic-tool-card {
   display: grid;
@@ -659,7 +663,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
   border: 1px solid var(--op-line);
   box-shadow: 0 22px 60px rgba(54, 45, 31, .08);
 }
-.p15-operations .empty-state-card > span { color: var(--op-wax); font: 600 9px/1 var(--mono); }
+.p15-operations .empty-state-card > span { color: var(--op-wax-text,var(--op-wax)); font: 600 9px/1 var(--mono); }
 .p15-operations .empty-state-card h2 { font-size: clamp(28px, 3vw, 38px); }
 .p15-operations .empty-state-card p { margin-top: 6px; color: var(--op-muted); font-size: 14px; }
 .p15-operations .application-layout {
@@ -684,7 +688,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
   font: 600 9px/1.2 var(--mono);
   text-transform: uppercase;
 }
-.p15-operations .application-paper > header b { color: var(--op-wax); }
+.p15-operations .application-paper > header b { color: var(--op-wax-text,var(--op-wax)); }
 .p15-operations .application-paper dl > div {
   display: grid;
   grid-template-columns: 175px minmax(0, 1fr);
@@ -696,7 +700,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
 .p15-operations .application-paper dd { color: var(--op-ink); font-size: 12px; overflow-wrap: anywhere; }
 .p15-operations .application-paper dd small { display: block; margin-top: 4px; color: var(--op-muted); font-size: 9px; }
 .p15-operations .application-paper__comment { margin-top: 18px; padding: 16px; background: var(--op-paper); border-left: 2px solid var(--op-wax); }
-.p15-operations .application-paper__comment span { color: var(--op-wax); font: 600 8px/1.2 var(--mono); text-transform: uppercase; }
+.p15-operations .application-paper__comment span { color: var(--op-wax-text,var(--op-wax)); font: 600 8px/1.2 var(--mono); text-transform: uppercase; }
 .p15-operations .application-paper__comment p { margin-top: 7px; color: var(--op-ink); font-size: 12px; }
 .p15-operations .application-paper > footer {
   display: flex;
@@ -720,7 +724,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
   padding: 13px 0;
   border-bottom: 1px solid var(--op-line);
 }
-.p15-operations .application-actions li > span { color: var(--op-wax); font: 600 9px/1.5 var(--mono); }
+.p15-operations .application-actions li > span { color: var(--op-wax-text,var(--op-wax)); font: 600 9px/1.5 var(--mono); }
 .p15-operations .application-actions li p { color: var(--op-text); font-size: 11px; }
 .p15-operations .application-actions .button--primary { width: 100%; margin-top: 24px; }
 .p15-operations .application-actions .button--text { width: 100%; margin-top: 4px; }
@@ -753,7 +757,7 @@ body.p15-application #p15ZayavkaMain {
   border-left: 1px solid var(--op-line);
 }
 .p15-operations .payment-flow article:last-child { border-right: 1px solid var(--op-line); }
-.p15-operations .payment-flow article > span { color: var(--op-wax); font: 600 9px/1 var(--mono); }
+.p15-operations .payment-flow article > span { color: var(--op-wax-text,var(--op-wax)); font: 600 9px/1 var(--mono); }
 .p15-operations .payment-flow h2 { font-size: 25px; }
 .p15-operations .payment-flow p { margin-top: 8px; color: var(--op-muted); font-size: 10px; }
 .p15-operations .payment-demo {
@@ -825,7 +829,7 @@ body.p15-system.p15-standalone .system-page {
   height: 110px;
   place-items: center;
   margin-bottom: 28px;
-  color: var(--op-wax);
+  color: var(--op-wax-text,var(--op-wax));
   background: var(--op-wax-soft);
   border-radius: 50%;
   font: 500 34px/1 var(--serif);

@@ -71,7 +71,15 @@ body.polish15-specification::before{
   --line-strong:#565148;
   --hairline:#3c3932;
   --hairline-strong:#565148;
-  --wax:#c65b41;
+  --wax:#B44F37;
+  /* Акцентный ТЕКСТ на тёмном — отдельным токеном. Тем же --wax закрашен
+     ФОН под светлым текстом (кнопки, плашки, метки), поэтому осветлить сам
+     --wax нельзя: cream на нём и так 4.07, стало бы 3.2. А как краска текста
+     #C65B41 давал 4.00 на --paper при норме 4.5 — 1163 элемента на 88
+     страницах. #E07C61 даёт 5.80 на --paper, 5.47 на --sheet и 4.77 на
+     --wax-soft. Правила берут его через var(--wax-text,var(--wax)):
+     где токен не объявлен, всё остаётся как было — светлая тема не тронута. */
+  --wax-text:#E07C61;
   --wax-deep:#a4432d;
   --wax-soft:#42251f;
   --green:#7faa8b;
@@ -316,7 +324,7 @@ body.polish15-specification::before{
 }
 
 .polish15-specification .spec-notes li>span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:600 9px/1.5 var(--mono);
 }
 

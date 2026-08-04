@@ -53,7 +53,15 @@
   --line: #3c3932;
   --line-soft: rgba(242, 236, 223, .09);
   --line-strong: #565148;
-  --wax: #c65b41;
+  --wax: #B44F37;
+  /* Акцентный ТЕКСТ на тёмном — отдельным токеном. Тем же --wax закрашен
+     ФОН под светлым текстом (кнопки, плашки, метки), поэтому осветлить сам
+     --wax нельзя: cream на нём и так 4.07, стало бы 3.2. А как краска текста
+     #C65B41 давал 4.00 на --paper при норме 4.5 — 1163 элемента на 88
+     страницах. #E07C61 даёт 5.80 на --paper, 5.47 на --sheet и 4.77 на
+     --wax-soft. Правила берут его через var(--wax-text,var(--wax)):
+     где токен не объявлен, всё остаётся как было — светлая тема не тронута. */
+  --wax-text:#E07C61;
   --wax-deep: #a4432d;
   --wax-soft: #42251f;
   --green: #7faa8b;
@@ -116,7 +124,7 @@
 
 .is-account-route .account-nav__person:hover strong,
 .is-account-route .account-nav__person:focus-visible strong {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-nav__person > span {
@@ -457,7 +465,7 @@
 
 .is-account-route .tag--new,
 .is-account-route .tag--fix {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border-color: transparent;
 }
@@ -502,7 +510,7 @@
 
 .is-account-route button.account-dates__row:hover .account-dates__what,
 .is-account-route button.account-dates__row:focus-visible .account-dates__what {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-dates__when {
@@ -554,7 +562,7 @@
 }
 
 .is-account-route .account-docgroup__no {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 600 11px/1.2 var(--mono);
   letter-spacing: .04em;
 }
@@ -722,7 +730,7 @@
   width: 42px;
   height: 42px;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border-radius: 50%;
   font: 600 12px/1 var(--mono);
@@ -802,7 +810,7 @@
   height: 38px;
   grid-row: 1 / 3;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border-radius: 50%;
   font: 600 11px/1 var(--mono);
@@ -914,7 +922,7 @@
 }
 
 .is-account-route .account-case-production .oj.hot {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border-color: transparent;
 }
@@ -964,7 +972,7 @@
 
 /* раздел, в котором вас ждут, помечен сургучом — но только пока он закрыт */
 .is-account-route .account-case-production .case-secnav .oj.hot {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border-color: transparent;
 }
@@ -1367,7 +1375,7 @@
 }
 
 .is-account-route .account-section > header .eyebrow {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 550 11px/1.2 var(--mono);
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -1406,7 +1414,7 @@
   width: 34px;
   height: 34px;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border-radius: 50%;
   font: 600 12px/1 var(--mono);
@@ -1536,7 +1544,7 @@
 }
 
 .is-account-route .account-ledger__delta.is-minus {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 /* строка-переход «дело → сумма к оплате» в сводке «Платежей».
@@ -1571,7 +1579,7 @@
 }
 
 .is-account-route .account-ledger__delta.is-due {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font-size: 13px;
 }
 
@@ -1721,7 +1729,7 @@
 }
 
 .is-account-route .account-steps b {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 650 12px/1.45 var(--mono);
 }
 
@@ -1775,7 +1783,7 @@
 }
 
 .is-account-route .pay-requisites .ps-copy:hover {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   border-color: var(--wax);
 }
 
@@ -2012,7 +2020,7 @@
 
 .is-account-route .plus-plan-card > header > span,
 .is-account-route .plus-plan-card li b {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .plus-plan-card > header > p {
@@ -2022,7 +2030,7 @@
 .is-account-route .plus-plan-card > header > em {
   margin-left: auto;
   padding: 5px 7px;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   font-style: normal;
 }
@@ -2170,7 +2178,7 @@
 }
 
 .is-account-route .deposit-calculator__controls .eyebrow {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 550 11px/1.2 var(--mono);
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -2221,7 +2229,7 @@
 
 .is-account-route .deposit-tiers > *:hover b,
 .is-account-route .deposit-tiers > .is-current b {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .deposit-tiers > .is-current {
@@ -2442,7 +2450,7 @@
 }
 
 .is-account-route .bonus-list--expiring b {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 /* ---------- конструктор абонемента: плитки-опции ---------- */
@@ -2519,7 +2527,7 @@
 }
 
 .is-account-route .builder-option.is-selected b {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .builder-option.is-selected i {
@@ -2784,7 +2792,7 @@
 /* ---------- надзаголовок раздела (глобального .eyebrow в проде нет) ---------- */
 .is-account-route .account-case-production .eyebrow,
 .is-account-route .case-state .eyebrow {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 550 11px/1.2 var(--mono);
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -2890,7 +2898,7 @@
 
 .is-account-route .account-case-production .dl-chip.warn,
 .is-account-route .account-case-production .dl-chip.late {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: transparent;
   border-color: var(--wax);
 }
@@ -3049,7 +3057,7 @@
 
 .is-account-route .account-case-production .case-note .link,
 .is-account-route .account-case-production .case-sec__lead .link {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-case-production .case-sub {
@@ -3118,7 +3126,7 @@
 }
 
 .is-account-route .account-case-production .case-ledger dt small.s-due {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-case-production .case-ledger dd {
@@ -3205,7 +3213,7 @@
 }
 
 .is-account-route .account-case-production .case-spec__terms > summary:hover {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-case-production .case-spec__open,
@@ -3293,7 +3301,7 @@
 }
 
 .is-account-route .account-case-production .case-timeline__list > li.is-current small {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 /* эталон снимает с названий событий серифность: это UI, а не заголовки */
@@ -3339,7 +3347,7 @@
   height: 34px;
   flex: 0 0 auto;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border-radius: 3px;
   font: 600 11px/1 var(--mono);
@@ -3371,7 +3379,7 @@
 
 /* «новый» — слово плюс восковой оттенок той же марки: не цветом одним */
 .is-account-route .file-row__new {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 550 11px/1.5 var(--mono);
   letter-spacing: .06em;
   text-transform: uppercase;
@@ -3384,7 +3392,7 @@
 }
 
 .is-account-route .file-row:hover strong {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 /* ---------- переписка: список пузырей эталона ---------- */
@@ -3611,7 +3619,7 @@
 }
 
 .is-account-route .account-case-production .case-consent a {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 /* ---------- благодарность: суммы плитками, без пилюль ---------- */
@@ -3654,7 +3662,7 @@
   height: 40px;
   flex: 0 0 auto;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border-radius: 50%;
   font: 500 17px/1 var(--serif);
@@ -3683,12 +3691,12 @@
 }
 
 .is-account-route .account-case-production .rv-star.on {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-case-production .rv-stars-static {
   margin-top: 18px;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font-size: 20px;
   letter-spacing: 2px;
   line-height: 1;
@@ -4082,7 +4090,7 @@
 }
 
 .is-account-route .account-case-production .case-progress-meta strong {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 500 clamp(18px, 2vw, 22px)/1 var(--serif);
   white-space: nowrap;
 }
@@ -4179,7 +4187,7 @@
 }
 
 .is-account-route .account-note .link {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 @media (max-width: 480px) {
@@ -4332,7 +4340,7 @@
 }
 
 .is-account-route .account-case-production .back-link:hover {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-case-production .back-link span {
@@ -4381,7 +4389,7 @@
 .is-account-route .account-case-production .case-overview__count {
   display: grid;
   gap: 3px;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 500 26px/1 var(--serif);
   text-align: right;
   white-space: nowrap;
@@ -4775,7 +4783,7 @@
 }
 
 .is-account-route .account-nav__assurance > span {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font-family: var(--serif);
 }
 
@@ -5044,7 +5052,7 @@
   height: 30px;
   grid-row: 1 / 3;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border-radius: 50%;
   font: 600 11px/1 var(--mono);
@@ -5399,7 +5407,7 @@
 
 .is-account-route .account-nav nav button:hover .account-nav__glyph,
 .is-account-route .account-nav nav button.is-current .account-nav__glyph {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border-color: color-mix(in srgb, var(--wax) 36%, var(--line));
 }
@@ -5433,7 +5441,7 @@
 }
 
 .is-account-route .account-nav__bottom i {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 600 11px/1 var(--mono);
   font-style: normal;
   text-align: center;
@@ -5448,7 +5456,7 @@
 }
 
 .is-account-route .account-head__new:hover {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--sheet);
   border-color: var(--wax);
   box-shadow: none;
@@ -5499,7 +5507,7 @@
 }
 
 .is-account-route .account-tabs i {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 650 11px/1 var(--mono);
   font-style: normal;
   text-align: center;
@@ -5550,7 +5558,7 @@
 }
 
 .is-account-route .account-priority__kicker {
-  color: var(--wax) !important;
+  color: var(--wax-text,var(--wax)) !important;
   font: 650 11px/1.3 var(--mono) !important;
   letter-spacing: .09em;
   text-transform: uppercase;
@@ -5893,7 +5901,7 @@
 }
 
 .is-cabinet-demo .account-demo-flag strong {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 650 11px/1.3 var(--mono);
   letter-spacing: .09em;
   text-transform: uppercase;
@@ -6334,7 +6342,7 @@
   }
 
   .is-account-route .account-case-production .case-body[data-case-section="files"] .file-row:hover > b {
-    color: var(--wax);
+    color: var(--wax-text,var(--wax));
     transform: translate(2px, -2px);
   }
 
@@ -6686,7 +6694,7 @@
 
 .is-account-route .account-order-group--waiting > header h3,
 .is-account-route .account-order-group--waiting > header > span {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-orders--registry .order-list {
@@ -6767,7 +6775,7 @@
 }
 
 .is-account-route .account-orders--registry .order-card--attention footer {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-conversations {
@@ -6874,7 +6882,7 @@
 }
 
 .is-account-route .account-conversation__body > span b {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 600 11px/1.3 var(--mono);
   letter-spacing: .04em;
 }
@@ -6916,7 +6924,7 @@
 }
 
 .is-account-route .account-conversation__meta b {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font-size: 11px;
   font-weight: 600;
 }
@@ -7267,7 +7275,7 @@
 
 .is-account-route .account-document-note > summary::after {
   margin-left: 7px;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   content: "+";
 }
 
@@ -7418,7 +7426,7 @@
   width: 36px;
   height: 40px;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border: 1px solid color-mix(in srgb, var(--wax) 25%, var(--line));
   font: 650 11px/1 var(--mono);
@@ -7465,7 +7473,7 @@
 
 .is-account-route .account-finance-summary__item:hover > i,
 .is-account-route .account-finance-summary__item:focus-visible > i {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   transform: translateX(2px);
 }
 
@@ -7977,7 +7985,7 @@
   width: 34px;
   height: 38px;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border: 1px solid color-mix(in srgb, var(--wax) 25%, var(--line));
   font: 650 11px/1 var(--mono);
@@ -8030,7 +8038,7 @@
 
 .is-account-route .account-home-tools > button:hover > i,
 .is-account-route .account-home-tools > button:focus-visible > i {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 @media (max-width: 1100px) {
@@ -8185,7 +8193,7 @@
   width: 46px;
   height: 50px;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border: 1px solid color-mix(in srgb, var(--wax) 32%, var(--line));
   font: 500 24px/1 var(--serif);
@@ -8359,7 +8367,7 @@
 
 .is-account-route .account-support-guides > a:hover i,
 .is-account-route .account-support-guides > a:focus-visible i {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-settings-profile {
@@ -8462,7 +8470,7 @@
   width: 32px;
   height: 36px;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border: 1px solid color-mix(in srgb, var(--wax) 25%, var(--line));
   font: 600 12px/1 var(--mono);
@@ -8513,7 +8521,7 @@
 
 .is-account-route .account-setting-row > :is(.theme-toggle, .calm-toggle):hover,
 .is-account-route .account-setting-row > :is(.theme-toggle, .calm-toggle):focus-visible {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border-color: var(--wax);
 }
@@ -8983,7 +8991,7 @@
   width: 27px;
   height: 28px;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   border: 1px solid color-mix(in srgb, var(--wax) 34%, var(--line));
   font: 650 11px/1 var(--mono);
   letter-spacing: 0;
@@ -9284,7 +9292,7 @@
 
 .is-account-route .cab-auth-head .caps {
   margin-bottom: 10px;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font-size: 11px;
 }
 
@@ -9404,7 +9412,7 @@
   position: absolute;
   top: 50%;
   right: 2px;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 400 21px/1 var(--serif);
   transform: translateY(-50%);
 }
@@ -9534,7 +9542,7 @@
 }
 
 .is-account-route .cab-first-order > b {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font-size: 12px;
 }
 
@@ -9556,7 +9564,7 @@
 .is-account-route .cab-login-pending__step {
   display: block;
   margin-bottom: 4px;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   font: 650 11px/1.2 var(--mono);
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -9606,7 +9614,7 @@
   width: 58px;
   height: 58px;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   border: 1px solid color-mix(in srgb, var(--wax) 46%, var(--line));
   border-radius: 50%;
   box-shadow: inset 0 0 0 4px var(--sheet), inset 0 0 0 5px color-mix(in srgb, var(--wax) 18%, transparent);
@@ -9616,7 +9624,7 @@
 
 .is-account-route .account-loader .eyebrow {
   margin-bottom: 8px;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-loader h1 {
@@ -9850,7 +9858,7 @@
 .is-account-route .account-club-card > header .line-link {
   flex: 0 0 auto;
   padding: 9px 0;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-club-card .plus-intro {
@@ -10017,7 +10025,7 @@
 
 .is-account-route .account-club-plans .plus-extras .line-link:hover,
 .is-account-route .account-club-plans .plus-extras .line-link:focus-visible {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   border-color: color-mix(in srgb, var(--wax) 42%, var(--line));
 }
 
@@ -10140,7 +10148,7 @@
   width: 34px;
   height: 38px;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   background: var(--wax-soft);
   border: 1px solid color-mix(in srgb, var(--wax) 28%, var(--line));
   font: 650 11px/1 var(--mono);
@@ -10186,7 +10194,7 @@
 
 .is-account-route .account-money-route button:hover .account-money-route__arrow,
 .is-account-route .account-money-route button:focus-visible .account-money-route__arrow {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   transform: translateX(2px);
 }
 
@@ -10394,7 +10402,7 @@
 
 .is-account-route .account-curator-row .line-link:hover,
 .is-account-route .account-curator-row .line-link:focus-visible {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-curator-empty {
@@ -10412,7 +10420,7 @@
   height: 44px;
   flex: 0 0 auto;
   place-items: center;
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
   border: 1px solid var(--line-strong);
   font-size: 20px;
 }
@@ -10901,7 +10909,7 @@
 
 .is-account-route .account-club-plans .plus-plan-card--blank > header > span,
 .is-account-route .account-club-plans .plus-plan-card--blank li b {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .account-club-plans .plus-plan-card--blank ul,
@@ -10945,7 +10953,7 @@
 }
 
 .is-account-route .club-blank > header .eyebrow {
-  color: var(--wax);
+  color: var(--wax-text,var(--wax));
 }
 
 .is-account-route .club-blank > header h3 {
@@ -11368,7 +11376,7 @@
     align-items: center;
     justify-content: flex-end;
     padding-right: 6px;
-    color: var(--wax);
+    color: var(--wax-text,var(--wax));
     background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--paper) 99%, transparent) 72%);
     content: "›";
     font: 700 18px/1 var(--serif);
@@ -11835,7 +11843,7 @@
   }
 
   .is-account-route .account-nav nav button.is-current .account-nav__glyph {
-    color: var(--wax);
+    color: var(--wax-text,var(--wax));
     background: transparent;
     border-color: transparent;
   }
@@ -11882,7 +11890,7 @@
 
   .is-account-route .account-nav__more.is-current > summary .account-nav__glyph,
   .is-account-route .account-nav__more[open] > summary .account-nav__glyph {
-    color: var(--wax);
+    color: var(--wax-text,var(--wax));
   }
 
   .is-account-route .account-nav__more-panel {

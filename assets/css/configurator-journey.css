@@ -152,7 +152,7 @@
   width:auto;
   height:auto;
   align-self:center;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   background:none;
 }
 
@@ -280,7 +280,7 @@
 .configurator-task .concept-home-prefill button{
   flex:0 0 auto;
   padding:8px 0;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   border:0;
   border-bottom:1px solid currentColor;
   background:transparent;
@@ -318,7 +318,7 @@
 }
 
 .configurator-task .concept-draft-choice small{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:650 8px/1 var(--mono);
   letter-spacing:.1em;
   text-transform:uppercase;
@@ -355,7 +355,7 @@
 }
 
 .configurator-task .concept-work-choice__head>span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:650 10px/1 var(--mono);
   letter-spacing:.1em;
   text-transform:uppercase;
@@ -1340,7 +1340,7 @@
   flex:0 0 auto;
   border:1px solid var(--hairline-strong,var(--hairline));
   border-radius:2px;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   background:transparent;
   font:400 21px/1 var(--serif);
 }

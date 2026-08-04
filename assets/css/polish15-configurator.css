@@ -301,7 +301,7 @@ html:not(.service-plan) .configurator-task .estimate-builder-note{display:none!i
 .configurator-task .wstep::before{
   display:block;
   margin:0 0 13px;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:550 9px/1.2 var(--mono);
   letter-spacing:.12em;
   text-transform:uppercase;
@@ -460,7 +460,7 @@ html:not(.service-plan) .configurator-task .estimate-builder-note{display:none!i
   color:var(--ink-faint);
   font-size:9px;
 }
-.configurator-task #typeGroup button.optrow[aria-checked="true"] .o-val{color:var(--wax)}
+.configurator-task #typeGroup button.optrow[aria-checked="true"] .o-val{color:var(--wax-text,var(--wax))}
 .configurator-task #typeGroup .svc-group{grid-column:1/-1}
 .configurator-task #typeGroup .svc-group .opt-list{
   display:grid;
@@ -637,11 +637,11 @@ html:not(.service-plan) .configurator-task .estimate-builder-note{display:none!i
 .configurator-task .lq-dochead::after{
   right:18px;
   top:13px;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   opacity:.15;
 }
 .configurator-task .lq-head{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:550 8px/1.3 var(--mono);
   letter-spacing:.13em;
 }
@@ -714,7 +714,7 @@ html:not(.service-plan) .configurator-task .estimate-builder-note{display:none!i
   place-items:center;
   border:1px solid var(--hairline-strong);
   border-radius:50%;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:550 8px/1 var(--mono);
 }
 .configurator-task .final-section-head b{
@@ -773,7 +773,7 @@ html:not(.service-plan) .configurator-task .estimate-builder-note{display:none!i
   background:color-mix(in srgb,var(--paper) 64%,var(--sheet));
   font-size:12px;
 }
-.configurator-task .att-add svg{color:var(--wax)}
+.configurator-task .att-add svg{color:var(--wax-text,var(--wax))}
 .configurator-task #attHint{margin-top:8px;font-size:10px}
 .configurator-task .att-item{border-radius:5px;background:var(--sheet)}
 .configurator-task #checkoutFields{min-width:0}
@@ -847,7 +847,7 @@ html:not(.service-plan) .configurator-task .estimate-builder-note{display:none!i
   place-items:center;
   border:1px solid var(--hairline);
   border-radius:50%;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 .configurator-task .final-more-body{padding-top:12px}
 .configurator-task #btnSubmit{
@@ -871,7 +871,7 @@ html.service-plan .configurator-task .conf-head{
 }
 html.service-plan .configurator-task .conf-head::before{
   grid-column:1;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
 }
 html.service-plan .configurator-task .conf-head h1{
   grid-column:1;
@@ -931,7 +931,7 @@ html.service-plan .configurator-task .split{display:block}
   border-bottom:1px solid var(--hairline);
   background:var(--sheet);
 }
-.configurator-task .cart-folio{color:var(--wax);font-size:8px}
+.configurator-task .cart-folio{color:var(--wax-text,var(--wax));font-size:8px}
 .configurator-task .cart-head h2{font-size:clamp(34px,4vw,54px);letter-spacing:-.03em}
 .configurator-task .cart-head p{max-width:68ch;font-size:14px}
 .configurator-task .cart-close{
@@ -957,7 +957,7 @@ html.service-plan .configurator-task .split{display:block}
   background:color-mix(in srgb,var(--sheet) 82%,var(--paper));
 }
 .configurator-task .cart-actions .btn{border-radius:5px}
-.configurator-task .cart-total-main b{color:var(--wax);font-size:28px}
+.configurator-task .cart-total-main b{color:var(--wax-text,var(--wax));font-size:28px}
 
 /* Mobile app edition */
 @media(max-width:920px){
@@ -1361,7 +1361,7 @@ html.service-plan .configurator-task .tx-wizard-sidebar .wprog{display:grid!impo
 
 .configurator-task .eyebrow{
   margin:0;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:550 9px/1.25 var(--mono);
   letter-spacing:.12em;
   text-transform:uppercase;
@@ -1843,7 +1843,7 @@ html.service-plan .configurator-task .tx-wizard-sidebar .wprog{display:grid!impo
   background:var(--sheet);
   font-size:10px;
 }
-.configurator-task .materials-step .file-list i{color:var(--wax);font:normal 600 8px/1 var(--mono)}
+.configurator-task .materials-step .file-list i{color:var(--wax-text,var(--wax));font:normal 600 8px/1 var(--mono)}
 .configurator-task .materials-step .file-list button{
   padding:0;
   border:0;
@@ -1953,7 +1953,7 @@ html[data-theme="dark"] .configurator-task .materials-step input[type="date"]{co
   flex:0 0 auto;
   place-items:center;
   border-radius:50%;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   background:var(--wax-soft);
   font:400 22px/1 var(--serif);
 }
@@ -1976,7 +1976,7 @@ html[data-theme="dark"] .configurator-task .materials-step input[type="date"]{co
   background:var(--sheet);
   font-size:10px;
 }
-.configurator-task .contact-step .file-list i{color:var(--wax);font:normal 600 8px/1 var(--mono)}
+.configurator-task .contact-step .file-list i{color:var(--wax-text,var(--wax));font:normal 600 8px/1 var(--mono)}
 .configurator-task .contact-step .file-list button{
   padding:0;
   border:0;
@@ -2634,7 +2634,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
 }
 .tx-wizard-brand img{width:40px;height:40px;box-shadow:0 0 0 1px var(--hairline-strong)}
 .tx-wizard-brand strong{color:var(--ink);font-size:15px}
-.tx-wizard-brand small{color:var(--wax);font-size:8px;letter-spacing:.12em}
+.tx-wizard-brand small{color:var(--wax-text,var(--wax));font-size:8px;letter-spacing:.12em}
 .tx-wizard-sidebar .wprog{margin-top:54px;gap:10px}
 .tx-wizard-sidebar .wp-track{height:1px;background:var(--hairline)}
 .tx-wizard-sidebar .wp-fill{background:var(--wax)}
@@ -2671,11 +2671,11 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
 .tx-wizard-steps strong{font:520 11.5px/1.25 var(--sans)}
 .tx-wizard-steps .is-current button{color:var(--ink)}
 .tx-wizard-steps .is-current button::before{background:var(--wax)}
-.tx-wizard-steps .is-current button>span{color:var(--wax);border:0;background:transparent;box-shadow:none}
+.tx-wizard-steps .is-current button>span{color:var(--wax-text,var(--wax));border:0;background:transparent;box-shadow:none}
 .tx-wizard-steps .is-done button{color:var(--ink-soft)}
 .tx-wizard-steps .is-done button>span{color:var(--ink-soft);border:0;background:transparent}
 .tx-wizard-help{padding-top:22px;border-top:1px solid var(--hairline)}
-.tx-wizard-help>span{color:var(--wax)}
+.tx-wizard-help>span{color:var(--wax-text,var(--wax))}
 .tx-wizard-help p{color:var(--ink-soft);font-size:11px}
 .tx-wizard-help button{border-bottom-color:var(--hairline-strong);color:var(--ink)}
 
@@ -2692,7 +2692,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
 }
 .configurator-task .wizard-main__head{padding-bottom:25px;border-bottom:1px solid var(--hairline-strong)}
 .configurator-task .wizard-main__head>div:first-child{max-width:760px}
-.configurator-task .wizard-main__head .eyebrow{margin-bottom:15px;color:var(--wax);letter-spacing:.13em}
+.configurator-task .wizard-main__head .eyebrow{margin-bottom:15px;color:var(--wax-text,var(--wax));letter-spacing:.13em}
 .configurator-task .wizard-main__head h1{
   max-width:15ch;
   margin:0;
@@ -2729,7 +2729,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   width:32px;
   height:32px;
   place-items:center;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:400 21px/1 var(--serif);
 }
 .configurator-task .wizard-close:hover{color:var(--ink);background:transparent}
@@ -2770,7 +2770,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   box-shadow:inset 3px 0 0 color-mix(in srgb,var(--wax) 42%,transparent);
   transform:none;
 }
-.configurator-task .decision-card:hover::after{color:var(--wax);transform:translateX(3px)}
+.configurator-task .decision-card:hover::after{color:var(--wax-text,var(--wax));transform:translateX(3px)}
 .configurator-task .decision-card.is-selected{
   border-color:var(--hairline);
   background:color-mix(in srgb,var(--wax-soft) 48%,transparent);
@@ -2796,7 +2796,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   margin-bottom:16px;
 }
 .configurator-task .concept-work-choice__head>span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:600 8px/1.2 var(--mono);
   letter-spacing:.1em;
   text-transform:uppercase;
@@ -3043,10 +3043,10 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
 /* Экран несостоявшейся отправки. Отличается от успеха знаком и цветом:
    человек должен сразу видеть, что заявка НЕ ушла, а не читать текст. */
 .configurator-task .concept-success--failed .concept-success__mark{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   border-color:var(--wax);
 }
-.configurator-task .concept-success--failed .eyebrow{ color:var(--wax); }
+.configurator-task .concept-success--failed .eyebrow{ color:var(--wax-text,var(--wax)); }
 .configurator-task .concept-success--failed .fb-box{
   margin-top:22px;
   text-align:left;
@@ -3189,7 +3189,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   width:22px;
   height:22px;
   place-items:center;
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   background:var(--wax-soft);
 }
 .configurator-task .wizard-autosave__icon svg{
@@ -3210,7 +3210,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   background:var(--verify-soft);
 }
 .configurator-task .wizard-autosave[data-autosave-state="error"]{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   border-color:var(--wax);
 }
 
@@ -3258,7 +3258,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   grid-column:1;
   place-items:center;
   border:1px solid var(--hairline-strong);
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   background:color-mix(in srgb,var(--sheet) 72%,transparent);
 }
 .configurator-task .decision-card__icon svg{
@@ -3278,7 +3278,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   gap:7px!important;
 }
 .configurator-task .decision-card__kicker{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:650 8px/1 var(--mono);
   font-style:normal;
   letter-spacing:.12em;
@@ -3641,7 +3641,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
 .configurator-task .recommendation-more>summary span,
 .configurator-task .materials-more>summary span,
 .configurator-task .contact-more>summary span{
-  color:var(--wax);
+  color:var(--wax-text,var(--wax));
   font:300 20px/1 var(--sans);
   transition:transform .18s ease;
 }
