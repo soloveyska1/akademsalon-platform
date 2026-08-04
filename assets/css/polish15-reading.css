@@ -5,18 +5,18 @@
    ============================================================ */
 
 body.reading-page{
-  --canvas:#f3eee4;
-  --canvas-deep:#e9e1d3;
-  --paper:#faf6ee;
+  --canvas:#E9DDCC;
+  --canvas-deep:#DDCDB6;
+  --paper:#F4EBDE;
   --paper-2:#e9e1d3;
-  --sheet:#fffdf8;
+  --sheet:#FFF9F0;
   --sheet-rgb:255,253,248;
   --ink:#1d1c18;
   --text:#38352f;
   --ink-soft:#68635a;
-  --muted:#68635a;
+  --muted:#645F57;
   --ink-faint:#8b8375;
-  --quiet:#8b8375;
+  --quiet:#645F57;
   --faint:#aaa08f;
   --hairline:#d8cebd;
   --line:#d8cebd;

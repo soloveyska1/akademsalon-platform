@@ -2,17 +2,17 @@
    The file is intentionally scoped: common navigation remains owned by chrome.css. */
 
 body.p15-operations {
-  --op-canvas: #f3eee4;
-  --op-paper: #f8f4ec;
-  --op-sheet: #fffdf8;
+  --op-canvas: #E9DDCC;
+  --op-paper: #F4EBDE;
+  --op-sheet: #FFF9F0;
   --op-ink: #201f1b;
   --op-text: #57534c;
   /* Вторичный текст. Затемнён с #777168: тот проходил AA только на самом
      светлом --op-sheet (4.75), а на холсте давал 4.18 и на --op-paper 4.40
      при норме 4.5. Сейчас 4.63 / 4.88 / 5.27 — с запасом на всех трёх фонах
      этого листа. Тёмная тема не тронута. */
-  --op-muted: #706a61;
-  --op-quiet: #68635a;
+  --op-muted: #645F57;
+  --op-quiet: #645F57;
   --op-line: #d9cebc;
   --op-line-strong: #c3b59f;
   --op-wax: #a63f29;

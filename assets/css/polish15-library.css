@@ -3,16 +3,16 @@
  * В файле нет блоков, отсутствующих в утверждённом экране.
  */
 body.polish15-library{
-  --canvas:#f3eee4;
-  --paper:#faf6ee;
-  --sheet:#fffdf8;
+  --canvas:#E9DDCC;
+  --paper:#F4EBDE;
+  --sheet:#FFF9F0;
   --sheet-rgb:255,253,248;
   --night:#1d1c18;
   --on-night:#fffaf3;
   --ink:#1d1c18;
   --text:#38352f;
-  --muted:#68635a;
-  --quiet:#8b8375;
+  --muted:#645F57;
+  --quiet:#645F57;
   --line:#d8cebd;
   --line-strong:#b8aa94;
   --wax:#a63f29;

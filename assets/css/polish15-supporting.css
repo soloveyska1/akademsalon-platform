@@ -4,16 +4,16 @@
  * публичных секций. Слой изолирован body-классом.
  */
 body.polish15-supporting{
-  --canvas:#f3eee4;
-  --canvas-deep:#e9e1d3;
-  --paper:#faf6ee;
-  --sheet:#fffdf8;
+  --canvas:#E9DDCC;
+  --canvas-deep:#DDCDB6;
+  --paper:#F4EBDE;
+  --sheet:#FFF9F0;
   --night:#1d1c18;
   --on-night:#fffaf3;
   --ink:#1d1c18;
   --text:#38352f;
-  --muted:#68635a;
-  --quiet:#68635a;
+  --muted:#645F57;
+  --quiet:#645F57;
   --line:#d8cebd;
   --line-soft:rgba(102,91,72,.12);
   --line-strong:#b8aa94;
@@ -1380,7 +1380,7 @@ body.polish15-supporting .membership-pass>header span{
 body.polish15-supporting .membership-pass>header small,
 body.polish15-supporting .membership-pass>footer,
 body.polish15-supporting .membership-pass dt{
-  color:#736a5d;
+  color:var(--muted);
   font:600 9px/1.3 var(--mono);
   letter-spacing:.06em;
   text-transform:uppercase;
@@ -1406,7 +1406,7 @@ body.polish15-supporting .membership-pass>div:nth-of-type(2){
 
 body.polish15-supporting .membership-pass>div:nth-of-type(2) p,
 body.polish15-supporting .membership-pass>div:nth-of-type(2) span{
-  color:#6c6458;
+  color:var(--muted);
   font-size:12px;
 }
 
@@ -1468,7 +1468,7 @@ body.polish15-supporting .period-switch{
 body.polish15-supporting .period-switch button{
   min-height:40px;
   padding:8px 16px;
-  color:var(--muted);
+  color:var(--text);
   background:transparent;
   border-radius:999px;
   font-size:12px;
