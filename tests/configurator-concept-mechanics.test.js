@@ -74,9 +74,19 @@ test('draft and comments routes start with a file review instead of a guessed fu
   assert.match(html, /function sourceFileRequired\(\)/);
   assert.match(html, /\['draft','comments'\]\.indexOf\(state\.situation\) >= 0/);
   assert.match(html, /\['diagnostic','editing'\]\.indexOf\(effectiveResult\(\)\) >= 0/);
-  assert.match(html, /var requiredSourceReady = !sourceFileRequired\(\) \|\| fileNames\(\)\.length > 0/);
+  // Ворота остаются: без исходника расчёт не выдаётся. Но доказательством
+  // служит файл ИЛИ описание задачи, и второй путь обязан жить внутри мастера —
+  // прежняя ссылка уводила на приёмную и бросала заявку.
+  assert.match(html, /function sourceEvidenceReady\(\)/);
+  assert.match(html, /!sourceFileRequired\(\) \|\| fileNames\(\)\.length > 0 \|\| describedInsteadOfFile\(\)/);
+  assert.match(html, /SOURCE_DESCRIPTION_MIN = \d+/);
+  assert.match(html, /serviceQuestionsComplete\(\) && sourceEvidenceReady\(\)/);
   assert.match(html, /Для точного разбора нужен файл с текстом или замечаниями/);
-  assert.match(html, /опишите задачу редактору/);
+  const hint = html.match(/<p class="materials-hint" role="note"><strong>Для точного разбора[\s\S]*?<\/p>/);
+  assert.ok(hint, 'file-review hint must stay');
+  assert.doesNotMatch(hint[0], /<a\b/, 'the no-file escape must not navigate out of the wizard');
+  assert.match(hint[0], /data-describe-instead/);
+  assert.match(html, /\[data-describe-instead\][\s\S]*?data-concept-field="comment"[\s\S]*?focus\(/);
   assert.match(html, /state\.workType === 'self'[\s\S]*?priceText:'после уточнения вида и объёма работы'/);
   assert.match(html, /state\.workType !== 'self'/);
 });

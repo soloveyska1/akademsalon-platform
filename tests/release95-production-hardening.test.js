@@ -18,10 +18,15 @@ test('narrow configurator header cannot exceed the mobile viewport', () => {
 });
 
 test('desktop work choices preserve a readable 44px target', () => {
-  assert.match(
-    journeyCss,
-    /@media\(min-width:921px\)\{\s*\.configurator-task \.concept-work-choice__rows button\{\s*min-height:44px;\s*font-size:12px;/,
+  // Раньше здесь стояли точные 44px/12px, и любое укрупнение читалось как
+  // регрессия. Стережём сам инвариант: цель не мельче 44px, подпись не мельче
+  // 12px — исходный дефект (сжатие ниже порога) по-прежнему валит тест.
+  const rule = journeyCss.match(
+    /@media\(min-width:921px\)\{[\s\S]*?\.configurator-task \.concept-work-choice__rows button\{[\s\S]*?min-height:(\d+)px;\s*font-size:(\d+)px;/,
   );
+  assert.ok(rule, 'desktop work choices need an explicit target rule');
+  assert.ok(Number(rule[1]) >= 44, `work choice target must stay >=44px, got ${rule[1]}px`);
+  assert.ok(Number(rule[2]) >= 12, `work choice label must stay >=12px, got ${rule[2]}px`);
 });
 
 test('mobile footer has no duplicate light-only tail and keeps legal links tappable', () => {

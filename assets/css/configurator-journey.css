@@ -54,6 +54,26 @@
   padding:clamp(26px,3.4vw,48px) clamp(28px,5vw,76px) 28px;
 }
 
+/* На больших экранах шаг занимал верхнюю половину, а под ним до нижней панели
+   оставалась пустая полоса около 240px. Тело шага забирает свободную высоту и
+   встаёт по центру: на низких экранах свободной высоты нет и правило молчит.
+   Нижний отступ держит содержимое над закреплённой панелью действий. */
+@media(min-width:921px){
+  .configurator-task .concept-wizard-host{
+    display:flex;
+    flex-direction:column;
+    padding-bottom:106px;
+  }
+
+  .configurator-task .concept-wizard-host>:is(
+    .decision-workbench,
+    .materials-step,
+    .contact-step
+  ){
+    margin-block:auto;
+  }
+}
+
 .configurator-task .concept-wizard-host>:is(
   .wizard-main__head,
   .decision-workbench,
@@ -83,8 +103,8 @@
 
 .configurator-task .wizard-main__head h1+p{
   max-width:66ch;
-  margin-top:9px;
-  font-size:13px;
+  margin-top:11px;
+  font-size:16px;
   line-height:1.48;
 }
 
@@ -99,6 +119,46 @@
 
 .configurator-task .wizard-autosave small{
   display:block;
+}
+
+/* Это пассивное уведомление, а рамка с заливкой и плашечный значок — язык
+   блока «Вы выбрали», то есть главного акцента шага. Проходная сноска в чужой
+   одежде и выглядела неопрятно; вдобавок главная строка была набрана 10.5px,
+   а подчинённая под ней — 12px, иерархия читалась наоборот.
+   Возвращаем сноске её роль: одна тихая строка под лидом, без короба. */
+.configurator-task .wizard-autosave{
+  display:inline-grid;
+  min-height:0;
+  max-width:100%;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:start;
+  gap:1px 9px;
+  margin:16px 0 0!important;
+  padding:0;
+  border:0;
+  color:var(--ink-soft);
+  background:none;
+  font:500 13px/1.5 var(--sans)!important;
+}
+
+.configurator-task .wizard-autosave small{
+  display:block;
+  grid-column:2;
+  color:var(--ink-faint);
+  font:500 12px/1.5 var(--sans);
+}
+
+.configurator-task .wizard-autosave__icon{
+  width:auto;
+  height:auto;
+  align-self:center;
+  color:var(--wax);
+  background:none;
+}
+
+.configurator-task .wizard-autosave__icon svg{
+  width:13px;
+  height:13px;
 }
 
 .configurator-task .decision-workbench{
@@ -170,7 +230,7 @@
 }
 
 .configurator-task .decision-card__kicker{
-  font-size:9px;
+  font-size:10px;
 }
 
 .configurator-task .decision-card strong{
@@ -179,7 +239,7 @@
 }
 
 .configurator-task .decision-card small{
-  font-size:10.5px;
+  font-size:13px;
   line-height:1.36;
 }
 
@@ -207,14 +267,14 @@
 
 .configurator-task .concept-home-prefill small{
   color:var(--ink-faint);
-  font:650 7px/1 var(--mono);
+  font:650 10px/1 var(--mono);
   letter-spacing:.1em;
   text-transform:uppercase;
 }
 
 .configurator-task .concept-home-prefill strong{
   color:var(--ink);
-  font:500 18px/1.15 var(--serif);
+  font:500 22px/1.15 var(--serif);
 }
 
 .configurator-task .concept-home-prefill button{
@@ -224,7 +284,7 @@
   border:0;
   border-bottom:1px solid currentColor;
   background:transparent;
-  font:650 9px/1 var(--sans);
+  font:650 13px/1 var(--sans);
   cursor:pointer;
 }
 
@@ -296,13 +356,13 @@
 
 .configurator-task .concept-work-choice__head>span{
   color:var(--wax);
-  font:650 7px/1 var(--mono);
+  font:650 10px/1 var(--mono);
   letter-spacing:.1em;
   text-transform:uppercase;
 }
 
 .configurator-task .concept-work-choice__head h2{
-  font-size:18px;
+  font-size:22px;
 }
 
 .configurator-task .concept-work-choice__rows{
@@ -313,18 +373,25 @@
 }
 
 .configurator-task .concept-work-choice__rows button{
-  min-height:43px;
-  padding:8px 10px;
+  min-height:52px;
+  padding:12px 12px;
   border-right:1px solid var(--hairline);
   border-bottom:1px solid var(--hairline);
   background:color-mix(in srgb,var(--sheet) 66%,transparent);
-  font-size:10px;
+  font-size:13px;
 }
 
 @media(min-width:921px){
+  /* Две колонки вместо трёх: при 15px подписи «ВКР или диплом» и «Отчёт по
+     практике» переставали ломаться пополам, а сам выбор набирает вес — это
+     единственное действие шага. */
+  .configurator-task .concept-work-choice__rows{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
   .configurator-task .concept-work-choice__rows button{
-    min-height:44px;
-    font-size:12px;
+    min-height:64px;
+    font-size:15px;
   }
 }
 
@@ -335,8 +402,8 @@
 }
 
 .configurator-task .concept-freeform{
-  margin-top:10px;
-  font-size:10px;
+  margin-top:14px;
+  font-size:13px;
 }
 
 .configurator-task .live-quote{
@@ -398,7 +465,7 @@
   max-width:49ch;
   margin:13px 0 0;
   color:var(--journey-soft);
-  font-size:11px;
+  font-size:15px;
   line-height:1.5;
 }
 
@@ -410,7 +477,7 @@
 
 .configurator-task .live-quote>dl>div{
   display:grid;
-  grid-template-columns:104px 1fr;
+  grid-template-columns:128px 1fr;
   gap:12px;
   padding:10px 0;
   border-bottom:1px solid var(--journey-line);
@@ -418,7 +485,7 @@
 
 .configurator-task .live-quote dt{
   color:var(--journey-muted);
-  font:600 9px/1.3 var(--mono);
+  font:600 10px/1.35 var(--mono);
   letter-spacing:.08em;
   text-transform:uppercase;
 }
@@ -426,7 +493,7 @@
 .configurator-task .live-quote dd{
   margin:0;
   color:var(--journey-ink);
-  font-size:10.5px;
+  font-size:15px;
   font-weight:560;
   line-height:1.38;
 }
@@ -434,7 +501,7 @@
 .configurator-task .live-quote .live-quote__price{
   color:var(--journey-wax-deep);
   font-family:var(--serif);
-  font-size:17px;
+  font-size:23px;
 }
 
 .configurator-task .live-quote__more{
@@ -449,7 +516,7 @@
   gap:14px;
   color:var(--journey-ink);
   cursor:pointer;
-  font-size:10px;
+  font-size:13px;
   font-weight:650;
   list-style:none;
 }
@@ -475,7 +542,7 @@
 .configurator-task .live-quote__more p{
   margin:0;
   color:var(--journey-soft);
-  font-size:9.5px;
+  font-size:13px;
   line-height:1.5;
 }
 
@@ -490,7 +557,7 @@
 .configurator-task .live-quote>small{
   margin-top:14px;
   color:var(--journey-muted);
-  font:600 9px/1.4 var(--mono);
+  font:600 10px/1.45 var(--mono);
   letter-spacing:.045em;
   text-transform:uppercase;
 }
@@ -826,14 +893,14 @@
 
   .configurator-task .concept-task-bar strong{
     color:var(--ink);
-    font-size:12px;
+    font-size:15px;
   }
 
   .configurator-task .concept-task-bar .btn,
   .configurator-task .concept-task-back{
-    min-height:50px;
+    min-height:52px;
     border-radius:2px;
-    font-size:12px;
+    font-size:15px;
   }
 
   .configurator-task .concept-task-bar .btn:disabled{
@@ -992,14 +1059,14 @@
 
   .configurator-task .concept-task-bar strong{
     color:var(--ink);
-    font-size:12px;
+    font-size:15px;
   }
 
   .configurator-task .concept-task-bar .btn,
   .configurator-task .concept-task-back{
-    min-height:50px;
+    min-height:52px;
     border-radius:2px;
-    font-size:12px;
+    font-size:15px;
   }
 
   .configurator-task .concept-task-bar .btn:disabled{
@@ -1128,7 +1195,7 @@
 .configurator-task .field-inline-reason{
   margin:0 0 10px;
   color:var(--ink-soft);
-  font-size:12.5px;
+  font-size:15px;
   line-height:1.45;
 }
 
@@ -1190,22 +1257,103 @@
   padding:14px 0 4px;
 }
 
+/* Этот поздний блок повторно ужимал те же роли и перекрывал шкалу выше:
+   ответ панели, пояснение и раскрывашка возвращались к 10.5–12px. */
+/* Шаги «Срок и материалы» и «Проверка и отправка» набирались 8–11px из
+   polish15-configurator: подписи полей были мельче плашки автосохранения, а
+   подписи сводки — 8px. Доводим до той же шкалы, что и первый шаг, чтобы путь
+   не проваливался в мелкий кегль на середине. */
+.configurator-task .materials-step .field>span,
+.configurator-task .contact-step .field>span{
+  font-size:13px;
+}
+
+/* В polish15-configurator у подсказки стоял отрицательный верхний отступ -4px:
+   она наезжала на пунктирную зону файла. На 10px это читалось как тесная
+   вёрстка, на читаемом кегле — как наложение. Разводим по-человечески. */
+.configurator-task .materials-hint{
+  margin:14px 0 0;
+  font-size:13px;
+  line-height:1.5;
+}
+
+/* Обход набран внутри абзаца, поэтому подчёркивание должно переноситься вместе
+   со словами: у .line-link оно нарисовано border-bottom и при переносе строки
+   отрывалось отдельной чертой под следующей строкой. */
+.configurator-task .materials-hint .line-link{
+  display:inline;
+  padding:0;
+  border:0;
+  /* --wax на тёмной карточке давал 3.84:1; --journey-wax переопределяется темой */
+  color:var(--journey-wax,var(--wax));
+  background:none;
+  font:inherit;
+  font-weight:650;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  cursor:pointer;
+}
+
+.configurator-task .deadline-flex>span{
+  font-size:15px;
+}
+
+.configurator-task .file-drop span>strong{
+  font-size:15px;
+}
+
+.configurator-task .file-drop span>small{
+  font-size:12px;
+}
+
+/* Круг 42px с розовой заливкой был единственной скруглённой пастельной формой
+   в наборе, где всё остальное — квадратные штампы и волосяные линии. Берём тот
+   же оттиск, что у карточки возврата: квадрат, тонкая грань, воск без заливки. */
+.configurator-task .file-drop__icon{
+  width:34px;
+  height:34px;
+  flex:0 0 auto;
+  border:1px solid var(--hairline-strong,var(--hairline));
+  border-radius:2px;
+  color:var(--wax);
+  background:transparent;
+  font:400 21px/1 var(--serif);
+}
+
+.configurator-task .file-drop:hover .file-drop__icon,
+.configurator-task .file-drop:focus-visible .file-drop__icon{
+  border-color:var(--wax);
+}
+
+.configurator-task .wizard-summary>.eyebrow,
+.configurator-task .wizard-summary dt{
+  font-size:10px;
+}
+
+.configurator-task .wizard-summary dd{
+  font-size:15px;
+}
+
+.configurator-task .wizard-summary>p:not(.eyebrow){
+  font-size:13px;
+}
+
 .configurator-task .decision-card small,
 .configurator-task .live-quote>p,
 .configurator-task .live-quote dd{
-  font-size:12px;
+  font-size:15px;
 }
 
 .configurator-task .live-quote__more summary{
-  font-size:12px;
+  font-size:13px;
 }
 
 .configurator-task .live-quote__more p{
-  font-size:11.5px;
+  font-size:13px;
 }
 
 .configurator-task .live-quote>small{
-  font-size:10.5px;
+  font-size:10px;
 }
 
 .configurator-task .concept-telegram-row--login{
@@ -1278,7 +1426,7 @@
 
 @media(max-width:920px){
   .configurator-task .wizard-autosave small{
-    font-size:11.5px;
+    font-size:12px;
   }
 
   .configurator-task .deadline-flex{
