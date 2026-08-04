@@ -14,7 +14,9 @@
   --ink-p15: #1d1c18;
   --text-p15: #38352f;
   --muted-p15: #68635a;
-  --quiet-p15: #6f695f;
+  /* прежний #6f695f давал 4.17–4.35:1 на мелких надписях (7.5–9px) поверх
+     светлого градиента — на волосок ниже AA; тёмная тема токен переопределяет */
+  --quiet-p15: #69645a;
   --line-p15: #d8cebd;
   --line-strong-p15: #b8aa94;
   --wax-p15: #a63f29;
@@ -586,8 +588,10 @@
 
 .p15-catalog .discipline-grid a {
   display: grid;
+  /* код · заголовок · описание · подвал; описание забирает остаток,
+     чтобы цена держалась по низу при заголовке в две строки */
+  grid-template-rows: auto auto 1fr auto;
   min-height: 210px;
-  align-content: start;
   padding: 24px;
   border-right: 1px solid var(--line-p15);
   border-bottom: 1px solid var(--line-p15);
@@ -606,7 +610,6 @@
 .p15-catalog .discipline-grid h3 {
   margin-top: 30px;
   font-size: 25px;
-  text-transform: capitalize;
 }
 
 .p15-catalog .discipline-grid p {
@@ -661,6 +664,11 @@
 
 .p15-catalog .choice-help .eyebrow {
   color: #a69e91;
+}
+
+/* В тёмной теме печать стоит на ярком воске: светлые чернила давали 2.63:1. */
+:root[data-theme="dark"] .p15-catalog .choice-help__seal {
+  color: var(--night-p15, #1d1c18);
 }
 
 .p15-catalog .choice-help h2 {
@@ -2387,7 +2395,8 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
 .p15-catalog .service-card-grid--catalog .service-card:nth-child(5),
 .p15-catalog .service-card-grid--catalog .service-card:nth-child(10){
   background:
-    radial-gradient(circle at 90% 5%,color-mix(in srgb,var(--wax-p15) 18%,transparent),transparent 33%),
+    /* 18% восковой подсветки уводило мелкие надписи карточек 5 и 10 к 4.37:1 */
+    radial-gradient(circle at 90% 5%,color-mix(in srgb,var(--wax-p15) 14%,transparent),transparent 33%),
     color-mix(in srgb,var(--sheet-p15) 88%,var(--paper-p15));
 }
 .p15-catalog .service-card__link{padding:24px}
@@ -2452,6 +2461,13 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
 }
 .p15-catalog .discipline-section .section-head h2{color:#f6efe5}
 .p15-catalog .discipline-section .section-head>p{color:#bdb3a7}
+/* Секция всегда тёмная, поэтому надзаголовок, код маршрута и кольцо фокуса
+   не должны наследовать светлые токены темы: на этом фоне они падали до 2.7–3.5:1. */
+.p15-catalog .discipline-section .section-head .eyebrow{color:#c6bdaf}
+.p15-catalog .discipline-section .discipline-grid__code{color:#ff8064}
+.p15-catalog .discipline-section .discipline-grid a:focus-visible{outline-color:#ff8064}
+/* стрелка в подвале карточки: в тёмной теме токен давал 2.0:1 против 7.4:1 в светлой */
+.p15-catalog .discipline-section .discipline-grid footer span{color:#b8aa94}
 .p15-catalog .discipline-section .discipline-grid{
   border-top-color:rgba(246,239,229,.28);
   border-left-color:rgba(246,239,229,.14);

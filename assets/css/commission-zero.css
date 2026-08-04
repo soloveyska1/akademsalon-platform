@@ -1180,7 +1180,8 @@
   color:#c76d56;
   font:500 54px/.85 var(--serif);
 }
-.catalog-commission .eyebrow{ margin:0 0 7px;color:rgba(255,250,241,.43)!important; }
+/* .43 давало 3.46:1 на тёмном градиенте секции; .58 совпадает с соседним абзацем */
+.catalog-commission .eyebrow{ margin:0 0 7px;color:rgba(255,250,241,.58)!important; }
 .catalog-commission h2{
   margin:0;
   color:#fffaf1!important;
