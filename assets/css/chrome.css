@@ -2677,3 +2677,121 @@ html[data-input-modality="keyboard"] .site-header .brand:focus-visible .brand__n
   .case-bridge__actions .button{display:none}
   .case-bridge__self{min-height:46px}
 }
+
+/* ============================================================
+   ПРИЁМНАЯ · окно «Спросить мастера»
+   Прежде окно называлось «спросить», обещало «опишите задачу
+   своими словами» — и не давало ничего описать: пять ссылок
+   наружу и выбор канала за клиента. Теперь спрашивают здесь,
+   а каналы убраны под раскрытие.
+   ============================================================ */
+
+.cs-ask{
+  display:grid;
+  gap:10px;
+  margin:18px 0 0;
+  padding:16px 16px 18px;
+  background:var(--sheet);
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+
+.cs-ask__label{
+  color:var(--quiet);
+  font:600 9.5px/1.4 var(--mono);
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.cs-ask__field{
+  width:100%;
+  min-height:84px;
+  padding:12px 13px;
+  color:var(--ink);
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:8px;
+  font:400 15px/1.5 var(--sans);
+  resize:vertical;
+  transition:border-color .18s ease,box-shadow .18s ease;
+}
+
+.cs-ask__field::placeholder{color:var(--quiet)}
+
+.cs-ask__field:focus-visible{
+  border-color:var(--wax);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--wax) 16%,transparent);
+  outline:none;
+}
+
+.cs-ask__send{
+  width:100%;
+  min-height:48px;
+  justify-content:center;
+}
+
+.cs-ask__how{
+  margin:0;
+  color:var(--muted);
+  font-size:12.5px;
+  line-height:1.45;
+}
+
+.cs-ask__free{
+  margin:2px 0 0;
+  padding-top:11px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.cs-ask__free b{color:var(--ink)}
+
+.cs-alt2{
+  margin-top:16px;
+  border-top:1px solid var(--line);
+}
+
+.cs-alt2>summary{
+  padding:14px 0 12px;
+  color:var(--muted);
+  cursor:pointer;
+  font:500 13.5px/1.3 var(--sans);
+  list-style:none;
+}
+
+.cs-alt2>summary::-webkit-details-marker{display:none}
+
+.cs-alt2>summary::after{
+  margin-left:8px;
+  color:var(--quiet);
+  content:"▾";
+  font-size:11px;
+}
+
+.cs-alt2[open]>summary::after{content:"▴"}
+
+.cs-alt2>summary:hover{color:var(--ink)}
+
+.cs-alt2__list{display:grid;gap:1px;background:var(--line);border-top:1px solid var(--line)}
+
+.cs-alt2__list>a{
+  display:grid;
+  gap:3px;
+  padding:12px 2px 13px;
+  background:var(--sheet);
+  color:inherit;
+  text-decoration:none;
+}
+
+.cs-alt2__list>a b{color:var(--ink);font-size:14.5px;font-weight:600}
+
+.cs-alt2__list>a small{color:var(--muted);font-size:12.5px;line-height:1.45}
+
+.cs-alt2__list>a:hover b{color:var(--wax-text,var(--wax))}
+
+@media (max-width:520px){
+  .cs-ask{padding:14px}
+  .cs-ask__field{min-height:96px}
+}

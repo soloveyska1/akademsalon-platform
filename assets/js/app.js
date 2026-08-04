@@ -2927,42 +2927,62 @@
               '<span aria-hidden="true">×</span></button></div>' +
           '<div class="cs-body">' +
             '<p class="cs-lead">' + (opts.lead ||
-              'Напишите тему и срок. Скажем, возьмёмся ли, сколько это стоит и что понадобится от вас.') + '</p>' +
+              'Напишите, что за работа и когда нужно. Мастер ответит, возьмёмся ли, сколько это стоит и что понадобится от вас.') + '</p>' +
+            /* Окно называется «спросить», значит спросить надо давать
+               прямо здесь. Прежде это было меню из пяти ссылок наружу:
+               человек нажимал «спросить» и получал выбор канала. */
+            '<div class="cs-ask">' +
+              '<label class="cs-ask__label" for="csAsk">В двух словах — что за работа и срок</label>' +
+              '<textarea id="csAsk" class="cs-ask__field" rows="3" data-cs-text ' +
+                'placeholder="Например: курсовая по экономике, тема есть, нужен план и структура. Сдавать 20-го."></textarea>' +
+              '<button class="cs-ask__send btn btn-wax" type="button" data-cs-send>' +
+                'Отправить мастеру <span aria-hidden="true">→</span></button>' +
+              '<p class="cs-ask__how">Откроется Telegram с уже готовым сообщением — останется нажать «отправить».</p>' +
+              '<p class="cs-ask__free"><b>Без оплаты:</b> сначала ответ и понятная цена.</p>' +
+            '</div>' +
             /* Состояние — словами, а не цветом: §3 запрещает цвет как
-               единственный носитель смысла. Набором стоит сама метка
-               («НА СВЯЗИ» / «НОЧЬ»), цвет только поддерживает. */
-            /* Тире внутри второй строки, а не пробел между элементами:
-               флексбокс выбрасывает пробельные узлы между детьми, и
-               role="status" прочитался бы как «На связиСрок ответа…». */
+               единственный носитель смысла. И конкретно: прежнее «срок
+               ответа зависит от загрузки мастерской» не сообщало ничего. */
             '<p class="cs-live' + (day ? '' : ' night') + '" role="status">' +
               '<b class="cs-live-tag">' + (day ? 'На связи' : 'Ночь') + '</b>' +
-              '<span>' + (day ? '— срок ответа зависит от загрузки мастерской'
-                              : '— ответим в рабочее время, с 9 до 23 по Москве') + '</span></p>' +
-            /* Список действий по мерке .sheet-action-list эталона:
-               строки разделены волосяной линией, без карточек-коробок. */
-            '<div class="cs-routes">' +
-              '<a class="cs-route cs-route--main" href="' + LINKS.human + '" target="_blank" rel="noopener">' +
-                '<span class="cs-num" aria-hidden="true">01</span>' +
-                '<span class="cs-route-copy"><b>Написать мастеру</b>' +
-                '<small>Личный диалог в Telegram</small></span>' +
-                '<span class="cs-arrow" aria-hidden="true">→</span></a>' +
-              '<a class="cs-route" href="configurator.html">' +
-                '<span class="cs-num" aria-hidden="true">02</span>' +
-                '<span class="cs-route-copy"><b>Оставить заявку на сайте</b>' +
-                '<small>Смета, файлы и статус в одном месте</small></span>' +
-                '<span class="cs-arrow" aria-hidden="true">→</span></a>' +
-            '</div>' +
-            '<div class="cs-alt"><span class="cs-alt-label">Другой путь</span>' +
-              '<div class="cs-alt-grid">' +
-                '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener">ВКонтакте</a>' +
-                '<a href="' + order + '" target="_blank" rel="noopener">Бот 24/7</a>' +
-                '<a href="priyomnaya.html">Анонимно</a>' +
-              '</div></div>' +
-            '<p class="cs-foot"><b>Без оплаты:</b> сначала ответ и понятная цена.</p>' +
+              '<span>' + (day ? '— отвечаем с 9:00 до 23:00 по Москве'
+                              : '— ответим утром, после 9:00 по Москве') + '</span></p>' +
+            /* Остальные каналы не спорят с главным действием: они убраны
+               под раскрытие и объяснены человеческими словами. */
+            '<details class="cs-alt2">' +
+              '<summary>Другой способ связи</summary>' +
+              '<div class="cs-alt2__list">' +
+                '<a href="configurator.html">' +
+                  '<b>Оставить заявку на сайте</b>' +
+                  '<small>Форма с вопросами. Смета, файлы и статус потом в одном месте.</small></a>' +
+                '<a href="' + LINKS.vkm + '" target="_blank" rel="noopener">' +
+                  '<b>ВКонтакте</b><small>Тот же мастер, если вам привычнее ВК.</small></a>' +
+                '<a href="' + order + '" target="_blank" rel="noopener">' +
+                  '<b>Телеграм-бот</b><small>Соберёт заявку по шагам и покажет расчёт без человека.</small></a>' +
+                '<a href="priyomnaya.html">' +
+                  '<b>Спросить открыто</b><small>Вопрос и ответ увидят другие. Имя не публикуем.</small></a>' +
+              '</div>' +
+            '</details>' +
           '</div>' +
         '</div>';
       return el;
     }
+    function wireAsk(root) {
+      var field = root.querySelector('[data-cs-text]');
+      var send = root.querySelector('[data-cs-send]');
+      if (!field || !send) return;
+      send.addEventListener('click', function () {
+        var text = (field.value || '').trim();
+        var href = LINKS.human;
+        if (text) href += '?text=' + encodeURIComponent(text);
+        if (Salon.visit) Salon.visit.mark('приёмная: отправить мастеру');
+        window.open(href, '_blank', 'noopener');
+      });
+      field.addEventListener('keydown', function (e) {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') send.click();
+      });
+    }
+
     function close() {
       if (!sheet) return;
       sheet.classList.remove('open');
@@ -2975,6 +2995,7 @@
     Salon.contact = function (opts) {
       lastFocus = document.activeElement;
       sheet = build(opts || {});
+      wireAsk(sheet);
       document.body.appendChild(sheet);
       document.body.classList.add('toc-lock');
       inerted = ['.site-header', 'main', '.site-footer', '.mobile-cta', '.toc', '.mrail', '.lrail']
