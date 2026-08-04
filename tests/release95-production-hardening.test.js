@@ -29,6 +29,16 @@ test('desktop work choices preserve a readable 44px target', () => {
   assert.ok(Number(rule[2]) >= 12, `work choice label must stay >=12px, got ${rule[2]}px`);
 });
 
+test('consent to personal-data processing is not the smallest text on the step', () => {
+  // Согласие на обработку ПДн и ссылка на политику набирались 10px: человек
+  // принимал юридически значимое решение самым мелким текстом экрана.
+  const rule = journeyCss.match(
+    /\.configurator-task \.contact-step \.consent-check\{\s*font-size:(\d+)px;/,
+  );
+  assert.ok(rule, 'consent block needs an explicit size in the journey layer');
+  assert.ok(Number(rule[1]) >= 14, `consent copy must stay >=14px, got ${rule[1]}px`);
+});
+
 test('mobile footer has no duplicate light-only tail and keeps legal links tappable', () => {
   assert.doesNotMatch(mobileCss, /body \.site-footer\{\s*padding-bottom:calc\(74px/);
   assert.match(

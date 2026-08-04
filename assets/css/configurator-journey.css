@@ -1338,6 +1338,32 @@
   font-size:13px;
 }
 
+/* Третий шаг оставался самым мелким. Главное здесь не эстетика: согласие на
+   обработку персональных данных и ссылка на политику набирались 10px — человек
+   принимал юридически значимое решение самым мелким текстом экрана. Выбор
+   способа связи и вводный текст шага тоже были ниже читаемого яруса. */
+.configurator-task .contact-step .consent-check{
+  font-size:14px;
+  line-height:1.5;
+}
+
+.configurator-task .concept-contact-intro span{
+  font-size:15px;
+}
+
+.configurator-task .concept-contact-methods button{
+  font-size:15px;
+}
+
+.configurator-task .concept-telegram-row span>small{
+  font-size:13px;
+  line-height:1.45;
+}
+
+.configurator-task .concept-contact-or{
+  font-size:10px;
+}
+
 .configurator-task .decision-card small,
 .configurator-task .live-quote>p,
 .configurator-task .live-quote dd{
