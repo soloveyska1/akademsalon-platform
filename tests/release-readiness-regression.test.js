@@ -139,7 +139,7 @@ test('home loads only the reproducible release bundles', () => {
   // OUT-005 rebuilds only JS after the route-context source changes.
   // OUT-007 keeps its shared search wave; release103 adds a CSS-only trigger marker.
   // This check also proves that home loads only the generated bundles.
-  assert.match(home, /assets\/css\/home-release\.min\.css\?v=20260804shell112&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1&amp;contrast=20260804contrast1&amp;wax=20260804wax1&amp;hdr=20260804hdr2&amp;sheen=20260804sheen1" data-mobile-edition="1"/);
+  assert.match(home, /assets\/css\/home-release\.min\.css\?v=20260804shell112&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1&amp;contrast=20260804contrast1&amp;wax=20260804wax1&amp;hdr=20260804hdr2&amp;sheen=20260804sheen2" data-mobile-edition="1"/);
   assert.match(home, /assets\/js\/home-release\.min\.js\?v=20260804services112/);
   assert.doesNotMatch(home, /assets\/css\/(?:styles|chrome|polish15-chrome|extras|polish15-home|commission-zero|home-intro|home-ecosystem|mobile)\.css/);
   assert.doesNotMatch(home, /assets\/js\/(?:app|polish15-chrome|extras|home-intro|home-ecosystem)\.js/);

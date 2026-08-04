@@ -2,3 +2,4 @@
 
 body .site-header,:root[data-theme=dark] body .site-header,html.header-scrolled body .site-header,html.header-menu-open body .site-header,body .site-header.scrolled,body .site-header.is-scrolled{background:var(--paper)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 :root[data-theme=dark] body.concept-shell::before{background:radial-gradient(circle at 8% 8%,rgba(255,238,208,.16),transparent 24%),radial-gradient(circle at 92% 16%,rgba(180,148,88,.1),transparent 24%),repeating-linear-gradient(0deg,rgba(242,236,223,.02) 0 1px,transparent 1px 4px)}
+:root[data-theme=dark] body .site-header::before{background:linear-gradient(105deg,color-mix(in srgb,#FFEED0 10%,transparent),transparent 24% 72%,color-mix(in srgb,var(--wax) 8%,transparent))}

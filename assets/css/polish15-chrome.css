@@ -2658,6 +2658,20 @@ body .site-header::before{
   pointer-events:none;
 }
 
+/* Блик шапки в тёмной теме — тёплый. Правило выше кладёт на шапку
+   color-mix(in srgb,#fff 14%,transparent) — чистый белый. На светлой шапке это
+   стеклянный отблеск, на тёмной (#1E1D19) те же 14% белого дают #3d3c39:
+   нейтральный серый, холоднее и светлее самой шапки. Владелец видел это как
+   «шапка серая» даже после того, как тело страницы уже согрели.
+   Кремовый той же силы держит тон «Оттиска». */
+:root[data-theme="dark"] body .site-header::before{
+  background:
+    linear-gradient(105deg,
+      color-mix(in srgb,#FFEED0 10%,transparent),
+      transparent 24% 72%,
+      color-mix(in srgb,var(--wax) 8%,transparent));
+}
+
 body .site-header::after{
   position:absolute;
   right:0;
