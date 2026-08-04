@@ -24,11 +24,17 @@ body.concept-shell{
   --sheet:#FFF9F0;
   --sheet-rgb:255,249,240;
   --ink:#1D1C18;
-  --ink-soft:#68635A;
-  --ink-faint:#68635A;
+  /* Вторичная краска — четыре имени одного цвета. Затемнена с #68635A:
+     тот давал 4.45 на основном фоне --paper (#E9DDCC) при норме AA 4.5,
+     то есть промахивался на 0.05 сразу на всём сайте — 208 замеренных
+     элементов на пяти страницах выборки, от девиза в шапке до подписей
+     в оверлее навигации. Сейчас 4.73 на --paper и 6.05 на --sheet.
+     Тёмная тема не тронута: там свои значения ниже. */
+  --ink-soft:#645F57;
+  --ink-faint:#645F57;
   --text:#38352F;
-  --muted:#68635A;
-  --quiet:#68635A;
+  --muted:#645F57;
+  --quiet:#645F57;
   --faint:#AAA08F;
   --hairline:#D8CEBD;
   --hairline-strong:#B8AA94;
@@ -134,10 +140,27 @@ body.concept-shell::before{
      (styles.css → .btn-wax). var(--sheet) сюда нельзя —
      в тёмной теме он тёмный и контраст ломается. */
   --ov-on-wax:#FFFEF9;
+
+  /* Вторичная краска панели закреплена локально — по той же причине, что и
+     значения выше. Оверлей это общий хром поверх ЛЮБОЙ страницы, а страничные
+     слои переопределяют --ink-faint под свой лист: polish15-reading и
+     polish15-specification на #8b8375, polish15-configurator на #938a7d,
+     home-story на #8e8479. Без этих строк надзаголовки и подписи меню меняют
+     цвет от раздела к разделу, и на reading-страницах падают до 3.48 при
+     норме 4.5. Значения совпадают с body.concept-shell: панель набрана на
+     --paper, фон у неё тот же. */
+  --ink-faint:#645F57;
+  --ink-soft:#645F57;
+  --muted:#645F57;
+  --quiet:#645F57;
 }
 :root[data-theme="dark"] .overlay{
   --ov-shadow:-30px 0 90px rgba(0,0,0,.55);
   --ov-shadow-float:0 24px 64px rgba(0,0,0,.55);
+  --ink-faint:#9B9487;
+  --ink-soft:#AAA293;
+  --muted:#AAA293;
+  --quiet:#9B9487;
 }
 
 
@@ -459,7 +482,12 @@ body.concept-shell::before{
 .theme-choice button{
   min-height:44px;           /* цель касания по DESIGN-SYSTEM → Mobile */
   padding:8px 16px;
-  color:var(--ink-soft);
+  /* Не --ink-soft: дорожка переключателя набрана на --paper-2 (#DDCDB6),
+     она темнее страницы, и вторичная краска давала на ней 3.83 — надпись
+     неактивной темы читалась хуже всего в оверлее. --text даёт 7.85 в
+     светлой и 11.4 в тёмной. Активная кнопка не затронута: у неё своя
+     чернильная плашка с --sheet поверх. */
+  color:var(--text);
   background:transparent;
   border:0;
   border-radius:999px;
