@@ -772,7 +772,7 @@
   display: grid;
 }
 
-.is-admin-route .admin-queue > div > button {
+.is-admin-route .admin-queue__open {
   display: grid;
   /* последняя колонка была 18px под одну стрелку; теперь там имя действия,
      и она отдаётся под содержимое, а сжимается описание */
@@ -787,7 +787,7 @@
   text-align: left;
 }
 
-.is-admin-route .admin-queue > div > button:hover,
+.is-admin-route .admin-queue__open:hover,
 .is-admin-route .admin-inbox > div > button:hover {
   background: var(--ad-hover);
 }
@@ -2804,7 +2804,7 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
     padding: 15px;
   }
 
-  .is-admin-route .admin-queue > div > button {
+  .is-admin-route .admin-queue__open {
     grid-template-columns: 34px 8px minmax(0, 1fr) 12px;
     min-height: 68px;
   }
@@ -4782,5 +4782,71 @@ html[data-input-modality="keyboard"] .is-admin-route .admin-sidebar__brand:focus
 
   .is-admin-route .cl-orders__go {
     display: none;
+  }
+}
+
+/* --------- Очередь рабочего стола: действие прямо из строки ---------
+   Строка перестала быть одной кнопкой: рядом с «открыть» стоит быстрое
+   действие. Кнопка действия не растягивает строку и не спорит с ней за
+   клик — у неё своя область и свой контур. */
+.is-admin-route .admin-queue__row {
+  display: grid;
+  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr);
+  border-bottom: 1px solid var(--ad-line);
+}
+
+.is-admin-route .admin-queue__row.has-quick {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  padding-right: 13px;
+}
+
+.is-admin-route .admin-queue__row:last-child {
+  border-bottom: 0;
+}
+
+.is-admin-route .admin-queue__open {
+  border-bottom: 0;
+}
+
+.is-admin-route .admin-queue__quick {
+  align-self: center;
+  min-height: 34px;
+  padding: 7px 13px;
+  white-space: nowrap;
+}
+
+.is-admin-route .admin-queue__quick:hover {
+  color: var(--ad-ink);
+  border-color: var(--ad-wax);
+}
+
+.is-admin-route .admin-queue__quick[disabled] {
+  opacity: .55;
+  cursor: progress;
+}
+
+/* Рядом с быстрым действием подпись «куда ведёт строка» становится шумом:
+   решение уже на виду, а строка просто открывает дело. */
+.is-admin-route .admin-queue__row.has-quick .admin-queue__act {
+  font-size: 0;
+}
+
+.is-admin-route .admin-queue__row.has-quick .admin-queue__act::after {
+  content: "→";
+  font-size: 13px;
+}
+
+@media (max-width: 720px) {
+  .is-admin-route .admin-queue__row.has-quick {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0 13px 12px;
+  }
+
+  .is-admin-route .admin-queue__quick {
+    width: 100%;
+    min-height: 42px;
+    justify-content: center;
   }
 }

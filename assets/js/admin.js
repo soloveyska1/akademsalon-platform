@@ -1679,6 +1679,11 @@ function initGodEye() {
       /* focus — блок карточки, из-за которого дело попало в очередь.
          Очередь называет причину, значит знает и адрес: карточка встанет
          на нужном месте, а не заставит искать его глазами заново. */
+      /* focus — блок карточки, из-за которого дело попало в очередь.
+         quick — действие, которое можно сделать не открывая дело: оно
+         помещается в одно решение. Где решения два и больше (цена, файл,
+         текст письма) — quick пустой, строка только открывает карточку
+         на нужном месте. */
       if (left !== null && left < 0) {
         r = { sc: 100 + Math.min(-left, 30), why: 'срок вышел ' + (-left) + ' дн назад', cls: 'fire',
               focus: 'handoff', act: 'Открыть передачу' };
@@ -1687,19 +1692,22 @@ function initGodEye() {
               focus: 'handoff', act: 'Открыть передачу' };
       } else if (o.claimed) {
         r = { sc: 85, why: 'клиент отметил оплату — сверьте и подтвердите', cls: 'act',
-              focus: 'plan', act: 'Открыть план оплат' };
+              focus: 'plan', act: 'Открыть план оплат',
+              quick: 'pay', quickLabel: 'Сверить оплату' };
       } else if (o.status === 'new') {
         r = { sc: 80, why: 'новая заявка — посмотрите и назначьте цену', cls: 'act',
               focus: 'plan', act: 'Назначить цену' };
       } else if (o.status === 'fix') {
         r = { sc: 75, why: 'клиент ждёт правки', cls: 'act',
-              focus: 'feed', act: 'Открыть переписку' };
+              focus: 'feed', act: 'Открыть переписку',
+              quick: 'fixack', quickLabel: 'Взял в работу' };
       } else if (o.status === 'priced' && quiet >= 2) {
         r = { sc: 60, why: 'предложение висит ' + quiet + ' дн — напомните о себе', cls: '',
               focus: 'feed', act: 'Написать клиенту' };
       } else if (o.status === 'prepay' && quiet >= 2) {
         r = { sc: 58, why: 'счёт не оплачен ' + quiet + ' дн — стоит напомнить', cls: '',
-              focus: 'plan', act: 'Открыть план оплат' };
+              focus: 'plan', act: 'Открыть план оплат',
+              quick: 'remind', quickLabel: 'Напомнить об оплате' };
       } else if (o.status === 'check' && quiet >= 5) {
         r = { sc: 50, why: 'на проверке ' + quiet + ' дн — поторопите с приёмкой', cls: '',
               focus: 'feed', act: 'Написать клиенту' };
@@ -1772,12 +1780,22 @@ function initGodEye() {
       ? queue.slice(0, 4).map(function (r) {
           var o = r.o;
           var time = o.deadline_date ? dmLabel(o.deadline_date) : '—';
-          return '<button type="button" data-open-order="' + o.id + '" data-focus="' +
-            esc(r.focus || '') + '" title="' + esc(r.act || 'Открыть дело') + '"><span>' + esc(time) + '</span>' +
-            '<i class="admin-status admin-status--' + (r.cls === 'fire' ? 'attention' : 'work') + '"></i>' +
-            '<div><strong>' + esc(r.why) + '</strong><small>№' + o.id + ' · ' +
-            esc(o.work_label || 'Заявка') + '</small></div>' +
-            '<b class="admin-queue__act">' + esc(r.act || 'Открыть') + ' →</b></button>';
+          /* Строка — не одна кнопка: рядом с «открыть» живёт быстрое
+             действие, а вложенные <button> невалидны. Поэтому строка стала
+             контейнером с двумя кнопками. */
+          return '<div class="admin-queue__row' + (r.quick ? ' has-quick' : '') + '">' +
+            '<button type="button" class="admin-queue__open" data-open-order="' + o.id +
+              '" data-focus="' + esc(r.focus || '') + '" title="' + esc(r.act || 'Открыть дело') + '">' +
+              '<span>' + esc(time) + '</span>' +
+              '<i class="admin-status admin-status--' + (r.cls === 'fire' ? 'attention' : 'work') + '"></i>' +
+              '<div><strong>' + esc(r.why) + '</strong><small>№' + o.id + ' · ' +
+              esc(o.work_label || 'Заявка') + '</small></div>' +
+              '<b class="admin-queue__act">' + esc(r.act || 'Открыть') + ' →</b></button>' +
+            (r.quick
+              ? '<button type="button" class="btn btn-line admin-queue__quick" data-quick="' + r.quick +
+                '" data-quick-order="' + o.id + '">' + esc(r.quickLabel) + '</button>'
+              : '') +
+            '</div>';
         }).join('')
       : loading
         ? '<div class="admin-queue-empty" aria-busy="true"><i class="admin-status admin-status--work"></i>' +
@@ -3938,10 +3956,13 @@ function initGodEye() {
       }, 0);
     }
     /* Пришли из очереди с адресом блока — встаём на нём и подсвечиваем один
-       раз. Дальше карточка ведёт себя как обычно: адрес одноразовый. */
-    if (st.cardFocus) {
-      var want = st.cardFocus;
-      st.cardFocus = '';
+       раз. Адрес одноразовый, но срабатывает ТОЛЬКО на своём деле: до
+       свежей карточки drawCard успевает отрисовать предыдущую (drawBody
+       зовёт его с ещё старым st.card), и без сверки id адрес съедала
+       именно та, промежуточная отрисовка. */
+    if (st.cardFocus && st.cardFocus.id === o.id) {
+      var want = st.cardFocus.block;
+      st.cardFocus = null;
       setTimeout(function () {
         var target = box.querySelector('[data-block="' + want + '"]');
         if (!target) return;
@@ -4508,6 +4529,94 @@ function initGodEye() {
     } else toast(errSay(r.error));
   }
 
+  /* ---------------- быстрые действия по делу ----------------
+     Сюда вынесены действия, которые целиком помещаются в ОДНО решение
+     мастера. Их можно выполнить и из карточки, и прямо из строки очереди
+     на рабочем столе — реализация одна, поэтому подтверждению суммы и
+     разбору серверных отказов негде разойтись между двумя местами.
+
+     Всё, что требует контекста — назначить цену, передать файл, написать
+     письмо, — быстрым действием НЕ является: из очереди такие причины
+     только открывают карточку на нужном блоке. Одним кликом мимо плана
+     оплат и переписки такие вещи не делаются.
+
+     Каждое действие берёт id явно, а не из st.sel: строка очереди
+     работает по делу, которое не открыто. */
+  function actConfirmPayment(id, kind, amount) {
+    return confirmDlg({
+      title: 'Подтвердить оплату ' + money(amount) + ' ₽?',
+      text: 'Сверьте поступление С ТОЧНОСТЬЮ ДО СУММЫ: этап закроется на ' + money(amount) +
+            ' ₽. Пришло меньше или больше — сначала договоритесь с клиентом (доплата или возврат разницы), потом подтверждайте. ' +
+            'Подтверждение двинет заказ и начислит клиенту кэшбэк — отменить будет нельзя.',
+      okLabel: 'Пришло ровно ' + money(amount) + ' ₽ — подтвердить', noLabel: 'Отмена'
+    }).then(function (res) {
+      if (!res.ok) return null;
+      return api('/admin/orders/' + id + '/confirm_payment', { kind: kind, amount: amount })
+        .then(function (r) {
+          afterOrder(r, 'Оплата подтверждена');
+          if (r.ok && S.stamp) S.stamp('Оплачено');
+          return r;
+        });
+    });
+  }
+
+  function actRemindPay(id) {
+    return api('/admin/orders/' + id + '/remind_pay', {}).then(function (r) {
+      if (!r.ok) {
+        toast({ claimed: 'Клиент отметил оплату — сверьте и подтвердите «Получена»',
+                nothing_due: 'Платить нечего — созревших неоплаченных этапов нет',
+                paused: 'Дело на паузе — сначала снимите паузу',
+                busy: 'Секунду…' }[r.error] || 'Не получилось');
+        return r;
+      }
+      var where = r.delivered_tg ? 'в Telegram' + (r.mailed ? ' и на почту' : '')
+        : (r.mailed ? 'на почту' : 'в кабинет (там счёт и так виден)');
+      afterOrder(r, 'Напоминание ' + money(r.due) + ' ₽ ушло ' + where);
+      return r;
+    });
+  }
+
+  function actFixAck(id) {
+    return api('/admin/orders/' + id + '/fix_ack', {}).then(function (r) {
+      if (r && !r.ok && r.error === 'already') {
+        toast('Клиенту уже сообщали — после нового запроса правок кнопка оживёт');
+        return r;
+      }
+      afterOrder(r, r && r.ok ? 'Клиенту сообщено: правки в работе' : null);
+      if (r && !r.ok) toast(errSay(r.error));
+      return r;
+    });
+  }
+
+  /* Открыть дело и встать на нужном блоке карточки. */
+  function openOrderAt(id, block) {
+    st.tab = 'orders'; st.filter = ''; st.q = '';
+    st.sel = parseInt(id, 10);
+    st.cardFocus = block ? { id: st.sel, block: block } : null;
+    drawNav();
+    loadTab();
+  }
+
+  /* Сверка отмеченной клиентом оплаты из очереди. Сумму и этап берём
+     с сервера, а не из списка: ответ `/admin/orders?status=active` не
+     обещает поля plan, и подтверждать деньги по догадке нельзя. Если
+     отмеченных этапов не ровно один — это уже разбор, а не одно решение:
+     открываем карточку на плане оплат. */
+  function quickPaymentReview(id, btn) {
+    if (btn) btn.disabled = true;
+    S.api.get('/admin/orders/' + id).then(function (r) {
+      if (btn) btn.disabled = false;
+      var o = r && r.ok && r.order;
+      if (!o) { toast('Дело не открылось — попробуйте ещё раз'); return; }
+      var claimed = (o.plan || []).filter(function (p) { return p.state === 'claimed'; });
+      if (claimed.length !== 1) { openOrderAt(id, 'plan'); return; }
+      actConfirmPayment(id, claimed[0].kind, claimed[0].amount);
+    }).catch(function () {
+      if (btn) btn.disabled = false;
+      toast('Сеть прервалась — дело не открылось');
+    });
+  }
+
   function uploadAdminFile(input, deliver, preview) {
     var files = input.files ? Array.prototype.slice.call(input.files) : [];
     if (!files.length || !st.sel) return;
@@ -4982,15 +5091,24 @@ function initGodEye() {
       });
       return;
     }
+    /* Быстрое действие прямо из строки очереди — до обработчика открытия,
+       иначе клик по кнопке внутри строки просто открыл бы дело. */
+    var quick = t.closest('[data-quick]');
+    if (quick) {
+      var qid = parseInt(quick.getAttribute('data-quick-order'), 10);
+      var qkind = quick.getAttribute('data-quick');
+      if (qkind === 'pay') quickPaymentReview(qid, quick);
+      else if (qkind === 'remind') actRemindPay(qid);
+      else if (qkind === 'fixack') actFixAck(qid);
+      return;
+    }
     var oo = t.closest('[data-open-order]');
     if (oo) {
-      st.tab = 'orders'; st.filter = ''; st.q = '';
-      st.sel = parseInt(oo.getAttribute('data-open-order'), 10);
       /* Открыть карточку мало: мастер всё равно ищет глазами тот блок,
          из-за которого дело попало в очередь. Очередь знает, какой это
          блок, и говорит карточке, куда встать. */
-      st.cardFocus = oo.getAttribute('data-focus') || '';
-      drawNav(); loadTab(); return;
+      openOrderAt(oo.getAttribute('data-open-order'), oo.getAttribute('data-focus'));
+      return;
     }
     var oc = t.closest('[data-open-client]');
     if (oc) { st.tab = 'clients'; st.csel = parseInt(oc.getAttribute('data-open-client'), 10); drawNav(); loadTab(); return; }
@@ -5349,17 +5467,7 @@ function initGodEye() {
     if (payBtn) {
       var kind = payBtn.getAttribute('data-pay-kind');
       var amount = parseInt(payBtn.getAttribute('data-pay-amount'), 10);
-      confirmDlg({
-        title: 'Подтвердить оплату ' + money(amount) + ' ₽?',
-        text: 'Сверьте поступление С ТОЧНОСТЬЮ ДО СУММЫ: этап закроется на ' + money(amount) +
-              ' ₽. Пришло меньше или больше — сначала договоритесь с клиентом (доплата или возврат разницы), потом подтверждайте. ' +
-              'Подтверждение двинет заказ и начислит клиенту кэшбэк — отменить будет нельзя.',
-        okLabel: 'Пришло ровно ' + money(amount) + ' ₽ — подтвердить', noLabel: 'Отмена'
-      }).then(function (res) {
-        if (!res.ok) return;
-        api('/admin/orders/' + st.sel + '/confirm_payment', { kind: kind, amount: amount })
-          .then(function (r) { afterOrder(r, 'Оплата подтверждена'); if (r.ok && S.stamp) S.stamp('Оплачено'); });
-      });
+      actConfirmPayment(st.sel, kind, amount);
       return;
     }
     var stb = t.closest('.ag-stbtn');
@@ -5385,14 +5493,7 @@ function initGodEye() {
         .then(function (r) { afterOrder(r, 'Статус обновлён — клиент уведомлён'); });
       return;
     }
-    if (t.closest('#agFixAck')) {
-      api('/admin/orders/' + st.sel + '/fix_ack', {}).then(function (r) {
-        if (r && !r.ok && r.error === 'already') { toast('Клиенту уже сообщали — после нового запроса правок кнопка оживёт'); return; }
-        afterOrder(r, r && r.ok ? 'Клиенту сообщено: правки в работе' : null);
-        if (r && !r.ok) toast(errSay(r.error));
-      });
-      return;
-    }
+    if (t.closest('#agFixAck')) { actFixAck(st.sel); return; }
     if (t.closest('#agFinalReady')) {
       confirmDlg({
         title: 'Финальный результат подготовлен — выставить счёт на остаток?',
@@ -5477,19 +5578,7 @@ function initGodEye() {
     }
     var remindBtn = t.closest('[data-remind-pay]');
     if (remindBtn) {
-      api('/admin/orders/' + st.sel + '/remind_pay', {})
-        .then(function (r) {
-          if (!r.ok) {
-            toast({ claimed: 'Клиент отметил оплату — сверьте и подтвердите «Получена»',
-                    nothing_due: 'Платить нечего — созревших неоплаченных этапов нет',
-                    paused: 'Дело на паузе — сначала снимите паузу',
-                    busy: 'Секунду…' }[r.error] || 'Не получилось');
-            return;
-          }
-          var where = r.delivered_tg ? 'в Telegram' + (r.mailed ? ' и на почту' : '')
-            : (r.mailed ? 'на почту' : 'в кабинет (там счёт и так виден)');
-          afterOrder(r, 'Напоминание ' + money(r.due) + ' ₽ ушло ' + where);
-        });
+      actRemindPay(st.sel);
       return;
     }
     if (t.closest('#agCancel2')) {
