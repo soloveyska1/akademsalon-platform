@@ -17,7 +17,11 @@
 .cart-entry-copy{display:flex;min-width:0;flex:1;flex-direction:column;align-items:flex-start;text-align:left}
 .cart-entry-copy b{font-family:var(--serif);font-size:15px;font-weight:520}
 .cart-entry-copy small{margin-top:2px;color:var(--ink-soft);font-size:10px}
-.cart-tab-count{min-width:25px;height:25px;padding:0 7px;display:grid;place-items:center;border-radius:50%;
+/* Радиус пилюлей, а не 50%: счётчик растёт вместе с числом, и на «12»
+   круглый радиус давал эллипс, а вне флекса — полосу во всю ширину.
+   999px держит форму при любой ширине: круг на одной цифре, аккуратная
+   пилюля на двух и трёх. */
+.cart-tab-count{min-width:25px;height:25px;padding:0 7px;display:grid;place-items:center;border-radius:999px;
   background:var(--wax-cta,var(--wax));color:#fff;font:600 11px/1 var(--mono);font-variant-numeric:tabular-nums}
 .cart-tab.is-empty,.cart-dock.is-empty{display:none!important}
 .cart-tab.bump .cart-tab-count{animation:cart-bump .36s var(--ease-press,ease)}

@@ -408,9 +408,12 @@ body.p15-tool-workspace .site-header { display: none !important; }
   justify-self: center;
   text-align: center;
 }
+/* width задан рядом с height: круг, чья ширина держится на содержимом,
+   растянется в эллипс от любой правки текста внутри. */
 .p15-operations .checker-empty > span {
   display: grid;
   min-width: 72px;
+  width: 72px;
   height: 72px;
   place-items: center;
   color: var(--op-wax-text,var(--op-wax));

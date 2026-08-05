@@ -424,7 +424,7 @@ test('every shared order-runtime consumer uses its current atomic cache wave', (
     const refs = [...source.matchAll(/assets\/js\/(app|extras|home-release\.min)\.js\?v=([^&"']+)/g)];
     for (const ref of refs) {
       consumers++;
-      const expected = ref[1] === 'extras' ? '20260806shell114' : '20260806services113';
+      const expected = ref[1] === 'extras' ? '20260806shell115' : '20260806services113';
       assert.equal(ref[2], expected, `${file}: stale ${ref[1]} runtime cache key`);
     }
   }

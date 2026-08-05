@@ -615,8 +615,10 @@ html[data-motion="off"] .stamp-burst{display:none!important}
 
 /* ---------- ГРОМКАЯ: полоса набора ---------- */
 .mnote--call{display:flex;gap:12px;align-items:flex-start;padding:14px 14px 13px 16px;touch-action:pan-y}
+/* width дублирует flex-basis намеренно: круг, у которого ширина берётся
+   только из флекса, вне флекс-контекста растекается в эллипс. */
 .mn-seal{
-  flex:0 0 34px;height:34px;border:1.5px solid var(--wax);border-radius:50%;
+  flex:0 0 34px;width:34px;height:34px;border:1.5px solid var(--wax);border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   font-family:var(--serif);font-size:17px;color:var(--wax-text,var(--wax));
   transform:rotate(-6deg);margin-top:2px;
