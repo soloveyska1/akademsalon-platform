@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-9279a4aa7fe8498bb97b284f916f188c",
+  "slug": "mobile-first",
+  "status": "active",
+  "branch": "claude/mobile-first-audit",
+  "base_sha": "ece385da72ded618b6a83374abff035fbd637f9f",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-008"
+  ],
+  "write_owner": "claude-opus-5",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/E-1014.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-9279a4aa7fe8498bb97b284f916f188c/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
