@@ -250,6 +250,49 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Точечное заполнение между названием и ценой.
+
+   На широком экране строка разваливалась: колонка названия тянется
+   на всю свободную ширину, а текст в ней короткий — между концом
+   «ВКР / диплом» и его ценой оставалось 968px пустоты (замер на
+   окне 2029px). Глазу не за что держаться, строка читается как два
+   несвязанных куска, и в пустой зоне вылезала фоновая вертикальная
+   линия набора — со стороны это выглядело поломкой, а не воздухом.
+
+   Решение из книжного набора: отточие, как в оглавлении и в любом
+   настоящем прейскуранте. Оно ведёт взгляд от названия к сумме и
+   ничего не стоит по высоте.
+
+   Точки живут на ::before, а не на ::after: ::after у этого же
+   элемента уже занят меткой «ваш подбор». Порядок внутри строки
+   задаётся order — текст (0), метка (2), отточие (3). */
+[data-p15-tariffs] .fulllist .price-row > div strong {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+[data-p15-tariffs] .fulllist .price-row > div strong::before {
+  content: "";
+  order: 3;
+  flex: 1 1 auto;
+  min-width: 20px;
+  align-self: center;
+  border-bottom: 1px dotted var(--line-strong-p15);
+  opacity: .8;
+}
+
+[data-p15-tariffs] .fulllist .price-row.is-picked > div strong::after {
+  order: 2;
+  margin-left: 0;
+}
+
+/* На подобранной строке отточие подсвечивается вместе с ней. */
+[data-p15-tariffs] .fulllist .price-row.is-picked > div strong::before {
+  border-bottom-color: var(--wax-p15);
+  opacity: .4;
+}
+
 /* Строка, выбранная подбором наверху, получает подпись — иначе
    подсветку легко принять за случайное выделение. */
 [data-p15-tariffs] .fulllist .price-row.is-picked > div strong::after {
@@ -509,6 +552,10 @@
   [data-p15-tariffs] .price-group__head em { display: none; }
   [data-p15-tariffs] .pricesearch__count { display: none; }
   [data-p15-tariffs] .fulllist .price-row.is-picked > div strong::after { content: none; }
+
+  /* Отточие — лекарство от широкой строки; на телефоне разрыва нет,
+     название и цена и так стоят рядом. Точки там только шумели бы. */
+  [data-p15-tariffs] .fulllist .price-row > div strong::before { display: none; }
 
   [data-p15-tariffs] .term-grid--inline article { grid-template-columns: 48px minmax(0, 1fr); }
   [data-p15-tariffs] .pay-fig svg { width: 48px; }
