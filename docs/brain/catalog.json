@@ -3,7 +3,7 @@
   "record_schema_version": 1,
   "source_of_truth": "docs/brain",
   "derived_state": ".brain",
-  "canonical_ref": "origin/codex/full-reference-production",
+  "canonical_ref": "origin/main",
   "workstream_policy": "docs/brain/workstream-policy.json",
   "context_budget_bytes": 16384,
   "index_allowlist": [

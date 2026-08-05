@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "canonical_ref": "origin/codex/full-reference-production",
+  "canonical_ref": "origin/main",
   "proof_command_ids": [
     "brain:test",
     "brain:validate"
