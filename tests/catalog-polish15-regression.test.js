@@ -98,3 +98,35 @@ test('catalog behavior preserves global search ownership, routing and legacy-wid
   assert.match(catalog, /configurator\.html\?service=pl/);
   assert.match(extras, /document\.querySelector\('\.p15-service,\.p15-catalog'\)/);
 });
+
+/* Приглушение недоступных сочетаний на странице цен держится на копии
+   ключей матрицы PICK: сама матрица закрыта в замыкании polish15-catalog.js
+   и снаружи недоступна. Копия обязана сходиться с оригиналом, иначе
+   страница начнёт гасить существующие сочетания или, наоборот, вести
+   человека в тупик, который выглядит обычным путём. */
+test('приглушение недоступных сочетаний совпадает с матрицей прайса', () => {
+  const catalog = read('assets/js/polish15-catalog.js');
+  const press = read('assets/js/tariffs-press.js');
+
+  const pickBlock = catalog.match(/var PICK = \{([\s\S]*?)\n {2}\};/);
+  assert.ok(pickBlock, 'не найдена матрица PICK в polish15-catalog.js');
+  const truth = new Map();
+  for (const [, work, task] of pickBlock[1].matchAll(/'([a-z0-9]+)\.([a-z0-9]+)'\s*:/g)) {
+    if (!truth.has(work)) truth.set(work, new Set());
+    truth.get(work).add(task);
+  }
+  assert.ok(truth.size >= 5, `в PICK найдено всего ${truth.size} типов работ`);
+
+  const copyBlock = press.match(/var WORK_TASKS = \{([\s\S]*?)\n {2}\};/);
+  assert.ok(copyBlock, 'не найдена копия WORK_TASKS в tariffs-press.js');
+  const copy = new Map();
+  for (const [, work, list] of copyBlock[1].matchAll(/([a-z0-9]+):\s*\[([^\]]*)\]/g)) {
+    copy.set(work, new Set([...list.matchAll(/'([a-z0-9]+)'/g)].map((m) => m[1])));
+  }
+
+  const sorted = (map) => [...map.entries()]
+    .map(([work, set]) => [work, [...set].sort()])
+    .sort(([a], [b]) => a.localeCompare(b));
+  assert.deepEqual(sorted(copy), sorted(truth),
+    'WORK_TASKS в tariffs-press.js разошлась с PICK в polish15-catalog.js');
+});

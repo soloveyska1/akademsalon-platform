@@ -46,7 +46,6 @@
           <p class="eyebrow">Цены</p>
           <h1>Сколько будет стоить</h1>
           <p class="page-head__lead">Выберите два — увидите цену.</p>
-          <p class="page-head__colophon" aria-hidden="true"><span class="colophon-rule"></span><span class="colophon-text">прейскурант мастерской · 16 позиций · 2 500 – 60 000 ₽</span><span class="colophon-rule"></span></p>
         </div>
       </header>
 
@@ -85,14 +84,9 @@
         </div>
 
         <div class="pricecard" data-price-card aria-live="polite">
-          <svg class="pricecard__seal" data-press-seal viewBox="0 0 96 96" aria-hidden="true" focusable="false"><circle class="seal-edge" cx="48" cy="48" r="44"/><circle class="seal-dots" cx="48" cy="48" r="37"/><circle class="seal-pulse" cx="48" cy="48" r="44"/><text class="seal-mark" x="48" y="59">АС</text></svg>
+          <span class="pricecard__seal" data-press-seal aria-hidden="true">АС</span>
           <p class="pricecard__what" data-card-what></p>
           <p class="pricecard__sum"><small data-card-pref></small><strong data-card-sum></strong></p>
-          <div class="pricescale" data-price-scale data-scale-state="priced" aria-hidden="true">
-            <span class="pricescale__cap">на шкале прайса</span>
-            <span class="pricescale__track"><i class="pricescale__marker" data-scale-marker></i></span>
-            <span class="pricescale__ends"><span>2 500 ₽</span><span>60 000 ₽</span></span>
-          </div>
           <p class="pricecard__note" data-card-note></p>
           <p class="pricecard__fine">Точную цену и срок назовём, когда посмотрим материалы. До этого платить не нужно.</p>
           <div class="pricecard__act">
@@ -173,31 +167,31 @@
     <div><p class="eyebrow">Оплата</p><h2>Как устроена оплата</h2></div>
 
   </header>
-        <div class="term-grid term-grid--press">
-          <article><figure class="pay-fig pay-fig--stages" aria-hidden="true"><svg viewBox="0 0 132 76" focusable="false">
-              <g class="pf-stage pf-stage--a"><rect class="pf-box" x="8" y="20" width="34" height="34" rx="2.5"/><line class="pf-leaf" x1="15" y1="29" x2="35" y2="29"/><line class="pf-leaf" x1="15" y1="36" x2="35" y2="36"/><path class="pf-tick" pathLength="1" d="M18 41l5 5 10-11"/></g>
-              <g class="pf-stage pf-stage--b"><rect class="pf-box" x="49" y="20" width="34" height="34" rx="2.5"/><line class="pf-leaf" x1="56" y1="29" x2="76" y2="29"/><line class="pf-leaf" x1="56" y1="36" x2="76" y2="36"/><path class="pf-tick" pathLength="1" d="M59 41l5 5 10-11"/></g>
-              <g class="pf-stage pf-stage--c"><rect class="pf-box" x="90" y="20" width="34" height="34" rx="2.5"/><line class="pf-leaf" x1="97" y1="29" x2="117" y2="29"/><line class="pf-leaf" x1="97" y1="36" x2="117" y2="36"/><path class="pf-tick" pathLength="1" d="M100 41l5 5 10-11"/></g>
-              <path class="pf-thread" pathLength="1" d="M8 64h116"/>
+        <div class="term-grid term-grid--press term-grid--inline">
+          <article><figure class="pay-fig pay-fig--stages" aria-hidden="true"><svg viewBox="0 0 64 64" focusable="false">
+              <g class="pf-stage pf-stage--a"><rect class="pf-box" x="5" y="13" width="15" height="24" rx="2"/><line class="pf-leaf" x1="9" y1="19" x2="16" y2="19"/><path class="pf-tick" pathLength="1" d="M9 28l3.5 3.5 6-7"/></g>
+              <g class="pf-stage pf-stage--b"><rect class="pf-box" x="24.5" y="13" width="15" height="24" rx="2"/><line class="pf-leaf" x1="28.5" y1="19" x2="35.5" y2="19"/><path class="pf-tick" pathLength="1" d="M28.5 28l3.5 3.5 6-7"/></g>
+              <g class="pf-stage pf-stage--c"><rect class="pf-box" x="44" y="13" width="15" height="24" rx="2"/><line class="pf-leaf" x1="48" y1="19" x2="55" y2="19"/><path class="pf-tick" pathLength="1" d="M48 28l3.5 3.5 6-7"/></g>
+              <path class="pf-thread" pathLength="1" d="M5 47h54"/>
             </svg></figure><span>01</span><h3>По этапам</h3><p>Большую работу делим на части. Следующий платёж — после принятия предыдущего результата.</p></article>
-          <article><figure class="pay-fig pay-fig--receipt" aria-hidden="true"><svg viewBox="0 0 132 76" focusable="false">
-              <defs><clipPath id="pfslot"><rect x="0" y="0" width="132" height="62"/></clipPath></defs>
+          <article><figure class="pay-fig pay-fig--receipt" aria-hidden="true"><svg viewBox="0 0 64 64" focusable="false">
+              <defs><clipPath id="pfslot"><rect x="0" y="0" width="64" height="50"/></clipPath></defs>
               <g clip-path="url(#pfslot)"><g class="pf-receipt">
-                <path class="pf-paper" d="M46 10h40v46l-5 4-5-4-5 4-5-4-5 4-5-4-5 4-5-4z"/>
-                <line class="pf-row pf-row--a" x1="53" y1="22" x2="79" y2="22"/>
-                <line class="pf-row pf-row--b" x1="53" y1="29" x2="79" y2="29"/>
-                <line class="pf-row pf-row--c" x1="53" y1="36" x2="71" y2="36"/>
-                <g class="pf-stamp"><circle cx="73" cy="46" r="6.5"/><path class="pf-stamptick" pathLength="1" d="M70 46l2.4 2.4 4-4.6"/></g>
+                <path class="pf-paper" d="M20 6h24v34l-4 3-4-3-4 3-4-3-4 3-4-3z"/>
+                <line class="pf-row pf-row--a" x1="25" y1="14" x2="39" y2="14"/>
+                <line class="pf-row pf-row--b" x1="25" y1="20" x2="39" y2="20"/>
+                <line class="pf-row pf-row--c" x1="25" y1="26" x2="34" y2="26"/>
+                <g class="pf-stamp"><circle cx="36" cy="33" r="5"/><path class="pf-stamptick" pathLength="1" d="M33.5 33l2 2 3.5-4"/></g>
               </g></g>
-              <line class="pf-slot" x1="38" y1="62" x2="94" y2="62"/>
+              <line class="pf-slot" x1="14" y1="50" x2="50" y2="50"/>
             </svg></figure><span>02</span><h3>С чеком</h3><p>После платежа чек и статус доступны в личном кабинете.</p></article>
-          <article><figure class="pay-fig pay-fig--refund" aria-hidden="true"><svg viewBox="0 0 132 76" focusable="false">
-              <rect class="pf-wallet" x="8" y="34" width="22" height="18" rx="3"/>
-              <line class="pf-walletlip" x1="8" y1="40" x2="30" y2="40"/>
-              <path class="pf-fwd" pathLength="1" d="M34 50c24 4 56 4 82 1"/>
-              <path class="pf-back" pathLength="1" d="M116 42C96 22 56 20 36 37"/>
-              <path class="pf-backhead" pathLength="1" d="M43 32l-7 5 8 3"/>
-              <circle class="pf-coin" cx="33" cy="40" r="5"/>
+          <article><figure class="pay-fig pay-fig--refund" aria-hidden="true"><svg viewBox="0 0 64 64" focusable="false">
+              <rect class="pf-wallet" x="4" y="30" width="18" height="16" rx="3"/>
+              <line class="pf-walletlip" x1="4" y1="36" x2="22" y2="36"/>
+              <path class="pf-fwd" pathLength="1" d="M25 44c14 3 28 2 35-1"/>
+              <path class="pf-back" pathLength="1" d="M56 34C44 18 28 17 20 28"/>
+              <path class="pf-backhead" pathLength="1" d="M25 24l-5 4 6 2"/>
+              <circle class="pf-coin" cx="26" cy="35" r="4"/>
             </svg></figure><span>03</span><h3>С правом отказаться</h3><p>До начала работы платёж возвращается полностью. После начала — за вычетом выполненной части.</p></article>
         </div>
         <a class="line-link" href="oplata.html">Подробно об оплате и возврате <span aria-hidden="true">→</span></a>

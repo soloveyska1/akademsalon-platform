@@ -7,53 +7,42 @@
    [data-p15-tariffs], чтобы ни одно правило не утекло на
    services.html, где те же классы .price-row/.pricesearch.
 
-   Язык раздела: прейскурант университетской типографии —
-   колофонная строка, сургучная печать, шкала-линейка,
-   картотека с пятью ящиками и три гравюры об оплате.
-   Все цвета — токенами p15: тёмная тема переключает их сама.
+   ГЛАВНОЕ ПРАВИЛО ЭТОЙ СТРАНИЦЫ, добытое замером: цена И кнопка
+   «Рассчитать точно» обязаны попадать в первый экран ноутбука
+   1280×720. Первая редакция файла об это разбилась — колофонная
+   строка и шкала прайса вместе стоили 116px и вытолкнули кнопку
+   на 817px, то есть за экран. Отсюда бюджетное правило: элемент,
+   который занимает высоту ВЫШЕ кнопки, обязан нести факт, которого
+   на странице ещё нет. Украшение имеет право только на то место,
+   которое ничего не стоит: абсолютный слой, фон, состояние.
    ============================================================ */
 
-/* ── Колофонная строка под заголовком ──────────────────────────
-   Факты со страницы (16 позиций, вилка), набранные как выходные
-   данные книги. Линейки «печатаются» один раз при загрузке —
-   первое движение страницы, задающее тон остальным. */
-[data-p15-tariffs] .page-head__colophon {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 20px 0 0;
-  color: var(--quiet-p15);
-  font: 400 10px/1.5 var(--mono);
-  letter-spacing: .16em;
-  text-transform: uppercase;
+/* ── Фишки выбора ──────────────────────────────────────────────
+   Нажатие ощущается пальцем; недоступные сочетания гаснут. */
+[data-p15-tariffs] .pick-chip {
+  transition: color .16s ease, background-color .16s ease,
+              border-color .16s ease, opacity .16s ease, transform .12s ease;
 }
 
-[data-p15-tariffs] .colophon-text { white-space: nowrap; }
-
-[data-p15-tariffs] .colophon-rule {
-  flex: 1 1 36px;
-  max-width: 150px;
-  height: 1px;
-  background: var(--line-strong-p15);
-  transform-origin: right center;
-  animation: colophon-print .9s var(--ease-out-p15) .15s both;
-}
-
-[data-p15-tariffs] .colophon-rule:last-child { transform-origin: left center; }
-
-@keyframes colophon-print {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
-/* ── Фишки выбора: нажатие должно ощущаться пальцем ──────────── */
-[data-p15-tariffs] .pick-chip { transition: color .16s ease, background-color .16s ease, border-color .16s ease, transform .12s ease; }
 [data-p15-tariffs] .pick-chip:active { transform: scale(.96); }
 
-/* ── Карточка цены: формуляр со стопкой листов ─────────────────
-   Под карточкой — второй лист со сдвигом: цена лежит не на
-   плашке, а на верхнем листе стопки. Чистый ::before, без
-   лишних узлов в разметке. */
+/* Сочетания, которого нет в прайсе, быть не должно тупиком: раньше
+   «Реферат + Защита» молча приводил к «посчитаем индивидуально»,
+   и человек узнавал об этом только после клика. Теперь видно
+   заранее. Кнопка НЕ блокируется: выбор остаётся возможным, за ним
+   честный ответ про индивидуальный расчёт — просто он больше не
+   выглядит как обычный путь. Стоимость по высоте — ноль. */
+[data-p15-tariffs] .pick-chip[data-pick-off="1"] {
+  opacity: .4;
+  border-style: dashed;
+}
+
+[data-p15-tariffs] .pick-chip[data-pick-off="1"]:hover { opacity: .72; }
+
+/* ── Карточка цены ─────────────────────────────────────────────
+   Формуляр расчёта: стопка листов под верхним, сургучная печать
+   мастерской, крупная цена. Всё добавленное — абсолютное или
+   фоновое, высоты карточки не занимает. */
 [data-p15-tariffs] .pricecard {
   position: relative;
   box-shadow: var(--shadow-paper-p15);
@@ -69,31 +58,35 @@
   z-index: -1;
 }
 
-/* Сургучная печать мастерской. Декор: aria-hidden, поверх неё
-   ничего не читается. При каждой смене цены печать «прижимается»
-   заново — см. .is-press ниже. */
+/* Печать — плотный сургучный круг с засечным «АС», как
+   .resume-card__seal и .choice-help__seal в эталоне style-lab/full.
+   Первая редакция рисовала тонкий контурный кружок с пунктиром —
+   стилистика не наша, да и размером 74px он спорил с ценой.
+   Теперь 44px, приглушён и стоит выше строки типа работы. */
 [data-p15-tariffs] .pricecard__seal {
   position: absolute;
-  top: 18px;
-  right: 20px;
-  width: 74px;
-  height: 74px;
-  color: var(--wax-p15);
-  opacity: .5;
-  transform: rotate(-8deg);
+  top: clamp(18px, 2vw, 24px);
+  right: clamp(18px, 2vw, 24px);
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: #fff5ea;
+  background: var(--wax-p15);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .1);
+  font: 500 14px/1 var(--serif);
+  letter-spacing: .02em;
+  opacity: .9;
+  transform: rotate(-7deg);
   transform-origin: 50% 50%;
   pointer-events: none;
 }
 
-[data-p15-tariffs] .seal-edge  { fill: none; stroke: currentColor; stroke-width: 2; }
-[data-p15-tariffs] .seal-dots  { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-dasharray: .5 4.6; stroke-linecap: round; }
-[data-p15-tariffs] .seal-mark  { fill: currentColor; font: 400 30px/1 var(--serif); letter-spacing: .02em; text-anchor: middle; }
-[data-p15-tariffs] .seal-pulse { fill: none; stroke: currentColor; stroke-width: 2; opacity: 0; transform-origin: 50% 50%; }
-
 /* Смена цены = новый оттиск: цифра проявляется из лёгкой
-   размытости (краска садится в бумагу), печать прижимается,
-   от неё расходится чернильное кольцо. Класс вешает JS,
-   без него карточка просто мгновенно меняет текст — как сейчас. */
+   размытости (краска садится в бумагу), печать прижимается.
+   Класс вешает JS; без него карточка просто мгновенно меняет
+   текст — как и было до этого файла. */
 [data-p15-tariffs] .pricecard.is-press .pricecard__sum strong {
   animation: press-sum .46s var(--ease-out-p15);
 }
@@ -109,111 +102,22 @@
 }
 
 @keyframes press-seal {
-  0%   { transform: rotate(-8deg) scale(1); }
-  35%  { transform: rotate(-9.5deg) scale(.9); }
-  70%  { transform: rotate(-7.5deg) scale(1.05); }
-  100% { transform: rotate(-8deg) scale(1); }
+  0%   { transform: rotate(-7deg) scale(1); }
+  35%  { transform: rotate(-8.5deg) scale(.9); }
+  70%  { transform: rotate(-6.5deg) scale(1.05); }
+  100% { transform: rotate(-7deg) scale(1); }
 }
 
-[data-p15-tariffs] .pricecard.is-press .seal-pulse {
-  animation: press-pulse .55s ease-out;
-}
+/* Цифры — табличные, чтобы при смене выбора разряды не плясали
+   и цена меняла значение, а не ширину. */
+[data-p15-tariffs] .pricecard__sum strong { font-variant-numeric: tabular-nums; }
 
-@keyframes press-pulse {
-  0%   { opacity: .55; transform: scale(.9); }
-  100% { opacity: 0;   transform: scale(1.24); }
-}
-
-/* ── Шкала-линейка: где выбранное сочетание на вилке прайса ────
-   Ответ на невысказанный вопрос «это дорого или нет?» без
-   единого лишнего слова. Шкала логарифмическая: на линейной
-   2 500 и 6 000 слипались бы в левом углу. Значения берутся
-   из уже показанной суммы — никаких собственных цифр. */
-[data-p15-tariffs] .pricescale {
-  display: grid;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-[data-p15-tariffs] .pricescale__cap {
-  color: var(--quiet-p15);
-  font: 400 9.5px/1 var(--mono);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-
-[data-p15-tariffs] .pricescale__track {
-  position: relative;
-  display: block;
-  height: 15px;
-}
-
-/* Деления — фон, а не 13 span'ов: разметка не раздувается. */
-[data-p15-tariffs] .pricescale__track::before {
-  content: "";
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 7px;
-  background-image: repeating-linear-gradient(90deg,
-    var(--line-p15) 0 1px, transparent 1px 8.3333%);
-  opacity: .9;
-}
-
-[data-p15-tariffs] .pricescale__track::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 1px;
-  background: var(--line-strong-p15);
-}
-
-[data-p15-tariffs] .pricescale__marker {
-  position: absolute;
-  left: 34%;
-  bottom: 0;
-  width: 0;
-  height: 15px;
-  transition: left .5s var(--ease-out-p15), opacity .3s ease;
-}
-
-[data-p15-tariffs] .pricescale__marker::before {
-  content: "";
-  position: absolute;
-  left: -1px;
-  bottom: 0;
-  width: 2px;
-  height: 11px;
-  background: var(--wax-p15);
-}
-
-[data-p15-tariffs] .pricescale__marker::after {
-  content: "";
-  position: absolute;
-  left: -3.5px;
-  top: 0;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--wax-p15);
-}
-
-/* Нет цены — нечего показывать на шкале: маркер гаснет,
-   деления притухают, но высота не прыгает. */
-[data-p15-tariffs] .pricescale[data-scale-state="custom"] .pricescale__marker { opacity: 0; }
-[data-p15-tariffs] .pricescale[data-scale-state="custom"] .pricescale__track  { opacity: .45; }
-
-[data-p15-tariffs] .pricescale__ends {
-  display: flex;
-  justify-content: space-between;
-  color: var(--quiet-p15);
-  font: 400 10px/1 var(--mono);
-  letter-spacing: .06em;
-  font-variant-numeric: tabular-nums;
-}
+/* Строка типа работы не должна заезжать под печать. */
+[data-p15-tariffs] .pricecard__what { padding-right: 56px; }
 
 /* ── Комиссия №0: три фиксированные цены прямо в карточке ──────
    Раньше флагман стоял без единой цифры, хотя цены у него
-   единственного фиксированные — то есть самые честные на
+   единственного фиксированные — то есть самые твёрдые на
    странице. Теперь это видно без прокрутки к списку. */
 [data-p15-tariffs] .k0card__prices {
   display: flex;
@@ -288,34 +192,35 @@
 
 /* ── Картотека: пять ящиков вместо ленты на 16 строк ───────────
    Сплошной список читался только перебором. Ящик = группа с
-   именем и счётом позиций; перфорированные разделители внутри —
-   строки одного ящика листаются как карточки. */
+   именем и счётом позиций. Заголовок держим в одну строку и без
+   собственного вертикального ритма: пять заголовков — это пять
+   раз по высоте, и они уже стоили списку 270px. */
 [data-p15-tariffs] .price-table--folio {
   display: grid;
-  gap: 30px;
-  padding-top: 26px;
+  gap: 22px;
+  padding-top: 20px;
   border-top: 0;
 }
 
 [data-p15-tariffs] .price-group__head {
   display: flex;
   align-items: baseline;
-  gap: 14px;
+  gap: 12px;
   margin: 0;
-  padding-bottom: 10px;
+  padding-bottom: 7px;
   border-bottom: 1px solid var(--line-strong-p15);
 }
 
 [data-p15-tariffs] .price-group__head span {
   color: var(--ink-p15);
-  font: 500 10.5px/1 var(--mono);
+  font: 500 10px/1 var(--mono);
   letter-spacing: .18em;
   text-transform: uppercase;
 }
 
 [data-p15-tariffs] .price-group__head em {
   color: var(--muted-p15);
-  font: italic 400 12.5px/1.2 var(--serif);
+  font: italic 400 12px/1.2 var(--serif);
   letter-spacing: .01em;
 }
 
@@ -328,8 +233,8 @@
 [data-p15-tariffs] .price-group .price-row { border-bottom-style: dotted; }
 [data-p15-tariffs] .price-group .price-row:last-child { border-bottom: 0; }
 
-/* Наведение — лист приподнимается из ящика: фон-подложка и
-   сургучная закладка слева. Сдвигов нет, только краска. */
+/* Наведение — лист приподнимается из ящика: подложка и сургучная
+   закладка слева. Сдвигов нет, только краска. */
 @media (hover: hover) {
   [data-p15-tariffs] .fulllist .price-row:hover {
     background: rgba(var(--sheet-rgb-p15), .66);
@@ -358,33 +263,46 @@
   white-space: nowrap;
 }
 
-/* ── Оплата: три гравюры-объяснялки ────────────────────────────
-   Живые картинки вместо голых абзацев: этапная оплата, чек и
-   возврат нарисованы штрихом и повторяются медленным циклом.
-   Токены вместо литералов — гравюры сами переживают тёмную тему.
-   Вся хореография на CSS: без JS картинки работают так же. */
-[data-p15-tariffs] .term-grid--press article { position: relative; }
+/* ── Оплата: три строчные виньетки ─────────────────────────────
+   Первая редакция ставила рисунок блоком НАД текстом: 154px на
+   карточку, блок оплаты раздувался с 420 до 591px, а в статике
+   (то есть в любой случайный момент девятисекундного цикла) это
+   выглядело как три бледные пустые рамки. Теперь виньетка стоит
+   в строке с номером — 46px, плотный штрих, и она читается даже
+   застывшей. Токены вместо литералов: тёмная тема сама. */
+[data-p15-tariffs] .term-grid--inline article {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  column-gap: 16px;
+  align-items: center;
+}
 
-[data-p15-tariffs] .pay-fig {
-  margin: 0 0 16px;
-  padding: 12px 14px 8px;
-  background: rgba(var(--sheet-rgb-p15), .55);
-  border: 1px solid var(--line-p15);
-  border-radius: 6px;
+[data-p15-tariffs] .term-grid--inline .pay-fig {
+  grid-row: 1 / span 2;
+  margin: 0;
+  padding: 0;
+}
+
+[data-p15-tariffs] .term-grid--inline article > span { align-self: end; }
+[data-p15-tariffs] .term-grid--inline h3 { align-self: start; }
+
+/* Абзац уходит под виньетку во всю ширину: короткая колонка
+   рядом с картинкой рвала бы текст на четыре слова в строке. */
+[data-p15-tariffs] .term-grid--inline article > p {
+  grid-column: 1 / -1;
+  margin-top: 8px;
 }
 
 [data-p15-tariffs] .pay-fig svg {
   display: block;
-  width: 100%;
-  max-width: 230px;
+  width: 58px;
   height: auto;
-  margin: 0 auto;
 }
 
 [data-p15-tariffs] .pay-fig svg * {
   fill: none;
   stroke: var(--muted-p15);
-  stroke-width: 1.5;
+  stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -398,11 +316,18 @@
 [data-p15-tariffs] .pay-fig .pf-coin { stroke: var(--wax-p15); }
 
 [data-p15-tariffs] .pay-fig .pf-leaf,
-[data-p15-tariffs] .pay-fig .pf-row { stroke-width: 1.2; opacity: .8; }
+[data-p15-tariffs] .pay-fig .pf-row { stroke-width: 2; opacity: .75; }
 
-/* Гравюра 1 «По этапам»: нить тянется под тремя тетрадями,
-   после каждой — отметка о принятии. Пауза между рывками и есть
-   смысл картинки: следующий платёж только после принятия. */
+/* Гравюра 1 «По этапам»: нить тянется под тремя тетрадями, после
+   каждой — отметка о принятии. Пауза между рывками и есть смысл
+   картинки: следующий платёж только после принятия предыдущего.
+
+   Раскладка цикла подчинена одному требованию: собранная картинка
+   должна стоять дольше, чем рисоваться. В первой редакции последняя
+   отметка появлялась на 75% цикла — то есть 6 секунд из 8 виньетка
+   была недорисованной, и в любой случайный момент (а скриншот и
+   беглый взгляд — это всегда случайный момент) читалась как пустая
+   рамка. Теперь всё собирается к 30% и держится до 88%. */
 [data-p15-tariffs] .pay-fig--stages .pf-thread {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -410,14 +335,14 @@
 }
 
 @keyframes pf-thread {
-  0%       { stroke-dashoffset: 1;   opacity: 1; }
-  9%       { stroke-dashoffset: .71; }
-  30%      { stroke-dashoffset: .71; }
-  39%      { stroke-dashoffset: .36; }
-  60%      { stroke-dashoffset: .36; }
-  69%      { stroke-dashoffset: 0; }
-  88%      { stroke-dashoffset: 0;   opacity: 1; }
-  96%,100% { stroke-dashoffset: 0;   opacity: 0; }
+  0%       { stroke-dashoffset: 1;  opacity: 1; }
+  6%       { stroke-dashoffset: .71; }
+  12%      { stroke-dashoffset: .71; }
+  17%      { stroke-dashoffset: .36; }
+  22%      { stroke-dashoffset: .36; }
+  27%      { stroke-dashoffset: 0; }
+  88%      { stroke-dashoffset: 0;  opacity: 1; }
+  96%,100% { stroke-dashoffset: 0;  opacity: 0; }
 }
 
 [data-p15-tariffs] .pay-fig--stages .pf-tick {
@@ -430,40 +355,40 @@
 [data-p15-tariffs] .pf-stage--c .pf-tick { animation: pf-tick-c 8s var(--ease-out-p15) infinite; }
 
 @keyframes pf-tick-a {
-  0%, 9%   { stroke-dashoffset: 1; opacity: 1; }
-  15%      { stroke-dashoffset: 0; }
+  0%, 6%   { stroke-dashoffset: 1; opacity: 1; }
+  11%      { stroke-dashoffset: 0; }
   88%      { stroke-dashoffset: 0; opacity: 1; }
   96%,100% { stroke-dashoffset: 0; opacity: 0; }
 }
 
 @keyframes pf-tick-b {
-  0%, 39%  { stroke-dashoffset: 1; opacity: 1; }
-  45%      { stroke-dashoffset: 0; }
+  0%, 17%  { stroke-dashoffset: 1; opacity: 1; }
+  22%      { stroke-dashoffset: 0; }
   88%      { stroke-dashoffset: 0; opacity: 1; }
   96%,100% { stroke-dashoffset: 0; opacity: 0; }
 }
 
 @keyframes pf-tick-c {
-  0%, 69%  { stroke-dashoffset: 1; opacity: 1; }
-  75%      { stroke-dashoffset: 0; }
+  0%, 27%  { stroke-dashoffset: 1; opacity: 1; }
+  32%      { stroke-dashoffset: 0; }
   88%      { stroke-dashoffset: 0; opacity: 1; }
   96%,100% { stroke-dashoffset: 0; opacity: 0; }
 }
 
-/* Гравюра 2 «С чеком»: чек выезжает из прорези кассы, строки
-   печатаются, круглая печать заверяет. Прорезь — clipPath в
-   самой SVG: чек ниже линии просто не существует. */
+/* Гравюра 2 «С чеком»: чек выезжает из прорези, строки печатаются,
+   круглая печать заверяет. Прорезь — clipPath внутри самой SVG:
+   ниже линии чека просто не существует. */
 [data-p15-tariffs] .pay-fig--receipt .pf-receipt {
-  transform: translateY(56px);
+  transform: translateY(46px);
   animation: pf-rise 9s var(--ease-out-p15) infinite;
 }
 
 @keyframes pf-rise {
-  0%       { transform: translateY(56px); opacity: 1; }
-  15%      { transform: translateY(0); }
-  82%      { transform: translateY(0);    opacity: 1; }
-  92%      { transform: translateY(-8px); opacity: 0; }
-  100%     { transform: translateY(56px); opacity: 0; }
+  0%   { transform: translateY(46px); opacity: 1; }
+  11%  { transform: translateY(0); }
+  85%  { transform: translateY(0);    opacity: 1; }
+  93%  { transform: translateY(-6px); opacity: 0; }
+  100% { transform: translateY(46px); opacity: 0; }
 }
 
 [data-p15-tariffs] .pay-fig--receipt .pf-row { opacity: 0; }
@@ -471,22 +396,22 @@
 [data-p15-tariffs] .pay-fig--receipt .pf-row--b { animation: pf-row-b 9s linear infinite; }
 [data-p15-tariffs] .pay-fig--receipt .pf-row--c { animation: pf-row-c 9s linear infinite; }
 
-@keyframes pf-row-a { 0%,17% { opacity: 0; } 21% { opacity: .8; } 82% { opacity: .8; } 90%,100% { opacity: 0; } }
-@keyframes pf-row-b { 0%,23% { opacity: 0; } 27% { opacity: .8; } 82% { opacity: .8; } 90%,100% { opacity: 0; } }
-@keyframes pf-row-c { 0%,29% { opacity: 0; } 33% { opacity: .8; } 82% { opacity: .8; } 90%,100% { opacity: 0; } }
+@keyframes pf-row-a { 0%,12% { opacity: 0; } 15% { opacity: .75; } 85% { opacity: .75; } 91%,100% { opacity: 0; } }
+@keyframes pf-row-b { 0%,15% { opacity: 0; } 18% { opacity: .75; } 85% { opacity: .75; } 91%,100% { opacity: 0; } }
+@keyframes pf-row-c { 0%,18% { opacity: 0; } 21% { opacity: .75; } 85% { opacity: .75; } 91%,100% { opacity: 0; } }
 
 [data-p15-tariffs] .pay-fig--receipt .pf-stamp circle {
   transform: scale(0);
-  transform-origin: 73px 46px;
+  transform-origin: 36px 33px;
   animation: pf-stampin 9s var(--ease-out-p15) infinite;
 }
 
 @keyframes pf-stampin {
-  0%, 38%  { transform: scale(0);    opacity: 0; }
-  44%      { transform: scale(1.12); opacity: 1; }
-  48%      { transform: scale(1); }
-  82%      { transform: scale(1);    opacity: 1; }
-  90%,100% { transform: scale(1);    opacity: 0; }
+  0%, 23%  { transform: scale(0);    opacity: 0; }
+  28%      { transform: scale(1.12); opacity: 1; }
+  32%      { transform: scale(1); }
+  85%      { transform: scale(1);    opacity: 1; }
+  91%,100% { transform: scale(1);    opacity: 0; }
 }
 
 [data-p15-tariffs] .pay-fig--receipt .pf-stamptick {
@@ -496,16 +421,16 @@
 }
 
 @keyframes pf-stamptick {
-  0%, 44%  { stroke-dashoffset: 1; opacity: 1; }
-  50%      { stroke-dashoffset: 0; }
-  82%      { stroke-dashoffset: 0; opacity: 1; }
-  90%,100% { stroke-dashoffset: 0; opacity: 0; }
+  0%, 28%  { stroke-dashoffset: 1; opacity: 1; }
+  33%      { stroke-dashoffset: 0; }
+  85%      { stroke-dashoffset: 0; opacity: 1; }
+  91%,100% { stroke-dashoffset: 0; opacity: 0; }
 }
 
 /* Гравюра 3 «С правом отказаться»: платёж уходит тонкой линией
-   вправо, сургучная линия возвращается назад к кошельку, монета
-   встаёт на место. Обратный путь нарисован справа налево — SVG
-   рисует штрих в направлении пути, само собой получается «назад». */
+   вправо, сургучная линия возвращается к кошельку, монета встаёт
+   на место. Обратный путь нарисован справа налево — SVG рисует
+   штрих по направлению пути, «назад» получается само. */
 [data-p15-tariffs] .pay-fig--refund .pf-fwd {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -513,9 +438,9 @@
 }
 
 @keyframes pf-fwd {
-  0%, 5%   { stroke-dashoffset: 1; opacity: .75; }
-  20%      { stroke-dashoffset: 0; }
-  86%      { stroke-dashoffset: 0; opacity: .75; }
+  0%, 3%   { stroke-dashoffset: 1; opacity: .7; }
+  12%      { stroke-dashoffset: 0; }
+  86%      { stroke-dashoffset: 0; opacity: .7; }
   94%,100% { stroke-dashoffset: 0; opacity: 0; }
 }
 
@@ -526,8 +451,8 @@
 }
 
 @keyframes pf-backdraw {
-  0%, 32%  { stroke-dashoffset: 1; opacity: 1; }
-  54%      { stroke-dashoffset: 0; }
+  0%, 15%  { stroke-dashoffset: 1; opacity: 1; }
+  28%      { stroke-dashoffset: 0; }
   86%      { stroke-dashoffset: 0; opacity: 1; }
   94%,100% { stroke-dashoffset: 0; opacity: 0; }
 }
@@ -539,70 +464,63 @@
 }
 
 @keyframes pf-backhead {
-  0%, 54%  { stroke-dashoffset: 1; opacity: 1; }
-  58%      { stroke-dashoffset: 0; }
+  0%, 28%  { stroke-dashoffset: 1; opacity: 1; }
+  32%      { stroke-dashoffset: 0; }
   86%      { stroke-dashoffset: 0; opacity: 1; }
   94%,100% { stroke-dashoffset: 0; opacity: 0; }
 }
 
 [data-p15-tariffs] .pay-fig--refund .pf-coin {
   transform: scale(0);
-  transform-origin: 33px 40px;
+  transform-origin: 26px 35px;
   animation: pf-coin 9s var(--ease-out-p15) infinite;
 }
 
 @keyframes pf-coin {
-  0%, 58%  { transform: scale(0);    opacity: 0; }
-  64%      { transform: scale(1.15); opacity: 1; }
-  68%      { transform: scale(1); }
+  0%, 32%  { transform: scale(0);    opacity: 0; }
+  37%      { transform: scale(1.15); opacity: 1; }
+  41%      { transform: scale(1); }
   86%      { transform: scale(1);    opacity: 1; }
   94%,100% { transform: scale(1);    opacity: 0; }
 }
 
 /* ── Тёмная тема: точечные поправки ────────────────────────────
-   Токены перекрашивают всё сами; вручную — только светимость
-   печати (тёмный сургуч на тёмном листе терял оттиск). */
-:root[data-theme="dark"] [data-p15-tariffs] .pricecard__seal { opacity: .62; }
+   Токены перекрашивают всё сами; вручную — только подложка
+   стопки, которой нужен более глухой тон, чем лист. */
 :root[data-theme="dark"] [data-p15-tariffs] .pricecard::before { background: var(--canvas-deep); }
 
-/* ── Телефон: первый экран цены неприкосновенен ────────────────
-   Колофон и шкала — десктопная роскошь: на 844px каждая строка
-   отодвигает цену от края экрана (замер в polish15-catalog:
-   заголовок+выбор+карточка уже впритык). Печать остаётся, она
+/* ── Телефон ───────────────────────────────────────────────────
+   Первый экран с ценой неприкосновенен: на 844px каждая лишняя
+   строка отодвигает цену от края. Печать остаётся — она
    абсолютная и высоты не ест. */
 @media (max-width: 920px) {
-  [data-p15-tariffs] .page-head__colophon { display: none; }
-  [data-p15-tariffs] .pricescale { display: none; }
-
   [data-p15-tariffs] .pricecard__seal {
     top: 14px;
     right: 14px;
-    width: 56px;
-    height: 56px;
+    width: 38px;
+    height: 38px;
+    font-size: 12px;
   }
 
+  [data-p15-tariffs] .pricecard__what { padding-right: 46px; }
   [data-p15-tariffs] .pricecard::before { inset: 8px -5px -5px 8px; }
 
-  [data-p15-tariffs] .price-table--folio { gap: 22px; padding-top: 18px; }
+  [data-p15-tariffs] .price-table--folio { gap: 18px; padding-top: 16px; }
   [data-p15-tariffs] .price-group__head em { display: none; }
   [data-p15-tariffs] .pricesearch__count { display: none; }
   [data-p15-tariffs] .fulllist .price-row.is-picked > div strong::after { content: none; }
 
-  [data-p15-tariffs] .pay-fig { margin-bottom: 12px; }
-  [data-p15-tariffs] .pay-fig svg { max-width: 200px; }
+  [data-p15-tariffs] .term-grid--inline article { grid-template-columns: 48px minmax(0, 1fr); }
+  [data-p15-tariffs] .pay-fig svg { width: 48px; }
 }
 
 /* ── Покой по просьбе системы ──────────────────────────────────
-   Гравюры застывают на финальном кадре (всё принято, чек
+   Виньетки застывают на финальном кадре (всё принято, чек
    заверен, монета вернулась), а не на пустом первом. */
 @media (prefers-reduced-motion: reduce) {
-  [data-p15-tariffs] .colophon-rule,
   [data-p15-tariffs] .pricecard.is-press .pricecard__sum strong,
   [data-p15-tariffs] .pricecard.is-press .pricecard__seal,
-  [data-p15-tariffs] .pricecard.is-press .seal-pulse,
   [data-p15-tariffs] .pay-fig svg * { animation: none !important; }
-
-  [data-p15-tariffs] .pricescale__marker { transition: none; }
 
   [data-p15-tariffs] .pay-fig--stages .pf-thread,
   [data-p15-tariffs] .pay-fig--stages .pf-tick,
@@ -612,7 +530,7 @@
   [data-p15-tariffs] .pay-fig--refund .pf-backhead { stroke-dashoffset: 0; }
 
   [data-p15-tariffs] .pay-fig--receipt .pf-receipt { transform: none; }
-  [data-p15-tariffs] .pay-fig--receipt .pf-row { opacity: .8; }
+  [data-p15-tariffs] .pay-fig--receipt .pf-row { opacity: .75; }
   [data-p15-tariffs] .pay-fig--receipt .pf-stamp circle,
   [data-p15-tariffs] .pay-fig--refund .pf-coin { transform: none; opacity: 1; }
 }

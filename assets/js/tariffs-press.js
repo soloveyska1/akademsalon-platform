@@ -5,43 +5,17 @@
    Смена цены замечается через MutationObserver — карточку красит чужой код,
    и вклиниваться в него значило бы связать два файла навсегда. Без этого
    скрипта страница полностью работоспособна: суммы меняются мгновенно,
-   шкала и печать просто стоят на месте. */
+   печать просто стоит на месте, а все чипы выглядят одинаково. */
 (function () {
   'use strict';
 
   var root = document.querySelector('[data-p15-tariffs]');
   if (!root) return;
 
-  /* ── Оттиск: печать и шкала при смене цены ─────────────────────────── */
   var card = root.querySelector('[data-price-card]');
   var sum = root.querySelector('[data-card-sum]');
-  var scale = root.querySelector('[data-price-scale]');
-  var marker = root.querySelector('[data-scale-marker]');
 
-  /* Края шкалы = края реального прайса «с нуля»: 2 500 и 60 000.
-     Числа не назначают цену — только позицию уже показанной суммы. */
-  var SCALE_MIN = 2500;
-  var SCALE_MAX = 60000;
-
-  function priceOf(text) {
-    var digits = String(text || '').replace(/[^0-9]/g, '');
-    return digits ? parseInt(digits, 10) : null;
-  }
-
-  function place(value) {
-    if (!scale || !marker) return;
-    if (value == null) {
-      scale.setAttribute('data-scale-state', 'custom');
-      return;
-    }
-    scale.setAttribute('data-scale-state', 'priced');
-    /* Шкала логарифмическая: линейная сплющила бы 2 500…9 900 в углу. */
-    var t = (Math.log(value) - Math.log(SCALE_MIN)) /
-            (Math.log(SCALE_MAX) - Math.log(SCALE_MIN));
-    t = Math.max(0, Math.min(1, t));
-    marker.style.left = (t * 100).toFixed(2) + '%';
-  }
-
+  /* ── Оттиск: печать прижимается при каждой новой цене ──────────────── */
   function press() {
     if (!card) return;
     /* Снять и вернуть класс с принудительным reflow — единственный
@@ -52,18 +26,69 @@
     card.classList.add('is-press');
   }
 
-  if (sum) {
-    place(priceOf(sum.textContent));
-    if (typeof MutationObserver === 'function') {
-      var lastSum = sum.textContent;
-      new MutationObserver(function () {
-        if (sum.textContent === lastSum) return;
-        lastSum = sum.textContent;
-        place(priceOf(lastSum));
-        press();
-      }).observe(sum, { childList: true, characterData: true, subtree: true });
-    }
+  if (sum && typeof MutationObserver === 'function') {
+    var lastSum = sum.textContent;
+    new MutationObserver(function () {
+      if (sum.textContent === lastSum) return;
+      lastSum = sum.textContent;
+      press();
+    }).observe(sum, { childList: true, characterData: true, subtree: true });
   }
+
+  /* ── Тупики видно заранее ──────────────────────────────────────────────
+     В прайсе есть не всякое сочетание: у реферата нет ни редактуры, ни
+     защиты, ни Комиссии №0. Раньше человек узнавал об этом только после
+     клика — получал «посчитаем индивидуально» и упирался. Теперь
+     недоступные варианты приглушены заранее.
+
+     Кнопки НЕ блокируются: выбрать по-прежнему можно, и честный ответ
+     про индивидуальный расчёт никуда не делся — он просто перестал
+     выглядеть обычным путём.
+
+     ВНИМАНИЕ: это копия ключей матрицы PICK из polish15-catalog.js. Взять
+     их оттуда напрямую нельзя — PICK закрыт в замыкании модуля. Копия
+     обязана сходиться с оригиналом, поэтому расхождение ловит тест
+     «приглушение недоступных сочетаний совпадает с матрицей прайса»
+     в tests/catalog-polish15-regression.test.js. Правите цены там —
+     тест сам укажет сюда. Цена от рассинхронизации не пострадает
+     (её всё равно считает каталог), но приглушение начнёт врать. */
+  var WORK_TASKS = {
+    ref:  ['zero', 'razbor', 'norm'],
+    kurs: ['zero', 'edit', 'razbor', 'norm', 'zashita', 'k0'],
+    vkr:  ['zero', 'edit', 'razbor', 'norm', 'zashita', 'k0'],
+    mag:  ['zero', 'razbor', 'norm', 'zashita', 'k0'],
+    art:  ['zero', 'edit', 'razbor']
+  };
+
+  var workChips = Array.prototype.slice.call(root.querySelectorAll('[data-pick-work]'));
+  var taskChips = Array.prototype.slice.call(root.querySelectorAll('[data-pick-task]'));
+
+  function paintAvailability() {
+    var current = null;
+    workChips.forEach(function (chip) {
+      if (chip.getAttribute('aria-pressed') === 'true') current = chip.getAttribute('data-pick-work');
+    });
+    var allowed = WORK_TASKS[current];
+    taskChips.forEach(function (chip) {
+      var on = !allowed || allowed.indexOf(chip.getAttribute('data-pick-task')) !== -1;
+      if (on) {
+        chip.removeAttribute('data-pick-off');
+        chip.removeAttribute('title');
+      } else {
+        chip.setAttribute('data-pick-off', '1');
+        chip.setAttribute('title', 'Такого сочетания нет в прайсе — посчитаем индивидуально');
+      }
+    });
+  }
+
+  /* Слушатель вешается на тот же корень, что и чужой: обработчики одного
+     элемента вызываются в порядке регистрации, а наш файл грузится после
+     каталога — значит к моменту перекраски выбор уже переключён. */
+  root.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    if (e.target.closest('[data-pick-work]')) paintAvailability();
+  });
+  paintAvailability();
 
   /* ── Картотека: счётчик находок и пустые ящики ─────────────────────── */
   var rows = Array.prototype.slice.call(root.querySelectorAll('[data-price-row]'));
@@ -78,16 +103,13 @@
         ? rows.length + ' позиций'
         : visible + ' из ' + rows.length;
     }
-    /* Ящик без единой видимой строки прячется целиком: заголовок
-       группы над пустотой читался бы как сломанный фильтр. */
+    /* Ящик без единой видимой строки прячется целиком: заголовок группы
+       над пустотой читался бы как сломанный фильтр. */
     groups.forEach(function (group) {
       group.hidden = !group.querySelector('[data-price-row]:not([hidden])');
     });
   }
 
-  /* Слушатель регистрируется после чужого paint(): порядок вызова
-     на одном элементе сохраняется, к моменту recount() строки уже
-     спрятаны или показаны. */
   if (search) search.addEventListener('input', recount);
   recount();
 })();
