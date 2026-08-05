@@ -127,14 +127,79 @@
 
     var live = root.querySelector('[data-catalog-live]');
 
-    /* Что клиент получит на руки — миниатюрой прямо в карточке.
-       Рисуется полосками через CSS: ни одной картинки, ни одного запроса. */
+    /* Что клиент получит на руки — рисунком прямо в карточке.
+
+       Раньше здесь было пять пустых <i>, которым CSS задавал ширину: набор
+       абстрактных полосок, одинаковый для всех пяти видов работы и потому
+       неотличимый от заглушки-скелетона, пока грузится страница. Теперь
+       каждый вид — узнаваемый рисунок того самого документа: оглавление с
+       отточиями, лист с правками на полях, чек-лист сверки, карта связей
+       между источниками, переплетённая рукопись с ляссе.
+
+       По-прежнему ни одной картинки и ни одного запроса: это инлайн-SVG на
+       currentColor, сургучные акценты отдельным классом, поэтому обе темы
+       работают сами. Штрихи заданы в квадрате 64×64 — один и тот же рисунок
+       годится и крупным планом в ведущей карточке, и значком в строке. */
     var ARTIFACT_CAPTION = {
       plan: 'план и структура',
       marks: 'правки и комментарии',
       checklist: 'чек-лист сверки',
       research: 'карта источников',
       manuscript: 'готовая рукопись'
+    };
+
+    var ARTIFACT_ART = {
+      /* Оглавление: разделы, отточия, номера страниц. */
+      plan:
+        '<rect class="a-sheet" x="8" y="6" width="48" height="52" rx="2"/>' +
+        '<line class="a-rule" x1="15" y1="16" x2="34" y2="16"/>' +
+        '<g class="a-dots"><line x1="15" y1="27" x2="41" y2="27"/>' +
+        '<line x1="15" y1="36" x2="45" y2="36"/>' +
+        '<line x1="15" y1="45" x2="38" y2="45"/></g>' +
+        '<g class="a-mark"><line x1="45" y1="27" x2="49" y2="27"/>' +
+        '<line x1="47.5" y1="36" x2="49" y2="36"/>' +
+        '<line x1="42" y1="45" x2="49" y2="45"/></g>',
+      /* Лист с правками: строка вычеркнута, на поле — сургучная помета. */
+      marks:
+        '<rect class="a-sheet" x="6" y="6" width="42" height="52" rx="2"/>' +
+        '<g class="a-dots"><line x1="13" y1="17" x2="40" y2="17"/>' +
+        '<line x1="13" y1="26" x2="36" y2="26"/>' +
+        '<line x1="13" y1="35" x2="41" y2="35"/>' +
+        '<line x1="13" y1="44" x2="33" y2="44"/></g>' +
+        '<line class="a-strike" x1="11" y1="26" x2="38" y2="26"/>' +
+        '<path class="a-mark" d="M52 22v14"/>' +
+        '<path class="a-mark" d="M50 31l2.5 3 4.5-6"/>',
+      /* Чек-лист сверки: что уже сошлось с методичкой. */
+      checklist:
+        '<rect class="a-sheet" x="8" y="6" width="48" height="52" rx="2"/>' +
+        '<rect class="a-box" x="15" y="16" width="8" height="8" rx="1.5"/>' +
+        '<rect class="a-box" x="15" y="29" width="8" height="8" rx="1.5"/>' +
+        '<rect class="a-box" x="15" y="42" width="8" height="8" rx="1.5"/>' +
+        '<g class="a-dots"><line x1="29" y1="20" x2="48" y2="20"/>' +
+        '<line x1="29" y1="33" x2="45" y2="33"/>' +
+        '<line x1="29" y1="46" x2="47" y2="46"/></g>' +
+        '<path class="a-mark" d="M16.5 20l2 2 4-4.5"/>' +
+        '<path class="a-mark" d="M16.5 33l2 2 4-4.5"/>',
+      /* Карта источников: узлы и связи, ядро сургучом. */
+      research:
+        '<circle class="a-node a-mark" cx="32" cy="32" r="6"/>' +
+        '<g class="a-link"><line x1="32" y1="26" x2="18" y2="14"/>' +
+        '<line x1="38" y1="32" x2="52" y2="20"/>' +
+        '<line x1="32" y1="38" x2="20" y2="50"/>' +
+        '<line x1="37" y1="36" x2="50" y2="46"/></g>' +
+        '<circle class="a-node" cx="16" cy="12" r="4"/>' +
+        '<circle class="a-node" cx="54" cy="18" r="4"/>' +
+        '<circle class="a-node" cx="18" cy="52" r="4"/>' +
+        '<circle class="a-node" cx="52" cy="48" r="4"/>',
+      /* Готовая рукопись: стопка листов и ляссе. */
+      manuscript:
+        '<rect class="a-sheet" x="12" y="12" width="42" height="46" rx="2"/>' +
+        '<path class="a-back" d="M8 8h40v42"/>' +
+        '<g class="a-dots"><line x1="19" y1="24" x2="45" y2="24"/>' +
+        '<line x1="19" y1="32" x2="47" y2="32"/>' +
+        '<line x1="19" y1="40" x2="41" y2="40"/>' +
+        '<line x1="19" y1="48" x2="44" y2="48"/></g>' +
+        '<path class="a-ribbon a-mark" d="M40 12v16l-4-4-4 4V12"/>'
     };
 
     function decorate(card) {
@@ -147,7 +212,13 @@
         art.setAttribute('data-kind', kind);
         art.setAttribute('data-caption', ARTIFACT_CAPTION[kind]);
         art.setAttribute('aria-hidden', 'true');
-        for (var i = 0; i < 5; i++) art.appendChild(document.createElement('i'));
+        /* innerHTML на статичной строке из ARTIFACT_ART: пользовательских
+           данных здесь нет, а собирать полсотни узлов через createElementNS
+           значило бы утроить объём кода ради того же результата. */
+        art.innerHTML =
+          '<svg class="art-svg" viewBox="0 0 64 64" focusable="false" aria-hidden="true">' +
+          ARTIFACT_ART[kind] + '</svg>' +
+          '<span class="art-cap">' + ARTIFACT_CAPTION[kind] + '</span>';
         var link = card.querySelector('.service-card__link');
         var meta = card.querySelector('.service-card__meta');
         if (link && meta) link.insertBefore(art, meta);

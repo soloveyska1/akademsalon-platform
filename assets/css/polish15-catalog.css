@@ -2395,12 +2395,19 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
   font-size:13px;
   line-height:1.5;
 }
+/* Липкая панель фильтров идёт РОВНО по колонке контента.
+
+   Раньше здесь стояла пара `margin-inline:-gutter` + `padding-inline:gutter`:
+   приём «фон шире, содержимое на месте». Содержимое он действительно
+   оставлял на месте, но фон уводил на всю ширину page-shell — на широком
+   экране панель торчала на 72px левее и правее заголовка «Состав и цены»
+   и колонки карточек (замер на 2000px: панель 268…1732 против 340…1660 у
+   всего остального) и обрывалась в воздухе. Ради края, который всё равно
+   не доходит до края экрана, ломалась вертикаль всего раздела. */
 .p15-catalog .catalog-toolbar{
   position:sticky;
   z-index:12;
   top:var(--catalog-header-offset);
-  margin-inline:calc(var(--gutter-p15) * -1);
-  padding-inline:var(--gutter-p15);
   border-bottom:1px solid var(--line-p15);
   background:color-mix(in srgb,var(--paper-p15) 92%,transparent);
   -webkit-backdrop-filter:blur(16px) saturate(1.15);
@@ -3292,102 +3299,85 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
 .page-services .service-card[data-rank="hero"] .service-card__body{margin-block:2px 4px}
 .page-services .service-card[data-rank="hero"] .service-card__meta{margin-top:6px}
 
-/* ---------- миниатюра результата ---------- */
+/* ---------- миниатюра результата ----------
+
+   Рисунок того, что клиент получит на руки. Раньше здесь лежали пять пустых
+   <i> с процентными ширинами: одинаковый для всех пяти видов набор полосок,
+   который читался не как документ, а как скелетон незагрузившейся страницы.
+   Теперь у каждого вида свой инлайн-SVG (см. ARTIFACT_ART в
+   polish15-catalog.js), а раскладка блока подстраивается под роль карточки:
+   в ведущей — крупный план, в остальных — строка «значок + подпись».
+   ------------------------------------------------------------------ */
 
 .page-services .service-artifact{
-  --art-line:color-mix(in srgb,var(--ink) 22%,transparent);
-  --art-fill:color-mix(in srgb,var(--ink) 9%,transparent);
   position:relative;
-  display:block;
-  overflow:hidden;
-  min-height:78px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  min-height:0;
   margin-top:14px;
-  padding:12px 13px;
+  padding:11px 13px;
   background:color-mix(in srgb,var(--canvas) 62%,transparent);
   border:1px solid var(--line);
   border-radius:5px;
   pointer-events:none;
 }
 
-.page-services .service-artifact::after{
-  position:absolute;
-  right:9px;
-  bottom:7px;
+.page-services .service-artifact .art-svg{
+  flex:0 0 auto;
+  width:40px;
+  height:40px;
+  overflow:visible;
+  color:color-mix(in srgb,var(--ink) 42%,transparent);
+  transition:color .3s ease;
+}
+
+.page-services .service-artifact .art-cap{
   color:var(--quiet);
-  font:600 7.5px/1 var(--mono);
-  letter-spacing:.1em;
+  font:600 8px/1.3 var(--mono);
+  letter-spacing:.12em;
   text-transform:uppercase;
-  content:attr(data-caption);
 }
 
-.page-services .service-artifact i{
-  display:block;
-  height:4px;
-  margin-bottom:6px;
-  background:var(--art-line);
-  border-radius:2px;
-  transform-origin:left center;
-  transition:transform .45s cubic-bezier(.22,1,.36,1),background-color .3s ease;
+/* Обводка — общий штрих; заливок нет нигде, это гравюра, а не иконка. */
+.page-services .service-artifact .art-svg *{
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
 
-.page-services .service-card:hover .service-artifact i{background:color-mix(in srgb,var(--wax) 42%,transparent)}
-.page-services .service-card:hover .service-artifact i:nth-child(2){transform:scaleX(1.08)}
-.page-services .service-card:hover .service-artifact i:nth-child(4){transform:scaleX(1.12)}
+/* Лист держим тоньше содержимого: рамка не должна спорить со строками. */
+.page-services .service-artifact .a-sheet,
+.page-services .service-artifact .a-back{ stroke-width:2; }
+.page-services .service-artifact .a-dots line{ stroke-width:2; opacity:.55; }
+.page-services .service-artifact .a-rule{ stroke-width:2.6; }
+.page-services .service-artifact .a-link line{ stroke-width:1.6; opacity:.5; }
+.page-services .service-artifact .a-box{ stroke-width:1.8; opacity:.7; }
 
-/* план: строки со ступенчатым отступом */
-.page-services .service-artifact[data-kind="plan"] i:nth-child(2),
-.page-services .service-artifact[data-kind="plan"] i:nth-child(4){margin-left:14px}
+/* Сургучом — только смысловое: принято, исправлено, ядро, ляссе. */
+.page-services .service-artifact .a-mark{ stroke:var(--wax); }
+.page-services .service-artifact .a-strike{ stroke:var(--wax); stroke-width:1.6; }
 
-/* правки: короткие строки и метки на поле */
-.page-services .service-artifact[data-kind="marks"] i{margin-left:20px}
-.page-services .service-artifact[data-kind="marks"] i::before{
-  position:absolute;
-  left:12px;
-  width:9px;
-  height:4px;
-  background:color-mix(in srgb,var(--wax) 55%,transparent);
-  border-radius:2px;
-  content:"";
+/* Наведение: рисунок наливается краской вместе с карточкой. */
+.page-services .service-card:hover .service-artifact .art-svg{
+  color:color-mix(in srgb,var(--ink) 62%,transparent);
 }
 
-/* чек-лист: галочка перед строкой */
-.page-services .service-artifact[data-kind="checklist"] i{margin-left:16px}
-.page-services .service-artifact[data-kind="checklist"] i::before{
-  position:absolute;
-  left:12px;
-  width:6px;
-  height:6px;
-  margin-top:-1px;
-  border:1.4px solid color-mix(in srgb,var(--verify,var(--green)) 70%,transparent);
-  border-radius:1px;
-  content:"";
+/* Ведущая карточка: тот же рисунок крупным планом, подпись уходит вниз. */
+.page-services .service-card[data-rank="hero"] .service-artifact{
+  flex-direction:column;
+  gap:14px;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
 }
 
-/* карта источников: точки и связь */
-.page-services .service-artifact[data-kind="research"] i{
-  width:auto;
-  height:6px;
-  border-radius:3px;
+.page-services .service-card[data-rank="hero"] .service-artifact .art-svg{
+  width:min(100%,124px);
+  height:auto;
 }
-.page-services .service-artifact[data-kind="research"] i:nth-child(odd){margin-left:26px}
-.page-services .service-artifact[data-kind="research"] i::before{
-  position:absolute;
-  left:13px;
-  width:6px;
-  height:6px;
-  background:color-mix(in srgb,var(--wax) 50%,transparent);
-  border-radius:50%;
-  content:"";
-}
-
-/* рукопись: ровный набор */
-.page-services .service-artifact[data-kind="manuscript"] i{height:3px;margin-bottom:7px}
-
-.page-services .service-artifact i:nth-child(1){width:82%}
-.page-services .service-artifact i:nth-child(2){width:62%}
-.page-services .service-artifact i:nth-child(3){width:74%}
-.page-services .service-artifact i:nth-child(4){width:54%}
-.page-services .service-artifact i:nth-child(5){width:68%}
 
 /* ---------- кнопка сравнения ---------- */
 
@@ -3636,7 +3626,7 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
 
 @media (prefers-reduced-motion:reduce){
   .page-services .service-card,
-  .page-services .service-artifact i,
+  .page-services .service-artifact .art-svg,
   .compare-tray__inner,
   .compare-sheet,
   .compare-sheet__panel{
@@ -3648,19 +3638,17 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
 /* Компактные карточки не должны перевешивать героя: миниатюра у них
    короче, у средних — промежуточная. Иначе иерархия читается наоборот. */
 .page-services .service-card[data-rank="minor"] .service-artifact{
-  min-height:54px;
   margin-top:11px;
   padding:9px 11px;
 }
 
-.page-services .service-card[data-rank="minor"] .service-artifact i:nth-child(n+4){display:none}
+.page-services .service-card[data-rank="minor"] .service-artifact .art-svg{width:32px;height:32px}
 
 .page-services .service-card[data-rank="major"] .service-artifact{
-  min-height:66px;
   margin-top:12px;
 }
 
-.page-services .service-card[data-rank="major"] .service-artifact i:nth-child(5){display:none}
+.page-services .service-card[data-rank="major"] .service-artifact .art-svg{width:36px;height:36px}
 
 /* Ранг должен пересиливать прежние правила ширины по nth-child: они
    расставляли размеры по ПОРЯДКУ карточек, а порядок теперь меняется
