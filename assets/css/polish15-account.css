@@ -11935,10 +11935,15 @@
     box-shadow: 0 18px 46px rgba(26, 18, 13, .2);
   }
 
+  /* Строка «Новое дело» занимает обе колонки, и без явного выравнивания её
+     содержимое растягивалось: иконка и подпись вставали на y=7 высотой 34 при
+     строке 48, тогда как в остальных строках они центрированы (y=14 и y=17).
+     Из-за этого первая строка панели читалась криво. */
   .is-account-route .account-nav__more-panel .account-nav__more-option {
     display: grid;
     min-width: 0;
     min-height: 48px;
+    align-items: center;
     grid-template-columns: 26px minmax(0, 1fr) auto;
     gap: 7px;
     padding: 7px 9px;

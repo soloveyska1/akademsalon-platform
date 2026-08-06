@@ -976,6 +976,28 @@ main[tabindex="-1"]:focus{outline:none}
   line-height:1.05;
   letter-spacing:-.02em;
 }
+/* Крестик закрытия оверлея: две полоски внутри пустого <i>.
+   Меню и поиск несут ОДНУ разметку (polish15-chrome.js:89 и :123), но полоски
+   были заданы только для `.overlay--search .search-close i`. Меню оставалось
+   кругом 50×50 с пустым <i> 0×0 — «белое ничто» вместо крестика на index,
+   services, knowledge, dashboard и tariffs. Правило поиска лежит позже по
+   каскаду, с теми же значениями, поэтому его вид не меняется. */
+.overlay .icon-button--close > i,
+.overlay .icon-button--close > i::after,
+.overlay__close > i,
+.overlay__close > i::after{
+  display:block;
+  width:14px;
+  height:1.5px;
+  border-radius:2px;
+  background:currentColor;
+  content:"";
+}
+.overlay .icon-button--close > i,
+.overlay__close > i{transform:rotate(45deg)}
+.overlay .icon-button--close > i::after,
+.overlay__close > i::after{transform:rotate(90deg)}
+
 /* Крестик по мерке .overlay .icon-button--close. */
 .contact-sheet .cs-x{
   display:grid;

@@ -91,6 +91,45 @@ test('решение hall97 не отменяется: общий док в ка
   );
 });
 
+test('крестик закрытия рисуется у любого оверлея, а не только у поиска', () => {
+  /* Меню и поиск несут одну разметку — `<button class="icon-button
+     icon-button--close"><i aria-hidden="true"></i></button>`
+     (`polish15-chrome.js:89` и `:123`), но полоски крестика были заданы только
+     для `.overlay--search .search-close i`. Меню получало круг 50×50 с пустым
+     `<i>` 0×0 — замер на index, services, knowledge, dashboard и tariffs. */
+  const chromeCss = fs.readFileSync(path.join(root, 'assets/css/chrome.css'), 'utf8');
+  assert.match(
+    chromeCss,
+    /\.overlay \.icon-button--close\s*>\s*i[^{]*\{[^}]*background:\s*currentColor/,
+    'полоски крестика должны задаваться для любого оверлея'
+  );
+  assert.match(
+    chromeCss,
+    /\.overlay \.icon-button--close\s*>\s*i[^{]*\{\s*transform:\s*rotate\(45deg\)/,
+    'первая полоска должна быть повёрнута на 45°'
+  );
+  /* Главная подключает не исходники, а сборку — без пересборки правка до неё
+     не доходит. Замер это и показал: крестик починился везде, кроме index. */
+  const homeCss = fs.readFileSync(path.join(root, 'assets/css/home-release.min.css'), 'utf8');
+  assert.ok(
+    homeCss.includes('.overlay .icon-button--close>i') ||
+      homeCss.includes('.overlay .icon-button--close > i'),
+    'сборка главной должна содержать то же правило — пересоберите home-release'
+  );
+});
+
+test('первая строка панели «Ещё» выровнена так же, как остальные', () => {
+  /* Замер до правки: в строке «Новое дело» иконка и подпись стояли на y=7
+     при высоте строки 48 и растягивались до 34 px, тогда как в остальных
+     строках они центрированы (y=14 и y=17, высота 20 и 14). */
+  const option = rule('.is-account-route .account-nav__more-panel .account-nav__more-option');
+  assert.match(
+    option,
+    /align-items:\s*center/,
+    'строки панели должны центрировать содержимое по вертикали'
+  );
+});
+
 test('набор разделов кабинета не меняется: четыре кнопки и «Ещё»', () => {
   assert.match(
     finalLayer,
