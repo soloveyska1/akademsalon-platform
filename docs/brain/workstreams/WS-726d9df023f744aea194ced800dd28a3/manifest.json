@@ -1,0 +1,57 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-726d9df023f744aea194ced800dd28a3",
+  "slug": "mobile-shell",
+  "status": "active",
+  "branch": "claude/mobile-shell",
+  "base_sha": "f6a81259fc1a57c78f44786eaca47c639342b09b",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-008"
+  ],
+  "write_owner": "claude-opus-5",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/chrome.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/home-release.min.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/mobile.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/polish15-account.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/app.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/home-release.min.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-726d9df023f744aea194ced800dd28a3/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/mobile-shell.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
