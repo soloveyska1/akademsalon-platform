@@ -5114,3 +5114,50 @@ if (document.prerendering) {
 } else {
   initCabinet();
 }
+
+/* ---------------- Панель «Ещё»: закрытие ----------------
+   `.account-nav__more` — нативный `<details>`, а он закрывается только
+   повторным нажатием на свой `<summary>`. Пока панель разделов стояла
+   сверху, это почти не мешало. После её переезда вниз панель раскрывается
+   ВВЕРХ на 172 px (замер 390×844: `[58,610,316,172]`) и накрывает контент
+   ровно там, где палец, — тап мимо обязан её убирать.
+
+   Обработчики висят на документе, а не на самом узле: разметка кабинета
+   перерисовывается при каждой смене вкладки, и обработчик на узле умирал бы
+   вместе с ней. Слушаем `pointerdown`, а не `click`: закрыть надо в момент
+   касания, до того как страница успеет отработать нажатие под панелью. */
+(function morePanelDismiss() {
+  'use strict';
+
+  function openPanel() {
+    return document.querySelector('.account-nav__more[open]');
+  }
+
+  function closeMorePanel(returnFocus) {
+    var panel = openPanel();
+    if (!panel) return;
+    panel.removeAttribute('open');
+    if (returnFocus !== true) return;
+    /* Иначе после Esc фокус остаётся на исчезнувшем пункте и следующий Tab
+       уводит в начало документа. */
+    var summary = panel.querySelector('summary');
+    if (summary && typeof summary.focus === 'function') summary.focus();
+  }
+
+  document.addEventListener('pointerdown', function (event) {
+    var panel = openPanel();
+    if (!panel) return;
+    var target = event.target;
+    /* Нажатие внутри самой панели ведёт в раздел — оно закроет её своим
+       переходом. Нажатие по `summary` обрабатывает сам `<details>`. */
+    if (target && target.nodeType === 1 && target.closest('.account-nav__more')) return;
+    closeMorePanel(false);
+  }, true);
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && openPanel()) closeMorePanel(true);
+  });
+
+  /* Смена раздела: без этого панель оставалась висеть поверх нового. */
+  window.addEventListener('hashchange', closeMorePanel);
+})();
