@@ -826,8 +826,7 @@
   html[data-pr-flat] .home .pr-cta,
   html:not(.has-js) .home .pr-cta{margin-top:20px}
   html[data-pr-flat] .home .pr-note,
-  html:not(.has-js) .home .pr-note,
-  .home .story-chip{display:none!important}
+  html:not(.has-js) .home .pr-note{display:none!important}
   .home .slot-line--cover{
     justify-content:space-between;
     gap:10px;
@@ -1340,12 +1339,6 @@
   .home .pr-lead{font-size:16px;line-height:1.5}
   .home .pr-cta{margin-top:18px!important}
   .home .pr-note{margin-top:10px!important}
-  .home .story-chip{
-    min-height:44px;
-    margin-top:10px;
-    padding-top:9px;
-    padding-bottom:9px;
-  }
 }
 
 /* ============================================================

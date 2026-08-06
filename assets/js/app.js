@@ -412,7 +412,7 @@
   /* Один fail-closed путь для внутренних и внешних analytics page labels.
      Список намеренно exact: синтаксически красивый, но неизвестный Nginx 404
      pathname всё равно может содержать имя или токен и обязан стать /other. */
-  var ANALYTICS_PAGE_LIST = '404.html 50x.html about.html academic-integrity.html admin-covers.html admin.html audit-temy-vkr.html avtorskiy-zakaz.html check.html configurator.html consent-analytics.html consent-marketing.html consent-publication.html consent-request.html consent.html dashboard.html deposit.html diplomnaya-po-ekonomike.html diplomnaya-po-psihologii.html diplomnaya-po-yurisprudencii.html diplomnaya-rabota.html dorabotka-otcheta-po-praktike.html dosie-nauchruka.html expertise.html gift.html guarantees.html guide-antiplagiat-ai.html guide-apellyaciya.html guide-dnevnik-praktiki.html guide-harakteristika-s-praktiki.html guide-kursovaya-za-nedelyu.html guide-normocontrol.html guide-obekt-predmet-cel-zadachi.html guide-otchet-po-praktike.html guide-otzyv-rukovoditelya-vkr.html guide-prakticheskaya-chast-kursovoy.html guide-prezentaciya-k-zashchite.html guide-prilozheniya-po-gost.html guide-recenziya-na-vkr.html guide-rech-na-zashchitu.html guide-rinc-statya.html guide-skolko-stoit-diplomnaya.html guide-skolko-stoit-kursovaya.html guide-spisok-literatury.html guide-temy-vkr.html guide-titulnyj-list.html guide-vkr-struktura.html guide-vvedenie-kursovoy.html guide-zaklyuchenie-kursovoy.html guide-zaklyuchenie-vkr.html guide-zashchita-diploma.html index.html kandidatskaya-dissertaciya.html knowledge.html komissiya-0.html kursovaya-po-ekonomike.html kursovaya-po-informatike.html kursovaya-po-menedzhmentu.html kursovaya-po-pedagogike.html kursovaya-po-psihologii.html kursovaya-po-yurisprudencii.html kursovaya-rabota.html loyalty.html magisterskaya-dissertaciya.html maintenance.html nauchnaya-statya.html normokontrol-vkr.html oferta.html oplaceno.html oplata.html otchet-po-praktike.html plan.html plus.html privacy.html priyomnaya.html prolog.html proverka-istochnikov-vkr.html razbor-zamechaniy-nauchruka.html redaktura-posle-ii.html referat.html referral.html refunds.html requisites.html reviews.html services.html specifikaciya.html start.html tariffs.html terms.html tools.html vedenie.html zayavka.html';
+  var ANALYTICS_PAGE_LIST = '404.html 50x.html about.html academic-integrity.html admin-covers.html admin.html audit-temy-vkr.html avtorskiy-zakaz.html check.html configurator.html consent-analytics.html consent-marketing.html consent-publication.html consent-request.html consent.html dashboard.html deposit.html diplomnaya-po-ekonomike.html diplomnaya-po-psihologii.html diplomnaya-po-yurisprudencii.html diplomnaya-rabota.html dorabotka-otcheta-po-praktike.html dosie-nauchruka.html expertise.html gift.html guarantees.html guide-antiplagiat-ai.html guide-apellyaciya.html guide-dnevnik-praktiki.html guide-harakteristika-s-praktiki.html guide-kursovaya-za-nedelyu.html guide-normocontrol.html guide-obekt-predmet-cel-zadachi.html guide-otchet-po-praktike.html guide-otzyv-rukovoditelya-vkr.html guide-prakticheskaya-chast-kursovoy.html guide-prezentaciya-k-zashchite.html guide-prilozheniya-po-gost.html guide-recenziya-na-vkr.html guide-rech-na-zashchitu.html guide-rinc-statya.html guide-skolko-stoit-diplomnaya.html guide-skolko-stoit-kursovaya.html guide-spisok-literatury.html guide-temy-vkr.html guide-titulnyj-list.html guide-vkr-struktura.html guide-vvedenie-kursovoy.html guide-zaklyuchenie-kursovoy.html guide-zaklyuchenie-vkr.html guide-zashchita-diploma.html index.html kandidatskaya-dissertaciya.html knowledge.html komissiya-0.html kursovaya-po-ekonomike.html kursovaya-po-informatike.html kursovaya-po-menedzhmentu.html kursovaya-po-pedagogike.html kursovaya-po-psihologii.html kursovaya-po-yurisprudencii.html kursovaya-rabota.html loyalty.html magisterskaya-dissertaciya.html maintenance.html nauchnaya-statya.html normokontrol-vkr.html oferta.html offline.html oplaceno.html oplata.html otchet-po-praktike.html plan.html plus.html privacy.html priyomnaya.html prolog.html proverka-istochnikov-vkr.html razbor-zamechaniy-nauchruka.html redaktura-posle-ii.html referat.html referral.html refunds.html requisites.html reviews.html services.html specifikaciya.html start.html tariffs.html terms.html tools.html vedenie.html zayavka.html';
   var ANALYTICS_PAGE_MAP = {};
   ANALYTICS_PAGE_LIST.split(' ').forEach(function (name) { ANALYTICS_PAGE_MAP[name] = true; });
   function analyticsPage(value) {
@@ -4193,4 +4193,36 @@
     }, { threshold: 0.6 });
     document.querySelectorAll('[data-count]').forEach(function (n) { cio.observe(n); });
   }
+})();
+
+/* ---------------- Установка на домашний экран ----------------
+   Сервис-воркер нужен, чтобы сайт ставился как приложение и открывал
+   осмысленную страницу без сети. Он технический: аналитики не ведёт, к
+   согласию отношения не имеет, поэтому регистрируется сразу.
+
+   Регистрируем после load — до этого браузер занят первой отрисовкой, и
+   лишний запрос отодвигает её. Адрес несёт тот же ключ семьи shell, что и
+   ассеты: смена ключа поднимает новую версию воркера и сносит старые кэши. */
+(function serviceWorker() {
+  'use strict';
+  if (!('serviceWorker' in navigator)) return;
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost'
+      && location.hostname !== '127.0.0.1') return;
+  window.addEventListener('load', function () {
+    /* Ключ берём у ссылки на манифест, а не у первой попавшейся таблицы
+       стилей: на главной первой идёт семья release, и воркер регистрировался
+       бы под чужим ключом. Манифест есть на всех страницах и несёт ровно ту
+       же семью shell, что объявлена константой VERSION внутри sw.js. */
+    var ver = '';
+    try {
+      var link = document.querySelector('link[rel="manifest"][href*="?v="]');
+      ver = link ? (link.getAttribute('href').split('?v=')[1] || '').split('&')[0] : '';
+    } catch (e) {}
+    navigator.serviceWorker.register('/sw.js' + (ver ? '?v=' + ver : ''), { scope: '/' })
+      .catch(function (err) {
+        /* Отказ регистрации не должен ломать страницу: сайт обязан работать
+           и без установки. Молча живём дальше. */
+        if (window.console && console.debug) console.debug('sw:', err && err.message);
+      });
+  });
 })();

@@ -224,7 +224,8 @@ test('analytics page identity accepts only canonical public routes', () => {
     assert.equal(analyticsPage(input), expected, input);
   }
   const publicPages = fs.readdirSync(root).filter((file) => file.endsWith('.html'));
-  assert.equal(publicPages.length, 92);
+  /* 93-я страница — offline.html, лист сервис-воркера на случай без сети. */
+  assert.equal(publicPages.length, 93);
   for (const file of publicPages) assert.equal(analyticsPage(`/${file}`), `/${file}`, file);
   assert.match(app, /url:\s*location\.origin\s*\+\s*analyticsPage\(location\.pathname\)/);
   assert.match(app, /function page\(\) \{ return analyticsPage\(location\.pathname\); \}/);
