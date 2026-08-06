@@ -192,12 +192,26 @@ test('абзац листа остаётся целым: юридический 
 
 test('заголовок листа уходит из раскладки, но остаётся именем региона', () => {
   /* `role="region" aria-labelledby="cb-title"` берёт имя из этого h2.
-     `display:none` убрал бы имя целиком, поэтому заголовок прячется
-     тем же приёмом, что и живые регионы рельсов в extras.css. */
-  const head = rule(':root.has-consent-bar .lrail .cookiebar .cb-head', consentLayer);
-  assert.match(head, /position:\s*absolute/, 'заголовок должен выходить из потока, а не сжиматься');
-  assert.match(head, /clip:\s*rect\(0 0 0 0\)/, 'заголовок прячется приёмом sr-only');
-  assert.doesNotMatch(head, /display:\s*none/, 'display:none лишил бы регион доступного имени');
+
+     Проверять один блок здесь НЕЛЬЗЯ. Этот селектор объявлен в mobile.css
+     дважды с одинаковой специфичностью (0,4,1): ранний блок ставит
+     `display:none`, поздний — sr-only. Пока поздний не объявлял `display`,
+     побеждал `display:none`, и замер в браузере показывал ровно то, что
+     этот тест запрещает, — а тест был зелёный, потому что смотрел только
+     на поздний блок. Поэтому берём ВСЕ объявления и проверяем последнее. */
+  const heads = [...mobileCss.matchAll(
+    /:root\.has-consent-bar[^{}]*\.cookiebar \.cb-head\s*\{([^}]*)\}/g
+  )].map((m) => m[1]);
+  assert.ok(heads.length >= 1, 'правило .cb-head должно остаться в mobile.css');
+
+  const lastDisplay = heads
+    .flatMap((body) => [...body.matchAll(/display:\s*([a-z-]+)/g)].map((m) => m[1]))
+    .pop();
+  assert.equal(lastDisplay, 'block', 'итог каскада не должен быть display:none');
+
+  const srOnly = heads[heads.length - 1];
+  assert.match(srOnly, /position:\s*absolute/, 'заголовок должен выходить из потока, а не сжиматься');
+  assert.match(srOnly, /clip:\s*rect\(0 0 0 0\)/, 'заголовок прячется приёмом sr-only');
 });
 
 test('мёртвый блок компактности убран, а не оставлен вводить в заблуждение', () => {
