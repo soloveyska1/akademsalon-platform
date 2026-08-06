@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-9279a4aa7fe8498bb97b284f916f188c",
   "slug": "mobile-first",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "claude/mobile-first-audit",
   "base_sha": "ece385da72ded618b6a83374abff035fbd637f9f",
   "result_sha": "44b9861dcdcec2fb6077ace3755c6f4f535c29a2",
@@ -28,6 +28,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "0bb6457e1af0e038beb39ff3941f108d1c8cddda67ec7e9d9f985e49ce060825"
+  "manifest_revision": 3,
+  "base_manifest_hash": "1d9903a71011efb57d4216c19c13245de6824603280e4ac34cd6f91ed6e723a3"
 }
