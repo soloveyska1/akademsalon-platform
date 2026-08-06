@@ -27,7 +27,7 @@ test('home-owned surfaces and the situation drawer share the dark palette', () =
 
 test('browser chrome follows the redesigned black theme', () => {
   assert.match(home, /setAttribute\('content', '#15110e'\)/);
-  assert.match(home, /home-release\.min\.css\?v=20260806shell115/);
+  assert.match(home, /home-release\.min\.css\?v=20260806shell116/);
   assert.match(darkLayer, /:root\[data-theme="dark"\] body \.site-header\{/);
 });
 
