@@ -61,6 +61,14 @@ function build(input, output, loader) {
   }
 }
 
+/* Классы, которые JS собирает склейкой: purge их не видит. */
+const RUNTIME_CLASSES = [
+  'mnote', 'mnote--call', 'mnote--echo',
+  'is-stamp', 'is-wax', 'is-verify', 'is-new', 'is-in',
+  'stamp-burst', 'ml-row', 'cf-lamp', 'fcl-dot', 'night',
+  'site-header--account',
+];
+
 function purgeCss(input) {
   const outputDir = join(temp, 'purged');
   mkdirSync(outputDir);
@@ -74,6 +82,23 @@ function purgeCss(input) {
       '--content',
       join(root, 'index.html'),
       ...jsSources.map((source) => join(root, source)),
+      /* Purge ищет имена классов как ЦЕЛЫЕ строки в HTML и JS. Имя, собранное
+         склейкой, он не находит и правило выбрасывает. Так с главной пропала
+         раскладка карточки уведомления:
+
+           el.className = 'mnote mnote--' + (loud ? 'call' : 'echo') +
+                          ' is-' + (o.tone || 'stamp');            // app.js:1309
+
+         Строк `mnote--call` и `is-stamp` в исходниках нет, есть только куски.
+         Карточка на главной рисовалась блоком без отступов: печать «¶»
+         упиралась в верхнюю кромку, а крестик уезжал под кнопки. На остальных
+         89 страницах `extras.css` подключён напрямую, и дефекта там не было.
+
+         Регулярные выражения CLI не принимает — `--safelist` это список точных
+         имён, поэтому перечисляем их полностью. Проверку держит
+         tests/mobile-shell.test.js. */
+      '--safelist',
+      ...RUNTIME_CLASSES,
       '--output',
       outputDir,
     ],
