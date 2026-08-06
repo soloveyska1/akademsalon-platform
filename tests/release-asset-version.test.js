@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
-const releaseKey = '20260806release118';
+const releaseKey = '20260806release119';
 const shellRuntimeKey = '20260806shell123';
 const out005RuntimeKey = '20260806services115';
 const changedAssets = new Set([
