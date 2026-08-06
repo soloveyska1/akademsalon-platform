@@ -42,7 +42,7 @@ test('demo bootstrap loads before cabinet and has a permanent visible marker', (
   const demoAt = dashboard.indexOf('assets/js/cabinet-demo.js');
   const cabinetAt = dashboard.indexOf('assets/js/cabinet.js');
   assert.ok(demoAt > 0 && cabinetAt > demoAt);
-  assert.match(dashboard, /cabinet-demo\.js\?v=20260806release115/);
+  assert.match(dashboard, /cabinet-demo\.js\?v=20260806release116/);
   assert.match(css, /\.is-cabinet-demo \.account-demo-flag/);
   assert.match(demo, /<span>Внешние действия отключены<\/span>/);
   assert.doesNotMatch(demo, /Алексей Воронов · внешние действия отключены/);
