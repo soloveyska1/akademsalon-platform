@@ -11776,8 +11776,29 @@
 }
 
 @media (max-width: 920px) {
+  /* Панель разделов кабинета стоит внизу, в зоне большого пальца.
+     Раньше она липла к шапке (замер 390×844 в залогиненном виде:
+     rect 0,104,390,61), и нижняя треть экрана — единственная, куда палец
+     достаёт без перехвата телефона второй рукой, — оставалась пустой.
+     Общий док здесь по-прежнему выключен решением hall97, поэтому нижний
+     слой остаётся ровно один, а набор разделов не меняется.
+     Замеры до правки — docs/brain/evidence/E-1014.md. */
+  :root {
+    --account-dock-h: calc(61px + env(safe-area-inset-bottom));
+  }
+
   .is-account-route .account-nav {
+    position: fixed;
+    z-index: 95;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     padding: 5px var(--gutter);
+    padding-bottom: max(5px, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 0;
   }
 
   .is-account-route .account-nav nav {
@@ -11896,10 +11917,12 @@
     color: var(--wax-text,var(--wax));
   }
 
+  /* Панель раскрывается вверх: снизу у кнопки «Ещё» теперь кромка экрана. */
   .is-account-route .account-nav__more-panel {
     position: absolute;
     z-index: 90;
-    top: calc(100% + 7px);
+    top: auto;
+    bottom: calc(100% + 7px);
     right: 0;
     display: grid;
     width: min(316px, calc(100vw - var(--gutter) * 2));
@@ -11959,7 +11982,17 @@
   }
 
   body.is-account-route {
-    padding-bottom: 0 !important;
+    padding-bottom: calc(var(--account-dock-h) + 12px);
+  }
+
+  /* Первый визит прямо в кабинет: баннер согласия (z-index 96) вставал на
+     панель разделов (z-index 95) и перекрывал её на 51 px. Для дока сайта в
+     mobile.css принято прятать нижний слой, пока висит выбор о данных, но
+     здесь эта панель — единственный путь между разделами кабинета, поэтому
+     уступает не она, а баннер: он поднимается над ней. Высоту самого листа
+     согласия сокращает следующий шаг этапа 1. */
+  :root.has-consent-bar body.is-account-route .lrail {
+    bottom: calc(var(--account-dock-h) + 8px);
   }
 
   body.is-account-route .mobile-dock.mobile-cta {
