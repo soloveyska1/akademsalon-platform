@@ -50,8 +50,8 @@
   .chapter{padding-top:52px}
   .chapter .ch-rule{margin-bottom:24px}
   .h-display{font-size:clamp(31px,9vw,40px);line-height:1.04}
-  h2{font-size:clamp(25px,7vw,31px)}
-  .lead{font-size:16px;line-height:1.58}
+  h2{font-size:clamp(26px,7vw,31px)}
+  .lead{font-size:18px;line-height:1.58}
 
   /* Повторяющиеся десктопные сетки становятся читаемым потоком. */
   .grid-2,.grid-3,.split,.pages,.ws-grid,.proc-grid,.trust-grid,
@@ -66,7 +66,7 @@
   .doc-wrap{padding-top:88px;padding-bottom:48px}
   .doc{max-width:100%}
   .doc h1{font-size:clamp(30px,8.5vw,37px)}
-  .doc h2{font-size:24px;margin-top:30px}
+  .doc h2{font-size:26px;margin-top:30px}
   .doc p,.doc li{line-height:1.62}
   .doc pre,.doc code,.doc table{
     max-width:100%;
@@ -94,7 +94,7 @@
     gap:3px;
     padding:4px 2px;
     border-radius:3px;
-    font-size:10px;
+    font-size:11px;
     letter-spacing:.01em;
   }
   .mnav .mn-i .mn-ic{height:20px;font-size:17px}
@@ -145,12 +145,12 @@
     min-height:58px;
     padding:11px 13px;
     border-radius:5px;
-    font-size:14.5px;
+    font-size:16px;
     line-height:1.3;
   }
   body.conf-step-later #discGroup .optrow .dots{display:none}
   body.conf-step-later #discGroup .optrow .o-val{
-    font-size:11.5px;
+    font-size:14px;
     color:var(--ink-soft);
   }
   body.conf-step-later #discGroup .optrow[aria-checked="true"]{
@@ -202,12 +202,12 @@
     display:block;
     margin-bottom:5px;
     color:var(--wax-text,var(--wax));
-    font-size:8.5px;
+    font-size:11px;
   }
   body.conf-step-final .conf-final-intro p{
     max-width:42ch;
     color:var(--ink-soft);
-    font-size:13px;
+    font-size:14px;
     line-height:1.45;
   }
   body.conf-step-final .final-section{
@@ -247,7 +247,7 @@
     display:block;
     margin-top:3px;
     color:var(--ink-faint);
-    font-size:11px;
+    font-size:12px;
     line-height:1.35;
   }
   body.conf-step-final .wstep-final>.final-section .field,
@@ -260,7 +260,7 @@
     justify-content:space-between;
     gap:8px;
     margin-bottom:7px;
-    font-size:9.5px;
+    font-size:11px;
     letter-spacing:.12em;
   }
   body.conf-step-final .field-optional{
@@ -297,7 +297,7 @@
     padding:10px 12px;
     border-radius:5px;
     background:color-mix(in srgb,var(--paper-2) 72%,transparent);
-    font-size:13px;
+    font-size:14px;
     line-height:1.3;
     text-align:left;
   }
@@ -311,7 +311,7 @@
   body.conf-step-final .att-item{
     gap:7px;
     padding:8px 9px;
-    font-size:12.5px;
+    font-size:14px;
   }
   body.conf-step-final #ctAuthed p{
     margin:0 0 12px;
@@ -320,7 +320,7 @@
     border-radius:0 5px 5px 0;
     background:var(--verify-soft);
     color:var(--ink-soft);
-    font-size:12px;
+    font-size:14px;
     line-height:1.45;
   }
   body.conf-step-final #ctChips{
@@ -334,7 +334,7 @@
     min-width:0;
     min-height:44px;
     padding:6px 5px;
-    font-size:11px;
+    font-size:12px;
   }
   body.conf-step-final #ctChips .ct-chip:nth-child(4),
   body.conf-step-final #ctChips .ct-chip:nth-child(5){
@@ -348,7 +348,7 @@
     margin:2px 0 11px;
     cursor:pointer;
     color:var(--ink-soft);
-    font-size:11.5px;
+    font-size:14px;
     line-height:1.45;
   }
   body.conf-step-final .consent-row input{
@@ -361,7 +361,7 @@
     min-height:46px;
     margin:0 0 9px;
     padding:9px 12px;
-    font-size:12.5px;
+    font-size:14px;
   }
   body.conf-step-final .contact-or{
     display:flex;
@@ -409,14 +409,14 @@
   }
   body.conf-step-final .final-more-toggle b{
     display:block;
-    font-size:13px;
+    font-size:14px;
     font-weight:500;
   }
   body.conf-step-final .final-more-toggle small{
     display:block;
     margin-top:2px;
     color:var(--ink-faint);
-    font-size:10.5px;
+    font-size:12px;
     line-height:1.3;
   }
   body.conf-step-final .final-more-arrow{
@@ -447,7 +447,7 @@
   body.conf-step-final .cp-toggle{
     min-height:44px;
     padding:9px 10px;
-    font-size:12.5px;
+    font-size:14px;
   }
   body.conf-step-final .cp-body{padding:2px 10px 10px}
   body.conf-step-final .cp-done{
@@ -477,7 +477,7 @@
   body.conf-step-final .contact-fallbacks .btn{
     min-height:44px;
     padding:8px;
-    font-size:11.5px;
+    font-size:14px;
   }
   body.conf-step-final .qm-card{
     margin:8px 0 0;
@@ -493,16 +493,16 @@
     flex-wrap:nowrap;
   }
   body.conf-step-final .qm-head svg{margin:0}
-  body.conf-step-final .qm-head .qm-t{font-size:12.5px}
+  body.conf-step-final .qm-head .qm-t{font-size:14px}
   body.conf-step-final .qm-head .petit{
-    font-size:10.5px;
+    font-size:12px;
     line-height:1.35;
   }
   body.conf-step-final .qm-open{
     grid-column:3;
     min-height:40px;
     padding:7px 9px;
-    font-size:11px;
+    font-size:12px;
   }
   body.conf-step-final .qm-form{margin-top:9px;padding-top:9px}
   body.conf-step-final .wsubmit-note{
@@ -513,7 +513,7 @@
     border-radius:5px;
     background:var(--verify-soft);
     color:var(--ink-soft);
-    font-size:11.5px;
+    font-size:14px;
     line-height:1.4;
   }
   body.conf-step-final .wsubmit-note>span{
@@ -551,7 +551,7 @@
     margin:0 0 14px;
   }
   .conf-mcta .lq-mobile-head .lq-head{
-    font-size:9px;
+    font-size:11px;
     letter-spacing:.16em;
   }
   .conf-mcta .lq-mobile-head .lq-type{
@@ -563,7 +563,7 @@
     padding:5px 9px;
     border-color:var(--hairline);
     background:transparent;
-    font-size:8.5px;
+    font-size:11px;
   }
   .conf-mcta .lq-mobile-price{
     padding:0 0 14px!important;
@@ -591,7 +591,7 @@
     padding:0;
     border-radius:0;
     background:none;
-    font-size:12px;
+    font-size:14px;
     line-height:1.4;
   }
   .conf-mcta .lq-mobile-formula,
@@ -631,7 +631,7 @@
   }
   .conf-mcta .lq-mobile-formula .ledger .lg-row{
     padding:7px 0;
-    font-size:12px;
+    font-size:14px;
   }
   .conf-mcta .lq-mobile-info{
     margin:0!important;
@@ -643,14 +643,14 @@
     padding:0;
     border:0;
     background:none;
-    font-size:12.5px;
+    font-size:14px;
     line-height:1.5;
   }
   .conf-mcta .lq-mobile-info .lq-when{
     margin:0;
     padding-top:10px;
     border-top:1px solid var(--hairline);
-    font-size:12px;
+    font-size:14px;
     line-height:1.5;
     color:var(--ink-soft);
   }
@@ -714,7 +714,7 @@
   }
   .conf-mcta .mq-total-copy .num{
     overflow:hidden;
-    font-size:15px;
+    font-size:16px;
     line-height:1.15;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -730,7 +730,7 @@
     min-height:52px;
     padding:8px 12px;
     border-radius:5px;
-    font-size:15px;
+    font-size:16px;
     line-height:1.15;
   }
   body.conf-step-final .conf-mcta .mq-bar{
@@ -796,7 +796,7 @@
     margin-bottom:20px;
     padding:0;
     border:0;
-    font-size:8.5px;
+    font-size:11px;
     letter-spacing:.17em;
   }
   html[data-pr-flat] .home .pr-kicker::before,
@@ -819,7 +819,7 @@
     margin-top:20px;
     padding:16px 0 0;
     border-top:1px solid var(--hairline-strong);
-    font-size:15px;
+    font-size:16px;
     line-height:1.52;
   }
   .home .pr-lead::before{display:none}
@@ -838,10 +838,10 @@
     border-bottom:0;
   }
   .home .slot-line--cover .sl-k{
-    font-size:9px;
+    font-size:11px;
     letter-spacing:.14em;
   }
-  .home .slot-line--cover .sl-v{font-size:14px}
+  .home .slot-line--cover .sl-v{font-size:16px}
 
   /* Переход к содержанию — продолжение листа, а не новая стопка карточек. */
   .home .pr-toc{
@@ -850,12 +850,12 @@
   .home .pr-toccaps{display:none}
   .home .pr-toc h2{
     margin:0 0 8px;
-    font-size:30px;
+    font-size:31px;
   }
   .home .pr-tocsub{
     max-width:29ch;
     margin:0 auto 24px;
-    font-size:14px;
+    font-size:16px;
     line-height:1.5;
   }
   .home .pr-first-here{
@@ -946,7 +946,7 @@
   .home .pr-book-trigger-copy strong{
     color:var(--ink);
     font-family:var(--serif);
-    font-size:14px;
+    font-size:16px;
     font-weight:600;
   }
   .home .pr-book-trigger-copy small{display:none!important}
@@ -973,8 +973,8 @@
     padding:8px 2px;
   }
   .home .pr-formsub,.home .pr-step-help,
-  .home .pr-estimate-note{font-size:12.5px;line-height:1.5}
-  .home .pr-trust{font-size:10.5px;line-height:1.4}
+  .home .pr-estimate-note{font-size:14px;line-height:1.5}
+  .home .pr-trust{font-size:12px;line-height:1.4}
 
   /* Открытая смета — самостоятельный мобильный экран. Нижний док
      не перехватывает кнопку «Далее», навигация шага остаётся у пальца. */
@@ -1078,12 +1078,12 @@
   .toc .toc-head>div{min-width:0}
   .toc-kicker{
     margin-bottom:3px;
-    font-size:8px;
+    font-size:11px;
     letter-spacing:.18em;
   }
   .toc-title{
     overflow:hidden;
-    font-size:24px;
+    font-size:26px;
     line-height:1.05;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -1127,7 +1127,7 @@
     grid-row:1;
     align-self:auto;
     padding:0;
-    font-size:8.5px;
+    font-size:11px;
   }
   .tch-copy{
     grid-column:1/-1;
@@ -1135,14 +1135,14 @@
     align-self:end;
   }
   .tch-copy b{
-    font-size:15.5px;
+    font-size:16px;
     line-height:1.14;
   }
   .tch-copy small{display:none}
   .tch-go{
     grid-column:2;
     grid-row:1;
-    font-size:15px;
+    font-size:16px;
     line-height:1;
   }
   .toc-route{
@@ -1182,8 +1182,8 @@
     min-height:50px;
     padding:7px 11px;
   }
-  .toc-directory>summary b{font-size:15.5px}
-  .toc-directory>summary small{font-size:10px}
+  .toc-directory>summary b{font-size:16px}
+  .toc-directory>summary small{font-size:12px}
   .toc-grid{padding:12px 11px}
   .toc-sr .dotrow>span:first-child{
     min-width:0;
@@ -1210,11 +1210,11 @@
   }
   .toc-footbar button span{
     color:color-mix(in srgb,#FFFEF9 72%,transparent);
-    font-size:10px;
+    font-size:12px;
   }
   .toc-footbar button b{
     color:#FFFEF9;
-    font-size:14px;
+    font-size:16px;
   }
 
   /* Кабинет и ссылка оплаты: узкие строки становятся двухрядными. */
@@ -1256,7 +1256,7 @@
     -webkit-line-clamp:2;
     overflow:hidden;
     margin-bottom:9px;
-    font-size:12px;
+    font-size:14px;
     line-height:1.4;
   }
   .cookiebar .cb-actions{grid-template-columns:1fr 1fr;gap:7px}
@@ -1265,14 +1265,14 @@
 }
 
 @media screen and (max-width:420px){
-  .mnav .mn-i{font-size:10px;letter-spacing:0}
+  .mnav .mn-i{font-size:11px;letter-spacing:0}
   .conf-mcta .mq-bar{
     grid-template-columns:46px minmax(0,1fr) minmax(106px,.74fr);
     gap:6px;
   }
   .conf-mcta .mq-back{width:46px}
-  .conf-mcta .mq-more{font-size:9.5px}
-  .conf-mcta #mNext{font-size:14px}
+  .conf-mcta .mq-more{font-size:12px}
+  .conf-mcta #mNext{font-size:16px}
   body.conf-step-final .conf-mcta .mq-bar{
     grid-template-columns:46px minmax(0,1fr) 132px;
   }
@@ -1299,14 +1299,14 @@
 }
 
 @media screen and (max-width:340px){
-  .mnav .mn-i{font-size:9.5px}
+  .mnav .mn-i{font-size:11px}
   .home .pr-note{
     margin-top:9px!important;
     padding-left:0!important;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-    font-size:9.5px!important;
+    font-size:11px!important;
   }
   .conf-mcta .mq-bar{
     grid-template-columns:44px minmax(0,1fr) minmax(96px,.7fr);
@@ -1345,7 +1345,7 @@
   .home .pr-cta{margin-top:14px!important}
   .rv-hero{padding-top:calc(var(--mobile-header-h) + 18px)!important}
   .rv-hero .h-display{font-size:44px!important;line-height:.98!important}
-  .rv-hero .rv-lead{font-size:14.5px!important;line-height:1.45!important}
+  .rv-hero .rv-lead{font-size:16px!important;line-height:1.45!important}
   .rv-cover-actions{margin-top:16px!important}
   .rv-cover-note{display:none!important}
 }
@@ -1354,7 +1354,7 @@
   .contact-sheet .cs-card{max-height:94svh}
   .sdlg-card,.tour-card,.dossier-dialog,.mledger{max-height:94svh}
   .home .pr-h{font-size:35px}
-  .home .pr-lead{font-size:14px;line-height:1.5}
+  .home .pr-lead{font-size:16px;line-height:1.5}
   .home .pr-cta{margin-top:18px!important}
   .home .pr-note{margin-top:10px!important}
   .home .story-chip{
@@ -1419,7 +1419,7 @@
     padding:5px 2px 4px;
     border-radius:4px;
     color:var(--ink-soft);
-    font-size:10px;
+    font-size:11px;
     font-weight:520;
     letter-spacing:0;
   }
@@ -1502,7 +1502,7 @@
 }
 
 @media screen and (max-width:350px){
-  .mnav .mn-i{font-size:9px}
+  .mnav .mn-i{font-size:11px}
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -1545,7 +1545,7 @@
   .pf-footer__actions>button{min-height:44px}
   .site-footer .pf-footer__channels a{
     min-height:44px;
-    font-size:10.5px;
+    font-size:12px;
   }
   .site-footer .pf-footer__nav>a{
     display:flex;
@@ -1588,7 +1588,7 @@
     min-width:0;
     padding:5px 5px 5px 10px;
   }
-  .toc-appearance .toc-theme-row .ttr-lbl{font-size:11px}
+  .toc-appearance .toc-theme-row .ttr-lbl{font-size:12px}
   .toc-appearance .theme-toggle,
   .toc-appearance .calm-toggle{
     width:38px;
@@ -2111,7 +2111,7 @@
   }
 }
 @media screen and (max-width:390px){
-  .mobile-dock.mobile-cta small{font-size:10.5px}
+  .mobile-dock.mobile-cta small{font-size:11px}
   .mobile-dock .mn-ic.mobile-dock__seal{width:48px;height:48px}
 }
 
@@ -2232,7 +2232,7 @@
   }
 
   :root.has-consent-bar .lrail .cookiebar h2{
-    font-size:17px;
+    font-size:18px;
     line-height:1.15;
   }
 
@@ -2240,7 +2240,7 @@
     display:block;
     margin-bottom:7px;
     overflow:visible;
-    font-size:11.5px;
+    font-size:14px;
     line-height:1.36;
   }
 
@@ -2252,7 +2252,7 @@
   :root.has-consent-bar .lrail .cookiebar .cb-actions .btn{
     min-height:44px;
     padding:7px 8px;
-    font-size:11.5px;
+    font-size:14px;
   }
 
   :root.has-consent-bar .lrail .cookiebar .cb-foot{
@@ -2265,7 +2265,7 @@
     display:inline-flex;
     min-height:44px;
     align-items:center;
-    font-size:10.5px;
+    font-size:12px;
   }
 }
 
@@ -2687,7 +2687,7 @@ html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-
   }
 
   .home-case .case-prompt__toggle strong{
-    font-size:15px;
+    font-size:16px;
   }
 
   .home-case .case-prompt__toggle i{
@@ -2707,7 +2707,7 @@ html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-
   .home-case .case-prompt textarea{
     min-height:62px;
     height:62px;
-    font-size:14px;
+    font-size:16px;
   }
 
   .home-case .case-prompt__field .button{
@@ -2944,12 +2944,12 @@ body .resume-card.is-typing-copy .resume-card__detail{
   body .resume-card.is-rail-resume .resume-card__message{
     display:grid;
     gap:2px;
-    font-size:9px;
+    font-size:11px;
     white-space:normal;
   }
 
   body .resume-card.is-rail-resume .resume-card__message strong{
-    font-size:12.5px;
+    font-size:14px;
   }
 
   body .resume-card__kicker{
@@ -2957,14 +2957,14 @@ body .resume-card.is-typing-copy .resume-card__detail{
   }
 
   body .resume-card__detail{
-    font-size:9px;
+    font-size:11px;
   }
 
   body .resume-card__action{
     width:44px;
     min-height:44px;
     padding:0;
-    font-size:15px;
+    font-size:16px;
   }
 
   body .resume-card__action-label{
@@ -3021,13 +3021,13 @@ body .resume-card.is-typing-copy .resume-card__detail{
   }
 
   body .lrail .cookiebar.is-confirmed h2{
-    font-size:16px;
+    font-size:18px;
   }
 
   body .lrail .cookiebar.is-confirmed>p{
     grid-area:copy;
     margin:0;
-    font-size:11px;
+    font-size:14px;
     line-height:1.32;
   }
 
@@ -3182,7 +3182,7 @@ body .resume-card.is-typing-copy .resume-card__detail{
   body .site-footer__brand p{
     max-width:30ch;
     margin-top:5px;
-    font-size:12px;
+    font-size:14px;
   }
 
   body .site-footer__brand-actions{
@@ -3199,7 +3199,7 @@ body .resume-card.is-typing-copy .resume-card__detail{
     padding:8px 10px;
     border:1px solid #4a443b;
     border-radius:3px;
-    font-size:11.5px;
+    font-size:12px;
     text-align:center;
   }
 
@@ -3260,7 +3260,7 @@ body .resume-card.is-typing-copy .resume-card__detail{
     min-height:44px;
     align-items:center;
     color:#b4ab9d;
-    font-size:12.5px;
+    font-size:14px;
   }
 
   body .site-footer__bottom{
@@ -3270,7 +3270,7 @@ body .resume-card.is-typing-copy .resume-card__detail{
     gap:8px 14px;
     align-items:center;
     padding:16px max(18px,env(safe-area-inset-left)) 18px;
-    font-size:10.5px;
+    font-size:12px;
     line-height:1.45;
     letter-spacing:.02em;
     text-transform:none;
@@ -3351,4 +3351,42 @@ body .resume-card.is-typing-copy .resume-card__detail{
 @media screen and (max-width:350px){
   body .mobile-appbar{grid-template-columns:44px minmax(0,1fr) 44px}
   body .mobile-appbar--root{grid-template-columns:minmax(0,1fr) 44px}
+}
+
+/* ОТТИСК В МОБИЛЬНОЙ ШАПКЕ
+   Знак несёт кремовый диск и белое кольцо `0 0 0 2px rgba(255,253,248,.9)`
+   (polish15-chrome.css:1494). На бумажном фоне десктопа это паспарту, но
+   мобильная шапка — стекло: `blur(20px) saturate(1.28)` поверх страницы.
+   Белое кольцо ярче всего, что есть на стекле, поэтому знак читался наклейкой
+   с белым ореолом, а край диска упирался в нижнюю линию шапки.
+   На стекле оставляем сам оттиск: сургучный волосок вместо белого кольца,
+   диск чуть прозрачнее фона шапки и мягкая тень прижима. */
+@media screen and (max-width:920px){
+  body .mobile-appbar__brand .brand__mark{
+    background:color-mix(in srgb,var(--paper) 88%,transparent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb,var(--wax) 30%,transparent),
+      0 3px 9px rgba(78,43,29,.2);
+    transition:transform .2s cubic-bezier(.22,1,.36,1),box-shadow .2s ease;
+  }
+
+  /* Нажатие — оттиск прижимается к бумаге. */
+  body .mobile-appbar__brand:active .brand__mark{
+    transform:scale(.94);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb,var(--wax) 44%,transparent),
+      0 1px 4px rgba(78,43,29,.24);
+  }
+
+  /* Появление — знак ставят один раз, как печать: поворот и лёгкий отскок. */
+  @media (prefers-reduced-motion:no-preference){
+    body .mobile-appbar__brand .brand__mark{
+      animation:seal-set .58s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes seal-set{
+      from{transform:scale(.84) rotate(-10deg);opacity:0}
+      62%{transform:scale(1.04) rotate(3deg);opacity:1}
+      to{transform:none;opacity:1}
+    }
+  }
 }
