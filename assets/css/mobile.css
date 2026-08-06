@@ -1238,30 +1238,13 @@
 
   .dossier-dialog-content{padding-bottom:84px}
 
-  /* Первый consent — компактное решение, а не второй экран поверх сайта. */
-  .cookiebar{
-    left:8px;
-    right:8px;
-    bottom:max(8px,env(safe-area-inset-bottom));
-    width:auto;
-    max-height:min(52svh,360px);
-    overflow:auto;
-    padding:12px;
-    border-radius:8px;
-  }
-  .cookiebar .cb-head{margin-bottom:7px}
-  .cookiebar>p{
-    display:-webkit-box;
-    -webkit-box-orient:vertical;
-    -webkit-line-clamp:2;
-    overflow:hidden;
-    margin-bottom:9px;
-    font-size:14px;
-    line-height:1.4;
-  }
-  .cookiebar .cb-actions{grid-template-columns:1fr 1fr;gap:7px}
-  .cookiebar .cb-actions .btn{min-height:46px}
-  .cookiebar .cb-foot{margin-top:7px;padding-top:7px}
+  /* Правила листа согласия жили здесь, но не применялись никогда: их
+     перебивает блок `:root.has-consent-bar body .lrail .cookiebar` (0,4,1)
+     ниже в этом же файле. Замер с заглушённым `app.js`: вне `.lrail` баннер
+     не рисуется вообще — без app.js его не появляется ни на services, ни на
+     tariffs, а главная несёт тот же код в сборке. Клэмп абзаца в две строки
+     отсюда тем более не должен вернуться: он резал бы многоточием фразу о
+     целях обработки. Живая раскладка — один блок, ближе к концу файла. */
 }
 
 @media screen and (max-width:420px){
@@ -2215,30 +2198,35 @@
   :root.has-consent-bar body .lrail .cookiebar{
     display:grid;
     max-height:none;
-    padding:11px 12px 10px;
+    padding:10px 12px 8px;
     overflow:visible;
     border-radius:10px;
     background:color-mix(in srgb,var(--sheet) 96%,var(--paper));
     box-shadow:0 14px 44px color-mix(in srgb,var(--ink) 16%,transparent);
   }
 
+  /* Вариант B этапа 1: на телефоне лист занимал 219 px — 26% экрана на 390×844
+     и 33% на 375×667. Кегли трогать нельзя (юридический текст уже поднят до
+     14px), поэтому компактность берётся структурой. Заголовок «Вы решаете, что
+     сохранять» дублирует смысл абзаца и уходит из раскладки, но остаётся в
+     доступности: `role="region" aria-labelledby="cb-title"` берёт имя именно
+     из него, и `display:none` оставил бы регион безымянным. Приём тот же, что
+     у живых регионов рельсов в extras.css. На десктопе заголовок виден. */
   :root.has-consent-bar .lrail .cookiebar .cb-head{
-    display:block;
-    margin-bottom:4px;
-  }
-
-  :root.has-consent-bar .lrail .cookiebar .cb-kicker{
-    display:none;
-  }
-
-  :root.has-consent-bar .lrail .cookiebar h2{
-    font-size:18px;
-    line-height:1.15;
+    position:absolute;
+    width:1px;
+    height:1px;
+    margin:-1px;
+    padding:0;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+    white-space:nowrap;
+    border:0;
   }
 
   :root.has-consent-bar .lrail .cookiebar>p{
     display:block;
-    margin-bottom:7px;
+    margin-bottom:6px;
     overflow:visible;
     font-size:14px;
     line-height:1.36;
@@ -2249,16 +2237,22 @@
     gap:7px;
   }
 
+  /* padding 7→5 при min-height 44: кнопка была 51 px из-за собственного
+     наполнения, а не из-за тач-цели. Цель остаётся 44. */
   :root.has-consent-bar .lrail .cookiebar .cb-actions .btn{
     min-height:44px;
-    padding:7px 8px;
+    padding:5px 8px;
     font-size:14px;
   }
 
+  /* Линия над подвалом делит лист, в котором осталось три элемента. Отступ и
+     линия уходят вместе; ссылки остаются целями 44 px и стоят в одну строку. */
   :root.has-consent-bar .lrail .cookiebar .cb-foot{
-    gap:8px 10px;
-    margin-top:6px;
-    padding-top:5px;
+    gap:0 14px;
+    flex-wrap:nowrap;
+    margin-top:4px;
+    padding-top:0;
+    border-top:0;
   }
 
   :root.has-consent-bar .lrail .cookiebar .cb-more{

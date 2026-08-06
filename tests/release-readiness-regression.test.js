@@ -84,7 +84,14 @@ test('consent choice stays compact, equal and non-blocking', () => {
   assert.match(extras, /Обезличенную аналитику включим только с вашего разрешения/);
   assert.match(mobile, /:root\.has-consent-bar \.lrail\{[\s\S]*?width:min\(1030px,calc\(100vw - 40px\)\)/);
   assert.match(mobile, /grid-template-areas:\s*"head copy actions"\s*"head foot actions"/);
-  assert.match(mobile, /:root\.has-consent-bar \.lrail \.cookiebar \.cb-kicker\{\s*display:none/);
+  /* Прежде компактность на телефоне держалась на одном скрытом надзаголовке.
+     Этап 1 OUT-008 (вариант B) убрал из раскладки всю шапку листа — вместе с
+     надзаголовком, — но оставил её скринридерам: имя региона берётся из h2.
+     Проверяем более сильный механизм, требование прежнее. */
+  assert.match(
+    mobile,
+    /:root\.has-consent-bar \.lrail \.cookiebar \.cb-head\{[\s\S]*?clip:rect\(0 0 0 0\)/,
+  );
   assert.match(mobile, /grid-template-columns:1fr 1fr/);
 });
 

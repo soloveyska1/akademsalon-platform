@@ -137,3 +137,81 @@ test('набор разделов кабинета не меняется: чет
     'панель разделов должна остаться сеткой из четырёх колонок'
   );
 });
+
+/* ---------------- Лист согласия: вторая половина этапа 1 ----------------
+
+   Замер до правки (chromium 390×844 и 375×667, первый визит, главная,
+   services и tariffs дают одно и то же): лист `10,615,370×218.8` — 26% экрана
+   на 390 и 33% на iPhone SE, то есть ровно «нижняя треть». Внутри: заголовок
+   20.7 + абзац 57.1 (три строки по 14px) + кнопки 51 + подвал 50 + паддинги 21.
+
+   Владелец выбрал вариант B: кегли не трогаем (абзац и кнопки остаются 14px),
+   компактность берём структурой — уплотнение и уход заголовка из раскладки.
+   Замер после правки: 178.1 px, 21% и 26.7%.
+
+   Выигрывающий слой — последний блок `has-consent-bar` в mobile.css
+   (специфичность 0,4,1). Более ранний блок `.cookiebar` (0,1,0) в том же файле
+   не применяется НИКОГДА: замер с заглушённым `app.js` показал, что вне
+   `.lrail` баннер не рисуется вообще — на services и tariffs он без app.js
+   не появляется, а главная несёт тот же код в сборке. */
+
+const mobileCss = fs.readFileSync(path.join(root, 'assets/css/mobile.css'), 'utf8');
+const consentLayer = mobileCss.slice(mobileCss.lastIndexOf(':root.has-consent-bar .lrail{'));
+
+test('лист согласия уплотнён и больше не занимает нижнюю треть телефона', () => {
+  const sheet = rule(':root.has-consent-bar body .lrail .cookiebar', consentLayer);
+  assert.match(sheet, /padding:\s*10px 12px 8px/, 'паддинги листа должны стать плотнее');
+
+  const button = rule(':root.has-consent-bar .lrail .cookiebar .cb-actions .btn', consentLayer);
+  assert.match(button, /min-height:\s*44px/, 'тач-цель кнопки остаётся не меньше 44px');
+  assert.match(button, /padding:\s*5px 8px/, 'кнопка должна стать ровно 44, а не 51');
+  assert.match(button, /font-size:\s*14px/, 'кегль кнопки не уменьшается: компактность берём структурой');
+
+  const foot = rule(':root.has-consent-bar .lrail .cookiebar .cb-foot', consentLayer);
+  assert.match(foot, /padding-top:\s*0/, 'подвал не должен нести верхний отступ');
+  assert.match(foot, /border-top:\s*0/, 'разделительная линия подвала уходит вместе с отступом');
+
+  const more = rule(':root.has-consent-bar .lrail .cookiebar .cb-more', consentLayer);
+  assert.match(more, /min-height:\s*44px/, 'ссылки подвала остаются тач-целями 44px');
+});
+
+test('абзац листа остаётся целым: юридический текст не режется многоточием', () => {
+  /* Ранний блок mobile.css клэмпил абзац в две строки. Решение более позднего
+     блока — `display:block; overflow:visible` — отменило клэмп сознательно.
+     Возврат клэмпа обрезал бы фразу о целях обработки, поэтому запрещён. */
+  const paragraph = rule(':root.has-consent-bar .lrail .cookiebar>p', consentLayer);
+  assert.match(paragraph, /font-size:\s*14px/, 'кегль абзаца не уменьшается');
+  /* Ранний блок этого же файла продолжает страховать `-webkit-line-clamp:unset`
+     на случай, если клэмп вернётся из другого слоя. Запрещено именно число. */
+  assert.doesNotMatch(
+    mobileCss,
+    /-webkit-line-clamp:\s*\d/,
+    'клэмп абзаца числом не должен возвращаться ни в одном блоке mobile.css'
+  );
+});
+
+test('заголовок листа уходит из раскладки, но остаётся именем региона', () => {
+  /* `role="region" aria-labelledby="cb-title"` берёт имя из этого h2.
+     `display:none` убрал бы имя целиком, поэтому заголовок прячется
+     тем же приёмом, что и живые регионы рельсов в extras.css. */
+  const head = rule(':root.has-consent-bar .lrail .cookiebar .cb-head', consentLayer);
+  assert.match(head, /position:\s*absolute/, 'заголовок должен выходить из потока, а не сжиматься');
+  assert.match(head, /clip:\s*rect\(0 0 0 0\)/, 'заголовок прячется приёмом sr-only');
+  assert.doesNotMatch(head, /display:\s*none/, 'display:none лишил бы регион доступного имени');
+});
+
+test('мёртвый блок компактности убран, а не оставлен вводить в заблуждение', () => {
+  assert.doesNotMatch(
+    mobileCss,
+    /max-height:\s*min\(52svh,\s*360px\)/,
+    'правило max-height не применялось ни на одном живом пути'
+  );
+});
+
+test('сборка главной несёт тот же уплотнённый лист', () => {
+  const homeCss = fs.readFileSync(path.join(root, 'assets/css/home-release.min.css'), 'utf8');
+  assert.ok(
+    homeCss.includes('padding:10px 12px 8px'),
+    'сборка главной должна содержать уплотнённый лист — пересоберите home-release'
+  );
+});
