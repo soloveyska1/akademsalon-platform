@@ -13,7 +13,7 @@
      а телефон бывает общим. Эти адреса не кладём в кэш никогда;
    - всё, что не GET, и всё, что с другого домена.
 */
-const VERSION = '20260806shell122';
+const VERSION = '20260806shell123';
 const SHELL_CACHE = `salon-shell-${VERSION}`;
 const PAGE_CACHE = `salon-pages-${VERSION}`;
 const OFFLINE_URL = '/offline.html';

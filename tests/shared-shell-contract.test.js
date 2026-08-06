@@ -61,7 +61,7 @@ const adminFoundation = ['admin.html'];
    намеренно не тянет общую оболочку: внешние файлы могут быть не в кэше. */
 const standaloneRoutes = ['admin-covers.html', 'offline.html', 'oplaceno.html'];
 const directPublicRoutes = publicRoutes.filter((file) => file !== 'index.html');
-const shellReleaseKey = '20260806shell122';
+const shellReleaseKey = '20260806shell123';
 const out005ReleaseKey = '20260806services115';
 
 function assetUrl(html, asset) {
