@@ -57,7 +57,7 @@ test('desktop wizard does not apply the sidebar offset twice', () => {
 });
 
 test('configurator keeps tablet controls usable and hides the action dock for the software keyboard', () => {
-  assert.match(configurator, /configurator-journey\.css\?v=20260806release116/);
+  assert.match(configurator, /configurator-journey\.css\?v=20260806release117/);
   assert.match(
     configuratorCss,
     /@media\(min-width:921px\) and \(max-width:1200px\)\{[\s\S]*?\.configurator-task \.decision-workbench,[\s\S]*?grid-template-columns:minmax\(0,1fr\);/,

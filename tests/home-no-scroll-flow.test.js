@@ -46,7 +46,7 @@ test('editorial desk keeps normal scrolling, mobile flow and a persistent live c
   assert.doesNotMatch(js, /function show\(nextStep/);
   assert.match(build, /'assets\/css\/home-guided-flow\.css'/);
   assert.match(build, /'assets\/js\/home-guided-flow\.js'/);
-  assert.match(home, /home-release\.min\.css\?v=20260806shell120/);
+  assert.match(home, /home-release\.min\.css\?v=20260806shell121/);
   assert.match(home, /home-release\.min\.js\?v=20260806services115/);
 });
 
