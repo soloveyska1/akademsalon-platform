@@ -59,7 +59,7 @@ const publicRoutes = Object.values(routeFamilies).flat().sort();
 const adminFoundation = ['admin.html'];
 const standaloneRoutes = ['admin-covers.html', 'oplaceno.html'];
 const directPublicRoutes = publicRoutes.filter((file) => file !== 'index.html');
-const shellReleaseKey = '20260806shell116';
+const shellReleaseKey = '20260806shell117';
 const out005ReleaseKey = '20260806services113';
 
 function assetUrl(html, asset) {
