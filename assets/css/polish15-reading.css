@@ -948,7 +948,7 @@ body.reading-page::before{
   .source-document li,
   .source-document dd,
   .source-document dt{
-    font-size:15px;
+    font-size:16px;
   }
 
   .article-content>.article-opening{
@@ -1171,7 +1171,7 @@ body.reading-page::before{
     gap:6px;
   }
   .read-cta p,
-  .read-cta a{ font-size:14.5px; }
+  .read-cta a{ font-size:16px; }
   .read-cta a{ white-space:normal; }
 }
 @media (prefers-reduced-motion:reduce){

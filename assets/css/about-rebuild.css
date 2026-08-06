@@ -342,7 +342,7 @@
   .ar-hero{padding:84px 0 58px}
   .ar-hero__grid{grid-template-columns:1fr;gap:43px}
   .ar-hero h1{font-size:clamp(45px,13.2vw,58px);line-height:.95}
-  .ar-hero__lead{margin:22px 0 25px;font-size:15px}
+  .ar-hero__lead{margin:22px 0 25px;font-size:16px}
   .ar-actions{align-items:flex-start;flex-direction:column;gap:16px}
   .ar-desk{padding:22px 19px 19px}
   .ar-desk ol{grid-template-columns:1fr}

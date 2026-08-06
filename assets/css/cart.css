@@ -823,7 +823,7 @@ html[data-theme="dark"] .configurator-task .cart-shell .cart-head{
     position:sticky;z-index:5;top:0;min-height:118px;padding:25px 20px 18px;backdrop-filter:blur(14px)
   }
   .configurator-task .cart-shell .cart-head h2{max-width:14ch;font-size:34px}
-  .configurator-task .cart-shell .cart-head p{max-width:44ch;font-size:12.5px}
+  .configurator-task .cart-shell .cart-head p{max-width:44ch;font-size:16px}
   .configurator-task .cart-shell .cart-body{padding:20px 18px 28px;overflow:visible}
   .configurator-task .cart-shell .cart-foot{
     padding:22px 18px max(20px,env(safe-area-inset-bottom));overflow:visible;

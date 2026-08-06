@@ -1304,7 +1304,7 @@
   .home-case .case-route__reason{padding-inline:15px}
   .home-case .case-route__reason div{grid-template-columns:75px 1fr;padding-inline:8px}
   .home-case .case-route__reason dt{font-size:11px}
-  .home-case .case-route__reason dd{font-size:11px}
+  .home-case .case-route__reason dd{font-size:16px}
   .home-case .case-route__confirm{padding-inline:15px}
   .home-case .case-route__actions{padding-inline:15px}
   .home-case .case-route__human{margin-inline:15px;font-size:11px}

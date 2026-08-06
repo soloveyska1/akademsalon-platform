@@ -959,7 +959,7 @@ body.p15-operations .cookieprefs .cp-card {
   .p15-operations .page-head { padding-block: 35px 31px; }
   .p15-operations .page-head h1,
   .p15-operations .page-head--compact h1 { font-size: clamp(37px, 11vw, 48px); }
-  .p15-operations .page-head__lead { font-size: 15px; line-height: 1.5; }
+  .p15-operations .page-head__lead { font-size: 16px; line-height: 1.5; }
   .p15-operations .page-head__action,
   .p15-operations .page-head__action .button { width: 100%; }
   .p15-operations .tool-card { min-height: 285px; padding: 26px 22px; }
