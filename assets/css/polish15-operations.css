@@ -277,7 +277,7 @@ body.p15-operations::before {
 }
 .p15-operations .section-head > div { display: grid; gap: 11px; }
 .p15-operations .section-head h2 { font-size: clamp(34px, 4vw, 53px); }
-.p15-operations .section-head > p { color: var(--op-muted); font-size: 15px; }
+.p15-operations .section-head > p { color: var(--op-muted); font-size: 16px; }
 
 /* Tools index */
 .p15-operations .tool-grid {
@@ -306,7 +306,7 @@ body.p15-operations::before {
   max-width: 600px;
   margin-top: 12px;
   color: var(--op-muted);
-  font-size: 12px;
+  font-size: 16px;
 }
 .p15-operations .tool-card .line-link { margin-top: auto; padding-top: 28px; }
 
@@ -332,7 +332,7 @@ body.p15-operations::before {
   font: 550 14px/1 var(--serif);
 }
 .p15-operations .tools-privacy h2 { margin-top: 5px; font-size: 25px; }
-.p15-operations .tools-privacy > p { color: var(--op-muted); font-size: 11px; }
+.p15-operations .tools-privacy > p { color: var(--op-muted); font-size: 16px; }
 
 /* Interactive tool workspaces */
 body.p15-tool-workspace .site-header { display: none !important; }
@@ -422,7 +422,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
   font: 500 21px/1 var(--serif);
 }
 .p15-operations .checker-empty h2 { margin-top: 18px; font-size: 27px; }
-.p15-operations .checker-empty p { margin-top: 8px; color: var(--op-muted); font-size: 11px; }
+.p15-operations .checker-empty p { margin-top: 8px; color: var(--op-muted); font-size: 16px; }
 .p15-operations .checker-result > header > div { display: grid; gap: 6px; }
 .p15-operations .checker-result > header h2 { font-size: 32px; }
 .p15-operations .checker-metrics {
@@ -456,7 +456,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
 }
 .p15-operations .finding > div { display: grid; gap: 3px; }
 .p15-operations .finding strong { color: var(--op-ink); font-size: 10px; }
-.p15-operations .finding p { color: var(--op-muted); font-size: 9px; }
+.p15-operations .finding p { color: var(--op-muted); font-size: 16px; }
 .p15-operations .finding--warning { border-color: var(--op-amber); }
 .p15-operations .finding--warning > span { color: var(--op-amber); background: var(--op-amber-soft); }
 .p15-operations .finding--good { border-color: var(--op-green); }
@@ -516,7 +516,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
   border-bottom: 1px solid var(--op-line);
 }
 .p15-operations .topic-audit__result dt { color: var(--op-quiet); font-size: 9px; }
-.p15-operations .topic-audit__result dd { color: var(--op-ink); font-size: 11px; }
+.p15-operations .topic-audit__result dd { color: var(--op-ink); font-size: 16px; }
 .p15-operations .article-callout {
   margin-top: 16px;
   padding: 15px;
@@ -524,7 +524,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
   border-left: 2px solid var(--op-wax);
 }
 .p15-operations .article-callout span { color: var(--op-wax-text,var(--op-wax)); font: 600 8px/1.2 var(--mono); text-transform: uppercase; }
-.p15-operations .article-callout p { margin-top: 7px; color: var(--op-text); font-size: 11px; }
+.p15-operations .article-callout p { margin-top: 7px; color: var(--op-text); font-size: 16px; }
 .p15-operations .topic-audit__result .line-link { margin-top: 18px; }
 
 .p15-operations .source-checker { grid-template-columns: minmax(340px, .8fr) minmax(0, 1.2fr); }
@@ -539,7 +539,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
 }
 .p15-operations .source-list article > span { color: var(--op-green); font: 550 8px/1.5 var(--mono); }
 .p15-operations .source-list .has-issue > span { color: var(--op-amber); }
-.p15-operations .source-list p { color: var(--op-ink); font-size: 10px; overflow-wrap: anywhere; }
+.p15-operations .source-list p { color: var(--op-ink); font-size: 16px; overflow-wrap: anywhere; }
 .p15-operations .source-list small { display: block; margin-top: 4px; color: var(--op-green); font-size: 8px; }
 .p15-operations .source-list .has-issue small { color: var(--op-amber); }
 
@@ -556,7 +556,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
   border-left: 2px solid var(--op-wax);
 }
 .p15-operations .tool-assurance h2 { margin-top: 5px; color: var(--op-ink); font-size: 22px; }
-.p15-operations .tool-assurance > p { color: var(--op-muted); font-size: 11px; line-height: 1.6; }
+.p15-operations .tool-assurance > p { color: var(--op-muted); font-size: 16px; line-height: 1.6; }
 .p15-operations .tool-assurance .button { white-space: nowrap; }
 
 .p15-operations .tool-guidance {
@@ -572,7 +572,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
 .p15-operations .tool-guidance > header { display: grid; max-width: 760px; gap: 10px; }
 .p15-operations .tool-guidance h2 { color: var(--op-ink); font-size: clamp(28px, 3vw, 42px); }
 .p15-operations .tool-guidance h3 { color: var(--op-ink); font-size: 17px; }
-.p15-operations .tool-guidance p { max-width: 82ch; color: var(--op-muted); font-size: 12px; line-height: 1.7; }
+.p15-operations .tool-guidance p { max-width: 82ch; color: var(--op-muted); font-size: 16px; line-height: 1.7; }
 .p15-operations .tool-guidance > section { display: grid; gap: 12px; padding-top: 28px; border-top: 1px solid var(--op-line); }
 .p15-operations .tool-guidance__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--op-line); }
 .p15-operations .tool-guidance__grid > section { display: grid; min-width: 0; align-content: start; gap: 8px; padding: 20px; }
@@ -593,7 +593,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
   border: 1px solid var(--op-line);
 }
 .p15-operations .generic-tool-card h2 { margin-top: 8px; font-size: 35px; }
-.p15-operations .generic-tool-card > p { color: var(--op-muted); font-size: 13px; }
+.p15-operations .generic-tool-card > p { color: var(--op-muted); font-size: 16px; }
 .p15-operations .generic-tool-card .button { width: max-content; }
 
 /* Formats */
@@ -636,7 +636,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
 .p15-operations .format-cards dl { margin-top: 40px; border-top: 1px solid var(--op-line); }
 .p15-operations .format-cards dl > div { display: grid; gap: 6px; padding: 13px 0; border-bottom: 1px solid var(--op-line); }
 .p15-operations .format-cards dt { color: var(--op-quiet); font: 550 8px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
-.p15-operations .format-cards dd { color: var(--op-ink); font-size: 10px; }
+.p15-operations .format-cards dd { color: var(--op-ink); font-size: 16px; }
 .p15-operations .format-cards .line-link { margin-top: auto; padding-top: 24px; }
 .p15-operations .format-cards article:nth-child(2) .line-link { color: #fffaf3; }
 .p15-operations .format-cards article:nth-child(2) .line-link::after { background: #6a6358; }
@@ -668,7 +668,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
 }
 .p15-operations .empty-state-card > span { color: var(--op-wax-text,var(--op-wax)); font: 600 9px/1 var(--mono); }
 .p15-operations .empty-state-card h2 { font-size: clamp(28px, 3vw, 38px); }
-.p15-operations .empty-state-card p { margin-top: 6px; color: var(--op-muted); font-size: 14px; }
+.p15-operations .empty-state-card p { margin-top: 6px; color: var(--op-muted); font-size: 16px; }
 .p15-operations .application-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
@@ -700,11 +700,11 @@ body.p15-tool-workspace .site-header { display: none !important; }
   border-bottom: 1px solid var(--op-line);
 }
 .p15-operations .application-paper dt { color: var(--op-quiet); font-size: 9px; }
-.p15-operations .application-paper dd { color: var(--op-ink); font-size: 12px; overflow-wrap: anywhere; }
+.p15-operations .application-paper dd { color: var(--op-ink); font-size: 16px; overflow-wrap: anywhere; }
 .p15-operations .application-paper dd small { display: block; margin-top: 4px; color: var(--op-muted); font-size: 9px; }
 .p15-operations .application-paper__comment { margin-top: 18px; padding: 16px; background: var(--op-paper); border-left: 2px solid var(--op-wax); }
 .p15-operations .application-paper__comment span { color: var(--op-wax-text,var(--op-wax)); font: 600 8px/1.2 var(--mono); text-transform: uppercase; }
-.p15-operations .application-paper__comment p { margin-top: 7px; color: var(--op-ink); font-size: 12px; }
+.p15-operations .application-paper__comment p { margin-top: 7px; color: var(--op-ink); font-size: 16px; }
 .p15-operations .application-paper > footer {
   display: flex;
   justify-content: space-between;
@@ -728,7 +728,7 @@ body.p15-tool-workspace .site-header { display: none !important; }
   border-bottom: 1px solid var(--op-line);
 }
 .p15-operations .application-actions li > span { color: var(--op-wax-text,var(--op-wax)); font: 600 9px/1.5 var(--mono); }
-.p15-operations .application-actions li p { color: var(--op-text); font-size: 11px; }
+.p15-operations .application-actions li p { color: var(--op-text); font-size: 16px; }
 .p15-operations .application-actions .button--primary { width: 100%; margin-top: 24px; }
 .p15-operations .application-actions .button--text { width: 100%; margin-top: 4px; }
 
@@ -762,7 +762,7 @@ body.p15-application #p15ZayavkaMain {
 .p15-operations .payment-flow article:last-child { border-right: 1px solid var(--op-line); }
 .p15-operations .payment-flow article > span { color: var(--op-wax-text,var(--op-wax)); font: 600 9px/1 var(--mono); }
 .p15-operations .payment-flow h2 { font-size: 25px; }
-.p15-operations .payment-flow p { margin-top: 8px; color: var(--op-muted); font-size: 10px; }
+.p15-operations .payment-flow p { margin-top: 8px; color: var(--op-muted); font-size: 16px; }
 .p15-operations .payment-demo {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
@@ -781,7 +781,7 @@ body.p15-application #p15ZayavkaMain {
 .p15-operations .payment-safety article { min-height: 160px; padding: 26px; }
 .p15-operations .payment-safety article + article { border-left: 1px solid var(--op-line); }
 .p15-operations .payment-safety h3 { font-size: 22px; }
-.p15-operations .payment-safety p { margin-top: 9px; color: var(--op-muted); font-size: 10px; }
+.p15-operations .payment-safety p { margin-top: 9px; color: var(--op-muted); font-size: 16px; }
 
 .p15-payment-dialog {
   width: min(92vw, 560px);
@@ -795,7 +795,7 @@ body.p15-application #p15ZayavkaMain {
 .p15-payment-dialog::backdrop { background: rgba(20, 18, 15, .58); backdrop-filter: blur(5px); }
 .p15-payment-dialog__inner { display: grid; gap: 17px; padding: 30px; }
 .p15-payment-dialog h2 { font-size: 31px; }
-.p15-payment-dialog p { color: var(--op-muted); font-size: 13px; }
+.p15-payment-dialog p { color: var(--op-muted); font-size: 16px; }
 .p15-payment-dialog__facts { display: grid; grid-template-columns: repeat(2, 1fr); border-block: 1px solid var(--op-line); }
 .p15-payment-dialog__facts span { display: grid; gap: 4px; padding: 13px 0; }
 .p15-payment-dialog__facts span + span { padding-left: 15px; border-left: 1px solid var(--op-line); }
@@ -1646,7 +1646,7 @@ body.p15-operations .cookieprefs .cp-card {
 
 .p15-operations .payment-flow__body i{
   color:var(--op-muted);
-  font-size:13.5px;
+  font-size:16px;
   font-style:normal;
   line-height:1.5;
 }
@@ -1771,7 +1771,7 @@ body.p15-operations .cookieprefs .cp-card {
 .p15-operations .pay-how__grid p{
   margin:0;
   color:var(--op-muted);
-  font-size:14.5px;
+  font-size:16px;
   line-height:1.55;
 }
 
@@ -1813,4 +1813,32 @@ body.p15-operations .cookieprefs .cp-card {
     animation-duration:.01ms;
     transition-duration:.01ms;
   }
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .p15-operations .section-head > p{font-size:15px}
+  .p15-operations .tool-card p{font-size:12px}
+  .p15-operations .tools-privacy > p{font-size:11px}
+  .p15-operations .checker-empty p{font-size:11px}
+  .p15-operations .finding p{font-size:9px}
+  .p15-operations .topic-audit__result dd{font-size:11px}
+  .p15-operations .article-callout p{font-size:11px}
+  .p15-operations .source-list p{font-size:10px}
+  .p15-operations .tool-assurance > p{font-size:11px}
+  .p15-operations .tool-guidance p{font-size:12px}
+  .p15-operations .generic-tool-card > p{font-size:13px}
+  .p15-operations .format-cards dd{font-size:10px}
+  .p15-operations .empty-state-card p{font-size:14px}
+  .p15-operations .application-paper dd{font-size:12px}
+  .p15-operations .application-paper__comment p{font-size:12px}
+  .p15-operations .application-actions li p{font-size:11px}
+  .p15-operations .payment-flow p{font-size:10px}
+  .p15-operations .payment-safety p{font-size:10px}
+  .p15-payment-dialog p{font-size:13px}
+  .p15-operations .payment-flow__body i{font-size:13.5px}
+  .p15-operations .pay-how__grid p{font-size:14.5px}
 }

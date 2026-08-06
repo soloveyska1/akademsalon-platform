@@ -361,7 +361,7 @@
 
 .home-case .case-route__reason dd{
   color:var(--ink-soft);
-  font-size:12px;
+  font-size:16px;
   line-height:1.48;
 }
 
@@ -565,7 +565,7 @@
   max-width:49ch;
   padding-bottom:4px;
   color:var(--ink-soft);
-  font-size:15px;
+  font-size:16px;
   line-height:1.65;
 }
 
@@ -914,7 +914,7 @@
 }
 
 .home-case .case-file li strong{
-  font-size:12px;
+  font-size:16px;
   font-weight:600;
 }
 
@@ -1515,7 +1515,7 @@
 }
 
 .home-case .case-route__reason dd{
-  font-size:11px;
+  font-size:16px;
   line-height:1.42;
 }
 
@@ -1530,7 +1530,7 @@
 
 .home-case .case-route__details p{
   padding-bottom:8px;
-  font-size:10.5px;
+  font-size:16px;
 }
 
 .home-case .case-route__actions{
@@ -2749,7 +2749,7 @@ html:not(.has-js) .home-case .case-hero__inner{
 .case-scope-drawer__lead{
   padding:20px 31px 17px;
   color:var(--ink-soft);
-  font-size:13px;
+  font-size:16px;
   line-height:1.55;
 }
 
@@ -3643,4 +3643,16 @@ html.has-js .home-case .case-scope-trigger::before{
   .home-case .case-scope-trigger__action{
     margin-top:9px;
   }
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .home-case .case-route__reason dd{font-size:11px}
+  .home-case .case-section-head>p{font-size:15px}
+  .home-case .case-file li strong{font-size:12px}
+  .home-case .case-route__details p{font-size:10.5px}
+  .case-scope-drawer__lead{font-size:13px}
 }

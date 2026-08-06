@@ -173,7 +173,7 @@ body.polish15-supporting .section-head h2{
 
 body.polish15-supporting .section-head>p{
   color:var(--muted);
-  font-size:15px;
+  font-size:16px;
 }
 
 body.polish15-supporting .button{
@@ -441,7 +441,7 @@ body.polish15-supporting .accordion-list details>p{
   max-width:760px;
   padding:0 38px 20px 0;
   color:var(--muted);
-  font-size:13px;
+  font-size:16px;
   line-height:1.62;
 }
 
@@ -528,7 +528,7 @@ body.polish15-supporting .about-principles h3{
 body.polish15-supporting .about-principles article p{
   margin-top:9px;
   color:var(--muted);
-  font-size:11px;
+  font-size:16px;
 }
 
 body.polish15-supporting .team-grid{
@@ -609,7 +609,7 @@ body.polish15-supporting .about-history li span{
 
 body.polish15-supporting .about-history li p{
   color:var(--muted);
-  font-size:12px;
+  font-size:16px;
 }
 
 /* Гарантии */
@@ -639,7 +639,7 @@ body.polish15-supporting .guarantee-ledger h2{
 body.polish15-supporting .guarantee-ledger p{
   margin-top:10px;
   color:var(--muted);
-  font-size:11px;
+  font-size:16px;
 }
 
 body.polish15-supporting .guarantee-example{
@@ -930,7 +930,7 @@ body.polish15-supporting .support-form-card h2{
 body.polish15-supporting .support-form-card>p{
   margin-top:-9px;
   color:var(--muted);
-  font-size:11px;
+  font-size:16px;
 }
 
 body.polish15-supporting .support-form-card>.button{
@@ -966,7 +966,7 @@ body.polish15-supporting .support-info ol li{
   gap:12px;
   padding:12px 0;
   border-bottom:1px solid var(--line);
-  font-size:10px;
+  font-size:16px;
 }
 
 body.polish15-supporting .support-info ol span{
@@ -999,7 +999,7 @@ body.polish15-supporting .support-info summary span{
 body.polish15-supporting .support-info details p{
   padding:0 0 14px;
   color:var(--muted);
-  font-size:9px;
+  font-size:16px;
 }
 
 body.polish15-supporting .support-success{
@@ -1407,7 +1407,7 @@ body.polish15-supporting .membership-pass>div:nth-of-type(2){
 body.polish15-supporting .membership-pass>div:nth-of-type(2) p,
 body.polish15-supporting .membership-pass>div:nth-of-type(2) span{
   color:var(--muted);
-  font-size:12px;
+  font-size:16px;
 }
 
 body.polish15-supporting .membership-pass h2{
@@ -1429,7 +1429,7 @@ body.polish15-supporting .membership-pass dl>div{
 }
 
 body.polish15-supporting .membership-pass dd{
-  font-size:12px;
+  font-size:16px;
 }
 
 body.polish15-supporting .membership-pass>footer{
@@ -1563,7 +1563,7 @@ body.polish15-supporting .plus-plan-card>p{
   min-height:52px;
   margin-top:15px;
   color:var(--muted);
-  font-size:12px;
+  font-size:16px;
   line-height:1.5;
 }
 
@@ -1588,7 +1588,7 @@ body.polish15-supporting .plus-plan-card li b{
 
 body.polish15-supporting .plus-plan-card li span{
   color:var(--muted);
-  font-size:11px;
+  font-size:16px;
   line-height:1.45;
 }
 
@@ -1663,7 +1663,7 @@ body.polish15-supporting .plus-clarity dt{
 
 body.polish15-supporting .plus-clarity dd{
   color:var(--muted);
-  font-size:13px;
+  font-size:16px;
   line-height:1.62;
 }
 
@@ -1780,7 +1780,7 @@ body.polish15-supporting .deposit-ledger-card>div:nth-of-type(2) strong{
 
 body.polish15-supporting .deposit-ledger-card>div p{
   color:#aaa296;
-  font-size:12px;
+  font-size:16px;
 }
 
 body.polish15-supporting .deposit-ledger-card>footer{
@@ -2061,7 +2061,7 @@ body.polish15-supporting .deposit-principles h3{
 body.polish15-supporting .deposit-principles article p{
   margin-top:12px;
   color:var(--muted);
-  font-size:12px;
+  font-size:16px;
   line-height:1.6;
 }
 
@@ -2095,7 +2095,7 @@ body.polish15-supporting .deposit-terms dt{
 
 body.polish15-supporting .deposit-terms dd{
   color:var(--muted);
-  font-size:13px;
+  font-size:16px;
   line-height:1.58;
 }
 
@@ -2241,7 +2241,7 @@ body.polish15-supporting .gift-certificate>footer{
 
 body.polish15-supporting .gift-preview>p{
   color:var(--quiet);
-  font-size:9px;
+  font-size:16px;
   text-align:center;
 }
 
@@ -2286,7 +2286,7 @@ body.polish15-supporting .gift-checkout__payment h2{
 body.polish15-supporting .gift-checkout__form>p,
 body.polish15-supporting .gift-checkout__payment>p{
   color:var(--muted);
-  font-size:12px;
+  font-size:16px;
 }
 
 body.polish15-supporting .gift-delivery{
@@ -3071,4 +3071,29 @@ body.polish15-supporting .review-rating--quiet small{
   font-size:12px;
   line-height:1.45;
   max-width:26ch;
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  body.polish15-supporting .section-head>p{font-size:15px}
+  body.polish15-supporting .accordion-list details>p{font-size:13px}
+  body.polish15-supporting .about-principles article p{font-size:11px}
+  body.polish15-supporting .about-history li p{font-size:12px}
+  body.polish15-supporting .guarantee-ledger p{font-size:11px}
+  body.polish15-supporting .support-form-card>p{font-size:11px}
+  body.polish15-supporting .support-info ol li{font-size:10px}
+  body.polish15-supporting .support-info details p{font-size:9px}
+  body.polish15-supporting .membership-pass>div:nth-of-type(2) p, body.polish15-supporting .membership-pass>div:nth-of-type(2) span{font-size:12px}
+  body.polish15-supporting .membership-pass dd{font-size:12px}
+  body.polish15-supporting .plus-plan-card>p{font-size:12px}
+  body.polish15-supporting .plus-plan-card li span{font-size:11px}
+  body.polish15-supporting .plus-clarity dd{font-size:13px}
+  body.polish15-supporting .deposit-ledger-card>div p{font-size:12px}
+  body.polish15-supporting .deposit-principles article p{font-size:12px}
+  body.polish15-supporting .deposit-terms dd{font-size:13px}
+  body.polish15-supporting .gift-preview>p{font-size:9px}
+  body.polish15-supporting .gift-checkout__form>p, body.polish15-supporting .gift-checkout__payment>p{font-size:12px}
 }

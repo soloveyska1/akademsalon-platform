@@ -547,7 +547,7 @@
 .p15-commission .k0-section-head > p{
   margin:0 0 5px;
   color:var(--muted);
-  font-size:15px;
+  font-size:16px;
   line-height:1.6;
 }
 .p15-commission .k0-timeline{ margin:0;padding:0;list-style:none; }
@@ -579,7 +579,7 @@
   max-width:600px;
   margin:0;
   color:var(--muted);
-  font-size:14px;
+  font-size:16px;
   line-height:1.6;
 }
 
@@ -655,7 +655,7 @@
 .p15-commission .k0-signatures > p{
   margin:0;
   color:rgba(255,250,241,.47);
-  font-size:11px;
+  font-size:16px;
   line-height:1.55;
 }
 
@@ -676,7 +676,7 @@
 .p15-commission .k0-protocol__copy > p:not(.k0-overline){
   margin:24px 0 0;
   color:var(--muted);
-  font-size:15px;
+  font-size:16px;
   line-height:1.65;
 }
 .p15-commission .k0-two-axis{
@@ -701,7 +701,7 @@
 .p15-commission .k0-two-axis dd{
   margin:0;
   color:var(--muted);
-  font-size:12px;
+  font-size:16px;
   line-height:1.45;
 }
 .p15-commission .protocol-paper{
@@ -875,7 +875,7 @@
 .p15-commission .k0-data__copy li p{
   margin:0;
   color:rgba(255,250,241,.45);
-  font-size:10px;
+  font-size:16px;
   line-height:1.5;
 }
 .p15-commission .k0-data__note{
@@ -973,7 +973,7 @@
   max-width:790px;
   margin:0;
   color:var(--muted);
-  font-size:12px;
+  font-size:16px;
   line-height:1.55;
 }
 .p15-commission .k0-price__legal{
@@ -1054,7 +1054,7 @@
   margin:-5px 0 22px;
   padding-right:50px;
   color:var(--muted);
-  font-size:13px;
+  font-size:16px;
   line-height:1.65;
 }
 .p15-commission .k0-final{
@@ -1081,7 +1081,7 @@
   flex-basis:100%;
   margin:0 0 7px;
   color:rgba(255,250,241,.58);
-  font-size:14px;
+  font-size:16px;
   line-height:1.6;
 }
 .p15-commission .k0-final .k0-line-link{ color:rgba(255,250,241,.75); }
@@ -1192,7 +1192,7 @@
   max-width:780px;
   margin:10px 0 0;
   color:rgba(255,250,241,.58);
-  font-size:12px;
+  font-size:16px;
   line-height:1.55;
 }
 .catalog-commission__actions{ display:flex;gap:13px;align-items:center; }
@@ -1385,4 +1385,21 @@
     animation-iteration-count:1!important;
     transition-duration:.01ms!important;
   }
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .p15-commission .k0-section-head > p{font-size:15px}
+  .p15-commission .k0-timeline li > p{font-size:14px}
+  .p15-commission .k0-signatures > p{font-size:11px}
+  .p15-commission .k0-protocol__copy > p:not(.k0-overline){font-size:15px}
+  .p15-commission .k0-two-axis dd{font-size:12px}
+  .p15-commission .k0-data__copy li p{font-size:10px}
+  .p15-commission .k0-entry p{font-size:12px}
+  .p15-commission .k0-faq details p{font-size:13px}
+  .p15-commission .k0-final__grid > div:last-child > p{font-size:14px}
+  .catalog-commission p{font-size:12px}
 }

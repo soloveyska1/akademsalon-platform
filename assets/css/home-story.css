@@ -263,7 +263,7 @@ html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-
 
 .home-case .case-assurances li{
   color:var(--story-muted);
-  font-size:10px;
+  font-size:16px;
 }
 
 .home-case .case-assurances li::before{
@@ -587,7 +587,7 @@ html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-
   max-width:48ch;
   margin:0 0 7px;
   color:var(--story-muted);
-  font-size:15px;
+  font-size:16px;
   line-height:1.65;
 }
 
@@ -712,7 +712,7 @@ html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-
   padding:10px 7px 10px 18px;
   border-bottom:1px dotted var(--story-line);
   color:var(--story-ink);
-  font-size:11.5px;
+  font-size:16px;
   line-height:1.45;
 }
 
@@ -957,7 +957,7 @@ html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-
   padding:11px 8px 11px 23px;
   border-bottom:1px dotted var(--story-line);
   color:var(--story-muted);
-  font-size:12px;
+  font-size:16px;
 }
 
 .home-case .case-terms__boundary{
@@ -1046,7 +1046,7 @@ html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-
 
 .home-case .case-faq .faq-item p{
   padding:0 clamp(18px,2.5vw,32px) 25px;
-  font-size:12.5px;
+  font-size:16px;
 }
 
 .home-case .case-final{
@@ -1487,7 +1487,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
 .home-case .case-stage-panel__deliverables li{
   padding-block:11px;
-  font-size:12px;
+  font-size:16px;
 }
 
 .home-case .case-stage-panel__routes{
@@ -1672,7 +1672,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
 .home-case .case-confidence strong,
 .home-case .case-confidence li:first-child strong{
-  font-size:15px;
+  font-size:16px;
 }
 
 .home-case .case-confidence span{
@@ -2079,7 +2079,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 .home-case .case-terms__ledger li>p{
   max-width:29ch;
   color:var(--story-muted);
-  font-size:11.5px;
+  font-size:16px;
   line-height:1.55;
 }
 
@@ -2152,7 +2152,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   max-width:66ch;
   margin:22px 0 18px;
   color:var(--story-muted);
-  font-size:11.5px;
+  font-size:16px;
   line-height:1.6;
 }
 
@@ -2452,7 +2452,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   max-width:68ch;
   padding:0 64px 26px 24px;
   color:var(--story-muted);
-  font-size:13px;
+  font-size:16px;
   line-height:1.65;
 }
 
@@ -2595,7 +2595,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   margin:0;
   padding:24px 42px 22px;
   color:var(--story-muted,#6f685e);
-  font-size:13px;
+  font-size:16px;
   line-height:1.6;
 }
 
@@ -3186,7 +3186,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
 .home-case .case-faq .faq-item p{
   padding:0 64px 28px 62px;
-  font-size:13.5px;
+  font-size:16px;
 }
 
 .home-case .case-faq__human{
@@ -4044,7 +4044,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   padding:13px 24px 13px 48px;
   border-bottom:1px solid #cdc3b1;
   color:#625d54;
-  font-size:11.5px;
+  font-size:16px;
   line-height:1.45;
 }
 
@@ -5766,7 +5766,7 @@ html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-
   max-width:610px;
   margin-top:clamp(22px,3vh,32px);
   padding-left:20px;
-  font-size:15.5px;
+  font-size:16px;
   line-height:1.56;
 }
 
@@ -5826,7 +5826,7 @@ body .home-case .hero-act__facts>div:last-child{
 
 body .home-case .hero-act__facts dd{
   color:var(--story-ink);
-  font-size:15px;
+  font-size:16px;
 }
 
 body .home-case .hero-act__note{
@@ -6412,4 +6412,23 @@ body .home-case .hero-act__note{
   .home-case .case-scope-deck__head strong{
     font-size:21px;
   }
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .home-case .case-assurances li{font-size:10px}
+  .home-case .case-section-head>p{font-size:15px}
+  .home-case .case-stage-panel__deliverables li{font-size:12px}
+  .home-case .case-terms__card li{font-size:12px}
+  .home-case .case-faq .faq-item p{font-size:13.5px}
+  .home-case .case-confidence strong, .home-case .case-confidence li:first-child strong{font-size:15px}
+  .home-case .case-terms__ledger li>p{font-size:11.5px}
+  .home-case .case-terms__prices>p{font-size:11.5px}
+  .case-scope-drawer__lead{font-size:13px}
+  .home-case .case-file__control p{font-size:11.5px}
+  .home-case .case-hero__lead, html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-hero__lead{font-size:15.5px}
+  body .home-case .hero-act__facts dd{font-size:15px}
 }

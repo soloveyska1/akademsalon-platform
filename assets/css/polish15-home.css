@@ -188,7 +188,7 @@
 .polish15-home .section-head h2{ font-size:clamp(34px,4vw,53px); }
 .polish15-home .section-head > p{
   color:var(--muted);
-  font-size:15px;
+  font-size:16px;
 }
 .polish15-home .section-head__action{
   align-self:end;
@@ -265,7 +265,7 @@
 }
 .polish15-home .home-hero__facts dd{
   color:var(--quiet);
-  font-size:11px;
+  font-size:16px;
 }
 .polish15-home .home-hero__express-note{
   max-width:560px;
@@ -547,7 +547,7 @@
 .polish15-home .situation-card p{
   margin-top:7px;
   color:var(--muted);
-  font-size:12px;
+  font-size:16px;
 }
 .polish15-home .situation-card__result{
   display:grid;
@@ -605,7 +605,7 @@
   padding:13px 0;
   color:#d8d0c1;
   border-bottom:1px solid #3b3932;
-  font-size:12px;
+  font-size:16px;
 }
 .polish15-home .plain-checks li span{
   color:#c96e56;
@@ -761,7 +761,7 @@
 .polish15-home .service-card h3{ font-size:25px; }
 .polish15-home .service-card__body > p:last-child{
   color:var(--muted);
-  font-size:12px;
+  font-size:16px;
 }
 .polish15-home .service-card__meta{
   display:grid;
@@ -824,7 +824,7 @@
 .polish15-home .process-grid p{
   margin-top:9px;
   color:var(--muted);
-  font-size:12px;
+  font-size:16px;
 }
 
 .polish15-home .home-library{
@@ -1297,4 +1297,17 @@
     animation-iteration-count:1!important;
     transition-duration:.01ms!important;
   }
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .polish15-home .section-head > p{font-size:15px}
+  .polish15-home .home-hero__facts dd{font-size:11px}
+  .polish15-home .situation-card p{font-size:12px}
+  .polish15-home .plain-checks li{font-size:12px}
+  .polish15-home .service-card__body > p:last-child{font-size:12px}
+  .polish15-home .process-grid p{font-size:12px}
 }

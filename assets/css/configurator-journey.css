@@ -465,7 +465,7 @@
   max-width:49ch;
   margin:13px 0 0;
   color:var(--journey-soft);
-  font-size:15px;
+  font-size:16px;
   line-height:1.5;
 }
 
@@ -493,7 +493,7 @@
 .configurator-task .live-quote dd{
   margin:0;
   color:var(--journey-ink);
-  font-size:15px;
+  font-size:16px;
   font-weight:560;
   line-height:1.38;
 }
@@ -542,7 +542,7 @@
 .configurator-task .live-quote__more p{
   margin:0;
   color:var(--journey-soft);
-  font-size:13px;
+  font-size:16px;
   line-height:1.5;
 }
 
@@ -1356,7 +1356,7 @@
 }
 
 .configurator-task .wizard-summary dd{
-  font-size:15px;
+  font-size:16px;
 }
 
 .configurator-task .wizard-summary>p:not(.eyebrow){
@@ -1400,7 +1400,7 @@
 }
 
 .configurator-task .live-quote__more p{
-  font-size:13px;
+  font-size:16px;
 }
 
 .configurator-task .live-quote>small{
@@ -1558,4 +1558,15 @@
   .configurator-task .concept-work-choice{
     margin-top:13px;
   }
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .configurator-task .live-quote>p{font-size:15px}
+  .configurator-task .live-quote dd{font-size:15px}
+  .configurator-task .live-quote__more p{font-size:13px}
+  .configurator-task .wizard-summary dd{font-size:15px}
 }

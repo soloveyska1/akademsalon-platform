@@ -336,7 +336,7 @@ body.prolog-route .prolog-roles dt {
 body.prolog-route .prolog-roles dd {
   margin: 0;
   color: var(--op-text);
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -427,7 +427,7 @@ body.prolog-route .scene-input {
 
 body.prolog-route .scene-input p {
   color: var(--op-ink);
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -763,7 +763,7 @@ body.prolog-route .prolog-keeps__grid h3 {
 
 body.prolog-route .prolog-keeps__grid p {
   color: var(--op-muted);
-  font-size: 12.5px;
+  font-size: 16px;
   line-height: 1.55;
 }
 
@@ -785,7 +785,7 @@ body.prolog-route .prolog-limits > * + * { border-left: 1px solid var(--op-line)
 
 body.prolog-route .prolog-limits__intro { display: grid; align-content: start; gap: 12px; }
 body.prolog-route .prolog-limits__intro h2 { font-size: clamp(26px, 2.5vw, 34px); }
-body.prolog-route .prolog-limits__intro p { color: var(--op-muted); font-size: 13px; line-height: 1.55; }
+body.prolog-route .prolog-limits__intro p { color: var(--op-muted); font-size: 16px; line-height: 1.55; }
 
 body.prolog-route .prolog-limits ul { display: grid; gap: 10px; margin-top: 14px; list-style: none; }
 body.prolog-route .prolog-limits li {
@@ -793,7 +793,7 @@ body.prolog-route .prolog-limits li {
   grid-template-columns: 15px minmax(0, 1fr);
   gap: 10px;
   color: var(--op-text);
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.5;
 }
 body.prolog-route .prolog-limits li::before {
@@ -840,7 +840,7 @@ body.prolog-route .prolog-faq details > p {
   max-width: 78ch;
   padding-bottom: 20px;
   color: var(--op-muted);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.6;
 }
 
@@ -862,7 +862,7 @@ body.prolog-route .prolog-next p {
   max-width: 56ch;
   margin-top: 10px;
   color: var(--op-muted);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.55;
 }
 body.prolog-route .prolog-next__actions { display: grid; gap: 10px; justify-items: start; }
@@ -999,4 +999,18 @@ body.prolog-route .prolog-faq summary:focus-visible {
     stroke-dashoffset: 0;
   }
   body.prolog-route .prolog-panel .scene-caret { animation: none !important; opacity: 0; }
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  body.prolog-route .prolog-roles dd{font-size:13px}
+  body.prolog-route .scene-input p{font-size:13px}
+  body.prolog-route .prolog-keeps__grid p{font-size:12.5px}
+  body.prolog-route .prolog-limits__intro p{font-size:13px}
+  body.prolog-route .prolog-limits li{font-size:13px}
+  body.prolog-route .prolog-faq details > p{font-size:14px}
+  body.prolog-route .prolog-next p{font-size:14px}
 }

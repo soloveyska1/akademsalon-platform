@@ -410,7 +410,7 @@ body.polish15-library .article-card h3{
 body.polish15-library .article-card p{
   margin:0;
   color:var(--muted);
-  font-size:11px;
+  font-size:16px;
 }
 
 body.polish15-library .article-card footer{
@@ -458,7 +458,7 @@ body.polish15-library .catalog-empty p{
   max-width:440px;
   margin:0;
   color:var(--muted);
-  font-size:13px;
+  font-size:16px;
 }
 
 body.polish15-library [hidden]{
@@ -674,4 +674,13 @@ body.polish15-library .library-tools a b{
     animation-iteration-count:1!important;
     transition-duration:.01ms!important;
   }
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  body.polish15-library .article-card p{font-size:11px}
+  body.polish15-library .catalog-empty p{font-size:13px}
 }

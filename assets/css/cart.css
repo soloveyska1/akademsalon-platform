@@ -15,7 +15,7 @@
 .cart-entry-icon{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border:1px solid var(--hairline);
   border-radius:50%;font:17px/1 var(--serif);color:var(--wax-text,var(--wax))}
 .cart-entry-copy{display:flex;min-width:0;flex:1;flex-direction:column;align-items:flex-start;text-align:left}
-.cart-entry-copy b{font-family:var(--serif);font-size:15px;font-weight:520}
+.cart-entry-copy b{font-family:var(--serif);font-size:16px;font-weight:520}
 .cart-entry-copy small{margin-top:2px;color:var(--ink-soft);font-size:10px}
 /* Радиус пилюлей, а не 50%: счётчик растёт вместе с числом, и на «12»
    круглый радиус давал эллипс, а вне флекса — полосу во всю ширину.
@@ -53,7 +53,7 @@
   border-bottom:2px solid var(--ink);background:var(--sheet)}
 .cart-folio{display:block;margin-bottom:5px;font:600 9px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--wax-text,var(--wax))}
 .cart-head h2{margin:0;font-family:var(--serif);font-size:clamp(24px,4vw,31px);font-weight:420;letter-spacing:-.02em}
-.cart-head p{margin:4px 0 0;font-size:12px;color:var(--ink-soft)}
+.cart-head p{margin:4px 0 0;font-size:16px;color:var(--ink-soft)}
 .cart-close{width:38px;height:38px;border:1px solid var(--hairline);border-radius:50%;background:transparent;
   color:var(--ink-soft);font:22px/1 var(--sans);cursor:pointer}
 .cart-close:hover{border-color:var(--wax);color:var(--wax-text,var(--wax))}
@@ -64,7 +64,7 @@
 .cart-empty-mark{width:58px;height:58px;margin:0 auto 13px;display:grid;place-items:center;border:1px solid var(--wax);
   border-radius:50%;font:italic 25px/1 var(--serif);color:var(--wax-text,var(--wax));transform:rotate(-5deg)}
 .cart-empty h3{margin:0 0 7px;font-family:var(--serif);font-size:20px;font-weight:480}
-.cart-empty p{margin:0 auto 16px;max-width:36ch;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.cart-empty p{margin:0 auto 16px;max-width:36ch;font-size:16px;line-height:1.55;color:var(--ink-soft)}
 
 .cart-list{display:grid;gap:8px;counter-reset:cart-item}
 .cart-item{counter-increment:cart-item;position:relative;padding:12px 12px 10px 42px;border:1px solid var(--hairline);
@@ -84,7 +84,7 @@
 .cart-item-facts>div{display:grid;grid-template-columns:minmax(88px,.34fr) minmax(0,1fr);gap:8px;padding-bottom:5px;
   border-bottom:1px solid color-mix(in srgb,var(--hairline) 72%,transparent)}
 .cart-item-facts dt{font:600 8.5px/1.35 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
-.cart-item-facts dd{min-width:0;margin:0;font-size:11px;line-height:1.38;color:var(--ink-soft);overflow-wrap:anywhere}
+.cart-item-facts dd{min-width:0;margin:0;font-size:16px;line-height:1.38;color:var(--ink-soft);overflow-wrap:anywhere}
 .cart-note{width:100%;margin-top:7px;padding:8px 9px;border:1px solid var(--hairline);
   background:var(--paper-2);color:var(--ink);font:12px var(--sans);border-radius:3px}
 .cart-note:focus{outline:2px solid var(--stamp);outline-offset:1px;border-color:transparent}
@@ -207,12 +207,12 @@ html[data-motion="off"] .cart-tab,html[data-motion="off"] .cart-dock,html[data-m
   border-radius:5px;background:linear-gradient(145deg,var(--sheet),var(--wax-soft));
 }
 .compose-gate h3{margin:7px 0 6px;font:520 21px/1.2 var(--serif)}
-.compose-gate p{margin:0 0 15px;color:var(--ink-soft);font-size:13px;line-height:1.5}
+.compose-gate p{margin:0 0 15px;color:var(--ink-soft);font-size:16px;line-height:1.5}
 
 .cart-drawer{width:min(96vw,620px)}
 .cart-head{padding:21px 24px 16px}
 .cart-head h2{font-size:32px}
-.cart-head p{font-size:13px}
+.cart-head p{font-size:16px}
 .cart-body{padding:14px 20px 22px}
 .cart-foot{padding:0 20px max(16px,env(safe-area-inset-bottom))}
 
@@ -221,7 +221,7 @@ html[data-motion="off"] .cart-tab,html[data-motion="off"] .cart-dock,html[data-m
 .cart-section-no{display:grid;place-items:center;flex:0 0 27px;width:27px;height:27px;border:1px solid var(--hairline);
   border-radius:50%;font:600 8.5px/1 var(--mono);color:var(--wax-text,var(--wax))}
 .cart-section-head h3{margin:0;font:520 18px/1.2 var(--serif)}
-.cart-section-head p{margin:2px 0 0;color:var(--ink-faint);font-size:11px}
+.cart-section-head p{margin:2px 0 0;color:var(--ink-faint);font-size:16px}
 .cart-group>h4{margin:13px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--hairline);
   font:600 8.5px/1 var(--mono);letter-spacing:.17em;text-transform:uppercase;color:var(--ink-faint)}
 .cart-list{gap:7px}
@@ -277,7 +277,7 @@ html[data-motion="off"] .cart-tab,html[data-motion="off"] .cart-dock,html[data-m
 .cart-tools{margin-top:14px;padding:13px;border:1px solid var(--hairline);border-radius:5px;background:var(--sheet)}
 .cart-tool{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;padding:10px 0;border-top:1px solid var(--hairline)}
 .cart-tools .cart-section-head+.cart-tool{border-top:0;padding-top:2px}
-.cart-tool-copy b{display:block;font-size:13px;font-weight:620}
+.cart-tool-copy b{display:block;font-size:16px;font-weight:620}
 .cart-tool-copy small{display:block;margin-top:2px;color:var(--ink-soft);font-size:10.5px;line-height:1.35}
 .cart-tool-value{font:650 11px/1 var(--mono);color:var(--verify);white-space:nowrap}
 .cart-tool-remove{width:28px;height:28px;border:1px solid var(--hairline);border-radius:50%;background:transparent;color:var(--ink-faint);cursor:pointer}
@@ -513,7 +513,7 @@ body.cart-checkout #giftBox{display:none}
   font:500 20px/1 var(--serif);
 }
 .cart-single-help h3{margin:0;font:520 17px/1.25 var(--serif)}
-.cart-single-help p{margin:5px 0 0;color:var(--ink-soft);font-size:12.5px;line-height:1.5}
+.cart-single-help p{margin:5px 0 0;color:var(--ink-soft);font-size:16px;line-height:1.5}
 
 .cart-foot .cart-tools{
   margin-top:18px;
@@ -637,7 +637,7 @@ body.cart-checkout #giftBox{display:none}
   background:var(--sheet);border-color:color-mix(in srgb,var(--wax) 32%,var(--hairline))
 }
 .configurator-task .cart-shell .cart-section-head h3{color:var(--ink);font-size:21px}
-.configurator-task .cart-shell .cart-section-head p{margin-top:4px;color:var(--ink-soft);font-size:12px}
+.configurator-task .cart-shell .cart-section-head p{margin-top:4px;color:var(--ink-soft);font-size:16px}
 .configurator-task .cart-shell .cart-group>h4{margin:16px 0 9px;padding-bottom:8px;color:var(--ink-faint)}
 .configurator-task .cart-shell .cart-work-groups{gap:12px}
 .configurator-task .cart-shell .cart-work-group{
@@ -720,7 +720,7 @@ body.cart-checkout #giftBox{display:none}
 .configurator-task .cart-shell .cart-tools-body{padding-top:2px;border-top:1px solid var(--hairline)}
 .configurator-task .cart-shell .cart-tool{min-width:0;gap:10px;padding:14px 0;border-color:var(--hairline)}
 .configurator-task .cart-shell .cart-tool-copy{min-width:0}
-.configurator-task .cart-shell .cart-tool-copy b{color:var(--ink);font-size:13px}
+.configurator-task .cart-shell .cart-tool-copy b{color:var(--ink);font-size:16px}
 .configurator-task .cart-shell .cart-tool-copy small{color:var(--ink-soft);font-size:10.5px}
 .configurator-task .cart-shell .cart-tool-value{color:var(--verify)}
 .configurator-task .cart-shell .cart-foot .cart-code{grid-template-columns:minmax(0,1fr) auto;gap:7px}
@@ -911,4 +911,21 @@ html[data-theme="dark"] .configurator-task .cart-shell .cart-head{
 @media (max-width:620px){
   .compose-gate,.compose-bar{padding:14px}
   .compose-gate__add,.compose-bar__open,.compose-bar__add{width:100%}
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .cart-entry-copy b{font-size:15px}
+  .cart-head p{font-size:13px}
+  .cart-empty p{font-size:13px}
+  .cart-item-facts dd{font-size:11px}
+  .compose-gate p{font-size:13px}
+  .cart-section-head p{font-size:11px}
+  .cart-tool-copy b{font-size:13px}
+  .cart-single-help p{font-size:12.5px}
+  .configurator-task .cart-shell .cart-section-head p{font-size:12px}
+  .configurator-task .cart-shell .cart-tool-copy b{font-size:13px}
 }

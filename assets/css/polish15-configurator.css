@@ -194,7 +194,7 @@
   letter-spacing:.1em;
   text-transform:uppercase;
 }
-.tx-wizard-help p{max-width:25ch;color:var(--tx-sidebar-muted);font-size:11px;line-height:1.5}
+.tx-wizard-help p{max-width:25ch;color:var(--tx-sidebar-muted);font-size:16px;line-height:1.5}
 .tx-wizard-help button{
   display:inline-flex;
   width:max-content;
@@ -692,7 +692,7 @@ html:not(.service-plan) .configurator-task .estimate-builder-note{display:none!i
   border-bottom:1px solid var(--hairline);
 }
 .configurator-task .conf-final-intro .caps{display:none}
-.configurator-task .conf-final-intro p{color:var(--ink-soft);font-size:14px}
+.configurator-task .conf-final-intro p{color:var(--ink-soft);font-size:16px}
 .configurator-task .plan-form-head{display:none}
 .configurator-task .final-section{
   margin:0;
@@ -933,7 +933,7 @@ html.service-plan .configurator-task .split{display:block}
 }
 .configurator-task .cart-folio{color:var(--wax-text,var(--wax));font-size:8px}
 .configurator-task .cart-head h2{font-size:clamp(34px,4vw,54px);letter-spacing:-.03em}
-.configurator-task .cart-head p{max-width:68ch;font-size:14px}
+.configurator-task .cart-head p{max-width:68ch;font-size:16px}
 .configurator-task .cart-close{
   width:42px;
   height:42px;
@@ -1638,7 +1638,7 @@ html.service-plan .configurator-task .tx-wizard-sidebar .wprog{display:grid!impo
 .configurator-task .recommendation-rationale p{
   margin:0;
   color:var(--ink-soft);
-  font-size:11px;
+  font-size:16px;
   line-height:1.55;
 }
 .configurator-task .recommendation-rationale strong{color:var(--ink)}
@@ -1704,7 +1704,7 @@ html.service-plan .configurator-task .tx-wizard-sidebar .wprog{display:grid!impo
   max-width:62ch;
   margin:14px 0 0;
   color:var(--ink-soft);
-  font-size:13px;
+  font-size:16px;
   line-height:1.6;
 }
 
@@ -1732,7 +1732,7 @@ html.service-plan .configurator-task .tx-wizard-sidebar .wprog{display:grid!impo
 .configurator-task .recommendation-facts dd{
   margin:5px 0 0;
   color:var(--ink);
-  font-size:11px;
+  font-size:16px;
   line-height:1.45;
 }
 
@@ -1745,7 +1745,7 @@ html.service-plan .configurator-task .tx-wizard-sidebar .wprog{display:grid!impo
 .configurator-task .recommendation-scope p{
   margin:7px 0 0;
   color:var(--ink-soft);
-  font-size:11px;
+  font-size:16px;
   line-height:1.55;
 }
 .configurator-task .recommendation-note{
@@ -2047,7 +2047,7 @@ html[data-theme="dark"] .configurator-task .materials-step input[type="date"]{co
   letter-spacing:.06em;
   text-transform:uppercase;
 }
-.configurator-task .wizard-summary dd{margin:0;color:var(--ink);font-size:11px}
+.configurator-task .wizard-summary dd{margin:0;color:var(--ink);font-size:16px}
 .configurator-task .wizard-summary>p:not(.eyebrow){margin:15px 0 0;color:var(--ink-faint);font-size:9px}
 .configurator-task .wizard-summary__notice{
   margin-top:14px;
@@ -2126,7 +2126,7 @@ html[data-theme="dark"] .configurator-task .materials-step input[type="date"]{co
 }
 .configurator-task .concept-success dl>div{padding:14px 0;border-bottom:1px solid var(--hairline)}
 .configurator-task .concept-success dt{color:var(--ink-faint);font:550 8px/1.2 var(--mono);text-transform:uppercase}
-.configurator-task .concept-success dd{margin:4px 0 0;color:var(--ink);font-size:12px}
+.configurator-task .concept-success dd{margin:4px 0 0;color:var(--ink);font-size:16px}
 .configurator-task .concept-success__actions{display:flex;gap:8px;margin-top:24px}
 
 /* Canonical tablet step between the desktop rail and the mobile edition:
@@ -2470,7 +2470,7 @@ html[data-motion="off"] .configurator-task .sv-letter{animation:none}
 .configurator-task .exit-dlg .sdlg-card>p{
   margin:0;
   color:var(--ink-soft);
-  font-size:13.5px;
+  font-size:16px;
   line-height:1.55;
 }
 
@@ -2520,7 +2520,7 @@ html[data-motion="off"] .configurator-task .sv-letter{animation:none}
   border-radius:7px;
   color:var(--ink);
   background:var(--sheet);
-  font-size:12px;
+  font-size:16px;
   font-weight:550;
   letter-spacing:0;
 }
@@ -2554,7 +2554,7 @@ html[data-motion="off"] .configurator-task .sv-letter{animation:none}
   padding:8px 1px;
   border-bottom:1px solid var(--hairline);
   color:var(--ink-soft);
-  font-size:12px;
+  font-size:16px;
   line-height:1.4;
 }
 
@@ -2676,7 +2676,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
 .tx-wizard-steps .is-done button>span{color:var(--ink-soft);border:0;background:transparent}
 .tx-wizard-help{padding-top:22px;border-top:1px solid var(--hairline)}
 .tx-wizard-help>span{color:var(--wax-text,var(--wax))}
-.tx-wizard-help p{color:var(--ink-soft);font-size:11px}
+.tx-wizard-help p{color:var(--ink-soft);font-size:16px}
 .tx-wizard-help button{border-bottom-color:var(--hairline-strong);color:var(--ink)}
 
 .configurator-task .concept-wizard-host{
@@ -3618,7 +3618,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   padding:11px 10px;
   border-bottom:0!important;
 }
-.configurator-task .recommendation-facts dd{font-size:11px;line-height:1.4}
+.configurator-task .recommendation-facts dd{font-size:16px;line-height:1.4}
 .configurator-task .recommendation-more,
 .configurator-task .materials-more,
 .configurator-task .contact-more{
@@ -3788,4 +3788,23 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   .configurator-task .recommendation-more>summary span,
   .configurator-task .materials-more>summary span,
   .configurator-task .contact-more>summary span{transition:none}
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .tx-wizard-help p{font-size:11px}
+  .configurator-task .conf-final-intro p{font-size:14px}
+  .configurator-task .cart-head p{font-size:14px}
+  .configurator-task .recommendation-rationale p{font-size:11px}
+  .configurator-task .recommendation-card__lead{font-size:13px}
+  .configurator-task .recommendation-facts dd{font-size:11px}
+  .configurator-task .recommendation-scope p{font-size:11px}
+  .configurator-task .wizard-summary dd{font-size:11px}
+  .configurator-task .concept-success dd{font-size:12px}
+  .configurator-task .exit-dlg .sdlg-card>p{font-size:13.5px}
+  .configurator-task .exit-dlg .xc-copy{font-size:12px}
+  .configurator-task .exit-dlg .exit-terms li{font-size:12px}
 }

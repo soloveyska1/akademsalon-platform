@@ -291,7 +291,7 @@ textarea{resize:vertical;min-height:120px;line-height:1.55}
 }
 .faq-item[open] summary::after{transform:translateY(-50%) rotate(45deg)}
 .faq-item summary:hover{color:var(--wax-text,var(--wax))}
-.faq-item p{padding:0 36px 20px 0;color:var(--ink-soft);font-size:15px;line-height:1.65;max-width:68ch}
+.faq-item p{padding:0 36px 20px 0;color:var(--ink-soft);font-size:16px;line-height:1.65;max-width:68ch}
 
 /* ---------- Reveal ---------- */
 .has-js .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
@@ -449,4 +449,12 @@ details[open] > *:not(summary){animation:foldIn .26s ease}
 @keyframes foldIn{from{transform:translateY(-3px)}to{transform:none}}
 @media (prefers-reduced-motion: reduce){
   details[open] > *:not(summary){animation:none}
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .faq-item p{font-size:15px}
 }

@@ -86,7 +86,7 @@ body.home-flow-page .skip-link:focus{
 
 .home-guided .guided-desk__topline>p span{
   color:var(--guided-wax);
-  font-size:7px;
+  font-size:16px;
 }
 
 .home-guided .guided-desk__layout{
@@ -223,7 +223,7 @@ body.home-flow-page .skip-link:focus{
   margin:0;
   color:var(--guided-ink);
   font-family:var(--serif);
-  font-size:13px;
+  font-size:16px;
   font-weight:520;
   line-height:1.3;
 }
@@ -644,7 +644,7 @@ html:not(.has-js) .home-guided .guided-desk__noscript a+a{
 .home-guided .guided-desk__artifact>div>p strong{
   color:var(--guided-ink);
   font-family:var(--serif);
-  font-size:15px;
+  font-size:16px;
   font-weight:520;
   line-height:1.2;
 }
@@ -674,14 +674,14 @@ html:not(.has-js) .home-guided .guided-desk__noscript a+a{
 
 .home-guided .guided-desk__artifact li b{
   color:var(--guided-ink);
-  font-size:11px;
+  font-size:16px;
   font-weight:650;
   line-height:1.2;
 }
 
 .home-guided .guided-desk__artifact li i{
   color:var(--guided-quiet);
-  font-size:9px;
+  font-size:16px;
   font-style:normal;
   line-height:1.2;
   text-align:right;
@@ -1378,4 +1378,16 @@ body.home-flow-page .brand__motto-default{
     animation-duration:.01ms !important;
     transition-duration:.01ms !important;
   }
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .home-guided .guided-desk__topline>p span{font-size:7px}
+  .home-guided .guided-desk__facts dd{font-size:13px}
+  .home-guided .guided-desk__artifact>div>p strong{font-size:15px}
+  .home-guided .guided-desk__artifact li b{font-size:11px}
+  .home-guided .guided-desk__artifact li i{font-size:9px}
 }

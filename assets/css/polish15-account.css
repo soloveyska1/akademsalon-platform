@@ -348,7 +348,7 @@
 
 .is-account-route .account-summary article > p {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .is-account-route .status-dot {
@@ -754,7 +754,7 @@
 
 .is-account-route .account-benefit-card p {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.48;
 }
 
@@ -1434,7 +1434,7 @@
 
 .is-account-route .account-notice p {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -1498,7 +1498,7 @@
 .is-account-route .account-panel > p {
   max-width: 62ch;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.55;
 }
 
@@ -1778,7 +1778,7 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   font: inherit;
-  font-size: 12px;
+  font-size: 16px;
   white-space: nowrap;
 }
 
@@ -1915,7 +1915,7 @@
 .is-account-route .membership-pass__body p,
 .is-account-route .membership-pass__body > span {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -1941,7 +1941,7 @@
 
 .is-account-route .membership-pass dd {
   color: var(--text);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -2064,7 +2064,7 @@
 .is-account-route .plus-plan-card > p {
   margin-top: 13px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -2089,7 +2089,7 @@
 
 .is-account-route .plus-plan-card li span {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.45;
 }
 
@@ -2291,7 +2291,7 @@
 
 .is-account-route .deposit-ledger-card > div p {
   color: var(--night-quiet);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.5;
   text-transform: none;
   letter-spacing: normal;
@@ -3038,7 +3038,7 @@
   max-width: 74ch;
   margin-top: 16px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.6;
 }
 
@@ -3317,7 +3317,7 @@
 .is-account-route .account-case-production .case-timeline__list p {
   max-width: 72ch;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.6;
 }
 
@@ -3444,7 +3444,7 @@
 .is-account-route .account-case-production .message p {
   overflow-wrap: anywhere;
   color: var(--text);
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.52;
   white-space: pre-wrap;
 }
@@ -3838,7 +3838,7 @@
   max-width: 56ch;
   margin-top: 10px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.6;
 }
 
@@ -4518,7 +4518,7 @@
 .is-account-route .account-case-production .case-support p {
   margin-top: 6px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.6;
 }
 
@@ -4789,7 +4789,7 @@
 
 .is-account-route .account-nav__assurance p {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -4848,7 +4848,7 @@
 
 .is-account-route .account-summary article > span,
 .is-account-route .account-summary article > p {
-  font-size: 11px;
+  font-size: 16px;
 }
 
 .is-account-route .account-summary article > strong {
@@ -5572,7 +5572,7 @@
 
 .is-account-route .account-priority > div > p:last-child {
   max-width: 72ch;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .is-account-route .account-priority .line-link {
@@ -5978,7 +5978,7 @@
 .is-account-route .account-case-production .case-support--compact p {
   margin-top: 2px;
   color: var(--quiet);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.4;
 }
 
@@ -6528,7 +6528,7 @@
   max-width: 46ch;
   margin-top: 5px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.55;
 }
 
@@ -6676,7 +6676,7 @@
 .is-account-route .account-conversation-group > header p {
   margin-top: 3px;
   color: var(--quiet);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.4;
 }
 
@@ -6895,7 +6895,7 @@
 .is-account-route .account-conversation__body > strong {
   overflow: hidden;
   color: var(--ink);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -6904,7 +6904,7 @@
 .is-account-route .account-conversation__body > i {
   overflow: hidden;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 16px;
   font-style: normal;
   line-height: 1.45;
   text-overflow: ellipsis;
@@ -7101,7 +7101,7 @@
 .is-account-route .account-document-summary p {
   grid-column: 1 / -1;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.4;
 }
 
@@ -7457,7 +7457,7 @@
 .is-account-route .account-finance-summary__copy em {
   overflow: hidden;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
   font-style: normal;
   line-height: 1.35;
   text-overflow: ellipsis;
@@ -7831,7 +7831,7 @@
 
 .is-account-route .account-home-focus__primary .account-priority > div > p:last-child {
   max-width: 61ch;
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.55;
 }
 
@@ -8407,7 +8407,7 @@
 
 .is-account-route .account-settings-profile > div > p:last-child {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
 }
 
 .is-account-route .account-settings-profile__state {
@@ -8504,7 +8504,7 @@
 .is-account-route .account-setting-row p {
   max-width: 44ch;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.45;
 }
 
@@ -8606,14 +8606,14 @@
 
 .is-account-route .account-access-item__copy strong {
   color: var(--ink);
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
 }
 
 .is-account-route .account-access-item__copy p {
   overflow: hidden;
   color: var(--text);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.4;
   text-overflow: ellipsis;
 }
@@ -8668,7 +8668,7 @@
   color: var(--muted);
   background: var(--sheet);
   border-left: 2px solid var(--line-strong);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.45;
 }
 
@@ -9227,7 +9227,7 @@
 .is-account-route .cab-story-lead {
   max-width: 36ch;
   color: rgba(239, 229, 216, .7);
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.62;
 }
 
@@ -9309,7 +9309,7 @@
   max-width: 48ch;
   margin-bottom: 22px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.58;
 }
 
@@ -9445,7 +9445,7 @@
 .is-account-route .cab-alt > p {
   padding: 2px 0 10px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -9580,7 +9580,7 @@
 }
 
 .is-account-route .cab-login-pending p {
-  font-size: 11px;
+  font-size: 16px;
 }
 
 .is-account-route .cab-login-hint:not([hidden]) {
@@ -9640,7 +9640,7 @@
   max-width: 52ch;
   margin-top: 8px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.55;
 }
 
@@ -9879,7 +9879,7 @@
 
 .is-account-route .account-club-card .plus-intro__copy > p:first-child {
   max-width: 58ch;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .is-account-route .account-club-card .commerce-facts {
@@ -10390,7 +10390,7 @@
 .is-account-route .account-curator-row__copy strong {
   overflow: hidden;
   color: var(--ink);
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.35;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -10436,7 +10436,7 @@
 .is-account-route .account-curator-empty p {
   margin: 4px 0 0;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
 }
 
 .is-account-route .account-curator-add {
@@ -10988,7 +10988,7 @@
   max-width: 70ch;
   margin: 0;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 16px;
   line-height: 1.55;
 }
 
@@ -12051,4 +12051,51 @@
   .is-account-route .account-nav__more > summary > span {
     font-size: 11px;
   }
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .is-account-route .account-summary article > p{font-size:12px}
+  .is-account-route .account-benefit-card p{font-size:11px}
+  .is-account-route .account-notice p{font-size:11px}
+  .is-account-route .account-panel > p{font-size:12px}
+  .is-account-route .pay-requisites .ps-copy{font-size:12px}
+  .is-account-route .membership-pass__body p, .is-account-route .membership-pass__body > span{font-size:11px}
+  .is-account-route .membership-pass dd{font-size:11px}
+  .is-account-route .plus-plan-card > p{font-size:11px}
+  .is-account-route .plus-plan-card li span{font-size:11px}
+  .is-account-route .deposit-ledger-card > div p{font-size:11px}
+  /* ---------- проза внутри раздела ---------- */ .is-account-route .account-case-production .case-sec__lead{font-size:12px}
+  .is-account-route .account-case-production .case-timeline__list p{font-size:11px}
+  .is-account-route .account-case-production .message p{font-size:13px}
+  .is-account-route .case-state__body p{font-size:12px}
+  .is-account-route .account-case-production .case-support p{font-size:12px}
+  .is-account-route .account-nav__assurance p{font-size:12px}
+  .is-account-route .account-summary article > span, .is-account-route .account-summary article > p{font-size:11px}
+  .is-account-route .account-priority > div > p:last-child{font-size:12px}
+  .is-account-route .account-case-production .case-support--compact p{font-size:11px}
+  .is-account-route .account-case-production .case-pay__settled p{font-size:12px}
+  .is-account-route .account-order-group > header p, .is-account-route .account-conversation-group > header p{font-size:11px}
+  .is-account-route .account-conversation__body > strong{font-size:14px}
+  .is-account-route .account-conversation__body > i{font-size:12px}
+  .is-account-route .account-document-summary p{font-size:11px}
+  .is-account-route .account-finance-summary__copy em{font-size:11px}
+  .is-account-route .account-home-focus__primary .account-priority > div > p:last-child{font-size:12px}
+  .is-account-route .account-settings-profile > div > p:last-child{font-size:11px}
+  .is-account-route .account-setting-row p{font-size:11px}
+  .is-account-route .account-access-item__copy strong{font-size:12px}
+  .is-account-route .account-access-item__copy p{font-size:12px}
+  .is-account-route .account-setting-row p.account-access-notice{font-size:12px}
+  .is-account-route .cab-story-lead{font-size:13px}
+  .is-account-route .cab-auth-head > p:last-child{font-size:12px}
+  .is-account-route .cab-alt > p{font-size:11px}
+  .is-account-route .cab-login-pending p{font-size:11px}
+  .is-account-route .account-loader h1 + p{font-size:12px}
+  .is-account-route .account-club-card .plus-intro__copy > p:first-child{font-size:12px}
+  .is-account-route .account-curator-row__copy strong{font-size:13px}
+  .is-account-route .account-curator-empty p{font-size:11px}
+  .is-account-route .club-blank__options > p{font-size:11px}
 }

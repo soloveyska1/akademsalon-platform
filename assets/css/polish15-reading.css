@@ -446,7 +446,7 @@ body.reading-page::before{
   padding:12px 14px;
   border-right:1px solid var(--line);
   border-bottom:1px solid var(--line);
-  font-size:13px;
+  font-size:16px;
   line-height:1.5;
   text-align:left;
   vertical-align:top;
@@ -593,7 +593,7 @@ body.reading-page::before{
 
 .article-card p{
   color:var(--muted);
-  font-size:11px;
+  font-size:16px;
 }
 
 .article-card footer{
@@ -1142,7 +1142,7 @@ body.reading-page::before{
 }
 .read-cta p{
   margin:0;
-  font-size:15px;
+  font-size:16px;
   line-height:1.5;
   color:var(--ink);
 }
@@ -1188,4 +1188,14 @@ body.reading-page::before{
     radial-gradient(circle at 8% 8%,rgba(255,238,208,.16),transparent 24%),
     radial-gradient(circle at 92% 16%,rgba(180,148,88,.10),transparent 24%),
     repeating-linear-gradient(0deg,rgba(242,236,223,.02) 0 1px,transparent 1px 4px);
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .source-document th, .source-document td{font-size:13px}
+  .article-card p{font-size:11px}
+  .read-cta p{font-size:15px}
 }

@@ -271,7 +271,7 @@ body.concept-shell::before{
 }
 .overlay__header p{
   margin-top:8px;
-  font-size:14px;
+  font-size:16px;
   color:var(--ink-soft);
 }
 
@@ -696,7 +696,7 @@ body.concept-shell::before{
   max-width:44ch;
   margin-top:8px;
   color:var(--ink-soft);
-  font-size:14.5px;
+  font-size:16px;
   line-height:1.55;
 }
 .search-empty button{
@@ -1066,7 +1066,7 @@ body .cookiebar h2{
 body .cookiebar > p{
   margin:0 0 16px;
   color:var(--ink-soft);
-  font-size:14px;
+  font-size:16px;
   line-height:1.55;
 }
 body .cookiebar .cb-actions{
@@ -3854,7 +3854,7 @@ body .site-header--account .header-menu-button{display:grid}
 
 .overlay--search .search-empty p{
   margin:0;
-  font-size:12.5px;
+  font-size:16px;
 }
 
 .overlay--search .search-empty a{
@@ -3991,4 +3991,15 @@ body .site-header--account .header-menu-button{display:grid}
     radial-gradient(circle at 8% 8%,rgba(255,238,208,.16),transparent 24%),
     radial-gradient(circle at 92% 16%,rgba(180,148,88,.10),transparent 24%),
     repeating-linear-gradient(0deg,rgba(242,236,223,.02) 0 1px,transparent 1px 4px);
+}
+
+/* MOBILE-FIRST · десктопный откат кеглей основного текста (OUT-008) */
+/* База выше теперь мобильная: основной текст 16px. Здесь десктоп
+   получает прежние кегли обратно. Блок стоит последним в файле,
+   поэтому выигрывает по порядку при равной специфичности. */
+@media (min-width:921px){
+  .overlay__header p{font-size:14px}
+  .search-empty p{font-size:14.5px}
+  body .cookiebar > p{font-size:14px}
+  .overlay--search .search-empty p{font-size:12.5px}
 }
