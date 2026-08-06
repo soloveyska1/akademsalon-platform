@@ -1188,7 +1188,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
   .home-case .case-hero__lead{
     padding-left:15px;
-    font-size:14px;
+    font-size:16px;
   }
 
   .home-case .case-prompt__toggle{
@@ -1203,7 +1203,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   }
 
   .home-case .case-prompt__toggle strong{
-    font-size:20px;
+    font-size:21px;
   }
 
   .home-case .case-prompt__field{
@@ -1291,7 +1291,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   }
 
   .home-case .case-stages strong{
-    font-size:17px;
+    font-size:16px;
   }
 
   .home-case .case-stage-panel{
@@ -1330,7 +1330,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   }
 
   body .resume-card.is-rail-resume .resume-card__message strong{
-    font-size:13.5px;
+    font-size:16px;
   }
 }
 
@@ -1598,7 +1598,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
   .home-case .case-result-context>strong{
     grid-column:2;
-    font-size:15px;
+    font-size:16px;
   }
 
   .home-case .case-result-context>button{
@@ -2729,7 +2729,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   }
 
   .home-case .case-stage-panel__note{
-    font-size:10px;
+    font-size:11px;
   }
 
   .home-case .case-dossier::after{
@@ -2758,7 +2758,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
   .home-case .case-terms__ledger li>strong{
     margin-top:4px;
-    font-size:20px;
+    font-size:21px;
   }
 
   .home-case .case-terms__care{
@@ -2773,7 +2773,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   .home-case .case-faq .faq-item summary{
     min-height:72px;
     padding:19px 48px 19px 18px;
-    font-size:17px;
+    font-size:16px;
   }
 
   .home-case .case-faq .faq-item p{
@@ -3281,7 +3281,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   .home-case .case-faq .faq-item summary{
     min-height:78px;
     padding:21px 48px 21px 48px;
-    font-size:17px;
+    font-size:16px;
   }
 
   .home-case .case-faq .faq-item summary::before,
@@ -3511,7 +3511,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
   .home-case .case-hero h1>em{
     margin-top:10px;
-    font-size:20px;
+    font-size:21px;
   }
 
   .home-case .case-hero__lead,
@@ -3869,11 +3869,11 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
   .home-case .case-confidence strong,
   .home-case .case-confidence li:first-child strong{
-    font-size:15px;
+    font-size:16px;
   }
 
   .home-case .case-confidence span{
-    font-size:9.5px;
+    font-size:11px;
   }
 
   .home-case .case-ecosystem .case-section-head h2{
@@ -3883,7 +3883,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
   .home-case .case-ecosystem .case-section-head>p{
     padding-left:14px;
-    font-size:13px;
+    font-size:16px;
     line-height:1.5;
   }
 
@@ -4118,7 +4118,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
   .home-case .case-process__mobile-note span{
     color:var(--story-muted);
-    font-size:10.5px;
+    font-size:11px;
     line-height:1.45;
   }
 
@@ -4142,7 +4142,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   }
 
   .home-case .case-dossier__copy>p:not(.eyebrow){
-    font-size:13px;
+    font-size:14px;
   }
 
   .home-case .case-process button{
@@ -4155,7 +4155,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
   }
 
   .home-case .case-file__current strong{
-    font-size:27px;
+    font-size:26px;
   }
 
   .home-case .case-file__control p{
@@ -4829,7 +4829,7 @@ body .resume-card.is-rail-resume .resume-card__message strong{
 
   .case-scope-drawer__lead{
     padding-block:18px 15px;
-    font-size:12.5px;
+    font-size:16px;
   }
 
   .case-scope-drawer__list{
@@ -4869,8 +4869,8 @@ body .resume-card.is-rail-resume .resume-card__message strong{
     gap:5px;
   }
 
-  .case-scope-drawer__list button strong{font-size:20px}
-  .case-scope-drawer__list button small{font-size:10px}
+  .case-scope-drawer__list button strong{font-size:21px}
+  .case-scope-drawer__list button small{font-size:11px}
 
   .case-scope-drawer__list button>i{
     width:30px;
@@ -6217,7 +6217,7 @@ body .home-case .hero-act__note{
   }
 
   .home-case .case-hero__folio-card strong{
-    font-size:20px;
+    font-size:21px;
   }
 
   .home-case .case-hero__accolade{
@@ -6240,7 +6240,7 @@ body .home-case .hero-act__note{
   html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-hero__lead{
     margin-top:17px;
     padding-left:15px;
-    font-size:14px;
+    font-size:16px;
     line-height:1.48;
   }
 
@@ -6250,7 +6250,7 @@ body .home-case .hero-act__note{
 
   body .home-case .hero-act__cta{
     min-height:58px;
-    font-size:15px;
+    font-size:16px;
   }
 
   body .home-case .hero-act__facts>div{
@@ -6283,7 +6283,7 @@ body .home-case .hero-act__note{
   }
 
   .home-case .case-scope-deck__head strong{
-    font-size:25px;
+    font-size:26px;
   }
 
   .home-case .case-scope-index{
@@ -6329,13 +6329,13 @@ body .home-case .hero-act__note{
   }
 
   .home-case .case-scope-choice__copy strong{
-    font-size:19px;
+    font-size:18px;
   }
 
   .home-case .case-scope-choice__copy em{
     margin-top:auto;
     padding-top:8px;
-    font-size:10px;
+    font-size:11px;
   }
 
   .home-case .case-scope-choice__arrow{
@@ -6391,17 +6391,17 @@ body .home-case .hero-act__note{
 
   body .home-case .hero-act__folio{
     min-height:27px;
-    font-size:7.5px;
+    font-size:11px;
   }
 
   body .home-case .hero-act__cta{
     min-height:56px;
     padding:13px 15px;
-    font-size:14px;
+    font-size:16px;
   }
 
   body .home-case .hero-act__facts dd{
-    font-size:13px;
+    font-size:16px;
   }
 
   .home-case .case-scope-index li{
@@ -6410,6 +6410,6 @@ body .home-case .hero-act__note{
   }
 
   .home-case .case-scope-deck__head strong{
-    font-size:23px;
+    font-size:21px;
   }
 }

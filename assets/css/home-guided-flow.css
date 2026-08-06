@@ -1059,7 +1059,7 @@ body.home-flow-page .brand__motto-default{
 
   .home-guided .guided-desk__kicker{
     margin-bottom:9px;
-    font-size:9px;
+    font-size:11px;
     letter-spacing:.12em;
   }
 
@@ -1070,7 +1070,7 @@ body.home-flow-page .brand__motto-default{
 
   .home-guided .guided-desk__lead{
     margin-top:13px;
-    font-size:14px;
+    font-size:16px;
     line-height:1.43;
   }
 
@@ -1115,14 +1115,14 @@ body.home-flow-page .brand__motto-default{
 
   .home-guided .guided-desk__picker strong{
     font-family:var(--sans);
-    font-size:13px;
+    font-size:14px;
     font-weight:650;
     white-space:normal;
   }
 
   .home-guided .guided-desk__picker small{
     display:block;
-    font-size:10.5px;
+    font-size:11px;
     line-height:1.2;
     text-overflow:clip;
     white-space:normal;
@@ -1144,11 +1144,11 @@ body.home-flow-page .brand__motto-default{
   }
 
   .home-guided .guided-desk__prompt p{
-    font-size:22px;
+    font-size:21px;
   }
 
   .home-guided .guided-desk__prompt small{
-    font-size:10.5px;
+    font-size:11px;
   }
 
   .home-guided .guided-desk__folio{
@@ -1204,7 +1204,7 @@ body.home-flow-page .brand__motto-default{
   }
 
   .home-guided .guided-desk__meta dt{
-    font-size:10px;
+    font-size:11px;
   }
 
   .home-guided .guided-desk__artifact summary{
@@ -1259,7 +1259,7 @@ body.home-flow-page .brand__motto-default{
   }
 
   .home-guided .guided-desk__trust strong{
-    font-size:13px;
+    font-size:14px;
     overflow:visible;
     text-overflow:clip;
     white-space:normal;
@@ -1335,7 +1335,7 @@ body.home-flow-page .brand__motto-default{
 
   .home-guided .guided-desk__lead{
     margin-top:9px;
-    font-size:12.5px;
+    font-size:16px;
     line-height:1.34;
   }
 

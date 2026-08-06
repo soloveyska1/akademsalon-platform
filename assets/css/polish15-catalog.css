@@ -1398,7 +1398,7 @@
   .p15-catalog .pricecard__fine {
     margin-top: 8px;
     padding-top: 8px;
-    font-size: 10.5px;
+    font-size: 11px;
   }
 
   .p15-catalog .page-head--pick h1 {
@@ -1407,7 +1407,7 @@
 
   .p15-catalog .page-head--pick .page-head__lead {
     margin-top: 10px;
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .p15-catalog .pickrow + .pickrow {
@@ -1425,7 +1425,7 @@
   .p15-catalog .pick-chip {
     min-height: 40px;
     padding: 0 13px;
-    font-size: 12.5px;
+    font-size: 14px;
   }
 
   .p15-catalog .pricecard {
@@ -1755,7 +1755,7 @@
 
   .p15-catalog .section-head > p,
   .p15-service .section-head > p {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .p15-service .service-hero,
@@ -1830,7 +1830,7 @@
   }
 
   .p15-service .deliverable-grid p {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .p15-service .vertical-process li,
@@ -1845,7 +1845,7 @@
 
   .p15-service .vertical-process p {
     margin-top: 8px;
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .p15-service .price-composition__main {
@@ -1860,7 +1860,7 @@
   }
 
   .p15-service .service-final > p {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .p15-catalog .catalog-toolbar,
@@ -1910,7 +1910,7 @@
   }
 
   .p15-catalog .choice-help > p {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   /* Телефон: две колонки вместо четырёх. Название занимает всю ширину,
@@ -2046,7 +2046,7 @@
   .p15-service .service-facts span,
   .p15-service .service-facts strong,
   .p15-service .service-facts > p {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .p15-service .comment-example {
@@ -2054,7 +2054,7 @@
   }
 
   .p15-service .comment-example blockquote {
-    font-size: 20px;
+    font-size: 21px;
   }
 
   .p15-service .comment-example ol {
@@ -2088,7 +2088,7 @@
   .p15-catalog .section-head h2,
   .p15-service .section-head h2,
   .p15-catalog .calm-cta h2 {
-    font-size: 32px;
+    font-size: 31px;
   }
 
   .p15-catalog .choice-help {
@@ -2606,7 +2606,7 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
   .p15-catalog .page-head__copy{padding-right:0;border-right:0}
   .p15-catalog .page-head__side{padding:0}
   .p15-catalog .page-head h1{max-width:11ch;font-size:clamp(42px,10.5vw,58px)}
-  .p15-catalog .page-head__lead{font-size:14px}
+  .p15-catalog .page-head__lead{font-size:16px}
   .p15-catalog .catalog-route-index{
     display:grid!important;
     width:100%;
@@ -2686,7 +2686,7 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
     min-height:250px;
     grid-column:1/-1;
   }
-  .p15-catalog .service-card-grid--catalog .service-card:nth-child(-n+2) h2{font-size:29px}
+  .p15-catalog .service-card-grid--catalog .service-card:nth-child(-n+2) h2{font-size:31px}
   .p15-catalog .catalog-resume{
     grid-template-columns:34px minmax(0,1fr);
   }
@@ -2728,14 +2728,14 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
     font-size:inherit;
     white-space:normal;
   }
-  body .p15-catalog .catalog-resume .resume-card__message strong{font-size:14px}
-  body .p15-catalog .catalog-resume .resume-card__detail{font-size:10.5px}
+  body .p15-catalog .catalog-resume .resume-card__message strong{font-size:16px}
+  body .p15-catalog .catalog-resume .resume-card__detail{font-size:11px}
   body .p15-catalog .catalog-resume .resume-card__action{
     position:static!important;
     width:auto;
     min-height:44px;
     padding:12px 14px;
-    font-size:10.5px;
+    font-size:11px;
   }
   body .p15-catalog .catalog-resume .resume-card__action-label{
     position:static!important;
@@ -2841,8 +2841,8 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
     padding:15px 16px;
   }
   .p15-service .deliverable-grid article>span{grid-row:1/3;padding-top:4px}
-  .p15-service .deliverable-grid h3{grid-column:2;margin:0;font-size:19px}
-  .p15-service .deliverable-grid p{grid-column:2;margin:3px 0 0;font-size:12px}
+  .p15-service .deliverable-grid h3{grid-column:2;margin:0;font-size:18px}
+  .p15-service .deliverable-grid p{grid-column:2;margin:3px 0 0;font-size:16px}
   .p15-service .vertical-process li{padding:15px 0}
   .p15-service .price-composition{gap:0}
   .p15-service .price-composition__main,
@@ -2853,7 +2853,7 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
 @media(max-width:620px){
   .p15-service .service-hero__copy{padding-left:14px}
   .p15-service .service-hero__actions{margin-top:2px}
-  .p15-service .service-hero__action-note{font-size:8px!important}
+  .p15-service .service-hero__action-note{font-size:11px!important}
   .p15-service .service-facts{padding:10px 13px}
   .p15-service .comment-example{padding:18px}
   .p15-service .comment-example blockquote{font-size:18px}
@@ -3005,7 +3005,7 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
   .p15-service .service-hero__actions{gap:5px}
   .p15-service .service-hero__action-note{
     margin-top:0;
-    font-size:8px!important;
+    font-size:11px!important;
   }
   .p15-service .service-facts{padding:13px 15px}
   .p15-service .service-facts>div,
@@ -3013,7 +3013,7 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
     grid-template-columns:minmax(0,1fr) auto;
     padding:12px 0;
   }
-  .p15-service .service-facts span{font-size:9px}
+  .p15-service .service-facts span{font-size:11px}
   .p15-service .service-facts strong{font-size:14px}
   .p15-service .deliverable-grid{grid-template-columns:1fr;gap:10px}
   .p15-service .deliverable-grid article,
@@ -3057,8 +3057,8 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
     padding:15px 16px;
   }
   .p15-service .deliverable-grid article>span{grid-row:1/3;padding-top:4px}
-  .p15-service .deliverable-grid h3{grid-column:2;margin:0;font-size:19px}
-  .p15-service .deliverable-grid p{grid-column:2;margin:3px 0 0;font-size:12px}
+  .p15-service .deliverable-grid h3{grid-column:2;margin:0;font-size:18px}
+  .p15-service .deliverable-grid p{grid-column:2;margin:3px 0 0;font-size:16px}
 }
 
 @media(max-width:620px){
@@ -3084,7 +3084,7 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
 @media(max-width:620px){
   .p15-catalog .page-head{gap:22px;padding-block:30px 28px}
   .p15-catalog .page-head h1{max-width:12ch;font-size:42px}
-  .p15-catalog .page-head__lead{font-size:14px}
+  .p15-catalog .page-head__lead{font-size:16px}
   .p15-catalog .catalog-route-index{
     display:grid!important;
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -3105,11 +3105,11 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
   }
   .p15-catalog .catalog-route-index__icon{width:32px;height:32px}
   .p15-catalog .catalog-route-index a>span:nth-child(2){gap:3px}
-  .p15-catalog .catalog-route-index small{font-size:9px}
+  .p15-catalog .catalog-route-index small{font-size:11px}
   .p15-catalog .catalog-route-index strong{font-size:14px;line-height:1.15}
   .p15-catalog .catalog-route-index em,
   .p15-catalog .catalog-route-index a>i{display:none}
-  .p15-catalog .catalog-route-hint{margin:9px 0 0;font-size:10px}
+  .p15-catalog .catalog-route-hint{margin:9px 0 0;font-size:11px}
   .p15-catalog .catalog-directory-head{padding-block:30px 18px}
   .p15-catalog .service-card-grid--catalog .service-card,
   .p15-catalog .service-card-grid--catalog .service-card:nth-child(-n+2){min-height:238px}
@@ -3166,7 +3166,7 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
   body .p15-catalog .catalog-resume .resume-card__action{
     display:none!important;
   }
-  .p15-catalog .catalog-route-index small{font-size:9px}
+  .p15-catalog .catalog-route-index small{font-size:11px}
   .p15-catalog .catalog-route-choice,
   .p15-catalog .catalog-route-choice:hover,
   .p15-catalog .catalog-route-choice:focus-visible{

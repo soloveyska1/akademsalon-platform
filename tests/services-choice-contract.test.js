@@ -144,10 +144,20 @@ test('fresh services state requires one selected situation before one continuati
     /catalog-route-index small\{font-size:7px\}/,
     'mobile stage labels must remain readable'
   );
+  /* Пол поднят с 9px до 11px в рамках мобильной шкалы OUT-008 (11/12/14/16/18/
+     21/26/31). Смысл контракта не менялся: метки этапов остаются читаемыми и
+     планшет с телефоном по-прежнему делят ОДНО значение — оба брейкпоинта,
+     620px и 920px, несут 11px. Заморожено именно это, а не число 9. */
+  const catalogCss = read('assets/css/polish15-catalog.css');
   assert.match(
-    read('assets/css/polish15-catalog.css'),
-    /@media\(max-width:920px\)[\s\S]*?catalog-route-index small\{font-size:9px\}/,
-    'tablet and phone stage labels must share the 9px floor'
+    catalogCss,
+    /@media\(max-width:920px\)[\s\S]*?catalog-route-index small\{font-size:11px\}/,
+    'tablet and phone stage labels must share the 11px floor'
+  );
+  assert.match(
+    catalogCss,
+    /@media\(max-width:620px\)[\s\S]*?catalog-route-index small\{font-size:11px\}/,
+    'the phone breakpoint must carry the same floor, not a smaller one'
   );
 });
 

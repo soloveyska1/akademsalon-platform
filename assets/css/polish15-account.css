@@ -1169,7 +1169,7 @@
   }
 
   .is-account-route .account-main__head p:not(.eyebrow) {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .is-account-route .account-summary {
@@ -1187,7 +1187,7 @@
 
   .is-account-route .account-summary article > span,
   .is-account-route .account-summary article > p {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .is-account-route .account-orders > header,
@@ -2708,7 +2708,7 @@
 
   .is-account-route .account-doc-list__mark,
   .is-account-route .account-notice__mark {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   /* ссылка-строка на телефоне становится нормальной областью касания */
@@ -3883,7 +3883,7 @@
   }
 
   .is-account-route .account-case-production .case-sum {
-    font-size: 24px;
+    font-size: 26px;
   }
 }
 
@@ -3897,7 +3897,7 @@
   }
 
   .is-account-route .account-case-production .case-file__head h2 {
-    font-size: 25px;
+    font-size: 26px;
     line-height: 1.14;
   }
 
@@ -4007,7 +4007,7 @@
   .is-account-route .account-case-production .case-field textarea,
   .is-account-route .account-case-production #reviewForm textarea,
   .is-account-route .account-case-production .case-consent {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .is-account-route .account-case-production .case-spec__no,
@@ -4064,7 +4064,7 @@
 /* ---------- ≤390: заголовок дела не выламывается ---------- */
 @media (max-width: 390px) {
   .is-account-route .account-case-production .case-file__head h2 {
-    font-size: 30px;
+    font-size: 31px;
   }
 
   .is-account-route .account-case-production .case-sum {
@@ -4545,7 +4545,7 @@
   }
 
   .is-account-route .account-case-production .case-overview__count {
-    font-size: 22px;
+    font-size: 21px;
   }
 }
 
@@ -5792,7 +5792,7 @@
   }
 
   .is-account-route [data-account-brief] article > strong {
-    font-size: 22px;
+    font-size: 21px;
   }
 
   .is-account-route [data-account-brief] article > p {
@@ -5811,7 +5811,7 @@
   }
 
   .is-account-route .account-priority strong {
-    font-size: 20px;
+    font-size: 21px;
   }
 
   .is-account-route .account-priority .account-notice__acts {
@@ -7017,7 +7017,7 @@
   .is-account-route .account-conversation__mark {
     width: 30px;
     height: 30px;
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .is-account-route .account-conversation__meta {
@@ -7343,7 +7343,7 @@
   }
 
   .is-account-route .account-document-summary strong {
-    font-size: 20px;
+    font-size: 21px;
   }
 
   .is-account-route .account-document-summary p {
@@ -7717,7 +7717,7 @@
   }
 
   .is-account-route .account-finance-summary__copy strong {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .is-account-route .account-finance-summary__copy em {
@@ -8088,7 +8088,7 @@
   }
 
   .is-account-route [data-account-tab="home"] .account-summary article > strong {
-    font-size: 23px;
+    font-size: 21px;
   }
 
   .is-account-route .account-home-focus__primary .account-priority {
@@ -8749,7 +8749,7 @@
   }
 
   .is-account-route .account-support-primary h2 {
-    font-size: 27px;
+    font-size: 26px;
   }
 
   .is-account-route .account-support-reception {
@@ -8773,7 +8773,7 @@
   .is-account-route .account-settings-profile__avatar {
     width: 46px;
     height: 50px;
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .is-account-route .account-settings-profile h2 {
@@ -10073,7 +10073,7 @@
   }
 
   .is-account-route .account-club-card > header h2 {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .is-account-route .account-club-card .commerce-facts {
@@ -10654,7 +10654,7 @@
   }
 
   .is-account-route .account-club-curator > header h2 {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .is-account-route .account-curator-agenda {
@@ -10738,7 +10738,7 @@
   }
 
   .is-account-route .account-curator-reminders small {
-    font-size: 9px;
+    font-size: 11px;
   }
 }
 
@@ -11205,7 +11205,7 @@
 
   .is-account-route .club-blank .builder-option b {
     margin-top: 4px;
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .is-account-route .club-blank .builder-option small {
@@ -11839,7 +11839,7 @@
   .is-account-route .account-nav__more > summary > span {
     max-width: 100%;
     overflow: hidden;
-    font-size: 10.5px;
+    font-size: 11px;
     line-height: 1.15;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -11852,7 +11852,7 @@
     min-width: 17px;
     height: 17px;
     padding: 0 4px;
-    font-size: 9px;
+    font-size: 11px;
     line-height: 17px;
   }
 
@@ -11966,7 +11966,7 @@
 
   .is-account-route .account-nav__more-panel .account-nav__more-option > span {
     overflow: hidden;
-    font-size: 11.5px;
+    font-size: 12px;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -12031,7 +12031,7 @@
 
   .is-cabinet-demo .account-demo-flag strong {
     flex: 0 0 auto;
-    font-size: 9.5px;
+    font-size: 11px;
   }
 
   .is-cabinet-demo .account-demo-flag span {
@@ -12049,6 +12049,6 @@
 @media (max-width: 360px) {
   .is-account-route .account-nav nav > .account-nav__group > button > span,
   .is-account-route .account-nav__more > summary > span {
-    font-size: 9.75px;
+    font-size: 11px;
   }
 }

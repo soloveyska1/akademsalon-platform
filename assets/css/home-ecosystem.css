@@ -1240,7 +1240,7 @@
   .home-case .case-hero__copy>.eyebrow{
     max-width:30ch;
     margin-bottom:12px;
-    font-size:9px;
+    font-size:11px;
   }
   .home-case .case-hero h1{
     max-width:12ch;
@@ -1249,7 +1249,7 @@
   }
   .home-case .case-hero__lead{
     margin:15px 0 20px;
-    font-size:14px;
+    font-size:16px;
     line-height:1.5;
   }
   .home-case .case-prompt{
@@ -1260,7 +1260,7 @@
     display:block;
     margin-bottom:7px;
   }
-  .home-case .case-prompt>label span{font-size:12.5px}
+  .home-case .case-prompt>label span{font-size:14px}
   .home-case .case-prompt>label small{display:none}
   .home-case .case-prompt__field{grid-template-columns:1fr}
   .home-case .case-prompt textarea{
@@ -1288,7 +1288,7 @@
   .home-case .case-continuity__grid a{min-height:136px;padding:18px}
   .home-case .case-prompt__privacy{
     margin-top:9px;
-    font-size:9.5px;
+    font-size:11px;
   }
   .home-case .case-route{
     padding-bottom:16px;
@@ -1296,18 +1296,18 @@
   }
   .home-case .case-route::before{right:20px;width:56px;height:22px}
   .home-case .case-route__head{min-height:64px;padding:13px 15px}
-  .home-case .case-route__head div strong{font-size:19px}
-  .home-case .case-route__status{font-size:8px}
+  .home-case .case-route__head div strong{font-size:18px}
+  .home-case .case-route__status{font-size:11px}
   .home-case .case-route__steps{padding-inline:15px}
   .home-case .case-route__steps li{min-height:62px;padding-left:27px}
   .home-case .case-route__steps strong{font-size:16px}
   .home-case .case-route__reason{padding-inline:15px}
   .home-case .case-route__reason div{grid-template-columns:75px 1fr;padding-inline:8px}
-  .home-case .case-route__reason dt{font-size:8.5px}
-  .home-case .case-route__reason dd{font-size:10.5px}
+  .home-case .case-route__reason dt{font-size:11px}
+  .home-case .case-route__reason dd{font-size:11px}
   .home-case .case-route__confirm{padding-inline:15px}
   .home-case .case-route__actions{padding-inline:15px}
-  .home-case .case-route__human{margin-inline:15px;font-size:9.5px}
+  .home-case .case-route__human{margin-inline:15px;font-size:11px}
   .home-case .case-trust{
     padding-inline:var(--case-gutter);
     grid-template-columns:1fr 1fr;
@@ -1318,8 +1318,8 @@
     grid-template-columns:auto 1fr;
     gap:7px;
   }
-  .home-case .case-trust strong{font-size:13px}
-  .home-case .case-trust small{font-size:9px}
+  .home-case .case-trust strong{font-size:14px}
+  .home-case .case-trust small{font-size:11px}
   .home-case .resume-card{
     grid-template-columns:auto 1fr;
     gap:14px;
@@ -1327,8 +1327,8 @@
     padding:15px;
   }
   .home-case .resume-card__seal{width:42px;height:42px}
-  .home-case .resume-card h2{font-size:17px}
-  .home-case .resume-card p:not(.eyebrow){font-size:9.5px}
+  .home-case .resume-card h2{font-size:16px}
+  .home-case .resume-card p:not(.eyebrow){font-size:11px}
   .home-case .resume-card .button{grid-column:1/-1;width:100%}
   .home-case .case-section-head{margin-bottom:29px}
   .home-case .case-section-head h2,
@@ -1337,7 +1337,7 @@
   .home-case .case-final h2{
     font-size:clamp(34px,10vw,43px);
   }
-  .home-case .case-section-head>p{font-size:13px}
+  .home-case .case-section-head>p{font-size:16px}
   .home-case .case-stages{
     margin-inline:calc(var(--case-gutter) * -1);
     padding-inline:var(--case-gutter);
@@ -1358,7 +1358,7 @@
   .home-case .case-stage-panel__intro{gap:11px}
   .home-case .case-stage-panel__intro h3{
     margin-block:5px 10px;
-    font-size:29px;
+    font-size:31px;
   }
   .home-case .case-stage-panel__intro p:not(.eyebrow){font-size:12px}
   .home-case .case-stage-panel__routes>a{
@@ -1367,18 +1367,18 @@
     grid-template-columns:1fr;
   }
   .home-case .case-stage-panel__routes strong{font-size:16px}
-  .home-case .case-stage-panel__routes span{margin-top:4px;font-size:10px}
+  .home-case .case-stage-panel__routes span{margin-top:4px;font-size:11px}
   .home-case .case-dossier__grid{gap:38px}
-  .home-case .case-dossier__copy>p:not(.eyebrow){font-size:13px}
+  .home-case .case-dossier__copy>p:not(.eyebrow){font-size:14px}
   .home-case .case-dossier__links{align-items:stretch;flex-direction:column}
   .home-case .case-dossier__links .button{width:100%}
   .home-case .case-dossier__links .line-link{align-self:center}
   .home-case .case-file{box-shadow:7px 7px 0 rgba(255,255,255,.07)}
-  .home-case .case-file>header{padding-inline:12px;font-size:7.5px}
+  .home-case .case-file>header{padding-inline:12px;font-size:11px}
   .home-case .case-file__current{margin:12px;padding:12px}
   .home-case .case-file ol{margin:0 12px 12px}
   .home-case .case-file li{grid-template-columns:24px 1fr auto;gap:6px}
-  .home-case .case-file li small{font-size:8.5px}
+  .home-case .case-file li small{font-size:11px}
   .home-case .case-file>footer{
     align-items:flex-start;
     flex-direction:column;
@@ -1387,7 +1387,7 @@
   }
   .home-case .commission0-feature{display:block}
   .home-case .case-proof{gap:38px}
-  .home-case .case-proof__copy>p:not(.eyebrow){font-size:13px}
+  .home-case .case-proof__copy>p:not(.eyebrow){font-size:14px}
   .home-case .case-proof__facts{margin-top:24px}
   .home-case .case-proof__review{padding:17px;box-shadow:6px 6px 0 var(--paper-2)}
   .home-case .case-proof__review img{max-height:300px}
@@ -1677,7 +1677,7 @@
   .home-case .case-route__head-actions>button{
     min-height:29px;
     padding-inline:7px;
-    font-size:8.5px;
+    font-size:11px;
   }
 
   .home-case .case-route__steps,
@@ -1701,12 +1701,12 @@
   .home-case .case-route__actions>.button{
     min-height:47px;
     padding-inline:8px;
-    font-size:11.5px;
+    font-size:12px;
   }
 
   .home-case .case-route__human{
     margin-inline:13px;
-    font-size:10px;
+    font-size:11px;
   }
 }
 
@@ -2051,7 +2051,7 @@
 
   .home-case .case-hero__lead{
     margin:15px 0 18px;
-    font-size:14px;
+    font-size:16px;
     line-height:1.5;
   }
 
@@ -2076,13 +2076,13 @@
   }
 
   .home-case .case-prompt__privacy{
-    font-size:9.5px;
+    font-size:11px;
   }
 
   .home-case .case-assurances{
     gap:7px 14px;
     margin-top:13px;
-    font-size:10px;
+    font-size:11px;
   }
 
   .home-case .case-assurances li{
@@ -2413,7 +2413,7 @@
   .home-case .case-hero__copy>.eyebrow{
     max-width:none;
     margin-bottom:12px;
-    font-size:8.5px;
+    font-size:11px;
   }
 
   .home-case .case-hero h1,
@@ -2427,7 +2427,7 @@
   .home-case .case-hero__lead,
   html.has-js .home-case .case-hero__inner:not([data-route-visible="true"]) .case-hero__lead{
     margin-top:14px;
-    font-size:13.5px;
+    font-size:16px;
     line-height:1.5;
   }
 
@@ -2454,7 +2454,7 @@
   }
 
   .home-case .case-prompt__privacy{
-    font-size:9.5px;
+    font-size:11px;
   }
 
   .home-case .case-assurances,
@@ -2463,7 +2463,7 @@
     justify-content:flex-start;
     gap:6px 15px;
     margin-top:11px;
-    font-size:9.5px;
+    font-size:11px;
   }
 
   .home-case .case-assurances li{
@@ -2868,7 +2868,7 @@ html:not(.has-js) .home-case .case-hero__inner{
   .home-case .case-scope-trigger>strong{
     max-width:14ch;
     margin-top:22px;
-    font-size:27px;
+    font-size:26px;
   }
 
   .home-case .case-scope-trigger__action{
@@ -2886,12 +2886,12 @@ html:not(.has-js) .home-case .case-hero__inner{
   }
 
   .case-scope-drawer__head h2{
-    font-size:25px;
+    font-size:26px;
   }
 
   .case-scope-drawer__lead{
     padding:16px 18px 13px;
-    font-size:12px;
+    font-size:16px;
   }
 
   .case-scope-drawer__list{
@@ -2913,7 +2913,7 @@ html:not(.has-js) .home-case .case-hero__inner{
 
   .home-case .case-route__head-actions>button{
     max-width:78px;
-    font-size:8.5px;
+    font-size:11px;
   }
 }
 
@@ -3176,7 +3176,7 @@ html.has-js .home-case .case-scope-trigger::before{
   }
 
   .home-case .case-prompt__toggle strong{
-    font-size:19px;
+    font-size:18px;
   }
 
   .home-case .case-prompt__body{
@@ -3546,7 +3546,7 @@ html.has-js .home-case .case-scope-trigger::before{
 @media(max-width:620px){
   .home-case .case-hero__accolade{
     margin-bottom:13px;
-    font-size:7.2px;
+    font-size:11px;
     line-height:1.65;
     white-space:normal;
   }
@@ -3569,11 +3569,11 @@ html.has-js .home-case .case-scope-trigger::before{
     width:auto;
     min-height:36px;
     padding-inline:10px;
-    font-size:10px;
+    font-size:11px;
   }
 
   .home-case .resume-card__message{
-    font-size:9.5px;
+    font-size:11px;
   }
 
   .home-case .case-route__head-actions>button{

@@ -1049,7 +1049,7 @@
     margin-bottom:26px;
   }
   .polish15-home .section-head h2{ font-size:36px; }
-  .polish15-home .section-head > p{ font-size:14px; }
+  .polish15-home .section-head > p{ font-size:16px; }
   .polish15-home .section-head__action{ width:max-content; }
   .polish15-home .tag{ min-height:28px; }
   .polish15-home .home-hero{
@@ -1122,13 +1122,13 @@
     grid-column:2;
     margin-top:6px;
   }
-  .polish15-home .situation-card__result small{ font-size:9px; }
+  .polish15-home .situation-card__result small{ font-size:11px; }
   .polish15-home .situation-card__arrow{
     grid-column:3;
     grid-row:1;
   }
-  .polish15-home .situation-card h3{ font-size:22px; }
-  .polish15-home .situation-card p{ font-size:13px; }
+  .polish15-home .situation-card h3{ font-size:21px; }
+  .polish15-home .situation-card p{ font-size:16px; }
   .polish15-home .evidence-section__grid{
     grid-template-columns:1fr;
     gap:42px;
@@ -1167,7 +1167,7 @@
     border-top:1px solid var(--line);
   }
   .polish15-home .process-grid h3{ margin-top:22px; }
-  .polish15-home .process-grid p{ font-size:13px; }
+  .polish15-home .process-grid p{ font-size:16px; }
   .polish15-home .home-library,
   .polish15-home .testimonial-section__grid,
   .polish15-home .calm-cta{
@@ -1214,7 +1214,7 @@
   .polish15-home .home-hero__grid{
     padding-inline:max(16px,env(safe-area-inset-left));
   }
-  .polish15-home .home-hero__lead{ font-size:15px; }
+  .polish15-home .home-hero__lead{ font-size:16px; }
   .polish15-home .home-hero__actions{
     align-items:stretch;
     flex-direction:column;
@@ -1233,17 +1233,17 @@
   .polish15-home .project-ledger__chrome{
     min-height:40px;
     padding:10px 12px;
-    font-size:8px;
+    font-size:11px;
   }
   .polish15-home .project-ledger__paper{ padding:18px; }
   .polish15-home .project-ledger__head{
     align-items:flex-start;
     padding-bottom:17px;
   }
-  .polish15-home .project-ledger__head strong{ font-size:22px; }
+  .polish15-home .project-ledger__head strong{ font-size:21px; }
   .polish15-home .project-ledger__status{
     padding:6px 7px;
-    font-size:7px;
+    font-size:11px;
   }
   .polish15-home .project-ledger__prices a{ min-height:50px; }
   .polish15-home .project-ledger__prices span{ gap:7px; font-size:12px; }
@@ -1251,7 +1251,7 @@
   .polish15-home .project-ledger__scope{
     gap:5px;
     overflow:hidden;
-    font-size:7px;
+    font-size:11px;
   }
   .polish15-home .project-ledger__footer{
     align-items:flex-start;
@@ -1267,7 +1267,7 @@
     min-height:390px;
     padding:24px 20px;
   }
-  .polish15-home .document-sheet h3{ font-size:25px; }
+  .polish15-home .document-sheet h3{ font-size:26px; }
   .polish15-home .document-sheet__table{ grid-template-columns:1fr; }
   .polish15-home .service-card{
     width:min(86vw,340px);
@@ -1285,7 +1285,7 @@
   .polish15-home .home-tools__grid a{
     grid-template-columns:28px minmax(0,1fr) 22px;
   }
-  .polish15-home .home-tools__grid strong{ font-size:20px; }
+  .polish15-home .home-tools__grid strong{ font-size:21px; }
 }
 
 @media(prefers-reduced-motion:reduce){

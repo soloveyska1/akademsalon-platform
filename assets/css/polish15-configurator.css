@@ -1036,7 +1036,7 @@ html.service-plan .configurator-task .split{display:block}
   }
   .configurator-task .wstep::before{margin-bottom:10px}
   .configurator-task .purpose-note{margin-bottom:22px}
-  .configurator-task .purpose-note p{font-size:13px}
+  .configurator-task .purpose-note p{font-size:14px}
   .configurator-task .service-finder{margin-bottom:18px}
   .configurator-task .sf-filters{
     flex-wrap:nowrap;
@@ -1047,7 +1047,7 @@ html.service-plan .configurator-task .split{display:block}
   }
   .configurator-task .sf-filters::-webkit-scrollbar{display:none}
   .configurator-task .sf-filter{flex:0 0 auto;min-height:38px}
-  .configurator-task .sf-status{font-size:8px}
+  .configurator-task .sf-status{font-size:11px}
   .configurator-task #typeGroup{grid-template-columns:1fr;gap:12px}
   .configurator-task #typeGroup .svc-group{grid-column:1}
   .configurator-task #typeGroup .svc-group .opt-list{grid-template-columns:1fr}
@@ -1061,7 +1061,7 @@ html.service-plan .configurator-task .split{display:block}
     grid-template-columns:20px minmax(0,1fr) auto;
   }
   .configurator-task #typeGroup button.optrow .dots{display:none}
-  .configurator-task #typeGroup .optrow>span:first-of-type{font-size:12.5px}
+  .configurator-task #typeGroup .optrow>span:first-of-type{font-size:14px}
   .configurator-task #planEntry{font-size:11px}
   .configurator-task #discGroup,
   .configurator-task #tierGroup{
@@ -1076,9 +1076,9 @@ html.service-plan .configurator-task .split{display:block}
     padding:17px;
   }
   .configurator-task #discGroup .optrow>span:first-child,
-  .configurator-task #tierGroup .optrow>span:first-child{font-size:17px}
-  .configurator-task #tierGroup .optrow small{font-size:11.5px}
-  .configurator-task .disc-profile{font-size:11.5px}
+  .configurator-task #tierGroup .optrow>span:first-child{font-size:16px}
+  .configurator-task #tierGroup .optrow small{font-size:12px}
+  .configurator-task .disc-profile{font-size:12px}
   .configurator-task .seg-term{
     grid-template-columns:1fr;
     gap:8px;
@@ -1093,10 +1093,10 @@ html.service-plan .configurator-task .split{display:block}
   .configurator-task .conf-aside{display:none}
 
   .configurator-task .conf-final-intro{margin-bottom:22px}
-  .configurator-task .conf-final-intro p{font-size:13px}
+  .configurator-task .conf-final-intro p{font-size:16px}
   .configurator-task .final-section{padding:21px 0}
-  .configurator-task .final-section-head b{font-size:19px}
-  .configurator-task .final-section-head small{font-size:10.5px}
+  .configurator-task .final-section-head b{font-size:18px}
+  .configurator-task .final-section-head small{font-size:11px}
   .configurator-task .final-task{grid-template-columns:1fr}
   .configurator-task .final-task .final-section-head,
   .configurator-task .final-task .field:has(#fDetails){grid-column:1}
@@ -1196,17 +1196,17 @@ html.service-plan .configurator-task .split{display:block}
   }
   .configurator-task .mq-total-copy b{
     overflow:hidden;
-    font-size:13px;
+    font-size:16px;
     text-overflow:ellipsis;
     white-space:nowrap;
   }
-  .configurator-task .mq-more{font-size:10px}
+  .configurator-task .mq-more{font-size:11px}
   .configurator-task #mNext{
     min-width:0;
     min-height:50px;
     padding:10px 16px;
     border-radius:6px;
-    font-size:13px;
+    font-size:14px;
   }
 
   .configurator-task .cart-drawer{
@@ -1227,7 +1227,7 @@ html.service-plan .configurator-task .split{display:block}
     border-radius:99px;
   }
   .configurator-task .cart-head{padding:23px 18px 15px}
-  .configurator-task .cart-head h2{font-size:29px}
+  .configurator-task .cart-head h2{font-size:31px}
   .configurator-task .cart-body{padding:14px 14px 20px}
   .configurator-task .cart-foot{
     min-height:auto;
@@ -2175,7 +2175,7 @@ html[data-theme="dark"] .configurator-task .materials-step input[type="date"]{co
     align-items:center;
     padding:17px;
   }
-  .configurator-task .decision-card strong{font-size:17px}
+  .configurator-task .decision-card strong{font-size:16px}
   .configurator-task .decision-card small{font-size:12px}
   .configurator-task .discipline-choice{margin-top:14px;padding:14px}
   .configurator-task .discipline-choice legend{display:grid;gap:3px}
@@ -2275,7 +2275,7 @@ html[data-theme="dark"] .configurator-task .materials-step input[type="date"]{co
     padding-left:max(16px,env(safe-area-inset-left));
   }
   .configurator-task .wizard-main__head h1{font-size:37px}
-  .configurator-task .wizard-main__head p:not(.eyebrow){font-size:13px}
+  .configurator-task .wizard-main__head p:not(.eyebrow){font-size:14px}
   .configurator-task .wizard-theme,
   .configurator-task .wizard-close{
     width:38px;
@@ -2580,20 +2580,20 @@ html[data-motion="off"] .configurator-task .sv-letter{animation:none}
   }
   .configurator-task .exit-dlg .eyebrow,
   .configurator-task .exit-dlg .xc-lbl{font-size:12px;letter-spacing:.08em}
-  .configurator-task .exit-dlg h3{font-size:24px}
-  .configurator-task .exit-dlg .sdlg-card>p{font-size:13.5px}
-  .configurator-task .exit-dlg .exit-terms li{font-size:12.5px}
+  .configurator-task .exit-dlg h3{font-size:26px}
+  .configurator-task .exit-dlg .sdlg-card>p{font-size:16px}
+  .configurator-task .exit-dlg .exit-terms li{font-size:16px}
   .configurator-task .exit-dlg .xc-copy{
     min-height:48px;
-    font-size:12.5px;
+    font-size:16px;
   }
-  .configurator-task .exit-dlg .sdlg-row .btn{min-height:50px;font-size:13.5px}
+  .configurator-task .exit-dlg .sdlg-row .btn{min-height:50px;font-size:14px}
 }
 
 /* Узкие телефоны: код и его действие встают в две строки */
 @media(max-width:430px){
   .configurator-task .exit-dlg .xc-row{gap:11px}
-  .configurator-task .exit-dlg .xc-code{flex:1 0 100%;font-size:20px}
+  .configurator-task .exit-dlg .xc-code{flex:1 0 100%;font-size:21px}
   .configurator-task .exit-dlg .xc-copy{width:100%}
 }
 
@@ -3033,7 +3033,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   }
   .configurator-task .wizard-main .wizard-lead,
   .configurator-task .wizard-main__intro p{
-    font-size:14.5px;
+    font-size:16px;
     line-height:1.45;
   }
   .configurator-task .concept-work-choice{ margin-top:18px; }
@@ -3105,7 +3105,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
     justify-content:space-between;
     margin-top:10px;
     padding:10px 0;
-    font-size:13.5px;
+    font-size:14px;
     line-height:1.35;
   }
 
@@ -3144,7 +3144,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   }
 
   .concept-task-bar span[data-concept-task-kicker]{
-    font-size:9px;
+    font-size:11px;
   }
 
   .concept-task-bar strong{
@@ -3441,8 +3441,8 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   }
   .configurator-task .decision-card__icon{width:38px;height:38px}
   .configurator-task .decision-card__icon svg{width:25px;height:25px}
-  .configurator-task .decision-card strong{font-size:17px}
-  .configurator-task .decision-card small{font-size:10.5px}
+  .configurator-task .decision-card strong{font-size:16px}
+  .configurator-task .decision-card small{font-size:11px}
   .configurator-task .decision-card>.decision-card__radio{width:20px;height:20px}
   .configurator-task .concept-work-choice{margin-top:20px;padding:20px 0 0;border-width:1px 0 0;border-left:0;background:transparent}
   .configurator-task .concept-work-choice__head{padding-inline:0}
@@ -3734,7 +3734,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
   .configurator-task .contact-step{margin-top:18px}
   .configurator-task .recommendation-card{grid-template-columns:1fr;gap:14px}
   .configurator-task .recommendation-card__main{padding:18px}
-  .configurator-task .recommendation-card__main h2{font-size:32px}
+  .configurator-task .recommendation-card__main h2{font-size:31px}
   .configurator-task .wizard-summary--selection{
     display:grid;
     grid-template-columns:minmax(0,1fr) auto;
@@ -3743,7 +3743,7 @@ html[data-motion="off"] .configurator-task .exit-dlg .sdlg-card{transition:none!
     padding:14px 16px;
   }
   .configurator-task .wizard-summary--selection .eyebrow{grid-column:1/-1}
-  .configurator-task .wizard-summary--selection h2{font-size:20px}
+  .configurator-task .wizard-summary--selection h2{font-size:21px}
   .configurator-task .wizard-summary--selection .wizard-summary__selection{
     grid-column:1;
     margin:0!important;
