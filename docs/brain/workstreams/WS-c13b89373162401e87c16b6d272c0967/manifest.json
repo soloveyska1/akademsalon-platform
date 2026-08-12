@@ -1,0 +1,83 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-c13b89373162401e87c16b6d272c0967",
+  "slug": "release158-analytics-master-parity",
+  "status": "active",
+  "branch": "codex/release158-analytics-master-parity",
+  "base_sha": "fa2b317f8e99abcc7917a9d867407c460d82b9b6",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1016.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0158.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-c13b89373162401e87c16b6d272c0967/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "admin-analytics.html",
+        "match": "exact"
+      },
+      {
+        "path": "admin.html",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/admin-analytics.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin-analytics.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "README.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/production-smoke.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
