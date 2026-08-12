@@ -154,8 +154,17 @@ function handleApi(request, response, url, requests) {
   const cookie = request.headers.cookie || '';
   if (url.pathname === '/api/auth/session') {
     if (/analytics_mode=forbidden/.test(cookie)) return json(response, 403, { ok: false });
-    return json(response, 200, { ok: true, user: { name: 'Мастер' } });
+    return json(response, 200, { ok: true, authenticated: true, session: true, user: { name: 'Мастер' } });
   }
+  if (url.pathname === '/api/admin/overview') {
+    return json(response, 200, {
+      ok: true, by_status: {}, visits: { online: 0 }, qa: { pending: 0 },
+      gifts: { claimed_n: 0 }, current_user: { name: 'Мастер' }
+    });
+  }
+  if (url.pathname === '/api/admin/orders') return json(response, 200, { ok: true, orders: [] });
+  if (url.pathname === '/api/admin/subs') return json(response, 200, { ok: true, subscribers: [] });
+  if (url.pathname === '/api/events') return json(response, 200, { ok: true, v: 0, events: [] });
   if (!url.pathname.startsWith('/api/admin/analytics/')) return false;
   const hours = Number(url.searchParams.get('hours') || 168);
   const source = url.searchParams.get('source') || '';
@@ -422,6 +431,44 @@ async function checkCabinetDeepLink(browser, origin) {
   await context.close();
 }
 
+async function checkCabinetSearchHandoff(browser, origin) {
+  const cabinetOrigin = origin.replace('127.0.0.1', 'akademsalon.ru');
+  const scenarios = [
+    { name: 'shortcut', viewport: { width: 1024, height: 900 }, run: (page) => page.keyboard.press('Meta+K') },
+    { name: 'sidebar', viewport: { width: 1024, height: 900 }, run: (page) => page.locator('.admin-sidebar__search').click() },
+    { name: 'mobile', viewport: { width: 390, height: 844 }, run: (page) => page.locator('.admin-mobile-appbar__search').click() }
+  ];
+  for (const scenario of scenarios) {
+    const context = await browser.newContext({ viewport: scenario.viewport });
+    const page = await context.newPage();
+    const watch = watchPage(page, cabinetOrigin, true);
+    await page.goto(cabinetOrigin + '/admin-analytics.html', { waitUntil: 'networkidle' });
+    await waitLoaded(page);
+    await scenario.run(page);
+    try {
+      await page.waitForSelector('#agQ', { timeout: 8000 });
+    } catch (error) {
+      const diagnostic = await page.evaluate(() => ({
+        url: location.href,
+        text: document.body.innerText.slice(0, 500),
+        marker: sessionStorage.getItem('ag_focus_search'),
+        saved: localStorage.getItem('ag_tab')
+      }));
+      throw new Error(`cabinet search/${scenario.name}: ${JSON.stringify(diagnostic)}; ${watch.faults.join(' | ')}`);
+    }
+    await page.waitForFunction(() => document.activeElement && document.activeElement.id === 'agQ');
+    assert(new URL(page.url()).pathname === '/admin.html',
+      `cabinet search/${scenario.name}: did not enter the real cabinet`);
+    assert(await page.locator('#agQ').evaluate((node) => node === document.activeElement),
+      `cabinet search/${scenario.name}: order search was not focused`);
+    assert(await page.evaluate(() => sessionStorage.getItem('ag_focus_search')) === null,
+      `cabinet search/${scenario.name}: one-shot focus marker was retained`);
+    assert(await page.evaluate(() => JSON.parse(localStorage.getItem('ag_tab'))) === 'orders',
+      `cabinet search/${scenario.name}: Orders tab was not persisted`);
+    await context.close();
+  }
+}
+
 async function checkRaceAndPagination(browser, origin, requests) {
   const context = await browser.newContext({ viewport: { width: 1024, height: 900 } });
   const page = await context.newPage();
@@ -468,12 +515,16 @@ async function main() {
   const { chromium } = loadPlaywright();
   let browser;
   try {
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({
+      headless: true,
+      args: ['--host-resolver-rules=MAP akademsalon.ru 127.0.0.1']
+    });
     const geometry = [];
     for (const viewport of VIEWPORTS) geometry.push(await checkLayout(browser, origin, viewport));
     await checkForbidden(browser, origin);
     await checkForbiddenAfterData(browser, origin);
     await checkCabinetDeepLink(browser, origin);
+    await checkCabinetSearchHandoff(browser, origin);
     await checkRaceAndPagination(browser, origin, requests);
     console.log(JSON.stringify({
       ok: true,
@@ -481,6 +532,7 @@ async function main() {
       forbidden: 'isolated',
       runtime_forbidden: 'isolated',
       cabinet_deep_link: 'explicit',
+      cabinet_search_handoff: 'focused',
       race_and_pagination: 'isolated',
       screenshots: OUTPUT,
       analytics_requests: requests.length

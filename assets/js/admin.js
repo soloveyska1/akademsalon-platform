@@ -5889,6 +5889,18 @@ function initGodEye() {
     if (mt && VALID_TABS[mt[1]]) st.tab = mt[1];
     var mo = h.match(/(?:^#|[#&])o=(\d+)/);
     if (mo) { st.tab = 'orders'; st.filter = ''; st.sel = parseInt(mo[1], 10); }
+    /* Отдельные защищённые экраны кабинета передают только одноразовое
+       намерение фокуса. Оно живёт в sessionStorage, удаляется до любого API и
+       не содержит запрос, клиента или данные дела. */
+    var focusSearchHandoff = false;
+    try {
+      focusSearchHandoff = sessionStorage.getItem('ag_focus_search') === '1';
+      if (focusSearchHandoff) sessionStorage.removeItem('ag_focus_search');
+    } catch (e) {}
+    if (focusSearchHandoff && !mo) {
+      st.tab = 'orders';
+      pendingAdminFocus = true;
+    }
     var mch = h.match(/alk=([A-Za-z0-9_-]+)/);
     if (!mch) {
       if (mo) history.replaceState(null, '', location.pathname);

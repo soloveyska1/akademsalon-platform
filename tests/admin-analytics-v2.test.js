@@ -143,6 +143,7 @@ test('master search controls and shortcut hand focus to the real cabinet search'
   assert.match(html, /data-admin-search[^>]*>[\s\S]{0,500}<kbd>⌘ K<\/kbd>/);
   assert.match(js, /function openCabinetSearch\(\)[\s\S]*ag_tab[\s\S]*ag_focus_search[\s\S]*admin\.html#orders/);
   assert.match(js, /metaKey \|\| event\.ctrlKey[\s\S]*openCabinetSearch\(\)/);
+  assert.match(admin, /ag_focus_search[\s\S]*sessionStorage\.removeItem\('ag_focus_search'\)[\s\S]*pendingAdminFocus\s*=\s*true/);
 });
 
 test('hidden pagination stays hidden and the authenticated master identity is projected', () => {
