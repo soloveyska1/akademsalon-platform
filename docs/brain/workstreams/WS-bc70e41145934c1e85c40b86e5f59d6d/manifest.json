@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-bc70e41145934c1e85c40b86e5f59d6d",
   "slug": "admin-analytics-master-parity-release",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/admin-analytics-master-parity-release",
   "base_sha": "3a102e8545e06f57913d51fdc7638dc85bdb1889",
   "result_sha": "10fce082029dd198a770272fa8ec642b438825f0",
@@ -82,6 +82,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "a80b4f96e4d8b6c66e3f1725a35938e0bc9228497456f61f56e69e6db78df4b3"
+  "manifest_revision": 3,
+  "base_manifest_hash": "18344fbbc324655f02d9e739a083fc20a9c1b848bfb331f061b377138e9eeff4"
 }
