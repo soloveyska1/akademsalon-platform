@@ -61,6 +61,10 @@
         "match": "exact"
       },
       {
+        "path": "assets/js/home-release.min.js",
+        "match": "exact"
+      },
+      {
         "path": "audit-temy-vkr.html",
         "match": "exact"
       },
@@ -493,6 +497,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "443efb5e8210a992e413384829d5517853927fe3944373e1cd6f9ca98691f9dc"
+  "manifest_revision": 3,
+  "base_manifest_hash": "186abe45c224304329c858332b71517c13f71cc714c9d4b5402f0e6d39249441"
 }
