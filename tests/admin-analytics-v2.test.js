@@ -35,6 +35,14 @@ test('analytics UI has no raw identity or third-party IP disclosure', () => {
   assert.match(sw, /admin(?:\\\\\(\?:-\[a-z0-9-\]\+\\\\\)\?)?/i);
 });
 
+test('approximate geography visibly attributes the local DB-IP dataset', () => {
+  assert.match(html, /Геоданные:\s*<a href="https:\/\/db-ip\.com"/);
+  assert.match(html, /DB-IP<\/a>\s*\(CC BY 4\.0\)/);
+  assert.match(html, /rel="noopener noreferrer"/);
+  assert.doesNotMatch(html, /(?:script|img|link)[^>]+db-ip\.com/i,
+    'attribution is a link, never a third-party runtime resource');
+});
+
 test('private panel uses a read-only same-origin client without public analytics shell', () => {
   assert.doesNotMatch(html, /assets\/js\/app\.js/);
   assert.match(html, /admin-analytics-api\.js/);
