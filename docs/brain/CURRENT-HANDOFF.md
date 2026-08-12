@@ -2,80 +2,84 @@
 
 ## Canonical and production truth
 
-- Canonical source is `c891d24254e671292d327dc485d9d71a342156d1`.
+- Canonical production source is
+  `fa2b317f8e99abcc7917a9d867407c460d82b9b6`.
 - Production `current` and compatibility `dist` resolve to
-  `release157-c891d24`; `previous` resolves to `release156-1b8f03f`.
-- Release157 has G10 GO with P0=0/P1=0. Exact files, hashes, tests, synthetic
-  cleanup, browser proof and executed rollback/forward are in `REL-0157`.
-- Backend rollback is the exact final pre-install backup
-  `/root/salon_bot/backups/analytics-v2-20260812T165403022124Z` together with
-  static release156. The installer refuses a stale or mixed state.
-- The active service and Nginx are healthy; final external and VPS read-only
-  smoke each passed 14/14 after forward restore.
+  `release158-fa2b317`; `previous` resolves to `release157-c891d24`.
+- Release158 has G10 GO with P0=0/P1=0. Exact source, hashes, tests, CSP,
+  two-vantage smoke and executed static rollback/forward are in `REL-0158`.
+- The Analytics v2 backend remains the exact release157 runtime. Static
+  rollback changes both pointers to release157; the separate full pre-v2
+  backend rollback remains documented in `REL-0157`.
+- `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
+  is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
 
-## What Analytics v2 now proves
+## What the master now sees
 
-- The Russian master dashboard is live at `/admin-analytics.html` and calculates
-  complete server-side metrics for one selected period: anonymous visitors and
-  sessions, online activity, time, entry/exit, sources/campaigns, device/browser/
-  OS, approximate geography, transitions, six-stage funnel, conversion, safe
-  chronology, errors and collection health.
-- The contract covers 87 public pages and 45 allowlisted events. Idempotent IDs,
-  occurrence time, client sequence, atomic thirty-minute sessionisation and
-  server pagination close the previous silent-drop, duplicate, >100% conversion
-  and mixed-window failures.
-- Live synthetic proof accepted six ordered funnel events, deduplicated the
-  replay, deleted all raw rows on revoke and blocked replay. The exact synthetic
-  trace was removed; final v2 raw and health counts were zero at the release
-  checkpoint.
-- A fresh real browser sends no Analytics v2 or legacy request before consent.
-  The live private page has strict self-only CSP, no external resources and no
-  overflow at 390/1440 px. Unauthenticated admin readback is 403.
+- `/admin-analytics.html` uses the same cabinet shell, desktop sidebar, mobile
+  appbar, navigation order, identity, themes, typography and flat surface
+  language as the master's operational cabinet.
+- The Russian decision path remains complete: trust/freshness, period and
+  source/device/page filters, six metrics and trend, online activity, sources,
+  approximate geography, devices, browsers, operating systems, pages,
+  transitions, six-stage funnel, safe events/errors, sessions and data health.
+- At 390x844 the first metric is visible without scrolling. The 390/1024/1440
+  browser matrix has no root overflow, CSP violation, external resource or
+  console error; menus, filters, dialog and tables retain their focus/scroll
+  contracts in light and dark themes.
+- Sidebar/mobile search and `Cmd/Ctrl+K` open the real Orders search and focus
+  `#agQ` through a data-free one-shot marker removed before API access.
+- Initial/runtime 403 replaces the workspace with the access gate and purges
+  rows, detail and counters. Late responses cannot restore private DOM. One
+  immutable applied query prevents mixed periods, filters and pagination.
 
-## Privacy and interpretation
+## Analytics accuracy and privacy
 
+- The server calculates every metric for one selected window and paginates the
+  complete matching session set. Idempotent event IDs, occurrence time, client
+  sequence and atomic sessionisation remain the release157 contract.
 - A visitor is a random anonymous browser ID, not a known person. Contacts,
-  orders, login identity, raw IP/UA/referrer, query, form text and files are not
-  linked or stored in the v2 schema.
-- Approximate geography is produced locally from the August 2026 DB-IP City Lite
-  snapshot. The UI visibly attributes DB-IP / CC BY 4.0 and calls no remote geo
-  service.
-- Collection is consent-only and blockers/refusal reduce coverage. The dashboard
-  explicitly says this; it must not be presented as a census of all people.
-- Trustworthy history begins at release157. Legacy rows are intentionally not
-  imported or read because their meaning and accuracy cannot be defended.
-- Raw v2 events are retained for at most 365 days. Revoke cascades visitor,
-  sessions and events and keeps only a bounded deletion-proof hash to reject
-  offline replay.
+  orders, login identity, raw IP/UA/referrer, query/form text, files and OAuth
+  data are neither linked nor stored in Analytics v2.
+- Collection is consent-only; refusal, blockers and bot filtering reduce
+  coverage. The dashboard names that limitation and must not be presented as a
+  census of everyone who opened the site.
+- Trustworthy history begins at release157. Legacy rows remain excluded because
+  their meaning and accuracy cannot be defended.
+- Raw events have a maximum 365-day lifetime; signed revoke cascades visitor,
+  sessions and events and retains only a bounded hashed replay tombstone.
 
 ## Verification summary
 
-- Site 553/553; backend 30/30; Brain 39/39; compile, strict validation and diff
+- Site 563/563; backend 30/30; Brain 39/39; syntax, strict validation and diff
   checks green; three independent reviews GO with P0=0/P1=0.
-- Deterministic payload: 353 files / 24,940,374 bytes, manifest
-  `35dfa8aa…c49`; live immutable tree: 356 files / 24,950,545 bytes, manifest
-  `875fd192…73e`.
-- Server-first activation disabled legacy `/api/visit` before the public v2
-  scripts became live. Exact module, contract, source and Nginx hashes match the
-  pinned installer result.
-- Rollback to release156 and pre-v2 runtime passed external/VPS 14/14; the second
-  backend-first forward install and release157 restore again passed external/VPS
-  14/14 plus live Chromium and SQLite integrity.
-- Production contacts, orders, logs and legacy visit contents were never read;
-  no real order or user was created, changed or deleted.
+- Deterministic payload: 353 files / 24,970,161 bytes, manifest
+  `f759b4a9…55b5`; immutable live tree: 356 files / 24,980,332 bytes, manifest
+  `fab1be44…fe38`.
+- Repository, immutable tree and live HTTP hashes agree for `admin.html`,
+  `admin-analytics.html`, analytics CSS/JS and the master `admin.js`.
+- `admin.html` uses the fresh `analytics3` controller URL; the live analytics
+  page has strict same-origin CSP and unauthenticated readback returns 403.
+- External/VPS smoke passed 14/14 before activation and after release158. It
+  passed 14/14 during the executed rollback to release157 and again after
+  forward restore to release158.
+- Production contacts, orders, logs, raw analytics and legacy rows were not
+  read; no backend, database or collector file changed.
 
 ## Remaining P2
 
+- The authenticated owner should confirm the first organic consented session;
+  an initially empty series is correct and must not be seeded from legacy data.
 - Replace the monthly DB-IP snapshot with the verified September file by
   15 September 2026; integration/operations owns it.
 - Consolidate the pre-existing duplicate Nginx `server_name` definitions before
   the next topology change. Syntax and the active release remain healthy.
-- Legacy analytics retention/deletion needs a separate privacy workstream. Do
-  not backfill it into Analytics v2.
+- Legacy analytics retention/deletion needs a separate privacy workstream and
+  must not be exposed as Analytics v2 history.
 
 ## One exact next step
 
 Open the authenticated master dashboard at
-`https://akademsalon.ru/admin-analytics.html`, confirm the first organic
-consented session appears, and treat an initially empty series as correct rather
-than seeding or importing unverifiable legacy history.
+`https://akademsalon.ru/admin-analytics.html`, confirm that the first organic
+consented session appears in the new cabinet shell, and report any real-world
+classification discrepancy with its selected period and filters.

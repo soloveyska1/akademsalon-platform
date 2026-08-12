@@ -4,19 +4,21 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release157>
+- Production: <https://akademsalon.ru/?v=release158>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=release98>
-- Production release: `release157-c891d24`
-- Production source: `c891d24254e671292d327dc485d9d71a342156d1`
+- Production release: `release158-fa2b317`
+- Production source: `fa2b317f8e99abcc7917a9d867407c460d82b9b6`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
+- Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Rollback: `release156-1b8f03f` плюс exact backend backup из `REL-0157`.
-- Release157 имеет G10 GO: site 553/553, backend 30/30, Brain 39/39,
-  external/VPS smoke 14/14 в release157, 14/14 в выполненном rollback и снова
-  14/14 после forward restore; live Chromium и synthetic ingest/dedupe/revoke
-  зелёные. Точная запись: [releases/REL-0157.md](releases/REL-0157.md).
+- Static rollback: `release157-c891d24`; backend остаётся release157. Полный
+  pre-v2 backend rollback сохранён в `REL-0157`.
+- Release158 имеет G10 GO: site 563/563, backend 30/30, Brain 39/39, три
+  независимых P0/P1 review GO, точные live SHA/CSP/403 и external/VPS smoke
+  14/14 до выпуска, после выпуска, в выполненном static rollback и после
+  forward restore. Точная запись: [releases/REL-0158.md](releases/REL-0158.md).
 - 3 августа после release103 исправлен production-wide отказ
   заявок и подарочных форм: backend оставался на privacy/oferta
   3.0/3.0 при опубликованных 3.1/3.2. Активные константы выровнены,
@@ -67,7 +69,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0157.md](releases/REL-0157.md) — доказательная запись текущего GO-релиза.
+- [releases/REL-0158.md](releases/REL-0158.md) — доказательная запись текущего GO-релиза.
 
 ## Старт новой сессии
 
