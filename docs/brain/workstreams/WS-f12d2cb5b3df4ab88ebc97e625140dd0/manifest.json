@@ -45,6 +45,10 @@
         "match": "exact"
       },
       {
+        "path": "assets/js/admin-analytics-api.js",
+        "match": "exact"
+      },
+      {
         "path": "assets/js/admin-analytics.js",
         "match": "exact"
       },
@@ -433,6 +437,14 @@
         "match": "exact"
       },
       {
+        "path": "tests/first-step-measurement-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/shared-shell-contract.test.js",
+        "match": "exact"
+      },
+      {
         "path": "tools.html",
         "match": "exact"
       },
@@ -458,6 +470,10 @@
     },
     {
       "access": "write",
+      "key": "api-route:POST:/analytics/grant"
+    },
+    {
+      "access": "write",
       "key": "api-route:POST:/analytics/events"
     },
     {
@@ -477,6 +493,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "443efb5e8210a992e413384829d5517853927fe3944373e1cd6f9ca98691f9dc"
 }
