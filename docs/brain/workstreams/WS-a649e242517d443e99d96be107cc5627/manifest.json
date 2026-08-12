@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-a649e242517d443e99d96be107cc5627",
   "slug": "release157-analytics-v2-v2",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/release157-analytics-v2-v2",
   "base_sha": "c891d24254e671292d327dc485d9d71a342156d1",
-  "result_sha": null,
+  "result_sha": "d4946094a085d9da0b347e17e9b5efe48f2dc32d",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -58,6 +58,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "9bcad7961e028e605b8b9b20e84f9e97b8ba6a752500463ffa66d84373b85492"
 }
