@@ -1,0 +1,87 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-bc70e41145934c1e85c40b86e5f59d6d",
+  "slug": "admin-analytics-master-parity-release",
+  "status": "active",
+  "branch": "codex/admin-analytics-master-parity-release",
+  "base_sha": "3a102e8545e06f57913d51fdc7638dc85bdb1889",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "admin-analytics.html",
+        "match": "exact"
+      },
+      {
+        "path": "admin.html",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/admin-analytics.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin-analytics.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1016.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-bc70e41145934c1e85c40b86e5f59d6d/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/admin-analytics-browser-smoke.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/admin-analytics-v2.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/css/polish15-admin.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/styles.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin-analytics-api.js",
+        "match": "exact"
+      },
+      {
+        "path": "sw.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:admin-analytics"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:admin-search"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
