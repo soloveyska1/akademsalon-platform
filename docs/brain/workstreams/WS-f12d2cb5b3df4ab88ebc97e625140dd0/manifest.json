@@ -117,6 +117,10 @@
         "match": "exact"
       },
       {
+        "path": "dashboard.html",
+        "match": "exact"
+      },
+      {
         "path": "deposit.html",
         "match": "exact"
       },
@@ -455,6 +459,10 @@
       {
         "path": "vedenie.html",
         "match": "exact"
+      },
+      {
+        "path": "zayavka.html",
+        "match": "exact"
       }
     ],
     "read": []
@@ -497,6 +505,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 3,
-  "base_manifest_hash": "186abe45c224304329c858332b71517c13f71cc714c9d4b5402f0e6d39249441"
+  "manifest_revision": 4,
+  "base_manifest_hash": "1780be87382aecde6e73fadb4fc32925a791c8a428446cc3f990ccc8953720ea"
 }
