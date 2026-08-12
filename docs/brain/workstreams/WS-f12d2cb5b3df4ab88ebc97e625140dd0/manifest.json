@@ -57,15 +57,11 @@
         "match": "exact"
       },
       {
-        "path": "assets/js/app.js",
+        "path": "assets/js/analytics-attribution-v2.js",
         "match": "exact"
       },
       {
         "path": "assets/js/analytics-v2.js",
-        "match": "exact"
-      },
-      {
-        "path": "assets/js/home-release.min.js",
         "match": "exact"
       },
       {
@@ -118,10 +114,6 @@
       },
       {
         "path": "consent.html",
-        "match": "exact"
-      },
-      {
-        "path": "dashboard.html",
         "match": "exact"
       },
       {
@@ -441,6 +433,10 @@
         "match": "exact"
       },
       {
+        "path": "tests/analytics-attribution-v2.test.js",
+        "match": "exact"
+      },
+      {
         "path": "tests/analytics-v2-browser.test.js",
         "match": "exact"
       },
@@ -453,10 +449,6 @@
         "match": "exact"
       },
       {
-        "path": "tests/privacy-security-contracts.test.js",
-        "match": "exact"
-      },
-      {
         "path": "tests/shared-shell-contract.test.js",
         "match": "exact"
       },
@@ -466,10 +458,6 @@
       },
       {
         "path": "vedenie.html",
-        "match": "exact"
-      },
-      {
-        "path": "zayavka.html",
         "match": "exact"
       }
     ],
@@ -513,6 +501,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 5,
-  "base_manifest_hash": "e401fdc0a3821e2e1c204251bc39944e32fc9d4066925eadabaed2c2e57b329b"
+  "manifest_revision": 6,
+  "base_manifest_hash": "734638e4bf3d0c2b8482fea88cd4f83a7b4dab11e49d7292df47c2be6a722623"
 }
