@@ -152,3 +152,10 @@ test('hidden pagination stays hidden and the authenticated master identity is pr
   assert.match(html, /id="adminReturn"/);
   assert.match(js, /function syncMasterIdentity\(session\)/);
 });
+
+test('the changed master controller has a fresh immutable URL in the cabinet', () => {
+  const sourceUrl = adminHtml.match(/assets\/js\/admin\.js\?[^" ]+/)?.[0];
+  assert.ok(sourceUrl, 'cabinet references its controller with a complete URL');
+  assert.match(sourceUrl, /analytics=20260812analytics3/);
+  assert.doesNotMatch(sourceUrl, /analytics=20260812analytics2/);
+});

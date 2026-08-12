@@ -196,7 +196,7 @@ function handleApi(request, response, url, requests) {
   return json(response, 404, { ok: false });
 }
 
-function createServer(requests) {
+function createServer(requests, oldAdminJs) {
   return http.createServer((request, response) => {
     let url;
     try { url = new URL(request.url, 'http://127.0.0.1'); } catch (_) {
@@ -205,6 +205,16 @@ function createServer(requests) {
     const handled = handleApi(request, response, url, requests);
     if (handled !== false) return;
     const pathname = url.pathname === '/' ? '/admin-analytics.html' : decodeURIComponent(url.pathname);
+    if (pathname === '/assets/js/admin.js' && url.searchParams.get('analytics') === '20260812analytics2') {
+      const body = Buffer.from(oldAdminJs);
+      response.writeHead(200, {
+        'Content-Type': MIME['.js'],
+        'Cache-Control': 'public, max-age=2592000, stale-while-revalidate=86400',
+        'Content-Length': body.length
+      });
+      response.end(body);
+      return;
+    }
     const candidate = path.resolve(ROOT, '.' + pathname);
     if (!candidate.startsWith(ROOT + path.sep) || !fs.existsSync(candidate) || fs.statSync(candidate).isDirectory()) {
       response.writeHead(404); response.end('Not found'); return;
@@ -469,6 +479,28 @@ async function checkCabinetSearchHandoff(browser, origin) {
   }
 }
 
+async function checkWarmedControllerCache(browser, origin) {
+  const cabinetOrigin = origin.replace('127.0.0.1', 'akademsalon.ru');
+  const context = await browser.newContext({ viewport: { width: 1024, height: 900 }, serviceWorkers: 'block' });
+  const page = await context.newPage();
+  await page.goto(cabinetOrigin + '/admin-analytics.html', { waitUntil: 'networkidle' });
+  const controllerUrl = await page.evaluate(async ({ cabinetOrigin }) => {
+    const html = await fetch('/admin.html').then((response) => response.text());
+    const relative = html.match(/assets\/js\/admin\.js\?[^"<]+/)?.[0].replaceAll('&amp;', '&');
+    if (!relative) throw new Error('admin controller URL missing');
+    return new URL(relative, cabinetOrigin + '/').href;
+  }, { cabinetOrigin });
+  assert(/analytics=20260812analytics3/.test(controllerUrl),
+    `warmed cache: new controller URL is not analytics3 (${controllerUrl})`);
+  const oldUrl = controllerUrl.replace('analytics=20260812analytics3', 'analytics=20260812analytics2');
+  const oldBytes = await page.evaluate(async (url) => fetch(url).then((response) => response.text()), oldUrl);
+  const newBytes = await page.evaluate(async (url) => fetch(url).then((response) => response.text()), controllerUrl);
+  assert(!oldBytes.includes('ag_focus_search'), 'warmed cache: old controller unexpectedly contains the handoff');
+  assert(newBytes.includes('ag_focus_search'), 'warmed cache: new controller does not contain the handoff');
+  assert(oldUrl !== controllerUrl, 'warmed cache: changed bytes reused the immutable URL');
+  await context.close();
+}
+
 async function checkRaceAndPagination(browser, origin, requests) {
   const context = await browser.newContext({ viewport: { width: 1024, height: 900 } });
   const page = await context.newPage();
@@ -510,7 +542,8 @@ async function checkRaceAndPagination(browser, origin, requests) {
 async function main() {
   fs.mkdirSync(OUTPUT, { recursive: true });
   const requests = [];
-  const server = createServer(requests);
+  const oldAdminJs = process.env.ANALYTICS_BASE_ADMIN_JS || '';
+  const server = createServer(requests, oldAdminJs || fs.readFileSync(path.join(ROOT, 'assets/js/admin.js'), 'utf8').replaceAll('ag_focus_search', 'old_focus_marker'));
   const origin = await listen(server);
   const { chromium } = loadPlaywright();
   let browser;
@@ -525,6 +558,7 @@ async function main() {
     await checkForbiddenAfterData(browser, origin);
     await checkCabinetDeepLink(browser, origin);
     await checkCabinetSearchHandoff(browser, origin);
+    await checkWarmedControllerCache(browser, origin);
     await checkRaceAndPagination(browser, origin, requests);
     console.log(JSON.stringify({
       ok: true,
@@ -533,6 +567,7 @@ async function main() {
       runtime_forbidden: 'isolated',
       cabinet_deep_link: 'explicit',
       cabinet_search_handoff: 'focused',
+      warmed_controller_cache: 'fresh_url',
       race_and_pagination: 'isolated',
       screenshots: OUTPUT,
       analytics_requests: requests.length
