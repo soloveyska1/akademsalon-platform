@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-bf9cbff4dbbd47e2ad9db588f8293cd6",
   "slug": "analytics-v2-dbip-attribution",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/analytics-v2-dbip-attribution",
   "base_sha": "f215d850d24f45baa7a18eca515ca94a05707f42",
   "result_sha": "2f4e2ce62f718e681d6a9babea7d6719fda9c9bd",
@@ -41,6 +41,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "76f7f2939afb647a3c284a202ee1f491e81be12fa0fec88f4d25ade733da6430"
+  "manifest_revision": 3,
+  "base_manifest_hash": "158f03ddf4f96cd13e7f860267bf98a135f94b569f83f9b0a6bbe324c9b8724f"
 }
