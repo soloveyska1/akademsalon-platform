@@ -57,6 +57,10 @@
         "match": "exact"
       },
       {
+        "path": "assets/js/app.js",
+        "match": "exact"
+      },
+      {
         "path": "assets/js/analytics-v2.js",
         "match": "exact"
       },
@@ -449,6 +453,10 @@
         "match": "exact"
       },
       {
+        "path": "tests/privacy-security-contracts.test.js",
+        "match": "exact"
+      },
+      {
         "path": "tests/shared-shell-contract.test.js",
         "match": "exact"
       },
@@ -505,6 +513,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 4,
-  "base_manifest_hash": "1780be87382aecde6e73fadb4fc32925a791c8a428446cc3f990ccc8953720ea"
+  "manifest_revision": 5,
+  "base_manifest_hash": "e401fdc0a3821e2e1c204251bc39944e32fc9d4066925eadabaed2c2e57b329b"
 }
