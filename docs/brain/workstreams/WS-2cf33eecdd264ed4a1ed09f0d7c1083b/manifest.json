@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-2cf33eecdd264ed4a1ed09f0d7c1083b",
+  "slug": "release157-analytics-v2",
+  "status": "active",
+  "branch": "codex/release157-analytics-v2",
+  "base_sha": "f215d850d24f45baa7a18eca515ca94a05707f42",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0157.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-2cf33eecdd264ed4a1ed09f0d7c1083b/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "docs/brain/evidence/E-1015.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0156.md",
+        "match": "exact"
+      },
+      {
+        "path": "README.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/production-smoke.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
