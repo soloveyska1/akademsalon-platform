@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="theme-color" content="#F6F1E7" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Академсалон" />
+  <title>Аналитика — Академический Салон</title>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest?v=20260806shell123" />
+  <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260806release119" />
+  <link rel="stylesheet" href="assets/css/admin-analytics.css?v=20260812analytics2" />
+</head>
+<body>
+  <a class="skip-link" href="#analyticsMain">К содержанию аналитики</a>
+  <header class="aa-topbar">
+    <div class="aa-topbar__brand">
+      <a class="aa-back" href="admin.html" aria-label="Вернуться в кабинет мастера">← Кабинет</a>
+      <div>
+        <p class="aa-kicker">Кабинет мастера</p>
+        <h1>Аналитика</h1>
+      </div>
+    </div>
+    <div class="aa-topbar__actions">
+      <span class="aa-updated" id="updatedAt">Ещё не загружено</span>
+      <button class="aa-button aa-button--primary" type="button" id="refreshButton">Обновить</button>
+    </div>
+  </header>
+
+  <main id="analyticsMain" tabindex="-1">
+    <section class="aa-trust" aria-labelledby="trustTitle">
+      <div class="aa-trust__icon" aria-hidden="true">✓</div>
+      <div>
+        <h2 id="trustTitle">Что именно показывают цифры</h2>
+        <p><strong>Только после согласия.</strong> Это посетители, которые отдельно разрешили аналитику. Охват неизвестен: блокировщики и отказ от согласия не учитываются.</p>
+        <p>«Посетитель» — случайный анонимный браузерный идентификатор, а не установленный человек. Контакты, заказы, тексты и файлы здесь не связываются. Московское время используется во всех датах.</p>
+      </div>
+      <div class="aa-trust__state" id="freshnessState">Проверяем свежесть…</div>
+    </section>
+
+    <section class="aa-controls" aria-label="Фильтры аналитики">
+      <fieldset class="aa-periods">
+        <legend>Период</legend>
+        <button type="button" data-hours="24">24 часа</button>
+        <button type="button" data-hours="168" aria-pressed="true">7 дней</button>
+        <button type="button" data-hours="720">30 дней</button>
+        <button type="button" data-hours="2160">90 дней</button>
+      </fieldset>
+      <label>Источник
+        <select id="sourceFilter"><option value="">Все источники</option></select>
+      </label>
+      <label>Устройство
+        <select id="deviceFilter"><option value="">Все устройства</option></select>
+      </label>
+      <label>Страница
+        <select id="pageFilter"><option value="">Все страницы</option></select>
+      </label>
+      <label class="aa-check"><input type="checkbox" id="botsFilter" /> Показывать роботов</label>
+      <button class="aa-button" type="button" id="applyFilters">Применить</button>
+    </section>
+
+    <nav class="aa-section-nav" aria-label="Разделы аналитики">
+      <a href="#summary">Сводка</a>
+      <a href="#online">Сейчас на сайте</a>
+      <a href="#acquisition">Источники</a>
+      <a href="#behavior">Страницы и переходы</a>
+      <a href="#funnel">Воронка</a>
+      <a href="#sessions">Посетители и сессии</a>
+      <a href="#quality">Качество данных</a>
+    </nav>
+
+    <div class="aa-message" id="message" role="status" aria-live="polite" hidden></div>
+    <section class="aa-access" id="accessDenied" hidden>
+      <h2>Нужен вход мастера</h2>
+      <p>Аналитика доступна только из защищённого кабинета.</p>
+      <a class="aa-button aa-button--primary" href="admin.html">Войти в кабинет</a>
+    </section>
+
+    <div id="analyticsContent" hidden>
+      <section class="aa-section" id="summary" aria-labelledby="summaryTitle">
+        <header class="aa-section__head">
+          <div><p class="aa-kicker">Общая картина</p><h2 id="summaryTitle">Сводка</h2></div>
+          <p id="periodCaption">За 7 дней · МСК</p>
+        </header>
+        <div class="aa-metrics" id="metricCards"></div>
+        <div class="aa-panel aa-chart-panel">
+          <div class="aa-panel__head"><h3>Динамика</h3><p>Сессии и успешные заявки по времени</p></div>
+          <div id="trendChart" class="aa-chart"></div>
+          <details class="aa-data-details">
+            <summary>Таблица значений графика</summary>
+            <div class="aa-table-wrap"><table>
+              <caption>Динамика за выбранный период</caption>
+              <thead><tr><th>Интервал</th><th>Посетители</th><th>Сессии</th><th>Просмотры</th><th>Заявки</th></tr></thead>
+              <tbody id="trendRows"></tbody>
+            </table></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="aa-section" id="online" aria-labelledby="onlineTitle">
+        <header class="aa-section__head"><div><p class="aa-kicker">Последнее событие не старше 3 минут</p><h2 id="onlineTitle">Сейчас на сайте</h2></div><strong class="aa-live-count" id="onlineCount">0</strong></header>
+        <div class="aa-panel" id="onlineList"><p class="aa-empty">Сейчас активных сессий не видно.</p></div>
+      </section>
+
+      <section class="aa-section" id="acquisition" aria-labelledby="acquisitionTitle">
+        <header class="aa-section__head"><div><p class="aa-kicker">Откуда и на чём пришли</p><h2 id="acquisitionTitle">Источники, география и устройства</h2></div></header>
+        <div class="aa-grid aa-grid--two">
+          <div class="aa-panel"><div class="aa-panel__head"><h3>Источники</h3><p>Первый известный источник сессии</p></div><div class="aa-table-wrap"><table><caption>Источники посещений</caption><thead><tr><th>Источник</th><th>Сессии</th><th>Посетители</th><th>Заявки</th></tr></thead><tbody id="sourceRows"></tbody></table></div></div>
+          <div class="aa-panel"><div class="aa-panel__head"><h3>Приблизительная география</h3><p>Определяется локально; пустое значение не считается городом</p></div><div class="aa-table-wrap"><table><caption>География посещений</caption><thead><tr><th>Регион</th><th>Сессии</th><th>Посетители</th></tr></thead><tbody id="geoRows"></tbody></table></div></div>
+        </div>
+        <div class="aa-grid aa-grid--three aa-spaced">
+          <div class="aa-panel"><h3>Устройства</h3><div id="deviceBars" class="aa-bars"></div></div>
+          <div class="aa-panel"><h3>Браузеры</h3><div id="browserBars" class="aa-bars"></div></div>
+          <div class="aa-panel"><h3>Операционные системы</h3><div id="osBars" class="aa-bars"></div></div>
+        </div>
+      </section>
+
+      <section class="aa-section" id="behavior" aria-labelledby="behaviorTitle">
+        <header class="aa-section__head"><div><p class="aa-kicker">Куда идут и где заканчивают</p><h2 id="behaviorTitle">Страницы и переходы</h2></div></header>
+        <div class="aa-panel"><div class="aa-table-wrap"><table><caption>Страницы за выбранный период</caption><thead><tr><th>Страница</th><th>Просмотры</th><th>Входы</th><th>Выходы</th><th>Заявки</th></tr></thead><tbody id="pageRows"></tbody></table></div></div>
+        <div class="aa-panel aa-spaced"><div class="aa-panel__head"><h3>Частые переходы</h3><p>Только последовательные просмотры в одной анонимной сессии</p></div><div class="aa-table-wrap"><table><caption>Переходы между страницами</caption><thead><tr><th>Откуда</th><th>Куда</th><th>Переходы</th></tr></thead><tbody id="transitionRows"></tbody></table></div></div>
+      </section>
+
+      <section class="aa-section" id="funnel" aria-labelledby="funnelTitle">
+        <header class="aa-section__head"><div><p class="aa-kicker">От просмотра до результата</p><h2 id="funnelTitle">Воронка и события</h2></div><p>Этап засчитывается только после предыдущего: пропуски не дорисовываются.</p></header>
+        <div class="aa-funnel" id="funnelSteps"></div>
+        <div class="aa-grid aa-grid--two aa-spaced">
+          <div class="aa-panel"><div class="aa-panel__head"><h3>Все события</h3><p>Полный принятый набор, без обрезания до 300 сессий</p></div><div class="aa-table-wrap"><table><caption>События</caption><thead><tr><th>Событие</th><th>Срабатывания</th><th>Сессии</th></tr></thead><tbody id="eventRows"></tbody></table></div></div>
+          <div class="aa-panel"><div class="aa-panel__head"><h3>Технические ошибки</h3><p>Только тип, страница, браузер и релиз — без текста и адреса файла</p></div><div class="aa-table-wrap"><table><caption>Ошибки JavaScript</caption><thead><tr><th>Ошибка</th><th>Где</th><th>Количество</th><th>Последняя</th></tr></thead><tbody id="errorRows"></tbody></table></div></div>
+        </div>
+      </section>
+
+      <section class="aa-section" id="sessions" aria-labelledby="sessionsTitle">
+        <header class="aa-section__head"><div><p class="aa-kicker">Кто, когда и какой путь прошёл</p><h2 id="sessionsTitle">Посетители и сессии</h2></div><p>«П-…» — стабильный анонимный ярлык браузера; «С-…» — один период активности.</p></header>
+        <div class="aa-panel"><div class="aa-table-wrap"><table><caption>Анонимные сессии</caption><thead><tr><th aria-sort="descending">Последняя активность</th><th>Посетитель</th><th>Источник</th><th>Вход → выход</th><th>Устройство</th><th>Результат</th><th aria-label="Действия"></th></tr></thead><tbody id="sessionRows"></tbody></table></div><div class="aa-more"><button class="aa-button" type="button" id="loadMore">Показать ещё</button></div></div>
+      </section>
+
+      <section class="aa-section" id="quality" aria-labelledby="qualityTitle">
+        <header class="aa-section__head"><div><p class="aa-kicker">Можно ли доверять экрану</p><h2 id="qualityTitle">Качество данных</h2></div></header>
+        <div class="aa-quality" id="qualityCards"></div>
+        <div class="aa-panel aa-spaced">
+          <h3>Как читать статус</h3>
+          <ul class="aa-explain">
+            <li><strong>Принято</strong> — новые проверенные события, реально записанные сервером.</li>
+            <li><strong>Повторы</strong> — повторно доставленные события, которые не увеличили показатели.</li>
+            <li><strong>Отклонено</strong> — неизвестные или нарушившие контракт данные; они не попали в отчёт.</li>
+            <li><strong>Ограничено</strong> — события, остановленные отдельным лимитом нагрузки.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <dialog id="sessionDialog" class="aa-dialog" aria-labelledby="sessionDialogTitle">
+    <div class="aa-dialog__head"><div><p class="aa-kicker">Без персональных данных</p><h2 id="sessionDialogTitle">Путь сессии</h2></div><button type="button" class="aa-icon-button" id="closeDialog" aria-label="Закрыть детали">×</button></div>
+    <div id="sessionDetail"></div>
+  </dialog>
+
+  <script src="assets/js/admin-analytics-api.js?v=20260812analytics2"></script>
+  <script src="assets/js/admin-analytics.js?v=20260812analytics2"></script>
+</body>
+</html>

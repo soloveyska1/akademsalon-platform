@@ -661,6 +661,10 @@ function initGodEye() {
      и уводим фокус на тело — иначе он падает на <body> при каждой смене */
   function goTab(name, openFirst) {
     if (!VALID_TABS[name]) return;
+    if (name === 'visits') {
+      window.location.assign('admin-analytics.html');
+      return;
+    }
     st.tab = name;
     try { S.store.set('ag_tab', name); } catch (e) {}
     try {
@@ -1250,7 +1254,7 @@ function initGodEye() {
       ]],
       ['Бизнес и система', [
         ['gifts', 'Сертификаты', 'gifts', b.gifts],
-        ['visits', 'Посещения', 'visits', online],
+        ['visits', 'Аналитика', 'visits', online],
         ['content', 'Материалы', 'content', 0],
         ['settings', 'Настройки', 'settings', 0]
       ]]
@@ -1288,7 +1292,7 @@ function initGodEye() {
       : 'Сроки, оплаты и переписка';
     var label = {
       summary: ['Редакционный кабинет', 'Рабочий стол', 'Сводка на сегодня'],
-      visits: ['Аналитика', 'Посещения', 'Живые визиты и источники переходов'],
+      visits: ['Аналитика', 'Надёжные данные', 'Посетители, источники, пути, воронка и качество сбора'],
       orders: ['Операционная работа', 'Дела', ordersLead],
       clients: ['Отношения с клиентами', 'Клиенты', 'История дел и обращений'],
       reviews: ['Репутация', 'Отзывы', 'Публикация и модерация'],
@@ -1304,7 +1308,7 @@ function initGodEye() {
     }).join('').slice(0, 2).toUpperCase() || 'СМ';
     var mobileTitle = {
       summary: 'Редакционный кабинет',
-      visits: 'Посещения',
+      visits: 'Аналитика',
       orders: 'Дела',
       clients: 'Клиенты',
       reviews: 'Отзывы',
@@ -1852,7 +1856,7 @@ function initGodEye() {
           '<div><dt>На доработке</dt><dd>' + (by.fix || 0) + '</dd></div>' +
           '<div><dt>Отзывы</dt><dd>' + reviews + '</dd></div></dl></section>' +
         '<section class="admin-panel admin-inbox"><header><div><h2>Последние события</h2><span>' +
-          (ov.events || []).length + ' в сводке</span></div><button type="button" data-go="@visits">Посещения</button></header>' +
+          (ov.events || []).length + ' в сводке</span></div><button type="button" data-go="@visits">Аналитика</button></header>' +
           '<div>' + inboxHtml + '</div></section>' +
       '</div></section>';
   }

@@ -223,10 +223,13 @@ test('analytics page identity accepts only canonical public routes', () => {
   ]) {
     assert.equal(analyticsPage(input), expected, input);
   }
-  const publicPages = fs.readdirSync(root).filter((file) => file.endsWith('.html'));
-  /* 93-я страница — offline.html, лист сервис-воркера на случай без сети. */
-  assert.equal(publicPages.length, 93);
-  for (const file of publicPages) assert.equal(analyticsPage(`/${file}`), `/${file}`, file);
+  const rootPages = fs.readdirSync(root).filter((file) => file.endsWith('.html'));
+  /* 94-я страница — закрытая аналитика: public runtime её не измеряет. */
+  assert.equal(rootPages.length, 94);
+  for (const file of rootPages) {
+    const expected = file === 'admin-analytics.html' ? '/other' : `/${file}`;
+    assert.equal(analyticsPage(`/${file}`), expected, file);
+  }
   assert.match(app, /url:\s*location\.origin\s*\+\s*analyticsPage\(location\.pathname\)/);
   assert.match(app, /function page\(\) \{ return analyticsPage\(location\.pathname\); \}/);
 });

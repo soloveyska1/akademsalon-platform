@@ -28,7 +28,7 @@ const PRECACHE = [
 ];
 
 /* Адреса, чью разметку не кэшируем ни при каких условиях. */
-const PRIVATE_PAGES = /^\/(dashboard|admin|admin-covers|admin-mock|oplaceno)\.html$/;
+const PRIVATE_PAGES = /^\/(dashboard|admin(?:-[a-z0-9-]+)?|oplaceno)\.html$/;
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

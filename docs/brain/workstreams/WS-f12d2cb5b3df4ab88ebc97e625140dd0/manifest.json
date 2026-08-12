@@ -1,0 +1,506 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-f12d2cb5b3df4ab88ebc97e625140dd0",
+  "slug": "out-006-analytics-v2-core",
+  "status": "submitted",
+  "branch": "codex/out-006-analytics-v2-core",
+  "base_sha": "68a9d9c12a9f55844569c210df1fd6dc24a82e61",
+  "result_sha": "9e09e986d91779f6de95f4677c6437e0b088eaf3",
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "404.html",
+        "match": "exact"
+      },
+      {
+        "path": "50x.html",
+        "match": "exact"
+      },
+      {
+        "path": "about.html",
+        "match": "exact"
+      },
+      {
+        "path": "academic-integrity.html",
+        "match": "exact"
+      },
+      {
+        "path": "admin-analytics.html",
+        "match": "exact"
+      },
+      {
+        "path": "admin.html",
+        "match": "exact"
+      },
+      {
+        "path": "analytics/contract.json",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/admin-analytics.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin-analytics-api.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin-analytics.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/analytics-attribution-v2.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/analytics-v2.js",
+        "match": "exact"
+      },
+      {
+        "path": "audit-temy-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "avtorskiy-zakaz.html",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/requirements-analytics-v2.txt",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "check.html",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-analytics.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-marketing.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-publication.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-request.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent.html",
+        "match": "exact"
+      },
+      {
+        "path": "deposit.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1015.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/OUT-006-ANALYTICS-V2.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-f12d2cb5b3df4ab88ebc97e625140dd0/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "dorabotka-otcheta-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "dosie-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "expertise.html",
+        "match": "exact"
+      },
+      {
+        "path": "gift.html",
+        "match": "exact"
+      },
+      {
+        "path": "guarantees.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-antiplagiat-ai.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-apellyaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-dnevnik-praktiki.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-harakteristika-s-praktiki.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-kursovaya-za-nedelyu.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-normocontrol.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-obekt-predmet-cel-zadachi.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-otzyv-rukovoditelya-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prakticheskaya-chast-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prezentaciya-k-zashchite.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prilozheniya-po-gost.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-recenziya-na-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-rech-na-zashchitu.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-rinc-statya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-skolko-stoit-diplomnaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-skolko-stoit-kursovaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-spisok-literatury.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-temy-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-titulnyj-list.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-vkr-struktura.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-vvedenie-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zaklyuchenie-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zaklyuchenie-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zashchita-diploma.html",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "kandidatskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "knowledge.html",
+        "match": "exact"
+      },
+      {
+        "path": "komissiya-0.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-informatike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-menedzhmentu.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-pedagogike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "loyalty.html",
+        "match": "exact"
+      },
+      {
+        "path": "magisterskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "maintenance.html",
+        "match": "exact"
+      },
+      {
+        "path": "nauchnaya-statya.html",
+        "match": "exact"
+      },
+      {
+        "path": "normokontrol-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "oferta.html",
+        "match": "exact"
+      },
+      {
+        "path": "oplata.html",
+        "match": "exact"
+      },
+      {
+        "path": "ops/analytics-v2/nginx-security.conf",
+        "match": "exact"
+      },
+      {
+        "path": "ops/analytics-v2/README.md",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "plan.html",
+        "match": "exact"
+      },
+      {
+        "path": "plus.html",
+        "match": "exact"
+      },
+      {
+        "path": "privacy.html",
+        "match": "exact"
+      },
+      {
+        "path": "priyomnaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "prolog.html",
+        "match": "exact"
+      },
+      {
+        "path": "proverka-istochnikov-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "razbor-zamechaniy-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "redaktura-posle-ii.html",
+        "match": "exact"
+      },
+      {
+        "path": "referat.html",
+        "match": "exact"
+      },
+      {
+        "path": "referral.html",
+        "match": "exact"
+      },
+      {
+        "path": "refunds.html",
+        "match": "exact"
+      },
+      {
+        "path": "requisites.html",
+        "match": "exact"
+      },
+      {
+        "path": "reviews.html",
+        "match": "exact"
+      },
+      {
+        "path": "services.html",
+        "match": "exact"
+      },
+      {
+        "path": "specifikaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "start.html",
+        "match": "exact"
+      },
+      {
+        "path": "sw.js",
+        "match": "exact"
+      },
+      {
+        "path": "tariffs.html",
+        "match": "exact"
+      },
+      {
+        "path": "terms.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/admin-analytics-v2.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/analytics-attribution-v2.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/analytics-v2-browser.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/analytics-v2-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/first-step-measurement-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/shared-shell-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tools.html",
+        "match": "exact"
+      },
+      {
+        "path": "vedenie.html",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "api-route:GET:/admin/analytics/overview"
+    },
+    {
+      "access": "write",
+      "key": "api-route:GET:/admin/analytics/session"
+    },
+    {
+      "access": "write",
+      "key": "api-route:GET:/admin/analytics/sessions"
+    },
+    {
+      "access": "write",
+      "key": "api-route:POST:/analytics/grant"
+    },
+    {
+      "access": "write",
+      "key": "api-route:POST:/analytics/events"
+    },
+    {
+      "access": "write",
+      "key": "api-route:POST:/analytics/revoke"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:analytics-v2"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:admin-analytics"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 7,
+  "base_manifest_hash": "78cb5671a973d0292c5edd963d8dc1a7ed74c0d5ad8db2d7fa66971d400f47b9"
+}
