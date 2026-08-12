@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-f12d2cb5b3df4ab88ebc97e625140dd0",
   "slug": "out-006-analytics-v2-core",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-006-analytics-v2-core",
   "base_sha": "68a9d9c12a9f55844569c210df1fd6dc24a82e61",
-  "result_sha": null,
+  "result_sha": "9e09e986d91779f6de95f4677c6437e0b088eaf3",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -501,6 +501,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 6,
-  "base_manifest_hash": "734638e4bf3d0c2b8482fea88cd4f83a7b4dab11e49d7292df47c2be6a722623"
+  "manifest_revision": 7,
+  "base_manifest_hash": "78cb5671a973d0292c5edd963d8dc1a7ed74c0d5ad8db2d7fa66971d400f47b9"
 }
