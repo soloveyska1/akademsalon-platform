@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-c13b89373162401e87c16b6d272c0967",
   "slug": "release158-analytics-master-parity",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/release158-analytics-master-parity",
   "base_sha": "fa2b317f8e99abcc7917a9d867407c460d82b9b6",
-  "result_sha": null,
+  "result_sha": "7d39e6f28390dd962e58c46383caf7d47acfcdee",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -78,6 +78,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "00cfb68e6e84c06afa724a33c6d2636342127648632b3feb329b427bb4c57197"
 }
