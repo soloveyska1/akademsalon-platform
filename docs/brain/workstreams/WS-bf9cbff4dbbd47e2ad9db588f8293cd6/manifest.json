@@ -1,0 +1,46 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-bf9cbff4dbbd47e2ad9db588f8293cd6",
+  "slug": "analytics-v2-dbip-attribution",
+  "status": "active",
+  "branch": "codex/analytics-v2-dbip-attribution",
+  "base_sha": "f215d850d24f45baa7a18eca515ca94a05707f42",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "admin-analytics.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1015.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-bf9cbff4dbbd47e2ad9db588f8293cd6/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/admin-analytics-v2.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:admin-analytics"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
