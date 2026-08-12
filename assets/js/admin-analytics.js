@@ -17,7 +17,9 @@
     overview: null,
     sessions: [],
     cursor: null,
+    appliedQuery: null,
     lastSuccess: '',
+    accessDenied: false,
     generation: 0,
     controller: null,
     moreController: null,
@@ -154,6 +156,16 @@
       hours: state.hours, source: state.source, device: state.device,
       page: state.page, bots: state.bots
     };
+  }
+  function cloneQuery(values) {
+    values = values || {};
+    return Object.freeze({
+      hours: Number(values.hours) || 168,
+      source: String(values.source || ''),
+      device: String(values.device || ''),
+      page: String(values.page || ''),
+      bots: !!values.bots
+    });
   }
   function query(extra, values) {
     values = values || state;
@@ -324,6 +336,7 @@
     } else {
       fresh.textContent = 'Последнее событие ' + dateTime(quality.latest_event_at);
     }
+    setFreshnessTone(quality.latest_event_at && quality.data_delay_seconds > 180 ? 'stale' : '');
   }
 
   function renderSessions(items, append) {
@@ -348,7 +361,13 @@
         '" aria-label="Открыть путь ' + esc(row.session_label) + '">Путь</button></td></tr>';
     }).join('') : emptyRow(7, 'В новой серии пока нет сессий за этот период.');
     var online = rows.filter(function (row) { return row.active; });
-    byId('onlineCount').textContent = number((state.overview.metrics || {}).online);
+    var onlineTotal = Number((state.overview.metrics || {}).online || 0);
+    byId('onlineCount').textContent = number(onlineTotal);
+    var navOnline = byId('navOnlineCount');
+    if (navOnline) {
+      navOnline.textContent = number(onlineTotal);
+      navOnline.hidden = onlineTotal < 1;
+    }
     byId('onlineList').innerHTML = online.length
       ? '<div class="aa-online-cards">' + online.map(function (row) {
         return '<article class="aa-online-card"><strong>' + esc(row.visitor_label) + ' · ' + esc(row.session_label) +
@@ -379,11 +398,93 @@
   function periodMatches(data, hours) {
     return responseHours(data) === Number(hours);
   }
+  function setFreshnessTone(tone) {
+    var box = byId('freshnessState');
+    var wrap = box && box.parentElement;
+    if (!wrap) return;
+    wrap.classList.toggle('is-stale', tone === 'stale');
+    wrap.classList.toggle('is-error', tone === 'error');
+  }
+  function setBusy(busy) {
+    var body = byId('agBody');
+    if (body) body.setAttribute('aria-busy', String(!!busy));
+  }
+  function showWorkspace() {
+    state.accessDenied = false;
+    byId('loadingState').hidden = true;
+    byId('accessDenied').hidden = true;
+    byId('analyticsWorkspace').hidden = false;
+  }
+  function clearRenderedData() {
+    [
+      'metricCards', 'trendChart', 'trendRows', 'sourceRows', 'geoRows',
+      'deviceBars', 'browserBars', 'osBars', 'pageRows', 'transitionRows',
+      'funnelSteps', 'eventRows', 'errorRows', 'sessionRows', 'qualityCards',
+      'onlineList', 'sessionDetail'
+    ].forEach(function (id) {
+      var node = byId(id);
+      if (node) node.innerHTML = '';
+    });
+    state.overview = null;
+    state.sessions = [];
+    state.cursor = null;
+    state.appliedQuery = null;
+    state.lastSuccess = '';
+    var navOnline = byId('navOnlineCount');
+    if (navOnline) {
+      navOnline.textContent = '0';
+      navOnline.hidden = true;
+    }
+  }
+  function showAccessDenied() {
+    state.generation += 1;
+    [state.controller, state.moreController, state.detailController].forEach(function (controller) {
+      if (controller && controller.abort) controller.abort();
+    });
+    state.controller = null;
+    state.moreController = null;
+    state.detailController = null;
+    state.accessDenied = true;
+    clearRenderedData();
+    setMobileMenu(false, false);
+    var dialog = byId('sessionDialog');
+    if (dialog.open && dialog.close) dialog.close();
+    byId('loadingState').hidden = true;
+    byId('analyticsWorkspace').hidden = true;
+    byId('analyticsContent').hidden = true;
+    byId('accessDenied').hidden = false;
+    byId('refreshButton').disabled = true;
+    byId('updatedAt').textContent = 'Доступ закрыт';
+    byId('freshnessState').textContent = 'Нужен вход мастера';
+    setFreshnessTone('error');
+    setBusy(false);
+    var accessAction = byId('accessDenied').querySelector('a[href]');
+    if (accessAction && accessAction.focus) accessAction.focus({ preventScroll: true });
+  }
+  function applyQueryToControls(values) {
+    if (!values) return;
+    state.hours = values.hours;
+    state.source = values.source;
+    state.device = values.device;
+    state.page = values.page;
+    state.bots = values.bots;
+    fillSelect('sourceFilter', 'Все источники', state.choices.sources, values.source);
+    fillSelect('deviceFilter', 'Все устройства', state.choices.devices, values.device);
+    fillSelect('pageFilter', 'Все страницы', state.choices.pages, values.page);
+    byId('botsFilter').checked = values.bots;
+    document.querySelectorAll('[data-hours]').forEach(function (button) {
+      button.setAttribute('aria-pressed', String(Number(button.getAttribute('data-hours')) === values.hours));
+    });
+  }
+  function restoreAppliedControls() {
+    if (state.appliedQuery) applyQueryToControls(state.appliedQuery);
+  }
   function markPending() {
     byId('freshnessState').textContent = state.lastSuccess
       ? 'Обновляем… пока показаны данные от ' + dateTime(state.lastSuccess)
       : 'Обновляем данные…';
     byId('updatedAt').textContent = 'Обновляем…';
+    setFreshnessTone('');
   }
   function markStale(label) {
     byId('freshnessState').textContent = state.lastSuccess
@@ -392,10 +493,19 @@
     byId('updatedAt').textContent = state.lastSuccess
       ? 'Последнее обновление ' + dateTime(state.lastSuccess)
       : 'Не обновлено';
+    setFreshnessTone(state.lastSuccess ? 'stale' : 'error');
   }
   function renderAll(data, sessionData, requested) {
     var serverHours = responseHours(data);
+    var applied = cloneQuery({
+      hours: serverHours,
+      source: requested.source,
+      device: requested.device,
+      page: requested.page,
+      bots: requested.bots
+    });
     state.overview = data;
+    state.appliedQuery = applied;
     state.cursor = sessionData.next_cursor || null;
     rememberChoices(data);
     renderMetrics(data);
@@ -408,27 +518,21 @@
     renderFunnel(data);
     renderQuality(data);
     renderSessions(sessionData.items || [], false);
-    fillSelect('sourceFilter', 'Все источники', state.choices.sources, state.source);
-    fillSelect('deviceFilter', 'Все устройства', state.choices.devices, state.device);
-    fillSelect('pageFilter', 'Все страницы', state.choices.pages, state.page);
-    byId('botsFilter').checked = state.bots;
+    applyQueryToControls(applied);
     byId('periodCaption').textContent = 'За ' + periodName(serverHours) + ' · МСК';
-    document.querySelectorAll('[data-hours]').forEach(function (button) {
-      button.setAttribute('aria-pressed', String(Number(button.getAttribute('data-hours')) === serverHours));
-    });
     byId('loadMore').hidden = !state.cursor;
     byId('loadMore').disabled = false;
     byId('analyticsContent').hidden = false;
-    byId('accessDenied').hidden = true;
     state.lastSuccess = data.generated_at;
     byId('updatedAt').textContent = 'Обновлено ' + dateTime(data.generated_at);
+    showWorkspace();
     setMessage('Данные рассчитаны сервером целиком за ' + periodName(serverHours) +
       '. Охват неизвестен: учитывается только согласившаяся выборка.');
   }
 
   function loadAll() {
     if (!S || !S.api) { setMessage('Не удалось запустить защищённый доступ к аналитике.', 'error'); return; }
-    var requested = requestState();
+    var requested = cloneQuery(requestState());
     var generation = ++state.generation;
     if (state.controller) state.controller.abort();
     if (state.moreController) state.moreController.abort();
@@ -436,13 +540,16 @@
     state.controller = typeof AbortController === 'function' ? new AbortController() : null;
     state.moreController = null;
     state.detailController = null;
+    state.cursor = null;
     var signal = state.controller ? state.controller.signal : undefined;
     var dialog = byId('sessionDialog');
     if (dialog.open && dialog.close) dialog.close();
     setMessage('Загружаем полные серверные агрегаты…');
     markPending();
+    setBusy(true);
     byId('refreshButton').disabled = true;
     byId('loadMore').disabled = true;
+    byId('loadMore').hidden = true;
     Promise.all([
       S.api.get('/admin/analytics/overview?' + query({}, requested), { signal: signal }),
       S.api.get('/admin/analytics/sessions?' + query({ limit: 100 }, requested), { signal: signal })
@@ -450,19 +557,20 @@
       if (generation !== state.generation) return;
       var overview = responses[0], sessions = responses[1];
       if ((overview && overview.error === 'forbidden') || (sessions && sessions.error === 'forbidden')) {
-        byId('accessDenied').hidden = false;
-        byId('analyticsContent').hidden = true;
-        setMessage('Войдите как мастер, чтобы открыть аналитику.', 'error');
-        markStale('Доступ к данным закрыт');
+        showAccessDenied();
         return;
       }
       if (!overview || !overview.ok || !sessions || !sessions.ok) {
+        showWorkspace();
+        restoreAppliedControls();
         var stale = state.lastSuccess ? ' Последние успешно загруженные данные: ' + dateTime(state.lastSuccess) + '.' : '';
         setMessage('Сервер аналитики сейчас не ответил.' + stale + ' Нули не подставлены — попробуйте ещё раз.', 'error');
         markStale();
         return;
       }
       if (!periodMatches(overview, requested.hours) || !periodMatches(sessions, requested.hours)) {
+        showWorkspace();
+        restoreAppliedControls();
         setMessage('Сервер вернул данные за другой период. Экран не обновлён, чтобы не смешивать цифры.', 'error');
         markStale('Период ответа не совпал');
         return;
@@ -470,21 +578,25 @@
       renderAll(overview, sessions, requested);
     }).catch(function () {
       if (generation !== state.generation) return;
+      showWorkspace();
+      restoreAppliedControls();
       var stale = state.lastSuccess ? ' Последние успешно загруженные данные: ' + dateTime(state.lastSuccess) + '.' : '';
       setMessage('Нет связи с аналитикой.' + stale + ' Показанные ранее цифры не обновлялись.', 'error');
       markStale();
     }).finally(function () {
       if (generation !== state.generation) return;
       state.controller = null;
-      byId('refreshButton').disabled = false;
-      byId('loadMore').disabled = false;
+      setBusy(false);
+      byId('refreshButton').disabled = state.accessDenied;
+      byId('loadMore').disabled = !state.cursor || state.accessDenied;
+      byId('loadMore').hidden = !state.cursor || state.accessDenied;
     });
   }
 
   function loadMore() {
-    if (!state.cursor) return;
+    if (!state.cursor || !state.appliedQuery || state.accessDenied) return;
     var generation = state.generation;
-    var requested = requestState();
+    var requested = state.appliedQuery;
     var cursor = state.cursor;
     if (state.moreController) state.moreController.abort();
     state.moreController = typeof AbortController === 'function' ? new AbortController() : null;
@@ -494,6 +606,10 @@
       signal: controller ? controller.signal : undefined
     }).then(function (result) {
       if (generation !== state.generation || cursor !== state.cursor) return;
+      if (result && result.error === 'forbidden') {
+        showAccessDenied();
+        return;
+      }
       if (!result || !result.ok) { setMessage('Следующую страницу сессий загрузить не удалось.', 'error'); return; }
       if (!periodMatches(result, requested.hours)) {
         setMessage('Следующая страница относится к другому периоду и не была добавлена.', 'error');
@@ -505,13 +621,15 @@
     }).finally(function () {
       if (generation !== state.generation || state.moreController !== controller) return;
       state.moreController = null;
-      byId('loadMore').disabled = false;
+      byId('loadMore').disabled = state.accessDenied || !state.cursor;
+      byId('loadMore').hidden = state.accessDenied || !state.cursor;
     });
   }
 
   function openSession(sessionId) {
+    if (!state.appliedQuery || state.accessDenied) return;
     var generation = state.generation;
-    var requested = requestState();
+    var requested = state.appliedQuery;
     if (state.detailController) state.detailController.abort();
     state.detailController = typeof AbortController === 'function' ? new AbortController() : null;
     var controller = state.detailController;
@@ -521,6 +639,10 @@
     S.api.get('/admin/analytics/session/' + encodeURIComponent(sessionId) + '?hours=' +
       encodeURIComponent(requested.hours), { signal: controller ? controller.signal : undefined }).then(function (detail) {
       if (generation !== state.generation || state.detailController !== controller) return;
+      if (detail && detail.error === 'forbidden') {
+        showAccessDenied();
+        return;
+      }
       if (!detail || !detail.ok) {
         byId('sessionDetail').innerHTML = '<p class="aa-empty">Путь сессии сейчас недоступен.</p>';
         return;
@@ -555,12 +677,142 @@
     });
   }
 
+  function currentTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  }
+  function syncThemeControls() {
+    var action = currentTheme() === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему';
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (button) {
+      button.setAttribute('aria-label', action);
+    });
+    document.querySelectorAll('[data-theme-action], [data-theme-copy]').forEach(function (node) {
+      node.textContent = action;
+    });
+  }
+  function toggleTheme() {
+    var next = currentTheme() === 'dark' ? 'light' : 'dark';
+    if (next === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
+    try { localStorage.setItem('salon_theme', next); } catch (ignoreStore) {}
+    syncThemeControls();
+  }
+
+  function syncMasterIdentity(session) {
+    var user = session && session.user || {};
+    var name = String(user.name || 'мастер').trim() || 'мастер';
+    var initials = name.split(/\s+/).slice(0, 2).map(function (part) { return part.charAt(0); }).join('').toUpperCase() || 'М';
+    var profile = byId('adminProfile');
+    var back = byId('adminReturn');
+    if (profile) {
+      profile.textContent = initials;
+      profile.title = 'Мастер · ' + name;
+    }
+    if (back) back.textContent = 'Вернуться · ' + name;
+  }
+
+  function openCabinetSearch() {
+    try {
+      localStorage.setItem('ag_tab', JSON.stringify('orders'));
+      sessionStorage.setItem('ag_focus_search', '1');
+    } catch (ignoreStore) {}
+    window.location.assign('admin.html#orders');
+  }
+
+  var mobileMenuTrigger = byId('analyticsNav') && document.querySelector('[data-admin-mobile-menu]');
+  var mobileMenuReturn = null;
+  function setMobileMenu(open, restoreFocus) {
+    open = !!open;
+    document.body.classList.toggle('admin-nav-expanded', open);
+    if (mobileMenuTrigger) {
+      mobileMenuTrigger.setAttribute('aria-expanded', String(open));
+      mobileMenuTrigger.setAttribute('aria-label', open ? 'Закрыть разделы' : 'Открыть разделы');
+    }
+    var main = byId('analyticsMain');
+    if (main) main.inert = open;
+    if (open) {
+      mobileMenuReturn = mobileMenuTrigger || document.activeElement;
+      var current = document.querySelector('#analyticsNav [aria-current="page"]');
+      if (current) current.focus({ preventScroll: true });
+    } else if (restoreFocus && mobileMenuReturn && mobileMenuReturn.focus) {
+      mobileMenuReturn.focus({ preventScroll: true });
+    }
+  }
+
+  var filterExpanded = false;
+  function filtersAreMobile() {
+    return !!(window.matchMedia && window.matchMedia('(max-width: 720px)').matches);
+  }
+  function syncAdvancedFilters() {
+    var panel = byId('advancedFilters');
+    var toggle = byId('filterToggle');
+    if (!panel || !toggle) return;
+    panel.hidden = filtersAreMobile() && !filterExpanded;
+    toggle.setAttribute('aria-expanded', String(!panel.hidden));
+    toggle.textContent = panel.hidden ? 'Фильтры' : 'Скрыть';
+  }
+
+  document.querySelectorAll('[data-theme-toggle]').forEach(function (button) {
+    button.addEventListener('click', toggleTheme);
+  });
+  syncThemeControls();
+  if (mobileMenuTrigger) {
+    mobileMenuTrigger.addEventListener('click', function () {
+      setMobileMenu(mobileMenuTrigger.getAttribute('aria-expanded') !== 'true', false);
+    });
+  }
+  document.querySelectorAll('[data-admin-nav-link]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      var href = link.getAttribute('href') || '';
+      var match = href.match(/^admin\.html#([a-z]+)$/);
+      if (match) {
+        try { localStorage.setItem('ag_tab', JSON.stringify(match[1])); } catch (ignoreStore) {}
+      }
+      setMobileMenu(false, false);
+    });
+  });
+  document.querySelectorAll('[data-admin-search]').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      openCabinetSearch();
+    });
+  });
+  byId('filterToggle').addEventListener('click', function () {
+    filterExpanded = !filterExpanded;
+    syncAdvancedFilters();
+    if (filterExpanded) {
+      var first = byId('advancedFilters').querySelector('select, input, button');
+      if (first) first.focus({ preventScroll: true });
+    }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 920) setMobileMenu(false, false);
+    syncAdvancedFilters();
+  }, { passive: true });
+  document.addEventListener('keydown', function (event) {
+    if ((event.metaKey || event.ctrlKey) && String(event.key).toLowerCase() === 'k') {
+      event.preventDefault();
+      openCabinetSearch();
+      return;
+    }
+    if (event.key === 'Escape' && document.body.classList.contains('admin-nav-expanded')) {
+      event.preventDefault();
+      setMobileMenu(false, true);
+    }
+  });
+  syncAdvancedFilters();
+  var currentNav = document.querySelector('#analyticsNav [aria-current="page"]');
+  if (currentNav && currentNav.scrollIntoView) {
+    currentNav.scrollIntoView({ block: 'nearest', inline: 'center' });
+  }
+
   byId('refreshButton').addEventListener('click', loadAll);
   byId('applyFilters').addEventListener('click', function () {
     state.source = byId('sourceFilter').value;
     state.device = byId('deviceFilter').value;
     state.page = byId('pageFilter').value;
     state.bots = byId('botsFilter').checked;
+    filterExpanded = false;
+    syncAdvancedFilters();
     loadAll();
   });
   document.querySelectorAll('[data-hours]').forEach(function (button) {
@@ -581,6 +833,21 @@
 
   var sortedHeader = document.querySelector('[aria-sort]');
   if (sortedHeader) sortedHeader.setAttribute('aria-label', 'Последняя активность, по убыванию');
-  if (S && S.api && S.api.ready && typeof S.api.ready.then === 'function') S.api.ready.then(loadAll);
-  else loadAll();
+  byId('refreshButton').disabled = true;
+  setBusy(true);
+  if (S && S.api && S.api.ready && typeof S.api.ready.then === 'function') {
+    S.api.ready.then(function (session) {
+      if (session && session.error === 'forbidden') {
+        showAccessDenied();
+        return;
+      }
+      syncMasterIdentity(session);
+      loadAll();
+    });
+  } else {
+    showWorkspace();
+    setMessage('Не удалось запустить защищённый доступ к аналитике.', 'error');
+    markStale('Данные не загружены');
+    setBusy(false);
+  }
 })();
