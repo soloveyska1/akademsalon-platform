@@ -1,21 +1,22 @@
 # START HERE — Академический Салон
 
-Последнее обновление: 3 августа 2026 г.
+Последнее обновление: 12 августа 2026 г.
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release103>
+- Production: <https://akademsalon.ru/?v=release157>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=release98>
-- Production release: `release103-74b6e0937277`
-- Production source: `74b6e0937277ddf0afcd433da9a22f973c7a7d26`
+- Production release: `release157-c891d24`
+- Production source: `c891d24254e671292d327dc485d9d71a342156d1`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
-- Каноническая integration-ветка: `origin/codex/full-reference-production`
+- Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
+- Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Rollback: `release102-e2f76c3d71c8`
-- Release103 имеет G10 GO: product 501/501, Brain 39/39, external/VPS smoke
-  14/14 до и после выполненного rollback, production WebKit 48/48 до и 48/48
-  после forward restore. Точная запись:
-  [releases/REL-0103.md](releases/REL-0103.md).
+- Rollback: `release156-1b8f03f` плюс exact backend backup из `REL-0157`.
+- Release157 имеет G10 GO: site 553/553, backend 30/30, Brain 39/39,
+  external/VPS smoke 14/14 в release157, 14/14 в выполненном rollback и снова
+  14/14 после forward restore; live Chromium и synthetic ingest/dedupe/revoke
+  зелёные. Точная запись: [releases/REL-0157.md](releases/REL-0157.md).
 - 3 августа после release103 исправлен production-wide отказ
   заявок и подарочных форм: backend оставался на privacy/oferta
   3.0/3.0 при опубликованных 3.1/3.2. Активные константы выровнены,
@@ -32,12 +33,12 @@
 
 ## NOW
 
-1. Получить от пользователя повторный результат его реальной заявки
+1. Открыть авторизованную Analytics v2 в `/admin-analytics.html` и подтвердить
+   первый естественный consented-сеанс; не подмешивать legacy history.
+2. Получить от пользователя повторный результат его реальной заявки
    после исправления `E-1013`; агенты сами production submit не выполняют.
    Затем отдельно закрыть stale-page copy/classification и версию 3.0 в
    `consent-request.html`.
-2. Продолжение `OUT-006` — не включать новые milestones до authoritative server
-   contract; затем провести preregistered synthetic comprehension test.
 3. `OUT-001` — не выполнять production submit, пока не появятся безопасные
    marker/lookup/cleanup и authoritative backend/bot evidence.
 
@@ -66,7 +67,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0103.md](releases/REL-0103.md) — доказательная запись текущего GO-релиза.
+- [releases/REL-0157.md](releases/REL-0157.md) — доказательная запись текущего GO-релиза.
 
 ## Старт новой сессии
 

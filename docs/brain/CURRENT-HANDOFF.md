@@ -2,66 +2,80 @@
 
 ## Canonical and production truth
 
-- Canonical integration ref at incident branch creation is exact
-  `1d9d681fcf037d998a81102be82a7f8fb039c952`; release103 static source remains
-  `74b6e0937277ddf0afcd433da9a22f973c7a7d26` and its frozen product result is
-  `8ed1cd5c4f463fbf3a3010c9dd6fd5437d335b79`.
-- Production `current` and compatibility `dist` both resolve to
-  `release103-74b6e0937277`. Exact publication, two-vantage smoke, 96 production
-  browser states and executed release102 rollback/forward are in `REL-0103`.
-- Rollback is `release102-e2f76c3d71c8`. It is healthy but intentionally
-  reopens the historical 921–1240 pointer-search P1 until forward restore.
+- Canonical source is `c891d24254e671292d327dc485d9d71a342156d1`.
+- Production `current` and compatibility `dist` resolve to
+  `release157-c891d24`; `previous` resolves to `release156-1b8f03f`.
+- Release157 has G10 GO with P0=0/P1=0. Exact files, hashes, tests, synthetic
+  cleanup, browser proof and executed rollback/forward are in `REL-0157`.
+- Backend rollback is the exact final pre-install backup
+  `/root/salon_bot/backups/analytics-v2-20260812T165403022124Z` together with
+  static release156. The installer refuses a stale or mixed state.
+- The active service and Nginx are healthy; final external and VPS read-only
+  smoke each passed 14/14 after forward restore.
 
-## What release103 proves
+## What Analytics v2 now proves
 
-- One named 44×44 search trigger is continuously reachable across the 920 px
-  mobile seam and through 1240 px on home, services and cabinet in light/dark.
-- Search/catalogue JS and the protected 12 hub cards, 9 disciplines, 22 detail
-  URLs, ItemList 13, routes/prices/schema and saved intent remain unchanged.
-- Product is 501/501; Brain 39/39; shared shell proves every consumer has a live
-  dialog runtime. Kimi/Sonnet/GLM and Opus approve; three independent Codex
-  reviews report P0=0/P1=0.
-- Public artifact is 337 exact files plus two preserved server paths, 339 total.
-  Live chrome CSS is `89dbf8de…46ce`, home CSS `0d463049…5cde` and index
-  `c3f7709b…9104`.
-- Final external and VPS smoke each passed 14/14 before and after the executed
-  rollback. Production WebKit passed 48/48 before and 48/48 after restore.
+- The Russian master dashboard is live at `/admin-analytics.html` and calculates
+  complete server-side metrics for one selected period: anonymous visitors and
+  sessions, online activity, time, entry/exit, sources/campaigns, device/browser/
+  OS, approximate geography, transitions, six-stage funnel, conversion, safe
+  chronology, errors and collection health.
+- The contract covers 87 public pages and 45 allowlisted events. Idempotent IDs,
+  occurrence time, client sequence, atomic thirty-minute sessionisation and
+  server pagination close the previous silent-drop, duplicate, >100% conversion
+  and mixed-window failures.
+- Live synthetic proof accepted six ordered funnel events, deduplicated the
+  replay, deleted all raw rows on revoke and blocked replay. The exact synthetic
+  trace was removed; final v2 raw and health counts were zero at the release
+  checkpoint.
+- A fresh real browser sends no Analytics v2 or legacy request before consent.
+  The live private page has strict self-only CSP, no external resources and no
+  overflow at 390/1440 px. Unauthenticated admin readback is 403.
 
-## Production submit incident and recovery
+## Privacy and interpretation
 
-- The user's exact 409 copy exposed a real production-wide outage, not a client
-  mistake. Live frontend and documents were consent request 1.0, privacy 3.1 and
-  oferta 3.2; active backend order and gift contracts still required 3.0/3.0.
-- The backend rejects that mismatch before request-ID lookup or database create,
-  so the reported failed attempt did not create an order.
-- An authorized backend-only hotfix aligned the active order and gift constants,
-  compiled the replacement and restarted `salon-bot-v2.service`. Exact previous
-  bytes remain in `config.py.pre-consent-hotfix-20260803`; active source hash is
-  `d15fd1f5…93a9`.
-- Service health recovered on the first bounded follow-up poll and VPS GET-only
-  smoke passed 14/14. No test order, client row, OAuth flow or deletion was used.
-  Exact proof and rollback are `E-1013`.
+- A visitor is a random anonymous browser ID, not a known person. Contacts,
+  orders, login identity, raw IP/UA/referrer, query, form text and files are not
+  linked or stored in the v2 schema.
+- Approximate geography is produced locally from the August 2026 DB-IP City Lite
+  snapshot. The UI visibly attributes DB-IP / CC BY 4.0 and calls no remote geo
+  service.
+- Collection is consent-only and blockers/refusal reduce coverage. The dashboard
+  explicitly says this; it must not be presented as a census of all people.
+- Trustworthy history begins at release157. Legacy rows are intentionally not
+  imported or read because their meaning and accuracy cannot be defended.
+- Raw v2 events are retained for at most 365 days. Revoke cascades visitor,
+  sessions and events and keeps only a bounded deletion-proof hash to reject
+  offline replay.
 
-## Remaining limits and debt
+## Verification summary
 
-- `/api/visit` backend IP handling, dedupe, idempotency, retention and aggregate
-  readback remain unknown. New `first_step_*` claims remain forbidden.
-- OUT-001 still needs authoritative backend/bot marker, lookup and cleanup; no
-  production submit has been attempted by an agent. The user may safely retry
-  the unchanged real form because the rejected attempt occurred before create.
-- The request-consent page has one stale textual reference to privacy 3.0, and a
-  future `consent_version_mismatch` would still show the generic ambiguous 409
-  copy. Both are bounded tracked follow-ups for the next frontend release.
-- Overlapping legacy header visibility rules are P2. Consolidate them only in a
-  separate failure-first workstream before the next breakpoint edit.
-- Default network route is `utun6`; production SSH/curl must bind to `en0` or
-  execute smoke on the VPS.
-- Inactive release102 sidecar staging remains non-live and untouched until an
-  explicit cleanup plan.
+- Site 553/553; backend 30/30; Brain 39/39; compile, strict validation and diff
+  checks green; three independent reviews GO with P0=0/P1=0.
+- Deterministic payload: 353 files / 24,940,374 bytes, manifest
+  `35dfa8aa…c49`; live immutable tree: 356 files / 24,950,545 bytes, manifest
+  `875fd192…73e`.
+- Server-first activation disabled legacy `/api/visit` before the public v2
+  scripts became live. Exact module, contract, source and Nginx hashes match the
+  pinned installer result.
+- Rollback to release156 and pre-v2 runtime passed external/VPS 14/14; the second
+  backend-first forward install and release157 restore again passed external/VPS
+  14/14 plus live Chromium and SQLite integrity.
+- Production contacts, orders, logs and legacy visit contents were never read;
+  no real order or user was created, changed or deleted.
+
+## Remaining P2
+
+- Replace the monthly DB-IP snapshot with the verified September file by
+  15 September 2026; integration/operations owns it.
+- Consolidate the pre-existing duplicate Nginx `server_name` definitions before
+  the next topology change. Syntax and the active release remain healthy.
+- Legacy analytics retention/deletion needs a separate privacy workstream. Do
+  not backfill it into Analytics v2.
 
 ## One exact next step
 
-Collect the user's result from retrying the unchanged real request. If it is
-successful, ship the bounded privacy-reference and stale-page error-copy fix in
-its own frontend workstream; agents still do not submit a production test request
-until the unique marker, isolated lookup and bounded cleanup contract exists.
+Open the authenticated master dashboard at
+`https://akademsalon.ru/admin-analytics.html`, confirm the first organic
+consented session appears, and treat an initially empty series as correct rather
+than seeding or importing unverifiable legacy history.

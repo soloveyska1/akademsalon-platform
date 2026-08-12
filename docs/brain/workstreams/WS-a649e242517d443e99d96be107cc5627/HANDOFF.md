@@ -43,18 +43,37 @@
 
 ## Changed
 
-Only this release declaration exists so far. Production has not been mutated.
+- Published immutable `release157-c891d24`; `current` and `dist` resolve to it,
+  and `previous` resolves to `release156-1b8f03f`.
+- Installed pinned Analytics v2 backend/contract, root-only signing secret,
+  local DB-IP City Lite August 2026, edge limits and strict admin CSP.
+- Disabled legacy `/api/visit` before switching static clients.
+- Added durable release record `REL-0157`, refreshed `START-HERE` and replaced
+  `CURRENT-HANDOFF` with current production truth.
+
+## Verified result
+
+- Site 553/553, backend 30/30, Brain 39/39; compile, strict validation and diff
+  checks green.
+- Deterministic 353-file payload and exact 356-file immutable live tree verified.
+- Production synthetic funnel 6/6, duplicate replay 6/6, ordered chronology,
+  revoke 6/6 and replay block; exact synthetic trace cleaned to zero.
+- External/VPS smoke 14/14 before release, after first activation, in executed
+  release156/backend rollback and after second forward restore.
+- Live Chromium: no collection before consent, strict admin CSP, 390/1440 no
+  overflow, honest unauthenticated state and zero external admin resources.
+- Three independent final reviewers returned GO with P0=0/P1=0.
 
 ## Risks and rollback
 
-The hard release risks are contract drift, partial server/static activation,
-SQLite or Nginx failure, accidental collection before consent, attribution
-license omission and an untested rollback. Any failed hard gate stops the
-release. The rollback target is the exact current release156 static tree plus
-the installer's exact pre-v2 backup; the rollback drill must be executed before
-the final GO and then forward-restored to release157.
+Rollback was executed and forward-restored. The current exact rollback target
+is release156 plus
+`/root/salon_bot/backups/analytics-v2-20260812T165403022124Z`. Monthly DB-IP
+replacement and the pre-existing duplicate Nginx server-name warnings are P2
+owned by integration/operations; legacy analytics remains outside v2 readback.
 
 ## Next
 
-Commit this reservation, prove scope is conflict-free, rerun all local gates,
-build the immutable artifact, then perform the bounded backend-first rollout.
+Freeze this verified result, integrate the durable release truth into fresh
+canonical, and let the authenticated owner confirm the first organic consented
+session without importing or seeding legacy data.
