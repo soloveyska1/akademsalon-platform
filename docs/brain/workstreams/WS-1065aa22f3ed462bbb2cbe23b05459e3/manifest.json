@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-1065aa22f3ed462bbb2cbe23b05459e3",
   "slug": "incident-502-vhost-isolation",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/incident-502-vhost-isolation",
   "base_sha": "d7817620839c7e3d2f4fce777cfda96f5d5bde64",
-  "result_sha": null,
+  "result_sha": "55971b79819f5fcd59bc7ca74db88055f58a8df4",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -66,6 +66,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "b034ae71acf8509ae688286f840dfb21c16a252a19ac0869b8c6e01a04838ada"
 }
