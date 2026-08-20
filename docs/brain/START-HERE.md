@@ -1,6 +1,6 @@
 # START HERE — Академический Салон
 
-Последнее обновление: 12 августа 2026 г.
+Последнее обновление: 21 августа 2026 г.
 
 ## Текущая истина
 
@@ -24,6 +24,12 @@
   3.0/3.0 при опубликованных 3.1/3.2. Активные константы выровнены,
   сервис active, VPS read-only smoke 14/14; реальная тестовая заявка
   не создавалась. Точная запись: [evidence/E-1013.md](evidence/E-1013.md).
+- 20–21 августа устранён ложный всплеск 502: остановленный соседний vhost
+  проксировал сканеры в отсутствующий 4310, а Салон-дозор читал общий лог всего
+  VPS. Kiskispace теперь локально отвечает 404, `akademsalon.ru` имеет отдельный
+  privacy-safe log и PHP reject, duplicate enabled backup удалён; external/VPS
+  smoke 14/14 и rollback/forward проверены. Static release/backend не менялись.
+  Точная запись: [evidence/E-1017.md](evidence/E-1017.md).
 
 ## Главная цель продукта
 
@@ -70,6 +76,8 @@
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
 - [releases/REL-0158.md](releases/REL-0158.md) — доказательная запись текущего GO-релиза.
+- [../../ops/monitoring/README.md](../../ops/monitoring/README.md) — контракт
+  изоляции Nginx virtual hosts и Салон-дозора на общем VPS.
 
 ## Старт новой сессии
 

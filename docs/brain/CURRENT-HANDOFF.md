@@ -14,6 +14,22 @@
 - `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
   is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
 
+## 20–21 August server-error isolation
+
+- The reported PHP/WordPress `502` burst did not hit Akademsalon. Sanitized
+  Nginx evidence mapped it to a stopped neighbouring Duo Space/Kiskispace
+  upstream on absent port 4310; the Salon watcher had incorrectly consumed the
+  VPS-wide access log.
+- Akademsalon now owns a dedicated privacy-safe `noqs` log and local PHP `404`;
+  the retired host returns local `404`; the watcher reads only the Salon log.
+  Its proven false daily 5xx count/throttle were cleared under lock.
+- The executable backup copy was removed from `sites-enabled`, so `nginx -t` is
+  clean instead of emitting six duplicate-name warnings. Static release158,
+  backend, database and Analytics v2 were unchanged.
+- Final external/VPS smoke is 14/14 + 14/14; five cross-vhost scanner probes
+  changed neither the dedicated log nor `day.5xx=0`. Exact hashes, root-only
+  backup and executed rollback/forward proof are in `E-1017`.
+
 ## What the master now sees
 
 - `/admin-analytics.html` uses the same cabinet shell, desktop sidebar, mobile
@@ -51,8 +67,9 @@
 
 ## Verification summary
 
-- Site 563/563; backend 30/30; Brain 39/39; syntax, strict validation and diff
-  checks green; three independent reviews GO with P0=0/P1=0.
+- Release158 proof remains site 563/563. The current incident branch is site
+  566/566; backend 30/30; Brain 39/39; syntax, strict validation and diff checks
+  green. The release158 three-review GO remains unchanged.
 - Deterministic payload: 353 files / 24,970,161 bytes, manifest
   `f759b4a9…55b5`; immutable live tree: 356 files / 24,980,332 bytes, manifest
   `fab1be44…fe38`.
@@ -72,8 +89,6 @@
   an initially empty series is correct and must not be seeded from legacy data.
 - Replace the monthly DB-IP snapshot with the verified September file by
   15 September 2026; integration/operations owns it.
-- Consolidate the pre-existing duplicate Nginx `server_name` definitions before
-  the next topology change. Syntax and the active release remain healthy.
 - Legacy analytics retention/deletion needs a separate privacy workstream and
   must not be exposed as Analytics v2 history.
 
