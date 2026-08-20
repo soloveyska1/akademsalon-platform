@@ -1,0 +1,71 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-1065aa22f3ed462bbb2cbe23b05459e3",
+  "slug": "incident-502-vhost-isolation",
+  "status": "active",
+  "branch": "codex/incident-502-vhost-isolation",
+  "base_sha": "d7817620839c7e3d2f4fce777cfda96f5d5bde64",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1017.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-1065aa22f3ed462bbb2cbe23b05459e3/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "ops/monitoring",
+        "match": "tree"
+      },
+      {
+        "path": "tests/ops-monitoring-contract.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "ops/analytics-v2/nginx-security.conf",
+        "match": "exact"
+      },
+      {
+        "path": "tests/production-smoke.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "brain-record:E-1017"
+    },
+    {
+      "access": "write",
+      "key": "contract:salon-watch-vhost-isolation"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
