@@ -30,6 +30,12 @@
   privacy-safe log и PHP reject, duplicate enabled backup удалён; external/VPS
   smoke 14/14 и rollback/forward проверены. Static release/backend не менялись.
   Точная запись: [evidence/E-1017.md](evidence/E-1017.md).
+- 21 августа повторный сигнал локализован как 500 честных `404` за 12 секунд
+  при `5xx=0` и без совпадающей consented-сессии. Raw public 404 больше не
+  создаёт alert, суточный health-счётчик или throttle; проверка настоящих 5xx
+  сохранена без изменения. Live 50-request threshold, smoke 14/14 с двух
+  vantage и watcher rollback/forward зелёные; release/backend не менялись.
+  Точная запись: [evidence/E-1018.md](evidence/E-1018.md).
 
 ## Главная цель продукта
 

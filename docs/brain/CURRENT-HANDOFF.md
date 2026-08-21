@@ -30,6 +30,22 @@
   changed neither the dedicated log nor `day.5xx=0`. Exact hashes, root-only
   backup and executed rollback/forward proof are in `E-1017`.
 
+## 21 August 404 scanner-noise policy
+
+- Повторный alert соответствовал ровно 500 `GET 404` за 12 секунд;
+  `day.5xx=0`, все watcher checks были `up`. Legacy «Визиты» не содержали
+  строк за интервал, а consent-only Analytics v2 оставалась пустой; отсутствие
+  сессии использовано только как corroboration, не как перепись HTTP traffic.
+- Raw public 404 больше не создаёт Telegram alert, throttle или суточный
+  health-счётчик. Internal links/routes остаются под детерминированными тестами,
+  а прежний порог настоящих 5xx сохранён без изменения.
+- Active watcher hash: `31f1f968d4363fb91fccad2736727bccf488ec4883580e6a8d4df15e873bd06f`.
+  Ложные `day.404=591` и throttle удалены под lock; live 50-request threshold
+  оставил 404 state пустым и `day.5xx=0`.
+- External/VPS smoke 14/14 + 14/14, synthetic old/new policy и executed
+  rollback/forward зелёные. Root-only backup и exact hashes находятся в
+  `E-1018`; static release158, Nginx, backend и SQLite не менялись.
+
 ## What the master now sees
 
 - `/admin-analytics.html` uses the same cabinet shell, desktop sidebar, mobile
@@ -68,7 +84,7 @@
 ## Verification summary
 
 - Release158 proof remains site 563/563. The current incident branch is site
-  566/566; backend 30/30; Brain 39/39; syntax, strict validation and diff checks
+  567/567; backend 30/30; Brain 39/39; syntax, strict validation and diff checks
   green. The release158 three-review GO remains unchanged.
 - Deterministic payload: 353 files / 24,970,161 bytes, manifest
   `f759b4a9…55b5`; immutable live tree: 356 files / 24,980,332 bytes, manifest
@@ -80,8 +96,10 @@
 - External/VPS smoke passed 14/14 before activation and after release158. It
   passed 14/14 during the executed rollback to release157 and again after
   forward restore to release158.
-- Production contacts, orders, logs, raw analytics and legacy rows were not
-  read; no backend, database or collector file changed.
+- Только privacy-safe агрегат dedicated access log и агрегированные временные
+  границы «Визитов» были прочитаны для `E-1018`; raw identifiers, IP/UA,
+  query/referrer, contacts, orders and texts не читались. Backend, database и
+  analytics collector files не менялись.
 
 ## Remaining P2
 
