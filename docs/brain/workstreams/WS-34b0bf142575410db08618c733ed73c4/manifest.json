@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-34b0bf142575410db08618c733ed73c4",
+  "slug": "incident-404-scanner-noise",
+  "status": "active",
+  "branch": "codex/incident-404-scanner-noise",
+  "base_sha": "4f3f13a07a1d3131979904296af75db0b72464ba",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1018.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-34b0bf142575410db08618c733ed73c4/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "ops/monitoring",
+        "match": "tree"
+      },
+      {
+        "path": "tests/ops-monitoring-contract.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "brain-record:E-1018"
+    },
+    {
+      "access": "write",
+      "key": "contract:salon-watch-404-alert-policy"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
