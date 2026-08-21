@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-34b0bf142575410db08618c733ed73c4",
   "slug": "incident-404-scanner-noise",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/incident-404-scanner-noise",
   "base_sha": "4f3f13a07a1d3131979904296af75db0b72464ba",
-  "result_sha": null,
+  "result_sha": "fb37c7803851400038dd24fbe645e73ebe2686b6",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -57,6 +57,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "4e2aad9e58ab69e653a849c1078a96b095e5c62632818fbffed863434d635989"
 }
