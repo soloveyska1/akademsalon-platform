@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-b4ec6d890eab488784d19eecf7cdca2e",
   "slug": "release159-quote-scope-measurement-v2",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/release159-quote-scope-measurement-v2",
   "base_sha": "57703fa7d97fb8ad9b8685dda0a6e684801e939d",
   "result_sha": "e5688948df8e737f7f2e923f7de1a83cebaeea99",
@@ -86,6 +86,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "47d3ef05f1b875c986e5b091dfffa52de020994c6b9aa7d60a2b2416b9666e8c"
+  "manifest_revision": 3,
+  "base_manifest_hash": "c794030ecfe4d922fdd478b9e2d76e2d8f0f13ce9a31a7c83e74c562f4e3a17d"
 }
