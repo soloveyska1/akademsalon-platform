@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-50a43e35fa2d4c77a03d38da4830c44e",
   "slug": "out-006-conversion-package-v1",
-  "status": "submitted",
+  "status": "active",
   "branch": "codex/out-006-conversion-package-v1",
   "base_sha": "f3d2295eacef7b022c5e1180a1166c5843a7bc07",
-  "result_sha": "fc910140decf08b4a8b43d3fe0c229114ae779c5",
+  "result_sha": null,
   "outcome_ids": [
     "OUT-006"
   ],
@@ -54,6 +54,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "fe18ec36c488bafabbe15c3ca1a3d413fef991ee8c14a7cb8cee9e7734f05736"
+  "manifest_revision": 3,
+  "base_manifest_hash": "565aac8e57d2b173eb067ec50fe88291a488c49ec3bde884aa55e40b5b5bfae2"
 }
