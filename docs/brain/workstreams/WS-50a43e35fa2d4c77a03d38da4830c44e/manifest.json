@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-50a43e35fa2d4c77a03d38da4830c44e",
+  "slug": "out-006-conversion-package-v1",
+  "status": "active",
+  "branch": "codex/out-006-conversion-package-v1",
+  "base_sha": "f3d2295eacef7b022c5e1180a1166c5843a7bc07",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/configurator-journey.css",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-50a43e35fa2d4c77a03d38da4830c44e/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/configurator-conversion-package.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "analytics/contract.json",
+        "match": "exact"
+      },
+      {
+        "path": "reviews.html",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:configurator-conversion-package"
+    },
+    {
+      "access": "read",
+      "key": "contract:analytics-v2"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
