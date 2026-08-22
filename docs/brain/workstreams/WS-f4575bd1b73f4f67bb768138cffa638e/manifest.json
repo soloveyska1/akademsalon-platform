@@ -1,0 +1,75 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-f4575bd1b73f4f67bb768138cffa638e",
+  "slug": "out-006-quote-scope-measurement-v1",
+  "status": "active",
+  "branch": "codex/out-006-quote-scope-measurement-v1",
+  "base_sha": "81d2bd33da8ad16ea166a312c583e52d5781d350",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "analytics/contract.json",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/analytics-v2.js",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1019.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-f4575bd1b73f4f67bb768138cffa638e/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/configurator-quote-scope-analytics.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "docs/brain/plans/OUT-006-FIRST-STEP-MEASUREMENT.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "brain-record:E-1019"
+    },
+    {
+      "access": "write",
+      "key": "contract:analytics-v2"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:configurator-quote-scope-measurement"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
