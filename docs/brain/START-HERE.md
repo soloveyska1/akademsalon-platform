@@ -4,18 +4,24 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release159>
-- Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=release98>
-- Production release: `release159-57703fa`
-- Production source: `57703fa7d97fb8ad9b8685dda0a6e684801e939d`
+- Production: <https://akademsalon.ru/?v=release160>
+- Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=36>
+- Production release: `release160-135cb45`
+- Production source: `135cb4559ee6c81b0e42633d2ebb2ad48abbb1a1`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
 - Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
 - Проверенный quote-scope result: `5ef9b235d970969b5479d1708a1fdb7e9b3c0db6`.
+- Проверенный practice-price result: `89a2887eff51561e519c1357e5da88046b9c9d9c`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Static rollback: `release158-fa2b317`; backend rollback — exact final backup
-  из `REL-0159`.
+- Static rollback: `release159-57703fa`; backend не менялся и остаётся на
+  Analytics v2 contract 2.3.0.
+- Release160 имеет G10 GO: три объёма практики и их цена видны до контакта,
+  `draft+support` непрерывен до конфигуратора, site 584/584, backend 31/31,
+  Brain 39/39, 390/1440 light/dark без overflow/console errors, external/VPS
+  smoke 14/14 после выпуска, в выполненном rollback на release159 и после
+  forward restore. Точная запись: [releases/REL-0160.md](releases/REL-0160.md).
 - Release159 имеет G10 GO: site 580/580, backend 31/31, Brain 39/39, exact live
   hashes, 360/390/1024/1440 light/dark без overflow/console errors, zero-residue
   synthetic contract proof и external/VPS smoke 14/14 после выпуска, в полном
@@ -49,15 +55,19 @@
 
 ## NOW
 
-1. Открыть авторизованную Analytics v2 в `/admin-analytics.html`, подтвердить
+1. Для следующего лида по практике давать прямую ссылку
+   `/otchet-po-praktike.html#service-price` и обсуждать выбранный объём, а не
+   защищать 14 000 RUB как цену той же редактуры. Не снижать цену и не обещать
+   uplift по самому факту релиза.
+2. Открыть авторизованную Analytics v2 в `/admin-analytics.html`, подтвердить
    первый естественный consented-сеанс и после достаточного sample сравнить
    `first|milestone|full` по одному заранее выбранному окну; не подмешивать
    legacy history и не заявлять uplift по первым событиям.
-2. Получить от пользователя повторный результат его реальной заявки
+3. Получить от пользователя повторный результат его реальной заявки
    после исправления `E-1013`; агенты сами production submit не выполняют.
    Затем отдельно закрыть stale-page copy/classification и версию 3.0 в
    `consent-request.html`.
-3. `OUT-001` — не выполнять production submit, пока не появятся безопасные
+4. `OUT-001` — не выполнять production submit, пока не появятся безопасные
    marker/lookup/cleanup и authoritative backend/bot evidence.
 
 `OUT-002`, `OUT-003`, `OUT-004` и `OUT-005` verified; точные implementation/evidence SHA

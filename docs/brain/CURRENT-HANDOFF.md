@@ -3,17 +3,33 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `57703fa7d97fb8ad9b8685dda0a6e684801e939d`.
+  `135cb4559ee6c81b0e42633d2ebb2ad48abbb1a1`.
 - Production `current` and compatibility `dist` resolve to
-  `release159-57703fa`; `previous` resolves to `release158-fa2b317`.
-- Release159 has G10 GO with P0=0/P1=0. Exact source, hashes, browser matrix,
-  two-vantage smoke, zero-residue synthetic proof and executed full
-  rollback/forward are in `REL-0159` and `E-1020`.
+  `release160-135cb45`; `previous` resolves to `release159-57703fa`.
+- Release160 has G10 GO with P0=0/P1=0. Exact source, hashes, browser matrix,
+  two-vantage smoke and executed static rollback/forward are in `REL-0160` and
+  `E-1021`.
 - Analytics v2 contract is 2.3.0. Full rollback changes both static pointers to
-  release158 and restores backend from
-  `/root/salon_bot/backups/analytics-v2-20260822T221327303991Z` before restart.
+  release159; backend restore or restart is not part of release160.
 - `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
   is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
+
+## 23 August practice-price trust
+
+- The practice page presents written diagnostic from 2 500 RUB, editing of a
+  ready factual package from 8 000 RUB and staged support from 14 000 RUB as
+  three selectable scopes rather than three prices for one job.
+- One native radio owns both continuations. `draft+diagnostic`,
+  `draft+editing` and `draft+support` reach the matching configurator result;
+  live support shows the 14 000–19 500 RUB range.
+- Lower-orientation factors and the fixed-price moment are explicit. Stage
+  stop, student authorship and the bounded compatible diagnostic credit remain
+  visible; no discount, fake scarcity, grade promise or uplift claim was added.
+- The Otisk layout is preserved. Production 390/1440 light/dark has overflow=0
+  and console errors/warnings=0. JSON-LD has three minimum-price Offers and no
+  false `highPrice`.
+- The lost lead's acquisition source remains unknown: admin and analytics were
+  intentionally outside this release.
 
 ## 23 August quote-scope price clarity
 
@@ -97,7 +113,22 @@
 - Raw events have a maximum 365-day lifetime; signed revoke cascades visitor,
   sessions and events and retains only a bounded hashed replay tombstone.
 
-## Verification summary
+## Release160 verification summary
+
+- Site 584/584; backend 31/31; Brain 39/39; focused 32/32; strict validation
+  and two deterministic builds green.
+- Public payload: 353 files / 25 006 595 bytes, digest `4bba587f…efcdf`;
+  immutable live tree: 356 files / 25 016 766 bytes, manifest
+  `4b6c07fb…c2e9b`, owner/mode drift 0.
+- Repository, immutable tree and HTTP SHA-256 agree for the only two changed
+  public files. Backend, DB seam, Analytics runtime/contract, Nginx and security
+  headers stayed byte-identical.
+- External/VPS smoke passed 14/14 after activation, 14/14 in the executed
+  release159 rollback and 14/14 after final forward restore to release160.
+- No production contact, order, file, message, raw analytics row, IP/UA,
+  query/referrer or OAuth material was read or changed.
+
+## Release159 verification summary
 
 - Site 580/580; backend 31/31; Brain 39/39; strict validation, syntax, two
   deterministic builds and diff checks green. `E-1019` separately proves
@@ -129,8 +160,8 @@
 
 ## One exact next step
 
-Open the authenticated master dashboard at
-`https://akademsalon.ru/admin-analytics.html`, confirm the first organic
-consented session, then wait for a sufficient fixed-window sample before
-comparing `first|milestone|full` continuation and submit outcomes. Do not claim
-conversion uplift from the release proof itself.
+For the next practice-report lead, send
+`https://akademsalon.ru/otchet-po-praktike.html#service-price` and ask which of
+the three visible scopes matches the materials. Do not discount staged support
+as if it were the same service as editing, and do not claim conversion uplift
+from release proof alone.
