@@ -51,19 +51,31 @@
     review approved the corrected 390/1024 light/dark composition with the P1s
     closed. A repeat call to the second text-review endpoint failed at its SSL
     boundary, so the resolution rests on deterministic tests and the browser
-    prototype rather than an unsupported model vote.
+    prototype rather than an unsupported model vote;
+  - Sites owner-only preview version 34 was saved from exact pushed source
+    commit `984650381c28e5dab7965f3c3749371d9be82e74` and a locally built tar
+    archive (355 recorded files, 25,262,080 bytes), then deployed successfully
+    at `https://akademsalon-desktop-preview.saymoon.chatgpt.site`. Access was
+    re-read immediately before deployment: current caller is owner, custom
+    allowlist has exactly one account, zero external visitors and no workspace
+    or tenant groups. Sites produced a fresh deployed screenshot. The protected
+    configurator URL itself returned a Cloudflare block to both agent browser
+    environments, so no claim is made for a post-deploy interactive browser
+    smoke; exact interactive behavior remains covered by the local Playwright
+    matrix and version 34 is bound to the same tested commit.
 - Unverified: no claim is made yet about conversion uplift; that requires
   production Analytics v2 evidence after a separately approved public release.
-  Public `akademsalon.ru` has not been changed. Owner-only Sites preview is the
-  next release gate and is not yet deployed in this revision.
+  Public `akademsalon.ru` has not been changed. The owner-only preview is not a
+  substitute for a separately approved production healthcheck and live funnel
+  smoke.
 - Risks/rollback: extra choice may compete with the recommended first step;
   mitigation is a default selection, no validation gate and unchanged primary
   CTA. Extended scopes remain requests for a quote, never a displayed total or
   work authorization. Credit language is limited to eligible diagnostics and
   is repeated in the saved request for manual specification. Rollback is the
-  implementation commit revert; no backend, payment, consent or production
-  data mutation is in scope.
-- Next: commit the verified implementation, publish that exact source commit to
-  the existing owner-only Sites preview, smoke the deployed version, record its
-  version here, then freeze the workstream as `submitted` after a fresh fetch
-  and conflict check.
+  implementation commit revert; the private preview can be rolled back by
+  redeploying Sites version 33. No backend, payment, consent, public-domain or
+  production-data mutation is in scope.
+- Next: after a fresh canonical fetch and exact conflict check, freeze this
+  result as `submitted`. A later integration owner may approve a public release
+  and must then run production health, key-funnel smoke and rollback checks.
