@@ -29,9 +29,19 @@
   label it as support rather than a first-stage price, and do not receive a
   contradictory scope selector. A re-entrant `salon:cart` render discovered by
   the browser flow is guarded at the existing refresh boundary.
+- Follow-up price clarity: selecting an extended quote scope now updates the
+  existing price row instead of leaving the first-stage label beside a broader
+  selection. `milestone` shows `Смета до следующего рубежа`, `full` shows
+  `Смета до сдачи / защиты`; both honestly state `после просмотра материалов`
+  and retain `Первый этап — от …` as a smaller anchor. The default `first`
+  state keeps its former label, numeric treatment and 23 px price without an
+  anchor. The update is targeted rather than a full render, so radio focus and
+  the dossier composition remain stable. The same truth function owns the
+  live recommendation, materials summary and contact summary; cart, service
+  and full-support price labels retain their separate meanings.
 - Verified:
-  - `node --test tests/configurator-conversion-package.test.js`: 7/7;
-  - `node --test tests/*.test.js`: 574/574;
+  - `node --test tests/configurator-conversion-package.test.js`: 8/8;
+  - `node --test --test-reporter=dot tests/*.test.js`: 575/575;
   - `npm run build`: static preview built successfully;
   - `git diff --check`: clean;
   - `./bin/brain validate --strict`: valid (75 records, 136 links, 27
@@ -63,6 +73,17 @@
     environments, so no claim is made for a post-deploy interactive browser
     smoke; exact interactive behavior remains covered by the local Playwright
     matrix and version 34 is bound to the same tested commit.
+  - The follow-up price-clarity test was observed red before implementation.
+    Fresh Playwright flows against exact source at 390 px light and 1024 px
+    dark, with only the production auth session mocked, report zero console
+    errors/warnings/page errors, zero horizontal overflow and changed targets
+    of 52–54 px. `first`, `milestone` and `full` all update the same row;
+    keyboard focus remains on the selected radio; `full` persists and appears
+    with the same label/value/anchor on both materials and contact summaries.
+  - Independent GLM vision review and an isolated read-only Codex vision review
+    both returned `approve` with no observed P0/P1 in the 390-light and
+    1024-dark captures. A Sonnet review could not authenticate and Kimi had no
+    available model channel; neither failure was treated as product evidence.
 - Unverified: no claim is made yet about conversion uplift; that requires
   production Analytics v2 evidence after a separately approved public release.
   Public `akademsalon.ru` has not been changed. The owner-only preview is not a
@@ -71,11 +92,15 @@
 - Risks/rollback: extra choice may compete with the recommended first step;
   mitigation is a default selection, no validation gate and unchanged primary
   CTA. Extended scopes remain requests for a quote, never a displayed total or
-  work authorization. Credit language is limited to eligible diagnostics and
-  is repeated in the saved request for manual specification. Rollback is the
-  implementation commit revert; the private preview can be rolled back by
-  redeploying Sites version 33. No backend, payment, consent, public-domain or
+  work authorization. The conditional total is deliberately textual; only the
+  already-calculated first-stage amount remains numeric. Credit language is
+  limited to eligible diagnostics and is repeated in the saved request for
+  manual specification. Rollback is the implementation commit revert; the
+  private preview can be rolled back by redeploying Sites version 34 after the
+  follow-up preview is saved. No backend, payment, consent, public-domain or
   production-data mutation is in scope.
-- Next: after a fresh canonical fetch and exact conflict check, freeze this
-  result as `submitted`. A later integration owner may approve a public release
-  and must then run production health, key-funnel smoke and rollback checks.
+- Next: commit the verified follow-up, update the same owner-only Sites preview
+  from that exact commit, then fetch canonical truth, rerun exact conflicts and
+  freeze this result as `submitted`. A later integration owner may approve a
+  public release and must then run production health, key-funnel smoke and
+  rollback checks.

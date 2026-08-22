@@ -34,6 +34,25 @@ test('expanded scope never masquerades as a known total or adds a submission gat
   assert.doesNotMatch(html, /quote_scope_(?:view|change|submit)/);
 });
 
+test('the visible price row explains the selected quote scope without inventing a total', () => {
+  assert.match(html, /function scopePriceView\(pricing\)/);
+  assert.match(html, /pricing\.cartHasItems[\s\S]*?label:'Ориентир состава'[\s\S]*?value:pricing\.priceText/);
+  assert.match(html, /state\.quoteScope === 'full'\s*\? 'Смета до сдачи \/ защиты'\s*:\s*'Смета до следующего рубежа'/);
+  assert.match(html, /value:'после просмотра материалов'/);
+  assert.match(html, /anchor:'Первый этап — ' \+ pricing\.priceText/);
+  assert.match(html, /data-scope-price-label/);
+  assert.match(html, /data-scope-price/);
+  assert.match(html, /data-quote-scope-note/);
+  assert.match(html, /function refreshQuoteScopePresentation\(\)/);
+  assert.match(html, /state\.quoteScope = [^;]+;[\s\S]*?refreshQuoteScopePresentation\(\);/);
+
+  const scopeView = html.slice(html.indexOf('function scopePriceView(pricing)'), html.indexOf('function creditMarkup()'));
+  assert.doesNotMatch(scopeView, /SalonCalc|vip|quote\(/);
+
+  const scopeHandler = html.slice(html.indexOf("host.querySelectorAll('[data-quote-scope]')"), html.indexOf("host.querySelectorAll('[data-concept-discipline]')"));
+  assert.doesNotMatch(scopeHandler, /render\(\)/);
+});
+
 test('an explicit full-support route never labels its project range as a first-stage price', () => {
   assert.match(html, /function quoteScopeEligible\(\) \{\s*return !service && effectiveResult\(\) !== 'support';\s*\}/);
   assert.match(html, /function quoteScopeMarkup\(\) \{\s*if \(!quoteScopeEligible\(\)\) return '';/);
@@ -67,9 +86,11 @@ test('contextual proof points only to published source messages', () => {
 
 test('new controls remain tappable, responsive and theme-aware', () => {
   assert.match(css, /\.quote-scope__option\{[\s\S]*?min-height:44px/);
+  assert.match(css, /\.live-quote__price\.price-view--pending\{[\s\S]*?font-size:clamp\(18px,2\.2vw,21px\)/);
+  assert.match(css, /\.live-quote__price-anchor\{[\s\S]*?display:block/);
   assert.match(css, /@media\(max-width:920px\)[\s\S]*?\.quote-scope__options/);
   assert.match(css, /:root\[data-theme="dark"\][\s\S]*?\.quote-scope/);
-  assert.match(html, /conversion=20260822conversion1/);
+  assert.match(html, /conversion=20260822conversion2/);
 });
 
 test('cart refresh cannot recursively rerender the visible wizard', () => {

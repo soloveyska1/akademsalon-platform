@@ -504,6 +504,24 @@
   font-size:23px;
 }
 
+.configurator-task .live-quote .live-quote__price.price-view--pending{
+  font-size:clamp(18px,2.2vw,21px);
+  line-height:1.16;
+}
+
+.configurator-task .live-quote__price-anchor{
+  display:block;
+  margin-top:4px;
+  color:var(--journey-soft,var(--ink-soft));
+  font:600 10px/1.35 var(--mono);
+  letter-spacing:.035em;
+}
+
+.configurator-task .wizard-summary .live-quote__price-anchor{
+  margin-top:3px;
+  color:var(--journey-muted,var(--ink-faint));
+}
+
 .configurator-task .live-quote__more{
   border-bottom:1px solid var(--journey-line);
 }
