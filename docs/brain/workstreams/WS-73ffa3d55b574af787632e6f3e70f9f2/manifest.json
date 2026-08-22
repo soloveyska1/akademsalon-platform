@@ -1,0 +1,91 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-73ffa3d55b574af787632e6f3e70f9f2",
+  "slug": "release159-quote-scope-measurement",
+  "status": "active",
+  "branch": "codex/release159-quote-scope-measurement",
+  "base_sha": "5ef6d177227c7559f58ae69ff5290f0f5cce3296",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1020.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0159.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-73ffa3d55b574af787632e6f3e70f9f2/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "analytics/contract.json",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/configurator-journey.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/analytics-v2.js",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1019.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0158.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/production-smoke.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
