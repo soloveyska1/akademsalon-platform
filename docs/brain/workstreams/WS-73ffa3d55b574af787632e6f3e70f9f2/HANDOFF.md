@@ -33,12 +33,14 @@
   cycle on exact production copies, read-only production smoke from operator
   and VPS, browser matrix, exact live hashes, bounded synthetic revoke proof and
   executed rollback/forward checks.
-- Changed: none yet.
-- Unverified: production has not been mutated in this workstream.
+- Changed: declaration only. A canonical Brain-integrity repair landed after
+  bootstrap, so this branch is superseded before release preparation.
+- Unverified: production was not mutated in this workstream.
 - Risks/rollback: client-first publication would silently lose the new events,
   and the active Nginx site hash intentionally differs from the historical
   installer default after the vhost-isolation incident. The release must pin
   that current hash explicitly, prove the installer leaves Nginx unchanged,
   deploy backend before static, and roll static back before restoring contract
   2.2. Any unknown hash, mixed pointer, failed cleanup or red P0/P1 is NO-GO.
-- Next: review and commit the manifest plus this handoff.
+- Next: abandon this stale-base declaration and initialize a fresh release
+  workstream from canonical `57703fa7d97fb8ad9b8685dda0a6e684801e939d`.
