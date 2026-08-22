@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-d77d10e6e07a4642b41873171f873b19",
+  "slug": "practice-price-trust-v3",
+  "status": "active",
+  "branch": "codex/out-006-practice-price-trust-v3",
+  "base_sha": "2147cbd67fc76277141d5ff0eb2cbbd90681126c",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/polish15-catalog.css",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-d77d10e6e07a4642b41873171f873b19/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/practice-price-trust.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/seo-pricing-consistency.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "academic-integrity.html",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/DECISIONS.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "guarantees.html",
+        "match": "exact"
+      },
+      {
+        "path": "oferta.html",
+        "match": "exact"
+      },
+      {
+        "path": "requisites.html",
+        "match": "exact"
+      },
+      {
+        "path": "services.html",
+        "match": "exact"
+      },
+      {
+        "path": "specifikaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "vedenie.html",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "journey:JRN-001-practice-price-expectation"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:practice-price-trust"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:practice-price-trust"
+    },
+    {
+      "access": "read",
+      "key": "contract:pricing-canonical"
+    },
+    {
+      "access": "read",
+      "key": "contract:seo-price-schema"
+    },
+    {
+      "access": "read",
+      "key": "decision:DEC-0002"
+    },
+    {
+      "access": "read",
+      "key": "decision:DEC-0003"
+    },
+    {
+      "access": "read",
+      "key": "journey:JRN-001"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
