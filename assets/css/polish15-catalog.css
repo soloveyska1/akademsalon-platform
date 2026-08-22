@@ -3853,3 +3853,355 @@ body.page-services .site-header .nav-cta>a.btn-wax{display:none!important}
   .p15-catalog .pickwhat__list li{font-size:14.5px}
   .p15-catalog .k0card__copy p{font-size:14.5px}
 }
+
+/* ==========================================================================
+   Practice price passport · three scopes, one route, no surprise uplift
+   ========================================================================== */
+.p15-service[data-p15-service="otchet-po-praktike"] .service-hero{
+  grid-template-columns:minmax(0,1fr) minmax(380px,.82fr);
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] [data-practice-price-brief]>div{
+  grid-template-areas:
+    "label price"
+    "hint hint";
+  row-gap:5px;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] [data-practice-price-brief]>div>span{
+  grid-area:label;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] [data-practice-price-brief]>div>strong{
+  grid-area:price;
+  white-space:nowrap;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] [data-practice-price-brief]>div>small{
+  grid-area:hint;
+  color:var(--muted-p15);
+  font-size:12.5px;
+  line-height:1.35;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] [data-practice-price-brief]>p{
+  font-size:13px;
+  line-height:1.48;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map{
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  background:var(--sheet-p15);
+  border:1px solid var(--line-p15);
+  border-top:4px solid var(--wax-p15);
+  box-shadow:8px 8px 0 color-mix(in srgb,var(--wax-p15) 17%,var(--paper-p15));
+  list-style:none;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__item{
+  position:relative;
+  border-bottom:1px solid var(--line-p15);
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__input{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+  pointer-events:none;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__choice{
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr) minmax(148px,auto);
+  gap:16px 22px;
+  padding:clamp(22px,2.8vw,34px);
+  cursor:pointer;
+  transition:background-color .18s ease,box-shadow .18s ease;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__item:last-child{
+  border-bottom:0;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__choice:hover{
+  background:color-mix(in srgb,var(--wax-p15) 5%,transparent);
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__input:focus-visible+.practice-price-map__choice{
+  outline:2px solid var(--wax-p15);
+  outline-offset:-4px;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__input:checked+.practice-price-map__choice{
+  background:color-mix(in srgb,var(--wax-p15) 8%,transparent);
+  box-shadow:inset 4px 0 0 var(--wax-p15);
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__number{
+  display:grid;
+  grid-template-columns:12px auto;
+  gap:7px;
+  align-items:center;
+  align-self:start;
+  padding-top:6px;
+  color:var(--wax-p15);
+  font:650 11px/1 var(--mono);
+  letter-spacing:.08em;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__number i{
+  position:relative;
+  display:block;
+  width:12px;
+  height:12px;
+  border:1px solid var(--wax-p15);
+  border-radius:50%;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__input:checked+.practice-price-map__choice .practice-price-map__number i::after{
+  position:absolute;
+  inset:3px;
+  background:var(--wax-p15);
+  border-radius:50%;
+  content:"";
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__head .eyebrow{
+  max-width:620px;
+  line-height:1.35;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__head h3{
+  margin-top:7px;
+  font-size:clamp(23px,2.4vw,31px);
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__price{
+  align-self:start;
+  color:var(--ink-p15);
+  font:500 clamp(23px,2.4vw,31px)/1.1 var(--serif);
+  letter-spacing:-.035em;
+  text-align:right;
+  white-space:nowrap;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__details{
+  display:grid;
+  grid-column:2/-1;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px 30px;
+  padding-top:17px;
+  border-top:1px solid var(--line-p15);
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__details p{
+  color:var(--muted-p15);
+  font-size:15px;
+  line-height:1.52;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__details span{
+  display:block;
+  margin-bottom:6px;
+  color:var(--quiet-p15);
+  font:650 9px/1.2 var(--mono);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-reason{
+  display:grid;
+  grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);
+  gap:clamp(28px,4.5vw,64px);
+  margin-top:18px;
+  padding:clamp(24px,3.2vw,40px);
+  background:var(--paper-p15);
+  border:1px solid var(--line-p15);
+  border-left:3px solid var(--wax-p15);
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-reason h3{
+  margin-top:9px;
+  font-size:clamp(27px,3vw,38px);
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-reason>div>p:last-child{
+  margin-top:14px;
+  color:var(--muted-p15);
+  font-size:15px;
+  line-height:1.55;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-reason ul{
+  display:grid;
+  gap:0;
+  margin:0;
+  padding:0;
+  border-top:1px solid var(--line-p15);
+  list-style:none;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-reason li{
+  padding:12px 0;
+  color:var(--muted-p15);
+  border-bottom:1px solid var(--line-p15);
+  font-size:14px;
+  line-height:1.5;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-reason li strong{
+  color:var(--ink-p15);
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:24px 40px;
+  align-items:center;
+  margin-top:18px;
+  padding:22px 24px;
+  background:color-mix(in srgb,var(--sheet-p15) 84%,var(--wax-soft-p15));
+  border:1px solid var(--line-p15);
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action>div{
+  display:grid;
+  gap:6px;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action p{
+  max-width:820px;
+  color:var(--muted-p15);
+  font-size:13.5px;
+  line-height:1.5;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action p:first-child{
+  color:var(--text-p15);
+  font-weight:600;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action .practice-price-action__selection{
+  color:var(--wax-deep-p15);
+  font:700 10px/1.35 var(--mono);
+  letter-spacing:.055em;
+  text-transform:uppercase;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action .button{
+  width:max-content;
+  white-space:nowrap;
+}
+
+.p15-service[data-p15-service="otchet-po-praktike"] .button [data-practice-route-label],
+.p15-service[data-p15-service="otchet-po-praktike"] .button:hover [data-practice-route-label]{
+  transform:none;
+}
+
+:root[data-theme="dark"] .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map,
+:root[data-theme="dark"] .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-reason,
+:root[data-theme="dark"] .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action{
+  background:
+    radial-gradient(circle at 92% 0,rgba(255,107,75,.09),transparent 30%),
+    var(--sheet-p15);
+  border-color:rgba(246,239,229,.18);
+}
+
+:root[data-theme="dark"] .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map{
+  border-top-color:#ff6b4b;
+  box-shadow:8px 8px 0 rgba(110,28,17,.48);
+}
+
+:root[data-theme="dark"] .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action .practice-price-action__selection{
+  color:#ff9a83;
+}
+
+@media(max-width:920px){
+  .p15-service[data-p15-service="otchet-po-praktike"] .service-hero{
+    grid-template-columns:minmax(0,1fr);
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__choice{
+    grid-template-columns:40px minmax(0,1fr) auto;
+    gap:14px 18px;
+    padding:22px;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__details{
+    gap:18px;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-reason,
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action{
+    grid-template-columns:minmax(0,1fr);
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action{
+    align-items:start;
+  }
+}
+
+@media(max-width:620px){
+  .p15-service[data-p15-service="otchet-po-praktike"] [data-practice-price-brief]>div{
+    grid-template-columns:minmax(0,1fr) auto;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] [data-practice-price-brief]>div>small{
+    font-size:13px;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__choice{
+    grid-template-columns:36px minmax(0,1fr);
+    gap:11px 12px;
+    padding:19px 15px;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__number{
+    grid-row:1/4;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__head{
+    grid-column:2;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__head h3{
+    font-size:24px;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__price{
+    grid-column:2;
+    font-size:27px;
+    text-align:left;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__details{
+    grid-column:2;
+    grid-template-columns:minmax(0,1fr);
+    gap:13px;
+    padding-top:13px;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-map__details p,
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-reason>div>p:last-child,
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-reason li,
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action p{
+    font-size:16px;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-reason{
+    gap:22px;
+    padding:22px 19px;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action{
+    padding:20px 17px;
+  }
+
+  .p15-service[data-p15-service="otchet-po-praktike"] .practice-price-action .button{
+    width:100%;
+    white-space:normal;
+  }
+}
