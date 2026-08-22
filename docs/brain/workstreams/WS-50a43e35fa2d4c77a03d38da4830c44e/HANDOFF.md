@@ -84,6 +84,19 @@
     both returned `approve` with no observed P0/P1 in the 390-light and
     1024-dark captures. A Sonnet review could not authenticate and Kimi had no
     available model channel; neither failure was treated as product evidence.
+  - Sites owner-only preview version 35 was saved and deployed successfully
+    from exact pushed source commit
+    `99e8de91daf73d75b7b6e87f1811771e65c89ac2`. Sites recorded the tar as 355
+    files, 25,262,080 bytes and
+    `sha256:ee0e63c2d4d211aa06d6646dbce7f4a0a3ac5aca354f6859e91963c3383c934c`.
+    Access was re-read immediately before private deployment: current caller
+    is owner, custom allowlist has one owner, zero external visitors and zero
+    groups. The deployed URL remains
+    `https://akademsalon-desktop-preview.saymoon.chatgpt.site`; public
+    `akademsalon.ru` was not changed. Because that protected host was already
+    blocked for the owner by Cloudflare, the exact built local configurator was
+    opened directly for visual inspection instead of treating the protected
+    URL as interactive evidence.
 - Unverified: no claim is made yet about conversion uplift; that requires
   production Analytics v2 evidence after a separately approved public release.
   Public `akademsalon.ru` has not been changed. The owner-only preview is not a
@@ -99,8 +112,6 @@
   private preview can be rolled back by redeploying Sites version 34 after the
   follow-up preview is saved. No backend, payment, consent, public-domain or
   production-data mutation is in scope.
-- Next: commit the verified follow-up, update the same owner-only Sites preview
-  from that exact commit, then fetch canonical truth, rerun exact conflicts and
-  freeze this result as `submitted`. A later integration owner may approve a
-  public release and must then run production health, key-funnel smoke and
-  rollback checks.
+- Next: fetch canonical truth, rerun exact conflicts and freeze this result as
+  `submitted`. A later integration owner may approve a public release and must
+  then run production health, key-funnel smoke and rollback checks.
