@@ -7,7 +7,11 @@ const root = path.join(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const html = read('otchet-po-praktike.html');
 const css = read('assets/css/polish15-catalog.css');
+const configurator = read('configurator.html');
 const visibleHtml = html.replace(/<script\b[\s\S]*?<\/script>/gi, '');
+const serviceSchema = [...html.matchAll(/<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/gi)]
+  .map((match) => JSON.parse(match[1]))
+  .find((value) => value['@type'] === 'Service');
 
 const section = (id) => {
   const start = html.indexOf(`id="${id}"`);
@@ -31,7 +35,7 @@ test('each price is tied to a different entry condition and verifiable output', 
   assert.equal((price.match(/data-practice-scope=/g) || []).length, 3);
   assert.match(price, /data-practice-scope="diagnostic"[\s\S]*?Есть файл или замечания[\s\S]*?Без правок в документе/);
   assert.match(price, /data-practice-scope="editing"[\s\S]*?Готовы отчёт и дневник на фактических материалах[\s\S]*?Word с видимыми исправлениями/);
-  assert.match(price, /data-practice-scope="support"[\s\S]*?[Рр]еальные материалы[\s\S]*?несколько связанных этапов[\s\S]*?версии документов по согласованным этапам[\s\S]*?итоговый чек-лист комплектности/);
+  assert.match(price, /data-practice-scope="support"[\s\S]*?[Чч]ерновик и реальные материалы[\s\S]*?несколько связанных этапов[\s\S]*?план согласованных этапов[\s\S]*?версии документов[\s\S]*?итоговый чек-лист комплектности/);
   assert.match(price, /Студент предоставляет и подтверждает факты, даты и выполненные задачи[\s\S]*?принимает содержательные решения[\s\S]*?формирует финальную авторскую версию/);
   assert.match(price, /Следующий этап не запускается автоматически/);
   assert.match(price, /в течение 14 дней[\s\S]*?зачтём один раз/);
@@ -48,15 +52,22 @@ test('one selected scope controls every continuation into the configurator', () 
   assert.equal((price.match(/checked/g) || []).length, 1);
   assert.match(html, /data-route="configurator\.html\?work=practice&amp;situation=draft&amp;result=diagnostic&amp;route=service"/);
   assert.match(html, /data-route="configurator\.html\?work=practice&amp;situation=draft&amp;result=editing&amp;route=service"/);
-  assert.match(html, /data-route="configurator\.html\?work=practice&amp;situation=topic&amp;result=support&amp;route=service"/);
+  assert.match(html, /data-route="configurator\.html\?work=practice&amp;situation=draft&amp;result=support&amp;route=service"/);
+  assert.doesNotMatch(html, /situation=topic&amp;result=support/);
+  assert.match(configurator, /draft:'Свой черновик'/);
+  assert.match(configurator, /support:'Сопровождение исследования по этапам'/);
+  assert.match(configurator, /support:\{[\s\S]*?first:'План исследования и задачи на первый этап'/);
   assert.equal((html.match(/data-practice-route href=/g) || []).length, 2);
   assert.match(html, /querySelectorAll\('\[data-practice-scope-choice\]'\)/);
   assert.match(html, /link\.setAttribute\('href',route\)/);
   assert.match(html, /data-practice-selection aria-live="polite"/);
   assert.match(html, /href="#service-price">Выбрать объём и цену/);
   assert.doesNotMatch(price, /data-start-format/);
-  assert.match(html, /"lowPrice":2500\b/);
-  assert.match(html, /"highPrice":14000\b/);
+  assert.deepEqual(
+    serviceSchema.offers.map((offer) => offer.priceSpecification.minPrice),
+    [2500, 8000, 14000]
+  );
+  assert.doesNotMatch(html, /"highPrice":/);
 });
 
 test('practice price ledger is page-scoped and covered in dark and mobile layouts', () => {

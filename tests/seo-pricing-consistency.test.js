@@ -38,7 +38,9 @@ const pages = {
     type: 'course', canonical: ['2 500', '9 000', '14 000'], promoted: '14 000', schemaHigh: 20000,
     faq: ['Можно прийти вообще без текста?', 'Правда можно получить черновик за один день?', 'Как передаются правки?', 'Что происходит, если срок меняется?']
   },
-  'otchet-po-praktike.html': { type: 'practice', visible: ['2 500', '8 000', '14 000'] }
+  'otchet-po-praktike.html': {
+    type: 'practice', visible: ['2 500', '8 000', '14 000'], offerMinimums: [2500, 8000, 14000]
+  }
 };
 
 test('canonical pricing source contains every primary service type', () => {
@@ -64,8 +66,24 @@ test('primary landing pages show the canonical entry price and preserve schema b
     const promoted = config.promoted || canonical[0];
     const entry = promoted.replace(' ', '[ \\\\u00a0]');
     assert.match(html, new RegExp(`от ${entry}[ \\\\u00a0]₽`), `${file}: canonical entry price is not visible`);
-    assert.match(html, new RegExp(`"lowPrice":${expected[0]}\\b`), `${file}: wrong AggregateOffer.lowPrice`);
-    assert.match(html, new RegExp(`"highPrice":${config.schemaHigh || expected[2]}\\b`), `${file}: wrong AggregateOffer.highPrice`);
+    if (config.offerMinimums) {
+      const service = jsonLd(html).find((node) => node['@type'] === 'Service');
+      assert.ok(service, `${file}: missing Service schema`);
+      assert.ok(Array.isArray(service.offers), `${file}: minimum prices need separate offers`);
+      assert.deepEqual(
+        service.offers.map((offer) => offer.priceSpecification && offer.priceSpecification.minPrice),
+        config.offerMinimums,
+        `${file}: wrong offer minimums`
+      );
+      assert.ok(
+        service.offers.every((offer) => offer.priceSpecification && offer.priceSpecification.priceCurrency === 'RUB'),
+        `${file}: every offer minimum needs RUB currency`
+      );
+      assert.doesNotMatch(html, /"highPrice":/, `${file}: a from-price cannot be published as a maximum`);
+    } else {
+      assert.match(html, new RegExp(`"lowPrice":${expected[0]}\\b`), `${file}: wrong AggregateOffer.lowPrice`);
+      assert.match(html, new RegExp(`"highPrice":${config.schemaHigh || expected[2]}\\b`), `${file}: wrong AggregateOffer.highPrice`);
+    }
     const faq = jsonLd(html).find((node) => node['@type'] === 'FAQPage');
     assert.ok(faq, `${file}: visible FAQ has matching schema`);
     assert.deepEqual(faq.mainEntity.map((entry) => entry.name), config.faq || finalFaq, `${file}: final FAQ schema`);
