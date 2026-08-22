@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-d77d10e6e07a4642b41873171f873b19",
   "slug": "practice-price-trust-v3",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-006-practice-price-trust-v3",
   "base_sha": "2147cbd67fc76277141d5ff0eb2cbbd90681126c",
-  "result_sha": null,
+  "result_sha": "89a2887eff51561e519c1357e5da88046b9c9d9c",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -114,6 +114,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "375924f2b825195627fa38bb22e2df916e689c2047bd1d168ce9af3487ea470c"
 }
