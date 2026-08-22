@@ -28,9 +28,7 @@
   `git diff --check`. Exact 390-light and 1024-dark baseline/current PNGs are
   byte-identical. A local browser route recorded exactly `seen:first` then
   `continue:full`; returning to the first step created no duplicate, preserved
-  `full`, kept all three controls and produced 0 console errors/warnings. Frozen
-  result `5ef9b235d970969b5479d1708a1fdb7e9b3c0db6` is an ancestor of the freshly
-  fetched canonical ref.
+  `full`, kept all three controls and produced 0 console errors/warnings.
 - Unverified: no production contract install, asset publish, analytics readback
   or real request submit was performed. Council review endpoints were
   unavailable and their failures are not treated as evidence.
@@ -38,7 +36,7 @@
   new event names. Any later release must install the expanded contract first,
   then publish the configurator asset wave, and verify readback before claiming
   measurement. Rollback restores both contract and static source together.
-- Next: if publication is explicitly approved, open a separate release
-  workstream. Deploy the backend contract first, the static asset wave second,
-  then prove health, accepted/rejected live readback and rollback before
-  claiming measurement.
+- Next: rerun the final Brain/repository gates, commit the implementation, then
+  freeze the exact result SHA as `submitted`. A later release owner must deploy
+  backend contract first, static asset wave second, and prove live readback and
+  rollback before claiming measurement.
