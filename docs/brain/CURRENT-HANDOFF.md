@@ -3,16 +3,32 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `fa2b317f8e99abcc7917a9d867407c460d82b9b6`.
+  `57703fa7d97fb8ad9b8685dda0a6e684801e939d`.
 - Production `current` and compatibility `dist` resolve to
-  `release158-fa2b317`; `previous` resolves to `release157-c891d24`.
-- Release158 has G10 GO with P0=0/P1=0. Exact source, hashes, tests, CSP,
-  two-vantage smoke and executed static rollback/forward are in `REL-0158`.
-- The Analytics v2 backend remains the exact release157 runtime. Static
-  rollback changes both pointers to release157; the separate full pre-v2
-  backend rollback remains documented in `REL-0157`.
+  `release159-57703fa`; `previous` resolves to `release158-fa2b317`.
+- Release159 has G10 GO with P0=0/P1=0. Exact source, hashes, browser matrix,
+  two-vantage smoke, zero-residue synthetic proof and executed full
+  rollback/forward are in `REL-0159` and `E-1020`.
+- Analytics v2 contract is 2.3.0. Full rollback changes both static pointers to
+  release158 and restores backend from
+  `/root/salon_bot/backups/analytics-v2-20260822T221327303991Z` before restart.
 - `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
   is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
+
+## 23 August quote-scope price clarity
+
+- `Только первый этап` keeps the known first-stage price. `До следующего
+  рубежа` and `До сдачи / защиты` replace the ambiguous row with an honest
+  `после просмотра материалов` estimate while preserving the first-stage
+  anchor below it.
+- The choice is only a quote preference: it neither starts work nor blocks the
+  request and can be changed before submission. No unknown total is invented.
+- The approved «Оттиск» composition remains intact. Production Chromium at
+  360/390/1024/1440 in light/dark has root overflow=0 and console errors=0;
+  the price and note update in place without rerendering the wizard.
+- Consented Analytics v2 now accepts only `quote_scope_seen` and
+  `quote_scope_continue` with `first|milestone|full`. The events sit outside
+  the strict submit funnel and carry no arbitrary text, contact or file data.
 
 ## 20–21 August server-error isolation
 
@@ -83,23 +99,24 @@
 
 ## Verification summary
 
-- Release158 proof remains site 563/563. The current incident branch is site
-  567/567; backend 30/30; Brain 39/39; syntax, strict validation and diff checks
-  green. The release158 three-review GO remains unchanged.
-- Deterministic payload: 353 files / 24,970,161 bytes, manifest
-  `f759b4a9…55b5`; immutable live tree: 356 files / 24,980,332 bytes, manifest
-  `fab1be44…fe38`.
-- Repository, immutable tree and live HTTP hashes agree for `admin.html`,
-  `admin-analytics.html`, analytics CSS/JS and the master `admin.js`.
-- `admin.html` uses the fresh `analytics3` controller URL; the live analytics
-  page has strict same-origin CSP and unauthenticated readback returns 403.
-- External/VPS smoke passed 14/14 before activation and after release158. It
-  passed 14/14 during the executed rollback to release157 and again after
-  forward restore to release158.
-- Только privacy-safe агрегат dedicated access log и агрегированные временные
-  границы «Визитов» были прочитаны для `E-1018`; raw identifiers, IP/UA,
-  query/referrer, contacts, orders and texts не читались. Backend, database и
-  analytics collector files не менялись.
+- Site 580/580; backend 31/31; Brain 39/39; strict validation, syntax, two
+  deterministic builds and diff checks green. `E-1019` separately proves
+  byte-identical baseline/current UI for instrumentation.
+- Public payload: 353 files / 24,987,483 bytes, deterministic build digest
+  `44736478…55f`; immutable live tree: 356 files / 24,997,654 bytes, manifest
+  `842dd247…4b53`, owner/mode drift 0.
+- Repository, immutable tree and HTTP SHA-256 agree for the three changed
+  public files. Webapp, DB seam, Analytics runtime, incident-hardened Nginx and
+  security headers stayed byte-identical; contract alone advanced to 2.3.0.
+- A bounded synthetic cycle was run before and after rollback: accepted=2,
+  rejected=1, duplicate=2, revoke removed visitor=1/session=1/events=2, final
+  matching visitor/session/event/revocation residue=0 and SQLite `ok`.
+- External/VPS smoke passed 14/14 after activation, 14/14 during the executed
+  release158 + contract 2.2.0 rollback and 14/14 after backend-first forward
+  restore to release159 + contract 2.3.0.
+- No production contact, order, file, message, raw analytics row, IP/UA,
+  query/referrer or OAuth material was read. Synthetic IDs and technical smoke
+  deltas were removed exactly.
 
 ## Remaining P2
 
@@ -113,6 +130,7 @@
 ## One exact next step
 
 Open the authenticated master dashboard at
-`https://akademsalon.ru/admin-analytics.html`, confirm that the first organic
-consented session appears in the new cabinet shell, and report any real-world
-classification discrepancy with its selected period and filters.
+`https://akademsalon.ru/admin-analytics.html`, confirm the first organic
+consented session, then wait for a sufficient fixed-window sample before
+comparing `first|milestone|full` continuation and submit outcomes. Do not claim
+conversion uplift from the release proof itself.

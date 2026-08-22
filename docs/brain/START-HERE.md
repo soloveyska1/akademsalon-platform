@@ -1,24 +1,26 @@
 # START HERE — Академический Салон
 
-Последнее обновление: 21 августа 2026 г.
+Последнее обновление: 23 августа 2026 г.
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release158>
+- Production: <https://akademsalon.ru/?v=release159>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=release98>
-- Production release: `release158-fa2b317`
-- Production source: `fa2b317f8e99abcc7917a9d867407c460d82b9b6`
+- Production release: `release159-57703fa`
+- Production source: `57703fa7d97fb8ad9b8685dda0a6e684801e939d`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
 - Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
+- Проверенный quote-scope result: `5ef9b235d970969b5479d1708a1fdb7e9b3c0db6`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Static rollback: `release157-c891d24`; backend остаётся release157. Полный
-  pre-v2 backend rollback сохранён в `REL-0157`.
-- Release158 имеет G10 GO: site 563/563, backend 30/30, Brain 39/39, три
-  независимых P0/P1 review GO, точные live SHA/CSP/403 и external/VPS smoke
-  14/14 до выпуска, после выпуска, в выполненном static rollback и после
-  forward restore. Точная запись: [releases/REL-0158.md](releases/REL-0158.md).
+- Static rollback: `release158-fa2b317`; backend rollback — exact final backup
+  из `REL-0159`.
+- Release159 имеет G10 GO: site 580/580, backend 31/31, Brain 39/39, exact live
+  hashes, 360/390/1024/1440 light/dark без overflow/console errors, zero-residue
+  synthetic contract proof и external/VPS smoke 14/14 после выпуска, в полном
+  rollback на release158 + contract 2.2.0 и после backend-first forward restore.
+  Точная запись: [releases/REL-0159.md](releases/REL-0159.md).
 - 3 августа после release103 исправлен production-wide отказ
   заявок и подарочных форм: backend оставался на privacy/oferta
   3.0/3.0 при опубликованных 3.1/3.2. Активные константы выровнены,
@@ -47,8 +49,10 @@
 
 ## NOW
 
-1. Открыть авторизованную Analytics v2 в `/admin-analytics.html` и подтвердить
-   первый естественный consented-сеанс; не подмешивать legacy history.
+1. Открыть авторизованную Analytics v2 в `/admin-analytics.html`, подтвердить
+   первый естественный consented-сеанс и после достаточного sample сравнить
+   `first|milestone|full` по одному заранее выбранному окну; не подмешивать
+   legacy history и не заявлять uplift по первым событиям.
 2. Получить от пользователя повторный результат его реальной заявки
    после исправления `E-1013`; агенты сами production submit не выполняют.
    Затем отдельно закрыть stale-page copy/classification и версию 3.0 в
@@ -81,7 +85,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0158.md](releases/REL-0158.md) — доказательная запись текущего GO-релиза.
+- [releases/REL-0159.md](releases/REL-0159.md) — доказательная запись текущего GO-релиза.
 - [../../ops/monitoring/README.md](../../ops/monitoring/README.md) — контракт
   изоляции Nginx virtual hosts и Салон-дозора на общем VPS.
 
