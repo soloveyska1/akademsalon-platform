@@ -71,7 +71,7 @@ test('strict attribution precedes analytics v2 on every measured public page', (
   assert.equal(measured.length, 87);
   for (const file of measured) {
     const html = fs.readFileSync(path.join(root, file), 'utf8');
-    assert.match(html, /<script(?: defer)? src="assets\/js\/analytics-attribution-v2\.js\?v=20260812analytics2"><\/script>\s*<script(?: defer)? src="assets\/js\/analytics-v2\.js\?v=20260812analytics2"><\/script>/,
+    assert.match(html, /<script(?: defer)? src="assets\/js\/analytics-attribution-v2\.js\?v=20260812analytics2"><\/script>\s*<script(?: defer)? src="assets\/js\/analytics-v2\.js\?v=20260812analytics2(?:&amp;contract=20260822quote1)?"><\/script>/,
       `${file}: strict attribution must be loaded first`);
   }
   for (const file of ['admin.html', 'dashboard.html', 'zayavka.html']) {

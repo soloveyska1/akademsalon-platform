@@ -41,6 +41,10 @@
         "match": "exact"
       },
       {
+        "path": "tests/analytics-attribution-v2.test.js",
+        "match": "exact"
+      },
+      {
         "path": "tests/configurator-quote-scope-analytics.test.js",
         "match": "exact"
       }
@@ -70,6 +74,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "fd998150815a497745f8f94f43b991b4e014ada1e8d8452b17e565fe03dcfdf7"
 }

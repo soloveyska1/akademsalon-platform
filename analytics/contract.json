@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "contract_version": "2.2.0",
+  "contract_version": "2.3.0",
   "release": "20260812analytics2",
   "timezone": "Europe/Moscow",
   "session_timeout_minutes": 30,
@@ -130,6 +130,8 @@
     "home_desk_situation": {"label": "Выбор ситуации на главной", "group": "interest"},
     "home_desk_artifact": {"label": "Работа с примером результата", "group": "interest"},
     "home_desk_continue": {"label": "Продолжение с главной", "group": "progress"},
+    "quote_scope_seen": {"label": "Показан выбор объёма сметы", "group": "progress"},
+    "quote_scope_continue": {"label": "Выбранный объём сметы продолжен", "group": "progress"},
     "cta_contact": {"label": "Запрос связи с мастером", "group": "interest"},
     "cta_configurator": {"label": "Переход к конфигуратору", "group": "interest"},
     "service_selected": {"label": "Выбор услуги", "group": "interest"},
@@ -163,7 +165,8 @@
     "commission_zero", "work_turn", "work_vip", "work_base"
   ],
   "variant_exact": [
-    "text", "comments", "defense", "open", "close", "free", "configurator"
+    "text", "comments", "defense", "open", "close", "free", "configurator",
+    "first", "milestone", "full"
   ],
   "variant_pattern": "^r1_[a-z0-9_-]{1,29}$",
   "error_types": [

@@ -42,7 +42,8 @@
     'case_bridge_open case_route_inferred case_step_view case_recommend_view case_route_confirm ' +
     'case_route_change case_submit_ready case_route_ready case_route_uncertain case_route_blocked ' +
     'case_prompt_start case_result_situation_changed case_route_open case_free_route_open ' +
-    'case_ecosystem_stage home_desk_situation home_desk_artifact home_desk_continue cta_contact ' +
+    'case_ecosystem_stage home_desk_situation home_desk_artifact home_desk_continue ' +
+    'quote_scope_seen quote_scope_continue cta_contact ' +
     'cta_configurator service_selected config_step_1 config_step_2 config_step_3 config_step_4 ' +
     'quote_email_requested order_form_ready order_fallback_shown help_hint_shown help_bookmark_shown ' +
     'guide_question_opened quote_return_shown mini_quote_seen doi_check_complete js_error ' +
@@ -244,7 +245,7 @@
     };
     if (detail.cta && /^[a-z][a-z0-9_:-]{0,31}$/.test(detail.cta)) item.cta_id = detail.cta;
     if (detail.variant && (/^r1_[a-z0-9_-]{1,29}$/.test(detail.variant) ||
-        /^(?:text|comments|defense|open|close|free|configurator)$/.test(detail.variant))) {
+        /^(?:text|comments|defense|open|close|free|configurator|first|milestone|full)$/.test(detail.variant))) {
       item.variant = detail.variant;
     }
     if (name === 'js_error' && ERROR_TYPES[detail.error_type]) item.error_type = detail.error_type;
@@ -393,6 +394,16 @@
     return event.event_id;
   }
 
+  /* Конфигуратор сообщает только два этапа и один из трёх заранее известных
+     объёмов. Свободный текст формы, контакт и файлы сюда не принимаются. */
+  function quoteScope(stage, scope) {
+    stage = String(stage || '').toLowerCase();
+    scope = String(scope || '').toLowerCase();
+    if (stage !== 'seen' && stage !== 'continue') return '';
+    if (scope !== 'first' && scope !== 'milestone' && scope !== 'full') return '';
+    return enqueue('quote_scope_' + stage, { cta:'configurator', variant:scope });
+  }
+
   function pendingRevoke() {
     var pending = get(PENDING_REVOKE_KEY, null);
     return pending && /^v[0-9a-f]{18}$/.test(String(pending.visitor_id || '')) &&
@@ -532,7 +543,12 @@
     if (document.visibilityState === 'hidden') flush();
   });
   window.addEventListener('pagehide', flush);
-  Salon.analyticsV2 = { schemaVersion: SCHEMA_VERSION, release: RELEASE, flush: flush };
+  Salon.analyticsV2 = {
+    schemaVersion: SCHEMA_VERSION,
+    release: RELEASE,
+    flush: flush,
+    quoteScope: quoteScope
+  };
 
   sendPendingRevoke();
   if (allowed()) start(false);

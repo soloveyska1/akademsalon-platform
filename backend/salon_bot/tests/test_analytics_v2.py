@@ -131,6 +131,39 @@ class AnalyticsV2Test(unittest.TestCase):
         self.assertEqual(result["discarded"], [event["event_id"]])
         self.assertEqual(self.store.overview(hours=24)["metrics"]["events"], 0)
 
+    def test_quote_scope_events_accept_only_bounded_contract_values(self):
+        visitor, secret = "v" + "3b" * 9, "cb" * 32
+        events = [
+            self.event(
+                "quote_scope_seen", page="/configurator.html",
+                cta_id="configurator", variant="first",
+            ),
+            self.event(
+                "quote_scope_continue", page="/configurator.html",
+                cta_id="configurator", variant="full",
+            ),
+            self.event(
+                "quote_scope_seen", page="/configurator.html",
+                cta_id="configurator", variant="contact@example.com",
+            ),
+            self.event(
+                "quote_scope_continue", page="/configurator.html",
+                cta_id="configurator", variant="phone_79990000000",
+            ),
+        ]
+        result = self.store.ingest(self.payload(visitor, secret, events))
+        self.assertEqual(result["accepted"], 2)
+        self.assertEqual(result["invalid"], 2)
+        row = self.store.sessions(hours=24, limit=10)["items"][0]
+        detail = self.store.session_detail(row["session_id"])
+        safe = [(item["event"], item["cta_id"], item["variant"]) for item in detail["events"]]
+        self.assertEqual(safe, [
+            ("quote_scope_seen", "configurator", "first"),
+            ("quote_scope_continue", "configurator", "full"),
+        ])
+        self.assertNotIn("contact@example.com", json.dumps(detail))
+        self.assertNotIn("79990000000", json.dumps(detail))
+
     def test_campaign_dimensions_reject_arbitrary_query_text(self):
         event = self.event("page_view")
         event["source"] = {
