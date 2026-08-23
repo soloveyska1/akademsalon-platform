@@ -240,11 +240,12 @@
   function syncMobileDock(selected,route,explicit){
     var dock=document.querySelector('.mobile-dock__primary');
     if(!dock||(!explicit && dock.getAttribute('data-resume-draft')==='true'))return;
-    dock.setAttribute('href',route);
-    dock.removeAttribute('data-resume-draft');
-    dock.setAttribute('aria-label','Далее: '+selected.title);
+    if(dock.getAttribute('href')!==route)dock.setAttribute('href',route);
+    if(dock.getAttribute('data-resume-draft')!==null)dock.removeAttribute('data-resume-draft');
+    var dockName='Далее: '+selected.title;
+    if(dock.getAttribute('aria-label')!==dockName)dock.setAttribute('aria-label',dockName);
     var dockLabel=dock.querySelector('.mn-l');
-    if(dockLabel)dockLabel.textContent='Далее';
+    if(dockLabel&&dockLabel.textContent!=='Далее')dockLabel.textContent='Далее';
   }
   function applyChoice(choice,explicit){
     if(!choice||!copy[choice.value])return;
@@ -252,11 +253,12 @@
     var route=choice.getAttribute('data-route');
     if(route!==selected.route)return;
     links.forEach(function(link){
-      link.setAttribute('href',route);
+      if(link.getAttribute('href')!==route)link.setAttribute('href',route);
       var label=link.querySelector('[data-practice-route-label]');
-      if(label)label.textContent=selected.button;
+      if(label&&label.textContent!==selected.button)label.textContent=selected.button;
     });
-    if(status)status.textContent='Выбрано: '+selected.title+' · '+selected.price;
+    var statusText='Выбрано: '+selected.title+' · '+selected.price;
+    if(status&&status.textContent!==statusText)status.textContent=statusText;
     syncMobileDock(selected,route,explicit===true);
   }
   function syncChoice(){
@@ -265,6 +267,9 @@
   choices.forEach(function(choice){
     choice.addEventListener('change',function(){applyChoice(choice,true);});
     choice.addEventListener('click',function(){if(choice.checked)applyChoice(choice,true);});
+    choice.addEventListener('keydown',function(event){
+      if(!event.repeat&&(event.key===' '||event.key==='Spacebar')&&choice.checked)applyChoice(choice,true);
+    });
   });
   window.addEventListener('pageshow',syncChoice);
   syncChoice();

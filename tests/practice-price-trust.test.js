@@ -126,15 +126,17 @@ test('one selected scope controls every continuation into the configurator', () 
 test('practice selection also controls the mobile dock without stealing a saved draft', () => {
   assert.match(html, /document\.querySelector\('\.mobile-dock__primary'\)/);
   assert.match(html, /dock\.setAttribute\('href',route\)/);
-  assert.match(html, /dock\.setAttribute\('aria-label','Далее: '\+selected\.title\)/);
+  assert.match(html, /var dockName='Далее: '\+selected\.title/);
+  assert.match(html, /dock\.getAttribute\('aria-label'\)!==dockName/);
   assert.match(html, /dockLabel\.textContent='Далее'/);
   assert.match(html, /!explicit && dock\.getAttribute\('data-resume-draft'\)==='true'/);
   assert.match(html, /dock\.removeAttribute\('data-resume-draft'\)/);
+  assert.match(html, /status&&status\.textContent!==statusText/);
   assert.match(html, /applyChoice\(choice,true\)/);
   assert.match(html, /applyChoice\([^;]+,false\)/);
 });
 
-test('an explicit tap on the already checked scope overrides a saved-draft dock', () => {
+test('an explicit activation on the already checked scope overrides a saved-draft dock once', () => {
   const scriptMarker = '<script>(function(){\n  var root=document.querySelector(\'[data-p15-service="otchet-po-praktike"]\');';
   const scriptStart = html.indexOf(scriptMarker);
   assert.notEqual(scriptStart, -1, 'practice selector runtime must exist');
@@ -156,11 +158,18 @@ test('an explicit tap on the already checked scope overrides a saved-draft dock'
     };
   };
   const choices = [choice('diagnostic', false), choice('editing', true), choice('support', false)];
-  const status = { textContent: '' };
+  let statusText = '';
+  let statusWrites = 0;
+  const status = {};
+  Object.defineProperty(status, 'textContent', {
+    get() { return statusText; },
+    set(value) { statusText = value; statusWrites += 1; },
+  });
   const pageLinks = [0, 1].map(() => {
     const label = { textContent: '' };
     return {
       href: '',
+      getAttribute(name) { return name === 'href' ? this.href : null; },
       setAttribute(name, value) { if (name === 'href') this.href = value; },
       querySelector(selector) { return selector === '[data-practice-route-label]' ? label : null; },
     };
@@ -200,10 +209,27 @@ test('an explicit tap on the already checked scope overrides a saved-draft dock'
   assert.equal(dockAttrs['data-resume-draft'], 'true');
   assert.equal(dockLabel.textContent, 'Черновик');
   assert.equal(typeof choices[1].listeners.click, 'function');
+  assert.equal(typeof choices[1].listeners.keydown, 'function');
+  choices[1].listeners.keydown({ key: ' ' });
+  assert.equal(dockAttrs['data-resume-draft'], undefined);
+  assert.equal(dockAttrs.href, routes.editing);
+  assert.equal(dockLabel.textContent, 'Далее');
+
+  dockAttrs.href = 'configurator.html?work=practice&situation=draft&result=editing&route=page';
+  dockAttrs['data-resume-draft'] = 'true';
+  dockLabel.textContent = 'Черновик';
   choices[1].listeners.click();
   assert.equal(dockAttrs['data-resume-draft'], undefined);
   assert.equal(dockAttrs.href, routes.editing);
   assert.equal(dockLabel.textContent, 'Далее');
+
+  statusWrites = 0;
+  choices[1].checked = false;
+  choices[2].checked = true;
+  choices[2].listeners.click();
+  choices[2].listeners.change();
+  assert.equal(statusText, 'Выбрано: сопровождение по этапам · от 14 000 ₽');
+  assert.equal(statusWrites, 1, 'click + change must not duplicate the aria-live announcement');
 });
 
 test('three practice routes preserve scope codes while draft support stays supplied-material A1', () => {
