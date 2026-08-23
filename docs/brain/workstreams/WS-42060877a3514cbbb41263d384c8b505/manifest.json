@@ -1,0 +1,75 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-42060877a3514cbbb41263d384c8b505",
+  "slug": "private-checkpoint",
+  "status": "active",
+  "branch": "codex/out-008-private-checkpoint-v1",
+  "base_sha": "ca0ff6a57e33d4d1f6f25480e19a3d932bf44120",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-008"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1026.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-42060877a3514cbbb41263d384c8b505/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/configurator-private-checkpoint.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/css/configurator-journey.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/polish15-configurator.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/cart.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1025.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/PRODUCT-MAP.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/configurator-concept-mechanics.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/mobile-light-smoke.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:configurator-private-checkpoint"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
