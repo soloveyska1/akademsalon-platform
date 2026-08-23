@@ -233,25 +233,36 @@
   var links=[].slice.call(root.querySelectorAll('[data-practice-route]'));
   var status=root.querySelector('[data-practice-selection]');
   var copy={
-    diagnostic:{title:'письменный разбор',price:'от 2 500 ₽',button:'Продолжить с разбором'},
-    editing:{title:'редактура готового комплекта',price:'от 8 000 ₽',button:'Продолжить с редактурой'},
-    support:{title:'сопровождение по этапам',price:'от 14 000 ₽',button:'Продолжить с сопровождением'}
+    diagnostic:{title:'письменный разбор',price:'от 2 500 ₽',button:'Продолжить с разбором',route:'configurator.html?work=practice&situation=draft&result=diagnostic&route=service'},
+    editing:{title:'редактура готового комплекта',price:'от 8 000 ₽',button:'Продолжить с редактурой',route:'configurator.html?work=practice&situation=draft&result=editing&route=service'},
+    support:{title:'сопровождение по этапам',price:'от 14 000 ₽',button:'Продолжить с сопровождением',route:'configurator.html?work=practice&situation=draft&result=support&route=service'}
   };
-  function applyChoice(choice){
+  function syncMobileDock(selected,route,explicit){
+    var dock=document.querySelector('.mobile-dock__primary');
+    if(!dock||(!explicit && dock.getAttribute('data-resume-draft')==='true'))return;
+    dock.setAttribute('href',route);
+    dock.removeAttribute('data-resume-draft');
+    dock.setAttribute('aria-label','Продолжить: '+selected.title);
+    var dockLabel=dock.querySelector('.mn-l');
+    if(dockLabel)dockLabel.textContent='Продолжить';
+  }
+  function applyChoice(choice,explicit){
     if(!choice||!copy[choice.value])return;
     var selected=copy[choice.value];
     var route=choice.getAttribute('data-route');
+    if(route!==selected.route)return;
     links.forEach(function(link){
       link.setAttribute('href',route);
       var label=link.querySelector('[data-practice-route-label]');
       if(label)label.textContent=selected.button;
     });
     if(status)status.textContent='Выбрано: '+selected.title+' · '+selected.price;
+    syncMobileDock(selected,route,explicit===true);
   }
   function syncChoice(){
-    applyChoice(root.querySelector('[data-practice-scope-choice]:checked')||choices[0]);
+    applyChoice(root.querySelector('[data-practice-scope-choice]:checked')||choices[0],false);
   }
-  choices.forEach(function(choice){choice.addEventListener('change',function(){applyChoice(choice);});});
+  choices.forEach(function(choice){choice.addEventListener('change',function(){applyChoice(choice,true);});});
   window.addEventListener('pageshow',syncChoice);
   syncChoice();
 })();</script>

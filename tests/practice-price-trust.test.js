@@ -122,6 +122,17 @@ test('one selected scope controls every continuation into the configurator', () 
   assert.doesNotMatch(html, /"highPrice":/);
 });
 
+test('practice selection also controls the mobile dock without stealing a saved draft', () => {
+  assert.match(html, /document\.querySelector\('\.mobile-dock__primary'\)/);
+  assert.match(html, /dock\.setAttribute\('href',route\)/);
+  assert.match(html, /dock\.setAttribute\('aria-label','Продолжить: '\+selected\.title\)/);
+  assert.match(html, /dockLabel\.textContent='Продолжить'/);
+  assert.match(html, /!explicit && dock\.getAttribute\('data-resume-draft'\)==='true'/);
+  assert.match(html, /dock\.removeAttribute\('data-resume-draft'\)/);
+  assert.match(html, /applyChoice\(choice,true\)/);
+  assert.match(html, /applyChoice\([^;]+,false\)/);
+});
+
 test('three practice routes preserve scope codes while draft support stays supplied-material A1', () => {
   assert.match(
     configurator,
