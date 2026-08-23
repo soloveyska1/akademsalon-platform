@@ -3,16 +3,36 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `1ea81c6825c02b94f8a8dff84a9186a8534b4265`.
+  `5b1735c2c959ce63733b270259f74965d2fe46d3`.
 - Production `current` and compatibility `dist` resolve to
-  `release164-1ea81c6`; `previous` resolves to `release162-977c1f6`.
-- Release164 has G10 GO with P0=0/P1=0/P2=0. Exact source, hashes, browser
+  `release165-5b1735c`; `previous` resolves to `release164-1ea81c6`.
+- Release165 has G10 GO with P0=0/P1=0/P2=0. Exact source, hashes, browser
   matrix, two-vantage smoke and executed static rollback/forward are in
-  `REL-0164` and `E-1024`.
+  `REL-0165` and `E-1025`.
 - Analytics v2 contract is 2.3.0. Full rollback changes both static pointers to
-  release162; backend restore or restart is not part of release164.
+  release164; backend restore or restart is not part of release165.
 - `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
   is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
+
+## 23 August mobile configurator keyboard action
+
+- While the mobile software keyboard is open, the existing current-step
+  primary becomes one compact shelf above it. The active field, validation
+  reason and action remain simultaneously reachable; closing the keyboard
+  restores the unchanged full taskbar.
+- At the 40-character boundary the same primary enables without blur. The
+  production practice-support journey keeps one primary, the exact
+  `practice_draft_support` scope and 14,000–19,500 RUB orientation; contact
+  remains disabled until its existing requirements are met.
+- The shelf is mobile, field-focus and keyboard-occlusion gated. Consent keeps
+  precedence, desktop geometry does not enter the state, and no second CTA,
+  route, submit path, price, discount or promise was added.
+- Focused Chromium and WebKit passed 3/3 each at 320/390/430. The reviewed code
+  passed a real iOS 26.4 software-keyboard journey; production Chromium 360
+  light and 390 dark repeated the live geometry and captured no POST.
+- Release165 completed external/VPS smoke 14/14 after activation, in a real
+  rollback to release164 and after forward restore. Service, Nginx and SQLite
+  stayed green. Reachability is proved; conversion uplift is not claimed.
 
 ## 23 August mobile practice scope and Browser Back
 
@@ -171,6 +191,22 @@
   their meaning and accuracy cannot be defended.
 - Raw events have a maximum 365-day lifetime; signed revoke cascades visitor,
   sessions and events and retains only a bounded hashed replay tombstone.
+
+## Release165 verification summary
+
+- Site 592/592; backend 31/31; focused Chromium/WebKit 6/6; Brain validation,
+  deterministic builds and diff checks green. Two independent final reviews
+  report P0=0/P1=0/P2=0.
+- Public payload: 353 files / 25,048,287 bytes, digest `51f75570…2e7`;
+  immutable live tree: 356 files / 25,058,458 bytes, manifest
+  `7ea25e87…e4c`, owner/mode drift 0.
+- Exactly two public files differ from release164. Repository, immutable tree
+  and live HTTP hashes agree at `7f99eda2…0cd4` and `d474c38e…b1b`; three
+  server-owned files and backend/Nginx stayed byte-identical.
+- External/VPS smoke passed 14/14 after activation, 14/14 in the executed
+  release164 rollback and 14/14 after final forward restore to release165.
+- No production form was submitted and no contact, order, client file,
+  message, payment or analytics record was read or changed.
 
 ## Release164 verification summary
 
