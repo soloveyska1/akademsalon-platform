@@ -1,0 +1,99 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-f66ad05f7d864b93a4f3d60646050847",
+  "slug": "out-006-practice-support-continuity-v4",
+  "status": "active",
+  "branch": "codex/out-006-practice-support-continuity-v4",
+  "base_sha": "85d41fa764262ede019611983555db70112e6e0b",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "admin.html",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/configurator-journey.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/cart.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-f66ad05f7d864b93a4f3d60646050847/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/cart-regression.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/practice-price-trust.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/practice-support-specification.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "academic-integrity.html",
+        "match": "exact"
+      },
+      {
+        "path": "content/legal/SPECIFICATION-V2.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/DECISIONS.md",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/configurator-concept-mechanics.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/release-asset-version.test.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:practice-draft-support"
+    },
+    {
+      "access": "write",
+      "key": "contract:practice-support-specification"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:configurator-practice-support"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
