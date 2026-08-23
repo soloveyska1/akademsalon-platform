@@ -3131,6 +3131,7 @@ function initGodEye() {
     if (contour !== 'A') return '';
     row = row || {};
     var value = String(row.academic_submode || row.academicSubmode || '').toUpperCase();
+    if (value === 'A1' || value === 'А1') return 'A1';
     if (value === 'A2' || value === 'А2') return 'A2';
     var routeResult = String(row.result_code || row.resultCode ||
       (row.case_context && row.case_context.result) || '').toLowerCase();
@@ -3155,12 +3156,26 @@ function initGodEye() {
       (o.specification && o.specification.lines) ||
       (o.offer && o.offer.specification_lines) ||
       (o.offer && o.offer.specification && o.offer.specification.lines) || [];
-    var rows = saved.length ? saved : (o.items || []);
+    var directItems = Array.isArray(o.items) && o.items.length ? o.items : [];
+    var cartItems = o.cart && Array.isArray(o.cart.items) ? o.cart.items : [];
+    var rows = saved.length ? saved : (directItems.length ? directItems : cartItems);
     if (!rows.length) {
+      var fallbackContext = o.case_context && typeof o.case_context === 'object'
+        ? o.case_context : {};
       rows = [{
         id:'order-' + o.id, label:o.work_label || 'Индивидуальная услуга',
         topic:o.topic || '', deadline_text:o.deadline_text || '',
-        requirements:o.details || '', contract_contour:'A', academic_submode:'A1'
+        requirements:o.details || '',
+        type:o.type || '',
+        service_id:o.service_id || o.type || '',
+        tier:o.tier || '',
+        result_code:o.result_code || fallbackContext.result_code || fallbackContext.result || '',
+        scope_code:o.scope_code || fallbackContext.scope_code || '',
+        contract_contour:o.contract_contour || fallbackContext.contract_contour || 'A',
+        academic_submode:o.academic_submode || fallbackContext.academic_submode || '',
+        legal_service_type:o.legal_service_type || '',
+        permitted_purpose:o.permitted_purpose || '',
+        author_participation:o.author_participation || null
       }];
     }
     var amounts = specificationAllocation(total, rows);
@@ -3175,6 +3190,24 @@ function initGodEye() {
       var scope = row.scope && typeof row.scope === 'object' ? row.scope : {};
       var inputs = row.customer_inputs && typeof row.customer_inputs === 'object'
         ? row.customer_inputs : {};
+      var rawRequiredInputs = Array.isArray(scope.required_inputs)
+        ? scope.required_inputs
+        : (Array.isArray(row.required_inputs) ? row.required_inputs : []);
+      var requiredInputs = rawRequiredInputs.map(function (value) {
+        return String(value || '').trim().slice(0, 500);
+      }).filter(Boolean);
+      var rawDependencies = Array.isArray(row.dependencies)
+        ? row.dependencies
+        : (row.dependencies ? [row.dependencies] : []);
+      var dependencies = rawDependencies.map(function (value) {
+        return String(value || '').trim().slice(0, 1000);
+      }).filter(Boolean);
+      if (!dependencies.length && requiredInputs.length) {
+        dependencies = [
+          'Срок и работа по позиции начинаются после получения полного комплекта исходников: ' +
+            requiredInputs.join('; ')
+        ];
+      }
       var serviceId = String(row.service_id || row.serviceId || row.catalog_id || row.type || '');
       var contour = specificationContour(row.contract_contour || answers.author_model, serviceId);
       var academicSubmode = specificationAcademicSubmode(row, contour, serviceId);
@@ -3286,16 +3319,24 @@ function initGodEye() {
               : 'Самостоятельная работа Заказчика с консультационной, редакторской или учебно-методической помощью мастерской')
             : 'Использование авторского материала только для прямо согласованной цели вне учебной и научной аттестации'),
         topic:topic,
-        scope:{ topic:topic, included:included, excluded:excluded },
+        scope:{
+          topic:topic,
+          required_inputs:requiredInputs,
+          included:included,
+          excluded:excluded
+        },
         inclusions:included,
         exclusions:excluded,
         customer_inputs:{
-          description:inputs.description || (isAiEditing
+          description:requiredInputs.length
+            ? ('До начала позиции Заказчик передаёт: ' + requiredInputs.join('; '))
+            : inputs.description || (isAiEditing
             ? ('Исходный текст; исходный prompt: ' + String(answers.prompt || '') +
               '; сведения об источниках: ' + String(answers.sources || ''))
             : topic || requirements || 'Исходные материалы и требования, переданные в деле заказа'),
+          required_inputs:requiredInputs,
           version:inputs.version || 'версия, зафиксированная в деле до начала позиции',
-          source_material_required:isAiEditing,
+          source_material_required:isAiEditing || requiredInputs.length > 0,
           source_material_provided:isAiEditing
             ? inputs.source_material_provided === true : null,
           original_prompt:isAiEditing ? String(inputs.original_prompt || answers.prompt || '') : '',
@@ -3311,6 +3352,7 @@ function initGodEye() {
           ]
         }) : null,
         acceptance_criteria:criteria,
+        dependencies:dependencies,
         deadline_text:row.deadline_text || row.deadline || o.deadline_text || '',
         deadline_date:row.deadline_date || o.deadline_date || '',
         correction_window:{ days:7, scope:'устранение подтверждённых несоответствий этой позиции' },

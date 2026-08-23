@@ -7,7 +7,17 @@ const root = path.join(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const html = read('otchet-po-praktike.html');
 const css = read('assets/css/polish15-catalog.css');
+const journeyCss = read('assets/css/configurator-journey.css');
+const cart = read('assets/js/cart.js');
 const configurator = read('configurator.html');
+const cartCurrentItem = configurator.slice(
+  configurator.indexOf('function cartCurrentItem()'),
+  configurator.indexOf('function cartCurrentValid()'),
+);
+const radioGroup = configurator.slice(
+  configurator.indexOf('function radioGroup('),
+  configurator.indexOf('var rgType ='),
+);
 const visibleHtml = html.replace(/<script\b[\s\S]*?<\/script>/gi, '');
 const serviceSchema = [...html.matchAll(/<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/gi)]
   .map((match) => JSON.parse(match[1]))
@@ -68,6 +78,104 @@ test('one selected scope controls every continuation into the configurator', () 
     [2500, 8000, 14000]
   );
   assert.doesNotMatch(html, /"highPrice":/);
+});
+
+test('three practice routes preserve scope codes while draft support stays supplied-material A1', () => {
+  assert.match(
+    configurator,
+    /function practiceDraftScopeCode\(\)[\s\S]*?service \|\| state\.workType !== 'practice' \|\| state\.situation !== 'draft'[\s\S]*?practice_draft_/
+  );
+  assert.match(configurator, /function isPracticeDraftDiagnostic\(\)[\s\S]*?practiceDraftScopeCode\(\) === 'practice_draft_diagnostic'/);
+  assert.match(configurator, /function isPracticeDraftEditing\(\)[\s\S]*?practiceDraftScopeCode\(\) === 'practice_draft_editing'/);
+  assert.match(configurator, /function isPracticeDraftSupport\(\)[\s\S]*?practiceDraftScopeCode\(\) === 'practice_draft_support'/);
+  assert.match(configurator, /Письменный разбор комплекта по практике/);
+  assert.match(configurator, /Карта несоответствий, обязательных исправлений и приоритетов/);
+  assert.match(configurator, /Редактор не вносит правки в документы на этом этапе/);
+  assert.match(configurator, /Редактура готового комплекта по практике/);
+  assert.match(configurator, /Word с видимыми правками, сверка с программой и чек-лист подписей и приложений/);
+  assert.match(configurator, /Приложить готовый комплект/);
+  assert.match(configurator, /Для точной редактуры нужны готовые отчёт и дневник/);
+  assert.match(configurator, /срок начнётся после получения полного комплекта/);
+  assert.match(configurator, /Сопровождение комплекта по практике/);
+  assert.match(
+    configurator,
+    /Начнём с проверки вашего черновика, дневника, программы и приложений\.[\s\S]*?будем вести согласованные версии документов/
+  );
+  assert.match(configurator, /Карта требований, список недостающего и план согласованных этапов/);
+  assert.match(
+    configurator,
+    /Передать реальные сведения о практике[\s\S]*?подтвердить факты, даты и выполненные задачи/
+  );
+  assert.match(
+    configurator,
+    /function academicSubmode\(\)[\s\S]*?isPracticeDraftSupport\(\)[\s\S]*?return 'A1'/
+  );
+  assert.match(configurator, /scope_code:practiceDraftScopeCode\(\) \|\| null/);
+  assert.match(configurator, /result_code:effectiveResult\(\) \|\| null/);
+  assert.match(configurator, /practice_draft_diagnostic\|practice_draft_editing\|practice_draft_support/);
+  assert.match(cartCurrentItem, /var scopeCode = caseContext[\s\S]*?scopeCode:scopeCode/);
+  assert.match(cartCurrentItem, /var resultCode = caseContext[\s\S]*?resultCode:resultCode/);
+  assert.doesNotMatch(radioGroup, /caseContext|practice_draft_/);
+  assert.match(
+    configurator,
+    /var practiceScopeSubmit = caseContext &&[\s\S]*?practice_draft_diagnostic\|practice_draft_editing\|practice_draft_support/
+  );
+  assert.match(
+    configurator,
+    /var shouldMaterializeCurrent = activeCart[\s\S]*?practiceScopeSubmit[\s\S]*?activeCart\.materializeCurrent\(\{ silent:true \}\)/
+  );
+  assert.match(
+    configurator,
+    /if \(!svc && !practiceScopeSubmit &&[\s\S]*?svc_\(\?:plan\|review\|norm\|defense\|ai\|tutor\)/
+  );
+  assert.match(configurator, /payload\.cart = window\.SalonCart\.payload\(\)/);
+  assert.match(
+    configurator,
+    /var academicSubmode = caseContext && caseContext\.academic_submode === 'A2'[\s\S]*?state\.tier === 'vip' \? 'A2' : 'A1'[\s\S]*?caseContext\.academic_submode === 'A1'\) academicSubmode = 'A1'/
+  );
+  assert.match(
+    cart,
+    /function resolvedAcademicSubmode\(x\)[\s\S]*?x\.academicSubmode === 'A1'[\s\S]*?x\.academicSubmode === 'A2'[\s\S]*?x\.tier === 'vip'/
+  );
+  assert.match(cart, /Письменный разбор комплекта по практике/);
+  assert.match(cart, /Редактура готового комплекта по практике/);
+  assert.match(cart, /Сопровождение комплекта по практике/);
+  assert.match(cart, /Редакторское сопровождение предоставленного Заказчиком черновика и связанных документов по практике/);
+  assert.match(configurator, /materials-step--practice-scope/);
+  assert.match(configurator, /configurator-journey\.css[^\"]*practice=20260823continuity1/);
+  assert.match(configurator, /assets\/js\/cart\.js[^\"]*practice=20260823continuity1/);
+  assert.match(
+    journeyCss,
+    /@media\(max-width:920px\)[\s\S]*?\.materials-step--practice-scope \.wizard-summary[\s\S]*?order:-1/
+  );
+  assert.match(
+    configurator,
+    /<a class="line-link" href="otchet-po-praktike\.html#service-price">Изменить объём/
+  );
+  assert.doesNotMatch(
+    configurator,
+    /practiceSupport \? '<button[^']*data-concept-edit[^']*Изменить объём/
+  );
+  assert.match(
+    configurator,
+    /Проверьте перенесённый объём, укажите дату первого результата и приложите материалы комплекта/
+  );
+  assert.match(
+    configurator,
+    /Проверю факты, даты и выполненные задачи, приму содержательные решения и подготовлю финальную авторскую версию/
+  );
+  assert.match(configurator, /aria-describedby="practiceSupportDescriptionHint"/);
+  assert.match(
+    configurator,
+    /practiceSupportDescriptionHint[\s\S]*?минимум ' \+ SOURCE_DESCRIPTION_MIN \+ ' знаков[\s\S]*?data-source-description-count/
+  );
+  assert.match(
+    configurator,
+    /key === 'comment'[\s\S]*?data-source-description-count[\s\S]*?state\.comment\.trim\(\)\.length \+ ' из ' \+ SOURCE_DESCRIPTION_MIN/
+  );
+  assert.doesNotMatch(configurator, /data-source-description-count[^>]*aria-live/);
+  assert.match(configurator, /опишите комплект: минимум 40 знаков/);
+  assert.match(configurator, /support:\{[\s\S]*?Можно прийти без текста[\s\S]*?first:'План исследования и задачи на первый этап'/);
 });
 
 test('practice price ledger is page-scoped and covered in dark and mobile layouts', () => {

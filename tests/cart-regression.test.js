@@ -54,7 +54,14 @@ function makeHarness() {
       }
     ],
     SalonCalc: {
-      quote(type) {
+      quote(type, disc, term, tier) {
+        if (type === 'practice') {
+          return {
+            base: { low: 2500, high: 3500 },
+            turn: { low: 8000, high: 11000 },
+            vip: { low: 14000, high: 19500 },
+          }[tier];
+        }
         return type === 'diploma'
           ? { low: 30000, high: 40000 }
           : { low: 10000, high: 12000 };
@@ -169,6 +176,81 @@ test('materializeCurrent сохраняет единственную позиц�
     { use_bonus: payload.benefits_intent.use_bonus, bonus_amount: payload.benefits_intent.bonus_amount },
     { use_bonus: true, bonus_amount: 1000 }
   );
+});
+
+test('three practice scopes keep their exact result contract while generic vip remains A2', () => {
+  const h = makeHarness();
+  const exacts = [
+    Object.assign(work('practice-diagnostic', 'Отчёт по практике', 'practice'), {
+      tier: 'base', academicSubmode: 'A1', resultCode: 'diagnostic',
+      scopeCode: 'practice_draft_diagnostic',
+    }),
+    Object.assign(work('practice-editing', 'Отчёт по практике', 'practice'), {
+      tier: 'turn', academicSubmode: 'A1', resultCode: 'editing',
+      scopeCode: 'practice_draft_editing',
+    }),
+    Object.assign(work('practice-support', 'Отчёт по практике', 'practice'), {
+      tier: 'vip', academicSubmode: 'A1', resultCode: 'support',
+      scopeCode: 'practice_draft_support',
+    }),
+  ];
+  const generic = Object.assign(work('practice-a2', 'Отчёт по практике', 'practice'), {
+    tier: 'vip'
+  });
+
+  h.api.reset(blank(exacts), { S: h.S });
+  let payload = h.api.payload();
+  assert.deepEqual(
+    { low: payload.quote_preview.low, high: payload.quote_preview.high },
+    { low: 24500, high: 34000 }
+  );
+  const [diagnostic, editing, support] = payload.items;
+
+  assert.equal(h.api.contourLabel(exacts[0]), 'Письменный разбор комплекта по практике');
+  assert.equal(diagnostic.result_code, 'diagnostic');
+  assert.equal(diagnostic.scope_code, 'practice_draft_diagnostic');
+  assert.equal(diagnostic.academic_submode, 'A1');
+  assert.equal(diagnostic.legal_service_type, 'consultation');
+  assert.match(diagnostic.deliverable, /Карта несоответствий/);
+  assert.match(diagnostic.deliverable, /редактор не вносит правки/i);
+  assert.doesNotMatch(diagnostic.inclusions.join(' '), /правк\w* в документ|исправленн\w* Word/i);
+  assert.match(diagnostic.exclusions.join(' '), /правки в Word, дневник или приложения/i);
+
+  assert.equal(h.api.contourLabel(exacts[1]), 'Редактура готового комплекта по практике');
+  assert.equal(editing.result_code, 'editing');
+  assert.equal(editing.scope_code, 'practice_draft_editing');
+  assert.equal(editing.academic_submode, 'A1');
+  assert.equal(editing.legal_service_type, 'editing');
+  assert.match(editing.deliverable, /Word с видимыми правками/);
+  assert.match(editing.deliverable, /сверка с программой практики/);
+  assert.match(editing.deliverable, /чек-лист подписей и приложений/);
+
+  assert.equal(h.api.contourLabel(exacts[2]), 'Сопровождение комплекта по практике');
+  assert.equal(support.result_code, 'support');
+  assert.equal(support.scope_code, 'practice_draft_support');
+  assert.equal(support.academic_submode, 'A1');
+  assert.equal(support.legal_service_type, 'editing');
+  assert.match(support.permitted_purpose, /предоставленного Заказчиком черновика и связанных документов по практике/);
+  assert.doesNotMatch(support.permitted_purpose, /от темы или задания/);
+  assert.match(support.deliverable, /Карта требований и план согласованных этапов/);
+  assert.match(support.deliverable, /версии отчёта и дневника/);
+  assert.match(support.deliverable, /итоговый чек-лист/);
+
+  payload.items.forEach((item) => {
+    assert.equal(item.deliverables_pending, false);
+    assert.equal(item.scope.included_pending, false);
+    assert.equal(item.scope.excluded_pending, false);
+    assert.ok(item.inclusions.length >= 3);
+    assert.ok(item.exclusions.length >= 3);
+  });
+
+  h.api.reset(blank([generic]), { S: h.S });
+  payload = h.api.payload();
+  assert.equal(h.api.contourLabel(generic), 'Совместный исследовательский проект с нуля');
+  assert.equal(payload.items[0].academic_submode, 'A2');
+  assert.match(payload.items[0].permitted_purpose, /от темы или задания до рабочего черновика/);
+  assert.equal(payload.items[0].scope_code, '');
+  assert.equal(payload.items[0].deliverables_pending, true);
 });
 
 test('редактирование current с тем же sourceId обновляет строку без дубля', () => {

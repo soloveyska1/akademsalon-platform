@@ -209,9 +209,82 @@
   /* Клиенту — человеческим языком. Коды «А1»/«А2» это наши договорные
      подрежимы: они нужны в оферте и в работе мастера, а в составе заказа
      читаются как шифр и ровно этим делают смету непонятной. */
+  function resolvedAcademicSubmode(x) {
+    if (x && x.serviceId === 'author') return null;
+    if (x && (x.academicSubmode === 'A1' || x.academicSubmode === 'A2')) {
+      return x.academicSubmode;
+    }
+    return x && x.kind === 'work' && x.tier === 'vip' ? 'A2' : 'A1';
+  }
+  function practiceScopeProfile(x) {
+    if (!x || resolvedAcademicSubmode(x) !== 'A1') return null;
+    var scopeCode = String(x.scopeCode || '');
+    var resultCode = String(x.resultCode || '').toLowerCase();
+    var expectedResult = scopeCode.replace(/^practice_draft_/, '');
+    if (!/^(diagnostic|editing|support)$/.test(expectedResult)) return null;
+    if (resultCode && resultCode !== expectedResult) return null;
+    var commonExclusions = [
+      'вымышленные факты, даты и выполненные задачи или фиктивный дневник',
+      'гарантия оценки, допуска, принятия комплекта или решения комиссии',
+      'выполнение и сдача аттестационной работы вместо Заказчика'
+    ];
+    if (expectedResult === 'diagnostic') return {
+      scopeCode:scopeCode,
+      resultCode:'diagnostic',
+      label:'Письменный разбор комплекта по практике',
+      legalType:'consultation',
+      purpose:'Письменный разбор предоставленных Заказчиком черновика или замечаний по комплекту практики: сверка с программой, карта несоответствий и приоритетов без внесения правок в документы и без выполнения аттестации вместо Заказчика.',
+      deliverable:'Карта несоответствий, обязательных исправлений и приоритетов; редактор не вносит правки в документы.',
+      requiredInputs:['черновик отчёта или замечания руководителя', 'программа или методичка практики', 'реальные факты и доступные материалы комплекта'],
+      inclusions:[
+        'сверка переданного черновика или замечаний с программой и методичкой',
+        'карта несоответствий и обязательных исправлений по приоритету',
+        'оценка объёма и порядка следующего этапа'
+      ],
+      exclusions:['правки в Word, дневник или приложения', 'исправленная версия комплекта'].concat(commonExclusions)
+    };
+    if (expectedResult === 'editing') return {
+      scopeCode:scopeCode,
+      resultCode:'editing',
+      label:'Редактура готового комплекта по практике',
+      legalType:'editing',
+      purpose:'Редактура предоставленного Заказчиком фактического комплекта по практике: видимые правки, сверка с программой и проверка подписей и приложений без создания вымышленных фактов или выполнения аттестации вместо Заказчика.',
+      deliverable:'Word с видимыми правками, сверка с программой практики и чек-лист подписей и приложений.',
+      requiredInputs:['готовые отчёт и дневник на фактических материалах', 'программа или методичка практики', 'реальные факты, даты, задачи и приложения'],
+      inclusions:[
+        'видимые редакторские правки в переданных отчёте и дневнике',
+        'сверка комплекта с программой или методичкой практики',
+        'чек-лист подписей и приложений'
+      ],
+      exclusions:[
+        'сопровождение последующих версий после передачи согласованного результата',
+        'сборка комплекта по нескольким автоматически запускаемым этапам'
+      ].concat(commonExclusions)
+    };
+    return {
+      scopeCode:scopeCode,
+      resultCode:'support',
+      label:'Сопровождение комплекта по практике',
+      legalType:'editing',
+      purpose:'Редакторское сопровождение предоставленного Заказчиком черновика и связанных документов по практике: проверка согласованности, редактура и подготовка этапных версий без создания вымышленных фактов или выполнения аттестации вместо Заказчика.',
+      deliverable:'Карта требований и план согласованных этапов; согласованные редакторские версии отчёта и дневника; итоговый чек-лист комплектности, подписей и приложений.',
+      requiredInputs:['программа или методичка практики', 'черновик отчёта и дневника', 'реальные факты, даты, задачи и приложения'],
+      inclusions:[
+        'карта требований и список недостающего по переданному комплекту',
+        'план согласованных этапов и редакторская работа с версиями отчёта и дневника',
+        'финальная сверка комплектности, подписей и приложений с итоговым чек-листом'
+      ],
+      exclusions:[
+        'следующий этап без отдельного согласования состава, срока и цены',
+        'самостоятельный сбор реальных сведений о практике вместо Заказчика'
+      ].concat(commonExclusions)
+    };
+  }
   function contourLabel(x) {
     if (!x || x.serviceId !== 'author') {
-      return x && (x.academicSubmode === 'A2' || (x.kind === 'work' && x.tier === 'vip'))
+      var practiceProfile = practiceScopeProfile(x);
+      if (practiceProfile) return practiceProfile.label;
+      return resolvedAcademicSubmode(x) === 'A2'
         ? 'Совместный исследовательский проект с нуля'
         : 'Редакторская и консультационная помощь';
     }
@@ -1184,9 +1257,10 @@
         var legalType = x.kind === 'service' ? 'consultation' : 'methodological_material';
         var answerMap = x.answers && typeof x.answers === 'object' ? x.answers : {};
         var authorModel = String(answerMap.author_model || '');
-        var academicSubmode = x.serviceId === 'author'
-          ? null
-          : (x.academicSubmode === 'A2' || (x.kind === 'work' && x.tier === 'vip') ? 'A2' : 'A1');
+        var academicSubmode = resolvedAcademicSubmode(x);
+        var practiceProfile = practiceScopeProfile(x);
+        var resultCode = String(x.resultCode || '').toLowerCase();
+        if (!/^(diagnostic|editing|support)$/.test(resultCode)) resultCode = '';
         var contour = x.serviceId === 'author'
           ? (authorModel.indexOf('Б1') >= 0 ? 'B1'
             : authorModel.indexOf('Б2') >= 0 ? 'B2'
@@ -1194,11 +1268,14 @@
           : 'A';
         var permittedPurpose = x.serviceId === 'author'
           ? String(answerMap.purpose || '').slice(0, 500)
+          : practiceProfile
+            ? practiceProfile.purpose
           : academicSubmode === 'A2'
             ? 'Совместная исследовательская разработка от темы или задания до рабочего черновика при обязательном содержательном участии Заказчика; финальная авторская версия формируется Заказчиком.'
             : 'Самостоятельная работа Заказчика; консультация, аудит, редактура предоставленного материала или подготовка к выступлению без выполнения аттестации вместо Заказчика.';
         if (x.serviceId === 'author') legalType = 'author_order_non_attestation';
         if (academicSubmode === 'A2') legalType = 'joint_research_development';
+        if (practiceProfile) legalType = practiceProfile.legalType;
         if (/edit|red|corr/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'editing';
         if (/format|norm|gost/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'formatting';
         if (/tutor|consult|razbor/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'consultation';
@@ -1212,6 +1289,8 @@
           academic_submode: academicSubmode,
           academic_submode_pending: false,
           permitted_purpose: permittedPurpose,
+          result_code: practiceProfile ? practiceProfile.resultCode : resultCode,
+          scope_code: practiceProfile ? practiceProfile.scopeCode : '',
           kind: x.kind === 'service' ? 'service' : 'work',
           legal_service_type: legalType,
           type: String(x.type || ''),
@@ -1238,11 +1317,15 @@
           scope: {
             topic: String(x.topic || '').slice(0, 400),
             customer_requirements: String(x.requirements || '').slice(0, 1500),
-            required_inputs: x.serviceId === 'ai'
+            required_inputs: practiceProfile
+              ? practiceProfile.requiredInputs
+              : x.serviceId === 'ai'
               ? ['исходный текст после ИИ', 'исходный prompt', 'сведения об источниках']
               : [],
-            included_pending: true,
-            excluded_pending: true
+            included: practiceProfile ? practiceProfile.inclusions : [],
+            included_pending: !practiceProfile,
+            excluded: practiceProfile ? practiceProfile.exclusions : [],
+            excluded_pending: !practiceProfile
           },
           customer_inputs: {
             description: x.serviceId === 'ai'
@@ -1265,7 +1348,10 @@
               'содержательная доработка рабочего черновика и формирование финальной авторской версии'
             ]
           } : null,
-          deliverables_pending: true,
+          deliverable: practiceProfile ? practiceProfile.deliverable : '',
+          inclusions: practiceProfile ? practiceProfile.inclusions : [],
+          exclusions: practiceProfile ? practiceProfile.exclusions : [],
+          deliverables_pending: !practiceProfile,
           acceptance_criteria_pending: true,
           corrections_pending: true,
           intellectual_rights_profile: x.serviceId === 'author' ? String(answerMap.rights || '') : 'not_applicable_service_result',
@@ -1354,6 +1440,7 @@
       addCurrent:addCurrent, syncCurrent:syncCurrent, materializeCurrent:materializeCurrent,
       equivalent:equivalent, addonItem:addonItem,
       currentPreview:currentPreview, benefitsFor:benefits, checkoutBenefits:checkoutBenefits,
+      contourLabel:contourLabel, resolvedAcademicSubmode:resolvedAcademicSubmode,
       setBonusChoice:setBonusChoice, appliedBenefitCount:appliedBenefitCount,
       beginAddon:beginAddon, beginStandalone:beginStandalone, savePendingAddon:savePendingAddon,
       pending:function() { return pendingAddon ? JSON.parse(JSON.stringify(pendingAddon)) : null; },

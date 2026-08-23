@@ -1597,6 +1597,27 @@
   z-index:1;
 }
 
+/* The routed practice-scope choice is read before the fields. Wide screens
+   keep the established form-left / dossier-right composition; compact screens
+   show the same dossier first, without creating another primary action. */
+@media(min-width:1201px){
+  .configurator-task .materials-step--practice-scope>.materials-step__main{
+    grid-column:1;
+    grid-row:1;
+  }
+
+  .configurator-task .materials-step--practice-scope>.wizard-summary{
+    grid-column:2;
+    grid-row:1;
+  }
+}
+
+@media(max-width:920px){
+  .configurator-task .materials-step--practice-scope .wizard-summary{
+    order:-1;
+  }
+}
+
 .configurator-task .quote-scope{
   min-width:0;
   margin:18px 0 0;
