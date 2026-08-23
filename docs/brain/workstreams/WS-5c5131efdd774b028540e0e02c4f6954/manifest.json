@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-5c5131efdd774b028540e0e02c4f6954",
   "slug": "practice-mobile-dock-parity-v2",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-008-mobile-action-reachability-v2",
   "base_sha": "72ceab5fbd2550237ba4b93fd5c2b3ea6d9c8e66",
   "result_sha": "b183ebe9c998b591b188ce5451d089525ab5f898",
@@ -41,6 +41,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "a068670126f5674d109692edc7b48ffb91c5a629346f4a1cdb00e0de21c36243"
+  "manifest_revision": 3,
+  "base_manifest_hash": "9910db5cd3a0bb552c16c9109496f1562f030e0402e0403f64151bdaa3f0facf"
 }
