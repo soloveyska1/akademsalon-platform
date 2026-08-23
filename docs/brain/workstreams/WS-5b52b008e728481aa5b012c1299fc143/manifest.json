@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-5b52b008e728481aa5b012c1299fc143",
   "slug": "out-006-practice-result-passport-v1",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-006-practice-result-passport-v1",
   "base_sha": "a28330ccf83ed3f70b0beb5425b8ba5504625c07",
   "result_sha": "29376844dc9691f0f9f8f40dbd83ebcdc0f2d1ee",
@@ -54,6 +54,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "7f9101f03c9de1f442d22a7d00a2423d3105fb945337769b4f90f0274848465e"
+  "manifest_revision": 3,
+  "base_manifest_hash": "2e2e5f60aa5910f393de8567b83623d62ee926c20d3d2317361a19dc6ddb746b"
 }
