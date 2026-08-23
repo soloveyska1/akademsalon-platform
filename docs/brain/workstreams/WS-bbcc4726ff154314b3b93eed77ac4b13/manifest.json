@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-bbcc4726ff154314b3b93eed77ac4b13",
   "slug": "incident-admin-auth-recovery-v2",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/incident-admin-auth-recovery-v2",
   "base_sha": "2480fa414c2dbaabcefb1714b10bc7490af67f05",
   "result_sha": "51b53739e1269c34fa2ab4bff5dc7b3fea8eb09f",
@@ -70,6 +70,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "5a8e272c064b91aa9603278a77b6cd1e910209df4894022cf985601915e82b20"
+  "manifest_revision": 3,
+  "base_manifest_hash": "004872626dfa2d25bbc7933840fc3bd8403728f8e9f5976df86e018b795d748e"
 }
