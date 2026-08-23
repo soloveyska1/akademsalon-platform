@@ -1,0 +1,46 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-5c5131efdd774b028540e0e02c4f6954",
+  "slug": "practice-mobile-dock-parity-v2",
+  "status": "active",
+  "branch": "codex/out-008-mobile-action-reachability-v2",
+  "base_sha": "72ceab5fbd2550237ba4b93fd5c2b3ea6d9c8e66",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-008"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/workstreams/WS-5c5131efdd774b028540e0e02c4f6954/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/practice-price-trust.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:practice-scope-mobile-dock"
+    },
+    {
+      "access": "read",
+      "key": "journey:practice-scope-pricing"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
