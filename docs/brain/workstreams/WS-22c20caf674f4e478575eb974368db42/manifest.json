@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-22c20caf674f4e478575eb974368db42",
   "slug": "release162-practice-passport",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/release162-practice-passport",
   "base_sha": "977c1f6a52a38c59ea5bbfc9c93910b8e615495c",
-  "result_sha": null,
+  "result_sha": "855bc2b636c1f294d4ac5f5b611ba5563192a9a2",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -74,6 +74,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "9899e7dc09e6ac9146b81356533035a8467a38f40e2daeebae948e0390222b20"
 }
