@@ -18,13 +18,24 @@
   strict Brain validation; immutable tree/hash/owner/mode parity; two-vantage
   GET/HEAD-only smoke; production Playwright; rollback/forward chronology in
   `E-1023` and release truth in `REL-0162`.
-- Changed: none yet.
-- Unverified: implementation not started.
+- Changed: published canonical source `977c1f6a` as immutable
+  `release162-977c1f6`; recorded `REL-0162`, `E-1023`, current truth and the
+  next bounded product focus. The public payload changes only the practice page
+  and its page-scoped catalogue CSS.
+- Verified: site 590/590, backend 31/31, Brain 39/39, strict validation, two
+  byte-identical builds, source/tree/HTTP hash agreement, 353/353 parity,
+  owner/mode drift 0, three independent GO reviews, production Chromium at
+  390/1440 light/dark, keyboard and Browser Back, external/VPS smoke 14/14 and
+  executed release161 rollback/forward. Service, Nginx, SQLite and backend
+  hashes remained unchanged.
+- Unverified: conversion uplift and the rejected lead's acquisition source;
+  neither can be inferred from release correctness.
 - Risks/rollback: stale cache could preserve the unconditional passport; a
   restored support radio could disagree with the CTA; or the immutable tree
   could overwrite server-owned files. Exact cache key, runtime state proof and
   baseline-overlay assembly contain these risks. Rollback changes only paired
   static pointers to immutable `release161-1c5f0ee`; backend/database are never
   restored or restarted.
-- Next: commit this declaration, run fresh strict conflicts, then perform
-  read-only production preflight before assembling any inactive release path.
+- Next: integrate the exact verified release record into fresh `origin/main`,
+  then open a separate bounded OUT-008 mobile-first audit without changing the
+  released offer.

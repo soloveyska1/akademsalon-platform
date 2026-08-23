@@ -3,16 +3,33 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `1c5f0eed53da5ab894c06545ae80806790fb1d8c`.
+  `977c1f6a52a38c59ea5bbfc9c93910b8e615495c`.
 - Production `current` and compatibility `dist` resolve to
-  `release161-1c5f0ee`; `previous` resolves to `release160-135cb45`.
-- Release161 has G10 GO with P0=0/P1=0/P2=0. Exact source, hashes, browser
+  `release162-977c1f6`; `previous` resolves to `release161-1c5f0ee`.
+- Release162 has G10 GO with P0=0/P1=0/P2=0. Exact source, hashes, browser
   matrix, two-vantage smoke and executed static rollback/forward are in
-  `REL-0161` and `E-1022`.
+  `REL-0162` and `E-1023`.
 - Analytics v2 contract is 2.3.0. Full rollback changes both static pointers to
-  release160; backend restore or restart is not part of release161.
+  release161; backend restore or restart is not part of release162.
 - `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
   is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
+
+## 23 August practice-support result passport
+
+- Only the selected 14,000 RUB support row expands a compact passport; the
+  2,500 RUB diagnostic and 8,000 RUB editing choices remain concise.
+- Before contact it names the real input set, requirements map, stage plan,
+  agreed report/diary versions and final completeness checklist. Visible
+  exclusions preserve student authorship and forbid fictional facts, substitute
+  attestation work and grade/admission/acceptance promises.
+- 14,000 RUB is explicitly the lower orientation for the complete listed
+  composition, not only its first result. The total, stage split and any later
+  out-of-scope work are fixed before payment.
+- The specification link is secondary and explicitly fictional. Native radio,
+  status and both continuation routes remain synchronized after Browser Back.
+- Production 390/1440 light/dark has overflow=0 and console=0. Three
+  independent final reviews report P0=0/P1=0/P2=0. No price, configurator,
+  request, backend, admin or Analytics contract changed.
 
 ## 23 August practice-scope continuity
 
@@ -134,6 +151,21 @@
 - Raw events have a maximum 365-day lifetime; signed revoke cascades visitor,
   sessions and events and retains only a bounded hashed replay tombstone.
 
+## Release162 verification summary
+
+- Site 590/590; backend 31/31; Brain 39/39; strict validation, deterministic
+  builds and diff checks green.
+- Public payload: 353 files / 25,039,823 bytes, digest `c7a7fff…dd7c`;
+  immutable live tree: 356 files / 25,049,994 bytes, manifest
+  `20cd81dc…a70`, owner/mode drift 0.
+- Repository, immutable tree and HTTP SHA-256 agree for exactly two changed
+  public files. The three server-owned files and all backend/Nginx hashes stayed
+  byte-identical.
+- External/VPS smoke passed 14/14 after activation, 14/14 in the executed
+  release161 rollback and 14/14 after final forward restore to release162.
+- No production contact, order, client file, message, payment, raw analytics
+  row, IP/UA, query/referrer or OAuth material was read or changed.
+
 ## Release161 verification summary
 
 - Site 589/589; backend 31/31; Brain 39/39; focused 25/25; strict validation,
@@ -196,9 +228,8 @@
 
 ## One exact next step
 
-Create one bounded product workstream for a compact «Паспорт результата
-сопровождения» immediately after `.practice-price-reason` and before the price
-action. Reuse the existing explicitly fictional dissected specification through
-one secondary text link; name inputs, four outputs and exclusions. Do not add a
-second primary CTA, JavaScript, discount, invented practice review, fixed
-package promise or conversion claim.
+Switch from price explanation to a bounded OUT-008 mobile-first audit of the
+public path `home → service → configurator → request` at 390×844. Measure touch
+targets, input zoom and whether the primary remains reachable with the software
+keyboard open; make no redesign until the audit produces a reproducible P0/P1
+or the owner approves a scoped plan.

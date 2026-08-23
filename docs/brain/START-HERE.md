@@ -4,20 +4,28 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release161>
-- Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=37>
-- Production release: `release161-1c5f0ee`
-- Production source: `1c5f0eed53da5ab894c06545ae80806790fb1d8c`
+- Production: <https://akademsalon.ru/?v=release162>
+- Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=38>
+- Production release: `release162-977c1f6`
+- Production source: `977c1f6a52a38c59ea5bbfc9c93910b8e615495c`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
 - Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
 - Проверенный quote-scope result: `5ef9b235d970969b5479d1708a1fdb7e9b3c0db6`.
 - Проверенный practice-price result: `89a2887eff51561e519c1357e5da88046b9c9d9c`.
 - Проверенный practice-continuity result: `34e10367eac4f7451b56bbe01753ff00e9dffce2`.
+- Проверенный practice-passport result: `29376844dc9691f0f9f8f40dbd83ebcdc0f2d1ee`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Static rollback: `release160-135cb45`; backend не менялся и остаётся на
+- Static rollback: `release161-1c5f0ee`; backend не менялся и остаётся на
   Analytics v2 contract 2.3.0.
+- Release162 имеет G10 GO: при выборе сопровождения от 14 000 RUB до контакта
+  раскрывается паспорт с реальными входами, четырьмя проверяемыми результатами,
+  границами авторства, исключениями и точным смыслом цены; варианты 2 500/8 000
+  не перегружены им. Site 590/590, backend 31/31, Brain 39/39, 390/1440
+  light/dark без overflow/console errors, external/VPS smoke 14/14 после
+  выпуска, в выполненном rollback на release161 и после forward restore. Точная
+  запись: [releases/REL-0162.md](releases/REL-0162.md).
 - Release161 имеет G10 GO: выбранные разбор, редактура и сопровождение практики
   сохраняют точный результат, входные материалы и границы через конфигуратор,
   request и предоплатную спецификацию. Site 589/589, backend 31/31, Brain
@@ -65,12 +73,12 @@
 1. Для следующего лида по практике давать прямую ссылку
    `/otchet-po-praktike.html#service-price` и обсуждать выбранный объём, а не
    защищать 14 000 RUB как цену той же редактуры. Выбранный объём теперь должен
-   совпадать с первым экраном и спецификацией; цену не снижать и uplift по факту
-   релиза не обещать.
-2. Следующий bounded product candidate — компактный «Паспорт результата
-   сопровождения» перед CTA цены: входные материалы, четыре проверяемых
-   результата, исключения и одна текстовая ссылка на существующий вымышленный
-   образец спецификации. Без нового primary CTA, JS, отзыва или акции.
+   совпадать с паспортом, первым экраном и спецификацией; цену не снижать и
+   uplift по факту релиза не обещать.
+2. Следующий bounded product-фокус переключить с цены на mobile-first
+   удобство: измерить путь главная → услуга → конфигуратор → заявка на 390×844,
+   начиная с достижимости действия при открытой клавиатуре и тач-целей ≥44 px.
+   Редизайн не начинать до измеренного P0/P1 или согласованного плана OUT-008.
 3. Аналитику и админку не развивать в текущем product-фокусе. Позже измерять
    только достаточный органический consented sample по заранее выбранному окну;
    до этого не заявлять conversion uplift.
@@ -102,7 +110,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0159.md](releases/REL-0159.md) — доказательная запись текущего GO-релиза.
+- [releases/REL-0162.md](releases/REL-0162.md) — доказательная запись текущего GO-релиза.
 - [../../ops/monitoring/README.md](../../ops/monitoring/README.md) — контракт
   изоляции Nginx virtual hosts и Салон-дозора на общем VPS.
 
