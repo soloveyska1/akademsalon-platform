@@ -3,16 +3,37 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `135cb4559ee6c81b0e42633d2ebb2ad48abbb1a1`.
+  `1c5f0eed53da5ab894c06545ae80806790fb1d8c`.
 - Production `current` and compatibility `dist` resolve to
-  `release160-135cb45`; `previous` resolves to `release159-57703fa`.
-- Release160 has G10 GO with P0=0/P1=0. Exact source, hashes, browser matrix,
-  two-vantage smoke and executed static rollback/forward are in `REL-0160` and
-  `E-1021`.
+  `release161-1c5f0ee`; `previous` resolves to `release160-135cb45`.
+- Release161 has G10 GO with P0=0/P1=0/P2=0. Exact source, hashes, browser
+  matrix, two-vantage smoke and executed static rollback/forward are in
+  `REL-0161` and `E-1022`.
 - Analytics v2 contract is 2.3.0. Full rollback changes both static pointers to
-  release159; backend restore or restart is not part of release160.
+  release160; backend restore or restart is not part of release161.
 - `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
   is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
+
+## 23 August practice-scope continuity
+
+- The selected 2,500 / 8,000 / 14,000 RUB practice scope now remains exact
+  through configurator, cart/request and prepayment specification. Direct
+  submit materializes the selected position even when the cart was never
+  opened.
+- Diagnostic remains a 2,500–3,500 RUB written map without edits; editing
+  remains an 8,000–11,000 RUB ready-package Word/program/checklist result;
+  support remains 14,000–19,500 RUB supplied-material staged editing with a
+  requirements map, document versions and final completeness checklist.
+- Exact support is A1 and carries the full required-input dependency. Generic
+  `topic+support` remains A2/from-zero; the fix did not convert all VIP work to
+  A1 or change pricing.
+- The next screen repeats the chosen title, result and upload request. Mobile
+  shows the compact dossier before fields and desktop preserves form-left /
+  dossier-right. `Изменить объём` returns to the public selector rather than
+  resetting the generic wizard.
+- Production 390/1440 light/dark has overflow=0 and console=0. Three
+  independent final reviews report P0=0/P1=0/P2=0. Admin UI, Analytics and the
+  backend were not changed.
 
 ## 23 August practice-price trust
 
@@ -113,6 +134,21 @@
 - Raw events have a maximum 365-day lifetime; signed revoke cascades visitor,
   sessions and events and retains only a bounded hashed replay tombstone.
 
+## Release161 verification summary
+
+- Site 589/589; backend 31/31; Brain 39/39; focused 25/25; strict validation,
+  syntax, deterministic builds and diff checks green.
+- Public payload: 353 files / 25,030,042 bytes, digest `00cc9703…6952`;
+  immutable live tree: 356 files / 25,040,213 bytes, manifest
+  `a455a53b…23f4`, owner/mode drift 0.
+- Repository, immutable tree and HTTP SHA-256 agree for exactly five changed
+  public files. The three server-owned files and all backend/Nginx hashes stayed
+  byte-identical.
+- External/VPS smoke passed 14/14 after activation, 14/14 in the executed
+  release160 rollback and 14/14 after final forward restore to release161.
+- No production contact, order, client file, message, payment, raw analytics
+  row, IP/UA, query/referrer or OAuth material was read or changed.
+
 ## Release160 verification summary
 
 - Site 584/584; backend 31/31; Brain 39/39; focused 32/32; strict validation
@@ -160,8 +196,9 @@
 
 ## One exact next step
 
-For the next practice-report lead, send
-`https://akademsalon.ru/otchet-po-praktike.html#service-price` and ask which of
-the three visible scopes matches the materials. Do not discount staged support
-as if it were the same service as editing, and do not claim conversion uplift
-from release proof alone.
+Create one bounded product workstream for a compact «Паспорт результата
+сопровождения» immediately after `.practice-price-reason` and before the price
+action. Reuse the existing explicitly fictional dissected specification through
+one secondary text link; name inputs, four outputs and exclusions. Do not add a
+second primary CTA, JavaScript, discount, invented practice review, fixed
+package promise or conversion claim.
