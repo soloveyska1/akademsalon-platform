@@ -54,6 +54,44 @@ test('each price is tied to a different entry condition and verifiable output', 
   assert.doesNotMatch(price, /под ключ|гарантируем (?:оценку|зачёт|принятие)|скидк|только сегодня|осталось \d+ мест/i);
 });
 
+test('14k support has one checkable result passport before the primary action', () => {
+  const price = section('service-price');
+  const passportStart = price.indexOf('data-practice-result-passport');
+  const actionStart = price.indexOf('class="practice-price-action"');
+
+  assert.equal((price.match(/data-practice-result-passport/g) || []).length, 1);
+  assert.ok(passportStart >= 0 && passportStart < actionStart, 'passport must precede the price action');
+  assert.match(
+    price,
+    /data-practice-scope="support"[\s\S]*?data-practice-scope-choice[\s\S]*?data-practice-result-passport[\s\S]*?<\/li>[\s\S]*?<\/ol>/
+  );
+  assert.match(price, /Вариант 03 · сопровождение от 14(?: |&nbsp;|\u00a0)000(?: |&nbsp;|\u00a0)₽/);
+  assert.match(price, /Паспорт результата сопровождения/);
+  assert.match(price, /class="practice-result-passport__folio" aria-hidden="true">03/);
+  assert.match(
+    price,
+    /Для старта[\s\S]*?Программа или методичка практики[\s\S]*?черновики отчёта и дневника[\s\S]*?реальные факты, даты, выполненные задачи и приложения/
+  );
+  assert.equal((price.match(/data-practice-passport-output=/g) || []).length, 4);
+  assert.match(price, /Карта требований и список недостающего по переданному комплекту/);
+  assert.match(price, /План согласованных этапов[\s\S]*?результат каждого этапа/);
+  assert.match(price, /Согласованные редакторские версии отчёта и дневника/);
+  assert.match(price, /Итоговый чек-лист комплектности, подписей и приложений/);
+  assert.match(
+    price,
+    /Самостоятельный сбор реальных сведений о практике[\s\S]*?выполнение и сдача аттестационной работы вместо вас[\s\S]*?вымышленные факты, даты, задачи и фиктивный дневник[\s\S]*?гарантия оценки, допуска, принятия комплекта или решения комиссии/
+  );
+  assert.match(price, /Следующий этап не запускается автоматически/);
+  assert.match(price, /14 000 ₽ — нижний ориентир всего состава выше, не только первого результата/);
+  assert.match(price, /до оплаты в спецификации зафиксируем общую цену сопровождения и разбивку по этапам/);
+  assert.match(price, /Новые задачи вне неё считаются отдельно/);
+  assert.match(price, /<details class="practice-result-passport__boundary">[\s\S]*?<summary>Кто за что отвечает и как запускаются этапы/);
+  assert.match(price, /href="specifikaciya\.html"[\s\S]*?вымышленный образец/);
+  assert.equal((price.match(/href="specifikaciya\.html"/g) || []).length, 1);
+  assert.equal((price.match(/button--primary/g) || []).length, 1);
+  assert.doesNotMatch(price, /универсальная смета|реальный кейс|результат клиента/i);
+});
+
 test('one selected scope controls every continuation into the configurator', () => {
   const price = section('service-price');
   assert.equal((price.match(/button--primary/g) || []).length, 1);
@@ -71,6 +109,10 @@ test('one selected scope controls every continuation into the configurator', () 
   assert.match(html, /querySelectorAll\('\[data-practice-scope-choice\]'\)/);
   assert.match(html, /link\.setAttribute\('href',route\)/);
   assert.match(html, /data-practice-selection aria-live="polite"/);
+  assert.match(
+    html,
+    /function syncChoice\(\)[\s\S]*?data-practice-scope-choice\]:checked[\s\S]*?window\.addEventListener\('pageshow',syncChoice\)/
+  );
   assert.match(html, /href="#service-price">Выбрать объём и цену/);
   assert.doesNotMatch(price, /data-start-format/);
   assert.deepEqual(
@@ -181,8 +223,14 @@ test('three practice routes preserve scope codes while draft support stays suppl
 test('practice price ledger is page-scoped and covered in dark and mobile layouts', () => {
   assert.match(css, /\[data-p15-service="otchet-po-praktike"\] \.practice-price-map/);
   assert.match(css, /:root\[data-theme="dark"\] \.p15-service\[data-p15-service="otchet-po-praktike"\][\s\S]*?\.practice-price-map/);
+  assert.match(css, /\[data-p15-service="otchet-po-praktike"\] \.practice-result-passport/);
+  assert.match(css, /\.practice-result-passport\{[\s\S]*?display:none/);
+  assert.match(css, /practice-price-map__input:checked~\.practice-result-passport\{[\s\S]*?display:block/);
+  assert.match(css, /:root\[data-theme="dark"\] \.p15-service\[data-p15-service="otchet-po-praktike"\][\s\S]*?\.practice-result-passport/);
+  assert.match(css, /:root\[data-theme="dark"\][\s\S]*?\.practice-result-passport__outputs li span[\s\S]*?color:color-mix/);
   assert.match(css, /practice-price-map__input:checked\+\.practice-price-map__choice/);
   assert.match(css, /practice-price-map__input:focus-visible\+\.practice-price-map__choice/);
-  assert.match(css, /@media\(max-width:920px\)[\s\S]*?\[data-p15-service="otchet-po-praktike"\] \.practice-price-map__choice/);
-  assert.match(css, /@media\(max-width:620px\)[\s\S]*?\[data-p15-service="otchet-po-praktike"\] \.practice-price-map__head/);
+  assert.match(css, /\.practice-result-passport__boundary summary\{[\s\S]*?min-height:54px/);
+  assert.match(css, /@media\(max-width:920px\)[\s\S]*?\[data-p15-service="otchet-po-praktike"\] \.practice-result-passport__outputs ol/);
+  assert.match(css, /@media\(max-width:620px\)[\s\S]*?\[data-p15-service="otchet-po-praktike"\] \.practice-result-passport__folio/);
 });
