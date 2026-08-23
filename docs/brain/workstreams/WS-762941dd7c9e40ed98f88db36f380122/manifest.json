@@ -1,0 +1,46 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-762941dd7c9e40ed98f88db36f380122",
+  "slug": "practice-back-navigation-parity",
+  "status": "active",
+  "branch": "codex/out-009-practice-back-parity",
+  "base_sha": "9f9d5980166ad2fe87f26b31ff2870df6283c497",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-008"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/workstreams/WS-762941dd7c9e40ed98f88db36f380122/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/practice-price-trust.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:practice-scope-mobile-dock"
+    },
+    {
+      "access": "read",
+      "key": "journey:practice-scope-pricing"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
