@@ -28,16 +28,17 @@
   backend 31/31; two identical 353-file builds; real Chromium file-loss,
   cart-bypass, persisted-description and legacy-plan privacy journeys; 360/390
   light/dark and 1440 geometry; `brain:validate`; `git diff --check`; `E-1026`.
-- Changed: implementation `6953d0e89375f0d732e3165fa4ff94ff1357609d`
+- Changed: implementation `3fb1671444c4f73452c28b5751315b77f1497740`
   removes legacy private residue and consolidates contact preflight, visible
-  recovery and focus. New regression contract binds all bypasses and privacy
-  copy. No CSS/backend/admin/analytics/price file changed.
+  recovery and post-render focus. Recovery copy clears as soon as a real file
+  or sufficient description is present. New regression contract binds all
+  bypasses and privacy copy. No CSS/backend/admin/analytics/price file changed.
 - Unverified: independent exact-result reviews; production publication,
   production smoke and rollback/forward proof. No local or production form was
   submitted during implementation verification.
 - Risks/rollback: do not persist contact in sessionStorage as a hidden exception;
   do not reset price/scope/cart; do not loop on history; do not focus a hidden
   legacy contact field. Rollback is implementation commit
-  `6953d0e89375f0d732e3165fa4ff94ff1357609d` plus its evidence revision.
+  `3fb1671444c4f73452c28b5751315b77f1497740` plus its evidence revision.
 - Next: obtain two independent read-only reviews of the exact evidence commit;
   close every P0/P1 before freezing the workstream result.
