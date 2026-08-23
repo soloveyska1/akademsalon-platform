@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-dee7b3e6ff1d43e4aa70d2135f4664b4",
+  "slug": "release164-practice-back-parity",
+  "status": "active",
+  "branch": "codex/release164-practice-back-parity",
+  "base_sha": "1ea81c6825c02b94f8a8dff84a9186a8534b4265",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-008"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1024.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0163.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0164.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-dee7b3e6ff1d43e4aa70d2135f4664b4/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/practice-price-trust.test.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "read",
+      "key": "ui-state:practice-scope-mobile-dock"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
