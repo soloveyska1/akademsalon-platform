@@ -1,0 +1,75 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-2f182483670947249a23af6655d28636",
+  "slug": "out-008-keyboard-action-shelf-v2",
+  "status": "active",
+  "branch": "codex/out-008-keyboard-action-shelf-v2",
+  "base_sha": "f28b3ca79f17bd7bd29ea8eba481edb49c71c5e1",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-008"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/configurator-journey.css",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1025.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-2f182483670947249a23af6655d28636/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/compact-client-journey.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/mobile-light-smoke.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/css/polish15-configurator.css",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/DECISIONS.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "brain-record:E-1025"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:configurator-keyboard-action-shelf"
+    },
+    {
+      "access": "read",
+      "key": "journey:configurator-context"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
