@@ -6,13 +6,37 @@
   `a9e038ed62c126e3d54290cfda547c50bd290772`.
 - Production `current` and compatibility `dist` resolve to
   `release166-a9e038e`; `previous` resolves to `release165-5b1735c`.
+- Backend auth recovery REL-0167 is live at exact `webapp.py`
+  `14a45362e9ce17416c552557f4610546ce23549a4fc35dbbccc46d9e624448ee`.
+  Its final exact rollback copy is
+  `/root/salon_bot/backups/admin-auth-recovery-20260823T220441760076Z`.
 - Release166 has G10 GO with P0=0/P1=0/P2=0. Exact source, hashes, browser
   matrix, two-vantage smoke and executed static rollback/forward are in
   `REL-0166` and `E-1026`.
-- Analytics v2 contract is 2.3.0. Full rollback changes both static pointers to
-  release165; backend restore or restart is not part of release166.
+- Analytics v2 contract is 2.3.0. Static rollback changes both static pointers
+  to release165; REL-0167 backend rollback is separately pinned in E-1027.
 - `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
   is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
+
+## 24 August admin Telegram-auth recovery
+
+- The production failure was exact: an expired or revoked HttpOnly session
+  cookie made `POST /api/auth/start` return CSRF `403`, although the same
+  browser was correctly unauthenticated and a clean browser could start login.
+- Exact `POST /api/auth/start` now resolves the cookie first. Only
+  `_session_user() is None` may invoke the unchanged anonymous handler and
+  clear the two stale auth cookies. Valid sessions retain exact-Origin,
+  header/cookie and database-bound CSRF; every other unsafe route remains
+  fail-closed.
+- The originally failing tab now reaches `Подтвердите в боте…` and the normal
+  `Открыть бота` link. Telegram confirmation remains the user's action; no
+  authenticated admin mutation was performed during release proof.
+- Focused 8/8, backend 39/39, public 596/596 and Brain 39/39 passed. Two final
+  independent reviews reported P0=0/P1=0/P2=0.
+- Exact apply, real rollback to the former `403`, and forward restore were
+  executed. Final service is active, Nginx is valid and SQLite quick-check is
+  `ok`. Exact evidence and rollback commands are bounded by `REL-0167` and
+  `E-1027`.
 
 ## 23 August private configurator checkpoint
 

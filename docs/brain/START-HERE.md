@@ -1,6 +1,6 @@
 # START HERE — Академический Салон
 
-Последнее обновление: 23 августа 2026 г.
+Последнее обновление: 24 августа 2026 г.
 
 ## Текущая истина
 
@@ -19,10 +19,20 @@
 - Проверенный practice Browser Back result: `89ddeed5744c428a09d0096b1b37621538a3ff72`.
 - Проверенный keyboard-action-shelf result: `8adcfb4543f7388f7b03403007771d63dae1e19f`.
 - Проверенный private-checkpoint result: `eb60be42dcf773f42553c737db92f92b4efcfd8e`.
+- Проверенный admin-auth recovery result: `cc9cfed21c3ebebba386d6962954fc85f8a87df7`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Static rollback: `release165-5b1735c`; backend не менялся и остаётся на
-  Analytics v2 contract 2.3.0.
+- Static rollback: `release165-5b1735c`; static production остаётся release166.
+- Backend auth result: `webapp.py` `14a45362…48ee`; rollback copy
+  `/root/salon_bot/backups/admin-auth-recovery-20260823T220441760076Z`.
+  Analytics v2 contract остаётся 2.3.0.
+- REL-0167 имеет G10 GO: просроченная или отозванная HttpOnly session-cookie
+  больше не блокирует новый Telegram-вход через CSRF `403`. Исключение строго
+  ограничено exact `POST /api/auth/start` и не ослабляет valid-session CSRF или
+  другие unsafe routes. Focused 8/8, backend 39/39, site 596/596, Brain 39/39;
+  production stale-cookie matrix, исходная вкладка, exact hashes, service,
+  Nginx, SQLite и выполненный backend rollback/forward зелёные. Точная запись:
+  [releases/REL-0167.md](releases/REL-0167.md).
 - Release166 имеет G10 GO: контакт, согласие и файлы не сохраняются; если
   обязательный временный файл исчез после reload, все пути возвращают только к
   материалам с видимым объяснением, сохраняя scope, срок, корзину и цену.
