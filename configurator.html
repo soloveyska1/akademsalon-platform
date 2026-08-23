@@ -338,8 +338,31 @@ function initConf() {
   var isPlanService = !!(svc && svc.id === 'plan');
   var SERVICE_DRAFT_KEY = 'salon_service_draft_v1';
 
+  /* Старый реестр формы сохранял имя и контакт вместе с темой. Видимый
+     визард уже обещает обратное, поэтому не только перестаём записывать PII,
+     но и вычищаем остаток прежней версии при следующем открытии конфигуратора.
+     Остальные поля и concept-состояние остаются на месте. */
+  function scrubPrivateDraftFields(value) {
+    if (!value || typeof value !== 'object' || !value.fields ||
+        typeof value.fields !== 'object') return false;
+    var changed = false;
+    ['name','contact'].forEach(function (key) {
+      if (!Object.prototype.hasOwnProperty.call(value.fields,key)) return;
+      delete value.fields[key];
+      changed = true;
+    });
+    return changed;
+  }
+  function scrubStoredPrivateDraft(key,value) {
+    if (scrubPrivateDraftFields(value)) S.store.set(key,value);
+    return value;
+  }
+
   /* --- восстановление черновика (главная/прайс пишут сюда предвыбор) --- */
   var draft = S.store.get('salon_draft', null);
+  scrubStoredPrivateDraft('salon_draft', draft);
+  var storedServiceDraft = S.store.get(SERVICE_DRAFT_KEY, null);
+  scrubStoredPrivateDraft(SERVICE_DRAFT_KEY, storedServiceDraft);
   if (!svc && draft && draft.state) {
     canSave = true;
     if (has(C.types, draft.state.type)) {
@@ -572,8 +595,7 @@ function initConf() {
     var incomingRouteValue = new URLSearchParams(location.search).get('route') || '';
     incomingCaseRoute = incomingRouteValue === 'page' || incomingRouteValue === 'case1';
   } catch (e) {}
-  var svcDraft = isPlanService && !incomingCaseRoute
-    ? S.store.get(SERVICE_DRAFT_KEY, null) : null;
+  var svcDraft = isPlanService && !incomingCaseRoute ? storedServiceDraft : null;
   if (svcDraft && svcDraft.service === svc.id && svcDraft.answers) {
     Object.keys(svcDraft.answers).forEach(function (k) { svcAnswers[k] = svcDraft.answers[k]; });
   }
@@ -931,8 +953,6 @@ function initConf() {
         fields:{
           topic:topicIn ? topicIn.value : '',
           deadline:deadlineIn ? deadlineIn.value : '',
-          name:$('fName') ? $('fName').value : '',
-          contact:$('fContact') ? $('fContact').value : '',
           ct:ctKind || 'tg'
         },
         savedAt:Date.now()
@@ -945,12 +965,10 @@ function initConf() {
       state: { type: state.type, disc: state.disc, term: state.term, tier: state.tier },
       idx: idx,
       plan: plan,
-      fields: { /* набранный текст переживает уход в Telegram и перезагрузку */
+      fields: { /* только рабочее описание; имя и контакт не сохраняются */
         topic: topicIn ? topicIn.value : '',
         deadline: deadlineIn ? deadlineIn.value : '',
         details: detailsIn ? detailsIn.value : '',
-        name: $('fName') ? $('fName').value : '',
-        contact: $('fContact') ? $('fContact').value : '',
         ct: ctKind
       },
       concept: previousDraft.concept || null,
@@ -1323,8 +1341,8 @@ function initConf() {
     if (hint) hint.textContent = CT_META[ctKind][1];
     saveDraftSoon();
   });
-  /* восстановление набранных полей из черновика: уход в Telegram или
-     случайная перезагрузка больше не стирают тему, требования и контакт */
+  /* Восстанавливаем только рабочее описание. Имя и контакт живут лишь в
+     памяти открытой вкладки и после перезагрузки намеренно остаются пустыми. */
   (function () {
     if (svc && !isPlanService) return;
     var f = isPlanService ? (svcDraft && svcDraft.fields) : (draft && draft.fields);
@@ -1332,8 +1350,6 @@ function initConf() {
       if (topicIn && !topicIn.value && f.topic) topicIn.value = f.topic;
       if (deadlineIn && !deadlineIn.value && f.deadline) deadlineIn.value = f.deadline;
       if (!isPlanService && detailsIn && !detailsIn.value && f.details) detailsIn.value = f.details;
-      if ($('fName') && !$('fName').value && f.name) $('fName').value = f.name;
-      if ($('fContact') && !$('fContact').value && f.contact) $('fContact').value = f.contact;
       if (f.ct && CT_META[f.ct] && ctChips) {
         ctKind = f.ct;
         ctChips.querySelectorAll('.ct-chip').forEach(function (x) {
@@ -2127,7 +2143,7 @@ function initConf() {
        юрдоки подняли только что. Гость не сделал ничего плохого — ему нужно
        обновление листа, а не «напишите мастеру напрямую». */
     if (err === 'consent_version_mismatch' || err === 'consent_contract_mismatch') {
-      S.toast('Условия успели обновиться, пока вы заполняли лист. Обновите страницу (⌘R или F5) и нажмите «Отправить» ещё раз — введённое сохранено в черновике.',
+      S.toast('Условия успели обновиться, пока вы заполняли лист. Обновите страницу (⌘R или F5). Остальные ответы сохранены в черновике; контакт и согласие нужно указать заново.',
               { type: 'error' });
       return;
     }
@@ -2485,6 +2501,9 @@ function initConf() {
         go(3, false);
         var wiz = window.SalonConceptWizard;
         if (wiz && typeof wiz.goToContact === 'function') wiz.goToContact();
+        var visibleWizard = document.getElementById('conceptWizard');
+        if (wiz && visibleWizard &&
+            visibleWizard.getAttribute('data-concept-stage') !== 'contact') return;
         setTimeout(function () {
           var target = (S.api && S.api.token()) ? $('btnSubmit') : $('fContact');
           if (target && target.focus) target.focus({ preventScroll:true });
@@ -2518,6 +2537,7 @@ if (document.prerendering) {
   var fieldAutosaveTimer = null;
   var terminalSuccess = false;
   var cartRenderSync = false;
+  var materialRecoveryReason = '';
 
   var STORE_KEY = 'salon_concept_request_v1';
   var STORE_VERSION = 5;
@@ -2882,6 +2902,20 @@ if (document.prerendering) {
     catch (e) { heading.focus(); }
   }
 
+  function focusMaterialRecovery() {
+    var note = host.querySelector('[data-material-recovery]');
+    if (!note) return false;
+    if (note.scrollIntoView) {
+      note.scrollIntoView({
+        block:'center',
+        behavior:window.Salon && Salon.reduceMotion ? 'auto' : 'smooth'
+      });
+    }
+    try { note.focus({ preventScroll:true }); }
+    catch (e) { note.focus(); }
+    return true;
+  }
+
   if (hasRoutedContext && !pendingRouteConflict) clearIncomingRouteParams();
   var showAllSituations = false;
 
@@ -2914,7 +2948,10 @@ if (document.prerendering) {
     routeSteps[0].title = 'Что у вас уже есть?';
     routeSteps[0].lead = 'Выберите ситуацию и вид работы. Сразу покажем первый результат и ориентир цены.';
     clearIncomingRouteParams();
+    var contactReady = ensureContactPrerequisites('restore');
+    if (!contactReady) saveSelections();
     render();
+    if (!contactReady && focusMaterialRecovery()) return;
     focusConceptHeading();
   }
 
@@ -3765,6 +3802,45 @@ if (document.prerendering) {
   function sourceEvidenceReady() {
     return !sourceFileRequired() || fileNames().length > 0 || describedInsteadOfFile();
   }
+  function contactSourceMissing(stepKey,sourceRequired,evidenceReady) {
+    return stepKey === 'contact' && sourceRequired && !evidenceReady;
+  }
+  function materialStepIndex() {
+    for (var index = 0; index < steps.length; index += 1) {
+      if (steps[index] && steps[index].key === 'materials') return index;
+    }
+    return -1;
+  }
+  /* Файл живёт только в памяти вкладки. Любой путь к контакту — обычный Next,
+     history, восстановленный draft или checkout из сметы — проходит один и тот
+     же preflight. Если файл исчез, возвращаем только на материалы и сохраняем
+     коммерческий выбор, срок и остальные безопасные ответы. */
+  function ensureContactPrerequisites(reason) {
+    var step = steps[state.step];
+    if (!contactSourceMissing(step && step.key,sourceFileRequired(),sourceEvidenceReady())) {
+      if (step && step.key === 'contact') materialRecoveryReason = '';
+      return true;
+    }
+    var materialStep = materialStepIndex();
+    if (materialStep < 0) return false;
+    state.step = materialStep;
+    materialRecoveryReason = reason === 'restore' ? 'restore' : 'continue';
+    return false;
+  }
+  function materialRecoveryMarkup() {
+    if (!materialRecoveryReason) return '';
+    var restored = materialRecoveryReason === 'restore';
+    var support = isPracticeDraftSupport();
+    var message = restored
+      ? (support
+        ? '<strong>Файлы не сохраняются после перезагрузки.</strong> Поэтому приложите материал заново или опишите готовый комплект — минимум 40 знаков. Выбранный объём, срок и ориентир цены сохранены.'
+        : '<strong>Файлы не сохраняются после перезагрузки.</strong> Поэтому приложите материал заново или опишите задачу — минимум 40 знаков. Остальные ответы сохранены.')
+      : (support
+        ? '<strong>Перед контактом нужны материалы.</strong> Приложите файл или опишите готовый комплект — минимум 40 знаков. Выбранный объём, срок и ориентир цены сохранены.'
+        : '<strong>Перед контактом нужны материалы.</strong> Приложите файл или опишите задачу — минимум 40 знаков.');
+    return '<p class="concept-prerequisite-note" data-material-recovery role="status" tabindex="-1">' +
+      message + '</p>';
+  }
   function materialsMarkup() {
     var rec = recommendationFor();
     var pricing = quoteInfo();
@@ -3801,6 +3877,7 @@ if (document.prerendering) {
     var mainMarkup =
       '<div class="materials-step__main">' +
           '<section class="materials-card">' +
+            materialRecoveryMarkup() +
             (service && legacyAsk && legacyAsk.children.length
               ? '<section class="concept-service-questions"><p class="eyebrow">Детали услуги</p><div data-concept-service-ask></div></section>'
               : '') +
@@ -3980,6 +4057,7 @@ if (document.prerendering) {
       return !!((state.deadlineDate || state.deadlineFlexible) &&
         serviceQuestionsComplete() && sourceEvidenceReady());
     }
+    if (contactSourceMissing(key,sourceFileRequired(),sourceEvidenceReady())) return false;
     var authed = !!(window.Salon && Salon.api && Salon.api.token && Salon.api.token());
     return !!((authed || state.contact.trim()) && state.consent &&
       (state.result !== 'support' || state.authorParticipation)) &&
@@ -4004,6 +4082,9 @@ if (document.prerendering) {
       if (!serviceQuestionsComplete()) return 'Ответьте на вопросы выше';
     }
     if (key === 'contact') {
+      if (contactSourceMissing(key,sourceFileRequired(),sourceEvidenceReady())) {
+        return 'Вернитесь к материалам: приложите файл или опишите задачу минимум в 40 знаках';
+      }
       var authed = !!(window.Salon && Salon.api && Salon.api.token && Salon.api.token());
       if (!(authed || state.contact.trim())) return 'Оставьте контакт, чтобы мы ответили';
       var format = contactFormatIssue();
@@ -4463,21 +4544,27 @@ if (document.prerendering) {
   function go(next,fromHistory) {
     if (terminalSuccess) return;
     var previous = state.step;
-    state.step = Math.max(0,Math.min(steps.length - 1,next));
+    var requested = Math.max(0,Math.min(steps.length - 1,next));
+    state.step = requested;
+    var contactReady = ensureContactPrerequisites(fromHistory ? 'restore' : 'continue');
     saveSelections();
     render();
     /* Шаги не попадали в историю браузера: «Назад» — а на телефоне это ещё и
        свайп от края — уводил со страницы целиком посреди заполнения.
        Каждый переход становится записью, возврат отрабатывает popstate. */
-    if (!fromHistory && state.step !== previous) {
+    if (!contactReady && fromHistory) {
+      try { history.replaceState({ conceptStep:state.step },'',location.href); } catch (e) {}
+    } else if (!fromHistory && state.step !== previous) {
       try { history.pushState({ conceptStep: state.step },'',location.href); } catch (e) {}
     }
     try { window.scrollTo({top:0,behavior:window.Salon && Salon.reduceMotion ? 'auto' : 'smooth'}); } catch (e) { window.scrollTo(0,0); }
+    if (!contactReady && focusMaterialRecovery()) return false;
     var title = host.querySelector('h1');
     if (title) {
       title.setAttribute('tabindex','-1');
       title.focus({preventScroll:true});
     }
+    return state.step === requested;
   }
 
   function startAnother(kind) {
@@ -4513,6 +4600,12 @@ if (document.prerendering) {
 
   function submit() {
     if (terminalSuccess) return;
+    if (!ensureContactPrerequisites('continue')) {
+      saveSelections();
+      render();
+      focusMaterialRecovery();
+      return;
+    }
     if (!service && state.situation === 'topic' && resultNeedsExistingMaterial(state.result)) {
       go(0);
       if (window.Salon && Salon.toast) {
@@ -4836,6 +4929,10 @@ if (document.prerendering) {
     button.addEventListener('click',next);
   });
 
+  /* Файлы невозможно восстановить из localStorage. Исправляем сохранённый шаг
+     до базовой history-записи, чтобы Back/Forward не возвращали ghost-contact. */
+  if (!pendingRouteConflict && !ensureContactPrerequisites('restore')) saveSelections();
+
   /* Базовая запись истории для текущего шага: без неё первый «Назад» ушёл бы
      со страницы, а не на предыдущий шаг. Дальше записи добавляет go(). */
   try { history.replaceState({ conceptStep: state.step },'',location.href); } catch (e) {}
@@ -5002,9 +5099,8 @@ if (document.prerendering) {
     goToContact:function () {
       var target = -1;
       steps.forEach(function (item, index) { if (item.key === 'contact') target = index; });
-      if (target < 0 || target === state.step) return false;
-      go(target);
-      return true;
+      if (target < 0) return false;
+      return go(target) === true;
     },
     currentKey:function () { return state.draftId; },
     context:function () {
