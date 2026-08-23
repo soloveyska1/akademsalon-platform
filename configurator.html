@@ -36,7 +36,7 @@
 <link rel="preload" href="assets/fonts/literata-normal-300-700-cyrillic-core.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260806shell123&amp;journey=1&amp;wax=20260804wax1&amp;glass=20260804glass1" media="screen and (max-width:920px)" data-mobile-edition="1" />
 <link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260806release119&amp;journey=4&amp;wax=20260804wax1&amp;glass=20260804glass1" />
-<link rel="stylesheet" href="assets/css/configurator-journey.css?v=20260806release119&amp;wizard=20260804wizard3&amp;wax=20260804wax1&amp;conversion=20260822conversion2&amp;practice=20260823continuity1" />
+<link rel="stylesheet" href="assets/css/configurator-journey.css?v=20260806release119&amp;wizard=20260804wizard3&amp;wax=20260804wax1&amp;conversion=20260822conversion2&amp;practice=20260823continuity1&amp;keyboard=20260823shelf2" />
 </head>
 <body class="configurator-task">
 
@@ -4718,6 +4718,109 @@ if (document.prerendering) {
       }
       if (telegramBridge && telegramBridge.start) telegramBridge.start(telegram);
     });
+  }
+
+  /* На телефоне системная клавиатура отнимает нижнюю часть экрана. Раньше
+     вместе с ней исчезало и единственное действие шага. Переиспользуем
+     существующую кнопку как компактную полку над клавиатурой: никаких новых
+     маршрутов, состояний или обработчиков отправки здесь нет. */
+  var keyboardShelfFrame = 0;
+  var keyboardShelfMode = '';
+  function clearKeyboardShelf() {
+    var root = document.documentElement;
+    keyboardShelfMode = '';
+    root.classList.remove('concept-keyboard-open');
+    root.removeAttribute('data-concept-keyboard-mode');
+    root.style.removeProperty('--concept-keyboard-inset');
+    root.style.removeProperty('--concept-keyboard-occlusion');
+  }
+  function focusedConceptField() {
+    var field = document.activeElement;
+    if (!field || !host.contains(field) || !field.matches('input,textarea,select')) return null;
+    return field;
+  }
+  function revealFieldAboveKeyboardShelf(field,visualViewport) {
+    if (!field || field !== document.activeElement) return;
+    var bar = document.getElementById('conceptTaskBar');
+    if (!bar || bar.hidden) return;
+    var barStyle = getComputedStyle(bar);
+    if (barStyle.display === 'none' || barStyle.visibility === 'hidden') return;
+    var barBox = bar.getBoundingClientRect();
+    var reason = bar.querySelector('[data-concept-task-reason]:not([hidden])');
+    var reasonBox = null;
+    if (reason) {
+      var reasonStyle = getComputedStyle(reason);
+      if (reasonStyle.display !== 'none' && reasonStyle.visibility !== 'hidden') {
+        reasonBox = reason.getBoundingClientRect();
+      }
+    }
+    var visibleTop = visualViewport.offsetTop + 12;
+    var visibleBottom = Math.min(
+      barBox.top,
+      reasonBox && reasonBox.height ? reasonBox.top : barBox.top
+    ) - 12;
+    var fieldBox = field.getBoundingClientRect();
+    var delta = 0;
+    if (fieldBox.bottom > visibleBottom) delta = fieldBox.bottom - visibleBottom;
+    else if (fieldBox.top < visibleTop) delta = fieldBox.top - visibleTop;
+    if (Math.abs(delta) <= 1) return;
+    try { window.scrollBy({ top:delta, behavior:'auto' }); }
+    catch (error) { window.scrollBy(0,delta); }
+  }
+  function syncKeyboardShelf() {
+    keyboardShelfFrame = 0;
+    var root = document.documentElement;
+    var visualViewport = window.visualViewport;
+    var bar = document.getElementById('conceptTaskBar');
+    var field = focusedConceptField();
+    var mobile = !window.matchMedia || window.matchMedia('(max-width:920px)').matches;
+    var keyboardOpen = !!(visualViewport &&
+      window.innerHeight - visualViewport.height > 140);
+    var allowed = mobile && keyboardOpen && field && bar && !bar.hidden &&
+      !root.classList.contains('has-consent-bar');
+    if (!allowed) {
+      clearKeyboardShelf();
+      return;
+    }
+
+    var visualBottom = visualViewport.offsetTop + visualViewport.height;
+    if (!root.classList.contains('concept-keyboard-open')) {
+      root.classList.add('concept-keyboard-open');
+      root.style.setProperty('--concept-keyboard-inset','0px');
+      keyboardShelfMode = '';
+    }
+    if (!keyboardShelfMode) {
+      /* Современный iOS уже привязывает fixed к visual viewport, Chromium —
+         к layout viewport. Сначала измеряем естественное положение и лишь
+         затем добавляем inset, поэтому клавиатура никогда не учитывается дважды. */
+      var naturalBottom = bar.getBoundingClientRect().bottom;
+      keyboardShelfMode = Math.abs(naturalBottom - visualBottom) <= 3
+        ? 'visual' : 'layout';
+      root.setAttribute('data-concept-keyboard-mode',keyboardShelfMode);
+    }
+    var inset = keyboardShelfMode === 'layout'
+      ? Math.max(0,window.innerHeight - visualBottom) : 0;
+    root.style.setProperty('--concept-keyboard-inset',inset + 'px');
+    root.style.setProperty('--concept-keyboard-occlusion',
+      Math.max(0,window.innerHeight - visualViewport.height) + 'px');
+    window.requestAnimationFrame(function () {
+      revealFieldAboveKeyboardShelf(field,visualViewport);
+    });
+  }
+  function scheduleKeyboardShelf() {
+    if (keyboardShelfFrame) return;
+    keyboardShelfFrame = window.requestAnimationFrame(syncKeyboardShelf);
+  }
+  window.addEventListener('resize',scheduleKeyboardShelf,{passive:true});
+  document.addEventListener('focusin',scheduleKeyboardShelf);
+  document.addEventListener('input',scheduleKeyboardShelf,true);
+  document.addEventListener('change',scheduleKeyboardShelf,true);
+  document.addEventListener('focusout',function () {
+    window.setTimeout(scheduleKeyboardShelf,0);
+  });
+  if (window.visualViewport && window.visualViewport.addEventListener) {
+    window.visualViewport.addEventListener('resize',scheduleKeyboardShelf,{passive:true});
+    window.visualViewport.addEventListener('scroll',scheduleKeyboardShelf,{passive:true});
   }
 
   document.querySelectorAll('[data-concept-jump]').forEach(function (button) {

@@ -56,13 +56,29 @@ test('desktop wizard does not apply the sidebar offset twice', () => {
   assert.match(configuratorCss, /\.configurator-task \.tx-wizard-sidebar\{[\s\S]*?width:100%;/);
 });
 
-test('configurator keeps tablet controls usable and hides the action dock for the software keyboard', () => {
+test('configurator keeps tablet controls usable and reuses the primary above the software keyboard', () => {
   assert.match(configurator, /configurator-journey\.css\?v=20260806release119/);
   assert.match(
     configuratorCss,
     /@media\(min-width:921px\) and \(max-width:1200px\)\{[\s\S]*?\.configurator-task \.decision-workbench,[\s\S]*?grid-template-columns:minmax\(0,1fr\);/,
   );
+  assert.match(configurator, /function syncKeyboardShelf\(\)/);
+  assert.match(configurator, /visualViewport\.offsetTop \+ visualViewport\.height/);
+  assert.match(configurator, /--concept-keyboard-inset/);
+  assert.match(configurator, /--concept-keyboard-occlusion/);
   assert.match(
+    configuratorCss,
+    /html\.concept-keyboard-open \.configurator-task \.concept-task-bar\{[\s\S]*?bottom:var\(--concept-keyboard-inset,0px\);[\s\S]*?visibility:visible;[\s\S]*?transform:none;/,
+  );
+  assert.match(
+    configuratorCss,
+    /html\.has-consent-bar\.concept-keyboard-open \.configurator-task \.concept-task-bar\{[\s\S]*?visibility:hidden;/,
+  );
+  assert.match(
+    configuratorCss,
+    /html\.concept-keyboard-open \.configurator-task \.concept-wizard-host\{[\s\S]*?padding-bottom:calc\(var\(--concept-keyboard-occlusion,0px\) \+ 92px\)!important;/,
+  );
+  assert.doesNotMatch(
     configuratorCss,
     /html\.keyboard-open \.configurator-task \.concept-task-bar\{[\s\S]*?visibility:hidden;[\s\S]*?transform:translateY\(110%\);/,
   );

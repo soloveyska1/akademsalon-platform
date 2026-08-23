@@ -20,7 +20,7 @@ const http = require('node:http');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 
-const PLAYWRIGHT_VERSION = '1.60.0';
+const PLAYWRIGHT_VERSION = '1.61.1';
 const ROOT = path.resolve(__dirname, '..');
 const OUTPUT_ROOT = path.join(ROOT, 'output', 'playwright', 'mobile-light');
 const DEFAULT_PAGES = [
@@ -29,7 +29,8 @@ const DEFAULT_PAGES = [
   'zayavka.html',
   'dashboard.html',
   'configurator.html?step=2',
-  'configurator.html?step=4'
+  'configurator.html?step=4',
+  'configurator.html?keyboard-shelf-smoke=1'
 ];
 const VIEWPORTS = [
   { name: 'iphone-320', width: 320, height: 568 },
@@ -1452,6 +1453,259 @@ async function inspectConfiguratorStep4(page) {
   };
 }
 
+async function inspectConfiguratorKeyboardShelf(page) {
+  const failures = [];
+  const postRequests = [];
+  const capturePost = (request) => {
+    if (request.method() === 'POST') postRequests.push(request.url());
+  };
+  page.on('request', capturePost);
+  const concept = {
+    version: 5,
+    mode: 'route',
+    serviceCode: '',
+    step: 1,
+    draftId: 'mobile_keyboard_shelf_smoke',
+    situation: 'draft',
+    workType: 'practice',
+    discipline: 'hum',
+    result: 'support',
+    deadlineDate: '',
+    deadlineFlexible: true,
+    topic: '',
+    comment: 'а'.repeat(39),
+    quoteScope: 'full',
+    contactMethod: 'telegram',
+    entryPrefilled: true,
+    authorParticipation: false,
+    routeConfirmation: 'confirmed',
+    updatedAt: Date.now()
+  };
+  await page.evaluate((savedConcept) => {
+    const savedAt = Date.now();
+    localStorage.setItem('salon_draft', JSON.stringify({
+      concept: savedConcept,
+      idx: savedConcept.step,
+      savedAt
+    }));
+    localStorage.setItem('salon_concept_request_v1', JSON.stringify(savedConcept));
+  }, concept);
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() =>
+    document.getElementById('conceptWizard')?.getAttribute('data-concept-stage') === 'materials' &&
+    document.querySelector('[data-concept-field="comment"]') &&
+    document.getElementById('conceptTaskBar')
+  );
+
+  await page.focus('[data-concept-field="comment"]');
+  const emulation = await page.evaluate(() => {
+    const original = window.visualViewport;
+    if (!original || typeof original.dispatchEvent !== 'function') {
+      return { installed: false, reason: 'visualViewport unavailable' };
+    }
+    const descriptor = Object.getOwnPropertyDescriptor(window, 'visualViewport');
+    const fakeHeight = Math.max(280, Math.round(innerHeight * 0.58));
+    const fake = {
+      width: innerWidth,
+      height: fakeHeight,
+      offsetTop: 0,
+      offsetLeft: 0,
+      pageTop: scrollY,
+      pageLeft: scrollX,
+      scale: 1
+    };
+    window.__mobileSmokeVisualViewport = original;
+    window.__mobileSmokeVisualViewportDescriptor = descriptor;
+    try {
+      Object.defineProperty(window, 'visualViewport', {
+        configurable: true,
+        enumerable: true,
+        value: fake
+      });
+    } catch (error) {
+      return { installed: false, reason: error.message };
+    }
+    original.dispatchEvent(new Event('resize'));
+    window.dispatchEvent(new Event('resize'));
+    return {
+      installed: window.visualViewport === fake,
+      fakeHeight,
+      innerHeight
+    };
+  });
+  if (!emulation.installed) {
+    failures.push(`configurator keyboard emulation: ${JSON.stringify(emulation)}`);
+    page.off('request', capturePost);
+    return { emulation, postRequests, failures };
+  }
+
+  await page.waitForTimeout(180);
+  const readShelf = () => page.evaluate(() => {
+    const visible = (element) => {
+      if (!element) return false;
+      const style = getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return !element.hidden && style.display !== 'none' &&
+        style.visibility !== 'hidden' && Number(style.opacity) !== 0 &&
+        rect.width > 0 && rect.height > 0;
+    };
+    const box = (element) => {
+      if (!element) return null;
+      const rect = element.getBoundingClientRect();
+      return {
+        left: Math.round(rect.left),
+        top: Math.round(rect.top),
+        right: Math.round(rect.right),
+        bottom: Math.round(rect.bottom),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height)
+      };
+    };
+    const bar = document.getElementById('conceptTaskBar');
+    const next = bar?.querySelector('[data-concept-next]');
+    const reason = bar?.querySelector('[data-concept-task-reason]');
+    const field = document.activeElement?.matches?.('input,textarea,select')
+      ? document.activeElement : null;
+    const barBox = box(bar);
+    const reasonBox = visible(reason) ? box(reason) : null;
+    const fieldBox = box(field);
+    const visualBottom = window.visualViewport.offsetTop + window.visualViewport.height;
+    const obstructionTop = Math.min(
+      barBox ? barBox.top : visualBottom,
+      reasonBox ? reasonBox.top : visualBottom
+    );
+    const nextBox = box(next);
+    const hit = nextBox
+      ? document.elementFromPoint(
+        Math.round((nextBox.left + nextBox.right) / 2),
+        Math.round((nextBox.top + nextBox.bottom) / 2)
+      ) : null;
+    const visiblePrimaries = Array.from(document.querySelectorAll('[data-concept-next]'))
+      .filter(visible);
+    return {
+      activeField: field?.getAttribute('data-concept-field') || '',
+      activeFontSize: field ? parseFloat(getComputedStyle(field).fontSize) : 0,
+      keyboardClass: document.documentElement.classList.contains('concept-keyboard-open'),
+      legacyKeyboardClass: document.documentElement.classList.contains('keyboard-open'),
+      mode: document.documentElement.getAttribute('data-concept-keyboard-mode') || '',
+      inset: getComputedStyle(document.documentElement)
+        .getPropertyValue('--concept-keyboard-inset').trim(),
+      visualBottom: Math.round(visualBottom),
+      barVisible: visible(bar),
+      barPosition: bar ? getComputedStyle(bar).position : '',
+      bar: barBox,
+      field: fieldBox,
+      reasonVisible: visible(reason),
+      reasonHidden: !!reason?.hidden,
+      reasonText: String(reason?.textContent || '').replace(/\s+/g, ' ').trim(),
+      obstructionTop: Math.round(obstructionTop),
+      nextVisible: visible(next),
+      nextDisabled: !!next?.disabled,
+      nextText: String(next?.textContent || '').replace(/\s+/g, ' ').trim(),
+      nextHit: !!(next && hit && (hit === next || next.contains(hit))),
+      nextBox,
+      visiblePrimaryCount: visiblePrimaries.length,
+      stage: document.getElementById('conceptWizard')?.getAttribute('data-concept-stage') || '',
+      pageWidth: document.documentElement.scrollWidth,
+      viewportWidth: innerWidth
+    };
+  });
+
+  const at39 = await readShelf();
+  if (!at39.keyboardClass || !at39.legacyKeyboardClass ||
+      !at39.barVisible || at39.barPosition !== 'fixed' ||
+      !at39.nextVisible || !at39.nextDisabled ||
+      at39.visiblePrimaryCount !== 1 || at39.activeField !== 'comment' ||
+      at39.activeFontSize < 16 ||
+      !/40/.test(at39.reasonText) || at39.reasonHidden ||
+      !at39.bar || Math.abs(at39.bar.bottom - at39.visualBottom) > 2 ||
+      !at39.field || at39.field.bottom > at39.obstructionTop - 10 ||
+      at39.pageWidth > at39.viewportWidth + 1 ||
+      (at39.viewportWidth >= 360 && !at39.reasonVisible)) {
+    failures.push(`configurator keyboard shelf at 39 chars: ${JSON.stringify(at39)}`);
+  }
+
+  await page.keyboard.insertText('б');
+  await page.waitForTimeout(120);
+  const at40 = await readShelf();
+  if (!at40.keyboardClass || !at40.barVisible || at40.nextDisabled ||
+      !/^К проверке/.test(at40.nextText) || !at40.nextHit ||
+      at40.visiblePrimaryCount !== 1 || at40.activeField !== 'comment' ||
+      !at40.bar || Math.abs(at40.bar.bottom - at40.visualBottom) > 2 ||
+      !at40.field || at40.field.bottom > at40.obstructionTop - 10) {
+    failures.push(`configurator keyboard shelf at 40 chars: ${JSON.stringify(at40)}`);
+  }
+
+  await page.click('#conceptTaskBar [data-concept-next]');
+  await page.waitForFunction(() =>
+    document.getElementById('conceptWizard')?.getAttribute('data-concept-stage') === 'contact'
+  );
+  await page.focus('[data-concept-field="contact"]');
+  await page.waitForTimeout(120);
+  const contact = await readShelf();
+  const contract = await page.evaluate(() => ({
+    price: String(document.querySelector('[data-summary-price]')?.textContent ||
+      document.getElementById('conceptWizard')?.textContent || '').replace(/\s+/g, ' '),
+    context: window.SalonConceptWizard?.context?.() || null,
+    authorshipChecked: !!document.querySelector('[data-concept-authorship]')?.checked,
+    consentChecked: !!document.querySelector('[data-concept-consent]')?.checked
+  }));
+  if (contact.stage !== 'contact' || !contact.keyboardClass || !contact.barVisible ||
+      !/^Отправить заявку/.test(contact.nextText) || !contact.nextDisabled ||
+      contact.activeField !== 'contact' || contact.visiblePrimaryCount !== 1 ||
+      !contact.bar || Math.abs(contact.bar.bottom - contact.visualBottom) > 2 ||
+      !contact.field || contact.field.bottom > contact.obstructionTop - 10 ||
+      !/14\s*000/.test(contract.price) ||
+      contract.context?.scope_code !== 'practice_draft_support' ||
+      contract.authorshipChecked || contract.consentChecked) {
+    failures.push(
+      `configurator keyboard shelf contact handoff: ${JSON.stringify({ contact, contract })}`
+    );
+  }
+
+  const restored = await page.evaluate(() => {
+    const original = window.__mobileSmokeVisualViewport;
+    const descriptor = window.__mobileSmokeVisualViewportDescriptor;
+    if (descriptor) Object.defineProperty(window, 'visualViewport', descriptor);
+    else {
+      delete window.visualViewport;
+      if (original) window.visualViewport = original;
+    }
+    original?.dispatchEvent(new Event('resize'));
+    window.dispatchEvent(new Event('resize'));
+    return true;
+  });
+  await page.waitForTimeout(180);
+  const restoreState = await page.evaluate(() => {
+    const visible = (element) => {
+      if (!element) return false;
+      const style = getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return !element.hidden && style.display !== 'none' &&
+        style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+    };
+    return {
+      restored: !!window.visualViewport,
+      keyboardClass: document.documentElement.classList.contains('concept-keyboard-open'),
+      legacyKeyboardClass: document.documentElement.classList.contains('keyboard-open'),
+      titleVisible: visible(document.querySelector('#conceptTaskBar>div')),
+      backVisible: visible(document.querySelector('#conceptTaskBar [data-concept-back]')),
+      nextVisible: visible(document.querySelector('#conceptTaskBar [data-concept-next]'))
+    };
+  });
+  if (!restored || !restoreState.restored || restoreState.keyboardClass ||
+      restoreState.legacyKeyboardClass || !restoreState.titleVisible ||
+      !restoreState.backVisible || !restoreState.nextVisible) {
+    failures.push(`configurator keyboard shelf restore: ${JSON.stringify(restoreState)}`);
+  }
+  if (postRequests.length) {
+    failures.push(`configurator keyboard shelf submitted requests: ${JSON.stringify(postRequests)}`);
+  }
+  page.off('request', capturePost);
+
+  return { emulation, at39, at40, contact, contract, restoreState, postRequests, failures };
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const playwright = loadPlaywright();
@@ -1510,6 +1764,21 @@ async function main() {
                   expiresAt: new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString()
                 }));
               } catch {}
+
+              const nativeFetch = window.fetch.bind(window);
+              window.fetch = (input, init) => {
+                const requestUrl = typeof input === 'string' ? input : input?.url;
+                if (requestUrl && /^https:\/\/akademsalon\.ru\/api\/auth\/session(?:\?|$)/.test(requestUrl)) {
+                  return Promise.resolve(new Response(
+                    JSON.stringify({ ok: true, authenticated: false }),
+                    {
+                      status: 200,
+                      headers: { 'Content-Type': 'application/json; charset=utf-8' }
+                    }
+                  ));
+                }
+                return nativeFetch(input, init);
+              };
             });
 
             const page = await context.newPage();
@@ -1603,6 +1872,9 @@ async function main() {
                     document.getElementById('mobile-smoke-keyboard-screenshot')?.remove();
                   });
                 }
+              }
+              if (/^configurator\.html\?keyboard-shelf-smoke=1(?:&|$)/.test(pageName)) {
+                configuratorInspection = await inspectConfiguratorKeyboardShelf(page);
               }
               inspection = await inspectPage(page, pageName === 'index.html');
               if (options.screenshots) {

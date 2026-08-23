@@ -938,7 +938,45 @@
 }
 
 @media(max-width:920px){
-  html.keyboard-open .configurator-task .concept-task-bar{
+  html.keyboard-open:not(.concept-keyboard-open) .configurator-task .concept-task-bar{
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(110%);
+  }
+
+  html.concept-keyboard-open .configurator-task .concept-task-bar{
+    bottom:var(--concept-keyboard-inset,0px);
+    min-height:68px;
+    justify-content:stretch;
+    padding:8px max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));
+    visibility:visible;
+    pointer-events:auto;
+    transform:none;
+    transition:none;
+  }
+
+  html.concept-keyboard-open .configurator-task .concept-task-bar>div,
+  html.concept-keyboard-open .configurator-task .concept-task-back{
+    display:none!important;
+  }
+
+  html.concept-keyboard-open .configurator-task .concept-task-bar>.btn{
+    width:100%;
+    min-height:52px;
+  }
+
+  html.concept-keyboard-open .configurator-task,
+  html.concept-keyboard-open .configurator-task .concept-wizard-host{
+    padding-bottom:calc(var(--concept-keyboard-occlusion,0px) + 92px)!important;
+  }
+
+  html.concept-keyboard-open .configurator-task:has(.concept-task-reason:not([hidden])),
+  html.concept-keyboard-open .configurator-task:has(.concept-task-reason:not([hidden]))
+    .concept-wizard-host{
+    padding-bottom:calc(var(--concept-keyboard-occlusion,0px) + 92px)!important;
+  }
+
+  html.has-consent-bar.concept-keyboard-open .configurator-task .concept-task-bar{
     visibility:hidden;
     pointer-events:none;
     transform:translateY(110%);
@@ -1015,6 +1053,22 @@
   .configurator-task .wizard-summary{
     position:relative;
     top:auto;
+  }
+
+  .configurator-task .review-step,
+  .configurator-task .review-step>.contact-step__form,
+  .configurator-task .review-step>.wizard-summary{
+    width:100%;
+    min-width:0;
+    max-width:100%;
+  }
+
+  .configurator-task .review-step>.wizard-summary dl>div,
+  .configurator-task .review-step>.wizard-summary dt,
+  .configurator-task .review-step>.wizard-summary dd{
+    min-width:0;
+    max-width:100%;
+    overflow-wrap:anywhere;
   }
 
   .configurator-task .wizard-main__footer{
