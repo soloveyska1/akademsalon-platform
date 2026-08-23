@@ -27,18 +27,25 @@
   now passes 4/4; related paths 85/85; full public 596/596; Brain 39/39;
   backend 31/31; two identical 353-file builds; real Chromium file-loss,
   cart-bypass, persisted-description and legacy-plan privacy journeys; 360/390
-  light/dark and 1440 geometry; `brain:validate`; `git diff --check`; `E-1026`.
+  light/dark and 1440 geometry; Chromium/WebKit keyboard 6/6; zero captured
+  POST; three exact-candidate independent GO reviews with P0/P1/P2=0;
+  `brain:validate`; `git diff --check`; `E-1026`.
 - Changed: implementation `3fb1671444c4f73452c28b5751315b77f1497740`
   removes legacy private residue and consolidates contact preflight, visible
   recovery and post-render focus. Recovery copy clears as soon as a real file
   or sufficient description is present. New regression contract binds all
   bypasses and privacy copy. No CSS/backend/admin/analytics/price file changed.
-- Unverified: independent exact-result reviews; production publication,
-  production smoke and rollback/forward proof. No local or production form was
-  submitted during implementation verification.
+- Verified: exact candidate `5fb79626ec7cfdaa8b6d9d2ce12d553213bc74d8`
+  received three independent GO verdicts with P0/P1/P2=0. File loss, cart,
+  history, direct bridge, defensive submit, 40-character resume, both draft
+  keys, focus/geometry and zero-POST boundaries were repeated independently.
+- Unverified: production publication, production smoke and rollback/forward
+  proof. No local or production form was submitted during implementation
+  verification.
 - Risks/rollback: do not persist contact in sessionStorage as a hidden exception;
   do not reset price/scope/cart; do not loop on history; do not focus a hidden
   legacy contact field. Rollback is implementation commit
   `3fb1671444c4f73452c28b5751315b77f1497740` plus its evidence revision.
-- Next: obtain two independent read-only reviews of the exact evidence commit;
-  close every P0/P1 before freezing the workstream result.
+- Next: fetch canonical truth, rerun conflicts and deterministic gates, freeze
+  this exact product result, integrate it, then use a separate bounded G10
+  release workstream for production smoke and rollback/forward proof.
