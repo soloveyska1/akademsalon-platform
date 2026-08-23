@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-733cdafe58194d83afc04b92839bfb72",
   "slug": "release166-private-checkpoint",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/release166-private-checkpoint",
   "base_sha": "a9e038ed62c126e3d54290cfda547c50bd290772",
   "result_sha": "ba8d935f98ce7b0d991f3a1454115a494f506b23",
@@ -58,6 +58,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "26cdb82b5fbe8ac2bb9c610f0196280e906807e1a3fc3222bd2d3c16459c6d22"
+  "manifest_revision": 3,
+  "base_manifest_hash": "8a0eae7d130a6b1e1a469fc968f8850abec80044186aebd7a4c02783d33472c9"
 }
