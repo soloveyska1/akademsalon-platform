@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-2f182483670947249a23af6655d28636",
   "slug": "out-008-keyboard-action-shelf-v2",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-008-keyboard-action-shelf-v2",
   "base_sha": "f28b3ca79f17bd7bd29ea8eba481edb49c71c5e1",
-  "result_sha": null,
+  "result_sha": "8adcfb4543f7388f7b03403007771d63dae1e19f",
   "outcome_ids": [
     "OUT-008"
   ],
@@ -70,6 +70,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "49a19e13d710c37fe423191abe21c546047cee5e6718b325ad2161e17e0e12e5"
 }
