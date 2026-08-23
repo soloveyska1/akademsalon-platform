@@ -23,13 +23,21 @@
     added, and the existing submit/backend/price contracts are unchanged;
   - 360/390 light/dark and 1440 preserve one primary, focus, at least 44 px
     targets, at least 16 px fields and zero horizontal overflow.
-- Proof: failing-first executable `tests/configurator-private-checkpoint.test.js`;
-  Chromium/WebKit runtime with all POST requests captured and zero submissions;
-  focused/related/full public regressions; `brain:test`, `brain:validate`,
-  `git diff --check`; two independent exact-result reviews; `E-1026`.
-- Changed: none yet.
-- Unverified: implementation not started.
+- Proof: failing-first executable `tests/configurator-private-checkpoint.test.js`
+  now passes 4/4; related paths 85/85; full public 596/596; Brain 39/39;
+  backend 31/31; two identical 353-file builds; real Chromium file-loss,
+  cart-bypass, persisted-description and legacy-plan privacy journeys; 360/390
+  light/dark and 1440 geometry; `brain:validate`; `git diff --check`; `E-1026`.
+- Changed: implementation `6953d0e89375f0d732e3165fa4ff94ff1357609d`
+  removes legacy private residue and consolidates contact preflight, visible
+  recovery and focus. New regression contract binds all bypasses and privacy
+  copy. No CSS/backend/admin/analytics/price file changed.
+- Unverified: independent exact-result reviews; production publication,
+  production smoke and rollback/forward proof. No local or production form was
+  submitted during implementation verification.
 - Risks/rollback: do not persist contact in sessionStorage as a hidden exception;
   do not reset price/scope/cart; do not loop on history; do not focus a hidden
-  legacy contact field. Rollback is one implementation commit.
-- Next: review and commit the manifest plus this handoff.
+  legacy contact field. Rollback is implementation commit
+  `6953d0e89375f0d732e3165fa4ff94ff1357609d` plus its evidence revision.
+- Next: obtain two independent read-only reviews of the exact evidence commit;
+  close every P0/P1 before freezing the workstream result.
