@@ -133,6 +133,16 @@ test('restored file-only requests return to materials without losing commercial 
   );
   assert.match(html, /state\.step\s*=\s*materialStep[\s\S]*?materialRecoveryReason/);
   assert.match(html, /saveSelections\(\)/);
+  assert.match(
+    html,
+    /restoredMaterialPrerequisite[\s\S]*?render\(\);[\s\S]*?setTimeout\(focusMaterialRecovery,0\)/,
+    'a restored file loss must focus its notice after the initial render',
+  );
+  assert.match(
+    html,
+    /salon:attachments[\s\S]*?sourceEvidenceReady\(\)[\s\S]*?materialRecoveryReason\s*=\s*''/,
+    'reattaching a file must clear the now-stale recovery warning',
+  );
 });
 
 test('the UI and conflict recovery state the same privacy boundary', () => {

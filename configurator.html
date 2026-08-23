@@ -4707,6 +4707,11 @@ if (document.prerendering) {
           if (sourceDescriptionCount) {
             sourceDescriptionCount.textContent = state.comment.trim().length + ' из ' + SOURCE_DESCRIPTION_MIN;
           }
+          if (materialRecoveryReason && sourceEvidenceReady()) {
+            materialRecoveryReason = '';
+            var recoveryNotice = host.querySelector('[data-material-recovery]');
+            if (recoveryNotice) recoveryNotice.remove();
+          }
         }
         syncLegacy();
         syncStoredCurrent();
@@ -4931,7 +4936,11 @@ if (document.prerendering) {
 
   /* Файлы невозможно восстановить из localStorage. Исправляем сохранённый шаг
      до базовой history-записи, чтобы Back/Forward не возвращали ghost-contact. */
-  if (!pendingRouteConflict && !ensureContactPrerequisites('restore')) saveSelections();
+  var restoredMaterialPrerequisite = false;
+  if (!pendingRouteConflict && !ensureContactPrerequisites('restore')) {
+    restoredMaterialPrerequisite = true;
+    saveSelections();
+  }
 
   /* Базовая запись истории для текущего шага: без неё первый «Назад» ушёл бы
      со страницы, а не на предыдущий шаг. Дальше записи добавляет go(). */
@@ -4948,7 +4957,10 @@ if (document.prerendering) {
 
   document.addEventListener('salon:attachments',function () {
     var key = steps[state.step] && steps[state.step].key;
-    if (key === 'materials' || key === 'contact') setTimeout(render,0);
+    if (key === 'materials' || key === 'contact') {
+      if (materialRecoveryReason && sourceEvidenceReady()) materialRecoveryReason = '';
+      setTimeout(render,0);
+    }
   });
   if (legacyAsk) {
     ['click','input'].forEach(function (eventName) {
@@ -5125,6 +5137,7 @@ if (document.prerendering) {
     }
   };
   render();
+  if (restoredMaterialPrerequisite) setTimeout(focusMaterialRecovery,0);
   if (window.matchMedia && window.matchMedia('(max-width:340px) and (max-height:620px)').matches) {
     setTimeout(revealPendingChoice,0);
   }
