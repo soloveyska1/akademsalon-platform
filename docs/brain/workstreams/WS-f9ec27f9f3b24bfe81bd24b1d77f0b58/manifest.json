@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-f9ec27f9f3b24bfe81bd24b1d77f0b58",
+  "slug": "release161-practice-continuity",
+  "status": "active",
+  "branch": "codex/release161-practice-continuity",
+  "base_sha": "1c5f0eed53da5ab894c06545ae80806790fb1d8c",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1022.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0161.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-f9ec27f9f3b24bfe81bd24b1d77f0b58/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "admin.html",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/configurator-journey.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/cart.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "read",
+      "key": "contract:practice-draft-support"
+    },
+    {
+      "access": "read",
+      "key": "contract:practice-support-specification"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
