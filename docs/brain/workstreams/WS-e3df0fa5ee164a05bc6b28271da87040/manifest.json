@@ -1,0 +1,71 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-e3df0fa5ee164a05bc6b28271da87040",
+  "slug": "release165-keyboard-shelf",
+  "status": "active",
+  "branch": "codex/release165-keyboard-shelf",
+  "base_sha": "5b1735c2c959ce63733b270259f74965d2fe46d3",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-008"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1025.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0165.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-e3df0fa5ee164a05bc6b28271da87040/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/css/configurator-journey.css",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/compact-client-journey.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/mobile-light-smoke.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "read",
+      "key": "ui-state:configurator-keyboard-action-shelf"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
