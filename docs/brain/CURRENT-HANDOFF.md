@@ -3,16 +3,37 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `977c1f6a52a38c59ea5bbfc9c93910b8e615495c`.
+  `1ea81c6825c02b94f8a8dff84a9186a8534b4265`.
 - Production `current` and compatibility `dist` resolve to
-  `release162-977c1f6`; `previous` resolves to `release161-1c5f0ee`.
-- Release162 has G10 GO with P0=0/P1=0/P2=0. Exact source, hashes, browser
+  `release164-1ea81c6`; `previous` resolves to `release162-977c1f6`.
+- Release164 has G10 GO with P0=0/P1=0/P2=0. Exact source, hashes, browser
   matrix, two-vantage smoke and executed static rollback/forward are in
-  `REL-0162` and `E-1023`.
+  `REL-0164` and `E-1024`.
 - Analytics v2 contract is 2.3.0. Full rollback changes both static pointers to
-  release161; backend restore or restart is not part of release162.
+  release162; backend restore or restart is not part of release164.
 - `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
   is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
+
+## 23 August mobile practice scope and Browser Back
+
+- The fixed mobile primary follows the same exact diagnostic/editing/support
+  route as both page continuations. Fresh production dock clicks reach the
+  matching 2,500 / 8,000 / 14,000 RUB flow and first result.
+- An existing configurator draft still owns the initial `Черновик` action. A
+  real repeated pointer tap or Space on the checked scope intentionally changes
+  the dock to that scope without deleting the saved draft.
+- Browser-restored `checked` state is distinguished from the HTML
+  `defaultChecked` state. Support -> fictional specification -> Browser Back
+  restores support radio, 14,000 RUB status, visible passport, both page routes
+  and the dock href/aria to one exact allowlisted route.
+- One new selection emits one live-region update and repeated activation emits
+  none. At 360/390 light/dark the dock has one visible primary, a 48/48 px
+  unclipped label, at least a 67.2x70.4 px target and overflow 0; at 1440 it is
+  hidden. Production console errors/warnings are 0.
+- Release163 first exposed a real production-only P1 on this Back path and was
+  immediately rolled back. Release164 contains the bounded fix and completed a
+  successful release162 rollback plus forward restore. Prices, Otisk layout,
+  configurator, request, backend, admin and Analytics did not change.
 
 ## 23 August practice-support result passport
 
@@ -150,6 +171,23 @@
   their meaning and accuracy cannot be defended.
 - Raw events have a maximum 365-day lifetime; signed revoke cascades visitor,
   sessions and events and retains only a bounded hashed replay tombstone.
+
+## Release164 verification summary
+
+- Site 592/592; backend 31/31; Brain 39/39; focused 8/8 and related 64/64;
+  strict validation, deterministic builds and diff checks green. Three
+  independent final reviews report P0=0/P1=0/P2=0.
+- Public payload: 353 files / 25,041,362 bytes, digest `7915d085…be97`;
+  immutable live tree: 356 files / 25,051,533 bytes, manifest
+  `c3050fff…e053`, owner/mode drift 0.
+- Exactly one public file differs from release162. Repository, immutable tree
+  and live HTTP page SHA-256 agree at `3292958b…4585`; CSS, three server-owned
+  files and all backend/Nginx hashes stayed byte-identical.
+- External/VPS smoke passed 14/14 after activation, 14/14 in the executed
+  release162 rollback and 14/14 after final forward restore to release164.
+- Release163 is recorded as failed and rolled back, not as an earlier success.
+  No production form was submitted and no contact, order, client file,
+  message, payment or analytics record was read or changed.
 
 ## Release162 verification summary
 

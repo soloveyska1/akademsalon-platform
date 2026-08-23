@@ -4,10 +4,10 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release162>
+- Production: <https://akademsalon.ru/?v=release164>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=38>
-- Production release: `release162-977c1f6`
-- Production source: `977c1f6a52a38c59ea5bbfc9c93910b8e615495c`
+- Production release: `release164-1ea81c6`
+- Production source: `1ea81c6825c02b94f8a8dff84a9186a8534b4265`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
 - Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
@@ -15,10 +15,24 @@
 - Проверенный practice-price result: `89a2887eff51561e519c1357e5da88046b9c9d9c`.
 - Проверенный practice-continuity result: `34e10367eac4f7451b56bbe01753ff00e9dffce2`.
 - Проверенный practice-passport result: `29376844dc9691f0f9f8f40dbd83ebcdc0f2d1ee`.
+- Проверенный practice mobile-dock result: `c8afde5c2199a8d19c5cab01acb31e7fc99d506d`.
+- Проверенный practice Browser Back result: `89ddeed5744c428a09d0096b1b37621538a3ff72`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Static rollback: `release161-1c5f0ee`; backend не менялся и остаётся на
+- Static rollback: `release162-977c1f6`; backend не менялся и остаётся на
   Analytics v2 contract 2.3.0.
+- Release164 имеет G10 GO: ближайшее мобильное действие сохраняет выбранный
+  объём практики 2 500/8 000/14 000 RUB, не затирает существующий черновик и
+  восстанавливается вместе с radio/status после specification -> Browser Back.
+  Site 592/592, backend 31/31, Brain 39/39, production Chromium 360/390
+  light/dark без overflow/console errors, external/VPS smoke 14/14 после
+  выпуска, в выполненном rollback на release162 и после forward restore.
+  Точная запись: [releases/REL-0164.md](releases/REL-0164.md).
+- Release163 был снят с production по G10 P1: после Browser Back видимый
+  support от 14 000 RUB расходился с мобильным editing-route. Немедленный
+  rollback вернул release162 и smoke 14/14; неуспешный immutable artifact
+  остаётся только для аудита. Точная запись:
+  [releases/REL-0163.md](releases/REL-0163.md).
 - Release162 имеет G10 GO: при выборе сопровождения от 14 000 RUB до контакта
   раскрывается паспорт с реальными входами, четырьмя проверяемыми результатами,
   границами авторства, исключениями и точным смыслом цены; варианты 2 500/8 000
@@ -110,7 +124,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0162.md](releases/REL-0162.md) — доказательная запись текущего GO-релиза.
+- [releases/REL-0164.md](releases/REL-0164.md) — доказательная запись текущего GO-релиза.
 - [../../ops/monitoring/README.md](../../ops/monitoring/README.md) — контракт
   изоляции Nginx virtual hosts и Салон-дозора на общем VPS.
 
