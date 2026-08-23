@@ -1,0 +1,75 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-bbcc4726ff154314b3b93eed77ac4b13",
+  "slug": "incident-admin-auth-recovery-v2",
+  "status": "active",
+  "branch": "codex/incident-admin-auth-recovery-v2",
+  "base_sha": "2480fa414c2dbaabcefb1714b10bc7490af67f05",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-003"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "backend/salon_bot/install_auth_recovery.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_auth_recovery.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1027.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0167.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-bbcc4726ff154314b3b93eed77ac4b13/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "brain-record:E-1027"
+    },
+    {
+      "access": "write",
+      "key": "brain-record:REL-0167"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "read",
+      "key": "contract:auth"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
