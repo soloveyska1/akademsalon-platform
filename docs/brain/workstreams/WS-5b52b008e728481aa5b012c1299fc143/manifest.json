@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-5b52b008e728481aa5b012c1299fc143",
+  "slug": "out-006-practice-result-passport-v1",
+  "status": "active",
+  "branch": "codex/out-006-practice-result-passport-v1",
+  "base_sha": "a28330ccf83ed3f70b0beb5425b8ba5504625c07",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/polish15-catalog.css",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-5b52b008e728481aa5b012c1299fc143/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/practice-price-trust.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/js/cart.js",
+        "match": "exact"
+      },
+      {
+        "path": "specifikaciya.html",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:public-practice-result-passport"
+    },
+    {
+      "access": "read",
+      "key": "contract:practice-draft-support"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
