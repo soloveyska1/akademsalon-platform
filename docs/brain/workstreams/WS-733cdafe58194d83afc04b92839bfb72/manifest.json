@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-733cdafe58194d83afc04b92839bfb72",
+  "slug": "release166-private-checkpoint",
+  "status": "active",
+  "branch": "codex/release166-private-checkpoint",
+  "base_sha": "a9e038ed62c126e3d54290cfda547c50bd290772",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-008"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1026.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0166.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-733cdafe58194d83afc04b92839bfb72/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/configurator-private-checkpoint.test.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "read",
+      "key": "ui-state:configurator-private-checkpoint"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
