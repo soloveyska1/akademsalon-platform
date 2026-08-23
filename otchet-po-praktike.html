@@ -262,7 +262,9 @@
     syncMobileDock(selected,route,explicit===true);
   }
   function syncChoice(){
-    applyChoice(root.querySelector('[data-practice-scope-choice]:checked')||choices[0],false);
+    var choice=root.querySelector('[data-practice-scope-choice]:checked')||choices[0];
+    var historyRestored=!!(choice&&choice.checked&&!choice.defaultChecked);
+    applyChoice(choice,historyRestored);
   }
   choices.forEach(function(choice){
     choice.addEventListener('change',function(){applyChoice(choice,true);});
