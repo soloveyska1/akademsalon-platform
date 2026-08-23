@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-f9ec27f9f3b24bfe81bd24b1d77f0b58",
   "slug": "release161-practice-continuity",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/release161-practice-continuity",
   "base_sha": "1c5f0eed53da5ab894c06545ae80806790fb1d8c",
   "result_sha": "d4746fbb3d09169c7643099bc31db4ac97afefcd",
@@ -74,6 +74,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "2c46cc10b7a5afa846cf2aed305931dda3bb97f352a50b754aa37ad2a2434515"
+  "manifest_revision": 3,
+  "base_manifest_hash": "cec09d8b31e83f0f1aed0f1309c1ffe3a821c671b6097742d796bfa4bf5640c3"
 }
