@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-22c20caf674f4e478575eb974368db42",
+  "slug": "release162-practice-passport",
+  "status": "active",
+  "branch": "codex/release162-practice-passport",
+  "base_sha": "977c1f6a52a38c59ea5bbfc9c93910b8e615495c",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1023.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0162.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-22c20caf674f4e478575eb974368db42/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/css/polish15-catalog.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/cart.js",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "specifikaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/practice-price-trust.test.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "read",
+      "key": "contract:practice-draft-support"
+    },
+    {
+      "access": "read",
+      "key": "ui-state:public-practice-result-passport"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
