@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 const root = path.join(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
@@ -125,12 +126,84 @@ test('one selected scope controls every continuation into the configurator', () 
 test('practice selection also controls the mobile dock without stealing a saved draft', () => {
   assert.match(html, /document\.querySelector\('\.mobile-dock__primary'\)/);
   assert.match(html, /dock\.setAttribute\('href',route\)/);
-  assert.match(html, /dock\.setAttribute\('aria-label','Продолжить: '\+selected\.title\)/);
-  assert.match(html, /dockLabel\.textContent='Продолжить'/);
+  assert.match(html, /dock\.setAttribute\('aria-label','Далее: '\+selected\.title\)/);
+  assert.match(html, /dockLabel\.textContent='Далее'/);
   assert.match(html, /!explicit && dock\.getAttribute\('data-resume-draft'\)==='true'/);
   assert.match(html, /dock\.removeAttribute\('data-resume-draft'\)/);
   assert.match(html, /applyChoice\(choice,true\)/);
   assert.match(html, /applyChoice\([^;]+,false\)/);
+});
+
+test('an explicit tap on the already checked scope overrides a saved-draft dock', () => {
+  const scriptMarker = '<script>(function(){\n  var root=document.querySelector(\'[data-p15-service="otchet-po-praktike"]\');';
+  const scriptStart = html.indexOf(scriptMarker);
+  assert.notEqual(scriptStart, -1, 'practice selector runtime must exist');
+  const scriptEnd = html.indexOf('</script>', scriptStart);
+  const script = html.slice(scriptStart + '<script>'.length, scriptEnd);
+  const routes = {
+    diagnostic: 'configurator.html?work=practice&situation=draft&result=diagnostic&route=service',
+    editing: 'configurator.html?work=practice&situation=draft&result=editing&route=service',
+    support: 'configurator.html?work=practice&situation=draft&result=support&route=service',
+  };
+  const choice = (value, checked) => {
+    const listeners = {};
+    return {
+      value,
+      checked,
+      listeners,
+      getAttribute(name) { return name === 'data-route' ? routes[value] : null; },
+      addEventListener(type, handler) { listeners[type] = handler; },
+    };
+  };
+  const choices = [choice('diagnostic', false), choice('editing', true), choice('support', false)];
+  const status = { textContent: '' };
+  const pageLinks = [0, 1].map(() => {
+    const label = { textContent: '' };
+    return {
+      href: '',
+      setAttribute(name, value) { if (name === 'href') this.href = value; },
+      querySelector(selector) { return selector === '[data-practice-route-label]' ? label : null; },
+    };
+  });
+  const dockLabel = { textContent: 'Черновик' };
+  const dockAttrs = {
+    href: 'configurator.html?work=practice&situation=draft&result=editing&route=page',
+    'data-resume-draft': 'true',
+  };
+  const dock = {
+    getAttribute(name) { return dockAttrs[name] ?? null; },
+    setAttribute(name, value) { dockAttrs[name] = value; },
+    removeAttribute(name) { delete dockAttrs[name]; },
+    querySelector(selector) { return selector === '.mn-l' ? dockLabel : null; },
+  };
+  const rootStub = {
+    querySelectorAll(selector) {
+      if (selector === '[data-practice-scope-choice]') return choices;
+      if (selector === '[data-practice-route]') return pageLinks;
+      return [];
+    },
+    querySelector(selector) {
+      if (selector === '[data-practice-selection]') return status;
+      if (selector === '[data-practice-scope-choice]:checked') return choices.find((item) => item.checked);
+      return null;
+    },
+  };
+  const documentStub = {
+    querySelector(selector) {
+      if (selector === '[data-p15-service="otchet-po-praktike"]') return rootStub;
+      if (selector === '.mobile-dock__primary') return dock;
+      return null;
+    },
+  };
+
+  vm.runInNewContext(script, { document: documentStub, window: { addEventListener() {} } });
+  assert.equal(dockAttrs['data-resume-draft'], 'true');
+  assert.equal(dockLabel.textContent, 'Черновик');
+  assert.equal(typeof choices[1].listeners.click, 'function');
+  choices[1].listeners.click();
+  assert.equal(dockAttrs['data-resume-draft'], undefined);
+  assert.equal(dockAttrs.href, routes.editing);
+  assert.equal(dockLabel.textContent, 'Далее');
 });
 
 test('three practice routes preserve scope codes while draft support stays supplied-material A1', () => {

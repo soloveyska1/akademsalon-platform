@@ -242,9 +242,9 @@
     if(!dock||(!explicit && dock.getAttribute('data-resume-draft')==='true'))return;
     dock.setAttribute('href',route);
     dock.removeAttribute('data-resume-draft');
-    dock.setAttribute('aria-label','Продолжить: '+selected.title);
+    dock.setAttribute('aria-label','Далее: '+selected.title);
     var dockLabel=dock.querySelector('.mn-l');
-    if(dockLabel)dockLabel.textContent='Продолжить';
+    if(dockLabel)dockLabel.textContent='Далее';
   }
   function applyChoice(choice,explicit){
     if(!choice||!copy[choice.value])return;
@@ -262,7 +262,10 @@
   function syncChoice(){
     applyChoice(root.querySelector('[data-practice-scope-choice]:checked')||choices[0],false);
   }
-  choices.forEach(function(choice){choice.addEventListener('change',function(){applyChoice(choice,true);});});
+  choices.forEach(function(choice){
+    choice.addEventListener('change',function(){applyChoice(choice,true);});
+    choice.addEventListener('click',function(){if(choice.checked)applyChoice(choice,true);});
+  });
   window.addEventListener('pageshow',syncChoice);
   syncChoice();
 })();</script>
