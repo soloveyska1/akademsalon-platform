@@ -3,16 +3,34 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `5b1735c2c959ce63733b270259f74965d2fe46d3`.
+  `a9e038ed62c126e3d54290cfda547c50bd290772`.
 - Production `current` and compatibility `dist` resolve to
-  `release165-5b1735c`; `previous` resolves to `release164-1ea81c6`.
-- Release165 has G10 GO with P0=0/P1=0/P2=0. Exact source, hashes, browser
+  `release166-a9e038e`; `previous` resolves to `release165-5b1735c`.
+- Release166 has G10 GO with P0=0/P1=0/P2=0. Exact source, hashes, browser
   matrix, two-vantage smoke and executed static rollback/forward are in
-  `REL-0165` and `E-1025`.
+  `REL-0166` and `E-1026`.
 - Analytics v2 contract is 2.3.0. Full rollback changes both static pointers to
-  release164; backend restore or restart is not part of release165.
+  release165; backend restore or restart is not part of release166.
 - `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
   is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
+
+## 23 August private configurator checkpoint
+
+- Contact, consent and files now remain memory-only. Both legacy draft keys
+  scrub old name/contact residue on load while retaining safe scope, deadline
+  and working-description data.
+- If reload removes a required attachment, every contact/checkout/history/
+  defensive-submit path returns only to Materials. One focused explanation
+  names the loss and offers reattachment or a 40-character description.
+- The exact `practice_draft_support` scope, cart and 14,000–19,500 RUB
+  orientation survive recovery. Reattachment removes the stale notice and the
+  39/40 -> 40/40 boundary enables the same primary without blur.
+- Production 360 light and 390 dark have one 50 px primary, overflow 0, visible
+  focused recovery and no console errors. Synthetic contact markers were
+  absent from all local/session storage and network capture contained no POST.
+- Release166 completed external/VPS smoke 14/14 after activation, in a real
+  rollback to release165 and after forward restore. Service, Nginx and SQLite
+  stayed green. Trust and continuity are proved; uplift is not claimed.
 
 ## 23 August mobile configurator keyboard action
 
@@ -191,6 +209,22 @@
   their meaning and accuracy cannot be defended.
 - Raw events have a maximum 365-day lifetime; signed revoke cascades visitor,
   sessions and events and retains only a bounded hashed replay tombstone.
+
+## Release166 verification summary
+
+- Site 596/596; backend 31/31; Brain 39/39; focused 4/4 and related 85/85;
+  deterministic builds and diff checks green. Three independent final reviews
+  report P0=0/P1=0/P2=0.
+- Public payload: 353 files / 25,054,477 bytes, digest `dbec7e39…552`;
+  immutable live tree: 356 files / 25,064,648 bytes, manifest
+  `79f51ae8…bfd`, owner/mode drift 0.
+- Exactly one public file differs from release165. Repository, immutable tree
+  and live HTTP hash agree at `295b2b3d…8a6e`; server-owned files and
+  backend/Nginx stayed byte-identical.
+- External/VPS smoke passed 14/14 after activation, 14/14 in the executed
+  release165 rollback and 14/14 after final forward restore to release166.
+- No production form was submitted and no client contact, file, order,
+  message, payment or analytics row was read or changed.
 
 ## Release165 verification summary
 

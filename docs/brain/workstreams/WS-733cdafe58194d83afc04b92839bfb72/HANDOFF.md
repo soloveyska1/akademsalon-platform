@@ -20,12 +20,27 @@
   production 360/390 light/dark checkpoint journeys, GET/HEAD-only two-vantage
   smoke, service/Nginx/SQLite checks, pointer snapshots and executed
   rollback/forward recorded in `REL-0166` and `E-1026`.
-- Changed: none yet.
-- Unverified: production publication and all release proof are not started; no
-  production form will be submitted.
+- Changed: built canonical source twice, assembled immutable
+  `release166-a9e038e`, activated it, verified production recovery/privacy and
+  hashes, executed a complete release165 rollback and restored release166.
+  Updated `E-1026`, `REL-0166`, `CURRENT-HANDOFF.md` and `START-HERE.md`;
+  product blobs, prices, routes, backend and infrastructure configuration were
+  not changed in this release workstream.
+- Verified: byte-identical builds are 353 files / 25,054,477 bytes with digest
+  `dbec7e39…552`; immutable tree is 356 files / 25,064,648 bytes with manifest
+  `79f51ae8…bfd`, full source parity and owner/mode drift 0. Production
+  Chromium 360 light and 390 dark proved focused recovery, one disabled 50 px
+  primary, exact support scope/price, reattachment, 39/40 -> 40/40, zero
+  storage marker, overflow, POST and console error. External and VPS smoke
+  passed 14/14 after activation, on release165 rollback and after forward
+  restore; service/Nginx/SQLite stayed green and pointer residue is zero.
+- Unverified: no production form was submitted. Organic conversion and revenue
+  uplift are not claimed.
 - Risks/rollback: immutable overlay could disturb server-owned files; pointer
   rotation could target the wrong previous release; a local browser proof
   could accidentally hide persistence residue. Preflight resolves exact
   pointers/hashes and storage state first; activation uses explicit validated
   paths; rollback atomically restores release165 with release164 as previous.
-- Next: review and commit the manifest plus this handoff.
+- Next: run the final full public/backend/Brain gates on the exact release
+  documentation commit, obtain an independent release-proof review, then
+  submit and integrate this workstream without modifying product blobs.

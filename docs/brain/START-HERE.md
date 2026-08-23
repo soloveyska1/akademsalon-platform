@@ -4,10 +4,10 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release165>
+- Production: <https://akademsalon.ru/?v=release166>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=38>
-- Production release: `release165-5b1735c`
-- Production source: `5b1735c2c959ce63733b270259f74965d2fe46d3`
+- Production release: `release166-a9e038e`
+- Production source: `a9e038ed62c126e3d54290cfda547c50bd290772`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
 - Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
@@ -18,10 +18,19 @@
 - Проверенный practice mobile-dock result: `c8afde5c2199a8d19c5cab01acb31e7fc99d506d`.
 - Проверенный practice Browser Back result: `89ddeed5744c428a09d0096b1b37621538a3ff72`.
 - Проверенный keyboard-action-shelf result: `8adcfb4543f7388f7b03403007771d63dae1e19f`.
+- Проверенный private-checkpoint result: `eb60be42dcf773f42553c737db92f92b4efcfd8e`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Static rollback: `release164-1ea81c6`; backend не менялся и остаётся на
+- Static rollback: `release165-5b1735c`; backend не менялся и остаётся на
   Analytics v2 contract 2.3.0.
+- Release166 имеет G10 GO: контакт, согласие и файлы не сохраняются; если
+  обязательный временный файл исчез после reload, все пути возвращают только к
+  материалам с видимым объяснением, сохраняя scope, срок, корзину и цену.
+  Повторное вложение или описание от 40 знаков возобновляет путь. Site 596/596,
+  backend 31/31, Brain 39/39, production 360/390 без overflow, POST и
+  storage-residue, external/VPS smoke 14/14 после выпуска, в выполненном
+  rollback на release165 и после forward restore. Точная запись:
+  [releases/REL-0166.md](releases/REL-0166.md).
 - Release165 имеет G10 GO: при открытой мобильной клавиатуре активное поле,
   причина валидации и единственный primary остаются доступными; на границе
   39/40 → 40/40 тот же primary включается без потери фокуса. Цены, маршруты,
@@ -98,11 +107,12 @@
    защищать 14 000 RUB как цену той же редактуры. Выбранный объём теперь должен
    совпадать с паспортом, первым экраном и спецификацией; цену не снижать и
    uplift по факту релиза не обещать.
-2. Продолжить OUT-008 следующим отдельным измерением mobile-first пути, не
-   переписывая экран целиком: проверить заполнение контакта, ошибки и возврат
-   после системных прерываний на реальном iOS. Достижимость действия при
-   открытой клавиатуре уже закрыта release165; новый дизайн открывать только по
-   воспроизводимому P0/P1 и отдельному bounded-плану.
+2. Продолжить OUT-008 следующим отдельным измерением, не переписывая экран
+   целиком: проверить, понимает ли клиент на Contact, что произойдёт после
+   нажатия и когда он получит первый содержательный ответ. Приватность,
+   обязательные материалы и восстановление после reload уже закрыты
+   release166; новую механику открывать только по воспроизводимому P0/P1 и
+   отдельному bounded-плану.
 3. Аналитику и админку не развивать в текущем product-фокусе. Позже измерять
    только достаточный органический consented sample по заранее выбранному окну;
    до этого не заявлять conversion uplift.
@@ -134,7 +144,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0165.md](releases/REL-0165.md) — доказательная запись текущего GO-релиза.
+- [releases/REL-0166.md](releases/REL-0166.md) — доказательная запись текущего GO-релиза.
 - [../../ops/monitoring/README.md](../../ops/monitoring/README.md) — контракт
   изоляции Nginx virtual hosts и Салон-дозора на общем VPS.
 
