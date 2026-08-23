@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-dee7b3e6ff1d43e4aa70d2135f4664b4",
   "slug": "release164-practice-back-parity",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/release164-practice-back-parity",
   "base_sha": "1ea81c6825c02b94f8a8dff84a9186a8534b4265",
-  "result_sha": null,
+  "result_sha": "b1573e38fed1a3387e17004a4909955d74b70b75",
   "outcome_ids": [
     "OUT-008"
   ],
@@ -62,6 +62,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "e356c7cf874b3804325b67d6753ef25640b3d69afdb8073e240ffa9f69b09c77"
 }
