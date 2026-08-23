@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-e3df0fa5ee164a05bc6b28271da87040",
   "slug": "release165-keyboard-shelf",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/release165-keyboard-shelf",
   "base_sha": "5b1735c2c959ce63733b270259f74965d2fe46d3",
   "result_sha": "3a28bc1ad86b16605b2b2ae75c41076091641a99",
@@ -66,6 +66,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "050ae5f3b5a851824918bd8dfa3d94819b27f6f876afd997e970c6ff517a4869"
+  "manifest_revision": 3,
+  "base_manifest_hash": "07476c3f1dcc61bc9692a57835beaf5d8ac1ef04a4e6765268b1b08ebc5df38e"
 }
