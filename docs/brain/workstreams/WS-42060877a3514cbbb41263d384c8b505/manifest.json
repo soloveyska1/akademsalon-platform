@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-42060877a3514cbbb41263d384c8b505",
   "slug": "private-checkpoint",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-008-private-checkpoint-v1",
   "base_sha": "ca0ff6a57e33d4d1f6f25480e19a3d932bf44120",
-  "result_sha": null,
+  "result_sha": "eb60be42dcf773f42553c737db92f92b4efcfd8e",
   "outcome_ids": [
     "OUT-008"
   ],
@@ -70,6 +70,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "28f63b89368d2cd8d085f8dad2c98017a661621752ce17aa982dd5193d3d209d"
 }
