@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-f66ad05f7d864b93a4f3d60646050847",
   "slug": "out-006-practice-support-continuity-v4",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-006-practice-support-continuity-v4",
   "base_sha": "85d41fa764262ede019611983555db70112e6e0b",
   "result_sha": "34e10367eac4f7451b56bbe01753ff00e9dffce2",
@@ -94,6 +94,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "af39592db26d4f94564c2e824ed88f8446a6229761a0efee4944efaaeece4b53"
+  "manifest_revision": 3,
+  "base_manifest_hash": "8ade9fd10a26de4e331cf48dc3095f8350e37aaddf6c9f2ad183208f60d1173b"
 }
