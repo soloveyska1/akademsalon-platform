@@ -4,10 +4,10 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release166>
+- Production: <https://akademsalon.ru/?v=release168>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=38>
-- Production release: `release166-a9e038e`
-- Production source: `a9e038ed62c126e3d54290cfda547c50bd290772`
+- Production release: `release168-afe4755`
+- Production source: `afe47556c9dcdeda3c69d20601ab11fc806fb399`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
 - Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
@@ -20,12 +20,20 @@
 - Проверенный keyboard-action-shelf result: `8adcfb4543f7388f7b03403007771d63dae1e19f`.
 - Проверенный private-checkpoint result: `eb60be42dcf773f42553c737db92f92b4efcfd8e`.
 - Проверенный admin-auth recovery result: `cc9cfed21c3ebebba386d6962954fc85f8a87df7`.
+- Проверенный first-order promo result: `157d6f7a0507bb091d313acce7412c751ca9bce9`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Static rollback: `release165-5b1735c`; static production остаётся release166.
-- Backend auth result: `webapp.py` `14a45362…48ee`; rollback copy
-  `/root/salon_bot/backups/admin-auth-recovery-20260823T220441760076Z`.
+- Static rollback: `release166-a9e038e`; static production — release168.
+- Backend promo result: `webapp.py` `48a1f40a…008b`; rollback copy
+  `/root/salon_bot/backups/first-order-promo-20260824T094143186111Z`.
   Analytics v2 contract остаётся 2.3.0.
+- REL-0168 имеет G10 GO: новые посетители Салона и Кладовой видят фирменный
+  лист `ПЕРВЫЙЛИСТ`, старые и уже использовавшие серию подавляются, удержание
+  ограничено 1%/1 000 RUB/72 часами, а сервер повторно проверяет первый заказ
+  атомарно. Три review дали P0=0/P1=0; public 602/602, backend 47/47,
+  Kladovaya 277/277, production Chromium, external/VPS smoke 14/14 и
+  backend/Salon/Kladovaya rollback-forward зелёные. Точная запись:
+  [releases/REL-0168.md](releases/REL-0168.md).
 - REL-0167 имеет G10 GO: просроченная или отозванная HttpOnly session-cookie
   больше не блокирует новый Telegram-вход через CSRF `403`. Исключение строго
   ограничено exact `POST /api/auth/start` и не ослабляет valid-session CSRF или

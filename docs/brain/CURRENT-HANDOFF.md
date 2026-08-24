@@ -3,20 +3,48 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `a9e038ed62c126e3d54290cfda547c50bd290772`.
+  `afe47556c9dcdeda3c69d20601ab11fc806fb399`.
 - Production `current` and compatibility `dist` resolve to
-  `release166-a9e038e`; `previous` resolves to `release165-5b1735c`.
-- Backend auth recovery REL-0167 is live at exact `webapp.py`
-  `14a45362e9ce17416c552557f4610546ce23549a4fc35dbbccc46d9e624448ee`.
-  Its final exact rollback copy is
-  `/root/salon_bot/backups/admin-auth-recovery-20260823T220441760076Z`.
-- Release166 has G10 GO with P0=0/P1=0/P2=0. Exact source, hashes, browser
-  matrix, two-vantage smoke and executed static rollback/forward are in
-  `REL-0166` and `E-1026`.
-- Analytics v2 contract is 2.3.0. Static rollback changes both static pointers
-  to release165; REL-0167 backend rollback is separately pinned in E-1027.
+  `release168-afe4755`; `previous` resolves to `release166-a9e038e`.
+- Backend REL-0168 is live at exact `webapp.py` `48a1f40a…008b`, `db.py`
+  `be6bf8c8…8899` and `promo.py` `f912bec3…4c21`. Its final rollback copy is
+  `/root/salon_bot/backups/first-order-promo-20260824T094143186111Z`.
+- Kladovaya is live from exact source `ff848408…791f` at
+  `20260824T0947Z-first-order-promo-ff84840`.
+- REL-0168 has G10 GO with P0=0/P1=0. Exact source, hashes, browser matrix,
+  two-vantage smoke and executed backend/Salon/Kladovaya rollback-forward are
+  in `REL-0168` and `E-1029`.
+- Analytics v2 contract is 2.3.0. Static Salon rollback returns to release166;
+  the promo backend rollback preserves SQLite and switches the campaign off.
 - `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
   is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
+
+## 24 August first-order campaign
+
+- `ПЕРВЫЙЛИСТ` is 2% for one first order from 2,500 RUB, capped at 2,500 RUB.
+  The return-to-draft offer is 1% from 5,000 RUB, capped at 1,000 RUB and valid
+  for 72 hours. Both end within 21 September Moscow time and are mutually
+  exclusive/best-of with other promos.
+- Existing accounts, known guest orders, cross-account email/phone/social
+  contacts and prior family claims fail closed at the server. A cleared browser
+  can see only a provisional sheet; order creation repeats the check and claim
+  atomically.
+- Kladovaya calls its own PII-free `/promo-status`; it forwards no visitor
+  request, cookie or header to Salon. A failed/off status hides the sheet.
+- The authenticated Salon owner always receives a labelled non-redeemable
+  preview. Kladovaya's `?offer_preview=welcome` is a safe visual bookmark with
+  no outbound activation and no persistent owner marker.
+- Product regressions are Salon 602/602, backend 47/47, Brain 39/39 and
+  Kladovaya 277/277 plus lint. Three independent reviews returned GO with
+  P0=0/P1=0.
+- Production Chromium proved clean Kladovaya and Salon, returning Kladovaya
+  suppression and the safe Kladovaya owner preview at 360/390 without overflow
+  or console errors. No live form/order/grant was submitted.
+- Final Salon tree is 359 files / 26,180,414 bytes; final Kladovaya tree is 559
+  files / 50,051,737 bytes. Both static releases and the backend completed real
+  rollback plus forward restore. `promo_campaign` is the immediate kill switch.
+- Exact evidence and rollback paths: `REL-0168` and `E-1029`. Profit or
+  conversion uplift is not claimed before live measurement.
 
 ## 24 August admin Telegram-auth recovery
 

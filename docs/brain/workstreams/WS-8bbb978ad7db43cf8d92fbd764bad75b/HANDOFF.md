@@ -17,11 +17,25 @@
 - Proof: `E-1028`, new `E-1029`, exact hashes, GET-only/API eligibility smoke,
   production Chromium, pointer/source readback, `brain:test` and
   `brain:validate`.
-- Changed: none yet.
-- Unverified: production has not yet been changed.
+- Changed:
+  - installed the exact backend candidate, additive SQLite campaign contract
+    and active kill-switch setting;
+  - published Salon `release168-afe4755` and Kladovaya
+    `20260824T0947Z-first-order-promo-ff84840`;
+  - recorded exact production proof in `E-1029`, release truth in `REL-0168`
+    and refreshed `START-HERE`/`CURRENT-HANDOFF`.
+- Verified:
+  - backend exact check/apply, Python compile, active service, Nginx and SQLite;
+  - external and VPS Salon smoke 14/14 after activation, rollback and restore;
+  - Salon and Kladovaya immutable manifests and live key-file hashes;
+  - production Chromium clean-new/returning/preview states at 360/390 with
+    zero overflow and zero console errors;
+  - executed backend, Salon static and Kladovaya static rollback plus forward
+    restore; final pointers and campaign state are active with zero residue.
+- Unverified: no real order or retention grant was created; financial uplift
+  remains unmeasured.
 - Risks/rollback: campaign has an immediate database kill switch; backend
   rollback restores only pinned source and preserves live SQLite writes;
   static rollback switches immutable pointers to the exact previous releases.
-- Next: commit this declaration, run the strict conflict gate, then deploy
-  backend first and execute bounded rollback/forward proof before public
-  activation.
+- Next: validate the durable records, commit the verified release candidate and
+  submit this workstream for canonical integration.
