@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-838673b2da9d47caa2d07a87b8a11a7e",
   "slug": "out-006-promo-value-v3",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-006-promo-value-v3",
   "base_sha": "d1f512c5d7e701c9492835883ae16f2aee081eec",
   "result_sha": "bd2334f2459f106ebea15241359101164ab5c7bd",
@@ -110,6 +110,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "f59cd4f13a4b52961c9e71c0aa8d94c5978ce0322a2a3e71fb5edb020cadb37a"
+  "manifest_revision": 3,
+  "base_manifest_hash": "a0065048c6ff2c5fd026c932af9d741fb574bbd907440dc4b7a021acdba350b6"
 }
