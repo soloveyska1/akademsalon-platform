@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-7f3b19fd83a04d11b8653aa27505d43a",
   "slug": "out-006-new-user-promo-v3",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-006-new-user-promo-v3",
   "base_sha": "fb9b8901f03f32b9e64304ebe99da76ec3a85264",
-  "result_sha": null,
+  "result_sha": "157d6f7a0507bb091d313acce7412c751ca9bce9",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -114,6 +114,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "851c533752bccab4c6b87b94e9f2e505dd59339c4c71b8949da0abcdfd4cd905"
 }
