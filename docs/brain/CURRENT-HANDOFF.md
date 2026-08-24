@@ -3,28 +3,30 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `afe47556c9dcdeda3c69d20601ab11fc806fb399`.
+  `51f3556210d2821df17829d4b7776ad2f1dee948`.
 - Production `current` and compatibility `dist` resolve to
-  `release168-afe4755`; `previous` resolves to `release166-a9e038e`.
-- Backend REL-0168 is live at exact `webapp.py` `48a1f40a…008b`, `db.py`
-  `be6bf8c8…8899` and `promo.py` `f912bec3…4c21`. Its final rollback copy is
-  `/root/salon_bot/backups/first-order-promo-20260824T094143186111Z`.
-- Kladovaya is live from exact source `ff848408…791f` at
-  `20260824T0947Z-first-order-promo-ff84840`.
-- REL-0168 has G10 GO with P0=0/P1=0. Exact source, hashes, browser matrix,
+  `release169-51f3556`; `previous` resolves to `release168-afe4755`.
+- Backend REL-0169 is live as the exact six-source economics-v2 set. Its
+  rollback copy is
+  `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
+- Kladovaya is live from exact source `58f4c116…421e` at
+  `20260824T1214Z-promo-mobile-58f4c11`.
+- REL-0169 has G10 GO with P0=0/P1=0. Exact source, hashes, browser matrix,
   two-vantage smoke and executed backend/Salon/Kladovaya rollback-forward are
-  in `REL-0168` and `E-1029`.
-- Analytics v2 contract is 2.3.0. Static Salon rollback returns to release166;
-  the promo backend rollback preserves SQLite and switches the campaign off.
+  in `REL-0169` and `E-1031`.
+- Analytics v2 contract is 2.3.0. REL-0169's static rollback target is
+  release168. Promo backend rollback
+  preserves SQLite, promised rows and the aggregate guard while switching new
+  campaign activity off.
 - `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
   is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
 
 ## 24 August first-order campaign
 
-- `ПЕРВЫЙЛИСТ` is 2% for one first order from 2,500 RUB, capped at 2,500 RUB.
-  The return-to-draft offer is 1% from 5,000 RUB, capped at 1,000 RUB and valid
+- `ПЕРВЫЙЛИСТ` is 12% for one first order from 2,500 RUB, capped at 5,000 RUB.
+  The return-to-draft offer is 10% from 5,000 RUB, capped at 2,500 RUB and valid
   for 72 hours. Both end within 21 September Moscow time and are mutually
-  exclusive/best-of with other promos.
+  exclusive/best-of with other promos or Salon+.
 - Existing accounts, known guest orders, cross-account email/phone/social
   contacts and prior family claims fail closed at the server. A cleared browser
   can see only a provisional sheet; order creation repeats the check and claim
@@ -34,17 +36,21 @@
 - The authenticated Salon owner always receives a labelled non-redeemable
   preview. Kladovaya's `?offer_preview=welcome` is a safe visual bookmark with
   no outbound activation and no persistent owner marker.
-- Product regressions are Salon 602/602, backend 47/47, Brain 39/39 and
-  Kladovaya 277/277 plus lint. Three independent reviews returned GO with
-  P0=0/P1=0.
-- Production Chromium proved clean Kladovaya and Salon, returning Kladovaya
-  suppression and the safe Kladovaya owner preview at 360/390 without overflow
-  or console errors. No live form/order/grant was submitted.
-- Final Salon tree is 359 files / 26,180,414 bytes; final Kladovaya tree is 559
-  files / 50,051,737 bytes. Both static releases and the backend completed real
+- Product regressions are Salon 603/603, focused economics backend 19/19,
+  Brain 39/39 and Kladovaya 277/277 plus lint. Three independent reviews
+  returned GO with P0=0/P1=0.
+- Production Chromium proved clean Salon presentation, returning suppression,
+  labelled owner welcome/retention layouts and the safe Kladovaya owner preview
+  at 360/390 without overflow or console errors. No live form/order/grant was
+  submitted.
+- Final Salon tree is 359 files / 26,181,248 bytes; final Kladovaya tree is 559
+  files / 50,053,327 bytes. Both static releases and the backend completed real
   rollback plus forward restore. `promo_campaign` is the immediate kill switch.
-- Exact evidence and rollback paths: `REL-0168` and `E-1029`. Profit or
-  conversion uplift is not claimed before live measurement.
+- Promo/subscription best-of plus spent bonus points is bounded to 25% of the
+  agreed price. This is controlled acquisition spend; positive margin is not
+  claimed without authoritative fulfilment cost and commission data.
+- Exact evidence and rollback paths: `REL-0169` and `E-1031`. Conversion,
+  revenue and profit uplift are not claimed before live measurement.
 
 ## 24 August admin Telegram-auth recovery
 

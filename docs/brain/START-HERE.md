@@ -4,10 +4,10 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release168>
+- Production: <https://akademsalon.ru/?v=release169>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=38>
-- Production release: `release168-afe4755`
-- Production source: `afe47556c9dcdeda3c69d20601ab11fc806fb399`
+- Production release: `release169-51f3556`
+- Production source: `51f3556210d2821df17829d4b7776ad2f1dee948`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
 - Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
@@ -21,12 +21,22 @@
 - Проверенный private-checkpoint result: `eb60be42dcf773f42553c737db92f92b4efcfd8e`.
 - Проверенный admin-auth recovery result: `cc9cfed21c3ebebba386d6962954fc85f8a87df7`.
 - Проверенный first-order promo result: `157d6f7a0507bb091d313acce7412c751ca9bce9`.
+- Проверенный material promo economics result: `bd2334f2459f106ebea15241359101164ab5c7bd`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Static rollback: `release166-a9e038e`; static production — release168.
-- Backend promo result: `webapp.py` `48a1f40a…008b`; rollback copy
-  `/root/salon_bot/backups/first-order-promo-20260824T094143186111Z`.
+- Static rollback: `release168-afe4755`; static production — release169.
+- Backend promo result: coherent six-source economics v2, including
+  `webapp.py` `346a41ea…f735` and `promo.py` `b10967c0…8a00`; rollback copy
+  `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
   Analytics v2 contract остаётся 2.3.0.
+- REL-0169 имеет G10 GO: `ПЕРВЫЙЛИСТ` даёт ощутимые 12% от 2 500 RUB с
+  потолком 5 000 RUB, а квалифицированное удержание — 10% от 5 000 RUB с
+  потолком 2 500 RUB на 72 часа. Старые пользователи подавляются, owner preview
+  ничего не активирует, promo/Salon+ работают best-of, а общая выгода вместе с
+  потраченными баллами ограничена 25%. Три review дали P0=0/P1=0; public
+  603/603, backend 19/19, Kladovaya 277/277, Brain 39/39, production Chromium,
+  smoke 14/14 с двух vantage и все rollback-forward зелёные. Точная запись:
+  [releases/REL-0169.md](releases/REL-0169.md).
 - REL-0168 имеет G10 GO: новые посетители Салона и Кладовой видят фирменный
   лист `ПЕРВЫЙЛИСТ`, старые и уже использовавшие серию подавляются, удержание
   ограничено 1%/1 000 RUB/72 часами, а сервер повторно проверяет первый заказ
@@ -162,7 +172,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0166.md](releases/REL-0166.md) — доказательная запись текущего GO-релиза.
+- [releases/REL-0169.md](releases/REL-0169.md) — доказательная запись текущего GO-релиза.
 - [../../ops/monitoring/README.md](../../ops/monitoring/README.md) — контракт
   изоляции Nginx virtual hosts и Салон-дозора на общем VPS.
 
