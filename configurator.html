@@ -12,7 +12,33 @@
 <link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260806shell123&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1&amp;contrast=20260804contrast1&amp;wax=20260804wax1&amp;hdr=20260804hdr2&amp;sheen=20260804sheen2&amp;glass=20260804glass1" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260806release119&amp;journey=1&amp;wax=20260804wax1" />
 <link rel="stylesheet" href="assets/css/cart.css?v=20260806release119&amp;wax=20260804wax1" />
-<script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");var q=new URLSearchParams(location.search);var s=q.get("service");if(s==="pl"||s==="plan"||(!s&&q.get("plan")==="1"))document.documentElement.classList.add("service-plan");}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/css/promo-campaign.css?v=20260824promo1" />
+<script>
+(function () {
+  try {
+    var promoKeys = [
+      'salon_home_intro_v6', 'salon_draft', 'salon_concept_request_v1',
+      'salon_cart_v1', 'salon_home_situation', 'salon_promo_welcome_v1_seen'
+    ];
+    window.__salonPromoFootprint = {
+      storageReady:true,
+      returning:promoKeys.some(function (key) { return !!localStorage.getItem(key); })
+    };
+  } catch (error) {
+    window.__salonPromoFootprint = { storageReady:false, returning:true };
+  }
+  try {
+    var theme = localStorage.getItem('salon_theme');
+    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
+    if (theme === 'dark') document.documentElement.setAttribute('data-theme','dark');
+    var query = new URLSearchParams(location.search);
+    var service = query.get('service');
+    if (service === 'pl' || service === 'plan' || (!service && query.get('plan') === '1')) {
+      document.documentElement.classList.add('service-plan');
+    }
+  } catch (error) {}
+}());
+</script>
 <link rel="canonical" href="https://akademsalon.ru/configurator.html" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -2026,6 +2052,7 @@ function initConf() {
        Иначе заказ уже создан, а единственная копия материалов остаётся только
        в памяти вкладки и исчезает после незаметного upload 503. */
     if (!attQueue.length) clearSubmittedDrafts();
+    try { document.dispatchEvent(new CustomEvent('salon:promo-submit-success')); } catch (e) {}
     renderDoneReceipt(submittedCartSnapshot);
     if (submittedCartCount && window.SalonCart) {
       window.SalonCart.clear();
@@ -2511,6 +2538,28 @@ function initConf() {
       }
     });
   }
+
+  /* Узкий мост промокампании: наружу не выходят текст заявки, контакт или
+     файлы. Модуль может только применить код и прочитать агрегатный статус. */
+  window.SalonPromoCampaignBridge = {
+    applyPromo:function (code, done) {
+      if (promoIn) promoIn.value = String(code || '').toUpperCase().slice(0,24);
+      promoCheck(false,done);
+    },
+    hasPromo:function () { return !!promoCode; },
+    checkpoint:function () {
+      return { stage:'review', qualified:false, itemCount:0, quoteLow:0, hasPromo:!!promoCode };
+    },
+    submission:function () {
+      return {
+        submitting:!!submitting,
+        accepted:!!acceptedOrderId,
+        uploading:attQueue.some(function (item) {
+          return item.st === 'wait' || item.st === 'up';
+        })
+      };
+    }
+  };
 
   /* --- старт --- */
   rgType.set(state.type);
@@ -5136,6 +5185,22 @@ if (document.prerendering) {
       };
     }
   };
+  if (window.SalonPromoCampaignBridge) {
+    window.SalonPromoCampaignBridge.checkpoint = function () {
+      var key = steps[state.step] && steps[state.step].key || 'review';
+      var pricing = quoteInfo();
+      var quoteLow = pricing && pricing.quote ? Number(pricing.quote.low || 0) : 0;
+      var itemCount = pricing && pricing.cartCount ? Number(pricing.cartCount) :
+        (state.workType || service ? 1 : 0);
+      return {
+        stage:key === 'contact' ? 'contact' : 'review',
+        qualified:key === 'contact' && itemCount > 0 && quoteLow >= 5000,
+        itemCount:itemCount,
+        quoteLow:quoteLow,
+        hasPromo:window.SalonPromoCampaignBridge.hasPromo()
+      };
+    };
+  }
   render();
   if (restoredMaterialPrerequisite) setTimeout(focusMaterialRecovery,0);
   if (window.matchMedia && window.matchMedia('(max-width:340px) and (max-height:620px)').matches) {
@@ -5143,5 +5208,6 @@ if (document.prerendering) {
   }
 })();
 </script>
+<script src="assets/js/promo-campaign.js?v=20260824promo1"></script>
 </body>
 </html>

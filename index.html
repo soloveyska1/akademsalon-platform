@@ -15,6 +15,7 @@
 <meta name="description" content="Курсовые, ВКР, магистерские, статьи и отчёты — с нуля, на доработку и срочно. До оплаты фиксируем результат, срок и цену." />
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=20260806release119" />
 <link rel="stylesheet" href="assets/css/home-release.min.css?v=20260806shell123&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1&amp;contrast=20260804contrast1&amp;wax=20260804wax1&amp;hdr=20260804hdr2&amp;sheen=20260804sheen2&amp;glass=20260804glass1&amp;ask=20260804ask1&amp;ask=20260804ask2" data-mobile-edition="1" />
+<link rel="stylesheet" href="assets/css/promo-campaign.css?v=20260824promo1" />
 <meta name="theme-color" content="#EFE5D6" />
 <script>
 (function () {
@@ -27,6 +28,22 @@
   var previewAlways = false; /* показываем новому посетителю один раз; повтор — ?intro=replay */
   var storageReady = true;
   root.classList.add('has-js');
+
+  /* Снимаем признак возврата до того, как титульная анимация или приложение
+     запишут свои ключи. Это только локальный фильтр показа; право на скидку
+     окончательно подтверждает сервер при создании заказа. */
+  try {
+    var promoKeys = [
+      'salon_home_intro_v6', 'salon_draft', 'salon_concept_request_v1',
+      'salon_cart_v1', 'salon_home_situation', 'salon_promo_welcome_v1_seen'
+    ];
+    window.__salonPromoFootprint = {
+      storageReady:true,
+      returning:promoKeys.some(function (key) { return !!localStorage.getItem(key); })
+    };
+  } catch (error) {
+    window.__salonPromoFootprint = { storageReady:false, returning:true };
+  }
 
   try { theme = localStorage.getItem('salon_theme'); } catch (error) {}
   if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -802,6 +819,7 @@
 }
 </script>
 <script src="assets/js/home-release.min.js?v=20260806services115&amp;privacy=20260803out006privacy1&amp;search=20260803out007search1&amp;naming=20260804naming1&amp;ask=20260804ask1"></script>
+<script src="assets/js/promo-campaign.js?v=20260824promo1"></script>
 <script src="assets/js/analytics-attribution-v2.js?v=20260812analytics2"></script>
 <script src="assets/js/analytics-v2.js?v=20260812analytics2"></script>
 </body>
