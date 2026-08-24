@@ -429,6 +429,34 @@ test('benefit badge считает только реально совмести�
   assert.equal(h.api.appliedBenefitCount(totals), 3, 'скидка + бонус + сертификат');
 });
 
+test('ПЕРВЫЙЛИСТ выигрывает best-of, а бонусы не пробивают общий потолок 25%', () => {
+  const h = makeHarness();
+  const state = blank([work('w1', 'Диплом')]);
+  state.checkout = { useBonus: true, bonusAmount: 9000 };
+  h.api.reset(state, {
+    S: h.S,
+    member: {
+      sub: { label: 'Салон+ Про', discount_pct: 10, discount_cap: 3000 },
+      bonus: { balance: 9000 },
+    },
+    api: {
+      getDeals: () => ({
+        promoCode: 'ПЕРВЫЙЛИСТ',
+        promoDeal: { pct: 12, cap: 5000, min_price: 2500 },
+      }),
+    },
+  });
+
+  const totals = h.api.benefitsFor();
+  assert.equal(totals.quote.low, 30000);
+  assert.equal(totals.promo, 3600);
+  assert.equal(totals.subSave, 3000);
+  assert.equal(totals.discount, 3600, 'promo и подписка не складываются');
+  assert.equal(totals.bonus, 3900, 'бонус уменьшается до остатка общего потолка');
+  assert.equal(totals.discount + totals.bonus, 7500);
+  assert.equal(totals.due, 22500);
+});
+
 test('storage round-trip сохраняет состав, ответы и parentId без сетевых вызовов', () => {
   const h = makeHarness();
   const original = blank([

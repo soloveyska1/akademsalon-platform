@@ -43,8 +43,37 @@
     including owner previews, focus, overflow, console and zero-submit checks;
   - three independent economics/architecture/UX reviews with P0=P1=0, recorded
     in `E-1030` before submission.
-- Changed: none yet.
-- Unverified: implementation not started.
+- Changed:
+  - Salon welcome is 12% from 2,500 RUB capped at 5,000 RUB; retention is 10%
+    from 5,000 RUB capped at 2,500 RUB for 72 hours. Copy, five exact examples,
+    terms, accessible labels, owner-preview labels and one cache wave agree.
+  - The backend economics installer upgrades six pinned production sources and
+    campaign rows through a staged sentinel/restart/finalize protocol. One
+    authoritative transaction now owns best-of, finite-use CAS, bonus
+    consume/refund, repricing and late subscription changes.
+  - Invalid/minimum and no-active-subscription paths reconcile stale discounts
+    and points; exact claimed finite/dormant promos survive repricing without
+    becoming reusable by another order.
+  - The v2 patch restores the runtime `why_invalid` function missing from the
+    installed v1 promo service and exercises it without a test stub.
+  - Companion Kladovaya branch `codex/new-user-promo-value-v2` updates its
+    branded first-order sheet to the same welcome contract without changing
+    the paid-site/privacy boundary or durable suppression keys.
+  - Evidence: `E-1030`.
+- Verified:
+  - Salon public Node 603/603; backend 19/19 with `ResourceWarning` fatal;
+    Brain 39/39; strict validation green; repeat Salon build identical.
+  - Kladovaya build + 277/277, lint and repeat 408-file client build identical.
+  - Local Chromium mobile welcome/retention/owner states have no horizontal
+    overflow, keep scroll/focus containment and preserve one primary.
+  - Latest live read-only source preview is `ready`; open-order preflight is
+    `stacked_open=0`, `over_cap_open=0`; no client rows were read.
+  - UX, architecture and economics each returned GO with P0=0/P1=0 on the
+    final freeze.
+- Unverified:
+  - production backend migration, immutable static activation, health/smoke
+    and executed rollback/forward belong to the release workstream after this
+    product result is integrated.
 - Risks/rollback: a discount cannot be literally costless; this design treats
   it as bounded acquisition/retention spend and proves only the 12% standalone
   ceiling, not net profit without authoritative delivery-cost data. It exceeds
@@ -52,7 +81,13 @@
   adjacent to the promise. Retention remains qualified explicit-exit only and
   is suppressed when a stronger welcome code is already applied, so the site
   does not teach casual visitors to leave. Backend rollout backs up the live
-  database and exact current promo source, supports a real v1 -> v2 -> safe-v1
-  rollback without replacing later orders, and fails closed on mixed hashes.
+  database and exact current promo source. Its rollback keeps the coherent v2
+  aggregate guard, turns new claims off, preserves promised rows without
+  replacing later orders and fails closed on mixed hashes.
   Static rollback remains immutable pointer rotation.
-- Next: review and commit the manifest plus this handoff.
+  A separate kill-switch toggle is forbidden between economics staging and
+  finalize/rollback because it would replace the transition sentinel; the
+  release owner must complete one of those two actions before any toggle.
+- Next: commit the verified implementation, mark this workstream submitted,
+  fetch/recheck conflicts, integrate the exact result and open the bounded
+  production release workstream.

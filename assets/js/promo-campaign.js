@@ -11,12 +11,12 @@
 
   var CAMPAIGNS = {
     welcome: {
-      id:'welcome-v1', code:'ПЕРВЫЙЛИСТ', pct:2, floor:0,
-      cap:2500, minPrice:2500, expiresAt:'2026-09-21'
+      id:'welcome-v1', code:'ПЕРВЫЙЛИСТ', pct:12, floor:0,
+      cap:5000, minPrice:2500, expiresAt:'2026-09-21'
     },
     retention: {
-      id:'retention-v1', pct:1, floor:0,
-      cap:1000, minPrice:5000, durationHours:72,
+      id:'retention-v1', pct:10, floor:0,
+      cap:2500, minPrice:5000, durationHours:72,
       issueEndsAt:'2026-09-18T20:59:59Z'
     }
   };
@@ -298,8 +298,8 @@
   }
 
   function codeMarkup() {
-    return '<div class="promo-campaign__code" aria-label="Промокод ПЕРВЫЙЛИСТ">' +
-      '<span>ПЕРВЫЙЛИСТ</span><small>первый заказ · по 21 сентября</small></div>';
+    return '<div class="promo-campaign__code" aria-label="Промокод ПЕРВЫЙЛИСТ: 12%, максимум 5 000 рублей, один первый заказ">' +
+      '<span>ПЕРВЫЙЛИСТ</span><small>12% · до 5 000 ₽ · один первый заказ</small></div>';
   }
 
   function welcomeDialog(win, server, previewOnly) {
@@ -314,25 +314,26 @@
     layer.setAttribute('aria-describedby', 'promoWelcomeDescription promoWelcomeTerms');
     layer.innerHTML = '<section class="promo-campaign__sheet">' +
       '<button class="promo-campaign__close" type="button" data-promo-dismiss data-promo-initial aria-label="Закрыть приветственное предложение">×</button>' +
-      (previewOnly ? '<p class="promo-campaign__preview" role="status">Предпросмотр владельца · скидка не активирована</p>' : '') +
+      (previewOnly ? '<p class="promo-campaign__preview" role="status">Предпросмотр владельца · код не выдан · скидка не активирована</p>' : '') +
       '<div class="promo-campaign__art" aria-hidden="true"></div>' +
       '<div class="promo-campaign__body">' +
-        '<p class="promo-campaign__kicker">Приветственный лист · новый посетитель</p>' +
-        '<h2 id="promoWelcomeTitle">Первый заказ — с растущей скидкой</h2>' +
-        '<p id="promoWelcomeDescription">Чем выше согласованная цена работы, тем больше выгода. Состав, срок, цену и точную скидку зафиксируем до оплаты.</p>' +
+        '<p class="promo-campaign__kicker">Приветственный лист · один первый заказ</p>' +
+        '<h2 id="promoWelcomeTitle">До 5 000 ₽ на первый заказ</h2>' +
+        '<p id="promoWelcomeDescription">Промокод даёт скидку 12% от согласованной цены. Чем больше объём, тем больше выгода — максимум 5 000 ₽. Состав, срок и итог зафиксируем до оплаты.</p>' +
         codeMarkup() +
         '<ol class="promo-campaign__scale" aria-label="Примеры скидки">' +
-          '<li><span>2 500 ₽</span><b>−50 ₽</b></li>' +
-          '<li><span>20 000 ₽</span><b>−400 ₽</b></li>' +
-          '<li><span>60 000 ₽</span><b>−1 200 ₽</b></li>' +
-          '<li><span>125 000 ₽ и выше</span><b>до −2 500 ₽</b></li>' +
+          '<li><span>2 500 ₽</span><b>−300 ₽</b></li>' +
+          '<li><span>5 000 ₽</span><b>−600 ₽</b></li>' +
+          '<li><span>10 000 ₽</span><b>−1 200 ₽</b></li>' +
+          '<li><span>20 000 ₽</span><b>−2 400 ₽</b></li>' +
+          '<li><span>42 000 ₽ и выше</span><b>до −5 000 ₽</b></li>' +
         '</ol>' +
         '<div class="promo-campaign__actions">' +
           '<button class="promo-campaign__primary" type="button" data-promo-primary>' +
             (previewOnly ? 'Закрыть предпросмотр' : 'Подобрать первый этап со скидкой') + '</button>' +
           '<button class="promo-campaign__secondary" type="button" data-promo-dismiss>Сначала посмотреть мастерскую</button>' +
         '</div>' +
-        '<p class="promo-campaign__terms" id="promoWelcomeTerms">2% согласованной цены, но не более 2 500 ₽, для первого заказа от 2 500 ₽. Один раз. Не действует на сертификаты, депозит и абонементы. С другими скидками не складывается — сервер применит более выгодную.</p>' +
+        '<p class="promo-campaign__terms" id="promoWelcomeTerms">12% согласованной цены, но не более 5 000 ₽, для одного первого заказа от 2 500 ₽. Действует по 21 сентября 2026 года. Не распространяется на сертификаты, депозит и абонементы. С другими скидками не складывается — сервер применит одну, более выгодную.</p>' +
       '</div></section>';
     layer.querySelector('.promo-campaign__art').appendChild(campaignImage(doc));
     var dismiss = function () {
@@ -413,7 +414,7 @@
       });
     }).catch(function () {
       button.disabled = false;
-      button.textContent = 'Остаться и применить 1%';
+      button.textContent = 'Применить 10% и продолжить';
       if (statusNode) statusNode.textContent = 'Код сейчас недоступен. Черновик сохранён — можно продолжить без скидки.';
       return false;
     });
@@ -429,20 +430,21 @@
     layer.setAttribute('aria-labelledby', 'promoRetentionTitle');
     layer.setAttribute('aria-describedby', 'promoRetentionDescription');
     layer.innerHTML = '<section class="promo-campaign__sheet promo-campaign__sheet--retention">' +
-      '<button class="promo-campaign__close" type="button" data-promo-retention-exit data-promo-initial aria-label="Сохранить и выйти">×</button>' +
-      (previewOnly ? '<p class="promo-campaign__preview" role="status">Предпросмотр владельца · скидка не активирована</p>' : '') +
+      '<button class="promo-campaign__close" type="button" data-promo-retention-exit data-promo-initial aria-label="' +
+        (previewOnly ? 'Закрыть предпросмотр' : 'Сохранить и выйти') + '">×</button>' +
+      (previewOnly ? '<p class="promo-campaign__preview" role="status">Предпросмотр владельца · код не выдан · скидка не активирована</p>' : '') +
       '<div class="promo-campaign__body">' +
         '<p class="promo-campaign__kicker">Черновик сохранён</p>' +
-        '<h2 id="promoRetentionTitle">Хотите оставить себе небольшой запас?</h2>' +
-        '<p id="promoRetentionDescription">Если останетесь и отправите эту заявку в течение 72 часов, применим скидку 1% — не более 1 000 ₽ — при согласованной цене от 5 000 ₽.</p>' +
-        '<div class="promo-campaign__retention-mark" aria-hidden="true"><b>1%</b><span>до 1 000 ₽</span></div>' +
+        '<h2 id="promoRetentionTitle">Для этой заявки доступно 10%</h2>' +
+        '<p id="promoRetentionDescription">Примените скидку сейчас — код будет действовать 72 часа. Можно отказаться и выйти: черновик останется. Если уже действует более выгодное предложение, оно сохранится.</p>' +
+        '<div class="promo-campaign__retention-mark" aria-hidden="true"><b>10%</b><span>до 2 500 ₽</span></div>' +
         '<div class="promo-campaign__actions">' +
           '<button class="promo-campaign__primary" type="button" data-promo-retention-apply>' +
-            (previewOnly ? 'Закрыть предпросмотр' : 'Остаться и применить 1%') + '</button>' +
+            (previewOnly ? 'Закрыть предпросмотр' : 'Применить 10% и продолжить') + '</button>' +
           '<button class="promo-campaign__secondary" type="button" data-promo-retention-exit>Сохранить и выйти</button>' +
         '</div>' +
         '<p class="promo-campaign__status" role="status" aria-live="polite"></p>' +
-        '<p class="promo-campaign__terms">Одноразовый код для первого заказа. Не складывается с приветственным кодом или другой скидкой — применим более выгодную.</p>' +
+        '<p class="promo-campaign__terms">Один первый заказ от 5 000 ₽. Код действует 72 часа, не складывается с приветственной или другой скидкой — сервер выберет более выгодную.</p>' +
       '</div></section>';
     var leave = function () {
       if (!previewOnly) {
@@ -498,7 +500,7 @@
     bar.setAttribute('data-promo-return', '');
     bar.setAttribute('aria-labelledby', 'promoReturnTitle');
     bar.innerHTML = '<div><p class="promo-campaign__kicker">Черновик на месте</p>' +
-      '<h2 id="promoReturnTitle">Для него доступен 1% — до 1 000 ₽ — на 72 часа.</h2>' +
+      '<h2 id="promoReturnTitle">Для сохранённой заявки доступны 10% — до 2 500 ₽.</h2>' +
       '<p>Код проверит сервер; текст и контакт черновика в запрос не попадут.</p></div>' +
       '<div class="promo-return__actions"><button type="button" data-promo-return-apply>Применить и продолжить</button>' +
       '<button type="button" data-promo-return-dismiss>Не сейчас</button></div>' +

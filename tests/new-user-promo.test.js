@@ -11,13 +11,18 @@ test('reviewed schedules grow monotonically and keep exact boundaries', () => {
   const welcome = campaign.CAMPAIGNS.welcome;
   const retention = campaign.CAMPAIGNS.retention;
   assert.equal(campaign.discount(welcome, 2499), 0);
-  assert.equal(campaign.discount(welcome, 2500), 50);
-  assert.equal(campaign.discount(welcome, 124999), 2500);
-  assert.equal(campaign.discount(welcome, 125000), 2500);
+  assert.equal(campaign.discount(welcome, 2500), 300);
+  assert.equal(campaign.discount(welcome, 5000), 600);
+  assert.equal(campaign.discount(welcome, 10000), 1200);
+  assert.equal(campaign.discount(welcome, 20000), 2400);
+  assert.equal(campaign.discount(welcome, 41666), 5000);
+  assert.equal(campaign.discount(welcome, 41667), 5000);
   assert.equal(campaign.discount(retention, 4999), 0);
-  assert.equal(campaign.discount(retention, 5000), 50);
-  assert.equal(campaign.discount(retention, 99999), 1000);
-  assert.equal(campaign.discount(retention, 100000), 1000);
+  assert.equal(campaign.discount(retention, 5000), 500);
+  assert.equal(campaign.discount(retention, 10000), 1000);
+  assert.equal(campaign.discount(retention, 20000), 2000);
+  assert.equal(campaign.discount(retention, 24999), 2500);
+  assert.equal(campaign.discount(retention, 25000), 2500);
   const retentionCutoff = Date.parse(retention.issueEndsAt);
   assert.equal(campaign.retentionIssuable(null, retentionCutoff), true);
   assert.equal(campaign.retentionIssuable(null, retentionCutoff + 1), false);
@@ -38,6 +43,10 @@ test('reviewed schedules grow monotonically and keep exact boundaries', () => {
         priorFinal = finalPrice;
       }
       assert.ok(amount <= schedule.cap, `${schedule.id}: cap at ${price}`);
+      const maxShare = schedule === welcome ? 0.12 : 0.10;
+      if (price >= schedule.minPrice) {
+        assert.ok(amount <= Math.ceil(price * maxShare), `${schedule.id}: share at ${price}`);
+      }
       priorDiscount = amount;
     }
   }
@@ -81,8 +90,8 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   const configurator = read('configurator.html');
   const script = read('assets/js/promo-campaign.js');
   for (const html of [home, configurator]) {
-    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260824promo1/);
-    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260824promo1/);
+    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260824promo2/);
+    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260824promo2/);
   }
   assert.doesNotMatch(home, /<img[^>]+promo-salon-welcome/u);
   assert.doesNotMatch(configurator, /<img[^>]+promo-salon-welcome/u);
@@ -90,7 +99,7 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   assert.match(script, /\/promo\/eligibility/);
   assert.match(script, /credentials:\s*'include'/);
   assert.match(script, /owner_preview/);
-  assert.match(script, /Предпросмотр владельца · скидка не активирована/u);
+  assert.match(script, /Предпросмотр владельца · код не выдан · скидка не активирована/u);
   assert.match(script, /node\.hidden \|\| node\.inert/);
   assert.match(script, /getAttribute\('aria-hidden'\) === 'true'/);
   assert.match(script, /style\.display !== 'none' && style\.visibility !== 'hidden'/);
@@ -105,6 +114,8 @@ test('retention uses explicit intent or later return and never networks during u
   assert.match(script, /pagehide/);
   assert.match(script, /\/promo\/retention/);
   assert.match(script, /\.tx-close,\s*\.tx-mobile-back,\s*\.wizard-close/);
+  assert.match(script, /previewOnly \? 'Закрыть предпросмотр' : 'Сохранить и выйти'/u);
+  assert.match(script, /Примените скидку сейчас — код будет действовать 72 часа/u);
   assert.doesNotMatch(script, /beforeunload|sendBeacon|mouseleave|mouseout/);
   const pagehide = script.slice(script.indexOf('function onPageHide'), script.indexOf('function postRetention'));
   assert.doesNotMatch(pagehide, /fetch\(|\.post\(|\.get\(/);
@@ -113,10 +124,11 @@ test('retention uses explicit intent or later return and never networks during u
 test('public terms state provisional authority, first-order scope and non-stacking', () => {
   const loyalty = read('loyalty.html');
   assert.match(loyalty, /ПЕРВЫЙЛИСТ/u);
-  assert.match(loyalty, /2%/u);
+  assert.match(loyalty, /12%/u);
   assert.match(loyalty, /2 500 ₽/u);
-  assert.match(loyalty, /1%/u);
-  assert.match(loyalty, /1 000 ₽/u);
+  assert.match(loyalty, /5 000 ₽/u);
+  assert.match(loyalty, /10%/u);
+  assert.match(loyalty, /2 500 ₽/u);
   assert.match(loyalty, /не позднее 18 сентября 2026 г\./u);
   assert.match(loyalty, /не складыва/u);
   assert.match(loyalty, /окончательн[^<]{0,80}сервер/u);

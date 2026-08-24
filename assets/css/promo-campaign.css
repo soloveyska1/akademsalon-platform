@@ -235,8 +235,20 @@
 .promo-campaign__primary:disabled { cursor: wait; opacity: .72; }
 
 .promo-campaign__secondary {
+  min-height: 44px !important;
+  justify-self: center;
+  padding: 9px 12px !important;
+  border-color: transparent !important;
   background: transparent;
   color: var(--promo-ink);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+}
+
+.promo-campaign__secondary:hover:not(:disabled) {
+  color: var(--promo-wax);
+  text-decoration-color: currentColor;
 }
 
 .promo-campaign__terms {
