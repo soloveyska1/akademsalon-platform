@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-8bbb978ad7db43cf8d92fbd764bad75b",
   "slug": "release168-first-order-promo",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/release168-first-order-promo",
   "base_sha": "afe47556c9dcdeda3c69d20601ab11fc806fb399",
   "result_sha": "b004b0fcb63f44e3ce05ae7651886d6ef3897f32",
@@ -54,6 +54,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "acf8677daf98ee4ffcd0e3689b19720c88d497182a63e26fdd2763bb2bfc8162"
+  "manifest_revision": 3,
+  "base_manifest_hash": "58462cc9b0f5d0f9ea466d76d17c1b24bde4111a7052c31bdfa34295129281f2"
 }
