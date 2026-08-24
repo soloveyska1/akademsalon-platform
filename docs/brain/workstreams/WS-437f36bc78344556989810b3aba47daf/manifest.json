@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-437f36bc78344556989810b3aba47daf",
   "slug": "release169-promo-value",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/release169-promo-value",
   "base_sha": "51f3556210d2821df17829d4b7776ad2f1dee948",
-  "result_sha": null,
+  "result_sha": "e0f3a298c2124f1d0706d2f962b92c1784097d76",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -62,6 +62,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "04f342959a8086bcd26896d1b98f381952977a532c5359018ab4cc8d3df4f5a8"
 }
