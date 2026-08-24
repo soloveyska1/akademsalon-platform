@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-437f36bc78344556989810b3aba47daf",
+  "slug": "release169-promo-value",
+  "status": "active",
+  "branch": "codex/release169-promo-value",
+  "base_sha": "51f3556210d2821df17829d4b7776ad2f1dee948",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1031.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0169.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-437f36bc78344556989810b3aba47daf/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "backend/salon_bot/install_promo_campaign.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1029.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1030.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0168.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
