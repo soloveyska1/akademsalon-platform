@@ -1,0 +1,115 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-838673b2da9d47caa2d07a87b8a11a7e",
+  "slug": "out-006-promo-value-v3",
+  "status": "active",
+  "branch": "codex/out-006-promo-value-v3",
+  "base_sha": "d1f512c5d7e701c9492835883ae16f2aee081eec",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/promo-campaign.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/promo-campaign.js",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_promo_campaign.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_promo_campaign.py",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1030.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-838673b2da9d47caa2d07a87b8a11a7e/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "loyalty.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/cart-regression.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/new-user-promo.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "docs/brain/evidence/E-1028.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1029.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0168.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "api-route:GET:/promo/eligibility"
+    },
+    {
+      "access": "write",
+      "key": "api-route:POST:/promo/retention"
+    },
+    {
+      "access": "write",
+      "key": "contract:promo-eligibility"
+    },
+    {
+      "access": "write",
+      "key": "decision:promo-economics-v2"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:promo-campaign"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:configurator-retention"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:new-visitor-promo"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
