@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-9bec44129f3e4c60a975399edea4e96c",
   "slug": "out-006-smart-rescue",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-006-smart-rescue",
   "base_sha": "0fbdde35d12c5b8d84e043faa4e502c2a5fcf575",
   "result_sha": "925309b2a5380457a336c892ef89fac564898239",
@@ -134,6 +134,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 4,
-  "base_manifest_hash": "d510ea4db0a1b28d0e3b27200038bcf6b1e5f61b5914b4c241f735f0a2ac1bd8"
+  "manifest_revision": 5,
+  "base_manifest_hash": "c6dc7e28fb4b55b656c7dc2cc285791cfb046877e0c2af69d66da472fb844f16"
 }
