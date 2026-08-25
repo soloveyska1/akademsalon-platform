@@ -1,0 +1,91 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-3acdadf46aad4609bca4c5d7463302c0",
+  "slug": "release173-retention-preview",
+  "status": "active",
+  "branch": "codex/release173-retention-preview",
+  "base_sha": "c245da0e00ce3a9dfaefbe985b9540672687e1d3",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1037.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0173.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-3acdadf46aad4609bca4c5d7463302c0/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/css/promo-campaign.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/promo-campaign.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "deposit.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0172.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-08d29437a63b4a6ebd06258dfbab076f/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "brain-record:E-1037"
+    },
+    {
+      "access": "write",
+      "key": "brain-record:REL-0173"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
