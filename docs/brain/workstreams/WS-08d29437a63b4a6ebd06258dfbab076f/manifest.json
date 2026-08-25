@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-08d29437a63b4a6ebd06258dfbab076f",
   "slug": "retention-preview-polish",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-006-retention-preview-polish",
   "base_sha": "2061a9891a371fef16ef6cc91eed7621ca7b056b",
   "result_sha": "5ac8bc8f5af40b1d63fb4b9fd3e18413ffef5a27",
@@ -61,6 +61,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "6030e8ab7abc874e82c5dbb11b818a172fafe3f72154b5393f7a3b4bc3cd238e"
+  "manifest_revision": 3,
+  "base_manifest_hash": "41ed1f66cd041caf5cc13e4a81a3113d3dd95f7c50ef6909ea447ca81b6a5c65"
 }
