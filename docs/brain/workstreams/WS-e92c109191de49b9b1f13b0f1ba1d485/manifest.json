@@ -25,6 +25,10 @@
         "match": "exact"
       },
       {
+        "path": "backend/salon_bot/tests/remote_economic_v2_integration.py",
+        "match": "exact"
+      },
+      {
         "path": "backend/salon_bot/tests/test_economic_safety.py",
         "match": "exact"
       },
@@ -58,6 +62,10 @@
       },
       {
         "path": "tests/economic-safety.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/deposit-page-regression.test.js",
         "match": "exact"
       }
     ],
@@ -110,6 +118,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "21ca8c8c46b3aca35ce06c029c174db44bfc5ac594199d11b8437b285b51a662"
+  "manifest_revision": 3,
+  "base_manifest_hash": "7ca014fcb1ef9700cb2e1cfafa112ec9e12eae0d69019d5ed9864c0f2260f22f"
 }
