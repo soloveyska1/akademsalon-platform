@@ -3,9 +3,9 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `ffa2421ce9b3aed62b3c508a210fa50a2bb1e438`.
+  `df007e40399f47a26bd3903b4702fbcc74755ab4`.
 - Production `current` and compatibility `dist` resolve to
-  `release171-ffa2421`; `previous` resolves to `release169-51f3556`.
+  `release172-df007e4`; `previous` resolves to `release171-ffa2421`.
 - REL-0169 campaign/economics semantics remain live. Its original six-source
   rollback copy is
   `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
@@ -30,13 +30,52 @@
   economic-safety scope. Exact combined regressions, production hashes,
   Chromium, two-vantage smoke and both rollback-forward drills are in
   `REL-0171` and `E-1035`.
+- REL-0172 has G10 GO with P0=0/P1=0 in the bounded smart-rescue scope. Exact
+  public hashes, independent reviews, Chromium/WebKit mobile proof,
+  production owner/returning/remarks states, two-vantage smoke and an executed
+  static rollback-forward are in `REL-0172` and `E-1036`.
 - Analytics v2 contract is 2.3.0. REL-0169's static rollback target is
-  release168; REL-0171's static rollback target is release169. Promo backend rollback
-  preserves SQLite, promised rows and the aggregate guard while switching new
-  campaign activity off.
+  release168; REL-0171's target is release169; REL-0172's target is release171.
+  Promo backend rollback preserves SQLite, promised rows and the aggregate
+  guard while switching new campaign activity off.
 - `salon-bot-v2.service` is active as final PID `557663` with `NRestarts=0`;
   SQLite is WAL and integrity is `ok`. Deposit issuance is open. Final
   operator-network and VPS read-only smoke each passed 14/14.
+
+## 25 August REL-0172 smart rescue
+
+- The exact smart-rescue result
+  `925309b2a5380457a336c892ef89fac564898239` is contained in canonical source
+  `df007e40399f47a26bd3903b4702fbcc74755ab4` and published as
+  `release172-df007e4`.
+- An unfinished configurator exit asks one of four finite reasons. Only the
+  explicit price objection requests the existing qualified 10% offer from
+  5,000 RUB, capped at 2,500 RUB for 72 hours. Materials, composition and
+  deadline routes solve the named obstacle without issuing a discount.
+- Returning users remain suppressed. The labelled owner preview reproduces the
+  client presentation but cannot claim, navigate, persist promo state or alter
+  statistics. Browser Back/edge swipe closes the rescue layer before changing
+  the wizard.
+- Supervisor remarks move 40–800 characters through a ten-minute same-tab
+  envelope; no private text enters the URL. Existing-draft conflict is explicit,
+  legacy handoff keys are scrubbed and inaccessible storage fails closed.
+- Public 621/621, backend 99/99, Brain 39/39, focused 15/15 and mobile
+  Chromium/WebKit 36/36 passed. Three independent final reviews report GO with
+  P0=0/P1=0. One accepted UX P2 is limited to cleanup of a legacy remark when
+  the dossier next opens; active code never reads or sends it.
+- The deterministic public subset is 358 files / 26,234,987 bytes with manifest
+  `63f2f9ed...00cf`; immutable production has 361 files including three exact
+  retained server files. Owner/mode/path/symlink/hash drift is zero.
+- Initial activation, a real rollback to release171 and forward restore each
+  passed external/VPS smoke 14/14. Final pointers are release172/release171.
+  Backup: `/root/site-backups/release172-smart-rescue-20260825T121703Z`.
+- Production owner, returning-user and remarks browser states were GET-only and
+  created no form, order, claim or money mutation. Bot PID `557663`, restart
+  count zero, Nginx, WAL and `quick_check=ok` remained unchanged; actual
+  lock/traceback/ERROR/CRITICAL matches are zero.
+- Backend, database, tariffs, prices, deposits, Salon+, referrals and Kladovaya
+  did not change. Deposit issuance remains open. Mechanics and rollback are
+  proved; conversion, contribution margin and profit uplift are not.
 
 ## 25 August REL-0171 publication
 

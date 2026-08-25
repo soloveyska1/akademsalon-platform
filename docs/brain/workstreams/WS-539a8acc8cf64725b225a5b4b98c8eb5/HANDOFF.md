@@ -19,8 +19,21 @@
   permissions, two-vantage `production-smoke.js`, browser owner-preview GET-only
   inspection, executed symlink rollback/forward, service/journal/SQLite readback
   and final public SHA checks.
-- Changed: none yet.
-- Unverified: implementation not started.
+- Changed: published exact canonical `df007e40` as immutable
+  `release172-df007e4`, preserved the three retained server files, executed a
+  real release171 rollback and forward restore, and recorded the complete
+  production proof in `E-1036`, `REL-0172`, `START-HERE.md` and
+  `CURRENT-HANDOFF.md`.
+- Verified: public 621/621; backend 99/99 with one expected local skip; Brain
+  39/39; focused 15/15; Chromium/WebKit mobile 36/36; two identical 358-file
+  builds with manifest `63f2f9ed...00cf`; remote content/owner/mode/symlink
+  drift zero; external and VPS smoke 14/14 on forward, rollback and restored
+  forward; production owner/old-user/remarks browser proof GET-only; bot PID,
+  restart count, Nginx, WAL, quick-check and error journal green.
+- Unverified: conversion, revenue, contribution margin and profit uplift await
+  an authoritative consented sample and fulfilment-cost data. Accepted P2:
+  legacy private remark cleanup occurs when the dossier next opens; active code
+  never reads or sends the value.
 - Risks/rollback: P0 is a changed deposit rate/CTA, backend or DB mutation,
   service restart, asset hash mismatch, missing retained server file, broken
   main journey, unexpected non-GET browser request, or inability to restore
@@ -28,4 +41,6 @@
   version. Before pointer mutation, preserve exact old pointers and retained
   hashes; rollback atomically restores `current` and `dist` to REL-0171 and then
   reruns both smoke vantage points.
-- Next: review and commit the manifest plus this handoff.
+- Next: commit these exact proof records, submit the workstream at that result
+  SHA, integrate it into fresh `origin/main`, then leave release172 as the
+  canonical static truth with release171 as the immediate rollback.

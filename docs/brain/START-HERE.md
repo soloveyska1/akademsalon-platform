@@ -4,10 +4,10 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release171>
+- Production: <https://akademsalon.ru/?v=release172>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=38>
-- Production release: `release171-ffa2421`
-- Production source: `ffa2421ce9b3aed62b3c508a210fa50a2bb1e438`
+- Production release: `release172-df007e4`
+- Production source: `df007e40399f47a26bd3903b4702fbcc74755ab4`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
 - Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
@@ -27,9 +27,11 @@
   `1ee9533df1d677c34b44c95bf8e13ec9a7cda5e3`.
 - Проверенный September economic-safety result:
   `4acd0e623f5b2a5e2efd6926f799b71032234c4d`.
+- Проверенный smart-rescue result:
+  `925309b2a5380457a336c892ef89fac564898239`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Static rollback: `release169-51f3556`; static production — release171.
+- Static rollback: `release171-ffa2421`; static production — release172.
 - Backend promo result: coherent six-source economics v2, including
   `webapp.py` `346a41ea…f735` and `promo.py` `b10967c0…8a00`; rollback copy
   `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
@@ -45,6 +47,17 @@
   fixed referral равен 200 один раз. Source rollback copy:
   `/root/salon_bot/backups/economic-v2-20260825T100618364976Z`; обычный rollback
   закрывает только новую выдачу и никогда не восстанавливает SQLite.
+- REL-0172 имеет G10 GO в ограниченном smart-rescue scope: незавершённый выход
+  уточняет одну из четырёх причин, и только явное возражение по цене запрашивает
+  существующее удержание 10% от 5 000 RUB с потолком 2 500 RUB на 72 часа.
+  Старые пользователи полностью подавлены, owner preview не активирует выгоду,
+  Browser Back закрывает слой, а замечания руководителя передаются в обычный
+  черновик без текста в URL. Public 621/621, backend 99/99, Brain 39/39,
+  Chromium/WebKit mobile 36/36 и external/VPS smoke 14/14 после активации,
+  реального rollback и forward. Backend, база, цены, тарифы, Кладовая и
+  депозитная экономика не менялись; депозиты открыты. Точная запись:
+  [releases/REL-0172.md](releases/REL-0172.md), доказательства:
+  [evidence/E-1036.md](evidence/E-1036.md).
 - REL-0171 имеет G10 GO в ограниченном first-entry/economic-safety scope:
   объединённые public 612/612, backend 99/99, Brain 39/39, exact immutable tree,
   production Chromium 390/1440, external/VPS smoke 14/14 после активации,
@@ -201,7 +214,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0170.md](releases/REL-0170.md) — доказательная запись текущего GO-релиза.
+- [releases/REL-0172.md](releases/REL-0172.md) — доказательная запись текущего GO-релиза.
 - [../../ops/monitoring/README.md](../../ops/monitoring/README.md) — контракт
   изоляции Nginx virtual hosts и Салон-дозора на общем VPS.
 
