@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-e92c109191de49b9b1f13b0f1ba1d485",
   "slug": "september-economic-safety",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/september-economic-safety",
   "base_sha": "a84bd0a8bdab431198b1fb1cbd6427be76b7d85a",
   "result_sha": "33970f1dee440410fb5fb6df6195afb30b6cd120",
@@ -118,6 +118,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 4,
-  "base_manifest_hash": "c4a01f24e3fd933c0786b6c6c6ef5e87b585e9d09126a6d5612f79d7a1ea80fd"
+  "manifest_revision": 5,
+  "base_manifest_hash": "7e17bf3138ba4a7f7b9d0fb69bc64c9f8036ff91cf50a23d88307f83c6a2a147"
 }
