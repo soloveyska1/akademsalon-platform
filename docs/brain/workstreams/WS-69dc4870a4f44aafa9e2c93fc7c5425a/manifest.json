@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-69dc4870a4f44aafa9e2c93fc7c5425a",
   "slug": "release171-production-proof",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/september-full-integration",
   "base_sha": "ffa2421ce9b3aed62b3c508a210fa50a2bb1e438",
   "result_sha": "be38595102560e5cf38161414919d06f8d412f85",
@@ -71,6 +71,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "767b8abe43a092869240970a9643e3a8cee0107c576aa9ba2d7f20f86caf32d7"
+  "manifest_revision": 3,
+  "base_manifest_hash": "6a102f268a11fbb8d5ca41e6961aca9d0202856980c54d607baa46744eab3401"
 }
