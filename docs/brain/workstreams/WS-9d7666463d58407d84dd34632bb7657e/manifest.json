@@ -1,0 +1,83 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-9d7666463d58407d84dd34632bb7657e",
+  "slug": "out-006-sqlite-recovery",
+  "status": "active",
+  "branch": "codex/out-006-sqlite-recovery",
+  "base_sha": "4af52bb099bb8ecc2d6b8cd5b8802d96150c1d2a",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "backend/salon_bot/install_sqlite_recovery.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_sqlite_recovery.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1032.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0170.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-9d7666463d58407d84dd34632bb7657e/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "backend/salon_bot/analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_promo_campaign.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_promo_campaign.py",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:sqlite-recovery"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
