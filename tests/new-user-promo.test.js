@@ -54,6 +54,7 @@ test('reviewed schedules grow monotonically and keep exact boundaries', () => {
 
 test('eligibility fails closed and owner mode is presentation-only', () => {
   assert.equal(campaign.canPresent({ state: 'eligible' }, { returning: false }), true);
+  assert.equal(campaign.canPresent({ state: 'eligible' }, { returning: true }), false);
   assert.equal(campaign.canPresent({ state: 'provisional' }, { returning: false }), true);
   assert.equal(campaign.canPresent({ state: 'provisional' }, { returning: true }), false);
   assert.equal(campaign.canPresent({ state: 'existing' }, { returning: false }), false);
@@ -90,11 +91,12 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   const configurator = read('configurator.html');
   const script = read('assets/js/promo-campaign.js');
   for (const html of [home, configurator]) {
-    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260824promo2/);
-    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260824promo2/);
+    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260825promo3/);
+    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260825promo3/);
   }
   assert.doesNotMatch(home, /<img[^>]+promo-salon-welcome/u);
   assert.doesNotMatch(configurator, /<img[^>]+promo-salon-welcome/u);
+  assert.match(script, /assets\/img\/promo-salon-welcome\.webp\?v=20260825promo3/);
   assert.match(script, /assets\/img\/promo-salon-welcome\.png/);
   assert.match(script, /\/promo\/eligibility/);
   assert.match(script, /credentials:\s*'include'/);
