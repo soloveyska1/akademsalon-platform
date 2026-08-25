@@ -1,0 +1,94 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-2ecb95c1742441bc82768b6c38edcb95",
+  "slug": "september-entry",
+  "status": "active",
+  "branch": "codex/out-008-september-entry",
+  "base_sha": "a84bd0a8bdab431198b1fb1cbd6427be76b7d85a",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-008"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/img/promo-salon-welcome.webp",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/promo-campaign.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1033.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0171.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-2ecb95c1742441bc82768b6c38edcb95/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/new-user-promo.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/september-entry-readiness.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "zayavka.html",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:promo-campaign"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:mobile-first-entry"
+    },
+    {
+      "access": "read",
+      "key": "contract:order-submit"
+    },
+    {
+      "access": "read",
+      "key": "contract:promo-eligibility"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 5,
+  "base_manifest_hash": "54ac434a2191dff558b5bf5d4af30a006bf82d50527b3e5a0149681f92758e79"
+}

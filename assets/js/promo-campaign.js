@@ -23,7 +23,8 @@
   var WELCOME_SEEN = 'salon_promo_welcome_v1_seen';
   var RETENTION_LEFT = 'salon_promo_retention_v1_left';
   var RETENTION_DISMISSED = 'salon_promo_retention_v1_dismissed';
-  var IMAGE_PATH = 'assets/img/promo-salon-welcome.png';
+  var IMAGE_WEBP_PATH = 'assets/img/promo-salon-welcome.webp?v=20260825promo3';
+  var IMAGE_FALLBACK_PATH = 'assets/img/promo-salon-welcome.png';
   var startedAt = 0;
   var visibleStartedAt = 0;
   var visibleElapsedMs = 0;
@@ -53,8 +54,9 @@
 
   function canPresent(server, footprint) {
     if (!server || !footprint || footprint.storageReady === false) return false;
+    if (footprint.returning) return false;
     if (server.state === 'eligible') return true;
-    return server.state === 'provisional' && !footprint.returning;
+    return server.state === 'provisional';
   }
 
   function presentationMode(server) {
@@ -284,16 +286,21 @@
 
   function campaignImage(doc) {
     var img = doc.createElement('img');
-    img.src = IMAGE_PATH;
+    img.src = IMAGE_WEBP_PATH;
     img.alt = '';
     img.width = 960;
     img.height = 720;
     img.decoding = 'async';
     img.setAttribute('fetchpriority', 'high');
     img.addEventListener('error', function () {
+      if (img.getAttribute('data-promo-fallback') !== '1') {
+        img.setAttribute('data-promo-fallback', '1');
+        img.src = IMAGE_FALLBACK_PATH;
+        return;
+      }
       if (img.parentNode) img.parentNode.classList.add('promo-campaign__art--failed');
       img.remove();
-    }, { once:true });
+    });
     return img;
   }
 

@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260806shell123&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1&amp;contrast=20260804contrast1&amp;wax=20260804wax1&amp;hdr=20260804hdr2&amp;sheen=20260804sheen2&amp;glass=20260804glass1" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260806release119&amp;journey=1&amp;wax=20260804wax1" />
 <link rel="stylesheet" href="assets/css/cart.css?v=20260806release119&amp;wax=20260804wax1" />
-<link rel="stylesheet" href="assets/css/promo-campaign.css?v=20260824promo2" />
+<link rel="stylesheet" href="assets/css/promo-campaign.css?v=20260825promo3" />
 <script>
 (function () {
   try {
@@ -2601,6 +2601,7 @@ if (document.prerendering) {
   var resultCode = '';
   var disciplineCode = '';
   var routeOrigin = '';
+  var RESPONSE_WINDOW = 'В рабочее время обычно отвечаем за 15–30 минут; ночью может потребоваться больше времени.';
   try {
     routeParams = new URLSearchParams(location.search);
     serviceCode = routeParams.get('service') || '';
@@ -4013,7 +4014,7 @@ if (document.prerendering) {
           (loggedIn
             ? '<div class="concept-telegram-row concept-telegram-row--login"><span class="concept-auth-ok"><i></i><b>Telegram подключён</b><small>Ответ и статусы появятся в кабинете и боте.</small></span></div>'
             : '<div class="concept-contact-intro">' +
-                '<strong>Куда прислать ответ?</strong><span>Оставьте один контакт. Ответим в выбранном канале после просмотра материалов.</span>' +
+                '<strong>Куда прислать ответ?</strong><span>Оставьте один контакт. Ответим в выбранном канале после просмотра заявки и приложенных материалов, если они есть.</span>' +
               '</div>' +
               '<div class="concept-contact-methods" role="group" aria-label="Способ ответа">' +
                 ['telegram','email','phone'].map(function (method) {
@@ -4055,7 +4056,7 @@ if (document.prerendering) {
             (creditEligible() ? '<div><dt>Зачёт разбора</dt><dd>14 дней · один раз в ближайший согласованный этап</dd></div>' : '') +
             '<div><dt data-scope-price-label>' + safeText(priceView.label) + '</dt><dd data-summary-price><span data-scope-price class="' + (priceView.pending ? 'price-view--pending' : '') + '">' + scopePriceValueMarkup(priceView) + '</span></dd></div>' +
           '</dl>' +
-          '<p>За отправку заявки платить не нужно. В рабочее время обычно отвечаем за 15–30 минут. Работа начнётся только после согласования состава, срока и цены.</p>' +
+          '<p>За отправку заявки платить не нужно. ' + RESPONSE_WINDOW + ' Работа начнётся только после согласования состава, срока и цены.</p>' +
           (!currentIncluded
             ? '<div class="wizard-summary__notice">Текущий выбор пока не входит в состав. Откройте смету и добавьте его отдельной строкой, если он нужен в заказе.</div>'
             : '') +
@@ -5124,8 +5125,8 @@ if (document.prerendering) {
           '<div class="concept-success__mark">¶</div>' +
           '<p class="eyebrow">Готово</p>' +
           '<h1 tabindex="-1">Заявка отправлена.</h1>' +
-          '<p>Платная работа ещё не началась. Редактор посмотрит материалы и пришлёт состав, срок и точную цену; вы решите, продолжать ли.</p>' +
-          '<dl><div><dt>Заявка</dt><dd>' + safeText(number || 'создана') + '</dd></div><div><dt>Следующий шаг</dt><dd>редактор изучит материалы</dd></div></dl>' +
+          '<p>Платная работа ещё не началась. Редактор посмотрит заявку и приложенные материалы, если они есть. ' + RESPONSE_WINDOW + '</p>' +
+          '<dl><div><dt>Заявка</dt><dd>' + safeText(number || 'создана') + '</dd></div><div><dt>Следующий шаг</dt><dd>подтвердим заявку; если данных достаточно — состав, срок и точная цена, иначе уточним недостающее</dd></div></dl>' +
           '<div data-success-files></div>' +
           '<div class="concept-success__actions" data-success-actions></div>' +
         '</div>';
@@ -5208,6 +5209,6 @@ if (document.prerendering) {
   }
 })();
 </script>
-<script src="assets/js/promo-campaign.js?v=20260824promo2"></script>
+<script src="assets/js/promo-campaign.js?v=20260825promo3"></script>
 </body>
 </html>

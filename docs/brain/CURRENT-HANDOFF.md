@@ -29,6 +29,28 @@
   SQLite is WAL and integrity is `ok`. Final operator-network and VPS read-only
   smoke each passed 14/14.
 
+## 25 August September audit and first-entry candidate
+
+- `REL-0171` is a verified but unpublished seven-file candidate at
+  `1ee9533df1d677c34b44c95bf8e13ec9a7cda5e3`. Static production remains
+  `release169-51f3556`; backend production remains `REL-0170`.
+- The welcome PNG is retained as fallback while eligible visitors receive a
+  versioned 33,652-byte WebP. Existing, failed-eligibility and returning
+  visitors request no artwork. A real browser probe found and closed the case
+  where server `eligible` overrode a returning local footprint.
+- Chromium/WebKit passed twelve cold eligibility/fallback cases. Twelve cold
+  Lighthouse runs show eligible median bytes 1,494,793 -> 445,578 (-70.2%);
+  median score stays 87 and LCP is effectively unchanged. This is not field
+  Core Web Vitals, conversion, ranking or profit evidence.
+- Application copy now matches three actual steps, permits no-file requests,
+  uses one conditional response window and promises exact price only when data
+  is sufficient. Promo percentages, caps, prices and backend submit authority
+  are unchanged.
+- Full September release remains NO-GO. Deposit and referral public contracts
+  disagree with runtime; legal factual confirmations remain open; 320px
+  services/tariffs overflow and the configurator Back-history loop belong to
+  separate scopes. Exact proof and prioritized vetoes are in `E-1033`.
+
 ## 25 August SQLite BUSY_SNAPSHOT recovery
 
 - The bot produced 170 bounded `database is locked` failures while systemd
