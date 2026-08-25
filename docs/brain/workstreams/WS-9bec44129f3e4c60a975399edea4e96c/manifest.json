@@ -65,6 +65,10 @@
         "match": "exact"
       },
       {
+        "path": "tests/operations-polish15-regression.test.js",
+        "match": "exact"
+      },
+      {
         "path": "tests/release-asset-version.test.js",
         "match": "exact"
       },
@@ -130,6 +134,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "4ed6e08e325accf16a1b4996e8dcaa97f00e91ebc7a7ab2a97158930237d3909"
+  "manifest_revision": 3,
+  "base_manifest_hash": "c5f9ee335bcedb4db841e9e395f7f2891f5e1cd043754ad475f77f94c1444df2"
 }
