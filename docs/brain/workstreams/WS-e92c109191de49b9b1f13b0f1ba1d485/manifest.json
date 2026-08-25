@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-e92c109191de49b9b1f13b0f1ba1d485",
+  "slug": "september-economic-safety",
+  "status": "active",
+  "branch": "codex/september-economic-safety",
+  "base_sha": "a84bd0a8bdab431198b1fb1cbd6427be76b7d85a",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-004"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/js/cabinet.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/extras.js",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_economic_safety.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_economic_safety.py",
+        "match": "exact"
+      },
+      {
+        "path": "deposit.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1034.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-e92c109191de49b9b1f13b0f1ba1d485/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "loyalty.html",
+        "match": "exact"
+      },
+      {
+        "path": "oferta.html",
+        "match": "exact"
+      },
+      {
+        "path": "referral.html",
+        "match": "exact"
+      },
+      {
+        "path": "refunds.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/economic-safety.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/privacy-security-contracts.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "backend/salon_bot/install_promo_campaign.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_sqlite_recovery.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_promo_campaign.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_sqlite_recovery.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:deposit"
+    },
+    {
+      "access": "write",
+      "key": "contract:referral"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:economic-safety"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:deposit-safety"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:referral-safety"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
