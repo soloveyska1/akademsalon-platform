@@ -264,7 +264,18 @@
   max-height: min(780px, calc(100dvh - max(28px, env(safe-area-inset-top) + env(safe-area-inset-bottom))));
 }
 
-.promo-campaign--retention h2 { max-width: 16ch; }
+.promo-campaign--retention .promo-campaign__body {
+  padding: clamp(50px, 7vh, 68px) clamp(28px, 4vw, 48px) clamp(30px, 4vw, 42px);
+}
+
+.promo-campaign--retention h2 {
+  max-width: 13ch;
+  font-size: clamp(32px, 3.2vw, 46px);
+  line-height: 1.03;
+  letter-spacing: -.035em;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
 
 .promo-campaign__reasons {
   display: grid;
@@ -333,7 +344,7 @@
 .promo-campaign__reasons label:hover span { transform: translateY(-1px); }
 
 .promo-campaign__rescue-outcome > p:not(.promo-campaign__kicker) {
-  max-width: 56ch;
+  max-width: 46ch;
   margin: 18px 0 0;
   color: var(--promo-muted);
   font-size: 15px;
@@ -349,6 +360,37 @@
 }
 
 .promo-campaign__rescue-outcome[hidden] { display: none; }
+
+.promo-campaign__rescue-outcome .promo-campaign__actions {
+  width: min(100%, 360px);
+  margin-top: 26px;
+}
+
+.promo-campaign__rescue-outcome .promo-campaign__primary {
+  width: 100%;
+  border-color: var(--promo-wax);
+  background: var(--promo-wax);
+  color: #fff9f0;
+}
+
+.promo-campaign__rescue-outcome .promo-campaign__primary:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--promo-wax) 82%, var(--promo-ink));
+  background: color-mix(in srgb, var(--promo-wax) 82%, var(--promo-ink));
+  color: #fff9f0;
+}
+
+.promo-campaign__rescue-outcome .promo-campaign__secondary {
+  color: var(--promo-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.promo-campaign__rescue-outcome > .promo-campaign__terms {
+  max-width: 46ch;
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px dotted var(--promo-line);
+}
 
 .promo-campaign__retention-mark {
   display: flex;
@@ -409,6 +451,10 @@
 }
 
 :root[data-theme="dark"] .promo-campaign__primary { color: #171714; }
+:root[data-theme="dark"] .promo-campaign__rescue-outcome .promo-campaign__primary { color: #171714; }
+:root[data-theme="dark"] .promo-campaign__rescue-outcome .promo-campaign__primary:hover:not(:disabled) {
+  color: #171714;
+}
 
 @media (max-width: 760px) {
   .promo-campaign { padding: 0; place-items: end center; }
@@ -440,8 +486,17 @@
   .promo-campaign__scale li { min-height: 31px; }
   .promo-campaign__sheet--retention { border-radius: 18px 18px 0 0; }
   .promo-campaign__sheet--retention { max-height: min(92dvh, 780px); }
+  .promo-campaign--retention .promo-campaign__body {
+    padding: 68px 20px max(24px, env(safe-area-inset-bottom));
+  }
+  .promo-campaign--owner-preview .promo-campaign__body { padding-top: 26px; }
+  .promo-campaign--retention h2 {
+    max-width: 13ch;
+    font-size: clamp(30px, 8.3vw, 38px);
+  }
   .promo-campaign__reasons { grid-template-columns: 1fr; }
   .promo-campaign__reasons span { min-height: 64px; }
+  .promo-campaign__rescue-outcome .promo-campaign__actions { width: min(100%, 340px); }
   .promo-return { grid-template-columns: 1fr; margin-inline: 0; }
   .promo-return__actions { flex-direction: column; }
 }
@@ -456,6 +511,17 @@
   .promo-campaign__actions { margin-top: 15px; }
   .promo-campaign__reasons { margin-top: 15px; gap: 6px; }
   .promo-campaign__reasons span { min-height: 58px; padding-block: 9px; }
+  .promo-campaign--retention .promo-campaign__body {
+    padding-top: 58px;
+    padding-bottom: max(22px, env(safe-area-inset-bottom));
+  }
+  .promo-campaign--owner-preview .promo-campaign__body { padding-top: 22px; }
+  .promo-campaign__rescue-outcome > p:not(.promo-campaign__kicker) { margin-top: 12px; }
+  .promo-campaign__rescue-outcome .promo-campaign__actions { margin-top: 18px; }
+  .promo-campaign__rescue-outcome > .promo-campaign__terms {
+    margin-top: 16px;
+    padding-top: 11px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -474,14 +540,20 @@
   .promo-return__actions button { border: 2px solid CanvasText; }
   .promo-campaign__primary,
   :root[data-theme="dark"] .promo-campaign__primary,
+  .promo-campaign__rescue-outcome .promo-campaign__primary,
+  .promo-campaign__rescue-outcome .promo-campaign__primary:hover:not(:disabled),
+  :root[data-theme="dark"] .promo-campaign__rescue-outcome .promo-campaign__primary,
+  :root[data-theme="dark"] .promo-campaign__rescue-outcome .promo-campaign__primary:hover:not(:disabled),
   .promo-return__actions button:first-child {
     border-width: 3px;
+    border-color: CanvasText;
     background: Canvas;
     color: CanvasText;
     -webkit-text-fill-color: CanvasText;
     forced-color-adjust: none;
   }
   .promo-campaign__secondary,
+  .promo-campaign__rescue-outcome .promo-campaign__secondary,
   .promo-campaign__reasons span,
   .promo-return__actions button + button {
     background: Canvas;

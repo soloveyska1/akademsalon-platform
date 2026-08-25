@@ -35,8 +35,8 @@
     },
     unclear:{
       id:'unclear', label:'Не понимаю состав', kind:'local', requestRetention:false,
-      title:'Вернёмся к предварительному итогу',
-      description:'Там уже видны первый результат, срок и ориентир цены. Отправка заявки бесплатна, а условия вы подтвердите до оплаты.',
+      title:'Итог уже готов',
+      description:'В нём уже видны первый результат, срок и ориентир цены. Отправка заявки бесплатна, а условия вы подтвердите до оплаты.',
       action:'Вернуться к итогу'
     },
     deadline:{
@@ -552,7 +552,8 @@
     options = options || {};
     var doc = win.document;
     var layer = doc.createElement('div');
-    layer.className = 'promo-campaign promo-campaign--retention';
+    layer.className = 'promo-campaign promo-campaign--retention' +
+      (previewOnly ? ' promo-campaign--owner-preview' : '');
     layer.setAttribute('role', 'dialog');
     layer.setAttribute('aria-modal', 'true');
     layer.setAttribute('aria-labelledby', 'promoRetentionTitle');
@@ -585,6 +586,7 @@
     var outcome = layer.querySelector('[data-promo-rescue-outcome]');
     var status = layer.querySelector('.promo-campaign__status');
     var next = layer.querySelector('[data-promo-rescue-next]');
+    var sheet = layer.querySelector('.promo-campaign__sheet--retention');
     var selected = '';
     var stay = function () { closeDialog(win, layer); };
     var leave = function () {
@@ -604,6 +606,7 @@
       outcome.hidden = true;
       outcome.innerHTML = '';
       prompt.hidden = false;
+      if (sheet) sheet.scrollTop = 0;
       layer.setAttribute('aria-labelledby', 'promoRetentionTitle');
       layer.setAttribute('aria-describedby', 'promoRetentionDescription');
       status.textContent = '';
@@ -634,6 +637,7 @@
         (decision.requestRetention
           ? '<p class="promo-campaign__terms">Один первый заказ от 5 000 ₽. Код действует 72 часа, не складывается с приветственной или другой скидкой — сервер выберет более выгодную.</p>'
           : '<p class="promo-campaign__terms">Состав, реальный срок и точную цену редактор подтвердит до оплаты.</p>');
+      if (sheet) sheet.scrollTop = 0;
       var back = outcome.querySelector('[data-promo-rescue-back]');
       var action = outcome.querySelector('[data-promo-rescue-act]');
       if (back) back.addEventListener('click', showReasons);

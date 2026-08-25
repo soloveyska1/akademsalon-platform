@@ -103,8 +103,8 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   const configurator = read('configurator.html');
   const script = read('assets/js/promo-campaign.js');
   for (const html of [home, configurator]) {
-    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260825rescue1/);
-    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260825rescue1/);
+    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260825rescue2/);
+    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260825rescue2/);
   }
   assert.doesNotMatch(home, /<img[^>]+promo-salon-welcome/u);
   assert.doesNotMatch(configurator, /<img[^>]+promo-salon-welcome/u);
@@ -118,6 +118,46 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   assert.match(script, /!node\.hidden && !node\.closest\('\[hidden\]'\)/);
   assert.match(script, /getAttribute\('aria-hidden'\) === 'true'/);
   assert.match(script, /style\.display !== 'none' && style\.visibility !== 'hidden'/);
+});
+
+test('retention outcome has a bounded editorial hierarchy instead of a full-width slab', () => {
+  const script = read('assets/js/promo-campaign.js');
+  const css = read('assets/css/promo-campaign.css');
+  assert.match(script, /title:'Итог уже готов'/u);
+  assert.doesNotMatch(script, /Вернёмся к предварительному итогу/u);
+  assert.match(script, /promo-campaign--owner-preview/u);
+  assert.match(
+    css,
+    /\.promo-campaign--retention h2\s*\{[\s\S]*?font-size:\s*clamp\(32px,\s*3\.2vw,\s*46px\);[\s\S]*?overflow-wrap:\s*anywhere;/u,
+  );
+  assert.match(
+    css,
+    /\.promo-campaign__rescue-outcome \.promo-campaign__actions\s*\{[\s\S]*?width:\s*min\(100%,\s*360px\);/u,
+  );
+  assert.match(
+    css,
+    /\.promo-campaign__rescue-outcome \.promo-campaign__primary\s*\{[\s\S]*?background:\s*var\(--promo-wax\);/u,
+  );
+  assert.match(
+    css,
+    /\.promo-campaign__rescue-outcome \.promo-campaign__secondary\s*\{[\s\S]*?color:\s*var\(--promo-muted\);/u,
+  );
+});
+
+test('retention outcome preserves contrast in dark hover and forced-colors modes', () => {
+  const css = read('assets/css/promo-campaign.css');
+  assert.match(
+    css,
+    /:root\[data-theme="dark"\] \.promo-campaign__rescue-outcome \.promo-campaign__primary:hover:not\(:disabled\)\s*\{\s*color:\s*#171714;/u,
+  );
+  assert.match(
+    css,
+    /@media \(forced-colors:\s*active\)[\s\S]*?\.promo-campaign__rescue-outcome \.promo-campaign__primary:hover:not\(:disabled\)[\s\S]*?border-color:\s*CanvasText;[\s\S]*?background:\s*Canvas;[\s\S]*?color:\s*CanvasText;/u,
+  );
+  assert.match(
+    css,
+    /@media \(forced-colors:\s*active\)[\s\S]*?\.promo-campaign__rescue-outcome \.promo-campaign__secondary,[\s\S]*?background:\s*Canvas;[\s\S]*?color:\s*CanvasText;/u,
+  );
 });
 
 test('retention asks a finite reason, keeps return neutral and never networks during unload', () => {
@@ -155,6 +195,7 @@ test('owner preview can inspect reason branches without storage, navigation or p
   assert.match(dialog, /decision\.requestRetention/u);
   assert.match(dialog, /claimRetention/u);
   assert.match(dialog, /bridge\.rescue/u);
+  assert.match(dialog, /sheet\.scrollTop = 0/u);
   assert.doesNotMatch(dialog, /previewOnly \? 'Вернуться к причинам' : decision\.action/u);
   assert.match(dialog, /decision\.action \+ '<\/button>'/u);
 });

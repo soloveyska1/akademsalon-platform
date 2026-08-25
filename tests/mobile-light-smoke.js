@@ -37,6 +37,12 @@ const VIEWPORTS = [
   { name: 'iphone-390', width: 390, height: 844 },
   { name: 'iphone-430', width: 430, height: 932 }
 ];
+const PROMO_VIEWPORTS = [
+  { name: 'promo-short-568', width: 568, height: 514, promoOnly: true },
+  { name: 'promo-boundary-760', width: 760, height: 650, promoOnly: true },
+  { name: 'promo-desktop-1440', width: 1440, height: 900, promoOnly: true, mobile: false }
+];
+const TEST_VIEWPORTS = VIEWPORTS.concat(PROMO_VIEWPORTS);
 
 function loadPlaywright() {
   try {
@@ -183,11 +189,15 @@ function sanitizePageName(pageName) {
 }
 
 async function inspectPage(page, ctaRequired) {
-  const theme = await page.evaluate(() => ({
+  const expectedTheme = new URL(page.url()).searchParams.get('theme-smoke') === 'dark'
+    ? 'dark'
+    : 'light';
+  const theme = await page.evaluate((expected) => ({
     dataTheme: document.documentElement.getAttribute('data-theme'),
     prefersDark: window.matchMedia('(prefers-color-scheme: dark)').matches,
-    storedTheme: localStorage.getItem('salon_theme')
-  }));
+    storedTheme: localStorage.getItem('salon_theme'),
+    expected
+  }), expectedTheme);
 
   const overflow = await page.evaluate(() => {
     const viewportWidth = window.innerWidth;
@@ -343,7 +353,10 @@ async function inspectPage(page, ctaRequired) {
   });
 
   const failures = [];
-  if (theme.dataTheme === 'dark' || theme.prefersDark || theme.storedTheme !== 'light') {
+  const themeMismatch = expectedTheme === 'dark'
+    ? theme.dataTheme !== 'dark' || theme.storedTheme !== 'dark'
+    : theme.dataTheme === 'dark' || theme.prefersDark || theme.storedTheme !== 'light';
+  if (themeMismatch) {
     failures.push(`theme=${JSON.stringify(theme)}`);
   }
   if (overflow.delta > 1) {
@@ -1706,7 +1719,7 @@ async function inspectConfiguratorKeyboardShelf(page) {
   return { emulation, at39, at40, contact, contract, restoreState, postRequests, failures };
 }
 
-async function inspectPromoHistoryBack(page) {
+async function inspectPromoHistoryBack(page, screenshotLabel) {
   const failures = [];
   const postRequests = [];
   const capturePost = (request) => {
@@ -1717,15 +1730,93 @@ async function inspectPromoHistoryBack(page) {
   page.on('request', capturePost);
   await page.waitForSelector('.promo-campaign--retention.is-open', { timeout: 5_000 });
 
-  await page.check('input[name="promo-rescue-reason"][value="price"]');
-  await page.click('[data-promo-rescue-next]');
-  const previewAction = String(await page.locator('[data-promo-rescue-act]').textContent() || '')
-    .replace(/\s+/g, ' ').trim();
-  if (previewAction !== 'Применить 10% и продолжить') {
-    failures.push(`owner preview action differs from client action: ${previewAction}`);
+  const outcomes = [];
+  let previewAction = '';
+  for (const reason of ['price', 'materials', 'unclear', 'deadline']) {
+    await page.check(`input[name="promo-rescue-reason"][value="${reason}"]`);
+    await page.click('[data-promo-rescue-next]');
+    await page.waitForSelector('[data-promo-rescue-outcome]:not([hidden])');
+    const state = await page.evaluate((currentReason) => {
+      const box = (node) => {
+        const rect = node.getBoundingClientRect();
+        return {
+          left: rect.left,
+          top: rect.top,
+          right: rect.right,
+          bottom: rect.bottom,
+          width: rect.width,
+          height: rect.height
+        };
+      };
+      const sheet = document.querySelector('.promo-campaign__sheet--retention');
+      const body = sheet.querySelector('.promo-campaign__body');
+      const title = sheet.querySelector('[data-promo-outcome-title]');
+      const description = sheet.querySelector('#promoRetentionOutcomeDescription');
+      const actions = sheet.querySelector('.promo-campaign__rescue-outcome .promo-campaign__actions');
+      const primary = sheet.querySelector('[data-promo-rescue-act]');
+      const secondaries = Array.from(
+        sheet.querySelectorAll('.promo-campaign__rescue-outcome .promo-campaign__secondary')
+      );
+      const close = sheet.querySelector('.promo-campaign__close');
+      const preview = sheet.querySelector('.promo-campaign__preview');
+      const titleStyle = getComputedStyle(title);
+      return {
+        reason: currentReason,
+        viewport: { width: innerWidth, height: innerHeight },
+        sheet: box(sheet),
+        body: box(body),
+        title: box(title),
+        description: box(description),
+        actions: box(actions),
+        primary: box(primary),
+        secondary: secondaries.map(box),
+        close: box(close),
+        preview: box(preview),
+        titleText: String(title.textContent || '').replace(/\s+/g, ' ').trim(),
+        titleFont: parseFloat(titleStyle.fontSize),
+        titleOverflow: title.scrollWidth - title.clientWidth,
+        sheetOverflow: sheet.scrollWidth - sheet.clientWidth,
+        sheetScrollTop: sheet.scrollTop,
+        rootOverflow: document.documentElement.scrollWidth - innerWidth,
+        ownerClass: document.querySelector('.promo-campaign--owner-preview') !== null
+      };
+    }, reason);
+    outcomes.push(state);
+
+    const inside = (inner, outer) =>
+      inner.left >= outer.left - 1 && inner.right <= outer.right + 1;
+    const visibleVertically = (inner) =>
+      inner.top >= -1 && inner.bottom <= state.viewport.height + 1;
+    if (!state.ownerClass || state.rootOverflow > 1 || state.sheetOverflow > 1 ||
+        state.sheetScrollTop > 1 || state.titleOverflow > 1 ||
+        !inside(state.sheet, { left: 0, right: state.viewport.width }) ||
+        !inside(state.title, state.body) || !inside(state.description, state.body) ||
+        !inside(state.actions, state.body) || !inside(state.close, state.sheet) ||
+        !inside(state.preview, state.sheet) || state.titleFont > 46.1 ||
+        !visibleVertically(state.title) || !visibleVertically(state.primary) ||
+        !visibleVertically(state.close) || !visibleVertically(state.preview) ||
+        state.actions.width > 361 || state.primary.height < 49 ||
+        state.secondary.some((target) => target.height < 44)) {
+      failures.push(`promo ${reason} geometry: ${JSON.stringify(state)}`);
+    }
+    if (reason === 'price') {
+      previewAction = String(await page.locator('[data-promo-rescue-act]').textContent() || '')
+        .replace(/\s+/g, ' ').trim();
+      if (previewAction !== 'Применить 10% и продолжить') {
+        failures.push(`owner preview action differs from client action: ${previewAction}`);
+      }
+    }
+    if (screenshotLabel && (reason === 'price' || reason === 'unclear')) {
+      const screenshotPath = path.join(
+        OUTPUT_ROOT,
+        `${screenshotLabel}-${reason}-outcome.png`
+      );
+      fs.mkdirSync(path.dirname(screenshotPath), { recursive: true });
+      await page.screenshot({ path: screenshotPath, fullPage: false });
+    }
+    await page.click('[data-promo-rescue-act]');
+    await page.waitForSelector('[data-promo-rescue-prompt]:not([hidden])');
   }
-  await page.click('[data-promo-rescue-act]');
-  await page.waitForSelector('[data-promo-rescue-prompt]:not([hidden])');
 
   const before = await page.evaluate(() => ({
     stage: document.getElementById('conceptWizard')?.getAttribute('data-concept-stage') || '',
@@ -1759,7 +1850,7 @@ async function inspectPromoHistoryBack(page) {
     failures.push(`owner preview submitted requests: ${JSON.stringify(postRequests)}`);
   }
   page.off('request', capturePost);
-  return { before, after, previewAction, postRequests, failures };
+  return { before, after, outcomes, previewAction, postRequests, failures };
 }
 
 async function inspectRemarksDraftConflict(page, choice) {
@@ -1863,23 +1954,30 @@ async function main() {
       }
 
       try {
-        for (const viewport of VIEWPORTS) {
+        for (const viewport of TEST_VIEWPORTS) {
           for (const pageName of options.pages) {
+            const promoScenario = /promo-history-smoke=1/.test(pageName);
+            if (viewport.promoOnly && !promoScenario) continue;
+            const mobileContext = viewport.mobile !== false;
             const context = await browser.newContext({
               colorScheme: 'light',
-              deviceScaleFactor: 2,
-              hasTouch: true,
-              isMobile: true,
+              deviceScaleFactor: mobileContext ? 2 : 1,
+              hasTouch: mobileContext,
+              isMobile: mobileContext,
               locale: 'ru-RU',
               reducedMotion: 'reduce',
-              userAgent: browserName === 'webkit'
+              userAgent: mobileContext && browserName === 'webkit'
                 ? 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1'
                 : undefined,
               viewport: { width: viewport.width, height: viewport.height }
             });
             await context.addInitScript(() => {
               try {
-                localStorage.setItem('salon_theme', 'light');
+                const params = new URLSearchParams(location.search);
+                localStorage.setItem(
+                  'salon_theme',
+                  params.get('theme-smoke') === 'dark' ? 'dark' : 'light'
+                );
                 localStorage.setItem('salon_calm', '1');
                 localStorage.removeItem('salon_draft');
                 localStorage.removeItem('salon_cart_v1');
@@ -1894,7 +1992,6 @@ async function main() {
                   at: now.toISOString(),
                   expiresAt: new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString()
                 }));
-                const params = new URLSearchParams(location.search);
                 if (params.get('promo-history-smoke') === '1') {
                   const concept = {
                     version: 5,
@@ -2090,7 +2187,10 @@ async function main() {
                 configuratorInspection = await inspectConfiguratorKeyboardShelf(page);
               }
               if (/promo-history-smoke=1/.test(pageName)) {
-                configuratorInspection = await inspectPromoHistoryBack(page);
+                configuratorInspection = await inspectPromoHistoryBack(
+                  page,
+                  options.screenshots ? label : ''
+                );
               }
               const remarksConflict = pageName.match(/remarks-conflict-smoke=(continue|new)/);
               if (remarksConflict) {
