@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260806shell123&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1&amp;contrast=20260804contrast1&amp;wax=20260804wax1&amp;hdr=20260804hdr2&amp;sheen=20260804sheen2&amp;glass=20260804glass1" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260806release119&amp;journey=1&amp;wax=20260804wax1" />
 <link rel="stylesheet" href="assets/css/cart.css?v=20260806release119&amp;wax=20260804wax1" />
-<link rel="stylesheet" href="assets/css/promo-campaign.css?v=20260825promo3" />
+<link rel="stylesheet" href="assets/css/promo-campaign.css?v=20260825rescue1" />
 <script>
 (function () {
   try {
@@ -2590,6 +2590,10 @@ if (document.prerendering) {
 
   var STORE_KEY = 'salon_concept_request_v1';
   var STORE_VERSION = 5;
+  var SOURCE_DESCRIPTION_MIN = 40;
+  var REMARKS_HANDOFF_KEY = 'salon_remarks_handoff_v1';
+  var REMARKS_HANDOFF_TTL = 10 * 60 * 1000;
+  var REMARKS_HANDOFF_MAX = 800;
   var RULES_VERSION = 'case-2026-07-26.1';
   var RULES_EVENT_VERSION = 'r1';
   var conceptEventSeen = {};
@@ -2601,6 +2605,7 @@ if (document.prerendering) {
   var resultCode = '';
   var disciplineCode = '';
   var routeOrigin = '';
+  var handoffCode = '';
   var RESPONSE_WINDOW = 'В рабочее время обычно отвечаем за 15–30 минут; ночью может потребоваться больше времени.';
   try {
     routeParams = new URLSearchParams(location.search);
@@ -2610,6 +2615,7 @@ if (document.prerendering) {
     resultCode = routeParams.get('result') || '';
     disciplineCode = routeParams.get('discipline') || '';
     routeOrigin = routeParams.get('route') || '';
+    handoffCode = routeParams.get('handoff') || '';
   } catch (e) {}
   var service = null;
   if (serviceCode && window.SalonServices) {
@@ -2689,6 +2695,50 @@ if (document.prerendering) {
     if (window.Salon && Salon.store) return Salon.store.set(key, value);
     try { localStorage.setItem(key, JSON.stringify(value)); return true; }
     catch (e) { return false; }
+  }
+  function readIncomingRemarksHandoff() {
+    var expected = !serviceCode && handoffCode === 'remarks' &&
+      situationCode === 'comments' && resultCode === 'diagnostic' && routeOrigin === 'page';
+    if (!expected) return { expected:false, status:'none', text:'' };
+    var raw = null;
+    try {
+      raw = sessionStorage.getItem(REMARKS_HANDOFF_KEY);
+    } catch (e) {
+      return { expected:true, status:'missing', text:'' };
+    }
+    if (!raw) return { expected:true, status:'missing', text:'' };
+    try {
+      var value = JSON.parse(raw);
+      var createdAt = Number(value && value.created_at);
+      var text = value && typeof value.text === 'string'
+        ? value.text.replace(/\r\n?/g,'\n').trim().slice(0,REMARKS_HANDOFF_MAX) : '';
+      var fresh = createdAt > 0 && Date.now() >= createdAt &&
+        Date.now() - createdAt <= REMARKS_HANDOFF_TTL;
+      if (value && value.v === 1 && value.kind === 'remarks' && fresh &&
+          text.length >= SOURCE_DESCRIPTION_MIN) {
+        return { expected:true, status:'imported', text:text };
+      }
+    } catch (e) {}
+    try { sessionStorage.removeItem(REMARKS_HANDOFF_KEY); } catch (e) {}
+    return { expected:true, status:'missing', text:'' };
+  }
+  var remarksHandoff = readIncomingRemarksHandoff();
+  function dropIncomingRemarksHandoff() {
+    try { sessionStorage.removeItem(REMARKS_HANDOFF_KEY); } catch (e) {}
+  }
+  function resolveRemarksDraftChoice(handoff, choice, savedComment) {
+    var incoming = handoff && handoff.status === 'imported' &&
+      typeof handoff.text === 'string' ? handoff.text : '';
+    if (choice === 'new') {
+      return {
+        handoff:handoff || { expected:false, status:'none', text:'' },
+        comment:incoming
+      };
+    }
+    return {
+      handoff:{ expected:false, status:'declined', text:'' },
+      comment:String(savedComment == null ? '' : savedComment)
+    };
   }
   function normalizeWorkType(value) {
     var map = {
@@ -2918,10 +2968,13 @@ if (document.prerendering) {
     state.deadlineDate = '';
     state.deadlineFlexible = false;
     state.quoteScope = 'first';
+    state.topic = '';
+    state.comment = remarksHandoff.status === 'imported' ? remarksHandoff.text : '';
     state.entryPrefilled = !!routedResult;
     state.authorParticipation = false;
     state.routeConfirmation = 'inferred';
     saveSelections(true);
+    if (remarksHandoff.status === 'imported') dropIncomingRemarksHandoff();
     }
     if (!pendingRouteConflict && state.situation === 'topic' && resultNeedsExistingMaterial(state.result)) {
       state.result = '';
@@ -2938,6 +2991,7 @@ if (document.prerendering) {
       routeParams.delete('discipline');
       routeParams.delete('result');
       routeParams.delete('route');
+      routeParams.delete('handoff');
       var cleanQuery = routeParams.toString();
       history.replaceState(history.state, '', location.pathname +
         (cleanQuery ? '?' + cleanQuery : '') + location.hash);
@@ -2982,11 +3036,14 @@ if (document.prerendering) {
     state.deadlineFlexible = false;
     state.quoteScope = 'first';
     state.topic = '';
-    state.comment = '';
+    var remarksChoice = resolveRemarksDraftChoice(remarksHandoff,'new',state.comment);
+    remarksHandoff = remarksChoice.handoff;
+    state.comment = remarksChoice.comment;
     state.entryPrefilled = !!routedResult;
     state.authorParticipation = false;
     state.routeConfirmation = 'inferred';
     saveSelections(true);
+    dropIncomingRemarksHandoff();
     clearIncomingRouteParams();
     render();
     focusConceptHeading();
@@ -2994,6 +3051,10 @@ if (document.prerendering) {
 
   function continueSavedRoute() {
     pendingRouteConflict = false;
+    var remarksChoice = resolveRemarksDraftChoice(remarksHandoff,'saved',state.comment);
+    remarksHandoff = remarksChoice.handoff;
+    state.comment = remarksChoice.comment;
+    dropIncomingRemarksHandoff();
     routeOrigin = '';
     routeSteps[0].title = 'Что у вас уже есть?';
     routeSteps[0].lead = 'Выберите ситуацию и вид работы. Сразу покажем первый результат и ориентир цены.';
@@ -3845,7 +3906,6 @@ if (document.prerendering) {
   // второй путь. Порог в 40 символов отсекает «нет файла» и «потом пришлю»:
   // редактору нужно, с чем работать. Расчёт остаётся предварительным в обоих
   // случаях, поэтому доступ к следующему шагу здесь ничем не рискует.
-  var SOURCE_DESCRIPTION_MIN = 40;
   function describedInsteadOfFile() {
     return state.comment.trim().length >= SOURCE_DESCRIPTION_MIN;
   }
@@ -3860,6 +3920,17 @@ if (document.prerendering) {
       if (steps[index] && steps[index].key === 'materials') return index;
     }
     return -1;
+  }
+  function remarksHandoffMarkup() {
+    if (!remarksHandoff.expected || state.situation !== 'comments') return '';
+    if (remarksHandoff.status === 'imported') {
+      return '<p class="concept-prerequisite-note" data-remarks-handoff role="status">' +
+        '<strong>Замечания перенесены.</strong> Текст находится в черновике на этом устройстве. ' +
+        'На сервер он уйдёт только вместе с заявкой после вашего согласия.</p>';
+    }
+    return '<p class="concept-prerequisite-note" data-remarks-handoff role="status">' +
+      '<strong>Текст не перенесён.</strong> Вставьте замечания ещё раз в поле ниже. ' +
+      'Остальные ответы не потеряются.</p>';
   }
   /* Файл живёт только в памяти вкладки. Любой путь к контакту — обычный Next,
      history, восстановленный draft или checkout из сметы — проходит один и тот
@@ -3927,6 +3998,7 @@ if (document.prerendering) {
     var mainMarkup =
       '<div class="materials-step__main">' +
           '<section class="materials-card">' +
+            remarksHandoffMarkup() +
             materialRecoveryMarkup() +
             (service && legacyAsk && legacyAsk.children.length
               ? '<section class="concept-service-questions"><p class="eyebrow">Детали услуги</p><div data-concept-service-ask></div></section>'
@@ -4316,6 +4388,9 @@ if (document.prerendering) {
   }
 
   function currentStepLead(step) {
+    if (step && step.key === 'materials' && state.situation === 'comments') {
+      return 'Проверьте замечания, укажите срок и приложите текущую версию работы. Без файла редактор обозначит только предварительный маршрут; точную смету подтвердит после просмотра материала.';
+    }
     if (step && step.key === 'materials' && isPracticeDraftSupport()) {
       return 'Проверьте перенесённый объём, укажите дату первого результата и приложите материалы комплекта. Если файлов пока нет, опишите, что уже готово.';
     }
@@ -4332,6 +4407,7 @@ if (document.prerendering) {
   }
 
   function renderDraftConflict() {
+    var hasIncomingRemarks = remarksHandoff.status === 'imported';
     host.setAttribute('data-concept-stage','draft-choice');
     host.innerHTML =
       '<header class="wizard-main__head wizard-main__head--draft-choice">' +
@@ -4341,10 +4417,15 @@ if (document.prerendering) {
       '</header>' +
       '<section class="concept-draft-choice" aria-label="Выбор заявки">' +
         '<button type="button" class="concept-draft-choice__primary" data-continue-saved>' +
-          '<small>Сохранённый черновик</small><strong>Продолжить заявку</strong><span>' + safeText(savedDraftSummary()) + '</span>' +
+          '<small>Сохранённый черновик</small><strong>Продолжить заявку</strong><span>' + safeText(savedDraftSummary()) +
+            (hasIncomingRemarks ? '. Новые замечания в этот черновик не добавятся.' : '') + '</span>' +
         '</button>' +
         '<button type="button" class="concept-draft-choice__secondary" data-start-routed>' +
-          '<small>Новая задача</small><strong>Начать заново</strong><span>' + safeText(incomingRouteSummary()) + '. Сохранённый черновик будет заменён.</span>' +
+          '<small>' + (hasIncomingRemarks ? 'Новая задача с замечаниями' : 'Новая задача') + '</small>' +
+          '<strong>' + (hasIncomingRemarks ? 'Создать новую заявку' : 'Начать заново') + '</strong><span>' +
+            safeText(incomingRouteSummary()) +
+            (hasIncomingRemarks ? '. Перенесённые замечания будут добавлены.' : '') +
+            ' Сохранённый черновик будет заменён.</span>' +
         '</button>' +
       '</section>';
     var progress = document.getElementById('conceptProgress');
@@ -4365,6 +4446,9 @@ if (document.prerendering) {
     }
     syncLegacy();
     var step = steps[state.step];
+    if (step && step.key === 'materials' && state.situation === 'comments') {
+      step = Object.assign({},step,{ title:'Замечания и материалы' });
+    }
     var compactHomeEntry = step.key === 'situation' && !showAllSituations &&
       !!state.entryPrefilled && !!state.situation;
     if (compactHomeEntry && routeOrigin !== 'home-zero' && routeOrigin !== 'home-edit') {
@@ -5201,6 +5285,37 @@ if (document.prerendering) {
         hasPromo:window.SalonPromoCampaignBridge.hasPromo()
       };
     };
+    window.SalonPromoCampaignBridge.rescue = function (reason) {
+      if (reason === 'unclear') {
+        var summary = host.querySelector('.wizard-summary h2');
+        if (!summary) return false;
+        summary.setAttribute('tabindex','-1');
+        summary.scrollIntoView({ block:'center', behavior:window.Salon && Salon.reduceMotion ? 'auto' : 'smooth' });
+        summary.focus({ preventScroll:true });
+        return true;
+      }
+      if (reason !== 'materials' && reason !== 'deadline') return false;
+      var materialStep = materialStepIndex();
+      if (materialStep < 0 || go(materialStep) !== true) return false;
+      setTimeout(function () {
+        var target = null;
+        if (reason === 'materials') {
+          target = host.querySelector('[data-concept-field="comment"]');
+          var details = target && target.closest('details');
+          while (details) {
+            details.open = true;
+            details = details.parentElement && details.parentElement.closest('details');
+          }
+        } else {
+          target = host.querySelector('[data-concept-field="deadlineDate"]:not([disabled])') ||
+            host.querySelector('[data-concept-deadline-flex]');
+        }
+        if (!target) return;
+        target.scrollIntoView({ block:'center', behavior:'auto' });
+        target.focus({ preventScroll:true });
+      },0);
+      return true;
+    };
   }
   render();
   if (restoredMaterialPrerequisite) setTimeout(focusMaterialRecovery,0);
@@ -5209,6 +5324,6 @@ if (document.prerendering) {
   }
 })();
 </script>
-<script src="assets/js/promo-campaign.js?v=20260825promo3"></script>
+<script src="assets/js/promo-campaign.js?v=20260825rescue1"></script>
 </body>
 </html>

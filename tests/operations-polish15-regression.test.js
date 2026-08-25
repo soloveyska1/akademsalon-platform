@@ -38,7 +38,8 @@ test('tool routes keep real interactive controls', () => {
   assert.match(read('audit-temy-vkr.html'), /data-run-topic-audit/);
   assert.match(read('proverka-istochnikov-vkr.html'), /data-run-source-check/);
   assert.match(read('assets/js/polish15-operations.js'), /api\.crossref\.org\/works/);
-  assert.match(read('dosie-nauchruka.html'), /data-generic-tool-submit/);
+  assert.match(read('dosie-nauchruka.html'), /data-remarks-handoff-submit/);
+  assert.match(read('assets/js/remarks-handoff.js'), /sessionStorage\.setItem\(KEY/);
 });
 
 test('payment routing and live offer mechanics remain connected', () => {

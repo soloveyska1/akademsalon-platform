@@ -20,6 +20,32 @@
       issueEndsAt:'2026-09-18T20:59:59Z'
     }
   };
+  var RESCUE_DECISIONS = {
+    price:{
+      id:'price', label:'Цена выше ожиданий', kind:'discount', requestRetention:true,
+      title:'Проверим скидку 10%',
+      description:'Код действует 72 часа и уменьшит согласованную цену максимум на 2 500 ₽. Если уже есть более выгодное предложение, оно сохранится.',
+      action:'Применить 10% и продолжить'
+    },
+    materials:{
+      id:'materials', label:'Не хватает материалов', kind:'local', requestRetention:false,
+      title:'Файлы можно приложить позже',
+      description:'Сейчас достаточно описать, что уже готово и чего не хватает, — минимум 40 знаков. Точную смету редактор подтвердит после просмотра материала.',
+      action:'Описать вместо файла'
+    },
+    unclear:{
+      id:'unclear', label:'Не понимаю состав', kind:'local', requestRetention:false,
+      title:'Вернёмся к предварительному итогу',
+      description:'Там уже видны первый результат, срок и ориентир цены. Отправка заявки бесплатна, а условия вы подтвердите до оплаты.',
+      action:'Вернуться к итогу'
+    },
+    deadline:{
+      id:'deadline', label:'Нужно согласовать срок', kind:'local', requestRetention:false,
+      title:'Срок можно оставить гибким',
+      description:'Редактор уточнит реальную дату после просмотра материалов. До согласования работа и оплата не начнутся.',
+      action:'Уточнить срок'
+    }
+  };
   var WELCOME_SEEN = 'salon_promo_welcome_v1_seen';
   var RETENTION_LEFT = 'salon_promo_retention_v1_left';
   var RETENTION_DISMISSED = 'salon_promo_retention_v1_dismissed';
@@ -29,7 +55,23 @@
   var visibleStartedAt = 0;
   var visibleElapsedMs = 0;
   var resolvedEligibility = null;
+  var resolvedFootprint = null;
   var openLayer = null;
+  var dialogSequence = 0;
+
+  function rescueDecision(reason) {
+    var decision = RESCUE_DECISIONS[String(reason || '')];
+    if (!decision) return null;
+    return {
+      id:decision.id,
+      label:decision.label,
+      kind:decision.kind,
+      requestRetention:decision.requestRetention,
+      title:decision.title,
+      description:decision.description,
+      action:decision.action
+    };
+  }
 
   function discount(schedule, rawPrice) {
     var price = Math.max(0, Math.floor(Number(rawPrice) || 0));
@@ -123,6 +165,16 @@
 
   function pageKind(win) {
     return /configurator\.html$/i.test(win.location.pathname || '') ? 'configurator' : 'home';
+  }
+
+  function dialogHistoryState(rawState, token) {
+    var baseState = rawState && typeof rawState === 'object' ? rawState : {};
+    var sentinel = {};
+    Object.keys(baseState).forEach(function (key) {
+      if (key !== 'salonPromoDialog') sentinel[key] = baseState[key];
+    });
+    sentinel.salonPromoDialog = String(token || 'promo');
+    return sentinel;
   }
 
   function bootFootprint(win) {
@@ -226,12 +278,21 @@
   function focusables(layer) {
     return Array.prototype.slice.call(layer.querySelectorAll(
       'button:not([disabled]),a[href],input:not([disabled]),[tabindex]:not([tabindex="-1"])'
-    )).filter(function (node) { return !node.hidden; });
+    )).filter(function (node) { return !node.hidden && !node.closest('[hidden]'); });
   }
 
-  function closeDialog(win, layer, options) {
+  function clearDialogHistory(win, layer) {
+    if (layer.__historyFallback) win.clearTimeout(layer.__historyFallback);
+    layer.__historyFallback = 0;
+    if (layer.__popHandler) win.removeEventListener('popstate', layer.__popHandler, true);
+    layer.__popHandler = null;
+    layer.__historyArmed = false;
+  }
+
+  function finishDialogClose(win, layer, options) {
     if (!layer || layer !== openLayer) return;
     options = options || {};
+    clearDialogHistory(win, layer);
     openLayer = null;
     setPageInert(win.document, layer, false);
     win.document.body.style.overflow = layer.__bodyOverflow || '';
@@ -242,6 +303,59 @@
         win.document.contains(layer.__returnFocus)) {
       try { layer.__returnFocus.focus({ preventScroll:true }); } catch (error) {}
     }
+    if (typeof options.after === 'function') options.after();
+  }
+
+  function closeDialog(win, layer, options) {
+    if (!layer || layer !== openLayer) return;
+    options = options || {};
+    if (layer.__historyArmed) {
+      if (layer.__pendingClose) return;
+      layer.__pendingClose = options;
+      layer.setAttribute('data-promo-closing', '');
+      try { win.history.back(); } catch (error) {}
+      layer.__historyFallback = win.setTimeout(function () {
+        if (!layer.__pendingClose || layer !== openLayer) return;
+        var pending = layer.__pendingClose;
+        layer.__pendingClose = null;
+        try {
+          var current = win.history.state;
+          if (current && current.salonPromoDialog === layer.__historyToken) {
+            win.history.replaceState(layer.__historyBaseState, '', win.location.href);
+          }
+        } catch (error) {}
+        finishDialogClose(win, layer, pending);
+      }, 700);
+      return;
+    }
+    finishDialogClose(win, layer, options);
+  }
+
+  function armDialogHistory(win, layer, onDismiss) {
+    if (pageKind(win) !== 'configurator') return;
+    var baseState = win.history.state;
+    if (!baseState || typeof baseState !== 'object') baseState = {};
+    var token = 'promo_' + (++dialogSequence);
+    var sentinel = dialogHistoryState(baseState, token);
+    try { win.history.pushState(sentinel, '', win.location.href); }
+    catch (error) { return; }
+    layer.__historyToken = token;
+    layer.__historyBaseState = baseState;
+    layer.__historyArmed = true;
+    layer.__popHandler = function (event) {
+      if (!layer.__historyArmed) return;
+      event.stopImmediatePropagation();
+      layer.__historyArmed = false;
+      var pending = layer.__pendingClose;
+      layer.__pendingClose = null;
+      clearDialogHistory(win, layer);
+      if (pending) {
+        finishDialogClose(win, layer, pending);
+        return;
+      }
+      onDismiss('history');
+    };
+    win.addEventListener('popstate', layer.__popHandler, true);
   }
 
   function wireDialog(win, layer, onDismiss) {
@@ -276,6 +390,7 @@
     win.document.body.style.overflow = 'hidden';
     setPageInert(win.document, layer, true);
     openLayer = layer;
+    armDialogHistory(win, layer, onDismiss);
     layer.offsetWidth;
     layer.classList.add('is-open');
     win.requestAnimationFrame(function () {
@@ -380,11 +495,16 @@
   function retentionRecord(win, checkpoint) {
     if (!retentionIssuable(resolvedEligibility)) return false;
     var payload = retentionPayload(checkpoint);
+    payload.v = 1;
+    payload.reason = 'unanswered';
     payload.left_at = Date.now();
     return storageWrite(win.localStorage, RETENTION_LEFT, JSON.stringify(payload));
   }
 
   function onPageHide(win) {
+    if (!resolvedEligibility) return;
+    var mode = presentationMode(resolvedEligibility);
+    if (mode.previewOnly || !canPresent(resolvedEligibility, resolvedFootprint)) return;
     var bridge = win.SalonPromoCampaignBridge;
     if (!bridge || typeof bridge.checkpoint !== 'function') return;
     var checkpoint = bridge.checkpoint();
@@ -427,8 +547,9 @@
     });
   }
 
-  function retentionDialog(win, href, checkpoint, previewOnly) {
+  function retentionDialog(win, href, checkpoint, previewOnly, options) {
     if (openLayer) return;
+    options = options || {};
     var doc = win.document;
     var layer = doc.createElement('div');
     layer.className = 'promo-campaign promo-campaign--retention';
@@ -437,41 +558,122 @@
     layer.setAttribute('aria-labelledby', 'promoRetentionTitle');
     layer.setAttribute('aria-describedby', 'promoRetentionDescription');
     layer.innerHTML = '<section class="promo-campaign__sheet promo-campaign__sheet--retention">' +
-      '<button class="promo-campaign__close" type="button" data-promo-retention-exit data-promo-initial aria-label="' +
-        (previewOnly ? 'Закрыть предпросмотр' : 'Сохранить и выйти') + '">×</button>' +
+      '<button class="promo-campaign__close" type="button" data-promo-dismiss aria-label="' +
+        (previewOnly ? 'Закрыть предпросмотр' : 'Закрыть и остаться в заявке') + '">×</button>' +
       (previewOnly ? '<p class="promo-campaign__preview" role="status">Предпросмотр владельца · код не выдан · скидка не активирована</p>' : '') +
       '<div class="promo-campaign__body">' +
-        '<p class="promo-campaign__kicker">Черновик сохранён</p>' +
-        '<h2 id="promoRetentionTitle">Для этой заявки доступно 10%</h2>' +
-        '<p id="promoRetentionDescription">Примените скидку сейчас — код будет действовать 72 часа. Можно отказаться и выйти: черновик останется. Если уже действует более выгодное предложение, оно сохранится.</p>' +
-        '<div class="promo-campaign__retention-mark" aria-hidden="true"><b>10%</b><span>до 2 500 ₽</span></div>' +
-        '<div class="promo-campaign__actions">' +
-          '<button class="promo-campaign__primary" type="button" data-promo-retention-apply>' +
-            (previewOnly ? 'Закрыть предпросмотр' : 'Применить 10% и продолжить') + '</button>' +
-          '<button class="promo-campaign__secondary" type="button" data-promo-retention-exit>Сохранить и выйти</button>' +
+        '<div data-promo-rescue-prompt>' +
+          '<p class="promo-campaign__kicker">Черновик сохранён</p>' +
+          '<h2 id="promoRetentionTitle" tabindex="-1" data-promo-initial>Что мешает закончить заявку?</h2>' +
+          '<p id="promoRetentionDescription">Выберите причину — покажем один подходящий следующий шаг. Текст заявки, контакт и файлы не попадут в запрос промокода.</p>' +
+          '<fieldset class="promo-campaign__reasons"><legend>Причина выхода</legend>' +
+            '<label><input type="radio" name="promo-rescue-reason" value="price"><span><b>Цена выше ожиданий</b><small>Проверить доступную выгоду</small></span></label>' +
+            '<label><input type="radio" name="promo-rescue-reason" value="materials"><span><b>Не хватает материалов</b><small>Продолжить без файла</small></span></label>' +
+            '<label><input type="radio" name="promo-rescue-reason" value="unclear"><span><b>Не понимаю состав</b><small>Вернуться к понятному итогу</small></span></label>' +
+            '<label><input type="radio" name="promo-rescue-reason" value="deadline"><span><b>Нужно согласовать срок</b><small>Оставить дату гибкой</small></span></label>' +
+          '</fieldset>' +
+          '<div class="promo-campaign__actions">' +
+            '<button class="promo-campaign__primary" type="button" data-promo-rescue-next disabled>Выберите причину</button>' +
+            '<button class="promo-campaign__secondary" type="button" data-promo-retention-exit>' +
+              (previewOnly ? 'Закрыть предпросмотр' : 'Сохранить и выйти') + '</button>' +
+          '</div>' +
         '</div>' +
+        '<div class="promo-campaign__rescue-outcome" data-promo-rescue-outcome hidden></div>' +
         '<p class="promo-campaign__status" role="status" aria-live="polite"></p>' +
-        '<p class="promo-campaign__terms">Один первый заказ от 5 000 ₽. Код действует 72 часа, не складывается с приветственной или другой скидкой — сервер выберет более выгодную.</p>' +
       '</div></section>';
+    var prompt = layer.querySelector('[data-promo-rescue-prompt]');
+    var outcome = layer.querySelector('[data-promo-rescue-outcome]');
+    var status = layer.querySelector('.promo-campaign__status');
+    var next = layer.querySelector('[data-promo-rescue-next]');
+    var selected = '';
+    var stay = function () { closeDialog(win, layer); };
     var leave = function () {
       if (!previewOnly) {
         storageWrite(win.localStorage, RETENTION_DISMISSED, String(Date.now()));
         storageDrop(win.localStorage, RETENTION_LEFT);
       }
-      closeDialog(win, layer, { restore:false });
-      if (!previewOnly && href) win.location.assign(href);
+      closeDialog(win, layer, {
+        restore:false,
+        after:function () {
+          if (typeof options.onResolve === 'function') options.onResolve('exit');
+          if (!previewOnly && href) win.location.assign(href);
+        }
+      });
     };
-    wireDialog(win, layer, leave);
-    Array.prototype.forEach.call(layer.querySelectorAll('[data-promo-retention-exit]'), function (button) {
-      button.addEventListener('click', leave);
+    function showReasons() {
+      outcome.hidden = true;
+      outcome.innerHTML = '';
+      prompt.hidden = false;
+      layer.setAttribute('aria-labelledby', 'promoRetentionTitle');
+      layer.setAttribute('aria-describedby', 'promoRetentionDescription');
+      status.textContent = '';
+      var title = layer.querySelector('#promoRetentionTitle');
+      if (title) title.focus({ preventScroll:true });
+    }
+    function showOutcome(reason) {
+      var decision = rescueDecision(reason);
+      if (!decision) return;
+      prompt.hidden = true;
+      outcome.hidden = false;
+      layer.setAttribute('aria-labelledby', 'promoRetentionOutcomeTitle');
+      layer.setAttribute('aria-describedby', 'promoRetentionOutcomeDescription');
+      status.textContent = '';
+      outcome.innerHTML = '<p class="promo-campaign__kicker">Подходящий следующий шаг</p>' +
+        '<h2 id="promoRetentionOutcomeTitle" tabindex="-1" data-promo-outcome-title>' + decision.title + '</h2>' +
+        '<p id="promoRetentionOutcomeDescription">' + decision.description + '</p>' +
+        (decision.requestRetention
+          ? '<div class="promo-campaign__retention-mark" aria-hidden="true"><b>10%</b><span>до 2 500 ₽</span></div>'
+          : '') +
+        '<div class="promo-campaign__actions">' +
+          '<button class="promo-campaign__primary" type="button" data-promo-rescue-act>' +
+            decision.action + '</button>' +
+          (previewOnly ? '' : '<button class="promo-campaign__secondary" type="button" data-promo-rescue-back>Выбрать другую причину</button>') +
+          '<button class="promo-campaign__secondary" type="button" data-promo-retention-exit>' +
+            (previewOnly ? 'Закрыть предпросмотр' : 'Сохранить и выйти') + '</button>' +
+        '</div>' +
+        (decision.requestRetention
+          ? '<p class="promo-campaign__terms">Один первый заказ от 5 000 ₽. Код действует 72 часа, не складывается с приветственной или другой скидкой — сервер выберет более выгодную.</p>'
+          : '<p class="promo-campaign__terms">Состав, реальный срок и точную цену редактор подтвердит до оплаты.</p>');
+      var back = outcome.querySelector('[data-promo-rescue-back]');
+      var action = outcome.querySelector('[data-promo-rescue-act]');
+      if (back) back.addEventListener('click', showReasons);
+      outcome.querySelector('[data-promo-retention-exit]').addEventListener('click', leave);
+      action.addEventListener('click', function () {
+        if (previewOnly) { showReasons(); return; }
+        if (decision.requestRetention) {
+          var payload = retentionPayload(checkpoint);
+          claimRetention(win, payload, status, action).then(function (applied) {
+            if (!applied) return;
+            closeDialog(win, layer, {
+              after:function () {
+                if (typeof options.onResolve === 'function') options.onResolve(decision.id);
+              }
+            });
+          });
+          return;
+        }
+        storageDrop(win.localStorage, RETENTION_LEFT);
+        closeDialog(win, layer, {
+          after:function () {
+            if (typeof options.onResolve === 'function') options.onResolve(decision.id);
+            var bridge = win.SalonPromoCampaignBridge;
+            if (bridge && typeof bridge.rescue === 'function') bridge.rescue(decision.id);
+          }
+        });
+      });
+      var title = outcome.querySelector('[data-promo-outcome-title]');
+      if (title) title.focus({ preventScroll:true });
+    }
+    wireDialog(win, layer, stay);
+    layer.querySelector('[data-promo-retention-exit]').addEventListener('click', leave);
+    Array.prototype.forEach.call(layer.querySelectorAll('input[name="promo-rescue-reason"]'), function (radio) {
+      radio.addEventListener('change', function () {
+        selected = radio.value;
+        next.disabled = !rescueDecision(selected);
+        next.textContent = next.disabled ? 'Выберите причину' : 'Показать следующий шаг';
+      });
     });
-    var primary = layer.querySelector('[data-promo-retention-apply]');
-    primary.addEventListener('click', function () {
-      if (previewOnly) { closeDialog(win, layer); return; }
-      var payload = retentionPayload(checkpoint);
-      claimRetention(win, payload, layer.querySelector('.promo-campaign__status'), primary)
-        .then(function (applied) { if (applied) closeDialog(win, layer); });
-    });
+    next.addEventListener('click', function () { showOutcome(selected); });
   }
 
   function onExplicitExit(win, event) {
@@ -484,7 +686,7 @@
     var dismissed = Number(storageRead(win.localStorage, RETENTION_DISMISSED) || 0);
     if (dismissed && Date.now() - dismissed < 30 * 24 * 60 * 60 * 1000) return;
     var mode = presentationMode(resolvedEligibility);
-    var footprint = bootFootprint(win);
+    var footprint = resolvedFootprint || bootFootprint(win);
     if (!mode.previewOnly && !canPresent(resolvedEligibility, footprint)) return;
     if (!mode.previewOnly && !retentionIssuable(resolvedEligibility)) return;
     var checkpoint = bridge.checkpoint();
@@ -497,7 +699,24 @@
     retentionDialog(win, trigger.href, checkpoint, mode.previewOnly);
   }
 
-  function returnBanner(win, record) {
+  function checkpointFromRecord(record) {
+    if (!record || record.v !== 1 || record.reason !== 'unanswered' ||
+        record.campaign_id !== CAMPAIGNS.retention.id || record.stage !== 'contact') return null;
+    var active = { under_60:0, '60_119':60, '120_plus':120 }[record.active_seconds_bucket];
+    var items = { '0':0, '1':1, '2_3':2, '4_plus':4 }[record.item_count_bucket];
+    var quote = {
+      under_5k:0, '5_10k':5000, '10_20k':10000, '20_40k':20000,
+      '40_60k':40000, '60_100k':60000, '100k_plus':100000
+    }[record.quote_band];
+    if (!Number.isFinite(active) || !Number.isFinite(items) || !Number.isFinite(quote) ||
+        active < 60 || items < 1 || quote < CAMPAIGNS.retention.minPrice) return null;
+    return {
+      stage:'contact', activeSeconds:active, itemCount:items, quoteLow:quote,
+      qualified:true, hasPromo:false
+    };
+  }
+
+  function returnBanner(win, checkpoint) {
     var doc = win.document;
     if (doc.querySelector('[data-promo-return]')) return;
     var host = doc.querySelector('.tx-body,.configurator-task,main');
@@ -507,22 +726,15 @@
     bar.setAttribute('data-promo-return', '');
     bar.setAttribute('aria-labelledby', 'promoReturnTitle');
     bar.innerHTML = '<div><p class="promo-campaign__kicker">Черновик на месте</p>' +
-      '<h2 id="promoReturnTitle">Для сохранённой заявки доступны 10% — до 2 500 ₽.</h2>' +
-      '<p>Код проверит сервер; текст и контакт черновика в запрос не попадут.</p></div>' +
-      '<div class="promo-return__actions"><button type="button" data-promo-return-apply>Применить и продолжить</button>' +
+      '<h2 id="promoReturnTitle">Поможем закончить без лишних шагов.</h2>' +
+      '<p>Выберите, что остановило: цена, материалы, состав или срок.</p></div>' +
+      '<div class="promo-return__actions"><button type="button" data-promo-return-open>Разобраться и продолжить</button>' +
       '<button type="button" data-promo-return-dismiss>Не сейчас</button></div>' +
       '<p class="promo-campaign__status" role="status" aria-live="polite"></p>';
     host.insertBefore(bar, host.firstChild);
-    var apply = bar.querySelector('[data-promo-return-apply]');
-    apply.addEventListener('click', function () {
-      claimRetention(win, {
-        campaign_id:CAMPAIGNS.retention.id,
-        stage:record.stage,
-        active_seconds_bucket:record.active_seconds_bucket,
-        item_count_bucket:record.item_count_bucket,
-        quote_band:record.quote_band
-      }, bar.querySelector('.promo-campaign__status'), apply).then(function (ok) {
-        if (ok) bar.remove();
+    bar.querySelector('[data-promo-return-open]').addEventListener('click', function () {
+      retentionDialog(win, '', checkpoint, false, {
+        onResolve:function (reason) { if (reason !== 'exit' && bar.parentNode) bar.remove(); }
       });
     });
     bar.querySelector('[data-promo-return-dismiss]').addEventListener('click', function () {
@@ -554,7 +766,12 @@
       }
       return;
     }
-    returnBanner(win, record);
+    var checkpoint = checkpointFromRecord(record);
+    if (!checkpoint) {
+      storageDrop(win.localStorage, RETENTION_LEFT);
+      return;
+    }
+    returnBanner(win, checkpoint);
   }
 
   function boot(win) {
@@ -571,6 +788,7 @@
       }
     });
     var footprint = bootFootprint(win);
+    resolvedFootprint = footprint;
     waitForPage(win).then(function () { return waitForSession(win); }).then(function () {
       return fetchEligibility(win);
     }).then(function (server) {
@@ -617,6 +835,9 @@
     presentationMode:presentationMode,
     retentionIssuable:retentionIssuable,
     retentionPayload:retentionPayload,
+    rescueDecision:rescueDecision,
+    checkpointFromRecord:checkpointFromRecord,
+    dialogHistoryState:dialogHistoryState,
     boot:boot
   };
 

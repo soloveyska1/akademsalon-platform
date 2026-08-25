@@ -1706,6 +1706,137 @@ async function inspectConfiguratorKeyboardShelf(page) {
   return { emulation, at39, at40, contact, contract, restoreState, postRequests, failures };
 }
 
+async function inspectPromoHistoryBack(page) {
+  const failures = [];
+  const postRequests = [];
+  const capturePost = (request) => {
+    if (request.method() !== 'GET' && request.method() !== 'HEAD') {
+      postRequests.push(`${request.method()} ${request.url()}`);
+    }
+  };
+  page.on('request', capturePost);
+  await page.waitForSelector('.promo-campaign--retention.is-open', { timeout: 5_000 });
+
+  await page.check('input[name="promo-rescue-reason"][value="price"]');
+  await page.click('[data-promo-rescue-next]');
+  const previewAction = String(await page.locator('[data-promo-rescue-act]').textContent() || '')
+    .replace(/\s+/g, ' ').trim();
+  if (previewAction !== 'Применить 10% и продолжить') {
+    failures.push(`owner preview action differs from client action: ${previewAction}`);
+  }
+  await page.click('[data-promo-rescue-act]');
+  await page.waitForSelector('[data-promo-rescue-prompt]:not([hidden])');
+
+  const before = await page.evaluate(() => ({
+    stage: document.getElementById('conceptWizard')?.getAttribute('data-concept-stage') || '',
+    step: history.state?.conceptStep,
+    sentinel: history.state?.salonPromoDialog || '',
+    href: location.href,
+    storage: Object.keys(localStorage).sort().map((key) => [key, localStorage.getItem(key)])
+  }));
+  await page.evaluate(() => history.back());
+  await page.waitForFunction(() => !document.querySelector('.promo-campaign--retention.is-open'));
+  await page.waitForTimeout(220);
+  const after = await page.evaluate(() => ({
+    stage: document.getElementById('conceptWizard')?.getAttribute('data-concept-stage') || '',
+    step: history.state?.conceptStep,
+    sentinel: history.state?.salonPromoDialog || '',
+    href: location.href,
+    storage: Object.keys(localStorage).sort().map((key) => [key, localStorage.getItem(key)]),
+    overflow: document.body.style.overflow,
+    inertCount: Array.from(document.body.children).filter((node) => node.inert).length
+  }));
+
+  if (before.stage !== 'contact' || before.step !== 2 || !before.sentinel) {
+    failures.push(`promo Back precondition: ${JSON.stringify(before)}`);
+  }
+  if (after.stage !== 'contact' || after.step !== 2 || after.sentinel ||
+      after.href !== before.href || after.overflow || after.inertCount ||
+      JSON.stringify(after.storage) !== JSON.stringify(before.storage)) {
+    failures.push(`promo Back changed configurator state: ${JSON.stringify({ before, after })}`);
+  }
+  if (postRequests.length) {
+    failures.push(`owner preview submitted requests: ${JSON.stringify(postRequests)}`);
+  }
+  page.off('request', capturePost);
+  return { before, after, previewAction, postRequests, failures };
+}
+
+async function inspectRemarksDraftConflict(page, choice) {
+  const failures = [];
+  await page.waitForFunction(() =>
+    document.getElementById('conceptWizard')?.getAttribute('data-concept-stage') === 'draft-choice'
+  );
+  const conflict = await page.evaluate(() => ({
+    text: String(document.getElementById('conceptWizard')?.textContent || '')
+      .replace(/\s+/g, ' ').trim(),
+    handoff: sessionStorage.getItem('salon_remarks_handoff_v1')
+  }));
+  if (!conflict.handoff ||
+      !conflict.text.includes('Новые замечания в этот черновик не добавятся') ||
+      !conflict.text.includes('Перенесённые замечания будут добавлены')) {
+    failures.push(`remarks conflict is not explicit: ${JSON.stringify(conflict)}`);
+  }
+
+  await page.click(choice === 'new' ? '[data-start-routed]' : '[data-continue-saved]');
+  await page.waitForFunction(() =>
+    document.getElementById('conceptWizard')?.getAttribute('data-concept-stage') !== 'draft-choice'
+  );
+  if (choice === 'new') {
+    const importedBeforeWorkChoice = await page.evaluate(() => {
+      const draft = JSON.parse(localStorage.getItem('salon_draft') || '{}');
+      return {
+        comment: draft?.concept?.comment || '',
+        handoff: sessionStorage.getItem('salon_remarks_handoff_v1')
+      };
+    });
+    if (importedBeforeWorkChoice.comment !==
+        'Новые замечания руководителя: исправить методику, таблицы и выводы до повторной проверки.' ||
+        importedBeforeWorkChoice.handoff !== null) {
+      failures.push(`remarks were not committed before work choice: ${JSON.stringify(importedBeforeWorkChoice)}`);
+    }
+    await page.click('[data-concept-work="diplom"]');
+    await page.click('#conceptTaskBar [data-concept-next]');
+    await page.waitForFunction(() =>
+      document.getElementById('conceptWizard')?.getAttribute('data-concept-stage') === 'materials'
+    );
+  }
+  const resolved = await page.evaluate(() => {
+    const draft = JSON.parse(localStorage.getItem('salon_draft') || '{}');
+    return {
+      comment: draft?.concept?.comment || '',
+      stage: document.getElementById('conceptWizard')?.getAttribute('data-concept-stage') || '',
+      success: !!document.querySelector('[data-remarks-handoff]') &&
+        /Замечания перенесены/.test(document.querySelector('[data-remarks-handoff]')?.textContent || ''),
+      handoff: sessionStorage.getItem('salon_remarks_handoff_v1'),
+      search: location.search
+    };
+  });
+  const expected = choice === 'new'
+    ? 'Новые замечания руководителя: исправить методику, таблицы и выводы до повторной проверки.'
+    : 'Старый комментарий сохранённой заявки, который нельзя заменять без выбора пользователя.';
+  if (resolved.comment !== expected || resolved.handoff !== null || /handoff=remarks/.test(resolved.search) ||
+      (choice === 'new' ? !resolved.success : resolved.success)) {
+    failures.push(`remarks conflict ${choice}: ${JSON.stringify(resolved)}`);
+  }
+  return { conflict, resolved, failures };
+}
+
+async function inspectLegacyRemarksScrub(page) {
+  const state = await page.evaluate(() => ({
+    session: sessionStorage.getItem('salon_editor_brief'),
+    local: localStorage.getItem('salon_prefill_comment'),
+    keepSession: sessionStorage.getItem('keep_session'),
+    keepLocal: localStorage.getItem('keep_local')
+  }));
+  const failures = [];
+  if (state.session !== null || state.local !== null ||
+      state.keepSession !== 'yes' || state.keepLocal !== 'yes') {
+    failures.push(`legacy remarks scrub: ${JSON.stringify(state)}`);
+  }
+  return { state, failures };
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const playwright = loadPlaywright();
@@ -1763,6 +1894,75 @@ async function main() {
                   at: now.toISOString(),
                   expiresAt: new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString()
                 }));
+                const params = new URLSearchParams(location.search);
+                if (params.get('promo-history-smoke') === '1') {
+                  const concept = {
+                    version: 5,
+                    mode: 'route',
+                    step: 2,
+                    draftId: 'promo_history_smoke',
+                    situation: 'topic',
+                    workType: 'diplom',
+                    discipline: 'hum',
+                    result: 'diagnostic',
+                    deadlineDate: '',
+                    deadlineFlexible: true,
+                    topic: 'Проверка системной кнопки Назад',
+                    comment: '',
+                    quoteScope: 'first',
+                    contactMethod: 'telegram',
+                    entryPrefilled: false,
+                    authorParticipation: false,
+                    routeConfirmation: 'confirmed',
+                    updatedAt: Date.now()
+                  };
+                  localStorage.setItem('salon_concept_request_v1', JSON.stringify(concept));
+                  localStorage.setItem('salon_draft', JSON.stringify({
+                    concept,
+                    savedAt: Date.now(),
+                    idx: 2
+                  }));
+                }
+                if (params.has('remarks-conflict-smoke')) {
+                  const concept = {
+                    version: 5,
+                    mode: 'route',
+                    step: 1,
+                    draftId: 'remarks_conflict_smoke',
+                    situation: 'comments',
+                    workType: 'diplom',
+                    discipline: 'hum',
+                    result: 'diagnostic',
+                    deadlineDate: '',
+                    deadlineFlexible: true,
+                    topic: '',
+                    comment: 'Старый комментарий сохранённой заявки, который нельзя заменять без выбора пользователя.',
+                    quoteScope: 'first',
+                    contactMethod: 'telegram',
+                    entryPrefilled: false,
+                    authorParticipation: false,
+                    routeConfirmation: 'confirmed',
+                    updatedAt: Date.now()
+                  };
+                  localStorage.setItem('salon_concept_request_v1', JSON.stringify(concept));
+                  localStorage.setItem('salon_draft', JSON.stringify({
+                    concept,
+                    savedAt: Date.now(),
+                    idx: 1
+                  }));
+                  sessionStorage.setItem('salon_remarks_handoff_v1', JSON.stringify({
+                    v: 1,
+                    kind: 'remarks',
+                    text: 'Новые замечания руководителя: исправить методику, таблицы и выводы до повторной проверки.',
+                    created_at: Date.now()
+                  }));
+                }
+                if (params.get('legacy-scrub-smoke') === '1') {
+                  sessionStorage.setItem('salon_editor_brief', '{"message":"legacy"}');
+                  localStorage.setItem('salon_prefill_comment', 'legacy private text');
+                  sessionStorage.setItem('keep_session', 'yes');
+                  localStorage.setItem('keep_local', 'yes');
+                }
               } catch {}
 
               const nativeFetch = window.fetch.bind(window);
@@ -1771,6 +1971,19 @@ async function main() {
                 if (requestUrl && /^https:\/\/akademsalon\.ru\/api\/auth\/session(?:\?|$)/.test(requestUrl)) {
                   return Promise.resolve(new Response(
                     JSON.stringify({ ok: true, authenticated: false }),
+                    {
+                      status: 200,
+                      headers: { 'Content-Type': 'application/json; charset=utf-8' }
+                    }
+                  ));
+                }
+                if (requestUrl && /^https:\/\/akademsalon\.ru\/api\/promo\/eligibility(?:\?|$)/.test(requestUrl)) {
+                  const ownerPreview = new URLSearchParams(location.search)
+                    .get('promo-history-smoke') === '1';
+                  return Promise.resolve(new Response(
+                    JSON.stringify(ownerPreview
+                      ? { ok: true, state: 'owner_preview', reason: 'mobile-smoke-owner' }
+                      : { ok: true, state: 'ineligible', reason: 'mobile-smoke' }),
                     {
                       status: 200,
                       headers: { 'Content-Type': 'application/json; charset=utf-8' }
@@ -1875,6 +2088,16 @@ async function main() {
               }
               if (/^configurator\.html\?keyboard-shelf-smoke=1(?:&|$)/.test(pageName)) {
                 configuratorInspection = await inspectConfiguratorKeyboardShelf(page);
+              }
+              if (/promo-history-smoke=1/.test(pageName)) {
+                configuratorInspection = await inspectPromoHistoryBack(page);
+              }
+              const remarksConflict = pageName.match(/remarks-conflict-smoke=(continue|new)/);
+              if (remarksConflict) {
+                configuratorInspection = await inspectRemarksDraftConflict(page, remarksConflict[1]);
+              }
+              if (/legacy-scrub-smoke=1/.test(pageName)) {
+                configuratorInspection = await inspectLegacyRemarksScrub(page);
               }
               inspection = await inspectPage(page, pageName === 'index.html');
               if (options.screenshots) {

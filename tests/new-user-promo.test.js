@@ -86,13 +86,25 @@ test('retention payload is categorical and cannot carry draft or identity text',
   );
 });
 
+test('rescue reason matrix gives the existing discount only to the price objection', () => {
+  const reasons = ['price', 'materials', 'unclear', 'deadline'];
+  const decisions = reasons.map((reason) => campaign.rescueDecision(reason));
+  assert.deepEqual(decisions.map((decision) => decision.id), reasons);
+  assert.deepEqual(
+    decisions.filter((decision) => decision.kind === 'discount').map((decision) => decision.id),
+    ['price'],
+  );
+  assert.equal(decisions.filter((decision) => decision.requestRetention).length, 1);
+  assert.equal(campaign.rescueDecision('free text'), null);
+});
+
 test('campaign assets are isolated, versioned and never preloaded for suppressed users', () => {
   const home = read('index.html');
   const configurator = read('configurator.html');
   const script = read('assets/js/promo-campaign.js');
   for (const html of [home, configurator]) {
-    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260825promo3/);
-    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260825promo3/);
+    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260825rescue1/);
+    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260825rescue1/);
   }
   assert.doesNotMatch(home, /<img[^>]+promo-salon-welcome/u);
   assert.doesNotMatch(configurator, /<img[^>]+promo-salon-welcome/u);
@@ -103,11 +115,12 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   assert.match(script, /owner_preview/);
   assert.match(script, /Предпросмотр владельца · код не выдан · скидка не активирована/u);
   assert.match(script, /node\.hidden \|\| node\.inert/);
+  assert.match(script, /!node\.hidden && !node\.closest\('\[hidden\]'\)/);
   assert.match(script, /getAttribute\('aria-hidden'\) === 'true'/);
   assert.match(script, /style\.display !== 'none' && style\.visibility !== 'hidden'/);
 });
 
-test('retention uses explicit intent or later return and never networks during unload', () => {
+test('retention asks a finite reason, keeps return neutral and never networks during unload', () => {
   const script = read('assets/js/promo-campaign.js');
   const configurator = read('configurator.html');
   assert.match(configurator, /window\.SalonPromoCampaignBridge\s*=\s*\{/);
@@ -117,10 +130,58 @@ test('retention uses explicit intent or later return and never networks during u
   assert.match(script, /\/promo\/retention/);
   assert.match(script, /\.tx-close,\s*\.tx-mobile-back,\s*\.wizard-close/);
   assert.match(script, /previewOnly \? 'Закрыть предпросмотр' : 'Сохранить и выйти'/u);
-  assert.match(script, /Примените скидку сейчас — код будет действовать 72 часа/u);
+  assert.match(script, /Что мешает закончить заявку\?/u);
+  assert.match(script, /Цена выше ожиданий/u);
+  assert.match(script, /Не хватает материалов/u);
+  assert.match(script, /Не понимаю состав/u);
+  assert.match(script, /Нужно согласовать срок/u);
+  assert.match(script, /Черновик на месте/u);
+  assert.doesNotMatch(script, /Для сохранённой заявки доступны 10%/u);
   assert.doesNotMatch(script, /beforeunload|sendBeacon|mouseleave|mouseout/);
   const pagehide = script.slice(script.indexOf('function onPageHide'), script.indexOf('function postRetention'));
   assert.doesNotMatch(pagehide, /fetch\(|\.post\(|\.get\(/);
+  assert.match(pagehide, /mode\.previewOnly/);
+  assert.match(pagehide, /canPresent\(resolvedEligibility, resolvedFootprint\)/);
+});
+
+test('owner preview can inspect reason branches without storage, navigation or promo claim', () => {
+  const script = read('assets/js/promo-campaign.js');
+  const dialog = script.slice(
+    script.indexOf('function retentionDialog'),
+    script.indexOf('function onExplicitExit'),
+  );
+  assert.match(dialog, /if \(previewOnly\)[\s\S]{0,180}showReasons/u);
+  assert.match(dialog, /if \(!previewOnly\)[\s\S]{0,220}storageWrite/u);
+  assert.match(dialog, /decision\.requestRetention/u);
+  assert.match(dialog, /claimRetention/u);
+  assert.match(dialog, /bridge\.rescue/u);
+  assert.doesNotMatch(dialog, /previewOnly \? 'Вернуться к причинам' : decision\.action/u);
+  assert.match(dialog, /decision\.action \+ '<\/button>'/u);
+});
+
+test('promo dialog history sentinel preserves the configurator step and consumes Back first', () => {
+  assert.deepEqual(
+    campaign.dialogHistoryState({ conceptStep: 2, safe: 'kept' }, 'qa-token'),
+    { conceptStep: 2, safe: 'kept', salonPromoDialog: 'qa-token' },
+  );
+  const script = read('assets/js/promo-campaign.js');
+  const historyBlock = script.slice(
+    script.indexOf('function clearDialogHistory'),
+    script.indexOf('function wireDialog'),
+  );
+  assert.match(historyBlock, /history\.pushState\(sentinel/u);
+  assert.match(historyBlock, /addEventListener\('popstate', layer\.__popHandler, true\)/u);
+  assert.match(historyBlock, /event\.stopImmediatePropagation\(\)/u);
+  assert.match(historyBlock, /onDismiss\('history'\)/u);
+  assert.match(historyBlock, /win\.history\.back\(\)/u);
+  assert.match(
+    read('assets/css/promo-campaign.css'),
+    /\.promo-campaign__reasons span \{ transition: none; \}/u,
+  );
+  assert.match(
+    read('assets/css/promo-campaign.css'),
+    /\.promo-campaign__reasons label:hover span \{ transform: none; \}/u,
+  );
 });
 
 test('public terms state provisional authority, first-order scope and non-stacking', () => {

@@ -27,6 +27,14 @@
 <link rel="stylesheet" href="assets/css/extras.css?v=20260806release119&amp;wax=20260804wax1" />
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260806shell123&amp;wax=20260804wax1&amp;glass=20260804glass1" media="screen and (max-width:920px)" data-mobile-edition="1" />
 <link rel="stylesheet" href="assets/css/polish15-operations.css?v=20260806release119&amp;story=20260804story2&amp;sheen=20260804sheen1&amp;canvas=20260804canvas1&amp;pay=20260804pay1" />
+<style>
+body.p15-tool-workspace .case-bridge__inner>*{min-width:0}
+@media(max-width:340px){
+  body.p15-tool-workspace .case-bridge__stages{grid-template-columns:repeat(4,minmax(0,1fr))}
+  body.p15-tool-workspace .case-bridge__stages>span{min-width:0}
+  body.p15-tool-workspace .case-bridge__stages b{overflow-wrap:anywhere}
+}
+</style>
 <script>(function(){try{var t=localStorage.getItem("salon_theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
 </head>
 <body class="p15-operations p15-tool-workspace">
@@ -42,10 +50,11 @@
 </header>
     <section class="generic-tool-card">
       <span class="generic-tool-card__mark">АС</span>
-      <h2>Соберите требования в одном сообщении.</h2>
-      <p>Укажите замечания, повторяющиеся требования и доступные материалы. Редактор проверит исходные данные перед ответом.</p>
-      <label class="field"><span>Что нужно проверить</span><textarea rows="6" data-generic-tool-text placeholder="Перечислите замечания руководителя и требования кафедры"></textarea></label>
-      <button class="button button--primary" type="button" data-generic-tool-submit>Подготовить запрос</button>
+      <h2>Вставьте замечания — мы перенесём их в заявку.</h2>
+      <p>Соберите в одном сообщении требования руководителя и кафедры. На этом шаге текст никуда не отправляется.</p>
+      <label class="field"><span>Замечания руководителя</span><textarea rows="6" maxlength="800" aria-describedby="remarksHandoffNote" data-remarks-handoff-text placeholder="Например: во введении уточнить цель; в главе 2 обосновать выбор метода…"></textarea></label>
+      <p class="p15-tool-note" id="remarksHandoffNote">Не указывайте ФИО, контакты и лишние персональные данные. Минимум 40 знаков.</p>
+      <button class="button button--primary" type="button" data-remarks-handoff-submit>Перейти к смете</button>
       <p class="p15-tool-note" data-p15-notice hidden></p>
     </section>
   </div>
@@ -57,5 +66,6 @@
 <script defer src="assets/js/polish15-chrome.js?v=20260806release119&amp;search=20260803out007search1"></script>
 <script src="assets/js/extras.js?v=20260806shell123"></script>
 <script src="assets/js/polish15-operations.js?v=20260806release119&amp;pay=20260804pay1"></script>
+<script src="assets/js/remarks-handoff.js?v=20260825rescue1"></script>
 </body>
 </html>

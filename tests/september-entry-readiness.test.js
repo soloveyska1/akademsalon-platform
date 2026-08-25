@@ -30,8 +30,8 @@ test('welcome artwork is a bounded modern source with an intrinsic PNG fallback'
 test('promo cache wave is atomic on both eligible entry routes', () => {
   for (const file of ['index.html', 'configurator.html']) {
     const html = read(file);
-    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260825promo3/);
-    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260825promo3/);
+    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260825rescue1/);
+    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260825rescue1/);
     assert.doesNotMatch(html, /<img[^>]+promo-salon-welcome/u);
     assert.doesNotMatch(html, /rel=["']preload["'][^>]+promo-salon-welcome/u);
   }
