@@ -3,7 +3,7 @@
 - Branch: `codex/out-008-september-entry`
 - Outcomes: `OUT-008`
 - Base: `a84bd0a8bdab431198b1fb1cbd6427be76b7d85a`.
-- Implementation: `1ee9533d6d771fddbcce630fcb1ae58a39e4b508`.
+- Implementation: `1ee9533df1d677c34b44c95bf8e13ec9a7cda5e3`.
 - Goal: remove first-visit artwork waste, suppress every returning footprint
   and make the configurator's next-step promise accurate on narrow mobile
   routes, without changing prices, promo economics, backend authority or

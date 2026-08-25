@@ -32,7 +32,7 @@
 ## 25 August September audit and first-entry candidate
 
 - `REL-0171` is a verified but unpublished seven-file candidate at
-  `1ee9533d6d771fddbcce630fcb1ae58a39e4b508`. Static production remains
+  `1ee9533df1d677c34b44c95bf8e13ec9a7cda5e3`. Static production remains
   `release169-51f3556`; backend production remains `REL-0170`.
 - The welcome PNG is retained as fallback while eligible visitors receive a
   versioned 33,652-byte WebP. Existing, failed-eligibility and returning

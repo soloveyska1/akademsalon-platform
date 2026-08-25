@@ -24,7 +24,7 @@
 - Проверенный material promo economics result: `bd2334f2459f106ebea15241359101164ab5c7bd`.
 - Проверенный SQLite recovery result: `1101c16c1fd68d65c6999d3d16f9815284eb4015`.
 - Проверенный, но не опубликованный September entry candidate:
-  `1ee9533d6d771fddbcce630fcb1ae58a39e4b508`.
+  `1ee9533df1d677c34b44c95bf8e13ec9a7cda5e3`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
 - Static rollback: `release168-afe4755`; static production — release169.
