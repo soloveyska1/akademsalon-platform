@@ -3,9 +3,9 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `df007e40399f47a26bd3903b4702fbcc74755ab4`.
+  `c245da0e00ce3a9dfaefbe985b9540672687e1d3`.
 - Production `current` and compatibility `dist` resolve to
-  `release172-df007e4`; `previous` resolves to `release171-ffa2421`.
+  `release173-c245da0`; `previous` resolves to `release172-df007e4`.
 - REL-0169 campaign/economics semantics remain live. Its original six-source
   rollback copy is
   `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
@@ -34,13 +34,54 @@
   public hashes, independent reviews, Chromium/WebKit mobile proof,
   production owner/returning/remarks states, two-vantage smoke and an executed
   static rollback-forward are in `REL-0172` and `E-1036`.
+- REL-0173 has G10 GO with P0=0/P1=0 in the bounded retention-preview visual
+  scope. Exact public hashes, visual/accessibility reviews, targeted
+  WebKit/Chromium and forced-colors proof, production 390/568 owner states,
+  two-vantage smoke and executed REL-0172 rollback-forward are in `REL-0173`
+  and `E-1037`.
 - Analytics v2 contract is 2.3.0. REL-0169's static rollback target is
-  release168; REL-0171's target is release169; REL-0172's target is release171.
+  release168; REL-0171's target is release169; REL-0172's target is release171;
+  REL-0173's target is release172.
   Promo backend rollback preserves SQLite, promised rows and the aggregate
   guard while switching new campaign activity off.
 - `salon-bot-v2.service` is active as final PID `557663` with `NRestarts=0`;
   SQLite is WAL and integrity is `ok`. Deposit issuance is open. Final
   operator-network and VPS read-only smoke each passed 14/14.
+
+## 25 August REL-0173 retention preview correction
+
+- The exact design result `5ac8bc8f5af40b1d63fb4b9fd3e18413ffef5a27`
+  is contained in canonical source
+  `c245da0e00ce3a9dfaefbe985b9540672687e1d3` and published as
+  `release173-c245da0`.
+- `Не понимаю состав` now opens the compact `Итог уже готов` outcome. The
+  retention title is bounded, actions are 340/360 px, primary is Salon wax and
+  terms remain subordinate. Inner sheet scroll resets before outcome focus so
+  owner label and close cannot stay hidden after a long branch.
+- Economics, eligibility and the four decisions are exact. Only the price
+  reason can request the existing 10%/2,500 RUB/72-hour offer. Returning users
+  remain suppressed and owner preview still cannot claim, navigate, persist or
+  alter statistics.
+- Focused 14/14, public 623/623, Brain 39/39 and targeted WebKit/Chromium
+  light/dark/reduced-motion 24/24 passed. Visual review is P0=0/P1=0/P2=0;
+  accessibility/behavior is P0=0/P1=0, including forced-colors and about 7.29:1
+  dark hover contrast.
+- The deterministic public subset is 358 files / 26,237,792 bytes with manifest
+  `94fe2348...736f`. Immutable production is 361 files / 26,247,963 bytes with
+  full manifest `40ea966b...4dda`; retained files and all owners/modes/paths are
+  exact.
+- Production Chromium at 390x844 and 568x514 inspected unclear and price with
+  zero overflow, console error, non-GET request, storage or URL mutation. A
+  real rollback returned exact release172 hashes; external/VPS smoke passed
+  14/14 on initial forward, rollback and final forward.
+- Final pointers are release173/release172. Backup:
+  `/root/site-backups/release173-retention-preview-20260825T133327Z`. Bot PID
+  `557663`, restart count zero, Nginx, WAL and `quick_check=ok` are unchanged;
+  release-window lock/traceback/ERROR/CRITICAL matches are zero.
+- Backend, database, tariffs, prices, deposits, Salon+, referrals and Kladovaya
+  did not change. Deposit issuance remains open. The default index smoke's
+  removed `#toc`/`Salon.toc` wait is accepted pre-existing test debt and must be
+  handled in a separate workstream.
 
 ## 25 August REL-0172 smart rescue
 

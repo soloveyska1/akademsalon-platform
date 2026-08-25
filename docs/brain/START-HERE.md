@@ -4,10 +4,10 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release172>
+- Production: <https://akademsalon.ru/?v=release173>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=38>
-- Production release: `release172-df007e4`
-- Production source: `df007e40399f47a26bd3903b4702fbcc74755ab4`
+- Production release: `release173-c245da0`
+- Production source: `c245da0e00ce3a9dfaefbe985b9540672687e1d3`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
 - Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
@@ -29,9 +29,11 @@
   `4acd0e623f5b2a5e2efd6926f799b71032234c4d`.
 - Проверенный smart-rescue result:
   `925309b2a5380457a336c892ef89fac564898239`.
+- Проверенный retention-preview polish result:
+  `5ac8bc8f5af40b1d63fb4b9fd3e18413ffef5a27`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Static rollback: `release171-ffa2421`; static production — release172.
+- Static rollback: `release172-df007e4`; static production — release173.
 - Backend promo result: coherent six-source economics v2, including
   `webapp.py` `346a41ea…f735` and `promo.py` `b10967c0…8a00`; rollback copy
   `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
@@ -47,6 +49,16 @@
   fixed referral равен 200 один раз. Source rollback copy:
   `/root/salon_bot/backups/economic-v2-20260825T100618364976Z`; обычный rollback
   закрывает только новую выдачу и никогда не восстанавливает SQLite.
+- REL-0173 имеет G10 GO в ограниченном retention-preview scope: длинный
+  обрезавшийся заголовок заменён на `Итог уже готов`, CTA ограничен 340/360 px
+  и использует сургучный акцент, owner label и close остаются видимыми после
+  любой ветки. Экономика, eligibility, backend и депозиты не менялись. Public
+  623/623, Brain 39/39, WebKit/Chromium promo 24/24, forced-colors и два
+  независимых review зелёные. Production Chromium 390/568 был GET-only без
+  overflow, POST, storage или URL mutation; external/VPS smoke 14/14 после
+  активации, реального rollback на release172 и forward. Точная запись:
+  [releases/REL-0173.md](releases/REL-0173.md), доказательства:
+  [evidence/E-1037.md](evidence/E-1037.md).
 - REL-0172 имеет G10 GO в ограниченном smart-rescue scope: незавершённый выход
   уточняет одну из четырёх причин, и только явное возражение по цене запрашивает
   существующее удержание 10% от 5 000 RUB с потолком 2 500 RUB на 72 часа.
