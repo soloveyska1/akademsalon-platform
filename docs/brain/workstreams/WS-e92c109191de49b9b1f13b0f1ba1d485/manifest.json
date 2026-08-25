@@ -21,6 +21,10 @@
         "match": "exact"
       },
       {
+        "path": "backend/salon_bot/economic_v2_runtime.py",
+        "match": "exact"
+      },
+      {
         "path": "backend/salon_bot/tests/test_economic_safety.py",
         "match": "exact"
       },
@@ -106,6 +110,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
+  "manifest_revision": 2,
   "base_manifest_hash": null
 }

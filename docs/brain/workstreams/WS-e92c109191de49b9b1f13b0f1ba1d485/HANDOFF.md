@@ -2,27 +2,29 @@
 
 - Branch: `codex/september-economic-safety`
 - Outcomes: `OUT-004`
-- Goal: fail-close new deposit/referral issuance while the runtime and public
-  money contract disagree, without hiding or revoking an existing balance,
-  pending entitlement, refund request or previously earned bonus.
-- Acceptance: persistent SQLite guards default OFF and survive source rollback;
-  current runtime maps the pause to an honest non-payment state; deposit refund
-  never deducts already used promotional bonus from refundable cash; the
-  cabinet never converts unavailable account data into zero/empty state or a
-  generic bot URL into a personal referral link; public pages say that new
-  issuance is paused while existing rights remain accessible.
+- Goal: keep the existing deposit and referral experience available while the
+  backend is aligned with the published money contract: atomic principal lots,
+  earned (not upfront-spendable) deposit benefit, exact cash refunds and one
+  fixed 200-point referral reward.
+- Acceptance: the original public layout and 8/10/12/15 tiers remain; no pause
+  state is shown; SQLite V2 invariants survive source rollback; a top-up cannot
+  be turned into immediately spendable points and then fully refunded; deposit
+  pay/refund races cannot overspend principal; used discounts never reduce the
+  refundable cash remainder; personal referral links remain available and
+  settle exactly 200 points once, never 5/7 percent or an invitee gift.
 - Proof: failing-first focused Python/Node contracts; exact live-source hash
   inventory; isolated SQLite apply/check/rollback drills; full public/backend/
   Brain suites; strict conflict and corpus validation; independent architecture,
   economics and UX review. Evidence will be recorded in `E-1034`.
 - Changed: none yet.
 - Unverified: implementation not started.
-- Risks/rollback: never restore a SQLite snapshot. Disable the exact versioned
-  settings first; persistent DB triggers continue blocking unsafe issuance even
-  if source files are rolled back. Existing read/spend/refund paths remain
-  available and no historical ledger row is rewritten. `assets/js/cabinet.js`
-  is reserved by active `codex/out-001-claim-continuity`; this workstream must
-  not touch it. The shared invite dialog therefore rejects a non-personal URL,
-  while the cabinet's unavailable/zero-state debt stays sequential follow-up.
-- Next: commit this manifest boundary, run strict conflict detection, then add
-  the failing-first safety contracts before implementation.
+- Risks/rollback: never restore a SQLite snapshot. Disable the exact V2 setting
+  before restoring Python; persistent triggers then reject every legacy money
+  seam. Existing historical ledger rows are never rewritten. The one legacy
+  pending 60 000 ₽ invoice keeps its id and old promise and must be reconciled,
+  not silently converted. `assets/js/cabinet.js` remains owned by
+  `codex/out-001-claim-continuity`; its one misleading toast is a declared
+  integration dependency rather than an overlapping edit here.
+- Next: add failing-first Deposit V2/referral contracts, implement the pinned
+  runtime asset and installer, then run exact-source, concurrency, visual and
+  rollback gates.
