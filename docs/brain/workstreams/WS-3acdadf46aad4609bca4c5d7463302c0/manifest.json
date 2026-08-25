@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-3acdadf46aad4609bca4c5d7463302c0",
   "slug": "release173-retention-preview",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/release173-retention-preview",
   "base_sha": "c245da0e00ce3a9dfaefbe985b9540672687e1d3",
   "result_sha": "e0ee4e82d3f8e1e8e27015528b3d73b1a7ef509d",
@@ -86,6 +86,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "13dec27d4200596de4f407c6b330ad45bf6d7fe9b8b91d8b386a4175a359091b"
+  "manifest_revision": 3,
+  "base_manifest_hash": "6069c88528cd7fd9252fd648698c595a94ff82918efdd46828eaf8450a2d0cd5"
 }
