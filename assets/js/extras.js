@@ -127,12 +127,35 @@
   };
 
   /* ---------------- «Пригласительное письмо» ----------------
-     Salon.invite({site, tg}) — красивый механизм «пригласить друга»:
+     Salon.invite({site, tg}) — механизм личной рекомендации:
      готовый текст письма (не голая ссылка), отправка в Telegram/ВК/WhatsApp,
-     копирование письма целиком. Работает без анимаций и без rAF. */
+     копирование письма целиком. Общая ссылка бота никогда не считается личной. */
   S.invite = function (links) {
     links = links || {};
-    var site = links.site || 'https://akademsalon.ru/';
+    var alreadyOpen = document.querySelector('.sdlg.inv[role="dialog"]');
+    if (alreadyOpen) return alreadyOpen;
+    function personalReferral(raw) {
+      if (typeof raw !== 'string' || !raw.trim()) return false;
+      try {
+        var u = new URL(raw, location.origin);
+        var ref = u.searchParams.get('ref') || '';
+        var start = u.searchParams.get('start') || '';
+        var salonHost = u.hostname.toLowerCase() === 'akademsalon.ru';
+        var botHost = u.hostname.toLowerCase() === 't.me' &&
+          u.pathname.replace(/\/+$/, '').toLowerCase() === '/academic_saloon_bot';
+        return (salonHost && /^[1-9]\d*$/.test(ref)) ||
+          (botHost && /^ref_[1-9]\d*$/.test(start));
+      } catch (e) {
+        return false;
+      }
+    }
+    var personalSite = personalReferral(links.site) ? links.site : '';
+    var personalTg = personalReferral(links.tg) ? links.tg : '';
+    if (!personalSite && !personalTg) {
+      if (S.toast) S.toast('Личная ссылка не загрузилась. Обновите кабинет и попробуйте ещё раз.');
+      return null;
+    }
+    var site = personalSite || personalTg;
     var letter = 'Привет! Советую «Академический Салон» — мастерская, где помогают ' +
       'разобрать учебную задачу, проверить и отредактировать свой текст, пройти нормоконтроль и подготовиться к защите.\n\n' +
       'Если после знакомства ты оформишь и полностью оплатишь первый заказ, мне начислят 200 бонусов за рекомендацию. Для тебя цена от ссылки не меняется:\n' + site;
@@ -175,14 +198,84 @@
         '<p class="sdlg-note">Ссылка личная — бонусы придут именно вам. Начисления видны в кабинете, в журнале бонусов. <a class="link" href="loyalty.html">Правила клуба</a></p>' +
       '</div>';
     el.querySelector('.inv-text').textContent = letter;
+    var opener = document.activeElement;
+    var background = [];
+    var scrollY = window.scrollY || window.pageYOffset || 0;
+    var bodyStyle = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      left: document.body.style.left,
+      right: document.body.style.right,
+      width: document.body.style.width,
+      overflow: document.body.style.overflow
+    };
+    var closed = false;
     document.body.appendChild(el);
-    setTimeout(function () { el.classList.add('open'); }, 10);
+    background = Array.prototype.slice.call(document.body.children)
+      .filter(function (node) { return node !== el; })
+      .map(function (node) { return { node: node, inert: node.inert === true }; });
+    background.forEach(function (entry) { entry.node.inert = true; });
+    document.body.style.position = 'fixed';
+    document.body.style.top = (-scrollY) + 'px';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
+    setTimeout(function () {
+      el.classList.add('open');
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          if (!closed) el.querySelector('.inv-x').focus();
+        });
+      });
+    }, 10);
     function close() {
+      if (closed) return;
+      closed = true;
       el.classList.remove('open');
-      setTimeout(function () { el.remove(); }, 240);
       document.removeEventListener('keydown', onKey);
+      setTimeout(function () {
+        if (el.parentNode) el.remove();
+        background.forEach(function (entry) {
+          if (entry.node) entry.node.inert = entry.inert;
+        });
+        document.body.style.position = bodyStyle.position;
+        document.body.style.top = bodyStyle.top;
+        document.body.style.left = bodyStyle.left;
+        document.body.style.right = bodyStyle.right;
+        document.body.style.width = bodyStyle.width;
+        document.body.style.overflow = bodyStyle.overflow;
+        try { window.scrollTo(0, scrollY); } catch (err) {}
+        if (opener && opener.focus && document.contains(opener)) {
+          try { opener.focus(); } catch (err) {}
+        }
+      }, reduceMotion ? 0 : 240);
     }
-    function onKey(e) { if (e.key === 'Escape') close(); }
+    function onKey(e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      var focusable = Array.prototype.slice.call(el.querySelectorAll(
+        'button:not([disabled]),a[href]:not([tabindex="-1"])'
+      ));
+      if (!focusable.length) return;
+      var first = focusable[0], last = focusable[focusable.length - 1];
+      if (!el.contains(document.activeElement)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      }
+      else if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+      else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
     document.addEventListener('keydown', onKey);
     el.addEventListener('click', function (e) {
       if (e.target.closest('[data-x]')) { close(); return; }
@@ -195,9 +288,11 @@
         return;
       }
       if (e.target.closest('[data-inv-native]')) {
-        try { navigator.share({ text: letter }); } catch (err) {}
+        try { Promise.resolve(navigator.share({ text: letter })).catch(function () {}); }
+        catch (err) {}
       }
     });
+    return el;
   };
 
   /* ---------------- Настройки данных · consent v2 ---------------- */

@@ -65,8 +65,8 @@ test('calculator mirrors the four live wallet top-ups and loyalty rates', () => 
     );
     assert.match(
       page,
-      new RegExp(`\\+${item.bonus.toLocaleString('ru-RU').replace(/\s/g, '[ \\\\u00a0]')} бонусов`),
-      `visible bonus ${item.bonus}`,
+      new RegExp(`резерв до ${item.bonus.toLocaleString('ru-RU').replace(/\s/g, '[ \\\\u00a0]')} бонусов`),
+      `truthful reserve ${item.bonus}`,
     );
   }
 
@@ -83,7 +83,7 @@ test('page keeps money and bonuses separate and states the approved limits', () 
   assert.match(page, /180 дней/);
   assert.match(page, /не банковский вклад/);
   assert.match(page, /Этап оплачивается целиком/);
-  assert.match(page, /Неиспользованный денежный остаток можно вернуть/);
+  assert.match(page, /Неиспользованный остаток — без штрафа/);
   assert.match(page, /href="loyalty\.html"/);
 });
 
