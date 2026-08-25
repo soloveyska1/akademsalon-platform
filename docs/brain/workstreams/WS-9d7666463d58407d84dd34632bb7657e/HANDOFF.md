@@ -39,11 +39,19 @@
   `51702018cf8bf97d3bfa97675133bf8dc21d8d5b2692577cb079d0609588b2a1`;
   `services/deposit.py` is
   `8ecfa3492bef54bb4501db65c59bb0a403ef2c5ba798b04426c1636a1b24d816`.
-- Unverified: production source apply, exact rollback/forward drill,
-  130-second scheduler window and final external/VPS smoke.
+- Production: implementation commit
+  `1101c16c1fd68d65c6999d3d16f9815284eb4015` was installed with exact source
+  rollback and forward proof. Final PID `536473` ran 158 seconds with
+  `NRestarts=0`, listener/health green, zero lock/traceback/scheduler/ERROR or
+  CRITICAL records, exact post-hashes and `PRAGMA quick_check=ok`. External and
+  VPS read-only smoke each passed 14/14. Final source rollback is
+  `/root/salon_bot/backups/sqlite-recovery-20260825T030859216319Z`; durable
+  records are `E-1032` and `REL-0170`.
+- Unverified: only the planned 24-hour post-release journal readback and P2
+  cancellation-at-commit audit; no P0/P1 release gate remains open.
 - Risks/rollback: standard cancellation-at-commit ambiguity remains P2 for a
   bounded transaction audit and 24-hour post-release watch. Rollback stops the
   service, restores only the exact ten pre-fix source files from the installer
   manifest, compiles and restarts; restoring an SQLite backup is forbidden.
-- Next: commit this exact reviewed snapshot, repeat fetch/conflict preflight and
-  execute the pinned production release with rollback/forward proof.
+- Next: at or after 26 August 2026 06:09 MSK, record bounded 24-hour journal and
+  PID-restart counts; make no code change without a reproducible signal.

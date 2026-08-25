@@ -6,20 +6,59 @@
   `51f3556210d2821df17829d4b7776ad2f1dee948`.
 - Production `current` and compatibility `dist` resolve to
   `release169-51f3556`; `previous` resolves to `release168-afe4755`.
-- Backend REL-0169 is live as the exact six-source economics-v2 set. Its
+- REL-0169 campaign/economics semantics remain live. Its original six-source
   rollback copy is
   `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
+- Backend REL-0170 is live as the exact ten-source SQLite recovery set from
+  implementation `1101c16c1fd68d65c6999d3d16f9815284eb4015`. Its final
+  source-only rollback copy is
+  `/root/salon_bot/backups/sqlite-recovery-20260825T030859216319Z`.
 - Kladovaya is live from exact source `58f4c116…421e` at
   `20260824T1214Z-promo-mobile-58f4c11`.
 - REL-0169 has G10 GO with P0=0/P1=0. Exact source, hashes, browser matrix,
   two-vantage smoke and executed backend/Salon/Kladovaya rollback-forward are
   in `REL-0169` and `E-1031`.
+- REL-0170 has G10 GO with P0=0/P1=0. Root-cause reproduction, all ten source
+  hashes, transaction proof and executed rollback/forward are in `REL-0170`
+  and `E-1032`.
 - Analytics v2 contract is 2.3.0. REL-0169's static rollback target is
   release168. Promo backend rollback
   preserves SQLite, promised rows and the aggregate guard while switching new
   campaign activity off.
-- `salon-bot-v2.service` is active, Nginx syntax is valid and SQLite integrity
-  is `ok`. Final operator-network and VPS read-only smoke each passed 14/14.
+- `salon-bot-v2.service` is active as final PID `536473` with `NRestarts=0`;
+  SQLite is WAL and integrity is `ok`. Final operator-network and VPS read-only
+  smoke each passed 14/14.
+
+## 25 August SQLite BUSY_SNAPSHOT recovery
+
+- The bot produced 170 bounded `database is locked` failures while systemd
+  still showed an active process. Promo eligibility, `/api/orders` and the
+  scheduler failed through the same shared `aiosqlite` write path. A graceful
+  04:51 MSK restart restored service and produced no further failures before
+  the durable release, but did not constitute the fix.
+- The deterministic cause is WAL `SQLITE_BUSY_SNAPSHOT`: a long-lived read on
+  the shared connection, an Analytics commit on its correctly isolated writer,
+  then a shared snapshot upgrade. SQLite integrity remained `ok`; Analytics was
+  the concurrency trigger, not a leaked lock holder.
+- Ordinary runtime writes now use one persistent autocommit writer serialized
+  by `asyncio.Lock`. The shared reader becomes `query_only`; direct runtime DML
+  across the exact ten modules is migrated or placed inside an isolated
+  `BEGIN IMMEDIATE` transaction. There is no replay and no rollback owned by a
+  different task.
+- Deposit activation/refund re-read state under the transaction, use status
+  CAS and include money plus bonus effects in one unit. Concurrent activation,
+  concurrent refund and injected-failure tests prove exactly-once/rollback
+  behaviour.
+- Focused production-Python 18/18, backend 76/76, public 603/603, Brain 39/39
+  and strict validation passed. Architecture and economics reviews both report
+  GO with P0=0/P1=0.
+- Exact production source rollback started healthy and immediate forward apply
+  restored the post-set. Final observation ran 158 seconds on one PID with
+  zero lock/traceback/scheduler/ERROR/CRITICAL records, exact hashes and
+  `quick_check=ok`.
+- Rollback is source-only through the final REL-0170 backup. Never restore an
+  SQLite snapshot for this incident because that can erase later valid orders
+  or payments.
 
 ## 24 August first-order campaign
 
@@ -391,11 +430,13 @@
   15 September 2026; integration/operations owns it.
 - Legacy analytics retention/deletion needs a separate privacy workstream and
   must not be exposed as Analytics v2 history.
+- Integration/operations should audit cancellation at the explicit SQLite
+  transaction commit boundary and perform a 24-hour REL-0170 journal readback
+  by 26 August 2026 06:09 MSK.
 
 ## One exact next step
 
-Switch from price explanation to a bounded OUT-008 mobile-first audit of the
-public path `home → service → configurator → request` at 390×844. Measure touch
-targets, input zoom and whether the primary remains reachable with the software
-keyboard open; make no redesign until the audit produces a reproducible P0/P1
-or the owner approves a scoped plan.
+At or after 26 August 2026 06:09 MSK, read the REL-0170 service journal from the
+final forward start and record the 24-hour counts for `database is locked`,
+tracebacks, scheduler failures and PID restarts. Make no further SQLite change
+unless that bounded observation produces a reproducible signal.

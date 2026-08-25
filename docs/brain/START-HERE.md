@@ -1,6 +1,6 @@
 # START HERE — Академический Салон
 
-Последнее обновление: 24 августа 2026 г.
+Последнее обновление: 25 августа 2026 г.
 
 ## Текущая истина
 
@@ -22,6 +22,7 @@
 - Проверенный admin-auth recovery result: `cc9cfed21c3ebebba386d6962954fc85f8a87df7`.
 - Проверенный first-order promo result: `157d6f7a0507bb091d313acce7412c751ca9bce9`.
 - Проверенный material promo economics result: `bd2334f2459f106ebea15241359101164ab5c7bd`.
+- Проверенный SQLite recovery result: `1101c16c1fd68d65c6999d3d16f9815284eb4015`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
 - Static rollback: `release168-afe4755`; static production — release169.
@@ -29,6 +30,18 @@
   `webapp.py` `346a41ea…f735` and `promo.py` `b10967c0…8a00`; rollback copy
   `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
   Analytics v2 contract остаётся 2.3.0.
+- Backend SQLite REL-0170 установлен как exact ten-source set. Обычные записи
+  идут через отдельный autocommit writer, shared reader работает `query_only`,
+  а multi-write операции используют isolated transactions. Финальный rollback
+  copy —
+  `/root/salon_bot/backups/sqlite-recovery-20260825T030859216319Z`; SQLite
+  snapshot для этого инцидента восстанавливать запрещено.
+- REL-0170 имеет G10 GO: детерминированно воспроизведён и устранён
+  `SQLITE_BUSY_SNAPSHOT`, два review дали P0=0/P1=0, production Python 18/18,
+  backend 76/76, public 603/603 и Brain 39/39. Exact source rollback и forward
+  выполнены; финальный PID стабилен 158 секунд с `NRestarts=0`, journal errors
+  0, `quick_check=ok`, external/VPS smoke 14/14. Точная запись:
+  [releases/REL-0170.md](releases/REL-0170.md).
 - REL-0169 имеет G10 GO: `ПЕРВЫЙЛИСТ` даёт ощутимые 12% от 2 500 RUB с
   потолком 5 000 RUB, а квалифицированное удержание — 10% от 5 000 RUB с
   потолком 2 500 RUB на 72 часа. Старые пользователи подавляются, owner preview
@@ -172,7 +185,7 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0169.md](releases/REL-0169.md) — доказательная запись текущего GO-релиза.
+- [releases/REL-0170.md](releases/REL-0170.md) — доказательная запись текущего GO-релиза.
 - [../../ops/monitoring/README.md](../../ops/monitoring/README.md) — контракт
   изоляции Nginx virtual hosts и Салон-дозора на общем VPS.
 
