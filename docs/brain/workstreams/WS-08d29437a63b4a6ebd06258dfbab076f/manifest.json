@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-08d29437a63b4a6ebd06258dfbab076f",
+  "slug": "retention-preview-polish",
+  "status": "active",
+  "branch": "codex/out-006-retention-preview-polish",
+  "base_sha": "2061a9891a371fef16ef6cc91eed7621ca7b056b",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/promo-campaign.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/promo-campaign.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-08d29437a63b4a6ebd06258dfbab076f/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/mobile-light-smoke.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/new-user-promo.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/september-entry-readiness.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "release-cache:promo-rescue2"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:promo-retention-preview"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
