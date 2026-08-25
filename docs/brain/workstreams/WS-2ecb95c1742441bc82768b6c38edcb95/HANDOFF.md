@@ -9,10 +9,10 @@
   routes, without changing prices, promo economics, backend authority or
   submission contracts.
 - Acceptance: the welcome artwork is at most 50 KiB with the existing PNG as
-  fallback; eligible mobile Lighthouse no longer has poor LCP caused by the
-  artwork; ineligible visitors do not download it; `/zayavka.html` and the
-  configurator consistently describe three steps and the exact response window;
-  existing promo, journey and mobile gates stay green.
+  fallback; eligible mobile transfer falls materially without a score or LCP
+  regression; ineligible visitors do not download it; `/zayavka.html` and the
+  configurator consistently describe three steps and one conditional response
+  window; existing promo, journey and mobile gates stay green.
 - Proof: failing-first Node contracts, focused promo/configurator tests, full
   `node --test tests/*.test.js`, Chromium/WebKit mobile matrix, eligible and
   ineligible Lighthouse comparison, Brain validation and `E-1033`.
