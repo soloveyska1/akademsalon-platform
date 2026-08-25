@@ -20,6 +20,9 @@
 - Risks/rollback: never restore a SQLite snapshot. Disable the exact versioned
   settings first; persistent DB triggers continue blocking unsafe issuance even
   if source files are rolled back. Existing read/spend/refund paths remain
-  available and no historical ledger row is rewritten.
+  available and no historical ledger row is rewritten. `assets/js/cabinet.js`
+  is reserved by active `codex/out-001-claim-continuity`; this workstream must
+  not touch it. The shared invite dialog therefore rejects a non-personal URL,
+  while the cabinet's unavailable/zero-state debt stays sequential follow-up.
 - Next: commit this manifest boundary, run strict conflict detection, then add
   the failing-first safety contracts before implementation.

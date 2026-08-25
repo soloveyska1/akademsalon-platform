@@ -13,10 +13,6 @@
   "scope": {
     "write": [
       {
-        "path": "assets/js/cabinet.js",
-        "match": "exact"
-      },
-      {
         "path": "assets/js/extras.js",
         "match": "exact"
       },
@@ -58,10 +54,6 @@
       },
       {
         "path": "tests/economic-safety.test.js",
-        "match": "exact"
-      },
-      {
-        "path": "tests/privacy-security-contracts.test.js",
         "match": "exact"
       }
     ],
