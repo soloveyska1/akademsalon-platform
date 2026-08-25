@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-9d7666463d58407d84dd34632bb7657e",
   "slug": "out-006-sqlite-recovery",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-006-sqlite-recovery",
   "base_sha": "4af52bb099bb8ecc2d6b8cd5b8802d96150c1d2a",
-  "result_sha": null,
+  "result_sha": "1d3c8ac00f07ce10ffda62cbd91bb8a78551bb91",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -78,6 +78,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "7b3d2eb3158cbc3d29b9ad1b65fd69083f3c1013fde0ef7b89ed41fe4e5eb7a9"
 }
