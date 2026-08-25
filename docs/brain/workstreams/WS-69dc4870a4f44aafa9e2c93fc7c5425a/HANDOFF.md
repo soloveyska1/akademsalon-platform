@@ -16,11 +16,23 @@
   full immutable-tree manifest, external plus VPS smoke, production Chromium,
   rollback-forward pointer and settings readbacks, strict Brain validation,
   `E-1035` and final `REL-0171`.
-- Changed: none yet.
-- Unverified: implementation not started.
+- Changed: canonical combined product was published as immutable
+  `release171-ffa2421`; exact economic V2 backend was applied; release evidence,
+  release record, current handoff and start page were updated.
+- Verified: combined public 612/612, backend 99/99 and Brain 39/39; deterministic
+  357-file build; inactive 360-file production tree parity; installer final
+  state `after`, eleven triggers, four zero invariant counters, open issuance,
+  active PID with `NRestarts=0`, WAL/quick-check/journal clean; production
+  Chromium 390/1440; external and VPS smoke 14/14 after activation, rollback
+  and forward; exact backend disable/forward and static release169/forward
+  drills; no temporary pointer/source residue.
+- Unverified: field conversion, revenue, contribution margin, profit and Core
+  Web Vitals remain unclaimed. Separate legal, SEO, 320px overflow and Browser
+  Back scopes remain outside this workstream.
 - Risks/rollback: bot is stopped only for the bounded atomic migration. Keep an
   online SQLite safety copy but never restore it during rollback. Backend
   rollback disables new V2 issuance while retaining the safe runtime, then
   reapplies the exact candidate. Static rollback moves only the three release
   symlinks to already verified immutable trees, smokes, then restores forward.
-- Next: review and commit the manifest plus this handoff.
+- Next: validate and freeze the production proof, integrate its exact result,
+  then monitor ordinary consented evidence without changing the release.

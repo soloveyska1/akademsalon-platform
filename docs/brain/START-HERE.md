@@ -4,10 +4,10 @@
 
 ## Текущая истина
 
-- Production: <https://akademsalon.ru/?v=release169>
+- Production: <https://akademsalon.ru/?v=release171>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=38>
-- Production release: `release169-51f3556`
-- Production source: `51f3556210d2821df17829d4b7776ad2f1dee948`
+- Production release: `release171-ffa2421`
+- Production source: `ffa2421ce9b3aed62b3c508a210fa50a2bb1e438`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
 - Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
@@ -23,11 +23,13 @@
 - Проверенный first-order promo result: `157d6f7a0507bb091d313acce7412c751ca9bce9`.
 - Проверенный material promo economics result: `bd2334f2459f106ebea15241359101164ab5c7bd`.
 - Проверенный SQLite recovery result: `1101c16c1fd68d65c6999d3d16f9815284eb4015`.
-- Проверенный, но не опубликованный September entry candidate:
+- Проверенный September entry result:
   `1ee9533df1d677c34b44c95bf8e13ec9a7cda5e3`.
+- Проверенный September economic-safety result:
+  `4acd0e623f5b2a5e2efd6926f799b71032234c4d`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
-- Static rollback: `release168-afe4755`; static production — release169.
+- Static rollback: `release169-51f3556`; static production — release171.
 - Backend promo result: coherent six-source economics v2, including
   `webapp.py` `346a41ea…f735` and `promo.py` `b10967c0…8a00`; rollback copy
   `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
@@ -38,20 +40,24 @@
   copy —
   `/root/salon_bot/backups/sqlite-recovery-20260825T030859216319Z`; SQLite
   snapshot для этого инцидента восстанавливать запрещено.
+- Backend REL-0171 установлен поверх REL-0170 как exact hash-pinned V2 set.
+  Депозитная выдача открыта (`earned-v2:open`), существующий кошелёк обслуживается,
+  fixed referral равен 200 один раз. Source rollback copy:
+  `/root/salon_bot/backups/economic-v2-20260825T100618364976Z`; обычный rollback
+  закрывает только новую выдачу и никогда не восстанавливает SQLite.
+- REL-0171 имеет G10 GO в ограниченном first-entry/economic-safety scope:
+  объединённые public 612/612, backend 99/99, Brain 39/39, exact immutable tree,
+  production Chromium 390/1440, external/VPS smoke 14/14 после активации,
+  реального rollback и forward. Депозиты открыты, публичная лестница
+  8/10/12/15 и wallet CTA сохранены; CSS и кабинет не менялись. Точная запись:
+  [releases/REL-0171.md](releases/REL-0171.md), доказательства:
+  [evidence/E-1035.md](evidence/E-1035.md).
 - REL-0170 имеет G10 GO: детерминированно воспроизведён и устранён
   `SQLITE_BUSY_SNAPSHOT`, два review дали P0=0/P1=0, production Python 18/18,
   backend 76/76, public 603/603 и Brain 39/39. Exact source rollback и forward
   выполнены; финальный PID стабилен 158 секунд с `NRestarts=0`, journal errors
   0, `quick_check=ok`, external/VPS smoke 14/14. Точная запись:
   [releases/REL-0170.md](releases/REL-0170.md).
-- REL-0171 — не production-релиз, а проверенный кандидат первого входа. WebP
-  уменьшает eligible median bytes на 70,2% без изменения Lighthouse score/LCP;
-  старые, failed-eligibility и returning посетители не загружают artwork,
-  owner preview остаётся безопасным. Public 606/606, Brain 39/39 и двенадцать
-  Chromium/WebKit eligibility/fallback cases зелёные. Полный сентябрьский G10
-  остаётся NO-GO из-за deposit/referral contract mismatch, legal confirmations
-  и отдельного UX-долга. Точная запись: [releases/REL-0171.md](releases/REL-0171.md),
-  доказательства: [evidence/E-1033.md](evidence/E-1033.md).
 - REL-0169 имеет G10 GO: `ПЕРВЫЙЛИСТ` даёт ощутимые 12% от 2 500 RUB с
   потолком 5 000 RUB, а квалифицированное удержание — 10% от 5 000 RUB с
   потолком 2 500 RUB на 72 часа. Старые пользователи подавляются, owner preview

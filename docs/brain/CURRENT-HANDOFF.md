@@ -3,9 +3,9 @@
 ## Canonical and production truth
 
 - Canonical production source is
-  `51f3556210d2821df17829d4b7776ad2f1dee948`.
+  `ffa2421ce9b3aed62b3c508a210fa50a2bb1e438`.
 - Production `current` and compatibility `dist` resolve to
-  `release169-51f3556`; `previous` resolves to `release168-afe4755`.
+  `release171-ffa2421`; `previous` resolves to `release169-51f3556`.
 - REL-0169 campaign/economics semantics remain live. Its original six-source
   rollback copy is
   `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
@@ -13,6 +13,11 @@
   implementation `1101c16c1fd68d65c6999d3d16f9815284eb4015`. Its final
   source-only rollback copy is
   `/root/salon_bot/backups/sqlite-recovery-20260825T030859216319Z`.
+- Backend REL-0171 is live as the exact economic V2 post-image set from
+  implementation `4acd0e623f5b2a5e2efd6926f799b71032234c4d`. Deposit issuance
+  is `earned-v2:open`; fixed referral is `fixed-200:on`; eleven exact triggers
+  and all four invariant counters are green. Source pre-images are at
+  `/root/salon_bot/backups/economic-v2-20260825T100618364976Z`.
 - Kladovaya is live from exact source `58f4c116…421e` at
   `20260824T1214Z-promo-mobile-58f4c11`.
 - REL-0169 has G10 GO with P0=0/P1=0. Exact source, hashes, browser matrix,
@@ -21,35 +26,45 @@
 - REL-0170 has G10 GO with P0=0/P1=0. Root-cause reproduction, all ten source
   hashes, transaction proof and executed rollback/forward are in `REL-0170`
   and `E-1032`.
+- REL-0171 has G10 GO with P0=0/P1=0 in the bounded first-entry and
+  economic-safety scope. Exact combined regressions, production hashes,
+  Chromium, two-vantage smoke and both rollback-forward drills are in
+  `REL-0171` and `E-1035`.
 - Analytics v2 contract is 2.3.0. REL-0169's static rollback target is
-  release168. Promo backend rollback
+  release168; REL-0171's static rollback target is release169. Promo backend rollback
   preserves SQLite, promised rows and the aggregate guard while switching new
   campaign activity off.
-- `salon-bot-v2.service` is active as final PID `536473` with `NRestarts=0`;
-  SQLite is WAL and integrity is `ok`. Final operator-network and VPS read-only
-  smoke each passed 14/14.
+- `salon-bot-v2.service` is active as final PID `557663` with `NRestarts=0`;
+  SQLite is WAL and integrity is `ok`. Deposit issuance is open. Final
+  operator-network and VPS read-only smoke each passed 14/14.
 
-## 25 August September audit and first-entry candidate
+## 25 August REL-0171 publication
 
-- `REL-0171` is a verified but unpublished seven-file candidate at
-  `1ee9533df1d677c34b44c95bf8e13ec9a7cda5e3`. Static production remains
-  `release169-51f3556`; backend production remains `REL-0170`.
-- The welcome PNG is retained as fallback while eligible visitors receive a
-  versioned 33,652-byte WebP. Existing, failed-eligibility and returning
-  visitors request no artwork. A real browser probe found and closed the case
-  where server `eligible` overrode a returning local footprint.
-- Chromium/WebKit passed twelve cold eligibility/fallback cases. Twelve cold
-  Lighthouse runs show eligible median bytes 1,494,793 -> 445,578 (-70.2%);
-  median score stays 87 and LCP is effectively unchanged. This is not field
-  Core Web Vitals, conversion, ranking or profit evidence.
-- Application copy now matches three actual steps, permits no-file requests,
-  uses one conditional response window and promises exact price only when data
-  is sufficient. Promo percentages, caps, prices and backend submit authority
-  are unchanged.
-- Full September release remains NO-GO. Deposit and referral public contracts
-  disagree with runtime; legal factual confirmations remain open; 320px
-  services/tariffs overflow and the configurator Back-history loop belong to
-  separate scopes. Exact proof and prioritized vetoes are in `E-1033`.
+- The reviewed first-entry result
+  `1ee9533df1d677c34b44c95bf8e13ec9a7cda5e3` and economic-safety result
+  `4acd0e623f5b2a5e2efd6926f799b71032234c4d` are combined in canonical product
+  source `ffa2421ce9b3aed62b3c508a210fa50a2bb1e438` and published as
+  `release171-ffa2421`.
+- The welcome PNG remains fallback while eligible visitors receive the
+  33,652-byte WebP. Returning footprints suppress it and owner preview remains
+  labelled/non-redeemable. Production Chromium loaded the exact 960x720 WebP
+  at 390 and 1440 with zero overflow or console errors.
+- Deposits are open. The public 8/10/12/15 ladder and wallet CTA remain; benefit
+  is earned from net used principal, ordinary cashback/deposit value is
+  best-of, uplift waits 14 days, and cumulative partial refunds return exact
+  unused principal. A qualifying first referral settles 200 once.
+- Backend apply took four seconds. Final source state is `after`,
+  `quick_check=ok`, journal lock/traceback/error matches are zero and
+  `NRestarts=0`. The disable/forward drill closed only new issuance for one
+  second and restored `earned-v2:open` without restoring SQLite.
+- Immutable production is 360 files / 26,220,995 bytes; the 357-file public
+  subset manifest is `4a3c2f22...053`. Static rollback to release169 and
+  forward restore both passed external/VPS smoke 14/14 with exact old/new
+  hashes. Backup: `/root/site-backups/release171-september-20260825T100556Z`.
+- Separate legal factual confirmation, SEO cleanup, 320px services/tariffs
+  overflow and configurator Back-history debt remain outside REL-0171; do not
+  convert this publication into a claim that those scopes or revenue uplift
+  are complete.
 
 ## 25 August SQLite BUSY_SNAPSHOT recovery
 
