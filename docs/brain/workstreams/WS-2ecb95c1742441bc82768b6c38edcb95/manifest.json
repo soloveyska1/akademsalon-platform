@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-2ecb95c1742441bc82768b6c38edcb95",
   "slug": "september-entry",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-008-september-entry",
   "base_sha": "a84bd0a8bdab431198b1fb1cbd6427be76b7d85a",
-  "result_sha": null,
+  "result_sha": "0976fe1bc37f72e85a1d89aaafef3d869f25e819",
   "outcome_ids": [
     "OUT-008"
   ],
@@ -89,6 +89,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "0cbb500fa028239d11a07c3c196b7c33daccf729ddf26c6ea7571c4d50111c26"
 }
