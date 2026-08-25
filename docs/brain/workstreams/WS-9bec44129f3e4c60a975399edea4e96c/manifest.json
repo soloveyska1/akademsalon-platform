@@ -17,7 +17,7 @@
         "match": "exact"
       },
       {
-        "path": "assets/js/polish15-operations.js",
+        "path": "assets/js/remarks-handoff.js",
         "match": "exact"
       },
       {
@@ -57,15 +57,31 @@
         "match": "exact"
       },
       {
+        "path": "tests/mobile-light-smoke.js",
+        "match": "exact"
+      },
+      {
         "path": "tests/new-user-promo.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/release-asset-version.test.js",
         "match": "exact"
       },
       {
         "path": "tests/remarks-handoff.test.js",
         "match": "exact"
+      },
+      {
+        "path": "tests/september-entry-readiness.test.js",
+        "match": "exact"
       }
     ],
     "read": [
+      {
+        "path": "assets/js/polish15-operations.js",
+        "match": "exact"
+      },
       {
         "path": "analytics/contract.json",
         "match": "exact"
@@ -114,6 +130,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "4ed6e08e325accf16a1b4996e8dcaa97f00e91ebc7a7ab2a97158930237d3909"
 }
