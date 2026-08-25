@@ -28,7 +28,9 @@
 - Verified: public 609/609, backend 99/99 with one expected local dependency
   skip, Brain 39/39, build/compile/diff checks, focused 23 Python + 12 Node,
   exact 390/1440 baseline geometry and isolated production-venv apply/reapply/
-  check/integration. `E-1034` contains the commands, hashes and observed states.
+  check/integration. Fresh-fetch conflict analysis found hard=0; 42 historical
+  terminal/unmanaged-ref warnings were explicitly accepted for this local
+  snapshot. `E-1034` contains the commands, hashes and observed states.
 - Unverified: no production activation, authenticated wallet purchase, real
   payment, message delivery or post-release smoke was performed. Final repeated
   architecture, economics and UX verdicts are GO with P0=0/P1=0; this candidate
