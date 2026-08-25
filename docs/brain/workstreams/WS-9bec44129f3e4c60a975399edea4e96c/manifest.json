@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-9bec44129f3e4c60a975399edea4e96c",
+  "slug": "out-006-smart-rescue",
+  "status": "active",
+  "branch": "codex/out-006-smart-rescue",
+  "base_sha": "0fbdde35d12c5b8d84e043faa4e502c2a5fcf575",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/promo-campaign.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/polish15-operations.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/promo-campaign.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1036.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0172.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-9bec44129f3e4c60a975399edea4e96c/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "dosie-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/new-user-promo.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/remarks-handoff.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "analytics/contract.json",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_promo_campaign.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "brain-record:E-1036"
+    },
+    {
+      "access": "write",
+      "key": "brain-record:REL-0172"
+    },
+    {
+      "access": "write",
+      "key": "contract:remarks-handoff"
+    },
+    {
+      "access": "write",
+      "key": "journey:remarks-to-estimate"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:promo-rescue"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:promo-rescue"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
