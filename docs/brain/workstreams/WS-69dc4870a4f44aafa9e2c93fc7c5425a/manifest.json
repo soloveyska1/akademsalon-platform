@@ -1,0 +1,76 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-69dc4870a4f44aafa9e2c93fc7c5425a",
+  "slug": "release171-production-proof",
+  "status": "active",
+  "branch": "codex/september-full-integration",
+  "base_sha": "ffa2421ce9b3aed62b3c508a210fa50a2bb1e438",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-004",
+    "OUT-008"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1035.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0171.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-69dc4870a4f44aafa9e2c93fc7c5425a/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "backend/salon_bot/economic_v2_runtime.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_economic_safety.py",
+        "match": "exact"
+      },
+      {
+        "path": "dist/client",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/E-1033.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1034.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "production:deploy"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
