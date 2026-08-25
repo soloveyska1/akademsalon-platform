@@ -23,7 +23,9 @@
 - Verified: public 606/606, Brain 39/39, strict validation, diff check;
   Chromium/WebKit twelve-case eligibility/fallback matrix; 320/390 entry-route
   matrix; twelve cold Lighthouse runs. Eligible median bytes fall 70.2%; score
-  and LCP are unchanged. Economics and UX exact-diff reviews are GO P0=0/P1=0.
+  and LCP are unchanged. Architecture, economics and UX final exact-result
+  reviews are GO P0=0/P1=0. Remaining P2: preserve a reusable browser harness
+  and name working hours only after operations confirms the real schedule.
 - Unverified: production parity, external smoke and static rollback-forward
   were intentionally not run because the candidate was not published. Full
   September G10 remains blocked by the deposit/referral contract mismatch,
@@ -31,7 +33,6 @@
 - Risks/rollback: cache-key mistakes can strand an old script; copy can promise
   an unsupported SLA. Rollback is one exact static release pointer to the prior
   immutable release; no backend or database mutation is in scope.
-- Next: freeze the evidence revision, obtain final architecture review on the
-  exact SHA, rerun fetch/conflicts and mark this workstream `submitted`. Start a
-  separate fail-closed deposit/referral safety workstream before any full
-  September production release.
+- Next: keep this candidate submitted and start a separate fail-closed
+  deposit/referral safety workstream before any full September production
+  release.
