@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-4d34f0a468874c12bdf39703834c194f",
+  "slug": "out-001-synthetic-e2e",
+  "status": "active",
+  "branch": "codex/out-001-synthetic-e2e",
+  "base_sha": "a7fd11299a88736696bc6573216dbfe025e08604",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-001"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "backend/salon_bot/install_out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/migrations/0009_out001_synthetic.sql",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/out001_probe.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-4d34f0a468874c12bdf39703834c194f/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "backend/salon_bot/install_promo_campaign.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_sqlite_recovery.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_promo_campaign.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_sqlite_recovery.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/plans/OUT-001-AUTHORITATIVE-BACKEND.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/order-submit-contract.test.js",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "api-route:POST:/orders"
+    },
+    {
+      "access": "write",
+      "key": "contract:out001-synthetic-e2e"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:out001-synthetic"
+    },
+    {
+      "access": "read",
+      "key": "contract:deposit"
+    },
+    {
+      "access": "read",
+      "key": "decision:promo-economics-v2"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
