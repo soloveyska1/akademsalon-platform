@@ -1,0 +1,87 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-539a8acc8cf64725b225a5b4b98c8eb5",
+  "slug": "release172-smart-rescue",
+  "status": "active",
+  "branch": "codex/release172-smart-rescue",
+  "base_sha": "df007e40399f47a26bd3903b4702fbcc74755ab4",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1036.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0172.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/START-HERE.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-539a8acc8cf64725b225a5b4b98c8eb5/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "assets/js/promo-campaign.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/remarks-handoff.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "deposit.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/QUALITY-GATES.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0171.md",
+        "match": "exact"
+      },
+      {
+        "path": "dosie-nauchruka.html",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "brain-record:E-1036"
+    },
+    {
+      "access": "write",
+      "key": "brain-record:REL-0172"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
