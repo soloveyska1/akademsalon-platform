@@ -9,6 +9,7 @@ import re
 import secrets
 import shutil
 import sqlite3
+import stat
 import subprocess
 import tempfile
 import time
@@ -1766,6 +1767,121 @@ def insert_race(synthetic_context, resp):
                 )
             self.assertTrue(outside_target.is_file())
             self.assertEqual(outside_target.read_text(encoding="utf-8"), migration_payload)
+
+    def test_installer_accepts_only_exact_orphan_owned_production_app_parent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / "root"
+            app = root / "app"
+            app.mkdir(parents=True)
+            target = app / "db.py"
+            real_lstat = os.lstat
+
+            def layout(*, uid: int = 501, gid: int = 50, mode: int = 0o755):
+                def fake_lstat(path):
+                    if Path(path) == root:
+                        return SimpleNamespace(
+                            st_mode=stat.S_IFDIR | 0o755,
+                            st_uid=0,
+                            st_gid=0,
+                        )
+                    if Path(path) == app:
+                        return SimpleNamespace(
+                            st_mode=stat.S_IFDIR | mode,
+                            st_uid=uid,
+                            st_gid=gid,
+                        )
+                    return real_lstat(path)
+
+                return fake_lstat
+
+            with (
+                patch.object(installer, "PRODUCTION_ROOT", root),
+                patch.object(installer.os, "geteuid", return_value=0),
+                patch.object(installer.os, "lstat", side_effect=layout()),
+                patch.object(installer.pwd, "getpwuid", side_effect=KeyError(501)),
+            ):
+                installer._secure_target_parent(root, target, create=False)
+
+            rejecting = (
+                (layout(uid=502), KeyError(502), 0),
+                (layout(gid=51), KeyError(501), 0),
+                (layout(mode=0o775), KeyError(501), 0),
+                (layout(), SimpleNamespace(pw_name="named-owner"), 0),
+                (layout(), KeyError(501), 501),
+            )
+            for fake_lstat, passwd_result, effective_uid in rejecting:
+                with self.subTest(
+                    passwd_result=passwd_result,
+                    effective_uid=effective_uid,
+                ):
+                    passwd = (
+                        patch.object(installer.pwd, "getpwuid", return_value=passwd_result)
+                        if not isinstance(passwd_result, KeyError)
+                        else patch.object(
+                            installer.pwd, "getpwuid", side_effect=passwd_result
+                        )
+                    )
+                    with (
+                        patch.object(installer, "PRODUCTION_ROOT", root),
+                        patch.object(installer.os, "geteuid", return_value=effective_uid),
+                        patch.object(installer.os, "lstat", side_effect=fake_lstat),
+                        passwd,
+                        self.assertRaisesRegex(RuntimeError, "unsafe target parent"),
+                    ):
+                        installer._secure_target_parent(root, target, create=False)
+
+            other = root / "handlers"
+            other.mkdir()
+            with (
+                patch.object(installer, "PRODUCTION_ROOT", root),
+                patch.object(installer.os, "geteuid", return_value=0),
+                patch.object(
+                    installer.os,
+                    "lstat",
+                    side_effect=lambda path: (
+                        SimpleNamespace(st_mode=stat.S_IFDIR | 0o755, st_uid=0, st_gid=0)
+                        if Path(path) == root
+                        else (
+                            SimpleNamespace(
+                                st_mode=stat.S_IFDIR | 0o755,
+                                st_uid=501,
+                                st_gid=50,
+                            )
+                            if Path(path) == other
+                            else real_lstat(path)
+                        )
+                    ),
+                ),
+                patch.object(installer.pwd, "getpwuid", side_effect=KeyError(501)),
+                self.assertRaisesRegex(RuntimeError, "unsafe target parent"),
+            ):
+                installer._secure_target_parent(root, other / "module.py", create=False)
+
+            alternate_root = Path(tmp).resolve() / "alternate-root"
+            alternate_app = alternate_root / "app"
+            alternate_app.mkdir(parents=True)
+
+            def alternate_lstat(path):
+                if Path(path) == alternate_root:
+                    return SimpleNamespace(
+                        st_mode=stat.S_IFDIR | 0o755, st_uid=0, st_gid=0
+                    )
+                if Path(path) == alternate_app:
+                    return SimpleNamespace(
+                        st_mode=stat.S_IFDIR | 0o755, st_uid=501, st_gid=50
+                    )
+                return real_lstat(path)
+
+            with (
+                patch.object(installer, "PRODUCTION_ROOT", root),
+                patch.object(installer.os, "geteuid", return_value=0),
+                patch.object(installer.os, "lstat", side_effect=alternate_lstat),
+                patch.object(installer.pwd, "getpwuid", side_effect=KeyError(501)),
+                self.assertRaisesRegex(RuntimeError, "unsafe target parent"),
+            ):
+                installer._secure_target_parent(
+                    alternate_root, alternate_app / "db.py", create=False
+                )
 
     def test_foreign_outbox_linked_money_and_schema_drift_block_without_deletion(self) -> None:
         cases = (
