@@ -17,7 +17,7 @@
         "match": "exact"
       },
       {
-        "path": "backend/salon_bot/migrations/0009_out001_synthetic.sql",
+        "path": "backend/salon_bot/migrations/0010_out001_synthetic.sql",
         "match": "exact"
       },
       {
@@ -59,6 +59,10 @@
         "match": "exact"
       },
       {
+        "path": "docs/brain/plans/OUT-001-SUBMIT-SAFETY.md",
+        "match": "exact"
+      },
+      {
         "path": "tests/order-submit-contract.test.js",
         "match": "exact"
       }
@@ -90,6 +94,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "bfefa3508e7fa9069f9220b8298a939cb736c406992fed3335e3ff0f7e306ff7"
 }
