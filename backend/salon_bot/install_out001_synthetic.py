@@ -43,12 +43,13 @@ MARKER = "out001-synthetic-plane:20260826"
 SERVICE_NAME = "salon-bot-v2"
 CAPABILITY_PATH = Path("/run/salon-bot/out001-capability.json")
 PRODUCTION_ROOT = Path("/root/salon_bot")
-# The VPS ``app`` directory predates root-managed releases and retains an
-# orphaned macOS copy owner.  It is safe only as this exact non-writable tuple;
-# a passwd-resolvable UID or any other parent remains forbidden.
-LEGACY_APP_UID = 501
-LEGACY_APP_GID = 50
-LEGACY_APP_MODE = 0o755
+# The VPS ``app`` and ``migrations`` directories predate root-managed releases
+# and retain an orphaned macOS copy owner. They are safe only as these two exact
+# non-writable paths and this exact ownership tuple; every other parent remains
+# forbidden.
+LEGACY_PARENT_UID = 501
+LEGACY_PARENT_GID = 50
+LEGACY_PARENT_MODE = 0o755
 ORDER_SCHEMA_SHA256 = "c7b91d09c4a0f4f1ff737d1c650bca508cdb70ba2977bd9ede9775829ca941bb"
 PRE_ORDER_SCHEMA_SHA256 = "ea62b6c20bbe8147ec9caaa75830e0540f80d8fd23c829cc1a3bbe2b26db5524"
 
@@ -973,23 +974,23 @@ def _secure_target_parent(root: Path, target: Path, *, create: bool) -> None:
                 raise RuntimeError(f"missing target parent: {current}") from None
             os.mkdir(current, 0o750)
             info = os.lstat(current)
-        legacy_orphaned_app = False
+        legacy_orphaned_parent = False
         if (
             owner == 0
             and os.geteuid() == 0
             and root == PRODUCTION_ROOT
-            and current == root / "app"
-            and info.st_uid == LEGACY_APP_UID
-            and info.st_gid == LEGACY_APP_GID
-            and stat.S_IMODE(info.st_mode) == LEGACY_APP_MODE
+            and current in {root / "app", root / "migrations"}
+            and info.st_uid == LEGACY_PARENT_UID
+            and info.st_gid == LEGACY_PARENT_GID
+            and stat.S_IMODE(info.st_mode) == LEGACY_PARENT_MODE
         ):
             try:
                 pwd.getpwuid(info.st_uid)
             except KeyError:
-                legacy_orphaned_app = True
+                legacy_orphaned_parent = True
         if (
             not stat.S_ISDIR(info.st_mode)
-            or (info.st_uid != owner and not legacy_orphaned_app)
+            or (info.st_uid != owner and not legacy_orphaned_parent)
             or stat.S_IMODE(info.st_mode) & 0o022
         ):
             raise RuntimeError(f"unsafe target parent: {current}")

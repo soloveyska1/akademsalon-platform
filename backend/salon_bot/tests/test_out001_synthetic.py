@@ -1472,6 +1472,143 @@ class ProbeAndInstallerTests(unittest.TestCase):
                 self.assertFalse(residue["already_rolled_back"])
                 self.assertTrue(all(not path.exists() for path in target_paths.values()))
 
+    def test_installer_full_cycle_with_both_exact_orphan_owned_parents(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp).resolve()
+            root = base / "root"
+            app = root / "app"
+            migrations = root / "migrations"
+            app.mkdir(parents=True)
+            migrations.mkdir()
+            db_before = "DB_BEFORE\n"
+            web_before = "WEB_BEFORE\n"
+            db_after = db_before + "DB_AFTER\n"
+            web_after = web_before + "WEB_AFTER\n"
+            (app / "db.py").write_text(db_before, encoding="utf-8")
+            (app / "webapp.py").write_text(web_before, encoding="utf-8")
+            database = root / "salon.db"
+            connection = sqlite3.connect(database)
+            try:
+                connection.executescript(BASE_SCHEMA)
+            finally:
+                connection.close()
+            capability = base / "capability.json"
+            backups = root / "backups"
+            assets = HERE.parents[1]
+            known_before = {
+                "db": installer.sha256_text(db_before),
+                "webapp": installer.sha256_text(web_before),
+            }
+            known_after = {
+                "db": installer.sha256_text(db_after),
+                "webapp": installer.sha256_text(web_after),
+            }
+            real_lstat = os.lstat
+
+            def orphan_layout(path):
+                value = Path(path)
+                info = real_lstat(path)
+                if value == root:
+                    return SimpleNamespace(
+                        st_mode=info.st_mode,
+                        st_uid=0,
+                        st_gid=0,
+                    )
+                if value in {app, migrations}:
+                    return SimpleNamespace(
+                        st_mode=stat.S_IFDIR | 0o755,
+                        st_uid=501,
+                        st_gid=50,
+                    )
+                if stat.S_ISDIR(info.st_mode) and root in value.parents:
+                    return SimpleNamespace(
+                        st_mode=info.st_mode,
+                        st_uid=0,
+                        st_gid=0,
+                    )
+                return info
+
+            def patch_db(value: str) -> str:
+                return db_after if value == db_before else value
+
+            def patch_webapp(value: str) -> str:
+                return web_after if value == web_before else value
+
+            target_paths = installer._target_paths(root)
+            with (
+                patch.object(installer, "PRODUCTION_ROOT", root),
+                patch.object(installer, "KNOWN_BEFORE", known_before),
+                patch.object(installer, "KNOWN_AFTER", known_after),
+                patch.object(installer, "patch_db", side_effect=patch_db),
+                patch.object(installer, "patch_webapp", side_effect=patch_webapp),
+                patch.object(installer, "validate_candidate", return_value=None),
+                patch.object(installer.os, "geteuid", return_value=0),
+                patch.object(installer.os, "lstat", side_effect=orphan_layout),
+                patch.object(installer.pwd, "getpwuid", side_effect=KeyError(501)),
+            ):
+                checked = installer.preview(root, assets, database, capability)
+                self.assertTrue(checked["changed"])
+                self.assertFalse(checked["migration_applied"])
+
+                first = installer.install(
+                    root,
+                    assets,
+                    database,
+                    capability,
+                    backups,
+                    require_stopped=False,
+                    now=datetime(2026, 8, 26, 0, 0, 0, tzinfo=timezone.utc),
+                )
+                self.assertTrue(first["changed"])
+                self.assertTrue(all(path.is_file() for path in target_paths.values()))
+
+                repeated = installer.install(
+                    root,
+                    assets,
+                    database,
+                    capability,
+                    backups,
+                    require_stopped=False,
+                )
+                self.assertFalse(repeated["changed"])
+
+                rolled_back = installer.rollback(
+                    root,
+                    database,
+                    capability,
+                    Path(first["backup"]),
+                    require_stopped=False,
+                )
+                self.assertTrue(rolled_back["rolled_back"])
+                self.assertTrue(all(not path.exists() for path in target_paths.values()))
+
+                forwarded = installer.install(
+                    root,
+                    assets,
+                    database,
+                    capability,
+                    backups,
+                    require_stopped=False,
+                    now=datetime(2026, 8, 26, 0, 0, 1, tzinfo=timezone.utc),
+                )
+                self.assertTrue(forwarded["changed"])
+                self.assertTrue(forwarded["migration_applied"])
+                self.assertTrue(all(path.is_file() for path in target_paths.values()))
+
+                final = installer.rollback(
+                    root,
+                    database,
+                    capability,
+                    Path(forwarded["backup"]),
+                    require_stopped=False,
+                )
+                self.assertTrue(final["rolled_back"])
+                self.assertTrue(all(not path.exists() for path in target_paths.values()))
+                self.assertEqual((app / "db.py").read_text(encoding="utf-8"), db_before)
+                self.assertEqual(
+                    (app / "webapp.py").read_text(encoding="utf-8"), web_before
+                )
+
     def test_real_source_patch_hashes_are_pinned_and_assets_are_private_by_contract(self) -> None:
         self.assertTrue(all(len(value) == 64 for value in installer.KNOWN_BEFORE.values()))
         self.assertTrue(all(len(value) == 64 for value in installer.KNOWN_AFTER.values()))
@@ -1881,6 +2018,99 @@ def insert_race(synthetic_context, resp):
             ):
                 installer._secure_target_parent(
                     alternate_root, alternate_app / "db.py", create=False
+                )
+
+    def test_installer_accepts_exact_orphan_owned_production_migrations_parent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / "root"
+            migrations = root / "migrations"
+            migrations.mkdir(parents=True)
+            target = migrations / "0010_out001_synthetic.sql"
+            real_lstat = os.lstat
+
+            def legacy_layout(path):
+                if Path(path) == root:
+                    return SimpleNamespace(
+                        st_mode=stat.S_IFDIR | 0o755,
+                        st_uid=0,
+                        st_gid=0,
+                    )
+                if Path(path) == migrations:
+                    return SimpleNamespace(
+                        st_mode=stat.S_IFDIR | 0o755,
+                        st_uid=501,
+                        st_gid=50,
+                    )
+                return real_lstat(path)
+
+            with (
+                patch.object(installer, "PRODUCTION_ROOT", root),
+                patch.object(installer.os, "geteuid", return_value=0),
+                patch.object(installer.os, "lstat", side_effect=legacy_layout),
+                patch.object(installer.pwd, "getpwuid", side_effect=KeyError(501)),
+            ):
+                installer._secure_target_parent(root, target, create=False)
+
+            for forbidden in (root / "migrations-archive", root / "assets"):
+                forbidden.mkdir()
+
+                def forbidden_layout(path, *, forbidden=forbidden):
+                    if Path(path) == root:
+                        return SimpleNamespace(
+                            st_mode=stat.S_IFDIR | 0o755,
+                            st_uid=0,
+                            st_gid=0,
+                        )
+                    if Path(path) == forbidden:
+                        return SimpleNamespace(
+                            st_mode=stat.S_IFDIR | 0o755,
+                            st_uid=501,
+                            st_gid=50,
+                        )
+                    return real_lstat(path)
+
+                with (
+                    self.subTest(forbidden=forbidden.name),
+                    patch.object(installer, "PRODUCTION_ROOT", root),
+                    patch.object(installer.os, "geteuid", return_value=0),
+                    patch.object(installer.os, "lstat", side_effect=forbidden_layout),
+                    patch.object(installer.pwd, "getpwuid", side_effect=KeyError(501)),
+                    self.assertRaisesRegex(RuntimeError, "unsafe target parent"),
+                ):
+                    installer._secure_target_parent(
+                        root, forbidden / "release.sql", create=False
+                    )
+
+            alternate_root = Path(tmp).resolve() / "alternate-root"
+            alternate_migrations = alternate_root / "migrations"
+            alternate_migrations.mkdir(parents=True)
+
+            def alternate_layout(path):
+                if Path(path) == alternate_root:
+                    return SimpleNamespace(
+                        st_mode=stat.S_IFDIR | 0o755,
+                        st_uid=0,
+                        st_gid=0,
+                    )
+                if Path(path) == alternate_migrations:
+                    return SimpleNamespace(
+                        st_mode=stat.S_IFDIR | 0o755,
+                        st_uid=501,
+                        st_gid=50,
+                    )
+                return real_lstat(path)
+
+            with (
+                patch.object(installer, "PRODUCTION_ROOT", root),
+                patch.object(installer.os, "geteuid", return_value=0),
+                patch.object(installer.os, "lstat", side_effect=alternate_layout),
+                patch.object(installer.pwd, "getpwuid", side_effect=KeyError(501)),
+                self.assertRaisesRegex(RuntimeError, "unsafe target parent"),
+            ):
+                installer._secure_target_parent(
+                    alternate_root,
+                    alternate_migrations / "0010_out001_synthetic.sql",
+                    create=False,
                 )
 
     def test_foreign_outbox_linked_money_and_schema_drift_block_without_deletion(self) -> None:
