@@ -121,22 +121,24 @@ workstream manifest, а не из чата или model report.
 ### OUT-001 — Заявка становится подтверждённым делом
 
 - Почему важно: это единственный критический участок release98, где frontend
-  success доказан локально, но downstream production/staging E2E намеренно не
-  создавался.
-- Результат: контролируемая тестовая заявка один раз проходит frontend → API →
-  бот/оператор → кабинет и получает проверяемый ID и первый статус.
+  success был доказан локально, но downstream production E2E долго оставался
+  намеренно неисполненным без безопасного маркера и cleanup.
+- Проверенный результат: root-only обезличенная заявка проходит API →
+  изолированный outbox → кабинет, повторный submit возвращает то же дело, а
+  exact cleanup каждого journey оставляет ноль активных
+  synthetic/outbox/receipt строк и одну непрозрачную tombstone; два выполненных
+  journey оставили две. Generated/hidden order links fail closed.
 - Связи: `JRN-001`, `JRN-003`, `JRN-006`, `SUR-002`, `SUR-003`, `SUR-005`.
-- Метрика: 100% контрольных сценариев создают ровно одно дело; ложный success и
-  дубли — 0.
-- Proof: staging или согласованный production marker, network/server/cabinet/
-  notification evidence и повторный submit.
-- Gate: backend/bot source или безопасные marker, lookup и cleanup пока
-  отсутствуют. Никакой реальной клиентской мутации без них. Outcome перенесён из
-  `NOW` в `LATER` 2026-08-06: его исполнение уже было записано здесь, а гейт
-  снимается не агентом, а появлением authoritative backend/bot contract.
+- Метрика: оба выполненных bounded production-сценария создали ровно одно дело,
+  дубли 0, ложный success 0, активный residue 0, экономический guard неизменен.
+- Proof: `REL-0174`, `E-1038`; authoritative result
+  `7cf25718e9c8ae39c1e7105b62d3206e4e8196b7`; generated-link hotfix
+  `292784c11aeadfd860e660d9c2f4147e19d74069`.
+- Граница: закрыт только контролируемый технический путь с DB-local isolated
+  delivery. Органическая заявка, внешний Telegram/оператор, качество первого
+  ответа, конверсия и выручка этим proof не подтверждены. Повторный probe —
+  отдельная root-only операция, не demo-fixture и не фоновый трафик.
 
-- Production/staging исполнение `OUT-001` после появления marker/lookup/cleanup
-  и authoritative backend/bot contract.
 - Калибровка модельного совета на слепых задачах главной, мобильного дела и
   тёмной темы.
 - Контентный граф знаний: материал → проблема → услуга → следующий шаг.

@@ -2,7 +2,7 @@
 
 ## Canonical and production truth
 
-- Canonical production source is
+- Canonical static production source is
   `c245da0e00ce3a9dfaefbe985b9540672687e1d3`.
 - Production `current` and compatibility `dist` resolve to
   `release173-c245da0`; `previous` resolves to `release172-df007e4`.
@@ -20,6 +20,11 @@
   `/root/salon_bot/backups/economic-v2-20260825T100618364976Z`.
 - Kladovaya is live from exact source `58f4c116…421e` at
   `20260824T1214Z-promo-mobile-58f4c11`.
+- Backend OUT-001 is live from canonical source
+  `d6f1a1b4783d5600abcfe5ecce835c56e5c3bac4`: authoritative result
+  `7cf25718e…19b7`, generated-link hotfix `292784c1…4069`, runtime
+  `cba09cf5…44a5`. It is default-off outside an explicit root-only capability;
+  public/static remains release173.
 - REL-0169 has G10 GO with P0=0/P1=0. Exact source, hashes, browser matrix,
   two-vantage smoke and executed backend/Salon/Kladovaya rollback-forward are
   in `REL-0169` and `E-1031`.
@@ -39,14 +44,49 @@
   WebKit/Chromium and forced-colors proof, production 390/568 owner states,
   two-vantage smoke and executed REL-0172 rollback-forward are in `REL-0173`
   and `E-1037`.
+- REL-0174 has G10 GO with P0=0/P1=0 in the bounded technical OUT-001 scope. Its
+  exact synthetic API → isolated outbox → cabinet → cleanup proof, security
+  stop/hotfix, two-vantage smoke and executed source rollback-forward are in
+  `REL-0174` and `E-1038`; all three final reviews report P2=0 as well.
 - Analytics v2 contract is 2.3.0. REL-0169's static rollback target is
   release168; REL-0171's target is release169; REL-0172's target is release171;
   REL-0173's target is release172.
   Promo backend rollback preserves SQLite, promised rows and the aggregate
   guard while switching new campaign activity off.
-- `salon-bot-v2.service` is active as final PID `557663` with `NRestarts=0`;
-  SQLite is WAL and integrity is `ok`. Deposit issuance is open. Final
-  operator-network and VPS read-only smoke each passed 14/14.
+- `salon-bot-v2.service` is active as final PID `768912` with `NRestarts=0`;
+  SQLite is WAL with `quick_check=ok`, zero FK violations and exact 30-link
+  `table_xinfo` inventory. Active synthetic/outbox/receipt counts are zero,
+  capability is absent, economic guard is `49cf27f7…172a3`, and deposit issuance
+  is open. Final operator-network and VPS read-only smoke each passed 14/14.
+
+## 26 August REL-0174 bounded OUT-001 proof
+
+- The authoritative backend plane is default-off and accepts only one exact
+  no-contact/no-file/no-money fixture signed by a short-lived root-owned
+  canonical-origin capability. Ordinary requests never read the capability.
+- The first successful journey was not accepted as final evidence after review
+  found a future generated-link gap. Live `table_info`/`table_xinfo` comparison
+  proved no residue; failing-first hotfix `292784c1…4069` now detects generated
+  and hidden `order_id` columns and blocks before cleanup writes.
+- Exact local gates are focused 30/30, backend 129 with one environment skip,
+  public 623/623, Brain 39/39. Final security/trust, economics/eligibility and
+  product/ops reviews all report GO with P0=0/P1=0/P2=0.
+- Production used the rehearsed stopped-service old-installer rollback followed
+  by new installer `031bedbe…d186`; direct new apply over the old runtime is
+  forbidden. The repeated probe proved one exact order, duplicate recovery,
+  isolated delivery, claim/cabinet visibility and exact cleanup. Final active
+  residue is zero and the two executed journeys leave two opaque tombstones.
+- A real new rollback restored source preimages and removed all three assets;
+  both smoke vantage points stayed 14/14. Forward restore created final backup
+  `/root/salon_bot/backups/out001-synthetic-20260826T021208015769Z`; immediate
+  apply is idempotent.
+- Prices, tariffs, promo, deposit mechanics, public design, static pointers and
+  Kladovaya did not change. One 10-second upstream Telegram `Bad Gateway`
+  polling interval recovered without restart; SQLite lock/traceback/critical
+  matches are zero and a subsequent clean window is recorded in `E-1038`.
+- The proof closes the controlled technical path only. Organic Telegram/
+  operator fulfilment, quality, conversion, revenue, margin and profit remain
+  unproved and must not be inferred from the synthetic result.
 
 ## 25 August REL-0173 retention preview correction
 

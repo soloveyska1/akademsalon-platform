@@ -1,13 +1,13 @@
 # START HERE — Академический Салон
 
-Последнее обновление: 25 августа 2026 г.
+Последнее обновление: 26 августа 2026 г.
 
 ## Текущая истина
 
 - Production: <https://akademsalon.ru/?v=release173>
 - Закрытое превью: <https://akademsalon-desktop-preview.saymoon.chatgpt.site/?v=38>
 - Production release: `release173-c245da0`
-- Production source: `c245da0e00ce3a9dfaefbe985b9540672687e1d3`
+- Static production source: `c245da0e00ce3a9dfaefbe985b9540672687e1d3`
 - Проверенный privacy result: `1011060c9b2f30b55809ab9bb253ae64cf811925`
 - Проверенный Analytics v2 result: `9e09e986d91779f6de95f4677c6437e0b088eaf3`.
 - Проверенный master-parity result: `10fce082029dd198a770272fa8ec642b438825f0`.
@@ -31,6 +31,10 @@
   `925309b2a5380457a336c892ef89fac564898239`.
 - Проверенный retention-preview polish result:
   `5ac8bc8f5af40b1d63fb4b9fd3e18413ffef5a27`.
+- Проверенный OUT-001 authoritative result:
+  `7cf25718e9c8ae39c1e7105b62d3206e4e8196b7`.
+- Проверенный OUT-001 generated-link hotfix result:
+  `292784c11aeadfd860e660d9c2f4147e19d74069`.
 - Каноническая integration-ветка: `origin/main`
 - Текущую task-ветку и точный HEAD всегда брать из `brain context`/`brain doctor`, а не из этого файла.
 - Static rollback: `release172-df007e4`; static production — release173.
@@ -59,6 +63,16 @@
   активации, реального rollback на release172 и forward. Точная запись:
   [releases/REL-0173.md](releases/REL-0173.md), доказательства:
   [evidence/E-1037.md](evidence/E-1037.md).
+- REL-0174 имеет G10 GO в ограниченном техническом OUT-001 scope:
+  root-only обезличенная заявка проходит API, изолированный outbox и кабинет,
+  повторный submit идемпотентен, cleanup каждого journey оставляет ноль
+  активных строк и одну непрозрачную tombstone; всего после двух journey их две.
+  Generated/hidden order links проверяются через
+  `table_xinfo`; цены, promo, депозиты и public/static не менялись. Focused
+  30/30, backend 129, public 623/623, Brain 39/39, два production journey и
+  executed source rollback-forward зелёные; три финальных review закрыты с
+  P0=0/P1=0/P2=0. Точная запись: [releases/REL-0174.md](releases/REL-0174.md),
+  доказательства: [evidence/E-1038.md](evidence/E-1038.md).
 - REL-0172 имеет G10 GO в ограниченном smart-rescue scope: незавершённый выход
   уточняет одну из четырёх причин, и только явное возражение по цене запрашивает
   существующее удержание 10% от 5 000 RUB с потолком 2 500 RUB на 72 часа.
@@ -198,8 +212,11 @@
 3. Аналитику и админку не развивать в текущем product-фокусе. Позже измерять
    только достаточный органический consented sample по заранее выбранному окну;
    до этого не заявлять conversion uplift.
-4. `OUT-001` — не выполнять production submit, пока не появятся безопасные
-   marker/lookup/cleanup и authoritative backend/bot evidence.
+4. `OUT-001` — bounded technical production path уже доказан REL-0174: marker,
+   lookup, isolated delivery и generated-link-safe cleanup существуют. Не
+   превращать root-only probe в demo или фон и не заявлять органический
+   Telegram/операторский путь, качество ответа, conversion или profit без
+   отдельного реального evidence.
 
 `OUT-002`, `OUT-003`, `OUT-004` и `OUT-005` verified; точные implementation/evidence SHA
 находятся в `ROADMAP.md` и `CURRENT-HANDOFF.md`.
@@ -226,7 +243,9 @@
 - [CURRENT-HANDOFF.md](CURRENT-HANDOFF.md) — актуальная передача следующей сессии.
 - [plans/BRAIN-15-MVP.md](plans/BRAIN-15-MVP.md) — контракт атомарного контекста и локальной безопасности параллельных веток.
 - [workstream-policy.json](workstream-policy.json) — разрешённые semantic namespaces и proof IDs; executable-команд здесь нет.
-- [releases/REL-0172.md](releases/REL-0172.md) — доказательная запись текущего GO-релиза.
+- [releases/REL-0174.md](releases/REL-0174.md) — доказательная запись текущего
+  bounded backend-релиза; [releases/REL-0173.md](releases/REL-0173.md) —
+  текущего static production-релиза.
 - [../../ops/monitoring/README.md](../../ops/monitoring/README.md) — контракт
   изоляции Nginx virtual hosts и Салон-дозора на общем VPS.
 
