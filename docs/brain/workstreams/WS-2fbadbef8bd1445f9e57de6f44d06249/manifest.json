@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-2fbadbef8bd1445f9e57de6f44d06249",
+  "slug": "out001-table-xinfo-links-v2",
+  "status": "active",
+  "branch": "codex/out001-table-xinfo-links-v2",
+  "base_sha": "341f55283d53317697b37a02ccf39f2a67deae9b",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-001"
+  ],
+  "write_owner": "root",
+  "scope": {
+    "write": [
+      {
+        "path": "backend/salon_bot/install_out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-2fbadbef8bd1445f9e57de6f44d06249/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "backend/salon_bot/migrations/0010_out001_synthetic.sql",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/out001_probe.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-4d34f0a468874c12bdf39703834c194f/HANDOFF.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:out001-synthetic-e2e"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:out001-synthetic"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
