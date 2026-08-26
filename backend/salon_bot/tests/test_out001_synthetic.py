@@ -2211,6 +2211,57 @@ def insert_race(synthetic_context, resp):
                 finally:
                     connection.close()
 
+    def test_generated_order_link_blocks_cleanup_without_deletion(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            database = create_database(Path(tmp))
+            order_id = insert_bundle(database)
+            connection = sqlite3.connect(database)
+            try:
+                connection.execute(
+                    "CREATE TABLE future_refs("
+                    "raw_id INTEGER,"
+                    "order_id INTEGER GENERATED ALWAYS AS (raw_id) VIRTUAL)"
+                )
+                connection.execute(
+                    "INSERT INTO future_refs(raw_id) VALUES(?)", (order_id,)
+                )
+                connection.commit()
+            finally:
+                connection.close()
+
+            with self.assertRaisesRegex(
+                runtime.CleanupBlocked, "synthetic_schema_drift"
+            ):
+                runtime.cleanup(
+                    database,
+                    RUN_ID,
+                    order_id,
+                    expected_economic_guard=runtime.economic_guard_digest(database),
+                )
+
+            connection = sqlite3.connect(database)
+            try:
+                self.assertEqual(
+                    connection.execute(
+                        "SELECT count(*) FROM orders WHERE id=?", (order_id,)
+                    ).fetchone()[0],
+                    1,
+                )
+                self.assertEqual(
+                    connection.execute(
+                        "SELECT count(*) FROM future_refs WHERE order_id=?", (order_id,)
+                    ).fetchone()[0],
+                    1,
+                )
+                self.assertEqual(
+                    connection.execute(
+                        "SELECT count(*) FROM synthetic_probe_tombstones"
+                    ).fetchone()[0],
+                    0,
+                )
+            finally:
+                connection.close()
+
     def test_installer_preflight_rejects_schema_drift_before_migration(self) -> None:
         runtime_asset = HERE.parents[1] / "out001_synthetic.py"
         mutations = {

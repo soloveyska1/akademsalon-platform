@@ -870,7 +870,7 @@ def _order_links(connection: sqlite3.Connection) -> set[tuple[str, str]]:
         )
     ]
     for table in tables:
-        for column in connection.execute(f"PRAGMA table_info({_identifier(table)})"):
+        for column in connection.execute(f"PRAGMA table_xinfo({_identifier(table)})"):
             name = str(column[1])
             lowered = name.lower()
             if "order" in lowered and "id" in lowered:

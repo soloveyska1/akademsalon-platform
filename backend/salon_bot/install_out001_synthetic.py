@@ -34,7 +34,7 @@ KNOWN_AFTER = {
     "webapp": "cb5b2624f9ed9769e9464f2a198ad997127641fba6fa19d30cec9fbc3943a200",
 }
 KNOWN_ASSETS = {
-    "runtime": "7add4843d037f04f0b4098c3e842a5524b4ad76742d830e48b75b2951def28cf",
+    "runtime": "cba09cf5db96d632d3f07ff45713b9518841b4a6654217bec3ef9f9fa87844a5",
     "probe": "5dd4cb602f92f4a36511376336b12076a9e0482ec7387ff99c3e30f69ebb452d",
     "migration": "e6500fa4dd68a2a99f357f0a5c8b118d05e12858980354a82452fe0d80cbf8d8",
 }
