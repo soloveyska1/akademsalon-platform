@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-112f390ab1204285994b4c90e84ed464",
   "slug": "out001-installer-parent-layout",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out001-installer-parent-layout",
   "base_sha": "2736ad303dabcf96db773917ed0a4cebee42e21e",
   "result_sha": "6ab2bce925fa140533b0efb745882ed90a0d6ed1",
@@ -46,6 +46,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 3,
-  "base_manifest_hash": "e43997551e7232f7f2fbeb3daf3f2a71f8b204fcf6a68447f8b6cfb3c4bd2898"
+  "manifest_revision": 4,
+  "base_manifest_hash": "6e3b8bc9128f509b12fbf8e10250aaf9f839befef17d5efaeb78c38b32efab6d"
 }
