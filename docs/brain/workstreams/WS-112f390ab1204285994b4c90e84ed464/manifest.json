@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-112f390ab1204285994b4c90e84ed464",
+  "slug": "out001-installer-parent-layout",
+  "status": "active",
+  "branch": "codex/out001-installer-parent-layout",
+  "base_sha": "2736ad303dabcf96db773917ed0a4cebee42e21e",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-001"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "backend/salon_bot/install_out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-112f390ab1204285994b4c90e84ed464/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": [
+      {
+        "path": "backend/salon_bot/migrations/0010_out001_synthetic.sql",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-ceea8ce154b546ddad874c2c97d7c53c/HANDOFF.md",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "shared-runtime:out001-installer-parent-layout"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
