@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-4d34f0a468874c12bdf39703834c194f",
   "slug": "out-001-synthetic-e2e",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-001-synthetic-e2e",
   "base_sha": "a7fd11299a88736696bc6573216dbfe025e08604",
   "result_sha": "7cf25718e9c8ae39c1e7105b62d3206e4e8196b7",
@@ -94,6 +94,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 3,
-  "base_manifest_hash": "a13ab8f1541255f9d9147d0c5a6053f43fa7e2d2c7754b70e7d38053b5a40dd2"
+  "manifest_revision": 4,
+  "base_manifest_hash": "eac92d9eacbf633150ee0c21c5921b5fa9ab1404e1a37c505d910905e11abac0"
 }
