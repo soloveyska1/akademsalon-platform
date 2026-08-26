@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-67ebb92f28c4457d9fc1a59ae4470d5c",
   "slug": "out001-installer-migrations-layout",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out001-installer-migrations-layout",
   "base_sha": "662971e2c34056b9dbd075cc55c2155414ae36d3",
-  "result_sha": null,
+  "result_sha": "0cfed4c2648cf5960070d33d9cdd08563202597d",
   "outcome_ids": [
     "OUT-001"
   ],
@@ -46,6 +46,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "cb27fe9e1672a14eb353a0dffead09a9e4078dcd575b81e5c164c5536f605e4c"
 }
