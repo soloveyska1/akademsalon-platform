@@ -33,10 +33,6 @@
       {
         "path": "backend/salon_bot/out001_synthetic.py",
         "match": "exact"
-      },
-      {
-        "path": "docs/brain/workstreams/WS-ceea8ce154b546ddad874c2c97d7c53c/HANDOFF.md",
-        "match": "exact"
       }
     ]
   },
@@ -50,6 +46,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "e9fab8317f54953961a4417c40aefe210e1aaf8d9cf24696fc64abcf55bdbe59"
 }
