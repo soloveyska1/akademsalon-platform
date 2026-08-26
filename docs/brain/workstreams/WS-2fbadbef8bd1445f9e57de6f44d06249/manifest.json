@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-2fbadbef8bd1445f9e57de6f44d06249",
   "slug": "out001-table-xinfo-links-v2",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out001-table-xinfo-links-v2",
   "base_sha": "341f55283d53317697b37a02ccf39f2a67deae9b",
-  "result_sha": null,
+  "result_sha": "292784c11aeadfd860e660d9c2f4147e19d74069",
   "outcome_ids": [
     "OUT-001"
   ],
@@ -58,6 +58,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "4461a48b6983c68b425a9caa5ce7e2952e08c874684b591b378b2a5cf37d82a8"
 }
