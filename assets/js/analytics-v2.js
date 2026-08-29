@@ -4,6 +4,13 @@
 (function analyticsV2Bootstrap() {
   'use strict';
 
+  try {
+    if (window.__salonAnalyticsOriginalUrl) {
+      history.replaceState(history.state, '', window.__salonAnalyticsOriginalUrl);
+      delete window.__salonAnalyticsOriginalUrl;
+    }
+  } catch (restoreError) {}
+
   var SCHEMA_VERSION = 2;
   var RELEASE = '20260812analytics2';
   var API = '/api';
@@ -78,6 +85,11 @@
     var owner = get(OWNER_DEVICE_KEY, null);
     if (owner && owner.v === 1) return true;
     try { return sessionStorage.getItem(QA_SESSION_KEY) === '1'; } catch (error) { return false; }
+  }
+  function stopVendorAnalytics() {
+    try {
+      if (Salon.metrika && typeof Salon.metrika.stop === 'function') Salon.metrika.stop();
+    } catch (error) {}
   }
   function consentRecord() {
     try {
@@ -525,6 +537,13 @@
   });
   window.addEventListener('salon:analytics-exclusion', function () {
     if (!collectionExcluded()) return;
+    stopVendorAnalytics();
+    started = false;
+    beginRevoke();
+  });
+  window.addEventListener('storage', function (event) {
+    if (event.key !== OWNER_DEVICE_KEY || !collectionExcluded()) return;
+    stopVendorAnalytics();
     started = false;
     beginRevoke();
   });
@@ -564,7 +583,10 @@
   };
 
   sendPendingRevoke();
-  if (collectionExcluded()) beginRevoke();
+  if (collectionExcluded()) {
+    stopVendorAnalytics();
+    beginRevoke();
+  }
   else if (allowed()) start(false);
   else if (queue().length || get(DELETE_KEY, '') || get('salon_vid', '')) beginRevoke();
 })();

@@ -104,7 +104,7 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   const script = read('assets/js/promo-campaign.js');
   for (const html of [home, configurator]) {
     assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260825rescue2/);
-    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260825rescue2&amp;owner=20260829analytics4/);
+    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260825rescue2/);
   }
   assert.doesNotMatch(home, /<img[^>]+promo-salon-welcome/u);
   assert.doesNotMatch(configurator, /<img[^>]+promo-salon-welcome/u);
@@ -113,8 +113,8 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   assert.match(script, /\/promo\/eligibility/);
   assert.match(script, /credentials:\s*'include'/);
   assert.match(script, /owner_preview/);
-  assert.match(script, /salon_analytics_owner_device_v1/);
-  assert.match(script, /salon:analytics-exclusion/);
+  assert.doesNotMatch(script, /salon_analytics_owner_device_v1/);
+  assert.doesNotMatch(script, /salon:analytics-exclusion/);
   assert.match(script, /Предпросмотр владельца · код не выдан · скидка не активирована/u);
   assert.match(script, /node\.hidden \|\| node\.inert/);
   assert.match(script, /!node\.hidden && !node\.closest\('\[hidden\]'\)/);
@@ -202,15 +202,12 @@ test('owner preview can inspect reason branches without storage, navigation or p
   assert.match(dialog, /decision\.action \+ '<\/button>'/u);
 });
 
-test('owner analytics exclusion is separate from campaign footprint and entitlement state', () => {
+test('owner preview remains GET-only and never mutates analytics identity', () => {
   const script = read('assets/js/promo-campaign.js');
-  const marker = script.slice(
-    script.indexOf('function markOwnerAnalyticsExclusion'),
-    script.indexOf('function endpoint'),
-  );
-  assert.match(marker, /salon_analytics_owner_device_v1/);
-  assert.match(marker, /CustomEvent\('salon:analytics-exclusion'/);
-  assert.doesNotMatch(marker, /WELCOME_SEEN|RETENTION_LEFT|promo|claim|entitlement/i);
+  const boot = script.slice(script.indexOf('function boot(win)'), script.indexOf('function autoBoot'));
+  assert.match(boot, /fetchEligibility\(win\)/);
+  assert.doesNotMatch(boot, /salon_analytics_owner_device_v1|salon:analytics-exclusion/);
+  assert.doesNotMatch(script, /function markOwnerAnalyticsExclusion/);
 });
 
 test('promo dialog history sentinel preserves the configurator step and consumes Back first', () => {

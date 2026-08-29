@@ -194,17 +194,6 @@
     }
   }
 
-  function markOwnerAnalyticsExclusion(win) {
-    storageWrite(win.localStorage, 'salon_analytics_owner_device_v1', JSON.stringify({
-      v:1, confirmed_at:new Date().toISOString()
-    }));
-    try {
-      win.dispatchEvent(new win.CustomEvent('salon:analytics-exclusion', {
-        detail:{ role:'owner' }
-      }));
-    } catch (error) {}
-  }
-
   function endpoint(win, suffix) {
     if (win.Salon && win.Salon.api && win.Salon.api.base) {
       return String(win.Salon.api.base).replace(/\/$/, '') + suffix;
@@ -809,7 +798,6 @@
     }).then(function (server) {
       resolvedEligibility = server;
       if (!server) return;
-      if (server.state === 'owner_preview') markOwnerAnalyticsExclusion(win);
       var mode = presentationMode(server);
       var preview = query(win, 'offer_preview');
       if (mode.previewOnly && preview === 'retention' && pageKind(win) === 'configurator') {

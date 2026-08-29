@@ -12,6 +12,7 @@ function runtime(analytics = true, shared = {}) {
   const windowListeners = new Map();
   const calls = shared.calls || [];
   const state = shared.state || { uuid: 0, randomByte: 6 };
+  const vendor = shared.vendor || { stops: 0 };
   const consent = { v: 3, analytics, at: new Date(Date.now() - 60_000).toISOString() };
   const storage = {
     getItem(key) { return values.has(key) ? values.get(key) : null; },
@@ -82,6 +83,7 @@ function runtime(analytics = true, shared = {}) {
         save(value) { consent.analytics = value === true; return consent; },
       },
       attribution: { ref: () => shared.attribution || '' },
+      metrika: { stop() { vendor.stops += 1; } },
       analyticsPrivacy: {
         page: () => '/services.html',
         mark: (value) => value === 'cta: конфигуратор' ? 'cta_configurator' : '',
@@ -92,7 +94,7 @@ function runtime(analytics = true, shared = {}) {
   };
   context.window = context;
   vm.runInNewContext(source, context, { filename: 'analytics-v2.js' });
-  return { context, calls, values, consent, listeners, windowListeners };
+  return { context, calls, values, consent, listeners, windowListeners, vendor };
 }
 
 async function settle() {
@@ -134,6 +136,7 @@ test('a pre-confirmed owner device and session QA never start collection', async
     const r = runtime(true, { values });
     await settle();
     assert.equal(r.calls.length, 0, key);
+    assert.equal(r.vendor.stops, 1, key);
     assert.equal(r.consent.analytics, true, 'saved consent choice is not rewritten');
   }
 });
@@ -148,12 +151,29 @@ test('late authenticated owner confirmation revokes the anonymous identity and s
   exclude(new r.context.CustomEvent('salon:analytics-exclusion', { detail: { role: 'owner' } }));
   await settle();
   assert.ok(r.calls.some((call) => call.url === '/api/analytics/revoke'));
+  assert.equal(r.vendor.stops, 1);
   const before = r.calls.length;
   r.context.Salon.visit.event('first_input', { cta: 'calculator' });
   await settle();
   assert.equal(r.calls.length, before);
   assert.equal(r.consent.analytics, true);
   assert.equal(r.values.has('salon_analytics_owner_device_v1'), true);
+});
+
+test('native owner marker from another tab revokes and stops vendor analytics', async () => {
+  const r = runtime(true);
+  await settle();
+  r.values.set('salon_analytics_owner_device_v1', JSON.stringify({ v: 1 }));
+  const storage = r.windowListeners.get('storage');
+  assert.equal(typeof storage, 'function');
+  storage({ key: 'salon_analytics_owner_device_v1' });
+  await settle();
+  assert.equal(r.vendor.stops, 1);
+  assert.ok(r.calls.some((call) => call.url === '/api/analytics/revoke'));
+  const before = r.calls.length;
+  r.context.Salon.visit.event('first_input', { cta: 'calculator' });
+  await settle();
+  assert.equal(r.calls.length, before);
 });
 
 test('arbitrary UTM text never becomes a stored campaign dimension', async () => {
