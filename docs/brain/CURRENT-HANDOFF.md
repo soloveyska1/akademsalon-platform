@@ -2,10 +2,17 @@
 
 ## Canonical and production truth
 
-- REL-0175 is live from authoritative implementation
-  `dcbef91b604a8eec9a2e7a67439eee4069d77222`. Production `current` and
-  compatibility `dist` resolve to `release175-dcbef91`; `previous` resolves to
-  `release173-c245da0`. Exact proof is `E-1039` and release record `REL-0175`.
+- REL-0177 is live from authoritative implementation
+  `2a6ef72a765ed6962fbd51ef164b9aa005b28047`. Production `current` and
+  compatibility `dist` resolve to `release177-2a6ef72`; `previous` resolves to
+  `release176-9d44d99`. Exact proof is `E-1041` and release record `REL-0177`.
+- The shared case bridge uses a bounded 2x2 layout below 360 px and preserves
+  16 px gutters and enlarged-text reflow. At >=360 its prior geometry is exact.
+  Public 638/638, backend 129 with two expected skips, Brain 39/39, independent
+  reviews, production browser, external/VPS 14/14 and real rollback-forward pass.
+  This static-only release did not change prices, deposits, promo or analytics.
+- REL-0176 remains included: nine discipline Service offers now match the
+  visible price orientation, with no hidden lower-price offers. See E-1040.
 - Analytics contract is 2.4.0. Consented input is `first_input`; attempt and
   server-confirmed success are separate. Authenticated owner and QA browsers
   are excluded before legacy, strict-attribution, first-party and Yandex
@@ -22,8 +29,8 @@
   anonymous visitors, including 12 `config_step_1` events that are not true
   input. Post-release events were zero at readback. Wait for a prospective
   REL-0175 sample before interpreting conversion.
-- The exact prior static rollback source is
-  `c245da0e00ce3a9dfaefbe985b9540672687e1d3` (`release173-c245da0`).
+- The exact current static rollback source is
+  `9d44d99f66e4174960777a579d203089f0758f7d` (`release176-9d44d99`).
 - REL-0169 campaign/economics semantics remain live. Its original six-source
   rollback copy is
   `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
