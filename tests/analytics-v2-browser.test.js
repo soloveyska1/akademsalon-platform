@@ -176,6 +176,29 @@ test('owner retention preview is GET-only and leaves seeded analytics identity u
   assert.equal(r.context.location.search, '?offer_preview=retention');
 });
 
+test('excluded bootstrap drains an older pending deletion before revoking current identity', async () => {
+  const visitorA = `v${'a'.repeat(18)}`;
+  const visitorB = `v${'b'.repeat(18)}`;
+  const values = new Map([
+    ['salon_analytics_owner_device_v1', JSON.stringify({ v: 1 })],
+    ['salon_analytics_revoke_pending', JSON.stringify({
+      schema_version: 2, visitor_id: visitorA, deletion_secret: 'c'.repeat(64),
+    })],
+    ['salon_vid', JSON.stringify(visitorB)],
+    ['salon_analytics_delete_v2', JSON.stringify({
+      visitor_id: visitorB, deletion_secret: 'd'.repeat(64),
+    })],
+  ]);
+  const r = runtime(true, { values });
+  await settle();
+  const revokeCalls = r.calls.filter((call) => call.url === '/api/analytics/revoke');
+  assert.deepEqual(revokeCalls.map((call) => JSON.parse(call.options.body).visitor_id), [
+    visitorA, visitorB,
+  ]);
+  assert.equal(r.values.has('salon_analytics_revoke_pending'), false);
+  assert.equal(r.values.has('salon_vid'), false);
+});
+
 test('late authenticated owner confirmation revokes the anonymous identity and stays silent', async () => {
   const r = runtime(true);
   await settle();

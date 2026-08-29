@@ -593,7 +593,12 @@
     /* Authenticated owner preview is a protected observation surface: loading
        it must remain GET-only and may not rotate or revoke an older identity.
        The admin confirmation path already performs the ordinary revocation. */
-    if (!previewOnlyRequest) beginRevoke();
+    if (!previewOnlyRequest) {
+      /* Drain an older durable deletion request before beginRevoke persists
+         the current identity. Its completion hook then drains the new proof. */
+      sendPendingRevoke();
+      beginRevoke();
+    }
   }
   else {
     sendPendingRevoke();
