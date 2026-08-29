@@ -93,7 +93,7 @@ function deliveredEvents(calls) {
 }
 
 test('contract adds only bounded quote-scope progress events outside the strict funnel', () => {
-  assert.equal(contract.contract_version, '2.3.0');
+  assert.equal(contract.contract_version, '2.4.0');
   assert.deepEqual(contract.events.quote_scope_seen, {
     label: 'Показан выбор объёма сметы', group: 'progress',
   });
@@ -143,7 +143,7 @@ test('configurator records exposure and carried value once without changing the 
   assert.match(configurator, /Salon\.analyticsV2\.quoteScope\(stage,scope\)/);
   assert.match(configurator, /trackQuoteScope\('seen',state\.quoteScope\)/);
   assert.match(configurator, /trackQuoteScope\('continue',state\.quoteScope\)/);
-  assert.match(configurator, /analytics-v2\.js\?v=20260812analytics2&amp;contract=20260822quote1/);
+  assert.match(configurator, /analytics-v2\.js\?v=20260829analytics4/);
   assert.match(configurator, /Смета до сдачи \/ защиты/);
   assert.match(configurator, /после просмотра материалов/);
 });

@@ -9,6 +9,7 @@ const source = fs.readFileSync(path.resolve(__dirname, '../assets/js/analytics-v
 function runtime(analytics = true, shared = {}) {
   const values = shared.values || new Map();
   const listeners = new Map();
+  const windowListeners = new Map();
   const calls = shared.calls || [];
   const state = shared.state || { uuid: 0, randomByte: 6 };
   const consent = { v: 3, analytics, at: new Date(Date.now() - 60_000).toISOString() };
@@ -64,7 +65,7 @@ function runtime(analytics = true, shared = {}) {
       }) });
     },
     setTimeout() { return 1; }, clearTimeout() {},
-    addEventListener() {},
+    addEventListener(name, fn) { windowListeners.set(name, fn); },
     Salon: {
       store: {
         get(key, fallback) { const value = storage.getItem(key); return value == null ? fallback : JSON.parse(value); },
@@ -91,7 +92,7 @@ function runtime(analytics = true, shared = {}) {
   };
   context.window = context;
   vm.runInNewContext(source, context, { filename: 'analytics-v2.js' });
-  return { context, calls, values, consent, listeners };
+  return { context, calls, values, consent, listeners, windowListeners };
 }
 
 async function settle() {
@@ -122,6 +123,37 @@ test('without consent no analytics event is sent', async () => {
   const r = runtime(false);
   await settle();
   assert.equal(r.calls.length, 0);
+});
+
+test('a pre-confirmed owner device and session QA never start collection', async () => {
+  for (const [key, value] of [
+    ['salon_analytics_owner_device_v1', JSON.stringify({ v: 1 })],
+    ['salon_analytics_qa_session_v1', '1'],
+  ]) {
+    const values = new Map([[key, value]]);
+    const r = runtime(true, { values });
+    await settle();
+    assert.equal(r.calls.length, 0, key);
+    assert.equal(r.consent.analytics, true, 'saved consent choice is not rewritten');
+  }
+});
+
+test('late authenticated owner confirmation revokes the anonymous identity and stays silent', async () => {
+  const r = runtime(true);
+  await settle();
+  assert.ok(r.calls.some((call) => call.url === '/api/analytics/events'));
+  r.values.set('salon_analytics_owner_device_v1', JSON.stringify({ v: 1 }));
+  const exclude = r.windowListeners.get('salon:analytics-exclusion');
+  assert.equal(typeof exclude, 'function');
+  exclude(new r.context.CustomEvent('salon:analytics-exclusion', { detail: { role: 'owner' } }));
+  await settle();
+  assert.ok(r.calls.some((call) => call.url === '/api/analytics/revoke'));
+  const before = r.calls.length;
+  r.context.Salon.visit.event('first_input', { cta: 'calculator' });
+  await settle();
+  assert.equal(r.calls.length, before);
+  assert.equal(r.consent.analytics, true);
+  assert.equal(r.values.has('salon_analytics_owner_device_v1'), true);
 });
 
 test('arbitrary UTM text never becomes a stored campaign dimension', async () => {

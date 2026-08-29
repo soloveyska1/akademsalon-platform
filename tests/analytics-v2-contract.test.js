@@ -18,6 +18,11 @@ test('v2 contract is one explicit privacy-safe source of truth', () => {
   assert.equal(contract.retention_cleanup_interval_seconds, 3600);
   assert.deepEqual(contract.event_ordering, ['occurred_at', 'client_sequence', 'event_id']);
   assert.equal(contract.identity_definition, 'anonymous_browser');
+  assert.deepEqual(
+    contract.funnel.find((stage) => stage.id === 'input').events,
+    ['first_input'],
+    'opening step 1 must not masquerade as a real form interaction',
+  );
   assert.ok(Object.keys(contract.pages).length >= 85);
   assert.ok(Object.keys(contract.events).length >= 35);
   assert.deepEqual(contract.forbidden_fields.sort(), [

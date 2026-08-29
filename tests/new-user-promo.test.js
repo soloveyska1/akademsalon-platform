@@ -113,6 +113,8 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   assert.match(script, /\/promo\/eligibility/);
   assert.match(script, /credentials:\s*'include'/);
   assert.match(script, /owner_preview/);
+  assert.match(script, /salon_analytics_owner_device_v1/);
+  assert.match(script, /salon:analytics-exclusion/);
   assert.match(script, /Предпросмотр владельца · код не выдан · скидка не активирована/u);
   assert.match(script, /node\.hidden \|\| node\.inert/);
   assert.match(script, /!node\.hidden && !node\.closest\('\[hidden\]'\)/);
@@ -198,6 +200,17 @@ test('owner preview can inspect reason branches without storage, navigation or p
   assert.match(dialog, /sheet\.scrollTop = 0/u);
   assert.doesNotMatch(dialog, /previewOnly \? 'Вернуться к причинам' : decision\.action/u);
   assert.match(dialog, /decision\.action \+ '<\/button>'/u);
+});
+
+test('owner analytics exclusion is separate from campaign footprint and entitlement state', () => {
+  const script = read('assets/js/promo-campaign.js');
+  const marker = script.slice(
+    script.indexOf('function markOwnerAnalyticsExclusion'),
+    script.indexOf('function endpoint'),
+  );
+  assert.match(marker, /salon_analytics_owner_device_v1/);
+  assert.match(marker, /CustomEvent\('salon:analytics-exclusion'/);
+  assert.doesNotMatch(marker, /WELCOME_SEEN|RETENTION_LEFT|promo|claim|entitlement/i);
 });
 
 test('promo dialog history sentinel preserves the configurator step and consumes Back first', () => {

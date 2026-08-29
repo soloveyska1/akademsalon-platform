@@ -9,6 +9,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const app = read('assets/js/app.js');
 const supporting = read('assets/js/polish15-supporting.js');
 const configurator = read('configurator.html');
+const admin = read('assets/js/admin.js');
 const privacyWave = '20260803out006privacy1';
 
 function functionSource(source, name) {
@@ -455,6 +456,29 @@ test('question payload never links PII to the analytics browser id', () => {
 test('OUT-006 adds no production measurement milestone before server authority', () => {
   assert.doesNotMatch(app, /first_step_(?:exposed|selected|continued|alternate)/);
   assert.doesNotMatch(read('assets/js/home-guided-flow.js'), /first_step_(?:exposed|selected|continued|alternate)/);
+});
+
+test('first input remains armed until analytics consent actually allows collection', () => {
+  const start = configurator.indexOf('(function trackFirstInput()');
+  const end = configurator.indexOf('btnSubmit.addEventListener', start);
+  assert.notEqual(start, -1);
+  assert.notEqual(end, -1);
+  const source = configurator.slice(start, end);
+  const consentAt = source.indexOf('S.consent.allowed()');
+  const removeAt = source.indexOf("removeEventListener('input', firstInput)");
+  assert.ok(consentAt > 0, 'listener must check current consent');
+  assert.ok(removeAt > consentAt, 'pre-consent input must not consume the one-shot listener');
+});
+
+test('only an authenticated admin overview can persist the owner-device exclusion', () => {
+  const success = admin.slice(
+    admin.indexOf("S.api.get('/admin/overview')"),
+    admin.indexOf('st.ov = r'),
+  );
+  assert.match(success, /salon_analytics_owner_device_v1/);
+  assert.ok(success.indexOf('if (!r.ok)') < success.indexOf('salon_analytics_owner_device_v1'));
+  assert.doesNotMatch(admin.slice(0, admin.indexOf("S.api.get('/admin/overview')")),
+    /salon_analytics_owner_device_v1/);
 });
 
 test('all direct app consumers carry one atomic privacy cache wave', () => {
