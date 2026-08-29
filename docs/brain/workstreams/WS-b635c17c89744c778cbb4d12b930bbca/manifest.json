@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-b635c17c89744c778cbb4d12b930bbca",
   "slug": "case-bridge-320",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-008-case-bridge-320-v1",
   "base_sha": "cbb44a60ae21ab31e13b89beb252567d392da0e3",
   "result_sha": "074a8aeb24c287a3f56915b9e09572645512bd5f",
@@ -421,6 +421,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "cd94f1be046c34e17e6f3a3cb12c2c34f83711d4f8d895a3b1ea330252ff6093"
+  "manifest_revision": 3,
+  "base_manifest_hash": "0eee5f1392521567a23121a7c8a35a12fb3394faff61a3527d4024bc9429793a"
 }
