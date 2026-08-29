@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-36779b968bd0436f926cc4dc532813c6",
   "slug": "out-006-analytics-truth-v6",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-006-analytics-truth-v6",
   "base_sha": "2683a4ec3337620022049f755b3e5d23a0ccfeb6",
   "result_sha": "65896a4f9b16e077edee1fe38571029e6682f16c",
@@ -482,6 +482,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "28daac7b88bd66b6322643aff8e76e9d741ae8201fe351795ef802e017bf636e"
+  "manifest_revision": 3,
+  "base_manifest_hash": "05782795e7174258d80f08c1c498c19a15100ff988fc05035cc3dee8b537add1"
 }
