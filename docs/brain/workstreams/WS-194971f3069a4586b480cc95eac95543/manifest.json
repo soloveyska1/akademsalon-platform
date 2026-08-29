@@ -1,0 +1,94 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-194971f3069a4586b480cc95eac95543",
+  "slug": "seo-pricing-truth",
+  "status": "active",
+  "branch": "codex/out-007-seo-pricing-truth-v1",
+  "base_sha": "9fd85ce166f022792c9140c3a215573448650c53",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-007"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "diplomnaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1040.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0176.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-194971f3069a4586b480cc95eac95543/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-informatike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-menedzhmentu.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-pedagogike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "sitemap.xml",
+        "match": "exact"
+      },
+      {
+        "path": "tests/seo-pricing-consistency.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "brain-record:E-1040"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:REL-0176"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
