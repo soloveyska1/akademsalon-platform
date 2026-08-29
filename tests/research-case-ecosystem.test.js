@@ -410,6 +410,15 @@ test('every major public surface can continue the same case', () => {
   assert.match(app, /mobileRouteHref = currentCaseContext \? currentCaseContext\.action/);
 });
 
+test('the shared case bridge keeps all four stages inside a 320px viewport', () => {
+  const compact = chromeCss.match(/@media\(max-width:340px\)\{([\s\S]*?)\n\}/);
+  assert.ok(compact, 'chrome.css must carry a dedicated <=340px bridge layout');
+  assert.match(compact[1], /\.case-bridge__stages\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/);
+  assert.match(compact[1], /\.case-bridge__stages>span\{border-bottom:1px solid var\(--cb-line\)\}/);
+  assert.match(compact[1], /\.case-bridge__stages>span:nth-child\(n\+3\)\{border-bottom:0\}/);
+  assert.match(compact[1], /\.case-bridge__stages>span:nth-child\(odd\)\{border-left:1px solid var\(--cb-line\)\}/);
+});
+
 test('library, catalog and mobile proof no longer contain orphan routes', () => {
   const topics = [...knowledge.matchAll(/data-topic="([^"]+)"/g)].map((match) => match[1]);
   assert.equal(topics.length, 25, 'all 25 library cards must remain discoverable');
