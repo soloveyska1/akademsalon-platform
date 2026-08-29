@@ -7,6 +7,7 @@ const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(root, 'assets/js/configurator-nav-guard.js'), 'utf8');
 const analyticsSource = fs.readFileSync(path.join(root, 'assets/js/analytics-v2.js'), 'utf8');
+const attributionSource = fs.readFileSync(path.join(root, 'assets/js/analytics-attribution-v2.js'), 'utf8');
 
 function runtime(seed = {}) {
   const listeners = new Map();
@@ -36,7 +37,7 @@ function runtime(seed = {}) {
     history: { state: { safe: true }, replaceState(_state, _title, value) { applyUrl(value); } },
     localStorage: storage(localValues),
     sessionStorage: storage(sessionValues),
-    URL,
+    URL, URLSearchParams,
     document: {
       addEventListener(name, fn, options) { listeners.set(`document:${name}`, { fn, options }); },
     },
@@ -141,6 +142,33 @@ test('owner and QA bootstrap analytics preview only during shared-runtime startu
   const runtimeGateAt = analyticsSource.indexOf('if (!window.Salon || !Salon.store || !Salon.consent)');
   assert.ok(restoreAt > 0 && restoreAt < runtimeGateAt,
     'analytics v2 must restore the clean URL before its own runtime gates');
+});
+
+test('owner and QA bootstrap keeps strict attribution silent before URL restore', () => {
+  for (const seed of [
+    { local: { salon_analytics_owner_device_v1: JSON.stringify({ v: 1 }) } },
+    { session: { salon_analytics_qa_session_v1: '1' } },
+  ]) {
+    const r = runtime(seed);
+    r.context.location.protocol = 'https:';
+    r.context.location.hostname = 'akademsalon.ru';
+    r.context.document.referrer = 'https://google.com/search';
+    r.context.Salon = {
+      store: {
+        get(key, fallback) {
+          const raw = r.context.localStorage.getItem(key);
+          return raw == null ? fallback : JSON.parse(raw);
+        },
+        set(key, value) { r.context.localStorage.setItem(key, JSON.stringify(value)); },
+        del(key) { r.context.localStorage.removeItem(key); },
+      },
+      consent: { allowed: () => true },
+      analyticsPrivacy: { page: (value) => value },
+    };
+    vm.runInNewContext(attributionSource, r.context, { filename: 'analytics-attribution-v2.js' });
+    assert.equal(r.context.localStorage.getItem('salon_attr_v2'), null);
+    assert.equal(r.context.Salon.attribution.ref(), '');
+  }
 });
 
 test('every analytics-enabled page boots exclusion guard before shared runtime and analytics', () => {

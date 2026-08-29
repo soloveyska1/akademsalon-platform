@@ -23,16 +23,27 @@ function runtime(analytics = true, shared = {}) {
     constructor() { this.signal = { aborted: false }; }
     abort() { this.signal.aborted = true; }
   }
+  const location = {
+    protocol: 'https:', hostname: 'akademsalon.ru',
+    pathname: shared.pathname || '/services.html', search: shared.search || '',
+    hash: shared.hash || '', origin: 'https://akademsalon.ru',
+  };
   const context = {
     window: {},
-    location: {
-      protocol: 'https:', hostname: 'akademsalon.ru', pathname: '/services.html',
-      search: '', origin: 'https://akademsalon.ru',
+    location,
+    history: {
+      state: null,
+      replaceState(_state, _title, value) {
+        const url = new URL(value, location.origin);
+        location.pathname = url.pathname;
+        location.search = url.search;
+        location.hash = url.hash;
+      },
     },
     performance: { timeOrigin: Date.now() - 5_000 },
     localStorage: storage,
     sessionStorage: storage,
-    URLSearchParams,
+    URL, URLSearchParams,
     TextEncoder,
     AbortController: TestAbortController,
     document: {
@@ -92,6 +103,7 @@ function runtime(analytics = true, shared = {}) {
       visit: { mark() {}, order() {}, event() {} },
     },
   };
+  if (shared.originalUrl) context.__salonAnalyticsOriginalUrl = shared.originalUrl;
   context.window = context;
   vm.runInNewContext(source, context, { filename: 'analytics-v2.js' });
   return { context, calls, values, consent, listeners, windowListeners, vendor };
@@ -139,6 +151,29 @@ test('a pre-confirmed owner device and session QA never start collection', async
     assert.equal(r.vendor.stops, 1, key);
     assert.equal(r.consent.analytics, true, 'saved consent choice is not rewritten');
   }
+});
+
+test('owner retention preview is GET-only and leaves seeded analytics identity untouched', async () => {
+  const values = new Map([
+    ['salon_analytics_owner_device_v1', JSON.stringify({ v: 1 })],
+    ['salon_vid', JSON.stringify(`v${'a'.repeat(18)}`)],
+    ['salon_analytics_delete_v2', JSON.stringify({
+      visitor_id: `v${'a'.repeat(18)}`, deletion_secret: 'b'.repeat(64),
+    })],
+    ['salon_analytics_sequence_v2', JSON.stringify({ value: 7 })],
+  ]);
+  const before = [...values.entries()];
+  const r = runtime(true, {
+    values,
+    pathname: '/configurator.html',
+    search: '?desktop-preview=1&offer_preview=retention',
+    originalUrl: '/configurator.html?offer_preview=retention',
+  });
+  await settle();
+  assert.deepEqual([...r.values.entries()], before);
+  assert.equal(r.calls.length, 0);
+  assert.equal(r.vendor.stops, 1);
+  assert.equal(r.context.location.search, '?offer_preview=retention');
 });
 
 test('late authenticated owner confirmation revokes the anonymous identity and stays silent', async () => {

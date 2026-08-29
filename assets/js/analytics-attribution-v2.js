@@ -18,10 +18,15 @@
   };
   var here = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
   var impersonation = false;
+  var analyticsPreview = false;
   try { impersonation = sessionStorage.getItem('salon_imp') === '1'; } catch (ignore) {}
+  try {
+    analyticsPreview = new URLSearchParams(location.search).get('desktop-preview') === '1';
+  } catch (ignorePreview) {}
   var silent = here.indexOf('admin') === 0 || here === 'dashboard.html' ||
     here === 'zayavka.html' || here === 'oplaceno.html' || here === 'offline.html' ||
-    impersonation || location.protocol !== 'https:' || location.hostname !== 'akademsalon.ru';
+    impersonation || analyticsPreview || location.protocol !== 'https:' ||
+    location.hostname !== 'akademsalon.ru';
   var blockedUntilNavigation = !(Salon.consent && Salon.consent.allowed());
 
   function allowed() {

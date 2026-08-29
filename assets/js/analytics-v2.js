@@ -4,7 +4,13 @@
 (function analyticsV2Bootstrap() {
   'use strict';
 
+  var previewOnlyRequest = false;
   try {
+    var analyticsOriginalUrl = window.__salonAnalyticsOriginalUrl ||
+      (location.pathname + location.search + (location.hash || ''));
+    var analyticsOriginalQuery = new URL(analyticsOriginalUrl, location.origin).searchParams;
+    previewOnlyRequest = analyticsOriginalQuery.get('offer_preview') === 'retention' ||
+      analyticsOriginalQuery.get('offer_preview') === 'welcome';
     if (window.__salonAnalyticsOriginalUrl) {
       history.replaceState(history.state, '', window.__salonAnalyticsOriginalUrl);
       delete window.__salonAnalyticsOriginalUrl;
@@ -582,11 +588,16 @@
     quoteScope: quoteScope
   };
 
-  sendPendingRevoke();
   if (collectionExcluded()) {
     stopVendorAnalytics();
-    beginRevoke();
+    /* Authenticated owner preview is a protected observation surface: loading
+       it must remain GET-only and may not rotate or revoke an older identity.
+       The admin confirmation path already performs the ordinary revocation. */
+    if (!previewOnlyRequest) beginRevoke();
   }
-  else if (allowed()) start(false);
-  else if (queue().length || get(DELETE_KEY, '') || get('salon_vid', '')) beginRevoke();
+  else {
+    sendPendingRevoke();
+    if (allowed()) start(false);
+    else if (queue().length || get(DELETE_KEY, '') || get('salon_vid', '')) beginRevoke();
+  }
 })();
