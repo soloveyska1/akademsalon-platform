@@ -12,6 +12,11 @@ const jsonLd = (html) => [...html.matchAll(
   const value = JSON.parse(match[1]);
   return Array.isArray(value['@graph']) ? value['@graph'] : [value];
 });
+const jsonObjects = (value) => {
+  if (Array.isArray(value)) return value.flatMap(jsonObjects);
+  if (!value || typeof value !== 'object') return [];
+  return [value, ...Object.values(value).flatMap(jsonObjects)];
+};
 
 function canonicalPrices() {
   const source = read('assets/js/app.js');
@@ -87,6 +92,36 @@ test('primary landing pages show the canonical entry price and preserve schema b
     const faq = jsonLd(html).find((node) => node['@type'] === 'FAQPage');
     assert.ok(faq, `${file}: visible FAQ has matching schema`);
     assert.deepEqual(faq.mainEntity.map((entry) => entry.name), config.faq || finalFaq, `${file}: final FAQ schema`);
+  }
+});
+
+test('discipline landing schema publishes only the visible entry price', () => {
+  const files = fs.readdirSync(root)
+    .filter((file) => /^(?:kursovaya|diplomnaya)-po-.*\.html$/.test(file))
+    .sort();
+
+  assert.equal(files.length, 9, 'discipline pricing contract must cover all nine landings');
+
+  for (const file of files) {
+    const html = read(file);
+    const visible = html.match(/<span>Ориентир<\/span><strong>от ([\d\s\u00a0]+)[\s\u00a0]*₽<\/strong>/);
+    assert.ok(visible, `${file}: missing visible entry price`);
+
+    const nodes = jsonLd(html);
+    const services = nodes.filter((node) => node['@type'] === 'Service');
+    assert.equal(services.length, 1, `${file}: needs exactly one Service schema`);
+    assert.deepEqual(services[0].offers, {
+      '@type': 'Offer',
+      priceSpecification: {
+        '@type': 'PriceSpecification',
+        minPrice: money(visible[1]),
+        priceCurrency: 'RUB',
+      },
+    }, `${file}: schema must publish only the visible RUB entry price`);
+
+    const offerNodes = nodes.flatMap(jsonObjects)
+      .filter((node) => node['@type'] === 'Offer' || node['@type'] === 'AggregateOffer');
+    assert.equal(offerNodes.length, 1, `${file}: hidden parallel price offers are forbidden`);
   }
 });
 
