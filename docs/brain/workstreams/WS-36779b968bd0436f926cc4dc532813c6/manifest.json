@@ -41,6 +41,10 @@
         "match": "exact"
       },
       {
+        "path": "assets/js/analytics-attribution-v2.js",
+        "match": "exact"
+      },
+      {
         "path": "assets/js/analytics-v2.js",
         "match": "exact"
       },
