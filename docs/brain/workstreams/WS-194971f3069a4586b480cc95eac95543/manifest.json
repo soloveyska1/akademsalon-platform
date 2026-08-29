@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-194971f3069a4586b480cc95eac95543",
   "slug": "seo-pricing-truth",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-007-seo-pricing-truth-v1",
   "base_sha": "9fd85ce166f022792c9140c3a215573448650c53",
   "result_sha": "df5b861ffd02474936b9ce6f5286ddf7229457d8",
@@ -89,6 +89,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "6587e52f591a4de04d345ea554e5fee741beb186645c44a618abc279e39b00de"
+  "manifest_revision": 3,
+  "base_manifest_hash": "5c5e85210ad44f42d56c91dc36601fd6a5844c353623ad5c3d70160be6df95a5"
 }
