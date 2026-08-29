@@ -101,6 +101,10 @@
         "match": "exact"
       },
       {
+        "path": "docs/brain/workstreams/WS-726d9df023f744aea194ced800dd28a3/manifest.json",
+        "match": "exact"
+      },
+      {
         "path": "docs/brain/releases/REL-0177.md",
         "match": "exact"
       },
