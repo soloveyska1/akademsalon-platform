@@ -1,26 +1,59 @@
 # Workstream handoff
 
-- Branch: `codex/out-006-analytics-truth-v6`
-- Outcomes: `OUT-006`
-- Goal: make the consented funnel truthful, exclude authenticated owner and
-  release-QA browsers from first-party and vendor business metrics, and make
-  slow mobile configurator navigation single-flight without changing promo,
-  deposit or price economics.
-- Acceptance: funnel input is `first_input` only; pre-consent input remains
-  armed; success remains server-confirmed. Owner is marked only after an
-  authenticated admin response, owner preview remains GET-only/zero-storage,
-  future owner/QA pages suppress analytics before the shared runtime and
-  already-open tabs revoke/stop on native storage. First navigation remains
-  native and measurable once; repeats create no second navigation or CTA event.
-- Proof: failing-first and full Node/backend suites, focused real-browser
-  scenarios, independent exact-diff reviews, Brain validation, exact
-  production hashes, two-vantage smoke and contract/static rollback. Durable
-  records: `E-1039`, `REL-0175`.
-- Changed: none yet.
-- Unverified: implementation not started.
-- Risks/rollback: the early exclusion bootstrap may alter only analytics
-  preview state, never promo eligibility, consent, draft or money state. The
-  current backend overlay accepts only a contract-only update; no full legacy
-  installer, DB snapshot or deposit mutation. Static rollback is immutable.
-- Next: commit declaration, clear conflicts, port the reviewed candidate,
-  close all independent P1/P2 findings, rerun gates and publish safely.
+- Branch: `codex/out-006-analytics-truth-v6`.
+- Base: `2683a4ec3337620022049f755b3e5d23a0ccfeb6` (`origin/main` at init).
+- Outcome: `OUT-006`.
+- Goal: make the consented funnel truthful, exclude authenticated owner and QA
+  browsers from first-party/vendor business metrics, and make slow mobile
+  configurator navigation single-flight without changing promo, deposit or
+  price economics.
+- Authoritative implementation:
+  `dcbef91b604a8eec9a2e7a67439eee4069d77222`.
+
+## Changed
+
+- Analytics contract 2.4 interprets input as `first_input` only; attempt and
+  server-confirmed success remain distinct.
+- Pre-consent first input stays armed.
+- Successful authenticated admin overview marks the local owner device. An
+  early guard suppresses legacy/Yandex collection; strict attribution and
+  Analytics v2 exclude owner/QA, including cross-tab confirmation and ordered
+  anonymous revocation. Protected retention preview remains GET-only and
+  zero-storage.
+- All 87 measured pages load one cache-busted guard/attribution/analytics wave.
+  First configurator activation is native; immediate repeats are blocked before
+  a second telemetry intent and accessible state is restored on `pageshow`.
+- Production contract and static payload were released as REL-0175. Promo,
+  drafts, prices, tariffs, deposits, Salon+, referrals and Kladovaya were not
+  changed.
+
+## Verified
+
+- Public 636/636; backend 129 with two expected skips; Brain 39/39; focused
+  final 68/68; strict validation and diff checks green.
+- Final independent reviews: analytics P0=0/P1=0/P2=0; mobile
+  P0=0/P1=0/P2=0; SQLite/release P0=0/P1=0.
+- Two byte-identical 359-file builds; immutable live release175 has 362 files
+  with three exact retained server files and zero ownership/mode/symlink drift.
+- Production Chromium 390×844, two-vantage smoke, exact public hashes, service,
+  Nginx, WAL, `quick_check`, FK and clean journal verified.
+- Real static release173 rollback/forward and contract 2.3/2.4 rollback/forward
+  passed. No SQLite restore or deposit action occurred.
+- Durable proof: `E-1039`; release record: `REL-0175`.
+
+## Limits and rollback
+
+- Historical `config_step_1` events are not true input and cannot be repaired.
+  Use only the prospective post-REL-0175 series. No conversion, revenue, margin
+  or profit uplift is claimed yet.
+- The full tracked analytics installer must not run on the current production
+  overlay. Static rollback is `release173-c245da0`; backend rollback is the
+  exact contract JSON swap plus service restart, never a DB restore.
+- User dirty file `.claude/launch.json` in the original checkout was untouched.
+
+## One exact next step
+
+After at least seven full days or 100 consented sessions, whichever is later,
+compare `first_input → submit_attempt → submit_success` by device and source,
+excluding owner/QA. Do not tune prices or promo from the historical
+`config_step_1` series.

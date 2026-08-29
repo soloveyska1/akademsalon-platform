@@ -2,10 +2,28 @@
 
 ## Canonical and production truth
 
-- Canonical static production source is
-  `c245da0e00ce3a9dfaefbe985b9540672687e1d3`.
-- Production `current` and compatibility `dist` resolve to
-  `release173-c245da0`; `previous` resolves to `release172-df007e4`.
+- REL-0175 is live from authoritative implementation
+  `dcbef91b604a8eec9a2e7a67439eee4069d77222`. Production `current` and
+  compatibility `dist` resolve to `release175-dcbef91`; `previous` resolves to
+  `release173-c245da0`. Exact proof is `E-1039` and release record `REL-0175`.
+- Analytics contract is 2.4.0. Consented input is `first_input`; attempt and
+  server-confirmed success are separate. Authenticated owner and QA browsers
+  are excluded before legacy, strict-attribution, first-party and Yandex
+  collection. Owner retention preview remains GET-only/zero-storage.
+- The mobile configurator link is single-flight: one native measurable intent,
+  accessible busy state and no second navigation/telemetry from rapid repeats.
+  Promo, price, tariff, deposit, Salon+, referral and Kladovaya behavior did not
+  change.
+- REL-0175 final service PID is `828640` with `NRestarts=0`; SQLite is WAL with
+  `quick_check=ok`, FK=0 and zero release-window lock/busy/traceback/critical
+  matches. External/VPS smoke passed 14/14 on forward, both executed rollbacks
+  and final restore.
+- The immediate aggregate is historical: 151 events, 22 sessions and 5
+  anonymous visitors, including 12 `config_step_1` events that are not true
+  input. Post-release events were zero at readback. Wait for a prospective
+  REL-0175 sample before interpreting conversion.
+- The exact prior static rollback source is
+  `c245da0e00ce3a9dfaefbe985b9540672687e1d3` (`release173-c245da0`).
 - REL-0169 campaign/economics semantics remain live. Its original six-source
   rollback copy is
   `/root/salon_bot/backups/first-order-promo-economics-20260824T120008432055Z`.
@@ -24,7 +42,7 @@
   `d6f1a1b4783d5600abcfe5ecce835c56e5c3bac4`: authoritative result
   `7cf25718e…19b7`, generated-link hotfix `292784c1…4069`, runtime
   `cba09cf5…44a5`. It is default-off outside an explicit root-only capability;
-  public/static remains release173.
+  that backend-only release did not alter then-current static release173.
 - REL-0169 has G10 GO with P0=0/P1=0. Exact source, hashes, browser matrix,
   two-vantage smoke and executed backend/Salon/Kladovaya rollback-forward are
   in `REL-0169` and `E-1031`.
@@ -48,12 +66,12 @@
   exact synthetic API → isolated outbox → cabinet → cleanup proof, security
   stop/hotfix, two-vantage smoke and executed source rollback-forward are in
   `REL-0174` and `E-1038`; all three final reviews report P2=0 as well.
-- Analytics v2 contract is 2.3.0. REL-0169's static rollback target is
+- Analytics v2 contract was 2.3.0 before REL-0175 and is now 2.4.0. REL-0169's static rollback target is
   release168; REL-0171's target is release169; REL-0172's target is release171;
   REL-0173's target is release172.
   Promo backend rollback preserves SQLite, promised rows and the aggregate
   guard while switching new campaign activity off.
-- `salon-bot-v2.service` is active as final PID `768912` with `NRestarts=0`;
+- `salon-bot-v2.service` is active as final PID `828640` with `NRestarts=0`;
   SQLite is WAL with `quick_check=ok`, zero FK violations and exact 30-link
   `table_xinfo` inventory. Active synthetic/outbox/receipt counts are zero,
   capability is absent, economic guard is `49cf27f7…172a3`, and deposit issuance
