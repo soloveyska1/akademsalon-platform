@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-726d9df023f744aea194ced800dd28a3",
   "slug": "mobile-shell",
-  "status": "active",
+  "status": "abandoned",
   "branch": "claude/mobile-shell",
   "base_sha": "f6a81259fc1a57c78f44786eaca47c639342b09b",
   "result_sha": null,
@@ -52,6 +52,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "4ea46307fad45d2e482f14fbb3e5b4d5891ebaa8f2220dae5da9d27a2ce87fc5"
 }
