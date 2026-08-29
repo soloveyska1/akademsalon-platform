@@ -2699,8 +2699,11 @@ html[data-input-modality="keyboard"] .site-header .brand:focus-visible .brand__n
   .case-bridge__actions .button{display:none}
   .case-bridge__self{min-height:46px}
 }
-@media(max-width:340px){
+@media(max-width:359px){
+  .case-bridge__inner{grid-template-columns:minmax(0,1fr)}
   .case-bridge__stages{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .case-bridge__stages b{overflow-wrap:anywhere}
+  .case-bridge__copy{overflow-wrap:anywhere}
   .case-bridge__stages>span{border-bottom:1px solid var(--cb-line)}
   .case-bridge__stages>span:nth-child(n+3){border-bottom:0}
   .case-bridge__stages>span:nth-child(odd){border-left:1px solid var(--cb-line)}

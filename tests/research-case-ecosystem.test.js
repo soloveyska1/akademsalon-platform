@@ -411,9 +411,12 @@ test('every major public surface can continue the same case', () => {
 });
 
 test('the shared case bridge keeps all four stages inside a 320px viewport', () => {
-  const compact = chromeCss.match(/@media\(max-width:340px\)\{([\s\S]*?)\n\}/);
-  assert.ok(compact, 'chrome.css must carry a dedicated <=340px bridge layout');
+  const compact = chromeCss.match(/@media\(max-width:359px\)\{([\s\S]*?)\n\}/);
+  assert.ok(compact, 'chrome.css must carry a dedicated sub-360px bridge layout');
+  assert.match(compact[1], /\.case-bridge__inner\{grid-template-columns:minmax\(0,1fr\)\}/);
   assert.match(compact[1], /\.case-bridge__stages\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/);
+  assert.match(compact[1], /\.case-bridge__stages b\{overflow-wrap:anywhere\}/);
+  assert.match(compact[1], /\.case-bridge__copy\{overflow-wrap:anywhere\}/);
   assert.match(compact[1], /\.case-bridge__stages>span\{border-bottom:1px solid var\(--cb-line\)\}/);
   assert.match(compact[1], /\.case-bridge__stages>span:nth-child\(n\+3\)\{border-bottom:0\}/);
   assert.match(compact[1], /\.case-bridge__stages>span:nth-child\(odd\)\{border-left:1px solid var\(--cb-line\)\}/);
