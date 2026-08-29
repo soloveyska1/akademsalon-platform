@@ -82,7 +82,7 @@ test('all public app pages load v2 after the shared application runtime', () => 
     const html = read(file);
     if (privatePages.has(file) || !/assets\/js\/(?:app|home-release\.min)\.js/.test(html)) continue;
     const appAt = Math.max(html.indexOf('assets/js/app.js'), html.indexOf('assets/js/home-release.min.js'));
-    const v2At = html.indexOf('assets/js/analytics-v2.js?v=20260812analytics2');
+    const v2At = html.indexOf('assets/js/analytics-v2.js?v=20260829analytics4');
     assert.ok(v2At > appAt, `${file}: analytics v2 must follow the shared runtime`);
   }
 });

@@ -473,6 +473,15 @@ function initGodEye() {
         render('<div class="ag-empty">Сервер недоступен. <button class="btn btn-line" id="agRetry">Повторить</button></div>');
         return;
       }
+      S.store.set('salon_analytics_owner_device_v1', {
+        v: 1,
+        confirmed_at: new Date().toISOString()
+      });
+      try {
+        window.dispatchEvent(new CustomEvent('salon:analytics-exclusion', {
+          detail: { role: 'owner' }
+        }));
+      } catch (error) {}
       st.ov = r;
       st.ovAt = Date.now();
       st.ovFailed = false;

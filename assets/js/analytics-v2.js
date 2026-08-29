@@ -12,6 +12,8 @@
   var PENDING_REVOKE_KEY = 'salon_analytics_revoke_pending';
   var SEQUENCE_KEY = 'salon_analytics_sequence_v2';
   var GRANT_KEY = 'salon_analytics_grant_v2';
+  var OWNER_DEVICE_KEY = 'salon_analytics_owner_device_v1';
+  var QA_SESSION_KEY = 'salon_analytics_qa_session_v1';
   var QUEUE_LIMIT = 50;
   var QUEUE_TTL = 72 * 60 * 60 * 1000;
   var RETRIES = [1500, 5000, 15000, 45000];
@@ -71,6 +73,11 @@
   }
   function allowed() {
     try { return Salon.consent.allowed() === true; } catch (error) { return false; }
+  }
+  function collectionExcluded() {
+    var owner = get(OWNER_DEVICE_KEY, null);
+    if (owner && owner.v === 1) return true;
+    try { return sessionStorage.getItem(QA_SESSION_KEY) === '1'; } catch (error) { return false; }
   }
   function consentRecord() {
     try {
@@ -167,7 +174,8 @@
     return record ? String(record.v || '') + ':' + String(record.at || '') : '';
   }
   function consentIsCurrent(generation, stamp) {
-    return generation === consentGeneration && stamp && allowed() && consentStamp() === stamp;
+    return generation === consentGeneration && stamp && allowed() && !collectionExcluded() &&
+      consentStamp() === stamp;
   }
   function abortCollectionRequests() {
     if (grantController) {
@@ -236,7 +244,7 @@
     else set(QUEUE_KEY, items.slice(-QUEUE_LIMIT));
   }
   function buildEvent(name, detail, newGrant, identity) {
-    if (EVENT_NAMES[name] !== true || !allowed()) return null;
+    if (EVENT_NAMES[name] !== true || !allowed() || collectionExcluded()) return null;
     detail = detail || {};
     var item = {
       event_id: eventId(), event: name, page: canonicalPage(), release: RELEASE,
@@ -257,7 +265,7 @@
   var retryIndex = 0;
   var retryTimer = 0;
   function scheduleRetry() {
-    if (!allowed() || retryTimer) return;
+    if (!allowed() || collectionExcluded() || retryTimer) return;
     var delay = RETRIES[Math.min(retryIndex, RETRIES.length - 1)];
     retryIndex += 1;
     retryTimer = setTimeout(function () { retryTimer = 0; flush(); }, delay);
@@ -302,7 +310,7 @@
     return pending;
   }
   function flush() {
-    if (flushing || !allowed()) return Promise.resolve(false);
+    if (flushing || !allowed() || collectionExcluded()) return Promise.resolve(false);
     var items = queue();
     if (!items.length) return Promise.resolve(true);
     var identity = items[0].visitor_id;
@@ -380,7 +388,7 @@
     });
   }
   function enqueue(name, detail, newGrant) {
-    if (EVENT_NAMES[name] !== true || !allowed()) return '';
+    if (EVENT_NAMES[name] !== true || !allowed() || collectionExcluded()) return '';
     var identity = visitorId();
     var event = buildEvent(name, detail, newGrant, identity);
     if (!event) return '';
@@ -493,7 +501,7 @@
 
   var started = false;
   function start(newGrant) {
-    if (started || !allowed()) return;
+    if (started || !allowed() || collectionExcluded()) return;
     started = true;
     enqueue('page_view', {}, newGrant === true);
   }
@@ -514,6 +522,11 @@
       started = false;
       beginRevoke();
     }
+  });
+  window.addEventListener('salon:analytics-exclusion', function () {
+    if (!collectionExcluded()) return;
+    started = false;
+    beginRevoke();
   });
 
   Salon.visit = {
@@ -551,6 +564,7 @@
   };
 
   sendPendingRevoke();
-  if (allowed()) start(false);
+  if (collectionExcluded()) beginRevoke();
+  else if (allowed()) start(false);
   else if (queue().length || get(DELETE_KEY, '') || get('salon_vid', '')) beginRevoke();
 })();

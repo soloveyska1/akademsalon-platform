@@ -28,7 +28,7 @@ KNOWN_DB_POST_SHA256 = "7611e08b69bbe283b5614fbaaf5bd3f379b95cefb57dcc033b23446c
 KNOWN_NGINX_SITE_POST_SHA256 = "0270e47d48ce9e28eb226b06d3e2e37346c79f60fb768a3ce658b3f0e4f881f8"
 KNOWN_NGINX_HEADERS_POST_SHA256 = "ebe20503129e3b856f9e3d645ee206877dcc067d21fe7f6b2597c4b2b8e6d77d"
 KNOWN_MODULE_SHA256 = "69a9d642263a88570abadc7f56c06138834c573d6f0049b1d7d02b8bc28991ea"
-KNOWN_CONTRACT_SHA256 = "e05bfd4b5b7588f35815ef32de06760e3ec2400b08e6790a9d6c268058021f99"
+KNOWN_CONTRACT_SHA256 = "c88146bccbf55e1356deebfce82d0f979f177c6171be52f8a31b4cd0cc42c069"
 MARKER = "analytics-v2-integration:20260812"
 
 
@@ -256,6 +256,7 @@ def validate_release(
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     if (
         contract.get("schema_version") != 2
+        or contract.get("contract_version") != "2.4.0"
         or contract.get("release") != "20260812analytics2"
         or not isinstance(contract.get("pages"), dict)
         or not isinstance(contract.get("events"), dict)

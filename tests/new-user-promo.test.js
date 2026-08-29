@@ -104,7 +104,7 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   const script = read('assets/js/promo-campaign.js');
   for (const html of [home, configurator]) {
     assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260825rescue2/);
-    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260825rescue2/);
+    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260829rescue3/);
   }
   assert.doesNotMatch(home, /<img[^>]+promo-salon-welcome/u);
   assert.doesNotMatch(configurator, /<img[^>]+promo-salon-welcome/u);
