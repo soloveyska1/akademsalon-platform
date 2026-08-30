@@ -1,0 +1,98 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-c8e25a769cf84a39b19d6add8b66fefa",
+  "slug": "out-006-form-input-truth-v2",
+  "status": "active",
+  "branch": "codex/out-006-form-input-truth-v2",
+  "base_sha": "d98e7e6599391eb33c44d6cd10973c4bdd66e0f8",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "analytics/contract.json",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin-analytics.js",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_analytics_v2.py",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/CURRENT-HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1041.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0178.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-c8e25a769cf84a39b19d6add8b66fefa/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/PRODUCT-SYSTEM-2026-07-26.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/admin-analytics-browser-smoke.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/analytics-v2-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/first-step-measurement-contract.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:analytics-v2"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:REL-0178"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:admin-analytics"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:configurator/input-funnel"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
