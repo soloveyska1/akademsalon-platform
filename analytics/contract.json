@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "contract_version": "2.4.0",
+  "contract_version": "2.4.1",
   "release": "20260812analytics2",
   "timezone": "Europe/Moscow",
   "session_timeout_minutes": 30,
@@ -111,7 +111,7 @@
     "step_view": {"label": "Просмотр шага конфигуратора", "group": "progress"},
     "submit_attempt": {"label": "Попытка отправить заявку", "group": "progress"},
     "submit_fail": {"label": "Неудачная отправка заявки", "group": "error"},
-    "first_input": {"label": "Первое действие в форме", "group": "progress"},
+    "first_input": {"label": "Первое изменение поля заявки", "group": "progress"},
     "case_bridge_open": {"label": "Открытие перехода из досье", "group": "interest"},
     "case_route_inferred": {"label": "Маршрут досье определён", "group": "progress"},
     "case_step_view": {"label": "Просмотр шага досье", "group": "progress"},
@@ -183,7 +183,7 @@
     {"id": "view", "label": "Просмотрели страницу", "events": ["page_view"]},
     {"id": "interest", "label": "Проявили интерес", "events": ["cta_click", "home_desk_continue", "case_route_open", "tg_open"]},
     {"id": "config", "label": "Открыли конфигуратор", "events": ["config_open", "cta_configurator"]},
-    {"id": "input", "label": "Начали заполнять", "events": ["first_input"]},
+    {"id": "input", "label": "Изменили поле заявки", "events": ["first_input"]},
     {"id": "attempt", "label": "Попытались отправить", "events": ["submit_attempt"]},
     {"id": "success", "label": "Отправили заявку", "events": ["submit_success"]}
   ],

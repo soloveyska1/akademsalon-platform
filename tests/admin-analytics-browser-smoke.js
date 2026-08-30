@@ -72,7 +72,10 @@ function overview(hours, query) {
     metrics: {
       visitors: 184 * factor, sessions: 231 * factor, pageviews: 612 * factor,
       converted_sessions: 37 * factor, session_conversion_pct: 16,
-      avg_pageviews: 2.6, online: 3
+      avg_pageviews: 2.6, online: 3,
+      configurator_sessions: 112 * factor,
+      engaged_sessions: 86 * factor, engaged_from_config_pct: 76.8,
+      contact_step_sessions: 41 * factor, contact_from_config_pct: 36.6
     },
     trend: [
       { bucket: '2026-08-08', visitors: 22, sessions: 28, pageviews: 76, conversions: 4 },
@@ -261,7 +264,7 @@ function watchPage(page, origin, ignoreExpectedHttpError = false) {
 
 async function waitLoaded(page) {
   await page.waitForSelector('#analyticsContent:not([hidden])', { timeout: 8000 });
-  await page.waitForSelector('.aa-metric:nth-child(6)', { timeout: 3000 });
+  await page.waitForSelector('.aa-metric:nth-child(8)', { timeout: 3000 });
 }
 
 async function checkLayout(browser, origin, viewport) {
@@ -296,7 +299,10 @@ async function checkLayout(browser, origin, viewport) {
   });
   assert(geometry.rootWidth === geometry.viewportWidth,
     `${viewport.name}: root overflow ${geometry.rootWidth}/${geometry.viewportWidth}`);
-  assert(geometry.metrics === 6, `${viewport.name}: rendered ${geometry.metrics}/6 metrics`);
+  assert(geometry.metrics === 8, `${viewport.name}: rendered ${geometry.metrics}/8 metrics`);
+  const metricLabels = await page.locator('.aa-metric__label').allTextContents();
+  assert(metricLabels.includes('Осмысленно продолжили'), `${viewport.name}: engagement metric missing`);
+  assert(metricLabels.includes('Дошли до контакта'), `${viewport.name}: contact metric missing`);
   assert(geometry.csp.length === 0, `${viewport.name}: CSP violations ${geometry.csp.join(', ')}`);
 
   if (viewport.width > 920) {

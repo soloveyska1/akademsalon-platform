@@ -1152,10 +1152,71 @@ class AnalyticsStore:
                 """,
                 params,
             ).fetchone()
+            diagnostics_row = conn.execute(
+                cte + """
+                SELECT
+                  COUNT(DISTINCT CASE
+                    WHEN e.event='config_open'
+                    THEN e.session_id END
+                  ) configurator_sessions,
+                  COUNT(DISTINCT CASE
+                    WHEN e.event IN (
+                      'case_route_change','case_route_confirm',
+                      'quote_scope_continue','first_input'
+                    ) AND EXISTS (
+                      SELECT 1 FROM window_events opened
+                      WHERE opened.session_id=e.session_id
+                        AND opened.event='config_open'
+                        AND (
+                          opened.occurred_at<e.occurred_at OR
+                          (opened.occurred_at=e.occurred_at AND opened.client_sequence<e.client_sequence) OR
+                          (opened.occurred_at=e.occurred_at AND opened.client_sequence=e.client_sequence
+                           AND opened.event_id<e.event_id)
+                        )
+                    ) THEN e.session_id END
+                  ) engaged_sessions,
+                  COUNT(DISTINCT CASE
+                    WHEN e.event='case_step_view'
+                      AND (
+                        (e.variant LIKE 'r1_s2_%' AND (
+                          SELECT opened.cta_id FROM window_events opened
+                          WHERE opened.session_id=e.session_id
+                            AND opened.event='config_open'
+                            AND (
+                              opened.occurred_at<e.occurred_at OR
+                              (opened.occurred_at=e.occurred_at AND opened.client_sequence<e.client_sequence) OR
+                              (opened.occurred_at=e.occurred_at AND opened.client_sequence=e.client_sequence
+                               AND opened.event_id<e.event_id)
+                            )
+                          ORDER BY opened.occurred_at DESC,opened.client_sequence DESC,opened.event_id DESC
+                          LIMIT 1
+                        )='calculator') OR
+                        (e.variant LIKE 'r1_s1_%' AND (
+                          SELECT opened.cta_id FROM window_events opened
+                          WHERE opened.session_id=e.session_id
+                            AND opened.event='config_open'
+                            AND (
+                              opened.occurred_at<e.occurred_at OR
+                              (opened.occurred_at=e.occurred_at AND opened.client_sequence<e.client_sequence) OR
+                              (opened.occurred_at=e.occurred_at AND opened.client_sequence=e.client_sequence
+                               AND opened.event_id<e.event_id)
+                            )
+                          ORDER BY opened.occurred_at DESC,opened.client_sequence DESC,opened.event_id DESC
+                          LIMIT 1
+                        ) LIKE 'service:%')
+                      ) THEN e.session_id END
+                  ) contact_step_sessions
+                FROM window_events e JOIN window_sessions ws ON ws.id=e.session_id
+                """,
+                params,
+            ).fetchone()
             sessions_count = int(session_row["sessions"] or 0)
             visitors_count = int(session_row["visitors"] or 0)
             converted_sessions = int(event_row["converted_sessions"] or 0)
             converted_visitors = int(event_row["converted_visitors"] or 0)
+            configurator_sessions = int(diagnostics_row["configurator_sessions"] or 0)
+            engaged_sessions = int(diagnostics_row["engaged_sessions"] or 0)
+            contact_step_sessions = int(diagnostics_row["contact_step_sessions"] or 0)
             metrics = {
                 "visitors": visitors_count,
                 "sessions": sessions_count,
@@ -1165,6 +1226,15 @@ class AnalyticsStore:
                 "converted_visitors": converted_visitors,
                 "session_conversion_pct": self._percentage(converted_sessions, sessions_count),
                 "visitor_conversion_pct": self._percentage(converted_visitors, visitors_count),
+                "configurator_sessions": configurator_sessions,
+                "engaged_sessions": engaged_sessions,
+                "contact_step_sessions": contact_step_sessions,
+                "engaged_from_config_pct": self._percentage(
+                    engaged_sessions, configurator_sessions
+                ),
+                "contact_from_config_pct": self._percentage(
+                    contact_step_sessions, configurator_sessions
+                ),
                 "online": int(session_row["online"] or 0),
                 "avg_duration_s": round(float(session_row["avg_duration_s"] or 0), 1),
                 "avg_pageviews": round(float(session_row["avg_pageviews"] or 0), 1),

@@ -304,6 +304,96 @@ class AnalyticsV2Test(unittest.TestCase):
         detail = self.store.session_detail(session["session_id"], hours=24)
         self.assertEqual([event["event"] for event in detail["events"]], names)
 
+    def test_engagement_diagnostics_do_not_reinterpret_strict_input(self):
+        visitor, secret = "v" + "e" * 18, "8" * 64
+        route_materials_only = [
+            self.event("page_view"),
+            self.event("config_open", page="/configurator.html", cta_id="service:pl"),
+            self.event("cta_click", cta_id="configurator"),
+            self.event("config_open", page="/configurator.html", cta_id="calculator"),
+            self.event(
+                "case_route_change", page="/configurator.html",
+                cta_id="work_base", variant="r1_st_topic_dp_t_dg",
+            ),
+            self.event(
+                "case_step_view", page="/configurator.html",
+                cta_id="svc_plan", variant="r1_s1_dp_t_dg",
+            ),
+        ]
+        result = self.store.ingest(self.payload(visitor, secret, route_materials_only))
+        self.assertEqual(result["accepted"], len(route_materials_only))
+
+        self.clock.advance(minutes=31)
+        route_plan_contact = [
+            self.event("page_view"),
+            self.event("cta_click", cta_id="configurator"),
+            self.event("config_open", page="/configurator.html", cta_id="calculator"),
+            self.event(
+                "case_route_change", page="/configurator.html",
+                cta_id="svc_plan", variant="r1_st_topic_dp_t_dg",
+            ),
+            self.event(
+                "case_step_view", page="/configurator.html",
+                cta_id="svc_plan", variant="r1_s2_dp_t_dg",
+            ),
+        ]
+        result = self.store.ingest(self.payload(visitor, secret, route_plan_contact))
+        self.assertEqual(result["accepted"], len(route_plan_contact))
+
+        self.clock.advance(minutes=31)
+        route_review_contact = [
+            self.event("page_view"),
+            self.event("cta_click", cta_id="configurator"),
+            self.event("config_open", page="/configurator.html", cta_id="calculator"),
+            self.event(
+                "case_route_change", page="/configurator.html",
+                cta_id="svc_review", variant="r1_st_draft_dp_d_dg",
+            ),
+            self.event(
+                "case_step_view", page="/configurator.html",
+                cta_id="svc_review", variant="r1_s2_dp_d_dg",
+            ),
+        ]
+        result = self.store.ingest(self.payload(visitor, secret, route_review_contact))
+        self.assertEqual(result["accepted"], len(route_review_contact))
+
+        self.clock.advance(minutes=31)
+        typed = [
+            self.event("page_view"),
+            self.event("config_open", page="/configurator.html", cta_id="calculator"),
+            self.event("cta_click", cta_id="configurator:pl"),
+            self.event("config_open", page="/configurator.html", cta_id="service:pl"),
+            self.event("first_input", page="/configurator.html", cta_id="service:pl"),
+            self.event(
+                "case_step_view", page="/configurator.html",
+                cta_id="svc_plan", variant="r1_s1_w_s_r",
+            ),
+        ]
+        result = self.store.ingest(self.payload(visitor, secret, typed))
+        self.assertEqual(result["accepted"], len(typed))
+
+        click_without_open = [
+            self.event("page_view"),
+            self.event("cta_configurator", cta_id="configurator"),
+            self.event(
+                "case_route_change", page="/configurator.html",
+                cta_id="work_base", variant="r1_st_topic_dp_t_dg",
+            ),
+        ]
+        result = self.store.ingest(self.payload(
+            "v" + "f" * 18, "9" * 64, click_without_open
+        ))
+        self.assertEqual(result["accepted"], len(click_without_open))
+
+        overview = self.store.overview(hours=24)
+        self.assertEqual(overview["metrics"]["configurator_sessions"], 4)
+        self.assertEqual(overview["metrics"]["engaged_sessions"], 4)
+        self.assertEqual(overview["metrics"]["contact_step_sessions"], 3)
+        self.assertEqual(overview["metrics"]["engaged_from_config_pct"], 100.0)
+        self.assertEqual(overview["metrics"]["contact_from_config_pct"], 75.0)
+        input_stage = next(stage for stage in overview["funnel"] if stage["id"] == "input")
+        self.assertEqual(input_stage["sessions"], 1)
+
     def test_retention_removes_old_event_inside_otherwise_fresh_session(self):
         visitor, secret = "v" + "c" * 18, "6" * 64
         old_at = (self.clock.value - timedelta(minutes=75)).isoformat(timespec="milliseconds").replace("+00:00", "Z")

@@ -468,6 +468,10 @@ test('first input remains armed until analytics consent actually allows collecti
   const removeAt = source.indexOf("removeEventListener('input', firstInput)");
   assert.ok(consentAt > 0, 'listener must check current consent');
   assert.ok(removeAt > consentAt, 'pre-consent input must not consume the one-shot listener');
+  assert.match(source, /var body = \$\('main'\)/,
+    'delegated listener must cover both the dynamic concept wizard and legacy form');
+  assert.doesNotMatch(source, /var body = \$\('confBody'\)/,
+    'hidden legacy form alone cannot represent current wizard input');
 });
 
 test('only an authenticated admin overview can persist the owner-device exclusion', () => {

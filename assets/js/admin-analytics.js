@@ -193,6 +193,10 @@
       ['Просмотры страниц', number(metrics.pageviews), 'Только канонические адреса без параметров'],
       ['Успешные заявки', number(metrics.converted_sessions), 'Факт успеха без номера и контакта'],
       ['Конверсия сессий', percent(metrics.session_conversion_pct), 'Не может превышать 100%'],
+      ['Осмысленно продолжили', number(metrics.engaged_sessions),
+        percent(metrics.engaged_from_config_pct) + ' от открывших конфигуратор · выбор или ввод'],
+      ['Дошли до контакта', number(metrics.contact_step_sessions),
+        percent(metrics.contact_from_config_pct) + ' от открывших конфигуратор · диагностический этап'],
       ['Средняя глубина', number(metrics.avg_pageviews), 'Просмотров на одну сессию']
     ];
     byId('metricCards').innerHTML = cards.map(function (card) {

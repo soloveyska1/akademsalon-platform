@@ -93,7 +93,7 @@ function deliveredEvents(calls) {
 }
 
 test('contract adds only bounded quote-scope progress events outside the strict funnel', () => {
-  assert.equal(contract.contract_version, '2.4.0');
+  assert.equal(contract.contract_version, '2.4.1');
   assert.deepEqual(contract.events.quote_scope_seen, {
     label: 'Показан выбор объёма сметы', group: 'progress',
   });

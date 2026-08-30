@@ -12,6 +12,7 @@ const app = read('assets/js/app.js');
 
 test('v2 contract is one explicit privacy-safe source of truth', () => {
   assert.equal(contract.schema_version, 2);
+  assert.equal(contract.contract_version, '2.4.1');
   assert.equal(contract.timezone, 'Europe/Moscow');
   assert.equal(contract.session_timeout_minutes, 30);
   assert.equal(contract.raw_retention_days, 365);
@@ -23,6 +24,9 @@ test('v2 contract is one explicit privacy-safe source of truth', () => {
     ['first_input'],
     'opening step 1 must not masquerade as a real form interaction',
   );
+  assert.equal(contract.events.first_input.label, 'Первое изменение поля заявки');
+  assert.equal(contract.funnel.find((stage) => stage.id === 'input').label,
+    'Изменили поле заявки');
   assert.ok(Object.keys(contract.pages).length >= 85);
   assert.ok(Object.keys(contract.events).length >= 35);
   assert.deepEqual(contract.forbidden_fields.sort(), [

@@ -25,6 +25,10 @@
         "match": "exact"
       },
       {
+        "path": "backend/salon_bot/install_analytics_v2.py",
+        "match": "exact"
+      },
+      {
         "path": "backend/salon_bot/tests/test_analytics_v2.py",
         "match": "exact"
       },
@@ -33,7 +37,7 @@
         "match": "exact"
       },
       {
-        "path": "docs/brain/evidence/E-1041.md",
+        "path": "docs/brain/evidence/E-1042.md",
         "match": "exact"
       },
       {
@@ -54,6 +58,10 @@
       },
       {
         "path": "tests/analytics-v2-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/configurator-quote-scope-analytics.test.js",
         "match": "exact"
       },
       {

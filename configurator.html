@@ -2279,7 +2279,10 @@ function initConf() {
     if (S.visit && S.visit.event) S.visit.event('submit_fail', { cta: 'network_fallback' });
   }
   (function trackFirstInput() {
-    var body = $('confBody');
+    /* Текущий визард рендерится в #conceptWizard, а legacy-поля остаются в
+       скрытом #confBody. Оба находятся внутри #main, поэтому делегирование на
+       стабильного общего предка измеряет реальный ввод в любой версии формы. */
+    var body = $('main');
     if (!body) return;
     body.addEventListener('input', function firstInput() {
       if (!S.consent || !S.consent.allowed()) return;
