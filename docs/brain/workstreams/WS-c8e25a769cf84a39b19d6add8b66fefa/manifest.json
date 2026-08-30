@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-c8e25a769cf84a39b19d6add8b66fefa",
   "slug": "out-006-form-input-truth-v2",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-006-form-input-truth-v2",
   "base_sha": "d98e7e6599391eb33c44d6cd10973c4bdd66e0f8",
   "result_sha": "2799d9baeee780bfd40d9be57dfe7677bd6e253a",
@@ -97,6 +97,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "06cc056735426868adc007e6f020754c65b041b4ca5e3508d52582090fa79c5f"
+  "manifest_revision": 3,
+  "base_manifest_hash": "bb3997c044e65b04a263e76c2e09bb178d753ef2ddece9be82f21a45b3185ccb"
 }
