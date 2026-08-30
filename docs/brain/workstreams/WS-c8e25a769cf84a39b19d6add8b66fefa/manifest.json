@@ -33,10 +33,6 @@
         "match": "exact"
       },
       {
-        "path": "docs/brain/CURRENT-HANDOFF.md",
-        "match": "exact"
-      },
-      {
         "path": "docs/brain/evidence/E-1041.md",
         "match": "exact"
       },
