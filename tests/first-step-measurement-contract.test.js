@@ -225,10 +225,12 @@ test('analytics page identity accepts only canonical public routes', () => {
     assert.equal(analyticsPage(input), expected, input);
   }
   const rootPages = fs.readdirSync(root).filter((file) => file.endsWith('.html'));
-  /* 94-я страница — закрытая аналитика: public runtime её не измеряет. */
-  assert.equal(rootPages.length, 94);
+  /* Закрытая аналитика и автономные условия акции не грузят public runtime. */
+  assert.equal(rootPages.length, 95);
   for (const file of rootPages) {
-    const expected = file === 'admin-analytics.html' ? '/other' : `/${file}`;
+    const expected = ['admin-analytics.html', 'zero-classes.html'].includes(file)
+      ? '/other'
+      : `/${file}`;
     assert.equal(analyticsPage(`/${file}`), expected, file);
   }
   assert.match(app, /url:\s*location\.origin\s*\+\s*analyticsPage\(location\.pathname\)/);

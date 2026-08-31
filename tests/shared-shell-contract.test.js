@@ -59,7 +59,10 @@ const publicRoutes = Object.values(routeFamilies).flat().sort();
 const adminFoundation = ['admin.html'];
 /* offline.html показывается сервис-воркером, когда сети нет, поэтому он
    намеренно не тянет общую оболочку: внешние файлы могут быть не в кэше. */
-const standaloneRoutes = ['admin-analytics.html', 'admin-covers.html', 'offline.html', 'oplaceno.html'];
+const standaloneRoutes = [
+  'admin-analytics.html', 'admin-covers.html', 'offline.html', 'oplaceno.html',
+  'zero-classes.html',
+];
 const directPublicRoutes = publicRoutes.filter((file) => file !== 'index.html');
 const shellReleaseKey = '20260806shell123';
 const out005ReleaseKey = '20260806services115';
@@ -99,7 +102,7 @@ function contrast(left, right) {
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
 
-test('all 94 root documents resolve to one explicit delivery and shell family', () => {
+test('all 95 root documents resolve to one explicit delivery and shell family', () => {
   const htmlFiles = fs.readdirSync(root).filter((file) => file.endsWith('.html')).sort();
   const declared = [...publicRoutes, ...adminFoundation, ...standaloneRoutes].sort();
   assert.equal(publicRoutes.length, 89);
