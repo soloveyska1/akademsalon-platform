@@ -37,6 +37,14 @@
         "match": "exact"
       },
       {
+        "path": "tests/first-step-measurement-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/shared-shell-contract.test.js",
+        "match": "exact"
+      },
+      {
         "path": "tests/zero-classes-campaign.test.js",
         "match": "exact"
       },
@@ -61,6 +69,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "c55e47b91bf9fcd68a4e8a738dba4192062360a29be4252001c95568e0b4f353"
 }
