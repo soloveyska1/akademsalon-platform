@@ -1,0 +1,94 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-3a980bb41bd74e698ea25d17603d141e",
+  "slug": "out-006-psychology-vip-v3",
+  "status": "active",
+  "branch": "codex/out-006-psychology-vip-v3",
+  "base_sha": "a9c778f4d7ec19ac0dd260cece8944004e88fd84",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/psychology-vkr.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/app.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/polish15-chrome.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1043.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0179.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-3a980bb41bd74e698ea25d17603d141e/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/psychology-vip-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/seo-pricing-consistency.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/services-choice-contract.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "journey:clinical-material-privacy"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:REL-0179"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:SalonCalc/psychology-vip"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:search/psychology-vkr"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:psychology-vkr"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
