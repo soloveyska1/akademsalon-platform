@@ -11,6 +11,9 @@ test('Zero Classes page states exact value, limits, dates and non-cash boundary'
   assert.match(html, /09:01/);
   assert.match(html, /13:01/);
   assert.match(html, /18:01/);
+  assert.match(html, /30 скидок/);
+  assert.match(html, /Выбери свой звонок/);
+  assert.match(html, /Три шага\. Меньше минуты\./);
   assert.match(html, /скидк[ау] 1 000 ₽/i);
   assert.match(html, /заказ[ау]? от 5 000 ₽/i);
   assert.match(html, /до 21 сентября 2026 года, 23:59 МСК/);
@@ -24,6 +27,11 @@ test('Zero Classes page delegates issuance to Kladovaya and reads only aggregate
   const html = read('zero-classes.html');
   const js = read('assets/js/zero-classes.js');
   assert.match(html, /https:\/\/studkladovaya\.ru\/zero/);
+  for (const drop of ['0901', '1301', '1801']) {
+    assert.match(html, new RegExp(`https:\\/\\/t\\.me\\/kladovoygipsrbot\\?start=zero_${drop}`));
+  }
+  assert.match(html, /data-drop-action/);
+  assert.match(js, /Забрать код на 1 000 ₽/);
   assert.match(js, /\/api\/campaigns\/zero-classes-2026-09-01\/status/);
   assert.doesNotMatch(js, /\/claim|claimant_key|X-Zero-Signature/);
   assert.doesNotMatch(html + js, /NP26-[A-Z0-9-]+/);

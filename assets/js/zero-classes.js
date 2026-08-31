@@ -4,7 +4,7 @@
   var endpoint = '/api/campaigns/zero-classes-2026-09-01/status';
   var campaign = 'zero-classes-2026-09-01';
   var labels = {
-    upcoming: 'Ещё не началась',
+    upcoming: 'Можно включить напоминание',
     live: 'Раздача открыта',
     sold_out: '10 из 10 уже забрали',
     ended: 'Раздача закончилась',
@@ -40,10 +40,19 @@
             ? 'Закончилась. ' + String(drop.remaining) + ' не забрали'
             : labels[state]);
       }
+      var action = card.querySelector('[data-drop-action]');
+      var time = card.querySelector('strong');
+      if (action) {
+        action.textContent = state === 'live'
+          ? 'Забрать код на 1 000 ₽ →'
+          : (state === 'upcoming' && time
+            ? 'Напомнить о ' + time.textContent + ' →'
+            : 'Проверить в боте →');
+      }
     });
     status.textContent = body.state === 'closed'
       ? 'Новые коды пока не выдаём. Уже полученные сохраняются.'
-      : 'Остаток обновлён по серверу. Во время раздачи окончательное место закрепляет бот.';
+      : 'Остаток обновлён. Во время раздачи код закрепляет бот.';
     return true;
   }
 
