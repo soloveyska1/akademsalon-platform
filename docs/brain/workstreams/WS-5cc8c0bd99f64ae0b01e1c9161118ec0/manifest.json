@@ -61,6 +61,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
+  "manifest_revision": 1,
   "base_manifest_hash": null
 }
