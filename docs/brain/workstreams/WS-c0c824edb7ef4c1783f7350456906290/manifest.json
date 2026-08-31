@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-c0c824edb7ef4c1783f7350456906290",
   "slug": "out-006-vip-entry-clarity-v1",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/out-006-vip-entry-clarity-v1",
   "base_sha": "21cd8d9f5c5fe85036c74f78071835e902d66685",
   "result_sha": "98973234c142abf2aed9e0dba8281566786d0c4a",
@@ -85,6 +85,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 4,
-  "base_manifest_hash": "87a04473a562a8d6d1d1d2759281fb7b5e9b3cbff4c6c70588d65091dc080c32"
+  "manifest_revision": 5,
+  "base_manifest_hash": "c2214921fc9b2b8a7e54940cb3ec22f9def6589139a719d494d39dc000bd8035"
 }
