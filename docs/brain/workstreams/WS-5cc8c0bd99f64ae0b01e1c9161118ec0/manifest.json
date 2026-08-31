@@ -17,6 +17,10 @@
         "match": "exact"
       },
       {
+        "path": "backend/salon_bot/systemd/salon-bot-v2-zero-campaign.conf",
+        "match": "exact"
+      },
+      {
         "path": "backend/salon_bot/tests/test_zero_classes_campaign.py",
         "match": "exact"
       },
@@ -69,6 +73,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "c55e47b91bf9fcd68a4e8a738dba4192062360a29be4252001c95568e0b4f353"
+  "manifest_revision": 3,
+  "base_manifest_hash": "4c2bfe78cfc90fc7ed56abccfb662756ed46c8eb1d03100dcb427fa15c67851b"
 }
