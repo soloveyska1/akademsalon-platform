@@ -51,6 +51,10 @@ function makeHarness() {
       {
         id: 'norm', code: 'nm', label: 'Нормоконтроль',
         from: 5000, ask: []
+      },
+      {
+        id: 'psychologyvip', code: 'pv', label: 'ВКР по психологии · полный проект',
+        from: 91000, fixed: true, ask: []
       }
     ],
     SalonCalc: {
@@ -251,6 +255,82 @@ test('three practice scopes keep their exact result contract while generic vip r
   assert.match(payload.items[0].permitted_purpose, /от темы или задания до рабочего черновика/);
   assert.equal(payload.items[0].scope_code, '');
   assert.equal(payload.items[0].deliverables_pending, true);
+});
+
+test('psychology VIP materializes one exact 91k A2 package with scope and three payment stages', () => {
+  const h = makeHarness();
+  const current = {
+    kind: 'service', type: 'custom', serviceId: 'psychologyvip', serviceCode: 'pv',
+    label: 'ВКР по психологии · полный проект', serviceMeta: 'услуга мастерской',
+    low: 91000, high: 91000, fixed: true, allowQty: false,
+    answers: { scope: 'Нужно перестроить главы', data: 'Обезличенная таблица' },
+    answerLines: ['Исходная задача: Нужно перестроить главы', 'Данные: Обезличенная таблица'],
+    needs: 0, topic: 'Клиническая психология', deadline: '20 сентября',
+    requirements: 'Есть две курсовые и замечания руководителя', note: '', sourceId: 'psychology-vip',
+    contractContour: 'A', academicSubmode: 'A2', authorParticipation: true,
+  };
+  h.api.reset(blank(), {
+    S: h.S,
+    api: { getCurrent: () => ({ ...current }), validateCurrent: () => true }
+  });
+
+  assert.equal(h.api.materializeCurrent({ silent: true }), true);
+  const payload = h.api.payload();
+  const item = payload.items[0];
+
+  assert.deepEqual(
+    { low: payload.quote_preview.low, high: payload.quote_preview.high },
+    { low: 91000, high: 91000 }
+  );
+  assert.equal(item.scope_code, 'psychology_full_vip');
+  assert.equal(item.result_code, 'support');
+  assert.equal(item.academic_submode, 'A2');
+  assert.equal(item.author_participation.confirmed, true);
+  assert.equal(item.fixed_package_selected, true);
+  assert.equal(item.price_status, 'customer_selected_fixed_package');
+  assert.equal(item.iterations, 3);
+  assert.equal(item.payment_stage_allocations.length, 3);
+  assert.deepEqual(Array.from(item.payment_stage_allocations, (stage) => stage.percentage), [30, 40, 30]);
+  assert.deepEqual(Array.from(item.payment_stage_allocations, (stage) => stage.amount_preview), [27300, 36400, 27300]);
+  assert.deepEqual(Array.from(payload.payment_plan_request.percentages), [30, 40, 30]);
+  assert.deepEqual(Array.from(payload.payment_plan_request.amounts_preview), [27300, 36400, 27300]);
+  assert.match(item.deliverable, /нормоконтроль/);
+  assert.match(item.deliverable, /презентация/);
+  assert.match(item.inclusions.join(' '), /до трёх консолидированных циклов/);
+  assert.match(item.exclusions.join(' '), /новые данные, методики или дополнительная выборка/);
+  assert.equal(item.scope.included_pending, false);
+  assert.equal(item.scope.excluded_pending, false);
+  assert.equal(item.deliverables_pending, false);
+  assert.equal(item.acceptance_criteria_pending, false);
+});
+
+test('psychology VIP keeps the existing best-of discount and 25 percent combined-benefit floor', () => {
+  const h = makeHarness();
+  const vip = {
+    id: 'pv1', kind: 'service', type: 'custom', serviceId: 'psychologyvip',
+    serviceCode: 'pv', label: 'ВКР по психологии · полный проект',
+    low: 91000, high: 91000, fixed: true, qty: 1,
+    academicSubmode: 'A2', authorParticipation: true, answers: {},
+  };
+  const state = blank([vip]);
+  state.checkout = { useBonus: true, bonusAmount: 17750 };
+  h.api.reset(state, {
+    S: h.S,
+    member: {
+      sub: { label: 'Салон+', discount_pct: 10, discount_cap: 7000 },
+      bonus: { balance: 30000 }
+    },
+    api: {
+      getDeals: () => ({
+        promoCode: 'ПЕРВЫЙЛИСТ', promoDeal: { pct: 20, cap: 5000, min_price: 5000 }
+      })
+    }
+  });
+
+  const totals = h.api.benefitsFor();
+  assert.equal(totals.discount, 7000, 'best-of выбирает подписку, не складывает её с промокодом');
+  assert.equal(totals.bonus, 15750, 'общая выгода ограничена 25%');
+  assert.equal(totals.due, 68250);
 });
 
 test('редактирование current с тем же sourceId обновляет строку без дубля', () => {

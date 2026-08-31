@@ -21,11 +21,23 @@
         "match": "exact"
       },
       {
+        "path": "assets/js/admin.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/cart.js",
+        "match": "exact"
+      },
+      {
         "path": "assets/js/polish15-chrome.js",
         "match": "exact"
       },
       {
         "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "admin.html",
         "match": "exact"
       },
       {
@@ -46,6 +58,10 @@
       },
       {
         "path": "tests/psychology-vip-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/cart-regression.test.js",
         "match": "exact"
       },
       {
@@ -78,6 +94,14 @@
     },
     {
       "access": "write",
+      "key": "shared-runtime:cart/psychology-vip"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:admin/specification/psychology-vip"
+    },
+    {
+      "access": "write",
       "key": "shared-runtime:search/psychology-vkr"
     },
     {
@@ -89,6 +113,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "5a1903c22071bd2b5d5e1f23a4ecd0341c19a9fc76d5abdebce1509a99e6e6be"
 }

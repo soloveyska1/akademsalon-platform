@@ -280,10 +280,58 @@
       ].concat(commonExclusions)
     };
   }
+  function psychologyVipScopeProfile(x) {
+    if (!x || x.serviceId !== 'psychologyvip' || resolvedAcademicSubmode(x) !== 'A2') return null;
+    return {
+      scopeCode:'psychology_full_vip',
+      resultCode:'support',
+      label:'ВКР по психологии · полный проект',
+      legalType:'joint_research_development',
+      purpose:'Совместная исследовательская доработка предоставленной ВКР по психологии при обязательном содержательном участии Заказчика. Мастерская готовит согласованные промежуточные материалы; Заказчик проверяет реальные данные, принимает исследовательские решения и формирует финальную авторскую версию.',
+      deliverable:'Согласованный комплект полного проекта: исследовательский паспорт; статистический план и расчёты по обезличенным данным; этапные редакторские версии ВКР; один полный нормоконтроль и одна повторная сверка; презентация; речь; карта вероятных вопросов; одна репетиция защиты; финальный чек-лист комплектности.',
+      requiredInputs:[
+        'обезличенная актуальная версия ВКР и две исходные курсовые, если они используются',
+        'методичка и требования кафедры к ВКР и нормоконтролю',
+        'обезличенная таблица данных, кодировка переменных и ключи методик',
+        'замечания руководителя и известные сроки согласований и защиты'
+      ],
+      inclusions:[
+        'паспорт исследования: гипотезы, переменные, группы, предпосылки, критерии, эффекты, интерпретация и ограничения',
+        'статистический план, расчёты по переданным обезличенным данным и проверка связи выводов с результатами',
+        'глубокая перестройка и поэтапная редактура предоставленной ВКР под согласованную тему',
+        'до трёх консолидированных циклов замечаний руководителя до согласованной даты',
+        'один полный нормоконтроль и одна повторная сверка по переданной методичке',
+        'презентация, речь, карта вероятных вопросов и одна репетиция защиты',
+        'финальная сверка комплектности согласованного набора файлов'
+      ],
+      exclusions:[
+        'новая тема после фиксации согласованного состава',
+        'новые данные, методики или дополнительная выборка после старта',
+        'замечания, поступившие после согласованной даты сопровождения',
+        'гарантия процента оригинальности, результата детектора ИИ, оценки, допуска или защиты',
+        'выполнение и сдача аттестационной работы вместо Заказчика'
+      ],
+      acceptanceCriteria:[
+        'переданы все результаты, перечисленные во включённом составе',
+        'статистические выводы воспроизводимы на зафиксированной обезличенной таблице',
+        'финальная сверка выполнена по версии методички, закреплённой в спецификации'
+      ],
+      iterations:3,
+      correctionsPolicy:'До трёх консолидированных циклов замечаний руководителя до согласованной даты; новая тема, данные, методики, выборка и более поздние замечания рассчитываются отдельно.',
+      paymentStageAllocations:[
+        { stage:1, percentage:30, amount_preview:27300, trigger:'после спецификации и приёма исходников' },
+        { stage:2, percentage:40, amount_preview:36400, trigger:'после согласования исследовательской и текстовой части' },
+        { stage:3, percentage:30, amount_preview:27300, trigger:'перед финальным комплектом, нормоконтролем и подготовкой к защите' }
+      ]
+    };
+  }
+  function scopeProfile(x) {
+    return psychologyVipScopeProfile(x) || practiceScopeProfile(x);
+  }
   function contourLabel(x) {
     if (!x || x.serviceId !== 'author') {
-      var practiceProfile = practiceScopeProfile(x);
-      if (practiceProfile) return practiceProfile.label;
+      var profile = scopeProfile(x);
+      if (profile) return profile.label;
       return resolvedAcademicSubmode(x) === 'A2'
         ? 'Совместный исследовательский проект с нуля'
         : 'Редакторская и консультационная помощь';
@@ -1258,7 +1306,7 @@
         var answerMap = x.answers && typeof x.answers === 'object' ? x.answers : {};
         var authorModel = String(answerMap.author_model || '');
         var academicSubmode = resolvedAcademicSubmode(x);
-        var practiceProfile = practiceScopeProfile(x);
+        var lineProfile = scopeProfile(x);
         var resultCode = String(x.resultCode || '').toLowerCase();
         if (!/^(diagnostic|editing|support)$/.test(resultCode)) resultCode = '';
         var contour = x.serviceId === 'author'
@@ -1268,14 +1316,14 @@
           : 'A';
         var permittedPurpose = x.serviceId === 'author'
           ? String(answerMap.purpose || '').slice(0, 500)
-          : practiceProfile
-            ? practiceProfile.purpose
+          : lineProfile
+            ? lineProfile.purpose
           : academicSubmode === 'A2'
             ? 'Совместная исследовательская разработка от темы или задания до рабочего черновика при обязательном содержательном участии Заказчика; финальная авторская версия формируется Заказчиком.'
             : 'Самостоятельная работа Заказчика; консультация, аудит, редактура предоставленного материала или подготовка к выступлению без выполнения аттестации вместо Заказчика.';
         if (x.serviceId === 'author') legalType = 'author_order_non_attestation';
         if (academicSubmode === 'A2') legalType = 'joint_research_development';
-        if (practiceProfile) legalType = practiceProfile.legalType;
+        if (lineProfile) legalType = lineProfile.legalType;
         if (/edit|red|corr/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'editing';
         if (/format|norm|gost/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'formatting';
         if (/tutor|consult|razbor/i.test(String(x.type || '') + ' ' + String(x.serviceId || ''))) legalType = 'consultation';
@@ -1289,8 +1337,8 @@
           academic_submode: academicSubmode,
           academic_submode_pending: false,
           permitted_purpose: permittedPurpose,
-          result_code: practiceProfile ? practiceProfile.resultCode : resultCode,
-          scope_code: practiceProfile ? practiceProfile.scopeCode : '',
+          result_code: lineProfile ? lineProfile.resultCode : resultCode,
+          scope_code: lineProfile ? lineProfile.scopeCode : '',
           kind: x.kind === 'service' ? 'service' : 'work',
           legal_service_type: legalType,
           type: String(x.type || ''),
@@ -1298,7 +1346,7 @@
           label: String(x.label || '').slice(0, 160),
           qty: Math.max(1, Math.min(10, parseInt(x.qty, 10) || 1)),
           unit: (parseInt(x.qty, 10) || 1) > 1 ? 'идентичная единица услуги' : 'позиция',
-          unit_definition_pending: true,
+          unit_definition_pending: !lineProfile,
           disc: String(x.disc || ''),
           term: String(x.term || ''),
           tier: String(x.tier || ''),
@@ -1317,15 +1365,15 @@
           scope: {
             topic: String(x.topic || '').slice(0, 400),
             customer_requirements: String(x.requirements || '').slice(0, 1500),
-            required_inputs: practiceProfile
-              ? practiceProfile.requiredInputs
+            required_inputs: lineProfile
+              ? lineProfile.requiredInputs
               : x.serviceId === 'ai'
               ? ['исходный текст после ИИ', 'исходный prompt', 'сведения об источниках']
               : [],
-            included: practiceProfile ? practiceProfile.inclusions : [],
-            included_pending: !practiceProfile,
-            excluded: practiceProfile ? practiceProfile.exclusions : [],
-            excluded_pending: !practiceProfile
+            included: lineProfile ? lineProfile.inclusions : [],
+            included_pending: !lineProfile,
+            excluded: lineProfile ? lineProfile.exclusions : [],
+            excluded_pending: !lineProfile
           },
           customer_inputs: {
             description: x.serviceId === 'ai'
@@ -1334,7 +1382,7 @@
                 '. Источники: ' + String(answerMap.sources || '')).slice(0, 1500)
               : String(x.topic || x.requirements || '').slice(0, 1500),
             version_pending: true,
-            source_material_required: x.serviceId === 'ai',
+            source_material_required: x.serviceId === 'ai' || !!lineProfile,
             source_material_provided: x.serviceId === 'ai' ? !!x.sourceMaterialProvided : null,
             original_prompt: x.serviceId === 'ai' ? String(answerMap.prompt || '').slice(0, 1500) : '',
             sources_disclosure: x.serviceId === 'ai' ? String(answerMap.sources || '').slice(0, 1500) : ''
@@ -1348,12 +1396,16 @@
               'содержательная доработка рабочего черновика и формирование финальной авторской версии'
             ]
           } : null,
-          deliverable: practiceProfile ? practiceProfile.deliverable : '',
-          inclusions: practiceProfile ? practiceProfile.inclusions : [],
-          exclusions: practiceProfile ? practiceProfile.exclusions : [],
-          deliverables_pending: !practiceProfile,
-          acceptance_criteria_pending: true,
-          corrections_pending: true,
+          deliverable: lineProfile ? lineProfile.deliverable : '',
+          inclusions: lineProfile ? lineProfile.inclusions : [],
+          exclusions: lineProfile ? lineProfile.exclusions : [],
+          deliverables_pending: !lineProfile,
+          acceptance_criteria: lineProfile ? lineProfile.acceptanceCriteria || [] : [],
+          acceptance_criteria_pending: !lineProfile,
+          iterations: lineProfile ? lineProfile.iterations || 1 : 1,
+          corrections_policy: lineProfile ? lineProfile.correctionsPolicy || '' : '',
+          corrections_pending: !lineProfile,
+          payment_stage_allocations: lineProfile ? lineProfile.paymentStageAllocations || [] : [],
           intellectual_rights_profile: x.serviceId === 'author' ? String(answerMap.rights || '') : 'not_applicable_service_result',
           intellectual_rights_profile_pending: x.serviceId === 'author' && !answerMap.rights,
           actual_author_profile: x.serviceId === 'author'
@@ -1364,7 +1416,8 @@
           actual_author_profile_pending: x.serviceId === 'author' && !answerMap.author_name,
           third_party_performers: [],
           third_party_performers_pending: contour === 'B2_third_party_author_order',
-          price_status: 'estimate_only',
+          price_status: x.serviceId === 'psychologyvip' ? 'customer_selected_fixed_package' : 'estimate_only',
+          fixed_package_selected: x.serviceId === 'psychologyvip',
           answers: answerMap,
           quote_preview: qPreview
         };
@@ -1379,6 +1432,10 @@
         'actual_author_profile', 'author_participation'
       ],
       benefits_intent: { use_bonus:!!data.checkout.useBonus, bonus_amount:benefits().bonus || 0 },
+      payment_plan_request: data.items.some(function (item) { return item.serviceId === 'psychologyvip'; })
+        ? { stages:3, percentages:[30,40,30], amounts_preview:q.low === 91000 && q.high === 91000
+          ? [27300,36400,27300] : [] }
+        : null,
       quote_preview: { low:q.low, high:q.high }
     };
   }

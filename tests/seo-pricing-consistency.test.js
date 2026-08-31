@@ -110,6 +110,20 @@ test('discipline landing schema publishes only the visible entry price', () => {
     const nodes = jsonLd(html);
     const services = nodes.filter((node) => node['@type'] === 'Service');
     assert.equal(services.length, 1, `${file}: needs exactly one Service schema`);
+    if (file === 'diplomnaya-po-psihologii.html') {
+      assert.ok(Array.isArray(services[0].offers), `${file}: four visible packages need an offers array`);
+      assert.deepEqual(
+        services[0].offers.map((offer) => [offer.name, offer.lowPrice || offer.price, offer.highPrice || offer.price]),
+        [
+          ['Письменный разбор', 3500, 5000],
+          ['Глубокая доработка', 29000, 40500],
+          ['Сопровождение исследования', 48500, 68000],
+          ['VIP · полный проект до защиты', 91000, 91000],
+        ],
+        `${file}: structured offers must match all four visible levels`
+      );
+      continue;
+    }
     assert.deepEqual(services[0].offers, {
       '@type': 'Offer',
       priceSpecification: {

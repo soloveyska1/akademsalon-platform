@@ -3364,8 +3364,9 @@ function initGodEye() {
         dependencies:dependencies,
         deadline_text:row.deadline_text || row.deadline || o.deadline_text || '',
         deadline_date:row.deadline_date || o.deadline_date || '',
-        correction_window:{ days:7, scope:'устранение подтверждённых несоответствий этой позиции' },
-        iterations:1,
+        correction_window:{ days:7, scope:row.corrections_policy || 'устранение подтверждённых несоответствий этой позиции' },
+        corrections_policy:String(row.corrections_policy || ''),
+        iterations:Math.max(1, parseInt(row.iterations, 10) || 1),
         actual_author:actualAuthor,
         actual_author_profile:authorProfile,
         rights_mode:rights,
@@ -3383,7 +3384,13 @@ function initGodEye() {
         price_amount:amounts[index],
         final_price:amounts[index],
         a:amounts[index],
-        payment_allocation:['распределяется сервером по утверждённому графику платежей'],
+        payment_allocation:Array.isArray(row.payment_stage_allocations) && row.payment_stage_allocations.length
+          ? row.payment_stage_allocations.map(function (stage) {
+            return 'этап ' + String(stage.stage || '') + ': ' + String(stage.percentage || '') + '% · ' + String(stage.trigger || '');
+          })
+          : ['распределяется сервером по утверждённому графику платежей'],
+        payment_stage_allocations:Array.isArray(row.payment_stage_allocations)
+          ? row.payment_stage_allocations : [],
         cancellation_effect:'расчёт за фактически оказанное по этой позиции'
       };
     });
@@ -3391,7 +3398,10 @@ function initGodEye() {
 
   function planBlock(o) {
     var plan = o.plan || [];
-    var cur = o.stages_total || 1;
+    var requestedStages = o.cart && o.cart.payment_plan_request
+      ? parseInt(o.cart.payment_plan_request.stages, 10) || 0 : 0;
+    var cur = o.offer && o.stages_total
+      ? o.stages_total : (requestedStages || o.stages_total || 1);
     var planSel = '<select id="agPlanSel">' + [1, 2, 3].map(function (n) {
       return '<option value="' + n + '"' + (cur === n ? ' selected' : '') + '>' + PLAN_LBL[n] + '</option>';
     }).join('') + '</select>';
