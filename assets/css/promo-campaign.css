@@ -441,6 +441,27 @@
 }
 .promo-return__actions button + button { background: transparent; color: var(--ink, #1d1c18); }
 
+.promo-owner-launcher {
+  position: fixed;
+  z-index: 175;
+  top: 306px;
+  left: 24px;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px solid var(--line-strong, #b8aa94);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sheet, #fff9f0) 94%, var(--wax-soft, #f2ddd5));
+  box-shadow: 0 12px 28px rgb(33 27 20 / .12);
+  color: var(--ink, #1d1c18);
+  font: 700 12px/1.1 var(--font-sans, Inter, system-ui, sans-serif);
+  letter-spacing: .03em;
+  cursor: pointer;
+}
+
+.promo-owner-launcher:hover { border-color: var(--wax, #9f3f2d); }
+.promo-owner-launcher:focus-visible { outline: 3px solid var(--wax, #9f3f2d); outline-offset: 3px; }
+.promo-owner-launcher__short { display: none; }
+
 :root[data-theme="dark"] .promo-campaign {
   --promo-paper: #24221d;
   --promo-canvas: #171714;
@@ -499,6 +520,17 @@
   .promo-campaign__rescue-outcome .promo-campaign__actions { width: min(100%, 340px); }
   .promo-return { grid-template-columns: 1fr; margin-inline: 0; }
   .promo-return__actions { flex-direction: column; }
+  .promo-owner-launcher {
+    top: auto;
+    right: 12px;
+    bottom: calc(82px + env(safe-area-inset-bottom));
+    left: auto;
+    min-width: 58px;
+    min-height: 40px;
+    padding-inline: 13px;
+  }
+  .promo-owner-launcher__long { display: none; }
+  .promo-owner-launcher__short { display: inline; }
 }
 
 @media (max-width: 350px), (max-height: 650px) {
@@ -537,7 +569,8 @@
   .promo-campaign__actions button,
   .promo-campaign__close,
   .promo-return,
-  .promo-return__actions button { border: 2px solid CanvasText; }
+  .promo-return__actions button,
+  .promo-owner-launcher { border: 2px solid CanvasText; }
   .promo-campaign__primary,
   :root[data-theme="dark"] .promo-campaign__primary,
   .promo-campaign__rescue-outcome .promo-campaign__primary,
@@ -565,5 +598,6 @@
 
 @media print {
   .promo-campaign,
-  .promo-return { display: none !important; }
+  .promo-return,
+  .promo-owner-launcher { display: none !important; }
 }

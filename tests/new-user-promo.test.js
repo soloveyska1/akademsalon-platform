@@ -103,8 +103,8 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   const configurator = read('configurator.html');
   const script = read('assets/js/promo-campaign.js');
   for (const html of [home, configurator]) {
-    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260825rescue2/);
-    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260825rescue2/);
+    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260831vipclarity1/);
+    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260831vipclarity1/);
   }
   assert.doesNotMatch(home, /<img[^>]+promo-salon-welcome/u);
   assert.doesNotMatch(configurator, /<img[^>]+promo-salon-welcome/u);
@@ -120,6 +120,19 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   assert.match(script, /!node\.hidden && !node\.closest\('\[hidden\]'\)/);
   assert.match(script, /getAttribute\('aria-hidden'\) === 'true'/);
   assert.match(script, /style\.display !== 'none' && style\.visibility !== 'hidden'/);
+});
+
+test('owner preview stays observable without covering an active configurator', () => {
+  const script = read('assets/js/promo-campaign.js');
+  const css = read('assets/css/promo-campaign.css');
+
+  assert.match(script, /function ownerPreviewLauncher\(win, server\)/);
+  assert.match(script, /Открыть предпросмотр приветственного предложения/u);
+  assert.match(script, /mode\.previewOnly && pageKind\(win\) === 'configurator' && preview !== 'welcome'/);
+  assert.match(script, /ownerPreviewLauncher\(win, server\);\s*return;/);
+  assert.match(script, /preview === 'welcome'/);
+  assert.match(css, /\.promo-owner-launcher\s*\{/);
+  assert.match(css, /\.promo-owner-launcher__short/);
 });
 
 test('retention outcome has a bounded editorial hierarchy instead of a full-width slab', () => {

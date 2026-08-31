@@ -349,3 +349,126 @@
 @media (max-width: 560px) {
   .configurator-task .clinical-data-gate { padding: 17px; }
 }
+
+/* VIP entry: first explain the fixed package, then collect project details. */
+.service-psychology-vip .concept-service-questions--vip {
+  display: grid;
+  gap: 22px;
+}
+
+.service-psychology-vip .psychology-vip-brief {
+  padding: clamp(20px, 3vw, 30px);
+  border: 1px solid color-mix(in srgb, var(--wax, #9f3f2d) 50%, var(--line, #d7d0c4));
+  border-top: 4px solid var(--wax, #9f3f2d);
+  background: color-mix(in srgb, var(--sheet, #fffdf8) 94%, var(--wax-soft, #f2ddd5));
+}
+
+.service-psychology-vip .psychology-vip-brief__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 28px;
+  align-items: start;
+}
+
+.service-psychology-vip .psychology-vip-brief__top h2 {
+  margin: 7px 0 9px;
+  font: 600 clamp(28px, 3vw, 40px)/1.03 var(--serif, Georgia, serif);
+}
+
+.service-psychology-vip .psychology-vip-brief__top p:not(.eyebrow) {
+  max-width: 64ch;
+  margin: 0;
+  color: var(--muted, #6d675e);
+  line-height: 1.55;
+}
+
+.service-psychology-vip .psychology-vip-brief__top > strong {
+  padding-top: 3px;
+  color: var(--wax, #9f3f2d);
+  font: 650 clamp(26px, 2.4vw, 34px)/1 var(--serif, Georgia, serif);
+  white-space: nowrap;
+}
+
+.service-psychology-vip .psychology-vip-brief__outcomes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 23px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line, #d7d0c4);
+  border-left: 1px solid var(--line, #d7d0c4);
+  list-style: none;
+}
+
+.service-psychology-vip .psychology-vip-brief__outcomes li {
+  position: relative;
+  min-height: 58px;
+  padding: 16px 18px 15px 42px;
+  border-right: 1px solid var(--line, #d7d0c4);
+  border-bottom: 1px solid var(--line, #d7d0c4);
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.service-psychology-vip .psychology-vip-brief__outcomes li::before {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: var(--wax, #9f3f2d);
+  content: '✓';
+}
+
+.service-psychology-vip .psychology-vip-brief__payment {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-top: 18px;
+  color: var(--ink, #1d1c18);
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+
+.service-psychology-vip .psychology-vip-brief__payment span { color: var(--muted, #6d675e); }
+.service-psychology-vip .psychology-vip-brief__payment i { color: var(--muted, #6d675e); font-style: normal; }
+
+.service-psychology-vip .psychology-vip-brief__next {
+  margin: 18px 0 0;
+  padding: 15px 17px;
+  background: color-mix(in srgb, var(--wax, #9f3f2d) 7%, transparent);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@media (min-width: 921px) {
+  .service-psychology-vip .concept-task-bar { display: none!important; }
+  .service-psychology-vip .wizard-main__footer { display: block!important; }
+  .service-psychology-vip .wizard-main { padding-bottom: 32px; }
+}
+
+@media (max-width: 640px) {
+  .service-psychology-vip .psychology-vip-brief__top,
+  .service-psychology-vip .psychology-vip-brief__outcomes {
+    grid-template-columns: 1fr;
+  }
+  .service-psychology-vip .psychology-vip-brief__top { gap: 13px; }
+  .service-psychology-vip .psychology-vip-brief__top > strong { grid-row: 1; }
+  .service-psychology-vip .psychology-vip-brief__outcomes li { min-height: 0; }
+  .service-psychology-vip .psychology-vip-brief__payment i { display: none; }
+}
+
+@media (max-width: 920px) {
+  body:has(.p15-service[data-p15-service="diplomnaya-po-psihologii"] input[value="psychologyvip"]:checked) .mobile-dock {
+    display: none!important;
+  }
+
+  .service-psychology-vip .concept-task-bar {
+    position: static;
+    margin: 0 16px max(18px, env(safe-area-inset-bottom));
+    box-shadow: none;
+  }
+
+  .service-psychology-vip .configurator-task,
+  .service-psychology-vip .concept-wizard-host {
+    padding-bottom: 24px!important;
+  }
+}

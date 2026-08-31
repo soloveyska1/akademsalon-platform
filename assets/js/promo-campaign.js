@@ -429,7 +429,8 @@
     if (typeof win.__salonIntroFinish === 'function') win.__salonIntroFinish(true);
     var doc = win.document;
     var layer = doc.createElement('div');
-    layer.className = 'promo-campaign promo-campaign--welcome';
+    layer.className = 'promo-campaign promo-campaign--welcome' +
+      (previewOnly ? ' promo-campaign--owner-preview' : '');
     layer.setAttribute('role', 'dialog');
     layer.setAttribute('aria-modal', 'true');
     layer.setAttribute('aria-labelledby', 'promoWelcomeTitle');
@@ -778,6 +779,22 @@
     returnBanner(win, checkpoint);
   }
 
+  function ownerPreviewLauncher(win, server) {
+    var doc = win.document;
+    if (doc.querySelector('[data-promo-owner-launcher]')) return;
+    var launcher = doc.createElement('button');
+    launcher.type = 'button';
+    launcher.className = 'promo-owner-launcher';
+    launcher.setAttribute('data-promo-owner-launcher', '');
+    launcher.setAttribute('aria-label', 'Открыть предпросмотр приветственного предложения');
+    launcher.innerHTML = '<span class="promo-owner-launcher__long">Предпросмотр предложения</span>' +
+      '<span class="promo-owner-launcher__short" aria-hidden="true">Акция</span>';
+    launcher.addEventListener('click', function () {
+      withDialogSlot(win, function () { welcomeDialog(win, server, true); });
+    });
+    doc.body.appendChild(launcher);
+  }
+
   function boot(win) {
     startedAt = win.performance && typeof win.performance.now === 'function' ? win.performance.now() : 0;
     visibleStartedAt = win.document.visibilityState === 'hidden' ? 0 : startedAt;
@@ -806,6 +823,14 @@
             stage:'contact', activeSeconds:120, itemCount:1, quoteLow:20000, qualified:true
           }, true);
         });
+        return;
+      }
+      if (mode.previewOnly && preview === 'welcome' && pageKind(win) === 'configurator') {
+        withDialogSlot(win, function () { welcomeDialog(win, server, true); });
+        return;
+      }
+      if (mode.previewOnly && pageKind(win) === 'configurator' && preview !== 'welcome') {
+        ownerPreviewLauncher(win, server);
         return;
       }
       maybeReturnOffer(win, server, footprint);

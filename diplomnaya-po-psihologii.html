@@ -64,7 +64,7 @@
             <span class="psychology-offer__folio">03</span><span class="psychology-offer__body"><strong>Сопровождение исследования</strong><em>48 500–68 000 ₽</em><small>Связанные главы, расчёты и ответы на замечания по заранее согласованным этапам.</small></span><i aria-hidden="true"></i>
           </label>
           <label class="psychology-offer psychology-offer--vip">
-            <input type="radio" name="psychology-offer" value="psychologyvip" data-offer-href="configurator.html?service=pv&amp;work=diplom&amp;discipline=psychology&amp;situation=draft&amp;result=support&amp;route=service" data-offer-cta="Запросить полный проект за 91 000 ₽" />
+            <input type="radio" name="psychology-offer" value="psychologyvip" data-offer-href="configurator.html?service=pv&amp;work=diplom&amp;discipline=psychology&amp;situation=draft&amp;result=support&amp;route=service" data-offer-cta="Проверить комплект VIP за 91 000 ₽" />
             <span class="psychology-offer__folio">04</span><span class="psychology-offer__body"><span class="psychology-offer__stamp">Полный маршрут</span><strong>VIP · до защиты</strong><em>91 000 ₽</em><small>Полное сопровождение, статистика, нормоконтроль, презентация, речь, репетиция и финальная комплектность.</small></span><i aria-hidden="true"></i>
           </label>
         </fieldset>
@@ -166,6 +166,7 @@
 (function(){
   var cta=document.getElementById('psychologyOfferCta');
   var note=document.getElementById('psychologyOfferNote');
+  var vipScope=document.querySelector('.psychology-vip-scope');
   var inputs=document.querySelectorAll('[data-offer-href]');
   var notes={
     diagnostic:'Ориентир: 3 500–5 000 ₽. Самостоятельный письменный результат без правок и расчётов.',
@@ -180,6 +181,7 @@
     var arrow=document.createElement('span');arrow.setAttribute('aria-hidden','true');arrow.textContent='→';cta.appendChild(arrow);
     if(input.value==='psychologyvip'){
       ['data-type','data-disc','data-term','data-tier'].forEach(function(name){cta.removeAttribute(name);});
+      if(vipScope)vipScope.open=true;
     }else{
       cta.setAttribute('data-type','diplom');cta.setAttribute('data-disc','psychology');cta.setAttribute('data-term','free');
       cta.setAttribute('data-tier',input.getAttribute('data-offer-tier'));
@@ -188,6 +190,9 @@
   }
   inputs.forEach(function(input){input.addEventListener('change',function(){if(input.checked)select(input);});});
   select(document.querySelector('[data-offer-href]:checked'));
+  window.addEventListener('pageshow',function(){
+    select(document.querySelector('[data-offer-href]:checked'));
+  });
 }());
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Доработка и сопровождение ВКР по психологии","serviceType":"Методология, статистика, редактура и подготовка к защите ВКР по психологии","description":"Сложная доработка предоставленной ВКР по психологии: паспорт исследования, статистика по обезличенным данным, редактура, нормоконтроль и подготовка к защите.","url":"https://akademsalon.ru/diplomnaya-po-psihologii.html","areaServed":{"@type":"Country","name":"Россия"},"availableChannel":{"@type":"ServiceChannel","serviceUrl":"https://akademsalon.ru/configurator.html"},"provider":{"@type":"ProfessionalService","name":"Академический Салон","url":"https://akademsalon.ru/"},"offers":[{"@type":"AggregateOffer","name":"Письменный разбор","lowPrice":3500,"highPrice":5000,"priceCurrency":"RUB"},{"@type":"AggregateOffer","name":"Глубокая доработка","lowPrice":29000,"highPrice":40500,"priceCurrency":"RUB"},{"@type":"AggregateOffer","name":"Сопровождение исследования","lowPrice":48500,"highPrice":68000,"priceCurrency":"RUB"},{"@type":"Offer","name":"VIP · полный проект до защиты","price":91000,"priceCurrency":"RUB"}]}</script>

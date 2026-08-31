@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="assets/css/polish15-chrome.css?v=20260806shell123&amp;search=20260803out007search1&amp;trigger=20260803out007trigger1&amp;contrast=20260804contrast1&amp;wax=20260804wax1&amp;hdr=20260804hdr2&amp;sheen=20260804sheen2&amp;glass=20260804glass1" />
 <link rel="stylesheet" href="assets/css/extras.css?v=20260806release119&amp;journey=1&amp;wax=20260804wax1" />
 <link rel="stylesheet" href="assets/css/cart.css?v=20260806release119&amp;wax=20260804wax1" />
-<link rel="stylesheet" href="assets/css/promo-campaign.css?v=20260825rescue2" />
+<link rel="stylesheet" href="assets/css/promo-campaign.css?v=20260831vipclarity1" />
 <script>
 (function () {
   try {
@@ -35,6 +35,9 @@
     var service = query.get('service');
     if (service === 'pl' || service === 'plan' || (!service && query.get('plan') === '1')) {
       document.documentElement.classList.add('service-plan');
+    }
+    if (service === 'pv' || service === 'psychologyvip') {
+      document.documentElement.classList.add('service-psychology-vip');
     }
   } catch (error) {}
 }());
@@ -63,7 +66,7 @@
 <link rel="stylesheet" href="assets/css/mobile.css?v=20260806shell123&amp;journey=1&amp;wax=20260804wax1&amp;glass=20260804glass1" media="screen and (max-width:920px)" data-mobile-edition="1" />
 <link rel="stylesheet" href="assets/css/polish15-configurator.css?v=20260806release119&amp;journey=4&amp;wax=20260804wax1&amp;glass=20260804glass1" />
 <link rel="stylesheet" href="assets/css/configurator-journey.css?v=20260806release119&amp;wizard=20260804wizard3&amp;wax=20260804wax1&amp;conversion=20260822conversion2&amp;practice=20260823continuity1&amp;keyboard=20260823shelf2" />
-<link rel="stylesheet" href="assets/css/psychology-vkr.css?v=20260831psychvip1" />
+<link rel="stylesheet" href="assets/css/psychology-vkr.css?v=20260831psychvip2" />
 </head>
 <body class="configurator-task">
 
@@ -315,12 +318,16 @@
    равно должна открыть точный VIP-пакет, а не общий конфигуратор. */
 (function ensurePsychologyVipService() {
   if (!Array.isArray(window.SalonServices)) return;
-  if (window.SalonServices.some(function (service) { return service.id === 'psychologyvip'; })) return;
+  var existingVip = window.SalonServices.find(function (service) { return service.id === 'psychologyvip'; });
+  if (existingVip) {
+    if (existingVip.ask && existingVip.ask[0]) existingVip.ask[0].label = 'Что сильнее всего изменилось в работе?';
+    return;
+  }
   window.SalonServices.push({
     id:'psychologyvip', label:'ВКР по психологии · полный проект', from:91000, unit:'', code:'pv', fixed:true,
     desc:'Полное сопровождение сложной доработки ВКР по психологии: исследовательский паспорт, статистический план и расчёты по обезличенным данным, поэтапная редактура, нормоконтроль, презентация, речь и подготовка к защите. 91 000 ₽ при плановом сроке и согласованном составе.',
     ask:[
-      { id:'scope', label:'Что изменилось в работе?', short:'Исходная задача', type:'chips', req:true,
+      { id:'scope', label:'Что сильнее всего изменилось в работе?', short:'Исходная задача', type:'chips', req:true,
         opts:['Изменилась тема','Нужно перестроить главы','Нужна статистика','Есть замечания руководителя','Нужен полный цикл'] },
       { id:'data', label:'Что есть для эмпирической части?', short:'Данные', type:'chips', req:true,
         opts:['Обезличенная таблица','Только результаты методик','Данные ещё собираются','Нужна проверка комплекта'] }
@@ -814,7 +821,9 @@ function initConf() {
       put('high', 'цена фиксированная — доплат по ходу не будет');
       put('pay', svc.id === 'plan'
         ? 'Один платёж после подтверждения мастером. При переходе в сопровождение сумма письменного разбора зачитывается в его стоимость.'
-        : 'Оплата одним платежом после подтверждения мастером.');
+        : svc.id === 'psychologyvip'
+          ? 'Оплата по этапам: 27 300 ₽, 36 400 ₽ и 27 300 ₽.'
+          : 'Оплата одним платежом после подтверждения мастером.');
       svcPricePaint();
     }
   }
@@ -2693,7 +2702,9 @@ if (document.prerendering) {
   }
   var serviceSteps = [
     {
-      key:'materials', displayStep:1, title:service ? service.label : 'Что нужно сделать?',
+      key:'materials', displayStep:1, title:service && service.id === 'psychologyvip'
+        ? 'Полный проект ВКР по психологии'
+        : (service ? service.label : 'Что нужно сделать?'),
       lead:service ? service.desc : 'Опишите задачу, дату и приложите материалы, которые помогут редактору оценить работу.',
       options:[]
     },
@@ -3916,6 +3927,24 @@ if (document.prerendering) {
       '<a href="priyomnaya.html">Задать вопрос без файла <span aria-hidden="true">→</span></a>' +
     '</section>';
   }
+  function psychologyVipBriefMarkup() {
+    if (!service || service.id !== 'psychologyvip') return '';
+    return '<section class="psychology-vip-brief" aria-labelledby="psychologyVipBriefTitle">' +
+      '<div class="psychology-vip-brief__top"><div>' +
+        '<p class="eyebrow">Фиксированный пакет · 91 000 ₽</p>' +
+        '<h2 id="psychologyVipBriefTitle">Полный маршрут до защиты</h2>' +
+        '<p>Берём проект целиком: от исследовательской логики и расчётов до финальной защиты. Новая тема, новые данные или новый объём после фиксации оцениваются отдельно.</p>' +
+      '</div><strong>91 000 ₽</strong></div>' +
+      '<ul class="psychology-vip-brief__outcomes">' +
+        '<li>Методология и паспорт исследования</li>' +
+        '<li>Статистика и интерпретация</li>' +
+        '<li>Редактура и нормоконтроль</li>' +
+        '<li>Презентация, речь и репетиция</li>' +
+      '</ul>' +
+      '<div class="psychology-vip-brief__payment"><span>Оплата по этапам</span><b>27 300 ₽</b><i>→</i><b>36 400 ₽</b><i>→</i><b>27 300 ₽</b></div>' +
+      '<p class="psychology-vip-brief__next"><strong>Сейчас достаточно отметить состояние работы,</strong> указать дату первого результата и приложить обезличенные материалы. Заявка бесплатна, условия подтвердим до оплаты.</p>' +
+    '</section>';
+  }
   function filesMarkup() {
     var files = fileNames();
     var required = sourceFileRequired();
@@ -4066,7 +4095,9 @@ if (document.prerendering) {
             remarksHandoffMarkup() +
             materialRecoveryMarkup() +
             (service && legacyAsk && legacyAsk.children.length
-              ? '<section class="concept-service-questions"><p class="eyebrow">Детали услуги</p><div data-concept-service-ask></div></section>'
+              ? '<section class="concept-service-questions' + (service.id === 'psychologyvip' ? ' concept-service-questions--vip' : '') + '">' +
+                  (service.id === 'psychologyvip' ? psychologyVipBriefMarkup() : '<p class="eyebrow">Детали услуги</p>') +
+                  '<div data-concept-service-ask></div></section>'
               : '') +
             '<div class="deadline-field">' +
               '<label class="field"><span>Срок первого результата</span><input type="date" min="' + minDate() + '" data-concept-field="deadlineDate" value="' + safeText(state.deadlineDate) + '" ' + (state.deadlineFlexible ? 'disabled' : '') + '></label>' +
@@ -4097,6 +4128,7 @@ if (document.prerendering) {
           '<dl><div><dt>Первый результат</dt><dd>' + safeText(rec.first) + '</dd></div>' +
           (quoteScopeEligible() ? '<div><dt>Запрос сметы</dt><dd>' + safeText(quoteScopeLabel(state.quoteScope)) + '</dd></div>' : '') +
           '<div><dt data-scope-price-label>' + safeText(priceView.label) + '</dt><dd data-summary-price><span data-scope-price class="' + (priceView.pending ? 'price-view--pending' : '') + '">' + scopePriceValueMarkup(priceView) + '</span></dd></div>' +
+          (service && service.id === 'psychologyvip' ? '<div><dt>Оплата по этапам</dt><dd>27 300 / 36 400 / 27 300 ₽</dd></div>' : '') +
           '<div><dt>Дата</dt><dd data-summary-date>' + safeText(dateText) + '</dd></div>' +
           '<div><dt>Материалы</dt><dd>' + fileCountText(files.length) + '</dd></div></dl>' +
           '<p>Точный состав, срок и стоимость редактор подтвердит до оплаты.</p>' +
@@ -4468,7 +4500,7 @@ if (document.prerendering) {
       return 'Проверьте перенесённый объём, укажите дату первого результата и приложите файл или замечания для письменного разбора.';
     }
     if (step && step.key === 'materials' && service && service.id === 'psychologyvip') {
-      return 'Укажите дату первого результата и приложите материалы полного проекта. Тему и пояснение можно добавить при желании.';
+      return 'Сначала сверим состав полного сопровождения. Затем отметьте состояние проекта, укажите дату первого результата и приложите обезличенные материалы. Заявка бесплатна.';
     }
     if (step && step.key === 'materials' && sourceFileRequired()) {
       return 'Укажите дату первого результата и приложите файл для разбора. Тему и пояснение можно добавить при желании.';
@@ -5400,6 +5432,6 @@ if (document.prerendering) {
   }
 })();
 </script>
-<script src="assets/js/promo-campaign.js?v=20260825rescue2"></script>
+<script src="assets/js/promo-campaign.js?v=20260831vipclarity1"></script>
 </body>
 </html>

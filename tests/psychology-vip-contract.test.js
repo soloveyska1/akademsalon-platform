@@ -68,6 +68,47 @@ test('psychology materials are gated by explicit de-identification', () => {
   assert.match(source, /Подтвердите, что описание и файлы обезличены/);
 });
 
+test('VIP configurator explains the package before asking for project details', () => {
+  const source = read('configurator.html');
+  const css = read('assets/css/psychology-vkr.css');
+
+  assert.match(source, /service === 'pv'[\s\S]*?service-psychology-vip/);
+  assert.match(source, /function psychologyVipBriefMarkup\(\)/);
+  for (const phrase of [
+    'Полный маршрут до защиты',
+    'Методология и паспорт исследования',
+    'Статистика и интерпретация',
+    'Редактура и нормоконтроль',
+    'Презентация, речь и репетиция',
+    '27 300 ₽',
+    '36 400 ₽',
+  ]) {
+    assert.match(source, new RegExp(phrase));
+  }
+  assert.match(source, /Сейчас достаточно отметить состояние работы/);
+  assert.match(source, /Что сильнее всего изменилось в работе\?/);
+  assert.match(source, /svc\.id === 'psychologyvip'[\s\S]*?Оплата по этапам: 27 300 ₽, 36 400 ₽ и 27 300 ₽/);
+  assert.match(source, /Полный проект ВКР по психологии/);
+  assert.match(css, /\.service-psychology-vip[\s\S]*?\.psychology-vip-brief/);
+  assert.match(
+    css,
+    /@media \(min-width: 921px\)[\s\S]*?\.service-psychology-vip[\s\S]*?\.concept-task-bar\s*\{[\s\S]*?display:\s*none!important;/,
+  );
+  assert.match(
+    css,
+    /@media \(min-width: 921px\)[\s\S]*?\.service-psychology-vip[\s\S]*?\.wizard-main__footer\s*\{[\s\S]*?display:\s*block!important;/,
+  );
+});
+
+test('VIP choice remains the source of truth after browser back-forward cache restore', () => {
+  const html = read('diplomnaya-po-psihologii.html');
+
+  assert.match(html, /window\.addEventListener\('pageshow',[\s\S]*?select\(document\.querySelector\('\[data-offer-href\]:checked'\)\)/);
+  assert.match(html, /if\(vipScope\)vipScope\.open=true/);
+  assert.match(html, /data-offer-cta="Проверить комплект VIP за 91 000 ₽"/);
+  assert.match(html, /value="psychologyvip"[\s\S]*?data-offer-href="configurator\.html\?service=pv&amp;/);
+});
+
 test('research passport and search language cover the real psychology request', () => {
   const html = read('diplomnaya-po-psihologii.html');
   const app = read('assets/js/app.js');
