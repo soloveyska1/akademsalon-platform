@@ -2,6 +2,18 @@
 
 ## Canonical and production truth
 
+- REL-0180 is live from authoritative implementation
+  `98973234c142abf2aed9e0dba8281566786d0c4a`. Production `current` and
+  compatibility `dist` resolve to `release180-9897323`; `previous` resolves to
+  `release179-0bfa0ee`. The psychology VIP configurator explains the fixed
+  91,000 RUB package and 30/40/30 stages before fields, keeps owner promo
+  preview available without auto-covering the form, and preserves exact VIP
+  CTA truth after browser Back. Public 648/648, mobile WebKit/Chromium 6/6,
+  two independent reviews, production browser, exact hashes and executed
+  rollback-forward pass. Prices, discounts, deposits, A2, privacy and payload
+  contracts did not change. Exact proof is `E-1044` and `REL-0180`.
+- REL-0179 remains included: four psychology VКР levels, fixed 91,000 RUB VIP,
+  bounded scope, A2 participation and staged-payment request. See `E-1043`.
 - REL-0177 is live from authoritative implementation
   `2a6ef72a765ed6962fbd51ef164b9aa005b28047`. Production `current` and
   compatibility `dist` resolve to `release177-2a6ef72`; `previous` resolves to

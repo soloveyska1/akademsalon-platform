@@ -17,9 +17,19 @@
   build, strict Brain validation, desktop/mobile light/dark Chromium snapshots,
   owner/new/returning eligibility scenarios, no production submit, two
   independent final reviews, exact production hashes and rollback-forward.
-- Changed: none yet.
-- Unverified: implementation not started.
+- Changed: added the VIP package passport before form fields; exposed exact
+  91,000 RUB and 27,300 / 36,400 / 27,300; made the owner welcome preview an
+  explicit compact launcher; moved the VIP mobile action into document flow;
+  removed the desktop overlay; restored VIP CTA truth on `pageshow`; clarified
+  the single-choice question as the strongest change.
+- Verified: 648/648 Node tests, deterministic build, WebKit/Chromium mobile
+  6/6, real browser BFCache and authenticated owner-preview scenarios, two GO
+  reviews, exact public hashes, HTTP smokes, service/Nginx/SQLite/journal checks,
+  executed rollback-forward and private Sites version 42.
+- Unverified: no real customer order or conversion uplift was created or
+  claimed.
 - Risks/rollback: shared promo assets are cache-busted together at both direct
   consumers. The change is static-only; rollback is the prior immutable
   release and requires no backend or database restore.
-- Next: review and commit the manifest plus this handoff.
+- Next: observe real VIP selection and qualified-submission data before any
+  price, scope or multi-select contract change.
