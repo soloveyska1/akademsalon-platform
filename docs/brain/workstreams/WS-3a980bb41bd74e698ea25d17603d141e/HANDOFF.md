@@ -22,14 +22,18 @@
   questions; materialized direct VIP submit into the cart; carried bounded
   scope, A2, fixed price and stage allocations into the admin specification;
   defaulted the incoming VIP order to three payments. Deposits are unchanged.
-- Unverified: production publication, external health/readback, exact live
-  hashes and executed rollback-forward.
-- Risks/rollback: shared app/cart/admin/search assets are cache-busted at their
-  direct consumers. Static rollback is the prior immutable release; no backend
-  or database rollback is required.
+- Production: immutable `release179-0bfa0ee` is live; `current` and `dist` point
+  to release179 and `previous` to release178. Exact local/filesystem/public
+  hashes match. Public route, configurator, admin and health smoke are green.
+  Private Sites version 41 also deployed successfully.
+- Rollback: an actual pointer rollback to release178 and forward restore to
+  release179 both passed. No backend or database restore is required.
+- Post-release health: Nginx syntax valid, bot active with `NRestarts=0`, SQLite
+  WAL and `quick_check=ok`, zero lock/busy/traceback/CRITICAL journal matches.
 - Council: external Kimi/Sonnet/GLM review was attempted after deterministic
   checks but providers returned 503, expired OAuth and 429 respectively; no
   provider result is counted as evidence.
-- Next: commit the verified implementation, submit/integrate the workstream,
-  publish immutable REL-0179, execute static rollback-forward and record exact
-  production proof.
+- Evidence: `docs/brain/evidence/E-1043.md`; release
+  `docs/brain/releases/REL-0179.md`.
+- Next: measure qualified VIP selections, submitted specifications, accepted
+  quotes and realised margin before changing the price or scope.
