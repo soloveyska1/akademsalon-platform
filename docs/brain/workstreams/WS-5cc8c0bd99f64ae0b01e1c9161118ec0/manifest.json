@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-5cc8c0bd99f64ae0b01e1c9161118ec0",
   "slug": "september-zero-classes",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/september-zero-classes-2026",
   "base_sha": "21cd8d9f5c5fe85036c74f78071835e902d66685",
-  "result_sha": null,
+  "result_sha": "9835f455ec3ac997fd9b6b1082cd9a1477ac31bb",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -73,6 +73,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 3,
-  "base_manifest_hash": "4c2bfe78cfc90fc7ed56abccfb662756ed46c8eb1d03100dcb427fa15c67851b"
+  "manifest_revision": 4,
+  "base_manifest_hash": "e0c4b85e57fc5234e9215d84d26acd9ad9c7c999da33ec471cee909bb3bd7c44"
 }
