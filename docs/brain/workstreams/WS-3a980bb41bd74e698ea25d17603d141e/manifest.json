@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-3a980bb41bd74e698ea25d17603d141e",
   "slug": "out-006-psychology-vip-v3",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-006-psychology-vip-v3",
   "base_sha": "a9c778f4d7ec19ac0dd260cece8944004e88fd84",
-  "result_sha": null,
+  "result_sha": "0bfa0eed5efe3a0b81d4b3b1b39cdd7b76acda83",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -113,6 +113,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "5a1903c22071bd2b5d5e1f23a4ecd0341c19a9fc76d5abdebce1509a99e6e6be"
+  "manifest_revision": 3,
+  "base_manifest_hash": "b3fe943bcf1995f691a333132c8c535554290e6167992cf088d8abd17fa5f9e0"
 }
