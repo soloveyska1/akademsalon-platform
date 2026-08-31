@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-5cc8c0bd99f64ae0b01e1c9161118ec0",
+  "slug": "september-zero-classes",
+  "status": "active",
+  "branch": "codex/september-zero-classes-2026",
+  "base_sha": "21cd8d9f5c5fe85036c74f78071835e902d66685",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/zero-classes.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/zero-classes.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-5cc8c0bd99f64ae0b01e1c9161118ec0/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/zero-classes-campaign.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "zero-classes.html",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:zero-classes-2026"
+    },
+    {
+      "access": "read",
+      "key": "contract:first-order-2026-08"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
