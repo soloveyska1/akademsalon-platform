@@ -29,6 +29,10 @@
         "match": "exact"
       },
       {
+        "path": "diplomnaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
         "path": "docs/brain/evidence/E-1044.md",
         "match": "exact"
       },
@@ -77,6 +81,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "c68b787132419c50b92ef72d8d1704043d94e66cd1977bcbe57d713fc69f0b63"
 }
