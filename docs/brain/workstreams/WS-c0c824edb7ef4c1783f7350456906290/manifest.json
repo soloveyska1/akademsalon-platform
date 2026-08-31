@@ -1,0 +1,82 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-c0c824edb7ef4c1783f7350456906290",
+  "slug": "out-006-vip-entry-clarity-v1",
+  "status": "active",
+  "branch": "codex/out-006-vip-entry-clarity-v1",
+  "base_sha": "21cd8d9f5c5fe85036c74f78071835e902d66685",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/promo-campaign.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/psychology-vkr.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/promo-campaign.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1044.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0180.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-c0c824edb7ef4c1783f7350456906290/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/new-user-promo.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/psychology-vip-contract.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "journey:owner-promo-preview"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:REL-0180"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:psychology-vkr"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
