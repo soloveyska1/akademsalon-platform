@@ -4,7 +4,9 @@ import asyncio
 import hashlib
 import importlib.util
 import json
+import os
 import sqlite3
+import subprocess
 import sys
 import tempfile
 import types
@@ -496,6 +498,237 @@ class ZeroCampaignTests(unittest.TestCase):
                     restart=False, dropin=dropin,
                 )
 
+    def test_installer_rejects_marker_bearing_source_with_after_hash_drift(self) -> None:
+        installer = load_installer()
+        root = Path(self.temp.name) / "runtime-drift"
+        (root / "app/services").mkdir(parents=True)
+        target = installer.paths(root)
+        clean = {
+            "webapp": f"# {installer.MARKER}:web\n",
+            "db": f"# {installer.MARKER}:db\n",
+            "promo": f"# {installer.MARKER}:promo\n",
+            "zero": "reviewed campaign runtime\n",
+        }
+        for key, content in clean.items():
+            target[key].write_text(content, encoding="utf-8")
+        known_after = {key: installer.sha256(path) for key, path in target.items()}
+        target["webapp"].write_text(clean["webapp"] + "tampered\n", encoding="utf-8")
+        with mock.patch.object(installer, "KNOWN_AFTER", known_after):
+            with self.assertRaisesRegex(RuntimeError, "source drift"):
+                installer.install(
+                    root,
+                    self.path,
+                    Path(self.temp.name) / "backups-drift",
+                    restart=False,
+                )
+
+    def test_pinned_production_candidates_match_both_hash_sets(self) -> None:
+        fixture_value = os.environ.get("ZERO_CLASSES_PINNED_SOURCE_DIR", "").strip()
+        if not fixture_value:
+            self.skipTest("set ZERO_CLASSES_PINNED_SOURCE_DIR to exact production sources")
+        installer = load_installer()
+        fixture = Path(fixture_value)
+        target = installer.paths(fixture)
+        self.assertEqual(
+            {key: installer.sha256(target[key]) for key in installer.KNOWN_BEFORE},
+            installer.KNOWN_BEFORE,
+        )
+        candidates = installer.source_candidates(fixture)
+        self.assertEqual(
+            {key: installer.sha256_text(value) for key, value in candidates.items()},
+            installer.KNOWN_AFTER,
+        )
+
+    def test_exact_http_order_flow_when_pinned_runtime_is_supplied(self) -> None:
+        runtime = os.environ.get("ZERO_CLASSES_HTTP_E2E_ROOT", "").strip()
+        database = os.environ.get("ZERO_CLASSES_HTTP_E2E_DB", "").strip()
+        if not runtime or not database:
+            self.skipTest("set ZERO_CLASSES_HTTP_E2E_ROOT and ZERO_CLASSES_HTTP_E2E_DB")
+        completed = subprocess.run(
+            [sys.executable, str(HERE), "--http-e2e"],
+            check=True,
+            capture_output=True,
+            text=True,
+            env=os.environ.copy(),
+        )
+        result = json.loads(completed.stdout.strip().splitlines()[-1])
+        self.assertEqual(
+            result,
+            {
+                "claim_status": 200,
+                "discount_4999": 0,
+                "discount_5000": 1000,
+                "order_status": 200,
+                "promo_check_status": 200,
+                "repeat_after_disable": True,
+                "second_order_status": 409,
+            },
+        )
+
+
+async def run_exact_http_e2e() -> dict[str, object]:
+    runtime = Path(os.environ["ZERO_CLASSES_HTTP_E2E_ROOT"]).resolve()
+    database = Path(os.environ["ZERO_CLASSES_HTTP_E2E_DB"]).resolve()
+    if not (runtime / "app/webapp.py").is_file() or not database.is_file():
+        raise RuntimeError("exact HTTP E2E runtime is incomplete")
+    source_hashes = {
+        key: hashlib.sha256(path.read_bytes()).hexdigest()
+        for key, path in {
+            "webapp": runtime / "app/webapp.py",
+            "db": runtime / "app/db.py",
+            "promo": runtime / "app/services/promo.py",
+            "zero": runtime / "app/services/zero_campaign.py",
+        }.items()
+    }
+    installer = load_installer()
+    if source_hashes != installer.KNOWN_AFTER:
+        raise RuntimeError("exact HTTP E2E source hashes do not match KNOWN_AFTER")
+
+    connection = sqlite3.connect(database)
+    try:
+        connection.execute(
+            "UPDATE zero_campaigns SET enabled=1 WHERE campaign_id=?",
+            (installer.CAMPAIGN_ID,),
+        )
+        connection.commit()
+    finally:
+        connection.close()
+
+    for name in list(sys.modules):
+        if name == "app" or name.startswith("app."):
+            del sys.modules[name]
+    sys.path.insert(0, str(runtime))
+
+    from aiohttp.test_utils import TestClient, TestServer
+    from app import config, db, webapp
+    from app.services import promo, zero_campaign
+
+    if Path(config.DB_PATH).resolve() != database:
+        raise RuntimeError("runtime DB_PATH does not point to the isolated database")
+    await db.init(config.DB_PATH)
+    now = epoch("2026-09-01T06:02:00")
+    zero_campaign.time.time = lambda: now
+    webapp._bg = lambda *_args, **_kwargs: None
+
+    class DummyBot:
+        pass
+
+    client = TestClient(TestServer(webapp.build_app(DummyBot())))
+    await client.start_server()
+    try:
+        secret = os.environ["ACADEMIC_SALON_ZERO_HMAC"].encode("utf-8")
+        claimant = hashlib.sha256(b"exact-http-e2e-student").hexdigest()
+
+        def signed(drop_id: str, request_id: str, nonce: str):
+            value = {
+                "drop_id": drop_id,
+                "claimant_key": claimant,
+                "request_id": request_id,
+            }
+            body = json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+            timestamp = str(now)
+            return body, {
+                "Content-Type": "application/json",
+                "Origin": "https://studkladovaya.ru",
+                "X-Zero-Timestamp": timestamp,
+                "X-Zero-Nonce": nonce,
+                "X-Zero-Signature": zero_campaign.body_signature(
+                    secret, timestamp, nonce, body
+                ),
+            }
+
+        body, headers = signed("0901", "1" * 32, "2" * 32)
+        claim_response = await client.post(
+            "/api/campaigns/zero-classes-2026-09-01/claim",
+            data=body,
+            headers=headers,
+        )
+        claim_value = await claim_response.json()
+        if claim_response.status != 200 or claim_value.get("ok") is not True:
+            raise RuntimeError("exact HTTP claim failed")
+        code = str(claim_value["code"])
+
+        promo_response = await client.post(
+            "/api/promo/check",
+            json={"code": code},
+            headers={"Origin": "https://akademsalon.ru"},
+        )
+        promo_value = await promo_response.json()
+        if promo_response.status != 200 or promo_value.get("ok") is not True:
+            raise RuntimeError("exact HTTP promo check failed")
+
+        order_payload = {
+            "name": "Zero E2E",
+            "contact": "zero-e2e@example.invalid",
+            "consent": True,
+            "consent_doc": config.ORDER_CONSENT_DOC,
+            "type": "custom",
+            "details": "Изолированная проверка акционного заказа.",
+            "promo": code,
+            "client_request_id": "zero_e2e_order_0001",
+            "page": "/zero-classes.html",
+        }
+        order_response = await client.post(
+            "/api/orders",
+            json=order_payload,
+            headers={"Origin": "https://akademsalon.ru"},
+        )
+        order_value = await order_response.json()
+        if order_response.status != 200 or order_value.get("promo") != "ok":
+            raise RuntimeError("exact HTTP order creation failed")
+        order_id = int(order_value["id"])
+
+        second_response = await client.post(
+            "/api/orders",
+            json={
+                **order_payload,
+                "contact": "zero-e2e-second@example.invalid",
+                "client_request_id": "zero_e2e_order_0002",
+            },
+            headers={"Origin": "https://akademsalon.ru"},
+        )
+        await second_response.read()
+
+        await db.update_order(order_id, price=4999)
+        await db.conn().commit()
+        discount_4999 = await promo.apply(order_id)
+        await db.update_order(order_id, price=5000)
+        await db.conn().commit()
+        discount_5000 = await promo.apply(order_id)
+
+        await db._exec(
+            "UPDATE zero_campaigns SET enabled=0 WHERE campaign_id=?",
+            (zero_campaign.CAMPAIGN_ID,),
+        )
+        await db.conn().commit()
+        repeat_body, repeat_headers = signed("1801", "3" * 32, "4" * 32)
+        repeat_response = await client.post(
+            "/api/campaigns/zero-classes-2026-09-01/claim",
+            data=repeat_body,
+            headers=repeat_headers,
+        )
+        repeat_value = await repeat_response.json()
+        repeat_after_disable = bool(
+            repeat_response.status == 200
+            and repeat_value.get("repeated") is True
+            and repeat_value.get("code") == code
+        )
+        return {
+            "claim_status": claim_response.status,
+            "discount_4999": int(discount_4999),
+            "discount_5000": int(discount_5000),
+            "order_status": order_response.status,
+            "promo_check_status": promo_response.status,
+            "repeat_after_disable": repeat_after_disable,
+            "second_order_status": second_response.status,
+        }
+    finally:
+        await client.close()
+        await db.close()
+
 
 if __name__ == "__main__":
-    unittest.main()
+    if "--http-e2e" in sys.argv:
+        print(json.dumps(asyncio.run(run_exact_http_e2e()), sort_keys=True))
+    else:
+        unittest.main()

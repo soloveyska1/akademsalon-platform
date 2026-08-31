@@ -26,6 +26,12 @@ KNOWN_BEFORE = {
     "db": "b9ac6409c834f6858855d13aba862e3c0dc063c064837e4f5c5d5b75ea4efd6f",
     "promo": "b10967c095969099e8ecfbb5679e2e3db8d8993bd5ba9e76b74d32c508c8a00c",
 }
+KNOWN_AFTER = {
+    "webapp": "a208a0cd37cfbd511e279553bb0b60b0b673e109607c8c8114cf68e44d91772e",
+    "db": "265417999d535e83bcf66896ccfabb9f28e66cdaacdc0851c8f58024fd4042a0",
+    "promo": "b2360962304630ae4e43ad24e1fbec88f892e1153d81a8d24edde2f0738a375a",
+    "zero": "fb6f6b789f7a7b0a03ba2debf709cbdbc44eae5b52cb6f17c61feacb4402a712",
+}
 CAMPAIGN_ID = "zero-classes-2026-09-01"
 DEFAULT_CREDENTIAL = Path("/etc/academic-salon/zero_campaign_hmac")
 DEFAULT_DROPIN = Path(
@@ -440,6 +446,13 @@ def install(
     target = paths(root)
     current = {key: sha256(target[key]) for key in ("webapp", "db", "promo")}
     if all(MARKER in target[key].read_text(encoding="utf-8") for key in current):
+        actual = {
+            key: sha256(target[key])
+            for key in ("webapp", "db", "promo", "zero")
+            if target[key].is_file()
+        }
+        if actual != KNOWN_AFTER:
+            raise RuntimeError(f"installed campaign source drift: {actual}")
         if restart:
             prepare_runtime(credential, dropin)
             restart_service()
@@ -449,6 +462,11 @@ def install(
     if restart:
         prepare_runtime(credential, dropin)
     candidates = source_candidates(root)
+    candidate_hashes = {
+        key: sha256_text(content) for key, content in candidates.items()
+    }
+    if candidate_hashes != KNOWN_AFTER:
+        raise RuntimeError(f"campaign candidate hash mismatch: {candidate_hashes}")
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     backup = backup_root / f"zero-classes-{stamp}"
     backup.mkdir(parents=True, exist_ok=False)
@@ -551,10 +569,10 @@ def restore(
 
 def check(root: Path, database: Path) -> dict:
     target = paths(root)
-    installed = all(
-        target[key].exists() and MARKER in target[key].read_text(encoding="utf-8")
-        for key in ("webapp", "db", "promo")
-    ) and target["zero"].exists()
+    source_hashes = {
+        key: sha256(path) for key, path in target.items() if path.is_file()
+    }
+    installed = source_hashes == KNOWN_AFTER
     connection = sqlite3.connect(f"file:{database}?mode=ro", uri=True)
     integrity = "schema_missing"
     try:
@@ -584,7 +602,8 @@ def check(root: Path, database: Path) -> dict:
         "seeded_slots": int(slots), "claims": int(claims),
         "enabled": bool(row and row[0]), "quick_check": quick,
         "integrity": integrity,
-        "sha256": {key: sha256(path) for key, path in target.items() if path.exists()},
+        "source_integrity": "ok" if installed else "mismatch",
+        "sha256": source_hashes,
     }
 
 

@@ -13,17 +13,19 @@
   HMAC-authenticated status and claim endpoints, exact hash-pinned installer,
   systemd credential drop-in, source and economic regressions, and shared-shell
   route contracts. Issuance is default-off until the runtime gate succeeds.
-- Verified locally: focused campaign backend 13/13 and public 3/3; full public,
-  backend and Brain suites green; strict Brain validation and diff checks green.
+- Verified on the exact rebased tree: focused campaign backend 16/16 and public
+  3/3; full public, 146-test backend and 39-test Brain suites green; strict
+  Brain validation and diff checks green. The installer rejects marker-bearing
+  drift and the pinned production fixture matches both preimage and postimage
+  hash sets.
   A hash-pinned copy of the exact production source and database completed an
   isolated end-to-end claim/order race: one code claimant, one winning order,
   one rejected competing order, exact 0/1,000 RUB price boundary, and repeat
   retrieval after issuance was disabled. Chromium desktop/mobile states cover
   upcoming, live, closed, ended and unavailable API paths without fake stock.
   Three independent reviews cover runtime/operations, economics/copy and UX.
-- Unverified: fresh-origin rebase, final exact-tree regression, production
-  install, live static/API readback and scheduled-publication timer are still
-  release gates.
+- Unverified: production install, live static/API readback and the
+  scheduled-publication timer are still release gates.
 - Risks/rollback: before the first claim, the installer can restore the exact
   source preimages and disable/deactivate the seeded campaign. After any claim,
   source rollback is deliberately refused: the safe rollback is issuance
@@ -31,6 +33,6 @@
   bearer code remains bound, gated and redeemable. Never restore the database
   snapshot over live orders or claims. Static rollback is the previous
   immutable release.
-- Next: integrate onto fresh `origin/main`, rerun the complete gates, stage the
-  disabled backend and static release, verify shared credential digest and live
-  health, then enable issuance and read back the exact production state.
+- Next: stage the disabled backend and static release, verify shared credential
+  digest and live health, then enable issuance and read back the exact
+  production state.
