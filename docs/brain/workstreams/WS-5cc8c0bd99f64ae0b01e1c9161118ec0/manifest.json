@@ -13,6 +13,18 @@
   "scope": {
     "write": [
       {
+        "path": "backend/salon_bot/install_zero_classes_campaign.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_zero_classes_campaign.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/zero_campaign.py",
+        "match": "exact"
+      },
+      {
         "path": "assets/css/zero-classes.css",
         "match": "exact"
       },
@@ -49,6 +61,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
+  "manifest_revision": 2,
   "base_manifest_hash": null
 }
