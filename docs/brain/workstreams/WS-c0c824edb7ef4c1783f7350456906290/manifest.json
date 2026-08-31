@@ -55,6 +55,10 @@
       {
         "path": "tests/psychology-vip-contract.test.js",
         "match": "exact"
+      },
+      {
+        "path": "tests/september-entry-readiness.test.js",
+        "match": "exact"
       }
     ],
     "read": []
@@ -81,6 +85,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "c68b787132419c50b92ef72d8d1704043d94e66cd1977bcbe57d713fc69f0b63"
+  "manifest_revision": 3,
+  "base_manifest_hash": "dbf1f4fb3877f06a481334c2c08d642de1bf21d5cfaee1ba5fa2f29947d1dce3"
 }
