@@ -12,7 +12,10 @@
 - Changed: added the campaign page, bounded status UI, campaign schema/runtime,
   HMAC-authenticated status and claim endpoints, exact hash-pinned installer,
   systemd credential drop-in, source and economic regressions, and shared-shell
-  route contracts. Issuance is default-off until the runtime gate succeeds.
+  route contracts. A follow-up clarity pass now leads with the exact 30 × 1,000
+  RUB value, replaces campaign jargon with plain code language, adds direct
+  Telegram actions for every drop and explains the whole route in three short
+  steps. Issuance is default-off until the runtime gate succeeds.
 - Verified on the exact rebased tree: focused campaign backend 16/16 and public
   3/3; full public, 146-test backend and 39-test Brain suites green; strict
   Brain validation and diff checks green. The installer rejects marker-bearing
@@ -24,18 +27,23 @@
   retrieval after issuance was disabled. Chromium desktop/mobile states cover
   upcoming, live, closed, ended and unavailable API paths without fake stock.
   Three independent reviews cover runtime/operations, economics/copy and UX.
+- Follow-up verification on 31 August 2026: the Kladovaya full suite and lint,
+  all 651 public Salon tests, 146 backend tests and 39 Brain tests pass. Chromium
+  at 390 and 1440 px shows zero horizontal overflow, the three exact Telegram
+  drop links, current aggregate status and no console errors.
 - Verified in production on 31 August 2026: Academic Salon static release
-  `release181-6fb27fd` is live with `release180-9897323` as the rollback;
+  `release182-576423a` is live with `release181-6fb27fd` as the rollback;
   the exact backend postimage, 30 seeded slots, zero claims, SQLite
   `quick_check=ok` and `enabled=true` were read back from the live host.
   Public home, campaign page, campaign API and health return HTTP 200. The
   static rollback/forward and the live issuance kill-switch cycle both passed.
-  Kladovaya site, bot, reminder timer and the 08:35 MSK Telegram publication
-  timer are active; the scheduled-post receipt is absent, so nothing was
-  published early. Private Salon Sites version 43 and public Kladovaya Sites
-  version 88 deployed successfully. The latter provider still returns its
-  pre-existing Cloudflare 403, while the canonical `studkladovaya.ru` VPS route
-  is healthy.
+  Kladovaya release `20260831T141500Z-zero-clarity-921e08a`, bot, reminder timer
+  and the 08:35 MSK Telegram publication timer are active; the revised caption
+  passes the protected publisher validator and the scheduled-post receipt is
+  absent, so nothing was published early. Private Salon Sites version 44 and
+  public Kladovaya Sites version 89 deployed successfully. The latter provider
+  still returns its pre-existing Cloudflare 403, while the canonical
+  `studkladovaya.ru` VPS route is healthy.
 - Risks/rollback: before the first claim, the installer can restore the exact
   source preimages and disable/deactivate the seeded campaign. After any claim,
   source rollback is deliberately refused: the safe rollback is issuance
