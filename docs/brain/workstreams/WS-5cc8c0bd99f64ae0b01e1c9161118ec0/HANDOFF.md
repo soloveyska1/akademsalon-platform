@@ -24,8 +24,18 @@
   retrieval after issuance was disabled. Chromium desktop/mobile states cover
   upcoming, live, closed, ended and unavailable API paths without fake stock.
   Three independent reviews cover runtime/operations, economics/copy and UX.
-- Unverified: production install, live static/API readback and the
-  scheduled-publication timer are still release gates.
+- Verified in production on 31 August 2026: Academic Salon static release
+  `release181-6fb27fd` is live with `release180-9897323` as the rollback;
+  the exact backend postimage, 30 seeded slots, zero claims, SQLite
+  `quick_check=ok` and `enabled=true` were read back from the live host.
+  Public home, campaign page, campaign API and health return HTTP 200. The
+  static rollback/forward and the live issuance kill-switch cycle both passed.
+  Kladovaya site, bot, reminder timer and the 08:35 MSK Telegram publication
+  timer are active; the scheduled-post receipt is absent, so nothing was
+  published early. Private Salon Sites version 43 and public Kladovaya Sites
+  version 88 deployed successfully. The latter provider still returns its
+  pre-existing Cloudflare 403, while the canonical `studkladovaya.ru` VPS route
+  is healthy.
 - Risks/rollback: before the first claim, the installer can restore the exact
   source preimages and disable/deactivate the seeded campaign. After any claim,
   source rollback is deliberately refused: the safe rollback is issuance
@@ -33,6 +43,6 @@
   bearer code remains bound, gated and redeemable. Never restore the database
   snapshot over live orders or claims. Static rollback is the previous
   immutable release.
-- Next: stage the disabled backend and static release, verify shared credential
-  digest and live health, then enable issuance and read back the exact
-  production state.
+- Next: monitor the scheduled 08:35 MSK publication and the three 09:01, 13:01
+  and 18:01 MSK drop windows; use issuance disablement, not database restore,
+  if a post-claim incident occurs.
