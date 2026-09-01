@@ -43,6 +43,10 @@
       {
         "path": "tests/new-user-promo.test.js",
         "match": "exact"
+      },
+      {
+        "path": "tests/september-entry-readiness.test.js",
+        "match": "exact"
       }
     ],
     "read": []
@@ -65,6 +69,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
+  "manifest_revision": 2,
   "base_manifest_hash": null
 }
