@@ -782,6 +782,9 @@
   function ownerPreviewLauncher(win, server) {
     var doc = win.document;
     if (doc.querySelector('[data-promo-owner-launcher]')) return;
+    var sidebar = doc.querySelector('.tx-wizard-sidebar');
+    var help = sidebar && sidebar.querySelector('.tx-wizard-help');
+    var compact = typeof win.matchMedia === 'function' ? win.matchMedia('(max-width: 920px)') : null;
     var launcher = doc.createElement('button');
     launcher.type = 'button';
     launcher.className = 'promo-owner-launcher';
@@ -789,10 +792,36 @@
     launcher.setAttribute('aria-label', 'Открыть предпросмотр приветственного предложения');
     launcher.innerHTML = '<span class="promo-owner-launcher__long">Предпросмотр предложения</span>' +
       '<span class="promo-owner-launcher__short" aria-hidden="true">Акция</span>';
+    var keepLauncherFocus = false;
+    launcher.addEventListener('focus', function () { keepLauncherFocus = true; });
+    doc.addEventListener('focusin', function (event) {
+      if (event.target !== launcher) keepLauncherFocus = false;
+    });
     launcher.addEventListener('click', function () {
       withDialogSlot(win, function () { welcomeDialog(win, server, true); });
     });
-    doc.body.appendChild(launcher);
+
+    function placeLauncher() {
+      var useSidebar = !!(sidebar && help && !(compact && compact.matches));
+      var restoreFocus = doc.activeElement === launcher || keepLauncherFocus;
+      launcher.classList.toggle('promo-owner-launcher--sidebar', useSidebar);
+      launcher.classList.toggle('promo-owner-launcher--floating', !useSidebar);
+      if (useSidebar) {
+        sidebar.insertBefore(launcher, help);
+      } else if (launcher.parentNode !== doc.body) {
+        doc.body.appendChild(launcher);
+      }
+      if (restoreFocus && doc.activeElement !== launcher) {
+        try { launcher.focus({ preventScroll:true }); }
+        catch (error) { launcher.focus(); }
+      }
+    }
+
+    placeLauncher();
+    if (compact) {
+      if (typeof compact.addEventListener === 'function') compact.addEventListener('change', placeLauncher);
+      else if (typeof compact.addListener === 'function') compact.addListener(placeLauncher);
+    }
   }
 
   function boot(win) {

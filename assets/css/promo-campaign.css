@@ -442,11 +442,11 @@
 .promo-return__actions button + button { background: transparent; color: var(--ink, #1d1c18); }
 
 .promo-owner-launcher {
-  position: fixed;
   z-index: 175;
-  top: 306px;
-  left: 24px;
+  display: inline-flex;
   min-height: 42px;
+  align-items: center;
+  justify-content: center;
   padding: 10px 14px;
   border: 1px solid var(--line-strong, #b8aa94);
   border-radius: 999px;
@@ -456,6 +456,24 @@
   font: 700 12px/1.1 var(--font-sans, Inter, system-ui, sans-serif);
   letter-spacing: .03em;
   cursor: pointer;
+}
+
+.promo-owner-launcher--sidebar {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  min-height: 44px;
+  flex: 0 0 auto;
+  margin-top: clamp(18px, 3vh, 28px);
+  box-shadow: 0 8px 20px rgb(33 27 20 / .08);
+}
+
+.promo-owner-launcher--floating {
+  position: fixed;
+  right: auto;
+  bottom: 24px;
+  left: 24px;
 }
 
 .promo-owner-launcher:hover { border-color: var(--wax, #9f3f2d); }
@@ -475,6 +493,20 @@
 :root[data-theme="dark"] .promo-campaign__rescue-outcome .promo-campaign__primary { color: #171714; }
 :root[data-theme="dark"] .promo-campaign__rescue-outcome .promo-campaign__primary:hover:not(:disabled) {
   color: #171714;
+}
+
+@media (max-width: 920px) {
+  .promo-owner-launcher--floating {
+    top: auto;
+    right: 12px;
+    bottom: calc(82px + env(safe-area-inset-bottom));
+    left: auto;
+    min-width: 58px;
+    min-height: 40px;
+    padding-inline: 13px;
+  }
+  .promo-owner-launcher__long { display: none; }
+  .promo-owner-launcher__short { display: inline; }
 }
 
 @media (max-width: 760px) {
@@ -520,17 +552,6 @@
   .promo-campaign__rescue-outcome .promo-campaign__actions { width: min(100%, 340px); }
   .promo-return { grid-template-columns: 1fr; margin-inline: 0; }
   .promo-return__actions { flex-direction: column; }
-  .promo-owner-launcher {
-    top: auto;
-    right: 12px;
-    bottom: calc(82px + env(safe-area-inset-bottom));
-    left: auto;
-    min-width: 58px;
-    min-height: 40px;
-    padding-inline: 13px;
-  }
-  .promo-owner-launcher__long { display: none; }
-  .promo-owner-launcher__short { display: inline; }
 }
 
 @media (max-width: 350px), (max-height: 650px) {

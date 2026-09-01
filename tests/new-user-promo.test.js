@@ -103,8 +103,8 @@ test('campaign assets are isolated, versioned and never preloaded for suppressed
   const configurator = read('configurator.html');
   const script = read('assets/js/promo-campaign.js');
   for (const html of [home, configurator]) {
-    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260831vipclarity1/);
-    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260831vipclarity1/);
+    assert.match(html, /assets\/css\/promo-campaign\.css\?v=20260901ownerlayout1/);
+    assert.match(html, /assets\/js\/promo-campaign\.js\?v=20260901ownerlayout1/);
   }
   assert.doesNotMatch(home, /<img[^>]+promo-salon-welcome/u);
   assert.doesNotMatch(configurator, /<img[^>]+promo-salon-welcome/u);
@@ -131,7 +131,20 @@ test('owner preview stays observable without covering an active configurator', (
   assert.match(script, /mode\.previewOnly && pageKind\(win\) === 'configurator' && preview !== 'welcome'/);
   assert.match(script, /ownerPreviewLauncher\(win, server\);\s*return;/);
   assert.match(script, /preview === 'welcome'/);
+  assert.match(script, /querySelector\('\.tx-wizard-sidebar'\)/);
+  assert.match(script, /querySelector\('\.tx-wizard-help'\)/);
+  assert.match(script, /promo-owner-launcher--sidebar/);
+  assert.match(script, /promo-owner-launcher--floating/);
+  assert.match(script, /matchMedia\('\(max-width: 920px\)'\)/);
+  assert.match(script, /sidebar\.insertBefore\(launcher, help\)/);
+  assert.match(script, /launcher\.addEventListener\('focus', function \(\) \{ keepLauncherFocus = true; \}\)/);
+  assert.match(script, /var restoreFocus = doc\.activeElement === launcher \|\| keepLauncherFocus;/);
+  assert.match(script, /launcher\.focus\(\{ preventScroll:true \}\)/);
   assert.match(css, /\.promo-owner-launcher\s*\{/);
+  assert.match(css, /\.promo-owner-launcher--sidebar\s*\{/);
+  assert.match(css, /\.promo-owner-launcher--floating\s*\{/);
+  assert.match(css, /@media \(max-width: 920px\)\s*\{[\s\S]*?\.promo-owner-launcher--floating\s*\{[\s\S]*?bottom:\s*calc\(82px \+ env\(safe-area-inset-bottom\)\);/u);
+  assert.doesNotMatch(css, /\.promo-owner-launcher\s*\{[^}]*top:\s*306px;/s);
   assert.match(css, /\.promo-owner-launcher__short/);
 });
 
