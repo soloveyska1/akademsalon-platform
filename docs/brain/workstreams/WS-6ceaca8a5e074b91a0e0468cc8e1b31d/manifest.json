@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-6ceaca8a5e074b91a0e0468cc8e1b31d",
   "slug": "owner-launcher-layout-v1",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/out-006-owner-launcher-layout-v1",
   "base_sha": "ba246390540b70196fcb7158302de4ca6f10bd2c",
-  "result_sha": null,
+  "result_sha": "007bf7ba92397d363f4cc90a6418cd3e663ddb3b",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -69,6 +69,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "287dd4875fc41a7381158f5518da882bfacc5d3da4f75f85e1077702d0e53913"
+  "manifest_revision": 3,
+  "base_manifest_hash": "52a02d1d1c5be2102db96a4dfac75a4b09975206105a4dd5582c8f89573ccaba"
 }
