@@ -1,0 +1,70 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-6ceaca8a5e074b91a0e0468cc8e1b31d",
+  "slug": "owner-launcher-layout-v1",
+  "status": "active",
+  "branch": "codex/out-006-owner-launcher-layout-v1",
+  "base_sha": "ba246390540b70196fcb7158302de4ca6f10bd2c",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/promo-campaign.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/promo-campaign.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/E-1045.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/releases/REL-0181.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-6ceaca8a5e074b91a0e0468cc8e1b31d/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/new-user-promo.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "journey:owner-promo-preview"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "write",
+      "key": "release-cache:REL-0181"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
