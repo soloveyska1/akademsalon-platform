@@ -1,0 +1,182 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-ea41aecae85d424d883e5044bc75af43",
+  "slug": "salon-direct-orders",
+  "status": "active",
+  "branch": "codex/salon-direct-orders",
+  "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": ".openai/hosting.json",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-direct.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-direct.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-order.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-products.js",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/salon-direct",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-ea41aecae85d424d883e5044bc75af43/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "prolog.html",
+        "match": "exact"
+      },
+      {
+        "path": "services.html",
+        "match": "exact"
+      },
+      {
+        "path": "tariffs.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-direct.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "reviews.html",
+        "match": "exact"
+      },
+      {
+        "path": "guarantees.html",
+        "match": "exact"
+      },
+      {
+        "path": "about.html",
+        "match": "exact"
+      },
+      {
+        "path": "priyomnaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "magisterskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "kandidatskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "nauchnaya-statya.html",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "referat.html",
+        "match": "exact"
+      },
+      {
+        "path": "avtorskiy-zakaz.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-informatike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-menedzhmentu.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-pedagogike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/build-sites-static.mjs",
+        "match": "exact"
+      },
+      {
+        "path": "tests/order-submit-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/privacy-security-contracts.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "journey:direct-order"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:salon-direct"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
