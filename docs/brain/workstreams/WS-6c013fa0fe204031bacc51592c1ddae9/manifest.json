@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-6c013fa0fe204031bacc51592c1ddae9",
   "slug": "specification-document",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/specification-document",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": null,
+  "result_sha": "2805f7f206916d3d18973d4d0c4896320391fc40",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -41,6 +41,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "96f74e1de4320668f91d6892d57bcac0690011d7d53aac229ca2e8172d5f806d"
 }
