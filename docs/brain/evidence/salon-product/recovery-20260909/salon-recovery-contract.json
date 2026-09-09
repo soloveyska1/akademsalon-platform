@@ -427,5 +427,34 @@
   "external_mutations": false,
   "source_edits": false,
   "browser_closed": true,
-  "blockers": []
+  "blockers": [],
+  "reproducers": {
+    "harnesses": [
+      {
+        "path": "/tmp/salon-recovery-contract-browser.js",
+        "sha256": "c6d68260c18251c5c95917119425c958536909de70861386da7c50963613bae4"
+      },
+      {
+        "path": "/tmp/salon-recovery-about.js",
+        "sha256": "f8e17c619daedffe86dfb95c4923924c2ec20d5a3dd320ba37199a9cd206d131"
+      },
+      {
+        "path": "/tmp/salon-recovery-delta.js",
+        "sha256": "81d4355208a5a751f128a9f5fe546f58795a639fbfb6c7fb7df0351487217135"
+      }
+    ],
+    "command_template": "/Users/saymurrbk.ru/.codex/skills/playwright/scripts/playwright_cli.sh -s=recovery-contract open about:blank; /Users/saymurrbk.ru/.codex/skills/playwright/scripts/playwright_cli.sh -s=recovery-contract run-code --filename <harness-path>; /Users/saymurrbk.ru/.codex/skills/playwright/scripts/playwright_cli.sh -s=recovery-contract close",
+    "prerequisite": "Owner preview running at http://127.0.0.1:8771; each harness creates fresh context with serviceWorkers:block, mocks health/outcomes and blocks external access; do not replace mocks with real financial requests",
+    "coverage": {
+      "salon-recovery-contract-browser.js": "27 baseline assertions:4 passive loads,13 pathcases,6 health outcomes,manualretry,8snetworktimeout+duplicateclick,lateack,8sslowJSON.26PASS; stalehash case closed by delta",
+      "salon-recovery-about.js": "7PASS:about3 and noJS4",
+      "salon-recovery-delta.js": "5PASS finaltargetrefresh:hashchange,popstate,latehealth,replaceState+click,adminreject"
+    },
+    "outputs": [
+      "/tmp/salon-recovery-contract-browser.log",
+      "/tmp/salon-recovery-about.log",
+      "/tmp/salon-recovery-delta.log",
+      "/tmp/salon-recovery-pwa.log"
+    ]
+  }
 }
