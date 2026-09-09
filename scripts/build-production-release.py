@@ -6,7 +6,7 @@ import argparse, hashlib, html, json, re, subprocess, tarfile
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit, unquote
 
-ROOT_FILES = {'sw.js','manifest.webmanifest','robots.txt','sitemap.xml','feed.xml','llms.txt','d485ac6cc21986723e6f627b37da7c5b.txt'}
+ROOT_FILES = {'favicon.ico','sw.js','manifest.webmanifest','robots.txt','sitemap.xml','feed.xml','llms.txt','d485ac6cc21986723e6f627b37da7c5b.txt'}
 ASSET_EXT = {'.js','.mjs','.css','.woff2','.woff','.ttf','.pdf','.docx','.png','.jpg','.jpeg','.webp','.svg','.ico','.mp4','.gif','.bcmap','.pfb'}
 def sha(b): return hashlib.sha256(b).hexdigest()
 def allowed(name):
