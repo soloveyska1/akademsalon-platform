@@ -599,6 +599,14 @@
       {
         "path": "prolog.html",
         "match": "exact"
+      },
+      {
+        "path": "tests/supporting-pages-polish15.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/deposit-page-regression.test.js",
+        "match": "exact"
       }
     ],
     "read": []
@@ -617,6 +625,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 27,
-  "base_manifest_hash": "ee738066f66ac6f961c5ae4f74682a9daec0716c63751cbfc7c9a523c9ad0400"
+  "manifest_revision": 28,
+  "base_manifest_hash": "f9365e6c98f752e839ca6f3c93b20871696710ccb8bf040ab9f5de2acf659bda"
 }
