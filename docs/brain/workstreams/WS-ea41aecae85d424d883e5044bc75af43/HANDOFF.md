@@ -222,3 +222,7 @@ Replaced five old page shells and conflicting legacy chrome with modern family h
 Process task coordination: restored prolog.html historic reservation after FOREIGN_SCOPE_ESCAPE report. Separate user task owns only new prolog-interactive.html and page-owned assets; waits to hand off exact SHA for sequential integration. No prolog code edited in this iteration.
 
 Next step: publish exact clean source to owner-private Sites, verify all five routes and stop owned preview/test processes. Public canonical release remains outside verified gates.
+
+### Sequential submitted process input
+
+Owner of separate user-requested process redesign submitted result3578433e, revisionb3a108d3. Integration owner read evidence and Brain submitted-input ancestry handling1912–1950. Fresh origin fetch, hard0/warnings60 before merge. Merged exact submitted revision with ancestry; no canonical status changed. Reserve only3new input paths to copy verified HTML to historical prolog.html and remove intermediate route. No new design changes. Acceptance: exact input hashes retained, no intermediate page in distribution, fresh actual-composition browser journey and private publish/readback. Separate input's two independent reviews and70state matrix retained verbatim under its evidence. Root owns final composed check and publication.

@@ -611,6 +611,18 @@
       {
         "path": "tests/economic-safety.test.js",
         "match": "exact"
+      },
+      {
+        "path": "assets/css/order-journey.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/order-journey.js",
+        "match": "exact"
+      },
+      {
+        "path": "prolog-interactive.html",
+        "match": "exact"
       }
     ],
     "read": []
@@ -629,6 +641,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 29,
-  "base_manifest_hash": "b1846468be6d6bd65b5a74e9108547ff3d117bd898f98068762b255081e933e3"
+  "manifest_revision": 30,
+  "base_manifest_hash": "f99a815c8b4f5646b3b61081c97ef4e38354ee91409fedcd6ceddcf4b9102942"
 }
