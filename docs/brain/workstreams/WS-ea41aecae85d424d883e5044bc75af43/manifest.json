@@ -743,6 +743,14 @@
       {
         "path": "docs/brain/workstreams/WS-6c013fa0fe204031bacc51592c1ddae9",
         "match": "tree"
+      },
+      {
+        "path": "sw.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/pwa-install.test.js",
+        "match": "exact"
       }
     ],
     "read": []
@@ -761,6 +769,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 46,
-  "base_manifest_hash": "e2c07f8fd5c6e3c80c6fc2d19ded63f3ce0892d84b1787746f82b825244c20d3"
+  "manifest_revision": 47,
+  "base_manifest_hash": "99929a9cd394e17bbda3ad5110b02aac54cb32cbdbfd7927760a7d4b89127179"
 }
