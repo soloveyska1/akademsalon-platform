@@ -121,26 +121,26 @@ window.SalonPortfolio = [
   {
     "id": "practice",
     "kind": "Отчёт по практике",
-    "title": "Социально-психологический климат в трудовом коллективе",
+    "title": "Педагогическая практика: анализ занятий и собственное мероприятие",
     "product": "practice",
-    "discipline": "Психология",
+    "discipline": "Педагогика",
     "pages": 18,
-    "previewPage": 7,
-    "size": 128972,
-    "pdf": "assets/samples/practice.pdf",
-    "cover": "assets/samples/practice.png",
+    "previewPage": 4,
+    "size": 171534,
+    "pdf": "assets/samples/practice.pdf?v=06f5315f1d02",
+    "cover": "assets/samples/practice.png?v=06f5315f1d02",
     "jumps": [
       {
-        "label": "Вступление",
-        "page": 2
+        "label": "Задания",
+        "page": 3
       },
       {
-        "label": "Программа",
-        "page": 5
+        "label": "Конспект",
+        "page": 7
       },
       {
-        "label": "Анкета",
-        "page": 14
+        "label": "Заключение",
+        "page": 17
       }
     ]
   },

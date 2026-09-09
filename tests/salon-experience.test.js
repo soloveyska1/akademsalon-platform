@@ -59,3 +59,29 @@ test('new interactions support keyboard, reduced motion and no-JS routing',()=>{
  assert.match(read('assets/js/salon-samples.js'),/ArrowRight/);assert.match(read('assets/js/salon-samples.js'),/aria-controls/);
  for(const p of ['samples.html','benefits.html']){assert.match(read(p),/href="configurator.html"|href="plus.html/);assert.match(read(p),/analytics-attribution-v2/)}
 });
+
+test('benefit order receipt uses best discount, shared cap and excludes certificates from cashback',()=>{
+ const v=math.orderProjection(10000,5000,'pro',true,1000);
+ assert.equal(v.discount,1200);assert.equal(v.discountSource,'promo');assert.equal(v.spent,1300);assert.equal(v.giftUsed,1000);assert.equal(v.payable,6500);assert.equal(v.cashback,650);assert.equal(v.pointsLeft,3700);
+ assert.equal(math.orderProjection(2000,1000,'none',true,0).discount,0);
+ assert.equal(math.orderProjection(999,1000,'none',false,0).spent,0);
+ assert.equal(math.orderProjection(100000,0,'pro',true,0).discount,5000);
+ const gift=math.orderProjection(2500,0,'none',true,50000);assert.equal(gift.payable,0);assert.equal(gift.cashback,0);assert.equal(gift.giftUsed,2200);
+ assert.equal(math.orderProjection(14000,1000,'session',false,0).discount,980);
+});
+test('benefit receipt conserves each ruble and respects caps across prices and plans',()=>{
+ for(const price of [999,1000,2499,2500,10000,14000,20000,30000,49999,60000,100000,500000])for(const balance of [0,100,1000,50000,500000])for(const plan of ['none','plus','pro','session'])for(const promo of [false,true])for(const gift of [0,1000,50000]){
+  const v=math.orderProjection(price,balance,plan,promo,gift);
+  assert.equal(v.discount+v.spent+v.giftUsed+v.payable,price);
+  assert.ok(v.discount+v.spent<=price*.25);assert.ok(v.spent<=price*.20);assert.ok(v.spent<=balance);assert.ok(v.payable>=0);assert.ok(v.cashback<=v.payable*.10);assert.ok(v.giftUsed<=gift);
+ }
+});
+test('subscription floor rounding does not falsely recommend a paid plan at break-even',()=>{
+ const v=math.planComparison(19990,1,'sem');assert.equal(v.plus.discount,999);assert.equal(v.plus.net,0);
+ assert.equal(math.orderProjection(1009,0,'pro',false,0).discount,100);
+ assert.equal(math.orderProjection(2505,0,'none',true,0).discount,301);
+});
+test('welcome campaign opens and closes on Moscow day boundaries',()=>{
+ for(const [date,active] of [['2026-08-23T23:59:59+03:00',false],['2026-08-24T00:00:00+03:00',true],['2026-09-21T23:59:59+03:00',true],['2026-09-22T00:00:00+03:00',false]])assert.equal(math.welcomeActive(Date.parse(date)),active,date);
+ assert.equal(math.welcomeActive(NaN),false);
+});

@@ -4,7 +4,7 @@
 function planComparison(price,count,period){
  price=Math.max(0,Math.min(500000,Number(price)||0));count=Math.max(1,Math.min(20,Math.floor(Number(count)||1)));
  const sem=period==='sem';const plusCost=sem?999:449,proCost=sem?2690:1190;
- const plus=Math.round(Math.min(price*.05,1000))*count,pro=Math.round(Math.min(price*.10,3000))*count;
+ const plus=Math.floor(Math.min(price*5/100,1000))*count,pro=Math.floor(Math.min(price*10/100,3000))*count;
  return {price,count,total:price*count,plus:{discount:plus,cost:plusCost,net:plus-plusCost},pro:{discount:pro,cost:proCost,net:pro-proCost}};
 }
 function depositProjection(contribution,used){
@@ -41,4 +41,56 @@ document.querySelectorAll('[data-deposit-calculator]').forEach((host,i)=>{
  function render(){used.max=amount.value;used.value=Math.min(Number(used.value),Number(amount.value));const v=depositProjection(amount.value,used.value);host.querySelector('[data-amount-out]').textContent=money(v.contribution);host.querySelector('[data-used-out]').textContent=money(v.used);host.querySelector('.benefit-results').innerHTML='<div class="deposit-buckets"><div><span>Останется ваших денег<small>На следующие услуги</small></span><strong>'+money(v.balance)+'</strong></div><div><span>Максимальный резерв<small>Не доступен для оплаты сейчас</small></span><strong>'+bonus(v.reserve)+'</strong></div><div><span>Условная доплата бонусами<small>Кешбэк '+bonus(v.cashback)+' уже учтён</small></span><strong>'+bonus(v.additional)+'</strong></div></div><p class="micro">По использованной сумме рассчитано '+bonus(v.earned)+', из них вычтен обычный кешбэк. Положительная разница открывается после приёмки услуг и 14 дней. Возврат, другой кешбэк и действующие ограничения изменят результат. Доступный баланс смотрите в кабинете.</p><a class="text-link" href="deposit.html">Смотреть условия →</a>'}
  [amount,used].forEach(x=>x.addEventListener('input',render));render();
 });
+})(typeof window!=='undefined'?window:globalThis);
+
+(function(root){
+'use strict';
+const bounded=(v,min,max)=>Math.max(min,Math.min(max,Math.floor(Number(v)||0)));
+const planRules={none:{rate:0,cap:0,cashback:5},plus:{rate:5,cap:1000,cashback:5},pro:{rate:10,cap:3000,cashback:10},session:{rate:7,cap:2000,cashback:5}};
+function welcomeActive(now){const t=Number(now===undefined?Date.now():now);return Number.isFinite(t)&&t>=Date.parse('2026-08-24T00:00:00+03:00')&&t<Date.parse('2026-09-22T00:00:00+03:00')}
+function orderProjection(price,points,plan,promo,gift){
+ price=bounded(price,0,500000);points=bounded(points,0,500000);gift=bounded(gift,0,50000);
+ const rule=planRules[plan]||planRules.none,subscription=Math.floor(Math.min(price*rule.rate/100,rule.cap));
+ const promotion=promo&&price>=2500?Math.round(Math.min(price*.12,5000)):0,discount=Math.max(subscription,promotion);
+ const spent=price>=1000?Math.min(points,Math.floor(price*.20),Math.max(0,Math.floor(price*.25)-discount)):0;
+ const giftUsed=Math.min(gift,price-discount-spent),payable=price-discount-spent-giftUsed;
+ return {price,points,discount,discountSource:promotion>subscription?'promo':subscription?'subscription':'none',spent,giftUsed,payable,cashback:Math.floor(payable*rule.cashback/100),cashbackRate:rule.cashback,pointsLeft:points-spent};
+}
+root.SalonBenefitMath.orderProjection=orderProjection;root.SalonBenefitMath.welcomeActive=welcomeActive;
+if(typeof document==='undefined')return;
+const host=document.querySelector('[data-benefits-hub]');if(!host)return;
+const $=s=>host.querySelector(s),$$=s=>Array.from(host.querySelectorAll(s));
+const money=n=>Math.round(n).toLocaleString('ru-RU')+' ₽',points=n=>Math.floor(n).toLocaleString('ru-RU')+' б.';
+const aliases={compare:'subscriptions',bonuses:'bonuses',deposit:'deposit',more:'more',subscriptions:'subscriptions'};
+function activate(id,write){id=aliases[id]||'subscriptions';$$('[data-benefit-tab]').forEach(a=>{if(a.dataset.benefitTab===id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});$$('.bh-panel').forEach(p=>p.hidden=p.id!==id);if(write)history.replaceState(null,'','#'+id)}
+$$('[data-benefit-tab]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();activate(a.dataset.benefitTab,true)}));window.addEventListener('hashchange',()=>activate(location.hash.slice(1),false));activate(location.hash.slice(1),false);
+const price=$('#bh-price'),count=$('#bh-count');
+function renderPlans(){
+ const valid=price.value&&count.value&&price.validity.valid&&count.validity.valid;$('#bh-plan-error').hidden=!!valid;$('#bh-plans').hidden=!valid;$('#bh-verdict').hidden=!valid;if(!valid)return;
+ const period=$('input[name=bh-period]:checked').value,v=root.SalonBenefitMath.planComparison(price.value,count.value,period),days=period==='sem'?150:30;
+ const best=v.pro.net>Math.max(0,v.plus.net)?'pro':v.plus.net>0?'plus':'none';
+ const items=[{id:'none',title:'Без подписки',fee:0,discount:0,net:0,rate:'Обычная цена заказа',cap:'Кешбэк 5% после полной оплаты',features:['Без дополнительной платы','Бонусы на следующие заказы'],cta:'Выбрать работу',link:'services.html'}, {id:'plus',title:'Салон+',fee:v.plus.cost,...v.plus,rate:'Скидка 5% на каждый заказ',cap:'Не больше 1 000 ₽ на заказ',features:['Приоритет в графике','Куратор и материалы'],cta:'Оформить Салон+',link:'dashboard.html#plus'}, {id:'pro',title:'Салон+ Про',fee:v.pro.cost,...v.pro,rate:'Скидка 10% на каждый заказ',cap:'Не больше 3 000 ₽ на заказ',features:['Всё из Салон+','Кешбэк 10% · тренажёр защиты','Консультация 15 мин / 30 дней'],cta:'Оформить Про',link:'dashboard.html#plus'}];
+ $('#bh-plans').innerHTML=items.map(p=>'<article class="bh-plan '+(p.id===best?'is-best':'')+'"><div class="bh-plan-name"><h3>'+p.title+'</h3>'+(p.id===best?'<span class="bh-best-label">Выгоднее по расчёту</span>':'')+'</div><div class="bh-plan-price">'+money(p.fee)+' <small>'+(p.fee?'за '+days+' дней':'за подключение')+'</small></div><div class="bh-plan-discount">'+p.rate+'<small>'+p.cap+'</small></div><details class="bh-plan-features"><summary>Что входит <span aria-hidden="true">+</span></summary><ul>'+p.features.map(f=>'<li>'+f+'</li>').join('')+'</ul></details><div class="bh-plan-summary"><div><span>Скидки на '+v.count+' раб.</span><b>'+money(p.discount)+'</b></div><div><span>Работы + подписка</span><b>'+money(v.total-p.discount+p.fee)+'</b></div><div><span>'+(p.net>=0?'Чистая экономия':'Переплата за подписку')+'</span><b>'+(p.net>=0?money(p.net):money(-p.net))+'</b></div></div><a class="bh-plan-cta" href="'+p.link+'">'+p.cta+' ↗</a></article>').join('');
+ const chosen=items.find(p=>p.id===best),breakEven=chosen.id==='none'?null:Math.ceil(chosen.fee/(chosen.discount/v.count));
+ $('#bh-verdict').innerHTML='<div><strong>'+(best==='none'?'Для этого заказа подписка не обязательна.':chosen.title+' окупается на '+breakEven+'-й работе.')+'</strong><p>'+(best==='none'?'По указанному плану обычный заказ дешевле платных подписок. Бонусы всё равно начислятся.':'За '+v.count+' раб. с подпиской: '+money(v.total-chosen.discount+chosen.fee)+'. Без неё: '+money(v.total)+'.')+'</p></div><div class="bh-verdict-number">'+(best==='none'?'Без доплат':'−'+money(chosen.net))+'</div>';
+ $$('[data-count-step]').forEach(b=>b.disabled=Number(count.value)+(Number(b.dataset.countStep))<1||Number(count.value)+(Number(b.dataset.countStep))>20);
+}
+[price,count,...$$('input[name=bh-period]')].forEach(el=>el.addEventListener('input',renderPlans));$$('[data-count-step]').forEach(b=>b.onclick=()=>{count.value=bounded(Number(count.value)+Number(b.dataset.countStep),1,20);renderPlans()});$$('[data-plan-preset]').forEach(b=>b.onclick=()=>{const v=b.dataset.planPreset.split(',');price.value=v[0];count.value=v[1];$('input[name=bh-period][value='+v[2]+']').checked=true;renderPlans()});renderPlans();
+function renderBonus(){
+ const inputs=['#bh-order-price','#bh-points','#bh-gift'].map($);if(inputs.some(e=>!e.value||!e.validity.valid)){$('#bh-bonus-receipt').innerHTML='<p>Укажи корректные суммы: заказ от 1 000 ₽, бонусы от 0, сертификат до 50 000 ₽.</p>';return}
+ const v=orderProjection(inputs[0].value,inputs[1].value,$('#bh-member').value,$('#bh-promo').checked&&welcomeActive(),inputs[2].value);
+ $('#bh-bonus-receipt').innerHTML='<span class="bh-overline">ПРИМЕР ТВОЕГО СЧЁТА</span><div class="bh-receipt-total">'+money(v.payable)+'</div><div class="bh-receipt-caption">Останется оплатить деньгами</div><dl><div><dt>Цена работы</dt><dd>'+money(v.price)+'</dd></div><div><dt>'+(v.discountSource==='promo'?'Промокод 12%':v.discountSource==='subscription'?'Скидка подписки':'Скидка')+'</dt><dd>−'+money(v.discount)+'</dd></div><div><dt>Списать бонусы</dt><dd>−'+points(v.spent)+'</dd></div>'+(v.giftUsed?'<div><dt>Оплата сертификатом</dt><dd>−'+money(v.giftUsed)+'</dd></div>':'')+'</dl><div class="bh-future"><strong>+'+points(v.cashback)+' на следующие заказы</strong><span>'+v.cashbackRate+'% с оплаченной деньгами части после полной оплаты. Использовать за 90 дней.</span></div><p class="bh-note">'+(v.pointsLeft?'Останется '+points(v.pointsLeft)+' из введённого баланса. ':'')+'Скидка + списание: '+money(v.discount+v.spent)+'. Лимит 25% соблюдён.'+($('#bh-promo').checked&&v.price<2500?' Промокод действует от 2 500 ₽.':'')+'</p><a class="bh-plan-cta" href="dashboard.html#deposit">Открыть бонусный счёт ↗</a>';
+}
+['#bh-order-price','#bh-points','#bh-gift','#bh-member','#bh-promo'].forEach(s=>$(s).addEventListener('input',renderBonus));renderBonus();
+function renderDeposit(){
+ const amount=$('#bh-deposit-amount'),used=$('#bh-deposit-used');used.max=amount.value;used.value=Math.min(Number(used.value),Number(amount.value));
+ const v=root.SalonBenefitMath.depositProjection(amount.value,used.value),rate=$('#bh-deposit-pro').checked?10:5,cashback=Math.floor(v.used*rate/100),extra=Math.max(0,v.earned-cashback);
+ $('#bh-deposit-amount-out').textContent=money(v.contribution);$('#bh-deposit-used-out').textContent=money(v.used);
+ $$('[data-deposit-preset]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.depositPreset)===v.contribution)));
+ $('#bh-deposit-receipt').innerHTML='<span class="bh-overline">ДЕНЕЖНЫЙ ОСТАТОК</span><div class="bh-receipt-total">'+money(v.balance)+'</div><div class="bh-receipt-caption">Твои деньги на следующие услуги</div><div class="bh-deposit-meter" aria-hidden="true"><span style="width:'+(v.used/v.contribution*100)+'%"></span></div><p class="bh-note">Использовано '+money(v.used)+' из '+money(v.contribution)+'</p><dl><div><dt>Резерв до '+Math.round(v.rate*100)+'%</dt><dd>'+points(v.reserve)+'</dd></div><div><dt>Расчёт по использованному</dt><dd>'+points(v.earned)+'</dd></div><div><dt>Кешбэк уже учтён</dt><dd>'+points(cashback)+'</dd></div></dl><div class="bh-future"><strong>Ещё +'+points(extra)+' по депозиту</strong><span>Условная доплата сверх кешбэка. После приёмки услуг и 14 дней. Резерв не доступен для оплаты сейчас.</span></div><a class="bh-plan-cta" href="deposit.html#deposit-calc">Перейти к депозиту ↗</a>';
+}
+['#bh-deposit-amount','#bh-deposit-used','#bh-deposit-pro'].forEach(s=>$(s).addEventListener('input',renderDeposit));$$('[data-deposit-preset]').forEach(b=>b.onclick=()=>{$('#bh-deposit-amount').value=b.dataset.depositPreset;renderDeposit()});renderDeposit();
+function refreshCampaign(){const active=welcomeActive();$('#bh-promo').disabled=!active;if(!active)$('#bh-promo').checked=false;$('#bh-copy-promo').disabled=!active;$('#bh-first-active').hidden=!active;$('#bh-first-ended').hidden=active;return active}
+refreshCampaign();document.addEventListener('visibilitychange',()=>{if(!document.hidden){refreshCampaign();renderBonus()}});
+$('#bh-copy-promo').onclick=async()=>{if(!refreshCampaign())return;try{await navigator.clipboard.writeText('ПЕРВЫЙЛИСТ');$('[data-copy-label]').textContent='Скопировано';$('#bh-copy-status').textContent='Код скопирован. Укажи его в заявке; доступность и скидку подтвердим при расчёте.'}catch(e){$('#bh-copy-status').textContent='Скопируй код вручную: ПЕРВЫЙЛИСТ. Затем укажи его в заявке.'}};
 })(typeof window!=='undefined'?window:globalThis);

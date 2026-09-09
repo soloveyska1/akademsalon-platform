@@ -79,27 +79,29 @@
     {
       "id": "practice",
       "kind": "Отчёт по практике",
-      "title": "Социально-психологический климат в трудовом коллективе",
+      "title": "Педагогическая практика: анализ занятий и собственное мероприятие",
       "product": "practice",
-      "discipline": "Психология",
-      "source_sha256": "de2cd68ac5fc86df4fed763239788c676f39f3c32ad64838c1727cd0c34045db",
-      "source_modified": "2026-07-16T11:23:58.696518",
-      "body_start_child": 32,
+      "discipline": "Педагогика",
+      "source_sha256": "1c5347bd76e436a2e44c071aed9701861d134b06b197882c46b91e61f0090743",
+      "source_modified": "2026-02-17T10:36:14.117845",
+      "body_start_child": 35,
       "redacted_paragraphs": [
+        40,
+        41,
+        42,
         43,
-        65,
-        149,
-        159,
-        160,
-        161,
-        162,
-        163
+        44,
+        50,
+        70,
+        72,
+        76,
+        158
       ],
-      "pdf_sha256": "cc1fdd3495b5cdfcd905c8920e694e673482a01dbaacefc1ce84f3fa232e8595",
+      "pdf_sha256": "06f5315f1d02407a0fc58748272ca9fe9b67de6fdd7f8ff456ef8fb14e794625",
       "pages": 18,
       "annotations": 0,
       "pdf_metadata_clean": true,
-      "text_characters": 25583
+      "text_characters": 27050
     },
     {
       "id": "project",
