@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-a4cbf79bebbb46d287d1f6f9b4f38e44",
+  "slug": "order-stages-interactive",
+  "status": "active",
+  "branch": "codex/order-stages-interactive",
+  "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/prolog-process.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/prolog-process.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/order-stages-interactive",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-a4cbf79bebbb46d287d1f6f9b4f38e44/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "prolog.html",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:prolog-tour"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
