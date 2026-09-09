@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-ea41aecae85d424d883e5044bc75af43",
   "slug": "salon-direct-orders",
-  "status": "submitted",
+  "status": "active",
   "branch": "codex/salon-direct-orders",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": "1b382d114cd4377dbcf0de078dbb9690516c1897",
+  "result_sha": null,
   "outcome_ids": [
     "OUT-006"
   ],
@@ -527,6 +527,34 @@
       {
         "path": "assets/js/salon-shell.js",
         "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-portfolio.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-portfolio.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-select.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-select.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-intake.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-intake.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-portfolio-data.js",
+        "match": "exact"
       }
     ],
     "read": []
@@ -545,6 +573,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 14,
-  "base_manifest_hash": "73b003db0528d00d3b66eb4bfe99f111067b714587ad46fd80858b4fdc0ef20b"
+  "manifest_revision": 15,
+  "base_manifest_hash": "aeb3a75cd1b8430b4e6093340340a6870c3da0f7cdf059f268b18a5051bb8445"
 }
