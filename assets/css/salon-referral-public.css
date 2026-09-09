@@ -15,3 +15,5 @@ body.salon-referral-public .rf-page .club-grid{display:grid;grid-template-column
 @media(prefers-reduced-motion:reduce){body.salon-referral-public .rf-page *{transition:none!important;scroll-behavior:auto!important}}
 
 body.salon-referral-public .rf-page .rf-terms summary::after{content:none;display:none}
+/* The helper remains available after the page, without covering reward terms or invitation actions. */
+body.salon-referral-public>.sa-launch{position:relative;inset:auto;display:flex;width:max-content;max-width:calc(100% - 40px);margin:0 auto 32px;transform:none}
