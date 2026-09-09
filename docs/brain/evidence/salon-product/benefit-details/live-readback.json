@@ -1,0 +1,37 @@
+[
+  {
+    "route": "plus",
+    "status": 200,
+    "modern": true,
+    "h1": "Салон+.Больше для твоей учёбы."
+  },
+  {
+    "route": "deposit",
+    "status": 200,
+    "modern": true,
+    "h1": "Твоя учёба.Твой запас."
+  },
+  {
+    "route": "referral",
+    "status": 200,
+    "modern": true,
+    "h1": "Хорошим делятся.За это — 200 бонусов."
+  },
+  {
+    "route": "gift",
+    "status": 200,
+    "modern": true,
+    "h1": "Подари немногоспокойствия."
+  },
+  {
+    "route": "loyalty",
+    "status": 200,
+    "modern": true,
+    "h1": "Правила программы лояльности «Академический Салон»"
+  },
+  {
+    "route": "css",
+    "status": 200,
+    "exact_source": true
+  }
+]

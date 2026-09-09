@@ -1,0 +1,34 @@
+{
+  "site": "https://akademsalon-desktop-preview.saymoon.chatgpt.site/samples",
+  "version": 51,
+  "source": "cb235b8b136ef5110841785d9eb8dae7639a7ccb",
+  "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_34a6dd67623c81919ee1838ac3b29227",
+  "deployment_id": "appgdep_6aa0dfb3bd388191bc52c7f6d24b60b7",
+  "status": "succeeded",
+  "updated_at": "2026-09-09T04:25:33.139803+00:00",
+  "archive_local_sha256": "c1d3be39199522256d32bf774ce51184b5cf390cd39f423f04722a5d51e1b761",
+  "archive_storage_sha256": "sha256:3529ed64bc3e709ba1f9979ceb4974074e97857982006d6facb77a9b91803b8b",
+  "access": {
+    "mode": "custom",
+    "allowed_users": 1,
+    "external_visitors": 0,
+    "workspace_groups": 0,
+    "tenant_groups": 0,
+    "current_user_role": "owner"
+  },
+  "rollback_version": 50,
+  "rollback_version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_a8c81d2395788191b9b7ca4f32352fc5",
+  "rollback": "retained saved version independently read; not exercised",
+  "readback": [
+    "Existing in-app tab /samples shows seven types and selected real 51-page coursework.",
+    "PDF loads real canvas and text layer; introduction quick jump opens page2.",
+    "Fulltext query returns three matching pages and navigates to page8.",
+    "Need part CTA reaches configurator?product=course&sample=method&sampleScope=part, with finite sample reference and part scope, empty task/contact fields.",
+    "No real submission. Existing browser tabs returned to permanent private /samples."
+  ],
+  "cleanup": [
+    "Owned local live8768 PID31532 and raw8769 PID31543 stopped.",
+    "Owned salon-portfolio test browser closed; isolated contexts closed after each run."
+  ],
+  "public_akademsalon": "unchanged"
+}

@@ -1,0 +1,197 @@
+{
+  "states": [
+    {
+      "path": "/priyomnaya.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "heading": "Давай разберёмся.",
+      "nav": "Задать вопрос",
+      "form": true,
+      "supportLoaded": true
+    },
+    {
+      "path": "/priyomnaya.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "heading": "Давай разберёмся.",
+      "nav": "Задать вопрос",
+      "form": true,
+      "supportLoaded": true
+    },
+    {
+      "path": "/guarantees.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "heading": "Всё важное.\nДо начала.",
+      "nav": "Условия и гарантии",
+      "form": false,
+      "supportLoaded": true
+    },
+    {
+      "path": "/guarantees.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "heading": "Всё важное.\nДо начала.",
+      "nav": "Условия и гарантии",
+      "form": false,
+      "supportLoaded": true
+    },
+    {
+      "path": "/oplata.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "heading": "Видишь состав.\nПонимаешь сумму.",
+      "nav": "Оплата и этапы",
+      "form": false,
+      "supportLoaded": true
+    },
+    {
+      "path": "/oplata.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "heading": "Видишь состав.\nПонимаешь сумму.",
+      "nav": "Оплата и этапы",
+      "form": false,
+      "supportLoaded": true
+    },
+    {
+      "path": "/priyomnaya.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "heading": "Давай разберёмся.",
+      "nav": "Задать вопрос",
+      "form": true,
+      "supportLoaded": true
+    },
+    {
+      "path": "/priyomnaya.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "heading": "Давай разберёмся.",
+      "nav": "Задать вопрос",
+      "form": true,
+      "supportLoaded": true
+    },
+    {
+      "path": "/guarantees.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "heading": "Всё важное.\nДо начала.",
+      "nav": "Условия и гарантии",
+      "form": false,
+      "supportLoaded": true
+    },
+    {
+      "path": "/guarantees.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "heading": "Всё важное.\nДо начала.",
+      "nav": "Условия и гарантии",
+      "form": false,
+      "supportLoaded": true
+    },
+    {
+      "path": "/oplata.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "heading": "Видишь состав.\nПонимаешь сумму.",
+      "nav": "Оплата и этапы",
+      "form": false,
+      "supportLoaded": true
+    },
+    {
+      "path": "/oplata.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "heading": "Видишь состав.\nПонимаешь сумму.",
+      "nav": "Оплата и этапы",
+      "form": false,
+      "supportLoaded": true
+    },
+    {
+      "path": "/priyomnaya.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "heading": "Давай разберёмся.",
+      "nav": "Задать вопрос",
+      "form": true,
+      "supportLoaded": true
+    },
+    {
+      "path": "/priyomnaya.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "heading": "Давай разберёмся.",
+      "nav": "Задать вопрос",
+      "form": true,
+      "supportLoaded": true
+    },
+    {
+      "path": "/guarantees.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "heading": "Всё важное.\nДо начала.",
+      "nav": "Условия и гарантии",
+      "form": false,
+      "supportLoaded": true
+    },
+    {
+      "path": "/guarantees.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "heading": "Всё важное.\nДо начала.",
+      "nav": "Условия и гарантии",
+      "form": false,
+      "supportLoaded": true
+    },
+    {
+      "path": "/oplata.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "heading": "Видишь состав.\nПонимаешь сумму.",
+      "nav": "Оплата и этапы",
+      "form": false,
+      "supportLoaded": true
+    },
+    {
+      "path": "/oplata.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "heading": "Видишь состав.\nПонимаешь сумму.",
+      "nav": "Оплата и этапы",
+      "form": false,
+      "supportLoaded": true
+    }
+  ],
+  "halves": [
+    "22 500 ₽",
+    "22 501 ₽"
+  ],
+  "confirmedCopy": true,
+  "returnLink": "refunds.html",
+  "express": true,
+  "homeVisible": true,
+  "homeWorks": true,
+  "errors": [],
+  "blocked": [],
+  "actualFinancialMutations": 0,
+  "actualLeadMutations": 0
+}

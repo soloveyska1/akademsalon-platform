@@ -1,0 +1,198 @@
+{
+  "decision": "GO",
+  "findings": [],
+  "scope": "CSS cascade contract review, no browser screenshot acceptance implied",
+  "head": "55fafbec04be110b5e98147f9befb22b499223a5",
+  "css_sha256": "16fc0cd80c1cd38c579cca1ceba94ff786a2f9ae0ae9990f61436259cd7d9b48",
+  "tests": [
+    {
+      "case": "exact three property additions only",
+      "pass": true
+    },
+    {
+      "case": "only CSS dirty",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "referat.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "referat.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html loads override after global",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html HTML unchanged",
+      "pass": true
+    },
+    {
+      "case": "exact sixteen entry pages",
+      "pass": true
+    },
+    {
+      "case": "selector does not match normal configurator",
+      "pass": true
+    },
+    {
+      "case": "no JS activation visibility change",
+      "pass": true
+    },
+    {
+      "case": "new reset all themes/media",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-experience.js behavior unchanged",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-order.js behavior unchanged",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-commerce.js behavior unchanged",
+      "pass": true
+    },
+    {
+      "case": "assets/js/app.js behavior unchanged",
+      "pass": true
+    }
+  ],
+  "passed": 42,
+  "pages": [
+    "diplomnaya-po-ekonomike.html",
+    "diplomnaya-po-psihologii.html",
+    "diplomnaya-po-yurisprudencii.html",
+    "diplomnaya-rabota.html",
+    "kandidatskaya-dissertaciya.html",
+    "kursovaya-po-ekonomike.html",
+    "kursovaya-po-informatike.html",
+    "kursovaya-po-menedzhmentu.html",
+    "kursovaya-po-pedagogike.html",
+    "kursovaya-po-psihologii.html",
+    "kursovaya-po-yurisprudencii.html",
+    "kursovaya-rabota.html",
+    "magisterskaya-dissertaciya.html",
+    "nauchnaya-statya.html",
+    "otchet-po-praktike.html",
+    "referat.html"
+  ],
+  "cascade": "Scoped selectors (0,1,1) override global fieldset/legend (0,0,1), including the mobile18px/global20px radius; transparent follows light/dark parent. No focus, sizing, checked state, display, JS, scope, price, submit or ordinary-form declarations changed.",
+  "reproducer": "/tmp/salon-fieldset-contract.py"
+}

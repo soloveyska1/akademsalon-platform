@@ -1,0 +1,39 @@
+{
+  "base": "f27a2f10197364e3b545572d3632cb53a0ee28e0",
+  "scope_commit": "2f5b4094a512f9aba263f113153f6cfd68978320",
+  "timestamp": "2026-09-09T17:57:08.075925+00:00",
+  "browser": "Chromium via playwright-cli",
+  "data": "anonymous fixture, API mocked, no order/payment submits",
+  "root_matrix": {
+    "states": 50,
+    "widths": [
+      320,
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "expected": "no viewport/header clipping,3demo panels2hidden,CTA>=44",
+    "actual": "PASS50/50 after svx namespace isolation"
+  },
+  "legacy_tests": {
+    "pass": 11,
+    "fail": 2,
+    "cause": "unchanged old dashboard assertions in salon-experience.test.js; tests and dashboard byte-identical to base",
+    "mandatory_public_gate": "run against frozen production overlay"
+  },
+  "external_network": "intermittent local SSL/SSH handshake timeouts; health11901s confirmedok uploads0, active191 and3servicesactive; no networkchanges",
+  "final_source_hashes": {
+    "assets/js/salon-experience.js": "987c0fa6d5a080249b23c5b818e6396f4d7daec74a66594b64f89b94aba71930",
+    "assets/css/salon-experience.css": "58235791f6d587f36aa3f9c9655b0b6855dba772c01fc93346d67c228e1dd24a",
+    "normokontrol-vkr.html": "0011eb80fff2416dd0ca3af1dccc66f824166e50ae29b6a4ebf5fd055538fa8a",
+    "plan.html": "d06e7d4de91e8bcd7fc3f4f7ace1c8bb7cb9f49fb25b4b56771807428141cd25",
+    "redaktura-posle-ii.html": "8e6c62f250b93223c2443975c8f7f7685f6cb4805ff45a0829e57c5cfca5cd49",
+    "razbor-zamechaniy-nauchruka.html": "4ceb52a898545a92bfeee9174c9a11eb6f8290b67acff1dbed53e8dac91205e1",
+    "dorabotka-otcheta-po-praktike.html": "19d48f9fb41edf507b91c681c000bfb4121165cea1768afcf23cedb538fbd598"
+  }
+}

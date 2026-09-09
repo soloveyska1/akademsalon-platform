@@ -1,0 +1,19 @@
+### Result
+{"back":true,"milestoneCreateDelete":true,"icsEvents":6,"icsPrivate":true,"giftDownload":true,"giftFocus":true,"lateResponseIgnored":true,"errors":[]}
+### Ran Playwright code
+```js
+await (async initial=>{const context=await initial.context().browser().newContext({serviceWorkers:'block'});const page=await context.newPage();try{await page.route('**/*',r=>{const u=r.request().url();if(u.includes('akademsalon.ru/api/'))return r.fulfill({json:{ok:true,authenticated:false,orders:[]}});if(!u.startsWith('http://127.0.0.1:8769/'))return r.abort();if(/\/sw\.js(?:\?|$)/.test(u))return r.fulfill({body:'',contentType:'application/javascript'});return r.continue()});return await (async page=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce',colorScheme:'light'});
+ await page.goto('http://127.0.0.1:8769/dashboard.html?demo=alexey#home');await page.waitForSelector('.desk-quick');const cookie=page.getByRole('button',{name:'Только необходимое',exact:true});if(await cookie.count())await cookie.click();
+ await page.locator('[data-now-open="701"]').first().click();await page.waitForSelector('.case-sec');await page.goBack();await page.waitForSelector('.desk-quick');
+ await page.evaluate(()=>location.hash='calendar');await page.waitForSelector('[data-calendar-export]');
+ await page.locator('#curatorAdd summary').click();await page.locator('#msTitle').fill('Проверка календаря');const date=await page.evaluate(()=>{var d=new Date();d.setDate(d.getDate()+4);return d.toISOString().slice(0,10)});await page.locator('#msDate').fill(date);await page.locator('#msAdd').click();await page.getByRole('button',{name:'Убрать дату: Проверка календаря'}).waitFor();
+ const downloadPromise=page.waitForEvent('download');await page.locator('[data-calendar-export]').click();const download=await downloadPromise;const stream=await download.createReadStream();let ics='';for await(const chunk of stream)ics+=chunk.toString('utf8');if(ics.includes('Проверка календаря')||!ics.includes('VALARM'))throw Error('ICS privacy/reminder failed');
+ await page.getByRole('button',{name:'Убрать дату: Проверка календаря'}).click();await page.getByRole('button',{name:'Убрать дату: Проверка календаря'}).waitFor({state:'detached'});
+ await page.evaluate(()=>location.hash='community');await page.locator('[data-community-check=salon]:enabled').waitFor();await page.locator('[data-community-check=salon]').click();await page.locator('[data-community-download=salon]').waitFor();const focus=await page.evaluate(()=>document.activeElement?.getAttribute('data-community-download'));if(focus!=='salon')throw Error('gift focus missing');
+ const giftPromise=page.waitForEvent('download');await page.locator('[data-community-download=salon]').click();const gift=await giftPromise;if(!gift.suggestedFilename().endsWith('.html'))throw Error('gift file missing');
+ await page.reload();await page.locator('[data-community-check=salon]:enabled').waitFor();await page.evaluate(()=>{const api=window.Salon.api,old=api.post;api.post=(path,body)=>path==='/community/claim'?new Promise(resolve=>{window.resolveLateGift=resolve}):old(path,body)});await page.locator('[data-community-check=salon]').click();await page.evaluate(()=>{window.Salon.api.user=()=>({id:'different-user'});window.resolveLateGift({ok:true,enabled:true,linked:true,channels:{salon:{granted:true}}});location.hash='home'});await page.waitForSelector('.desk-quick');await page.evaluate(()=>location.hash='community');await page.locator('.desk-gift-grid').waitFor();if(await page.locator('[data-community-download=salon]').count())throw Error('stale gift crossed identities');
+ return {back:true,milestoneCreateDelete:true,icsEvents:(ics.match(/BEGIN:VEVENT/g)||[]).length,icsPrivate:true,giftDownload:true,giftFocus:true,lateResponseIgnored:true,errors};
+}
+)(page)}finally{await context.close()}})(page);
+```

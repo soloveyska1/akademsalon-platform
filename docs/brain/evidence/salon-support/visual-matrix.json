@@ -1,0 +1,1142 @@
+[
+  {
+    "width": 320,
+    "theme": "light",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 250
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 298
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 250
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 298
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 250
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 298
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 250
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 298
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 250
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 298
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 250
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 298
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 360,
+    "theme": "light",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 290
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 338
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 360,
+    "theme": "light",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 290
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 338
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 360,
+    "theme": "light",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 290
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 338
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 360,
+    "theme": "dark",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 290
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 338
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 360,
+    "theme": "dark",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 290
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 338
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 360,
+    "theme": "dark",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 57.3125,
+        "h": 44,
+        "right": 290
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 338
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 65.4375,
+        "h": 44,
+        "right": 315
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 365
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 65.4375,
+        "h": 44,
+        "right": 315
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 365
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 65.4375,
+        "h": 44,
+        "right": 315
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 365
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 65.4375,
+        "h": 44,
+        "right": 315
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 365
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 65.4375,
+        "h": 44,
+        "right": 315
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 365
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Личный кабинет",
+        "w": 65.4375,
+        "h": 44,
+        "right": 315
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 365
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 515.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 565.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 673
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 723
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 515.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 565.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 673
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 723
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 515.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 565.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 673
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 723
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 515.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 565.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 673
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 723
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 515.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 565.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 673
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 723
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 515.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 565.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 673
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 723
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1024,
+    "theme": "light",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 771.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 821.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 929
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 979
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1024,
+    "theme": "light",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 771.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 821.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 929
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 979
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1024,
+    "theme": "light",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 771.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 821.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 929
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 979
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1024,
+    "theme": "dark",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 771.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 821.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 929
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 979
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1024,
+    "theme": "dark",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 771.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 821.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 929
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 979
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1024,
+    "theme": "dark",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 771.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 821.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 929
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 979
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 1121.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 1171.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 1279
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 1329
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 1121.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 1171.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 1279
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 1329
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 1121.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 1171.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 1279
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 1329
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "path": "priyomnaya.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 1121.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 1171.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 1279
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 1329
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "path": "guarantees.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 1121.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 1171.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 1279
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 1329
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "path": "oplata.html",
+    "overflow": 0,
+    "header": [
+      {
+        "label": "Найти по сайту",
+        "w": 44,
+        "h": 44,
+        "right": 1121.4375
+      },
+      {
+        "label": "Переключить тему",
+        "w": 44,
+        "h": 44,
+        "right": 1171.4375
+      },
+      {
+        "label": "Личный кабинет",
+        "w": 101.5625,
+        "h": 44,
+        "right": 1279
+      },
+      {
+        "label": "Открыть меню",
+        "w": 44,
+        "h": 44,
+        "right": 1329
+      }
+    ],
+    "faq": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  }
+]

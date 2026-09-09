@@ -1,0 +1,36 @@
+{
+  "browser": "152.0.7977.84",
+  "serviceWorkers": "block",
+  "result": [
+    {
+      "case": "animation completed after scroll",
+      "header": 78,
+      "cta": {
+        "x": 45,
+        "y": -57.765625,
+        "width": 300,
+        "height": 54,
+        "top": -57.765625,
+        "right": 345,
+        "bottom": -3.765625,
+        "left": 45
+      },
+      "hidden": false
+    },
+    {
+      "case": "CTA fully obscured by sticky header, dock shown",
+      "header": 78,
+      "cta": {
+        "x": 45,
+        "y": 16.234375,
+        "width": 300,
+        "height": 54,
+        "top": 16.234375,
+        "right": 345,
+        "bottom": 70.234375,
+        "left": 45
+      },
+      "hidden": false
+    }
+  ]
+}

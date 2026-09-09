@@ -1,0 +1,58 @@
+{
+  "timestamp_utc": "2026-09-09T05:54:32.947267+00:00",
+  "source_commit": "e688b85e6ea4b98644236bf38166e341f004267a",
+  "private_preview": {
+    "version": 53,
+    "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_6a39c3bb32a88191976bc5bc24a229dc",
+    "deployment_id": "appgdep_6aa0f3ce30e88191ad35efc6c4203b37",
+    "url": "https://akademsalon-desktop-preview.saymoon.chatgpt.site",
+    "status": "succeeded",
+    "access": "sole owner, revision1, no groups or external viewers",
+    "archive_sha256": "1fb60a995fec9d890f270556fe5bb43cc168b549df91a7fc8a905431232565fd",
+    "rollback_version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_b8bb7f7a12b481918e8f4e9ed80b4455",
+    "rollback_exercised": false,
+    "live_readback": [
+      "home counters and next action",
+      "calendar dates and ICS affordance",
+      "mobile More navigation",
+      "community both channels",
+      "demo Kladovaya claim changes 0/2 to 1/2 and focuses download"
+    ]
+  },
+  "backend": {
+    "service": "salon-bot-v2.service",
+    "before_sha256": "a208a0cd37cfbd511e279553bb0b60b0b673e109607c8c8114cf68e44d91772e",
+    "after_sha256": "7b87b6a921df199aed74f1f288baa0c056cf6cbb68a234d130dd0c46278fc522",
+    "module_sha256": "8ddd274aababe381fd7b37593cf9f16aff127b3ab88efc73c5ed2e7915f2fd9a",
+    "initial_backup": "/root/salon_bot/backups/community-gifts-20260909T054824117511Z",
+    "forward_backup": "/root/salon_bot/backups/community-gifts-20260909T055010054733Z",
+    "rollback_exercised": true,
+    "database_restored": false,
+    "final_pid": 25399,
+    "active": true,
+    "restarts": 0,
+    "journal_errors": 0,
+    "store_mode": "0600",
+    "smoke": {
+      "health": 200,
+      "features_flag": true,
+      "guest_overview": 401,
+      "guest_download_both": 401,
+      "guest_claim": 401,
+      "invalid_cookie_no_csrf_claim": 403
+    },
+    "rollback_smoke": {
+      "health": 200,
+      "features_flag_absent": true,
+      "community_GET": 405,
+      "note": "existing fallback returns method-not-allowed for absent route, not404"
+    },
+    "telegram_both_bot_admin": true,
+    "real_customer_claim_performed": false
+  },
+  "limits": [
+    "Public frontend not deployed; earlier canonical release gates unchanged",
+    "Private preview is explicit synthetic demo",
+    "Real customer grant not executed; membership API rights verified, authenticated grants covered by isolated tests"
+  ]
+}

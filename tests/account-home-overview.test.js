@@ -50,19 +50,18 @@ function renderNowCard(orders) {
   return context.output;
 }
 
-test('overview has one priority area paired with a short agenda', () => {
-  assert.match(cabinet, /class="account-home-focus' \+ \(agenda \? '' : ' is-single'\)/);
-  assert.match(cabinet, /class="account-home-focus__primary"/);
-  assert.match(cabinet, /class="account-home-focus__agenda" aria-label="Ближайшие даты"/);
-  assert.match(cabinet, /rows\.slice\(0, 4\)/);
-  assert.match(accountCss, /\.account-home-focus\s*\{[\s\S]*?align-items:\s*stretch/);
-  assert.match(accountCss, /\.account-home-focus__agenda \.account-dates > header\s*\{[\s\S]*?display:\s*grid/);
+test('overview pairs one action lane with a short agenda and order register', () => {
+  assert.match(cabinet, /class="desk-priority"/);
+  assert.match(cabinet, /class="desk-home-grid"/);
+  assert.match(cabinet, /class="desk-home-aside"/);
+  assert.match(cabinet, /rows\.slice\(0, 3\)/);
+  assert.match(cabinet, /data-tab="calendar"/);
 });
 
 test('overview has an honest calm state when no client action is pending', () => {
   assert.match(cabinet, /account-priority--calm/);
-  assert.match(cabinet, /От вас ничего срочного не требуется/);
-  assert.match(cabinet, /Изменение статуса, новый файл или счёт появятся здесь первыми/);
+  assert.match(cabinet, /Всё идёт своим чередом/);
+  assert.match(cabinet, /Если понадобится твоё решение, оно появится здесь/);
   assert.doesNotMatch(cabinet, /Мастерская продолжает работу\. Новое решение/);
   assert.match(cabinet, /data-account-priority="0"/);
   assert.match(accountCss, /\.account-priority--calm\s*\{[\s\S]*?box-shadow:\s*inset 3px 0 0 var\(--green\)/);
@@ -128,22 +127,13 @@ test('zero-like and negative counters are not new files or messages', () => {
   assert.equal(renderNowCard([cabinetOrder(32, { files_new: -1, unread: -1, days: 1 })]), '');
 });
 
-test('overview ends with exactly three useful destinations instead of a card stack', () => {
-  const start = cabinet.indexOf('function homeTab()');
-  const end = cabinet.indexOf('function loginNudge', start);
-  const source = cabinet.slice(start, end);
-  assert.match(source, /class="account-home-tools reveal"/);
-  assert.match(source, /data-tab="messages"/);
-  assert.match(source, /data-tab="documents"/);
-  assert.match(source, /data-tab="wallet"/);
-  assert.doesNotMatch(source, /account-command-grid/);
-  assert.doesNotMatch(source, /data-contact="1"/);
-  assert.match(source, /accountIcon\('messages'\)/);
-  assert.match(source, /accountIcon\('documents'\)/);
-  assert.match(source, /accountIcon\('wallet'\)/);
-  assert.doesNotMatch(source, /<span aria-hidden="true">(?:¶|PDF|₽)<\/span><div>/);
-  assert.match(accountCss, /\.account-home-tools\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3/);
-  assert.match(accountCss, /\.account-home-tools > button > span svg\s*\{[\s\S]*?stroke:\s*currentColor/);
+test('overview has compact direct shortcuts and an optional gift shelf', () => {
+  const source=cabinet.slice(cabinet.indexOf('function homeTab()'),cabinet.indexOf('function loginNudge'));
+  assert.match(source,/class="desk-quick"/);
+  for(const destination of ['orders','messages','documents','community'])assert.ok(source.includes('data-tab="'+destination+'"'));
+  assert.doesNotMatch(source,/account-command-grid/);
+  assert.doesNotMatch(source,/data-contact="1"/);
+  assert.match(source,/nowCard\(\)/);
 });
 
 test('dark luminous materials keep saved drafts on the same surface as live cases', () => {

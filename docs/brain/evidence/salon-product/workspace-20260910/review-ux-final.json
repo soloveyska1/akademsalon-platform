@@ -1,0 +1,356 @@
+{
+  "decision": "GO",
+  "findings": [],
+  "resolved": [
+    "P1documentsresults nestedinflex dueunclosedtoolbar; correctedfullwidth1132px andnormalrows freshbrowser",
+    "P2desktoporderfilter34px corrected44px",
+    "P2deeplink selectedmoneytab clippedat390; now centeredinsidetabs"
+  ],
+  "checks": {
+    "matrix32": [
+      {
+        "hash": "home",
+        "theme": "light",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "home",
+        "theme": "dark",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "home",
+        "theme": "light",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "home",
+        "theme": "dark",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "orders",
+        "theme": "light",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "orders",
+        "theme": "dark",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "orders",
+        "theme": "light",
+        "width": 1440,
+        "overflow": 0,
+        "small": [
+          {
+            "text": "В работе",
+            "h": 34
+          },
+          {
+            "text": "Все",
+            "h": 34
+          },
+          {
+            "text": "Архив",
+            "h": 34
+          }
+        ],
+        "error": false
+      },
+      {
+        "hash": "orders",
+        "theme": "dark",
+        "width": 1440,
+        "overflow": 0,
+        "small": [
+          {
+            "text": "В работе",
+            "h": 34
+          },
+          {
+            "text": "Все",
+            "h": 34
+          },
+          {
+            "text": "Архив",
+            "h": 34
+          }
+        ],
+        "error": false
+      },
+      {
+        "hash": "order-701-work",
+        "theme": "light",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-work",
+        "theme": "dark",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-work",
+        "theme": "light",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-work",
+        "theme": "dark",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-chat",
+        "theme": "light",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-chat",
+        "theme": "dark",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-chat",
+        "theme": "light",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-chat",
+        "theme": "dark",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-files",
+        "theme": "light",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-files",
+        "theme": "dark",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-files",
+        "theme": "light",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-files",
+        "theme": "dark",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-money",
+        "theme": "light",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-money",
+        "theme": "dark",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-money",
+        "theme": "light",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "order-701-money",
+        "theme": "dark",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "documents",
+        "theme": "light",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "documents",
+        "theme": "dark",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "documents",
+        "theme": "light",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "documents",
+        "theme": "dark",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "messages",
+        "theme": "light",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "messages",
+        "theme": "dark",
+        "width": 390,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "messages",
+        "theme": "light",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      },
+      {
+        "hash": "messages",
+        "theme": "dark",
+        "width": 1440,
+        "overflow": 0,
+        "small": [],
+        "error": false
+      }
+    ],
+    "docsInteraction": {
+      "filters": [
+        {
+          "key": "master",
+          "rows": 5
+        },
+        {
+          "key": "client",
+          "rows": 4
+        },
+        {
+          "key": "new",
+          "rows": 3
+        },
+        {
+          "key": "all",
+          "rows": 9
+        }
+      ],
+      "empty": "По этому запросу файлов нет\n\nПопробуй другое название или выбери «Все».\n\nСбросить фильтры",
+      "download": "В демонстрации скачивание отключено.",
+      "dest": {
+        "hash": "#order-684-files",
+        "title": "ВКР по экономике"
+      }
+    },
+    "finalDelta": {
+      "active": {
+        "x": 180.1875,
+        "y": 334.3125,
+        "width": 117.890625,
+        "height": 44
+      },
+      "tabs": {
+        "x": 18,
+        "y": 328.3125,
+        "width": 354,
+        "height": 56
+      },
+      "filters": [
+        44,
+        44,
+        44
+      ]
+    },
+    "draft": "701 chat draft retained afterfiles→chat",
+    "More": "MobileMore containsdocuments/calendar/benefits/messages/profile/help;Escape returnsfocus",
+    "shortKeyboard": "390x420textarea focus hidesdock, zerooverflow, Tab toattachfile fullyvisible",
+    "limitations": "Synthetic localdemoonly;external/nonGETblocked; no actualpayment/auth/production test"
+  },
+  "evidence": [
+    "/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/docs/brain/evidence/salon-product/workspace-20260910/review-ux-1-new-workspace-home-390-dark.png",
+    "/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/docs/brain/evidence/salon-product/workspace-20260910/review-ux-2-new-workspace-order-701-chat-1440-light.png",
+    "/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/docs/brain/evidence/salon-product/workspace-20260910/review-ux-3-new-workspace-docs-fresh1440.png",
+    "/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/docs/brain/evidence/salon-product/workspace-20260910/review-ux-4-new-workspace-docs-fresh390dark.png",
+    "/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/docs/brain/evidence/salon-product/workspace-20260910/review-ux-5-new-workspace-money-tab-final390.png"
+  ],
+  "hashes": {
+    "dashboard.html": "4960c80d24d9d2b849cdc1e01486d1ef81b8143a99ff69203ae8f4eeead29f1f",
+    "assets/js/salon-workspace.js": "193625459d9c6d6cd8e42771e34061ff8cc5d72b1e32fe9886501784a77fd406",
+    "assets/css/salon-workspace.css": "5046fa30d610f8b722b951a2f0cb7a3eaa008acf49ade5ba7f594c388d67e8c1"
+  }
+}

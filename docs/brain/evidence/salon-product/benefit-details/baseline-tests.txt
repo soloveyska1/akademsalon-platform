@@ -1,0 +1,80 @@
+TAP version 13
+# Subtest: вспомогательные маршруты используют один изолированный финальный слой
+not ok 1 - вспомогательные маршруты используют один изолированный финальный слой
+  ---
+  duration_ms: 0.506666
+  type: 'test'
+  location: '/private/tmp/salon-original-supporting.test.js:24:1'
+  failureType: 'testCodeFailure'
+  error: 'about.html'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="referrer" content="no-referrer"><link rel="manifest" href="/manifest.webmanifest?v=20260806shell123"><meta name="apple-mobile-web-app-capable" content="yes"><link rel="apple-touch-icon" href="assets/img/icon-192.png"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>О мастерской | Академический Салон</title><meta name="description" content="Академический Салон: предметное понимание, методология, работа с источниками и редактура."><meta name="theme-color" content="#f5f3ed"><link rel="canonical" href="https://akademsalon.ru/about.html"><link rel="icon" href="assets/img/favicon.svg"><link rel="stylesheet" href="assets/fonts/fonts.css"><link rel="stylesheet" href="assets/css/salon-direct.css?v=20260909direct1" data-mobile-edition="1"><script>try{if(localStorage.getItem('salon_theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script><link rel="stylesheet" href="assets/css/salon-experience.css?v=20260909home3"><meta name="apple-mobile-web-app-title" content="Академсалон"></head><body class="salon-experience salon-direct concept-shell"><a class="skip-link" href="#main">К содержанию</a><div class="family-strip"><a href="https://studkladovaya.ru" target="_blank" rel="noopener">От создателя Кладовой ГИПСР <span aria-hidden="true">↗</span></a><span>Работы, исследования и помощь с учёбой</span></div><header class="site-header direct-header"><a class="brand" href="/" aria-label="Академический Салон — главная"><span class="brand-mark" aria-hidden="true">а.</span><span>Академический<br>Салон<span class="brand-caption">МАСТЕРСКАЯ УЧЕБНЫХ РАБОТ</span></span></a><nav class="desktop-nav" aria-label="Основная навигация"><a href="services.html" >Работы и цены</a><a href="samples.html">Примеры</a><a href="benefits.html">Выгоды</a></nav><div class="header-actions"><button type="button" class="search-button" aria-label="Найти по сайту" title="Найти по сайту">⌕</button><button type="button" class="theme-button" aria-label="Переключить тему" title="Переключить тему">◐</button><a class="cabinet-link" href="dashboard.html">Кабинет</a><a class="button small" href="configurator.html">Заказать <span aria-hidden="true">↗</span></a><button type="button" class="menu-button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">☰</button></div></header><nav id="mobile-menu" class="mobile-menu" aria-label="Мобильная навигация" hidden><a href="services.html">Работы и цены</a><a href="prolog.html">Как всё устроено</a><a href="samples.html">Примеры работ</a><a href="benefits.html">Выгоды и бонусы</a><a href="knowledge.html">Библиотека</a><a href="reviews.html">Отзывы</a><a href="priyomnaya.html">Связаться</a><a href="dashboard.html">Личный кабинет</a></nav><main id="main"><section class="page-intro"><span class="eyebrow">АКАДЕМИЧЕСКИЙ САЛОН</span><h1>Работы, в которых<br><em>всё связано.</em></h1><p>Соединяем предметное понимание, исследовательскую методологию, работу с данными и редактуру. Помогаем превратить задачу в согласованный результат.</p></section><section class="sample-section"><div><span class="eyebrow">НАШ ПОДХОД</span><h2>От вопроса<br><em>к обоснованному выводу.</em></h2></div><div><p>Проверяем, согласованы ли цель и задачи, отвечает ли метод вопросу исследования, следуют ли выводы из данных. Объём текста сам по себе этого не заменяет.</p><p>Для сложной задачи отдельно определяем необходимую экспертизу и границы работы. Клиент участвует в содержательных решениях и утверждает итоговую версию.</p></div></section><section class="section price-explainer"><h2>Два продукта.<br><em>Один подход к учёбе.</em></h2><div><p>Кладовая ГИПСР помогает с расписанием, материалами и правилами института. Академический Салон занимается индивидуальными заданиями, текстами и исследованиями.</p><a class="text-link" href="https://studkladovaya.ru" target="_blank" rel="noopener">Перейти в Кладовую ↗</a><br><a class="text-link" href="reviews.html">Посмотреть отзывы ↗</a> · <a class="text-link" href="requisites.html">Реквизиты ↗</a></div></section><section class="closing"><span class="eyebrow">НАЧНЁМ С ЗАДАНИЯ</span><h2>Теперь <em>ваша очередь.</em></h2><p>Расскажите, что нужно получить и когда. Смету согласуем до оплаты.</p><a class="button large" href="configurator.html">Заказать работу ↗</a></section></main><footer class="site-footer direct-footer"><div class="footer-main"><a class="brand" href="/"><span class="brand-mark">а.</span><span>Академический<br>Салон</span></a><p>Большая работа начинается<br>с понятной договорённости.</p><a class="family-link" href="https://studkladovaya.ru" target="_blank" rel="noopener"><span class="small-label">ЕЩЁ ОДИН НАШ ПРОЕКТ</span><strong>Кладовая ГИПСР ↗</strong><span>Расписание, материалы и жизнь института</span></a></div><div class="footer-links"><a href="benefits.html">Выгоды</a><a href="samples.html">Примеры</a><a href="knowledge.html">Библиотека</a><a href="prolog.html">Как это работает</a><a href="oferta.html">Оферта</a><a href="privacy.html">Конфиденциальность</a><a href="guarantees.html">Гарантии</a><a href="refunds.html">Возврат</a><a href="requisites.html">Реквизиты</a><a href="priyomnaya.html">Связаться</a></div><p class="footer-note">Работаем по согласованному заданию. Вы участвуете в содержательных решениях и проверяете результат. Условия, состав, цена и срок фиксируются до оплаты.</p></footer><div class="mobile-cta" hidden></div><script src="assets/js/configurator-nav-guard.js?v=20260829nav2"></script><script src="assets/js/app.js?v=20260806services115&amp;privacy=20260803out006privacy1&amp;naming=20260804naming1&amp;ask=20260804ask1&amp;experience=20260909product1"></script><script src="assets/js/analytics-attribution-v2.js?v=20260829analytics4"></script><script src="assets/js/analytics-v2.js?v=20260829analytics4"></script><script src="assets/js/salon-products.js?v=20260909direct1"></script><script src="assets/js/salon-direct.js?v=20260909direct1"></script><script src="assets/js/salon-experience.js?v=20260909home3"></script></body></html>`
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (/private/tmp/salon-original-supporting.test.js:26:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: старые публичные композиции не попали в финальные страницы
+ok 2 - старые публичные композиции не попали в финальные страницы
+  ---
+  duration_ms: 0.296875
+  type: 'test'
+  ...
+# Subtest: приёмная сохраняет рабочий API и Telegram-маршрут без публичного журнала
+ok 3 - приёмная сохраняет рабочий API и Telegram-маршрут без публичного журнала
+  ---
+  duration_ms: 0.09525
+  type: 'test'
+  ...
+# Subtest: книга благодарностей содержит весь исходный архив и доступный просмотр
+not ok 4 - книга благодарностей содержит весь исходный архив и доступный просмотр
+  ---
+  duration_ms: 0.34525
+  type: 'test'
+  location: '/private/tmp/salon-original-supporting.test.js:52:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 48
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 48
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/private/tmp/salon-original-supporting.test.js:56:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: денежные экраны оставляют расчёты и выпуск в рабочем слое
+ok 5 - денежные экраны оставляют расчёты и выпуск в рабочем слое
+  ---
+  duration_ms: 0.17
+  type: 'test'
+  ...
+# Subtest: общий интерактивный файл синтаксически валиден
+ok 6 - общий интерактивный файл синтаксически валиден
+  ---
+  duration_ms: 0.323917
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 4
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 47.55675

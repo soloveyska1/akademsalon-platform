@@ -1,0 +1,61 @@
+{
+  "head": "79f9a7d0",
+  "risks": [
+    {
+      "id": "retry",
+      "source": "assets/js/polish15-operations.js:350-365",
+      "risk": "Current unbounded HEAD / disables retry forever on hang and success throws away original route.",
+      "requirement": "Click-only GET /api/health, AbortController8s, busy guard, restore button every failure; require JSONoktrue; success means available endpoint,not payment/delivery."
+    },
+    {
+      "id": "fallback",
+      "source": "sw.js:31,65-109",
+      "risk": "SW fallback only on network rejection,not HTTP503/404. Nonprivate successful GET documents are cached including full query.",
+      "requirement": "Do not rely on offline.html for HTTP errors. Errorpages selfcontained rootabsolute links. ExistingSW unchanged means explicitly record offlinecachefreshness limitation."
+    },
+    {
+      "id": "sensitive-context",
+      "source": "zayavka.html:183-196;assets/js/polish15-supporting.js:363-376;assets/js/salon-workspace.js:init",
+      "risk": "Blind query/hash removal loses claim/order/offer/gift recovery; echoing full URL leaks capability.",
+      "requirement": "Keep originallocation onlyruntime; never healthquery/analytics/localstorage/log/copiedsupporttext; retry originalallowlistedroute without converting fragment intoquery."
+    },
+    {
+      "id": "redirect",
+      "source": "planned recovery resolver",
+      "risk": "next/return query or protocol-relative path could create external redirect.",
+      "requirement": "Knownsameorigin pathnameallowlist; reject /api,schemes,//,backslashes,credentials; do not recursivelyread return. For dedicatederrorURLs choose / or /dashboard.html ratherthan selfloop."
+    },
+    {
+      "id": "state-promises",
+      "source": "50x.html:39;assets/js/salon-order.js:132",
+      "risk": "Oldcopy overstates draftpersistence. Onlyproduct/scope/discipline/deadline persisted.",
+      "requirement": "Acceptedorders server-backed; unsubmittedtext/answers/files mayrequire entryagain; no claim theyaresaved,paid,refunded,canceled."
+    },
+    {
+      "id": "sideeffects",
+      "source": "selfcontained candidate architecture",
+      "risk": "Globalapp bootstraps auth/analytics/backgroundrequests and mayprocess URLtokens before intendedrecovery.",
+      "requirement": "No app/assistant/analytics/bootstrap onerrorpage; no POST, auto retry, tokenexchange, cookie/sessionclear."
+    },
+    {
+      "id": "external-support",
+      "source": "maintenance.html:40-41",
+      "risk": "Samebrokenserver supportform inaccessible; fullURL/PII toTelegram leaks.",
+      "requirement": "Native externalcontact fallback with noopener/noreferrer and referrerpolicy no-referrer; static channelURL, no injectedtokens."
+    },
+    {
+      "id": "cache-version",
+      "source": "sw.js:16-26 install/activate",
+      "risk": "OfflineURL precached onlyoninstallation; sameSWbytes/version can leaveoldofflineHTML for installedusers despite staticdeployment.",
+      "requirement": "Either explicitreviewed SW/cacheversion rollout or record existinginstall limitation; do not claimeveryofflineclientupdated."
+    },
+    {
+      "id": "health-privacy",
+      "source": "ops/monitoring/README.md:49;readonlywebapp.py:6534-6539",
+      "risk": "Health includes operatingmetrics not needed client. Snapshot notcurrentremoteconfirmation.",
+      "requirement": "Useonlyresponse.ok + JSONok; no rawpayloadrender/storage; timeoutincludesbodyJSON and redirects mustnotescapeorigin."
+    }
+  ],
+  "source_edits": false,
+  "external_requests": false
+}

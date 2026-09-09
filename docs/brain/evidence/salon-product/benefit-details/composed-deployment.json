@@ -1,0 +1,43 @@
+{
+  "version": {
+    "id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_29c475f3bfd48191a0e88d47ba662096",
+    "project_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7",
+    "version_number": 56,
+    "source": {
+      "commit_sha": "00fbb5b27c197e3687a317e93379fbaee37349ea"
+    },
+    "archive_storage": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_00000000ea088230a76bcb83b1d92482",
+      "content_hash": "sha256:10a5fa7ae1e9f95d0962e7c5a14a24608ea32242a60f1b028fa8b813b583798d",
+      "size_bytes": 31047680,
+      "file_count": 410
+    },
+    "screenshot_url": null
+  },
+  "deployment": {
+    "id": "appgdep_6aa10129ee708191914fa265490f7471",
+    "project_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7",
+    "title": "Академический Салон — просмотр главной",
+    "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_29c475f3bfd48191a0e88d47ba662096",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://akademsalon-desktop-preview.saymoon.chatgpt.site",
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "saymoon--akademsalon-desktop-preview",
+    "failure_message": null,
+    "env_set_revision": 0,
+    "updated_at": "2026-09-09T06:48:18.839274+00:00"
+  },
+  "rollback": {
+    "version_number": 55,
+    "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_1b7ceaba92948191bbfb6eddb6e4e21b",
+    "exercised": false
+  },
+  "owner_only": true,
+  "input_result": "3578433e4887c55eb9cf2d10d5619227cd38ee84",
+  "input_submission": "b3a108d39a30f386898c90e2adf8890606ae16e9",
+  "canonical_unchanged": true,
+  "owned_processes_stopped": true,
+  "browser": "Tab8 actual /prolog#prolog-step-3 selected Работа, then result click; final tab /plus#plus-plans"
+}

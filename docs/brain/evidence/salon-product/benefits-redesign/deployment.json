@@ -1,0 +1,22 @@
+{
+  "source_commit": "1ed10cfde58d69e93ce78324955f06ae24ca777a",
+  "version_number": 54,
+  "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_37e51a62a624819180d1a5f906734504",
+  "deployment_id": "appgdep_6aa0f88554ac8191aaa8a70d13af43a3",
+  "status": "succeeded",
+  "url": "https://akademsalon-desktop-preview.saymoon.chatgpt.site/benefits",
+  "archive_sha256": "d66a89010001d18877211cee2dde9074d89f1e46112e85ab651b0746c753379d",
+  "access": "sole owner, revision1, no groups/external viewers",
+  "rollback_version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_6a39c3bb32a88191976bc5bc24a229dc",
+  "rollback_exercised": false,
+  "live_readback": [
+    "new title/icon navigation",
+    "collapsed estimate",
+    "Pro to Plus manual selection;999fee/40899total/1101net",
+    "bonus13000cash and650futurepoints",
+    "more promo/referral/certificate/community links"
+  ],
+  "backend_changed": false,
+  "public_frontend_changed": false,
+  "cleanup": "owned8768/8769 and browser closed; all six in-app tabs permanent URLs"
+}

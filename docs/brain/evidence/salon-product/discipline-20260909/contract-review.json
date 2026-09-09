@@ -1,0 +1,2968 @@
+{
+  "decision": "GO",
+  "base": "3c18690b90e25b73c056805c28f659f59533a0a7",
+  "tests": [
+    {
+      "case": "kursovaya-po-ekonomike identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike single graph",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike price schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike url schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike retained canonical",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike retained description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike retained og:title",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike retained og:description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike retained og:url",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike static CTA /configurator.html?product=course&amp;disc=hum&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike static CTA /configurator.html?product=course&amp;disc=hum&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike static CTA /configurator.html?product=course&amp;disc=hum&amp;result=editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike static CTA /configurator.html?product=course&amp;disc=hum&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike noJS remains unenhanced",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu single graph",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu price schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu url schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu retained canonical",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu retained description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu retained og:title",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu retained og:description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu retained og:url",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu static CTA /configurator.html?product=course&amp;disc=hum&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu static CTA /configurator.html?product=course&amp;disc=hum&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu static CTA /configurator.html?product=course&amp;disc=hum&amp;result=editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu static CTA /configurator.html?product=course&amp;disc=hum&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu noJS remains unenhanced",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike single graph",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike price schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike url schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike retained canonical",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike retained description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike retained og:title",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike retained og:description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike retained og:url",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike static CTA /configurator.html?product=course&amp;disc=pedagogy&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike static CTA /configurator.html?product=course&amp;disc=pedagogy&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike static CTA /configurator.html?product=course&amp;disc=pedagogy&amp;result=editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike static CTA /configurator.html?product=course&amp;disc=pedagogy&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike noJS remains unenhanced",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii single graph",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii price schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii url schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii retained canonical",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii retained description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii retained og:title",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii retained og:description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii retained og:url",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii static CTA /configurator.html?product=course&amp;disc=jurisprudence&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii static CTA /configurator.html?product=course&amp;disc=jurisprudence&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii static CTA /configurator.html?product=course&amp;disc=jurisprudence&amp;result=editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii static CTA /configurator.html?product=course&amp;disc=jurisprudence&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii noJS remains unenhanced",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike single graph",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike price schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike url schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike retained canonical",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike retained description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike retained og:title",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike retained og:description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike retained og:url",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike static CTA /configurator.html?product=course&amp;disc=tech&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike static CTA /configurator.html?product=course&amp;disc=tech&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike static CTA /configurator.html?product=course&amp;disc=tech&amp;result=editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike static CTA /configurator.html?product=course&amp;disc=tech&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike noJS remains unenhanced",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii single graph",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii price schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii url schema",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii retained canonical",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii retained description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii retained og:title",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii retained og:description",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii retained og:url",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii static CTA /configurator.html?product=course&amp;disc=psychology&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii static CTA /configurator.html?product=course&amp;disc=psychology&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii static CTA /configurator.html?product=course&amp;disc=psychology&amp;result=editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii static CTA /configurator.html?product=course&amp;disc=psychology&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii noJS remains unenhanced",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike identity",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike single graph",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike price schema",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike url schema",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike retained canonical",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike retained description",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike retained og:title",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike retained og:description",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike retained og:url",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike static CTA /configurator.html?product=diplom&amp;disc=hum&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike static CTA /configurator.html?product=diplom&amp;disc=hum&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike static CTA /configurator.html?product=diplom&amp;disc=hum&amp;result=editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike static CTA /configurator.html?product=diplom&amp;disc=hum&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike noJS remains unenhanced",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii identity",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii single graph",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii price schema",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii url schema",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii retained canonical",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii retained description",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii retained og:title",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii retained og:description",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii retained og:url",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii static CTA /configurator.html?product=diplom&amp;disc=jurisprudence&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii static CTA /configurator.html?product=diplom&amp;disc=jurisprudence&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii static CTA /configurator.html?product=diplom&amp;disc=jurisprudence&amp;result=editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii static CTA /configurator.html?product=diplom&amp;disc=jurisprudence&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii noJS remains unenhanced",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii identity",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii single graph",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii price schema",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii url schema",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii retained canonical",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii retained description",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii retained og:title",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii retained og:description",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii retained og:url",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii static CTA /configurator.html?product=diplom&amp;disc=psychology&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii static CTA /configurator.html?product=diplom&amp;disc=psychology&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii static CTA /configurator.html?product=diplom&amp;disc=psychology&amp;result=editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii static CTA configurator.html?product=diplom&amp;disc=psychology&amp;result=diagnostic",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii static CTA configurator.html?product=diplom&amp;disc=psychology&amp;result=editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii static CTA /configurator.html?product=diplom&amp;disc=psychology&amp;result=whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii noJS remains unenhanced",
+      "pass": true
+    },
+    {
+      "case": "psychology exactly two protected blocks",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota unchanged bytes",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota unchanged bytes",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya unchanged bytes",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya unchanged bytes",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike unchanged bytes",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya unchanged bytes",
+      "pass": true
+    },
+    {
+      "case": "referat unchanged bytes",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-order.js financial/payload code unchanged",
+      "pass": true
+    },
+    {
+      "case": "assets/js/app.js financial/payload code unchanged",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-commerce.js financial/payload code unchanged",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota footer scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota times2",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota fast unknown",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota checklist display only",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota scope whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota footer scope part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota scope part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota scope editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota times2",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota fast unknown",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota checklist display only",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya scope whole",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya footer scope part",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya scope part",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya scope editing",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya speed standard",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya speed express24",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya times2",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya fast unknown",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya checklist display only",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya scope whole",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya footer scope part",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya scope part",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya scope editing",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya speed standard",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya checklist display only",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike scope whole",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike footer scope part",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike scope part",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike scope editing",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike speed standard",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike speed express24",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike times2",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike fast unknown",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike checklist display only",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya scope whole",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya footer scope part",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya scope part",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya scope editing",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya speed standard",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya speed express24",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya times2",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya fast unknown",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya checklist display only",
+      "pass": true
+    },
+    {
+      "case": "referat enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "referat initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "referat initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "referat footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "referat disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "referat scope whole",
+      "pass": true
+    },
+    {
+      "case": "referat footer scope part",
+      "pass": true
+    },
+    {
+      "case": "referat disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "referat scope part",
+      "pass": true
+    },
+    {
+      "case": "referat partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "referat footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "referat disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "referat scope editing",
+      "pass": true
+    },
+    {
+      "case": "referat partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "referat footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "referat disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "referat speed standard",
+      "pass": true
+    },
+    {
+      "case": "referat footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "referat disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "referat speed express24",
+      "pass": true
+    },
+    {
+      "case": "referat times2",
+      "pass": true
+    },
+    {
+      "case": "referat footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "referat disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "referat speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "referat fast unknown",
+      "pass": true
+    },
+    {
+      "case": "referat checklist display only",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike scope whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike footer scope part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike scope part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike scope editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike times2",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike fast unknown",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike checklist display only",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii scope whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii footer scope part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii scope part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii scope editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii times2",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii fast unknown",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii checklist display only",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii scope whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii footer scope part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii scope part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii scope editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii times2",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii fast unknown",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii checklist display only",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike footer scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike times2",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike fast unknown",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike checklist display only",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike footer scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike times2",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike fast unknown",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike checklist display only",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu footer scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu times2",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu fast unknown",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu checklist display only",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike footer scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike times2",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike fast unknown",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike checklist display only",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii footer scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii times2",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii fast unknown",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii checklist display only",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii enhanced only after init",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii initial footer sync",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii footer scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii disc preserved whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii footer scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii disc preserved part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii footer scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii disc preserved editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii footer speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii disc speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii footer speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii disc speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii times2",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii footer speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii disc speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii fast unknown",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii checklist display only",
+      "pass": true
+    },
+    {
+      "case": "whole + express24",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "part explicit",
+      "pass": true,
+      "state": {
+        "product": "practice",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "practice",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "editing explicit",
+      "pass": true,
+      "state": {
+        "product": "practice",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "practice",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "fast unresolved",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "expressfast",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "candidate refuses speed",
+      "pass": true,
+      "state": {
+        "product": "kandidat",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "kandidat",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "invalid enum ignored",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "service precedence",
+      "pass": true,
+      "state": {
+        "product": "service:norm",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "hum",
+        "service": "norm",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "scope without product cannot reset draft",
+      "pass": true,
+      "state": {
+        "product": "master",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "master",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "explicit resets unrelated extras",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diagnostic unchanged",
+      "pass": true,
+      "state": {
+        "product": "practice",
+        "scope": "diagnostic",
+        "composition": {
+          "version": 1,
+          "product": "practice",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "legacy type and speed",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "no contact or arbitrary financial hydration",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course hum whole",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course hum part",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course hum editing",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course pedagogy whole",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "pedagogy",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course pedagogy part",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "discipline": "pedagogy",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course pedagogy editing",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "discipline": "pedagogy",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course jurisprudence whole",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "jurisprudence",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course jurisprudence part",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "discipline": "jurisprudence",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course jurisprudence editing",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "discipline": "jurisprudence",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course psychology whole",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "psychology",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course psychology part",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "discipline": "psychology",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course psychology editing",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "discipline": "psychology",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course tech whole",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "tech",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course tech part",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "discipline": "tech",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course tech editing",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "discipline": "tech",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diplom hum whole",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diplom hum part",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diplom hum editing",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "discipline": "hum",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diplom jurisprudence whole",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "jurisprudence",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diplom jurisprudence part",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "discipline": "jurisprudence",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diplom jurisprudence editing",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "discipline": "jurisprudence",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diplom psychology whole",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "psychology",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diplom psychology part",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "discipline": "psychology",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diplom psychology editing",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "discipline": "psychology",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "pv protected service amount and code",
+      "pass": true,
+      "state": {
+        "product": "service:psychologyvip",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "hum",
+        "service": "psychologyvip",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "psychology diagnosis3500",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "diagnostic",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "discipline": "psychology",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "psychology editing29000",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "discipline": "psychology",
+        "promo": "",
+        "gift": ""
+      }
+    }
+  ],
+  "source_sha256": {
+    "kursovaya-po-ekonomike.html": "3c4a37fcdb26b31fc47863b4978701fcabcef5af770cb23be08bbf04f2a9b9ca",
+    "kursovaya-po-menedzhmentu.html": "8542e3bbbd5bccaa28af8800f0f8b45322099a7e3f594fae3180f0bbbd5cac2e",
+    "kursovaya-po-pedagogike.html": "94ce05ed4123c391d2814663cf7859d2d5fc7f42bb1b7927c2019aa0154e3767",
+    "kursovaya-po-yurisprudencii.html": "b4e37eaf6006bb8fbbcc4976f8fec12aa23dbea4f9b80205f2595c6ff894a56c",
+    "kursovaya-po-informatike.html": "301964a80382b051ecc5d64d7d910762f7476d381e7f6894a4c60e7a2ffacd2b",
+    "kursovaya-po-psihologii.html": "2d43aa7c18954ffe118c4f4b6c8e3b0cbcd50b3c14f6dfc03ebfab1151f396ac",
+    "diplomnaya-po-ekonomike.html": "d942c25183956e70a083b7ea56f54d4bc57532dc586f4f03367e100cbfd89ae2",
+    "diplomnaya-po-yurisprudencii.html": "ab00dfc24aacc8efad6b477db3109782b233b07c7328ca0fde6a409cdba15270",
+    "diplomnaya-po-psihologii.html": "aa5eb07aad4682bb6f320c9895f4a2bbb463745a704df13200ea4e1121d698c3",
+    "assets/js/salon-experience.js": "e07aed70a64a6d76710b6aa73f9c1ced3db0a41e0ec22aa52e14416702804274",
+    "assets/css/salon-experience.css": "1d4d292ea766b29888293198ffa25792db609275c14c644517e7d96dcab313bb",
+    "docs/brain/evidence/salon-product/discipline-20260909/rebuild-discipline.py": "bac7717975fd6abd76b2771f12c2d39d231cef1dbe058b56e41b25ad40a15c4c"
+  },
+  "reproducers": [
+    "/tmp/salon-discipline-contract.py",
+    "/tmp/salon-discipline-entry-contract.cjs",
+    "/tmp/salon-discipline-order-contract.cjs"
+  ],
+  "findings": [],
+  "summary": {
+    "passed": 586,
+    "P0": 0,
+    "P1": 0,
+    "P2": 0
+  },
+  "limitations": [
+    "Deterministic source/VM review; parent owns rendered browser and frozen/live deployment gates.",
+    "No customer data, external requests or financial mutations. Source payload code remains byte-identical to baseline."
+  ],
+  "final_drift_check": []
+}

@@ -1,0 +1,160 @@
+{
+  "rows": [
+    {
+      "route": "about.html",
+      "width": 320,
+      "error": "TimeoutError: page.goto: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://akademsalon.ru/about.html?v=release191\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "route": "about.html",
+      "width": 390,
+      "error": "TimeoutError: page.goto: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://akademsalon.ru/about.html?v=release191\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 320,
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 304,
+        "bottom": 162
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 16,
+          "right": 60,
+          "bottom": 148
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 86.84375,
+          "right": 130.84375,
+          "bottom": 148
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 75.453125,
+          "height": 44,
+          "left": 157.703125,
+          "right": 233.15625,
+          "bottom": 148
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 260,
+          "right": 304,
+          "bottom": 148
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 390,
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 374,
+        "bottom": 162
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 16,
+          "right": 60,
+          "bottom": 148
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 108.765625,
+          "right": 152.765625,
+          "bottom": 148
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 79.703125,
+          "height": 44,
+          "left": 201.53125,
+          "right": 281.234375,
+          "bottom": 148
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 330,
+          "right": 374,
+          "bottom": 148
+        }
+      ]
+    },
+    {
+      "route": "knowledge.html",
+      "width": 320,
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 304,
+        "bottom": 63
+      },
+      "actions": [
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 44,
+          "height": 44,
+          "left": 203,
+          "right": 247,
+          "bottom": 53
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 251,
+          "right": 295,
+          "bottom": 53
+        }
+      ]
+    },
+    {
+      "route": "knowledge.html",
+      "width": 390,
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 374,
+        "bottom": 67
+      },
+      "actions": [
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 44,
+          "height": 44,
+          "left": 270,
+          "right": 314,
+          "bottom": 55
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 318,
+          "right": 362,
+          "bottom": 55
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "blocked": []
+}

@@ -1,0 +1,5 @@
+active
+active
+active
+/var/www/academic_saloon/releases/release188-2276c819
+/var/www/academic_saloon/releases/release187-93b1c40c

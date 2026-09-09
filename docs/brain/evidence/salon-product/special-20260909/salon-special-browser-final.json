@@ -1,0 +1,1205 @@
+{
+  "rows": [
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 302,
+          "width": 284,
+          "height": 54.390625,
+          "href": "configurator.html?service=nm"
+        },
+        {
+          "left": 42,
+          "right": 278,
+          "width": 236,
+          "height": 54.390625,
+          "href": "configurator.html?service=nm"
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 302,
+          "width": 284,
+          "height": 54.390625,
+          "href": "configurator.html?service=nm"
+        },
+        {
+          "left": 42,
+          "right": 278,
+          "width": 236,
+          "height": 54.390625,
+          "href": "configurator.html?service=nm"
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 372,
+          "width": 354,
+          "height": 54.390625,
+          "href": "configurator.html?service=nm"
+        },
+        {
+          "left": 42,
+          "right": 348,
+          "width": 306,
+          "height": 54.390625,
+          "href": "configurator.html?service=nm"
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 372,
+          "width": 354,
+          "height": 54.390625,
+          "href": "configurator.html?service=nm"
+        },
+        {
+          "left": 42,
+          "right": 348,
+          "width": 306,
+          "height": 54.390625,
+          "href": "configurator.html?service=nm"
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 299.203125,
+          "width": 267.203125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        },
+        {
+          "left": 461.046875,
+          "right": 710,
+          "width": 248.953125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 299.203125,
+          "width": 267.203125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        },
+        {
+          "left": 461.046875,
+          "right": 710,
+          "width": 248.953125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 299.203125,
+          "width": 267.203125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        },
+        {
+          "left": 711.046875,
+          "right": 960,
+          "width": 248.953125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 299.203125,
+          "width": 267.203125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        },
+        {
+          "left": 711.046875,
+          "right": 960,
+          "width": 248.953125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 100,
+          "right": 367.203125,
+          "width": 267.203125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        },
+        {
+          "left": 1059.046875,
+          "right": 1308,
+          "width": 248.953125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 100,
+          "right": 367.203125,
+          "width": 267.203125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        },
+        {
+          "left": 1059.046875,
+          "right": 1308,
+          "width": 248.953125,
+          "height": 56,
+          "href": "configurator.html?service=nm"
+        }
+      ]
+    },
+    {
+      "route": "plan.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 302,
+          "width": 284,
+          "height": 54.390625,
+          "href": "configurator.html?service=pl"
+        },
+        {
+          "left": 42,
+          "right": 278,
+          "width": 236,
+          "height": 54.390625,
+          "href": "configurator.html?service=pl"
+        }
+      ]
+    },
+    {
+      "route": "plan.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 302,
+          "width": 284,
+          "height": 54.390625,
+          "href": "configurator.html?service=pl"
+        },
+        {
+          "left": 42,
+          "right": 278,
+          "width": 236,
+          "height": 54.390625,
+          "href": "configurator.html?service=pl"
+        }
+      ]
+    },
+    {
+      "route": "plan.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 372,
+          "width": 354,
+          "height": 54.390625,
+          "href": "configurator.html?service=pl"
+        },
+        {
+          "left": 42,
+          "right": 348,
+          "width": 306,
+          "height": 54.390625,
+          "href": "configurator.html?service=pl"
+        }
+      ]
+    },
+    {
+      "route": "plan.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 372,
+          "width": 354,
+          "height": 54.390625,
+          "href": "configurator.html?service=pl"
+        },
+        {
+          "left": 42,
+          "right": 348,
+          "width": 306,
+          "height": 54.390625,
+          "href": "configurator.html?service=pl"
+        }
+      ]
+    },
+    {
+      "route": "plan.html",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 284.125,
+          "width": 252.125,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        },
+        {
+          "left": 476.125,
+          "right": 710,
+          "width": 233.875,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        }
+      ]
+    },
+    {
+      "route": "plan.html",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 284.125,
+          "width": 252.125,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        },
+        {
+          "left": 476.125,
+          "right": 710,
+          "width": 233.875,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        }
+      ]
+    },
+    {
+      "route": "plan.html",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 284.125,
+          "width": 252.125,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        },
+        {
+          "left": 726.125,
+          "right": 960,
+          "width": 233.875,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        }
+      ]
+    },
+    {
+      "route": "plan.html",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 284.125,
+          "width": 252.125,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        },
+        {
+          "left": 726.125,
+          "right": 960,
+          "width": 233.875,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        }
+      ]
+    },
+    {
+      "route": "plan.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 100,
+          "right": 352.125,
+          "width": 252.125,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        },
+        {
+          "left": 1074.125,
+          "right": 1308,
+          "width": 233.875,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        }
+      ]
+    },
+    {
+      "route": "plan.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 100,
+          "right": 352.125,
+          "width": 252.125,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        },
+        {
+          "left": 1074.125,
+          "right": 1308,
+          "width": 233.875,
+          "height": 56,
+          "href": "configurator.html?service=pl"
+        }
+      ]
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 302,
+          "width": 284,
+          "height": 54.390625,
+          "href": "configurator.html?service=ai"
+        },
+        {
+          "left": 42,
+          "right": 278,
+          "width": 236,
+          "height": 54.390625,
+          "href": "configurator.html?service=ai"
+        }
+      ]
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 302,
+          "width": 284,
+          "height": 54.390625,
+          "href": "configurator.html?service=ai"
+        },
+        {
+          "left": 42,
+          "right": 278,
+          "width": 236,
+          "height": 54.390625,
+          "href": "configurator.html?service=ai"
+        }
+      ]
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 372,
+          "width": 354,
+          "height": 54.390625,
+          "href": "configurator.html?service=ai"
+        },
+        {
+          "left": 42,
+          "right": 348,
+          "width": 306,
+          "height": 54.390625,
+          "href": "configurator.html?service=ai"
+        }
+      ]
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 372,
+          "width": 354,
+          "height": 54.390625,
+          "href": "configurator.html?service=ai"
+        },
+        {
+          "left": 42,
+          "right": 348,
+          "width": 306,
+          "height": 54.390625,
+          "href": "configurator.html?service=ai"
+        }
+      ]
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 261.671875,
+          "width": 229.671875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        },
+        {
+          "left": 498.578125,
+          "right": 710,
+          "width": 211.421875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        }
+      ]
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 261.671875,
+          "width": 229.671875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        },
+        {
+          "left": 498.578125,
+          "right": 710,
+          "width": 211.421875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        }
+      ]
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 261.671875,
+          "width": 229.671875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        },
+        {
+          "left": 748.578125,
+          "right": 960,
+          "width": 211.421875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        }
+      ]
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 261.671875,
+          "width": 229.671875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        },
+        {
+          "left": 748.578125,
+          "right": 960,
+          "width": 211.421875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        }
+      ]
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 100,
+          "right": 329.671875,
+          "width": 229.671875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        },
+        {
+          "left": 1096.578125,
+          "right": 1308,
+          "width": 211.421875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        }
+      ]
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 100,
+          "right": 329.671875,
+          "width": 229.671875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        },
+        {
+          "left": 1096.578125,
+          "right": 1308,
+          "width": 211.421875,
+          "height": 56,
+          "href": "configurator.html?service=ai"
+        }
+      ]
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 302,
+          "width": 284,
+          "height": 54.390625,
+          "href": "configurator.html?service=rv"
+        },
+        {
+          "left": 42,
+          "right": 278,
+          "width": 236,
+          "height": 54.390625,
+          "href": "configurator.html?service=rv"
+        }
+      ]
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 302,
+          "width": 284,
+          "height": 54.390625,
+          "href": "configurator.html?service=rv"
+        },
+        {
+          "left": 42,
+          "right": 278,
+          "width": 236,
+          "height": 54.390625,
+          "href": "configurator.html?service=rv"
+        }
+      ]
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 372,
+          "width": 354,
+          "height": 54.390625,
+          "href": "configurator.html?service=rv"
+        },
+        {
+          "left": 42,
+          "right": 348,
+          "width": 306,
+          "height": 54.390625,
+          "href": "configurator.html?service=rv"
+        }
+      ]
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 372,
+          "width": 354,
+          "height": 54.390625,
+          "href": "configurator.html?service=rv"
+        },
+        {
+          "left": 42,
+          "right": 348,
+          "width": 306,
+          "height": 54.390625,
+          "href": "configurator.html?service=rv"
+        }
+      ]
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 236.0625,
+          "width": 204.0625,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        },
+        {
+          "left": 524.1875,
+          "right": 710,
+          "width": 185.8125,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        }
+      ]
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 236.0625,
+          "width": 204.0625,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        },
+        {
+          "left": 524.1875,
+          "right": 710,
+          "width": 185.8125,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        }
+      ]
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 236.0625,
+          "width": 204.0625,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        },
+        {
+          "left": 774.1875,
+          "right": 960,
+          "width": 185.8125,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        }
+      ]
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 236.0625,
+          "width": 204.0625,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        },
+        {
+          "left": 774.1875,
+          "right": 960,
+          "width": 185.8125,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        }
+      ]
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 100,
+          "right": 304.0625,
+          "width": 204.0625,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        },
+        {
+          "left": 1122.1875,
+          "right": 1308,
+          "width": 185.8125,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        }
+      ]
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 100,
+          "right": 304.0625,
+          "width": 204.0625,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        },
+        {
+          "left": 1122.1875,
+          "right": 1308,
+          "width": 185.8125,
+          "height": 56,
+          "href": "configurator.html?service=rv"
+        }
+      ]
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 302,
+          "width": 284,
+          "height": 54.390625,
+          "href": "configurator.html?work=practice&result=editing"
+        },
+        {
+          "left": 42,
+          "right": 278,
+          "width": 236,
+          "height": 54.390625,
+          "href": "configurator.html?work=practice&result=editing"
+        }
+      ]
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 302,
+          "width": 284,
+          "height": 54.390625,
+          "href": "configurator.html?work=practice&result=editing"
+        },
+        {
+          "left": 42,
+          "right": 278,
+          "width": 236,
+          "height": 54.390625,
+          "href": "configurator.html?work=practice&result=editing"
+        }
+      ]
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 372,
+          "width": 354,
+          "height": 54.390625,
+          "href": "configurator.html?work=practice&result=editing"
+        },
+        {
+          "left": 42,
+          "right": 348,
+          "width": 306,
+          "height": 54.390625,
+          "href": "configurator.html?work=practice&result=editing"
+        }
+      ]
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 18,
+          "right": 372,
+          "width": 354,
+          "height": 54.390625,
+          "href": "configurator.html?work=practice&result=editing"
+        },
+        {
+          "left": 42,
+          "right": 348,
+          "width": 306,
+          "height": 54.390625,
+          "href": "configurator.html?work=practice&result=editing"
+        }
+      ]
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 262,
+          "width": 230,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        },
+        {
+          "left": 498.25,
+          "right": 710,
+          "width": 211.75,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        }
+      ]
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 262,
+          "width": 230,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        },
+        {
+          "left": 498.25,
+          "right": 710,
+          "width": 211.75,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        }
+      ]
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 262,
+          "width": 230,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        },
+        {
+          "left": 748.25,
+          "right": 960,
+          "width": 211.75,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        }
+      ]
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 32,
+          "right": 262,
+          "width": 230,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        },
+        {
+          "left": 748.25,
+          "right": 960,
+          "width": 211.75,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        }
+      ]
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 100,
+          "right": 330,
+          "width": 230,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        },
+        {
+          "left": 1096.25,
+          "right": 1308,
+          "width": 211.75,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        }
+      ]
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "hiddenPanels": 2,
+      "headerBad": [],
+      "cta": [
+        {
+          "left": 100,
+          "right": 330,
+          "width": 230,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        },
+        {
+          "left": 1096.25,
+          "right": 1308,
+          "width": 211.75,
+          "height": 56,
+          "href": "configurator.html?work=practice&result=editing"
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

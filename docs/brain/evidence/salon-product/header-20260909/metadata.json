@@ -1,0 +1,32 @@
+{
+  "scope": "OUT-006 legacy narrow header only",
+  "base": "fd46bf833aceb591cc2a605f84cc9ca55c6cc3e4",
+  "css_sha256": "2df3ffbdedda6efdabbd7376703d5abee7fc0918617ea2a9cebbc33bb7d50b44",
+  "browser": "Chromium via playwright-cli",
+  "data": "anonymous local GET with API mocks; no production mutations",
+  "root_matrix": {
+    "states": 112,
+    "routes": 7,
+    "widths": [
+      320,
+      360,
+      390,
+      650,
+      768,
+      1024,
+      1280,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "overflow": 0,
+    "page_errors": 0,
+    "expected": "Each visible action >=44px, inside viewport and header",
+    "actual": "PASS112/112"
+  },
+  "reviews": "two independent GO; fixed inherited70px parent height and retested18+15 states",
+  "timestamp": "2026-09-09T17:27:52.641531+00:00",
+  "production_at_review": "release190-1940537d"
+}

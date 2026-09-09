@@ -1,0 +1,12 @@
+### Result
+[{"name":"index","buttons":[{"label":"Закрыть меню","class":"shell-menu-close","x":245,"y":54.140625,"width":44,"height":44,"top":54.140625,"right":289,"bottom":98.140625,"left":245},{"label":"Найти по сайту","class":"","x":31,"y":488.0625,"width":117.25,"height":44,"top":488.0625,"right":148.25,"bottom":532.0625,"left":31},{"label":"Тёмная тема","class":"","x":185,"y":488.0625,"width":104,"height":44,"top":488.0625,"right":289,"bottom":532.0625,"left":185}]},{"name":"index","closed":"false"},{"name":"knowledge","buttons":[{"label":"Закрыть меню","class":"shell-menu-close","x":245,"y":34.4375,"width":44,"height":44,"top":34.4375,"right":289,"bottom":78.4375,"left":245},{"label":"Найти по сайту","class":"","x":31,"y":448.671875,"width":117.25,"height":44,"top":448.671875,"right":148.25,"bottom":492.671875,"left":31},{"label":"Тёмная тема","class":"","x":185,"y":448.671875,"width":104,"height":44,"top":448.671875,"right":289,"bottom":492.671875,"left":185}]},{"name":"knowledge","closed":"false"}]
+### Ran Playwright code
+```js
+await (async(page)=>{const out=[];for(const name of ["index","knowledge"]){await page.goto("http://127.0.0.1:8771/"+name+".html");await page.locator(".shell-menu-toggle").click();out.push(await page.locator("#home-navigation").evaluate((e,name)=>({name,buttons:[...e.querySelectorAll("button")].filter(b=>b.getBoundingClientRect().width>0).map(b=>({label:b.ariaLabel||b.textContent.trim(),class:b.className,...b.getBoundingClientRect().toJSON()}))}),name));await page.keyboard.press("Escape");await page.waitForTimeout(60);out.push({name,closed:await page.locator(".shell-menu-toggle").getAttribute("aria-expanded")});}return out;})(page);
+```
+### Page
+- Page URL: http://127.0.0.1:8771/knowledge.html
+- Page Title: Полезные материалы по ВКР и курсовым — Академический Салон
+- Console: 1 errors, 0 warnings
+### Events
+- New console entries: .playwright-cli/console-2026-09-09T17-22-32-836Z.log#L51-L53

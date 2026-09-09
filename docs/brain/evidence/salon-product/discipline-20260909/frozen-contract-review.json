@@ -1,0 +1,128 @@
+{
+  "decision": "GO",
+  "findings": [],
+  "source_commit": "dc6fa1ff7174dfb5feae7c0021d2a0b89202a816",
+  "tests": [
+    {
+      "case": "pinned source",
+      "pass": true
+    },
+    {
+      "case": "434 frozen file hashes",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html reviewed source identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html exact frozen transform",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html reviewed source identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html exact frozen transform",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html reviewed source identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html exact frozen transform",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html reviewed source identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html exact frozen transform",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html reviewed source identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html exact frozen transform",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html reviewed source identity",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html exact frozen transform",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html reviewed source identity",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html exact frozen transform",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html reviewed source identity",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html exact frozen transform",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html reviewed source identity",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html exact frozen transform",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-experience.js reviewed source identity",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-experience.js exact frozen transform",
+      "pass": true
+    },
+    {
+      "case": "CSS only reviewed two color rules",
+      "pass": true
+    },
+    {
+      "case": "assets/css/salon-experience.css exact frozen transform",
+      "pass": true
+    },
+    {
+      "case": "docs/brain/evidence/salon-product/discipline-20260909/rebuild-discipline.py reviewed source identity",
+      "pass": true
+    },
+    {
+      "case": "frozen psychology protected blocks byte exact",
+      "pass": true
+    }
+  ],
+  "passed": 26,
+  "reproducer": "/tmp/salon-discipline-frozen-contract.py",
+  "manifest_sha256": "a73e70af0b2f30ee4b445085b3501fc3a17b54e5b661a15855a182af1a2576f0",
+  "frozen_reviewed_files": {
+    "kursovaya-po-ekonomike.html": "67b0f5b9f1bda0436e51b071f638e2e991dcfb88144ba5f238561d3ba1f0f1ee",
+    "kursovaya-po-menedzhmentu.html": "bd83e4b10b65dea32cbf88ccaebe2844b6861a2fe11279f6cbdcf3b0ad22cc69",
+    "kursovaya-po-pedagogike.html": "50d0698c6cc6b1552bf52f7e82aba2d9f10f64c3166b812cdc18faa13322492f",
+    "kursovaya-po-yurisprudencii.html": "2a742bc78824c965a222853b238253111a48585b1952eb1262a016a508e93735",
+    "kursovaya-po-informatike.html": "7ca9be480a327fba60e70d39e55ab9e7a2bce7b349d7e24898cbe522c71dca46",
+    "kursovaya-po-psihologii.html": "257cd1d583a47f35cc496afb2269e73e08bbc3d49e7ef7cba9b72c67f4ba13c7",
+    "diplomnaya-po-ekonomike.html": "fa9b97407ebfabd23e7c5f20a40a801f9a5aaa65f884989655293f4953aa279d",
+    "diplomnaya-po-yurisprudencii.html": "1dc2e12d9542f312601380b6bdf398a3ee240ae997d0e362508bf2ac970708b7",
+    "diplomnaya-po-psihologii.html": "659228b248039e4fb54be2989fc3e81dbeb306ba33366c753f4ff5f863de12bd",
+    "assets/js/salon-experience.js": "e07aed70a64a6d76710b6aa73f9c1ced3db0a41e0ec22aa52e14416702804274",
+    "assets/css/salon-experience.css": "30a124ffdda2c97ec4db7b33b0344a06c4b28be5f6bb3cf4e9f9f777d7862e0c"
+  },
+  "boundary": "Independent local frozen byte verification. Parent owns browser/live and rollback receipts."
+}

@@ -1,0 +1,82 @@
+{
+  "review": "independent assistant UX",
+  "verdict": "GO",
+  "checked_files": {
+    "assets/js/salon-assistant.js": "dfabb0bba7b02e89b87490a7cab4961c41983555e5676c94aed68090de71c1aa",
+    "assets/css/salon-assistant.css": "24173db772a9f4af72cd9040603d56b406dcc55035890f372215eab059c58060",
+    "assets/img/salon-assistant/list.webp": "072201f933666d4d3e4ab0dc5c23f1399a0377d212af01e3312fb9a5bcddca34",
+    "backend/salon_bot/assistant.py": "ca32ca8d1bc6293780cff1580f10bd4a7492708ac20cee9518e3674cac0d1039"
+  },
+  "external_mutations": "blocked; answers generated from local assistant.py",
+  "matrix": {
+    "widths": [
+      360,
+      390,
+      768,
+      1024,
+      1280,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "states": [
+      "welcome",
+      "chat",
+      "handoff"
+    ],
+    "passed_states": 36,
+    "inside_viewport": true,
+    "horizontal_overflow": false,
+    "mascot_loaded": true,
+    "handoff_forms": 1
+  },
+  "long_text": {
+    "length": 2050,
+    "valid": false,
+    "counter": "2050 / 2000 · сократи сообщение перед отправкой",
+    "text_preserved": true,
+    "contact_preserved_on_back": true
+  },
+  "short_viewport": [
+    {
+      "height": 420,
+      "panel_top": 8,
+      "panel_bottom": 412,
+      "submit_top": 297,
+      "submit_bottom": 345
+    },
+    {
+      "height": 320,
+      "panel_top": 8,
+      "panel_bottom": 312,
+      "submit_top": 263,
+      "submit_bottom": 311
+    }
+  ],
+  "identity_reset": {
+    "panel_open": false,
+    "old_text_retained": false,
+    "contact_retained": false,
+    "forms": 0,
+    "focus": "sa-launch"
+  },
+  "keyboard": {
+    "widths": [
+      390,
+      1440
+    ],
+    "shift_enter_newline": true,
+    "escape_closes": true,
+    "focus_returns_to_launcher": true,
+    "draft_preserved_on_reopen": true
+  },
+  "limitations": [
+    "No real OS virtual keyboard",
+    "No live send or payment",
+    "Backend runtime responses mocked from local source; not production deployment proof"
+  ],
+  "browser_closed": "list-review",
+  "root_server_8771": "left running; no own server started"
+}

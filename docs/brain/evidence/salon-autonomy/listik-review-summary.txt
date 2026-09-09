@@ -1,0 +1,3 @@
+Two independent read-only reviews: assistant_contract_review GO, campaign_review GO after P1 short viewport topic tray fixed. Root sole source writer.
+JS SHA256 4bb4849ec4ea6016799e40806511bf3834a077c10bc60fe1ed837ce4f4c2b8bf. CSS SHA256 47d5adfeb6373fa56dc4c9da3a0a93e359a45a57fb2409d6b4d40f32c6db3e93.
+17 assistant unit tests PASS; isolated exact-source installer apply/rollback/forward PASS. Browser request/render states, skip, reduced motion, close/identity races, 6 topic shortcuts, scroll preservation/jump, 12 width/theme states PASS. Final short390x320/420 topics footer and all6buttons fit/reachable (44px). Older visual-review JSON NO-GO superseded only by short-final proof. No real customer/lead/payment mutation; no physical mobile keyboard test.

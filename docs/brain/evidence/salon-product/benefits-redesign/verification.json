@@ -1,0 +1,45 @@
+{
+  "scope": "OUT-006 benefits visual correction",
+  "tests": {
+    "focused_pass": 76,
+    "fail": 0
+  },
+  "browser": {
+    "states": 48,
+    "widths": [
+      320,
+      360,
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "panels": 4,
+    "overflow": 0,
+    "pageerrors": 0,
+    "journey_checks": 20
+  },
+  "contrast": {
+    "visible_panel_text_minimum": 4.73,
+    "theme_panel_states": 8
+  },
+  "reviews": {
+    "journey_review": "GO; invalid collapsed estimate P2 fixed and source rechecked",
+    "order_contract_review": "GO; independent12/12 tests and economic/source review"
+  },
+  "source_hashes": {
+    "benefits.html": "101fc9418df33e7b799aeb9ca1bdde1b390d266bfc66411b603499cc94f621c6",
+    "assets/css/salon-experience.css": "f374c606a0f573ef5eeba2f609f6a106878164376bd6c39c1681335c9c313c7d",
+    "assets/js/salon-benefits.js": "1ddb71ca030e5f67f772087474c181c53978d89a3bcd34b5e1728b20f2797104"
+  },
+  "limits": [
+    "Owner-private preview only",
+    "Economic functions unchanged",
+    "No production customer or financial mutations",
+    "Public frontend release blockers unchanged"
+  ]
+}

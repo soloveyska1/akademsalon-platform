@@ -1,0 +1,14 @@
+{
+  "referral.html": "4bcd6f6c26cf34472c2c44b1630df44908823b647d3eb98a7ada87cce783e5c0",
+  "referral-rules.html": "e8d15c8d0a162ebf983fd27e0ec06bb4531a089ff23b1ba304c710142ed65756",
+  "assets/css/salon-referral.css": "a85d15799782e4ce95bd6c9defc24c2e33102f426f60300987977db3d9922dab",
+  "assets/js/salon-referral.js": "7f5ce185394cd7d8c2b8dc71185c842eb222c3b20dba993954e8829b2586501e",
+  "assets/js/salon-referral-policy.js": "c80dde3d87908d66d81400ca0b941a27c92ef20db896c6e4905826c8f6fb99ed",
+  "assets/js/cabinet.js": "a56025b380cf55a27ecaabfb3c17fc46d428827e40e269004370a5723f0bbce9",
+  "assets/js/salon-cabinet.js": "b460a375f0e1fb130eb39a13f5cb121948c8b801d7ecd68db3fba04220274b56",
+  "assets/css/salon-cabinet.css": "cdd06ca990e6b3bba6d6684d280d7ee054d938531c49f6f1de3cb85d7d508164",
+  "backend/salon_bot/referral_rewards.py": "3083aad054ce947178005aba3b3e4c0a59fa9cebaa0567909a3f9ba75839a799",
+  "assets/js/salon-experience.js": "6ff88696485be96fc180ea71d2700cf8cd06ef6aeac2dfd3d06220f85cde3389",
+  "benefits.html": "17d2549bd3daa76a773df534f8428183ba0e4fbbaacf21722d850f191cb858bc",
+  "dashboard.html": "a92cc4e7e92093788f45ae3b6f0942d7cf2ff986635638dffe49f3d343007959"
+}

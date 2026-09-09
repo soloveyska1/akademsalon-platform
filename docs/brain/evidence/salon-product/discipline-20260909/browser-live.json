@@ -1,0 +1,25 @@
+{
+  "rows": [
+    {
+      "route": "kursovaya-po-informatike",
+      "choice": "https://akademsalon.ru/configurator.html?product=course&result=part&speed=express24&disc=tech",
+      "form": {
+        "product": "course",
+        "scope": "part",
+        "speed": "express24",
+        "disc": "tech"
+      }
+    },
+    {
+      "route": "diplomnaya-po-psihologii",
+      "choice": "https://akademsalon.ru/configurator.html?product=diplom&result=part&speed=express24&disc=psychology",
+      "form": {
+        "product": "diplom",
+        "scope": "part",
+        "speed": "express24",
+        "disc": "psychology"
+      }
+    }
+  ],
+  "posts": 0
+}

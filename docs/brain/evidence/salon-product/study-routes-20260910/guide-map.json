@@ -1,0 +1,152 @@
+{
+  "antiplagiat-ai": [
+    "diplom",
+    "writing",
+    "redaktura-posle-ii.html",
+    "Редактура готового текста"
+  ],
+  "apellyaciya": [
+    "diplom",
+    "finishing",
+    "priyomnaya.html",
+    "Обсудить свою ситуацию"
+  ],
+  "dnevnik-praktiki": [
+    "practice",
+    "writing",
+    "configurator.html?product=practice&result=part",
+    "Помощь с частью отчёта"
+  ],
+  "harakteristika-s-praktiki": [
+    "practice",
+    "starting",
+    "otchet-po-praktike.html",
+    "Помощь с отчётом по практике"
+  ],
+  "kursovaya-za-nedelyu": [
+    "course",
+    "writing",
+    "kursovaya-rabota.html",
+    "Выбрать объём и срок курсовой"
+  ],
+  "normocontrol": [
+    "diplom",
+    "finishing",
+    "normokontrol-vkr.html",
+    "Разобраться с требованиями нормоконтроля"
+  ],
+  "obekt-predmet-cel-zadachi": [
+    "diplom",
+    "starting",
+    "plan.html",
+    "Помощь с темой и планом"
+  ],
+  "otchet-po-praktike": [
+    "practice",
+    "writing",
+    "otchet-po-praktike.html",
+    "Выбрать состав отчёта"
+  ],
+  "otzyv-rukovoditelya-vkr": [
+    "diplom",
+    "finishing",
+    "diplomnaya-rabota.html",
+    "Помощь с подготовкой ВКР"
+  ],
+  "prakticheskaya-chast-kursovoy": [
+    "course",
+    "writing",
+    "configurator.html?product=course&result=part",
+    "Помощь с практической частью"
+  ],
+  "prezentaciya-k-zashchite": [
+    "diplom",
+    "finishing",
+    "configurator.html?service=df",
+    "Презентация и речь к защите"
+  ],
+  "prilozheniya-po-gost": [
+    "diplom",
+    "finishing",
+    "normokontrol-vkr.html",
+    "Сверить требования к оформлению"
+  ],
+  "recenziya-na-vkr": [
+    "diplom",
+    "finishing",
+    "diplomnaya-rabota.html",
+    "Помощь с подготовкой ВКР"
+  ],
+  "rech-na-zashchitu": [
+    "diplom",
+    "finishing",
+    "configurator.html?service=df",
+    "Презентация и речь к защите"
+  ],
+  "rinc-statya": [
+    null,
+    null,
+    "nauchnaya-statya.html",
+    "Помощь с текстом статьи"
+  ],
+  "skolko-stoit-diplomnaya": [
+    "diplom",
+    "starting",
+    "diplomnaya-rabota.html",
+    "Выбрать состав и срок ВКР"
+  ],
+  "skolko-stoit-kursovaya": [
+    "course",
+    "starting",
+    "kursovaya-rabota.html",
+    "Выбрать состав и срок курсовой"
+  ],
+  "spisok-literatury": [
+    "diplom",
+    "writing",
+    "normokontrol-vkr.html",
+    "Сверить требования к оформлению"
+  ],
+  "temy-vkr": [
+    "diplom",
+    "starting",
+    "plan.html",
+    "Помощь с темой и планом"
+  ],
+  "titulnyj-list": [
+    "diplom",
+    "finishing",
+    "normokontrol-vkr.html",
+    "Сверить требования к оформлению"
+  ],
+  "vkr-struktura": [
+    "diplom",
+    "writing",
+    "configurator.html?product=diplom&result=part",
+    "Помощь с введением ВКР"
+  ],
+  "vvedenie-kursovoy": [
+    "course",
+    "writing",
+    "configurator.html?product=course&result=part",
+    "Помощь с введением курсовой"
+  ],
+  "zaklyuchenie-kursovoy": [
+    "course",
+    "finishing",
+    "configurator.html?product=course&result=part",
+    "Помощь с заключением курсовой"
+  ],
+  "zaklyuchenie-vkr": [
+    "diplom",
+    "finishing",
+    "configurator.html?product=diplom&result=part",
+    "Помощь с заключением ВКР"
+  ],
+  "zashchita-diploma": [
+    "diplom",
+    "finishing",
+    "configurator.html?service=df",
+    "Презентация и речь к защите"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "release": "release198-666e7b8f",
+  "source_commit": "666e7b8f95aa262fc7f152bc7fc117469a8489b5",
+  "files": 434,
+  "steps": [],
+  "database_restored": false,
+  "error": "AssertionError: expertise.html",
+  "recovery": {
+    "health": {
+      "ok": true,
+      "uptime_s": 29342,
+      "active_orders": 38,
+      "uploads": {
+        "pending": 0,
+        "delayed": 0
+      }
+    },
+    "pay_online": true,
+    "current": "/var/www/academic_saloon/releases/release197-be99a1d9",
+    "index_sha256": "505c9d1f190dea0bbccf25dc1514b89fd3d73cb47aa91815431e8008b8e4fb72"
+  }
+}
