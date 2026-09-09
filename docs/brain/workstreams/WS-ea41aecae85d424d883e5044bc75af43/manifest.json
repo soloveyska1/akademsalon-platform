@@ -859,6 +859,50 @@
       {
         "path": "docs/brain/evidence/salon-support",
         "match": "tree"
+      },
+      {
+        "path": "assets/css/salon-rewards.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-rewards.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-reviews.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-reviews.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-legal.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-legal.js",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/legal-presentation.py",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-rewards-redesign.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-legal-presentation.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-reviews.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/salon-rewards",
+        "match": "tree"
       }
     ],
     "read": []
@@ -877,6 +921,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 54,
-  "base_manifest_hash": "997eef5641fff511d106c159f9a86112e41043baafb7931d477bcc7e227a55af"
+  "manifest_revision": 55,
+  "base_manifest_hash": "0b7eb98f9f6bcea6c89ef68f17ebcdf81d6e5081a26162acdd43ed7dc1602527"
 }
