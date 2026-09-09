@@ -2366,10 +2366,19 @@ function initCabinet() {
     var payBtns = '<div class="case-acts case-pay__actions">' +
       (depBtn ? '<button type="button" class="btn btn-wax" data-act-pay-dep>С депозита — ' + money(depDue) + ' ₽</button>' : '') +
       (o.pay_online ? '<button type="button" class="btn ' + (depBtn ? 'btn-line' : 'btn-wax') + '" data-act-pay>Оплатить картой онлайн</button>' : '') +
-      '<button type="button" class="btn ' + (o.pay_online || depBtn ? 'btn-line' : 'btn-wax') + '" data-act="paid">Я оплатил(а) переводом</button>' +
+      (!o.pay_online ? '<button type="button" class="btn ' + (depBtn ? 'btn-line' : 'btn-wax') + '" data-act="paid">Я оплатил(а) переводом</button>' : '') +
       '</div><p class="case-pay__help"><button type="button" class="line-link" data-chat-focus>' +
       'Вопрос по оплате <span aria-hidden="true">→</span></button></p>';
-    return head + payWorkspace(req + receiptField + payBtns, history, 'due') + '</div>';
+    var automatic = o.pay_online
+      ? '<div class="account-notice"><span class="account-notice__mark" aria-hidden="true">✓</span>' +
+        '<div><strong>Оплата подтвердится автоматически</strong><p>Защищённая страница Robokassa. После оплаты статус обновится в кабинете. Отправлять скриншот и отмечать перевод не нужно.</p></div></div>'
+      : '';
+    var fallback = o.pay_online && o.requisites
+      ? '<details class="case-pay__transfer"><summary>Оплатить обычным переводом</summary>' + req +
+        '<p class="case-field__hint">Этот способ требует сверки поступления мастером.</p>' +
+        '<button type="button" class="btn btn-line" data-act="paid">Я оплатил(а) переводом</button></details>'
+      : '';
+    return head + payWorkspace(automatic + (o.pay_online ? '' : req) + receiptField + payBtns + fallback, history, 'due') + '</div>';
   }
 
   /* part='decide' — только решения по делу, part='pay' — только платёж.
@@ -4018,14 +4027,16 @@ function initCabinet() {
     S.api.post('/orders/' + st.currentId + '/pay', { email: email }, orderHeaders(st.currentId))
       .then(function (r) {
         st.busy = false;
-        if (!r.ok) { toast('Не получилось открыть оплату — воспользуйтесь реквизитами'); return; }
+        if (!r.ok) { toast('Не получилось открыть счёт. Попробуйте ещё раз или напишите в чат заказа'); return; }
         if (r.online && r.url) {
           toast('Открываем защищённую страницу оплаты…');
-          var w = window.open(r.url, '_blank', 'noopener');
-          if (!w) location.href = r.url;
+          location.assign(r.url);
         } else {
           toast('Онлайн-оплата пока не подключена — переведите по реквизитам');
         }
+      }).catch(function () {
+        st.busy = false;
+        toast('Связь прервалась. Нажмите «Оплатить» ещё раз — статус платежа проверяет сервер');
       });
   }
 

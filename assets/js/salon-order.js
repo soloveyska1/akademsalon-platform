@@ -2,6 +2,10 @@
 'use strict';
 const $=id=>document.getElementById(id), form=$('direct-order'), S=window.Salon, C=window.SalonCalc, P=window.SalonProducts;
 if(!form||!S||!C||!P)return;
+// Retire private contact residue from the previous form without erasing its
+// non-private task selection. This migration is safe to run repeatedly.
+for(const key of ['salon_draft','salon_service_draft_v1']){try{const saved=S.store.get(key,null);if(saved?.fields&&typeof saved.fields==='object'){let changed=false;for(const field of ['name','contact'])if(Object.hasOwn(saved.fields,field)){delete saved.fields[field];changed=true}if(changed)S.store.set(key,saved)}}catch(e){}}
+
 const summary=document.querySelector('.order-summary'),layout=document.querySelector('.order-layout'),summaryMedia=matchMedia('(max-width:800px)');
 function placeSummary(){if(document.body.classList.contains('salon-intake'))return;const focus=document.activeElement;if(summaryMedia.matches){$('topic').previousElementSibling.before(summary)}else layout.append(summary);if(focus&&summary.contains(focus))focus.focus({preventScroll:true})}
 placeSummary();summaryMedia.addEventListener('change',placeSummary);
@@ -27,7 +31,7 @@ else if(params.get('composition')==='1'&&M?.saved()){setValue('product',composit
 else{try{const saved=JSON.parse(sessionStorage.getItem(draftKey)||'null');if(saved){setValue('product',saved.product);setValue('scope',saved.scope);setValue('discipline',saved.discipline);if(/^\d{4}-\d{2}-\d{2}$/.test(saved.deadline||''))$('deadline').value=saved.deadline}}catch(e){}}
 const sampleRefs={essay:'Историческая правда и рыцарский миф в «Айвенго»',referat:'Травля: понятие, формы и способы противодействия',comparison:'Сравнительный анализ типологических моделей акцентуаций характера',risk:'Государственно-частное партнёрство: модели и риски',method:'Оценка звуко-слогового состава слова у старших дошкольников',practice:'Педагогическая практика: анализ занятий и собственное мероприятие',project:'Коммуникация органа власти: анализ и проектные предложения'};
 if(Object.hasOwn(sampleRefs,params.get('sample'))&&params.get('sampleScope')==='part')$('scope').value='part';
-if(params.get('result')==='editing'||params.get('result')==='ai_editing')$('scope').value='editing';
+if(params.get('tier')==='turn'||params.get('result')==='editing'||params.get('result')==='ai_editing')$('scope').value='editing';
 const legacyDisc=params.get('disc')||params.get('discipline')||({h:'hum',l:'law',t:'tech',m:'med'}[params.get('d')]);
 if(legacyDisc)setValue('discipline',legacyDisc);
 if(params.get('result')==='diagnostic'||params.get('tier')==='base')$('scope').value='diagnostic';
@@ -107,11 +111,15 @@ function mountComposition(){
  compositionControls.querySelectorAll('[data-order-addon]').forEach(c=>c.addEventListener('change',()=>{composition.addons=c.checked?[...composition.addons,c.value]:composition.addons.filter(id=>id!==c.value);update()}));
 }
 
+function creditEligible(){return service?.id==='plan'||service?.id==='review'||$('scope').value==='diagnostic'}
+const credit=document.createElement('details');credit.className='order-extra-details';credit.innerHTML='<summary>Стоимость разбора можно зачесть в продолжение <span>14 дней</span></summary><p>После оплаченного письменного разбора его стоимость зачтём один раз в ближайший согласованный этап по этому же материалу или плану, если продолжишь в течение 14 календарных дней.</p><p>Этап должен использовать выводы разбора. Для несвязанной услуги зачёт не действует. Сумму закрепим в спецификации до оплаты.</p>';
+$('send-order').before(credit);
 function update(){
+ credit.hidden=!creditEligible();
  const cs=compositionState();
  const a=selected(),q=quote();
  const participation=((a.tier==='vip'&&a.scope!=='support')||service?.id==='psychologyvip')&&service?.id!=='author';$('participation-row').hidden=!participation;$('participation').required=participation;
- const anonymous=service?.id==='psychologyvip';$('anonymous-row').hidden=!anonymous;$('anonymous-data').required=anonymous;
+ const anonymous=service?.id==='psychologyvip'||$('discipline').value==='psychology';$('anonymous-row').hidden=!anonymous;$('anonymous-data').required=anonymous;
  $('summary-name').textContent=a.p.name;
  $('summary-scope').textContent=service?'Отдельная услуга':{whole:'Работа с нуля',part:'Отдельная часть',editing:'Доработка готового текста',diagnostic:'Письменный разбор (по желанию)',support:'Работа с готовым проектом по этапам'}[a.scope];
  $('summary-price').textContent=q.amount?(q.exact?'':'от ')+P.money(q.amount)+(service?.unit||''):'По заданию';
@@ -154,25 +162,32 @@ $('files').addEventListener('change',()=>{
 });
 function freeze(on){form.querySelectorAll('input,select,textarea').forEach(x=>x.disabled=on);$('scope').disabled=on||!!service;fileList();if(!on)renderComposition()}
 function payload(){const a=selected(),activeComposition=compositionState();const details=[a.p.name,'Объём заказа: '+$('summary-scope').textContent,$('volume').value.trim()?'Объём: '+$('volume').value.trim():'',...Object.entries(serviceAnswers).map(([k,v])=>{const q=service.ask.find(x=>x.id===k);return q.label+': '+v}),$('details').value.trim(),Object.hasOwn(sampleRefs,params.get('sample'))&&$('intake-sample')?.dataset.active==='true'?'Ориентир по подходу из примеров: '+sampleRefs[params.get('sample')]:'',compositionState()?M.summary(composition):'',activeComposition&&activeComposition.speed!=='standard'&&$('express-clock')?.value?'Нужно к '+($('deadline').value||'дате, которую уточним')+' '+$('express-clock').value+' (часовой пояс клиента: '+Intl.DateTimeFormat().resolvedOptions().timeZone+')':''].filter(Boolean).join('\n');
- const p={type:a.type,disc:C.transportDiscipline(a.disc),term:a.term,tier:a.tier,topic:$('topic').value.trim(),deadline:$('deadline').value,details,plan:service?.id==='plan',name:$('name').value.trim(),contact:$('contact').value.trim(),website:$('website').value,consent:$('consent').checked,privacy_notice_ack:$('consent').checked,consent_doc:window.SalonDirectContract.consent_doc,page:'configurator.html'};
+ const p={intake_version:2,type:a.type,disc:C.transportDiscipline(a.disc),term:a.term,tier:a.tier,topic:$('topic').value.trim(),deadline:$('deadline').value,details,plan:service?.id==='plan',name:$('name').value.trim(),contact:$('contact').value.trim(),website:$('website').value,consent:$('consent').checked,privacy_notice_ack:$('consent').checked,consent_doc:window.SalonDirectContract.consent_doc,page:'configurator.html'};
+ if(creditEligible())p.details+='\nЗачёт разбора: 14 календарных дней; один раз; ближайший этап по тому же материалу или плану, использующий выводы разбора; не для несвязанной услуги. Сумму закрепить в спецификации до оплаты.';
  if($('promo').value.trim())p.promo=$('promo').value.trim();if($('gift').value.trim())p.gift=$('gift').value.trim();
  if(S.refCode?.())p.ref=S.refCode();
  if(service?.id!=='author'){p.contract_contour='A';p.academic_submode=((a.tier==='vip'&&a.scope!=='support')||service?.id==='psychologyvip')?'A2':'A1';if(p.academic_submode==='A2')p.author_participation={required:true,confirmed:$('participation').checked,checkpoints:['утверждение проблемы, цели, метода и содержательных решений','проверка фактов, источников и исходных данных','подготовка, содержательная проверка и утверждение клиентом финальной версии']}}
- p.case_context={work_type:a.p.type,requested_result:service?service.id:a.scope==='diagnostic'?'diagnostic':a.scope==='editing'?'editing':'support',offer_id:service?.id==='psychologyvip'?'psychology_full_vip':service?serviceTypes[service.id]:a.type==='custom'?'custom':a.tier==='vip'?'work_vip':a.tier==='turn'?'work_turn':'work_base',contract_contour:p.contract_contour,academic_submode:p.academic_submode,author_participation:!!p.author_participation?.confirmed,scope_code:service?.id==='psychologyvip'?'psychology_full_vip':a.p.type==='practice'&&['diagnostic','editing','support'].includes(a.scope)?'practice_draft_'+a.scope:null,result_code:a.scope==='diagnostic'?'diagnostic':a.scope==='editing'?'editing':'support',work:a.p.type,result:a.scope==='diagnostic'?'diagnostic':a.scope==='editing'?'editing':'support',user_confirmed:true,scope:a.scope,source:'direct-order'};
- if(service?.id==='psychologyvip')p.case_context.data_deidentified=$('anonymous-data').checked;
+ p.case_context={discipline:a.disc,work_type:a.p.type,requested_result:service?service.id:a.scope==='diagnostic'?'diagnostic':a.scope==='editing'?'editing':'support',offer_id:service?.id==='psychologyvip'?'psychology_full_vip':service?serviceTypes[service.id]:a.type==='custom'?'custom':a.tier==='vip'?'work_vip':a.tier==='turn'?'work_turn':'work_base',contract_contour:p.contract_contour,academic_submode:p.academic_submode,author_participation:!!p.author_participation?.confirmed,scope_code:service?.id==='psychologyvip'?'psychology_full_vip':a.p.type==='practice'&&['diagnostic','editing','support'].includes(a.scope)?'practice_draft_'+a.scope:null,result_code:a.scope==='diagnostic'?'diagnostic':a.scope==='editing'?'editing':'support',work:a.p.type,result:a.scope==='diagnostic'?'diagnostic':a.scope==='editing'?'editing':'support',user_confirmed:true,scope:a.scope,source:'direct-order'};
+ if(service?.id==='psychologyvip'||a.disc==='psychology')p.case_context.data_deidentified=$('anonymous-data').checked;
  // Reuse the established serializer without init(): no stored cart is read,
  // no cart UI is mounted, and S inside cart.js stays null so client fields
  // cannot be persisted. The actual submitted line retains package semantics.
  const cs=compositionState();
  const composed=cs&&(cs.speed!=='standard'||cs.package==='vip'||cs.addons.length>0);
  if(composed)p.composition_intent={...cs,express_factor:cs.speed==='express24'?2:null,requested_clock:cs.speed!=='standard'?$('express-clock')?.value||'':'',quote_status:'estimate_only',price_and_schedule_confirmation_required:true};
- if(service||p.case_context.scope_code||composed){
+ {
   const q=quote(),cart=window.SalonCart;cart.clear();
   const mainLine={kind:service?'service':'work',type:a.type,serviceId:service?.id||'',label:a.p.name,disc:a.disc,term:a.term,tier:a.tier,low:q.amount||0,high:q.amount||0,fixed:!!service?.fixed,topic:p.topic,deadline:p.deadline,requirements:p.details,answers:{...serviceAnswers},academicSubmode:p.academic_submode,authorParticipation:!!p.author_participation?.confirmed,scopeCode:p.case_context.scope_code,resultCode:a.scope==='diagnostic'?'diagnostic':a.scope==='editing'?'editing':'support',sourceMaterialProvided:queue.length>0};cart.add(mainLine,{silent:true});
   if(composed)M.lines(cs).forEach(l=>cart.add({kind:'service',type:l.type,serviceId:l.service,label:l.label,parentId:mainLine.id,disc:a.disc,term:a.term,tier:'base',low:l.price,high:l.price,topic:p.topic,deadline:p.deadline,requirements:l.detail,answers:{when:p.deadline||'Дату защиты согласуем по заданию'},academicSubmode:'A1',authorParticipation:false},{silent:true}));
   p.cart=cart.payload();
+  // The direct intake owns full text. The legacy serializer's short preview
+  // must not replace the actual brief sent to the versioned server parser.
+  const first=p.cart.items[0];first.topic=p.topic;first.requirements=p.details;
+  first.answers={...serviceAnswers};first.scope.customer_requirements=p.details;
+  first.scope.topic=p.topic;
   if(composed){const cq=q.compositionQuote;p.cart.items[0].quote_preview={low:cq.work||0,high:cq.work||0};p.cart.items[0].quote_pending=cq.work===null||cs.package==='vip';p.cart.items[0].schedule.requested_turnaround_hours=cs.speed==='express24'?24:null;p.cart.items[0].schedule.express_requested=cs.speed!=='standard';p.cart.quote_preview={low:cq.total??cq.lowerBound,high:cq.total??cq.lowerBound};p.cart.quote_pending=cq.total===null;p.cart.package_request=cs.package;p.cart.express_request=cs.speed;p.cart.base_formatting_included=true;}
-  p.cart.items.forEach(x=>x.disc=C.transportDiscipline(x.disc));
+  const lineIds=new Map(p.cart.items.map((x,i)=>[x.client_id,i===0?'direct-main':'direct-addon-'+i]));
+  p.cart.items.forEach(x=>{x.disc=C.transportDiscipline(x.disc);x.client_id=lineIds.get(x.client_id);x.requested_line_id=x.client_id;x.parent_client_id=lineIds.get(x.parent_client_id)||null;if('parent_requested_line_id' in x)x.parent_requested_line_id=x.parent_client_id});
  }
  if(queue.length)p.attachments=queue.map(a=>({client_file_id:a.id,name:a.file.name,size:a.file.size,type:a.file.type||'application/octet-stream',status:'pending'}));
  if(S.attribution?.decoratePage)p.page=S.attribution.decoratePage(p.page);

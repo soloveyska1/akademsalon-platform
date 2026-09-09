@@ -60,7 +60,7 @@
       { id: 'vak',        label: 'Научная статья ВАК',               base: 18000,  prices: { diagnostic: 3000, editing: 12000, support: 18000 } },
       { id: 'scopus',     label: 'Статья Scopus / Web of Science',   base: 35000,  prices: { diagnostic: 5000, editing: 22000, support: 35000 } },
       { id: 'rinc',       label: 'Научная статья РИНЦ',              base: 9000,   prices: { diagnostic: 2500, editing: 7000,  support: 9000 } },
-      { id: 'self',       label: 'Реферат или эссе',                 base: 2500,   prices: { diagnostic: 2500, editing: 2500,  support: 2500 } }
+      { id: 'self',       label: 'Реферат или эссе',                 base: 2500,   prices: { diagnostic: 1500, editing: 2500,  support: 2500 } }
     ],
     disciplines: [
       { id: 'hum',  label: 'Гуманитарные / экономика',                 k: 1.0 },
