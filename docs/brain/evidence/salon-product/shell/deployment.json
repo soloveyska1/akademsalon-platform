@@ -1,0 +1,38 @@
+{
+  "id": "appgdep_6aa0c45abda4819182a9d894df5499b5",
+  "project_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7",
+  "title": "Академический Салон — просмотр главной",
+  "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_1ee6fb65a3508191bd4e101797298c73",
+  "type": "publish",
+  "status": "succeeded",
+  "url": "https://akademsalon-desktop-preview.saymoon.chatgpt.site",
+  "screenshot_asset_pointer": null,
+  "provider_deployment_id": "saymoon--akademsalon-desktop-preview",
+  "failure_message": null,
+  "env_set_revision": 0,
+  "updated_at": "2026-09-09T02:28:54.298045+00:00",
+  "source_sha": "0a5ce1d15ddac73467082b9e47ed08d23c13507a",
+  "version_number": 49,
+  "archive_storage_hash": "sha256:a140081a84568c2df5abbb2a2dda39440463d8184dd2ef199cf98e9a3f1a0421",
+  "local_archive_sha256": "83b79cd9cacff7671bf9527d64745f38d0d34590e78e4eeb3847d4e0d56e2cab",
+  "access": {
+    "owner_only": true,
+    "revision": 1,
+    "groups": 0
+  },
+  "readback": {
+    "surface": "CUA authenticated owner in-app preview",
+    "route": "/#home-benefits",
+    "observations": [
+      "Sticky header and grouped footer visually reopened",
+      "Single offer5% switches to semester999/150days with compare link",
+      "Native menu opens, forwards to local search, Escape returns menu opener",
+      "Cookie settings opens from footer, Escape closes without saving",
+      "Current composition remains preserved; no actual submission",
+      "Benefits anchor left open and marked deliverable"
+    ]
+  },
+  "previous_version": 48,
+  "rollback": "Previous saved version retained; rollback not executed",
+  "public_domain": "akademsalon.ru unchanged"
+}
