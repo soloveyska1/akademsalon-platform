@@ -9,7 +9,10 @@
 - Sources: current specifikaciya.html + linked sample PDF + existing offer. PDF is a separate illustrative multi-position example, not an exact copy of the screen; its old offer revision must not be represented as current terms.
 - Footer: root-independent audit found dark new footer background depends on body allowlist, while light link colors apply globally. Integration owner requested to migrate footer selectors to .salon-experience .site-footer.salon-bottom; internal document footers must remain untouched.
 - Proof plan: browser matrix 320/360/390/768/1024/1440 x light/dark x four fields; keyboard selection, noJS, modes, disclosures; contrast and PDF target. Legacy tests and composed contracts distinguished. Brain validation, scope check, independent review.
-- Changed: declaration only.
-- Unverified: implementation, shared footer integration and publication.
+- Changed: complete compact interactive specification, owned CSS/JS, progressive enhancement, two PDF links with truthful separate/older sample caveat, scoped modern footer skin.
+- Verified: 48-state browser matrix, mobile/noJS/keyboard/reduced motion, contrast minimum4.73, two independent reviews; stale hash found and repaired. Baseline651/651, ownJS syntax and Brain strict pass. Evidence: docs/brain/evidence/specification-interactive/report.txt.
+- Unverified: final integrated test migration, shared footer integration and private publication.
 - Risks/rollback: no backend/legal artifact changes. Restore previous specifikaciya.html and shared footer CSS from retained private version if necessary.
-- Next: implement, verify, freeze and submit result to active integration owner.
+- Next: integration owner merge submitted revision preserving frozen result ancestry, replace specifikaciya.html/remove intermediate HTML, update obsolete exact-document test, apply shared footer fix, private-publish and live readback.
+
+Bootstrap: strict scan has hard=0 and59 inherited historical warnings. Root consciously accepts unchanged disjoint legacy warnings for this isolated input; allow-warnings snapshot green.
