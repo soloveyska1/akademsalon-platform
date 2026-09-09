@@ -2374,7 +2374,7 @@
      бренд · Цены · Гарантии · Отзывы · Клуб · Полезные материалы · тема · «Рассчитать» · «Меню».
      На главной «Рассчитать» ведёт к смете на странице, дальше — в конфигуратор. */
   /* админка — рабочий стол мастера: маркетинговый каркас сайта там ни к чему */
-  var CHROME_OFF = here === 'admin.html' || here === 'admin-mock.html';
+  var CHROME_OFF = here === 'admin.html' || here === 'admin-mock.html' || document.body.classList.contains('salon-workspace');
   if (!CHROME_OFF && !document.querySelector('.site-header')) {
     var header = document.createElement('header');
     var accountChrome = document.body.classList.contains('is-account-route');
@@ -4233,4 +4233,15 @@
         if (window.console && console.debug) console.debug('sw:', err && err.message);
       });
   });
+})();
+
+/* The helper starts only after an explicit question; no background chat calls. */
+(function mountSalonAssistant(){
+  if(/^admin/.test(location.pathname.split('/').pop())||document.body.classList.contains('salon-workspace'))return;
+  function mount(){
+    if(document.querySelector('script[data-salon-assistant]'))return;
+    const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/css/salon-assistant.css?v=20260909assistant2';document.head.append(css);
+    const js=document.createElement('script');js.src='/assets/js/salon-assistant.js?v=20260909assistant2';js.dataset.salonAssistant='true';document.body.append(js);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
 })();

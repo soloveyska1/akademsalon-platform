@@ -1,0 +1,14 @@
+{
+  "dashboard.html": "fb32c74b3a895d5fc5ea1687134ed59d047fb44ca2e73d5f7d35674bd97ed9e0",
+  "assets/js/app.js": "dbbc02bf99f3c19ccd5112fea286075dd866a94e3f2ce479e40651fd7b7fcd83",
+  "assets/js/salon-workspace.js": "cc48ff13adf502c51c6aa8887a22d2120f5c2c7841fb67e56bdaddc465ee5ff1",
+  "assets/js/salon-order-domain.js": "365e549ac6c2236cd3f9a72abe1fcae86d420e16120a301b98bf0030d9c3ad4b",
+  "assets/js/salon-assistant.js": "1420b083cf55b93a5aef874a2df4fa85eb5bba6a70417d6c01b7e839fe7941ee",
+  "assets/css/salon-workspace.css": "344e4a6b6b984cfa02c5c21847fd316fca3fdb2b9ddc7cb80e40ae6cdfe1a198",
+  "assets/css/salon-assistant.css": "6443cf895b043a4a52f18adca52d53ccbc79b2dc6a5c8bf64bcb6efae04c533c",
+  "backend/salon_bot/autoquote.py": "3e48174c95853ab0537d47254fba3319a1f32d39aadf27cd344355cb95ce4a80",
+  "backend/salon_bot/assistant.py": "d736615ea0f51f8886451394222d316fe8e45aae22811fedb4bb703bc7293c63",
+  "backend/salon_bot/install_autoquote.py": "f3b61f103f0f4bb35f7c7a4feed889f57d72c83bd19136921f5411c1dd48864a",
+  "backend/salon_bot/tests/test_autoquote.py": "866826d43d55fe337f6fdaed5e2fb3b1d9c585c7eef6935a35d74acce6f0cb2c",
+  "backend/salon_bot/tests/test_assistant.py": "84de74991b1b0187352eef2639c91de55876dcd880351f1618dd7dadd2e70e5b"
+}
