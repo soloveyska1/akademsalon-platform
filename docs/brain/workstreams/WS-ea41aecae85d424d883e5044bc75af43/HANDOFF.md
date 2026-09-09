@@ -586,3 +586,17 @@ Ready criteria: computed transparentfieldset/radius0 in boththemes, alignedlegen
 mobile320/390 anddesktop1440 visual checks, volume/speed handoff unchanged,
 two independentreviews, frozenpublic checks, exactpublicreadback/rollback.
 Fresh originfetch completed. Existing workstream stays active; root solewriter.
+
+
+## User screenshot fixed — release196 verified 2026-09-10
+
+Implementation55ed92ad4ca3b56ce1d5faec4b8612fccc4fc97d. OnlythreeCSSproperties
+reset inheritedfieldset background/radius and legendpadding on16serviceentries.
+Evidence docs/brain/evidence/salon-product/fieldset-20260910. Root8source+8frozen
+states, independent42contract+4UXstates; public75tests, smoke14/14; actual
+apply196→rollback195→forward196 with434fileparity/35hashreadbacks. Live390dark
+confirmed transparent/radius0/padding0/overflow0/POST0. Mainproduction196-55ed92ad,
+previous195-dc6fa1ff. No financial/backend behaviour changes or indexingsubmissions.
+Privatepreviewunchangedv58 because existinguploadblock; no repeatedattempts.
+Ownedbrowser/server/SSHcontrol closed. Next: quiethealthmonitor andpromoexpiry,
+or follow newuserfeedback. No furtherredesign without a reproduced issue.
