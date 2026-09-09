@@ -12,7 +12,7 @@ test('frozen public artifact excludes private source and fixtures, retains viewe
   put('assets/js/app.js',"const dynamic='mobile.css?v=20260806shell123'");put('sw.js',"const VERSION = '20260806shell123'");
   put('manifest.webmanifest','{}');put('assets/vendor/pdfjs/pdf.min.mjs','viewer');put('assets/vendor/pdfjs/pdf.worker.min.mjs','worker');put('assets/samples/example.pdf','document');
   for(const n of ['.env','package.json','AGENTS.md','assets/.secret','assets/._document.pdf','backend/customer.txt','assets/js/cabinet-demo.js','docs/brain/private.txt'])put(n,'must-not-publish');
-  put('scripts/legal-presentation.py',fs.readFileSync('scripts/legal-presentation.py','utf8'));put('priyomnaya.html',fs.readFileSync('priyomnaya.html','utf8'));
+  put('scripts/referral-presentation.py',fs.readFileSync('scripts/referral-presentation.py','utf8'));put('priyomnaya.html',fs.readFileSync('priyomnaya.html','utf8'));
   for(const n of ['samples.html','benefits.html','services.html'])put(n,'<head><link rel="canonical" href="https://akademsalon.ru/'+n+'"></head>');
   put('tariffs.html','<head><link rel="canonical" href="https://akademsalon.ru/services.html"></head>');
   put('referral.html','unactivated1000');put('referral-rules.html','unactivated1000');
@@ -22,7 +22,7 @@ test('frozen public artifact excludes private source and fixtures, retains viewe
   const old=path.join(base,'legacy.html');fs.writeFileSync(old,'<html><head><title>Правила</title><link rel="canonical" href="https://akademsalon.ru/referral.html"></head><body><main><h1>200 бонусов</h1><p>первый заказ полностью оплачен</p></main></body></html>');
   const out=path.join(base,'public');const result=JSON.parse(execFileSync('python3',[script,'--repo',repo,'--ref',ref,'--legacy-referral',old,'--output',out],{encoding:'utf8'}));
   const manifest=JSON.parse(fs.readFileSync(result.manifest));assert.equal(result.source_commit,ref);
-  const referral=fs.readFileSync(path.join(out,'referral.html'),'utf8');assert.match(referral, /data-legal-reader/);assert.match(referral, /<h1>200 бонусов<\/h1><p>первый заказ полностью оплачен<\/p>/);assert.doesNotMatch(referral,/unactivated1000/);
+  const referral=fs.readFileSync(path.join(out,'referral.html'),'utf8');assert.match(referral, /data-referral-public/);assert.doesNotMatch(referral, /data-legal-reader|salon-legal\.js|class="doc"/);assert.match(referral, /<h1>200 бонусов<\/h1><p>первый заказ полностью оплачен<\/p>/);assert.doesNotMatch(referral,/unactivated1000/);
   const built=fs.readFileSync(path.join(out,'dashboard.html'),'utf8');assert.match(built,/flag=keep&amp;r=[a-f0-9]{16}/);assert.doesNotMatch(built,/cabinet-demo|__site-preview/);
   assert.match(built,new RegExp('production-'+ref.slice(0,12)));assert.doesNotMatch(fs.readFileSync(path.join(out,'assets/js/app.js'),'utf8'),/DIRTY/);
   assert.ok(manifest.files['assets/vendor/pdfjs/pdf.worker.min.mjs']);assert.ok(manifest.files['assets/samples/example.pdf']);
@@ -40,4 +40,15 @@ test('service worker never caches authenticated private routes with or without .
  const sw=fs.readFileSync('sw.js','utf8');const literal=sw.match(/const PRIVATE_PAGES = (.+);/)[1];const re=require('node:vm').runInNewContext(literal);
  for(const p of ['/dashboard','/dashboard.html','/admin','/admin-analytics.html','/oplaceno','/dashboard/'])assert.equal(re.test(p),true,p);
  assert.equal(re.test('/services.html'),false);
+});
+
+test('public referral preserves economic paragraph and replaces dead invitation input with a working cabinet route',()=>{
+ const terms='Пригласившему однократно начисляют 200 бонусов после того, как новый клиент полностью оплатит свой первый заказ. Регистрация по ссылке и заявка без оплаты начисления не дают. Для приглашённого цена не меняется. Начисление действует 90 дней.';
+ const source='<html><head><title>Бонусы</title></head><body><main><section class="club-hero"><div><h1>Бонусы за личную рекомендацию.</h1><p>'+terms+'</p><div><a class="button button--primary" href="loyalty.html">Прочитать полные правила</a></div></div></section><section class="club-grid"><article class="club-card club-card--invite"><div class="invite-action"><span>Ссылка</span><div><input readonly value="generic"><a href="https://t.me/academic_saloon_bot?start=club">Открыть</a></div></div></article><article class="club-card"><h2>Другой раздел остаётся</h2></article></section></main></body></html>';
+ const output=execFileSync('python3',['-c',"import runpy,sys,json;d=json.load(sys.stdin);print(runpy.run_path('scripts/referral-presentation.py')['render_referral'](d['source'],d['shell']))"],{input:JSON.stringify({source,shell:fs.readFileSync('priyomnaya.html','utf8')}),encoding:'utf8'});
+ assert.ok(output.includes('<p>'+terms+'</p>'));
+ assert.match(output,/data-referral-public/);assert.match(output,/href="dashboard.html#referral"/);
+ assert.match(output,/href="https:\/\/t.me\/academic_saloon_bot\?start=club"/);
+ assert.match(output,/<details class="rf-terms">/);assert.match(output,/Другой раздел остаётся/);
+ assert.doesNotMatch(output,/<input readonly|invite-action|salon-legal\.js|data-legal-reader/);
 });

@@ -59,10 +59,10 @@ def build(repo, revision, legacy, output):
  files={n:subprocess.check_output(['git','show',commit+':'+n],cwd=repo) for n in names if allowed(n)}
  old=legacy.read_bytes()
  if b'200' not in old or 'первый заказ'.encode() not in old or b'__site-preview' in old: raise ValueError('unexpected legacy referral input')
- # Apply only reading presentation to the verified live referral terms.
- presenter=subprocess.check_output(['git','show',commit+':scripts/legal-presentation.py'],cwd=repo,text=True)
- namespace={};exec(compile(presenter,'frozen-legal-presentation','exec'),namespace)
- presented=namespace['render_legal'](old.decode(),files['priyomnaya.html'].decode()).encode()
+ # Present the verified public referral independently from legal documents.
+ presenter=subprocess.check_output(['git','show',commit+':scripts/referral-presentation.py'],cwd=repo,text=True)
+ namespace={};exec(compile(presenter,'frozen-referral-presentation','exec'),namespace)
+ presented=namespace['render_referral'](old.decode(),files['priyomnaya.html'].decode()).encode()
  files['referral.html']=presented; files['referral-rules.html']=presented
  # Canonicalize the identical public referral compatibility page after its overlay.
  files['referral-rules.html']=re.sub(rb'(rel="canonical" href=")https://akademsalon.ru/referral-rules.html',rb'\1https://akademsalon.ru/referral.html',presented)
