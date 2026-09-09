@@ -600,3 +600,28 @@ previous195-dc6fa1ff. No financial/backend behaviour changes or indexingsubmissi
 Privatepreviewunchangedv58 because existinguploadblock; no repeatedattempts.
 Ownedbrowser/server/SSHcontrol closed. Next: quiethealthmonitor andpromoexpiry,
 or follow newuserfeedback. No furtherredesign without a reproduced issue.
+
+## Useful learning routes — bounded OUT-006 2026-09-10
+
+Baseccb1d12b20e48d58ba2d1b909406d6c4215e3719, cleanbranch. Userasks stronger
+search/usefulness/conversion/sharing. Readonlyaudit found catalogue topicfilter but
+no work×stage learning sequence, and29old bareconfigurator links in25articles.
+Implement one compact optional route in knowledge: course/practice/diplom ×
+starting/writing/finishing, three curatedguide anchors, safe sharelink, contextual
+service continuation. Collapseddefault, explicitvalidsharedrouteopens. Aftereach
+article add one nextreading and one relevantservice link plus fullroute link.
+Preserve25articlebytes andalloldanchors; this does not fix all29embeddedCTAs.
+Avoid duplicate bottompitch onguides withnewcontinuation. No pricing/rewards or
+backend changes; no promisedranking, no fabricatedreviews/urgency/progress.
+Scope: knowledge.html, existing25guideHTML, salon-library.js/css, ownsalon-product
+evidence andhandoff. Allpathsreserved; rootsolewriter. Twoindependentreviews.
+Readiness:9finiteplans,3staticfallbacklinks, clean shareURLs (noq/tokens/shelf),
+Back/Forward andsearch/shelf independent, no guide recommendsitself, articlebytes
+unchanged, meaningfulactualservice/formhandoff,320/390/768/1440boththemes,
+keyboard/noscript/clipboardfallback, focusedpublicchecks, productionreadback/rollback.
+Freshoriginfetch andcouncildoctor completed; exactconflictsbeforeimplementation.
+Design: existingpaper/ink/violet reader identity; a compactroute accordion withtwo
+segmentedrows andthree numberedreadinglinks. One strongfocus perexpandedblock;
+no extrahero, floatingCTA, inferred completionor mandatoryreading beforeorder.
+Googleprimarydocs consulted: helpfulpeople-firstcontent andcrawlableHTMLlinks;
+these guide implementation, not a claim of ranking improvement alreadyachieved.
