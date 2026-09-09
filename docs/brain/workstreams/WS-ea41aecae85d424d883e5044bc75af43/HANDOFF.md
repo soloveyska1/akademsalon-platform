@@ -510,3 +510,33 @@ PrivateSites: source43d38501 successfullypushedtoexistingmain; archivepackagedsu
 
 ## Discipline entry continuity — bounded OUT-006 heartbeat 2026-09-09
 Cleanbase3c18690b90e25b73c056805c28f659f59533a0a7, prod194healthy/uploads0/3servicesactive. Nine discipline pages still have generic composition and no explicit part choice unlike core194; keep the user's subject when adding the proven chooser. Rootsolewriter, existingreserved9HTML+salon-experience.js/css andsalon-product evidence. No newpaths outside manifest, no manualmanifest changes. Reuse existing sen-entry layout, optional discipline attribute propagated to primary/footer, unique subject outputs/materials and relevant links. Preserve exact existing visibleprices and raw psychologyVKR stagedpackage91000/servicepv block plus diagnostic/editing options. Do not normalize subject prices to generic14000/40000; no financial/backend/payload changes. Criteria:9subjects price/discipline parity, whole/part/editing and speed handoff through primary/footer, noJS defaults, keyboard,320/390/768/1440themes, old7core regression, twoindependentreviews, frozen75plus focusedcontracts, productionreadback androllback. No newIndexNowbatch for unchanged194; futurechanged9only aftersuccessfulpublication ifneeded. Freshfetch/councildoctor/context done. Inherited60warnings onlyacceptedifunchangedhard0.
+
+## Release195 — nine subject entries, completed 2026-09-09
+
+Base3c18690b90e25b73c056805c28f659f59533a0a7; scope0398a97e; implementation
+`dc6fa1ff7174dfb5feae7c0021d2a0b89202a816`. Solewriterroot, twoindependentreviews.
+Ninegeneric course/VKR discipline pages now use approved194shell: concise subject
+outputs, material checklist, subjectquestion, whole/part/editing and speedchooser.
+Primary/footer/noJS URLs retain existingdisc. Tariffs unchanged; psychology3500,
+29000 and separatepv91000 rawblocks unchanged. Scopedcontrast correction included.
+Evidence `docs/brain/evidence/salon-product/discipline-20260909`.
+
+Verified586contractassertions,75frozenpublictests,9staticcontracts, root90source+
+126frozenstates, reviewer72states+keyboard/noJS/seededdraft,9rootfrozenfooterflows,
+2productionbrowserflowsPOST0. Source/frozen/public details in evidenceREADME.
+Freshfetch/exactconflicts hard0,inherited60warnings consciouslyacceptedunchanged.
+Production `release195-dc6fa1ff`, previous`release194-43d38501`, actual rollback194
+andforward195 executed,434fileparity/35resourcehashreadbacks,smoke14/14.
+Backend unchanged, noorders/payments created. salon-watch is healthyoneshot with
+activetimer, idleinactive is normal. IndexNow accepted9changedURLsonceHTTP200;
+77batchnotrepeated, indexing/rankingsunproven.
+
+PrivateSites thirdsave ofprepared194archive again failed60sblobuploadbeforeversion.
+Stopidenticalretries absentexternalchange; lastverifiedprivatev58, VPS195healthy.
+Ownedsource/frozenservers androot/reviewerbrowserclosed. NoCURRENT-HANDOFFedit.
+
+Next exact step: audit the existing catalogue→configurator mobile flow using the
+nowpublished subject routes, and fix at most one reproduced customer-facing defect
+within declaredscope. No remaining`page-intro detail-intro`pages found in source;
+do not repeat redesigns alreadyfinished. If nodefect, keephealthcheckquiet and
+preserve laterTelegrampromoexpiry obligation; never invent backendautopayreadiness.
