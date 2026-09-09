@@ -1,0 +1,40 @@
+{
+  "checks": [
+    "sample: ZIP/XML integrity, metadata, no annotations/tracked/hidden/external content, required clauses, PDF page bounds passed",
+    "template: ZIP/XML integrity, metadata, no annotations/tracked/hidden/external content, required clauses, PDF page bounds passed",
+    "Page/sample scope, price, first payment and two PDF links match; stage total 3000+7000+4000=14000"
+  ],
+  "artifacts": {
+    "sample": {
+      "docx_sha256": "ec61d58f8ca299ab178d405e064f282c0cc57aeaa9a5849db06f566dcb69d85a",
+      "pdf_sha256": "c61fa022985692fd18d147f540ef56a03b4a5c07069f7859db57ec142959269f",
+      "pages": 8,
+      "page_text_lengths": [
+        1363,
+        1794,
+        1622,
+        1885,
+        2803,
+        3393,
+        3470,
+        2627
+      ]
+    },
+    "template": {
+      "docx_sha256": "ec7fbe3cfaf206802691c824d46c86dbd2cd61c453a262a237d88e143e40eee3",
+      "pdf_sha256": "18d5336c88c5d45f2ad831e14886e67241a9a9cad0906f6cdcc1073090aa8fa2",
+      "pages": 9,
+      "page_text_lengths": [
+        1427,
+        1383,
+        1582,
+        2017,
+        2818,
+        3398,
+        3475,
+        2487,
+        2116
+      ]
+    }
+  }
+}
