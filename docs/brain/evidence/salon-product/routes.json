@@ -1,0 +1,566 @@
+[
+  {
+    "path": "404.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "50x.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "about.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "academic-integrity.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "audit-temy-vkr.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "avtorskiy-zakaz.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "benefits.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "check.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "configurator.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "consent-analytics.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "consent-marketing.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "consent-publication.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "consent-request.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "consent.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "dashboard.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "deposit.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "diplomnaya-po-ekonomike.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "diplomnaya-po-psihologii.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "diplomnaya-po-yurisprudencii.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "diplomnaya-rabota.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "dorabotka-otcheta-po-praktike.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "dosie-nauchruka.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "expertise.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "gift.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guarantees.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-antiplagiat-ai.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-apellyaciya.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-dnevnik-praktiki.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-harakteristika-s-praktiki.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-kursovaya-za-nedelyu.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-normocontrol.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-obekt-predmet-cel-zadachi.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-otchet-po-praktike.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-otzyv-rukovoditelya-vkr.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-prakticheskaya-chast-kursovoy.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-prezentaciya-k-zashchite.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-prilozheniya-po-gost.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-recenziya-na-vkr.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-rech-na-zashchitu.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-rinc-statya.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-skolko-stoit-diplomnaya.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-skolko-stoit-kursovaya.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-spisok-literatury.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-temy-vkr.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-titulnyj-list.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-vkr-struktura.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-vvedenie-kursovoy.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-zaklyuchenie-kursovoy.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-zaklyuchenie-vkr.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "guide-zashchita-diploma.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "index.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "kandidatskaya-dissertaciya.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "knowledge.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "komissiya-0.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "kursovaya-po-ekonomike.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "kursovaya-po-informatike.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "kursovaya-po-menedzhmentu.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "kursovaya-po-pedagogike.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "kursovaya-po-psihologii.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "kursovaya-po-yurisprudencii.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "kursovaya-rabota.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "loyalty.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "magisterskaya-dissertaciya.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "maintenance.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "nauchnaya-statya.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "normokontrol-vkr.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "oferta.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "offline.html",
+    "experience": false,
+    "concurrentOwner": false,
+    "selfContained": true
+  },
+  {
+    "path": "oplaceno.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "oplata.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "otchet-po-praktike.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "plan.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "plus.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "privacy.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "priyomnaya.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "prolog.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "proverka-istochnikov-vkr.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "razbor-zamechaniy-nauchruka.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "redaktura-posle-ii.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "referat.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "referral.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "refunds.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "requisites.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "reviews.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "samples.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "services.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "specifikaciya.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "start.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "tariffs.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "terms.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "tools.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "vedenie.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "zayavka.html",
+    "experience": true,
+    "concurrentOwner": false,
+    "selfContained": false
+  },
+  {
+    "path": "zero-classes.html",
+    "experience": false,
+    "concurrentOwner": true,
+    "selfContained": false
+  }
+]

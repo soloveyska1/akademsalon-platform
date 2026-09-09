@@ -1,0 +1,162 @@
+{
+  "mode": "Actual extracted functions/bonus branch in Node VM; only synthetic data, API/confirmation mocked",
+  "hashes": {
+    "assets/js/admin.js": "81728fc2ea3a96003b2b4639c60f8130168ae9afec065b65f2099a17972f0b95"
+  },
+  "passed": 36,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Desk request is coalesced",
+      "pass": true
+    },
+    {
+      "name": "Failed initial desk is not empty queue",
+      "pass": true
+    },
+    {
+      "name": "Late desk result from old identity discarded",
+      "pass": true
+    },
+    {
+      "name": "New identity can start its own desk read before old request settles",
+      "pass": true
+    },
+    {
+      "name": "Old desk completion does not leave new UI waiting without a draw/reload",
+      "pass": true
+    },
+    {
+      "name": "Old mutation result is not delivered as success",
+      "pass": true
+    },
+    {
+      "name": "Identity change does not retain old busy lock",
+      "pass": true
+    },
+    {
+      "name": "Resolved network failure is classified as uncertain",
+      "pass": true
+    },
+    {
+      "name": "Background overview cannot repopulate old identity private state",
+      "pass": true
+    },
+    {
+      "name": "Bonus confirm after client switch does not mutate",
+      "pass": true
+    },
+    {
+      "name": "Bonus confirm after identity switch does not mutate",
+      "pass": true
+    },
+    {
+      "name": "Bonus uses amount and client actually confirmed",
+      "pass": true
+    },
+    {
+      "name": "Uncertain manual bonus cannot be immediately repeated",
+      "pass": true
+    },
+    {
+      "name": "Pending bonus is protected across reload before network acknowledgement",
+      "pass": true
+    },
+    {
+      "name": "Uncertain marker survives session serialization",
+      "pass": true
+    },
+    {
+      "name": "Failed journal read keeps uncertain lock",
+      "pass": true
+    },
+    {
+      "name": "Journal refresh is GET only and does not execute bonus",
+      "pass": true
+    },
+    {
+      "name": "Journal can be inspected before acknowledgement dialog",
+      "pass": true
+    },
+    {
+      "name": "Old identity journal result cannot clear lock",
+      "pass": true
+    },
+    {
+      "name": "Uncertain network retains persisted bonus lock",
+      "pass": true
+    },
+    {
+      "name": "Uncertain bad_json retains persisted bonus lock",
+      "pass": true
+    },
+    {
+      "name": "Definite validation bonus_empty clears pending marker",
+      "pass": true
+    },
+    {
+      "name": "Definite validation bad_amount clears pending marker",
+      "pass": true
+    },
+    {
+      "name": "Definite validation bad_request clears pending marker",
+      "pass": true
+    },
+    {
+      "name": "Definite validation forbidden clears pending marker",
+      "pass": true
+    },
+    {
+      "name": "Confirmed success clears pending marker",
+      "pass": true
+    },
+    {
+      "name": "Identity change during bonus retains recovery marker and suppresses success",
+      "pass": true
+    },
+    {
+      "name": "Acknowledgement without fresh journal cannot open confirm",
+      "pass": true
+    },
+    {
+      "name": "Fresh journal requires explicit second click before confirmation",
+      "pass": true
+    },
+    {
+      "name": "Cancel explicit review preserves lock",
+      "pass": true
+    },
+    {
+      "name": "Confirmed review clears lock with no automatic POST",
+      "pass": true
+    },
+    {
+      "name": "Late review confirmation after identity change cannot clear marker",
+      "pass": true
+    },
+    {
+      "name": "Payment filter shows claimed only and no paused",
+      "pass": true
+    },
+    {
+      "name": "Fix filter keeps existing quick action and target",
+      "pass": true
+    },
+    {
+      "name": "New filter preserves quote target",
+      "pass": true
+    },
+    {
+      "name": "Rejected create-link clipboard does not claim copied",
+      "pass": true
+    }
+  ],
+  "reproducer": "/private/tmp/salon-admin-candidate-contract.cjs",
+  "decision": "GO",
+  "findings": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 0
+  },
+  "scope": "Bounded deterministic contract review of changed queue/loading/read identity/API/bonus recovery/clipboard paths. Excludes visual layout, all legacy administration operations, live server and deployment."
+}

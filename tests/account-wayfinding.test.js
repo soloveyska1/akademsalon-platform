@@ -17,9 +17,11 @@ test('cabinet exposes one ordered route with compact section identity', () => {
   assert.match(cabinet, /class="account-nav__more-panel" aria-label="Другие разделы"/);
   assert.match(cabinet, /class="account-main__identity"/);
   assert.match(cabinet, /class="account-main__code"/);
-  for (const code of ['01', '02', '03', '04', '05', '06', '07']) {
-    assert.ok(cabinet.includes(`'${code}']`), `missing section code ${code}`);
+  // Section names now carry meaning; decorative ordinal codes are removed.
+  for (const route of ['home', 'orders', 'messages', 'calendar', 'community']) {
+    assert.match(cabinet, new RegExp("\\['" + route + "',"));
   }
+
 });
 
 test('the messages badge counts messages, not files from another section', () => {
@@ -40,7 +42,7 @@ test('new matter is primary only where creation belongs to the route', () => {
   assert.match(cabinet, /var newMatterPrimary = \(st\.tab === 'home' \|\| st\.tab === 'orders'\) &&/);
   assert.match(cabinet, /st\.orders\.length > 0 && !st\.orders\.some\(needsAction\)/);
   assert.match(cabinet, /account-head__new--seal' : 'account-head__new--quiet'/);
-  assert.match(cabinet, /href="configurator\.html">Новое дело/);
+  assert.match(cabinet, /href="configurator\.html">Новый заказ/);
   assert.match(accountCss, /WAX SEAL CTA · hall86/);
   assert.match(accountCss, /\.account-main__head > \.account-head__new--seal\s*\{[\s\S]*?background:\s*var\(--account-seal-wax\)[\s\S]*?text-transform:\s*uppercase/);
   assert.match(accountCss, /\.account-main__head > \.account-head__new--quiet\s*\{[\s\S]*?background:\s*transparent/);

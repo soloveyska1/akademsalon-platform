@@ -1,0 +1,98 @@
+{
+  "status": "GO",
+  "scope": "Five special-service pages local presentation and navigation review; no production/payment claims",
+  "routes": [
+    "normokontrol-vkr",
+    "plan",
+    "redaktura-posle-ii",
+    "razbor-zamechaniy-nauchruka",
+    "dorabotka-otcheta-po-praktike"
+  ],
+  "matrix": {
+    "states": 40,
+    "widths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "evidence": "/tmp/special-final-matrix.json"
+  },
+  "verified": [
+    "Modern header all visible actions44px and withinviewport",
+    "40states zero document overflow and no small primary/summary/tab/checklist targets",
+    "Hero introdisplayblock and coherent desktop columns",
+    "Dark demo output and final heading darkink39,33,53 on pastel backgrounds",
+    "All15demotabs onevisiblepanel and selectedstate correct",
+    "Home/End keyboard navigation on allfivepages",
+    "Checklist2of3 and FAQEnter on allfivepages",
+    "NoJS:3panels readable; inerttabbar/statushidden on allfivepages",
+    "6actualGET CTA destinations select service:norm/plan/ai/review or practice+editing/diagnostic correctly",
+    "Mobilemascot60px hiddenwhileanyorderCTAvisible,visibleelsewhere;desktop220pxunchanged",
+    "Each example explicitlylabelled schematic; distinct concrete service outcomes",
+    "Practice8000editing distinct from2500diagnostic; searchtitle no obsolete2500editingclaim",
+    "Explicit salon_direct_selection_v1 practiceediting fixture preserved afterplan navigation; selectiontrail absent"
+  ],
+  "resolved_findings": [
+    {
+      "priority": "P1",
+      "issue": "Header320clipped",
+      "fixed": "scoped modernheadercabinet/menu44px"
+    },
+    {
+      "priority": "P1",
+      "issue": "Nestedintrogrid and navcollidewithsupportstyles",
+      "fixed": "Unique svx namespace"
+    },
+    {
+      "priority": "P1",
+      "issue": "Darkwhiteheadingonpastel lowcontrast",
+      "fixed": "Explicitink #272135"
+    },
+    {
+      "priority": "P1",
+      "issue": "FloatingmascotcoversorderCTA",
+      "fixed": "Correct sa-launchselector60px and visibilityobserver"
+    },
+    {
+      "priority": "P2",
+      "issue": "Oldpracticepriceinsearchtitle",
+      "fixed": "Removedobsoleteprice"
+    },
+    {
+      "priority": "P2",
+      "issue": "Oldselectiontrailabovehero",
+      "fixed": "data-special-service guard; practiceediting→plan freshnavigation shows no trail"
+    }
+  ],
+  "non_blocking_observations": [],
+  "evidence": [
+    "/tmp/special-functional.json",
+    "/tmp/special-routes.txt",
+    "/tmp/special-last-delta.txt",
+    "/tmp/special-final-cta320.png",
+    "/tmp/special-final-demo320.png",
+    "/tmp/special-final-redaktura-posle-ii-1440-dark.png",
+    "/tmp/special-clean-trail.txt",
+    "/tmp/special-last-clean-hero320.png",
+    "/tmp/special-saved-choice-fixture.txt"
+  ],
+  "limitations": [
+    "BrowserlocalGETonly;noactualAPI submissions/payments",
+    "No physicaliOSkeyboard test",
+    "Screenswithspecial-final-prefix beforelastdelta maystillshowoldwideassistant; last-delta evidencebindsfinalmascot"
+  ],
+  "sha256": {
+    "assets/css/salon-experience.css": "58235791f6d587f36aa3f9c9655b0b6855dba772c01fc93346d67c228e1dd24a",
+    "assets/js/salon-experience.js": "987c0fa6d5a080249b23c5b818e6396f4d7daec74a66594b64f89b94aba71930",
+    "normokontrol-vkr.html": "0011eb80fff2416dd0ca3af1dccc66f824166e50ae29b6a4ebf5fd055538fa8a",
+    "plan.html": "d06e7d4de91e8bcd7fc3f4f7ace1c8bb7cb9f49fb25b4b56771807428141cd25",
+    "redaktura-posle-ii.html": "8e6c62f250b93223c2443975c8f7f7685f6cb4805ff45a0829e57c5cfca5cd49",
+    "razbor-zamechaniy-nauchruka.html": "4ceb52a898545a92bfeee9174c9a11eb6f8290b67acff1dbed53e8dac91205e1",
+    "dorabotka-otcheta-po-praktike.html": "19d48f9fb41edf507b91c681c000bfb4121165cea1768afcf23cedb538fbd598"
+  }
+}

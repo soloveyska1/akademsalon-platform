@@ -1,0 +1,342 @@
+{
+  "passed": 84,
+  "tests": [
+    {
+      "case": "coursestarting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "coursestarting valid opens",
+      "pass": true
+    },
+    {
+      "case": "coursestarting 3links",
+      "pass": true
+    },
+    {
+      "case": "coursestarting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "coursestarting relevant help",
+      "pass": true
+    },
+    {
+      "case": "coursestarting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "coursestarting copied current",
+      "pass": true
+    },
+    {
+      "case": "coursewriting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "coursewriting valid opens",
+      "pass": true
+    },
+    {
+      "case": "coursewriting 3links",
+      "pass": true
+    },
+    {
+      "case": "coursewriting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "coursewriting relevant help",
+      "pass": true
+    },
+    {
+      "case": "coursewriting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "coursewriting copied current",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing no load history writes",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing valid opens",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing 3links",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing actual finite links",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing relevant help",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing clean share exact",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing copied current",
+      "pass": true
+    },
+    {
+      "case": "practicestarting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "practicestarting valid opens",
+      "pass": true
+    },
+    {
+      "case": "practicestarting 3links",
+      "pass": true
+    },
+    {
+      "case": "practicestarting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "practicestarting relevant help",
+      "pass": true
+    },
+    {
+      "case": "practicestarting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "practicestarting copied current",
+      "pass": true
+    },
+    {
+      "case": "practicewriting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "practicewriting valid opens",
+      "pass": true
+    },
+    {
+      "case": "practicewriting 3links",
+      "pass": true
+    },
+    {
+      "case": "practicewriting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "practicewriting relevant help",
+      "pass": true
+    },
+    {
+      "case": "practicewriting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "practicewriting copied current",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing no load history writes",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing valid opens",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing 3links",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing actual finite links",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing relevant help",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing clean share exact",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing copied current",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting valid opens",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting 3links",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting relevant help",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting copied current",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting valid opens",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting 3links",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting relevant help",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting copied current",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing no load history writes",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing valid opens",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing 3links",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing actual finite links",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing relevant help",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing clean share exact",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing copied current",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?work=__proto__&stage=writing",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?work=__proto__&stage=writing",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?work=practice&stage=constructor",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?work=practice&stage=constructor",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?work=evil&stage=writing",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?work=evil&stage=writing",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?work=practice",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?work=practice",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?stage=finishing",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?stage=finishing",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?work=%3Cscript%3E&stage=starting",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?work=%3Cscript%3E&stage=starting",
+      "pass": true
+    },
+    {
+      "case": "catalogue filters preserved",
+      "pass": true
+    },
+    {
+      "case": "search removed from push",
+      "pass": true
+    },
+    {
+      "case": "publicplan current",
+      "pass": true
+    },
+    {
+      "case": "back restores plan",
+      "pass": true
+    },
+    {
+      "case": "back resets absent plan",
+      "pass": true
+    },
+    {
+      "case": "denied exposes manual clean URL",
+      "pass": true
+    },
+    {
+      "case": "manual field focused/select",
+      "pass": true
+    },
+    {
+      "case": "stale copy false suppressed",
+      "pass": true
+    },
+    {
+      "case": "stale copy true suppressed",
+      "pass": true
+    }
+  ],
+  "scope": "Actual appended route IIFE; fake DOM/history/clipboard. No storage/fetch APIs."
+}

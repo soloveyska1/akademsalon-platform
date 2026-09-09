@@ -1,0 +1,15 @@
+{
+  "release": "release189-3988a471",
+  "surface": "Codex in-app browser, actual production URLs",
+  "checks": {
+    "reviews": "47 existing reviews, 9 initially visible; first original-image dialog opened, navigation and zoom controls observed; close restored focus",
+    "deposit": "Preset 60000 updates contribution to 60000, remaining cash to 40000 and reserve to 9000 with 20000 used; cashback 1000 and additional earned 600; cabinet link #deposit",
+    "gift": "10000 amount and Before session wish update visible gift preview; no checkout submitted",
+    "legal": "oferta document search for возврат returned 11 matches and next-match control"
+  },
+  "limitations": [
+    "Two separate Playwright live matrix attempts timed out and are not reported as passed. Native app interactions and exact HTTP asset readback succeeded.",
+    "No real bank charge, gift issuance or customer message created. No measured conversion lift claimed."
+  ],
+  "cleanup": "Own Playwright rewards-root closed; own preview servers 8771 and 8772 stopped; temporary SSH control socket already expired. User app tabs retained."
+}

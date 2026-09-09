@@ -1,0 +1,47 @@
+{
+  "source": "8314b15c",
+  "steps": [
+    {
+      "action": "apply",
+      "health": {
+        "ok": true,
+        "uptime_s": 0,
+        "active_orders": 37,
+        "uploads": {
+          "pending": 0,
+          "delayed": 0
+        }
+      },
+      "backup": "/root/salon_bot/backups/direct-intake-20260909T084406704896Z"
+    },
+    {
+      "action": "rollback",
+      "health": {
+        "ok": true,
+        "uptime_s": 0,
+        "active_orders": 37
+      }
+    },
+    {
+      "action": "forward",
+      "health": {
+        "ok": true,
+        "uptime_s": 0,
+        "active_orders": 37,
+        "uploads": {
+          "pending": 0,
+          "delayed": 0
+        }
+      },
+      "backup": "/root/salon_bot/backups/direct-intake-20260909T084414175758Z"
+    }
+  ],
+  "hashes": {
+    "before": "7b87b6a921df199aed74f1f288baa0c056cf6cbb68a234d130dd0c46278fc522",
+    "after": "ade607b6005ffb359c6841fdd8ed28c6773a1cbd67109567710972d85928ed29",
+    "module": "6b0561b0fec37f3a81d7c9faefa8671a2add92a17ffb552d6a1886579a745771",
+    "upload_module": "d97b0adf2f8bc72ac0191ae614d941c03dccd09d7b8e957270c01e2f814b9f17",
+    "database_restored": false
+  },
+  "database_restored": false
+}

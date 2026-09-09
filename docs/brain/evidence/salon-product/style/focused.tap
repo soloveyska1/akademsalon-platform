@@ -1,0 +1,520 @@
+TAP version 13
+# Subtest: arbitrary UTM-like text is neither stored nor attached to an order page
+ok 1 - arbitrary UTM-like text is neither stored nor attached to an order page
+  ---
+  duration_ms: 1.593541
+  type: 'test'
+  ...
+# Subtest: published campaign enums remain measurable and legacy values are recanonicalized
+ok 2 - published campaign enums remain measurable and legacy values are recanonicalized
+  ---
+  duration_ms: 0.937667
+  type: 'test'
+  ...
+# Subtest: revocation purges attribution and blocks same-document recapture
+ok 3 - revocation purges attribution and blocks same-document recapture
+  ---
+  duration_ms: 0.778167
+  type: 'test'
+  ...
+# Subtest: strict attribution precedes analytics v2 on every measured public page
+ok 4 - strict attribution precedes analytics v2 on every measured public page
+  ---
+  duration_ms: 40.5245
+  type: 'test'
+  ...
+# Subtest: v2 boundary disables legacy visit hooks after loading
+ok 5 - v2 boundary disables legacy visit hooks after loading
+  ---
+  duration_ms: 0.840875
+  type: 'test'
+  ...
+# Subtest: consented page creates one idempotent page view with cookieless delivery
+ok 6 - consented page creates one idempotent page view with cookieless delivery
+  ---
+  duration_ms: 5.339166
+  type: 'test'
+  ...
+# Subtest: without consent no analytics event is sent
+ok 7 - without consent no analytics event is sent
+  ---
+  duration_ms: 0.719458
+  type: 'test'
+  ...
+# Subtest: a pre-confirmed owner device and session QA never start collection
+ok 8 - a pre-confirmed owner device and session QA never start collection
+  ---
+  duration_ms: 1.598875
+  type: 'test'
+  ...
+# Subtest: owner retention preview is GET-only and leaves seeded analytics identity untouched
+ok 9 - owner retention preview is GET-only and leaves seeded analytics identity untouched
+  ---
+  duration_ms: 1.331166
+  type: 'test'
+  ...
+# Subtest: excluded bootstrap drains an older pending deletion before revoking current identity
+ok 10 - excluded bootstrap drains an older pending deletion before revoking current identity
+  ---
+  duration_ms: 1.592375
+  type: 'test'
+  ...
+# Subtest: late authenticated owner confirmation revokes the anonymous identity and stays silent
+ok 11 - late authenticated owner confirmation revokes the anonymous identity and stays silent
+  ---
+  duration_ms: 1.296666
+  type: 'test'
+  ...
+# Subtest: native owner marker from another tab revokes and stops vendor analytics
+ok 12 - native owner marker from another tab revokes and stops vendor analytics
+  ---
+  duration_ms: 1.247542
+  type: 'test'
+  ...
+# Subtest: arbitrary UTM text never becomes a stored campaign dimension
+ok 13 - arbitrary UTM text never becomes a stored campaign dimension
+  ---
+  duration_ms: 1.554125
+  type: 'test'
+  ...
+# Subtest: revocation sends only deletion proof, clears queue and rotates identity
+ok 14 - revocation sends only deletion proof, clears queue and rotates identity
+  ---
+  duration_ms: 2.116083
+  type: 'test'
+  ...
+# Subtest: 21 page navigations reuse one session grant and preserve client order
+ok 15 - 21 page navigations reuse one session grant and preserve client order
+  ---
+  duration_ms: 11.741291
+  type: 'test'
+  ...
+# Subtest: expired consent still revokes by the durable visitor and deletion-secret pair
+ok 16 - expired consent still revokes by the durable visitor and deletion-secret pair
+  ---
+  duration_ms: 1.062291
+  type: 'test'
+  ...
+# Subtest: revocation aborts an in-flight grant and late response cannot restore or send
+ok 17 - revocation aborts an in-flight grant and late response cannot restore or send
+  ---
+  duration_ms: 1.432
+  type: 'test'
+  ...
+# Subtest: two identities revoked during one in-flight request are both sent in order
+ok 18 - two identities revoked during one in-flight request are both sent in order
+  ---
+  duration_ms: 1.159875
+  type: 'test'
+  ...
+# Subtest: failed pending-revoke storage keeps durable proof and still sends it directly
+ok 19 - failed pending-revoke storage keeps durable proof and still sends it directly
+  ---
+  duration_ms: 0.56125
+  type: 'test'
+  ...
+# Subtest: grant budget exhaustion clears cached token and the queued event gets a fresh grant
+ok 20 - grant budget exhaustion clears cached token and the queued event gets a fresh grant
+  ---
+  duration_ms: 0.5665
+  type: 'test'
+  ...
+# Subtest: the two public producers use one frozen v2 contract and no parallel JSON truth
+ok 21 - the two public producers use one frozen v2 contract and no parallel JSON truth
+  ---
+  duration_ms: 3.509916
+  type: 'test'
+  ...
+# Subtest: every tracked browser producer routes /orders through the canonical helper
+ok 22 - every tracked browser producer routes /orders through the canonical helper
+  ---
+  duration_ms: 41.623
+  type: 'test'
+  ...
+# Subtest: one atomic v2 session record binds producer, scope, id and fingerprint
+ok 23 - one atomic v2 session record binds producer, scope, id and fingerprint
+  ---
+  duration_ms: 1.32175
+  type: 'test'
+  ...
+# Subtest: legacy v1 identity or fingerprint fails closed and is never rebound
+ok 24 - legacy v1 identity or fingerprint fails closed and is never rebound
+  ---
+  duration_ms: 1.223458
+  type: 'test'
+  ...
+# Subtest: corrupt, partial, foreign and future records all fail closed
+ok 25 - corrupt, partial, foreign and future records all fail closed
+  ---
+  duration_ms: 1.876
+  type: 'test'
+  ...
+# Subtest: storage, fingerprint, header and secure-id failures are shaped before network
+ok 26 - storage, fingerprint, header and secure-id failures are shaped before network
+  ---
+  duration_ms: 1.763375
+  type: 'test'
+  ...
+# Subtest: success accepts only a safe positive integer or its canonical decimal string
+ok 27 - success accepts only a safe positive integer or its canonical decimal string
+  ---
+  duration_ms: 0.637875
+  type: 'test'
+  ...
+# Subtest: outcomes distinguish terminal rejection, conflict, ambiguity and local block
+ok 28 - outcomes distinguish terminal rejection, conflict, ambiguity and local block
+  ---
+  duration_ms: 0.337625
+  type: 'test'
+  ...
+# Subtest: fingerprint follows JSON wire semantics and ignores object key order
+ok 29 - fingerprint follows JSON wire semantics and ignores object key order
+  ---
+  duration_ms: 0.755792
+  type: 'test'
+  ...
+# Subtest: producer-supplied request identity and unserializable payload fail before fetch
+ok 30 - producer-supplied request identity and unserializable payload fail before fetch
+  ---
+  duration_ms: 0.520917
+  type: 'test'
+  ...
+# Subtest: concurrent identical submits are single-flight and cause one physical POST
+ok 31 - concurrent identical submits are single-flight and cause one physical POST
+  ---
+  duration_ms: 3.586
+  type: 'test'
+  ...
+# Subtest: soft timeout never aborts POST and retry joins the still-live request
+ok 32 - soft timeout never aborts POST and retry joins the still-live request
+  ---
+  duration_ms: 0.632334
+  type: 'test'
+  ...
+# Subtest: changed concurrent intent conflicts while the original flight continues
+ok 33 - changed concurrent intent conflicts while the original flight continues
+  ---
+  duration_ms: 0.545917
+  type: 'test'
+  ...
+# Subtest: request state clears only by compare-and-swap with the exact terminal attempt id
+ok 34 - request state clears only by compare-and-swap with the exact terminal attempt id
+  ---
+  duration_ms: 0.751625
+  type: 'test'
+  ...
+# Subtest: ambiguous failures retain identity across reload and changed intent rotates it
+ok 35 - ambiguous failures retain identity across reload and changed intent rotates it
+  ---
+  duration_ms: 1.036
+  type: 'test'
+  ...
+# Subtest: order transport invokes the shared status hook before reading a 401 body
+ok 36 - order transport invokes the shared status hook before reading a 401 body
+  ---
+  duration_ms: 0.494166
+  type: 'test'
+  ...
+# Subtest: late 401 cannot clear a newer auth generation, token or impersonation context
+ok 37 - late 401 cannot clear a newer auth generation, token or impersonation context
+  ---
+  duration_ms: 0.339542
+  type: 'test'
+  ...
+# Subtest: producer UI clears identity only after confirmed or definitive terminal outcomes
+ok 38 - producer UI clears identity only after confirmed or definitive terminal outcomes
+  ---
+  duration_ms: 0.154666
+  type: 'test'
+  ...
+# Subtest: generated home runtime remains in parity with the canonical helper
+ok 39 - generated home runtime remains in parity with the canonical helper
+  ---
+  duration_ms: 0.209792
+  type: 'test'
+  ...
+# Subtest: every shared order-runtime consumer uses its current atomic cache wave
+ok 40 - every shared order-runtime consumer uses its current atomic cache wave
+  ---
+  duration_ms: 22.954417
+  type: 'test'
+  ...
+# Subtest: production smoke default run is mechanically read-only and never reaches /orders
+ok 41 - production smoke default run is mechanically read-only and never reaches /orders
+  ---
+  duration_ms: 1.345125
+  type: 'test'
+  ...
+# Subtest: unknown producer and invalid guide scope fail closed
+ok 42 - unknown producer and invalid guide scope fail closed
+  ---
+  duration_ms: 0.400792
+  type: 'test'
+  ...
+# Subtest: UTM attribution keeps canonical non-PII codes only
+ok 43 - UTM attribution keeps canonical non-PII codes only
+  ---
+  duration_ms: 3.18175
+  type: 'test'
+  ...
+# Subtest: analytics consent describes the implementation without a server checksum promise
+ok 44 - analytics consent describes the implementation without a server checksum promise
+  ---
+  duration_ms: 0.492042
+  type: 'test'
+  ...
+# Subtest: referral contract consistently rewards the inviter after the first paid order
+ok 45 - referral contract consistently rewards the inviter after the first paid order
+  ---
+  duration_ms: 0.248542
+  type: 'test'
+  ...
+# Subtest: order capability tokens stay out of new upload/list query strings
+ok 46 - order capability tokens stay out of new upload/list query strings
+  ---
+  duration_ms: 0.73325
+  type: 'test'
+  ...
+# Subtest: browser secret storage is session-scoped and old persistent secrets are removed
+ok 47 - browser secret storage is session-scoped and old persistent secrets are removed
+  ---
+  duration_ms: 0.313583
+  type: 'test'
+  ...
+# Subtest: normal authentication uses HttpOnly-cookie transport with CSRF protection
+ok 48 - normal authentication uses HttpOnly-cookie transport with CSRF protection
+  ---
+  duration_ms: 1.196083
+  type: 'test'
+  ...
+# Subtest: new cross-device order links are one-time exchanges and are scrubbed immediately
+ok 49 - new cross-device order links are one-time exchanges and are scrubbed immediately
+  ---
+  duration_ms: 0.361834
+  type: 'test'
+  ...
+# Subtest: gift purchase secrets use a header and are removed from the visible address
+ok 50 - gift purchase secrets use a header and are removed from the visible address
+  ---
+  duration_ms: 0.100583
+  type: 'test'
+  ...
+# Subtest: A2 offer issuance requires recorded participation and customer decisions
+ok 51 - A2 offer issuance requires recorded participation and customer decisions
+  ---
+  duration_ms: 0.685791
+  type: 'test'
+  ...
+# Subtest: B1 and B2 offers require structured named rights provenance
+ok 52 - B1 and B2 offers require structured named rights provenance
+  ---
+  duration_ms: 1.113292
+  type: 'test'
+  ...
+# Subtest: AI specification keeps its canonical service id and source provenance
+ok 53 - AI specification keeps its canonical service id and source provenance
+  ---
+  duration_ms: 0.507792
+  type: 'test'
+  ...
+# Subtest: Telegram receives a one-time login code, never an order capability token
+ok 54 - Telegram receives a one-time login code, never an order capability token
+  ---
+  duration_ms: 0.834584
+  type: 'test'
+  ...
+# Subtest: sensitive entry pages suppress referrers
+ok 55 - sensitive entry pages suppress referrers
+  ---
+  duration_ms: 0.572833
+  type: 'test'
+  ...
+# Subtest: 24-hour express doubles the work only, and faster requests have no invented total
+ok 56 - 24-hour express doubles the work only, and faster requests have no invented total
+  ---
+  duration_ms: 0.487916
+  type: 'test'
+  ...
+# Subtest: candidate work cannot inherit express when switching products
+ok 57 - candidate work cannot inherit express when switching products
+  ---
+  duration_ms: 0.065041
+  type: 'test'
+  ...
+# Subtest: known protection bundle replaces both lines and does not double charge
+ok 58 - known protection bundle replaces both lines and does not double charge
+  ---
+  duration_ms: 0.064375
+  type: 'test'
+  ...
+# Subtest: VIP includes selectable extras and requires an individual final quote
+ok 59 - VIP includes selectable extras and requires an individual final quote
+  ---
+  duration_ms: 0.49425
+  type: 'test'
+  ...
+# Subtest: persisted composition is finite, unique and excludes client content
+ok 60 - persisted composition is finite, unique and excludes client content
+  ---
+  duration_ms: 0.1145
+  type: 'test'
+  ...
+# Subtest: unknown partial prices remain unknown even when paid extras are chosen
+ok 61 - unknown partial prices remain unknown even when paid extras are chosen
+  ---
+  duration_ms: 0.684292
+  type: 'test'
+  ...
+# Subtest: homepage removes large distractions and form loads the same composition contract
+ok 62 - homepage removes large distractions and form loads the same composition contract
+  ---
+  duration_ms: 0.83025
+  type: 'test'
+  ...
+# Subtest: every priced work matches the actual complete-project tariff, not diagnostic
+ok 63 - every priced work matches the actual complete-project tariff, not diagnostic
+  ---
+  duration_ms: 1.575292
+  type: 'test'
+  ...
+# Subtest: all 12 categories have explicit deliverables and timing
+ok 64 - all 12 categories have explicit deliverables and timing
+  ---
+  duration_ms: 0.298666
+  type: 'test'
+  ...
+# Subtest: whole work sends support tier for every canonical work
+ok 65 - whole work sends support tier for every canonical work
+  ---
+  duration_ms: 2.966417
+  type: 'test'
+  ...
+# Subtest: partial thesis is custom rather than the full thesis price
+ok 66 - partial thesis is custom rather than the full thesis price
+  ---
+  duration_ms: 1.953833
+  type: 'test'
+  ...
+# Subtest: unclassified editing never silently becomes a course order
+ok 67 - unclassified editing never silently becomes a course order
+  ---
+  duration_ms: 1.407541
+  type: 'test'
+  ...
+# Subtest: explicit diagnostic selection remains available without becoming a prerequisite
+ok 68 - explicit diagnostic selection remains available without becoming a prerequisite
+  ---
+  duration_ms: 0.712333
+  type: 'test'
+  ...
+# Subtest: named chapter remains a separate supported work type
+ok 69 - named chapter remains a separate supported work type
+  ---
+  duration_ms: 0.211292
+  type: 'test'
+  ...
+# Subtest: each public card targets a selectable product and all internal files exist
+ok 70 - each public card targets a selectable product and all internal files exist
+  ---
+  duration_ms: 19.239917
+  type: 'test'
+  ...
+# Subtest: direct form has explicit consent, no prechecked agreement and correct shared helper
+ok 71 - direct form has explicit consent, no prechecked agreement and correct shared helper
+  ---
+  duration_ms: 0.396416
+  type: 'test'
+  ...
+# Subtest: serializer preserves detailed existing package contracts without reading a saved cart
+ok 72 - serializer preserves detailed existing package contracts without reading a saved cart
+  ---
+  duration_ms: 0.303417
+  type: 'test'
+  ...
+# Subtest: only finite selection state is persisted; entered content stays in memory
+ok 73 - only finite selection state is persisted; entered content stays in memory
+  ---
+  duration_ms: 0.123
+  type: 'test'
+  ...
+# Subtest: request agreement is read from the HTML contract consumed by production smoke
+ok 74 - request agreement is read from the HTML contract consumed by production smoke
+  ---
+  duration_ms: 0.18025
+  type: 'test'
+  ...
+# Subtest: every redesigned route retains analytics exclusion before the shared runtime
+ok 75 - every redesigned route retains analytics exclusion before the shared runtime
+  ---
+  duration_ms: 8.680166
+  type: 'test'
+  ...
+# Subtest: contact requires an answer channel and remains private
+ok 76 - contact requires an answer channel and remains private
+  ---
+  duration_ms: 0.122333
+  type: 'test'
+  ...
+# Subtest: one-time remarks handoff rejects expired, future and oversized content
+ok 77 - one-time remarks handoff rejects expired, future and oversized content
+  ---
+  duration_ms: 0.629041
+  type: 'test'
+  ...
+# Subtest: semester plans subtract membership price and respect per-order caps
+ok 78 - semester plans subtract membership price and respect per-order caps
+  ---
+  duration_ms: 0.964375
+  type: 'test'
+  ...
+# Subtest: deposit projection follows authoritative integer tier boundaries
+ok 79 - deposit projection follows authoritative integer tier boundaries
+  ---
+  duration_ms: 0.352959
+  type: 'test'
+  ...
+# Subtest: deposit projection never treats unused reserve as spendable money
+ok 80 - deposit projection never treats unused reserve as spendable money
+  ---
+  duration_ms: 2.479
+  type: 'test'
+  ...
+# Subtest: three original sample types have complete annotations and real order destinations
+ok 81 - three original sample types have complete annotations and real order destinations
+  ---
+  duration_ms: 1.127625
+  type: 'test'
+  ...
+# Subtest: every declared customer page uses the experience shell exactly once
+ok 82 - every declared customer page uses the experience shell exactly once
+  ---
+  duration_ms: 21.565459
+  type: 'test'
+  ...
+# Subtest: private cabinet preserves IDs and loads changed runtime with a new cache identity
+ok 83 - private cabinet preserves IDs and loads changed runtime with a new cache identity
+  ---
+  duration_ms: 1.604209
+  type: 'test'
+  ...
+# Subtest: shared selection stores finite choices only and search is local
+ok 84 - shared selection stores finite choices only and search is local
+  ---
+  duration_ms: 0.326833
+  type: 'test'
+  ...
+# Subtest: new interactions support keyboard, reduced motion and no-JS routing
+ok 85 - new interactions support keyboard, reduced motion and no-JS routing
+  ---
+  duration_ms: 1.503792
+  type: 'test'
+  ...
+1..85
+# tests 85
+# suites 0
+# pass 85
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 144.523959

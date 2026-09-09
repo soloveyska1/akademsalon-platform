@@ -1,0 +1,14 @@
+{
+  "project_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7",
+  "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_6640d75306b48191a0fb765ba561aa11",
+  "version_number": 45,
+  "source_sha": "9debbb14ec6c4eba4de5c5868abbca2b4e8b5e65",
+  "deployment_id": "appgdep_6aa0a34f7a2c8191993052e3cd103f1b",
+  "status": "succeeded",
+  "url": "https://akademsalon-desktop-preview.saymoon.chatgpt.site",
+  "access": "owner only",
+  "live_readback": "CUA exact URL visibly showed redesigned homepage; real home CTA opened form; loaded service options, price summary and preview isolation banner verified; browser Back returned to homepage; no form submitted.",
+  "rollback_candidate": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_0a2f67d4d68c81918a885f931b800293",
+  "rollback_exercised": false,
+  "public_domain_changed": false
+}

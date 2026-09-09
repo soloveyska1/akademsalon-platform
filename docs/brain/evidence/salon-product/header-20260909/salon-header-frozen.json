@@ -1,0 +1,949 @@
+{
+  "rows": [
+    {
+      "route": "about.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 304,
+        "height": 123,
+        "bottom": 162
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 16,
+          "right": 60,
+          "bottom": 148
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 85.4375,
+          "right": 129.4375,
+          "bottom": 148
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 79.703125,
+          "height": 44,
+          "left": 154.859375,
+          "right": 234.5625,
+          "bottom": 148
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 260,
+          "right": 304,
+          "bottom": 148
+        }
+      ]
+    },
+    {
+      "route": "about.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 304,
+        "height": 123,
+        "bottom": 162
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 16,
+          "right": 60,
+          "bottom": 148
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 85.4375,
+          "right": 129.4375,
+          "bottom": 148
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 79.703125,
+          "height": 44,
+          "left": 154.859375,
+          "right": 234.5625,
+          "bottom": 148
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 260,
+          "right": 304,
+          "bottom": 148
+        }
+      ]
+    },
+    {
+      "route": "about.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 374,
+        "height": 123,
+        "bottom": 162
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 16,
+          "right": 60,
+          "bottom": 148
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 108.765625,
+          "right": 152.765625,
+          "bottom": 148
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 79.703125,
+          "height": 44,
+          "left": 201.53125,
+          "right": 281.234375,
+          "bottom": 148
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 330,
+          "right": 374,
+          "bottom": 148
+        }
+      ]
+    },
+    {
+      "route": "about.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 374,
+        "height": 123,
+        "bottom": 162
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 16,
+          "right": 60,
+          "bottom": 148
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 108.765625,
+          "right": 152.765625,
+          "bottom": 148
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 79.703125,
+          "height": 44,
+          "left": 201.53125,
+          "right": 281.234375,
+          "bottom": 148
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 330,
+          "right": 374,
+          "bottom": 148
+        }
+      ]
+    },
+    {
+      "route": "about.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 80,
+        "right": 1360,
+        "height": 99.96875,
+        "bottom": 138.96875
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1049.359375,
+          "right": 1093.359375,
+          "bottom": 110.484375
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1105.359375,
+          "right": 1149.359375,
+          "bottom": 110.484375
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 53.703125,
+          "height": 44.796875,
+          "left": 1161.359375,
+          "right": 1215.0625,
+          "bottom": 110.875
+        }
+      ]
+    },
+    {
+      "route": "about.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 80,
+        "right": 1360,
+        "height": 99.96875,
+        "bottom": 138.96875
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1049.359375,
+          "right": 1093.359375,
+          "bottom": 110.484375
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1105.359375,
+          "right": 1149.359375,
+          "bottom": 110.484375
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 53.703125,
+          "height": 44.796875,
+          "left": 1161.359375,
+          "right": 1215.0625,
+          "bottom": 110.875
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 304,
+        "height": 123,
+        "bottom": 162
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 16,
+          "right": 60,
+          "bottom": 148
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 85.4375,
+          "right": 129.4375,
+          "bottom": 148
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 79.703125,
+          "height": 44,
+          "left": 154.859375,
+          "right": 234.5625,
+          "bottom": 148
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 260,
+          "right": 304,
+          "bottom": 148
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 304,
+        "height": 123,
+        "bottom": 162
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 16,
+          "right": 60,
+          "bottom": 148
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 85.4375,
+          "right": 129.4375,
+          "bottom": 148
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 79.703125,
+          "height": 44,
+          "left": 154.859375,
+          "right": 234.5625,
+          "bottom": 148
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 260,
+          "right": 304,
+          "bottom": 148
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 374,
+        "height": 123,
+        "bottom": 162
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 16,
+          "right": 60,
+          "bottom": 148
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 108.765625,
+          "right": 152.765625,
+          "bottom": 148
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 79.703125,
+          "height": 44,
+          "left": 201.53125,
+          "right": 281.234375,
+          "bottom": 148
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 330,
+          "right": 374,
+          "bottom": 148
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 374,
+        "height": 123,
+        "bottom": 162
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 16,
+          "right": 60,
+          "bottom": 148
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 108.765625,
+          "right": 152.765625,
+          "bottom": 148
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 79.703125,
+          "height": 44,
+          "left": 201.53125,
+          "right": 281.234375,
+          "bottom": 148
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 330,
+          "right": 374,
+          "bottom": 148
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 80,
+        "right": 1360,
+        "height": 70,
+        "bottom": 109
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1049.359375,
+          "right": 1093.359375,
+          "bottom": 95.5
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1105.359375,
+          "right": 1149.359375,
+          "bottom": 95.5
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 53.703125,
+          "height": 44.796875,
+          "left": 1161.359375,
+          "right": 1215.0625,
+          "bottom": 95.890625
+        }
+      ]
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 80,
+        "right": 1360,
+        "height": 70,
+        "bottom": 109
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1049.359375,
+          "right": 1093.359375,
+          "bottom": 95.5
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1105.359375,
+          "right": 1149.359375,
+          "bottom": 95.5
+        },
+        {
+          "name": "\u041a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 53.703125,
+          "height": 44.796875,
+          "left": 1161.359375,
+          "right": 1215.0625,
+          "bottom": 95.890625
+        }
+      ]
+    },
+    {
+      "route": "knowledge.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 304,
+        "height": 63,
+        "bottom": 63
+      },
+      "actions": [
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 44,
+          "height": 44,
+          "left": 203,
+          "right": 247,
+          "bottom": 53
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 251,
+          "right": 295,
+          "bottom": 53
+        }
+      ]
+    },
+    {
+      "route": "knowledge.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 304,
+        "height": 63,
+        "bottom": 63
+      },
+      "actions": [
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 44,
+          "height": 44,
+          "left": 203,
+          "right": 247,
+          "bottom": 53
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 251,
+          "right": 295,
+          "bottom": 53
+        }
+      ]
+    },
+    {
+      "route": "knowledge.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 374,
+        "height": 67,
+        "bottom": 67
+      },
+      "actions": [
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 44,
+          "height": 44,
+          "left": 270,
+          "right": 314,
+          "bottom": 55
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 318,
+          "right": 362,
+          "bottom": 55
+        }
+      ]
+    },
+    {
+      "route": "knowledge.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 374,
+        "height": 67,
+        "bottom": 67
+      },
+      "actions": [
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 44,
+          "height": 44,
+          "left": 270,
+          "right": 314,
+          "bottom": 55
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 318,
+          "right": 362,
+          "bottom": 55
+        }
+      ]
+    },
+    {
+      "route": "knowledge.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 80,
+        "right": 1360,
+        "height": 99.96875,
+        "bottom": 99.96875
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1136.296875,
+          "right": 1180.296875,
+          "bottom": 71.46875
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1186.296875,
+          "right": 1230.296875,
+          "bottom": 71.46875
+        },
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 73.703125,
+          "height": 49.796875,
+          "left": 1236.296875,
+          "right": 1310,
+          "bottom": 74.375
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 1316,
+          "right": 1360,
+          "bottom": 71.46875
+        }
+      ]
+    },
+    {
+      "route": "knowledge.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 80,
+        "right": 1360,
+        "height": 99.96875,
+        "bottom": 99.96875
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1136.296875,
+          "right": 1180.296875,
+          "bottom": 71.46875
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1186.296875,
+          "right": 1230.296875,
+          "bottom": 71.46875
+        },
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 73.703125,
+          "height": 49.796875,
+          "left": 1236.296875,
+          "right": 1310,
+          "bottom": 74.375
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 1316,
+          "right": 1360,
+          "bottom": 71.46875
+        }
+      ]
+    },
+    {
+      "route": "index.html",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 304,
+        "height": 70,
+        "bottom": 82
+      },
+      "actions": [
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 44,
+          "height": 44,
+          "left": 201,
+          "right": 245,
+          "bottom": 69
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 249,
+          "right": 293,
+          "bottom": 69
+        }
+      ]
+    },
+    {
+      "route": "index.html",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 304,
+        "height": 70,
+        "bottom": 82
+      },
+      "actions": [
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 44,
+          "height": 44,
+          "left": 201,
+          "right": 245,
+          "bottom": 69
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 249,
+          "right": 293,
+          "bottom": 69
+        }
+      ]
+    },
+    {
+      "route": "index.html",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 374,
+        "height": 70,
+        "bottom": 82
+      },
+      "actions": [
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 44,
+          "height": 44,
+          "left": 268,
+          "right": 312,
+          "bottom": 69
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 316,
+          "right": 360,
+          "bottom": 69
+        }
+      ]
+    },
+    {
+      "route": "index.html",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 16,
+        "right": 374,
+        "height": 70,
+        "bottom": 82
+      },
+      "actions": [
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 44,
+          "height": 44,
+          "left": 268,
+          "right": 312,
+          "bottom": 69
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 316,
+          "right": 360,
+          "bottom": 69
+        }
+      ]
+    },
+    {
+      "route": "index.html",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "header": {
+        "left": 80,
+        "right": 1360,
+        "height": 78.984375,
+        "bottom": 96.984375
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1077.4375,
+          "right": 1121.4375,
+          "bottom": 79.484375
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1128.4375,
+          "right": 1172.4375,
+          "bottom": 79.484375
+        },
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 108.5625,
+          "height": 44,
+          "left": 1179.4375,
+          "right": 1288,
+          "bottom": 79.484375
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 1295,
+          "right": 1339,
+          "bottom": 79.484375
+        }
+      ]
+    },
+    {
+      "route": "index.html",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "header": {
+        "left": 80,
+        "right": 1360,
+        "height": 78.984375,
+        "bottom": 96.984375
+      },
+      "actions": [
+        {
+          "name": "\u041d\u0430\u0439\u0442\u0438 \u043f\u043e \u0441\u0430\u0439\u0442\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1077.4375,
+          "right": 1121.4375,
+          "bottom": 79.484375
+        },
+        {
+          "name": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0435\u043c\u0443",
+          "width": 44,
+          "height": 44,
+          "left": 1128.4375,
+          "right": 1172.4375,
+          "bottom": 79.484375
+        },
+        {
+          "name": "\u041b\u0438\u0447\u043d\u044b\u0439 \u043a\u0430\u0431\u0438\u043d\u0435\u0442",
+          "width": 108.5625,
+          "height": 44,
+          "left": 1179.4375,
+          "right": 1288,
+          "bottom": 79.484375
+        },
+        {
+          "name": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e",
+          "width": 44,
+          "height": 44,
+          "left": 1295,
+          "right": 1339,
+          "bottom": 79.484375
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

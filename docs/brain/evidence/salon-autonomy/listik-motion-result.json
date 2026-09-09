@@ -1,0 +1,18 @@
+{
+  "name": "Листик",
+  "thinking": "thinking",
+  "writing": "writing",
+  "done": "done",
+  "thinkingPose": "matrix(1, 0, 0, 1, -58, 0)",
+  "writingPose": "matrix(1, 0, 0, 1, 0, -58)",
+  "closedStaysClosed": true,
+  "identityClean": true,
+  "reducedImmediate": true,
+  "topics": true,
+  "scrollPreserved": true,
+  "jumpVisible": true,
+  "overflow": false,
+  "errors": [],
+  "actualMutations": 0,
+  "mockedRequests": 7
+}

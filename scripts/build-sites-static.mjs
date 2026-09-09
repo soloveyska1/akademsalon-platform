@@ -3,6 +3,7 @@ import {
   existsSync,
   mkdirSync,
   readdirSync,
+  readFileSync,
   rmSync,
   statSync,
   writeFileSync,
@@ -42,7 +43,24 @@ for (const entry of readdirSync(root)) {
     continue;
   }
   cpSync(source, join(client, entry));
+  if (extname(entry) === ".html") {
+    const html = readFileSync(source, "utf8").replace(/<head>/i,
+      '<head><meta name="robots" content="noindex,nofollow"><script src="/__site-preview.js"></script>');
+    writeFileSync(join(client, entry), html);
+  }
 }
+
+// Sites is the owner's review surface. Production HTML remains untouched.
+writeFileSync(join(client, "__site-preview.js"), String.raw`(function(){
+  'use strict';
+  const realFetch = window.fetch.bind(window);
+  function isApi(input){try{const u=new URL(typeof input==='string'?input:input.url,location.href);return u.pathname.startsWith('/api/')||u.hostname==='akademsalon.ru'&&u.pathname==='/api'}catch(e){return false}}
+  window.fetch = function(input,init){if(isApi(input))return Promise.resolve(new Response(JSON.stringify({ok:false,error:'private_preview',authenticated:false,guest_session:false,orders:[]}),{status:403,headers:{'Content-Type':'application/json'}}));return realFetch(input,init)};
+  if(navigator.sendBeacon){const send=navigator.sendBeacon.bind(navigator);navigator.sendBeacon=(url,data)=>isApi(url)?false:send(url,data)}
+  if(navigator.serviceWorker){navigator.serviceWorker.register=()=>Promise.reject(new Error('Private preview'));navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister()))}
+  document.addEventListener('DOMContentLoaded',()=>{const bar=document.createElement('div');bar.textContent='Личный просмотр · заявки здесь не отправляются';bar.style.cssText='padding:9px 16px;background:#26213d;color:#fff;text-align:center;font:12px/1.5 sans-serif';document.body.prepend(bar)});
+  document.addEventListener('submit',e=>{e.preventDefault();e.stopImmediatePropagation();const n=document.getElementById('form-message')||document.getElementById('supportStatus');if(n){n.hidden=false;n.textContent='Это версия для просмотра. Заявка не отправлена. На основном сайте форма будет передавать задание в кабинет.';n.focus()}},true);
+})();`);
 
 writeFileSync(
   join(server, "index.js"),

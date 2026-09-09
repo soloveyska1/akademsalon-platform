@@ -1,0 +1,83 @@
+[
+  {
+    "scenario": "course",
+    "visible": "от 14 000 ₽",
+    "serverLow": 14000,
+    "serverHigh": 19500,
+    "quotes": [
+      14000
+    ],
+    "errors": []
+  },
+  {
+    "scenario": "course24addon",
+    "visible": "от 34 000 ₽",
+    "serverLow": 34000,
+    "serverHigh": 45000,
+    "quotes": [
+      28000,
+      6000
+    ],
+    "errors": []
+  },
+  {
+    "scenario": "faster",
+    "visible": "По заданию",
+    "serverLow": 0,
+    "serverHigh": 0,
+    "quotes": [
+      null
+    ],
+    "errors": []
+  },
+  {
+    "scenario": "customaddon",
+    "visible": "По заданию",
+    "serverLow": 0,
+    "serverHigh": 0,
+    "quotes": [
+      null
+    ],
+    "errors": []
+  },
+  {
+    "scenario": "practiceediting",
+    "visible": "от 9 500 ₽",
+    "serverLow": 9500,
+    "serverHigh": 13500,
+    "quotes": [
+      9500
+    ],
+    "errors": []
+  },
+  {
+    "scenario": "psychologyvip",
+    "visible": "91 000 ₽",
+    "serverLow": 0,
+    "serverHigh": 0,
+    "quotes": [
+      null
+    ],
+    "errors": []
+  },
+  {
+    "scenario": "commission0",
+    "visible": "9 900 ₽",
+    "serverLow": 0,
+    "serverHigh": 0,
+    "quotes": [
+      null
+    ],
+    "errors": []
+  },
+  {
+    "scenario": "authorB",
+    "visible": "от 12 000 ₽",
+    "serverLow": 12000,
+    "serverHigh": 12000,
+    "quotes": [
+      12000
+    ],
+    "errors": []
+  }
+]

@@ -1,0 +1,8 @@
+### Result
+{"trail":0,"choice":null,"heroTop":241,"mascot":"hidden"}
+### Ran Playwright code
+```js
+await (async(page)=>{await page.setViewportSize({width:320,height:820});await page.goto("http://127.0.0.1:8771/configurator.html?work=practice&result=editing");await page.goto("http://127.0.0.1:8771/plan.html");await page.waitForTimeout(100);const result=await page.evaluate(()=>({trail:document.querySelectorAll(".selection-trail").length,choice:sessionStorage.getItem("salon_product_choice"),heroTop:document.querySelector(".svx-hero").getBoundingClientRect().top,mascot:getComputedStyle(document.querySelector(".sa-launch")).visibility}));await page.screenshot({path:"/tmp/special-last-clean-hero320.png"});return result;})(page);
+```
+### Events
+- New console entries: .playwright-cli/console-2026-09-09T17-50-14-015Z.log#L102-L104

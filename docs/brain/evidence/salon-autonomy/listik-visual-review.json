@@ -1,0 +1,58 @@
+{
+  "verdict": "NO-GO until short viewport topics clipping fixed",
+  "p1": {
+    "viewport": [
+      390,
+      320
+    ],
+    "topic_open": true,
+    "panel_bottom": 312,
+    "footer_bottom": 403,
+    "send_button_top": 298,
+    "send_button_bottom": 342,
+    "evidence": "/tmp/listik-topics-short-current.png"
+  },
+  "passed": {
+    "matrix": {
+      "widths": [
+        360,
+        390,
+        768,
+        1024,
+        1280,
+        1440
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "height": 844,
+      "all_inside": true,
+      "all_topic_targets_at_least44": true,
+      "sprite_loaded": true,
+      "single_handoff": true
+    },
+    "phases": [
+      "listening",
+      "thinking",
+      "writing",
+      "done"
+    ],
+    "measured_reveal_ms": 459.2,
+    "show_immediately": true,
+    "reduced_motion_instant": true,
+    "reduced_motion_animation": "none",
+    "scroll_pin_top": 0,
+    "jump_remaining_bottom": 0,
+    "close_during_pending_stays_closed": true,
+    "identity_during_reveal_clears_history": true
+  },
+  "source_hashes": {
+    "assets/js/salon-assistant.js": "4bb4849ec4ea6016799e40806511bf3834a077c10bc60fe1ed837ce4f4c2b8bf",
+    "assets/css/salon-assistant.css": "e69c40908dd78353db3b206a5d3298c22ce553ea0df94c650a131e8c73d2f079",
+    "assets/img/salon-assistant/listik-states.webp": "1f86ee21e1c7dbe07ab105bcf4acd86f641a296af28c3486c2f482c7d6b20bd2"
+  },
+  "network": "actual external mutations blocked, assistant responses mocked from current local assistant.py",
+  "session": "listik-review closed",
+  "own_server": false
+}

@@ -9,7 +9,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const root = path.resolve(__dirname, '..');
+const root = process.env.SALON_PUBLIC_ROOT || path.resolve(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const pages = fs.readdirSync(root).filter((f) => f.endsWith('.html'));
 
@@ -76,7 +76,7 @@ test('страница без сети существует и не зависи
   assert.match(offline, /<style>/, 'стили должны лежать внутри: внешний файл может быть недоступен');
   assert.doesNotMatch(offline, /<link rel="stylesheet"/, 'внешних стилей быть не должно');
   assert.doesNotMatch(offline, /<script src=/, 'внешних скриптов быть не должно');
-  assert.match(offline, /Сети нет/);
+  assert.match(offline, /Не удалось связаться с сайтом/);
   const sw = read('sw.js');
   assert.match(sw, /OFFLINE_URL = '\/offline\.html'/);
   assert.ok(sw.includes('PRECACHE'), 'офлайн-лист должен класться заранее');
@@ -91,12 +91,13 @@ test('версия воркера совпадает с ключом семьи 
   /* Читаем ключ по ссылке манифеста, а не по chrome.css: главная подключает
      не исходники, а сборку, и chrome.css в её разметке нет вовсе. Ссылка на
      манифест есть на всех страницах и несёт тот же ключ семьи shell. */
-  const shellKey = read('index.html').match(/manifest\.webmanifest\?v=([a-z0-9]+)/)?.[1];
-  assert.ok(shellKey, 'ключ семьи shell должен читаться из ссылки на манифест');
-  assert.equal(version, shellKey, 'при бампе ключа обязательно поднять версию воркера');
-  /* И тот же ключ обязан стоять у ассетов, иначе воркер и стили разъедутся. */
-  const assetKey = read('services.html').match(/chrome\.css\?v=([a-z0-9]+)/)?.[1];
-  assert.equal(assetKey, shellKey, 'ключ манифеста и ключ ассетов должны совпадать');
+  for (const name of pages) {
+    const key=read(name).match(/manifest\.webmanifest\?v=([^"&]+)/)?.[1];
+    assert.equal(key, version, name + ': manifest and worker must share a cache family');
+  }
+  // The redesigned catalogue no longer includes chrome.css. Production asset
+  // content fingerprints are independently verified by production-release.test.
+
 });
 
 test('воркер регистрируется и не ломает страницу при отказе', () => {
@@ -104,4 +105,69 @@ test('воркер регистрируется и не ломает стран�
   assert.match(app, /navigator\.serviceWorker\.register\('\/sw\.js'/);
   assert.match(app, /\.catch\(/, 'отказ регистрации не должен ронять страницу');
   assert.match(app, /location\.protocol !== 'https:'/, 'регистрируем только в защищённом контексте');
+});
+
+test('обновление не переносит старый offline и не читает чужую семью кэша', async () => {
+  const vm = require('node:vm');
+  const listeners = {};
+  const stores = new Map();
+  const origin = 'https://fixture.invalid';
+  const keyOf = (request) => new URL(typeof request === 'string' ? request : request.url, origin).href;
+  let installed = [], network = false;
+  const lookups = [];
+  const store = (name) => {
+    if (!stores.has(name)) stores.set(name, new Map());
+    const entries = stores.get(name);
+    return {
+      addAll: async (requests) => {
+        installed = requests;
+        for (const request of requests) entries.set(keyOf(request), new Response(request.cache === 'reload' ? 'current' : 'stale-http'));
+      },
+      put: async (request, response) => entries.set(keyOf(request), response),
+      match: async (request) => entries.get(keyOf(request))?.clone(),
+    };
+  };
+  const caches = {
+    open: async (name) => store(name),
+    match: async (request, options = {}) => {
+      lookups.push({path: new URL(keyOf(request)).pathname, cacheName: options.cacheName});
+      if (options.cacheName) return store(options.cacheName).match(request);
+      for (const name of stores.keys()) { const hit = await store(name).match(request); if (hit) return hit; }
+    },
+    keys: async () => [...stores.keys()], delete: async (name) => stores.delete(name),
+  };
+  class WorkerRequest extends Request {
+    constructor(url, options) { super(new URL(url, origin), options); }
+  }
+  vm.runInNewContext(read('sw.js'), {
+    self: {location: {origin}, addEventListener: (name, fn) => { listeners[name] = fn; }, skipWaiting: async () => {}, clients: {claim: async () => {}}},
+    caches, Request: WorkerRequest, Response, URL, Promise,
+    fetch: async () => { if (!network) throw new Error('offline'); return new Response('network'); },
+  });
+  const version = read('sw.js').match(/const VERSION = '([^']+)'/)[1];
+  const shell = `salon-shell-${version}`, pagesCache = `salon-pages-${version}`;
+  // An old worker can recreate its cache after activation cleanup. Insert it first.
+  await store('salon-shell-old').put('/offline.html', new Response('old-offline'));
+  await store('salon-pages-old').put('/about.html', new Response('old-page'));
+  let install;
+  listeners.install({waitUntil: (promise) => { install = promise; }}); await install;
+  assert.ok(installed.length >= 5);
+  assert.ok(installed.every((request) => request.cache === 'reload'));
+  const request = (pathname, extra = {}) => ({url: origin + pathname, method: 'GET', mode: 'navigate', destination: 'document', ...extra});
+  const run = async (req) => {
+    let promise;
+    listeners.fetch({request: req, respondWith: (response) => { promise = response; }});
+    return promise ? (await promise).text() : undefined;
+  };
+  assert.equal(await run(request('/dashboard.html?token=fixture')), 'current');
+  assert.ok(!lookups.some((entry) => entry.path === '/dashboard.html'));
+  assert.equal(await run(request('/about.html')), 'current');
+  await store(pagesCache).put('/about.html', new Response('current-page'));
+  assert.equal(await run(request('/about.html')), 'current-page');
+  const asset = '/assets/example.js?v=fixture';
+  await store('salon-shell-old').put(asset, new Response('old-asset'));
+  await store(shell).put(asset, new Response('current-asset'));
+  assert.equal(await run(request(asset, {mode: 'cors', destination: 'script'})), 'current-asset');
+  for (const req of [request('/api/payment'), request('/about.html', {method: 'POST'}), request('/about.html', {url: 'https://other.invalid/about.html'})]) assert.equal(await run(req), undefined);
+  assert.ok(lookups.every((entry) => [shell, pagesCache].includes(entry.cacheName)));
 });

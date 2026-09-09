@@ -1,0 +1,9 @@
+{
+  "pass": true,
+  "orders": 1200,
+  "deposits": 36,
+  "promoBoundary": true,
+  "sourceMathSha256": "1ddb71ca030e5f67f772087474c181c53978d89a3bcd34b5e1728b20f2797104",
+  "sourceUIsha256": "28d9331d0266aca32dc729a9b4ee31be834439fd222544773b0676e312f97d33",
+  "limit": "Pure public projection invariants only; input validation and runtime financial issuance not asserted"
+}

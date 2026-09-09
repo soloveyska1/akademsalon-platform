@@ -1,0 +1,410 @@
+{
+  "decision": "GO",
+  "source_sha256": {
+    "assets/js/salon-tools.js": "f4a853c5c880614eff124ba80645fa43dfb6a2c6b9c93365f9855bd462445383",
+    "assets/js/salon-library.js": "6a517f69ec263afc76bb86db3ec4796cd2ab77c36298e1d6c08d5a3383e105b3",
+    "assets/js/polish15-supporting.js": "764f2f4ce63a9367965266a15ab22fc3f57de5b1a6a45d2baec59cdc7832bf19",
+    "oplaceno.html": "b0f037240025c10266ba70bf5cc7d8fbf297ce8eabe577fd1c14f3c52928d8b0",
+    "knowledge.html": "2aeb97c79cb418410ad4f76bfb25a6653a629ce0fcc92bf591e9f5d3c4083e5b"
+  },
+  "tests": {
+    "browser": {
+      "tests": [
+        {
+          "id": "crossref-opt-in",
+          "pass": true,
+          "detail": {
+            "calls": 0
+          }
+        },
+        {
+          "id": "crossref-concurrency3",
+          "pass": true,
+          "detail": {
+            "calls": 3
+          }
+        },
+        {
+          "id": "doi-max8-and-status",
+          "pass": true,
+          "detail": "Найдено: 1 · Не найдено: 1 · Не удалось проверить: 6 · Не проверено: 2"
+        },
+        {
+          "id": "doi-xss-as-text",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "id": "old-doi-does-not-overwrite",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "id": "example-preserves-input",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "id": "clear-cancel-preserves-input",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "id": "clear-confirm-clears",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "id": "tool-text-not-stored",
+          "pass": true,
+          "detail": {
+            "local": {},
+            "session": {
+              "salon_t0": "1788971162306"
+            }
+          }
+        },
+        {
+          "id": "input-xss-as-text",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "id": "finding-selects-text",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "id": "query-scrub-and-initial-value",
+          "pass": true,
+          "detail": "http://127.0.0.1:8771/knowledge.html"
+        },
+        {
+          "id": "typed-query-no-history",
+          "pass": true,
+          "detail": "http://127.0.0.1:8771/knowledge.html?topic=start"
+        },
+        {
+          "id": "shelf-allowlist-dedupe",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "id": "shelf-malformed",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "id": "blocked-storage-no-false-save",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "id": "reader-toc",
+          "pass": true,
+          "detail": null
+        },
+        {
+          "id": "reader-size",
+          "pass": true,
+          "detail": null
+        }
+      ],
+      "errors": [],
+      "crossrefCalls": 9,
+      "externalMutations": []
+    },
+    "edges": {
+      "tests": [
+        {
+          "id": "doi-timeout-unlocks-unknown",
+          "pass": true,
+          "text": "Найдено: 0 · Не найдено: 0 · Не удалось проверить: 1"
+        },
+        {
+          "id": "clean-route-query-privacy",
+          "pass": true,
+          "url": "http://127.0.0.1:8771/knowledge",
+          "input": "CLEAN_SECRET"
+        },
+        {
+          "id": "clear-data-only-confirms",
+          "pass": true,
+          "remaining": "Уникальные сведения про доступные данные"
+        }
+      ],
+      "externalMutations": false
+    },
+    "gift": {
+      "tests": [
+        {
+          "id": "gift-return-missing",
+          "pass": true,
+          "disabled": true,
+          "payVisible": false,
+          "state": "",
+          "note": "Не удалось восстановить оформление в этом браузере. Не создавай сертификат повторно: открой исходную вкладку покупки или напиши мастеру, приложив чек. Статус оплаты проверяется на сервере."
+        },
+        {
+          "id": "gift-return-pending",
+          "pass": true,
+          "disabled": true,
+          "payVisible": false,
+          "state": "Подтверждение кассы ещё ожидается. Не повторяй платёж. Статус обновляется автоматически; если он долго не меняется, напиши мастеру с чеком.",
+          "note": ""
+        },
+        {
+          "id": "gift-return-active",
+          "pass": true,
+          "disabled": true,
+          "payVisible": false,
+          "state": "Сертификат выпущен. Код и PDF доступны ниже.",
+          "note": ""
+        },
+        {
+          "id": "gift-return-unknown",
+          "pass": true,
+          "disabled": true,
+          "payVisible": false,
+          "state": "",
+          "note": "Не удалось проверить прежнее оформление. Его данные сохранены. Обнови страницу для проверки статуса или обратись к мастеру; новый сертификат пока не создаётся."
+        },
+        {
+          "id": "gift-return-not_found",
+          "pass": true,
+          "disabled": true,
+          "payVisible": false,
+          "state": "",
+          "note": "Оформление не найдено по сохранённым данным. Не повторяй покупку: напиши мастеру с чеком для проверки оплаты."
+        }
+      ],
+      "calls": [
+        {
+          "mode": "missing",
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "mode": "missing",
+          "path": "/api/gift/config",
+          "method": "GET"
+        },
+        {
+          "mode": "pending",
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "mode": "pending",
+          "path": "/api/gift/config",
+          "method": "GET"
+        },
+        {
+          "mode": "pending",
+          "path": "/api/gift/state",
+          "method": "GET"
+        },
+        {
+          "mode": "active",
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "mode": "active",
+          "path": "/api/gift/config",
+          "method": "GET"
+        },
+        {
+          "mode": "active",
+          "path": "/api/gift/state",
+          "method": "GET"
+        },
+        {
+          "mode": "unknown",
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "mode": "unknown",
+          "path": "/api/gift/config",
+          "method": "GET"
+        },
+        {
+          "mode": "unknown",
+          "path": "/api/gift/state",
+          "method": "GET"
+        },
+        {
+          "mode": "not_found",
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "mode": "not_found",
+          "path": "/api/gift/config",
+          "method": "GET"
+        },
+        {
+          "mode": "not_found",
+          "path": "/api/gift/state",
+          "method": "GET"
+        }
+      ],
+      "externalMutations": false
+    }
+  },
+  "article_parity": [
+    {
+      "file": "guide-antiplagiat-ai.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-apellyaciya.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-dnevnik-praktiki.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-harakteristika-s-praktiki.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-kursovaya-za-nedelyu.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-normocontrol.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-obekt-predmet-cel-zadachi.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-otchet-po-praktike.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-otzyv-rukovoditelya-vkr.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-prakticheskaya-chast-kursovoy.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-prezentaciya-k-zashchite.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-prilozheniya-po-gost.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-recenziya-na-vkr.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-rech-na-zashchitu.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-rinc-statya.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-skolko-stoit-diplomnaya.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-skolko-stoit-kursovaya.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-spisok-literatury.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-temy-vkr.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-titulnyj-list.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-vkr-struktura.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-vvedenie-kursovoy.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-zaklyuchenie-kursovoy.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-zaklyuchenie-vkr.html",
+      "source_article_byte_equal": true
+    },
+    {
+      "file": "guide-zashchita-diploma.html",
+      "source_article_byte_equal": true
+    }
+  ],
+  "blockers": [],
+  "backend_confirmation": "/tmp/salon-learning-payments-readonly.txt payments.py SHA1f428f3d708d3b23432757d7c387b4cf3b5b28418de77855cdd6c145ee9b75e5 confirms gift ID not redeem code",
+  "external_mutations": false,
+  "sources_modified": false,
+  "closed_findings": [
+    "P1 gift pending return blocks pay/claim/cancel; only GET refresh/poll/support",
+    "P2 data-only clear requests confirmation",
+    "clean knowledge route q scrub repaired"
+  ],
+  "pure_functions": {
+    "passed": 4,
+    "cases": [
+      "tasks prefix/split",
+      "DOI case/trailing punctuation",
+      "findings capped60",
+      "total not silently capped"
+    ]
+  },
+  "payment_route_mock": [
+    {
+      "id": "payment-return",
+      "search": "?Shp_kind=gift&Shp_gift=42",
+      "target": "gift.html?payment_return=1"
+    },
+    {
+      "id": "payment-return",
+      "search": "?Shp_kind=deposit&Shp_dep=42",
+      "target": "dashboard.html#deposit"
+    },
+    {
+      "id": "payment-return",
+      "search": "?Shp_kind=order&Shp_order=42",
+      "target": "dashboard.html?paid=42"
+    },
+    {
+      "id": "payment-return",
+      "search": "?Shp_kind=sub&Shp_sub=42",
+      "target": "dashboard.html#plus"
+    }
+  ],
+  "totals": {
+    "browser_and_edges": 26,
+    "pass": 26,
+    "article_parity": 25,
+    "pure": 4
+  },
+  "browser_closed": true,
+  "limitations": [
+    "All API and Crossref outcomes mocked; no real financial mutation tested or performed",
+    "GO covers bounded learning UI and payment return recovery, not whole payment backend",
+    "Existing editorial guide body and prices intentionally preserved byte-for-byte"
+  ]
+}

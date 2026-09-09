@@ -1,0 +1,26 @@
+{
+  "links": {
+    "current": "/var/www/academic_saloon/releases/release184-0341e9c4",
+    "dist": "/var/www/academic_saloon/releases/release184-0341e9c4",
+    "previous": "/var/www/academic_saloon/releases/release183-007bf7b"
+  },
+  "services": {
+    "salon-bot-v2.service": "active",
+    "nginx": "active",
+    "salon-watch.timer": "active"
+  },
+  "bot": {
+    "Restart": "always",
+    "RestartUSec": "5s",
+    "NRestarts": "0"
+  },
+  "sqlite_quick_check": "ok",
+  "synthetic_active": 0,
+  "probe_capability_present": false,
+  "private_urls": {
+    "/docs/brain/START-HERE.md": 404,
+    "/.env": 404,
+    "/assets/js/cabinet-demo.js": 404,
+    "/__site-preview.js": 404
+  }
+}

@@ -1,0 +1,53 @@
+[
+  {
+    "route": "plus",
+    "status": 200,
+    "expected_ui": true,
+    "h1": "Салон+.Больше для твоей учёбы."
+  },
+  {
+    "route": "deposit",
+    "status": 200,
+    "expected_ui": true,
+    "h1": "Твоя учёба.Твой запас."
+  },
+  {
+    "route": "referral",
+    "status": 200,
+    "expected_ui": true,
+    "h1": "Хорошим делятся.За это — 200 бонусов."
+  },
+  {
+    "route": "gift",
+    "status": 200,
+    "expected_ui": true,
+    "h1": "Подари немногоспокойствия."
+  },
+  {
+    "route": "loyalty",
+    "status": 200,
+    "expected_ui": true,
+    "h1": "Правила программы лояльности «Академический Салон»"
+  },
+  {
+    "route": "prolog",
+    "status": 200,
+    "expected_ui": true,
+    "h1": "Большая работа.Понятные шаги."
+  },
+  {
+    "route": "assets/css/salon-experience.css",
+    "status": 200,
+    "exact_source": true
+  },
+  {
+    "route": "assets/css/order-journey.css",
+    "status": 200,
+    "exact_source": true
+  },
+  {
+    "route": "assets/js/order-journey.js",
+    "status": 200,
+    "exact_source": true
+  }
+]

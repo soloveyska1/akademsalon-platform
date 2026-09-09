@@ -1,0 +1,246 @@
+TAP version 13
+# Subtest: semester plans subtract membership price and respect per-order caps
+ok 1 - semester plans subtract membership price and respect per-order caps
+  ---
+  duration_ms: 1.380667
+  type: 'test'
+  ...
+# Subtest: deposit projection follows authoritative integer tier boundaries
+ok 2 - deposit projection follows authoritative integer tier boundaries
+  ---
+  duration_ms: 1.629584
+  type: 'test'
+  ...
+# Subtest: deposit projection never treats unused reserve as spendable money
+ok 3 - deposit projection never treats unused reserve as spendable money
+  ---
+  duration_ms: 2.227541
+  type: 'test'
+  ...
+# Subtest: three original sample types have complete annotations and real order destinations
+ok 4 - three original sample types have complete annotations and real order destinations
+  ---
+  duration_ms: 0.62725
+  type: 'test'
+  ...
+# Subtest: every declared customer page uses the experience shell exactly once
+not ok 5 - every declared customer page uses the experience shell exactly once
+  ---
+  duration_ms: 7.56325
+  type: 'test'
+  location: '/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/tests/salon-experience.test.js:40:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    dashboard.html
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/tests/salon-experience.test.js:42:103)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: private cabinet preserves IDs and loads changed runtime with a new cache identity
+not ok 6 - private cabinet preserves IDs and loads changed runtime with a new cache identity
+  ---
+  duration_ms: 0.315875
+  type: 'test'
+  location: '/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/tests/salon-experience.test.js:44:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /skip-link" href="#accountWorkspace"/. Input:
+    
+    '<!doctype html>\n' +
+      '<html lang="ru"><head>\n' +
+      '<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n' +
+      '<meta name="referrer" content="no-referrer"><meta name="robots" content="noindex">\n' +
+      '<title>Мой Салон · Академический Салон</title>\n' +
+      '<meta name="description" content="Твои заказы, файлы, сроки и оплата в одном пространстве.">\n' +
+      '<link rel="canonical" href="https://akademsalon.ru/dashboard.html">\n' +
+      '<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">\n' +
+      '<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png"><link rel="manifest" href="/manifest.webmanifest?v=20260806shell123">\n' +
+      '<meta name="theme-color" content="#5136b5">\n' +
+      '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Академсалон"><meta name="apple-mobile-web-app-status-bar-style" content="default">\n' +
+      '<link rel="stylesheet" href="assets/fonts/fonts.css">\n' +
+      '<link rel="stylesheet" href="assets/css/salon-workspace.css?v=20260909workspace3" data-mobile-edition="1">\n' +
+      "<script>try{if(localStorage.getItem('salon_theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>\n" +
+      '<link rel="stylesheet" href="assets/css/salon-assistant.css?v=20260909assistant4"></head><body class="salon-workspace">\n' +
+      '<a class="ws-skip skip-link" href="#ws-main">К содержанию</a>\n' +
+      '<div id="workspace-root"><main id="ws-main" class="ws-loading" tabindex="-1"><span class="ws-monogram">а.</span><h1>Открываем твой Салон</h1><p>Проверяем доступ и загружаем заказы.</p><noscript><p>Для кабинета нужен JavaScript. <a href="https://t.me/academic_saloon_bot">Открыть Салон в Telegram</a></p></noscript></main></div>\n' +
+      '<div id="ws-notice" class="ws-notice" role="status" aria-live="polite" hidden></div>\n' +
+      '<dialog id="ws-dialog" aria-labelledby="ws-dialog-title"></dialog>\n' +
+      '<script src="assets/js/app.js?v=20260909workspace3"></script>\n' +
+      '<script src="assets/js/cabinet-demo.js?v=20260909workspace3"></script>\n' +
+      '<script src="assets/js/salon-order-domain.js?v=20260909workspace3"></script>\n' +
+      '<script src="assets/js/salon-workspace.js?v=20260909workspace3"></script>\n' +
+      '<script src="assets/js/salon-assistant.js?v=20260909assistant4"></script></body></html>\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    <!doctype html>
+    <html lang="ru"><head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="referrer" content="no-referrer"><meta name="robots" content="noindex">
+    <title>Мой Салон · Академический Салон</title>
+    <meta name="description" content="Твои заказы, файлы, сроки и оплата в одном пространстве.">
+    <link rel="canonical" href="https://akademsalon.ru/dashboard.html">
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png"><link rel="manifest" href="/manifest.webmanifest?v=20260806shell123">
+    <meta name="theme-color" content="#5136b5">
+    <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Академсалон"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" href="assets/fonts/fonts.css">
+    <link rel="stylesheet" href="assets/css/salon-workspace.css?v=20260909workspace3" data-mobile-edition="1">
+    <script>try{if(localStorage.getItem('salon_theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
+    <link rel="stylesheet" href="assets/css/salon-assistant.css?v=20260909assistant4"></head><body class="salon-workspace">
+    <a class="ws-skip skip-link" href="#ws-main">К содержанию</a>
+    <div id="workspace-root"><main id="ws-main" class="ws-loading" tabindex="-1"><span class="ws-monogram">а.</span><h1>Открываем твой Салон</h1><p>Проверяем доступ и загружаем заказы.</p><noscript><p>Для кабинета нужен JavaScript. <a href="https://t.me/academic_saloon_bot">Открыть Салон в Telegram</a></p></noscript></main></div>
+    <div id="ws-notice" class="ws-notice" role="status" aria-live="polite" hidden></div>
+    <dialog id="ws-dialog" aria-labelledby="ws-dialog-title"></dialog>
+    <script src="assets/js/app.js?v=20260909workspace3"></script>
+    <script src="assets/js/cabinet-demo.js?v=20260909workspace3"></script>
+    <script src="assets/js/salon-order-domain.js?v=20260909workspace3"></script>
+    <script src="assets/js/salon-workspace.js?v=20260909workspace3"></script>
+    <script src="assets/js/salon-assistant.js?v=20260909assistant4"></script></body></html>
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/tests/salon-experience.test.js:45:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: shared selection stores finite choices only and search is local
+ok 7 - shared selection stores finite choices only and search is local
+  ---
+  duration_ms: 0.203959
+  type: 'test'
+  ...
+# Subtest: new interactions support keyboard, reduced motion and no-JS routing
+ok 8 - new interactions support keyboard, reduced motion and no-JS routing
+  ---
+  duration_ms: 0.893667
+  type: 'test'
+  ...
+# Subtest: benefit order receipt uses best discount, shared cap and excludes certificates from cashback
+ok 9 - benefit order receipt uses best discount, shared cap and excludes certificates from cashback
+  ---
+  duration_ms: 0.326334
+  type: 'test'
+  ...
+# Subtest: benefit receipt conserves each ruble and respects caps across prices and plans
+ok 10 - benefit receipt conserves each ruble and respects caps across prices and plans
+  ---
+  duration_ms: 1.030375
+  type: 'test'
+  ...
+# Subtest: subscription floor rounding does not falsely recommend a paid plan at break-even
+ok 11 - subscription floor rounding does not falsely recommend a paid plan at break-even
+  ---
+  duration_ms: 0.112958
+  type: 'test'
+  ...
+# Subtest: welcome campaign opens and closes on Moscow day boundaries
+ok 12 - welcome campaign opens and closes on Moscow day boundaries
+  ---
+  duration_ms: 0.07475
+  type: 'test'
+  ...
+# {
+#   "source": "/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/assets/js/salon-support.js",
+#   "sha256": "5cd12dc419edb6f7ea83d1c2fa915f5512400a178d30d1ee442bb6edcc5fec7f",
+#   "networkCalls": 0,
+#   "productionMutations": 0,
+#   "cases": [
+#     {
+#       "name": "uncertain:{\\"ok\\":false,\\"error\\":\\"bad_json\\"}",
+#       "pass": true
+#     },
+#     {
+#       "name": "uncertain:{\\"ok\\":false,\\"error\\":\\"server_error\\"}",
+#       "pass": true
+#     },
+#     {
+#       "name": "uncertain:{\\"ok\\":false,\\"error\\":\\"network\\"}",
+#       "pass": true
+#     },
+#     {
+#       "name": "uncertain:null",
+#       "pass": true
+#     },
+#     {
+#       "name": "uncertain:{\\"ok\\":true,\\"id\\":true}",
+#       "pass": true
+#     },
+#     {
+#       "name": "uncertain:{\\"ok\\":true,\\"id\\":\\"12\\"}",
+#       "pass": true
+#     },
+#     {
+#       "name": "uncertain:{\\"ok\\":true,\\"id\\":0}",
+#       "pass": true
+#     },
+#     {
+#       "name": "uncertain:{\\"ok\\":true,\\"id\\":-1}",
+#       "pass": true
+#     },
+#     {
+#       "name": "uncertain:{\\"ok\\":true}",
+#       "pass": true
+#     },
+#     {
+#       "name": "promise rejection blocks duplicate",
+#       "pass": true
+#     },
+#     {
+#       "name": "timeout blocks while request pending; late success wins",
+#       "pass": true
+#     },
+#     {
+#       "name": "timeout then explicit rejection unlocks retry",
+#       "pass": true
+#     },
+#     {
+#       "name": "known rejection unlocks; retains content; no automatic retry",
+#       "pass": true
+#     },
+#     {
+#       "name": "confirmed success one explicit POST only; privacy payload",
+#       "pass": true
+#     },
+#     {
+#       "name": "copy survives DOM currentTarget clearing after dispatch",
+#       "pass": true
+#     }
+#   ],
+#   "total": 15,
+#   "pass": true
+# }
+# Subtest: tests/salon-support.test.js
+ok 2 - tests/salon-support.test.js
+  ---
+  duration_ms: 63.327625
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 11
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 86.6285

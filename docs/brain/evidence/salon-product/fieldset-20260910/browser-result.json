@@ -1,0 +1,85 @@
+{
+  "rows": [
+    {
+      "width": 320,
+      "theme": "light",
+      "background": "rgba(0, 0, 0, 0)",
+      "radius": "0px",
+      "legendPadding": "0px",
+      "alignment": 0,
+      "overflow": false,
+      "href": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24"
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "background": "rgba(0, 0, 0, 0)",
+      "radius": "0px",
+      "legendPadding": "0px",
+      "alignment": 0,
+      "overflow": false,
+      "href": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24"
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "background": "rgba(0, 0, 0, 0)",
+      "radius": "0px",
+      "legendPadding": "0px",
+      "alignment": 0,
+      "overflow": false,
+      "href": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24"
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "background": "rgba(0, 0, 0, 0)",
+      "radius": "0px",
+      "legendPadding": "0px",
+      "alignment": 0,
+      "overflow": false,
+      "href": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24"
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "background": "rgba(0, 0, 0, 0)",
+      "radius": "0px",
+      "legendPadding": "0px",
+      "alignment": 0,
+      "overflow": false,
+      "href": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24"
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "background": "rgba(0, 0, 0, 0)",
+      "radius": "0px",
+      "legendPadding": "0px",
+      "alignment": 0,
+      "overflow": false,
+      "href": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24"
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "background": "rgba(0, 0, 0, 0)",
+      "radius": "0px",
+      "legendPadding": "0px",
+      "alignment": 0,
+      "overflow": false,
+      "href": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24"
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "background": "rgba(0, 0, 0, 0)",
+      "radius": "0px",
+      "legendPadding": "0px",
+      "alignment": 0,
+      "overflow": false,
+      "href": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24"
+    }
+  ],
+  "errors": []
+}

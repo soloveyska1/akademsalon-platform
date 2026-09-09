@@ -1,0 +1,14 @@
+{
+  "head_sha": "432dfa9bd03a716c38b85d5d648d2655ed1ab8ed",
+  "canonical_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "counts": {
+    "blocking": 0,
+    "hard": 0,
+    "info": 8,
+    "inspected": 220,
+    "warnings": 60
+  },
+  "decision": "PROCEED_LOCAL_SNAPSHOT",
+  "blocking": [],
+  "hard": []
+}

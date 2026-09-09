@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-5905274fa24a4c61b51894d5e1a08e0a",
+  "slug": "salon-admin-workspace",
+  "status": "submitted",
+  "branch": "codex/salon-admin-workspace",
+  "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "result_sha": "5e410ae31325be0b6eb8df5036ac2c2f6f1422de",
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "admin.html",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/polish15-admin.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-admin.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/salon-admin-control",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-5905274fa24a4c61b51894d5e1a08e0a/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-admin-control.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:admin-control-workspace"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 2,
+  "base_manifest_hash": "94fb821d886933fbbb7a543ff323b49bc9abc4fe2ecea4c2d78c06acb3fed048"
+}

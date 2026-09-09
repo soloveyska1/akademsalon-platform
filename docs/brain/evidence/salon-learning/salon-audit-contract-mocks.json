@@ -1,0 +1,58 @@
+{
+  "head": "67b9b1e4",
+  "evidence": [
+    {
+      "id": "source-out-of-order",
+      "observed": true,
+      "before": "<header><div><p class=\"eyebrow\">Результат</p><h2>1 записей</h2></div><span class=\"tag tag--green\">0 требуют внимания</span></header><div class=\"source-list\"><article class=\"\"><span>01</span><div><p>Петров П. П. Новая книга. 2024.</p><small>Основные поля найдены</small></div></article></div>",
+      "after": "<header><div><p class=\"eyebrow\">Результат</p><h2>1 записей</h2></div><span class=\"tag tag--green\">0 требуют внимания</span></header><div class=\"source-list\"><article class=\"has-issue\"><span>01</span><div><p>Иванов И. И. Старая книга. 2022. DOI: 10.1234/old</p><small>Основные поля найдены · Crossref: запись не подтверждена</small></div></article></div>",
+      "requests": [
+        [
+          "fetch",
+          "https://api.crossref.org/works/10.1234%2Fold",
+          {
+            "method": "GET",
+            "headers": {
+              "Accept": "application/json"
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "retry-pending-disabled",
+      "observed": true,
+      "request": [
+        [
+          "fetch",
+          "/",
+          {
+            "method": "HEAD",
+            "cache": "no-store"
+          }
+        ]
+      ],
+      "explanation": "No timeout/abort branch in source; unresolved HEAD leaves disabled indefinitely"
+    },
+    {
+      "id": "payment-return",
+      "search": "?Shp_kind=gift&Shp_gift=42",
+      "target": "gift.html?payment_return=1"
+    },
+    {
+      "id": "payment-return",
+      "search": "?Shp_kind=deposit&Shp_dep=42",
+      "target": "dashboard.html#deposit"
+    },
+    {
+      "id": "payment-return",
+      "search": "?Shp_kind=order&Shp_order=42",
+      "target": "dashboard.html?paid=42"
+    },
+    {
+      "id": "payment-return",
+      "search": "?Shp_kind=sub&Shp_sub=42",
+      "target": "dashboard.html#plus"
+    }
+  ]
+}

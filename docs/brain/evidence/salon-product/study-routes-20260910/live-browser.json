@@ -1,0 +1,34 @@
+{
+  "rows": [
+    {
+      "page": "psychology",
+      "cards": 2,
+      "faq": 4,
+      "overflow": false,
+      "mascot": "hidden"
+    },
+    {
+      "page": "library",
+      "open": true,
+      "caption": "ВКР · Завершаю",
+      "links": [
+        "guide-zashchita-diploma.html",
+        "guide-prezentaciya-k-zashchite.html",
+        "guide-rech-na-zashchitu.html"
+      ],
+      "overflow": false
+    },
+    {
+      "page": "contextual-form",
+      "product": "course",
+      "scope": "part",
+      "pathname": "/configurator.html",
+      "search": "?product=course&result=part"
+    }
+  ],
+  "errors": [],
+  "blockedMutations": [],
+  "source_commit": "be99a1d914d7063f7232ab7d243d3a6503ad317d",
+  "browser": "Chromium fresh / serviceWorkers block",
+  "data": "anonymous; live GET/HEAD only"
+}

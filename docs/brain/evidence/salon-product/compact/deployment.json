@@ -1,0 +1,16 @@
+{
+  "project_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7",
+  "version": 47,
+  "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_c2719ba3174881918aad4adafb9bf532",
+  "deployment_id": "appgdep_6aa0b98e659c819182e644f6368ef56b",
+  "status": "succeeded",
+  "source_sha": "9b6887b2a85d7c236578c6006f33087df1b7852e",
+  "url": "https://akademsalon-desktop-preview.saymoon.chatgpt.site/",
+  "archive_hash": "sha256:0dfedac9bea1bcd416a43bd92d01cb5c63a925b51a4b64c503bdfa38b7fee313",
+  "access": "owner-only unchanged",
+  "readback": "CUA: new compact homepage, extras modal 37500, Escape focus restore, extensionless configurator same37500/express24/bundle. Final homepage visible and marked deliverable. No actual submit.",
+  "cleanup": "owned local preview8768/test8769 and salon-compact browser stopped",
+  "public_domain": "unchanged; real server composition/pending acceptance gate remains open",
+  "rollback": "prior version46 retained; rollback not executed",
+  "observed_at": "2026-09-09T01:45:21.099908+00:00"
+}

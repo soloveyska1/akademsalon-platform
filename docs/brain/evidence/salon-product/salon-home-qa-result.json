@@ -1,0 +1,12 @@
+{
+  "checks": [
+    "home express x2 + bundled extras",
+    "form continuity, exact prices, associations, stable retry, requested clock",
+    "VIP quote + included extras, candidate restriction",
+    "FAQ interaction and keyboard",
+    "legacy scopes remove hidden express; discipline/date/quote and selected introduction restored"
+  ],
+  "matrix": 20,
+  "posts": 2,
+  "errors": []
+}

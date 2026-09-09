@@ -1,0 +1,55 @@
+{
+  "release": "release185-432dfa9b",
+  "source_commit": "432dfa9bd03a716c38b85d5d648d2655ed1ab8ed",
+  "files": 420,
+  "steps": [
+    {
+      "action": "apply",
+      "health": {
+        "ok": true,
+        "uptime_s": 105,
+        "active_orders": 37,
+        "uploads": {
+          "pending": 0,
+          "delayed": 0
+        }
+      },
+      "pay_online": true,
+      "current": "/var/www/academic_saloon/releases/release185-432dfa9b",
+      "index_sha256": "4d8eb037e4c98f23dbad9b3f47161a7382ecd7c64ba93fe061bdd11a84dd2094",
+      "pdf_module_mime": "application/javascript"
+    },
+    {
+      "action": "rollback",
+      "health": {
+        "ok": true,
+        "uptime_s": 105,
+        "active_orders": 37,
+        "uploads": {
+          "pending": 0,
+          "delayed": 0
+        }
+      },
+      "pay_online": true,
+      "current": "/var/www/academic_saloon/releases/release184-0341e9c4",
+      "index_sha256": "902122bf0208c93081c4d05db21f1f878b37e748792cbdc18b8c9b382dd33ab1"
+    },
+    {
+      "action": "forward",
+      "health": {
+        "ok": true,
+        "uptime_s": 105,
+        "active_orders": 37,
+        "uploads": {
+          "pending": 0,
+          "delayed": 0
+        }
+      },
+      "pay_online": true,
+      "current": "/var/www/academic_saloon/releases/release185-432dfa9b",
+      "index_sha256": "4d8eb037e4c98f23dbad9b3f47161a7382ecd7c64ba93fe061bdd11a84dd2094",
+      "pdf_module_mime": "application/javascript"
+    }
+  ],
+  "database_restored": false
+}

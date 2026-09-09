@@ -1,0 +1,62 @@
+[
+  {
+    "route": "plus",
+    "width": 390,
+    "theme": "light",
+    "overflow": false
+  },
+  {
+    "route": "plus",
+    "width": 1440,
+    "theme": "light",
+    "overflow": false
+  },
+  {
+    "route": "deposit",
+    "width": 390,
+    "theme": "light",
+    "overflow": false
+  },
+  {
+    "route": "deposit",
+    "width": 1440,
+    "theme": "light",
+    "overflow": false
+  },
+  {
+    "route": "referral",
+    "width": 390,
+    "theme": "light",
+    "overflow": false
+  },
+  {
+    "route": "referral",
+    "width": 1440,
+    "theme": "light",
+    "overflow": false
+  },
+  {
+    "route": "gift",
+    "width": 390,
+    "theme": "light",
+    "overflow": false
+  },
+  {
+    "route": "gift",
+    "width": 1440,
+    "theme": "light",
+    "overflow": false
+  },
+  {
+    "route": "loyalty",
+    "width": 390,
+    "theme": "light",
+    "overflow": false
+  },
+  {
+    "route": "loyalty",
+    "width": 1440,
+    "theme": "light",
+    "overflow": false
+  }
+]

@@ -1,0 +1,1177 @@
+{
+  "status": "GO",
+  "scope": "legacy header CSS only independent read-only local browser review",
+  "matrix": "/tmp/header-review-matrix.json",
+  "states": 42,
+  "widths": [
+    320,
+    390,
+    650
+  ],
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "routes": [
+    "about",
+    "kursovaya-rabota",
+    "normokontrol-vkr",
+    "plan",
+    "50x",
+    "index",
+    "knowledge"
+  ],
+  "passed": [
+    "All rendered header actions at least44px in every state",
+    "No viewport overflow or center-point occlusion",
+    "Search opens by Enter on five legacy pages",
+    "Theme toggles on five legacy pages",
+    "Menu Enter/Escape works on five legacy pages",
+    "All account hrefs dashboard.html",
+    "Modern home/library retain44px menu search/theme actions and Escape closes"
+  ],
+  "findings": [
+    {
+      "severity": "P2",
+      "status": "fixed and retested",
+      "file": "assets/css/polish15-chrome.css",
+      "line": 3051,
+      "issue": "Fixed header height70px remains on norm/plan/50x in two-row mobile layout; header bottom109 cuts action row104..148",
+      "proposed": "height:auto on scoped narrow legacy header",
+      "verification": "18 fresh states: all header controls fully contained;320/390 header123px;650 header73px"
+    }
+  ],
+  "evidence": [
+    "/tmp/header-review-interactions.txt",
+    "/tmp/header-review-modern.txt",
+    "/tmp/header-review-about-320-light.png",
+    "/tmp/header-review-about-650-dark.png",
+    "/tmp/header-review-50x-320-dark.png",
+    "/tmp/header-final-delta.txt",
+    "/tmp/header-final-50x-dark.png",
+    "/tmp/header-final-plan-light.png"
+  ],
+  "source_sha256": "2df3ffbdedda6efdabbd7376703d5abee7fc0918617ea2a9cebbc33bb7d50b44",
+  "limits": [
+    "No production writes or payments; local GET only",
+    "Review bounded to header; old content and cookie banner are outside scope"
+  ],
+  "delta_states": [
+    {
+      "route": "normokontrol-vkr",
+      "width": 320,
+      "theme": "light",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 288,
+        "height": 123,
+        "top": 39,
+        "right": 304,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 85.4375,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 129.4375,
+          "bottom": 148,
+          "left": 85.4375
+        },
+        {
+          "label": "Кабинет",
+          "x": 154.859375,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 234.5625,
+          "bottom": 148,
+          "left": 154.859375
+        },
+        {
+          "label": "Открыть меню",
+          "x": 260,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 304,
+          "bottom": 148,
+          "left": 260
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "normokontrol-vkr",
+      "width": 320,
+      "theme": "dark",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 288,
+        "height": 123,
+        "top": 39,
+        "right": 304,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 85.4375,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 129.4375,
+          "bottom": 148,
+          "left": 85.4375
+        },
+        {
+          "label": "Кабинет",
+          "x": 154.859375,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 234.5625,
+          "bottom": 148,
+          "left": 154.859375
+        },
+        {
+          "label": "Открыть меню",
+          "x": 260,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 304,
+          "bottom": 148,
+          "left": 260
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "normokontrol-vkr",
+      "width": 390,
+      "theme": "light",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 358,
+        "height": 123,
+        "top": 39,
+        "right": 374,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 108.765625,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 152.765625,
+          "bottom": 148,
+          "left": 108.765625
+        },
+        {
+          "label": "Кабинет",
+          "x": 201.53125,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 281.234375,
+          "bottom": 148,
+          "left": 201.53125
+        },
+        {
+          "label": "Открыть меню",
+          "x": 330,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 374,
+          "bottom": 148,
+          "left": 330
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "normokontrol-vkr",
+      "width": 390,
+      "theme": "dark",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 358,
+        "height": 123,
+        "top": 39,
+        "right": 374,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 108.765625,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 152.765625,
+          "bottom": 148,
+          "left": 108.765625
+        },
+        {
+          "label": "Кабинет",
+          "x": 201.53125,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 281.234375,
+          "bottom": 148,
+          "left": 201.53125
+        },
+        {
+          "label": "Открыть меню",
+          "x": 330,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 374,
+          "bottom": 148,
+          "left": 330
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "normokontrol-vkr",
+      "width": 650,
+      "theme": "light",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 618,
+        "height": 73,
+        "top": 39,
+        "right": 634,
+        "bottom": 112,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 398.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 442.296875,
+          "bottom": 97,
+          "left": 398.296875
+        },
+        {
+          "label": "Переключить тему",
+          "x": 450.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 494.296875,
+          "bottom": 97,
+          "left": 450.296875
+        },
+        {
+          "label": "Кабинет",
+          "x": 502.296875,
+          "y": 53,
+          "width": 79.703125,
+          "height": 44,
+          "top": 53,
+          "right": 582,
+          "bottom": 97,
+          "left": 502.296875
+        },
+        {
+          "label": "Открыть меню",
+          "x": 590,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 634,
+          "bottom": 97,
+          "left": 590
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "normokontrol-vkr",
+      "width": 650,
+      "theme": "dark",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 618,
+        "height": 73,
+        "top": 39,
+        "right": 634,
+        "bottom": 112,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 398.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 442.296875,
+          "bottom": 97,
+          "left": 398.296875
+        },
+        {
+          "label": "Переключить тему",
+          "x": 450.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 494.296875,
+          "bottom": 97,
+          "left": 450.296875
+        },
+        {
+          "label": "Кабинет",
+          "x": 502.296875,
+          "y": 53,
+          "width": 79.703125,
+          "height": 44,
+          "top": 53,
+          "right": 582,
+          "bottom": 97,
+          "left": 502.296875
+        },
+        {
+          "label": "Открыть меню",
+          "x": 590,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 634,
+          "bottom": 97,
+          "left": 590
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "plan",
+      "width": 320,
+      "theme": "light",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 288,
+        "height": 123,
+        "top": 39,
+        "right": 304,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 85.4375,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 129.4375,
+          "bottom": 148,
+          "left": 85.4375
+        },
+        {
+          "label": "Кабинет",
+          "x": 154.859375,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 234.5625,
+          "bottom": 148,
+          "left": 154.859375
+        },
+        {
+          "label": "Открыть меню",
+          "x": 260,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 304,
+          "bottom": 148,
+          "left": 260
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "plan",
+      "width": 320,
+      "theme": "dark",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 288,
+        "height": 123,
+        "top": 39,
+        "right": 304,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 85.4375,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 129.4375,
+          "bottom": 148,
+          "left": 85.4375
+        },
+        {
+          "label": "Кабинет",
+          "x": 154.859375,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 234.5625,
+          "bottom": 148,
+          "left": 154.859375
+        },
+        {
+          "label": "Открыть меню",
+          "x": 260,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 304,
+          "bottom": 148,
+          "left": 260
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "plan",
+      "width": 390,
+      "theme": "light",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 358,
+        "height": 123,
+        "top": 39,
+        "right": 374,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 108.765625,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 152.765625,
+          "bottom": 148,
+          "left": 108.765625
+        },
+        {
+          "label": "Кабинет",
+          "x": 201.53125,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 281.234375,
+          "bottom": 148,
+          "left": 201.53125
+        },
+        {
+          "label": "Открыть меню",
+          "x": 330,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 374,
+          "bottom": 148,
+          "left": 330
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "plan",
+      "width": 390,
+      "theme": "dark",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 358,
+        "height": 123,
+        "top": 39,
+        "right": 374,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 108.765625,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 152.765625,
+          "bottom": 148,
+          "left": 108.765625
+        },
+        {
+          "label": "Кабинет",
+          "x": 201.53125,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 281.234375,
+          "bottom": 148,
+          "left": 201.53125
+        },
+        {
+          "label": "Открыть меню",
+          "x": 330,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 374,
+          "bottom": 148,
+          "left": 330
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "plan",
+      "width": 650,
+      "theme": "light",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 618,
+        "height": 73,
+        "top": 39,
+        "right": 634,
+        "bottom": 112,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 398.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 442.296875,
+          "bottom": 97,
+          "left": 398.296875
+        },
+        {
+          "label": "Переключить тему",
+          "x": 450.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 494.296875,
+          "bottom": 97,
+          "left": 450.296875
+        },
+        {
+          "label": "Кабинет",
+          "x": 502.296875,
+          "y": 53,
+          "width": 79.703125,
+          "height": 44,
+          "top": 53,
+          "right": 582,
+          "bottom": 97,
+          "left": 502.296875
+        },
+        {
+          "label": "Открыть меню",
+          "x": 590,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 634,
+          "bottom": 97,
+          "left": 590
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "plan",
+      "width": 650,
+      "theme": "dark",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 618,
+        "height": 73,
+        "top": 39,
+        "right": 634,
+        "bottom": 112,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 398.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 442.296875,
+          "bottom": 97,
+          "left": 398.296875
+        },
+        {
+          "label": "Переключить тему",
+          "x": 450.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 494.296875,
+          "bottom": 97,
+          "left": 450.296875
+        },
+        {
+          "label": "Кабинет",
+          "x": 502.296875,
+          "y": 53,
+          "width": 79.703125,
+          "height": 44,
+          "top": 53,
+          "right": 582,
+          "bottom": 97,
+          "left": 502.296875
+        },
+        {
+          "label": "Открыть меню",
+          "x": 590,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 634,
+          "bottom": 97,
+          "left": 590
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "50x",
+      "width": 320,
+      "theme": "light",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 288,
+        "height": 123,
+        "top": 39,
+        "right": 304,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 85.4375,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 129.4375,
+          "bottom": 148,
+          "left": 85.4375
+        },
+        {
+          "label": "Кабинет",
+          "x": 154.859375,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 234.5625,
+          "bottom": 148,
+          "left": 154.859375
+        },
+        {
+          "label": "Открыть меню",
+          "x": 260,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 304,
+          "bottom": 148,
+          "left": 260
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "50x",
+      "width": 320,
+      "theme": "dark",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 288,
+        "height": 123,
+        "top": 39,
+        "right": 304,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 85.4375,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 129.4375,
+          "bottom": 148,
+          "left": 85.4375
+        },
+        {
+          "label": "Кабинет",
+          "x": 154.859375,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 234.5625,
+          "bottom": 148,
+          "left": 154.859375
+        },
+        {
+          "label": "Открыть меню",
+          "x": 260,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 304,
+          "bottom": 148,
+          "left": 260
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "50x",
+      "width": 390,
+      "theme": "light",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 358,
+        "height": 123,
+        "top": 39,
+        "right": 374,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 108.765625,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 152.765625,
+          "bottom": 148,
+          "left": 108.765625
+        },
+        {
+          "label": "Кабинет",
+          "x": 201.53125,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 281.234375,
+          "bottom": 148,
+          "left": 201.53125
+        },
+        {
+          "label": "Открыть меню",
+          "x": 330,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 374,
+          "bottom": 148,
+          "left": 330
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "50x",
+      "width": 390,
+      "theme": "dark",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 358,
+        "height": 123,
+        "top": 39,
+        "right": 374,
+        "bottom": 162,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 16,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 60,
+          "bottom": 148,
+          "left": 16
+        },
+        {
+          "label": "Переключить тему",
+          "x": 108.765625,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 152.765625,
+          "bottom": 148,
+          "left": 108.765625
+        },
+        {
+          "label": "Кабинет",
+          "x": 201.53125,
+          "y": 104,
+          "width": 79.703125,
+          "height": 44,
+          "top": 104,
+          "right": 281.234375,
+          "bottom": 148,
+          "left": 201.53125
+        },
+        {
+          "label": "Открыть меню",
+          "x": 330,
+          "y": 104,
+          "width": 44,
+          "height": 44,
+          "top": 104,
+          "right": 374,
+          "bottom": 148,
+          "left": 330
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "50x",
+      "width": 650,
+      "theme": "light",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 618,
+        "height": 73,
+        "top": 39,
+        "right": 634,
+        "bottom": 112,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 398.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 442.296875,
+          "bottom": 97,
+          "left": 398.296875
+        },
+        {
+          "label": "Переключить тему",
+          "x": 450.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 494.296875,
+          "bottom": 97,
+          "left": 450.296875
+        },
+        {
+          "label": "Кабинет",
+          "x": 502.296875,
+          "y": 53,
+          "width": 79.703125,
+          "height": 44,
+          "top": 53,
+          "right": 582,
+          "bottom": 97,
+          "left": 502.296875
+        },
+        {
+          "label": "Открыть меню",
+          "x": 590,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 634,
+          "bottom": 97,
+          "left": 590
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "route": "50x",
+      "width": 650,
+      "theme": "dark",
+      "header": {
+        "x": 16,
+        "y": 39,
+        "width": 618,
+        "height": 73,
+        "top": 39,
+        "right": 634,
+        "bottom": 112,
+        "left": 16
+      },
+      "controls": [
+        {
+          "label": "Найти по сайту",
+          "x": 398.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 442.296875,
+          "bottom": 97,
+          "left": 398.296875
+        },
+        {
+          "label": "Переключить тему",
+          "x": 450.296875,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 494.296875,
+          "bottom": 97,
+          "left": 450.296875
+        },
+        {
+          "label": "Кабинет",
+          "x": 502.296875,
+          "y": 53,
+          "width": 79.703125,
+          "height": 44,
+          "top": 53,
+          "right": 582,
+          "bottom": 97,
+          "left": 502.296875
+        },
+        {
+          "label": "Открыть меню",
+          "x": 590,
+          "y": 53,
+          "width": 44,
+          "height": 44,
+          "top": 53,
+          "right": 634,
+          "bottom": 97,
+          "left": 590
+        }
+      ],
+      "overflow": 0
+    }
+  ]
+}

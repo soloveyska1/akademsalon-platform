@@ -1,0 +1,9 @@
+{
+  "services": [
+    "active",
+    "active",
+    "active"
+  ],
+  "polling_started": true,
+  "error_lines_in_final_window": 0
+}

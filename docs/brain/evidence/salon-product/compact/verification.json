@@ -1,0 +1,48 @@
+{
+  "observed_at": "2026-09-09T01:40:29.920244+00:00",
+  "base": "d5a563cf0a057bd9d9ebf9c72400905505b9740d",
+  "source_fingerprints": {
+    "index.html": "2df579081bbef543d05b8ea10b9cb09705e438012c7b01f4488ad86dc7b1e8af",
+    "configurator.html": "85632cd79c1a8c9f42cd3da351ba7f14ff8bf84457fc83174a36d57193e70cf1",
+    "assets/js/salon-home.js": "0763fea1e8c772d8ffd1d7734ee6d2e145ffcc8203489470626fad336fb1b490",
+    "assets/js/salon-order.js": "bec07d691d57616ba9323b6967129df962e2d1e01b99b493556ff8b9d8e822d9",
+    "assets/css/salon-home.css": "3f5319274bf25f4f39789388aee2500ebba217cfd1c0a62a0cc677995c2fc0e8"
+  },
+  "canonical_fetched": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "browser": "Playwright Chromium salon-compact; isolated service-worker-blocked context for old source comparison",
+  "routes": [
+    "index.html",
+    "configurator.html?composition=1"
+  ],
+  "data": "synthetic selections and intercepted orders; no real POST",
+  "comparison": {
+    "390": {
+      "previous": 5926,
+      "current": 2159,
+      "reduction_percent": 63.57
+    },
+    "1440": {
+      "previous": 3781,
+      "current": 1775,
+      "reduction_percent": 53.05
+    }
+  },
+  "viewport_theme_matrix": "360/390/768/1024/1440, light/dark, main and dialog; screenshots filenames identify width/theme, fullpage light 390/1440 at 1000 high",
+  "tests": {
+    "focused_pass": 85,
+    "focused_fail": 0,
+    "full_pass": 506,
+    "full_fail": 175,
+    "new_failures": 0
+  },
+  "reviews": {
+    "journey_review": "GO; visual390/1440 and chapter editing return defect closed",
+    "order_contract_review": "GO; 6048 quote states match; scope preservation suggestion implemented"
+  },
+  "not_verified": [
+    "conversion/profit lift",
+    "production server handling of composition express/pending",
+    "production auth callbacks",
+    "public release smoke/rollback"
+  ]
+}

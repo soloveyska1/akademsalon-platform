@@ -1,0 +1,65 @@
+[
+  {
+    "id": "comparison",
+    "sha256": "8ce1b19e37f699f2e7b8d7e65a3eb3cfaa13fa70fb34b414ea1b04179b66880a",
+    "pages": 10,
+    "metadata_clean": true,
+    "annotations": 0,
+    "blank_pages": 0,
+    "source_before_september": true
+  },
+  {
+    "id": "risk",
+    "sha256": "eab7027fc77caaa8fe3f2b1adac1b453d72ad93df5071bc6c7b6c43279adc298",
+    "pages": 44,
+    "metadata_clean": true,
+    "annotations": 0,
+    "blank_pages": 0,
+    "source_before_september": true
+  },
+  {
+    "id": "method",
+    "sha256": "0063fbd577ad470791b2e6ef6b5c6b22d46e449d46722a8bf3481718259fdd24",
+    "pages": 51,
+    "metadata_clean": true,
+    "annotations": 0,
+    "blank_pages": 0,
+    "source_before_september": true
+  },
+  {
+    "id": "referat",
+    "sha256": "2f237f825fcf5fe7605ff8220cceadac86fc23d0e85bc8f9f9fd3c11b4cd796e",
+    "pages": 13,
+    "metadata_clean": true,
+    "annotations": 0,
+    "blank_pages": 0,
+    "source_before_september": true
+  },
+  {
+    "id": "essay",
+    "sha256": "d5537075c7c2e224537b9088720bcb137f331a6726bc73495223bfc94de8e87f",
+    "pages": 18,
+    "metadata_clean": true,
+    "annotations": 0,
+    "blank_pages": 0,
+    "source_before_september": true
+  },
+  {
+    "id": "practice",
+    "sha256": "06f5315f1d02407a0fc58748272ca9fe9b67de6fdd7f8ff456ef8fb14e794625",
+    "pages": 18,
+    "metadata_clean": true,
+    "annotations": 0,
+    "blank_pages": 0,
+    "source_before_september": true
+  },
+  {
+    "id": "project",
+    "sha256": "6e74fb3f72aba1f9ef0d0c1e37b3fb55ab45327eb6cea3db9926c1ec503f2e4c",
+    "pages": 120,
+    "metadata_clean": true,
+    "annotations": 0,
+    "blank_pages": 0,
+    "source_before_september": true
+  }
+]

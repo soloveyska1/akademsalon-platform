@@ -1,0 +1,42 @@
+{
+  "decision": "GO",
+  "scope": "Nine discipline landing pages, independent read-only browser UX and handoff review",
+  "time": "2026-09-09T22:29:05.367779",
+  "findings": [],
+  "checks": {
+    "geometry": "72 states: 9 pages x 4 widths (320,390,768,1440) x 2 themes, no overflow/outside-header/under44 main or header targets",
+    "keyboard": "Space activates part and expressfast buttons on all nine, aria-pressed true",
+    "seededDraft": "Nine actual primary links after seeded other discipline: product/scope/discipline/speed all exact, part+expressfast. Footer href agrees with selection on all nine. External and nonGET requests blocked.",
+    "noJS": "All nine: controls hidden, fallback readable, primary/footer retain correct whole product and discipline, overflow0",
+    "fixedPackage": "Psychology service=pv stays independent after editing+expressfast; actual form service:psychologyvip, whole, standard;91000 visible. Package price/terms unchanged. Fresh mobile light/dark screenshots show readable violet heading/price/button",
+    "mascot": "320px IT chooser visible: helper visibility hidden, does not cover control"
+  },
+  "evidence": [
+    "/tmp/discipline-matrix.json",
+    "/tmp/discipline-handoff.json",
+    "/tmp/discipline-nojs.json",
+    "/tmp/discipline-pv.json",
+    "/tmp/discipline-psych-package-final390dark.png",
+    "/tmp/discipline-psych-package-final320light.png",
+    "/tmp/discipline-kursovaya-po-informatike-320-light.png"
+  ],
+  "hashes": {
+    "kursovaya-po-ekonomike.html": "3c4a37fcdb26b31fc47863b4978701fcabcef5af770cb23be08bbf04f2a9b9ca",
+    "diplomnaya-po-ekonomike.html": "d942c25183956e70a083b7ea56f54d4bc57532dc586f4f03367e100cbfd89ae2",
+    "kursovaya-po-menedzhmentu.html": "8542e3bbbd5bccaa28af8800f0f8b45322099a7e3f594fae3180f0bbbd5cac2e",
+    "kursovaya-po-pedagogike.html": "94ce05ed4123c391d2814663cf7859d2d5fc7f42bb1b7927c2019aa0154e3767",
+    "kursovaya-po-yurisprudencii.html": "b4e37eaf6006bb8fbbcc4976f8fec12aa23dbea4f9b80205f2595c6ff894a56c",
+    "diplomnaya-po-yurisprudencii.html": "ab00dfc24aacc8efad6b477db3109782b233b07c7328ca0fde6a409cdba15270",
+    "kursovaya-po-informatike.html": "301964a80382b051ecc5d64d7d910762f7476d381e7f6894a4c60e7a2ffacd2b",
+    "kursovaya-po-psihologii.html": "2d43aa7c18954ffe118c4f4b6c8e3b0cbcd50b3c14f6dfc03ebfab1151f396ac",
+    "diplomnaya-po-psihologii.html": "aa5eb07aad4682bb6f320c9895f4a2bbb463745a704df13200ea4e1121d698c3",
+    "assets/css/salon-experience.css": "30a124ffdda2c97ec4db7b33b0344a06c4b28be5f6bb3cf4e9f9f777d7862e0c",
+    "assets/js/salon-experience.js": "e07aed70a64a6d76710b6aa73f9c1ced3db0a41e0ec22aa52e14416702804274",
+    "assets/js/salon-order.js": "54548e1663f3e7f7cc6befd9abab56c2fb02ad6a82f97bb90e975b1ed8eacca1"
+  },
+  "limits": [
+    "Read-only local preview; no order creation, payment, or production verification",
+    "Expected blocked service-worker registration console messages introduced by test fixture; not production errors",
+    "Economics/management hum tariff grouping intentionally preserved; detailed topic supplied in existing form"
+  ]
+}

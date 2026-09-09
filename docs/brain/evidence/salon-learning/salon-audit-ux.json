@@ -1,0 +1,174 @@
+{
+  "base": "67b9b1e4",
+  "publicSnapshot": "/tmp/salon-public-release189-final",
+  "mode": "read-only; local GET only, all external requests blocked",
+  "matrix": "/tmp/site-next-matrix.json",
+  "recommendedRelease": {
+    "name": "Найти полезное без лишнего шага",
+    "scope": [
+      "knowledge.html",
+      "tools.html",
+      "new shared library/tools CSS and JS",
+      "shared current header/footer copied from rewards/support"
+    ],
+    "goal": "Search and task choice visible in first screen; results directly under search; choose one of four tools without an extra anchor-only CTA",
+    "preserve": [
+      "25 article URLs and existing topic/q deep links",
+      "Existing tool APIs and private local-analysis contracts",
+      "No new pricing or legal claims"
+    ],
+    "acceptance": [
+      "320/360/390/768/1024/1440 light/dark no offscreen controls",
+      "Query практика shows3matching cards directly after search, featured absent while filtered",
+      "Visible aria-live result count; empty/reset/Back restore",
+      "All four tool choices discoverable compactly; keyboard targets44px",
+      "Current shell navigation opens and closes; no double handlers"
+    ]
+  },
+  "findings": [
+    {
+      "id": "NAV-01",
+      "priority": "P1",
+      "issue": "Legacy hamburger outside320pxviewport",
+      "paths": [
+        [
+          "knowledge.html",
+          37
+        ],
+        [
+          "tools.html",
+          33
+        ],
+        [
+          "about.html",
+          1
+        ],
+        [
+          "guide-vvedenie-kursovoy.html",
+          30
+        ],
+        [
+          "redaktura-posle-ii.html",
+          17
+        ]
+      ],
+      "repro": "Open on320px; hamburger x305.515625,width44,right349.515625. About total overflow30; other legacy roots conceal overflow rather than fixing bounds.",
+      "recommendation": "Reuse verified rewards/support shell; retain visible cabinet and menu, move search/theme into mobile menu."
+    },
+    {
+      "id": "KB-01",
+      "priority": "P1",
+      "issue": "Search results are below unrelated feature card and result count remains hidden",
+      "paths": [
+        [
+          "knowledge.html",
+          51
+        ],
+        [
+          "knowledge.html",
+          69
+        ],
+        [
+          "assets/js/knowledge.js",
+          119
+        ],
+        [
+          "assets/js/knowledge.js",
+          140
+        ]
+      ],
+      "repro": "390x844; query практика; status Найдено3 but hidden=true; searchy719.8; unrelated featured introduction y823.8,h776.3; firstmatchingcardy1613.1.",
+      "evidence": "/tmp/site-next-knowledge-search390.png",
+      "recommendation": "Compact hero; search+topics before decoration; suppress featured while filtered; visible count and reset."
+    },
+    {
+      "id": "READ-01",
+      "priority": "P1",
+      "issue": "Old client-side reader deletes substantive source paragraph",
+      "paths": [
+        [
+          "guide-vvedenie-kursovoy.html",
+          110
+        ],
+        [
+          "assets/js/polish15-reading.js",
+          98
+        ],
+        [
+          "assets/js/polish15-reading.js",
+          337
+        ]
+      ],
+      "repro": "Source paragraph contains зеркальная пара, rendered main.innerText does not. cloneSafe discards any P containing configurator link.",
+      "recommendation": "Next coherent reader release for25guidepages: preserve exact article content and original anchors; add new chrome and reader tools without filtering source."
+    },
+    {
+      "id": "TOOLS-01",
+      "priority": "P2",
+      "issue": "Four-way selection stretched over several screens",
+      "paths": [
+        [
+          "tools.html",
+          34
+        ],
+        [
+          "tools.html",
+          44
+        ]
+      ],
+      "repro": "390:hero436px; card1y665h385, card4y1794h411. First heroCTA only scrolls tocards.",
+      "evidence": "/tmp/site-next-tools-390.png",
+      "recommendation": "Compact fourtaskchooser with concrete input/output labels; direct tool links; separate on-request human service from three executable tools."
+    },
+    {
+      "id": "SERVICES-01",
+      "priority": "P2",
+      "issue": "Same illustrative result across five different services",
+      "paths": [
+        [
+          "redaktura-posle-ii.html",
+          105
+        ],
+        [
+          "razbor-zamechaniy-nauchruka.html",
+          84
+        ],
+        [
+          "normokontrol-vkr.html",
+          84
+        ],
+        [
+          "plan.html",
+          106
+        ],
+        [
+          "dorabotka-otcheta-po-praktike.html",
+          105
+        ]
+      ],
+      "repro": "All5 data-p15-service pages have identical blockquote Результаты приведены, но не объяснено, как они отвечают второй задаче исследования. In normocontrol or plan this does not demonstrate service-specific output.",
+      "recommendation": "Separate next release for5specialservicepages: compact service passport + own labelled schematic example + aligned incomingservice CTA; preserve current prices/meaning."
+    },
+    {
+      "id": "ABOUT-01",
+      "priority": "P2",
+      "issue": "About remains generic narrative with old shell",
+      "paths": [
+        [
+          "about.html",
+          1
+        ]
+      ],
+      "repro": "Main contains only broad approach and Kladovaya paragraph; no concrete journey or documentary proof except reviews/requisites links.",
+      "recommendation": "Lower priority than search/navigation. Build owner-approved identity/process/proof story using existing genuine sources, never invent biography or metrics."
+    }
+  ],
+  "comparison": "Rewards/support place task-specific interactive controls in unified shell, use single-layercards and scoped typography. Old hubs combine8stylesheets, legacybehaviors, beigeheader, oversizededitorialintro and modal-cookie stack.",
+  "limitations": [
+    "Only7representativepages browserchecked at320/390/1440; not whole-site audit",
+    "No production/APIwrites or clientsubmissions",
+    "Tool internals and actualservice economics not audited here",
+    "About quality assessment is editorial judgment, not a measured conversion claim"
+  ],
+  "cleanup": "Own browser site-next-audit and temporary server8783 will be closed."
+}

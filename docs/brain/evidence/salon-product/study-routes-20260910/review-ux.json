@@ -1,0 +1,372 @@
+{
+  "decision": "GO",
+  "checks": {
+    "psychology": [
+      {
+        "width": 390,
+        "theme": "light",
+        "overflow": 0,
+        "faqOpen": true,
+        "small": []
+      },
+      {
+        "width": 390,
+        "theme": "dark",
+        "overflow": 0,
+        "faqOpen": true,
+        "small": []
+      },
+      {
+        "width": 1440,
+        "theme": "light",
+        "overflow": 0,
+        "faqOpen": true,
+        "small": []
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "overflow": 0,
+        "faqOpen": true,
+        "small": []
+      }
+    ],
+    "combos": {
+      "out": [
+        {
+          "work": "course",
+          "stage": "starting",
+          "focus": "starting",
+          "copy": "https://akademsalon.ru/knowledge.html?work=course&stage=starting#study-route",
+          "links": [
+            "guide-obekt-predmet-cel-zadachi.html",
+            "guide-vvedenie-kursovoy.html",
+            "guide-skolko-stoit-kursovaya.html"
+          ],
+          "help": "kursovaya-rabota.html",
+          "topic": "true",
+          "shelf": "true"
+        },
+        {
+          "work": "course",
+          "stage": "writing",
+          "focus": "writing",
+          "copy": "https://akademsalon.ru/knowledge.html?work=course&stage=writing#study-route",
+          "links": [
+            "guide-vvedenie-kursovoy.html",
+            "guide-prakticheskaya-chast-kursovoy.html",
+            "guide-zaklyuchenie-kursovoy.html"
+          ],
+          "help": "kursovaya-rabota.html",
+          "topic": "true",
+          "shelf": "true"
+        },
+        {
+          "work": "course",
+          "stage": "finishing",
+          "focus": "finishing",
+          "copy": "https://akademsalon.ru/knowledge.html?work=course&stage=finishing#study-route",
+          "links": [
+            "guide-zaklyuchenie-kursovoy.html",
+            "guide-spisok-literatury.html",
+            "guide-normocontrol.html"
+          ],
+          "help": "kursovaya-rabota.html",
+          "topic": "true",
+          "shelf": "true"
+        },
+        {
+          "work": "practice",
+          "stage": "starting",
+          "focus": "starting",
+          "copy": "https://akademsalon.ru/knowledge.html?work=practice&stage=starting#study-route",
+          "links": [
+            "guide-otchet-po-praktike.html",
+            "guide-dnevnik-praktiki.html",
+            "guide-harakteristika-s-praktiki.html"
+          ],
+          "help": "otchet-po-praktike.html",
+          "topic": "true",
+          "shelf": "true"
+        },
+        {
+          "work": "practice",
+          "stage": "writing",
+          "focus": "writing",
+          "copy": "https://akademsalon.ru/knowledge.html?work=practice&stage=writing#study-route",
+          "links": [
+            "guide-dnevnik-praktiki.html",
+            "guide-otchet-po-praktike.html",
+            "guide-prilozheniya-po-gost.html"
+          ],
+          "help": "otchet-po-praktike.html",
+          "topic": "true",
+          "shelf": "true"
+        },
+        {
+          "work": "practice",
+          "stage": "finishing",
+          "focus": "finishing",
+          "copy": "https://akademsalon.ru/knowledge.html?work=practice&stage=finishing#study-route",
+          "links": [
+            "guide-otchet-po-praktike.html",
+            "guide-prilozheniya-po-gost.html",
+            "guide-titulnyj-list.html"
+          ],
+          "help": "otchet-po-praktike.html",
+          "topic": "true",
+          "shelf": "true"
+        },
+        {
+          "work": "diplom",
+          "stage": "starting",
+          "focus": "starting",
+          "copy": "https://akademsalon.ru/knowledge.html?work=diplom&stage=starting#study-route",
+          "links": [
+            "guide-temy-vkr.html",
+            "guide-obekt-predmet-cel-zadachi.html",
+            "guide-vkr-struktura.html"
+          ],
+          "help": "diplomnaya-rabota.html",
+          "topic": "true",
+          "shelf": "true"
+        },
+        {
+          "work": "diplom",
+          "stage": "writing",
+          "focus": "writing",
+          "copy": "https://akademsalon.ru/knowledge.html?work=diplom&stage=writing#study-route",
+          "links": [
+            "guide-vkr-struktura.html",
+            "guide-spisok-literatury.html",
+            "guide-zaklyuchenie-vkr.html"
+          ],
+          "help": "diplomnaya-rabota.html",
+          "topic": "true",
+          "shelf": "true"
+        },
+        {
+          "work": "diplom",
+          "stage": "finishing",
+          "focus": "finishing",
+          "copy": "https://akademsalon.ru/knowledge.html?work=diplom&stage=finishing#study-route",
+          "links": [
+            "guide-zashchita-diploma.html",
+            "guide-prezentaciya-k-zashchite.html",
+            "guide-rech-na-zashchitu.html"
+          ],
+          "help": "diplomnaya-rabota.html",
+          "topic": "true",
+          "shelf": "true"
+        }
+      ],
+      "fallback": {
+        "hidden": false,
+        "value": "https://akademsalon.ru/knowledge.html?work=diplom&stage=finishing#study-route",
+        "focus": true
+      },
+      "back": "ВКР · Пишу"
+    },
+    "nextCard": {
+      "route": {
+        "open": true,
+        "caption": "Практика · Пишу",
+        "overflow": 0
+      },
+      "guide": {
+        "nextCount": 1,
+        "nextText": "Дальше по твоей задаче.\nВесь маршрут ↗\nСЛЕДУЮЩИЙ РАЗБОР\nСпланировать практическую часть\n\nОпредели, какие реальные данные и методы нужны.\n\n↗\nЕСЛИ НУЖНА ПОМОЩЬ\nПомощь с введением курсовой\n\nСостав, условия и следующий шаг по твоей задаче.\n\n↗",
+        "pitchDisplay": "none",
+        "overflow": 0
+      }
+    },
+    "independenceNoJS": {
+      "independent": {
+        "query": "дневник",
+        "status": "Показано 2 из 2 материалов",
+        "topic": "true"
+      },
+      "nojs": {
+        "links": [
+          "guide-obekt-predmet-cel-zadachi.html",
+          "guide-vvedenie-kursovoy.html",
+          "guide-skolko-stoit-kursovaya.html"
+        ],
+        "controls": [
+          "none"
+        ],
+        "copy": true,
+        "cards": 25
+      }
+    },
+    "articleBytes": "25/25 article.doc byte-identical against HEAD"
+  },
+  "hashes": {
+    "knowledge.html": "b5a2cbdc98b36db0ad6825428734e89988dcaa0232726dda713aea0c2153a986",
+    "assets/css/salon-experience.css": "4df3f9b0f7db3d2f995b4cfdf111a33421b425054e1ef13ea2077bd9251171a4",
+    "assets/js/salon-experience.js": "516d4e1439d2329c52cc759459f8d9d73836a48696d0617a1c64b73d119b2bcf",
+    "assets/css/salon-library.css": "bac01df31e2756e3d8f753783ffa489db79eb076f9c592903f1866414c72a82b",
+    "assets/js/salon-library.js": "294a7f56423b0b283a280c980005d2d721350ed16f1271c6787589750dc441dc"
+  },
+  "resolved_findings": [
+    {
+      "priority": "P1",
+      "area": "assistant overlap",
+      "repro": "1440x900 knowledge.html?work=diplom&stage=finishing#study-route: scroll full route into view; assistant covers right help link. Also psychology footer primary button covered at1440x1000.",
+      "evidence": [
+        "/tmp/route-library1440light.png",
+        "/tmp/route-psych-faq-1440-light.png"
+      ]
+    },
+    {
+      "priority": "P2",
+      "area": "FAQ keyboard focus",
+      "repro": "Focus first summary then Enter: outline bottom crosses beginning of answer due no top padding; inset focus outline recommended.",
+      "evidence": "/tmp/route-psych-faq-1440-light.png"
+    }
+  ],
+  "findings": [],
+  "delta_checks": [
+    {
+      "width": 390,
+      "theme": "light",
+      "reading": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "faq": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "outline": "-4px",
+      "footer": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "away": {
+        "visibility": "visible",
+        "pointerEvents": "auto"
+      },
+      "route": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "libraryAway": {
+        "visibility": "visible",
+        "pointerEvents": "auto"
+      }
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "reading": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "faq": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "outline": "-4px",
+      "footer": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "away": {
+        "visibility": "visible",
+        "pointerEvents": "auto"
+      },
+      "route": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "libraryAway": {
+        "visibility": "visible",
+        "pointerEvents": "auto"
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "reading": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "faq": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "outline": "-4px",
+      "footer": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "away": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "route": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "libraryAway": {
+        "visibility": "visible",
+        "pointerEvents": "auto"
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "reading": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "faq": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "outline": "-4px",
+      "footer": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "away": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "route": {
+        "visibility": "hidden",
+        "pointerEvents": "none"
+      },
+      "libraryAway": {
+        "visibility": "visible",
+        "pointerEvents": "auto"
+      }
+    }
+  ],
+  "delta_return_checks": [
+    {
+      "page": "psych",
+      "theme": "light",
+      "returnAtHero": "visible"
+    },
+    {
+      "page": "guide",
+      "theme": "light",
+      "hidden": "hidden",
+      "returnAtTop": "visible"
+    },
+    {
+      "page": "psych",
+      "theme": "dark",
+      "returnAtHero": "visible"
+    },
+    {
+      "page": "guide",
+      "theme": "dark",
+      "hidden": "hidden",
+      "returnAtTop": "visible"
+    }
+  ],
+  "delta_note": "P1/P2 closed: observers hide mascot at visible route/reader/FAQ/footer actions at390/1440 in both themes; returns at hero/top. FAQ keyboard outline inset-4px no longer crosses answer. Fresh screenshots /tmp/route-delta-*."
+}

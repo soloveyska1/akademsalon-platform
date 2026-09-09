@@ -1,0 +1,6 @@
+{
+  "actual_input_sha256": "ba992e6c19a43927cb014a46d994b27c98c0a073503d346d3ff294f8ac43c628",
+  "input_has_legal_reader": false,
+  "actual_transform_checked": true,
+  "raw_document_not_copied": "Reproducer uses minimal public-shaped fixture; actual deployment overlay parity remains frozen gate."
+}

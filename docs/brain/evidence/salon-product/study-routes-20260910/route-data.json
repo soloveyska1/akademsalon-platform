@@ -1,0 +1,173 @@
+{
+  "course": {
+    "label": "Курсовая",
+    "service": "kursovaya-rabota.html",
+    "plans": {
+      "starting": [
+        {
+          "url": "guide-obekt-predmet-cel-zadachi.html",
+          "title": "Связать тему и задачи",
+          "note": "Проверь, что именно исследуешь и к какому результату идёшь."
+        },
+        {
+          "url": "guide-vvedenie-kursovoy.html",
+          "title": "Собрать введение",
+          "note": "Разложи актуальность, цель и методы по своим местам."
+        },
+        {
+          "url": "guide-skolko-stoit-kursovaya.html",
+          "title": "Прикинуть состав и бюджет",
+          "note": "Разберись, что влияет на объём помощи и стоимость."
+        }
+      ],
+      "writing": [
+        {
+          "url": "guide-vvedenie-kursovoy.html",
+          "title": "Проверить логику введения",
+          "note": "Сопоставь цель и задачи с тем, что уже написано."
+        },
+        {
+          "url": "guide-prakticheskaya-chast-kursovoy.html",
+          "title": "Спланировать практическую часть",
+          "note": "Определи, какие реальные данные и методы нужны."
+        },
+        {
+          "url": "guide-zaklyuchenie-kursovoy.html",
+          "title": "Собрать выводы",
+          "note": "Покажи, как выполненные задачи привели к результату."
+        }
+      ],
+      "finishing": [
+        {
+          "url": "guide-zaklyuchenie-kursovoy.html",
+          "title": "Сверить выводы с задачами",
+          "note": "Проверь смысловую связность готовой работы."
+        },
+        {
+          "url": "guide-spisok-literatury.html",
+          "title": "Привести в порядок источники",
+          "note": "Сопоставь список литературы и ссылки в тексте."
+        },
+        {
+          "url": "guide-normocontrol.html",
+          "title": "Пройти проверку оформления",
+          "note": "Сверь готовую версию с требованиями кафедры."
+        }
+      ]
+    }
+  },
+  "practice": {
+    "label": "Практика",
+    "service": "otchet-po-praktike.html",
+    "plans": {
+      "starting": [
+        {
+          "url": "guide-otchet-po-praktike.html",
+          "title": "Понять состав отчёта",
+          "note": "Сверь программу практики и будущие разделы."
+        },
+        {
+          "url": "guide-dnevnik-praktiki.html",
+          "title": "Организовать дневник",
+          "note": "Записывай реальные задачи и результаты по дням."
+        },
+        {
+          "url": "guide-harakteristika-s-praktiki.html",
+          "title": "Уточнить, кто готовит характеристику",
+          "note": "Заранее узнай, какие сведения и согласования нужны."
+        }
+      ],
+      "writing": [
+        {
+          "url": "guide-dnevnik-praktiki.html",
+          "title": "Собрать записи о работе",
+          "note": "Проверь даты, задачи и результаты своей практики."
+        },
+        {
+          "url": "guide-otchet-po-praktike.html",
+          "title": "Превратить материалы в отчёт",
+          "note": "Свяжи выполненные задачи с разделами документа."
+        },
+        {
+          "url": "guide-prilozheniya-po-gost.html",
+          "title": "Подготовить приложения",
+          "note": "Вынеси дополнительные материалы и свяжи их с текстом."
+        }
+      ],
+      "finishing": [
+        {
+          "url": "guide-otchet-po-praktike.html",
+          "title": "Сверить комплект отчёта",
+          "note": "Проверь структуру и требования программы практики."
+        },
+        {
+          "url": "guide-prilozheniya-po-gost.html",
+          "title": "Проверить приложения",
+          "note": "Убедись, что в тексте есть нужные ссылки на материалы."
+        },
+        {
+          "url": "guide-titulnyj-list.html",
+          "title": "Проверить титульный лист",
+          "note": "Сверь реквизиты и подписи с образцом кафедры."
+        }
+      ]
+    }
+  },
+  "diplom": {
+    "label": "ВКР",
+    "service": "diplomnaya-rabota.html",
+    "plans": {
+      "starting": [
+        {
+          "url": "guide-temy-vkr.html",
+          "title": "Сузить тему",
+          "note": "Выбери вопрос, который можно раскрыть на доступных данных."
+        },
+        {
+          "url": "guide-obekt-predmet-cel-zadachi.html",
+          "title": "Связать цель и задачи",
+          "note": "Проверь границы исследования и ожидаемый результат."
+        },
+        {
+          "url": "guide-vkr-struktura.html",
+          "title": "Собрать основу введения",
+          "note": "Свяжи тему, методы и будущую структуру работы."
+        }
+      ],
+      "writing": [
+        {
+          "url": "guide-vkr-struktura.html",
+          "title": "Сверить введение с главами",
+          "note": "Проверь, что задачи действительно раскрываются в тексте."
+        },
+        {
+          "url": "guide-spisok-literatury.html",
+          "title": "Упорядочить источники",
+          "note": "Проверь записи и ссылки, пока работа ещё в процессе."
+        },
+        {
+          "url": "guide-zaklyuchenie-vkr.html",
+          "title": "Сформулировать результаты",
+          "note": "Сопоставь выводы с поставленными задачами."
+        }
+      ],
+      "finishing": [
+        {
+          "url": "guide-zashchita-diploma.html",
+          "title": "Подготовиться к защите",
+          "note": "Проверь комплект материалов и порядок выступления."
+        },
+        {
+          "url": "guide-prezentaciya-k-zashchite.html",
+          "title": "Собрать слайды",
+          "note": "Выбери главное, что стоит показать комиссии."
+        },
+        {
+          "url": "guide-rech-na-zashchitu.html",
+          "title": "Подготовить речь",
+          "note": "Собери связное выступление по своей работе."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "counts": {
+    "blocking": 0,
+    "hard": 0,
+    "info": 8,
+    "inspected": 220,
+    "warnings": 60
+  },
+  "canonical_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "head_sha": "7cbc7ddd7ca669296dea2c9e86a2e86c680e83d1",
+  "snapshot_digest": "a1ec7d66acf4f873f5c492ecc8e7563be18c5380d867888e783bb7512a0ffa42",
+  "decision": "PROCEED_LOCAL_SNAPSHOT"
+}

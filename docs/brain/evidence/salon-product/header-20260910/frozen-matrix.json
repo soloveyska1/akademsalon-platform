@@ -1,0 +1,1288 @@
+{
+  "rows": [
+    {
+      "route": "/index.html",
+      "width": 320,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 320,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 360,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 360,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 390,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 390,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 768,
+      "theme": "light",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 768,
+      "theme": "dark",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 920,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 920,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 1024,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 1024,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 1280,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 1280,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 1440,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/index.html",
+      "width": 1440,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 320,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 320,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 360,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 360,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 390,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 390,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 768,
+      "theme": "light",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 768,
+      "theme": "dark",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 920,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 920,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 1024,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 1024,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 1280,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 1280,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 1440,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/kursovaya-po-psihologii.html",
+      "width": 1440,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 320,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 320,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 360,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 360,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 390,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 390,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 768,
+      "theme": "light",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 768,
+      "theme": "dark",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 920,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 920,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 1024,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 1024,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 1280,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 1280,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 1440,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/services.html",
+      "width": 1440,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 320,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 320,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 360,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 360,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 390,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 390,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 768,
+      "theme": "light",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 768,
+      "theme": "dark",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 920,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 920,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1024,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1024,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1280,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1280,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1440,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1440,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 320,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 320,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 360,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 360,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 390,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 390,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 768,
+      "theme": "light",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 768,
+      "theme": "dark",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 920,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 920,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 1024,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 1024,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 1280,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 1280,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 1440,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/guide-vvedenie-kursovoy.html",
+      "width": 1440,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 320,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 320,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 360,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 360,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 390,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 390,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 768,
+      "theme": "light",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 768,
+      "theme": "dark",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 920,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 920,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 1024,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 1024,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 1280,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 1280,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 1440,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/referral.html",
+      "width": 1440,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 320,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 320,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 360,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 360,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 390,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 390,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 768,
+      "theme": "light",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 768,
+      "theme": "dark",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 920,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 920,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 1024,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 1024,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 1280,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 1280,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 1440,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/privacy.html",
+      "width": 1440,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 320,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 320,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 360,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 360,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 390,
+      "theme": "light",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 390,
+      "theme": "dark",
+      "height": 75,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 768,
+      "theme": "light",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 768,
+      "theme": "dark",
+      "height": 81,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 920,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 920,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 1024,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 1024,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 1280,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 1280,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 1440,
+      "theme": "light",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    },
+    {
+      "route": "/tariffs.html",
+      "width": 1440,
+      "theme": "dark",
+      "height": 93,
+      "overflow": false,
+      "bad": [],
+      "cabinet": "flex",
+      "menuReady": "1"
+    }
+  ],
+  "errors": [],
+  "source_commit": "666e7b8f95aa262fc7f152bc7fc117469a8489b5",
+  "browser": "Fresh Chromium, serviceWorkers blocked",
+  "state": "anonymous frozen; GET API fixture"
+}

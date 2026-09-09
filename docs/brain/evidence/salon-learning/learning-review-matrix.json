@@ -1,0 +1,1270 @@
+[
+  {
+    "width": 320,
+    "theme": "light",
+    "path": "knowledge",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      },
+      {
+        "text": "Исследование",
+        "x": 227.5625,
+        "right": 340.921875
+      },
+      {
+        "text": "Источники",
+        "x": 345.921875,
+        "right": 434.6875
+      },
+      {
+        "text": "Оформление",
+        "x": 439.6875,
+        "right": 546.390625
+      },
+      {
+        "text": "Практика",
+        "x": 551.390625,
+        "right": 633.453125
+      },
+      {
+        "text": "Защита",
+        "x": 638.453125,
+        "right": 710.53125
+      },
+      {
+        "text": "Статья",
+        "x": 715.53125,
+        "right": 783.453125
+      },
+      {
+        "text": "Цены",
+        "x": 788.453125,
+        "right": 847.828125
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "path": "tools",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "path": "guide-vvedenie-kursovoy",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "path": "guide-normocontrol",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "path": "check",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "path": "audit-temy-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "path": "proverka-istochnikov-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "path": "dosie-nauchruka",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "path": "knowledge",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      },
+      {
+        "text": "Исследование",
+        "x": 227.5625,
+        "right": 340.921875
+      },
+      {
+        "text": "Источники",
+        "x": 345.921875,
+        "right": 434.6875
+      },
+      {
+        "text": "Оформление",
+        "x": 439.6875,
+        "right": 546.390625
+      },
+      {
+        "text": "Практика",
+        "x": 551.390625,
+        "right": 633.453125
+      },
+      {
+        "text": "Защита",
+        "x": 638.453125,
+        "right": 710.53125
+      },
+      {
+        "text": "Статья",
+        "x": 715.53125,
+        "right": 783.453125
+      },
+      {
+        "text": "Цены",
+        "x": 788.453125,
+        "right": 847.828125
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "path": "tools",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "path": "guide-vvedenie-kursovoy",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "path": "guide-normocontrol",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "path": "check",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "path": "audit-temy-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "path": "proverka-istochnikov-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "path": "dosie-nauchruka",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Открыть меню",
+        "x": 305.515625,
+        "right": 341.515625
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "path": "knowledge",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Источники",
+        "x": 345.921875,
+        "right": 434.6875
+      },
+      {
+        "text": "Оформление",
+        "x": 439.6875,
+        "right": 546.390625
+      },
+      {
+        "text": "Практика",
+        "x": 551.390625,
+        "right": 633.453125
+      },
+      {
+        "text": "Защита",
+        "x": 638.453125,
+        "right": 710.53125
+      },
+      {
+        "text": "Статья",
+        "x": 715.53125,
+        "right": 783.453125
+      },
+      {
+        "text": "Цены",
+        "x": 788.453125,
+        "right": 847.828125
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "path": "tools",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "path": "guide-vvedenie-kursovoy",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "path": "guide-normocontrol",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "path": "check",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "path": "audit-temy-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "path": "proverka-istochnikov-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "path": "dosie-nauchruka",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "path": "knowledge",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": [
+      {
+        "text": "Источники",
+        "x": 345.921875,
+        "right": 434.6875
+      },
+      {
+        "text": "Оформление",
+        "x": 439.6875,
+        "right": 546.390625
+      },
+      {
+        "text": "Практика",
+        "x": 551.390625,
+        "right": 633.453125
+      },
+      {
+        "text": "Защита",
+        "x": 638.453125,
+        "right": 710.53125
+      },
+      {
+        "text": "Статья",
+        "x": 715.53125,
+        "right": 783.453125
+      },
+      {
+        "text": "Цены",
+        "x": 788.453125,
+        "right": 847.828125
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "path": "tools",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "path": "guide-vvedenie-kursovoy",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "path": "guide-normocontrol",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "path": "check",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "path": "audit-temy-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "path": "proverka-istochnikov-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "path": "dosie-nauchruka",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "path": "knowledge",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "path": "tools",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "path": "guide-vvedenie-kursovoy",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "path": "guide-normocontrol",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "path": "check",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "path": "audit-temy-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "path": "proverka-istochnikov-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "path": "dosie-nauchruka",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "path": "knowledge",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "path": "tools",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "path": "guide-vvedenie-kursovoy",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "path": "guide-normocontrol",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "path": "check",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "path": "audit-temy-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "path": "proverka-istochnikov-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "path": "dosie-nauchruka",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "light",
+    "path": "knowledge",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "light",
+    "path": "tools",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "light",
+    "path": "guide-vvedenie-kursovoy",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "light",
+    "path": "guide-normocontrol",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "light",
+    "path": "check",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "light",
+    "path": "audit-temy-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "light",
+    "path": "proverka-istochnikov-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "light",
+    "path": "dosie-nauchruka",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "dark",
+    "path": "knowledge",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "dark",
+    "path": "tools",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "dark",
+    "path": "guide-vvedenie-kursovoy",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "dark",
+    "path": "guide-normocontrol",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "dark",
+    "path": "check",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "dark",
+    "path": "audit-temy-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "dark",
+    "path": "proverka-istochnikov-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1024,
+    "theme": "dark",
+    "path": "dosie-nauchruka",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "path": "knowledge",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "path": "tools",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "path": "guide-vvedenie-kursovoy",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "path": "guide-normocontrol",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "path": "check",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "path": "audit-temy-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "path": "proverka-istochnikov-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "path": "dosie-nauchruka",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "path": "knowledge",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "path": "tools",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "path": "guide-vvedenie-kursovoy",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "path": "guide-normocontrol",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "path": "check",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "path": "audit-temy-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "path": "proverka-istochnikov-vkr",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "path": "dosie-nauchruka",
+    "overflow": 0,
+    "small": [
+      {
+        "text": "Открыть меню",
+        "h": 33.59375
+      }
+    ],
+    "outside": []
+  }
+]

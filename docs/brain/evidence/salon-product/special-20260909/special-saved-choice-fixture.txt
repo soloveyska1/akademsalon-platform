@@ -1,0 +1,12 @@
+### Result
+{"trail":0,"choice":{"product":"practice","scope":"editing","discipline":"hum","deadline":""}}
+### Ran Playwright code
+```js
+await (async(page)=>{await page.context().route("**/*",r=>r.request().url().startsWith("http://127.0.0.1:8771/")&&r.request().method()==="GET"?r.continue():r.abort());await page.addInitScript(()=>{navigator.serviceWorker.register=()=>Promise.reject(new Error("QA blocked SW"));sessionStorage.setItem("salon_direct_selection_v1",JSON.stringify({product:"practice",scope:"editing",discipline:"hum",deadline:""}))});await page.goto("http://127.0.0.1:8771/plan.html");return await page.evaluate(()=>({trail:document.querySelectorAll(".selection-trail").length,choice:JSON.parse(sessionStorage.getItem("salon_direct_selection_v1"))}));})(page);
+```
+### Page
+- Page URL: http://127.0.0.1:8771/plan.html
+- Page Title: Разбор темы и плана — от 3 000 ₽ | Академический Салон
+- Console: 1 errors, 0 warnings
+### Events
+- New console entries: .playwright-cli/console-2026-09-09T17-57-30-535Z.log#L1
