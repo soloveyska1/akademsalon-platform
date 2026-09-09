@@ -243,3 +243,8 @@ Read-only independent reviews received UXandcontracts. Backendcurrent app source
 
 ## Specification composition checkpoint
 Frozen input63a96fe9 merged with ancestry after fresh fetch and zero hard conflicts. Root replaced specifikaciya.html, removed intermediate and scoped modern footer selectors. New exact contract and legal runtime migration:12/12 tests. Composition48 states (6widths ×2themes ×4fields), zero overflow/errors/failures; footer rgb41,35,55. Independent frozen reviews in imported report. Referral own dirty paths stashed separately for this small private publication. Public backend/economics unchanged. Next: publish exact clean composition, live readback, restore referral work.
+
+## Referral circle private prototype checkpoint
+Canonical base unchanged e53d11c; branch codex/salon-direct-orders. Small specification composition v57 source748ef1ff published and independently read back; evidence specification-live.json (HTML contains Sites injection, assets exact).
+Referral page rebuilt, cabinet invitations route, proposed rules, old200 link preserved. UI and disabled storage core verified45Node/16Python tests,48public+8cabinet browser states,2independent reviews. Evidence salon-product/referral. No real API mutations, no production programme activation, no profit guarantee. Economics remains proposed except user min5000;6000 retail/cost answer pending. Unsafe live adapter removed.
+Next exact step: integrate canonical versioned payment/refund events and fulfillment against a server-owned defense line/price, with legacy cutover and outbox, then test/review before enabling. Until then feature disabled and clear private prototype notice. Do not claim complete automatic referral programme.

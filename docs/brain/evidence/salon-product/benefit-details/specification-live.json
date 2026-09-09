@@ -1,0 +1,34 @@
+[
+  {
+    "route": "specifikaciya",
+    "status": 200,
+    "hash_matches": false,
+    "size": 24333,
+    "local_size": 23395,
+    "marker": true
+  },
+  {
+    "route": "assets/css/order-specification.css",
+    "status": 200,
+    "hash_matches": true,
+    "size": 17234,
+    "local_size": 17234,
+    "marker": false
+  },
+  {
+    "route": "assets/js/order-specification.js",
+    "status": 200,
+    "hash_matches": true,
+    "size": 3763,
+    "local_size": 3763,
+    "marker": false
+  },
+  {
+    "route": "assets/css/salon-home.css",
+    "status": 200,
+    "hash_matches": true,
+    "size": 46076,
+    "local_size": 46076,
+    "marker": false
+  }
+]

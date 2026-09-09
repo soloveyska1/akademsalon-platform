@@ -14,11 +14,12 @@ function initCabinet() {
   if (!S || !S.api || !root) return;
   var startupAccess = Promise.resolve();
   var Desk = window.SalonCabinetUI;
+  var referralState = null, referralLoading = false;
   var communityState = null, communityLoading = false, communityIdentity = null, communityEpoch = 0;
   function syncCommunityIdentity() {
     var user = S.api.token() && S.api.user();
     var identity = user ? String(user.id) : null;
-    if (identity !== communityIdentity) { communityIdentity = identity; communityEpoch++; communityState = null; communityLoading = false; }
+    if (identity !== communityIdentity) { communityIdentity = identity; communityEpoch++; communityState = null; communityLoading = false; referralState = null; referralLoading = false; referralState = null; referralLoading = false; }
     return communityEpoch;
   }
 
@@ -2889,12 +2890,14 @@ function initCabinet() {
       ['messages', 'Сообщения', badge.orders || '', 'messages'],
       ['calendar', 'Календарь', '', 'calendar'],
       ['community', 'Полка своих', '', 'gift'],
+      ['referrals', 'Приглашения', '', 'gift'],
       ['documents', 'Документы', '', 'documents'],
       ['wallet', 'Оплата и бонусы', badge.club || '', 'wallet']
     ];
     var secondary = [
       ['calendar', 'Календарь', '', 'calendar'],
       ['community', 'Полка своих', '', 'gift'],
+      ['referrals', 'Приглашения', '', 'gift'],
       ['documents', 'Документы', '', 'documents'],
       ['wallet', 'Оплата и бонусы', badge.club || '', 'wallet'],
       ['help', 'Помощь', '', 'help'],
@@ -2991,6 +2994,7 @@ function initCabinet() {
 
   /* заголовок рабочей полосы: раздел + живая мета */
   function tabHead() {
+    if(st.tab === 'referrals') return '<p class="desk-community-heading">ПРИГЛАШЕНИЯ</p>';
     if(st.tab === 'community') return '<p class="desk-community-heading">ПОЛКА СВОИХ</p>';
     var u = S.api.token() && S.api.user();
     var first = u && u.name ? String(u.name).trim().split(/\s+/)[0] : '';
@@ -3023,6 +3027,7 @@ function initCabinet() {
   function setTab(tab, silentHash) {
     st.tab = tab;
     if (tab === 'community') loadCommunity();
+    if (tab === 'referrals') loadReferrals();
     st.caseOpen = false; /* раздел стойки всегда открывает свой список, не дело */
     if (!silentHash) {
       /* pushState, а не replaceState: иначе «Назад» на телефоне уводит
@@ -3068,6 +3073,17 @@ function initCabinet() {
   function calendarTab() {
     var button = notiSupported() ? '<button type="button" class="desk-button" id="cabNotiBtn"' + (notiOn() ? ' disabled' : '') + '>' + (notiOn() ? 'Уведомления включены' : 'Включить уведомления') + '</button>' : '<p class="desk-inline-note">Этот браузер не поддерживает уведомления.</p>';
     return Desk.calendar(activeOrders(), st.me, st.me ? curatorHtml() : '', button);
+  }
+
+  function loadReferrals(force) {
+    syncCommunityIdentity();
+    if(referralLoading || (!force && referralState) || !st.me || !communityIdentity)return;
+    if(!st.features){ensureFeatures();return;}
+    if(!st.features.referral_circle){referralState={enabled:false};return;}
+    referralLoading=true;var epoch=communityEpoch;
+    S.api.get('/referral').then(function(r){if(epoch===syncCommunityIdentity())referralState=r.ok?r:{loadError:true};})
+    .catch(function(){if(epoch===syncCommunityIdentity())referralState={loadError:true};})
+    .finally(function(){if(epoch!==syncCommunityIdentity())return;referralLoading=false;if(st.tab==='referrals'&&!caseVisible())rerenderHome();});
   }
 
   function loadCommunity() {
@@ -3513,6 +3529,7 @@ function initCabinet() {
       if (st.tab === 'settings') return settingsTab();
       if (st.tab === 'calendar') return calendarTab();
       if (st.tab === 'community') return communityTab();
+      if (st.tab === 'referrals') { loadReferrals(); return Desk.referrals(referralState, !!st.me, st.me); }
       return homeTab();
     });
     var body = caseVisible()
@@ -3638,6 +3655,7 @@ function initCabinet() {
     S.api.get('/features').then(function (r) {
       st.features = (r && r.ok) ? r : {};
       if (st.tab === 'community' && st.me) { loadCommunity(); rerenderHome(); }
+      if (st.tab === 'referrals' && st.me) { loadReferrals(); rerenderHome(); }
       /* экран входа уже на месте — дорисуем опцию почты */
       if (!S.api.identified() && document.getElementById('cabTg')) render(tplLogin(lastPending));
     });
@@ -4438,6 +4456,20 @@ function initCabinet() {
       toast('Календарь скачан. Импортируй его в приложение календаря.');
       return;
     }
+    if(t.closest('[data-circle-retry]')){referralState=null;loadReferrals(true);rerenderHome();return;}
+    if(t.closest('[data-circle-copy]')||t.closest('[data-circle-copy-message]')){
+      var field=document.getElementById(t.closest('[data-circle-copy-message]')?'desk-circle-message':'desk-circle-link');
+      if(field)S.copy(field.value).then(function(ok){toast(ok?'Скопировано. Можно отправить другу.':'Выдели текст и скопируй вручную.');});return;
+    }
+    var reserve=t.closest('[data-circle-reserve]'),release=t.closest('[data-circle-release]');
+    if(reserve||release){
+      if(!referralState||!referralState.enabled||referralState.busy)return;
+      var refEpoch=syncCommunityIdentity(),endpoint,body;
+      if(reserve){var oid=Number(reserve.dataset.circleReserve),amount=Number(reserve.dataset.circleAmount);referralState.requests=referralState.requests||{};var rk=oid+':'+amount;referralState.requests[rk]=referralState.requests[rk]||crypto.randomUUID();endpoint='/referral/claim';body={request_id:referralState.requests[rk],order_id:oid,amount:amount};}
+      else{endpoint='/referral/claim/'+encodeURIComponent(release.dataset.circleRelease)+'/release';body={};}
+      referralState.busy=true;rerenderHome();
+      S.api.post(endpoint,body).then(function(r){if(refEpoch!==syncCommunityIdentity())return;if(r.ok){toast(r.message||'Резерв снят.');loadReferrals(true);}else{referralState.message='Не получилось изменить резерв. Обнови баланс и попробуй ещё раз.';}}).catch(function(){if(refEpoch===syncCommunityIdentity())referralState.message='Ответ не получен. Повторная попытка не создаст второй резерв.';}).finally(function(){if(refEpoch!==syncCommunityIdentity())return;referralState.busy=false;if(st.tab==='referrals')rerenderHome();});return;
+    }
     if (t.closest('[data-community-retry]')) { communityState=null;loadCommunity();rerenderHome();return; }
     var giftCheck = t.closest('[data-community-check]');
     if (giftCheck) {
@@ -4556,7 +4588,7 @@ function initCabinet() {
       return;
     }
     if (t.closest('#cabLogout')) {
-      communityEpoch++; communityState = null; communityLoading = false;
+      communityEpoch++; communityState = null; communityLoading = false; referralState = null; referralLoading = false;
       S.api.logout().then(function () { st.detail = null; st.me = null; loadList(); });
       return;
     }
@@ -4721,16 +4753,7 @@ function initCabinet() {
       if (st.ledgerOpen) scrollToEl('bonusLedger');
       return;
     }
-    if (t.closest('#bonusRefBtn')) {
-      var link = (st.me && st.me.ref_link) || 'https://t.me/academic_saloon_bot';
-      var linkTg = (st.me && st.me.ref_link_tg) || link;
-      if (S.invite) { S.invite({ site: link, tg: linkTg }); return; }
-      if (S.copy) S.copy(link).then(function (okc) {
-        toast(okc ? 'Ссылка-приглашение скопирована — отправьте другу'
-                  : 'Ссылка: ' + link);
-      });
-      return;
-    }
+    if (t.closest('#bonusRefBtn')) { setTab('referrals'); rerenderHome(); return; }
     var star = t.closest('.rv-star');
     if (star) {
       var wrap = document.getElementById('rvStars');
@@ -4904,7 +4927,7 @@ function initCabinet() {
     else if (h0.indexOf('plus') >= 0) {
       st.tab = 'club'; st.plusOpen = true; st.clubOpen = true; hashPlusScroll = true;
     }
-    else if (['home', 'orders', 'messages', 'documents', 'wallet', 'deposit', 'club', 'help', 'settings', 'calendar', 'community'].indexOf(h0) >= 0) {
+    else if (['home', 'orders', 'messages', 'documents', 'wallet', 'deposit', 'club', 'help', 'settings', 'calendar', 'community', 'referrals'].indexOf(h0) >= 0) {
       st.tab = h0;
       if (h0 === 'deposit') hashDepositScroll = true;
     }
@@ -4926,7 +4949,7 @@ function initCabinet() {
      адреса не было вовсе: F5 или присланная ссылка всегда открывали список,
      а «Назад» на телефоне уводил с сайта (везде стоял replaceState). */
   var TAB_HASHES = ['home', 'orders', 'messages', 'documents', 'wallet',
-                    'deposit', 'club', 'help', 'settings', 'calendar', 'community'];
+                    'deposit', 'club', 'help', 'settings', 'calendar', 'community', 'referrals'];
 
   function caseHash() {
     return '#order-' + st.currentId + (st.caseSec && st.caseSec !== 'work' ? '-' + st.caseSec : '');
