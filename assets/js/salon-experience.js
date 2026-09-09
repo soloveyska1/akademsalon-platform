@@ -13,7 +13,7 @@ function readChoice(){try{const x=JSON.parse(sessionStorage.getItem(key)||'null'
 function publishChoice(id){if(!P?.products.some(p=>p.id===id))return;const old=readChoice()||{};const next={product:id,scope:old.product===id?old.scope:'whole',discipline:old.discipline||'hum',deadline:old.deadline||''};try{sessionStorage.setItem(key,JSON.stringify(next))}catch(e){}document.dispatchEvent(new CustomEvent('salon:selection',{detail:{product:id}}));updateTrail()}
 let trail;
 function updateTrail(){
- const x=readChoice();if(!main||route==='configurator'||route==='dashboard'||$('[data-home-workbench]')||$('[data-catalogue]')||$('[data-portfolio]')||$('[data-benefits-hub]')||$('[data-referral-circle]')||$('[data-support-page]')||$('[data-rewards-hub]')||$('.salon-rewards')||$('[data-legal-reader]')||$('.salon-learning')||$('[data-special-service]'))return;
+ const x=readChoice();if(!main||route==='configurator'||route==='dashboard'||$('[data-home-workbench]')||$('[data-catalogue]')||$('[data-portfolio]')||$('[data-benefits-hub]')||$('[data-referral-circle]')||$('[data-support-page]')||$('[data-rewards-hub]')||$('.salon-rewards')||$('[data-legal-reader]')||$('.salon-learning')||$('[data-special-service]')||$('[data-about-salon]'))return;
  if(!trail){trail=document.createElement('div');trail.className='selection-trail';main.before(trail)}
  trail.hidden=!x;if(!x)return;
  trail.innerHTML='<span>Вы выбирали</span><a href="configurator.html">'+esc(P.get(x.product).name)+' · продолжить →</a><button type="button">Сбросить выбор</button>';
@@ -69,7 +69,7 @@ if(route.startsWith('guide-')&&!document.querySelector('[data-guide-reader]')){
 
 // Service examples contain only labelled schematic content, never customer input.
 (function(){
- const root=document.querySelector('[data-special-service]');if(!root)return;
+ const root=document.querySelector('[data-special-service],[data-about-salon]');if(!root)return;
  const tabs=[...root.querySelectorAll('[data-special-tab]')],panels=[...root.querySelectorAll('[data-special-panel]')],bar=root.querySelector('[data-special-tabs]');
  if(tabs.length&&tabs.length===panels.length){
   bar.setAttribute('role','tablist');root.querySelector('.svx-folio').setAttribute('data-special-enhanced','');

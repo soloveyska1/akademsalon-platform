@@ -76,7 +76,7 @@ test('страница без сети существует и не зависи
   assert.match(offline, /<style>/, 'стили должны лежать внутри: внешний файл может быть недоступен');
   assert.doesNotMatch(offline, /<link rel="stylesheet"/, 'внешних стилей быть не должно');
   assert.doesNotMatch(offline, /<script src=/, 'внешних скриптов быть не должно');
-  assert.match(offline, /Сети нет/);
+  assert.match(offline, /Не удалось связаться с сайтом/);
   const sw = read('sw.js');
   assert.match(sw, /OFFLINE_URL = '\/offline\.html'/);
   assert.ok(sw.includes('PRECACHE'), 'офлайн-лист должен класться заранее');
