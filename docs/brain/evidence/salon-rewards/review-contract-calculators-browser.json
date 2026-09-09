@@ -1,0 +1,59 @@
+{
+  "results": [
+    {
+      "name": "bonus invalid \"\"",
+      "pass": true
+    },
+    {
+      "name": "bonus invalid \"0\"",
+      "pass": true
+    },
+    {
+      "name": "bonus invalid \"500001\"",
+      "pass": true
+    },
+    {
+      "name": "bonus invalid \"2500.5\"",
+      "pass": true
+    },
+    {
+      "name": "bonus valid restores result",
+      "pass": true
+    },
+    {
+      "name": "expired promo hidden on focus",
+      "pass": true
+    },
+    {
+      "name": "plan invalid \"\"",
+      "pass": true
+    },
+    {
+      "name": "plan invalid \"0\"",
+      "pass": true
+    },
+    {
+      "name": "plan invalid \"21\"",
+      "pass": true
+    },
+    {
+      "name": "plan invalid \"2.5\"",
+      "pass": true
+    },
+    {
+      "name": "valid plan restores result",
+      "pass": true
+    },
+    {
+      "name": "fixed plan tariff updates despite invalid estimate input",
+      "pass": true,
+      "detail": {
+        "fee": "449 ₽",
+        "days": "30 дней"
+      }
+    }
+  ],
+  "errors": [],
+  "pass": true,
+  "productionMutations": 0
+}

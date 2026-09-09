@@ -12,14 +12,15 @@ test('frozen public artifact excludes private source and fixtures, retains viewe
   put('assets/js/app.js',"const dynamic='mobile.css?v=20260806shell123'");put('sw.js',"const VERSION = '20260806shell123'");
   put('manifest.webmanifest','{}');put('assets/vendor/pdfjs/pdf.min.mjs','viewer');put('assets/vendor/pdfjs/pdf.worker.min.mjs','worker');put('assets/samples/example.pdf','document');
   for(const n of ['.env','package.json','AGENTS.md','assets/.secret','assets/._document.pdf','backend/customer.txt','assets/js/cabinet-demo.js','docs/brain/private.txt'])put(n,'must-not-publish');
+  put('scripts/legal-presentation.py',fs.readFileSync('scripts/legal-presentation.py','utf8'));put('priyomnaya.html',fs.readFileSync('priyomnaya.html','utf8'));
   put('referral.html','unactivated1000');put('referral-rules.html','unactivated1000');
   execFileSync('git',['init','-q'],{cwd:repo});execFileSync('git',['add','.'],{cwd:repo});execFileSync('git',['-c','user.name=Fixture','-c','user.email=fixture@example.invalid','commit','-qm','fixture'],{cwd:repo});
   const ref=execFileSync('git',['rev-parse','HEAD'],{cwd:repo,encoding:'utf8'}).trim();
   put('assets/js/app.js','DIRTY MUST NOT SHIP');
-  const old=path.join(base,'legacy.html');fs.writeFileSync(old,'200 бонусов, первый заказ полностью оплачен');
+  const old=path.join(base,'legacy.html');fs.writeFileSync(old,'<html><head><title>Правила</title></head><body><main><h1>200 бонусов</h1><p>первый заказ полностью оплачен</p></main></body></html>');
   const out=path.join(base,'public');const result=JSON.parse(execFileSync('python3',[script,'--repo',repo,'--ref',ref,'--legacy-referral',old,'--output',out],{encoding:'utf8'}));
   const manifest=JSON.parse(fs.readFileSync(result.manifest));assert.equal(result.source_commit,ref);
-  assert.equal(fs.readFileSync(path.join(out,'referral.html'),'utf8'),fs.readFileSync(old,'utf8'));
+  const referral=fs.readFileSync(path.join(out,'referral.html'),'utf8');assert.match(referral, /data-legal-reader/);assert.match(referral, /<h1>200 бонусов<\/h1><p>первый заказ полностью оплачен<\/p>/);assert.doesNotMatch(referral,/unactivated1000/);
   const built=fs.readFileSync(path.join(out,'dashboard.html'),'utf8');assert.match(built,/flag=keep&amp;r=[a-f0-9]{16}/);assert.doesNotMatch(built,/cabinet-demo|__site-preview/);
   assert.match(built,new RegExp('production-'+ref.slice(0,12)));assert.doesNotMatch(fs.readFileSync(path.join(out,'assets/js/app.js'),'utf8'),/DIRTY/);
   assert.ok(manifest.files['assets/vendor/pdfjs/pdf.worker.min.mjs']);assert.ok(manifest.files['assets/samples/example.pdf']);

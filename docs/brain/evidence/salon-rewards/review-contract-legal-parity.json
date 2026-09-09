@@ -1,0 +1,74 @@
+[
+  {
+    "file": "oferta.html",
+    "raw_article_identical": true,
+    "before_sha256": "a7b95f3b86cecf5a598d98872135fd7eff0040949d6eea74175d42d620b46b8b",
+    "after_sha256": "a7b95f3b86cecf5a598d98872135fd7eff0040949d6eea74175d42d620b46b8b"
+  },
+  {
+    "file": "privacy.html",
+    "raw_article_identical": true,
+    "before_sha256": "4e1d80a7f0bc7a6fe7ff4d23fc0e193e193154970d2e6005ab65e6bd2201c785",
+    "after_sha256": "4e1d80a7f0bc7a6fe7ff4d23fc0e193e193154970d2e6005ab65e6bd2201c785"
+  },
+  {
+    "file": "terms.html",
+    "raw_article_identical": true,
+    "before_sha256": "930106feaca1b6daf39c53a4ea36291d9d91885219b024372d218acf2471de06",
+    "after_sha256": "930106feaca1b6daf39c53a4ea36291d9d91885219b024372d218acf2471de06"
+  },
+  {
+    "file": "refunds.html",
+    "raw_article_identical": true,
+    "before_sha256": "295fe4ae90926ba11f47ea3ea21671f859e4df5f8fae53dfea133f7096dbe88e",
+    "after_sha256": "295fe4ae90926ba11f47ea3ea21671f859e4df5f8fae53dfea133f7096dbe88e"
+  },
+  {
+    "file": "requisites.html",
+    "raw_article_identical": true,
+    "before_sha256": "1fe3b328393d622151ffd088bec6607077a1b73b8359c038273fa85674aa350d",
+    "after_sha256": "1fe3b328393d622151ffd088bec6607077a1b73b8359c038273fa85674aa350d"
+  },
+  {
+    "file": "academic-integrity.html",
+    "raw_article_identical": true,
+    "before_sha256": "fabae81d96e6a13d8dd4cc97078628b06afd7fd054734a84af2de10bfef4b46a",
+    "after_sha256": "fabae81d96e6a13d8dd4cc97078628b06afd7fd054734a84af2de10bfef4b46a"
+  },
+  {
+    "file": "loyalty.html",
+    "raw_article_identical": true,
+    "before_sha256": "d223489a04b7a028832c6c437def96f3b62f4531cd9571ee7610ccdfd98ecaec",
+    "after_sha256": "d223489a04b7a028832c6c437def96f3b62f4531cd9571ee7610ccdfd98ecaec"
+  },
+  {
+    "file": "consent.html",
+    "raw_article_identical": true,
+    "before_sha256": "1570d38133a7a763e4349fbc428b43558848cf39306e5b58700b6a333694ffac",
+    "after_sha256": "1570d38133a7a763e4349fbc428b43558848cf39306e5b58700b6a333694ffac"
+  },
+  {
+    "file": "consent-request.html",
+    "raw_article_identical": true,
+    "before_sha256": "57ea48a4b810be307f9954efec9c322eb8235fd0cb72c864c92f56d79a95bc1c",
+    "after_sha256": "57ea48a4b810be307f9954efec9c322eb8235fd0cb72c864c92f56d79a95bc1c"
+  },
+  {
+    "file": "consent-analytics.html",
+    "raw_article_identical": true,
+    "before_sha256": "b19542579f24a559d9761191ccda3f555e6d9319a644f1a9fccaf982243fd2c5",
+    "after_sha256": "b19542579f24a559d9761191ccda3f555e6d9319a644f1a9fccaf982243fd2c5"
+  },
+  {
+    "file": "consent-marketing.html",
+    "raw_article_identical": true,
+    "before_sha256": "f3d2d9713f0086ced14f8aae8d6a94184a4117e59e1ce2dcf0078648bd4b4f75",
+    "after_sha256": "f3d2d9713f0086ced14f8aae8d6a94184a4117e59e1ce2dcf0078648bd4b4f75"
+  },
+  {
+    "file": "consent-publication.html",
+    "raw_article_identical": true,
+    "before_sha256": "b22bcbc8872a98cd9fa6da7444a7e54cd83b9f05c797b017502e78e846e3616d",
+    "after_sha256": "b22bcbc8872a98cd9fa6da7444a7e54cd83b9f05c797b017502e78e846e3616d"
+  }
+]

@@ -1,0 +1,229 @@
+{
+  "results": [
+    {
+      "name": "restore pending",
+      "pass": true
+    },
+    {
+      "name": "restore active",
+      "pass": true
+    },
+    {
+      "name": "restore spent",
+      "pass": true
+    },
+    {
+      "name": "restore expired",
+      "pass": true
+    },
+    {
+      "name": "restore refunded",
+      "pass": true
+    },
+    {
+      "name": "restore unknown",
+      "pass": true
+    },
+    {
+      "name": "known create rejection",
+      "pass": true
+    },
+    {
+      "name": "unknown create locks across reload",
+      "pass": true
+    },
+    {
+      "name": "successful create blocks duplicate",
+      "pass": true
+    },
+    {
+      "name": "unknown restore must block new create",
+      "pass": true
+    },
+    {
+      "name": "public code cleaned",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "calls": [
+    {
+      "case": "restore pending",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "restore pending",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "restore pending",
+      "path": "/api/gift/state",
+      "method": "GET"
+    },
+    {
+      "case": "restore active",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "restore active",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "restore active",
+      "path": "/api/gift/state",
+      "method": "GET"
+    },
+    {
+      "case": "restore spent",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "restore spent",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "restore spent",
+      "path": "/api/gift/state",
+      "method": "GET"
+    },
+    {
+      "case": "restore expired",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "restore expired",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "restore expired",
+      "path": "/api/gift/state",
+      "method": "GET"
+    },
+    {
+      "case": "restore refunded",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "restore refunded",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "restore refunded",
+      "path": "/api/gift/state",
+      "method": "GET"
+    },
+    {
+      "case": "restore unknown",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "restore unknown",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "restore unknown",
+      "path": "/api/gift/state",
+      "method": "GET"
+    },
+    {
+      "case": "known create rejection",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "known create rejection",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "known create rejection",
+      "path": "/api/gift",
+      "method": "POST"
+    },
+    {
+      "case": "unknown create locks across reload",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "unknown create locks across reload",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "unknown create locks across reload",
+      "path": "/api/gift",
+      "method": "POST"
+    },
+    {
+      "case": "unknown create locks across reload",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "unknown create locks across reload",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "successful create blocks duplicate",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "successful create blocks duplicate",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "successful create blocks duplicate",
+      "path": "/api/gift",
+      "method": "POST"
+    },
+    {
+      "case": "unknown restore must block new create",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "unknown restore must block new create",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "unknown restore must block new create",
+      "path": "/api/gift/state",
+      "method": "GET"
+    },
+    {
+      "case": "public code cleaned",
+      "path": "/api/auth/session",
+      "method": "GET"
+    },
+    {
+      "case": "public code cleaned",
+      "path": "/api/gift/config",
+      "method": "GET"
+    },
+    {
+      "case": "public code cleaned",
+      "path": "/api/gift/view",
+      "method": "GET"
+    }
+  ],
+  "productionMutations": 0,
+  "total": 11,
+  "pass": true
+}

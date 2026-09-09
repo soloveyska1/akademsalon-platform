@@ -21,7 +21,11 @@ def build(repo, revision, legacy, output):
  files={n:subprocess.check_output(['git','show',commit+':'+n],cwd=repo) for n in names if allowed(n)}
  old=legacy.read_bytes()
  if b'200' not in old or 'первый заказ'.encode() not in old or b'__site-preview' in old: raise ValueError('unexpected legacy referral input')
- files['referral.html']=old; files['referral-rules.html']=old
+ # Apply only reading presentation to the verified live referral terms.
+ presenter=subprocess.check_output(['git','show',commit+':scripts/legal-presentation.py'],cwd=repo,text=True)
+ namespace={};exec(compile(presenter,'frozen-legal-presentation','exec'),namespace)
+ presented=namespace['render_legal'](old.decode(),files['priyomnaya.html'].decode()).encode()
+ files['referral.html']=presented; files['referral-rules.html']=presented
  version='production-'+commit[:12]
  # Replace the whole shell family, including JS-inserted mobile CSS, to evict old SW caches.
  for name,data in list(files.items()):

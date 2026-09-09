@@ -331,7 +331,8 @@
       deliver_max_days: 90,
       pay_online: false
     };
-    var state = { amount: 5000, gift: null, token: '', pollTimer: null };
+    var state = { amount: 5000, gift: null, token: '', pollTimer: null, creating: false, uncertain: false };
+    try { state.uncertain = sessionStorage.getItem('salon_gift_creation_uncertain') === '1'; } catch (_) {}
     var amountButtons = Array.prototype.slice.call(document.querySelectorAll('[data-gift-amount]'));
     var recipient = byId('giftRecipient');
     var message = byId('giftMessage');
@@ -370,7 +371,8 @@
     });
     if (fragmentParams.has('code') || fragmentParams.has('buy') || fragmentParams.has('t')
         || new URLSearchParams(location.search).has('t')
-        || new URLSearchParams(location.search).has('buy')) {
+        || new URLSearchParams(location.search).has('buy')
+        || new URLSearchParams(location.search).has('code')) {
       try { history.replaceState(null, '', location.pathname); } catch (e) {}
     }
 
@@ -386,7 +388,7 @@
     }
 
     function selectAmount(value, fromCustom) {
-      value = Math.round(Number(value) / 100) * 100;
+      value = Number(value);
       state.amount = value;
       amountButtons.forEach(function (button) {
         var selected = Number(button.dataset.giftAmount) === value;
@@ -394,7 +396,7 @@
         button.setAttribute('aria-pressed', String(selected));
       });
       if (!fromCustom && custom) custom.value = '';
-      previewAmount.textContent = value >= config.min && value <= config.max ? money(value) : '—';
+      previewAmount.textContent = value >= config.min && value <= config.max && value % 100 === 0 ? money(value) : '—';
     }
 
     function updatePreview() {
@@ -414,12 +416,13 @@
         selectAmount(Number(button.dataset.giftAmount), false);
       });
     });
+    ['giftCheckoutRecipient','giftCheckoutMessage'].forEach(function(id){var el=byId(id);if(el)el.addEventListener('input',function(){if(id==='giftCheckoutRecipient')recipient.value=el.value;else message.value=el.value;updatePreview();});});
     recipient.addEventListener('input', updatePreview);
     message.addEventListener('input', updatePreview);
     if (custom) {
       custom.addEventListener('input', function () {
         var value = Number(custom.value);
-        if (value >= config.min && value <= config.max) {
+        if (value >= config.min && value <= config.max && value % 100 === 0) {
           selectAmount(value, true);
         } else {
           state.amount = 0;
@@ -479,7 +482,15 @@
       deliveryDate.max = maximum.toISOString().slice(0, 10);
     });
 
+    function creationGuard(on) { try { if(on)sessionStorage.setItem('salon_gift_creation_uncertain','1');else sessionStorage.removeItem('salon_gift_creation_uncertain'); } catch (_) {} }
+    function uncertainCreation() {
+      state.creating=false;state.uncertain=true;creationGuard(true);setButtonBusy(submit,false);submit.disabled=true;
+      showNote('Результат оформления пока неизвестен. Чтобы не создать второй сертификат, повторная отправка остановлена. Проверь почту или уточни статус у мастера через «Задать вопрос».', 'error');
+      checkout.hidden=false;
+    }
+    if(state.uncertain)uncertainCreation();
     submit.addEventListener('click', function () {
+      if(state.creating||state.uncertain||state.gift)return;
       var deliveryByEmail = selectedDelivery() === 'email';
       var email = buyerEmail.value.trim();
       var toEmail = deliveryByEmail ? recipientEmail.value.trim() : '';
@@ -487,8 +498,8 @@
         return Salon.valid ? Salon.valid.email(value) : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
       };
 
-      if (!(state.amount >= config.min && state.amount <= config.max)) {
-        showNote('Выберите номинал от ' + money(config.min) + ' до ' + money(config.max) + '.', 'error');
+      if (!(state.amount >= config.min && state.amount <= config.max && state.amount % 100 === 0)) {
+        showNote('Выберите номинал от ' + money(config.min) + ' до ' + money(config.max) + ', с шагом 100 ₽.', 'error');
         return;
       }
       if (!email && !Salon.api.token()) {
@@ -517,6 +528,7 @@
         return;
       }
 
+      state.creating=true;creationGuard(true);
       setButtonBusy(submit, true, 'Оформляем…');
       Salon.api.post('/gift', {
         amount: state.amount,
@@ -543,9 +555,13 @@
             consent_required: 'Нужно согласие на обработку данных.',
             rate_limit: 'Слишком много попыток. Подождите минуту и повторите.'
           };
-          showNote(messages[response && response.error] || 'Не удалось оформить сертификат. Попробуйте ещё раз.', 'error');
+          if(!messages[response && response.error]){uncertainCreation();return;}
+          state.creating=false;creationGuard(false);
+          showNote(messages[response.error], 'error');
           return;
         }
+        if(!response.gift||!response.gift.id||!response.buy_token){uncertainCreation();return;}
+        state.creating=false;state.uncertain=false;creationGuard(false);submit.disabled=true;
         state.gift = response.gift;
         state.token = response.buy_token;
         if (Salon.secretStore) {
@@ -555,7 +571,7 @@
         showNote('Сертификат оформлен. Осталось выбрать способ оплаты.', 'ok');
         drawPayment();
         payment.scrollIntoView({ behavior: Salon.reduceMotion ? 'auto' : 'smooth', block: 'center' });
-      });
+      }).catch(uncertainCreation);
     });
 
     function giftPath(path) {
@@ -581,6 +597,9 @@
       });
     }
 
+    function safeGiftPaymentURL(value) {
+      try { var u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&(!u.port||u.port==='443')&&['auth.robokassa.ru','services.robokassa.ru','yoomoney.ru','yookassa.ru'].indexOf(u.hostname)>=0?u.href:''; } catch (_) {return '';}
+    }
     function bindPaymentActions() {
       var pay = byId('giftPay');
       var paid = byId('giftPaid');
@@ -591,26 +610,26 @@
           setButtonBusy(pay, true, 'Открываем кассу…');
           Salon.api.post(giftPath('/pay'), {}, giftHeaders()).then(function (response) {
             setButtonBusy(pay, false);
-            if (response && response.ok && response.online && response.url) {
-              location.href = response.url;
+            if (response && response.ok && response.online && safeGiftPaymentURL(response.url)) {
+              location.href = safeGiftPaymentURL(response.url);
             } else if (response && response.ok && !response.online) {
               state.gift.requisites = response.requisites;
               drawPayment();
             } else {
-              paymentStatus.textContent = 'Онлайн-касса недоступна. Деньги не списаны; используйте реквизиты ниже.';
+              paymentStatus.textContent = 'Не удалось открыть кассу. Если ты уже платил, сначала проверь статус и банковскую операцию. При неопределённом результате уточни оплату у мастера.';
             }
-          });
+          }).catch(function(){setButtonBusy(pay,false);paymentStatus.textContent='Статус кассы пока неизвестен. Проверь банковскую операцию и уточни оплату у мастера перед повторным платежом.';});
         });
       }
       if (paid) paid.addEventListener('click', function () { paymentAction('/paid'); });
       if (unpaid) unpaid.addEventListener('click', function () { paymentAction('/unpaid'); });
       if (cancel) {
         cancel.addEventListener('click', function () {
-          var message = 'Отменить оформление? Деньги не будут списаны.';
+          var message = 'Отменить оформление сертификата?';
           if (Salon.confirm) {
             Salon.confirm({
               title: 'Отменить оформление?',
-              text: 'Ничего не списано. Оформить сертификат заново можно в любой момент.',
+              text: 'Отмена оформления не подтверждает возврат проведённого платежа. Если уже платил, уточни его статус у мастера.',
               okLabel: 'Отменить',
               noLabel: 'Оставить',
               danger: true
@@ -652,11 +671,11 @@
           : 'После перевода отметьте оплату. Редактор сверит поступление и выпустит сертификат.';
         bindPaymentActions();
       } else if (gift.state === 'canceled') {
-        paymentStatus.textContent = 'Оформление отменено. Деньги не списаны.';
+        paymentStatus.textContent = 'Оформление отменено. Если платёж уже проводился, уточни его статус у мастера.';
         if (Salon.secretStore) Salon.secretStore.del('salon_gift_buy');
         if (Salon.store) Salon.store.del('salon_gift_buy');
-      } else {
-        paymentStatus.textContent = 'Оплата подтверждена. Сертификат выпущен, код и PDF отправлены на почту.';
+      } else if ((gift.state === 'active' || gift.state === 'spent') && gift.code) {
+        paymentStatus.textContent = gift.state === 'spent' ? 'Сертификат выпущен и использован.' : 'Сертификат выпущен. Код и PDF доступны ниже.';
         paymentFinal.hidden = false;
         paymentFinal.innerHTML =
           '<div class="gift-code">' + escapeHTML(gift.code || '') + '</div>' +
@@ -666,6 +685,8 @@
           Salon.api.base + '/gift/pdf?code=' + encodeURIComponent(gift.code || '') + '">Скачать PDF</a></div>';
         if (Salon.secretStore) Salon.secretStore.del('salon_gift_buy');
         if (Salon.store) Salon.store.del('salon_gift_buy');
+      } else {
+        paymentStatus.textContent = gift.state === 'expired' ? 'Срок предъявления истёк. Уточни у мастера использование или возврат остатка.' : gift.state === 'refunded' ? 'Сертификат возвращён. Данные возврата можно уточнить у мастера.' : 'Статус сертификата требует проверки. Обратись к мастеру; повторно оплачивать пока не нужно.';
       }
     }
 
@@ -727,16 +748,24 @@
     }
     if (buyId && buyToken) {
       Salon.api.get('/gift/state?id=' + buyId, { 'X-Gift-Token': buyToken }).then(function (response) {
-        if (!(response && response.ok && response.gift) || response.gift.state === 'canceled') {
+        if (!(response && response.ok && response.gift)) {
+          if(response && response.error==='not_found'){
+            if (Salon.secretStore) Salon.secretStore.del('salon_gift_buy');
+            if (Salon.store) Salon.store.del('salon_gift_buy');
+            return;
+          }
+          uncertainCreation();showNote('Не удалось проверить прежнее оформление. Его данные сохранены. Обнови страницу для проверки статуса или обратись к мастеру; новый сертификат пока не создаётся.','error');return;
+        }
+        if(response.gift.state==='canceled'){
           if (Salon.secretStore) Salon.secretStore.del('salon_gift_buy');
           if (Salon.store) Salon.store.del('salon_gift_buy');
-          return;
+          creationGuard(false);state.uncertain=false;submit.disabled=false;formNote.hidden=true;return;
         }
         state.gift = response.gift;
-        state.token = buyToken;
+        state.token = buyToken;state.uncertain=false;creationGuard(false);submit.disabled=true;formNote.hidden=true;
         checkout.hidden = false;
         drawPayment();
-      });
+      }).catch(uncertainCreation);
     }
 
     function pollPayment() {
