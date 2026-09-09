@@ -2,20 +2,20 @@
   {
     "path": "/priyomnaya.html",
     "width": 320,
-    "overflow": false,
+    "overflow": true,
     "footerHeading": "block"
   },
   {
     "path": "/guarantees.html",
     "width": 320,
-    "overflow": false,
-    "footerHeading": "none"
+    "overflow": true,
+    "footerHeading": "block"
   },
   {
     "path": "/oplata.html",
     "width": 320,
-    "overflow": false,
-    "footerHeading": "none"
+    "overflow": true,
+    "footerHeading": "block"
   },
   {
     "path": "/priyomnaya.html",
@@ -27,12 +27,12 @@
     "path": "/guarantees.html",
     "width": 1440,
     "overflow": false,
-    "footerHeading": "none"
+    "footerHeading": "flex"
   },
   {
     "path": "/oplata.html",
     "width": 1440,
     "overflow": false,
-    "footerHeading": "none"
+    "footerHeading": "flex"
   }
 ]
