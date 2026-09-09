@@ -14,3 +14,5 @@ body.salon-rewards .gift-preview::before,body.salon-rewards .gift-preview::after
 body.salon-rewards .gift-certificate{border:0}
 .rw-hub-panel{scroll-margin-top:105px}.rw-validation{padding:13px 16px;background:var(--soft);color:var(--accent);border-radius:10px;font-size:12px;line-height:1.6;margin:15px 0}
 body.salon-rewards .rw-main input[aria-invalid=true]{border-color:#ad424b;outline-color:#ad424b}
+/* A thin visual track with a generous touch area. */
+body.salon-rewards .rw-main input[type=range]{height:44px;min-height:44px;max-height:44px;margin:2px 0;background-size:100% 6px;background-repeat:no-repeat;background-position:center}
