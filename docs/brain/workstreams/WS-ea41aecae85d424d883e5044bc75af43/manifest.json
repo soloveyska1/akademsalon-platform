@@ -595,6 +595,10 @@
       {
         "path": "tests/account-home-overview.test.js",
         "match": "exact"
+      },
+      {
+        "path": "prolog.html",
+        "match": "exact"
       }
     ],
     "read": []
@@ -613,6 +617,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 26,
-  "base_manifest_hash": "590858a6506819983f51fdc3cbc04ada186c108a35286e88d4300ccc57175807"
+  "manifest_revision": 27,
+  "base_manifest_hash": "ee738066f66ac6f961c5ae4f74682a9daec0716c63751cbfc7c9a523c9ad0400"
 }
