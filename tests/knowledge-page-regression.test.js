@@ -111,11 +111,17 @@ test('каждый гайд подключает финальный читате
   }
 });
 
-test('правовые страницы используют тот же финальный runtime без старой оболочки', () => {
+test('правовые страницы используют соответствующий читательский runtime', () => {
   for (const file of legalPages) {
     const html = fs.readFileSync(path.join(root, file), 'utf8');
-    assert.match(html, /assets\/css\/polish15-reading\.css\?v=[^"]+/, `${file}: css`);
-    assert.match(html, /assets\/js\/polish15-reading\.js\?v=[^"]+/, `${file}: js`);
+    if (file === 'specifikaciya.html') {
+      assert.match(html, /assets\/js\/order-specification\.js/, `${file}: interactive runtime`);
+    } else if (file === 'loyalty.html') {
+      assert.match(html, /assets\/js\/salon-experience\.js/, `${file}: benefits runtime`);
+    } else {
+      assert.match(html, /assets\/css\/polish15-reading\.css\?v=[^"]+/, `${file}: css`);
+      assert.match(html, /assets\/js\/polish15-reading\.js\?v=[^"]+/, `${file}: js`);
+    }
     assert.doesNotMatch(html, /assets\/(?:css|js)\/knowledge\.(?:css|js)/, `${file}: no legacy runtime`);
     assert.match(html, new RegExp(`<link rel="canonical" href="https://akademsalon\\.ru/${file.replace('.', '\\.')}`));
     assert.equal((html.match(/<h1\b/g) || []).length, 1, `${file}: one source h1`);
@@ -138,18 +144,15 @@ test('читательский runtime создаёт оглавление, як
   assert.match(readingCss, /@media print/);
 });
 
-test('спецификация совпадает с отдельным утверждённым экраном', () => {
+test('спецификация объясняет четыре поля и четыре формата без скрытых обязательств', () => {
   const html = fs.readFileSync(path.join(root, 'specifikaciya.html'), 'utf8');
-  assert.match(html, /body class="[^"]*\bpolish15-specification specification-page\b[^"]*"/);
-  assert.match(html, /data-specification-view="exact"/);
-  assert.match(html, /data-specification-id="AS-SPEC-02"/);
-  assert.match(html, /data-specification-version="1\.1"/);
-  assert.match(html, /<footer><span>Версия 1\.1<\/span>/);
-  assert.equal((html.match(/data-specification-download/g) || []).length, 2);
-  assert.equal((html.match(/class="spec-page-head"/g) || []).length, 1);
-  assert.equal((html.match(/class="spec-paper"/g) || []).length, 1);
-  assert.equal((html.match(/class="spec-notes"/g) || []).length, 1);
-  assert.doesNotMatch(html, /class="(?:doc|doc-wrap|doc-crumb)"/);
+  assert.match(html, /body class="[^"]*salon-specification/);
+  for (const attr of ['data-field=', 'data-annotation=', 'data-mode-tab=', 'data-mode-panel=']) {
+    assert.equal(html.split(attr).length - 1, 4, attr);
+  }
+  assert.equal((html.match(/href="[^"]+\.pdf(?:\?[^"]*)?"/g) || []).length, 2);
+  assert.match(html, /assets\/js\/order-specification\.js/);
+  assert.match(html, /assets\/css\/order-specification\.css/);
 });
 
 test('редакционные исправления убирают самые рискованные обещания и фиктивные советы', () => {
