@@ -903,6 +903,34 @@
       {
         "path": "docs/brain/evidence/salon-rewards",
         "match": "tree"
+      },
+      {
+        "path": "assets/css/salon-library.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-library.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-tools.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-tools.js",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/rebuild-learning-pages.py",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-learning.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/salon-learning",
+        "match": "tree"
       }
     ],
     "read": []
@@ -921,6 +949,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 55,
-  "base_manifest_hash": "0b7eb98f9f6bcea6c89ef68f17ebcdf81d6e5081a26162acdd43ed7dc1602527"
+  "manifest_revision": 56,
+  "base_manifest_hash": "3354033da5be2648e71f4ee5cac218feb0868c6266547db892bcfa53f991ba71"
 }
