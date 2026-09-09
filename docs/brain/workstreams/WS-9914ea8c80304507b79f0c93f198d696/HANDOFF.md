@@ -7,3 +7,8 @@ Plan: merge preserved codex/salon-direct-orders (contains verified cabinet199 an
 Acceptance: no P0/P1; publish exact435-file candidate, verify APIhealth/publicassets and read-onlysmoke, execute static rollback199→200 withoutDBrestore. No realclient/testpayments or authmessages. Close own servers/browsers, update existing heartbeat and handoff.
 
 Next: commitmanifest/handoff, strictcheck then merge and recheck before any release.
+
+## Exact integration gates
+Initial canonical integration skeleton correctly reported overlapping source branches until their verified history was merged. After merge, only superseded abandoned checkout overlap remained; old salon-direct-orders checkout parked clean at detached canonical (its completed branch e89556db preserved), owned8771server stopped. Exact Brain now hard0/60inherited warnings accepted, no bypass. Active checkout is salon-control-release.
+
+Root frozen visual readback found inherited color specificity made nav badge foreground equal background. Scoped final correction targets #agNav badge color only; no business logic change. New freeze required.

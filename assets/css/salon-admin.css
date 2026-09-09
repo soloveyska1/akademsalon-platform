@@ -50,3 +50,5 @@ body.salon-admin.is-admin-route .control-login{min-height:100svh;display:flex;fl
 .control-login-status{padding:15px;background:var(--mark);border-radius:12px;font-size:12px;line-height:1.6;color:var(--ink)}
 .control-login-signature{font:italic 13px Literata,Georgia,serif;color:var(--ink-soft);margin-top:24px}
 @media(max-width:480px){.control-login-card{padding:29px 24px;border-radius:21px}.control-login-home{left:24px;top:17px}body.salon-admin.is-admin-route .control-login{padding:82px 17px 30px}}
+
+body.salon-admin.is-admin-route .admin-sidebar #agNav .ag-tab b{color:var(--sheet);background:var(--stamp);-webkit-text-fill-color:currentColor}
