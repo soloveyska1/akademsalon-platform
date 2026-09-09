@@ -52,18 +52,8 @@ const faq=$('[data-home-faq]');const questions=[
  ['…есть промокод, бонусы или сертификат?','Промокод и сертификат можно указать в заявке. Доступные бонусы применяются до первой оплаты по правилам программы. Если сочетать всё нельзя, условия выгоды будут видны до оплаты.']
 ];faq.innerHTML=questions.map((q,i)=>'<details name="home-faq"><summary>'+q[0]+'<span aria-hidden="true">+</span></summary><div><p>'+q[1]+'</p>'+(i===4?'<a href="benefits.html">Все условия выгоды ↗</a>':'')+'</div></details>').join('');
 
-// The homepage shell owns its native navigation dialog; legacy menu listeners are not used.
-const nav=$('#home-navigation'),navToggle=$('.shell-menu-toggle');let restoreNav=true;
-if(nav&&navToggle){
- const closeNav=(restore=true)=>{restoreNav=restore;nav.close()};
- navToggle.onclick=()=>{restoreNav=true;nav.showModal();document.body.classList.add('home-nav-open');navToggle.setAttribute('aria-expanded','true');nav.querySelector('.shell-menu-close').focus();dockVisibility()};
- nav.querySelector('.shell-menu-close').onclick=()=>closeNav();
- nav.addEventListener('close',()=>{document.body.classList.remove('home-nav-open');navToggle.setAttribute('aria-expanded','false');if(restoreNav)navToggle.focus({preventScroll:true});dockVisibility()});
- nav.addEventListener('click',e=>{if(e.target===nav){const r=nav.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeNav()}else if(e.target.closest('a[href]'))closeNav(false)});
- nav.querySelector('[data-menu-search]').onclick=()=>{closeNav(false);$('.search-button').click();$('.experience-search')?.addEventListener('close',()=>navToggle.focus({preventScroll:true}),{once:true})};
- const themeShortcut=nav.querySelector('[data-menu-theme]');function themeLabel(){themeShortcut.querySelector('span').textContent=document.documentElement.dataset.theme==='dark'?'Светлая тема':'Тёмная тема'}
- themeShortcut.onclick=()=>{$('.theme-button').click();themeLabel()};new MutationObserver(themeLabel).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});themeLabel();
-}
+document.addEventListener('salon:shellchange',dockVisibility);
+
 // These are published examples, not personal eligibility or automatically applied benefits.
 const perks={
  single:{tag:'БОНУСЫ САЛОНА',value:'5%',unit:'бонусами',copy:'От суммы, оплаченной деньгами.',note:'После полной оплаты.<br>Используй в течение 90 дней.',href:'benefits.html#bonuses',action:'Как это работает'},

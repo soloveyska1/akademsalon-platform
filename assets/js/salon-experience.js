@@ -13,7 +13,7 @@ function readChoice(){try{const x=JSON.parse(sessionStorage.getItem(key)||'null'
 function publishChoice(id){if(!P?.products.some(p=>p.id===id))return;const old=readChoice()||{};const next={product:id,scope:old.product===id?old.scope:'whole',discipline:old.discipline||'hum',deadline:old.deadline||''};try{sessionStorage.setItem(key,JSON.stringify(next))}catch(e){}document.dispatchEvent(new CustomEvent('salon:selection',{detail:{product:id}}));updateTrail()}
 let trail;
 function updateTrail(){
- const x=readChoice();if(!main||route==='configurator'||route==='dashboard'||$('[data-home-workbench]'))return;
+ const x=readChoice();if(!main||route==='configurator'||route==='dashboard'||$('[data-home-workbench]')||$('[data-catalogue]'))return;
  if(!trail){trail=document.createElement('div');trail.className='selection-trail';main.before(trail)}
  trail.hidden=!x;if(!x)return;
  trail.innerHTML='<span>Вы выбирали</span><a href="configurator.html">'+esc(P.get(x.product).name)+' · продолжить →</a><button type="button">Сбросить выбор</button>';

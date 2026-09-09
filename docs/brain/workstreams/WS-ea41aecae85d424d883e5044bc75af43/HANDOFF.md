@@ -86,3 +86,12 @@ Acceptance before edits: 12 searchable and filterable products, accurate baselin
 Design plan: warm paper #faf9f6, ink #292537, violet #5136b5, lilac #eeeafa, mint #d9f5bb, white #ffffff. Golos headings/body; Literata italic accent; tabular price numerals. Signature is an academic catalogue with compact two-column work entries and a made-to-order specification sheet. The sheet provides scope and extras alongside a persistent estimate, rather than text-heavy separate pages. Plan critique: avoid novelty controls that obscure checkout; search and category filters remain ordinary controls, no scarcity, forced registration, preselected paid extras or invented discounts.
 
 Proof: focused commerce/order/privacy regression; fresh browser contexts with serviceWorkers blocked, route screenshots and journey assertions; two independent read-only reviews journey_review and order_contract_review. Public production and backend unchanged, private Sites owner preview only. Legacy warnings accepted consciously from existing ownership audit; new hard conflicts prohibited.
+
+
+### Catalogue verified result
+
+Implemented services catalogue with canonical price/speed/context controls, search aliases/categories, editable composition native dialog, extras bundle and VIP, explicit saved continuation and preserved form context. Shared header/footer/menu reused on catalogue; homepage menu extracted without behavioral changes. Static direct links progressively enhance to buttons to avoid capture-phase navigation guard.
+
+Proof: docs/brain/evidence/salon-product/catalogue/verification.md and pinned source hashes. Focused85/85, arithmetic6048/6048, catalogue42states,5groupedjourneys,2Back regression scenarios,34contrast pairs minimum4.7266, homepage commerce/shell/benefit regressions passed. Both independent reviewers GO after cached-context and past-date fixes. Browser BFCache admission itself not asserted; actual Back plus explicit persisted event verified.
+
+No public/backend change. Oldfullsuite/public release gates remain as documented. Next exact step: clean source save and owner-only private Sites update, then readback and shutdown task-owned local servers/browser.
