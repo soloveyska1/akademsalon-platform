@@ -13,7 +13,7 @@ function readChoice(){try{const x=JSON.parse(sessionStorage.getItem(key)||'null'
 function publishChoice(id){if(!P?.products.some(p=>p.id===id))return;const old=readChoice()||{};const next={product:id,scope:old.product===id?old.scope:'whole',discipline:old.discipline||'hum',deadline:old.deadline||''};try{sessionStorage.setItem(key,JSON.stringify(next))}catch(e){}document.dispatchEvent(new CustomEvent('salon:selection',{detail:{product:id}}));updateTrail()}
 let trail;
 function updateTrail(){
- const x=readChoice();if(!main||route==='configurator'||route==='dashboard'||$('[data-home-workbench]')||$('[data-catalogue]')||$('[data-portfolio]')||$('[data-benefits-hub]')||$('[data-referral-circle]')||$('[data-support-page]')||$('[data-rewards-hub]')||$('.salon-rewards')||$('[data-legal-reader]')||$('.salon-learning')||$('[data-special-service]')||$('[data-about-salon]'))return;
+ const x=readChoice();if(!main||route==='configurator'||route==='dashboard'||$('[data-home-workbench]')||$('[data-catalogue]')||$('[data-portfolio]')||$('[data-benefits-hub]')||$('[data-referral-circle]')||$('[data-support-page]')||$('[data-rewards-hub]')||$('.salon-rewards')||$('[data-legal-reader]')||$('.salon-learning')||$('[data-special-service]')||$('[data-about-salon],[data-service-entry]'))return;
  if(!trail){trail=document.createElement('div');trail.className='selection-trail';main.before(trail)}
  trail.hidden=!x;if(!x)return;
  trail.innerHTML='<span>Вы выбирали</span><a href="configurator.html">'+esc(P.get(x.product).name)+' · продолжить →</a><button type="button">Сбросить выбор</button>';
@@ -69,7 +69,7 @@ if(route.startsWith('guide-')&&!document.querySelector('[data-guide-reader]')){
 
 // Service examples contain only labelled schematic content, never customer input.
 (function(){
- const root=document.querySelector('[data-special-service],[data-about-salon]');if(!root)return;
+ const root=document.querySelector('[data-special-service],[data-about-salon],[data-service-entry]');if(!root)return;
  const tabs=[...root.querySelectorAll('[data-special-tab]')],panels=[...root.querySelectorAll('[data-special-panel]')],bar=root.querySelector('[data-special-tabs]');
  if(tabs.length&&tabs.length===panels.length){
   bar.setAttribute('role','tablist');root.querySelector('.svx-folio').setAttribute('data-special-enhanced','');
@@ -77,7 +77,28 @@ if(route.startsWith('guide-')&&!document.querySelector('[data-guide-reader]')){
   tabs.forEach((tab,i)=>{tab.addEventListener('click',()=>choose(i));tab.addEventListener('keydown',e=>{let n;if(e.key==='ArrowRight')n=(i+1)%tabs.length;if(e.key==='ArrowLeft')n=(i+tabs.length-1)%tabs.length;if(e.key==='Home')n=0;if(e.key==='End')n=tabs.length-1;if(n!==undefined){e.preventDefault();choose(n,true)}})});choose(0);
  }
  // Give visible order links priority over the floating helper on phones.
- if('IntersectionObserver' in window){const mobile=matchMedia('(max-width:760px)'),visible=new Set();const paint=()=>document.body.classList.toggle('special-order-visible',mobile.matches&&visible.size>0);const observer=new IntersectionObserver(entries=>{entries.forEach(e=>e.isIntersecting?visible.add(e.target):visible.delete(e.target));paint()});document.querySelectorAll('a[href*="configurator.html"]').forEach(a=>observer.observe(a));mobile.addEventListener('change',paint)}
+ if('IntersectionObserver' in window){const mobile=matchMedia('(max-width:760px)'),visible=new Set();const paint=()=>document.body.classList.toggle('special-order-visible',mobile.matches&&visible.size>0);const observer=new IntersectionObserver(entries=>{entries.forEach(e=>e.isIntersecting?visible.add(e.target):visible.delete(e.target));paint()});document.querySelectorAll('a[href*="configurator.html"],.sen-brief').forEach(a=>observer.observe(a));mobile.addEventListener('change',paint)}
  const checks=[...root.querySelectorAll('[data-special-material]')],status=root.querySelector('[data-special-ready]');
  const update=()=>{if(status){status.hidden=false;status.textContent=checks.filter(x=>x.checked).length+' из '+checks.length+' готово'}};checks.forEach(c=>c.addEventListener('change',update));update();
+})();
+
+(function(){
+ const root=document.querySelector('[data-service-entry]');if(!root)return;
+ const id=root.dataset.entryProduct,base=Number(root.dataset.entryBase),days=root.dataset.entryDays;
+ const scopes=[...root.querySelectorAll('[data-entry-scope]')],speeds=[...root.querySelectorAll('[data-entry-speed]')];
+ const order=root.querySelector('[data-entry-order]'),originalAction=order.textContent,continuations=[...document.querySelectorAll('footer a[href*="configurator.html"]')];
+ let scope='whole',speed='standard';
+ function paint(){
+  scopes.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.entryScope===scope)));
+  speeds.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.entrySpeed===speed)));
+  const priced=scope==='whole'&&speed!=='expressfast';
+  root.querySelector('[data-entry-price]').textContent=priced?'от '+new Intl.NumberFormat('ru-RU').format(base*(speed==='express24'?2:1))+' ₽':'По заданию';
+  root.querySelector('[data-entry-term]').textContent=speed==='express24'?'24 часа':speed==='expressfast'?'Меньше суток':scope==='whole'?days:'Согласуем';
+  root.querySelector('[data-entry-note]').textContent=speed==='express24'?'×2 к плановой цене выбранной работы. Старт после согласования, материалов и оплаты.':speed==='expressfast'?'Сначала проверим задачу и материалы. Возможность, срок и цена подтверждаются до оплаты.':scope==='whole'?'За согласованный состав всей работы. Точная цена и дата после задания, до оплаты.':'Оценим именно твой объём и сложность. Цена всей работы не делится автоматически на главы.';
+  root.querySelector('[data-entry-scope-copy]').textContent=scope==='whole'?'Базовый состав всей работы. Конкретный объём закрепим в задании.':scope==='part'?'Из этой структуры выбираешь нужный фрагмент. Остальное в заказ не добавляется.':'Ниже структура, по которой можно проверить текст. В заказ войдут только согласованные изменения.';
+  const q=new URLSearchParams({product:id,result:scope,speed});order.href='/configurator.html?'+q.toString();continuations.forEach(a=>a.href=order.href);order.textContent=scope==='whole'?originalAction:scope==='part'?'Заказать нужную часть ↗':'Заказать доработку ↗';
+ }
+ scopes.forEach(b=>b.addEventListener('click',()=>{scope=b.dataset.entryScope;paint()}));
+ speeds.forEach(b=>b.addEventListener('click',()=>{speed=id==='kandidat'?'standard':b.dataset.entrySpeed;paint()}));
+ const checks=[...root.querySelectorAll('.sen-checklist input')];checks.forEach(b=>b.addEventListener('change',()=>{const n=checks.filter(c=>c.checked).length;root.querySelector('[data-entry-progress]').textContent=n?`Под рукой ${n} из ${checks.length}. Добавь материалы в заявку, когда будешь готов.`:'Можно начать с того, что есть.'}));paint();root.dataset.entryEnhanced='true';
 })();

@@ -31,6 +31,9 @@ else if(params.get('composition')==='1'&&M?.saved()){setValue('product',composit
 else{try{const saved=JSON.parse(sessionStorage.getItem(draftKey)||'null');if(saved){setValue('product',saved.product);setValue('scope',saved.scope);setValue('discipline',saved.discipline);if(/^\d{4}-\d{2}-\d{2}$/.test(saved.deadline||''))$('deadline').value=saved.deadline}}catch(e){}}
 const sampleRefs={essay:'Историческая правда и рыцарский миф в «Айвенго»',referat:'Травля: понятие, формы и способы противодействия',comparison:'Сравнительный анализ типологических моделей акцентуаций характера',risk:'Государственно-частное партнёрство: модели и риски',method:'Оценка звуко-слогового состава слова у старших дошкольников',practice:'Педагогическая практика: анализ занятий и собственное мероприятие',project:'Коммуникация органа власти: анализ и проектные предложения'};
 if(Object.hasOwn(sampleRefs,params.get('sample'))&&params.get('sampleScope')==='part')$('scope').value='part';
+// Explicit landing choice has a finite scope; unrelated URL values cannot set fields.
+if(initial&&['whole','part','editing'].includes(params.get('result')))setValue('scope',params.get('result'));
+if(initial&&M&&!initialService){composition=M.normalize({...composition,product:initial,scope:$('scope').value,speed:['standard','express24','expressfast'].includes(params.get('speed'))?params.get('speed'):'standard'})}
 if(params.get('tier')==='turn'||params.get('result')==='editing'||params.get('result')==='ai_editing')$('scope').value='editing';
 const legacyDisc=params.get('disc')||params.get('discipline')||({h:'hum',l:'law',t:'tech',m:'med'}[params.get('d')]);
 if(legacyDisc)setValue('discipline',legacyDisc);

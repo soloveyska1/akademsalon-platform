@@ -3,6 +3,8 @@
 The unactivated referral prototype stays private; reviewed live terms are explicit input.
 """
 import argparse, hashlib, html, json, re, subprocess, tarfile
+from html.parser import HTMLParser
+import xml.etree.ElementTree as ET
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit, unquote
 
@@ -15,6 +17,42 @@ def allowed(name):
  if name=='assets/js/cabinet-demo.js': return False
  if len(p.parts)==1: return p.suffix=='.html' or name in ROOT_FILES
  return p.parts[0] in ('assets','bimi') and (p.suffix in ASSET_EXT or name=='assets/vendor/pdfjs/LICENSE')
+class SearchHead(HTMLParser):
+ def __init__(self):
+  super().__init__();self.canonicals=[];self.noindex=False;self.in_head=True
+ def handle_starttag(self,tag,attrs):
+  if not self.in_head:return
+  a=dict(attrs)
+  if tag=='link' and 'canonical' in a.get('rel','').lower().split():self.canonicals.append(a.get('href',''))
+  if tag=='meta' and a.get('name','').lower() in ('robots','googlebot','yandex'):
+   self.noindex=self.noindex or bool(re.search(r'(?:^|[\s,])(?:noindex|none)(?:$|[\s,])',a.get('content','').lower()))
+ def handle_endtag(self,tag):
+  if tag=='head':self.in_head=False
+
+def public_sitemap(repo,commit,files):
+ """Derive discovery from the final public overlay, never from private prototypes.
+ Dates come from the exact source history; fingerprint changes are not content edits.
+ """
+ ns='http://www.sitemaps.org/schemas/sitemap/0.9';ET.register_namespace('',ns)
+ tree=ET.Element('{'+ns+'}urlset');seen=set()
+ for name,data in sorted(files.items()):
+  if not name.endswith('.html') or '/' in name:continue
+  head=SearchHead();head.feed(data.decode())
+  if head.noindex:continue
+  if len(head.canonicals)!=1:raise ValueError('indexable page needs one canonical: '+name)
+  canonical=head.canonicals[0];u=urlsplit(canonical)
+  if u.scheme!='https' or u.netloc!='akademsalon.ru' or u.query or u.fragment:raise ValueError('unsafe canonical: '+name)
+  target='index.html' if u.path=='/' else unquote(u.path).lstrip('/')
+  if target not in files:raise ValueError('missing canonical target: '+name)
+  if target!=name:continue
+  if canonical in seen:raise ValueError('duplicate canonical: '+name)
+  seen.add(canonical);entry=ET.SubElement(tree,'{'+ns+'}url');ET.SubElement(entry,'{'+ns+'}loc').text=canonical
+  # The legacy referral is supplied externally, not authored by this source commit.
+  if name not in ('referral.html','referral-rules.html'):
+   date=subprocess.check_output(['git','log','-1','--format=%cs',commit,'--',name],cwd=repo,text=True).strip()
+   if re.fullmatch(r'\d{4}-\d{2}-\d{2}',date):ET.SubElement(entry,'{'+ns+'}lastmod').text=date
+ return ET.tostring(tree,encoding='utf-8',xml_declaration=True)+b'\n'
+
 def build(repo, revision, legacy, output):
  commit=subprocess.check_output(['git','rev-parse',revision+'^{commit}'],cwd=repo,text=True).strip()
  names=subprocess.check_output(['git','ls-tree','-r','--name-only',commit],cwd=repo,text=True).splitlines()
@@ -26,6 +64,9 @@ def build(repo, revision, legacy, output):
  namespace={};exec(compile(presenter,'frozen-legal-presentation','exec'),namespace)
  presented=namespace['render_legal'](old.decode(),files['priyomnaya.html'].decode()).encode()
  files['referral.html']=presented; files['referral-rules.html']=presented
+ # Canonicalize the identical public referral compatibility page after its overlay.
+ files['referral-rules.html']=re.sub(rb'(rel="canonical" href=")https://akademsalon.ru/referral-rules.html',rb'\1https://akademsalon.ru/referral.html',presented)
+ files['sitemap.xml']=public_sitemap(repo,commit,files)
  version='production-'+commit[:12]
  # Replace the whole shell family, including JS-inserted mobile CSS, to evict old SW caches.
  for name,data in list(files.items()):
