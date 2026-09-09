@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-ea41aecae85d424d883e5044bc75af43",
   "slug": "salon-direct-orders",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/salon-direct-orders",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": null,
+  "result_sha": "f5cf3756c3097343f48d3e48e7f90e3923f901c5",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -581,6 +581,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 15,
-  "base_manifest_hash": "aeb3a75cd1b8430b4e6093340340a6870c3da0f7cdf059f268b18a5051bb8445"
+  "manifest_revision": 16,
+  "base_manifest_hash": "bcb34a164512b4a419ff479722faf9bbee31bc72301a50d6782a8c78d6f56cbd"
 }
