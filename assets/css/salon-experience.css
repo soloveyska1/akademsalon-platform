@@ -118,3 +118,19 @@ body.salon-experience.salon-benefits-detail .club-card--deposit{background:#d9f5
 body.salon-experience.salon-benefits-detail .club-card--plus{background:#5136b5;border-color:#5136b5}
 
 body.salon-experience.salon-benefits-detail .club-card--invite{background:var(--soft)}
+/* Older detail pages keep all header actions reachable on narrow phones.
+   New salon-topbar consumers own their separate compact navigation. */
+@media(max-width:650px){
+ body.salon-experience header.site-header.direct-header:not(.salon-topbar){width:calc(100% - 32px);max-width:1280px;height:auto;gap:12px;flex-wrap:wrap;padding:14px 0}
+ body.salon-experience header.direct-header:not(.salon-topbar) .brand{min-width:0;font-size:15px;gap:9px}
+ body.salon-experience header.direct-header:not(.salon-topbar) .brand-caption{display:none}
+ body.salon-experience header.direct-header:not(.salon-topbar) .header-actions{display:flex;flex:none;gap:8px;max-width:100%;margin-left:auto;align-items:center}
+ body.salon-experience header.direct-header:not(.salon-topbar) :is(.search-button,.theme-button,.menu-button){display:grid;place-items:center;width:44px;min-width:44px;height:44px;min-height:44px;padding:0}
+ body.salon-experience header.direct-header:not(.salon-topbar) .cabinet-link{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:8px 12px;font-size:13px;color:var(--ink);border:1px solid var(--line);border-radius:12px;white-space:nowrap}
+ body.salon-experience header.direct-header:not(.salon-topbar) .header-actions>.button{display:none}
+}
+@media(max-width:420px){
+ body.salon-experience header.site-header.direct-header:not(.salon-topbar){display:grid!important;grid-template-columns:minmax(0,1fr);gap:12px;padding-block:13px}
+ body.salon-experience header.direct-header:not(.salon-topbar) .header-actions{width:100%;margin:0;justify-content:space-between}
+ body.salon-experience header.direct-header:not(.salon-topbar) .brand{font-size:15px}
+}
