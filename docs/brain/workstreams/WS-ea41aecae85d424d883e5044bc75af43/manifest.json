@@ -607,6 +607,10 @@
       {
         "path": "tests/deposit-page-regression.test.js",
         "match": "exact"
+      },
+      {
+        "path": "tests/economic-safety.test.js",
+        "match": "exact"
       }
     ],
     "read": []
@@ -625,6 +629,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 28,
-  "base_manifest_hash": "f9365e6c98f752e839ca6f3c93b20871696710ccb8bf040ab9f5de2acf659bda"
+  "manifest_revision": 29,
+  "base_manifest_hash": "b1846468be6d6bd65b5a74e9108547ff3d117bd898f98068762b255081e933e3"
 }
