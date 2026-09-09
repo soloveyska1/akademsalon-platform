@@ -1,9 +1,9 @@
 CLEAR_LOCAL_SNAPSHOT_WITH_WARNINGS
-decision: BLOCKED
-counts: hard=0 warnings=60 info=8 blocking=60 inspected=220
-warning-policy: block
+decision: PROCEED_LOCAL_SNAPSHOT
+counts: hard=0 warnings=60 info=8 blocking=0 inspected=220
+warning-policy: allow-explicit
 canonical: e53d11cea40055f2dae41a0f212cbbac4c79055f
-head: 56629ab3a2888eb4c998532f837b57898928d36e
+head: be99a1d914d7063f7232ab7d243d3a6503ad317d
 manifest: WS-ea41aecae85d424d883e5044bc75af43
 WARN TERMINAL_WORKTREE_PRESENT: claude/mobile-shell:abandoned
 WARN TERMINAL_WORKTREE_PRESENT: codex/admin-analytics-master-parity-release:integrated
@@ -73,8 +73,8 @@ INFO FOREIGN_DIRTY_DISJOINT: /Users/saymurrbk.ru/Desktop/Сайт для за�
 INFO FOREIGN_DIRTY_DISJOINT: /Users/saymurrbk.ru/Desktop/Сайт для заказов/.claude/worktrees/fervent-noether-da89f1
 INFO HISTORY_UNRELATED: 9 refs: codex/fix-drawer-close; codex/fix-drawer-close-hover; codex/header-glass-deploy; codex/menu-readability-preview; codex/redesign-dark-theme; codex/redesign-search-overlay; codex/refine-proof-copy; codex/scope-drawer-redesign
 INFO SEMANTICS_UNKNOWN: 22 refs: codex/admin-analytics-master-parity; codex/incident-admin-auth-recovery-v1; codex/out-006-analytics-truth-v1; codex/out-006-analytics-truth-v2; codex/out-006-analytics-truth-v3; codex/out-006-analytics-v2; codex/out-006-form-engagement-truth-v1; codex/out-006-new-user-promo-v1
-snapshot: b813f4d5fc6ed15c1a2f42aad48573f984dafe412b01200cad5a123ea240e4d9
+snapshot: 790887653ae452c6e055be057c42eedb36835aaf1534f74928574a1577428796
 LIMIT: no fetch or remote lease
 LIMIT: unfetched, unpushed and undeclared semantic work is unknown
 LIMIT: re-run on exact SHAs before integration
-NEXT: review every warning; only the integration owner may rerun with --allow-warnings.
+NEXT: re-run this local snapshot immediately before integration.

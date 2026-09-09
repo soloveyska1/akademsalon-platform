@@ -1,0 +1,1450 @@
+{
+  "decision": "GO",
+  "base": "ccb1d12b20e48d58ba2d1b909406d6c4215e3719",
+  "tests": [
+    {
+      "case": "guide-antiplagiat-ai.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html existing safe knowledge.html?work=diplom&amp;stage=writing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html existing safe guide-vkr-struktura.html",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html existing safe redaktura-posle-ii.html",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html existing safe knowledge.html?work=diplom&amp;stage=finishing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html existing safe guide-zashchita-diploma.html",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html existing safe priyomnaya.html",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html existing safe knowledge.html?work=practice&amp;stage=writing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html existing safe guide-otchet-po-praktike.html",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html existing safe configurator.html?product=practice&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html existing safe knowledge.html?work=practice&amp;stage=starting#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html existing safe guide-otchet-po-praktike.html",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html existing safe otchet-po-praktike.html",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html existing safe knowledge.html?work=course&amp;stage=writing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html existing safe guide-vvedenie-kursovoy.html",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html existing safe kursovaya-rabota.html",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html existing safe knowledge.html?work=diplom&amp;stage=finishing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html existing safe guide-zashchita-diploma.html",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html existing safe normokontrol-vkr.html",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html existing safe knowledge.html?work=diplom&amp;stage=starting#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html existing safe guide-temy-vkr.html",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html existing safe plan.html",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html existing safe knowledge.html?work=practice&amp;stage=writing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html existing safe guide-dnevnik-praktiki.html",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html existing safe otchet-po-praktike.html",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html existing safe knowledge.html?work=diplom&amp;stage=finishing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html existing safe guide-zashchita-diploma.html",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html existing safe diplomnaya-rabota.html",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html existing safe knowledge.html?work=course&amp;stage=writing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html existing safe guide-vvedenie-kursovoy.html",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html existing safe configurator.html?product=course&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html existing safe knowledge.html?work=diplom&amp;stage=finishing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html existing safe guide-zashchita-diploma.html",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html existing safe configurator.html?service=df",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html existing safe knowledge.html?work=diplom&amp;stage=finishing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html existing safe guide-zashchita-diploma.html",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html existing safe normokontrol-vkr.html",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html existing safe knowledge.html?work=diplom&amp;stage=finishing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html existing safe guide-zashchita-diploma.html",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html existing safe diplomnaya-rabota.html",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html existing safe knowledge.html?work=diplom&amp;stage=finishing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html existing safe guide-zashchita-diploma.html",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html existing safe configurator.html?service=df",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html existing safe knowledge.html?topic=publication",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html existing safe guide-spisok-literatury.html",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html existing safe nauchnaya-statya.html",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html existing safe knowledge.html?work=diplom&amp;stage=starting#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html existing safe guide-temy-vkr.html",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html existing safe diplomnaya-rabota.html",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html existing safe knowledge.html?work=course&amp;stage=starting#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html existing safe guide-obekt-predmet-cel-zadachi.html",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html existing safe kursovaya-rabota.html",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html existing safe knowledge.html?work=diplom&amp;stage=writing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html existing safe guide-vkr-struktura.html",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html existing safe normokontrol-vkr.html",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html existing safe knowledge.html?work=diplom&amp;stage=starting#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html existing safe guide-obekt-predmet-cel-zadachi.html",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html existing safe plan.html",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html existing safe knowledge.html?work=diplom&amp;stage=finishing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html existing safe guide-zashchita-diploma.html",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html existing safe normokontrol-vkr.html",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html existing safe knowledge.html?work=diplom&amp;stage=writing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html existing safe guide-spisok-literatury.html",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html existing safe configurator.html?product=diplom&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html existing safe knowledge.html?work=course&amp;stage=writing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html existing safe guide-prakticheskaya-chast-kursovoy.html",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html existing safe configurator.html?product=course&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html existing safe knowledge.html?work=course&amp;stage=finishing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html existing safe guide-spisok-literatury.html",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html existing safe configurator.html?product=course&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html existing safe knowledge.html?work=diplom&amp;stage=finishing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html existing safe guide-zashchita-diploma.html",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html existing safe configurator.html?product=diplom&amp;result=part",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html exact article",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html one outside next",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html existing safe knowledge.html?work=diplom&amp;stage=finishing#study-route",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html finite route",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html existing safe guide-prezentaciya-k-zashchite.html",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html existing safe configurator.html?service=df",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html only added library",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html only added library",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html only added library",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html only added library",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html only added library",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html only added library",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html only added library",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html only added library",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html only added library",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html only added library",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html only added library",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html only added library",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html only added library",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html only added library",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html only added library",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "referat.html old reading targets retained",
+      "pass": true
+    },
+    {
+      "case": "referat.html only added library",
+      "pass": true
+    },
+    {
+      "case": "referat.html all original FAQ pairs",
+      "pass": true
+    },
+    {
+      "case": "exact3worktypes",
+      "pass": true
+    },
+    {
+      "case": "course correct service",
+      "pass": true
+    },
+    {
+      "case": "course exact3stages",
+      "pass": true
+    },
+    {
+      "case": "coursestarting 3 unique real guides",
+      "pass": true
+    },
+    {
+      "case": "coursewriting 3 unique real guides",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing 3 unique real guides",
+      "pass": true
+    },
+    {
+      "case": "practice correct service",
+      "pass": true
+    },
+    {
+      "case": "practice exact3stages",
+      "pass": true
+    },
+    {
+      "case": "practicestarting 3 unique real guides",
+      "pass": true
+    },
+    {
+      "case": "practicewriting 3 unique real guides",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing 3 unique real guides",
+      "pass": true
+    },
+    {
+      "case": "diplom correct service",
+      "pass": true
+    },
+    {
+      "case": "diplom exact3stages",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting 3 unique real guides",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting 3 unique real guides",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing 3 unique real guides",
+      "pass": true
+    },
+    {
+      "case": "original shelf/search/history/reader exact",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-order.js unchanged",
+      "pass": true
+    },
+    {
+      "case": "assets/js/app.js unchanged",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-commerce.js unchanged",
+      "pass": true
+    },
+    {
+      "case": "experience exact observer-only delta",
+      "pass": true
+    },
+    {
+      "case": "coursestarting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "coursestarting valid opens",
+      "pass": true
+    },
+    {
+      "case": "coursestarting 3links",
+      "pass": true
+    },
+    {
+      "case": "coursestarting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "coursestarting relevant help",
+      "pass": true
+    },
+    {
+      "case": "coursestarting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "coursestarting copied current",
+      "pass": true
+    },
+    {
+      "case": "coursewriting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "coursewriting valid opens",
+      "pass": true
+    },
+    {
+      "case": "coursewriting 3links",
+      "pass": true
+    },
+    {
+      "case": "coursewriting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "coursewriting relevant help",
+      "pass": true
+    },
+    {
+      "case": "coursewriting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "coursewriting copied current",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing no load history writes",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing valid opens",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing 3links",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing actual finite links",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing relevant help",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing clean share exact",
+      "pass": true
+    },
+    {
+      "case": "coursefinishing copied current",
+      "pass": true
+    },
+    {
+      "case": "practicestarting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "practicestarting valid opens",
+      "pass": true
+    },
+    {
+      "case": "practicestarting 3links",
+      "pass": true
+    },
+    {
+      "case": "practicestarting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "practicestarting relevant help",
+      "pass": true
+    },
+    {
+      "case": "practicestarting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "practicestarting copied current",
+      "pass": true
+    },
+    {
+      "case": "practicewriting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "practicewriting valid opens",
+      "pass": true
+    },
+    {
+      "case": "practicewriting 3links",
+      "pass": true
+    },
+    {
+      "case": "practicewriting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "practicewriting relevant help",
+      "pass": true
+    },
+    {
+      "case": "practicewriting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "practicewriting copied current",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing no load history writes",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing valid opens",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing 3links",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing actual finite links",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing relevant help",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing clean share exact",
+      "pass": true
+    },
+    {
+      "case": "practicefinishing copied current",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting valid opens",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting 3links",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting relevant help",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "diplomstarting copied current",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting no load history writes",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting valid opens",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting 3links",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting actual finite links",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting relevant help",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting clean share exact",
+      "pass": true
+    },
+    {
+      "case": "diplomwriting copied current",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing no load history writes",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing valid opens",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing 3links",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing actual finite links",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing relevant help",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing clean share exact",
+      "pass": true
+    },
+    {
+      "case": "diplomfinishing copied current",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?work=__proto__&stage=writing",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?work=__proto__&stage=writing",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?work=practice&stage=constructor",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?work=practice&stage=constructor",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?work=evil&stage=writing",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?work=evil&stage=writing",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?work=practice",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?work=practice",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?stage=finishing",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?stage=finishing",
+      "pass": true
+    },
+    {
+      "case": "malformed route default ?work=%3Cscript%3E&stage=starting",
+      "pass": true
+    },
+    {
+      "case": "malformed no forced opening ?work=%3Cscript%3E&stage=starting",
+      "pass": true
+    },
+    {
+      "case": "catalogue filters preserved",
+      "pass": true
+    },
+    {
+      "case": "search removed from push",
+      "pass": true
+    },
+    {
+      "case": "publicplan current",
+      "pass": true
+    },
+    {
+      "case": "back restores plan",
+      "pass": true
+    },
+    {
+      "case": "back resets absent plan",
+      "pass": true
+    },
+    {
+      "case": "denied exposes manual clean URL",
+      "pass": true
+    },
+    {
+      "case": "manual field focused/select",
+      "pass": true
+    },
+    {
+      "case": "stale copy false suppressed",
+      "pass": true
+    },
+    {
+      "case": "stale copy true suppressed",
+      "pass": true
+    },
+    {
+      "case": "df maps exact defense6000",
+      "pass": true,
+      "state": {
+        "product": "service:defense",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "service": "defense",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course contextual part",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "practice contextual part",
+      "pass": true,
+      "state": {
+        "product": "practice",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "practice",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diplom contextual part",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "entry observes exact3targets",
+      "pass": true
+    },
+    {
+      "case": "entry no mutation before visibility callback",
+      "pass": true
+    },
+    {
+      "case": "entry visible action hides launcher",
+      "pass": true
+    },
+    {
+      "case": "entry second action retains hide",
+      "pass": true
+    },
+    {
+      "case": "entry no actions restores launcher",
+      "pass": true
+    },
+    {
+      "case": "entry duplicate observer entries safe",
+      "pass": true
+    },
+    {
+      "case": "entry absent surface/capability {\"eligible\":false}",
+      "pass": true
+    },
+    {
+      "case": "entry absent surface/capability {\"support\":false}",
+      "pass": true
+    },
+    {
+      "case": "entry absent surface/capability {\"eligible\":false,\"support\":false}",
+      "pass": true
+    },
+    {
+      "case": "entry focus not hidden",
+      "pass": true
+    },
+    {
+      "case": "learning observes exact3targets",
+      "pass": true
+    },
+    {
+      "case": "learning no mutation before visibility callback",
+      "pass": true
+    },
+    {
+      "case": "learning visible action hides launcher",
+      "pass": true
+    },
+    {
+      "case": "learning second action retains hide",
+      "pass": true
+    },
+    {
+      "case": "learning no actions restores launcher",
+      "pass": true
+    },
+    {
+      "case": "learning duplicate observer entries safe",
+      "pass": true
+    },
+    {
+      "case": "learning absent surface/capability {\"eligible\":false}",
+      "pass": true
+    },
+    {
+      "case": "learning absent surface/capability {\"support\":false}",
+      "pass": true
+    },
+    {
+      "case": "learning absent surface/capability {\"eligible\":false,\"support\":false}",
+      "pass": true
+    },
+    {
+      "case": "learning focus not hidden",
+      "pass": true
+    },
+    {
+      "case": "noJS fallback disclosed",
+      "pass": true
+    },
+    {
+      "case": "noJS copy hidden",
+      "pass": true
+    },
+    {
+      "case": "noJS controls hidden and gated",
+      "pass": true
+    }
+  ],
+  "passed": 329,
+  "source_sha256": {
+    "assets/css/salon-experience.css": "4df3f9b0f7db3d2f995b4cfdf111a33421b425054e1ef13ea2077bd9251171a4",
+    "assets/css/salon-library.css": "bac01df31e2756e3d8f753783ffa489db79eb076f9c592903f1866414c72a82b",
+    "assets/js/salon-experience.js": "516d4e1439d2329c52cc759459f8d9d73836a48696d0617a1c64b73d119b2bcf",
+    "assets/js/salon-library.js": "294a7f56423b0b283a280c980005d2d721350ed16f1271c6787589750dc441dc",
+    "diplomnaya-po-ekonomike.html": "0b3c4393b6a8564528cd040fffc4c6782bd1c07daf7832cb4aaf4f98ffb4b3a1",
+    "diplomnaya-po-psihologii.html": "d09463ca57b34435ac6fdf1e98a811d91bd92d720356d464561b4d8886bca92f",
+    "diplomnaya-po-yurisprudencii.html": "7400c844a0f69efe9d6226bf5a8326512ab1c1bdef72ad41718414995fe646a1",
+    "diplomnaya-rabota.html": "11cef28e63180c8b67a14d258e3016358b67d78dd44f568756f7fc9067d8e1e7",
+    "guide-antiplagiat-ai.html": "66590491ab35ac83be84fea5f98d3318454c69dbc067c0f7fd14a368c00701ae",
+    "guide-apellyaciya.html": "88e8ad092adec830e2b44a2388bf223e75c7d1e73aa15e01d6f23813fbeeb872",
+    "guide-dnevnik-praktiki.html": "d9574e3ff47a43da38297e0da16a55210ebb734e1076627f162e80c7f1efa890",
+    "guide-harakteristika-s-praktiki.html": "82afd230ef1fe9088c3d855ed2f6015859a55dab01befcbf075c2a38cd0d9178",
+    "guide-kursovaya-za-nedelyu.html": "49d1f2ec0907b1ab441592c26c032fd59c575adf428ee9eb9cb08c86a4868876",
+    "guide-normocontrol.html": "acc62ba49e298f58e05f0bf695fb8fe50785c3ede00e751d1176ee9a1874ceba",
+    "guide-obekt-predmet-cel-zadachi.html": "4ea68c143a06e959b8792f04b69f2cba7bcfc49b59fc137534aca20768fa88a1",
+    "guide-otchet-po-praktike.html": "bab2ebda13eee13be5f0db31fa30e1a7578282b03192deb720fc257b085d8834",
+    "guide-otzyv-rukovoditelya-vkr.html": "192f5eac1fca29655857b9668672a4d558f249b42e9223f72032149b3e0812ed",
+    "guide-prakticheskaya-chast-kursovoy.html": "8c20502700cb73a1db56db0f7a2ecb3eabc32077ee14ddd14f85507c6980f14c",
+    "guide-prezentaciya-k-zashchite.html": "aaf999af90998f601f2437130cca5b5226ffef1fdb303aef147b2274823c35f3",
+    "guide-prilozheniya-po-gost.html": "17c175b2a48a44da680e6326e8bb88e66f8c8ecec130cbe9faf4eca43ab33c29",
+    "guide-recenziya-na-vkr.html": "8b1b2b36185e66fdda563a555a65d1a66d02fcfaf20af6ea7f73c7b13ea37130",
+    "guide-rech-na-zashchitu.html": "21c0e1e85b2f90c8536693009a119a0e3779f251269df72804ad62922c776fad",
+    "guide-rinc-statya.html": "0aa173fff23a73a2eb291497a47034e1890a7b76aaad1380bbfe408fdce9f347",
+    "guide-skolko-stoit-diplomnaya.html": "9681dbe4df0b19f4eda796ead9981c30c8ccae2b48cabf0572a85427a8526583",
+    "guide-skolko-stoit-kursovaya.html": "5732ea2bbc7820962df98d5b6f3739ee4654864fde72ce3ff381c04f76c1da63",
+    "guide-spisok-literatury.html": "fb2306623b827d4bafc2c871e96e97d9fd8a4428cf88a40cb50191b9608341af",
+    "guide-temy-vkr.html": "4911ffb1fc9122f8241c9afbd3eae7bb7fcc8006e802190acfde98b219c6635d",
+    "guide-titulnyj-list.html": "3957d47a0cf6581e3386fb40d3c046500f31423f04494ca41854aaca351400d1",
+    "guide-vkr-struktura.html": "0c06230dc936a5cc154afb6893beddb073567e33aab5ab5f8a2822a7f8e230cc",
+    "guide-vvedenie-kursovoy.html": "e589ce724a3965a87d018db8bca77f891427f67079026d4aed5e330b5d460015",
+    "guide-zaklyuchenie-kursovoy.html": "3cc502bf9995752967a29f30761c149cb4e712fe9402dd0ca865ed506c51fc1a",
+    "guide-zaklyuchenie-vkr.html": "cebea832f7d074eabb52c560d5e5e3f8ac1b1c74462f348d908d19c0236038da",
+    "guide-zashchita-diploma.html": "9d0c15b445254229ccf4f2ec6af46f6d3086b13b5b9293f9d52e67283facb3b0",
+    "kandidatskaya-dissertaciya.html": "aeb7539e925a2f4eaef86415d992936786d7f8e7750e55fae7242d62ba27c192",
+    "knowledge.html": "b5a2cbdc98b36db0ad6825428734e89988dcaa0232726dda713aea0c2153a986",
+    "kursovaya-po-ekonomike.html": "918233f4921231e8d727a12d469f7b5d0c521c2719138b682333954f11bda70c",
+    "kursovaya-po-informatike.html": "4ef1085ef647f31bc363cef621720f4a575a9818f969638fdba3ac4ddfbce09f",
+    "kursovaya-po-menedzhmentu.html": "aeccbb9e07af79d75964db1ab6094a8815cf5075fa5d0a7e3eb150412891acc8",
+    "kursovaya-po-pedagogike.html": "c00ed6a00c23aa2f6d20fb088b1d5a982fa4014701f7f367cd131a6b6683b49f",
+    "kursovaya-po-psihologii.html": "43dc2ba8331a271b18e3f0fcba9b6bb3ece294a844e827bd0c10d9b357463cfc",
+    "kursovaya-po-yurisprudencii.html": "38d861e99a7f899790db1a7b99f7dbe68517d470779e3d8f093d438069fe5c3a",
+    "kursovaya-rabota.html": "8a243d321463ea677ef6abf4573f283fcc272d21ef4ba91d066549f7432b09ef",
+    "magisterskaya-dissertaciya.html": "70e293a2fcb49651880fdc8813a60910985671ea89ee0f0664da488cb653ee41",
+    "nauchnaya-statya.html": "e906cf9cfc4ee355143e6822fc8cb1f0e68ae0f9f02383a4e9fd29e6423d3722",
+    "otchet-po-praktike.html": "1b1540020efc81f31743e7302824c53dab777fa0b92ba2cecf2d56434cc29ca8",
+    "referat.html": "3f987b11180762a2025baed42f255820e13dd5ca69b7529e4d0bc3d1d780cc30"
+  },
+  "findings": [],
+  "summary": {
+    "passed": 329,
+    "P0": 0,
+    "P1": 0,
+    "P2": 0,
+    "files": 46
+  },
+  "reproducer": "docs/brain/evidence/salon-product/study-routes-20260910/review-contract-run.py",
+  "limitations": [
+    "Pinned source/VM review; UX browser and frozen/live deployment gates parent-owned.",
+    "Original29 unscoped order links retained inside exact original25articles; contextual next block adds correct explicit path.",
+    "No network, customer-data or financial mutations."
+  ],
+  "final_drift": [],
+  "reproducer_sha256": {
+    "docs/brain/evidence/salon-product/study-routes-20260910/review-contract-observers.cjs": "e76dcbd802448a3bae0eda3109e690d1bee51f1f70e4d4904685b8ecb25eb95e",
+    "docs/brain/evidence/salon-product/study-routes-20260910/review-contract-static.py": "c3bcf882351e7793aaed9d100451f545d0588fe30a56ee0111308a663cc08e5d",
+    "docs/brain/evidence/salon-product/study-routes-20260910/review-contract-order.cjs": "471f13cf379ba8a3a2c76ad14b0e8d99a769845b6b7722b543be1b9b0a5f30ba",
+    "docs/brain/evidence/salon-product/study-routes-20260910/review-contract-run.py": "0f7b6976875475bf29a6286f37dd8c306b30b24c18bac33d4bd3d174bd260be8",
+    "docs/brain/evidence/salon-product/study-routes-20260910/review-contract-route.cjs": "cd89786c1508a02ca319d0b5804b6807cd01b2d9f3667d8d1e29d3c4ea7cd7d1"
+  }
+}

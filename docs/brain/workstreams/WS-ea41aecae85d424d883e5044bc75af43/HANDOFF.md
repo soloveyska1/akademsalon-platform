@@ -634,3 +634,16 @@ Keep exactFAQanswers, originalreadingdestinations, prices, entrychooser andforms
 This is explicituser scope extension, implemented before finishinglibraryroute.
 Additionalproof:16staticdestinations preserved, FAQsemanticanswers unchanged,
 mobile/dark/light screenshots and independentreviews alongside librarychecks.
+
+
+## Release197 — coherent reading, FAQ and study routes
+
+User rejected the lower psychology service page as bland/inconsistent and asked for cohesive design. OUT-006, same active owner workstream; scope declared640a06f9 and56629ab3 before implementation. Baseccb1d12b20e48d58ba2d1b909406d6c4215e3719; product sourcebe99a1d914d7063f7232ab7d243d3a6503ad317d.
+
+Published release197-be99a1d9; previous196-55ed92ad. All16service pages now use paired editorial reading cards, compact related-direction links and a consistent native FAQ panel. Library adds a collapsed finite3x3reading route with safe share URL/noJS fallback;25exact original articles receive contextual continuation outside their original body. Floating mascot yields to reading/FAQ/route/footer actions without losing existing keyboard focus.
+
+Evidence: docs/brain/evidence/salon-product/study-routes-20260910/. Public75tests;42source+42frozenvisualstates320/360/390/768/1024/1280/1440both themes; independent329contractcases plus independent browserUX GO. Freshfetch and exact conflict scan hard0/inherited60accepted. Atomic434fileparity release,55publicresourcehashes and actualapply→rollback→forward; health/pay_online true eachstep. Live read-only smoke14/14; actualbrowser390darkFAQ, sharedVKRfinishroute and article→course/partform correct; pageerrors0/nonGET0.
+
+Not asserted: searchrank/conversionlift, actualcustomerpayment/order, automaticcapacitypricing. Original29bare embedded orderlinks remain inside byte-preservedarticles; new contextual actions have explicit service/scope. PrivateSites stayslastverifiedv58; unchanged uploadfailure not retried. No backend/DB/price/bonus changes. Current workstream remains active for existing user-authorized followup; CURRENT-HANDOFF belongs to another owner and was not edited.
+
+Next exact step: quiet health check in existing automation and obligation to expire only Telegrampromo908 after2026-09-10UTC; productfollowups require a reproducible defect and bounded scope. Do not repeat completed redesign or blockedSitesupload.
