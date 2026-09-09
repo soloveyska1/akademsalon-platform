@@ -663,26 +663,6 @@
       {
         "path": "referral-rules.html",
         "match": "exact"
-      },
-      {
-        "path": "specification-interactive.html",
-        "match": "exact"
-      },
-      {
-        "path": "assets/css/order-specification.css",
-        "match": "exact"
-      },
-      {
-        "path": "assets/js/order-specification.js",
-        "match": "exact"
-      },
-      {
-        "path": "docs/brain/evidence/specification-interactive",
-        "match": "tree"
-      },
-      {
-        "path": "docs/brain/workstreams/WS-b4a8ea7f7e06481ebd8a08f661f160cc",
-        "match": "tree"
       }
     ],
     "read": []
@@ -701,6 +681,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 37,
-  "base_manifest_hash": "be0e5fd559f2e3aef7306b0c5d7ce13f5fb3749a1a8a2b26d9ef9131343667c3"
+  "manifest_revision": 38,
+  "base_manifest_hash": "f749eb785dd9f1bcbf8a88b07a73601239c5b2b0b6aa436936889cca87f27fac"
 }
