@@ -28,3 +28,12 @@ completed release evidence. Next heartbeat should check health first and only
 escalate on corroborated service failure; don't call this live audit passed.
 
 Own mobile-audit browser and8772 frozenserver closed. No background runtimes added.
+
+Follow-up 2026-09-09 19:54 UTC: local and VPS health both ok, uptime19325/19327,
+38activeorders, uploads0; bot/nginx/watchtimeractive, oneshotexit0; release195.
+Fresh live Chromium390light completed the full catalogue→basket→form→Back/resume
+→core→psychology→editing/expressfast form scenario. Both formvisits retain expected
+context, no stale addon on newsubjectorder. Overflow0, pageerrors0, POST0.
+Result live-completed-195.json; same live-audit.js reproducer. This closes the
+previously incomplete livecheck without changing source or production. Browser
+mobile-readback closed after verification; no serverstarted.

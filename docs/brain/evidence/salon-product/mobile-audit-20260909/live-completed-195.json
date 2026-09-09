@@ -1,0 +1,55 @@
+{
+  "rows": [
+    {
+      "width": 390,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "dialogOverflow": false,
+        "checkout": [
+          {
+            "text": "×",
+            "width": 44,
+            "height": 44,
+            "left": 328,
+            "right": 372,
+            "top": 8,
+            "bottom": 52
+          },
+          {
+            "text": "К заявке →",
+            "width": 168,
+            "height": 48,
+            "left": 202,
+            "right": 370,
+            "top": 739.125,
+            "bottom": 787.125
+          }
+        ]
+      },
+      "form": {
+        "product": "course",
+        "scope": "part",
+        "speed": "express24",
+        "addons": [
+          "defense"
+        ],
+        "overflow": false
+      },
+      "resume": {
+        "scope": "part",
+        "speed": "express24",
+        "addon": true
+      },
+      "subject": {
+        "product": "course",
+        "disc": "psychology",
+        "scope": "editing",
+        "speed": "expressfast",
+        "addons": []
+      }
+    }
+  ],
+  "errors": [],
+  "posts": 0
+}

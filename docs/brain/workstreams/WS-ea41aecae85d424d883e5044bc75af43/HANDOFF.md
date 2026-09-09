@@ -562,3 +562,14 @@ HTML remainedloading, so newliveaudit is incomplete, not markedpassed. See exact
 limitations in evidence; no corroboratedoutage and no networkchanges. Ownedbrowser
 and8772server stopped. Next step: freshhealthfirst nextheartbeat; only escalate a
 confirmed failure, and don't repeat finished redesigns or frozenaudit unchanged.
+
+
+## Live mobile follow-up complete, 2026-09-09 19:54 UTC
+
+Health checked locally and onVPS: ok, uptime19325/19327, uploads0, activeorders38,
+services/timerhealthy, release195 unchanged. Fresh live390light catalogue→basket
+→form→Back/resume→core→psychology→form passed, exactscope/speed/discipline/addons,
+overflow0/pageerrors0/POST0. Evidence mobile-audit-20260909/live-completed-195.json
+closes the previous transport-limited liveaudit. No product or deployment changes.
+Browser closed; no devservercreated. Next: quiethealthmonitoring and scheduled
+promoexpiry obligation; do not rerun the completed audit without new evidence.
