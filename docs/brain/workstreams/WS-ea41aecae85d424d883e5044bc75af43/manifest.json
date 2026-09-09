@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-ea41aecae85d424d883e5044bc75af43",
   "slug": "salon-direct-orders",
-  "status": "submitted",
+  "status": "active",
   "branch": "codex/salon-direct-orders",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": "754ff51f500d1e4c45b601b2d9d35abd9e392c54",
+  "result_sha": null,
   "outcome_ids": [
     "OUT-006"
   ],
@@ -515,6 +515,18 @@
       {
         "path": "assets/css/salon-home.css",
         "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-catalogue.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-catalogue.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-shell.js",
+        "match": "exact"
       }
     ],
     "read": []
@@ -533,6 +545,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 10,
-  "base_manifest_hash": "1f872ab0b8309b3a9afd6e6d12dd53a40d16230f6c0401546794b330a62c77a4"
+  "manifest_revision": 11,
+  "base_manifest_hash": "565be975d1b00e8edafae43707ebc4e2c2c960a2578d11002f400fc7bd883576"
 }
