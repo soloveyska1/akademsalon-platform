@@ -106,3 +106,68 @@ test('воркер регистрируется и не ломает стран�
   assert.match(app, /\.catch\(/, 'отказ регистрации не должен ронять страницу');
   assert.match(app, /location\.protocol !== 'https:'/, 'регистрируем только в защищённом контексте');
 });
+
+test('обновление не переносит старый offline и не читает чужую семью кэша', async () => {
+  const vm = require('node:vm');
+  const listeners = {};
+  const stores = new Map();
+  const origin = 'https://fixture.invalid';
+  const keyOf = (request) => new URL(typeof request === 'string' ? request : request.url, origin).href;
+  let installed = [], network = false;
+  const lookups = [];
+  const store = (name) => {
+    if (!stores.has(name)) stores.set(name, new Map());
+    const entries = stores.get(name);
+    return {
+      addAll: async (requests) => {
+        installed = requests;
+        for (const request of requests) entries.set(keyOf(request), new Response(request.cache === 'reload' ? 'current' : 'stale-http'));
+      },
+      put: async (request, response) => entries.set(keyOf(request), response),
+      match: async (request) => entries.get(keyOf(request))?.clone(),
+    };
+  };
+  const caches = {
+    open: async (name) => store(name),
+    match: async (request, options = {}) => {
+      lookups.push({path: new URL(keyOf(request)).pathname, cacheName: options.cacheName});
+      if (options.cacheName) return store(options.cacheName).match(request);
+      for (const name of stores.keys()) { const hit = await store(name).match(request); if (hit) return hit; }
+    },
+    keys: async () => [...stores.keys()], delete: async (name) => stores.delete(name),
+  };
+  class WorkerRequest extends Request {
+    constructor(url, options) { super(new URL(url, origin), options); }
+  }
+  vm.runInNewContext(read('sw.js'), {
+    self: {location: {origin}, addEventListener: (name, fn) => { listeners[name] = fn; }, skipWaiting: async () => {}, clients: {claim: async () => {}}},
+    caches, Request: WorkerRequest, Response, URL, Promise,
+    fetch: async () => { if (!network) throw new Error('offline'); return new Response('network'); },
+  });
+  const version = read('sw.js').match(/const VERSION = '([^']+)'/)[1];
+  const shell = `salon-shell-${version}`, pagesCache = `salon-pages-${version}`;
+  // An old worker can recreate its cache after activation cleanup. Insert it first.
+  await store('salon-shell-old').put('/offline.html', new Response('old-offline'));
+  await store('salon-pages-old').put('/about.html', new Response('old-page'));
+  let install;
+  listeners.install({waitUntil: (promise) => { install = promise; }}); await install;
+  assert.ok(installed.length >= 5);
+  assert.ok(installed.every((request) => request.cache === 'reload'));
+  const request = (pathname, extra = {}) => ({url: origin + pathname, method: 'GET', mode: 'navigate', destination: 'document', ...extra});
+  const run = async (req) => {
+    let promise;
+    listeners.fetch({request: req, respondWith: (response) => { promise = response; }});
+    return promise ? (await promise).text() : undefined;
+  };
+  assert.equal(await run(request('/dashboard.html?token=fixture')), 'current');
+  assert.ok(!lookups.some((entry) => entry.path === '/dashboard.html'));
+  assert.equal(await run(request('/about.html')), 'current');
+  await store(pagesCache).put('/about.html', new Response('current-page'));
+  assert.equal(await run(request('/about.html')), 'current-page');
+  const asset = '/assets/example.js?v=fixture';
+  await store('salon-shell-old').put(asset, new Response('old-asset'));
+  await store(shell).put(asset, new Response('current-asset'));
+  assert.equal(await run(request(asset, {mode: 'cors', destination: 'script'})), 'current-asset');
+  for (const req of [request('/api/payment'), request('/about.html', {method: 'POST'}), request('/about.html', {url: 'https://other.invalid/about.html'})]) assert.equal(await run(req), undefined);
+  assert.ok(lookups.every((entry) => [shell, pagesCache].includes(entry.cacheName)));
+});
