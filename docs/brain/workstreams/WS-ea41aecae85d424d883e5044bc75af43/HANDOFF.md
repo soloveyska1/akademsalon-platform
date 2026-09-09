@@ -625,3 +625,12 @@ segmentedrows andthree numberedreadinglinks. One strongfocus perexpandedblock;
 no extrahero, floatingCTA, inferred completionor mandatoryreading beforeorder.
 Googleprimarydocs consulted: helpfulpeople-firstcontent andcrawlableHTMLlinks;
 these guide implementation, not a claim of ranking improvement alreadyachieved.
+
+User steering: supplied psychology page screenshot rejects reading/FAQ assembly.
+Extend samecoherentrelease to16existingentryHTML andsalon-experience.css (reserved):
+replace bare readinglinks with compact editorialcards, labelleddisciplinepills and
+one integratedFAQpanel. Rewrite these componentstyles rather thanaccumulatepatches.
+Keep exactFAQanswers, originalreadingdestinations, prices, entrychooser andforms.
+This is explicituser scope extension, implemented before finishinglibraryroute.
+Additionalproof:16staticdestinations preserved, FAQsemanticanswers unchanged,
+mobile/dark/light screenshots and independentreviews alongside librarychecks.
