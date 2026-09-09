@@ -763,10 +763,6 @@
       {
         "path": "backend/salon_bot/install_out001_synthetic.py",
         "match": "exact"
-      },
-      {
-        "path": "docs/brain/CURRENT-HANDOFF.md",
-        "match": "exact"
       }
     ],
     "read": []
@@ -785,6 +781,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 50,
-  "base_manifest_hash": "d57c0a6dc20e91cce0735c5a1883da0ac44332bf0ef518bd76ca2e95a5ce00ce"
+  "manifest_revision": 51,
+  "base_manifest_hash": "35c3f62f5c68a57a5f2dca5eaacc5e2a864207492e5b1d09b88f39580a67dff5"
 }
