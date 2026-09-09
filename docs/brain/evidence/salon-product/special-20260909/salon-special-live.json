@@ -1,0 +1,26 @@
+{
+  "rows": [
+    {
+      "route": "plan.html",
+      "overflow": false,
+      "selected": "\u0413\u043b\u0430\u0432\u044b",
+      "ready": "1 \u0438\u0437 3 \u0433\u043e\u0442\u043e\u0432\u043e",
+      "primary": "configurator.html?service=pl"
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "overflow": false,
+      "selected": "\u041f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u044f",
+      "ready": "1 \u0438\u0437 3 \u0433\u043e\u0442\u043e\u0432\u043e",
+      "primary": "configurator.html?work=practice&result=editing",
+      "intake": {
+        "url": "/configurator.html?work=practice&result=editing",
+        "product": "practice",
+        "scope": "editing",
+        "price": "\u043e\u0442 8\u00a0000 \u20bd"
+      }
+    }
+  ],
+  "errors": [],
+  "blocked": []
+}
