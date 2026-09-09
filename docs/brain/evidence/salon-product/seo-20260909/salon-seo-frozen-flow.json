@@ -1,0 +1,68 @@
+{
+  "rows": [
+    {
+      "route": "kursovaya-rabota",
+      "choice": "http://127.0.0.1:8772/configurator.html?product=course&result=part&speed=express24",
+      "form": {
+        "product": "course",
+        "scope": "part",
+        "speed": "express24"
+      }
+    },
+    {
+      "route": "diplomnaya-rabota",
+      "choice": "http://127.0.0.1:8772/configurator.html?product=diplom&result=part&speed=express24",
+      "form": {
+        "product": "diplom",
+        "scope": "part",
+        "speed": "express24"
+      }
+    },
+    {
+      "route": "otchet-po-praktike",
+      "choice": "http://127.0.0.1:8772/configurator.html?product=practice&result=part&speed=express24",
+      "form": {
+        "product": "practice",
+        "scope": "part",
+        "speed": "express24"
+      }
+    },
+    {
+      "route": "referat",
+      "choice": "http://127.0.0.1:8772/configurator.html?product=referat&result=part&speed=express24",
+      "form": {
+        "product": "referat",
+        "scope": "part",
+        "speed": "express24"
+      }
+    },
+    {
+      "route": "magisterskaya-dissertaciya",
+      "choice": "http://127.0.0.1:8772/configurator.html?product=master&result=part&speed=express24",
+      "form": {
+        "product": "master",
+        "scope": "part",
+        "speed": "express24"
+      }
+    },
+    {
+      "route": "nauchnaya-statya",
+      "choice": "http://127.0.0.1:8772/configurator.html?product=rinc&result=part&speed=express24",
+      "form": {
+        "product": "rinc",
+        "scope": "part",
+        "speed": "express24"
+      }
+    },
+    {
+      "route": "kandidatskaya-dissertaciya",
+      "choice": "http://127.0.0.1:8772/configurator.html?product=kandidat&result=part&speed=standard",
+      "form": {
+        "product": "kandidat",
+        "scope": "part",
+        "speed": "standard"
+      }
+    }
+  ],
+  "posts": 0
+}
