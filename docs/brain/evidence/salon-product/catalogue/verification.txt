@@ -16,12 +16,12 @@ Outcome OUT-006, owner-requested redesign continuation. Implementation base 2f35
 
 - focused-tests.txt: 85/85 passed.
 - price-parity.cjs: independent reviewer reproduction, 6048/6048 catalogue/form price states passed. Run node docs/brain/evidence/salon-product/catalogue/price-parity.cjs from repository root.
-- look.js / look.log: 42 catalogue/sheet/extras states across 320,360,390,608,768,1024,1440 widths and light/dark themes; no horizontal overflow and checkout visible. Screenshots labelled by route state/width/theme, height900. Cards begin at498px desktop1440 and569px mobile390 in clean synthetic state.
-- journey.js / journey.log: five grouped search/order/continuation/keyboard journeys with detailed assertions. No real POST.
-- back.js / back.log: actual Back plus persisted-event regression.
-- contrast.js / contrast.log:34 text/background pairs, minimum4.7266. Samples wait for theme transition completion.
-- home-qa.js / home-qa.log: six existing commerce journeys,36 main/extras viewport-theme states,2mocked retry POST; zero real submission.
-- home-journey.js / home-journey.log: six shell/benefit journeys and36 benefit states.
+- look.js / look-result.txt: 42 catalogue/sheet/extras states across 320,360,390,608,768,1024,1440 widths and light/dark themes; no horizontal overflow and checkout visible. Screenshots labelled by route state/width/theme, height900. Cards begin at498px desktop1440 and569px mobile390 in clean synthetic state.
+- journey.js / journey-result.txt: five grouped search/order/continuation/keyboard journeys with detailed assertions. No real POST.
+- back.js / back-result.txt: actual Back plus persisted-event regression.
+- contrast.js / contrast-result.txt:34 text/background pairs, minimum4.7266. Samples wait for theme transition completion.
+- home-qa.js / home-qa-result.txt: six existing commerce journeys,36 main/extras viewport-theme states,2mocked retry POST; zero real submission.
+- home-journey.js / home-journey-result.txt: six shell/benefit journeys and36 benefit states.
 - source-hashes.json pins exact changed product assets. Brain validate passed records125; conflicts hard0 warnings60 info8 blocking0. Existing legacy warnings accepted deliberately by integration owner, no new hard conflict.
 
 ## Independent review
