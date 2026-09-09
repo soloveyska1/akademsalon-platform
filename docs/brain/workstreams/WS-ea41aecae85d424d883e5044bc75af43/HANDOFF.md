@@ -523,7 +523,7 @@ Evidence `docs/brain/evidence/salon-product/discipline-20260909`.
 
 Verified586contractassertions,75frozenpublictests,9staticcontracts, root90source+
 126frozenstates, reviewer72states+keyboard/noJS/seededdraft,9rootfrozenfooterflows,
-2productionbrowserflowsPOST0. Source/frozen/public details in evidenceREADME.
+2productionbrowserflowsPOST0. Source/frozen/public details in discipline-20260909/release-notes.txt.
 Freshfetch/exactconflicts hard0,inherited60warnings consciouslyacceptedunchanged.
 Production `release195-dc6fa1ff`, previous`release194-43d38501`, actual rollback194
 andforward195 executed,434fileparity/35resourcehashreadbacks,smoke14/14.
@@ -540,3 +540,12 @@ nowpublished subject routes, and fix at most one reproduced customer-facing defe
 within declaredscope. No remaining`page-intro detail-intro`pages found in source;
 do not repeat redesigns alreadyfinished. If nodefect, keephealthcheckquiet and
 preserve laterTelegrampromoexpiry obligation; never invent backendautopayreadiness.
+
+
+## Brain evidence filename correction, 2026-09-09
+
+Heartbeat preflight reproduced RECORD_FILENAME because the newly added release195
+narrative used README.md inside Brain evidence, where Markdown files are reserved
+for E-NNNN records. Renamed this owned artifact to release-notes.txt, matching prior
+product evidence practice; no content, product source or production changes.
+Verified Brain doctor ready; context with150000bytebudget succeeds; validate passes125records/263links/72manifests. Production195 remains healthy. Read-only mobile audit follows.
