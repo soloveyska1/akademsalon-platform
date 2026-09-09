@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-ea41aecae85d424d883e5044bc75af43",
   "slug": "salon-direct-orders",
-  "status": "submitted",
+  "status": "active",
   "branch": "codex/salon-direct-orders",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": "5e6743f21b45b70ff5535f32843a973b45bf725b",
+  "result_sha": null,
   "outcome_ids": [
     "OUT-006"
   ],
@@ -159,6 +159,314 @@
       {
         "path": "tests/privacy-security-contracts.test.js",
         "match": "exact"
+      },
+      {
+        "path": "proverka-istochnikov-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zaklyuchenie-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "deposit.html",
+        "match": "exact"
+      },
+      {
+        "path": "audit-temy-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-skolko-stoit-diplomnaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "razbor-zamechaniy-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zashchita-diploma.html",
+        "match": "exact"
+      },
+      {
+        "path": "oplata.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-apellyaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "komissiya-0.html",
+        "match": "exact"
+      },
+      {
+        "path": "offline.html",
+        "match": "exact"
+      },
+      {
+        "path": "knowledge.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-rinc-statya.html",
+        "match": "exact"
+      },
+      {
+        "path": "refunds.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-publication.html",
+        "match": "exact"
+      },
+      {
+        "path": "50x.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-antiplagiat-ai.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prakticheskaya-chast-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prilozheniya-po-gost.html",
+        "match": "exact"
+      },
+      {
+        "path": "oferta.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zaklyuchenie-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "terms.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent.html",
+        "match": "exact"
+      },
+      {
+        "path": "zayavka.html",
+        "match": "exact"
+      },
+      {
+        "path": "404.html",
+        "match": "exact"
+      },
+      {
+        "path": "start.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-rech-na-zashchitu.html",
+        "match": "exact"
+      },
+      {
+        "path": "referral.html",
+        "match": "exact"
+      },
+      {
+        "path": "normokontrol-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-recenziya-na-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "dashboard.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-request.html",
+        "match": "exact"
+      },
+      {
+        "path": "check.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-otzyv-rukovoditelya-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "redaktura-posle-ii.html",
+        "match": "exact"
+      },
+      {
+        "path": "expertise.html",
+        "match": "exact"
+      },
+      {
+        "path": "dorabotka-otcheta-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-skolko-stoit-kursovaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "dosie-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "specifikaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-obekt-predmet-cel-zadachi.html",
+        "match": "exact"
+      },
+      {
+        "path": "loyalty.html",
+        "match": "exact"
+      },
+      {
+        "path": "tools.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prezentaciya-k-zashchite.html",
+        "match": "exact"
+      },
+      {
+        "path": "academic-integrity.html",
+        "match": "exact"
+      },
+      {
+        "path": "vedenie.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-marketing.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-vkr-struktura.html",
+        "match": "exact"
+      },
+      {
+        "path": "requisites.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-temy-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "plan.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-harakteristika-s-praktiki.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-analytics.html",
+        "match": "exact"
+      },
+      {
+        "path": "gift.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "maintenance.html",
+        "match": "exact"
+      },
+      {
+        "path": "plus.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-dnevnik-praktiki.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-vvedenie-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-normocontrol.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-titulnyj-list.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-spisok-literatury.html",
+        "match": "exact"
+      },
+      {
+        "path": "privacy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-kursovaya-za-nedelyu.html",
+        "match": "exact"
+      },
+      {
+        "path": "oplaceno.html",
+        "match": "exact"
+      },
+      {
+        "path": "samples.html",
+        "match": "exact"
+      },
+      {
+        "path": "benefits.html",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-experience.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-experience.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-cabinet.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-benefits.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/cabinet.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/cabinet-demo.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-samples.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-experience.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-route-inventory.mjs",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/salon-product",
+        "match": "tree"
       }
     ],
     "read": []
@@ -177,6 +485,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "7605335ec07225b1af4dabd2211867a1b03b4e27b7513c6bad47b0b274438c7a"
+  "manifest_revision": 3,
+  "base_manifest_hash": "15ec5666bdb4032c56e17c483af0153fc2573c8788295517161ef7d751c0d7a3"
 }

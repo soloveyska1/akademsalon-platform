@@ -17,3 +17,11 @@ Repository gate: pre-existing TERMINAL_RESULT_DRIFT resolved reversibly (archive
 Next exact step: inspect the privately deployed candidate, then disposition the retired UI test inventory before preparing the public-domain release health/smoke/rollback. The submitted manifest pins the implementation result_sha. Live publication status is reported separately after the Sites connector confirms it.
 
 Private preview published successfully as version45; exact live homepage and direct-order form visually reopened in CUA. Evidence: docs/brain/evidence/salon-direct/deployment.json. User-facing tab remains on the saved homepage. Temporary development servers and test browser are stopped at handoff. Original public domain unchanged.
+
+## Iteration 2 — complete product experience
+
+User explicitly extends scope on 2026-09-09: every customer section and cabinet, interactive work samples, current offers/benefits, preserved choices and thoughtful next steps. Same OUT-006 user-directed product outcome; scope now covers root customer HTML except administration, dedicated experience/sample/benefit/cabinet assets and existing cabinet renderer. No new task branch or unrelated backend scope. Owner remains sole writer; two independent read-only reviewers inspect economics and cabinet contracts.
+
+Acceptance before editing: home choice follows into sample/catalogue/form; no forced diagnostic/payment/login before request; examples show inspectable original sample content and explicit illustrative status; benefits distinguish spendable/held/projected and use current server contracts; cabinet retains authoritative resolver and genuine states, source files/messages/payments/auth flows; all customer page routes have coherent shell and next step. No fake novelty/market leadership/conversion numbers, no hidden exits. Existing73 protocol/functional checks plus new behavior checks and actual browser flows at mobile/desktop light/dark. Private preview isolates every production mutation and supports synthetic cabinet demonstrations.
+
+Live working preview is restored for user observation. Final durable private publication, live readback and server/test cleanup required. The broad historical UI test inventory from iteration1 is reviewed explicitly; do not mask failures or call it all green.
