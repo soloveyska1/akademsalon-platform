@@ -631,6 +631,38 @@
       {
         "path": "docs/brain/workstreams/WS-a4cbf79bebbb46d287d1f6f9b4f38e44",
         "match": "tree"
+      },
+      {
+        "path": "assets/css/salon-referral.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-referral.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-referral-policy.js",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/referral_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_referral_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_referral_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-referral.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "referral-rules.html",
+        "match": "exact"
       }
     ],
     "read": []
@@ -649,6 +681,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 35,
-  "base_manifest_hash": "e47c8953fd0be24631db5f11fc240109fa36443d7f5afe342e82b20e29fef682"
+  "manifest_revision": 36,
+  "base_manifest_hash": "5e30a641d32a3062f6894a7419fdbe81e0eaf673a94ecab0832d985077417d08"
 }
