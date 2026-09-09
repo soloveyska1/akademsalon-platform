@@ -49,10 +49,6 @@
         "match": "exact"
       },
       {
-        "path": "prolog.html",
-        "match": "exact"
-      },
-      {
         "path": "services.html",
         "match": "exact"
       },
@@ -617,6 +613,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 25,
-  "base_manifest_hash": "d7c5d04c478c121a37b64deb0be99d854fe55ebb87d25b2ba0429b49bcecaf0a"
+  "manifest_revision": 26,
+  "base_manifest_hash": "590858a6506819983f51fdc3cbc04ada186c108a35286e88d4300ccc57175807"
 }
