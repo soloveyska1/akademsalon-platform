@@ -555,6 +555,14 @@
       {
         "path": "assets/js/salon-portfolio-data.js",
         "match": "exact"
+      },
+      {
+        "path": "assets/samples",
+        "match": "tree"
+      },
+      {
+        "path": "assets/vendor/pdfjs",
+        "match": "tree"
       }
     ],
     "read": []
