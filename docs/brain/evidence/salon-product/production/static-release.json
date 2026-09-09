@@ -51,5 +51,17 @@
       "pdf_module_mime": "application/javascript"
     }
   ],
-  "database_restored": false
+  "database_restored": false,
+  "compatibility_links": {
+    "before": {
+      "current": "release184-0341e9c4",
+      "dist": "release183-007bf7b",
+      "previous": "release182-576423a"
+    },
+    "after": {
+      "current": "/var/www/academic_saloon/releases/release184-0341e9c4",
+      "dist": "/var/www/academic_saloon/releases/release184-0341e9c4",
+      "previous": "/var/www/academic_saloon/releases/release183-007bf7b"
+    }
+  }
 }
