@@ -573,3 +573,16 @@ overflow0/pageerrors0/POST0. Evidence mobile-audit-20260909/live-completed-195.j
 closes the previous transport-limited liveaudit. No product or deployment changes.
 Browser closed; no devservercreated. Next: quiethealthmonitoring and scheduled
 promoexpiry obligation; do not rerun the completed audit without new evidence.
+
+## User-reported fieldset appearance — bounded correction 2026-09-10
+
+Base38ba4955b65d502e7f84caf2403748e7b9e2de1a, clean branch. User screenshot shows
+unwanted rounded sheet behind the service entry volume legend. Reproduced source
+cause: global salon-direct fieldset background/radius remain on .sen-brief fieldset,
+whose reset omitted both properties. Scope: existing reserved salon-experience.css,
+owned salon-product evidence and this handoff only. Keep selection, tariffs and
+form behaviour unchanged. Fix background/radius and legendalignment within entry.
+Ready criteria: computed transparentfieldset/radius0 in boththemes, alignedlegend,
+mobile320/390 anddesktop1440 visual checks, volume/speed handoff unchanged,
+two independentreviews, frozenpublic checks, exactpublicreadback/rollback.
+Fresh originfetch completed. Existing workstream stays active; root solewriter.
