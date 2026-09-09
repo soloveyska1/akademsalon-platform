@@ -751,6 +751,14 @@
       {
         "path": "tests/pwa-install.test.js",
         "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_out001_synthetic.py",
+        "match": "exact"
       }
     ],
     "read": []
@@ -769,6 +777,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 47,
-  "base_manifest_hash": "99929a9cd394e17bbda3ad5110b02aac54cb32cbdbfd7927760a7d4b89127179"
+  "manifest_revision": 48,
+  "base_manifest_hash": "211ecbf6aadefa10275a01daab6a9e6e8b305e969fd870117a575246f049f1e3"
 }
