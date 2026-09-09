@@ -495,6 +495,18 @@
       {
         "path": "tests/knowledge-page-regression.test.js",
         "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-home.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-commerce.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-commerce.test.js",
+        "match": "exact"
       }
     ],
     "read": []
