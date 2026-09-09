@@ -13,11 +13,11 @@
   "scope": {
     "write": [
       {
-        "path": "assets/css/prolog-process.css",
+        "path": "assets/css/order-journey.css",
         "match": "exact"
       },
       {
-        "path": "assets/js/prolog-process.js",
+        "path": "assets/js/order-journey.js",
         "match": "exact"
       },
       {
@@ -29,7 +29,7 @@
         "match": "exact"
       },
       {
-        "path": "prolog.html",
+        "path": "prolog-interactive.html",
         "match": "exact"
       }
     ],
@@ -45,6 +45,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "d8ebb51cd804dc58f0214c76f4b3ef64d2d8c956041c49ac4f8bd431f9ade6c3"
 }
