@@ -1,0 +1,303 @@
+{
+  "rows": [
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 360,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 360,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 1280,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 1280,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 360,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 360,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 1280,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 1280,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "knowledge",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 360,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 360,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 390,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 768,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 768,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 1280,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 1280,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "bad": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "bad": []
+    }
+  ],
+  "errors": [],
+  "base": "ccb1d12b20e48d58ba2d1b909406d6c4215e3719",
+  "browser": "Chromium fresh context / serviceWorkers block",
+  "state": "anonymous source preview / GET API fixture",
+  "expected": "no overflow, no undersized new targets, no pageerror"
+}

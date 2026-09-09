@@ -1,0 +1,3 @@
+usage: brain.py conflicts [-h] [--manifest MANIFEST] [--strict |
+                          --allow-warnings] [--json]
+brain.py conflicts: error: argument --allow-warnings: not allowed with argument --strict

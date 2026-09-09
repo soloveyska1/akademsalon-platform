@@ -78,6 +78,8 @@ if(route.startsWith('guide-')&&!document.querySelector('[data-guide-reader]')){
  }
  // Give visible order links priority over the floating helper on phones.
  if('IntersectionObserver' in window){const mobile=matchMedia('(max-width:760px)'),visible=new Set();const paint=()=>document.body.classList.toggle('special-order-visible',mobile.matches&&visible.size>0);const observer=new IntersectionObserver(entries=>{entries.forEach(e=>e.isIntersecting?visible.add(e.target):visible.delete(e.target));paint()});document.querySelectorAll('a[href*="configurator.html"],.sen-brief').forEach(a=>observer.observe(a));mobile.addEventListener('change',paint)}
+ // Keep the reading and FAQ controls clear of the floating mascot at every width.
+ if(root.matches('[data-service-entry]')&&'IntersectionObserver' in window){const visible=new Set();const observer=new IntersectionObserver(entries=>{entries.forEach(e=>e.isIntersecting?visible.add(e.target):visible.delete(e.target));document.body.classList.toggle('entry-reading-visible',visible.size>0)});document.querySelectorAll('.sen-reading,.sen-faq,footer a[href*="configurator.html"]').forEach(el=>observer.observe(el))}
  const checks=[...root.querySelectorAll('[data-special-material]')],status=root.querySelector('[data-special-ready]');
  const update=()=>{if(status){status.hidden=false;status.textContent=checks.filter(x=>x.checked).length+' из '+checks.length+' готово'}};checks.forEach(c=>c.addEventListener('change',update));update();
 })();
