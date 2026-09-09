@@ -549,3 +549,16 @@ narrative used README.md inside Brain evidence, where Markdown files are reserve
 for E-NNNN records. Renamed this owned artifact to release-notes.txt, matching prior
 product evidence practice; no content, product source or production changes.
 Verified Brain doctor ready; context with150000bytebudget succeeds; validate passes125records/263links/72manifests. Production195 remains healthy. Read-only mobile audit follows.
+
+## Read-only mobile audit checkpoint, 2026-09-09
+
+Evidence: docs/brain/evidence/salon-product/mobile-audit-20260909/audit-notes.txt.
+Frozen195 four320/390 light/dark journeys passed catalogue→basket→form→Back/resume
+and catalogue→core→subject→form, including addons and clearing unrelated context.
+No reproduced product defect; no product/backend/publication/IndexNow changes.
+Brain filename correction806ac026 validated. Initial livehealthhealthy, uploads0,
+38activeorders, release195. Later livejourney and localcurl/SSH timedout; finalform
+HTML remainedloading, so newliveaudit is incomplete, not markedpassed. See exact
+limitations in evidence; no corroboratedoutage and no networkchanges. Ownedbrowser
+and8772server stopped. Next step: freshhealthfirst nextheartbeat; only escalate a
+confirmed failure, and don't repeat finished redesigns or frozenaudit unchanged.

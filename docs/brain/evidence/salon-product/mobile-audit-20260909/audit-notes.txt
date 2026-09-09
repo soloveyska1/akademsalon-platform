@@ -1,0 +1,30 @@
+Mobile catalogue audit, 2026-09-09 heartbeat. Product source remains dc6fa1ff,
+production release195. No product, backend, price, publication or IndexNow changes.
+
+Preflight discovered Brain RECORD_FILENAME for the release195 README.md evidence
+narrative. Renamed the owned artifact to release-notes.txt in commit806ac026.
+Brain doctor ready; context150000bytes; validate125records/263links/72manifests.
+Council doctor all5providers ready. No design changes, so no model review needed.
+
+Frozen public195 Chromium, API GET fixtures, serviceworkers blocked and all writes
+aborted:320/390 x light/dark. Four complete journeys each cover catalogue search,
+part+24h+defense add-on, form values, BrowserBack, restored basket, catalogue→core
+course→psychology→editing+faster form. All8 form visits retain their expected state;
+subject explicit new order clears unrelated add-on. Overflow0, close44px,
+checkout48px, both visible in mobile sheet, JS pageerrors0, POST0.
+No reproducible product defect found. Exact script/result included.
+
+Initial live health via217.18.63.210: ok, uptime18148s, activeorders38,
+uploadspending0/delayed0; bot/nginx/watchtimeractive; watchoneshot exit0success;
+current release195. Local HEAD services returned200 at19:37:26UTC.
+Live browser audit did not finish: initial navigation timeout; later got through
+catalogue flow but the final psychology form document stayed readyState=loading,
+without parsed form/scripts, until30s timeout. No JSexception or POST. This is
+incomplete live evidence, not a verified UI defect or proved network diagnosis.
+Subsequent local curl and SSH readbacks also timed out; external web probe declined
+URL as unsafe and gives no availability evidence. No outage claim or network edits.
+The earlier release195 exact readbacks and two live journeys remain the last
+completed release evidence. Next heartbeat should check health first and only
+escalate on corroborated service failure; don't call this live audit passed.
+
+Own mobile-audit browser and8772 frozenserver closed. No background runtimes added.
