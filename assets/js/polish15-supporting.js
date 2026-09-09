@@ -656,7 +656,21 @@
       paymentFinal.hidden = true;
       paymentFinal.innerHTML = '';
 
-      if (gift.state === 'pending') {
+      if (gift.state === 'pending' && params.get('payment_return') === '1') {
+        paymentReq.hidden = true;
+        paymentStatus.textContent = 'Подтверждение кассы ещё ожидается. Не повторяй платёж. Статус обновляется автоматически; если он долго не меняется, напиши мастеру с чеком.';
+        var refresh = document.createElement('button');
+        refresh.type = 'button'; refresh.className = 'button button--secondary'; refresh.textContent = 'Обновить статус';
+        refresh.addEventListener('click', function () {
+          refresh.disabled = true;
+          Salon.api.get('/gift/state?id=' + state.gift.id, giftHeaders()).then(function (response) {
+            if(response && response.ok && response.gift){state.gift=response.gift;drawPayment();}
+            else {paymentStatus.textContent='Не удалось проверить статус. Не повторяй платёж; попробуй обновить статус или напиши мастеру.';refresh.disabled=false;}
+          }).catch(function(){paymentStatus.textContent='Связь прервалась. Статус оплаты неизвестен. Не повторяй платёж; обратись к мастеру с чеком.';refresh.disabled=false;});
+        });
+        var help = document.createElement('a');help.href='priyomnaya.html';help.className='line-link';help.textContent='Помочь с оплатой ↗';
+        paymentActions.append(refresh,help);
+      } else if (gift.state === 'pending') {
         var buttons = '';
         if (gift.pay_online) {
           buttons += '<button class="button button--primary" type="button" id="giftPay">Оплатить картой</button>';
@@ -746,10 +760,21 @@
         buyToken = saved.t;
       }
     }
+    if (params.get('payment_return') === '1' && !(buyId && buyToken)) {
+      uncertainCreation();
+      showNote('Не удалось восстановить оформление в этом браузере. Не создавай сертификат повторно: открой исходную вкладку покупки или напиши мастеру, приложив чек. Статус оплаты проверяется на сервере.', 'error');
+      checkout.hidden = false;
+      var recoveryLink = document.createElement('a');
+      recoveryLink.href = 'priyomnaya.html';
+      recoveryLink.className = 'line-link';
+      recoveryLink.textContent = 'Помочь найти оплату ↗';
+      formNote.after(recoveryLink);
+    }
     if (buyId && buyToken) {
       Salon.api.get('/gift/state?id=' + buyId, { 'X-Gift-Token': buyToken }).then(function (response) {
         if (!(response && response.ok && response.gift)) {
           if(response && response.error==='not_found'){
+            if(params.get('payment_return') === '1'){uncertainCreation();showNote('Оформление не найдено по сохранённым данным. Не повторяй покупку: напиши мастеру с чеком для проверки оплаты.','error');checkout.hidden=false;return;}
             if (Salon.secretStore) Salon.secretStore.del('salon_gift_buy');
             if (Salon.store) Salon.store.del('salon_gift_buy');
             return;

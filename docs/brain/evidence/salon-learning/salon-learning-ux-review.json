@@ -1,0 +1,196 @@
+{
+  "status": "GO",
+  "scope": "Read-only local learning UI review; no production/payment claims",
+  "source_root": "/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders",
+  "source_head": "e33bd2ff36483fb8647498f4c95adacbf8cf3b62",
+  "matrix": {
+    "states": 80,
+    "pages": [
+      "knowledge",
+      "tools",
+      "guide-vvedenie-kursovoy",
+      "guide-normocontrol",
+      "check",
+      "audit-temy-vkr",
+      "proverka-istochnikov-vkr",
+      "dosie-nauchruka"
+    ],
+    "widths": [
+      320,
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "evidence": "/tmp/learning-review-matrix.json",
+    "initial_header_p1": "fixed and targeted retested on fresh source"
+  },
+  "articles": [
+    {
+      "page": "guide-antiplagiat-ai.html",
+      "exact": true
+    },
+    {
+      "page": "guide-apellyaciya.html",
+      "exact": true
+    },
+    {
+      "page": "guide-dnevnik-praktiki.html",
+      "exact": true
+    },
+    {
+      "page": "guide-harakteristika-s-praktiki.html",
+      "exact": true
+    },
+    {
+      "page": "guide-kursovaya-za-nedelyu.html",
+      "exact": true
+    },
+    {
+      "page": "guide-normocontrol.html",
+      "exact": true
+    },
+    {
+      "page": "guide-obekt-predmet-cel-zadachi.html",
+      "exact": true
+    },
+    {
+      "page": "guide-otchet-po-praktike.html",
+      "exact": true
+    },
+    {
+      "page": "guide-otzyv-rukovoditelya-vkr.html",
+      "exact": true
+    },
+    {
+      "page": "guide-prakticheskaya-chast-kursovoy.html",
+      "exact": true
+    },
+    {
+      "page": "guide-prezentaciya-k-zashchite.html",
+      "exact": true
+    },
+    {
+      "page": "guide-prilozheniya-po-gost.html",
+      "exact": true
+    },
+    {
+      "page": "guide-recenziya-na-vkr.html",
+      "exact": true
+    },
+    {
+      "page": "guide-rech-na-zashchitu.html",
+      "exact": true
+    },
+    {
+      "page": "guide-rinc-statya.html",
+      "exact": true
+    },
+    {
+      "page": "guide-skolko-stoit-diplomnaya.html",
+      "exact": true
+    },
+    {
+      "page": "guide-skolko-stoit-kursovaya.html",
+      "exact": true
+    },
+    {
+      "page": "guide-spisok-literatury.html",
+      "exact": true
+    },
+    {
+      "page": "guide-temy-vkr.html",
+      "exact": true
+    },
+    {
+      "page": "guide-titulnyj-list.html",
+      "exact": true
+    },
+    {
+      "page": "guide-vkr-struktura.html",
+      "exact": true
+    },
+    {
+      "page": "guide-vvedenie-kursovoy.html",
+      "exact": true
+    },
+    {
+      "page": "guide-zaklyuchenie-kursovoy.html",
+      "exact": true
+    },
+    {
+      "page": "guide-zaklyuchenie-vkr.html",
+      "exact": true
+    },
+    {
+      "page": "guide-zashchita-diploma.html",
+      "exact": true
+    }
+  ],
+  "verified": [
+    "All 25 source article nodes byte-identical to baseline",
+    "JavaScript disabled: all25 library cards visible",
+    "Library search practice3 results; save/reload/remove;9 then18 pagination",
+    "New shelf stores only allowed public article IDs; input query remains local",
+    "All4 tool example runs; changed input invalidates results",
+    "101 sources explicit rejection without truncation;6400-character unbroken text has zero horizontal overflow",
+    "Task checkboxes progress0/3 to1/3",
+    "Reader TOC sets focus to chosen h2; font enlargement works",
+    "Legacy slug and article-section-0 links both resolve and scroll",
+    "320 header cabinet/menu44x44 fully within viewport, both themes",
+    "Keyboard Enter opens menu; Escape closes and restores toggle focus",
+    "Source handoff copy now explicitly distinguishes Remarks tool",
+    "Main mobile padding12px; headline top191.6 at320; zero horizontal overflow",
+    "Final mobile mascot60x60 atx315y662 on390x740; visibilityhidden while tool input focused",
+    "Synthetic118-char Remarks handoff reaches configurator and stores salon_remarks_handoff_v1; no submission"
+  ],
+  "resolved_findings": [
+    {
+      "severity": "P1",
+      "issue": "320 header menu outside viewport",
+      "resolution": "scoped narrow header CSS; actions x203..295; cabinet/menu44px"
+    },
+    {
+      "severity": "P2",
+      "issue": "legacy reader anchor compatibility",
+      "resolution": "slug IDs and numeric aliases verified"
+    },
+    {
+      "severity": "P2",
+      "issue": "ambiguous shared transfer copy",
+      "resolution": "explicit Remarks-specific wording verified; original observation narrowed after discovering standalone handoff"
+    }
+  ],
+  "remaining_blockers": [],
+  "limits": [
+    "No actual external mutations; Crossref blocked",
+    "No production submission/payment tested in this bounded UI review",
+    "Short viewport is emulated browser geometry, not a physical iOS keyboard",
+    "Initial matrix screenshots predate header fix; use final-header and final-knowledge images for current chrome"
+  ],
+  "evidence": [
+    "/tmp/learning-functional.txt",
+    "/tmp/learning-functional-other.txt",
+    "/tmp/learning-final-interactions.txt",
+    "/tmp/learning-final-deltas.txt",
+    "/tmp/learning-final-knowledge320-dark.png",
+    "/tmp/learning-final-header320-light.png",
+    "/tmp/learning-final-header320-dark.png",
+    "/tmp/learning-functional-audit-temy-vkr390.png",
+    "/tmp/learning-functional-dosie-nauchruka390.png",
+    "/tmp/learning-tool-keyboard390x320.png",
+    "/tmp/learning-last-delta.txt",
+    "/tmp/learning-last-mascot.txt",
+    "/tmp/learning-final-search390.png"
+  ],
+  "hashes": {
+    "assets/css/salon-library.css": "b201a11216e017ba0e17acbe2170a193e0a6d23c4e26640882cbb54def7dd270",
+    "assets/css/salon-tools.css": "c15ff67a56f1448e3cc64425cb53d07347e8aad0f32b230e33e4527012f06686",
+    "assets/js/salon-library.js": "7018a6332648ce05bf5b6e1c54c82c85a5a8b31b615b3b4fd92ce1dc9de911b8",
+    "assets/js/salon-tools.js": "f4a853c5c880614eff124ba80645fa43dfb6a2c6b9c93365f9855bd462445383"
+  }
+}

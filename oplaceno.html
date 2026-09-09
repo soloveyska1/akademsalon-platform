@@ -52,8 +52,9 @@
   var target = '';
   if (kind === 'tip' && order) target = 'dashboard.html?thanks=' + encodeURIComponent(order);
   else if (offer) target = 'zayavka.html#k=' + encodeURIComponent(offer);
-  else if (gift) target = 'gift.html?code=' + encodeURIComponent(gift);
+  else if (kind === 'gift' || gift) target = 'gift.html?payment_return=1';
   else if (kind === 'sub') target = 'dashboard.html#plus';
+  else if (kind === 'deposit') target = 'dashboard.html#deposit';
   else if (order) target = 'dashboard.html?paid=' + encodeURIComponent(order);
 
   if (!target) {

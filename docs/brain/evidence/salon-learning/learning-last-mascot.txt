@@ -1,0 +1,12 @@
+### Result
+{"before":{"x":315,"y":662,"width":60,"height":60},"focused":"hidden"}
+### Ran Playwright code
+```js
+await (async(page)=>{await page.goto("http://127.0.0.1:8771/check.html");await page.locator(".sa-launch").waitFor({state:"visible"});const before=await page.locator(".sa-launch").boundingBox();await page.locator("[data-tool-input]").focus();const focused=await page.locator(".sa-launch").evaluate(e=>getComputedStyle(e).visibility);await page.locator("[data-tool-run]").focus();await page.keyboard.press("Tab");return {before,focused};})(page);
+```
+### Page
+- Page URL: http://127.0.0.1:8771/check.html
+- Page Title: Проверка академического текста — Академический Салон
+- Console: 1 errors, 0 warnings
+### Events
+- New console entries: .playwright-cli/console-2026-09-09T16-32-27-892Z.log#L8-L9

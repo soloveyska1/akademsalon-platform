@@ -13,7 +13,7 @@ function readChoice(){try{const x=JSON.parse(sessionStorage.getItem(key)||'null'
 function publishChoice(id){if(!P?.products.some(p=>p.id===id))return;const old=readChoice()||{};const next={product:id,scope:old.product===id?old.scope:'whole',discipline:old.discipline||'hum',deadline:old.deadline||''};try{sessionStorage.setItem(key,JSON.stringify(next))}catch(e){}document.dispatchEvent(new CustomEvent('salon:selection',{detail:{product:id}}));updateTrail()}
 let trail;
 function updateTrail(){
- const x=readChoice();if(!main||route==='configurator'||route==='dashboard'||$('[data-home-workbench]')||$('[data-catalogue]')||$('[data-portfolio]')||$('[data-benefits-hub]')||$('[data-referral-circle]')||$('[data-support-page]')||$('[data-rewards-hub]')||$('.salon-rewards')||$('[data-legal-reader]'))return;
+ const x=readChoice();if(!main||route==='configurator'||route==='dashboard'||$('[data-home-workbench]')||$('[data-catalogue]')||$('[data-portfolio]')||$('[data-benefits-hub]')||$('[data-referral-circle]')||$('[data-support-page]')||$('[data-rewards-hub]')||$('.salon-rewards')||$('[data-legal-reader]')||$('.salon-learning'))return;
  if(!trail){trail=document.createElement('div');trail.className='selection-trail';main.before(trail)}
  trail.hidden=!x;if(!x)return;
  trail.innerHTML='<span>Вы выбирали</span><a href="configurator.html">'+esc(P.get(x.product).name)+' · продолжить →</a><button type="button">Сбросить выбор</button>';
@@ -49,7 +49,7 @@ document.querySelectorAll('[data-journey-preview]').forEach((host,i)=>{
  host.querySelectorAll('button').forEach(b=>b.onclick=()=>render(Number(b.dataset.journey)));render(0);
 });
 // Reading aids work locally and retain the original source-bound article.
-if(route.startsWith('guide-')){
+if(route.startsWith('guide-')&&!document.querySelector('[data-guide-reader]')){
  const article=$('article.doc')||$('article');
  if(article){
   const words=article.textContent.trim().split(/\s+/).length,head=article.querySelector('h1');

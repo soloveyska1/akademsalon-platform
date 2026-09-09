@@ -1,0 +1,154 @@
+{
+  "scope": "read-only remaining surfaces contract audit",
+  "head": "67b9b1e4",
+  "production_baseline": "frozen189",
+  "parity": [
+    {
+      "path": "oplaceno.html",
+      "sha256": "777a7041414b3c8b603b8b628b9ed9a34e1fe6dbb3c735a557c7029816cd9cc8",
+      "frozen189_equal": false
+    },
+    {
+      "path": "50x.html",
+      "sha256": "01fdb0e47005befd23d97cf2d0265bec20d9728a4d318bc0f87df019b4fabc83",
+      "frozen189_equal": false
+    },
+    {
+      "path": "offline.html",
+      "sha256": "b43d27d51a26c1576a59579e102ecfc8b4d6dd0ae81380623d29814ce646183c",
+      "frozen189_equal": false
+    },
+    {
+      "path": "404.html",
+      "sha256": "c016483de4be687cd1ae2013c4786d32d11b8ce6f9a656a8744de12d49f3490f",
+      "frozen189_equal": false
+    },
+    {
+      "path": "start.html",
+      "sha256": "96b64be2b05e2c867a4c1c994fb044af5eb9aba2b745df4b5bce74ce2f912efe",
+      "frozen189_equal": false
+    },
+    {
+      "path": "assets/js/polish15-operations.js",
+      "sha256": "ca3b7f04a3e6a3b73d1361227d3ca56690697662651dc76bf6a4f9f0058805e6",
+      "frozen189_equal": true
+    },
+    {
+      "path": "assets/js/polish15-supporting.js",
+      "sha256": "e1e229ba244a5515aec8b1592e9d52c9f2866681e02cdc4285575f959ad6d42a",
+      "frozen189_equal": true
+    },
+    {
+      "path": "assets/js/salon-workspace.js",
+      "sha256": "22547165d3ab5e3f0d6dca1e9fea10f5063897de418e1327e96be953ce4af800",
+      "frozen189_equal": true
+    },
+    {
+      "path": "assets/js/salon-order.js",
+      "sha256": "ff07a3aae3f3a968d348d12b83e16255bd888bb238675c95ce5447adfeaf3042",
+      "frozen189_equal": true
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P1",
+      "id": "gift-return-wrong-identifier",
+      "path": "oplaceno.html",
+      "line": 55,
+      "finding": "Shp_gift numeric ID is interpreted as public redemption code. Gift public-view branch bypasses saved buyer-token recovery.",
+      "reproduce": "Evaluate return script ?Shp_kind=gift&Shp_gift=42 -> gift.html?code=42; current gift viewer calls GET /gift/view?code=42.",
+      "backend_evidence": "/tmp/salon-autoquote-review/app/services/payments.py:865 snapshot; exact current backend parity pending parent confirmation.",
+      "fix": "Route recognized gift return to gift.html with non-authoritative recovery flag. Recover only using saved id+X-Gift-Token; if missing credential explain return in original tab/use receipt or support, never create duplicate or display paid from URL."
+    },
+    {
+      "priority": "P2",
+      "id": "deposit-return-dead-end",
+      "path": "oplaceno.html",
+      "line": 49,
+      "finding": "Shp_kind=deposit&Shp_dep=42 has no target. Landing remains animated status=requested although it sends no status request.",
+      "fix": "Route recognized deposit to dashboard.html#deposit, current workspace supports route and authenticated status."
+    },
+    {
+      "priority": "P2",
+      "id": "crossref-stale-race",
+      "path": "assets/js/polish15-operations.js",
+      "line": 277,
+      "finding": "Analyze DOI A (pending), then new list B: late A overwrites B. Deterministic mock reproduced.",
+      "fix": "Increment generation on each run and edit; render final result only for same generation. Abort old optional lookups."
+    },
+    {
+      "priority": "P2",
+      "id": "crossref-network-vs-missing",
+      "path": "assets/js/polish15-operations.js",
+      "line": 233,
+      "finding": "Lookup network failure and actual no record share Crossref: record unconfirmed; issue summary excludes failed DOI and can show zero requiring attention despite an issue row.",
+      "fix": "Show distinct checking/unavailable/not found/found states; unknown is not negative proof. Derive summary from rendered issue status."
+    },
+    {
+      "priority": "P2",
+      "id": "retry-unbounded-loses-route",
+      "path": "assets/js/polish15-operations.js",
+      "line": 356,
+      "finding": "503 retry unresolved HEAD permanently disables button; successful HEAD redirects to home, losing original failed route.",
+      "fix": "Bound HEAD/abort timeout and re-enable; recover same origin original safe path and nonsecret context; plain reload fallback if scripts fail."
+    },
+    {
+      "priority": "P2",
+      "id": "topic-passport-orphan-store",
+      "path": "assets/js/polish15-operations.js",
+      "line": 186,
+      "finding": "Topic passport writes full text into sessionStorage but no script reads salon_topic_passport; CTA plan.html or configurator drops entered topic.",
+      "fix": "Remove unused input storage; offer explicit copy/download passport and clear indication text is not auto transferred. Any future handoff must be explicit, time-bound and consumed once."
+    },
+    {
+      "priority": "P2",
+      "id": "error-copy-overpromises-draft",
+      "path": "50x.html",
+      "line": 39,
+      "finding": "Claims selected answers remain in browser without qualification; salon-order.js only persists product/scope/discipline/deadline, not topic, name/contact, answers, files.",
+      "fix": "Use offline page accurate distinction: accepted order server-backed; unsent text and attachments may need entry again."
+    }
+  ],
+  "mocks": "/tmp/salon-audit-contract-mocks.json",
+  "reproducer": "/tmp/salon-audit-contract.cjs",
+  "keep": [
+    "payment redirect does not prove settlement; authorized server state only",
+    "order ?paid=id supported by salon-workspace, keep money route",
+    "start JS redirect preserves query/hash; no-js CTA does not, lower priority",
+    "about currently contains no numerical unsupported success promise",
+    "guide price descriptions still editorial-specific; do not replace tariff facts with unaudited market claims",
+    "tools source checker must say DOI-only external request, not all processing local",
+    "check is heuristic readability only, not AI/plagiarism/quality guarantee",
+    "remarks-handoff separate module already explicit user initiated + TTL10min + single-use, do not regress"
+  ],
+  "bounded_release": [
+    "gift/deposit payment-return recovery",
+    "tool analyzer result generation guard, optional DOI with timeout/concurrency/status",
+    "public ID-only library shelf + copy/download locally computed reports",
+    "guide context-specific CTA product/service allowlist; preserve authoritative guide and price content"
+  ],
+  "external_mutations": false,
+  "browser_sessions_started": false,
+  "html_content_parity": {
+    "oplaceno.html": {
+      "main_equal": true,
+      "inline_scripts_equal": true
+    },
+    "50x.html": {
+      "main_equal": true,
+      "inline_scripts_equal": true
+    },
+    "offline.html": {
+      "main_equal": true,
+      "inline_scripts_equal": true
+    },
+    "404.html": {
+      "main_equal": true,
+      "inline_scripts_equal": true
+    },
+    "start.html": {
+      "main_equal": true,
+      "inline_scripts_equal": true
+    }
+  }
+}
