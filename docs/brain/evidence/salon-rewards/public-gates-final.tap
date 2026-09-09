@@ -1,0 +1,400 @@
+TAP version 13
+# Subtest: deposit rebuilt calculator preserves published tiers and wallet route
+ok 1 - deposit rebuilt calculator preserves published tiers and wallet route
+  ---
+  duration_ms: 3.750667
+  type: 'test'
+  ...
+# Subtest: deposit copy promises an earned reserve, not immediately spendable points
+ok 2 - deposit copy promises an earned reserve, not immediately spendable points
+  ---
+  duration_ms: 0.414125
+  type: 'test'
+  ...
+# Subtest: cash refund remains exact and never deducts an already used discount
+ok 3 - cash refund remains exact and never deducts an already used discount
+  ---
+  duration_ms: 0.245625
+  type: 'test'
+  ...
+# Subtest: referral storefront stays active and advertises exactly fixed 200 once
+ok 4 - referral storefront stays active and advertises exactly fixed 200 once
+  ---
+  duration_ms: 0.322416
+  type: 'test'
+  ...
+# Subtest: invite dialog rejects generic URLs without inventing a service pause
+ok 5 - invite dialog rejects generic URLs without inventing a service pause
+  ---
+  duration_ms: 0.314917
+  type: 'test'
+  ...
+# Subtest: invite dialog is keyboard-modal without changing page geometry
+ok 6 - invite dialog is keyboard-modal without changing page geometry
+  ---
+  duration_ms: 0.13525
+  type: 'test'
+  ...
+# Subtest: the two public producers use one frozen v2 contract and no parallel JSON truth
+ok 7 - the two public producers use one frozen v2 contract and no parallel JSON truth
+  ---
+  duration_ms: 4.367959
+  type: 'test'
+  ...
+# Subtest: every tracked browser producer routes /orders through the canonical helper
+ok 8 - every tracked browser producer routes /orders through the canonical helper
+  ---
+  duration_ms: 79.325334
+  type: 'test'
+  ...
+# Subtest: one atomic v2 session record binds producer, scope, id and fingerprint
+ok 9 - one atomic v2 session record binds producer, scope, id and fingerprint
+  ---
+  duration_ms: 1.307125
+  type: 'test'
+  ...
+# Subtest: legacy v1 identity or fingerprint fails closed and is never rebound
+ok 10 - legacy v1 identity or fingerprint fails closed and is never rebound
+  ---
+  duration_ms: 1.132959
+  type: 'test'
+  ...
+# Subtest: corrupt, partial, foreign and future records all fail closed
+ok 11 - corrupt, partial, foreign and future records all fail closed
+  ---
+  duration_ms: 2.422542
+  type: 'test'
+  ...
+# Subtest: storage, fingerprint, header and secure-id failures are shaped before network
+ok 12 - storage, fingerprint, header and secure-id failures are shaped before network
+  ---
+  duration_ms: 1.916083
+  type: 'test'
+  ...
+# Subtest: success accepts only a safe positive integer or its canonical decimal string
+ok 13 - success accepts only a safe positive integer or its canonical decimal string
+  ---
+  duration_ms: 0.49275
+  type: 'test'
+  ...
+# Subtest: outcomes distinguish terminal rejection, conflict, ambiguity and local block
+ok 14 - outcomes distinguish terminal rejection, conflict, ambiguity and local block
+  ---
+  duration_ms: 0.357833
+  type: 'test'
+  ...
+# Subtest: fingerprint follows JSON wire semantics and ignores object key order
+ok 15 - fingerprint follows JSON wire semantics and ignores object key order
+  ---
+  duration_ms: 0.929542
+  type: 'test'
+  ...
+# Subtest: producer-supplied request identity and unserializable payload fail before fetch
+ok 16 - producer-supplied request identity and unserializable payload fail before fetch
+  ---
+  duration_ms: 0.615708
+  type: 'test'
+  ...
+# Subtest: concurrent identical submits are single-flight and cause one physical POST
+ok 17 - concurrent identical submits are single-flight and cause one physical POST
+  ---
+  duration_ms: 5.037542
+  type: 'test'
+  ...
+# Subtest: soft timeout never aborts POST and retry joins the still-live request
+ok 18 - soft timeout never aborts POST and retry joins the still-live request
+  ---
+  duration_ms: 0.868958
+  type: 'test'
+  ...
+# Subtest: changed concurrent intent conflicts while the original flight continues
+ok 19 - changed concurrent intent conflicts while the original flight continues
+  ---
+  duration_ms: 0.662875
+  type: 'test'
+  ...
+# Subtest: request state clears only by compare-and-swap with the exact terminal attempt id
+ok 20 - request state clears only by compare-and-swap with the exact terminal attempt id
+  ---
+  duration_ms: 0.527375
+  type: 'test'
+  ...
+# Subtest: ambiguous failures retain identity across reload and changed intent rotates it
+ok 21 - ambiguous failures retain identity across reload and changed intent rotates it
+  ---
+  duration_ms: 0.905083
+  type: 'test'
+  ...
+# Subtest: order transport invokes the shared status hook before reading a 401 body
+ok 22 - order transport invokes the shared status hook before reading a 401 body
+  ---
+  duration_ms: 0.377708
+  type: 'test'
+  ...
+# Subtest: late 401 cannot clear a newer auth generation, token or impersonation context
+ok 23 - late 401 cannot clear a newer auth generation, token or impersonation context
+  ---
+  duration_ms: 0.294416
+  type: 'test'
+  ...
+# Subtest: producer UI clears identity only after confirmed or definitive terminal outcomes
+ok 24 - producer UI clears identity only after confirmed or definitive terminal outcomes
+  ---
+  duration_ms: 0.14925
+  type: 'test'
+  ...
+# Subtest: generated home runtime remains in parity with the canonical helper
+ok 25 - generated home runtime remains in parity with the canonical helper
+  ---
+  duration_ms: 0.213458
+  type: 'test'
+  ...
+# Subtest: shared runtime URLs are versioned and public release fingerprints match exact bytes
+ok 26 - shared runtime URLs are versioned and public release fingerprints match exact bytes
+  ---
+  duration_ms: 26.223625
+  type: 'test'
+  ...
+# Subtest: production smoke default run is mechanically read-only and never reaches /orders
+ok 27 - production smoke default run is mechanically read-only and never reaches /orders
+  ---
+  duration_ms: 1.296875
+  type: 'test'
+  ...
+# Subtest: unknown producer and invalid guide scope fail closed
+ok 28 - unknown producer and invalid guide scope fail closed
+  ---
+  duration_ms: 0.430542
+  type: 'test'
+  ...
+# Subtest: UTM attribution keeps canonical non-PII codes only
+ok 29 - UTM attribution keeps canonical non-PII codes only
+  ---
+  duration_ms: 3.7725
+  type: 'test'
+  ...
+# Subtest: analytics consent describes the implementation without a server checksum promise
+ok 30 - analytics consent describes the implementation without a server checksum promise
+  ---
+  duration_ms: 0.889417
+  type: 'test'
+  ...
+# Subtest: referral contract consistently rewards the inviter after the first paid order
+ok 31 - referral contract consistently rewards the inviter after the first paid order
+  ---
+  duration_ms: 0.394167
+  type: 'test'
+  ...
+# Subtest: order capability tokens stay out of new upload/list query strings
+ok 32 - order capability tokens stay out of new upload/list query strings
+  ---
+  duration_ms: 1.025667
+  type: 'test'
+  ...
+# Subtest: browser secret storage is session-scoped and old persistent secrets are removed
+ok 33 - browser secret storage is session-scoped and old persistent secrets are removed
+  ---
+  duration_ms: 0.552084
+  type: 'test'
+  ...
+# Subtest: normal authentication uses HttpOnly-cookie transport with CSRF protection
+ok 34 - normal authentication uses HttpOnly-cookie transport with CSRF protection
+  ---
+  duration_ms: 1.326333
+  type: 'test'
+  ...
+# Subtest: new cross-device order links are one-time exchanges and are scrubbed immediately
+ok 35 - new cross-device order links are one-time exchanges and are scrubbed immediately
+  ---
+  duration_ms: 0.398125
+  type: 'test'
+  ...
+# Subtest: gift purchase secrets use a header and are removed from the visible address
+ok 36 - gift purchase secrets use a header and are removed from the visible address
+  ---
+  duration_ms: 0.110667
+  type: 'test'
+  ...
+# Subtest: A2 offer issuance requires recorded participation and customer decisions
+ok 37 - A2 offer issuance requires recorded participation and customer decisions
+  ---
+  duration_ms: 0.824458
+  type: 'test'
+  ...
+# Subtest: B1 and B2 offers require structured named rights provenance
+ok 38 - B1 and B2 offers require structured named rights provenance
+  ---
+  duration_ms: 0.776625
+  type: 'test'
+  ...
+# Subtest: AI specification keeps its canonical service id and source provenance
+ok 39 - AI specification keeps its canonical service id and source provenance
+  ---
+  duration_ms: 0.503125
+  type: 'test'
+  ...
+# Subtest: Telegram receives a one-time login code, never an order capability token
+ok 40 - Telegram receives a one-time login code, never an order capability token
+  ---
+  duration_ms: 0.8785
+  type: 'test'
+  ...
+# Subtest: sensitive entry pages suppress referrers
+ok 41 - sensitive entry pages suppress referrers
+  ---
+  duration_ms: 0.576166
+  type: 'test'
+  ...
+# Subtest: манифест и мета установки есть на КАЖДОЙ странице
+ok 42 - манифест и мета установки есть на КАЖДОЙ странице
+  ---
+  duration_ms: 18.669084
+  type: 'test'
+  ...
+# Subtest: манифест описывает установку полностью
+ok 43 - манифест описывает установку полностью
+  ---
+  duration_ms: 0.370084
+  type: 'test'
+  ...
+# Subtest: иконки установки нужного размера, а не растянутые
+ok 44 - иконки установки нужного размера, а не растянутые
+  ---
+  duration_ms: 0.231958
+  type: 'test'
+  ...
+# Subtest: воркер не касается денег, входа и чужих кабинетов
+ok 45 - воркер не касается денег, входа и чужих кабинетов
+  ---
+  duration_ms: 0.204459
+  type: 'test'
+  ...
+# Subtest: страница без сети существует и не зависит от внешних файлов
+ok 46 - страница без сети существует и не зависит от внешних файлов
+  ---
+  duration_ms: 0.236166
+  type: 'test'
+  ...
+# Subtest: версия воркера совпадает с ключом семьи shell
+ok 47 - версия воркера совпадает с ключом семьи shell
+  ---
+  duration_ms: 9.771084
+  type: 'test'
+  ...
+# Subtest: воркер регистрируется и не ломает страницу при отказе
+ok 48 - воркер регистрируется и не ломает страницу при отказе
+  ---
+  duration_ms: 1.276125
+  type: 'test'
+  ...
+# Subtest: oferta: legal text, edition, anchors and destinations survive presentation change
+ok 49 - oferta: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 33.260834
+  type: 'test'
+  ...
+# Subtest: privacy: legal text, edition, anchors and destinations survive presentation change
+ok 50 - privacy: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 23.834375
+  type: 'test'
+  ...
+# Subtest: terms: legal text, edition, anchors and destinations survive presentation change
+ok 51 - terms: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 17.897542
+  type: 'test'
+  ...
+# Subtest: refunds: legal text, edition, anchors and destinations survive presentation change
+ok 52 - refunds: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 16.3105
+  type: 'test'
+  ...
+# Subtest: requisites: legal text, edition, anchors and destinations survive presentation change
+ok 53 - requisites: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 16.2535
+  type: 'test'
+  ...
+# Subtest: academic-integrity: legal text, edition, anchors and destinations survive presentation change
+ok 54 - academic-integrity: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 17.16875
+  type: 'test'
+  ...
+# Subtest: loyalty: legal text, edition, anchors and destinations survive presentation change
+ok 55 - loyalty: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 17.45225
+  type: 'test'
+  ...
+# Subtest: consent: legal text, edition, anchors and destinations survive presentation change
+ok 56 - consent: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 17.623084
+  type: 'test'
+  ...
+# Subtest: consent-request: legal text, edition, anchors and destinations survive presentation change
+ok 57 - consent-request: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 15.306708
+  type: 'test'
+  ...
+# Subtest: consent-analytics: legal text, edition, anchors and destinations survive presentation change
+ok 58 - consent-analytics: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 15.452542
+  type: 'test'
+  ...
+# Subtest: consent-marketing: legal text, edition, anchors and destinations survive presentation change
+ok 59 - consent-marketing: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 15.104791
+  type: 'test'
+  ...
+# Subtest: consent-publication: legal text, edition, anchors and destinations survive presentation change
+ok 60 - consent-publication: legal text, edition, anchors and destinations survive presentation change
+  ---
+  duration_ms: 14.117167
+  type: 'test'
+  ...
+# Subtest: gallery retains only exactly the previously published source images and captions
+ok 61 - gallery retains only exactly the previously published source images and captions
+  ---
+  duration_ms: 30.245125
+  type: 'test'
+  ...
+# Subtest: benefit ledger preserves money and caps at all published tiers
+ok 62 - benefit ledger preserves money and caps at all published tiers
+  ---
+  duration_ms: 2.295125
+  type: 'test'
+  ...
+# Subtest: deposit always separates unspent cash and earned reserve net of cashback
+ok 63 - deposit always separates unspent cash and earned reserve net of cashback
+  ---
+  duration_ms: 0.582542
+  type: 'test'
+  ...
+# Subtest: new rewards controls have a single owner and valid cabinet routes
+ok 64 - new rewards controls have a single owner and valid cabinet routes
+  ---
+  duration_ms: 1.623916
+  type: 'test'
+  ...
+# Subtest: gift retains every functional form field and secret recovery view
+ok 65 - gift retains every functional form field and secret recovery view
+  ---
+  duration_ms: 1.492208
+  type: 'test'
+  ...
+1..65
+# tests 65
+# suites 0
+# pass 65
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 276.351583
