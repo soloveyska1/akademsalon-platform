@@ -35,8 +35,8 @@
     "transient community retry",
     "unknown Telegram membership unavailable"
   ],
-  "live_api": "prepared; installation and rollback smoke pending",
-  "private_preview": "pending publication",
+  "live_api": "installed; health, auth/CSRF denial, source rollback and forward verified",
+  "private_preview": "version53 published; live home, calendar, mobile More and demo gift claim/focus read back",
   "source_sha256": {
     "dashboard.html": "fa95f33160f4e9659c6c3d4e0a60b654ddccc6ce6d816220946419cd45d544db",
     "assets/css/salon-cabinet.css": "f01a594bf9bc7e78f4ee0a11b4e6cc2997d60f304c8cf6ed19bdd536b4b5c180",
@@ -53,7 +53,7 @@
     "failed": 0
   },
   "telegram_readback": {
-    "salon": "bot administrator confirmed",
-    "kladovaya": "username and channel ID confirmed; getChatMember returns member list is inaccessible"
+    "salon": "administrator confirmed",
+    "kladovaya": "administrator confirmed after owner role update"
   }
 }
