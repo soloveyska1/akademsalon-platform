@@ -1,0 +1,46 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-6c013fa0fe204031bacc51592c1ddae9",
+  "slug": "specification-document",
+  "status": "active",
+  "branch": "codex/specification-document",
+  "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/docs/specification-2026",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/specification-document",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-6c013fa0fe204031bacc51592c1ddae9/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "legal/specification-2026",
+        "match": "tree"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:specification-2026"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
