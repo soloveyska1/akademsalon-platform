@@ -1,0 +1,12 @@
+### Result
+{"price":[{"id":"agCardClose","r":{"x":329,"y":14,"width":44,"height":44,"top":14,"right":373,"bottom":58,"left":329},"labels":[]},{"id":"agPrice","r":{"x":32,"y":187.890625,"width":327,"height":45.1875,"top":187.890625,"right":359,"bottom":233.078125,"left":32},"labels":["Цена, ₽"]},{"id":"agPrepay","r":{"x":32,"y":265.46875,"width":327,"height":45.1875,"top":265.46875,"right":359,"bottom":310.65625,"left":32},"labels":["Первый платёж, ₽"]},{"id":"agPlanSel","r":{"x":32,"y":343.046875,"width":327,"height":44,"top":343.046875,"right":359,"bottom":387.046875,"left":32},"labels":["План оплаты\nОдним платежом · целиком\n2 части · 50/50\n3 части · 30/40/30"]}],"feed":{"x":32,"y":187.28125,"width":265,"height":120},"posts":[]}
+### Ran Playwright code
+```js
+await (async(page)=>{await page.setViewportSize({width:390,height:420});await page.locator("[data-admin-mobile-menu]").click();await page.locator("[data-tab=orders]").click();await page.locator(".ag-row").first().click();await page.locator("[data-control-panel-go=plan]").click();await page.locator("#agPrice").scrollIntoViewIfNeeded();await page.screenshot({path:"/tmp/admin-review-final-short-price390.png"});const price=await page.locator("#agPrice,#agPrepay,#agPlanSel,#agCardClose").evaluateAll(es=>es.map(e=>({id:e.id,r:e.getBoundingClientRect().toJSON(),labels:Array.from(e.labels||[]).map(l=>l.innerText)})));await page.locator("[data-control-panel-go=feed]").click();await page.locator("#agMsg").fill("Short viewport draft");await page.locator("#agMsgSend").scrollIntoViewIfNeeded().catch(()=>{});const feed=await page.locator("#agMsg").boundingBox();await page.screenshot({path:"/tmp/admin-review-final-short-chat390.png"});await page.keyboard.press("Escape");return {price,feed,posts:await page.evaluate(()=>window.__adminQA.posts)};})(page);
+```
+### Page
+- Page URL: http://127.0.0.1:8774/admin.html#orders
+- Page Title: Кабинет мастера — Академический Салон
+- Console: 1 errors, 0 warnings
+### Events
+- New console entries: .playwright-cli/console-2026-09-09T23-17-23-563Z.log#L4-L5
