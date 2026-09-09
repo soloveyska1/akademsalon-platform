@@ -10,7 +10,7 @@ header=shell[shell.index('<body'):shell.index('<main')]
 header=re.sub(r'<body[^>]*>','<body class="salon-direct salon-experience concept-shell salon-learning">',header)
 footer=re.search(r'<footer\b.*?</footer>',shell,re.S).group()
 styles=''.join('<link rel="stylesheet" href="'+x+'">' for x in ['assets/fonts/fonts.css','assets/css/salon-direct.css','assets/css/salon-experience.css','assets/css/salon-home.css','assets/css/salon-support.css','assets/css/salon-library.css?v=20260909learning1'])
-scripts=''.join('<script src="'+x+'"></script>' for x in ['assets/js/configurator-nav-guard.js','assets/js/app.js','assets/js/analytics-attribution-v2.js','assets/js/analytics-v2.js','assets/js/salon-products.js','assets/js/salon-experience.js','assets/js/salon-shell.js','assets/js/salon-library.js?v=20260909learning1'])
+scripts=''.join('<script src="'+x+'"></script>' for x in ['assets/js/configurator-nav-guard.js','assets/js/app.js?v=20260909learning1','assets/js/analytics-attribution-v2.js','assets/js/analytics-v2.js','assets/js/salon-products.js','assets/js/salon-experience.js','assets/js/salon-shell.js','assets/js/salon-library.js?v=20260909learning1'])
 def write(name,main,tool=False,extra=''):
  s=old(name);head=s[:s.index('</head>')]
  head=re.sub(r'<link\b[^>]*rel="stylesheet"[^>]*>','',head)
