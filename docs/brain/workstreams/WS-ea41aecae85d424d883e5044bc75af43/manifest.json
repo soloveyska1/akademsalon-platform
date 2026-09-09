@@ -507,6 +507,10 @@
       {
         "path": "tests/salon-commerce.test.js",
         "match": "exact"
+      },
+      {
+        "path": "tests/account-wayfinding.test.js",
+        "match": "exact"
       }
     ],
     "read": []
