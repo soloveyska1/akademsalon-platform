@@ -14,7 +14,7 @@ const panel=document.createElement('dialog');panel.className='extras-panel';pane
 panel.innerHTML='<div class="extras-heading"><div><span class="eyebrow">ТВОЙ КОМПЛЕКТ</span><h2 id="extras-title">Если нужно больше.</h2></div><button type="button" class="extras-close" aria-label="Закрыть дополнения">×</button></div><p class="extras-intro">Оформление по твоей методичке уже включено. Здесь только дополнительные задачи.</p><div class="extras-options">'+M.addons.map(a=>'<label class="extra-row"><input type="checkbox" data-addon="'+a.id+'"><span><strong>'+a.label+'</strong><small>'+a.detail+'</small><b data-extra-price="'+a.id+'">от '+money(a.price)+'</b></span></label>').join('')+'</div><p id="extras-saving" class="extras-saving" hidden></p><label class="extras-vip"><input type="checkbox" id="choose-vip"><span><strong>VIP · от начала до защиты <b>VIP</b></strong><small>План, этапы, обратная связь, нормоконтроль, презентация, речь и индивидуальный разбор.</small><em>Единая смета по заданию</em></span></label><p id="vip-boundaries" hidden>Полный состав, количество итераций и срок сопровождения закрепим до оплаты. <a href="diplomnaya-po-psihologii.html">ВКР по психологии: готовый пакет 91 000 ₽ ↗</a></p><div class="extras-bottom"><div><span>Весь заказ</span><strong id="extras-total"></strong></div><button type="button" class="button" id="extras-done">Готово <span aria-hidden="true">✓</span></button></div>';
 document.body.append(panel);
 const dock=document.createElement('div');dock.className='home-order-dock';dock.hidden=true;dock.innerHTML='<a class="dock-edit" href="#choose-work"><small id="dock-name"></small><strong id="dock-price"></strong></a><a class="button" href="configurator.html?composition=1">К заявке →</a>';document.body.append(dock);
-function dockVisibility(){const rect=$('#quick-order').getBoundingClientRect(),hero=host.getBoundingClientRect(),focus=document.activeElement,typing=focus&&/^(INPUT|TEXTAREA|SELECT)$/.test(focus.tagName),keyboard=window.visualViewport&&visualViewport.height<innerHeight*.72;dock.hidden=innerWidth>800||panel.open||!!$('dialog[open]')||typing||keyboard||hero.top>innerHeight||(rect.bottom>=0&&rect.top<innerHeight);}
+function dockVisibility(){const rect=$('#quick-order').getBoundingClientRect(),hero=host.getBoundingClientRect(),focus=document.activeElement,typing=focus&&/^(INPUT|TEXTAREA|SELECT)$/.test(focus.tagName),covered=Math.max(0,$('.salon-topbar')?.getBoundingClientRect().bottom||0),keyboard=window.visualViewport&&visualViewport.height<innerHeight*.72;dock.hidden=innerWidth>800||panel.open||!!$('dialog[open]')||typing||keyboard||hero.top>innerHeight||(rect.bottom>covered&&rect.top<innerHeight);}
 function render(){
  state=M.normalize(state);persist();const p=P.get(state.product),q=M.quote(state,base(p)),vip=state.package==='vip',candidate=p.id==='kandidat',total=q.total===null?'По заданию':'от '+money(q.total);
  $('#quick-product').value=state.part==='intro'?'intro':p.id;
@@ -42,6 +42,7 @@ $('#open-extras').onclick=openExtras;$('.extras-close').onclick=closeExtras;$('#
 panel.addEventListener('close',()=>{document.body.classList.remove('extras-open');returnFocus?.focus({preventScroll:true});dockVisibility()});
 panel.addEventListener('click',e=>{if(e.target===panel){const r=panel.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeExtras()}});
 panel.querySelectorAll('[data-addon]').forEach(c=>c.onchange=()=>{const id=c.dataset.addon;state.addons=c.checked?[...state.addons,id]:state.addons.filter(x=>x!==id);render()});$('#choose-vip').onchange=e=>{state.package=e.target.checked?'vip':'standard';render()};
+host.addEventListener('animationend',dockVisibility);
 window.addEventListener('scroll',dockVisibility,{passive:true});window.addEventListener('resize',dockVisibility);window.visualViewport?.addEventListener('resize',dockVisibility);document.addEventListener('focusin',dockVisibility);document.addEventListener('focusout',()=>requestAnimationFrame(dockVisibility));new MutationObserver(dockVisibility).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
 const faq=$('[data-home-faq]');const questions=[
  ['…нужно уже завтра?','Выбери «24 часа»: ориентир ×2 к обычной цене работы. Если нужно быстрее, укажи дату и час в заявке. Экспресс начинается после согласования задания, материалов и оплаты. Для кандидатской можно заказать срочно отдельную главу.'],
@@ -50,5 +51,27 @@ const faq=$('[data-home-faq]');const questions=[
  ['…хочется сопровождение до защиты?','Открой «Дополнения и VIP». В VIP входят этапы, обратная связь, нормоконтроль, презентация, речь и индивидуальный разбор. Состав, число итераций и срок поддержки закрепим в смете.'],
  ['…есть промокод, бонусы или сертификат?','Промокод и сертификат можно указать в заявке. Доступные бонусы применяются до первой оплаты по правилам программы. Если сочетать всё нельзя, условия выгоды будут видны до оплаты.']
 ];faq.innerHTML=questions.map((q,i)=>'<details name="home-faq"><summary>'+q[0]+'<span aria-hidden="true">+</span></summary><div><p>'+q[1]+'</p>'+(i===4?'<a href="benefits.html">Все условия выгоды ↗</a>':'')+'</div></details>').join('');
+
+// The homepage shell owns its native navigation dialog; legacy menu listeners are not used.
+const nav=$('#home-navigation'),navToggle=$('.shell-menu-toggle');let restoreNav=true;
+if(nav&&navToggle){
+ const closeNav=(restore=true)=>{restoreNav=restore;nav.close()};
+ navToggle.onclick=()=>{restoreNav=true;nav.showModal();document.body.classList.add('home-nav-open');navToggle.setAttribute('aria-expanded','true');nav.querySelector('.shell-menu-close').focus();dockVisibility()};
+ nav.querySelector('.shell-menu-close').onclick=()=>closeNav();
+ nav.addEventListener('close',()=>{document.body.classList.remove('home-nav-open');navToggle.setAttribute('aria-expanded','false');if(restoreNav)navToggle.focus({preventScroll:true});dockVisibility()});
+ nav.addEventListener('click',e=>{if(e.target===nav){const r=nav.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeNav()}else if(e.target.closest('a[href]'))closeNav(false)});
+ nav.querySelector('[data-menu-search]').onclick=()=>{closeNav(false);$('.search-button').click();$('.experience-search')?.addEventListener('close',()=>navToggle.focus({preventScroll:true}),{once:true})};
+ const themeShortcut=nav.querySelector('[data-menu-theme]');function themeLabel(){themeShortcut.querySelector('span').textContent=document.documentElement.dataset.theme==='dark'?'Светлая тема':'Тёмная тема'}
+ themeShortcut.onclick=()=>{$('.theme-button').click();themeLabel()};new MutationObserver(themeLabel).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});themeLabel();
+}
+// These are published examples, not personal eligibility or automatically applied benefits.
+const perks={
+ single:{tag:'БОНУСЫ САЛОНА',value:'5%',unit:'бонусами',copy:'От суммы, оплаченной деньгами.',note:'После полной оплаты.<br>Используй в течение 90 дней.',href:'benefits.html#bonuses',action:'Как это работает'},
+ semester:{tag:'АБОНЕМЕНТ «САЛОН+»',value:'999 ₽',unit:'на 150 дней',copy:'Скидки на несколько работ за семестр.',note:'Без автопродления.<br>Сначала проверь окупаемость.',href:'benefits.html#compare',action:'Посчитать выгоду'},
+ gift:{tag:'ПОДАРОЧНЫЙ СЕРТИФИКАТ',value:'от 2 000 ₽',unit:'',copy:'На консультации и услуги Салона.',note:'Твоё поздравление.<br>Твоя дата отправки.',href:'gift.html',action:'Собрать подарок'}
+};
+const perkButtons=[...document.querySelectorAll('[data-perk]')],perkPanel=$('#perk-panel');
+function choosePerk(id){const p=perks[id];if(!p||!perkPanel)return;perkButtons.forEach(b=>{const selected=b.dataset.perk===id;b.setAttribute('aria-selected',String(selected));b.tabIndex=selected?0:-1});perkPanel.setAttribute('aria-labelledby','perk-'+id);perkPanel.innerHTML='<div class="perk-ticket-top"><span>'+p.tag+'</span><span aria-hidden="true">✳</span></div><div class="perk-ticket-value">'+p.value+'<span>'+p.unit+'</span></div><p>'+p.copy+'</p><div class="perk-ticket-bottom"><span>'+p.note+'</span><a href="'+p.href+'">'+p.action+'<span aria-hidden="true">↗</span></a></div>'}
+perkButtons.forEach((b,i)=>{b.onclick=()=>choosePerk(b.dataset.perk);b.onkeydown=e=>{let n;if(e.key==='ArrowRight')n=(i+1)%perkButtons.length;else if(e.key==='ArrowLeft')n=(i-1+perkButtons.length)%perkButtons.length;else if(e.key==='Home')n=0;else if(e.key==='End')n=perkButtons.length-1;else return;e.preventDefault();perkButtons[n].focus();choosePerk(perkButtons[n].dataset.perk)}});
 render();
 })();

@@ -39,7 +39,7 @@ test('three original sample types have complete annotations and real order desti
 });
 test('every declared customer page uses the experience shell exactly once',()=>{
  const routes=JSON.parse(read('docs/brain/evidence/salon-product/routes.json'));
- for(const r of routes){if(r.concurrentOwner||r.selfContained)continue;const html=read(r.path);assert.equal((html.match(/assets\/css\/salon-experience.css/g)||[]).length,1,r.path);assert.equal((html.match(/assets\/js\/salon-experience.js/g)||[]).length,1,r.path);assert.match(html,/class="site-header direct-header"/,r.path)}
+ for(const r of routes){if(r.concurrentOwner||r.selfContained)continue;const html=read(r.path);assert.equal((html.match(/assets\/css\/salon-experience.css/g)||[]).length,1,r.path);assert.equal((html.match(/assets\/js\/salon-experience.js/g)||[]).length,1,r.path);assert.match(html,/class="site-header direct-header(?: [^"]*)?"/,r.path)}
 });
 test('private cabinet preserves IDs and loads changed runtime with a new cache identity',()=>{
  assert.match(read('dashboard.html'),/skip-link" href="#accountWorkspace"/);

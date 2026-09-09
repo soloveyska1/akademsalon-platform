@@ -1,0 +1,132 @@
+{
+  "browser": "152.0.7977.84",
+  "serviceWorkers": "block",
+  "result": [
+    {
+      "theme": "light",
+      "label": "footer link",
+      "fg": "rgb(240, 233, 248)",
+      "bg": "rgb(41, 35, 55)",
+      "ratio": 12.75
+    },
+    {
+      "theme": "light",
+      "label": "footer legal",
+      "fg": "rgb(193, 184, 206)",
+      "bg": "rgb(41, 35, 55)",
+      "ratio": 7.93
+    },
+    {
+      "theme": "light",
+      "label": "footer CTA",
+      "fg": "rgb(41, 55, 36)",
+      "bg": "rgb(217, 245, 187)",
+      "ratio": 10.64
+    },
+    {
+      "theme": "light",
+      "label": "benefits heading",
+      "fg": "rgb(41, 55, 36)",
+      "bg": "rgb(237, 243, 230)",
+      "ratio": 11.14
+    },
+    {
+      "theme": "light",
+      "label": "benefits conditions",
+      "fg": "rgb(85, 100, 78)",
+      "bg": "rgb(237, 243, 230)",
+      "ratio": 5.59
+    },
+    {
+      "theme": "light",
+      "label": "ticket description",
+      "fg": "rgb(107, 101, 121)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "label": "ticket link",
+      "fg": "rgb(81, 54, 181)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 8.25
+    },
+    {
+      "theme": "light",
+      "label": "selected tab",
+      "fg": "rgb(41, 55, 36)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 12.6
+    },
+    {
+      "theme": "light",
+      "label": "other tab",
+      "fg": "rgb(72, 88, 62)",
+      "bg": "rgb(223, 232, 215)",
+      "ratio": 6.08
+    },
+    {
+      "theme": "dark",
+      "label": "footer link",
+      "fg": "rgb(240, 233, 248)",
+      "bg": "rgb(41, 35, 55)",
+      "ratio": 12.75
+    },
+    {
+      "theme": "dark",
+      "label": "footer legal",
+      "fg": "rgb(193, 184, 206)",
+      "bg": "rgb(41, 35, 55)",
+      "ratio": 7.93
+    },
+    {
+      "theme": "dark",
+      "label": "footer CTA",
+      "fg": "rgb(41, 55, 36)",
+      "bg": "rgb(217, 245, 187)",
+      "ratio": 10.64
+    },
+    {
+      "theme": "dark",
+      "label": "benefits heading",
+      "fg": "rgb(232, 244, 223)",
+      "bg": "rgb(37, 48, 37)",
+      "ratio": 12.06
+    },
+    {
+      "theme": "dark",
+      "label": "benefits conditions",
+      "fg": "rgb(186, 203, 176)",
+      "bg": "rgb(37, 48, 37)",
+      "ratio": 8.02
+    },
+    {
+      "theme": "dark",
+      "label": "ticket description",
+      "fg": "rgb(107, 101, 121)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 5.58
+    },
+    {
+      "theme": "dark",
+      "label": "ticket link",
+      "fg": "rgb(81, 54, 181)",
+      "bg": "rgb(255, 255, 255)",
+      "ratio": 8.25
+    },
+    {
+      "theme": "dark",
+      "label": "selected tab",
+      "fg": "rgb(41, 55, 36)",
+      "bg": "rgb(217, 245, 187)",
+      "ratio": 10.64
+    },
+    {
+      "theme": "dark",
+      "label": "other tab",
+      "fg": "rgb(215, 229, 206)",
+      "bg": "rgb(52, 67, 50)",
+      "ratio": 8.01
+    }
+  ]
+}
