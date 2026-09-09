@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-b4a8ea7f7e06481ebd8a08f661f160cc",
   "slug": "specification-interactive",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/specification-interactive",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": null,
+  "result_sha": "9fcb59865415d588a39bd461bf6e950a07b198c4",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -45,6 +45,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "bb3cae33da293516f67cf79567393e497b783f28a41eadba6bbb83f13072d981"
 }
