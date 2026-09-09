@@ -1,0 +1,1885 @@
+{
+  "decision": "GO",
+  "source_commit": "7ed5e283970082fcc1f016e6ffccba4a8b762798",
+  "scope": "Frozen static/contract/manifest review; full gate and visual results separate",
+  "passed": 467,
+  "failed": 0,
+  "source_hashes": {
+    "scripts/referral-presentation.py": "8417bab948e26e04652049bc06f43248d5b8fd8eaf92c2dc42dd7d91f2675679",
+    "scripts/build-production-release.py": "1ff77d1fcff971b65a998631196af4f602de12014711c12a0f4190b93cbd960e",
+    "tests/production-release.test.js": "f68be17dfbe51feb29e9c83cf07aff17dde42a50d952690324424a94a92a4e6d",
+    "assets/css/salon-referral-public.css": "894bc20c290ea1dd0c707ffed07ca4f866f0888b002e3170c219ea323d70bb61"
+  },
+  "frozen_referral_sha256": "1b97aecc08d90b635712a8dd422b245a40e64dfd17e4297cdfd06c1ebbf9611d",
+  "reproducer": "/tmp/salon-referral-final-contract.py",
+  "results": [
+    {
+      "name": "referral.html preserves exact published economic paragraph",
+      "pass": true
+    },
+    {
+      "name": "referral.html independent presentation has no legal reader/input",
+      "pass": true
+    },
+    {
+      "name": "referral.html has two actionable cabinet links and Telegram fallback",
+      "pass": true
+    },
+    {
+      "name": "referral.html full rules and related benefits retained",
+      "pass": true
+    },
+    {
+      "name": "referral.html canonical points to single referral",
+      "pass": true
+    },
+    {
+      "name": "referral.html one main and h1",
+      "pass": true
+    },
+    {
+      "name": "referral.html no unactivated prototype runtime",
+      "pass": true
+    },
+    {
+      "name": "referral.html CSS fingerprint matches exact artifact",
+      "pass": true
+    },
+    {
+      "name": "referral-rules.html preserves exact published economic paragraph",
+      "pass": true
+    },
+    {
+      "name": "referral-rules.html independent presentation has no legal reader/input",
+      "pass": true
+    },
+    {
+      "name": "referral-rules.html has two actionable cabinet links and Telegram fallback",
+      "pass": true
+    },
+    {
+      "name": "referral-rules.html full rules and related benefits retained",
+      "pass": true
+    },
+    {
+      "name": "referral-rules.html canonical points to single referral",
+      "pass": true
+    },
+    {
+      "name": "referral-rules.html one main and h1",
+      "pass": true
+    },
+    {
+      "name": "referral-rules.html no unactivated prototype runtime",
+      "pass": true
+    },
+    {
+      "name": "referral-rules.html CSS fingerprint matches exact artifact",
+      "pass": true
+    },
+    {
+      "name": "Both referral aliases are identical",
+      "pass": true
+    },
+    {
+      "name": "Discovery contains referral exactly once and not private/alias",
+      "pass": true
+    },
+    {
+      "name": "oferta original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "privacy original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "terms original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "refunds original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "requisites original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "academic-integrity original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "loyalty original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "consent original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "consent-request original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "consent-analytics original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "consent-marketing original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "consent-publication original legal article unchanged",
+      "pass": true
+    },
+    {
+      "name": "Manifest 404.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest 50x.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest about.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest academic-integrity.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest admin-analytics.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest admin-covers.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest admin.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/brand/telegram/avatar-bot-512.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/brand/telegram/avatar-bot-800.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/brand/telegram/avatar-bot.mp4",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/brand/telegram/avatar-kanal-512.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/brand/telegram/avatar-kanal-800.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/brand/telegram/avatar-kanal.mp4",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/campaigns/autumn-2026/two-projects.jpg",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/campaigns/autumn-2026/two-projects.mp4",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/about-rebuild.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/admin-analytics.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/cart.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/chrome.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/commission-zero.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/configurator-journey.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/extras.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/hero-situation-first.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/home-ecosystem.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/home-guided-flow.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/home-guided.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/home-intro.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/home-release.min.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/home-story.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/mobile.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/order-journey.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/order-specification.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/polish15-account.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/polish15-admin.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/polish15-catalog.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/polish15-chrome.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/polish15-configurator.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/polish15-home.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/polish15-library.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/polish15-operations.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/polish15-reading.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/polish15-specification.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/polish15-supporting.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/prolog-process.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/promo-campaign.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/psychology-vkr.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-admin.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-assistant.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-cabinet.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-catalogue.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-direct.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-experience.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-home.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-intake.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-legal.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-library.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-portfolio.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-referral-public.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-referral.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-reviews.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-rewards.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-select.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-support.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-tools.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/salon-workspace.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/styles.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/tariffs-press.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/css/zero-classes.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/docs/specification-2026/specification-sample.docx",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/docs/specification-2026/specification-sample.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/docs/specification-2026/specification-template.docx",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/docs/specification-2026/specification-template.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/docs/specifikaciya-obrazec-list-izmeneniy.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/docs/specifikaciya-obrazec-neskolko-poziciy.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/docs/specifikaciya-obrazec-odna-poziciya.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/docs/specifikaciya-obrazec.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/fonts.css",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/golos-text-normal-400-600-common-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/golos-text-normal-400-600-cyrillic-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/golos-text-normal-400-600-latin-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/golos-text-normal-400-cyrillic.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/golos-text-normal-400-latin.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/golos-text-normal-500-cyrillic.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/golos-text-normal-500-latin.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/golos-text-normal-600-cyrillic.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/golos-text-normal-600-latin.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/golos-text-symbols-400-600-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/golos-text-symbols.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/jetbrains-mono-normal-400-600-common-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/jetbrains-mono-normal-400-600-cyrillic-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/jetbrains-mono-normal-400-600-latin-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/jetbrains-mono-normal-400-cyrillic.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/jetbrains-mono-normal-400-latin.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/jetbrains-mono-normal-600-cyrillic.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/jetbrains-mono-normal-600-latin.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/jetbrains-mono-symbols-400-600-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/jetbrains-mono-symbols.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-italic-400-common-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-italic-400-cyrillic-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-italic-400-cyrillic.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-italic-400-latin-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-italic-400-latin.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-italic-400-symbols-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-italic-symbols.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-normal-300-700-common-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-normal-300-700-cyrillic-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-normal-300-700-cyrillic.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-normal-300-700-latin-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-normal-300-700-latin.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-normal-300-700-symbols-core.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/fonts/literata-symbols.woff2",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/apple-touch-icon.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/bot-avatar.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/favicon-120.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/favicon-32.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/favicon.svg",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/icon-192.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/icon-512.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/icon-maskable-512.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/logo-mark.svg",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/mail-avatar-180.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/mail-avatar-512.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og-cover-v2.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og-cover-v3.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og-cover-v4.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og-cover.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-ai-editing.jpg",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-antiplagiat.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-doi-checker.jpg",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-guarantees.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-knowledge.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-mag.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-normokontrol.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-practice-revision.jpg",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-rech.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-spisok.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-supervisor-dossier.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-topic-audit.jpg",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/og/og-vvedenie.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/promo-salon-welcome.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/promo-salon-welcome.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-01.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-02.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-03.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-04.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-05.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-06.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-07.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-08.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-09.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-10.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-11.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-12.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-13.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-14.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-15.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-16.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-17.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-18.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-19.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-20.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-21.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-22.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-23.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-24.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-25.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-26.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-28.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-29.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-31.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-32.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-33.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-34.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-35.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-36.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-37.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-38.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-39.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-40.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-41.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-42.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-43.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-44.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-45.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-46.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-47.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-48.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-49.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/review-50.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-01.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-02.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-03.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-04.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-05.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-06.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-07.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-08.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-09.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-10.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-11.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-12.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-13.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-14.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-15.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-16.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-17.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-18.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-19.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-20.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-21.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-22.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-23.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-24.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-25.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-26.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-28.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-29.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-31.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-32.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-33.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-34.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-35.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-36.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-37.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-38.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-39.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-40.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-41.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-42.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-43.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-44.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-45.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-46.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-47.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-48.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-49.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/reviews/thumbs/review-50.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/salon-assistant/list.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/salon-assistant/listik-states.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/samples/obrazec-glava-analiz.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/samples/obrazec-spisok-literatury.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/samples/obrazec-vvedenie-vkr.webp",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/showcase/showcase-1.jpg",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/showcase/showcase-2.jpg",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/showcase/showcase-3.jpg",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/showcase/showcase-4.jpg",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/06-pack.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/07-pay.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/ava-1024.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/svc-ai.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/svc-diplom.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/svc-kursovaya.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/svc-mag.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/svc-normo.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/svc-plan.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/svc-praktika.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/svc-prez.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/svc-referat.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/svc-statya.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/img/vk/svc-tutor.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/admin-analytics-api.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/admin-analytics.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/admin.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/analytics-attribution-v2.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/analytics-v2.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/app.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/cabinet.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/cart.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/commission-zero.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/configurator-nav-guard.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/doi-checker.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/extras.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/home-ecosystem.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/home-guided-flow.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/home-intro.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/home-release.min.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/knowledge.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/order-journey.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/order-specification.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/pereplet.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/polish15-catalog.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/polish15-chrome.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/polish15-operations.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/polish15-reading.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/polish15-supporting.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/prolog-process.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/promo-campaign.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/remarks-handoff.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-assistant.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-benefits.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-cabinet.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-catalogue.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-commerce.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-direct.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-experience.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-home.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-intake.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-legal.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-library.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-order-domain.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-order.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-portfolio-data.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-portfolio.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-products.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-referral-policy.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-referral.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-reviews.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-rewards.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-samples.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-select.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-shell.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-support.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-tools.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/salon-workspace.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/tariffs-press.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/js/zero-classes.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/comparison.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/comparison.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/essay.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/essay.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/method.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/method.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/obrazec-glava-analiz.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/obrazec-spisok-literatury.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/obrazec-vvedenie-vkr.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/practice.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/practice.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/project.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/project.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/referat.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/referat.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/risk.pdf",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/samples/risk.png",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/vendor/pdfjs/LICENSE",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/vendor/pdfjs/pdf.min.mjs",
+      "pass": true
+    },
+    {
+      "name": "Manifest assets/vendor/pdfjs/pdf.worker.min.mjs",
+      "pass": true
+    },
+    {
+      "name": "Manifest audit-temy-vkr.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest avtorskiy-zakaz.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest benefits.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest bimi/logo.svg",
+      "pass": true
+    },
+    {
+      "name": "Manifest check.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest configurator.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest consent-analytics.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest consent-marketing.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest consent-publication.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest consent-request.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest consent.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest d485ac6cc21986723e6f627b37da7c5b.txt",
+      "pass": true
+    },
+    {
+      "name": "Manifest dashboard.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest deposit.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest diplomnaya-po-ekonomike.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest diplomnaya-po-psihologii.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest diplomnaya-po-yurisprudencii.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest diplomnaya-rabota.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest dorabotka-otcheta-po-praktike.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest dosie-nauchruka.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest expertise.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest favicon.ico",
+      "pass": true
+    },
+    {
+      "name": "Manifest feed.xml",
+      "pass": true
+    },
+    {
+      "name": "Manifest gift.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guarantees.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-antiplagiat-ai.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-apellyaciya.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-dnevnik-praktiki.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-harakteristika-s-praktiki.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-kursovaya-za-nedelyu.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-normocontrol.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-obekt-predmet-cel-zadachi.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-otchet-po-praktike.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-otzyv-rukovoditelya-vkr.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-prakticheskaya-chast-kursovoy.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-prezentaciya-k-zashchite.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-prilozheniya-po-gost.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-recenziya-na-vkr.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-rech-na-zashchitu.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-rinc-statya.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-skolko-stoit-diplomnaya.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-skolko-stoit-kursovaya.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-spisok-literatury.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-temy-vkr.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-titulnyj-list.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-vkr-struktura.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-vvedenie-kursovoy.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-zaklyuchenie-kursovoy.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-zaklyuchenie-vkr.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest guide-zashchita-diploma.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest index.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest kandidatskaya-dissertaciya.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest knowledge.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest komissiya-0.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest kursovaya-po-ekonomike.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest kursovaya-po-informatike.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest kursovaya-po-menedzhmentu.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest kursovaya-po-pedagogike.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest kursovaya-po-psihologii.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest kursovaya-po-yurisprudencii.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest kursovaya-rabota.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest llms.txt",
+      "pass": true
+    },
+    {
+      "name": "Manifest loyalty.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest magisterskaya-dissertaciya.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest maintenance.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest manifest.webmanifest",
+      "pass": true
+    },
+    {
+      "name": "Manifest nauchnaya-statya.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest normokontrol-vkr.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest oferta.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest offline.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest oplaceno.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest oplata.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest otchet-po-praktike.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest plan.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest plus.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest privacy.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest priyomnaya.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest prolog.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest proverka-istochnikov-vkr.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest razbor-zamechaniy-nauchruka.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest redaktura-posle-ii.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest referat.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest referral-rules.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest referral.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest refunds.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest requisites.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest reviews.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest robots.txt",
+      "pass": true
+    },
+    {
+      "name": "Manifest samples.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest services.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest sitemap.xml",
+      "pass": true
+    },
+    {
+      "name": "Manifest specifikaciya.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest start.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest sw.js",
+      "pass": true
+    },
+    {
+      "name": "Manifest tariffs.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest terms.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest tools.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest vedenie.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest zayavka.html",
+      "pass": true
+    },
+    {
+      "name": "Manifest zero-classes.html",
+      "pass": true
+    },
+    {
+      "name": "Private documents/secrets excluded",
+      "pass": true
+    }
+  ]
+}

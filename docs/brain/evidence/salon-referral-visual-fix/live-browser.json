@@ -1,0 +1,214 @@
+{
+  "source": "7ed5e283970082fcc1f016e6ffccba4a8b762798",
+  "states": [
+    {
+      "width": 390,
+      "route": "referral.html",
+      "theme": "light",
+      "overflow": false,
+      "cardCount": 4,
+      "inputs": 0,
+      "helper": "relative",
+      "legal": false,
+      "buttons": [
+        {
+          "text": "Получить личную ссылку ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        },
+        {
+          "text": "Моя ссылка в кабинете ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "referral.html",
+      "theme": "dark",
+      "overflow": false,
+      "cardCount": 4,
+      "inputs": 0,
+      "helper": "relative",
+      "legal": false,
+      "buttons": [
+        {
+          "text": "Получить личную ссылку ↗",
+          "color": "rgb(36, 33, 46)",
+          "bg": "rgb(188, 171, 255)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        },
+        {
+          "text": "Моя ссылка в кабинете ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "referral-rules.html",
+      "theme": "light",
+      "overflow": false,
+      "cardCount": 4,
+      "inputs": 0,
+      "helper": "relative",
+      "legal": false,
+      "buttons": [
+        {
+          "text": "Получить личную ссылку ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        },
+        {
+          "text": "Моя ссылка в кабинете ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "referral-rules.html",
+      "theme": "dark",
+      "overflow": false,
+      "cardCount": 4,
+      "inputs": 0,
+      "helper": "relative",
+      "legal": false,
+      "buttons": [
+        {
+          "text": "Получить личную ссылку ↗",
+          "color": "rgb(36, 33, 46)",
+          "bg": "rgb(188, 171, 255)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        },
+        {
+          "text": "Моя ссылка в кабинете ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "referral.html",
+      "theme": "light",
+      "overflow": false,
+      "cardCount": 4,
+      "inputs": 0,
+      "helper": "relative",
+      "legal": false,
+      "buttons": [
+        {
+          "text": "Получить личную ссылку ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        },
+        {
+          "text": "Моя ссылка в кабинете ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "referral.html",
+      "theme": "dark",
+      "overflow": false,
+      "cardCount": 4,
+      "inputs": 0,
+      "helper": "relative",
+      "legal": false,
+      "buttons": [
+        {
+          "text": "Получить личную ссылку ↗",
+          "color": "rgb(36, 33, 46)",
+          "bg": "rgb(188, 171, 255)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        },
+        {
+          "text": "Моя ссылка в кабинете ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "referral-rules.html",
+      "theme": "light",
+      "overflow": false,
+      "cardCount": 4,
+      "inputs": 0,
+      "helper": "relative",
+      "legal": false,
+      "buttons": [
+        {
+          "text": "Получить личную ссылку ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        },
+        {
+          "text": "Моя ссылка в кабинете ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "referral-rules.html",
+      "theme": "dark",
+      "overflow": false,
+      "cardCount": 4,
+      "inputs": 0,
+      "helper": "relative",
+      "legal": false,
+      "buttons": [
+        {
+          "text": "Получить личную ссылку ↗",
+          "color": "rgb(36, 33, 46)",
+          "bg": "rgb(188, 171, 255)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        },
+        {
+          "text": "Моя ссылка в кабинете ↗",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(81, 54, 181)",
+          "height": 48,
+          "href": "dashboard.html#referral"
+        }
+      ]
+    }
+  ],
+  "errors": []
+}
