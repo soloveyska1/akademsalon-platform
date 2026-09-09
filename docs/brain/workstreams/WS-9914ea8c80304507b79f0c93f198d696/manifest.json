@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-9914ea8c80304507b79f0c93f198d696",
   "slug": "salon-control-release",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/salon-control-release",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": null,
+  "result_sha": "1aed34c8c2867c782c87654f623fa46760d8abe2",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -997,6 +997,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "e43175d3b1153d6a4b5ee612f325f5a7a8804698868be8cdda91d2ee71e11faa"
 }
