@@ -30,5 +30,5 @@ def render_referral(source, shell):
         content = content.replace('Бонусы начисляются после подтверждения оплаты', 'После подтверждения оплаты тебе начисляют 200 бонусов')
     header = re.search(r'<header class="site-header[\s\S]*?</header>', shell)[0]
     footer = re.search(r'<footer class="site-footer[\s\S]*?</footer>', shell)[0]
-    js = ''.join('<script src="assets/js/'+s+'.js"></script>' for s in ['app','salon-products','salon-experience','salon-shell'])
+    js = ''.join('<script src="assets/js/'+s+'.js?v=20260910referral1"></script>' for s in ['app','salon-products','salon-experience','salon-shell'])
     return '<!doctype html><html lang="ru"><head>'+head+'</head><body class="salon-direct salon-experience concept-shell salon-referral-public"><a class="skip-link" href="#main">К содержанию</a>'+header+'<main id="main" class="rf-page" data-referral-public>'+content+'</main>'+footer+js+'</body></html>'

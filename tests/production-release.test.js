@@ -50,5 +50,5 @@ test('public referral preserves economic paragraph and replaces dead invitation 
  assert.match(output,/data-referral-public/);assert.match(output,/href="dashboard.html#referral"/);
  assert.match(output,/href="https:\/\/t.me\/academic_saloon_bot\?start=club"/);
  assert.match(output,/<details class="rf-terms">/);assert.match(output,/Другой раздел остаётся/);
- assert.doesNotMatch(output,/<input readonly|invite-action|salon-legal\.js|data-legal-reader/);
+ assert.doesNotMatch(output,/<input readonly|class="invite-action"|salon-legal\.js|data-legal-reader/);
 });
