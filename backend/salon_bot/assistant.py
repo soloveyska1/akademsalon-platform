@@ -6,7 +6,7 @@ an unfamiliar question produces an editable handoff, not a made-up answer.
 """
 import re
 
-VERSION = "salon-guide-2026-09-09.2"
+VERSION = "salon-guide-2026-09-09.3"
 KNOWLEDGE = [
     ("timing", r"сроч|экспресс|сутк|24\s*час|сегодня|завтра|быстр", "Экспресс за 24 часа стоит ×2 к плановой цене основной работы. Дополнения считаются отдельно. Для срока меньше суток, кандидатской и сложного состава нужна проверка возможности выполнения. Срок закрепляется после проверки задания, материалов и загрузки.", [("Выбрать работу и срок", "/configurator.html"), ("Как проходит заказ", "/prolog.html")]),
     ("norm", r"нормоконтрол|нормконтрол|методич|оформлен|гост", "Оформление по предоставленной методичке входит в согласованную работу. Новые замечания нормоконтроля после её проверки — отдельная услуга. Приложи сами замечания: тогда можно определить объём и включить нужную доработку в смету.", [("Работы и дополнения", "/services.html"), ("О нормоконтроле", "/normokontrol-vkr.html")]),
@@ -48,6 +48,8 @@ def answer(question, order=None, context=None):
     # Context is only a navigation hint. It never contains trusted order facts.
     ctx = context if isinstance(context, dict) else {}
     previous = ctx.get("topic") if isinstance(ctx.get("topic"), str) and ctx.get("topic") in TOPICS else None
+    allowed_products = {"essay", "referat", "self", "course", "course_emp", "diplom", "master", "kandidat", "practice", "rinc", "custom"}
+    selected_product = ctx.get("product") if isinstance(ctx.get("product"), str) and ctx.get("product") in allowed_products else None
     source, body, links, suggestions, card, handoff = "handoff", "", [], [], None, False
     order_url = f"/dashboard.html#order-{int(order['id'])}" if order else "/dashboard.html#orders"
     human = bool(re.search(r"позови|позвать|связаться|свяжи|оператор|живой человек|хочу.*мастер|нужен.*мастер|переда[йт].*мастер", q))
@@ -80,7 +82,7 @@ def answer(question, order=None, context=None):
         suggestions = ["Позови мастера"]
     elif re.fullmatch(r"(?:привет|здравствуй(?:те)?|добрый (?:день|вечер)|доброе утро|начнем|помоги)[!.? ]*", q):
         source = "hello"
-        body = "Привет! Я Лист, бот-помощник Салона. Помогу разобраться с задачей, сроками и выгодами. С чего начнём?"
+        body = "Привет! Я Листик, бот-помощник Салона. Помогу разобраться с задачей, сроками и выгодами. С чего начнём?"
         suggestions = ["Хочу заказать работу", "Как получить подарки?", "Вопрос по оплате"]
     elif re.fullmatch(r"(?:спасибо|благодарю|понятно|ок|хорошо|круто)[!.? ]*", q):
         source = previous or "hello"
@@ -130,6 +132,7 @@ def answer(question, order=None, context=None):
                 body += "\n\nОриентир не заменяет смету: точный объём и возможность срока проверяются по заданию."
                 product = {"Магистерская":"master","Кандидатская":"kandidat","Дипломная / ВКР":"diplom","Курсовая":"course","Практика":"practice","Эссе":"essay","Реферат":"referat","Статья":"rinc","Самостоятельная / контрольная":"self"}.get(work,"custom")
                 if product == "course" and re.search(r"статист|эмпир|исследован",q):product="course_emp"
+                selected_product = product
                 links=[("Собрать этот заказ", "/configurator.html?product="+product), ("Посмотреть примеры", "/samples.html")]
             if len(hits)>1 and source not in ("scope","timing"):
                 suggestions = SUGGESTIONS.get(source, [])[:1] + ["Что влияет на цену?"]
@@ -138,17 +141,19 @@ def answer(question, order=None, context=None):
             suggestions = ["Хочу заказать работу", "Вопрос по оплате", "Позови мастера"]
             handoff = True
     if not human and 'work_labels' in locals() and len(work_labels)>1:
-        source = "scope";card = None
+        source = "scope";card = None;selected_product = None
         body = "В сообщении несколько форматов. С какой работой сейчас помочь? Выбери один формат или уточни, какую часть нужно сделать."
         links=[];suggestions=work_labels[:3];handoff=False
     if not human and re.search(r"хочу заказать работу|подобрать формат", q):
         body = "Какой формат тебе нужен? Можно заказать работу целиком, отдельную главу или доработку. Если название не подходит, просто опиши задачу своими словами."
         suggestions = ["Курсовая работа", "Дипломная работа", "Отчёт по практике"]
     if not suggestions:suggestions = SUGGESTIONS.get(source, ["Что нужно для заказа?", "Как получить подарки?"])
+    if source == "files" and order:links = [("Файлы этого заказа", order_url + "-files")]
+    if selected_product:links = [(label, url+"?product="+selected_product if url == "/configurator.html" else url) for label,url in links]
     handoff_text = "Вопрос к мастеру: " + question
     if order:handoff_text += f"\nЗаказ № {order['id']}. " + str(order.get("work_label") or "")
     return {"ok":True,"version":VERSION,"answer":body,"source":source,
             "links":[{"label":label,"url":url} for label,url in links], "suggestions":suggestions[:3],
             "card":card,"handoff":handoff,"handoff_requested":human,"handoff_text":handoff_text,
-            "context":{"topic":source if source in TOPICS else "hello"},
+            "context":{"topic":source if source in TOPICS else "hello", "product":selected_product},
             "order_id":order["id"] if order else None}

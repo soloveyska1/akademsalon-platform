@@ -1,0 +1,9 @@
+{
+  "before_web": "4a008c0ed257d8614ef34698fe84dce01b6a64bd4c01c79cb74ef0724a76b621",
+  "after_web": "4a008c0ed257d8614ef34698fe84dce01b6a64bd4c01c79cb74ef0724a76b621",
+  "before_assistant": "ca32ca8d1bc6293780cff1580f10bd4a7492708ac20cee9518e3674cac0d1039",
+  "after_assistant": "61ab866d1c600893e05271e39eaf6c4ffbc865591c94d4cec701d7d180a71aee",
+  "database_changed": false,
+  "backup": "/var/folders/xx/v200p6jj3jn68953g8k4rw3m0000gn/T/salon-listik-installer-p_856wyy/backups/assistant-20260909T142915333976Z",
+  "apply_rollback_forward": true
+}

@@ -2,8 +2,8 @@
 """Exact-source assistant upgrade. No schema, pricing or payment mutations."""
 from pathlib import Path
 import argparse,datetime,hashlib,json,os,subprocess,tempfile
-EXPECTED_WEB='2e7f7e959049c22feb3b108c64f9f87b6d1a97703eb95f068e4327d64b14df9f'
-EXPECTED_ASSISTANT='d736615ea0f51f8886451394222d316fe8e45aae22811fedb4bb703bc7293c63'
+EXPECTED_WEB='4a008c0ed257d8614ef34698fe84dce01b6a64bd4c01c79cb74ef0724a76b621'
+EXPECTED_ASSISTANT='ca32ca8d1bc6293780cff1580f10bd4a7492708ac20cee9518e3674cac0d1039'
 def sha(data):return hashlib.sha256(data).hexdigest()
 def atomic(path,data):
  fd,name=tempfile.mkstemp(prefix='.assistant-',dir=path.parent)
@@ -15,13 +15,8 @@ def atomic(path,data):
 def prepare(root,module):
  web=(root/'app/webapp.py').read_bytes();old=(root/'app/services/assistant.py').read_bytes()
  if sha(web)!=EXPECTED_WEB or sha(old)!=EXPECTED_ASSISTANT:raise ValueError('reviewed_source_changed')
- s=web.decode();anchor='return _json(assistant.answer(body["question"], order))'
- if s.count(anchor)!=1:raise ValueError('assistant_anchor_changed')
- s=s.replace(anchor,'return _json(assistant.answer(body["question"].strip(), order, context=body.get("context")))')
- # Limit raw input as well: padded oversized text must not become a 500 or a huge body.
- anchor='not 1 <= len(body["question"].strip()) <= 2000'
- if s.count(anchor)!=1:raise ValueError('validation_anchor_changed')
- s=s.replace(anchor,'(not body["question"].strip() or len(body["question"]) > 2000)')
+ s=web.decode()
+ if s.count('return _json(assistant.answer(body["question"].strip(), order, context=body.get("context")))') != 1:raise ValueError('assistant_route_changed')
  new=module.read_bytes();compile(s,'webapp.py','exec');compile(new,'assistant.py','exec')
  return web,old,s.encode(),new
 def apply(root,module):

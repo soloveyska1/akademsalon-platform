@@ -103,5 +103,15 @@ class Assistant(unittest.TestCase):
         self.assertIsNone(r["card"]);self.assertFalse(r["links"])
         self.assertEqual(len(r["suggestions"]),2)
 
+    def test_product_followup_is_only_allowlisted_navigation(self):
+        a=assistant.answer("Курсовая со статистикой")
+        b=assistant.answer("А быстрее суток?",context=a["context"])
+        self.assertTrue(any("product=course_emp" in x["url"] for x in b["links"]))
+        self.assertNotIn("can_pay",b)
+        for ctx in ({"product":[]},{"product":"javascript:alert(1)"},{"product":"../../private"}):
+            c=assistant.answer("Хочу заказать работу",context=ctx)
+            self.assertIsNone(c["context"]["product"])
+        self.assertIn("Я Листик",assistant.answer("Привет")["answer"])
+
 
 if __name__ == "__main__": unittest.main()

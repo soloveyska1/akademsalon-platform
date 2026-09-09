@@ -4240,8 +4240,8 @@
   if(/^admin/.test(location.pathname.split('/').pop())||document.body.classList.contains('salon-workspace'))return;
   function mount(){
     if(document.querySelector('script[data-salon-assistant]'))return;
-    const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/css/salon-assistant.css?v=20260909assistant3';document.head.append(css);
-    const js=document.createElement('script');js.src='/assets/js/salon-assistant.js?v=20260909assistant3';js.dataset.salonAssistant='true';document.body.append(js);
+    const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/css/salon-assistant.css?v=20260909assistant4';document.head.append(css);
+    const js=document.createElement('script');js.src='/assets/js/salon-assistant.js?v=20260909assistant4';js.dataset.salonAssistant='true';document.body.append(js);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
 })();
