@@ -204,3 +204,11 @@ Proof benefits-redesign:76 focused tests,48 width/theme/panel states,20 browser 
 ### Benefits visual correction publication receipt
 
 Owner-private v54 published from1ed10cfd; policyrevision1 unchanged. Live CUA confirmed title/navigation, collapsedestimate, Pro→Plus choice (999fee,40899total,1101net), bonuscash13000/future650 andmoreoffers/communitylink. Exactdeployment/rollbackIDs in benefits-redesign/deployment.json; previousv53 retained, Sitesrollback not exercised. Publicfrontend/backend unchanged. Owned8768/8769 and root/reviewer browsers closed; all six user tabs retain permanent links. Next exact step: owner reviews v54 visual direction; canonical public release still requires earlier composition/auth/fullsuite gates.
+
+## Benefit detail family · owner request
+
+OUT-006 continuation from29df03ec. User linked plus.html#plus-plans and requested remaining linked pages redesigned. Bounded to plus/deposit/referral/gift/loyalty and existing shared CSS/JS, all already reserved. Same workstream reopened, root sole writer, fetched canonical unchanged. No backend/economic/legal wording change.
+
+Acceptance: unified current shell and visual system across five pages; compact plan comparison with existing30/150switch and60dayfixedsession; preserved deposit range and truthful cash/reserve; editable gift preview and canonical checkout/privacy; readable rules with section navigation and unmodified normative content. All IDs/anchors/payment controls retained. Mobile/light/dark/keyboard, deterministic contracts and two independent read-only reviews; owner-private publish only.
+
+Design: violet5136b5, mintd9f5bb, paperfaf9f6, ink27223b, lavendereeeafa. Golos UI, restrained Literata title and pass monogram, tabular money. Shared slim benefit navigation; short hero (no giant decorative sample), membership passes with compact details, deposit cash/reserve receipt, live gift certificate, legal reading column with jump navigation. Existing disclaimer/conditions preserved within readable foldouts; no misleading emphasis or invented privileges. Critique: eliminate duplicated calculators and ornamental sample cards, avoid new generic marketing blocks. Proof: exact DOM attribute preservation, browser48+states and gift local validation without live submissions. Inherited terminal warnings consciously accepted by root as unchanged/disjoint.
