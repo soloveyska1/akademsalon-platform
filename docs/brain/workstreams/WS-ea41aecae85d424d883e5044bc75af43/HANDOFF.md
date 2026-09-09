@@ -42,3 +42,8 @@ Evidence: docs/brain/evidence/salon-product/verification.json, source-fingerprin
 Public release remains NO-GO until server parsing of express/pending/package requests, full callback/auth verification, legacy test disposition, live smoke and rollback are complete. No real client orders or payments tested. Current scope delivered for owner review, not claimed conversion lift or fully released production product.
 
 Next exact step: publish the exact clean commit to the existing owner-only Sites preview and reopen home/form; record version/SHA and isolation evidence. Then stop temporary servers/test browsers. Main domain and origin/main remain unchanged.
+
+
+Version46 privately published successfully from 1121f43822f3058cd363ebe7c9d790197cb40b31. Owner-only access verified unchanged. CUA live readback: homepage express ×2, course28000 + defensepack9500 =37500, same speed/addons/total restored on extensionless configurator route. No real submit. Homepage left open and marked deliverable. Owned local servers8768/8769 and test browser closed. Evidence: docs/brain/evidence/salon-product/deployment.json. Prior private version45 remains available; rollback not executed. Public akademsalon.ru unchanged.
+
+Next exact step: owner reviews this homepage; before any public release, verify authoritative server parsing and price/schedule confirmation of the new composition intent on a safe staging contract, then resolve remaining release gates recorded above. Do not mark integrated until the frozen result is an ancestor of freshly fetched canonical.

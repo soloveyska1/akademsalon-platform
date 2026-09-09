@@ -1,0 +1,23 @@
+{
+  "project_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7",
+  "version": 46,
+  "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_2731a55dbed08191bfbd1fe157cb13df",
+  "deployment_id": "appgdep_6aa0b4554bf88191815d3d2722117442",
+  "status": "succeeded",
+  "url": "https://akademsalon-desktop-preview.saymoon.chatgpt.site/",
+  "source_sha": "1121f43822f3058cd363ebe7c9d790197cb40b31",
+  "implementation_sha": "e95f85b4aa92ad00096786c40f05aff87f0ca281",
+  "archive_hash": "sha256:35898949b2e362cabc7516360e5a8dcd7870bc1e44afb607857334fed8ffef8c",
+  "access": "verified owner-only; policy revision1 unchanged; no groups/external visitors",
+  "readback": {
+    "browser": "CUA Codex in-app tab1",
+    "homepage": "new workbench/FAQ and express ×2 visible",
+    "composition": "course 28000 + defensepack9500 =37500; same amount, speed, two checked addons on /configurator?composition=1",
+    "preview_banner": "Личный просмотр · заявки здесь не отправляются",
+    "actual_submit": "none; no real order or payment created",
+    "final_tab": "homepage open and marked deliverable"
+  },
+  "completed_at": "2026-09-09T01:22:45.901747+00:00",
+  "rollback": "previous saved private version45 retained; rollback was not executed",
+  "public_domain": "unchanged"
+}
