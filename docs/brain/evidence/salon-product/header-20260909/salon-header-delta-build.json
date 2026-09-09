@@ -1,0 +1,26 @@
+{
+  "source_commit": "ba0543388c716fb6f24387c5512cd9bd043c9d89",
+  "files": 434,
+  "changed": 102,
+  "delta_sha256": "80f747d2173d0d8dddb65938c0ebd05538e9ddbee303fc4cc04d1417321c9b9e",
+  "delta_bytes": 524421,
+  "manifest_sha256": "0a514f8a133e7e249e463e842024898b504ca73cc3926460ff123bd60b365e15",
+  "local_overlay_parity": true,
+  "readback_paths": [
+    "assets/css/salon-experience.css",
+    "about.html",
+    "kursovaya-rabota.html",
+    "normokontrol-vkr.html",
+    "plan.html",
+    "50x.html",
+    "index.html",
+    "knowledge.html",
+    "services.html",
+    "gift.html",
+    "dashboard.html",
+    "configurator.html",
+    "priyomnaya.html",
+    "oplaceno.html",
+    "referral.html"
+  ]
+}
