@@ -22,9 +22,9 @@ test('account production page uses the final concept shell', () => {
   assert.match(cabinetJs, /class="account-nav"/);
   assert.match(cabinetJs, /class="account-nav__person" data-tab="settings" aria-label="Открыть настройки профиля"/);
   assert.match(cabinetJs, /class="account-main"/);
-  assert.match(cabinetJs, /class="account-summary"/);
+  assert.match(cabinetJs, /class="desk-quick"/);
   assert.match(cabinetJs, /class="order-list"/);
-  assert.match(cabinetJs, /class="account-home-tools reveal"/);
+  assert.match(cabinetJs, /class="desk-home-grid"/);
   /* «Депозит» переименован в «Депозит и бонусы» 2026-07-26: прежде пункты
      «Платежи» и «Депозит» вели в один и тот же экран (обе ветки renderTab
      звали walletTab), теперь у каждого своё содержимое. */

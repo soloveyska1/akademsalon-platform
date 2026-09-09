@@ -17,9 +17,11 @@ test('cabinet exposes one ordered route with compact section identity', () => {
   assert.match(cabinet, /class="account-nav__more-panel" aria-label="Другие разделы"/);
   assert.match(cabinet, /class="account-main__identity"/);
   assert.match(cabinet, /class="account-main__code"/);
-  for (const code of ['01', '02', '03', '04', '05', '06', '07']) {
-    assert.ok(cabinet.includes(`'${code}']`), `missing section code ${code}`);
+  // Section names now carry meaning; decorative ordinal codes are removed.
+  for (const route of ['home', 'orders', 'messages', 'calendar', 'community']) {
+    assert.match(cabinet, new RegExp("\\['" + route + "',"));
   }
+
 });
 
 test('the messages badge counts messages, not files from another section', () => {

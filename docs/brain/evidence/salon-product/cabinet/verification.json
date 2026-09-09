@@ -1,0 +1,59 @@
+{
+  "outcome": "OUT-006",
+  "scope": "personal cabinet and subscriber digital gifts",
+  "focused_tests": {
+    "passed": 196,
+    "failed": 0
+  },
+  "backend_tests": {
+    "passed": 15,
+    "failed": 0
+  },
+  "browser_states": 160,
+  "browser_errors": 0,
+  "browser_overflow": 0,
+  "journey": [
+    "order-back",
+    "milestone-create-delete",
+    "ICS-privacy-VALARM",
+    "gift-download",
+    "gift-focus",
+    "late-account-response-ignored"
+  ],
+  "gift_kits": [
+    "3 tools each",
+    "editable offline",
+    "save filled copy",
+    "print styles"
+  ],
+  "reviewers": {
+    "journey_review": "GO demo contour, P0/P1=0",
+    "order_contract_review": "GO bounded API install, P0/P1=0"
+  },
+  "fixed_review_notes": [
+    "gift result focus",
+    "transient community retry",
+    "unknown Telegram membership unavailable"
+  ],
+  "live_api": "prepared; installation and rollback smoke pending",
+  "private_preview": "pending publication",
+  "source_sha256": {
+    "dashboard.html": "fa95f33160f4e9659c6c3d4e0a60b654ddccc6ce6d816220946419cd45d544db",
+    "assets/css/salon-cabinet.css": "f01a594bf9bc7e78f4ee0a11b4e6cc2997d60f304c8cf6ed19bdd536b4b5c180",
+    "assets/js/cabinet.js": "6156f2bb8483045cc7313790d164c74a71f400a49439d5e20c424442c667a478",
+    "assets/js/cabinet-demo.js": "4af544034aad7ccbc0aaceee8a3f2fe93051d31c4ffd220e9321b4f009cd8943",
+    "assets/js/salon-cabinet.js": "3fb66a3f70f2386108e623cf6c7b0ed986bf9bd78ad3ef4adc3f5bde6df65caf",
+    "assets/js/salon-select.js": "33c4498ec9f32dce5a9ad799a760a9fff178b25494a18a74201caf43f7a0c7db",
+    "backend/salon_bot/community_rewards.py": "8ddd274aababe381fd7b37593cf9f16aff127b3ab88efc73c5ed2e7915f2fd9a",
+    "backend/salon_bot/install_community_rewards.py": "494502f4d04703b805a72ac05dfc6b0667c474e877c61b372dfda90f06dc947f"
+  },
+  "backend_all_tests": {
+    "run": 161,
+    "skipped": 4,
+    "failed": 0
+  },
+  "telegram_readback": {
+    "salon": "bot administrator confirmed",
+    "kladovaya": "username and channel ID confirmed; getChatMember returns member list is inaccessible"
+  }
+}

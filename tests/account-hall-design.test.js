@@ -9,12 +9,12 @@ const accountCss = fs.readFileSync(path.join(root, 'assets/css/polish15-account.
 const dashboard = fs.readFileSync(path.join(root, 'dashboard.html'), 'utf8');
 
 test('account overview separates work, client decisions, and new events', () => {
-  assert.match(cabinet, /class="account-summary" data-account-brief/);
+  assert.match(cabinet, /class="desk-quick"/);
   assert.match(cabinet, /В работе/);
-  assert.match(cabinet, /Ждёт вас/);
-  assert.match(cabinet, /Новое/);
+  assert.match(cabinet, /Сейчас важно/);
+  assert.match(cabinet, /новых сообщений/);
   assert.doesNotMatch(cabinet, /attention \+= unread/);
-  assert.match(cabinet, /Здесь видно, что происходит с заказами и требуется ли от вас действие/);
+  assert.match(cabinet, /Заказы, сроки и следующий шаг/);
 });
 
 test('one priority sheet leads the next client action', () => {

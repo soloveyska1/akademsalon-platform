@@ -1,0 +1,18 @@
+async page=>{
+ const errors=[],results=[];page.on('pageerror',e=>errors.push(e.message));
+ const routes=['home','orders','messages','documents','wallet','deposit','club','calendar','community','settings','help','order-701','order-684-money','order-659-files','order-659-chat','order-659-terms'];
+ for(const width of [360,390,768,1024,1440])for(const theme of ['light','dark']){
+  await page.setViewportSize({width,height:900});
+  for(const tab of routes){
+   await page.addInitScript(t=>localStorage.setItem('salon_theme',t),theme);await page.emulateMedia({colorScheme:theme,reducedMotion:'reduce'});await page.goto('http://127.0.0.1:8769/dashboard.html?demo=alexey#'+tab);
+   await page.waitForSelector('#accountWorkspace');await page.evaluate(t=>{document.documentElement.dataset.theme=t},theme);
+   const cookie=page.getByRole('button',{name:'Только необходимое',exact:true});if(await cookie.count())await cookie.click();
+   await page.waitForSelector(tab.startsWith('order-')?'.case-sec':tab==='home'?'.desk-quick':tab==='community'?'.desk-gift-grid':'.account-main__body');
+   const report=await page.evaluate(()=>{const root=document.querySelector('#cabRoot');return{overflow:document.documentElement.scrollWidth>innerWidth+1,failed:/Раздел не собрался/.test(root.innerText),heading:document.querySelector('#accountWorkspace h1, #accountWorkspace .case-title, #accountWorkspace h2')?.textContent,priorityWidth:document.querySelector('.desk-priority .account-priority>div')?.getBoundingClientRect().width,mainWidth:document.querySelector('#accountWorkspace').getBoundingClientRect().width}});
+   results.push({width,theme,tab,...report});
+   if((width===390||width===1440)&&['home','community','calendar','order-701','order-659-chat'].includes(tab))await page.screenshot({path:'docs/brain/evidence/salon-product/cabinet/'+tab+'-'+width+'-'+theme+'.png',fullPage:true,animations:'disabled'});
+  }
+ }
+ await page.goto('http://127.0.0.1:8769/dashboard.html?demo=entry');await page.waitForSelector('.cab-login-card');await page.screenshot({path:'docs/brain/evidence/salon-product/cabinet/entry.png',fullPage:true,animations:'disabled'});
+ return {states:results.length,failures:results.filter(r=>r.overflow||r.failed||!r.heading),narrowPriority:results.filter(r=>r.priorityWidth&&r.priorityWidth<200),errors};
+}

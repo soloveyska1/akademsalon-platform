@@ -25,7 +25,7 @@ function enhance(select){if(adapters.has(select)||select.multiple||select.size>1
  const observer=new MutationObserver(()=>{sync();if(isOpen)render()});observer.observe(select,{subtree:true,childList:true,attributes:true,attributeFilter:['disabled','selected','label','hidden']});
  const api={sync,close,open,trigger};adapters.set(select,api);sync();
 }
-function scan(){document.querySelectorAll('body.salon-catalogue select,body.salon-home select,body.salon-intake select,body.salon-portfolio select,body.salon-benefits select').forEach(enhance)}
+function scan(){document.querySelectorAll('body.salon-catalogue select,body.salon-home select,body.salon-intake select,body.salon-portfolio select,body.salon-benefits select,body.salon-desk select').forEach(enhance)}
 scan();new MutationObserver(records=>{if(records.some(r=>[...r.addedNodes].some(n=>n.nodeType===1&&(n.matches?.('select')||n.querySelector?.('select')))))scan()}).observe(document.body,{childList:true,subtree:true});
 document.addEventListener('click',e=>{if(e.target.closest('.salon-select'))return;const l=e.target.closest('label[for]'),s=l&&document.getElementById(l.htmlFor);if(s?.tagName==='SELECT'&&adapters.has(s)){e.preventDefault();adapters.get(s).open()}});
 document.addEventListener('change',()=>queueMicrotask(()=>document.querySelectorAll('select').forEach(s=>adapters.get(s)?.sync())));
