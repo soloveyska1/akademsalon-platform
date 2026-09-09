@@ -727,6 +727,18 @@
       {
         "path": "backend/salon_bot/tests/test_direct_upload.py",
         "match": "exact"
+      },
+      {
+        "path": "legal/specification-2026",
+        "match": "tree"
+      },
+      {
+        "path": "assets/docs/specification-2026",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/specification-document",
+        "match": "tree"
       }
     ],
     "read": []
@@ -745,6 +757,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 44,
-  "base_manifest_hash": "ce6804a63365786fa172a235023adfbed77bf9696cc6032641774268539eb409"
+  "manifest_revision": 45,
+  "base_manifest_hash": "d18b06820c6797ad4fb03860736c616f0eec2332c8f7c9a5d96ec6197e33cbdb"
 }
