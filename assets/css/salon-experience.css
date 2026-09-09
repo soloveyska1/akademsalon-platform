@@ -225,3 +225,23 @@ html[data-theme=dark] .salon-about .sab-main{--sab-sheet:#232528;--sab-soft:#d5c
 .sen-checklist label{margin:0}.sen-breadcrumbs a{min-width:44px}
 .sen-brief fieldset{display:none}[data-entry-enhanced] .sen-brief fieldset{display:block}
 @media(max-width:760px){.sen-brief-top{display:none}.sen-brief h2{margin:0 0 15px}.sen-brief fieldset{margin-bottom:12px}.sen-brief legend{margin-bottom:6px}.sen-included{margin-top:15px}}
+
+/* Psychology options remain independent of the ordinary whole/part estimate. */
+.sen-psychology{margin:0 0 38px;border-top:1px solid var(--line)}
+.sen-psychology .section.compact{padding:28px 0;margin:0}
+.sen-psychology .service-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.sen-psychology .service-options>a{padding:22px;border:1px solid var(--line);border-radius:18px;background:var(--sen-sheet);color:var(--ink);text-decoration:none}
+.sen-psychology .service-options h3{font-size:18px;margin:0 0 10px}
+.sen-psychology .service-options p,.sen-psychology .part-band p,.sen-psychology .package-terms{font-size:14px;line-height:1.65;color:var(--muted)}
+.sen-psychology .service-options strong{display:block;font-size:21px;color:var(--sen-deep);margin-top:17px}
+.sen-psychology .part-band.inside{display:grid;grid-template-columns:1.1fr 1fr;gap:30px;padding:28px;border:1px solid var(--line);border-radius:22px;background:var(--sen-sheet);color:var(--ink);margin:0}
+.sen-psychology .part-band h2{font-size:32px;margin:14px 0}
+.sen-psychology .package-side{min-width:0;align-self:center}
+.sen-psychology .package-side>strong{font-size:36px;color:var(--sen-deep)}
+.sen-psychology .package-side .button{min-height:48px;max-width:100%;white-space:normal;text-align:center}
+.sen-psychology .package-terms{padding:0 6px;margin:15px 0 0}
+.sen-psychology .package-terms summary{min-height:48px;align-content:center;color:var(--ink);cursor:pointer;padding:10px 0}
+.sen-psychology .package-terms ul{padding-left:20px}.sen-psychology .package-terms li{margin:8px 0}
+@media(max-width:760px){.sen-psychology .service-options,.sen-psychology .part-band.inside{grid-template-columns:1fr}.sen-psychology .part-band.inside{padding:20px;gap:18px}.sen-psychology .part-band h2{font-size:28px}.sen-psychology .service-options>a{padding:18px}.sen-psychology .section.compact{padding:22px 0}}
+.sen-psychology .part-band em{color:var(--sen-deep)}
+.sen-psychology .package-side .button{background:var(--sen-deep);color:var(--sen-sheet)}

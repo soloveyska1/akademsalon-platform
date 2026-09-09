@@ -1,0 +1,56 @@
+[
+  {
+    "slug": "kursovaya-po-ekonomike",
+    "product": "course",
+    "disc": "hum",
+    "price": 14000
+  },
+  {
+    "slug": "diplomnaya-po-ekonomike",
+    "product": "diplom",
+    "disc": "hum",
+    "price": 40000
+  },
+  {
+    "slug": "kursovaya-po-menedzhmentu",
+    "product": "course",
+    "disc": "hum",
+    "price": 14000
+  },
+  {
+    "slug": "kursovaya-po-pedagogike",
+    "product": "course",
+    "disc": "pedagogy",
+    "price": 14000
+  },
+  {
+    "slug": "kursovaya-po-yurisprudencii",
+    "product": "course",
+    "disc": "jurisprudence",
+    "price": 14000
+  },
+  {
+    "slug": "diplomnaya-po-yurisprudencii",
+    "product": "diplom",
+    "disc": "jurisprudence",
+    "price": 40000
+  },
+  {
+    "slug": "kursovaya-po-informatike",
+    "product": "course",
+    "disc": "tech",
+    "price": 18000
+  },
+  {
+    "slug": "kursovaya-po-psihologii",
+    "product": "course",
+    "disc": "psychology",
+    "price": 17000
+  },
+  {
+    "slug": "diplomnaya-po-psihologii",
+    "product": "diplom",
+    "disc": "psychology",
+    "price": 48500
+  }
+]
