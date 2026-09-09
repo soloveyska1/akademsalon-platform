@@ -843,6 +843,22 @@
       {
         "path": "backend/salon_bot/install_assistant.py",
         "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-support.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-support.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-support.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/salon-support",
+        "match": "tree"
       }
     ],
     "read": []
@@ -861,6 +877,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 53,
-  "base_manifest_hash": "ca0aff8fc13a6bdbed7a3126b7d7a17b6ca41cc6f88f94469f48ac40432e313d"
+  "manifest_revision": 54,
+  "base_manifest_hash": "997eef5641fff511d106c159f9a86112e41043baafb7931d477bcc7e227a55af"
 }
