@@ -1,0 +1,5 @@
+
+> build
+> node scripts/build-sites-static.mjs
+
+Built static preview in /Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/dist

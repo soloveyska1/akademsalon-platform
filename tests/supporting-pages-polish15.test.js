@@ -23,8 +23,15 @@ const behavior = fs.readFileSync(path.join(root, 'assets/js/polish15-supporting.
 
 test('вспомогательные маршруты используют один изолированный финальный слой', () => {
   for (const [name, source] of Object.entries(pages)) {
-    assert.match(source, /<body class="polish15-supporting /, name);
-    assert.match(source, /assets\/css\/polish15-supporting\.css/, name);
+    if (['referral.html','plus.html','deposit.html','gift.html'].includes(name)) {
+      assert.match(source, /salon-benefits-detail concept-shell/, name);
+      assert.match(source, /assets\/css\/salon-home\.css/, name);
+      assert.doesNotMatch(source, /assets\/css\/(?:polish15-chrome|polish15-supporting)\.css/, name);
+      assert.equal((source.match(/<footer class="site-footer/g) || []).length, 1, name);
+    } else {
+      assert.match(source, /<body class="polish15-supporting /, name);
+      assert.match(source, /assets\/css\/polish15-supporting\.css/, name);
+    }
     assert.equal((source.match(/<h1\b/g) || []).length, 1, name);
     assert.match(source, new RegExp(`<link rel="canonical" href="https://akademsalon\\.ru/${name}"`), name);
     assert.doesNotMatch(source, /href="#\/|data-route=/, name);

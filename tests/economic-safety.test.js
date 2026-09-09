@@ -20,7 +20,7 @@ test('deposit keeps the original storefront, tiers, calculator and CTA', () => {
   assert.match(deposit, /data-deposit-amount="30000" data-deposit-rate="10"/);
   assert.match(deposit, /data-deposit-amount="45000" data-deposit-rate="12"/);
   assert.match(deposit, /data-deposit-amount="60000" data-deposit-rate="15"/);
-  assert.match(deposit, /href="dashboard\.html#wallet">Перейти в кошелёк/);
+  assert.match(deposit, /href="dashboard\.html#deposit">Перейти в кошелёк/);
   assert.match(deposit, /AggregateOffer/);
   assert.doesNotMatch(deposit, /временно (?:на паузе|недоступ)/i);
 });
