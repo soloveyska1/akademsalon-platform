@@ -1,0 +1,94 @@
+{
+  "checks": [
+    "dialog Escape/focus, automatic bundle, live total, chip removal",
+    "home→form exact price, cart + stable retry (mocked API)",
+    "scope retained on product switch; introduction transferred",
+    "form→home→form partial/editing including chapter/date/discipline",
+    "candidate exception; VIP quote and included extras",
+    "mobile dock quote visibility + FAQ inline"
+  ],
+  "sizes": [
+    {
+      "width": 360,
+      "height": 2213,
+      "desk": 575.484375,
+      "overflow": false,
+      "selectFont": 16,
+      "theme": "light"
+    },
+    {
+      "width": 360,
+      "height": 2213,
+      "desk": 575.484375,
+      "overflow": false,
+      "selectFont": 16,
+      "theme": "dark"
+    },
+    {
+      "width": 390,
+      "height": 2159,
+      "desk": 575.484375,
+      "overflow": false,
+      "selectFont": 16,
+      "theme": "light"
+    },
+    {
+      "width": 390,
+      "height": 2159,
+      "desk": 575.484375,
+      "overflow": false,
+      "selectFont": 16,
+      "theme": "dark"
+    },
+    {
+      "width": 768,
+      "height": 2135,
+      "desk": 611.375,
+      "overflow": false,
+      "selectFont": 17,
+      "theme": "light"
+    },
+    {
+      "width": 768,
+      "height": 2135,
+      "desk": 611.375,
+      "overflow": false,
+      "selectFont": 17,
+      "theme": "dark"
+    },
+    {
+      "width": 1024,
+      "height": 1831,
+      "desk": 611.375,
+      "overflow": false,
+      "selectFont": 17,
+      "theme": "light"
+    },
+    {
+      "width": 1024,
+      "height": 1831,
+      "desk": 611.375,
+      "overflow": false,
+      "selectFont": 17,
+      "theme": "dark"
+    },
+    {
+      "width": 1440,
+      "height": 1775,
+      "desk": 609.375,
+      "overflow": false,
+      "selectFont": 17,
+      "theme": "light"
+    },
+    {
+      "width": 1440,
+      "height": 1775,
+      "desk": 609.375,
+      "overflow": false,
+      "selectFont": 17,
+      "theme": "dark"
+    }
+  ],
+  "posts": 2,
+  "errors": []
+}

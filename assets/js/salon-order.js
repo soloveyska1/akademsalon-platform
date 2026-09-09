@@ -124,7 +124,7 @@ function update(){
 }
 // Restore selection without storing topic, contact, name, notes, consent or files.
 service=serviceList.find(s=>'service:'+s.id===$('product').value)||null;
-if($('product').value==='editing')$('scope').value='editing';if($('product').value==='chapter')$('scope').value='part';
+if($('product').value==='editing')$('scope').value='editing';if($('product').value==='chapter'&&$('scope').value==='whole')$('scope').value='part';
 $('scope').disabled=!!service;renderQuestions();
 function validRemarks(record,now){if(!record||record.v!==1||record.kind!=='remarks'||typeof record.text!=='string'||!Number.isFinite(record.created_at)||record.created_at>now||now-record.created_at>600000)return '';const text=record.text.trim();return text.length>=40&&text.length<=800?text:''}
 function validCommission(record,now){if(!record||record.version!==1||!['course','diplom','master'].includes(record.work)||!['draft','ai','comments'].includes(record.source)||!Number.isFinite(record.savedAt)||record.savedAt>now||now-record.savedAt>600000||typeof record.topic!=='string'||record.topic.length>240)return null;return {work:record.work,source:record.source,topic:record.topic.trim()}}
