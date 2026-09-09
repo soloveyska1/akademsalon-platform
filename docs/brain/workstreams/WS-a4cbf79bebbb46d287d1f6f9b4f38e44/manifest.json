@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-a4cbf79bebbb46d287d1f6f9b4f38e44",
   "slug": "order-stages-interactive",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/order-stages-interactive",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": null,
+  "result_sha": "3578433e4887c55eb9cf2d10d5619227cd38ee84",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -45,6 +45,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "d8ebb51cd804dc58f0214c76f4b3ef64d2d8c956041c49ac4f8bd431f9ade6c3"
+  "manifest_revision": 3,
+  "base_manifest_hash": "c861d0467ccfafa96f325a117eab8731647287dcb618d268614dc8b98e4ef72d"
 }
