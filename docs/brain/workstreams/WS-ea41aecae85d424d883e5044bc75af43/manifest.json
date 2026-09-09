@@ -763,6 +763,78 @@
       {
         "path": "backend/salon_bot/install_out001_synthetic.py",
         "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/autoquote.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_autoquote.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/assistant.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_autoquote.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_assistant.py",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-quote.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-quote.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-workspace.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-order-domain.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-workspace.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-assistant.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-assistant.css",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-autoquote.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-workspace.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-assistant.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/render-campaign-video.py",
+        "match": "exact"
+      },
+      {
+        "path": "assets/campaigns/autumn-2026",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-autonomy",
+        "match": "tree"
       }
     ],
     "read": []
@@ -781,6 +853,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 51,
-  "base_manifest_hash": "35c3f62f5c68a57a5f2dca5eaacc5e2a864207492e5b1d09b88f39580a67dff5"
+  "manifest_revision": 52,
+  "base_manifest_hash": "7fe0058fc605923954dfc43acd698070da96b872075fd057de0f29fb37b127a8"
 }
