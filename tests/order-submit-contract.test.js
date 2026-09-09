@@ -417,27 +417,23 @@ test('generated home runtime remains in parity with the canonical helper', () =>
   assert.doesNotMatch(bundleContract, /Math\.random/);
 });
 
-test('every shared order-runtime consumer uses its current atomic cache wave', () => {
-  const files = childProcess.execFileSync('git', ['ls-files', '*.html'], {
-    cwd: root, encoding: 'utf8',
-  }).trim().split('\n').filter(Boolean);
-  let consumers = 0;
-  let directConsumers = 0;
-  for (const file of files) {
-    const source = fs.readFileSync(path.join(root, file), 'utf8');
-    if (source.includes('salon-direct concept-shell')) {
-      directConsumers++;
-      assert.equal((source.match(/assets\/js\/app\.js\?/g)||[]).length, 1, file);
-    }
-    const refs = [...source.matchAll(/assets\/js\/(app|extras|home-release\.min)\.js\?v=([^&"']+)/g)];
-    for (const ref of refs) {
-      consumers++;
-      const expected = ref[1] === 'extras' ? '20260806shell123' : '20260806services115';
-      assert.equal(ref[2], expected, `${file}: stale ${ref[1]} runtime cache key`);
+test('shared runtime URLs are versioned and public release fingerprints match exact bytes', () => {
+  const releaseRoot=process.env.SALON_PUBLIC_ROOT || root;
+  const files=fs.readdirSync(releaseRoot).filter(n=>n.endsWith('.html'));
+  let consumers=0;
+  for(const file of files){
+    const html=fs.readFileSync(path.join(releaseRoot,file),'utf8');
+    if(html.includes('salon-direct concept-shell'))assert.equal((html.match(/assets\/js\/app\.js\?/g)||[]).length,1,file);
+    for(const [,raw] of html.matchAll(/src="([^"]*assets\/js\/(?:app|extras|home-release\.min)\.js[^" ]*)"/g)){
+      consumers++;const url=new URL(raw.replaceAll('&amp;','&'),'https://fixture.invalid/');
+      assert.ok(url.searchParams.get('v'),file);
+      if(process.env.SALON_PUBLIC_ROOT){
+        const bytes=fs.readFileSync(path.join(releaseRoot,url.pathname));
+        assert.equal(url.searchParams.get('r'),crypto.createHash('sha256').update(bytes).digest('hex').slice(0,16),file+': exact public runtime bytes');
+      }
     }
   }
-  assert.equal(directConsumers, 26, 'each redesigned page must load the shared runtime once');
-  assert.ok(consumers > directConsumers, 'unchanged legacy runtime consumers remain covered');
+  assert.ok(consumers>50,'public and legacy consumers remain covered');
 });
 
 test('production smoke default run is mechanically read-only and never reaches /orders', async () => {

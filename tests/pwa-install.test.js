@@ -9,7 +9,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const root = path.resolve(__dirname, '..');
+const root = process.env.SALON_PUBLIC_ROOT || path.resolve(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const pages = fs.readdirSync(root).filter((f) => f.endsWith('.html'));
 
@@ -91,12 +91,13 @@ test('версия воркера совпадает с ключом семьи 
   /* Читаем ключ по ссылке манифеста, а не по chrome.css: главная подключает
      не исходники, а сборку, и chrome.css в её разметке нет вовсе. Ссылка на
      манифест есть на всех страницах и несёт тот же ключ семьи shell. */
-  const shellKey = read('index.html').match(/manifest\.webmanifest\?v=([a-z0-9]+)/)?.[1];
-  assert.ok(shellKey, 'ключ семьи shell должен читаться из ссылки на манифест');
-  assert.equal(version, shellKey, 'при бампе ключа обязательно поднять версию воркера');
-  /* И тот же ключ обязан стоять у ассетов, иначе воркер и стили разъедутся. */
-  const assetKey = read('services.html').match(/chrome\.css\?v=([a-z0-9]+)/)?.[1];
-  assert.equal(assetKey, shellKey, 'ключ манифеста и ключ ассетов должны совпадать');
+  for (const name of pages) {
+    const key=read(name).match(/manifest\.webmanifest\?v=([^"&]+)/)?.[1];
+    assert.equal(key, version, name + ': manifest and worker must share a cache family');
+  }
+  // The redesigned catalogue no longer includes chrome.css. Production asset
+  // content fingerprints are independently verified by production-release.test.
+
 });
 
 test('воркер регистрируется и не ломает страницу при отказе', () => {

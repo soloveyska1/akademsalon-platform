@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: the two public producers use one frozen v2 contract and no parallel JSON truth
+ok 1 - the two public producers use one frozen v2 contract and no parallel JSON truth
+  ---
+  duration_ms: 1.470125
+  type: 'test'
+  ...
+# Subtest: every tracked browser producer routes /orders through the canonical helper
+ok 2 - every tracked browser producer routes /orders through the canonical helper
+  ---
+  duration_ms: 89.967291
+  type: 'test'
+  ...
+# Subtest: one atomic v2 session record binds producer, scope, id and fingerprint
+ok 3 - one atomic v2 session record binds producer, scope, id and fingerprint
+  ---
+  duration_ms: 1.016875
+  type: 'test'
+  ...
+# Subtest: legacy v1 identity or fingerprint fails closed and is never rebound
+ok 4 - legacy v1 identity or fingerprint fails closed and is never rebound
+  ---
+  duration_ms: 0.949792
+  type: 'test'
+  ...
+# Subtest: corrupt, partial, foreign and future records all fail closed
+ok 5 - corrupt, partial, foreign and future records all fail closed
+  ---
+  duration_ms: 1.523625
+  type: 'test'
+  ...
+# Subtest: storage, fingerprint, header and secure-id failures are shaped before network
+ok 6 - storage, fingerprint, header and secure-id failures are shaped before network
+  ---
+  duration_ms: 1.329375
+  type: 'test'
+  ...
+# Subtest: success accepts only a safe positive integer or its canonical decimal string
+ok 7 - success accepts only a safe positive integer or its canonical decimal string
+  ---
+  duration_ms: 0.308875
+  type: 'test'
+  ...
+# Subtest: outcomes distinguish terminal rejection, conflict, ambiguity and local block
+ok 8 - outcomes distinguish terminal rejection, conflict, ambiguity and local block
+  ---
+  duration_ms: 0.262792
+  type: 'test'
+  ...
+# Subtest: fingerprint follows JSON wire semantics and ignores object key order
+ok 9 - fingerprint follows JSON wire semantics and ignores object key order
+  ---
+  duration_ms: 0.615875
+  type: 'test'
+  ...
+# Subtest: producer-supplied request identity and unserializable payload fail before fetch
+ok 10 - producer-supplied request identity and unserializable payload fail before fetch
+  ---
+  duration_ms: 0.496459
+  type: 'test'
+  ...
+# Subtest: concurrent identical submits are single-flight and cause one physical POST
+ok 11 - concurrent identical submits are single-flight and cause one physical POST
+  ---
+  duration_ms: 2.926208
+  type: 'test'
+  ...
+# Subtest: soft timeout never aborts POST and retry joins the still-live request
+ok 12 - soft timeout never aborts POST and retry joins the still-live request
+  ---
+  duration_ms: 0.535208
+  type: 'test'
+  ...
+# Subtest: changed concurrent intent conflicts while the original flight continues
+ok 13 - changed concurrent intent conflicts while the original flight continues
+  ---
+  duration_ms: 0.458375
+  type: 'test'
+  ...
+# Subtest: request state clears only by compare-and-swap with the exact terminal attempt id
+ok 14 - request state clears only by compare-and-swap with the exact terminal attempt id
+  ---
+  duration_ms: 0.375917
+  type: 'test'
+  ...
+# Subtest: ambiguous failures retain identity across reload and changed intent rotates it
+ok 15 - ambiguous failures retain identity across reload and changed intent rotates it
+  ---
+  duration_ms: 0.618875
+  type: 'test'
+  ...
+# Subtest: order transport invokes the shared status hook before reading a 401 body
+ok 16 - order transport invokes the shared status hook before reading a 401 body
+  ---
+  duration_ms: 0.293209
+  type: 'test'
+  ...
+# Subtest: late 401 cannot clear a newer auth generation, token or impersonation context
+ok 17 - late 401 cannot clear a newer auth generation, token or impersonation context
+  ---
+  duration_ms: 0.246792
+  type: 'test'
+  ...
+# Subtest: producer UI clears identity only after confirmed or definitive terminal outcomes
+ok 18 - producer UI clears identity only after confirmed or definitive terminal outcomes
+  ---
+  duration_ms: 0.117333
+  type: 'test'
+  ...
+# Subtest: generated home runtime remains in parity with the canonical helper
+ok 19 - generated home runtime remains in parity with the canonical helper
+  ---
+  duration_ms: 0.190208
+  type: 'test'
+  ...
+# Subtest: shared runtime URLs are versioned and public release fingerprints match exact bytes
+ok 20 - shared runtime URLs are versioned and public release fingerprints match exact bytes
+  ---
+  duration_ms: 21.124875
+  type: 'test'
+  ...
+# Subtest: production smoke default run is mechanically read-only and never reaches /orders
+ok 21 - production smoke default run is mechanically read-only and never reaches /orders
+  ---
+  duration_ms: 0.8805
+  type: 'test'
+  ...
+# Subtest: unknown producer and invalid guide scope fail closed
+ok 22 - unknown producer and invalid guide scope fail closed
+  ---
+  duration_ms: 0.3495
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 162.303708

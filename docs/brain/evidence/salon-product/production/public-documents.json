@@ -1,0 +1,46 @@
+{
+  "docs": [
+    {
+      "type": "essay",
+      "pages": 18,
+      "text": 2450
+    },
+    {
+      "type": "referat",
+      "pages": 13,
+      "text": 1776
+    },
+    {
+      "type": "self",
+      "pages": 10,
+      "text": 292
+    },
+    {
+      "type": "course",
+      "pages": 51,
+      "text": 101
+    },
+    {
+      "type": "practice",
+      "pages": 18,
+      "text": 1885
+    },
+    {
+      "type": "chapter",
+      "pages": 44,
+      "text": 1471
+    },
+    {
+      "type": "master",
+      "pages": 120,
+      "text": 1417
+    }
+  ],
+  "ring": {
+    "input": "none",
+    "wrapper": "solid"
+  },
+  "disc": "law",
+  "errors": [],
+  "source_commit": "0341e9c4c80fdf7f60efe75acf50080a468d9a35"
+}

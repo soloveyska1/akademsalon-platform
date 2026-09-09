@@ -1,0 +1,1439 @@
+{
+  "data": "synthetic signed-out API; all external traffic intercepted; no mutations",
+  "browser": "152.0.7977.84",
+  "states": 144,
+  "failures": [],
+  "errors": [],
+  "requests": [],
+  "rows": [
+    {
+      "route": "/",
+      "width": 360,
+      "theme": "light",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 360,
+      "theme": "light",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 360,
+      "theme": "light",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 360,
+      "theme": "light",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 360,
+      "theme": "light",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 360,
+      "theme": "light",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 360,
+      "theme": "light",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 360,
+      "theme": "light",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 360,
+      "theme": "light",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 360,
+      "theme": "light",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 360,
+      "theme": "light",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 360,
+      "theme": "light",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/",
+      "width": 360,
+      "theme": "dark",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 360,
+      "theme": "dark",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 360,
+      "theme": "dark",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 360,
+      "theme": "dark",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 360,
+      "theme": "dark",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 360,
+      "theme": "dark",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 360,
+      "theme": "dark",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 360,
+      "theme": "dark",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 360,
+      "theme": "dark",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 360,
+      "theme": "dark",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 360,
+      "theme": "dark",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 360,
+      "theme": "dark",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "theme": "light",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 390,
+      "theme": "light",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 390,
+      "theme": "light",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 390,
+      "theme": "light",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 390,
+      "theme": "light",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 390,
+      "theme": "light",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 390,
+      "theme": "light",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 390,
+      "theme": "light",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 390,
+      "theme": "light",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 390,
+      "theme": "light",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 390,
+      "theme": "light",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 390,
+      "theme": "light",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "theme": "dark",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 390,
+      "theme": "dark",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 390,
+      "theme": "dark",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 390,
+      "theme": "dark",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 390,
+      "theme": "dark",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 390,
+      "theme": "dark",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 390,
+      "theme": "dark",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 390,
+      "theme": "dark",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 390,
+      "theme": "dark",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 390,
+      "theme": "dark",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 390,
+      "theme": "dark",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 390,
+      "theme": "dark",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "theme": "light",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 768,
+      "theme": "light",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 768,
+      "theme": "light",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 768,
+      "theme": "light",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 768,
+      "theme": "light",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 768,
+      "theme": "light",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 768,
+      "theme": "light",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 768,
+      "theme": "light",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 768,
+      "theme": "light",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 768,
+      "theme": "light",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 768,
+      "theme": "light",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 768,
+      "theme": "light",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "theme": "dark",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 768,
+      "theme": "dark",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 768,
+      "theme": "dark",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 768,
+      "theme": "dark",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 768,
+      "theme": "dark",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 768,
+      "theme": "dark",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 768,
+      "theme": "dark",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 768,
+      "theme": "dark",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 768,
+      "theme": "dark",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 768,
+      "theme": "dark",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 768,
+      "theme": "dark",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 768,
+      "theme": "dark",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/",
+      "width": 1024,
+      "theme": "light",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 1024,
+      "theme": "light",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1024,
+      "theme": "light",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 1024,
+      "theme": "light",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 1024,
+      "theme": "light",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 1024,
+      "theme": "light",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 1024,
+      "theme": "light",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 1024,
+      "theme": "light",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 1024,
+      "theme": "light",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 1024,
+      "theme": "light",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 1024,
+      "theme": "light",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 1024,
+      "theme": "light",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 1024,
+      "theme": "dark",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "theme": "light",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 1280,
+      "theme": "light",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1280,
+      "theme": "light",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 1280,
+      "theme": "light",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 1280,
+      "theme": "light",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 1280,
+      "theme": "light",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 1280,
+      "theme": "light",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 1280,
+      "theme": "light",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 1280,
+      "theme": "light",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 1280,
+      "theme": "light",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 1280,
+      "theme": "light",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 1280,
+      "theme": "light",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 1280,
+      "theme": "dark",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "theme": "light",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 1440,
+      "theme": "light",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1440,
+      "theme": "light",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 1440,
+      "theme": "light",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 1440,
+      "theme": "light",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 1440,
+      "theme": "light",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 1440,
+      "theme": "light",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 1440,
+      "theme": "light",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 1440,
+      "theme": "light",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 1440,
+      "theme": "light",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 1440,
+      "theme": "light",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 1440,
+      "theme": "light",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "heading": "С учёбой можно проще.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/services.html",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Работы и цены | Академический Салон",
+      "heading": "Под твою задачу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/configurator.html",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Заказать работу | Академический Салон",
+      "heading": "Теперь твоя задача.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/samples.html",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "heading": "Открой готовую работу.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/benefits.html",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Выгоды: посчитай свою экономию | Академический Салон",
+      "heading": "Учиться дальше.Тратить разумнее.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/plus.html",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Абонемент «Салон+» — планы и условия | Академический Салон",
+      "heading": "Салон+.Больше для твоей учёбы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/deposit.html",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Депозит мастерской — аванс на будущие этапы | Академический Салон",
+      "heading": "Твоя учёба.Твой запас.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/referral.html",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+      "heading": "Бонусы за личную рекомендацию.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/dashboard.html",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Личный кабинет — Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/oplata.html",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Как проходит оплата — Академический Салон",
+      "heading": "Платите по частям —за согласованные этапы.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/prolog.html",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Как проходит заказ | Академический Салон",
+      "heading": "Большая работа.Понятные шаги.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    },
+    {
+      "route": "/specifikaciya.html",
+      "width": 1440,
+      "theme": "dark",
+      "title": "Условия твоего заказа | Академический Салон",
+      "heading": "Каждая деталь.До оплаты.",
+      "overflow": false,
+      "preview": false,
+      "brokenImages": []
+    }
+  ],
+  "source_commit": "0341e9c4c80fdf7f60efe75acf50080a468d9a35"
+}
