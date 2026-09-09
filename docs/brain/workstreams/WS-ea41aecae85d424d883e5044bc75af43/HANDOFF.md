@@ -95,3 +95,10 @@ Implemented services catalogue with canonical price/speed/context controls, sear
 Proof: docs/brain/evidence/salon-product/catalogue/verification.txt and pinned source hashes. Focused85/85, arithmetic6048/6048, catalogue42states,5groupedjourneys,2Back regression scenarios,34contrast pairs minimum4.7266, homepage commerce/shell/benefit regressions passed. Both independent reviewers GO after cached-context and past-date fixes. Browser BFCache admission itself not asserted; actual Back plus explicit persisted event verified.
 
 No public/backend change. Oldfullsuite/public release gates remain as documented. Next exact step: clean source save and owner-only private Sites update, then readback and shutdown task-owned local servers/browser.
+
+
+### Catalogue private publication receipt
+
+Version50 source fcef03b3b91529d6e477d5ceb45e716a0bd2ef31 published successfully to owner-only Sites, readback services→course24→defense/norm9500→form37500 retained all choices. No real submission. Exact identifiers, hashes, audience and limits in docs/brain/evidence/salon-product/catalogue/deployment.json. Previous version49 retained and independently read as rollback, not exercised. Existing user browser returned to /services, marked deliverable. Local8768/8769 and owned test browser stopped.
+
+Workstream remains submitted, not integrated into public origin/main. Next exact step: owner reviews /services; subsequent customer-page work is a new explicitly declared iteration. Public release requires pending authoritative composition/backend and release-wide gates.
