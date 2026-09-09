@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-ea41aecae85d424d883e5044bc75af43",
   "slug": "salon-direct-orders",
-  "status": "submitted",
+  "status": "active",
   "branch": "codex/salon-direct-orders",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": "eb946743ed094f323dada9e18be3095ab43589b6",
+  "result_sha": null,
   "outcome_ids": [
     "OUT-006"
   ],
@@ -683,6 +683,26 @@
       {
         "path": "docs/brain/workstreams/WS-b4a8ea7f7e06481ebd8a08f661f160cc",
         "match": "tree"
+      },
+      {
+        "path": "scripts/build-production-release.py",
+        "match": "exact"
+      },
+      {
+        "path": "tests/production-release.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/production-smoke.js",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/production_probe.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_production_probe.py",
+        "match": "exact"
       }
     ],
     "read": []
@@ -701,6 +721,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 40,
-  "base_manifest_hash": "796e8e5a3a56c8b250910f600a72c2d13104960c274ec222ffc8903ce5daf1e7"
+  "manifest_revision": 42,
+  "base_manifest_hash": "fd079d1f1323929bb59f5b6034aad1edce5261f38ed21e065f336e94f2a27a0a"
 }
