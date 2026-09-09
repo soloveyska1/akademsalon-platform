@@ -719,6 +719,14 @@
       {
         "path": "tests/automatic-payment.test.js",
         "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/direct_upload.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_direct_upload.py",
+        "match": "exact"
       }
     ],
     "read": []
@@ -737,6 +745,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 43,
-  "base_manifest_hash": "3f6366feb5b49be71135de56ac3feed126d18fcb30ea91612052be938d1180a0"
+  "manifest_revision": 44,
+  "base_manifest_hash": "ce6804a63365786fa172a235023adfbed77bf9696cc6032641774268539eb409"
 }
