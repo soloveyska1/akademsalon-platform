@@ -954,7 +954,7 @@ function initCabinet() {
       '<a class="line-link" href="loyalty.html">Правила программы <span aria-hidden="true">→</span></a></header>' +
       '<div class="account-panel">' +
       '<header><span>Баланс счёта</span><small>АС · БОН</small></header>' +
-      '<strong class="account-panel__figure">' + money(b.balance) + ' бонусов</strong>' +
+      '<strong class="account-panel__figure">' + balanceText(b.balance, ' бонусов') + '</strong>' +
       '<p>Списание применяется один раз к одному заказу и только до первой оплаты. ' +
       'Стоимость абонемента бонусами не оплачивается.</p>' +
       facts +
@@ -992,7 +992,7 @@ function initCabinet() {
           (d.rates || []).forEach(function (rr) { if (a >= rr.from) pct = rr.pct; });
           return '<button type="button" data-dep-topup="' + a + '">' +
             '<span class="deposit-tiers__sum">' + money(a) + ' ₽</span>' +
-            '<b>+' + pct + ' %</b><small>бонусами</small></button>';
+            '<b>до ' + pct + ' %</b><small>в резерв бонусов</small></button>';
         }).join('') + '</div>'
       : '<div class="account-notice account-notice--wax">' +
         '<span class="account-notice__mark" aria-hidden="true">≤</span>' +
@@ -1006,18 +1006,18 @@ function initCabinet() {
       '<div class="deposit-calculator">' +
       '<div class="deposit-calculator__controls">' +
       '<p class="eyebrow">Пополнение</p><h3>Выберите сумму аванса.</h3>' +
-      '<p>Ставка начисления зависит от суммы пополнения. Из денежного остатка этап оплачивается целиком; ' +
-      'официальный чек относится к пополнению, а не к списанию.</p>' +
+      '<p>Авансом можно оплачивать согласованные этапы. Сумма пополнения определяет потолок резерва бонусов. ' +
+      'Дополнительные бонусы зависят от использованной суммы, учитывают кешбэк и открываются после приёмки и 14 дней.</p>' +
       tops +
       '<div class="account-panel__acts"><button type="button" class="button button--secondary" id="depLogBtn">' +
       (st.depLedgerOpen ? 'Скрыть журнал' : 'Журнал счёта') + '</button></div>' +
       '</div>' +
       '<aside class="deposit-ledger-card">' +
       '<header><span>Счёт мастерской</span><small>АС · ДЕП</small></header>' +
-      '<div><small>Денежный остаток</small><strong>' + money(d.balance) + ' ₽</strong>' +
+      '<div><small>Денежный остаток</small><strong>' + balanceText(d.balance, ' ₽') + '</strong>' +
       '<p>аванс для оплаты согласованных этапов</p></div>' +
-      (bon ? '<div><small>Бонусный счёт</small><strong>+' + money(bon.balance || 0) + '</strong>' +
-        '<p>начисление за пополнения, срок действия 180 дней</p></div>' : '') +
+      (bon ? '<div><small>Доступные бонусы</small><strong>' + balanceText(bon.balance, ' бонусов') + '</strong>' +
+        '<p>Сроки действия отдельных начислений видны в бонусном счёте.</p></div>' : '') +
       '<footer><span>Деньги и бонусы</span>' +
       '<b>учитываются раздельно и не складываются в одну денежную сумму</b></footer>' +
       '</aside></div>' + led + '</section>';
@@ -1624,12 +1624,10 @@ function initCabinet() {
      полноразмерные карточки, а в «Делах», «Сообщениях» и «Документах» три
      почти одинаковых набора компактных корешков. Теперь карточка одна: раздел
      меняет только две справки под шкалой и подпись в подвале. */
-  function orderPct(o) {
-    if (o.status === 'done') return 100;
-    if (o.status === 'cancel' || (o.step || 0) < 0) return 0;
-    var total = Math.max(1, o.stages_total || 1);
-    var stage = Math.max(1, o.stage || 1);
-    return Math.max(8, Math.min(92, Math.round((stage - 0.35) / total * 100)));
+  function orderStage(o) {
+    var total = Number(o.stages_total), stage = Number(o.stage);
+    if (!Number.isInteger(total) || total < 1 || !Number.isInteger(stage) || stage < 1) return '';
+    return 'Этап ' + Math.min(stage, total) + ' из ' + total;
   }
   function orderCard(o, mode) {
     var files = (o.files && o.files.length) || o.files_count || 0;
@@ -1673,7 +1671,7 @@ function initCabinet() {
         : isArch(o) ? 'Открыть завершённое дело'
         : 'Открыть дело';
     }
-    var pct = orderPct(o);
+    var stageLabel = orderStage(o);
     var attention = !isArch(o) && needsAction(o);
     /* без .is-current: дело больше не раскрывается под списком, подсвечивать
        «выбранную» карточку нечем — в эталоне такого состояния тоже нет */
@@ -1685,8 +1683,7 @@ function initCabinet() {
       esc(o.status_label || shortStatus(o) || 'дело') + '</span>' +
       '<span>' + esc(o.no || ('№ ' + o.id)) + '</span></div>' +
       '<h3>' + esc(o.work_label || 'Редакторская работа') + '</h3>' +
-      '<div class="order-card__progress" role="img" aria-label="Пройдено по делу: ' + pct +
-      ' процентов"><i style="width:' + pct + '%"></i></div>' +
+      (stageLabel ? '<div class="order-card__ordinal">' + stageLabel + '</div>' : '') +
       '<div class="order-card__stage">' + facts.map(function (f) {
         return '<span><small>' + f[0] + '</small><strong>' + esc(f[1]) + '</strong></span>';
       }).join('') + '</div>' +
@@ -1794,16 +1791,16 @@ function initCabinet() {
   }
   function caseProgress(o) {
     if (!o.steps || !o.steps.length || o.step < 1) return '';
-    var pct = o.status === 'done'
-      ? 100
-      : Math.max(5, Math.min(95, Math.round((o.step - 0.35) / o.steps.length * 100)));
-    /* дробь «N из M» стоит в шапке разворота — здесь та же величина долей,
-       без тавтологии: рядом со шкалой уместен процент, как в эталоне */
-    return '<div class="case-progress-meta"><span>Готовность дела</span>' +
-      '<strong>' + pct + ' %</strong></div>' +
-      '<div class="case-progress" role="img" aria-label="Пройдено этапов: ' +
-      o.step + ' из ' + o.steps.length + '"><i class="' + pctBucket(pct) + '"></i></div>';
+    var current = Math.max(1, Math.min(o.steps.length, Math.floor(o.step)));
+    return '<div class="case-progress-meta"><span>Текущий этап</span>' +
+      '<strong>' + current + ' из ' + o.steps.length + '</strong></div>' +
+      '<div class="case-stage-track" role="img" aria-label="Текущий этап: ' +
+      current + ' из ' + o.steps.length + '">' + o.steps.map(function (step, i) {
+        return '<i class="' + (o.status === 'done' || i + 1 < current ? 'is-done' :
+          i + 1 === current ? 'is-current' : '') + '"></i>';
+      }).join('') + '</div>';
   }
+
   function payScale(o) {
     var total = o.due_total || o.price || 0;
     var paid = (o.payments || []).filter(function (p) { return p.status === 'paid'; })
@@ -2878,7 +2875,7 @@ function initCabinet() {
     var accountOpen = ['wallet', 'deposit', 'club'].indexOf(st.tab) >= 0;
     var items = [
       ['home', 'Обзор', '', 'home'],
-      ['orders', 'Дела', '', 'orders'],
+      ['orders', 'Заказы', '', 'orders'],
       ['messages', 'Сообщения', badge.orders || '', 'messages'],
       ['documents', 'Документы', '', 'documents'],
       ['wallet', 'Счёт и клуб', badge.club || '', 'wallet']
@@ -2913,7 +2910,7 @@ function initCabinet() {
       '<div class="account-nav__more-panel" aria-label="Другие разделы">' +
         '<a class="account-nav__more-option account-nav__more-new" href="configurator.html">' +
           '<i class="account-nav__glyph" aria-hidden="true">' + accountIcon('plus') + '</i>' +
-          '<span>Новое дело</span><b aria-hidden="true">→</b></a>' +
+          '<span>Новый заказ</span><b aria-hidden="true">→</b></a>' +
         secondary.map(function (item) { return button(item, 'account-nav__more-option'); }).join('') +
       '</div></details></nav>';
   }
@@ -2985,7 +2982,7 @@ function initCabinet() {
     var copy = {
       home: ['Личный зал', first ? 'Добрый день, ' + esc(first) + '.' : 'Ваш личный кабинет.',
         'Здесь видно, что происходит с заказами и требуется ли от вас действие.', '01'],
-      orders: ['Работа мастерской', 'Ваши дела.', 'Сроки, файлы, сообщения и оплата по каждому заказу.', '02'],
+      orders: ['Работа мастерской', 'Ваши заказы.', 'Сроки, файлы, сообщения и оплата по каждому заказу.', '02'],
       messages: ['Личный кабинет', 'Сообщения.', 'Новые вопросы редактора и переписка собраны по делам.', '03'],
       documents: ['Личный кабинет', 'Документы.', 'Файлы, спецификации, акты и подтверждения оплаты.', '04'],
       wallet: ['Платежи и документы', 'Платежи.', 'Что ждёт оплаты по вашим делам и подтверждения прошедших операций.', '05'],
@@ -3003,7 +3000,7 @@ function initCabinet() {
       '<h1>' + copy[1] + '</h1><p>' + copy[2] + '</p></div>' +
       '<a class="button button--secondary account-head__new ' +
         (newMatterPrimary ? 'account-head__new--seal' : 'account-head__new--quiet') +
-        '" href="configurator.html">Новое дело <span aria-hidden="true">→</span></a></header>';
+        '" href="configurator.html">Новый заказ <span aria-hidden="true">→</span></a></header>';
   }
 
   function setTab(tab, silentHash) {
@@ -3130,9 +3127,13 @@ function initCabinet() {
                   : files + ' ' + plural(files, 'файл', 'файла', 'файлов')) +
       '</em></div><i aria-hidden="true">→</i></button>' +
       '<button type="button" data-tab="wallet"><span aria-hidden="true">' + accountIcon('wallet') + '</span><div>' +
-      '<small>Средства</small><strong>Счёт и клуб</strong><em>' + money(dep.balance || 0) +
-      ' ₽ · ' + money(bon.balance || 0) + ' бонусов</em></div><i aria-hidden="true">→</i></button></nav>';
-    return '<section class="account-summary" data-account-brief>' +
+      '<small>Средства</small><strong>Счёт и клуб</strong><em>' + balanceText(dep.balance, ' ₽') +
+      ' · ' + balanceText(bon.balance, ' бонусов') + '</em></div><i aria-hidden="true">→</i></button></nav>';
+    return '<div class="account-home-focus' + (agenda ? '' : ' is-single') + '">' +
+      '<div class="account-home-focus__primary">' + priority + '</div>' +
+      (agenda ? '<aside class="account-home-focus__agenda" aria-label="Ближайшие даты">' +
+        agenda + '</aside>' : '') + '</div>' +
+      '<section class="account-summary" data-account-brief>' +
       '<article><span class="status-dot"><i></i> В работе</span><strong>' + act + '</strong><p>' +
       plural(act, 'дело в работе', 'дела в работе', 'дел в работе') + '</p></article>' +
       '<article><span>Ждёт вас</span><strong>' + attention + '</strong><p>' +
@@ -3140,13 +3141,9 @@ function initCabinet() {
       '<article><span>Новое</span><strong>' + unread + '</strong><p>' +
       plural(unread, 'сообщение или файл', 'сообщения или файла', 'сообщений или файлов') + '</p></article>' +
       '</section>' +
-      '<div class="account-home-focus' + (agenda ? '' : ' is-single') + '">' +
-      '<div class="account-home-focus__primary">' + priority + '</div>' +
-      (agenda ? '<aside class="account-home-focus__agenda" aria-label="Ближайшие даты">' +
-        agenda + '</aside>' : '') + '</div>' +
       '<div class="account-home-cases">' + draftSection(true) +
       (st.orders.length ? ordersRegister('', true) :
-        '<section class="account-orders"><header><h2>Ваши дела</h2></header>' +
+        '<section class="account-orders"><header><h2>Ваши заказы</h2></header>' +
         '<div class="account-empty"><p>Здесь появятся сроки, файлы и сообщения мастера.</p>' +
         '<a class="button button--primary" href="configurator.html">Описать задачу</a></div></section>') +
       '</div>' + tools;
@@ -3246,6 +3243,11 @@ function initCabinet() {
 
   /* Локальные вкладки одного раздела стойки. Старые маршруты #deposit/#club
      остаются прямыми ссылками, но больше не конкурируют с делами глобально. */
+  function balanceText(value, suffix) {
+    return value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value))
+      ? money(Number(value)) + (suffix || '') : 'Уточняется';
+  }
+
   function accountTabs() {
     var me = st.me || {};
     var dep = me.deposit || {};
@@ -3258,7 +3260,7 @@ function initCabinet() {
       { tab: 'wallet', label: 'Платежи', mark: '₽',
         value: due ? money(due) + ' ₽ к оплате' : 'Счетов сейчас нет' },
       { tab: 'deposit', label: 'Депозит и бонусы', mark: '◆',
-        value: money(dep.balance || 0) + ' ₽ · ' + money(bon.balance || 0) + ' бонусов' },
+        value: balanceText(dep.balance, ' ₽') + ' · ' + balanceText(bon.balance, ' бонусов') },
       { tab: 'club', label: 'Клуб Салона', mark: 'АС+', value: clubState }
     ];
     return '<nav class="account-tabs account-money-route" aria-label="Счёт и клуб">' + items.map(function (item) {

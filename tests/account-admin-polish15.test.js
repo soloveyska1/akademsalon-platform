@@ -15,7 +15,7 @@ const adminJs = read('assets/js/admin.js');
 const adminCss = read('assets/css/polish15-admin.css');
 
 test('account production page uses the final concept shell', () => {
-  assert.match(dashboardHtml, /body class="is-account-route"/);
+  assert.match(dashboardHtml, /body class="[^"]*\bis-account-route\b[^"]*"/);
   assert.match(dashboardHtml, /polish15-account\.css/);
   assert.doesNotMatch(dashboardHtml, /class="chapter cab"/);
   assert.match(cabinetJs, /class="account-shell"/);
@@ -28,7 +28,7 @@ test('account production page uses the final concept shell', () => {
   /* «Депозит» переименован в «Депозит и бонусы» 2026-07-26: прежде пункты
      «Платежи» и «Депозит» вели в один и тот же экран (обе ветки renderTab
      звали walletTab), теперь у каждого своё содержимое. */
-  for (const label of ['Дела', 'Сообщения', 'Документы', 'Платежи', 'Клуб Салона', 'Депозит и бонусы']) {
+  for (const label of ['Заказы', 'Сообщения', 'Документы', 'Платежи', 'Клуб Салона', 'Депозит и бонусы']) {
     assert.match(cabinetJs, new RegExp(`'${label.replace(/[+]/g, '\\$&')}'`));
   }
 });

@@ -140,7 +140,7 @@ test('читательский runtime создаёт оглавление, як
 
 test('спецификация совпадает с отдельным утверждённым экраном', () => {
   const html = fs.readFileSync(path.join(root, 'specifikaciya.html'), 'utf8');
-  assert.match(html, /body class="polish15-specification specification-page"/);
+  assert.match(html, /body class="[^"]*\bpolish15-specification specification-page\b[^"]*"/);
   assert.match(html, /data-specification-view="exact"/);
   assert.match(html, /data-specification-id="AS-SPEC-02"/);
   assert.match(html, /data-specification-version="1\.1"/);

@@ -5,7 +5,8 @@ if(!form||!S||!C||!P)return;
 const summary=document.querySelector('.order-summary'),layout=document.querySelector('.order-layout'),summaryMedia=matchMedia('(max-width:800px)');
 function placeSummary(){const focus=document.activeElement;if(summaryMedia.matches){$('topic').previousElementSibling.before(summary)}else layout.append(summary);if(focus&&summary.contains(focus))focus.focus({preventScroll:true})}
 placeSummary();summaryMedia.addEventListener('change',placeSummary);
-const params=new URLSearchParams(location.search), draftKey='salon_direct_selection_v1';
+const params=new URLSearchParams(location.search), draftKey='salon_direct_selection_v1', M=window.SalonCommerce;
+let composition=M?M.read():null,compositionControls=null;
 const serviceTypes={plan:'svc_plan',ai:'svc_ai',review:'svc_review',tutor:'svc_tutor',norm:'svc_norm',defense:'svc_defense',defensepack:'svc_defense_pack',commission0:'commission_zero',psychologyvip:'custom',author:'svc_author_order'};
 const serviceList=window.SalonServices||[];
 let queue=[],busy=false,confirmed=null,frozenPayload=null,service=null,serviceAnswers={};
@@ -21,7 +22,8 @@ let initial=params.get('product')||params.get('type')||params.get('work')||param
 const initialService=serviceList.find(s=>s.id===svcCode||s.code===svcCode);
 if(initialService)initial='service:'+initialService.id;
 function setValue(id,value){if([...$(id).options].some(o=>o.value===value))$(id).value=value}
-if(initial)setValue('product',initial);
+if(initial){setValue('product',initial);if(M)composition=M.normalize({product:initial})}
+else if(params.get('composition')==='1'&&M?.saved()){setValue('product',composition.product);setValue('scope',composition.scope);try{const saved=JSON.parse(sessionStorage.getItem(draftKey)||'null');if(saved){setValue('discipline',saved.discipline);if(/^\d{4}-\d{2}-\d{2}$/.test(saved.deadline||''))$('deadline').value=saved.deadline}}catch(e){}}
 else{try{const saved=JSON.parse(sessionStorage.getItem(draftKey)||'null');if(saved){setValue('product',saved.product);setValue('scope',saved.scope);setValue('discipline',saved.discipline);if(/^\d{4}-\d{2}-\d{2}$/.test(saved.deadline||''))$('deadline').value=saved.deadline}}catch(e){}}
 if(params.get('result')==='editing'||params.get('result')==='ai_editing')$('scope').value='editing';
 const legacyDisc=params.get('disc')||params.get('discipline')||({h:'hum',l:'law',t:'tech',m:'med'}[params.get('d')]);
@@ -29,7 +31,7 @@ if(legacyDisc)setValue('discipline',legacyDisc);
 if(params.get('result')==='diagnostic'||params.get('tier')==='base')$('scope').value='diagnostic';
 for(const id of ['promo','gift']){const value=params.get(id);if(value&&/^[A-Za-zА-Яа-яЁё0-9_-]{1,100}$/.test(value))$(id).value=value}
 if(params.get('work')==='practice'&&params.get('situation')==='draft'&&params.get('result')==='support')$('scope').value='support';
-const part={intro:'Введение или заключение',defense:'Презентация и речь'}[params.get('part')];
+const part={intro:'Введение или заключение',defense:'Презентация и речь'}[params.get('part')||(params.get('composition')==='1'?composition?.part:'')];
 if(part){$('scope').value='part';$('volume').value=part}
 const today=new Date();today.setHours(0,0,0,0);const isoDate=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
 $('deadline').min=isoDate(today);
@@ -40,7 +42,7 @@ function product(){
  const extra=C.types.find(x=>x.id===id);
  return P.products.find(p=>p.id===id)||(extra?{id,type:id,name:extra.label,days:'по заданию',detail:'Состав работы и этапы согласуем по требованиям к вашему проекту.',price:extra.base,min:0}:P.get('course'));
 }
-function term(){if(!$('deadline').value)return 'free';const diff=Math.ceil((new Date($('deadline').value+'T00:00:00')-today)/86400000);return diff<14?'urgent':diff<30?'mid':'free'}
+function term(){const cs=compositionState();if(cs&&cs.speed!=='standard')return 'urgent';if(!$('deadline').value)return 'free';const diff=Math.ceil((new Date($('deadline').value+'T00:00:00')-today)/86400000);return diff<14?'urgent':diff<30?'mid':'free'}
 function selected(){const p=product(),scope=$('scope').value;const custom=p.id==='custom'||p.id==='editing'||(scope==='part'&&p.id!=='chapter');return {p,scope,type:custom?'custom':p.type,tier:service?'base':scope==='diagnostic'?'base':scope==='editing'?'turn':'vip',term:service?'free':term(),disc:$('discipline').value}}
 function renderQuestions(){
  asks.replaceChildren();serviceAnswers={};
@@ -60,11 +62,51 @@ function changeProduct(){
  $('scope').disabled=!!service;
  renderQuestions();update();
 }
-function quote(){const a=selected();if(service){const n=service.priceFor?service.priceFor(serviceAnswers):service.from;return {amount:n,exact:service.fixed,note:'Стоимость выбранной услуги. Окончательные условия закрепим до оплаты.'}}
+function baseQuote(){const a=selected();if(service){const n=service.priceFor?service.priceFor(serviceAnswers):service.from;return {amount:n,exact:service.fixed,note:'Стоимость выбранной услуги. Окончательные условия закрепим до оплаты.'}}
  if(a.p.id==='custom'||a.p.id==='editing'||(a.scope==='part'&&a.p.id!=='chapter'))return {amount:null,note:'Посчитаем только выбранную часть по заданию. Полная работа в цену не включается.'};
  const q=C.quote(a.type,a.disc,a.term,a.tier);return {amount:q.low,exact:false,note:(a.term==='urgent'?'Срок до 14 дней: в действующем тарифе учтена срочность ×1,45. ':a.term==='mid'?'Срок 14–29 дней: учтён коэффициент ×1,15. ':'')+(a.disc!=='hum'?'Учтена выбранная дисциплина. ':'')+'Итоговая смета после задания.'};
 }
+
+function compositionState(){
+ if(!M||service||!M.products.includes($('product').value)||!['whole','part','editing'].includes($('scope').value))return null;
+ composition=M.normalize({...composition,product:$('product').value,scope:$('scope').value});return composition;
+}
+function quote(){
+ const a=selected(),base=baseQuote(),cs=compositionState();if(!cs)return base;
+ let amount=base.amount;
+ if(cs.speed!=='standard'&&amount!==null)amount=C.quote(a.type,a.disc,'free',a.tier).low;
+ const cq=M.quote(cs,amount);
+ return {amount:cq.total,exact:false,baseAmount:amount,compositionQuote:cq,note:cs.package==='vip'?'Полная смета за работу и VIP-сопровождение после задания.':cs.speed==='expressfast'?'Срок меньше суток и стоимость рассчитаем по заданию.':cs.speed==='express24'?'Экспресс работы за 24 часа: ×2 к плановой цене. Дополнения отдельно. Срок начинается после согласования, материалов и оплаты.':base.note+(cq.lines.length?' Выбранные дополнения включены в ориентир.':'')};
+}
+function renderComposition(){
+ if(!compositionControls)return;const cs=compositionState();compositionControls.hidden=!cs;if(!cs)return;
+ const vip=cs.package==='vip',candidate=cs.product==='kandidat';
+ $('order-speed').value=cs.speed;$('order-package').value=cs.package;
+ [...$('order-speed').options].forEach(o=>o.disabled=candidate&&o.value!=='standard');
+ compositionControls.querySelectorAll('[data-order-addon]').forEach(c=>{c.checked=vip||cs.addons.includes(c.value);c.disabled=vip||busy||!!frozenPayload;compositionControls.querySelector('[data-order-addon-price="'+c.value+'"]').textContent=vip?'Входит в VIP':'от '+P.money(M.addons.find(a=>a.id===c.value).price)});
+ $('order-express-note').textContent=candidate?'Для кандидатской выбран плановый срок. Для экспресса можно заказать отдельную часть.':cs.speed==='standard'?'Оформление по предоставленной методичке входит в основную работу.':'Если важен конкретный час, укажите дату выше и время ниже. Экспресс после согласования задания, материалов и оплаты.';
+ $('express-clock-row').hidden=cs.speed==='standard';$('order-vip-note').hidden=!vip;
+ const q=quote(),cq=q.compositionQuote,receipt=$('order-composition-lines');
+ receipt.replaceChildren();if(cq){
+  const base=document.createElement('div');base.textContent=selected().p.name+' · '+(cq.work===null?'по заданию':'от '+P.money(cq.work));receipt.append(base);
+  if(vip){const row=document.createElement('div');row.textContent='VIP-сопровождение · единая смета по заданию';receipt.append(row)}
+  cq.lines.forEach(l=>{const row=document.createElement('div');row.textContent=l.label+' · от '+P.money(l.price);receipt.append(row)});
+  if(cq.saving){const row=document.createElement('p');row.className='bundle-saving';row.textContent='Пакет «К защите» вместо двух услуг: экономия '+P.money(cq.saving)+'.';receipt.append(row)}
+ }
+ M.save(cs);
+}
+function mountComposition(){
+ if(!M)return;
+ compositionControls=document.createElement('section');compositionControls.className='order-composition-controls';compositionControls.setAttribute('aria-label','Срок, сопровождение и дополнения');
+ compositionControls.innerHTML='<div class="form-two"><div><label for="order-speed">Скорость выполнения</label><select id="order-speed"><option value="standard">Планово · обычная цена</option><option value="express24">Экспресс за 24 часа · от ×2</option><option value="expressfast">Быстрее суток · по расчёту</option></select></div><div><label for="order-package">Сопровождение</label><select id="order-package"><option value="standard">Работа по заданию</option><option value="vip">VIP · от начала до защиты</option></select></div></div><p class="field-note" id="order-express-note"></p><label id="express-clock-row" hidden>Нужно к определённому времени <input id="express-clock" type="time"><span class="field-note">Необязательно. Время относится к выбранной дате и вашему часовому поясу.</span></label><p class="order-vip-note" id="order-vip-note" hidden>VIP включает поэтапное сопровождение, обратную связь, дополнительные требования нормоконтроля, презентацию, речь и индивидуальный разбор. Полный состав, итерации и срок поддержки закрепим в смете.</p><details class="order-extra-details"><summary>Дополнения к работе <span>по желанию</span></summary>'+M.addons.map(a=>'<label class="addon-option"><input type="checkbox" data-order-addon value="'+a.id+'"><span><strong>'+a.label+'</strong><small>'+a.detail+'</small></span><b data-order-addon-price="'+a.id+'">от '+P.money(a.price)+'</b></label>').join('')+'</details><div class="order-composition-lines" id="order-composition-lines" aria-live="polite"></div>';
+ $('details').previousElementSibling.before(compositionControls);
+ compositionControls.querySelector('.order-extra-details').open=!!composition?.addons?.length;
+ $('order-speed').addEventListener('change',()=>{composition.speed=$('order-speed').value;update()});$('order-package').addEventListener('change',()=>{composition.package=$('order-package').value;update()});
+ compositionControls.querySelectorAll('[data-order-addon]').forEach(c=>c.addEventListener('change',()=>{composition.addons=c.checked?[...composition.addons,c.value]:composition.addons.filter(id=>id!==c.value);update()}));
+}
+
 function update(){
+ const cs=compositionState();
  const a=selected(),q=quote();
  const participation=((a.tier==='vip'&&a.scope!=='support')||service?.id==='psychologyvip')&&service?.id!=='author';$('participation-row').hidden=!participation;$('participation').required=participation;
  const anonymous=service?.id==='psychologyvip';$('anonymous-row').hidden=!anonymous;$('anonymous-data').required=anonymous;
@@ -72,12 +114,13 @@ function update(){
  $('summary-scope').textContent=service?'Отдельная услуга':{whole:'Работа с нуля',part:'Отдельная часть',editing:'Доработка готового текста',diagnostic:'Письменный разбор (по желанию)',support:'Работа с готовым проектом по этапам'}[a.scope];
  $('summary-price').textContent=q.amount?(q.exact?'':'от ')+P.money(q.amount)+(service?.unit||''):'По заданию';
  $('summary-price-note').textContent=q.note;
- $('summary-days').textContent=a.scope==='diagnostic'?'1–2 рабочих дня':a.scope==='editing'?'по объёму правок':a.p.days;
+ $('summary-days').textContent=cs?.speed==='express24'?'до 24 часов':cs?.speed==='expressfast'?'меньше суток':a.scope==='diagnostic'?'1–2 рабочих дня':a.scope==='editing'?'по объёму правок':a.p.days;
  $('summary-detail').textContent=a.scope==='support'?'План согласованных этапов, редакторские версии готового комплекта и итоговая сверка.':a.scope==='diagnostic'?'Письменный разбор требований и материалов с порядком дальнейших действий. Это отдельная услуга по вашему выбору.':a.scope==='editing'?'Исправленный текст по вашим замечаниям и согласованному заданию.':a.scope==='part'&&a.p.id!=='chapter'?'Только указанная вами часть. Уточните нужный результат в поле «Объём» или описании.':a.p.detail;
  let timeNote='Срок плановый. Точную дату подтвердим до оплаты.';
  if($('deadline').value){const days=Math.ceil((new Date($('deadline').value+'T00:00:00')-today)/86400000);timeNote='Нужная дата: '+new Date($('deadline').value+'T00:00:00').toLocaleDateString('ru-RU')+'. '+(days<(a.scope==='diagnostic'?1:a.p.min)?'Срок короче планового: сначала подтвердим возможность выполнить задание.':'Возможность сдачи подтвердим до оплаты.')}
  $('deadline-note').textContent=timeNote;
  try{sessionStorage.setItem(draftKey,JSON.stringify({product:$('product').value,scope:a.scope,discipline:a.disc,deadline:$('deadline').value}))}catch(e){}
+ renderComposition();
 }
 // Restore selection without storing topic, contact, name, notes, consent or files.
 service=serviceList.find(s=>'service:'+s.id===$('product').value)||null;
@@ -96,7 +139,7 @@ if(service?.id==='commission0'){
  const incoming=validCommission(consumeHandoff('salon_commission_zero_handoff_v1'),Date.now());
  if(incoming){for(const id of ['work','source']){$('service-'+id).value=incoming[id];serviceAnswers[id]=incoming[id]}$('topic').value=incoming.topic}
 }
-update();
+mountComposition();update();
 $('product').addEventListener('change',changeProduct);['scope','discipline','deadline'].forEach(id=>$(id).addEventListener('change',update));
 function message(text,focus=true){$('form-message').textContent=text;$('form-message').hidden=false;if(focus)$('form-message').focus()}
 function fileId(f){let h=2166136261;const s=[f.name,f.size,f.lastModified,f.type].join('|');for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return 'file_'+(h>>>0).toString(36)}
@@ -107,8 +150,8 @@ $('files').addEventListener('change',()=>{
  const errors=[];for(const f of $('files').files){if(queue.some(a=>a.id===fileId(f)))continue;if(queue.length>=5){errors.push('Можно прикрепить до 5 файлов.');break}if(!f.size||f.size>20*1048576){errors.push('Пустой файл или размер больше 20 МБ: '+f.name);continue}if(!/\.(docx?|pdf|rtf|odt|txt|jpe?g|png|webp|heic)$/i.test(f.name)){errors.push('Неподдерживаемый формат: '+f.name);continue}queue.push({file:f,id:fileId(f),state:'wait'})}
  $('files').value='';fileList();if(errors.length)message(errors.join('\n'));
 });
-function freeze(on){form.querySelectorAll('input,select,textarea').forEach(x=>x.disabled=on);$('scope').disabled=on||!!service;fileList()}
-function payload(){const a=selected();const details=[a.p.name,'Объём заказа: '+$('summary-scope').textContent,$('volume').value.trim()?'Объём: '+$('volume').value.trim():'',...Object.entries(serviceAnswers).map(([k,v])=>{const q=service.ask.find(x=>x.id===k);return q.label+': '+v}),$('details').value.trim()].filter(Boolean).join('\n');
+function freeze(on){form.querySelectorAll('input,select,textarea').forEach(x=>x.disabled=on);$('scope').disabled=on||!!service;fileList();if(!on)renderComposition()}
+function payload(){const a=selected(),activeComposition=compositionState();const details=[a.p.name,'Объём заказа: '+$('summary-scope').textContent,$('volume').value.trim()?'Объём: '+$('volume').value.trim():'',...Object.entries(serviceAnswers).map(([k,v])=>{const q=service.ask.find(x=>x.id===k);return q.label+': '+v}),$('details').value.trim(),compositionState()?M.summary(composition):'',activeComposition&&activeComposition.speed!=='standard'&&$('express-clock')?.value?'Нужно к '+($('deadline').value||'дате, которую уточним')+' '+$('express-clock').value+' (часовой пояс клиента: '+Intl.DateTimeFormat().resolvedOptions().timeZone+')':''].filter(Boolean).join('\n');
  const p={type:a.type,disc:C.transportDiscipline(a.disc),term:a.term,tier:a.tier,topic:$('topic').value.trim(),deadline:$('deadline').value,details,plan:service?.id==='plan',name:$('name').value.trim(),contact:$('contact').value.trim(),website:$('website').value,consent:$('consent').checked,privacy_notice_ack:$('consent').checked,consent_doc:window.SalonDirectContract.consent_doc,page:'configurator.html'};
  if($('promo').value.trim())p.promo=$('promo').value.trim();if($('gift').value.trim())p.gift=$('gift').value.trim();
  if(S.refCode?.())p.ref=S.refCode();
@@ -118,10 +161,16 @@ function payload(){const a=selected();const details=[a.p.name,'Объём зак
  // Reuse the established serializer without init(): no stored cart is read,
  // no cart UI is mounted, and S inside cart.js stays null so client fields
  // cannot be persisted. The actual submitted line retains package semantics.
- if(service||p.case_context.scope_code){
+ const cs=compositionState();
+ const composed=cs&&(cs.speed!=='standard'||cs.package==='vip'||cs.addons.length>0);
+ if(composed)p.composition_intent={...cs,express_factor:cs.speed==='express24'?2:null,requested_clock:cs.speed!=='standard'?$('express-clock')?.value||'':'',quote_status:'estimate_only',price_and_schedule_confirmation_required:true};
+ if(service||p.case_context.scope_code||composed){
   const q=quote(),cart=window.SalonCart;cart.clear();
-  cart.add({kind:service?'service':'work',type:a.type,serviceId:service?.id||'',label:a.p.name,disc:a.disc,term:a.term,tier:a.tier,low:q.amount||0,high:q.amount||0,fixed:!!service?.fixed,topic:p.topic,deadline:p.deadline,requirements:p.details,answers:{...serviceAnswers},academicSubmode:p.academic_submode,authorParticipation:!!p.author_participation?.confirmed,scopeCode:p.case_context.scope_code,resultCode:a.scope==='diagnostic'?'diagnostic':a.scope==='editing'?'editing':'support',sourceMaterialProvided:queue.length>0},{silent:true});
-  p.cart=cart.payload();p.cart.items.forEach(x=>x.disc=C.transportDiscipline(x.disc));
+  const mainLine={kind:service?'service':'work',type:a.type,serviceId:service?.id||'',label:a.p.name,disc:a.disc,term:a.term,tier:a.tier,low:q.amount||0,high:q.amount||0,fixed:!!service?.fixed,topic:p.topic,deadline:p.deadline,requirements:p.details,answers:{...serviceAnswers},academicSubmode:p.academic_submode,authorParticipation:!!p.author_participation?.confirmed,scopeCode:p.case_context.scope_code,resultCode:a.scope==='diagnostic'?'diagnostic':a.scope==='editing'?'editing':'support',sourceMaterialProvided:queue.length>0};cart.add(mainLine,{silent:true});
+  if(composed)M.lines(cs).forEach(l=>cart.add({kind:'service',type:l.type,serviceId:l.service,label:l.label,parentId:mainLine.id,disc:a.disc,term:a.term,tier:'base',low:l.price,high:l.price,topic:p.topic,deadline:p.deadline,requirements:l.detail,answers:{when:p.deadline||'Дату защиты согласуем по заданию'},academicSubmode:'A1',authorParticipation:false},{silent:true}));
+  p.cart=cart.payload();
+  if(composed){const cq=q.compositionQuote;p.cart.items[0].quote_preview={low:cq.work||0,high:cq.work||0};p.cart.items[0].quote_pending=cq.work===null||cs.package==='vip';p.cart.items[0].schedule.requested_turnaround_hours=cs.speed==='express24'?24:null;p.cart.items[0].schedule.express_requested=cs.speed!=='standard';p.cart.quote_preview={low:cq.total??cq.lowerBound,high:cq.total??cq.lowerBound};p.cart.quote_pending=cq.total===null;p.cart.package_request=cs.package;p.cart.express_request=cs.speed;p.cart.base_formatting_included=true;}
+  p.cart.items.forEach(x=>x.disc=C.transportDiscipline(x.disc));
  }
  if(queue.length)p.attachments=queue.map(a=>({client_file_id:a.id,name:a.file.name,size:a.file.size,type:a.file.type||'application/octet-stream',status:'pending'}));
  if(S.attribution?.decoratePage)p.page=S.attribution.decoratePage(p.page);
@@ -132,7 +181,7 @@ function renderUploads(){
 }
 async function upload(a){if(!confirmed||a.state==='up'||a.state==='ok')return;a.state='up';renderUploads();try{const fd=new FormData();fd.append('file',a.file,a.file.name);fd.append('client_file_id',a.id);const h=S.api.headers('POST');if(confirmed.token)h['X-Order-Token']=confirmed.token;const r=await fetch(S.api.base+'/orders/'+confirmed.id+'/upload',{method:'POST',credentials:'include',headers:h,body:fd});const data=await r.json();a.state=r.ok&&data.ok===true?'ok':'err'}catch(e){a.state='err'}renderUploads();if(queue.every(f=>f.state==='ok')){try{sessionStorage.removeItem(draftKey)}catch(e){}}}
 async function showSuccess(r,attempt){
- confirmed=r;if(S.visit?.order)S.visit.order(r.id,r.token);if(S.metrika?.goal)S.metrika.goal('order_submitted');S.orderContract.clear('configurator',undefined,attempt.clientRequestId);
+ confirmed=r;if(M)M.clear();if(S.visit?.order)S.visit.order(r.id,r.token);if(S.metrika?.goal)S.metrika.goal('order_submitted');S.orderContract.clear('configurator',undefined,attempt.clientRequestId);
  if(r.token)S.api.addGuestToken(r.token);if(r.guest_session)S.api.setGuestHint(true);
  if(!queue.length){try{sessionStorage.removeItem(draftKey)}catch(e){}}
  document.querySelector('.order-layout').hidden=true;document.body.classList.add('is-success');$('order-success').hidden=false;$('success-id').textContent=String(r.id);

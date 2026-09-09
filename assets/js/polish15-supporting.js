@@ -325,7 +325,7 @@
     if (!builder || !Salon.api) return;
 
     var config = {
-      presets: [2000, 5000, 10000, 15000],
+      presets: [3000, 5000, 10000, 15000],
       min: 2000,
       max: 50000,
       deliver_max_days: 90,
@@ -455,6 +455,24 @@
       config.max = Number(response.max) || config.max;
       config.deliver_max_days = Number(response.deliver_max_days) || config.deliver_max_days;
       config.pay_online = !!response.pay_online;
+      // Keep the visible presets and validation in sync with public configuration.
+      if (Array.isArray(response.presets)) {
+        config.presets = response.presets.map(Number).filter(function (amount) {
+          return Number.isInteger(amount) && amount >= config.min && amount <= config.max;
+        }).slice(0, amountButtons.length);
+        amountButtons.forEach(function (button, index) {
+          var amount = config.presets[index];
+          button.hidden = !amount;
+          if (!amount) return;
+          button.dataset.giftAmount = String(amount);
+          button.textContent = money(amount);
+          button.classList.toggle('is-selected', amount === state.amount);
+          button.setAttribute('aria-pressed', String(amount === state.amount));
+        });
+      }
+      custom.min = String(config.min);
+      custom.max = String(config.max);
+
       var today = new Date();
       var maximum = new Date(Date.now() + config.deliver_max_days * 86400000);
       deliveryDate.min = today.toISOString().slice(0, 10);
