@@ -623,6 +623,14 @@
       {
         "path": "prolog-interactive.html",
         "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/order-stages-interactive",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-a4cbf79bebbb46d287d1f6f9b4f38e44",
+        "match": "tree"
       }
     ],
     "read": []
@@ -641,6 +649,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 30,
-  "base_manifest_hash": "f99a815c8b4f5646b3b61081c97ef4e38354ee91409fedcd6ceddcf4b9102942"
+  "manifest_revision": 31,
+  "base_manifest_hash": "86c77e3e995fe63654a7534b621a7b9488638c843059f389d2ca785b6ede66a1"
 }
