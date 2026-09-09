@@ -73,6 +73,7 @@ function initGodEye() {
   /* Серверные коды отказов — человеческим языком: что произошло и что
      безопасно сделать сейчас. Владельцу нечего делать с «bad_price». */
   var ERR_WORD = {
+    network_uncertain: 'Ответ не получен. Перед повтором обновите данные и проверьте, выполнено ли действие.',
     busy: 'Секунду — предыдущее действие ещё выполняется.',
     forbidden: 'Доступ закрыт: этот аккаунт не в списке мастеров.',
     unauthorized: 'Сессия закончилась. Войдите заново.',
@@ -107,6 +108,7 @@ function initGodEye() {
   }
 
   var st = {
+    identityEpoch: 0, deskLoading: false, deskFailed: false, controlFilter: 'all', controlLimit: 8, controlPanels: {},
     offnew: false, offlink: null,   /* сборка заявки под ссылку */
     tab: 'summary', filter: 'attention', q: '', sort: 'fresh', listLimit: 40,
     orders: [], sel: null, card: null,
@@ -127,6 +129,13 @@ function initGodEye() {
     leadsLoaded: false, leadsSynced: false,   /* обращения: список загружен / фоновая догрузка счётчика */
     tabRequestEpoch: 0, cardRequestSeq: 0, clientRequestSeq: 0
   };
+
+  var uncertainBonuses={},bonusReadEvidence=null;
+  try{uncertainBonuses=JSON.parse(sessionStorage.getItem('salon_admin_uncertain_bonus')||'{}')||{};}catch(e){}
+  function saveUncertainBonus(id,delta){if(delta===null)delete uncertainBonuses[id];else uncertainBonuses[id]={delta:delta,at:Date.now()};try{sessionStorage.setItem('salon_admin_uncertain_bonus',JSON.stringify(uncertainBonuses));}catch(e){}}
+  function uncertainBonusNotice(id){return uncertainBonuses[id]?'<div class="control-warning"><strong>Исход предыдущей операции неизвестен</strong><p>Не повторяйте начисление или списание, пока не сверите баланс и историю ниже.</p><button type="button" class="btn btn-line" data-bonus-reconcile="'+id+'">Обновить и сверить историю</button>'+((bonusReadEvidence&&bonusReadEvidence.id===Number(id)&&bonusReadEvidence.epoch===st.identityEpoch)?'<button type="button" class="btn btn-line" data-bonus-reviewed="'+id+'">Я сверил историю</button>':'')+'</div>':'';}
+
+  function adminRead(path){var epoch=st.identityEpoch;return S.api.get(path).then(function(r){return epoch===st.identityEpoch?r:{ok:false,error:'identity_changed'};});}
 
   /* ОТМЕТКА «ОБРАБОТАН» У ОБРАЩЕНИЙ.
      Серверного маршрута для смены статуса лида нет (в API живёт только
@@ -438,23 +447,24 @@ function initGodEye() {
 
   /* ---------------- вход/гейт ---------------- */
   function tplLogin(pending, denied) {
-    return '<main class="ag-login sheet sheet-pad stacked">' +
-      '<div class="admin-login-brand"><img src="bimi/logo.svg" alt=""><div><p class="caps">Редакционный кабинет</p>' +
-      '<strong>Академический Салон</strong></div></div>' +
-      '<p class="caps">Кабинет мастера</p>' +
-      '<h1 style="font-size:26px;margin:6px 0 10px">Рабочий стол мастерской</h1>' +
-      (denied ? '<p class="petit" style="color:var(--wax,#A8402F);margin-bottom:12px">Этот аккаунт Telegram не является мастером — доступа нет.</p>' : '') +
+    return '<main class="control-login"><a class="control-login-home" href="index.html">← На сайт Салона</a>' +
+      '<section class="control-login-card"><div class="control-emblem" aria-hidden="true">А</div>' +
+      '<p class="control-eyebrow">АКАДЕМИЧЕСКИЙ САЛОН · ДЛЯ МАСТЕРА</p>' +
+      '<h1>Твоя мастерская.<br><em>Всё под рукой.</em></h1>' +
+      '<p class="control-login-intro">Заказы, переписка, сроки и оплаты в одном рабочем пространстве.</p>' +
+      (denied ? '<p class="control-login-status" role="alert">У этого аккаунта нет доступа к управлению. Войди через Telegram мастера.</p>' : '') +
       (pending
-        ? '<p class="petit" style="margin-bottom:12px">Ждём подтверждение в Telegram — нажмите в боте <b>Start</b>.</p>' +
-          '<a class="btn btn-wax btn-block" href="' + (pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Открыть Telegram</a>' +
-          '<button type="button" class="btn btn-line btn-block" id="agCancel" style="margin-top:10px">Отменить</button>'
-        : '<button type="button" class="btn btn-wax btn-block" id="agTg">Войти через Telegram</button>') +
-      (denied ? '<button type="button" class="btn btn-line btn-block" id="agLogout" style="margin-top:10px">Выйти и сменить аккаунт</button>' : '') +
-      '<p class="ag-note" style="margin-top:14px">Вход подтверждается в боте мастерской. Посторонним сервер не отвечает.</p>' +
-      '</main>';
+        ? '<p class="control-login-status" role="status">Подтверди вход в боте: нажми «Запустить». Эта страница откроет мастерскую автоматически.</p>' +
+          '<a class="btn btn-wax btn-block" href="' + esc(pending.link || 'https://t.me/academic_saloon_bot') + '" target="_blank" rel="noopener">Подтвердить в Telegram ↗</a>' +
+          '<button type="button" class="btn btn-line btn-block" id="agCancel">Отменить вход</button>'
+        : '<button type="button" class="btn btn-wax btn-block" id="agTg">Войти через Telegram ↗</button>') +
+      (denied ? '<button type="button" class="btn btn-line btn-block" id="agLogout">Сменить аккаунт</button>' : '') +
+      '<div class="control-login-note"><span aria-hidden="true">◇</span><span>Доступ только для мастера.<br>Пароль запоминать не нужно.</span></div></section>' +
+      '<p class="control-login-signature">Внимание к деталям начинается здесь.</p></main>';
   }
 
   function gate() {
+    var gateEpoch=++st.identityEpoch;
     if (!S.api.token()) {
       document.body.classList.remove('admin-workspace-ready', 'admin-nav-expanded',
         'admin-drawer-open', 'admin-client-selected');
@@ -462,7 +472,8 @@ function initGodEye() {
       render(tplLogin(pending));
       return;
     }
-    S.api.get('/admin/overview').then(function (r) {
+    adminRead('/admin/overview').then(function (r) {
+      if(gateEpoch!==st.identityEpoch)return;
       if (r.error === 'forbidden') {
         document.body.classList.remove('admin-workspace-ready');
         render(tplLogin(null, true));
@@ -504,7 +515,9 @@ function initGodEye() {
     });
   }
 
+  document.addEventListener('salon:identity-changing',function(){st.identityEpoch++;st.tabRequestEpoch++;st.cardRequestSeq++;st.clientRequestSeq++;st.busy=false;st.deskLoading=false;st.ovBusy=false;st.subsLoading=false;st.desk=null;st.ov=null;st.ovAt=0;});
   document.addEventListener('salon:auth-lost', function () {
+    st.identityEpoch++;st.tabRequestEpoch++;st.cardRequestSeq++;st.clientRequestSeq++;st.deskLoading=false;st.ovBusy=false;st.subsLoading=false;st.desk=null;st.deskFailed=false;st.orders=[];st.clients=[];st.ccard=null;st.csel=null;st.ov=null;st.ovAt=0;
     st.busy = false;
     st.card = null;
     releaseAdminObjectUrls();
@@ -533,7 +546,7 @@ function initGodEye() {
     if (st.subsLoading) return;
     st.subsLoading = true;
     st.subsFailed = false;
-    S.api.get('/admin/subs').then(function (r) {
+    adminRead('/admin/subs').then(function (r) {
       st.subsLoading = false;
       if (r && r.ok) {
         st.subs = r;
@@ -558,11 +571,13 @@ function initGodEye() {
     refreshT = setTimeout(doRefresh, 300);
   }
   function doRefresh() {
+    var refreshEpoch=st.identityEpoch;
     refreshT = null;
     if (!S.api.token()) return;
     if (!st.ovBusy) {
       st.ovBusy = true;
-      S.api.get('/admin/overview').then(function (r) {
+      adminRead('/admin/overview').then(function (r) {
+        if(refreshEpoch!==st.identityEpoch)return;
         st.ovBusy = false;
         if (r.ok) {
           st.ov = r;
@@ -582,7 +597,7 @@ function initGodEye() {
     if (st.tab === 'gifts') loadGifts();
     if (st.tab === 'qa') loadQA();
     if (st.tab === 'orders') {
-      S.api.get('/admin/orders?' + listQuery()).then(function (r) {
+      adminRead('/admin/orders?' + listQuery()).then(function (r) {
         if (r.ok && st.tab === 'orders') { st.orders = r.orders; drawList(); }
       });
       if (st.sel) loadCard(st.sel, true);
@@ -616,7 +631,7 @@ function initGodEye() {
        остаётся на прошлой вкладке, хотя в шапке уже подсвечена новая */
     tabLoading();
     if (st.tab === 'orders') {
-      S.api.get('/admin/orders?' + listQuery()).then(function (r) {
+      adminRead('/admin/orders?' + listQuery()).then(function (r) {
         if (!tabRequestCurrent()) return;
         if (!r.ok) return tabFail();
         st.orders = r.orders;
@@ -626,7 +641,7 @@ function initGodEye() {
         if (st.sel) loadCard(st.sel);
       });
     } else if (st.tab === 'clients') {
-      S.api.get('/admin/clients').then(function (r) {
+      adminRead('/admin/clients').then(function (r) {
         if (!tabRequestCurrent()) return;
         if (!r.ok) return tabFail();
         st.clients = r.clients;
@@ -634,7 +649,7 @@ function initGodEye() {
         if (st.csel) loadClient(st.csel);
       });
     } else if (st.tab === 'reviews') {
-      S.api.get('/admin/reviews').then(function (r) {
+      adminRead('/admin/reviews').then(function (r) {
         if (!tabRequestCurrent()) return;
         if (!r.ok) return tabFail();
         st.reviews = r.reviews;
@@ -645,7 +660,7 @@ function initGodEye() {
     } else if (st.tab === 'gifts') {
       loadGifts();
     } else if (st.tab === 'leads') {
-      S.api.get('/admin/leads').then(function (r) {
+      adminRead('/admin/leads').then(function (r) {
         if (!tabRequestCurrent()) return;
         if (!r.ok) return tabFail();
         st.leads = r.leads || [];
@@ -686,7 +701,7 @@ function initGodEye() {
   }
   function loadQA() {
     snapshotQaDrafts();   /* сохранить недописанные ответы перед перерисовкой ленты */
-    S.api.get('/admin/qa').then(function (r) {
+    adminRead('/admin/qa').then(function (r) {
       if (!r || !r.ok) { if (st.tab === 'qa') tabFail(); return; }
       st.qa = r.items;
       st.qaTags = r.tags || {};
@@ -712,7 +727,7 @@ function initGodEye() {
   function loadVisits(silent) {
     var o = st.vopts;
     var qs = 'hours=' + o.hours + (o.self ? '&self=1' : '') + (o.bots ? '&bots=1' : '');
-    S.api.get('/admin/visits?' + qs).then(function (r) {
+    adminRead('/admin/visits?' + qs).then(function (r) {
       if (!r || !r.ok) return;
       st.visits = r.visits;
       st.vstats = r.stats;
@@ -1077,7 +1092,7 @@ function initGodEye() {
   function loadCard(id, silent) {
     st.sel = id;
     var requestSeq = ++st.cardRequestSeq;
-    S.api.get('/admin/orders/' + id).then(function (r) {
+    adminRead('/admin/orders/' + id).then(function (r) {
       if (requestSeq !== st.cardRequestSeq || st.tab !== 'orders' || st.sel !== id) return;
       if (!r.ok) return;
       var was = st.card;
@@ -1104,7 +1119,7 @@ function initGodEye() {
     drawClientList();   /* подсветить выбранную строку сразу */
     var profile = document.getElementById('agCCard');
     if (profile) profile.innerHTML = '<div class="ag-empty" role="status">Открываем карточку клиента…</div>';
-    S.api.get('/admin/clients/' + id).then(function (r) {
+    adminRead('/admin/clients/' + id).then(function (r) {
       if (requestSeq !== st.clientRequestSeq || st.tab !== 'clients' || st.csel !== id) return;
       if (!r.ok) {
         st.csel = null;
@@ -1142,49 +1157,14 @@ function initGodEye() {
       action + '</span></button>';
   }
 
+
   function renderShell() {
-    var u = S.api.user() || {};
+    var u=S.api.user()||{};
     document.body.classList.add('admin-workspace-ready');
-    render('<a class="workspace-skip-link" href="#agBody">К рабочей области</a>' +
-      '<header class="admin-mobile-appbar">' +
-        '<button type="button" class="admin-mobile-appbar__back" data-admin-mobile-back aria-label="Вернуться назад">←</button>' +
-        '<span class="admin-mobile-appbar__brand"><img src="bimi/logo.svg" alt="">' +
-          '<span><strong>Редакционный кабинет</strong><small>Управление</small></span></span>' +
-        '<button type="button" class="admin-mobile-appbar__search" data-admin-mobile-search aria-label="Найти дело">' + icoSearch(18) + '</button>' +
-        adminThemeButton() +
-        '<button type="button" class="admin-mobile-appbar__menu" data-admin-mobile-menu aria-controls="agNav" aria-expanded="false" aria-label="Открыть разделы"><i></i></button>' +
-      '</header>' +
-      '<div class="admin-shell">' +
-      '<aside class="admin-sidebar">' +
-        '<a class="admin-sidebar__brand" href="/"><img src="bimi/logo.svg" alt="">' +
-          '<span><strong>Академический Салон</strong><small>Редакционный кабинет</small></span></a>' +
-        /* Поиск поднят НАД навигацией: раньше он стоял после неё и вместе с
-           подвалом съедал столько высоты, что на окне 720px список разделов
-           обрывался на «Отзывах» — пять разделов не существовало для глаза. */
-        '<button type="button" class="admin-sidebar__search" data-admin-global-search>' +
-          icoSearch(15) + '<span>Найти дело</span><kbd>⌘ K</kbd></button>' +
-        '<div class="admin-sidebar__scroll">' +
-          '<nav id="agNav" aria-label="Разделы администрирования"></nav>' +
-        '</div>' +
-        /* Подвал сжат до двух строк. Раньше он занимал пять: две ссылки,
-           плашка темы с текстом в два ряда, выход и декоративная подпись
-           «Рабочая среда». Эти ~90px отбирались у списка разделов. */
-        '<footer><div class="admin-sidebar__links">' +
-            '<a href="/">Сайт <span>↗</span></a>' +
-            '<a href="dashboard.html">Кабинет клиента <span>↗</span></a>' +
-          '</div>' +
-          '<div class="admin-theme-row">' + adminThemeButton() +
-            '<span data-theme-action>' + (S.theme && S.theme.current && S.theme.current() === 'dark'
-              ? 'Включить светлую тему' : 'Включить тёмную тему') + '</span></div>' +
-          '<button type="button" class="admin-logout" id="agLogout" title="Выйти из кабинета мастера">Выйти · ' +
-            esc(u.name || 'мастер') + '</button></footer>' +
-      '</aside>' +
-      '<main class="admin-main"><header class="admin-head" id="agHead"></header>' +
-        '<div id="agBody" tabindex="-1"></div></main></div>');
-    drawNav();
-    drawLive();
-    bindNavOverflow();
+    render('<a class="workspace-skip-link" href="#agBody">К рабочей области</a><div class="admin-mobile-appbar"><a class="admin-mobile-appbar__back" href="/" aria-label="На главную сайта">'+ico('desk',19)+'</a><span class="admin-mobile-appbar__brand"><span><strong>Пульт Салона</strong><small>Управление</small></span></span><button type="button" class="admin-mobile-appbar__search" data-admin-mobile-search aria-label="Найти заказ">'+icoSearch(18)+'</button>'+adminThemeButton()+'<button type="button" class="admin-mobile-appbar__menu" data-admin-mobile-menu aria-controls="agNav" aria-expanded="false" aria-label="Открыть разделы">Меню</button></div><div class="admin-shell"><aside class="admin-sidebar"><a class="admin-sidebar__brand" href="/"><span class="control-emblem">'+ico('stPriced',26)+'</span><span><small>Академический</small><strong>Салон</strong></span></a><div class="control-owner"><span>РАБОЧЕЕ ПРОСТРАНСТВО</span><strong>Пульт управления</strong></div><button type="button" class="admin-sidebar__search" data-admin-global-search>'+icoSearch(17)+'<span>Найти заказ</span><kbd>⌘ K</kbd></button><div class="admin-sidebar__scroll"><nav id="agNav" aria-label="Разделы администрирования"></nav></div><footer><div class="admin-sidebar__links"><a href="/">На сайт ↗</a><a href="dashboard.html">Кабинет клиента ↗</a></div><div class="admin-theme-row">'+adminThemeButton()+'<span data-theme-action>Сменить тему</span></div><button type="button" class="admin-logout" id="agLogout">Выйти · '+esc(u.name||'мастер')+'</button></footer></aside><main class="admin-main"><header class="admin-head" id="agHead"></header><div id="agBody" tabindex="-1"></div></main></div>');
+    drawNav();drawLive();bindNavOverflow();
   }
+
 
   /* Список разделов длиннее сайдбара на любом ноутбучном окне. Скролл там был
      всегда, но невидимый: ни полосы, ни среза. Класс на обёртке включает
@@ -1224,7 +1204,7 @@ function initGodEye() {
     var leads = st.leadsLoaded ? leadsOpenCount() : (ov.leads_new || 0);
     if (!st.leadsLoaded && !st.leadsSynced && leads > 0 && leadsDone().length) {
       st.leadsSynced = true;
-      S.api.get('/admin/leads').then(function (r) {
+      adminRead('/admin/leads').then(function (r) {
         if (!r || !r.ok) return;
         st.leads = r.leads || [];
         st.leadsLoaded = true;
@@ -1252,7 +1232,7 @@ function initGodEye() {
     var groups = [
       ['Работа', [
         ['summary', 'Рабочий стол', 'desk', 0],
-        ['orders', 'Дела', 'cases', b.orders],
+        ['orders', 'Заказы', 'cases', b.orders],
         ['clients', 'Клиенты', 'clients', 0]
       ]],
       ['Коммуникации', [
@@ -1300,9 +1280,9 @@ function initGodEye() {
         ' · ' + attentionOrders + ' требуют решения'
       : 'Сроки, оплаты и переписка';
     var label = {
-      summary: ['Редакционный кабинет', 'Рабочий стол', 'Сводка на сегодня'],
+      summary: ['АКАДЕМИЧЕСКИЙ САЛОН', 'Всё перед глазами', 'Заказы, деньги и ближайшие решения.'],
       visits: ['Аналитика', 'Надёжные данные', 'Посетители, источники, пути, воронка и качество сбора'],
-      orders: ['Операционная работа', 'Дела', ordersLead],
+      orders: ['РАБОЧЕЕ ПРОСТРАНСТВО', 'Заказы', ordersLead],
       clients: ['Отношения с клиентами', 'Клиенты', 'История дел и обращений'],
       reviews: ['Репутация', 'Отзывы', 'Публикация и модерация'],
       qa: ['Открытая приёмная', 'Вопросы', 'Редакторские ответы посетителям'],
@@ -1316,7 +1296,7 @@ function initGodEye() {
       return p.charAt(0);
     }).join('').slice(0, 2).toUpperCase() || 'СМ';
     var mobileTitle = {
-      summary: 'Редакционный кабинет',
+      summary: 'Пульт Салона',
       visits: 'Аналитика',
       orders: 'Дела',
       clients: 'Клиенты',
@@ -1330,7 +1310,7 @@ function initGodEye() {
     }[st.tab] || 'Редакционный кабинет';
     var mobileBrand = root.querySelector('.admin-mobile-appbar__brand strong');
     if (mobileBrand) mobileBrand.textContent = mobileTitle;
-    var headAction = '';
+    var headAction = st.tab === 'summary' ? '<button type="button" class="header-action wz-open" id="wzOpen">+ Новый заказ</button>' : '';
     if (st.tab === 'content') {
       headAction = '<a class="header-action" href="knowledge.html" target="_blank" rel="noopener">Открыть библиотеку</a>';
     } else if (st.tab === 'orders') {
@@ -1355,7 +1335,7 @@ function initGodEye() {
       headAction +
       '<button type="button" class="ag-live quiet" id="agLive" title="Открыть посещения">' +
         '<span class="ld"></span><span><b id="agLiveN">0</b> онлайн</span></button>' +
-      '<span class="admin-profile">' + esc(initials) + '</span></div>';
+      '<span class="admin-profile" title="'+esc(u.name||'Мастер')+'">' + esc(initials) + '</span></div>';
     drawLive();
   }
 
@@ -1429,7 +1409,7 @@ function initGodEye() {
 
   /* ---------------- СЕРТИФИКАТЫ ---------------- */
   function loadGifts() {
-    S.api.get('/admin/gifts').then(function (r) {
+    adminRead('/admin/gifts').then(function (r) {
       /* при обрыве: есть кэш — вернём его (loadTab уже стёр тело в «Загружаем…»),
          нет — покажем ошибку с «Повторить». Иначе вкладка зависает на плейсхолдере */
       if (!r || !r.ok) { if (st.tab === 'gifts') { if (st.gifts) drawBody(); else tabFail(); } return; }
@@ -1600,7 +1580,7 @@ function initGodEye() {
     });
   }
   function openGiftCard(id) {
-    S.api.get('/admin/gifts/' + id).then(function (r) {
+    adminRead('/admin/gifts/' + id).then(function (r) {
       if (r && r.ok) drawGiftCard(r.gift);
     });
   }
@@ -1631,7 +1611,7 @@ function initGodEye() {
 
   function bcastRefresh() {
     var seg = (document.getElementById('agBSeg') || {}).value || 'all';
-    S.api.get('/admin/broadcast?segment=' + seg).then(function (r) {
+    adminRead('/admin/broadcast?segment=' + seg).then(function (r) {
       var c = document.getElementById('agBCount');
       if (!c || !r.ok) return;
       c.textContent = 'получателей: ' + r.count;
@@ -1651,7 +1631,7 @@ function initGodEye() {
         (stt.failed ? ' · недоставлено ' + stt.failed : '');
       setTimeout(function () {
         if (st.tab !== 'broadcast') return;
-        S.api.get('/admin/broadcast/status').then(function (r) { if (r.ok) bcastStatus(r.state); });
+        adminRead('/admin/broadcast/status').then(function (r) { if (r.ok) bcastStatus(r.state); });
       }, 2500);
     } else if (stt.finished_at) {
       el.innerHTML = 'Последняя рассылка («' + esc(stt.segment) + '»): доставлено ' + stt.sent +
@@ -1665,11 +1645,18 @@ function initGodEye() {
   /* -------- «Сегодня на столе»: фокус-очередь + календарь сдач --------
      Правило подачи: сначала то, что требует рук сегодня (и деньги дела),
      остальное — ниже, как обычно. Список собирается из активных заказов. */
+
   function loadDesk() {
-    S.api.get('/admin/orders?status=active').then(function (r) {
-      if (r && r.ok) { st.desk = r.orders || []; if (st.tab === 'summary') drawBody(); }
-    });
+    if(st.deskLoading)return;
+    st.deskLoading=true;st.deskFailed=false;
+    var epoch=st.identityEpoch;
+    adminRead('/admin/orders?status=active').then(function(r){
+      if(epoch!==st.identityEpoch)return;
+      if(r&&r.ok){st.desk=r.orders||[];st.deskAt=Date.now();}else st.deskFailed=true;
+    }).catch(function(){if(epoch===st.identityEpoch)st.deskFailed=true;}).finally(function(){if(epoch!==st.identityEpoch)return;st.deskLoading=false;if(st.tab==='summary')drawBody();});
   }
+
+
   function dlLeft(o) {
     /* считаем по календарным суткам: вчера = −1, сегодня = 0, завтра = 1 */
     if (!o.deadline_date || 'done cancel'.indexOf(o.status) >= 0) return null;
@@ -1741,134 +1728,31 @@ function initGodEye() {
       (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
   }
 
-  function tplSummary() {
-    var ov = st.ov || {};
-    var by = ov.by_status || {};
-    var active = ['new', 'priced', 'prepay', 'work', 'check', 'fix']
-      .reduce(function (s, k) { return s + (by[k] || 0); }, 0);
-    if (st.desk === null) loadDesk();
-    var queue = st.desk === null ? [] : deskRows();
-    var qa = +((ov.qa && ov.qa.pending) || 0);
-    var reviews = +(ov.reviews_pending || 0);
-    var subsPending = +(ov.subs_pending || 0);
-    var attention = queue.length + qa + reviews + subsPending;
-    var dueToday = (st.desk || []).filter(function (o) { return dlLeft(o) === 0; }).length;
-    var waiting = (by.priced || 0) + (by.prepay || 0) + (by.check || 0);
-    var events = (ov.events || []).slice(0, 2);
-    var weeks = (ov.weeks || []).slice(-7);
-    var maxWeek = Math.max.apply(null, weeks.map(function (x) { return x.revenue || 0; }).concat([1]));
-    var quality = ov.quality || {};
-    var alertAction = queue.length
-      ? ' data-open-order="' + queue[0].o.id + '">Открыть первое дело'
-      : qa
-        ? ' data-go="@qa">Открыть приёмную'
-        : reviews
-          ? ' data-go="@reviews">Открыть отзывы'
-          : ' data-summary-jump="agSubs">Открыть подписки';
-    var loading = st.desk === null;
-    var fresh = '<small class="admin-alert__stamp">живые данные · обновлено ' +
-      clockHM(st.ovAt) + '</small>';
-    var alertCopy = st.ovFailed
-      ? '<section class="admin-alert admin-alert--stale" aria-busy="false"><span>!</span>' +
-        '<div><strong>Связь со сводкой прервалась</strong>' +
-        '<p>Показываем последние полученные данные. Рабочие действия доступны.</p>' +
-        '<small class="admin-alert__stamp">нет связи · данные на ' + clockHM(st.ovAt) + '</small></div>' +
-        '<button type="button" id="agPulseRetry">Обновить сейчас <span>→</span></button></section>'
-      : loading
-      ? '<section class="admin-alert admin-alert--stale" aria-busy="true"><span>···</span>' +
-        '<div><strong>Собираем очередь</strong>' +
-        '<p>Сверяем сроки, оплаты и обращения. Список появится через мгновение.</p>' +
-        '<small class="admin-alert__stamp">обновлено ' + clockHM(st.ovAt) + '</small></div></section>'
-      : attention
-      ? '<section class="admin-alert" aria-busy="false"><span>' + attention + '</span><div><strong>' +
-        attention + ' ' + anPl(attention, 'задача требует', 'задачи требуют', 'задач требуют') +
-        ' решения</strong><p>Сроки, оплаты, вопросы и модерация собраны в одном центре действий.</p>' +
-        fresh + '</div>' +
-        '<button type="button"' + alertAction + ' <span>→</span></button></section>'
-      : '<section class="admin-alert admin-alert--calm" aria-busy="false"><span>' + icoCheck(17) +
-        '</span><div><strong>Стол чист — срочных решений нет</strong>' +
-        '<p>Новые события появятся здесь автоматически.</p>' + fresh + '</div>' +
-        '<button type="button" data-go="active">Активные дела <span>→</span></button></section>';
-    var queueHtml = queue.length
-      ? queue.slice(0, 4).map(function (r) {
-          var o = r.o;
-          var time = o.deadline_date ? dmLabel(o.deadline_date) : '—';
-          /* Строка — не одна кнопка: рядом с «открыть» живёт быстрое
-             действие, а вложенные <button> невалидны. Поэтому строка стала
-             контейнером с двумя кнопками. */
-          return '<div class="admin-queue__row' + (r.quick ? ' has-quick' : '') + '">' +
-            '<button type="button" class="admin-queue__open" data-open-order="' + o.id +
-              '" data-focus="' + esc(r.focus || '') + '" title="' + esc(r.act || 'Открыть дело') + '">' +
-              '<span>' + esc(time) + '</span>' +
-              '<i class="admin-status admin-status--' + (r.cls === 'fire' ? 'attention' : 'work') + '"></i>' +
-              '<div><strong>' + esc(r.why) + '</strong><small>№' + o.id + ' · ' +
-              esc(o.work_label || 'Заявка') + '</small></div>' +
-              '<b class="admin-queue__act">' + esc(r.act || 'Открыть') + ' →</b></button>' +
-            (r.quick
-              ? '<button type="button" class="btn btn-line admin-queue__quick" data-quick="' + r.quick +
-                '" data-quick-order="' + o.id + '">' + esc(r.quickLabel) + '</button>'
-              : '') +
-            '</div>';
-        }).join('')
-      : loading
-        ? '<div class="admin-queue-empty" aria-busy="true"><i class="admin-status admin-status--work"></i>' +
-          '<span><strong>Собираем очередь</strong><small>Читаем активные дела</small></span></div>'
-        : '<div class="admin-queue-empty"><i class="admin-status admin-status--done"></i>' +
-          '<span><strong>Срочных действий нет</strong><small>Очередь разобрана</small></span></div>';
-    /* Сумма недели стоит над СВОИМ столбиком, а не в общей полосе у верхней
-       кромки графика: раньше все подписи были прижаты к потолку колонки и
-       читались как строка заголовков, оторванная от высоты столбиков. */
-    var weekHtml = weeks.length
-      ? weeks.map(function (x, index) {
-          var value = x.revenue || 0;
-          var height = value ? Math.max(10, Math.round(value / maxWeek * 100)) : 3;
-          var when = esc(dmLabel(x.start || String(index + 1)));
-          return '<span title="Неделя с ' + when + ': ' + money(value) + ' ₽">' +
-            '<span class="load-chart__track"><i style="height:' + height + '%">' +
-              '<b>' + (value ? money(value) : '0') + '</b></i></span>' +
-            '<small>' + when + '</small></span>';
-        }).join('')
-      : '<div class="admin-chart-empty">Данные появятся после подтверждённых платежей.</div>';
-    var inboxHtml = events.length
-      ? events.map(function (e) {
-          var raw = evData(e);
-          return '<button type="button"' + (e.order_id ? ' data-open-order="' + e.order_id + '"' : '') +
-            '><span>' + (e.order_id ? '№' : 'АС') + '</span><div><strong>' +
-            esc(evLabel(e.kind)) + '</strong><small>' + esc(raw || 'Событие мастерской') +
-            '</small></div><time>' + dt(e.at) + '</time></button>';
-        }).join('')
-      : '<div class="admin-inbox-empty">Новых событий пока нет.</div>';
-    return '<section class="admin-workbench" aria-label="Рабочий стол мастерской">' +
-      alertCopy +
-      tplSubs(ov) +
-      '<section class="admin-metrics">' +
-        '<button type="button" data-go="active"><span>Активные дела</span><strong>' + active + '</strong><small>' +
-          (by.new || 0) + ' новых</small></button>' +
-        '<button type="button" data-go="active"><span>Ожидают клиента</span><strong>' + waiting + '</strong><small>' +
-          (ov.claimed || 0) + ' оплат на сверке</small></button>' +
-        '<button type="button" data-go="active"><span>Срок сегодня</span><strong>' + dueToday + '</strong><small>' +
-          (dueToday ? '<i class="warn">проверьте очередь</i>' : 'рисков не отмечено') + '</small></button>' +
-        '<article><span>Поступления за месяц</span><strong>' +
-          money((ov.month && ov.month.revenue) || 0) + ' ₽</strong><small>подтверждённые операции</small></article>' +
-      '</section>' +
-      '<div class="admin-dashboard-grid">' +
-        '<section class="admin-panel admin-queue"><header><div><h2>Сегодня</h2><span>По срочности</span></div>' +
-          '<button type="button" class="line-link" data-go="active">Вся очередь</button></header><div>' +
-          queueHtml + '</div></section>' +
-        '<section class="admin-panel admin-load"><header><div><h2>Поступления</h2><span>Последние недели</span></div></header>' +
-          '<div class="load-chart">' + weekHtml + '</div><footer><span><i class="admin-status admin-status--work"></i>' +
-          'Подтверждённые платежи</span></footer></section>' +
-        '<section class="admin-panel admin-quality"><header><div><h2>Качество</h2><span>По данным мастерской</span></div></header>' +
-          '<div><strong>' + (quality.first_accept_pct != null ? quality.first_accept_pct + '%' : '—') +
-          '</strong><span>этапов приняты с первого раза</span></div><dl>' +
-          '<div><dt>Средний ответ</dt><dd>' + esc(quality.reply_time || '—') + '</dd></div>' +
-          '<div><dt>На доработке</dt><dd>' + (by.fix || 0) + '</dd></div>' +
-          '<div><dt>Отзывы</dt><dd>' + reviews + '</dd></div></dl></section>' +
-        '<section class="admin-panel admin-inbox"><header><div><h2>Последние события</h2><span>' +
-          (ov.events || []).length + ' в сводке</span></div><button type="button" data-go="@visits">Аналитика</button></header>' +
-          '<div>' + inboxHtml + '</div></section>' +
-      '</div></section>';
+
+  function controlQueueRows(){
+    var rows=deskRows(),filter=st.controlFilter||'all';
+    if(filter==='all')return rows;
+    return (st.desk||[]).filter(function(o){return !o.paused&&(filter==='payment'?o.claimed:filter==='new'?o.status==='new':filter==='fix'?o.status==='fix':dlLeft(o)!==null&&dlLeft(o)<=2);}).map(function(o){
+      if(filter==='payment')return{o:o,why:'Клиент отметил оплату. Сверьте поступление.',focus:'plan',act:'План оплаты',cls:'act',quick:'pay',quickLabel:'Сверить'};
+      if(filter==='new')return{o:o,why:'Новая заявка. Нужно уточнить состав и цену.',focus:'plan',act:'Подготовить смету',cls:'act'};
+      if(filter==='fix')return{o:o,why:'Клиент ждёт корректировку результата.',focus:'feed',act:'Переписка',cls:'act',quick:'fixack',quickLabel:'В работу'};
+      return rows.find(function(r){return r.o.id===o.id;})||{o:o,why:'Ближайший срок',focus:'handoff',act:'Открыть передачу',cls:'fire'};
+    }).sort(function(a,b){return (dlLeft(a.o)??999)-(dlLeft(b.o)??999);});
   }
+  function controlQueue(){
+    if(st.desk===null)return '<div class="control-empty" '+(!st.deskFailed?'aria-busy="true"':'')+'><strong>'+(st.deskFailed?'Очередь не загрузилась':'Собираем очередь')+'</strong><p>'+(st.deskFailed?'Сводка могла обновиться отдельно. Это не означает, что задач нет.':'Проверяем активные заказы и сроки.')+'</p>'+(st.deskFailed?'<button class="btn btn-line" type="button" data-control-retry>Повторить загрузку</button>':'')+'</div>';
+    var rows=controlQueueRows(),limit=st.controlLimit||8;
+    return (st.deskFailed?'<p class="control-warning">Показаны последние полученные заказы. Обновите очередь.</p>':'')+(rows.length?rows.slice(0,limit).map(function(r){var o=r.o;return '<article class="control-task '+(r.cls==='fire'?'urgent':'')+'"><div class="control-task-body"><span class="control-task-cause">'+ico(r.cls==='fire'?'hourglass':o.claimed?'money':'cases',17)+esc(r.why)+'</span><button class="control-task-open" type="button" data-open-order="'+o.id+'" data-focus="'+esc(r.focus||'')+'"><strong>'+esc(o.work_label||'Новая задача')+'</strong><span>'+esc(o.topic||'Требования в карточке заказа')+'</span></button><div class="control-task-meta"><span>№ '+esc(o.no||o.id)+'</span><span>'+esc(o.user?.name||o.name||o.client_name||'Клиент в карточке')+'</span><span>'+esc(o.deadline_date?dmLabel(o.deadline_date):o.deadline_text||'Срок уточняется')+'</span></div></div><div class="control-task-actions"><button type="button" class="btn btn-line" data-open-order="'+o.id+'" data-focus="'+esc(r.focus||'')+'">'+esc(r.act||'Открыть заказ')+' →</button>'+(r.quick?'<button type="button" class="ag-linkbtn" data-quick="'+r.quick+'" data-quick-order="'+o.id+'">'+esc(r.quickLabel)+'</button>':'')+'</div></article>';}).join('')+(rows.length>limit?'<button type="button" class="control-show-more" data-control-more>Показать ещё · осталось '+(rows.length-limit)+'</button>':''):'<div class="control-empty"><strong>'+(st.controlFilter&&st.controlFilter!=='all'?'В этой группе задач нет':'Срочная очередь разобрана')+'</strong><p>Все активные заказы доступны в реестре.</p><button type="button" class="btn btn-line" data-go="active">Открыть заказы</button></div>');
+  }
+  function tplSummary(){
+    var ov=st.ov||{},by=ov.by_status||{},known=!!st.ovAt,active=['new','priced','prepay','work','check','fix'].reduce(function(n,k){return n+(by[k]||0);},0);
+    if(st.desk===null&&!st.deskFailed&&!st.deskLoading)loadDesk();
+    var deadlines=(st.desk||[]).filter(function(o){return o.deadline_date&&!o.paused&&!['done','cancel'].includes(o.status);}).sort(function(a,b){return a.deadline_date.localeCompare(b.deadline_date);}).slice(0,5);
+    var pending=(ov.qa?.pending||0)+(ov.reviews_pending||0)+(ov.leads_new||0),queue=st.desk===null?null:deskRows().length;
+    var metrics=[['active','В работе',known?active:'—',known?'Новых заявок: '+(by.new||0):'Сводка ещё загружается'],['claimed','Оплаты на сверке',known?(ov.claimed||0):'—','Подтверждение после проверки'],['@leads','Обращения',known?(ov.leads_new||0):'—','Новые задачи с сайта']];
+    return '<section class="control-room" aria-label="Пульт управления"><div class="control-fresh '+(st.ovFailed||st.deskFailed?'stale':'')+'"><span><i></i>'+(st.ovFailed?'Сводка недоступна · последние данные ':known?'Сводка обновлена в ':'Загружаем сводку ')+clockHM(st.ovAt)+'</span><button type="button" id="agPulseRetry">Обновить</button></div><div class="control-metrics">'+metrics.map(function(m){return '<button type="button" data-go="'+m[0]+'"><span>'+m[1]+'</span><strong>'+m[2]+'</strong><small>'+m[3]+'</small></button>';}).join('')+'<article><span>Поступления за месяц</span><strong>'+((ov.month&&ov.month.revenue!=null)?money(ov.month.revenue)+' ₽':'—')+'</strong><small>Подтверждённые платежи</small></article></div><div class="control-grid"><div class="control-primary"><section class="control-queue"><header><div><span class="control-eyebrow">СНАЧАЛА ВАЖНОЕ</span><h2>Требует внимания <b>'+(queue===null?'…':queue)+'</b></h2></div><span class="control-caption">По срокам и действиям</span></header><div class="control-filters" role="group" aria-label="Причина внимания">'+[['all','Всё'],['deadline','Сроки'],['payment','Оплаты'],['new','Новые'],['fix','Правки']].map(function(t){return '<button type="button" data-control-filter="'+t[0]+'" aria-pressed="'+((st.controlFilter||'all')===t[0])+'">'+t[1]+'</button>';}).join('')+'</div><div id="controlQueue">'+controlQueue()+'</div></section>'+tplSubs(ov)+'<section class="control-routing"><header><h2>Ответить и разобрать</h2><span class="control-caption">'+pending+' в сводке</span></header><div>'+[['qa','Вопросы посетителей',ov.qa?.pending,'ask'],['reviews','Отзывы на модерации',ov.reviews_pending,'reviews'],['leads','Обращения с сайта',ov.leads_new,'leads']].map(function(t){return '<button type="button" data-tab-go="'+t[0]+'">'+ico(t[3],20)+'<span>'+t[1]+'</span><b>'+(known?(t[2]||0):'—')+'</b></button>';}).join('')+'</div></section></div><aside class="control-secondary"><section class="control-deadlines"><header><h2>Ближайшие сроки</h2>'+ico('hourglass',18)+'</header>'+(deadlines.length?deadlines.map(function(o){var n=dlLeft(o);return '<button type="button" data-open-order="'+o.id+'" data-focus="handoff"><time class="'+(n<1?'urgent':'')+'">'+esc(dmLabel(o.deadline_date))+'<small>'+(n<0?'Срок прошёл':n===0?'Сегодня':n===1?'Завтра':'Через '+n+' дн.')+'</small></time><span>'+esc(o.work_label||'Заказ')+'<small>№ '+esc(o.no||o.id)+'</small></span></button>';}).join(''):'<p class="control-caption">'+(st.desk===null?'Заказы ещё загружаются.':'В активных заказах нет назначенных дат.')+'</p>')+'</section><section class="control-connections"><header><h2>Работа сервиса</h2></header>'+[['Онлайн-оплата',ov.pay_online],['Письма клиентам',ov.mail_on]].map(function(t){return '<div><span>'+t[0]+'</span><b class="'+(t[1]===true?'ok':'')+'">'+(t[1]===true?'Подключено':t[1]===false?'Недоступно':'Нет данных')+'</b></div>';}).join('')+'<button type="button" data-tab-go="settings">Проверить настройки →</button></section><section class="control-shortcuts"><span class="control-eyebrow">ПОД РУКОЙ</span><button type="button" data-tab-go="clients">'+ico('clients',18)+'Клиенты и бонусы →</button><button type="button" data-tab-go="gifts">'+ico('gifts',18)+'Сертификаты →</button><a href="admin-analytics.html">'+ico('visits',18)+'Подробная аналитика ↗</a><button type="button" class="wz-open">'+ico('stNew',18)+'Создать заказ</button></section></aside></div></section>';
+  }
+
 
   function tplContent() {
     var topics = [
@@ -3402,9 +3286,9 @@ function initGodEye() {
       ? parseInt(o.cart.payment_plan_request.stages, 10) || 0 : 0;
     var cur = o.offer && o.stages_total
       ? o.stages_total : (requestedStages || o.stages_total || 1);
-    var planSel = '<select id="agPlanSel">' + [1, 2, 3].map(function (n) {
+    var planSel = '<label class="control-plan-field" for="agPlanSel">План оплаты<select id="agPlanSel">' + [1, 2, 3].map(function (n) {
       return '<option value="' + n + '"' + (cur === n ? ' selected' : '') + '>' + PLAN_LBL[n] + '</option>';
-    }).join('') + '</select>';
+    }).join('') + '</select></label>';
     var remindShown = false;
     var rows = plan.map(function (p) {
       var m = PL_ST[p.state] || ['', ''];
@@ -3426,8 +3310,8 @@ function initGodEye() {
       '<span class="sub">' + (o.sub_discount ? 'скидка подписки: −' + money(o.sub_discount) + ' · ' : '') +
       'бонусами списано: ' + money(o.bonus_spent || 0) + ' · деньгами всего: ' + money(o.due_total || o.price || 0) + ' ₽</span></span>' +
       '<div class="ag-actrow">' +
-      '<input type="number" id="agPrice" placeholder="цена ₽" value="' + (o.price || '') + '">' +
-      '<input type="number" id="agPrepay" placeholder="первый платёж" value="' + (o.prepay || '') + '">' +
+      '<label class="control-plan-field" for="agPrice">Цена, ₽<input type="number" id="agPrice" placeholder="Сумма заказа" value="' + (o.price || '') + '"></label>' +
+      '<label class="control-plan-field" for="agPrepay">Первый платёж, ₽<input type="number" id="agPrepay" placeholder="По плану оплаты" value="' + (o.prepay || '') + '"></label>' +
       planSel +
       '<button type="button" class="btn btn-wax" id="agPriceSend">' + (o.price ? 'Обновить предложение' : 'Отправить предложение') + '</button>' +
       '</div>' +
@@ -3937,6 +3821,8 @@ function initGodEye() {
     if (shade) shade.tabIndex = -1;
   }
 
+  function selectControlPanel(key){if(!['feed','handoff','plan','brief'].includes(key))key='feed';if(st.sel)st.controlPanels[st.sel]=key;root.querySelectorAll('[data-control-panel]').forEach(function(p){p.hidden=p.dataset.controlPanel!==key;});root.querySelectorAll('[data-control-panel-go]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.controlPanelGo===key));});var tabs=root.querySelector('.control-order-tabs'),current=tabs?.querySelector('[aria-pressed=true]');if(tabs&&current)tabs.scrollLeft=Math.max(0,current.offsetLeft-tabs.offsetLeft-(tabs.clientWidth-current.offsetWidth)/2);}
+
   function drawCard() {
     var box = document.getElementById('agCard');
     var o = st.card;
@@ -3988,11 +3874,12 @@ function initGodEye() {
         (hint[2] ? '<p>' + hint[2] + '</p>' : '') + '</div>' +
         (hint[3] ? '<div class="ag-next__act">' + hint[3] + '</div>' : '') +
         '</section>' : '') + '</div>' +
+      '<nav class="control-order-tabs" aria-label="Разделы заказа">'+[['feed','Переписка'],['handoff','Передача'],['plan','Смета и оплата'],['brief','Задание и условия']].map(function(t){return '<button type="button" data-control-panel-go="'+t[0]+'" aria-pressed="false">'+t[1]+'</button>';}).join('')+'</nav>'+
       '<div class="admin-order-drawer__workspace">' +
       '<div class="admin-order-drawer__primary">' +
         /* порядок — по частоте работы: переписка, передача и счёт этапа,
            цена и план, сборка заявки, и только потом длинная спецификация */
-        feedBlock(o) + partsBlock(o) + planBlock(o) + offerBlock(o) + orderItemsBlock(o) +
+        '<section data-control-panel="feed">'+feedBlock(o)+'</section><section data-control-panel="handoff">'+partsBlock(o)+'</section><section data-control-panel="plan">'+planBlock(o)+'</section><section data-control-panel="brief">'+offerBlock(o)+orderItemsBlock(o)+'</section>'+
       '</div><aside class="admin-order-drawer__rail" aria-label="Сводка и управление">' +
       /* деньги первыми: при полусотне открытий в день это главный вопрос */
       moneyBlock(o) + clientLine(o) + filesBlock(o) + manageBlock(o) + intelBlock(o) +
@@ -4012,6 +3899,9 @@ function initGodEye() {
       if (st.feedStick || !sameOrder) feedBox.scrollTop = feedBox.scrollHeight;
       else if (prevTop != null) feedBox.scrollTop = prevTop;
     }
+    var initialPanel=(st.cardFocus&&st.cardFocus.id===o.id)?st.cardFocus.block:st.offnew?'brief':st.controlPanels[o.id]||(['new','priced','prepay'].includes(o.status)?'plan':'feed');
+    selectControlPanel(initialPanel);
+    if(preserved&&st.cardFocus)preserved.focus=null;
     restoreAdminCardUi(box, preserved);
     if (!preserved) {
       setTimeout(function () {
@@ -4180,7 +4070,7 @@ function initGodEye() {
           bonus.expiring.map(function (e) { return '<b>' + money(e.amount) + '</b> — ' + dt(e.at).slice(0, 5); }).join(', ') +
           '</span></p>'
         : '') +
-      '<div class="cl-bonus__form">' +
+      uncertainBonusNotice(c.id) + '<div class="cl-bonus__form">' +
         '<label class="cl-bonus__field"><span>Сумма</span>' +
           '<input type="number" id="agBDelta" placeholder="+500 или −500" inputmode="numeric"></label>' +
         '<label class="cl-bonus__field cl-bonus__field--wide"><span>Комментарий — клиент его увидит</span>' +
@@ -4583,8 +4473,8 @@ function initGodEye() {
   /* ---------------- действия ---------------- */
   function api(path, body) {
     if (st.busy) return Promise.resolve({ ok: false, error: 'busy' });
-    st.busy = true;
-    return S.api.post(path, body).then(function (r) { st.busy = false; return r; });
+    st.busy = true;var epoch=st.identityEpoch;
+    return S.api.post(path, body).then(function (r) { if(epoch!==st.identityEpoch)return{ok:false,error:'unauthorized'};if(r&&!r.ok&&['network','bad_json'].includes(r.error))return{ok:false,error:'network_uncertain'};return r; },function(){return {ok:false,error:'network_uncertain'};}).finally(function(){if(epoch===st.identityEpoch)st.busy=false;});
   }
   function afterOrder(r, msg) {
     if (r.ok) {
@@ -4631,7 +4521,8 @@ function initGodEye() {
         toast({ claimed: 'Клиент отметил оплату — сверьте и подтвердите «Получена»',
                 nothing_due: 'Платить нечего — созревших неоплаченных этапов нет',
                 paused: 'Дело на паузе — сначала снимите паузу',
-                busy: 'Секунду…' }[r.error] || 'Не получилось');
+                network_uncertain: 'Ответ не получен. Перед повтором обновите данные и проверьте, выполнено ли действие.',
+    busy: 'Секунду…' }[r.error] || 'Не получилось');
         return r;
       }
       var where = r.delivered_tg ? 'в Telegram' + (r.mailed ? ' и на почту' : '')
@@ -4669,7 +4560,7 @@ function initGodEye() {
      открываем карточку на плане оплат. */
   function quickPaymentReview(id, btn) {
     if (btn) btn.disabled = true;
-    S.api.get('/admin/orders/' + id).then(function (r) {
+    adminRead('/admin/orders/' + id).then(function (r) {
       if (btn) btn.disabled = false;
       var o = r && r.ok && r.order;
       if (!o) { toast('Дело не открылось — попробуйте ещё раз'); return; }
@@ -4762,6 +4653,11 @@ function initGodEye() {
 
   root.addEventListener('click', function (e) {
     var t = e.target;
+    var panel=t.closest('[data-control-panel-go]');if(panel){selectControlPanel(panel.dataset.controlPanelGo);return;}
+    var controlFilter=t.closest('[data-control-filter]');
+    if(controlFilter){st.controlFilter=controlFilter.dataset.controlFilter;st.controlLimit=8;root.querySelectorAll('[data-control-filter]').forEach(function(b){b.setAttribute('aria-pressed',String(b===controlFilter));});document.getElementById('controlQueue').innerHTML=controlQueue();return;}
+    if(t.closest('[data-control-more]')){st.controlLimit=(st.controlLimit||8)+8;document.getElementById('controlQueue').innerHTML=controlQueue();return;}
+    if(t.closest('[data-control-retry]')){loadDesk();return;}
     if (t.closest('[data-admin-mobile-back]')) {
       if (history.length > 1) history.back();
       else location.href = '/';
@@ -4848,7 +4744,7 @@ function initGodEye() {
     if (t.closest('#agLogout')) { S.api.logout().then(gate); return; }
     if (t.closest('#agRetry')) { gate(); return; }
     if (t.closest('#agTabRetry')) { loadTab(true); return; }
-    if (t.closest('#agPulseRetry')) { doRefresh(); return; }
+    if (t.closest('#agPulseRetry')) { loadDesk();doRefresh();return; }
     if (t.closest('#agSubsRetry')) { loadSubs(); return; }
     var leadBtn = t.closest('[data-lead-done]');
     if (leadBtn) {
@@ -5496,8 +5392,7 @@ function initGodEye() {
             return;
           }
           st.offnew = false;
-          try { navigator.clipboard.writeText(r.url); } catch (e) {}
-          toast('Заявка собрана · ссылка в буфере');
+          Promise.resolve().then(function(){return navigator.clipboard.writeText(r.url);}).then(function(){toast('Заявка собрана · ссылка скопирована');},function(){toast('Заявка собрана. Ссылка доступна в карточке заказа; скопируйте её вручную.');});
           afterOrder(r, null);
         });
       });
@@ -5787,7 +5682,7 @@ function initGodEye() {
           if (qo) { if ('answer' in qpayload) qo.answer = qpayload.answer; if ('question' in qpayload) qo.question = qpayload.question; }
           toast(qaDone[qact] || 'Готово');
           loadQA();
-          S.api.get('/admin/overview').then(function (r2) { if (r2.ok) { st.ov = r2; drawNav(); } });
+          adminRead('/admin/overview').then(function (r2) { if (r2.ok) { st.ov = r2; drawNav(); } });
         });
       };
       if (qact === 'delete' || qact === 'ban') {
@@ -5817,7 +5712,7 @@ function initGodEye() {
             if (!r.ok) { toast('Не получилось'); return; }
             toast(ok ? 'Опубликован на сайте' : 'Снят с сайта');
             loadTab();
-            S.api.get('/admin/overview').then(function (r2) { if (r2.ok) { st.ov = r2; drawNav(); } });
+            adminRead('/admin/overview').then(function (r2) { if (r2.ok) { st.ov = r2; drawNav(); } });
           });
       };
       /* снять уже опубликованный отзыв — публичное действие, спрашиваем; отклонить
@@ -5832,15 +5727,21 @@ function initGodEye() {
       return;
     }
     /* --- клиенты --- */
+    var reviewed=t.closest('[data-bonus-reviewed]');
+    if(reviewed){var reviewedId=Number(reviewed.dataset.bonusReviewed),proof=bonusReadEvidence;if(!proof||proof.id!==reviewedId||proof.epoch!==st.identityEpoch||st.csel!==reviewedId)return;confirmDlg({title:'Проверка истории завершена?',text:'Если предыдущая операция уже есть в журнале, повторять её не нужно. Новое начисление или списание автоматически не произойдёт.',okLabel:'История проверена',noLabel:'Вернуться к истории'}).then(function(res){if(res.ok&&st.csel===reviewedId&&st.identityEpoch===proof.epoch&&bonusReadEvidence===proof){saveUncertainBonus(reviewedId,null);bonusReadEvidence=null;drawClientCard();toast('Проверка отмечена. Повторная операция автоматически не выполняется.');}});return;}
+    var reconcile=t.closest('[data-bonus-reconcile]');
+    if(reconcile){var reconcileId=Number(reconcile.dataset.bonusReconcile),reconcileEpoch=st.identityEpoch;if(reconcile.disabled)return;reconcile.disabled=true;adminRead('/admin/clients/'+reconcileId).then(function(r){if(st.csel!==reconcileId||st.identityEpoch!==reconcileEpoch)return;if(!r?.ok||!r.client){toast('Историю не удалось обновить. Повторная операция остаётся заблокирована.');return;}st.ccard=r.client;bonusReadEvidence={id:reconcileId,epoch:reconcileEpoch,at:Date.now()};drawClientCard();document.getElementById('clBonusPanel')?.scrollIntoView({block:'start'});toast('История обновлена. Проверьте записи ниже, затем отметьте сверку.');}).finally(function(){if(reconcile.isConnected)reconcile.disabled=false;});return;}
     if (t.closest('#agBApply')) {
-      var delta = parseInt((document.getElementById('agBDelta') || {}).value, 10);
-      var note = (document.getElementById('agBNote') || {}).value || '';
-      if (!delta) { toast('Введите сумму: 500 — начислить, -500 — списать'); return; }
-      api('/admin/clients/' + st.csel + '/bonus', { delta: delta, note: note })
-        .then(function (r) {
-          if (r.ok) { toast('Проведено · баланс ' + money(r.balance)); loadClient(st.csel); }
-          else toast(r.error === 'bonus_empty' ? 'У клиента нет столько бонусов' : 'Не получилось');
-        });
+      var bonusButton=t.closest('#agBApply');if(bonusButton.disabled)return;if(uncertainBonuses[st.csel]){toast('Сначала обновите и сверьте историю предыдущей бонусной операции.');return;}
+      var delta=Number((document.getElementById('agBDelta')||{}).value),note=String((document.getElementById('agBNote')||{}).value||'').trim(),clientId=st.csel;
+      if(!Number.isSafeInteger(delta)||!delta){toast('Введите целое число: плюс для начисления, минус для списания.');return;}
+      if(note.length<3){toast('Укажите причину операции. Клиент увидит этот комментарий.');document.getElementById('agBNote')?.focus();return;}
+      bonusButton.disabled=true;
+      var clientName=st.ccard?.user?.name||st.ccard?.name||('Клиент № '+clientId),epoch=st.identityEpoch;
+      confirmDlg({title:delta>0?'Начислить бонусы?':'Списать бонусы?',text:clientName+' · '+(delta>0?'+':'−')+money(Math.abs(delta))+' бонусов. Причина: '+note,okLabel:'Подтвердить операцию',noLabel:'Отмена',danger:delta<0}).then(function(res){
+        if(!res.ok)return;if(st.csel!==clientId||st.identityEpoch!==epoch){toast('Выбран другой клиент или изменился доступ. Откройте нужную карточку снова.');return;}
+        if(uncertainBonuses[clientId]){toast('Предыдущая операция требует сверки.');return;}saveUncertainBonus(clientId,delta);bonusReadEvidence=null;return api('/admin/clients/'+clientId+'/bonus',{delta:delta,note:note}).then(function(r){if(r.ok){saveUncertainBonus(clientId,null);}else if(['bonus_empty','bad_amount','bad_request','forbidden','busy'].includes(r.error)){saveUncertainBonus(clientId,null);}if(r.ok){toast('Проведено · баланс '+money(r.balance));if(st.csel===clientId)loadClient(clientId);}else{if(uncertainBonuses[clientId]&&st.csel===clientId&&st.identityEpoch===epoch)drawClientCard();toast(errSay(r.error));}});
+      }).finally(function(){if(bonusButton.isConnected)bonusButton.disabled=false;});
       return;
     }
     if (t.closest('#agBan')) {
@@ -6026,7 +5927,7 @@ function initGodEye() {
         }
       }
       if (document.body.classList.contains('admin-nav-expanded')) {
-        var openNav = document.getElementById('agNav');
+        var openNav = root.querySelector('.admin-sidebar');
         var navFocus = openNav ? Array.prototype.filter.call(
           openNav.querySelectorAll('a[href], button:not([disabled])'),
           function (el) {
