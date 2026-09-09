@@ -15,3 +15,5 @@ Not verified: conversion or profit lift; public-domain deployment; real user ord
 Repository gate: pre-existing TERMINAL_RESULT_DRIFT resolved reversibly (archive/salon-owner-launcher-20260909, detached unchanged worktree, canonical ancestry). hard0, warnings60, blocking0; legacy dormant warnings consciously accepted by integration owner. Fresh origin/main remains exact base. No public integration yet.
 
 Next exact step: inspect the privately deployed candidate, then disposition the retired UI test inventory before preparing the public-domain release health/smoke/rollback. The submitted manifest pins the implementation result_sha. Live publication status is reported separately after the Sites connector confirms it.
+
+Private preview published successfully as version45; exact live homepage and direct-order form visually reopened in CUA. Evidence: docs/brain/evidence/salon-direct/deployment.json. User-facing tab remains on the saved homepage. Temporary development servers and test browser are stopped at handoff. Original public domain unchanged.
