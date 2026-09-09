@@ -168,3 +168,7 @@ Acceptance before edits: one authoritative next action; compact home and navigat
 Design: violet #5136b5, paper #faf9f6, graphite #292537, lavender #eeeafa, mint #d9f5bb. Golos UI, restrained Literata accent, tabular dates and amounts. Signature: a personal academic desk with a folded margin on the next-action card and two collectible project folders. Compact sidebar, one task lane, order register and dates; quiet optional gifts. Critique: avoid generic dashboard KPI tiles and artificial progress percentages; dates and actions must encode server truth.
 
 Proof plan: deterministic calendar/gift/state tests, focused existing account contracts, authenticated synthetic and guest browser flows across mobile/desktop/light/dark, two independent read-only reviews, build and private Sites readback. No public/backend activation claim without deployed health/smoke/rollback evidence. Old production release blockers remain separate.
+
+Bootstrap conflict scan: hard=0, warnings=60 unchanged legacy terminal/dormant overlap observations. Root integration owner consciously accepts these warnings for the already reserved private workstream only; foreign dirty trees are disjoint and untouched. No canonical integration authorized by this acknowledgement.
+
+Scope refinement: four old account presentation tests are reserved for migration to the requested home/calendar structure. Authoritative action, payment, guest and history tests remain intact.

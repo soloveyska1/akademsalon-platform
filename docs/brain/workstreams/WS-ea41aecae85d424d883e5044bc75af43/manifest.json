@@ -583,6 +583,22 @@
       {
         "path": "backend/salon_bot/tests/test_community_rewards.py",
         "match": "exact"
+      },
+      {
+        "path": "tests/account-admin-comfort.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-curator-planner.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-hall-design.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-home-overview.test.js",
+        "match": "exact"
       }
     ],
     "read": []
@@ -601,6 +617,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 20,
-  "base_manifest_hash": "e630ce059f57cc8978917fb831abaeb3e4031221085f136de2cd7be0cc9bb664"
+  "manifest_revision": 21,
+  "base_manifest_hash": "cc30ae68bbb51626ab890efcd7f591d1db68f0c4090386fd25eee2cf2c3478b7"
 }
