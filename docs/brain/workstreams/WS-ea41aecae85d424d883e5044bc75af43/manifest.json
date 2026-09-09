@@ -467,6 +467,14 @@
       {
         "path": "docs/brain/evidence/salon-product",
         "match": "tree"
+      },
+      {
+        "path": "assets/js/polish15-supporting.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/analytics-attribution-v2.test.js",
+        "match": "exact"
       }
     ],
     "read": []
