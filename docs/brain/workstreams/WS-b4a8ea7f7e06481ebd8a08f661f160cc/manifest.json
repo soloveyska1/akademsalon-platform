@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-b4a8ea7f7e06481ebd8a08f661f160cc",
+  "slug": "specification-interactive",
+  "status": "active",
+  "branch": "codex/specification-interactive",
+  "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/order-specification.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/order-specification.js",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/specification-interactive",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-b4a8ea7f7e06481ebd8a08f661f160cc/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "specification-interactive.html",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:specification-interactive"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
