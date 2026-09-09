@@ -3,7 +3,7 @@
 const $=id=>document.getElementById(id), form=$('direct-order'), S=window.Salon, C=window.SalonCalc, P=window.SalonProducts;
 if(!form||!S||!C||!P)return;
 const summary=document.querySelector('.order-summary'),layout=document.querySelector('.order-layout'),summaryMedia=matchMedia('(max-width:800px)');
-function placeSummary(){const focus=document.activeElement;if(summaryMedia.matches){$('topic').previousElementSibling.before(summary)}else layout.append(summary);if(focus&&summary.contains(focus))focus.focus({preventScroll:true})}
+function placeSummary(){if(document.body.classList.contains('salon-intake'))return;const focus=document.activeElement;if(summaryMedia.matches){$('topic').previousElementSibling.before(summary)}else layout.append(summary);if(focus&&summary.contains(focus))focus.focus({preventScroll:true})}
 placeSummary();summaryMedia.addEventListener('change',placeSummary);
 const params=new URLSearchParams(location.search), draftKey='salon_direct_selection_v1', M=window.SalonCommerce;
 let composition=M?M.read():null,compositionControls=null;
@@ -25,6 +25,8 @@ function setValue(id,value){if([...$(id).options].some(o=>o.value===value))$(id)
 if(initial){setValue('product',initial);if(M)composition=M.normalize({product:initial})}
 else if(params.get('composition')==='1'&&M?.saved()){setValue('product',composition.product);setValue('scope',composition.scope);try{const saved=JSON.parse(sessionStorage.getItem(draftKey)||'null');if(saved){setValue('discipline',saved.discipline);if(/^\d{4}-\d{2}-\d{2}$/.test(saved.deadline||''))$('deadline').value=saved.deadline}}catch(e){}}
 else{try{const saved=JSON.parse(sessionStorage.getItem(draftKey)||'null');if(saved){setValue('product',saved.product);setValue('scope',saved.scope);setValue('discipline',saved.discipline);if(/^\d{4}-\d{2}-\d{2}$/.test(saved.deadline||''))$('deadline').value=saved.deadline}}catch(e){}}
+const sampleRefs={essay:'Историческая правда и рыцарский миф в «Айвенго»',referat:'Травля: понятие, формы и способы противодействия',comparison:'Сравнительный анализ типологических моделей акцентуаций характера',risk:'Государственно-частное партнёрство: модели и риски',method:'Оценка звуко-слогового состава слова у старших дошкольников',practice:'Социально-психологический климат в трудовом коллективе',project:'Коммуникация органа власти: анализ и проектные предложения'};
+if(Object.hasOwn(sampleRefs,params.get('sample'))&&params.get('sampleScope')==='part')$('scope').value='part';
 if(params.get('result')==='editing'||params.get('result')==='ai_editing')$('scope').value='editing';
 const legacyDisc=params.get('disc')||params.get('discipline')||({h:'hum',l:'law',t:'tech',m:'med'}[params.get('d')]);
 if(legacyDisc)setValue('discipline',legacyDisc);
@@ -35,7 +37,7 @@ const part={intro:'Введение или заключение',defense:'Пре
 if(part){$('scope').value='part';$('volume').value=part}
 const today=new Date();today.setHours(0,0,0,0);const isoDate=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
 $('deadline').min=isoDate(today);
-const asks=document.createElement('div');asks.id='service-questions';$('product').after(asks);
+const asks=document.createElement('div');asks.id='service-questions';if($('intake-service-slot'))$('intake-service-slot').append(asks);else $('product').after(asks);
 function product(){
  const id=$('product').value;
  if(id.startsWith('service:'))return {id,type:serviceTypes[service.id]||'custom',name:service.label,days:'по заданию',detail:service.desc,price:service.from,min:0};
@@ -79,7 +81,7 @@ function quote(){
  return {amount:cq.total,exact:false,baseAmount:amount,compositionQuote:cq,note:cs.package==='vip'?'Полная смета за работу и VIP-сопровождение после задания.':cs.speed==='expressfast'?'Срок меньше суток и стоимость рассчитаем по заданию.':cs.speed==='express24'?'Экспресс работы за 24 часа: ×2 к плановой цене. Дополнения отдельно. Срок начинается после согласования, материалов и оплаты.':base.note+(cq.lines.length?' Выбранные дополнения включены в ориентир.':'')};
 }
 function renderComposition(){
- if(!compositionControls)return;const cs=compositionState();compositionControls.hidden=!cs;if(!cs)return;
+ if(!compositionControls)return;const cs=compositionState();compositionControls.hidden=!cs;if(!cs){if($('express-clock-row'))$('express-clock-row').hidden=true;return;}
  const vip=cs.package==='vip',candidate=cs.product==='kandidat';
  $('order-speed').value=cs.speed;$('order-package').value=cs.package;
  [...$('order-speed').options].forEach(o=>o.disabled=candidate&&o.value!=='standard');
@@ -99,7 +101,7 @@ function mountComposition(){
  if(!M)return;
  compositionControls=document.createElement('section');compositionControls.className='order-composition-controls';compositionControls.setAttribute('aria-label','Срок, сопровождение и дополнения');
  compositionControls.innerHTML='<div class="form-two"><div><label for="order-speed">Скорость выполнения</label><select id="order-speed"><option value="standard">Планово · обычная цена</option><option value="express24">Экспресс за 24 часа · от ×2</option><option value="expressfast">Быстрее суток · по расчёту</option></select></div><div><label for="order-package">Сопровождение</label><select id="order-package"><option value="standard">Работа по заданию</option><option value="vip">VIP · от начала до защиты</option></select></div></div><p class="field-note" id="order-express-note"></p><label id="express-clock-row" hidden>Нужно к определённому времени <input id="express-clock" type="time"><span class="field-note">Необязательно. Время относится к выбранной дате и вашему часовому поясу.</span></label><p class="order-vip-note" id="order-vip-note" hidden>VIP включает поэтапное сопровождение, обратную связь, дополнительные требования нормоконтроля, презентацию, речь и индивидуальный разбор. Полный состав, итерации и срок поддержки закрепим в смете.</p><details class="order-extra-details"><summary>Дополнения к работе <span>по желанию</span></summary>'+M.addons.map(a=>'<label class="addon-option"><input type="checkbox" data-order-addon value="'+a.id+'"><span><strong>'+a.label+'</strong><small>'+a.detail+'</small></span><b data-order-addon-price="'+a.id+'">от '+P.money(a.price)+'</b></label>').join('')+'</details><div class="order-composition-lines" id="order-composition-lines" aria-live="polite"></div>';
- $('details').previousElementSibling.before(compositionControls);
+ if($('intake-composition-slot'))$('intake-composition-slot').append(compositionControls);else $('details').previousElementSibling.before(compositionControls);
  compositionControls.querySelector('.order-extra-details').open=!!composition?.addons?.length;
  $('order-speed').addEventListener('change',()=>{composition.speed=$('order-speed').value;update()});$('order-package').addEventListener('change',()=>{composition.package=$('order-package').value;update()});
  compositionControls.querySelectorAll('[data-order-addon]').forEach(c=>c.addEventListener('change',()=>{composition.addons=c.checked?[...composition.addons,c.value]:composition.addons.filter(id=>id!==c.value);update()}));
@@ -120,7 +122,7 @@ function update(){
  if($('deadline').value){const days=Math.ceil((new Date($('deadline').value+'T00:00:00')-today)/86400000);timeNote='Нужная дата: '+new Date($('deadline').value+'T00:00:00').toLocaleDateString('ru-RU')+'. '+(days<(a.scope==='diagnostic'?1:a.p.min)?'Срок короче планового: сначала подтвердим возможность выполнить задание.':'Возможность сдачи подтвердим до оплаты.')}
  $('deadline-note').textContent=timeNote;
  try{sessionStorage.setItem(draftKey,JSON.stringify({product:$('product').value,scope:a.scope,discipline:a.disc,deadline:$('deadline').value}))}catch(e){}
- renderComposition();
+ renderComposition();document.dispatchEvent(new Event('salon:order-updated'));
 }
 // Restore selection without storing topic, contact, name, notes, consent or files.
 service=serviceList.find(s=>'service:'+s.id===$('product').value)||null;
@@ -151,7 +153,7 @@ $('files').addEventListener('change',()=>{
  $('files').value='';fileList();if(errors.length)message(errors.join('\n'));
 });
 function freeze(on){form.querySelectorAll('input,select,textarea').forEach(x=>x.disabled=on);$('scope').disabled=on||!!service;fileList();if(!on)renderComposition()}
-function payload(){const a=selected(),activeComposition=compositionState();const details=[a.p.name,'Объём заказа: '+$('summary-scope').textContent,$('volume').value.trim()?'Объём: '+$('volume').value.trim():'',...Object.entries(serviceAnswers).map(([k,v])=>{const q=service.ask.find(x=>x.id===k);return q.label+': '+v}),$('details').value.trim(),compositionState()?M.summary(composition):'',activeComposition&&activeComposition.speed!=='standard'&&$('express-clock')?.value?'Нужно к '+($('deadline').value||'дате, которую уточним')+' '+$('express-clock').value+' (часовой пояс клиента: '+Intl.DateTimeFormat().resolvedOptions().timeZone+')':''].filter(Boolean).join('\n');
+function payload(){const a=selected(),activeComposition=compositionState();const details=[a.p.name,'Объём заказа: '+$('summary-scope').textContent,$('volume').value.trim()?'Объём: '+$('volume').value.trim():'',...Object.entries(serviceAnswers).map(([k,v])=>{const q=service.ask.find(x=>x.id===k);return q.label+': '+v}),$('details').value.trim(),Object.hasOwn(sampleRefs,params.get('sample'))&&$('intake-sample')?.dataset.active==='true'?'Ориентир по подходу из примеров: '+sampleRefs[params.get('sample')]:'',compositionState()?M.summary(composition):'',activeComposition&&activeComposition.speed!=='standard'&&$('express-clock')?.value?'Нужно к '+($('deadline').value||'дате, которую уточним')+' '+$('express-clock').value+' (часовой пояс клиента: '+Intl.DateTimeFormat().resolvedOptions().timeZone+')':''].filter(Boolean).join('\n');
  const p={type:a.type,disc:C.transportDiscipline(a.disc),term:a.term,tier:a.tier,topic:$('topic').value.trim(),deadline:$('deadline').value,details,plan:service?.id==='plan',name:$('name').value.trim(),contact:$('contact').value.trim(),website:$('website').value,consent:$('consent').checked,privacy_notice_ack:$('consent').checked,consent_doc:window.SalonDirectContract.consent_doc,page:'configurator.html'};
  if($('promo').value.trim())p.promo=$('promo').value.trim();if($('gift').value.trim())p.gift=$('gift').value.trim();
  if(S.refCode?.())p.ref=S.refCode();
