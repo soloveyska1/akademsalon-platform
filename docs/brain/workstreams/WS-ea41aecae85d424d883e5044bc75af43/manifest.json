@@ -703,6 +703,22 @@
       {
         "path": "backend/salon_bot/tests/test_production_probe.py",
         "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/direct_intake.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_direct_intake.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_direct_intake.py",
+        "match": "exact"
+      },
+      {
+        "path": "tests/automatic-payment.test.js",
+        "match": "exact"
       }
     ],
     "read": []
@@ -721,6 +737,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 42,
-  "base_manifest_hash": "fd079d1f1323929bb59f5b6034aad1edce5261f38ed21e065f336e94f2a27a0a"
+  "manifest_revision": 43,
+  "base_manifest_hash": "3f6366feb5b49be71135de56ac3feed126d18fcb30ea91612052be938d1180a0"
 }
