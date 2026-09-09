@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-ea41aecae85d424d883e5044bc75af43",
   "slug": "salon-direct-orders",
-  "status": "submitted",
+  "status": "active",
   "branch": "codex/salon-direct-orders",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": "b432d71586426de255491cc89e398bc2ddfc1fb8",
+  "result_sha": null,
   "outcome_ids": [
     "OUT-006"
   ],
@@ -563,6 +563,26 @@
       {
         "path": "assets/vendor/pdfjs",
         "match": "tree"
+      },
+      {
+        "path": "assets/css/salon-cabinet.css",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-cabinet.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/community_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_community_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_community_rewards.py",
+        "match": "exact"
       }
     ],
     "read": []
@@ -581,6 +601,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 18,
-  "base_manifest_hash": "c4d2892fbc06d077678c0113f674110295680453341137822afa709583c1bbdc"
+  "manifest_revision": 20,
+  "base_manifest_hash": "e630ce059f57cc8978917fb831abaeb3e4031221085f136de2cd7be0cc9bb664"
 }

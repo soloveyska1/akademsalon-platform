@@ -157,3 +157,14 @@ Evidence benefits folder:89focusedchecks,6048pricingstates,48viewport/theme/pane
 Version52 source36a08516bdd193514326a2fd5c99014199e99ec7 privately published successfully, soleownerpolicyrevision1 unchanged. Evidence benefits/deployment.json. Live CUA verified subscription3x14000 netPro1510, deposit30000/used20000/cash10000/conditionalextra600, and actual replacementpractice18pagePDF with newhashURL and3/7/17jumps. Existing tab6 left at permanent /benefits. Priorv51 independently read and retained, rollback not exercised. Owned live8768/QA8769 and root/reviewer browsers stopped. Publicdomain unchanged.
 
 Workstream submitted, not canonical-integrated. Next exact step: owner reviews benefits and replacementpractice in private preview; any further customer-page changes need explicit bounded iteration. Before public release close earlier authoritative backend composition/auth/fullsuite disposition and release-wide gates.
+
+
+## Cabinet and Telegram community continuation · 2026-09-09
+
+OUT-006, owner-requested scope: redesign dashboard and preserved order detail surfaces; first-class dates/reminders; subscription gifts linking existing Salon and Kladovaya Telegram channels. Base 7266b2a2, freshly fetched canonical e53d11ce. Same existing branch and workstream reopened through Brain; no new branch. Root sole writer. Own scope extended through validated Brain manifest writer for dedicated cabinet CSS/tests and bounded backend rewards module/installer/tests; no foreign manifest copied.
+
+Acceptance before edits: one authoritative next action; compact home and navigation; orders, files, messages, payments, guest access, auth and Back contracts retained. Calendar lists actual order dates and milestones, export works with calendar reminders, no background notification claims without support. Telegram gifts use server-authenticated identity and actual membership checks, idempotent grants, clear unavailable/unlinked states, no cash credit or paid service entitlement. Original reusable digital kits, no private client content. Private demo is explicitly labeled and isolated from production.
+
+Design: violet #5136b5, paper #faf9f6, graphite #292537, lavender #eeeafa, mint #d9f5bb. Golos UI, restrained Literata accent, tabular dates and amounts. Signature: a personal academic desk with a folded margin on the next-action card and two collectible project folders. Compact sidebar, one task lane, order register and dates; quiet optional gifts. Critique: avoid generic dashboard KPI tiles and artificial progress percentages; dates and actions must encode server truth.
+
+Proof plan: deterministic calendar/gift/state tests, focused existing account contracts, authenticated synthetic and guest browser flows across mobile/desktop/light/dark, two independent read-only reviews, build and private Sites readback. No public/backend activation claim without deployed health/smoke/rollback evidence. Old production release blockers remain separate.
