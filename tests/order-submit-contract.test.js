@@ -8,7 +8,8 @@ const childProcess = require('node:child_process');
 
 const root = path.resolve(__dirname, '..');
 const app = fs.readFileSync(path.join(root, 'assets/js/app.js'), 'utf8');
-const configurator = fs.readFileSync(path.join(root, 'configurator.html'), 'utf8');
+const configuratorHtml = fs.readFileSync(path.join(root, 'configurator.html'), 'utf8');
+const configurator = fs.readFileSync(path.join(root, 'assets/js/salon-order.js'), 'utf8');
 const extras = fs.readFileSync(path.join(root, 'assets/js/extras.js'), 'utf8');
 const homeBundle = fs.readFileSync(path.join(root, 'assets/js/home-release.min.js'), 'utf8');
 const productionSmokeSource = fs.readFileSync(path.join(root, 'tests/production-smoke.js'), 'utf8');
@@ -391,9 +392,11 @@ test('late 401 cannot clear a newer auth generation, token or impersonation cont
 });
 
 test('producer UI clears identity only after confirmed or definitive terminal outcomes', () => {
-  assert.match(configurator, /onSubmitOk\(a1\.r, a1\)/);
-  assert.match(configurator, /classify\(attempt\) === 'definitive_rejection'/);
-  assert.doesNotMatch(configurator, /function onSubmitErr[\s\S]{0,120}?clearRequestId\(\);/);
+  assert.match(configuratorHtml, /assets\/js\/salon-order\.js/);
+  assert.match(configurator, /if\(S\.orderContract\.isConfirmed\(attempt\)\)\{await showSuccess\(attempt\.r,attempt\)/);
+  assert.match(configurator, /if\(kind==='definitive_rejection'\)S\.orderContract\.clear\(/);
+  assert.equal((configurator.match(/S\.orderContract\.clear\(/g)||[]).length, 2, 'only confirmed success and definitive rejection clear identity');
+  assert.doesNotMatch(configurator.slice(configurator.indexOf("message(kind==='conflict'")), /orderContract\.clear/);
   assert.match(extras, /outcome === 'definitive_rejection'/);
   assert.match(extras, /clear\('guide_microlead', here, attempt\.clientRequestId\)/);
   /* Локальный замок guideIntent убран целиком: он повторял ту же ошибку —
@@ -419,8 +422,13 @@ test('every shared order-runtime consumer uses its current atomic cache wave', (
     cwd: root, encoding: 'utf8',
   }).trim().split('\n').filter(Boolean);
   let consumers = 0;
+  let directConsumers = 0;
   for (const file of files) {
     const source = fs.readFileSync(path.join(root, file), 'utf8');
+    if (source.includes('salon-direct concept-shell')) {
+      directConsumers++;
+      assert.equal((source.match(/assets\/js\/app\.js\?/g)||[]).length, 1, file);
+    }
     const refs = [...source.matchAll(/assets\/js\/(app|extras|home-release\.min)\.js\?v=([^&"']+)/g)];
     for (const ref of refs) {
       consumers++;
@@ -428,7 +436,8 @@ test('every shared order-runtime consumer uses its current atomic cache wave', (
       assert.equal(ref[2], expected, `${file}: stale ${ref[1]} runtime cache key`);
     }
   }
-  assert.ok(consumers >= 170, 'shared runtime consumer inventory unexpectedly shrank');
+  assert.equal(directConsumers, 26, 'each redesigned page must load the shared runtime once');
+  assert.ok(consumers > directConsumers, 'unchanged legacy runtime consumers remain covered');
 });
 
 test('production smoke default run is mechanically read-only and never reaches /orders', async () => {

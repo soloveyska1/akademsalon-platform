@@ -4,10 +4,14 @@ Outcome: OUT-006. Owner: Codex. Base: e53d11cea40055f2dae41a0f212cbbac4c79055f.
 
 The owner explicitly requests a full redesign and direct order entry on 2026-09-09. This supersedes DEC-0003's situation-first entry and historic restrictions on catalogue redesign. One write owner; two independent read-only reviewers.
 
-Scope: home, catalogue/prices, how-it-works and direct configurator. Preserve backend order/consent/upload/idempotency contract and cabinet. User dirty .claude/launch.json remains in original checkout untouched.
+Scope: 26 customer pages: main, catalogue, prices, process, form, work/discipline details, reviews, about, guarantees and contact. New shared visual/product/form assets; isolated private Sites build; migrated two protocol/privacy suites. Backend/cabinet/auth runtime unchanged. Original user .claude/launch.json remains untouched.
 
-Acceptance before release: service and whole/partial scope directly selectable; published price source and planning times visible before contact; no mandatory paid diagnosis/auth; exact server ID before success; repeat-submit stable request ID; attachments retriable; no client data stored in analytics/local storage; responsive accessible light/dark pages; independent reviews; deterministic build and relevant regressions. Production smoke/rollback only if publishing production.
+Done and verified for owner preview: modern Kladovaya-related palette/type; immediate whole or partial order; published price engine and planning times; no mandatory diagnosis or sign-in; optional service routes preserved. Exact order/consent/upload/idempotency contract, private contact, practice A1 and VIP fixed91k specification, one-time remarks and commission handoff, Cyrillic promo retained. Selection-only autosave; no contact/topic/files in new persistent stores.
 
-Proof: Node contracts, build, local browser geometry and synthetic mocked-API journeys, independent reviews. Existing design-specific tests may be intentionally superseded; record each actual regression separately.
+Evidence: docs/brain/evidence/salon-direct/design.txt, browser-result.json, private-preview-result.json, source-fingerprints.json, screenshots and reproducible browser scripts. Focused73/73, browser130states and recorded synthetic journeys, private preview0actualAPI requests, build/syntax/brain validation. Two independent reviewers GO on reviewed scope. Full historical suite remains490/666; obsolete interface assertions inventoried, not hidden or claimed green. Council provider inference unavailable, not counted as review.
 
-Next: implement the direct commercial journey and record reproducible evidence under docs/brain/evidence/salon-direct.
+Not verified: conversion or profit lift; public-domain deployment; real user order through production; all external auth providers end-to-end. Existing production read-only health14/14 is a separate observation. Private Sites review does not change akademsalon.ru. Legacy knowledge/cabinet/legal interfaces retain existing appearance.
+
+Repository gate: pre-existing TERMINAL_RESULT_DRIFT resolved reversibly (archive/salon-owner-launcher-20260909, detached unchanged worktree, canonical ancestry). hard0, warnings60, blocking0; legacy dormant warnings consciously accepted by integration owner. Fresh origin/main remains exact base. No public integration yet.
+
+Next exact step: inspect the privately deployed candidate, then disposition the retired UI test inventory before preparing the public-domain release health/smoke/rollback. The submitted manifest pins the implementation result_sha. Live publication status is reported separately after the Sites connector confirms it.
