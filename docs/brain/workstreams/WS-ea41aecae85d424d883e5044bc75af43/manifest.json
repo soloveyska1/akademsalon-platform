@@ -835,6 +835,14 @@
       {
         "path": "docs/brain/evidence/salon-autonomy",
         "match": "tree"
+      },
+      {
+        "path": "assets/img/salon-assistant",
+        "match": "tree"
+      },
+      {
+        "path": "backend/salon_bot/install_assistant.py",
+        "match": "exact"
       }
     ],
     "read": []
@@ -853,6 +861,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 52,
-  "base_manifest_hash": "7fe0058fc605923954dfc43acd698070da96b872075fd057de0f29fb37b127a8"
+  "manifest_revision": 53,
+  "base_manifest_hash": "ca0aff8fc13a6bdbed7a3126b7d7a17b6ca41cc6f88f94469f48ac40432e313d"
 }
