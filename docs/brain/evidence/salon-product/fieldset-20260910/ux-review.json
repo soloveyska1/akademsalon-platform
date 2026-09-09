@@ -1,0 +1,119 @@
+{
+  "decision": "GO",
+  "findings": [],
+  "css_sha256": "16fc0cd80c1cd38c579cca1ceba94ff786a2f9ae0ae9990f61436259cd7d9b48",
+  "states": [
+    {
+      "width": 390,
+      "theme": "light",
+      "before": [
+        {
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "legendPadding": "0px",
+          "legendX": 37,
+          "buttonsX": 37
+        },
+        {
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "legendPadding": "0px",
+          "legendX": 37,
+          "buttonsX": 37
+        }
+      ],
+      "chosen": {
+        "scope": "true",
+        "speed": "true",
+        "href": "/configurator.html?product=course&result=part&speed=express24",
+        "overflow": 0
+      }
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "before": [
+        {
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "legendPadding": "0px",
+          "legendX": 37,
+          "buttonsX": 37
+        },
+        {
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "legendPadding": "0px",
+          "legendX": 37,
+          "buttonsX": 37
+        }
+      ],
+      "chosen": {
+        "scope": "true",
+        "speed": "true",
+        "href": "/configurator.html?product=course&result=part&speed=express24",
+        "overflow": 0
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "before": [
+        {
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "legendPadding": "0px",
+          "legendX": 807.328125,
+          "buttonsX": 807.328125
+        },
+        {
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "legendPadding": "0px",
+          "legendX": 807.328125,
+          "buttonsX": 807.328125
+        }
+      ],
+      "chosen": {
+        "scope": "true",
+        "speed": "true",
+        "href": "/configurator.html?product=course&result=part&speed=express24",
+        "overflow": 0
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "before": [
+        {
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "legendPadding": "0px",
+          "legendX": 807.328125,
+          "buttonsX": 807.328125
+        },
+        {
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "legendPadding": "0px",
+          "legendX": 807.328125,
+          "buttonsX": 807.328125
+        }
+      ],
+      "chosen": {
+        "scope": "true",
+        "speed": "true",
+        "href": "/configurator.html?product=course&result=part&speed=express24",
+        "overflow": 0
+      }
+    }
+  ],
+  "visual": "Fresh390dark and1440light screenshot inspected: no rounded green fieldset blob; both legends align with controls; readable chosen states. Four states computed transparent bg,0 radius,0 legendpadding. Scope+24h update CTA.",
+  "evidence": [
+    "/tmp/fieldset-fixed-390-light.png",
+    "/tmp/fieldset-fixed-390-dark.png",
+    "/tmp/fieldset-fixed-1440-light.png",
+    "/tmp/fieldset-fixed-1440-dark.png"
+  ],
+  "limits": "Local read-only review. All nonGET/external requests blocked. No production verification."
+}
