@@ -49,6 +49,8 @@ class Concierge(unittest.TestCase):
         r=assistant.answer('Какие скидки есть?',context={'page':'/shop.html'})
         self.assertEqual(r['source'],'store');self.assertNotIn('ПЕРВЫЙЛИСТ',r['answer']);self.assertIn('/shop-terms.html',[s['url'] for s in r['sources']])
         self.assertEqual(assistant.answer('Где скачать купленные материалы?')['source'],'store')
+        latin=assistant.answer('Можно промокод SEMESTR для материалов?');self.assertEqual(latin['source'],'store');self.assertNotIn('ПЕРВЫЙЛИСТ',latin['answer'])
+        failed=assistant.answer('Получил чек, но платёж завис',context={'page':'/shop.html'});self.assertEqual(failed['links'][0]['url'],'/shop.html#purchases')
         self.assertEqual(assistant.answer('Получил чек, но платёж завис',context={'page':'/shop.html'})['source'],'payment_issue')
     def test_guarded_installer_roundtrip_and_source_drift(self):
         import tempfile,subprocess,importlib.util

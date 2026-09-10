@@ -345,14 +345,17 @@ def answer(question, order=None, context=None):
     # Safety/support intentions have precedence over commercial keywords.
     human=bool(re.search(r'позови|позвать|связаться|свяжи|оператор|живой человек|хочу.*мастер|нужен.*мастер|переда[йт].*мастер',q))
     if human:return finish(_legacy_answer(question,order,context))
+    store_context=ctx.get('page') in ('/shop.html','/shop-terms.html') and not b.get('active') or bool(re.search(r'магазин|готов[а-я]* материал|семестр|semestr|купленн[а-я]* материал',q))
     failure=bool(re.search(r'платеж.*(?:не|завис)|оплата.*(?:не прош|не появ|не подтв)|статус.*не.*(?:измен|обнов)|повторн.*оплат|дважды.*оплат',q))
     if failure or not re.search(r'возврат|вернуть.*деньг|отмен|налогов.*чек|где.*чек',q) and re.search(r'деньги.*списа|списа.*деньг|уже.*оплати|оплатил|оплатила',q):
+        if store_context:
+            r=result('payment_issue','Если деньги списались, не оплачивай повторно. Открой «Мои покупки» в магазине и проверь подтверждение оплаты. Если покупка не появилась или статус завис, подготовлю обращение мастеру: достаточно номера покупки, времени и суммы. Не присылай полный номер карты, пароли и коды.',[('Мои покупки','/shop.html#purchases')],['Позови мастера'],True)
+            r['sources']=[{'title':'Оплата и доступ к материалам','url':'/shop-terms.html'}];return finish(r)
         return finish(_legacy_answer('Деньги списались, но статус не изменился',order,context))
-    store_context=ctx.get('page') in ('/shop.html','/shop-terms.html') and not b.get('active') or bool(re.search(r'магазин|готов[а-я]* материал|семестр|купленн[а-я]* материал',q))
-    if store_context and re.search(r'куп|покуп|материал|скид|бонус|промокод|семестр|скач|файл|лиценз|тираж|возврат|вернуть.*деньг',q):
+    if store_context and re.search(r'куп|покуп|материал|скид|бонус|промокод|семестр|semestr|скач|файл|лиценз|тираж|возврат|вернуть.*деньг',q):
         page=next((p for p in _PAGES if p['url']=='/shop-terms.html'),None)
         if page:
-            section='6.' if re.search(r'возврат|вернуть|ошиб|не открыв|не скач',q) else '5.' if re.search(r'скид|бонус|код|семестр',q) else '4.' if re.search(r'лиценз|тираж|доступ|скач|файл',q) else '3.'
+            section='6.' if re.search(r'возврат|вернуть|ошиб|не открыв|не скач',q) else '5.' if re.search(r'скид|бонус|код|семестр|semestr',q) else '4.' if re.search(r'лиценз|тираж|доступ|скач|файл',q) else '3.'
             chunks=[c['text'] for c in page['chunks'] if c['heading'].startswith(section)]
             body='\n\n'.join(chunks[:3])
             if len(body)>1600:body='\n\n'.join(chunks[:2])
