@@ -39,7 +39,9 @@
     var terminal = !!(o && (o.status === 'done' || o.status === 'cancel'));
     var action = null;
     if (o && !paused && !terminal) {
-      if (payment.phase === 'due') {
+      if (o.status === 'priced') {
+        action = { kind: 'price', score: 6, jump: 'secDecide', icon: 'wallet' };
+      } else if (payment.phase === 'due') {
         action = { kind: 'payment', score: 5, jump: 'secPay', icon: 'wallet' };
       } else if (o.status === 'priced') {
         action = { kind: 'price', score: 4, jump: 'secDecide', icon: 'wallet' };
@@ -57,7 +59,7 @@
     } else if (action) {
       destination = action.jump === 'secPay' ? 'money'
         : action.jump === 'secFiles' ? 'files'
-        : action.jump === 'secChat' ? 'chat' : 'work';
+        : action.jump === 'secChat' ? 'chat' : action.kind === 'price' ? 'money' : 'work';
     } else if (payment.phase === 'checking') {
       destination = 'money';
     }

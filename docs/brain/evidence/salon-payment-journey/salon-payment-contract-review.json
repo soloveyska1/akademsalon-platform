@@ -1,0 +1,39 @@
+{
+  "decision": "GO for reviewed backend candidate; production activation not performed",
+  "scope": "Backend payment journey module and hash-pinned installer only; no deployment or UI endorsement",
+  "reproducers": [
+    "/tmp/salon-payment-installer-review.py",
+    "/tmp/salon-payment-independent-tests.py"
+  ],
+  "evidence": [
+    "/tmp/salon-payment-independent-tests.json",
+    "/tmp/salon-payment-installer-review.json"
+  ],
+  "open": [],
+  "closed": [
+    "unsupported source checkout replaced by price plus source-snapshot provenance",
+    "full-gift accepts exact specification without fake cash payment",
+    "accepted gift held through expiry; cancellation releases once",
+    "pending online invoice cannot be cancelled by stale new expected_revision",
+    "state detects equal-cash differing settlement",
+    "for_pay rejects mismatching financial settlement even with fresh revision",
+    "rollback retains standalone gift.py compatibility; exact retained code tested after accepted gift, expiry and cancellation",
+    "unhashable action rejects before state change"
+  ],
+  "hashes": {
+    "backend/salon_bot/payment_journey.py": "87ae411f8b33e60673aab1b8fa4774011157280fd196e369087d6bc0db1a9b51",
+    "backend/salon_bot/install_payment_journey.py": "7a1eca039798cb1ebd800c6172a6ad789b72d3d59e1ff162196cbded5d9a790d"
+  },
+  "passed": {
+    "independent_actual_db": 11,
+    "installer_sandbox": 4
+  },
+  "limits": [
+    "No production/customer requests or live provider test.",
+    "PDF renderer mocked; contractual normalized lines and actual SQLite finance helpers exercised.",
+    "Rollback deliberately retains gift.py; a later prepare must account for retained compatibility hash rather than assume pristine original tree.",
+    "Old interrupted deposit reservations continue to rely on existing background recover_payments; not a new duplicate reserve."
+  ],
+  "run_order": "Run installer-review first to capture exact retained gift bytes; then independent-tests.",
+  "fixture_source_hash": "70f3321c0e68989fe8a7f5c4b6fa2d6ce59c0948b7a3d0a68562d9d3869a3292"
+}
